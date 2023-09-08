@@ -1,0 +1,93 @@
+
+
+view_name: vw_export_wastewater_structure
+table: qgep_od.vw_qgep_wastewater_structure
+pkey: obj_id
+view_schema: qgep_od
+
+joins:
+  cover_shape:
+    table: qgep_vl.cover_cover_shape
+    fkey: co_shape
+    prefix: cover_shape_
+  cover_fastening:
+    table: qgep_vl.cover_fastening
+    fkey: co_fastening
+    prefix: cover_fastening_
+  cover_material:
+    table: qgep_vl.cover_material
+    fkey: co_material
+    prefix: cover_material_
+  positional_accuracy:
+    table: qgep_vl.cover_positional_accuracy
+    fkey: co_positional_accuracy
+    prefix: positional_accuracy_
+  sludge_bucket:
+    table: qgep_vl.cover_sludge_bucket
+    fkey: co_sludge_bucket
+    prefix: sludge_bucket_
+  venting:
+    table: qgep_vl.cover_venting
+    fkey: co_venting
+    prefix: venting_
+  renovation_demand:
+    table: qgep_vl.structure_part_renovation_demand
+    fkey: co_renovation_demand
+    prefix: renovation_demand_
+  financing:
+    table: qgep_vl.wastewater_structure_financing
+    fkey: financing
+    prefix: financing_
+  renovation_necessity:
+    table: qgep_vl.wastewater_structure_renovation_necessity
+    fkey: renovation_necessity
+    prefix: renovation_necessity_
+  rv_construction_type:
+    table: qgep_vl.wastewater_structure_rv_construction_type
+    fkey: rv_construction_type
+    prefix: rv_construction_type_
+  status:
+    table: qgep_vl.wastewater_structure_status
+    fkey: status
+    prefix: status_
+  structure_condition:
+    table: qgep_vl.wastewater_structure_structure_condition
+    fkey: structure_condition
+    prefix: structure_condition_
+  owner:
+    table: qgep_od.organisation
+    fkey: fk_owner
+    prefix: owner_
+  operator:
+    table: qgep_od.organisation
+    fkey: fk_operator
+    prefix: operator_
+  manhole_function:
+    table: qgep_vl.manhole_function
+    fkey: ma_function
+    prefix: manhole_function_
+  material:
+    table: qgep_vl.manhole_material
+    fkey: ma_material
+    prefix: material_
+  surface_inflow:
+    table: qgep_vl.manhole_surface_inflow
+    fkey: ma_surface_inflow
+    prefix: surface_inflow_
+  bypass:
+    table: qgep_vl.special_structure_bypass
+    fkey: ss_bypass
+    prefix: bypass_
+  special_structure_function:
+    table: qgep_vl.special_structure_function
+    fkey: ss_function
+    prefix: special_structure_function_
+  stormwater_tank_arrangement:
+    table: qgep_vl.special_structure_stormwater_tank_arrangement
+    fkey: ss_stormwater_tank_arrangement
+    prefix: stormwater_tank_arrangement_
+  relevance:
+    table: qgep_vl.discharge_point_relevance
+    fkey: dp_relevance
+    prefix: relevance_
+

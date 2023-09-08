@@ -1,0 +1,15 @@
+
+
+table: qgep_od.damage
+view_name: vw_qgep_damage
+allow_type_change: False
+allow_parent_only: True
+pkey_default_value: True
+
+joins:
+  channel:
+    table: qgep_od.damage_channel
+
+  manhole:
+    table: qgep_od.damage_manhole
+
