@@ -3,7 +3,7 @@
 -- Synchronize GEOMETRY with bottom_level qgep_od.wastewater_node
 -----------------------------------------------
 -----------------------------------------------
-SELECT set_config('qgep.srid', :SRID::text, false);
+SELECT set_config('qgep.srid', 2056::text, false);
 DO $DO$
 BEGIN
 EXECUTE format($TRIGGER$
@@ -45,7 +45,7 @@ CREATE TRIGGER synchronize_level_with_altitude
 -- Synchronize GEOMETRY with level qgep_od.cover
 -----------------------------------------------
 -----------------------------------------------
-SELECT set_config('qgep.srid', :SRID::text, false);
+SELECT set_config('qgep.srid', 2056::text, false);
 DO $DO$
 BEGIN
 EXECUTE format($TRIGGER$
