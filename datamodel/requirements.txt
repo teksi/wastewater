@@ -1,0 +1,4 @@
+pirogue==1.4.1
+psycopg2
+pyyaml
+pum>=0.10.0
