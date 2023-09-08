@@ -1,5 +1,5 @@
 -------
-CREATE TABLE qgep_od.re_maintenance_event_wastewater_structure
+/* CREATE TABLE qgep_od.re_maintenance_event_wastewater_structure
 (
   fk_wastewater_structure varchar (16) NOT NULL,
   fk_maintenance_event varchar (16) NOT NULL,
@@ -9,7 +9,7 @@ CREATE TABLE qgep_od.re_maintenance_event_wastewater_structure
 )
 WITH (
    OIDS = False
-);
+); */
 
 CREATE INDEX in_re_me_ws__fk_ws ON qgep_od.re_maintenance_event_wastewater_structure USING btree (fk_wastewater_structure ASC);
 CREATE INDEX in_re_me_ws__fk_me ON qgep_od.re_maintenance_event_wastewater_structure USING btree (fk_maintenance_event ASC);
