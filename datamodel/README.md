@@ -1,1 +1,1 @@
-Here come the datamodel files for this module
+Here come the datamodel VSA-DSS 2020 files for this module
