@@ -1,4 +1,4 @@
------- This file generates the VSA-DSS database (Modul VSA-DSS 2015) table aqu  in en on QQIS
+------ This file generates the VSA-DSS database (Modul VSA-DSS 2015) table _aquifier (as it does not exist anymore in VSA-DSS 2020)  in en on QQIS
 ------ For questions etc. please contact Stefan Burckhardt stefan.burckhardt@sjib.ch
 ------ version 03.07.2017 21:26:28
 BEGIN;
