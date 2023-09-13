@@ -10,7 +10,7 @@
 
 CREATE OR REPLACE VIEW qgep_od.vw_organisation AS
   SELECT *
-   FROM qgep_od.organisation f
+   FROM qgep_od.organisation;
      
 ALTER VIEW qgep_od.vw_organisation ALTER obj_id SET DEFAULT qgep_sys.generate_oid('qgep_od','organisation');
 
