@@ -91,7 +91,8 @@ def create_views(srid: int,
     # Recreate swmm views
     run_sql('swmm_views/01_vw_swmm_create_schema.sql', pg_service, variables)
     run_sql('swmm_views/02_vw_swmm_junctions.sql', pg_service, variables)
-    run_sql('swmm_views/03_vw_swmm_aquifers.sql', pg_service, variables)
+    # 13.9.2023 temporaily take out
+    # run_sql('swmm_views/03_vw_swmm_aquifers.sql', pg_service, variables)
     run_sql('swmm_views/04_vw_swmm_conduits.sql', pg_service, variables)
     run_sql('swmm_views/05_vw_swmm_dividers.sql', pg_service, variables)
     run_sql('swmm_views/06_vw_swmm_landuses.sql', pg_service, variables)
