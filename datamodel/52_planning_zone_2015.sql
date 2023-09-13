@@ -13,7 +13,7 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE qgep_od.seq_planning_zone_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE qgep_od.planning_zone ALTER COLUMN obj_id SET DEFAULT qgep_sys.generate_oid('qgep_od','planning_zone');
+ ALTER TABLE qgep_od._planning_zone ALTER COLUMN obj_id SET DEFAULT qgep_sys.generate_oid('qgep_od','planning_zone');
 COMMENT ON COLUMN qgep_od._planning_zone.obj_id IS '[primary_key] INTERLIS STANDARD OID (with Postfix/Präfix) or UUOID, see www.interlis.ch';
 ALTER TABLE qgep_od._planning_zone ADD COLUMN kind  integer ;
 COMMENT ON COLUMN qgep_od._planning_zone.kind IS 'Type of planning zone / Art der Bauzone / Genre de zones à bâtir';
@@ -40,7 +40,7 @@ ALTER TABLE qgep_vl._planning_zone_kind ADD CONSTRAINT pkey_qgep_vl_planning_zon
  INSERT INTO qgep_vl._planning_zone_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (30,30,'agricultural_zone','Landwirtschaftszone','zone_agricole', 'zzz_Landwirtschaftszone', '', '', '', '', '', '', 'true');
  INSERT INTO qgep_vl._planning_zone_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3077,3077,'unknown','unbekannt','inconnu', 'sconosciuto', '', '', '', '', '', '', 'true');
  INSERT INTO qgep_vl._planning_zone_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (29,29,'residential_zone','Wohnzone','zone_d_habitations', 'zzz_Wohnzone', '', '', '', '', '', '', 'true');
- ALTER TABLE qgep_od.planning_zone ADD CONSTRAINT fkey_vl_planning_zone_kind FOREIGN KEY (kind)
+ ALTER TABLE qgep_od._planning_zone ADD CONSTRAINT fkey_vl_planning_zone_kind FOREIGN KEY (kind)
  REFERENCES qgep_vl._planning_zone_kind (code) MATCH SIMPLE 
  ON UPDATE RESTRICT ON DELETE RESTRICT;
  
