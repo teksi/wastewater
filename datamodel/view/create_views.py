@@ -68,7 +68,8 @@ def create_views(srid: int,
     SingleInheritance('qgep_od.connection_object', 'qgep_od.fountain', view_name='vw_fountain', pkey_default_value=True, pg_service=pg_service).create()
     
     MultipleInheritance(safe_load(open("view/vw_maintenance_examination.yaml")), drop=True, pg_service=pg_service).create()
-    MultipleInheritance(safe_load(open("view/vw_damage.yaml")), drop=True, pg_service=pg_service).create()
+    # 13.9.2023 temporary commented out - adaption to naming of damage_* attributes needed
+    # MultipleInheritance(safe_load(open("view/vw_damage.yaml")), drop=True, pg_service=pg_service).create()
 
     vw_qgep_wastewater_structure(srid, pg_service=pg_service, extra_definition=qgep_wastewater_structure_extra)
     vw_qgep_reach(pg_service=pg_service, extra_definition=qgep_reach_extra)
