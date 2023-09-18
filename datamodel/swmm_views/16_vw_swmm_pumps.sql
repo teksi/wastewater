@@ -22,7 +22,7 @@ SELECT
 		THEN 'No curve will be created for this pump, it has no overflow_characteristic'
 		-- Attribute overflow_characteristics_digital does not exist anymore in VSA-DSS 2020
 		-- WHEN  oc.overflow_characteristic_digital != 6223  --'yes;
-		THEN 'No curve will be created for this pump, overflow_characteristic_digital not equal to yes'
+		-- THEN 'No curve will be created for this pump, overflow_characteristic_digital not equal to yes'
 		WHEN  oc.kind_overflow_char != 6220 --'hq;
 		THEN concat(pu.obj_id, 'No curve will be created for this pump, kind_overflow_char is not equal to H/Q, Q/Q relations are not supported by SWMM')
 		ELSE NULL
