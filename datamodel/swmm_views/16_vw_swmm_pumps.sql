@@ -20,10 +20,11 @@ SELECT
 		CASE
   		WHEN  oc.obj_id IS NULL  --'yes;
 		THEN 'No curve will be created for this pump, it has no overflow_characteristic'
-		WHEN  oc.overflow_characteristic_digital != 6223  --'yes;
+		-- Attribute overflow_characteristics_digital does not exist anymore in VSA-DSS 2020
+		-- WHEN  oc.overflow_characteristic_digital != 6223  --'yes;
 		THEN 'No curve will be created for this pump, overflow_characteristic_digital not equal to yes'
-		WHEN  oc.kind_overflow_characteristic != 6220 --'hq;
-		THEN concat(pu.obj_id, 'No curve will be created for this pump, kind_overflow_characteristic is not equal to H/Q, Q/Q relations are not supported by SWMM')
+		WHEN  oc.kind_overflow_char != 6220 --'hq;
+		THEN concat(pu.obj_id, 'No curve will be created for this pump, kind_overflow_char is not equal to H/Q, Q/Q relations are not supported by SWMM')
 		ELSE NULL
 		END
 	) as description,

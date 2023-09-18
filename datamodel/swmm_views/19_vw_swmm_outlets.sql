@@ -24,5 +24,6 @@ LEFT JOIN qgep_od.overflow_char oc ON of.fk_overflow_char = oc.obj_id
 LEFT JOIN qgep_od.wastewater_node wn ON wn.obj_id = of.fk_wastewater_node
 LEFT JOIN qgep_od.wastewater_structure ws ON ws.fk_main_wastewater_node = wn.obj_id
 WHERE status IN (6530, 6533, 8493, 6529, 6526, 7959)
-AND oc.overflow_characteristic_digital = 6223  --'yes;
-AND oc.kind_overflow_characteristic = 6220; -- h/q relations (Q/Q relations are not supported by SWMM) 
+-- Attribute overflow_characteristics_digital does not exist anymore in VSA-DSS 2020
+-- AND oc.overflow_characteristic_digital = 6223  --'yes;
+AND oc.kind_overflow_char = 6220; -- h/q relations (Q/Q relations are not supported by SWMM) 
