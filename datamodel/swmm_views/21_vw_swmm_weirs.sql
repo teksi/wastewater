@@ -27,7 +27,7 @@ SELECT
 	NULL as message
 FROM qgep_od.prank_weir pw
 LEFT JOIN qgep_od.overflow of ON pw.obj_id = of.obj_id
-LEFT JOIN qgep_od.overflow_char oc ON of.fk_overflow_characteristic = oc.obj_id
+LEFT JOIN qgep_od.overflow_char oc ON of.fk_overflow_char = oc.obj_id
 LEFT JOIN qgep_od.wastewater_node wn ON wn.obj_id = of.fk_wastewater_node
 LEFT JOIN qgep_od.wastewater_structure ws ON ws.fk_main_wastewater_node = wn.obj_id
 WHERE status IN (6530, 6533, 8493, 6529, 6526, 7959)
@@ -63,7 +63,7 @@ SELECT
 	concat('Leaping weirs are not supported by SWMM, ', lw.obj_id, 'see: https://swmm5.org/2013/07/19/leaping-weir-example-in-swmm-5-and-infoswmm-alternative/') as message
 FROM qgep_od.leapingweir lw
 LEFT JOIN qgep_od.overflow of ON lw.obj_id = of.obj_id
-LEFT JOIN qgep_od.overflow_char oc ON of.fk_overflow_characteristic = oc.obj_id
+LEFT JOIN qgep_od.overflow_char oc ON of.fk_overflow_char = oc.obj_id
 LEFT JOIN qgep_od.wastewater_node wn ON wn.obj_id = of.fk_wastewater_node
 LEFT JOIN qgep_od.wastewater_structure ws ON ws.fk_main_wastewater_node = wn.obj_id
 WHERE status IN (6530, 6533, 8493, 6529, 6526, 7959);

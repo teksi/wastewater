@@ -23,8 +23,8 @@ CREATE OR REPLACE VIEW qgep_swmm.vw_curves AS
 	END as hierarchy,
 	wn.obj_id as obj_id
 FROM qgep_od.hq_relation hq
-LEFT JOIN qgep_od.overflow_char oc ON hq.fk_overflow_characteristic = oc.obj_id
-LEFT JOIN qgep_od.overflow of ON of.fk_overflow_characteristic = oc.obj_id
+LEFT JOIN qgep_od.overflow_char oc ON hq.fk_overflow_char = oc.obj_id
+LEFT JOIN qgep_od.overflow of ON of.fk_overflow_char = oc.obj_id
 LEFT JOIN qgep_od.pump pu ON pu.obj_id = of.obj_id
 LEFT JOIN qgep_od.wastewater_node wn ON wn.obj_id = of.fk_wastewater_node
 LEFT JOIN qgep_od.wastewater_structure ws ON ws.fk_main_wastewater_node = wn.obj_id
@@ -56,8 +56,8 @@ UNION ALL
 	END as hierarchy,
 	wn.obj_id as obj_id
 FROM qgep_od.hq_relation hq
-LEFT JOIN qgep_od.overflow_char oc ON hq.fk_overflow_characteristic = oc.obj_id
-LEFT JOIN qgep_od.overflow of ON of.fk_overflow_characteristic = oc.obj_id
+LEFT JOIN qgep_od.overflow_char oc ON hq.fk_overflow_char = oc.obj_id
+LEFT JOIN qgep_od.overflow of ON of.fk_overflow_char = oc.obj_id
 LEFT JOIN qgep_od.prank_weir pw ON pw.obj_id = of.obj_id
 LEFT JOIN qgep_od.wastewater_node wn ON wn.obj_id = of.fk_wastewater_node
 LEFT JOIN qgep_od.wastewater_structure ws ON ws.fk_main_wastewater_node = wn.obj_id

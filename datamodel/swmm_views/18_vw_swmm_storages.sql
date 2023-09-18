@@ -173,7 +173,7 @@ SELECT
 	wn.obj_id as obj_id
 FROM qgep_od.prank_weir pw
 LEFT JOIN qgep_od.overflow of ON pw.obj_id = of.obj_id
-LEFT JOIN qgep_od.overflow_char oc ON of.fk_overflow_characteristic = oc.obj_id
+LEFT JOIN qgep_od.overflow_char oc ON of.fk_overflow_char = oc.obj_id
 LEFT JOIN qgep_od.wastewater_node wn ON wn.obj_id = of.fk_wastewater_node
 LEFT JOIN qgep_od.wastewater_structure ws ON ws.fk_main_wastewater_node = wn.obj_id
 WHERE status IN (6530, 6533, 8493, 6529, 6526, 7959)
