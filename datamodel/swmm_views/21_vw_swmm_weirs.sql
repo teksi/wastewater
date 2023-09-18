@@ -6,7 +6,7 @@ SELECT
 	of.fk_wastewater_node as FromNode, -- inlet is the waternode entering the pump
 	of.fk_overflow_to as ToNode, -- outlet is the waternode at the top of next reach
 	'SIDEFLOW' as Type,
-	coalesce(wn.backflow_level,0) as CrestHt,
+	coalesce(wn.backflow_level_current,0) as CrestHt,
 	3.33 as Qcoeff,
 	'NO' as Gated,
 	0 as EndCond,
@@ -45,7 +45,7 @@ SELECT
 	of.fk_wastewater_node as FromNode, -- inlet is the waternode entering the pump
 	of.fk_overflow_to as ToNode, -- outlet is the waternode at the top of next reach
 	'SIDEFLOW' as Type,
-	coalesce(wn.backflow_level,0) as CrestHt,
+	coalesce(wn.backflow_level_current,0) as CrestHt,
 	3.33 as Qcoeff,
 	'NO' as Gated,
 	0 as EndCond,
