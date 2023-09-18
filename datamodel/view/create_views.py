@@ -70,7 +70,7 @@ def create_views(srid: int,
     MultipleInheritance(safe_load(open("view/vw_maintenance_examination.yaml")), drop=True, pg_service=pg_service).create()
     
     # 13.9.2023 temporary commented out - adaption to naming of damage_* attributes needed in datamodel. Subclass attributes cannot have the same name with PUM.
-    # MultipleInheritance(safe_load(open("view/vw_damage.yaml")), drop=True, pg_service=pg_service).create()
+    MultipleInheritance(safe_load(open("view/vw_damage.yaml")), drop=True, pg_service=pg_service).create()
 
     vw_qgep_wastewater_structure(srid, pg_service=pg_service, extra_definition=qgep_wastewater_structure_extra)
     vw_qgep_reach(pg_service=pg_service, extra_definition=qgep_reach_extra)
@@ -89,6 +89,7 @@ def create_views(srid: int,
     run_sql('view/network/vw_network_segment.sql', pg_service, variables)
 
     # Recreate swmm views
+    # to do finish testing swmm views
     run_sql('swmm_views/01_vw_swmm_create_schema.sql', pg_service, variables)
     run_sql('swmm_views/02_vw_swmm_junctions.sql', pg_service, variables)
     run_sql('swmm_views/03_vw_swmm_aquifers.sql', pg_service, variables)
