@@ -23,8 +23,9 @@ WITH (
   OIDS=FALSE
 );
 
-ALTER TABLE tww_sys.dictionary_vw_field
-  OWNER TO tww;
+-- does not work - now role tww at this moment
+-- ALTER TABLE tww_sys.dictionary_vw_field
+--  OWNER TO tww;
 
 -- Reach
 
@@ -486,7 +487,8 @@ CREATE VIEW tww_od.vw_dictionary_field AS
 	field_description_ro
     FROM tww_sys.dictionary_od_field;
 
-ALTER VIEW tww_od.vw_dictionary_field
-  OWNER TO tww;
+-- does not work - now role tww at this moment
+-- ALTER VIEW tww_od.vw_dictionary_field
+--  OWNER TO tww;
 
 
