@@ -27,7 +27,7 @@ INSERT INTO tww_sys.oid_prefixes (prefix,organization,active) VALUES ('ch17f516'
 INSERT INTO tww_sys.oid_prefixes (prefix,organization,active) VALUES ('ch17nq5g','Triform',FALSE);
 INSERT INTO tww_sys.oid_prefixes (prefix,organization,active) VALUES ('ch2003p6','Vevey',FALSE);
 INSERT INTO tww_sys.oid_prefixes (prefix,organization,active) VALUES ('ch238z74','La Tour-de-Peilz',FALSE);
-INSERT INTO qgep_sys.oid_prefixes (prefix,organization,active) VALUES ('ch234hqx','BTI',FALSE);
+INSERT INTO tww_sys.oid_prefixes (prefix,organization,active) VALUES ('ch234hqx','BTI',FALSE);
 
 CREATE INDEX in_tww_is_oid_prefixes_active
   ON tww_sys.oid_prefixes
