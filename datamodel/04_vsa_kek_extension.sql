@@ -138,8 +138,8 @@ COMMENT ON COLUMN tww_od.damage_manhole.manhole_damage_end IS 'Location on the c
 COMMENT ON COLUMN tww_od.damage_manhole.manhole_quantification1 IS 'Quantification 1 according to SN EN 13508. Permissible inputs are described in chapter 3.1.5. Implemented as text attribute. / Quantifizierung 1 gemäss SN EN 13508. Zulässige Eingaben sind in Kapitel 3.1.5 beschrieben. Als Textattribut umgesetzt. / Quantification 1 selon la SN EN 13508. Les entrées autorisées sont décrites dans le chapitre 3.1.5. Type texte.';
  ALTER TABLE tww_od.damage_manhole ADD COLUMN manhole_shaft_area  integer ;
 COMMENT ON COLUMN tww_od.damage_manhole.manhole_shaft_area IS 'yyy_Bereich in dem eine Feststellung auftritt. Die Werte sind unter 3.1.9 abschliessend beschrieben. / Bereich in dem eine Feststellung auftritt. Die Werte sind unter 3.1.9 abschliessend beschrieben. / Domaine où une observation est faite. Les valeurs sont décrites dans 3.1.9.';
- ALTER TABLE tww_od.damage_manhole ADD COLUMN quantification2  varchar(20) ;
-COMMENT ON COLUMN tww_od.damage_manhole.quantification2 IS 'Quantification 2 according to SN EN 13508. Permissible inputs are described in chapter 3.1.5. Implemented as text attribute. / Quantifizierung 2 gemäss SN EN 13508. Zulässige Eingaben sind in Kapitel 3.1.5 beschrieben. Als Textattribut umgesetzt. / Quantification 2 selon la SN EN 13508. Les entrées autorisées sont décrites dans le chapitre 3.1.5. Type texte';
+ ALTER TABLE tww_od.damage_manhole ADD COLUMN manhole_quantification2  varchar(20) ;
+COMMENT ON COLUMN tww_od.damage_manhole.manhole_quantification2 IS 'Quantification 2 according to SN EN 13508. Permissible inputs are described in chapter 3.1.5. Implemented as text attribute. / Quantifizierung 2 gemäss SN EN 13508. Zulässige Eingaben sind in Kapitel 3.1.5 beschrieben. Als Textattribut umgesetzt. / Quantification 2 selon la SN EN 13508. Les entrées autorisées sont décrites dans le chapitre 3.1.5. Type texte';
 -------
 CREATE TRIGGER
 update_last_modified_damage_manhole
