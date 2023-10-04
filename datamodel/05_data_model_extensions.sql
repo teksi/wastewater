@@ -37,12 +37,14 @@ added solely for TEKSI Wastewater & GEP';
 -- this column is an extension to the VSA data model and puts the _function_hierarchic in order
 ALTER TABLE tww_vl.channel_function_hierarchic ADD COLUMN order_fct_hierarchic smallint;
 -- integrate Alter order_fct_hierarchic in qgep_vl.channel_function_hierarchic #224 https://github.com/QGEP/datamodel/pull/224
+-- this column is an extension to the VSA data model and puts the _usage_current in order
+ALTER TABLE tww_vl.channel_usage_current ADD COLUMN order_usage_current smallint;
 UPDATE qgep_vl.channel_function_hierarchic 
 SET order_fct_hierarchic=
  array_position(
 	 ARRAY[
 		 5068 --pwwf.water_bodies
-  	 ,5070 --pwwf.main_drain_regional
+  	     ,5070 --pwwf.main_drain_regional
 		 ,5069 --pwwf.main_drain
 		 ,5071 --pwwf.collector_sewer
 		 ,5062 --pwwf.renovation_conduction
@@ -57,19 +59,6 @@ SET order_fct_hierarchic=
 		 ,5075 --swwf.unknown
 		 ]
 	 ,code) 
-
--- this column is an extension to the VSA data model and puts the _usage_current in order
-ALTER TABLE tww_vl.channel_usage_current ADD COLUMN order_usage_current smallint;
-UPDATE tww_vl.channel_usage_current SET order_usage_current=5 WHERE code = 4514;
-UPDATE tww_vl.channel_usage_current SET order_usage_current=3 WHERE code = 4516;
-UPDATE tww_vl.channel_usage_current SET order_usage_current=7 WHERE code = 4518;
-UPDATE tww_vl.channel_usage_current SET order_usage_current=6 WHERE code = 4520;
-UPDATE tww_vl.channel_usage_current SET order_usage_current=2 WHERE code = 4522;
-UPDATE tww_vl.channel_usage_current SET order_usage_current=4 WHERE code = 4524;
-UPDATE tww_vl.channel_usage_current SET order_usage_current=1 WHERE code = 4526;
-UPDATE tww_vl.channel_usage_current SET order_usage_current=8 WHERE code = 4571;
-UPDATE tww_vl.channel_usage_current SET order_usage_current=9 WHERE code = 5322;
-
 
 -- table wastewater_node is extended to hold additional attributes necessary for symbology reasons
 -- extended attributes are started with an underscore
