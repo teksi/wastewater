@@ -4,7 +4,7 @@
 ------ with 3D coordinates
 
 BEGIN;
------- neu in 00_qgep_schema.sql
+------ neu in 00_tww_schema.sql
 -- CREATE EXTENSION IF NOT EXISTS postgis;
 -- CREATE EXTENSION IF NOT EXISTS hstore;
 -- CREATE SCHEMA tww_sys;
