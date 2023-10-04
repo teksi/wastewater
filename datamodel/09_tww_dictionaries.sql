@@ -122,6 +122,8 @@ ALTER TABLE tww_sys.dictionary_od_table ADD CONSTRAINT unq_tww_is_dictonary_name
 
 DROP TYPE IF EXISTS tww_od.plantype;
 CREATE TYPE tww_od.plantype AS ENUM ('Leitungskataster','Werkinformation', 'GEP_Verband', 'GEP_Traegerschaft', 'PAA', 'SAA', 'kein_Plantyp_definiert');
+
+
 CREATE TABLE tww_sys.dictionary_od_field (
     id serial NOT NULL,
     class_id integer,
