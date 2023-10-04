@@ -2,7 +2,7 @@
 ------ For questions etc. please contact Stefan Burckhardt stefan.burckhardt@sjib.ch
 ------ version 04.10.2023 16:38:12
 ------ with 3D coordinates
-BEGIN;
+
 CREATE EXTENSION IF NOT EXISTS postgis;
 CREATE EXTENSION IF NOT EXISTS hstore;
 CREATE SCHEMA tww_sys;
