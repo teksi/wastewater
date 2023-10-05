@@ -1,7 +1,7 @@
 --------
 -- View for the swmm module class curves
 --------
-CREATE OR REPLACE VIEW qgep_swmm.vw_curves AS
+CREATE OR REPLACE VIEW tww_swmm.vw_curves AS
 
 -- Pump curves
 (SELECT

@@ -1,7 +1,7 @@
 --------
 -- View for the swmm module class xsections
 --------
-CREATE OR REPLACE VIEW qgep_swmm.vw_xsections AS
+CREATE OR REPLACE VIEW tww_swmm.vw_xsections AS
 
 SELECT DISTINCT
   re.obj_id as Link,

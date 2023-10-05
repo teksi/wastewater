@@ -1,8 +1,8 @@
 --------
 -- View for the swmm module class polygons
--- - Depends on qgep_swmm.vw_subcatchments
+-- - Depends on tww_swmm.vw_subcatchments
 --------
-CREATE OR REPLACE VIEW qgep_swmm.vw_polygons AS
+CREATE OR REPLACE VIEW tww_swmm.vw_polygons AS
 
 SELECT
   Subcatchment,
@@ -19,6 +19,6 @@ SELECT
       state,
       hierarchy,
       obj_id
-      FROM qgep_swmm.vw_subcatchments
+      FROM tww_swmm.vw_subcatchments
     ) as foo
 WHERE (dp).path[2] != nvert;	-- dont select last vertex

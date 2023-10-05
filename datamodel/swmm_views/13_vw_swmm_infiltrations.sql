@@ -1,5 +1,5 @@
 -- Creates default infiltration for each subcatchment
-CREATE OR REPLACE VIEW qgep_swmm.vw_infiltration AS
+CREATE OR REPLACE VIEW tww_swmm.vw_infiltration AS
 SELECT
   CASE 
     WHEN state = 'current' THEN concat(replace(ca.obj_id, ' ', '_'), '_', 'rw_current')

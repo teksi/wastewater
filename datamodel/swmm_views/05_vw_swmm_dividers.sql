@@ -1,7 +1,7 @@
 --------
 -- View for the swmm module class dividers
 -- Question attribute Diverted Link: Name of link which receives the diverted flow. overflow > fk_overflow_to
-CREATE OR REPLACE VIEW qgep_swmm.vw_dividers AS
+CREATE OR REPLACE VIEW tww_swmm.vw_dividers AS
 
 SELECT
 	ma.obj_id as Name,

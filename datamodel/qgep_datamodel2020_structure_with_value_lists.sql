@@ -60,13 +60,13 @@ ALTER SCHEMA qgep_od OWNER TO postgres;
 
 --
 -- TOC entry 12 (class 2615 OID 1499275)
--- Name: qgep_swmm; Type: SCHEMA; Schema: -; Owner: postgres
+-- Name: tww_swmm; Type: SCHEMA; Schema: -; Owner: postgres
 --
 
-CREATE SCHEMA qgep_swmm;
+CREATE SCHEMA tww_swmm;
 
 
-ALTER SCHEMA qgep_swmm OWNER TO postgres;
+ALTER SCHEMA tww_swmm OWNER TO postgres;
 
 --
 -- TOC entry 15 (class 2615 OID 1487870)
@@ -11791,16 +11791,16 @@ COMMENT ON COLUMN qgep_od.zone.fk_provider IS 'Foreignkey to Metaattribute provi
 
 --
 -- TOC entry 568 (class 1259 OID 1499276)
--- Name: reach_coefficient_of_friction; Type: TABLE; Schema: qgep_swmm; Owner: postgres
+-- Name: reach_coefficient_of_friction; Type: TABLE; Schema: tww_swmm; Owner: postgres
 --
 
-CREATE TABLE qgep_swmm.reach_coefficient_of_friction (
+CREATE TABLE tww_swmm.reach_coefficient_of_friction (
     fk_material integer NOT NULL,
     coefficient_of_friction smallint
 );
 
 
-ALTER TABLE qgep_swmm.reach_coefficient_of_friction OWNER TO postgres;
+ALTER TABLE tww_swmm.reach_coefficient_of_friction OWNER TO postgres;
 
 --
 -- TOC entry 575 (class 1259 OID 1499395)
@@ -15382,10 +15382,10 @@ COPY qgep_od.zone (obj_id, identifier, remark, last_modification, fk_dataowner, 
 --
 -- TOC entry 6928 (class 0 OID 1499276)
 -- Dependencies: 568
--- Data for Name: reach_coefficient_of_friction; Type: TABLE DATA; Schema: qgep_swmm; Owner: postgres
+-- Data for Name: reach_coefficient_of_friction; Type: TABLE DATA; Schema: tww_swmm; Owner: postgres
 --
 
-COPY qgep_swmm.reach_coefficient_of_friction (fk_material, coefficient_of_friction) FROM stdin;
+COPY tww_swmm.reach_coefficient_of_friction (fk_material, coefficient_of_friction) FROM stdin;
 5381	100
 2754	83
 3638	83
@@ -22325,10 +22325,10 @@ ALTER TABLE ONLY qgep_od.zone
 
 --
 -- TOC entry 5933 (class 2606 OID 1499280)
--- Name: reach_coefficient_of_friction pkey_qgep_vl_reach_coefficient_of_friction_id; Type: CONSTRAINT; Schema: qgep_swmm; Owner: postgres
+-- Name: reach_coefficient_of_friction pkey_qgep_vl_reach_coefficient_of_friction_id; Type: CONSTRAINT; Schema: tww_swmm; Owner: postgres
 --
 
-ALTER TABLE ONLY qgep_swmm.reach_coefficient_of_friction
+ALTER TABLE ONLY tww_swmm.reach_coefficient_of_friction
     ADD CONSTRAINT pkey_qgep_vl_reach_coefficient_of_friction_id PRIMARY KEY (fk_material);
 
 
@@ -28839,10 +28839,10 @@ GRANT ALL ON SCHEMA qgep_od TO qgep_user;
 --
 -- TOC entry 6953 (class 0 OID 0)
 -- Dependencies: 12
--- Name: SCHEMA qgep_swmm; Type: ACL; Schema: -; Owner: postgres
+-- Name: SCHEMA tww_swmm; Type: ACL; Schema: -; Owner: postgres
 --
 
-GRANT USAGE ON SCHEMA qgep_swmm TO qgep_viewer;
+GRANT USAGE ON SCHEMA tww_swmm TO qgep_viewer;
 
 
 --
@@ -30705,10 +30705,10 @@ GRANT ALL ON TABLE qgep_od.zone TO qgep_user;
 --
 -- TOC entry 7892 (class 0 OID 0)
 -- Dependencies: 568
--- Name: TABLE reach_coefficient_of_friction; Type: ACL; Schema: qgep_swmm; Owner: postgres
+-- Name: TABLE reach_coefficient_of_friction; Type: ACL; Schema: tww_swmm; Owner: postgres
 --
 
-GRANT SELECT,REFERENCES,TRIGGER ON TABLE qgep_swmm.reach_coefficient_of_friction TO qgep_viewer;
+GRANT SELECT,REFERENCES,TRIGGER ON TABLE tww_swmm.reach_coefficient_of_friction TO qgep_viewer;
 
 
 --
@@ -32585,10 +32585,10 @@ ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA qgep_od GRANT ALL ON TABLES
 
 --
 -- TOC entry 4146 (class 826 OID 1499519)
--- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: qgep_swmm; Owner: postgres
+-- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: tww_swmm; Owner: postgres
 --
 
-ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA qgep_swmm GRANT SELECT,REFERENCES,TRIGGER ON TABLES  TO qgep_viewer;
+ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA tww_swmm GRANT SELECT,REFERENCES,TRIGGER ON TABLES  TO qgep_viewer;
 
 
 --

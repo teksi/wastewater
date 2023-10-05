@@ -1,14 +1,14 @@
 --------
 -- View for the swmm module class tags
 -- Depends on:
--- - qgep_swmm.vw_junctions
--- - qgep_swmm.vw_outfalls
--- - qgep_swmm.vw_storages
--- - qgep_swmm.vw_conduits
--- - qgep_swmm.vw_pumps
--- - qgep_swmm.vw_subcatchments
+-- - tww_swmm.vw_junctions
+-- - tww_swmm.vw_outfalls
+-- - tww_swmm.vw_storages
+-- - tww_swmm.vw_conduits
+-- - tww_swmm.vw_pumps
+-- - tww_swmm.vw_subcatchments
 --------
-CREATE OR REPLACE VIEW qgep_swmm.vw_tags AS
+CREATE OR REPLACE VIEW tww_swmm.vw_tags AS
 
 SELECT
 	'Node' as type,
@@ -17,7 +17,7 @@ SELECT
 	state,
 	hierarchy,
 	obj_id
-FROM qgep_swmm.vw_junctions
+FROM tww_swmm.vw_junctions
 WHERE tag IS NOT NULL
 
 UNION
@@ -29,7 +29,7 @@ SELECT
 	state,
 	hierarchy,
 	obj_id
-FROM qgep_swmm.vw_outfalls
+FROM tww_swmm.vw_outfalls
 WHERE tag IS NOT NULL
 
 UNION
@@ -41,7 +41,7 @@ SELECT
 	state,
 	hierarchy,
 	obj_id
-FROM qgep_swmm.vw_storages
+FROM tww_swmm.vw_storages
 WHERE tag IS NOT NULL
 
 UNION
@@ -53,7 +53,7 @@ SELECT
 	state,
 	hierarchy,
 	obj_id
-FROM qgep_swmm.vw_conduits
+FROM tww_swmm.vw_conduits
 WHERE tag IS NOT NULL
 
 UNION
@@ -65,7 +65,7 @@ SELECT
 	state,
 	hierarchy,
 	obj_id
-FROM qgep_swmm.vw_pumps
+FROM tww_swmm.vw_pumps
 WHERE tag IS NOT NULL
 
 UNION
@@ -77,5 +77,5 @@ SELECT
 	state,
 	hierarchy,
 	obj_id
-FROM qgep_swmm.vw_subcatchments
+FROM tww_swmm.vw_subcatchments
 WHERE tag IS NOT NULL;

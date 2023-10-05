@@ -1,7 +1,7 @@
 --------
 -- View for the swmm module class _aquifiers, in VSA-DSS 2020 not part of the datamodel anymore - therefore referenced on qgep_od._aquifier
 --------
-CREATE OR REPLACE VIEW qgep_swmm.vw_aquifers AS
+CREATE OR REPLACE VIEW tww_swmm.vw_aquifers AS
 
 SELECT
 	aq.obj_id as Name,

@@ -2,7 +2,7 @@
 -- View for the swmm module class losses
 -- 20190329 qgep code sprint SB, TP
 --------
-CREATE OR REPLACE VIEW qgep_swmm.vw_losses AS
+CREATE OR REPLACE VIEW tww_swmm.vw_losses AS
 
 SELECT DISTINCT
   re.obj_id as Link,

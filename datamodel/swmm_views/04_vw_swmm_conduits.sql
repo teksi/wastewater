@@ -1,7 +1,7 @@
 --------
 -- View for the swmm module class conduits
 --------
-CREATE OR REPLACE VIEW qgep_swmm.vw_conduits AS
+CREATE OR REPLACE VIEW tww_swmm.vw_conduits AS
 
 SELECT
 	re.obj_id as Name,

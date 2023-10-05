@@ -1,7 +1,7 @@
 --------
 -- View for the swmm module class junction
 --------
-CREATE OR REPLACE VIEW qgep_swmm.vw_junctions AS
+CREATE OR REPLACE VIEW tww_swmm.vw_junctions AS
 
 -- manholes
 SELECT

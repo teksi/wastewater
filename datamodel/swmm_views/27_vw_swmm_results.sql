@@ -1,5 +1,5 @@
 
-CREATE OR REPLACE VIEW qgep_swmm.node_results AS
+CREATE OR REPLACE VIEW tww_swmm.node_results AS
 SELECT ws.obj_id AS ws_obj_id, mf.vsacode AS ma_function, ssf.vsacode AS ss_function,
 mp.obj_id AS mp_obj_id, mp.remark AS swmm_simulation_name,
 md.obj_id AS md_obj_id,
@@ -19,7 +19,7 @@ LEFT JOIN qgep_od.measurement_result mr ON mr.fk_measurement_series = ms.obj_id
 WHERE md.remark = 'SWMM Simulation'
 ORDER BY mp.obj_id, mr.time;
 
-CREATE OR REPLACE VIEW qgep_swmm.link_results AS
+CREATE OR REPLACE VIEW tww_swmm.link_results AS
 SELECT ne.fk_wastewater_structure AS ws_obj_id, re.obj_id AS re_obj_id,
 re.clear_height, re.material,
 mp.obj_id AS mp_obj_id, mp.remark AS swmm_simulation_name,

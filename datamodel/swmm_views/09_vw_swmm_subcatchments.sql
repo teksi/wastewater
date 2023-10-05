@@ -3,7 +3,7 @@
 -- View for the swmm module class subcatchments
 --------
 
-CREATE OR REPLACE VIEW qgep_swmm.vw_subcatchments AS
+CREATE OR REPLACE VIEW tww_swmm.vw_subcatchments AS
 SELECT
   concat(replace(ca.obj_id, ' ', '_'), '_', state) as Name,
   concat('raingage@', replace(ca.obj_id, ' ', '_'))::varchar as RainGage,
