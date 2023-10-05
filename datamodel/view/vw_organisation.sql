@@ -3,16 +3,16 @@
 -- ******************************************************************************
 
 -- ******************************************************************************
--- 1. qgep_od.vw_organisation :
+-- 1. tww_od.vw_organisation :
 -- ******************************************************************************
 
--- View: qgep_od.vw_organisation
+-- View: tww_od.vw_organisation
 
-CREATE OR REPLACE VIEW qgep_od.vw_organisation AS
+CREATE OR REPLACE VIEW tww_od.vw_organisation AS
   SELECT *
-   FROM qgep_od.organisation;
+   FROM tww_od.organisation;
      
-ALTER VIEW qgep_od.vw_organisation ALTER obj_id SET DEFAULT qgep_sys.generate_oid('qgep_od','organisation');
+ALTER VIEW tww_od.vw_organisation ALTER obj_id SET DEFAULT tww_sys.generate_oid('tww_od','organisation');
 
 /* to do define later if still needed - organisation should not be created anymore on its own - use VSA_organisation import intstead.
 
@@ -21,14 +21,14 @@ ALTER VIEW qgep_od.vw_organisation ALTER obj_id SET DEFAULT qgep_sys.generate_oi
 -- 3. FUNCTIONS :
 -- ******************************************************************************
 
--- Function: qgep_od.vw_organisation_delete()
--- DROP FUNCTION qgep_od.vw_organisation_delete();
+-- Function: tww_od.vw_organisation_delete()
+-- DROP FUNCTION tww_od.vw_organisation_delete();
 
-CREATE OR REPLACE FUNCTION qgep_od.vw_organisation_delete()
+CREATE OR REPLACE FUNCTION tww_od.vw_organisation_delete()
   RETURNS trigger AS
 $BODY$
   BEGIN
-    DELETE FROM qgep_od.file WHERE obj_id = OLD.obj_id;
+    DELETE FROM tww_od.file WHERE obj_id = OLD.obj_id;
     RETURN OLD;
   END;
 $BODY$
@@ -37,9 +37,9 @@ COST 100;
 
 
 -- ******************************************************************************
--- Function: qgep_od.vw_organisation_insert()
--- DROP FUNCTION qgep_od.vw_organisation_insert();
-CREATE OR REPLACE FUNCTION qgep_od.vw_organisation_insert()
+-- Function: tww_od.vw_organisation_insert()
+-- DROP FUNCTION tww_od.vw_organisation_insert();
+CREATE OR REPLACE FUNCTION tww_od.vw_organisation_insert()
   RETURNS trigger AS
 $BODY$
 
@@ -47,7 +47,7 @@ $BODY$
 
     NEW._url = replace(NEW._url, '\', '/');
 
-    INSERT INTO qgep_od.file(
+    INSERT INTO tww_od.file(
       class,
       identifier,
       kind,
@@ -68,7 +68,7 @@ $BODY$
       NEW.provider, -- fk_provider,
       obj_id, -- fk_data_media
       NEW.remark
-    FROM qgep_od.data_media
+    FROM tww_od.data_media
     WHERE "path" = SUBSTRING(NEW._url FROM 1 FOR LENGTH("path"))
     ORDER BY LENGTH("path") DESC
     LIMIT 1;
@@ -85,17 +85,17 @@ END; $BODY$
   COST 100;
 
   -- ******************************************************************************
--- Function: qgep_od.vw_organisation_update()
--- DROP FUNCTION qgep_od.vw_organisation_update();
+-- Function: tww_od.vw_organisation_update()
+-- DROP FUNCTION tww_od.vw_organisation_update();
 
-CREATE OR REPLACE FUNCTION qgep_od.vw_organisation_update()
+CREATE OR REPLACE FUNCTION tww_od.vw_organisation_update()
   RETURNS trigger AS
 $BODY$
 BEGIN
 
 NEW._url = replace(NEW._url, '\', '/');
 
-  UPDATE  qgep_od.file
+  UPDATE  tww_od.file
     SET
     class = NEW.class,
     identifier = NEW.identifier,
@@ -110,7 +110,7 @@ NEW._url = replace(NEW._url, '\', '/');
 FROM (
   SELECT obj_id as id,
 	path
-	FROM qgep_od.data_media
+	FROM tww_od.data_media
 	WHERE path = SUBSTRING(NEW._url FROM 1 FOR LENGTH(path))
 	ORDER BY LENGTH(path) DESC
 	LIMIT 1)  dm
@@ -127,31 +127,31 @@ $BODY$
 
 -- TRIGGERS :
 -- ******************************************************************************
--- Trigger: vw_organisation_delete on qgep_od.vw_organisation
--- DROP TRIGGER vw_organisation_delete ON qgep_od.vw_organisation;
+-- Trigger: vw_organisation_delete on tww_od.vw_organisation
+-- DROP TRIGGER vw_organisation_delete ON tww_od.vw_organisation;
 
 CREATE TRIGGER vw_organisation_delete
   INSTEAD OF DELETE
-  ON qgep_od.vw_organisation
+  ON tww_od.vw_organisation
   FOR EACH ROW
-  EXECUTE PROCEDURE qgep_od.vw_organisation_delete();
+  EXECUTE PROCEDURE tww_od.vw_organisation_delete();
 
--- Trigger: vw_organisation_insert on qgep_od.vw_organisation
--- DROP TRIGGER vw_organisation_insert ON qgep_od.vw_organisation;
+-- Trigger: vw_organisation_insert on tww_od.vw_organisation
+-- DROP TRIGGER vw_organisation_insert ON tww_od.vw_organisation;
 
 CREATE TRIGGER vw_organisation_insert
   INSTEAD OF INSERT
-  ON qgep_od.vw_organisation
+  ON tww_od.vw_organisation
   FOR EACH ROW
-  EXECUTE PROCEDURE qgep_od.vw_organisation_insert();
+  EXECUTE PROCEDURE tww_od.vw_organisation_insert();
 
--- Trigger: vw_organisation_update on qgep_od.vw_organisation
--- DROP TRIGGER vw_organisation_update ON qgep_od.vw_organisation;
+-- Trigger: vw_organisation_update on tww_od.vw_organisation
+-- DROP TRIGGER vw_organisation_update ON tww_od.vw_organisation;
 
 CREATE TRIGGER vw_organisation_update
   INSTEAD OF UPDATE
-  ON qgep_od.vw_organisation
+  ON tww_od.vw_organisation
   FOR EACH ROW
-  EXECUTE PROCEDURE qgep_od.vw_organisation_update();
+  EXECUTE PROCEDURE tww_od.vw_organisation_update();
 -- ******************************************************************************
  */

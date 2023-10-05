@@ -1,13 +1,13 @@
 
 
-table: qgep_od.maintenance_event
-view_name: vw_qgep_maintenance
+table: tww_od.maintenance_event
+view_name: vw_tww_maintenance
 allow_type_change: false
 allow_parent_only: true
 pkey_default_value: True
 
 joins:
   examination:
-    table: qgep_od.examination
+    table: tww_od.examination
 
 

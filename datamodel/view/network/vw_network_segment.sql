@@ -1,7 +1,7 @@
 
--- DROP MATERIALIZED VIEW IF EXISTS qgep_od.vw_network_segment;
+-- DROP MATERIALIZED VIEW IF EXISTS tww_od.vw_network_segment;
 
-CREATE MATERIALIZED VIEW qgep_od.vw_network_segment AS
+CREATE MATERIALIZED VIEW tww_od.vw_network_segment AS
 SELECT s.id as gid,
        COALESCE(
          s.ne_id, 
@@ -30,12 +30,12 @@ SELECT s.id as gid,
        mat.abbr_de AS material,
        s.geom AS progression_geometry,
        s.geom AS detail_geometry
-FROM qgep_network.segment s
-JOIN qgep_od.vw_network_node n1 ON n1.gid = s.from_node
-JOIN qgep_od.vw_network_node n2 ON n2.gid = s.to_node
-LEFT JOIN qgep_od.reach r ON r.obj_id = s.ne_id
-LEFT JOIN qgep_vl.reach_material mat ON r.material = mat.code
-LEFT JOIN qgep_od.wastewater_networkelement ne ON ne.obj_id = s.ne_id
-LEFT JOIN qgep_od.channel ch ON ch.obj_id = ne.fk_wastewater_structure;
+FROM tww_network.segment s
+JOIN tww_od.vw_network_node n1 ON n1.gid = s.from_node
+JOIN tww_od.vw_network_node n2 ON n2.gid = s.to_node
+LEFT JOIN tww_od.reach r ON r.obj_id = s.ne_id
+LEFT JOIN tww_vl.reach_material mat ON r.material = mat.code
+LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = s.ne_id
+LEFT JOIN tww_od.channel ch ON ch.obj_id = ne.fk_wastewater_structure;
 
-CREATE INDEX in_qgep_od_vw_network_segment_progression_geometry ON qgep_od.vw_network_segment USING gist (progression_geometry);
+CREATE INDEX in_tww_od_vw_network_segment_progression_geometry ON tww_od.vw_network_segment USING gist (progression_geometry);

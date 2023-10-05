@@ -1,8 +1,8 @@
-﻿-- View: qgep_od.vw_reach_relining
+﻿-- View: tww_od.vw_reach_relining
 
--- DROP VIEW qgep_od.vw_reach_relining;
+-- DROP VIEW tww_od.vw_reach_relining;
 
-CREATE OR REPLACE VIEW qgep_od.vw_reach_relining AS 
+CREATE OR REPLACE VIEW tww_od.vw_reach_relining AS 
  SELECT re.obj_id,
     re.clear_height,
     re.inside_coating,
@@ -19,12 +19,12 @@ CREATE OR REPLACE VIEW qgep_od.vw_reach_relining AS
     we.remark,
     we.last_modification,
     we.fk_wastewater_structure
-   FROM qgep_od.reach re
-     LEFT JOIN qgep_od.wastewater_networkelement we ON we.obj_id::text = re.obj_id::text
+   FROM tww_od.reach re
+     LEFT JOIN tww_od.wastewater_networkelement we ON we.obj_id::text = re.obj_id::text
    Where re.relining_construction > 1 or re.material = 5078;
 
-ALTER TABLE qgep_od.vw_reach_relining
+ALTER TABLE tww_od.vw_reach_relining
   OWNER TO postgres;
-GRANT ALL ON TABLE qgep_od.vw_reach_relining TO postgres;
-GRANT ALL ON TABLE qgep_od.vw_reach_relining TO qgep;
+GRANT ALL ON TABLE tww_od.vw_reach_relining TO postgres;
+GRANT ALL ON TABLE tww_od.vw_reach_relining TO tww;
 

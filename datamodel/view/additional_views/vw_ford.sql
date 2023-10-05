@@ -1,11 +1,11 @@
-DROP VIEW IF EXISTS qgep_od.vw_ford;
+DROP VIEW IF EXISTS tww_od.vw_ford;
 
 
 --------
 -- Subclass: ford
 -- Superclass: water_control_structure
 --------
-CREATE OR REPLACE VIEW qgep_od.vw_ford AS
+CREATE OR REPLACE VIEW tww_od.vw_ford AS
 
 SELECT
    FD.obj_id
@@ -16,8 +16,8 @@ CS.situation_geometry
    , CS.fk_provider
    , CS.last_modification
   , CS.fk_water_course_segment
-  FROM qgep_od.ford FD
- LEFT JOIN qgep_od.water_control_structure CS
+  FROM tww_od.ford FD
+ LEFT JOIN tww_od.water_control_structure CS
  ON CS.obj_id = FD.obj_id;
 
 -----------------------------------
@@ -25,11 +25,11 @@ CS.situation_geometry
 -- Function: vw_ford_insert()
 -----------------------------------
 
-CREATE OR REPLACE FUNCTION qgep_od.vw_ford_insert()
+CREATE OR REPLACE FUNCTION tww_od.vw_ford_insert()
   RETURNS trigger AS
 $BODY$
 BEGIN
-  INSERT INTO qgep_od.water_control_structure (
+  INSERT INTO tww_od.water_control_structure (
              obj_id
            , identifier
            , remark
@@ -39,7 +39,7 @@ BEGIN
            , last_modification
            , fk_water_course_segment
            )
-     VALUES ( COALESCE(NEW.obj_id,qgep_sys.generate_oid('qgep_od','ford')) -- obj_id
+     VALUES ( COALESCE(NEW.obj_id,tww_sys.generate_oid('tww_od','ford')) -- obj_id
            , NEW.identifier
            , NEW.remark
             , NEW.situation_geometry
@@ -50,7 +50,7 @@ BEGIN
            )
            RETURNING obj_id INTO NEW.obj_id;
 
-INSERT INTO qgep_od.ford (
+INSERT INTO tww_od.ford (
              obj_id
            )
           VALUES (
@@ -61,24 +61,24 @@ END; $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100;
 
--- DROP TRIGGER vw_ford_ON_INSERT ON qgep_od.ford;
+-- DROP TRIGGER vw_ford_ON_INSERT ON tww_od.ford;
 
-CREATE TRIGGER vw_ford_ON_INSERT INSTEAD OF INSERT ON qgep_od.vw_ford
-  FOR EACH ROW EXECUTE PROCEDURE qgep_od.vw_ford_insert();
+CREATE TRIGGER vw_ford_ON_INSERT INSTEAD OF INSERT ON tww_od.vw_ford
+  FOR EACH ROW EXECUTE PROCEDURE tww_od.vw_ford_insert();
 
 -----------------------------------
 -- ford UPDATE
 -- Rule: vw_ford_ON_UPDATE()
 -----------------------------------
 
-CREATE OR REPLACE RULE vw_ford_ON_UPDATE AS ON UPDATE TO qgep_od.vw_ford DO INSTEAD (
+CREATE OR REPLACE RULE vw_ford_ON_UPDATE AS ON UPDATE TO tww_od.vw_ford DO INSTEAD (
 --------
--- UPDATE qgep_od.ford
+-- UPDATE tww_od.ford
 --  SET
 --  WHERE obj_id = OLD.obj_id;
 --------
 
-UPDATE qgep_od.water_control_structure
+UPDATE tww_od.water_control_structure
   SET
        identifier = NEW.identifier
      , remark = NEW.remark
@@ -95,8 +95,8 @@ UPDATE qgep_od.water_control_structure
 -- Rule: vw_ford_ON_DELETE ()
 -----------------------------------
 
-CREATE OR REPLACE RULE vw_ford_ON_DELETE AS ON DELETE TO qgep_od.vw_ford DO INSTEAD (
-  DELETE FROM qgep_od.ford WHERE obj_id = OLD.obj_id;
-  DELETE FROM qgep_od.water_control_structure WHERE obj_id = OLD.obj_id;
+CREATE OR REPLACE RULE vw_ford_ON_DELETE AS ON DELETE TO tww_od.vw_ford DO INSTEAD (
+  DELETE FROM tww_od.ford WHERE obj_id = OLD.obj_id;
+  DELETE FROM tww_od.water_control_structure WHERE obj_id = OLD.obj_id;
 );
 

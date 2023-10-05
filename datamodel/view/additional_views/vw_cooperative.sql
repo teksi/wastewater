@@ -1,11 +1,11 @@
-DROP VIEW IF EXISTS qgep_od.vw_cooperative;
+DROP VIEW IF EXISTS tww_od.vw_cooperative;
 
 
 --------
 -- Subclass: cooperative
 -- Superclass: organisation
 --------
-CREATE OR REPLACE VIEW qgep_od.vw_cooperative AS
+CREATE OR REPLACE VIEW tww_od.vw_cooperative AS
 
 SELECT
    CP.obj_id
@@ -15,8 +15,8 @@ SELECT
    , OG.fk_dataowner
    , OG.fk_provider
    , OG.last_modification
-  FROM qgep_od.cooperative CP
- LEFT JOIN qgep_od.organisation OG
+  FROM tww_od.cooperative CP
+ LEFT JOIN tww_od.organisation OG
  ON OG.obj_id = CP.obj_id;
 
 -----------------------------------
@@ -24,11 +24,11 @@ SELECT
 -- Function: vw_cooperative_insert()
 -----------------------------------
 
-CREATE OR REPLACE FUNCTION qgep_od.vw_cooperative_insert()
+CREATE OR REPLACE FUNCTION tww_od.vw_cooperative_insert()
   RETURNS trigger AS
 $BODY$
 BEGIN
-  INSERT INTO qgep_od.organisation (
+  INSERT INTO tww_od.organisation (
              obj_id
            , identifier
            , remark
@@ -37,7 +37,7 @@ BEGIN
            , fk_provider
            , last_modification
            )
-     VALUES ( COALESCE(NEW.obj_id,qgep_sys.generate_oid('qgep_od','cooperative')) -- obj_id
+     VALUES ( COALESCE(NEW.obj_id,tww_sys.generate_oid('tww_od','cooperative')) -- obj_id
            , NEW.identifier
            , NEW.remark
            , NEW.uid
@@ -47,7 +47,7 @@ BEGIN
            )
            RETURNING obj_id INTO NEW.obj_id;
 
-INSERT INTO qgep_od.cooperative (
+INSERT INTO tww_od.cooperative (
              obj_id
            )
           VALUES (
@@ -58,24 +58,24 @@ END; $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100;
 
--- DROP TRIGGER vw_cooperative_ON_INSERT ON qgep_od.cooperative;
+-- DROP TRIGGER vw_cooperative_ON_INSERT ON tww_od.cooperative;
 
-CREATE TRIGGER vw_cooperative_ON_INSERT INSTEAD OF INSERT ON qgep_od.vw_cooperative
-  FOR EACH ROW EXECUTE PROCEDURE qgep_od.vw_cooperative_insert();
+CREATE TRIGGER vw_cooperative_ON_INSERT INSTEAD OF INSERT ON tww_od.vw_cooperative
+  FOR EACH ROW EXECUTE PROCEDURE tww_od.vw_cooperative_insert();
 
 -----------------------------------
 -- cooperative UPDATE
 -- Rule: vw_cooperative_ON_UPDATE()
 -----------------------------------
 
-CREATE OR REPLACE RULE vw_cooperative_ON_UPDATE AS ON UPDATE TO qgep_od.vw_cooperative DO INSTEAD (
+CREATE OR REPLACE RULE vw_cooperative_ON_UPDATE AS ON UPDATE TO tww_od.vw_cooperative DO INSTEAD (
 --------
--- UPDATE qgep_od.cooperative
+-- UPDATE tww_od.cooperative
 --  SET
 --  WHERE obj_id = OLD.obj_id;
 --------
 
-UPDATE qgep_od.organisation
+UPDATE tww_od.organisation
   SET
        identifier = NEW.identifier
      , remark = NEW.remark
@@ -91,8 +91,8 @@ UPDATE qgep_od.organisation
 -- Rule: vw_cooperative_ON_DELETE ()
 -----------------------------------
 
-CREATE OR REPLACE RULE vw_cooperative_ON_DELETE AS ON DELETE TO qgep_od.vw_cooperative DO INSTEAD (
-  DELETE FROM qgep_od.cooperative WHERE obj_id = OLD.obj_id;
-  DELETE FROM qgep_od.organisation WHERE obj_id = OLD.obj_id;
+CREATE OR REPLACE RULE vw_cooperative_ON_DELETE AS ON DELETE TO tww_od.vw_cooperative DO INSTEAD (
+  DELETE FROM tww_od.cooperative WHERE obj_id = OLD.obj_id;
+  DELETE FROM tww_od.organisation WHERE obj_id = OLD.obj_id;
 );
 

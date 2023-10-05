@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# -- View: vw_qgep_wastewater_structure
+# -- View: vw_tww_wastewater_structure
 
 import os
 import argparse
@@ -9,10 +9,10 @@ from yaml import safe_load
 from pirogue.utils import select_columns, insert_command, update_command, table_parts
 
 
-def vw_qgep_reach(pg_service: str = None,
+def vw_tww_reach(pg_service: str = None,
                   extra_definition: dict = None):
     """
-    Creates qgep_reach view
+    Creates tww_reach view
     :param pg_service: the PostgreSQL service name
     :param extra_definition: a dictionary for additional read-only columns
     """
@@ -25,9 +25,9 @@ def vw_qgep_reach(pg_service: str = None,
     cursor = conn.cursor()
 
     view_sql = """
-    DROP VIEW IF EXISTS qgep_od.vw_qgep_reach;
+    DROP VIEW IF EXISTS tww_od.vw_tww_reach;
     
-    CREATE OR REPLACE VIEW qgep_od.vw_qgep_reach AS
+    CREATE OR REPLACE VIEW tww_od.vw_tww_reach AS
     
     SELECT 
         re.obj_id,
@@ -53,13 +53,13 @@ def vw_qgep_reach(pg_service: str = None,
         , {ws_cols}
         , {rp_from_cols}
         , {rp_to_cols}
-      FROM qgep_od.reach re
-         LEFT JOIN qgep_od.wastewater_networkelement ne ON ne.obj_id = re.obj_id
-         LEFT JOIN qgep_od.reach_point rp_from ON rp_from.obj_id = re.fk_reach_point_from
-         LEFT JOIN qgep_od.reach_point rp_to ON rp_to.obj_id = re.fk_reach_point_to
-         LEFT JOIN qgep_od.wastewater_structure ws ON ne.fk_wastewater_structure = ws.obj_id
-         LEFT JOIN qgep_od.channel ch ON ch.obj_id = ws.obj_id
-         LEFT JOIN qgep_od.pipe_profile pp ON re.fk_pipe_profile = pp.obj_id
+      FROM tww_od.reach re
+         LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = re.obj_id
+         LEFT JOIN tww_od.reach_point rp_from ON rp_from.obj_id = re.fk_reach_point_from
+         LEFT JOIN tww_od.reach_point rp_to ON rp_to.obj_id = re.fk_reach_point_to
+         LEFT JOIN tww_od.wastewater_structure ws ON ne.fk_wastewater_structure = ws.obj_id
+         LEFT JOIN tww_od.channel ch ON ch.obj_id = ws.obj_id
+         LEFT JOIN tww_od.pipe_profile pp ON re.fk_pipe_profile = pp.obj_id
          {extra_joins};
     """.format(extra_cols='\n    , '.join([select_columns(pg_cur=cursor,
                                                           table_schema=table_parts(table_def['table'])[0],
@@ -71,7 +71,7 @@ def vw_qgep_reach(pg_service: str = None,
                                                           )
                                           for table_def in extra_definition.get('joins', {}).values()]),
                re_cols=select_columns(pg_cur=cursor,
-                                      table_schema='qgep_od',
+                                      table_schema='tww_od',
                                       table_name='reach',
                                       table_alias='re',
                                       remove_pkey=True,
@@ -79,14 +79,14 @@ def vw_qgep_reach(pg_service: str = None,
                                       skip_columns=['clear_height', 'material',
                                                     'fk_reach_point_from', 'fk_reach_point_to']),
                ne_cols=select_columns(pg_cur=cursor,
-                                      table_schema='qgep_od',
+                                      table_schema='tww_od',
                                       table_name='wastewater_networkelement',
                                       table_alias='ne',
                                       remove_pkey=True,
                                       indent=4,
                                       skip_columns=['fk_wastewater_structure']),
                ch_cols=select_columns(pg_cur=cursor,
-                                      table_schema='qgep_od',
+                                      table_schema='tww_od',
                                       table_name='channel',
                                       table_alias='ch',
                                       prefix='ch_',
@@ -94,7 +94,7 @@ def vw_qgep_reach(pg_service: str = None,
                                       indent=4,
                                       skip_columns=['usage_current', 'function_hierarchic', 'function_hydraulic']),
                ws_cols=select_columns(pg_cur=cursor,
-                                      table_schema='qgep_od',
+                                      table_schema='tww_od',
                                       table_name='wastewater_structure',
                                       table_alias='ws',
                                       prefix='ws_',
@@ -104,7 +104,7 @@ def vw_qgep_reach(pg_service: str = None,
                                                     'fk_dataowner', 'fk_provider', '_usage_current',
                                                     '_function_hierarchic', '_label', '_depth', 'fk_main_cover']),
                rp_from_cols=select_columns(pg_cur=cursor,
-                                           table_schema='qgep_od',
+                                           table_schema='tww_od',
                                            table_name='reach_point',
                                            table_alias='rp_from',
                                            prefix='rp_from_',
@@ -112,7 +112,7 @@ def vw_qgep_reach(pg_service: str = None,
                                            indent=4,
                                            skip_columns=['situation_geometry']),
                rp_to_cols=select_columns(pg_cur=cursor,
-                                         table_schema='qgep_od',
+                                         table_schema='tww_od',
                                          table_name='reach_point',
                                          table_alias='rp_to',
                                          prefix='rp_to_',
@@ -130,9 +130,9 @@ def vw_qgep_reach(pg_service: str = None,
 
     trigger_insert_sql="""
     -- REACH INSERT
-    -- Function: vw_qgep_reach_insert()
+    -- Function: vw_tww_reach_insert()
     
-    CREATE OR REPLACE FUNCTION qgep_od.ft_vw_qgep_reach_insert()
+    CREATE OR REPLACE FUNCTION tww_od.ft_vw_tww_reach_insert()
       RETURNS trigger AS
     $BODY$
     BEGIN
@@ -155,10 +155,10 @@ def vw_qgep_reach(pg_service: str = None,
       LANGUAGE plpgsql VOLATILE
       COST 100;
     
-    CREATE TRIGGER vw_qgep_reach_insert INSTEAD OF INSERT ON qgep_od.vw_qgep_reach
-      FOR EACH ROW EXECUTE PROCEDURE qgep_od.ft_vw_qgep_reach_insert();
+    CREATE TRIGGER vw_tww_reach_insert INSTEAD OF INSERT ON tww_od.vw_tww_reach
+      FOR EACH ROW EXECUTE PROCEDURE tww_od.ft_vw_tww_reach_insert();
     """.format(rp_from=insert_command(pg_cur=cursor,
-                                        table_schema='qgep_od',
+                                        table_schema='tww_od',
                                         table_name='reach_point',
                                         prefix='rp_from_',
                                         remove_pkey=False,
@@ -168,7 +168,7 @@ def vw_qgep_reach(pg_service: str = None,
                                         insert_values={'situation_geometry': 'ST_StartPoint(NEW.progression_geometry)'},
                                         returning='obj_id INTO NEW.rp_from_obj_id'),
                rp_to=insert_command(pg_cur=cursor,
-                                    table_schema='qgep_od',
+                                    table_schema='tww_od',
                                     table_name='reach_point',
                                     prefix='rp_to_',
                                     remove_pkey=False,
@@ -178,7 +178,7 @@ def vw_qgep_reach(pg_service: str = None,
                                     insert_values={'situation_geometry': 'ST_EndPoint(NEW.progression_geometry)'},
                                     returning='obj_id INTO NEW.rp_to_obj_id'),
                ws=insert_command(pg_cur=cursor,
-                                 table_schema='qgep_od',
+                                 table_schema='tww_od',
                                  table_name='wastewater_structure',
                                  prefix='ws_',
                                  remove_pkey=False,
@@ -186,7 +186,7 @@ def vw_qgep_reach(pg_service: str = None,
                                  skip_columns=['detail_geometry_geometry', 'fk_dataowner', 'fk_provider',
                                                '_usage_current', '_function_hierarchic', '_label', '_depth', 'fk_main_cover']),
                ch=insert_command(pg_cur=cursor,
-                                 table_schema='qgep_od',
+                                 table_schema='tww_od',
                                  table_name='channel',
                                  prefix='ch_',
                                  remove_pkey=False,
@@ -194,13 +194,13 @@ def vw_qgep_reach(pg_service: str = None,
                                  remap_columns={'obj_id': 'ws_obj_id'},
                                  skip_columns=[]),
                ne=insert_command(pg_cur=cursor,
-                                 table_schema='qgep_od',
+                                 table_schema='tww_od',
                                  table_name='wastewater_networkelement',
                                  remove_pkey=False,
                                  indent=2,
                                  remap_columns={'fk_wastewater_structure': 'ws_obj_id'}),
                re=insert_command(pg_cur=cursor,
-                                 table_schema='qgep_od',
+                                 table_schema='tww_od',
                                  table_name='reach',
                                  remove_pkey=False,
                                  indent=2,
@@ -211,7 +211,7 @@ def vw_qgep_reach(pg_service: str = None,
     cursor.execute(trigger_insert_sql)
 
     trigger_update_sql="""
-    CREATE OR REPLACE FUNCTION qgep_od.ft_vw_qgep_reach_update()
+    CREATE OR REPLACE FUNCTION tww_od.ft_vw_tww_reach_update()
       RETURNS trigger AS
     $BODY$
     BEGIN
@@ -253,28 +253,28 @@ def vw_qgep_reach(pg_service: str = None,
     END; $BODY$
       LANGUAGE plpgsql VOLATILE;
     """.format(rp_from=update_command(pg_cur=cursor,
-                                      table_schema='qgep_od',
+                                      table_schema='tww_od',
                                       table_name='reach_point',
                                       prefix='rp_from_',
                                       remove_pkey=True,
                                       indent=6,
                                       update_values={'situation_geometry': 'ST_StartPoint(NEW.progression_geometry)'}),
                rp_to=update_command(pg_cur=cursor,
-                                    table_schema='qgep_od',
+                                    table_schema='tww_od',
                                     table_name='reach_point',
                                     prefix='rp_to_',
                                     remove_pkey=True,
                                     indent=6,
                                     update_values={'situation_geometry': 'ST_EndPoint(NEW.progression_geometry)'}),
                ch=update_command(pg_cur=cursor,
-                                 table_schema='qgep_od',
+                                 table_schema='tww_od',
                                  table_name='channel',
                                  prefix='ch_',
                                  remove_pkey=True,
                                  indent=6,
                                  remap_columns={'obj_id': 'ws_obj_id'}),
                ws=update_command(pg_cur=cursor,
-                                 table_schema='qgep_od',
+                                 table_schema='tww_od',
                                  table_name='wastewater_structure',
                                  prefix='ws_',
                                  remove_pkey=True,
@@ -285,14 +285,14 @@ def vw_qgep_reach(pg_service: str = None,
                                  skip_columns=['detail_geometry_geometry', '_usage_current', '_function_hierarchic',
                                                '_label', '_depth', 'fk_main_cover']),
                ne=update_command(pg_cur=cursor,
-                                 table_schema='qgep_od',
+                                 table_schema='tww_od',
                                  table_name='wastewater_networkelement',
                                  remove_pkey=True,
                                  indent=6,
                                  remap_columns={'fk_wastewater_structure': 'ws_obj_id'}
                                  ),
                re=update_command(pg_cur=cursor,
-                                 table_schema='qgep_od',
+                                 table_schema='tww_od',
                                  table_name='reach',
                                  remove_pkey=True,
                                  indent=6,
@@ -302,28 +302,28 @@ def vw_qgep_reach(pg_service: str = None,
     cursor.execute(trigger_update_sql)
 
     trigger_delete_sql="""
-    CREATE TRIGGER vw_qgep_reach_update
+    CREATE TRIGGER vw_tww_reach_update
       INSTEAD OF UPDATE
-      ON qgep_od.vw_qgep_reach
+      ON tww_od.vw_tww_reach
       FOR EACH ROW
-      EXECUTE PROCEDURE qgep_od.ft_vw_qgep_reach_update();
+      EXECUTE PROCEDURE tww_od.ft_vw_tww_reach_update();
     
     
     -- REACH DELETE
-    -- Rule: vw_qgep_reach_delete()
+    -- Rule: vw_tww_reach_delete()
     
-    CREATE OR REPLACE RULE vw_qgep_reach_delete AS ON DELETE TO qgep_od.vw_qgep_reach DO INSTEAD (
-      DELETE FROM qgep_od.reach WHERE obj_id = OLD.obj_id;
+    CREATE OR REPLACE RULE vw_tww_reach_delete AS ON DELETE TO tww_od.vw_tww_reach DO INSTEAD (
+      DELETE FROM tww_od.reach WHERE obj_id = OLD.obj_id;
     );
     """
     cursor.execute(trigger_delete_sql)
 
     extras = """
-    ALTER VIEW qgep_od.vw_qgep_reach ALTER obj_id SET DEFAULT qgep_sys.generate_oid('qgep_od','reach');
+    ALTER VIEW tww_od.vw_tww_reach ALTER obj_id SET DEFAULT tww_sys.generate_oid('tww_od','reach');
     
-    ALTER VIEW qgep_od.vw_qgep_reach ALTER rp_from_obj_id SET DEFAULT qgep_sys.generate_oid('qgep_od','reach_point');
-    ALTER VIEW qgep_od.vw_qgep_reach ALTER rp_to_obj_id SET DEFAULT qgep_sys.generate_oid('qgep_od','reach_point');
-    ALTER VIEW qgep_od.vw_qgep_reach ALTER ws_obj_id SET DEFAULT qgep_sys.generate_oid('qgep_od','channel');
+    ALTER VIEW tww_od.vw_tww_reach ALTER rp_from_obj_id SET DEFAULT tww_sys.generate_oid('tww_od','reach_point');
+    ALTER VIEW tww_od.vw_tww_reach ALTER rp_to_obj_id SET DEFAULT tww_sys.generate_oid('tww_od','reach_point');
+    ALTER VIEW tww_od.vw_tww_reach ALTER ws_obj_id SET DEFAULT tww_sys.generate_oid('tww_od','channel');
     """
     cursor.execute(extras)
 
@@ -339,4 +339,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
     pg_service = args.pg_service or os.getenv('PGSERVICE')
     extra_definition = safe_load(open(args.extra_definition)) if args.extra_definition else {}
-    vw_qgep_reach(pg_service=pg_service, extra_definition=extra_definition)
+    vw_tww_reach(pg_service=pg_service, extra_definition=extra_definition)

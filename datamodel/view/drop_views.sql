@@ -132,5 +132,5 @@ DROP VIEW IF EXISTS tww_od.vw_file;
 DROP VIEW IF EXISTS tww_od.vw_change_points;
 DROP VIEW IF EXISTS tww_od.vw_catchment_area_connections;
 
--- qgep_sys views
-DROP VIEW IF EXISTS qgep_sys.dictionary_value_list;
+-- tww_sys views
+DROP VIEW IF EXISTS tww_sys.dictionary_value_list;

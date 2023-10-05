@@ -1,11 +1,11 @@
-DROP VIEW IF EXISTS qgep_od.vw_chute;
+DROP VIEW IF EXISTS tww_od.vw_chute;
 
 
 --------
 -- Subclass: chute
 -- Superclass: water_control_structure
 --------
-CREATE OR REPLACE VIEW qgep_od.vw_chute AS
+CREATE OR REPLACE VIEW tww_od.vw_chute AS
 
 SELECT
    CE.obj_id
@@ -19,8 +19,8 @@ CS.situation_geometry
    , CS.fk_provider
    , CS.last_modification
   , CS.fk_water_course_segment
-  FROM qgep_od.chute CE
- LEFT JOIN qgep_od.water_control_structure CS
+  FROM tww_od.chute CE
+ LEFT JOIN tww_od.water_control_structure CS
  ON CS.obj_id = CE.obj_id;
 
 -----------------------------------
@@ -28,11 +28,11 @@ CS.situation_geometry
 -- Function: vw_chute_insert()
 -----------------------------------
 
-CREATE OR REPLACE FUNCTION qgep_od.vw_chute_insert()
+CREATE OR REPLACE FUNCTION tww_od.vw_chute_insert()
   RETURNS trigger AS
 $BODY$
 BEGIN
-  INSERT INTO qgep_od.water_control_structure (
+  INSERT INTO tww_od.water_control_structure (
              obj_id
            , identifier
            , remark
@@ -42,7 +42,7 @@ BEGIN
            , last_modification
            , fk_water_course_segment
            )
-     VALUES ( COALESCE(NEW.obj_id,qgep_sys.generate_oid('qgep_od','chute')) -- obj_id
+     VALUES ( COALESCE(NEW.obj_id,tww_sys.generate_oid('tww_od','chute')) -- obj_id
            , NEW.identifier
            , NEW.remark
             , NEW.situation_geometry
@@ -53,7 +53,7 @@ BEGIN
            )
            RETURNING obj_id INTO NEW.obj_id;
 
-INSERT INTO qgep_od.chute (
+INSERT INTO tww_od.chute (
              obj_id
            , kind
            , material
@@ -70,25 +70,25 @@ END; $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100;
 
--- DROP TRIGGER vw_chute_ON_INSERT ON qgep_od.chute;
+-- DROP TRIGGER vw_chute_ON_INSERT ON tww_od.chute;
 
-CREATE TRIGGER vw_chute_ON_INSERT INSTEAD OF INSERT ON qgep_od.vw_chute
-  FOR EACH ROW EXECUTE PROCEDURE qgep_od.vw_chute_insert();
+CREATE TRIGGER vw_chute_ON_INSERT INSTEAD OF INSERT ON tww_od.vw_chute
+  FOR EACH ROW EXECUTE PROCEDURE tww_od.vw_chute_insert();
 
 -----------------------------------
 -- chute UPDATE
 -- Rule: vw_chute_ON_UPDATE()
 -----------------------------------
 
-CREATE OR REPLACE RULE vw_chute_ON_UPDATE AS ON UPDATE TO qgep_od.vw_chute DO INSTEAD (
-UPDATE qgep_od.chute
+CREATE OR REPLACE RULE vw_chute_ON_UPDATE AS ON UPDATE TO tww_od.vw_chute DO INSTEAD (
+UPDATE tww_od.chute
   SET
        kind = NEW.kind
      , material = NEW.material
      , vertical_drop = NEW.vertical_drop
   WHERE obj_id = OLD.obj_id;
 
-UPDATE qgep_od.water_control_structure
+UPDATE tww_od.water_control_structure
   SET
        identifier = NEW.identifier
      , remark = NEW.remark
@@ -105,8 +105,8 @@ UPDATE qgep_od.water_control_structure
 -- Rule: vw_chute_ON_DELETE ()
 -----------------------------------
 
-CREATE OR REPLACE RULE vw_chute_ON_DELETE AS ON DELETE TO qgep_od.vw_chute DO INSTEAD (
-  DELETE FROM qgep_od.chute WHERE obj_id = OLD.obj_id;
-  DELETE FROM qgep_od.water_control_structure WHERE obj_id = OLD.obj_id;
+CREATE OR REPLACE RULE vw_chute_ON_DELETE AS ON DELETE TO tww_od.vw_chute DO INSTEAD (
+  DELETE FROM tww_od.chute WHERE obj_id = OLD.obj_id;
+  DELETE FROM tww_od.water_control_structure WHERE obj_id = OLD.obj_id;
 );
 
