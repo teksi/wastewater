@@ -15,11 +15,11 @@ SELECT
 	CONCAT_WS(',', 'manhole', mf.value_en) as tag,
 	wn.situation_geometry as geom,
 	CASE 
-		WHEN status IN (7959, 6529, 6526) THEN 'planned'
+		WHEN ws_st.vsacode IN (7959, 6529, 6526) THEN 'planned'
 		ELSE 'current'
 	END as state,
 	CASE 
-		WHEN ws._function_hierarchic in (5062, 5064, 5066, 5068, 5069, 5070, 5071, 5072, 5074) THEN 'primary'
+		WHEN ch_fh.vsacode in (5062, 5064, 5066, 5068, 5069, 5070, 5071, 5072, 5074) THEN 'primary'
 		ELSE 'secondary'
 	END as hierarchy,
 	wn.obj_id as obj_id
@@ -29,8 +29,10 @@ LEFT JOIN qgep_od.wastewater_networkelement we ON we.fk_wastewater_structure::te
 LEFT JOIN qgep_od.wastewater_node wn on wn.obj_id = we.obj_id
 LEFT JOIN qgep_od.cover co on ws.fk_main_cover = co.obj_id
 LEFT JOIN qgep_vl.manhole_function mf on ma.function = mf.code
+LEFT JOIN qgep_vl.wastewater_structure_status ws_st on ws_st.code=ws.status
+LEFT JOIN qgep_vl.channel_function_hierarchic ch_fh on ch_fh.code=ws._function_hierarchic
 WHERE wn.obj_id IS NOT NULL
-AND status IN (6530, 6533, 8493, 6529, 6526, 7959)
+AND ws_st.vsacode IN (6530, 6533, 8493, 6529, 6526, 7959)
 
 UNION
 
@@ -43,14 +45,14 @@ SELECT
 	NULL::float as SurchargeDepth,
 	NULL::float as PondedArea,
 	ws.identifier::text as description,
-	CONCAT_WS(',','special_structure', ssf.value_en) as tag,
+	CONCAT_WS(',','special_structure', ss_fu.value_en) as tag,
 	wn.situation_geometry as geom,
 	CASE 
-		WHEN status IN (7959, 6529, 6526) THEN 'planned'
+		WHEN ws_st.vsacode IN (7959, 6529, 6526) THEN 'planned'
 		ELSE 'current'
 	END as state,
 	CASE 
-		WHEN ws._function_hierarchic in (5062, 5064, 5066, 5068, 5069, 5070, 5071, 5072, 5074) THEN 'primary'
+		WHEN ch_fh.vsacode in (5062, 5064, 5066, 5068, 5069, 5070, 5071, 5072, 5074) THEN 'primary'
 		ELSE 'secondary'
 	END as hierarchy,
 	wn.obj_id as obj_id
@@ -59,10 +61,12 @@ LEFT JOIN qgep_od.wastewater_structure ws ON ws.obj_id::text = ss.obj_id::text
 LEFT JOIN qgep_od.wastewater_networkelement we ON we.fk_wastewater_structure::text = ws.obj_id::text
 LEFT JOIN qgep_od.wastewater_node wn on wn.obj_id = we.obj_id
 LEFT JOIN qgep_od.cover co on ws.fk_main_cover = co.obj_id
-LEFT JOIN qgep_vl.special_structure_function ssf on ss.function = ssf.code
+LEFT JOIN qgep_vl.special_structure_function ss_fu on ss_fu.code=ss.function
+LEFT JOIN qgep_vl.wastewater_structure_status ws_st on ws_st.code=ws.status
+LEFT JOIN qgep_vl.channel_function_hierarchic ch_fh on ch_fh.code=ws._function_hierarchic
 WHERE wn.obj_id IS NOT NULL
-AND status IN (6530, 6533, 8493, 6529, 6526, 7959)
-AND function NOT IN ( -- must be the same list in vw_swmm_storages
+AND ws_st.vsacode IN (6530, 6533, 8493, 6529, 6526, 7959)
+AND ss_fu.vsacode NOT IN ( -- must be the same list in vw_swmm_storages
 6397, --"pit_without_drain"
 -- 245, --"drop_structure"
 6398, --"hydrolizing_tank"
@@ -109,11 +113,11 @@ SELECT
 	'junction without structure' as tag,
 	coalesce(from_wn.situation_geometry,  ST_StartPoint(re.progression_geometry)) as geom,
 	CASE 
-		WHEN ws.status IN (7959, 6529, 6526) THEN 'planned'
+		WHEN ws_st.vsacode IN (7959, 6529, 6526) THEN 'planned'
 		ELSE 'current'
 	END as state,
 	CASE 
-		WHEN ch.function_hierarchic in (5062, 5064, 5066, 5068, 5069, 5070, 5071, 5072, 5074) THEN 'primary'
+		WHEN ch_fh.vsacode in (5062, 5064, 5066, 5068, 5069, 5070, 5071, 5072, 5074) THEN 'primary'
 		ELSE 'secondary'
 	END as hierarchy,
 	coalesce(from_wn.obj_id, re.obj_id)  as obj_id
@@ -126,8 +130,10 @@ LEFT JOIN qgep_od.channel ch on ch.obj_id::text = ws.obj_id::text
 -- Get wastewater structure linked to the from node
 LEFT JOIN qgep_od.wastewater_networkelement we ON from_wn.obj_id = we.obj_id
 LEFT JOIN qgep_od.wastewater_structure ws_node ON we.fk_wastewater_structure::text = ws_node.obj_id::text
+LEFT JOIN qgep_vl.wastewater_structure_status ws_st on ws_st.code=ws.status
+LEFT JOIN qgep_vl.channel_function_hierarchic ch_fh on ch_fh.code=ch.function_hierarchic
 -- select only operationals and "planned"
-WHERE ws.status IN (6530, 6533, 8493, 6529, 6526, 7959)
+WHERE ws_st.vsacode IN (6530, 6533, 8493, 6529, 6526, 7959)
 and ws_node is null
 
 UNION
@@ -143,11 +149,11 @@ SELECT
 	'junction without structure' as tag,
 	coalesce(to_wn.situation_geometry,  ST_EndPoint(re.progression_geometry)) as geom,
 	CASE 
-		WHEN ws.status IN (7959, 6529, 6526) THEN 'planned'
+		WHEN ws_st.vsacode IN (7959, 6529, 6526) THEN 'planned'
 		ELSE 'current'
 	END as state,
 	CASE 
-		WHEN ch.function_hierarchic in (5062, 5064, 5066, 5068, 5069, 5070, 5071, 5072, 5074) THEN 'primary'
+		WHEN ch_fh.vsacode in (5062, 5064, 5066, 5068, 5069, 5070, 5071, 5072, 5074) THEN 'primary'
 		ELSE 'secondary'
 	END as hierarchy,
 	coalesce(to_wn.obj_id, re.obj_id) as obj_id
@@ -160,6 +166,8 @@ LEFT JOIN qgep_od.channel ch on ch.obj_id::text = ws.obj_id::text
 -- Get wastewater structure linked to the to node
 LEFT JOIN qgep_od.wastewater_networkelement we ON to_wn.obj_id = we.obj_id
 LEFT JOIN qgep_od.wastewater_structure ws_node ON we.fk_wastewater_structure::text = ws_node.obj_id::text
+LEFT JOIN qgep_vl.wastewater_structure_status ws_st on ws_st.code=ws.status
+LEFT JOIN qgep_vl.channel_function_hierarchic ch_fh on ch_fh.code=ch.function_hierarchic
 -- select only operationals and "planned"
-WHERE ws.status IN (6530, 6533, 8493, 6529, 6526, 7959)
+WHERE ws_st.vsacode IN (6530, 6533, 8493, 6529, 6526, 7959)
 and ws_node is null;
