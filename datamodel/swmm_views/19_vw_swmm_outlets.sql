@@ -21,7 +21,8 @@ SELECT
 FROM qgep_od.prank_weir pw
 LEFT JOIN qgep_od.overflow of ON pw.obj_id = of.obj_id
 LEFT JOIN qgep_od.overflow_char oc ON of.fk_overflow_char = oc.obj_id
-LEFT JOIN qgep_vl.overflow_char_overflow_characteristic_digital vL_oc_dig ON oc.overflow_characteristic_digital = vL_oc_dig.code
+-- Attribute overflow_characteristics_digital does not exist anymore in VSA-DSS 2020
+--LEFT JOIN qgep_vl.overflow_char_overflow_characteristic_digital vL_oc_dig ON oc.overflow_characteristic_digital = vL_oc_dig.code
 LEFT JOIN qgep_vl.overflow_char_kind_overflow_char vl_oc_ki ON oc.kind_overflow_char = vl_oc_ki.code
 LEFT JOIN qgep_od.wastewater_node wn ON wn.obj_id = of.fk_wastewater_node
 LEFT JOIN qgep_od.wastewater_structure ws ON ws.fk_main_wastewater_node = wn.obj_id

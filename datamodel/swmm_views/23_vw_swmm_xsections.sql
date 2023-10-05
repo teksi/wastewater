@@ -87,7 +87,8 @@ LEFT JOIN qgep_od.wastewater_structure ws ON ws.fk_main_wastewater_node = wn.obj
 LEFT JOIN qgep_vl.wastewater_structure_status ws_st ON ws.status = ws_st.code
 LEFT JOIN qgep_vl.channel_function_hierarchic cfhi ON cfhi.code=ws._function_hierarchic
 WHERE ws_st.vsacode IN (6530, 6533, 8493, 6529, 6526, 7959)
-AND oc.overflow_characteristic_digital != 6223  --'NO or unknown;
+-- -- Attribute overflow_characteristics_digital does not exist anymore in VSA-DSS 2020
+-- AND oc.overflow_characteristic_digital != 6223  --'NO or unknown;
 OR oc.kind_overflow_char != 6220 -- Q/Q relation or unknown
 AND ws_st.vsacode IN (6530, 6533, 8493, 6529, 6526, 7959);
 
