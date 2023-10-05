@@ -149,7 +149,7 @@ UNION ALL
 SELECT
 	wn.obj_id as Name,
 	coalesce(wn.bottom_level,0) as InvertElev,
-	coalesce((wn.backflow_level-wn.bottom_level),0) as MaxDepth,
+	coalesce((wn.backflow_level_current-wn.bottom_level),0) as MaxDepth,
 	0 as InitDepth,
 	'FUNCTIONAL' as Shape,
 	'0' as CurveCoefficientOrCurveName, -- curve coefficient if FONCTIONAL curve name if TABULAR

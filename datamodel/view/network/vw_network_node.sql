@@ -31,7 +31,7 @@ SELECT n.id as gid,
        END as level,
        NULL::text AS usage_current,
        co.level as cover_level,
-       NULL::float AS backflow_level,
+       NULL::float AS backflow_level_current,
        CASE
          WHEN n.node_type = 'reach_point' THEN rp.identifier
          WHEN n.node_type = 'wastewater_node' THEN ne.identifier
