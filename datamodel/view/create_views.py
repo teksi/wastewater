@@ -8,8 +8,8 @@ from pirogue import SingleInheritance, MultipleInheritance, SimpleJoins
 import sys, os
 sys.path.append(os.path.join(os.path.dirname(__file__)))
 
-from vw_qgep_wastewater_structure import vw_qgep_wastewater_structure
-from vw_qgep_reach import vw_qgep_reach
+from vw_tww_wastewater_structure import vw_tww_wastewater_structure
+from vw_tww_reach import vw_tww_reach
 
 
 def run_sql(file_path: str, pg_service: str, variables: dict = {}):
@@ -27,55 +27,55 @@ def drop_views(pg_service):
 
 def create_views(srid: int,
                  pg_service: str,
-                 qgep_reach_extra: str = None,
-                 qgep_wastewater_structure_extra: str = None):
+                 tww_reach_extra: str = None,
+                 tww_wastewater_structure_extra: str = None):
     """
-    Creates the views for QGEP
+    Creates the views for TEKSI Wastewater & GEP
     :param srid: the EPSG code for geometry columns
     :param pg_service: the PostgreSQL service, if not given it will be determined from environment variable in Pirogue
-    :param qgep_reach_extra: YAML file path of the definition of additional columns for vw_qgep_reach view
-    :param qgep_wastewater_structure_extra: YAML file path of the definition of additional columns for vw_qgep_wastewater_structure_extra view"""
+    :param tww_reach_extra: YAML file path of the definition of additional columns for vw_tww_reach view
+    :param tww_wastewater_structure_extra: YAML file path of the definition of additional columns for vw_tww_wastewater_structure_extra view"""
 
     variables = {'SRID': srid}
 
     # open YAML files
-    if qgep_reach_extra:
-        qgep_reach_extra = safe_load(open(qgep_reach_extra))
-    if qgep_wastewater_structure_extra:
-        qgep_wastewater_structure_extra = safe_load(open(qgep_wastewater_structure_extra))
+    if tww_reach_extra:
+        tww_reach_extra = safe_load(open(tww_reach_extra))
+    if tww_wastewater_structure_extra:
+        tww_wastewater_structure_extra = safe_load(open(tww_wastewater_structure_extra))
 
     drop_views(pg_service)
 
     run_sql('view/vw_dictionary_value_list.sql', pg_service, variables)
 
-    SingleInheritance('qgep_od.structure_part', 'qgep_od.access_aid', view_name='vw_access_aid', pg_service=pg_service, pkey_default_value=True, inner_defaults={'identifier': 'obj_id'}).create()
-    SingleInheritance('qgep_od.structure_part', 'qgep_od.benching', view_name='vw_benching', pg_service=pg_service, pkey_default_value=True, inner_defaults={'identifier': 'obj_id'}).create()
-    SingleInheritance('qgep_od.structure_part', 'qgep_od.backflow_prevention', view_name='vw_backflow_prevention', pg_service=pg_service, pkey_default_value=True, inner_defaults={'identifier': 'obj_id'}).create()
-    SingleInheritance('qgep_od.structure_part', 'qgep_od.cover', view_name='vw_cover', pg_service=pg_service, pkey_default_value=True, inner_defaults={'identifier': 'obj_id'}).create()
-    SingleInheritance('qgep_od.structure_part', 'qgep_od.dryweather_downspout', view_name='vw_dryweather_downspout', pg_service=pg_service, pkey_default_value=True, inner_defaults={'identifier': 'obj_id'}).create()
-    SingleInheritance('qgep_od.structure_part', 'qgep_od.dryweather_flume', view_name='vw_dryweather_flume', pg_service=pg_service, pkey_default_value=True, inner_defaults={'identifier': 'obj_id'}).create()
-    SingleInheritance('qgep_od.wastewater_structure', 'qgep_od.channel', view_name='vw_channel', pg_service=pg_service).create()
-    SingleInheritance('qgep_od.wastewater_structure', 'qgep_od.manhole', view_name='vw_manhole', pg_service=pg_service).create()
-    SingleInheritance('qgep_od.wastewater_structure', 'qgep_od.discharge_point', view_name='vw_discharge_point', pg_service=pg_service).create()
-    SingleInheritance('qgep_od.wastewater_structure', 'qgep_od.special_structure', view_name='vw_special_structure', pg_service=pg_service).create()
-    SingleInheritance('qgep_od.wastewater_structure', 'qgep_od.infiltration_installation', view_name='vw_infiltration_installation', pg_service=pg_service).create()
-    SingleInheritance('qgep_od.wastewater_structure', 'qgep_od.wwtp_structure', view_name='vw_wwtp_structure', pg_service=pg_service).create()
+    SingleInheritance('tww_od.structure_part', 'tww_od.access_aid', view_name='vw_access_aid', pg_service=pg_service, pkey_default_value=True, inner_defaults={'identifier': 'obj_id'}).create()
+    SingleInheritance('tww_od.structure_part', 'tww_od.benching', view_name='vw_benching', pg_service=pg_service, pkey_default_value=True, inner_defaults={'identifier': 'obj_id'}).create()
+    SingleInheritance('tww_od.structure_part', 'tww_od.backflow_prevention', view_name='vw_backflow_prevention', pg_service=pg_service, pkey_default_value=True, inner_defaults={'identifier': 'obj_id'}).create()
+    SingleInheritance('tww_od.structure_part', 'tww_od.cover', view_name='vw_cover', pg_service=pg_service, pkey_default_value=True, inner_defaults={'identifier': 'obj_id'}).create()
+    SingleInheritance('tww_od.structure_part', 'tww_od.dryweather_downspout', view_name='vw_dryweather_downspout', pg_service=pg_service, pkey_default_value=True, inner_defaults={'identifier': 'obj_id'}).create()
+    SingleInheritance('tww_od.structure_part', 'tww_od.dryweather_flume', view_name='vw_dryweather_flume', pg_service=pg_service, pkey_default_value=True, inner_defaults={'identifier': 'obj_id'}).create()
+    SingleInheritance('tww_od.wastewater_structure', 'tww_od.channel', view_name='vw_channel', pg_service=pg_service).create()
+    SingleInheritance('tww_od.wastewater_structure', 'tww_od.manhole', view_name='vw_manhole', pg_service=pg_service).create()
+    SingleInheritance('tww_od.wastewater_structure', 'tww_od.discharge_point', view_name='vw_discharge_point', pg_service=pg_service).create()
+    SingleInheritance('tww_od.wastewater_structure', 'tww_od.special_structure', view_name='vw_special_structure', pg_service=pg_service).create()
+    SingleInheritance('tww_od.wastewater_structure', 'tww_od.infiltration_installation', view_name='vw_infiltration_installation', pg_service=pg_service).create()
+    SingleInheritance('tww_od.wastewater_structure', 'tww_od.wwtp_structure', view_name='vw_wwtp_structure', pg_service=pg_service).create()
 
-    SingleInheritance('qgep_od.wastewater_networkelement', 'qgep_od.reach', view_name='vw_reach', pg_service=pg_service).create()
-    SingleInheritance('qgep_od.wastewater_networkelement', 'qgep_od.wastewater_node', view_name='vw_wastewater_node', pkey_default_value=True, pg_service=pg_service).create()
+    SingleInheritance('tww_od.wastewater_networkelement', 'tww_od.reach', view_name='vw_reach', pg_service=pg_service).create()
+    SingleInheritance('tww_od.wastewater_networkelement', 'tww_od.wastewater_node', view_name='vw_wastewater_node', pkey_default_value=True, pg_service=pg_service).create()
 
-    SingleInheritance('qgep_od.connection_object', 'qgep_od.individual_surface', view_name='vw_individual_surface', pkey_default_value=True, pg_service=pg_service).create()
-    SingleInheritance('qgep_od.connection_object', 'qgep_od.building', view_name='vw_building', pkey_default_value=True, pg_service=pg_service).create()
-    SingleInheritance('qgep_od.connection_object', 'qgep_od.reservoir', view_name='vw_reservoir', pkey_default_value=True, pg_service=pg_service).create()
-    SingleInheritance('qgep_od.connection_object', 'qgep_od.fountain', view_name='vw_fountain', pkey_default_value=True, pg_service=pg_service).create()
+    SingleInheritance('tww_od.connection_object', 'tww_od.individual_surface', view_name='vw_individual_surface', pkey_default_value=True, pg_service=pg_service).create()
+    SingleInheritance('tww_od.connection_object', 'tww_od.building', view_name='vw_building', pkey_default_value=True, pg_service=pg_service).create()
+    SingleInheritance('tww_od.connection_object', 'tww_od.reservoir', view_name='vw_reservoir', pkey_default_value=True, pg_service=pg_service).create()
+    SingleInheritance('tww_od.connection_object', 'tww_od.fountain', view_name='vw_fountain', pkey_default_value=True, pg_service=pg_service).create()
     
     MultipleInheritance(safe_load(open("view/vw_maintenance_examination.yaml")), drop=True, pg_service=pg_service).create()
     
     # 13.9.2023 temporary commented out - adaption to naming of damage_* attributes needed in datamodel. Subclass attributes cannot have the same name with PUM.
     MultipleInheritance(safe_load(open("view/vw_damage.yaml")), drop=True, pg_service=pg_service).create()
 
-    vw_qgep_wastewater_structure(srid, pg_service=pg_service, extra_definition=qgep_wastewater_structure_extra)
-    vw_qgep_reach(pg_service=pg_service, extra_definition=qgep_reach_extra)
+    vw_tww_wastewater_structure(srid, pg_service=pg_service, extra_definition=tww_wastewater_structure_extra)
+    vw_tww_reach(pg_service=pg_service, extra_definition=tww_reach_extra)
 
     run_sql('view/vw_file.sql', pg_service, variables)
 
@@ -84,7 +84,7 @@ def create_views(srid: int,
     
     run_sql('view/vw_catchment_area_connections.sql', pg_service, variables)
     run_sql('view/vw_change_points.sql', pg_service, variables)
-    run_sql('view/vw_qgep_import.sql', pg_service, variables)
+    run_sql('view/vw_tww_import.sql', pg_service, variables)
 
     # Recreate network views
     run_sql('view/network/vw_network_node.sql', pg_service, variables)
@@ -129,11 +129,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-p', '--pg_service', help='postgres service')
     parser.add_argument('-s', '--srid', help='SRID EPSG code, defaults to 2056', type=int, default=2056)
-    parser.add_argument('--qgep_wastewater_structure_extra', help='YAML definition file path for additions to vw_qgep_wastewater_structure view')
-    parser.add_argument('--qgep_reach_extra', help='YAML definition file path for additions to vw_qgep_reach view')
+    parser.add_argument('--tww_wastewater_structure_extra', help='YAML definition file path for additions to vw_tww_wastewater_structure view')
+    parser.add_argument('--tww_reach_extra', help='YAML definition file path for additions to vw_tww_reach view')
     args = parser.parse_args()
 
     create_views(args.srid, args.pg_service,
-                 qgep_reach_extra=args.qgep_reach_extra,
-                 qgep_wastewater_structure_extra=args.qgep_wastewater_structure_extra)
+                 tww_reach_extra=args.tww_reach_extra,
+                 tww_wastewater_structure_extra=args.tww_wastewater_structure_extra)
 
