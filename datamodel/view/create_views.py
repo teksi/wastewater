@@ -46,6 +46,8 @@ def create_views(srid: int,
 
     drop_views(pg_service)
 
+    run_sql('view/vw_dictionary_value_list.sql', pg_service, variables)
+
     SingleInheritance('qgep_od.structure_part', 'qgep_od.access_aid', view_name='vw_access_aid', pg_service=pg_service, pkey_default_value=True, inner_defaults={'identifier': 'obj_id'}).create()
     SingleInheritance('qgep_od.structure_part', 'qgep_od.benching', view_name='vw_benching', pg_service=pg_service, pkey_default_value=True, inner_defaults={'identifier': 'obj_id'}).create()
     SingleInheritance('qgep_od.structure_part', 'qgep_od.backflow_prevention', view_name='vw_backflow_prevention', pg_service=pg_service, pkey_default_value=True, inner_defaults={'identifier': 'obj_id'}).create()
