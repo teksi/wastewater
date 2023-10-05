@@ -20,7 +20,7 @@ SELECT
 	wn.obj_id as obj_id
 FROM qgep_od.prank_weir pw
 LEFT JOIN qgep_od.overflow of ON pw.obj_id = of.obj_id
-LEFT JOIN qgep_od.overflow_char oc ON of.fk_overflow_characteristic = oc.obj_id
+LEFT JOIN qgep_od.overflow_char oc ON of.fk_overflow_char = oc.obj_id
 LEFT JOIN qgep_vl.overflow_char_overflow_characteristic_digital vL_oc_dig ON oc.overflow_characteristic_digital = vL_oc_dig.code
 LEFT JOIN qgep_vl.overflow_char_kind_overflow_characteristic vl_oc_ki ON oc.kind_overflow_characteristic = vl_oc_ki.code
 LEFT JOIN qgep_od.wastewater_node wn ON wn.obj_id = of.fk_wastewater_node
