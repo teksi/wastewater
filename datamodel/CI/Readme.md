@@ -31,7 +31,7 @@ LINE 38:     EXECUTE FUNCTION tww_od.ft_vw_wastewater_node_delete();
 And this can be done locally too (with Docker) by doing the same steps done in https://github.com/QGEP/datamodel/blob/master/.github/workflows/docker-test-and-push.yaml#L44-L48.
 ```bash
 # build dockerfile
-docker build -f .docker/Dockerfile --build-arg POSTGIS_VERSION=11-3.2 --tag qgep_img .
+docker build -f .docker/Dockerfile --build-arg POSTGIS_VERSION=11-3.2 --tag tww_img .
 
 # initialize tww container (without -d so it runs in foreground)
 docker run -it -p 5432:5432 --name tww tww_img
