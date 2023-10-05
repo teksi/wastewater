@@ -123,18 +123,18 @@ SELECT
 		ELSE 'secondary'
 	END as hierarchy,
 	re.obj_id as obj_id
-FROM qgep_od.reach as re
-LEFT JOIN qgep_od.pipe_profile pp on pp.obj_id = re.fk_pipe_profile
-LEFT JOIN qgep_vl.pipe_profile_profile_type vl_pp on pp.profile_type = vl_pp.code
-LEFT JOIN qgep_od.wastewater_networkelement ne ON ne.obj_id::text = re.obj_id::text
-LEFT JOIN qgep_od.wastewater_structure ws ON ws.obj_id = ne.fk_wastewater_structure
-LEFT JOIN qgep_od.reach_point rp_from ON rp_from.obj_id::text = re.fk_reach_point_from::text
-LEFT JOIN qgep_od.reach_point rp_to ON rp_to.obj_id::text = re.fk_reach_point_to::text
-LEFT JOIN qgep_od.wastewater_node from_wn on from_wn.obj_id = rp_from.fk_wastewater_networkelement
-LEFT JOIN qgep_od.wastewater_node to_wn on to_wn.obj_id = rp_to.fk_wastewater_networkelement
-LEFT JOIN qgep_od.channel ch on ch.obj_id::text = ws.obj_id::text
-LEFT JOIN qgep_vl.channel_function_hierarchic cfhi on cfhi.code = ch.function_hierarchic
-LEFT JOIN qgep_vl.channel_function_hydraulic cfhy on cfhy.code = ch.function_hydraulic
+FROM tww_od.reach as re
+LEFT JOIN tww_od.pipe_profile pp on pp.obj_id = re.fk_pipe_profile
+LEFT JOIN tww_vl.pipe_profile_profile_type vl_pp on pp.profile_type = vl_pp.code
+LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id::text = re.obj_id::text
+LEFT JOIN tww_od.wastewater_structure ws ON ws.obj_id = ne.fk_wastewater_structure
+LEFT JOIN tww_od.reach_point rp_from ON rp_from.obj_id::text = re.fk_reach_point_from::text
+LEFT JOIN tww_od.reach_point rp_to ON rp_to.obj_id::text = re.fk_reach_point_to::text
+LEFT JOIN tww_od.wastewater_node from_wn on from_wn.obj_id = rp_from.fk_wastewater_networkelement
+LEFT JOIN tww_od.wastewater_node to_wn on to_wn.obj_id = rp_to.fk_wastewater_networkelement
+LEFT JOIN tww_od.channel ch on ch.obj_id::text = ws.obj_id::text
+LEFT JOIN tww_vl.channel_function_hierarchic cfhi on cfhi.code = ch.function_hierarchic
+LEFT JOIN tww_vl.channel_function_hydraulic cfhy on cfhy.code = ch.function_hydraulic
 -- select only operationals and "planned"
 WHERE status IN (6530, 6533, 8493, 6529, 6526, 7959);
 -- 6526	"other.calculation_alternative"

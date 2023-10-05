@@ -25,7 +25,7 @@ In this specific case, you will see:
      Applying delta 1.5.5 symbology_for_nodes... OK
      Applying delta 1.5.6 kek_model_update_2008_2019... OK
      Applying delta 1.5.7 add_status_to_wn... syntax error at or near "FUNCTION"
-LINE 38:     EXECUTE FUNCTION qgep_od.ft_vw_wastewater_node_delete();
+LINE 38:     EXECUTE FUNCTION tww_od.ft_vw_wastewater_node_delete();
 ```
 
 And this can be done locally too (with Docker) by doing the same steps done in https://github.com/QGEP/datamodel/blob/master/.github/workflows/docker-test-and-push.yaml#L44-L48.
@@ -33,6 +33,6 @@ And this can be done locally too (with Docker) by doing the same steps done in h
 # build dockerfile
 docker build -f .docker/Dockerfile --build-arg POSTGIS_VERSION=11-3.2 --tag qgep_img .
 
-# initialize qgep container (without -d so it runs in foreground)
-docker run -it -p 5432:5432 --name qgep qgep_img
+# initialize tww container (without -d so it runs in foreground)
+docker run -it -p 5432:5432 --name tww tww_img
 ```

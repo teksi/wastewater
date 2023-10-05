@@ -35,19 +35,19 @@ SELECT
 		ELSE 'secondary'
 	END as hierarchy,
 	wn.obj_id as obj_id
-FROM qgep_od.special_structure ss
-LEFT JOIN qgep_od.wastewater_structure ws ON ws.obj_id::text = ss.obj_id::text
-LEFT JOIN qgep_vl.wastewater_structure_status ws_st ON ws.status = ws_st.code
-LEFT JOIN qgep_vl.channel_function_hierarchic cfhi ON cfhi.code=ws._function_hierarchic
-LEFT JOIN qgep_od.wastewater_networkelement we ON we.fk_wastewater_structure::text = ws.obj_id::text
-LEFT JOIN qgep_od.wastewater_node wn on wn.obj_id = we.obj_id
-LEFT JOIN qgep_od.hydr_geometry hg on hg.obj_id = wn.fk_hydr_geometry
+FROM tww_od.special_structure ss
+LEFT JOIN tww_od.wastewater_structure ws ON ws.obj_id::text = ss.obj_id::text
+LEFT JOIN tww_vl.wastewater_structure_status ws_st ON ws.status = ws_st.code
+LEFT JOIN tww_vl.channel_function_hierarchic cfhi ON cfhi.code=ws._function_hierarchic
+LEFT JOIN tww_od.wastewater_networkelement we ON we.fk_wastewater_structure::text = ws.obj_id::text
+LEFT JOIN tww_od.wastewater_node wn on wn.obj_id = we.obj_id
+LEFT JOIN tww_od.hydr_geometry hg on hg.obj_id = wn.fk_hydr_geometry
 LEFT JOIN (
 	SELECT distinct fk_hydr_geometry
-	FROM qgep_od.hydr_geom_relation
+	FROM tww_od.hydr_geom_relation
 ) as hr on hr.fk_hydr_geometry =  hg.obj_id
-LEFT JOIN qgep_od.cover co on ws.fk_main_cover = co.obj_id
-LEFT JOIN qgep_vl.special_structure_function ssf on ss.function = ssf.code
+LEFT JOIN tww_od.cover co on ws.fk_main_cover = co.obj_id
+LEFT JOIN tww_vl.special_structure_function ssf on ss.function = ssf.code
 WHERE ssf.vsacode IN ( -- must be the same list in vw_swmm_junctions
 6397, --"pit_without_drain"
 -- 245, --"drop_structure"
@@ -116,18 +116,18 @@ SELECT
 		ELSE 'secondary'
 	END as hierarchy,
 	wn.obj_id as obj_id
-FROM qgep_od.infiltration_installation as ii
-LEFT JOIN qgep_od.wastewater_structure ws ON ws.obj_id::text = ii.obj_id::text
-LEFT JOIN qgep_vl.wastewater_structure_status ws_st ON ws.status = ws_st.code
-LEFT JOIN qgep_vl.channel_function_hierarchic cfhi ON cfhi.code=ws._function_hierarchic
-LEFT JOIN qgep_od.wastewater_networkelement we ON we.fk_wastewater_structure::text = ws.obj_id::text
-LEFT JOIN qgep_od.wastewater_node wn on wn.obj_id = we.obj_id
-LEFT JOIN qgep_od.hydr_geometry hg on hg.obj_id = wn.fk_hydr_geometry
+FROM tww_od.infiltration_installation as ii
+LEFT JOIN tww_od.wastewater_structure ws ON ws.obj_id::text = ii.obj_id::text
+LEFT JOIN tww_vl.wastewater_structure_status ws_st ON ws.status = ws_st.code
+LEFT JOIN tww_vl.channel_function_hierarchic cfhi ON cfhi.code=ws._function_hierarchic
+LEFT JOIN tww_od.wastewater_networkelement we ON we.fk_wastewater_structure::text = ws.obj_id::text
+LEFT JOIN tww_od.wastewater_node wn on wn.obj_id = we.obj_id
+LEFT JOIN tww_od.hydr_geometry hg on hg.obj_id = wn.fk_hydr_geometry
 LEFT JOIN (
 	SELECT distinct fk_hydr_geometry
-	FROM qgep_od.hydr_geom_relation
+	FROM tww_od.hydr_geom_relation
 ) as hr on hr.fk_hydr_geometry =  hg.obj_id
-LEFT JOIN qgep_vl.infiltration_installation_kind iik on ii.kind = iik.code
+LEFT JOIN tww_vl.infiltration_installation_kind iik on ii.kind = iik.code
 WHERE iik.vsacode IN (
 --3282	--"with_soil_passage"
 --3285	--"without_soil_passage"
@@ -175,16 +175,16 @@ SELECT
 		ELSE 'secondary'
 	END as hierarchy,
 	wn.obj_id as obj_id
-FROM qgep_od.prank_weir pw
-LEFT JOIN qgep_od.overflow of ON pw.obj_id = of.obj_id
-LEFT JOIN qgep_od.overflow_char oc ON of.fk_overflow_char = oc.obj_id
+FROM tww_od.prank_weir pw
+LEFT JOIN tww_od.overflow of ON pw.obj_id = of.obj_id
+LEFT JOIN tww_od.overflow_char oc ON of.fk_overflow_char = oc.obj_id
 -- Attribute overflow_characteristics_digital does not exist anymore in VSA-DSS 2020
---LEFT JOIN qgep_vl.overflow_char_overflow_characteristic_digital vl_oc_dig ON oc.overflow_characteristic_digital = vl_oc_dig.code
-LEFT JOIN qgep_vl.overflow_char_kind_overflow_char vL_oc_ki ON oc.kind_overflow_char = vL_oc_ki.code
-LEFT JOIN qgep_od.wastewater_node wn ON wn.obj_id = of.fk_wastewater_node
-LEFT JOIN qgep_od.wastewater_structure ws ON ws.fk_main_wastewater_node = wn.obj_id
-LEFT JOIN qgep_vl.wastewater_structure_status ws_st ON ws.status = ws_st.code
-LEFT JOIN qgep_vl.channel_function_hierarchic cfhi ON cfhi.code=ws._function_hierarchic
+--LEFT JOIN tww_vl.overflow_char_overflow_characteristic_digital vl_oc_dig ON oc.overflow_characteristic_digital = vl_oc_dig.code
+LEFT JOIN tww_vl.overflow_char_kind_overflow_char vL_oc_ki ON oc.kind_overflow_char = vL_oc_ki.code
+LEFT JOIN tww_od.wastewater_node wn ON wn.obj_id = of.fk_wastewater_node
+LEFT JOIN tww_od.wastewater_structure ws ON ws.fk_main_wastewater_node = wn.obj_id
+LEFT JOIN tww_vl.wastewater_structure_status ws_st ON ws.status = ws_st.code
+LEFT JOIN tww_vl.channel_function_hierarchic cfhi ON cfhi.code=ws._function_hierarchic
 WHERE ws_st.vsacode IN (6530, 6533, 8493, 6529, 6526, 7959)
 -- Attribute overflow_characteristics_digital does not exist anymore in VSA-DSS 2020
 --AND vl_oc_dig.vsacode = 6223  --'yes;

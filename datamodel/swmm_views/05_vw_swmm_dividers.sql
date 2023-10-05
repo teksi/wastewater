@@ -23,14 +23,14 @@ SELECT
 		ELSE 'secondary'
 	END as hierarchy,
 	wn.obj_id as obj_id
-FROM qgep_od.manhole ma
-LEFT JOIN qgep_od.wastewater_structure ws ON ws.obj_id::text = ma.obj_id::text
-LEFT JOIN qgep_vl.wastewater_structure_status ws_st ON ws.status = ws_st.code
-LEFT JOIN qgep_vl.channel_function_hierarchic cfhi ON cfhi.code=ws._function_hierarchic
-LEFT JOIN qgep_od.wastewater_networkelement ne ON ne.fk_wastewater_structure::text = ws.obj_id::text
-LEFT JOIN qgep_od.wastewater_node wn on wn.obj_id = ne.obj_id
-LEFT JOIN qgep_od.cover co on ws.fk_main_cover = co.obj_id
-LEFT JOIN qgep_vl.manhole_function mf on ma.function = mf.code
+FROM tww_od.manhole ma
+LEFT JOIN tww_od.wastewater_structure ws ON ws.obj_id::text = ma.obj_id::text
+LEFT JOIN tww_vl.wastewater_structure_status ws_st ON ws.status = ws_st.code
+LEFT JOIN tww_vl.channel_function_hierarchic cfhi ON cfhi.code=ws._function_hierarchic
+LEFT JOIN tww_od.wastewater_networkelement ne ON ne.fk_wastewater_structure::text = ws.obj_id::text
+LEFT JOIN tww_od.wastewater_node wn on wn.obj_id = ne.obj_id
+LEFT JOIN tww_od.cover co on ws.fk_main_cover = co.obj_id
+LEFT JOIN tww_vl.manhole_function mf on ma.function = mf.code
 WHERE mf.vsacode = 4798 -- separating_structure
 AND ws_st.vsacode IN (6530, 6533, 8493, 6529, 6526, 7959)
 
@@ -56,13 +56,13 @@ SELECT
 		ELSE 'secondary'
 	END as hierarchy,
 	wn.obj_id as obj_id
-FROM qgep_od.special_structure ss
-LEFT JOIN qgep_od.wastewater_structure ws ON ws.obj_id::text = ss.obj_id::text
-LEFT JOIN qgep_vl.wastewater_structure_status ws_st ON ws.status = ws_st.code
-LEFT JOIN qgep_vl.channel_function_hierarchic cfhi ON cfhi.code=ws._function_hierarchic
-LEFT JOIN qgep_od.wastewater_networkelement ne ON ne.fk_wastewater_structure::text = ws.obj_id::text
-LEFT JOIN qgep_od.wastewater_node wn on wn.obj_id = ne.obj_id
-LEFT JOIN qgep_od.cover co on ws.fk_main_cover = co.obj_id
-LEFT JOIN qgep_vl.special_structure_function ssf on ss.function = ssf.code
+FROM tww_od.special_structure ss
+LEFT JOIN tww_od.wastewater_structure ws ON ws.obj_id::text = ss.obj_id::text
+LEFT JOIN tww_vl.wastewater_structure_status ws_st ON ws.status = ws_st.code
+LEFT JOIN tww_vl.channel_function_hierarchic cfhi ON cfhi.code=ws._function_hierarchic
+LEFT JOIN tww_od.wastewater_networkelement ne ON ne.fk_wastewater_structure::text = ws.obj_id::text
+LEFT JOIN tww_od.wastewater_node wn on wn.obj_id = ne.obj_id
+LEFT JOIN tww_od.cover co on ws.fk_main_cover = co.obj_id
+LEFT JOIN tww_vl.special_structure_function ssf on ss.function = ssf.code
 WHERE ssf.vsacode  = 4799 -- separating_structure
 AND ws_st.vsacode IN (6530, 6533, 8493, 6529, 6526, 7959);
