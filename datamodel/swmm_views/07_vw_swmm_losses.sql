@@ -30,5 +30,6 @@ LEFT JOIN qgep_od.reach_point rp_from ON rp_from.obj_id::text = re.fk_reach_poin
 LEFT JOIN qgep_od.wastewater_node from_wn on from_wn.obj_id = rp_from.fk_wastewater_networkelement
 LEFT JOIN qgep_od.throttle_shut_off_unit ts ON ts.fk_wastewater_node = from_wn.obj_id
 LEFT JOIN qgep_od.wastewater_structure ws ON ws.obj_id = ne.fk_wastewater_structure
-WHERE status IN (6530, 6533, 8493, 6529, 6526, 7959)
+LEFT JOIN qgep_vl.wastewater_structure_status ws_st ON ws.status = ws_st.code
+WHERE ws_st.vsacode IN (6530, 6533, 8493, 6529, 6526, 7959)
 ;  -- wastewater node of the downstream wastewater node
