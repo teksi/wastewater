@@ -29,5 +29,6 @@ LEFT JOIN tww_od.wastewater_structure ws ON ws.fk_main_wastewater_node = wn.obj_
 LEFT JOIN tww_vl.wastewater_structure_status ws_st ON ws.status = ws_st.code
 LEFT JOIN tww_vl.channel_function_hierarchic cfhi ON cfhi.code=ws._function_hierarchic
 WHERE ws_st.vsacode IN (6530, 6533, 8493, 6529, 6526, 7959)
-AND vL_oc_dig.vsacode = 6223  --'yes;
+-- Attribute overflow_characteristics_digital does not exist anymore in VSA-DSS 2020
+--AND vL_oc_dig.vsacode = 6223  --'yes;
 AND vl_oc_ki.vsacode = 6220; -- h/q relations (Q/Q relations are not supported by SWMM) 
