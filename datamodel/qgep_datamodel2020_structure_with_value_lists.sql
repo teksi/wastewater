@@ -5,7 +5,7 @@
 -- Dumped from database version 12.1
 -- Dumped by pg_dump version 15.3
 
--- Started on 2023-10-05 15:04:35
+-- Started on 2023-10-06 08:36:51
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -22716,7 +22716,7 @@ SELECT pg_catalog.setval('tww_sys.oid_prefixes_id_seq', 10, true);
 -- Name: pum_info_id_seq; Type: SEQUENCE SET; Schema: tww_sys; Owner: postgres
 --
 
-SELECT pg_catalog.setval('tww_sys.pum_info_id_seq', 1, false);
+SELECT pg_catalog.setval('tww_sys.pum_info_id_seq', 1, true);
 
 
 --
@@ -34064,7 +34064,7 @@ ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA tww_vl GRANT SELECT,REFEREN
 ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA tww_vl GRANT ALL ON TABLES  TO tww_manager;
 
 
--- Completed on 2023-10-05 15:04:35
+-- Completed on 2023-10-06 08:36:52
 
 --
 -- PostgreSQL database dump complete
