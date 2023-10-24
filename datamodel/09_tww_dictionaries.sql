@@ -7,7 +7,7 @@ DROP VIEW IF EXISTS tww_sys.dictionary_value_list;
 
 CREATE VIEW tww_sys.dictionary_value_list AS
   SELECT p.relname AS vl_name, vl.*
-  FROM tww_sys.value_list_base vl, pg_class p
+  FROM tww_vl.value_list_base vl, pg_class p
   WHERE vl.tableoid = p.oid;
 
 

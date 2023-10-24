@@ -1,0 +1,16 @@
+
+
+table: tww_od.damage
+view_name: vw_tww_damage
+view_schema: tww_app
+allow_type_change: False
+allow_parent_only: True
+pkey_default_value: True
+
+joins:
+  channel:
+    table: tww_od.damage_channel
+
+  manhole:
+    table: tww_od.damage_manhole
+

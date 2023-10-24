@@ -1,0 +1,24 @@
+
+table: tww_od.overflow
+view_name: vw_tww_overflow
+view_schema: tww_app
+
+additional_columns:
+  geometry: n1.situation_geometry::geometry('PointZ',%(SRID)s)
+additional_joins: >
+  LEFT JOIN tww_od.wastewater_node n1 ON overflow.fk_wastewater_node::text = n1.obj_id::text
+
+
+joins:
+  leapingweir:
+    table: tww_od.leapingweir
+
+  prank_weir:
+    table: tww_od.prank_weir
+
+  pump:
+    table: tww_od.pump
+
+
+
+
