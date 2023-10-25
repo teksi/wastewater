@@ -34,7 +34,9 @@ jobs:
           docker exec teksi-wastewater init_db.sh wait
 
       - name: create dumps
-        run: docker exec -e PGSERVICE=pg_teksi_wastewater teksi-wastewater /src/scripts/create-dumps.py
+        run: |
+          docker exec -e PGSERVICE=pg_teksi_wastewater teksi-wastewater /src/scripts/create-dumps.py
+          docker cp pg_teksi_wastewater:/src/artifacts datamodel/artifacts
 
       - uses: actions/upload-artifact@v3
         with:
