@@ -17,12 +17,7 @@
 ***************************************************************************
 """
 
-__author__ = "Denis Rouzaud"
-__date__ = "April 2018"
-__copyright__ = "(C) 2018,Denis Rouzaud"
-# This will get replaced with a git SHA1 when you do a git archive
-__revision__ = "$Format:%H$"
-
+import argparse
 import os
 import subprocess
 
@@ -55,19 +50,19 @@ tww_{version}_structure_and_demo_data.backup | Complete backup with structure an
 """  # noqa
 
 
-def create_dumps():
+def create_dumps(**args):
     """
     Creates all dumps
     :return: the files names in a list
     """
-    file_s = create_plain_structure_only()
-    file_v = create_plain_value_list(file_s)
-    file_d = create_backup_data()
-    file_b = create_backup_complete()
+    file_s = create_plain_structure_only(**args)
+    file_v = create_plain_value_list(structure_dump_file=file_s, **args)
+    file_d = create_backup_data(**args)
+    file_b = create_backup_complete(**args)
     return [file_s, file_v, file_d, file_b]
 
 
-def create_plain_structure_only():
+def create_plain_structure_only(database: str, version: str):
     """
     Create a plain SQL dump of data structure
     of all schemas and the content of pum_sys.inf
@@ -76,7 +71,7 @@ def create_plain_structure_only():
     print("::group::plain SQL structure only")
 
     # structure
-    dump_s = "tww_{version}_structure.sql".format(version=os.environ["CI_TAG"])
+    dump_s = f"tww_{version}_structure.sql"
 
     print(f"Creating dump {dump_s}")
     dump_file_s = f"artifacts/{dump_s}"
@@ -91,12 +86,12 @@ def create_plain_structure_only():
             "--exclude-schema",
             "public",
             "--no-owner",
-            "tww_prod",
+            database,
         ]
     )
 
     # dump all from tww_sys except logged_actions
-    dump_i = "tww_{version}_pum_info.sql".format(version=os.environ["CI_TAG"])
+    dump_i = f"tww_{version}_pum_info.sql"
     print(f"Creating dump {dump_i}")
     dump_file_i = f"artifacts/{dump_i}"
     _cmd(
@@ -111,7 +106,7 @@ def create_plain_structure_only():
             "tww_sys",
             "--exclude-table",
             "tww_sys.logged_actions",
-            "tww_prod",
+            database,
         ]
     )
     print("Concatenating the 2 dumps")
@@ -125,7 +120,7 @@ def create_plain_structure_only():
     return dump_file_s
 
 
-def create_plain_value_list(structure_dump_file):
+def create_plain_value_list(database: str, version: str, structure_dump_file: str):
     """
     Create a plain SQL dump of data structure (result of create_structure_only)
     with value list content
@@ -133,7 +128,7 @@ def create_plain_value_list(structure_dump_file):
     """
     print("::group::value lists dump")
 
-    dump = "tww_{version}_structure_with_value_lists.sql".format(version=os.environ["CI_TAG"])
+    dump = f"tww_{version}_structure_with_value_lists.sql"
 
     print(f"Creating dump {dump}")
     dump_file = f"artifacts/{dump}"
@@ -149,7 +144,7 @@ def create_plain_value_list(structure_dump_file):
             dump_file,
             "--schema",
             "tww_vl",
-            "tww_prod",
+            database,
         ]
     )
 
@@ -168,13 +163,13 @@ def create_plain_value_list(structure_dump_file):
     return dump_file
 
 
-def create_backup_data():
+def create_backup_data(database: str, version: str):
     """
     Create a data-only dump (without VL and pum_info)
     :return: the file name
     """
     # Create data-only dumps (with sample data)
-    dump = "tww_{version}_demo_data.backup".format(version=os.environ["CI_TAG"])
+    dump = f"tww_{version}_demo_data.backup"
     print(f"::group::{dump}")
     print(f"Creating dump {dump}")
     dump_file = f"artifacts/{dump}"
@@ -193,20 +188,20 @@ def create_backup_data():
             "tww_od.*",
             "--table",
             "tww_sys.logged_actions",
-            "tww_prod",
+            database,
         ]
     )
     print("::endgroup::")
     return dump_file
 
 
-def create_backup_complete():
+def create_backup_complete(database: str, version: str):
     """
     Create data + structure dump
     :return: the file name
     """
     # Create data + structure dumps (with sample data)
-    dump = "tww_{version}_structure_and_demo_data.backup".format(version=os.environ["CI_TAG"])
+    dump = f"tww_{version}_structure_and_demo_data.backup"
     print(f"::group::{dump}")
     print(f"Creating dump {dump}")
     dump_file = f"artifacts/{dump}"
@@ -222,7 +217,7 @@ def create_backup_complete():
             dump_file,
             "-N",
             "public",
-            "tww_prod",
+            database,
         ]
     )
     print("::endgroup::")
@@ -230,18 +225,27 @@ def create_backup_complete():
     return dump_file
 
 
-def main():
+def get_parser():
+    """
+    Creates a new argument parser.
+    """
+    parser = argparse.ArgumentParser("create-dumps.py")
+    parser.add_argument("--version", "-v", help="Sets the version", default="dev")
+    parser.add_argument(
+        "--database", "-d", help="Sets the database name", default="teksi_wastewater"
+    )
+    return parser
+
+
+def main(args=None):
     """
     Creates dumps to be attached to releases.
     """
-    if "CI_TAG" not in os.environ or not os.environ["CI_TAG"]:
-        print("No git tag: not deploying anything")
-        return
-    else:
-        print("Creating release from tag {}".format(os.environ["CI_TAG"]))
+    parser = get_parser()
+    args = parser.parse_args(args)
 
-    os.mkdir("artifacts")
-    files = create_dumps()
+    os.makedirs("artifacts", exist_ok=True)
+    files = create_dumps(version=args.version, database=args.database)
     print("Dumps created: {}".format(", ".join(files)))
 
 

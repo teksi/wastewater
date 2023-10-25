@@ -31,7 +31,12 @@ jobs:
       - name: "initialize container"
         run: |
           docker run -d -p 5432:5432 --name teksi-wastewater teksi/wastewater:unstable
-          docker exec tww init_db.sh wait
+          docker exec teksi-wastewater init_db.sh wait
 
       - name: create dumps
         run: docker exec -e PGSERVICE=pg_teksi_wastewater teksi-wastewater /src/scripts/create-dumps.py
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: datamodel-dumps
+          path: artifacts/
