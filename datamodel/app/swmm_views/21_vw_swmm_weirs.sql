@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW tww_app.swmm.vw_weirs AS
+CREATE OR REPLACE VIEW tww_app.swmm_vw_weirs AS
 
 -- prank weirs without h/q relations
 SELECT

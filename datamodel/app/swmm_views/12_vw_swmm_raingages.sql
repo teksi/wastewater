@@ -1,5 +1,5 @@
 -- Creates a default raingage for each subcatchment
-CREATE OR REPLACE VIEW tww_app.swmm.vw_raingages AS
+CREATE OR REPLACE VIEW tww_app.swmm_vw_raingages AS
 SELECT
   ('raingage@' || replace(ca.obj_id, ' ', '_'))::varchar as Name,
   'INTENSITY'::varchar as Format,

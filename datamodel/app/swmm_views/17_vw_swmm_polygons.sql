@@ -1,8 +1,8 @@
 --------
 -- View for the swmm module class polygons
--- - Depends on tww_app.swmm.vw_subcatchments
+-- - Depends on tww_app.swmm_vw_subcatchments
 --------
-CREATE OR REPLACE VIEW tww_app.swmm.vw_polygons AS
+CREATE OR REPLACE VIEW tww_app.swmm_vw_polygons AS
 
 SELECT
   Subcatchment,
@@ -19,6 +19,6 @@ SELECT
       state,
       hierarchy,
       obj_id
-      FROM tww_app.swmm.vw_subcatchments
+      FROM tww_app.swmm_vw_subcatchments
     ) as foo
 WHERE (dp).path[2] != nvert;	-- dont select last vertex

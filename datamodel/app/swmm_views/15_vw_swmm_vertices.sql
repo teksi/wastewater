@@ -1,8 +1,8 @@
 --------
 -- View for the swmm module class vertices
--- - Depends on tww_app.swmm.vw_conduits
+-- - Depends on tww_app.swmm_vw_conduits
 --------
-CREATE OR REPLACE VIEW tww_app.swmm.vw_vertices AS
+CREATE OR REPLACE VIEW tww_app.swmm_vw_vertices AS
 
 SELECT
   link,
@@ -19,7 +19,7 @@ FROM (
     state,
     hierarchy,
     obj_id
-  FROM tww_app.swmm.vw_conduits
+  FROM tww_app.swmm_vw_conduits
   ) as foo
 WHERE (dp).path[1] != 1		-- dont select first vertice
 AND (dp).path[1] != nvert;	-- dont select last vertice

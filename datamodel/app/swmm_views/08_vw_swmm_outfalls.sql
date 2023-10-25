@@ -1,7 +1,7 @@
 --------
 -- View for the swmm module class outfalls
 --------
-CREATE OR REPLACE VIEW tww_app.swmm.vw_outfalls AS
+CREATE OR REPLACE VIEW tww_app.swmm_vw_outfalls AS
 
 SELECT
   wn.obj_id as Name,

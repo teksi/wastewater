@@ -1,14 +1,14 @@
 --------
 -- View for the swmm module class tags
 -- Depends on:
--- - tww_app.swmm.vw_junctions
--- - tww_app.swmm.vw_outfalls
--- - tww_app.swmm.vw_storages
--- - tww_app.swmm.vw_conduits
--- - tww_app.swmm.vw_pumps
--- - tww_app.swmm.vw_subcatchments
+-- - tww_app.swmm_vw_junctions
+-- - tww_app.swmm_vw_outfalls
+-- - tww_app.swmm_vw_storages
+-- - tww_app.swmm_vw_conduits
+-- - tww_app.swmm_vw_pumps
+-- - tww_app.swmm_vw_subcatchments
 --------
-CREATE OR REPLACE VIEW tww_app.swmm.vw_tags AS
+CREATE OR REPLACE VIEW tww_app.swmm_vw_tags AS
 
 SELECT
 	'Node' as type,
@@ -17,7 +17,7 @@ SELECT
 	state,
 	hierarchy,
 	obj_id
-FROM tww_app.swmm.vw_junctions
+FROM tww_app.swmm_vw_junctions
 WHERE tag IS NOT NULL
 
 UNION
@@ -29,7 +29,7 @@ SELECT
 	state,
 	hierarchy,
 	obj_id
-FROM tww_app.swmm.vw_outfalls
+FROM tww_app.swmm_vw_outfalls
 WHERE tag IS NOT NULL
 
 UNION
@@ -41,7 +41,7 @@ SELECT
 	state,
 	hierarchy,
 	obj_id
-FROM tww_app.swmm.vw_storages
+FROM tww_app.swmm_vw_storages
 WHERE tag IS NOT NULL
 
 UNION
@@ -53,7 +53,7 @@ SELECT
 	state,
 	hierarchy,
 	obj_id
-FROM tww_app.swmm.vw_conduits
+FROM tww_app.swmm_vw_conduits
 WHERE tag IS NOT NULL
 
 UNION
@@ -65,7 +65,7 @@ SELECT
 	state,
 	hierarchy,
 	obj_id
-FROM tww_app.swmm.vw_pumps
+FROM tww_app.swmm_vw_pumps
 WHERE tag IS NOT NULL
 
 UNION
@@ -77,5 +77,5 @@ SELECT
 	state,
 	hierarchy,
 	obj_id
-FROM tww_app.swmm.vw_subcatchments
+FROM tww_app.swmm_vw_subcatchments
 WHERE tag IS NOT NULL;

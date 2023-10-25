@@ -1,5 +1,5 @@
 -- Creates Dry Weather Flow related to the catchment area
-CREATE OR REPLACE VIEW tww_app.swmm.vw_dwf AS
+CREATE OR REPLACE VIEW tww_app.swmm_vw_dwf AS
 SELECT
 	CASE
 		WHEN type_ca = 'rw_current' THEN fk_wastewater_networkelement_rw_current

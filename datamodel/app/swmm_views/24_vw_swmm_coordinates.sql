@@ -1,13 +1,13 @@
 --------
 -- View for the swmm module class coordinate
 -- Depends on:
--- - tww_app.swmm.vw_junctions
--- - tww_app.swmm.vw_outfalls
--- - tww_app.swmm.vw_dividers
--- - tww_app.swmm.vw_storages
--- - tww_app.swmm.vw_raingages
+-- - tww_app.swmm_vw_junctions
+-- - tww_app.swmm_vw_outfalls
+-- - tww_app.swmm_vw_dividers
+-- - tww_app.swmm_vw_storages
+-- - tww_app.swmm_vw_raingages
 --------
-CREATE OR REPLACE VIEW tww_app.swmm.vw_coordinates AS
+CREATE OR REPLACE VIEW tww_app.swmm_vw_coordinates AS
 
 SELECT
 	Name as Node,
@@ -16,7 +16,7 @@ SELECT
 	state,
 	hierarchy,
 	obj_id
-FROM tww_app.swmm.vw_junctions
+FROM tww_app.swmm_vw_junctions
 WHERE geom IS NOT NULL
 
 UNION
@@ -28,7 +28,7 @@ SELECT
 	state,
 	hierarchy,
 	obj_id
-FROM tww_app.swmm.vw_outfalls
+FROM tww_app.swmm_vw_outfalls
 WHERE geom IS NOT NULL
 
 UNION
@@ -40,7 +40,7 @@ SELECT
 	state,
 	hierarchy,
 	obj_id
-FROM tww_app.swmm.vw_dividers
+FROM tww_app.swmm_vw_dividers
 WHERE geom IS NOT NULL
 
 UNION
@@ -52,7 +52,7 @@ SELECT
 	state,
 	hierarchy,
 	obj_id
-FROM tww_app.swmm.vw_storages
+FROM tww_app.swmm_vw_storages
 WHERE geom IS NOT NULL
 
 UNION
@@ -64,5 +64,5 @@ SELECT
 	state,
 	hierarchy,
 	obj_id
-FROM tww_app.swmm.vw_raingages
+FROM tww_app.swmm_vw_raingages
 WHERE geom IS NOT NULL;

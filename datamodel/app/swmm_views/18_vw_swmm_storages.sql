@@ -1,7 +1,7 @@
 --------
 -- View for the swmm module class storages
 --------
-CREATE OR REPLACE VIEW tww_app.swmm.vw_storages AS
+CREATE OR REPLACE VIEW tww_app.swmm_vw_storages AS
 
 SELECT
 	wn.obj_id as Name,

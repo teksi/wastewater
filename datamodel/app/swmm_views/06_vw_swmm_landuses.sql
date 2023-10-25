@@ -1,7 +1,7 @@
 -------
 -- View for the swmm module class landuses
 --------
-CREATE OR REPLACE VIEW tww_app.swmm.vw_landuses AS
+CREATE OR REPLACE VIEW tww_app.swmm_vw_landuses AS
   SELECT
     value_en as Name,
     0 as sweepingInterval,

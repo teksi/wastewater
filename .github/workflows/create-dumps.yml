@@ -1,15 +1,19 @@
 name: Test and build Docker image
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - datamodel
       - '.github/workflows/create-dumps.yml'
   pull_request:
     branches:
-      - master
+      - main
   workflow_dispatch:
 
 
@@ -26,8 +30,8 @@ jobs:
 
       - name: "initialize container"
         run: |
-          docker run -d -p 5432:5432 --name tww teksi/wastewater:unstable
+          docker run -d -p 5432:5432 --name teksi-wastewater teksi/wastewater:unstable
           docker exec tww init_db.sh wait
 
       - name: create dumps
-        run: docker exec -e PGSERVICE=pg_teksi_wastewater tww /src/scripts/create-dumps.py
+        run: docker exec -e PGSERVICE=pg_teksi_wastewater teksi-wastewater /src/scripts/create-dumps.py

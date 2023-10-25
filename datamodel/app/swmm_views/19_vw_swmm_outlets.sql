@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW tww_app.swmm.vw_outlets AS
+CREATE OR REPLACE VIEW tww_app.swmm_vw_outlets AS
 
 SELECT
 	concat('outlet@',pw.obj_id) as Name,

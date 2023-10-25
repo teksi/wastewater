@@ -1,7 +1,7 @@
 --------
 -- View for the swmm module class conduits
 --------
-CREATE OR REPLACE VIEW tww_app.swmm.vw_conduits AS
+CREATE OR REPLACE VIEW tww_app.swmm_vw_conduits AS
 
 SELECT
 	re.obj_id as Name,

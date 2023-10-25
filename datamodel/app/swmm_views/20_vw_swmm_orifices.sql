@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW tww_app.swmm.vw_orifices AS
+CREATE OR REPLACE VIEW tww_app.swmm_vw_orifices AS
 
 SELECT
 NULL::text as Name,

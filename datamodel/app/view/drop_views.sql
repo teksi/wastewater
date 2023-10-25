@@ -1,25 +1,25 @@
 
 -- tww_app.swmm views
-DROP VIEW IF EXISTS tww_app.swmm.vw_aquifers CASCADE;
-DROP VIEW IF EXISTS tww_app.swmm.vw_conduits CASCADE;
-DROP VIEW IF EXISTS tww_app.swmm.vw_coordinates CASCADE;
-DROP VIEW IF EXISTS tww_app.swmm.vw_coverages CASCADE;
-DROP VIEW IF EXISTS tww_app.swmm.vw_dividers CASCADE;
-DROP VIEW IF EXISTS tww_app.swmm.vw_dwf CASCADE;
-DROP VIEW IF EXISTS tww_app.swmm.vw_infiltration CASCADE;
-DROP VIEW IF EXISTS tww_app.swmm.vw_junctions CASCADE;
-DROP VIEW IF EXISTS tww_app.swmm.vw_landuses CASCADE;
-DROP VIEW IF EXISTS tww_app.swmm.vw_losses CASCADE;
-DROP VIEW IF EXISTS tww_app.swmm.vw_outfalls CASCADE;
-DROP VIEW IF EXISTS tww_app.swmm.vw_polygons CASCADE;
-DROP VIEW IF EXISTS tww_app.swmm.vw_pumps CASCADE;
-DROP VIEW IF EXISTS tww_app.swmm.vw_raingages CASCADE;
-DROP VIEW IF EXISTS tww_app.swmm.vw_storages CASCADE;
-DROP VIEW IF EXISTS tww_app.swmm.vw_subareas CASCADE;
-DROP VIEW IF EXISTS tww_app.swmm.vw_subcatchments CASCADE;
-DROP VIEW IF EXISTS tww_app.swmm.vw_tags CASCADE;
-DROP VIEW IF EXISTS tww_app.swmm.vw_vertices CASCADE;
-DROP VIEW IF EXISTS tww_app.swmm.vw_xsections CASCADE;
+DROP VIEW IF EXISTS tww_app.swmm_vw_aquifers CASCADE;
+DROP VIEW IF EXISTS tww_app.swmm_vw_conduits CASCADE;
+DROP VIEW IF EXISTS tww_app.swmm_vw_coordinates CASCADE;
+DROP VIEW IF EXISTS tww_app.swmm_vw_coverages CASCADE;
+DROP VIEW IF EXISTS tww_app.swmm_vw_dividers CASCADE;
+DROP VIEW IF EXISTS tww_app.swmm_vw_dwf CASCADE;
+DROP VIEW IF EXISTS tww_app.swmm_vw_infiltration CASCADE;
+DROP VIEW IF EXISTS tww_app.swmm_vw_junctions CASCADE;
+DROP VIEW IF EXISTS tww_app.swmm_vw_landuses CASCADE;
+DROP VIEW IF EXISTS tww_app.swmm_vw_losses CASCADE;
+DROP VIEW IF EXISTS tww_app.swmm_vw_outfalls CASCADE;
+DROP VIEW IF EXISTS tww_app.swmm_vw_polygons CASCADE;
+DROP VIEW IF EXISTS tww_app.swmm_vw_pumps CASCADE;
+DROP VIEW IF EXISTS tww_app.swmm_vw_raingages CASCADE;
+DROP VIEW IF EXISTS tww_app.swmm_vw_storages CASCADE;
+DROP VIEW IF EXISTS tww_app.swmm_vw_subareas CASCADE;
+DROP VIEW IF EXISTS tww_app.swmm_vw_subcatchments CASCADE;
+DROP VIEW IF EXISTS tww_app.swmm_vw_tags CASCADE;
+DROP VIEW IF EXISTS tww_app.swmm_vw_vertices CASCADE;
+DROP VIEW IF EXISTS tww_app.swmm_vw_xsections CASCADE;
 
 -- network views
 DROP MATERIALIZED VIEW IF EXISTS tww_app.vw_network_segment;
