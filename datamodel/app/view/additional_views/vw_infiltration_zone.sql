@@ -97,4 +97,3 @@ CREATE OR REPLACE RULE vw_infiltration_zone_ON_DELETE AS ON DELETE TO tww_app.vw
   DELETE FROM tww_od.infiltration_zone WHERE obj_id = OLD.obj_id;
   DELETE FROM tww_od.zone WHERE obj_id = OLD.obj_id;
 );
-

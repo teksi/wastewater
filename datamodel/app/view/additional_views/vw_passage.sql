@@ -99,4 +99,3 @@ CREATE OR REPLACE RULE vw_passage_ON_DELETE AS ON DELETE TO tww_app.vw_passage D
   DELETE FROM tww_od.passage WHERE obj_id = OLD.obj_id;
   DELETE FROM tww_od.water_control_structure WHERE obj_id = OLD.obj_id;
 );
-

@@ -2965,7 +2965,7 @@ ALTER TABLE tww_vl.symbol_plantype ADD CONSTRAINT pkey_tww_vl_symbol_plantype_co
  INSERT INTO tww_vl.symbol_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7878,7878,'overviewmap.om5','Uebersichtsplan.UeP5','plan_d_ensemble.pe5', 'piano_di_insieme.pi5', 'rrr_Uebersichtsplan.UeP5', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.symbol_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7875,7875,'network_plan','Werkplan','plan_de_reseau', 'zzz_Werkplan', 'rrr_Werkplan', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.txt_symbol ADD CONSTRAINT fkey_vl_symbol_plantype FOREIGN KEY (plantype)
- REFERENCES tww_vl.symbol_plantype (code) MATCH SIMPLE 
+ REFERENCES tww_vl.symbol_plantype (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.txt_text ADD COLUMN fk_wastewater_structure varchar(16);
 ALTER TABLE tww_od.txt_text ADD CONSTRAINT rel_text_wastewater_structure FOREIGN KEY (fk_wastewater_structure) REFERENCES tww_od.wastewater_structure(obj_id) ON DELETE cascade;
@@ -2981,7 +2981,7 @@ ALTER TABLE tww_vl.text_plantype ADD CONSTRAINT pkey_tww_vl_text_plantype_code P
  INSERT INTO tww_vl.text_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7848,7848,'overviewmap.om5','Uebersichtsplan.UeP5','plan_d_ensemble.pe5', 'piano_di_insieme.pi5', 'rrr_Uebersichtsplan.UeP5', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.text_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7845,7845,'network_plan','Werkplan','plan_de_reseau', 'zzz_Werkplan', 'rrr_Werkplan', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.txt_text ADD CONSTRAINT fkey_vl_text_plantype FOREIGN KEY (plantype)
- REFERENCES tww_vl.text_plantype (code) MATCH SIMPLE 
+ REFERENCES tww_vl.text_plantype (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.text_texthali () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.text_texthali ADD CONSTRAINT pkey_tww_vl_text_texthali_code PRIMARY KEY (code);
@@ -2989,7 +2989,7 @@ ALTER TABLE tww_vl.text_texthali ADD CONSTRAINT pkey_tww_vl_text_texthali_code P
  INSERT INTO tww_vl.text_texthali (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7851,7851,'1','1','1', '1', '1', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.text_texthali (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7852,7852,'2','2','2', '2', '2', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.txt_text ADD CONSTRAINT fkey_vl_text_texthali FOREIGN KEY (texthali)
- REFERENCES tww_vl.text_texthali (code) MATCH SIMPLE 
+ REFERENCES tww_vl.text_texthali (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.text_textvali () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.text_textvali ADD CONSTRAINT pkey_tww_vl_text_textvali_code PRIMARY KEY (code);
@@ -2999,7 +2999,7 @@ ALTER TABLE tww_vl.text_textvali ADD CONSTRAINT pkey_tww_vl_text_textvali_code P
  INSERT INTO tww_vl.text_textvali (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7856,7856,'3','3','3', '3', '3', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.text_textvali (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7857,7857,'4','4','4', '4', '4', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.txt_text ADD CONSTRAINT fkey_vl_text_textvali FOREIGN KEY (textvali)
- REFERENCES tww_vl.text_textvali (code) MATCH SIMPLE 
+ REFERENCES tww_vl.text_textvali (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.progression_alternative ADD COLUMN fk_reach varchar(16);
 ALTER TABLE tww_od.progression_alternative ADD CONSTRAINT rel_progression_alternative_reach FOREIGN KEY (fk_reach) REFERENCES tww_od.reach(obj_id) ON UPDATE CASCADE ON DELETE cascade;
@@ -3011,7 +3011,7 @@ ALTER TABLE tww_vl.progression_alternative_plantype ADD CONSTRAINT pkey_tww_vl_p
  INSERT INTO tww_vl.progression_alternative_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9287,9287,'overviewmap.om5','Uebersichtsplan.UeP5','plan_d_ensemble.pe5', 'piano_di_insieme.pi5', 'rrr_Uebersichtsplan.UeP5', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.progression_alternative_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9284,9284,'network_plan','Werkplan','plan_de_reseau', 'zzz_Werkplan', 'rrr_Werkplan', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.progression_alternative ADD CONSTRAINT fkey_vl_progression_alternative_plantype FOREIGN KEY (plantype)
- REFERENCES tww_vl.progression_alternative_plantype (code) MATCH SIMPLE 
+ REFERENCES tww_vl.progression_alternative_plantype (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.organisation_organisation_type () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.organisation_organisation_type ADD CONSTRAINT pkey_tww_vl_organisation_organisation_type_code PRIMARY KEY (code);
@@ -3022,14 +3022,14 @@ ALTER TABLE tww_vl.organisation_organisation_type ADD CONSTRAINT pkey_tww_vl_org
  INSERT INTO tww_vl.organisation_organisation_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8605,8605,'canton','Kanton','canton', 'cantone', 'rrr_Kanton', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.organisation_organisation_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8606,8606,'private','Privat','prive', 'privato', 'privata', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.organisation ADD CONSTRAINT fkey_vl_organisation_organisation_type FOREIGN KEY (organisation_type)
- REFERENCES tww_vl.organisation_organisation_type (code) MATCH SIMPLE 
+ REFERENCES tww_vl.organisation_organisation_type (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.organisation_status () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.organisation_status ADD CONSTRAINT pkey_tww_vl_organisation_status_code PRIMARY KEY (code);
  INSERT INTO tww_vl.organisation_status (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9047,9047,'activ','aktiv','active', 'attivo', 'rrr_aktiv', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.organisation_status (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9048,9048,'gone','untergegangen','disparue', 'decaduta', 'rrr_untergegangen', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.organisation ADD CONSTRAINT fkey_vl_organisation_status FOREIGN KEY (status)
- REFERENCES tww_vl.organisation_status (code) MATCH SIMPLE 
+ REFERENCES tww_vl.organisation_status (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.measure ADD COLUMN fk_responsible_entity varchar(16);
 ALTER TABLE tww_od.measure ADD CONSTRAINT rel_measure_responsible_entity FOREIGN KEY (fk_responsible_entity) REFERENCES tww_od.organisation(obj_id) ON UPDATE CASCADE ON DELETE set null;
@@ -3058,7 +3058,7 @@ ALTER TABLE tww_vl.measure_category ADD CONSTRAINT pkey_tww_vl_measure_category_
  INSERT INTO tww_vl.measure_category (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8650,8650,'incident_prevention','Stoerfallvorsorge','prevention_des_accidents_majeurs', 'prevenzione_incidenti_rilevanti', 'rrr_Stoerfallvorsorge', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.measure_category (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4652,4652,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', 'U', 'I', '', '', 'true');
  ALTER TABLE tww_od.measure ADD CONSTRAINT fkey_vl_measure_category FOREIGN KEY (category)
- REFERENCES tww_vl.measure_category (code) MATCH SIMPLE 
+ REFERENCES tww_vl.measure_category (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.measure_priority () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.measure_priority ADD CONSTRAINT pkey_tww_vl_measure_priority_code PRIMARY KEY (code);
@@ -3069,7 +3069,7 @@ ALTER TABLE tww_vl.measure_priority ADD CONSTRAINT pkey_tww_vl_measure_priority_
  INSERT INTO tww_vl.measure_priority (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4763,4763,'M4','M4','M4', 'M4', 'M4', 'M4', 'M4', 'M4', '', '', 'true');
  INSERT INTO tww_vl.measure_priority (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5584,5584,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.measure ADD CONSTRAINT fkey_vl_measure_priority FOREIGN KEY (priority)
- REFERENCES tww_vl.measure_priority (code) MATCH SIMPLE 
+ REFERENCES tww_vl.measure_priority (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.measure_status () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.measure_status ADD CONSTRAINT pkey_tww_vl_measure_status_code PRIMARY KEY (code);
@@ -3079,7 +3079,7 @@ ALTER TABLE tww_vl.measure_status ADD CONSTRAINT pkey_tww_vl_measure_status_code
  INSERT INTO tww_vl.measure_status (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4767,4767,'suspended','sistiert','supprime', 'sospesa', 'rrr_sistiert', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.measure_status (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4768,4768,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.measure ADD CONSTRAINT fkey_vl_measure_status FOREIGN KEY (status)
- REFERENCES tww_vl.measure_status (code) MATCH SIMPLE 
+ REFERENCES tww_vl.measure_status (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.mutation_kind () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.mutation_kind ADD CONSTRAINT pkey_tww_vl_mutation_kind_code PRIMARY KEY (code);
@@ -3087,7 +3087,7 @@ ALTER TABLE tww_vl.mutation_kind ADD CONSTRAINT pkey_tww_vl_mutation_kind_code P
  INSERT INTO tww_vl.mutation_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5582,5582,'changed','geaendert','changee', 'modificato', 'modificat', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.mutation_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5583,5583,'deleted','geloescht','effacee', 'eliminata', 'eliminate', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.mutation ADD CONSTRAINT fkey_vl_mutation_kind FOREIGN KEY (kind)
- REFERENCES tww_vl.mutation_kind (code) MATCH SIMPLE 
+ REFERENCES tww_vl.mutation_kind (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.waste_water_treatment_plant_operator_type () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.waste_water_treatment_plant_operator_type ADD CONSTRAINT pkey_tww_vl_waste_water_treatment_plant_operator_type_code PRIMARY KEY (code);
@@ -3101,7 +3101,7 @@ ALTER TABLE tww_vl.waste_water_treatment_plant_operator_type ADD CONSTRAINT pkey
  INSERT INTO tww_vl.waste_water_treatment_plant_operator_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8980,8980,'domicile_municipality','Sitzgemeinde','commune_d_implantation', 'zzz_Sitzgemeinde', 'rrr_Sitzgemeinde', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.waste_water_treatment_plant_operator_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8979,8979,'special_purpose_association','Zweckverband','groupement', 'zzz_Zweckverband', 'rrr_Zweckverband', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.waste_water_treatment_plant ADD CONSTRAINT fkey_vl_waste_water_treatment_plant_operator_type FOREIGN KEY (operator_type)
- REFERENCES tww_vl.waste_water_treatment_plant_operator_type (code) MATCH SIMPLE 
+ REFERENCES tww_vl.waste_water_treatment_plant_operator_type (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.wastewater_structure ADD COLUMN fk_owner varchar(16);
 ALTER TABLE tww_od.wastewater_structure ADD CONSTRAINT rel_wastewater_structure_owner FOREIGN KEY (fk_owner) REFERENCES tww_od.organisation(obj_id) ON UPDATE CASCADE ON DELETE set null;
@@ -3116,7 +3116,7 @@ ALTER TABLE tww_vl.wastewater_structure_accessibility ADD CONSTRAINT pkey_tww_vl
  INSERT INTO tww_vl.wastewater_structure_accessibility (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3446,3446,'inaccessible','unzugaenglich','inaccessible', 'non_accessibile', 'inaccesibil', '', 'UZG', 'NA', '', '', 'true');
  INSERT INTO tww_vl.wastewater_structure_accessibility (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3445,3445,'accessible','zugaenglich','accessible', 'accessibile', 'accessibil', '', 'ZG', 'A', '', '', 'true');
  ALTER TABLE tww_od.wastewater_structure ADD CONSTRAINT fkey_vl_wastewater_structure_accessibility FOREIGN KEY (accessibility)
- REFERENCES tww_vl.wastewater_structure_accessibility (code) MATCH SIMPLE 
+ REFERENCES tww_vl.wastewater_structure_accessibility (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.wastewater_structure_financing () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.wastewater_structure_financing ADD CONSTRAINT pkey_tww_vl_wastewater_structure_financing_code PRIMARY KEY (code);
@@ -3124,7 +3124,7 @@ ALTER TABLE tww_vl.wastewater_structure_financing ADD CONSTRAINT pkey_tww_vl_was
  INSERT INTO tww_vl.wastewater_structure_financing (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5511,5511,'private','privat','prive', 'privato', 'privata', 'PR', 'PR', 'PR', '', '', 'true');
  INSERT INTO tww_vl.wastewater_structure_financing (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5512,5512,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', 'U', 'U', 'I', '', '', 'true');
  ALTER TABLE tww_od.wastewater_structure ADD CONSTRAINT fkey_vl_wastewater_structure_financing FOREIGN KEY (financing)
- REFERENCES tww_vl.wastewater_structure_financing (code) MATCH SIMPLE 
+ REFERENCES tww_vl.wastewater_structure_financing (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.wastewater_structure_renovation_necessity () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.wastewater_structure_renovation_necessity ADD CONSTRAINT pkey_tww_vl_wastewater_structure_renovation_necessity_code PRIMARY KEY (code);
@@ -3135,7 +3135,7 @@ ALTER TABLE tww_vl.wastewater_structure_renovation_necessity ADD CONSTRAINT pkey
  INSERT INTO tww_vl.wastewater_structure_renovation_necessity (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3,3,'medium_term','mittelfristig','a_moyen_terme', 'medio_termine', 'termen_mediu', '', 'MF', 'MT', '', '', 'true');
  INSERT INTO tww_vl.wastewater_structure_renovation_necessity (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5369,5369,'unknown','unbekannt','inconnue', 'sconosciuto', 'necunoscuta', '', 'U', 'I', '', '', 'true');
  ALTER TABLE tww_od.wastewater_structure ADD CONSTRAINT fkey_vl_wastewater_structure_renovation_necessity FOREIGN KEY (renovation_necessity)
- REFERENCES tww_vl.wastewater_structure_renovation_necessity (code) MATCH SIMPLE 
+ REFERENCES tww_vl.wastewater_structure_renovation_necessity (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.wastewater_structure_rv_construction_type () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.wastewater_structure_rv_construction_type ADD CONSTRAINT pkey_tww_vl_wastewater_structure_rv_construction_type_code PRIMARY KEY (code);
@@ -3146,7 +3146,7 @@ ALTER TABLE tww_vl.wastewater_structure_rv_construction_type ADD CONSTRAINT pkey
  INSERT INTO tww_vl.wastewater_structure_rv_construction_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4604,4604,'road','Strasse','sous_route', 'strada', 'sub_strada', 'ST', 'ST', 'ST', '', '', 'true');
  INSERT INTO tww_vl.wastewater_structure_rv_construction_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4601,4601,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscut', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.wastewater_structure ADD CONSTRAINT fkey_vl_wastewater_structure_rv_construction_type FOREIGN KEY (rv_construction_type)
- REFERENCES tww_vl.wastewater_structure_rv_construction_type (code) MATCH SIMPLE 
+ REFERENCES tww_vl.wastewater_structure_rv_construction_type (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.wastewater_structure_status () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.wastewater_structure_status ADD CONSTRAINT pkey_tww_vl_wastewater_structure_status_code PRIMARY KEY (code);
@@ -3162,7 +3162,7 @@ ALTER TABLE tww_vl.wastewater_structure_status ADD CONSTRAINT pkey_tww_vl_wastew
  INSERT INTO tww_vl.wastewater_structure_status (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7959,7959,'other.planned','weitere.geplant','autre.planifie', 'altro.previsto', 'rrr_weitere.geplant', '', 'G', 'PL', '', '', 'true');
  INSERT INTO tww_vl.wastewater_structure_status (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (6529,6529,'other.project','weitere.Projekt','autre.projet', 'altro.progetto', 'alta.proiect', '', 'N', 'PR', '', '', 'true');
  ALTER TABLE tww_od.wastewater_structure ADD CONSTRAINT fkey_vl_wastewater_structure_status FOREIGN KEY (status)
- REFERENCES tww_vl.wastewater_structure_status (code) MATCH SIMPLE 
+ REFERENCES tww_vl.wastewater_structure_status (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.wastewater_structure_structure_condition () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.wastewater_structure_structure_condition ADD CONSTRAINT pkey_tww_vl_wastewater_structure_structure_condition_code PRIMARY KEY (code);
@@ -3173,7 +3173,7 @@ ALTER TABLE tww_vl.wastewater_structure_structure_condition ADD CONSTRAINT pkey_
  INSERT INTO tww_vl.wastewater_structure_structure_condition (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3361,3361,'Z3','Z3','Z3', 'Z3', 'Z3', '', 'Z3', 'Z3', '', '', 'true');
  INSERT INTO tww_vl.wastewater_structure_structure_condition (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3362,3362,'Z4','Z4','Z4', 'Z4', 'Z4', '', 'Z4', 'Z4', '', '', 'true');
  ALTER TABLE tww_od.wastewater_structure ADD CONSTRAINT fkey_vl_wastewater_structure_structure_condition FOREIGN KEY (structure_condition)
- REFERENCES tww_vl.wastewater_structure_structure_condition (code) MATCH SIMPLE 
+ REFERENCES tww_vl.wastewater_structure_structure_condition (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.channel ADD CONSTRAINT oorel_od_channel_wastewater_structure FOREIGN KEY (obj_id) REFERENCES tww_od.wastewater_structure(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
 CREATE TABLE tww_vl.channel_bedding_encasement () INHERITS (tww_vl.value_list_base);
@@ -3193,7 +3193,7 @@ ALTER TABLE tww_vl.channel_bedding_encasement ADD CONSTRAINT pkey_tww_vl_channel
  INSERT INTO tww_vl.channel_bedding_encasement (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5327,5327,'bed_plank','Sohlbrett','radier_en_planches', 'zzz_Sohlbrett', 'pat_de_pamant', '', 'SB', 'RP', '', '', 'true');
  INSERT INTO tww_vl.channel_bedding_encasement (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5329,5329,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscut', '', 'U', 'I', '', '', 'true');
  ALTER TABLE tww_od.channel ADD CONSTRAINT fkey_vl_channel_bedding_encasement FOREIGN KEY (bedding_encasement)
- REFERENCES tww_vl.channel_bedding_encasement (code) MATCH SIMPLE 
+ REFERENCES tww_vl.channel_bedding_encasement (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.channel_connection_type () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.channel_connection_type ADD CONSTRAINT pkey_tww_vl_channel_connection_type_code PRIMARY KEY (code);
@@ -3211,7 +3211,7 @@ ALTER TABLE tww_vl.channel_connection_type ADD CONSTRAINT pkey_tww_vl_channel_co
  INSERT INTO tww_vl.channel_connection_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3036,3036,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscut', '', 'U', 'I', '', '', 'true');
  INSERT INTO tww_vl.channel_connection_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3666,3666,'jacking_pipe_coupling','Vortriebsrohrkupplung','raccord_pour_tube_de_pousse_tube', 'zzz_Vortriebsrohrkupplung', 'racord_prin_presstube', '', 'VK', 'RTD', '', '', 'true');
  ALTER TABLE tww_od.channel ADD CONSTRAINT fkey_vl_channel_connection_type FOREIGN KEY (connection_type)
- REFERENCES tww_vl.channel_connection_type (code) MATCH SIMPLE 
+ REFERENCES tww_vl.channel_connection_type (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.channel_function_amelioration () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.channel_function_amelioration ADD CONSTRAINT pkey_tww_vl_channel_function_amelioration_code PRIMARY KEY (code);
@@ -3220,7 +3220,7 @@ ALTER TABLE tww_vl.channel_function_amelioration ADD CONSTRAINT pkey_tww_vl_chan
  INSERT INTO tww_vl.channel_function_amelioration (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4584,4584,'suction_pipe','Sauger','drains', 'zzz_Sauger', 'rrr_Sauger', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.channel_function_amelioration (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4585,4585,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.channel ADD CONSTRAINT fkey_vl_channel_function_amelioration FOREIGN KEY (function_amelioration)
- REFERENCES tww_vl.channel_function_amelioration (code) MATCH SIMPLE 
+ REFERENCES tww_vl.channel_function_amelioration (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.channel_function_hierarchic () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.channel_function_hierarchic ADD CONSTRAINT pkey_tww_vl_channel_function_hierarchic_code PRIMARY KEY (code);
@@ -3239,7 +3239,7 @@ ALTER TABLE tww_vl.channel_function_hierarchic ADD CONSTRAINT pkey_tww_vl_channe
  INSERT INTO tww_vl.channel_function_hierarchic (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5073,5073,'swwf.road_drainage','SAA.Strassenentwaesserung','OAS.evacuation_des_eaux_de_routes', 'ISS.smaltimento_acque_strade', 'swwf.evacuare_ape_rigole', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.channel_function_hierarchic (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5075,5075,'swwf.unknown','SAA.unbekannt','OAS.inconnue', 'ISS.sconosciuto', 'swwf.necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.channel ADD CONSTRAINT fkey_vl_channel_function_hierarchic FOREIGN KEY (function_hierarchic)
- REFERENCES tww_vl.channel_function_hierarchic (code) MATCH SIMPLE 
+ REFERENCES tww_vl.channel_function_hierarchic (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.channel_function_hydraulic () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.channel_function_hydraulic ADD CONSTRAINT pkey_tww_vl_channel_function_hydraulic_code PRIMARY KEY (code);
@@ -3256,7 +3256,7 @@ ALTER TABLE tww_vl.channel_function_hydraulic ADD CONSTRAINT pkey_tww_vl_channel
  INSERT INTO tww_vl.channel_function_hydraulic (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3655,3655,'vacuum_pipe','Vakuumleitung','conduite_sous_vide', 'canalizzazione_sotto_vuoto', 'conducta_vidata', '', 'VL', 'CV', '', '', 'true');
  INSERT INTO tww_vl.channel_function_hydraulic (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8662,8662,'infiltration_pipe','Versickerungsleitung','conduite_d_infiltration', 'condotta_d_infiltrazione', 'rrr_Versickerungsleitung', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.channel ADD CONSTRAINT fkey_vl_channel_function_hydraulic FOREIGN KEY (function_hydraulic)
- REFERENCES tww_vl.channel_function_hydraulic (code) MATCH SIMPLE 
+ REFERENCES tww_vl.channel_function_hydraulic (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.channel_seepage () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.channel_seepage ADD CONSTRAINT pkey_tww_vl_channel_seepage_code PRIMARY KEY (code);
@@ -3265,7 +3265,7 @@ ALTER TABLE tww_vl.channel_seepage ADD CONSTRAINT pkey_tww_vl_channel_seepage_co
  INSERT INTO tww_vl.channel_seepage (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4795,4795,'soakaway_gravel','Sickerkies','gravier', 'zzz_Sickerkies', 'rrr_Sickerkies', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.channel_seepage (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4796,4796,'unknown','unbekannt','inconnue', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.channel ADD CONSTRAINT fkey_vl_channel_seepage FOREIGN KEY (seepage)
- REFERENCES tww_vl.channel_seepage (code) MATCH SIMPLE 
+ REFERENCES tww_vl.channel_seepage (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.channel_usage_current () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.channel_usage_current ADD CONSTRAINT pkey_tww_vl_channel_usage_current_code PRIMARY KEY (code);
@@ -3279,7 +3279,7 @@ ALTER TABLE tww_vl.channel_usage_current ADD CONSTRAINT pkey_tww_vl_channel_usag
  INSERT INTO tww_vl.channel_usage_current (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4526,4526,'wastewater','Schmutzabwasser','eaux_usees', 'acque_luride', 'ape_uzate', '', 'SW', 'EU', '', '', 'true');
  INSERT INTO tww_vl.channel_usage_current (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4571,4571,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', 'U', 'I', '', '', 'true');
  ALTER TABLE tww_od.channel ADD CONSTRAINT fkey_vl_channel_usage_current FOREIGN KEY (usage_current)
- REFERENCES tww_vl.channel_usage_current (code) MATCH SIMPLE 
+ REFERENCES tww_vl.channel_usage_current (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.channel_usage_planned () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.channel_usage_planned ADD CONSTRAINT pkey_tww_vl_channel_usage_planned_code PRIMARY KEY (code);
@@ -3293,7 +3293,7 @@ ALTER TABLE tww_vl.channel_usage_planned ADD CONSTRAINT pkey_tww_vl_channel_usag
  INSERT INTO tww_vl.channel_usage_planned (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4527,4527,'wastewater','Schmutzabwasser','eaux_usees', 'acque_luride', 'ape_uzate', '', 'SW', 'EU', '', '', 'true');
  INSERT INTO tww_vl.channel_usage_planned (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4569,4569,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', 'U', 'I', '', '', 'true');
  ALTER TABLE tww_od.channel ADD CONSTRAINT fkey_vl_channel_usage_planned FOREIGN KEY (usage_planned)
- REFERENCES tww_vl.channel_usage_planned (code) MATCH SIMPLE 
+ REFERENCES tww_vl.channel_usage_planned (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.manhole ADD CONSTRAINT oorel_od_manhole_wastewater_structure FOREIGN KEY (obj_id) REFERENCES tww_od.wastewater_structure(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
 CREATE TABLE tww_vl.manhole_amphibian_exit () INHERITS (tww_vl.value_list_base);
@@ -3302,7 +3302,7 @@ ALTER TABLE tww_vl.manhole_amphibian_exit ADD CONSTRAINT pkey_tww_vl_manhole_amp
  INSERT INTO tww_vl.manhole_amphibian_exit (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9053,9053,'no','nein','non', 'no', 'nu', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.manhole_amphibian_exit (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9054,9054,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.manhole ADD CONSTRAINT fkey_vl_manhole_amphibian_exit FOREIGN KEY (amphibian_exit)
- REFERENCES tww_vl.manhole_amphibian_exit (code) MATCH SIMPLE 
+ REFERENCES tww_vl.manhole_amphibian_exit (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.manhole_function () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.manhole_function ADD CONSTRAINT pkey_tww_vl_manhole_function_code PRIMARY KEY (code);
@@ -3329,7 +3329,7 @@ ALTER TABLE tww_vl.manhole_function ADD CONSTRAINT pkey_tww_vl_manhole_function_
  INSERT INTO tww_vl.manhole_function (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5345,5345,'unknown','unbekannt','inconnue', 'sconosciuto', 'necunoscuta', '', 'U', 'I', '', '', 'true');
  INSERT INTO tww_vl.manhole_function (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8703,8703,'pretreatment_plant','Vorbehandlungsanlage','installation_de_pretraitement', 'zzz_Vorbehandlungsanlage', 'rrr_Vorbehandlungsanlage', 'yyy', 'VH', '', '', '', 'true');
  ALTER TABLE tww_od.manhole ADD CONSTRAINT fkey_vl_manhole_function FOREIGN KEY (function)
- REFERENCES tww_vl.manhole_function (code) MATCH SIMPLE 
+ REFERENCES tww_vl.manhole_function (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.manhole_material () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.manhole_material ADD CONSTRAINT pkey_tww_vl_manhole_material_code PRIMARY KEY (code);
@@ -3338,7 +3338,7 @@ ALTER TABLE tww_vl.manhole_material ADD CONSTRAINT pkey_tww_vl_manhole_material_
  INSERT INTO tww_vl.manhole_material (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4542,4542,'plastic','Kunststoff','matiere_plastique', 'zzz_Kunststoff', 'materie_plastica', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.manhole_material (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4543,4543,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscut', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.manhole ADD CONSTRAINT fkey_vl_manhole_material FOREIGN KEY (material)
- REFERENCES tww_vl.manhole_material (code) MATCH SIMPLE 
+ REFERENCES tww_vl.manhole_material (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.manhole_possibility_intervention () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.manhole_possibility_intervention ADD CONSTRAINT pkey_tww_vl_manhole_possibility_intervention_code PRIMARY KEY (code);
@@ -3346,7 +3346,7 @@ ALTER TABLE tww_vl.manhole_possibility_intervention ADD CONSTRAINT pkey_tww_vl_m
  INSERT INTO tww_vl.manhole_possibility_intervention (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9057,9057,'no','nein','non', 'no', 'nu', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.manhole_possibility_intervention (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9058,9058,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.manhole ADD CONSTRAINT fkey_vl_manhole_possibility_intervention FOREIGN KEY (possibility_intervention)
- REFERENCES tww_vl.manhole_possibility_intervention (code) MATCH SIMPLE 
+ REFERENCES tww_vl.manhole_possibility_intervention (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.manhole_surface_inflow () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.manhole_surface_inflow ADD CONSTRAINT pkey_tww_vl_manhole_surface_inflow_code PRIMARY KEY (code);
@@ -3356,7 +3356,7 @@ ALTER TABLE tww_vl.manhole_surface_inflow ADD CONSTRAINT pkey_tww_vl_manhole_sur
  INSERT INTO tww_vl.manhole_surface_inflow (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5343,5343,'unknown','unbekannt','inconnue', 'sconosciuto', 'necunoscut', '', 'U', 'I', '', '', 'true');
  INSERT INTO tww_vl.manhole_surface_inflow (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (2740,2740,'intake_from_side','Zulauf_seitlich','arrivee_laterale', 'zzz_Zulauf_seitlich', 'admisie_laterala', '', 'ZS', 'AL', '', '', 'true');
  ALTER TABLE tww_od.manhole ADD CONSTRAINT fkey_vl_manhole_surface_inflow FOREIGN KEY (surface_inflow)
- REFERENCES tww_vl.manhole_surface_inflow (code) MATCH SIMPLE 
+ REFERENCES tww_vl.manhole_surface_inflow (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.discharge_point ADD CONSTRAINT oorel_od_discharge_point_wastewater_structure FOREIGN KEY (obj_id) REFERENCES tww_od.wastewater_structure(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
 CREATE TABLE tww_vl.discharge_point_relevance () INHERITS (tww_vl.value_list_base);
@@ -3364,7 +3364,7 @@ ALTER TABLE tww_vl.discharge_point_relevance ADD CONSTRAINT pkey_tww_vl_discharg
  INSERT INTO tww_vl.discharge_point_relevance (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5580,5580,'relevant_for_water_course','gewaesserrelevant','pertinent_pour_milieu_recepteur', 'zzz_gewaesserrelevant', 'relevanta_pentru_mediul_receptor', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.discharge_point_relevance (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5581,5581,'non_relevant_for_water_course','nicht_gewaesserrelevant','insignifiant_pour_milieu_recepteur', 'zzz_nicht_gewaesserrelevant', 'nerelevanta_pentru_mediul_receptor', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.discharge_point ADD CONSTRAINT fkey_vl_discharge_point_relevance FOREIGN KEY (relevance)
- REFERENCES tww_vl.discharge_point_relevance (code) MATCH SIMPLE 
+ REFERENCES tww_vl.discharge_point_relevance (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.special_structure ADD CONSTRAINT oorel_od_special_structure_wastewater_structure FOREIGN KEY (obj_id) REFERENCES tww_od.wastewater_structure(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
 CREATE TABLE tww_vl.special_structure_amphibian_exit () INHERITS (tww_vl.value_list_base);
@@ -3373,7 +3373,7 @@ ALTER TABLE tww_vl.special_structure_amphibian_exit ADD CONSTRAINT pkey_tww_vl_s
  INSERT INTO tww_vl.special_structure_amphibian_exit (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9053,9053,'no','nein','non', 'no', 'nu', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.special_structure_amphibian_exit (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9054,9054,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.special_structure ADD CONSTRAINT fkey_vl_special_structure_amphibian_exit FOREIGN KEY (amphibian_exit)
- REFERENCES tww_vl.special_structure_amphibian_exit (code) MATCH SIMPLE 
+ REFERENCES tww_vl.special_structure_amphibian_exit (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.special_structure_bypass () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.special_structure_bypass ADD CONSTRAINT pkey_tww_vl_special_structure_bypass_code PRIMARY KEY (code);
@@ -3381,7 +3381,7 @@ ALTER TABLE tww_vl.special_structure_bypass ADD CONSTRAINT pkey_tww_vl_special_s
  INSERT INTO tww_vl.special_structure_bypass (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3055,3055,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscut', '', 'U', 'I', '', '', 'true');
  INSERT INTO tww_vl.special_structure_bypass (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (2681,2681,'existent','vorhanden','existant', 'presente', 'existent', '', 'V', 'E', '', '', 'true');
  ALTER TABLE tww_od.special_structure ADD CONSTRAINT fkey_vl_special_structure_bypass FOREIGN KEY (bypass)
- REFERENCES tww_vl.special_structure_bypass (code) MATCH SIMPLE 
+ REFERENCES tww_vl.special_structure_bypass (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.special_structure_emergency_overflow () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.special_structure_emergency_overflow ADD CONSTRAINT pkey_tww_vl_special_structure_emergency_overflow_code PRIMARY KEY (code);
@@ -3394,7 +3394,7 @@ ALTER TABLE tww_vl.special_structure_emergency_overflow ADD CONSTRAINT pkey_tww_
  INSERT INTO tww_vl.special_structure_emergency_overflow (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9076,9076,'surface_discharge','oberflaechlich_ausmuendend','deversement_en_surface', 'con_sbocco_superficiale', 'deversare_la_suprafata', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.special_structure_emergency_overflow (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5867,5867,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscut', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.special_structure ADD CONSTRAINT fkey_vl_special_structure_emergency_overflow FOREIGN KEY (emergency_overflow)
- REFERENCES tww_vl.special_structure_emergency_overflow (code) MATCH SIMPLE 
+ REFERENCES tww_vl.special_structure_emergency_overflow (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.special_structure_function () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.special_structure_function ADD CONSTRAINT pkey_tww_vl_special_structure_function_code PRIMARY KEY (code);
@@ -3434,7 +3434,7 @@ ALTER TABLE tww_vl.special_structure_function ADD CONSTRAINT pkey_tww_vl_special
  INSERT INTO tww_vl.special_structure_function (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9089,9089,'pretreatment_plant','Vorbehandlungsanlage','installation_de_pretraitement', 'zzz_Vorbehandlungsanlage', 'rrr_Vorbehandlungsanlage', '', 'VH', '', '', '', 'true');
  INSERT INTO tww_vl.special_structure_function (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (2745,2745,'vortex_manhole','Wirbelfallschacht','chambre_de_chute_a_vortex', 'camera_caduta_vortice', 'instalatie_picurare_cu_vortex', '', 'WF', 'CT', '', '', 'true');
  ALTER TABLE tww_od.special_structure ADD CONSTRAINT fkey_vl_special_structure_function FOREIGN KEY (function)
- REFERENCES tww_vl.special_structure_function (code) MATCH SIMPLE 
+ REFERENCES tww_vl.special_structure_function (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.special_structure_possibility_intervention () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.special_structure_possibility_intervention ADD CONSTRAINT pkey_tww_vl_special_structure_possibility_intervention_code PRIMARY KEY (code);
@@ -3442,7 +3442,7 @@ ALTER TABLE tww_vl.special_structure_possibility_intervention ADD CONSTRAINT pke
  INSERT INTO tww_vl.special_structure_possibility_intervention (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9057,9057,'no','nein','non', 'no', 'nu', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.special_structure_possibility_intervention (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9058,9058,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.special_structure ADD CONSTRAINT fkey_vl_special_structure_possibility_intervention FOREIGN KEY (possibility_intervention)
- REFERENCES tww_vl.special_structure_possibility_intervention (code) MATCH SIMPLE 
+ REFERENCES tww_vl.special_structure_possibility_intervention (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.special_structure_stormwater_tank_arrangement () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.special_structure_stormwater_tank_arrangement ADD CONSTRAINT pkey_tww_vl_special_structure_stormwater_tank_arrangement_code PRIMARY KEY (code);
@@ -3450,7 +3450,7 @@ ALTER TABLE tww_vl.special_structure_stormwater_tank_arrangement ADD CONSTRAINT 
  INSERT INTO tww_vl.special_structure_stormwater_tank_arrangement (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4609,4609,'side_connection','Nebenschluss','en_parallele', 'in_parallelo', 'conectare_laterala', '', 'NS', 'CL', '', '', 'true');
  INSERT INTO tww_vl.special_structure_stormwater_tank_arrangement (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4610,4610,'unknown','unbekannt','inconnue', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.special_structure ADD CONSTRAINT fkey_vl_special_structure_stormwater_tank_arrangement FOREIGN KEY (stormwater_tank_arrangement)
- REFERENCES tww_vl.special_structure_stormwater_tank_arrangement (code) MATCH SIMPLE 
+ REFERENCES tww_vl.special_structure_stormwater_tank_arrangement (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.infiltration_installation ADD CONSTRAINT oorel_od_infiltration_installation_wastewater_structure FOREIGN KEY (obj_id) REFERENCES tww_od.wastewater_structure(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
 CREATE TABLE tww_vl.infiltration_installation_defects () INHERITS (tww_vl.value_list_base);
@@ -3459,7 +3459,7 @@ ALTER TABLE tww_vl.infiltration_installation_defects ADD CONSTRAINT pkey_tww_vl_
  INSERT INTO tww_vl.infiltration_installation_defects (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3276,3276,'marginal','unwesentliche','modestes', 'zzz_unwesentliche', 'modeste', '', 'UW', 'MI', '', '', 'true');
  INSERT INTO tww_vl.infiltration_installation_defects (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3275,3275,'substantial','wesentliche','importantes', 'zzz_wesentliche', 'importante', '', 'W', 'MA', '', '', 'true');
  ALTER TABLE tww_od.infiltration_installation ADD CONSTRAINT fkey_vl_infiltration_installation_defects FOREIGN KEY (defects)
- REFERENCES tww_vl.infiltration_installation_defects (code) MATCH SIMPLE 
+ REFERENCES tww_vl.infiltration_installation_defects (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.infiltration_installation_emergency_overflow () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.infiltration_installation_emergency_overflow ADD CONSTRAINT pkey_tww_vl_infiltration_installation_emergency_overflow_code PRIMARY KEY (code);
@@ -3472,7 +3472,7 @@ ALTER TABLE tww_vl.infiltration_installation_emergency_overflow ADD CONSTRAINT p
  INSERT INTO tww_vl.infiltration_installation_emergency_overflow (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9071,9071,'surface_discharge','oberflaechlich_ausmuendend','deversement_en_surface', 'zzz_oberflaechlich_ausmuendend', 'deversare_la_suprafata', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.infiltration_installation_emergency_overflow (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3308,3308,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscut', '', 'U', 'I', '', '', 'true');
  ALTER TABLE tww_od.infiltration_installation ADD CONSTRAINT fkey_vl_infiltration_installation_emergency_overflow FOREIGN KEY (emergency_overflow)
- REFERENCES tww_vl.infiltration_installation_emergency_overflow (code) MATCH SIMPLE 
+ REFERENCES tww_vl.infiltration_installation_emergency_overflow (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.infiltration_installation_filling_material () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.infiltration_installation_filling_material ADD CONSTRAINT pkey_tww_vl_infiltration_installation_filling_material_code PRIMARY KEY (code);
@@ -3481,7 +3481,7 @@ ALTER TABLE tww_vl.infiltration_installation_filling_material ADD CONSTRAINT pke
  INSERT INTO tww_vl.infiltration_installation_filling_material (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4787,4787,'soakaway_gravel','Sickerkies','gravier', 'zzz_Sickerkies', 'rrr_Sickerkies', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.infiltration_installation_filling_material (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4788,4788,'unknown','unbekannt','inconnue', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.infiltration_installation ADD CONSTRAINT fkey_vl_infiltration_installation_filling_material FOREIGN KEY (filling_material)
- REFERENCES tww_vl.infiltration_installation_filling_material (code) MATCH SIMPLE 
+ REFERENCES tww_vl.infiltration_installation_filling_material (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.infiltration_installation_kind () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.infiltration_installation_kind ADD CONSTRAINT pkey_tww_vl_infiltration_installation_kind_code PRIMARY KEY (code);
@@ -3497,7 +3497,7 @@ ALTER TABLE tww_vl.infiltration_installation_kind ADD CONSTRAINT pkey_tww_vl_inf
  INSERT INTO tww_vl.infiltration_installation_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (278,278,'adsorbing_well','Versickerungsschacht','puits_d_infiltration', 'zzz_Versickerungsschacht', 'put_de_inflitrare', '', 'VS', 'PI', '', '', 'true');
  INSERT INTO tww_vl.infiltration_installation_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3283,3283,'infiltration_pipe_sections_gallery','Versickerungsstrang_Galerie','bande_infiltration_galerie', 'zzz_Versickerungsstrang_Galerie', 'conducta_infiltrare_galerie', '', 'VG', 'TIG', '', '', 'true');
  ALTER TABLE tww_od.infiltration_installation ADD CONSTRAINT fkey_vl_infiltration_installation_kind FOREIGN KEY (kind)
- REFERENCES tww_vl.infiltration_installation_kind (code) MATCH SIMPLE 
+ REFERENCES tww_vl.infiltration_installation_kind (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.infiltration_installation_labeling () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.infiltration_installation_labeling ADD CONSTRAINT pkey_tww_vl_infiltration_installation_labeling_code PRIMARY KEY (code);
@@ -3505,7 +3505,7 @@ ALTER TABLE tww_vl.infiltration_installation_labeling ADD CONSTRAINT pkey_tww_vl
  INSERT INTO tww_vl.infiltration_installation_labeling (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5363,5363,'not_labeled','nichtbeschriftet','non_signalee', 'zzz_nichtbeschriftet', 'nemarcat', '', 'NBS', 'NSI', '', '', 'true');
  INSERT INTO tww_vl.infiltration_installation_labeling (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5364,5364,'unknown','unbekannt','inconnue', 'sconosciuto', 'necunoscut', '', 'U', 'I', '', '', 'true');
  ALTER TABLE tww_od.infiltration_installation ADD CONSTRAINT fkey_vl_infiltration_installation_labeling FOREIGN KEY (labeling)
- REFERENCES tww_vl.infiltration_installation_labeling (code) MATCH SIMPLE 
+ REFERENCES tww_vl.infiltration_installation_labeling (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.infiltration_installation_seepage_utilization () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.infiltration_installation_seepage_utilization ADD CONSTRAINT pkey_tww_vl_infiltration_installation_seepage_utilization_code PRIMARY KEY (code);
@@ -3513,7 +3513,7 @@ ALTER TABLE tww_vl.infiltration_installation_seepage_utilization ADD CONSTRAINT 
  INSERT INTO tww_vl.infiltration_installation_seepage_utilization (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (273,273,'clean_water','Reinabwasser','eaux_claires', 'acque_chiare', 'ape_conventional_curate', '', 'KW', 'EC', '', '', 'true');
  INSERT INTO tww_vl.infiltration_installation_seepage_utilization (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5359,5359,'unknown','unbekannt','inconnue', 'sconosciuto', 'necunoscut', '', 'U', 'I', '', '', 'true');
  ALTER TABLE tww_od.infiltration_installation ADD CONSTRAINT fkey_vl_infiltration_installation_seepage_utilization FOREIGN KEY (seepage_utilization)
- REFERENCES tww_vl.infiltration_installation_seepage_utilization (code) MATCH SIMPLE 
+ REFERENCES tww_vl.infiltration_installation_seepage_utilization (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.infiltration_installation_vehicle_access () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.infiltration_installation_vehicle_access ADD CONSTRAINT pkey_tww_vl_infiltration_installation_vehicle_access_code PRIMARY KEY (code);
@@ -3521,7 +3521,7 @@ ALTER TABLE tww_vl.infiltration_installation_vehicle_access ADD CONSTRAINT pkey_
  INSERT INTO tww_vl.infiltration_installation_vehicle_access (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3288,3288,'inaccessible','unzugaenglich','inaccessible', 'non_accessibile', 'neaccesibil', '', 'ZU', 'IAC', '', '', 'true');
  INSERT INTO tww_vl.infiltration_installation_vehicle_access (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3287,3287,'accessible','zugaenglich','accessible', 'accessibile', 'accessibil', '', 'Z', 'AC', '', '', 'true');
  ALTER TABLE tww_od.infiltration_installation ADD CONSTRAINT fkey_vl_infiltration_installation_vehicle_access FOREIGN KEY (vehicle_access)
- REFERENCES tww_vl.infiltration_installation_vehicle_access (code) MATCH SIMPLE 
+ REFERENCES tww_vl.infiltration_installation_vehicle_access (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.infiltration_installation_watertightness () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.infiltration_installation_watertightness ADD CONSTRAINT pkey_tww_vl_infiltration_installation_watertightness_code PRIMARY KEY (code);
@@ -3529,7 +3529,7 @@ ALTER TABLE tww_vl.infiltration_installation_watertightness ADD CONSTRAINT pkey_
  INSERT INTO tww_vl.infiltration_installation_watertightness (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5360,5360,'unknown','unbekannt','inconnue', 'sconosciuto', 'necunoscuta', '', 'U', 'I', '', '', 'true');
  INSERT INTO tww_vl.infiltration_installation_watertightness (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3294,3294,'watertight','wasserdicht','etanche', 'zzz_wasserdicht', 'etans', '', 'WD', 'E', '', '', 'true');
  ALTER TABLE tww_od.infiltration_installation ADD CONSTRAINT fkey_vl_infiltration_installation_watertightness FOREIGN KEY (watertightness)
- REFERENCES tww_vl.infiltration_installation_watertightness (code) MATCH SIMPLE 
+ REFERENCES tww_vl.infiltration_installation_watertightness (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.wwtp_structure ADD COLUMN fk_waste_water_treatment_plant varchar(16);
 ALTER TABLE tww_od.wwtp_structure ADD CONSTRAINT rel_wwtp_structure_waste_water_treatment_plant FOREIGN KEY (fk_waste_water_treatment_plant) REFERENCES tww_od.waste_water_treatment_plant(obj_id) ON UPDATE CASCADE ON DELETE set null;
@@ -3545,7 +3545,7 @@ ALTER TABLE tww_vl.wwtp_structure_kind ADD CONSTRAINT pkey_tww_vl_wwtp_structure
  INSERT INTO tww_vl.wwtp_structure_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3032,3032,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.wwtp_structure_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (326,326,'primary_clarifier','Vorklaerbecken','decanteurs_primaires', 'zzz_Vorklaerbecken', 'rrr_Vorklaerbecken', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.wwtp_structure ADD CONSTRAINT fkey_vl_wwtp_structure_kind FOREIGN KEY (kind)
- REFERENCES tww_vl.wwtp_structure_kind (code) MATCH SIMPLE 
+ REFERENCES tww_vl.wwtp_structure_kind (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.maintenance_event ADD COLUMN fk_operating_company varchar(16);
 ALTER TABLE tww_od.maintenance_event ADD CONSTRAINT rel_maintenance_event_operating_company FOREIGN KEY (fk_operating_company) REFERENCES tww_od.organisation(obj_id) ON UPDATE CASCADE ON DELETE set null;
@@ -3558,7 +3558,7 @@ ALTER TABLE tww_vl.maintenance_event_status ADD CONSTRAINT pkey_tww_vl_maintenan
  INSERT INTO tww_vl.maintenance_event_status (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3678,3678,'not_possible','nicht_moeglich','impossible', 'non_possibile', 'rrr_nicht_moeglich', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.maintenance_event_status (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3047,3047,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.maintenance_event ADD CONSTRAINT fkey_vl_maintenance_event_status FOREIGN KEY (status)
- REFERENCES tww_vl.maintenance_event_status (code) MATCH SIMPLE 
+ REFERENCES tww_vl.maintenance_event_status (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.infiltration_zone ADD CONSTRAINT oorel_od_infiltration_zone_zone FOREIGN KEY (obj_id) REFERENCES tww_od.zone(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
 CREATE TABLE tww_vl.infiltration_zone_infiltration_capacity () INHERITS (tww_vl.value_list_base);
@@ -3570,7 +3570,7 @@ ALTER TABLE tww_vl.infiltration_zone_infiltration_capacity ADD CONSTRAINT pkey_t
  INSERT INTO tww_vl.infiltration_zone_infiltration_capacity (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3073,3073,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.infiltration_zone_infiltration_capacity (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (2996,2996,'not_allowed','unzulaessig','non_admis', 'zzz_unzulaessig', 'rrr_unzulaessig', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.infiltration_zone ADD CONSTRAINT fkey_vl_infiltration_zone_infiltration_capacity FOREIGN KEY (infiltration_capacity)
- REFERENCES tww_vl.infiltration_zone_infiltration_capacity (code) MATCH SIMPLE 
+ REFERENCES tww_vl.infiltration_zone_infiltration_capacity (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.drainage_system ADD CONSTRAINT oorel_od_drainage_system_zone FOREIGN KEY (obj_id) REFERENCES tww_od.zone(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
 CREATE TABLE tww_vl.drainage_system_kind () INHERITS (tww_vl.value_list_base);
@@ -3582,7 +3582,7 @@ ALTER TABLE tww_vl.drainage_system_kind ADD CONSTRAINT pkey_tww_vl_drainage_syst
  INSERT INTO tww_vl.drainage_system_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (2723,2723,'separated_system','Trennsystem','systeme_separatif', 'sistema_separato', 'rrr_Trennsystem', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.drainage_system_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3060,3060,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.drainage_system ADD CONSTRAINT fkey_vl_drainage_system_kind FOREIGN KEY (kind)
- REFERENCES tww_vl.drainage_system_kind (code) MATCH SIMPLE 
+ REFERENCES tww_vl.drainage_system_kind (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.pipe_profile_profile_type () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.pipe_profile_profile_type ADD CONSTRAINT pkey_tww_vl_pipe_profile_profile_type_code PRIMARY KEY (code);
@@ -3594,7 +3594,7 @@ ALTER TABLE tww_vl.pipe_profile_profile_type ADD CONSTRAINT pkey_tww_vl_pipe_pro
  INSERT INTO tww_vl.pipe_profile_profile_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3355,3355,'special','Spezialprofil','profil_special', 'sezione_speciale', 'sectiune_speciala', 'S', 'S', 'PS', 'S', 'S', 'true');
  INSERT INTO tww_vl.pipe_profile_profile_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3357,3357,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscut', 'U', 'U', 'I', 'S', 'N', 'true');
  ALTER TABLE tww_od.pipe_profile ADD CONSTRAINT fkey_vl_pipe_profile_profile_type FOREIGN KEY (profile_type)
- REFERENCES tww_vl.pipe_profile_profile_type (code) MATCH SIMPLE 
+ REFERENCES tww_vl.pipe_profile_profile_type (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.wwtp_energy_use ADD COLUMN fk_waste_water_treatment_plant varchar(16);
 ALTER TABLE tww_od.wwtp_energy_use ADD CONSTRAINT rel_wwtp_energy_use_waste_water_treatment_plant FOREIGN KEY (fk_waste_water_treatment_plant) REFERENCES tww_od.waste_water_treatment_plant(obj_id) ON UPDATE CASCADE ON DELETE cascade;
@@ -3609,7 +3609,7 @@ ALTER TABLE tww_vl.waste_water_treatment_kind ADD CONSTRAINT pkey_tww_vl_waste_w
  INSERT INTO tww_vl.waste_water_treatment_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (366,366,'mechanical','mechanisch','mecanique', 'zzz_mechanisch', 'rrr_mechanisch', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.waste_water_treatment_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3076,3076,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.waste_water_treatment ADD CONSTRAINT fkey_vl_waste_water_treatment_kind FOREIGN KEY (kind)
- REFERENCES tww_vl.waste_water_treatment_kind (code) MATCH SIMPLE 
+ REFERENCES tww_vl.waste_water_treatment_kind (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.sludge_treatment ADD COLUMN fk_waste_water_treatment_plant varchar(16);
 ALTER TABLE tww_od.sludge_treatment ADD CONSTRAINT rel_sludge_treatment_waste_water_treatment_plant FOREIGN KEY (fk_waste_water_treatment_plant) REFERENCES tww_od.waste_water_treatment_plant(obj_id) ON UPDATE CASCADE ON DELETE cascade;
@@ -3623,7 +3623,7 @@ ALTER TABLE tww_vl.sludge_treatment_stabilisation ADD CONSTRAINT pkey_tww_vl_slu
  INSERT INTO tww_vl.sludge_treatment_stabilisation (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (2994,2994,'other','andere','autres', 'altro', 'rrr_altul', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.sludge_treatment_stabilisation (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3004,3004,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.sludge_treatment ADD CONSTRAINT fkey_vl_sludge_treatment_stabilisation FOREIGN KEY (stabilisation)
- REFERENCES tww_vl.sludge_treatment_stabilisation (code) MATCH SIMPLE 
+ REFERENCES tww_vl.sludge_treatment_stabilisation (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.wastewater_networkelement ADD COLUMN fk_wastewater_structure varchar(16);
 ALTER TABLE tww_od.wastewater_networkelement ADD CONSTRAINT rel_wastewater_networkelement_wastewater_structure FOREIGN KEY (fk_wastewater_structure) REFERENCES tww_od.wastewater_structure(obj_id) ON UPDATE CASCADE ON DELETE cascade;
@@ -3637,7 +3637,7 @@ ALTER TABLE tww_vl.reach_point_elevation_accuracy ADD CONSTRAINT pkey_tww_vl_rea
  INSERT INTO tww_vl.reach_point_elevation_accuracy (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3247,3247,'plusminus_6cm','plusminus_6cm','plus_moins_6cm', 'piu_meno_6cm', 'plus_minus_6cm', '', 'P06', 'P06', '', '', 'true');
  INSERT INTO tww_vl.reach_point_elevation_accuracy (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5376,5376,'unknown','unbekannt','inconnue', 'sconosciuto', 'necunoscut', '', 'U', 'I', '', '', 'true');
  ALTER TABLE tww_od.reach_point ADD CONSTRAINT fkey_vl_reach_point_elevation_accuracy FOREIGN KEY (elevation_accuracy)
- REFERENCES tww_vl.reach_point_elevation_accuracy (code) MATCH SIMPLE 
+ REFERENCES tww_vl.reach_point_elevation_accuracy (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.reach_point_outlet_shape () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.reach_point_outlet_shape ADD CONSTRAINT pkey_tww_vl_reach_point_outlet_shape_code PRIMARY KEY (code);
@@ -3647,7 +3647,7 @@ ALTER TABLE tww_vl.reach_point_outlet_shape ADD CONSTRAINT pkey_tww_vl_reach_poi
  INSERT INTO tww_vl.reach_point_outlet_shape (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (286,286,'sharp_edged','scharfkantig','aretes_vives', 'zzz_scharfkantig', 'margini_ascutite', '', 'SK', 'AV', '', '', 'true');
  INSERT INTO tww_vl.reach_point_outlet_shape (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5375,5375,'unknown','unbekannt','inconnue', 'sconosciuto', 'necunoscuta', '', 'U', 'I', '', '', 'true');
  ALTER TABLE tww_od.reach_point ADD CONSTRAINT fkey_vl_reach_point_outlet_shape FOREIGN KEY (outlet_shape)
- REFERENCES tww_vl.reach_point_outlet_shape (code) MATCH SIMPLE 
+ REFERENCES tww_vl.reach_point_outlet_shape (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.reach_point_pipe_closure () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.reach_point_pipe_closure ADD CONSTRAINT pkey_tww_vl_reach_point_pipe_closure_code PRIMARY KEY (code);
@@ -3655,7 +3655,7 @@ ALTER TABLE tww_vl.reach_point_pipe_closure ADD CONSTRAINT pkey_tww_vl_reach_poi
  INSERT INTO tww_vl.reach_point_pipe_closure (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9000,9000,'no','nein','non', 'no', 'nu', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.reach_point_pipe_closure (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9001,9001,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.reach_point ADD CONSTRAINT fkey_vl_reach_point_pipe_closure FOREIGN KEY (pipe_closure)
- REFERENCES tww_vl.reach_point_pipe_closure (code) MATCH SIMPLE 
+ REFERENCES tww_vl.reach_point_pipe_closure (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.wastewater_node ADD COLUMN fk_hydr_geometry varchar(16);
 ALTER TABLE tww_od.wastewater_node ADD CONSTRAINT rel_wastewater_node_hydr_geometry FOREIGN KEY (fk_hydr_geometry) REFERENCES tww_od.hydr_geometry(obj_id) ON UPDATE CASCADE ON DELETE cascade;
@@ -3668,7 +3668,7 @@ ALTER TABLE tww_vl.wastewater_node_elevation_accuray ADD CONSTRAINT pkey_tww_vl_
  INSERT INTO tww_vl.wastewater_node_elevation_accuray (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9064,9064,'plusminus_6cm','plusminus_6cm','plus_moins_6cm', 'piu_meno_6cm', 'plus_minus_6cm', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.wastewater_node_elevation_accuray (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9060,9060,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.wastewater_node ADD CONSTRAINT fkey_vl_wastewater_node_elevation_accuray FOREIGN KEY (elevation_accuray)
- REFERENCES tww_vl.wastewater_node_elevation_accuray (code) MATCH SIMPLE 
+ REFERENCES tww_vl.wastewater_node_elevation_accuray (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.wastewater_node_function_node_amelioration () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.wastewater_node_function_node_amelioration ADD CONSTRAINT pkey_tww_vl_wastewater_node_function_node_amelioration_code PRIMARY KEY (code);
@@ -3681,7 +3681,7 @@ ALTER TABLE tww_vl.wastewater_node_function_node_amelioration ADD CONSTRAINT pke
  INSERT INTO tww_vl.wastewater_node_function_node_amelioration (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9085,9085,'standard_manhole_caliber_change','Normschacht_Kaliberwechsel','chambre_standard_changement_de_calibre', 'zzz_Normschacht_Kaliberwechsel', 'rrr_Normschacht_Kaliberwechsel', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.wastewater_node_function_node_amelioration (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4620,4620,'unknown','unbekannt','inconnue', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.wastewater_node ADD CONSTRAINT fkey_vl_wastewater_node_function_node_amelioration FOREIGN KEY (function_node_amelioration)
- REFERENCES tww_vl.wastewater_node_function_node_amelioration (code) MATCH SIMPLE 
+ REFERENCES tww_vl.wastewater_node_function_node_amelioration (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.reach ADD COLUMN fk_reach_point_from varchar(16);
 ALTER TABLE tww_od.reach ADD CONSTRAINT rel_reach_reach_point_from FOREIGN KEY (fk_reach_point_from) REFERENCES tww_od.reach_point(obj_id) ON UPDATE CASCADE ON DELETE cascade;
@@ -3696,7 +3696,7 @@ ALTER TABLE tww_vl.reach_elevation_determination ADD CONSTRAINT pkey_tww_vl_reac
  INSERT INTO tww_vl.reach_elevation_determination (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4778,4778,'unknown','unbekannt','inconnue', 'sconosciuto', 'necunoscuta', '', 'U', 'I', '', '', 'true');
  INSERT INTO tww_vl.reach_elevation_determination (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4779,4779,'inaccurate','ungenau','imprecise', 'impreciso', 'imprecisa', '', 'LU', 'IP', '', '', 'true');
  ALTER TABLE tww_od.reach ADD CONSTRAINT fkey_vl_reach_elevation_determination FOREIGN KEY (elevation_determination)
- REFERENCES tww_vl.reach_elevation_determination (code) MATCH SIMPLE 
+ REFERENCES tww_vl.reach_elevation_determination (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.reach_horizontal_positioning () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.reach_horizontal_positioning ADD CONSTRAINT pkey_tww_vl_reach_horizontal_positioning_code PRIMARY KEY (code);
@@ -3704,7 +3704,7 @@ ALTER TABLE tww_vl.reach_horizontal_positioning ADD CONSTRAINT pkey_tww_vl_reach
  INSERT INTO tww_vl.reach_horizontal_positioning (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5379,5379,'unknown','unbekannt','inconnue', 'sconosciuto', 'necunoscuta', '', 'U', 'I', '', '', 'true');
  INSERT INTO tww_vl.reach_horizontal_positioning (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5380,5380,'inaccurate','ungenau','imprecise', 'impreciso', 'imprecisa', '', 'LU', 'IP', '', '', 'true');
  ALTER TABLE tww_od.reach ADD CONSTRAINT fkey_vl_reach_horizontal_positioning FOREIGN KEY (horizontal_positioning)
- REFERENCES tww_vl.reach_horizontal_positioning (code) MATCH SIMPLE 
+ REFERENCES tww_vl.reach_horizontal_positioning (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.reach_inside_coating () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.reach_inside_coating ADD CONSTRAINT pkey_tww_vl_reach_inside_coating_code PRIMARY KEY (code);
@@ -3715,7 +3715,7 @@ ALTER TABLE tww_vl.reach_inside_coating ADD CONSTRAINT pkey_tww_vl_reach_inside_
  INSERT INTO tww_vl.reach_inside_coating (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5384,5384,'unknown','unbekannt','inconnue', 'sconosciuto', 'necunoscuta', '', 'U', 'I', '', '', 'true');
  INSERT INTO tww_vl.reach_inside_coating (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (249,249,'cement_mortar_lining','Zementmoertelauskleidung','revetement_en_mortier_de_ciment', 'zzz_Zementmoertelauskleidung', 'strat_mortar_ciment', '', 'ZM', 'RM', '', '', 'true');
  ALTER TABLE tww_od.reach ADD CONSTRAINT fkey_vl_reach_inside_coating FOREIGN KEY (inside_coating)
- REFERENCES tww_vl.reach_inside_coating (code) MATCH SIMPLE 
+ REFERENCES tww_vl.reach_inside_coating (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.reach_leak_protection () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.reach_leak_protection ADD CONSTRAINT pkey_tww_vl_reach_leak_protection_code PRIMARY KEY (code);
@@ -3723,7 +3723,7 @@ ALTER TABLE tww_vl.reach_leak_protection ADD CONSTRAINT pkey_tww_vl_reach_leak_p
  INSERT INTO tww_vl.reach_leak_protection (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8711,8711,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.reach_leak_protection (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8709,8709,'existent','vorhanden','existant', 'presente', 'existent', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.reach ADD CONSTRAINT fkey_vl_reach_leak_protection FOREIGN KEY (leak_protection)
- REFERENCES tww_vl.reach_leak_protection (code) MATCH SIMPLE 
+ REFERENCES tww_vl.reach_leak_protection (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.reach_material () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.reach_material ADD CONSTRAINT pkey_tww_vl_reach_material_code PRIMARY KEY (code);
@@ -3752,7 +3752,7 @@ ALTER TABLE tww_vl.reach_material ADD CONSTRAINT pkey_tww_vl_reach_material_code
  INSERT INTO tww_vl.reach_material (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3016,3016,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscut', 'U', 'U', 'I', 'SC', '', 'true');
  INSERT INTO tww_vl.reach_material (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (2762,2762,'cement','Zement','ciment', 'cemento', 'ciment', 'C', 'Z', 'C', 'C', '', 'true');
  ALTER TABLE tww_od.reach ADD CONSTRAINT fkey_vl_reach_material FOREIGN KEY (material)
- REFERENCES tww_vl.reach_material (code) MATCH SIMPLE 
+ REFERENCES tww_vl.reach_material (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.reach_reliner_material () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.reach_reliner_material ADD CONSTRAINT pkey_tww_vl_reach_reliner_material_code PRIMARY KEY (code);
@@ -3773,7 +3773,7 @@ ALTER TABLE tww_vl.reach_reliner_material ADD CONSTRAINT pkey_tww_vl_reach_relin
  INSERT INTO tww_vl.reach_reliner_material (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (6468,6468,'vinyl_ester_resin_glass_fibre_laminate','Vinylesterharz_Glasfaserlaminat','resine_d_ester_vinylique_lamine_en_fibre_de_verre', 'zzz_Vinylesterharz_Glasfaserlaminat', 'rasina_de_ester_vinil_laminata_in_fibra_de_sticla', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.reach_reliner_material (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (6469,6469,'vinyl_ester_resin_plastic_felt','Vinylesterharz_Kunststofffilz','resine_d_ester_vinylique_feutre_synthetique', 'zzz_Vinylesterharz_Kunststofffilz', 'rasina_de_ester_vinil', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.reach ADD CONSTRAINT fkey_vl_reach_reliner_material FOREIGN KEY (reliner_material)
- REFERENCES tww_vl.reach_reliner_material (code) MATCH SIMPLE 
+ REFERENCES tww_vl.reach_reliner_material (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.reach_relining_construction () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.reach_relining_construction ADD CONSTRAINT pkey_tww_vl_reach_relining_construction_code PRIMARY KEY (code);
@@ -3787,7 +3787,7 @@ ALTER TABLE tww_vl.reach_relining_construction ADD CONSTRAINT pkey_tww_vl_reach_
  INSERT INTO tww_vl.reach_relining_construction (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (6453,6453,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.reach_relining_construction (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (6480,6480,'spiral_lining','Wickelrohrrelining','chemisage_par_tube_spirale', 'zzz_Wickelrohrrelining', 'captusire_prin_tub_spirala', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.reach ADD CONSTRAINT fkey_vl_reach_relining_construction FOREIGN KEY (relining_construction)
- REFERENCES tww_vl.reach_relining_construction (code) MATCH SIMPLE 
+ REFERENCES tww_vl.reach_relining_construction (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.reach_relining_kind () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.reach_relining_kind ADD CONSTRAINT pkey_tww_vl_reach_relining_kind_code PRIMARY KEY (code);
@@ -3795,7 +3795,7 @@ ALTER TABLE tww_vl.reach_relining_kind ADD CONSTRAINT pkey_tww_vl_reach_relining
  INSERT INTO tww_vl.reach_relining_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (6456,6456,'partial','partiell','partiellement', 'parziale', 'partial', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.reach_relining_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (6457,6457,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscut', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.reach ADD CONSTRAINT fkey_vl_reach_relining_kind FOREIGN KEY (relining_kind)
- REFERENCES tww_vl.reach_relining_kind (code) MATCH SIMPLE 
+ REFERENCES tww_vl.reach_relining_kind (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.profile_geometry ADD COLUMN fk_pipe_profile varchar(16);
 ALTER TABLE tww_od.profile_geometry ADD CONSTRAINT rel_profile_geometry_pipe_profile FOREIGN KEY (fk_pipe_profile) REFERENCES tww_od.pipe_profile(obj_id) ON UPDATE CASCADE ON DELETE cascade;
@@ -3812,7 +3812,7 @@ ALTER TABLE tww_vl.mechanical_pretreatment_kind ADD CONSTRAINT pkey_tww_vl_mecha
  INSERT INTO tww_vl.mechanical_pretreatment_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3321,3321,'floating_matter_separator','Schwimmstoffabscheider','separateur_materiaux_flottants', 'separatore_materiali_galleggianti', 'separator_materie_flotanta', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.mechanical_pretreatment_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3322,3322,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.mechanical_pretreatment ADD CONSTRAINT fkey_vl_mechanical_pretreatment_kind FOREIGN KEY (kind)
- REFERENCES tww_vl.mechanical_pretreatment_kind (code) MATCH SIMPLE 
+ REFERENCES tww_vl.mechanical_pretreatment_kind (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.retention_body ADD COLUMN fk_infiltration_installation varchar(16);
 ALTER TABLE tww_od.retention_body ADD CONSTRAINT rel_retention_body_infiltration_installation FOREIGN KEY (fk_infiltration_installation) REFERENCES tww_od.infiltration_installation(obj_id) ON UPDATE CASCADE ON DELETE cascade;
@@ -3825,7 +3825,7 @@ ALTER TABLE tww_vl.retention_body_kind ADD CONSTRAINT pkey_tww_vl_retention_body
  INSERT INTO tww_vl.retention_body_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (347,347,'accumulation_channel','Staukanal','retention_dans_canalisations_stockage', 'zzz_Staukanal', 'rrr_Staukanal', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.retention_body_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3031,3031,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.retention_body ADD CONSTRAINT fkey_vl_retention_body_kind FOREIGN KEY (kind)
- REFERENCES tww_vl.retention_body_kind (code) MATCH SIMPLE 
+ REFERENCES tww_vl.retention_body_kind (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.overflow_char_kind_overflow_char () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.overflow_char_kind_overflow_char ADD CONSTRAINT pkey_tww_vl_overflow_char_kind_overflow_char_code PRIMARY KEY (code);
@@ -3833,7 +3833,7 @@ ALTER TABLE tww_vl.overflow_char_kind_overflow_char ADD CONSTRAINT pkey_tww_vl_o
  INSERT INTO tww_vl.overflow_char_kind_overflow_char (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (6221,6221,'qq','QQ','QQ', 'QQ', 'QQ', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.overflow_char_kind_overflow_char (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (6228,6228,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.overflow_char ADD CONSTRAINT fkey_vl_overflow_char_kind_overflow_char FOREIGN KEY (kind_overflow_char)
- REFERENCES tww_vl.overflow_char_kind_overflow_char (code) MATCH SIMPLE 
+ REFERENCES tww_vl.overflow_char_kind_overflow_char (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.hq_relation ADD COLUMN fk_overflow_char varchar(16);
 ALTER TABLE tww_od.hq_relation ADD CONSTRAINT rel_hq_relation_overflow_char FOREIGN KEY (fk_overflow_char) REFERENCES tww_od.overflow_char(obj_id) ON UPDATE CASCADE ON DELETE cascade;
@@ -3845,7 +3845,7 @@ ALTER TABLE tww_vl.structure_part_renovation_demand ADD CONSTRAINT pkey_tww_vl_s
  INSERT INTO tww_vl.structure_part_renovation_demand (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (137,137,'necessary','notwendig','necessaire', 'zzz_notwendig', 'necesare', 'N', 'N', 'N', '', '', 'true');
  INSERT INTO tww_vl.structure_part_renovation_demand (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5358,5358,'unknown','unbekannt','inconnue', 'sconosciuto', 'necunoscut', '', 'U', 'I', '', '', 'true');
  ALTER TABLE tww_od.structure_part ADD CONSTRAINT fkey_vl_structure_part_renovation_demand FOREIGN KEY (renovation_demand)
- REFERENCES tww_vl.structure_part_renovation_demand (code) MATCH SIMPLE 
+ REFERENCES tww_vl.structure_part_renovation_demand (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.dryweather_downspout ADD CONSTRAINT oorel_od_dryweather_downspout_structure_part FOREIGN KEY (obj_id) REFERENCES tww_od.structure_part(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE tww_od.access_aid ADD CONSTRAINT oorel_od_access_aid_structure_part FOREIGN KEY (obj_id) REFERENCES tww_od.structure_part(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
@@ -3861,7 +3861,7 @@ ALTER TABLE tww_vl.access_aid_kind ADD CONSTRAINT pkey_tww_vl_access_aid_kind_co
  INSERT INTO tww_vl.access_aid_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3230,3230,'door','Tuere','porte', 'porta', 'usa', '', 'T', 'P', '', '', 'true');
  INSERT INTO tww_vl.access_aid_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3048,3048,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscut', '', 'U', 'I', '', '', 'true');
  ALTER TABLE tww_od.access_aid ADD CONSTRAINT fkey_vl_access_aid_kind FOREIGN KEY (kind)
- REFERENCES tww_vl.access_aid_kind (code) MATCH SIMPLE 
+ REFERENCES tww_vl.access_aid_kind (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.dryweather_flume ADD CONSTRAINT oorel_od_dryweather_flume_structure_part FOREIGN KEY (obj_id) REFERENCES tww_od.structure_part(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
 CREATE TABLE tww_vl.dryweather_flume_material () INHERITS (tww_vl.value_list_base);
@@ -3873,7 +3873,7 @@ ALTER TABLE tww_vl.dryweather_flume_material ADD CONSTRAINT pkey_tww_vl_dryweath
  INSERT INTO tww_vl.dryweather_flume_material (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3017,3017,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscut', '', 'U', 'I', '', '', 'true');
  INSERT INTO tww_vl.dryweather_flume_material (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (237,237,'cement_mortar','Zementmoertel','mortier_de_ciment', 'zzz_Zementmoertel', 'mortar_ciment', '', 'ZM', 'MC', '', '', 'true');
  ALTER TABLE tww_od.dryweather_flume ADD CONSTRAINT fkey_vl_dryweather_flume_material FOREIGN KEY (material)
- REFERENCES tww_vl.dryweather_flume_material (code) MATCH SIMPLE 
+ REFERENCES tww_vl.dryweather_flume_material (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.cover ADD CONSTRAINT oorel_od_cover_structure_part FOREIGN KEY (obj_id) REFERENCES tww_od.structure_part(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
 CREATE TABLE tww_vl.cover_cover_shape () INHERITS (tww_vl.value_list_base);
@@ -3883,7 +3883,7 @@ ALTER TABLE tww_vl.cover_cover_shape ADD CONSTRAINT pkey_tww_vl_cover_cover_shap
  INSERT INTO tww_vl.cover_cover_shape (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3498,3498,'round','rund','rond', 'zzz_rund', 'rotund', '', 'R', 'R', '', '', 'true');
  INSERT INTO tww_vl.cover_cover_shape (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5354,5354,'unknown','unbekannt','inconnue', 'sconosciuto', 'necunoscut', '', 'U', 'I', '', '', 'true');
  ALTER TABLE tww_od.cover ADD CONSTRAINT fkey_vl_cover_cover_shape FOREIGN KEY (cover_shape)
- REFERENCES tww_vl.cover_cover_shape (code) MATCH SIMPLE 
+ REFERENCES tww_vl.cover_cover_shape (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.cover_fastening () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.cover_fastening ADD CONSTRAINT pkey_tww_vl_cover_fastening_code PRIMARY KEY (code);
@@ -3891,7 +3891,7 @@ ALTER TABLE tww_vl.cover_fastening ADD CONSTRAINT pkey_tww_vl_cover_fastening_co
  INSERT INTO tww_vl.cover_fastening (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5351,5351,'unknown','unbekannt','inconnue', 'sconosciuto', 'necunoscuta', '', 'U', 'I', '', '', 'true');
  INSERT INTO tww_vl.cover_fastening (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5352,5352,'bolted','verschraubt','vissee', 'zzz_verschraubt', 'insurubata', '', 'VS', 'VS', '', '', 'true');
  ALTER TABLE tww_od.cover ADD CONSTRAINT fkey_vl_cover_fastening FOREIGN KEY (fastening)
- REFERENCES tww_vl.cover_fastening (code) MATCH SIMPLE 
+ REFERENCES tww_vl.cover_fastening (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.cover_material () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.cover_material ADD CONSTRAINT pkey_tww_vl_cover_material_code PRIMARY KEY (code);
@@ -3902,7 +3902,7 @@ ALTER TABLE tww_vl.cover_material ADD CONSTRAINT pkey_tww_vl_cover_material_code
  INSERT INTO tww_vl.cover_material (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (235,235,'cast_iron_with_concrete_filling','Guss_mit_Betonfuellung','fonte_avec_remplissage_beton', 'zzz_Guss_mit_Betonfuellung', 'fonta_cu_umplutura_beton', '', 'GBT', 'FRB', '', '', 'true');
  INSERT INTO tww_vl.cover_material (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3015,3015,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscut', '', 'U', 'I', '', '', 'true');
  ALTER TABLE tww_od.cover ADD CONSTRAINT fkey_vl_cover_material FOREIGN KEY (material)
- REFERENCES tww_vl.cover_material (code) MATCH SIMPLE 
+ REFERENCES tww_vl.cover_material (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.cover_positional_accuracy () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.cover_positional_accuracy ADD CONSTRAINT pkey_tww_vl_cover_positional_accuracy_code PRIMARY KEY (code);
@@ -3912,7 +3912,7 @@ ALTER TABLE tww_vl.cover_positional_accuracy ADD CONSTRAINT pkey_tww_vl_cover_po
  INSERT INTO tww_vl.cover_positional_accuracy (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3242,3242,'plusminus_50cm','plusminus_50cm','plus_moins_50cm', 'piu_meno_50cm', 'plus_minus_50cm', '', 'P50', 'P50', '', '', 'true');
  INSERT INTO tww_vl.cover_positional_accuracy (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5349,5349,'unknown','unbekannt','inconnue', 'sconosciuto', 'necunoscuta', '', 'U', 'I', '', '', 'true');
  ALTER TABLE tww_od.cover ADD CONSTRAINT fkey_vl_cover_positional_accuracy FOREIGN KEY (positional_accuracy)
- REFERENCES tww_vl.cover_positional_accuracy (code) MATCH SIMPLE 
+ REFERENCES tww_vl.cover_positional_accuracy (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.cover_sludge_bucket () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.cover_sludge_bucket ADD CONSTRAINT pkey_tww_vl_cover_sludge_bucket_code PRIMARY KEY (code);
@@ -3920,7 +3920,7 @@ ALTER TABLE tww_vl.cover_sludge_bucket ADD CONSTRAINT pkey_tww_vl_cover_sludge_b
  INSERT INTO tww_vl.cover_sludge_bucket (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3066,3066,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscut', '', 'U', 'I', '', '', 'true');
  INSERT INTO tww_vl.cover_sludge_bucket (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (422,422,'existent','vorhanden','existant', 'presente', 'existent', '', 'V', 'E', '', '', 'true');
  ALTER TABLE tww_od.cover ADD CONSTRAINT fkey_vl_cover_sludge_bucket FOREIGN KEY (sludge_bucket)
- REFERENCES tww_vl.cover_sludge_bucket (code) MATCH SIMPLE 
+ REFERENCES tww_vl.cover_sludge_bucket (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.cover_venting () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.cover_venting ADD CONSTRAINT pkey_tww_vl_cover_venting_code PRIMARY KEY (code);
@@ -3928,7 +3928,7 @@ ALTER TABLE tww_vl.cover_venting ADD CONSTRAINT pkey_tww_vl_cover_venting_code P
  INSERT INTO tww_vl.cover_venting (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (230,230,'not_vented','nicht_entlueftet','non_aere', 'zzz_nicht_entlueftet', 'fara_aerisire', '', 'NEL', 'NAE', '', '', 'true');
  INSERT INTO tww_vl.cover_venting (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5348,5348,'unknown','unbekannt','inconnue', 'sconosciuto', 'necunoscut', '', 'U', 'I', '', '', 'true');
  ALTER TABLE tww_od.cover ADD CONSTRAINT fkey_vl_cover_venting FOREIGN KEY (venting)
- REFERENCES tww_vl.cover_venting (code) MATCH SIMPLE 
+ REFERENCES tww_vl.cover_venting (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.electric_equipment ADD CONSTRAINT oorel_od_electric_equipment_structure_part FOREIGN KEY (obj_id) REFERENCES tww_od.structure_part(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
 CREATE TABLE tww_vl.electric_equipment_kind () INHERITS (tww_vl.value_list_base);
@@ -3940,7 +3940,7 @@ ALTER TABLE tww_vl.electric_equipment_kind ADD CONSTRAINT pkey_tww_vl_electric_e
  INSERT INTO tww_vl.electric_equipment_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (377,377,'phone','Telephon','telephone', 'telefono', 'telefon', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.electric_equipment_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3038,3038,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.electric_equipment ADD CONSTRAINT fkey_vl_electric_equipment_kind FOREIGN KEY (kind)
- REFERENCES tww_vl.electric_equipment_kind (code) MATCH SIMPLE 
+ REFERENCES tww_vl.electric_equipment_kind (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.electromechanical_equipment ADD CONSTRAINT oorel_od_electromechanical_equipment_structure_part FOREIGN KEY (obj_id) REFERENCES tww_od.structure_part(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
 CREATE TABLE tww_vl.electromechanical_equipment_kind () INHERITS (tww_vl.value_list_base);
@@ -3950,7 +3950,7 @@ ALTER TABLE tww_vl.electromechanical_equipment_kind ADD CONSTRAINT pkey_tww_vl_e
  INSERT INTO tww_vl.electromechanical_equipment_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (337,337,'air_dehumidifier','Luftentfeuchter','deshumidificateur', 'zzz_Luftentfeuchter', 'rrr_Luftentfeuchter', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.electromechanical_equipment_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3072,3072,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.electromechanical_equipment ADD CONSTRAINT fkey_vl_electromechanical_equipment_kind FOREIGN KEY (kind)
- REFERENCES tww_vl.electromechanical_equipment_kind (code) MATCH SIMPLE 
+ REFERENCES tww_vl.electromechanical_equipment_kind (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.benching ADD CONSTRAINT oorel_od_benching_structure_part FOREIGN KEY (obj_id) REFERENCES tww_od.structure_part(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
 CREATE TABLE tww_vl.benching_kind () INHERITS (tww_vl.value_list_base);
@@ -3961,7 +3961,7 @@ ALTER TABLE tww_vl.benching_kind ADD CONSTRAINT pkey_tww_vl_benching_kind_code P
  INSERT INTO tww_vl.benching_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3231,3231,'none','kein','aucun', 'nessuno', 'niciun', '', 'KB', 'AN', '', '', 'true');
  INSERT INTO tww_vl.benching_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3033,3033,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', 'U', 'I', '', '', 'true');
  ALTER TABLE tww_od.benching ADD CONSTRAINT fkey_vl_benching_kind FOREIGN KEY (kind)
- REFERENCES tww_vl.benching_kind (code) MATCH SIMPLE 
+ REFERENCES tww_vl.benching_kind (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.flushing_nozzle ADD CONSTRAINT oorel_od_flushing_nozzle_structure_part FOREIGN KEY (obj_id) REFERENCES tww_od.structure_part(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE tww_od.connection_object ADD COLUMN fk_wastewater_networkelement varchar(16);
@@ -3982,7 +3982,7 @@ ALTER TABLE tww_vl.individual_surface_function ADD CONSTRAINT pkey_tww_vl_indivi
  INSERT INTO tww_vl.individual_surface_function (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3465,3465,'connecting_or_principal_or_major_road','Verbindungs_Hauptverkehrs_Hochleistungsstrassen','routes_de_raccordement_principales_grand_trafic', 'zzz_Verbindungs_Hauptverkehrs_Hochleistungsstrassen', 'rrr_Verbindungs_Hauptverkehrs_Hochleistungsstrassen', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.individual_surface_function (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3463,3463,'forecourt_and_access_road','VorplaetzeZufahrten','places_devant_entree_acces', 'zzz_VorplaetzeZufahrten', 'rrr_VorplaetzeZufahrten', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.individual_surface ADD CONSTRAINT fkey_vl_individual_surface_function FOREIGN KEY (function)
- REFERENCES tww_vl.individual_surface_function (code) MATCH SIMPLE 
+ REFERENCES tww_vl.individual_surface_function (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.individual_surface_pavement () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.individual_surface_pavement ADD CONSTRAINT pkey_tww_vl_individual_surface_pavement_code PRIMARY KEY (code);
@@ -3993,7 +3993,7 @@ ALTER TABLE tww_vl.individual_surface_pavement ADD CONSTRAINT pkey_tww_vl_indivi
  INSERT INTO tww_vl.individual_surface_pavement (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3030,3030,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.individual_surface_pavement (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (2034,2034,'barren','vegetationslos','sans_vegetation', 'zzz_vegetationslos', 'rrr_vegetationslos', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.individual_surface ADD CONSTRAINT fkey_vl_individual_surface_pavement FOREIGN KEY (pavement)
- REFERENCES tww_vl.individual_surface_pavement (code) MATCH SIMPLE 
+ REFERENCES tww_vl.individual_surface_pavement (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.fountain ADD CONSTRAINT oorel_od_fountain_connection_object FOREIGN KEY (obj_id) REFERENCES tww_od.connection_object(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE tww_od.log_card ADD COLUMN fk_pwwf_wastewater_node varchar(16);
@@ -4012,7 +4012,7 @@ ALTER TABLE tww_vl.log_card_control_remote_control ADD CONSTRAINT pkey_tww_vl_lo
  INSERT INTO tww_vl.log_card_control_remote_control (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8533,8533,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.log_card_control_remote_control (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8531,8531,'interconnection_control','Verbundsteuerung','commande_combinee', 'comando_composito', 'rrr_Verbundsteuerung', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.log_card ADD CONSTRAINT fkey_vl_log_card_control_remote_control FOREIGN KEY (control_remote_control)
- REFERENCES tww_vl.log_card_control_remote_control (code) MATCH SIMPLE 
+ REFERENCES tww_vl.log_card_control_remote_control (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.log_card_information_source () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.log_card_information_source ADD CONSTRAINT pkey_tww_vl_log_card_information_source_code PRIMARY KEY (code);
@@ -4021,7 +4021,7 @@ ALTER TABLE tww_vl.log_card_information_source ADD CONSTRAINT pkey_tww_vl_log_ca
  INSERT INTO tww_vl.log_card_information_source (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5602,5602,'gwdp_responsible_body','GEP_Traegerschaft','entite_responsable_PGEE', 'PGS_ente_responsabile', 'rrr_GEP_Traegerschaft', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.log_card_information_source (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5603,5603,'unknown','unbekannt','inconnue', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.log_card ADD CONSTRAINT fkey_vl_log_card_information_source FOREIGN KEY (information_source)
- REFERENCES tww_vl.log_card_information_source (code) MATCH SIMPLE 
+ REFERENCES tww_vl.log_card_information_source (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.catchment_area ADD COLUMN fk_wastewater_networkelement_rw_current varchar(16);
 ALTER TABLE tww_od.catchment_area ADD CONSTRAINT rel_catchment_area_wastewater_networkelement_rw_current FOREIGN KEY (fk_wastewater_networkelement_rw_current) REFERENCES tww_od.wastewater_networkelement(obj_id) ON UPDATE CASCADE ON DELETE set null;
@@ -4045,7 +4045,7 @@ ALTER TABLE tww_vl.catchment_area_direct_discharge_current ADD CONSTRAINT pkey_t
  INSERT INTO tww_vl.catchment_area_direct_discharge_current (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5458,5458,'no','nein','non', 'no', 'nu', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.catchment_area_direct_discharge_current (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5463,5463,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.catchment_area ADD CONSTRAINT fkey_vl_catchment_area_direct_discharge_current FOREIGN KEY (direct_discharge_current)
- REFERENCES tww_vl.catchment_area_direct_discharge_current (code) MATCH SIMPLE 
+ REFERENCES tww_vl.catchment_area_direct_discharge_current (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.catchment_area_direct_discharge_planned () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.catchment_area_direct_discharge_planned ADD CONSTRAINT pkey_tww_vl_catchment_area_direct_discharge_planned_code PRIMARY KEY (code);
@@ -4053,7 +4053,7 @@ ALTER TABLE tww_vl.catchment_area_direct_discharge_planned ADD CONSTRAINT pkey_t
  INSERT INTO tww_vl.catchment_area_direct_discharge_planned (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5460,5460,'no','nein','non', 'no', 'nu', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.catchment_area_direct_discharge_planned (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5464,5464,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.catchment_area ADD CONSTRAINT fkey_vl_catchment_area_direct_discharge_planned FOREIGN KEY (direct_discharge_planned)
- REFERENCES tww_vl.catchment_area_direct_discharge_planned (code) MATCH SIMPLE 
+ REFERENCES tww_vl.catchment_area_direct_discharge_planned (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.catchment_area_drainage_system_current () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.catchment_area_drainage_system_current ADD CONSTRAINT pkey_tww_vl_catchment_area_drainage_system_current_code PRIMARY KEY (code);
@@ -4066,7 +4066,7 @@ ALTER TABLE tww_vl.catchment_area_drainage_system_current ADD CONSTRAINT pkey_tw
  INSERT INTO tww_vl.catchment_area_drainage_system_current (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5189,5189,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.catchment_area_drainage_system_current (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8693,8693,'separated_system_in_preparation','vorbereitetes_Trennsystem','systeme_separatif_prepare', 'predisposizione_sistema_separato', 'rrr_vorbereitetes_Trennsystem', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.catchment_area ADD CONSTRAINT fkey_vl_catchment_area_drainage_system_current FOREIGN KEY (drainage_system_current)
- REFERENCES tww_vl.catchment_area_drainage_system_current (code) MATCH SIMPLE 
+ REFERENCES tww_vl.catchment_area_drainage_system_current (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.catchment_area_drainage_system_planned () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.catchment_area_drainage_system_planned ADD CONSTRAINT pkey_tww_vl_catchment_area_drainage_system_planned_code PRIMARY KEY (code);
@@ -4079,7 +4079,7 @@ ALTER TABLE tww_vl.catchment_area_drainage_system_planned ADD CONSTRAINT pkey_tw
  INSERT INTO tww_vl.catchment_area_drainage_system_planned (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5195,5195,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.catchment_area_drainage_system_planned (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8692,8692,'separated_system_in_preparation','vorbereitetes_Trennsystem','systeme_separatif_prepare', 'predisposizione_sistema_separato', 'rrr_vorbereitetes_Trennsystem', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.catchment_area ADD CONSTRAINT fkey_vl_catchment_area_drainage_system_planned FOREIGN KEY (drainage_system_planned)
- REFERENCES tww_vl.catchment_area_drainage_system_planned (code) MATCH SIMPLE 
+ REFERENCES tww_vl.catchment_area_drainage_system_planned (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.catchment_area_infiltration_current () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.catchment_area_infiltration_current ADD CONSTRAINT pkey_tww_vl_catchment_area_infiltration_current_code PRIMARY KEY (code);
@@ -4087,7 +4087,7 @@ ALTER TABLE tww_vl.catchment_area_infiltration_current ADD CONSTRAINT pkey_tww_v
  INSERT INTO tww_vl.catchment_area_infiltration_current (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5453,5453,'no','nein','non', 'no', 'nu', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.catchment_area_infiltration_current (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5165,5165,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.catchment_area ADD CONSTRAINT fkey_vl_catchment_area_infiltration_current FOREIGN KEY (infiltration_current)
- REFERENCES tww_vl.catchment_area_infiltration_current (code) MATCH SIMPLE 
+ REFERENCES tww_vl.catchment_area_infiltration_current (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.catchment_area_infiltration_planned () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.catchment_area_infiltration_planned ADD CONSTRAINT pkey_tww_vl_catchment_area_infiltration_planned_code PRIMARY KEY (code);
@@ -4095,7 +4095,7 @@ ALTER TABLE tww_vl.catchment_area_infiltration_planned ADD CONSTRAINT pkey_tww_v
  INSERT INTO tww_vl.catchment_area_infiltration_planned (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5462,5462,'no','nein','non', 'no', 'nu', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.catchment_area_infiltration_planned (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5170,5170,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.catchment_area ADD CONSTRAINT fkey_vl_catchment_area_infiltration_planned FOREIGN KEY (infiltration_planned)
- REFERENCES tww_vl.catchment_area_infiltration_planned (code) MATCH SIMPLE 
+ REFERENCES tww_vl.catchment_area_infiltration_planned (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.catchment_area_retention_current () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.catchment_area_retention_current ADD CONSTRAINT pkey_tww_vl_catchment_area_retention_current_code PRIMARY KEY (code);
@@ -4103,7 +4103,7 @@ ALTER TABLE tww_vl.catchment_area_retention_current ADD CONSTRAINT pkey_tww_vl_c
  INSERT INTO tww_vl.catchment_area_retention_current (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5468,5468,'no','nein','non', 'no', 'nu', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.catchment_area_retention_current (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5469,5469,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.catchment_area ADD CONSTRAINT fkey_vl_catchment_area_retention_current FOREIGN KEY (retention_current)
- REFERENCES tww_vl.catchment_area_retention_current (code) MATCH SIMPLE 
+ REFERENCES tww_vl.catchment_area_retention_current (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.catchment_area_retention_planned () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.catchment_area_retention_planned ADD CONSTRAINT pkey_tww_vl_catchment_area_retention_planned_code PRIMARY KEY (code);
@@ -4111,7 +4111,7 @@ ALTER TABLE tww_vl.catchment_area_retention_planned ADD CONSTRAINT pkey_tww_vl_c
  INSERT INTO tww_vl.catchment_area_retention_planned (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5471,5471,'no','nein','non', 'no', 'nu', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.catchment_area_retention_planned (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5472,5472,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.catchment_area ADD CONSTRAINT fkey_vl_catchment_area_retention_planned FOREIGN KEY (retention_planned)
- REFERENCES tww_vl.catchment_area_retention_planned (code) MATCH SIMPLE 
+ REFERENCES tww_vl.catchment_area_retention_planned (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.surface_runoff_parameters ADD COLUMN fk_catchment_area varchar(16);
 ALTER TABLE tww_od.surface_runoff_parameters ADD CONSTRAINT rel_surface_runoff_parameters_catchment_area FOREIGN KEY (fk_catchment_area) REFERENCES tww_od.catchment_area(obj_id) ON UPDATE CASCADE ON DELETE cascade;
@@ -4129,7 +4129,7 @@ ALTER TABLE tww_vl.measuring_point_damming_device ADD CONSTRAINT pkey_tww_vl_mea
  INSERT INTO tww_vl.measuring_point_damming_device (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5724,5724,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.measuring_point_damming_device (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5723,5723,'venturi_necking','Venturieinschnuerung','etranglement_venturi', 'restringimento_venturi', 'rrr_Venturieinschnuerung', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.measuring_point ADD CONSTRAINT fkey_vl_measuring_point_damming_device FOREIGN KEY (damming_device)
- REFERENCES tww_vl.measuring_point_damming_device (code) MATCH SIMPLE 
+ REFERENCES tww_vl.measuring_point_damming_device (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.measuring_point_purpose () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.measuring_point_purpose ADD CONSTRAINT pkey_tww_vl_measuring_point_purpose_code PRIMARY KEY (code);
@@ -4138,7 +4138,7 @@ ALTER TABLE tww_vl.measuring_point_purpose ADD CONSTRAINT pkey_tww_vl_measuring_
  INSERT INTO tww_vl.measuring_point_purpose (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4594,4594,'technical_purpose','technischer_Zweck','but_technique', 'scopo_tecnico', 'rrr_technischer_Zweck', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.measuring_point_purpose (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4592,4592,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.measuring_point ADD CONSTRAINT fkey_vl_measuring_point_purpose FOREIGN KEY (purpose)
- REFERENCES tww_vl.measuring_point_purpose (code) MATCH SIMPLE 
+ REFERENCES tww_vl.measuring_point_purpose (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.measuring_device ADD COLUMN fk_measuring_point varchar(16);
 ALTER TABLE tww_od.measuring_device ADD CONSTRAINT rel_measuring_device_measuring_point FOREIGN KEY (fk_measuring_point) REFERENCES tww_od.measuring_point(obj_id) ON UPDATE CASCADE ON DELETE set null;
@@ -4154,7 +4154,7 @@ ALTER TABLE tww_vl.measuring_device_kind ADD CONSTRAINT pkey_tww_vl_measuring_de
  INSERT INTO tww_vl.measuring_device_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (6322,6322,'ultrasound','Ultraschall','ultrason', 'ultrasuono', 'ultrasunete', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.measuring_device_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5709,5709,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.measuring_device ADD CONSTRAINT fkey_vl_measuring_device_kind FOREIGN KEY (kind)
- REFERENCES tww_vl.measuring_device_kind (code) MATCH SIMPLE 
+ REFERENCES tww_vl.measuring_device_kind (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.measurement_series ADD COLUMN fk_measuring_point varchar(16);
 ALTER TABLE tww_od.measurement_series ADD CONSTRAINT rel_measurement_series_measuring_point FOREIGN KEY (fk_measuring_point) REFERENCES tww_od.measuring_point(obj_id) ON UPDATE CASCADE ON DELETE cascade;
@@ -4168,7 +4168,7 @@ ALTER TABLE tww_vl.measurement_series_kind ADD CONSTRAINT pkey_tww_vl_measuremen
  INSERT INTO tww_vl.measurement_series_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8778,8778,'simulation','Simulation','simulation', 'simulazione', 'rrr_Simulation', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.measurement_series_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3053,3053,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.measurement_series ADD CONSTRAINT fkey_vl_measurement_series_kind FOREIGN KEY (kind)
- REFERENCES tww_vl.measurement_series_kind (code) MATCH SIMPLE 
+ REFERENCES tww_vl.measurement_series_kind (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.measurement_result ADD COLUMN fk_measuring_device varchar(16);
 ALTER TABLE tww_od.measurement_result ADD CONSTRAINT rel_measurement_result_measuring_device FOREIGN KEY (fk_measuring_device) REFERENCES tww_od.measuring_device(obj_id) ON UPDATE CASCADE ON DELETE set null;
@@ -4181,7 +4181,7 @@ ALTER TABLE tww_vl.measurement_result_measurement_type ADD CONSTRAINT pkey_tww_v
  INSERT INTO tww_vl.measurement_result_measurement_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5734,5734,'level','Niveau','niveau', 'livello', '', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.measurement_result_measurement_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5735,5735,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.measurement_result ADD CONSTRAINT fkey_vl_measurement_result_measurement_type FOREIGN KEY (measurement_type)
- REFERENCES tww_vl.measurement_result_measurement_type (code) MATCH SIMPLE 
+ REFERENCES tww_vl.measurement_result_measurement_type (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.overflow ADD COLUMN fk_wastewater_node varchar(16);
 ALTER TABLE tww_od.overflow ADD CONSTRAINT rel_overflow_wastewater_node FOREIGN KEY (fk_wastewater_node) REFERENCES tww_od.wastewater_node(obj_id) ON UPDATE CASCADE ON DELETE cascade;
@@ -4203,7 +4203,7 @@ ALTER TABLE tww_vl.overflow_actuation ADD CONSTRAINT pkey_tww_vl_overflow_actuat
  INSERT INTO tww_vl.overflow_actuation (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (304,304,'pneumatic','pneumatisch','pneumatique', 'zzz_pneumatisch', 'pneumatic', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.overflow_actuation (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3005,3005,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.overflow ADD CONSTRAINT fkey_vl_overflow_actuation FOREIGN KEY (actuation)
- REFERENCES tww_vl.overflow_actuation (code) MATCH SIMPLE 
+ REFERENCES tww_vl.overflow_actuation (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.overflow_adjustability () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.overflow_adjustability ADD CONSTRAINT pkey_tww_vl_overflow_adjustability_code PRIMARY KEY (code);
@@ -4211,7 +4211,7 @@ ALTER TABLE tww_vl.overflow_adjustability ADD CONSTRAINT pkey_tww_vl_overflow_ad
  INSERT INTO tww_vl.overflow_adjustability (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3021,3021,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.overflow_adjustability (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (356,356,'adjustable','verstellbar','reglable', 'zzz_verstellbar', 'rrr_verstellbar', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.overflow ADD CONSTRAINT fkey_vl_overflow_adjustability FOREIGN KEY (adjustability)
- REFERENCES tww_vl.overflow_adjustability (code) MATCH SIMPLE 
+ REFERENCES tww_vl.overflow_adjustability (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.overflow_control () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.overflow_control ADD CONSTRAINT pkey_tww_vl_overflow_control_code PRIMARY KEY (code);
@@ -4220,7 +4220,7 @@ ALTER TABLE tww_vl.overflow_control ADD CONSTRAINT pkey_tww_vl_overflow_control_
  INSERT INTO tww_vl.overflow_control (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (306,306,'none','keine','aucun', 'nessuno', 'inexistent', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.overflow_control (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3028,3028,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.overflow ADD CONSTRAINT fkey_vl_overflow_control FOREIGN KEY (control)
- REFERENCES tww_vl.overflow_control (code) MATCH SIMPLE 
+ REFERENCES tww_vl.overflow_control (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.overflow_function () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.overflow_function ADD CONSTRAINT pkey_tww_vl_overflow_function_code PRIMARY KEY (code);
@@ -4231,7 +4231,7 @@ ALTER TABLE tww_vl.overflow_function ADD CONSTRAINT pkey_tww_vl_overflow_functio
  INSERT INTO tww_vl.overflow_function (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5546,5546,'internal_overflow','Trennueberlauf','deversoir_interne', 'zzz_Trennueberlauf', 'rrr_Trennueberlauf', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.overflow_function (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3010,3010,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.overflow ADD CONSTRAINT fkey_vl_overflow_function FOREIGN KEY (function)
- REFERENCES tww_vl.overflow_function (code) MATCH SIMPLE 
+ REFERENCES tww_vl.overflow_function (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.overflow_signal_transmission () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.overflow_signal_transmission ADD CONSTRAINT pkey_tww_vl_overflow_signal_transmission_code PRIMARY KEY (code);
@@ -4240,7 +4240,7 @@ ALTER TABLE tww_vl.overflow_signal_transmission ADD CONSTRAINT pkey_tww_vl_overf
  INSERT INTO tww_vl.overflow_signal_transmission (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (2695,2695,'sending_receiving','senden_empfangen','emettre_recevoir', 'zzz_senden_empfangen', 'rrr_senden_empfangen', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.overflow_signal_transmission (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3056,3056,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.overflow ADD CONSTRAINT fkey_vl_overflow_signal_transmission FOREIGN KEY (signal_transmission)
- REFERENCES tww_vl.overflow_signal_transmission (code) MATCH SIMPLE 
+ REFERENCES tww_vl.overflow_signal_transmission (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.throttle_shut_off_unit ADD COLUMN fk_wastewater_node varchar(16);
 ALTER TABLE tww_od.throttle_shut_off_unit ADD CONSTRAINT rel_throttle_shut_off_unit_wastewater_node FOREIGN KEY (fk_wastewater_node) REFERENCES tww_od.wastewater_node(obj_id) ON UPDATE CASCADE ON DELETE cascade;
@@ -4260,7 +4260,7 @@ ALTER TABLE tww_vl.throttle_shut_off_unit_actuation ADD CONSTRAINT pkey_tww_vl_t
  INSERT INTO tww_vl.throttle_shut_off_unit_actuation (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3158,3158,'pneumatic','pneumatisch','pneumatique', 'zzz_pneumatisch', 'pneumatic', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.throttle_shut_off_unit_actuation (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3151,3151,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscut', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.throttle_shut_off_unit ADD CONSTRAINT fkey_vl_throttle_shut_off_unit_actuation FOREIGN KEY (actuation)
- REFERENCES tww_vl.throttle_shut_off_unit_actuation (code) MATCH SIMPLE 
+ REFERENCES tww_vl.throttle_shut_off_unit_actuation (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.throttle_shut_off_unit_adjustability () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.throttle_shut_off_unit_adjustability ADD CONSTRAINT pkey_tww_vl_throttle_shut_off_unit_adjustability_code PRIMARY KEY (code);
@@ -4268,7 +4268,7 @@ ALTER TABLE tww_vl.throttle_shut_off_unit_adjustability ADD CONSTRAINT pkey_tww_
  INSERT INTO tww_vl.throttle_shut_off_unit_adjustability (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3161,3161,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.throttle_shut_off_unit_adjustability (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3160,3160,'adjustable','verstellbar','reglable', 'zzz_verstellbar', 'rrr_verstellbar', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.throttle_shut_off_unit ADD CONSTRAINT fkey_vl_throttle_shut_off_unit_adjustability FOREIGN KEY (adjustability)
- REFERENCES tww_vl.throttle_shut_off_unit_adjustability (code) MATCH SIMPLE 
+ REFERENCES tww_vl.throttle_shut_off_unit_adjustability (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.throttle_shut_off_unit_control () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.throttle_shut_off_unit_control ADD CONSTRAINT pkey_tww_vl_throttle_shut_off_unit_control_code PRIMARY KEY (code);
@@ -4277,7 +4277,7 @@ ALTER TABLE tww_vl.throttle_shut_off_unit_control ADD CONSTRAINT pkey_tww_vl_thr
  INSERT INTO tww_vl.throttle_shut_off_unit_control (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3165,3165,'none','keine','aucun', 'nessuno', 'inexistent', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.throttle_shut_off_unit_control (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3164,3164,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.throttle_shut_off_unit ADD CONSTRAINT fkey_vl_throttle_shut_off_unit_control FOREIGN KEY (control)
- REFERENCES tww_vl.throttle_shut_off_unit_control (code) MATCH SIMPLE 
+ REFERENCES tww_vl.throttle_shut_off_unit_control (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.throttle_shut_off_unit_kind () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.throttle_shut_off_unit_kind ADD CONSTRAINT pkey_tww_vl_throttle_shut_off_unit_kind_code PRIMARY KEY (code);
@@ -4297,7 +4297,7 @@ ALTER TABLE tww_vl.throttle_shut_off_unit_kind ADD CONSTRAINT pkey_tww_vl_thrott
  INSERT INTO tww_vl.throttle_shut_off_unit_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3046,3046,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.throttle_shut_off_unit_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (133,133,'whirl_throttle','Wirbeldrossel','limiteur_a_vortex', 'zzz_Wirbeldrossel', 'rrr_Wirbeldrossel', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.throttle_shut_off_unit ADD CONSTRAINT fkey_vl_throttle_shut_off_unit_kind FOREIGN KEY (kind)
- REFERENCES tww_vl.throttle_shut_off_unit_kind (code) MATCH SIMPLE 
+ REFERENCES tww_vl.throttle_shut_off_unit_kind (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.throttle_shut_off_unit_signal_transmission () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.throttle_shut_off_unit_signal_transmission ADD CONSTRAINT pkey_tww_vl_throttle_shut_off_unit_signal_transmission_code PRIMARY KEY (code);
@@ -4306,7 +4306,7 @@ ALTER TABLE tww_vl.throttle_shut_off_unit_signal_transmission ADD CONSTRAINT pke
  INSERT INTO tww_vl.throttle_shut_off_unit_signal_transmission (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3169,3169,'sending_receiving','senden_empfangen','emettre_recevoir', 'zzz_senden_empfangen', 'rrr_senden_empfangen', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.throttle_shut_off_unit_signal_transmission (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3170,3170,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.throttle_shut_off_unit ADD CONSTRAINT fkey_vl_throttle_shut_off_unit_signal_transmission FOREIGN KEY (signal_transmission)
- REFERENCES tww_vl.throttle_shut_off_unit_signal_transmission (code) MATCH SIMPLE 
+ REFERENCES tww_vl.throttle_shut_off_unit_signal_transmission (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.prank_weir ADD CONSTRAINT oorel_od_prank_weir_overflow FOREIGN KEY (obj_id) REFERENCES tww_od.overflow(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
 CREATE TABLE tww_vl.prank_weir_weir_edge () INHERITS (tww_vl.value_list_base);
@@ -4317,14 +4317,14 @@ ALTER TABLE tww_vl.prank_weir_weir_edge ADD CONSTRAINT pkey_tww_vl_prank_weir_we
  INSERT INTO tww_vl.prank_weir_weir_edge (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (349,349,'sharp_edged','scharfkantig','arete_vive', 'zzz_scharfkantig', 'margini_ascutite', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.prank_weir_weir_edge (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3014,3014,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.prank_weir ADD CONSTRAINT fkey_vl_prank_weir_weir_edge FOREIGN KEY (weir_edge)
- REFERENCES tww_vl.prank_weir_weir_edge (code) MATCH SIMPLE 
+ REFERENCES tww_vl.prank_weir_weir_edge (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.prank_weir_weir_kind () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.prank_weir_weir_kind ADD CONSTRAINT pkey_tww_vl_prank_weir_weir_kind_code PRIMARY KEY (code);
  INSERT INTO tww_vl.prank_weir_weir_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5772,5772,'raised','hochgezogen','a_seuil_sureleve', 'laterale_alto', 'rrr_hochgezogen', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.prank_weir_weir_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5771,5771,'low','niedrig','a_seuil_abaisse', 'laterale_basso', '', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.prank_weir ADD CONSTRAINT fkey_vl_prank_weir_weir_kind FOREIGN KEY (weir_kind)
- REFERENCES tww_vl.prank_weir_weir_kind (code) MATCH SIMPLE 
+ REFERENCES tww_vl.prank_weir_weir_kind (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.pump ADD CONSTRAINT oorel_od_pump_overflow FOREIGN KEY (obj_id) REFERENCES tww_od.overflow(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
 CREATE TABLE tww_vl.pump_construction_type () INHERITS (tww_vl.value_list_base);
@@ -4337,7 +4337,7 @@ ALTER TABLE tww_vl.pump_construction_type ADD CONSTRAINT pkey_tww_vl_pump_constr
  INSERT INTO tww_vl.pump_construction_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3082,3082,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.pump_construction_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (2661,2661,'vacuum_system','Vakuumanlage','systeme_a_vide_d_air', 'impinato_a_vuoto_aria', 'rrr_Vakuumanlage', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.pump ADD CONSTRAINT fkey_vl_pump_construction_type FOREIGN KEY (construction_type)
- REFERENCES tww_vl.pump_construction_type (code) MATCH SIMPLE 
+ REFERENCES tww_vl.pump_construction_type (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.pump_placement_of_actuation () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.pump_placement_of_actuation ADD CONSTRAINT pkey_tww_vl_pump_placement_of_actuation_code PRIMARY KEY (code);
@@ -4345,7 +4345,7 @@ ALTER TABLE tww_vl.pump_placement_of_actuation ADD CONSTRAINT pkey_tww_vl_pump_p
  INSERT INTO tww_vl.pump_placement_of_actuation (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (311,311,'dry','trocken','non_submersible', 'zzz_trocken', 'rrr_trocken', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.pump_placement_of_actuation (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3070,3070,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.pump ADD CONSTRAINT fkey_vl_pump_placement_of_actuation FOREIGN KEY (placement_of_actuation)
- REFERENCES tww_vl.pump_placement_of_actuation (code) MATCH SIMPLE 
+ REFERENCES tww_vl.pump_placement_of_actuation (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.pump_placement_of_pump () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.pump_placement_of_pump ADD CONSTRAINT pkey_tww_vl_pump_placement_of_pump_code PRIMARY KEY (code);
@@ -4353,7 +4353,7 @@ ALTER TABLE tww_vl.pump_placement_of_pump ADD CONSTRAINT pkey_tww_vl_pump_placem
  INSERT INTO tww_vl.pump_placement_of_pump (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3071,3071,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.pump_placement_of_pump (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (363,363,'vertical','vertikal','vertical', 'zzz_vertikal', 'rrr_vertikal', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.pump ADD CONSTRAINT fkey_vl_pump_placement_of_pump FOREIGN KEY (placement_of_pump)
- REFERENCES tww_vl.pump_placement_of_pump (code) MATCH SIMPLE 
+ REFERENCES tww_vl.pump_placement_of_pump (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.leapingweir ADD CONSTRAINT oorel_od_leapingweir_overflow FOREIGN KEY (obj_id) REFERENCES tww_od.overflow(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
 CREATE TABLE tww_vl.leapingweir_opening_shape () INHERITS (tww_vl.value_list_base);
@@ -4364,7 +4364,7 @@ ALTER TABLE tww_vl.leapingweir_opening_shape ADD CONSTRAINT pkey_tww_vl_leapingw
  INSERT INTO tww_vl.leapingweir_opening_shape (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3583,3583,'rectangular','Rechteck','rectangulaire', 'zzz_Rechteck', 'rrr_Rechteck', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.leapingweir_opening_shape (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3584,3584,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.leapingweir ADD CONSTRAINT fkey_vl_leapingweir_opening_shape FOREIGN KEY (opening_shape)
- REFERENCES tww_vl.leapingweir_opening_shape (code) MATCH SIMPLE 
+ REFERENCES tww_vl.leapingweir_opening_shape (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.maintenance ADD CONSTRAINT oorel_od_maintenance_maintenance_event FOREIGN KEY (obj_id) REFERENCES tww_od.maintenance_event(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
 CREATE TABLE tww_vl.maintenance_kind () INHERITS (tww_vl.value_list_base);
@@ -4379,7 +4379,7 @@ ALTER TABLE tww_vl.maintenance_kind ADD CONSTRAINT pkey_tww_vl_maintenance_kind_
  INSERT INTO tww_vl.maintenance_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9316,9316,'yyy_Unterhaltsplanung','Unterhaltsplanung','xxx_Unterhaltsplanung', 'zzz_Unterhaltsplanung', 'rrr_Unterhaltsplanung', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.maintenance_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9315,9315,'examination','Untersuchung','examen', 'zzz_Untersuchung', 'rrr_Untersuchung', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.maintenance ADD CONSTRAINT fkey_vl_maintenance_kind FOREIGN KEY (kind)
- REFERENCES tww_vl.maintenance_kind (code) MATCH SIMPLE 
+ REFERENCES tww_vl.maintenance_kind (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.bio_ecol_assessment ADD CONSTRAINT oorel_od_bio_ecol_assessment_maintenance_event FOREIGN KEY (obj_id) REFERENCES tww_od.maintenance_event(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
 CREATE TABLE tww_vl.bio_ecol_assessment_comparison_last () INHERITS (tww_vl.value_list_base);
@@ -4391,7 +4391,7 @@ ALTER TABLE tww_vl.bio_ecol_assessment_comparison_last ADD CONSTRAINT pkey_tww_v
  INSERT INTO tww_vl.bio_ecol_assessment_comparison_last (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (6269,6269,'improvement','Verbesserung','amelioration', 'miglioramento', 'rrrr_Verbesserung', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.bio_ecol_assessment_comparison_last (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (6270,6270,'worsening','Verschlechterung','deterioration', 'peggioramento', 'rrr_Verschlechterung', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.bio_ecol_assessment ADD CONSTRAINT fkey_vl_bio_ecol_assessment_comparison_last FOREIGN KEY (comparison_last)
- REFERENCES tww_vl.bio_ecol_assessment_comparison_last (code) MATCH SIMPLE 
+ REFERENCES tww_vl.bio_ecol_assessment_comparison_last (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.bio_ecol_assessment_impact_auxiliary_indic () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.bio_ecol_assessment_impact_auxiliary_indic ADD CONSTRAINT pkey_tww_vl_bio_ecol_assessment_impact_auxiliary_indic_code PRIMARY KEY (code);
@@ -4402,7 +4402,7 @@ ALTER TABLE tww_vl.bio_ecol_assessment_impact_auxiliary_indic ADD CONSTRAINT pke
  INSERT INTO tww_vl.bio_ecol_assessment_impact_auxiliary_indic (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8690,8690,'unknown','unbekannt','inconnue', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.bio_ecol_assessment_impact_auxiliary_indic (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8688,8688,'unclear','unklar','pas_clair', 'non_chiaro', 'rrr_unklar', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.bio_ecol_assessment ADD CONSTRAINT fkey_vl_bio_ecol_assessment_impact_auxiliary_indic FOREIGN KEY (impact_auxiliary_indic)
- REFERENCES tww_vl.bio_ecol_assessment_impact_auxiliary_indic (code) MATCH SIMPLE 
+ REFERENCES tww_vl.bio_ecol_assessment_impact_auxiliary_indic (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.bio_ecol_assessment_impact_external_aspect () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.bio_ecol_assessment_impact_external_aspect ADD CONSTRAINT pkey_tww_vl_bio_ecol_assessment_impact_external_aspect_code PRIMARY KEY (code);
@@ -4413,7 +4413,7 @@ ALTER TABLE tww_vl.bio_ecol_assessment_impact_external_aspect ADD CONSTRAINT pke
  INSERT INTO tww_vl.bio_ecol_assessment_impact_external_aspect (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8669,8669,'unknown','unbekannt','inconnue', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.bio_ecol_assessment_impact_external_aspect (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8667,8667,'unclear','unklar','pas_clair', 'non_chiaro', 'rrr_unklar', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.bio_ecol_assessment ADD CONSTRAINT fkey_vl_bio_ecol_assessment_impact_external_aspect FOREIGN KEY (impact_external_aspect)
- REFERENCES tww_vl.bio_ecol_assessment_impact_external_aspect (code) MATCH SIMPLE 
+ REFERENCES tww_vl.bio_ecol_assessment_impact_external_aspect (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.bio_ecol_assessment_impact_macroinvertebrates () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.bio_ecol_assessment_impact_macroinvertebrates ADD CONSTRAINT pkey_tww_vl_bio_ecol_assessment_impact_macroinvertebrates_code PRIMARY KEY (code);
@@ -4424,7 +4424,7 @@ ALTER TABLE tww_vl.bio_ecol_assessment_impact_macroinvertebrates ADD CONSTRAINT 
  INSERT INTO tww_vl.bio_ecol_assessment_impact_macroinvertebrates (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8676,8676,'unknown','unbekannt','inconnue', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.bio_ecol_assessment_impact_macroinvertebrates (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8674,8674,'unclear','unklar','pas_clair', 'non_chiaro', 'rrr_unklar', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.bio_ecol_assessment ADD CONSTRAINT fkey_vl_bio_ecol_assessment_impact_macroinvertebrates FOREIGN KEY (impact_macroinvertebrates)
- REFERENCES tww_vl.bio_ecol_assessment_impact_macroinvertebrates (code) MATCH SIMPLE 
+ REFERENCES tww_vl.bio_ecol_assessment_impact_macroinvertebrates (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.bio_ecol_assessment_impact_water_plants () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.bio_ecol_assessment_impact_water_plants ADD CONSTRAINT pkey_tww_vl_bio_ecol_assessment_impact_water_plants_code PRIMARY KEY (code);
@@ -4435,7 +4435,7 @@ ALTER TABLE tww_vl.bio_ecol_assessment_impact_water_plants ADD CONSTRAINT pkey_t
  INSERT INTO tww_vl.bio_ecol_assessment_impact_water_plants (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8683,8683,'unknown','unbekannt','inconnue', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.bio_ecol_assessment_impact_water_plants (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8681,8681,'unclear','unklar','pas_clair', 'non_chiaro', 'rrr_unklar', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.bio_ecol_assessment ADD CONSTRAINT fkey_vl_bio_ecol_assessment_impact_water_plants FOREIGN KEY (impact_water_plants)
- REFERENCES tww_vl.bio_ecol_assessment_impact_water_plants (code) MATCH SIMPLE 
+ REFERENCES tww_vl.bio_ecol_assessment_impact_water_plants (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.bio_ecol_assessment_intervention_demand () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.bio_ecol_assessment_intervention_demand ADD CONSTRAINT pkey_tww_vl_bio_ecol_assessment_intervention_demand_code PRIMARY KEY (code);
@@ -4445,7 +4445,7 @@ ALTER TABLE tww_vl.bio_ecol_assessment_intervention_demand ADD CONSTRAINT pkey_t
  INSERT INTO tww_vl.bio_ecol_assessment_intervention_demand (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5944,5944,'no','nein','non', 'no', 'nu', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.bio_ecol_assessment_intervention_demand (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9093,9093,'clarify_status','Status_klaeren','clarifier_statut', 'chiarire_stato', 'rrr_Status_klaeren', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.bio_ecol_assessment ADD CONSTRAINT fkey_vl_bio_ecol_assessment_intervention_demand FOREIGN KEY (intervention_demand)
- REFERENCES tww_vl.bio_ecol_assessment_intervention_demand (code) MATCH SIMPLE 
+ REFERENCES tww_vl.bio_ecol_assessment_intervention_demand (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.bio_ecol_assessment_io_calculation () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.bio_ecol_assessment_io_calculation ADD CONSTRAINT pkey_tww_vl_bio_ecol_assessment_io_calculation_code PRIMARY KEY (code);
@@ -4453,7 +4453,7 @@ ALTER TABLE tww_vl.bio_ecol_assessment_io_calculation ADD CONSTRAINT pkey_tww_vl
  INSERT INTO tww_vl.bio_ecol_assessment_io_calculation (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5952,5952,'no','nein','non', 'no', 'nu', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.bio_ecol_assessment_io_calculation (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5954,5954,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.bio_ecol_assessment ADD CONSTRAINT fkey_vl_bio_ecol_assessment_io_calculation FOREIGN KEY (io_calculation)
- REFERENCES tww_vl.bio_ecol_assessment_io_calculation (code) MATCH SIMPLE 
+ REFERENCES tww_vl.bio_ecol_assessment_io_calculation (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.bio_ecol_assessment_relevance_matrix () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.bio_ecol_assessment_relevance_matrix ADD CONSTRAINT pkey_tww_vl_bio_ecol_assessment_relevance_matrix_code PRIMARY KEY (code);
@@ -4461,7 +4461,7 @@ ALTER TABLE tww_vl.bio_ecol_assessment_relevance_matrix ADD CONSTRAINT pkey_tww_
  INSERT INTO tww_vl.bio_ecol_assessment_relevance_matrix (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5948,5948,'no','nein','non', 'no', 'nu', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.bio_ecol_assessment_relevance_matrix (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5950,5950,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.bio_ecol_assessment ADD CONSTRAINT fkey_vl_bio_ecol_assessment_relevance_matrix FOREIGN KEY (relevance_matrix)
- REFERENCES tww_vl.bio_ecol_assessment_relevance_matrix (code) MATCH SIMPLE 
+ REFERENCES tww_vl.bio_ecol_assessment_relevance_matrix (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.bio_ecol_assessment_type_water_body () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.bio_ecol_assessment_type_water_body ADD CONSTRAINT pkey_tww_vl_bio_ecol_assessment_type_water_body_code PRIMARY KEY (code);
@@ -4476,7 +4476,7 @@ ALTER TABLE tww_vl.bio_ecol_assessment_type_water_body ADD CONSTRAINT pkey_tww_v
  INSERT INTO tww_vl.bio_ecol_assessment_type_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9149,9149,'lake','See','lac', 'lago', 'rrr_See', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.bio_ecol_assessment_type_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5890,5890,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.bio_ecol_assessment ADD CONSTRAINT fkey_vl_bio_ecol_assessment_type_water_body FOREIGN KEY (type_water_body)
- REFERENCES tww_vl.bio_ecol_assessment_type_water_body (code) MATCH SIMPLE 
+ REFERENCES tww_vl.bio_ecol_assessment_type_water_body (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.hydraulic_char_data ADD COLUMN fk_wastewater_node varchar(16);
 ALTER TABLE tww_od.hydraulic_char_data ADD CONSTRAINT rel_hydraulic_char_data_wastewater_node FOREIGN KEY (fk_wastewater_node) REFERENCES tww_od.wastewater_node(obj_id) ON UPDATE CASCADE ON DELETE set null;
@@ -4490,7 +4490,7 @@ ALTER TABLE tww_vl.hydraulic_char_data_is_overflowing ADD CONSTRAINT pkey_tww_vl
  INSERT INTO tww_vl.hydraulic_char_data_is_overflowing (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5775,5775,'no','nein','non', 'no', 'nu', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.hydraulic_char_data_is_overflowing (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5778,5778,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.hydraulic_char_data ADD CONSTRAINT fkey_vl_hydraulic_char_data_is_overflowing FOREIGN KEY (is_overflowing)
- REFERENCES tww_vl.hydraulic_char_data_is_overflowing (code) MATCH SIMPLE 
+ REFERENCES tww_vl.hydraulic_char_data_is_overflowing (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.hydraulic_char_data_main_weir_kind () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.hydraulic_char_data_main_weir_kind ADD CONSTRAINT pkey_tww_vl_hydraulic_char_data_main_weir_kind_code PRIMARY KEY (code);
@@ -4498,7 +4498,7 @@ ALTER TABLE tww_vl.hydraulic_char_data_main_weir_kind ADD CONSTRAINT pkey_tww_vl
  INSERT INTO tww_vl.hydraulic_char_data_main_weir_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (6420,6420,'prank_weir_raised','Streichwehr_hochgezogen','deversoir_lateral_a_seuil_sureleve', 'stramazzo_laterale_alto', 'rrr_Streichwehr_hochgezogen', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.hydraulic_char_data_main_weir_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (6421,6421,'prank_weir_low','Streichwehr_niedrig','deversoir_lateral_a_seuil_abaisse', 'stamazzo_laterale_basso', 'rrr_Streichwehr_niedrig', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.hydraulic_char_data ADD CONSTRAINT fkey_vl_hydraulic_char_data_main_weir_kind FOREIGN KEY (main_weir_kind)
- REFERENCES tww_vl.hydraulic_char_data_main_weir_kind (code) MATCH SIMPLE 
+ REFERENCES tww_vl.hydraulic_char_data_main_weir_kind (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.hydraulic_char_data_pump_characteristics () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.hydraulic_char_data_pump_characteristics ADD CONSTRAINT pkey_tww_vl_hydraulic_char_data_pump_characteristics_code PRIMARY KEY (code);
@@ -4508,7 +4508,7 @@ ALTER TABLE tww_vl.hydraulic_char_data_pump_characteristics ADD CONSTRAINT pkey_
  INSERT INTO tww_vl.hydraulic_char_data_pump_characteristics (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (6377,6377,'parallel','parallel','parallele', 'parallelo', 'rrr_parallel', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.hydraulic_char_data_pump_characteristics (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (6378,6378,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.hydraulic_char_data ADD CONSTRAINT fkey_vl_hydraulic_char_data_pump_characteristics FOREIGN KEY (pump_characteristics)
- REFERENCES tww_vl.hydraulic_char_data_pump_characteristics (code) MATCH SIMPLE 
+ REFERENCES tww_vl.hydraulic_char_data_pump_characteristics (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.hydraulic_char_data_status () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.hydraulic_char_data_status ADD CONSTRAINT pkey_tww_vl_hydraulic_char_data_status_code PRIMARY KEY (code);
@@ -4516,7 +4516,7 @@ ALTER TABLE tww_vl.hydraulic_char_data_status ADD CONSTRAINT pkey_tww_vl_hydraul
  INSERT INTO tww_vl.hydraulic_char_data_status (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (6372,6372,'current','Ist','actuel', 'attuale', 'rrr_Ist', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.hydraulic_char_data_status (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (6373,6373,'current_optimized','Ist_optimiert','actuel_opt', 'attuale_ottimizzato', 'rrr_Ist_optimiert', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.hydraulic_char_data ADD CONSTRAINT fkey_vl_hydraulic_char_data_status FOREIGN KEY (status)
- REFERENCES tww_vl.hydraulic_char_data_status (code) MATCH SIMPLE 
+ REFERENCES tww_vl.hydraulic_char_data_status (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.backflow_prevention ADD COLUMN fk_throttle_shut_off_unit varchar(16);
 ALTER TABLE tww_od.backflow_prevention ADD CONSTRAINT rel_backflow_prevention_throttle_shut_off_unit FOREIGN KEY (fk_throttle_shut_off_unit) REFERENCES tww_od.throttle_shut_off_unit(obj_id) ON UPDATE CASCADE ON DELETE set null;
@@ -4531,7 +4531,7 @@ ALTER TABLE tww_vl.backflow_prevention_kind ADD CONSTRAINT pkey_tww_vl_backflow_
  INSERT INTO tww_vl.backflow_prevention_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5758,5758,'gate_shield','Stauschild','plaque_de_retenue', 'paratoia_cilindrica', 'rrr_Stauschild', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.backflow_prevention_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8636,8636,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.backflow_prevention ADD CONSTRAINT fkey_vl_backflow_prevention_kind FOREIGN KEY (kind)
- REFERENCES tww_vl.backflow_prevention_kind (code) MATCH SIMPLE 
+ REFERENCES tww_vl.backflow_prevention_kind (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.solids_retention ADD CONSTRAINT oorel_od_solids_retention_structure_part FOREIGN KEY (obj_id) REFERENCES tww_od.structure_part(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
 CREATE TABLE tww_vl.solids_retention_type () INHERITS (tww_vl.value_list_base);
@@ -4545,7 +4545,7 @@ ALTER TABLE tww_vl.solids_retention_type ADD CONSTRAINT pkey_tww_vl_solids_reten
  INSERT INTO tww_vl.solids_retention_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5668,5668,'scumboard','Tauchwand','paroi_plongeante', 'parete_sommersa', 'rrr_Tauchwand', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.solids_retention_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5669,5669,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.solids_retention ADD CONSTRAINT fkey_vl_solids_retention_type FOREIGN KEY (type)
- REFERENCES tww_vl.solids_retention_type (code) MATCH SIMPLE 
+ REFERENCES tww_vl.solids_retention_type (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.tank_cleaning ADD CONSTRAINT oorel_od_tank_cleaning_structure_part FOREIGN KEY (obj_id) REFERENCES tww_od.structure_part(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
 CREATE TABLE tww_vl.tank_cleaning_type () INHERITS (tww_vl.value_list_base);
@@ -4559,7 +4559,7 @@ ALTER TABLE tww_vl.tank_cleaning_type ADD CONSTRAINT pkey_tww_vl_tank_cleaning_t
  INSERT INTO tww_vl.tank_cleaning_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5624,5624,'tipping_bucket','Spuelkippe','bac_de_rincage', 'benna_ribaltabile', 'rrr_Spuelkippe', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.tank_cleaning_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8626,8626,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.tank_cleaning ADD CONSTRAINT fkey_vl_tank_cleaning_type FOREIGN KEY (type)
- REFERENCES tww_vl.tank_cleaning_type (code) MATCH SIMPLE 
+ REFERENCES tww_vl.tank_cleaning_type (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.tank_emptying ADD COLUMN fk_throttle_shut_off_unit varchar(16);
 ALTER TABLE tww_od.tank_emptying ADD CONSTRAINT rel_tank_emptying_throttle_shut_off_unit FOREIGN KEY (fk_throttle_shut_off_unit) REFERENCES tww_od.throttle_shut_off_unit(obj_id) ON UPDATE CASCADE ON DELETE set null;
@@ -4574,7 +4574,7 @@ ALTER TABLE tww_vl.tank_emptying_type ADD CONSTRAINT pkey_tww_vl_tank_emptying_t
  INSERT INTO tww_vl.tank_emptying_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5629,5629,'valve','Schieber','vanne', 'saracinesca', 'rrr_Schieber', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.tank_emptying_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8637,8637,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.tank_emptying ADD CONSTRAINT fkey_vl_tank_emptying_type FOREIGN KEY (type)
- REFERENCES tww_vl.tank_emptying_type (code) MATCH SIMPLE 
+ REFERENCES tww_vl.tank_emptying_type (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.catchement_area_totals ADD COLUMN fk_discharge_point varchar(16);
 ALTER TABLE tww_od.catchement_area_totals ADD CONSTRAINT rel_catchement_area_totals_discharge_point FOREIGN KEY (fk_discharge_point) REFERENCES tww_od.discharge_point(obj_id) ON UPDATE CASCADE ON DELETE set null;
@@ -4597,7 +4597,7 @@ ALTER TABLE tww_vl.disposal_disposal_place_current ADD CONSTRAINT pkey_tww_vl_di
  INSERT INTO tww_vl.disposal_disposal_place_current (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4945,4945,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.disposal_disposal_place_current (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4948,4948,'central_WWTP','zentraleARA','STEP_centrale', 'zzz_zentraleARA', 'rrr_zentraleARA', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.disposal ADD CONSTRAINT fkey_vl_disposal_disposal_place_current FOREIGN KEY (disposal_place_current)
- REFERENCES tww_vl.disposal_disposal_place_current (code) MATCH SIMPLE 
+ REFERENCES tww_vl.disposal_disposal_place_current (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.disposal_disposal_place_planned () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.disposal_disposal_place_planned ADD CONSTRAINT pkey_tww_vl_disposal_disposal_place_planned_code PRIMARY KEY (code);
@@ -4608,7 +4608,7 @@ ALTER TABLE tww_vl.disposal_disposal_place_planned ADD CONSTRAINT pkey_tww_vl_di
  INSERT INTO tww_vl.disposal_disposal_place_planned (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4950,4950,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.disposal_disposal_place_planned (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4953,4953,'central_WWTP','zentraleARA','STEP_centrale', 'zzz_zentraleARA', 'rrr_zentraleARA', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.disposal ADD CONSTRAINT fkey_vl_disposal_disposal_place_planned FOREIGN KEY (disposal_place_planned)
- REFERENCES tww_vl.disposal_disposal_place_planned (code) MATCH SIMPLE 
+ REFERENCES tww_vl.disposal_disposal_place_planned (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.building_group ADD COLUMN fk_disposal varchar(16);
 ALTER TABLE tww_od.building_group ADD CONSTRAINT rel_building_group_disposal FOREIGN KEY (fk_disposal) REFERENCES tww_od.disposal(obj_id) ON UPDATE CASCADE ON DELETE set null;
@@ -4620,7 +4620,7 @@ ALTER TABLE tww_vl.building_group_connecting_obligation ADD CONSTRAINT pkey_tww_
  INSERT INTO tww_vl.building_group_connecting_obligation (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5485,5485,'no','nein','non', 'no', 'nu', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.building_group_connecting_obligation (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5486,5486,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.building_group ADD CONSTRAINT fkey_vl_building_group_connecting_obligation FOREIGN KEY (connecting_obligation)
- REFERENCES tww_vl.building_group_connecting_obligation (code) MATCH SIMPLE 
+ REFERENCES tww_vl.building_group_connecting_obligation (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.building_group_connection_wwtp () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.building_group_connection_wwtp ADD CONSTRAINT pkey_tww_vl_building_group_connection_wwtp_code PRIMARY KEY (code);
@@ -4628,7 +4628,7 @@ ALTER TABLE tww_vl.building_group_connection_wwtp ADD CONSTRAINT pkey_tww_vl_bui
  INSERT INTO tww_vl.building_group_connection_wwtp (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5096,5096,'not_connected','nicht_angeschlossen','non_raccorde', 'non_collegato', '', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.building_group_connection_wwtp (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5097,5097,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.building_group ADD CONSTRAINT fkey_vl_building_group_connection_wwtp FOREIGN KEY (connection_wwtp)
- REFERENCES tww_vl.building_group_connection_wwtp (code) MATCH SIMPLE 
+ REFERENCES tww_vl.building_group_connection_wwtp (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.building_group_drainage_map () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.building_group_drainage_map ADD CONSTRAINT pkey_tww_vl_building_group_drainage_map_code PRIMARY KEY (code);
@@ -4636,7 +4636,7 @@ ALTER TABLE tww_vl.building_group_drainage_map ADD CONSTRAINT pkey_tww_vl_buildi
  INSERT INTO tww_vl.building_group_drainage_map (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4841,4841,'no','nein','non', 'no', 'nu', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.building_group_drainage_map (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4839,4839,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.building_group ADD CONSTRAINT fkey_vl_building_group_drainage_map FOREIGN KEY (drainage_map)
- REFERENCES tww_vl.building_group_drainage_map (code) MATCH SIMPLE 
+ REFERENCES tww_vl.building_group_drainage_map (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.building_group_drinking_water_network () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.building_group_drinking_water_network ADD CONSTRAINT pkey_tww_vl_building_group_drinking_water_network_code PRIMARY KEY (code);
@@ -4644,7 +4644,7 @@ ALTER TABLE tww_vl.building_group_drinking_water_network ADD CONSTRAINT pkey_tww
  INSERT INTO tww_vl.building_group_drinking_water_network (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4827,4827,'not_connected','nicht_angeschlossen','non_raccorde', 'non_collegato', '', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.building_group_drinking_water_network (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4825,4825,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.building_group ADD CONSTRAINT fkey_vl_building_group_drinking_water_network FOREIGN KEY (drinking_water_network)
- REFERENCES tww_vl.building_group_drinking_water_network (code) MATCH SIMPLE 
+ REFERENCES tww_vl.building_group_drinking_water_network (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.building_group_drinking_water_others () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.building_group_drinking_water_others ADD CONSTRAINT pkey_tww_vl_building_group_drinking_water_others_code PRIMARY KEY (code);
@@ -4654,7 +4654,7 @@ ALTER TABLE tww_vl.building_group_drinking_water_others ADD CONSTRAINT pkey_tww_
  INSERT INTO tww_vl.building_group_drinking_water_others (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4829,4829,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.building_group_drinking_water_others (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4832,4832,'cistern','Zisterne','citerne', 'zzz_Zisterne', 'rrr_Zisterne', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.building_group ADD CONSTRAINT fkey_vl_building_group_drinking_water_others FOREIGN KEY (drinking_water_others)
- REFERENCES tww_vl.building_group_drinking_water_others (code) MATCH SIMPLE 
+ REFERENCES tww_vl.building_group_drinking_water_others (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.building_group_electric_connection () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.building_group_electric_connection ADD CONSTRAINT pkey_tww_vl_building_group_electric_connection_code PRIMARY KEY (code);
@@ -4662,7 +4662,7 @@ ALTER TABLE tww_vl.building_group_electric_connection ADD CONSTRAINT pkey_tww_vl
  INSERT INTO tww_vl.building_group_electric_connection (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4837,4837,'not_connected','nicht_angeschlossen','non_raccorde', 'non_collegato', '', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.building_group_electric_connection (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4835,4835,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.building_group ADD CONSTRAINT fkey_vl_building_group_electric_connection FOREIGN KEY (electric_connection)
- REFERENCES tww_vl.building_group_electric_connection (code) MATCH SIMPLE 
+ REFERENCES tww_vl.building_group_electric_connection (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.building_group_function () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.building_group_function ADD CONSTRAINT pkey_tww_vl_building_group_function_code PRIMARY KEY (code);
@@ -4673,7 +4673,7 @@ ALTER TABLE tww_vl.building_group_function ADD CONSTRAINT pkey_tww_vl_building_g
  INSERT INTO tww_vl.building_group_function (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4818,4818,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.building_group_function (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4819,4819,'residential_building','Wohngebaeude','uniquement_habitation', 'zzz_Wohngebaeude', 'rrr_Wohngebaeude', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.building_group ADD CONSTRAINT fkey_vl_building_group_function FOREIGN KEY (function)
- REFERENCES tww_vl.building_group_function (code) MATCH SIMPLE 
+ REFERENCES tww_vl.building_group_function (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.building_group_renovation_necessity () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.building_group_renovation_necessity ADD CONSTRAINT pkey_tww_vl_building_group_renovation_necessity_code PRIMARY KEY (code);
@@ -4681,7 +4681,7 @@ ALTER TABLE tww_vl.building_group_renovation_necessity ADD CONSTRAINT pkey_tww_v
  INSERT INTO tww_vl.building_group_renovation_necessity (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8798,8798,'no','nein','non', 'no', 'nu', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.building_group_renovation_necessity (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8799,8799,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.building_group ADD CONSTRAINT fkey_vl_building_group_renovation_necessity FOREIGN KEY (renovation_necessity)
- REFERENCES tww_vl.building_group_renovation_necessity (code) MATCH SIMPLE 
+ REFERENCES tww_vl.building_group_renovation_necessity (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.building_group_baugwr ADD COLUMN fk_building_group varchar(16);
 ALTER TABLE tww_od.building_group_baugwr ADD CONSTRAINT rel_building_group_baugwr_building_group FOREIGN KEY (fk_building_group) REFERENCES tww_od.building_group(obj_id) ON UPDATE CASCADE ON DELETE set null;
@@ -4694,7 +4694,7 @@ ALTER TABLE tww_vl.farm_cesspit_volume ADD CONSTRAINT pkey_tww_vl_farm_cesspit_v
  INSERT INTO tww_vl.farm_cesspit_volume (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5489,5489,'third_party_operation','Fremdbetrieb','exploitation_externe', 'zzz_Fremdbetrieb', 'rrr_Fremdbetrieb', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.farm_cesspit_volume (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5491,5491,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.farm ADD CONSTRAINT fkey_vl_farm_cesspit_volume FOREIGN KEY (cesspit_volume)
- REFERENCES tww_vl.farm_cesspit_volume (code) MATCH SIMPLE 
+ REFERENCES tww_vl.farm_cesspit_volume (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.farm_conformity () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.farm_conformity ADD CONSTRAINT pkey_tww_vl_farm_conformity_code PRIMARY KEY (code);
@@ -4703,7 +4703,7 @@ ALTER TABLE tww_vl.farm_conformity ADD CONSTRAINT pkey_tww_vl_farm_conformity_co
  INSERT INTO tww_vl.farm_conformity (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4897,4897,'restoration_pending','Sanierung_bevorstehend','imminente', 'zzz_Sanierung_bevorstehend', 'rrr_Sanierung_bevorstehend', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.farm_conformity (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4895,4895,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.farm ADD CONSTRAINT fkey_vl_farm_conformity FOREIGN KEY (conformity)
- REFERENCES tww_vl.farm_conformity (code) MATCH SIMPLE 
+ REFERENCES tww_vl.farm_conformity (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.farm_continuance () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.farm_continuance ADD CONSTRAINT pkey_tww_vl_farm_continuance_code PRIMARY KEY (code);
@@ -4711,7 +4711,7 @@ ALTER TABLE tww_vl.farm_continuance ADD CONSTRAINT pkey_tww_vl_farm_continuance_
  INSERT INTO tww_vl.farm_continuance (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4892,4892,'improble','unwahrscheinlich','improbable', 'zzz_unwahrscheinlich', 'rrr_unwahrscheinlich', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.farm_continuance (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4891,4891,'probable','wahrscheinlich','probable', 'zzz_wahrscheinlich', 'rrr_wahrscheinlich', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.farm ADD CONSTRAINT fkey_vl_farm_continuance FOREIGN KEY (continuance)
- REFERENCES tww_vl.farm_continuance (code) MATCH SIMPLE 
+ REFERENCES tww_vl.farm_continuance (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.farm_shepherds_hut_wastewater () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.farm_shepherds_hut_wastewater ADD CONSTRAINT pkey_tww_vl_farm_shepherds_hut_wastewater_code PRIMARY KEY (code);
@@ -4719,7 +4719,7 @@ ALTER TABLE tww_vl.farm_shepherds_hut_wastewater ADD CONSTRAINT pkey_tww_vl_farm
  INSERT INTO tww_vl.farm_shepherds_hut_wastewater (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4870,4870,'no','nein','non', 'no', 'nu', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.farm_shepherds_hut_wastewater (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4871,4871,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.farm ADD CONSTRAINT fkey_vl_farm_shepherds_hut_wastewater FOREIGN KEY (shepherds_hut_wastewater)
- REFERENCES tww_vl.farm_shepherds_hut_wastewater (code) MATCH SIMPLE 
+ REFERENCES tww_vl.farm_shepherds_hut_wastewater (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.farm_stable_cattle () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.farm_stable_cattle ADD CONSTRAINT pkey_tww_vl_farm_stable_cattle_code PRIMARY KEY (code);
@@ -4727,7 +4727,7 @@ ALTER TABLE tww_vl.farm_stable_cattle ADD CONSTRAINT pkey_tww_vl_farm_stable_cat
  INSERT INTO tww_vl.farm_stable_cattle (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4876,4876,'no','nein','non', 'no', 'nu', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.farm_stable_cattle (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4877,4877,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.farm ADD CONSTRAINT fkey_vl_farm_stable_cattle FOREIGN KEY (stable_cattle)
- REFERENCES tww_vl.farm_stable_cattle (code) MATCH SIMPLE 
+ REFERENCES tww_vl.farm_stable_cattle (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.small_treatment_plant ADD CONSTRAINT oorel_od_small_treatment_plant_wastewater_structure FOREIGN KEY (obj_id) REFERENCES tww_od.wastewater_structure(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
 CREATE TABLE tww_vl.small_treatment_plant_function () INHERITS (tww_vl.value_list_base);
@@ -4742,7 +4742,7 @@ ALTER TABLE tww_vl.small_treatment_plant_function ADD CONSTRAINT pkey_tww_vl_sma
  INSERT INTO tww_vl.small_treatment_plant_function (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5016,5016,'immersion_trickle_filter','Tauchkoerper','disques_biologiques', 'zzz_Tauchkoerper', 'rrr_Tauchkoerper', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.small_treatment_plant_function (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5021,5021,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.small_treatment_plant ADD CONSTRAINT fkey_vl_small_treatment_plant_function FOREIGN KEY (function)
- REFERENCES tww_vl.small_treatment_plant_function (code) MATCH SIMPLE 
+ REFERENCES tww_vl.small_treatment_plant_function (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.small_treatment_plant_remote_monitoring () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.small_treatment_plant_remote_monitoring ADD CONSTRAINT pkey_tww_vl_small_treatment_plant_remote_monitoring_code PRIMARY KEY (code);
@@ -4750,7 +4750,7 @@ ALTER TABLE tww_vl.small_treatment_plant_remote_monitoring ADD CONSTRAINT pkey_t
  INSERT INTO tww_vl.small_treatment_plant_remote_monitoring (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (6415,6415,'no','nein','non', 'no', 'nu', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.small_treatment_plant_remote_monitoring (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (6416,6416,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.small_treatment_plant ADD CONSTRAINT fkey_vl_small_treatment_plant_remote_monitoring FOREIGN KEY (remote_monitoring)
- REFERENCES tww_vl.small_treatment_plant_remote_monitoring (code) MATCH SIMPLE 
+ REFERENCES tww_vl.small_treatment_plant_remote_monitoring (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.drainless_toilet ADD CONSTRAINT oorel_od_drainless_toilet_wastewater_structure FOREIGN KEY (obj_id) REFERENCES tww_od.wastewater_structure(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
 CREATE TABLE tww_vl.drainless_toilet_kind () INHERITS (tww_vl.value_list_base);
@@ -4761,7 +4761,7 @@ ALTER TABLE tww_vl.drainless_toilet_kind ADD CONSTRAINT pkey_tww_vl_drainless_to
  INSERT INTO tww_vl.drainless_toilet_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (6412,6412,'unknown','unbekannt','inconu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.drainless_toilet_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (6409,6409,'incinerating_toilet','Verbrennungstoilette','toilette_d_incineration', 'toilette_inceneriscono', 'rrr_Verbrennungstoilette', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.drainless_toilet ADD CONSTRAINT fkey_vl_drainless_toilet_kind FOREIGN KEY (kind)
- REFERENCES tww_vl.drainless_toilet_kind (code) MATCH SIMPLE 
+ REFERENCES tww_vl.drainless_toilet_kind (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 ------------ Text and Symbol Tables ----------- ;
@@ -4941,7 +4941,7 @@ ALTER TABLE tww_vl.wastewater_structure_text_plantype ADD CONSTRAINT pkey_tww_vl
  INSERT INTO tww_vl.wastewater_structure_text_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7848,7848,'overviewmap.om5','Uebersichtsplan.UeP5','plan_d_ensemble.pe5', 'piano_di_insieme.pi5', 'rrr_Uebersichtsplan.UeP5', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.wastewater_structure_text_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7845,7845,'network_plan','Werkplan','plan_de_reseau', 'zzz_Werkplan', 'rrr_Werkplan', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.wastewater_structure_text ADD CONSTRAINT fkey_vl_wastewater_structure_text_plantype FOREIGN KEY (plantype)
- REFERENCES tww_vl.wastewater_structure_text_plantype (code) MATCH SIMPLE 
+ REFERENCES tww_vl.wastewater_structure_text_plantype (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.wastewater_structure_text_texthali () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.wastewater_structure_text_texthali ADD CONSTRAINT pkey_tww_vl_wastewater_structure_text_texthali_code PRIMARY KEY (code);
@@ -4949,7 +4949,7 @@ ALTER TABLE tww_vl.wastewater_structure_text_texthali ADD CONSTRAINT pkey_tww_vl
  INSERT INTO tww_vl.wastewater_structure_text_texthali (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7851,7851,'1','1','1', '1', '1', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.wastewater_structure_text_texthali (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7852,7852,'2','2','2', '2', '2', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.wastewater_structure_text ADD CONSTRAINT fkey_vl_wastewater_structure_text_texthali FOREIGN KEY (texthali)
- REFERENCES tww_vl.wastewater_structure_text_texthali (code) MATCH SIMPLE 
+ REFERENCES tww_vl.wastewater_structure_text_texthali (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.wastewater_structure_text_textvali () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.wastewater_structure_text_textvali ADD CONSTRAINT pkey_tww_vl_wastewater_structure_text_textvali_code PRIMARY KEY (code);
@@ -4959,7 +4959,7 @@ ALTER TABLE tww_vl.wastewater_structure_text_textvali ADD CONSTRAINT pkey_tww_vl
  INSERT INTO tww_vl.wastewater_structure_text_textvali (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7856,7856,'3','3','3', '3', '3', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.wastewater_structure_text_textvali (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7857,7857,'4','4','4', '4', '4', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.wastewater_structure_text ADD CONSTRAINT fkey_vl_wastewater_structure_text_textvali FOREIGN KEY (textvali)
- REFERENCES tww_vl.wastewater_structure_text_textvali (code) MATCH SIMPLE 
+ REFERENCES tww_vl.wastewater_structure_text_textvali (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.reach_text_plantype () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.reach_text_plantype ADD CONSTRAINT pkey_tww_vl_reach_text_plantype_code PRIMARY KEY (code);
@@ -4969,7 +4969,7 @@ ALTER TABLE tww_vl.reach_text_plantype ADD CONSTRAINT pkey_tww_vl_reach_text_pla
  INSERT INTO tww_vl.reach_text_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7848,7848,'overviewmap.om5','Uebersichtsplan.UeP5','plan_d_ensemble.pe5', 'piano_di_insieme.pi5', 'rrr_Uebersichtsplan.UeP5', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.reach_text_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7845,7845,'network_plan','Werkplan','plan_de_reseau', 'zzz_Werkplan', 'rrr_Werkplan', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.reach_text ADD CONSTRAINT fkey_vl_reach_text_plantype FOREIGN KEY (plantype)
- REFERENCES tww_vl.reach_text_plantype (code) MATCH SIMPLE 
+ REFERENCES tww_vl.reach_text_plantype (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.reach_text_texthali () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.reach_text_texthali ADD CONSTRAINT pkey_tww_vl_reach_text_texthali_code PRIMARY KEY (code);
@@ -4977,7 +4977,7 @@ ALTER TABLE tww_vl.reach_text_texthali ADD CONSTRAINT pkey_tww_vl_reach_text_tex
  INSERT INTO tww_vl.reach_text_texthali (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7851,7851,'1','1','1', '1', '1', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.reach_text_texthali (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7852,7852,'2','2','2', '2', '2', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.reach_text ADD CONSTRAINT fkey_vl_reach_text_texthali FOREIGN KEY (texthali)
- REFERENCES tww_vl.reach_text_texthali (code) MATCH SIMPLE 
+ REFERENCES tww_vl.reach_text_texthali (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.reach_text_textvali () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.reach_text_textvali ADD CONSTRAINT pkey_tww_vl_reach_text_textvali_code PRIMARY KEY (code);
@@ -4987,7 +4987,7 @@ ALTER TABLE tww_vl.reach_text_textvali ADD CONSTRAINT pkey_tww_vl_reach_text_tex
  INSERT INTO tww_vl.reach_text_textvali (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7856,7856,'3','3','3', '3', '3', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.reach_text_textvali (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7857,7857,'4','4','4', '4', '4', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.reach_text ADD CONSTRAINT fkey_vl_reach_text_textvali FOREIGN KEY (textvali)
- REFERENCES tww_vl.reach_text_textvali (code) MATCH SIMPLE 
+ REFERENCES tww_vl.reach_text_textvali (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.catchment_area_text_plantype () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.catchment_area_text_plantype ADD CONSTRAINT pkey_tww_vl_catchment_area_text_plantype_code PRIMARY KEY (code);
@@ -4997,7 +4997,7 @@ ALTER TABLE tww_vl.catchment_area_text_plantype ADD CONSTRAINT pkey_tww_vl_catch
  INSERT INTO tww_vl.catchment_area_text_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7848,7848,'overviewmap.om5','Uebersichtsplan.UeP5','plan_d_ensemble.pe5', 'piano_di_insieme.pi5', 'rrr_Uebersichtsplan.UeP5', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.catchment_area_text_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7845,7845,'network_plan','Werkplan','plan_de_reseau', 'zzz_Werkplan', 'rrr_Werkplan', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.catchment_area_text ADD CONSTRAINT fkey_vl_catchment_area_text_plantype FOREIGN KEY (plantype)
- REFERENCES tww_vl.catchment_area_text_plantype (code) MATCH SIMPLE 
+ REFERENCES tww_vl.catchment_area_text_plantype (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.catchment_area_text_texthali () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.catchment_area_text_texthali ADD CONSTRAINT pkey_tww_vl_catchment_area_text_texthali_code PRIMARY KEY (code);
@@ -5005,7 +5005,7 @@ ALTER TABLE tww_vl.catchment_area_text_texthali ADD CONSTRAINT pkey_tww_vl_catch
  INSERT INTO tww_vl.catchment_area_text_texthali (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7851,7851,'1','1','1', '1', '1', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.catchment_area_text_texthali (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7852,7852,'2','2','2', '2', '2', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.catchment_area_text ADD CONSTRAINT fkey_vl_catchment_area_text_texthali FOREIGN KEY (texthali)
- REFERENCES tww_vl.catchment_area_text_texthali (code) MATCH SIMPLE 
+ REFERENCES tww_vl.catchment_area_text_texthali (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.catchment_area_text_textvali () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.catchment_area_text_textvali ADD CONSTRAINT pkey_tww_vl_catchment_area_text_textvali_code PRIMARY KEY (code);
@@ -5015,7 +5015,7 @@ ALTER TABLE tww_vl.catchment_area_text_textvali ADD CONSTRAINT pkey_tww_vl_catch
  INSERT INTO tww_vl.catchment_area_text_textvali (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7856,7856,'3','3','3', '3', '3', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.catchment_area_text_textvali (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7857,7857,'4','4','4', '4', '4', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.catchment_area_text ADD CONSTRAINT fkey_vl_catchment_area_text_textvali FOREIGN KEY (textvali)
- REFERENCES tww_vl.catchment_area_text_textvali (code) MATCH SIMPLE 
+ REFERENCES tww_vl.catchment_area_text_textvali (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.wastewater_structure_symbol_plantype () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.wastewater_structure_symbol_plantype ADD CONSTRAINT pkey_tww_vl_wastewater_structure_symbol_plantype_code PRIMARY KEY (code);
@@ -5025,7 +5025,7 @@ ALTER TABLE tww_vl.wastewater_structure_symbol_plantype ADD CONSTRAINT pkey_tww_
  INSERT INTO tww_vl.wastewater_structure_symbol_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7878,7878,'overviewmap.om5','Uebersichtsplan.UeP5','plan_d_ensemble.pe5', 'piano_di_insieme.pi5', 'rrr_Uebersichtsplan.UeP5', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.wastewater_structure_symbol_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7875,7875,'network_plan','Werkplan','plan_de_reseau', 'zzz_Werkplan', 'rrr_Werkplan', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.wastewater_structure_symbol ADD CONSTRAINT fkey_vl_wastewater_structure_symbol_plantype FOREIGN KEY (plantype)
- REFERENCES tww_vl.wastewater_structure_symbol_plantype (code) MATCH SIMPLE 
+ REFERENCES tww_vl.wastewater_structure_symbol_plantype (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 ------------ Reach Progression Alternative Table ----------- ;
@@ -5070,7 +5070,7 @@ ALTER TABLE tww_vl.reach_progression_alternative_plantype ADD CONSTRAINT pkey_tw
  INSERT INTO tww_vl.reach_progression_alternative_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9287,9287,'overviewmap.om5','Uebersichtsplan.UeP5','plan_d_ensemble.pe5', 'piano_di_insieme.pi5', 'rrr_Uebersichtsplan.UeP5', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.reach_progression_alternative_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9284,9284,'network_plan','Werkplan','plan_de_reseau', 'zzz_Werkplan', 'rrr_Werkplan', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.reach_progression_alternative ADD CONSTRAINT fkey_vl_reach_progression_alternative_plantype FOREIGN KEY (plantype)
- REFERENCES tww_vl.reach_progression_alternative_plantype (code) MATCH SIMPLE 
+ REFERENCES tww_vl.reach_progression_alternative_plantype (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 --------- Relations to class organisation for dataowner and provider (new 3.11.2014);
@@ -5184,4 +5184,3 @@ ALTER TABLE tww_od.farm ADD CONSTRAINT rel_od_farm_fk_dataprovider FOREIGN KEY (
  CREATE UNIQUE INDEX in_od_hydraulic_char_data_identifier ON tww_od.hydraulic_char_data USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
  CREATE UNIQUE INDEX in_od_catchement_area_totals_identifier ON tww_od.catchement_area_totals USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
  CREATE UNIQUE INDEX in_od_building_group_identifier ON tww_od.building_group USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
-

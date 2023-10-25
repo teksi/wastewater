@@ -97,4 +97,3 @@ CREATE OR REPLACE RULE vw_planning_zone_ON_DELETE AS ON DELETE TO tww_app.vw_pla
   DELETE FROM tww_od.planning_zone WHERE obj_id = OLD.obj_id;
   DELETE FROM tww_od.zone WHERE obj_id = OLD.obj_id;
 );
-

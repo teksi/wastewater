@@ -31,5 +31,3 @@ jobs:
 
       - name: create dumps
         run: docker exec -e PGSERVICE=pg_teksi_wastewater tww /src/scripts/create-dumps.py
-
-

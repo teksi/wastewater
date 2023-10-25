@@ -93,4 +93,3 @@ CREATE OR REPLACE RULE vw_river_ON_DELETE AS ON DELETE TO tww_app.vw_river DO IN
   DELETE FROM tww_od.river WHERE obj_id = OLD.obj_id;
   DELETE FROM tww_od.surface_water_bodies WHERE obj_id = OLD.obj_id;
 );
-

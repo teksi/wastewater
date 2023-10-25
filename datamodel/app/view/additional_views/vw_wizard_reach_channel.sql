@@ -2,8 +2,8 @@
 
 -- DROP VIEW vw_wizard_reach_channel;
 
-CREATE OR REPLACE VIEW tww_app.vw_wizard_reach_channel AS 
- SELECT 
+CREATE OR REPLACE VIEW tww_app.vw_wizard_reach_channel AS
+ SELECT
      re.obj_id
    , bedding_encasement
    , connection_type
@@ -75,7 +75,7 @@ CREATE OR REPLACE VIEW tww_app.vw_wizard_reach_channel AS
    , rp_to_dataowner
    , rp_to_provider
    , rp_to_fk_wastewater_networkelement
-   
+
    FROM tww_app.vw_channel ch
      LEFT JOIN tww_app.vw_reach re ON ch.obj_id = re.fk_wastewater_structure
   WHERE false;
@@ -243,4 +243,3 @@ DROP TRIGGER IF EXISTS vw_wizard_reach_channel_ON_INSERT ON tww_app.vw_wizard_re
 
 CREATE TRIGGER vw_wizard_reach_channel_ON_INSERT INSTEAD OF INSERT ON tww_app.vw_wizard_reach_channel
   FOR EACH ROW EXECUTE PROCEDURE tww_app.vw_wizard_reach_channel_INSERT();
-

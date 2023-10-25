@@ -18,7 +18,3 @@ joins:
 
   pump:
     table: tww_od.pump
-
-
-
-

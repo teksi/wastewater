@@ -101,4 +101,3 @@ CREATE OR REPLACE RULE vw_blocking_debris_ON_DELETE AS ON DELETE TO tww_app.vw_b
   DELETE FROM tww_od.blocking_debris WHERE obj_id = OLD.obj_id;
   DELETE FROM tww_od.water_control_structure WHERE obj_id = OLD.obj_id;
 );
-

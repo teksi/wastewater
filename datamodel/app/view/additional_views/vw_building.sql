@@ -121,4 +121,3 @@ CREATE OR REPLACE RULE vw_building_ON_DELETE AS ON DELETE TO tww_app.vw_building
   DELETE FROM tww_od.building WHERE obj_id = OLD.obj_id;
   DELETE FROM tww_od.connection_object WHERE obj_id = OLD.obj_id;
 );
-

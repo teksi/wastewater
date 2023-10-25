@@ -39,7 +39,7 @@ SELECT
 	ROUND(ST_Y(geom)::numeric,2) as Y_Coord,
 	state,
 	hierarchy,
-	obj_id	
+	obj_id
 FROM tww_app.swmm.vw_dividers
 WHERE geom IS NOT NULL
 

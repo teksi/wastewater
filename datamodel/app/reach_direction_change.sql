@@ -18,15 +18,15 @@
  * This function changes the direction of a set of reaches.
  * It will change the direction of the line itself as well as switch the two reach points
  * to make sure the topology and reach point attributes stay the way they were.
- * 
+ *
  * With the parameter `reach_obj_ids` it is possible to specify on which reaches this operation
  * should be performed by passing in an array of obj_ids
  */
 CREATE OR REPLACE FUNCTION tww_app.reach_direction_change(reach_obj_ids text[])RETURNS void AS $BODY$
 
-BEGIN 
- 
-UPDATE tww_od.reach 
+BEGIN
+
+UPDATE tww_od.reach
   SET
     progression_geometry = (ST_ForceCurve(ST_Reverse(ST_CurveToLine(progression_geometry)))),
     fk_reach_point_from = fk_reach_point_to,

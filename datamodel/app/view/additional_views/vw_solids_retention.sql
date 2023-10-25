@@ -117,4 +117,3 @@ CREATE OR REPLACE RULE vw_solids_retention_ON_DELETE AS ON DELETE TO tww_app.vw_
   DELETE FROM tww_od.solids_retention WHERE obj_id = OLD.obj_id;
   DELETE FROM tww_od.structure_part WHERE obj_id = OLD.obj_id;
 );
-

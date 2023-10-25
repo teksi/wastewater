@@ -105,4 +105,3 @@ CREATE OR REPLACE RULE vw_rock_ramp_ON_DELETE AS ON DELETE TO tww_app.vw_rock_ra
   DELETE FROM tww_od.rock_ramp WHERE obj_id = OLD.obj_id;
   DELETE FROM tww_od.water_control_structure WHERE obj_id = OLD.obj_id;
 );
-

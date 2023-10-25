@@ -2,7 +2,7 @@
 
 -- DROP VIEW tww_app.vw_tww_maintenance_on_reach;
 
-CREATE OR REPLACE VIEW tww_app.vw_tww_maintenance_on_reach AS 
+CREATE OR REPLACE VIEW tww_app.vw_tww_maintenance_on_reach AS
  SELECT re_m_w.obj_id AS re_m_w_id,
     maintenance.obj_id,
     maintenance.identifier,

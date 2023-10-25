@@ -14,11 +14,11 @@ SELECT DISTINCT
     ELSE 'NO'
   END as flap_gate,
   0::float as Seepage,
-	CASE 
+	CASE
 		WHEN status IN (7959, 6529, 6526) THEN 'planned'
 		ELSE 'current'
 	END as state,
-  CASE 
+  CASE
 		WHEN ws._function_hierarchic in (5062, 5064, 5066, 5068, 5069, 5070, 5071, 5072, 5074) THEN 'primary'
 		ELSE 'secondary'
 	END as hierarchy,

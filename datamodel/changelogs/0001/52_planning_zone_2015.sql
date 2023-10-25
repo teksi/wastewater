@@ -41,7 +41,7 @@ ALTER TABLE tww_vl._planning_zone_kind ADD CONSTRAINT pkey_tww_vl_planning_zone_
  INSERT INTO tww_vl._planning_zone_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3077,3077,'unknown','unbekannt','inconnu', 'sconosciuto', '', '', '', '', '', '', 'true');
  INSERT INTO tww_vl._planning_zone_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (29,29,'residential_zone','Wohnzone','zone_d_habitations', 'zzz_Wohnzone', '', '', '', '', '', '', 'true');
  ALTER TABLE tww_od._planning_zone ADD CONSTRAINT fkey_vl_planning_zone_kind FOREIGN KEY (kind)
- REFERENCES tww_vl._planning_zone_kind (code) MATCH SIMPLE 
+ REFERENCES tww_vl._planning_zone_kind (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
- 
+
  COMMIT;

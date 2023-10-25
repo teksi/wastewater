@@ -93,4 +93,3 @@ CREATE OR REPLACE RULE vw_ground_water_protection_perimeter_ON_DELETE AS ON DELE
   DELETE FROM tww_od.ground_water_protection_perimeter WHERE obj_id = OLD.obj_id;
   DELETE FROM tww_od.zone WHERE obj_id = OLD.obj_id;
 );
-

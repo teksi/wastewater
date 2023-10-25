@@ -239,7 +239,7 @@ ALTER TABLE tww_vl.examination_recording_type ADD CONSTRAINT pkey_tww_vl_examina
  INSERT INTO tww_vl.examination_recording_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3686,3686,'channel_TV','Kanalfernsehen','camera_canalisations', 'videoispezione', 'rrr_Kanalfernsehen', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.examination_recording_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3687,3687,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.examination ADD CONSTRAINT fkey_vl_examination_recording_type FOREIGN KEY (recording_type)
- REFERENCES tww_vl.examination_recording_type (code) MATCH SIMPLE 
+ REFERENCES tww_vl.examination_recording_type (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.examination_weather () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.examination_weather ADD CONSTRAINT pkey_tww_vl_examination_weather_code PRIMARY KEY (code);
@@ -250,7 +250,7 @@ ALTER TABLE tww_vl.examination_weather ADD CONSTRAINT pkey_tww_vl_examination_we
  INSERT INTO tww_vl.examination_weather (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3703,3703,'nice_dry','schoen_trocken','beau_sec', 'sereno_asciutto', 'rrr_schoen_trocken', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.examination_weather (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3704,3704,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.examination ADD CONSTRAINT fkey_vl_examination_weather FOREIGN KEY (weather)
- REFERENCES tww_vl.examination_weather (code) MATCH SIMPLE 
+ REFERENCES tww_vl.examination_weather (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.damage ADD COLUMN fk_examination varchar(16);
 ALTER TABLE tww_od.damage ADD CONSTRAINT rel_damage_examination FOREIGN KEY (fk_examination) REFERENCES tww_od.examination(obj_id) ON UPDATE CASCADE ON DELETE cascade;
@@ -259,7 +259,7 @@ ALTER TABLE tww_vl.damage_connection ADD CONSTRAINT pkey_tww_vl_damage_connectio
  INSERT INTO tww_vl.damage_connection (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8498,8498,'yes','ja','oui', 'si', 'da', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_connection (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8499,8499,'no','nein','non', 'no', 'nu', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.damage ADD CONSTRAINT fkey_vl_damage_connection FOREIGN KEY (connection)
- REFERENCES tww_vl.damage_connection (code) MATCH SIMPLE 
+ REFERENCES tww_vl.damage_connection (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.damage_single_damage_class () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.damage_single_damage_class ADD CONSTRAINT pkey_tww_vl_damage_single_damage_class_code PRIMARY KEY (code);
@@ -270,7 +270,7 @@ ALTER TABLE tww_vl.damage_single_damage_class ADD CONSTRAINT pkey_tww_vl_damage_
  INSERT INTO tww_vl.damage_single_damage_class (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3711,3711,'EZ4','EZ4','EZ4', 'EZ4', 'EZ4', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_single_damage_class (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4561,4561,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.damage ADD CONSTRAINT fkey_vl_damage_single_damage_class FOREIGN KEY (single_damage_class)
- REFERENCES tww_vl.damage_single_damage_class (code) MATCH SIMPLE 
+ REFERENCES tww_vl.damage_single_damage_class (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.damage_channel ADD CONSTRAINT oorel_od_damage_channel_damage FOREIGN KEY (obj_id) REFERENCES tww_od.damage(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
 CREATE TABLE tww_vl.damage_channel_channel_damage_code () INHERITS (tww_vl.value_list_base);
@@ -599,7 +599,7 @@ ALTER TABLE tww_vl.damage_channel_channel_damage_code ADD CONSTRAINT pkey_tww_vl
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4101,4101,'BDGC','BDGC','BDGC', 'BDGC', 'BDGC', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4102,4102,'BDGZ','BDGZ','BDGZ', 'BDGZ', 'BDGZ', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.damage_channel ADD CONSTRAINT fkey_vl_damage_channel_channel_damage_code FOREIGN KEY (channel_damage_code)
- REFERENCES tww_vl.damage_channel_channel_damage_code (code) MATCH SIMPLE 
+ REFERENCES tww_vl.damage_channel_channel_damage_code (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.damage_manhole ADD CONSTRAINT oorel_od_damage_manhole_damage FOREIGN KEY (obj_id) REFERENCES tww_od.damage(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
 CREATE TABLE tww_vl.damage_manhole_manhole_damage_code () INHERITS (tww_vl.value_list_base);
@@ -941,7 +941,7 @@ ALTER TABLE tww_vl.damage_manhole_manhole_damage_code ADD CONSTRAINT pkey_tww_vl
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4418,4418,'DDGC','DDGC','DDGC', 'DDGC', 'DDGC', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4419,4419,'DDGZ','DDGZ','DDGZ', 'DDGZ', 'DDGZ', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.damage_manhole ADD CONSTRAINT fkey_vl_damage_manhole_manhole_damage_code FOREIGN KEY (manhole_damage_code)
- REFERENCES tww_vl.damage_manhole_manhole_damage_code (code) MATCH SIMPLE 
+ REFERENCES tww_vl.damage_manhole_manhole_damage_code (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.damage_manhole_manhole_shaft_area () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.damage_manhole_manhole_shaft_area ADD CONSTRAINT pkey_tww_vl_damage_manhole_manhole_shaft_area_code PRIMARY KEY (code);
@@ -953,7 +953,7 @@ ALTER TABLE tww_vl.damage_manhole_manhole_shaft_area ADD CONSTRAINT pkey_tww_vl_
  INSERT INTO tww_vl.damage_manhole_manhole_shaft_area (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3748,3748,'I','I','I', 'I', 'I', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_manhole_manhole_shaft_area (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3749,3749,'J','J','J', 'J', 'J', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.damage_manhole ADD CONSTRAINT fkey_vl_damage_manhole_manhole_shaft_area FOREIGN KEY (manhole_shaft_area)
- REFERENCES tww_vl.damage_manhole_manhole_shaft_area (code) MATCH SIMPLE 
+ REFERENCES tww_vl.damage_manhole_manhole_shaft_area (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.data_media_kind () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.data_media_kind ADD CONSTRAINT pkey_tww_vl_data_media_kind_code PRIMARY KEY (code);
@@ -965,7 +965,7 @@ ALTER TABLE tww_vl.data_media_kind ADD CONSTRAINT pkey_tww_vl_data_media_kind_co
  INSERT INTO tww_vl.data_media_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3789,3789,'server','Server','serveur', 'server', 'server', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.data_media_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3790,3790,'videotape','Videoband','bande_video', 'nastro_video', 'rrr_Videoband', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.data_media ADD CONSTRAINT fkey_vl_data_media_kind FOREIGN KEY (kind)
- REFERENCES tww_vl.data_media_kind (code) MATCH SIMPLE 
+ REFERENCES tww_vl.data_media_kind (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.file ADD COLUMN fk_data_media varchar(16);
 ALTER TABLE tww_od.file ADD CONSTRAINT rel_file_data_media FOREIGN KEY (fk_data_media) REFERENCES tww_od.data_media(obj_id) ON UPDATE CASCADE ON DELETE set null;
@@ -1082,7 +1082,7 @@ ALTER TABLE tww_vl.file_class ADD CONSTRAINT pkey_tww_vl_file_class_code PRIMARY
  INSERT INTO tww_vl.file_class (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3890,3890,'water_catchment','Wasserfassung','CAPTAGE', 'zzz_Wasserfassung', 'rrr_Wasserfassung', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.file_class (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3891,3891,'zone','Zone','ZONE', 'zzz_Zone', 'rrr_Zone', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.file ADD CONSTRAINT fkey_vl_file_class FOREIGN KEY (class)
- REFERENCES tww_vl.file_class (code) MATCH SIMPLE 
+ REFERENCES tww_vl.file_class (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.file_kind () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.file_kind ADD CONSTRAINT pkey_tww_vl_file_kind_code PRIMARY KEY (code);
@@ -1095,7 +1095,7 @@ ALTER TABLE tww_vl.file_kind ADD CONSTRAINT pkey_tww_vl_file_kind_code PRIMARY K
  INSERT INTO tww_vl.file_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3774,3774,'textfile','Textdatei','fichier_texte', 'file_di_testo', 'rrr_Textdatei', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.file_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3775,3775,'video','Video','video', 'video', 'rrr_video', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.file ADD CONSTRAINT fkey_vl_file_kind FOREIGN KEY (kind)
- REFERENCES tww_vl.file_kind (code) MATCH SIMPLE 
+ REFERENCES tww_vl.file_kind (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 --------- Relations to class organisation for dataowner and provider (new 3.11.2014);
 

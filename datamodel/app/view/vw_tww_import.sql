@@ -509,4 +509,3 @@ CREATE TRIGGER after_mutation_delete_when_okay
   FOR EACH ROW
   WHEN ( NEW.structure_okay IS TRUE AND NEW.inlet_okay IS TRUE AND NEW.outlet_okay IS TRUE )
   EXECUTE PROCEDURE tww_import.manhole_quarantine_delete_entry();
-

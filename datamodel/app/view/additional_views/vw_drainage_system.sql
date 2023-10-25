@@ -97,4 +97,3 @@ CREATE OR REPLACE RULE vw_drainage_system_ON_DELETE AS ON DELETE TO tww_app.vw_d
   DELETE FROM tww_od.drainage_system WHERE obj_id = OLD.obj_id;
   DELETE FROM tww_od.zone WHERE obj_id = OLD.obj_id;
 );
-

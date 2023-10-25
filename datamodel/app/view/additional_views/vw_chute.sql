@@ -109,4 +109,3 @@ CREATE OR REPLACE RULE vw_chute_ON_DELETE AS ON DELETE TO tww_app.vw_chute DO IN
   DELETE FROM tww_od.chute WHERE obj_id = OLD.obj_id;
   DELETE FROM tww_od.water_control_structure WHERE obj_id = OLD.obj_id;
 );
-

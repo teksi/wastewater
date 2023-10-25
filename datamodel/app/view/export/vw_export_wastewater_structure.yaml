@@ -90,4 +90,3 @@ joins:
     table: tww_vl.discharge_point_relevance
     fkey: dp_relevance
     prefix: relevance_
-

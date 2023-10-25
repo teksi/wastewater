@@ -8,11 +8,11 @@ SELECT
 	coalesce(wn.bottom_level,0) as InvertElev,
 	coalesce((co.level-wn.bottom_level),0) as MaxDepth,
 	0 as InitDepth,
-	CASE 
+	CASE
 		WHEN hr.fk_hydr_geometry IS NOT NULL THEN 'TABULAR'
 		ELSE 'FUNCTIONAL'
 	END as Shape,
-	CASE 
+	CASE
 		WHEN hr.fk_hydr_geometry IS NOT NULL THEN concat('storageCurve@', wn.obj_id)
 		ELSE '0'
 	END as CurveCoefficientOrCurveName, -- curve coefficient if FONCTIONAL curve name if TABULAR
@@ -22,15 +22,15 @@ SELECT
 	0 as Fevap,
 	NULL as Psi,
 	NULL as Ksat, -- conductivity
-	NULL as IMD,	
+	NULL as IMD,
 	ws.identifier::text as description,
 	CONCAT_WS(',','special_structure', ssf.value_en) as tag,
 	wn.situation_geometry as geom,
-	CASE 
+	CASE
 		WHEN ws_st.vsacode IN (7959, 6529, 6526) THEN 'planned'
 		ELSE 'current'
 	END as state,
-	CASE 
+	CASE
 		WHEN cfhi.vsacode in (5062, 5064, 5066, 5068, 5069, 5070, 5071, 5072, 5074) THEN 'primary'
 		ELSE 'secondary'
 	END as hierarchy,
@@ -89,11 +89,11 @@ SELECT
 	coalesce(wn.bottom_level,0) as InvertElev,
 	coalesce((ii.upper_elevation-wn.bottom_level),0) as MaxDepth,
 	0 as InitDepth,
-	CASE 
+	CASE
 		WHEN hr.fk_hydr_geometry IS NOT NULL THEN 'TABULAR'
 		ELSE 'FUNCTIONAL'
 	END as Shape,
-	CASE 
+	CASE
 		WHEN hr.fk_hydr_geometry IS NOT NULL THEN concat('storageCurve@',wn.obj_id)
 		ELSE '0'
 	END as CurveCoefficientOrCurveName, -- curve coefficient if FONCTIONAL curve name if TABULAR
@@ -107,11 +107,11 @@ SELECT
 	ws.identifier::text as description,
 	CONCAT_WS(',','infiltration_installation', iik.value_en) as tag,
 	wn.situation_geometry as geom,
-	CASE 
+	CASE
 		WHEN ws_st.vsacode IN (7959, 6529, 6526) THEN 'planned'
 		ELSE 'current'
 	END as state,
-	CASE 
+	CASE
 		WHEN cfhi.vsacode in (5062, 5064, 5066, 5068, 5069, 5070, 5071, 5072, 5074) THEN 'primary'
 		ELSE 'secondary'
 	END as hierarchy,
@@ -158,7 +158,7 @@ SELECT
 	0 as SurchargeDepth,
 	0 as Fevap,
 	NULL as Psi,
-	NULL as Ksat, 
+	NULL as Ksat,
 	NULL as IMD,
 	concat_ws(';',
 		ws.identifier::text,
@@ -166,11 +166,11 @@ SELECT
 	) as description,
 	'Prank weir' as tag,
 	wn.situation_geometry as geom,
-	CASE 
+	CASE
 		WHEN ws_st.vsacode IN (7959, 6529, 6526) THEN 'planned'
 		ELSE 'current'
 	END as state,
-	CASE 
+	CASE
 		WHEN ws._function_hierarchic in (5062, 5064, 5066, 5068, 5069, 5070, 5071, 5072, 5074) THEN 'primary'
 		ELSE 'secondary'
 	END as hierarchy,
@@ -188,4 +188,4 @@ LEFT JOIN tww_vl.channel_function_hierarchic cfhi ON cfhi.code=ws._function_hier
 WHERE ws_st.vsacode IN (6530, 6533, 8493, 6529, 6526, 7959)
 -- Attribute overflow_characteristics_digital does not exist anymore in VSA-DSS 2020
 --AND vl_oc_dig.vsacode = 6223  --'yes;
-AND vL_oc_ki.vsacode = 6220; -- h/q relations (Q/Q relations are not supported by SWMM) 
+AND vL_oc_ki.vsacode = 6220; -- h/q relations (Q/Q relations are not supported by SWMM)

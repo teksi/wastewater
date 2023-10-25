@@ -28,7 +28,7 @@ SELECT
   END as percImperv, -- take from catchment_area instead of default value
   CASE
     WHEN wn_geom IS NOT NULL
-    THEN 	
+    THEN
     (
     st_maxdistance(wn_geom, ST_ExteriorRing(perimeter_geometry))
     + st_distance(wn_geom, ST_ExteriorRing(perimeter_geometry))
@@ -44,21 +44,21 @@ SELECT
   NULL::varchar as SnowPack, -- default value
   CASE
 		WHEN fk_wastewater_networkelement_ww_current is not null
-		THEN 
-			CASE 
+		THEN
+			CASE
 				WHEN waste_water_production_current IS NOT NULL THEN concat('catchment_area: ', ca.obj_id,': DWF baseline is computed from waste_water_production_current')
 				ELSE
-					CASE 
+					CASE
 						WHEN (surface_area IS NOT NULL AND surface_area != 0) THEN concat('catchment_area: ', ca.obj_id,': DWF baseline is computed from surface_area, population_density_current and a default production of 160 Litre / inhabitant /day')
 						ELSE concat('catchment_area: ', ca.obj_id,': DWF baseline is computed from the geometric area, population_density_current and a default production of 160 Litre / inhabitant /day')
 					END
 			END
 		WHEN fk_wastewater_networkelement_ww_planned is not null
-		THEN 
-			CASE 
+		THEN
+			CASE
 				WHEN waste_water_production_planned IS NOT NULL THEN concat('catchment_area: ', ca.obj_id,': DWF baseline is computed from waste_water_production_planned')
 				ELSE
-					CASE 
+					CASE
 						WHEN (surface_area IS NOT NULL AND surface_area != 0) THEN concat('catchment_area: ', ca.obj_id,': DWF baseline is computed from surface_area, population_density_planned and a default production of 160 Litre / inhabitant /day')
 						ELSE concat('catchment_area: ', ca.obj_id,': DWF baseline is computed from the geometric area, population_density_planned and a default production of 160 Litre / inhabitant /day')
 					END
@@ -75,31 +75,31 @@ SELECT
     WHEN state = 'rw_planned' OR state = 'ww_planned' THEN 'planned'
     ELSE 'planned'
   END as state,
-  CASE 
+  CASE
 		WHEN _function_hierarchic in (5062, 5064, 5066, 5068, 5069, 5070, 5071, 5072, 5074) THEN 'primary'
 		ELSE 'secondary'
 	END as hierarchy,
 	wn_obj_id as obj_id
 FROM (
-  SELECT ca.*, wn.situation_geometry as wn_geom, 'rw_current' as state, wn.obj_id as wn_obj_id, ws._function_hierarchic 
+  SELECT ca.*, wn.situation_geometry as wn_geom, 'rw_current' as state, wn.obj_id as wn_obj_id, ws._function_hierarchic
   FROM tww_od.catchment_area as ca
   INNER JOIN tww_od.wastewater_networkelement ne on ne.obj_id = ca.fk_wastewater_networkelement_rw_current
   LEFT JOIN tww_od.wastewater_node wn on wn.obj_id = ne.obj_id
   LEFT JOIN tww_od.wastewater_structure ws ON ws.obj_id = ne.fk_wastewater_structure
   UNION ALL
-  SELECT ca.*, wn.situation_geometry as wn_geom, 'rw_planned' as state, wn.obj_id as wn_obj_id, ws._function_hierarchic 
+  SELECT ca.*, wn.situation_geometry as wn_geom, 'rw_planned' as state, wn.obj_id as wn_obj_id, ws._function_hierarchic
   FROM tww_od.catchment_area as ca
   INNER JOIN tww_od.wastewater_networkelement ne on ne.obj_id = ca.fk_wastewater_networkelement_rw_planned
   LEFT JOIN tww_od.wastewater_node wn on wn.obj_id = ne.obj_id
   LEFT JOIN tww_od.wastewater_structure ws ON ws.obj_id = ne.fk_wastewater_structure
   UNION ALL
-  SELECT ca.*, wn.situation_geometry as wn_geom, 'ww_current' as state, wn.obj_id as wn_obj_id, ws._function_hierarchic 
+  SELECT ca.*, wn.situation_geometry as wn_geom, 'ww_current' as state, wn.obj_id as wn_obj_id, ws._function_hierarchic
   FROM tww_od.catchment_area as ca
   INNER JOIN tww_od.wastewater_networkelement ne on ne.obj_id = ca.fk_wastewater_networkelement_ww_current
   LEFT JOIN tww_od.wastewater_node wn on wn.obj_id = ne.obj_id
   LEFT JOIN tww_od.wastewater_structure ws ON ws.obj_id = ne.fk_wastewater_structure
   UNION ALL
-  SELECT ca.*, wn.situation_geometry as wn_geom,'ww_planned' as state, wn.obj_id as wn_obj_id, ws._function_hierarchic 
+  SELECT ca.*, wn.situation_geometry as wn_geom,'ww_planned' as state, wn.obj_id as wn_obj_id, ws._function_hierarchic
   FROM tww_od.catchment_area as ca
   INNER JOIN tww_od.wastewater_networkelement ne on ne.obj_id = ca.fk_wastewater_networkelement_ww_planned
   LEFT JOIN tww_od.wastewater_node wn on wn.obj_id = ne.obj_id

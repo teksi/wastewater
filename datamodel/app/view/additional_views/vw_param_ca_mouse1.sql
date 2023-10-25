@@ -133,4 +133,3 @@ CREATE OR REPLACE RULE vw_param_ca_mouse1_ON_DELETE AS ON DELETE TO tww_app.vw_p
   DELETE FROM tww_od.param_ca_mouse1 WHERE obj_id = OLD.obj_id;
   DELETE FROM tww_od.surface_runoff_parameters WHERE obj_id = OLD.obj_id;
 );
-

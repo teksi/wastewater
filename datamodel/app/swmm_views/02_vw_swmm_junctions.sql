@@ -14,7 +14,7 @@ SELECT
 	ws.identifier::text as description,
 	CONCAT_WS(',', 'manhole', mf.value_en) as tag,
 	wn.situation_geometry as geom,
-	CASE 
+	CASE
 		WHEN ws_st.vsacode IN (7959, 6529, 6526) THEN 'planned'
 		ELSE 'current'
 	END as state,
@@ -112,7 +112,7 @@ SELECT
 	coalesce(from_wn.obj_id, concat('from_node@',re.obj_id)) as description,
 	'junction without structure' as tag,
 	coalesce(from_wn.situation_geometry,  ST_StartPoint(re.progression_geometry)) as geom,
-	CASE 
+	CASE
 		WHEN ws_st.vsacode IN (7959, 6529, 6526) THEN 'planned'
 		ELSE 'current'
 	END as state,
@@ -148,7 +148,7 @@ SELECT
 	coalesce(to_wn.obj_id, concat('to_node@',re.obj_id)) as description,
 	'junction without structure' as tag,
 	coalesce(to_wn.situation_geometry,  ST_EndPoint(re.progression_geometry)) as geom,
-	CASE 
+	CASE
 		WHEN ws_st.vsacode IN (7959, 6529, 6526) THEN 'planned'
 		ELSE 'current'
 	END as state,

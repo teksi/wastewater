@@ -60,6 +60,6 @@ ALTER TABLE tww_od._aquifier ADD CONSTRAINT rel_od_aquifier_fk_dataprovider FORE
 ------ Indexes on identifiers
 
 CREATE UNIQUE INDEX in_od_aquifier_identifier ON tww_od._aquifier USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
- 
- 
+
+
 COMMIT;

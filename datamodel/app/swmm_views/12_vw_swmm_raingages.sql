@@ -8,12 +8,12 @@ SELECT
   'TIMESERIES default_tww_raingage_timeserie'::varchar as Source,
   st_centroid(perimeter_geometry)::geometry(Point, %(SRID)s) as geom,
   state,
-  CASE 
+  CASE
 		WHEN _function_hierarchic in (5062, 5064, 5066, 5068, 5069, 5070, 5071, 5072, 5074) THEN 'primary'
 		ELSE 'secondary'
 	END as hierarchy,
   wn_obj_id as obj_id
-FROM 
+FROM
 (
 SELECT ca.*,'current' as state, wn.obj_id as wn_obj_id, cfhi.vsacode AS _function_hierarchic
 FROM tww_od.catchment_area as ca

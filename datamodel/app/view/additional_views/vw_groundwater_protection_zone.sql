@@ -97,4 +97,3 @@ CREATE OR REPLACE RULE vw_groundwater_protection_zone_ON_DELETE AS ON DELETE TO 
   DELETE FROM tww_od.groundwater_protection_zone WHERE obj_id = OLD.obj_id;
   DELETE FROM tww_od.zone WHERE obj_id = OLD.obj_id;
 );
-

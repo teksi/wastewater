@@ -10,5 +10,3 @@ pkey_default_value: True
 joins:
   examination:
     table: tww_od.examination
-
-

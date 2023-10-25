@@ -209,4 +209,3 @@ CREATE OR REPLACE RULE vw_tww_catchment_area_ON_DELETE AS ON DELETE TO tww_app.v
 INSTEAD (
   DELETE FROM tww_od.catchment_area WHERE obj_id = OLD.obj_id;
 );
-

@@ -129,4 +129,3 @@ CREATE OR REPLACE RULE vw_param_ca_general_ON_DELETE AS ON DELETE TO tww_app.vw_
   DELETE FROM tww_od.param_ca_general WHERE obj_id = OLD.obj_id;
   DELETE FROM tww_od.surface_runoff_parameters WHERE obj_id = OLD.obj_id;
 );
-

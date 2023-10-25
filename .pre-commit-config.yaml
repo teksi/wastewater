@@ -31,6 +31,7 @@ repos:
     rev: "23.10.1"
     hooks:
       - id: black
+        args: ["--line-length=99"]
 
   # tool to automatically upgrade syntax for newer versions of the language
   - repo: https://github.com/asottile/pyupgrade
@@ -44,7 +45,11 @@ repos:
     rev: "6.1.0"
     hooks:
       - id: flake8
-        additional_dependencies: [flake8-match==1.0.0, flake8-walrus==1.1.0]
+        args: [
+          "--max-line-length=99",
+          # ignore long comments (E501), as long lines are formatted by black
+          "--ignore=E501,E203,W503",
+        ]
 
 #    # Static type-checking with mypy
 #  - repo: https://github.com/pre-commit/mirrors-mypy

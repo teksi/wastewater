@@ -99,4 +99,3 @@ CREATE OR REPLACE RULE vw_ford_ON_DELETE AS ON DELETE TO tww_app.vw_ford DO INST
   DELETE FROM tww_od.ford WHERE obj_id = OLD.obj_id;
   DELETE FROM tww_od.water_control_structure WHERE obj_id = OLD.obj_id;
 );
-

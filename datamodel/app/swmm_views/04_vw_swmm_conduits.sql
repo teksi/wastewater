@@ -17,7 +17,7 @@ SELECT
 	-- Roughness export prioriy: 1. coefficient_of_friction, 2. wall_roughness, 3. swmm_default_coefficient_of_friction, 4. 0.01
 	CASE
 		WHEN re.coefficient_of_friction IS NOT NULL THEN (1 / re.coefficient_of_friction::double precision)
-		WHEN re.coefficient_of_friction IS NULL AND re.wall_roughness IS NOT NULL THEN 
+		WHEN re.coefficient_of_friction IS NULL AND re.wall_roughness IS NOT NULL THEN
 			CASE
 				/* WHEN re.clear_height IS NOT NULL THEN (1 / (4 * SQRT(9.81) * POWER((32 / re.clear_height::double precision / 1000),(1 / 6::double precision))*LOG(((3.71 * re.clear_height::double precision / 1000) / (re.wall_roughness / 1000)))))::numeric(7,4) */
 				WHEN re.clear_height IS NOT NULL THEN 1./((4. * SQRT(9.81) * POWER((32. / (re.clear_height::double precision / 1000.)),(1. / 6.::double precision)))*LOG(((3.71 * (re.clear_height::double precision / 1000.)) / (re.wall_roughness / 1000.))))::numeric(7,4)
@@ -55,50 +55,50 @@ SELECT
 		ELSE 'Default value 0.01 is used as roughness'
 	END,
 	CASE
-		WHEN vl_pp.vsacode = 3350 THEN 
+		WHEN vl_pp.vsacode = 3350 THEN
 			CASE
 				WHEN re.clear_height = 0 OR re.clear_height IS NULL THEN concat('Reach', re.obj_id,': circular profile with default value of 0.1m as clear_height')
 				ELSE NULL
 			END
-		WHEN vl_pp.vsacode = 3351 THEN 
+		WHEN vl_pp.vsacode = 3351 THEN
 			CASE
 				WHEN re.clear_height = 0 OR re.clear_height IS NULL THEN concat('Reach', re.obj_id,': egg profile with default value of 0.1m as clear_height')
 				ELSE NULL
 			END
-		WHEN vl_pp.vsacode = 3352 THEN 
+		WHEN vl_pp.vsacode = 3352 THEN
 			CASE
-				WHEN pp.height_width_ratio IS NOT NULL THEN 
+				WHEN pp.height_width_ratio IS NOT NULL THEN
 					CASE
 						WHEN re.clear_height = 0 OR re.clear_height IS NULL THEN concat('Reach', re.obj_id,': arch profile with known height_width_ratio value and with default value of 0.1m as clear_height')
 						ELSE NULL
 					END
-				WHEN pp.height_width_ratio IS NULL THEN 
+				WHEN pp.height_width_ratio IS NULL THEN
 					CASE
 						WHEN re.clear_height = 0 OR re.clear_height IS NULL THEN concat('Reach', re.obj_id,': arch profile with default value of 1 as height_width_ratio and with default value of 0.1m as clear_height')
 						ELSE concat('Reach', re.obj_id,': arch profile with default value of 1 as height_width_ratio and with known clear_height value')
 					END
 			END
-		WHEN vl_pp.vsacode = 3353 THEN 
+		WHEN vl_pp.vsacode = 3353 THEN
 			CASE
-				WHEN pp.height_width_ratio IS NOT NULL THEN 
+				WHEN pp.height_width_ratio IS NOT NULL THEN
 					CASE
 						WHEN re.clear_height = 0 OR re.clear_height IS NULL THEN concat('Reach', re.obj_id,': rectangular profile with known height_width_ratio value and with default value of 0.1m as clear_height')
 						ELSE NULL
 					END
-				WHEN pp.height_width_ratio IS NULL THEN 
+				WHEN pp.height_width_ratio IS NULL THEN
 				CASE
 					WHEN re.clear_height = 0 OR re.clear_height IS NULL THEN concat('Reach', re.obj_id,': rectangular profile with default value of 1 as height_width_ratio and with default value of 0.1m as clear_height')
 					ELSE concat('Reach', re.obj_id,': rectangular profile with default value of 1 as height_width_ratio and with known clear_height value')
 				END
 			END
-		WHEN vl_pp.vsacode = 3354 THEN 
+		WHEN vl_pp.vsacode = 3354 THEN
 			CASE
-				WHEN pp.height_width_ratio IS NOT NULL THEN 
+				WHEN pp.height_width_ratio IS NOT NULL THEN
 					CASE
 						WHEN re.clear_height = 0 OR re.clear_height IS NULL THEN concat('Reach', re.obj_id,': parabolic profile with known height_width_ratio value, default value of 0.1m as clear_height and no code value')
 						ELSE NULL
 					END
-				WHEN pp.height_width_ratio IS NULL THEN 
+				WHEN pp.height_width_ratio IS NULL THEN
 					CASE
 						WHEN re.clear_height = 0 OR re.clear_height IS NULL THEN concat('Reach', re.obj_id,': parabolic profile with default value of 1 as height_width_ratio, with default value of 0.1m as clear_height and no code value')
 						ELSE concat('Reach', re.obj_id,': parabolic profile with default value of 1 as height_width_ratio, with known clear_height value and no code value')
@@ -114,11 +114,11 @@ SELECT
 	) as description,
 	cfhy.value_en as tag,
 	ST_CurveToLine(st_force3d(progression_geometry))::geometry(LineStringZ, %(SRID)s) as geom,
-	CASE 
+	CASE
 		WHEN status IN (7959, 6529, 6526) THEN 'planned'
 		ELSE 'current'
 	END as state,
-  CASE 
+  CASE
 		WHEN cfhi.vsacode in (5062, 5064, 5066, 5068, 5069, 5070, 5071, 5072, 5074) THEN 'primary'
 		ELSE 'secondary'
 	END as hierarchy,

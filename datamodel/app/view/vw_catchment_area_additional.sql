@@ -8,5 +8,5 @@ CREATE OR REPLACE VIEW tww_app.vw_catchment_area_additional AS
     ca.fk_wastewater_networkelement_rw_planned::text = ca.fk_wastewater_networkelement_ww_planned::text AS planned_ww_is_rw,
 	  ca.fk_wastewater_networkelement_ww_planned::text = ca.fk_wastewater_networkelement_ww_current::text AS ww_planned_is_current,
     ca.fk_wastewater_networkelement_rw_planned::text = ca.fk_wastewater_networkelement_rw_current::text AS rw_planned_is_current
-   
+
    FROM tww_od.catchment_area ca;

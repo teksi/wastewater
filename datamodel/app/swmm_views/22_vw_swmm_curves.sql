@@ -6,18 +6,18 @@ CREATE OR REPLACE VIEW tww_app.swmm.vw_curves AS
 -- Pump curves
 (SELECT
 	concat('pump_curve@',pu.obj_id)::varchar as Name,
-	CASE 
+	CASE
 		WHEN ROW_NUMBER () OVER (PARTITION BY pu.obj_id ORDER BY pu.obj_id, hq.altitude) = 1
 		THEN 'Pump4'
 		ELSE NULL
 	END as type,
 	hq.altitude as XValue,
 	hq.flow as YValue,
-	CASE 
+	CASE
 		WHEN ws_st.vsacode IN (7959, 6529, 6526) THEN 'planned'
 		ELSE 'current'
 	END as state,
-	CASE 
+	CASE
 		WHEN cfhi.vsacode in (5062, 5064, 5066, 5068, 5069, 5070, 5071, 5072, 5074) THEN 'primary'
 		ELSE 'secondary'
 	END as hierarchy,
@@ -36,7 +36,7 @@ LEFT JOIN tww_vl.channel_function_hierarchic cfhi ON cfhi.code=ws._function_hier
 WHERE ws_st.vsacode IN (6530, 6533, 8493, 6529, 6526, 7959)
 -- Attribute overflow_characteristics_digital does not exist anymore in VSA-DSS 2020
 --AND vl_oc_dig.vsacode = 6223  --'yes;
-AND vl_oc_ki.vsacode = 6220 -- h/q relations (Q/Q relations are not supported by SWMM) 
+AND vl_oc_ki.vsacode = 6220 -- h/q relations (Q/Q relations are not supported by SWMM)
 AND pu.obj_id IS NOT NULL
 ORDER BY pu.obj_id, hq.altitude)
 
@@ -45,18 +45,18 @@ UNION ALL
 -- Prank weir curves
 (SELECT
 	concat('prank_weir_curve@',pw.obj_id)::varchar as Name,
-	CASE 
+	CASE
 		WHEN ROW_NUMBER () OVER (PARTITION BY pw.obj_id ORDER BY pw.obj_id, hq.altitude) = 1
 		THEN 'Rating'
 		ELSE NULL
 	END as type,
 	hq.altitude as XValue,
 	hq.flow as YValue,
-	CASE 
+	CASE
 		WHEN ws_st.vsacode IN (7959, 6529, 6526) THEN 'planned'
 		ELSE 'current'
 	END as state,
-	CASE 
+	CASE
 		WHEN cfhi.vsacode in (5062, 5064, 5066, 5068, 5069, 5070, 5071, 5072, 5074) THEN 'primary'
 		ELSE 'secondary'
 	END as hierarchy,
@@ -75,7 +75,7 @@ LEFT JOIN tww_vl.channel_function_hierarchic cfhi ON cfhi.code=ws._function_hier
 WHERE ws_st.vsacode IN (6530, 6533, 8493, 6529, 6526, 7959)
 -- Attribute overflow_characteristics_digital does not exist anymore in VSA-DSS 2020
 --AND vl_oc_dig.vsacode = 6223  --'yes;
-AND vl_oc_ki.vsacode = 6220 -- h/q relations (Q/Q relations are not supported by SWMM) 
+AND vl_oc_ki.vsacode = 6220 -- h/q relations (Q/Q relations are not supported by SWMM)
 AND pw.obj_id IS NOT NULL
 ORDER BY pw.obj_id, hq.altitude)
 
@@ -84,18 +84,18 @@ UNION ALL
 -- storage curves
 (SELECT
 	concat('storageCurve@',wn.obj_id)::varchar as Name,
-	CASE 
+	CASE
 		WHEN ROW_NUMBER () OVER (PARTITION BY wn.obj_id ORDER BY wn.obj_id, hr.water_depth) = 1
 		THEN 'Storage'
 		ELSE NULL
 	END as type,
 	hr.water_depth as XValue,
 	hr.water_surface as YValue,
-	CASE 
+	CASE
 		WHEN ws_st.vsacode IN (7959, 6529, 6526) THEN 'planned'
 		ELSE 'current'
 	END as state,
-	CASE 
+	CASE
 		WHEN cfhi.vsacode in (5062, 5064, 5066, 5068, 5069, 5070, 5071, 5072, 5074) THEN 'primary'
 		ELSE 'secondary'
 	END as hierarchy,

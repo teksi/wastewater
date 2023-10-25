@@ -109,4 +109,3 @@ CREATE OR REPLACE RULE vw_tank_cleaning_ON_DELETE AS ON DELETE TO tww_app.vw_tan
   DELETE FROM tww_od.tank_cleaning WHERE obj_id = OLD.obj_id;
   DELETE FROM tww_od.structure_part WHERE obj_id = OLD.obj_id;
 );
-

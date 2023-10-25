@@ -109,4 +109,3 @@ CREATE OR REPLACE RULE vw_electric_equipment_ON_DELETE AS ON DELETE TO tww_app.v
   DELETE FROM tww_od.electric_equipment WHERE obj_id = OLD.obj_id;
   DELETE FROM tww_od.structure_part WHERE obj_id = OLD.obj_id;
 );
-

@@ -105,4 +105,3 @@ CREATE OR REPLACE RULE vw_dam_ON_DELETE AS ON DELETE TO tww_app.vw_dam DO INSTEA
   DELETE FROM tww_od.dam WHERE obj_id = OLD.obj_id;
   DELETE FROM tww_od.water_control_structure WHERE obj_id = OLD.obj_id;
 );
-

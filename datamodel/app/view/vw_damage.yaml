@@ -13,4 +13,3 @@ joins:
 
   manhole:
     table: tww_od.damage_manhole
-

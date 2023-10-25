@@ -216,4 +216,3 @@ CREATE OR REPLACE RULE vw_infiltration_installation_ON_DELETE AS ON DELETE TO tw
   DELETE FROM tww_od.infiltration_installation WHERE obj_id = OLD.obj_id;
   DELETE FROM tww_od.wastewater_structure WHERE obj_id = OLD.obj_id;
 );
-

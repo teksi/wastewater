@@ -95,4 +95,3 @@ CREATE OR REPLACE RULE vw_cooperative_ON_DELETE AS ON DELETE TO tww_app.vw_coope
   DELETE FROM tww_od.cooperative WHERE obj_id = OLD.obj_id;
   DELETE FROM tww_od.organisation WHERE obj_id = OLD.obj_id;
 );
-

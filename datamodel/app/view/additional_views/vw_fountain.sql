@@ -113,4 +113,3 @@ CREATE OR REPLACE RULE vw_fountain_ON_DELETE AS ON DELETE TO tww_app.vw_fountain
   DELETE FROM tww_od.fountain WHERE obj_id = OLD.obj_id;
   DELETE FROM tww_od.connection_object WHERE obj_id = OLD.obj_id;
 );
-

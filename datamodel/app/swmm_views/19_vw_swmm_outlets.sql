@@ -9,11 +9,11 @@ SELECT
     concat('prank_weir_curve@',pw.obj_id) as QTable_Qcoeff,
 	NULL as Qexpon,
     'NO' as Gated,
-	CASE 
+	CASE
 		WHEN ws_st.vsacode IN (7959, 6529, 6526) THEN 'planned'
 		ELSE 'current'
 	END as state,
-	CASE 
+	CASE
 		WHEN cfhi.vsacode in (5062, 5064, 5066, 5068, 5069, 5070, 5071, 5072, 5074) THEN 'primary'
 		ELSE 'secondary'
 	END as hierarchy,
@@ -31,4 +31,4 @@ LEFT JOIN tww_vl.channel_function_hierarchic cfhi ON cfhi.code=ws._function_hier
 WHERE ws_st.vsacode IN (6530, 6533, 8493, 6529, 6526, 7959)
 -- Attribute overflow_characteristics_digital does not exist anymore in VSA-DSS 2020
 --AND vL_oc_dig.vsacode = 6223  --'yes;
-AND vl_oc_ki.vsacode = 6220; -- h/q relations (Q/Q relations are not supported by SWMM) 
+AND vl_oc_ki.vsacode = 6220; -- h/q relations (Q/Q relations are not supported by SWMM)

@@ -33,4 +33,3 @@ joins:
     table: qgep_od.private
     remap_columns:
       kind: private_kind
-

@@ -125,7 +125,7 @@ BEGIN
     WHEN TG_OP = 'DELETE' THEN
       ch_obj_id = OLD.obj_id;
   END CASE;
-  
+
   BEGIN
     SELECT ws.obj_id, ne.obj_id INTO _ws_from_id, _ne_from_id
       FROM tww_od.wastewater_networkelement ch_ne
@@ -142,7 +142,7 @@ BEGIN
     WHEN TOO_MANY_ROWS THEN
         RAISE EXCEPTION 'TRIGGER ERROR ws_symbology_update_by_channel. Subquery shoud return exactly one row. This is not supposed to happen and indicates an isue with the trigger. The issue must be fixed in QGEP.';
   END;
-  
+
   BEGIN
     SELECT ws.obj_id, ne.obj_id INTO _ws_to_id, _ne_to_id
       FROM tww_od.wastewater_networkelement ch_ne
@@ -310,7 +310,7 @@ VOLATILE;
 ------ 14.9.2022 use idx only when more than one entry /cymed
 ------ 15.8.2018 uk adapted label display only for primary wastwater system
 ------ WHERE (_all OR NE.fk_wastewater_structure = _obj_id) and CH_to.function_hierarchic in (5062,5064,5066,5068,5069,5070,5071,5072,5074)  ----label only reaches with function_hierarchic=pwwf.*
-      				 
+
 
 
 CREATE OR REPLACE FUNCTION tww_app.update_wastewater_structure_label(_obj_id text, _all boolean default false)
@@ -340,7 +340,7 @@ SELECT   ws_obj_id,
 		  SELECT ws.obj_id AS ws_obj_id, ws.identifier AS ws_identifier, parts.co_level AS co_level, parts.rpi_level AS rpi_level, parts.rpo_level AS rpo_level, parts.obj_id, idx, bottom_level AS bottom_level
     FROM tww_od.wastewater_structure WS
 
-    LEFT JOIN (      
+    LEFT JOIN (
       SELECT coalesce(round(CO.level, 2)::text, '?') AS co_level, NULL::text AS rpi_level, NULL::text AS rpo_level, SP.fk_wastewater_structure ws, SP.obj_id, row_number() OVER(PARTITION BY SP.fk_wastewater_structure) AS idx, NULL::text AS bottom_level
       FROM tww_od.structure_part SP
       RIGHT JOIN tww_od.cover CO ON CO.obj_id = SP.obj_id
@@ -356,12 +356,12 @@ SELECT   ws_obj_id,
       WHERE (_all OR NE.fk_wastewater_structure = _obj_id) and CH_to.function_hierarchic in (5062,5064,5066,5068,5069,5070,5071,5072,5074)  ----label only reaches with function_hierarchic=pwwf.*
       -- Outputs
       UNION
-      SELECT NULL AS co_level, NULL::text AS rpi_level, 
-		coalesce(round(RP.level, 2)::text, '?') AS rpo_level, 
-		NE.fk_wastewater_structure ws, RP.obj_id, 
-		row_number() OVER(PARTITION BY NE.fk_wastewater_structure 
+      SELECT NULL AS co_level, NULL::text AS rpi_level,
+		coalesce(round(RP.level, 2)::text, '?') AS rpo_level,
+		NE.fk_wastewater_structure ws, RP.obj_id,
+		row_number() OVER(PARTITION BY NE.fk_wastewater_structure
 						  ORDER BY array_position(ARRAY[4522,4526,4524,4516,4514,4518,520,4571,5322], ch.usage_current),
-						  ST_Azimuth(RP.situation_geometry,ST_PointN(RE_from.progression_geometry,2))/pi()*180 ASC), 
+						  ST_Azimuth(RP.situation_geometry,ST_PointN(RE_from.progression_geometry,2))/pi()*180 ASC),
 		NULL::text AS bottom_level
       FROM tww_od.reach_point RP
       LEFT JOIN tww_od.wastewater_networkelement NE ON RP.fk_wastewater_networkelement = NE.obj_id
@@ -738,4 +738,3 @@ AFTER UPDATE
 ON tww_od.reach_point
 FOR EACH ROW
 EXECUTE PROCEDURE tww_app.ws_symbology_update_by_reach_point();
-

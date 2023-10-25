@@ -4,7 +4,7 @@
 CREATE MATERIALIZED VIEW tww_app.vw_network_segment AS
 SELECT s.id as gid,
        COALESCE(
-         s.ne_id, 
+         s.ne_id,
          CASE
            WHEN n1.type = 'wastewater_node' THEN n1.obj_id
            WHEN n2.type = 'wastewater_node' THEN n2.obj_id
