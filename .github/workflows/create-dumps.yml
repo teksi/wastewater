@@ -1,4 +1,4 @@
-name: Test and build Docker image
+name: Create dumps
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -36,7 +36,7 @@ jobs:
       - name: create dumps
         run: |
           docker exec -e PGSERVICE=pg_teksi_wastewater teksi-wastewater /src/scripts/create-dumps.py
-          docker cp pg_teksi_wastewater:/src/artifacts datamodel/artifacts
+          docker cp teksi-wastewater:/src/artifacts datamodel/artifacts
 
       - uses: actions/upload-artifact@v3
         with:

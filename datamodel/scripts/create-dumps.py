@@ -57,9 +57,8 @@ def create_dumps(**args):
     """
     file_s = create_plain_structure_only(**args)
     file_v = create_plain_value_list(structure_dump_file=file_s, **args)
-    file_d = create_backup_data(**args)
     file_b = create_backup_complete(**args)
-    return [file_s, file_v, file_d, file_b]
+    return file_s, file_v, file_b
 
 
 def create_plain_structure_only(database: str, version: str):
@@ -104,8 +103,10 @@ def create_plain_structure_only(database: str, version: str):
             dump_file_i,
             "--schema",
             "tww_sys",
-            "--exclude-table",
-            "tww_sys.logged_actions",
+            "--schema",
+            "tww_swmm",
+            "--schema",
+            "tww_network",
             database,
         ]
     )
@@ -163,38 +164,6 @@ def create_plain_value_list(database: str, version: str, structure_dump_file: st
     return dump_file
 
 
-def create_backup_data(database: str, version: str):
-    """
-    Create a data-only dump (without VL and pum_info)
-    :return: the file name
-    """
-    # Create data-only dumps (with sample data)
-    dump = f"tww_{version}_demo_data.backup"
-    print(f"::group::{dump}")
-    print(f"Creating dump {dump}")
-    dump_file = f"artifacts/{dump}"
-    _cmd(
-        [
-            "pg_dump",
-            "--format",
-            "custom",
-            "--blobs",
-            "--data-only",
-            "--compress",
-            "5",
-            "--file",
-            dump_file,
-            "--table",
-            "tww_od.*",
-            "--table",
-            "tww_sys.logged_actions",
-            database,
-        ]
-    )
-    print("::endgroup::")
-    return dump_file
-
-
 def create_backup_complete(database: str, version: str):
     """
     Create data + structure dump
@@ -215,7 +184,7 @@ def create_backup_complete(database: str, version: str):
             "5",
             "--file",
             dump_file,
-            "-N",
+            "--exclude-schema",
             "public",
             database,
         ]
@@ -229,25 +198,18 @@ def get_parser():
     """
     Creates a new argument parser.
     """
-    parser = argparse.ArgumentParser("create-dumps.py")
-    parser.add_argument("--version", "-v", help="Sets the version", default="dev")
-    parser.add_argument(
+    _parser = argparse.ArgumentParser("create-dumps.py")
+    _parser.add_argument("--version", "-v", help="Sets the version", default="dev")
+    _parser.add_argument(
         "--database", "-d", help="Sets the database name", default="teksi_wastewater"
     )
-    return parser
+    return _parser
 
 
-def main(args=None):
-    """
-    Creates dumps to be attached to releases.
-    """
+if __name__ == "__main__":
     parser = get_parser()
-    args = parser.parse_args(args)
+    args = parser.parse_args()
 
     os.makedirs("artifacts", exist_ok=True)
     files = create_dumps(version=args.version, database=args.database)
     print("Dumps created: {}".format(", ".join(files)))
-
-
-if __name__ == "__main__":
-    main()
