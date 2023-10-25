@@ -1,0 +1,23 @@
+
+table: qgep_od.overflow
+view_name: vw_qgep_overflow
+
+additional_columns:
+  geometry: n1.situation_geometry::geometry('PointZ',%(SRID)s)
+additional_joins: >
+  LEFT JOIN qgep_od.wastewater_node n1 ON overflow.fk_wastewater_node::text = n1.obj_id::text
+
+
+joins:
+  leapingweir:
+    table: qgep_od.leapingweir
+
+  prank_weir:
+    table: qgep_od.prank_weir
+
+  pump:
+    table: qgep_od.pump
+
+
+
+

@@ -1,0 +1,35 @@
+
+
+table: qgep_od.organisation
+view_name: vw_organisation
+allow_type_change: True
+
+merge_geometry_columns:
+  - perimeter_geometry
+
+joins:
+  cooperative:
+    table: qgep_od.cooperative
+
+  canton:
+    table: qgep_od.canton
+
+  waste_water_association:
+    table: qgep_od.waste_water_association
+
+  municipality:
+    table: qgep_od.municipality
+
+  administrative_office:
+    table: qgep_od.administrative_office
+
+  waste_water_treatment_plant:
+    table: qgep_od.waste_water_treatment_plant
+    remap_columns:
+      kind: waste_water_treatment_plant_kind
+
+  private:
+    table: qgep_od.private
+    remap_columns:
+      kind: private_kind
+
