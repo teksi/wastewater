@@ -1,13 +1,13 @@
 --------
 -- View for the swmm module class coordinate
 -- Depends on:
--- - qgep_swmm.vw_junctions
--- - qgep_swmm.vw_outfalls
--- - qgep_swmm.vw_dividers
--- - qgep_swmm.vw_storages
--- - qgep_swmm.vw_raingages
+-- - tww_swmm.vw_junctions
+-- - tww_swmm.vw_outfalls
+-- - tww_swmm.vw_dividers
+-- - tww_swmm.vw_storages
+-- - tww_swmm.vw_raingages
 --------
-CREATE OR REPLACE VIEW qgep_swmm.vw_coordinates AS
+CREATE OR REPLACE VIEW tww_swmm.vw_coordinates AS
 
 SELECT
 	Name as Node,
@@ -16,7 +16,7 @@ SELECT
 	state,
 	hierarchy,
 	obj_id
-FROM qgep_swmm.vw_junctions
+FROM tww_swmm.vw_junctions
 WHERE geom IS NOT NULL
 
 UNION
@@ -28,7 +28,7 @@ SELECT
 	state,
 	hierarchy,
 	obj_id
-FROM qgep_swmm.vw_outfalls
+FROM tww_swmm.vw_outfalls
 WHERE geom IS NOT NULL
 
 UNION
@@ -40,7 +40,7 @@ SELECT
 	state,
 	hierarchy,
 	obj_id	
-FROM qgep_swmm.vw_dividers
+FROM tww_swmm.vw_dividers
 WHERE geom IS NOT NULL
 
 UNION
@@ -52,7 +52,7 @@ SELECT
 	state,
 	hierarchy,
 	obj_id
-FROM qgep_swmm.vw_storages
+FROM tww_swmm.vw_storages
 WHERE geom IS NOT NULL
 
 UNION
@@ -64,5 +64,5 @@ SELECT
 	state,
 	hierarchy,
 	obj_id
-FROM qgep_swmm.vw_raingages
+FROM tww_swmm.vw_raingages
 WHERE geom IS NOT NULL;

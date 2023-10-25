@@ -1,15 +1,15 @@
 -- create quarantine table
 
 /*
-Note: triggers and functions related to this were moved to view/vw_qgep_import.sql
+Note: triggers and functions related to this were moved to view/vw_tww_import.sql
 and are to be initialized like the rest of the views with create_views.py
 */
 
-CREATE TABLE qgep_import.manhole_quarantine
+CREATE TABLE tww_import.manhole_quarantine
 (
   obj_id character varying(16),
   identifier character varying(20),
-  situation_geometry geometry(POINTZ, :SRID),
+  situation_geometry geometry(POINTZ, 2056),
   co_shape integer,
   co_diameter smallint,
   co_material integer,

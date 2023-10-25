@@ -1,8 +1,8 @@
 --------
 -- View for the swmm module class symbols (rain gages locations)
--- - This view depends on qgep_swmm.vw_raingages
+-- - This view depends on tww_swmm.vw_raingages
 --------
-CREATE OR REPLACE VIEW qgep_swmm.vw_symbols AS
+CREATE OR REPLACE VIEW tww_swmm.vw_symbols AS
 
 SELECT
 	Name as Gage,
@@ -11,4 +11,4 @@ SELECT
     state as state,
 	hierarchy,
 	obj_id
-FROM qgep_swmm.vw_raingages
+FROM tww_swmm.vw_raingages

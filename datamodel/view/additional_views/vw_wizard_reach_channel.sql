@@ -2,7 +2,7 @@
 
 -- DROP VIEW vw_wizard_reach_channel;
 
-CREATE OR REPLACE VIEW qgep_od.vw_wizard_reach_channel AS 
+CREATE OR REPLACE VIEW tww_od.vw_wizard_reach_channel AS 
  SELECT 
      re.obj_id
    , bedding_encasement
@@ -76,19 +76,19 @@ CREATE OR REPLACE VIEW qgep_od.vw_wizard_reach_channel AS
    , rp_to_provider
    , rp_to_fk_wastewater_networkelement
    
-   FROM qgep_od.vw_channel ch
-     LEFT JOIN qgep_od.vw_reach re ON ch.obj_id = re.fk_wastewater_structure
+   FROM tww_od.vw_channel ch
+     LEFT JOIN tww_od.vw_reach re ON ch.obj_id = re.fk_wastewater_structure
   WHERE false;
 
 -- INSERT function
 
-CREATE OR REPLACE FUNCTION qgep_od.vw_wizard_reach_channel_INSERT()
+CREATE OR REPLACE FUNCTION tww_od.vw_wizard_reach_channel_INSERT()
   RETURNS trigger AS
 $BODY$
 DECLARE
   ch_obj_id character varying(16);
 BEGIN
-  INSERT INTO qgep_od.vw_channel(
+  INSERT INTO tww_od.vw_channel(
          bedding_encasement
        , connection_type
        , function_hierarchic
@@ -156,7 +156,7 @@ BEGIN
        , NEW.fk_operator
        ) RETURNING obj_id INTO ch_obj_id;
 
-  INSERT INTO qgep_od.vw_reach(
+  INSERT INTO tww_od.vw_reach(
      clear_height
    , coefficient_of_friction
    , elevation_determination
@@ -239,8 +239,8 @@ BEGIN
 END; $BODY$ LANGUAGE plpgsql VOLATILE
   COST 100;
 
-DROP TRIGGER IF EXISTS vw_wizard_reach_channel_ON_INSERT ON qgep_od.vw_wizard_reach_channel;
+DROP TRIGGER IF EXISTS vw_wizard_reach_channel_ON_INSERT ON tww_od.vw_wizard_reach_channel;
 
-CREATE TRIGGER vw_wizard_reach_channel_ON_INSERT INSTEAD OF INSERT ON qgep_od.vw_wizard_reach_channel
-  FOR EACH ROW EXECUTE PROCEDURE qgep_od.vw_wizard_reach_channel_INSERT();
+CREATE TRIGGER vw_wizard_reach_channel_ON_INSERT INSTEAD OF INSERT ON tww_od.vw_wizard_reach_channel
+  FOR EACH ROW EXECUTE PROCEDURE tww_od.vw_wizard_reach_channel_INSERT();
 

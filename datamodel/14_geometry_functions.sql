@@ -1,13 +1,13 @@
 -----------------------------------------------
 -----------------------------------------------
--- Synchronize GEOMETRY with bottom_level qgep_od.wastewater_node
+-- Synchronize GEOMETRY with bottom_level tww_od.wastewater_node
 -----------------------------------------------
 -----------------------------------------------
-SELECT set_config('qgep.srid', :SRID::text, false);
+SELECT set_config('tww.srid', 2056::text, false);
 DO $DO$
 BEGIN
 EXECUTE format($TRIGGER$
-CREATE OR REPLACE FUNCTION qgep_od.synchronize_level_with_altitude_on_wastewater_node()
+CREATE OR REPLACE FUNCTION tww_od.synchronize_level_with_altitude_on_wastewater_node()
   RETURNS trigger AS
 $BODY$
 BEGIN
@@ -27,29 +27,29 @@ BEGIN
   RETURN NEW;
 END; $BODY$
   LANGUAGE plpgsql VOLATILE;
-$TRIGGER$, current_setting('qgep.srid'));
+$TRIGGER$, current_setting('tww.srid'));
 END
 $DO$;
 
-DROP TRIGGER IF EXISTS synchronize_level_with_altitude ON qgep_od.wastewater_node;
+DROP TRIGGER IF EXISTS synchronize_level_with_altitude ON tww_od.wastewater_node;
 
 CREATE TRIGGER synchronize_level_with_altitude
   BEFORE INSERT OR UPDATE
-  ON qgep_od.wastewater_node
+  ON tww_od.wastewater_node
   FOR EACH ROW
-  EXECUTE PROCEDURE qgep_od.synchronize_level_with_altitude_on_wastewater_node();
+  EXECUTE PROCEDURE tww_od.synchronize_level_with_altitude_on_wastewater_node();
 
 
 -----------------------------------------------
 -----------------------------------------------
--- Synchronize GEOMETRY with level qgep_od.cover
+-- Synchronize GEOMETRY with level tww_od.cover
 -----------------------------------------------
 -----------------------------------------------
-SELECT set_config('qgep.srid', :SRID::text, false);
+SELECT set_config('tww.srid', 2056::text, false);
 DO $DO$
 BEGIN
 EXECUTE format($TRIGGER$
-CREATE OR REPLACE FUNCTION qgep_od.synchronize_level_with_altitude_on_cover()
+CREATE OR REPLACE FUNCTION tww_od.synchronize_level_with_altitude_on_cover()
   RETURNS trigger AS
 $BODY$
 BEGIN
@@ -69,21 +69,21 @@ BEGIN
   RETURN NEW;
 END; $BODY$
   LANGUAGE plpgsql VOLATILE;
-$TRIGGER$, current_setting('qgep.srid'));
+$TRIGGER$, current_setting('tww.srid'));
 END
 $DO$;
 
-DROP TRIGGER IF EXISTS synchronize_level_with_altitude ON qgep_od.cover;
+DROP TRIGGER IF EXISTS synchronize_level_with_altitude ON tww_od.cover;
 
 CREATE TRIGGER synchronize_level_with_altitude
   BEFORE INSERT OR UPDATE
-  ON qgep_od.cover
+  ON tww_od.cover
   FOR EACH ROW
-  EXECUTE PROCEDURE qgep_od.synchronize_level_with_altitude_on_cover();
+  EXECUTE PROCEDURE tww_od.synchronize_level_with_altitude_on_cover();
 
 
 -----------------------------------------------
 -----------------------------------------------
--- Synchronize reach and reach_point GEOMETRY with level qgep_od.vw_qgep_reach is implemented in vw_qgep_reach.sql
+-- Synchronize reach and reach_point GEOMETRY with level tww_od.vw_tww_reach is implemented in vw_tww_reach.sql
 -----------------------------------------------
 -----------------------------------------------

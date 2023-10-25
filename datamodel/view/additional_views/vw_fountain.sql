@@ -1,11 +1,11 @@
-DROP VIEW IF EXISTS qgep_od.vw_fountain;
+DROP VIEW IF EXISTS tww_od.vw_fountain;
 
 
 --------
 -- Subclass: fountain
 -- Superclass: connection_object
 --------
-CREATE OR REPLACE VIEW qgep_od.vw_fountain AS
+CREATE OR REPLACE VIEW tww_od.vw_fountain AS
 
 SELECT
    FO.obj_id
@@ -20,8 +20,8 @@ SELECT
   , CN.fk_wastewater_networkelement
   , CN.fk_owner
   , CN.fk_operator
-  FROM qgep_od.fountain FO
- LEFT JOIN qgep_od.connection_object CN
+  FROM tww_od.fountain FO
+ LEFT JOIN tww_od.connection_object CN
  ON CN.obj_id = FO.obj_id;
 
 -----------------------------------
@@ -29,11 +29,11 @@ SELECT
 -- Function: vw_fountain_insert()
 -----------------------------------
 
-CREATE OR REPLACE FUNCTION qgep_od.vw_fountain_insert()
+CREATE OR REPLACE FUNCTION tww_od.vw_fountain_insert()
   RETURNS trigger AS
 $BODY$
 BEGIN
-  INSERT INTO qgep_od.connection_object (
+  INSERT INTO tww_od.connection_object (
              obj_id
            , identifier
            , remark
@@ -45,7 +45,7 @@ BEGIN
            , fk_owner
            , fk_operator
            )
-     VALUES ( COALESCE(NEW.obj_id,qgep_sys.generate_oid('qgep_od','fountain')) -- obj_id
+     VALUES ( COALESCE(NEW.obj_id,tww_sys.generate_oid('tww_od','fountain')) -- obj_id
            , NEW.identifier
            , NEW.remark
            , NEW.sewer_infiltration_water_production
@@ -58,7 +58,7 @@ BEGIN
            )
            RETURNING obj_id INTO NEW.obj_id;
 
-INSERT INTO qgep_od.fountain (
+INSERT INTO tww_od.fountain (
              obj_id
            , location_name
            , situation_geometry
@@ -73,24 +73,24 @@ END; $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100;
 
--- DROP TRIGGER vw_fountain_ON_INSERT ON qgep_od.fountain;
+-- DROP TRIGGER vw_fountain_ON_INSERT ON tww_od.fountain;
 
-CREATE TRIGGER vw_fountain_ON_INSERT INSTEAD OF INSERT ON qgep_od.vw_fountain
-  FOR EACH ROW EXECUTE PROCEDURE qgep_od.vw_fountain_insert();
+CREATE TRIGGER vw_fountain_ON_INSERT INSTEAD OF INSERT ON tww_od.vw_fountain
+  FOR EACH ROW EXECUTE PROCEDURE tww_od.vw_fountain_insert();
 
 -----------------------------------
 -- fountain UPDATE
 -- Rule: vw_fountain_ON_UPDATE()
 -----------------------------------
 
-CREATE OR REPLACE RULE vw_fountain_ON_UPDATE AS ON UPDATE TO qgep_od.vw_fountain DO INSTEAD (
-UPDATE qgep_od.fountain
+CREATE OR REPLACE RULE vw_fountain_ON_UPDATE AS ON UPDATE TO tww_od.vw_fountain DO INSTEAD (
+UPDATE tww_od.fountain
   SET
        location_name = NEW.location_name
      , situation_geometry = NEW.situation_geometry
   WHERE obj_id = OLD.obj_id;
 
-UPDATE qgep_od.connection_object
+UPDATE tww_od.connection_object
   SET
        identifier = NEW.identifier
      , remark = NEW.remark
@@ -109,8 +109,8 @@ UPDATE qgep_od.connection_object
 -- Rule: vw_fountain_ON_DELETE ()
 -----------------------------------
 
-CREATE OR REPLACE RULE vw_fountain_ON_DELETE AS ON DELETE TO qgep_od.vw_fountain DO INSTEAD (
-  DELETE FROM qgep_od.fountain WHERE obj_id = OLD.obj_id;
-  DELETE FROM qgep_od.connection_object WHERE obj_id = OLD.obj_id;
+CREATE OR REPLACE RULE vw_fountain_ON_DELETE AS ON DELETE TO tww_od.vw_fountain DO INSTEAD (
+  DELETE FROM tww_od.fountain WHERE obj_id = OLD.obj_id;
+  DELETE FROM tww_od.connection_object WHERE obj_id = OLD.obj_id;
 );
 

@@ -17,9 +17,9 @@ BEGIN;
 -- you're interested in, into a temporary table where you CREATE any useful
 -- indexes and do your analysis.
 --
-DROP TABLE IF EXISTS qgep_sys.logged_actions;
+DROP TABLE IF EXISTS tww_sys.logged_actions;
 
-CREATE TABLE qgep_sys.logged_actions (
+CREATE TABLE tww_sys.logged_actions (
     event_id bigserial PRIMARY KEY,
     schema_name text NOT NULL,
     table_name text NOT NULL,
@@ -39,44 +39,44 @@ CREATE TABLE qgep_sys.logged_actions (
     statement_only BOOLEAN NOT NULL
 );
  
-REVOKE ALL ON qgep_sys.logged_actions FROM public;
+REVOKE ALL ON tww_sys.logged_actions FROM public;
  
-COMMENT ON TABLE qgep_sys.logged_actions IS 'History of auditable actions on audited tables, from qgep_sys.if_modified_func()';
-COMMENT ON COLUMN qgep_sys.logged_actions.event_id IS 'Unique identifier for each auditable event';
-COMMENT ON COLUMN qgep_sys.logged_actions.schema_name IS 'Database schema audited table for this event is in';
-COMMENT ON COLUMN qgep_sys.logged_actions.table_name IS 'Non-schema-qualified table name of table event occured in';
-COMMENT ON COLUMN qgep_sys.logged_actions.relid IS 'Table OID. Changes with drop/create. Get with ''tablename''::regclass';
-COMMENT ON COLUMN qgep_sys.logged_actions.session_user_name IS 'Login / session user whose statement caused the audited event';
-COMMENT ON COLUMN qgep_sys.logged_actions.action_tstamp_tx IS 'Transaction start timestamp for tx in which audited event occurred';
-COMMENT ON COLUMN qgep_sys.logged_actions.action_tstamp_stm IS 'Statement start timestamp for tx in which audited event occurred';
-COMMENT ON COLUMN qgep_sys.logged_actions.action_tstamp_clk IS 'Wall clock time at which audited event''s trigger call occurred';
-COMMENT ON COLUMN qgep_sys.logged_actions.transaction_id IS 'Identifier of transaction that made the change. May wrap, but unique paired with action_tstamp_tx.';
-COMMENT ON COLUMN qgep_sys.logged_actions.client_addr IS 'IP address of client that issued query. Null for unix domain socket.';
-COMMENT ON COLUMN qgep_sys.logged_actions.client_port IS 'Remote peer IP port address of client that issued query. Undefined for unix socket.';
-COMMENT ON COLUMN qgep_sys.logged_actions.client_query IS 'Top-level query that caused this auditable event. May be more than one statement.';
-COMMENT ON COLUMN qgep_sys.logged_actions.application_name IS 'Application name set when this audit event occurred. Can be changed in-session by client.';
-COMMENT ON COLUMN qgep_sys.logged_actions.action IS 'Action type; I = insert, D = delete, U = update, T = truncate';
-COMMENT ON COLUMN qgep_sys.logged_actions.row_data IS 'Record value. Null for statement-level trigger. For INSERT this is the new tuple. For DELETE and UPDATE it is the old tuple.';
-COMMENT ON COLUMN qgep_sys.logged_actions.changed_fields IS 'New values of fields changed by UPDATE. Null except for row-level UPDATE events.';
-COMMENT ON COLUMN qgep_sys.logged_actions.statement_only IS '''t'' if audit event is from an FOR EACH STATEMENT trigger, ''f'' for FOR EACH ROW';
+COMMENT ON TABLE tww_sys.logged_actions IS 'History of auditable actions on audited tables, from tww_sys.if_modified_func()';
+COMMENT ON COLUMN tww_sys.logged_actions.event_id IS 'Unique identifier for each auditable event';
+COMMENT ON COLUMN tww_sys.logged_actions.schema_name IS 'Database schema audited table for this event is in';
+COMMENT ON COLUMN tww_sys.logged_actions.table_name IS 'Non-schema-qualified table name of table event occured in';
+COMMENT ON COLUMN tww_sys.logged_actions.relid IS 'Table OID. Changes with drop/create. Get with ''tablename''::regclass';
+COMMENT ON COLUMN tww_sys.logged_actions.session_user_name IS 'Login / session user whose statement caused the audited event';
+COMMENT ON COLUMN tww_sys.logged_actions.action_tstamp_tx IS 'Transaction start timestamp for tx in which audited event occurred';
+COMMENT ON COLUMN tww_sys.logged_actions.action_tstamp_stm IS 'Statement start timestamp for tx in which audited event occurred';
+COMMENT ON COLUMN tww_sys.logged_actions.action_tstamp_clk IS 'Wall clock time at which audited event''s trigger call occurred';
+COMMENT ON COLUMN tww_sys.logged_actions.transaction_id IS 'Identifier of transaction that made the change. May wrap, but unique paired with action_tstamp_tx.';
+COMMENT ON COLUMN tww_sys.logged_actions.client_addr IS 'IP address of client that issued query. Null for unix domain socket.';
+COMMENT ON COLUMN tww_sys.logged_actions.client_port IS 'Remote peer IP port address of client that issued query. Undefined for unix socket.';
+COMMENT ON COLUMN tww_sys.logged_actions.client_query IS 'Top-level query that caused this auditable event. May be more than one statement.';
+COMMENT ON COLUMN tww_sys.logged_actions.application_name IS 'Application name set when this audit event occurred. Can be changed in-session by client.';
+COMMENT ON COLUMN tww_sys.logged_actions.action IS 'Action type; I = insert, D = delete, U = update, T = truncate';
+COMMENT ON COLUMN tww_sys.logged_actions.row_data IS 'Record value. Null for statement-level trigger. For INSERT this is the new tuple. For DELETE and UPDATE it is the old tuple.';
+COMMENT ON COLUMN tww_sys.logged_actions.changed_fields IS 'New values of fields changed by UPDATE. Null except for row-level UPDATE events.';
+COMMENT ON COLUMN tww_sys.logged_actions.statement_only IS '''t'' if audit event is from an FOR EACH STATEMENT trigger, ''f'' for FOR EACH ROW';
  
-CREATE INDEX logged_actions_relid_idx ON qgep_sys.logged_actions(relid);
-CREATE INDEX logged_actions_action_tstamp_tx_stm_idx ON qgep_sys.logged_actions(action_tstamp_stm);
-CREATE INDEX logged_actions_action_idx ON qgep_sys.logged_actions(action);
+CREATE INDEX logged_actions_relid_idx ON tww_sys.logged_actions(relid);
+CREATE INDEX logged_actions_action_tstamp_tx_stm_idx ON tww_sys.logged_actions(action_tstamp_stm);
+CREATE INDEX logged_actions_action_idx ON tww_sys.logged_actions(action);
 
-CREATE TABLE qgep_sys.logged_relations (
+CREATE TABLE tww_sys.logged_relations (
     relation_name text not null,
     uid_column text not null,
     PRIMARY KEY (relation_name, uid_column)
 );
 
-COMMENT ON TABLE qgep_sys.logged_relations IS 'Table used to store unique identifier columns for table or views, so that events can be replayed';
-COMMENT ON COLUMN qgep_sys.logged_relations.relation_name IS 'Relation (table or view) name (with schema if needed)';
-COMMENT ON COLUMN qgep_sys.logged_relations.uid_column IS 'Name of a column that is used to uniquely identify a row in the relation';
+COMMENT ON TABLE tww_sys.logged_relations IS 'Table used to store unique identifier columns for table or views, so that events can be replayed';
+COMMENT ON COLUMN tww_sys.logged_relations.relation_name IS 'Relation (table or view) name (with schema if needed)';
+COMMENT ON COLUMN tww_sys.logged_relations.uid_column IS 'Name of a column that is used to uniquely identify a row in the relation';
 
-CREATE OR REPLACE FUNCTION qgep_sys.if_modified_func() RETURNS TRIGGER AS $body$
+CREATE OR REPLACE FUNCTION tww_sys.if_modified_func() RETURNS TRIGGER AS $body$
 DECLARE
-    audit_row qgep_sys.logged_actions;
+    audit_row tww_sys.logged_actions;
     include_values BOOLEAN;
     log_diffs BOOLEAN;
     h_old hstore;
@@ -85,11 +85,11 @@ DECLARE
 BEGIN
 
     IF NOT (TG_WHEN IN ('AFTER' , 'INSTEAD OF')) THEN
-        RAISE EXCEPTION 'qgep_sys.if_modified_func() may only run as an AFTER trigger';
+        RAISE EXCEPTION 'tww_sys.if_modified_func() may only run as an AFTER trigger';
     END IF;
 
     audit_row = ROW(
-        NEXTVAL('qgep_sys.logged_actions_event_id_seq'), -- event_id
+        NEXTVAL('tww_sys.logged_actions_event_id_seq'), -- event_id
         TG_TABLE_SCHEMA::text,                        -- schema_name
         TG_TABLE_NAME::text,                          -- table_name
         TG_RELID,                                     -- relation OID for much quicker searches
@@ -124,29 +124,29 @@ BEGIN
 
         IF audit_row.changed_fields = hstore('') THEN
             -- All changed fields are ignored. Skip this update.
-            RAISE WARNING '[qgep_sys.if_modified_func] - Trigger detected NULL hstore. ending';
+            RAISE WARNING '[tww_sys.if_modified_func] - Trigger detected NULL hstore. ending';
             RETURN NULL;
         END IF;
-  INSERT INTO qgep_sys.logged_actions VALUES (audit_row.*);
+  INSERT INTO tww_sys.logged_actions VALUES (audit_row.*);
   RETURN NEW;
         
     ELSIF (TG_OP = 'DELETE' AND TG_LEVEL = 'ROW') THEN
         audit_row.row_data = hstore(OLD.*) - excluded_cols;
-  INSERT INTO qgep_sys.logged_actions VALUES (audit_row.*);
+  INSERT INTO tww_sys.logged_actions VALUES (audit_row.*);
         RETURN OLD;
         
     ELSIF (TG_OP = 'INSERT' AND TG_LEVEL = 'ROW') THEN
         audit_row.row_data = hstore(NEW.*) - excluded_cols;
-  INSERT INTO qgep_sys.logged_actions VALUES (audit_row.*);
+  INSERT INTO tww_sys.logged_actions VALUES (audit_row.*);
         RETURN NEW;
 
     ELSIF (TG_LEVEL = 'STATEMENT' AND TG_OP IN ('INSERT','UPDATE','DELETE','TRUNCATE')) THEN
         audit_row.statement_only = 't';
-        INSERT INTO qgep_sys.logged_actions VALUES (audit_row.*);
+        INSERT INTO tww_sys.logged_actions VALUES (audit_row.*);
   RETURN NULL;
 
     ELSE
-        RAISE EXCEPTION USING MESSAGE = '[qgep_sys.if_modified_func] - Trigger func added as trigger for unhandled case: '||TG_OP||', '||TG_LEVEL;
+        RAISE EXCEPTION USING MESSAGE = '[tww_sys.if_modified_func] - Trigger func added as trigger for unhandled case: '||TG_OP||', '||TG_LEVEL;
         RETURN NEW;
     END IF;
 
@@ -158,7 +158,7 @@ SECURITY DEFINER
 SET search_path = pg_catalog, public;
 
 
-COMMENT ON FUNCTION qgep_sys.if_modified_func() IS $body$
+COMMENT ON FUNCTION tww_sys.if_modified_func() IS $body$
 Track changes TO a TABLE at the statement AND/OR row level.
 
 Optional parameters TO TRIGGER IN CREATE TRIGGER call:
@@ -191,7 +191,7 @@ $body$;
 
 
 
-CREATE OR REPLACE FUNCTION qgep_sys.audit_table(target_table regclass, audit_rows BOOLEAN, audit_query_text BOOLEAN, ignored_cols text[]) RETURNS void AS $body$
+CREATE OR REPLACE FUNCTION tww_sys.audit_table(target_table regclass, audit_rows BOOLEAN, audit_query_text BOOLEAN, ignored_cols text[]) RETURNS void AS $body$
 DECLARE
   stm_targets text = 'INSERT OR UPDATE OR DELETE OR TRUNCATE';
   _q_txt text;
@@ -206,7 +206,7 @@ BEGIN
         END IF;
         _q_txt = 'CREATE TRIGGER audit_trigger_row AFTER INSERT OR UPDATE OR DELETE ON ' || 
                  target_table::text || 
-                 ' FOR EACH ROW EXECUTE PROCEDURE qgep_sys.if_modified_func(' ||
+                 ' FOR EACH ROW EXECUTE PROCEDURE tww_sys.if_modified_func(' ||
                  quote_literal(audit_query_text) || _ignored_cols_snip || ');';
         RAISE NOTICE '%',_q_txt;
         EXECUTE _q_txt;
@@ -216,13 +216,13 @@ BEGIN
  
     _q_txt = 'CREATE TRIGGER audit_trigger_stm AFTER ' || stm_targets || ' ON ' ||
              target_table ||
-             ' FOR EACH STATEMENT EXECUTE PROCEDURE qgep_sys.if_modified_func('||
+             ' FOR EACH STATEMENT EXECUTE PROCEDURE tww_sys.if_modified_func('||
              quote_literal(audit_query_text) || ');';
     RAISE NOTICE '%',_q_txt;
     EXECUTE _q_txt;
 
     -- store primary key names
-    insert into qgep_sys.logged_relations (relation_name, uid_column)
+    insert into tww_sys.logged_relations (relation_name, uid_column)
          select target_table, a.attname
            from pg_index i
            join pg_attribute a on a.attrelid = i.indrelid
@@ -234,7 +234,7 @@ END;
 $body$
 LANGUAGE plpgsql;
 
-COMMENT ON FUNCTION qgep_sys.audit_table(regclass, BOOLEAN, BOOLEAN, text[]) IS $body$
+COMMENT ON FUNCTION tww_sys.audit_table(regclass, BOOLEAN, BOOLEAN, text[]) IS $body$
 ADD auditing support TO a TABLE.
  
 Arguments:
@@ -245,22 +245,22 @@ Arguments:
 $body$;
  
 -- Pg doesn't allow variadic calls with 0 params, so provide a wrapper
-CREATE OR REPLACE FUNCTION qgep_sys.audit_table(target_table regclass, audit_rows BOOLEAN, audit_query_text BOOLEAN) RETURNS void AS $body$
-SELECT qgep_sys.audit_table($1, $2, $3, ARRAY[]::text[]);
+CREATE OR REPLACE FUNCTION tww_sys.audit_table(target_table regclass, audit_rows BOOLEAN, audit_query_text BOOLEAN) RETURNS void AS $body$
+SELECT tww_sys.audit_table($1, $2, $3, ARRAY[]::text[]);
 $body$ LANGUAGE SQL;
  
 -- And provide a convenience call wrapper for the simplest case
 -- of row-level logging with no excluded cols and query logging enabled.
 --
-CREATE OR REPLACE FUNCTION qgep_sys.audit_table(target_table regclass) RETURNS void AS $body$
-SELECT qgep_sys.audit_table($1, BOOLEAN 't', BOOLEAN 't');
+CREATE OR REPLACE FUNCTION tww_sys.audit_table(target_table regclass) RETURNS void AS $body$
+SELECT tww_sys.audit_table($1, BOOLEAN 't', BOOLEAN 't');
 $body$ LANGUAGE 'sql';
 
-COMMENT ON FUNCTION qgep_sys.audit_table(regclass) IS $body$
+COMMENT ON FUNCTION tww_sys.audit_table(regclass) IS $body$
 Add auditing support to the given table. Row-level changes will be logged with full client query text. No cols are ignored.
 $body$;
 
-CREATE OR REPLACE FUNCTION qgep_sys.unaudit_table(target_table regclass) RETURNS void AS $body$
+CREATE OR REPLACE FUNCTION tww_sys.unaudit_table(target_table regclass) RETURNS void AS $body$
 BEGIN
     EXECUTE 'DROP TRIGGER IF EXISTS audit_trigger_row ON ' || target_table::text;
     EXECUTE 'DROP TRIGGER IF EXISTS audit_trigger_stm ON ' || target_table::text;
@@ -269,18 +269,18 @@ $body$
 LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE FUNCTION qgep_sys.replay_event(pevent_id int) RETURNS void AS $body$
+CREATE OR REPLACE FUNCTION tww_sys.replay_event(pevent_id int) RETURNS void AS $body$
 DECLARE
   query text;
 BEGIN
     with
     event as (
-        select * from qgep_sys.logged_actions where event_id = pevent_id
+        select * from tww_sys.logged_actions where event_id = pevent_id
     )
     -- get primary key names
     , where_pks as (
         select array_to_string(array_agg(uid_column || '=' || quote_literal(row_data->uid_column)), ' AND ') as where_clause
-          from qgep_sys.logged_relations r
+          from tww_sys.logged_relations r
           join event on relation_name = (schema_name || '.' || table_name)
     )
     select into query
@@ -306,14 +306,14 @@ END;
 $body$
 LANGUAGE plpgsql;
 
-COMMENT ON FUNCTION qgep_sys.replay_event(int) IS $body$
+COMMENT ON FUNCTION tww_sys.replay_event(int) IS $body$
 Replay a logged event.
  
 Arguments:
-   pevent_id:  The event_id of the event in qgep_sys.logged_actions to replay
+   pevent_id:  The event_id of the event in tww_sys.logged_actions to replay
 $body$;
 
-CREATE OR REPLACE FUNCTION qgep_sys.audit_view(target_view regclass, audit_query_text BOOLEAN, ignored_cols text[], uid_cols text[]) RETURNS void AS $body$
+CREATE OR REPLACE FUNCTION tww_sys.audit_view(target_view regclass, audit_query_text BOOLEAN, ignored_cols text[], uid_cols text[]) RETURNS void AS $body$
 DECLARE
   stm_targets text = 'INSERT OR UPDATE OR DELETE';
   _q_txt text;
@@ -328,14 +328,14 @@ BEGIN
 	END IF;
 	_q_txt = 'CREATE TRIGGER audit_trigger_row INSTEAD OF INSERT OR UPDATE OR DELETE ON ' || 
 		 target_view::TEXT || 
-		 ' FOR EACH ROW EXECUTE PROCEDURE qgep_sys.if_modified_func(' ||
+		 ' FOR EACH ROW EXECUTE PROCEDURE tww_sys.if_modified_func(' ||
 		 quote_literal(audit_query_text) || _ignored_cols_snip || ');';
 	RAISE NOTICE '%',_q_txt;
 	EXECUTE _q_txt;
 
     -- store uid columns if not already present
-  IF (select count(*) from qgep_sys.logged_relations where relation_name = (select target_view)::text AND  uid_column= (select unnest(uid_cols))::text) = 0 THEN
-      insert into qgep_sys.logged_relations (relation_name, uid_column)
+  IF (select count(*) from tww_sys.logged_relations where relation_name = (select target_view)::text AND  uid_column= (select unnest(uid_cols))::text) = 0 THEN
+      insert into tww_sys.logged_relations (relation_name, uid_column)
        select target_view, unnest(uid_cols);
   END IF;    
 
@@ -343,7 +343,7 @@ END;
 $body$
 LANGUAGE plpgsql;
 
-COMMENT ON FUNCTION qgep_sys.audit_view(regclass, BOOLEAN, text[], text[]) IS $body$
+COMMENT ON FUNCTION tww_sys.audit_view(regclass, BOOLEAN, text[], text[]) IS $body$
 ADD auditing support TO a VIEW.
  
 Arguments:
@@ -353,10 +353,10 @@ Arguments:
    uid_cols:         MANDATORY COLUMNS to use to uniquely identify a row from the view (in order to replay UPDATE and DELETE)
 
 Example:
-  SELECT qgep_sys.audit_view('qgep_od.vw_element_installation', 'true'::BOOLEAN, '{field_to_ignore}'::text[], '{key_field1, keyfield2}'::text[]) 
+  SELECT tww_sys.audit_view('tww_od.vw_element_installation', 'true'::BOOLEAN, '{field_to_ignore}'::text[], '{key_field1, keyfield2}'::text[]) 
 $body$;
  
-CREATE OR REPLACE FUNCTION qgep_sys.unaudit_view(target_view regclass) RETURNS void AS $body$
+CREATE OR REPLACE FUNCTION tww_sys.unaudit_view(target_view regclass) RETURNS void AS $body$
 BEGIN
     EXECUTE 'DROP TRIGGER IF EXISTS audit_trigger_row ON ' || target_view::text;
     EXECUTE 'DROP TRIGGER IF EXISTS audit_trigger_stm ON ' || target_view::text;

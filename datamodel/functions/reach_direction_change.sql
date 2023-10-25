@@ -2,6 +2,7 @@
     reach_direction_change.sql
     ---------------------
     begin                : August 2018
+	adapted to TEKSI wastewater : 5.10.2023 Stefan Burckhardt
     copyright            : (C) 2018 by Matthias Kuhn, OPENGIS.ch
     email                : matthias@opengis.ch
  ***************************************************************************
@@ -21,11 +22,11 @@
  * With the parameter `reach_obj_ids` it is possible to specify on which reaches this operation
  * should be performed by passing in an array of obj_ids
  */
-CREATE OR REPLACE FUNCTION qgep_od.reach_direction_change(reach_obj_ids text[])RETURNS void AS $BODY$
+CREATE OR REPLACE FUNCTION tww_od.reach_direction_change(reach_obj_ids text[])RETURNS void AS $BODY$
 
 BEGIN 
  
-UPDATE qgep_od.reach 
+UPDATE tww_od.reach 
   SET
     progression_geometry = (ST_ForceCurve(ST_Reverse(ST_CurveToLine(progression_geometry)))),
     fk_reach_point_from = fk_reach_point_to,

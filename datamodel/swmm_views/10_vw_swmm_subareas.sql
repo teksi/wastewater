@@ -1,5 +1,5 @@
 -- Creates subarea related to the subcatchment
-CREATE OR REPLACE VIEW qgep_swmm.vw_subareas AS
+CREATE OR REPLACE VIEW tww_swmm.vw_subareas AS
 SELECT
   concat(replace(ca.obj_id, ' ', '_'), '_', state) as Subcatchment,
   0.01 as NImperv, -- default value, Manning's n for overland flow over the impervious portion of the subcatchment 
@@ -25,35 +25,39 @@ SELECT
   wn_obj_id as obj_id
 FROM 
 (
-SELECT ca.*, sr.surface_storage, 'rw_current' as state, wn.obj_id as wn_obj_id, ws._function_hierarchic
-FROM qgep_od.catchment_area as ca
-LEFT JOIN qgep_od.surface_runoff_parameters sr ON ca.obj_id = sr.fk_catchment_area
-LEFT JOIN qgep_od.wastewater_networkelement ne on ne.obj_id = fk_wastewater_networkelement_rw_current
-LEFT JOIN qgep_od.wastewater_node wn on wn.obj_id = ne.obj_id
-LEFT JOIN qgep_od.wastewater_structure ws ON ws.obj_id = ne.fk_wastewater_structure
+SELECT ca.*, sr.surface_storage, 'rw_current' as state, wn.obj_id as wn_obj_id, cfhi.vsacode AS _function_hierarchic
+FROM tww_od.catchment_area as ca
+LEFT JOIN tww_od.surface_runoff_parameters sr ON ca.obj_id = sr.fk_catchment_area
+LEFT JOIN tww_od.wastewater_networkelement ne on ne.obj_id = fk_wastewater_networkelement_rw_current
+LEFT JOIN tww_od.wastewater_node wn on wn.obj_id = ne.obj_id
+LEFT JOIN tww_od.wastewater_structure ws ON ws.obj_id = ne.fk_wastewater_structure
+LEFT JOIN tww_vl.channel_function_hierarchic cfhi ON cfhi.code=ws._function_hierarchic
 WHERE fk_wastewater_networkelement_rw_current IS NOT NULL -- to avoid unconnected catchments
 UNION ALL
-SELECT ca.*, sr.surface_storage, 'ww_current' as state, wn.obj_id as wn_obj_id, ws._function_hierarchic
-FROM qgep_od.catchment_area as ca
-LEFT JOIN qgep_od.surface_runoff_parameters sr ON ca.obj_id = sr.fk_catchment_area
-LEFT JOIN qgep_od.wastewater_networkelement ne on ne.obj_id = fk_wastewater_networkelement_ww_current
-LEFT JOIN qgep_od.wastewater_node wn on wn.obj_id = ne.obj_id
-LEFT JOIN qgep_od.wastewater_structure ws ON ws.obj_id = ne.fk_wastewater_structure
+SELECT ca.*, sr.surface_storage, 'ww_current' as state, wn.obj_id as wn_obj_id, cfhi.vsacode AS _function_hierarchic
+FROM tww_od.catchment_area as ca
+LEFT JOIN tww_od.surface_runoff_parameters sr ON ca.obj_id = sr.fk_catchment_area
+LEFT JOIN tww_od.wastewater_networkelement ne on ne.obj_id = fk_wastewater_networkelement_ww_current
+LEFT JOIN tww_od.wastewater_node wn on wn.obj_id = ne.obj_id
+LEFT JOIN tww_od.wastewater_structure ws ON ws.obj_id = ne.fk_wastewater_structure
+LEFT JOIN tww_vl.channel_function_hierarchic cfhi ON cfhi.code=ws._function_hierarchic
 WHERE fk_wastewater_networkelement_ww_current IS NOT NULL -- to avoid unconnected catchments
 UNION ALL
-SELECT ca.*, sr.surface_storage, 'rw_planned' as state, wn.obj_id as wn_obj_id, ws._function_hierarchic
-FROM qgep_od.catchment_area as ca
-LEFT JOIN qgep_od.surface_runoff_parameters sr ON ca.obj_id = sr.fk_catchment_area
-LEFT JOIN qgep_od.wastewater_networkelement ne on ne.obj_id = fk_wastewater_networkelement_rw_planned
-LEFT JOIN qgep_od.wastewater_node wn on wn.obj_id = ne.obj_id
-LEFT JOIN qgep_od.wastewater_structure ws ON ws.obj_id = ne.fk_wastewater_structure
+SELECT ca.*, sr.surface_storage, 'rw_planned' as state, wn.obj_id as wn_obj_id, cfhi.vsacode AS _function_hierarchic
+FROM tww_od.catchment_area as ca
+LEFT JOIN tww_od.surface_runoff_parameters sr ON ca.obj_id = sr.fk_catchment_area
+LEFT JOIN tww_od.wastewater_networkelement ne on ne.obj_id = fk_wastewater_networkelement_rw_planned
+LEFT JOIN tww_od.wastewater_node wn on wn.obj_id = ne.obj_id
+LEFT JOIN tww_od.wastewater_structure ws ON ws.obj_id = ne.fk_wastewater_structure
+LEFT JOIN tww_vl.channel_function_hierarchic cfhi ON cfhi.code=ws._function_hierarchic
 WHERE fk_wastewater_networkelement_rw_planned IS NOT NULL -- to avoid unconnected catchments
 UNION ALL
-SELECT ca.*, sr.surface_storage, 'ww_planned' as state, wn.obj_id as wn_obj_id, ws._function_hierarchic
-FROM qgep_od.catchment_area as ca
-LEFT JOIN qgep_od.surface_runoff_parameters sr ON ca.obj_id = sr.fk_catchment_area
-LEFT JOIN qgep_od.wastewater_networkelement ne on ne.obj_id = fk_wastewater_networkelement_ww_planned
-LEFT JOIN qgep_od.wastewater_node wn on wn.obj_id = ne.obj_id
-LEFT JOIN qgep_od.wastewater_structure ws ON ws.obj_id = ne.fk_wastewater_structure
+SELECT ca.*, sr.surface_storage, 'ww_planned' as state, wn.obj_id as wn_obj_id, cfhi.vsacode AS _function_hierarchic
+FROM tww_od.catchment_area as ca
+LEFT JOIN tww_od.surface_runoff_parameters sr ON ca.obj_id = sr.fk_catchment_area
+LEFT JOIN tww_od.wastewater_networkelement ne on ne.obj_id = fk_wastewater_networkelement_ww_planned
+LEFT JOIN tww_od.wastewater_node wn on wn.obj_id = ne.obj_id
+LEFT JOIN tww_od.wastewater_structure ws ON ws.obj_id = ne.fk_wastewater_structure
+LEFT JOIN tww_vl.channel_function_hierarchic cfhi ON cfhi.code=ws._function_hierarchic
 WHERE fk_wastewater_networkelement_ww_planned IS NOT NULL -- to avoid unconnected catchments
 ) as ca;

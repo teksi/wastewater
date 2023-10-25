@@ -1,10 +1,10 @@
-DROP VIEW IF EXISTS qgep_od.vw_wwtp_structure;
+DROP VIEW IF EXISTS tww_od.vw_wwtp_structure;
 
 --------
 -- Subclass: wwtp_structure
 -- Superclass: wastewater_structure
 --------
-CREATE OR REPLACE VIEW qgep_od.vw_wwtp_structure AS
+CREATE OR REPLACE VIEW tww_od.vw_wwtp_structure AS
 
 SELECT
    WT.obj_id
@@ -33,8 +33,8 @@ SELECT
    , WS.last_modification
   , WS.fk_owner
   , WS.fk_operator
-  FROM qgep_od.wwtp_structure WT
- LEFT JOIN qgep_od.wastewater_structure WS
+  FROM tww_od.wwtp_structure WT
+ LEFT JOIN tww_od.wastewater_structure WS
  ON WS.obj_id = WT.obj_id;
 
 -----------------------------------
@@ -42,11 +42,11 @@ SELECT
 -- Function: vw_wwtp_structure_insert()
 -----------------------------------
 
-CREATE OR REPLACE FUNCTION qgep_od.vw_wwtp_structure_insert()
+CREATE OR REPLACE FUNCTION tww_od.vw_wwtp_structure_insert()
   RETURNS trigger AS
 $BODY$
 BEGIN
-  INSERT INTO qgep_od.wastewater_structure (
+  INSERT INTO tww_od.wastewater_structure (
              obj_id
            , accessibility
            , contract_section
@@ -73,7 +73,7 @@ BEGIN
            , fk_owner
            , fk_operator
            )
-     VALUES ( COALESCE(NEW.obj_id,qgep_sys.generate_oid('qgep_od','wwtp_structure')) -- obj_id
+     VALUES ( COALESCE(NEW.obj_id,tww_sys.generate_oid('tww_od','wwtp_structure')) -- obj_id
            , NEW.accessibility
            , NEW.contract_section
            , NEW.detail_geometry_geometry
@@ -101,7 +101,7 @@ BEGIN
            )
            RETURNING obj_id INTO NEW.obj_id;
 
-INSERT INTO qgep_od.wwtp_structure (
+INSERT INTO tww_od.wwtp_structure (
              obj_id
            , kind
            )
@@ -114,23 +114,23 @@ END; $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100;
 
--- DROP TRIGGER vw_wwtp_structure_ON_INSERT ON qgep_od.wwtp_structure;
+-- DROP TRIGGER vw_wwtp_structure_ON_INSERT ON tww_od.wwtp_structure;
 
-CREATE TRIGGER vw_wwtp_structure_ON_INSERT INSTEAD OF INSERT ON qgep_od.vw_wwtp_structure
-  FOR EACH ROW EXECUTE PROCEDURE qgep_od.vw_wwtp_structure_insert();
+CREATE TRIGGER vw_wwtp_structure_ON_INSERT INSTEAD OF INSERT ON tww_od.vw_wwtp_structure
+  FOR EACH ROW EXECUTE PROCEDURE tww_od.vw_wwtp_structure_insert();
 
 -----------------------------------
 -- wwtp_structure UPDATE
 -- Rule: vw_wwtp_structure_ON_UPDATE()
 -----------------------------------
 
-CREATE OR REPLACE RULE vw_wwtp_structure_ON_UPDATE AS ON UPDATE TO qgep_od.vw_wwtp_structure DO INSTEAD (
-UPDATE qgep_od.wwtp_structure
+CREATE OR REPLACE RULE vw_wwtp_structure_ON_UPDATE AS ON UPDATE TO tww_od.vw_wwtp_structure DO INSTEAD (
+UPDATE tww_od.wwtp_structure
   SET
        kind = NEW.kind
   WHERE obj_id = OLD.obj_id;
 
-UPDATE qgep_od.wastewater_structure
+UPDATE tww_od.wastewater_structure
   SET
        accessibility = NEW.accessibility
      , contract_section = NEW.contract_section
@@ -164,8 +164,8 @@ UPDATE qgep_od.wastewater_structure
 -- Rule: vw_wwtp_structure_ON_DELETE ()
 -----------------------------------
 
-CREATE OR REPLACE RULE vw_wwtp_structure_ON_DELETE AS ON DELETE TO qgep_od.vw_wwtp_structure DO INSTEAD (
-  DELETE FROM qgep_od.wwtp_structure WHERE obj_id = OLD.obj_id;
-  DELETE FROM qgep_od.wastewater_structure WHERE obj_id = OLD.obj_id;
+CREATE OR REPLACE RULE vw_wwtp_structure_ON_DELETE AS ON DELETE TO tww_od.vw_wwtp_structure DO INSTEAD (
+  DELETE FROM tww_od.wwtp_structure WHERE obj_id = OLD.obj_id;
+  DELETE FROM tww_od.wastewater_structure WHERE obj_id = OLD.obj_id;
 );
 

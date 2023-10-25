@@ -1,14 +1,14 @@
 
--- DROP MATERIALIZED VIEW IF EXISTS qgep_od.vw_network_node;
+-- DROP MATERIALIZED VIEW IF EXISTS tww_od.vw_network_node;
 
-CREATE MATERIALIZED VIEW qgep_od.vw_network_node AS
+CREATE MATERIALIZED VIEW tww_od.vw_network_node AS
 WITH cover_levels_per_network_element AS (
   SELECT ne.obj_id,
          MAX(level) as level
-  FROM qgep_od.cover co
-  JOIN qgep_od.structure_part sp ON co.obj_id = sp.obj_id
-  JOIN qgep_od.wastewater_structure ws ON sp.fk_wastewater_structure = ws.obj_id
-  JOIN qgep_od.wastewater_networkelement ne ON ws.obj_id = ne.fk_wastewater_structure
+  FROM tww_od.cover co
+  JOIN tww_od.structure_part sp ON co.obj_id = sp.obj_id
+  JOIN tww_od.wastewater_structure ws ON sp.fk_wastewater_structure = ws.obj_id
+  JOIN tww_od.wastewater_networkelement ne ON ws.obj_id = ne.fk_wastewater_structure
   GROUP BY ne.obj_id
 )
 SELECT n.id as gid,
@@ -31,7 +31,7 @@ SELECT n.id as gid,
        END as level,
        NULL::text AS usage_current,
        co.level as cover_level,
-       NULL::float AS backflow_level,
+       NULL::float AS backflow_level_current,
        CASE
          WHEN n.node_type = 'reach_point' THEN rp.identifier
          WHEN n.node_type = 'wastewater_node' THEN ne.identifier
@@ -39,12 +39,12 @@ SELECT n.id as gid,
        END AS description,
        n.geom AS situation_geometry,
        n.geom AS detail_geometry
-FROM qgep_network.node n
-LEFT JOIN qgep_od.reach_point rp ON rp_id = rp.obj_id
-LEFT JOIN qgep_od.wastewater_networkelement ne ON n.ne_id = ne.obj_id
-LEFT JOIN qgep_od.wastewater_node nd ON n.ne_id = nd.obj_id
+FROM tww_network.node n
+LEFT JOIN tww_od.reach_point rp ON rp_id = rp.obj_id
+LEFT JOIN tww_od.wastewater_networkelement ne ON n.ne_id = ne.obj_id
+LEFT JOIN tww_od.wastewater_node nd ON n.ne_id = nd.obj_id
 LEFT JOIN cover_levels_per_network_element co ON n.ne_id = co.obj_id AND n.node_type = 'wastewater_node'
-LEFT JOIN qgep_od.wastewater_structure ws ON ws.obj_id = ne.fk_wastewater_structure
-LEFT JOIN qgep_od.manhole mh ON mh.obj_id = ws.obj_id;
+LEFT JOIN tww_od.wastewater_structure ws ON ws.obj_id = ne.fk_wastewater_structure
+LEFT JOIN tww_od.manhole mh ON mh.obj_id = ws.obj_id;
 
-CREATE INDEX in_qgep_od_vw_network_node_situation_geometry ON qgep_od.vw_network_node USING gist (situation_geometry);
+CREATE INDEX in_tww_od_vw_network_node_situation_geometry ON tww_od.vw_network_node USING gist (situation_geometry);

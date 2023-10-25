@@ -1,5 +1,5 @@
 -- ******************************************************************************
--- Open/view files in qgep
+-- Open/view files in tww
 -- ******************************************************************************
 --1. ADD fk_data_media :
 -- ******************************************************************************
@@ -7,15 +7,15 @@
 -- Modification of table od_file --> insert fk_data_media
 
 -- done in 04_vsa_kek_extension instead
---ALTER TABLE qgep_od.file ADD COLUMN fk_data_media character varying(16);
+--ALTER TABLE tww_od.file ADD COLUMN fk_data_media character varying(16);
 
 -- ******************************************************************************
--- 2. qgep_od.vw_file :
+-- 2. tww_od.vw_file :
 -- ******************************************************************************
 
--- View: qgep_od.vw_file
+-- View: tww_od.vw_file
 
-CREATE OR REPLACE VIEW qgep_od.vw_file AS
+CREATE OR REPLACE VIEW tww_od.vw_file AS
   SELECT f.obj_id,
     f.identifier,
     f.kind,
@@ -26,23 +26,23 @@ CREATE OR REPLACE VIEW qgep_od.vw_file AS
     f.fk_dataowner as dataowner,
     f.fk_provider as provider,
     f.remark
-   FROM qgep_od.file f
-     LEFT JOIN qgep_od.data_media dm ON dm.obj_id::text = f.fk_data_media::text;
+   FROM tww_od.file f
+     LEFT JOIN tww_od.data_media dm ON dm.obj_id::text = f.fk_data_media::text;
      
-ALTER VIEW qgep_od.vw_file ALTER obj_id SET DEFAULT qgep_sys.generate_oid('qgep_od','file');
+ALTER VIEW tww_od.vw_file ALTER obj_id SET DEFAULT tww_sys.generate_oid('tww_od','file');
 
 -- ******************************************************************************
 -- 3. FUNCTIONS :
 -- ******************************************************************************
 
--- Function: qgep_od.vw_file_delete()
--- DROP FUNCTION qgep_od.vw_file_delete();
+-- Function: tww_od.vw_file_delete()
+-- DROP FUNCTION tww_od.vw_file_delete();
 
-CREATE OR REPLACE FUNCTION qgep_od.vw_file_delete()
+CREATE OR REPLACE FUNCTION tww_od.vw_file_delete()
   RETURNS trigger AS
 $BODY$
   BEGIN
-    DELETE FROM qgep_od.file WHERE obj_id = OLD.obj_id;
+    DELETE FROM tww_od.file WHERE obj_id = OLD.obj_id;
     RETURN OLD;
   END;
 $BODY$
@@ -51,9 +51,9 @@ COST 100;
 
 
 -- ******************************************************************************
--- Function: qgep_od.vw_file_insert()
--- DROP FUNCTION qgep_od.vw_file_insert();
-CREATE OR REPLACE FUNCTION qgep_od.vw_file_insert()
+-- Function: tww_od.vw_file_insert()
+-- DROP FUNCTION tww_od.vw_file_insert();
+CREATE OR REPLACE FUNCTION tww_od.vw_file_insert()
   RETURNS trigger AS
 $BODY$
 
@@ -61,7 +61,7 @@ $BODY$
 
     NEW._url = replace(NEW._url, '\', '/');
 
-    INSERT INTO qgep_od.file(
+    INSERT INTO tww_od.file(
       class,
       identifier,
       kind,
@@ -82,7 +82,7 @@ $BODY$
       NEW.provider, -- fk_provider,
       obj_id, -- fk_data_media
       NEW.remark
-    FROM qgep_od.data_media
+    FROM tww_od.data_media
     WHERE "path" = SUBSTRING(NEW._url FROM 1 FOR LENGTH("path"))
     ORDER BY LENGTH("path") DESC
     LIMIT 1;
@@ -99,17 +99,17 @@ END; $BODY$
   COST 100;
 
   -- ******************************************************************************
--- Function: qgep_od.vw_file_update()
--- DROP FUNCTION qgep_od.vw_file_update();
+-- Function: tww_od.vw_file_update()
+-- DROP FUNCTION tww_od.vw_file_update();
 
-CREATE OR REPLACE FUNCTION qgep_od.vw_file_update()
+CREATE OR REPLACE FUNCTION tww_od.vw_file_update()
   RETURNS trigger AS
 $BODY$
 BEGIN
 
 NEW._url = replace(NEW._url, '\', '/');
 
-  UPDATE  qgep_od.file
+  UPDATE  tww_od.file
     SET
     class = NEW.class,
     identifier = NEW.identifier,
@@ -124,7 +124,7 @@ NEW._url = replace(NEW._url, '\', '/');
 FROM (
   SELECT obj_id as id,
 	path
-	FROM qgep_od.data_media
+	FROM tww_od.data_media
 	WHERE path = SUBSTRING(NEW._url FROM 1 FOR LENGTH(path))
 	ORDER BY LENGTH(path) DESC
 	LIMIT 1)  dm
@@ -141,30 +141,30 @@ $BODY$
 
 -- TRIGGERS :
 -- ******************************************************************************
--- Trigger: vw_file_delete on qgep_od.vw_file
--- DROP TRIGGER vw_file_delete ON qgep_od.vw_file;
+-- Trigger: vw_file_delete on tww_od.vw_file
+-- DROP TRIGGER vw_file_delete ON tww_od.vw_file;
 
 CREATE TRIGGER vw_file_delete
   INSTEAD OF DELETE
-  ON qgep_od.vw_file
+  ON tww_od.vw_file
   FOR EACH ROW
-  EXECUTE PROCEDURE qgep_od.vw_file_delete();
+  EXECUTE PROCEDURE tww_od.vw_file_delete();
 
--- Trigger: vw_file_insert on qgep_od.vw_file
--- DROP TRIGGER vw_file_insert ON qgep_od.vw_file;
+-- Trigger: vw_file_insert on tww_od.vw_file
+-- DROP TRIGGER vw_file_insert ON tww_od.vw_file;
 
 CREATE TRIGGER vw_file_insert
   INSTEAD OF INSERT
-  ON qgep_od.vw_file
+  ON tww_od.vw_file
   FOR EACH ROW
-  EXECUTE PROCEDURE qgep_od.vw_file_insert();
+  EXECUTE PROCEDURE tww_od.vw_file_insert();
 
--- Trigger: vw_file_update on qgep_od.vw_file
--- DROP TRIGGER vw_file_update ON qgep_od.vw_file;
+-- Trigger: vw_file_update on tww_od.vw_file
+-- DROP TRIGGER vw_file_update ON tww_od.vw_file;
 
 CREATE TRIGGER vw_file_update
   INSTEAD OF UPDATE
-  ON qgep_od.vw_file
+  ON tww_od.vw_file
   FOR EACH ROW
-  EXECUTE PROCEDURE qgep_od.vw_file_update();
+  EXECUTE PROCEDURE tww_od.vw_file_update();
 -- ******************************************************************************
