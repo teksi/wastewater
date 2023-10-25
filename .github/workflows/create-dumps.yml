@@ -39,4 +39,5 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: datamodel-dumps
-          path: artifacts/
+          path: datamodel/artifacts/
+          if-no-files-found: error
