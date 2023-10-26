@@ -1,3 +1,4 @@
 datamodel/artifacts
 
 .idea
+.pyc

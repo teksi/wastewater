@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-DB_BASE_NAME=signalo
+DB_BASE_NAME=teksi_wastewater
 
 set -e
 
