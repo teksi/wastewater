@@ -1,4 +1,5 @@
 datamodel/artifacts
 
 .idea
-.pyc
+.pycache
+__pycache__
