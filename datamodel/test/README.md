@@ -1,4 +1,4 @@
-Functional tests for the QGEP Datamodel
+Functional tests for the TEKSI Wastewater Datamodel
 =======================================
 
 Here are functional tests for the TEKSI wastewater datamodel.

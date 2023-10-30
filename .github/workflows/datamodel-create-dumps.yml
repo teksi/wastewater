@@ -1,4 +1,4 @@
-name: Create dumps
+name: Datamodel | Create dumps
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -10,7 +10,7 @@ on:
       - main
     paths:
       - datamodel
-      - '.github/workflows/create-dumps.yml'
+      - '.github/workflows/datamodel-create-dumps.yml'
   pull_request:
     branches:
       - main
@@ -18,7 +18,7 @@ on:
 
 
 jobs:
-  docker-tests:
+  datamodel-dumps:
     name: Docker
     runs-on: ubuntu-latest
 

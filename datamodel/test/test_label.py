@@ -29,9 +29,9 @@ class TestViews(unittest.TestCase, DbTestBase):
                     )
                 ),
             }
-            manholes[manhole]["obj_id"] = self.insert("vw_qgep_wastewater_structure", row)
+            manholes[manhole]["obj_id"] = self.insert("vw_tww_wastewater_structure", row)
             manholes[manhole]["wn_obj_id"] = self.select(
-                "vw_qgep_wastewater_structure", manholes[manhole]["obj_id"]
+                "vw_tww_wastewater_structure", manholes[manhole]["obj_id"]
             )["wn_obj_id"]
 
     def insert_reaches(self, reaches, manholes):
@@ -67,7 +67,7 @@ class TestViews(unittest.TestCase, DbTestBase):
                     "ch_usage_current": 4514,
                     "progression_geometry": geom,
                 }
-                obj_id = self.insert("vw_qgep_reach", row)
+                obj_id = self.insert("vw_tww_reach", row)
                 self.connect_reach(
                     obj_id, from_id=start_point["wn_obj_id"], to_id=end_point["wn_obj_id"]
                 )
@@ -81,7 +81,7 @@ class TestViews(unittest.TestCase, DbTestBase):
             data["rp_from_fk_wastewater_networkelement"] = from_id
         if to_id is not None:
             data["rp_to_fk_wastewater_networkelement"] = to_id
-        self.update("vw_qgep_reach", data, reach_id)
+        self.update("vw_tww_reach", data, reach_id)
 
     def test_simpe_labels(self):
         manholes = {
@@ -112,13 +112,11 @@ class TestViews(unittest.TestCase, DbTestBase):
         }
         self.insert_reaches(reaches, manholes)
         self.assertEqual(
-            self.select("vw_qgep_wastewater_structure", manholes["main"]["obj_id"])[
-                "_input_label"
-            ],
+            self.select("vw_tww_wastewater_structure", manholes["main"]["obj_id"])["_input_label"],
             "\nI1=1011.00\nI2=1012.00\nI3=1013.00\nI4=1014.00",
         )
         self.assertEqual(
-            self.select("vw_qgep_wastewater_structure", manholes["main"]["obj_id"])[
+            self.select("vw_tww_wastewater_structure", manholes["main"]["obj_id"])[
                 "_output_label"
             ],
             "\nO1=1001.00\nO2=1002.00\nO3=1003.00\nO4=1004.00",
@@ -139,9 +137,7 @@ class TestViews(unittest.TestCase, DbTestBase):
         }
         self.insert_reaches(reaches, manholes)
         self.assertEqual(
-            self.select("vw_qgep_wastewater_structure", manholes["main"]["obj_id"])[
-                "_input_label"
-            ],
+            self.select("vw_tww_wastewater_structure", manholes["main"]["obj_id"])["_input_label"],
             "\nI1=1012.00\nI2=1011.00",
         )
 

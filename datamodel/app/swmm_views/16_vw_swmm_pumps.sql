@@ -2,7 +2,7 @@
 -- View for the swmm module class pumps
 -- A pump in tww is a node but a link in SWMM
 -- -> The pump is attached to the reach which goes out from the pump
--- -> inlet node is the water node where the QGEP pump is located
+-- -> inlet node is the water node where the TWW pump is located
 -- -> outlet node is the water node at the end of the reach going out of the pump
 --------
 CREATE OR REPLACE VIEW tww_app.swmm_vw_pumps AS

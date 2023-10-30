@@ -5,4 +5,3 @@ CREATE SCHEMA tww_od;
 CREATE SCHEMA tww_cfg;
 CREATE SCHEMA tww_network;
 CREATE SCHEMA tww_import;
-CREATE SCHEMA tww_swmm;

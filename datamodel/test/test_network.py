@@ -36,7 +36,7 @@ class TestNetwork(unittest.TestCase, DbTestBase):
             "identifier": identifier,
             "progression_geometry": self.make_line(x1, y1, 100, x2, y2, 100),
         }
-        reach_id = self.insert("vw_qgep_reach", reach)
+        reach_id = self.insert("vw_tww_reach", reach)
         reach = self.select("reach", reach_id)
         return reach_id, reach["fk_reach_point_from"], reach["fk_reach_point_to"]
 
@@ -45,8 +45,8 @@ class TestNetwork(unittest.TestCase, DbTestBase):
         Helper function that makes a manhole, returns (obj_id, wn_obj_id)
         """
         manhole = {"identifier": identifier, "situation_geometry": self.make_point_2d(x, y)}
-        manhole_id = self.insert("vw_qgep_wastewater_structure", manhole)
-        manhole_wn_id = self.select("vw_qgep_wastewater_structure", manhole_id)["wn_obj_id"]
+        manhole_id = self.insert("vw_tww_wastewater_structure", manhole)
+        manhole_wn_id = self.select("vw_tww_wastewater_structure", manhole_id)["wn_obj_id"]
         return manhole_id, manhole_wn_id
 
     def connect_reach(self, reach_id, from_id=None, to_id=None):
@@ -58,7 +58,7 @@ class TestNetwork(unittest.TestCase, DbTestBase):
             data["rp_from_fk_wastewater_networkelement"] = from_id
         if to_id is not None:
             data["rp_to_fk_wastewater_networkelement"] = to_id
-        self.update("vw_qgep_reach", data, reach_id)
+        self.update("vw_tww_reach", data, reach_id)
 
     def refresh_graph(self):
         cur = self.cursor()
@@ -71,8 +71,8 @@ class TestNetwork(unittest.TestCase, DbTestBase):
         query = """
         WITH RECURSIVE node_with_parent AS (
             SELECT n.obj_id, s.from_obj_id AS parent_id
-            FROM qgep_od.vw_network_node n
-            LEFT JOIN qgep_od.vw_network_segment s ON s.to_obj_id = n.obj_id
+            FROM tww_od.vw_network_node n
+            LEFT JOIN tww_od.vw_network_segment s ON s.to_obj_id = n.obj_id
         ),
         downstream AS (
             SELECT obj_id, parent_id, 0 AS depth
@@ -98,8 +98,8 @@ class TestNetwork(unittest.TestCase, DbTestBase):
 
         query = """
         WITH RECURSIVE node_with_child AS (
-            SELECT n.obj_id, s.to_obj_id AS child_id FROM qgep_od.vw_network_node n
-            LEFT JOIN qgep_od.vw_network_segment s ON s.from_obj_id = n.obj_id
+            SELECT n.obj_id, s.to_obj_id AS child_id FROM tww_od.vw_network_node n
+            LEFT JOIN tww_od.vw_network_segment s ON s.from_obj_id = n.obj_id
         ),
         upstream AS (
             SELECT obj_id, child_id, 0 AS depth

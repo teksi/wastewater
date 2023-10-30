@@ -65,9 +65,9 @@ class TestTriggers(unittest.TestCase, DbTestBase):
             "situation_geometry": self.execute("ST_SetSrid(ST_MakePoint(3000000, 1500000), 2056)"),
         }
 
-        obj_id = self.insert_check("vw_qgep_wastewater_structure", row)
+        obj_id = self.insert_check("vw_tww_wastewater_structure", row)
 
-        row = self.select("vw_qgep_wastewater_structure", obj_id)
+        row = self.select("vw_tww_wastewater_structure", obj_id)
 
         for r in row:
             print(r)
@@ -84,7 +84,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         strct_id = None
 
         def check_values(expected_values_for_field):
-            row = self.select("vw_qgep_wastewater_structure", strct_id)
+            row = self.select("vw_tww_wastewater_structure", strct_id)
             for field, expected_value in expected_values_for_field.items():
                 assert (
                     row[field] == expected_value
@@ -100,8 +100,8 @@ class TestTriggers(unittest.TestCase, DbTestBase):
             "ws_type": "manhole",
             "co_level": decimal.Decimal("100.000"),
         }
-        strct_id = self.insert("vw_qgep_wastewater_structure", row_strct)
-        strct_row = self.select("vw_qgep_wastewater_structure", strct_id)
+        strct_id = self.insert("vw_tww_wastewater_structure", row_strct)
+        strct_row = self.select("vw_tww_wastewater_structure", strct_id)
 
         expected = {
             "_label": "A",
@@ -120,7 +120,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
             "co_level": decimal.Decimal("98.000"),
             "wn_bottom_level": decimal.Decimal("90.1234567"),
         }
-        self.update("vw_qgep_wastewater_structure", row_strct, strct_id)
+        self.update("vw_tww_wastewater_structure", row_strct, strct_id)
 
         expected.update(
             {
@@ -142,7 +142,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
             "rp_to_fk_wastewater_networkelement": strct_row["wn_obj_id"],
             "rp_to_level": 95,
         }
-        reach_a_id = self.insert("vw_qgep_reach", row_reach_a)
+        reach_a_id = self.insert("vw_tww_reach", row_reach_a)
 
         expected.update(
             {
@@ -160,7 +160,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
             "rp_from_fk_wastewater_networkelement": strct_row["wn_obj_id"],
             "rp_from_level": 92,
         }
-        reach_b_id = self.insert("vw_qgep_reach", row_reach_b)
+        reach_b_id = self.insert("vw_tww_reach", row_reach_b)
 
         expected.update(
             {
@@ -178,7 +178,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
             "rp_from_fk_wastewater_networkelement": strct_row["wn_obj_id"],
             "rp_from_level": 93,
         }
-        reach_c_id = self.insert("vw_qgep_reach", row_reach_c)
+        reach_c_id = self.insert("vw_tww_reach", row_reach_c)
 
         expected.update(
             {
@@ -190,7 +190,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         # Test label generation on reach update (change level)
 
         row_reach_a = {"rp_to_level": 94}
-        self.update("vw_qgep_reach", row_reach_a, reach_a_id)
+        self.update("vw_tww_reach", row_reach_a, reach_a_id)
 
         expected.update(
             {
@@ -206,7 +206,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
                 "ST_ForceCurve(ST_SetSrid(ST_MakeLine(ST_MakePoint(3000000, 1500000, 92), ST_MakePoint(3000000, 1499999, 90)), 2056))"
             ),
         }
-        self.update("vw_qgep_reach", row_reach_b, reach_b_id)
+        self.update("vw_tww_reach", row_reach_b, reach_b_id)
 
         expected.update(
             {
@@ -218,7 +218,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         # Test label generation on reach update (level to null)
 
         row_reach_c = {"rp_from_level": None}
-        self.update("vw_qgep_reach", row_reach_c, reach_c_id)
+        self.update("vw_tww_reach", row_reach_c, reach_c_id)
 
         expected.update(
             {
@@ -230,8 +230,8 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         # TODO : reenable this (currently, deleting reaches doesn't trigger update on labels)
         # Test label generation on reach delete
         #
-        # self.delete('vw_qgep_reach', reach_a_id)
-        # self.delete('vw_qgep_reach', reach_c_id)
+        # self.delete('vw_tww_reach', reach_a_id)
+        # self.delete('vw_tww_reach', reach_c_id)
         #
         # expected.update({
         #     '_input_label': '',
@@ -257,7 +257,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
                 )
 
         strct_from_id = self.insert(
-            "vw_qgep_wastewater_structure",
+            "vw_tww_wastewater_structure",
             {
                 "identifier": "A",
                 "situation_geometry": self.execute(
@@ -267,10 +267,10 @@ class TestTriggers(unittest.TestCase, DbTestBase):
                 "co_level": decimal.Decimal("100.000"),
             },
         )
-        strct_from_row = self.select("vw_qgep_wastewater_structure", strct_from_id)
+        strct_from_row = self.select("vw_tww_wastewater_structure", strct_from_id)
 
         strct_to_id = self.insert(
-            "vw_qgep_wastewater_structure",
+            "vw_tww_wastewater_structure",
             {
                 "identifier": "B",
                 "situation_geometry": self.execute(
@@ -280,10 +280,10 @@ class TestTriggers(unittest.TestCase, DbTestBase):
                 "co_level": decimal.Decimal("100.000"),
             },
         )
-        strct_to_row = self.select("vw_qgep_wastewater_structure", strct_to_id)
+        strct_to_row = self.select("vw_tww_wastewater_structure", strct_to_id)
 
         reach_id = self.insert(
-            "vw_qgep_reach",
+            "vw_tww_reach",
             {
                 "identifier": "R1",
                 "progression_geometry": self.execute(
@@ -296,14 +296,14 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         )
 
         check_values(
-            "vw_qgep_wastewater_structure",
+            "vw_tww_wastewater_structure",
             strct_from_id,
             {
                 "_channel_function_hierarchic": 5062,
             },
         )
         check_values(
-            "vw_qgep_wastewater_structure",
+            "vw_tww_wastewater_structure",
             strct_to_id,
             {
                 "_channel_function_hierarchic": 5062,
@@ -326,17 +326,17 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         )
 
         # We change _function hierarchic on the reach
-        self.update("vw_qgep_reach", {"ch_function_hierarchic": 5063}, reach_id)
+        self.update("vw_tww_reach", {"ch_function_hierarchic": 5063}, reach_id)
 
         check_values(
-            "vw_qgep_wastewater_structure",
+            "vw_tww_wastewater_structure",
             strct_from_id,
             {
                 "_channel_function_hierarchic": 5063,
             },
         )
         check_values(
-            "vw_qgep_wastewater_structure",
+            "vw_tww_wastewater_structure",
             strct_to_id,
             {
                 "_channel_function_hierarchic": 5063,

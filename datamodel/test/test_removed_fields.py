@@ -20,7 +20,7 @@ class TestRemovedFields(unittest.TestCase, DbTestBase):
     def test_dataowner(self):
         cur = self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
-        cur.execute("SELECT * FROM qgep_od.wastewater_structure LIMIT 1")
+        cur.execute("SELECT * FROM tww_od.wastewater_structure LIMIT 1")
         colnames = [desc[0] for desc in cur.description]
 
         self.assertNotIn("provider", colnames)

@@ -37,8 +37,8 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         # update
         self.update("vw_manhole", row, obj_id, "qgep_import")
 
-        # it should be calculated correctly in the live table qgep_od.wastewater_structure
-        row = self.select("wastewater_structure", obj_id, "qgep_od")
+        # it should be calculated correctly in the live table tww_od.wastewater_structure
+        row = self.select("wastewater_structure", obj_id, "tww_od")
         self.assertNotEqual(row["_depth"], decimal.Decimal("12.220"))
 
         # it should be visible in the qgep_import.vw_manhole view
@@ -70,8 +70,8 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         # update
         self.update("vw_manhole", row, obj_id, "qgep_import")
 
-        # it should be calculated correctly in the live view qgep_od.vw_qgep_wastewater_structure
-        row = self.select("vw_qgep_wastewater_structure", obj_id, "qgep_od")
+        # it should be calculated correctly in the live view tww_od.vw_tww_wastewater_structure
+        row = self.select("vw_tww_wastewater_structure", obj_id, "tww_od")
         self.assertEqual(row["_depth"], decimal.Decimal("2.220"))
         self.assertEqual(row["co_level"], decimal.Decimal("22.220"))
         self.assertEqual(row["wn_bottom_level"], decimal.Decimal("20"))
@@ -105,8 +105,8 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         # update
         self.update("vw_manhole", row, obj_id, "qgep_import")
 
-        # it should be calculated correctly in the live view qgep_od.vw_qgep_wastewater_structure
-        row = self.select("vw_qgep_wastewater_structure", obj_id, "qgep_od")
+        # it should be calculated correctly in the live view tww_od.vw_tww_wastewater_structure
+        row = self.select("vw_tww_wastewater_structure", obj_id, "tww_od")
         self.assertEqual(row["_depth"], decimal.Decimal("7.780"))
         self.assertEqual(row["co_level"], decimal.Decimal("30"))
         self.assertEqual(row["wn_bottom_level"], decimal.Decimal("22.220"))
@@ -133,8 +133,8 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         # update
         self.update("vw_manhole", row, obj_id, "qgep_import")
 
-        # it should be deleted in the live table qgep_od.wastewater_structure
-        row = self.select("wastewater_structure", obj_id, "qgep_od")
+        # it should be deleted in the live table tww_od.wastewater_structure
+        row = self.select("wastewater_structure", obj_id, "tww_od")
         self.assertIsNone(row)
 
         # it should not be visible anymore in the qgep_import.vw_manhole view
@@ -154,8 +154,8 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         # update
         self.update("vw_manhole", row, obj_id, "qgep_import")
 
-        # it should not be deleted in the live table qgep_od.wastewater_structure
-        row = self.select("wastewater_structure", obj_id, "qgep_od")
+        # it should not be deleted in the live table tww_od.wastewater_structure
+        row = self.select("wastewater_structure", obj_id, "tww_od")
         self.assertIsNotNone(row)
 
         # it should still be visible anymore in the qgep_import.vw_manhole view
@@ -186,8 +186,8 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         # update
         self.update("vw_manhole", row, obj_id, "qgep_import")
 
-        # it should be in the live table qgep_od.wastewater_structure
-        row = self.select("wastewater_structure", obj_id, "qgep_od")
+        # it should be in the live table tww_od.wastewater_structure
+        row = self.select("wastewater_structure", obj_id, "tww_od")
         self.assertIsNotNone(row)
         self.assertEqual(row["remark"], "Strassenauslauf")
 
@@ -197,7 +197,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         self.assertEqual(row["co_material"], 3015)
         self.assertEqual(row["remark"], "Strassenauslauf")
 
-        # it should be in the live table qgep_od.reach and qgep_od.reach_point
+        # it should be in the live table tww_od.reach and tww_od.reach_point
         cur = self.cursor()
         cur.execute(
             psycopg2.sql.SQL(
@@ -205,9 +205,9 @@ class TestTriggers(unittest.TestCase, DbTestBase):
             FROM {schema}.reach re\
             LEFT JOIN {schema}.reach_point rp ON rp.obj_id = re.fk_reach_point_from\
             LEFT JOIN {schema}.wastewater_networkelement wn ON wn.obj_id = rp.fk_wastewater_networkelement\
-            LEFT JOIN {schema}.vw_qgep_wastewater_structure ws ON ws.obj_id = wn.fk_wastewater_structure\
+            LEFT JOIN {schema}.vw_tww_wastewater_structure ws ON ws.obj_id = wn.fk_wastewater_structure\
             WHERE ws.obj_id = %(obj_id)s"
-            ).format(schema=psycopg2.sql.Identifier("qgep_od")),
+            ).format(schema=psycopg2.sql.Identifier("tww_od")),
             {"obj_id": obj_id},
         )
         row = cur.fetchone()
@@ -216,15 +216,15 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         self.assertEqual(row["clear_height"], 160)
         self.assertEqual(row["level"], decimal.Decimal("301.700"))
 
-        # the photo should be in the live table qgep_od.file
-        row = self.select("file", obj_id, "qgep_od")
+        # the photo should be in the live table tww_od.file
+        row = self.select("file", obj_id, "tww_od")
         cur = self.cursor()
         cur.execute(
             psycopg2.sql.SQL(
                 "SELECT *\
             FROM {schema}.file\
             WHERE object = %(obj_id)s"
-            ).format(schema=psycopg2.sql.Identifier("qgep_od")),
+            ).format(schema=psycopg2.sql.Identifier("tww_od")),
             {"obj_id": obj_id},
         )
         row = cur.fetchone()
@@ -251,7 +251,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         # update
         self.update("vw_manhole", row, obj_id, "qgep_import")
 
-        # it should be in the live table qgep_od.reach and qgep_od.reach_point
+        # it should be in the live table tww_od.reach and tww_od.reach_point
         cur = self.cursor()
         cur.execute(
             psycopg2.sql.SQL(
@@ -259,9 +259,9 @@ class TestTriggers(unittest.TestCase, DbTestBase):
             FROM {schema}.reach re\
             LEFT JOIN {schema}.reach_point rp ON rp.obj_id = re.fk_reach_point_from\
             LEFT JOIN {schema}.wastewater_networkelement wn ON wn.obj_id = rp.fk_wastewater_networkelement\
-            LEFT JOIN {schema}.vw_qgep_wastewater_structure ws ON ws.obj_id = wn.fk_wastewater_structure\
+            LEFT JOIN {schema}.vw_tww_wastewater_structure ws ON ws.obj_id = wn.fk_wastewater_structure\
             WHERE ws.obj_id = %(obj_id)s"
-            ).format(schema=psycopg2.sql.Identifier("qgep_od")),
+            ).format(schema=psycopg2.sql.Identifier("tww_od")),
             {"obj_id": obj_id},
         )
         row = cur.fetchone()
@@ -326,7 +326,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         self.assertEqual(row["co_material"], 3015)
         self.assertEqual(row["remark"], "Strassenauslauf")
 
-        # it should be in the live table qgep_od.reach and qgep_od.reach_point
+        # it should be in the live table tww_od.reach and tww_od.reach_point
         cur = self.cursor()
         cur.execute(
             psycopg2.sql.SQL(
@@ -334,9 +334,9 @@ class TestTriggers(unittest.TestCase, DbTestBase):
             FROM {schema}.reach re\
             LEFT JOIN {schema}.reach_point rp ON rp.obj_id = re.fk_reach_point_from\
             LEFT JOIN {schema}.wastewater_networkelement wn ON wn.obj_id = rp.fk_wastewater_networkelement\
-            LEFT JOIN {schema}.vw_qgep_wastewater_structure ws ON ws.obj_id = wn.fk_wastewater_structure\
+            LEFT JOIN {schema}.vw_tww_wastewater_structure ws ON ws.obj_id = wn.fk_wastewater_structure\
             WHERE ws.obj_id = %(obj_id)s"
-            ).format(schema=psycopg2.sql.Identifier("qgep_od")),
+            ).format(schema=psycopg2.sql.Identifier("tww_od")),
             {"obj_id": obj_id},
         )
         row = cur.fetchone()
@@ -427,7 +427,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         self.assertEqual(row["co_material"], 3015)
         self.assertEqual(row["remark"], "E10")
 
-        # it should be in the live table qgep_od.reach and qgep_od.reach_point
+        # it should be in the live table tww_od.reach and tww_od.reach_point
         cur = self.cursor()
         cur.execute(
             psycopg2.sql.SQL(
@@ -435,9 +435,9 @@ class TestTriggers(unittest.TestCase, DbTestBase):
             FROM {schema}.reach re\
             LEFT JOIN {schema}.reach_point rp ON rp.obj_id = re.fk_reach_point_from\
             LEFT JOIN {schema}.wastewater_networkelement wn ON wn.obj_id = rp.fk_wastewater_networkelement\
-            LEFT JOIN {schema}.vw_qgep_wastewater_structure ws ON ws.obj_id = wn.fk_wastewater_structure\
+            LEFT JOIN {schema}.vw_tww_wastewater_structure ws ON ws.obj_id = wn.fk_wastewater_structure\
             WHERE ws.obj_id = %(obj_id)s"
-            ).format(schema=psycopg2.sql.Identifier("qgep_od")),
+            ).format(schema=psycopg2.sql.Identifier("tww_od")),
             {"obj_id": obj_id},
         )
         row = cur.fetchone()
@@ -461,11 +461,11 @@ class TestTriggers(unittest.TestCase, DbTestBase):
 
     # - general test
     def test_general(self):
-        # it should be in the live table qgep_od.reach and qgep_od.reach_point
+        # it should be in the live table tww_od.reach and tww_od.reach_point
         cur = self.cursor()
         cur.execute(
             psycopg2.sql.SQL("SELECT * FROM {schema}.wastewater_structure LIMIT 1").format(
-                schema=psycopg2.sql.Identifier("qgep_od")
+                schema=psycopg2.sql.Identifier("tww_od")
             )
         )
         row = cur.fetchone()

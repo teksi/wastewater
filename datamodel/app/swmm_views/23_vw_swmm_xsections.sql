@@ -33,7 +33,7 @@ SELECT DISTINCT
     END
     ELSE NULL
   END as Geom2,
-  --Geom3 = code -> used only for arch profile, but this code value is nowhere to be set in the QGEP model
+  --Geom3 = code -> used only for arch profile, but this code value is nowhere to be set in the TWW model
   0 as Geom3,
   0 as Geom4,
   1 as Barrels,

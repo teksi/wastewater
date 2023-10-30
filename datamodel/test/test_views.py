@@ -44,7 +44,7 @@ class TestViews(unittest.TestCase, DbTestBase):
 
         self.update_check("vw_prank_weir", row, obj_id)
 
-    def test_vw_qgep_reach(self):
+    def test_vw_tww_reach(self):
         row = {
             "clear_height": 100,
             "coefficient_of_friction": 10,
@@ -55,7 +55,7 @@ class TestViews(unittest.TestCase, DbTestBase):
             ),
         }
 
-        obj_id = self.insert_check("vw_qgep_reach", row)
+        obj_id = self.insert_check("vw_tww_reach", row)
 
         row = {
             "clear_height": 200,
@@ -64,9 +64,9 @@ class TestViews(unittest.TestCase, DbTestBase):
             "ch_usage_current": 4516,
         }
 
-        self.update_check("vw_qgep_reach", row, obj_id)
+        self.update_check("vw_tww_reach", row, obj_id)
 
-    def test_vw_qgep_wastewater_structure(self):
+    def test_vw_tww_wastewater_structure(self):
         row = {
             "identifier": "20",
             "ws_type": "manhole",
@@ -82,7 +82,7 @@ class TestViews(unittest.TestCase, DbTestBase):
             "ST_SetSRID(ST_MakePoint(2600000, 1200000), 2056)"
         )
 
-        obj_id = self.insert_check("vw_qgep_wastewater_structure", row, expected_row)
+        obj_id = self.insert_check("vw_tww_wastewater_structure", row, expected_row)
 
         row = {
             "identifier": "10",
@@ -91,12 +91,12 @@ class TestViews(unittest.TestCase, DbTestBase):
             "ss_upper_elevation": decimal.Decimal("405.000"),
         }
 
-        self.update_check("vw_qgep_wastewater_structure", row, obj_id)
+        self.update_check("vw_tww_wastewater_structure", row, obj_id)
 
         cur = self.cursor()
 
         cur.execute(
-            "SELECT * FROM qgep_od.wastewater_networkelement NE LEFT JOIN qgep_od.wastewater_node NO ON NO.obj_id = NE.obj_id WHERE fk_wastewater_structure='{obj_id}' ".format(
+            "SELECT * FROM tww_od.wastewater_networkelement NE LEFT JOIN tww_od.wastewater_node NO ON NO.obj_id = NE.obj_id WHERE fk_wastewater_structure='{obj_id}' ".format(
                 obj_id=obj_id
             )
         )

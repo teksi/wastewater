@@ -13,14 +13,9 @@ class DbTestBase:
             schema, table, expected, count
         )
 
-    def select(self, table, obj_id, schema="qgep_od"):
+    def select(self, table, obj_id, schema="tww_app"):
         cur = self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-        cur.execute(
-            "SELECT * FROM {schema}.{table} WHERE obj_id=%(obj_id)s".format(
-                table=table, schema=schema
-            ),
-            {"obj_id": obj_id},
-        )
+        cur.execute(f"SELECT * FROM {schema}.{table} WHERE obj_id=%(obj_id)s", {"obj_id": obj_id})
         return cur.fetchone()
 
     def execute(self, sql: str, params=[]):
@@ -31,37 +26,32 @@ class DbTestBase:
     def cursor(self):
         return self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
-    def insert(self, table, row, schema="qgep_od"):
+    def insert(self, table, row, schema="tww_app"):
         cur = self.conn.cursor()
         cols = ", ".join(row.keys())
         values = ", ".join([f"%({key})s" for key in row.keys()])
         cur.execute(
-            "INSERT INTO {schema}.{table} ({cols}) VALUES ({values}) RETURNING obj_id".format(
-                table=table, schema=schema, cols=cols, values=values
-            ),
-            row,
+            f"INSERT INTO {schema}.{table} ({cols}) VALUES ({values}) RETURNING obj_id", row
         )
         return cur.fetchone()[0]
 
-    def update(self, table, row, obj_id, schema="qgep_od"):
+    def update(self, table, row, obj_id, schema="tww_app"):
         cur = self.conn.cursor()
         cols = ",".join(["{key}=%({key})s".format(key=key) for key in row.keys()])
         row["obj_id"] = obj_id
         cur.execute(
-            "UPDATE {schema}.{table} SET {cols} WHERE obj_id=%(obj_id)s".format(
-                table=table, schema=schema, cols=cols
-            ),
+            f"UPDATE {schema}.{table} SET {cols} WHERE obj_id=%(obj_id)s",
             row,
         )
 
-    def delete(self, table, obj_id, schema="qgep_od"):
+    def delete(self, table, obj_id, schema="tww_app"):
         cur = self.conn.cursor()
         cur.execute(
             f"DELETE FROM {schema}.{table} WHERE obj_id=%s",
             [obj_id],
         )
 
-    def insert_check(self, table, row, expected_row=None, schema="qgep_od"):
+    def insert_check(self, table, row, expected_row=None, schema="tww_app"):
         obj_id = self.insert(table, row, schema)
         result = self.select(table, obj_id, schema)
 
@@ -74,12 +64,12 @@ class DbTestBase:
 
         return obj_id
 
-    def update_check(self, table, row, obj_id, schema="qgep_od"):
+    def update_check(self, table, row, obj_id, schema="tww_app"):
         self.update(table, row, obj_id, schema)
         result = self.select(table, obj_id, schema)
         self.check_result(row, result, table, "update", schema)
 
-    def check_result(self, expected, result, table, test_name, schema="qgep_od"):
+    def check_result(self, expected, result, table, test_name, schema="tww_app"):
         # TODO: don't convert to unicode, type inference for smallint is
         # currently broken, that's the reason at the moment.
         self.assertTrue(result, "No result set received.")

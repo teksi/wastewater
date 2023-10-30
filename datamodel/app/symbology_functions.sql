@@ -140,7 +140,7 @@ BEGIN
     WHEN NO_DATA_FOUND THEN
       -- DO NOTHING, THIS CAN HAPPEN
     WHEN TOO_MANY_ROWS THEN
-        RAISE EXCEPTION 'TRIGGER ERROR ws_symbology_update_by_channel. Subquery shoud return exactly one row. This is not supposed to happen and indicates an isue with the trigger. The issue must be fixed in QGEP.';
+        RAISE EXCEPTION 'TRIGGER ERROR ws_symbology_update_by_channel. Subquery shoud return exactly one row. This is not supposed to happen and indicates an isue with the trigger. The issue must be fixed in TWW.';
   END;
 
   BEGIN
@@ -157,7 +157,7 @@ BEGIN
     WHEN NO_DATA_FOUND THEN
       -- DO NOTHING, THIS CAN HAPPEN
     WHEN TOO_MANY_ROWS THEN
-        RAISE EXCEPTION 'TRIGGER ERROR ws_symbology_update_by_channel. Subquery shoud return exactly one row. This is not supposed to happen and indicates an isue with the trigger. The issue must be fixed in QGEP.';
+        RAISE EXCEPTION 'TRIGGER ERROR ws_symbology_update_by_channel. Subquery shoud return exactly one row. This is not supposed to happen and indicates an isue with the trigger. The issue must be fixed in TWW.';
   END;
 
   RETURN NEW;
@@ -197,7 +197,7 @@ BEGIN
     WHEN NO_DATA_FOUND THEN
       -- DO NOTHING, THIS CAN HAPPEN
     WHEN TOO_MANY_ROWS THEN
-        RAISE EXCEPTION 'TRIGGER ERROR ws_symbology_update_by_reach_point. Subquery shoud return exactly one row. This is not supposed to happen and indicates an isue with the trigger. The issue must be fixed in QGEP.';
+        RAISE EXCEPTION 'TRIGGER ERROR ws_symbology_update_by_reach_point. Subquery shoud return exactly one row. This is not supposed to happen and indicates an isue with the trigger. The issue must be fixed in TWW.';
   END;
 
   RETURN NEW;
@@ -239,7 +239,7 @@ BEGIN
     WHEN NO_DATA_FOUND THEN
       -- DO NOTHING, THIS CAN HAPPEN
     WHEN TOO_MANY_ROWS THEN
-        RAISE EXCEPTION 'TRIGGER ERROR ws_symbology_update_by_reach. Subquery shoud return exactly one row. This is not supposed to happen and indicates an isue with the trigger. The issue must be fixed in QGEP.';
+        RAISE EXCEPTION 'TRIGGER ERROR ws_symbology_update_by_reach. Subquery shoud return exactly one row. This is not supposed to happen and indicates an isue with the trigger. The issue must be fixed in TWW.';
   END;
 
   BEGIN
@@ -255,7 +255,7 @@ BEGIN
     WHEN NO_DATA_FOUND THEN
       -- DO NOTHING, THIS CAN HAPPEN
     WHEN TOO_MANY_ROWS THEN
-        RAISE EXCEPTION 'TRIGGER ERROR ws_symbology_update_by_reach. Subquery shoud return exactly one row. This is not supposed to happen and indicates an isue with the trigger. The issue must be fixed in QGEP.';
+        RAISE EXCEPTION 'TRIGGER ERROR ws_symbology_update_by_reach. Subquery shoud return exactly one row. This is not supposed to happen and indicates an isue with the trigger. The issue must be fixed in TWW.';
   END;
 
 

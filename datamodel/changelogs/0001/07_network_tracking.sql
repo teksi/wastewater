@@ -1,4 +1,4 @@
--- Views for network following with the Python NetworkX module and the QGEP Python plugins
+-- Views for network following with the Python NetworkX module and the TWW Python plugins
 
 /*
 This generates a graph representing the network.

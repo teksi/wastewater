@@ -27,10 +27,10 @@ class TestTriggers(unittest.TestCase, DbTestBase):
             "situation_geometry": "0101000020080800000000000060E346410000000060E33641",  # ST_SetSRID(ST_MakePoint(3000000, 1500000), 2056)
         }
 
-        obj_id = self.insert_check("vw_qgep_wastewater_structure", row)
+        obj_id = self.insert_check("vw_tww_wastewater_structure", row)
 
         # Get the new cover
-        row = self.select("vw_qgep_wastewater_structure", obj_id)
+        row = self.select("vw_tww_wastewater_structure", obj_id)
         row = self.select("vw_cover", row["co_obj_id"])
 
         self.delete("wastewater_structure", row["fk_wastewater_structure"])
@@ -79,7 +79,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         self.assertIsNone(self.select("reach_point", rp002_obj_id))
         self.assertIsNone(self.select("wastewater_networkelement", wn001_obj_id))
 
-        # The same but over the view vw_qgep_reach
+        # The same but over the view vw_tww_reach
         # Create a new reach and reach points
         rp001_obj_id = self.insert_check(
             "reach_point",
@@ -111,14 +111,14 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         }
         re001_obj_id = self.insert_check("reach", row)
 
-        self.assertIsNotNone(self.select("vw_qgep_reach", re001_obj_id))
+        self.assertIsNotNone(self.select("vw_tww_reach", re001_obj_id))
         self.assertIsNotNone(self.select("reach_point", rp001_obj_id))
         self.assertIsNotNone(self.select("reach_point", rp002_obj_id))
         self.assertIsNotNone(self.select("wastewater_networkelement", wn001_obj_id))
 
-        self.delete("vw_qgep_reach", re001_obj_id)
+        self.delete("vw_tww_reach", re001_obj_id)
 
-        self.assertIsNone(self.select("vw_qgep_reach", re001_obj_id))
+        self.assertIsNone(self.select("vw_tww_reach", re001_obj_id))
         self.assertIsNone(self.select("reach_point", rp001_obj_id))
         self.assertIsNone(self.select("reach_point", rp002_obj_id))
         self.assertIsNone(self.select("wastewater_networkelement", wn001_obj_id))
