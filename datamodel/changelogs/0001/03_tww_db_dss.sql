@@ -1171,12 +1171,9 @@ COMMENT ON COLUMN tww_od.reach.leak_protection IS 'Double-walled pipe or other s
 COMMENT ON COLUMN tww_od.reach.length_effective IS 'yyy_Tatsächliche schräge Länge (d.h. nicht in horizontale Ebene projiziert)  inklusive Kanalkrümmungen / Tatsächliche schräge Länge (d.h. nicht in horizontale Ebene projiziert)  inklusive Kanalkrümmungen / Longueur effective (non projetée) incluant les parties incurvées';
  ALTER TABLE tww_od.reach ADD COLUMN material  integer ;
 COMMENT ON COLUMN tww_od.reach.material IS 'Material of reach / pipe / Rohrmaterial / Matériau du tuyau';
-ALTER TABLE tww_od.reach ADD COLUMN progression_geometry geometry('COMPOUNDCURVE', 2056);
+ALTER TABLE tww_od.reach ADD COLUMN progression_geometry geometry('COMPOUNDCURVEZ', 2056);
 CREATE INDEX in_tww_reach_progression_geometry ON tww_od.reach USING gist (progression_geometry );
-COMMENT ON COLUMN tww_od.reach.progression_geometry IS 'Start, inflextion and endpoints of a pipe / Anfangs-, Knick- und Endpunkte der Leitung / Points de départ, intermédiaires et d’arrivée de la conduite.';
-ALTER TABLE tww_od.reach ADD COLUMN progression3d_geometry geometry('COMPOUNDCURVEZ', 2056);
-CREATE INDEX in_tww_reach_progression3d_geometry ON tww_od.reach USING gist (progression3d_geometry );
-COMMENT ON COLUMN tww_od.reach.progression3d_geometry IS 'Start, inflextion and endpoints of a pipe (3D coordinates) / Anfangs-, Knick- und Endpunkte der Leitung (3D Koordinaten) / Points de départ, intermédiaires et d’arrivée de la conduite (coordonnées 3D)';
+COMMENT ON COLUMN tww_od.reach.progression_geometry IS 'Start, inflextion and endpoints of a pipe (3D coordinates) / Anfangs-, Knick- und Endpunkte der Leitung (3D Koordinaten) / Points de départ, intermédiaires et d’arrivée de la conduite (coordonnées 3D)';
  ALTER TABLE tww_od.reach ADD COLUMN reliner_material  integer ;
 COMMENT ON COLUMN tww_od.reach.reliner_material IS 'Material of reliner / Material des Reliners / Materiaux du relining';
  ALTER TABLE tww_od.reach ADD COLUMN reliner_nominal_size  integer ;
@@ -1530,7 +1527,7 @@ COMMENT ON COLUMN tww_od.cover.level IS 'Height of cover / Deckelhöhe / Cote du
 COMMENT ON COLUMN tww_od.cover.material IS 'Material of cover / Deckelmaterial / Matériau du couvercle';
  ALTER TABLE tww_od.cover ADD COLUMN positional_accuracy  integer ;
 COMMENT ON COLUMN tww_od.cover.positional_accuracy IS 'Quantfication of accuarcy of position of cover (center hole) / Quantifizierung der Genauigkeit der Lage des Deckels (Pickelloch) / Plage de précision des coordonnées planimétriques du couvercle.';
-ALTER TABLE tww_od.cover ADD COLUMN situation_geometry geometry('POINT', 2056);
+ALTER TABLE tww_od.cover ADD COLUMN situation_geometry geometry('POINTZ', 2056);
 CREATE INDEX in_tww_cover_situation_geometry ON tww_od.cover USING gist (situation_geometry );
 COMMENT ON COLUMN tww_od.cover.situation_geometry IS 'Situation of cover (cover hole), National position coordinates (East, North) / Lage des Deckels (Pickelloch) / Positionnement du couvercle (milieu du couvercle)';
  ALTER TABLE tww_od.cover ADD COLUMN sludge_bucket  integer ;
