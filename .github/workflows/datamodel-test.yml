@@ -33,6 +33,5 @@ jobs:
           docker run -d -p 5432:5432 --name teksi-wastewater teksi/wastewater:unstable
           docker exec teksi-wastewater init_db.sh wait
 
-      - name: create dumps
-        run: |
-          docker exec -e PGSERVICE=pg_teksi_wastewater pytest
+      - name: run tests
+        run:  docker exec teksi-wastewater pytest
