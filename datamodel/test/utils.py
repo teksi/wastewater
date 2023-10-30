@@ -5,51 +5,64 @@ DEFAULT_PG_SERVICE = "pg_teksi_wastewater"
 
 
 class DbTestBase:
-    def assert_count(self, table, schema, expected):
-        cur = self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    @classmethod
+    def assert_count(cls, table, schema, expected):
+        cur = cls.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
         cur.execute(f"SELECT COUNT(*) FROM {schema}.{table}")
         count = cur.fetchone()[0]
-        assert count == expected, "Relation {}.{} : expected {} rows, got {} rows".format(
-            schema, table, expected, count
-        )
+        assert (
+            count == expected
+        ), f"Relation {schema}.{table} : expected {expected} rows, got {count} rows"
 
-    def select(self, table, obj_id, schema="tww_app"):
-        cur = self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    @classmethod
+    def geom_from_text(cls, wkt: str) -> str:
+        return cls.execute(f"ST_SetSRID(ST_GeomFromText('{wkt}'), 2056)")
+
+    @classmethod
+    def geom_as_text(cls, wkb: str) -> str:
+        return cls.execute(f"ST_GeomAsText('{wkb}')")
+
+    @classmethod
+    def select(cls, table, obj_id, schema="tww_app"):
+        cur = cls.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
         cur.execute(f"SELECT * FROM {schema}.{table} WHERE obj_id=%(obj_id)s", {"obj_id": obj_id})
         return cur.fetchone()
 
-    def execute(self, sql: str, params=[]):
-        cur = self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    @classmethod
+    def execute(cls, sql: str, params=[]):
+        cur = cls.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
         cur.execute(f"SELECT {sql}", params)
         return cur.fetchone()[0]
 
-    def cursor(self):
-        return self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    @classmethod
+    def cursor(cls):
+        return cls.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
-    def insert(self, table, row, schema="tww_app"):
-        cur = self.conn.cursor()
+    @classmethod
+    def insert(cls, table, row, schema="tww_app"):
+        cur = cls.conn.cursor()
         cols = ", ".join(row.keys())
         values = ", ".join([f"%({key})s" for key in row.keys()])
+        print(53453)
+        print(f"INSERT INTO {schema}.{table} ({cols}) VALUES ({values}) RETURNING obj_id")
+        print("-----")
+        print(row)
         cur.execute(
             f"INSERT INTO {schema}.{table} ({cols}) VALUES ({values}) RETURNING obj_id", row
         )
         return cur.fetchone()[0]
 
-    def update(self, table, row, obj_id, schema="tww_app"):
-        cur = self.conn.cursor()
+    @classmethod
+    def update(cls, table, row, obj_id, schema="tww_app"):
+        cur = cls.conn.cursor()
         cols = ",".join(["{key}=%({key})s".format(key=key) for key in row.keys()])
         row["obj_id"] = obj_id
-        cur.execute(
-            f"UPDATE {schema}.{table} SET {cols} WHERE obj_id=%(obj_id)s",
-            row,
-        )
+        cur.execute(f"UPDATE {schema}.{table} SET {cols} WHERE obj_id=%(obj_id)s", row)
 
-    def delete(self, table, obj_id, schema="tww_app"):
-        cur = self.conn.cursor()
-        cur.execute(
-            f"DELETE FROM {schema}.{table} WHERE obj_id=%s",
-            [obj_id],
-        )
+    @classmethod
+    def delete(cls, table, obj_id, schema="tww_app"):
+        cur = cls.conn.cursor()
+        cur.execute(f"DELETE FROM {schema}.{table} WHERE obj_id=%s", [obj_id])
 
     def insert_check(self, table, row, expected_row=None, schema="tww_app"):
         obj_id = self.insert(table, row, schema)
@@ -106,32 +119,36 @@ class DbTestBase:
                 ),
             )
 
-    def make_line(self, x1, y1, z1, x2, y2, z2, srid=2056):
+    @classmethod
+    def make_line(cls, x1, y1, z1, x2, y2, z2, srid=2056):
         """
         Helper to make 3D line geometries
         """
-        return self.execute(
+        return cls.execute(
             "ST_ForceCurve(ST_SetSrid(ST_MakeLine(ST_MakePoint(%s, %s, %s), ST_MakePoint(%s, %s, %s)), %s))",
             [x1, y1, z1, x2, y2, z2, srid],
         )
 
-    def make_line_2d(self, x1, y1, x2, y2, srid=2056):
+    @classmethod
+    def make_line_2d(cls, x1, y1, x2, y2, srid=2056):
         """
         Helper to make 2D line geometries
         """
-        return self.execute(
+        return cls.execute(
             "ST_ForceCurve(ST_SetSrid(ST_MakeLine(ST_MakePoint(%s, %s), ST_MakePoint(%s, %s)), %s))",
             [x1, y1, x2, y2, srid],
         )
 
-    def make_point(self, x, y, z, srid=2056):
+    @classmethod
+    def make_point(cls, x, y, z, srid=2056):
         """
         Helper to make 3D point geometries
         """
-        return self.execute("ST_SetSrid(ST_MakePoint(%s, %s, %s), %s)", [x, y, z, srid])
+        return cls.execute("ST_SetSrid(ST_MakePoint(%s, %s, %s), %s)", [x, y, z, srid])
 
-    def make_point_2d(self, x, y, z=None, srid=2056):
+    @classmethod
+    def make_point_2d(cls, x, y, z=None, srid=2056):
         """
         Helper to make 2D point geometries
         """
-        return self.execute("ST_SetSrid(ST_MakePoint(%s, %s), %s)", [x, y, srid])
+        return cls.execute("ST_SetSrid(ST_MakePoint(%s, %s), %s)", [x, y, srid])

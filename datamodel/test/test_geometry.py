@@ -7,8 +7,11 @@ import psycopg2.extras
 
 from .utils import DEFAULT_PG_SERVICE, DbTestBase
 
+X = 2556050.0
+Y = 1114225.0
 
-class TestViews(unittest.TestCase, DbTestBase):
+
+class TestGeometry(unittest.TestCase, DbTestBase):
     @classmethod
     def tearDownClass(cls):
         cls.conn.rollback()
@@ -20,21 +23,18 @@ class TestViews(unittest.TestCase, DbTestBase):
 
     def test_vw_tww_reach_geometry_insert(self):
         # 1. insert geometry with Z and no rp_from_level and no rp_to_level
-        # INSERT INTO tww_app.vw_tww_reach (progression_geometry, rp_from_obj_id, rp_to_obj_id) VALUES (ST_SetSRID(ST_GeomFromText('COMPOUNDCURVE Z ((1 2 3,4 5 6,7 8 9))'), 2056), 'BBB 1337_0001', 'CCC 1337_0001' );
+        geom = f"COMPOUNDCURVEZ(({X+1} {Y+1} 1001,{X+2} {Y+2} 1002, {X+3} {Y+3} 1003))"
         row = {
-            "progression_geometry": "01090000A00808000001000000010200008003000000000000000000F03F000000000000004000000000000008400000000000001040000000000000144000000000000018400000000000001C4000000000000020400000000000002240",
+            "progression_geometry": self.geom_from_text(geom),
             "rp_from_obj_id": "BBB 1337_0001",
             "rp_to_obj_id": "CCC 1337_0001",
         }
-        expected_row = copy.deepcopy(row)
-        # vw_tww_reach has the geometry but NaN as Z on start_point and NaN as Z on end_point: SELECT ST_SetSRID( ST_ForceCurve(ST_MakeLine(ARRAY[ST_MakePoint(1,2,'NaN'), ST_MakePoint(4,5,6), ST_MakePoint(7,8,'NaN')])), 2056)
-        expected_row[
-            "progression_geometry"
-        ] = "01090000A00808000001000000010200008003000000000000000000F03F0000000000000040000000000000F87F0000000000001040000000000000144000000000000018400000000000001C400000000000002040000000000000F87F"
-        # rp_from_level is NULL
-        expected_row["rp_from_level"] = None
-        # rp_to_level is NULL
-        expected_row["rp_to_level"] = None
+        geom = f"COMPOUNDCURVEZ(({X+1} {Y+1} NaN,{X+2} {Y+2} 1002, {X+3} {Y+3} NaN))"
+        expected_row = {
+            "progression_geometry": self.geom_from_text(geom),
+            "rp_from_level": None,
+            "rp_to_level": None,
+        }
         self.insert_check("vw_tww_reach", row, expected_row)
         # reach_point has on rp_to as Z NaN: SELECT ST_SetSRID( ST_MakePoint(1,2,'NaN'), 2056)
         row = self.select("reach_point", "BBB 1337_0001")
