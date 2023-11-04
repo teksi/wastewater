@@ -8,7 +8,7 @@ CREATE OR REPLACE VIEW tww_app.vw_reach_relining AS
     re.inside_coating,
     re.length_effective,
     re.material,
-    re.progression_geometry,
+    re.progression3d_geometry,
     re.reliner_material,
     re.reliner_nominal_size,
     re.relining_construction,

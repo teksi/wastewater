@@ -135,7 +135,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
 
         row_reach_a = {
             "identifier": "R1",
-            "progression_geometry": self.execute(
+            "progression3d_geometry": self.execute(
                 "ST_ForceCurve(ST_SetSrid(ST_MakeLine(ST_MakePoint(3000001, 1500001, 100), ST_MakePoint(3000000, 1500000, 100)), 2056))"
             ),
             "ch_function_hierarchic": 5062,
@@ -153,7 +153,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
 
         row_reach_b = {
             "identifier": "R2",
-            "progression_geometry": self.execute(
+            "progression3d_geometry": self.execute(
                 "ST_ForceCurve(ST_SetSrid(ST_MakeLine(ST_MakePoint(3000000, 1500000, 92), ST_MakePoint(3000000, 1500001, 90)), 2056))"
             ),
             "ch_function_hierarchic": 5062,
@@ -171,7 +171,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
 
         row_reach_c = {
             "identifier": "R3",
-            "progression_geometry": self.execute(
+            "progression3d_geometry": self.execute(
                 "ST_ForceCurve(ST_SetSrid(ST_MakeLine(ST_MakePoint(3000000, 1500000, 93), ST_MakePoint(3000001, 1500000, 90)), 2056))"
             ),
             "ch_function_hierarchic": 5062,
@@ -202,7 +202,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         # Test label generation on reach update (change azimuth)
 
         row_reach_b = {
-            "progression_geometry": self.execute(
+            "progression3d_geometry": self.execute(
                 "ST_ForceCurve(ST_SetSrid(ST_MakeLine(ST_MakePoint(3000000, 1500000, 92), ST_MakePoint(3000000, 1499999, 90)), 2056))"
             ),
         }
@@ -286,7 +286,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
             "vw_tww_reach",
             {
                 "identifier": "R1",
-                "progression_geometry": self.execute(
+                "progression3d_geometry": self.execute(
                     "ST_ForceCurve(ST_SetSrid(ST_MakeLine(ST_MakePoint(3000001, 1500001, 100), ST_MakePoint(3000000, 1500000, 100)), 2056))"
                 ),
                 "ch_function_hierarchic": 5062,

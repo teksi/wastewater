@@ -43,7 +43,7 @@ CREATE OR REPLACE VIEW tww_app.vw_wizard_reach_channel AS
    , inside_coating
    , length_effective
    , material
-   , progression_geometry
+   , progression3d_geometry
    , reliner_material
    , reliner_nominal_size
    , relining_construction
@@ -164,7 +164,7 @@ BEGIN
    , inside_coating
    , length_effective
    , material
-   , progression_geometry
+   , progression3d_geometry
    , reliner_material
    , reliner_nominal_size
    , relining_construction
@@ -202,9 +202,9 @@ BEGIN
    , NEW.elevation_determination
    , NEW.horizontal_positioning
    , NEW.inside_coating
-   , CASE WHEN NEW.length_effective IS NULL THEN round(ST_Length(NEW.progression_geometry)::numeric,2) ELSE NEW.length_effective END
+   , CASE WHEN NEW.length_effective IS NULL THEN round(ST_Length(NEW.progression3d_geometry)::numeric,2) ELSE NEW.length_effective END
    , NEW.material
-   , NEW.progression_geometry
+   , NEW.progression3d_geometry
    , NEW.reliner_material
    , NEW.reliner_nominal_size
    , NEW.relining_construction

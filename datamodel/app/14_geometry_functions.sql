@@ -13,13 +13,13 @@ $BODY$
 BEGIN
   CASE
     WHEN TG_OP = 'INSERT' THEN
-      NEW.situation_geometry = ST_SetSRID( ST_MakePoint( ST_X(NEW.situation_geometry), ST_Y(NEW.situation_geometry), COALESCE(NEW.bottom_level,'NaN') ), %1$s);
+      NEW.situation3d_geometry = ST_SetSRID( ST_MakePoint( ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), COALESCE(NEW.bottom_level,'NaN') ), %1$s);
     WHEN TG_OP = 'UPDATE' THEN
       IF NEW.bottom_level <> OLD.bottom_level OR (NEW.bottom_level IS NULL AND OLD.bottom_level IS NOT NULL) OR (NEW.bottom_level IS NOT NULL AND OLD.bottom_level IS NULL) THEN
-        NEW.situation_geometry = ST_SetSRID( ST_MakePoint( ST_X(NEW.situation_geometry), ST_Y(NEW.situation_geometry), COALESCE(NEW.bottom_level,'NaN') ), %1$s);
+        NEW.situation3d_geometry = ST_SetSRID( ST_MakePoint( ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), COALESCE(NEW.bottom_level,'NaN') ), %1$s);
       ELSE
-        IF ST_Z(NEW.situation_geometry) <> ST_Z(OLD.situation_geometry) THEN
-          NEW.bottom_level = NULLIF(ST_Z(NEW.situation_geometry),'NaN');
+        IF ST_Z(NEW.situation3d_geometry) <> ST_Z(OLD.situation3d_geometry) THEN
+          NEW.bottom_level = NULLIF(ST_Z(NEW.situation3d_geometry),'NaN');
         END IF;
       END IF;
   END CASE;
@@ -55,13 +55,13 @@ $BODY$
 BEGIN
   CASE
     WHEN TG_OP = 'INSERT' THEN
-      NEW.situation_geometry = ST_SetSRID( ST_MakePoint( ST_X(NEW.situation_geometry), ST_Y(NEW.situation_geometry), COALESCE(NEW.level,'NaN') ), %1$s);
+      NEW.situation3d_geometry = ST_SetSRID( ST_MakePoint( ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), COALESCE(NEW.level,'NaN') ), %1$s);
     WHEN TG_OP = 'UPDATE' THEN
       IF NEW.level <> OLD.level OR (NEW.level IS NULL AND OLD.level IS NOT NULL) OR (NEW.level IS NOT NULL AND OLD.level IS NULL) THEN
-        NEW.situation_geometry = ST_SetSRID( ST_MakePoint( ST_X(NEW.situation_geometry), ST_Y(NEW.situation_geometry), COALESCE(NEW.level,'NaN') ), %1$s);
+        NEW.situation3d_geometry = ST_SetSRID( ST_MakePoint( ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), COALESCE(NEW.level,'NaN') ), %1$s);
       ELSE
-        IF ST_Z(NEW.situation_geometry) <> ST_Z(OLD.situation_geometry) THEN
-          NEW.level = NULLIF(ST_Z(NEW.situation_geometry),'NaN');
+        IF ST_Z(NEW.situation3d_geometry) <> ST_Z(OLD.situation3d_geometry) THEN
+          NEW.level = NULLIF(ST_Z(NEW.situation3d_geometry),'NaN');
         END IF;
       END IF;
   END CASE;

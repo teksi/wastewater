@@ -26,7 +26,7 @@ mp.obj_id AS mp_obj_id, mp.remark AS swmm_simulation_name,
 md.obj_id AS md_obj_id,
 ms.obj_id AS ms_obj_id, ms.dimension, ms.remark AS swmm_parameter,
 mr.obj_id AS mr_obj_id, mr.measuring_duration, mr.time, mr.value,
-re.progression_geometry AS geom
+re.progression3d_geometry AS geom
 FROM tww_od.reach re
 JOIN tww_od.wastewater_networkelement ne ON re.obj_id= ne.obj_id
 LEFT JOIN tww_od.measuring_point mp ON  mp.fk_wastewater_structure = ne.fk_wastewater_structure

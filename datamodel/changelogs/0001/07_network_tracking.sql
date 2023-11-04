@@ -51,10 +51,10 @@ BEGIN
   SELECT DISTINCT
     'blind_connection',
     r.obj_id,
-    ST_ClosestPoint(r.progression_geometry, rp.situation_geometry)
+    ST_ClosestPoint(r.progression3d_geometry, rp.situation_geometry)
   FROM tww_od.reach r
   INNER JOIN tww_od.reach_point rp ON rp.fk_wastewater_networkelement = r.obj_id
-  WHERE ST_LineLocatePoint(ST_CurveToLine(r.progression_geometry), rp.situation_geometry) NOT IN (0.0, 1.0); -- if exactly at start or at end, we don't need a virtualnode as we have the reachpoint
+  WHERE ST_LineLocatePoint(ST_CurveToLine(r.progression3d_geometry), rp.situation_geometry) NOT IN (0.0, 1.0); -- if exactly at start or at end, we don't need a virtualnode as we have the reachpoint
 
   -- Insert reaches, subdivided according to blind reaches
   INSERT INTO tww_network.segment (segment_type, from_node, to_node, ne_id, geom)
@@ -63,22 +63,22 @@ BEGIN
          sub2.node_id_2,
          obj_id,
          ST_LineSubstring(
-           ST_CurveToLine(ST_Force2D(progression_geometry)), ratio_1, ratio_2
+           ST_CurveToLine(ST_Force2D(progression3d_geometry)), ratio_1, ratio_2
          )
   FROM (
     -- This subquery uses LAG to combine a node with the next on a reach.
     SELECT LAG(sub1.node_id) OVER (PARTITION BY sub1.obj_id ORDER BY sub1.ratio) as node_id_1,
            sub1.node_id as node_id_2,
-           sub1.progression_geometry,
+           sub1.progression3d_geometry,
            LAG(sub1.ratio) OVER (PARTITION BY sub1.obj_id ORDER BY sub1.ratio) as ratio_1,
            sub1.ratio as ratio_2,
            obj_id
     FROM (
         -- This subquery joins blind node to reach, with "ratio" being the position of the node along the reach
         SELECT r.obj_id,
-               r.progression_geometry,
+               r.progression3d_geometry,
                n.id as node_id,
-               ST_LineLocatePoint(ST_CurveToLine(r.progression_geometry), n.geom) AS ratio
+               ST_LineLocatePoint(ST_CurveToLine(r.progression3d_geometry), n.geom) AS ratio
         FROM tww_od.reach r
         JOIN tww_network.node n ON n.ne_id = r.obj_id
     ) AS sub1

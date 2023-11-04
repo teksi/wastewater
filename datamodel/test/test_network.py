@@ -34,7 +34,7 @@ class TestNetwork(unittest.TestCase, DbTestBase):
         """
         reach = {
             "identifier": identifier,
-            "progression_geometry": self.make_line(x1, y1, 100, x2, y2, 100),
+            "progression3d_geometry": self.make_line(x1, y1, 100, x2, y2, 100),
         }
         reach_id = self.insert("vw_tww_reach", reach)
         reach = self.select("reach", reach_id)

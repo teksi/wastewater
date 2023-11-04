@@ -19,7 +19,7 @@ CREATE OR REPLACE VIEW tww_app.vw_tww_maintenance_on_reach AS
     maintenance.result,
     maintenance.last_modification,
     maintenance.fk_operating_company,
-    reach.progression_geometry,
+    reach.progression3d_geometry,
     reach.length_effective AS re_length_effective,
     reach.material AS re_material,
     ch.usage_current AS ch_usage_current,

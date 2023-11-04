@@ -8,10 +8,10 @@ SELECT
 	coalesce(from_wn.obj_id, concat('from_node@',re.obj_id)) as FromNode,
 	coalesce(to_wn.obj_id, concat('to_node@',re.obj_id)) as ToNode,
 	CASE
-		WHEN re.length_effective <= 0.01 AND st_length(progression_geometry) <= 0.01 THEN 0.01
-		WHEN re.length_effective <= 0.01 AND st_length(progression_geometry) >= 0.01 THEN st_length(progression_geometry)
-		WHEN re.length_effective IS NULL AND st_length(progression_geometry) <= 0.01 THEN 0.01
-		WHEN re.length_effective IS NULL AND st_length(progression_geometry) >= 0.01 THEN st_length(progression_geometry)
+		WHEN re.length_effective <= 0.01 AND st_length(progression3d_geometry) <= 0.01 THEN 0.01
+		WHEN re.length_effective <= 0.01 AND st_length(progression3d_geometry) >= 0.01 THEN st_length(progression3d_geometry)
+		WHEN re.length_effective IS NULL AND st_length(progression3d_geometry) <= 0.01 THEN 0.01
+		WHEN re.length_effective IS NULL AND st_length(progression3d_geometry) >= 0.01 THEN st_length(progression3d_geometry)
 		ELSE re.length_effective
 	END as Length,
 	-- Roughness export prioriy: 1. coefficient_of_friction, 2. wall_roughness, 3. swmm_default_coefficient_of_friction, 4. 0.01
@@ -113,7 +113,7 @@ SELECT
 	END
 	) as description,
 	cfhy.value_en as tag,
-	ST_CurveToLine(st_force3d(progression_geometry))::geometry(LineStringZ, %(SRID)s) as geom,
+	ST_CurveToLine(st_force3d(progression3d_geometry))::geometry(LineStringZ, %(SRID)s) as geom,
 	CASE
 		WHEN status IN (7959, 6529, 6526) THEN 'planned'
 		ELSE 'current'

@@ -24,7 +24,7 @@ class TestViews(unittest.TestCase, DbTestBase):
             "clear_height": 100,
             "coefficient_of_friction": 10,
             "identifier": "20",
-            "progression_geometry": self.execute(
+            "situation3d_geometry": self.execute(
                 "ST_ForceCurve(ST_SetSrid(ST_MakeLine(ST_MakePoint(3000000, 1500000, 100), ST_MakePoint(3000001, 1500001, 100)), 2056))"
             ),
         }
@@ -50,7 +50,7 @@ class TestViews(unittest.TestCase, DbTestBase):
             "coefficient_of_friction": 10,
             "ws_identifier": "pra",
             "ch_usage_current": 4514,
-            "progression_geometry": self.execute(
+            "situation3d_geometry": self.execute(
                 "ST_ForceCurve(ST_SetSrid(ST_MakeLine(ST_MakePoint(3000000, 1500000, 'NaN'), ST_MakePoint(3000001, 1500001, 'NaN')), 2056))"
             ),
         }
@@ -70,7 +70,7 @@ class TestViews(unittest.TestCase, DbTestBase):
         row = {
             "identifier": "20",
             "ws_type": "manhole",
-            "situation_geometry": self.execute(
+            "situation3d_geometry": self.execute(
                 "ST_SetSRID(ST_GeomFromText('POINT(2600000 1200000)'), 2056)"
             ),
             #    'co_material': 5355,
@@ -78,7 +78,7 @@ class TestViews(unittest.TestCase, DbTestBase):
         }
 
         expected_row = copy.deepcopy(row)
-        expected_row["situation_geometry"] = self.execute(
+        expected_row["situation3d_geometry"] = self.execute(
             "ST_SetSRID(ST_MakePoint(2600000, 1200000), 2056)"
         )
 

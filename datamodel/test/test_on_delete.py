@@ -63,7 +63,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
             "obj_id": wn001_obj_id,
             "fk_reach_point_from": rp001_obj_id,
             "fk_reach_point_to": rp002_obj_id,
-            "progression_geometry": "01090000A008080000010000000102000080020000000000000060E346410000000060E3364100000000000059400000008060E346410000000061E336410000000000005940",  # SELECT ST_ForceCurve(ST_SetSrid(ST_MakeLine(ST_MakePoint(3000000, 1500000, 100), ST_MakePoint(3000001, 1500001, 100)), 2056));
+            "progression3d_geometry": "01090000A008080000010000000102000080020000000000000060E346410000000060E3364100000000000059400000008060E346410000000061E336410000000000005940",  # SELECT ST_ForceCurve(ST_SetSrid(ST_MakeLine(ST_MakePoint(3000000, 1500000, 100), ST_MakePoint(3000001, 1500001, 100)), 2056));
         }
         re001_obj_id = self.insert_check("reach", row)
 
@@ -105,7 +105,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
             "obj_id": wn001_obj_id,
             "fk_reach_point_from": rp001_obj_id,
             "fk_reach_point_to": rp002_obj_id,
-            "progression_geometry": self.execute(
+            "progression3d_geometry": self.execute(
                 "ST_ForceCurve(ST_SetSrid(ST_MakeLine(ST_MakePoint(3000000, 1500000, 100), ST_MakePoint(3000001, 1500001, 100)), 2056))"
             ),
         }
@@ -153,7 +153,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
                 "obj_id": wn001_obj_id,
                 "fk_reach_point_from": rp001_obj_id,
                 "fk_reach_point_to": rp002_obj_id,
-                "progression_geometry": self.execute(
+                "progression3d_geometry": self.execute(
                     "ST_ForceCurve(ST_SetSrid(ST_MakeLine(ST_MakePoint(3000000, 1500000, 100), ST_MakePoint(3000001, 1500001, 100)), 2056))"
                 ),
             },
@@ -186,7 +186,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
                 "obj_id": wn011_obj_id,
                 "fk_reach_point_from": rp011_obj_id,
                 "fk_reach_point_to": rp012_obj_id,
-                "progression_geometry": self.execute(
+                "progression3d_geometry": self.execute(
                     "ST_ForceCurve(ST_SetSrid(ST_MakeLine(ST_MakePoint(3000002, 1500002, 100), ST_MakePoint(3000003, 1500003, 100)), 2056))"
                 ),
             },

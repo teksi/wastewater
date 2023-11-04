@@ -43,7 +43,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
           ELSE clear_height
         END AS width,
         CASE
-          WHEN rp_from.level > 0 AND rp_to.level > 0 THEN round((rp_from.level - rp_to.level)/ST_LENGTH(re.progression_geometry)::numeric*1000,1)
+          WHEN rp_from.level > 0 AND rp_to.level > 0 THEN round((rp_from.level - rp_to.level)/ST_LENGTH(re.progression3d_geometry)::numeric*1000,1)
           ELSE NULL
         END AS _slope_per_mill
         , {extra_cols}
@@ -173,11 +173,11 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
     $BODY$
     BEGIN
       -- Synchronize geometry with level
-      NEW.progression_geometry = ST_ForceCurve(ST_SetPoint(ST_CurveToLine(NEW.progression_geometry),0,
-      ST_MakePoint(ST_X(ST_StartPoint(NEW.progression_geometry)),ST_Y(ST_StartPoint(NEW.progression_geometry)),COALESCE(NEW.rp_from_level,'NaN'))));
+      NEW.progression3d_geometry = ST_ForceCurve(ST_SetPoint(ST_CurveToLine(NEW.progression3d_geometry),0,
+      ST_MakePoint(ST_X(ST_StartPoint(NEW.progression3d_geometry)),ST_Y(ST_StartPoint(NEW.progression3d_geometry)),COALESCE(NEW.rp_from_level,'NaN'))));
 
-      NEW.progression_geometry = ST_ForceCurve(ST_SetPoint(ST_CurveToLine(NEW.progression_geometry),ST_NumPoints(NEW.progression_geometry)-1,
-      ST_MakePoint(ST_X(ST_EndPoint(NEW.progression_geometry)),ST_Y(ST_EndPoint(NEW.progression_geometry)),COALESCE(NEW.rp_to_level,'NaN'))));
+      NEW.progression3d_geometry = ST_ForceCurve(ST_SetPoint(ST_CurveToLine(NEW.progression3d_geometry),ST_NumPoints(NEW.progression3d_geometry)-1,
+      ST_MakePoint(ST_X(ST_EndPoint(NEW.progression3d_geometry)),ST_Y(ST_EndPoint(NEW.progression3d_geometry)),COALESCE(NEW.rp_to_level,'NaN'))));
 
       {rp_from}
       {rp_to}
@@ -203,7 +203,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             indent=2,
             skip_columns=[],
             coalesce_pkey_default=True,
-            insert_values={"situation_geometry": "ST_StartPoint(NEW.progression_geometry)"},
+            insert_values={"situation_geometry": "ST_StartPoint(NEW.progression3d_geometry)"},
             returning="obj_id INTO NEW.rp_from_obj_id",
         ),
         rp_to=insert_command(
@@ -215,7 +215,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             indent=2,
             skip_columns=[],
             coalesce_pkey_default=True,
-            insert_values={"situation_geometry": "ST_EndPoint(NEW.progression_geometry)"},
+            insert_values={"situation_geometry": "ST_EndPoint(NEW.progression3d_geometry)"},
             returning="obj_id INTO NEW.rp_to_obj_id",
         ),
         ws=insert_command(
@@ -276,21 +276,21 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
 
       -- Synchronize geometry with level
       IF NEW.rp_from_level <> OLD.rp_from_level OR (NEW.rp_from_level IS NULL AND OLD.rp_from_level IS NOT NULL) OR (NEW.rp_from_level IS NOT NULL AND OLD.rp_from_level IS NULL) THEN
-        NEW.progression_geometry = ST_ForceCurve(ST_SetPoint(ST_CurveToLine(NEW.progression_geometry),0,
-        ST_MakePoint(ST_X(ST_StartPoint(NEW.progression_geometry)),ST_Y(ST_StartPoint(NEW.progression_geometry)),COALESCE(NEW.rp_from_level,'NaN'))));
+        NEW.progression3d_geometry = ST_ForceCurve(ST_SetPoint(ST_CurveToLine(NEW.progression3d_geometry),0,
+        ST_MakePoint(ST_X(ST_StartPoint(NEW.progression3d_geometry)),ST_Y(ST_StartPoint(NEW.progression3d_geometry)),COALESCE(NEW.rp_from_level,'NaN'))));
       ELSE
-        IF ST_Z(ST_StartPoint(NEW.progression_geometry)) <> ST_Z(ST_StartPoint(OLD.progression_geometry)) THEN
-          NEW.rp_from_level = NULLIF(ST_Z(ST_StartPoint(NEW.progression_geometry)),'NaN');
+        IF ST_Z(ST_StartPoint(NEW.progression3d_geometry)) <> ST_Z(ST_StartPoint(OLD.progression3d_geometry)) THEN
+          NEW.rp_from_level = NULLIF(ST_Z(ST_StartPoint(NEW.progression3d_geometry)),'NaN');
         END IF;
       END IF;
 
       -- Synchronize geometry with level
       IF NEW.rp_to_level <> OLD.rp_to_level OR (NEW.rp_to_level IS NULL AND OLD.rp_to_level IS NOT NULL) OR (NEW.rp_to_level IS NOT NULL AND OLD.rp_to_level IS NULL) THEN
-        NEW.progression_geometry = ST_ForceCurve(ST_SetPoint(ST_CurveToLine(NEW.progression_geometry),ST_NumPoints(NEW.progression_geometry)-1,
-        ST_MakePoint(ST_X(ST_EndPoint(NEW.progression_geometry)),ST_Y(ST_EndPoint(NEW.progression_geometry)),COALESCE(NEW.rp_to_level,'NaN'))));
+        NEW.progression3d_geometry = ST_ForceCurve(ST_SetPoint(ST_CurveToLine(NEW.progression3d_geometry),ST_NumPoints(NEW.progression3d_geometry)-1,
+        ST_MakePoint(ST_X(ST_EndPoint(NEW.progression3d_geometry)),ST_Y(ST_EndPoint(NEW.progression3d_geometry)),COALESCE(NEW.rp_to_level,'NaN'))));
       ELSE
-        IF ST_Z(ST_EndPoint(NEW.progression_geometry)) <> ST_Z(ST_EndPoint(OLD.progression_geometry)) THEN
-          NEW.rp_to_level = NULLIF(ST_Z(ST_EndPoint(NEW.progression_geometry)),'NaN');
+        IF ST_Z(ST_EndPoint(NEW.progression3d_geometry)) <> ST_Z(ST_EndPoint(OLD.progression3d_geometry)) THEN
+          NEW.rp_to_level = NULLIF(ST_Z(ST_EndPoint(NEW.progression3d_geometry)),'NaN');
         END IF;
       END IF;
 
@@ -318,7 +318,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             prefix="rp_from_",
             remove_pkey=True,
             indent=6,
-            update_values={"situation_geometry": "ST_StartPoint(NEW.progression_geometry)"},
+            update_values={"situation_geometry": "ST_StartPoint(NEW.progression3d_geometry)"},
         ),
         rp_to=update_command(
             pg_cur=cursor,
@@ -327,7 +327,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             prefix="rp_to_",
             remove_pkey=True,
             indent=6,
-            update_values={"situation_geometry": "ST_EndPoint(NEW.progression_geometry)"},
+            update_values={"situation_geometry": "ST_EndPoint(NEW.progression3d_geometry)"},
         ),
         ch=update_command(
             pg_cur=cursor,

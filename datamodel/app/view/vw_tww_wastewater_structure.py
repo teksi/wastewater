@@ -56,7 +56,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
         , main_co_sp.renovation_demand AS co_renovation_demand
 
         , {main_co_cols}
-        , ST_Force2D(COALESCE(wn.situation_geometry, main_co.situation_geometry))::geometry(Point, %(SRID)s) AS situation_geometry
+        , ST_Force2D(COALESCE(wn.situation_geometry, main_co.situation3d_geometry))::geometry(Point, %(SRID)s) AS situation_geometry
 
         , {ma_columns}
 
@@ -139,7 +139,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             table_alias="main_co",
             remove_pkey=False,
             indent=4,
-            skip_columns=["situation_geometry"],
+            skip_columns=["situation3d_geometry"],
             prefix="co_",
             remap_columns={"cover_shape": "co_shape"},
             columns_at_end=["obj_id"],
@@ -349,7 +349,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             indent=6,
             insert_values={
                 "identifier": "COALESCE(NULLIF(NEW.wn_identifier,''), NEW.identifier)",
-                "situation_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation_geometry), ST_Y(NEW.situation_geometry), 'nan'), {srid} )".format(
+                "situation_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), 'nan'), {srid} )".format(
                     srid=srid
                 ),
                 "last_modification": "NOW()",
@@ -371,7 +371,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             remap_columns={"cover_shape": "co_shape"},
             insert_values={
                 "identifier": "COALESCE(NULLIF(NEW.co_identifier,''), NEW.identifier)",
-                "situation_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation_geometry), ST_Y(NEW.situation_geometry), 'nan'), {srid} )".format(
+                "situation3d_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), 'nan'), {srid} )".format(
                     srid=srid
                 ),
                 "last_modification": "NOW()",
@@ -432,17 +432,17 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
       END CASE;
 
       -- Cover geometry has been moved
-      IF NOT ST_Equals( OLD.situation_geometry, NEW.situation_geometry) THEN
-        dx = ST_X(NEW.situation_geometry) - ST_X(OLD.situation_geometry);
-        dy = ST_Y(NEW.situation_geometry) - ST_Y(OLD.situation_geometry);
+      IF NOT ST_Equals( OLD.situation3d_geometry, NEW.situation3d_geometry) THEN
+        dx = ST_X(NEW.situation3d_geometry) - ST_X(OLD.situation3d_geometry);
+        dy = ST_Y(NEW.situation3d_geometry) - ST_Y(OLD.situation3d_geometry);
 
         -- Move wastewater node as well
         -- comment: TRANSLATE((ST_MakePoint(500, 900, 'NaN')), 10, 20, 0) would return NaN NaN NaN - so we have this workaround
         UPDATE tww_od.wastewater_node WN
         SET situation_geometry = ST_SetSRID( ST_MakePoint(
-        ST_X(ST_TRANSLATE(ST_MakePoint(ST_X(WN.situation_geometry), ST_Y(WN.situation_geometry)), dx, dy )),
-        ST_Y(ST_TRANSLATE(ST_MakePoint(ST_X(WN.situation_geometry), ST_Y(WN.situation_geometry)), dx, dy )),
-        ST_Z(WN.situation_geometry)), %(SRID)s )
+        ST_X(ST_TRANSLATE(ST_MakePoint(ST_X(WN.situation3d_geometry), ST_Y(WN.situation3d_geometry)), dx, dy )),
+        ST_Y(ST_TRANSLATE(ST_MakePoint(ST_X(WN.situation3d_geometry), ST_Y(WN.situation3d_geometry)), dx, dy )),
+        ST_Z(WN.situation3d_geometry)), %(SRID)s )
         WHERE obj_id IN
         (
           SELECT obj_id FROM tww_od.wastewater_networkelement
@@ -451,10 +451,10 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
 
         -- Move covers
         UPDATE tww_od.cover CO
-        SET situation_geometry = ST_SetSRID( ST_MakePoint(
-        ST_X(ST_TRANSLATE(ST_MakePoint(ST_X(CO.situation_geometry), ST_Y(CO.situation_geometry)), dx, dy )),
-        ST_Y(ST_TRANSLATE(ST_MakePoint(ST_X(CO.situation_geometry), ST_Y(CO.situation_geometry)), dx, dy )),
-        ST_Z(CO.situation_geometry)), %(SRID)s )
+        SET situation3d_geometry = ST_SetSRID( ST_MakePoint(
+        ST_X(ST_TRANSLATE(ST_MakePoint(ST_X(CO.situation3d_geometry), ST_Y(CO.situation3d_geometry)), dx, dy )),
+        ST_Y(ST_TRANSLATE(ST_MakePoint(ST_X(CO.situation3d_geometry), ST_Y(CO.situation3d_geometry)), dx, dy )),
+        ST_Z(CO.situation3d_geometry)), %(SRID)s )
         WHERE obj_id IN
         (
           SELECT obj_id FROM tww_od.structure_part
@@ -463,14 +463,14 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
 
         -- Move reach(es) as well
         UPDATE tww_od.reach RE
-        SET progression_geometry =
+        SET progression3d_geometry =
           ST_ForceCurve (ST_SetPoint(
-            ST_CurveToLine (RE.progression_geometry ),
+            ST_CurveToLine (RE.progression3d_geometry ),
             0, -- SetPoint index is 0 based, PointN index is 1 based.
             ST_SetSRID( ST_MakePoint(
-                ST_X(ST_TRANSLATE(ST_MakePoint(ST_X(ST_PointN(RE.progression_geometry, 1)), ST_Y(ST_PointN(RE.progression_geometry, 1))), dx, dy )),
-                ST_Y(ST_TRANSLATE(ST_MakePoint(ST_X(ST_PointN(RE.progression_geometry, 1)), ST_Y(ST_PointN(RE.progression_geometry, 1))), dx, dy )),
-                ST_Z(ST_PointN(RE.progression_geometry, 1))), %(SRID)s )
+                ST_X(ST_TRANSLATE(ST_MakePoint(ST_X(ST_PointN(RE.progression3d_geometry, 1)), ST_Y(ST_PointN(RE.progression3d_geometry, 1))), dx, dy )),
+                ST_Y(ST_TRANSLATE(ST_MakePoint(ST_X(ST_PointN(RE.progression3d_geometry, 1)), ST_Y(ST_PointN(RE.progression3d_geometry, 1))), dx, dy )),
+                ST_Z(ST_PointN(RE.progression3d_geometry, 1))), %(SRID)s )
           ) )
         WHERE fk_reach_point_from IN
         (
@@ -480,14 +480,14 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
         );
 
         UPDATE tww_od.reach RE
-        SET progression_geometry =
+        SET progression3d_geometry =
           ST_ForceCurve( ST_SetPoint(
-            ST_CurveToLine( RE.progression_geometry ),
-            ST_NumPoints(RE.progression_geometry) - 1,
+            ST_CurveToLine( RE.progression3d_geometry ),
+            ST_NumPoints(RE.progression3d_geometry) - 1,
             ST_SetSRID( ST_MakePoint(
-                ST_X(ST_TRANSLATE(ST_MakePoint(ST_X(ST_EndPoint(RE.progression_geometry)), ST_Y(ST_EndPoint(RE.progression_geometry))), dx, dy )),
-                ST_Y(ST_TRANSLATE(ST_MakePoint(ST_X(ST_EndPoint(RE.progression_geometry)), ST_Y(ST_EndPoint(RE.progression_geometry))), dx, dy )),
-                ST_Z(ST_PointN(RE.progression_geometry, 1))), %(SRID)s )
+                ST_X(ST_TRANSLATE(ST_MakePoint(ST_X(ST_EndPoint(RE.progression3d_geometry)), ST_Y(ST_EndPoint(RE.progression3d_geometry))), dx, dy )),
+                ST_Y(ST_TRANSLATE(ST_MakePoint(ST_X(ST_EndPoint(RE.progression3d_geometry)), ST_Y(ST_EndPoint(RE.progression3d_geometry))), dx, dy )),
+                ST_Z(ST_PointN(RE.progression3d_geometry, 1))), %(SRID)s )
           ) )
         WHERE fk_reach_point_to IN
         (
@@ -516,7 +516,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             table_alias="co",
             prefix="co_",
             indent=6,
-            skip_columns=["situation_geometry"],
+            skip_columns=["situation3d_geometry"],
             remap_columns={"cover_shape": "co_shape"},
         ),
         update_sp=update_command(
