@@ -360,7 +360,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
         ),
         insert_vw_cover=insert_command(
             pg_cur=cursor,
-            table_schema="tww_od",
+            table_schema="tww_app",
             table_name="vw_cover",
             table_type="view",
             table_alias="co",
@@ -371,7 +371,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             remap_columns={"cover_shape": "co_shape"},
             insert_values={
                 "identifier": "COALESCE(NULLIF(NEW.co_identifier,''), NEW.identifier)",
-                "situation3d_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), 'nan'), {srid} )".format(
+                "situation3d_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation_geometry), ST_Y(NEW.situation_geometry), 'nan'), {srid} )".format(
                     srid=srid
                 ),
                 "last_modification": "NOW()",
