@@ -38,19 +38,13 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         self.insert_check("vw_tww_reach", row, expected_row)
         # reach_point has on rp_to as Z NaN: SELECT ST_SetSRID( ST_MakePoint(1,2,'NaN'), 2056)
         row = self.select("reach_point", "BBB 1337_0001", schema="tww_od")
-        assert (
-            row["situation3d_geometry"]
-            == self.execute(
-                f"ST_SetSRID( ST_MakePoint({X+1}, {Y+1},'NaN'), 2056)"
-            )
+        assert row["situation3d_geometry"] == self.execute(
+            f"ST_SetSRID( ST_MakePoint({X+1}, {Y+1},'NaN'), 2056)"
         )
         # reach_point has on rp_from as Z NaN: SELECT ST_SetSRID( ST_MakePoint(7,8,'NaN'), 2056)
         row = self.select("reach_point", "CCC 1337_0001", schema="tww_od")
-        assert (
-            row["situation3d_geometry"]
-            == self.execute(
-                f"ST_SetSRID( ST_MakePoint({X+3}, {Y+3},'NaN'), 2056)"
-            )
+        assert row["situation3d_geometry"] == self.execute(
+            f"ST_SetSRID( ST_MakePoint({X+3}, {Y+3},'NaN'), 2056)"
         )
 
         # 2. insert geometry with Z and no rp_from_level and 66 as rp_to_level
