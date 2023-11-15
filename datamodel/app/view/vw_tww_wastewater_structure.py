@@ -339,7 +339,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
         ),
         insert_wn=insert_command(
             pg_cur=cursor,
-            table_schema="tww_od",
+            table_schema="tww_app",
             table_name="vw_wastewater_node",
             table_type="view",
             table_alias="wn",
@@ -349,7 +349,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             indent=6,
             insert_values={
                 "identifier": "COALESCE(NULLIF(NEW.wn_identifier,''), NEW.identifier)",
-                "situation_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), 'nan'), {srid} )".format(
+                "situation_geometry": "ST_Force2d(ST_SetSRID(ST_MakePoint(ST_X(NEW.situation_geometry), ST_Y(NEW.situation_geometry), 'nan'), {srid} ))".format(
                     srid=srid
                 ),
                 "last_modification": "NOW()",

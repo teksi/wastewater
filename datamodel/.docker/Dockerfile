@@ -41,3 +41,5 @@ ENV POSTGRES_PASSWORD=postgres
 ENV PGSERVICEFILE=/etc/postgresql-common/pg_service.conf
 
 ENV PGSERVICE=pg_teksi_wastewater
+
+ENV PYTEST_ADDOPTS="--color=yes"
