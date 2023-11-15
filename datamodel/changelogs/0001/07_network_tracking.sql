@@ -42,7 +42,7 @@ BEGIN
     'reach_point',
     r.obj_id, -- the reachpoint also keeps a reference to it's reach, as it can be used by blind connections that happen exactly on start/end points
     rp.obj_id,
-    ST_Force2D(rp.situation_geometry)
+    ST_Force2D(rp.situation3d_geometry)
   FROM tww_od.reach_point rp
   JOIN tww_od.reach r ON rp.obj_id = r.fk_reach_point_from OR rp.obj_id = r.fk_reach_point_to;
 
@@ -51,10 +51,10 @@ BEGIN
   SELECT DISTINCT
     'blind_connection',
     r.obj_id,
-    ST_ClosestPoint(r.progression3d_geometry, rp.situation_geometry)
+    ST_ClosestPoint(r.progression3d_geometry, rp.situation3d_geometry)
   FROM tww_od.reach r
   INNER JOIN tww_od.reach_point rp ON rp.fk_wastewater_networkelement = r.obj_id
-  WHERE ST_LineLocatePoint(ST_CurveToLine(r.progression3d_geometry), rp.situation_geometry) NOT IN (0.0, 1.0); -- if exactly at start or at end, we don't need a virtualnode as we have the reachpoint
+  WHERE ST_LineLocatePoint(ST_CurveToLine(r.progression3d_geometry), rp.situation3d_geometry) NOT IN (0.0, 1.0); -- if exactly at start or at end, we don't need a virtualnode as we have the reachpoint
 
   -- Insert reaches, subdivided according to blind reaches
   INSERT INTO tww_network.segment (segment_type, from_node, to_node, ne_id, geom)

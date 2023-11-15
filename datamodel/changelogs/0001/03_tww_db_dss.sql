@@ -1087,9 +1087,9 @@ COMMENT ON COLUMN tww_od.reach_point.pipe_closure IS 'yyy_Rohrverschluss oder -k
 COMMENT ON COLUMN tww_od.reach_point.position_of_connection IS 'yyy_Anschlussstelle bezogen auf Querschnitt im Kanal; in Fliessrichtung  (für Haus- und Strassenanschlüsse) / Anschlussstelle bezogen auf Querschnitt im Kanal; in Fliessrichtung  (für Haus- und Strassenanschlüsse) / Emplacement de raccordement Référence à la section transversale dans le canal dans le sens d’écoulement (pour les raccordements domestiques et de rue).';
  ALTER TABLE tww_od.reach_point ADD COLUMN remark  varchar(80) ;
 COMMENT ON COLUMN tww_od.reach_point.remark IS 'General remarks / Allgemeine Bemerkungen / Remarques générales';
-ALTER TABLE tww_od.reach_point ADD COLUMN situation_geometry geometry('POINT', 2056);
-CREATE INDEX in_tww_reach_point_situation_geometry ON tww_od.reach_point USING gist (situation_geometry );
-COMMENT ON COLUMN tww_od.reach_point.situation_geometry IS 'National position coordinates (East, North) / Landeskoordinate Ost/Nord / Coordonnées nationales Est/Nord';
+ALTER TABLE tww_od.reach_point ADD COLUMN situation3d_geometry geometry('POINTZ', 2056);
+CREATE INDEX in_tww_reach_point_situation3d_geometry ON tww_od.reach_point USING gist (situation3d_geometry );
+COMMENT ON COLUMN tww_od.reach_point.situation3d_geometry IS 'National position coordinates (East, North) / Landeskoordinate Ost/Nord / Coordonnées nationales Est/Nord';
  ALTER TABLE tww_od.reach_point ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
 COMMENT ON COLUMN tww_od.reach_point.last_modification IS 'Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE';
  ALTER TABLE tww_od.reach_point ADD COLUMN fk_dataowner varchar(16);

@@ -37,16 +37,20 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         }
         self.insert_check("vw_tww_reach", row, expected_row)
         # reach_point has on rp_to as Z NaN: SELECT ST_SetSRID( ST_MakePoint(1,2,'NaN'), 2056)
-        row = self.select("reach_point", "BBB 1337_0001")
+        row = self.select("reach_point", "BBB 1337_0001", schema="tww_od")
         assert (
             row["situation3d_geometry"]
-            == "01010000A008080000000000000000F03F0000000000000040000000000000F87F"
+            == self.execute(
+                f"ST_SetSRID( ST_MakePoint({X+1}, {Y+1},'NaN'), 2056)"
+            )
         )
         # reach_point has on rp_from as Z NaN: SELECT ST_SetSRID( ST_MakePoint(7,8,'NaN'), 2056)
-        row = self.select("reach_point", "CCC 1337_0001")
+        row = self.select("reach_point", "CCC 1337_0001", schema="tww_od")
         assert (
             row["situation3d_geometry"]
-            == "01010000A0080800000000000000001C400000000000002040000000000000F87F"
+            == self.execute(
+                f"ST_SetSRID( ST_MakePoint({X+3}, {Y+3},'NaN'), 2056)"
+            )
         )
 
         # 2. insert geometry with Z and no rp_from_level and 66 as rp_to_level
@@ -68,13 +72,13 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         expected_row["rp_to_level"] = "66.000"
         self.insert_check("vw_tww_reach", row, expected_row)
         # reach_point has on rp_from as Z NaN: SELECT ST_SetSRID( ST_MakePoint(1,2,'NaN'), 2056)
-        row = self.select("reach_point", "BBB 1337_0002")
+        row = self.select("reach_point", "BBB 1337_0002", schema="tww_od")
         assert (
             row["situation3d_geometry"]
             == "01010000A008080000000000000000F03F0000000000000040000000000000F87F"
         )
         # reach_point has on rp_to as Z 66.000: SELECT ST_SetSRID( ST_MakePoint(7,8,66.000), 2056)
-        row = self.select("reach_point", "CCC 1337_0002")
+        row = self.select("reach_point", "CCC 1337_0002", schema="tww_od")
         assert (
             row["situation3d_geometry"]
             == "01010000A0080800000000000000001C4000000000000020400000000000805040"
@@ -100,13 +104,13 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         expected_row["rp_to_level"] = None
         self.insert_check("vw_tww_reach", row, expected_row)
         # reach_point has on rp_from as Z 77.000: SELECT ST_SetSRID( ST_MakePoint(1,2,77.000), 2056)
-        row = self.select("reach_point", "BBB 1337_0003")
+        row = self.select("reach_point", "BBB 1337_0003", schema="tww_od")
         assert (
             row["situation3d_geometry"]
             == "01010000A008080000000000000000F03F00000000000000400000000000405340"
         )
         # reach_point has on rp_to as Z 66.000: SELECT ST_SetSRID( ST_MakePoint(7,8,'NaN'), 2056)
-        row = self.select("reach_point", "CCC 1337_0003")
+        row = self.select("reach_point", "CCC 1337_0003", schema="tww_od")
         assert (
             row["situation3d_geometry"]
             == "01010000A0080800000000000000001C400000000000002040000000000000F87F"
@@ -140,10 +144,10 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         # rp_to_level is 9 (endpoint of geometry)
         assert new_row["rp_to_level"] == 9
         # reach_point has on rp_from as Z 3
-        new_row = self.select("reach_point", "BBB 1337_1010")
+        new_row = self.select("reach_point", "BBB 1337_1010", schema="tww_od")
         assert new_row["level"] == 3
         # reach_point has on rp_to as Z 9
-        new_row = self.select("reach_point", "CCC 1337_1010")
+        new_row = self.select("reach_point", "CCC 1337_1010", schema="tww_od")
         assert new_row["level"] == 9
 
         # 2. change geometry including Z with startpoint Z 33 and endpoint Z 99, no change on rp_from_level, but change on rp_to_level to NULL
@@ -164,10 +168,10 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         # rp_to_level is None (endpoint of geometry) and rp_to_level
         assert new_row["rp_to_level"] is None
         # reach_point has on rp_from as Z 3
-        new_row = self.select("reach_point", "BBB 1337_1010")
+        new_row = self.select("reach_point", "BBB 1337_1010", schema="tww_od")
         assert new_row["level"] == 33
         # reach_point has on rp_to as Z None
-        new_row = self.select("reach_point", "CCC 1337_1010")
+        new_row = self.select("reach_point", "CCC 1337_1010", schema="tww_od")
         assert new_row["level"] is None
 
         # 3. change geometry including Z with startpoint Z 300 and endpoint Z 900, but change on rp_from_level to 333, and change on rp_to_level to 999
@@ -189,10 +193,10 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         # rp_to_level is 999 (endpoint of geometry) and rp_to_level
         assert new_row["rp_to_level"] == 999
         # reach_point has on rp_from as Z 333
-        new_row = self.select("reach_point", "BBB 1337_1010")
+        new_row = self.select("reach_point", "BBB 1337_1010", schema="tww_od")
         assert new_row["level"] == 333
         # reach_point has on rp_to as Z 999
-        new_row = self.select("reach_point", "CCC 1337_1010")
+        new_row = self.select("reach_point", "CCC 1337_1010", schema="tww_od")
         assert new_row["level"] == 999
 
         # 4. change geometry including Z with startpoint Z NaN and endpoint Z NaN, no change on rp_from_level, no change on rp_to_level
@@ -212,23 +216,23 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         # rp_to_level is NULL (endpoint of geometry)
         assert new_row["rp_to_level"] is None
         # reach_point has on rp_from as Z NULL
-        new_row = self.select("reach_point", "BBB 1337_1010")
+        new_row = self.select("reach_point", "BBB 1337_1010", schema="tww_od")
         assert new_row["level"] is None
         # reach_point has on rp_to as Z NULL
-        new_row = self.select("reach_point", "CCC 1337_1010")
+        new_row = self.select("reach_point", "CCC 1337_1010", schema="tww_od")
         assert new_row["level"] is None
 
     def test_vw_tww_wastewater_structure_geometry_insert(self):
         # 1. insert geometry and no co_level and no wn_bottom_level
         # INSERT INTO tww_app.vw_tww_wastewater_structure (situation3d_geometry, wn_obj_id, co_obj_id) VALUES (ST_SetSRID(ST_MakePoint(2600000, 1200000), 2056), '1337_1001', '1337_1001');
         row = {
-            "situation3d_geometry": "0101000020080800000000000020D6434100000000804F3241",
+            "situation_geometry": "0101000020080800000000000020D6434100000000804F3241",
             "wn_obj_id": "1337_1001",
             "co_obj_id": "1337_1001",
         }
         expected_row = copy.deepcopy(row)
         # ws_qgep_wastewaterstructure has the geometry but NaN as Z because of no co_level (geometry of cover): ST_SetSRID(ST_Collect(ST_MakePoint(2600000, 1200000, 'NaN')), 2056)
-        expected_row["situation3d_geometry"] = "0101000020080800000000000020D6434100000000804F3241"
+        expected_row["situation_geometry"] = "0101000020080800000000000020D6434100000000804F3241"
         # co_level is NULL
         expected_row["co_level"] = None
         # wn_bottom_level NULL
@@ -237,7 +241,7 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         # cover geometry has the geometry but NaN as Z: ST_SetSRID(ST_MakePoint(2600000, 1200000, 'NaN'), 2056)
         row = self.select("cover", "1337_1001")
         assert (
-            row["situation3d_geometry"]
+            row["situation_geometry"]
             == "01010000A0080800000000000020D6434100000000804F3241000000000000F87F"
         )
         # wastewater_node has the geometry but NaN as Z: ST_SetSRID(ST_MakePoint(2600000, 1200000, 'NaN'), 2056)

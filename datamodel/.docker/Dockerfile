@@ -1,8 +1,8 @@
 # requires buildkit (default from docker engine 23.0)
 
-FROM imresamu/postgis-arm64:15-3.4 AS base-arm64
+FROM imresamu/postgis-arm64:14-3.2 AS base-arm64
 
-FROM postgis/postgis:15-3.4 AS base-amd64
+FROM postgis/postgis:14-3.2 AS base-amd64
 
 FROM base-$BUILDARCH as common
 

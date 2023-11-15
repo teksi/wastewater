@@ -138,7 +138,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             prefix="rp_from_",
             remove_pkey=False,
             indent=4,
-            skip_columns=["situation_geometry"],
+            skip_columns=["situation3d_geometry"],
         ),
         rp_to_cols=select_columns(
             pg_cur=cursor,
@@ -148,7 +148,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             prefix="rp_to_",
             remove_pkey=False,
             indent=4,
-            skip_columns=["situation_geometry"],
+            skip_columns=["situation3d_geometry"],
         ),
         extra_joins="\n    ".join(
             [
@@ -203,7 +203,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             indent=2,
             skip_columns=[],
             coalesce_pkey_default=True,
-            insert_values={"situation_geometry": "ST_StartPoint(NEW.progression3d_geometry)"},
+            insert_values={"situation3d_geometry": "ST_StartPoint(NEW.progression3d_geometry)"},
             returning="obj_id INTO NEW.rp_from_obj_id",
         ),
         rp_to=insert_command(
@@ -215,7 +215,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             indent=2,
             skip_columns=[],
             coalesce_pkey_default=True,
-            insert_values={"situation_geometry": "ST_EndPoint(NEW.progression3d_geometry)"},
+            insert_values={"situation3d_geometry": "ST_EndPoint(NEW.progression3d_geometry)"},
             returning="obj_id INTO NEW.rp_to_obj_id",
         ),
         ws=insert_command(
@@ -318,7 +318,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             prefix="rp_from_",
             remove_pkey=True,
             indent=6,
-            update_values={"situation_geometry": "ST_StartPoint(NEW.progression3d_geometry)"},
+            update_values={"situation3d_geometry": "ST_StartPoint(NEW.progression3d_geometry)"},
         ),
         rp_to=update_command(
             pg_cur=cursor,
@@ -327,7 +327,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             prefix="rp_to_",
             remove_pkey=True,
             indent=6,
-            update_values={"situation_geometry": "ST_EndPoint(NEW.progression3d_geometry)"},
+            update_values={"situation3d_geometry": "ST_EndPoint(NEW.progression3d_geometry)"},
         ),
         ch=update_command(
             pg_cur=cursor,

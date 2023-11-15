@@ -347,7 +347,7 @@ SELECT   ws_obj_id,
       WHERE _all OR SP.fk_wastewater_structure = _obj_id
       -- Inputs
       UNION
-      SELECT NULL AS co_level, coalesce(round(RP.level, 2)::text, '?') AS rpi_level, NULL::text AS rpo_level, NE.fk_wastewater_structure ws, RP.obj_id, row_number() OVER(PARTITION BY NE.fk_wastewater_structure ORDER BY ST_Azimuth(RP.situation_geometry,ST_PointN(RE_to.progression3d_geometry,-2))/pi()*180 ASC), NULL::text AS bottom_level
+      SELECT NULL AS co_level, coalesce(round(RP.level, 2)::text, '?') AS rpi_level, NULL::text AS rpo_level, NE.fk_wastewater_structure ws, RP.obj_id, row_number() OVER(PARTITION BY NE.fk_wastewater_structure ORDER BY ST_Azimuth(RP.situation3d_geometry,ST_PointN(RE_to.progression3d_geometry,-2))/pi()*180 ASC), NULL::text AS bottom_level
       FROM tww_od.reach_point RP
       LEFT JOIN tww_od.wastewater_networkelement NE ON RP.fk_wastewater_networkelement = NE.obj_id
       INNER JOIN tww_od.reach RE_to ON RP.obj_id = RE_to.fk_reach_point_to
@@ -361,7 +361,7 @@ SELECT   ws_obj_id,
 		NE.fk_wastewater_structure ws, RP.obj_id,
 		row_number() OVER(PARTITION BY NE.fk_wastewater_structure
 						  ORDER BY array_position(ARRAY[4522,4526,4524,4516,4514,4518,520,4571,5322], ch.usage_current),
-						  ST_Azimuth(RP.situation_geometry,ST_PointN(RE_from.progression3d_geometry,2))/pi()*180 ASC),
+						  ST_Azimuth(RP.situation3d_geometry,ST_PointN(RE_from.progression3d_geometry,2))/pi()*180 ASC),
 		NULL::text AS bottom_level
       FROM tww_od.reach_point RP
       LEFT JOIN tww_od.wastewater_networkelement NE ON RP.fk_wastewater_networkelement = NE.obj_id
