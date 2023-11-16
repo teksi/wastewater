@@ -22,14 +22,14 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         row = {
             "identifier": "CO123",
             "level": decimal.Decimal("100.000"),
-            "situation_geometry": self.execute(
+            "situation3d_geometry": self.execute(
                 "ST_SetSrid(ST_MakePoint(3000000, 1500000, 100), 2056)"
             ),
         }
 
         obj_id = self.insert_check("vw_cover", row)
 
-        row = self.select("structure_part", obj_id)
+        row = self.select("structure_part", obj_id, schema="tww_od")
 
         last_mod = row["last_modification"]
         assert last_mod is not None, "Last modification not set on insert"
@@ -38,9 +38,9 @@ class TestTriggers(unittest.TestCase, DbTestBase):
             "identifier": "CO1234",
         }
 
-        self.update_check("structure_part", row, obj_id)
+        self.update_check("structure_part", row, obj_id, schema="tww_od")
 
-        row = self.select("structure_part", obj_id)
+        row = self.select("structure_part", obj_id, schema="tww_od")
         assert (
             last_mod != row["last_modification"]
         ), "Last modification not set on update (still {})".format(row["last_modification"])
@@ -49,9 +49,9 @@ class TestTriggers(unittest.TestCase, DbTestBase):
 
         row = {"level": decimal.Decimal("300.000")}
 
-        self.update_check("cover", row, obj_id)
+        self.update_check("cover", row, obj_id, schema="tww_od")
 
-        row = self.select("structure_part", obj_id)
+        row = self.select("structure_part", obj_id, schema="tww_od")
         assert (
             last_mod != row["last_modification"]
         ), "Last modification not set on update of child table (still {})".format(
@@ -62,7 +62,9 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         row = {
             "co_level": decimal.Decimal("100.000"),
             "ws_type": "manhole",
-            "situation_geometry": self.execute("ST_SetSrid(ST_MakePoint(3000000, 1500000), 2056)"),
+            "situation3d_geometry": self.execute(
+                "ST_SetSrid(ST_MakePoint(3000000, 1500000), 2056)"
+            ),
         }
 
         obj_id = self.insert_check("vw_tww_wastewater_structure", row)
@@ -72,7 +74,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         for r in row:
             print(r)
 
-        row = self.select("structure_part", row["co_obj_id"])
+        row = self.select("structure_part", row["co_obj_id"], schema="tww_od")
 
         for r in row:
             print(r)
@@ -96,7 +98,9 @@ class TestTriggers(unittest.TestCase, DbTestBase):
 
         row_strct = {
             "identifier": "A",
-            "situation_geometry": self.execute("ST_SetSrid(ST_MakePoint(3000000, 1500000), 2056)"),
+            "situation3d_geometry": self.execute(
+                "ST_SetSrid(ST_MakePoint(3000000, 1500000), 2056)"
+            ),
             "ws_type": "manhole",
             "co_level": decimal.Decimal("100.000"),
         }
@@ -260,7 +264,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
             "vw_tww_wastewater_structure",
             {
                 "identifier": "A",
-                "situation_geometry": self.execute(
+                "situation3d_geometry": self.execute(
                     "ST_SetSrid(ST_MakePoint(3000000, 1500000), 2056)"
                 ),
                 "ws_type": "manhole",
@@ -273,7 +277,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
             "vw_tww_wastewater_structure",
             {
                 "identifier": "B",
-                "situation_geometry": self.execute(
+                "situation3d_geometry": self.execute(
                     "ST_SetSrid(ST_MakePoint(3000001, 1500001), 2056)"
                 ),
                 "ws_type": "manhole",
