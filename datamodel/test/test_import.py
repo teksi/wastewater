@@ -35,22 +35,22 @@ class TestImport(unittest.TestCase, DbTestBase):
         }
 
         # update
-        self.update("vw_manhole", row, obj_id, "qgep_import")
+        self.update("vw_manhole", row, obj_id)
 
         # it should be calculated correctly in the live table tww_od.wastewater_structure
         row = self.select("wastewater_structure", obj_id, "tww_od")
         self.assertNotEqual(row["_depth"], decimal.Decimal("12.220"))
 
-        # it should be visible in the qgep_import.vw_manhole view
-        row = self.select("vw_manhole", obj_id, "qgep_import")
+        # it should be visible in the vw_manhole view
+        row = self.select("vw_manhole", obj_id)
         self.assertNotEqual(row["_depth"], decimal.Decimal("12.220"))
 
-        # it shouldn't be in the quarantine qgep_import.manhole_quarantine
-        row = self.select("manhole_quarantine", obj_id, "qgep_import")
+        # it shouldn't be in the quarantine manhole_quarantine
+        row = self.select("manhole_quarantine", obj_id, schema="tww_import")
         self.assertIsNotNone(row)
 
         # delete it manually
-        self.delete("manhole_quarantine", obj_id, "qgep_import")
+        self.delete("manhole_quarantine", obj_id, schema="tww_import")
 
     # - ws bottom level calculation
     #   -> updated structure with calculated values
@@ -76,13 +76,13 @@ class TestImport(unittest.TestCase, DbTestBase):
         self.assertEqual(row["co_level"], decimal.Decimal("22.220"))
         self.assertEqual(row["wn_bottom_level"], decimal.Decimal("20"))
 
-        # it should be visible in the qgep_import.vw_manhole view
-        row = self.select("vw_manhole", obj_id, "qgep_import")
+        # it should be visible in the vw_manhole view
+        row = self.select("vw_manhole", obj_id)
         self.assertEqual(row["_depth"], decimal.Decimal("2.220"))
         self.assertEqual(row["co_level"], decimal.Decimal("22.220"))
         self.assertEqual(row["wn_bottom_level"], decimal.Decimal("20"))
 
-        # it shouldn't be in the quarantine qgep_import.manhole_quarantine
+        # it shouldn't be in the quarantine manhole_quarantine
         row = self.select("manhole_quarantine", obj_id, "tww_import")
         self.assertIsNone(row)
 
@@ -103,21 +103,22 @@ class TestImport(unittest.TestCase, DbTestBase):
         }
 
         # update
-        self.update("vw_manhole", row, obj_id, "tww_app")
+        self.update("vw_manhole", row, obj_id, "tww_import")
 
-        # it should be calculated correctly in the live view tww_od.vw_tww_wastewater_structure
+        # it should be calculated correctly in the live view vw_tww_wastewater_structure
         row = self.select("vw_tww_wastewater_structure", obj_id, "tww_app")
+        self.assertIsNotNone(row)
         self.assertEqual(row["_depth"], decimal.Decimal("7.780"))
         self.assertEqual(row["co_level"], decimal.Decimal("30"))
         self.assertEqual(row["wn_bottom_level"], decimal.Decimal("22.220"))
 
-        # it should be visible in the qgep_import.vw_manhole view
+        # it should be visible in the vw_manhole view
         row = self.select("vw_manhole", obj_id, "tww_app")
         self.assertEqual(row["_depth"], decimal.Decimal("7.780"))
         self.assertEqual(row["co_level"], decimal.Decimal("30"))
         self.assertEqual(row["wn_bottom_level"], decimal.Decimal("22.220"))
 
-        # it shouldn't be in the quarantine qgep_import.manhole_quarantine
+        # it shouldn't be in the quarantine manhole_quarantine
         row = self.select("manhole_quarantine", obj_id, "tww_import")
         self.assertIsNone(row)
 
@@ -131,14 +132,14 @@ class TestImport(unittest.TestCase, DbTestBase):
         row = {"deleted": True, "verified": True}
 
         # update
-        self.update("vw_manhole", row, obj_id, "qgep_import")
+        self.update("vw_manhole", row, obj_id)
 
         # it should be deleted in the live table tww_od.wastewater_structure
         row = self.select("wastewater_structure", obj_id, "tww_od")
         self.assertIsNone(row)
 
-        # it should not be visible anymore in the qgep_import.vw_manhole view
-        row = self.select("vw_manhole", obj_id, "qgep_import")
+        # it should not be visible anymore in the vw_manhole view
+        row = self.select("vw_manhole", obj_id)
         self.assertIsNone(row)
 
     # - delete of structure but have verified at false
@@ -152,14 +153,14 @@ class TestImport(unittest.TestCase, DbTestBase):
         row = {"deleted": True, "verified": False}
 
         # update
-        self.update("vw_manhole", row, obj_id, "qgep_import")
+        self.update("vw_manhole", row, obj_id)
 
         # it should not be deleted in the live table tww_od.wastewater_structure
         row = self.select("wastewater_structure", obj_id, "tww_od")
         self.assertIsNotNone(row)
 
-        # it should still be visible anymore in the qgep_import.vw_manhole view
-        row = self.select("vw_manhole", obj_id, "qgep_import")
+        # it should still be visible anymore in the vw_manhole view
+        row = self.select("vw_manhole", obj_id)
         self.assertIsNotNone(row)
 
     # - correct update with 1 old outlet and 1 new outlet and 0 old inlet and 0 new inlet
@@ -184,15 +185,15 @@ class TestImport(unittest.TestCase, DbTestBase):
         }
 
         # update
-        self.update("vw_manhole", row, obj_id, "qgep_import")
+        self.update("vw_manhole", row, obj_id)
 
         # it should be in the live table tww_od.wastewater_structure
         row = self.select("wastewater_structure", obj_id, "tww_od")
         self.assertIsNotNone(row)
         self.assertEqual(row["remark"], "Strassenauslauf")
 
-        # it should be in the view qgep_import.vw_manhole
-        row = self.select("vw_manhole", obj_id, "qgep_import")
+        # it should be in the view vw_manhole
+        row = self.select("vw_manhole", obj_id)
         self.assertIsNotNone(row)
         self.assertEqual(row["co_material"], 3015)
         self.assertEqual(row["remark"], "Strassenauslauf")
@@ -230,8 +231,8 @@ class TestImport(unittest.TestCase, DbTestBase):
         row = cur.fetchone()
         self.assertEqual(row["identifier"], "funky_selfie.png")
 
-        # it shouldn't be in the quarantine qgep_import.manhole_quarantine
-        row = self.select("manhole_quarantine", obj_id, "qgep_import")
+        # it shouldn't be in the quarantine manhole_quarantine
+        row = self.select("manhole_quarantine", obj_id)
         self.assertIsNone(row)
 
     # - incorrect update with a wrong cover material
@@ -249,31 +250,32 @@ class TestImport(unittest.TestCase, DbTestBase):
         row = {"co_material": 666, "outlet_1_material": 5081, "verified": True}
 
         # update
-        self.update("vw_manhole", row, obj_id, "qgep_import")
+        self.update("vw_manhole", row, obj_id, schema="tww_import")
 
         # it should be in the live table tww_od.reach and tww_od.reach_point
         cur = self.cursor()
         cur.execute(
             psycopg2.sql.SQL(
                 "SELECT re.material, re.clear_height, rp.level, ws.co_level\
-            FROM {schema}.reach re\
-            LEFT JOIN {schema}.reach_point rp ON rp.obj_id = re.fk_reach_point_from\
-            LEFT JOIN {schema}.wastewater_networkelement wn ON wn.obj_id = rp.fk_wastewater_networkelement\
-            LEFT JOIN {schema}.vw_tww_wastewater_structure ws ON ws.obj_id = wn.fk_wastewater_structure\
+            FROM tww_od.reach re\
+            LEFT JOIN tww_od.reach_point rp ON rp.obj_id = re.fk_reach_point_from\
+            LEFT JOIN tww_od.wastewater_networkelement wn ON wn.obj_id = rp.fk_wastewater_networkelement\
+            LEFT JOIN tww_app.vw_tww_wastewater_structure ws ON ws.obj_id = wn.fk_wastewater_structure\
             WHERE ws.obj_id = %(obj_id)s"
-            ).format(schema=psycopg2.sql.Identifier("tww_od")),
+            ),
             {"obj_id": obj_id},
         )
+
         row = cur.fetchone()
         self.assertIsNotNone(row)
         self.assertEqual(row["material"], 5081)
 
-        # it shouldn't be updated in the view qgep_import.vw_manhole
-        row = self.select("vw_manhole", obj_id, "qgep_import")
+        # it shouldn't be updated in the view vw_manhole
+        row = self.select("vw_manhole", obj_id, schema="tww_import")
         self.assertNotEqual(row["co_material"], 666)
 
-        # it should be in the quarantine qgep_import.manhole_quarantine
-        row = self.select("manhole_quarantine", obj_id, "qgep_import")
+        # it should be in the quarantine manhole_quarantine
+        row = self.select("manhole_quarantine", obj_id, schema="tww_import")
         self.assertIsNotNone(row)
         self.assertEqual(row["co_material"], 666)
         self.assertTrue(row["outlet_okay"])
@@ -283,14 +285,14 @@ class TestImport(unittest.TestCase, DbTestBase):
         row = {"co_material": 5547}
 
         # update
-        self.update("manhole_quarantine", row, obj_id, "qgep_import")
+        self.update("manhole_quarantine", row, obj_id, schema="tww_import")
 
-        # it should be updated in the view qgep_import.vw_manhole
-        row = self.select("vw_manhole", obj_id, "qgep_import")
+        # it should be updated in the view vw_manhole
+        row = self.select("vw_manhole", obj_id)
         self.assertEqual(row["co_material"], 5547)
 
-        # it shouldn't be anymore in the quarantine qgep_import.manhole_quarantine
-        row = self.select("manhole_quarantine", obj_id, "qgep_import")
+        # it shouldn't be anymore in the quarantine tww_import.manhole_quarantine
+        row = self.select("manhole_quarantine", obj_id, schema="tww_import")
         self.assertIsNone(row)
 
     # - problematic update with 1 old outlet and 1 new outlet and 0 old inlet and 1 new inlet
@@ -318,10 +320,10 @@ class TestImport(unittest.TestCase, DbTestBase):
         }
 
         # update
-        self.update("vw_manhole", row, obj_id, "qgep_import")
+        self.update("vw_manhole", row, obj_id, schema="tww_import")
 
-        # it should be in the view qgep_import.vw_manhole
-        row = self.select("vw_manhole", obj_id, "qgep_import")
+        # it should be in the view vw_manhole
+        row = self.select("vw_manhole", obj_id, schema="tww_import")
         self.assertIsNotNone(row)
         self.assertEqual(row["co_material"], 3015)
         self.assertEqual(row["remark"], "Strassenauslauf")
@@ -345,7 +347,7 @@ class TestImport(unittest.TestCase, DbTestBase):
         self.assertEqual(row["clear_height"], 160)
         self.assertEqual(row["level"], decimal.Decimal("301.700"))
 
-        # it should be still in the quarantine qgep_import.manhole_quarantine
+        # it should be still in the quarantine manhole_quarantine
         row = self.select("manhole_quarantine", obj_id, schema="tww_import")
         self.assertIsNotNone(row)
 
@@ -354,7 +356,7 @@ class TestImport(unittest.TestCase, DbTestBase):
         # update
         self.update("manhole_quarantine", row, obj_id, schema="tww_import")
 
-        # it shouldn't be anymore in the quarantine qgep_import.manhole_quarantine
+        # it shouldn't be anymore in the quarantine manhole_quarantine
         row = self.select("manhole_quarantine", obj_id, schema="tww_import")
         self.assertIsNone(row)
 
@@ -372,15 +374,15 @@ class TestImport(unittest.TestCase, DbTestBase):
         row = {"remark": "Strassenauslauf", "co_material": 3015, "verified": True}
 
         # update
-        self.update("vw_manhole", row, obj_id)
+        self.update("vw_manhole", row, obj_id, schema="tww_import")
 
-        # it should be in the view qgep_import.vw_manhole
-        row = self.select("vw_manhole", obj_id)
+        # it should be in the view vw_manhole
+        row = self.select("vw_manhole", obj_id, schema="tww_import")
         self.assertIsNotNone(row)
         self.assertEqual(row["co_material"], 3015)
         self.assertEqual(row["remark"], "Strassenauslauf")
 
-        # it should be still in the quarantine qgep_import.manhole_quarantine
+        # it should be still in the quarantine manhole_quarantine
         row = self.select("manhole_quarantine", obj_id, schema="tww_import")
         self.assertIsNotNone(row)
 
@@ -389,7 +391,7 @@ class TestImport(unittest.TestCase, DbTestBase):
         # update
         self.update("manhole_quarantine", row, obj_id, schema="tww_import")
 
-        # it shouldn't be anymore in the quarantine qgep_import.manhole_quarantine
+        # it shouldn't be anymore in the quarantine manhole_quarantine
         row = self.select("manhole_quarantine", obj_id, schema="tww_import")
         self.assertIsNone(row)
 
@@ -419,10 +421,10 @@ class TestImport(unittest.TestCase, DbTestBase):
         }
 
         # update
-        self.update("vw_manhole", row, obj_id, "qgep_import")
+        self.update("vw_manhole", row, obj_id)
 
-        # it should be in the view qgep_import.vw_manhole
-        row = self.select("vw_manhole", obj_id, "qgep_import")
+        # it should be in the view vw_manhole
+        row = self.select("vw_manhole", obj_id)
         self.assertIsNotNone(row)
         self.assertEqual(row["co_material"], 3015)
         self.assertEqual(row["remark"], "E10")
@@ -446,7 +448,7 @@ class TestImport(unittest.TestCase, DbTestBase):
         self.assertEqual(row["clear_height"], 160)
         self.assertEqual(row["level"], decimal.Decimal("400"))
 
-        # it should be still in the quarantine qgep_import.manhole_quarantine
+        # it should be still in the quarantine manhole_quarantine
         row = self.select("manhole_quarantine", obj_id, schema="tww_import")
         self.assertIsNotNone(row)
 
@@ -455,7 +457,7 @@ class TestImport(unittest.TestCase, DbTestBase):
         # update
         self.update("manhole_quarantine", row, obj_id, schema="tww_import")
 
-        # it shouldn't be anymore in the quarantine qgep_import.manhole_quarantine
+        # it shouldn't be anymore in the quarantine manhole_quarantine
         row = self.select("manhole_quarantine", obj_id, schema="tww_import")
         self.assertIsNone(row)
 
