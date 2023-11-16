@@ -56,7 +56,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
         , main_co_sp.renovation_demand AS co_renovation_demand
 
         , {main_co_cols}
-        , ST_Force2D(COALESCE(wn.situation_geometry, main_co.situation3d_geometry))::geometry(Point, %(SRID)s) AS situation_geometry
+        , ST_Force2D(COALESCE(wn.situation3d_geometry, main_co.situation3d_geometry))::geometry(Point, %(SRID)s) AS situation_geometry
 
         , {ma_columns}
 
@@ -195,7 +195,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             table_alias="wn",
             remove_pkey=False,
             indent=4,
-            skip_columns=["situation_geometry"],
+            skip_columns=["situation3d_geometry"],
             prefix="wn_",
             remap_columns={},
             columns_at_end=["obj_id"],
@@ -349,7 +349,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             indent=6,
             insert_values={
                 "identifier": "COALESCE(NULLIF(NEW.wn_identifier,''), NEW.identifier)",
-                "situation_geometry": "ST_Force2d(ST_SetSRID(ST_MakePoint(ST_X(NEW.situation_geometry), ST_Y(NEW.situation_geometry), 'nan'), {srid} ))".format(
+                "situation3d_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation_geometry), ST_Y(NEW.situation_geometry), 'nan'), {srid} )".format(
                     srid=srid
                 ),
                 "last_modification": "NOW()",
@@ -607,7 +607,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             table_alias="wn",
             prefix="wn_",
             indent=6,
-            skip_columns=["situation_geometry"],
+            skip_columns=["situation3d_geometry"],
         ),
     )
 

@@ -5,7 +5,7 @@ mp.obj_id AS mp_obj_id, mp.remark AS swmm_simulation_name,
 md.obj_id AS md_obj_id,
 ms.obj_id AS ms_obj_id, ms.dimension, ms.remark AS swmm_parameter,
 mr.obj_id AS mr_obj_id, mr.measuring_duration, mr.time, mr.value,
-wn.situation_geometry AS geom
+wn.situation3d_geometry AS geom
 FROM tww_od.wastewater_structure ws
 JOIN tww_od.wastewater_node wn ON wn.obj_id = ws.fk_main_wastewater_node
 LEFT JOIN tww_od.manhole ma ON ma.obj_id = ws.obj_id

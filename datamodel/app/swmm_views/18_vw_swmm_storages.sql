@@ -25,7 +25,7 @@ SELECT
 	NULL as IMD,
 	ws.identifier::text as description,
 	CONCAT_WS(',','special_structure', ssf.value_en) as tag,
-	wn.situation_geometry as geom,
+	wn.situation3d_geometry as geom,
 	CASE
 		WHEN ws_st.vsacode IN (7959, 6529, 6526) THEN 'planned'
 		ELSE 'current'
@@ -106,7 +106,7 @@ SELECT
 	NULL as IMD,
 	ws.identifier::text as description,
 	CONCAT_WS(',','infiltration_installation', iik.value_en) as tag,
-	wn.situation_geometry as geom,
+	wn.situation3d_geometry as geom,
 	CASE
 		WHEN ws_st.vsacode IN (7959, 6529, 6526) THEN 'planned'
 		ELSE 'current'
@@ -165,7 +165,7 @@ SELECT
 		concat('Storage created for the prank weir: ', pw.obj_id)
 	) as description,
 	'Prank weir' as tag,
-	wn.situation_geometry as geom,
+	wn.situation3d_geometry as geom,
 	CASE
 		WHEN ws_st.vsacode IN (7959, 6529, 6526) THEN 'planned'
 		ELSE 'current'

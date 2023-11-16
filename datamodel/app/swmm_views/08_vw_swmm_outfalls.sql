@@ -12,7 +12,7 @@ SELECT
   NULL::varchar as RouteTo,
   ws.identifier as description,
   dp.obj_id::varchar as tag,
-  wn.situation_geometry as geom,
+  wn.situation3d_geometry as geom,
 	CASE
 		WHEN ws_st.vsacode IN (7959, 6529, 6526) THEN 'planned'
 		ELSE 'current'
@@ -42,7 +42,7 @@ SELECT
   NULL::varchar as RouteTo,
   ws.identifier as description,
   ii.obj_id::varchar as tag,
-  wn.situation_geometry as geom,
+  wn.situation3d_geometry as geom,
 	CASE
 		WHEN ws_st.vsacode IN (7959, 6529, 6526) THEN 'planned'
 		ELSE 'current'

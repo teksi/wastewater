@@ -13,7 +13,7 @@ SELECT
 	0 as InitialDepth,
 	0 as SurchargeDepth,
 	0 as PondedArea,
-	wn.situation_geometry as geom,
+	wn.situation3d_geometry as geom,
 	CASE
 		WHEN ws_st.vsacode IN (7959, 6529, 6526) THEN 'planned'
 		ELSE 'current'
@@ -46,7 +46,7 @@ SELECT
 	0 as InitialDepth,
 	0 as SurchargeDepth,
 	0 as PondedArea,
-	wn.situation_geometry as geom,
+	wn.situation3d_geometry as geom,
 	CASE
 		WHEN ws_st.vsacode IN (7959, 6529, 6526) THEN 'planned'
 		ELSE 'current'
