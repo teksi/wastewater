@@ -56,7 +56,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
         , main_co_sp.renovation_demand AS co_renovation_demand
 
         , {main_co_cols}
-        , ST_Force2D(COALESCE(wn.situation3d_geometry, main_co.situation3d_geometry))::geometry(Point, %(SRID)s) AS situation_geometry
+        , ST_Force2D(COALESCE(wn.situation3d_geometry, main_co.situation3d_geometry))::geometry(Point, %(SRID)s) AS situation3d_geometry
 
         , {ma_columns}
 
@@ -349,7 +349,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             indent=6,
             insert_values={
                 "identifier": "COALESCE(NULLIF(NEW.wn_identifier,''), NEW.identifier)",
-                "situation3d_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation_geometry), ST_Y(NEW.situation_geometry), 'nan'), {srid} )".format(
+                "situation3d_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), 'nan'), {srid} )".format(
                     srid=srid
                 ),
                 "last_modification": "NOW()",
@@ -371,7 +371,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             remap_columns={"cover_shape": "co_shape"},
             insert_values={
                 "identifier": "COALESCE(NULLIF(NEW.co_identifier,''), NEW.identifier)",
-                "situation3d_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation_geometry), ST_Y(NEW.situation_geometry), 'nan'), {srid} )".format(
+                "situation3d_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), 'nan'), {srid} )".format(
                     srid=srid
                 ),
                 "last_modification": "NOW()",
@@ -439,7 +439,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
         -- Move wastewater node as well
         -- comment: TRANSLATE((ST_MakePoint(500, 900, 'NaN')), 10, 20, 0) would return NaN NaN NaN - so we have this workaround
         UPDATE tww_od.wastewater_node WN
-        SET situation_geometry = ST_SetSRID( ST_MakePoint(
+        SET situation3d_geometry = ST_SetSRID( ST_MakePoint(
         ST_X(ST_TRANSLATE(ST_MakePoint(ST_X(WN.situation3d_geometry), ST_Y(WN.situation3d_geometry)), dx, dy )),
         ST_Y(ST_TRANSLATE(ST_MakePoint(ST_X(WN.situation3d_geometry), ST_Y(WN.situation3d_geometry)), dx, dy )),
         ST_Z(WN.situation3d_geometry)), %(SRID)s )

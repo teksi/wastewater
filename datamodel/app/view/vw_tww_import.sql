@@ -3,7 +3,7 @@
 CREATE OR REPLACE VIEW tww_import.vw_manhole AS
  SELECT DISTINCT ON (ws.obj_id) ws.obj_id,
     ws.identifier,
-    ST_Force3D(ws.situation_geometry)::geometry(POINTZ, %(SRID)s) AS situation_geometry,
+    ST_Force3D(ws.situation3d_geometry)::geometry(POINTZ, %(SRID)s) AS situation_geometry,
     ws.co_shape,
     ws.co_diameter,
     ws.co_material,

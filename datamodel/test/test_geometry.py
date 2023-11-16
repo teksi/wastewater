@@ -220,13 +220,13 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         # 1. insert geometry and no co_level and no wn_bottom_level
         # INSERT INTO tww_app.vw_tww_wastewater_structure (situation_geometry, wn_obj_id, co_obj_id) VALUES (ST_SetSRID(ST_MakePoint(2600000, 1200000), 2056), '1337_1001', '1337_1001');
         row = {
-            "situation_geometry": "0101000020080800000000000020D6434100000000804F3241",
+            "situation3d_geometry": "0101000020080800000000000020D6434100000000804F3241",
             "wn_obj_id": "1337_1001",
             "co_obj_id": "1337_1001",
         }
         expected_row = copy.deepcopy(row)
         # ws_qgep_wastewaterstructure has the geometry but NaN as Z because of no co_level (geometry of cover): ST_SetSRID(ST_Collect(ST_MakePoint(2600000, 1200000, 'NaN')), 2056)
-        expected_row["situation_geometry"] = "0101000020080800000000000020D6434100000000804F3241"
+        expected_row["situation3d_geometry"] = "0101000020080800000000000020D6434100000000804F3241"
         # co_level is NULL
         expected_row["co_level"] = None
         # wn_bottom_level NULL
@@ -240,21 +240,21 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         )
         # wastewater_node has the geometry but not 3d: ST_SetSRID(ST_MakePoint(2600000, 1200000), 2056)
         row = self.select("wastewater_node", "1337_1001", schema="tww_od")
-        assert row["situation_geometry"] == self.execute(
-            "ST_SetSRID( ST_MakePoint(2600000, 1200000), 2056)"
+        assert row["situation3d_geometry"] == self.execute(
+            "ST_SetSRID( ST_MakePoint(2600000, 1200000, 'NaN'), 2056)"
         )
 
         # 2. insert geometry with no co_level and WITH wn_bottom_level
         # INSERT INTO tww_app.vw_tww_wastewater_structure (situation3d_geometry, wn_obj_id, co_obj_id, wn_bottom_level) VALUES (ST_SetSRID(ST_MakePoint(2600000, 1200000), 2056), '1337_1002', '1337_1002', 200.000);
         row = {
-            "situation_geometry": "0101000020080800000000000020D6434100000000804F3241",
+            "situation3d_geometry": "0101000020080800000000000020D6434100000000804F3241",
             "wn_obj_id": "1337_1002",
             "co_obj_id": "1337_1002",
             "wn_bottom_level": "200.000",
         }
         expected_row = copy.deepcopy(row)
         # ws_qgep_wastewaterstructure has the 2D geometry: ST_SetSRID(ST_MakePoint(2600000, 1200000), 2056)
-        expected_row["situation_geometry"] = "0101000020080800000000000020D6434100000000804F3241"
+        expected_row["situation3d_geometry"] = "0101000020080800000000000020D6434100000000804F3241"
         # co_level is NULL
         expected_row["co_level"] = None
         # wn_bottom_level is new wn_bottom_level
@@ -269,14 +269,14 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         # wastewater_node has the geometry and  wn_buttom_level as Z: ST_SetSRID(ST_MakePoint(2600000, 1200000, 200), 2056)
         row = self.select("wastewater_node", "1337_1002", schema="tww_od")
         assert (
-            row["situation_geometry"]
+            row["situation3d_geometry"]
             == "01010000A0080800000000000020D6434100000000804F32410000000000006940"
         )
 
         # 3. insert geometry with Z and WITH co_level and WITH wn_bottom_level
         # INSERT INTO tww_app.vw_tww_wastewater_structure (situation3d_geometry, wn_obj_id, co_obj_id, wn_bottom_level, co_level) VALUES (ST_SetSRID(ST_MakePoint(2600000, 1200000), 2056), '1337_1003', '1337_1003', 200.000, 500.000);
         row = {
-            "situation_geometry": "0101000020080800000000000020D6434100000000804F3241",
+            "situation3d_geometry": "0101000020080800000000000020D6434100000000804F3241",
             "wn_obj_id": "1337_1003",
             "co_obj_id": "1337_1003",
             "wn_bottom_level": "200.000",
@@ -284,7 +284,7 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         }
         expected_row = copy.deepcopy(row)
         # ws_qgep_wastewaterstructure has 2D geometry: ST_SetSRID(ST_MakePoint(2600000, 1200000), 2056)
-        expected_row["situation_geometry"] = "0101000020080800000000000020D6434100000000804F3241"
+        expected_row["situation3d_geometry"] = "0101000020080800000000000020D6434100000000804F3241"
         # co_level is new co_level
         expected_row["co_level"] = "500.000"
         # wn_bottom_level is new wn_bottom_level
@@ -299,7 +299,7 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         # wastewater_node has the geometry and wn_buttom_level as Z: ST_SetSRID(ST_MakePoint(2600000, 1200000, 200), 2056)
         row = self.select("wastewater_node", "1337_1003", schema="tww_od")
         assert (
-            row["situation_geometry"]
+            row["situation3d_geometry"]
             == "01010000A0080800000000000020D6434100000000804F32410000000000006940"
         )
 
