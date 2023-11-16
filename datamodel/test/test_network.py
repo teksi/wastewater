@@ -21,12 +21,14 @@ class TestNetwork(unittest.TestCase, DbTestBase):
         ⇐ :     rp's fk_wastewater_networkelement junction
     """
 
-    def tearDown(self):
-        self.conn.rollback()
+    @classmethod
+    def tearDownClass(cls):
+        cls.conn.rollback()
 
-    def setUp(self):
+    @classmethod
+    def setUpClass(cls):
         pgservice = os.environ.get("PGSERVICE") or DEFAULT_PG_SERVICE
-        self.conn = psycopg2.connect(f"service={pgservice}")
+        cls.conn = psycopg2.connect(f"service={pgservice}")
 
     def make_reach(self, identifier, x1, y1, x2, y2):
         """
@@ -37,14 +39,14 @@ class TestNetwork(unittest.TestCase, DbTestBase):
             "progression3d_geometry": self.make_line(x1, y1, 100, x2, y2, 100),
         }
         reach_id = self.insert("vw_tww_reach", reach)
-        reach = self.select("reach", reach_id)
+        reach = self.select("reach", reach_id, schema="tww_od")
         return reach_id, reach["fk_reach_point_from"], reach["fk_reach_point_to"]
 
     def make_manhole(self, identifier, x, y):
         """
         Helper function that makes a manhole, returns (obj_id, wn_obj_id)
         """
-        manhole = {"identifier": identifier, "situation_geometry": self.make_point_2d(x, y)}
+        manhole = {"identifier": identifier, "situation3d_geometry": self.make_point_2d(x, y)}
         manhole_id = self.insert("vw_tww_wastewater_structure", manhole)
         manhole_wn_id = self.select("vw_tww_wastewater_structure", manhole_id)["wn_obj_id"]
         return manhole_id, manhole_wn_id
@@ -61,8 +63,7 @@ class TestNetwork(unittest.TestCase, DbTestBase):
         self.update("vw_tww_reach", data, reach_id)
 
     def refresh_graph(self):
-        cur = self.cursor()
-        cur.execute("SELECT tww_app.refresh_network_simple()")
+        self.execute("tww_network.refresh_network_simple()")
 
     def downstream_nodes_depths(self, node_id):
         """returns a dict with all downstream nodes depths by id
@@ -71,8 +72,8 @@ class TestNetwork(unittest.TestCase, DbTestBase):
         query = """
         WITH RECURSIVE node_with_parent AS (
             SELECT n.obj_id, s.from_obj_id AS parent_id
-            FROM tww_od.vw_network_node n
-            LEFT JOIN tww_od.vw_network_segment s ON s.to_obj_id = n.obj_id
+            FROM tww_app.vw_network_node n
+            LEFT JOIN tww_app.vw_network_segment s ON s.to_obj_id = n.obj_id
         ),
         downstream AS (
             SELECT obj_id, parent_id, 0 AS depth
@@ -98,8 +99,8 @@ class TestNetwork(unittest.TestCase, DbTestBase):
 
         query = """
         WITH RECURSIVE node_with_child AS (
-            SELECT n.obj_id, s.to_obj_id AS child_id FROM tww_od.vw_network_node n
-            LEFT JOIN tww_od.vw_network_segment s ON s.from_obj_id = n.obj_id
+            SELECT n.obj_id, s.to_obj_id AS child_id FROM tww_app.vw_network_node n
+            LEFT JOIN tww_app.vw_network_segment s ON s.from_obj_id = n.obj_id
         ),
         upstream AS (
             SELECT obj_id, child_id, 0 AS depth

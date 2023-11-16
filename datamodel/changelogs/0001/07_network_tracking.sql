@@ -33,7 +33,7 @@ BEGIN
   SELECT
     'wastewater_node',
     n.obj_id,
-    ST_Force2D(n.situation_geometry)
+    ST_Force2D(n.situation3d_geometry)
   FROM tww_od.wastewater_node n;
 
   -- Insert reachpoints
