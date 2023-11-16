@@ -9,7 +9,7 @@ import psycopg2.sql
 from .utils import DEFAULT_PG_SERVICE, DbTestBase
 
 
-class TestTriggers(unittest.TestCase, DbTestBase):
+class TestImport(unittest.TestCase, DbTestBase):
     @classmethod
     def tearDownClass(cls):
         cls.conn.rollback()
@@ -68,7 +68,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         }
 
         # update
-        self.update("vw_manhole", row, obj_id, "qgep_import")
+        self.update("vw_manhole", row, obj_id, "tww_app")
 
         # it should be calculated correctly in the live view tww_od.vw_tww_wastewater_structure
         row = self.select("vw_tww_wastewater_structure", obj_id, "tww_od")
@@ -83,7 +83,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         self.assertEqual(row["wn_bottom_level"], decimal.Decimal("20"))
 
         # it shouldn't be in the quarantine qgep_import.manhole_quarantine
-        row = self.select("manhole_quarantine", obj_id, "qgep_import")
+        row = self.select("manhole_quarantine", obj_id, "tww_import")
         self.assertIsNone(row)
 
     # - cover level calculation
@@ -106,19 +106,19 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         self.update("vw_manhole", row, obj_id, "tww_app")
 
         # it should be calculated correctly in the live view tww_od.vw_tww_wastewater_structure
-        row = self.select("vw_tww_wastewater_structure", obj_id, "tww_od")
+        row = self.select("vw_tww_wastewater_structure", obj_id, "tww_app")
         self.assertEqual(row["_depth"], decimal.Decimal("7.780"))
         self.assertEqual(row["co_level"], decimal.Decimal("30"))
         self.assertEqual(row["wn_bottom_level"], decimal.Decimal("22.220"))
 
         # it should be visible in the qgep_import.vw_manhole view
-        row = self.select("vw_manhole", obj_id, "qgep_import")
+        row = self.select("vw_manhole", obj_id, "tww_app")
         self.assertEqual(row["_depth"], decimal.Decimal("7.780"))
         self.assertEqual(row["co_level"], decimal.Decimal("30"))
         self.assertEqual(row["wn_bottom_level"], decimal.Decimal("22.220"))
 
         # it shouldn't be in the quarantine qgep_import.manhole_quarantine
-        row = self.select("manhole_quarantine", obj_id, "qgep_import")
+        row = self.select("manhole_quarantine", obj_id, "tww_import")
         self.assertIsNone(row)
 
     # - delete of structure
@@ -346,16 +346,16 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         self.assertEqual(row["level"], decimal.Decimal("301.700"))
 
         # it should be still in the quarantine qgep_import.manhole_quarantine
-        row = self.select("manhole_quarantine", obj_id, "qgep_import")
+        row = self.select("manhole_quarantine", obj_id, schema="tww_import")
         self.assertIsNotNone(row)
 
         row = {"inlet_okay": "true"}
 
         # update
-        self.update("manhole_quarantine", row, obj_id, "qgep_import")
+        self.update("manhole_quarantine", row, obj_id, schema="tww_import")
 
         # it shouldn't be anymore in the quarantine qgep_import.manhole_quarantine
-        row = self.select("manhole_quarantine", obj_id, "qgep_import")
+        row = self.select("manhole_quarantine", obj_id, schema="tww_import")
         self.assertIsNone(row)
 
     # - problematic update with 1 old outlet and 0 new outlet and 0 old inlet and 0 new inlet
@@ -372,25 +372,25 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         row = {"remark": "Strassenauslauf", "co_material": 3015, "verified": True}
 
         # update
-        self.update("vw_manhole", row, obj_id, "qgep_import")
+        self.update("vw_manhole", row, obj_id)
 
         # it should be in the view qgep_import.vw_manhole
-        row = self.select("vw_manhole", obj_id, "qgep_import")
+        row = self.select("vw_manhole", obj_id)
         self.assertIsNotNone(row)
         self.assertEqual(row["co_material"], 3015)
         self.assertEqual(row["remark"], "Strassenauslauf")
 
         # it should be still in the quarantine qgep_import.manhole_quarantine
-        row = self.select("manhole_quarantine", obj_id, "qgep_import")
+        row = self.select("manhole_quarantine", obj_id, schema="tww_import")
         self.assertIsNotNone(row)
 
         row = {"outlet_okay": "true"}
 
         # update
-        self.update("manhole_quarantine", row, obj_id, "qgep_import")
+        self.update("manhole_quarantine", row, obj_id, schema="tww_import")
 
         # it shouldn't be anymore in the quarantine qgep_import.manhole_quarantine
-        row = self.select("manhole_quarantine", obj_id, "qgep_import")
+        row = self.select("manhole_quarantine", obj_id, schema="tww_import")
         self.assertIsNone(row)
 
     # - problematic update with 1 old outlet and 1 new outlet and 4 old inlet and 4 new inlet
@@ -447,16 +447,16 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         self.assertEqual(row["level"], decimal.Decimal("400"))
 
         # it should be still in the quarantine qgep_import.manhole_quarantine
-        row = self.select("manhole_quarantine", obj_id, "qgep_import")
+        row = self.select("manhole_quarantine", obj_id, schema="tww_import")
         self.assertIsNotNone(row)
 
         row = {"inlet_okay": "true"}
 
         # update
-        self.update("manhole_quarantine", row, obj_id, "qgep_import")
+        self.update("manhole_quarantine", row, obj_id, schema="tww_import")
 
         # it shouldn't be anymore in the quarantine qgep_import.manhole_quarantine
-        row = self.select("manhole_quarantine", obj_id, "qgep_import")
+        row = self.select("manhole_quarantine", obj_id, schema="tww_import")
         self.assertIsNone(row)
 
     # - general test
