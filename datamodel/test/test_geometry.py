@@ -329,13 +329,13 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         # wn_bottom_level is new wn_bottom_level
         self.assertEqual(new_row["wn_bottom_level"], 200.000)
         # no change on cover geometry: ST_SetSRID(ST_MakePoint(2600000, 1200000, 'NaN'), 2056)
-        new_row = self.select("cover", "1337_1010")
+        new_row = self.select("cover", "1337_1010", schema="tww_od")
         assert (
             new_row["situation3d_geometry"]
             == "01010000A0080800000000000020D6434100000000804F3241000000000000F87F"
         )
         # wastewater_node geometry has Z from new wn_bottom_level: ST_SetSRID(ST_MakePoint(2600000, 1200000, 200), 2056)
-        new_row = self.select("wastewater_node", "1337_1010")
+        new_row = self.select("wastewater_node", "1337_1010", schema="tww_od")
         assert (
             new_row["situation3d_geometry"]
             == "01010000A0080800000000000020D6434100000000804F32410000000000006940"
@@ -355,13 +355,13 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         # no change on wn_bottom_level
         assert new_row["wn_bottom_level"] == 200.000
         # cover geometry has Z from new co_level: ST_SetSRID(ST_MakePoint(2600000, 1200000, 500), 2056)
-        new_row = self.select("cover", "1337_1010")
+        new_row = self.select("cover", "1337_1010", schema="tww_od")
         assert (
             new_row["situation3d_geometry"]
             == "01010000A0080800000000000020D6434100000000804F32410000000000407F40"
         )
         # no change on wastewater_node geometry: ST_SetSRID(ST_MakePoint(2600000, 1200000, 200), 2056)
-        new_row = self.select("wastewater_node", "1337_1010")
+        new_row = self.select("wastewater_node", "1337_1010", schema="tww_od")
         assert (
             new_row["situation3d_geometry"]
             == "01010000A0080800000000000020D6434100000000804F32410000000000006940"
@@ -381,13 +381,13 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         # wn_bottom_level is new wn_bottom_level
         assert new_row["wn_bottom_level"] == 300.000
         # cover geometry has Z from new co_level: ST_SetSRID(ST_MakePoint(2600000, 1200000, 600), 2056)
-        new_row = self.select("cover", "1337_1010")
+        new_row = self.select("cover", "1337_1010", schema="tww_od")
         assert (
             new_row["situation3d_geometry"]
             == "01010000A0080800000000000020D6434100000000804F32410000000000C08240"
         )
         # no change on wastewater_node geometry: ST_SetSRID(ST_MakePoint(2600000, 1200000, 300), 2056)
-        new_row = self.select("wastewater_node", "1337_1010")
+        new_row = self.select("wastewater_node", "1337_1010", schema="tww_od")
         assert (
             new_row["situation3d_geometry"]
             == "01010000A0080800000000000020D6434100000000804F32410000000000C07240"
