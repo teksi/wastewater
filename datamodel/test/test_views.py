@@ -24,7 +24,7 @@ class TestViews(unittest.TestCase, DbTestBase):
             "clear_height": 100,
             "coefficient_of_friction": 10,
             "identifier": "20",
-            "situation3d_geometry": self.execute(
+            "progression3d_geometry": self.execute(
                 "ST_ForceCurve(ST_SetSrid(ST_MakeLine(ST_MakePoint(3000000, 1500000, 100), ST_MakePoint(3000001, 1500001, 100)), 2056))"
             ),
         }
@@ -50,7 +50,7 @@ class TestViews(unittest.TestCase, DbTestBase):
             "coefficient_of_friction": 10,
             "ws_identifier": "pra",
             "ch_usage_current": 4514,
-            "situation3d_geometry": self.execute(
+            "progression3d_geometry": self.execute(
                 "ST_ForceCurve(ST_SetSrid(ST_MakeLine(ST_MakePoint(3000000, 1500000, 'NaN'), ST_MakePoint(3000001, 1500001, 'NaN')), 2056))"
             ),
         }
@@ -74,7 +74,7 @@ class TestViews(unittest.TestCase, DbTestBase):
                 "ST_SetSRID(ST_GeomFromText('POINT(2600000 1200000)'), 2056)"
             ),
             #    'co_material': 5355,
-            "wn_backflow_level": decimal.Decimal("100.000"),
+            "wn_backflow_level_current": decimal.Decimal("100.000"),
         }
 
         expected_row = copy.deepcopy(row)
@@ -102,7 +102,7 @@ class TestViews(unittest.TestCase, DbTestBase):
         )
         row = cur.fetchone()
 
-        assert row["backflow_level"] == decimal.Decimal("100.000")
+        assert row["backflow_level_current"] == decimal.Decimal("100.000")
 
 
 if __name__ == "__main__":

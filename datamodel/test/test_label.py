@@ -23,7 +23,7 @@ class TestViews(unittest.TestCase, DbTestBase):
             row = {
                 "identifier": manhole,
                 "ws_type": "manhole",
-                "situation_geometry": self.execute(
+                "situation3d_geometry": self.execute(
                     "ST_SetSRID(ST_GeomFromText('POINT({x} {y})'), 2056)".format(
                         x=coords[0], y=coords[1]
                     )

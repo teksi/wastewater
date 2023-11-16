@@ -218,7 +218,7 @@ class TestGeometry(unittest.TestCase, DbTestBase):
 
     def test_vw_tww_wastewater_structure_geometry_insert(self):
         # 1. insert geometry and no co_level and no wn_bottom_level
-        # INSERT INTO tww_app.vw_tww_wastewater_structure (situation_geometry, wn_obj_id, co_obj_id) VALUES (ST_SetSRID(ST_MakePoint(2600000, 1200000), 2056), '1337_1001', '1337_1001');
+        # INSERT INTO tww_app.vw_tww_wastewater_structure (situation3d_geometry, wn_obj_id, co_obj_id) VALUES (ST_SetSRID(ST_MakePoint(2600000, 1200000), 2056), '1337_1001', '1337_1001');
         row = {
             "situation3d_geometry": "0101000020080800000000000020D6434100000000804F3241",
             "wn_obj_id": "1337_1001",
