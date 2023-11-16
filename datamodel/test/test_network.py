@@ -62,7 +62,7 @@ class TestNetwork(unittest.TestCase, DbTestBase):
 
     def refresh_graph(self):
         cur = self.cursor()
-        cur.execute("SELECT qgep_network.refresh_network_simple()")
+        cur.execute("SELECT tww_app.refresh_network_simple()")
 
     def downstream_nodes_depths(self, node_id):
         """returns a dict with all downstream nodes depths by id
