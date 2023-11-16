@@ -103,7 +103,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         }
 
         # update
-        self.update("vw_manhole", row, obj_id, "qgep_import")
+        self.update("vw_manhole", row, obj_id, "tww_app")
 
         # it should be calculated correctly in the live view tww_od.vw_tww_wastewater_structure
         row = self.select("vw_tww_wastewater_structure", obj_id, "tww_od")
