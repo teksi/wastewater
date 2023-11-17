@@ -42,7 +42,7 @@ def create_views(
     if tww_wastewater_structure_extra:
         tww_wastewater_structure_extra = safe_load(open(tww_wastewater_structure_extra))
 
-    # run_sql('view/vw_dictionary_value_list.sql', pg_service, variables)
+    run_sql("view/vw_dictionary_value_list.sql", pg_service, variables)
 
     defaults = {"view_schema": "tww_app", "pg_service": pg_service}
 

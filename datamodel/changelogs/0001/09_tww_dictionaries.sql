@@ -3,14 +3,6 @@
 ------ version 04.10.2023 16:39:42
 ------ with 3D coordinates
 
-DROP VIEW IF EXISTS tww_sys.dictionary_value_list;
-
-CREATE VIEW tww_sys.dictionary_value_list AS
-  SELECT p.relname AS vl_name, vl.*
-  FROM tww_vl.value_list_base vl, pg_class p
-  WHERE vl.tableoid = p.oid;
-
-
 CREATE TABLE tww_sys.dictionary_od_table
 (
   id integer NOT NULL,

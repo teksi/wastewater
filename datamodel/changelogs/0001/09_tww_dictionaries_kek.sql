@@ -3,7 +3,6 @@
 ------ version 04.10.2023 17:29:30
 ------ with 3D coordinates
 
---- CREATE VIEW tww_sys.dictionary_value_list already exists
 --- CREATE TABLE tww_sys.dictionary_od_table already exists
 
 
