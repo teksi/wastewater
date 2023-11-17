@@ -63,7 +63,7 @@ class TestNetwork(unittest.TestCase, DbTestBase):
         self.update("vw_tww_reach", data, reach_id)
 
     def refresh_graph(self):
-        self.execute("tww_network.refresh_network_simple()")
+        self.execute("tww_app.network_refresh_network_simple()")
 
     def downstream_nodes_depths(self, node_id):
         """returns a dict with all downstream nodes depths by id

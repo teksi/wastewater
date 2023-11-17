@@ -27,6 +27,6 @@ class CreateViews(DeltaPy):
         # refresh network views
         conn = psycopg2.connect(f"service={self.pg_service}")
         cursor = conn.cursor()
-        cursor.execute("SELECT tww_network.refresh_network_simple();")
+        cursor.execute("SELECT tww_app.network_refresh_network_simple();")
         conn.commit()
         conn.close()

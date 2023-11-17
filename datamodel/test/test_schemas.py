@@ -7,7 +7,7 @@ import psycopg2.extras
 from .utils import DEFAULT_PG_SERVICE, DbTestBase
 
 
-class TestGeometry(unittest.TestCase, DbTestBase):
+class TestSchemas(unittest.TestCase, DbTestBase):
     @classmethod
     def tearDownClass(cls):
         cls.conn.rollback()
@@ -31,6 +31,7 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         list_functions = (
             "SELECT routine_name, routine_schema FROM information_schema.routines "
             "WHERE routine_type = 'FUNCTION' "
+            "AND routine_name NOT IN ('update_last_modified', 'update_last_modified_parent', 'generate_oid') "
             "AND routine_schema NOT IN ('public', 'information_schema', 'pg_catalog', 'tww_app');"
         )
         self.check_empty(list_functions)
