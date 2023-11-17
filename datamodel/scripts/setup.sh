@@ -33,8 +33,9 @@ psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f ${DIR}/app/symbology_functions
 psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f ${DIR}/app/reach_direction_change.sql -v SRID=$SRID
 psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f ${DIR}/app/14_geometry_functions.sql -v SRID=$SRID
 
-
 ${DIR}/app/view/create_views.py --pg_service ${PGSERVICE} --srid ${SRID}
+psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f ${DIR}/app/triggers/network.sql
+
 
 psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f ${DIR}/12_0_roles.sql
 psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f ${DIR}/12_1_roles.sql
