@@ -31,8 +31,15 @@ class DbTestBase:
     @classmethod
     def execute(cls, sql: str, params=[]):
         cur = cls.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-        cur.execute(f"SELECT {sql}", params)
+        if not sql.startswith("SELECT"):
+            sql = f"SELECT {sql}"
+        cur.execute(sql, params)
         return cur.fetchone()[0]
+
+    def check_empty(self, sql: str):
+        cur = self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        cur.execute(sql)
+        self.assertIsNone(cur.fetchone())
 
     @classmethod
     def cursor(cls):
