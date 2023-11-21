@@ -1,4 +1,3 @@
-pirogue==1.4.1
+pirogue>=1.4.2
 psycopg2
 pyyaml
-pum>=0.10.0

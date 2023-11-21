@@ -1,0 +1,45 @@
+name: Datamodel | Create dumps
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - datamodel
+      - '.github/workflows/datamodel-create-dumps.yml'
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+
+jobs:
+  datamodel-dumps:
+    name: Docker
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: "build dockerfile"
+        run:  docker build -f datamodel/.docker/Dockerfile --tag teksi/wastewater:unstable .
+
+      - name: "initialize container"
+        run: |
+          docker run -d -p 5432:5432 --name teksi-wastewater teksi/wastewater:unstable
+          docker exec teksi-wastewater init_db.sh wait
+
+      - name: create dumps
+        run: |
+          docker exec -e PGSERVICE=pg_teksi_wastewater teksi-wastewater /src/scripts/create-dumps.py
+          docker cp teksi-wastewater:/src/artifacts datamodel/artifacts
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: datamodel-dumps
+          path: datamodel/artifacts/
+          if-no-files-found: error

@@ -466,11 +466,11 @@ INSERT INTO tww_sys.dictionary_vw_field (
   OR table_name = 'od_structure_part';
 
 
-CREATE VIEW tww_od.vw_dictionary_field AS
+CREATE VIEW tww_app.vw_dictionary_field AS
   SELECT *
     FROM tww_sys.dictionary_vw_field
-  UNION SELECT 
-    id, 
+  UNION SELECT
+    id,
 	class_id,
 	attribute_id,
 	table_name,
@@ -488,7 +488,5 @@ CREATE VIEW tww_od.vw_dictionary_field AS
     FROM tww_sys.dictionary_od_field;
 
 -- does not work - now role tww at this moment
--- ALTER VIEW tww_od.vw_dictionary_field
+-- ALTER VIEW tww_app.vw_dictionary_field
 --  OWNER TO tww;
-
-
