@@ -46,7 +46,7 @@ repos:
     hooks:
       - id: flake8
         args: [
-          "--max-line-length=99",
+          "--max-line-length=115",
           # ignore long comments (E501), as long lines are formatted by black
           "--ignore=E501,E203,W503",
         ]

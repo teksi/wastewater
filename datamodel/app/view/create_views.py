@@ -193,9 +193,14 @@ def create_views(
         pg_service=pg_service,
         drop=True,
     ).create()
-    run_sql("app/view/vw_organisation.sql", pg_service, variables)
 
-    run_sql("app/view/vw_catchment_area_connections.sql", pg_service, variables)
+    run_sql("app/view/catchment_area/vw_catchment_area_connections.sql", pg_service, variables)
+    run_sql("app/view/catchment_area/vw_catchment_area_additional.sql", pg_service, variables)
+    run_sql("app/view/catchment_area/vw_catchment_area_rwc_connections.sql", pg_service, variables)
+    run_sql("app/view/catchment_area/vw_catchment_area_wwc_connections.sql", pg_service, variables)
+    run_sql("app/view/catchment_area/vw_catchment_area_rwp_connections.sql", pg_service, variables)
+    run_sql("app/view/catchment_area/vw_catchment_area_wwp_connections.sql", pg_service, variables)
+
     run_sql("app/view/vw_change_points.sql", pg_service, variables)
     run_sql("app/view/vw_tww_import.sql", pg_service, variables)
 
