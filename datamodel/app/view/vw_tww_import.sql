@@ -43,7 +43,7 @@ CREATE OR REPLACE VIEW tww_app.import_vw_manhole AS
     NULL::integer AS outlet_2_clear_height,
     NULL::numeric(7, 3) AS outlet_2_depth_m,
     FALSE::boolean AS verified,
-    (CASE WHEN EXISTS ( SELECT TRUE FROM tww_import.manhole_quarantine q WHERE q.obj_id = ws.obj_id )
+    (CASE WHEN EXISTS ( SELECT TRUE FROM tww_od.import_manhole_quarantine q WHERE q.obj_id = ws.obj_id )
     THEN TRUE
     ELSE FALSE
     END) AS in_quarantine,
@@ -63,7 +63,7 @@ BEGIN
       WHERE obj_id = NEW.obj_id;
     ELSE
       -- insert data into quarantine
-      INSERT INTO tww_import.manhole_quarantine
+      INSERT INTO tww_od.import_manhole_quarantine
       (
       obj_id,
       identifier,
@@ -166,7 +166,7 @@ CREATE TRIGGER on_mutation_make_insert_or_delete
   EXECUTE PROCEDURE tww_app.import_vw_manhole_insert_into_quarantine_or_delete();
 
 
--- logic for tww_import.manhole_quarantine
+-- logic for tww_od.import_manhole_quarantine
 
 -- create trigger functions and triggers for quarantine table
 -- SELECT set_config('tww.srid', :SRID::text, false);
@@ -294,7 +294,7 @@ BEGIN
   END IF;
 
   -- set structure okay
-  UPDATE tww_import.manhole_quarantine
+  UPDATE tww_od.import_manhole_quarantine
   SET structure_okay = true
   WHERE quarantine_serial = NEW.quarantine_serial;
   RETURN NEW;
@@ -309,22 +309,22 @@ $TRIGGER$, %(SRID)s);
 END
 $DO$;
 
-DROP TRIGGER IF EXISTS after_update_try_structure_update ON tww_import.manhole_quarantine;
+DROP TRIGGER IF EXISTS after_update_try_structure_update ON tww_od.import_manhole_quarantine;
 
 CREATE TRIGGER after_update_try_structure_update
   AFTER UPDATE
-  ON tww_import.manhole_quarantine
+  ON tww_od.import_manhole_quarantine
   FOR EACH ROW
   WHEN ( ( NEW.structure_okay IS NOT TRUE )
   AND NOT( OLD.inlet_okay IS NOT TRUE AND NEW.inlet_okay IS TRUE )
   AND NOT( OLD.outlet_okay IS NOT TRUE AND NEW.outlet_okay IS TRUE ) )
   EXECUTE PROCEDURE tww_app.import_manhole_quarantine_try_structure_update(%(SRID)s);
 
-DROP TRIGGER IF EXISTS after_insert_try_structure_update ON tww_import.manhole_quarantine;
+DROP TRIGGER IF EXISTS after_insert_try_structure_update ON tww_od.import_manhole_quarantine;
 
 CREATE TRIGGER after_insert_try_structure_update
   AFTER INSERT
-  ON tww_import.manhole_quarantine
+  ON tww_od.import_manhole_quarantine
   FOR EACH ROW
   EXECUTE PROCEDURE tww_app.import_manhole_quarantine_try_structure_update(%(SRID)s);
 
@@ -432,12 +432,12 @@ BEGIN
 
       IF let_kind='inlet' THEN
         -- set inlet okay
-        UPDATE tww_import.manhole_quarantine
+        UPDATE tww_od.import_manhole_quarantine
         SET inlet_okay = true
         WHERE quarantine_serial = NEW.quarantine_serial;
       ELSE
         -- set outlet okay
-        UPDATE tww_import.manhole_quarantine
+        UPDATE tww_od.import_manhole_quarantine
         SET outlet_okay = true
         WHERE quarantine_serial = NEW.quarantine_serial;
       END IF;
@@ -453,59 +453,59 @@ BEGIN
 END; $BODY$
 LANGUAGE plpgsql;
 
-DROP TRIGGER IF EXISTS after_update_try_inlet_update ON tww_import.manhole_quarantine;
+DROP TRIGGER IF EXISTS after_update_try_inlet_update ON tww_od.import_manhole_quarantine;
 
 CREATE TRIGGER after_update_try_inlet_update
   AFTER UPDATE
-  ON tww_import.manhole_quarantine
+  ON tww_od.import_manhole_quarantine
   FOR EACH ROW
   WHEN ( ( NEW.inlet_okay IS NOT TRUE )
   AND NOT( OLD.outlet_okay IS NOT TRUE AND NEW.outlet_okay IS TRUE )
   AND NOT( OLD.structure_okay IS NOT TRUE AND NEW.structure_okay IS TRUE ) )
   EXECUTE PROCEDURE tww_app.import_manhole_quarantine_try_let_update( 'inlet' );
 
-DROP TRIGGER IF EXISTS after_insert_try_inlet_update ON tww_import.manhole_quarantine;
+DROP TRIGGER IF EXISTS after_insert_try_inlet_update ON tww_od.import_manhole_quarantine;
 
 CREATE TRIGGER after_insert_try_inlet_update
   AFTER INSERT
-  ON tww_import.manhole_quarantine
+  ON tww_od.import_manhole_quarantine
   FOR EACH ROW
   EXECUTE PROCEDURE tww_app.import_manhole_quarantine_try_let_update( 'inlet' );
 
-DROP TRIGGER IF EXISTS after_update_try_outlet_update ON tww_import.manhole_quarantine;
+DROP TRIGGER IF EXISTS after_update_try_outlet_update ON tww_od.import_manhole_quarantine;
 
 CREATE TRIGGER after_update_try_outlet_update
   AFTER UPDATE
-  ON tww_import.manhole_quarantine
+  ON tww_od.import_manhole_quarantine
   FOR EACH ROW
   WHEN ( ( NEW.outlet_okay IS NOT TRUE )
   AND NOT( OLD.inlet_okay IS NOT TRUE AND NEW.inlet_okay IS TRUE )
   AND NOT( OLD.structure_okay IS NOT TRUE AND NEW.structure_okay IS TRUE ) )
   EXECUTE PROCEDURE tww_app.import_manhole_quarantine_try_let_update( 'outlet' );
 
-DROP TRIGGER IF EXISTS after_insert_try_outlet_update ON tww_import.manhole_quarantine;
+DROP TRIGGER IF EXISTS after_insert_try_outlet_update ON tww_od.import_manhole_quarantine;
 
 CREATE TRIGGER after_insert_try_outlet_update
   AFTER INSERT
-  ON tww_import.manhole_quarantine
+  ON tww_od.import_manhole_quarantine
   FOR EACH ROW
   EXECUTE PROCEDURE tww_app.import_manhole_quarantine_try_let_update( 'outlet' );
 
 
 CREATE OR REPLACE FUNCTION tww_app.import_manhole_quarantine_delete_entry() RETURNS trigger AS $BODY$
 BEGIN
-  DELETE FROM tww_import.manhole_quarantine
+  DELETE FROM tww_od.import_manhole_quarantine
   WHERE quarantine_serial = NEW.quarantine_serial;
-  RAISE NOTICE 'Deleted row in tww_import.manhole_quarantine';
+  RAISE NOTICE 'Deleted row in tww_od.import_manhole_quarantine';
   RETURN NEW;
 END; $BODY$
 LANGUAGE plpgsql;
 
-DROP TRIGGER IF EXISTS after_mutation_delete_when_okay ON tww_import.manhole_quarantine;
+DROP TRIGGER IF EXISTS after_mutation_delete_when_okay ON tww_od.import_manhole_quarantine;
 
 CREATE TRIGGER after_mutation_delete_when_okay
   AFTER INSERT OR UPDATE
-  ON tww_import.manhole_quarantine
+  ON tww_od.import_manhole_quarantine
   FOR EACH ROW
   WHEN ( NEW.structure_okay IS TRUE AND NEW.inlet_okay IS TRUE AND NEW.outlet_okay IS TRUE )
   EXECUTE PROCEDURE tww_app.import_manhole_quarantine_delete_entry();

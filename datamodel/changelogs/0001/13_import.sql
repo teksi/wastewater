@@ -1,11 +1,11 @@
 -- create quarantine table
 
 /*
-Note: triggers and functions related to this were moved to view/vw_tww_import.sql
+Note: triggers and functions related to this were moved to view/vw_tww_od.import_sql
 and are to be initialized like the rest of the views with create_views.py
 */
 
-CREATE TABLE tww_import.manhole_quarantine
+CREATE TABLE tww_od.import_manhole_quarantine
 (
   obj_id character varying(16),
   identifier character varying(20),
