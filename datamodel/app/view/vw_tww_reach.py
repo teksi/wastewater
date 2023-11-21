@@ -118,7 +118,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             remove_pkey=False,
             indent=4,
             skip_columns=[
-                "detail_geometry_geometry",
+                "detail_geometry3d_geometry",
                 "status",
                 "fk_owner",
                 "fk_dataowner",
@@ -226,7 +226,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             remove_pkey=False,
             indent=2,
             skip_columns=[
-                "detail_geometry_geometry",
+                "detail_geometry3d_geometry",
                 "fk_dataowner",
                 "fk_provider",
                 "_usage_current",
@@ -351,7 +351,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
                 "last_modification": "last_modification",
             },
             skip_columns=[
-                "detail_geometry_geometry",
+                "detail_geometry3d_geometry",
                 "_usage_current",
                 "_function_hierarchic",
                 "_label",

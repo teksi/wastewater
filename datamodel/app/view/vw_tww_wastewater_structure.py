@@ -129,7 +129,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
                 "_function_hierarchic",
                 "fk_main_cover",
                 "fk_main_wastewater_node",
-                "detail_geometry_geometry",
+                "detail_geometry3d_geometry",
             ],
         ),
         main_co_cols=select_columns(
@@ -293,7 +293,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
                 "_function_hierarchic",
                 "fk_main_cover",
                 "fk_main_wastewater_node",
-                "detail_geometry_geometry",
+                "detail_geometry3d_geometry",
             ],
         ),
         insert_ma=insert_command(
@@ -541,7 +541,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             remove_pkey=False,
             indent=6,
             skip_columns=[
-                "detail_geometry_geometry",
+                "detail_geometry3d_geometry",
                 "last_modification",
                 "_usage_current",
                 "_function_hierarchic",
