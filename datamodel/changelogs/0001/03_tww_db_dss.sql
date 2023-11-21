@@ -1087,6 +1087,11 @@ COMMENT ON COLUMN tww_od.reach_point.pipe_closure IS 'yyy_Rohrverschluss oder -k
 COMMENT ON COLUMN tww_od.reach_point.position_of_connection IS 'yyy_Anschlussstelle bezogen auf Querschnitt im Kanal; in Fliessrichtung  (für Haus- und Strassenanschlüsse) / Anschlussstelle bezogen auf Querschnitt im Kanal; in Fliessrichtung  (für Haus- und Strassenanschlüsse) / Emplacement de raccordement Référence à la section transversale dans le canal dans le sens d’écoulement (pour les raccordements domestiques et de rue).';
  ALTER TABLE tww_od.reach_point ADD COLUMN remark  varchar(80) ;
 COMMENT ON COLUMN tww_od.reach_point.remark IS 'General remarks / Allgemeine Bemerkungen / Remarques générales';
+
+--ALTER TABLE tww_od.reach_point ADD COLUMN situation_geometry geometry('POINT', 2056);
+--CREATE INDEX in_tww_reach_point_situation_geometry ON tww_od.reach_point USING gist (situation_geometry );
+--COMMENT ON COLUMN tww_od.reach_point.situation_geometry IS 'National position coordinates (East, North) / Landeskoordinate Ost/Nord / Coordonnées nationales Est/Nord';
+
 ALTER TABLE tww_od.reach_point ADD COLUMN situation3d_geometry geometry('POINTZ', 2056);
 CREATE INDEX in_tww_reach_point_situation3d_geometry ON tww_od.reach_point USING gist (situation3d_geometry );
 COMMENT ON COLUMN tww_od.reach_point.situation3d_geometry IS 'National position coordinates (East, North) / Landeskoordinate Ost/Nord / Coordonnées nationales Est/Nord';
@@ -1125,6 +1130,11 @@ COMMENT ON COLUMN tww_od.wastewater_node.bottom_level IS 'yyy_Tiefster Punkt des
 COMMENT ON COLUMN tww_od.wastewater_node.elevation_accuray IS 'yyy_Höhengenauigkeit der Sohlenkote. Bei Neuerfassungen konsistent halten mit Höhengenauigkeit der Haltungspunkte (Ein-/Auslauf). / Höhengenauigkeit der Sohlenkote. Bei Neuerfassungen konsistent halten mit Höhengenauigkeit der Haltungspunkte (Ein-/Auslauf). / Précision altimétrique de la cote du radier. Lors de nouvelles saisies tenir consistent avec la précision altimétrique des points tronçon (entrée/sortie).';
  ALTER TABLE tww_od.wastewater_node ADD COLUMN function_node_amelioration  integer ;
 COMMENT ON COLUMN tww_od.wastewater_node.function_node_amelioration IS 'yyy_Bei Abwasserknoten von Meliorationsleitungen zwingend (dient der Plandarstellung); sonst optional (weglassen). / Bei Abwasserknoten von Meliorationsleitungen zwingend (dient der Plandarstellung); sonst optional (weglassen). / Obligatoire pour noeuds de réseau de conduites d''amélioration foncière (sert à la représentation dans un plan) sinon optionnel (laisser vide)';
+
+--ALTER TABLE tww_od.wastewater_node ADD COLUMN situation_geometry geometry('POINT', 2056);
+--CREATE INDEX in_tww_wastewater_node_situation_geometry ON tww_od.wastewater_node USING gist (situation_geometry );
+--COMMENT ON COLUMN tww_od.wastewater_node.situation_geometry IS 'yyy Situation of node. Decisive reference point for sewer network simulation  (In der Regel Lage des Pickellochs oder Lage des Trockenwetterauslauf) / Lage des Knotens, massgebender Bezugspunkt für die Kanalnetzberechnung. (In der Regel Lage des Pickellochs oder Lage des Trockenwetterauslaufs) / Positionnement du nœud. Point de référence déterminant pour le calcul de réseau de canalisations (en règle générale positionnement du milieu du couvercle ou de la sortie temps sec)';
+
 ALTER TABLE tww_od.wastewater_node ADD COLUMN situation3d_geometry geometry('POINTZ', 2056);
 CREATE INDEX in_tww_wastewater_node_situation3d_geometry ON tww_od.wastewater_node USING gist (situation3d_geometry );
 COMMENT ON COLUMN tww_od.wastewater_node.situation3d_geometry IS 'yyy Situation of node. Decisive reference point for sewer network simulation  (In der Regel Lage des Pickellochs oder Lage des Trockenwetterauslauf) / Lage des Knotens, massgebender Bezugspunkt für die Kanalnetzberechnung. (In der Regel Lage des Pickellochs oder Lage des Trockenwetterauslaufs) / Positionnement du nœud. Point de référence déterminant pour le calcul de réseau de canalisations (en règle générale positionnement du milieu du couvercle ou de la sortie temps sec)';
@@ -1171,6 +1181,11 @@ COMMENT ON COLUMN tww_od.reach.leak_protection IS 'Double-walled pipe or other s
 COMMENT ON COLUMN tww_od.reach.length_effective IS 'yyy_Tatsächliche schräge Länge (d.h. nicht in horizontale Ebene projiziert)  inklusive Kanalkrümmungen / Tatsächliche schräge Länge (d.h. nicht in horizontale Ebene projiziert)  inklusive Kanalkrümmungen / Longueur effective (non projetée) incluant les parties incurvées';
  ALTER TABLE tww_od.reach ADD COLUMN material  integer ;
 COMMENT ON COLUMN tww_od.reach.material IS 'Material of reach / pipe / Rohrmaterial / Matériau du tuyau';
+
+--ALTER TABLE tww_od.reach ADD COLUMN progression_geometry geometry('COMPOUNDCURVE', 2056);
+--CREATE INDEX in_tww_reach_progression_geometry ON tww_od.reach USING gist (progression_geometry );
+--COMMENT ON COLUMN tww_od.reach.progression_geometry IS 'Start, inflextion and endpoints of a pipe / Anfangs-, Knick- und Endpunkte der Leitung / Points de départ, intermédiaires et d’arrivée de la conduite.';
+
 ALTER TABLE tww_od.reach ADD COLUMN progression3d_geometry geometry('COMPOUNDCURVEZ', 2056);
 CREATE INDEX in_tww_reach_progression3d_geometry ON tww_od.reach USING gist (progression3d_geometry );
 COMMENT ON COLUMN tww_od.reach.progression3d_geometry IS 'Start, inflextion and endpoints of a pipe (3D coordinates) / Anfangs-, Knick- und Endpunkte der Leitung (3D Koordinaten) / Points de départ, intermédiaires et d’arrivée de la conduite (coordonnées 3D)';
@@ -1527,6 +1542,11 @@ COMMENT ON COLUMN tww_od.cover.level IS 'Height of cover / Deckelhöhe / Cote du
 COMMENT ON COLUMN tww_od.cover.material IS 'Material of cover / Deckelmaterial / Matériau du couvercle';
  ALTER TABLE tww_od.cover ADD COLUMN positional_accuracy  integer ;
 COMMENT ON COLUMN tww_od.cover.positional_accuracy IS 'Quantfication of accuarcy of position of cover (center hole) / Quantifizierung der Genauigkeit der Lage des Deckels (Pickelloch) / Plage de précision des coordonnées planimétriques du couvercle.';
+
+--ALTER TABLE tww_od.cover ADD COLUMN situation_geometry geometry('POINT', 2056);
+--CREATE INDEX in_tww_cover_situation_geometry ON tww_od.cover USING gist (situation_geometry );
+--COMMENT ON COLUMN tww_od.cover.situation_geometry IS 'Situation of cover (cover hole), National position coordinates (East, North) / Lage des Deckels (Pickelloch) / Positionnement du couvercle (milieu du couvercle)';
+
 ALTER TABLE tww_od.cover ADD COLUMN situation3d_geometry geometry('POINTZ', 2056);
 CREATE INDEX in_tww_cover_situation3d_geometry ON tww_od.cover USING gist (situation3d_geometry );
 COMMENT ON COLUMN tww_od.cover.situation3d_geometry IS 'Situation of cover (cover hole), National position coordinates (East, North) / Lage des Deckels (Pickelloch) / Positionnement du couvercle (milieu du couvercle)';
