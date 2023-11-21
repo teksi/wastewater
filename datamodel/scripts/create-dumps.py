@@ -103,10 +103,6 @@ def create_plain_structure_only(database: str, version: str):
             dump_file_i,
             "--schema",
             "tww_sys",
-            "--schema",
-            "tww_swmm",
-            "--schema",
-            "tww_network",
             database,
         ]
     )
@@ -145,6 +141,8 @@ def create_plain_value_list(database: str, version: str, structure_dump_file: st
             dump_file,
             "--schema",
             "tww_vl",
+            "--schema",
+            "tww_cfg",
             database,
         ]
     )
