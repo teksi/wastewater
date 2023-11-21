@@ -19,7 +19,7 @@ on:
 
 jobs:
   datamodel-tests:
-    name: Docker
+    name: Run unit tests on datamodel
     runs-on: ubuntu-latest
 
     steps:
@@ -35,3 +35,11 @@ jobs:
 
       - name: run tests
         run:  docker exec teksi-wastewater pytest
+
+  static-tests:
+    name: Run static tests on datamodel
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - run: ./datamodel/test/static_tests.sh
