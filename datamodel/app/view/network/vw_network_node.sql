@@ -39,7 +39,7 @@ SELECT n.id as gid,
        END AS description,
        n.geom AS situation_geometry,
        n.geom AS detail_geometry
-FROM tww_network.node n
+FROM tww_od.network_node n
 LEFT JOIN tww_od.reach_point rp ON rp_id = rp.obj_id
 LEFT JOIN tww_od.wastewater_networkelement ne ON n.ne_id = ne.obj_id
 LEFT JOIN tww_od.wastewater_node nd ON n.ne_id = nd.obj_id
