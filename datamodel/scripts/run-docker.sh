@@ -2,10 +2,15 @@
 
 set -e
 
+# load env vars
+# https://stackoverflow.com/a/20909045/1548052
+export $(grep -v '^#' .env | xargs)
+
 BUILD=0
 DEMO_DATA=0
+TWW_PG_PORT=${TWW_PG_PORT:-5432}
 
-while getopts 'd' opt; do
+while getopts 'bdp:' opt; do
   case "$opt" in
     b)
       echo "Rebuild docker image"
@@ -17,8 +22,14 @@ while getopts 'd' opt; do
       DEMO_DATA=1
       ;;
 
+    p)
+      echo "Overriding PG port to ${OPTARG}"
+      TWW_PG_PORT=${OPTARG}
+      ;;
+
+
     ?|h)
-      echo "Usage: $(basename $0) [-bd]"
+      echo "Usage: $(basename $0) [-bdp]"
       exit 1
       ;;
   esac
@@ -29,7 +40,7 @@ if [[ $BUILD -eq 1 ]]; then
 fi
 
 docker rm -f teksi-wastewater
-docker run -d -p 5433:5432 -v $(pwd)/datamodel:/src  --name teksi-wastewater teksi/wastewater -c log_statement=all
+docker run -d -p ${TWW_PG_PORT}:5432 -v $(pwd)/datamodel:/src  --name teksi-wastewater teksi/wastewater -c log_statement=all
 docker exec teksi-wastewater init_db.sh wait
 if [[ $DEMO_DATA -eq 1 ]]; then
   docker exec teksi-wastewater init_db.sh build -d
