@@ -253,7 +253,7 @@ class TestImport(unittest.TestCase, DbTestBase):
         # obj_id from the test data
         obj_id = "ch13p7mzMA000012"
 
-        # change co_material from 233 to 666, what not exists in the table qgep_vl.cover_material
+        # change co_material from 233 to 666, what not exists in the table tww_vl.cover_material
         row = {"co_material": 666, "outlet_1_material": 5081, "verified": True}
 
         # update

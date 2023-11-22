@@ -53,7 +53,7 @@ CREATE OR REPLACE FUNCTION tww_app.update_wastewater_node_symbology(_obj_id text
 BEGIN
 
 -- Otherwise this will result in very slow query due to on_structure_part_change_networkelement
--- being triggered for all rows. See https://github.com/QGEP/datamodel/pull/166#issuecomment-760245405
+-- being triggered for all rows. See https://github.com/QGEP/datamodel/pull/166#issuecomment-760245405 //skip-keyword-check
 IF _all THEN
   RAISE INFO 'Temporarily disabling symbology triggers';
   PERFORM tww_sys.drop_symbology_triggers();
