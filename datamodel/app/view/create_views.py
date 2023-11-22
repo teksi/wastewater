@@ -239,8 +239,7 @@ def create_views(
 
     SimpleJoins(safe_load(open("app/view/export/vw_export_reach.yaml")), pg_service).create()
     SimpleJoins(
-        safe_load(open("app/view/export/vw_export_wastewater_structure.yaml")),
-        pg_service,
+        safe_load(open("app/view/export/vw_export_wastewater_structure.yaml")), pg_service
     ).create()
 
 

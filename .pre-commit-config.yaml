@@ -1,3 +1,5 @@
+exclude: .*\.qgs
+
 repos:
   # Fix end of files
   - repo: https://github.com/pre-commit/pre-commit-hooks
