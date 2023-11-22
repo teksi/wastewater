@@ -29,7 +29,7 @@ while getopts 'bdp:' opt; do
 
 
     ?|h)
-      echo "Usage: $(basename $0) [-bdp]"
+      echo "Usage: $(basename $0) [-bd] [-p PG_PORT]"
       exit 1
       ;;
   esac
