@@ -14,6 +14,9 @@ on:
   pull_request:
     branches:
       - main
+    paths:
+      - datamodel
+      - '.github/workflows/datamodel-test.yml'
   workflow_dispatch:
 
 
