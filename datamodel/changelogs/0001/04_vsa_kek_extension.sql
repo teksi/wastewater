@@ -169,7 +169,7 @@ COMMENT ON COLUMN tww_od.data_media.identifier IS 'yyy_Name des Datenträgers. B
 COMMENT ON COLUMN tww_od.data_media.kind IS 'Describes the type of data media / Beschreibt die Art des Datenträgers / Décrit le genre de support de données';
  ALTER TABLE tww_od.data_media ADD COLUMN location  varchar(50) ;
 COMMENT ON COLUMN tww_od.data_media.location IS 'Location of the data medium / Ort, wo sich der Datenträger befindet / Emplacement du support de données';
- ALTER TABLE tww_od.data_media ADD COLUMN path  varchar(1023) ;
+ ALTER TABLE tww_od.data_media ADD COLUMN path TEXT;
 COMMENT ON COLUMN tww_od.data_media.path IS 'yyy_Zugriffspfad zum Datenträger. z.B. DVD-Laufwerk -> D: , Server -> //server/videos, Harddisk -> c:/videos . Kann auch eine URL sein. Bei einem analogen Videoband leer / Zugriffspfad zum Datenträger. z.B. DVD-Laufwerk -> D: , Server -> //server/videos, Harddisk -> c:/videos . Kann auch eine URL sein. Bei einem analogen Videoband leer / Chemin d’accès au support de données, p. ex. lecteur DVD -> D: , - serveur -> //server/videos , disque dur -> c:/videos , Peut aussi être une URL. Pour une bande vidéo analogique: vide';
  ALTER TABLE tww_od.data_media ADD COLUMN remark  varchar(80) ;
 COMMENT ON COLUMN tww_od.data_media.remark IS 'General remarks / Bemerkungen zum Datenträger / Remarques concernant le support de données';
