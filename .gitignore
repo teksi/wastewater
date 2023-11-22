@@ -2,6 +2,8 @@
 
 datamodel/artifacts
 
+project/*attachments.zip
+
 .idea
 .pycache
 __pycache__
