@@ -8,12 +8,12 @@ on:
   push:
     branches:
       - main
-    paths:
-      - datamodel
-      - '.github/workflows/datamodel-create-dumps.yml'
   pull_request:
     branches:
       - main
+    paths:
+      - datamodel
+      - '.github/workflows/datamodel-create-dumps.yml'
   workflow_dispatch:
 
 
