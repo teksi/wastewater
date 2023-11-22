@@ -1,3 +1,7 @@
+------ This file generates the VSA-DSS database (Modul VSA-DSS (2020)) in en on QQIS
+------ For questions etc. please contact Stefan Burckhardt stefan.burckhardt@sjib.ch
+------ version 21.11.2023 17:42:42
+------ with 3D coordinates
 
 ---------------------------
 
@@ -67,7 +71,7 @@ COMMENT ON COLUMN tww_od.txt_symbol.symbol_scaling_heigth IS '';
 COMMENT ON COLUMN tww_od.txt_symbol.symbol_scaling_width IS '';
  ALTER TABLE tww_od.txt_symbol ADD COLUMN symbolori  decimal(4,1) ;
 COMMENT ON COLUMN tww_od.txt_symbol.symbolori IS 'Default: 90 Degree / Default: 90 Grad / Default: 90 degree';
-ALTER TABLE tww_od.txt_symbol ADD COLUMN symbolpos_geometry geometry('POINT', 2056);
+ALTER TABLE tww_od.txt_symbol ADD COLUMN symbolpos_geometry geometry('POINT', :SRID);
 CREATE INDEX in_tww_txt_symbol_symbolpos_geometry ON tww_od.txt_symbol USING gist (symbolpos_geometry );
 COMMENT ON COLUMN tww_od.txt_symbol.symbolpos_geometry IS '';
  ALTER TABLE tww_od.txt_symbol ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
@@ -105,7 +109,7 @@ COMMENT ON COLUMN tww_od.txt_text.text IS 'yyy_Aus Attributwerten zusammengesetz
 COMMENT ON COLUMN tww_od.txt_text.texthali IS '';
  ALTER TABLE tww_od.txt_text ADD COLUMN textori  decimal(4,1) ;
 COMMENT ON COLUMN tww_od.txt_text.textori IS '';
-ALTER TABLE tww_od.txt_text ADD COLUMN textpos_geometry geometry('POINT', 2056);
+ALTER TABLE tww_od.txt_text ADD COLUMN textpos_geometry geometry('POINT', :SRID);
 CREATE INDEX in_tww_txt_text_textpos_geometry ON tww_od.txt_text USING gist (textpos_geometry );
 COMMENT ON COLUMN tww_od.txt_text.textpos_geometry IS '';
  ALTER TABLE tww_od.txt_text ADD COLUMN textvali  smallint ;
@@ -135,7 +139,7 @@ CREATE SEQUENCE tww_od.seq_progression_alternative_oid INCREMENT 1 MINVALUE 0 MA
 COMMENT ON COLUMN tww_od.progression_alternative.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.progression_alternative ADD COLUMN plantype  integer ;
 COMMENT ON COLUMN tww_od.progression_alternative.plantype IS '';
-ALTER TABLE tww_od.progression_alternative ADD COLUMN progression_geometry geometry('COMPOUNDCURVE', 2056);
+ALTER TABLE tww_od.progression_alternative ADD COLUMN progression_geometry geometry('COMPOUNDCURVE', :SRID);
 CREATE INDEX in_tww_progression_alternative_progression_geometry ON tww_od.progression_alternative USING gist (progression_geometry );
 COMMENT ON COLUMN tww_od.progression_alternative.progression_geometry IS 'Start, inflextion and endpoints of a progression alterative for selected scale (e.g. overview map) / Anfangs-, Knick- und Endpunkte des Alternativverlaufs der Leitung im gewählten Plantyp (z.B. Uebersichtsplan) / Points de départ, intermédiaires et d’arrivée de la trace alternative de la conduite dans la type de plan selectionée';
  ALTER TABLE tww_od.progression_alternative ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
@@ -162,19 +166,19 @@ CREATE SEQUENCE tww_od.seq_organisation_oid INCREMENT 1 MINVALUE 0 MAXVALUE 9999
  ALTER TABLE tww_od.organisation ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','organisation');
 COMMENT ON COLUMN tww_od.organisation.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.organisation ADD COLUMN identifier  varchar(255) ;
-COMMENT ON COLUMN tww_od.organisation.identifier IS 'It is suggested to use real names, e.g. Sample_Community and not only Community. Or "Waste Water Association WWTP Example" and not only Waste Water Association because there will be multiple objects / Es wird empfohlen reale Namen zu nehmen, z.B. Mustergemeinde und nicht Gemeinde. Oder Abwasserverband ARA Muster und nicht nur Abwasserverband, da es sonst Probleme gibt bei der Zusammenführung der Daten. / Utilisez les noms réels, par ex. commune "exemple" et pas seulement commune. Ou "Association pour l''épuration des eaux usées STEP XXX" et pas seulement  Association pour l''épuration des eaux usées. Sinon vous risquer des problèmes en réunissant les données de différentes communes.';
+COMMENT ON COLUMN tww_od.organisation.identifier IS 'The designation for municipalities is adopted according to the FSO list; for private individuals according to the UID register, if necessary with the addition of the location of the branch if no separate UID exists for it. / Die Bezeichnung für Gemeinden wird gemäss BFS-Liste übernommen; für Private gemäss UID-Register, allenfalls mit Zusatz des Ortes der Filiale, falls keine separate UID dafür besteht. / La désignation pour les communes est reprise selon la liste de l''OFS ; pour les particuliers, selon le registre UID, éventuellement avec l''ajout du lieu de la filiale s''il n''existe pas d''UID séparé pour celle-ci.';
  ALTER TABLE tww_od.organisation ADD COLUMN identifier_short  varchar(12) ;
 COMMENT ON COLUMN tww_od.organisation.identifier_short IS ' / Kurzbezeichnung / désignation abrégée';
  ALTER TABLE tww_od.organisation ADD COLUMN municipality_number  smallint ;
 COMMENT ON COLUMN tww_od.organisation.municipality_number IS 'Official number of municipality of federal office for statistics, mandatory for the municipalities. / Offizielle Gemeinde Nummer gemäss Bundesamt für Statistik, bei Gemeinden zwingend, sonst leer lassen. / Numéro officiel de la commune selon l''Office fédéral de la statistique, obligatoire pour les communes. Sinon, laissez vide.';
  ALTER TABLE tww_od.organisation ADD COLUMN organisation_type  integer ;
-COMMENT ON COLUMN tww_od.organisation.organisation_type IS 'Type of organisatoin / Art der Organisatoin / Genre d''organisation';
+COMMENT ON COLUMN tww_od.organisation.organisation_type IS 'Type of organisatoin / Art der Organisation / Genre d''organisation';
  ALTER TABLE tww_od.organisation ADD COLUMN remark  varchar(255) ;
 COMMENT ON COLUMN tww_od.organisation.remark IS 'General remarks / Allgemeine Bemerkungen / Remarques générales';
  ALTER TABLE tww_od.organisation ADD COLUMN status  integer ;
 COMMENT ON COLUMN tww_od.organisation.status IS 'yyy_Status der Organisation, damit untergegangende Organisationen nicht einfach gelöscht werden müssen und kontrolliert werden kann, ob noch Beziehungen auf untergegangene Organisationen, z.B. bei Gemeindefusion oder Konkurs einer Firma vorhanden sind / Status der Organisation, damit untergegangende Organisationen nicht einfach gelöscht werden müssen und kontrolliert werden kann, ob noch Beziehungen auf untergegangene Organisationen, z.B. bei Gemeindefusion oder Konkurs einer Firma vorhanden sind / Statut de l''organisation, pour que les organisations disparues ne soient pas simplement supprimées et qu''il soit possible de contrôler s''il existe encore des relations avec les organisations disparues, par exemple en cas de fusion de communes ou de faillite d''une société';
  ALTER TABLE tww_od.organisation ADD COLUMN uid  varchar(12) ;
-COMMENT ON COLUMN tww_od.organisation.uid IS 'yyy_Referenz zur Unternehmensidentifikation des Bundesamts fuer Statistik (www.uid.admin.ch), e.g. z.B. CHE123456789 / Referenz zur Unternehmensidentifikation des Bundesamts fuer Statistik (www.uid.admin.ch), z.B. CHE123456789 / Référence pour l’identification des entreprises selon l’Office fédéral de la statistique OFS (www.uid.admin.ch), par exemple: CHE123456789';
+COMMENT ON COLUMN tww_od.organisation.uid IS 'Reference to the company identification of the Federal Office for Statistics (www.uid.admin.ch), e.g. CHE123456789 / Referenz zur Unternehmensidentifikation des Bundesamts fuer Statistik (www.uid.admin.ch), z.B. CHE123456789 / Référence pour l’identification des entreprises selon l’Office fédéral de la statistique OFS (www.uid.admin.ch), par exemple: CHE123456789';
  ALTER TABLE tww_od.organisation ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
 COMMENT ON COLUMN tww_od.organisation.last_modification IS 'Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE';
  ALTER TABLE tww_od.organisation ADD COLUMN fk_dataowner varchar(16);
@@ -212,12 +216,12 @@ COMMENT ON COLUMN tww_od.measure.description IS '';
 COMMENT ON COLUMN tww_od.measure.identifier IS 'Identifier of the measure. The identification follows certain rules (see Wegleitung GEP-Daten) / Bezeichnung der Massnahme. Die Bezeichnung erfolgt nach bestimmten Regeln (siehe Wegleitung GEP-Daten) / Désignation de la mesure. La désignation suit des règles précises (cf. guide des données PGEE)';
  ALTER TABLE tww_od.measure ADD COLUMN intervention_demand  varchar(255) ;
 COMMENT ON COLUMN tww_od.measure.intervention_demand IS 'Short description of need of action / Kurzbeschreibung des Handlungsbedarfs / Description courte du besoin d''intervention';
-ALTER TABLE tww_od.measure ADD COLUMN line_geometry geometry('COMPOUNDCURVE', 2056);
+ALTER TABLE tww_od.measure ADD COLUMN line_geometry geometry('COMPOUNDCURVE', :SRID);
 CREATE INDEX in_tww_measure_line_geometry ON tww_od.measure USING gist (line_geometry );
 COMMENT ON COLUMN tww_od.measure.line_geometry IS 'yyy_Ermöglicht die Visualisierung einer Massnahme mit einer Linie (optional) / Ermöglicht die Visualisierung einer Massnahme mit einer Linie (optional) / Permet la visualisation d''une mesure à l''aide d''une ligne (optionnelle)';
  ALTER TABLE tww_od.measure ADD COLUMN link  varchar(255) ;
 COMMENT ON COLUMN tww_od.measure.link IS 'Reference to other measure (identifier)  or works done. Reference to documents, that specify details of the measure, e.g. GEP reports or documents or project papers. / Verweis auf andere Massnahmen (Bezeichnung) oder Arbeiten, Hinweis auf Grundlagen in denen die Massnahmen näher erläutert werden, wie z.B. auf die entsprechenden GEP-Teilprojekte / Référence à d’autres mesures ou travaux, documents explicatifs concernant la mesure, par exemple les projets partiels PGEE ou rapports d’état';
-ALTER TABLE tww_od.measure ADD COLUMN perimeter_geometry geometry('CURVEPOLYGON', 2056);
+ALTER TABLE tww_od.measure ADD COLUMN perimeter_geometry geometry('CURVEPOLYGON', :SRID);
 CREATE INDEX in_tww_measure_perimeter_geometry ON tww_od.measure USING gist (perimeter_geometry );
 COMMENT ON COLUMN tww_od.measure.perimeter_geometry IS 'Perimeter, for visualisation and geometrical relation (OPTIONAL) / Ermöglicht die Visualisierung einer Massnahme mit einer Fläche (optional) / Pour la visualisation et l’illustration avec une surface (optionelle)';
  ALTER TABLE tww_od.measure ADD COLUMN priority  integer ;
@@ -226,13 +230,13 @@ COMMENT ON COLUMN tww_od.measure.priority IS 'Priority of measure / Priorität d
 COMMENT ON COLUMN tww_od.measure.remark IS 'General remarks of project designer or controlling institution / Bemerkungen des Projektverfassers oder der Aufsichtsbehörde / Remarques du gestionnaire du projet ou de l''autorité de surveillance';
  ALTER TABLE tww_od.measure ADD COLUMN status  integer ;
 COMMENT ON COLUMN tww_od.measure.status IS 'Disposition state of measure / Status der Massnahme / Etat de la mesure';
-ALTER TABLE tww_od.measure ADD COLUMN symbolpos_geometry geometry('POINT', 2056);
+ALTER TABLE tww_od.measure ADD COLUMN symbolpos_geometry geometry('POINT', :SRID);
 CREATE INDEX in_tww_measure_symbolpos_geometry ON tww_od.measure USING gist (symbolpos_geometry );
 COMMENT ON COLUMN tww_od.measure.symbolpos_geometry IS 'For the visualisation (without geometric relation) / Für die Visualisierung (ohne räumlichen Bezug) / Pour la visualisation (sans relation géométrique)';
  ALTER TABLE tww_od.measure ADD COLUMN total_cost  decimal(10,2) ;
 COMMENT ON COLUMN tww_od.measure.total_cost IS 'Sum of own and cost of third parties. Eventually they can be listed also seperately. / Summe der Eigenleistung und Kosten Dritter. Allenfalls können diese zusätzlich auch separat ausgewiesen werden / Somme des contributions propres et des coûts de parties tiers. Ils peuvent également être justifiés séparément';
- ALTER TABLE tww_od.measure ADD COLUMN year_implementation_effectiv  smallint ;
-COMMENT ON COLUMN tww_od.measure.year_implementation_effectiv IS 'Year the measure was actually implemented / Jahr, in dem die Massnahme effektiv umgesetzt wurde / Année à laquelle la mesure a effectivement été mise en œuvre';
+ ALTER TABLE tww_od.measure ADD COLUMN year_implementation_effective  smallint ;
+COMMENT ON COLUMN tww_od.measure.year_implementation_effective IS 'Year the measure was actually implemented / Jahr, in dem die Massnahme effektiv umgesetzt wurde / Année à laquelle la mesure a effectivement été mise en œuvre';
  ALTER TABLE tww_od.measure ADD COLUMN year_implementation_planned  smallint ;
 COMMENT ON COLUMN tww_od.measure.year_implementation_planned IS 'Planned year of implementation / Jahr bis die Massnahme umgesetzt sein soll / Année à laquelle la mesure devrait être mise en œuvre';
  ALTER TABLE tww_od.measure ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
@@ -309,7 +313,7 @@ WITH (
 CREATE SEQUENCE tww_od.seq_waste_water_treatment_plant_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
  ALTER TABLE tww_od.waste_water_treatment_plant ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','waste_water_treatment_plant');
 COMMENT ON COLUMN tww_od.waste_water_treatment_plant.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
-ALTER TABLE tww_od.waste_water_treatment_plant ADD COLUMN area_geometry geometry('CURVEPOLYGON', 2056);
+ALTER TABLE tww_od.waste_water_treatment_plant ADD COLUMN area_geometry geometry('CURVEPOLYGON', :SRID);
 CREATE INDEX in_tww_waste_water_treatment_plant_area_geometry ON tww_od.waste_water_treatment_plant USING gist (area_geometry );
 COMMENT ON COLUMN tww_od.waste_water_treatment_plant.area_geometry IS 'yyy_Geometrie des Einzugsgebiets der ARA (Zuständigkeitsgebiet) als zusammenhängende Fläche, die sich in der Regel an den Gemeindegrenzen orientiert. Ein Einzugsgebiet setzt sich aus einer oder mehreren Gemeindeflächen oder Teilflächen von Gemeinden zusammen. Matching MGDM 134.5 Einzugsgebiet.Gebiet / Geometrie des Einzugsgebiets der ARA (Zuständigkeitsgebiet) als zusammenhängende Fläche, die sich in der Regel an den Gemeindegrenzen orientiert. Ein Einzugsgebiet setzt sich aus einer oder mehreren Gemeindeflächen oder Teilflächen von Gemeinden zusammen. Matching MGDM 134.5 Einzugsgebiet.Gebiet / Géométrie du bassin versant de la STEP (domaine de compétence) comme surface d’un seul tenant, qui se base généralement sur les frontières communales. Un bassin versant se compose d’une ou de plusieurs surfaces communales ou surfaces partielles communales. Matching MGDM 134.5 Einzugsgebiet.Gebiet';
  ALTER TABLE tww_od.waste_water_treatment_plant ADD COLUMN bod5  smallint ;
@@ -338,7 +342,7 @@ COMMENT ON COLUMN tww_od.waste_water_treatment_plant.population_connected IS ' /
 COMMENT ON COLUMN tww_od.waste_water_treatment_plant.population_total IS ' / VSA-Kennzahl "Anzahl Einwohner Total" [E], Matching MGDM 134.5 EinwAnz / Indicateur du VSA « Nombre total d’habitants » [H], Matching MGDM 134.5 EinwAnz';
  ALTER TABLE tww_od.waste_water_treatment_plant ADD COLUMN remark  varchar(255) ;
 COMMENT ON COLUMN tww_od.waste_water_treatment_plant.remark IS 'General remarks / Allgemeine Bemerkungen / Remarques générales';
-ALTER TABLE tww_od.waste_water_treatment_plant ADD COLUMN situation_geometry geometry('POINT', 2056);
+ALTER TABLE tww_od.waste_water_treatment_plant ADD COLUMN situation_geometry geometry('POINT', :SRID);
 CREATE INDEX in_tww_waste_water_treatment_plant_situation_geometry ON tww_od.waste_water_treatment_plant USING gist (situation_geometry );
 COMMENT ON COLUMN tww_od.waste_water_treatment_plant.situation_geometry IS 'yyy_Standort der ARA, Mitte des Geländes / Standort der ARA, Mitte des Geländes / Site de la STEP, milieu du site';
  ALTER TABLE tww_od.waste_water_treatment_plant ADD COLUMN start_year  smallint ;
@@ -374,14 +378,18 @@ CREATE SEQUENCE tww_od.seq_wastewater_structure_oid INCREMENT 1 MINVALUE 0 MAXVA
 COMMENT ON COLUMN tww_od.wastewater_structure.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.wastewater_structure ADD COLUMN accessibility  integer ;
 COMMENT ON COLUMN tww_od.wastewater_structure.accessibility IS 'Possibility of accessibility of a sewage structure for a person (not for a vehicle). / Möglichkeit der Zugänglichkeit eines Abwasserbauwerks für eine Person (nicht für ein Fahrzeug) / Possibilités d’accès à l’ouvrage d’assainissement pour une personne (non pour un véhicule)';
+ ALTER TABLE tww_od.wastewater_structure ADD COLUMN condition_score  decimal(3,2) ;
+COMMENT ON COLUMN tww_od.wastewater_structure.condition_score IS 'The condition score summarizes the overall condition of the wastewater structure under consideration on a scale of 0.00 to 4.00 above. It is derived mathematically from the totality of the individual conditions recorded at a wastewater structure by visual inspection. / Die Zustandsnote spiegelt den baulichen und betrieblichen Zustand eines Abwasserbauwerks als numerischen Wert wider. Sie leitet sich rechnerisch aus der Gesamtheit der an einem Abwasserbauwerk durch optische Inspektion erhobenen Einzelzustände ab. / La note d’état reflète sous forme numérique l’état structurel et fonctionnel d’un ouvrage du réseau d’assainissement. Elle est calculée à partir de l’ensemble des états individuels. relevés par inspection visuelle sur un ouvrage du réseau d’assainissement.';
  ALTER TABLE tww_od.wastewater_structure ADD COLUMN contract_section  varchar(50) ;
 COMMENT ON COLUMN tww_od.wastewater_structure.contract_section IS 'Number of contract section / Nummer des Bauloses / Numéro du lot de construction';
--- ALTER TABLE tww_od.wastewater_structure ADD COLUMN detail_geometry_geometry geometry('CURVEPOLYGON', 2056);
+-- ALTER TABLE tww_od.wastewater_structure ADD COLUMN detail_geometry_geometry geometry('CURVEPOLYGON', :SRID);
 -- CREATE INDEX in_tww_wastewater_structure_detail_geometry_geometry ON tww_od.wastewater_structure USING gist (detail_geometry_geometry );
 -- COMMENT ON COLUMN tww_od.wastewater_structure.detail_geometry_geometry IS 'Detail geometry especially with special structures. For manhole usually use dimension1 and 2. Also with normed infiltratin structures.  Channels usually do not have a detail_geometry. / Detaillierte Geometrie insbesondere bei Spezialbauwerken. Für Normschächte i.d. R.  Dimension1 und 2 verwenden. Dito bei normierten Versickerungsanlagen.  Kanäle haben normalerweise keine Detailgeometrie. / Géométrie détaillée particulièrement pour un OUVRAGE_SPECIAL. Pour l’attribut CHAMBRE_STANDARD utilisez Dimension1 et 2, de même pour une INSTALLATION_INFILTRATION normée.  Les canalisations n’ont en général pas de géométrie détaillée.';
-ALTER TABLE tww_od.wastewater_structure ADD COLUMN detail_geometry3d_geometry geometry('CURVEPOLYGONZ', 2056);
+ALTER TABLE tww_od.wastewater_structure ADD COLUMN detail_geometry3d_geometry geometry('CURVEPOLYGONZ', :SRID);
 CREATE INDEX in_tww_wastewater_structure_detail_geometry3d_geometry ON tww_od.wastewater_structure USING gist (detail_geometry3d_geometry );
 COMMENT ON COLUMN tww_od.wastewater_structure.detail_geometry3d_geometry IS 'Detail geometry (3D) especially with special structures. For manhole usually use dimension1 and 2. Also with normed infiltratin structures.  Channels usually do not have a detail_geometry. / Detaillierte Geometrie (3D) insbesondere bei Spezialbauwerken. Bei Normschächten mit Dimension1 und 2 arbeiten. Dito bei normierten Versickerungsanlagen. Kanäle haben normalerweise keine Detailgeometrie. / Géométrie détaillée (3D) particulièrement pour un OUVRAGE_SPECIAL. Pour l’attribut CHAMBRE_STANDARD utilisez Dimension1 et 2, de même pour une INSTALLATION_INFILTRATION normée.Les canalisations n’ont en général pas de géométrie détaillée.';
+ ALTER TABLE tww_od.wastewater_structure ADD COLUMN elevation_determination  integer ;
+COMMENT ON COLUMN tww_od.wastewater_structure.elevation_determination IS 'Defines the elevation_determination of the detail_geometry3d. / Definiert die Hoehenbestimmung der Detailgeometrie3D. / Définition de la détermination altimétrique de la GEOMETRIE_DETAILLEE3D.';
  ALTER TABLE tww_od.wastewater_structure ADD COLUMN financing  integer ;
 COMMENT ON COLUMN tww_od.wastewater_structure.financing IS ' Method of financing  (Financing based on GschG Art. 60a). / Finanzierungart (Finanzierung gemäss GschG Art. 60a). / Type de financement (financement selon LEaux Art. 60a)';
  ALTER TABLE tww_od.wastewater_structure ADD COLUMN gross_costs  decimal(10,2) ;
@@ -413,13 +421,13 @@ COMMENT ON COLUMN tww_od.wastewater_structure.structure_condition IS 'yyy_Zustan
  ALTER TABLE tww_od.wastewater_structure ADD COLUMN subsidies  decimal(10,2) ;
 COMMENT ON COLUMN tww_od.wastewater_structure.subsidies IS 'yyy_Staats- und Bundesbeiträge / Staats- und Bundesbeiträge / Contributions des cantons et de la Confédération';
  ALTER TABLE tww_od.wastewater_structure ADD COLUMN urgency_figure  smallint ;
-COMMENT ON COLUMN tww_od.wastewater_structure.urgency_figure IS 'yyy_Die Dringlichkeitszahl ist das numerische Mass für die Dringlichkeit von Sanierungsmassnahmen an einem Abwasserbauwerk und resultiert aus der Zustandsbewertung unter Berücksichtigung der Zustandsnote sowie weiterer Randbedingungen. Die Dringlichkeitszahl beschreibt die Dringlichkeit ausschliesslich unter Gesichtspunkten, die den baulich-betrieblichen Zustand eines Abwasserbauwerks betreffen. Sie ist daher unabhängig von Dringlichkeiten, die sich aus anderen Erfordernissen ergeben. / Die Dringlichkeitszahl ist das numerische Mass für die Dringlichkeit von Sanierungsmassnahmen an einem Abwasserbauwerk und resultiert aus der Zustandsbewertung unter Berücksichtigung der Zustandsnote sowie weiterer Randbedingungen. Die Dringlichkeitszahl beschreibt die Dringlichkeit ausschliesslich unter Gesichtspunkten, die den baulich-betrieblichen Zustand eines Abwasserbauwerks betreffen. Sie ist daher unabhängig von Dringlichkeiten, die sich aus anderen Erfordernissen ergeben. / xxx_L’indice d’urgence est un nombre qui indique l’urgence de mesures de réhabilitation d’un ouvrage du réseau d’assainissement. Il découle de l’appréciation de l’état, basé sur la note d’état ainsi que d’autres facteurs d’influence.';
+COMMENT ON COLUMN tww_od.wastewater_structure.urgency_figure IS 'The urgency figure is the numerical measure for the urgency of rehabilitation measures on a wastewater structure and results from the condition assessment taking into account the condition grade as well as other boundary conditions. The urgency number describes the urgency exclusively from the point of view of the structural and operational condition of a wastewater structure. It is therefore independent of urgencies resulting from other requirements. / Die Dringlichkeitszahl ist das numerische Mass für die Dringlichkeit von Sanierungsmassnahmen an einem Abwasserbauwerk und resultiert aus der Zustandsbewertung unter Berücksichtigung der Zustandsnote sowie weiterer Randbedingungen. Die Dringlichkeitszahl beschreibt die Dringlichkeit ausschliesslich unter Gesichtspunkten, die den baulich-betrieblichen Zustand eines Abwasserbauwerks betreffen. Sie ist daher unabhängig von Dringlichkeiten, die sich aus anderen Erfordernissen ergeben. / L’indice d’urgence est un nombre qui indique l’urgence de mesures de réhabilitation d’un ouvrage du réseau d’assainissement. Il découle de l’appréciation de l’état, basé sur la note d’état ainsi que d’autres facteurs d’influence.';
  ALTER TABLE tww_od.wastewater_structure ADD COLUMN year_of_construction  smallint ;
 COMMENT ON COLUMN tww_od.wastewater_structure.year_of_construction IS 'yyy_Jahr der Inbetriebsetzung (Schlussabnahme). Falls unbekannt = 1800 setzen (tiefster Wert des Wertebereiches) / Jahr der Inbetriebsetzung (Schlussabnahme). Falls unbekannt = 1800 setzen (tiefster Wert des Wertebereichs) / Année de mise en service (réception finale)';
  ALTER TABLE tww_od.wastewater_structure ADD COLUMN year_of_replacement  smallint ;
 COMMENT ON COLUMN tww_od.wastewater_structure.year_of_replacement IS 'yyy_Jahr, in dem die Lebensdauer des Bauwerks voraussichtlich abläuft / Jahr, in dem die Lebensdauer des Bauwerks voraussichtlich abläuft / Année pour laquelle on prévoit que la durée de vie de l''ouvrage soit écoulée';
- ALTER TABLE tww_od.wastewater_structure ADD COLUMN condition_score_score  decimal(3,2) ;
-COMMENT ON COLUMN tww_od.wastewater_structure.condition_score_score IS 'yyy_Die Zustandsnote ZN fasst den Gesamtzustand des betrachteten Abwasserbauwerks auf einer Skala von 0.00 bis 4.00 übergeordnet zusammen. / Die Zustandsnote spiegelt den baulichen und betrieblichen Zustand eines Abwasserbauwerks als numerischen Wert wider. Sie leitet sich rechnerisch aus der Gesamtheit der an einem Abwasserbauwerk durch optische Inspektion erhobenen Einzelzustände ab. / La note d’état reflète sous forme numérique l’état structurel et fonctionnel d’un ouvrage du réseau d’assainissement. Elle est calculée à partir de l’ensemble des états individuels. relevés par inspection visuelle sur un ouvrage du réseau d’assainissement.';
+
+
  ALTER TABLE tww_od.wastewater_structure ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
 COMMENT ON COLUMN tww_od.wastewater_structure.last_modification IS 'Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE';
  ALTER TABLE tww_od.wastewater_structure ADD COLUMN fk_dataowner varchar(16);
@@ -493,7 +501,7 @@ COMMENT ON COLUMN tww_od.manhole.obj_id IS 'INTERLIS STANDARD OID (with Postfix/
  ALTER TABLE tww_od.manhole ADD COLUMN amphibian_exit  integer ;
 COMMENT ON COLUMN tww_od.manhole.amphibian_exit IS 'Structural measures for the exit of amphibians available. / Bauliche Massnahme für den Ausstieg von Amphibien vorhanden. / Des mesures structurelles pour la sortie des amphibiens sont en place.';
  ALTER TABLE tww_od.manhole ADD COLUMN depth  smallint ;
-COMMENT ON COLUMN tww_od.manhole.depth IS 'yyy_Funktion (berechneter Wert) = zugehöriger Abwasserknoten.Sohlenkote minus Deckel.Kote (falls Sohlenkote nicht separat erfasst, dann ist es die tiefer liegende Haltungspunkt.Kote). Siehe auch SIA 405 2015 4.3.4. / Funktion (berechneter Wert) = zugehöriger Abwasserknoten.Sohlenkote minus Deckel.Kote (falls Sohlenkote nicht separat erfasst, dann ist es die tiefer liegende Haltungspunkt.Kote). Siehe auch SIA 405 2015 4.3.4. / Fonction (valeur calculée) = NOEUD_RESEAU.COTE_RADIER correspondant moins COUVERCLE.COTE (si le radier n’est pas saisi séparément, c’est la POINT_TRONCON.COTE le plus bas). Cf. SIA 405 cahier technique 2015 4.3.4.';
+COMMENT ON COLUMN tww_od.manhole.depth IS 'yyy_Function (calculated value) = associated wastewater_node.bottom_level minus cover.level (if bottom_level is not recorded separately, then it is the lower-lying reach_point.level). See also SIA 405 2015 4.3.4. / Funktion (berechneter Wert) = zugehöriger Abwasserknoten.Sohlenkote minus Deckel.Kote (falls Sohlenkote nicht separat erfasst, dann ist es die tiefer liegende Haltungspunkt.Kote). Siehe auch SIA 405 2015 4.3.4. / Fonction (valeur calculée) = NOEUD_RESEAU.COTE_RADIER correspondant moins COUVERCLE.COTE (si le radier n’est pas saisi séparément, c’est la POINT_TRONCON.COTE le plus bas). Cf. SIA 405 cahier technique 2015 4.3.4.';
  ALTER TABLE tww_od.manhole ADD COLUMN dimension1  smallint ;
 COMMENT ON COLUMN tww_od.manhole.dimension1 IS 'Dimension2 of infiltration installations (largest inside dimension). / Dimension1 des Schachtes (grösstes Innenmass). / Dimension1 de la chambre (plus grande mesure intérieure).';
  ALTER TABLE tww_od.manhole ADD COLUMN dimension2  smallint ;
@@ -529,7 +537,7 @@ CREATE SEQUENCE tww_od.seq_discharge_point_oid INCREMENT 1 MINVALUE 0 MAXVALUE 9
  ALTER TABLE tww_od.discharge_point ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','discharge_point');
 COMMENT ON COLUMN tww_od.discharge_point.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.discharge_point ADD COLUMN depth  smallint ;
-COMMENT ON COLUMN tww_od.discharge_point.depth IS 'yyy_Funktion (berechneter Wert) = repräsentative Abwasserknoten.Sohlenkote minus zugehörige Deckenkote des Bauwerks falls Detailgeometrie vorhanden, sonst Funktion (berechneter Wert) = Abwasserknoten.Sohlenkote minus zugehörige Deckel.Kote des Bauwerks / Funktion (berechneter Wert) = repräsentative Abwasserknoten.Sohlenkote minus zugehörige Deckenkote des Bauwerks falls Detailgeometrie vorhanden, sonst Funktion (berechneter Wert) = Abwasserknoten.Sohlenkote minus zugehörige Deckel.Kote des Bauwerks / Fonction (valeur calculée) = NOEUD_RESEAU.COTE_RADIER représentatif moins COTE_PLAFOND de l’ouvrage correspondant si la géométrie détaillée est disponible, sinon fonction (valeur calculée) = NŒUD_RESEAU.COT_RADIER moins COUVERCLE.COTE de l’ouvrage correspondant';
+COMMENT ON COLUMN tww_od.discharge_point.depth IS 'Function (calculated value) = representative wastewater_node.bottom_level minus associated upper_elevation of the structure if detailed geometry is available, otherwise Function (calculated value) = wastewater_node.bottom_level minus associated cover.level of the structure / Funktion (berechneter Wert) = repräsentative Abwasserknoten.Sohlenkote minus zugehörige Deckenkote des Bauwerks falls Detailgeometrie vorhanden, sonst Funktion (berechneter Wert) = Abwasserknoten.Sohlenkote minus zugehörige Deckel.Kote des Bauwerks / Fonction (valeur calculée) = NOEUD_RESEAU.COTE_RADIER représentatif moins COTE_PLAFOND de l’ouvrage correspondant si la géométrie détaillée est disponible, sinon fonction (valeur calculée) = NŒUD_RESEAU.COT_RADIER moins COUVERCLE.COTE de l’ouvrage correspondant';
  ALTER TABLE tww_od.discharge_point ADD COLUMN highwater_level  decimal(7,3) ;
 COMMENT ON COLUMN tww_od.discharge_point.highwater_level IS 'yyy_Massgebliche Hochwasserkote der Einleitstelle. Diese ist in der Regel grösser als der Wasserspiegel_Hydraulik. / Massgebliche Hochwasserkote der Einleitstelle. Diese ist in der Regel grösser als der Wasserspiegel_Hydraulik. / Cote de crue déterminante au point de rejet. Diese ist in der Regel grösser als der Wasserspiegel_Hydraulik.';
  ALTER TABLE tww_od.discharge_point ADD COLUMN relevance  integer ;
@@ -570,7 +578,7 @@ COMMENT ON COLUMN tww_od.special_structure.amphibian_exit IS 'Structural measure
  ALTER TABLE tww_od.special_structure ADD COLUMN bypass  integer ;
 COMMENT ON COLUMN tww_od.special_structure.bypass IS 'yyy_Bypass zur Umleitung des Wassers (z.B. während Unterhalt oder  im Havariefall) / Bypass zur Umleitung des Wassers (z.B. während Unterhalt oder  im Havariefall) / Bypass pour détourner les eaux (par exemple durant des opérations de maintenance ou en cas d’avaries)';
  ALTER TABLE tww_od.special_structure ADD COLUMN depth  smallint ;
-COMMENT ON COLUMN tww_od.special_structure.depth IS 'yyy_Funktion (berechneter Wert) = repräsentative Abwasserknoten.Sohlenkote minus zugehörige Deckenkote des Bauwerks falls Detailgeometrie vorhanden, sonst Funktion (berechneter Wert) = Abwasserknoten.Sohlenkote minus zugehörige Deckel.Kote des Bauwerks / Funktion (berechneter Wert) = repräsentative Abwasserknoten.Sohlenkote minus zugehörige Deckenkote des Bauwerks falls Detailgeometrie vorhanden, sonst Funktion (berechneter Wert) = Abwasserknoten.Sohlenkote minus zugehörige Deckel.Kote des Bauwerks / Fonction (valeur calculée) = NOEUD_RESEAU.COTE_RADIER représentatif moins COTE_PLAFOND de l’ouvrage correspondant si la géométrie détaillée est disponible, sinon fonction (valeur calculée) = NŒUD_RESEAU.COT_RADIER moins COUVERCLE.COTE de l’ouvrage correspondant';
+COMMENT ON COLUMN tww_od.special_structure.depth IS 'Function (calculated value) = representative wastewater_node.bottom_level minus associated upper_elevation of the structure if detailed geometry is available, otherwise Function (calculated value) = wastewater_node.bottom_level minus associated cover.level of the structure. / Funktion (berechneter Wert) = repräsentative Abwasserknoten.Sohlenkote minus zugehörige Deckenkote des Bauwerks falls Detailgeometrie vorhanden, sonst Funktion (berechneter Wert) = Abwasserknoten.Sohlenkote minus zugehörige Deckel.Kote des Bauwerks / Fonction (valeur calculée) = NOEUD_RESEAU.COTE_RADIER représentatif moins COTE_PLAFOND de l’ouvrage correspondant si la géométrie détaillée est disponible, sinon fonction (valeur calculée) = NŒUD_RESEAU.COT_RADIER moins COUVERCLE.COTE de l’ouvrage correspondant';
  ALTER TABLE tww_od.special_structure ADD COLUMN emergency_overflow  integer ;
 COMMENT ON COLUMN tww_od.special_structure.emergency_overflow IS 'zzz_Das Attribut beschreibt, wohin die das Volumen übersteigende Menge abgeleitet wird (v.a. Regenrückhaltebecken / Regenrückhaltekanal). / Das Attribut beschreibt, wohin die das Volumen übersteigende Menge abgeleitet wird (v.a bei Regenrückhaltebecken / Regenrückhaltekanal). / L’attribut décrit vers où le débit déversé s’écoule (surtout bassin d’accumulation / canal d’accumulation)';
  ALTER TABLE tww_od.special_structure ADD COLUMN function  integer ;
@@ -608,7 +616,7 @@ COMMENT ON COLUMN tww_od.infiltration_installation.absorption_capacity IS 'yyy_S
  ALTER TABLE tww_od.infiltration_installation ADD COLUMN defects  integer ;
 COMMENT ON COLUMN tww_od.infiltration_installation.defects IS 'yyy_Gibt die aktuellen Mängel der Versickerungsanlage an (IST-Zustand). / Gibt die aktuellen Mängel der Versickerungsanlage an (IST-Zustand). / Indique les défauts actuels de l''installation d''infiltration (etat_actuel).';
  ALTER TABLE tww_od.infiltration_installation ADD COLUMN depth  smallint ;
-COMMENT ON COLUMN tww_od.infiltration_installation.depth IS 'yyy_Funktion (berechneter Wert) = repräsentative Abwasserknoten.Sohlenkote minus zugehörige Deckenkote des Bauwerks falls Detailgeometrie vorhanden, sonst Funktion (berechneter Wert) = Abwasserknoten.Sohlenkote minus zugehörige Deckel.Kote des Bauwerks / Funktion (berechneter Wert) = repräsentative Abwasserknoten.Sohlenkote minus zugehörige Deckenkote des Bauwerks falls Detailgeometrie vorhanden, sonst Funktion (berechneter Wert) = Abwasserknoten.Sohlenkote minus zugehörige Deckel.Kote des Bauwerks / Fonction (valeur calculée) = NOEUD_RESEAU.COTE_RADIER représentatif moins COTE_PLAFOND de l’ouvrage correspondant si la géométrie détaillée est disponible, sinon fonction (valeur calculée) = NŒUD_RESEAU.COT_RADIER moins COUVERCLE.COTE de l’ouvrage correspondant';
+COMMENT ON COLUMN tww_od.infiltration_installation.depth IS 'Function (calculated value) = representative wastewater_node.bottom_level minus associated upper_elevation of the structure if detailed geometry is available, otherwise Function (calculated value) = wastewater_node.bottom_level minus associated cover.level of the structure. / Funktion (berechneter Wert) = repräsentative Abwasserknoten.Sohlenkote minus zugehörige Deckenkote des Bauwerks falls Detailgeometrie vorhanden, sonst Funktion (berechneter Wert) = Abwasserknoten.Sohlenkote minus zugehörige Deckel.Kote des Bauwerks / Fonction (valeur calculée) = NOEUD_RESEAU.COTE_RADIER représentatif moins COTE_PLAFOND de l’ouvrage correspondant si la géométrie détaillée est disponible, sinon fonction (valeur calculée) = NŒUD_RESEAU.COT_RADIER moins COUVERCLE.COTE de l’ouvrage correspondant';
  ALTER TABLE tww_od.infiltration_installation ADD COLUMN dimension1  smallint ;
 COMMENT ON COLUMN tww_od.infiltration_installation.dimension1 IS 'Dimension1 of infiltration installations (largest inside dimension) if used with norm elements. Else leave empty.. / Dimension1 der Versickerungsanlage (grösstes Innenmass) bei der Verwendung von Normbauteilen. Sonst leer lassen und mit Detailgeometrie beschreiben. / Dimension1 de l’installation d’infiltration (plus grande mesure intérieure) lorsqu’elle est utilisée pour des éléments d’ouvrage normés. Sinon, à laisser libre et prendre la description de la géométrie détaillée.';
  ALTER TABLE tww_od.infiltration_installation ADD COLUMN dimension2  smallint ;
@@ -759,7 +767,7 @@ CREATE SEQUENCE tww_od.seq_infiltration_zone_oid INCREMENT 1 MINVALUE 0 MAXVALUE
 COMMENT ON COLUMN tww_od.infiltration_zone.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.infiltration_zone ADD COLUMN infiltration_capacity  integer ;
 COMMENT ON COLUMN tww_od.infiltration_zone.infiltration_capacity IS 'yyy_Versickerungsmöglichkeit im Bereich / Versickerungsmöglichkeit im Bereich / Potentiel d''infiltration de la zone';
-ALTER TABLE tww_od.infiltration_zone ADD COLUMN perimeter_geometry geometry('CURVEPOLYGON', 2056);
+ALTER TABLE tww_od.infiltration_zone ADD COLUMN perimeter_geometry geometry('CURVEPOLYGON', :SRID);
 CREATE INDEX in_tww_infiltration_zone_perimeter_geometry ON tww_od.infiltration_zone USING gist (perimeter_geometry );
 COMMENT ON COLUMN tww_od.infiltration_zone.perimeter_geometry IS 'Boundary points of the perimeter / Begrenzungspunkte der Fläche / Points de délimitation de la surface';
 -------
@@ -785,7 +793,7 @@ CREATE SEQUENCE tww_od.seq_drainage_system_oid INCREMENT 1 MINVALUE 0 MAXVALUE 9
 COMMENT ON COLUMN tww_od.drainage_system.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.drainage_system ADD COLUMN kind  integer ;
 COMMENT ON COLUMN tww_od.drainage_system.kind IS 'yyy_Art des Entwässerungssystems in dem ein bestimmtes Gebiet entwässert werden soll (SOLL Zustand)  im groben Überblick für Planung. Wird später auf einzelnem Kanal attributiert. / Art des Entwässerungssystems in dem ein bestimmtes Gebiet entwässert werden soll (SOLL Zustand) im groben Überblick für Planung. Wird später auf einzelnem Kanal attributiert. / Genre de système d''évacuation choisi pour une région déterminée (Etat prévu). Vue d''ensemble grossière pour planification. Sera défini pour chaque canal par la suite.';
-ALTER TABLE tww_od.drainage_system ADD COLUMN perimeter_geometry geometry('CURVEPOLYGON', 2056);
+ALTER TABLE tww_od.drainage_system ADD COLUMN perimeter_geometry geometry('CURVEPOLYGON', :SRID);
 CREATE INDEX in_tww_drainage_system_perimeter_geometry ON tww_od.drainage_system USING gist (perimeter_geometry );
 COMMENT ON COLUMN tww_od.drainage_system.perimeter_geometry IS 'Boundary points of the perimeter / Begrenzungspunkte der Fläche / Points de délimitation de la surface';
 -------
@@ -971,7 +979,7 @@ CREATE SEQUENCE tww_od.seq_control_center_oid INCREMENT 1 MINVALUE 0 MAXVALUE 99
 COMMENT ON COLUMN tww_od.control_center.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.control_center ADD COLUMN identifier  varchar(20) ;
 COMMENT ON COLUMN tww_od.control_center.identifier IS '';
-ALTER TABLE tww_od.control_center ADD COLUMN situation_geometry geometry('POINT', 2056);
+ALTER TABLE tww_od.control_center ADD COLUMN situation_geometry geometry('POINT', :SRID);
 CREATE INDEX in_tww_control_center_situation_geometry ON tww_od.control_center USING gist (situation_geometry );
 COMMENT ON COLUMN tww_od.control_center.situation_geometry IS 'National position coordinates (East, North) / Landeskoordinate Ost/Nord / Coordonnées nationales Est/Nord';
  ALTER TABLE tww_od.control_center ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
@@ -1088,13 +1096,14 @@ COMMENT ON COLUMN tww_od.reach_point.position_of_connection IS 'yyy_Anschlussste
  ALTER TABLE tww_od.reach_point ADD COLUMN remark  varchar(80) ;
 COMMENT ON COLUMN tww_od.reach_point.remark IS 'General remarks / Allgemeine Bemerkungen / Remarques générales';
 
---ALTER TABLE tww_od.reach_point ADD COLUMN situation_geometry geometry('POINT', 2056);
---CREATE INDEX in_tww_reach_point_situation_geometry ON tww_od.reach_point USING gist (situation_geometry );
---COMMENT ON COLUMN tww_od.reach_point.situation_geometry IS 'National position coordinates (East, North) / Landeskoordinate Ost/Nord / Coordonnées nationales Est/Nord';
+--ALTER TABLE tww_od.reach_point ADD COLUMN situation_geometry geometry('POINT', :SRID);
+-- CREATE INDEX in_tww_reach_point_situation_geometry ON tww_od.reach_point USING gist (situation_geometry );
+-- COMMENT ON COLUMN tww_od.reach_point.situation_geometry IS 'National position coordinates (East, North) / Landeskoordinate Ost/Nord / Coordonnées nationales Est/Nord';
 
-ALTER TABLE tww_od.reach_point ADD COLUMN situation3d_geometry geometry('POINTZ', 2056);
+ALTER TABLE tww_od.reach_point ADD COLUMN situation3d_geometry geometry('POINTZ', :SRID);
 CREATE INDEX in_tww_reach_point_situation3d_geometry ON tww_od.reach_point USING gist (situation3d_geometry );
 COMMENT ON COLUMN tww_od.reach_point.situation3d_geometry IS 'National position coordinates (East, North) / Landeskoordinate Ost/Nord / Coordonnées nationales Est/Nord';
+
  ALTER TABLE tww_od.reach_point ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
 COMMENT ON COLUMN tww_od.reach_point.last_modification IS 'Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE';
  ALTER TABLE tww_od.reach_point ADD COLUMN fk_dataowner varchar(16);
@@ -1131,13 +1140,14 @@ COMMENT ON COLUMN tww_od.wastewater_node.elevation_accuray IS 'yyy_Höhengenauig
  ALTER TABLE tww_od.wastewater_node ADD COLUMN function_node_amelioration  integer ;
 COMMENT ON COLUMN tww_od.wastewater_node.function_node_amelioration IS 'yyy_Bei Abwasserknoten von Meliorationsleitungen zwingend (dient der Plandarstellung); sonst optional (weglassen). / Bei Abwasserknoten von Meliorationsleitungen zwingend (dient der Plandarstellung); sonst optional (weglassen). / Obligatoire pour noeuds de réseau de conduites d''amélioration foncière (sert à la représentation dans un plan) sinon optionnel (laisser vide)';
 
---ALTER TABLE tww_od.wastewater_node ADD COLUMN situation_geometry geometry('POINT', 2056);
---CREATE INDEX in_tww_wastewater_node_situation_geometry ON tww_od.wastewater_node USING gist (situation_geometry );
---COMMENT ON COLUMN tww_od.wastewater_node.situation_geometry IS 'yyy Situation of node. Decisive reference point for sewer network simulation  (In der Regel Lage des Pickellochs oder Lage des Trockenwetterauslauf) / Lage des Knotens, massgebender Bezugspunkt für die Kanalnetzberechnung. (In der Regel Lage des Pickellochs oder Lage des Trockenwetterauslaufs) / Positionnement du nœud. Point de référence déterminant pour le calcul de réseau de canalisations (en règle générale positionnement du milieu du couvercle ou de la sortie temps sec)';
+--ALTER TABLE tww_od.wastewater_node ADD COLUMN situation_geometry geometry('POINT', :SRID);
+-- CREATE INDEX in_tww_wastewater_node_situation_geometry ON tww_od.wastewater_node USING gist (situation_geometry );
+-- COMMENT ON COLUMN tww_od.wastewater_node.situation_geometry IS 'yyy Situation of node. Decisive reference point for sewer network simulation  (In der Regel Lage des Pickellochs oder Lage des Trockenwetterauslauf) / Lage des Knotens, massgebender Bezugspunkt für die Kanalnetzberechnung. (In der Regel Lage des Pickellochs oder Lage des Trockenwetterauslaufs) / Positionnement du nœud. Point de référence déterminant pour le calcul de réseau de canalisations (en règle générale positionnement du milieu du couvercle ou de la sortie temps sec)';
 
-ALTER TABLE tww_od.wastewater_node ADD COLUMN situation3d_geometry geometry('POINTZ', 2056);
+ALTER TABLE tww_od.wastewater_node ADD COLUMN situation3d_geometry geometry('POINTZ', :SRID);
 CREATE INDEX in_tww_wastewater_node_situation3d_geometry ON tww_od.wastewater_node USING gist (situation3d_geometry );
 COMMENT ON COLUMN tww_od.wastewater_node.situation3d_geometry IS 'yyy Situation of node. Decisive reference point for sewer network simulation  (In der Regel Lage des Pickellochs oder Lage des Trockenwetterauslauf) / Lage des Knotens, massgebender Bezugspunkt für die Kanalnetzberechnung. (In der Regel Lage des Pickellochs oder Lage des Trockenwetterauslaufs) / Positionnement du nœud. Point de référence déterminant pour le calcul de réseau de canalisations (en règle générale positionnement du milieu du couvercle ou de la sortie temps sec)';
+
  ALTER TABLE tww_od.wastewater_node ADD COLUMN wwtp_number  integer ;
 COMMENT ON COLUMN tww_od.wastewater_node.wwtp_number IS 'yyy_Eindeutige Identifikationsnummer der ARA ((WWTP Number from Federal Office for the Environment (FOEN))., in deren Einzugsgebiet der Knoten liegt. Ist auch abzufüllen, wenn der Knoten nicht an die ARA angeschlossen ist. Die Abgrenzung der ARA-Einzugsgebiete ist im Zweifelsfall mit der kantonalen Fachstelle zu klären. / Eindeutige Identifikationsnummer der ARA (ARA Nummer des BAFU), in deren Einzugsgebiet der Knoten liegt. Ist auch abzufüllen, wenn der Knoten nicht an die ARA angeschlossen ist. Die Abgrenzung der ARA-Einzugsgebiete ist im Zweifelsfall mit der kantonalen Fachstelle zu klären. / Numéro d''identification unique de la STEP (n° STEP de l’OFEV) dans le bassin versant de laquelle se trouve le nœud. A remplir également si le nœud n''est pas raccordé à la STEP. En cas de doute, la délimitation des bassins versants de STEP est à demander auprès de l''autorité cantonale.';
 -------
@@ -1166,7 +1176,7 @@ COMMENT ON COLUMN tww_od.reach.clear_height IS 'Clear height (inside) of profile
  ALTER TABLE tww_od.reach ADD COLUMN coefficient_of_friction  smallint ;
 COMMENT ON COLUMN tww_od.reach.coefficient_of_friction IS 'yyy http://www.linguee.com/english-german/search?source=auto&query=reibungsbeiwert / Hydraulische Kenngrösse zur Beschreibung der Beschaffenheit der Kanalwandung. Beiwert für die Formeln nach Manning-Strickler (K oder kstr) / Constante de rugosité selon Manning-Strickler (K ou kstr)';
  ALTER TABLE tww_od.reach ADD COLUMN elevation_determination  integer ;
-COMMENT ON COLUMN tww_od.reach.elevation_determination IS 'yyy_Definiert die Hoehenbestimmung einer Haltung. / Definiert die Hoehenbestimmung einer Haltung. / Définition de la détermination altimétrique d''un tronçon.';
+COMMENT ON COLUMN tww_od.reach.elevation_determination IS 'Defines the elevation_determination of the reach. / Definiert die Hoehenbestimmung einer Haltung. / Définition de la détermination altimétrique d''un tronçon.';
  ALTER TABLE tww_od.reach ADD COLUMN flow_time_dry_weather  decimal(7,0) ;
 COMMENT ON COLUMN tww_od.reach.flow_time_dry_weather IS 'Flow time in dry weather (daily mean) / Fliesszeit bei Trockenwetter (Tagesmittel) / Temps d''écoulement par temps sec (moyenne journalière)';
  ALTER TABLE tww_od.reach ADD COLUMN horizontal_positioning  integer ;
@@ -1182,11 +1192,11 @@ COMMENT ON COLUMN tww_od.reach.length_effective IS 'yyy_Tatsächliche schräge L
  ALTER TABLE tww_od.reach ADD COLUMN material  integer ;
 COMMENT ON COLUMN tww_od.reach.material IS 'Material of reach / pipe / Rohrmaterial / Matériau du tuyau';
 
---ALTER TABLE tww_od.reach ADD COLUMN progression_geometry geometry('COMPOUNDCURVE', 2056);
---CREATE INDEX in_tww_reach_progression_geometry ON tww_od.reach USING gist (progression_geometry );
---COMMENT ON COLUMN tww_od.reach.progression_geometry IS 'Start, inflextion and endpoints of a pipe / Anfangs-, Knick- und Endpunkte der Leitung / Points de départ, intermédiaires et d’arrivée de la conduite.';
+-- ALTER TABLE tww_od.reach ADD COLUMN progression_geometry geometry('COMPOUNDCURVE', :SRID);
+-- CREATE INDEX in_tww_reach_progression_geometry ON tww_od.reach USING gist (progression_geometry );
+-- COMMENT ON COLUMN tww_od.reach.progression_geometry IS 'Start, inflextion and endpoints of a pipe / Anfangs-, Knick- und Endpunkte der Leitung / Points de départ, intermédiaires et d’arrivée de la conduite.';
 
-ALTER TABLE tww_od.reach ADD COLUMN progression3d_geometry geometry('COMPOUNDCURVEZ', 2056);
+ALTER TABLE tww_od.reach ADD COLUMN progression3d_geometry geometry('COMPOUNDCURVEZ', :SRID);
 CREATE INDEX in_tww_reach_progression3d_geometry ON tww_od.reach USING gist (progression3d_geometry );
 COMMENT ON COLUMN tww_od.reach.progression3d_geometry IS 'Start, inflextion and endpoints of a pipe (3D coordinates) / Anfangs-, Knick- und Endpunkte der Leitung (3D Koordinaten) / Points de départ, intermédiaires et d’arrivée de la conduite (coordonnées 3D)';
  ALTER TABLE tww_od.reach ADD COLUMN reliner_material  integer ;
@@ -1531,7 +1541,7 @@ COMMENT ON COLUMN tww_od.cover.brand IS 'Name of manufacturer / Name der Herstel
  ALTER TABLE tww_od.cover ADD COLUMN cover_shape  integer ;
 COMMENT ON COLUMN tww_od.cover.cover_shape IS 'shape of cover / Form des Deckels / Forme du couvercle';
  ALTER TABLE tww_od.cover ADD COLUMN depth  smallint ;
-COMMENT ON COLUMN tww_od.cover.depth IS 'yyy_redundantes Funktionsattribut Maechtigkeit. Numerisch [mm]. Funktion (berechneter Wert) = zugehöriger Deckel.Kote minus Abwasserknoten.Sohlenkote.(falls die Sohlenkote nicht separat erfasst, dann ist es die tiefer liegende Hal-tungspunkt.Kote) / redundantes Funktionsattribut Maechtigkeit. Numerisch [mm]. Funktion (berechneter Wert) = zugehöriger Deckel.Kote minus Abwasserknoten.Sohlenkote.(falls die Sohlenkote nicht separat erfasst, dann ist es die tiefer liegende Haltungspunkt.Kote) / Attribut de fonction EPAISSEUR redondant, numérique [mm]. Fonction (valeur calculée) = COUVERCLE.COTE correspondant moins NŒUD_RESEAU.COTE_RADIER (si la cote radier ne peut pas être saisie séparément, prendre la POINT_TRONCON.COTE la plus basse.';
+COMMENT ON COLUMN tww_od.cover.depth IS 'Redundant Function attribut depth. Function (calculated value) = associated wastewater_node.bottom_level minus cover.level (if bottom_level is not recorded separately, then it is the lower-lying reach_point.level). / redundantes Funktionsattribut Maechtigkeit. Funktion (berechneter Wert) = zugehöriger Deckel.Kote minus Abwasserknoten.Sohlenkote.(falls die Sohlenkote nicht separat erfasst, dann ist es die tiefer liegende Haltungspunkt.Kote) / Attribut de fonction EPAISSEUR redondant, numérique [mm]. Fonction (valeur calculée) = COUVERCLE.COTE correspondant moins NŒUD_RESEAU.COTE_RADIER (si la cote radier ne peut pas être saisie séparément, prendre la POINT_TRONCON.COTE la plus basse.';
  ALTER TABLE tww_od.cover ADD COLUMN diameter  smallint ;
 COMMENT ON COLUMN tww_od.cover.diameter IS 'yyy_Abmessung des Deckels (bei eckigen Deckeln minimale Abmessung) / Abmessung des Deckels (bei eckigen Deckeln minimale Abmessung) / Dimension du couvercle (dimension minimale pour couvercle anguleux)';
  ALTER TABLE tww_od.cover ADD COLUMN fastening  integer ;
@@ -1543,13 +1553,14 @@ COMMENT ON COLUMN tww_od.cover.material IS 'Material of cover / Deckelmaterial /
  ALTER TABLE tww_od.cover ADD COLUMN positional_accuracy  integer ;
 COMMENT ON COLUMN tww_od.cover.positional_accuracy IS 'Quantfication of accuarcy of position of cover (center hole) / Quantifizierung der Genauigkeit der Lage des Deckels (Pickelloch) / Plage de précision des coordonnées planimétriques du couvercle.';
 
---ALTER TABLE tww_od.cover ADD COLUMN situation_geometry geometry('POINT', 2056);
---CREATE INDEX in_tww_cover_situation_geometry ON tww_od.cover USING gist (situation_geometry );
---COMMENT ON COLUMN tww_od.cover.situation_geometry IS 'Situation of cover (cover hole), National position coordinates (East, North) / Lage des Deckels (Pickelloch) / Positionnement du couvercle (milieu du couvercle)';
+--ALTER TABLE tww_od.cover ADD COLUMN situation_geometry geometry('POINT', :SRID);
+-- CREATE INDEX in_tww_cover_situation_geometry ON tww_od.cover USING gist (situation_geometry );
+-- COMMENT ON COLUMN tww_od.cover.situation_geometry IS 'Situation of cover (cover hole), National position coordinates (East, North) / Lage des Deckels (Pickelloch) / Positionnement du couvercle (milieu du couvercle)';
 
-ALTER TABLE tww_od.cover ADD COLUMN situation3d_geometry geometry('POINTZ', 2056);
+ALTER TABLE tww_od.cover ADD COLUMN situation3d_geometry geometry('POINTZ', :SRID);
 CREATE INDEX in_tww_cover_situation3d_geometry ON tww_od.cover USING gist (situation3d_geometry );
 COMMENT ON COLUMN tww_od.cover.situation3d_geometry IS 'Situation of cover (cover hole), National position coordinates (East, North) / Lage des Deckels (Pickelloch) / Positionnement du couvercle (milieu du couvercle)';
+
  ALTER TABLE tww_od.cover ADD COLUMN sludge_bucket  integer ;
 COMMENT ON COLUMN tww_od.cover.sludge_bucket IS 'yyy_Angabe, ob der Deckel mit einem Schlammeimer versehen ist oder nicht / Angabe, ob der Deckel mit einem Schlammeimer versehen ist oder nicht / Indication si le couvercle est pourvu ou non d''un ramasse-boues';
  ALTER TABLE tww_od.cover ADD COLUMN venting  integer ;
@@ -1652,7 +1663,7 @@ WITH (
 CREATE SEQUENCE tww_od.seq_flushing_nozzle_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
  ALTER TABLE tww_od.flushing_nozzle ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','flushing_nozzle');
 COMMENT ON COLUMN tww_od.flushing_nozzle.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
-ALTER TABLE tww_od.flushing_nozzle ADD COLUMN situation_geometry geometry('POINT', 2056);
+ALTER TABLE tww_od.flushing_nozzle ADD COLUMN situation_geometry geometry('POINT', :SRID);
 CREATE INDEX in_tww_flushing_nozzle_situation_geometry ON tww_od.flushing_nozzle USING gist (situation_geometry );
 COMMENT ON COLUMN tww_od.flushing_nozzle.situation_geometry IS '';
 -------
@@ -1713,10 +1724,10 @@ COMMENT ON COLUMN tww_od.building.obj_id IS 'INTERLIS STANDARD OID (with Postfix
 COMMENT ON COLUMN tww_od.building.house_number IS 'House number based on cadastral register / Hausnummer gemäss Grundbuch / Numéro de bâtiment selon le registre foncier';
  ALTER TABLE tww_od.building ADD COLUMN location_name  varchar(50) ;
 COMMENT ON COLUMN tww_od.building.location_name IS 'Street name or name of the location / Strassenname oder Ortsbezeichnung / Nom de la route ou du lieu';
-ALTER TABLE tww_od.building ADD COLUMN perimeter_geometry geometry('CURVEPOLYGON', 2056);
+ALTER TABLE tww_od.building ADD COLUMN perimeter_geometry geometry('CURVEPOLYGON', :SRID);
 CREATE INDEX in_tww_building_perimeter_geometry ON tww_od.building USING gist (perimeter_geometry );
 COMMENT ON COLUMN tww_od.building.perimeter_geometry IS 'Boundary points of the perimeter / Begrenzungspunkte der Fläche / Points de délimitation de la surface';
-ALTER TABLE tww_od.building ADD COLUMN reference_point_geometry geometry('POINT', 2056);
+ALTER TABLE tww_od.building ADD COLUMN reference_point_geometry geometry('POINT', :SRID);
 CREATE INDEX in_tww_building_reference_point_geometry ON tww_od.building USING gist (reference_point_geometry );
 COMMENT ON COLUMN tww_od.building.reference_point_geometry IS 'National position coordinates (East, North) (relevant point for e.g. address) / Landeskoordinate Ost/Nord (massgebender Bezugspunkt für z.B. Adressdaten ) / Coordonnées nationales Est/Nord (Point de référence pour la détermination de l''adresse par exemple)';
 -------
@@ -1742,7 +1753,7 @@ CREATE SEQUENCE tww_od.seq_reservoir_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 
 COMMENT ON COLUMN tww_od.reservoir.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.reservoir ADD COLUMN location_name  varchar(50) ;
 COMMENT ON COLUMN tww_od.reservoir.location_name IS 'Street name or name of the location / Strassenname oder Ortsbezeichnung / Nom de la route ou du lieu';
-ALTER TABLE tww_od.reservoir ADD COLUMN situation_geometry geometry('POINT', 2056);
+ALTER TABLE tww_od.reservoir ADD COLUMN situation_geometry geometry('POINT', :SRID);
 CREATE INDEX in_tww_reservoir_situation_geometry ON tww_od.reservoir USING gist (situation_geometry );
 COMMENT ON COLUMN tww_od.reservoir.situation_geometry IS 'National position coordinates (East, North) / Landeskoordinate Ost/Nord / Coordonnées nationales Est/Nord';
 -------
@@ -1772,7 +1783,7 @@ COMMENT ON COLUMN tww_od.individual_surface.function IS 'Type of usage of surfac
 COMMENT ON COLUMN tww_od.individual_surface.inclination IS 'yyy_Mittlere Neigung der Oberfläche in Promill / Mittlere Neigung der Oberfläche in Promill / Pente moyenne de la surface en promille';
  ALTER TABLE tww_od.individual_surface ADD COLUMN pavement  integer ;
 COMMENT ON COLUMN tww_od.individual_surface.pavement IS 'Type of pavement / Art der Befestigung / Genre de couverture du sol';
-ALTER TABLE tww_od.individual_surface ADD COLUMN perimeter_geometry geometry('CURVEPOLYGON', 2056);
+ALTER TABLE tww_od.individual_surface ADD COLUMN perimeter_geometry geometry('CURVEPOLYGON', :SRID);
 CREATE INDEX in_tww_individual_surface_perimeter_geometry ON tww_od.individual_surface USING gist (perimeter_geometry );
 COMMENT ON COLUMN tww_od.individual_surface.perimeter_geometry IS 'Boundary points of the perimeter / Begrenzungspunkte der Fläche / Points de délimitation de la surface';
 -------
@@ -1798,7 +1809,7 @@ CREATE SEQUENCE tww_od.seq_fountain_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 S
 COMMENT ON COLUMN tww_od.fountain.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.fountain ADD COLUMN location_name  varchar(50) ;
 COMMENT ON COLUMN tww_od.fountain.location_name IS 'Street name or name of the location / Strassenname oder Ortsbezeichnung / Nom de la route ou du lieu';
-ALTER TABLE tww_od.fountain ADD COLUMN situation_geometry geometry('POINT', 2056);
+ALTER TABLE tww_od.fountain ADD COLUMN situation_geometry geometry('POINT', :SRID);
 CREATE INDEX in_tww_fountain_situation_geometry ON tww_od.fountain USING gist (situation_geometry );
 COMMENT ON COLUMN tww_od.fountain.situation_geometry IS 'National position coordinates (East, North) / Landeskoordinate Ost/Nord / Coordonnées nationales Est/Nord';
 -------
@@ -1829,7 +1840,7 @@ COMMENT ON COLUMN tww_od.log_card.information_source IS 'Categories for informat
  ALTER TABLE tww_od.log_card ADD COLUMN person_in_charge  varchar(50) ;
 COMMENT ON COLUMN tww_od.log_card.person_in_charge IS 'Person in charge that created the log_card / Sachbearbeiter, der die Stammkarte erstellt hat. / Technicien ayant remplir la fiche technique.';
  ALTER TABLE tww_od.log_card ADD COLUMN remark  varchar(80) ;
-COMMENT ON COLUMN tww_od.log_card.remark IS 'General remarks';
+COMMENT ON COLUMN tww_od.log_card.remark IS 'If log_card Other insert description here / Falls Stammkarte Uebrige hier Beschrieb einfügen / Si FICHE_TECHNIQUE Autres, insérer ici la description';
  ALTER TABLE tww_od.log_card ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
 COMMENT ON COLUMN tww_od.log_card.last_modification IS 'Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE';
  ALTER TABLE tww_od.log_card ADD COLUMN fk_dataowner varchar(16);
@@ -1879,9 +1890,9 @@ COMMENT ON COLUMN tww_od.catchment_area.identifier IS '';
 COMMENT ON COLUMN tww_od.catchment_area.infiltration_current IS 'yyy_Das Niederschlagsabwasser wird ganz oder teilweise einer Versickerungsanlage zugeführt / Das Niederschlagsabwasser wird ganz oder teilweise einer Versickerungsanlage zugeführt / Les eaux pluviales sont amenées complètement ou partiellement à une installation d’infiltration';
  ALTER TABLE tww_od.catchment_area ADD COLUMN infiltration_planned  integer ;
 COMMENT ON COLUMN tww_od.catchment_area.infiltration_planned IS 'In the future the rain water will  be completly or partially infiltrated in a infiltration unit. / Das Niederschlagsabwasser wird in Zukunft ganz oder teilweise einer Versickerungsanlage zugeführt / Les eaux pluviales seront amenées complètement ou partiellement à une installation d’infiltration';
-ALTER TABLE tww_od.catchment_area ADD COLUMN perimeter_geometry geometry('CURVEPOLYGON', 2056);
+ALTER TABLE tww_od.catchment_area ADD COLUMN perimeter_geometry geometry('CURVEPOLYGON', :SRID);
 CREATE INDEX in_tww_catchment_area_perimeter_geometry ON tww_od.catchment_area USING gist (perimeter_geometry );
-COMMENT ON COLUMN tww_od.catchment_area.perimeter_geometry IS 'Boundary points of the perimeter sub catchement area / Begrenzungspunkte des Teileinzugsgebiets / Points de délimitation du bassin versant partiel';
+COMMENT ON COLUMN tww_od.catchment_area.perimeter_geometry IS 'Boundary points of the perimeter sub catchment area / Begrenzungspunkte des Teileinzugsgebiets / Points de délimitation du bassin versant partiel';
  ALTER TABLE tww_od.catchment_area ADD COLUMN population_density_current  smallint ;
 COMMENT ON COLUMN tww_od.catchment_area.population_density_current IS 'yyy_Dichte der (physischen) Einwohner im Ist-Zustand / Dichte der (physischen) Einwohner im Ist-Zustand / Densité (physique) de la population actuelle';
  ALTER TABLE tww_od.catchment_area ADD COLUMN population_density_planned  smallint ;
@@ -1990,7 +2001,7 @@ COMMENT ON COLUMN tww_od.measuring_point.kind IS 'yyy_Art der Untersuchungsstell
 COMMENT ON COLUMN tww_od.measuring_point.purpose IS 'Purpose of measurement / Zweck der Messung / Objet de la mesure';
  ALTER TABLE tww_od.measuring_point ADD COLUMN remark  varchar(80) ;
 COMMENT ON COLUMN tww_od.measuring_point.remark IS 'General remarks / Allgemeine Bemerkungen / Remarques générales';
-ALTER TABLE tww_od.measuring_point ADD COLUMN situation_geometry geometry('POINT', 2056);
+ALTER TABLE tww_od.measuring_point ADD COLUMN situation_geometry geometry('POINT', :SRID);
 CREATE INDEX in_tww_measuring_point_situation_geometry ON tww_od.measuring_point USING gist (situation_geometry );
 COMMENT ON COLUMN tww_od.measuring_point.situation_geometry IS 'National position coordinates (East, North) / Landeskoordinate Ost/Nord / Coordonnées nationales Est/Nord';
  ALTER TABLE tww_od.measuring_point ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
@@ -2140,7 +2151,7 @@ COMMENT ON COLUMN tww_od.overflow.brand IS 'Manufacturer of the electro-mechanin
  ALTER TABLE tww_od.overflow ADD COLUMN control  integer ;
 COMMENT ON COLUMN tww_od.overflow.control IS 'yyy_Steuer- und Regelorgan für die Einbaute / Steuer- und Regelorgan für die Einbaute / Dispositifs de commande et de régulation des installations';
  ALTER TABLE tww_od.overflow ADD COLUMN discharge_point  varchar(20) ;
-COMMENT ON COLUMN tww_od.overflow.discharge_point IS 'Identifier of discharge_point in which the overflow is discharging (redundant attribute with network follow up or result of that). Is only needed if overflow is discharging into a river (directly or via a rainwater drainage). Foreignkey to discharge_point in class catchement_area_totals in extension Stammkarte. / Bezeichnung der Einleitstelle in die der Ueberlauf entlastet (redundantes Attribut zur Netzverfolgung oder Resultat davon). Muss nur erfasst werden, wenn das Abwasser vom Notüberlauf in ein Gewässer eingeleitet wird (direkt oder über eine Niederschlagsabwasserleitung). Verknüpfung mit Fremdschlüssel zu Einleitstelle in Klasse Gesamteinzugsgebiet in Erweiterung Stammkarte. / Désignation de l''exutoire: A indiquer uniquement lorsque l’eau déversée est rejetée dans un cours d’eau (directement ou indirectement via une conduite d’eaux pluviales). Association à l''exutoire dans la classe BASSIN_VERSANT_COMPLET de l''extension fichier technique.';
+COMMENT ON COLUMN tww_od.overflow.discharge_point IS 'Identifier of discharge_point in which the overflow is discharging (redundant attribute with network follow up or result of that). Is only needed if overflow is discharging into a river (directly or via a rainwater drainage). Foreignkey to discharge_point in class catchment_area_totals in extension Stammkarte. / Bezeichnung der Einleitstelle in die der Ueberlauf entlastet (redundantes Attribut zur Netzverfolgung oder Resultat davon). Muss nur erfasst werden, wenn das Abwasser vom Notüberlauf in ein Gewässer eingeleitet wird (direkt oder über eine Niederschlagsabwasserleitung). Verknüpfung mit Fremdschlüssel zu Einleitstelle in Klasse Gesamteinzugsgebiet in Erweiterung Stammkarte. / Désignation de l''exutoire: A indiquer uniquement lorsque l’eau déversée est rejetée dans un cours d’eau (directement ou indirectement via une conduite d’eaux pluviales). Association à l''exutoire dans la classe BASSIN_VERSANT_COMPLET de l''extension fichier technique.';
  ALTER TABLE tww_od.overflow ADD COLUMN function  integer ;
 COMMENT ON COLUMN tww_od.overflow.function IS 'yyy_Funktion des Überlaufs charakterisiert durch den Teil des Mischwasserabflusses, der aus einem Überlauf in ein Gewässer oder in ein Abwasserbauwerk abgeleitet wird / Funktion des Überlaufs charakterisiert durch den Teil des Mischwasserabflusses, der aus einem Überlauf in ein Gewässer oder in ein Abwasserbauwerk abgeleitet wird. / Type de déversoir caractérisé par la partie de l''eau mixte déversée depuis le déversoir dans un cours d''eau, un plan d''eau ou un ouvrage_resau_as';
  ALTER TABLE tww_od.overflow ADD COLUMN gross_costs  decimal(10,2) ;
@@ -2574,54 +2585,54 @@ FOR EACH ROW EXECUTE PROCEDURE
 
 -------
 -------
-CREATE TABLE tww_od.catchement_area_totals
+CREATE TABLE tww_od.catchment_area_totals
 (
    obj_id varchar(16) NOT NULL,
-   CONSTRAINT pkey_tww_od_catchement_area_totals_obj_id PRIMARY KEY (obj_id)
+   CONSTRAINT pkey_tww_od_catchment_area_totals_obj_id PRIMARY KEY (obj_id)
 )
 WITH (
    OIDS = False
 );
-CREATE SEQUENCE tww_od.seq_catchement_area_totals_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.catchement_area_totals ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','catchement_area_totals');
-COMMENT ON COLUMN tww_od.catchement_area_totals.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
- ALTER TABLE tww_od.catchement_area_totals ADD COLUMN discharge_freight_nh4_n  integer ;
-COMMENT ON COLUMN tww_od.catchement_area_totals.discharge_freight_nh4_n IS 'based on base module chapter 8.5. of directive "Abwasserbewirtschaftung bei Regenwetter" of VSA (2019)" / Gemäss Basismodul Kapitel 8.5 der Richtlinie "Abwasserentsorgung bei Regenwetter" des VSA (2019) / Selon module de base chapitre 8.5 directive "Gestion des eaux urbaines par temps de pluie" du VSA (2019)';
- ALTER TABLE tww_od.catchement_area_totals ADD COLUMN discharge_proportion_nh4_n  decimal (5,2) ;
-COMMENT ON COLUMN tww_od.catchement_area_totals.discharge_proportion_nh4_n IS 'based on base module chapter 8.5. of directive "Abwasserbewirtschaftung bei Regenwetter" of VSA (2019)" / Gemäss Basismodul Kapitel 8.5 der Richtlinie "Abwasserentsorgung bei Regenwetter" des VSA (2019) / Selon module de base chapitre 8.5 directive "Gestion des eaux urbaines par temps de pluie" du VSA (2019)';
- ALTER TABLE tww_od.catchement_area_totals ADD COLUMN identifier  varchar(20) ;
-COMMENT ON COLUMN tww_od.catchement_area_totals.identifier IS '';
- ALTER TABLE tww_od.catchement_area_totals ADD COLUMN population  integer ;
-COMMENT ON COLUMN tww_od.catchement_area_totals.population IS 'Number of inhabitants (population) in the direct catchement area as informative value. Use  im direkten Einzugsgebiet als informativer Wert. Der massgebende Schmutzabwasseranfall ist im gleichnamigen entsprechenden Attribut anzugeben. / Anzahl Einwohner im direkten Einzugsgebiet als informativer Wert. Der massgebende Schmutzabwasseranfall ist im gleichnamigen entsprechenden Attribut anzugeben. / Nombre d''habitants dans le bassin versant direct, valeur à titre indicatif. Le débit d''eaux usées déterminant est spécifié dans l''attribut correspondant.';
- ALTER TABLE tww_od.catchement_area_totals ADD COLUMN population_dim  integer ;
-COMMENT ON COLUMN tww_od.catchement_area_totals.population_dim IS 'yyy_Anzahl Einwohner im direkten Einzugsgebiet (Dimensionierung) als informativer Wert. Der massgebende Schmutzabwasseranfall ist im gleichnamigen entsprechenden Attribut anzugeben. / Anzahl Einwohner im direkten Einzugsgebiet (Dimensionierung) als informativer Wert. Der massgebende Schmutzabwasseranfall ist im gleichnamigen entsprechenden Attribut anzugeben. / Nombre d’habitants dans le bassin versant direct (dimensionnement), valeur indicative. Le débit des eaux usées doit être indiqué dans l’attribut du même nom.';
- ALTER TABLE tww_od.catchement_area_totals ADD COLUMN sewer_infiltration_water  decimal(9,3) ;
-COMMENT ON COLUMN tww_od.catchement_area_totals.sewer_infiltration_water IS 'yyy_Totaler Fremdwasseranfall beim Bauwerk inkl. aller obenliegenden Gebiete. Angabe Jahresmittelwert (24 Std.-Mittel) in l/s. / Totaler Fremdwasseranfall beim Bauwerk inkl. aller obenliegenden Gebiete. Angabe Jahresmittelwert (24 Std.-Mittel) in l/s. / Débit total d’eaux claires parasites à l’ouvrage, incluant les surfaces en amont. Moyenne annuelle sur 24 h en l/s.';
- ALTER TABLE tww_od.catchement_area_totals ADD COLUMN surface_area  decimal(8,2) ;
-COMMENT ON COLUMN tww_od.catchement_area_totals.surface_area IS 'yyy_Bruttofläche des direkten Einzugsgebietes im Misch- resp. Trennsystem gemäss Abbildung. / Bruttofläche des direkten Einzugsgebietes im Misch- resp. Trennsystem gemäss Abbildung. / Surface brute du bassin versant direct en système unitaire, resp. séparatif, selon illustration.';
- ALTER TABLE tww_od.catchement_area_totals ADD COLUMN surface_dim  decimal(8,2) ;
-COMMENT ON COLUMN tww_od.catchement_area_totals.surface_dim IS 'yyy_Bruttofläche des Einzugsgebiets Dimensionierung. Dieses Einzugsgebiet umfasst in der Regel alle obenliegenden Flächen des Regenbeckenüberlaufbeckens (inkl. denjenigen von Regenüberläufen, Pumpwerken, etc.) oder alle obenliegenden Flächen bis zum nächsten Regenüberlaufbecken. / Bruttofläche des Einzugsgebiets Dimensionierung. Dieses Einzugsgebiet umfasst in der Regel alle obenliegenden Flächen des Regenbeckenüberlaufbeckens (inkl. denjenigen von Regenüberläufen, Pumpwerken, etc.) oder alle obenliegenden Flächen bis zum nächsten Regenüberlaufbecken. / Surface brute du bassin versant de dimensionnement. Lors de la saisie des bassins d’eaux pluviales, il faut également indiquer le bassin versant de dimensionnement. Ce bassin versant contient toutes les surfaces en amont du BEP (incl. en amont les déversoirs d’orage, stations de pompage, etc.) jusqu''au prochain BEP.';
- ALTER TABLE tww_od.catchement_area_totals ADD COLUMN surface_imp_dim  decimal(8,2) ;
-COMMENT ON COLUMN tww_od.catchement_area_totals.surface_imp_dim IS 'yyy_Befestigte Fläche des Einzugsgebiets Dimensionierung im Misch- resp. Trennsystem (nur Regenüberlaufbecken). Im Trennsystem ist für die Stammkarte die an das Schmutzabwasser angeschlossene befestigte Fläche anzugeben. Es muss mindestens eine Fläche (befestigt oder reduziert) angegeben werden. / Befestigte Fläche des Einzugsgebiets Dimensionierung im Misch- resp. Trennsystem (nur Regenüberlaufbecken). Im Trennsystem ist für die Stammkarte die an das Schmutzabwasser angeschlossene befestigte Fläche anzugeben. Es muss mindestens eine Fläche (befestigt oder reduziert) angegeben werden. / Surface imperméabilisée du bassin versant de dimensionnement dans le système unitaire, resp. séparatif (BEP uniquement). Dans un système séparatif, il faut saisir dans la fiche technique la surface imperméabilisée raccordée aux eaux usées. Au minimum une surface (imperméabilisée ou réduite) doit être indiquée.';
- ALTER TABLE tww_od.catchement_area_totals ADD COLUMN surface_imp_red  decimal(8,2) ;
-COMMENT ON COLUMN tww_od.catchement_area_totals.surface_imp_red IS 'yyy_Impermeable suface des direkten Einzugsgebiets im Misch- resp. Trennsystem gemäss Abbildung. Im Trennsystem ist für die Stammkarte die an das Schmutzabwasser ange-schlossene befestigte Fläche anzugeben. Es muss mindestens eine Fläche (befestigt oder reduziert) angegeben werden. / Befestigte Fläche des direkten Einzugsgebiets im Misch- resp. Trennsystem gemäss Abbildung. Im Trennsystem ist für die Stammkarte die an das Schmutzabwasser ange-schlossene befestigte Fläche anzugeben. Es muss mindestens eine Fläche (befestigt oder reduziert) angegeben werden. / Surface imperméabilisée du bassin versant  direct pour un système unitaire, resp. séparatif selon illustration. Dans un système séparatif, il faut saisir dans la fiche technique la surface réduite raccordée aux eaux usées. Au minimum une surface (imperméabilisée ou réduite) doit être indiquée.';
- ALTER TABLE tww_od.catchement_area_totals ADD COLUMN surface_red  decimal(8,2) ;
-COMMENT ON COLUMN tww_od.catchement_area_totals.surface_red IS 'yyy_Reduzierte Fläche des direkten Einzugsgebiets im Misch- resp. Trennsystem gemäss Abbildung. Im Trennsystem ist für die Stammkarte die an das Schmutzabwasser ange-schlossene reduzierte Fläche anzugeben. Es muss mindestens eine Fläche (befestigt oder reduziert) angegeben werden. / Reduzierte Fläche des direkten Einzugsgebiets im Misch- resp. Trennsystem gemäss Abbildung. Im Trennsystem ist für die Stammkarte die an das Schmutzabwasser ange-schlossene reduzierte Fläche anzugeben. Es muss mindestens eine Fläche (befestigt oder reduziert) angegeben werden. / Surface réduite du bassin versant direct pour un système unitaire, resp. séparatif selon illustration. Dans un système séparatif, il faut saisir la surface réduite raccordée aux eaux usées. Au minimum une surface (imperméabilisée ou réduite) doit être indiquée.';
- ALTER TABLE tww_od.catchement_area_totals ADD COLUMN surface_red_dim  decimal(8,2) ;
-COMMENT ON COLUMN tww_od.catchement_area_totals.surface_red_dim IS 'yyy_Reduzierte Fläche des Einzugsgebiets Dimensionierung im Misch- resp. Trennsystem (nur Regenüberlaufbecken). Im Trennsystem ist für die Stammkarte die an das Schmutzabwasser angeschlossene reduzierte Fläche anzugeben. Es muss mindestens eine Fläche (befestigt oder reduziert) angegeben werden. / Reduzierte Fläche des Einzugsgebiets Dimensionierung im Misch- resp. Trennsystem (nur Regenüberlaufbecken). Im Trennsystem ist für die Stammkarte die an das Schmutzabwasser angeschlossene reduzierte Fläche anzugeben. Es muss mindestens eine Fläche (befestigt oder reduziert) angegeben werden. / Surface réduite du bassin versant de dimensionnement dans le système unitaire, resp. séparatif. Dans un système séparatif, il faut saisir la surface réduite raccordée aux eaux usées. Au minimum une surface (imperméabilisée ou réduite) doit être indiquée.';
- ALTER TABLE tww_od.catchement_area_totals ADD COLUMN waste_water_production  decimal(9,3) ;
-COMMENT ON COLUMN tww_od.catchement_area_totals.waste_water_production IS 'Total waste water production at construction of all areas above. Yearly average (of 24h average) in l/s. / Totaler Schmutzabwasseranfall beim Bauwerk inkl. aller obenliegenden Gebiete. Angabe Jahresmittelwert (24 Std.-Mittel) in l/s. / Débit total d’eaux usées à l’ouvrage, incluant les surfaces en amont. Moyenne annuelle sur 24 h en l/s.';
- ALTER TABLE tww_od.catchement_area_totals ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
-COMMENT ON COLUMN tww_od.catchement_area_totals.last_modification IS 'Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE';
- ALTER TABLE tww_od.catchement_area_totals ADD COLUMN fk_dataowner varchar(16);
-COMMENT ON COLUMN tww_od.catchement_area_totals.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
- ALTER TABLE tww_od.catchement_area_totals ADD COLUMN fk_provider varchar(16);
-COMMENT ON COLUMN tww_od.catchement_area_totals.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
+CREATE SEQUENCE tww_od.seq_catchment_area_totals_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
+ ALTER TABLE tww_od.catchment_area_totals ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','catchment_area_totals');
+COMMENT ON COLUMN tww_od.catchment_area_totals.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
+ ALTER TABLE tww_od.catchment_area_totals ADD COLUMN discharge_freight_nh4_n  integer ;
+COMMENT ON COLUMN tww_od.catchment_area_totals.discharge_freight_nh4_n IS 'based on base module chapter 8.5. of directive "Abwasserbewirtschaftung bei Regenwetter" of VSA (2019)" / Gemäss Basismodul Kapitel 8.5 der Richtlinie "Abwasserentsorgung bei Regenwetter" des VSA (2019) / Selon module de base chapitre 8.5 directive "Gestion des eaux urbaines par temps de pluie" du VSA (2019)';
+ ALTER TABLE tww_od.catchment_area_totals ADD COLUMN discharge_proportion_nh4_n  decimal (5,2) ;
+COMMENT ON COLUMN tww_od.catchment_area_totals.discharge_proportion_nh4_n IS 'based on base module chapter 8.5. of directive "Abwasserbewirtschaftung bei Regenwetter" of VSA (2019)" / Gemäss Basismodul Kapitel 8.5 der Richtlinie "Abwasserentsorgung bei Regenwetter" des VSA (2019) / Selon module de base chapitre 8.5 directive "Gestion des eaux urbaines par temps de pluie" du VSA (2019)';
+ ALTER TABLE tww_od.catchment_area_totals ADD COLUMN identifier  varchar(20) ;
+COMMENT ON COLUMN tww_od.catchment_area_totals.identifier IS '';
+ ALTER TABLE tww_od.catchment_area_totals ADD COLUMN population  integer ;
+COMMENT ON COLUMN tww_od.catchment_area_totals.population IS 'Number of inhabitants (population) in the direct catchment area as informative value. Use  im direkten Einzugsgebiet als informativer Wert. Der massgebende Schmutzabwasseranfall ist im gleichnamigen entsprechenden Attribut anzugeben. / Anzahl Einwohner im direkten Einzugsgebiet als informativer Wert. Der massgebende Schmutzabwasseranfall ist im gleichnamigen entsprechenden Attribut anzugeben. / Nombre d''habitants dans le bassin versant direct, valeur à titre indicatif. Le débit d''eaux usées déterminant est spécifié dans l''attribut correspondant.';
+ ALTER TABLE tww_od.catchment_area_totals ADD COLUMN population_dim  integer ;
+COMMENT ON COLUMN tww_od.catchment_area_totals.population_dim IS 'yyy_Anzahl Einwohner im direkten Einzugsgebiet (Dimensionierung) als informativer Wert. Der massgebende Schmutzabwasseranfall ist im gleichnamigen entsprechenden Attribut anzugeben. / Anzahl Einwohner im direkten Einzugsgebiet (Dimensionierung) als informativer Wert. Der massgebende Schmutzabwasseranfall ist im gleichnamigen entsprechenden Attribut anzugeben. / Nombre d’habitants dans le bassin versant direct (dimensionnement), valeur indicative. Le débit des eaux usées doit être indiqué dans l’attribut du même nom.';
+ ALTER TABLE tww_od.catchment_area_totals ADD COLUMN sewer_infiltration_water  decimal(9,3) ;
+COMMENT ON COLUMN tww_od.catchment_area_totals.sewer_infiltration_water IS 'yyy_Totaler Fremdwasseranfall beim Bauwerk inkl. aller obenliegenden Gebiete. Angabe Jahresmittelwert (24 Std.-Mittel) in l/s. / Totaler Fremdwasseranfall beim Bauwerk inkl. aller obenliegenden Gebiete. Angabe Jahresmittelwert (24 Std.-Mittel) in l/s. / Débit total d’eaux claires parasites à l’ouvrage, incluant les surfaces en amont. Moyenne annuelle sur 24 h en l/s.';
+ ALTER TABLE tww_od.catchment_area_totals ADD COLUMN surface_area  decimal(8,2) ;
+COMMENT ON COLUMN tww_od.catchment_area_totals.surface_area IS 'yyy_Bruttofläche des direkten Einzugsgebietes im Misch- resp. Trennsystem gemäss Abbildung. / Bruttofläche des direkten Einzugsgebietes im Misch- resp. Trennsystem gemäss Abbildung. / Surface brute du bassin versant direct en système unitaire, resp. séparatif, selon illustration.';
+ ALTER TABLE tww_od.catchment_area_totals ADD COLUMN surface_dim  decimal(8,2) ;
+COMMENT ON COLUMN tww_od.catchment_area_totals.surface_dim IS 'yyy_Bruttofläche des Einzugsgebiets Dimensionierung. Dieses Einzugsgebiet umfasst in der Regel alle obenliegenden Flächen des Regenbeckenüberlaufbeckens (inkl. denjenigen von Regenüberläufen, Pumpwerken, etc.) oder alle obenliegenden Flächen bis zum nächsten Regenüberlaufbecken. / Bruttofläche des Einzugsgebiets Dimensionierung. Dieses Einzugsgebiet umfasst in der Regel alle obenliegenden Flächen des Regenbeckenüberlaufbeckens (inkl. denjenigen von Regenüberläufen, Pumpwerken, etc.) oder alle obenliegenden Flächen bis zum nächsten Regenüberlaufbecken. / Surface brute du bassin versant de dimensionnement. Lors de la saisie des bassins d’eaux pluviales, il faut également indiquer le bassin versant de dimensionnement. Ce bassin versant contient toutes les surfaces en amont du BEP (incl. en amont les déversoirs d’orage, stations de pompage, etc.) jusqu''au prochain BEP.';
+ ALTER TABLE tww_od.catchment_area_totals ADD COLUMN surface_imp  decimal(8,2) ;
+COMMENT ON COLUMN tww_od.catchment_area_totals.surface_imp IS 'yyy_Impermeable suface des direkten Einzugsgebiets im Misch- resp. Trennsystem gemäss Abbildung. Im Trennsystem ist für die Stammkarte die an das Schmutzabwasser ange-schlossene befestigte Fläche anzugeben. Es muss mindestens eine Fläche (befestigt oder reduziert) angegeben werden. / Befestigte Fläche des direkten Einzugsgebiets im Misch- resp. Trennsystem gemäss Abbildung. Im Trennsystem ist für die Stammkarte die an das Schmutzabwasser ange-schlossene befestigte Fläche anzugeben. Es muss mindestens eine Fläche (befestigt oder reduziert) angegeben werden. / Surface imperméabilisée du bassin versant  direct pour un système unitaire, resp. séparatif selon illustration. Dans un système séparatif, il faut saisir dans la fiche technique la surface réduite raccordée aux eaux usées. Au minimum une surface (imperméabilisée ou réduite) doit être indiquée.';
+ ALTER TABLE tww_od.catchment_area_totals ADD COLUMN surface_imp_dim  decimal(8,2) ;
+COMMENT ON COLUMN tww_od.catchment_area_totals.surface_imp_dim IS 'yyy_Befestigte Fläche des Einzugsgebiets Dimensionierung im Misch- resp. Trennsystem (nur Regenüberlaufbecken). Im Trennsystem ist für die Stammkarte die an das Schmutzabwasser angeschlossene befestigte Fläche anzugeben. Es muss mindestens eine Fläche (befestigt oder reduziert) angegeben werden. / Befestigte Fläche des Einzugsgebiets Dimensionierung im Misch- resp. Trennsystem (nur Regenüberlaufbecken). Im Trennsystem ist für die Stammkarte die an das Schmutzabwasser angeschlossene befestigte Fläche anzugeben. Es muss mindestens eine Fläche (befestigt oder reduziert) angegeben werden. / Surface imperméabilisée du bassin versant de dimensionnement dans le système unitaire, resp. séparatif (BEP uniquement). Dans un système séparatif, il faut saisir dans la fiche technique la surface imperméabilisée raccordée aux eaux usées. Au minimum une surface (imperméabilisée ou réduite) doit être indiquée.';
+ ALTER TABLE tww_od.catchment_area_totals ADD COLUMN surface_red  decimal(8,2) ;
+COMMENT ON COLUMN tww_od.catchment_area_totals.surface_red IS 'yyy_Reduzierte Fläche des direkten Einzugsgebiets im Misch- resp. Trennsystem gemäss Abbildung. Im Trennsystem ist für die Stammkarte die an das Schmutzabwasser ange-schlossene reduzierte Fläche anzugeben. Es muss mindestens eine Fläche (befestigt oder reduziert) angegeben werden. / Reduzierte Fläche des direkten Einzugsgebiets im Misch- resp. Trennsystem gemäss Abbildung. Im Trennsystem ist für die Stammkarte die an das Schmutzabwasser ange-schlossene reduzierte Fläche anzugeben. Es muss mindestens eine Fläche (befestigt oder reduziert) angegeben werden. / Surface réduite du bassin versant direct pour un système unitaire, resp. séparatif selon illustration. Dans un système séparatif, il faut saisir la surface réduite raccordée aux eaux usées. Au minimum une surface (imperméabilisée ou réduite) doit être indiquée.';
+ ALTER TABLE tww_od.catchment_area_totals ADD COLUMN surface_red_dim  decimal(8,2) ;
+COMMENT ON COLUMN tww_od.catchment_area_totals.surface_red_dim IS 'yyy_Reduzierte Fläche des Einzugsgebiets Dimensionierung im Misch- resp. Trennsystem (nur Regenüberlaufbecken). Im Trennsystem ist für die Stammkarte die an das Schmutzabwasser angeschlossene reduzierte Fläche anzugeben. Es muss mindestens eine Fläche (befestigt oder reduziert) angegeben werden. / Reduzierte Fläche des Einzugsgebiets Dimensionierung im Misch- resp. Trennsystem (nur Regenüberlaufbecken). Im Trennsystem ist für die Stammkarte die an das Schmutzabwasser angeschlossene reduzierte Fläche anzugeben. Es muss mindestens eine Fläche (befestigt oder reduziert) angegeben werden. / Surface réduite du bassin versant de dimensionnement dans le système unitaire, resp. séparatif. Dans un système séparatif, il faut saisir la surface réduite raccordée aux eaux usées. Au minimum une surface (imperméabilisée ou réduite) doit être indiquée.';
+ ALTER TABLE tww_od.catchment_area_totals ADD COLUMN waste_water_production  decimal(9,3) ;
+COMMENT ON COLUMN tww_od.catchment_area_totals.waste_water_production IS 'Total waste water production at construction of all areas above. Yearly average (of 24h average) in l/s. / Totaler Schmutzabwasseranfall beim Bauwerk inkl. aller obenliegenden Gebiete. Angabe Jahresmittelwert (24 Std.-Mittel) in l/s. / Débit total d’eaux usées à l’ouvrage, incluant les surfaces en amont. Moyenne annuelle sur 24 h en l/s.';
+ ALTER TABLE tww_od.catchment_area_totals ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
+COMMENT ON COLUMN tww_od.catchment_area_totals.last_modification IS 'Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE';
+ ALTER TABLE tww_od.catchment_area_totals ADD COLUMN fk_dataowner varchar(16);
+COMMENT ON COLUMN tww_od.catchment_area_totals.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
+ ALTER TABLE tww_od.catchment_area_totals ADD COLUMN fk_provider varchar(16);
+COMMENT ON COLUMN tww_od.catchment_area_totals.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
 -------
 CREATE TRIGGER
-update_last_modified_catchement_area_totals
+update_last_modified_catchment_area_totals
 BEFORE UPDATE OR INSERT ON
- tww_od.catchement_area_totals
+ tww_od.catchment_area_totals
 FOR EACH ROW EXECUTE PROCEDURE
  tww_sys.update_last_modified();
 
@@ -2803,7 +2814,7 @@ COMMENT ON COLUMN tww_od.building_group.restaurant_seats_permanent IS 'yyy_Resta
 COMMENT ON COLUMN tww_od.building_group.restructuring_concept IS 'Summary of the concept according to the service offer (GEP sample specification) / Kurzfassung des Konzepts gemäss Leistung Offerte (GEP Musterpflichtenheft) / Version courte du concept en fonction de l''offre de service (Cahier des charges type du PGEE)';
  ALTER TABLE tww_od.building_group ADD COLUMN school_students  smallint ;
 COMMENT ON COLUMN tww_od.building_group.school_students IS 'School: Number of pupils / Schule: Anzahl Schüler / Ecole: nombre d''élèves';
-ALTER TABLE tww_od.building_group ADD COLUMN situation_geometry geometry('POINT', 2056);
+ALTER TABLE tww_od.building_group ADD COLUMN situation_geometry geometry('POINT', :SRID);
 CREATE INDEX in_tww_building_group_situation_geometry ON tww_od.building_group USING gist (situation_geometry );
 COMMENT ON COLUMN tww_od.building_group.situation_geometry IS 'Location of the building group (can be taken from data in the Eidg. Gebäude und Wohnungsregister BAU/GWR) / Lage der Gebäudegruppe (kann aus Daten Eidg. Gebäude und Wohnungsregister BAU/GWR übernommen werden) / Localisation du groupe de bâtiments (peut être repris des données du Registre fédéral des bâtiments et des logements (RegBL))';
  ALTER TABLE tww_od.building_group ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
@@ -2862,8 +2873,8 @@ WITH (
 CREATE SEQUENCE tww_od.seq_farm_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
  ALTER TABLE tww_od.farm ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','farm');
 COMMENT ON COLUMN tww_od.farm.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
- ALTER TABLE tww_od.farm ADD COLUMN agriculture_aerable_surface  decimal(8,2) ;
-COMMENT ON COLUMN tww_od.farm.agriculture_aerable_surface IS 'yyy_Landwirtschaftliche Nutzfläche in ha / Landwirtschaftliche Nutzfläche in ha / Surface agricole utile en ha';
+ ALTER TABLE tww_od.farm ADD COLUMN agriculture_arable_surface  decimal(8,2) ;
+COMMENT ON COLUMN tww_od.farm.agriculture_arable_surface IS 'Arable agricultural area in ha / Landwirtschaftliche Nutzfläche in ha / Surface agricole utile en ha';
  ALTER TABLE tww_od.farm ADD COLUMN cesspit_comment  varchar(100) ;
 COMMENT ON COLUMN tww_od.farm.cesspit_comment IS 'Further remarks cesspit volume / Weitere Anmerkungen zur Güllegrube / Remarques additionnel volume fosse à purin';
  ALTER TABLE tww_od.farm ADD COLUMN cesspit_volume  integer ;
@@ -2882,10 +2893,10 @@ COMMENT ON COLUMN tww_od.farm.conformity IS 'Conformity of Einrichtungen (Gülle
 COMMENT ON COLUMN tww_od.farm.continuance IS 'yyy_Potentieller Fortbestand des Betriebs / Potentieller Fortbestand des Betriebs / Pérennité potentielle de l''exploitation';
  ALTER TABLE tww_od.farm ADD COLUMN continuance_comment  varchar(80) ;
 COMMENT ON COLUMN tww_od.farm.continuance_comment IS 'yyy_Bemerkungen zum Fortbestand des Betriebs / Bemerkungen zum Fortbestand des Betriebs / Remarques concernant la pérennité de l''exploitation';
- ALTER TABLE tww_od.farm ADD COLUMN muck_hill_area_current  decimal(8,2) ;
-COMMENT ON COLUMN tww_od.farm.muck_hill_area_current IS 'yyy_Mistplatz: aktuell vorhandene Fläche in m2 / Mistplatz: aktuell vorhandene Fläche in m2 / Fumière: surface actuelle en m2';
- ALTER TABLE tww_od.farm ADD COLUMN muck_hill_area_nominal  decimal(8,2) ;
-COMMENT ON COLUMN tww_od.farm.muck_hill_area_nominal IS 'yyy_Mistplatz: erforderliche Fläche in m2 (Sollzustand); Vorgabe aus GEP / Mistplatz: erforderliche Fläche in m2 (Sollzustand); Vorgabe aus GEP / Fumière: surface requise en m2 ; exigence selon PGEE';
+ ALTER TABLE tww_od.farm ADD COLUMN dung_heap_area_current  decimal(8,2) ;
+COMMENT ON COLUMN tww_od.farm.dung_heap_area_current IS 'Dung heap: currently available area in m2 / Mistplatz: aktuell vorhandene Fläche in m2 / Fumière: surface actuelle en m2';
+ ALTER TABLE tww_od.farm ADD COLUMN dung_heap_area_nominal  decimal(8,2) ;
+COMMENT ON COLUMN tww_od.farm.dung_heap_area_nominal IS 'dung heap: required area in m2 (target condition); specification from GEP / Mistplatz: erforderliche Fläche in m2 (Sollzustand); Vorgabe aus GEP / Fumière: surface requise en m2 ; exigence selon PGEE';
  ALTER TABLE tww_od.farm ADD COLUMN remark  varchar(80) ;
 COMMENT ON COLUMN tww_od.farm.remark IS 'General remarks / Allgemeine Bemerkungen / Remarques générales';
  ALTER TABLE tww_od.farm ADD COLUMN shepherds_hut_comment  varchar(80) ;
@@ -3034,7 +3045,8 @@ CREATE TABLE tww_vl.organisation_organisation_type () INHERITS (tww_vl.value_lis
 ALTER TABLE tww_vl.organisation_organisation_type ADD CONSTRAINT pkey_tww_vl_organisation_organisation_type_code PRIMARY KEY (code);
  INSERT INTO tww_vl.organisation_organisation_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8608,8608,'waste_water_association','Abwasserverband','association_epuration_eau', 'consorzio_depurazione', 'rrr_Abwasserverband', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.organisation_organisation_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8715,8715,'federation','Bund','federation', 'confederazione', 'rrr_Bund', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.organisation_organisation_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8604,8604,'municipality','Gemeinde','commune', 'comune', 'rrr_Gemeinde', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.organisation_organisation_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8604,8604,'municipality','Gemeinde','commune', 'comune', 'municipiul', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.organisation_organisation_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9319,9319,'municipal_department','Gemeindeabteilung','departement_communal', 'dipartimento_comunale', 'departamentul_municipal', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.organisation_organisation_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8610,8610,'cooperative','Genossenschaft_Korporation','cooperative', 'cooperativa_corporazione', 'rrr_Genossenschaft_Korporation', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.organisation_organisation_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8605,8605,'canton','Kanton','canton', 'cantone', 'rrr_Kanton', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.organisation_organisation_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8606,8606,'private','Privat','prive', 'privato', 'privata', '', '', '', '', '', 'true');
@@ -3128,12 +3140,20 @@ ALTER TABLE tww_od.wastewater_structure ADD COLUMN fk_main_cover varchar(16);
 ALTER TABLE tww_od.wastewater_structure ADD CONSTRAINT rel_wastewater_structure_main_cover FOREIGN KEY (fk_main_cover) REFERENCES tww_od.cover(obj_id) ON UPDATE CASCADE ON DELETE set null;
 CREATE TABLE tww_vl.wastewater_structure_accessibility () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.wastewater_structure_accessibility ADD CONSTRAINT pkey_tww_vl_wastewater_structure_accessibility_code PRIMARY KEY (code);
- INSERT INTO tww_vl.wastewater_structure_accessibility (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3444,3444,'covered','ueberdeckt','couvert', 'coperto', 'capac', '', 'UED', 'CO', '', '', 'true');
+ INSERT INTO tww_vl.wastewater_structure_accessibility (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3444,3444,'covered','ueberdeckt','couvert', 'coperto', 'capac', '', 'UED', 'COU', '', '', 'true');
  INSERT INTO tww_vl.wastewater_structure_accessibility (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3447,3447,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscut', '', 'U', 'I', '', '', 'true');
  INSERT INTO tww_vl.wastewater_structure_accessibility (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3446,3446,'inaccessible','unzugaenglich','inaccessible', 'non_accessibile', 'inaccesibil', '', 'UZG', 'NA', '', '', 'true');
  INSERT INTO tww_vl.wastewater_structure_accessibility (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3445,3445,'accessible','zugaenglich','accessible', 'accessibile', 'accessibil', '', 'ZG', 'A', '', '', 'true');
  ALTER TABLE tww_od.wastewater_structure ADD CONSTRAINT fkey_vl_wastewater_structure_accessibility FOREIGN KEY (accessibility)
  REFERENCES tww_vl.wastewater_structure_accessibility (code) MATCH SIMPLE
+ ON UPDATE RESTRICT ON DELETE RESTRICT;
+CREATE TABLE tww_vl.wastewater_structure_elevation_determination () INHERITS (tww_vl.value_list_base);
+ALTER TABLE tww_vl.wastewater_structure_elevation_determination ADD CONSTRAINT pkey_tww_vl_wastewater_structure_elevation_determination_code PRIMARY KEY (code);
+ INSERT INTO tww_vl.wastewater_structure_elevation_determination (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9321,9321,'accurate','genau','precise', 'precisa', 'precisa', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.wastewater_structure_elevation_determination (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9323,9323,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.wastewater_structure_elevation_determination (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9322,9322,'inaccurate','ungenau','imprecise', 'impreciso', 'imprecisa', '', '', '', '', '', 'true');
+ ALTER TABLE tww_od.wastewater_structure ADD CONSTRAINT fkey_vl_wastewater_structure_elevation_determination FOREIGN KEY (elevation_determination)
+ REFERENCES tww_vl.wastewater_structure_elevation_determination (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.wastewater_structure_financing () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.wastewater_structure_financing ADD CONSTRAINT pkey_tww_vl_wastewater_structure_financing_code PRIMARY KEY (code);
@@ -3426,7 +3446,7 @@ ALTER TABLE tww_vl.special_structure_function ADD CONSTRAINT pkey_tww_vl_special
  INSERT INTO tww_vl.special_structure_function (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (6399,6399,'septic_tank_two_chambers','Faulgrube','fosse_septique_2_compartiments', 'zzz_Faulgrube', 'fosa_septica_2_compartimente', '', 'FG', '', '', '', 'true');
  INSERT INTO tww_vl.special_structure_function (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8600,8600,'grease_separator','Fettabscheider','separateur_de_graisse', 'separatore_di_grasso', 'rrr_Fettabscheider', '', 'FA', '', '', '', 'true');
  INSERT INTO tww_vl.special_structure_function (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3348,3348,'terrain_depression','Gelaendemulde','depression_de_terrain', 'zzz_Gelaendemulde', 'depresiune_teren', '', 'GM', 'DT', '', '', 'true');
- INSERT INTO tww_vl.special_structure_function (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (336,336,'bolders_bedload_catchement_dam','Geschiebefang','depotoir_pour_alluvions', 'camera_ritenuta', 'colector_aluviuni', '', 'GF', 'DA', '', '', 'true');
+ INSERT INTO tww_vl.special_structure_function (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (336,336,'bedload_trap','Geschiebefang','depotoir_pour_alluvions', 'camera_ritenuta', 'colector_aluviuni', '', 'GF', 'DA', '', '', 'true');
  INSERT INTO tww_vl.special_structure_function (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5494,5494,'cesspit','Guellegrube','fosse_a_purin', 'fossa_liquame', 'hazna', '', 'JG', '', '', '', 'true');
  INSERT INTO tww_vl.special_structure_function (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8657,8657,'emergency_basin','Havariebecken','bassin_d_avarie', 'bacino_avaria', 'rrr_Havariebecken', '', 'HB', '', '', '', 'true');
  INSERT INTO tww_vl.special_structure_function (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (6478,6478,'septic_tank','Klaergrube','fosse_septique', 'fossa_settica', 'fosa_septica', '', 'KG', 'FD', '', '', 'true');
@@ -4393,7 +4413,7 @@ ALTER TABLE tww_vl.maintenance_kind ADD CONSTRAINT pkey_tww_vl_maintenance_kind_
  INSERT INTO tww_vl.maintenance_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9312,9312,'restoration_repair','Sanierung_Reparatur','rehabilitation_reparation', 'risanamento_riparazione', 'rrr_Sanierung_Reparatur', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.maintenance_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9313,9313,'restoration_unknown','Sanierung_unbekannt','rehabilitation_inconnue', 'risanamento_sconosciuto', 'rrr_Sanierung_unbekannt', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.maintenance_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9314,9314,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.maintenance_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9316,9316,'yyy_Unterhaltsplanung','Unterhaltsplanung','xxx_Unterhaltsplanung', 'zzz_Unterhaltsplanung', 'rrr_Unterhaltsplanung', '', '', '', '', '', 'true');
+
  INSERT INTO tww_vl.maintenance_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9315,9315,'examination','Untersuchung','examen', 'zzz_Untersuchung', 'rrr_Untersuchung', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.maintenance ADD CONSTRAINT fkey_vl_maintenance_kind FOREIGN KEY (kind)
  REFERENCES tww_vl.maintenance_kind (code) MATCH SIMPLE
@@ -4593,10 +4613,10 @@ ALTER TABLE tww_vl.tank_emptying_type ADD CONSTRAINT pkey_tww_vl_tank_emptying_t
  ALTER TABLE tww_od.tank_emptying ADD CONSTRAINT fkey_vl_tank_emptying_type FOREIGN KEY (type)
  REFERENCES tww_vl.tank_emptying_type (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
-ALTER TABLE tww_od.catchement_area_totals ADD COLUMN fk_discharge_point varchar(16);
-ALTER TABLE tww_od.catchement_area_totals ADD CONSTRAINT rel_catchement_area_totals_discharge_point FOREIGN KEY (fk_discharge_point) REFERENCES tww_od.discharge_point(obj_id) ON UPDATE CASCADE ON DELETE set null;
-ALTER TABLE tww_od.catchement_area_totals ADD COLUMN fk_hydraulic_char_data varchar(16);
-ALTER TABLE tww_od.catchement_area_totals ADD CONSTRAINT rel_catchement_area_totals_hydraulic_char_data FOREIGN KEY (fk_hydraulic_char_data) REFERENCES tww_od.hydraulic_char_data(obj_id) ON UPDATE CASCADE ON DELETE set null;
+ALTER TABLE tww_od.catchment_area_totals ADD COLUMN fk_discharge_point varchar(16);
+ALTER TABLE tww_od.catchment_area_totals ADD CONSTRAINT rel_catchment_area_totals_discharge_point FOREIGN KEY (fk_discharge_point) REFERENCES tww_od.discharge_point(obj_id) ON UPDATE CASCADE ON DELETE set null;
+ALTER TABLE tww_od.catchment_area_totals ADD COLUMN fk_hydraulic_char_data varchar(16);
+ALTER TABLE tww_od.catchment_area_totals ADD CONSTRAINT rel_catchment_area_totals_hydraulic_char_data FOREIGN KEY (fk_hydraulic_char_data) REFERENCES tww_od.hydraulic_char_data(obj_id) ON UPDATE CASCADE ON DELETE set null;
 ALTER TABLE tww_od.param_ca_general ADD CONSTRAINT oorel_od_param_ca_general_surface_runoff_parameters FOREIGN KEY (obj_id) REFERENCES tww_od.surface_runoff_parameters(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE tww_od.param_ca_mouse1 ADD CONSTRAINT oorel_od_param_ca_mouse1_surface_runoff_parameters FOREIGN KEY (obj_id) REFERENCES tww_od.surface_runoff_parameters(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE tww_od.disposal ADD COLUMN fk_infiltration_installation varchar(16);
@@ -4806,7 +4826,7 @@ COMMENT ON COLUMN tww_od.wastewater_structure_text.text IS 'yyy_Aus Attributwert
 COMMENT ON COLUMN tww_od.wastewater_structure_text.texthali IS '';
  ALTER TABLE tww_od.wastewater_structure_text ADD COLUMN textori  decimal(4,1) ;
 COMMENT ON COLUMN tww_od.wastewater_structure_text.textori IS '';
-ALTER TABLE tww_od.wastewater_structure_text ADD COLUMN textpos_geometry geometry('POINT', 2056);
+ALTER TABLE tww_od.wastewater_structure_text ADD COLUMN textpos_geometry geometry('POINT', :SRID);
 CREATE INDEX in_tww_wastewater_structure_text_textpos_geometry ON tww_od.wastewater_structure_text USING gist (textpos_geometry );
 COMMENT ON COLUMN tww_od.wastewater_structure_text.textpos_geometry IS '';
  ALTER TABLE tww_od.wastewater_structure_text ADD COLUMN textvali  smallint ;
@@ -4846,7 +4866,7 @@ COMMENT ON COLUMN tww_od.reach_text.text IS 'yyy_Aus Attributwerten zusammengese
 COMMENT ON COLUMN tww_od.reach_text.texthali IS '';
  ALTER TABLE tww_od.reach_text ADD COLUMN textori  decimal(4,1) ;
 COMMENT ON COLUMN tww_od.reach_text.textori IS '';
-ALTER TABLE tww_od.reach_text ADD COLUMN textpos_geometry geometry('POINT', 2056);
+ALTER TABLE tww_od.reach_text ADD COLUMN textpos_geometry geometry('POINT', :SRID);
 CREATE INDEX in_tww_reach_text_textpos_geometry ON tww_od.reach_text USING gist (textpos_geometry );
 COMMENT ON COLUMN tww_od.reach_text.textpos_geometry IS '';
  ALTER TABLE tww_od.reach_text ADD COLUMN textvali  smallint ;
@@ -4886,7 +4906,7 @@ COMMENT ON COLUMN tww_od.catchment_area_text.text IS 'yyy_Aus Attributwerten zus
 COMMENT ON COLUMN tww_od.catchment_area_text.texthali IS '';
  ALTER TABLE tww_od.catchment_area_text ADD COLUMN textori  decimal(4,1) ;
 COMMENT ON COLUMN tww_od.catchment_area_text.textori IS '';
-ALTER TABLE tww_od.catchment_area_text ADD COLUMN textpos_geometry geometry('POINT', 2056);
+ALTER TABLE tww_od.catchment_area_text ADD COLUMN textpos_geometry geometry('POINT', :SRID);
 CREATE INDEX in_tww_catchment_area_text_textpos_geometry ON tww_od.catchment_area_text USING gist (textpos_geometry );
 COMMENT ON COLUMN tww_od.catchment_area_text.textpos_geometry IS '';
  ALTER TABLE tww_od.catchment_area_text ADD COLUMN textvali  smallint ;
@@ -4924,7 +4944,7 @@ COMMENT ON COLUMN tww_od.wastewater_structure_symbol.symbol_scaling_heigth IS ''
 COMMENT ON COLUMN tww_od.wastewater_structure_symbol.symbol_scaling_width IS '';
  ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN symbolori  decimal(4,1) ;
 COMMENT ON COLUMN tww_od.wastewater_structure_symbol.symbolori IS 'Default: 90 Degree / Default: 90 Grad / Default: 90 degree';
-ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN symbolpos_geometry geometry('POINT', 2056);
+ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN symbolpos_geometry geometry('POINT', :SRID);
 CREATE INDEX in_tww_wastewater_structure_symbol_symbolpos_geometry ON tww_od.wastewater_structure_symbol USING gist (symbolpos_geometry );
 COMMENT ON COLUMN tww_od.wastewater_structure_symbol.symbolpos_geometry IS '';
  ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
@@ -5060,7 +5080,7 @@ CREATE SEQUENCE tww_od.seq_reach_progression_alternative_oid INCREMENT 1 MINVALU
 COMMENT ON COLUMN tww_od.reach_progression_alternative.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.reach_progression_alternative ADD COLUMN plantype  integer ;
 COMMENT ON COLUMN tww_od.reach_progression_alternative.plantype IS '';
-ALTER TABLE tww_od.reach_progression_alternative ADD COLUMN progression_geometry geometry('COMPOUNDCURVE', 2056);
+ALTER TABLE tww_od.reach_progression_alternative ADD COLUMN progression_geometry geometry('COMPOUNDCURVE', :SRID);
 CREATE INDEX in_tww_reach_progression_alternative_progression_geometry ON tww_od.reach_progression_alternative USING gist (progression_geometry );
 COMMENT ON COLUMN tww_od.reach_progression_alternative.progression_geometry IS 'Start, inflextion and endpoints of a progression alterative for selected scale (e.g. overview map) / Anfangs-, Knick- und Endpunkte des Alternativverlaufs der Leitung im gewählten Plantyp (z.B. Uebersichtsplan) / Points de départ, intermédiaires et d’arrivée de la trace alternative de la conduite dans la type de plan selectionée';
  ALTER TABLE tww_od.reach_progression_alternative ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
@@ -5158,8 +5178,8 @@ ALTER TABLE tww_od.throttle_shut_off_unit ADD CONSTRAINT rel_od_throttle_shut_of
 ALTER TABLE tww_od.throttle_shut_off_unit ADD CONSTRAINT rel_od_throttle_shut_off_unit_fk_dataprovider FOREIGN KEY (fk_provider) REFERENCES tww_od.organisation(obj_id);
 ALTER TABLE tww_od.hydraulic_char_data ADD CONSTRAINT rel_od_hydraulic_char_data_fk_dataowner FOREIGN KEY (fk_dataowner) REFERENCES tww_od.organisation(obj_id);
 ALTER TABLE tww_od.hydraulic_char_data ADD CONSTRAINT rel_od_hydraulic_char_data_fk_dataprovider FOREIGN KEY (fk_provider) REFERENCES tww_od.organisation(obj_id);
-ALTER TABLE tww_od.catchement_area_totals ADD CONSTRAINT rel_od_catchement_area_totals_fk_dataowner FOREIGN KEY (fk_dataowner) REFERENCES tww_od.organisation(obj_id);
-ALTER TABLE tww_od.catchement_area_totals ADD CONSTRAINT rel_od_catchement_area_totals_fk_dataprovider FOREIGN KEY (fk_provider) REFERENCES tww_od.organisation(obj_id);
+ALTER TABLE tww_od.catchment_area_totals ADD CONSTRAINT rel_od_catchment_area_totals_fk_dataowner FOREIGN KEY (fk_dataowner) REFERENCES tww_od.organisation(obj_id);
+ALTER TABLE tww_od.catchment_area_totals ADD CONSTRAINT rel_od_catchment_area_totals_fk_dataprovider FOREIGN KEY (fk_provider) REFERENCES tww_od.organisation(obj_id);
 ALTER TABLE tww_od.disposal ADD CONSTRAINT rel_od_disposal_fk_dataowner FOREIGN KEY (fk_dataowner) REFERENCES tww_od.organisation(obj_id);
 ALTER TABLE tww_od.disposal ADD CONSTRAINT rel_od_disposal_fk_dataprovider FOREIGN KEY (fk_provider) REFERENCES tww_od.organisation(obj_id);
 ALTER TABLE tww_od.building_group ADD CONSTRAINT rel_od_building_group_fk_dataowner FOREIGN KEY (fk_dataowner) REFERENCES tww_od.organisation(obj_id);
@@ -5199,5 +5219,5 @@ ALTER TABLE tww_od.farm ADD CONSTRAINT rel_od_farm_fk_dataprovider FOREIGN KEY (
  CREATE UNIQUE INDEX in_od_overflow_identifier ON tww_od.overflow USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
  CREATE UNIQUE INDEX in_od_throttle_shut_off_unit_identifier ON tww_od.throttle_shut_off_unit USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
  CREATE UNIQUE INDEX in_od_hydraulic_char_data_identifier ON tww_od.hydraulic_char_data USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
- CREATE UNIQUE INDEX in_od_catchement_area_totals_identifier ON tww_od.catchement_area_totals USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
+ CREATE UNIQUE INDEX in_od_catchment_area_totals_identifier ON tww_od.catchment_area_totals USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
  CREATE UNIQUE INDEX in_od_building_group_identifier ON tww_od.building_group USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
