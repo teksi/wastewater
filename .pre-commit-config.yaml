@@ -1,13 +1,21 @@
-exclude: .*\.qgs
-
 repos:
+  - repo: local
+    hooks:
+      - id: banned-words
+        name: Check Banned Words
+        entry: ./scripts/banned-words.sh
+        language: script
+
   # Fix end of files
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
     hooks:
       - id: trailing-whitespace
+        exclude: .*\.qgs
       - id: end-of-file-fixer
+        exclude: .*\.qgs
       - id: mixed-line-ending
+        exclude: .*\.qgs
         args:
           - '--fix=lf'
 
