@@ -3,6 +3,7 @@
 datamodel/artifacts
 
 project/*attachments.zip
+project/*.qgs~
 
 .idea
 .pycache
