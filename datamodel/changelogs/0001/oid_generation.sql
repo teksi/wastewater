@@ -1,6 +1,6 @@
 -- this file generates a new SQL function to create INTERLIS STANDARDOID's for all the tww_od.* tables.
 -- you need to add entries for your organizations into the table tww_sys.oid_prefixes
--- questions regarding this function should be directed to Andreas Neumann, Stadt Uster
+-- questions regarding this function should be directed to Arnaud Poncet, Pully
 -- Adapted for TEKSI VSA-DSS 2020 Stefan Burckhardt
 
 CREATE TABLE tww_sys.oid_prefixes
@@ -18,7 +18,7 @@ COMMENT ON TABLE tww_sys.oid_prefixes
   IS 'This table contains OID prefixes for different communities or organizations. The application or administrator changing this table has to make sure that only one record is set to active.';
 
 -- sample entry for Invalid - you need to adapt this entry later for your own organization
-INSERT INTO tww_sys.oid_prefixes (prefix,organization,active) VALUES ('00000000','Invalid',TRUE);
+INSERT INTO tww_sys.oid_prefixes (prefix,organization,active) VALUES ('ch000000','Invalid',TRUE);
 INSERT INTO tww_sys.oid_prefixes (prefix,organization,active) VALUES ('ch11h8mw','Stadt Uster',FALSE);
 INSERT INTO tww_sys.oid_prefixes (prefix,organization,active) VALUES ('ch15z36d','SIGE',FALSE);
 INSERT INTO tww_sys.oid_prefixes (prefix,organization,active) VALUES ('ch13p7mz','Arbon',FALSE);
