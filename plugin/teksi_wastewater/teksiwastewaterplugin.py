@@ -58,7 +58,7 @@ def locale(values, feature, parent):
     return QSettings().value("locale/userLocale", QLocale.system().name())
 
 
-class QgepPlugin:
+class TeksiWastewaterPlugin:
     """
     A plugin for wastewater management
     https://github.com/teksi/teksi_wastewater

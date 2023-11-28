@@ -24,6 +24,6 @@
 
 
 def classFactory(iface):
-    from .qgepplugin import QgepPlugin
+    from .teksiwastewaterplugin import TeksiWastewaterPlugin
 
-    return QgepPlugin(iface)
+    return TeksiWastewaterPlugin(iface)
