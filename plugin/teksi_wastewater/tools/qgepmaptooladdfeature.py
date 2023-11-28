@@ -360,9 +360,7 @@ class QgepMapToolAddReach(QgepMapToolAddFeature):
                 "to": self.last_snapping_match,
             }
             for dest, match in list(snapping_results.items()):
-                level_field_index = self.layer.fields().indexFromName(
-                    f"rp_{dest}_level"
-                )
+                level_field_index = self.layer.fields().indexFromName(f"rp_{dest}_level")
                 pt_idx = 0 if dest == "from" else -1
                 if match.isValid() and match.layer() in (
                     self.node_layer,
