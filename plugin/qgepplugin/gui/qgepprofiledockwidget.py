@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -----------------------------------------------------------
 #
 # Profile
@@ -23,7 +22,6 @@
 #
 # ---------------------------------------------------------------------
 
-from builtins import str
 
 from qgis.core import QgsFeatureRequest, QgsProject
 from qgis.PyQt.QtCore import Qt, pyqtSignal, pyqtSlot
@@ -54,14 +52,10 @@ class QgepProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
         QDockWidget.__init__(self, parent)
         self.setupUi(self)
 
-        self.selectCurrentPathAction = QAction(
-            self.tr("Select current path"), self.selectButton
-        )
+        self.selectCurrentPathAction = QAction(self.tr("Select current path"), self.selectButton)
         self.selectCurrentPathAction.triggered.connect(self.onSelectCurrentPathAction)
         self.selectButton.setDefaultAction(self.selectCurrentPathAction)
-        self.configureSelectionAction = QAction(
-            self.tr("Configure Select"), self.selectButton
-        )
+        self.configureSelectionAction = QAction(self.tr("Configure Select"), self.selectButton)
         self.configureSelectionAction.triggered.connect(self.onConfigureSelectAction)
         self.selectButton.addAction(self.configureSelectionAction)
         self.setAttribute(Qt.WA_DeleteOnClose)
@@ -82,9 +76,7 @@ class QgepProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
 
         self.printButton.clicked.connect(self.onPrintButtonClicked)
 
-        self.mSliderVerticalExaggeration.valueChanged.connect(
-            self.onVerticalExaggerationChanged
-        )
+        self.mSliderVerticalExaggeration.valueChanged.connect(self.onVerticalExaggerationChanged)
 
     def closeEvent(self, event):
         self.closed.emit()
@@ -113,24 +105,16 @@ class QgepProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
         dlg.setLayout(QGridLayout())
 
         ww_current_checkbox = QCheckBox(self.tr("Wastewater current"))
-        status, _ = QgsProject.instance().readBoolEntry(
-            "Qgep", "FollowWastewaterCurrent", True
-        )
+        status, _ = QgsProject.instance().readBoolEntry("Qgep", "FollowWastewaterCurrent", True)
         ww_current_checkbox.setChecked(status)
         ww_planned_checkbox = QCheckBox(self.tr("Wastewater planned"))
-        status, _ = QgsProject.instance().readBoolEntry(
-            "Qgep", "FollowWastewaterPlanned", True
-        )
+        status, _ = QgsProject.instance().readBoolEntry("Qgep", "FollowWastewaterPlanned", True)
         ww_planned_checkbox.setChecked(status)
         rw_current_checkbox = QCheckBox(self.tr("Rainwater current"))
-        status, _ = QgsProject.instance().readBoolEntry(
-            "Qgep", "FollowRainwaterCurrent", True
-        )
+        status, _ = QgsProject.instance().readBoolEntry("Qgep", "FollowRainwaterCurrent", True)
         rw_current_checkbox.setChecked(status)
         rw_planned_checkbox = QCheckBox(self.tr("Rainwater planned"))
-        status, _ = QgsProject.instance().readBoolEntry(
-            "Qgep", "FollowRainwaterPlanned", True
-        )
+        status, _ = QgsProject.instance().readBoolEntry("Qgep", "FollowRainwaterPlanned", True)
         rw_planned_checkbox.setChecked(status)
         btn_box = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
         btn_box.accepted.connect(dlg.accept)
@@ -170,50 +154,32 @@ class QgepProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
             if item["objType"] == "wastewater_node":
                 wastewater_nodes.append(item["objId"])
 
-        qgep_wastewater_structures_layer = QgepLayerManager.layer(
-            "vw_qgep_wastewater_structure"
-        )
+        qgep_wastewater_structures_layer = QgepLayerManager.layer("vw_qgep_wastewater_structure")
         wastewater_nodes_layer = QgepLayerManager.layer("vw_wastewater_node")
         qgep_reach_layer = QgepLayerManager.layer("vw_qgep_reach")
         catchment_areas_layer = QgepLayerManager.layer("od_catchment_area")
 
-        wastewater_node_list = ",".join(("'" + id + "'" for id in wastewater_nodes))
-        reach_list = ",".join(("'" + id + "'" for id in reaches))
+        wastewater_node_list = ",".join("'" + id + "'" for id in wastewater_nodes)
+        reach_list = ",".join("'" + id + "'" for id in reaches)
 
         if catchment_areas_layer:
             request = QgsFeatureRequest()
             filters = list()
-            if QgsProject.instance().readBoolEntry(
-                "Qgep", "FollowWastewaterCurrent", True
-            )[0]:
+            if QgsProject.instance().readBoolEntry("Qgep", "FollowWastewaterCurrent", True)[0]:
                 filters.append(
-                    "fk_wastewater_networkelement_ww_current IN ({})".format(
-                        wastewater_node_list
-                    )
+                    f"fk_wastewater_networkelement_ww_current IN ({wastewater_node_list})"
                 )
-            if QgsProject.instance().readBoolEntry(
-                "Qgep", "FollowWastewaterPlanned", True
-            )[0]:
+            if QgsProject.instance().readBoolEntry("Qgep", "FollowWastewaterPlanned", True)[0]:
                 filters.append(
-                    "fk_wastewater_networkelement_ww_planned IN ({})".format(
-                        wastewater_node_list
-                    )
+                    f"fk_wastewater_networkelement_ww_planned IN ({wastewater_node_list})"
                 )
-            if QgsProject.instance().readBoolEntry(
-                "Qgep", "FollowRainwaterCurrent", True
-            )[0]:
+            if QgsProject.instance().readBoolEntry("Qgep", "FollowRainwaterCurrent", True)[0]:
                 filters.append(
-                    "fk_wastewater_networkelement_rw_current IN ({})".format(
-                        wastewater_node_list
-                    )
+                    f"fk_wastewater_networkelement_rw_current IN ({wastewater_node_list})"
                 )
-            if QgsProject.instance().readBoolEntry(
-                "Qgep", "FollowRainwaterPlanned", True
-            )[0]:
+            if QgsProject.instance().readBoolEntry("Qgep", "FollowRainwaterPlanned", True)[0]:
                 filters.append(
-                    "fk_wastewater_networkelement_rw_planned IN ({})".format(
-                        wastewater_node_list
-                    )
+                    f"fk_wastewater_networkelement_rw_planned IN ({wastewater_node_list})"
                 )
 
             if filters:
@@ -223,13 +189,13 @@ class QgepProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
 
         if qgep_reach_layer:
             request = QgsFeatureRequest()
-            request.setFilterExpression("obj_id IN ({})".format(reach_list))
+            request.setFilterExpression(f"obj_id IN ({reach_list})")
             features = qgep_reach_layer.getFeatures(request)
             qgep_reach_layer.select([f.id() for f in features])
 
         if wastewater_nodes_layer:
             request = QgsFeatureRequest()
-            request.setFilterExpression("obj_id IN ({})".format(wastewater_node_list))
+            request.setFilterExpression(f"obj_id IN ({wastewater_node_list})")
             features = wastewater_nodes_layer.getFeatures(request)
             ids = list()
             for feature in features:
@@ -238,14 +204,12 @@ class QgepProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
             wastewater_nodes_layer.select(ids)
 
         wastewater_structure_list = ",".join(
-            ("'" + id + "'" for id in wastewater_structures if type(id) is str)
+            "'" + id + "'" for id in wastewater_structures if type(id) is str
         )
 
         if qgep_wastewater_structures_layer:
             request = QgsFeatureRequest()
-            request.setFilterExpression(
-                "obj_id IN ({})".format(wastewater_structure_list)
-            )
+            request.setFilterExpression(f"obj_id IN ({wastewater_structure_list})")
             features = qgep_wastewater_structures_layer.getFeatures(request)
             qgep_wastewater_structures_layer.select([f.id() for f in features])
 

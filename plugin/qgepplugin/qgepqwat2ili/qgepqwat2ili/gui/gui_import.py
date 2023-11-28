@@ -73,7 +73,9 @@ class GuiImport(QDialog):
             if cls not in self.category_items:
                 self.category_items[cls].setText(0, cls.__name__)
                 # self.category_items[cls].setCheckState(0, Qt.Checked)  # for now we remove per class checkboxes
-                self.category_items[cls].setFont(0, QFont(QFont().defaultFamily(), weight=QFont.Weight.Bold))
+                self.category_items[cls].setFont(
+                    0, QFont(QFont().defaultFamily(), weight=QFont.Weight.Bold)
+                )
                 self.treeWidget.addTopLevelItem(self.category_items[cls])
 
             editor.update_listitem()
@@ -173,7 +175,15 @@ class GuiImport(QDialog):
             self.debugTextEdit.append(f"{c.key}: {val}")
         #   Show sqlalchemy state in the debug text edit
         self.debugTextEdit.append("-- SQLALCHEMY STATUS --")
-        for status_name in ["transient", "pending", "persistent", "deleted", "detached", "modified", "expired"]:
+        for status_name in [
+            "transient",
+            "pending",
+            "persistent",
+            "deleted",
+            "detached",
+            "modified",
+            "expired",
+        ]:
             if getattr(inspect(editor.obj), status_name):
                 self.debugTextEdit.append(f"{status_name} ")
         self.debugTextEdit.append("-- DEBUG --")

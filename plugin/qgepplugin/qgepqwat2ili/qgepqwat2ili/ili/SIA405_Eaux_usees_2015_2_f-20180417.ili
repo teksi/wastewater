@@ -4,7 +4,7 @@
 INTERLIS 2.3;
 
 MODEL SIA405_EAUX_USEES_2015 (fr) AT "http://www.sia.ch/405"
-  VERSION "17.04.2018" TRANSLATION OF SIA405_ABWASSER_2015 [ "17.04.2018" ] = 
+  VERSION "17.04.2018" TRANSLATION OF SIA405_ABWASSER_2015 [ "17.04.2018" ] =
 
   IMPORTS UNQUALIFIED INTERLIS;     !! imports INTERLIS 2 Baseunits
   IMPORTS Units;
@@ -17,9 +17,9 @@ MODEL SIA405_EAUX_USEES_2015 (fr) AT "http://www.sia.ch/405"
 !! en cooperation avec Société suisse des ingénieurs et architectes (sia), Zurich
 !! L'utilisation de ce fichier modèle INTERLIS a besoin une licence!
 
-!! Les fichiers modèles originaux SIA405_Eaux_usees_2015_2_f.ili et les versions 
+!! Les fichiers modèles originaux SIA405_Eaux_usees_2015_2_f.ili et les versions
 !! modifiées à partir de ceux-ci ne peuvent pas être revendus.
-!! La distribution du fichier original (comme tout ou une partie de celui-ci) 
+!! La distribution du fichier original (comme tout ou une partie de celui-ci)
 !! n'est permise qu'avec l'achat d'une licence du sia / VSA par le destinataire.
 
 
@@ -38,11 +38,11 @@ Rapport_H_L = 0.01 .. 100.00;    !! Rapport entre la hauteur et la largeur, sans
 !! PROFIL_TUYAU.RAPPORT_HAUTEUR_LARGEUR
 
 
-EtatValeurs EXTENDS SIA405_Base_f.Etat = (  !! Etat de fonctionnement et de planification de l’ouvrage. 
+EtatValeurs EXTENDS SIA405_Base_f.Etat = (  !! Etat de fonctionnement et de planification de l’ouvrage.
 !! 1.2.2013 Adaptation à la nouvelle version de SIA405_Base_f.Etat – Extension des valeurs de base du fluide, modélisation hiérarchique et adaption compiler 4.5.13
       !! 17.7.2015 hors_service, !! comporte hors_service et les valeurs suivantes
          !!  reserve  !! n'existe pas en eaux_usées
-      en_service (  !! comporte en_service et les valeurs suivantes 
+      en_service (  !! comporte en_service et les valeurs suivantes
          !! 17.7.2015 en_service,
          provisoire,
          sera_supprime
@@ -59,8 +59,8 @@ EtatValeurs EXTENDS SIA405_Base_f.Etat = (  !! Etat de fonctionnement et de plan
          planifie,
          projet
       )
-    );   
-    !! nouveau 17.7.2015  
+    );
+    !! nouveau 17.7.2015
     Etat = ALL OF EtatValeurs;    !! extension valeurs SIA405 Etat
 !! OUVRAGE_RESEAU_AS.ETAT
 
@@ -89,11 +89,11 @@ Hauteur_max_profile = 0 .. 99999 [Units.mm];    !! milimètre [mm]
 !! TRONCON.RELINER_DIAMETRE_NOMINALE
 
 
-UID = TEXT*12;    !! 
+UID = TEXT*12;    !!
 !! ORGANISATION.UID
 
 
-Cadran = 0..12;    !! 
+Cadran = 0..12;    !!
 !! selon directive
 !! POINT_TRONCON.SITUATION_POINT_RACCORD
 
@@ -103,11 +103,11 @@ Cadran = 0..12;    !!
 !! www.vsa.ch
 !! L'utilisation de ce fichier modèle INTERLIS a besoin une licence!
 
-!! Les fichiers modèles originaux SIA405_Eaux_usees_2015_2_f.ili et les versions 
+!! Les fichiers modèles originaux SIA405_Eaux_usees_2015_2_f.ili et les versions
 !! modifiées à partir de ceux-ci ne peuvent pas être revendus.
-!! La distribution du fichier original (comme tout ou une partie de celui-ci) 
+!! La distribution du fichier original (comme tout ou une partie de celui-ci)
 !! n'est permise qu'avec l'achat d'une licence du VSA par le destinataire.
-CLASS ORGANISATION EXTENDS SIA405_Base_f.SIA405_BaseClass =  
+CLASS ORGANISATION EXTENDS SIA405_Base_f.SIA405_BaseClass =
 !! Superclasse pour les entités organisationnelles importantes pour la planification de l'évacuation des eaux (par ex. communes, cantons, etc.)
   ATTRIBUTE
     REMARQUE: TEXT*80;  !! Remarques générales
@@ -120,7 +120,7 @@ ASSOCIATION ORGANISATION_ELEMENT_DEAssoc =    !! Association
   ORGANISATION_ELEMENT_DEAssocRef -- {0..*} ORGANISATION; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END ORGANISATION_ELEMENT_DEAssoc;
 
-CLASS OUVRAGE_RESEAU_AS (ABSTRACT) EXTENDS SIA405_Base_f.SIA405_BaseClass =  
+CLASS OUVRAGE_RESEAU_AS (ABSTRACT) EXTENDS SIA405_Base_f.SIA405_BaseClass =
 !! Ouvrage appartenant au réseau de canalisations
   ATTRIBUTE
     DOSSIER: MTEXT*255;  !! N° de plan de la documentation d’exécution, description de dossiers, manuels, etc.
@@ -206,7 +206,7 @@ ASSOCIATION OUVRAGE_RESEAU_AS_EXPLOITANTAssoc =    !! Association
   OUVRAGE_RESEAU_AS_EXPLOITANTAssocRef -- {0..*} OUVRAGE_RESEAU_AS; !! Für den Unterhalt eines Bauwerks zuständige Stelle, Rolle2 - Klasse2 / Rôle2 - Classe2
 END OUVRAGE_RESEAU_AS_EXPLOITANTAssoc;
 
-CLASS CANALISATION EXTENDS OUVRAGE_RESEAU_AS =  
+CLASS CANALISATION EXTENDS OUVRAGE_RESEAU_AS =
 !! Canal ouvert ou fermé pour amener les eaux à évacuer d'un ouvrage du réseau d'évacuation à un autre
   ATTRIBUTE
     LIT_DE_POSE: (          !! Lit de pose (assise de la conduite), bourrage latéral (remblai latéral), couche de protection
@@ -299,7 +299,7 @@ CLASS CANALISATION EXTENDS OUVRAGE_RESEAU_AS =
     );
 END CANALISATION;
 
-CLASS CHAMBRE_STANDARD EXTENDS OUVRAGE_RESEAU_AS =  
+CLASS CHAMBRE_STANDARD EXTENDS OUVRAGE_RESEAU_AS =
 !! Chambre normalisée avec couvercle amovible
   ATTRIBUTE
     DIMENSION1: SIA405_Base_f.Metrage;  !! Dimension1 de la chambre (plus grande mesure intérieure).
@@ -337,7 +337,7 @@ CLASS CHAMBRE_STANDARD EXTENDS OUVRAGE_RESEAU_AS =
     );
 END CHAMBRE_STANDARD;
 
-CLASS EXUTOIRE EXTENDS OUVRAGE_RESEAU_AS =  
+CLASS EXUTOIRE EXTENDS OUVRAGE_RESEAU_AS =
 !! Point de déversement d'eaux à évacuer dans le milieu récepteur
   ATTRIBUTE
     COTE_CRUE: Base_f.Altitude;  !! Cote de crue déterminante au point de rejet. Diese ist in der Regel grösser als der Wasserspiegel_Hydraulik.
@@ -349,7 +349,7 @@ CLASS EXUTOIRE EXTENDS OUVRAGE_RESEAU_AS =
     NIVEAU_EAU_HYDRAULIQUE: Base_f.Altitude;  !! Niveau d’eau calculé à l’exutoire. Si aucun exigence est demandée, indiquer le niveau d’eau pour un HQ30.
 END EXUTOIRE;
 
-CLASS OUVRAGE_SPECIAL EXTENDS OUVRAGE_RESEAU_AS =  
+CLASS OUVRAGE_SPECIAL EXTENDS OUVRAGE_RESEAU_AS =
 !! Chambres non normalisées et bassins dans un réseau de canalisations
   ATTRIBUTE
     BYPASS: (          !! Bypass pour détourner les eaux (par exemple durant des opérations de maintenance ou en cas d’avaries)
@@ -404,7 +404,7 @@ CLASS OUVRAGE_SPECIAL EXTENDS OUVRAGE_RESEAU_AS =
     );
 END OUVRAGE_SPECIAL;
 
-CLASS INSTALLATION_INFILTRATION EXTENDS OUVRAGE_RESEAU_AS =  
+CLASS INSTALLATION_INFILTRATION EXTENDS OUVRAGE_RESEAU_AS =
 !! Installation permettant le passage d'eaux propres ou d'eaux pluviales légèrement polluées dans le sous-sol
   ATTRIBUTE
     GENRE: (          !! Genre de méthode d'infiltration.
@@ -460,7 +460,7 @@ CLASS INSTALLATION_INFILTRATION EXTENDS OUVRAGE_RESEAU_AS =
     SURFACE_UTILE: 0.00 .. 100000.00 [Units.m2];  !! Surface qui participe à l'écoulement
 END INSTALLATION_INFILTRATION;
 
-CLASS PROFIL_TUYAU EXTENDS SIA405_Base_f.SIA405_BaseClass =  
+CLASS PROFIL_TUYAU EXTENDS SIA405_Base_f.SIA405_BaseClass =
 !! Différents types de profil
   ATTRIBUTE
     REMARQUE: TEXT*80;  !! Remarques générales
@@ -477,7 +477,7 @@ CLASS PROFIL_TUYAU EXTENDS SIA405_Base_f.SIA405_BaseClass =
     );
 END PROFIL_TUYAU;
 
-CLASS ELEMENT_RESEAU_EVACUATION (ABSTRACT) EXTENDS SIA405_Base_f.SIA405_BaseClass =  
+CLASS ELEMENT_RESEAU_EVACUATION (ABSTRACT) EXTENDS SIA405_Base_f.SIA405_BaseClass =
 !! Définition de modélisation pour les noeuds de réseau et les tronçons
   ATTRIBUTE
     REMARQUE: TEXT*80;  !! Remarques générales
@@ -489,7 +489,7 @@ ASSOCIATION ELEMENT_RESEAU_EVACUATION_OUVRAGE_RESEAU_ASAssoc =    !! Association
   ELEMENT_RESEAU_EVACUATION_OUVRAGE_RESEAU_ASAssocRef -- {0..*} ELEMENT_RESEAU_EVACUATION; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END ELEMENT_RESEAU_EVACUATION_OUVRAGE_RESEAU_ASAssoc;
 
-CLASS POINT_TRONCON EXTENDS SIA405_Base_f.SIA405_BaseClass =  
+CLASS POINT_TRONCON EXTENDS SIA405_Base_f.SIA405_BaseClass =
 !! Informations détaillées sur la connexion entre les noeuds de réseau et les tronçons
   ATTRIBUTE
     FORME_SORTIE: (          !! Types de sortie
@@ -518,7 +518,7 @@ ASSOCIATION POINT_TRONCON_ELEMENT_RESEAU_ASAssoc =    !! Association
   POINT_TRONCON_ELEMENT_RESEAU_ASAssocRef -- {0..*} POINT_TRONCON; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END POINT_TRONCON_ELEMENT_RESEAU_ASAssoc;
 
-CLASS NOEUD_RESEAU EXTENDS ELEMENT_RESEAU_EVACUATION =  
+CLASS NOEUD_RESEAU EXTENDS ELEMENT_RESEAU_EVACUATION =
 !! Point de référence hydraulique de l'ouvrage du réseau d'évacuation, telle qu'une liaison entre deux tronçons
   ATTRIBUTE
     SITUATION: Base_f.CoordNat;  !! Positionnement du nœud. Point de référence déterminant pour le calcul de réseau de canalisations (en règle générale positionnement du milieu du couvercle ou de la sortie temps sec);
@@ -526,7 +526,7 @@ CLASS NOEUD_RESEAU EXTENDS ELEMENT_RESEAU_EVACUATION =
     COTE_RADIER: Base_f.Altitude;  !! Point le plus bas du noeud
 END NOEUD_RESEAU;
 
-CLASS TRONCON EXTENDS ELEMENT_RESEAU_EVACUATION =  
+CLASS TRONCON EXTENDS ELEMENT_RESEAU_EVACUATION =
 !! Elément de transport du réseau de canalisations hydrauliquement homogène, section utilisée pour une simulation de l'écoulement
   ATTRIBUTE
     PROTECTION_INTERIEURE: (          !! Protection de la paroi intérieur de la canalisation
@@ -648,7 +648,7 @@ ASSOCIATION TRONCON_GENRE_PROFILAssoc =    !! Association
   TRONCON_GENRE_PROFILAssocRef -- {0..*} TRONCON; !! {XOR (TRONCON)}, Rolle2 - Klasse2 / Rôle2 - Classe2
 END TRONCON_GENRE_PROFILAssoc;
 
-CLASS ELEMENT_OUVRAGE (ABSTRACT) EXTENDS SIA405_Base_f.SIA405_BaseClass =  
+CLASS ELEMENT_OUVRAGE (ABSTRACT) EXTENDS SIA405_Base_f.SIA405_BaseClass =
 !! Eléments constructifs et installations d'un ouvrage du réseau d'évacuation
   ATTRIBUTE
     REMARQUE: TEXT*80;  !! Remarques générales
@@ -665,13 +665,13 @@ ASSOCIATION ELEMENT_OUVRAGE_OUVRAGE_RESEAU_ASAssoc =    !! Composition
   ELEMENT_OUVRAGE_OUVRAGE_RESEAU_ASAssocRef -- {0..*} ELEMENT_OUVRAGE; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END ELEMENT_OUVRAGE_OUVRAGE_RESEAU_ASAssoc;
 
-CLASS TUYAU_CHUTE EXTENDS ELEMENT_OUVRAGE =  
+CLASS TUYAU_CHUTE EXTENDS ELEMENT_OUVRAGE =
 !! Tuyau dans une chambre de chute pour évacuer les débits par temps sec et faibles pluies
   ATTRIBUTE
     DIAMETRE: SIA405_Base_f.Metrage;  !! Dimension du couvercle (dimension minimale pour couvercle anguleux);
 END TUYAU_CHUTE;
 
-CLASS DISPOSITIF_D_ACCES EXTENDS ELEMENT_OUVRAGE =  
+CLASS DISPOSITIF_D_ACCES EXTENDS ELEMENT_OUVRAGE =
 !! Elément facilitant l'entrée dans un ouvrage d'eaux usées
   ATTRIBUTE
     GENRE: (          !! Genre d'accès à l'ouvrage
@@ -687,7 +687,7 @@ CLASS DISPOSITIF_D_ACCES EXTENDS ELEMENT_OUVRAGE =
     );
 END DISPOSITIF_D_ACCES;
 
-CLASS CUNETTE_DEBIT_TEMPS_SEC EXTENDS ELEMENT_OUVRAGE =  
+CLASS CUNETTE_DEBIT_TEMPS_SEC EXTENDS ELEMENT_OUVRAGE =
 !! Cunette d'écoulement pour les débits par temps sec
   ATTRIBUTE
     MATERIAU: (          !! Matériau de fabrication ou de revêtement de la cunette de débit temps sec
@@ -700,7 +700,7 @@ CLASS CUNETTE_DEBIT_TEMPS_SEC EXTENDS ELEMENT_OUVRAGE =
     );
 END CUNETTE_DEBIT_TEMPS_SEC;
 
-CLASS COUVERCLE EXTENDS ELEMENT_OUVRAGE =  
+CLASS COUVERCLE EXTENDS ELEMENT_OUVRAGE =
 !! Couvercle amovible d'une chambre
   ATTRIBUTE
     FORME_COUVERCLE: (          !! Forme du couvercle
@@ -745,10 +745,10 @@ CLASS COUVERCLE EXTENDS ELEMENT_OUVRAGE =
     );
 END COUVERCLE;
 
-CLASS BANQUETTE EXTENDS ELEMENT_OUVRAGE =  
+CLASS BANQUETTE EXTENDS ELEMENT_OUVRAGE =
 !! Banquette dans le canal ou la chambre
   ATTRIBUTE
-    GENRE: (        
+    GENRE: (
       autre,
       double,
       simple,
@@ -764,11 +764,11 @@ VIEW TOPIC SIA405_Eaux_usees_CS =
 
 VIEW ELEMENT_RESEAU_EVACUATION
   PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.ELEMENT_RESEAU_EVACUATION;
-  =  
+  =
   ATTRIBUTE
 END ELEMENT_RESEAU_EVACUATION;
 
-VIEW ELEMENT_RESEAU_EVACUATION_OUVRAGE_RESEAU_AS_Assoc 
+VIEW ELEMENT_RESEAU_EVACUATION_OUVRAGE_RESEAU_AS_Assoc
   PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.ELEMENT_RESEAU_EVACUATION_OUVRAGE_RESEAU_ASAssoc;
   =
   ATTRIBUTE
@@ -777,7 +777,7 @@ END ELEMENT_RESEAU_EVACUATION_OUVRAGE_RESEAU_AS_Assoc;
 
 VIEW OUVRAGE_RESEAU_AS
   PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.OUVRAGE_RESEAU_AS;
-  =  
+  =
   ATTRIBUTE
     GEOMETRIE_DETAILLEE :=base-> GEOMETRIE_DETAILLEE;
     ETAT :=base-> ETAT;
@@ -790,21 +790,21 @@ VIEW OUVRAGE_RESEAU_AS_Texte
     ALL OF base;
 END OUVRAGE_RESEAU_AS_Texte;
 
-VIEW OUVRAGE_RESEAU_AS_TexteAssoc 
+VIEW OUVRAGE_RESEAU_AS_TexteAssoc
   PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.OUVRAGE_RESEAU_AS_TexteAssoc;
   =
   ATTRIBUTE
     ALL OF base;
 END OUVRAGE_RESEAU_AS_TexteAssoc;
 
-VIEW OUVRAGE_RESEAU_AS_PROPRIETAIRE_Assoc 
+VIEW OUVRAGE_RESEAU_AS_PROPRIETAIRE_Assoc
   PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.OUVRAGE_RESEAU_AS_PROPRIETAIREAssoc;
   =
   ATTRIBUTE
      ALL OF base;
 END OUVRAGE_RESEAU_AS_PROPRIETAIRE_Assoc;
 
-VIEW OUVRAGE_RESEAU_AS_EXPLOITANT_Assoc 
+VIEW OUVRAGE_RESEAU_AS_EXPLOITANT_Assoc
   PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.OUVRAGE_RESEAU_AS_EXPLOITANTAssoc;
   =
   ATTRIBUTE
@@ -813,13 +813,13 @@ END OUVRAGE_RESEAU_AS_EXPLOITANT_Assoc;
 
 VIEW NOEUD_RESEAU
   PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.NOEUD_RESEAU;
-  =  
+  =
   ATTRIBUTE
 END NOEUD_RESEAU;
 
 VIEW COUVERCLE
   PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.COUVERCLE;
-  =  
+  =
   ATTRIBUTE
     SITUATION :=base-> SITUATION;
     DETERMINATION_PLANIMETRIQUE :=base-> DETERMINATION_PLANIMETRIQUE;
@@ -827,13 +827,13 @@ END COUVERCLE;
 
 VIEW EXUTOIRE
   PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.EXUTOIRE;
-  =  
+  =
   ATTRIBUTE
 END EXUTOIRE;
 
 VIEW TRONCON
   PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.TRONCON;
-  =  
+  =
   ATTRIBUTE
     DETERMINATION_PLANIMETRIQUE :=base-> DETERMINATION_PLANIMETRIQUE;
     TRACE :=base-> TRACE;
@@ -846,28 +846,28 @@ VIEW TRONCON_Texte
     ALL OF base;
 END TRONCON_Texte;
 
-VIEW TRONCON_TexteAssoc 
+VIEW TRONCON_TexteAssoc
   PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.TRONCON_TexteAssoc;
   =
   ATTRIBUTE
     ALL OF base;
 END TRONCON_TexteAssoc;
 
-VIEW TRONCON_POINT_TRONCON_DE_Assoc 
+VIEW TRONCON_POINT_TRONCON_DE_Assoc
   PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.TRONCON_POINT_TRONCON_DEAssoc;
   =
   ATTRIBUTE
      ALL OF base;
 END TRONCON_POINT_TRONCON_DE_Assoc;
 
-VIEW TRONCON_POINT_TRONCON_VERS_Assoc 
+VIEW TRONCON_POINT_TRONCON_VERS_Assoc
   PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.TRONCON_POINT_TRONCON_VERSAssoc;
   =
   ATTRIBUTE
      ALL OF base;
 END TRONCON_POINT_TRONCON_VERS_Assoc;
 
-VIEW TRONCON_GENRE_PROFIL_Assoc 
+VIEW TRONCON_GENRE_PROFIL_Assoc
   PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.TRONCON_GENRE_PROFILAssoc;
   =
   ATTRIBUTE
@@ -876,12 +876,12 @@ END TRONCON_GENRE_PROFIL_Assoc;
 
 VIEW POINT_TRONCON
   PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.POINT_TRONCON;
-  =  
+  =
   ATTRIBUTE
     SITUATION :=base-> SITUATION;
 END POINT_TRONCON;
 
-VIEW POINT_TRONCON_ELEMENT_RESEAU_AS_Assoc 
+VIEW POINT_TRONCON_ELEMENT_RESEAU_AS_Assoc
   PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.POINT_TRONCON_ELEMENT_RESEAU_ASAssoc;
   =
   ATTRIBUTE
@@ -890,21 +890,21 @@ END POINT_TRONCON_ELEMENT_RESEAU_AS_Assoc;
 
 VIEW CANALISATION
   PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.CANALISATION;
-  =  
+  =
   ATTRIBUTE
     FONCTION_HIERARCHIQUE :=base-> FONCTION_HIERARCHIQUE;
 END CANALISATION;
 
 VIEW CHAMBRE_STANDARD
   PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.CHAMBRE_STANDARD;
-  =  
+  =
   ATTRIBUTE
     FONCTION :=base-> FONCTION;
 END CHAMBRE_STANDARD;
 
 VIEW PROFIL_TUYAU
   PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.PROFIL_TUYAU;
-  =  
+  =
   ATTRIBUTE
     RAPPORT_HAUTEUR_LARGEUR :=base-> RAPPORT_HAUTEUR_LARGEUR;
     TYPE_PROFIL :=base-> TYPE_PROFIL;
@@ -912,14 +912,14 @@ END PROFIL_TUYAU;
 
 VIEW OUVRAGE_SPECIAL
   PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.OUVRAGE_SPECIAL;
-  =  
+  =
   ATTRIBUTE
     FONCTION :=base-> FONCTION;
 END OUVRAGE_SPECIAL;
 
 VIEW INSTALLATION_INFILTRATION
   PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.INSTALLATION_INFILTRATION;
-  =  
+  =
   ATTRIBUTE
 END INSTALLATION_INFILTRATION;
 
@@ -935,7 +935,7 @@ END SIA405_EAUX_USEES_2015.   !! Ende des Modells / Fin du modèle
 !! INTERLIS 2.3;
 
 MODEL SIA405_EAUX_USEES_2015_LV95 (fr) AT "http://www.sia.ch/405"
-  VERSION "17.04.2018" TRANSLATION OF SIA405_ABWASSER_2015_LV95 [ "17.04.2018" ] = 
+  VERSION "17.04.2018" TRANSLATION OF SIA405_ABWASSER_2015_LV95 [ "17.04.2018" ] =
 
   IMPORTS UNQUALIFIED INTERLIS;     !! imports INTERLIS 2 Baseunits
   IMPORTS Units;
@@ -948,9 +948,9 @@ MODEL SIA405_EAUX_USEES_2015_LV95 (fr) AT "http://www.sia.ch/405"
 !! en cooperation avec Société suisse des ingénieurs et architectes (sia), Zurich
 !! L'utilisation de ce fichier modèle INTERLIS a besoin une licence!
 
-!! Les fichiers modèles originaux SIA405_Eaux_usees_2015_2_f_LV95.ili et les versions 
+!! Les fichiers modèles originaux SIA405_Eaux_usees_2015_2_f_LV95.ili et les versions
 !! modifiées à partir de ceux-ci ne peuvent pas être revendus.
-!! La distribution du fichier original (comme tout ou une partie de celui-ci) 
+!! La distribution du fichier original (comme tout ou une partie de celui-ci)
 !! n'est permise qu'avec l'achat d'une licence du sia / VSA par le destinataire.
 
 
@@ -969,11 +969,11 @@ Rapport_H_L = 0.01 .. 100.00;    !! Rapport entre la hauteur et la largeur, sans
 !! PROFIL_TUYAU.RAPPORT_HAUTEUR_LARGEUR
 
 
-EtatValeurs EXTENDS SIA405_Base_f_LV95.Etat = (  !! Etat de fonctionnement et de planification de l’ouvrage. 
+EtatValeurs EXTENDS SIA405_Base_f_LV95.Etat = (  !! Etat de fonctionnement et de planification de l’ouvrage.
 !! 1.2.2013 Adaptation à la nouvelle version de SIA405_Base_f_LV95.Etat – Extension des valeurs de base du fluide, modélisation hiérarchique et adaption compiler 4.5.13
       !! 17.7.2015 hors_service, !! comporte hors_service et les valeurs suivantes
          !!  reserve  !! n'existe pas en eaux_usées
-      en_service (  !! comporte en_service et les valeurs suivantes 
+      en_service (  !! comporte en_service et les valeurs suivantes
          !! 17.7.2015 en_service,
          provisoire,
          sera_supprime
@@ -990,8 +990,8 @@ EtatValeurs EXTENDS SIA405_Base_f_LV95.Etat = (  !! Etat de fonctionnement et de
          planifie,
          projet
       )
-    );   
-    !! nouveau 17.7.2015  
+    );
+    !! nouveau 17.7.2015
     Etat = ALL OF EtatValeurs;    !! extension valeurs SIA405 Etat
 !! OUVRAGE_RESEAU_AS.ETAT
 
@@ -1020,11 +1020,11 @@ Hauteur_max_profile = 0 .. 99999 [Units.mm];    !! milimètre [mm]
 !! TRONCON.RELINER_DIAMETRE_NOMINALE
 
 
-UID = TEXT*12;    !! 
+UID = TEXT*12;    !!
 !! ORGANISATION.UID
 
 
-Cadran = 0..12;    !! 
+Cadran = 0..12;    !!
 !! selon directive
 !! POINT_TRONCON.SITUATION_POINT_RACCORD
 
@@ -1034,11 +1034,11 @@ Cadran = 0..12;    !!
 !! www.vsa.ch
 !! L'utilisation de ce fichier modèle INTERLIS a besoin une licence!
 
-!! Les fichiers modèles originaux SIA405_Eaux_usees_2015_2_f_LV95.ili et les versions 
+!! Les fichiers modèles originaux SIA405_Eaux_usees_2015_2_f_LV95.ili et les versions
 !! modifiées à partir de ceux-ci ne peuvent pas être revendus.
-!! La distribution du fichier original (comme tout ou une partie de celui-ci) 
+!! La distribution du fichier original (comme tout ou une partie de celui-ci)
 !! n'est permise qu'avec l'achat d'une licence du VSA par le destinataire.
-CLASS ORGANISATION EXTENDS SIA405_Base_f_LV95.SIA405_BaseClass =  
+CLASS ORGANISATION EXTENDS SIA405_Base_f_LV95.SIA405_BaseClass =
 !! Superclasse pour les entités organisationnelles importantes pour la planification de l'évacuation des eaux (par ex. communes, cantons, etc.)
   ATTRIBUTE
     REMARQUE: TEXT*80;  !! Remarques générales
@@ -1051,7 +1051,7 @@ ASSOCIATION ORGANISATION_ELEMENT_DEAssoc =    !! Association
   ORGANISATION_ELEMENT_DEAssocRef -- {0..*} ORGANISATION; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END ORGANISATION_ELEMENT_DEAssoc;
 
-CLASS OUVRAGE_RESEAU_AS (ABSTRACT) EXTENDS SIA405_Base_f_LV95.SIA405_BaseClass =  
+CLASS OUVRAGE_RESEAU_AS (ABSTRACT) EXTENDS SIA405_Base_f_LV95.SIA405_BaseClass =
 !! Ouvrage appartenant au réseau de canalisations
   ATTRIBUTE
     DOSSIER: MTEXT*255;  !! N° de plan de la documentation d’exécution, description de dossiers, manuels, etc.
@@ -1137,7 +1137,7 @@ ASSOCIATION OUVRAGE_RESEAU_AS_EXPLOITANTAssoc =    !! Association
   OUVRAGE_RESEAU_AS_EXPLOITANTAssocRef -- {0..*} OUVRAGE_RESEAU_AS; !! Für den Unterhalt eines Bauwerks zuständige Stelle, Rolle2 - Klasse2 / Rôle2 - Classe2
 END OUVRAGE_RESEAU_AS_EXPLOITANTAssoc;
 
-CLASS CANALISATION EXTENDS OUVRAGE_RESEAU_AS =  
+CLASS CANALISATION EXTENDS OUVRAGE_RESEAU_AS =
 !! Canal ouvert ou fermé pour amener les eaux à évacuer d'un ouvrage du réseau d'évacuation à un autre
   ATTRIBUTE
     LIT_DE_POSE: (          !! Lit de pose (assise de la conduite), bourrage latéral (remblai latéral), couche de protection
@@ -1230,7 +1230,7 @@ CLASS CANALISATION EXTENDS OUVRAGE_RESEAU_AS =
     );
 END CANALISATION;
 
-CLASS CHAMBRE_STANDARD EXTENDS OUVRAGE_RESEAU_AS =  
+CLASS CHAMBRE_STANDARD EXTENDS OUVRAGE_RESEAU_AS =
 !! Chambre normalisée avec couvercle amovible
   ATTRIBUTE
     DIMENSION1: SIA405_Base_f_LV95.Metrage;  !! Dimension1 de la chambre (plus grande mesure intérieure).
@@ -1268,7 +1268,7 @@ CLASS CHAMBRE_STANDARD EXTENDS OUVRAGE_RESEAU_AS =
     );
 END CHAMBRE_STANDARD;
 
-CLASS EXUTOIRE EXTENDS OUVRAGE_RESEAU_AS =  
+CLASS EXUTOIRE EXTENDS OUVRAGE_RESEAU_AS =
 !! Point de déversement d'eaux à évacuer dans le milieu récepteur
   ATTRIBUTE
     COTE_CRUE: Base_f_LV95.Altitude;  !! Cote de crue déterminante au point de rejet. Diese ist in der Regel grösser als der Wasserspiegel_Hydraulik.
@@ -1280,7 +1280,7 @@ CLASS EXUTOIRE EXTENDS OUVRAGE_RESEAU_AS =
     NIVEAU_EAU_HYDRAULIQUE: Base_f_LV95.Altitude;  !! Niveau d’eau calculé à l’exutoire. Si aucun exigence est demandée, indiquer le niveau d’eau pour un HQ30.
 END EXUTOIRE;
 
-CLASS OUVRAGE_SPECIAL EXTENDS OUVRAGE_RESEAU_AS =  
+CLASS OUVRAGE_SPECIAL EXTENDS OUVRAGE_RESEAU_AS =
 !! Chambres non normalisées et bassins dans un réseau de canalisations
   ATTRIBUTE
     BYPASS: (          !! Bypass pour détourner les eaux (par exemple durant des opérations de maintenance ou en cas d’avaries)
@@ -1335,7 +1335,7 @@ CLASS OUVRAGE_SPECIAL EXTENDS OUVRAGE_RESEAU_AS =
     );
 END OUVRAGE_SPECIAL;
 
-CLASS INSTALLATION_INFILTRATION EXTENDS OUVRAGE_RESEAU_AS =  
+CLASS INSTALLATION_INFILTRATION EXTENDS OUVRAGE_RESEAU_AS =
 !! Installation permettant le passage d'eaux propres ou d'eaux pluviales légèrement polluées dans le sous-sol
   ATTRIBUTE
     GENRE: (          !! Genre de méthode d'infiltration.
@@ -1391,7 +1391,7 @@ CLASS INSTALLATION_INFILTRATION EXTENDS OUVRAGE_RESEAU_AS =
     SURFACE_UTILE: 0.00 .. 100000.00 [Units.m2];  !! Surface qui participe à l'écoulement
 END INSTALLATION_INFILTRATION;
 
-CLASS PROFIL_TUYAU EXTENDS SIA405_Base_f_LV95.SIA405_BaseClass =  
+CLASS PROFIL_TUYAU EXTENDS SIA405_Base_f_LV95.SIA405_BaseClass =
 !! Différents types de profil
   ATTRIBUTE
     REMARQUE: TEXT*80;  !! Remarques générales
@@ -1408,7 +1408,7 @@ CLASS PROFIL_TUYAU EXTENDS SIA405_Base_f_LV95.SIA405_BaseClass =
     );
 END PROFIL_TUYAU;
 
-CLASS ELEMENT_RESEAU_EVACUATION (ABSTRACT) EXTENDS SIA405_Base_f_LV95.SIA405_BaseClass =  
+CLASS ELEMENT_RESEAU_EVACUATION (ABSTRACT) EXTENDS SIA405_Base_f_LV95.SIA405_BaseClass =
 !! Définition de modélisation pour les noeuds de réseau et les tronçons
   ATTRIBUTE
     REMARQUE: TEXT*80;  !! Remarques générales
@@ -1420,7 +1420,7 @@ ASSOCIATION ELEMENT_RESEAU_EVACUATION_OUVRAGE_RESEAU_ASAssoc =    !! Association
   ELEMENT_RESEAU_EVACUATION_OUVRAGE_RESEAU_ASAssocRef -- {0..*} ELEMENT_RESEAU_EVACUATION; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END ELEMENT_RESEAU_EVACUATION_OUVRAGE_RESEAU_ASAssoc;
 
-CLASS POINT_TRONCON EXTENDS SIA405_Base_f_LV95.SIA405_BaseClass =  
+CLASS POINT_TRONCON EXTENDS SIA405_Base_f_LV95.SIA405_BaseClass =
 !! Informations détaillées sur la connexion entre les noeuds de réseau et les tronçons
   ATTRIBUTE
     FORME_SORTIE: (          !! Types de sortie
@@ -1449,7 +1449,7 @@ ASSOCIATION POINT_TRONCON_ELEMENT_RESEAU_ASAssoc =    !! Association
   POINT_TRONCON_ELEMENT_RESEAU_ASAssocRef -- {0..*} POINT_TRONCON; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END POINT_TRONCON_ELEMENT_RESEAU_ASAssoc;
 
-CLASS NOEUD_RESEAU EXTENDS ELEMENT_RESEAU_EVACUATION =  
+CLASS NOEUD_RESEAU EXTENDS ELEMENT_RESEAU_EVACUATION =
 !! Point de référence hydraulique de l'ouvrage du réseau d'évacuation, telle qu'une liaison entre deux tronçons
   ATTRIBUTE
     SITUATION: Base_f_LV95.CoordNat;  !! Positionnement du nœud. Point de référence déterminant pour le calcul de réseau de canalisations (en règle générale positionnement du milieu du couvercle ou de la sortie temps sec);
@@ -1457,7 +1457,7 @@ CLASS NOEUD_RESEAU EXTENDS ELEMENT_RESEAU_EVACUATION =
     COTE_RADIER: Base_f_LV95.Altitude;  !! Point le plus bas du noeud
 END NOEUD_RESEAU;
 
-CLASS TRONCON EXTENDS ELEMENT_RESEAU_EVACUATION =  
+CLASS TRONCON EXTENDS ELEMENT_RESEAU_EVACUATION =
 !! Elément de transport du réseau de canalisations hydrauliquement homogène, section utilisée pour une simulation de l'écoulement
   ATTRIBUTE
     PROTECTION_INTERIEURE: (          !! Protection de la paroi intérieur de la canalisation
@@ -1579,7 +1579,7 @@ ASSOCIATION TRONCON_GENRE_PROFILAssoc =    !! Association
   TRONCON_GENRE_PROFILAssocRef -- {0..*} TRONCON; !! {XOR (TRONCON)}, Rolle2 - Klasse2 / Rôle2 - Classe2
 END TRONCON_GENRE_PROFILAssoc;
 
-CLASS ELEMENT_OUVRAGE (ABSTRACT) EXTENDS SIA405_Base_f_LV95.SIA405_BaseClass =  
+CLASS ELEMENT_OUVRAGE (ABSTRACT) EXTENDS SIA405_Base_f_LV95.SIA405_BaseClass =
 !! Eléments constructifs et installations d'un ouvrage du réseau d'évacuation
   ATTRIBUTE
     REMARQUE: TEXT*80;  !! Remarques générales
@@ -1596,13 +1596,13 @@ ASSOCIATION ELEMENT_OUVRAGE_OUVRAGE_RESEAU_ASAssoc =    !! Composition
   ELEMENT_OUVRAGE_OUVRAGE_RESEAU_ASAssocRef -- {0..*} ELEMENT_OUVRAGE; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END ELEMENT_OUVRAGE_OUVRAGE_RESEAU_ASAssoc;
 
-CLASS TUYAU_CHUTE EXTENDS ELEMENT_OUVRAGE =  
+CLASS TUYAU_CHUTE EXTENDS ELEMENT_OUVRAGE =
 !! Tuyau dans une chambre de chute pour évacuer les débits par temps sec et faibles pluies
   ATTRIBUTE
     DIAMETRE: SIA405_Base_f_LV95.Metrage;  !! Dimension du couvercle (dimension minimale pour couvercle anguleux);
 END TUYAU_CHUTE;
 
-CLASS DISPOSITIF_D_ACCES EXTENDS ELEMENT_OUVRAGE =  
+CLASS DISPOSITIF_D_ACCES EXTENDS ELEMENT_OUVRAGE =
 !! Elément facilitant l'entrée dans un ouvrage d'eaux usées
   ATTRIBUTE
     GENRE: (          !! Genre d'accès à l'ouvrage
@@ -1618,7 +1618,7 @@ CLASS DISPOSITIF_D_ACCES EXTENDS ELEMENT_OUVRAGE =
     );
 END DISPOSITIF_D_ACCES;
 
-CLASS CUNETTE_DEBIT_TEMPS_SEC EXTENDS ELEMENT_OUVRAGE =  
+CLASS CUNETTE_DEBIT_TEMPS_SEC EXTENDS ELEMENT_OUVRAGE =
 !! Cunette d'écoulement pour les débits par temps sec
   ATTRIBUTE
     MATERIAU: (          !! Matériau de fabrication ou de revêtement de la cunette de débit temps sec
@@ -1631,7 +1631,7 @@ CLASS CUNETTE_DEBIT_TEMPS_SEC EXTENDS ELEMENT_OUVRAGE =
     );
 END CUNETTE_DEBIT_TEMPS_SEC;
 
-CLASS COUVERCLE EXTENDS ELEMENT_OUVRAGE =  
+CLASS COUVERCLE EXTENDS ELEMENT_OUVRAGE =
 !! Couvercle amovible d'une chambre
   ATTRIBUTE
     FORME_COUVERCLE: (          !! Forme du couvercle
@@ -1676,10 +1676,10 @@ CLASS COUVERCLE EXTENDS ELEMENT_OUVRAGE =
     );
 END COUVERCLE;
 
-CLASS BANQUETTE EXTENDS ELEMENT_OUVRAGE =  
+CLASS BANQUETTE EXTENDS ELEMENT_OUVRAGE =
 !! Banquette dans le canal ou la chambre
   ATTRIBUTE
-    GENRE: (        
+    GENRE: (
       autre,
       double,
       simple,
@@ -1695,11 +1695,11 @@ VIEW TOPIC SIA405_Eaux_usees_CS =
 
 VIEW ELEMENT_RESEAU_EVACUATION
   PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.ELEMENT_RESEAU_EVACUATION;
-  =  
+  =
   ATTRIBUTE
 END ELEMENT_RESEAU_EVACUATION;
 
-VIEW ELEMENT_RESEAU_EVACUATION_OUVRAGE_RESEAU_AS_Assoc 
+VIEW ELEMENT_RESEAU_EVACUATION_OUVRAGE_RESEAU_AS_Assoc
   PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.ELEMENT_RESEAU_EVACUATION_OUVRAGE_RESEAU_ASAssoc;
   =
   ATTRIBUTE
@@ -1708,7 +1708,7 @@ END ELEMENT_RESEAU_EVACUATION_OUVRAGE_RESEAU_AS_Assoc;
 
 VIEW OUVRAGE_RESEAU_AS
   PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.OUVRAGE_RESEAU_AS;
-  =  
+  =
   ATTRIBUTE
     GEOMETRIE_DETAILLEE :=base-> GEOMETRIE_DETAILLEE;
     ETAT :=base-> ETAT;
@@ -1721,21 +1721,21 @@ VIEW OUVRAGE_RESEAU_AS_Texte
     ALL OF base;
 END OUVRAGE_RESEAU_AS_Texte;
 
-VIEW OUVRAGE_RESEAU_AS_TexteAssoc 
+VIEW OUVRAGE_RESEAU_AS_TexteAssoc
   PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.OUVRAGE_RESEAU_AS_TexteAssoc;
   =
   ATTRIBUTE
     ALL OF base;
 END OUVRAGE_RESEAU_AS_TexteAssoc;
 
-VIEW OUVRAGE_RESEAU_AS_PROPRIETAIRE_Assoc 
+VIEW OUVRAGE_RESEAU_AS_PROPRIETAIRE_Assoc
   PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.OUVRAGE_RESEAU_AS_PROPRIETAIREAssoc;
   =
   ATTRIBUTE
      ALL OF base;
 END OUVRAGE_RESEAU_AS_PROPRIETAIRE_Assoc;
 
-VIEW OUVRAGE_RESEAU_AS_EXPLOITANT_Assoc 
+VIEW OUVRAGE_RESEAU_AS_EXPLOITANT_Assoc
   PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.OUVRAGE_RESEAU_AS_EXPLOITANTAssoc;
   =
   ATTRIBUTE
@@ -1744,13 +1744,13 @@ END OUVRAGE_RESEAU_AS_EXPLOITANT_Assoc;
 
 VIEW NOEUD_RESEAU
   PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.NOEUD_RESEAU;
-  =  
+  =
   ATTRIBUTE
 END NOEUD_RESEAU;
 
 VIEW COUVERCLE
   PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.COUVERCLE;
-  =  
+  =
   ATTRIBUTE
     SITUATION :=base-> SITUATION;
     DETERMINATION_PLANIMETRIQUE :=base-> DETERMINATION_PLANIMETRIQUE;
@@ -1758,13 +1758,13 @@ END COUVERCLE;
 
 VIEW EXUTOIRE
   PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.EXUTOIRE;
-  =  
+  =
   ATTRIBUTE
 END EXUTOIRE;
 
 VIEW TRONCON
   PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.TRONCON;
-  =  
+  =
   ATTRIBUTE
     DETERMINATION_PLANIMETRIQUE :=base-> DETERMINATION_PLANIMETRIQUE;
     TRACE :=base-> TRACE;
@@ -1777,28 +1777,28 @@ VIEW TRONCON_Texte
     ALL OF base;
 END TRONCON_Texte;
 
-VIEW TRONCON_TexteAssoc 
+VIEW TRONCON_TexteAssoc
   PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.TRONCON_TexteAssoc;
   =
   ATTRIBUTE
     ALL OF base;
 END TRONCON_TexteAssoc;
 
-VIEW TRONCON_POINT_TRONCON_DE_Assoc 
+VIEW TRONCON_POINT_TRONCON_DE_Assoc
   PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.TRONCON_POINT_TRONCON_DEAssoc;
   =
   ATTRIBUTE
      ALL OF base;
 END TRONCON_POINT_TRONCON_DE_Assoc;
 
-VIEW TRONCON_POINT_TRONCON_VERS_Assoc 
+VIEW TRONCON_POINT_TRONCON_VERS_Assoc
   PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.TRONCON_POINT_TRONCON_VERSAssoc;
   =
   ATTRIBUTE
      ALL OF base;
 END TRONCON_POINT_TRONCON_VERS_Assoc;
 
-VIEW TRONCON_GENRE_PROFIL_Assoc 
+VIEW TRONCON_GENRE_PROFIL_Assoc
   PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.TRONCON_GENRE_PROFILAssoc;
   =
   ATTRIBUTE
@@ -1807,12 +1807,12 @@ END TRONCON_GENRE_PROFIL_Assoc;
 
 VIEW POINT_TRONCON
   PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.POINT_TRONCON;
-  =  
+  =
   ATTRIBUTE
     SITUATION :=base-> SITUATION;
 END POINT_TRONCON;
 
-VIEW POINT_TRONCON_ELEMENT_RESEAU_AS_Assoc 
+VIEW POINT_TRONCON_ELEMENT_RESEAU_AS_Assoc
   PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.POINT_TRONCON_ELEMENT_RESEAU_ASAssoc;
   =
   ATTRIBUTE
@@ -1821,21 +1821,21 @@ END POINT_TRONCON_ELEMENT_RESEAU_AS_Assoc;
 
 VIEW CANALISATION
   PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.CANALISATION;
-  =  
+  =
   ATTRIBUTE
     FONCTION_HIERARCHIQUE :=base-> FONCTION_HIERARCHIQUE;
 END CANALISATION;
 
 VIEW CHAMBRE_STANDARD
   PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.CHAMBRE_STANDARD;
-  =  
+  =
   ATTRIBUTE
     FONCTION :=base-> FONCTION;
 END CHAMBRE_STANDARD;
 
 VIEW PROFIL_TUYAU
   PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.PROFIL_TUYAU;
-  =  
+  =
   ATTRIBUTE
     RAPPORT_HAUTEUR_LARGEUR :=base-> RAPPORT_HAUTEUR_LARGEUR;
     TYPE_PROFIL :=base-> TYPE_PROFIL;
@@ -1843,18 +1843,17 @@ END PROFIL_TUYAU;
 
 VIEW OUVRAGE_SPECIAL
   PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.OUVRAGE_SPECIAL;
-  =  
+  =
   ATTRIBUTE
     FONCTION :=base-> FONCTION;
 END OUVRAGE_SPECIAL;
 
 VIEW INSTALLATION_INFILTRATION
   PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.INSTALLATION_INFILTRATION;
-  =  
+  =
   ATTRIBUTE
 END INSTALLATION_INFILTRATION;
 
 END SIA405_Eaux_usees_CS;  !! Ende der View
 
 END SIA405_EAUX_USEES_2015_LV95.   !! Ende des Modells / Fin du modèle
-

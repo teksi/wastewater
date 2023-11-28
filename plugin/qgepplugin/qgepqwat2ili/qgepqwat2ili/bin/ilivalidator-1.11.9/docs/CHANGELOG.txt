@@ -19,7 +19,7 @@ ilivalidator 1.11.7 (2020-09-29)
 -----------------------------
 - ili2c-5.1.3
 - iox-ili-1.21.2
-- log --modeldir value as modeldir (#256) 
+- log --modeldir value as modeldir (#256)
 - Overlaying AREA not detected (#263)
 - ignore polygon building errors if defaultGeometryTypeValidation="off"
 - improve error messages in INI-file parsing (#271)
@@ -125,7 +125,7 @@ ilivalidator 1.9.3 (2018-09-10)
 - validate BID/TID value syntax
 - fixed strange error message if surface line table without reference
 - validate URI datatype
-- fixed wrong line number of first object in a table 
+- fixed wrong line number of first object in a table
 - support disableRounding
 - fixed validation of number of reference properties
 - fixed quoted parameter names in TOML file
@@ -166,8 +166,8 @@ ilivalidator 1.7.0 (2018-02-08)
 ilivalidator 1.6.0 (2017-12-29)
 -----------------------------
 - added createReader() template method to high level API
-- fixed: ilidir setting from GUI not used 
-- added object statistics to log 
+- fixed: ilidir setting from GUI not used
+- added object statistics to log
 - iox-ili-1.20.1
 - ili2c-4.7.6
 
@@ -268,7 +268,7 @@ ilivalidator 0.7.0 (2016-12-29)
 ilivalidator 0.6.0 (2016-12-21)
 ----------------------------------------------
 - iox-ili-1.13.6-feature/validator1
-- validator: fixed if cardinality is N, show "*" (UNBOUND) is error message 
+- validator: fixed if cardinality is N, show "*" (UNBOUND) is error message
 - validator: validate mandatory constraint in NOT, OR, AND, DEFINED, UNDEFINED
 - validator: validate mandatory constraint in ==, !=, <>, <, <=, >, >= of attribute and attribute path
 

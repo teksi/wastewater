@@ -55,9 +55,14 @@ def action_import(plugin):
     if not configure_from_modelbaker(plugin.iface):
         return
 
-    default_folder = QgsSettings().value("qgep_pluging/last_interlis_path", QgsProject.instance().absolutePath())
+    default_folder = QgsSettings().value(
+        "qgep_pluging/last_interlis_path", QgsProject.instance().absolutePath()
+    )
     file_name, _ = QFileDialog.getOpenFileName(
-        None, plugin.tr("Import file"), default_folder, plugin.tr("Interlis transfer files (*.xtf)")
+        None,
+        plugin.tr("Import file"),
+        default_folder,
+        plugin.tr("Interlis transfer files (*.xtf)"),
     )
     if not file_name:
         # Operation canceled
@@ -142,7 +147,9 @@ def action_import(plugin):
     import_dialog = GuiImport(plugin.iface.mainWindow())
     progress_dialog.setValue(100)
 
-    log_handler = logging.FileHandler(make_log_path(base_log_path, "qgepqwat2ili-import"), mode="w", encoding="utf-8")
+    log_handler = logging.FileHandler(
+        make_log_path(base_log_path, "qgepqwat2ili-import"), mode="w", encoding="utf-8"
+    )
     log_handler.setLevel(logging.INFO)
     log_handler.setFormatter(logging.Formatter("%(levelname)-8s %(message)s"))
     with LoggingHandlerContext(log_handler):
@@ -162,8 +169,9 @@ def action_export(plugin):
     export_dialog = GuiExport(plugin.iface.mainWindow())
 
     def action_do_export():
-
-        default_folder = QgsSettings().value("qgep_pluging/last_interlis_path", QgsProject.instance().absolutePath())
+        default_folder = QgsSettings().value(
+            "qgep_pluging/last_interlis_path", QgsProject.instance().absolutePath()
+        )
         file_name, _ = QFileDialog.getSaveFileName(
             None,
             plugin.tr("Export to file"),
@@ -247,7 +255,9 @@ def action_export(plugin):
         progress_dialog.setLabelText("Converting from QGEP...")
         QApplication.processEvents()
 
-        log_handler = logging.FileHandler(make_log_path(file_name, "qgepqwat2ili-export"), mode="w", encoding="utf-8")
+        log_handler = logging.FileHandler(
+            make_log_path(file_name, "qgepqwat2ili-export"), mode="w", encoding="utf-8"
+        )
         log_handler.setLevel(logging.INFO)
         log_handler.setFormatter(logging.Formatter("%(levelname)-8s %(message)s"))
         with LoggingHandlerContext(log_handler):
@@ -261,7 +271,6 @@ def action_export(plugin):
             (config.ABWASSER_ILI_MODEL_NAME, None, 50),
             (config.ABWASSER_ILI_MODEL_NAME_SIA405, config.ABWASSER_ILI_MODEL_NAME_SIA405, 70),
         ]:
-
             export_file_name = f"{file_name_base}_{model_name}.xtf"
 
             # Export from ili2pg model to file
@@ -333,7 +342,9 @@ def configure_from_modelbaker(iface):
         )
         return False
 
-    elif modelbaker.__version__ != "dev" and parse_version(modelbaker.__version__) < parse_version(REQUIRED_VERSION):
+    elif modelbaker.__version__ != "dev" and parse_version(modelbaker.__version__) < parse_version(
+        REQUIRED_VERSION
+    ):
         iface.messageBar().pushMessage(
             "Error",
             f"This feature requires a more recent version of the ModelBaker plugin (currently : {modelbaker.__version__}). Please install and activate version {REQUIRED_VERSION} or newer from the plugin manager.",

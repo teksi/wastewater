@@ -4,7 +4,6 @@ from .base import Editor
 
 
 class DataMediaEditor(Editor):
-
     class_name = "data_media"
     widget_name = "data_media.ui"
 

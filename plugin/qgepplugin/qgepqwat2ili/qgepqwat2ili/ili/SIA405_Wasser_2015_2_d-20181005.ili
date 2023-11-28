@@ -3,7 +3,7 @@
 INTERLIS 2.3;
 
 MODEL SIA405_WASSER_2015 (de) AT "http://www.sia.ch/405"
-  VERSION "05.10.2018" = 
+  VERSION "05.10.2018" =
 
   IMPORTS UNQUALIFIED INTERLIS;     !! imports INTERLIS 2 Baseunits
   IMPORTS Units;
@@ -11,17 +11,17 @@ MODEL SIA405_WASSER_2015 (de) AT "http://www.sia.ch/405"
   IMPORTS SIA405_Base;
 
 !! Copyright 2002 - 2015
-!! SVGW 
+!! SVGW
 !! www.svgw.ch
 !! in Zusammenarbeit mit schweizer ingenieur und architektenverein (sia), Zürich
 !! www.sia.ch
 
 !! Die Nutzung dieser INTERLIS-Datei ist lizenzpflichtig!
 
-!! Die Originalmodelldatei SIA405_Wasser_2015_2_d.ili und darauf basierende 
-!! abgeänderte Versionen dürfen nicht weiterverkauft werden. 
-!! Die Weitergabe der Originaldatei (als Ganzes oder Teile davon) ist nur 
-!! zusammen mit dem Erwerb einer Lizenz beim sia durch den Empfänger erlaubt. 
+!! Die Originalmodelldatei SIA405_Wasser_2015_2_d.ili und darauf basierende
+!! abgeänderte Versionen dürfen nicht weiterverkauft werden.
+!! Die Weitergabe der Originaldatei (als Ganzes oder Teile davon) ist nur
+!! zusammen mit dem Erwerb einer Lizenz beim sia durch den Empfänger erlaubt.
 
 !! Freigegeben für öffentlichen Gebrauch und kommerzielle Anwendung mit Lizenz.
 !! Geprueft mit Compiler Version 4.7.7 (8.02.2018)
@@ -39,29 +39,29 @@ Statuswerte EXTENDS SIA405_Base.Status = (  !! Betriebs- und Planungszustand. ne
       ausser_Betrieb (  !! fasst ausser_Betrieb und folgende Werte zusammen
       !! 17.7.2015  ausser_Betrieb,
       Reserve
-	  ), 
+	  ),
       in_Betrieb (
       !! 17.7.2015  in_Betrieb,
          provisorisch
 		 ),
       !! 17.7.2015 tot,  !! fasst tot und folgende Werte zusammen
-      !! 17.7.2015 unbekannt, 
+      !! 17.7.2015 unbekannt,
       weitere ( !! fasst folgende Werte zusammen
-         Berechnungsvariante, 
-         geplant,  
+         Berechnungsvariante,
+         geplant,
          Projekt
          )
-      );  
-!! neu 9.7.2015  
+      );
+!! neu 9.7.2015
     Status = ALL OF Statuswerte;    !! Erweitert Wertebereich von SIA405 Status
 
 
-CLASS Hydraulischer_Knoten EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Hydraulischer_Knoten EXTENDS SIA405_Base.SIA405_BaseClass =
 !! ausgewählte Punkte der Tabellen Leitungspunkt, Absperrorgan, usw.
   ATTRIBUTE
     Name_Nummer: MANDATORY TEXT*40;
     Geometrie: Base.LKoord;
-    Knotentyp: (        
+    Knotentyp: (
       unbekannt,
       Normalknoten,
       Einspeisepunkt
@@ -79,7 +79,7 @@ ASSOCIATION Hydraulischer_Knoten_TextAssoc =   !! Komposition
   Text -- {0 .. *} Hydraulischer_Knoten_Text;
 END Hydraulischer_Knoten_TextAssoc;
 
-CLASS Hydraulischer_Strang EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Hydraulischer_Strang EXTENDS SIA405_Base.SIA405_BaseClass =
 !! von Knoten zu Knoten
   ATTRIBUTE
     Name_Nummer: MANDATORY TEXT*40;
@@ -111,12 +111,12 @@ ASSOCIATION Hydraulischer_Strang_bisKnotenAssoc =    !! Assoziation
   Hydraulischer_Strang_bisKnotenAssocRef -- {1..*} Hydraulischer_Strang; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Hydraulischer_Strang_bisKnotenAssoc;
 
-CLASS Leitung EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Leitung EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Leitung
   ATTRIBUTE
     Name_Nummer: TEXT*40;
     Geometrie: MANDATORY Base.Polyline;  !! offener Linienzug, Stützpunkte in Landeskoordinaten
-    Funktion: (     
+    Funktion: (
       unbekannt,
       Fernwasserleitung,
       Zubringerleitung,
@@ -134,7 +134,7 @@ CLASS Leitung EXTENDS SIA405_Base.SIA405_BaseClass =
       Interne_Leitung,
       Bau_Wasseranschluss
     );
-    Material: (     
+    Material: (
       unbekannt,
       Faserzement (
          Faserzement,  !! Faserzement
@@ -185,14 +185,14 @@ CLASS Leitung EXTENDS SIA405_Base.SIA405_BaseClass =
     DurchmesserAussen: 0 .. 9999 [Units.mm];  !! bei Kunststoffrohren
     Durchmesser: 0 .. 9999 [Units.mm];  !! für Leitungen aus Guss und Material unbekannt
     Nennweite: TEXT*10;  !! als TEXT, da zum Teil auch Doppelwerte mit Schrägstrich (z.B. 1500/800);
-    Wasserqualitaet: (        
+    Wasserqualitaet: (
       unbekannt,
       Trinkwasser,
       Industriebrauchwasser,
       Rohwasser,
       andere
     );
-    Lagebestimmung: (        
+    Lagebestimmung: (
       unbekannt,
       ungenau,
       genau,
@@ -200,7 +200,7 @@ CLASS Leitung EXTENDS SIA405_Base.SIA405_BaseClass =
     );
     Status: MANDATORY Status;
     Baujahr: MANDATORY SIA405_Base.Jahr;
-    Verbindungsart: (     
+    Verbindungsart: (
       unbekannt,
       Muffen (
          unbekannt,
@@ -219,7 +219,7 @@ CLASS Leitung EXTENDS SIA405_Base.SIA405_BaseClass =
       Straubkupplung,  !! Straubkupplung
       Gibaultkupplung  !! Gibaultkupplung
     );
-    Aussenbeschichtung: (        
+    Aussenbeschichtung: (
       unbekannt,
       keine,
       Bitumenschicht,
@@ -234,7 +234,7 @@ CLASS Leitung EXTENDS SIA405_Base.SIA405_BaseClass =
       Bitumenband,
       Schrumpffolie
     );
-    Innenbeschichtung: (     
+    Innenbeschichtung: (
       unbekannt,
       keine,
       Polyurethan (
@@ -248,14 +248,14 @@ CLASS Leitung EXTENDS SIA405_Base.SIA405_BaseClass =
       bitumiert,
       Zinkstein_Epoxi
     );
-    Verlegeart: (        
+    Verlegeart: (
       unbekannt,
       offener_Graben,
       grabenlos,
       Rohr_pressen,
       freiliegend
     );
-    Schubsicherung: (        
+    Schubsicherung: (
       unbekannt,
       aussen,
       innen,
@@ -265,7 +265,7 @@ CLASS Leitung EXTENDS SIA405_Base.SIA405_BaseClass =
       Klemmschelle
     );
     Ueberdeckung: SIA405_Base.Ueberdeckung;
-    Sanierung_Erneuerung: (        
+    Sanierung_Erneuerung: (
       keine,
       PE_Rohrrelining,
       Zement_Auskleidung,
@@ -275,7 +275,7 @@ CLASS Leitung EXTENDS SIA405_Base.SIA405_BaseClass =
       Stahl_Relining,
       andere
     );
-    Bettung: (        
+    Bettung: (
       unbekannt,
       Betonkies,
       Beton,
@@ -283,7 +283,7 @@ CLASS Leitung EXTENDS SIA405_Base.SIA405_BaseClass =
       Recyclingmaterial,
       Fliess
     );
-    Kathodischer_Schutz: (        
+    Kathodischer_Schutz: (
       unbekannt,
       keiner,
       Gleichstrom,
@@ -317,12 +317,12 @@ ASSOCIATION Leitung_StrangAssoc =    !! Assoziation
   Leitung_StrangAssocRef -- {1..*} Leitung; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Leitung_StrangAssoc;
 
-CLASS Schadenstelle EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Schadenstelle EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Schadenstelle
   ATTRIBUTE
     Name_Nummer: TEXT*40;
     Geometrie: MANDATORY Base.LKoord;  !! 2D, Landeskorrdinaten [m]
-    Art: (     
+    Art: (
       unbekannt,
       Bruch (
          Querbruch,
@@ -333,7 +333,7 @@ CLASS Schadenstelle EXTENDS SIA405_Base.SIA405_BaseClass =
       Mangel,
       weitere
     );
-    Ursache: (        
+    Ursache: (
       Setzung,
       Korrosion,
       Verbindung,
@@ -355,7 +355,7 @@ ASSOCIATION Schadenstelle_LeitungAssoc =    !! Assoziation
   Schadenstelle_LeitungAssocRef -- {0..*} Schadenstelle; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Schadenstelle_LeitungAssoc;
 
-CLASS Leitungsknoten (ABSTRACT) EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Leitungsknoten (ABSTRACT) EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Leitungsknoten
   ATTRIBUTE
     Geometrie: MANDATORY Base.LKoord;  !! 2D, Landeskorrdinaten [m]
@@ -382,11 +382,11 @@ ASSOCIATION Leitungsknoten_KnotenAssoc =    !! Assoziation
   Leitungsknoten_KnotenAssocRef -- {1..*} Leitungsknoten; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Leitungsknoten_KnotenAssoc;
 
-CLASS Absperrorgan EXTENDS Leitungsknoten =  
+CLASS Absperrorgan EXTENDS Leitungsknoten =
 !! Absperrorgan
   ATTRIBUTE
     Name_Nummer: TEXT*40;
-    Art: (     
+    Art: (
       unbekannt,
       Schieber (
          unbekannt,
@@ -410,12 +410,12 @@ CLASS Absperrorgan EXTENDS Leitungsknoten =
          Zonenklappe
       )
     );
-    Schaltzustand: (        
+    Schaltzustand: (
       unbekannt,
       offen,
       geschlossen
     );
-    Schaltantrieb: (     
+    Schaltantrieb: (
       unbekannt,
       keiner,
       motorisch (
@@ -425,7 +425,7 @@ CLASS Absperrorgan EXTENDS Leitungsknoten =
       ),
       mechanisch
     );
-    Material: (        
+    Material: (
       Kunststoff,
       unbekannt,
       Stahl,
@@ -435,18 +435,18 @@ CLASS Absperrorgan EXTENDS Leitungsknoten =
     Nennweite: TEXT*10;  !! als TEXT, da zum Teil auch Doppelwerte mit Schrägstrich (z.B. 1500/800);
     Hersteller: TEXT*30;
     Typ: TEXT*10;  !! Eindeutige Kennzeichnung  des Objektes wie Typennummer des Herstellers. Der Name des Herstellers wird im Attribut Hersteller abgelegt.
-    Schliessrichtung: (        
+    Schliessrichtung: (
       rechts,
       links
     );
     Zustand: TEXT*40;
 END Absperrorgan;
 
-CLASS Hydrant EXTENDS Leitungsknoten =  
+CLASS Hydrant EXTENDS Leitungsknoten =
 !! Hydrant
   ATTRIBUTE
     Name_Nummer: TEXT*40;
-    Art: (     
+    Art: (
       unbekannt,
       Oberflurhydrant (
          einarmig,
@@ -468,7 +468,7 @@ CLASS Hydrant EXTENDS Leitungsknoten =
       Sprinkler,
       Schneeanlage
     );
-    Material: (        
+    Material: (
       unbekannt,
       Metall
     );
@@ -481,11 +481,11 @@ CLASS Hydrant EXTENDS Leitungsknoten =
     Zustand: TEXT*40;
 END Hydrant;
 
-CLASS Rohrleitungsteil EXTENDS Leitungsknoten =  
+CLASS Rohrleitungsteil EXTENDS Leitungsknoten =
 !! Rohrleitungsteil
   ATTRIBUTE
     Name_Nummer: TEXT*40;
-    Art: (     
+    Art: (
       Verbindungselement (
         unbekannt,
          Ueberschieber_Schlaufe,
@@ -540,7 +540,7 @@ CLASS Rohrleitungsteil EXTENDS Leitungsknoten =
       ),
       Standrohr
     );
-    Verbindung: (        
+    Verbindung: (
       unbekannt,
       normal,
       aussenschubgesichert,
@@ -551,7 +551,7 @@ CLASS Rohrleitungsteil EXTENDS Leitungsknoten =
       geschweisst,
       gestemmt
     );
-    Material: (        
+    Material: (
       unbekannt,
       Stahl,
       Guss,
@@ -563,19 +563,19 @@ CLASS Rohrleitungsteil EXTENDS Leitungsknoten =
     Zustand: TEXT*40;
 END Rohrleitungsteil;
 
-CLASS Hausanschluss EXTENDS Leitungsknoten =  
+CLASS Hausanschluss EXTENDS Leitungsknoten =
 !! Hausanschluss
   ATTRIBUTE
     Name_Nummer: TEXT*40;  !! identifizierender Text
     Standort: TEXT*10;  !! Nummer (z.B. der Adresse);
     Art: TEXT*30;
-    Gebaeudeanschluss: (        
+    Gebaeudeanschluss: (
       unbekannt,
       Guss,
       Kunststoff,
       Stahl
     );
-    Isolierstueck: (        
+    Isolierstueck: (
       ja,
       nein
     );
@@ -587,10 +587,10 @@ CLASS Hausanschluss EXTENDS Leitungsknoten =
     Zustand: TEXT*40;
 END Hausanschluss;
 
-CLASS Muffen EXTENDS Leitungsknoten =  
+CLASS Muffen EXTENDS Leitungsknoten =
 !! Muffen
   ATTRIBUTE
-    Art: (        
+    Art: (
       unbekannt,
       geflanscht,
       gesteckt,
@@ -605,7 +605,7 @@ CLASS Muffen EXTENDS Leitungsknoten =
       Straubkupplung,
       Gibaultkupplung
     );
-    Schubsicherung: (        
+    Schubsicherung: (
       unbekannt,
       aussen,
       innen,
@@ -618,11 +618,11 @@ CLASS Muffen EXTENDS Leitungsknoten =
     Zustand: TEXT*40;
 END Muffen;
 
-CLASS Uebrige EXTENDS Leitungsknoten =  
+CLASS Uebrige EXTENDS Leitungsknoten =
 !! Übrige Leitungsknoten
   ATTRIBUTE
     Name_Nummer: TEXT*40;  !! z.B. Nummer des Bauwerkes
-    Art: (        
+    Art: (
       unbekannt,
       Probeentnahme,
       Piezometer,
@@ -632,11 +632,11 @@ CLASS Uebrige EXTENDS Leitungsknoten =
     Zustand: TEXT*40;
 END Uebrige;
 
-CLASS Anlage EXTENDS Leitungsknoten =  
+CLASS Anlage EXTENDS Leitungsknoten =
 !! Anlage
   ATTRIBUTE
     Name_Nummer: TEXT*40;  !! z.B. Anlagenummer oder -name
-    Art: (     
+    Art: (
       unbekannt,
       Schacht (
          unbekannt,
@@ -669,7 +669,7 @@ CLASS Anlage EXTENDS Leitungsknoten =
          Ziehbrunnen  !! Trinkwasser  !! kein Trinkwasser
       )
     );
-    Material: (        
+    Material: (
       unbekannt,
       Beton,
       Faserzement,
@@ -685,7 +685,7 @@ CLASS Anlage EXTENDS Leitungsknoten =
     Dimension1: SIA405_Base.Abmessung;
 END Anlage;
 
-CLASS Foerderanlage EXTENDS Leitungsknoten =  
+CLASS Foerderanlage EXTENDS Leitungsknoten =
 !! Einrichtung zum Transport von Flüssigkeiten
   ATTRIBUTE
     Name_Nummer: TEXT*40;  !! z.B. Pumpwerkname
@@ -704,18 +704,18 @@ CLASS Foerderanlage EXTENDS Leitungsknoten =
     Zustand: TEXT*40;
 END Foerderanlage;
 
-CLASS Wasserbehaelter EXTENDS Leitungsknoten =  
+CLASS Wasserbehaelter EXTENDS Leitungsknoten =
 !! Wasserbehälter
   ATTRIBUTE
     Name_Nummer: TEXT*40;
-    Art: (        
+    Art: (
       unbekannt,
       Behaelter_Reservoir,
       Kammer,
       Behaelter_mit_Stufenpumpe,
       andere
     );
-    Material: (        
+    Material: (
       unbekannt,
       Beton,
       Asbestzement,
@@ -732,11 +732,11 @@ CLASS Wasserbehaelter EXTENDS Leitungsknoten =
     Zustand: TEXT*40;
 END Wasserbehaelter;
 
-CLASS Wassergewinnungsanlage EXTENDS Leitungsknoten =  
+CLASS Wassergewinnungsanlage EXTENDS Leitungsknoten =
 !! Wassergewinnungsanlage
   ATTRIBUTE
     Name_Nummer: TEXT*40;
-    Art: (     
+    Art: (
       Fassungsanlage (
         unbekannt,
          Grundwasserfassung,
@@ -767,11 +767,11 @@ CLASS Wassergewinnungsanlage EXTENDS Leitungsknoten =
     Zustand: TEXT*40;
 END Wassergewinnungsanlage;
 
-CLASS Spezialbauwerk EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Spezialbauwerk EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Spezialbauwerk
   ATTRIBUTE
     Name_Nummer: TEXT*40;
-    Art: (     
+    Art: (
       Anlage,
       Wasserbehaelter,
       Wassergewinnungsanlage (
@@ -796,7 +796,7 @@ CLASS Spezialbauwerk EXTENDS SIA405_Base.SIA405_BaseClass =
            uebrige
       )
     );
-    Material: (        
+    Material: (
       unbekannt,
       Beton,
       Kunststoff,
@@ -852,7 +852,7 @@ VIEW TOPIC SIA405_Wasser_LK =
 
 VIEW Leitung
   PROJECTION OF base~SIA405_WASSER_2015.SIA405_Wasser.Leitung;
-  =  
+  =
   ATTRIBUTE
     OBJ_ID := base -> OBJ_ID;
     Metaattribute := base-> Metaattribute;
@@ -871,14 +871,14 @@ VIEW Leitung_Text
     ALL OF base;
 END Leitung_Text;
 
-VIEW Leitung_TextAssoc 
+VIEW Leitung_TextAssoc
   PROJECTION OF base~SIA405_WASSER_2015.SIA405_Wasser.Leitung_TextAssoc;
   =
   ATTRIBUTE
     ALL OF base;
 END Leitung_TextAssoc;
 
-VIEW Leitung_Strang_Assoc 
+VIEW Leitung_Strang_Assoc
   PROJECTION OF base~SIA405_WASSER_2015.SIA405_Wasser.Leitung_StrangAssoc;
   =
   ATTRIBUTE
@@ -887,7 +887,7 @@ END Leitung_Strang_Assoc;
 
 VIEW Leitungsknoten
   PROJECTION OF base~SIA405_WASSER_2015.SIA405_Wasser.Leitungsknoten;
-  =  
+  =
   ATTRIBUTE
     OBJ_ID := base -> OBJ_ID;
     Metaattribute := base-> Metaattribute;
@@ -906,14 +906,14 @@ VIEW Leitungsknoten_Text
     ALL OF base;
 END Leitungsknoten_Text;
 
-VIEW Leitungsknoten_TextAssoc 
+VIEW Leitungsknoten_TextAssoc
   PROJECTION OF base~SIA405_WASSER_2015.SIA405_Wasser.Leitungsknoten_TextAssoc;
   =
   ATTRIBUTE
     ALL OF base;
 END Leitungsknoten_TextAssoc;
 
-VIEW Leitungsknoten_Knoten_Assoc 
+VIEW Leitungsknoten_Knoten_Assoc
   PROJECTION OF base~SIA405_WASSER_2015.SIA405_Wasser.Leitungsknoten_KnotenAssoc;
   =
   ATTRIBUTE
@@ -923,7 +923,7 @@ END Leitungsknoten_Knoten_Assoc;
 VIEW Leitungspunkt
   UNION OF base1~SIA405_WASSER_2015.SIA405_Wasser.Absperrorgan,
          base2~SIA405_WASSER_2015.SIA405_Wasser.Hydrant;
-  =  
+  =
   ATTRIBUTE
     OBJ_ID := base1 -> OBJ_ID;
     Metaattribute := base1-> Metaattribute;
@@ -945,7 +945,7 @@ END Leitungspunkt;
 
 VIEW Anlage
   PROJECTION OF base~SIA405_WASSER_2015.SIA405_Wasser.Anlage;
-  =  
+  =
   ATTRIBUTE
     OBJ_ID := base -> OBJ_ID;
     Metaattribute := base-> Metaattribute;
@@ -971,7 +971,7 @@ END Anlage;
 
 VIEW Spezialbauwerk
   PROJECTION OF base~SIA405_WASSER_2015.SIA405_Wasser.Spezialbauwerk;
-  =  
+  =
   ATTRIBUTE
     OBJ_ID := base -> OBJ_ID;
     Metaattribute := base-> Metaattribute;
@@ -986,7 +986,7 @@ VIEW Spezialbauwerk_Text
     ALL OF base;
 END Spezialbauwerk_Text;
 
-VIEW Spezialbauwerk_TextAssoc 
+VIEW Spezialbauwerk_TextAssoc
   PROJECTION OF base~SIA405_WASSER_2015.SIA405_Wasser.Spezialbauwerk_TextAssoc;
   =
   ATTRIBUTE
@@ -1032,7 +1032,7 @@ END SIA405_WASSER_2015.   !! Ende des Modells / Fin du modèle
 !! INTERLIS 2.3;
 
 MODEL SIA405_WASSER_2015_LV95 (de) AT "http://www.sia.ch/405"
-  VERSION "05.10.2018" = 
+  VERSION "05.10.2018" =
 
   IMPORTS UNQUALIFIED INTERLIS;     !! imports INTERLIS 2 Baseunits
   IMPORTS Units;
@@ -1040,17 +1040,17 @@ MODEL SIA405_WASSER_2015_LV95 (de) AT "http://www.sia.ch/405"
   IMPORTS SIA405_Base_LV95;
 
 !! Copyright 2002 - 2015
-!! SVGW 
+!! SVGW
 !! www.svgw.ch
 !! in Zusammenarbeit mit schweizer ingenieur und architektenverein (sia), Zürich
 !! www.sia.ch
 
 !! Die Nutzung dieser INTERLIS-Datei ist lizenzpflichtig!
 
-!! Die Originalmodelldatei SIA405_Wasser_2015_2_d_LV95.ili und darauf basierende 
-!! abgeänderte Versionen dürfen nicht weiterverkauft werden. 
-!! Die Weitergabe der Originaldatei (als Ganzes oder Teile davon) ist nur 
-!! zusammen mit dem Erwerb einer Lizenz beim sia durch den Empfänger erlaubt. 
+!! Die Originalmodelldatei SIA405_Wasser_2015_2_d_LV95.ili und darauf basierende
+!! abgeänderte Versionen dürfen nicht weiterverkauft werden.
+!! Die Weitergabe der Originaldatei (als Ganzes oder Teile davon) ist nur
+!! zusammen mit dem Erwerb einer Lizenz beim sia durch den Empfänger erlaubt.
 
 !! Freigegeben für öffentlichen Gebrauch und kommerzielle Anwendung mit Lizenz.
 !! Geprueft mit Compiler Version 4.7.7 (8.02.2018)
@@ -1068,29 +1068,29 @@ Statuswerte EXTENDS SIA405_Base_LV95.Status = (  !! Betriebs- und Planungszustan
       ausser_Betrieb (  !! fasst ausser_Betrieb und folgende Werte zusammen
       !! 17.7.2015  ausser_Betrieb,
       Reserve
-	  ), 
+	  ),
       in_Betrieb (
       !! 17.7.2015  in_Betrieb,
          provisorisch
 		 ),
       !! 17.7.2015 tot,  !! fasst tot und folgende Werte zusammen
-      !! 17.7.2015 unbekannt, 
+      !! 17.7.2015 unbekannt,
       weitere ( !! fasst folgende Werte zusammen
-         Berechnungsvariante, 
-         geplant,  
+         Berechnungsvariante,
+         geplant,
          Projekt
          )
-      );  
-!! neu 9.7.2015  
+      );
+!! neu 9.7.2015
     Status = ALL OF Statuswerte;    !! Erweitert Wertebereich von SIA405 Status
 
 
-CLASS Hydraulischer_Knoten EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Hydraulischer_Knoten EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! ausgewählte Punkte der Tabellen Leitungspunkt, Absperrorgan, usw.
   ATTRIBUTE
     Name_Nummer: MANDATORY TEXT*40;
     Geometrie: Base_LV95.LKoord;
-    Knotentyp: (        
+    Knotentyp: (
       unbekannt,
       Normalknoten,
       Einspeisepunkt
@@ -1108,7 +1108,7 @@ ASSOCIATION Hydraulischer_Knoten_TextAssoc =   !! Komposition
   Text -- {0 .. *} Hydraulischer_Knoten_Text;
 END Hydraulischer_Knoten_TextAssoc;
 
-CLASS Hydraulischer_Strang EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Hydraulischer_Strang EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! von Knoten zu Knoten
   ATTRIBUTE
     Name_Nummer: MANDATORY TEXT*40;
@@ -1140,12 +1140,12 @@ ASSOCIATION Hydraulischer_Strang_bisKnotenAssoc =    !! Assoziation
   Hydraulischer_Strang_bisKnotenAssocRef -- {1..*} Hydraulischer_Strang; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Hydraulischer_Strang_bisKnotenAssoc;
 
-CLASS Leitung EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Leitung EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Leitung
   ATTRIBUTE
     Name_Nummer: TEXT*40;
     Geometrie: MANDATORY Base_LV95.Polyline;  !! offener Linienzug, Stützpunkte in Landeskoordinaten
-    Funktion: (     
+    Funktion: (
       unbekannt,
       Fernwasserleitung,
       Zubringerleitung,
@@ -1163,7 +1163,7 @@ CLASS Leitung EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
       Interne_Leitung,
       Bau_Wasseranschluss
     );
-    Material: (     
+    Material: (
       unbekannt,
       Faserzement (
          Faserzement,  !! Faserzement
@@ -1214,14 +1214,14 @@ CLASS Leitung EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
     DurchmesserAussen: 0 .. 9999 [Units.mm];  !! bei Kunststoffrohren
     Durchmesser: 0 .. 9999 [Units.mm];  !! für Leitungen aus Guss und Material unbekannt
     Nennweite: TEXT*10;  !! als TEXT, da zum Teil auch Doppelwerte mit Schrägstrich (z.B. 1500/800);
-    Wasserqualitaet: (        
+    Wasserqualitaet: (
       unbekannt,
       Trinkwasser,
       Industriebrauchwasser,
       Rohwasser,
       andere
     );
-    Lagebestimmung: (        
+    Lagebestimmung: (
       unbekannt,
       ungenau,
       genau,
@@ -1229,7 +1229,7 @@ CLASS Leitung EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
     );
     Status: MANDATORY Status;
     Baujahr: MANDATORY SIA405_Base_LV95.Jahr;
-    Verbindungsart: (     
+    Verbindungsart: (
       unbekannt,
       Muffen (
          unbekannt,
@@ -1248,7 +1248,7 @@ CLASS Leitung EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
       Straubkupplung,  !! Straubkupplung
       Gibaultkupplung  !! Gibaultkupplung
     );
-    Aussenbeschichtung: (        
+    Aussenbeschichtung: (
       unbekannt,
       keine,
       Bitumenschicht,
@@ -1263,7 +1263,7 @@ CLASS Leitung EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
       Bitumenband,
       Schrumpffolie
     );
-    Innenbeschichtung: (     
+    Innenbeschichtung: (
       unbekannt,
       keine,
       Polyurethan (
@@ -1277,14 +1277,14 @@ CLASS Leitung EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
       bitumiert,
       Zinkstein_Epoxi
     );
-    Verlegeart: (        
+    Verlegeart: (
       unbekannt,
       offener_Graben,
       grabenlos,
       Rohr_pressen,
       freiliegend
     );
-    Schubsicherung: (        
+    Schubsicherung: (
       unbekannt,
       aussen,
       innen,
@@ -1294,7 +1294,7 @@ CLASS Leitung EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
       Klemmschelle
     );
     Ueberdeckung: SIA405_Base_LV95.Ueberdeckung;
-    Sanierung_Erneuerung: (        
+    Sanierung_Erneuerung: (
       keine,
       PE_Rohrrelining,
       Zement_Auskleidung,
@@ -1304,7 +1304,7 @@ CLASS Leitung EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
       Stahl_Relining,
       andere
     );
-    Bettung: (        
+    Bettung: (
       unbekannt,
       Betonkies,
       Beton,
@@ -1312,7 +1312,7 @@ CLASS Leitung EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
       Recyclingmaterial,
       Fliess
     );
-    Kathodischer_Schutz: (        
+    Kathodischer_Schutz: (
       unbekannt,
       keiner,
       Gleichstrom,
@@ -1346,12 +1346,12 @@ ASSOCIATION Leitung_StrangAssoc =    !! Assoziation
   Leitung_StrangAssocRef -- {1..*} Leitung; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Leitung_StrangAssoc;
 
-CLASS Schadenstelle EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Schadenstelle EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Schadenstelle
   ATTRIBUTE
     Name_Nummer: TEXT*40;
     Geometrie: MANDATORY Base_LV95.LKoord;  !! 2D, Landeskorrdinaten [m]
-    Art: (     
+    Art: (
       unbekannt,
       Bruch (
          Querbruch,
@@ -1362,7 +1362,7 @@ CLASS Schadenstelle EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
       Mangel,
       weitere
     );
-    Ursache: (        
+    Ursache: (
       Setzung,
       Korrosion,
       Verbindung,
@@ -1384,7 +1384,7 @@ ASSOCIATION Schadenstelle_LeitungAssoc =    !! Assoziation
   Schadenstelle_LeitungAssocRef -- {0..*} Schadenstelle; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Schadenstelle_LeitungAssoc;
 
-CLASS Leitungsknoten (ABSTRACT) EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Leitungsknoten (ABSTRACT) EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Leitungsknoten
   ATTRIBUTE
     Geometrie: MANDATORY Base_LV95.LKoord;  !! 2D, Landeskorrdinaten [m]
@@ -1411,11 +1411,11 @@ ASSOCIATION Leitungsknoten_KnotenAssoc =    !! Assoziation
   Leitungsknoten_KnotenAssocRef -- {1..*} Leitungsknoten; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Leitungsknoten_KnotenAssoc;
 
-CLASS Absperrorgan EXTENDS Leitungsknoten =  
+CLASS Absperrorgan EXTENDS Leitungsknoten =
 !! Absperrorgan
   ATTRIBUTE
     Name_Nummer: TEXT*40;
-    Art: (     
+    Art: (
       unbekannt,
       Schieber (
          unbekannt,
@@ -1439,12 +1439,12 @@ CLASS Absperrorgan EXTENDS Leitungsknoten =
          Zonenklappe
       )
     );
-    Schaltzustand: (        
+    Schaltzustand: (
       unbekannt,
       offen,
       geschlossen
     );
-    Schaltantrieb: (     
+    Schaltantrieb: (
       unbekannt,
       keiner,
       motorisch (
@@ -1454,7 +1454,7 @@ CLASS Absperrorgan EXTENDS Leitungsknoten =
       ),
       mechanisch
     );
-    Material: (        
+    Material: (
       Kunststoff,
       unbekannt,
       Stahl,
@@ -1464,18 +1464,18 @@ CLASS Absperrorgan EXTENDS Leitungsknoten =
     Nennweite: TEXT*10;  !! als TEXT, da zum Teil auch Doppelwerte mit Schrägstrich (z.B. 1500/800);
     Hersteller: TEXT*30;
     Typ: TEXT*10;  !! Eindeutige Kennzeichnung  des Objektes wie Typennummer des Herstellers. Der Name des Herstellers wird im Attribut Hersteller abgelegt.
-    Schliessrichtung: (        
+    Schliessrichtung: (
       rechts,
       links
     );
     Zustand: TEXT*40;
 END Absperrorgan;
 
-CLASS Hydrant EXTENDS Leitungsknoten =  
+CLASS Hydrant EXTENDS Leitungsknoten =
 !! Hydrant
   ATTRIBUTE
     Name_Nummer: TEXT*40;
-    Art: (     
+    Art: (
       unbekannt,
       Oberflurhydrant (
          einarmig,
@@ -1497,7 +1497,7 @@ CLASS Hydrant EXTENDS Leitungsknoten =
       Sprinkler,
       Schneeanlage
     );
-    Material: (        
+    Material: (
       unbekannt,
       Metall
     );
@@ -1510,11 +1510,11 @@ CLASS Hydrant EXTENDS Leitungsknoten =
     Zustand: TEXT*40;
 END Hydrant;
 
-CLASS Rohrleitungsteil EXTENDS Leitungsknoten =  
+CLASS Rohrleitungsteil EXTENDS Leitungsknoten =
 !! Rohrleitungsteil
   ATTRIBUTE
     Name_Nummer: TEXT*40;
-    Art: (     
+    Art: (
       Verbindungselement (
         unbekannt,
          Ueberschieber_Schlaufe,
@@ -1569,7 +1569,7 @@ CLASS Rohrleitungsteil EXTENDS Leitungsknoten =
       ),
       Standrohr
     );
-    Verbindung: (        
+    Verbindung: (
       unbekannt,
       normal,
       aussenschubgesichert,
@@ -1580,7 +1580,7 @@ CLASS Rohrleitungsteil EXTENDS Leitungsknoten =
       geschweisst,
       gestemmt
     );
-    Material: (        
+    Material: (
       unbekannt,
       Stahl,
       Guss,
@@ -1592,19 +1592,19 @@ CLASS Rohrleitungsteil EXTENDS Leitungsknoten =
     Zustand: TEXT*40;
 END Rohrleitungsteil;
 
-CLASS Hausanschluss EXTENDS Leitungsknoten =  
+CLASS Hausanschluss EXTENDS Leitungsknoten =
 !! Hausanschluss
   ATTRIBUTE
     Name_Nummer: TEXT*40;  !! identifizierender Text
     Standort: TEXT*10;  !! Nummer (z.B. der Adresse);
     Art: TEXT*30;
-    Gebaeudeanschluss: (        
+    Gebaeudeanschluss: (
       unbekannt,
       Guss,
       Kunststoff,
       Stahl
     );
-    Isolierstueck: (        
+    Isolierstueck: (
       ja,
       nein
     );
@@ -1616,10 +1616,10 @@ CLASS Hausanschluss EXTENDS Leitungsknoten =
     Zustand: TEXT*40;
 END Hausanschluss;
 
-CLASS Muffen EXTENDS Leitungsknoten =  
+CLASS Muffen EXTENDS Leitungsknoten =
 !! Muffen
   ATTRIBUTE
-    Art: (        
+    Art: (
       unbekannt,
       geflanscht,
       gesteckt,
@@ -1634,7 +1634,7 @@ CLASS Muffen EXTENDS Leitungsknoten =
       Straubkupplung,
       Gibaultkupplung
     );
-    Schubsicherung: (        
+    Schubsicherung: (
       unbekannt,
       aussen,
       innen,
@@ -1647,11 +1647,11 @@ CLASS Muffen EXTENDS Leitungsknoten =
     Zustand: TEXT*40;
 END Muffen;
 
-CLASS Uebrige EXTENDS Leitungsknoten =  
+CLASS Uebrige EXTENDS Leitungsknoten =
 !! Übrige Leitungsknoten
   ATTRIBUTE
     Name_Nummer: TEXT*40;  !! z.B. Nummer des Bauwerkes
-    Art: (        
+    Art: (
       unbekannt,
       Probeentnahme,
       Piezometer,
@@ -1661,11 +1661,11 @@ CLASS Uebrige EXTENDS Leitungsknoten =
     Zustand: TEXT*40;
 END Uebrige;
 
-CLASS Anlage EXTENDS Leitungsknoten =  
+CLASS Anlage EXTENDS Leitungsknoten =
 !! Anlage
   ATTRIBUTE
     Name_Nummer: TEXT*40;  !! z.B. Anlagenummer oder -name
-    Art: (     
+    Art: (
       unbekannt,
       Schacht (
          unbekannt,
@@ -1698,7 +1698,7 @@ CLASS Anlage EXTENDS Leitungsknoten =
          Ziehbrunnen  !! Trinkwasser  !! kein Trinkwasser
       )
     );
-    Material: (        
+    Material: (
       unbekannt,
       Beton,
       Faserzement,
@@ -1714,7 +1714,7 @@ CLASS Anlage EXTENDS Leitungsknoten =
     Dimension1: SIA405_Base_LV95.Abmessung;
 END Anlage;
 
-CLASS Foerderanlage EXTENDS Leitungsknoten =  
+CLASS Foerderanlage EXTENDS Leitungsknoten =
 !! Einrichtung zum Transport von Flüssigkeiten
   ATTRIBUTE
     Name_Nummer: TEXT*40;  !! z.B. Pumpwerkname
@@ -1733,18 +1733,18 @@ CLASS Foerderanlage EXTENDS Leitungsknoten =
     Zustand: TEXT*40;
 END Foerderanlage;
 
-CLASS Wasserbehaelter EXTENDS Leitungsknoten =  
+CLASS Wasserbehaelter EXTENDS Leitungsknoten =
 !! Wasserbehälter
   ATTRIBUTE
     Name_Nummer: TEXT*40;
-    Art: (        
+    Art: (
       unbekannt,
       Behaelter_Reservoir,
       Kammer,
       Behaelter_mit_Stufenpumpe,
       andere
     );
-    Material: (        
+    Material: (
       unbekannt,
       Beton,
       Asbestzement,
@@ -1761,11 +1761,11 @@ CLASS Wasserbehaelter EXTENDS Leitungsknoten =
     Zustand: TEXT*40;
 END Wasserbehaelter;
 
-CLASS Wassergewinnungsanlage EXTENDS Leitungsknoten =  
+CLASS Wassergewinnungsanlage EXTENDS Leitungsknoten =
 !! Wassergewinnungsanlage
   ATTRIBUTE
     Name_Nummer: TEXT*40;
-    Art: (     
+    Art: (
       Fassungsanlage (
         unbekannt,
          Grundwasserfassung,
@@ -1796,11 +1796,11 @@ CLASS Wassergewinnungsanlage EXTENDS Leitungsknoten =
     Zustand: TEXT*40;
 END Wassergewinnungsanlage;
 
-CLASS Spezialbauwerk EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Spezialbauwerk EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Spezialbauwerk
   ATTRIBUTE
     Name_Nummer: TEXT*40;
-    Art: (     
+    Art: (
       Anlage,
       Wasserbehaelter,
       Wassergewinnungsanlage (
@@ -1825,7 +1825,7 @@ CLASS Spezialbauwerk EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
            uebrige
       )
     );
-    Material: (        
+    Material: (
       unbekannt,
       Beton,
       Kunststoff,
@@ -1881,7 +1881,7 @@ VIEW TOPIC SIA405_Wasser_LK =
 
 VIEW Leitung
   PROJECTION OF base~SIA405_WASSER_2015_LV95.SIA405_Wasser.Leitung;
-  =  
+  =
   ATTRIBUTE
     OBJ_ID := base -> OBJ_ID;
     Metaattribute := base-> Metaattribute;
@@ -1900,14 +1900,14 @@ VIEW Leitung_Text
     ALL OF base;
 END Leitung_Text;
 
-VIEW Leitung_TextAssoc 
+VIEW Leitung_TextAssoc
   PROJECTION OF base~SIA405_WASSER_2015_LV95.SIA405_Wasser.Leitung_TextAssoc;
   =
   ATTRIBUTE
     ALL OF base;
 END Leitung_TextAssoc;
 
-VIEW Leitung_Strang_Assoc 
+VIEW Leitung_Strang_Assoc
   PROJECTION OF base~SIA405_WASSER_2015_LV95.SIA405_Wasser.Leitung_StrangAssoc;
   =
   ATTRIBUTE
@@ -1916,7 +1916,7 @@ END Leitung_Strang_Assoc;
 
 VIEW Leitungsknoten
   PROJECTION OF base~SIA405_WASSER_2015_LV95.SIA405_Wasser.Leitungsknoten;
-  =  
+  =
   ATTRIBUTE
     OBJ_ID := base -> OBJ_ID;
     Metaattribute := base-> Metaattribute;
@@ -1935,14 +1935,14 @@ VIEW Leitungsknoten_Text
     ALL OF base;
 END Leitungsknoten_Text;
 
-VIEW Leitungsknoten_TextAssoc 
+VIEW Leitungsknoten_TextAssoc
   PROJECTION OF base~SIA405_WASSER_2015_LV95.SIA405_Wasser.Leitungsknoten_TextAssoc;
   =
   ATTRIBUTE
     ALL OF base;
 END Leitungsknoten_TextAssoc;
 
-VIEW Leitungsknoten_Knoten_Assoc 
+VIEW Leitungsknoten_Knoten_Assoc
   PROJECTION OF base~SIA405_WASSER_2015_LV95.SIA405_Wasser.Leitungsknoten_KnotenAssoc;
   =
   ATTRIBUTE
@@ -1952,7 +1952,7 @@ END Leitungsknoten_Knoten_Assoc;
 VIEW Leitungspunkt
   UNION OF base1~SIA405_WASSER_2015_LV95.SIA405_Wasser.Absperrorgan,
          base2~SIA405_WASSER_2015_LV95.SIA405_Wasser.Hydrant;
-  =  
+  =
   ATTRIBUTE
     OBJ_ID := base1 -> OBJ_ID;
     Metaattribute := base1-> Metaattribute;
@@ -1974,7 +1974,7 @@ END Leitungspunkt;
 
 VIEW Anlage
   PROJECTION OF base~SIA405_WASSER_2015_LV95.SIA405_Wasser.Anlage;
-  =  
+  =
   ATTRIBUTE
     OBJ_ID := base -> OBJ_ID;
     Metaattribute := base-> Metaattribute;
@@ -2000,7 +2000,7 @@ END Anlage;
 
 VIEW Spezialbauwerk
   PROJECTION OF base~SIA405_WASSER_2015_LV95.SIA405_Wasser.Spezialbauwerk;
-  =  
+  =
   ATTRIBUTE
     OBJ_ID := base -> OBJ_ID;
     Metaattribute := base-> Metaattribute;
@@ -2015,7 +2015,7 @@ VIEW Spezialbauwerk_Text
     ALL OF base;
 END Spezialbauwerk_Text;
 
-VIEW Spezialbauwerk_TextAssoc 
+VIEW Spezialbauwerk_TextAssoc
   PROJECTION OF base~SIA405_WASSER_2015_LV95.SIA405_Wasser.Spezialbauwerk_TextAssoc;
   =
   ATTRIBUTE
@@ -2054,4 +2054,3 @@ END Spezialbauwerk_LinieAssoc;
 END SIA405_Wasser_LK;  !! Ende der View
 
 END SIA405_WASSER_2015_LV95.   !! Ende des Modells / Fin du modèle
-

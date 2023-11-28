@@ -23,7 +23,9 @@ def findall_in_xml_kek_2019(root, tag, basket="VSA_KEK_2019_LV95.KEK"):
     return root.findall(f"ili:DATASECTION/ili:{basket}/ili:{tag}", ns)
 
 
-def findall_in_xml_sia_abwasser_2015(root, tag, basket="SIA405_ABWASSER_2015_LV95.SIA405_Abwasser"):
+def findall_in_xml_sia_abwasser_2015(
+    root, tag, basket="SIA405_ABWASSER_2015_LV95.SIA405_Abwasser"
+):
     ns = {"ili": "http://www.interlis.ch/INTERLIS2.3"}
     return root.findall(f"ili:DATASECTION/ili:{basket}/ili:{tag}", ns)
 
@@ -36,7 +38,9 @@ class TestQGEPUseCases(unittest.TestCase):
         We recieve data from a TV inspection company as a Wincan exported .xtf file. We want this data loaded into QGEP.
         """
 
-        path = os.path.join(os.path.dirname(__file__), "..", "data", "test_data", "case_a_import_from_wincan.xtf")
+        path = os.path.join(
+            os.path.dirname(__file__), "..", "data", "test_data", "case_a_import_from_wincan.xtf"
+        )
 
         # Prepare db (we import in a full schema)
         main(["setupdb", "full"])
@@ -99,7 +103,11 @@ class TestQGEPUseCases(unittest.TestCase):
         # Incomming XTF case_c_import_all_without_errors.xtf
         # THIS INPUT FILE IS VALID !
         path = os.path.join(
-            os.path.dirname(__file__), "..", "data", "test_data", "case_d_import_all_without_errors.xtf"
+            os.path.dirname(__file__),
+            "..",
+            "data",
+            "test_data",
+            "case_d_import_all_without_errors.xtf",
         )
 
         # Prepare subset db (we import in an empty schema)
@@ -120,7 +128,9 @@ class TestQGEPUseCases(unittest.TestCase):
         self.assertEqual(session.query(QGEP.manhole).count(), 49)
 
         # checking some properties  # TODO : add some more...
-        self.assertEqual(session.query(QGEP.manhole).get("ch080qwzNS000113").year_of_construction, 1950)
+        self.assertEqual(
+            session.query(QGEP.manhole).get("ch080qwzNS000113").year_of_construction, 1950
+        )
         session.close()
 
     def test_case_e_export_selection(self):
@@ -160,15 +170,33 @@ class TestQGEPUseCases(unittest.TestCase):
 
         root = ET.parse(path)
 
-        self.assertEqual(len(findall_in_xml_kek_2019(root, "SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Kanal")), 1)
         self.assertEqual(
-            len(findall_in_xml_kek_2019(root, "SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Normschacht")), 2
+            len(findall_in_xml_kek_2019(root, "SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Kanal")),
+            1,
         )
         self.assertEqual(
-            len(findall_in_xml_kek_2019(root, "SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Haltung_Text")), 3
+            len(
+                findall_in_xml_kek_2019(
+                    root, "SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Normschacht"
+                )
+            ),
+            2,
         )
         self.assertEqual(
-            len(findall_in_xml_kek_2019(root, "SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Abwasserbauwerk_Text")), 6
+            len(
+                findall_in_xml_kek_2019(
+                    root, "SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Haltung_Text"
+                )
+            ),
+            3,
+        )
+        self.assertEqual(
+            len(
+                findall_in_xml_kek_2019(
+                    root, "SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Abwasserbauwerk_Text"
+                )
+            ),
+            6,
         )
 
     def test_case_f_export_selection_sia405(self):
@@ -206,13 +234,28 @@ class TestQGEPUseCases(unittest.TestCase):
         root = ET.parse(path)
 
         self.assertEqual(
-            len(findall_in_xml_sia_abwasser_2015(root, "SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Kanal")), 1
+            len(
+                findall_in_xml_sia_abwasser_2015(
+                    root, "SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Kanal"
+                )
+            ),
+            1,
         )
         self.assertEqual(
-            len(findall_in_xml_sia_abwasser_2015(root, "SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Normschacht")), 2
+            len(
+                findall_in_xml_sia_abwasser_2015(
+                    root, "SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Normschacht"
+                )
+            ),
+            2,
         )
         self.assertEqual(
-            len(findall_in_xml_sia_abwasser_2015(root, "SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Haltung_Text")), 3
+            len(
+                findall_in_xml_sia_abwasser_2015(
+                    root, "SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Haltung_Text"
+                )
+            ),
+            3,
         )
         self.assertEqual(
             len(
@@ -233,7 +276,11 @@ class TestRegressions(unittest.TestCase):
         """
 
         path = os.path.join(
-            os.path.dirname(__file__), "..", "data", "test_data", "regression_001_self_referencing_organisation.xtf"
+            os.path.dirname(__file__),
+            "..",
+            "data",
+            "test_data",
+            "regression_001_self_referencing_organisation.xtf",
         )
 
         # Prepare db (we import in an empty schema)

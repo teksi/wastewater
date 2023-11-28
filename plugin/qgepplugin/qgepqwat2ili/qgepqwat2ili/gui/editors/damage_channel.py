@@ -2,7 +2,6 @@ from .base import Editor
 
 
 class DamageChannelEditor(Editor):
-
     class_name = "damage_channel"
 
     # DISABLED FOR NOW AS PER https://github.com/QGEP/qgepqwat2ili/issues/8

@@ -4,7 +4,7 @@
 INTERLIS 2.3;
 
 MODEL DSS_2015 (de) AT "http://www.vsa.ch/models"
-  VERSION "13.11.2018" = 
+  VERSION "13.11.2018" =
 
   IMPORTS UNQUALIFIED INTERLIS;     !! new 8.11.2004, imports INTERLIS 2 Baseunits
   IMPORTS Units;
@@ -17,10 +17,10 @@ MODEL DSS_2015 (de) AT "http://www.vsa.ch/models"
 
 !! Die Nutzung dieser INTERLIS-Datei ist lizenzpflichtig!
 
-!! Die Originalmodelldatei  und darauf basierende 
-!! abgeänderte Versionen dürfen nicht weiterverkauft werden. 
-!! Die Weitergabe der Originaldatei (als Ganzes oder Teile davon) ist nur 
-!! zusammen mit dem Erwerb einer Lizenz beim VSA durch den Empfänger erlaubt. 
+!! Die Originalmodelldatei  und darauf basierende
+!! abgeänderte Versionen dürfen nicht weiterverkauft werden.
+!! Die Weitergabe der Originaldatei (als Ganzes oder Teile davon) ist nur
+!! zusammen mit dem Erwerb einer Lizenz beim VSA durch den Empfänger erlaubt.
 
 !! Freigegeben für öffentlichen Gebrauch und kommerzielle Anwendung mit Lizenz.
 !! Geprueft mit Compiler Version 4.7.7 (8.02.2018)
@@ -52,7 +52,7 @@ Gebietseinteilung = AREA WITH (STRAIGHTS,ARCS) VERTEX Base.LKoord WITHOUT OVERLA
 !! Versickerungsbereich.Perimeter
 
 
-Number = -99999999.9999 ..  99999999.9999;    !! 
+Number = -99999999.9999 ..  99999999.9999;    !!
 !! Messresultat.Wert
 !! Rohrprofil_Geometrie.x
 !! Rohrprofil_Geometrie.y
@@ -62,7 +62,7 @@ Verhaeltnis_H_B = 0.01 .. 100.00;    !! Verhältnis Höhe zu Breite, ohne Einhei
 !! Rohrprofil.HoehenBreitenverhaeltnis
 
 
-Statuswerte EXTENDS SIA405_Base.Status = (  !! Betriebs- und Planungszustand. 
+Statuswerte EXTENDS SIA405_Base.Status = (  !! Betriebs- und Planungszustand.
 !! 11.2.2012 Anpassung auf neue Variante von SIA405_Base.Status - Erweiterung Basiswerte im Medium, hierarchische Modellierung und Anpassung auf Compiler 4.5.13
       !! 17.7.2015 ausser_Betrieb,   !! fasst ausser_Betrieb und folgende Werte zusammen
         !!  Reserve !! existiert nicht im Medium Abwasser
@@ -84,7 +84,7 @@ Statuswerte EXTENDS SIA405_Base.Status = (  !! Betriebs- und Planungszustand.
          Projekt
       )
     );    !! Erweitert Wertebereich von SIA405 Status
-!! neu 17.7.2015  
+!! neu 17.7.2015
     Status = ALL OF Statuswerte;    !! Erweitert Wertebereich von SIA405 Status
 !! Abwasserbauwerk.Status
 
@@ -158,15 +158,15 @@ Verlust = 0.0 .. 500.0 [Units.mm];    !! Milimeter [mm]
 !! Oberflaechenabflussparameter.Versickerungsverlust
 
 
-GemeindeNr = 1 .. 9999 [Units.CountedObjects];    !! 
+GemeindeNr = 1 .. 9999 [Units.CountedObjects];    !!
 !! Gemeinde.Gemeindenummer
 
 
-ARANr = 1 .. 999999 [Units.CountedObjects];    !! 
+ARANr = 1 .. 999999 [Units.CountedObjects];    !!
 !! Abwasserreinigungsanlage.Anlagenummer
 
 
-Position = 1 .. 999;    !! 
+Position = 1 .. 999;    !!
 !! Rohrprofil_Geometrie.Position
 
 
@@ -174,7 +174,7 @@ Ueberlaufhaeufigkeit = 0.0 .. 999.9;    !! [Anzahl Überläufe/Jahr]
 !! Hydr_Kennwerte.Ueberlaufhaeufigkeit
 
 
-Aggregatezahl = 1 .. 9  [Units.CountedObjects];    !! 
+Aggregatezahl = 1 .. 9  [Units.CountedObjects];    !!
 !! Hydr_Kennwerte.Aggregatezahl
 
 
@@ -186,7 +186,7 @@ Lichte_Hoehe = 0 .. 99999 [Units.mm];    !! Milimeter [mm]
 !! Haltung.Reliner_Nennweite
 
 
-UID = TEXT*12;    !! 
+UID = TEXT*12;    !!
 !! Organisation.UID
 
 
@@ -194,15 +194,15 @@ Foerderhoehe = 0.00 .. 30000.00 [m];    !! Meter [m], 2 Dezimalstellen
 !! Hydr_Kennwerte.Foerderhoehe_geodaetisch
 
 
-Ziffernblatt = 0..12;    !! 
+Ziffernblatt = 0..12;    !!
 !! gemäss Richtlinie
 !! Haltungspunkt.Lage_Anschluss
 
 
-CLASS MUTATION EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS MUTATION EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Transfer von Mutationen von Attributwerten beliebiger Klassen
   ATTRIBUTE
-    ART: (        
+    ART: (
       erstellt,
       geaendert,
       geloescht
@@ -218,7 +218,7 @@ CLASS MUTATION EXTENDS SIA405_Base.SIA405_BaseClass =
     SYSTEMBENUTZER: TEXT*41;  !! Name des Systembenutzers
 END MUTATION;
 
-CLASS Grundwasserleiter EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Grundwasserleiter EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Abgegrenztes Grundwasservorkommen oder abgegrenzter Teil davon
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -229,14 +229,14 @@ CLASS Grundwasserleiter EXTENDS SIA405_Base.SIA405_BaseClass =
     Perimeter: Base.Surface;  !! Begrenzungspunkte der Fläche
 END Grundwasserleiter;
 
-CLASS Oberflaechengewaesser (ABSTRACT) EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Oberflaechengewaesser (ABSTRACT) EXTENDS SIA405_Base.SIA405_BaseClass =
 !! In der Natur fliessendes oder stehendes Wasser einschliesslich Gewässerbett
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
     Bezeichnung: MANDATORY TEXT*20;
 END Oberflaechengewaesser;
 
-CLASS Fliessgewaesser EXTENDS Oberflaechengewaesser =  
+CLASS Fliessgewaesser EXTENDS Oberflaechengewaesser =
 !! Ständig oder zeitweise fliessendes oberirdisches Gewässer
   ATTRIBUTE
     Art: (          !! Art des Fliessgewässers. Klassifizierung nach GEWISS
@@ -246,19 +246,19 @@ CLASS Fliessgewaesser EXTENDS Oberflaechengewaesser =
       Travertinbach,
       unbekannt
     );
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Fliessgewaesser;
 
-CLASS See EXTENDS Oberflaechengewaesser =  
+CLASS See EXTENDS Oberflaechengewaesser =
 !! Oberirdisches Gewässer mit stehendem oder nahezu stehendem Wasser
   ATTRIBUTE
     Perimeter: Base.Surface;  !! Begrenzungspunkte der Fläche
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END See;
 
-CLASS Gewaesserabschnitt EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Gewaesserabschnitt EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Aus gewässermorphologischer Sicht homogener Teil eines Gewässers
   ATTRIBUTE
     Abflussregime: (          !! Grad der antropogenen Beeinflussung des charakteristischen Ganges des Abflusses.
@@ -274,7 +274,7 @@ CLASS Gewaesserabschnitt EXTENDS SIA405_Base.SIA405_BaseClass =
       uebermaessig_wuchernd,
       unbekannt
     );
-    Art: (        
+    Art: (
       eingedolt,
       offen,
       unbekannt
@@ -361,7 +361,7 @@ ASSOCIATION Gewaesserabschnitt_FliessgewaesserAssoc =    !! Komposition
   Gewaesserabschnitt_FliessgewaesserAssocRef -- {0..*} Gewaesserabschnitt; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Gewaesserabschnitt_FliessgewaesserAssoc;
 
-CLASS Wasserfassung EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Wasserfassung EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Entnahme von Grundwasser durch technische Massnahmen
   ATTRIBUTE
     Art: (          !! Art der Trinkwasserfassung
@@ -384,7 +384,7 @@ ASSOCIATION Wasserfassung_OberflaechengewaesserAssoc =    !! Assoziation
   Wasserfassung_OberflaechengewaesserAssocRef -- {0..*} Wasserfassung; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Wasserfassung_OberflaechengewaesserAssoc;
 
-CLASS Ufer EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Ufer EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Ans Gewässer angrenzende Zone
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -407,7 +407,7 @@ CLASS Ufer EXTENDS SIA405_Base.SIA405_BaseClass =
       unbekannt,
       Wald
     );
-    Vegetation: (        
+    Vegetation: (
       fehlend,
       standorttypisch,
       standortuntypisch,
@@ -440,7 +440,7 @@ ASSOCIATION Ufer_GewaesserabschnittAssoc =    !! Komposition
   Ufer_GewaesserabschnittAssocRef -- {0..2} Ufer; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Ufer_GewaesserabschnittAssoc;
 
-CLASS Gewaessersohle EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Gewaessersohle EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Bei Hochwasser umgelagerter Bereich eines Gewässers
   ATTRIBUTE
     Art: (          !! Sohlentyp
@@ -475,7 +475,7 @@ ASSOCIATION Gewaessersohle_GewaesserabschnittAssoc =    !! Komposition
   Gewaessersohle_GewaesserabschnittAssocRef -- {0..1} Gewaessersohle; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Gewaessersohle_GewaesserabschnittAssoc;
 
-CLASS Gewaessersektor EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Gewaessersektor EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Teilstück aus welchen sich ein  Gewässers aufbaut
   ATTRIBUTE
     Art: (          !! Ufer oder Gewässerlinie. Zur Unterscheidung der Seesektoren wichtig.
@@ -504,7 +504,7 @@ ASSOCIATION Gewaessersektor_OberflaechengewaesserAssoc =    !! Komposition
   Gewaessersektor_OberflaechengewaesserAssocRef -- {0..*} Gewaessersektor; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Gewaessersektor_OberflaechengewaesserAssoc;
 
-CLASS Organisation (ABSTRACT) EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Organisation (ABSTRACT) EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Superklasse für in der Entwässerungsplanung relevante organisatorische Einheiten (z.B. Gemeinde, Kanton, etc.)
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -517,29 +517,29 @@ ASSOCIATION Organisation_Teil_vonAssoc =    !! Assoziation
   Organisation_Teil_vonAssocRef -- {0..*} Organisation; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Organisation_Teil_vonAssoc;
 
-CLASS Genossenschaft_Korporation EXTENDS Organisation =  
+CLASS Genossenschaft_Korporation EXTENDS Organisation =
 !! Genossenschaft oder Kooperation: Körperschaft öffentlichen Rechts. Falls privaten Rechtes dann als Privat abbilden.
   ATTRIBUTE
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Genossenschaft_Korporation;
 
-CLASS Kanton EXTENDS Organisation =  
+CLASS Kanton EXTENDS Organisation =
 !! Kanton der Schweiz
   ATTRIBUTE
     Perimeter: Gebietseinteilung;  !! Kantonsgrenze
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Kanton;
 
-CLASS Abwasserverband EXTENDS Organisation =  
+CLASS Abwasserverband EXTENDS Organisation =
 !! Abwasserverband
   ATTRIBUTE
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Abwasserverband;
 
-CLASS Gemeinde EXTENDS Organisation =  
+CLASS Gemeinde EXTENDS Organisation =
 !! Für die Belange der Siedlungsentwässerung zuständiges Organ der Gemeindeverwaltung
   ATTRIBUTE
     Einwohner: EGW;  !! Ständige Einwohner (laut Einwohnerkontrolle der Gemeinde);
@@ -548,18 +548,18 @@ CLASS Gemeinde EXTENDS Organisation =
     GEP_Jahr: SIA405_Base.Jahr;  !! Rechtsgültiges GEP aus dem Jahr
     Hoehe: Base.Hoehe;  !! Mittlere Höhe des Siedlungsgebietes
     Perimeter: Gebietseinteilung;  !! Gemeindegrenze
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Gemeinde;
 
-CLASS Amt EXTENDS Organisation =  
+CLASS Amt EXTENDS Organisation =
 !! Teil einer Organisation (z.B. Amt für Umweltschutz, Amt für Abwasserentsorgung)
   ATTRIBUTE
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Amt;
 
-CLASS Abwasserreinigungsanlage EXTENDS Organisation =  
+CLASS Abwasserreinigungsanlage EXTENDS Organisation =
 !! Abwassreinigungsanlage (ARA)
   ATTRIBUTE
     Anlagenummer: ARANr;  !! ARA-Nummer gemäss Bundesamt für Umwelt (BAFU);
@@ -572,19 +572,19 @@ CLASS Abwasserreinigungsanlage EXTENDS Organisation =
     EliminationP: 0.00 .. 100.00 [Units.Percent];  !! Dimensionierungswert Eliminationsrate in %
     Inbetriebnahme: SIA405_Base.Jahr;  !! Jahr der Inbetriebnahme
     NH4: NH4;  !! Dimensionierungswert Ablauf Vorklärung. NH4 [gNH4/m3]
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Abwasserreinigungsanlage;
 
-CLASS Privat EXTENDS Organisation =  
+CLASS Privat EXTENDS Organisation =
 !! Privatperson oder Privatorganisation, welche im Rahmen der Entwässerungsplanung auftritt
   ATTRIBUTE
     Art: TEXT*50;
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Privat;
 
-CLASS Abwasserbauwerk (ABSTRACT) EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Abwasserbauwerk (ABSTRACT) EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Bauwerk in einem Entwässerungsnetz (dss)
   ATTRIBUTE
     Akten: MTEXT*255;  !! Plan Nr. der Ausführungsdokumentation. Kurzbeschrieb weiterer Akten (Betriebsanleitung vom …, etc.);
@@ -664,7 +664,7 @@ ASSOCIATION Abwasserbauwerk_BetreiberAssoc =    !! Assoziation
   Abwasserbauwerk_BetreiberAssocRef -- {0..*} Abwasserbauwerk; !! Für den Unterhalt eines Bauwerks zuständige Stelle, Rolle2 - Klasse2 / Rôle2 - Classe2
 END Abwasserbauwerk_BetreiberAssoc;
 
-CLASS Kanal EXTENDS Abwasserbauwerk =  
+CLASS Kanal EXTENDS Abwasserbauwerk =
 !! Offenes oder geschlossenes Gerinne zur Ableitung von Abwasser zwischen zwei Abwasserbauwerken
   ATTRIBUTE
     Bettung_Umhuellung: (          !! Art und Weise der unmittelbaren Rohrumgebung im Boden: Bettungsschicht (Unterlage der Leitung),  Verdämmung (seitliche Auffüllung), Schutzschicht
@@ -755,11 +755,11 @@ CLASS Kanal EXTENDS Abwasserbauwerk =
       unbekannt,
       Vortriebsrohrkupplung
     );
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Kanal;
 
-CLASS Normschacht EXTENDS Abwasserbauwerk =  
+CLASS Normschacht EXTENDS Abwasserbauwerk =
 !! Normiertes Schachtbauwerk mit abnehmbarem Deckel im Kanalnetz
   ATTRIBUTE
     Dimension1: SIA405_Base.Abmessung;  !! Dimension1 des Schachtes (grösstes Innenmass).
@@ -795,11 +795,11 @@ CLASS Normschacht EXTENDS Abwasserbauwerk =
       unbekannt,
       Zulauf_seitlich
     );
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Normschacht;
 
-CLASS Einleitstelle EXTENDS Abwasserbauwerk =  
+CLASS Einleitstelle EXTENDS Abwasserbauwerk =
 !! Auslauf aus dem Kanal in das Fliessgewässer
   ATTRIBUTE
     Hochwasserkote: Base.Hoehe;  !! Massgebliche Hochwasserkote der Einleitstelle. Diese ist in der Regel grösser als der Wasserspiegel_Hydraulik.
@@ -809,7 +809,7 @@ CLASS Einleitstelle EXTENDS Abwasserbauwerk =
     );
     Terrainkote: Base.Hoehe;  !! Terrainkote, falls kein Deckel vorhanden bei Einleitstelle (Kanalende ohne Bauwerk oder Bauwerk ohne Deckel);
     Wasserspiegel_Hydraulik: Base.Hoehe;  !! Wasserspiegelkote für die hydraulische Berechnung (IST-Zustand). Berechneter Wasserspiegel bei der Einleitstelle. Wo nichts anders gefordert, ist der Wasserspiegel bei einem HQ30 einzusetzen.
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Einleitstelle;
 
@@ -818,7 +818,7 @@ ASSOCIATION Einleitstelle_GewaessersektorAssoc =    !! Assoziation
   Einleitstelle_GewaessersektorAssocRef -- {0..*} Einleitstelle; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Einleitstelle_GewaessersektorAssoc;
 
-CLASS Spezialbauwerk EXTENDS Abwasserbauwerk =  
+CLASS Spezialbauwerk EXTENDS Abwasserbauwerk =
 !! Nicht normiertes Abwasserbauwerk mit spezieller Funktion, z.B zur Auftrennung von Abwassermengen, zur Überwindung von Höhenunterschieden oder zur Speicherung und Grobklärung
   ATTRIBUTE
     Bypass: (          !! Bypass zur Umleitung des Wassers (z.B. während Unterhalt oder  im Havariefall)
@@ -871,11 +871,11 @@ CLASS Spezialbauwerk EXTENDS Abwasserbauwerk =
       Nebenschluss,  !! Durchfluss des Beckens nur bei Regenwetter
       unbekannt
     );
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Spezialbauwerk;
 
-CLASS Versickerungsanlage EXTENDS Abwasserbauwerk =  
+CLASS Versickerungsanlage EXTENDS Abwasserbauwerk =
 !! Einbringen von Reinabwasser und wenig verschmutztem Regenabwasser in den Untergrund (Definition gemäss VSA Richtlinie Regenwasserentsorgung 2002)
   ATTRIBUTE
     Art: (          !! Arten von Versickerungsmethoden.
@@ -929,7 +929,7 @@ CLASS Versickerungsanlage EXTENDS Abwasserbauwerk =
       wasserdicht
     );
     Wirksameflaeche: 0.00 .. 100000.00 [Units.m2];  !! Für den Abfluss wirksame Fläche
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Versickerungsanlage;
 
@@ -938,7 +938,7 @@ ASSOCIATION Versickerungsanlage_GrundwasserleiterAssoc =    !! Assoziation
   Versickerungsanlage_GrundwasserleiterAssocRef -- {0..*} Versickerungsanlage; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Versickerungsanlage_GrundwasserleiterAssoc;
 
-CLASS ARABauwerk EXTENDS Abwasserbauwerk =  
+CLASS ARABauwerk EXTENDS Abwasserbauwerk =
 !! Reinigungsbecken einer Kläranlage
   ATTRIBUTE
     Art: (          !! Art des Beckens oder Verfahrens im ARA Bauwerk
@@ -951,11 +951,11 @@ CLASS ARABauwerk EXTENDS Abwasserbauwerk =
       unbekannt,
       Vorklaerbecken
     );
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END ARABauwerk;
 
-CLASS Erhaltungsereignis EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Erhaltungsereignis EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Aussagen zu betrieblichem und baulichem Unterhalt eines Abwasserbauwerkes
   ATTRIBUTE
     Art: (          !! Art des Ereignisses
@@ -997,14 +997,14 @@ ASSOCIATION Erhaltungsereignis_Ausfuehrende_FirmaAssoc =    !! Assoziation
   Erhaltungsereignis_Ausfuehrende_FirmaAssocRef -- {0..*} Erhaltungsereignis; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Erhaltungsereignis_Ausfuehrende_FirmaAssoc;
 
-CLASS Zone (ABSTRACT) EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Zone (ABSTRACT) EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Für bestimmte Zwecke ausgeschiedene Bereiche
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
     Bezeichnung: MANDATORY TEXT*20;
 END Zone;
 
-CLASS Planungszone EXTENDS Zone =  
+CLASS Planungszone EXTENDS Zone =
 !! Zonen gemäss Bauordnung
   ATTRIBUTE
     Art: (          !! Art der Bauzone
@@ -1016,11 +1016,11 @@ CLASS Planungszone EXTENDS Zone =
       Wohnzone
     );
     Perimeter: Gebietseinteilung;  !! Begrenzungspunkte der Fläche
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Planungszone;
 
-CLASS Versickerungsbereich EXTENDS Zone =  
+CLASS Versickerungsbereich EXTENDS Zone =
 !! Bereiche nach Versickerungsmöglichkeit
   ATTRIBUTE
     Perimeter: Gebietseinteilung;  !! Begrenzungspunkte der Fläche
@@ -1032,11 +1032,11 @@ CLASS Versickerungsbereich EXTENDS Zone =
       unbekannt,
       unzulaessig
     );
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Versickerungsbereich;
 
-CLASS Entwaesserungssystem EXTENDS Zone =  
+CLASS Entwaesserungssystem EXTENDS Zone =
 !! Art und Weise, wie ein bestimmtes Gebiet entwässert werden soll. (dss)
   ATTRIBUTE
     Art: (          !! Art des Entwässerungssystems in dem ein bestimmtes Gebiet entwässert werden soll (SOLL Zustand)
@@ -1048,11 +1048,11 @@ CLASS Entwaesserungssystem EXTENDS Zone =
       unbekannt
     );
     Perimeter: Base.Surface;  !! Begrenzungspunkte der Fläche
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Entwaesserungssystem;
 
-CLASS Gewaesserschutzbereich EXTENDS Zone =  
+CLASS Gewaesserschutzbereich EXTENDS Zone =
 !! Definiertes Gebiet, welches die Art des Schutzes bezüglich Gefährdung der Oberflächengewässer und des Grundwassers definiert.
   ATTRIBUTE
     Art: (          !! Art des Schutzbereiches für  oberflächliches Gewässer und Grundwasser bezüglich Gefährdung
@@ -1066,19 +1066,19 @@ CLASS Gewaesserschutzbereich EXTENDS Zone =
       Zu  !! Der Zuströmbereich Zu umfasst das Gebeit, aus dem bei niedrigem Wasserstand etwa 90 Prozent des Grundwasser, das bei einer Grundwasserfassung höchstens entnommen werden darf, stammt. (GSchV 1998)
     );
     Perimeter: Base.Surface;  !! Begrenzungspunkte der Fläche
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Gewaesserschutzbereich;
 
-CLASS Grundwasserschutzareal EXTENDS Zone =  
+CLASS Grundwasserschutzareal EXTENDS Zone =
 !! Areale, die für die künftige Nutzung und Anreicherung von Grundwasservorkommen von Bedeutung sind
   ATTRIBUTE
     Perimeter: Base.Surface;  !! Begrenzungspunkte der Fläche
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Grundwasserschutzareal;
 
-CLASS Grundwasserschutzzone EXTENDS Zone =  
+CLASS Grundwasserschutzzone EXTENDS Zone =
 !! Definiertes Gebiet, welches die im öffentlichen Interesse liegenden Grundwasserfassungen und Anreicherungsanlagen definiert und die notwendigen Eigentumsbeschränkungen festlegt.
   ATTRIBUTE
     Art: (          !! Zonenarten. Grundwasserschutzzonen bestehen aus dem Fassungsbereich (Zone S1), der Engeren Schutzzone (Zone S2) und der Weiteren Schutzzone (Zone S3).
@@ -1088,11 +1088,11 @@ CLASS Grundwasserschutzzone EXTENDS Zone =
       unbekannt
     );
     Perimeter: Base.Surface;  !! Begrenzungspunkte der Fläche
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Grundwasserschutzzone;
 
-CLASS Rohrprofil EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Rohrprofil EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Form des Fliessquerschnittes mit Angabe der Dimension
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -1109,7 +1109,7 @@ CLASS Rohrprofil EXTENDS SIA405_Base.SIA405_BaseClass =
     );
 END Rohrprofil;
 
-CLASS ARAEnergienutzung EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS ARAEnergienutzung EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Betriebsdaten zur Energienutzung auf der ARA
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -1124,7 +1124,7 @@ ASSOCIATION ARAEnergienutzung_AbwasserreinigungsanlageAssoc =    !! Komposition
   ARAEnergienutzung_AbwasserreinigungsanlageAssocRef -- {0..*} ARAEnergienutzung; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END ARAEnergienutzung_AbwasserreinigungsanlageAssoc;
 
-CLASS Abwasserbehandlung EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Abwasserbehandlung EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Gezielte Veränderung der Abwasserbeschaffenheit z.B. durch Reinigen, Neutralisation auf einer ARA
   ATTRIBUTE
     Art: (          !! Verfahren für die Abwasserbehandlung
@@ -1144,7 +1144,7 @@ ASSOCIATION Abwasserbehandlung_AbwasserreinigungsanlageAssoc =    !! Komposition
   Abwasserbehandlung_AbwasserreinigungsanlageAssocRef -- {0..*} Abwasserbehandlung; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Abwasserbehandlung_AbwasserreinigungsanlageAssoc;
 
-CLASS Schlammbehandlung EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Schlammbehandlung EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Daten zur Schlammbehandlung auf der ARA
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -1176,14 +1176,14 @@ ASSOCIATION Schlammbehandlung_AbwasserreinigungsanlageAssoc =    !! Komposition
   Schlammbehandlung_AbwasserreinigungsanlageAssocRef -- {0..*} Schlammbehandlung; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Schlammbehandlung_AbwasserreinigungsanlageAssoc;
 
-CLASS Steuerungszentrale EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Steuerungszentrale EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Gegenstelle zu Absperr_Drosselorgan / Ueberlauf  (Hydr_Einbaute) mit Signalübermittlung
   ATTRIBUTE
     Bezeichnung: MANDATORY TEXT*20;
     Lage: Base.LKoord;  !! Landeskoordinate Ost/Nord
 END Steuerungszentrale;
 
-CLASS Gewaesserverbauung (ABSTRACT) EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Gewaesserverbauung (ABSTRACT) EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Punktuelle Verbauung am oder im Gewässer wie Schwellen etc.
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -1196,14 +1196,14 @@ ASSOCIATION Gewaesserverbauung_GewaesserabschnittAssoc =    !! Assoziation
   Gewaesserverbauung_GewaesserabschnittAssocRef -- {0..*} Gewaesserverbauung; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Gewaesserverbauung_GewaesserabschnittAssoc;
 
-CLASS Furt EXTENDS Gewaesserverbauung =  
+CLASS Furt EXTENDS Gewaesserverbauung =
 !! Sohlengleiche Kreuzung eines Verkehrsweges mit einem Gewässer mit künstlicher Sohle in diesem Bereich
   ATTRIBUTE
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Furt;
 
-CLASS GewaesserAbsturz EXTENDS Gewaesserverbauung =  
+CLASS GewaesserAbsturz EXTENDS Gewaesserverbauung =
 !! Senkrechter Absturz von Wasser in einem Gewässer
   ATTRIBUTE
     Absturzhoehe: 0.00 .. 30000.00 [m];  !! Differenz des Wasserspiegels vor und nach dem Absturz
@@ -1220,34 +1220,34 @@ CLASS GewaesserAbsturz EXTENDS Gewaesserverbauung =
       natuerlich,
       unbekannt
     );
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END GewaesserAbsturz;
 
-CLASS Schleuse EXTENDS Gewaesserverbauung =  
+CLASS Schleuse EXTENDS Gewaesserverbauung =
 !! Künstliche Wasserkammer mit regulierbarem internem Wasserspiegel
   ATTRIBUTE
     Absturzhoehe: 0.00 .. 30000.00 [m];  !! Differenz im Wasserspiegel oberhalb und unterhalb der Schleuse
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Schleuse;
 
-CLASS Durchlass EXTENDS Gewaesserverbauung =  
+CLASS Durchlass EXTENDS Gewaesserverbauung =
 !! Eindolungen unter Strassen, Wegen u.a. mit einer Länge von unter 15m (ansonsten Gewässerabschnitt eingedolt)
   ATTRIBUTE
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Durchlass;
 
-CLASS Geschiebesperre EXTENDS Gewaesserverbauung =  
+CLASS Geschiebesperre EXTENDS Gewaesserverbauung =
 !! Querbauwerke mit Öffnungen, welche den Geschiebetransport bei Hochwasser zurückhalten
   ATTRIBUTE
     Absturzhoehe: 0.00 .. 30000.00 [m];  !! Differenz des Wasserspiegels vor und nach der Sperre
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Geschiebesperre;
 
-CLASS GewaesserWehr EXTENDS Gewaesserverbauung =  
+CLASS GewaesserWehr EXTENDS Gewaesserverbauung =
 !! Wehr im Gewässer
   ATTRIBUTE
     Absturzhoehe: 0.00 .. 30000.00 [m];  !! Differenz des Wasserspiegels vor und nach dem Absturz
@@ -1258,11 +1258,11 @@ CLASS GewaesserWehr EXTENDS Gewaesserverbauung =
       Tirolerwehr,
       unbekannt
     );
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END GewaesserWehr;
 
-CLASS Sohlrampe EXTENDS Gewaesserverbauung =  
+CLASS Sohlrampe EXTENDS Gewaesserverbauung =
 !! Flächige Sohlbefestigungen im Gewässer
   ATTRIBUTE
     Absturzhoehe: 0.00 .. 30000.00 [m];  !! Differenz des Wasserspiegels vor und nach dem Absturz
@@ -1275,11 +1275,11 @@ CLASS Sohlrampe EXTENDS Gewaesserverbauung =
       Holzbalken,
       unbekannt
     );
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Sohlrampe;
 
-CLASS Fischpass EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Fischpass EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Anlage, die Fischen das Überwinden einer Sohlenstufe ermöglicht
   ATTRIBUTE
     Absturzhoehe: 0.00 .. 30000.00 [m];  !! Differenz des Wasserspiegels vor und nach dem Fischpass
@@ -1292,7 +1292,7 @@ ASSOCIATION Fischpass_GewaesserverbauungAssoc =    !! Assoziation
   Fischpass_GewaesserverbauungAssocRef -- {0..1} Fischpass; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Fischpass_GewaesserverbauungAssoc;
 
-CLASS Badestelle EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Badestelle EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Badestelle eines Gewässers
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -1305,7 +1305,7 @@ ASSOCIATION Badestelle_OberflaechengewaesserAssoc =    !! Assoziation
   Badestelle_OberflaechengewaesserAssocRef -- {0..*} Badestelle; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Badestelle_OberflaechengewaesserAssoc;
 
-CLASS Hydr_Geometrie EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Hydr_Geometrie EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Beschreibt die hydraulische Geometrie eines Knotens
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -1317,7 +1317,7 @@ CLASS Hydr_Geometrie EXTENDS SIA405_Base.SIA405_BaseClass =
     Volumen_Pumpensumpf: 0.00 .. 10000000.00 [Units.m3];  !! Volumen des Pumpensumpfs von der Sohle bis zur maximal möglichen Wasserspiegellage (inkl. Kanalspeichervolumen im Zulaufkanal).
 END Hydr_Geometrie;
 
-CLASS Abwassernetzelement (ABSTRACT) EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Abwassernetzelement (ABSTRACT) EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Modelltechnischer Begriff für Abwasserknoten und Haltungen in der VSA-DSS
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -1329,7 +1329,7 @@ ASSOCIATION Abwassernetzelement_AbwasserbauwerkAssoc =    !! Assoziation
   Abwassernetzelement_AbwasserbauwerkAssocRef -- {0..*} Abwassernetzelement; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Abwassernetzelement_AbwasserbauwerkAssoc;
 
-CLASS Haltungspunkt EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Haltungspunkt EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Anfangs- oder Endpunkt einer Haltung mit Detailinformationen zur Verbindung zwischen Abwassernetzelementen.
   ATTRIBUTE
     Auslaufform: (          !! Art des Auslaufs
@@ -1358,13 +1358,13 @@ ASSOCIATION Haltungspunkt_AbwassernetzelementAssoc =    !! Assoziation
   Haltungspunkt_AbwassernetzelementAssocRef -- {0..*} Haltungspunkt; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Haltungspunkt_AbwassernetzelementAssoc;
 
-CLASS Abwasserknoten EXTENDS Abwassernetzelement =  
+CLASS Abwasserknoten EXTENDS Abwassernetzelement =
 !! Verbindung zwischen zwei Haltungen, hydraulischer Bezugspunkt des Abwasserbauwerks (dss)
   ATTRIBUTE
     Lage: Base.LKoord;  !! Lage des Knotens, massgebender Bezugspunkt für die Kanalnetzberechnung. (In der Regel Lage des Pickellochs oder Lage des Trockenwetterauslaufs);
     Rueckstaukote: Base.Hoehe;  !! 1. Massgebende Rückstaukote bezogen auf den Berechnungsregen (dss)  2. Höhe, unter der innerhalb der Grundstücksentwässerung besondere Massnahmen gegen Rückstau zu treffen sind. (DIN 4045);
     Sohlenkote: Base.Hoehe;  !! Tiefster Punkt des Abwasserbauwerks
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Abwasserknoten;
 
@@ -1374,7 +1374,7 @@ ASSOCIATION Abwasserknoten_Hydr_GeometrieAssoc =    !! Assoziation
   Abwasserknoten_Hydr_GeometrieAssocRef -- {0..*} Abwasserknoten; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Abwasserknoten_Hydr_GeometrieAssoc;
 
-CLASS Haltung EXTENDS Abwassernetzelement =  
+CLASS Haltung EXTENDS Abwassernetzelement =
 !! Hydraulisch homogenes Transportelement des Kanalnetzes, Berechnungsabschnitt einer Abflusssimulation.
   ATTRIBUTE
     Innenschutz: (          !! Schutz der Innenwände des Kanals
@@ -1458,7 +1458,7 @@ CLASS Haltung EXTENDS Abwassernetzelement =
     Ringsteifigkeit: 0 .. 16;  !! Ringsteifigkeitsklasse - Druckfestigkeit gegen Belastungen von aussen (gemäss ISO 13966 );
     Verlauf: Base.Polyline;  !! Anfangs-, Knick- und Endpunkte der Leitung
     Wandrauhigkeit: Prandtl;  !! Hydraulische Kenngrösse zur Beschreibung der Beschaffenheit der Kanalwandung. Beiwert für die Formeln nach Prandtl-Colebrook (ks oder kb);
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Haltung;
 
@@ -1495,7 +1495,7 @@ ASSOCIATION Haltung_RohrprofilAssoc =    !! Assoziation
   Haltung_RohrprofilAssocRef -- {0..*} Haltung; !! {XOR (Haltung)}, Rolle2 - Klasse2 / Rôle2 - Classe2
 END Haltung_RohrprofilAssoc;
 
-CLASS Rohrprofil_Geometrie EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Rohrprofil_Geometrie EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Geometrie des Rohrprofils als x/y-Punkte mit Lichte_Hoehe = 1
   ATTRIBUTE
     Position: Position;  !! Position der Detailpunkte der Geometrie
@@ -1508,7 +1508,7 @@ ASSOCIATION Rohrprofil_Geometrie_RohrprofilAssoc =    !! Komposition
   Rohrprofil_Geometrie_RohrprofilAssocRef -- {0..*} Rohrprofil_Geometrie; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Rohrprofil_Geometrie_RohrprofilAssoc;
 
-CLASS Hydr_GeomRelation EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Hydr_GeomRelation EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Tripel aus benetztem Querschnitt, benetzter Fläche und Kote
   ATTRIBUTE
     BenetzteQuerschnittsflaeche: 0.00 .. 100000.00 [Units.m2];  !! Hydraulisch wirksamer Querschnitt für Verlustberechnungen
@@ -1521,7 +1521,7 @@ ASSOCIATION Hydr_GeomRelation_Hydr_GeometrieAssoc =    !! Assoziation
   Hydr_GeomRelation_Hydr_GeometrieAssocRef -- {0..*} Hydr_GeomRelation; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Hydr_GeomRelation_Hydr_GeometrieAssoc;
 
-CLASS MechanischeVorreinigung EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS MechanischeVorreinigung EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Behandlungsanlage von Versickerungsanlage (gemäss VSA Richtlinie Regenwasserentsorgung 2002)
   ATTRIBUTE
     Art: (          !! Arten der mechanischen Vorreinigung / Behandlung (gemäss VSA Richtlinie Regenwasserentsorgung (2002))
@@ -1546,7 +1546,7 @@ ASSOCIATION MechanischeVorreinigung_AbwasserbauwerkAssoc =    !! Assoziation
   MechanischeVorreinigung_AbwasserbauwerkAssocRef -- {0..*} MechanischeVorreinigung; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END MechanischeVorreinigung_AbwasserbauwerkAssoc;
 
-CLASS Retentionskoerper EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Retentionskoerper EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Retentionskörper einer Versickerungsanlage
   ATTRIBUTE
     Art: (          !! Arten der Retention
@@ -1567,7 +1567,7 @@ ASSOCIATION Retentionskoerper_VersickerungsanlageAssoc =    !! Komposition
   Retentionskoerper_VersickerungsanlageAssocRef -- {0..*} Retentionskoerper; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Retentionskoerper_VersickerungsanlageAssoc;
 
-CLASS Ueberlaufcharakteristik EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Ueberlaufcharakteristik EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Quantitative Angaben zum Ueberlauf
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -1584,7 +1584,7 @@ CLASS Ueberlaufcharakteristik EXTENDS SIA405_Base.SIA405_BaseClass =
     );
 END Ueberlaufcharakteristik;
 
-CLASS HQ_Relation EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS HQ_Relation EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Korrelation von Wasserspiegelhöhe in Funktion des Abflusses. Die Kennlinie beschreibt den Verlauf der Menge in Primärrichtung des Trennbauwerkes bei verschiedenen Zufluss resp. Einstau-Verhältnissen. Sie muss aus mindestens 2 Stützpunkten bestehen. Kann zusätzlich als Tabelle / Ausdruck aus dem Berechnungsmodell oder als Tabelle abgegeben werden.
   ATTRIBUTE
     Abfluss: 0.000 .. 100000.000 [SIA405_Base.ls];  !! Abflussmenge (Q2) Richtung ARA
@@ -1597,7 +1597,7 @@ ASSOCIATION HQ_Relation_UeberlaufcharakteristikAssoc =    !! Assoziation
   HQ_Relation_UeberlaufcharakteristikAssocRef -- {0..*} HQ_Relation; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END HQ_Relation_UeberlaufcharakteristikAssoc;
 
-CLASS BauwerksTeil (ABSTRACT) EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS BauwerksTeil (ABSTRACT) EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Bauliche Bestandteile und Einrichtungen eines Abwasserbauwerkes
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -1614,15 +1614,15 @@ ASSOCIATION BauwerksTeil_AbwasserbauwerkAssoc =    !! Komposition
   BauwerksTeil_AbwasserbauwerkAssocRef -- {0..*} BauwerksTeil; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END BauwerksTeil_AbwasserbauwerkAssoc;
 
-CLASS Trockenwetterfallrohr EXTENDS BauwerksTeil =  
+CLASS Trockenwetterfallrohr EXTENDS BauwerksTeil =
 !! Fallrohr in einem Absturzschacht zur Ableitung des Zuflusses bei Trockenwetter und Schwachregen
   ATTRIBUTE
     Durchmesser: SIA405_Base.Abmessung;  !! Abmessung des Deckels (bei eckigen Deckeln minimale Abmessung);
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Trockenwetterfallrohr;
 
-CLASS Einstiegshilfe EXTENDS BauwerksTeil =  
+CLASS Einstiegshilfe EXTENDS BauwerksTeil =
 !! Element, welches den Zugang zu einem Abwasserbauwerk ermöglicht.
   ATTRIBUTE
     Art: (          !! Art des Einstiegs in das Bauwerk
@@ -1636,11 +1636,11 @@ CLASS Einstiegshilfe EXTENDS BauwerksTeil =
       Tuere,
       unbekannt
     );
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Einstiegshilfe;
 
-CLASS Trockenwetterrinne EXTENDS BauwerksTeil =  
+CLASS Trockenwetterrinne EXTENDS BauwerksTeil =
 !! Bauliche Einengung des Kanalquerschnittes zwecks Erhöhung der Fliessgeschwindigkeit für den Trockenwetteranfall
   ATTRIBUTE
     Material: (          !! Material der Ausbildung oder Auskleidung der Trockenwetterrinne
@@ -1651,11 +1651,11 @@ CLASS Trockenwetterrinne EXTENDS BauwerksTeil =
       unbekannt,
       Zementmoertel
     );
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Trockenwetterrinne;
 
-CLASS Deckel EXTENDS BauwerksTeil =  
+CLASS Deckel EXTENDS BauwerksTeil =
 !! Abnehmbare Abdeckung eines Schachtbauwerkes
   ATTRIBUTE
     Deckelform: (          !! Form des Deckels
@@ -1698,11 +1698,11 @@ CLASS Deckel EXTENDS BauwerksTeil =
       unbekannt,
       verschraubt
     );
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Deckel;
 
-CLASS ElektrischeEinrichtung EXTENDS BauwerksTeil =  
+CLASS ElektrischeEinrichtung EXTENDS BauwerksTeil =
 !! Elektrische Installationen und Geräte in einem Abwasserbauwerk
   ATTRIBUTE
     Art: (          !! Elektrische Installationen und Geräte
@@ -1715,11 +1715,11 @@ CLASS ElektrischeEinrichtung EXTENDS BauwerksTeil =
     );
     Bruttokosten: 0.00 .. 99999999.99 [Units.CHF];  !! Brutto Erstellungskosten der elektromechanischen Ausrüstung
     Ersatzjahr: SIA405_Base.Jahr;  !! Jahr, in dem die Lebensdauer der elektrischen Einrichtung voraussichtlich ausläuft
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END ElektrischeEinrichtung;
 
-CLASS ElektromechanischeAusruestung EXTENDS BauwerksTeil =  
+CLASS ElektromechanischeAusruestung EXTENDS BauwerksTeil =
 !! Elektromechanische Teile eines Bauwerks eines Abwasserbauwerks
   ATTRIBUTE
     Art: (          !! Elektromechanische Teile eines Bauwerks
@@ -1731,25 +1731,25 @@ CLASS ElektromechanischeAusruestung EXTENDS BauwerksTeil =
     );
     Bruttokosten: 0.00 .. 99999999.99 [Units.CHF];  !! Brutto Erstellungskosten der elektromechanischen Ausrüstung
     Ersatzjahr: SIA405_Base.Jahr;  !! Jahr in dem die Lebensdauer der elektromechanischen Ausrüstung voraussichtlich abläuft
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END ElektromechanischeAusruestung;
 
-CLASS Bankett EXTENDS BauwerksTeil =  
+CLASS Bankett EXTENDS BauwerksTeil =
 !! Bankett im Kanal oder Schacht
   ATTRIBUTE
-    Art: (        
+    Art: (
       andere,
       beidseitig,
       einseitig,
       kein,
       unbekannt
     );
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Bankett;
 
-CLASS Anschlussobjekt (ABSTRACT) EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Anschlussobjekt (ABSTRACT) EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Sammelbegriff für an die Kanalisation angeschlossenen Objekte
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -1772,27 +1772,27 @@ ASSOCIATION Anschlussobjekt_BetreiberAssoc =    !! Assoziation
   Anschlussobjekt_BetreiberAssocRef -- {0..*} Anschlussobjekt; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Anschlussobjekt_BetreiberAssoc;
 
-CLASS Gebaeude EXTENDS Anschlussobjekt =  
+CLASS Gebaeude EXTENDS Anschlussobjekt =
 !! Gebäude
   ATTRIBUTE
     Hausnummer: TEXT*50;  !! Hausnummer gemäss Grundbuch
     Perimeter: Base.Surface;  !! Begrenzungspunkte der Fläche
     Referenzpunkt: Base.LKoord;  !! Landeskoordinate Ost/Nord (massgebender Bezugspunkt für z.B. Adressdaten );
     Standortname: TEXT*50;  !! Strassenname oder Ortsbezeichnung
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Gebaeude;
 
-CLASS Reservoir EXTENDS Anschlussobjekt =  
+CLASS Reservoir EXTENDS Anschlussobjekt =
 !! Reservoir
   ATTRIBUTE
     Lage: Base.LKoord;  !! Landeskoordinate Ost/Nord
     Standortname: TEXT*50;  !! Strassenname oder Ortsbezeichnung
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Reservoir;
 
-CLASS Einzelflaeche EXTENDS Anschlussobjekt =  
+CLASS Einzelflaeche EXTENDS Anschlussobjekt =
 !! Zusammenhängende Gebiete mit gleicher Oberflächencharakteristik
   ATTRIBUTE
     Befestigung: (          !! Art der Befestigung
@@ -1817,20 +1817,20 @@ CLASS Einzelflaeche EXTENDS Anschlussobjekt =
     );
     Neigung: Neigung_Promille;  !! Mittlere Neigung der Oberfläche in Promill
     Perimeter: Base.Surface;  !! Begrenzungspunkte der Fläche
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Einzelflaeche;
 
-CLASS Brunnen EXTENDS Anschlussobjekt =  
+CLASS Brunnen EXTENDS Anschlussobjekt =
 !! Brunnen
   ATTRIBUTE
     Lage: Base.LKoord;  !! Landeskoordinate Ost/Nord
     Standortname: TEXT*50;  !! Strassenname oder Ortsbezeichnung
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Brunnen;
 
-CLASS Gefahrenquelle EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Gefahrenquelle EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Quelle abwassergefährdender Soffe
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -1848,7 +1848,7 @@ ASSOCIATION Gefahrenquelle_EigentuemerAssoc =    !! Assoziation
   Gefahrenquelle_EigentuemerAssocRef -- {0..*} Gefahrenquelle; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Gefahrenquelle_EigentuemerAssoc;
 
-CLASS Unfall EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Unfall EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Unfall, dessen Folgen das Grundwasser, das Gewässer, den ARA- und Kanalnetzbetrieb gefährden können
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -1864,7 +1864,7 @@ ASSOCIATION Unfall_GefahrenquelleAssoc =    !! Assoziation
   Unfall_GefahrenquelleAssocRef -- {0..*} Unfall; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Unfall_GefahrenquelleAssoc;
 
-CLASS Stoff EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Stoff EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Wassergefährdender Stoff
   ATTRIBUTE
     Art: TEXT*50;  !! Liste der wassergefährdenden Stoffe
@@ -1878,7 +1878,7 @@ ASSOCIATION Stoff_GefahrenquelleAssoc =    !! Komposition
   Stoff_GefahrenquelleAssocRef -- {1..*} Stoff; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Stoff_GefahrenquelleAssoc;
 
-CLASS Einzugsgebiet EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Einzugsgebiet EXTENDS SIA405_Base.SIA405_BaseClass =
 !! 1. Definiertes Gebiet, welches in einen bestimmten Abwasserknoten oder in eine bestimmte Haltung entwässert (Teileinzugsgebiet) . (dss) 2. Gebiet mit Abfluss zu einer Abwasserleitung, einem Abwasserkanal oder einem Gewässer. (DIN 752)
   ATTRIBUTE
     Abflussbegrenzung_geplant: 0.0 .. 999.9 [lsha];  !! Abflussbegrenzung, falls eine entsprechende Auflage aus dem Entwässerungskonzept vorliegt. Dieses Attribut hat Auflagecharakter. Es ist verbindlich für die Beurteilung von Baugesuchen
@@ -1977,7 +1977,7 @@ ASSOCIATION Einzugsgebiet_Abwassernetzelement_SW_IstAssoc =    !! Assoziation
   Einzugsgebiet_Abwassernetzelement_SW_IstAssocRef -- {0..*} Einzugsgebiet; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Einzugsgebiet_Abwassernetzelement_SW_IstAssoc;
 
-CLASS Oberflaechenabflussparameter (ABSTRACT) EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Oberflaechenabflussparameter (ABSTRACT) EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Kennzahlen zur Beschreibung des Oberflächenabflusses wie z.B. Benutzungs- oder Muldenverluste
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -1993,14 +1993,14 @@ ASSOCIATION Oberflaechenabflussparameter_EinzugsgebietAssoc =    !! Assoziation
   Oberflaechenabflussparameter_EinzugsgebietAssocRef -- {0..1} Oberflaechenabflussparameter; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Oberflaechenabflussparameter_EinzugsgebietAssoc;
 
-CLASS Messstelle EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Messstelle EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Ort an welchem zusammenhägende Messungen erhoben werden, z.B. benthosbiologische Untersuchungsstelle
   ATTRIBUTE
     Art: TEXT*50;  !! Art der Untersuchungsstelle ( Regenmessungen, Abflussmessungen, etc.);
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
     Bezeichnung: MANDATORY TEXT*20;
     Lage: Base.LKoord;  !! Landeskoordinate Ost/Nord
-    Staukoerper: (        
+    Staukoerper: (
       andere,
       keiner,
       Ueberfallwehr,  !! Alle Formen wie Dreieckwehr etc.
@@ -2040,7 +2040,7 @@ ASSOCIATION Messstelle_GewaesserabschnittAssoc =    !! Assoziation
   Messstelle_GewaesserabschnittAssocRef -- {0..*} Messstelle; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Messstelle_GewaesserabschnittAssoc;
 
-CLASS Messgeraet EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Messgeraet EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Gerät mit welchem gemessen wird
   ATTRIBUTE
     Art: (          !! Typ des Messgerätes
@@ -2065,7 +2065,7 @@ ASSOCIATION Messgeraet_MessstelleAssoc =    !! Assoziation
   Messgeraet_MessstelleAssocRef -- {0..*} Messgeraet; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Messgeraet_MessstelleAssoc;
 
-CLASS Messreihe EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Messreihe EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Zusammenfassung von Messresultaten eines bestimmten Types  (z.B. Abflussmessungen im Schacht NS234.)
   ATTRIBUTE
     Art: (          !! Art der Messreihe
@@ -2084,7 +2084,7 @@ ASSOCIATION Messreihe_MessstelleAssoc =    !! Assoziation
   Messreihe_MessstelleAssocRef -- {0..*} Messreihe; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Messreihe_MessstelleAssoc;
 
-CLASS Messresultat EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Messresultat EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Ergebnis einer Messung
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -2110,7 +2110,7 @@ ASSOCIATION Messresultat_MessreiheAssoc =    !! Komposition
   Messresultat_MessreiheAssocRef -- {0..*} Messresultat; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Messresultat_MessreiheAssoc;
 
-CLASS Ueberlauf (ABSTRACT) EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Ueberlauf (ABSTRACT) EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Bauteil in Abwasserbauwerken zum Ableiten von Abwasser in einen anderen Knoten
   ATTRIBUTE
     Antrieb: (          !! Antrieb der Einbaute
@@ -2178,7 +2178,7 @@ ASSOCIATION Ueberlauf_SteuerungszentraleAssoc =    !! Assoziation
   Ueberlauf_SteuerungszentraleAssocRef -- {0..*} Ueberlauf; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Ueberlauf_SteuerungszentraleAssoc;
 
-CLASS Absperr_Drosselorgan EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Absperr_Drosselorgan EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Absperr- oder Drosselorgan
   ATTRIBUTE
     Antrieb: (          !! Antrieb der Einbaute
@@ -2252,7 +2252,7 @@ ASSOCIATION Absperr_Drosselorgan_UeberlaufAssoc =    !! Assoziation
   Absperr_Drosselorgan_UeberlaufAssocRef -- {0..1} Absperr_Drosselorgan; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Absperr_Drosselorgan_UeberlaufAssoc;
 
-CLASS Streichwehr EXTENDS Ueberlauf =  
+CLASS Streichwehr EXTENDS Ueberlauf =
 !! Baute zur Entnahme von Wasser über eine Wehrkrone die parallel oder nahezu parallel zur Fliessrichtung angeordnet ist
   ATTRIBUTE
     HydrUeberfalllaenge: 0.00 .. 30000.00 [m];  !! Hydraulisch wirksame Wehrlänge
@@ -2269,11 +2269,11 @@ CLASS Streichwehr EXTENDS Ueberlauf =
       hochgezogen,  !! Streichwehr mit hochgezogener Wehrschwelle
       niedrig  !! Streichwehr mit niedriger Wehrschwelle
     );
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Streichwehr;
 
-CLASS FoerderAggregat EXTENDS Ueberlauf =  
+CLASS FoerderAggregat EXTENDS Ueberlauf =
 !! Einrichtung zum Transport von Flüssigkeiten
   ATTRIBUTE
     Arbeitspunkt: 0.00 .. 10000000.00 [Units.m3];  !! Fördermenge für Pumpen mit fixem Arbeitspunkt
@@ -2311,11 +2311,11 @@ CLASS FoerderAggregat EXTENDS Ueberlauf =
       Schmutzabwasser,  !! Durch Gebrauch verändertes Wasser (häusliches, gewerbliches oder industrielles Abwasser), das in eine Entwässerungsanlage eingeleitet und einer Abwasserbehandlung zugeführt werden muss. Schmutzabwasser gilt als verschmutztes Abwasser im Sinne des Gewässerschutzgesetzes (SN 592 000)
       unbekannt
     );
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END FoerderAggregat;
 
-CLASS Leapingwehr EXTENDS Ueberlauf =  
+CLASS Leapingwehr EXTENDS Ueberlauf =
 !! Regenüberlauf mit Bodenöffnung
   ATTRIBUTE
     Breite: 0.00 .. 30000.00 [m];  !! Maximale Abmessung der Bodenöffnung quer zur Fliessrichtung
@@ -2327,11 +2327,11 @@ CLASS Leapingwehr EXTENDS Ueberlauf =
       Rechteck,
       unbekannt
     );
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Leapingwehr;
 
-CLASS Hydr_Kennwerte EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Hydr_Kennwerte EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Aggregierte Eigenschaften zur Hydraulik
   ATTRIBUTE
     Aggregatezahl: Aggregatezahl;  !! Anzahl Förderaggregate
@@ -2392,7 +2392,7 @@ ASSOCIATION Hydr_Kennwerte_UeberlaufcharakteristikAssoc =    !! Assoziation
   Hydr_Kennwerte_UeberlaufcharakteristikAssocRef -- {0..1} Hydr_Kennwerte; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Hydr_Kennwerte_UeberlaufcharakteristikAssoc;
 
-CLASS Rueckstausicherung EXTENDS BauwerksTeil =  
+CLASS Rueckstausicherung EXTENDS BauwerksTeil =
 !! Die Rückstausicherung verhindert den Rückfluss von Wasser aus dem Gewässer in das Abwassernetz. Das Attribut wird bei demjenigen Sonderbauwerk erfasst, in dem es eingebaut ist. Ist keine Rückstausicherung vorhanden, wird kein Datensatz erfasst.
   ATTRIBUTE
     Art: (          !!  Ist keine Rückstausicherung vorhanden, wird keine Rueckstausicherung erfasst
@@ -2403,7 +2403,7 @@ CLASS Rueckstausicherung EXTENDS BauwerksTeil =
     );
     Bruttokosten: 0.00 .. 99999999.99 [Units.CHF];  !! Brutto Erstellungskosten
     Ersatzjahr: SIA405_Base.Jahr;  !! Jahr in dem die Lebensdauer der Rückstausicherung voraussichtlich abläuft
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Rueckstausicherung;
 
@@ -2417,7 +2417,7 @@ ASSOCIATION Rueckstausicherung_FoerderAggregatAssoc =    !! Assoziation
   Rueckstausicherung_FoerderAggregatAssocRef -- {0..1} Rueckstausicherung; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Rueckstausicherung_FoerderAggregatAssoc;
 
-CLASS Feststoffrueckhalt EXTENDS BauwerksTeil =  
+CLASS Feststoffrueckhalt EXTENDS BauwerksTeil =
 !! Elektromechanische Teile eines Bauwerks und Vorrichtung zum Feststoffrückhalt eines Abwasserbauwerks
   ATTRIBUTE
     Anspringkote: Base.Hoehe;  !! Anspringkote Feststoffrückhalt in m.ü.M.
@@ -2432,14 +2432,14 @@ CLASS Feststoffrueckhalt EXTENDS BauwerksTeil =
     Bruttokosten: 0.00 .. 99999999.99 [Units.CHF];  !! Brutto Erstellungskosten der elektromechnischen Ausrüstung für die Beckenentleerung
     Dimensionierungswert: 0.000 .. 100000.000 [SIA405_Base.ls];  !! Wassermenge, Dimensionierungswert des Feststoffrückhaltes
     Ersatzjahr: SIA405_Base.Jahr;  !! Jahr in dem die Lebensdauer der elektromechanischen Ausrüstung voraussichtlich abläuft
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Feststoffrueckhalt;
 
-CLASS Beckenreinigung EXTENDS BauwerksTeil =  
+CLASS Beckenreinigung EXTENDS BauwerksTeil =
 !! Elektromechanische Teile eines Bauwerks und Vorrichtung zur Beckenreinigung eines Abwasserbauwerks
   ATTRIBUTE
-    Art: (        
+    Art: (
       Air_Jet,  !! Druckluftstrom, auch Injektorpumpe genannt
       andere,
       keine,
@@ -2448,14 +2448,14 @@ CLASS Beckenreinigung EXTENDS BauwerksTeil =
     );
     Bruttokosten: 0.00 .. 99999999.99 [Units.CHF];  !! Brutto Erstellungskosten der elektromechnischen Ausrüstung für die Beckenreinigung
     Ersatzjahr: SIA405_Base.Jahr;  !! Jahr in dem die Lebensdauer der elektromechanischen Ausrüstung voraussichtlich abläuft
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Beckenreinigung;
 
-CLASS Beckenentleerung EXTENDS BauwerksTeil =  
+CLASS Beckenentleerung EXTENDS BauwerksTeil =
 !! Vorrichtung zur Beckenentleerung
   ATTRIBUTE
-    Art: (        
+    Art: (
       andere,
       keine,  !! Der Wert „keine“ wird verwendet, wenn das Bauwerk ohne Hilfsbetrieb entleert wird.
       Pumpe,
@@ -2464,7 +2464,7 @@ CLASS Beckenentleerung EXTENDS BauwerksTeil =
     Bruttokosten: 0.00 .. 99999999.99 [Units.CHF];  !! Brutto Erstellungskosten der elektromechnischen Ausrüstung für die Beckenentleerung
     Ersatzjahr: SIA405_Base.Jahr;  !! Jahr in dem die Lebensdauer der elektromechanischen Ausrüstung voraussichtlich abläuft
     Leistung: 0.000 .. 100000.000 [SIA405_Base.ls];  !! Bei mehreren Pumpen / Schiebern muss die maximale Gesamtmenge erfasst werden.
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Beckenentleerung;
 
@@ -2478,7 +2478,7 @@ ASSOCIATION Beckenentleerung_UeberlaufAssoc =    !! Assoziation
   Beckenentleerung_UeberlaufAssocRef -- {0..1} Beckenentleerung; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Beckenentleerung_UeberlaufAssoc;
 
-CLASS EZG_PARAMETER_ALLG EXTENDS Oberflaechenabflussparameter =  
+CLASS EZG_PARAMETER_ALLG EXTENDS Oberflaechenabflussparameter =
 !! Oberflächenparameter welche zu keinem speziellen Modell gehören
   ATTRIBUTE
     Einwohnergleichwert: EGW;
@@ -2486,11 +2486,11 @@ CLASS EZG_PARAMETER_ALLG EXTENDS Oberflaechenabflussparameter =
     Fliessweggefaelle: Neigung_Promille;  !! Fliessweggefälle [%o]
     Fliessweglaenge: 0.00 .. 30000.00 [m];  !! Fliessweglänge
     Trockenwetteranfall: 0.000 .. 100000.000 [SIA405_Base.ls];
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END EZG_PARAMETER_ALLG;
 
-CLASS EZG_PARAMETER_MOUSE1 EXTENDS Oberflaechenabflussparameter =  
+CLASS EZG_PARAMETER_MOUSE1 EXTENDS Oberflaechenabflussparameter =
 !! Oberflächenabflussparameter gemäss Modell MOUSE
   ATTRIBUTE
     Einwohnergleichwert: EGW;
@@ -2499,7 +2499,7 @@ CLASS EZG_PARAMETER_MOUSE1 EXTENDS Oberflaechenabflussparameter =
     Fliessweglaenge: 0.00 .. 30000.00 [m];  !! Parameter zur Bestimmung des Oberflächenabflusses für das Oberflächenabflussmodell A1 von MOUSE
     Nutzungsart: TEXT*50;  !! Klassifikation gemäss Oberflächenabflussmodell von MOUSE 2000/2001
     Trockenwetteranfall: 0.000 .. 100000.000 [SIA405_Base.ls];  !! Parameter zur Bestimmung des Oberflächenabflusses für das Oberflächenabflussmodell A1 von MOUSE
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END EZG_PARAMETER_MOUSE1;
 
@@ -2515,7 +2515,7 @@ END DSS_2015.   !! Ende des Modells / Fin du modèle
 !! INTERLIS 2.3;
 
 MODEL DSS_2015_LV95 (de) AT "http://www.vsa.ch/models"
-  VERSION "13.11.2018" = 
+  VERSION "13.11.2018" =
 
   IMPORTS UNQUALIFIED INTERLIS;     !! new 8.11.2004, imports INTERLIS 2 Baseunits
   IMPORTS Units;
@@ -2528,10 +2528,10 @@ MODEL DSS_2015_LV95 (de) AT "http://www.vsa.ch/models"
 
 !! Die Nutzung dieser INTERLIS-Datei ist lizenzpflichtig!
 
-!! Die Originalmodelldatei  und darauf basierende 
-!! abgeänderte Versionen dürfen nicht weiterverkauft werden. 
-!! Die Weitergabe der Originaldatei (als Ganzes oder Teile davon) ist nur 
-!! zusammen mit dem Erwerb einer Lizenz beim VSA durch den Empfänger erlaubt. 
+!! Die Originalmodelldatei  und darauf basierende
+!! abgeänderte Versionen dürfen nicht weiterverkauft werden.
+!! Die Weitergabe der Originaldatei (als Ganzes oder Teile davon) ist nur
+!! zusammen mit dem Erwerb einer Lizenz beim VSA durch den Empfänger erlaubt.
 
 !! Freigegeben für öffentlichen Gebrauch und kommerzielle Anwendung mit Lizenz.
 !! Geprueft mit Compiler Version 4.7.7 (8.02.2018)
@@ -2562,7 +2562,7 @@ Gebietseinteilung = AREA WITH (STRAIGHTS,ARCS) VERTEX Base_LV95.LKoord WITHOUT O
 !! Versickerungsbereich.Perimeter
 
 
-Number = -99999999.9999 ..  99999999.9999;    !! 
+Number = -99999999.9999 ..  99999999.9999;    !!
 !! Messresultat.Wert
 !! Rohrprofil_Geometrie.x
 !! Rohrprofil_Geometrie.y
@@ -2572,7 +2572,7 @@ Verhaeltnis_H_B = 0.01 .. 100.00;    !! Verhältnis Höhe zu Breite, ohne Einhei
 !! Rohrprofil.HoehenBreitenverhaeltnis
 
 
-Statuswerte EXTENDS SIA405_Base_LV95.Status = (  !! Betriebs- und Planungszustand. 
+Statuswerte EXTENDS SIA405_Base_LV95.Status = (  !! Betriebs- und Planungszustand.
 !! 11.2.2012 Anpassung auf neue Variante von SIA405_Base_LV95.Status - Erweiterung Basiswerte im Medium, hierarchische Modellierung und Anpassung auf Compiler 4.5.13
       !! 17.7.2015 ausser_Betrieb,   !! fasst ausser_Betrieb und folgende Werte zusammen
         !!  Reserve !! existiert nicht im Medium Abwasser
@@ -2594,7 +2594,7 @@ Statuswerte EXTENDS SIA405_Base_LV95.Status = (  !! Betriebs- und Planungszustan
          Projekt
       )
     );    !! Erweitert Wertebereich von SIA405 Status
-!! neu 17.7.2015  
+!! neu 17.7.2015
     Status = ALL OF Statuswerte;    !! Erweitert Wertebereich von SIA405 Status
 !! Abwasserbauwerk.Status
 
@@ -2668,15 +2668,15 @@ Verlust = 0.0 .. 500.0 [Units.mm];    !! Milimeter [mm]
 !! Oberflaechenabflussparameter.Versickerungsverlust
 
 
-GemeindeNr = 1 .. 9999 [Units.CountedObjects];    !! 
+GemeindeNr = 1 .. 9999 [Units.CountedObjects];    !!
 !! Gemeinde.Gemeindenummer
 
 
-ARANr = 1 .. 999999 [Units.CountedObjects];    !! 
+ARANr = 1 .. 999999 [Units.CountedObjects];    !!
 !! Abwasserreinigungsanlage.Anlagenummer
 
 
-Position = 1 .. 999;    !! 
+Position = 1 .. 999;    !!
 !! Rohrprofil_Geometrie.Position
 
 
@@ -2684,7 +2684,7 @@ Ueberlaufhaeufigkeit = 0.0 .. 999.9;    !! [Anzahl Überläufe/Jahr]
 !! Hydr_Kennwerte.Ueberlaufhaeufigkeit
 
 
-Aggregatezahl = 1 .. 9  [Units.CountedObjects];    !! 
+Aggregatezahl = 1 .. 9  [Units.CountedObjects];    !!
 !! Hydr_Kennwerte.Aggregatezahl
 
 
@@ -2696,7 +2696,7 @@ Lichte_Hoehe = 0 .. 99999 [Units.mm];    !! Milimeter [mm]
 !! Haltung.Reliner_Nennweite
 
 
-UID = TEXT*12;    !! 
+UID = TEXT*12;    !!
 !! Organisation.UID
 
 
@@ -2704,15 +2704,15 @@ Foerderhoehe = 0.00 .. 30000.00 [m];    !! Meter [m], 2 Dezimalstellen
 !! Hydr_Kennwerte.Foerderhoehe_geodaetisch
 
 
-Ziffernblatt = 0..12;    !! 
+Ziffernblatt = 0..12;    !!
 !! gemäss Richtlinie
 !! Haltungspunkt.Lage_Anschluss
 
 
-CLASS MUTATION EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS MUTATION EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Transfer von Mutationen von Attributwerten beliebiger Klassen
   ATTRIBUTE
-    ART: (        
+    ART: (
       erstellt,
       geaendert,
       geloescht
@@ -2728,7 +2728,7 @@ CLASS MUTATION EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
     SYSTEMBENUTZER: TEXT*41;  !! Name des Systembenutzers
 END MUTATION;
 
-CLASS Grundwasserleiter EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Grundwasserleiter EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Abgegrenztes Grundwasservorkommen oder abgegrenzter Teil davon
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -2739,14 +2739,14 @@ CLASS Grundwasserleiter EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
     Perimeter: Base_LV95.Surface;  !! Begrenzungspunkte der Fläche
 END Grundwasserleiter;
 
-CLASS Oberflaechengewaesser (ABSTRACT) EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Oberflaechengewaesser (ABSTRACT) EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! In der Natur fliessendes oder stehendes Wasser einschliesslich Gewässerbett
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
     Bezeichnung: MANDATORY TEXT*20;
 END Oberflaechengewaesser;
 
-CLASS Fliessgewaesser EXTENDS Oberflaechengewaesser =  
+CLASS Fliessgewaesser EXTENDS Oberflaechengewaesser =
 !! Ständig oder zeitweise fliessendes oberirdisches Gewässer
   ATTRIBUTE
     Art: (          !! Art des Fliessgewässers. Klassifizierung nach GEWISS
@@ -2756,19 +2756,19 @@ CLASS Fliessgewaesser EXTENDS Oberflaechengewaesser =
       Travertinbach,
       unbekannt
     );
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Fliessgewaesser;
 
-CLASS See EXTENDS Oberflaechengewaesser =  
+CLASS See EXTENDS Oberflaechengewaesser =
 !! Oberirdisches Gewässer mit stehendem oder nahezu stehendem Wasser
   ATTRIBUTE
     Perimeter: Base_LV95.Surface;  !! Begrenzungspunkte der Fläche
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END See;
 
-CLASS Gewaesserabschnitt EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Gewaesserabschnitt EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Aus gewässermorphologischer Sicht homogener Teil eines Gewässers
   ATTRIBUTE
     Abflussregime: (          !! Grad der antropogenen Beeinflussung des charakteristischen Ganges des Abflusses.
@@ -2784,7 +2784,7 @@ CLASS Gewaesserabschnitt EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
       uebermaessig_wuchernd,
       unbekannt
     );
-    Art: (        
+    Art: (
       eingedolt,
       offen,
       unbekannt
@@ -2871,7 +2871,7 @@ ASSOCIATION Gewaesserabschnitt_FliessgewaesserAssoc =    !! Komposition
   Gewaesserabschnitt_FliessgewaesserAssocRef -- {0..*} Gewaesserabschnitt; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Gewaesserabschnitt_FliessgewaesserAssoc;
 
-CLASS Wasserfassung EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Wasserfassung EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Entnahme von Grundwasser durch technische Massnahmen
   ATTRIBUTE
     Art: (          !! Art der Trinkwasserfassung
@@ -2894,7 +2894,7 @@ ASSOCIATION Wasserfassung_OberflaechengewaesserAssoc =    !! Assoziation
   Wasserfassung_OberflaechengewaesserAssocRef -- {0..*} Wasserfassung; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Wasserfassung_OberflaechengewaesserAssoc;
 
-CLASS Ufer EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Ufer EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Ans Gewässer angrenzende Zone
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -2917,7 +2917,7 @@ CLASS Ufer EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
       unbekannt,
       Wald
     );
-    Vegetation: (        
+    Vegetation: (
       fehlend,
       standorttypisch,
       standortuntypisch,
@@ -2950,7 +2950,7 @@ ASSOCIATION Ufer_GewaesserabschnittAssoc =    !! Komposition
   Ufer_GewaesserabschnittAssocRef -- {0..2} Ufer; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Ufer_GewaesserabschnittAssoc;
 
-CLASS Gewaessersohle EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Gewaessersohle EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Bei Hochwasser umgelagerter Bereich eines Gewässers
   ATTRIBUTE
     Art: (          !! Sohlentyp
@@ -2985,7 +2985,7 @@ ASSOCIATION Gewaessersohle_GewaesserabschnittAssoc =    !! Komposition
   Gewaessersohle_GewaesserabschnittAssocRef -- {0..1} Gewaessersohle; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Gewaessersohle_GewaesserabschnittAssoc;
 
-CLASS Gewaessersektor EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Gewaessersektor EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Teilstück aus welchen sich ein  Gewässers aufbaut
   ATTRIBUTE
     Art: (          !! Ufer oder Gewässerlinie. Zur Unterscheidung der Seesektoren wichtig.
@@ -3014,7 +3014,7 @@ ASSOCIATION Gewaessersektor_OberflaechengewaesserAssoc =    !! Komposition
   Gewaessersektor_OberflaechengewaesserAssocRef -- {0..*} Gewaessersektor; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Gewaessersektor_OberflaechengewaesserAssoc;
 
-CLASS Organisation (ABSTRACT) EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Organisation (ABSTRACT) EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Superklasse für in der Entwässerungsplanung relevante organisatorische Einheiten (z.B. Gemeinde, Kanton, etc.)
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -3027,29 +3027,29 @@ ASSOCIATION Organisation_Teil_vonAssoc =    !! Assoziation
   Organisation_Teil_vonAssocRef -- {0..*} Organisation; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Organisation_Teil_vonAssoc;
 
-CLASS Genossenschaft_Korporation EXTENDS Organisation =  
+CLASS Genossenschaft_Korporation EXTENDS Organisation =
 !! Genossenschaft oder Kooperation: Körperschaft öffentlichen Rechts. Falls privaten Rechtes dann als Privat abbilden.
   ATTRIBUTE
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Genossenschaft_Korporation;
 
-CLASS Kanton EXTENDS Organisation =  
+CLASS Kanton EXTENDS Organisation =
 !! Kanton der Schweiz
   ATTRIBUTE
     Perimeter: Gebietseinteilung;  !! Kantonsgrenze
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Kanton;
 
-CLASS Abwasserverband EXTENDS Organisation =  
+CLASS Abwasserverband EXTENDS Organisation =
 !! Abwasserverband
   ATTRIBUTE
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Abwasserverband;
 
-CLASS Gemeinde EXTENDS Organisation =  
+CLASS Gemeinde EXTENDS Organisation =
 !! Für die Belange der Siedlungsentwässerung zuständiges Organ der Gemeindeverwaltung
   ATTRIBUTE
     Einwohner: EGW;  !! Ständige Einwohner (laut Einwohnerkontrolle der Gemeinde);
@@ -3058,18 +3058,18 @@ CLASS Gemeinde EXTENDS Organisation =
     GEP_Jahr: SIA405_Base_LV95.Jahr;  !! Rechtsgültiges GEP aus dem Jahr
     Hoehe: Base_LV95.Hoehe;  !! Mittlere Höhe des Siedlungsgebietes
     Perimeter: Gebietseinteilung;  !! Gemeindegrenze
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Gemeinde;
 
-CLASS Amt EXTENDS Organisation =  
+CLASS Amt EXTENDS Organisation =
 !! Teil einer Organisation (z.B. Amt für Umweltschutz, Amt für Abwasserentsorgung)
   ATTRIBUTE
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Amt;
 
-CLASS Abwasserreinigungsanlage EXTENDS Organisation =  
+CLASS Abwasserreinigungsanlage EXTENDS Organisation =
 !! Abwassreinigungsanlage (ARA)
   ATTRIBUTE
     Anlagenummer: ARANr;  !! ARA-Nummer gemäss Bundesamt für Umwelt (BAFU);
@@ -3082,19 +3082,19 @@ CLASS Abwasserreinigungsanlage EXTENDS Organisation =
     EliminationP: 0.00 .. 100.00 [Units.Percent];  !! Dimensionierungswert Eliminationsrate in %
     Inbetriebnahme: SIA405_Base_LV95.Jahr;  !! Jahr der Inbetriebnahme
     NH4: NH4;  !! Dimensionierungswert Ablauf Vorklärung. NH4 [gNH4/m3]
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Abwasserreinigungsanlage;
 
-CLASS Privat EXTENDS Organisation =  
+CLASS Privat EXTENDS Organisation =
 !! Privatperson oder Privatorganisation, welche im Rahmen der Entwässerungsplanung auftritt
   ATTRIBUTE
     Art: TEXT*50;
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Privat;
 
-CLASS Abwasserbauwerk (ABSTRACT) EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Abwasserbauwerk (ABSTRACT) EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Bauwerk in einem Entwässerungsnetz (dss)
   ATTRIBUTE
     Akten: MTEXT*255;  !! Plan Nr. der Ausführungsdokumentation. Kurzbeschrieb weiterer Akten (Betriebsanleitung vom …, etc.);
@@ -3174,7 +3174,7 @@ ASSOCIATION Abwasserbauwerk_BetreiberAssoc =    !! Assoziation
   Abwasserbauwerk_BetreiberAssocRef -- {0..*} Abwasserbauwerk; !! Für den Unterhalt eines Bauwerks zuständige Stelle, Rolle2 - Klasse2 / Rôle2 - Classe2
 END Abwasserbauwerk_BetreiberAssoc;
 
-CLASS Kanal EXTENDS Abwasserbauwerk =  
+CLASS Kanal EXTENDS Abwasserbauwerk =
 !! Offenes oder geschlossenes Gerinne zur Ableitung von Abwasser zwischen zwei Abwasserbauwerken
   ATTRIBUTE
     Bettung_Umhuellung: (          !! Art und Weise der unmittelbaren Rohrumgebung im Boden: Bettungsschicht (Unterlage der Leitung),  Verdämmung (seitliche Auffüllung), Schutzschicht
@@ -3265,11 +3265,11 @@ CLASS Kanal EXTENDS Abwasserbauwerk =
       unbekannt,
       Vortriebsrohrkupplung
     );
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Kanal;
 
-CLASS Normschacht EXTENDS Abwasserbauwerk =  
+CLASS Normschacht EXTENDS Abwasserbauwerk =
 !! Normiertes Schachtbauwerk mit abnehmbarem Deckel im Kanalnetz
   ATTRIBUTE
     Dimension1: SIA405_Base_LV95.Abmessung;  !! Dimension1 des Schachtes (grösstes Innenmass).
@@ -3305,11 +3305,11 @@ CLASS Normschacht EXTENDS Abwasserbauwerk =
       unbekannt,
       Zulauf_seitlich
     );
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Normschacht;
 
-CLASS Einleitstelle EXTENDS Abwasserbauwerk =  
+CLASS Einleitstelle EXTENDS Abwasserbauwerk =
 !! Auslauf aus dem Kanal in das Fliessgewässer
   ATTRIBUTE
     Hochwasserkote: Base_LV95.Hoehe;  !! Massgebliche Hochwasserkote der Einleitstelle. Diese ist in der Regel grösser als der Wasserspiegel_Hydraulik.
@@ -3319,7 +3319,7 @@ CLASS Einleitstelle EXTENDS Abwasserbauwerk =
     );
     Terrainkote: Base_LV95.Hoehe;  !! Terrainkote, falls kein Deckel vorhanden bei Einleitstelle (Kanalende ohne Bauwerk oder Bauwerk ohne Deckel);
     Wasserspiegel_Hydraulik: Base_LV95.Hoehe;  !! Wasserspiegelkote für die hydraulische Berechnung (IST-Zustand). Berechneter Wasserspiegel bei der Einleitstelle. Wo nichts anders gefordert, ist der Wasserspiegel bei einem HQ30 einzusetzen.
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Einleitstelle;
 
@@ -3328,7 +3328,7 @@ ASSOCIATION Einleitstelle_GewaessersektorAssoc =    !! Assoziation
   Einleitstelle_GewaessersektorAssocRef -- {0..*} Einleitstelle; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Einleitstelle_GewaessersektorAssoc;
 
-CLASS Spezialbauwerk EXTENDS Abwasserbauwerk =  
+CLASS Spezialbauwerk EXTENDS Abwasserbauwerk =
 !! Nicht normiertes Abwasserbauwerk mit spezieller Funktion, z.B zur Auftrennung von Abwassermengen, zur Überwindung von Höhenunterschieden oder zur Speicherung und Grobklärung
   ATTRIBUTE
     Bypass: (          !! Bypass zur Umleitung des Wassers (z.B. während Unterhalt oder  im Havariefall)
@@ -3381,11 +3381,11 @@ CLASS Spezialbauwerk EXTENDS Abwasserbauwerk =
       Nebenschluss,  !! Durchfluss des Beckens nur bei Regenwetter
       unbekannt
     );
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Spezialbauwerk;
 
-CLASS Versickerungsanlage EXTENDS Abwasserbauwerk =  
+CLASS Versickerungsanlage EXTENDS Abwasserbauwerk =
 !! Einbringen von Reinabwasser und wenig verschmutztem Regenabwasser in den Untergrund (Definition gemäss VSA Richtlinie Regenwasserentsorgung 2002)
   ATTRIBUTE
     Art: (          !! Arten von Versickerungsmethoden.
@@ -3439,7 +3439,7 @@ CLASS Versickerungsanlage EXTENDS Abwasserbauwerk =
       wasserdicht
     );
     Wirksameflaeche: 0.00 .. 100000.00 [Units.m2];  !! Für den Abfluss wirksame Fläche
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Versickerungsanlage;
 
@@ -3448,7 +3448,7 @@ ASSOCIATION Versickerungsanlage_GrundwasserleiterAssoc =    !! Assoziation
   Versickerungsanlage_GrundwasserleiterAssocRef -- {0..*} Versickerungsanlage; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Versickerungsanlage_GrundwasserleiterAssoc;
 
-CLASS ARABauwerk EXTENDS Abwasserbauwerk =  
+CLASS ARABauwerk EXTENDS Abwasserbauwerk =
 !! Reinigungsbecken einer Kläranlage
   ATTRIBUTE
     Art: (          !! Art des Beckens oder Verfahrens im ARA Bauwerk
@@ -3461,11 +3461,11 @@ CLASS ARABauwerk EXTENDS Abwasserbauwerk =
       unbekannt,
       Vorklaerbecken
     );
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END ARABauwerk;
 
-CLASS Erhaltungsereignis EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Erhaltungsereignis EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Aussagen zu betrieblichem und baulichem Unterhalt eines Abwasserbauwerkes
   ATTRIBUTE
     Art: (          !! Art des Ereignisses
@@ -3507,14 +3507,14 @@ ASSOCIATION Erhaltungsereignis_Ausfuehrende_FirmaAssoc =    !! Assoziation
   Erhaltungsereignis_Ausfuehrende_FirmaAssocRef -- {0..*} Erhaltungsereignis; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Erhaltungsereignis_Ausfuehrende_FirmaAssoc;
 
-CLASS Zone (ABSTRACT) EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Zone (ABSTRACT) EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Für bestimmte Zwecke ausgeschiedene Bereiche
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
     Bezeichnung: MANDATORY TEXT*20;
 END Zone;
 
-CLASS Planungszone EXTENDS Zone =  
+CLASS Planungszone EXTENDS Zone =
 !! Zonen gemäss Bauordnung
   ATTRIBUTE
     Art: (          !! Art der Bauzone
@@ -3526,11 +3526,11 @@ CLASS Planungszone EXTENDS Zone =
       Wohnzone
     );
     Perimeter: Gebietseinteilung;  !! Begrenzungspunkte der Fläche
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Planungszone;
 
-CLASS Versickerungsbereich EXTENDS Zone =  
+CLASS Versickerungsbereich EXTENDS Zone =
 !! Bereiche nach Versickerungsmöglichkeit
   ATTRIBUTE
     Perimeter: Gebietseinteilung;  !! Begrenzungspunkte der Fläche
@@ -3542,11 +3542,11 @@ CLASS Versickerungsbereich EXTENDS Zone =
       unbekannt,
       unzulaessig
     );
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Versickerungsbereich;
 
-CLASS Entwaesserungssystem EXTENDS Zone =  
+CLASS Entwaesserungssystem EXTENDS Zone =
 !! Art und Weise, wie ein bestimmtes Gebiet entwässert werden soll. (dss)
   ATTRIBUTE
     Art: (          !! Art des Entwässerungssystems in dem ein bestimmtes Gebiet entwässert werden soll (SOLL Zustand)
@@ -3558,11 +3558,11 @@ CLASS Entwaesserungssystem EXTENDS Zone =
       unbekannt
     );
     Perimeter: Base_LV95.Surface;  !! Begrenzungspunkte der Fläche
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Entwaesserungssystem;
 
-CLASS Gewaesserschutzbereich EXTENDS Zone =  
+CLASS Gewaesserschutzbereich EXTENDS Zone =
 !! Definiertes Gebiet, welches die Art des Schutzes bezüglich Gefährdung der Oberflächengewässer und des Grundwassers definiert.
   ATTRIBUTE
     Art: (          !! Art des Schutzbereiches für  oberflächliches Gewässer und Grundwasser bezüglich Gefährdung
@@ -3576,19 +3576,19 @@ CLASS Gewaesserschutzbereich EXTENDS Zone =
       Zu  !! Der Zuströmbereich Zu umfasst das Gebeit, aus dem bei niedrigem Wasserstand etwa 90 Prozent des Grundwasser, das bei einer Grundwasserfassung höchstens entnommen werden darf, stammt. (GSchV 1998)
     );
     Perimeter: Base_LV95.Surface;  !! Begrenzungspunkte der Fläche
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Gewaesserschutzbereich;
 
-CLASS Grundwasserschutzareal EXTENDS Zone =  
+CLASS Grundwasserschutzareal EXTENDS Zone =
 !! Areale, die für die künftige Nutzung und Anreicherung von Grundwasservorkommen von Bedeutung sind
   ATTRIBUTE
     Perimeter: Base_LV95.Surface;  !! Begrenzungspunkte der Fläche
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Grundwasserschutzareal;
 
-CLASS Grundwasserschutzzone EXTENDS Zone =  
+CLASS Grundwasserschutzzone EXTENDS Zone =
 !! Definiertes Gebiet, welches die im öffentlichen Interesse liegenden Grundwasserfassungen und Anreicherungsanlagen definiert und die notwendigen Eigentumsbeschränkungen festlegt.
   ATTRIBUTE
     Art: (          !! Zonenarten. Grundwasserschutzzonen bestehen aus dem Fassungsbereich (Zone S1), der Engeren Schutzzone (Zone S2) und der Weiteren Schutzzone (Zone S3).
@@ -3598,11 +3598,11 @@ CLASS Grundwasserschutzzone EXTENDS Zone =
       unbekannt
     );
     Perimeter: Base_LV95.Surface;  !! Begrenzungspunkte der Fläche
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Grundwasserschutzzone;
 
-CLASS Rohrprofil EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Rohrprofil EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Form des Fliessquerschnittes mit Angabe der Dimension
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -3619,7 +3619,7 @@ CLASS Rohrprofil EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
     );
 END Rohrprofil;
 
-CLASS ARAEnergienutzung EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS ARAEnergienutzung EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Betriebsdaten zur Energienutzung auf der ARA
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -3634,7 +3634,7 @@ ASSOCIATION ARAEnergienutzung_AbwasserreinigungsanlageAssoc =    !! Komposition
   ARAEnergienutzung_AbwasserreinigungsanlageAssocRef -- {0..*} ARAEnergienutzung; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END ARAEnergienutzung_AbwasserreinigungsanlageAssoc;
 
-CLASS Abwasserbehandlung EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Abwasserbehandlung EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Gezielte Veränderung der Abwasserbeschaffenheit z.B. durch Reinigen, Neutralisation auf einer ARA
   ATTRIBUTE
     Art: (          !! Verfahren für die Abwasserbehandlung
@@ -3654,7 +3654,7 @@ ASSOCIATION Abwasserbehandlung_AbwasserreinigungsanlageAssoc =    !! Komposition
   Abwasserbehandlung_AbwasserreinigungsanlageAssocRef -- {0..*} Abwasserbehandlung; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Abwasserbehandlung_AbwasserreinigungsanlageAssoc;
 
-CLASS Schlammbehandlung EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Schlammbehandlung EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Daten zur Schlammbehandlung auf der ARA
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -3686,14 +3686,14 @@ ASSOCIATION Schlammbehandlung_AbwasserreinigungsanlageAssoc =    !! Komposition
   Schlammbehandlung_AbwasserreinigungsanlageAssocRef -- {0..*} Schlammbehandlung; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Schlammbehandlung_AbwasserreinigungsanlageAssoc;
 
-CLASS Steuerungszentrale EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Steuerungszentrale EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Gegenstelle zu Absperr_Drosselorgan / Ueberlauf  (Hydr_Einbaute) mit Signalübermittlung
   ATTRIBUTE
     Bezeichnung: MANDATORY TEXT*20;
     Lage: Base_LV95.LKoord;  !! Landeskoordinate Ost/Nord
 END Steuerungszentrale;
 
-CLASS Gewaesserverbauung (ABSTRACT) EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Gewaesserverbauung (ABSTRACT) EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Punktuelle Verbauung am oder im Gewässer wie Schwellen etc.
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -3706,14 +3706,14 @@ ASSOCIATION Gewaesserverbauung_GewaesserabschnittAssoc =    !! Assoziation
   Gewaesserverbauung_GewaesserabschnittAssocRef -- {0..*} Gewaesserverbauung; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Gewaesserverbauung_GewaesserabschnittAssoc;
 
-CLASS Furt EXTENDS Gewaesserverbauung =  
+CLASS Furt EXTENDS Gewaesserverbauung =
 !! Sohlengleiche Kreuzung eines Verkehrsweges mit einem Gewässer mit künstlicher Sohle in diesem Bereich
   ATTRIBUTE
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Furt;
 
-CLASS GewaesserAbsturz EXTENDS Gewaesserverbauung =  
+CLASS GewaesserAbsturz EXTENDS Gewaesserverbauung =
 !! Senkrechter Absturz von Wasser in einem Gewässer
   ATTRIBUTE
     Absturzhoehe: 0.00 .. 30000.00 [m];  !! Differenz des Wasserspiegels vor und nach dem Absturz
@@ -3730,34 +3730,34 @@ CLASS GewaesserAbsturz EXTENDS Gewaesserverbauung =
       natuerlich,
       unbekannt
     );
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END GewaesserAbsturz;
 
-CLASS Schleuse EXTENDS Gewaesserverbauung =  
+CLASS Schleuse EXTENDS Gewaesserverbauung =
 !! Künstliche Wasserkammer mit regulierbarem internem Wasserspiegel
   ATTRIBUTE
     Absturzhoehe: 0.00 .. 30000.00 [m];  !! Differenz im Wasserspiegel oberhalb und unterhalb der Schleuse
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Schleuse;
 
-CLASS Durchlass EXTENDS Gewaesserverbauung =  
+CLASS Durchlass EXTENDS Gewaesserverbauung =
 !! Eindolungen unter Strassen, Wegen u.a. mit einer Länge von unter 15m (ansonsten Gewässerabschnitt eingedolt)
   ATTRIBUTE
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Durchlass;
 
-CLASS Geschiebesperre EXTENDS Gewaesserverbauung =  
+CLASS Geschiebesperre EXTENDS Gewaesserverbauung =
 !! Querbauwerke mit Öffnungen, welche den Geschiebetransport bei Hochwasser zurückhalten
   ATTRIBUTE
     Absturzhoehe: 0.00 .. 30000.00 [m];  !! Differenz des Wasserspiegels vor und nach der Sperre
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Geschiebesperre;
 
-CLASS GewaesserWehr EXTENDS Gewaesserverbauung =  
+CLASS GewaesserWehr EXTENDS Gewaesserverbauung =
 !! Wehr im Gewässer
   ATTRIBUTE
     Absturzhoehe: 0.00 .. 30000.00 [m];  !! Differenz des Wasserspiegels vor und nach dem Absturz
@@ -3768,11 +3768,11 @@ CLASS GewaesserWehr EXTENDS Gewaesserverbauung =
       Tirolerwehr,
       unbekannt
     );
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END GewaesserWehr;
 
-CLASS Sohlrampe EXTENDS Gewaesserverbauung =  
+CLASS Sohlrampe EXTENDS Gewaesserverbauung =
 !! Flächige Sohlbefestigungen im Gewässer
   ATTRIBUTE
     Absturzhoehe: 0.00 .. 30000.00 [m];  !! Differenz des Wasserspiegels vor und nach dem Absturz
@@ -3785,11 +3785,11 @@ CLASS Sohlrampe EXTENDS Gewaesserverbauung =
       Holzbalken,
       unbekannt
     );
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Sohlrampe;
 
-CLASS Fischpass EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Fischpass EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Anlage, die Fischen das Überwinden einer Sohlenstufe ermöglicht
   ATTRIBUTE
     Absturzhoehe: 0.00 .. 30000.00 [m];  !! Differenz des Wasserspiegels vor und nach dem Fischpass
@@ -3802,7 +3802,7 @@ ASSOCIATION Fischpass_GewaesserverbauungAssoc =    !! Assoziation
   Fischpass_GewaesserverbauungAssocRef -- {0..1} Fischpass; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Fischpass_GewaesserverbauungAssoc;
 
-CLASS Badestelle EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Badestelle EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Badestelle eines Gewässers
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -3815,7 +3815,7 @@ ASSOCIATION Badestelle_OberflaechengewaesserAssoc =    !! Assoziation
   Badestelle_OberflaechengewaesserAssocRef -- {0..*} Badestelle; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Badestelle_OberflaechengewaesserAssoc;
 
-CLASS Hydr_Geometrie EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Hydr_Geometrie EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Beschreibt die hydraulische Geometrie eines Knotens
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -3827,7 +3827,7 @@ CLASS Hydr_Geometrie EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
     Volumen_Pumpensumpf: 0.00 .. 10000000.00 [Units.m3];  !! Volumen des Pumpensumpfs von der Sohle bis zur maximal möglichen Wasserspiegellage (inkl. Kanalspeichervolumen im Zulaufkanal).
 END Hydr_Geometrie;
 
-CLASS Abwassernetzelement (ABSTRACT) EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Abwassernetzelement (ABSTRACT) EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Modelltechnischer Begriff für Abwasserknoten und Haltungen in der VSA-DSS
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -3839,7 +3839,7 @@ ASSOCIATION Abwassernetzelement_AbwasserbauwerkAssoc =    !! Assoziation
   Abwassernetzelement_AbwasserbauwerkAssocRef -- {0..*} Abwassernetzelement; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Abwassernetzelement_AbwasserbauwerkAssoc;
 
-CLASS Haltungspunkt EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Haltungspunkt EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Anfangs- oder Endpunkt einer Haltung mit Detailinformationen zur Verbindung zwischen Abwassernetzelementen.
   ATTRIBUTE
     Auslaufform: (          !! Art des Auslaufs
@@ -3868,13 +3868,13 @@ ASSOCIATION Haltungspunkt_AbwassernetzelementAssoc =    !! Assoziation
   Haltungspunkt_AbwassernetzelementAssocRef -- {0..*} Haltungspunkt; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Haltungspunkt_AbwassernetzelementAssoc;
 
-CLASS Abwasserknoten EXTENDS Abwassernetzelement =  
+CLASS Abwasserknoten EXTENDS Abwassernetzelement =
 !! Verbindung zwischen zwei Haltungen, hydraulischer Bezugspunkt des Abwasserbauwerks (dss)
   ATTRIBUTE
     Lage: Base_LV95.LKoord;  !! Lage des Knotens, massgebender Bezugspunkt für die Kanalnetzberechnung. (In der Regel Lage des Pickellochs oder Lage des Trockenwetterauslaufs);
     Rueckstaukote: Base_LV95.Hoehe;  !! 1. Massgebende Rückstaukote bezogen auf den Berechnungsregen (dss)  2. Höhe, unter der innerhalb der Grundstücksentwässerung besondere Massnahmen gegen Rückstau zu treffen sind. (DIN 4045);
     Sohlenkote: Base_LV95.Hoehe;  !! Tiefster Punkt des Abwasserbauwerks
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Abwasserknoten;
 
@@ -3884,7 +3884,7 @@ ASSOCIATION Abwasserknoten_Hydr_GeometrieAssoc =    !! Assoziation
   Abwasserknoten_Hydr_GeometrieAssocRef -- {0..*} Abwasserknoten; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Abwasserknoten_Hydr_GeometrieAssoc;
 
-CLASS Haltung EXTENDS Abwassernetzelement =  
+CLASS Haltung EXTENDS Abwassernetzelement =
 !! Hydraulisch homogenes Transportelement des Kanalnetzes, Berechnungsabschnitt einer Abflusssimulation.
   ATTRIBUTE
     Innenschutz: (          !! Schutz der Innenwände des Kanals
@@ -3968,7 +3968,7 @@ CLASS Haltung EXTENDS Abwassernetzelement =
     Ringsteifigkeit: 0 .. 16;  !! Ringsteifigkeitsklasse - Druckfestigkeit gegen Belastungen von aussen (gemäss ISO 13966 );
     Verlauf: Base_LV95.Polyline;  !! Anfangs-, Knick- und Endpunkte der Leitung
     Wandrauhigkeit: Prandtl;  !! Hydraulische Kenngrösse zur Beschreibung der Beschaffenheit der Kanalwandung. Beiwert für die Formeln nach Prandtl-Colebrook (ks oder kb);
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Haltung;
 
@@ -4005,7 +4005,7 @@ ASSOCIATION Haltung_RohrprofilAssoc =    !! Assoziation
   Haltung_RohrprofilAssocRef -- {0..*} Haltung; !! {XOR (Haltung)}, Rolle2 - Klasse2 / Rôle2 - Classe2
 END Haltung_RohrprofilAssoc;
 
-CLASS Rohrprofil_Geometrie EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Rohrprofil_Geometrie EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Geometrie des Rohrprofils als x/y-Punkte mit Lichte_Hoehe = 1
   ATTRIBUTE
     Position: Position;  !! Position der Detailpunkte der Geometrie
@@ -4018,7 +4018,7 @@ ASSOCIATION Rohrprofil_Geometrie_RohrprofilAssoc =    !! Komposition
   Rohrprofil_Geometrie_RohrprofilAssocRef -- {0..*} Rohrprofil_Geometrie; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Rohrprofil_Geometrie_RohrprofilAssoc;
 
-CLASS Hydr_GeomRelation EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Hydr_GeomRelation EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Tripel aus benetztem Querschnitt, benetzter Fläche und Kote
   ATTRIBUTE
     BenetzteQuerschnittsflaeche: 0.00 .. 100000.00 [Units.m2];  !! Hydraulisch wirksamer Querschnitt für Verlustberechnungen
@@ -4031,7 +4031,7 @@ ASSOCIATION Hydr_GeomRelation_Hydr_GeometrieAssoc =    !! Assoziation
   Hydr_GeomRelation_Hydr_GeometrieAssocRef -- {0..*} Hydr_GeomRelation; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Hydr_GeomRelation_Hydr_GeometrieAssoc;
 
-CLASS MechanischeVorreinigung EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS MechanischeVorreinigung EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Behandlungsanlage von Versickerungsanlage (gemäss VSA Richtlinie Regenwasserentsorgung 2002)
   ATTRIBUTE
     Art: (          !! Arten der mechanischen Vorreinigung / Behandlung (gemäss VSA Richtlinie Regenwasserentsorgung (2002))
@@ -4056,7 +4056,7 @@ ASSOCIATION MechanischeVorreinigung_AbwasserbauwerkAssoc =    !! Assoziation
   MechanischeVorreinigung_AbwasserbauwerkAssocRef -- {0..*} MechanischeVorreinigung; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END MechanischeVorreinigung_AbwasserbauwerkAssoc;
 
-CLASS Retentionskoerper EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Retentionskoerper EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Retentionskörper einer Versickerungsanlage
   ATTRIBUTE
     Art: (          !! Arten der Retention
@@ -4077,7 +4077,7 @@ ASSOCIATION Retentionskoerper_VersickerungsanlageAssoc =    !! Komposition
   Retentionskoerper_VersickerungsanlageAssocRef -- {0..*} Retentionskoerper; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Retentionskoerper_VersickerungsanlageAssoc;
 
-CLASS Ueberlaufcharakteristik EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Ueberlaufcharakteristik EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Quantitative Angaben zum Ueberlauf
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -4094,7 +4094,7 @@ CLASS Ueberlaufcharakteristik EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
     );
 END Ueberlaufcharakteristik;
 
-CLASS HQ_Relation EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS HQ_Relation EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Korrelation von Wasserspiegelhöhe in Funktion des Abflusses. Die Kennlinie beschreibt den Verlauf der Menge in Primärrichtung des Trennbauwerkes bei verschiedenen Zufluss resp. Einstau-Verhältnissen. Sie muss aus mindestens 2 Stützpunkten bestehen. Kann zusätzlich als Tabelle / Ausdruck aus dem Berechnungsmodell oder als Tabelle abgegeben werden.
   ATTRIBUTE
     Abfluss: 0.000 .. 100000.000 [SIA405_Base_LV95.ls];  !! Abflussmenge (Q2) Richtung ARA
@@ -4107,7 +4107,7 @@ ASSOCIATION HQ_Relation_UeberlaufcharakteristikAssoc =    !! Assoziation
   HQ_Relation_UeberlaufcharakteristikAssocRef -- {0..*} HQ_Relation; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END HQ_Relation_UeberlaufcharakteristikAssoc;
 
-CLASS BauwerksTeil (ABSTRACT) EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS BauwerksTeil (ABSTRACT) EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Bauliche Bestandteile und Einrichtungen eines Abwasserbauwerkes
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -4124,15 +4124,15 @@ ASSOCIATION BauwerksTeil_AbwasserbauwerkAssoc =    !! Komposition
   BauwerksTeil_AbwasserbauwerkAssocRef -- {0..*} BauwerksTeil; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END BauwerksTeil_AbwasserbauwerkAssoc;
 
-CLASS Trockenwetterfallrohr EXTENDS BauwerksTeil =  
+CLASS Trockenwetterfallrohr EXTENDS BauwerksTeil =
 !! Fallrohr in einem Absturzschacht zur Ableitung des Zuflusses bei Trockenwetter und Schwachregen
   ATTRIBUTE
     Durchmesser: SIA405_Base_LV95.Abmessung;  !! Abmessung des Deckels (bei eckigen Deckeln minimale Abmessung);
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Trockenwetterfallrohr;
 
-CLASS Einstiegshilfe EXTENDS BauwerksTeil =  
+CLASS Einstiegshilfe EXTENDS BauwerksTeil =
 !! Element, welches den Zugang zu einem Abwasserbauwerk ermöglicht.
   ATTRIBUTE
     Art: (          !! Art des Einstiegs in das Bauwerk
@@ -4146,11 +4146,11 @@ CLASS Einstiegshilfe EXTENDS BauwerksTeil =
       Tuere,
       unbekannt
     );
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Einstiegshilfe;
 
-CLASS Trockenwetterrinne EXTENDS BauwerksTeil =  
+CLASS Trockenwetterrinne EXTENDS BauwerksTeil =
 !! Bauliche Einengung des Kanalquerschnittes zwecks Erhöhung der Fliessgeschwindigkeit für den Trockenwetteranfall
   ATTRIBUTE
     Material: (          !! Material der Ausbildung oder Auskleidung der Trockenwetterrinne
@@ -4161,11 +4161,11 @@ CLASS Trockenwetterrinne EXTENDS BauwerksTeil =
       unbekannt,
       Zementmoertel
     );
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Trockenwetterrinne;
 
-CLASS Deckel EXTENDS BauwerksTeil =  
+CLASS Deckel EXTENDS BauwerksTeil =
 !! Abnehmbare Abdeckung eines Schachtbauwerkes
   ATTRIBUTE
     Deckelform: (          !! Form des Deckels
@@ -4208,11 +4208,11 @@ CLASS Deckel EXTENDS BauwerksTeil =
       unbekannt,
       verschraubt
     );
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Deckel;
 
-CLASS ElektrischeEinrichtung EXTENDS BauwerksTeil =  
+CLASS ElektrischeEinrichtung EXTENDS BauwerksTeil =
 !! Elektrische Installationen und Geräte in einem Abwasserbauwerk
   ATTRIBUTE
     Art: (          !! Elektrische Installationen und Geräte
@@ -4225,11 +4225,11 @@ CLASS ElektrischeEinrichtung EXTENDS BauwerksTeil =
     );
     Bruttokosten: 0.00 .. 99999999.99 [Units.CHF];  !! Brutto Erstellungskosten der elektromechanischen Ausrüstung
     Ersatzjahr: SIA405_Base_LV95.Jahr;  !! Jahr, in dem die Lebensdauer der elektrischen Einrichtung voraussichtlich ausläuft
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END ElektrischeEinrichtung;
 
-CLASS ElektromechanischeAusruestung EXTENDS BauwerksTeil =  
+CLASS ElektromechanischeAusruestung EXTENDS BauwerksTeil =
 !! Elektromechanische Teile eines Bauwerks eines Abwasserbauwerks
   ATTRIBUTE
     Art: (          !! Elektromechanische Teile eines Bauwerks
@@ -4241,25 +4241,25 @@ CLASS ElektromechanischeAusruestung EXTENDS BauwerksTeil =
     );
     Bruttokosten: 0.00 .. 99999999.99 [Units.CHF];  !! Brutto Erstellungskosten der elektromechanischen Ausrüstung
     Ersatzjahr: SIA405_Base_LV95.Jahr;  !! Jahr in dem die Lebensdauer der elektromechanischen Ausrüstung voraussichtlich abläuft
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END ElektromechanischeAusruestung;
 
-CLASS Bankett EXTENDS BauwerksTeil =  
+CLASS Bankett EXTENDS BauwerksTeil =
 !! Bankett im Kanal oder Schacht
   ATTRIBUTE
-    Art: (        
+    Art: (
       andere,
       beidseitig,
       einseitig,
       kein,
       unbekannt
     );
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Bankett;
 
-CLASS Anschlussobjekt (ABSTRACT) EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Anschlussobjekt (ABSTRACT) EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Sammelbegriff für an die Kanalisation angeschlossenen Objekte
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -4282,27 +4282,27 @@ ASSOCIATION Anschlussobjekt_BetreiberAssoc =    !! Assoziation
   Anschlussobjekt_BetreiberAssocRef -- {0..*} Anschlussobjekt; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Anschlussobjekt_BetreiberAssoc;
 
-CLASS Gebaeude EXTENDS Anschlussobjekt =  
+CLASS Gebaeude EXTENDS Anschlussobjekt =
 !! Gebäude
   ATTRIBUTE
     Hausnummer: TEXT*50;  !! Hausnummer gemäss Grundbuch
     Perimeter: Base_LV95.Surface;  !! Begrenzungspunkte der Fläche
     Referenzpunkt: Base_LV95.LKoord;  !! Landeskoordinate Ost/Nord (massgebender Bezugspunkt für z.B. Adressdaten );
     Standortname: TEXT*50;  !! Strassenname oder Ortsbezeichnung
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Gebaeude;
 
-CLASS Reservoir EXTENDS Anschlussobjekt =  
+CLASS Reservoir EXTENDS Anschlussobjekt =
 !! Reservoir
   ATTRIBUTE
     Lage: Base_LV95.LKoord;  !! Landeskoordinate Ost/Nord
     Standortname: TEXT*50;  !! Strassenname oder Ortsbezeichnung
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Reservoir;
 
-CLASS Einzelflaeche EXTENDS Anschlussobjekt =  
+CLASS Einzelflaeche EXTENDS Anschlussobjekt =
 !! Zusammenhängende Gebiete mit gleicher Oberflächencharakteristik
   ATTRIBUTE
     Befestigung: (          !! Art der Befestigung
@@ -4327,20 +4327,20 @@ CLASS Einzelflaeche EXTENDS Anschlussobjekt =
     );
     Neigung: Neigung_Promille;  !! Mittlere Neigung der Oberfläche in Promill
     Perimeter: Base_LV95.Surface;  !! Begrenzungspunkte der Fläche
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Einzelflaeche;
 
-CLASS Brunnen EXTENDS Anschlussobjekt =  
+CLASS Brunnen EXTENDS Anschlussobjekt =
 !! Brunnen
   ATTRIBUTE
     Lage: Base_LV95.LKoord;  !! Landeskoordinate Ost/Nord
     Standortname: TEXT*50;  !! Strassenname oder Ortsbezeichnung
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Brunnen;
 
-CLASS Gefahrenquelle EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Gefahrenquelle EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Quelle abwassergefährdender Soffe
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -4358,7 +4358,7 @@ ASSOCIATION Gefahrenquelle_EigentuemerAssoc =    !! Assoziation
   Gefahrenquelle_EigentuemerAssocRef -- {0..*} Gefahrenquelle; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Gefahrenquelle_EigentuemerAssoc;
 
-CLASS Unfall EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Unfall EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Unfall, dessen Folgen das Grundwasser, das Gewässer, den ARA- und Kanalnetzbetrieb gefährden können
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -4374,7 +4374,7 @@ ASSOCIATION Unfall_GefahrenquelleAssoc =    !! Assoziation
   Unfall_GefahrenquelleAssocRef -- {0..*} Unfall; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Unfall_GefahrenquelleAssoc;
 
-CLASS Stoff EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Stoff EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Wassergefährdender Stoff
   ATTRIBUTE
     Art: TEXT*50;  !! Liste der wassergefährdenden Stoffe
@@ -4388,7 +4388,7 @@ ASSOCIATION Stoff_GefahrenquelleAssoc =    !! Komposition
   Stoff_GefahrenquelleAssocRef -- {1..*} Stoff; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Stoff_GefahrenquelleAssoc;
 
-CLASS Einzugsgebiet EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Einzugsgebiet EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! 1. Definiertes Gebiet, welches in einen bestimmten Abwasserknoten oder in eine bestimmte Haltung entwässert (Teileinzugsgebiet) . (dss) 2. Gebiet mit Abfluss zu einer Abwasserleitung, einem Abwasserkanal oder einem Gewässer. (DIN 752)
   ATTRIBUTE
     Abflussbegrenzung_geplant: 0.0 .. 999.9 [lsha];  !! Abflussbegrenzung, falls eine entsprechende Auflage aus dem Entwässerungskonzept vorliegt. Dieses Attribut hat Auflagecharakter. Es ist verbindlich für die Beurteilung von Baugesuchen
@@ -4487,7 +4487,7 @@ ASSOCIATION Einzugsgebiet_Abwassernetzelement_SW_IstAssoc =    !! Assoziation
   Einzugsgebiet_Abwassernetzelement_SW_IstAssocRef -- {0..*} Einzugsgebiet; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Einzugsgebiet_Abwassernetzelement_SW_IstAssoc;
 
-CLASS Oberflaechenabflussparameter (ABSTRACT) EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Oberflaechenabflussparameter (ABSTRACT) EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Kennzahlen zur Beschreibung des Oberflächenabflusses wie z.B. Benutzungs- oder Muldenverluste
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -4503,14 +4503,14 @@ ASSOCIATION Oberflaechenabflussparameter_EinzugsgebietAssoc =    !! Assoziation
   Oberflaechenabflussparameter_EinzugsgebietAssocRef -- {0..1} Oberflaechenabflussparameter; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Oberflaechenabflussparameter_EinzugsgebietAssoc;
 
-CLASS Messstelle EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Messstelle EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Ort an welchem zusammenhägende Messungen erhoben werden, z.B. benthosbiologische Untersuchungsstelle
   ATTRIBUTE
     Art: TEXT*50;  !! Art der Untersuchungsstelle ( Regenmessungen, Abflussmessungen, etc.);
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
     Bezeichnung: MANDATORY TEXT*20;
     Lage: Base_LV95.LKoord;  !! Landeskoordinate Ost/Nord
-    Staukoerper: (        
+    Staukoerper: (
       andere,
       keiner,
       Ueberfallwehr,  !! Alle Formen wie Dreieckwehr etc.
@@ -4550,7 +4550,7 @@ ASSOCIATION Messstelle_GewaesserabschnittAssoc =    !! Assoziation
   Messstelle_GewaesserabschnittAssocRef -- {0..*} Messstelle; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Messstelle_GewaesserabschnittAssoc;
 
-CLASS Messgeraet EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Messgeraet EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Gerät mit welchem gemessen wird
   ATTRIBUTE
     Art: (          !! Typ des Messgerätes
@@ -4575,7 +4575,7 @@ ASSOCIATION Messgeraet_MessstelleAssoc =    !! Assoziation
   Messgeraet_MessstelleAssocRef -- {0..*} Messgeraet; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Messgeraet_MessstelleAssoc;
 
-CLASS Messreihe EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Messreihe EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Zusammenfassung von Messresultaten eines bestimmten Types  (z.B. Abflussmessungen im Schacht NS234.)
   ATTRIBUTE
     Art: (          !! Art der Messreihe
@@ -4594,7 +4594,7 @@ ASSOCIATION Messreihe_MessstelleAssoc =    !! Assoziation
   Messreihe_MessstelleAssocRef -- {0..*} Messreihe; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Messreihe_MessstelleAssoc;
 
-CLASS Messresultat EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Messresultat EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Ergebnis einer Messung
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -4620,7 +4620,7 @@ ASSOCIATION Messresultat_MessreiheAssoc =    !! Komposition
   Messresultat_MessreiheAssocRef -- {0..*} Messresultat; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Messresultat_MessreiheAssoc;
 
-CLASS Ueberlauf (ABSTRACT) EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Ueberlauf (ABSTRACT) EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Bauteil in Abwasserbauwerken zum Ableiten von Abwasser in einen anderen Knoten
   ATTRIBUTE
     Antrieb: (          !! Antrieb der Einbaute
@@ -4688,7 +4688,7 @@ ASSOCIATION Ueberlauf_SteuerungszentraleAssoc =    !! Assoziation
   Ueberlauf_SteuerungszentraleAssocRef -- {0..*} Ueberlauf; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Ueberlauf_SteuerungszentraleAssoc;
 
-CLASS Absperr_Drosselorgan EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Absperr_Drosselorgan EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Absperr- oder Drosselorgan
   ATTRIBUTE
     Antrieb: (          !! Antrieb der Einbaute
@@ -4762,7 +4762,7 @@ ASSOCIATION Absperr_Drosselorgan_UeberlaufAssoc =    !! Assoziation
   Absperr_Drosselorgan_UeberlaufAssocRef -- {0..1} Absperr_Drosselorgan; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Absperr_Drosselorgan_UeberlaufAssoc;
 
-CLASS Streichwehr EXTENDS Ueberlauf =  
+CLASS Streichwehr EXTENDS Ueberlauf =
 !! Baute zur Entnahme von Wasser über eine Wehrkrone die parallel oder nahezu parallel zur Fliessrichtung angeordnet ist
   ATTRIBUTE
     HydrUeberfalllaenge: 0.00 .. 30000.00 [m];  !! Hydraulisch wirksame Wehrlänge
@@ -4779,11 +4779,11 @@ CLASS Streichwehr EXTENDS Ueberlauf =
       hochgezogen,  !! Streichwehr mit hochgezogener Wehrschwelle
       niedrig  !! Streichwehr mit niedriger Wehrschwelle
     );
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Streichwehr;
 
-CLASS FoerderAggregat EXTENDS Ueberlauf =  
+CLASS FoerderAggregat EXTENDS Ueberlauf =
 !! Einrichtung zum Transport von Flüssigkeiten
   ATTRIBUTE
     Arbeitspunkt: 0.00 .. 10000000.00 [Units.m3];  !! Fördermenge für Pumpen mit fixem Arbeitspunkt
@@ -4821,11 +4821,11 @@ CLASS FoerderAggregat EXTENDS Ueberlauf =
       Schmutzabwasser,  !! Durch Gebrauch verändertes Wasser (häusliches, gewerbliches oder industrielles Abwasser), das in eine Entwässerungsanlage eingeleitet und einer Abwasserbehandlung zugeführt werden muss. Schmutzabwasser gilt als verschmutztes Abwasser im Sinne des Gewässerschutzgesetzes (SN 592 000)
       unbekannt
     );
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END FoerderAggregat;
 
-CLASS Leapingwehr EXTENDS Ueberlauf =  
+CLASS Leapingwehr EXTENDS Ueberlauf =
 !! Regenüberlauf mit Bodenöffnung
   ATTRIBUTE
     Breite: 0.00 .. 30000.00 [m];  !! Maximale Abmessung der Bodenöffnung quer zur Fliessrichtung
@@ -4837,11 +4837,11 @@ CLASS Leapingwehr EXTENDS Ueberlauf =
       Rechteck,
       unbekannt
     );
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Leapingwehr;
 
-CLASS Hydr_Kennwerte EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Hydr_Kennwerte EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Aggregierte Eigenschaften zur Hydraulik
   ATTRIBUTE
     Aggregatezahl: Aggregatezahl;  !! Anzahl Förderaggregate
@@ -4902,7 +4902,7 @@ ASSOCIATION Hydr_Kennwerte_UeberlaufcharakteristikAssoc =    !! Assoziation
   Hydr_Kennwerte_UeberlaufcharakteristikAssocRef -- {0..1} Hydr_Kennwerte; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Hydr_Kennwerte_UeberlaufcharakteristikAssoc;
 
-CLASS Rueckstausicherung EXTENDS BauwerksTeil =  
+CLASS Rueckstausicherung EXTENDS BauwerksTeil =
 !! Die Rückstausicherung verhindert den Rückfluss von Wasser aus dem Gewässer in das Abwassernetz. Das Attribut wird bei demjenigen Sonderbauwerk erfasst, in dem es eingebaut ist. Ist keine Rückstausicherung vorhanden, wird kein Datensatz erfasst.
   ATTRIBUTE
     Art: (          !!  Ist keine Rückstausicherung vorhanden, wird keine Rueckstausicherung erfasst
@@ -4913,7 +4913,7 @@ CLASS Rueckstausicherung EXTENDS BauwerksTeil =
     );
     Bruttokosten: 0.00 .. 99999999.99 [Units.CHF];  !! Brutto Erstellungskosten
     Ersatzjahr: SIA405_Base_LV95.Jahr;  !! Jahr in dem die Lebensdauer der Rückstausicherung voraussichtlich abläuft
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Rueckstausicherung;
 
@@ -4927,7 +4927,7 @@ ASSOCIATION Rueckstausicherung_FoerderAggregatAssoc =    !! Assoziation
   Rueckstausicherung_FoerderAggregatAssocRef -- {0..1} Rueckstausicherung; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Rueckstausicherung_FoerderAggregatAssoc;
 
-CLASS Feststoffrueckhalt EXTENDS BauwerksTeil =  
+CLASS Feststoffrueckhalt EXTENDS BauwerksTeil =
 !! Elektromechanische Teile eines Bauwerks und Vorrichtung zum Feststoffrückhalt eines Abwasserbauwerks
   ATTRIBUTE
     Anspringkote: Base_LV95.Hoehe;  !! Anspringkote Feststoffrückhalt in m.ü.M.
@@ -4942,14 +4942,14 @@ CLASS Feststoffrueckhalt EXTENDS BauwerksTeil =
     Bruttokosten: 0.00 .. 99999999.99 [Units.CHF];  !! Brutto Erstellungskosten der elektromechnischen Ausrüstung für die Beckenentleerung
     Dimensionierungswert: 0.000 .. 100000.000 [SIA405_Base_LV95.ls];  !! Wassermenge, Dimensionierungswert des Feststoffrückhaltes
     Ersatzjahr: SIA405_Base_LV95.Jahr;  !! Jahr in dem die Lebensdauer der elektromechanischen Ausrüstung voraussichtlich abläuft
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Feststoffrueckhalt;
 
-CLASS Beckenreinigung EXTENDS BauwerksTeil =  
+CLASS Beckenreinigung EXTENDS BauwerksTeil =
 !! Elektromechanische Teile eines Bauwerks und Vorrichtung zur Beckenreinigung eines Abwasserbauwerks
   ATTRIBUTE
-    Art: (        
+    Art: (
       Air_Jet,  !! Druckluftstrom, auch Injektorpumpe genannt
       andere,
       keine,
@@ -4958,14 +4958,14 @@ CLASS Beckenreinigung EXTENDS BauwerksTeil =
     );
     Bruttokosten: 0.00 .. 99999999.99 [Units.CHF];  !! Brutto Erstellungskosten der elektromechnischen Ausrüstung für die Beckenreinigung
     Ersatzjahr: SIA405_Base_LV95.Jahr;  !! Jahr in dem die Lebensdauer der elektromechanischen Ausrüstung voraussichtlich abläuft
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Beckenreinigung;
 
-CLASS Beckenentleerung EXTENDS BauwerksTeil =  
+CLASS Beckenentleerung EXTENDS BauwerksTeil =
 !! Vorrichtung zur Beckenentleerung
   ATTRIBUTE
-    Art: (        
+    Art: (
       andere,
       keine,  !! Der Wert „keine“ wird verwendet, wenn das Bauwerk ohne Hilfsbetrieb entleert wird.
       Pumpe,
@@ -4974,7 +4974,7 @@ CLASS Beckenentleerung EXTENDS BauwerksTeil =
     Bruttokosten: 0.00 .. 99999999.99 [Units.CHF];  !! Brutto Erstellungskosten der elektromechnischen Ausrüstung für die Beckenentleerung
     Ersatzjahr: SIA405_Base_LV95.Jahr;  !! Jahr in dem die Lebensdauer der elektromechanischen Ausrüstung voraussichtlich abläuft
     Leistung: 0.000 .. 100000.000 [SIA405_Base_LV95.ls];  !! Bei mehreren Pumpen / Schiebern muss die maximale Gesamtmenge erfasst werden.
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END Beckenentleerung;
 
@@ -4988,7 +4988,7 @@ ASSOCIATION Beckenentleerung_UeberlaufAssoc =    !! Assoziation
   Beckenentleerung_UeberlaufAssocRef -- {0..1} Beckenentleerung; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Beckenentleerung_UeberlaufAssoc;
 
-CLASS EZG_PARAMETER_ALLG EXTENDS Oberflaechenabflussparameter =  
+CLASS EZG_PARAMETER_ALLG EXTENDS Oberflaechenabflussparameter =
 !! Oberflächenparameter welche zu keinem speziellen Modell gehören
   ATTRIBUTE
     Einwohnergleichwert: EGW;
@@ -4996,11 +4996,11 @@ CLASS EZG_PARAMETER_ALLG EXTENDS Oberflaechenabflussparameter =
     Fliessweggefaelle: Neigung_Promille;  !! Fliessweggefälle [%o]
     Fliessweglaenge: 0.00 .. 30000.00 [m];  !! Fliessweglänge
     Trockenwetteranfall: 0.000 .. 100000.000 [SIA405_Base_LV95.ls];
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END EZG_PARAMETER_ALLG;
 
-CLASS EZG_PARAMETER_MOUSE1 EXTENDS Oberflaechenabflussparameter =  
+CLASS EZG_PARAMETER_MOUSE1 EXTENDS Oberflaechenabflussparameter =
 !! Oberflächenabflussparameter gemäss Modell MOUSE
   ATTRIBUTE
     Einwohnergleichwert: EGW;
@@ -5009,7 +5009,7 @@ CLASS EZG_PARAMETER_MOUSE1 EXTENDS Oberflaechenabflussparameter =
     Fliessweglaenge: 0.00 .. 30000.00 [m];  !! Parameter zur Bestimmung des Oberflächenabflusses für das Oberflächenabflussmodell A1 von MOUSE
     Nutzungsart: TEXT*50;  !! Klassifikation gemäss Oberflächenabflussmodell von MOUSE 2000/2001
     Trockenwetteranfall: 0.000 .. 100000.000 [SIA405_Base_LV95.ls];  !! Parameter zur Bestimmung des Oberflächenabflusses für das Oberflächenabflussmodell A1 von MOUSE
-UNIQUE 
+UNIQUE
     Bezeichnung, Metaattribute->Datenherr;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Datenherr, damit mit VSA-DSS-Mini kompatibel (Wegleitung GEP-Daten 2013)
 END EZG_PARAMETER_MOUSE1;
 

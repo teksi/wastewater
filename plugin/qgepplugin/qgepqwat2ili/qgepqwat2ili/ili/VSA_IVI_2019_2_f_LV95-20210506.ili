@@ -5,7 +5,7 @@
 INTERLIS 2.3;
 
 MODEL VSA_IVI_2019_LV95 (fr) AT "http://www.vsa.ch/models"
-  VERSION "06.05.2021" TRANSLATION OF VSA_KEK_2019_LV95 [ "16.04.2021" ] = 
+  VERSION "06.05.2021" TRANSLATION OF VSA_KEK_2019_LV95 [ "16.04.2021" ] =
 
   IMPORTS UNQUALIFIED INTERLIS;
   IMPORTS Units;
@@ -19,9 +19,9 @@ MODEL VSA_IVI_2019_LV95 (fr) AT "http://www.vsa.ch/models"
 !! en cooperation avec Société suisse des ingénieurs et architectes (sia), Zurich
 !! L'utilisation de ce fichier modèle INTERLIS a besoin une licence!
 
-!! Les fichiers modèles originaux VSA_IVI_2019_2_f_LV95.ili et les versions 
+!! Les fichiers modèles originaux VSA_IVI_2019_2_f_LV95.ili et les versions
 !! modifiées à partir de ceux-ci ne peuvent pas être revendus.
-!! La distribution du fichier original (comme tout ou une partie de celui-ci) 
+!! La distribution du fichier original (comme tout ou une partie de celui-ci)
 !! n'est permise qu'avec l'achat d'une licence du VSA par le destinataire.
 
 
@@ -46,23 +46,23 @@ DOMAIN
 
 QuantificationCanalisation = 0 .. 100000;    !! [mm] ou [%], dependant du code EN
 
-Access_relatif = TEXT*200;    !! 
+Access_relatif = TEXT*200;    !!
 
-Chemin_access = TEXT*100;    !! 
+Chemin_access = TEXT*100;    !!
 
-Commentaire = TEXT*100;    !! 
+Commentaire = TEXT*100;    !!
 
 Parametres_projection = TEXT*200;    !! Paramètres de projection spéciaux pour le positionnement à l’intérieur d’un fichier film
 !! XML Tags dependant du système de XXX
 
-Designation_longue = TEXT*60;    !! 
+Designation_longue = TEXT*60;    !!
 
 Quantification_chambre = TEXT*20;    !! variable, dependant du code EN
 
 Dommage_troncons = TEXT*3;    !! Codes pour le début et la fin d’un dommage tronçons
 
 
-CLASS EVENEMENT_MAINTENANCE (ABSTRACT) EXTENDS SIA405_Base_f_LV95.SIA405_BaseClass =  
+CLASS EVENEMENT_MAINTENANCE (ABSTRACT) EXTENDS SIA405_Base_f_LV95.SIA405_BaseClass =
 !! Evénement d'exploitation et d'entretien
   ATTRIBUTE
     GENRE: MANDATORY (          !! Genre d'événement
@@ -103,7 +103,7 @@ ASSOCIATION EVENEMENT_MAINTENANCE_BUREAU_EXECUTANTAssoc =    !! Association
   EVENEMENT_MAINTENANCE_BUREAU_EXECUTANTAssocRef -- {0..*} EVENEMENT_MAINTENANCE;
 END EVENEMENT_MAINTENANCE_BUREAU_EXECUTANTAssoc;
 
-CLASS EXAMEN EXTENDS EVENEMENT_MAINTENANCE =  
+CLASS EXAMEN EXTENDS EVENEMENT_MAINTENANCE =
 !! Enquêtes sur la télévision
   ATTRIBUTE
     DESIGNATION_POINT_VERS: TEXT*20;  !! Point (chambre ou noeud) d’où l’examen termine. Désignation du « point d’arrivée » (DESIGNATION_POINT_VERS) d’une examen comme elle figure sur le plan. Elle sert d’alternative à la clé externe OUVRAGE_RESEAU_AS lorsque la topologie n’est pas encore définie (saisie initiale). La DESIGNATION_POINT_VERS sera utilisée ultérieurement par l’hydraulicien pour la construction de la topologie du réseau. Cette valeur reste vide lors d’inspections de chambres.
@@ -136,7 +136,7 @@ ASSOCIATION EXAMEN_POINT_TRONCONAssoc =    !! Association
   EXAMEN_POINT_TRONCONAssocRef -- {0..*} EXAMEN;
 END EXAMEN_POINT_TRONCONAssoc;
 
-CLASS DOMMAGE (ABSTRACT) EXTENDS SIA405_Base_f_LV95.SIA405_BaseClass =  
+CLASS DOMMAGE (ABSTRACT) EXTENDS SIA405_Base_f_LV95.SIA405_BaseClass =
 !! Cette classe est la classe de base de toutes les observations de dommages, tant de l’inspection visuelle de canalisations d’évacuation des eaux que de l’inspection de regards de visite.
   ATTRIBUTE
     COMMENTAIRES: TEXT*100;  !! Remarques libres concernant une observation
@@ -162,7 +162,7 @@ ASSOCIATION DOMMAGE_EXAMENAssoc =    !! Composition
   DOMMAGE_EXAMENAssocRef -- {0..*} DOMMAGE;
 END DOMMAGE_EXAMENAssoc;
 
-CLASS DOMMAGE_AUX_CANALISATIONS EXTENDS DOMMAGE =  
+CLASS DOMMAGE_AUX_CANALISATIONS EXTENDS DOMMAGE =
 !! Cette classe est déduite de la classe « Dommage », c.-à-d. qu’elle hérite tous les attributs de cette classe.
   ATTRIBUTE
     DISTANCE: MANDATORY 0.00 .. 30000.00 [m];  !! Longueur entre le début de la canalisation et l’observation (cf. paragraphe 2.1.1) en m avec deux chiffres après la virgule.
@@ -233,13 +233,13 @@ CLASS DOMMAGE_AUX_CANALISATIONS EXTENDS DOMMAGE =
       BAFAZ,  !! Paroi de la canalisation rugueuse, autre cause
       BAFBA,  !! Écaillage par dégradation mécanique
       BAFBE,  !! Écaillage, cause pas clairement identifiable
-      BAFBZ,  !! Écaillage, autre cause 
+      BAFBZ,  !! Écaillage, autre cause
       BAFCA,  !! Agrégats visibles par dégradation mécanique
       BAFCB,  !! Agrégats visibles par attaque chimique
       BAFCC,  !! Agrégats visibles par attaque chimique sur la partie supérieure du tuyau
       BAFCD,  !! Agrégats visibles par attaque chimique sur la partie inférieure du tuyau
       BAFCE,  !! Agrégats visibles, cause pas clairement identifiable
-      BAFCZ,  !! Agrégats visibles, autre cause 
+      BAFCZ,  !! Agrégats visibles, autre cause
       BAFDA,  !! Agrégats intrusifs en raison de dommages mécaniques
       BAFDB,  !! Agrégats intrusifs par attaque chimique
       BAFDC,  !! Agrégats intrusifs par attaque chimique sur la partie supérieure du tuyau
@@ -251,19 +251,19 @@ CLASS DOMMAGE_AUX_CANALISATIONS EXTENDS DOMMAGE =
       BAFEC,  !! Agrégats manquants par attaque chimique sur la partie supérieure du tuyau
       BAFED,  !! Agrégats manquants par attaque chimique sur la partie inférieure du tuyau
       BAFEE,  !! Agrégats manquants, cause pas clairement identifiable
-      BAFEZ,  !! Agrégats manquants, autre cause 
+      BAFEZ,  !! Agrégats manquants, autre cause
       BAFFA,  !! Armature visible par dégradation mécanique
       BAFFB,  !! Armature visible par attaque chimique
       BAFFC,  !! Armature visible par attaque chimique sur la partie supérieure du tuyau
       BAFFD,  !! Armature visible par attaque chimique sur la partie inférieure du tuyau
       BAFFE,  !! Armature visible, cause pas clairement identifiable
-      BAFFZ,  !! Armature visible, autre cause 
+      BAFFZ,  !! Armature visible, autre cause
       BAFGA,  !! Armature dépassant de la surface par dégradation mécanique
       BAFGB,  !! Armature dépassant de la surface par attaque chimique
       BAFGC,  !! Armature dépassant de la surface par attaque chimique sur la partie supérieure du tuyau
       BAFGD,  !! Armature dépassant de la surface par attaque chimique sur la partie inférieure du tuyau
       BAFGE,  !! Armature dépassant de la surface, cause pas clairement identifiable
-      BAFGZ,  !! Armature dépassant de la surface, autre cause 
+      BAFGZ,  !! Armature dépassant de la surface, autre cause
       BAFHB,  !! Armature corrodée par attaque chimique
       BAFHC,  !! Armature corrodée par attaque chimique sur la partie supérieure du tuyau
       BAFHD,  !! Armature corrodée par attaque chimique sur la partie inférieure du tuyau
@@ -273,7 +273,7 @@ CLASS DOMMAGE_AUX_CANALISATIONS EXTENDS DOMMAGE =
       BAFIC,  !! Paroi manquante par attaque chimique sur la partie supérieure du tuyau
       BAFID,  !! Paroi manquante par attaquechimique sur la partie inférieure du tuyau
       BAFIE,  !! Paroi manquante, cause pas clairement identifiable
-      BAFIZ,  !! Paroi manquante, autre cause 
+      BAFIZ,  !! Paroi manquante, autre cause
       BAFJB,  !! Paroi corrodée par attaque chimique
       BAFJC,  !! Paroi corrodée par attaque chimique sur la partie supérieure du tuyau
       BAFJD,  !! Paroi corrodée par attaque chimique sur la partie inférieure du tuyau
@@ -281,13 +281,13 @@ CLASS DOMMAGE_AUX_CANALISATIONS EXTENDS DOMMAGE =
       BAFJZ,  !! Paroi corrodée, autre cause
       BAFKA,  !! Bosse par dégradation mécanique
       BAFKE,  !! Bosse, cause pas clairement identifiable
-      BAFKZ,  !! Boss, autre cause 
+      BAFKZ,  !! Boss, autre cause
       BAFZA,  !! Dégradation de surface par dégradation mécanique
       BAFZB,  !! Dégradation de surface par attaque chimique
-      BAFZC,  !! Dégradation de surface par attaque chimique sur la partie supérieure du tuyau 
+      BAFZC,  !! Dégradation de surface par attaque chimique sur la partie supérieure du tuyau
       BAFZD,  !! Dégradation de surface par attaque chimique sur la partie inférieure du tuyau
-      BAFZE,  !! Dégradation de surface, cause pas clairement identifiable 
-      BAFZZ,  !! Dégradation de surface, autre cause 
+      BAFZE,  !! Dégradation de surface, cause pas clairement identifiable
+      BAFZZ,  !! Dégradation de surface, autre cause
       BAGA,  !! Branchement pénétrant
       BAHA,  !! Raccordement à position incorrecte
       BAHB,  !! Raccordement en retrait
@@ -320,7 +320,7 @@ CLASS DOMMAGE_AUX_CANALISATIONS EXTENDS DOMMAGE =
       BAKL,  !! Le matériau de la doublure semble mou
       BAKM,  !! La résine manque dans le stratifié
       BAKN,  !! La fin de la doublure n’est pas scellée
-      BAKZ,  !! Revêtement intérieur défectueux 
+      BAKZ,  !! Revêtement intérieur défectueux
       BALA,  !! Réparation défectueuse, paroi manquante
       BALB,  !! Réparation d’un trou défectueuse
       BALC,  !! Le matériau de réparation se désolidarise de l’ancien tuyau
@@ -348,7 +348,7 @@ CLASS DOMMAGE_AUX_CANALISATIONS EXTENDS DOMMAGE =
       BBCA,  !! Dépôts lâches, sable
       BBCB,  !! Dépôts lâches, gravier
       BBCC,  !! Dépôts durs
-      BBCZ,  !! Autres dépôts 
+      BBCZ,  !! Autres dépôts
       BBDA,  !! Entrée de sable
       BBDB,  !! Entrée d’humus
       BBDC,  !! Entrée de matériau fin
@@ -489,7 +489,7 @@ CLASS DOMMAGE_AUX_CANALISATIONS EXTENDS DOMMAGE =
       BDGA,  !! Visibilité nulle, caméra sous l’eau
       BDGB,  !! Visibilité nulle, envasement
       BDGC,  !! Visibilité nulle, vapeur
-      BDGZ  !! Visibilité nulle, autre raison 
+      BDGZ  !! Visibilité nulle, autre raison
     );
     QUANTIFICATION1: 0 .. 100000;  !! Quantification 1 selon la SN EN 13508-2. Les entrées autorisées sont décrites dans les chapitres 2.3 - 2.6
     QUANTIFICATION2: 0 .. 100000;  !! Quantification 2 selon la SN EN 13508. Les entrées autorisées sont décrites dans le chapitre 2.3 - 2.6
@@ -497,7 +497,7 @@ CLASS DOMMAGE_AUX_CANALISATIONS EXTENDS DOMMAGE =
     FIN_DOMMAGE: MANDATORY Cadran;  !! Emplacement circonférentiel: Fin du dommage. Valeurs et procédure sont décrites en détail dans le paragraphe 2.1.6.
 END DOMMAGE_AUX_CANALISATIONS;
 
-CLASS DOMMAGE_CHAMBRE_STANDARD EXTENDS DOMMAGE =  
+CLASS DOMMAGE_CHAMBRE_STANDARD EXTENDS DOMMAGE =
 !! Cette classe est déduite de la classe « Dommage », c.-à-d. qu’elle reprend tous les attributs de cette classe.
   ATTRIBUTE
     DISTANCE: 0.00 .. 30000.00 [m];  !! Longueur entre le bord supérieur du couvercle et l’observation (cf. paragraphe 3.1.1) en m avec deux chiffres après la virgule.
@@ -563,7 +563,7 @@ CLASS DOMMAGE_CHAMBRE_STANDARD EXTENDS DOMMAGE =
       DAFEC,  !! Agrégats manquants par attaque chimique sur la partie supérieure du tuyau
       DAFED,  !! Agrégats manquants par attaque chimique sur la partie inférieure du tuyau
       DAFEE,  !! Agrégats manquants, cause du dommage non définissable
-      DAFEZ,  !! Agrégats manquants, autre cause 
+      DAFEZ,  !! Agrégats manquants, autre cause
       DAFFA,  !! Armature visible par dégradation mécanique
       DAFFB,  !! Armature visible par attaque chimique
       DAFFC,  !! Armature visible par attaque chimique sur la partie supérieure du tuyau
@@ -590,7 +590,7 @@ CLASS DOMMAGE_CHAMBRE_STANDARD EXTENDS DOMMAGE =
       DAFJC,  !! Corrosion par attaque chimique sur la partie supérieure du tuyau
       DAFJD,  !! Corrosion par attaque chimique sur la partie inférieure du tuyau
       DAFJE,  !! Corrosion, cause pas clairement identifiable
-      DAFJZ,  !! Corrosion, autre cause 
+      DAFJZ,  !! Corrosion, autre cause
       DAFKA,  !! Bosse due à des dommages mécaniques
       DAFKE,  !! Bosse, cause pas clairement identifiable
       DAFKZ,  !! Bosse, autre cause
@@ -673,7 +673,7 @@ CLASS DOMMAGE_CHAMBRE_STANDARD EXTENDS DOMMAGE =
       DBBA,  !! Concrétions (calcifié)
       DBBB,  !! Graisse
       DBBC,  !! Moisissement
-      DBBZ,  !! Autres substances adhérentes 
+      DBBZ,  !! Autres substances adhérentes
       DBCA,  !! Dépôts lâches, sable
       DBCB,  !! Dépôts lâches, gravier
       DBCC,  !! Dépôts durs
@@ -844,7 +844,7 @@ CLASS DOMMAGE_CHAMBRE_STANDARD EXTENDS DOMMAGE =
       DDFA,  !! Danger existant: manque d’oxygène
       DDFB,  !! Danger existant: hydrogène sulfuré
       DDFC,  !! Danger existant: méthane
-      DDFZ,  !! Autres dangers présents 
+      DDFZ,  !! Autres dangers présents
       DDGA,  !! Absence de visibilité, caméra sous l’eau
       DDGB,  !! Absence de visibilité, vase
       DDGC,  !! Absence de visibilité, vapeur
@@ -854,7 +854,7 @@ CLASS DOMMAGE_CHAMBRE_STANDARD EXTENDS DOMMAGE =
     FIN_DOMMAGE: Cadran;  !! Emplacement circonférentiel: Fin du dommage. Valeurs et procédure sont décrites en détail dans le paragraphe 3.1.6.
 END DOMMAGE_CHAMBRE_STANDARD;
 
-CLASS SUPPORT_DONNEES EXTENDS SIA405_Base_f_LV95.SIA405_BaseClass =  
+CLASS SUPPORT_DONNEES EXTENDS SIA405_Base_f_LV95.SIA405_BaseClass =
 !! Support de données
   ATTRIBUTE
     GENRE: MANDATORY (          !! Décrit le genre de support de données
@@ -872,7 +872,7 @@ CLASS SUPPORT_DONNEES EXTENDS SIA405_Base_f_LV95.SIA405_BaseClass =
     EMPLACEMENT: TEXT*50;  !! Emplacement du support de données
 END SUPPORT_DONNEES;
 
-CLASS FICHIER EXTENDS SIA405_Base_f_LV95.SIA405_BaseClass =  
+CLASS FICHIER EXTENDS SIA405_Base_f_LV95.SIA405_BaseClass =
 !! La classe Fichier peut être associée avec chaque classe du modèle de données de VSA-SDEE.
   ATTRIBUTE
     GENRE: MANDATORY (          !! Décrit le type de fichier. Pour les vidéos analo-giques sur bandes, le type « vidéo » doit être entré. La désignation sera ensuite la même que celle de la bande vidéo.
@@ -1013,4 +1013,3 @@ END FICHIER_SUPPORT_DONNEESAssoc;
 END IVI;
 !!@comment = "Ende des Modells / Fin du modèle"
 END VSA_IVI_2019_LV95.
-

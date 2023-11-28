@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -----------------------------------------------------------
 #
 # Profile
@@ -43,7 +42,7 @@ class QgepWebPage(QWebPage):
         QWebPage.__init__(self, parent)
 
     def javaScriptConsoleMessage(self, msg, line, source):
-        self.logger.debug("{} line {}: {}".format(source, line, msg))
+        self.logger.debug(f"{source} line {line}: {msg}")
 
 
 class QgepPlotSVGWidget(QWidget):
@@ -82,18 +81,14 @@ class QgepPlotSVGWidget(QWidget):
         layout = QVBoxLayout(self)
         if url is None:
             # Starting with QGIS 3.4, QWebView requires paths with / even on windows.
-            default_url = (
-                plugin_root_path().replace("\\", "/") + "/svgprofile/index.html"
-            )
+            default_url = plugin_root_path().replace("\\", "/") + "/svgprofile/index.html"
             url = settings.value("/QGEP/SvgProfilePath", default_url)
             url = "file:///" + url
 
         developer_mode = settings.value("/QGEP/DeveloperMode", False, type=bool)
 
         if developer_mode is True:
-            self.webView.page().settings().setAttribute(
-                QWebSettings.DeveloperExtrasEnabled, True
-            )
+            self.webView.page().settings().setAttribute(QWebSettings.DeveloperExtrasEnabled, True)
         else:
             self.webView.setContextMenuPolicy(Qt.NoContextMenu)
 

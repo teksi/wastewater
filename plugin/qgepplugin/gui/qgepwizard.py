@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -----------------------------------------------------------
 #
 # Qgep
@@ -49,9 +48,7 @@ class QgepWizard(QDockWidget, DOCK_WIDGET):
             self.tr("Wastewater Structure"),
             "wastewater_structure",
         )
-        self.layerComboBox.insertItem(
-            self.layerComboBox.count(), self.tr("Reach"), "reach"
-        )
+        self.layerComboBox.insertItem(self.layerComboBox.count(), self.tr("Reach"), "reach")
         self.stateButton.setProperty("state", "inactive")
 
         self.mapToolAddReach = QgepMapToolAddReach(

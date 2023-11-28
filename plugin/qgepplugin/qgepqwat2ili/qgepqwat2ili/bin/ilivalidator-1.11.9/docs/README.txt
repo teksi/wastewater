@@ -23,7 +23,7 @@ The JRE (Java Runtime Environment) can be downloaded for free from the Website <
 
 Installing ilivalidator
 =======================
-To install ilivalidator, choose a directory and extract the distribution file there. 
+To install ilivalidator, choose a directory and extract the distribution file there.
 
 Running ilivalidator
 ====================

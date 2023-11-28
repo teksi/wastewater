@@ -1,7 +1,6 @@
 """
 This module helps managing the QGEP project layers.
 """
-from builtins import object
 
 from qgis.core import QgsProject
 from qgis.PyQt.QtCore import QObject, pyqtSignal
@@ -68,7 +67,7 @@ class QgepLayerNotifier(QObject):
 
 
 # pylint: disable=too-few-public-methods
-class QgepLayerManager(object):
+class QgepLayerManager:
     """
     Gives access to QGEP layers by the table name.
     """

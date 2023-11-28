@@ -10,9 +10,9 @@ validation="on"
 additionalModels="Beispiel1Zusatz"
 
 ["Beispiel1.Bodenbedeckung.Gebaeude"]
-# Zusaetzlicher Text fuer die Objektidentifikation fuer alle Fehlermeldung 
-# die sich auf ein Objekt der Klasse Beispiel1.Bodenbedeckung.Gebaeude beziehen. 
-# Die TID und Zeilennummer erscheint immer, falls vorhanden. keymsg ist 
+# Zusaetzlicher Text fuer die Objektidentifikation fuer alle Fehlermeldung
+# die sich auf ein Objekt der Klasse Beispiel1.Bodenbedeckung.Gebaeude beziehen.
+# Die TID und Zeilennummer erscheint immer, falls vorhanden. keymsg ist
 # zusaetzlich (eine Benutzerdefinierte/verständliche Identifikation).
 # inkl. Attributwerte in {}
 # Fuer irgendeine Sprache bzw. fuer DE
@@ -24,8 +24,8 @@ keymsg="AssNr {AssNr}"
 # Pruefen ob die Konsistenzbedingung erfuellt ist oder nicht.
 # on/warning/off
 check="warning"
-# Meldungstext, falls dieses Constraint nicht erfuellt ist. 
-# Wird ergaenzt um Objektidentifikation und Name des Constraints. 
+# Meldungstext, falls dieses Constraint nicht erfuellt ist.
+# Wird ergaenzt um Objektidentifikation und Name des Constraints.
 # Auf DE inkl. Attributwerte in {}
 msg_de="AndereArt muss definiert sein"
 
@@ -36,7 +36,7 @@ msg_de="AndereArt muss definiert sein"
 # on/warning/off
 multiplicity="warning"
 # Datentyppruefung ein/ausschalten bzw. nur als Hinweis.
-# z.B. ob eine Zahlenwert innerhalb des Bereichs ist, oder ein 
+# z.B. ob eine Zahlenwert innerhalb des Bereichs ist, oder ein
 # Aufzaehlwert dem Modell entspricht oder die Flaechen eine
 # Gebietseinteilung sind usw.
 # on/warning/off

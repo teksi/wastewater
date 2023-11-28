@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 /***************************************************************************
  QGEP processing provider
@@ -88,9 +86,7 @@ class SnapReachAlgorithm(QgepAlgorithm):
         self.addParameter(
             QgsProcessingParameterVectorLayer(
                 self.WASTEWATER_NODE_LAYER,
-                description=self.tr(
-                    "Wastewater node layer, will be used as snapping target"
-                ),
+                description=self.tr("Wastewater node layer, will be used as snapping target"),
             )
         )
 
@@ -123,9 +119,7 @@ class SnapReachAlgorithm(QgepAlgorithm):
                 reaches.append(reach)
                 # Batch processing: process blocks of 2000 reaches
                 if len(reaches) == 2000:
-                    self.processFeatures(
-                        reaches, reach_layer, wastewater_node_layer, distance
-                    )
+                    self.processFeatures(reaches, reach_layer, wastewater_node_layer, distance)
                     reaches = list()
 
                 current_feature += 1
@@ -140,9 +134,7 @@ class SnapReachAlgorithm(QgepAlgorithm):
 
         return {}
 
-    def processFeatures(
-        self, reaches, reach_layer, wastewater_node_layer, distance_threshold
-    ):
+    def processFeatures(self, reaches, reach_layer, wastewater_node_layer, distance_threshold):
         ids = list()
         to_ids = list()
         # Gather ids of connected networkelements
@@ -184,9 +176,7 @@ class SnapReachAlgorithm(QgepAlgorithm):
             if from_id in list(nodes.keys()):
                 if (
                     distance_threshold == 0
-                    or reach_geometry.sqrDistToVertexAt(
-                        nodes[from_id].geometry().asPoint(), 0
-                    )
+                    or reach_geometry.sqrDistToVertexAt(nodes[from_id].geometry().asPoint(), 0)
                     < distance_threshold
                 ):
                     reach_geometry.moveVertex(nodes[from_id].geometry().constGet(), 0)
@@ -201,9 +191,7 @@ class SnapReachAlgorithm(QgepAlgorithm):
                     )
                     < distance_threshold
                 ):
-                    reach_geometry.moveVertex(
-                        nodes[to_id].geometry().constGet(), last_vertex
-                    )
+                    reach_geometry.moveVertex(nodes[to_id].geometry().constGet(), last_vertex)
 
             if to_id in list(target_reaches.keys()):
                 last_vertex = reach_geometry.constGet().nCoordinates() - 1

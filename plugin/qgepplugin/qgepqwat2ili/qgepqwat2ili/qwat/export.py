@@ -21,7 +21,6 @@ from .model_wasser import get_wasser_model
 
 
 def qwat_export(include_hydraulics=False):
-
     if include_hydraulics:
         logger.warning(
             "Exports with hydraulics are currently broken (invalid). Remove --include_hydraulics to export valid files."
@@ -144,7 +143,9 @@ def qwat_export(include_hydraulics=False):
         for geom_idx in range(geom_count):
             spezialbauwerk_flaeche = WASSER.spezialbauwerk_flaeche(
                 # --- spezialbauwerk_flaeche ---
-                geometrie=ST_ForceCurve(ST_GeometryN(sanitize_geom(row.geometry_polygon), geom_idx + 1)),
+                geometrie=ST_ForceCurve(
+                    ST_GeometryN(sanitize_geom(row.geometry_polygon), geom_idx + 1)
+                ),
                 spezialbauwerkref__REL=spezialbauwerk,
             )
             wasser_session.add(spezialbauwerk_flaeche)
@@ -187,7 +188,6 @@ def qwat_export(include_hydraulics=False):
         logger.info("Exporting QWAT.node -> WASSER.hydraulischer_knoten")
         # Mapping all QWAT nodes to hydraulischer_knoten.
         for row in qwat_session.query(QWAT.node):
-
             # node --- node.id, node.fk_district, node.fk_pressurezone, node.fk_printmap, node._printmaps, node._geometry_alt1_used, node._geometry_alt2_used, node._pipe_node_type, node._pipe_orientation, node._pipe_schema_visible, node.geometry, node.geometry_alt1, node.geometry_alt2, node.update_geometry_alt1, node.update_geometry_alt2
             # _bwrel_ --- node.pipe__BWREL_fk_node_b, node.pipe__BWREL_fk_node_a
             # _rel_ --- node.fk_district__REL, node.fk_pressurezone__REL
@@ -214,7 +214,9 @@ def qwat_export(include_hydraulics=False):
     # But we still need to create leitungsknoten for plain nodes (not subclass instances)
     logger.info("Exporting QWAT.node -> WASSER.rohrleitungsteil")
     for row in (
-        qwat_session.query(QWAT.node).join(QWAT.network_element, isouter=True).filter(QWAT.network_element.id == None)
+        qwat_session.query(QWAT.node)
+        .join(QWAT.network_element, isouter=True)
+        .filter(QWAT.network_element.id == None)
     ):
         # In most cases, leitungsknoten will be created further down by subclasses.
         # But we still need to create leitungsknoten for plain nodes (not subclass instances)
@@ -255,7 +257,6 @@ def qwat_export(include_hydraulics=False):
 
     logger.info("Exporting QWAT.pipe -> WASSER.hydraulischer_strang, WASSER.leitung")
     for row in qwat_session.query(QWAT.pipe):
-
         # pipe --- pipe.id, pipe.fk_parent, pipe.fk_function, pipe.fk_installmethod, pipe.fk_material, pipe.fk_distributor, pipe.fk_precision, pipe.fk_bedding, pipe.fk_protection, pipe.fk_status, pipe.fk_watertype, pipe.fk_locationtype, pipe.fk_folder, pipe.year, pipe.year_rehabilitation, pipe.year_end, pipe.tunnel_or_bridge, pipe.pressure_nominal, pipe.remark, pipe._valve_count, pipe._valve_closed, pipe.label_1_visible, pipe.label_1_text, pipe.label_2_visible, pipe.label_2_text, pipe.fk_node_a, pipe.fk_node_b, pipe.fk_district, pipe.fk_pressurezone, pipe.fk_printmap, pipe._length2d, pipe._length3d, pipe._diff_elevation, pipe._printmaps, pipe._geometry_alt1_used, pipe._geometry_alt2_used, pipe.update_geometry_alt1, pipe.update_geometry_alt2, pipe.geometry, pipe.geometry_alt1, pipe.geometry_alt2, pipe.schema_force_visible, pipe._schema_visible
         # _bwrel_ --- pipe.meter__BWREL_fk_pipe, pipe.leak__BWREL_fk_pipe, pipe.valve__BWREL_fk_pipe, pipe.crossing__BWREL__pipe2_id, pipe.crossing__BWREL__pipe1_id, pipe.pipe__BWREL_fk_parent, pipe.part__BWREL_fk_pipe, pipe.subscriber__BWREL_fk_pipe, pipe.pump__BWREL_fk_pipe_in, pipe.pump__BWREL_fk_pipe_out
         # _rel_ --- pipe.fk_precision__REL, pipe.schema_force_visible__REL, pipe.fk_installmethod__REL, pipe.fk_material__REL, pipe.label_1_visible__REL, pipe.fk_function__REL, pipe.fk_watertype__REL, pipe.fk_parent__REL, pipe.label_2_visible__REL, pipe.fk_status__REL, pipe.fk_node_b__REL, pipe.fk_pressurezone__REL, pipe.fk_folder__REL, pipe.fk_protection__REL, pipe.fk_district__REL, pipe.fk_bedding__REL, pipe.fk_node_a__REL, pipe.fk_distributor__REL
@@ -264,14 +265,18 @@ def qwat_export(include_hydraulics=False):
             hydraulischer_strang = WASSER.hydraulischer_strang(
                 # --- baseclass ---
                 # --- sia405_baseclass ---
-                **base_common(row, "hydraulischer_strang", tid_for_class=WASSER.hydraulischer_strang),
+                **base_common(
+                    row, "hydraulischer_strang", tid_for_class=WASSER.hydraulischer_strang
+                ),
                 # --- hydraulischer_strang ---
                 bemerkung=truncate(sanitize_str(row.remark), 80),
                 bisknotenref=get_tid(row.fk_node_b__REL, QWAT.node),
                 durchfluss=DOES_NOT_EXIST_IN_QWAT,
                 fliessgeschwindigkeit=DOES_NOT_EXIST_IN_QWAT,
                 name_nummer=str(row.id),
-                referenz_durchmesser=clamp(get_vl(row.fk_material__REL, "diameter_nominal"), min_val=0),
+                referenz_durchmesser=clamp(
+                    get_vl(row.fk_material__REL, "diameter_nominal"), min_val=0
+                ),
                 referenz_laenge=row._length2d,
                 referenz_rauheit=DOES_NOT_EXIST_IN_QWAT,
                 verbrauch=DOES_NOT_EXIST_IN_QWAT,
@@ -330,7 +335,6 @@ def qwat_export(include_hydraulics=False):
 
     logger.info("Exporting QWAT.leak -> WASSER.schadenstelle")
     for row in qwat_session.query(QWAT.leak):
-
         # leak --- leak.id, leak.fk_cause, leak.fk_pipe, leak.widespread_damage, leak.detection_date, leak.repair_date, leak._repaired, leak.address, leak.pipe_replaced, leak.description, leak.repair, leak.geometry, leak.label_1_visible, leak.label_1_x, leak.label_1_y, leak.label_1_rotation, leak.label_1_text, leak.label_2_visible, leak.label_2_x, leak.label_2_y, leak.label_2_rotation, leak.label_2_text
         # _rel_ --- leak.label_2_visible__REL, leak.label_1_visible__REL, leak.fk_cause__REL, leak.fk_pipe__REL
 
@@ -365,7 +369,6 @@ def qwat_export(include_hydraulics=False):
 
     logger.info("Exporting QWAT.hydrant -> WASSER.hydrant")
     for row in qwat_session.query(QWAT.hydrant):
-
         # node --- hydrant.fk_district, hydrant.fk_pressurezone, hydrant.fk_printmap, hydrant._printmaps, hydrant._geometry_alt1_used, hydrant._geometry_alt2_used, hydrant._pipe_node_type, hydrant._pipe_orientation, hydrant._pipe_schema_visible, hydrant.geometry, hydrant.geometry_alt1, hydrant.geometry_alt2, hydrant.update_geometry_alt1, hydrant.update_geometry_alt2
         # network_element --- hydrant.identification, hydrant.fk_distributor, hydrant.fk_status, hydrant.fk_folder, hydrant.fk_locationtype, hydrant.fk_precision, hydrant.fk_precisionalti, hydrant.fk_object_reference, hydrant.altitude, hydrant.year, hydrant.year_end, hydrant.orientation, hydrant.remark, hydrant.label_1_visible, hydrant.label_1_x, hydrant.label_1_y, hydrant.label_1_rotation, hydrant.label_1_text, hydrant.label_2_visible, hydrant.label_2_x, hydrant.label_2_y, hydrant.label_2_rotation, hydrant.label_2_text
         # hydrant --- hydrant.id, hydrant.fk_provider, hydrant.fk_model_sup, hydrant.fk_model_inf, hydrant.fk_material, hydrant.fk_output, hydrant.underground, hydrant.marked, hydrant.pressure_static, hydrant.pressure_dynamic, hydrant.flow, hydrant.observation_date, hydrant.observation_source
@@ -379,7 +382,9 @@ def qwat_export(include_hydraulics=False):
             # --- leitungsknoten ---
             **leitungsknoten_common(row),
             # --- hydrant ---
-            art=get_vl(row.fk_model_inf__REL) if row.underground else get_vl(row.fk_model_sup__REL),
+            art=get_vl(row.fk_model_inf__REL)
+            if row.underground
+            else get_vl(row.fk_model_sup__REL),
             dimension=DOES_NOT_EXIST_IN_QWAT,
             entnahme=row.flow,
             fliessdruck=row.pressure_dynamic,
@@ -398,7 +403,6 @@ def qwat_export(include_hydraulics=False):
 
     logger.info("Exporting QWAT.tank -> WASSER.wasserbehaelter")
     for row in qwat_session.query(QWAT.tank):
-
         # node --- tank.fk_district, tank.fk_pressurezone, tank.fk_printmap, tank._printmaps, tank._geometry_alt1_used, tank._geometry_alt2_used, tank._pipe_node_type, tank._pipe_orientation, tank._pipe_schema_visible, tank.geometry, tank.geometry_alt1, tank.geometry_alt2, tank.update_geometry_alt1, tank.update_geometry_alt2
         # network_element --- tank.identification, tank.fk_distributor, tank.fk_status, tank.fk_folder, tank.fk_locationtype, tank.fk_precision, tank.fk_precisionalti, tank.fk_object_reference, tank.altitude, tank.year, tank.year_end, tank.orientation, tank.remark, tank.label_1_visible, tank.label_1_x, tank.label_1_y, tank.label_1_rotation, tank.label_1_text, tank.label_2_visible, tank.label_2_x, tank.label_2_y, tank.label_2_rotation, tank.label_2_text
         # installation --- tank.name, tank.fk_parent, tank.fk_remote, tank.fk_watertype, tank.parcel, tank.eca, tank.open_water_surface, tank.geometry_polygon
@@ -436,7 +440,6 @@ def qwat_export(include_hydraulics=False):
 
     logger.info("Exporting QWAT.pump -> WASSER.foerderanlage")
     for row in qwat_session.query(QWAT.pump):
-
         # node --- pump.fk_district, pump.fk_pressurezone, pump.fk_printmap, pump._printmaps, pump._geometry_alt1_used, pump._geometry_alt2_used, pump._pipe_node_type, pump._pipe_orientation, pump._pipe_schema_visible, pump.geometry, pump.geometry_alt1, pump.geometry_alt2, pump.update_geometry_alt1, pump.update_geometry_alt2
         # network_element --- pump.identification, pump.fk_distributor, pump.fk_status, pump.fk_folder, pump.fk_locationtype, pump.fk_precision, pump.fk_precisionalti, pump.fk_object_reference, pump.altitude, pump.year, pump.year_end, pump.orientation, pump.remark, pump.label_1_visible, pump.label_1_x, pump.label_1_y, pump.label_1_rotation, pump.label_1_text, pump.label_2_visible, pump.label_2_x, pump.label_2_y, pump.label_2_rotation, pump.label_2_text
         # installation --- pump.name, pump.fk_parent, pump.fk_remote, pump.fk_watertype, pump.parcel, pump.eca, pump.open_water_surface, pump.geometry_polygon
@@ -468,7 +471,6 @@ def qwat_export(include_hydraulics=False):
 
     logger.info("Exporting QWAT.treatment -> WASSER.wassergewinnungsanlage")
     for row in qwat_session.query(QWAT.treatment):
-
         # node --- treatment.fk_district, treatment.fk_pressurezone, treatment.fk_printmap, treatment._printmaps, treatment._geometry_alt1_used, treatment._geometry_alt2_used, treatment._pipe_node_type, treatment._pipe_orientation, treatment._pipe_schema_visible, treatment.geometry, treatment.geometry_alt1, treatment.geometry_alt2, treatment.update_geometry_alt1, treatment.update_geometry_alt2
         # network_element --- treatment.identification, treatment.fk_distributor, treatment.fk_status, treatment.fk_folder, treatment.fk_locationtype, treatment.fk_precision, treatment.fk_precisionalti, treatment.fk_object_reference, treatment.altitude, treatment.year, treatment.year_end, treatment.orientation, treatment.remark, treatment.label_1_visible, treatment.label_1_x, treatment.label_1_y, treatment.label_1_rotation, treatment.label_1_text, treatment.label_2_visible, treatment.label_2_x, treatment.label_2_y, treatment.label_2_rotation, treatment.label_2_text
         # installation --- treatment.name, treatment.fk_parent, treatment.fk_remote, treatment.fk_watertype, treatment.parcel, treatment.eca, treatment.open_water_surface, treatment.geometry_polygon
@@ -503,7 +505,6 @@ def qwat_export(include_hydraulics=False):
 
     logger.info("Exporting QWAT.subscriber -> WASSER.hausanschluss")
     for row in qwat_session.query(QWAT.subscriber):
-
         # node --- subscriber.fk_district, subscriber.fk_pressurezone, subscriber.fk_printmap, subscriber._printmaps, subscriber._geometry_alt1_used, subscriber._geometry_alt2_used, subscriber._pipe_node_type, subscriber._pipe_orientation, subscriber._pipe_schema_visible, subscriber.geometry, subscriber.geometry_alt1, subscriber.geometry_alt2, subscriber.update_geometry_alt1, subscriber.update_geometry_alt2
         # network_element --- subscriber.identification, subscriber.fk_distributor, subscriber.fk_status, subscriber.fk_folder, subscriber.fk_locationtype, subscriber.fk_precision, subscriber.fk_precisionalti, subscriber.fk_object_reference, subscriber.altitude, subscriber.year, subscriber.year_end, subscriber.orientation, subscriber.remark, subscriber.label_1_visible, subscriber.label_1_x, subscriber.label_1_y, subscriber.label_1_rotation, subscriber.label_1_text, subscriber.label_2_visible, subscriber.label_2_x, subscriber.label_2_y, subscriber.label_2_rotation, subscriber.label_2_text
         # subscriber --- subscriber.id, subscriber.fk_subscriber_type, subscriber.fk_pipe, subscriber.parcel, subscriber.flow_current, subscriber.flow_planned
@@ -511,7 +512,6 @@ def qwat_export(include_hydraulics=False):
         # _rel_ --- subscriber.fk_pipe__REL, subscriber.fk_subscriber_type__REL, subscriber.fk_object_reference__REL, subscriber.label_1_visible__REL, subscriber.label_2_visible__REL, subscriber.fk_precisionalti__REL, subscriber.fk_folder__REL, subscriber.fk_precision__REL, subscriber.fk_distributor__REL, subscriber.fk_status__REL, subscriber.fk_district__REL, subscriber.fk_pressurezone__REL
 
         if get_vl(row.fk_subscriber_type__REL) == "Fountain":
-
             anlage = WASSER.anlage(
                 # --- baseclass ---
                 # --- sia405_baseclass ---
@@ -536,7 +536,6 @@ def qwat_export(include_hydraulics=False):
                 create_spezialbauwerk(row, "Anlage")
 
         else:  # incl. row.fk_subscriber_type__REL.value_en == "Subscriber"
-
             hausanschluss = WASSER.hausanschluss(
                 # --- baseclass ---
                 # --- sia405_baseclass ---
@@ -565,7 +564,6 @@ def qwat_export(include_hydraulics=False):
 
     logger.info("Exporting QWAT.source -> WASSER.wassergewinnungsanlage")
     for row in qwat_session.query(QWAT.source):
-
         # node --- source.fk_district, source.fk_pressurezone, source.fk_printmap, source._printmaps, source._geometry_alt1_used, source._geometry_alt2_used, source._pipe_node_type, source._pipe_orientation, source._pipe_schema_visible, source.geometry, source.geometry_alt1, source.geometry_alt2, source.update_geometry_alt1, source.update_geometry_alt2
         # network_element --- source.identification, source.fk_distributor, source.fk_status, source.fk_folder, source.fk_locationtype, source.fk_precision, source.fk_precisionalti, source.fk_object_reference, source.altitude, source.year, source.year_end, source.orientation, source.remark, source.label_1_visible, source.label_1_x, source.label_1_y, source.label_1_rotation, source.label_1_text, source.label_2_visible, source.label_2_x, source.label_2_y, source.label_2_rotation, source.label_2_text
         # installation --- source.name, source.fk_parent, source.fk_remote, source.fk_watertype, source.parcel, source.eca, source.open_water_surface, source.geometry_polygon
@@ -596,7 +594,6 @@ def qwat_export(include_hydraulics=False):
 
     logger.info("Exporting QWAT.chamber -> WASSER.anlage")
     for row in qwat_session.query(QWAT.chamber):
-
         # node --- chamber.fk_district, chamber.fk_pressurezone, chamber.fk_printmap, chamber._printmaps, chamber._geometry_alt1_used, chamber._geometry_alt2_used, chamber._pipe_node_type, chamber._pipe_orientation, chamber._pipe_schema_visible, chamber.geometry, chamber.geometry_alt1, chamber.geometry_alt2, chamber.update_geometry_alt1, chamber.update_geometry_alt2
         # network_element --- chamber.identification, chamber.fk_distributor, chamber.fk_status, chamber.fk_folder, chamber.fk_locationtype, chamber.fk_precision, chamber.fk_precisionalti, chamber.fk_object_reference, chamber.altitude, chamber.year, chamber.year_end, chamber.orientation, chamber.remark, chamber.label_1_visible, chamber.label_1_x, chamber.label_1_y, chamber.label_1_rotation, chamber.label_1_text, chamber.label_2_visible, chamber.label_2_x, chamber.label_2_y, chamber.label_2_rotation, chamber.label_2_text
         # installation --- chamber.name, chamber.fk_parent, chamber.fk_remote, chamber.fk_watertype, chamber.parcel, chamber.eca, chamber.open_water_surface, chamber.geometry_polygon
@@ -632,7 +629,6 @@ def qwat_export(include_hydraulics=False):
 
     logger.info("Exporting QWAT.pressurecontrol -> WASSER.anlage")
     for row in qwat_session.query(QWAT.pressurecontrol):
-
         # node --- pressurecontrol.fk_district, pressurecontrol.fk_pressurezone, pressurecontrol.fk_printmap, pressurecontrol._printmaps, pressurecontrol._geometry_alt1_used, pressurecontrol._geometry_alt2_used, pressurecontrol._pipe_node_type, pressurecontrol._pipe_orientation, pressurecontrol._pipe_schema_visible, pressurecontrol.geometry, pressurecontrol.geometry_alt1, pressurecontrol.geometry_alt2, pressurecontrol.update_geometry_alt1, pressurecontrol.update_geometry_alt2
         # network_element --- pressurecontrol.identification, pressurecontrol.fk_distributor, pressurecontrol.fk_status, pressurecontrol.fk_folder, pressurecontrol.fk_locationtype, pressurecontrol.fk_precision, pressurecontrol.fk_precisionalti, pressurecontrol.fk_object_reference, pressurecontrol.altitude, pressurecontrol.year, pressurecontrol.year_end, pressurecontrol.orientation, pressurecontrol.remark, pressurecontrol.label_1_visible, pressurecontrol.label_1_x, pressurecontrol.label_1_y, pressurecontrol.label_1_rotation, pressurecontrol.label_1_text, pressurecontrol.label_2_visible, pressurecontrol.label_2_x, pressurecontrol.label_2_y, pressurecontrol.label_2_rotation, pressurecontrol.label_2_text
         # installation --- pressurecontrol.name, pressurecontrol.fk_parent, pressurecontrol.fk_remote, pressurecontrol.fk_watertype, pressurecontrol.parcel, pressurecontrol.eca, pressurecontrol.open_water_surface, pressurecontrol.geometry_polygon
@@ -716,8 +712,12 @@ def qwat_export(include_hydraulics=False):
                 6403: "motorisch.ohne_Fernsteuerung",
                 6406: "motorisch.mit_Fernsteuerung",
             }.get(get_vl(row.fk_valve_actuation__REL, "id"), "keiner"),
-            schaltzustand="unbekannt" if row.closed is None else ("geschlossen" if row.closed else "offen"),
-            schliessrichtung="links" if get_vl(row.fk_valve_actuation__REL, "id") == 6402 else "rechts",
+            schaltzustand="unbekannt"
+            if row.closed is None
+            else ("geschlossen" if row.closed else "offen"),
+            schliessrichtung="links"
+            if get_vl(row.fk_valve_actuation__REL, "id") == 6402
+            else "rechts",
             typ=DOES_NOT_EXIST_IN_QWAT,
             zulaessiger_bauteil_betriebsdruck=DOES_NOT_EXIST_IN_QWAT,
             zustand=get_vl(row.fk_status__REL),
@@ -732,7 +732,9 @@ def qwat_export(include_hydraulics=False):
         # Otherwise, we split the pipe at the valve.
 
         # Get the related pipe
-        leitung_a = wasser_session.query(WASSER.leitung).get(get_tid(row.fk_pipe__REL, for_class=WASSER.leitung))
+        leitung_a = wasser_session.query(WASSER.leitung).get(
+            get_tid(row.fk_pipe__REL, for_class=WASSER.leitung)
+        )
 
         # We clone the pipe
         leitung_b = utils.sqlalchemy.copy_instance(leitung_a)

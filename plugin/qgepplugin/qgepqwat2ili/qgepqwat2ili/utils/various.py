@@ -27,7 +27,13 @@ class DeduplicatedLogger(logging.Logger):
         this_message = (level, msg)
         if self._last_message is None or self._last_message != this_message:
             if self._repeated > 0:
-                super()._log(self._last_message[0], f"[repeted {self._repeated} times]", args, exc_info, extra)
+                super()._log(
+                    self._last_message[0],
+                    f"[repeted {self._repeated} times]",
+                    args,
+                    exc_info,
+                    extra,
+                )
 
             super()._log(level, msg, args, exc_info, extra)
             self._repeated = 0
@@ -125,7 +131,9 @@ def setup_test_db(template="full"):
         dexec_(
             "wget https://github.com/qwat/qwat-data-model/releases/download/1.3.6/qwat_v1.3.6_data_and_structure_sample.backup"
         )
-        dexec_("wget https://github.com/qwat/qwat-data-model/releases/download/1.3.6/qwat_v1.3.6_structure_only.sql")
+        dexec_(
+            "wget https://github.com/qwat/qwat-data-model/releases/download/1.3.6/qwat_v1.3.6_structure_only.sql"
+        )
         dexec_(
             "wget https://github.com/qwat/qwat-data-model/releases/download/1.3.6/qwat_v1.3.6_value_list_data_only.sql"
         )
@@ -151,12 +159,16 @@ def setup_test_db(template="full"):
         dexec_("createdb -U postgres --template=qgep_prod tpl_full")
 
         # Hotfix qgep invalid demo data
-        delta_path = os.path.join(os.path.dirname(__file__), "..", "data", "test_data", "qgep_demodata_hotfix.sql")
+        delta_path = os.path.join(
+            os.path.dirname(__file__), "..", "data", "test_data", "qgep_demodata_hotfix.sql"
+        )
         exec_(f"docker cp {delta_path} qgepqwat:/qgep_demodata_hotfix.sql")
         dexec_("psql -U postgres -d tpl_full -v ON_ERROR_STOP=1 -f /qgep_demodata_hotfix.sql")
 
         # Hotfix qwat invalid demo data
-        delta_path = os.path.join(os.path.dirname(__file__), "..", "data", "test_data", "qwat_demodata_hotfix.sql")
+        delta_path = os.path.join(
+            os.path.dirname(__file__), "..", "data", "test_data", "qwat_demodata_hotfix.sql"
+        )
         exec_(f"docker cp {delta_path} qgepqwat:/qwat_demodata_hotfix.sql")
         dexec_("psql -U postgres -d tpl_full -v ON_ERROR_STOP=1 -f /qwat_demodata_hotfix.sql")
 
