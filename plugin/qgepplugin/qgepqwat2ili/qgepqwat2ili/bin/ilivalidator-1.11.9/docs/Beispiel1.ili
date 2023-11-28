@@ -7,7 +7,7 @@ CONTRACTED MODEL Beispiel1
   DOMAIN
     LKoord = COORD 2480000.00 .. 2850000.00, 1060000.00 .. 1320000.00,
       ROTATION 2 -> 1;
-      
+
 
   TOPIC Bodenbedeckung =
 
@@ -28,13 +28,13 @@ CONTRACTED MODEL Beispiel1
     END BoFlaechen;
 
     FUNCTION checkGebaeudeVersicherungsSystem(str : TEXT):BOOLEAN;
-    
-    !! Metaattribute stehen immer vor dem Modellelement, auf das sie sich 
+
+    !! Metaattribute stehen immer vor dem Modellelement, auf das sie sich
     !! beziehen.
-    
-    !! Zusaetzlicher Text fuer die Objektidentifikation fuer alle Fehlermeldung 
+
+    !! Zusaetzlicher Text fuer die Objektidentifikation fuer alle Fehlermeldung
     !! die sich auf ein Objekt der folgenden Klasse beziehen.
-    !! Die TID und Zeilennummer erscheint immer, falls vorhanden. keymsg ist 
+    !! Die TID und Zeilennummer erscheint immer, falls vorhanden. keymsg ist
     !! zusaetzlich (eine Benutzerdefinierte/verständliche Identifikation).
     !! Bei Export aus/Check auf DB ist TID evtl. nicht vorhanden. Bei XML ist Zeilennummer in der Regel nicht hilfreich.
     !! inkl. Attributwerte in {}
@@ -43,7 +43,7 @@ CONTRACTED MODEL Beispiel1
     !!@ ilivalid.keymsg_de = "Assekuranz-Nr {AssNr}"
     CLASS Gebaeude =
       !! Datentyppruefung ein/ausschalten bzw. nur als Hinweis.
-      !! z.B. ob eine Zahlenwert innerhalb des Bereichs ist, oder ein 
+      !! z.B. ob eine Zahlenwert innerhalb des Bereichs ist, oder ein
       !! Aufzaehlwert dem Modell entspricht oder die Flaechen eine
       !! Gebietseinteilung sind usw.
       !! on/warning/off
@@ -60,8 +60,8 @@ CONTRACTED MODEL Beispiel1
         andere); !! R2.1, R2.2
       AndereArt : TEXT*6; !! R2.1, R2.2
       AssNr : MANDATORY TEXT*6; !! R2.1, R2.2
-      UNIQUE AssNr;                                    !! R2.3 
-           
+      UNIQUE AssNr;                                    !! R2.3
+
       EXISTENCE CONSTRAINT AndereArt REQUIRED IN GebaeudeArt:Art;    !! R2.4
       !! Constraint-Pruefung ein/ausschalten bzw. nur als Hinweis.
       !! Pruefen ob die Konsistenzbedingung erfuellt ist oder nicht.
@@ -70,8 +70,8 @@ CONTRACTED MODEL Beispiel1
       !! Name des Constraints (ili2.3 oder bei ili2.4 falls constraint kein name hat)
       !! Ergaenzt Fehlermeldung (ohne Name wird interne Id des Constraints verwendet)
       !!@ name = c1023
-      !! Meldungstext, falls dieses Constraint nicht erfuellt ist. 
-      !! Wird ergaenzt um Objektidentifikation und Name des Constraints. 
+      !! Meldungstext, falls dieses Constraint nicht erfuellt ist.
+      !! Wird ergaenzt um Objektidentifikation und Name des Constraints.
       !! Auf DE inkl. Attributwerte in {}
       !!@ ilivalid.msg_de = "AndereArt muss definiert sein"
       MANDATORY CONSTRAINT Art!=#andere OR DEFINED(AndereArt);       !! R2.5
@@ -93,7 +93,7 @@ CONTRACTED MODEL Beispiel1
       Gebaeude -- {0..*} Gebaeude;                     !! R2.8, R2.9
       Flaeche -- {1} BoFlaechen;
     END GebaeudeFlaeche;
-    
+
     VIEW IndustrieGebaeude                             !! R2.10
     	PROJECTION OF Gebaeude;
     	WHERE Gebaeude->Art==#Industrie;
@@ -101,7 +101,7 @@ CONTRACTED MODEL Beispiel1
       ALL OF Gebaeude;
       MANDATORY CONSTRAINT INTERLIS.len(AssNr)==6;
     END IndustrieGebaeude;
-    
+
   END Bodenbedeckung;
 
 END Beispiel1.
@@ -117,8 +117,8 @@ CONTRACTED MODEL Beispiel1Zusatz
 
 
     FUNCTION startsWith(str : TEXT;prefix : TEXT):BOOLEAN;
-    
-    
+
+
     VIEW IndustrieGebaeudeSO
     	PROJECTION OF Beispiel1.Bodenbedeckung.Gebaeude;
     	WHERE Gebaeude->Art==#Industrie;
@@ -126,8 +126,7 @@ CONTRACTED MODEL Beispiel1Zusatz
       ALL OF Gebaeude;
       MANDATORY CONSTRAINT startsWith(AssNr,"SO"); !! R1.8
     END IndustrieGebaeudeSO;
-    
+
   END BodenbedeckungZusatz;
 
 END Beispiel1Zusatz.
-

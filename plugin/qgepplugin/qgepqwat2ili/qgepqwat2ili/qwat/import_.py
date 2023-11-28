@@ -7,7 +7,6 @@ from .model_wasser import get_wasser_model
 
 
 def qwat_import():
-
     QWAT = get_qwat_model()
     WASSER = get_wasser_model()
 
@@ -16,7 +15,6 @@ def qwat_import():
 
     logger.info("Importing WASSER.hydraulischer_knoten -> QWAT.node")
     for row in wasser_session.query(WASSER.hydraulischer_knoten):
-
         # baseclass --- hydraulischer_knoten.t_type, hydraulischer_knoten.t_ili_tid
         # sia405_baseclass --- hydraulischer_knoten.obj_id
         # hydraulischer_knoten --- hydraulischer_knoten.t_id, hydraulischer_knoten.name_nummer, hydraulischer_knoten.geometrie, hydraulischer_knoten.knotentyp, hydraulischer_knoten.verbrauch, hydraulischer_knoten.druck, hydraulischer_knoten.bemerkung
@@ -45,8 +43,9 @@ def qwat_import():
     logger.info("done")
 
     logger.info("Importing WASSER.hydraulischer_strang, WASSER.leitung -> QWAT.pipe")
-    for row, leitung in wasser_session.query(WASSER.hydraulischer_strang, WASSER.leitung).join(WASSER.leitung):
-
+    for row, leitung in wasser_session.query(WASSER.hydraulischer_strang, WASSER.leitung).join(
+        WASSER.leitung
+    ):
         # baseclass --- hydraulischer_strang.t_type, hydraulischer_strang.t_ili_tid
         # sia405_baseclass --- hydraulischer_strang.obj_id
         # hydraulischer_strang --- hydraulischer_strang.t_id, hydraulischer_strang.name_nummer, hydraulischer_strang.referenz_laenge, hydraulischer_strang.referenz_rauheit, hydraulischer_strang.referenz_durchmesser, hydraulischer_strang.verbrauch, hydraulischer_strang.durchfluss, hydraulischer_strang.fliessgeschwindigkeit, hydraulischer_strang.zustand, hydraulischer_strang.bemerkung, hydraulischer_strang.bisknotenref, hydraulischer_strang.vonknotenref
@@ -111,7 +110,6 @@ def qwat_import():
 
     logger.info("Importing WASSER.schadenstelle -> QWAT.leak")
     for row in wasser_session.query(WASSER.schadenstelle):
-
         # baseclass --- schadenstelle.t_type, schadenstelle.t_ili_tid
         # sia405_baseclass --- schadenstelle.obj_id
         # schadenstelle --- schadenstelle.t_id, schadenstelle.name_nummer, schadenstelle.geometrie, schadenstelle.art, schadenstelle.ursache, schadenstelle.ausloeser, schadenstelle.erhebungsdatum, schadenstelle.behebungsdatum, schadenstelle.zustand, schadenstelle.bemerkung, schadenstelle.leitungref
@@ -149,7 +147,6 @@ def qwat_import():
 
     logger.info("Importing WASSER.hydrant -> QWAT.hydrant")
     for row in wasser_session.query(WASSER.hydrant):
-
         # baseclass --- hydrant.t_type, hydrant.t_ili_tid
         # sia405_baseclass --- hydrant.obj_id
         # leitungsknoten --- hydrant.geometrie, hydrant.symbolori, hydrant.lagebestimmung, hydrant.hoehe, hydrant.hoehenbestimmung, hydrant.einbaujahr, hydrant.druckzone, hydrant.eigentuemer, hydrant.bemerkung, hydrant.knotenref
@@ -218,7 +215,6 @@ def qwat_import():
 
     logger.info("Importing WASSER.wasserbehaelter -> QWAT.tank")
     for row in wasser_session.query(WASSER.wasserbehaelter):
-
         # baseclass --- wasserbehaelter.t_type, wasserbehaelter.t_ili_tid
         # sia405_baseclass --- wasserbehaelter.obj_id
         # leitungsknoten --- wasserbehaelter.geometrie, wasserbehaelter.symbolori, wasserbehaelter.lagebestimmung, wasserbehaelter.hoehe, wasserbehaelter.hoehenbestimmung, wasserbehaelter.einbaujahr, wasserbehaelter.druckzone, wasserbehaelter.eigentuemer, wasserbehaelter.bemerkung, wasserbehaelter.knotenref
@@ -305,7 +301,6 @@ def qwat_import():
 
     logger.info("Importing WASSER.foerderanlage -> QWAT.pump")
     for row in wasser_session.query(WASSER.foerderanlage):
-
         # baseclass --- foerderanlage.t_type, foerderanlage.t_ili_tid
         # sia405_baseclass --- foerderanlage.obj_id
         # leitungsknoten --- foerderanlage.geometrie, foerderanlage.symbolori, foerderanlage.lagebestimmung, foerderanlage.hoehe, foerderanlage.hoehenbestimmung, foerderanlage.einbaujahr, foerderanlage.druckzone, foerderanlage.eigentuemer, foerderanlage.bemerkung, foerderanlage.knotenref
@@ -378,7 +373,6 @@ def qwat_import():
 
     logger.info("Importing WASSER.anlage -> QWAT.treatment")
     for row in wasser_session.query(WASSER.anlage):
-
         # baseclass --- anlage.t_type, anlage.t_ili_tid
         # sia405_baseclass --- anlage.obj_id
         # leitungsknoten --- anlage.geometrie, anlage.symbolori, anlage.lagebestimmung, anlage.hoehe, anlage.hoehenbestimmung, anlage.einbaujahr, anlage.druckzone, anlage.eigentuemer, anlage.bemerkung, anlage.knotenref
@@ -454,7 +448,6 @@ def qwat_import():
 
     logger.info("Importing WASSER.hausanschluss -> QWAT.subscriber")
     for row in wasser_session.query(WASSER.hausanschluss):
-
         # baseclass --- hausanschluss.t_type, hausanschluss.t_ili_tid
         # sia405_baseclass --- hausanschluss.obj_id
         # leitungsknoten --- hausanschluss.geometrie, hausanschluss.symbolori, hausanschluss.lagebestimmung, hausanschluss.hoehe, hausanschluss.hoehenbestimmung, hausanschluss.einbaujahr, hausanschluss.druckzone, hausanschluss.eigentuemer, hausanschluss.bemerkung, hausanschluss.knotenref
@@ -516,7 +509,6 @@ def qwat_import():
 
     logger.info("Importing WASSER.wassergewinnungsanlage -> QWAT.source")
     for row in wasser_session.query(WASSER.wassergewinnungsanlage):
-
         # baseclass --- wassergewinnungsanlage.t_type, wassergewinnungsanlage.t_ili_tid
         # sia405_baseclass --- wassergewinnungsanlage.obj_id
         # leitungsknoten --- wassergewinnungsanlage.geometrie, wassergewinnungsanlage.symbolori, wassergewinnungsanlage.lagebestimmung, wassergewinnungsanlage.hoehe, wassergewinnungsanlage.hoehenbestimmung, wassergewinnungsanlage.einbaujahr, wassergewinnungsanlage.druckzone, wassergewinnungsanlage.eigentuemer, wassergewinnungsanlage.bemerkung, wassergewinnungsanlage.knotenref
@@ -589,7 +581,6 @@ def qwat_import():
 
     logger.info("Importing WASSER.absperrorgan -> QWAT.chamber")
     for row in wasser_session.query(WASSER.absperrorgan):
-
         # baseclass --- absperrorgan.t_type, absperrorgan.t_ili_tid
         # sia405_baseclass --- absperrorgan.obj_id
         # leitungsknoten --- absperrorgan.geometrie, absperrorgan.symbolori, absperrorgan.lagebestimmung, absperrorgan.hoehe, absperrorgan.hoehenbestimmung, absperrorgan.einbaujahr, absperrorgan.druckzone, absperrorgan.eigentuemer, absperrorgan.bemerkung, absperrorgan.knotenref
@@ -661,7 +652,6 @@ def qwat_import():
 
     logger.info("Importing WASSER.absperrorgan -> QWAT.valve")
     for row in wasser_session.query(WASSER.absperrorgan):
-
         # baseclass --- absperrorgan.t_type, absperrorgan.t_ili_tid
         # sia405_baseclass --- absperrorgan.obj_id
         # leitungsknoten --- absperrorgan.geometrie, absperrorgan.symbolori, absperrorgan.lagebestimmung, absperrorgan.hoehe, absperrorgan.hoehenbestimmung, absperrorgan.einbaujahr, absperrorgan.druckzone, absperrorgan.eigentuemer, absperrorgan.bemerkung, absperrorgan.knotenref

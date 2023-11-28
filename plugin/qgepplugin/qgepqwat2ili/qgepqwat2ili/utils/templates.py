@@ -21,7 +21,9 @@ def generate_template(model_name, ilimodel_name, model_base, ilimodel_base, mapp
             available_fields[key].append(attr)
         for fields in available_fields.values():
             fields.sort(key=lambda i: str(i))
-        ordered_tables = ["_rel_", "_bwrel_"] + list(c.__table__.name for c in cls.__mro__ if hasattr(c, "__table__"))
+        ordered_tables = ["_rel_", "_bwrel_"] + list(
+            c.__table__.name for c in cls.__mro__ if hasattr(c, "__table__")
+        )
         return sorted(
             available_fields.items(),
             key=lambda i: ordered_tables.index(i[0]),

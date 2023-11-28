@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -----------------------------------------------------------
 #
 # Profile
@@ -24,7 +23,6 @@
 # ---------------------------------------------------------------------
 
 import logging
-from builtins import str
 
 from qgis.core import QgsProject
 from qgis.PyQt.QtCore import QSettings, pyqtSlot
@@ -78,9 +76,7 @@ class QgepSettingsDialog(QDialog, DIALOG_UI):
             QColor(self.settings.value("/QGEP/HighlightColor", "#40FF40"))
         )
 
-        self.mPbnChooseProfileTemplateFile.clicked.connect(
-            self.onChooseProfileTemplateFileClicked
-        )
+        self.mPbnChooseProfileTemplateFile.clicked.connect(self.onChooseProfileTemplateFileClicked)
         self.mPbnChooseLogFile.clicked.connect(self.onChooseLogFileClicked)
 
         self.accepted.connect(self.onAccept)
@@ -98,7 +94,7 @@ class QgepSettingsDialog(QDialog, DIALOG_UI):
 
     def initLayerCombobox(self, combobox, default):
         reg = QgsProject.instance()
-        for (key, layer) in list(reg.mapLayers().items()):
+        for key, layer in list(reg.mapLayers().items()):
             combobox.addItem(layer.name(), key)
 
         idx = combobox.findData(default)
@@ -109,13 +105,8 @@ class QgepSettingsDialog(QDialog, DIALOG_UI):
     def onAccept(self):
         qgeplogger = logging.getLogger("qgep")
         # General settings
-        if (
-            self.mGbOverrideDefaultProfileTemplate.isChecked()
-            and self.mProfileTemplateFile.text()
-        ):
-            self.settings.setValue(
-                "/QGEP/SvgProfilePath", self.mProfileTemplateFile.text()
-            )
+        if self.mGbOverrideDefaultProfileTemplate.isChecked() and self.mProfileTemplateFile.text():
+            self.settings.setValue("/QGEP/SvgProfilePath", self.mProfileTemplateFile.text())
         else:
             self.settings.remove("/QGEP/SvgProfilePath")
 
@@ -152,12 +143,8 @@ class QgepSettingsDialog(QDialog, DIALOG_UI):
             self.settings.setValue("/QGEP/LogLevel", "Error")
 
         # Save colors
-        self.settings.setValue(
-            "/QGEP/HelperLineColor", self.mHelperLineColorButton.color().name()
-        )
-        self.settings.setValue(
-            "/QGEP/HighlightColor", self.mHighlightColorButton.color().name()
-        )
+        self.settings.setValue("/QGEP/HelperLineColor", self.mHelperLineColorButton.color().name())
+        self.settings.setValue("/QGEP/HighlightColor", self.mHighlightColorButton.color().name())
         self.settings.setValue(
             "/QGEP/CurrentProfileColor", self.mCurrentProfileColorButton.color().name()
         )

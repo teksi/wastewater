@@ -36,7 +36,9 @@ def custom_name_for_scalar_relationship(base, local_cls, referred_cls, constrain
     return f"{constraint.columns.keys()[0]}__REL"
 
 
-def custom_generate_relationship(base, direction, return_fn, attrname, local_cls, referred_cls, **kw):
+def custom_generate_relationship(
+    base, direction, return_fn, attrname, local_cls, referred_cls, **kw
+):
     """
     Skips creating backwards relations to avoid adding instances twice with session.merge
     """
@@ -49,7 +51,9 @@ def custom_generate_relationship(base, direction, return_fn, attrname, local_cls
     if attrname in ["fk_dataowner__REL", "fk_provider__REL"]:
         kw["post_update"] = True
 
-    return generate_relationship(base, direction, return_fn, attrname, local_cls, referred_cls, **kw)
+    return generate_relationship(
+        base, direction, return_fn, attrname, local_cls, referred_cls, **kw
+    )
 
 
 def prepare_automap_base(base, schema):

@@ -66,7 +66,9 @@ class Editor:
         """
         if not hasattr(self, "_listitem"):
             self._listitem = QTreeWidgetItem()
-            self._listitem.setCheckState(0, Qt.Checked if self.initially_checked() else Qt.Unchecked)
+            self._listitem.setCheckState(
+                0, Qt.Checked if self.initially_checked() else Qt.Unchecked
+            )
             self.update_listitem()
         return self._listitem
 

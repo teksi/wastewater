@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -----------------------------------------------------------
 #
 # Profile
@@ -28,10 +27,9 @@ This module provides objects which manage a QGEP profile.
 """
 
 import json
-from builtins import object
 
 
-class QgepProfileElement(object):
+class QgepProfileElement:
     """
     Base class for all profile elements
     """
@@ -132,9 +130,7 @@ class QgepProfileEdgeElement(QgepProfileElement):
         from_pos = edge_cache.attrAsFloat(edge, "from_pos")
         to_pos = edge_cache.attrAsFloat(edge, "to_pos")
 
-        interpolate_from_obj_id = edge_cache.attrAsUnicode(
-            edge, "from_obj_id_interpolate"
-        )
+        interpolate_from_obj_id = edge_cache.attrAsUnicode(edge, "from_obj_id_interpolate")
         interpolate_to_obj_id = edge_cache.attrAsUnicode(edge, "to_obj_id_interpolate")
         interpolate_from = node_cache.featureByObjId(interpolate_from_obj_id)
         interpolate_to = node_cache.featureByObjId(interpolate_to_obj_id)
@@ -164,24 +160,18 @@ class QgepProfileEdgeElement(QgepProfileElement):
         self.reachPoints[from_point_id]["offset"] = start_offset
         self.reachPoints[from_point_id]["level"] = fromlevel
         self.reachPoints[from_point_id]["pos"] = from_pos
-        self.reachPoints[from_point_id]["objId"] = node_cache.attrAsUnicode(
-            from_point, "obj_id"
-        )
+        self.reachPoints[from_point_id]["objId"] = node_cache.attrAsUnicode(from_point, "obj_id")
 
         self.reachPoints[to_point_id]["offset"] = end_offset
         self.reachPoints[to_point_id]["level"] = tolevel
         self.reachPoints[to_point_id]["pos"] = to_pos
-        self.reachPoints[to_point_id]["objId"] = node_cache.attrAsUnicode(
-            to_point, "obj_id"
-        )
+        self.reachPoints[to_point_id]["objId"] = node_cache.attrAsUnicode(to_point, "obj_id")
 
     def asDict(self):
         """
         Returns this element as a dict.
         """
-        reach_points = sorted(
-            list(self.reachPoints.values()), key=lambda p: p["offset"]
-        )
+        reach_points = sorted(list(self.reachPoints.values()), key=lambda p: p["offset"])
         startoffset = min([p["offset"] for p in reach_points])
         endoffset = max([p["offset"] for p in reach_points])
         fromlevel = reach_points[0]["level"] or 0
@@ -388,18 +378,10 @@ class QgepProfileSpecialStructureElement(QgepProfileEdgeElement):
 
         # There should always be a wastewater node but checking does not hurt
         if defining_wastewater_node is not None:
-            self.node_type = node_cache.attrAsUnicode(
-                defining_wastewater_node, "node_type"
-            )
-            self.cover_level = node_cache.attrAsFloat(
-                defining_wastewater_node, "cover_level"
-            )
-            self.description = node_cache.attrAsUnicode(
-                defining_wastewater_node, "description"
-            )
-            self.usage_current = node_cache.attrAsFloat(
-                defining_wastewater_node, "usage_current"
-            )
+            self.node_type = node_cache.attrAsUnicode(defining_wastewater_node, "node_type")
+            self.cover_level = node_cache.attrAsFloat(defining_wastewater_node, "cover_level")
+            self.description = node_cache.attrAsUnicode(defining_wastewater_node, "description")
+            self.usage_current = node_cache.attrAsFloat(defining_wastewater_node, "usage_current")
             self.detailGeometry = node_cache.attrAsGeometry(
                 defining_wastewater_node, "detail_geometry"
             )
@@ -454,7 +436,7 @@ class QgepProfileNodeElement(QgepProfileElement):
         return el
 
 
-class QgepProfile(object):
+class QgepProfile:
     """
     Manages a profile of reaches and special structures
     """
@@ -513,9 +495,7 @@ class QgepProfile(object):
         Prepare profile as JSON string, so the javascript responsible for the
         svg will know what to do with the data.
         """
-        return json.dumps(
-            [element.asDict() for element in list(self.elements.values())]
-        )
+        return json.dumps([element.asDict() for element in list(self.elements.values())])
 
     def reset(self):
         """

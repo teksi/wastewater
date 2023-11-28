@@ -22,7 +22,6 @@ engine = create_engine("postgresql://postgres:postgres@127.0.0.1:5432/qgep_prod"
 
 
 def example_0():
-
     Base = declarative_base()
 
     class Animal(Base):
@@ -49,7 +48,6 @@ def example_0():
 
 
 def example_1():
-
     meta = MetaData()
     meta.reflect(bind=engine, schema="qgep_od")
 
@@ -109,7 +107,6 @@ MAPPING = {
 
 
 def export_a():
-
     # Autoload QGEP datamodel
     QGEPBase = automap_base()
     QGEPBase.prepare(engine, reflect=True, schema="qgep_od")
@@ -190,7 +187,9 @@ def export_a():
         session.add(
             SIA.abwasserbauwerk(
                 t_id=oid2tid[row.obj_id],
-                zugaenglichkeit=MAPPING["wastewater_structure"]["accessibility"][row.accessibility],
+                zugaenglichkeit=MAPPING["wastewater_structure"]["accessibility"][
+                    row.accessibility
+                ],
             )
         )
         print(".", end="")
@@ -228,7 +227,6 @@ def export_a():
 
 
 def export_b():
-
     # Autoload QGEP datamodel
     QGEPBase = automap_base()
     QGEPBase.prepare(engine, reflect=True, schema="qgep_od")
@@ -251,10 +249,12 @@ def export_b():
     joined_query = (
         session.query(QGEP.manhole, QGEP.wastewater_structure, QGEP.wastewater_networkelement)
         .filter(QGEP.manhole.obj_id == QGEP.wastewater_structure.obj_id)
-        .filter(QGEP.wastewater_structure.obj_id == QGEP.wastewater_networkelement.fk_wastewater_structure)
+        .filter(
+            QGEP.wastewater_structure.obj_id
+            == QGEP.wastewater_networkelement.fk_wastewater_structure
+        )
     )
     for row in joined_query:
-
         # wastewater_networkelement -> baseclass
         session.add(
             SIA.baseclass(
@@ -420,7 +420,9 @@ def export_c():
                 t_type="normschacht",
                 t_ili_tid=row.obj_id,
                 obj_id=row.obj_id,
-                zugaenglichkeit=MAPPING["wastewater_structure"]["accessibility"][row.accessibility],
+                zugaenglichkeit=MAPPING["wastewater_structure"]["accessibility"][
+                    row.accessibility
+                ],
                 dimension1=row.dimension1,
                 dimension2=row.dimension2,
                 funktion=MAPPING["manhole"]["function"][row.function],

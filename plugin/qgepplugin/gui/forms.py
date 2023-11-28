@@ -20,9 +20,7 @@ def mapToolDeactivated(tool):
 def digitizeDrainageChannel(fid, layerid):
     layer = QgsProject.instance().mapLayer(layerid)
     layer.startEditing()
-    tool = QgepMapToolDigitizeDrainageChannel(
-        qgis.utils.plugins["qgepplugin"].iface, layer
-    )
+    tool = QgepMapToolDigitizeDrainageChannel(qgis.utils.plugins["qgepplugin"].iface, layer)
     qgis.utils.plugins["qgepplugin"].iface.mapCanvas().setMapTool(tool)
     tool.geometryDigitized.connect(lambda: geometryDigitized(fid, layer, tool))
     # form.window().hide()

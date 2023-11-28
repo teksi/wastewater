@@ -16,10 +16,14 @@ def create_ili_schema(schema, model, log_path, recreate_schema=False):
 
     if not recreate_schema:
         # If the schema already exists, we just truncate all tables
-        cursor.execute(f"SELECT schema_name FROM information_schema.schemata WHERE schema_name = '{schema}';")
+        cursor.execute(
+            f"SELECT schema_name FROM information_schema.schemata WHERE schema_name = '{schema}';"
+        )
         if cursor.rowcount > 0:
             logger.info(f"Schema {schema} already exists, we truncate instead")
-            cursor.execute(f"SELECT table_name FROM information_schema.tables WHERE table_schema = '{schema}';")
+            cursor.execute(
+                f"SELECT table_name FROM information_schema.tables WHERE table_schema = '{schema}';"
+            )
             for row in cursor.fetchall():
                 cursor.execute(f"TRUNCATE TABLE {schema}.{row[0]} CASCADE;")
             return

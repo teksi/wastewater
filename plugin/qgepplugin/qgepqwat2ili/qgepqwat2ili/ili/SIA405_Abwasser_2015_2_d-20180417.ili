@@ -4,7 +4,7 @@
 INTERLIS 2.3;
 
 MODEL SIA405_ABWASSER_2015 (de) AT "http://www.sia.ch/405"
-  VERSION "17.04.2018" = 
+  VERSION "17.04.2018" =
 
   IMPORTS UNQUALIFIED INTERLIS;     !! imports INTERLIS 2 Baseunits
   IMPORTS Units;
@@ -19,10 +19,10 @@ MODEL SIA405_ABWASSER_2015 (de) AT "http://www.sia.ch/405"
 
 !! Die Nutzung dieser INTERLIS-Datei ist lizenzpflichtig!
 
-!! Die Originalmodelldatei SIA405_Abwasser_2015_2_d.ili und darauf basierende 
-!! abgeänderte Versionen dürfen nicht weiterverkauft werden. 
-!! Die Weitergabe der Originaldatei (als Ganzes oder Teile davon) ist nur 
-!! zusammen mit dem Erwerb einer Lizenz beim sia / VSA durch den Empfänger erlaubt. 
+!! Die Originalmodelldatei SIA405_Abwasser_2015_2_d.ili und darauf basierende
+!! abgeänderte Versionen dürfen nicht weiterverkauft werden.
+!! Die Weitergabe der Originaldatei (als Ganzes oder Teile davon) ist nur
+!! zusammen mit dem Erwerb einer Lizenz beim sia / VSA durch den Empfänger erlaubt.
 
 !! Freigegeben für öffentlichen Gebrauch und kommerzielle Anwendung mit Lizenz.
 !! Geprueft mit Compiler Version 4.7.7 (8.02.2018)
@@ -39,7 +39,7 @@ Verhaeltnis_H_B = 0.01 .. 100.00;    !! Verhältnis Höhe zu Breite, ohne Einheit
 !! Rohrprofil.HoehenBreitenverhaeltnis
 
 
-Statuswerte EXTENDS SIA405_Base.Status = (  !! Betriebs- und Planungszustand. 
+Statuswerte EXTENDS SIA405_Base.Status = (  !! Betriebs- und Planungszustand.
 !! 11.2.2012 Anpassung auf neue Variante von SIA405_Base.Status - Erweiterung Basiswerte im Medium, hierarchische Modellierung und Anpassung auf Compiler 4.5.13
       !! 17.7.2015 ausser_Betrieb,   !! fasst ausser_Betrieb und folgende Werte zusammen
         !!  Reserve !! existiert nicht im Medium Abwasser
@@ -61,7 +61,7 @@ Statuswerte EXTENDS SIA405_Base.Status = (  !! Betriebs- und Planungszustand.
          Projekt
       )
     );    !! Erweitert Wertebereich von SIA405 Status
-!! neu 17.7.2015  
+!! neu 17.7.2015
     Status = ALL OF Statuswerte;    !! Erweitert Wertebereich von SIA405 Status
 !! Abwasserbauwerk.Status
 
@@ -90,16 +90,16 @@ Lichte_Hoehe = 0 .. 99999 [Units.mm];    !! Milimeter [mm]
 !! Haltung.Reliner_Nennweite
 
 
-UID = TEXT*12;    !! 
+UID = TEXT*12;    !!
 !! Organisation.UID
 
 
-Ziffernblatt = 0..12;    !! 
+Ziffernblatt = 0..12;    !!
 !! gemäss Richtlinie
 !! Haltungspunkt.Lage_Anschluss
 
 
-CLASS Organisation EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Organisation EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Superklasse für in der Entwässerungsplanung relevante organisatorische Einheiten (z.B. Gemeinde, Kanton, etc.)
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -112,7 +112,7 @@ ASSOCIATION Organisation_Teil_vonAssoc =    !! Assoziation
   Organisation_Teil_vonAssocRef -- {0..*} Organisation; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Organisation_Teil_vonAssoc;
 
-CLASS Abwasserbauwerk (ABSTRACT) EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Abwasserbauwerk (ABSTRACT) EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Bauwerk in einem Entwässerungsnetz (dss)
   ATTRIBUTE
     Akten: MTEXT*255;  !! Plan Nr. der Ausführungsdokumentation. Kurzbeschrieb weiterer Akten (Betriebsanleitung vom …, etc.);
@@ -192,7 +192,7 @@ ASSOCIATION Abwasserbauwerk_BetreiberAssoc =    !! Assoziation
   Abwasserbauwerk_BetreiberAssocRef -- {0..*} Abwasserbauwerk; !! Für den Unterhalt eines Bauwerks zuständige Stelle, Rolle2 - Klasse2 / Rôle2 - Classe2
 END Abwasserbauwerk_BetreiberAssoc;
 
-CLASS Kanal EXTENDS Abwasserbauwerk =  
+CLASS Kanal EXTENDS Abwasserbauwerk =
 !! Offenes oder geschlossenes Gerinne zur Ableitung von Abwasser zwischen zwei Abwasserbauwerken
   ATTRIBUTE
     Bettung_Umhuellung: (          !! Art und Weise der unmittelbaren Rohrumgebung im Boden: Bettungsschicht (Unterlage der Leitung),  Verdämmung (seitliche Auffüllung), Schutzschicht
@@ -285,7 +285,7 @@ CLASS Kanal EXTENDS Abwasserbauwerk =
     );
 END Kanal;
 
-CLASS Normschacht EXTENDS Abwasserbauwerk =  
+CLASS Normschacht EXTENDS Abwasserbauwerk =
 !! Normiertes Schachtbauwerk mit abnehmbarem Deckel im Kanalnetz
   ATTRIBUTE
     Dimension1: SIA405_Base.Abmessung;  !! Dimension1 des Schachtes (grösstes Innenmass).
@@ -323,7 +323,7 @@ CLASS Normschacht EXTENDS Abwasserbauwerk =
     );
 END Normschacht;
 
-CLASS Einleitstelle EXTENDS Abwasserbauwerk =  
+CLASS Einleitstelle EXTENDS Abwasserbauwerk =
 !! Auslauf aus dem Kanal in das Fliessgewässer
   ATTRIBUTE
     Hochwasserkote: Base.Hoehe;  !! Massgebliche Hochwasserkote der Einleitstelle. Diese ist in der Regel grösser als der Wasserspiegel_Hydraulik.
@@ -335,7 +335,7 @@ CLASS Einleitstelle EXTENDS Abwasserbauwerk =
     Wasserspiegel_Hydraulik: Base.Hoehe;  !! Wasserspiegelkote für die hydraulische Berechnung (IST-Zustand). Berechneter Wasserspiegel bei der Einleitstelle. Wo nichts anders gefordert, ist der Wasserspiegel bei einem HQ30 einzusetzen.
 END Einleitstelle;
 
-CLASS Spezialbauwerk EXTENDS Abwasserbauwerk =  
+CLASS Spezialbauwerk EXTENDS Abwasserbauwerk =
 !! Nicht normiertes Abwasserbauwerk mit spezieller Funktion, z.B zur Auftrennung von Abwassermengen, zur Überwindung von Höhenunterschieden oder zur Speicherung und Grobklärung
   ATTRIBUTE
     Bypass: (          !! Bypass zur Umleitung des Wassers (z.B. während Unterhalt oder  im Havariefall)
@@ -390,7 +390,7 @@ CLASS Spezialbauwerk EXTENDS Abwasserbauwerk =
     );
 END Spezialbauwerk;
 
-CLASS Versickerungsanlage EXTENDS Abwasserbauwerk =  
+CLASS Versickerungsanlage EXTENDS Abwasserbauwerk =
 !! Einbringen von Reinabwasser und wenig verschmutztem Regenabwasser in den Untergrund (Definition gemäss VSA Richtlinie Regenwasserentsorgung 2002)
   ATTRIBUTE
     Art: (          !! Arten von Versickerungsmethoden.
@@ -446,7 +446,7 @@ CLASS Versickerungsanlage EXTENDS Abwasserbauwerk =
     Wirksameflaeche: 0.00 .. 100000.00 [Units.m2];  !! Für den Abfluss wirksame Fläche
 END Versickerungsanlage;
 
-CLASS Rohrprofil EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Rohrprofil EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Form des Fliessquerschnittes mit Angabe der Dimension
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -463,7 +463,7 @@ CLASS Rohrprofil EXTENDS SIA405_Base.SIA405_BaseClass =
     );
 END Rohrprofil;
 
-CLASS Abwassernetzelement (ABSTRACT) EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Abwassernetzelement (ABSTRACT) EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Modelltechnischer Begriff für Abwasserknoten und Haltungen in der VSA-DSS
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -475,7 +475,7 @@ ASSOCIATION Abwassernetzelement_AbwasserbauwerkAssoc =    !! Assoziation
   Abwassernetzelement_AbwasserbauwerkAssocRef -- {0..*} Abwassernetzelement; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Abwassernetzelement_AbwasserbauwerkAssoc;
 
-CLASS Haltungspunkt EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS Haltungspunkt EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Anfangs- oder Endpunkt einer Haltung mit Detailinformationen zur Verbindung zwischen Abwassernetzelementen.
   ATTRIBUTE
     Auslaufform: (          !! Art des Auslaufs
@@ -504,7 +504,7 @@ ASSOCIATION Haltungspunkt_AbwassernetzelementAssoc =    !! Assoziation
   Haltungspunkt_AbwassernetzelementAssocRef -- {0..*} Haltungspunkt; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Haltungspunkt_AbwassernetzelementAssoc;
 
-CLASS Abwasserknoten EXTENDS Abwassernetzelement =  
+CLASS Abwasserknoten EXTENDS Abwassernetzelement =
 !! Verbindung zwischen zwei Haltungen, hydraulischer Bezugspunkt des Abwasserbauwerks (dss)
   ATTRIBUTE
     Lage: Base.LKoord;  !! Lage des Knotens, massgebender Bezugspunkt für die Kanalnetzberechnung. (In der Regel Lage des Pickellochs oder Lage des Trockenwetterauslaufs);
@@ -512,7 +512,7 @@ CLASS Abwasserknoten EXTENDS Abwassernetzelement =
     Sohlenkote: Base.Hoehe;  !! Tiefster Punkt des Abwasserbauwerks
 END Abwasserknoten;
 
-CLASS Haltung EXTENDS Abwassernetzelement =  
+CLASS Haltung EXTENDS Abwassernetzelement =
 !! Hydraulisch homogenes Transportelement des Kanalnetzes, Berechnungsabschnitt einer Abflusssimulation.
   ATTRIBUTE
     Innenschutz: (          !! Schutz der Innenwände des Kanals
@@ -631,7 +631,7 @@ ASSOCIATION Haltung_RohrprofilAssoc =    !! Assoziation
   Haltung_RohrprofilAssocRef -- {0..*} Haltung; !! {XOR (Haltung)}, Rolle2 - Klasse2 / Rôle2 - Classe2
 END Haltung_RohrprofilAssoc;
 
-CLASS BauwerksTeil (ABSTRACT) EXTENDS SIA405_Base.SIA405_BaseClass =  
+CLASS BauwerksTeil (ABSTRACT) EXTENDS SIA405_Base.SIA405_BaseClass =
 !! Bauliche Bestandteile und Einrichtungen eines Abwasserbauwerkes
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -648,13 +648,13 @@ ASSOCIATION BauwerksTeil_AbwasserbauwerkAssoc =    !! Komposition
   BauwerksTeil_AbwasserbauwerkAssocRef -- {0..*} BauwerksTeil; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END BauwerksTeil_AbwasserbauwerkAssoc;
 
-CLASS Trockenwetterfallrohr EXTENDS BauwerksTeil =  
+CLASS Trockenwetterfallrohr EXTENDS BauwerksTeil =
 !! Fallrohr in einem Absturzschacht zur Ableitung des Zuflusses bei Trockenwetter und Schwachregen
   ATTRIBUTE
     Durchmesser: SIA405_Base.Abmessung;  !! Abmessung des Deckels (bei eckigen Deckeln minimale Abmessung);
 END Trockenwetterfallrohr;
 
-CLASS Einstiegshilfe EXTENDS BauwerksTeil =  
+CLASS Einstiegshilfe EXTENDS BauwerksTeil =
 !! Element, welches den Zugang zu einem Abwasserbauwerk ermöglicht.
   ATTRIBUTE
     Art: (          !! Art des Einstiegs in das Bauwerk
@@ -670,7 +670,7 @@ CLASS Einstiegshilfe EXTENDS BauwerksTeil =
     );
 END Einstiegshilfe;
 
-CLASS Trockenwetterrinne EXTENDS BauwerksTeil =  
+CLASS Trockenwetterrinne EXTENDS BauwerksTeil =
 !! Bauliche Einengung des Kanalquerschnittes zwecks Erhöhung der Fliessgeschwindigkeit für den Trockenwetteranfall
   ATTRIBUTE
     Material: (          !! Material der Ausbildung oder Auskleidung der Trockenwetterrinne
@@ -683,7 +683,7 @@ CLASS Trockenwetterrinne EXTENDS BauwerksTeil =
     );
 END Trockenwetterrinne;
 
-CLASS Deckel EXTENDS BauwerksTeil =  
+CLASS Deckel EXTENDS BauwerksTeil =
 !! Abnehmbare Abdeckung eines Schachtbauwerkes
   ATTRIBUTE
     Deckelform: (          !! Form des Deckels
@@ -728,10 +728,10 @@ CLASS Deckel EXTENDS BauwerksTeil =
     );
 END Deckel;
 
-CLASS Bankett EXTENDS BauwerksTeil =  
+CLASS Bankett EXTENDS BauwerksTeil =
 !! Bankett im Kanal oder Schacht
   ATTRIBUTE
-    Art: (        
+    Art: (
       andere,
       beidseitig,
       einseitig,
@@ -747,11 +747,11 @@ VIEW TOPIC SIA405_Abwasser_LK =
 
 VIEW Abwassernetzelement
   PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Abwassernetzelement;
-  =  
+  =
   ATTRIBUTE
 END Abwassernetzelement;
 
-VIEW Abwassernetzelement_Abwasserbauwerk_Assoc 
+VIEW Abwassernetzelement_Abwasserbauwerk_Assoc
   PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Abwassernetzelement_AbwasserbauwerkAssoc;
   =
   ATTRIBUTE
@@ -760,7 +760,7 @@ END Abwassernetzelement_Abwasserbauwerk_Assoc;
 
 VIEW Abwasserbauwerk
   PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Abwasserbauwerk;
-  =  
+  =
   ATTRIBUTE
     Detailgeometrie :=base-> Detailgeometrie;
     Status :=base-> Status;
@@ -773,21 +773,21 @@ VIEW Abwasserbauwerk_Text
     ALL OF base;
 END Abwasserbauwerk_Text;
 
-VIEW Abwasserbauwerk_TextAssoc 
+VIEW Abwasserbauwerk_TextAssoc
   PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Abwasserbauwerk_TextAssoc;
   =
   ATTRIBUTE
     ALL OF base;
 END Abwasserbauwerk_TextAssoc;
 
-VIEW Abwasserbauwerk_Eigentuemer_Assoc 
+VIEW Abwasserbauwerk_Eigentuemer_Assoc
   PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Abwasserbauwerk_EigentuemerAssoc;
   =
   ATTRIBUTE
      ALL OF base;
 END Abwasserbauwerk_Eigentuemer_Assoc;
 
-VIEW Abwasserbauwerk_Betreiber_Assoc 
+VIEW Abwasserbauwerk_Betreiber_Assoc
   PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Abwasserbauwerk_BetreiberAssoc;
   =
   ATTRIBUTE
@@ -796,13 +796,13 @@ END Abwasserbauwerk_Betreiber_Assoc;
 
 VIEW Abwasserknoten
   PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Abwasserknoten;
-  =  
+  =
   ATTRIBUTE
 END Abwasserknoten;
 
 VIEW Deckel
   PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Deckel;
-  =  
+  =
   ATTRIBUTE
     Lage :=base-> Lage;
     Lagegenauigkeit :=base-> Lagegenauigkeit;
@@ -810,13 +810,13 @@ END Deckel;
 
 VIEW Einleitstelle
   PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Einleitstelle;
-  =  
+  =
   ATTRIBUTE
 END Einleitstelle;
 
 VIEW Haltung
   PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Haltung;
-  =  
+  =
   ATTRIBUTE
     Lagebestimmung :=base-> Lagebestimmung;
     Verlauf :=base-> Verlauf;
@@ -829,28 +829,28 @@ VIEW Haltung_Text
     ALL OF base;
 END Haltung_Text;
 
-VIEW Haltung_TextAssoc 
+VIEW Haltung_TextAssoc
   PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Haltung_TextAssoc;
   =
   ATTRIBUTE
     ALL OF base;
 END Haltung_TextAssoc;
 
-VIEW Haltung_vonHaltungspunkt_Assoc 
+VIEW Haltung_vonHaltungspunkt_Assoc
   PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Haltung_vonHaltungspunktAssoc;
   =
   ATTRIBUTE
      ALL OF base;
 END Haltung_vonHaltungspunkt_Assoc;
 
-VIEW Haltung_nachHaltungspunkt_Assoc 
+VIEW Haltung_nachHaltungspunkt_Assoc
   PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Haltung_nachHaltungspunktAssoc;
   =
   ATTRIBUTE
      ALL OF base;
 END Haltung_nachHaltungspunkt_Assoc;
 
-VIEW Haltung_Rohrprofil_Assoc 
+VIEW Haltung_Rohrprofil_Assoc
   PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Haltung_RohrprofilAssoc;
   =
   ATTRIBUTE
@@ -859,12 +859,12 @@ END Haltung_Rohrprofil_Assoc;
 
 VIEW Haltungspunkt
   PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Haltungspunkt;
-  =  
+  =
   ATTRIBUTE
     Lage :=base-> Lage;
 END Haltungspunkt;
 
-VIEW Haltungspunkt_Abwassernetzelement_Assoc 
+VIEW Haltungspunkt_Abwassernetzelement_Assoc
   PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Haltungspunkt_AbwassernetzelementAssoc;
   =
   ATTRIBUTE
@@ -873,21 +873,21 @@ END Haltungspunkt_Abwassernetzelement_Assoc;
 
 VIEW Kanal
   PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Kanal;
-  =  
+  =
   ATTRIBUTE
     FunktionHierarchisch :=base-> FunktionHierarchisch;
 END Kanal;
 
 VIEW Normschacht
   PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Normschacht;
-  =  
+  =
   ATTRIBUTE
     Funktion :=base-> Funktion;
 END Normschacht;
 
 VIEW Rohrprofil
   PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Rohrprofil;
-  =  
+  =
   ATTRIBUTE
     HoehenBreitenverhaeltnis :=base-> HoehenBreitenverhaeltnis;
     Profiltyp :=base-> Profiltyp;
@@ -895,14 +895,14 @@ END Rohrprofil;
 
 VIEW Spezialbauwerk
   PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Spezialbauwerk;
-  =  
+  =
   ATTRIBUTE
     Funktion :=base-> Funktion;
 END Spezialbauwerk;
 
 VIEW Versickerungsanlage
   PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Versickerungsanlage;
-  =  
+  =
   ATTRIBUTE
 END Versickerungsanlage;
 
@@ -917,7 +917,7 @@ END SIA405_ABWASSER_2015.   !! Ende des Modells / Fin du modèle
 !! INTERLIS 2.3;
 
 MODEL SIA405_ABWASSER_2015_LV95 (de) AT "http://www.sia.ch/405"
-  VERSION "17.04.2018" = 
+  VERSION "17.04.2018" =
 
   IMPORTS UNQUALIFIED INTERLIS;     !! imports INTERLIS 2 Baseunits
   IMPORTS Units;
@@ -932,10 +932,10 @@ MODEL SIA405_ABWASSER_2015_LV95 (de) AT "http://www.sia.ch/405"
 
 !! Die Nutzung dieser INTERLIS-Datei ist lizenzpflichtig!
 
-!! Die Originalmodelldatei SIA405_Abwasser_2015_2_d_LV95.ili und darauf basierende 
-!! abgeänderte Versionen dürfen nicht weiterverkauft werden. 
-!! Die Weitergabe der Originaldatei (als Ganzes oder Teile davon) ist nur 
-!! zusammen mit dem Erwerb einer Lizenz beim sia / VSA durch den Empfänger erlaubt. 
+!! Die Originalmodelldatei SIA405_Abwasser_2015_2_d_LV95.ili und darauf basierende
+!! abgeänderte Versionen dürfen nicht weiterverkauft werden.
+!! Die Weitergabe der Originaldatei (als Ganzes oder Teile davon) ist nur
+!! zusammen mit dem Erwerb einer Lizenz beim sia / VSA durch den Empfänger erlaubt.
 
 !! Freigegeben für öffentlichen Gebrauch und kommerzielle Anwendung mit Lizenz.
 !! Geprueft mit Compiler Version 4.7.7 (8.02.2018)
@@ -952,7 +952,7 @@ Verhaeltnis_H_B = 0.01 .. 100.00;    !! Verhältnis Höhe zu Breite, ohne Einheit
 !! Rohrprofil.HoehenBreitenverhaeltnis
 
 
-Statuswerte EXTENDS SIA405_Base_LV95.Status = (  !! Betriebs- und Planungszustand. 
+Statuswerte EXTENDS SIA405_Base_LV95.Status = (  !! Betriebs- und Planungszustand.
 !! 11.2.2012 Anpassung auf neue Variante von SIA405_Base_LV95.Status - Erweiterung Basiswerte im Medium, hierarchische Modellierung und Anpassung auf Compiler 4.5.13
       !! 17.7.2015 ausser_Betrieb,   !! fasst ausser_Betrieb und folgende Werte zusammen
         !!  Reserve !! existiert nicht im Medium Abwasser
@@ -974,7 +974,7 @@ Statuswerte EXTENDS SIA405_Base_LV95.Status = (  !! Betriebs- und Planungszustan
          Projekt
       )
     );    !! Erweitert Wertebereich von SIA405 Status
-!! neu 17.7.2015  
+!! neu 17.7.2015
     Status = ALL OF Statuswerte;    !! Erweitert Wertebereich von SIA405 Status
 !! Abwasserbauwerk.Status
 
@@ -1003,16 +1003,16 @@ Lichte_Hoehe = 0 .. 99999 [Units.mm];    !! Milimeter [mm]
 !! Haltung.Reliner_Nennweite
 
 
-UID = TEXT*12;    !! 
+UID = TEXT*12;    !!
 !! Organisation.UID
 
 
-Ziffernblatt = 0..12;    !! 
+Ziffernblatt = 0..12;    !!
 !! gemäss Richtlinie
 !! Haltungspunkt.Lage_Anschluss
 
 
-CLASS Organisation EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Organisation EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Superklasse für in der Entwässerungsplanung relevante organisatorische Einheiten (z.B. Gemeinde, Kanton, etc.)
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -1025,7 +1025,7 @@ ASSOCIATION Organisation_Teil_vonAssoc =    !! Assoziation
   Organisation_Teil_vonAssocRef -- {0..*} Organisation; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Organisation_Teil_vonAssoc;
 
-CLASS Abwasserbauwerk (ABSTRACT) EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Abwasserbauwerk (ABSTRACT) EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Bauwerk in einem Entwässerungsnetz (dss)
   ATTRIBUTE
     Akten: MTEXT*255;  !! Plan Nr. der Ausführungsdokumentation. Kurzbeschrieb weiterer Akten (Betriebsanleitung vom …, etc.);
@@ -1105,7 +1105,7 @@ ASSOCIATION Abwasserbauwerk_BetreiberAssoc =    !! Assoziation
   Abwasserbauwerk_BetreiberAssocRef -- {0..*} Abwasserbauwerk; !! Für den Unterhalt eines Bauwerks zuständige Stelle, Rolle2 - Klasse2 / Rôle2 - Classe2
 END Abwasserbauwerk_BetreiberAssoc;
 
-CLASS Kanal EXTENDS Abwasserbauwerk =  
+CLASS Kanal EXTENDS Abwasserbauwerk =
 !! Offenes oder geschlossenes Gerinne zur Ableitung von Abwasser zwischen zwei Abwasserbauwerken
   ATTRIBUTE
     Bettung_Umhuellung: (          !! Art und Weise der unmittelbaren Rohrumgebung im Boden: Bettungsschicht (Unterlage der Leitung),  Verdämmung (seitliche Auffüllung), Schutzschicht
@@ -1198,7 +1198,7 @@ CLASS Kanal EXTENDS Abwasserbauwerk =
     );
 END Kanal;
 
-CLASS Normschacht EXTENDS Abwasserbauwerk =  
+CLASS Normschacht EXTENDS Abwasserbauwerk =
 !! Normiertes Schachtbauwerk mit abnehmbarem Deckel im Kanalnetz
   ATTRIBUTE
     Dimension1: SIA405_Base_LV95.Abmessung;  !! Dimension1 des Schachtes (grösstes Innenmass).
@@ -1236,7 +1236,7 @@ CLASS Normschacht EXTENDS Abwasserbauwerk =
     );
 END Normschacht;
 
-CLASS Einleitstelle EXTENDS Abwasserbauwerk =  
+CLASS Einleitstelle EXTENDS Abwasserbauwerk =
 !! Auslauf aus dem Kanal in das Fliessgewässer
   ATTRIBUTE
     Hochwasserkote: Base_LV95.Hoehe;  !! Massgebliche Hochwasserkote der Einleitstelle. Diese ist in der Regel grösser als der Wasserspiegel_Hydraulik.
@@ -1248,7 +1248,7 @@ CLASS Einleitstelle EXTENDS Abwasserbauwerk =
     Wasserspiegel_Hydraulik: Base_LV95.Hoehe;  !! Wasserspiegelkote für die hydraulische Berechnung (IST-Zustand). Berechneter Wasserspiegel bei der Einleitstelle. Wo nichts anders gefordert, ist der Wasserspiegel bei einem HQ30 einzusetzen.
 END Einleitstelle;
 
-CLASS Spezialbauwerk EXTENDS Abwasserbauwerk =  
+CLASS Spezialbauwerk EXTENDS Abwasserbauwerk =
 !! Nicht normiertes Abwasserbauwerk mit spezieller Funktion, z.B zur Auftrennung von Abwassermengen, zur Überwindung von Höhenunterschieden oder zur Speicherung und Grobklärung
   ATTRIBUTE
     Bypass: (          !! Bypass zur Umleitung des Wassers (z.B. während Unterhalt oder  im Havariefall)
@@ -1303,7 +1303,7 @@ CLASS Spezialbauwerk EXTENDS Abwasserbauwerk =
     );
 END Spezialbauwerk;
 
-CLASS Versickerungsanlage EXTENDS Abwasserbauwerk =  
+CLASS Versickerungsanlage EXTENDS Abwasserbauwerk =
 !! Einbringen von Reinabwasser und wenig verschmutztem Regenabwasser in den Untergrund (Definition gemäss VSA Richtlinie Regenwasserentsorgung 2002)
   ATTRIBUTE
     Art: (          !! Arten von Versickerungsmethoden.
@@ -1359,7 +1359,7 @@ CLASS Versickerungsanlage EXTENDS Abwasserbauwerk =
     Wirksameflaeche: 0.00 .. 100000.00 [Units.m2];  !! Für den Abfluss wirksame Fläche
 END Versickerungsanlage;
 
-CLASS Rohrprofil EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Rohrprofil EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Form des Fliessquerschnittes mit Angabe der Dimension
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -1376,7 +1376,7 @@ CLASS Rohrprofil EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
     );
 END Rohrprofil;
 
-CLASS Abwassernetzelement (ABSTRACT) EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Abwassernetzelement (ABSTRACT) EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Modelltechnischer Begriff für Abwasserknoten und Haltungen in der VSA-DSS
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -1388,7 +1388,7 @@ ASSOCIATION Abwassernetzelement_AbwasserbauwerkAssoc =    !! Assoziation
   Abwassernetzelement_AbwasserbauwerkAssocRef -- {0..*} Abwassernetzelement; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Abwassernetzelement_AbwasserbauwerkAssoc;
 
-CLASS Haltungspunkt EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS Haltungspunkt EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Anfangs- oder Endpunkt einer Haltung mit Detailinformationen zur Verbindung zwischen Abwassernetzelementen.
   ATTRIBUTE
     Auslaufform: (          !! Art des Auslaufs
@@ -1417,7 +1417,7 @@ ASSOCIATION Haltungspunkt_AbwassernetzelementAssoc =    !! Assoziation
   Haltungspunkt_AbwassernetzelementAssocRef -- {0..*} Haltungspunkt; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END Haltungspunkt_AbwassernetzelementAssoc;
 
-CLASS Abwasserknoten EXTENDS Abwassernetzelement =  
+CLASS Abwasserknoten EXTENDS Abwassernetzelement =
 !! Verbindung zwischen zwei Haltungen, hydraulischer Bezugspunkt des Abwasserbauwerks (dss)
   ATTRIBUTE
     Lage: Base_LV95.LKoord;  !! Lage des Knotens, massgebender Bezugspunkt für die Kanalnetzberechnung. (In der Regel Lage des Pickellochs oder Lage des Trockenwetterauslaufs);
@@ -1425,7 +1425,7 @@ CLASS Abwasserknoten EXTENDS Abwassernetzelement =
     Sohlenkote: Base_LV95.Hoehe;  !! Tiefster Punkt des Abwasserbauwerks
 END Abwasserknoten;
 
-CLASS Haltung EXTENDS Abwassernetzelement =  
+CLASS Haltung EXTENDS Abwassernetzelement =
 !! Hydraulisch homogenes Transportelement des Kanalnetzes, Berechnungsabschnitt einer Abflusssimulation.
   ATTRIBUTE
     Innenschutz: (          !! Schutz der Innenwände des Kanals
@@ -1544,7 +1544,7 @@ ASSOCIATION Haltung_RohrprofilAssoc =    !! Assoziation
   Haltung_RohrprofilAssocRef -- {0..*} Haltung; !! {XOR (Haltung)}, Rolle2 - Klasse2 / Rôle2 - Classe2
 END Haltung_RohrprofilAssoc;
 
-CLASS BauwerksTeil (ABSTRACT) EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+CLASS BauwerksTeil (ABSTRACT) EXTENDS SIA405_Base_LV95.SIA405_BaseClass =
 !! Bauliche Bestandteile und Einrichtungen eines Abwasserbauwerkes
   ATTRIBUTE
     Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
@@ -1561,13 +1561,13 @@ ASSOCIATION BauwerksTeil_AbwasserbauwerkAssoc =    !! Komposition
   BauwerksTeil_AbwasserbauwerkAssocRef -- {0..*} BauwerksTeil; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
 END BauwerksTeil_AbwasserbauwerkAssoc;
 
-CLASS Trockenwetterfallrohr EXTENDS BauwerksTeil =  
+CLASS Trockenwetterfallrohr EXTENDS BauwerksTeil =
 !! Fallrohr in einem Absturzschacht zur Ableitung des Zuflusses bei Trockenwetter und Schwachregen
   ATTRIBUTE
     Durchmesser: SIA405_Base_LV95.Abmessung;  !! Abmessung des Deckels (bei eckigen Deckeln minimale Abmessung);
 END Trockenwetterfallrohr;
 
-CLASS Einstiegshilfe EXTENDS BauwerksTeil =  
+CLASS Einstiegshilfe EXTENDS BauwerksTeil =
 !! Element, welches den Zugang zu einem Abwasserbauwerk ermöglicht.
   ATTRIBUTE
     Art: (          !! Art des Einstiegs in das Bauwerk
@@ -1583,7 +1583,7 @@ CLASS Einstiegshilfe EXTENDS BauwerksTeil =
     );
 END Einstiegshilfe;
 
-CLASS Trockenwetterrinne EXTENDS BauwerksTeil =  
+CLASS Trockenwetterrinne EXTENDS BauwerksTeil =
 !! Bauliche Einengung des Kanalquerschnittes zwecks Erhöhung der Fliessgeschwindigkeit für den Trockenwetteranfall
   ATTRIBUTE
     Material: (          !! Material der Ausbildung oder Auskleidung der Trockenwetterrinne
@@ -1596,7 +1596,7 @@ CLASS Trockenwetterrinne EXTENDS BauwerksTeil =
     );
 END Trockenwetterrinne;
 
-CLASS Deckel EXTENDS BauwerksTeil =  
+CLASS Deckel EXTENDS BauwerksTeil =
 !! Abnehmbare Abdeckung eines Schachtbauwerkes
   ATTRIBUTE
     Deckelform: (          !! Form des Deckels
@@ -1641,10 +1641,10 @@ CLASS Deckel EXTENDS BauwerksTeil =
     );
 END Deckel;
 
-CLASS Bankett EXTENDS BauwerksTeil =  
+CLASS Bankett EXTENDS BauwerksTeil =
 !! Bankett im Kanal oder Schacht
   ATTRIBUTE
-    Art: (        
+    Art: (
       andere,
       beidseitig,
       einseitig,
@@ -1660,11 +1660,11 @@ VIEW TOPIC SIA405_Abwasser_LK =
 
 VIEW Abwassernetzelement
   PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Abwassernetzelement;
-  =  
+  =
   ATTRIBUTE
 END Abwassernetzelement;
 
-VIEW Abwassernetzelement_Abwasserbauwerk_Assoc 
+VIEW Abwassernetzelement_Abwasserbauwerk_Assoc
   PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Abwassernetzelement_AbwasserbauwerkAssoc;
   =
   ATTRIBUTE
@@ -1673,7 +1673,7 @@ END Abwassernetzelement_Abwasserbauwerk_Assoc;
 
 VIEW Abwasserbauwerk
   PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Abwasserbauwerk;
-  =  
+  =
   ATTRIBUTE
     Detailgeometrie :=base-> Detailgeometrie;
     Status :=base-> Status;
@@ -1686,21 +1686,21 @@ VIEW Abwasserbauwerk_Text
     ALL OF base;
 END Abwasserbauwerk_Text;
 
-VIEW Abwasserbauwerk_TextAssoc 
+VIEW Abwasserbauwerk_TextAssoc
   PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Abwasserbauwerk_TextAssoc;
   =
   ATTRIBUTE
     ALL OF base;
 END Abwasserbauwerk_TextAssoc;
 
-VIEW Abwasserbauwerk_Eigentuemer_Assoc 
+VIEW Abwasserbauwerk_Eigentuemer_Assoc
   PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Abwasserbauwerk_EigentuemerAssoc;
   =
   ATTRIBUTE
      ALL OF base;
 END Abwasserbauwerk_Eigentuemer_Assoc;
 
-VIEW Abwasserbauwerk_Betreiber_Assoc 
+VIEW Abwasserbauwerk_Betreiber_Assoc
   PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Abwasserbauwerk_BetreiberAssoc;
   =
   ATTRIBUTE
@@ -1709,13 +1709,13 @@ END Abwasserbauwerk_Betreiber_Assoc;
 
 VIEW Abwasserknoten
   PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Abwasserknoten;
-  =  
+  =
   ATTRIBUTE
 END Abwasserknoten;
 
 VIEW Deckel
   PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Deckel;
-  =  
+  =
   ATTRIBUTE
     Lage :=base-> Lage;
     Lagegenauigkeit :=base-> Lagegenauigkeit;
@@ -1723,13 +1723,13 @@ END Deckel;
 
 VIEW Einleitstelle
   PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Einleitstelle;
-  =  
+  =
   ATTRIBUTE
 END Einleitstelle;
 
 VIEW Haltung
   PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Haltung;
-  =  
+  =
   ATTRIBUTE
     Lagebestimmung :=base-> Lagebestimmung;
     Verlauf :=base-> Verlauf;
@@ -1742,28 +1742,28 @@ VIEW Haltung_Text
     ALL OF base;
 END Haltung_Text;
 
-VIEW Haltung_TextAssoc 
+VIEW Haltung_TextAssoc
   PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Haltung_TextAssoc;
   =
   ATTRIBUTE
     ALL OF base;
 END Haltung_TextAssoc;
 
-VIEW Haltung_vonHaltungspunkt_Assoc 
+VIEW Haltung_vonHaltungspunkt_Assoc
   PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Haltung_vonHaltungspunktAssoc;
   =
   ATTRIBUTE
      ALL OF base;
 END Haltung_vonHaltungspunkt_Assoc;
 
-VIEW Haltung_nachHaltungspunkt_Assoc 
+VIEW Haltung_nachHaltungspunkt_Assoc
   PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Haltung_nachHaltungspunktAssoc;
   =
   ATTRIBUTE
      ALL OF base;
 END Haltung_nachHaltungspunkt_Assoc;
 
-VIEW Haltung_Rohrprofil_Assoc 
+VIEW Haltung_Rohrprofil_Assoc
   PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Haltung_RohrprofilAssoc;
   =
   ATTRIBUTE
@@ -1772,12 +1772,12 @@ END Haltung_Rohrprofil_Assoc;
 
 VIEW Haltungspunkt
   PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Haltungspunkt;
-  =  
+  =
   ATTRIBUTE
     Lage :=base-> Lage;
 END Haltungspunkt;
 
-VIEW Haltungspunkt_Abwassernetzelement_Assoc 
+VIEW Haltungspunkt_Abwassernetzelement_Assoc
   PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Haltungspunkt_AbwassernetzelementAssoc;
   =
   ATTRIBUTE
@@ -1786,21 +1786,21 @@ END Haltungspunkt_Abwassernetzelement_Assoc;
 
 VIEW Kanal
   PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Kanal;
-  =  
+  =
   ATTRIBUTE
     FunktionHierarchisch :=base-> FunktionHierarchisch;
 END Kanal;
 
 VIEW Normschacht
   PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Normschacht;
-  =  
+  =
   ATTRIBUTE
     Funktion :=base-> Funktion;
 END Normschacht;
 
 VIEW Rohrprofil
   PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Rohrprofil;
-  =  
+  =
   ATTRIBUTE
     HoehenBreitenverhaeltnis :=base-> HoehenBreitenverhaeltnis;
     Profiltyp :=base-> Profiltyp;
@@ -1808,19 +1808,17 @@ END Rohrprofil;
 
 VIEW Spezialbauwerk
   PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Spezialbauwerk;
-  =  
+  =
   ATTRIBUTE
     Funktion :=base-> Funktion;
 END Spezialbauwerk;
 
 VIEW Versickerungsanlage
   PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Versickerungsanlage;
-  =  
+  =
   ATTRIBUTE
 END Versickerungsanlage;
 
 END SIA405_Abwasser_LK;  !! Ende der View
 
 END SIA405_ABWASSER_2015_LV95.   !! Ende des Modells / Fin du modèle
-
-

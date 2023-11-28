@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 /***************************************************************************
  QGEP-swmm processing provider
@@ -92,9 +90,7 @@ class SwmmSetFrictionAlgorithm(QgepAlgorithm):
 
         # init params
         database = self.parameterAsString(parameters, self.DATABASE, context)
-        overwrite_values = self.parameterAsBoolean(
-            parameters, self.OVERWRITE_VALUES, context
-        )
+        overwrite_values = self.parameterAsBoolean(parameters, self.OVERWRITE_VALUES, context)
         # Connect to QGEP database and perform translation
         with QgepSwmm(None, database, None, None, None, None, None, feedback) as qs:
             qs.disable_reach_trigger()

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -----------------------------------------------------------
 #
 # Profile
@@ -26,21 +25,18 @@
 """
 Manages a graph of a wastewater network
 """
-from __future__ import print_function
 
 import copyreg
 import re
 import time
 
 # pylint: disable=no-name-in-module
-from builtins import object, str, zip
 from collections import defaultdict
 
 import networkx as nx
+from qgepplugin.utils.qt_utils import OverrideCursor
 from qgis.core import NULL, Qgis, QgsGeometry, QgsMessageLog, QgsPointXY
 from qgis.PyQt.QtCore import QObject, Qt, pyqtSignal
-
-from qgepplugin.utils.qt_utils import OverrideCursor
 
 
 class QgepGraphManager(QObject):
@@ -263,9 +259,7 @@ class QgepGraphManager(QObject):
 
         try:
             path = nx.algorithms.dijkstra_path(self.graph, start_point, end_point)
-            edges = [
-                (u, v, self.graph.edges[u, v]) for (u, v) in zip(path[0:], path[1:])
-            ]
+            edges = [(u, v, self.graph.edges[u, v]) for (u, v) in zip(path[0:], path[1:])]
 
             p = (path, edges)
 
@@ -301,9 +295,7 @@ class QgepGraphManager(QObject):
 
         # Returns pred, weight
         pred, _ = nx.bellman_ford_predecessor_and_distance(my_graph, node)
-        edges = [
-            (v[0], u, my_graph.edges[v[0], u]) for (u, v) in list(pred.items()) if v
-        ]
+        edges = [(v[0], u, my_graph.edges[v[0], u]) for (u, v) in list(pred.items()) if v]
         nodes = [
             my_graph.nodes[n]
             for n in set(list(pred.keys()) + [v[0] for v in list(pred.values()) if v])
@@ -319,9 +311,7 @@ class QgepGraphManager(QObject):
         :return:       A list of polylines
         """
         cache = self.getFeaturesById(self.edge_layer, edges)
-        polylines = [
-            feat.geometry().asPolyline() for feat in list(cache.asDict().values())
-        ]
+        polylines = [feat.geometry().asPolyline() for feat in list(cache.asDict().values())]
         return polylines
 
     # pylint: disable=no-self-use
@@ -361,11 +351,11 @@ class QgepGraphManager(QObject):
         """
         Will print some performance profiling information
         """
-        for (name, spenttime) in self.timings:
+        for name, spenttime in self.timings:
             print(name + ":" + str(spenttime))
 
 
-class QgepFeatureCache(object):
+class QgepFeatureCache:
     """
     A feature cache.
     The DB can be slow sometimes, so if we know, that we'll be using some features
@@ -433,9 +423,7 @@ class QgepFeatureCache(object):
             else:
                 return feat[attr]
         except KeyError:
-            QgsMessageLog.logMessage(
-                "Unknown field {}".format(attr), "qgep", Qgis.Critical
-            )
+            QgsMessageLog.logMessage(f"Unknown field {attr}", "qgep", Qgis.Critical)
             return None
 
     def attrAsGeometry(self, feat, attr):

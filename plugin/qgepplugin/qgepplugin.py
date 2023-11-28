@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -----------------------------------------------------------
 #
 # QGEP
@@ -24,11 +23,9 @@
 #
 # ---------------------------------------------------------------------
 
-from __future__ import absolute_import, print_function
 
 import logging
 import os
-from builtins import object, str
 
 from qgis.core import Qgis, QgsApplication
 from qgis.PyQt.QtCore import QLocale, QSettings, Qt
@@ -61,7 +58,7 @@ def locale(values, feature, parent):
     return QSettings().value("locale/userLocale", QLocale.system().name())
 
 
-class QgepPlugin(object):
+class QgepPlugin:
     """
     A plugin for wastewater management
     https://github.com/teksi/teksi_wastewater
@@ -199,11 +196,7 @@ class QgepPlugin(object):
         self.wizardAction.triggered.connect(self.wizard)
 
         self.connectNetworkElementsAction = QAction(
-            QIcon(
-                os.path.join(
-                    plugin_root_path(), "icons/link-wastewater-networkelement.svg"
-                )
-            ),
+            QIcon(os.path.join(plugin_root_path(), "icons/link-wastewater-networkelement.svg")),
             QApplication.translate("qgepplugin", "Connect wastewater networkelements"),
             self.iface.mainWindow(),
         )
@@ -216,9 +209,7 @@ class QgepPlugin(object):
             "Refresh network topology",
             self.iface.mainWindow(),
         )
-        self.refreshNetworkTopologyAction.setWhatsThis(
-            self.tr("Refresh network topology")
-        )
+        self.refreshNetworkTopologyAction.setWhatsThis(self.tr("Refresh network topology"))
         self.refreshNetworkTopologyAction.setEnabled(False)
         self.refreshNetworkTopologyAction.setCheckable(False)
         self.refreshNetworkTopologyAction.triggered.connect(
@@ -251,9 +242,7 @@ class QgepPlugin(object):
         self.exportAction.setCheckable(False)
         self.exportAction.triggered.connect(self.actionExportClicked)
 
-        self.datamodelInitToolAction = QAction(
-            self.tr("Datamodel tool"), self.iface.mainWindow()
-        )
+        self.datamodelInitToolAction = QAction(self.tr("Datamodel tool"), self.iface.mainWindow())
         self.datamodelInitToolAction.triggered.connect(self.showDatamodelInitTool)
 
         # Add toolbar button and menu item
@@ -292,9 +281,7 @@ class QgepPlugin(object):
 
         # Init the object maintaining the network
         self.network_analyzer = QgepGraphManager()
-        self.network_analyzer.message_emitted.connect(
-            self.iface.messageBar().pushMessage
-        )
+        self.network_analyzer.message_emitted.connect(self.iface.messageBar().pushMessage)
         # Create the map tool for profile selection
         self.profile_tool = QgepProfileMapTool(
             self.iface, self.profileAction, self.network_analyzer
@@ -414,15 +401,9 @@ class QgepPlugin(object):
             self.profile_dock.closed.connect(self.onDockClosed)
             self.profile_dock.showIt()
 
-            self.plotWidget = QgepPlotSVGWidget(
-                self.profile_dock, self.network_analyzer
-            )
-            self.plotWidget.specialStructureMouseOver.connect(
-                self.highlightProfileElement
-            )
-            self.plotWidget.specialStructureMouseOut.connect(
-                self.unhighlightProfileElement
-            )
+            self.plotWidget = QgepPlotSVGWidget(self.profile_dock, self.network_analyzer)
+            self.plotWidget.specialStructureMouseOver.connect(self.highlightProfileElement)
+            self.plotWidget.specialStructureMouseOut.connect(self.unhighlightProfileElement)
             self.plotWidget.reachMouseOver.connect(self.highlightProfileElement)
             self.plotWidget.reachMouseOut.connect(self.unhighlightProfileElement)
             self.profile_dock.addPlotWidget(self.plotWidget)
