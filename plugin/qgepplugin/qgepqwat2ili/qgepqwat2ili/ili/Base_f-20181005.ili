@@ -1,0 +1,167 @@
+!! Base_f-20180410.ili
+!! 10.4.2018 Neu auch mit Base_f_LV95 in der gleichen Datei
+
+INTERLIS 2.3; 
+
+TYPE MODEL Base_f (fr) AT "http://www.sia.ch/405" 
+  VERSION "05.10.2018" TRANSLATION OF Base [ "05.10.2018" ] =
+
+  IMPORTS UNQUALIFIED INTERLIS;		!! nouveau 8.11.2004, importer INTERLIS 2.3. unitées de base
+  IMPORTS Units;   
+  !! IMPORTS CoordSys; 
+  !! REFSYSTEM BASKET BCoordSys ~ CoordSys.CoordsysTopic;  
+
+!! Copyright 2003 - 2018 SIA
+
+!! Des changements et compléments sont permis pour l'utilisation personnelle. 
+!! Ceux-ci doivent être documentés visiblement, afin de repérer les modifications 
+!! apportées (insérer des commentaires INTERLIS). 
+!! Les fichiers modèles originaux  et les versions 
+!! modifiées à partir de ceux-ci ne peuvent pas être revendus.
+
+!! Vérifié avec Compiler version 4.7.7 du 08.02.2018
+!! Greffier: Stefan Burckhardt / Commission SIA 405
+
+!! 4.2.2013 Corrections et adaptions française
+!! 18.4.2014 Correction domaine des valeurs pour CoordNat et CoordH pour LV95  (1070000.000 au lieu de 170000.000 .. 1300000.000)
+!! 30.10.2017 Polyligne au lieu de Polyline
+!! 10.4.2018 Checked with Compiler 4.7.7 vom 08.02.2018
+!! to do 5.10.2018 Checked with Compiler 4.7.7 vom 08.02.2018
+
+
+  DOMAIN 
+    !! Types généraux pour tous les modèles 
+
+    Orientation = 0.0 .. 359.9 CIRCULAR [Units.Angle_Degree]; 
+
+    CoordNat = COORD 480000.000 .. 840000.000 [m], !!CHMN03/1,
+                     70000.000 .. 300000.000 [m],  !!CHMN03/2,
+	           ROTATION 2 -> 1; 
+
+    CoordH = COORD 480000.000 .. 840000.000 [m], !!CHMN03/1,
+                   70000.000 .. 300000.000 [m], !!CHMN03/2,
+                   -200.000 .. 5000.000 [m], !!SwissOrthometricAlt,
+                   ROTATION 2 -> 1;
+
+
+    Altitude = -200.000 .. 5000.000 [m]; !!SwissOrthometricAlt;
+
+    Polyligne = POLYLINE WITH (STRAIGHTS, ARCS) VERTEX CoordNat; 
+
+    !! nouveau 2.1.2013
+    !! Surface = SURFACE WITH (STRAIGHTS, ARCS) VERTEX CoordNat WITHOUT OVERLAPS > 0.000; 
+    Surface = SURFACE WITH (STRAIGHTS, ARCS) VERTEX CoordNat WITHOUT OVERLAPS > 0.050; 
+
+!!  nouveau 2.8.2011
+    Polyligne3D = POLYLINE WITH (STRAIGHTS, ARCS) VERTEX CoordH;
+	
+!! nouveau 23.5.2012
+!!    Surface3D = SURFACE WITH (STRAIGHTS, ARCS) VERTEX HKoord WITHOUT OVERLAPS > 0.000;
+    Surface3D = SURFACE WITH (STRAIGHTS, ARCS) VERTEX CoordH WITHOUT OVERLAPS > 0.050;
+
+
+!! nouveau 25.1.2012
+   CLASS BaseClass (ABSTRACT) =
+   !! BaseClass pour toutes les sub classes (Subclass - héritage)
+
+   END BaseClass;  
+
+!! nouveau 4.8.2011 / 21.2.2012 (hérité de BaseClass)
+   CLASS TextePos (ABSTRACT) EXTENDS BaseClass =
+      TEXTEPOS: MANDATORY CoordNat; 
+      TEXTEORI: MANDATORY Orientation;
+      TEXTEHALI: MANDATORY HALIGNMENT;
+      TEXTEVALI: MANDATORY VALIGNMENT;
+   END TextePos; 
+
+!! nouveau 30.8.2011 / 21.2.2012 (hérité de BaseClass)
+   CLASS SymbolePos (ABSTRACT) EXTENDS BaseClass =
+      SYMBOLEPOS: MANDATORY CoordNat;  
+      SYMBOLEORI: MANDATORY Orientation;  !! Default: 90 degree
+
+   END SymbolePos; 
+
+END Base_f. 
+
+
+
+TYPE MODEL Base_f_LV95 (fr) AT "http://www.sia.ch/405" 
+  VERSION "10.04.2018" TRANSLATION OF Base_LV95 [ "10.04.2018" ] =
+
+  IMPORTS UNQUALIFIED INTERLIS;		!! nouveau 8.11.2004, importer INTERLIS 2.3. unitées de base
+  IMPORTS Units;   
+  !! IMPORTS CoordSys; 
+  !! REFSYSTEM BASKET BCoordSys ~ CoordSys.CoordsysTopic;  
+
+!! Copyright 2003 - 2018 SIA
+
+!! Des changements et compléments sont permis pour l'utilisation personnelle. 
+!! Ceux-ci doivent être documentés visiblement, afin de repérer les modifications 
+!! apportées (insérer des commentaires INTERLIS). 
+!! Les fichiers modèles originaux  et les versions 
+!! modifiées à partir de ceux-ci ne peuvent pas être revendus.
+
+!! Vérifié avec Compiler version 4.7.7 du 08.02.2018
+!! Greffier: Stefan Burckhardt / Commission SIA 405
+
+!! 4.2.2013 Corrections et adaptions française
+!! 18.4.2014 Correction domaine des valeurs pour CoordNat et CoordH pour LV95  (1070000.000 au lieu de 170000.000 .. 1300000.000)
+!! 30.10.2017 Polyligne au lieu de Polyline
+!! 31.10.2017 Version _LV95
+!! 10.4.2018 Checked with Compiler 4.7.7 vom 08.02.2018
+
+  DOMAIN 
+    !! Types généraux pour tous les modèles 
+
+    Orientation = 0.0 .. 359.9 CIRCULAR [Units.Angle_Degree]; 
+
+    
+!! pour LV95 veuillez utiliser ces définitions
+!! 10.04.2018
+   CoordNat = COORD 2480000.000 .. 2840000.000 [m], !!{CHMN95/1}, 
+                   1070000.000 .. 1300000.000 [m],  !!{CHMN95/2},
+                   ROTATION 2 -> 1;
+
+    CoordH = COORD 2480000.000 .. 2840000.000 [m], !!{CHMN95/1},
+                   1070000.000 .. 1300000.000 [m], !!{CHMN95/2}, 
+                   -200.000 .. 5000.000 [m], !!{SwissOrthometricAlt},
+                   ROTATION 2 -> 1;
+
+    Altitude = -200.000 .. 5000.000 [m]; !!SwissOrthometricAlt;
+
+    Polyligne = POLYLINE WITH (STRAIGHTS, ARCS) VERTEX CoordNat; 
+
+    !! nouveau 2.1.2013
+    !! Surface = SURFACE WITH (STRAIGHTS, ARCS) VERTEX CoordNat WITHOUT OVERLAPS > 0.000; 
+    Surface = SURFACE WITH (STRAIGHTS, ARCS) VERTEX CoordNat WITHOUT OVERLAPS > 0.050; 
+
+!!  nouveau 2.8.2011
+    Polyligne3D = POLYLINE WITH (STRAIGHTS, ARCS) VERTEX CoordH;
+	
+!! nouveau 23.5.2012
+!!    Surface3D = SURFACE WITH (STRAIGHTS, ARCS) VERTEX HKoord WITHOUT OVERLAPS > 0.000;
+    Surface3D = SURFACE WITH (STRAIGHTS, ARCS) VERTEX CoordH WITHOUT OVERLAPS > 0.050;
+
+
+!! nouveau 25.1.2012
+   CLASS BaseClass (ABSTRACT) =
+   !! BaseClass pour toutes les sub classes (Subclass - héritage)
+
+   END BaseClass;  
+
+!! nouveau 4.8.2011 / 21.2.2012 (hérité de BaseClass)
+   CLASS TextePos (ABSTRACT) EXTENDS BaseClass =
+      TEXTEPOS: MANDATORY CoordNat; 
+      TEXTEORI: MANDATORY Orientation;
+      TEXTEHALI: MANDATORY HALIGNMENT;
+      TEXTEVALI: MANDATORY VALIGNMENT;
+   END TextePos; 
+
+!! nouveau 30.8.2011 / 21.2.2012 (hérité de BaseClass)
+   CLASS SymbolePos (ABSTRACT) EXTENDS BaseClass =
+      SYMBOLEPOS: MANDATORY CoordNat;  
+      SYMBOLEORI: MANDATORY Orientation;  !! Default: 90 degree
+
+   END SymbolePos; 
+
+END Base_f_LV95. 

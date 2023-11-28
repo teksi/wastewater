@@ -1,0 +1,167 @@
+!! Base_d-20180410.ili
+!! 10.4.2018 Neu auch mit Base_LV95 in der gleichen Datei
+
+INTERLIS 2.3;
+
+TYPE MODEL Base (de) AT "http://www.sia.ch/405" 
+  VERSION "05.10.2018" =
+
+    IMPORTS UNQUALIFIED INTERLIS;		!! neu 8.11.2004, importiert INTERLIS 2.3. Basisunits
+    IMPORTS Units;
+  !! IMPORTS CoordSys;
+  !! REFSYSTEM BASKET BCoordSys ~ CoordSys.CoordsysTopic; 
+
+!! Copyright 2003 - 2018 SIA
+
+!! Änderungen und Ergänzungen dürfen zum Eigengebrauch getätigt werden. 
+!! Sie müssen innerhalb der Datei so dokumentiert sein, dass sichtbar wird, 
+!! welche Änderungen getätigt wurden (Einfügen von INTERLIS Kommentar). 
+!! Die Originalmodelldatei Base.ili und darauf basierende 
+!! abgeänderte Versionen dürfen nicht weiterverkauft werden. 
+
+!! Geprueft mit Compiler Version 4.7.7 vom 08.02.2018
+!! Sachbearbeiter: Stefan Burckhardt / SIA 405 Kommission  
+  
+!! 18.4.2014 Korrektur Wertebereich für LKKoord / HKoord für Bezugsrahmen LV95 (1070000.000 statt 170000.000 .. 1300000.000)
+  
+  DOMAIN
+    !! Allgemeine Typen fuer alle Modelle
+
+    Orientierung = 0.0 .. 359.9 CIRCULAR [Units.Angle_Degree];  !! Anpassen auf Geobasisdatendefinition?
+
+    LKoord = COORD 480000.000 .. 840000.000 [m], !!{CHLV03/1}, 
+                   70000.000 .. 300000.000 [m],  !!{CHLV03/2},
+                   ROTATION 2 -> 1;
+
+    HKoord = COORD 480000.000 .. 840000.000 [m], !!{CHLV03/1},
+                   70000.000 .. 300000.000 [m], !!{CHLV03/2}, 
+                   -200.000 .. 5000.000 [m], !!{SwissOrthometricAlt},
+                   ROTATION 2 -> 1;
+
+!! 10.4.2018 falls Bezugsrahmen LV95 untenstehende Version Base_LV95 verwenden)
+
+
+    Hoehe = -200.000 .. 5000.000 [m]; !!{SwissOrthometricAlt};
+
+    Polyline = POLYLINE WITH (STRAIGHTS, ARCS) VERTEX LKoord;
+
+!! neu 23.5.2012	
+!!    Surface = SURFACE WITH (STRAIGHTS, ARCS) VERTEX LKoord WITHOUT OVERLAPS > 0.000;  !! Einzelflächen
+	Surface = SURFACE WITH (STRAIGHTS, ARCS) VERTEX LKoord WITHOUT OVERLAPS > 0.050;  !! Einzelflächen
+
+!! neu 2.8.2011
+    Polyline3D = POLYLINE WITH (STRAIGHTS, ARCS) VERTEX HKoord;
+	
+!! neu 23.5.2012
+!!    Surface3D = SURFACE WITH (STRAIGHTS, ARCS) VERTEX HKoord WITHOUT OVERLAPS > 0.000;
+    Surface3D = SURFACE WITH (STRAIGHTS, ARCS) VERTEX HKoord WITHOUT OVERLAPS > 0.050;
+
+!! neu 25.1.2012
+   CLASS BaseClass (ABSTRACT) =
+   !! BaseClass für alle Subklassen (Subclass - Vererbung)
+
+   END BaseClass;  
+
+!! neu 4.8.2011 / 21.2.2012 (geerbt von BaseClass)
+   CLASS TextPos (ABSTRACT) EXTENDS BaseClass =
+!!      OID AS ANYOID; !! Hier definiert als ANY. Genaue Definition und Wahl durch die Transfergemeinschaft gemäss folgenden Varianten: Objektidentifikation gemäss INTERLIS 2 Definition für OID (entweder als UUIDOID nach ISO 11578 oder INTERLIS 2 STANDARDOID), siehe auch INTERLIS 2 Referenzhandbuch www.interlis.ch
+      TextPos: MANDATORY LKoord; 
+      TextOri: MANDATORY Orientierung;
+      TextHAli: MANDATORY HALIGNMENT;
+      TextVAli: MANDATORY VALIGNMENT;
+   END TextPos; 
+
+!! neu 30.8.2011 / 21.2.2012 (geerbt von BaseClass)
+   CLASS SymbolPos (ABSTRACT) EXTENDS BaseClass =
+!!      OID AS ANYOID; !! Hier definiert als ANY. Genaue Definition und Wahl durch die Transfergemeindschaft gemäss folgenden Varianten: Objektidentifikation gemäss INTERLIS 2 Definition für OID (entweder als INTERLIS 2 STANDARD-OID oder UUID-OID nach ISO 11578), siehe auch INTERLIS 2 Referenzhandbuch www.interlis.ch
+      SymbolPos: MANDATORY LKoord;  !! Landeskoordinate Ost/Nord, 2D Koordinaten 
+      SymbolOri: MANDATORY Orientierung;  !! Default: 90 Grad
+!! 21.2.2012 verschoben in SIA405_Base.ili
+!!      SymbolskalierungLaengs: 0.0..9.9;
+!!      SymbolskalierungHoch: 0.0..9.9;
+   END SymbolPos; 
+
+END Base.
+
+
+
+
+TYPE MODEL Base_LV95 (de) AT "http://www.sia.ch/405" 
+  VERSION "05.10.2018" =
+
+    IMPORTS UNQUALIFIED INTERLIS;		!! neu 8.11.2004, importiert INTERLIS 2.3. Basisunits
+    IMPORTS Units;
+  !! IMPORTS CoordSys;
+  !! REFSYSTEM BASKET BCoordSys ~ CoordSys.CoordsysTopic; 
+
+!! Copyright 2003 - 2018 SIA
+
+!! Änderungen und Ergänzungen dürfen zum Eigengebrauch getätigt werden. 
+!! Sie müssen innerhalb der Datei so dokumentiert sein, dass sichtbar wird, 
+!! welche Änderungen getätigt wurden (Einfügen von INTERLIS Kommentar). 
+!! Die Originalmodelldatei Base.ili und darauf basierende 
+!! abgeänderte Versionen dürfen nicht weiterverkauft werden. 
+
+!! Geprueft mit Compiler Version 4.7.7 vom 08.02.2018
+!! Sachbearbeiter: Stefan Burckhardt / SIA 405 Kommission  
+  
+!! 18.4.2014 Korrektur Wertebereich für LKKoord / HKoord für Bezugsrahmen LV95 (1070000.000 statt 170000.000 .. 1300000.000)
+  
+  DOMAIN
+    !! Allgemeine Typen fuer alle Modelle
+
+    Orientierung = 0.0 .. 359.9 CIRCULAR [Units.Angle_Degree];  !! Anpassen auf Geobasisdatendefinition?
+
+
+!! für Bezugsrahmen LV95 folgende Definition verwenden 
+!! 18.4.2014
+    LKoord = COORD 2480000.000 .. 2840000.000 [m], !!{CHLV95/1}, 
+                   1070000.000 .. 1300000.000 [m],  !!{CHLV95/2},
+                   ROTATION 2 -> 1;
+ 
+    HKoord = COORD 2480000.000 .. 2840000.000 [m], !!{CHL95/1},
+                   1070000.000 .. 1300000.000 [m], !!{CHLV95/2}, 
+                   -200.000 .. 5000.000 [m], !!{SwissOrthometricAlt},
+                   ROTATION 2 -> 1;
+
+    Hoehe = -200.000 .. 5000.000 [m]; !!{SwissOrthometricAlt};
+
+    Polyline = POLYLINE WITH (STRAIGHTS, ARCS) VERTEX LKoord;
+
+!! neu 23.5.2012	
+!!    Surface = SURFACE WITH (STRAIGHTS, ARCS) VERTEX LKoord WITHOUT OVERLAPS > 0.000;  !! Einzelflächen
+	Surface = SURFACE WITH (STRAIGHTS, ARCS) VERTEX LKoord WITHOUT OVERLAPS > 0.050;  !! Einzelflächen
+
+!! neu 2.8.2011
+    Polyline3D = POLYLINE WITH (STRAIGHTS, ARCS) VERTEX HKoord;
+	
+!! neu 23.5.2012
+!!    Surface3D = SURFACE WITH (STRAIGHTS, ARCS) VERTEX HKoord WITHOUT OVERLAPS > 0.000;
+    Surface3D = SURFACE WITH (STRAIGHTS, ARCS) VERTEX HKoord WITHOUT OVERLAPS > 0.050;
+
+!! neu 25.1.2012
+   CLASS BaseClass (ABSTRACT) =
+   !! BaseClass für alle Subklassen (Subclass - Vererbung)
+
+   END BaseClass;  
+
+!! neu 4.8.2011 / 21.2.2012 (geerbt von BaseClass)
+   CLASS TextPos (ABSTRACT) EXTENDS BaseClass =
+!!      OID AS ANYOID; !! Hier definiert als ANY. Genaue Definition und Wahl durch die Transfergemeinschaft gemäss folgenden Varianten: Objektidentifikation gemäss INTERLIS 2 Definition für OID (entweder als UUIDOID nach ISO 11578 oder INTERLIS 2 STANDARDOID), siehe auch INTERLIS 2 Referenzhandbuch www.interlis.ch
+      TextPos: MANDATORY LKoord; 
+      TextOri: MANDATORY Orientierung;
+      TextHAli: MANDATORY HALIGNMENT;
+      TextVAli: MANDATORY VALIGNMENT;
+   END TextPos; 
+
+!! neu 30.8.2011 / 21.2.2012 (geerbt von BaseClass)
+   CLASS SymbolPos (ABSTRACT) EXTENDS BaseClass =
+!!      OID AS ANYOID; !! Hier definiert als ANY. Genaue Definition und Wahl durch die Transfergemeindschaft gemäss folgenden Varianten: Objektidentifikation gemäss INTERLIS 2 Definition für OID (entweder als INTERLIS 2 STANDARD-OID oder UUID-OID nach ISO 11578), siehe auch INTERLIS 2 Referenzhandbuch www.interlis.ch
+      SymbolPos: MANDATORY LKoord;  !! Landeskoordinate Ost/Nord, 2D Koordinaten 
+      SymbolOri: MANDATORY Orientierung;  !! Default: 90 Grad
+!! 21.2.2012 verschoben in SIA405_Base.ili
+!!      SymbolskalierungLaengs: 0.0..9.9;
+!!      SymbolskalierungHoch: 0.0..9.9;
+   END SymbolPos; 
+
+END Base_LV95.

@@ -1,0 +1,274 @@
+!! SIA405_Base_d-20180410.ili 
+!! 10.4.2018 Neu auch mit Base_LV95 in der gleichen Datei
+
+INTERLIS 2.3;
+
+TYPE MODEL SIA405_Base (de) AT "http://www.sia.ch/405" 
+  VERSION "05.10.2018" =
+
+  IMPORTS UNQUALIFIED INTERLIS;		!! neu 8.11.2004, importiert INTERLIS 2 Basisunits
+  IMPORTS Base;
+  IMPORTS Units;
+
+!! Copyright 2003 - 2018 SIA
+
+!! Änderungen und Ergänzungen dürfen zum Eigengebrauch getätigt werden. 
+!! Sie müssen innerhalb der Datei so dokumentiert sein, dass sichtbar wird, 
+!! welche Änderungen getätigt wurden (Einfügen von INTERLIS Kommentar). 
+!! Die Originalmodelldatei SIA405_Base.ili und darauf basierende 
+!! abgeänderte Versionen dürfen nicht weiterverkauft werden. 
+
+!! Geprueft mit Compiler Version 4.7.7 vom 08.02.2018
+!! Sachbearbeiter: Stefan Burckhardt / SIA 405 Kommission
+
+!! 20.8.2010 Anpassungen im Layout und in den Kommentaren
+!! 23.9.2010 Anpassung Textinhalt neu 80 Zeichen
+!! 23.9.2010 / 1.7.2011 Anpassung Status
+!! 22.11.2010 Anpassung Reihenfolge Status neu alphabetisch
+!! 01.07.2011 MTEXT statt TEXT für Textinhalt
+!! 29.8.2011 Textinhalt neu MANDATORY, damit für Erzeugung von dxf ab INTERLIS in Inhalt vorhanden ist.
+!! 25.1.2012 Neue SIA405_BaseClass geerbt von Base.ili
+!! 21.2.2012 Neuer Datentyp Maechtigkeit
+!! 21.2.2012 Neuer Datentyp Abmessung
+!! 21.2.2012 OrganisationBezeichnung: TEXT*80;  !! Neuer Datentyp für Eigentuemer, Betreiber, Datenherr, Datenlieferant, etc.
+!! 21.2.2012 Neu Datentyp Ueberdeckung - Einheit klären
+!! 21.2.2012 Neu Datentyp Nennweite 
+!! 22.2.2012 OBJ_ID statt OID - VSA nennt das schon seit 1999 OBJ_ID, andere Medienmodelle haben dieses Attribut bisher nicht, was den Aufwand für einen neuen Namen im Abwasser nicht rechtfertigt -> Modellkonsistenz.
+!! TO DO 28.7.2011 Neue Referenz für Kommentar zu Genauigkeit 
+!! 14.3.2012 neu STRUCTURE ManagementAttributes
+!! 14.3.2012 OBJ_ID STANDARDOID
+!! 4.2.2012 Ueberdeckung 0.0 .. 999.9 [INTERLIS.m] - ein Kilometer überdeckung reicht, eine Nachkommastelle reicht
+!! 4.2.2012 Umbenennung ManagementAttribute neu Metaattribute
+!! 14.5.2012 Defiition Datenherr, Datenlieferant, Letzte_Aenderung ergänzt
+!! 23.5.2012 Kommentar zu OrganisationBezeichnung - UID  
+!! 8.6.2012 Metaattribute: MANDATORY Metaattribute; (neu MANDATORY)
+!! 11.6.2012 Maechtigkeit  = -99999 .. 99999 [Units.mm]; neu positiv und negativ, Die Mächtigkeit ergibt sich aus der Differenz aus KoteRef und KoteZ und kann entweder einen negativen oder positiven Wert annehmen."
+!! 11.6.2012 Breite maximal 4 m /4000 mm - darüber als Fläche abbilden, siehe Merkblatt 2015, 2.5.3 Geometrietypen und Abbildung 2D 
+!! 11.6.2012 Abmessung maximal 4 m / 4000 mm darüber als Fläche abbilden, siehe Merkblatt 2015, 2.5.3 Geometrietypen und Abbildung 2D
+!! 18.4.2014 Korrekturen Beschreibungen Schreibweise
+!! 10./11./18.6.2014 Neue Subwerte für Plantyp = Uebersichtsplan (UeP2, UeP5, UeP10)  
+!! 30.10.2017 SIA405_TextPos.Textinhalt: MANDATORY MTEXT; statt Textinhalt: MANDATORY MTEXT*80;
+!! 25.4.2018 Checked with Compiler 4.7.7 vom 08.02.2018
+!! 25.4.2018 Anpassung Beschreibung Aenderungsdatum Datum der letzten Änderung eines Datensatzes, falls diese Information vorhanden ist. Falls nicht vorhanden, wird als Datum 19000101 eingesetzt. Format: yyyymmdd (INTERLIS_1_DATE) statt .. , wird das Datum der Erzeugung des Transferdatensatzes eingesetzt. Format: yyyymmdd (INTERLIS_1_DATE), da sonst nicht unterschieden werden kann ob unbekannt oder von Aenderung von heute.
+
+  UNIT
+
+    KiloWatt [kW] = 1000 [Units.W];
+    Liter_pro_Sekunde [ls] = (Units.L/s);
+    Liter_pro_Tag [ld] = (Units.L/Units.d);
+    Gramm_pro_Kubikmeter [gm3] = (Units.g/Units.m3);
+    Kubikmeter_pro_Sekunde [m3s] = (Units.m3/s);
+    Kubikmeter_pro_Tag [m3d] = (Units.m3/Units.d);
+    Kubikmeter_pro_Stunde [m3h] = (Units.m3/Units.h);
+    Meter_pro_Sekunde [ms] EXTENDS Units.Velocity = (m/s);
+    Quadrat_Zentimeter [cm2] EXTENDS Units.Area = (Units.cm*Units.cm);
+
+  DOMAIN
+
+    !! Allgemeine Typen fuer alle SIA405 Medien
+!! neu 21.2.2012
+    Abmessung = 0 .. 4000 [Units.mm];    !! Einheit Milimeter [mm]
+    Breite = 0 .. 4000 [Units.mm];    !! Einheit Milimeter [mm]
+    Genauigkeit = (   !! Definiert die Lage- und Höhengenauigkeit eines Objektes. Falls ein Verlauf definiert ist, ist dieser immer [genau]. 
+                   genau,  !! +/- 10 cm, bei der Lagebestimmung aus unterschiedlichen Messungen das dreifache, d.h. +/- 30 cm (Norm SIA405 2012 XXXX)
+                   unbekannt,
+                   ungenau  !! siehe genau
+                   );
+    Jahr = 1800 .. 2100;  !! unbekannt = 1800 (niedrigster Wert des Wertebereiches)
+!! neu 21.2.2012 / 10.6.2012
+!!   Maechtigkeit  = 0 .. 99999 [Units.mm]; !! 
+    Maechtigkeit  = -99999 .. 99999 [Units.mm]; !! 11.6.2012, neu positiv und negativ, Die Mächtigkeit ergibt sich aus der Differenz aus KoteRef und KoteZ und kann entweder einen negativen oder positiven Wert annehmen."
+
+!! neu 21.2.2012
+    Nennweite = TEXT*10;  !! als TEXT, da zum Teil auch Doppelwerte mit Schrägstrich (300/600)
+!! neu 21.2.2012
+    OrganisationBezeichnung = TEXT*80;  !! Neuer Datentyp für Eigentuemer, Betreiber, Datenherr, Datenlieferant, etc. Länge vorbereitet für Bezeichnung bei UID (www.uid.admin.ch)
+    Plantyp = (   !! Plantyp, für welchen die TextPos / SymbolPos definiert ist
+               Leitungskataster, 
+               Werkplan, 
+               Uebersichtsplan (
+                  UeP10,  !! 1:10'000
+                  UeP2,  !! 1:2'000
+                  UeP5  !! 1:5'000
+                  )
+               );
+    Status= (   !! Betriebs- und Planungszustand. neu 2010: Erweiterungen dazu in den einzelnen Medien definieren
+             ausser_Betrieb,  
+             in_Betrieb,
+             tot,  
+             unbekannt, 
+             weitere 
+            );
+    Ueberdeckung = 0.0 .. 999.9 [INTERLIS.m];   !! mittlerer Wert eines Objektes (Schutzrohr / Wasser / Fernwärme)
+
+	STRUCTURE Metaattribute =
+	!! Metainformationen - bitte auch auf www.geocat.ch erfassen
+      Datenherr: MANDATORY OrganisationBezeichnung;  !! Datenherr, also diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern, zu verwalten. Falls ein Ingenieurbüro dies im Auftrag einer Gemeinde wahrnimmt, so ist die Gemeinde als Datenherr einzusetzen und nicht das Ingenieurbüro. Dieses wird dann unter Datenlieferant aufgeführt.
+      Datenlieferant: MANDATORY OrganisationBezeichnung;  !! Organisation, die diesen Datensatz erzeugt hat (siehe auch Datenherr und Letzte_Aenderung)
+      Letzte_Aenderung: MANDATORY INTERLIS.INTERLIS_1_DATE;  !! Datum der letzten Änderung eines Datensatzes, falls diese Information vorhanden ist. Falls nicht vorhanden, wird als Datum 19000101 eingesetzt. Format: yyyymmdd (INTERLIS_1_DATE)
+	END Metaattribute;
+	
+	
+!! neu 25.1.2012	
+   CLASS SIA405_BaseClass (ABSTRACT) EXTENDS Base.BaseClass =
+   !! BaseClass für alle Oberklassen (Superclass) mit Metaattributen
+   	  OID AS STANDARDOID;  !! gewählte Option für Definition ANYOID aus base.ili. Weitere Infos siehe Merkblatt 2015, Kapitel 2.1.3.8 Objektidentifikatoren (OID) 
+      !! Als Attribut OBJ_ID zusätzlich redundant zu OID und den Bedingungen für die TID ausmodelliert, damit Rückwärtskompatibilität mit INTERLIS 1 möglich. Attribut soll in Datenbank verwaltet werden oder stabil beim Export/Import verwaltet werden können. 
+	  ATTRIBUTE
+		OBJ_ID: TEXT*16; !! neu 23.5.2012 OID (STANDARDOID) zusätzlich redundant als Attribut modelliert (siehe SIA 405 Merkblatt 2015, Kapitel 2.3.
+		!! Metadatenattribute zentral einführen durch die STRUCTURE ManagementAttributes
+		Metaattribute: MANDATORY Metaattribute;
+      UNIQUE OBJ_ID;
+   END SIA405_BaseClass;  
+ 
+   CLASS SIA405_TextPos (ABSTRACT) EXTENDS Base.TextPos =
+      Plantyp: MANDATORY Plantyp;
+      !! Textinhalt: MANDATORY MTEXT*80; !! aus Attributen berechneter Wert, neu 80 statt 40 Zeichen und MTEXT statt TEXT, damit auch mehrzeilige Texte verarbeitet werden können.
+      Textinhalt: MANDATORY MTEXT; !! aus Attributen berechneter Wert
+      Bemerkung: TEXT*80; !! für bilaterale weitere Spezifikationen
+  END SIA405_TextPos; 
+
+!! neu 30.8.2011 - für Fernwärme / 21.2.2012 Symbolskalierung hierher verschoben statt in Base.ili
+   CLASS SIA405_SymbolPos (ABSTRACT) EXTENDS Base.SymbolPos =
+      Plantyp: MANDATORY Plantyp;
+      SymbolskalierungLaengs: 0.0 .. 9.9;
+      SymbolskalierungHoch: 0.0 .. 9.9;
+   END SIA405_SymbolPos; 
+
+END SIA405_Base.
+
+
+
+TYPE MODEL SIA405_Base_LV95 (de) AT "http://www.sia.ch/405" 
+  VERSION "05.10.2018" =
+
+  IMPORTS UNQUALIFIED INTERLIS;		!! neu 8.11.2004, importiert INTERLIS 2 Basisunits
+  IMPORTS Base_LV95;
+  IMPORTS Units;
+
+!! Copyright 2003 - 2018 SIA
+
+!! Änderungen und Ergänzungen dürfen zum Eigengebrauch getätigt werden. 
+!! Sie müssen innerhalb der Datei so dokumentiert sein, dass sichtbar wird, 
+!! welche Änderungen getätigt wurden (Einfügen von INTERLIS Kommentar). 
+!! Die Originalmodelldatei SIA405_Base.ili und darauf basierende 
+!! abgeänderte Versionen dürfen nicht weiterverkauft werden. 
+
+!! Geprueft mit Compiler Version 4.7.7 vom 08.02.2018
+!! Sachbearbeiter: Stefan Burckhardt / SIA 405 Kommission
+
+!! 20.8.2010 Anpassungen im Layout und in den Kommentaren
+!! 23.9.2010 Anpassung Textinhalt neu 80 Zeichen
+!! 23.9.2010 / 1.7.2011 Anpassung Status
+!! 22.11.2010 Anpassung Reihenfolge Status neu alphabetisch
+!! 01.07.2011 MTEXT statt TEXT für Textinhalt
+!! 29.8.2011 Textinhalt neu MANDATORY, damit für Erzeugung von dxf ab INTERLIS in Inhalt vorhanden ist.
+!! 25.1.2012 Neue SIA405_BaseClass geerbt von Base.ili
+!! 21.2.2012 Neuer Datentyp Maechtigkeit
+!! 21.2.2012 Neuer Datentyp Abmessung
+!! 21.2.2012 OrganisationBezeichnung: TEXT*80;  !! Neuer Datentyp für Eigentuemer, Betreiber, Datenherr, Datenlieferant, etc.
+!! 21.2.2012 Neu Datentyp Ueberdeckung - Einheit klären
+!! 21.2.2012 Neu Datentyp Nennweite 
+!! 22.2.2012 OBJ_ID statt OID - VSA nennt das schon seit 1999 OBJ_ID, andere Medienmodelle haben dieses Attribut bisher nicht, was den Aufwand für einen neuen Namen im Abwasser nicht rechtfertigt -> Modellkonsistenz.
+!! TO DO 28.7.2011 Neue Referenz für Kommentar zu Genauigkeit 
+!! 14.3.2012 neu STRUCTURE ManagementAttributes
+!! 14.3.2012 OBJ_ID STANDARDOID
+!! 4.2.2012 Ueberdeckung 0.0 .. 999.9 [INTERLIS.m] - ein Kilometer überdeckung reicht, eine Nachkommastelle reicht
+!! 4.2.2012 Umbenennung ManagementAttribute neu Metaattribute
+!! 14.5.2012 Defiition Datenherr, Datenlieferant, Letzte_Aenderung ergänzt
+!! 23.5.2012 Kommentar zu OrganisationBezeichnung - UID  
+!! 8.6.2012 Metaattribute: MANDATORY Metaattribute; (neu MANDATORY)
+!! 11.6.2012 Maechtigkeit  = -99999 .. 99999 [Units.mm]; neu positiv und negativ, Die Mächtigkeit ergibt sich aus der Differenz aus KoteRef und KoteZ und kann entweder einen negativen oder positiven Wert annehmen."
+!! 11.6.2012 Breite maximal 4 m /4000 mm - darüber als Fläche abbilden, siehe Merkblatt 2015, 2.5.3 Geometrietypen und Abbildung 2D 
+!! 11.6.2012 Abmessung maximal 4 m / 4000 mm darüber als Fläche abbilden, siehe Merkblatt 2015, 2.5.3 Geometrietypen und Abbildung 2D
+!! 18.4.2014 Korrekturen Beschreibungen Schreibweise
+!! 10./11./18.6.2014 Neue Subwerte für Plantyp = Uebersichtsplan (UeP2, UeP5, UeP10)  
+!! 30.10.2017 SIA405_TextPos.Textinhalt: MANDATORY MTEXT; statt Textinhalt: MANDATORY MTEXT*80;
+!! 31.10.2017 Version _LV95
+!! 10.4.2018 Checked with Compiler 4.7.7 vom 08.02.2018
+
+  UNIT
+
+    KiloWatt [kW] = 1000 [Units.W];
+    Liter_pro_Sekunde [ls] = (Units.L/s);
+    Liter_pro_Tag [ld] = (Units.L/Units.d);
+    Gramm_pro_Kubikmeter [gm3] = (Units.g/Units.m3);
+    Kubikmeter_pro_Sekunde [m3s] = (Units.m3/s);
+    Kubikmeter_pro_Tag [m3d] = (Units.m3/Units.d);
+    Kubikmeter_pro_Stunde [m3h] = (Units.m3/Units.h);
+    Meter_pro_Sekunde [ms] EXTENDS Units.Velocity = (m/s);
+    Quadrat_Zentimeter [cm2] EXTENDS Units.Area = (Units.cm*Units.cm);
+
+  DOMAIN
+
+    !! Allgemeine Typen fuer alle SIA405 Medien
+!! neu 21.2.2012
+    Abmessung = 0 .. 4000 [Units.mm];    !! Einheit Milimeter [mm]
+    Breite = 0 .. 4000 [Units.mm];    !! Einheit Milimeter [mm]
+    Genauigkeit = (   !! Definiert die Lage- und Höhengenauigkeit eines Objektes. Falls ein Verlauf definiert ist, ist dieser immer [genau]. 
+                   genau,  !! +/- 10 cm, bei der Lagebestimmung aus unterschiedlichen Messungen das dreifache, d.h. +/- 30 cm (Norm SIA405 2012 XXXX)
+                   unbekannt,
+                   ungenau  !! siehe genau
+                   );
+    Jahr = 1800 .. 2100;  !! unbekannt = 1800 (niedrigster Wert des Wertebereiches)
+!! neu 21.2.2012 / 10.6.2012
+!!   Maechtigkeit  = 0 .. 99999 [Units.mm]; !! 
+    Maechtigkeit  = -99999 .. 99999 [Units.mm]; !! 11.6.2012, neu positiv und negativ, Die Mächtigkeit ergibt sich aus der Differenz aus KoteRef und KoteZ und kann entweder einen negativen oder positiven Wert annehmen."
+
+!! neu 21.2.2012
+    Nennweite = TEXT*10;  !! als TEXT, da zum Teil auch Doppelwerte mit Schrägstrich
+!! neu 21.2.2012
+    OrganisationBezeichnung = TEXT*80;  !! Neuer Datentyp für Eigentuemer, Betreiber, Datenherr, Datenlieferant, etc. Länge vorbereitet für Bezeichnung bei UID (www.uid.admin.ch)
+    Plantyp = (   !! Plantyp, für welchen die TextPos / SymbolPos definiert ist
+               Leitungskataster, 
+               Werkplan, 
+               Uebersichtsplan (
+                  UeP10,  !! 1:10'000
+                  UeP2,  !! 1:2'000
+                  UeP5  !! 1:5'000
+                  )
+               );
+    Status= (   !! Betriebs- und Planungszustand. neu 2010: Erweiterungen dazu in den einzelnen Medien definieren
+             ausser_Betrieb,  
+             in_Betrieb,
+             tot,  
+             unbekannt, 
+             weitere 
+            );
+    Ueberdeckung = 0.0 .. 999.9 [INTERLIS.m];   !! mittlerer Wert eines Objektes (Schutzrohr / Wasser / Fernwärme)
+
+	STRUCTURE Metaattribute =
+	!! Metainformationen - bitte auch auf www.geocat.ch erfassen
+      Datenherr: MANDATORY OrganisationBezeichnung;  !! Datenherr, also diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern, zu verwalten. Falls ein Ingenieurbüro dies im Auftrag einer Gemeinde wahrnimmt, so ist die Gemeinde als Datenherr einzusetzen und nicht das Ingenieurbüro. Dieses wird dann unter Datenlieferant aufgeführt.
+      Datenlieferant: MANDATORY OrganisationBezeichnung;  !! Organisation, die diesen Datensatz erzeugt hat (siehe auch Datenherr und Letzte_Aenderung)
+      Letzte_Aenderung: MANDATORY INTERLIS.INTERLIS_1_DATE;  !! ! Datum der letzten Änderung dieses Datensatzes, falls diese Information vorhanden ist. Falls nicht vorhanden Datum der Erzeugung des Transferdatensatzes einsetzen.
+	END Metaattribute;
+	
+	
+!! neu 25.1.2012	
+   CLASS SIA405_BaseClass (ABSTRACT) EXTENDS Base_LV95.BaseClass =
+   !! BaseClass für alle Oberklassen (Superclass) mit Metaattributen
+   	  OID AS STANDARDOID;  !! gewählte Option für Definition ANYOID aus base.ili. Weitere Infos siehe Merkblatt 2015, Kapitel 2.1.3.8 Objektidentifikatoren (OID) 
+      !! Als Attribut OBJ_ID zusätzlich redundant zu OID und den Bedingungen für die TID ausmodelliert, damit Rückwärtskompatibilität mit INTERLIS 1 möglich. Attribut soll in Datenbank verwaltet werden oder stabil beim Export/Import verwaltet werden können. 
+	  ATTRIBUTE
+		OBJ_ID: TEXT*16; !! neu 23.5.2012 OID (STANDARDOID) zusätzlich redundant als Attribut modelliert (siehe SIA 405 Merkblatt 2015, Kapitel 2.3.
+		!! Metadatenattribute zentral einführen durch die STRUCTURE ManagementAttributes
+		Metaattribute: MANDATORY Metaattribute;
+      UNIQUE OBJ_ID;
+   END SIA405_BaseClass;  
+ 
+   CLASS SIA405_TextPos (ABSTRACT) EXTENDS Base_LV95.TextPos =
+      Plantyp: MANDATORY Plantyp;
+      !! Textinhalt: MANDATORY MTEXT*80; !! aus Attributen berechneter Wert, neu 80 statt 40 Zeichen und MTEXT statt TEXT, damit auch mehrzeilige Texte verarbeitet werden können.
+      Textinhalt: MANDATORY MTEXT; !! aus Attributen berechneter Wert
+      Bemerkung: TEXT*80; !! für bilaterale weitere Spezifikationen
+  END SIA405_TextPos; 
+
+!! neu 30.8.2011 - für Fernwärme / 21.2.2012 Symbolskalierung hierher verschoben statt in Base.ili
+   CLASS SIA405_SymbolPos (ABSTRACT) EXTENDS Base_LV95.SymbolPos =
+      Plantyp: MANDATORY Plantyp;
+      SymbolskalierungLaengs: 0.0 .. 9.9;
+      SymbolskalierungHoch: 0.0 .. 9.9;
+   END SIA405_SymbolPos; 
+
+END SIA405_Base_LV95.

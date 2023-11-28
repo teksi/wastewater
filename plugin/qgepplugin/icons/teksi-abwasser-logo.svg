@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="Calque_1"
+   data-name="Calque 1"
+   viewBox="0 0 200 200"
+   version="1.1"
+   sodipodi:docname="teksi-abwasser-logo.svg"
+   width="200"
+   height="200"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview378"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="0.944"
+     inkscape:cx="70.444915"
+     inkscape:cy="99.576271"
+     inkscape:window-width="1920"
+     inkscape:window-height="1055"
+     inkscape:window-x="1912"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="Calque_1" />
+  <defs
+     id="defs369">
+    <style
+       id="style367">.cls-1{fill:#c800d7;}.cls-2{fill:#969;}.cls-3{fill:#fff;}</style>
+  </defs>
+  <circle
+     class="cls-1"
+     cx="100"
+     cy="100"
+     r="100"
+     id="circle371" />
+  <circle
+     class="cls-2"
+     cx="100"
+     cy="100"
+     r="100"
+     id="circle373" />
+  <path
+     class="cls-3"
+     d="M 132.83,45.53 A 46.15,46.15 0 0 0 99.92,31.68 46.94,46.94 0 0 0 53.13,78.55 158.2,158.2 0 0 0 73.56,155.84 c 0.87,1.51 2.3,3.82 4.25,6.85 a 12.25,12.25 0 0 0 10.34,5.63 h 23.7 a 12.25,12.25 0 0 0 10.34,-5.63 c 2,-3 3.39,-5.34 4.25,-6.85 A 158.28,158.28 0 0 0 146.87,79.62 48.24,48.24 0 0 0 132.83,45.53 Z m -9.85,33 A 135.88,135.88 0 0 1 105.7,144 a 0.91,0.91 0 0 1 -0.78,0.46 H 95.09 A 0.91,0.91 0 0 1 94.3,144 133.87,133.87 0 0 1 77,78.55 a 23,23 0 1 1 46,0 z"
+     id="path375" />
+</svg>

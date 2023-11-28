@@ -1,0 +1,312 @@
+LATEST VERSION
+-----------------------------
+
+ilivalidator 1.11.9 (2020-12-28)
+-----------------------------
+- fix check-repo-data fails with java.io.FileNotFoundException (#291)
+- fix --createIliData fails with NPE if file in base folder (#292)
+- Log-Faehigkeit der INTERLIS.areArea()-Funktion (#240)
+- ili2c-5.1.5
+- iox-ili-1.21.4
+
+ilivalidator 1.11.8 (2020-10-02)
+-----------------------------
+- fix java.io.NotSerializableException (#280)
+- ili2c-5.1.4
+- iox-ili-1.21.3
+
+ilivalidator 1.11.7 (2020-09-29)
+-----------------------------
+- ili2c-5.1.3
+- iox-ili-1.21.2
+- log --modeldir value as modeldir (#256) 
+- Overlaying AREA not detected (#263)
+- ignore polygon building errors if defaultGeometryTypeValidation="off"
+- improve error messages in INI-file parsing (#271)
+- wrongly reports duplicate TIDs (#266)
+- Attempting to disable geometry validation with no success (#272)
+
+ilivalidator 1.11.6 (2020-05-01)
+-----------------------------
+- fails to lookup ili24 model if xtf24 transfer file (#239)
+- Check Base64 input character (#246)
+- No object found with OID null (#249)
+- iox-ili-1.21.0
+- ili2c-5.1.1
+
+ilivalidator 1.11.5 (2020-04-01)
+-----------------------------
+- Missing check when write to "unwriteable" log-file (#228)
+- NPE with ili23 / RoadsExgm2ien_Symbols-20160121.xml (#231)
+- ArrayIndexOutOfBoundsException with n-ary association (#232)
+- Xtf24: wrong xmlns for extended attributes (#235)
+- Xtf24: fails to read STRUCTUREs defined at model level (#236)
+- Xtf24: missing line number in messages (#237)
+- Xtf24: fails to read ref of embedded assoc with attrs (#238)
+- GUI: "Job done" message in GUI (#234)
+- GUI: scroll log area to end (#234)
+- ili2c-5.0.8
+- ehibasics-1.3.0
+- iox-ili-1.20.18
+
+ilivalidator 1.11.4 (2020-03-02)
+-----------------------------
+- Command line: use options without a data-file (#223)
+- java.lang.NullPointerException when starting filelist (#224)
+- Unique constraints violation throws NPE (ili1) (#225)
+- iox-ili-1.20.17
+- ili2c-5.0.6
+
+ilivalidator 1.11.3 (2019-12-23)
+-----------------------------
+- Unable to detect out model name for ili22 (#214)
+- NPE when reference to main table is missing in surface table (ili1) (#213)
+- Error: polygons overlay (#202)
+- iox-ili-1.20.15
+
+ilivalidator 1.11.2 (2019-11-08)
+-----------------------------
+- fix objectCount(UNDEFINED) (#203)
+- add User+start date/time to log
+- iox-ili-1.20.14
+
+ilivalidator 1.11.1 (2019-09-20)
+-----------------------------
+- fails to report superfluous TIDs (#201)
+- ili2c-5.0.2
+- iox-ili-1.20.13
+
+ilivalidator 1.11.0 (2019-04-03)
+-----------------------------
+- incomplete attribute path in error message
+- new config parameter to report inconsistent model version
+- new function --check-repo-data
+- new function --updateIliData
+- new function --createIliData
+- GUI: create menu items for cmdline options
+- localize validation messages
+- fixed: Xtflog contains not all messages
+- fixed: invalid ring lines Error - failed to build polygons
+- fixed: Constraints in association: compare objects not possible
+- iox-ili-1.20.11
+- ili2c-5.0.0
+
+ilivalidator 1.10.0 (2018-12-09)
+-----------------------------
+- GUI: use model names as additionalModels
+- GUI: add "new..." config file button
+- Error message addressed wrong basket
+- implement Math funcitons
+- fixed msg_(language) support
+- use keymsg in UNIQUE constraint
+- implement INTERLIS_ext functions
+- fixed CCW calculation if two half circles with horizontal straights
+- use attrPath in all validateAttribute messages
+- validate ALL OF enumerations
+- validate formatted type
+- validate UUID if used as BID
+- validate STANDRADOID
+- validate TEXT OID
+- validate basket element name
+- validate Contsraints in embedded associations
+- validate UNIQUE with forward references
+- support remote data/catalogue files
+- evaluate object paths with forward references
+- fix == with structures
+- report superflous attributes in embedded associations
+- validate that a BID is different from TIDs
+- switch config file reader to pure ini file syntax
+- improve temporary file size
+- iox-ili-1.20.10
+- ili2c-4.7.10
+
+ilivalidator 1.9.3 (2018-09-10)
+-----------------------------
+- validate BID/TID value syntax
+- fixed strange error message if surface line table without reference
+- validate URI datatype
+- fixed wrong line number of first object in a table 
+- support disableRounding
+- fixed validation of number of reference properties
+- fixed quoted parameter names in TOML file
+- add PipelinePool to Settings so that custom functions can use it
+- GUI: improve open fileselector(*.xtf and *.xml together)
+- iox-ili-1.20.9
+
+ilivalidator 1.9.2 (2018-07-05)
+-----------------------------
+- fixed: skip geometry errors in Itf2Reader if defaultGeometryTypeValidation="off"
+- iox-ili-1.20.7
+- ili2c-4.7.9
+
+ilivalidator 1.9.0 (2018-06-26)
+-----------------------------
+- added: --disableConstraintValidation
+- iox-ili-1.20.5
+- ili2c-4.7.8
+
+ilivalidator 1.8.1 (2018-03-09)
+-----------------------------
+- improved performance
+- fixed %JAR_DIR resolution
+
+ilivalidator 1.8.0 (2018-03-02)
+-----------------------------
+- improved performance
+- validate UNIQUE (LOCAL) against current object (and not all)
+- fixed %JAR_DIR resolution
+- fixed disableAreaValidation in toml not working
+- iox-ili-1.20.4
+
+ilivalidator 1.7.0 (2018-02-08)
+-----------------------------
+- iox-ili-1.20.2
+- ili2c-4.7.7
+
+ilivalidator 1.6.0 (2017-12-29)
+-----------------------------
+- added createReader() template method to high level API
+- fixed: ilidir setting from GUI not used 
+- added object statistics to log 
+- iox-ili-1.20.1
+- ili2c-4.7.6
+
+ilivalidator 1.5.0 (2017-10-20)
+-----------------------------
+- added: --allowItfAreaHoles (only ITF)
+- iox-ili-1.19.8
+- ili2c-4.7.4
+
+ilivalidator 1.4.0 (2017-08-24)
+-----------------------------
+- changed default --modeldir to %ITF_DIR;http://models.interlis.ch/;%JAR_DIR/ilimodels
+- set value of %JAR_DIR to folder of ilivalidator.jar
+- added: new option to assume all objects are known to the validator
+- added: iox-ili 1.19.6 (2017-08-24)
+- fixed TranslateToOrigin: failed if dest attribute name equals source attrname
+- fixed TranslateToTranslation: failed if dest attribute name equals source attrname
+- added CsvReader
+- added GmlReader
+- added Xtf24Reader
+- added addGenericReader
+
+ilivalidator 1.3.0 (2017-06-17)
+-----------------------------
+- added: support multiple input files
+- added: --skipPolygonBuilding (only ITF)
+- added: --multiplicityOff
+- fixed: wrong error message "doItfOidPerTable!=false" / save only persistent settings to ${HOME}/.ilivalidator
+- iox-ili-1.19.0 (2017-06-17)
+- ili2c-4.7.3
+
+ilivalidator 1.2.1 (2017-04-20)
+-----------------------------
+- iox-ili 1.18.1 (2017-04-20)
+- validator: fixed implementation of uniqueness constraint
+
+ilivalidator 1.2.0 (2017-04-19)
+-----------------------------
+- iox-ili 1.18.0 (2017-04-19)
+- keep/save last directory of file selector
+- iox-ili: fixed: missing custom functions should not report an error
+- validator: added: implement UNIQUE (LOCAL)
+- validator: added: implement UNIQUE WHERE expression
+
+ilivalidator 1.1.0 (2017-04-05)
+-----------------------------
+- iox-ili 1.16.0-master (2017-04-05)
+- validator: fixed: switching constraint check off
+- validator: fixed: role EXTERNAL handling in cardinality and reference
+- validator: optimized: constraint error messages
+- validator: added: new option --forceTypeValidation
+- validator: added: new option --disableAreaValidation
+
+ilivalidator 1.0.0 (2017-03-10)
+-----------------------------
+- iox-ili 1.14.0-feature/validator1 (2017-03-10)
+- validator: changed API of user defined functions
+- validator: added: validate plausibility constraints
+- validator: added: evaluate user defined functions
+- validator: added: enable user defined error messages
+- validator: added: get message in specific validation if configuration off
+- validator: fixed: unique constraint not checked
+- validator: fixed: custom functions with object collections
+- validator: fixed: missed errors in xtf log file
+- validator: fixed: evaluation of sub-enum constants
+- validator: improved/fixed topology validation
+- validator: optimized: validate external/additional constraint
+- validator: optimized: performance
+
+ilivalidator 0.10.0 (2017-02-10)
+-----------------------------
+- iox-ili 1.14.0-feature/validator1
+- validator: optimized unique TID/OID check
+- validator: added functions len, lenM, trim, trimM, isEnumSubVal, inEnumRange, objectCount(ALL),
+			 objectCount(Role), elementCount, myClass, isOfClass, isSubClass, areArea
+- validator: added handling if function is not yet implemented
+- validator: added set constraints
+- validator: added infoLogs and traceLogs
+- validator: added additional constraints
+
+ilivalidator 0.9.0 (2017-01-13)
+----------------------------------------------
+- iox-ili-1.14.0-feature/validator1
+- validator: optimized unique TID/OID check
+- validator: optimized performance
+- validator: added AREA/SURFACE topology validation
+- validator: added switch off existence, mandatory constraints and return warning instead of alert
+- validator: added switch off attribute cardinality and return warning instead of alert
+- validator: added role handling if role is EXTERNAL
+
+ilivalidator 0.7.0 (2016-12-29)
+----------------------------------------------
+- iox-ili-1.13.7-feature/validator1
+- validator: fixed cardinality fault if ili1.0
+- validator: validate POLYLINE topology
+- validator: optimized object pool
+
+ilivalidator 0.6.0 (2016-12-21)
+----------------------------------------------
+- iox-ili-1.13.6-feature/validator1
+- validator: fixed if cardinality is N, show "*" (UNBOUND) is error message 
+- validator: validate mandatory constraint in NOT, OR, AND, DEFINED, UNDEFINED
+- validator: validate mandatory constraint in ==, !=, <>, <, <=, >, >= of attribute and attribute path
+
+ilivalidator 0.5.0 (2016-12-12)
+-------------------------------
+- iox-ili-1.13.5-feature/validator1
+- validator: fixed OID uniqueness per table in ITF
+
+ilivalidator 0.4.0 (2016-12-01)
+-------------------------------
+- iox-ili-1.13.4-feature/validator1
+- validator: validate unique constraint
+- validator: validate cardinality in associations
+- validator: validate existence constraint
+- validator: validate reference type
+- validator: validate OID/TID uniqueness
+- validator: validate target class in associations
+
+ilivalidator 0.3.0 (2016-09-05)
+-------------------------------
+- iox-ili-1.13.2
+- validator: validate DATE, BOOLEAN, XMLDate, XMLDateTime, XMLTime, UUIDOID
+- validator: validate OID AS UUIDOID
+- validator: added global config section [PARAMTER] with entry validation="off"
+
+ilivalidator 0.2.1 (2016-08-22)
+-------------------------------
+- validator: fix mandatory check if attr type is a domain def
+- iox-ili-1.13.0
+
+ilivalidator 0.2.0 (2016-07-08)
+-------------------------------
+- added localizable GUI
+- read config from ili metaattrs
+- added TextType, NumericType, EnumerationType validation
+- ili2c-4.5.23
+- iox-ili-1.12.0
+
+ilivalidator 0.1.0 (2016-06-15)
+-------------------------------
+- initial coding/release

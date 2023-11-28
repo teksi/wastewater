@@ -1,0 +1,171 @@
+!! SIA405_Base_Abwasser-20201103.ili 
+!! Speziell für VSA-DSS Mini und VSA-DSS
+
+
+INTERLIS 2.3;
+
+ MODEL SIA405_Base_Abwasser_LV95 (de) AT "http://www.vsa.ch/models" 
+  VERSION "03.11.2020" =
+
+  !!@comment = "importiert INTERLIS 2 Basisunits"
+  IMPORTS UNQUALIFIED INTERLIS;
+  IMPORTS Units;
+  IMPORTS Base_LV95;
+
+
+!!@comment = "Copyright 2020 VSA"
+
+!!@comment = "Aufbauend auf SIA405_Base ergänzt der VSA SIA405_Base als SIA405_Base_Abwasser mit der Klasse Organisation in einem eigenen Topic Administration, damit Organisationen als externen Datensatz aus dem Repository eingebunden werden können."
+
+!!@comment = "Geprüft mit Commpiler Version 5.1.4 (2.10.2020)"
+!!@comment = "Sachbearbeiter: Stefan Burckhardt"
+
+!!@comment = "Sechste Version Variante SIA405_Base_Abwasser - in Bearbeitung"
+
+!!@ comment = "20.11.2019 nur noch Version LV95"
+!!@ comment = "1.8.2020 neu UNIQUE Bezeichnung, Organisationstyp;  !! Neben UNIQUE OBJ_ID zusätzlich auch Kombination Bezeichnung, Organisationstyp (Wegleitung GEP-Daten 2020)"
+!!@ comment = "26.8.2020 SIA405_BaseClass.OBJ_ID gelöscht - keine Rückwärtskompatibilität mit INTERLIS 1 mehr notwendig und Redundanz zu OID (STANDARDOID)"
+!!@ comment = "26.8.2020 Organisationstyp.Abwasserreinigungsanlage rausgenommen"
+!!@ comment = "Abwasserreinigungsanlage (ARA) - unter Anlagenummer ARA Nummer erfassen"
+!!@ comment = "26.8.2020 Anlagenummer: ARANr rausgenommen"
+!!@comment = "ARA-Nummer gemäss Bundesamt für Umwelt (BAFU), bei Abwasserreinigungsanlage zwingend, sonst leer lassen"
+!!@ comment = "8.9.2020 UNIQUE OBJ_ID rausgenommen"
+!!@ comment = "8.9.2020 Abwasserreinigungsanlage bei Organisationstyp rausgenommen"
+!!@ comment = "11.9.2020 UNIQUE Bezeichnung, Organisationstyp, UID statt Bezeichnung, Organisationstyp"
+!!@ comment = "11.9.2020 neues Attribut Status [aktiv, untergegangen]"
+!!@ comment = "8.10.2020     OrganisationBezeichnung = TEXT*255;  statt 80"
+!!@ comment = "3.11.2020 Issuer geändert auf www.vsa.ch/models"
+
+  UNIT
+
+    KiloWatt [kW] = 1000 [Units.W];
+    Liter_pro_Sekunde [ls] = (Units.L/s);
+    Liter_pro_Tag [ld] = (Units.L/Units.d);
+    Gramm_pro_Kubikmeter [gm3] = (Units.g/Units.m3);
+    Kubikmeter_pro_Sekunde [m3s] = (Units.m3/s);
+    Kubikmeter_pro_Tag [m3d] = (Units.m3/Units.d);
+    Kubikmeter_pro_Stunde [m3h] = (Units.m3/Units.h);
+    Meter_pro_Sekunde [ms] EXTENDS Units.Velocity = (m/s);
+    Quadrat_Zentimeter [cm2] EXTENDS Units.Area = (Units.cm*Units.cm);
+
+  DOMAIN
+
+    !!@comment = "Allgemeine Typen fuer alle SIA405 Medien"
+
+    !!@comment = "Abmessung Einheit Millimeter [mm], neu 21.2.2012"
+    Abmessung = 0 .. 4000 [Units.mm];
+    ARANr = 1 .. 999999 [Units.CountedObjects];
+    !!@comment = "Breite Einheit Millimeter [mm]"
+    Breite = 0 .. 4000 [Units.mm];    
+    
+    !!@comment = "Definiert die Lage- und Höhengenauigkeit eines Objektes. Falls ein Verlauf definiert ist, ist dieser immer [genau]."
+    Genauigkeit = (   
+                   !!@comment = "!! +/- 10 cm, bei der Lagebestimmung aus unterschiedlichen Messungen das dreifache, d.h. +/- 30 cm (Norm SIA405 2012)"
+                   genau,  
+                   unbekannt,
+                   !!@comment = "siehe genau"
+                   ungenau
+                   );
+    !!@comment = "Jahr: unbekannt = 1800 (niedrigster Wert des Wertebereiches)"
+    Jahr = 1800 .. 2100;  
+    !!@comment = "11.6.2012, neu positiv und negativ, Die Mächtigkeit ergibt sich aus der Differenz aus KoteRef und KoteZ und kann entweder einen negativen oder positiven Wert annehmen."
+    Maechtigkeit  = -99999 .. 99999 [Units.mm]; 
+
+    !!@comment ="als TEXT, da zum Teil auch Doppelwerte mit Schrägstrich, neu 21.2.2012"
+    Nennweite = TEXT*10;
+
+    !!@comment = "Neuer Datentyp für Eigentuemer, Betreiber, Datenherr, Datenlieferant, etc. Länge vorbereitet für Bezeichnung bei UID (www.uid.admin.ch). neu 21.2.2012"
+    OrganisationBezeichnung = TEXT*255;  
+    !!@comment = "Plantyp, für welchen die TextPos / SymbolPos definiert ist"
+    Plantyp = (   
+               Leitungskataster, 
+               Werkplan, 
+               Uebersichtsplan (
+                  UeP10,  !! 1:10'000
+                  UeP2,  !! 1:2'000
+                  UeP5  !! 1:5'000
+                  )
+               );
+    !!@comment = "Betriebs- und Planungszustand. neu 2010: Erweiterungen dazu in den einzelnen Medien definieren"
+    Status= (   
+             ausser_Betrieb,  
+             in_Betrieb,
+             tot,  
+             unbekannt, 
+             weitere 
+            );
+    !!@comment = "mittlerer Wert eines Objektes (Schutzrohr / Wasser / Fernwärme)"
+    Ueberdeckung = 0.0 .. 999.9 [INTERLIS.m];   
+    !!@comment = "Beispiel für UID: che123456789"
+    UID = TEXT*12;  
+    GemeindeNr = 1 .. 9999 [Units.CountedObjects];  
+
+
+   !!@comment = "SIA405_BaseClass für alle Oberklassen (Superclass) mit Metaattributen"
+   CLASS SIA405_BaseClass (ABSTRACT) EXTENDS Base_LV95.BaseClass =
+      !!@comment STANDARDOID ist gewählte Option für Definition ANYOID aus base.ili. Weitere Infos siehe Merkblatt 2015, Kapitel 2.1.3.8 Objektidentifikatoren (OID). OBJ_ID wird nicht mehr redundant modelliert und wurde aufgehoben. 
+      OID AS STANDARDOID;
+      ATTRIBUTE
+        !!@comment = "Letzte Aenderung des Datensatzes, andere Metaattribute neu als Beziehung"
+        Letzte_Aenderung: MANDATORY INTERLIS.INTERLIS_1_DATE; 
+   END SIA405_BaseClass;  
+ 
+   CLASS SIA405_TextPos (ABSTRACT) EXTENDS Base_LV95.TextPos =
+      !!@comment = "OID auch bei SIA405_TextPost neu 27.11.2019"
+      OID AS STANDARDOID;
+      Plantyp: MANDATORY Plantyp;
+      !!@comment = "aus Attributen berechneter Wert, MTEXT damit auch mehrzeilig möglich"
+      Textinhalt: MANDATORY MTEXT; 
+      !!@comment = "für bilaterale weitere Spezifikationen"
+      Bemerkung: TEXT*80; 
+   END SIA405_TextPos; 
+
+   CLASS SIA405_SymbolPos (ABSTRACT) EXTENDS Base_LV95.SymbolPos =
+      !!@comment = "neu OID auch für SIA405_SymbolPos 27.11.2019"
+      OID AS STANDARDOID;
+      Plantyp: MANDATORY Plantyp;
+      SymbolskalierungLaengs: 0.0 .. 9.9;
+      SymbolskalierungHoch: 0.0 .. 9.9;
+   END SIA405_SymbolPos; 
+   
+   TOPIC Administration = 
+   
+   CLASS Organisation EXTENDS SIA405_BaseClass = 
+      ATTRIBUTE
+        !!@ comment = "Allgemeine Bemerkungen"
+        Bemerkung: TEXT*255;
+		!!@ comment = "Es wird empfohlen reale Namen zu nehmen, z.B. Mustergemeinde und nicht Gemeinde. Oder Abwasserverband ARA Muster und nicht nur Abwasserverband, da es sonst Probleme gibt bei der Zusammenführung der Daten."
+        Bezeichnung: MANDATORY SIA405_Base_Abwasser_LV95.OrganisationBezeichnung;
+        !!@ comment = "Offizielle Gemeinde Nummer gemäss Bundesamt für Statistik, bei Gemeinde zwingend, sonst leer lassen."
+        Gemeindenummer: GemeindeNr;
+        !!@ comment = "Kurzbezeichnung"
+        Kurzbezeichnung: TEXT*12;
+		Organisationstyp: MANDATORY (
+          !!@ comment = "Abwasserverband"
+          Abwasserverband,
+          !!@ comment = "Teil einer Bundesverwaltung (z.B. Bundesamt für Umwelt, ASTRA, Armasuisse)"
+          Bund,
+          !!@ comment = "Für die Belange der Siedlungsentwässerung zuständiges Organ der Gemeindeverwaltung"
+          Gemeinde,
+          !!@ comment = "Genossenschaft oder Korporation: Körperschaft öffentlichen Rechts. Falls privaten Rechtes dann als Privat abbilden."
+          Genossenschaft_Korporation,
+          !!@ comment = "Teil einer kantonalen Verwaltung (z.B. Amt für Umweltschutz, Amt für Abwasserentsorgung)"
+          Kanton,
+          !!@ comment = "Privatperson oder Privatorganisation, welche im Rahmen der Entwässerungsplanung auftritt"
+          Privat
+        );
+        !!@ comment = "Status der Organisation, damit untergegangende Organisationen nicht einfach gelöscht werden müssen und kontrolliert werden kann, ob noch Beziehungen auf untergegangene Organisationen, z.B. bei Gemeindefusion oder Konkurs einer Firma vorhanden sind"
+        Status: MANDATORY (
+          aktiv,
+          untergegangen
+        );
+        !!@ comment = "Referenz zur Unternehmensidentifikation des Bundesamts fuer Statistik (www.uid.admin.ch), z.B. CHE123456789"
+        UID: UID;
+    UNIQUE 
+		!!@comment = "!! Neben UNIQUE OID zusätzlich auch Kombination Bezeichnung, Organisationstyp, UID (Wegleitung GEP-Daten 2020)"
+        Bezeichnung, Organisationstyp, UID; 
+    END Organisation;
+
+END Administration;
+
+END SIA405_Base_Abwasser_LV95.

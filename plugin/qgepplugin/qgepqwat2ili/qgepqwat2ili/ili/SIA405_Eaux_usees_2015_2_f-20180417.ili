@@ -1,0 +1,1860 @@
+!! SIA405_Eaux_usees_2015_2_f.ili
+!! Subset de la  Structure des données dans l'évacuation des eaux des agglomérations (VSA-SDEE)
+
+INTERLIS 2.3;
+
+MODEL SIA405_EAUX_USEES_2015 (fr) AT "http://www.sia.ch/405"
+  VERSION "17.04.2018" TRANSLATION OF SIA405_ABWASSER_2015 [ "17.04.2018" ] = 
+
+  IMPORTS UNQUALIFIED INTERLIS;     !! imports INTERLIS 2 Baseunits
+  IMPORTS Units;
+  IMPORTS Base_f;
+  IMPORTS SIA405_Base_f;
+
+!! Copyright 2002 - 2015
+!! Association suisse des professionnels de la protection des eaux (VSA), Zürich
+!! www.vsa.ch
+!! en cooperation avec Société suisse des ingénieurs et architectes (sia), Zurich
+!! L'utilisation de ce fichier modèle INTERLIS a besoin une licence!
+
+!! Les fichiers modèles originaux SIA405_Eaux_usees_2015_2_f.ili et les versions 
+!! modifiées à partir de ceux-ci ne peuvent pas être revendus.
+!! La distribution du fichier original (comme tout ou une partie de celui-ci) 
+!! n'est permise qu'avec l'achat d'une licence du sia / VSA par le destinataire.
+
+
+!! libéré pour utilisation publique et application commerciale avec la licence.
+!! Fichier modèle INTERLIS examiné avec Compiler INTERLIS Version 4.7.7 (8.02.2018)
+!! Sachbearbeiter: Stefan Burckhardt / SIA 405 Kommission
+
+UNIT
+
+TOPIC SIA405_Eaux_usees =
+
+DOMAIN
+
+
+Rapport_H_L = 0.01 .. 100.00;    !! Rapport entre la hauteur et la largeur, sans unité
+!! PROFIL_TUYAU.RAPPORT_HAUTEUR_LARGEUR
+
+
+EtatValeurs EXTENDS SIA405_Base_f.Etat = (  !! Etat de fonctionnement et de planification de l’ouvrage. 
+!! 1.2.2013 Adaptation à la nouvelle version de SIA405_Base_f.Etat – Extension des valeurs de base du fluide, modélisation hiérarchique et adaption compiler 4.5.13
+      !! 17.7.2015 hors_service, !! comporte hors_service et les valeurs suivantes
+         !!  reserve  !! n'existe pas en eaux_usées
+      en_service (  !! comporte en_service et les valeurs suivantes 
+         !! 17.7.2015 en_service,
+         provisoire,
+         sera_supprime
+      ),
+      abandonne (  !! comporte abandonne et les valeurs suivantes
+          !!  abandonne,   !! n'existe pas en eaux usées
+         supprime_non_demoli,
+         supprime_inconnu,
+         demoli
+      ),
+      !! 17.7.2015 inconnu,
+      autre ( !! comporte les valeurs suivantes
+         variante_de_calcul,
+         planifie,
+         projet
+      )
+    );   
+    !! nouveau 17.7.2015  
+    Etat = ALL OF EtatValeurs;    !! extension valeurs SIA405 Etat
+!! OUVRAGE_RESEAU_AS.ETAT
+
+
+Intervalle = 0.00 .. 20.00 [Units.CountedObjects];    !! années
+!! CANALISATION.INTERVALLE_CURAGE
+!! OUVRAGE_RESEAU_AS.INTERVALLE_INSPECTION
+
+
+Pente_promille = -10000 .. 10000;    !! promille [%o]
+!! 17.4.2014 nouveau pour pente_plan (au lieu de Promille), parce qu'il peut être plus grand que 1000
+!! TRONCON.PENTE_PLAN
+
+
+Strickler = 0 .. 999;    !! Coefficient de rugosité selon Manning-Strickler (K ou kstr) [m^(1/3)/s]
+!! TRONCON.K_STRICKLER
+
+
+Prandtl = 0.00 .. 100.00 [Units.mm];    !! Coefficient de rugosité d'après Prandtl Colebrook (ks ou kb), unité milimètre [mm]
+!! TRONCON.K_COLEBROOK
+
+
+Hauteur_max_profile = 0 .. 99999 [Units.mm];    !! milimètre [mm]
+!! 25.4.2012 nouveau SIA405_Base_f.Metrage
+!! TRONCON.HAUTEUR_MAX_PROFIL
+!! TRONCON.RELINER_DIAMETRE_NOMINALE
+
+
+UID = TEXT*12;    !! 
+!! ORGANISATION.UID
+
+
+Cadran = 0..12;    !! 
+!! selon directive
+!! POINT_TRONCON.SITUATION_POINT_RACCORD
+
+
+!! Copyright 2002 - 2015
+!! Association suisse des professionnels de la protection des eaux (VSA), Zürich
+!! www.vsa.ch
+!! L'utilisation de ce fichier modèle INTERLIS a besoin une licence!
+
+!! Les fichiers modèles originaux SIA405_Eaux_usees_2015_2_f.ili et les versions 
+!! modifiées à partir de ceux-ci ne peuvent pas être revendus.
+!! La distribution du fichier original (comme tout ou une partie de celui-ci) 
+!! n'est permise qu'avec l'achat d'une licence du VSA par le destinataire.
+CLASS ORGANISATION EXTENDS SIA405_Base_f.SIA405_BaseClass =  
+!! Superclasse pour les entités organisationnelles importantes pour la planification de l'évacuation des eaux (par ex. communes, cantons, etc.)
+  ATTRIBUTE
+    REMARQUE: TEXT*80;  !! Remarques générales
+    DESIGNATION: MANDATORY SIA405_Base_f.Organisation_Designation;  !! Utilisez les noms réels, par ex. commune "exemple" et pas seulement commune. Ou "Association pour l'épuration des eaux usées STEP XXX" et pas seulement  Association pour l'épuration des eaux usées. Sinon vous risquer des problèmes en réunissant les données de différentes communes.
+    UID: UID;  !! Référence pour l’identification des entreprises selon l’Office fédéral de la statistique OFS (www.uid.admin.ch), par exemple: CHE123456789
+END ORGANISATION;
+
+ASSOCIATION ORGANISATION_ELEMENT_DEAssoc =    !! Association
+  ELEMENT_DERef  -- {0..*} ORGANISATION; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  ORGANISATION_ELEMENT_DEAssocRef -- {0..*} ORGANISATION; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
+END ORGANISATION_ELEMENT_DEAssoc;
+
+CLASS OUVRAGE_RESEAU_AS (ABSTRACT) EXTENDS SIA405_Base_f.SIA405_BaseClass =  
+!! Ouvrage appartenant au réseau de canalisations
+  ATTRIBUTE
+    DOSSIER: MTEXT*255;  !! N° de plan de la documentation d’exécution, description de dossiers, manuels, etc.
+    ANNEE_DE_CONSTRUCTION: SIA405_Base_f.Annee;  !! Année de mise en service (réception finale);
+    ETAT_CONSTRUCTIF: (          !! Classes d'état. Description de l'état constructif selon la directive VSA "Maintien des canalisations" (2007/2009). Ne pas confondre avec les degrés de remise en état (attribut NECESSITE_ASSAINIR)
+      inconnu,
+      Z0,  !! Plus en état de fonctionner: L'ouvrage d'assainissement n’est déjà plus parcourable ou ne le sera plus dans peu de temps: Ouvrage d'assainissement écroulé, totalement bouché par des racines ou par d’autres obstacles à l’écoulement. L'ouvrage d'assainissement perd de l’eau (exfiltration / pollution probable de l’eau souterraine)
+      Z1,  !! Graves défauts: Dommages structurels ne garantissant plus la sécurité statique, l’hydraulique ou l’étanchéité: cassures, déformations, entrées ou sorties visibles d’eau, trous dans la paroi, forte saillie des raccords latéraux, fort développement des racines, paroi  fortement érodée par lavage. Matériau  inapproprié
+      Z2,  !! Défauts moyens: Défauts structurels affectant la statique, l’hydraulique ou l’étanchéité: joints avec canalisation renflés, entrées non nettoyées, fissures, légers obstacles à l’écoulement (entartrages, saillie des raccords latéraux, légers dommages à la paroi, développement localisé des racines, paroi érodée par lavage, etc.)
+      Z3,  !! Défauts légers: Défauts ou événements structurels ayant une influence insignifiante sur l’étanchéité, l’hydraulique ou la statique de l'ouvrage d'assainissement: joints avec canalisations renflées, raccords latéraux mal nettoyés, légères déformations sur matériaux plastiques, légères érosions dues au lavage, etc
+      Z4  !! Aucun défaut
+    );
+    LOT_CONSTRUCTION: TEXT*50;  !! Numéro du lot de construction
+    REMARQUE: TEXT*80;  !! Remarques générales
+    DESIGNATION: MANDATORY TEXT*20;  !! Désignation unique pour chaque maître des données
+    COUTS_BRUTS: 0.00 .. 99999999.99 [Units.CHF];  !! Coûts bruts des travaux de construction
+    GEOMETRIE_DETAILLEE: Base_f.Surface;  !! Géométrie détaillée particulièrement pour un OUVRAGE_SPECIAL. Pour l’attribut CHAMBRE_STANDARD utilisez Dimension1 et 2, de même pour une INSTALLATION_INFILTRATION normée.  Les canalisations n’ont en général pas de géométrie détaillée.
+    ANNEE_DE_REMPLACEMENT: SIA405_Base_f.Annee;  !! Année pour laquelle on prévoit que la durée de vie de l'ouvrage soit écoulée
+    FINANCEMENT: (          !! Type de financement (financement selon LEaux Art. 60a)
+      public,  !! L’intégralité des ouvrages d’assainissement qui sont financés selon l’art. 60a de la loi sur la protection des eaux (LEaux).
+      prive,  !! L’intégralité des conduites souterraines et ouvrages construits à l’intérieur et à l’extérieur des immeuble dans le domaine d’application de la SN 592 000, qui ne sont pas financés par les taxes d’épuration selon l’art. 60a de la loi sur la protection des eaux (LEaux)
+      inconnu
+    );
+    INTERVALLE_INSPECTION: Intervalle;  !! Fréquence à laquelle un ouvrage du réseau d‘assainissement devrait subir une inspection (années);
+    NECESSITE_ASSAINIR: (          !! 	Degrés d’urgence et délai de réalisation des mesures constructives selon la directive VSA "Maintien des canalisations"
+      urgente,  !! Les mesures doivent être réalisées d’urgence. Des mesures immédiates doivent être envisagées comme pour le degré a_court_terme. Délai 3-4 ans
+      aucune,  !! Aucune mesure n’est nécessaire jusqu’au prochain relevé et à la prochaine évaluation de l’état. Délai >= 10 ans
+      a_court_terme,  !! Les mesures doivent être réalisées de façon très urgente et à court terme. A titre de mesures immédiates, des réparations locales provisoires permettent de prévenir temporairement d’autres dommages. Délai <= 2 ans
+      a_long_terme,  !! Les mesures peuvent être projetées à long terme. Délai 7 - 10 ans
+      a_moyen_terme,  !! Les mesures sont nécessaires à moyen terme. Délai 5 à 7 ans
+      inconnue
+    );
+    LIEU_DIT: TEXT*50;  !! Nom de la route ou du lieu de l'ouvrage
+    ETAT: Etat;  !! Etat de fonctionnement et de planification de l’ouvrage
+    SUBVENTIONS: 0.00 .. 99999999.99 [Units.CHF];  !! Contributions des cantons et de la Confédération
+    VR_ANNEE_REFERENCE: SIA405_Base_f.Annee;  !! Année de référence pour le calcul de la valeur de remplacement (cf. valeur de remplacement);
+    VR_TYPE_CONSTRUCTION: (          !! Valeur de remplacement du type de construction
+      autre,
+      dans_les_champs,  !! Dans les champs (type de profile selon norme SIA 190)
+      conduite_d_assainissement_retro,  !! Conduites d’assainissement posées par rétrocaveuse
+      conduite_d_assainissement_trancheuse,  !! Conduites d’assainissement posées par trancheuse
+      sous_route,  !! sous route (type profile selon norme SIA 190)
+      inconnu
+    );
+    VALEUR_REMPLACEMENT: 0.00 .. 99999999.99 [Units.CHF];  !! Valeur de remplacement de l'OUVRAGE_RESEAU_AS. On à besoin aussi de saisir l'attribut VR_ANNEE_REFERENCE
+    ACCES: (          !! Possibilités d’accès à l’ouvrage d’assainissement pour une personne (non pour un véhicule)
+      couvert,  !! il faut par exemple déterrer le couvercle avant de pouvoir l'ouvrir
+      inconnu,
+      inaccessible,  !! Dans la  SIA405 1998 défini comme "non_accessible"
+      accessible  !! Accessible pour une personne (et pas nécessairement pour un véhicule)
+    );
+END OUVRAGE_RESEAU_AS;
+
+CLASS OUVRAGE_RESEAU_AS_Texte EXTENDS SIA405_Base_f.SIA405_TextePos =
+END OUVRAGE_RESEAU_AS_Texte;
+
+!!  Correction 10.12.2014
+!!  ASSOCIATION OUVRAGE_RESEAU_AS_TextAssoc =   !! Composition
+ASSOCIATION OUVRAGE_RESEAU_AS_TexteAssoc =   !! Composition
+  OUVRAGE_RESEAU_ASRef -<#> {1} OUVRAGE_RESEAU_AS;
+  Texte -- {0 .. *} OUVRAGE_RESEAU_AS_Texte;
+!!  END OUVRAGE_RESEAU_AS_TextAssoc;
+END OUVRAGE_RESEAU_AS_TexteAssoc;
+
+CLASS OUVRAGE_RESEAU_AS_Symbole EXTENDS SIA405_Base_f.SIA405_SymbolePos =
+END OUVRAGE_RESEAU_AS_Symbole;
+
+!! Correction 10.12.2014
+!! ASSOCIATION OUVRAGE_RESEAU_AS_SymbolAssoc =   !! Composition
+ASSOCIATION OUVRAGE_RESEAU_AS_SymboleAssoc =   !! Composition
+  OUVRAGE_RESEAU_ASRef -<#> {1} OUVRAGE_RESEAU_AS;
+  Symbole -- {0 .. *} OUVRAGE_RESEAU_AS_Symbole;
+!! END OUVRAGE_RESEAU_AS_SymbolAssoc;
+END OUVRAGE_RESEAU_AS_SymboleAssoc;
+
+ASSOCIATION OUVRAGE_RESEAU_AS_PROPRIETAIREAssoc =    !! Association
+  PROPRIETAIRERef  -- {0..1} ORGANISATION; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  OUVRAGE_RESEAU_AS_PROPRIETAIREAssocRef -- {0..*} OUVRAGE_RESEAU_AS; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
+END OUVRAGE_RESEAU_AS_PROPRIETAIREAssoc;
+
+ASSOCIATION OUVRAGE_RESEAU_AS_EXPLOITANTAssoc =    !! Association
+  EXPLOITANTRef  -- {0..1} ORGANISATION; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  OUVRAGE_RESEAU_AS_EXPLOITANTAssocRef -- {0..*} OUVRAGE_RESEAU_AS; !! Für den Unterhalt eines Bauwerks zuständige Stelle, Rolle2 - Klasse2 / Rôle2 - Classe2
+END OUVRAGE_RESEAU_AS_EXPLOITANTAssoc;
+
+CLASS CANALISATION EXTENDS OUVRAGE_RESEAU_AS =  
+!! Canal ouvert ou fermé pour amener les eaux à évacuer d'un ouvrage du réseau d'évacuation à un autre
+  ATTRIBUTE
+    LIT_DE_POSE: (          !! Lit de pose (assise de la conduite), bourrage latéral (remblai latéral), couche de protection
+      autre,
+      enterre,  !! avancement par méthode pousse-tube soit enrobé de matériaux d'excavation, soit par avancement pousse-tube ou presse-tube
+      suspendu_dans_le_canal,
+      betonne_dans_le_canal,
+      en_galerie,  !! SIA405 1998: en_cunette CU
+      en_pousse_tube_en_beton,
+      en_pousse_tube_en_acier,
+      sable,
+      SIA_type_1,  !! selon la définition Norme SIA 190, version 2000
+      SIA_type_2,  !! selon la définition Norme SIA 190, version 2000
+      SIA_type_3,  !! selon la définition Norme SIA 190, version 2000
+      SIA_type_4,  !! selon la définition Norme SIA 190, version 2000
+      radier_en_planches,  !! Lit constitué de planches pour des conduites d’amélioration foncière
+      inconnu
+    );
+    FONCTION_HIERARCHIQUE: (       !! Genre de canalisation par rapport à sa fonction dans le système d'évacuation
+      OAP (
+        autre,  !! autres ouvrages du réseau d’assainissement primaire (OAP)
+         cours_d_eau,  !! Saisie selon le point de vue de la canalisation (si par exemple des calculs hydrauliques sont nécessaires). SIA405 1998: eaux_publiques
+         collecteur_principal,  !! Collecteur principal, selon la hiérarchie du réseau
+         collecteur_principal_regional,  !! Collecteur principal avec importance régionale pour la structuration hiérarchique du réseau pour des PREE, car ne peut pas être résolu via l'attribut PROPRIETAIRE
+         evacuation_bien_fonds,  !! Terme générique pour l’évacuation des biens-fonds (hydrauliquement déterminant). La délimitation entre l'évacuation des biens-fonds et celle des immeubles se fait selon la norme "Conception et réalisation d'installations évacuation des eaux des biens-fonds (SN 592 000)"
+         collecteur,  !! Canal qui collecte les eaux des collecteurs des biens-fonds et des routes.
+         conduite_d_assainissement,  !! Conduite d'évacuation pour le raccordement technique de bâtiments isolés, auxquelles des simplifications ont été entreprises à la planification et à la réalisation.
+         evacuation_des_eaux_de_routes,  !! Evacuation des eaux des voies de communication (hydrauliquement déterminant)
+         inconnue
+      ),
+      OAS (
+         autre,  !! autre ouvrages du réseau d’assainissement secondaire (OAS)
+         evacuation_bien_fonds,  !! Terme générique pour l’évacuation des bien fonds (hydrauliquement non déterminants). La délimitation entre l'évacuation des biens-fonds et celle des immeubles se fait selon la norme "Conception et réalisation d'installations évacuation des eaux des biens-fonds (SN 592 000)"
+         conduite_d_assainissement,  !! Conduite d'évacuation pour le raccordement technique de bâtiments isolés, auxquelles des simplifications ont été entreprises à la planification et à la réalisation.
+         evacuation_des_eaux_de_routes,  !! Evacuation des eaux des voies de communication (hydrauliquement non déterminant)
+         inconnue  !! Evacuation des eaux des voies de communication (hydrauliquement non déterminant)
+      )
+    );
+    FONCTION_HYDRAULIQUE: (          !! Genre de canalisation par rapport à sa fonction hydraulique
+      autre,
+      conduite_de_transport_pour_le_drainage,  !! Canalisation transportant de l'eau provenant d'un réseau de drainage
+      conduite_d_etranglement,  !! Canalisation à section restreinte afin de diminuer le débit. Son fonctionnement se base sur des écoulement en charge
+      siphon_inverse,  !! Système de canalisations fermé, permettant le franchissement d'un obstacle. La conduite est en charge.
+      conduite_a_ecoulement_gravitaire,  !! Canalisation, dans laquelle l'eau s'écoule selon les lois de la gravité, d'un point de départ plus élevé à un point d'arrivée plus bas
+      conduite_de_refoulement,  !! Conduite sous pression installée à la suite d'une station de pompage permettant de gravir des pentes d'aval en amont
+      conduite_de_drainage,  !! 1. Canalisation avec ouverture vers des drains (SN 592 000)
+      conduite_de_retention,  !! Conduite dimensionnée afin de retenir des volumes d'eaux en lien avec un BEP, BEP_retention ou une canalisation de rétention
+      conduite_de_rincage,  !! Canalisation avec une fonction spéciale, permettant le rinçage des installations d'évacuation des eaux
+      inconnue,
+      conduite_sous_vide
+    );
+    GENRE_UTILISATION_PREVU: (          !! Utilisation prévue par le concept d'assainissement (voir aussi GENRE_UTILISATION_ACTUELLE)
+      autre,  !! par exemple accès, aération, désaération
+      eaux_cours_d_eau,  !! Eaux d'un cours d'eau s'écoulant dans son état naturel à la surface, mais qui peut aussi être mis sous terre par endroits
+      eaux_mixtes_deversees,  !! Eau conduite entre un ouvrage de déversement et un exutoire au milieu récepteur. Aucune eau usée ne doit être déversée dans cette canalisation
+      eaux_industrielles,  !! Eaux industrielles ou chimiques: Les eaux industrielles comprennent toutes les eaux produites lors d'un processus de production ou de fabrication. Les eaux industrielles doivent être prétraitées avant d'être déversées dans les canalisations en direction de la STEP communal (voir évacuation indirecte). En cas de déversement direct dans une eaux de surface, un traitement dans une station de traitement spécifique doit être effectué (voir évacuation directe).
+      eaux_mixtes,  !! 1. Réunion des eaux usées et eaux pluviales dans la même canalisation
+      eaux_pluviales,  !! Eau des précipitations naturelles non polluées par son utilisation selon directives VSA "Evacuation des eaux pluviales"
+      eaux_claires,  !! Terme générique pour l'eau de drainage, de source, souterraine, des fontaines, ainsi que de l'eau de refroidissement. Les eaux claires sont considérées comme non polluées (SN 592 000)..
+      eaux_usees,  !! Eaux transformées par leur utilisation (domestique, artisanale ou industrielle) et qui sont rejetées dans un système d'évacuation et qui doivent être conduites à un traitement
+      inconnu
+    );
+    GENRE_UTILISATION_ACTUEL: (          !! Pour les ouvrages du réseau primaire: utilisation actuelle autorisée pour les ouvrages du réseau secondaire: utilisation actuelle réelle
+      autre,  !! par exemple accès, aération, désaération
+      eaux_cours_d_eau,  !! Eaux d'un cours d'eau s'écoulant dans son état naturel à la surface, mais qui aussi être mis sous terre par endroits
+      eaux_mixtes_deversees,  !! Eau conduite entre un ouvrage de déversement et un exutoire au milieu récepteur. Aucune eau usée ne doit être déversée dans cette canalisation
+      eaux_industrielles,  !! Eaux industrielles ou chimiques: Les eaux industrielles comprennent toutes les eaux produites lors d'un processus de production ou de fabrication. Les eaux industrielles doivent être prétraitées avant d'être déversées dans les canalisations en direction de la STEP communal (voir évacuation indirecte). En cas de déversement direct dans une eaux de surface, un traitement dans une station de traitement spécifique doit être effectué (voir évacuation directe).
+      eaux_mixtes,  !! 1. Réunion des eaux usées et eaux pluviales dans la même canalisation
+      eaux_pluviales,  !! Eau des précipitations naturelles non polluées par son utilisation selon la directive VSA "Evacuation des eaux pluviales"
+      eaux_claires,  !! Terme générique pour l'eau de drainage, de source, souterraine, des fontaines, ainsi que de l'eau de refroidissement. Les eaux claires sont considérées comme non polluées (SN 592 000).
+      eaux_usees,  !! Eaux transformées par leur utilisation (domestique, artisanale ou industrielle) et qui sont rejetées dans un système d'évacuation et qui doivent être conduites à un traitement
+      inconnu
+    );
+    L_TUYAU: 0.00 .. 30000.00 [m];  !! Longueur de chaque tuyau ou distance des joints pour les canalisations en béton coulé sur place
+    INTERVALLE_CURAGE: Intervalle;  !! Fréquence à laquelle une canalisation devrait subir un curage (années);
+    RACCORDEMENT: (          !! Types de raccordement
+      autre,
+      manchon_electrosoudable,  !! SIA405 1998: manchon_soude_a_arc
+      manchon_plat,
+      bride,
+      emboitement_a_cloche,
+      raccord,
+      manchon_visse,
+      manchon_soude_au_miroir,  !! SIA405 1998: manchon_soude_miroir
+      emboitement_simple,
+      raccord_a_serrage,  !! SIA405 1998: raccord_de_serrage
+      manchon_coulissant,
+      inconnu,
+      raccord_pour_tube_de_pousse_tube
+    );
+END CANALISATION;
+
+CLASS CHAMBRE_STANDARD EXTENDS OUVRAGE_RESEAU_AS =  
+!! Chambre normalisée avec couvercle amovible
+  ATTRIBUTE
+    DIMENSION1: SIA405_Base_f.Metrage;  !! Dimension1 de la chambre (plus grande mesure intérieure).
+    DIMENSION2: SIA405_Base_f.Metrage;  !! Dimension2 de la chambre (plus petite mesure intérieure);
+    FONCTION: (          !! Genre d'utilisation
+      ouvrage_de_chute,  !! Ouvrage spécial dans le réseau de canalisations servant à relier des différences d'altitude sur une petite distance, en brisant l'énergie de l'écoulement.
+      autre,
+      aeration,  !! Installation permettant une aération dans un ouvrage d'assainissement
+      chambre_recolte_eaux_toitures,  !! Chambre se trouvant entre l'évacuation des eaux des bien-fonds et du réseau des canalisations, à l'arrivée d'un tuyau de descente. Souvent de taille inférieure que des chambres avec grille d'entrée
+      chambre_avec_grille_d_entree,  !! chambre avec grille d'entrée (sans retenue de boues) selon SN 640 356
+      rigole_de_drainage,  !! Ouvrage rectiligne à fentes, servant à récolter les eaux pluviales ruisselées
+      evacuation_des_eaux_des_voies_ferrees,  !! Chambre standard servant à évacuer les eaux d'installation ferroviaires
+      regard_de_visite,  !! Ouvrage d'accès au réseau par lequel le personnel d'entretien pénètre pour assurer le service et la surveillance du réseau
+      separateur_d_hydrocarbures,  !! Ouvrage spécial servant à séparer des fluides légers de l'eau. Il évite que des hydrocarbures pénètrent dans les milieux récepteur.
+      station_de_pompage,  !! Installation destinée à élever les eaux d'un niveau à un autre, soit pour le franchissement d'un obstacle, soit pour modifier des tracés devenus économiquement inacceptables en réseau gravitaire
+      deversoir_d_orage,  !! Ouvrage spécial, séparant les eaux mixtes en y rejetant une partie directement dans un cours d’eau
+      depotoir,  !! 1. Dépotoir avec retenue de boues
+      separateur_de_materiaux_flottants,  !! Dépotoir contenant soit un siphon prolongé ou une paroi plongeante. Tient le rôle de prétraitement sur une installation d'infiltration
+      chambre_de_chasse,  !! Chambre servant d'accès spécifiquement pour le rinçage
+      ouvrage_de_repartition,  !! Ouvrage, qui répartie les eaux dans le système sans les déverser. Une ou plusieurs entrées, deux à plusieurs sorties.
+      inconnue
+    );
+    MATERIAU: (          !! Matériau dont est construit l'ouvrage, pour une classification sommaire
+      autre,
+      beton,
+      matiere_plastique,
+      inconnu
+    );
+    ARRIVEE_EAUX_SUP: (          !! Arrivée directe d'eaux superficielles dans la chambre
+      autre,
+      aucune,
+      grille_d_ecoulement,
+      inconnue,
+      arrivee_laterale
+    );
+END CHAMBRE_STANDARD;
+
+CLASS EXUTOIRE EXTENDS OUVRAGE_RESEAU_AS =  
+!! Point de déversement d'eaux à évacuer dans le milieu récepteur
+  ATTRIBUTE
+    COTE_CRUE: Base_f.Altitude;  !! Cote de crue déterminante au point de rejet. Diese ist in der Regel grösser als der Wasserspiegel_Hydraulik.
+    SIGNIFIANCE: (          !! Il est conseillé d’utiliser des noms réels, tels qSignifiance pour milieu récepteur
+      pertinent_pour_milieu_recepteur,  !! Rejet d’une canalisation dans une eau de surface sans ou avec un ouvrage servant d’exutoire, qui perturbe l’état ou les conditions du cours d’eau. Outre les exutoires des réseaux primaires, par définition pertinents pour les cours d’eau, des exutoires des réseaux secondaires peuvent également être pertinents pour les cours d’eau
+      insignifiant_pour_milieu_recepteur  !! Rejet d’une canalisation secondaire dans un cours d’eau sans ou avec un ouvrage servant d’exutoire, qui ne perturbe que peu l’état ou les conditions du cours d’eau
+    );
+    COTE_TERRAIN: Base_f.Altitude;  !! Cote terrain s'il n'y a pas de couvercle à l'exutoire par example seulement fin du conduite
+    NIVEAU_EAU_HYDRAULIQUE: Base_f.Altitude;  !! Niveau d’eau calculé à l’exutoire. Si aucun exigence est demandée, indiquer le niveau d’eau pour un HQ30.
+END EXUTOIRE;
+
+CLASS OUVRAGE_SPECIAL EXTENDS OUVRAGE_RESEAU_AS =  
+!! Chambres non normalisées et bassins dans un réseau de canalisations
+  ATTRIBUTE
+    BYPASS: (          !! Bypass pour détourner les eaux (par exemple durant des opérations de maintenance ou en cas d’avaries)
+      inexistant,
+      inconnu,
+      existant
+    );
+    FONCTION: (          !! Genre d'utilisation
+      fosse_etanche,  !! Fosse étanche
+      ouvrage_de_chute,  !! Ouvrage spécial dans le réseau de canalisations servant à relier des différences d'altitude sur une petite distance, en brisant l'énergie de l'écoulement.
+      fosse_digestive,  !! Fosse digestive: 3 compartiments
+      autre,  !! Seulement à utiliser s'il n'y a pas de valeur existante. Ajouter la fonction détaillée dans commentaire
+      aeration,  !! Installation permettant une aération dans un ouvrage d'assainissement
+      chambre_avec_siphon_inverse,  !! Ouvrage spécial servant à purger le siphon inverse au point le plus bas.
+      entree_de_siphon,  !! Ouvrage d’entrée d'un siphon inversé pour répartir le débit sur plusieurs tuyaux.
+      fosse_septique,  !! Fosse septique: 2 compartiments
+      depression_de_terrain,  !! Dépression de terrain artificielle ou naturelle ayant une fonction de rétention
+      depotoir_pour_alluvions,  !! spécial, servant à récolter les matériaux transportés. Se trouve souvent à l'entrée des tronçons mis sous terre
+      fosse_a_purin,  !! Fosse à purin
+      fosse_de_decantation,  !! Appareil destiné à la collecte, à la liquéfaction partielle des matières polluantes contenues dans les eaux usées et à la rétention des matières solides et des déchets flottants. Il est souvent utilisé pour des bâtiments qui ne sont pas raccordés à un réseau d’égouts aboutissant à un traitement (1 chambre)
+      regard_de_visite,  !! Ouvrage d'accès au réseau par lequel le personnel d'entretien pénètre pour assurer le service et la surveillance du réseau
+      separateur_d_hydrocarbures,  !! Ouvrage spécial servant à séparer des fluides légers de l'eau. Il évite que des hydrocarbures pénètrent dans les milieux récepteur.
+      station_de_pompage,  !! Installation destinée à élever les eaux d'un niveau à un autre, soit pour le franchissement d'un obstacle, soit pour modifier des tracés devenus économiquement inacceptables en réseau gravitaire
+      BEP_decantation,  !! Ouvrage de réseau d’eaux mixtes pour la décantation de matières solides et le stockage d’eaux mixtes (fonction secondaire, pour le stockage de volumes d’eau pluviale minimes).
+      BEP_retention,  !! Bassin d'eau pluviale ayant comme fonction la rétention du premier flot d’orage (first flush)
+      BEP_canal_retention,  !! Canalisation de rétention avec déversement en amont dans un cours d'eau
+      BEP_clarification,  !! Bassin d’eaux pluviales de décantation dans un système séparatif
+      BEP_accumulation,  !! Bassin d'accumulation de débits de pointe dans un réseau d’eaux mixtes ou pluviales. Sa fonction est de décharger le réseau lors d’orages et n’a, contrairement au déversoir d’orage aucun déversement, mise à part un trop-plein vers un exutoire en milieu récepteur
+      BEP_canal_accumulation,  !! Canalisation de stockage avec mode de fonctionnement identique que la bassin d'accumulation.
+      BEP_canal_stockage,  !! Canalisation de stockage avec déversement en aval dans un cours d'eau
+      BEP_combine,  !! Bassin d'eau pluviale réunissant la rétention et la clarification
+      deversoir_d_orage,  !! Ouvrage spécial, séparant les eaux mixtes en y rejetant une partie directement dans un cours d’eau
+      separateur_de_materiaux_flottants,  !! Dépotoir contenant soit un siphon prolongé ou une paroi plongeante. Tient le rôle de prétraitement sur une installation d'infiltration
+      acces_lateral,  !! Accès à un ouvrage sans descente ou montée
+      chambre_de_chasse,  !! Chambre servant d'accès spécifiquement pour le rinçage
+      ouvrage_de_repartition,  !! Ouvrage spécial, qui répartie les eaux dans le système sans les déverser. Une ou plusieurs entrées, deux à plusieurs sorties
+      inconnu,
+      chambre_de_chute_a_vortex  !! Ouvrage permettant l'évacuation des eaux sans dégâts sur une hauteur donnée. L'ouvrage est composé de: chambre à formation de vortex, tuyau de chute, puits dissipateur et un tuyau d'aération
+    );
+    TROP_PLEIN_DE_SECOURS: (          !! L’attribut décrit vers où le débit déversé s’écoule. (bassin d’accumulation / canal d’accumulation)
+      autres,
+      dans_canalisation_eaux_mixtes,
+      dans_canalisation_eaux_pluviales,
+      dans_canalisation_eaux_usees,
+      aucun,
+      inconnu
+    );
+    BEP_DISPOSITION: (          !! Disposition d'un bassin d'eaux pluviales dans le réseau d'assainissement. Attribut additionnel pour les valeurs BEP_* de OUVRAGE_SPECIAL.FONCTION.
+      connexion_directe,  !! Connexion qui permet une traversée en permanence de la totalité des eaux de temps sec et d'une partie des eaux de temps de pluie
+      connexion_laterale,  !! Connexion qui présente uniquement une traversée des eaux de temps de pluie
+      inconnue
+    );
+END OUVRAGE_SPECIAL;
+
+CLASS INSTALLATION_INFILTRATION EXTENDS OUVRAGE_RESEAU_AS =  
+!! Installation permettant le passage d'eaux propres ou d'eaux pluviales légèrement polluées dans le sous-sol
+  ATTRIBUTE
+    GENRE: (          !! Genre de méthode d'infiltration.
+      autre_avec_passage_a_travers_sol,
+      autre_sans_passage_a_travers_sol,
+      infiltration_superficielle_sur_place,
+      corps_de_gravier,
+      combinaison_puits_bande,
+      cuvettes_rigoles_filtrantes,
+      inconnu,
+      infiltration_par_les_bas_cotes,
+      bassin_d_infiltration,
+      puits_d_infiltration,
+      bande_infiltration_galerie
+    );
+    SIGNALISATION: (          !! Désignation inscrite du couvercle de l'installation d'infiltration. Uniquement pour des installations avec couvercle
+      signalee,
+      non_signalee,
+      inconnue
+    );
+    DIMENSION1: SIA405_Base_f.Metrage;  !! Dimension1 de l’installation d’infiltration (plus grande mesure intérieure) lorsqu’elle est utilisée pour des éléments d’ouvrage normés. Sinon, à laisser libre et prendre la description de la géométrie détaillée.
+    DIMENSION2: SIA405_Base_f.Metrage;  !! Dimension2 de la chambre (plus petite mesure intérieure). La dimension2 est à saisir pour des chambres ovales et à laisser libre pour des chambres circulaires. Pour les chambres rectangulaires il faut utiliser la géométrie détaillée.
+    DISTANCE_AQUIFERE: 0.00 .. 30000.00 [m];  !! Distance à l'aquifère (distance verticale de la surface du terrain à l'aquifère);
+    LACUNES: (          !! Indique les défauts actuels de l'installation d'infiltration (etat_actuel).
+      aucunes,
+      modestes,  !! ne nécessitant pas de contrôle
+      importantes  !! nécessitant un contrôle
+    );
+    TROP_PLEIN_DE_SECOURS: (          !! Point cumulant des conduites du trop plein d'une installation d'infiltration
+      dans_canalisation_eaux_mixtes,  !! L'infiltration est directement connectée aux canalisations des eaux mixtes sans passer par le terrain (état non souhaité)
+      dans_canalisation_eaux_pluviales,  !! L'infiltration est directement connectée aux canalisations des eaux pluviales sans passer par le terrain (état non souhaité)
+      au_cours_d_eau_recepteur,  !! connexion directe au milieu récepteur (construction non souhaitée)
+      aucun,
+      deversement_en_surface,  !! L'eau submerge l'installation jusqu'à la surface (état souhaité / indiquant un colmatage)
+      inconnu
+    );
+    VEHICULE_D_ASPIRATION: (          !! Accessibilité pour des camions de vidange. Se réfère à toute l'installation d'infiltration / de prétraitement et peut être spécifiée sous REMARQUE
+      inconnu,
+      inaccessible,
+      accessible
+    );
+    CAPACITE_ABSORPTION_SOL: 0.000 .. 100000.000 [SIA405_Base_f.ls];  !! Capacité d'absorption du sol
+    EAU_INFILTRATION: (          !! Genre d'eau à infiltrer
+      eaux_pluviales,  !! Eaux des précipitations naturelles non polluées par son utilisation selon directives VSA "Evacuation des eaux pluviales"
+      eaux_claires,
+      inconnue
+    );
+    ETANCHEITE: (          !! Etanchéité contre des eaux superficielles. Uniquement pour des installations avec chambres
+      non_etanche,
+      inconnue,
+      etanche
+    );
+    SURFACE_UTILE: 0.00 .. 100000.00 [Units.m2];  !! Surface qui participe à l'écoulement
+END INSTALLATION_INFILTRATION;
+
+CLASS PROFIL_TUYAU EXTENDS SIA405_Base_f.SIA405_BaseClass =  
+!! Différents types de profil
+  ATTRIBUTE
+    REMARQUE: TEXT*80;  !! Remarques générales
+    DESIGNATION: MANDATORY TEXT*20;
+    RAPPORT_HAUTEUR_LARGEUR: Rapport_H_L;  !! Rapport entre la hauteur et la largeur
+    TYPE_PROFIL: (          !! Type du profil
+      ovoide,  !! A utiliser uniquement pour les profils ovoïdes normés selon DIN 4263 ayant un rapport hauteur/largeur de 1.5. Pour les autres profils ovoïdes, même ceux avec des modifications, la valeur devient « profil_special » et une définition du profil est à joindre.
+      circulaire,  !! A utiliser uniquement pour des profils circulaires normés, sans cunette de débit par temps sec ou autres modifications. Sinon la valeur devient « profil_special » et une définition du profil est à joindre.
+      profil_en_voute,  !! A utiliser uniquement pour les profils en voûte normés selon DIN 4263. Pour les variantes, même avec modifications, la valeur devient « profil_special » et une définition du profil est à joindre.
+      profil_ouvert,  !! A utiliser uniquement pour les profils ouverts. Une définition du profil est à joindre.
+      rectangulaire,  !! A utiliser uniquement pour des profils rectangulaires normés, sans cunette de débit par temps sec ou autres modifications. Sinon la valeur devient « profil_special » et une définition du profil est à joindre.
+      profil_special,  !! Pour des profils fermés non conformes. Une définition du profil est à joindre.
+      inconnu
+    );
+END PROFIL_TUYAU;
+
+CLASS ELEMENT_RESEAU_EVACUATION (ABSTRACT) EXTENDS SIA405_Base_f.SIA405_BaseClass =  
+!! Définition de modélisation pour les noeuds de réseau et les tronçons
+  ATTRIBUTE
+    REMARQUE: TEXT*80;  !! Remarques générales
+    DESIGNATION: MANDATORY TEXT*20;
+END ELEMENT_RESEAU_EVACUATION;
+
+ASSOCIATION ELEMENT_RESEAU_EVACUATION_OUVRAGE_RESEAU_ASAssoc =    !! Association
+  OUVRAGE_RESEAU_ASRef  -- {0..1} OUVRAGE_RESEAU_AS; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  ELEMENT_RESEAU_EVACUATION_OUVRAGE_RESEAU_ASAssocRef -- {0..*} ELEMENT_RESEAU_EVACUATION; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
+END ELEMENT_RESEAU_EVACUATION_OUVRAGE_RESEAU_ASAssoc;
+
+CLASS POINT_TRONCON EXTENDS SIA405_Base_f.SIA405_BaseClass =  
+!! Informations détaillées sur la connexion entre les noeuds de réseau et les tronçons
+  ATTRIBUTE
+    FORME_SORTIE: (          !! Types de sortie
+      arrondie,
+      en_forme_de_seuil_ou_diaphragme,
+      pas_de_changement_de_section,
+      aretes_vives,
+      inconnue
+    );
+    REMARQUE: TEXT*80;  !! Remarques générales
+    DESIGNATION: MANDATORY TEXT*20;
+    PRECISION_ALTIMETRIQUE: (          !! Plage de précision des coordonnées altimétriques du point de tronçon
+      plusque_6cm,  !! Fourchette de précision de l'altitude d'un point estimé
+      plus_moins_1cm,  !! Fourchette de précision de l'altitude d'un point nivelé
+      plus_moins_3cm,  !! Fourchette de précision de l'altitude d'un point déterminé par GPS
+      plus_moins_6cm,  !! Fourchette de précision de l'altitude d'un point déterminé par un instrument de mensuration (théodolite)
+      inconnue
+    );
+    COTE: Base_f.Altitude;  !! Cote du radier de la fin du tronçon
+    SITUATION: Base_f.CoordNat;  !! Coordonnées nationales Est/Nord
+    SITUATION_POINT_RACCORD: Cadran;  !! Emplacement de raccordement Référence à la section transversale dans le canal dans le sens d’écoulement (pour les raccordements domestiques et de rue).
+END POINT_TRONCON;
+
+ASSOCIATION POINT_TRONCON_ELEMENT_RESEAU_ASAssoc =    !! Association
+  ELEMENT_RESEAU_ASRef  -- {0..1} ELEMENT_RESEAU_EVACUATION; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  POINT_TRONCON_ELEMENT_RESEAU_ASAssocRef -- {0..*} POINT_TRONCON; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
+END POINT_TRONCON_ELEMENT_RESEAU_ASAssoc;
+
+CLASS NOEUD_RESEAU EXTENDS ELEMENT_RESEAU_EVACUATION =  
+!! Point de référence hydraulique de l'ouvrage du réseau d'évacuation, telle qu'une liaison entre deux tronçons
+  ATTRIBUTE
+    SITUATION: Base_f.CoordNat;  !! Positionnement du nœud. Point de référence déterminant pour le calcul de réseau de canalisations (en règle générale positionnement du milieu du couvercle ou de la sortie temps sec);
+    COTE_REFOULEMENT: Base_f.Altitude;  !! Cote de refoulement déterminante calculée à partir des pluies de projet
+    COTE_RADIER: Base_f.Altitude;  !! Point le plus bas du noeud
+END NOEUD_RESEAU;
+
+CLASS TRONCON EXTENDS ELEMENT_RESEAU_EVACUATION =  
+!! Elément de transport du réseau de canalisations hydrauliquement homogène, section utilisée pour une simulation de l'écoulement
+  ATTRIBUTE
+    PROTECTION_INTERIEURE: (          !! Protection de la paroi intérieur de la canalisation
+      autre,
+      peinture_revetement,
+      revetement_en_brique,
+      revetement_en_gres,
+      inconnue,
+      revetement_en_mortier_de_ciment
+    );
+    L_EFFECTIVE: 0.00 .. 30000.00 [m];  !! Longueur effective (non projetée) incluant les parties incurvées
+    DETERMINATION_PLANIMETRIQUE: (          !! Définit la précision de la détermination du tracé.
+      precise,  !! +/- 10 cm, lors de la détermination du tracé par différentes mesures, le triple, c'est-à-dire +/- 30 cm (norme SIA 405 1998, point 4 23 3)
+      inconnue,
+      imprecise  !! voir inconnue
+    );
+    HAUTEUR_MAX_PROFIL: Hauteur_max_profile;  !! Hauteur intérieure maximale du profil
+    MATERIAU: (          !! Matériau du tuyau
+      autre,
+      amiante_ciment,
+      beton_normal,
+      beton_coule_sur_place,
+      beton_pousse_tube,
+      beton_special,
+      beton_inconnu,
+      fibrociment,
+      terre_cuite,
+      fonte_ductile,
+      fonte_grise,
+      matiere_synthetique_resine_d_epoxy,
+      matiere_synthetique_polyethylene_dur,
+      matiere_synthetique_polyester_GUP,
+      matiere_synthetique_polyethylene,
+      matiere_synthetique_polypropylene,
+      matiere_synthetique_PVC,  !! polychlorure de vinyle
+      matiere_synthetique_inconnue,  !! matière synthétique inconnu
+      acier,
+      acier_inoxydable,
+      gres,
+      argile,
+      inconnu,
+      ciment
+    );
+    PENTE_PLAN: Pente_promille;  !! Pente indiquée sur d'anciens plans non contrôlée [%o]. Ne peut pas être reprise pour des calculs hydrauliques. Indication pour des canalisations de biens-fonds ou d'amélioration foncière. Représentation sur de plan: 3.5‰ p
+    K_STRICKLER: Strickler;  !! Constante de rugosité selon Manning-Strickler (K ou kstr);
+    RELINING_GENRE: (          !! Genre du relining
+      troncon_entier,
+      partiellement,
+      inconnu
+    );
+    RELINING_TECHNIQUE: (          !! Relining technique de construction. En addition la construction du reliner doit être modeler comme événement maintenance: Genre = reparation pour liner_partiel, autrement genre = renovation.
+      autre,
+      close_fit_relining,
+      relining_tube_court,
+      Noppenschlauchrelining,  !! terme française inconnue (english: Grouted in place lining)
+      liner_partiel,
+      chemisage_par_ligne_de_tuyau,  !! Chemisage par ligne de tuyau
+      chemisage_par_gainage,  !! Hhemisage par gainage
+      inconnu,
+      chemisage_par_tube_spirale  !! Chemisage par tube spirale
+    );
+    RELINING_MATERIAUX: (          !! Materiaux du relining
+      autre,
+      resine_epoxy_lamine_en_fibre_de_verre,  !! résine epoxy lamine en fibre de verre
+      resine_epoxy_feutre_synthetique,  !! résine epoxy feutre synthetique
+      tuyau_PRV,  !! Polyester 	non saturé renforcé de fibres de verre (PRV),  tuyau HOBAS.  En allemand GF-UP
+      HDPE,
+      isocyanat_resine_lamine_en_fibre_de_verre,  !! isocyanat résine lamine en fibre de verre
+      isocyanat_resine_lamine_feutre_synthetique,  !! isocyanat résine lamine feutre synthetique
+      resine_de_polyester_lamine_en_fibre_de_verre,  !! résine de polyester lamine en fibre de verre
+      resine_de_polyester_feutre_synthetique,  !! résine de polyester feutre synthetique
+      polypropylene,
+      PVC,
+      radier_avec_pellicule_en_beton_polyester,  !! radier avec pellicule en béton polyester
+      inconnu,
+      UP_resine_LED_fibre_synthetiques_liner,  !! Fibre synthetiques liner 	avec résine polyester non saturé (UP résine) UP, durcissement avec UV-LED
+      resine_d_ester_vinylique_lamine_en_fibre_de_verre,  !! Résine d'ester vinylique lamine en fibre de verre
+      resine_d_ester_vinylique_feutre_synthetique  !! Résine d'ester vinylique feutre synthetique
+    );
+    RELINER_DIAMETRE_NOMINALE: Hauteur_max_profile;  !! Hauteur intérieure maximale du profil de l'inliner. A l'export dans le software hydraulique il faut utiliser cette attribut au lieu de HAUTEUR_MAX_PROFIL
+    RIGIDITE_ANNULAIRE: 0 .. 16;  !! Rigidité annulaire pour des pressions extérieures (selon ISO 13966);
+    TRACE: Base_f.Polyligne;  !! Points de départ, intermédiaires et d’arrivée de la conduite.
+    K_COLEBROOK: Prandtl;  !! Coefficient de rugosité d'après Prandtl Colebrook (ks ou kb);
+END TRONCON;
+
+CLASS TRONCON_Texte EXTENDS SIA405_Base_f.SIA405_TextePos =
+END TRONCON_Texte;
+
+!!  Correction 10.12.2014
+!!  ASSOCIATION TRONCON_TextAssoc =   !! Composition
+ASSOCIATION TRONCON_TexteAssoc =   !! Composition
+  TRONCONRef -<#> {1} TRONCON;
+  Texte -- {0 .. *} TRONCON_Texte;
+!!  END TRONCON_TextAssoc;
+END TRONCON_TexteAssoc;
+
+CLASS TRONCON_TRACE_ALTERNATIVE EXTENDS Base_f.BaseClass =
+   TRACE_ALTERNATIVE: Base_f.Polyligne;  !!  Points de départ, intermédiaires et d’arrivée de la conduite dans la type de plan selectionée
+   TYPE_DE_PLAN: SIA405_Base_f.Type_de_plan; !! Default: plan_d_ensemble
+END TRONCON_TRACE_ALTERNATIVE;
+
+ASSOCIATION TRONCON_TRACE_ALTERNATIVEAssoc =   !! Composition
+  TRONCONRef -<#> {1} TRONCON;
+  TRACE_ALTERNATIVE -- {0 .. *} TRONCON_TRACE_ALTERNATIVE;
+END TRONCON_TRACE_ALTERNATIVEAssoc;
+
+ASSOCIATION TRONCON_POINT_TRONCON_DEAssoc =    !! Association
+  POINT_TRONCON_DERef  -- {1} POINT_TRONCON; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  TRONCON_POINT_TRONCON_DEAssocRef -- {0..1} TRONCON; !! {XOR (TRONCON)}, Rolle2 - Klasse2 / Rôle2 - Classe2
+END TRONCON_POINT_TRONCON_DEAssoc;
+
+ASSOCIATION TRONCON_POINT_TRONCON_VERSAssoc =    !! Association
+  POINT_TRONCON_VERSRef  -- {1} POINT_TRONCON; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  TRONCON_POINT_TRONCON_VERSAssocRef -- {0..1} TRONCON; !! {XOR (TRONCON)}, Rolle2 - Klasse2 / Rôle2 - Classe2
+END TRONCON_POINT_TRONCON_VERSAssoc;
+
+ASSOCIATION TRONCON_GENRE_PROFILAssoc =    !! Association
+  GENRE_PROFILRef  -- {0..1} PROFIL_TUYAU; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  TRONCON_GENRE_PROFILAssocRef -- {0..*} TRONCON; !! {XOR (TRONCON)}, Rolle2 - Klasse2 / Rôle2 - Classe2
+END TRONCON_GENRE_PROFILAssoc;
+
+CLASS ELEMENT_OUVRAGE (ABSTRACT) EXTENDS SIA405_Base_f.SIA405_BaseClass =  
+!! Eléments constructifs et installations d'un ouvrage du réseau d'évacuation
+  ATTRIBUTE
+    REMARQUE: TEXT*80;  !! Remarques générales
+    DESIGNATION: MANDATORY TEXT*20;
+    REMISE_EN_ETAT: (          !! Information sur l'état de l'élément de l'ouvrage
+      pas_necessaire,
+      necessaire,
+      inconnue
+    );
+END ELEMENT_OUVRAGE;
+
+ASSOCIATION ELEMENT_OUVRAGE_OUVRAGE_RESEAU_ASAssoc =    !! Composition
+  OUVRAGE_RESEAU_ASRef  -<#> {1} OUVRAGE_RESEAU_AS; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  ELEMENT_OUVRAGE_OUVRAGE_RESEAU_ASAssocRef -- {0..*} ELEMENT_OUVRAGE; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
+END ELEMENT_OUVRAGE_OUVRAGE_RESEAU_ASAssoc;
+
+CLASS TUYAU_CHUTE EXTENDS ELEMENT_OUVRAGE =  
+!! Tuyau dans une chambre de chute pour évacuer les débits par temps sec et faibles pluies
+  ATTRIBUTE
+    DIAMETRE: SIA405_Base_f.Metrage;  !! Dimension du couvercle (dimension minimale pour couvercle anguleux);
+END TUYAU_CHUTE;
+
+CLASS DISPOSITIF_D_ACCES EXTENDS ELEMENT_OUVRAGE =  
+!! Elément facilitant l'entrée dans un ouvrage d'eaux usées
+  ATTRIBUTE
+    GENRE: (          !! Genre d'accès à l'ouvrage
+      autre,
+      porte_etanche,
+      aucun_equipement_d_acces,
+      echelle,
+      echelons,
+      escalier,
+      marchepieds,  !! niches ou marchepied
+      porte,
+      inconnu
+    );
+END DISPOSITIF_D_ACCES;
+
+CLASS CUNETTE_DEBIT_TEMPS_SEC EXTENDS ELEMENT_OUVRAGE =  
+!! Cunette d'écoulement pour les débits par temps sec
+  ATTRIBUTE
+    MATERIAU: (          !! Matériau de fabrication ou de revêtement de la cunette de débit temps sec
+      autres,
+      combine,
+      matiere_synthetique,
+      gres,
+      inconnu,
+      mortier_de_ciment
+    );
+END CUNETTE_DEBIT_TEMPS_SEC;
+
+CLASS COUVERCLE EXTENDS ELEMENT_OUVRAGE =  
+!! Couvercle amovible d'une chambre
+  ATTRIBUTE
+    FORME_COUVERCLE: (          !! Forme du couvercle
+      autre,
+      anguleux,
+      rond,
+      inconnue
+    );
+    DIAMETRE: SIA405_Base_f.Metrage;  !! Dimension du couvercle (dimension minimale pour couvercle anguleux);
+    AERATION: (          !! Couvercle pourvu de trous d'aération
+      aere,
+      non_aere,
+      inconnue
+    );
+    FABRICANT: TEXT*50;  !! Nom de l'entreprise de fabrication
+    COTE: Base_f.Altitude;  !! Cote du couvercle
+    SITUATION: Base_f.CoordNat;  !! Positionnement du couvercle (milieu du couvercle);
+    DETERMINATION_PLANIMETRIQUE: (          !! Plage de précision des coordonnées planimétriques du couvercle.
+      plusque_50cm,
+      plus_moins_10cm,
+      plus_moins_3cm,
+      plus_moins_50cm,
+      inconnue
+    );
+    MATERIAU: (          !! Matériau du couvercle
+      autre,
+      beton,
+      fonte,
+      fonte_avec_remplissage_en_robe,
+      fonte_avec_remplissage_en_beton,
+      inconnu
+    );
+    RAMASSE_BOUES: (          !! Indication si le couvercle est pourvu ou non d'un ramasse-boues
+      inexistant,
+      inconnu,
+      existant
+    );
+    FERMETURE: (          !! Genre de fixation du couvercle
+      non_vissee,
+      inconnue,
+      vissee
+    );
+END COUVERCLE;
+
+CLASS BANQUETTE EXTENDS ELEMENT_OUVRAGE =  
+!! Banquette dans le canal ou la chambre
+  ATTRIBUTE
+    GENRE: (        
+      autre,
+      double,
+      simple,
+      aucun,
+      inconnu
+    );
+END BANQUETTE;
+
+END SIA405_Eaux_usees; !! end of TOPIC SIA405_Eaux_usees
+
+VIEW TOPIC SIA405_Eaux_usees_CS =
+    DEPENDS ON SIA405_Eaux_usees;
+
+VIEW ELEMENT_RESEAU_EVACUATION
+  PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.ELEMENT_RESEAU_EVACUATION;
+  =  
+  ATTRIBUTE
+END ELEMENT_RESEAU_EVACUATION;
+
+VIEW ELEMENT_RESEAU_EVACUATION_OUVRAGE_RESEAU_AS_Assoc 
+  PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.ELEMENT_RESEAU_EVACUATION_OUVRAGE_RESEAU_ASAssoc;
+  =
+  ATTRIBUTE
+     ALL OF base;
+END ELEMENT_RESEAU_EVACUATION_OUVRAGE_RESEAU_AS_Assoc;
+
+VIEW OUVRAGE_RESEAU_AS
+  PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.OUVRAGE_RESEAU_AS;
+  =  
+  ATTRIBUTE
+    GEOMETRIE_DETAILLEE :=base-> GEOMETRIE_DETAILLEE;
+    ETAT :=base-> ETAT;
+END OUVRAGE_RESEAU_AS;
+
+VIEW OUVRAGE_RESEAU_AS_Texte
+  PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.OUVRAGE_RESEAU_AS_Texte;
+  =
+  ATTRIBUTE
+    ALL OF base;
+END OUVRAGE_RESEAU_AS_Texte;
+
+VIEW OUVRAGE_RESEAU_AS_TexteAssoc 
+  PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.OUVRAGE_RESEAU_AS_TexteAssoc;
+  =
+  ATTRIBUTE
+    ALL OF base;
+END OUVRAGE_RESEAU_AS_TexteAssoc;
+
+VIEW OUVRAGE_RESEAU_AS_PROPRIETAIRE_Assoc 
+  PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.OUVRAGE_RESEAU_AS_PROPRIETAIREAssoc;
+  =
+  ATTRIBUTE
+     ALL OF base;
+END OUVRAGE_RESEAU_AS_PROPRIETAIRE_Assoc;
+
+VIEW OUVRAGE_RESEAU_AS_EXPLOITANT_Assoc 
+  PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.OUVRAGE_RESEAU_AS_EXPLOITANTAssoc;
+  =
+  ATTRIBUTE
+     ALL OF base;
+END OUVRAGE_RESEAU_AS_EXPLOITANT_Assoc;
+
+VIEW NOEUD_RESEAU
+  PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.NOEUD_RESEAU;
+  =  
+  ATTRIBUTE
+END NOEUD_RESEAU;
+
+VIEW COUVERCLE
+  PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.COUVERCLE;
+  =  
+  ATTRIBUTE
+    SITUATION :=base-> SITUATION;
+    DETERMINATION_PLANIMETRIQUE :=base-> DETERMINATION_PLANIMETRIQUE;
+END COUVERCLE;
+
+VIEW EXUTOIRE
+  PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.EXUTOIRE;
+  =  
+  ATTRIBUTE
+END EXUTOIRE;
+
+VIEW TRONCON
+  PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.TRONCON;
+  =  
+  ATTRIBUTE
+    DETERMINATION_PLANIMETRIQUE :=base-> DETERMINATION_PLANIMETRIQUE;
+    TRACE :=base-> TRACE;
+END TRONCON;
+
+VIEW TRONCON_Texte
+  PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.TRONCON_Texte;
+  =
+  ATTRIBUTE
+    ALL OF base;
+END TRONCON_Texte;
+
+VIEW TRONCON_TexteAssoc 
+  PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.TRONCON_TexteAssoc;
+  =
+  ATTRIBUTE
+    ALL OF base;
+END TRONCON_TexteAssoc;
+
+VIEW TRONCON_POINT_TRONCON_DE_Assoc 
+  PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.TRONCON_POINT_TRONCON_DEAssoc;
+  =
+  ATTRIBUTE
+     ALL OF base;
+END TRONCON_POINT_TRONCON_DE_Assoc;
+
+VIEW TRONCON_POINT_TRONCON_VERS_Assoc 
+  PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.TRONCON_POINT_TRONCON_VERSAssoc;
+  =
+  ATTRIBUTE
+     ALL OF base;
+END TRONCON_POINT_TRONCON_VERS_Assoc;
+
+VIEW TRONCON_GENRE_PROFIL_Assoc 
+  PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.TRONCON_GENRE_PROFILAssoc;
+  =
+  ATTRIBUTE
+     ALL OF base;
+END TRONCON_GENRE_PROFIL_Assoc;
+
+VIEW POINT_TRONCON
+  PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.POINT_TRONCON;
+  =  
+  ATTRIBUTE
+    SITUATION :=base-> SITUATION;
+END POINT_TRONCON;
+
+VIEW POINT_TRONCON_ELEMENT_RESEAU_AS_Assoc 
+  PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.POINT_TRONCON_ELEMENT_RESEAU_ASAssoc;
+  =
+  ATTRIBUTE
+     ALL OF base;
+END POINT_TRONCON_ELEMENT_RESEAU_AS_Assoc;
+
+VIEW CANALISATION
+  PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.CANALISATION;
+  =  
+  ATTRIBUTE
+    FONCTION_HIERARCHIQUE :=base-> FONCTION_HIERARCHIQUE;
+END CANALISATION;
+
+VIEW CHAMBRE_STANDARD
+  PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.CHAMBRE_STANDARD;
+  =  
+  ATTRIBUTE
+    FONCTION :=base-> FONCTION;
+END CHAMBRE_STANDARD;
+
+VIEW PROFIL_TUYAU
+  PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.PROFIL_TUYAU;
+  =  
+  ATTRIBUTE
+    RAPPORT_HAUTEUR_LARGEUR :=base-> RAPPORT_HAUTEUR_LARGEUR;
+    TYPE_PROFIL :=base-> TYPE_PROFIL;
+END PROFIL_TUYAU;
+
+VIEW OUVRAGE_SPECIAL
+  PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.OUVRAGE_SPECIAL;
+  =  
+  ATTRIBUTE
+    FONCTION :=base-> FONCTION;
+END OUVRAGE_SPECIAL;
+
+VIEW INSTALLATION_INFILTRATION
+  PROJECTION OF base~SIA405_EAUX_USEES_2015.SIA405_Eaux_usees.INSTALLATION_INFILTRATION;
+  =  
+  ATTRIBUTE
+END INSTALLATION_INFILTRATION;
+
+END SIA405_Eaux_usees_CS;  !! Ende der View
+
+END SIA405_EAUX_USEES_2015.   !! Ende des Modells / Fin du modèle
+
+
+
+!! SIA405_Eaux_usees_2015_2_f_LV95.ili
+!! Subset de la  Structure des données dans l'évacuation des eaux des agglomérations (VSA-SDEE)
+
+!! INTERLIS 2.3;
+
+MODEL SIA405_EAUX_USEES_2015_LV95 (fr) AT "http://www.sia.ch/405"
+  VERSION "17.04.2018" TRANSLATION OF SIA405_ABWASSER_2015_LV95 [ "17.04.2018" ] = 
+
+  IMPORTS UNQUALIFIED INTERLIS;     !! imports INTERLIS 2 Baseunits
+  IMPORTS Units;
+  IMPORTS Base_f_LV95;
+  IMPORTS SIA405_Base_f_LV95;
+
+!! Copyright 2002 - 2015
+!! Association suisse des professionnels de la protection des eaux (VSA), Zürich
+!! www.vsa.ch
+!! en cooperation avec Société suisse des ingénieurs et architectes (sia), Zurich
+!! L'utilisation de ce fichier modèle INTERLIS a besoin une licence!
+
+!! Les fichiers modèles originaux SIA405_Eaux_usees_2015_2_f_LV95.ili et les versions 
+!! modifiées à partir de ceux-ci ne peuvent pas être revendus.
+!! La distribution du fichier original (comme tout ou une partie de celui-ci) 
+!! n'est permise qu'avec l'achat d'une licence du sia / VSA par le destinataire.
+
+
+!! libéré pour utilisation publique et application commerciale avec la licence.
+!! Fichier modèle INTERLIS examiné avec Compiler INTERLIS Version 4.7.7 (8.02.2018)
+!! Sachbearbeiter: Stefan Burckhardt / SIA 405 Kommission
+
+UNIT
+
+TOPIC SIA405_Eaux_usees =
+
+DOMAIN
+
+
+Rapport_H_L = 0.01 .. 100.00;    !! Rapport entre la hauteur et la largeur, sans unité
+!! PROFIL_TUYAU.RAPPORT_HAUTEUR_LARGEUR
+
+
+EtatValeurs EXTENDS SIA405_Base_f_LV95.Etat = (  !! Etat de fonctionnement et de planification de l’ouvrage. 
+!! 1.2.2013 Adaptation à la nouvelle version de SIA405_Base_f_LV95.Etat – Extension des valeurs de base du fluide, modélisation hiérarchique et adaption compiler 4.5.13
+      !! 17.7.2015 hors_service, !! comporte hors_service et les valeurs suivantes
+         !!  reserve  !! n'existe pas en eaux_usées
+      en_service (  !! comporte en_service et les valeurs suivantes 
+         !! 17.7.2015 en_service,
+         provisoire,
+         sera_supprime
+      ),
+      abandonne (  !! comporte abandonne et les valeurs suivantes
+          !!  abandonne,   !! n'existe pas en eaux usées
+         supprime_non_demoli,
+         supprime_inconnu,
+         demoli
+      ),
+      !! 17.7.2015 inconnu,
+      autre ( !! comporte les valeurs suivantes
+         variante_de_calcul,
+         planifie,
+         projet
+      )
+    );   
+    !! nouveau 17.7.2015  
+    Etat = ALL OF EtatValeurs;    !! extension valeurs SIA405 Etat
+!! OUVRAGE_RESEAU_AS.ETAT
+
+
+Intervalle = 0.00 .. 20.00 [Units.CountedObjects];    !! années
+!! CANALISATION.INTERVALLE_CURAGE
+!! OUVRAGE_RESEAU_AS.INTERVALLE_INSPECTION
+
+
+Pente_promille = -10000 .. 10000;    !! promille [%o]
+!! 17.4.2014 nouveau pour pente_plan (au lieu de Promille), parce qu'il peut être plus grand que 1000
+!! TRONCON.PENTE_PLAN
+
+
+Strickler = 0 .. 999;    !! Coefficient de rugosité selon Manning-Strickler (K ou kstr) [m^(1/3)/s]
+!! TRONCON.K_STRICKLER
+
+
+Prandtl = 0.00 .. 100.00 [Units.mm];    !! Coefficient de rugosité d'après Prandtl Colebrook (ks ou kb), unité milimètre [mm]
+!! TRONCON.K_COLEBROOK
+
+
+Hauteur_max_profile = 0 .. 99999 [Units.mm];    !! milimètre [mm]
+!! 25.4.2012 nouveau SIA405_Base_f.Metrage
+!! TRONCON.HAUTEUR_MAX_PROFIL
+!! TRONCON.RELINER_DIAMETRE_NOMINALE
+
+
+UID = TEXT*12;    !! 
+!! ORGANISATION.UID
+
+
+Cadran = 0..12;    !! 
+!! selon directive
+!! POINT_TRONCON.SITUATION_POINT_RACCORD
+
+
+!! Copyright 2002 - 2015
+!! Association suisse des professionnels de la protection des eaux (VSA), Zürich
+!! www.vsa.ch
+!! L'utilisation de ce fichier modèle INTERLIS a besoin une licence!
+
+!! Les fichiers modèles originaux SIA405_Eaux_usees_2015_2_f_LV95.ili et les versions 
+!! modifiées à partir de ceux-ci ne peuvent pas être revendus.
+!! La distribution du fichier original (comme tout ou une partie de celui-ci) 
+!! n'est permise qu'avec l'achat d'une licence du VSA par le destinataire.
+CLASS ORGANISATION EXTENDS SIA405_Base_f_LV95.SIA405_BaseClass =  
+!! Superclasse pour les entités organisationnelles importantes pour la planification de l'évacuation des eaux (par ex. communes, cantons, etc.)
+  ATTRIBUTE
+    REMARQUE: TEXT*80;  !! Remarques générales
+    DESIGNATION: MANDATORY SIA405_Base_f_LV95.Organisation_Designation;  !! Utilisez les noms réels, par ex. commune "exemple" et pas seulement commune. Ou "Association pour l'épuration des eaux usées STEP XXX" et pas seulement  Association pour l'épuration des eaux usées. Sinon vous risquer des problèmes en réunissant les données de différentes communes.
+    UID: UID;  !! Référence pour l’identification des entreprises selon l’Office fédéral de la statistique OFS (www.uid.admin.ch), par exemple: CHE123456789
+END ORGANISATION;
+
+ASSOCIATION ORGANISATION_ELEMENT_DEAssoc =    !! Association
+  ELEMENT_DERef  -- {0..*} ORGANISATION; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  ORGANISATION_ELEMENT_DEAssocRef -- {0..*} ORGANISATION; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
+END ORGANISATION_ELEMENT_DEAssoc;
+
+CLASS OUVRAGE_RESEAU_AS (ABSTRACT) EXTENDS SIA405_Base_f_LV95.SIA405_BaseClass =  
+!! Ouvrage appartenant au réseau de canalisations
+  ATTRIBUTE
+    DOSSIER: MTEXT*255;  !! N° de plan de la documentation d’exécution, description de dossiers, manuels, etc.
+    ANNEE_DE_CONSTRUCTION: SIA405_Base_f_LV95.Annee;  !! Année de mise en service (réception finale);
+    ETAT_CONSTRUCTIF: (          !! Classes d'état. Description de l'état constructif selon la directive VSA "Maintien des canalisations" (2007/2009). Ne pas confondre avec les degrés de remise en état (attribut NECESSITE_ASSAINIR)
+      inconnu,
+      Z0,  !! Plus en état de fonctionner: L'ouvrage d'assainissement n’est déjà plus parcourable ou ne le sera plus dans peu de temps: Ouvrage d'assainissement écroulé, totalement bouché par des racines ou par d’autres obstacles à l’écoulement. L'ouvrage d'assainissement perd de l’eau (exfiltration / pollution probable de l’eau souterraine)
+      Z1,  !! Graves défauts: Dommages structurels ne garantissant plus la sécurité statique, l’hydraulique ou l’étanchéité: cassures, déformations, entrées ou sorties visibles d’eau, trous dans la paroi, forte saillie des raccords latéraux, fort développement des racines, paroi  fortement érodée par lavage. Matériau  inapproprié
+      Z2,  !! Défauts moyens: Défauts structurels affectant la statique, l’hydraulique ou l’étanchéité: joints avec canalisation renflés, entrées non nettoyées, fissures, légers obstacles à l’écoulement (entartrages, saillie des raccords latéraux, légers dommages à la paroi, développement localisé des racines, paroi érodée par lavage, etc.)
+      Z3,  !! Défauts légers: Défauts ou événements structurels ayant une influence insignifiante sur l’étanchéité, l’hydraulique ou la statique de l'ouvrage d'assainissement: joints avec canalisations renflées, raccords latéraux mal nettoyés, légères déformations sur matériaux plastiques, légères érosions dues au lavage, etc
+      Z4  !! Aucun défaut
+    );
+    LOT_CONSTRUCTION: TEXT*50;  !! Numéro du lot de construction
+    REMARQUE: TEXT*80;  !! Remarques générales
+    DESIGNATION: MANDATORY TEXT*20;  !! Désignation unique pour chaque maître des données
+    COUTS_BRUTS: 0.00 .. 99999999.99 [Units.CHF];  !! Coûts bruts des travaux de construction
+    GEOMETRIE_DETAILLEE: Base_f_LV95.Surface;  !! Géométrie détaillée particulièrement pour un OUVRAGE_SPECIAL. Pour l’attribut CHAMBRE_STANDARD utilisez Dimension1 et 2, de même pour une INSTALLATION_INFILTRATION normée.  Les canalisations n’ont en général pas de géométrie détaillée.
+    ANNEE_DE_REMPLACEMENT: SIA405_Base_f_LV95.Annee;  !! Année pour laquelle on prévoit que la durée de vie de l'ouvrage soit écoulée
+    FINANCEMENT: (          !! Type de financement (financement selon LEaux Art. 60a)
+      public,  !! L’intégralité des ouvrages d’assainissement qui sont financés selon l’art. 60a de la loi sur la protection des eaux (LEaux).
+      prive,  !! L’intégralité des conduites souterraines et ouvrages construits à l’intérieur et à l’extérieur des immeuble dans le domaine d’application de la SN 592 000, qui ne sont pas financés par les taxes d’épuration selon l’art. 60a de la loi sur la protection des eaux (LEaux)
+      inconnu
+    );
+    INTERVALLE_INSPECTION: Intervalle;  !! Fréquence à laquelle un ouvrage du réseau d‘assainissement devrait subir une inspection (années);
+    NECESSITE_ASSAINIR: (          !! 	Degrés d’urgence et délai de réalisation des mesures constructives selon la directive VSA "Maintien des canalisations"
+      urgente,  !! Les mesures doivent être réalisées d’urgence. Des mesures immédiates doivent être envisagées comme pour le degré a_court_terme. Délai 3-4 ans
+      aucune,  !! Aucune mesure n’est nécessaire jusqu’au prochain relevé et à la prochaine évaluation de l’état. Délai >= 10 ans
+      a_court_terme,  !! Les mesures doivent être réalisées de façon très urgente et à court terme. A titre de mesures immédiates, des réparations locales provisoires permettent de prévenir temporairement d’autres dommages. Délai <= 2 ans
+      a_long_terme,  !! Les mesures peuvent être projetées à long terme. Délai 7 - 10 ans
+      a_moyen_terme,  !! Les mesures sont nécessaires à moyen terme. Délai 5 à 7 ans
+      inconnue
+    );
+    LIEU_DIT: TEXT*50;  !! Nom de la route ou du lieu de l'ouvrage
+    ETAT: Etat;  !! Etat de fonctionnement et de planification de l’ouvrage
+    SUBVENTIONS: 0.00 .. 99999999.99 [Units.CHF];  !! Contributions des cantons et de la Confédération
+    VR_ANNEE_REFERENCE: SIA405_Base_f_LV95.Annee;  !! Année de référence pour le calcul de la valeur de remplacement (cf. valeur de remplacement);
+    VR_TYPE_CONSTRUCTION: (          !! Valeur de remplacement du type de construction
+      autre,
+      dans_les_champs,  !! Dans les champs (type de profile selon norme SIA 190)
+      conduite_d_assainissement_retro,  !! Conduites d’assainissement posées par rétrocaveuse
+      conduite_d_assainissement_trancheuse,  !! Conduites d’assainissement posées par trancheuse
+      sous_route,  !! sous route (type profile selon norme SIA 190)
+      inconnu
+    );
+    VALEUR_REMPLACEMENT: 0.00 .. 99999999.99 [Units.CHF];  !! Valeur de remplacement de l'OUVRAGE_RESEAU_AS. On à besoin aussi de saisir l'attribut VR_ANNEE_REFERENCE
+    ACCES: (          !! Possibilités d’accès à l’ouvrage d’assainissement pour une personne (non pour un véhicule)
+      couvert,  !! il faut par exemple déterrer le couvercle avant de pouvoir l'ouvrir
+      inconnu,
+      inaccessible,  !! Dans la  SIA405 1998 défini comme "non_accessible"
+      accessible  !! Accessible pour une personne (et pas nécessairement pour un véhicule)
+    );
+END OUVRAGE_RESEAU_AS;
+
+CLASS OUVRAGE_RESEAU_AS_Texte EXTENDS SIA405_Base_f_LV95.SIA405_TextePos =
+END OUVRAGE_RESEAU_AS_Texte;
+
+!!  Correction 10.12.2014
+!!  ASSOCIATION OUVRAGE_RESEAU_AS_TextAssoc =   !! Composition
+ASSOCIATION OUVRAGE_RESEAU_AS_TexteAssoc =   !! Composition
+  OUVRAGE_RESEAU_ASRef -<#> {1} OUVRAGE_RESEAU_AS;
+  Texte -- {0 .. *} OUVRAGE_RESEAU_AS_Texte;
+!!  END OUVRAGE_RESEAU_AS_TextAssoc;
+END OUVRAGE_RESEAU_AS_TexteAssoc;
+
+CLASS OUVRAGE_RESEAU_AS_Symbole EXTENDS SIA405_Base_f_LV95.SIA405_SymbolePos =
+END OUVRAGE_RESEAU_AS_Symbole;
+
+!! Correction 10.12.2014
+!! ASSOCIATION OUVRAGE_RESEAU_AS_SymbolAssoc =   !! Composition
+ASSOCIATION OUVRAGE_RESEAU_AS_SymboleAssoc =   !! Composition
+  OUVRAGE_RESEAU_ASRef -<#> {1} OUVRAGE_RESEAU_AS;
+  Symbole -- {0 .. *} OUVRAGE_RESEAU_AS_Symbole;
+!! END OUVRAGE_RESEAU_AS_SymbolAssoc;
+END OUVRAGE_RESEAU_AS_SymboleAssoc;
+
+ASSOCIATION OUVRAGE_RESEAU_AS_PROPRIETAIREAssoc =    !! Association
+  PROPRIETAIRERef  -- {0..1} ORGANISATION; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  OUVRAGE_RESEAU_AS_PROPRIETAIREAssocRef -- {0..*} OUVRAGE_RESEAU_AS; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
+END OUVRAGE_RESEAU_AS_PROPRIETAIREAssoc;
+
+ASSOCIATION OUVRAGE_RESEAU_AS_EXPLOITANTAssoc =    !! Association
+  EXPLOITANTRef  -- {0..1} ORGANISATION; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  OUVRAGE_RESEAU_AS_EXPLOITANTAssocRef -- {0..*} OUVRAGE_RESEAU_AS; !! Für den Unterhalt eines Bauwerks zuständige Stelle, Rolle2 - Klasse2 / Rôle2 - Classe2
+END OUVRAGE_RESEAU_AS_EXPLOITANTAssoc;
+
+CLASS CANALISATION EXTENDS OUVRAGE_RESEAU_AS =  
+!! Canal ouvert ou fermé pour amener les eaux à évacuer d'un ouvrage du réseau d'évacuation à un autre
+  ATTRIBUTE
+    LIT_DE_POSE: (          !! Lit de pose (assise de la conduite), bourrage latéral (remblai latéral), couche de protection
+      autre,
+      enterre,  !! avancement par méthode pousse-tube soit enrobé de matériaux d'excavation, soit par avancement pousse-tube ou presse-tube
+      suspendu_dans_le_canal,
+      betonne_dans_le_canal,
+      en_galerie,  !! SIA405 1998: en_cunette CU
+      en_pousse_tube_en_beton,
+      en_pousse_tube_en_acier,
+      sable,
+      SIA_type_1,  !! selon la définition Norme SIA 190, version 2000
+      SIA_type_2,  !! selon la définition Norme SIA 190, version 2000
+      SIA_type_3,  !! selon la définition Norme SIA 190, version 2000
+      SIA_type_4,  !! selon la définition Norme SIA 190, version 2000
+      radier_en_planches,  !! Lit constitué de planches pour des conduites d’amélioration foncière
+      inconnu
+    );
+    FONCTION_HIERARCHIQUE: (       !! Genre de canalisation par rapport à sa fonction dans le système d'évacuation
+      OAP (
+        autre,  !! autres ouvrages du réseau d’assainissement primaire (OAP)
+         cours_d_eau,  !! Saisie selon le point de vue de la canalisation (si par exemple des calculs hydrauliques sont nécessaires). SIA405 1998: eaux_publiques
+         collecteur_principal,  !! Collecteur principal, selon la hiérarchie du réseau
+         collecteur_principal_regional,  !! Collecteur principal avec importance régionale pour la structuration hiérarchique du réseau pour des PREE, car ne peut pas être résolu via l'attribut PROPRIETAIRE
+         evacuation_bien_fonds,  !! Terme générique pour l’évacuation des biens-fonds (hydrauliquement déterminant). La délimitation entre l'évacuation des biens-fonds et celle des immeubles se fait selon la norme "Conception et réalisation d'installations évacuation des eaux des biens-fonds (SN 592 000)"
+         collecteur,  !! Canal qui collecte les eaux des collecteurs des biens-fonds et des routes.
+         conduite_d_assainissement,  !! Conduite d'évacuation pour le raccordement technique de bâtiments isolés, auxquelles des simplifications ont été entreprises à la planification et à la réalisation.
+         evacuation_des_eaux_de_routes,  !! Evacuation des eaux des voies de communication (hydrauliquement déterminant)
+         inconnue
+      ),
+      OAS (
+         autre,  !! autre ouvrages du réseau d’assainissement secondaire (OAS)
+         evacuation_bien_fonds,  !! Terme générique pour l’évacuation des bien fonds (hydrauliquement non déterminants). La délimitation entre l'évacuation des biens-fonds et celle des immeubles se fait selon la norme "Conception et réalisation d'installations évacuation des eaux des biens-fonds (SN 592 000)"
+         conduite_d_assainissement,  !! Conduite d'évacuation pour le raccordement technique de bâtiments isolés, auxquelles des simplifications ont été entreprises à la planification et à la réalisation.
+         evacuation_des_eaux_de_routes,  !! Evacuation des eaux des voies de communication (hydrauliquement non déterminant)
+         inconnue  !! Evacuation des eaux des voies de communication (hydrauliquement non déterminant)
+      )
+    );
+    FONCTION_HYDRAULIQUE: (          !! Genre de canalisation par rapport à sa fonction hydraulique
+      autre,
+      conduite_de_transport_pour_le_drainage,  !! Canalisation transportant de l'eau provenant d'un réseau de drainage
+      conduite_d_etranglement,  !! Canalisation à section restreinte afin de diminuer le débit. Son fonctionnement se base sur des écoulement en charge
+      siphon_inverse,  !! Système de canalisations fermé, permettant le franchissement d'un obstacle. La conduite est en charge.
+      conduite_a_ecoulement_gravitaire,  !! Canalisation, dans laquelle l'eau s'écoule selon les lois de la gravité, d'un point de départ plus élevé à un point d'arrivée plus bas
+      conduite_de_refoulement,  !! Conduite sous pression installée à la suite d'une station de pompage permettant de gravir des pentes d'aval en amont
+      conduite_de_drainage,  !! 1. Canalisation avec ouverture vers des drains (SN 592 000)
+      conduite_de_retention,  !! Conduite dimensionnée afin de retenir des volumes d'eaux en lien avec un BEP, BEP_retention ou une canalisation de rétention
+      conduite_de_rincage,  !! Canalisation avec une fonction spéciale, permettant le rinçage des installations d'évacuation des eaux
+      inconnue,
+      conduite_sous_vide
+    );
+    GENRE_UTILISATION_PREVU: (          !! Utilisation prévue par le concept d'assainissement (voir aussi GENRE_UTILISATION_ACTUELLE)
+      autre,  !! par exemple accès, aération, désaération
+      eaux_cours_d_eau,  !! Eaux d'un cours d'eau s'écoulant dans son état naturel à la surface, mais qui peut aussi être mis sous terre par endroits
+      eaux_mixtes_deversees,  !! Eau conduite entre un ouvrage de déversement et un exutoire au milieu récepteur. Aucune eau usée ne doit être déversée dans cette canalisation
+      eaux_industrielles,  !! Eaux industrielles ou chimiques: Les eaux industrielles comprennent toutes les eaux produites lors d'un processus de production ou de fabrication. Les eaux industrielles doivent être prétraitées avant d'être déversées dans les canalisations en direction de la STEP communal (voir évacuation indirecte). En cas de déversement direct dans une eaux de surface, un traitement dans une station de traitement spécifique doit être effectué (voir évacuation directe).
+      eaux_mixtes,  !! 1. Réunion des eaux usées et eaux pluviales dans la même canalisation
+      eaux_pluviales,  !! Eau des précipitations naturelles non polluées par son utilisation selon directives VSA "Evacuation des eaux pluviales"
+      eaux_claires,  !! Terme générique pour l'eau de drainage, de source, souterraine, des fontaines, ainsi que de l'eau de refroidissement. Les eaux claires sont considérées comme non polluées (SN 592 000)..
+      eaux_usees,  !! Eaux transformées par leur utilisation (domestique, artisanale ou industrielle) et qui sont rejetées dans un système d'évacuation et qui doivent être conduites à un traitement
+      inconnu
+    );
+    GENRE_UTILISATION_ACTUEL: (          !! Pour les ouvrages du réseau primaire: utilisation actuelle autorisée pour les ouvrages du réseau secondaire: utilisation actuelle réelle
+      autre,  !! par exemple accès, aération, désaération
+      eaux_cours_d_eau,  !! Eaux d'un cours d'eau s'écoulant dans son état naturel à la surface, mais qui aussi être mis sous terre par endroits
+      eaux_mixtes_deversees,  !! Eau conduite entre un ouvrage de déversement et un exutoire au milieu récepteur. Aucune eau usée ne doit être déversée dans cette canalisation
+      eaux_industrielles,  !! Eaux industrielles ou chimiques: Les eaux industrielles comprennent toutes les eaux produites lors d'un processus de production ou de fabrication. Les eaux industrielles doivent être prétraitées avant d'être déversées dans les canalisations en direction de la STEP communal (voir évacuation indirecte). En cas de déversement direct dans une eaux de surface, un traitement dans une station de traitement spécifique doit être effectué (voir évacuation directe).
+      eaux_mixtes,  !! 1. Réunion des eaux usées et eaux pluviales dans la même canalisation
+      eaux_pluviales,  !! Eau des précipitations naturelles non polluées par son utilisation selon la directive VSA "Evacuation des eaux pluviales"
+      eaux_claires,  !! Terme générique pour l'eau de drainage, de source, souterraine, des fontaines, ainsi que de l'eau de refroidissement. Les eaux claires sont considérées comme non polluées (SN 592 000).
+      eaux_usees,  !! Eaux transformées par leur utilisation (domestique, artisanale ou industrielle) et qui sont rejetées dans un système d'évacuation et qui doivent être conduites à un traitement
+      inconnu
+    );
+    L_TUYAU: 0.00 .. 30000.00 [m];  !! Longueur de chaque tuyau ou distance des joints pour les canalisations en béton coulé sur place
+    INTERVALLE_CURAGE: Intervalle;  !! Fréquence à laquelle une canalisation devrait subir un curage (années);
+    RACCORDEMENT: (          !! Types de raccordement
+      autre,
+      manchon_electrosoudable,  !! SIA405 1998: manchon_soude_a_arc
+      manchon_plat,
+      bride,
+      emboitement_a_cloche,
+      raccord,
+      manchon_visse,
+      manchon_soude_au_miroir,  !! SIA405 1998: manchon_soude_miroir
+      emboitement_simple,
+      raccord_a_serrage,  !! SIA405 1998: raccord_de_serrage
+      manchon_coulissant,
+      inconnu,
+      raccord_pour_tube_de_pousse_tube
+    );
+END CANALISATION;
+
+CLASS CHAMBRE_STANDARD EXTENDS OUVRAGE_RESEAU_AS =  
+!! Chambre normalisée avec couvercle amovible
+  ATTRIBUTE
+    DIMENSION1: SIA405_Base_f_LV95.Metrage;  !! Dimension1 de la chambre (plus grande mesure intérieure).
+    DIMENSION2: SIA405_Base_f_LV95.Metrage;  !! Dimension2 de la chambre (plus petite mesure intérieure);
+    FONCTION: (          !! Genre d'utilisation
+      ouvrage_de_chute,  !! Ouvrage spécial dans le réseau de canalisations servant à relier des différences d'altitude sur une petite distance, en brisant l'énergie de l'écoulement.
+      autre,
+      aeration,  !! Installation permettant une aération dans un ouvrage d'assainissement
+      chambre_recolte_eaux_toitures,  !! Chambre se trouvant entre l'évacuation des eaux des bien-fonds et du réseau des canalisations, à l'arrivée d'un tuyau de descente. Souvent de taille inférieure que des chambres avec grille d'entrée
+      chambre_avec_grille_d_entree,  !! chambre avec grille d'entrée (sans retenue de boues) selon SN 640 356
+      rigole_de_drainage,  !! Ouvrage rectiligne à fentes, servant à récolter les eaux pluviales ruisselées
+      evacuation_des_eaux_des_voies_ferrees,  !! Chambre standard servant à évacuer les eaux d'installation ferroviaires
+      regard_de_visite,  !! Ouvrage d'accès au réseau par lequel le personnel d'entretien pénètre pour assurer le service et la surveillance du réseau
+      separateur_d_hydrocarbures,  !! Ouvrage spécial servant à séparer des fluides légers de l'eau. Il évite que des hydrocarbures pénètrent dans les milieux récepteur.
+      station_de_pompage,  !! Installation destinée à élever les eaux d'un niveau à un autre, soit pour le franchissement d'un obstacle, soit pour modifier des tracés devenus économiquement inacceptables en réseau gravitaire
+      deversoir_d_orage,  !! Ouvrage spécial, séparant les eaux mixtes en y rejetant une partie directement dans un cours d’eau
+      depotoir,  !! 1. Dépotoir avec retenue de boues
+      separateur_de_materiaux_flottants,  !! Dépotoir contenant soit un siphon prolongé ou une paroi plongeante. Tient le rôle de prétraitement sur une installation d'infiltration
+      chambre_de_chasse,  !! Chambre servant d'accès spécifiquement pour le rinçage
+      ouvrage_de_repartition,  !! Ouvrage, qui répartie les eaux dans le système sans les déverser. Une ou plusieurs entrées, deux à plusieurs sorties.
+      inconnue
+    );
+    MATERIAU: (          !! Matériau dont est construit l'ouvrage, pour une classification sommaire
+      autre,
+      beton,
+      matiere_plastique,
+      inconnu
+    );
+    ARRIVEE_EAUX_SUP: (          !! Arrivée directe d'eaux superficielles dans la chambre
+      autre,
+      aucune,
+      grille_d_ecoulement,
+      inconnue,
+      arrivee_laterale
+    );
+END CHAMBRE_STANDARD;
+
+CLASS EXUTOIRE EXTENDS OUVRAGE_RESEAU_AS =  
+!! Point de déversement d'eaux à évacuer dans le milieu récepteur
+  ATTRIBUTE
+    COTE_CRUE: Base_f_LV95.Altitude;  !! Cote de crue déterminante au point de rejet. Diese ist in der Regel grösser als der Wasserspiegel_Hydraulik.
+    SIGNIFIANCE: (          !! Il est conseillé d’utiliser des noms réels, tels qSignifiance pour milieu récepteur
+      pertinent_pour_milieu_recepteur,  !! Rejet d’une canalisation dans une eau de surface sans ou avec un ouvrage servant d’exutoire, qui perturbe l’état ou les conditions du cours d’eau. Outre les exutoires des réseaux primaires, par définition pertinents pour les cours d’eau, des exutoires des réseaux secondaires peuvent également être pertinents pour les cours d’eau
+      insignifiant_pour_milieu_recepteur  !! Rejet d’une canalisation secondaire dans un cours d’eau sans ou avec un ouvrage servant d’exutoire, qui ne perturbe que peu l’état ou les conditions du cours d’eau
+    );
+    COTE_TERRAIN: Base_f_LV95.Altitude;  !! Cote terrain s'il n'y a pas de couvercle à l'exutoire par example seulement fin du conduite
+    NIVEAU_EAU_HYDRAULIQUE: Base_f_LV95.Altitude;  !! Niveau d’eau calculé à l’exutoire. Si aucun exigence est demandée, indiquer le niveau d’eau pour un HQ30.
+END EXUTOIRE;
+
+CLASS OUVRAGE_SPECIAL EXTENDS OUVRAGE_RESEAU_AS =  
+!! Chambres non normalisées et bassins dans un réseau de canalisations
+  ATTRIBUTE
+    BYPASS: (          !! Bypass pour détourner les eaux (par exemple durant des opérations de maintenance ou en cas d’avaries)
+      inexistant,
+      inconnu,
+      existant
+    );
+    FONCTION: (          !! Genre d'utilisation
+      fosse_etanche,  !! Fosse étanche
+      ouvrage_de_chute,  !! Ouvrage spécial dans le réseau de canalisations servant à relier des différences d'altitude sur une petite distance, en brisant l'énergie de l'écoulement.
+      fosse_digestive,  !! Fosse digestive: 3 compartiments
+      autre,  !! Seulement à utiliser s'il n'y a pas de valeur existante. Ajouter la fonction détaillée dans commentaire
+      aeration,  !! Installation permettant une aération dans un ouvrage d'assainissement
+      chambre_avec_siphon_inverse,  !! Ouvrage spécial servant à purger le siphon inverse au point le plus bas.
+      entree_de_siphon,  !! Ouvrage d’entrée d'un siphon inversé pour répartir le débit sur plusieurs tuyaux.
+      fosse_septique,  !! Fosse septique: 2 compartiments
+      depression_de_terrain,  !! Dépression de terrain artificielle ou naturelle ayant une fonction de rétention
+      depotoir_pour_alluvions,  !! spécial, servant à récolter les matériaux transportés. Se trouve souvent à l'entrée des tronçons mis sous terre
+      fosse_a_purin,  !! Fosse à purin
+      fosse_de_decantation,  !! Appareil destiné à la collecte, à la liquéfaction partielle des matières polluantes contenues dans les eaux usées et à la rétention des matières solides et des déchets flottants. Il est souvent utilisé pour des bâtiments qui ne sont pas raccordés à un réseau d’égouts aboutissant à un traitement (1 chambre)
+      regard_de_visite,  !! Ouvrage d'accès au réseau par lequel le personnel d'entretien pénètre pour assurer le service et la surveillance du réseau
+      separateur_d_hydrocarbures,  !! Ouvrage spécial servant à séparer des fluides légers de l'eau. Il évite que des hydrocarbures pénètrent dans les milieux récepteur.
+      station_de_pompage,  !! Installation destinée à élever les eaux d'un niveau à un autre, soit pour le franchissement d'un obstacle, soit pour modifier des tracés devenus économiquement inacceptables en réseau gravitaire
+      BEP_decantation,  !! Ouvrage de réseau d’eaux mixtes pour la décantation de matières solides et le stockage d’eaux mixtes (fonction secondaire, pour le stockage de volumes d’eau pluviale minimes).
+      BEP_retention,  !! Bassin d'eau pluviale ayant comme fonction la rétention du premier flot d’orage (first flush)
+      BEP_canal_retention,  !! Canalisation de rétention avec déversement en amont dans un cours d'eau
+      BEP_clarification,  !! Bassin d’eaux pluviales de décantation dans un système séparatif
+      BEP_accumulation,  !! Bassin d'accumulation de débits de pointe dans un réseau d’eaux mixtes ou pluviales. Sa fonction est de décharger le réseau lors d’orages et n’a, contrairement au déversoir d’orage aucun déversement, mise à part un trop-plein vers un exutoire en milieu récepteur
+      BEP_canal_accumulation,  !! Canalisation de stockage avec mode de fonctionnement identique que la bassin d'accumulation.
+      BEP_canal_stockage,  !! Canalisation de stockage avec déversement en aval dans un cours d'eau
+      BEP_combine,  !! Bassin d'eau pluviale réunissant la rétention et la clarification
+      deversoir_d_orage,  !! Ouvrage spécial, séparant les eaux mixtes en y rejetant une partie directement dans un cours d’eau
+      separateur_de_materiaux_flottants,  !! Dépotoir contenant soit un siphon prolongé ou une paroi plongeante. Tient le rôle de prétraitement sur une installation d'infiltration
+      acces_lateral,  !! Accès à un ouvrage sans descente ou montée
+      chambre_de_chasse,  !! Chambre servant d'accès spécifiquement pour le rinçage
+      ouvrage_de_repartition,  !! Ouvrage spécial, qui répartie les eaux dans le système sans les déverser. Une ou plusieurs entrées, deux à plusieurs sorties
+      inconnu,
+      chambre_de_chute_a_vortex  !! Ouvrage permettant l'évacuation des eaux sans dégâts sur une hauteur donnée. L'ouvrage est composé de: chambre à formation de vortex, tuyau de chute, puits dissipateur et un tuyau d'aération
+    );
+    TROP_PLEIN_DE_SECOURS: (          !! L’attribut décrit vers où le débit déversé s’écoule. (bassin d’accumulation / canal d’accumulation)
+      autres,
+      dans_canalisation_eaux_mixtes,
+      dans_canalisation_eaux_pluviales,
+      dans_canalisation_eaux_usees,
+      aucun,
+      inconnu
+    );
+    BEP_DISPOSITION: (          !! Disposition d'un bassin d'eaux pluviales dans le réseau d'assainissement. Attribut additionnel pour les valeurs BEP_* de OUVRAGE_SPECIAL.FONCTION.
+      connexion_directe,  !! Connexion qui permet une traversée en permanence de la totalité des eaux de temps sec et d'une partie des eaux de temps de pluie
+      connexion_laterale,  !! Connexion qui présente uniquement une traversée des eaux de temps de pluie
+      inconnue
+    );
+END OUVRAGE_SPECIAL;
+
+CLASS INSTALLATION_INFILTRATION EXTENDS OUVRAGE_RESEAU_AS =  
+!! Installation permettant le passage d'eaux propres ou d'eaux pluviales légèrement polluées dans le sous-sol
+  ATTRIBUTE
+    GENRE: (          !! Genre de méthode d'infiltration.
+      autre_avec_passage_a_travers_sol,
+      autre_sans_passage_a_travers_sol,
+      infiltration_superficielle_sur_place,
+      corps_de_gravier,
+      combinaison_puits_bande,
+      cuvettes_rigoles_filtrantes,
+      inconnu,
+      infiltration_par_les_bas_cotes,
+      bassin_d_infiltration,
+      puits_d_infiltration,
+      bande_infiltration_galerie
+    );
+    SIGNALISATION: (          !! Désignation inscrite du couvercle de l'installation d'infiltration. Uniquement pour des installations avec couvercle
+      signalee,
+      non_signalee,
+      inconnue
+    );
+    DIMENSION1: SIA405_Base_f_LV95.Metrage;  !! Dimension1 de l’installation d’infiltration (plus grande mesure intérieure) lorsqu’elle est utilisée pour des éléments d’ouvrage normés. Sinon, à laisser libre et prendre la description de la géométrie détaillée.
+    DIMENSION2: SIA405_Base_f_LV95.Metrage;  !! Dimension2 de la chambre (plus petite mesure intérieure). La dimension2 est à saisir pour des chambres ovales et à laisser libre pour des chambres circulaires. Pour les chambres rectangulaires il faut utiliser la géométrie détaillée.
+    DISTANCE_AQUIFERE: 0.00 .. 30000.00 [m];  !! Distance à l'aquifère (distance verticale de la surface du terrain à l'aquifère);
+    LACUNES: (          !! Indique les défauts actuels de l'installation d'infiltration (etat_actuel).
+      aucunes,
+      modestes,  !! ne nécessitant pas de contrôle
+      importantes  !! nécessitant un contrôle
+    );
+    TROP_PLEIN_DE_SECOURS: (          !! Point cumulant des conduites du trop plein d'une installation d'infiltration
+      dans_canalisation_eaux_mixtes,  !! L'infiltration est directement connectée aux canalisations des eaux mixtes sans passer par le terrain (état non souhaité)
+      dans_canalisation_eaux_pluviales,  !! L'infiltration est directement connectée aux canalisations des eaux pluviales sans passer par le terrain (état non souhaité)
+      au_cours_d_eau_recepteur,  !! connexion directe au milieu récepteur (construction non souhaitée)
+      aucun,
+      deversement_en_surface,  !! L'eau submerge l'installation jusqu'à la surface (état souhaité / indiquant un colmatage)
+      inconnu
+    );
+    VEHICULE_D_ASPIRATION: (          !! Accessibilité pour des camions de vidange. Se réfère à toute l'installation d'infiltration / de prétraitement et peut être spécifiée sous REMARQUE
+      inconnu,
+      inaccessible,
+      accessible
+    );
+    CAPACITE_ABSORPTION_SOL: 0.000 .. 100000.000 [SIA405_Base_f_LV95.ls];  !! Capacité d'absorption du sol
+    EAU_INFILTRATION: (          !! Genre d'eau à infiltrer
+      eaux_pluviales,  !! Eaux des précipitations naturelles non polluées par son utilisation selon directives VSA "Evacuation des eaux pluviales"
+      eaux_claires,
+      inconnue
+    );
+    ETANCHEITE: (          !! Etanchéité contre des eaux superficielles. Uniquement pour des installations avec chambres
+      non_etanche,
+      inconnue,
+      etanche
+    );
+    SURFACE_UTILE: 0.00 .. 100000.00 [Units.m2];  !! Surface qui participe à l'écoulement
+END INSTALLATION_INFILTRATION;
+
+CLASS PROFIL_TUYAU EXTENDS SIA405_Base_f_LV95.SIA405_BaseClass =  
+!! Différents types de profil
+  ATTRIBUTE
+    REMARQUE: TEXT*80;  !! Remarques générales
+    DESIGNATION: MANDATORY TEXT*20;
+    RAPPORT_HAUTEUR_LARGEUR: Rapport_H_L;  !! Rapport entre la hauteur et la largeur
+    TYPE_PROFIL: (          !! Type du profil
+      ovoide,  !! A utiliser uniquement pour les profils ovoïdes normés selon DIN 4263 ayant un rapport hauteur/largeur de 1.5. Pour les autres profils ovoïdes, même ceux avec des modifications, la valeur devient « profil_special » et une définition du profil est à joindre.
+      circulaire,  !! A utiliser uniquement pour des profils circulaires normés, sans cunette de débit par temps sec ou autres modifications. Sinon la valeur devient « profil_special » et une définition du profil est à joindre.
+      profil_en_voute,  !! A utiliser uniquement pour les profils en voûte normés selon DIN 4263. Pour les variantes, même avec modifications, la valeur devient « profil_special » et une définition du profil est à joindre.
+      profil_ouvert,  !! A utiliser uniquement pour les profils ouverts. Une définition du profil est à joindre.
+      rectangulaire,  !! A utiliser uniquement pour des profils rectangulaires normés, sans cunette de débit par temps sec ou autres modifications. Sinon la valeur devient « profil_special » et une définition du profil est à joindre.
+      profil_special,  !! Pour des profils fermés non conformes. Une définition du profil est à joindre.
+      inconnu
+    );
+END PROFIL_TUYAU;
+
+CLASS ELEMENT_RESEAU_EVACUATION (ABSTRACT) EXTENDS SIA405_Base_f_LV95.SIA405_BaseClass =  
+!! Définition de modélisation pour les noeuds de réseau et les tronçons
+  ATTRIBUTE
+    REMARQUE: TEXT*80;  !! Remarques générales
+    DESIGNATION: MANDATORY TEXT*20;
+END ELEMENT_RESEAU_EVACUATION;
+
+ASSOCIATION ELEMENT_RESEAU_EVACUATION_OUVRAGE_RESEAU_ASAssoc =    !! Association
+  OUVRAGE_RESEAU_ASRef  -- {0..1} OUVRAGE_RESEAU_AS; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  ELEMENT_RESEAU_EVACUATION_OUVRAGE_RESEAU_ASAssocRef -- {0..*} ELEMENT_RESEAU_EVACUATION; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
+END ELEMENT_RESEAU_EVACUATION_OUVRAGE_RESEAU_ASAssoc;
+
+CLASS POINT_TRONCON EXTENDS SIA405_Base_f_LV95.SIA405_BaseClass =  
+!! Informations détaillées sur la connexion entre les noeuds de réseau et les tronçons
+  ATTRIBUTE
+    FORME_SORTIE: (          !! Types de sortie
+      arrondie,
+      en_forme_de_seuil_ou_diaphragme,
+      pas_de_changement_de_section,
+      aretes_vives,
+      inconnue
+    );
+    REMARQUE: TEXT*80;  !! Remarques générales
+    DESIGNATION: MANDATORY TEXT*20;
+    PRECISION_ALTIMETRIQUE: (          !! Plage de précision des coordonnées altimétriques du point de tronçon
+      plusque_6cm,  !! Fourchette de précision de l'altitude d'un point estimé
+      plus_moins_1cm,  !! Fourchette de précision de l'altitude d'un point nivelé
+      plus_moins_3cm,  !! Fourchette de précision de l'altitude d'un point déterminé par GPS
+      plus_moins_6cm,  !! Fourchette de précision de l'altitude d'un point déterminé par un instrument de mensuration (théodolite)
+      inconnue
+    );
+    COTE: Base_f_LV95.Altitude;  !! Cote du radier de la fin du tronçon
+    SITUATION: Base_f_LV95.CoordNat;  !! Coordonnées nationales Est/Nord
+    SITUATION_POINT_RACCORD: Cadran;  !! Emplacement de raccordement Référence à la section transversale dans le canal dans le sens d’écoulement (pour les raccordements domestiques et de rue).
+END POINT_TRONCON;
+
+ASSOCIATION POINT_TRONCON_ELEMENT_RESEAU_ASAssoc =    !! Association
+  ELEMENT_RESEAU_ASRef  -- {0..1} ELEMENT_RESEAU_EVACUATION; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  POINT_TRONCON_ELEMENT_RESEAU_ASAssocRef -- {0..*} POINT_TRONCON; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
+END POINT_TRONCON_ELEMENT_RESEAU_ASAssoc;
+
+CLASS NOEUD_RESEAU EXTENDS ELEMENT_RESEAU_EVACUATION =  
+!! Point de référence hydraulique de l'ouvrage du réseau d'évacuation, telle qu'une liaison entre deux tronçons
+  ATTRIBUTE
+    SITUATION: Base_f_LV95.CoordNat;  !! Positionnement du nœud. Point de référence déterminant pour le calcul de réseau de canalisations (en règle générale positionnement du milieu du couvercle ou de la sortie temps sec);
+    COTE_REFOULEMENT: Base_f_LV95.Altitude;  !! Cote de refoulement déterminante calculée à partir des pluies de projet
+    COTE_RADIER: Base_f_LV95.Altitude;  !! Point le plus bas du noeud
+END NOEUD_RESEAU;
+
+CLASS TRONCON EXTENDS ELEMENT_RESEAU_EVACUATION =  
+!! Elément de transport du réseau de canalisations hydrauliquement homogène, section utilisée pour une simulation de l'écoulement
+  ATTRIBUTE
+    PROTECTION_INTERIEURE: (          !! Protection de la paroi intérieur de la canalisation
+      autre,
+      peinture_revetement,
+      revetement_en_brique,
+      revetement_en_gres,
+      inconnue,
+      revetement_en_mortier_de_ciment
+    );
+    L_EFFECTIVE: 0.00 .. 30000.00 [m];  !! Longueur effective (non projetée) incluant les parties incurvées
+    DETERMINATION_PLANIMETRIQUE: (          !! Définit la précision de la détermination du tracé.
+      precise,  !! +/- 10 cm, lors de la détermination du tracé par différentes mesures, le triple, c'est-à-dire +/- 30 cm (norme SIA 405 1998, point 4 23 3)
+      inconnue,
+      imprecise  !! voir inconnue
+    );
+    HAUTEUR_MAX_PROFIL: Hauteur_max_profile;  !! Hauteur intérieure maximale du profil
+    MATERIAU: (          !! Matériau du tuyau
+      autre,
+      amiante_ciment,
+      beton_normal,
+      beton_coule_sur_place,
+      beton_pousse_tube,
+      beton_special,
+      beton_inconnu,
+      fibrociment,
+      terre_cuite,
+      fonte_ductile,
+      fonte_grise,
+      matiere_synthetique_resine_d_epoxy,
+      matiere_synthetique_polyethylene_dur,
+      matiere_synthetique_polyester_GUP,
+      matiere_synthetique_polyethylene,
+      matiere_synthetique_polypropylene,
+      matiere_synthetique_PVC,  !! polychlorure de vinyle
+      matiere_synthetique_inconnue,  !! matière synthétique inconnu
+      acier,
+      acier_inoxydable,
+      gres,
+      argile,
+      inconnu,
+      ciment
+    );
+    PENTE_PLAN: Pente_promille;  !! Pente indiquée sur d'anciens plans non contrôlée [%o]. Ne peut pas être reprise pour des calculs hydrauliques. Indication pour des canalisations de biens-fonds ou d'amélioration foncière. Représentation sur de plan: 3.5‰ p
+    K_STRICKLER: Strickler;  !! Constante de rugosité selon Manning-Strickler (K ou kstr);
+    RELINING_GENRE: (          !! Genre du relining
+      troncon_entier,
+      partiellement,
+      inconnu
+    );
+    RELINING_TECHNIQUE: (          !! Relining technique de construction. En addition la construction du reliner doit être modeler comme événement maintenance: Genre = reparation pour liner_partiel, autrement genre = renovation.
+      autre,
+      close_fit_relining,
+      relining_tube_court,
+      Noppenschlauchrelining,  !! terme française inconnue (english: Grouted in place lining)
+      liner_partiel,
+      chemisage_par_ligne_de_tuyau,  !! Chemisage par ligne de tuyau
+      chemisage_par_gainage,  !! Hhemisage par gainage
+      inconnu,
+      chemisage_par_tube_spirale  !! Chemisage par tube spirale
+    );
+    RELINING_MATERIAUX: (          !! Materiaux du relining
+      autre,
+      resine_epoxy_lamine_en_fibre_de_verre,  !! résine epoxy lamine en fibre de verre
+      resine_epoxy_feutre_synthetique,  !! résine epoxy feutre synthetique
+      tuyau_PRV,  !! Polyester 	non saturé renforcé de fibres de verre (PRV),  tuyau HOBAS.  En allemand GF-UP
+      HDPE,
+      isocyanat_resine_lamine_en_fibre_de_verre,  !! isocyanat résine lamine en fibre de verre
+      isocyanat_resine_lamine_feutre_synthetique,  !! isocyanat résine lamine feutre synthetique
+      resine_de_polyester_lamine_en_fibre_de_verre,  !! résine de polyester lamine en fibre de verre
+      resine_de_polyester_feutre_synthetique,  !! résine de polyester feutre synthetique
+      polypropylene,
+      PVC,
+      radier_avec_pellicule_en_beton_polyester,  !! radier avec pellicule en béton polyester
+      inconnu,
+      UP_resine_LED_fibre_synthetiques_liner,  !! Fibre synthetiques liner 	avec résine polyester non saturé (UP résine) UP, durcissement avec UV-LED
+      resine_d_ester_vinylique_lamine_en_fibre_de_verre,  !! Résine d'ester vinylique lamine en fibre de verre
+      resine_d_ester_vinylique_feutre_synthetique  !! Résine d'ester vinylique feutre synthetique
+    );
+    RELINER_DIAMETRE_NOMINALE: Hauteur_max_profile;  !! Hauteur intérieure maximale du profil de l'inliner. A l'export dans le software hydraulique il faut utiliser cette attribut au lieu de HAUTEUR_MAX_PROFIL
+    RIGIDITE_ANNULAIRE: 0 .. 16;  !! Rigidité annulaire pour des pressions extérieures (selon ISO 13966);
+    TRACE: Base_f_LV95.Polyligne;  !! Points de départ, intermédiaires et d’arrivée de la conduite.
+    K_COLEBROOK: Prandtl;  !! Coefficient de rugosité d'après Prandtl Colebrook (ks ou kb);
+END TRONCON;
+
+CLASS TRONCON_Texte EXTENDS SIA405_Base_f_LV95.SIA405_TextePos =
+END TRONCON_Texte;
+
+!!  Correction 10.12.2014
+!!  ASSOCIATION TRONCON_TextAssoc =   !! Composition
+ASSOCIATION TRONCON_TexteAssoc =   !! Composition
+  TRONCONRef -<#> {1} TRONCON;
+  Texte -- {0 .. *} TRONCON_Texte;
+!!  END TRONCON_TextAssoc;
+END TRONCON_TexteAssoc;
+
+CLASS TRONCON_TRACE_ALTERNATIVE EXTENDS Base_f_LV95.BaseClass =
+   TRACE_ALTERNATIVE: Base_f_LV95.Polyligne;  !!  Points de départ, intermédiaires et d’arrivée de la conduite dans la type de plan selectionée
+   TYPE_DE_PLAN: SIA405_Base_f_LV95.Type_de_plan; !! Default: plan_d_ensemble
+END TRONCON_TRACE_ALTERNATIVE;
+
+ASSOCIATION TRONCON_TRACE_ALTERNATIVEAssoc =   !! Composition
+  TRONCONRef -<#> {1} TRONCON;
+  TRACE_ALTERNATIVE -- {0 .. *} TRONCON_TRACE_ALTERNATIVE;
+END TRONCON_TRACE_ALTERNATIVEAssoc;
+
+ASSOCIATION TRONCON_POINT_TRONCON_DEAssoc =    !! Association
+  POINT_TRONCON_DERef  -- {1} POINT_TRONCON; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  TRONCON_POINT_TRONCON_DEAssocRef -- {0..1} TRONCON; !! {XOR (TRONCON)}, Rolle2 - Klasse2 / Rôle2 - Classe2
+END TRONCON_POINT_TRONCON_DEAssoc;
+
+ASSOCIATION TRONCON_POINT_TRONCON_VERSAssoc =    !! Association
+  POINT_TRONCON_VERSRef  -- {1} POINT_TRONCON; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  TRONCON_POINT_TRONCON_VERSAssocRef -- {0..1} TRONCON; !! {XOR (TRONCON)}, Rolle2 - Klasse2 / Rôle2 - Classe2
+END TRONCON_POINT_TRONCON_VERSAssoc;
+
+ASSOCIATION TRONCON_GENRE_PROFILAssoc =    !! Association
+  GENRE_PROFILRef  -- {0..1} PROFIL_TUYAU; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  TRONCON_GENRE_PROFILAssocRef -- {0..*} TRONCON; !! {XOR (TRONCON)}, Rolle2 - Klasse2 / Rôle2 - Classe2
+END TRONCON_GENRE_PROFILAssoc;
+
+CLASS ELEMENT_OUVRAGE (ABSTRACT) EXTENDS SIA405_Base_f_LV95.SIA405_BaseClass =  
+!! Eléments constructifs et installations d'un ouvrage du réseau d'évacuation
+  ATTRIBUTE
+    REMARQUE: TEXT*80;  !! Remarques générales
+    DESIGNATION: MANDATORY TEXT*20;
+    REMISE_EN_ETAT: (          !! Information sur l'état de l'élément de l'ouvrage
+      pas_necessaire,
+      necessaire,
+      inconnue
+    );
+END ELEMENT_OUVRAGE;
+
+ASSOCIATION ELEMENT_OUVRAGE_OUVRAGE_RESEAU_ASAssoc =    !! Composition
+  OUVRAGE_RESEAU_ASRef  -<#> {1} OUVRAGE_RESEAU_AS; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  ELEMENT_OUVRAGE_OUVRAGE_RESEAU_ASAssocRef -- {0..*} ELEMENT_OUVRAGE; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
+END ELEMENT_OUVRAGE_OUVRAGE_RESEAU_ASAssoc;
+
+CLASS TUYAU_CHUTE EXTENDS ELEMENT_OUVRAGE =  
+!! Tuyau dans une chambre de chute pour évacuer les débits par temps sec et faibles pluies
+  ATTRIBUTE
+    DIAMETRE: SIA405_Base_f_LV95.Metrage;  !! Dimension du couvercle (dimension minimale pour couvercle anguleux);
+END TUYAU_CHUTE;
+
+CLASS DISPOSITIF_D_ACCES EXTENDS ELEMENT_OUVRAGE =  
+!! Elément facilitant l'entrée dans un ouvrage d'eaux usées
+  ATTRIBUTE
+    GENRE: (          !! Genre d'accès à l'ouvrage
+      autre,
+      porte_etanche,
+      aucun_equipement_d_acces,
+      echelle,
+      echelons,
+      escalier,
+      marchepieds,  !! niches ou marchepied
+      porte,
+      inconnu
+    );
+END DISPOSITIF_D_ACCES;
+
+CLASS CUNETTE_DEBIT_TEMPS_SEC EXTENDS ELEMENT_OUVRAGE =  
+!! Cunette d'écoulement pour les débits par temps sec
+  ATTRIBUTE
+    MATERIAU: (          !! Matériau de fabrication ou de revêtement de la cunette de débit temps sec
+      autres,
+      combine,
+      matiere_synthetique,
+      gres,
+      inconnu,
+      mortier_de_ciment
+    );
+END CUNETTE_DEBIT_TEMPS_SEC;
+
+CLASS COUVERCLE EXTENDS ELEMENT_OUVRAGE =  
+!! Couvercle amovible d'une chambre
+  ATTRIBUTE
+    FORME_COUVERCLE: (          !! Forme du couvercle
+      autre,
+      anguleux,
+      rond,
+      inconnue
+    );
+    DIAMETRE: SIA405_Base_f_LV95.Metrage;  !! Dimension du couvercle (dimension minimale pour couvercle anguleux);
+    AERATION: (          !! Couvercle pourvu de trous d'aération
+      aere,
+      non_aere,
+      inconnue
+    );
+    FABRICANT: TEXT*50;  !! Nom de l'entreprise de fabrication
+    COTE: Base_f_LV95.Altitude;  !! Cote du couvercle
+    SITUATION: Base_f_LV95.CoordNat;  !! Positionnement du couvercle (milieu du couvercle);
+    DETERMINATION_PLANIMETRIQUE: (          !! Plage de précision des coordonnées planimétriques du couvercle.
+      plusque_50cm,
+      plus_moins_10cm,
+      plus_moins_3cm,
+      plus_moins_50cm,
+      inconnue
+    );
+    MATERIAU: (          !! Matériau du couvercle
+      autre,
+      beton,
+      fonte,
+      fonte_avec_remplissage_en_robe,
+      fonte_avec_remplissage_en_beton,
+      inconnu
+    );
+    RAMASSE_BOUES: (          !! Indication si le couvercle est pourvu ou non d'un ramasse-boues
+      inexistant,
+      inconnu,
+      existant
+    );
+    FERMETURE: (          !! Genre de fixation du couvercle
+      non_vissee,
+      inconnue,
+      vissee
+    );
+END COUVERCLE;
+
+CLASS BANQUETTE EXTENDS ELEMENT_OUVRAGE =  
+!! Banquette dans le canal ou la chambre
+  ATTRIBUTE
+    GENRE: (        
+      autre,
+      double,
+      simple,
+      aucun,
+      inconnu
+    );
+END BANQUETTE;
+
+END SIA405_Eaux_usees; !! end of TOPIC SIA405_Eaux_usees
+
+VIEW TOPIC SIA405_Eaux_usees_CS =
+    DEPENDS ON SIA405_Eaux_usees;
+
+VIEW ELEMENT_RESEAU_EVACUATION
+  PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.ELEMENT_RESEAU_EVACUATION;
+  =  
+  ATTRIBUTE
+END ELEMENT_RESEAU_EVACUATION;
+
+VIEW ELEMENT_RESEAU_EVACUATION_OUVRAGE_RESEAU_AS_Assoc 
+  PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.ELEMENT_RESEAU_EVACUATION_OUVRAGE_RESEAU_ASAssoc;
+  =
+  ATTRIBUTE
+     ALL OF base;
+END ELEMENT_RESEAU_EVACUATION_OUVRAGE_RESEAU_AS_Assoc;
+
+VIEW OUVRAGE_RESEAU_AS
+  PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.OUVRAGE_RESEAU_AS;
+  =  
+  ATTRIBUTE
+    GEOMETRIE_DETAILLEE :=base-> GEOMETRIE_DETAILLEE;
+    ETAT :=base-> ETAT;
+END OUVRAGE_RESEAU_AS;
+
+VIEW OUVRAGE_RESEAU_AS_Texte
+  PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.OUVRAGE_RESEAU_AS_Texte;
+  =
+  ATTRIBUTE
+    ALL OF base;
+END OUVRAGE_RESEAU_AS_Texte;
+
+VIEW OUVRAGE_RESEAU_AS_TexteAssoc 
+  PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.OUVRAGE_RESEAU_AS_TexteAssoc;
+  =
+  ATTRIBUTE
+    ALL OF base;
+END OUVRAGE_RESEAU_AS_TexteAssoc;
+
+VIEW OUVRAGE_RESEAU_AS_PROPRIETAIRE_Assoc 
+  PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.OUVRAGE_RESEAU_AS_PROPRIETAIREAssoc;
+  =
+  ATTRIBUTE
+     ALL OF base;
+END OUVRAGE_RESEAU_AS_PROPRIETAIRE_Assoc;
+
+VIEW OUVRAGE_RESEAU_AS_EXPLOITANT_Assoc 
+  PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.OUVRAGE_RESEAU_AS_EXPLOITANTAssoc;
+  =
+  ATTRIBUTE
+     ALL OF base;
+END OUVRAGE_RESEAU_AS_EXPLOITANT_Assoc;
+
+VIEW NOEUD_RESEAU
+  PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.NOEUD_RESEAU;
+  =  
+  ATTRIBUTE
+END NOEUD_RESEAU;
+
+VIEW COUVERCLE
+  PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.COUVERCLE;
+  =  
+  ATTRIBUTE
+    SITUATION :=base-> SITUATION;
+    DETERMINATION_PLANIMETRIQUE :=base-> DETERMINATION_PLANIMETRIQUE;
+END COUVERCLE;
+
+VIEW EXUTOIRE
+  PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.EXUTOIRE;
+  =  
+  ATTRIBUTE
+END EXUTOIRE;
+
+VIEW TRONCON
+  PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.TRONCON;
+  =  
+  ATTRIBUTE
+    DETERMINATION_PLANIMETRIQUE :=base-> DETERMINATION_PLANIMETRIQUE;
+    TRACE :=base-> TRACE;
+END TRONCON;
+
+VIEW TRONCON_Texte
+  PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.TRONCON_Texte;
+  =
+  ATTRIBUTE
+    ALL OF base;
+END TRONCON_Texte;
+
+VIEW TRONCON_TexteAssoc 
+  PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.TRONCON_TexteAssoc;
+  =
+  ATTRIBUTE
+    ALL OF base;
+END TRONCON_TexteAssoc;
+
+VIEW TRONCON_POINT_TRONCON_DE_Assoc 
+  PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.TRONCON_POINT_TRONCON_DEAssoc;
+  =
+  ATTRIBUTE
+     ALL OF base;
+END TRONCON_POINT_TRONCON_DE_Assoc;
+
+VIEW TRONCON_POINT_TRONCON_VERS_Assoc 
+  PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.TRONCON_POINT_TRONCON_VERSAssoc;
+  =
+  ATTRIBUTE
+     ALL OF base;
+END TRONCON_POINT_TRONCON_VERS_Assoc;
+
+VIEW TRONCON_GENRE_PROFIL_Assoc 
+  PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.TRONCON_GENRE_PROFILAssoc;
+  =
+  ATTRIBUTE
+     ALL OF base;
+END TRONCON_GENRE_PROFIL_Assoc;
+
+VIEW POINT_TRONCON
+  PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.POINT_TRONCON;
+  =  
+  ATTRIBUTE
+    SITUATION :=base-> SITUATION;
+END POINT_TRONCON;
+
+VIEW POINT_TRONCON_ELEMENT_RESEAU_AS_Assoc 
+  PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.POINT_TRONCON_ELEMENT_RESEAU_ASAssoc;
+  =
+  ATTRIBUTE
+     ALL OF base;
+END POINT_TRONCON_ELEMENT_RESEAU_AS_Assoc;
+
+VIEW CANALISATION
+  PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.CANALISATION;
+  =  
+  ATTRIBUTE
+    FONCTION_HIERARCHIQUE :=base-> FONCTION_HIERARCHIQUE;
+END CANALISATION;
+
+VIEW CHAMBRE_STANDARD
+  PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.CHAMBRE_STANDARD;
+  =  
+  ATTRIBUTE
+    FONCTION :=base-> FONCTION;
+END CHAMBRE_STANDARD;
+
+VIEW PROFIL_TUYAU
+  PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.PROFIL_TUYAU;
+  =  
+  ATTRIBUTE
+    RAPPORT_HAUTEUR_LARGEUR :=base-> RAPPORT_HAUTEUR_LARGEUR;
+    TYPE_PROFIL :=base-> TYPE_PROFIL;
+END PROFIL_TUYAU;
+
+VIEW OUVRAGE_SPECIAL
+  PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.OUVRAGE_SPECIAL;
+  =  
+  ATTRIBUTE
+    FONCTION :=base-> FONCTION;
+END OUVRAGE_SPECIAL;
+
+VIEW INSTALLATION_INFILTRATION
+  PROJECTION OF base~SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.INSTALLATION_INFILTRATION;
+  =  
+  ATTRIBUTE
+END INSTALLATION_INFILTRATION;
+
+END SIA405_Eaux_usees_CS;  !! Ende der View
+
+END SIA405_EAUX_USEES_2015_LV95.   !! Ende des Modells / Fin du modèle
+

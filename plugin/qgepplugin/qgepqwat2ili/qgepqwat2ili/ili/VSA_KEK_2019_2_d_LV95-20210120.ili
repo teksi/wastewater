@@ -1,0 +1,1025 @@
+!! VSA_KEK_2019_2_d_LV95.ili
+!!  Erweitert SIA 405 Abwasser für die "Optische Inspektion" (VSA-KEK)
+!!  http://dss.vsa.ch
+
+INTERLIS 2.3;
+
+MODEL VSA_KEK_2019_LV95 (de) AT "http://www.vsa.ch/models"
+  VERSION "20.01.2021" = 
+
+  IMPORTS UNQUALIFIED INTERLIS;
+  IMPORTS Units;
+  IMPORTS Base_LV95;
+  IMPORTS SIA405_Base_LV95;
+  IMPORTS SIA405_ABWASSER_2015_LV95;
+
+!! Copyright 2002 - 2021
+!! Verband Schweizer Abwasser- und Gewässerschutzfachleute (VSA), Zürich
+!! www.vsa.ch
+!! in Zusammenarbeit mit schweizer ingenieur und architektenverein (sia), Zürich
+!! www.sia.ch
+
+!! Die Nutzung dieser INTERLIS-Datei ist lizenzpflichtig!
+
+!! Die Originalmodelldatei VSA_KEK_2019_2_d_LV95.ili und darauf basierende 
+!! abgeänderte Versionen dürfen nicht weiterverkauft werden. 
+!! Die Weitergabe der Originaldatei (als Ganzes oder Teile davon) ist nur 
+!! zusammen mit dem Erwerb einer Lizenz beim VSA durch den Empfänger erlaubt. 
+
+!! In Bearbeitung.
+!! Nicht freigegeben für öffentlichen Gebrauch und kommerzielle Anwendung
+!! Geprueft mit Compiler Version 5.1.4 (2.10.2020)
+
+!! Sachbearbeiter Stefan Burckhardt
+!! Stefan Jürg Burckhardt, Software, Informationsmanagement, Beratung, Zürich. 
+!! www.sjib.ch
+
+!! 20.1.2021 Korrektur Beziehung Ausfuehrende_FirmaRef auf EXTERNAL
+
+UNIT
+
+STRUCTURE Videozaehlerstand  =
+   SUBDIVISION Hours: 0 .. 23 CIRCULAR [h];
+   CONTINUOUS SUBDIVISION Minutes: 0 .. 59 CIRCULAR [min];
+   CONTINUOUS SUBDIVISION Seconds: 0 .. 59 CIRCULAR [INTERLIS.s];
+   CONTINUOUS SUBDIVISION Frames: 0 .. 24 CIRCULAR;
+END Videozaehlerstand;
+
+DOMAIN XMLVideozaehlerstand = FORMAT BASED ON Videozaehlerstand ( Hours ":" Minutes ":" Seconds ":" Frames );  !! [hh:mm:ss:ff]
+
+TOPIC KEK EXTENDS SIA405_ABWASSER_2015_LV95.SIA405_Abwasser =
+
+DOMAIN
+
+KanalQuantifizierung = 0 .. 100000;    !! [mm] oder [%], je nach EN Schadencode
+
+Relativpfad = TEXT*200;    !! 
+
+Pfad = TEXT*100;    !! 
+
+Anmerkung = TEXT*100;    !! 
+
+Ansichtsparameter = TEXT*200;    !! Spezielle Ansichtsparameter für die Positionierung innerhalb einer Filmdatei
+!! XML Tags abhängig vom Aufnahmesystem
+
+Bezeichnung_lang = TEXT*60;    !! 
+
+SchachtQuantifizierung = TEXT*20;    !! variabel, je nach EN Schadencode
+
+Streckenschaden = TEXT*3;    !! Codes für den Anfang und das Ende eines Streckenschadens
+
+
+CLASS Erhaltungsereignis (ABSTRACT) EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+!! Aussagen zu betrieblichem und baulichem Unterhalt eines Abwasserbauwerkes
+  ATTRIBUTE
+    Art: MANDATORY (          !! Art des Ereignisses
+      andere,
+      Erneuerung,  !! Herstellung neuer Abwasserkanäle in der bisherigen oder anderer Linienführung, wobei die neuen Anlagen die Funktion der ursprünglichen Abwasserkanäle einbeziehen (SN EN 752).
+      Reinigung,  !! Reinigung oder Entleerung
+																																																				  
+      Renovierung,  !! Massnahmen zur Verbesserung der aktuellen Funktionsfähigkeit von Abwasserkanälen unter vollständiger oder teilweiser Einbezug ihrer ursprünglichen Substanz  (SN EN 752). In älteren Normen und Richtlinien wird diese Massnahme mit "Sanierung" bezeichnet.
+      Reparatur,  !! Massnahmen zur Behebung örtlich begrenzter Schäden (SN EN 752). In älteren Normen und Richtlinien wird diese Massnahme mit "Instandsetzung" bezeichnet.
+      Sanierung,  !! Alle Massnahmen zur Wiederherstellung oder Verbesserung von vorhandenen Entwässerungsanlagen. Die Massnahmen umfassen Reparatur, Renovierung und Erneuerung  (SN EN 752). In älteren Normen und Richtlinien wird dieser Begriff mit "Erhaltung" bezeichnet.
+      unbekannt,
+      Untersuchung
+    );
+    Ausfuehrender: TEXT*50;  !! Sachbearbeiter Firma oder Verwaltung (kann auch Operateur sein bei Untersuchung);
+    Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
+    Bezeichnung: MANDATORY TEXT*20;
+    Datengrundlage: TEXT*50;  !! Z.B. Schadensprotokoll
+    Dauer: 0 .. 10000 [Units.d];  !! Dauer des Ereignisses in Tagen
+    Detaildaten: TEXT*50;  !! Ort, wo sich weitere Detailinformationen zum Ereignis finden (z.B. Nr. eines Videobandes);
+    Ergebnis: TEXT*50;  !! Resultat oder wichtige Bemerkungen aus Sicht des Bearbeiters
+    Grund: TEXT*50;  !! Ursache für das Ereignis
+    Kosten: 0.00 .. 99999999.99 [Units.CHF];
+    Status: (          !! Phase in der sich das Erhaltungsereignis befindet
+      ausgefuehrt,
+      geplant,
+      nicht_moeglich,  !! Falls eine geplante Untersuchung nicht durchgeführt werden konnte.
+      unbekannt
+    );
+    Zeitpunkt: INTERLIS_1_DATE;  !! Zeitpunkt des Ereignisses
+END Erhaltungsereignis;
+
+ASSOCIATION Erhaltungsereignis_AbwasserbauwerkAssoc =    !! Assoziation
+  AbwasserbauwerkRef (EXTERNAL) -- {0..1} SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Abwasserbauwerk;
+  Erhaltungsereignis_AbwasserbauwerkAssocRef -- {0..*} Erhaltungsereignis;
+END Erhaltungsereignis_AbwasserbauwerkAssoc;
+
+ASSOCIATION Erhaltungsereignis_Ausfuehrende_FirmaAssoc =    !! Assoziation
+  /* Ausfuehrende_FirmaRef  -- {0..1} Organisation; */
+  Ausfuehrende_FirmaRef (EXTERNAL) -- {0..1} SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Organisation;
+  Erhaltungsereignis_Ausfuehrende_FirmaAssocRef -- {0..*} Erhaltungsereignis;
+END Erhaltungsereignis_Ausfuehrende_FirmaAssoc;
+
+CLASS Untersuchung EXTENDS Erhaltungsereignis =  
+!! Kanalfernsehuntersuchungen
+  ATTRIBUTE
+    bisPunktBezeichnung: TEXT*20;  !! Bezeichnung des "bis Punktes" einer Untersuchung, so wie sie auf dem Plan erscheint. Alternative zum Fremdschlüssel Abwasserbauwerk, wenn Topologie noch nicht definiert ist (Ersterfassung). Die bisPunktBezeichnung wird später vom Hydrauliker für den Aufbau der Kanalnetztopologie verwendet. Bei Schachtuntersuchungen bleibt dieser Wert leer.
+    Erfassungsart: MANDATORY (          !! Aufnahmetechnik, beschreibt die Art der Aufnahme
+      andere,
+      Begehung,
+      Deformationsmessung,
+      Dichtheitspruefung,
+      Georadar,
+      Kanalfernsehen,
+      unbekannt
+    );
+    Fahrzeug: TEXT*50;  !! Eingesetztes Inspektionsfahrzeug
+    Geraet: TEXT*50;  !! Eingesetztes Aufnahmegeräte (Kamera);
+    Inspizierte_Laenge: MANDATORY 0.00 .. 30000.00 [m];  !! Total untersuchte Länge in Metern mit zwei Nachkommastellen
+    Videonummer: TEXT*20;  !! Bei Videobändern steht hier die Bandnummer (z.B. 1/99). Bei elektronischen Datenträgern ist dies die Datenträgerbezeichnung (z.B. SG001). Falls pro Untersuchung eine einzelne Datei zur Verfügung steht, dann wird diese aus der Klasse Datei referenziert und dieses Attribut kann leer gelassen werden.
+    vonPunktBezeichnung: TEXT*20;  !! Bezeichnung des "von Punktes" einer Untersuchung, so wie sie auf dem Plan erscheint. Alternative zum Fremdschlüssel Haltungspunkt, wenn Topologie noch nicht definiert ist (Ersterfassung). Die vonPunktBezeichnung wird später vom Hydrauliker für den Aufbau der Kanalnetztopologie verwendet.
+    Witterung: (          !! Wetterverhältnisse während der Inspektion
+      bedeckt_regnerisch,
+      Nieselregen,
+      Regen,
+      Schneefall,
+      schoen_trocken,
+      unbekannt
+    );
+END Untersuchung;
+
+ASSOCIATION Untersuchung_HaltungspunktAssoc =    !! Assoziation
+  HaltungspunktRef (EXTERNAL) -- {0..1} SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Haltungspunkt;
+  Untersuchung_HaltungspunktAssocRef -- {0..*} Untersuchung;
+END Untersuchung_HaltungspunktAssoc;
+
+CLASS Schaden (ABSTRACT) EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+!! Diese Klasse ist die Basisklasse für alle Schadensfeststellungen, sowohl aus der optischen Inspektion von Entwässerungsleitungen, als auch von Schachtinspektionen.
+  ATTRIBUTE
+    Anmerkung: TEXT*100;  !! Freie Bemerkungen zu einer Feststellung
+    Ansichtsparameter: TEXT*200;  !! Spezielle Ansichtsparameter für die Positionierung innerhalb einer Filmdatei für Scanner- oder digitale Videotechnik
+    Einzelschadenklasse: (          !! Definiert die Schadensklasse eines Einzelschadens. Die Einteilung in die Zustandsklassen (Z0-Z4) erfolgt aufgrund des Schadenbilds und des Schadensausmasses. Dabei kann ein Abwasserbauwerk direkt einer Klasse zugeteilt werden oder zuerst jeder Schaden einzeln klassifiziert werden. (Am Schluss bestimmt dann z.B. der schwerste Einzelschaden die Klassifizierung des gesamten Kanals (Abwasserbauwerk.BaulicherZustand)).
+      EZ0,
+      EZ1,
+      EZ2,
+      EZ3,
+      EZ4,
+      unbekannt
+    );
+    Streckenschaden: TEXT*3;  !! Codes für den Anfang und das Ende eines Streckenschadens. Genaue Angaben unter 2.1.2 resp. 3.1.2
+    Verbindung: (          !! Kennzeichen für eine Feststellung an einer Rohrverbindung (2.1.7). bzw. bei zwei aneinandergrenzenden Schachtelementen gemäss (3.1.7). Entspricht in SN EN 13508 ja = "A", nein = leer
+      ja,
+      nein
+    );
+    Videozaehlerstand: XMLVideozaehlerstand;  !! Zählerstand auf einem analogen Videoband oder in einer digitalen Videodatei, in Echtzeit
+END Schaden;
+
+ASSOCIATION Schaden_UntersuchungAssoc =    !! Komposition
+  UntersuchungRef  -<#> {1} Untersuchung;
+  Schaden_UntersuchungAssocRef -- {0..*} Schaden;
+END Schaden_UntersuchungAssoc;
+
+CLASS Kanalschaden EXTENDS Schaden =  
+!! Diese Klasse ist von der Klasse "Schaden" abgeleitet. D.h. sie erbt alle Attribute dieser Klasse.
+  ATTRIBUTE
+    Distanz: MANDATORY 0.00 .. 30000.00 [m];  !! Länge von Rohranfang bis zur Feststellung (siehe Richtlinie Optische Inspektion von Entwässerungsanlagen: Schadencodierung und Datentransfer, Absatz 2.1.1) in m mit zwei Nachkommastellen
+    KanalSchadencode: MANDATORY (          !! Vorgegebener Wertebereich: Gültiger Code auf der Grundlage von SN EN 13508-2. Alle gültigen Codes sind in Kapitel 2 der Richtlinie "Schadencodierung" abschliessend aufgeführt.
+      AECXA,  !! Rohrprofilwechsel
+      AECXB,  !! Rohrprofilwechsel: Eiprofil
+      AECXC,  !! Rohrprofilwechsel: Kreisprofil
+      AECXD,  !! Rohrprofilwechsel: Maulprofil
+      AECXE,  !! Rohrprofilwechsel: offenes Profil
+      AECXF,  !! Rohrprofilwechsel: Rechteckprofil
+      AECXG,  !! Rohrprofilwechsel: Spezialprofil
+      AECXH,  !! Rohrprofilwechsel: unbekanntes Profil
+      AEDXA,  !! Rohrmaterialwechsel
+      AEDXB,  !! Rohrmaterialwechsel: Asbestzement
+      AEDXC,  !! Rohrmaterialwechsel: Normalbeton
+      AEDXD,  !! Rohrmaterialwechsel: Ortsbeton
+      AEDXE,  !! Rohrmaterialwechsel: Pressrohrbeton
+      AEDXF,  !! Rohrmaterialwechsel: Spezialbeton
+      AEDXG,  !! Rohrmaterialwechsel: Beton
+      AEDXH,  !! Rohrmaterialwechsel: Faserzement
+      AEDXI,  !! Rohrmaterialwechsel: Gebrannte Steine
+      AEDXJ,  !! Rohrmaterialwechsel: Duktiler Guss
+      AEDXK,  !! Rohrmaterialwechsel: Grauguss
+      AEDXL,  !! Rohrmaterialwechsel: Epoxidharz
+      AEDXM,  !! Rohrmaterialwechsel: Hartpolyethylen
+      AEDXN,  !! Rohrmaterialwechsel: Polyester GUP
+      AEDXO,  !! Rohrmaterialwechsel: Polyethylen
+      AEDXP,  !! Rohrmaterialwechsel: Polypropylen
+      AEDXQ,  !! Rohrmaterialwechsel: Polyvinylchlorid
+      AEDXR,  !! Rohrmaterialwechsel: Kunststoff unbekannt
+      AEDXS,  !! Rohrmaterialwechsel: Stahl
+      AEDXT,  !! Rohrmaterialwechsel: Rostfreier Stahl
+      AEDXU,  !! Rohrmaterialwechsel: Steinzeug
+      AEDXV,  !! Rohrmaterialwechsel: Ton
+      AEDXW,  !! Rohrmaterialwechsel: unbekanntes Material
+      AEDXX,  !! Rohrmaterialwechsel: Zement
+      AEF,  !! Neue Baulänge
+      BAAA,  !! Rohr vertikal deformiert
+      BAAB,  !! Rohr horizontal deformiert
+      BABAA,  !! Oberflächenriss (Haarriss) längs
+      BABAB,  !! Oberflächenriss (Haarriss) radial
+      BABAC,  !! Oberflächenriss (Haarriss), komplexe Rissbildung
+      BABAD,  !! Oberflächenriss (Haarriss), spiralförmige Rissbildung
+      BABAE,  !! Oberflächenriss (Haarriss), sternförmige Rissbildung
+      BABBA,  !! Riss längs
+      BABBB,  !! Riss radial
+      BABBC,  !! Riss, komplexe Rissbildung, Scherbenbildung
+      BABBD,  !! Riss, spiralförmige Rissbildung
+      BABBE,  !! Riss, sternförmige Rissbildung
+      BABCA,  !! Klaffender Riss, längs
+      BABCB,  !! Klaffender Riss, radial
+      BABCC,  !! Klaffender Riss, komplexe Rissbildung, Scherbenbildung
+      BABCD,  !! Klaffender Riss, spiralförmige Rissbildung
+      BABCE,  !! Klaffender Riss, sternförmige Rissbildung
+      BACA,  !! In der Lage verschobene Scherbe
+      BACB,  !! Fehlende Scherbe / Wandungsteil (Loch)
+      BACC,  !! Leitungsbruch / Einsturz
+      BADA,  !! Mauerwerk defekt, Mauer- / Backsteine verschoben
+      BADB,  !! Mauerwerk defekt, Mauer- / Backsteine fehlen
+      BADC,  !! Mauerwerk defekt, Sohle abgesackt
+      BADD,  !! Mauerwerk defekt, Einsturz
+      BAE,  !! Mörtel aus Mauerwerk fehlt ganz oder teilweise
+      BAFAA,  !! Rauhe Rohrwandung durch mechanische Beschädigung
+      BAFAB,  !! Rauhe Rohrwandung durch chemischen Angriff
+      BAFAC,  !! Rauhe Rohrwandung durch chemischen Angriff im oberen Teil des Rohres
+      BAFAD,  !! Rauhe Rohrwandung durch chemischen Angriff im unteren Teil des Rohres
+      BAFAE,  !! Rauhe Rohrwandung, Ursache nicht eindeutig feststellbar
+      BAFAZ,  !! Rauhe Rohrwandung, andere Ursache
+      BAFBA,  !! Abplatzung durch mechanische Beschädigung
+      BAFBE,  !! Abplatzung, Ursache nicht eindeutig feststellbar
+      BAFBZ,  !! Abplatzung, andere Ursache
+      BAFCA,  !! Zuschlagstoffe sichtbar durch mechanische Beschädigung
+      BAFCB,  !! Zuschlagstoffe sichtbar durch chemischen Angriff
+      BAFCC,  !! Zuschlagstoffe sichtbar durch chemischen Angriff im oberen Teil des Rohres
+      BAFCD,  !! Zuschlagstoffe sichtbar durch chemischen Angriff im unteren Teil des Rohres
+      BAFCE,  !! Zuschlagstoffe sichtbar, Ursache nicht eindeutig feststellbar
+      BAFCZ,  !! Zuschlagstoffe sichtbar, andere Ursache
+      BAFDA,  !! Zuschlagstoffe einragend durch mechanische Beschädigung
+      BAFDB,  !! Zuschlagstoffe einragend durch chemischen Angriff
+      BAFDC,  !! Zuschlagstoffe einragend durch chemischen Angriff im oberen Teil des Rohres
+      BAFDD,  !! Zuschlagstoffe einragend durch chemischen Angriff im unteren Teil des Rohres
+      BAFDE,  !! Zuschlagstoffe einragend, Ursache nicht eindeutig feststellbar
+      BAFDZ,  !! Zuschlagstoffe einragend, andere Ursache
+      BAFEA,  !! Zuschlagstoffe fehlen durch mechanische Beschädigung
+      BAFEB,  !! Zuschlagstoffe fehlen durch chemischen Angriff
+      BAFEC,  !! Zuschlagstoffe fehlen durch chemischen Angriff im oberen Teil des Rohres
+      BAFED,  !! Zuschlagstoffe fehlen durch chemischen Angriff im unteren Teil des Rohres
+      BAFEE,  !! Zuschlagstoffe fehlen, Ursache nicht eindeutig feststellbar
+      BAFEZ,  !! Zuschlagstoffe fehlen, andere Ursache
+      BAFFA,  !! Bewehrung sichtbar durch mechanische Beschädigung
+      BAFFB,  !! Bewehrung sichtbar durch chemischen Angriff
+      BAFFC,  !! Bewehrung sichtbar durch chemischen Angriff im oberen Teil des Rohres
+      BAFFD,  !! Bewehrung sichtbar durch chemischen Angriff im unteren Teil des Rohres
+      BAFFE,  !! Bewehrung sichtbar, Ursache nicht eindeutig feststellbar
+      BAFFZ,  !! Bewehrung sichtbar, andere Ursache
+      BAFGA,  !! Bewehrung einragend durch mechanische Beschädigung
+      BAFGB,  !! Bewehrung einragend durch chemischen Angriff
+      BAFGC,  !! Bewehrung einragend durch chemischen Angriff im oberen Teil des Rohres
+      BAFGD,  !! Bewehrung einragend durch chemischen Angriff im unteren Teil des Rohres
+      BAFGE,  !! Bewehrung einragend, Ursache nicht eindeutig feststellbar
+      BAFGZ,  !! Bewehrung einragend, andere Ursache
+      BAFHB,  !! Bewehrung korrodiert durch chemischen Angriff
+      BAFHC,  !! Bewehrung korrodiert durch chemischen Angriff im oberen Teil des Rohres
+      BAFHD,  !! Bewehrung korrodiert durch chemischen Angriff im unteren Teil des Rohres
+      BAFHE,  !! Bewehrung korrodiert, Ursache nicht eindeutig feststellbar
+      BAFIA,  !! Fehlende Rohrwandung durch mechanische Beschädigung
+      BAFIB,  !! Fehlende Rohrwandung durch chemischen Angriff
+      BAFIC,  !! Fehlende Rohrwandung durch chemischen Angriff im oberen Teil des Rohres
+      BAFID,  !! Fehlende Rohrwandung durch chemischen Angriff im unteren Teil des Rohres
+      BAFIE,  !! Fehlende Rohrwandung, Ursache nicht eindeutig feststellbar
+      BAFIZ,  !! Fehlende Rohrwandung, andere Ursache
+      BAFJB,  !! Rohrwand korrodiert durch chemischen Angriff
+      BAFJC,  !! Rohrwand korrodiert durch chemischen Angriff im oberen Teil des Rohres
+      BAFJD,  !! Rohrwand korrodiert durch chemischen Angriff im unteren Teil des Rohres
+      BAFJE,  !! Rohrwand korrodiert, Ursache nicht eindeutig feststellbar
+      BAFJZ,  !! Rohrwand korrodiert, andere Ursache
+      BAFKA,  !! Beule durch mechanische Beschädigung
+      BAFKE,  !! Beule, Ursache nicht eindeutig feststellbar
+      BAFKZ,  !! Beule, andere Ursache
+      BAFZA,  !! Andersartiger Oberflächenschaden durch mechanische Beschädigung
+      BAFZB,  !! Andersartiger Oberflächenschaden durch chemischen Angriff
+      BAFZC,  !! Andersartiger Oberflächenschaden durch chemischen Angriff im oberen Teil des Rohres
+      BAFZD,  !! AndersartigerOberflächenschaden durch chemischen Angriff im unteren Teil des Rohres
+      BAFZE,  !! Andersartiger Oberflächenschaden, Ursache nicht eindeutig feststellbar
+      BAFZZ,  !! Andersartiger Oberflächenschaden, andere Ursache
+      BAGA,  !! Anschluss einragend
+      BAHA,  !! Anschluss falsch eingeführt
+      BAHB,  !! Anschluss zurückliegend
+      BAHC,  !! Anschluss unvollständig oder nicht eingebunden
+      BAHD,  !! Anschluss beschädigt
+      BAHE,  !! Anschluss verstopft
+      BAHZ,  !! Anschluss andersartig schadhaft
+      BAIAA,  !! Dichtring verschoben
+      BAIAB,  !! Dichtring einragend, aber nicht gebrochen, tiefster Punkt oberhalb Rohrmitte 
+      BAIAC,  !! Dichtring einragend, aber nicht gebrochen, tiefster Punkt unterhalb Rohrmitte 
+      BAIAD,  !! Dichtring einragend, gebrochen 
+      BAIZ,  !! Einragendes Dichtungsmaterial
+      BAJA,  !! Breite Rohrverbindung
+      BAJB,  !! Rohrverbindung versetzt
+      BAJC,  !! Rohrverbindung Knick
+      BAKA,  !! Innenauskleidung abgelöst
+      BAKB,  !! Innenauskleidung verfärbt
+      BAKC,  !! Endstelle der Innenauskleidung schadhaft
+      BAKDA,  !! Innenauskleidung Faltenbildung, längs
+      BAKDB,  !! Innenauskleidung Faltenbildung, radial
+      BAKDC,  !! Innenauskleidung Faltenbildung, komplex 
+      BAKDD,  !! Innenauskleidung Faltenbildung, spiralformig 
+      BAKE,  !! Blasen/Beulen in der Innenauskleidung
+      BAKF,  !! Beule der Innauskleidung nach aussen
+      BAKG,  !! Ablösen der Innenhaut / Beschichtung
+      BAKH,  !! Ablösen der Abdeckung der Verbindungsnaht
+      BAKI,  !! Riss oder Splat in der Innauskleidung
+      BAKJ,  !! Loch in der Innauskleidung
+      BAKK,  !! Auskleidungsverbindung defekt
+      BAKL,  !! Auskleidungswerkstoff erscheint weich
+      BAKM,  !! Harz fehlt im Laminat
+      BAKN,  !! Ende der Auskleidung ist nicht abgedichtet
+      BAKZ,  !! Innenauskleidung andersartig schadhaft
+      BALA,  !! Reparatur mangelhaft, Wand fehlt teilweise
+      BALB,  !! Reparatur Loch mangelhaft
+      BALC,  !! Reparaturwerkstoff löst sich vom Altrohr
+      BALD,  !! Reparaturwerkstoff fehlt an der Kontaktfläche
+      BALE,  !! Überschüssiger Reparaturwerkstoff, Hindernis
+      BALF,  !! Loch im Reparaturwerkstoff
+      BALGA,  !! Riss im Reparaturwerkstoff, längs
+      BALGB,  !! Riss im Reparaturwerkstoff, radial
+      BALGC,  !! Riss im Reparaturwerkstoff, komplex
+      BALGD,  !! Riss im Reparaturwerkstoff, spiralförmig
+      BALZ,  !! Reparatur andersartig mangelhaft
+      BAMA,  !! Schweissnaht in Längsrichtung mangelhaft 
+      BAMB,  !! Schweissnaht radial mangelhaft 
+      BAMC,  !! Schweissnaht mit spiralförmigem Verlauf mangelhaft 
+      BAN,  !! Leitung porös
+      BAO,  !! anstehender Boden sichtbar 
+      BAP,  !! Hohlraum sichtbar 
+      BBAA,  !! Pfahlwurzel
+      BBAB,  !! Einzelner, feiner Wurzeleinwuchs
+      BBAC,  !! Komplexes Wurzelwerk
+      BBBA,  !! Inkrustation (verkalkt)
+      BBBB,  !! Fett
+      BBBC,  !! Fäulnis
+      BBBZ,  !! Andersartige anhaftende Stoffe
+      BBCA,  !! Lose Ablagerungen, Sand
+      BBCB,  !! Lose Ablagerungen, Kies
+      BBCC,  !! Harte Ablagerungen
+      BBCZ,  !! Andersartige Ablagerungen
+      BBDA,  !! Sand dringt ein
+      BBDB,  !! organischen Bodenmaterial dringt ein
+      BBDC,  !! Feinmaterial dringt ein
+      BBDD,  !! Grobmaterial dringt ein
+      BBDZ,  !! Bodenmaterial dringt ein
+      BBEA,  !! Hindernis: Mauer- oder Backstein liegt in der Rohrsohle
+      BBEB,  !! Hindernis: Leitungsstück liegt in der Rohrsohle
+      BBEC,  !! Gegenstand liegt in der Rohrsohle
+      BBED,  !! Gegenstand ragt durch die Wand ein
+      BBEE,  !! Gegenstand ist in der Rohrverbindung eingeklemmt
+      BBEF,  !! Gegenstand ragt aus Anschluss in Hauptleitung
+      BBEG,  !! Fremde Werkleitungen oder Kabel durchqueren die Leitung
+      BBEH,  !! Gegenstand ist in den Rohrkörper eingebaut
+      BBEZ,  !! Andersartiges Hindernis
+      BBFA,  !! Infiltration: Schwitzen / Verkalkung
+      BBFB,  !! Infiltration: Wasser tropft
+      BBFC,  !! Infiltration: Wasser fliesst
+      BBFD,  !! Infiltration: Wasser spritzt
+      BBG,  !! Sichtbarer Wasseraustritt
+      BBHAA,  !! Ratte in der Rohrleitung
+      BBHAB,  !! Ratte im Anschluss
+      BBHAC,  !! Ratte in der offenen Rohrverbindung
+      BBHAZ,  !! Ratte
+      BBHBA,  !! Kakerlake in der Rohrleitung
+      BBHBB,  !! Kakerlake im Anschluss
+      BBHBC,  !! Kakerlake in der offenen Rohrverbindung
+      BBHBZ,  !! Kakerlake
+      BBHZA,  !! Tier in der Rohrleitung
+      BBHZB,  !! Tier im Anschluss
+      BBHZC,  !! Tier in der offenen Rohrverbindung
+      BBHZZ,  !! Tier
+      BCAAA,  !! Anschluss mit Formstück
+      BCAAB,  !! Anschluss mit Formstück verschlossen
+      BCABA,  !! Sattelanschluss gebohrt 
+      BCABB,  !! Sattelanschluss gebohrt verschlossen
+      BCACA,  !! Sattelanschluss eingespitzt 
+      BCACB,  !! Sattelanschluss eingespitzt verschlossen
+      BCADA,  !! Anschluss gebohrt 
+      BCADB,  !! Anschluss gebohrt verschlossen
+      BCAEA,  !! Anschluss eingespitzt 
+      BCAEB,  !! Anschluss eingespitzt verschlossen
+      BCAFA,  !! Spezialanschluss 
+      BCAFB,  !! Spezialanschluss verschlossen
+      BCAGA,  !! Anschluss unbekannter Bauart 
+      BCAGB,  !! Anschluss unbekannter Bauart verschlossen
+      BCAZA,  !! Andersartiger Anschluss 
+      BCAZB,  !! Andersartiger Anschluss verschlossen
+      BCBA,  !! Reparatur, Rohr ausgetauscht
+      BCBB,  !! Reparatur, örtlich begrenzte Innenauskleidung des Rohres
+      BCBC,  !! Reparatur,  Mörtelinjizierung
+      BCBD,  !! Reparatur,  Injizierung
+      BCBE,  !! Loch repariert
+      BCBF,  !! Reparatur, örtlich begrenzte Innenauskleidung des Rohres
+      BCBG,  !! Andersartige Reparatur des Anschlusses
+      BCBZ,  !! Andersartige Reparatur mit grabenlosem Verfahren
+      BCCAA,  !! Bogen nach links oben
+      BCCAB,  !! Bogen nach links unten 
+      BCCAY,  !! Bogen nach links
+      BCCBA,  !! Bogen nach rechts oben
+      BCCBB,  !! Bogen nach rechts unten
+      BCCBY,  !! Bogen nach rechts
+      BCCYA,  !! Bogen nach oben
+      BCCYB,  !! Bogen nach unten
+      BCD,  !! Rohranfang
+      BCDXP,  !! Distanzmessung Anfang
+      BCE,  !! Rohrende
+      BCEXP,  !! Distanzmessung Ende
+      BDA,  !! Allgemeinzustand, Fotobeispiel
+      BDB,  !!     <kein Text>
+      BDBA,  !! A   Beginn TV-Untersuch (Vorgabe)
+      BDBB,  !! B   Inspektion erst nach Reinigung möglich
+      BDBC,  !! C   Inspektion erfolgt zu einem späteren Zeitpunkt
+      BDBD,  !! D   Inspektionsziel erreicht (ungültig: Ersatz BDCZA)
+      BDBE,  !! E   Auftraggeber verzichtet auf weitere Untersuchung (ungültig: Ersatz BDCZB)
+      BDBF,  !! F    Inspektion erfolgt von der Gegenseite
+      BDBG,  !! G   Kamera nicht einsetzbar, Schacht durch ein Fahrzeug blockiert
+      BDBH,  !! H   Kamera nicht einsetzbar, Schacht nicht erreichbar
+      BDBI,  !! I     Kamera nicht einsetzbar, Schacht kann nicht geöffnet werden
+      BDBJ,  !! J   Kamera nicht einsetzbar
+      BDBK,  !! K   Gegenseite erreicht (ungültig: Ersatz BDCZC)
+      BDBL,  !! L   Gegenseite nicht erreicht (ungültig: Ersatz BDCZD)
+      BDBM,  !! M   Inspektion von der Gegenseite nicht möglich
+      BDCA,  !! Abbruch der Inspektion, Hindernis (ungültig: Ersatz BDCAZ)
+      BDCAA,  !! Abbruch der Inspektion, Hindernis, Inspektionsziel erreicht
+      BDCAB,  !! Abbruch der Inspektion, Hindernis, Auftraggeber verzichtet auf weitere Inspektion
+      BDCAC,  !! Abbruch der Inspektion, Hindernis, Gegenseite erreicht
+      BDCAD,  !! Abbruch der Inspektion, Hindernis, Gegenseite nicht erreicht
+      BDCAE,  !! Abbruch der Inspektion, Hindernis, unklar, ob Gegenseite erreicht
+      BDCAZ,  !! Abbruch der Inspektion, Hindernis
+      BDCB,  !! Abbruch der Inspektion, hoher Wasserstand (ungültig: Ersatz BDCBZ)
+      BDCBA,  !! Abbruch der Inspektion, hoher Wasserstand, Inspektionsziel erreicht
+      BDCBB,  !! Abbruch der Inspektion, hoher Wasserstand, Auftraggeber verzichtet auf weitere Inspektion
+      BDCBC,  !! Abbruch der Inspektion, hoher Wasserstand, Gegenseite erreicht
+      BDCBD,  !! Abbruch der Inspektion, hoher Wasserstand, Gegenseite nicht erreicht
+      BDCBE,  !! Abbruch der Inspektion, hoher Wasserstand, unklar, ob Gegenseite erreicht
+      BDCBZ,  !! Abbruch der Inspektion, hoher Wasserstand
+      BDCC,  !! Abbruch der Inspektion, Kamera defekt (ungültig: Ersatz BDCCZ)
+      BDCCA,  !! Abbruch der Inspektion, Versagen der Ausrüstung, Inspektionsziel erreicht
+      BDCCB,  !! Abbruch der Inspektion, Versagen der Ausrüstung, Auftraggeber verzichtet auf weitere Inspektion
+      BDCCC,  !! Abbruch der Inspektion, Versagen der Ausrüstung, Gegenseite erreicht
+      BDCCD,  !! Abbruch der Inspektion, Versagen der Ausrüstung, Gegenseite nicht erreicht
+      BDCCE,  !! Abbruch der Inspektion, Versagen der Ausrüstung, unklar, ob Gegenseite erreicht
+      BDCCZ,  !! Abbruch der Inspektion, Versagen der Ausrüstung
+      BDCZ,  !! Abbruch der Inspektion (ungültig: Ersatz BDCZZ)
+      BDCZA,  !! Anderer Grund für Abbruch der Inspektion, Inspektionsziel erreicht
+      BDCZB,  !! Anderer Grund für Abbruch der Inspektion, Auftraggeber verzichtet auf weitere Inspektion
+      BDCZC,  !! Anderer Grund für Abbruch der Inspektion, Gegenseite erreicht
+      BDCZD,  !! Anderer Grund für Abbruch der Inspektion, Gegenseite nicht erreicht
+      BDCZE,  !! Anderer Grund für Abbruch der Inspektion, unklar, ob Gegenseite erreicht
+      BDCZZ,  !! Anderer Grund für Abbruch der Inspektion,
+      BDDA,  !! Wasserspiegel, Abwasser klar
+      BDDB,  !! Wasserspiegel, Abwasser trüb (ungültig: Ersatz BDDC)
+      BDDC,  !! Wasserspiegel, Abwasser trüb
+      BDDD,  !! Wasserspiegel, Abwasser gefärbt
+      BDDE,  !! Wasserspiegel, Abwasser trüb und gefärbt
+      BDEAA,  !! Fehlanschluss, Abwasserzufluss klar, Schmutzabwasser fliesst in Regenabwasser
+      BDEAB,  !! Fehlanschluss, Abwasserzufluss klar, Regenabwasser fliesst in Schmutzabwasser 
+      BDEAC,  !! Abwasserzufluss klar
+      BDEBA,  !! Fehlanschluss, Abwasserzufluss trüb, Schmutzabwasser fliesst in Regenabwasser (ungültig: Ersatz BDECA)
+      BDEBB,  !! Fehlanschluss, Abwasserzufluss trüb, Regenabwasser fliesst in Schmutzabwasser (ungültig: Ersatz BDECB)
+      BDEBC,  !! Abwasserzufluss trüb (ungültig: Ersatz BDECC)
+      BDECA,  !! Fehlanschluss, Abwasserzufluss trüb, Schmutzabwasser fliesst in Regenabwasser
+      BDECB,  !! Fehlanschluss, Abwasserzufluss trüb, Regenabwasser fliesst in Schmutzabwasser 
+      BDECC,  !! Abwasserzufluss trüb
+      BDEDA,  !! Fehlanschluss, Abwasserzufluss gefärbt, Schmutzabwasser fliesst in Regenabwasser
+      BDEDB,  !! Fehlanschluss, Abwasserzufluss gefärbt, Regenabwasser fliesst in Schmutzabwasser 
+      BDEDC,  !! Abwasserzufluss gefärbt
+      BDEEA,  !! Fehlanschluss, Abwasserzufluss trüb und gefärbt, Schmutzabwasser fliesst in Regenabwasser
+      BDEEB,  !! Fehlanschluss, Abwasserzufluss trüb und gefärbt, Regenabwasser fliesst in Schmutzabwasser 
+      BDEEC,  !! Abwasserzufluss trüb und gefärbt
+      BDEYA,  !! Fehlanschluss, Schmutzabwasser fliesst in Regenabwasser
+      BDEYB,  !! Fehlanschluss, Regenabwasser fliesst in Schmutzabwasser
+      BDEYY,  !! Abwasserzufluss
+      BDFA,  !! Gefährdung vorhanden: Sauerstoffmangel
+      BDFB,  !! Gefährdung vorhanden: Schwefelwasserstoff
+      BDFC,  !! Gefährdung vorhanden:  Methan
+      BDFZ,  !! Andersartige Gefährdung vorhanden
+      BDGA,  !! Keine Sicht, Kamera unter Wasser
+      BDGB,  !! Keine Sicht, Verschlammung
+      BDGC,  !! Keine Sicht, Dampf
+      BDGZ  !! Keine Sicht, anderer Grund
+    );
+    Quantifizierung1: 0 .. 100000;  !! Quantifizierung 1 gemäss SN EN 13508-2. Zulässige Eingaben sind in Kapitel 2.3 - 2.6 beschrieben
+    Quantifizierung2: 0 .. 100000;  !! Quantifizierung 2 gemäss SN EN 13508. Zulässige Eingaben sind in Kapitel 2.3 - 2.6  beschrieben
+    SchadenlageAnfang: MANDATORY Ziffernblatt;  !! Lage am Umfang: Beginn des Schadens. Werte und Vorgehen sind in Absatz 2.1.6 genau beschrieben.
+    SchadenlageEnde: MANDATORY Ziffernblatt;  !! Lage am Umfang: Ende des Schadens. Werte und Vorgehen sind in Absatz 2.1.6 genau beschrieben
+END Kanalschaden;
+
+CLASS Normschachtschaden EXTENDS Schaden =  
+!! Diese Klasse ist von der Klasse "Schaden" abgeleitet. D.h. sie erbt alle Attribute dieser Klasse.
+  ATTRIBUTE
+    Distanz: 0.00 .. 30000.00 [m];  !! Länge ab Oberkante Deckel bis zur Feststellung (siehe Absatz 3.1.1) in m mit zwei Nachkommastellen.
+    Quantifizierung1: TEXT*20;  !! Quantifizierung 1 gemäss SN EN 13508. Zulässige Eingaben sind in Kapitel 3.1.5 beschrieben. Als Textattribut umgesetzt.
+    Quantifizierung2: TEXT*20;  !! Quantifizierung 2 gemäss SN EN 13508. Zulässige Eingaben sind in Kapitel 3.1.5 beschrieben. Als Textattribut umgesetzt.
+    Schachtbereich: (          !! Bereich in dem eine Feststellung auftritt. Die Werte sind unter 3.1.9 abschliessend beschrieben.
+      A,  !! A Abdeckung und Rahmen
+      B,  !! B Schachthals
+      D,  !! D Konus
+      F,  !! F Schachtrohre
+      H,  !! H Bankett
+      I,  !! I Durchlaufrinne
+      J  !! J Sohle
+    );
+    SchachtSchadencode: MANDATORY (          !! Vorgegebener Wertebereich: Gültiger Code auf der Grundlage von SN EN 13508-2. Alle gültigen Codes sind in Kapitel 3 der Richtlinie "Schadencodierung" abschliessend aufgeführt.
+      DAAA,  !! Allgemeine Verformung
+      DAAB,  !! Punktuelle Verformung
+      DABAA,  !! Oberflächenriss (Haarriss) vertikal
+      DABAB,  !! Oberflächenriss (Haarriss) horizontal
+      DABAC,  !! Oberflächenriss (Haarriss), komplexe Rissbildung
+      DABAD,  !! Oberflächenriss (Haarriss), geneigte Rissbildung
+      DABAE,  !! Oberflächenriss (Haarriss), sternförmig Rissbildung
+      DABBA,  !! Riss vertikal
+      DABBB,  !! Riss horizontal
+      DABBC,  !! Riss, komplexe Rissbildung
+      DABBD,  !! Riss, geneigte Rissbildung
+      DABBE,  !! Riss, sternförmige Rissbildung
+      DABCA,  !! Klaffender Riss, vertikal
+      DABCB,  !! Klaffender Riss, horizontal
+      DABCC,  !! Klaffender Riss, komplexe Rissbildung
+      DABCD,  !! Klaffender Riss, geneigte Rissbildung
+      DABCE,  !! Klaffender Riss, sternförmige Rissbildung
+      DACA,  !! In der Lage verschobene Scherbe
+      DACB,  !! Fehlende Scherbe / Wandungsteil (Loch)
+      DACC,  !! Einsturz
+      DADA,  !! Mauerwerk defekt, Mauer- / Backsteine verschoben
+      DADB,  !! Mauerwerk defekt, Mauer- / Backsteine fehlen
+      DADC,  !! Mauerwerk defekt, Einsturz
+      DAE,  !! Mörtel aus Mauerwerk fehlt ganz oder teilweise
+      DAFAA,  !! Erhöhte Rauheit durch mechanische Beschädigung
+      DAFAB,  !! Erhöhte Rauheit durch chemischen Angriff
+      DAFAC,  !! Erhöhte Rauheit durch chemischen Angriff im oberen Teil des Gerinnes oder weiter oben
+      DAFAD,  !! Erhöhte Rauheit durch chemischen Angriff im unteren Teil des Gerinnes
+      DAFAE,  !! Erhöhte Rauheit, Schadensursache nicht feststellbar
+      DAFAZ,  !! Erhöhte Rauheit, andere Ursache
+      DAFBA,  !! Abplatzung durch mechanische Beschädigung
+      DAFBE,  !! Abplatzung, Schadensursache nicht feststellbar
+      DAFBZ,  !! Abplatzung, andere Ursache
+      DAFCA,  !! Zuschlagstoffe sichtbar durch mechanische Beschädigung
+      DAFCB,  !! Zuschlagstoffe sichtbar durch chemischen Angriff
+      DAFCC,  !! Zuschlagstoffe sichtbar durch chemischen Angriff im oberen Teil des Gerinnes oder weiter oben
+      DAFCD,  !! Zuschlagstoffe sichtbar durch chemischen Angriff im unteren Teil des Gerinnes
+      DAFCE,  !! Zuschlagstoffe sichtbar, Schadensursache nicht feststellbar
+      DAFCZ,  !! Zuschlagstoffe sichtbar, andere Ursache
+      DAFDA,  !! Zuschlagstoffe einragend durch mechanische Beschädigung
+      DAFDB,  !! Zuschlagstoffe einragend durch chemischen Angriff
+      DAFDC,  !! Zuschlagstoffe einragend durch chemischen Angriff im oberen Teil des Gerinnes oder weiter oben
+      DAFDD,  !! Zuschlagstoffe einragend durch chemischen Angriff im unteren Teil des Gerinnes
+      DAFDE,  !! Zuschlagstoffe einragend, Schadensursache nicht feststellbar
+      DAFDZ,  !! Zuschlagstoffe einragend, andere Ursache
+      DAFEA,  !! Zuschlagstoffe fehlen durch mechanische Beschädigung
+      DAFEB,  !! Zuschlagstoffe fehlen durch chemischen Angriff
+      DAFEC,  !! Zuschlagstoffe fehlen durch chemischen Angriff im oberen Teil des Gerinnes oder weiter oben
+      DAFED,  !! Zuschlagstoffe fehlen durch chemischen Angriff im unteren Teil des Gerinnes
+      DAFEE,  !! Zuschlagstoffe fehlen, Schadensursache nicht feststellbar
+      DAFEZ,  !! Zuschlagstoffe fehlen, andere Ursache
+      DAFFA,  !! Bewehrung sichtbar durch mechanische Beschädigung
+      DAFFB,  !! Bewehrung sichtbar durch chemischen Angriff
+      DAFFC,  !! Bewehrung sichtbar durch chemischen Angriff im oberen Teil des Gerinnes oder weiter oben
+      DAFFD,  !! Bewehrung sichtbar durch chemischen Angriff im unteren Teil des Gerinnes
+      DAFFE,  !! Bewehrung sichtbar, Schadensursache nicht feststellbar
+      DAFFZ,  !! Bewehrung sichtbar, andere Ursache
+      DAFGA,  !! Bewehrung einragend durch mechanische Beschädigung
+      DAFGB,  !! Bewehrung einragend durch chemischen Angriff
+      DAFGC,  !! Bewehrung einragend durch chemischen Angriff im oberen Teil des Gerinnes oder weiter oben
+      DAFGD,  !! Bewehrung einragend durch chemischen Angriff im unteren Teil des Gerinnes
+      DAFGE,  !! Bewehrung einragend, Schadensursache nicht feststellbar
+      DAFGZ,  !! Bewehrung einragend, andere Ursache
+      DAFHB,  !! Bewehrung korrodiert durch chemischen Angriff
+      DAFHC,  !! Bewehrung korrodiert durch chemischen Angriff im oberen Teil des Gerinnes oder weiter oben
+      DAFHD,  !! Bewehrung korrodiert durch chemischen Angriff im unteren Teil des Gerinnes
+      DAFHE,  !! Bewehrung korrodiert, Schadensursache nicht feststellbar
+      DAFIA,  !! Fehlende Wand durch mechanische Beschädigung
+      DAFIB,  !! Fehlende Wand durch chemischen Angriff
+      DAFIC,  !! Fehlende Wand  durch chemischen Angriff im oberen Teil des Gerinnes oder weiter oben
+      DAFID,  !! Fehlende Wand  durch chemischen Angriff im unteren Teil des Gerinnes
+      DAFIE,  !! Fehlende Wand, Schadensursache nicht feststellbar
+      DAFIZ,  !! Fehlende Wand, andere Ursache
+      DAFJB,  !! Korrosion durch chemischen Angriff
+      DAFJC,  !! Korrosion durch chemischen Angriff im oberen Teil des Gerinnes oder weiter oben
+      DAFJD,  !! Korrosion durch chemischen Angriff im unteren Teil des Gerinnes
+      DAFJE,  !! Korrosion, Schadensursache nicht feststellbar
+      DAFJZ,  !! Korrosion, andere Ursache
+      DAFKA,  !! Beule durch mechanische Beschädigung
+      DAFKE,  !! Beule, Schadensursache nicht feststellbar
+      DAFKZ,  !! Beule, andere Ursache
+      DAFZA,  !! Anderer Oberflächenschaden durch mechanische Beschädigung
+      DAFZB,  !! Anderer Oberflächenschaden durch chemischen Angriff
+      DAFZC,  !! Anderer Oberflächenschaden durch chemischen Angriff im oberen Teil des Gerinnes oder weiter oben
+      DAFZD,  !! Anderer Oberflächenschaden durch chemischen Angriff im unteren Teil des Gerinnes
+      DAFZE,  !! Anderer Oberflächenschaden, Schadensursache nicht feststellbar
+      DAFZZ,  !! Anderer Oberflächenschaden, andere Ursache
+      DAG,  !! Anschluss einragend
+      DAHA,  !! Anschluss falsch eingeführt
+      DAHB,  !! Anschluss zurückliegend
+      DAHC,  !! Anschluss unvollständig oder nicht eingebunden
+      DAHD,  !! Anschluss beschädigt
+      DAHE,  !! Anschluss verstopft
+      DAHZ,  !! Anschluss andersartig schadhaft
+      DAIAA,  !! Dichtring verschoben
+      DAIAB,  !! Dichtring hängend, aber nicht gebrochen 
+      DAIAC,  !! Dichtring einragend, gebrochen 
+      DAIZ,  !! Einragendes Dichtungsmaterial
+      DAJA,  !! Breite Schachtelementverbindung
+      DAJB,  !! Schachtelement versetzt
+      DAJC,  !! Schachtelemente Knick
+      DAKA,  !! Auskleidung abgelöst
+      DAKB,  !! Auskleidung verfärbt
+      DAKC,  !! Endstelle der Auskleidung schadhaft
+      DAKDA,  !! Vertikale Faltenbildung in der Auskleidung
+      DAKDB,  !! Horizontale Faltenbildung in der Auskleidung
+      DAKDC,  !! Komplexe Faltenbildung in der Auskleidung
+      DAKDD,  !! Spiralförmige Faltenbildung in der Auskleidung
+      DAKE,  !! Blasen / Beulen in der Auskleidung
+      DAKF,  !! Beule derAuskleidung nach aussen
+      DAKG,  !! Ablösen der Innenhaut / Beschichtung
+      DAKH,  !! Ablösen der Abdeckung der Verbindungsnaht
+      DAKI,  !! Riss oder Spalt in der Innenauskleidung
+      DAKJ,  !! Loch in der Innauskleidung
+      DAKK,  !! Auskleidungsverbindung defekt
+      DAKL,  !! Auskleidungswerkstoff erscheint weich
+      DAKM,  !! Harz fehlt im Laminat
+      DAKN,  !! Ende der Auskleidung ist nicht abgedichtet
+      DAKZ,  !! Auskleidung andersartig mangelhaft
+      DALA,  !! Reparatur mangelhaft, Wand fehlt teilweise
+      DALB,  !! Reparatur Loch mangelhaft
+      DALC,  !! Reparaturwerkstoff löst sich von der Wand
+      DALD,  !! Reparaturwerkstoff fehlt an der Kontaktfläche
+      DALE,  !! Überschüssiger Reparaturwerkstoff, Hindernis
+      DALF,  !! Loch im Reparaturwerkstoff
+      DALG,  !! Riss im Reparaturwerkstoff, längs
+      DALZ,  !! Reparatur andersartig mangelhaft
+      DAMA,  !! Vertikale Schweissnaht mangelhaft 
+      DAMB,  !! Horizontale Schweissnaht mangelhaft 
+      DAMC,  !! Schweissnaht mit spiralförmigem Verlauf mangelhaft 
+      DAN,  !! Schachtwand porös
+      DAO,  !! anstehender Boden sichtbar 
+      DAP,  !! Hohlraum sichtbar 
+      DAQA,  !! Steighilfe locker
+      DAQB,  !! Steighilfe fehlt
+      DAQC,  !! Steighilfe korrodiert
+      DAQD,  !! Steighilfe verbogen
+      DAQE,  !! Steighilfe Kunststoffverkleidung gebrochen
+      DAQF,  !! 'Steighilfe Handlauf korrodiert
+      DAQG,  !! Absturzsicherung locker
+      DAQH,  !! Absturzsicherung fehlt 
+      DAQI,  !! Absturzsicherung korrodiert
+      DAQJ,  !! Leitersprossen korrodiert
+      DAQK,  !! Steigkasten schadhaft
+      DAQZ,  !! Steighilfe andersweitig schadhaft
+      DARA,  !! Deckel gebrochen 
+      DARB,  !! Deckel wackelt
+      DARC,  !! Deckel fehlt
+      DARD,  !! Rahmen gebrochen
+      DARE,  !! Rahmen locker
+      DARF,  !! Rahmen fehlt
+      DARG,  !! Abdeckung zu tief
+      DARH,  !! Abdeckung zu hoch 
+      DARZ,  !! Abdeckung andersweitig schadhaft
+      DBAA,  !! Pfahlwurzel
+      DBAB,  !! Einzelner, feiner Wurzeleinwuchs
+      DBAC,  !! Komplexes Wurzelwerk
+      DBBA,  !! Inkrustation (verkalkt)
+      DBBB,  !! Fett
+      DBBC,  !! Fäulnis
+      DBBZ,  !! Andersartige anhaftende Stoffe
+      DBCA,  !! Lose Ablagerungen, Sand
+      DBCB,  !! Lose Ablagerungen, Kies
+      DBCC,  !! Harte Ablagerungen
+      DBCZ,  !! Andersartige Ablagerungen
+      DBD,  !! Bodenmaterial dringt ein
+      DBEA,  !! Abflusshindernis: Herausgefallener Mauer- oder Backstein
+      DBEB,  !! Abflusshindernis: Herausgebrochenes Leitungsstück
+      DBEC,  !! Abflusshindernis
+      DBED,  !! Gegenstand ragt durch die Wand ein
+      DBEE,  !! Gegenstand ist in der Schachtelementverbindung eingeklemmt
+      DBEF,  !! Gegenstand ragt aus Anschluss
+      DBEG,  !! Fremde Werkleitungen oder Kabel durchqueren den Schacht
+      DBEH,  !! Gegenstand ist in den Schacht eingebaut
+      DBEZ,  !! Andersartiges Hindernis
+      DBFAA,  !! Infiltration: Schwitzen / Verkalkung an der Schachtwand
+      DBFAB,  !! Infiltration: Schwitzen / Verkalkung der Einbindung eines Anschluss im Sohlbereich 
+      DBFAC,  !! Infiltration: Schwitzen / Verkalkung der Einbindung eines Anschluss oberhalb des Banketts
+      DBFBA,  !! Infiltration: Wasser tropft aus der Schachtwand
+      DBFBB,  !! Infiltration: Wasser tropft aus der Einbindung eines Anschluss im Sohlbereich
+      DBFBC,  !! Infiltration: Wasser tropft aus der Einbindung eines Anschluss oberhalb des Banketts
+      DBFCA,  !! Infiltration: Wasser fliesst aus der Schachtwand
+      DBFCB,  !! Infiltration: Wasser fliesst aus der Einbindung eines Anschluss im Sohlbereich
+      DBFCC,  !! Infiltration: Wasser fliesst aus der Einbindung eines Anschluss oberhalb des Banketts
+      DBFDA,  !! Infiltration: Wasser spritzt aus der Schachtwand
+      DBFDB,  !! Infiltration: Wasser spritzt aus der Einbindung eines Anschluss im Sohlbereich
+      DBFDC,  !! Infiltration: Wasser spritzt aus der Einbindung eines Anschluss oberhalb des Banketts
+      DBG,  !! Sichtbarer Wasseraustritt
+      DBHAA,  !! Ratte im Schacht
+      DBHAB,  !! Ratte im Anschluss
+      DBHAC,  !! Ratte in der offenen Schachtelementverbindung
+      DBHAZ,  !! Ratte
+      DBHBA,  !! Kakerlaken im Schacht
+      DBHBB,  !! Kakerlaken im Anschluss
+      DBHBC,  !! Kakerlaken in der offenen Schachtelementverbindung
+      DBHBZ,  !! Kakerlaken
+      DBHZA,  !! Tier im Schacht
+      DBHZB,  !! Tier im Anschluss
+      DBHZC,  !! Tier in der offenen Schachtelementverbindung
+      DBHZZ,  !! Tier
+      DCAA,  !! Anschluss mit Gerinne im Bankett
+      DCAB,  !! Anschluss in die Durchlaufrinne
+      DCAC,  !! Anschluss Schwanenhals
+      DCAD,  !! Anschluss Schwanenhals innenliegend
+      DCAE,  !! Anschluss mit Schussgerinne
+      DCAF,  !! Belüftungsrohr
+      DCAZ,  !! Anschluss 
+      DCBA,  !! Reparatur, Teil der Schachtwand ausgetauscht
+      DCBB,  !! Reparatur, örtlich begrenzte Innenauskleidung
+      DCBC,  !! Reparatur, Injizierung
+      DCBD,  !! Loch repariert
+      DCBE,  !! Reparatur, ortlich begrenzet Innenauskleidung des Anschlusses
+      DCBF,  !! Andersartige Reparatur des Anschlusses
+      DCBZ,  !! Andersartige Reparatur
+      DCFA,  !! <anderes Material> 
+      DCFB,  !! Asbestzement
+      DCFC,  !! Normalbeton
+      DCFD,  !! Ortsbeton
+      DCFE,  !! Pressrohrbeton
+      DCFF,  !! Spezialbeton
+      DCFG,  !! Beton
+      DCFH,  !! Faserzement
+      DCFI,  !! Gebrannte Steine
+      DCFJ,  !! Duktiler Guss
+      DCFK,  !! Grauguss
+      DCFL,  !! Epoxidharz
+      DCFM,  !! Hartpolyethylen
+      DCFN,  !! Polyester GUP
+      DCFO,  !! Polyethylen
+      DCFP,  !! Polypropylen
+      DCFQ,  !! Polyvinylchlorid
+      DCFR,  !! Kunststoff unbekannt
+      DCFS,  !! Stahl
+      DCFT,  !! Rostfreier Stahl
+      DCFU,  !! Steinzeug
+      DCFV,  !! Ton
+      DCFW,  !! unbekanntes Material
+      DCFX,  !! Zement
+      DCGAA,  !! Zulauf Kreisprofil
+      DCGAB,  !! Ablauf Kreisprofil
+      DCGAC,  !! Verschlossener Anschluss Kreisprofil
+      DCGBA,  !! Zulauf Rechteckprofil
+      DCGBB,  !! Ablauf Rechteckprofil
+      DCGBC,  !! Verschlossener Anschluss Rechteckprofil
+      DCGCA,  !! Zulauf Eiprofil
+      DCGCB,  !! Ablauf Eiprofil
+      DCGCC,  !! Verschlossener Anschluss Eiprofil
+      DCGXA,  !! Zulauf  Spezialprofil (ungültig: Ersatz DCGXAA)
+      DCGXAA,  !! Zulauf  Spezialprofil
+      DCGXAB,  !! Ablauf  Spezialprofil
+      DCGXAC,  !! Verschlossener Anschluss Spezialprofil
+      DCGXB,  !! Ablauf  Spezialprofil (ungültig: Ersatz DCGXAB)
+      DCGXBA,  !! Zulauf  Maulprofil
+      DCGXBB,  !! Ablauf  Maulprofil
+      DCGXBC,  !! Verschlossener Anschluss Maulprofil
+      DCGXC,  !! Verschlossener Anschluss Spezialprofil (ungültig: Ersatz DCGXAC)
+      DCGXCA,  !! Zulauf  offenes Profil
+      DCGXCB,  !! Ablauf  offenes Profil
+      DCGXCC,  !! Verschlossener Anschluss offenes Profil
+      DCGYA,  !! Zulauf  Profil unbekannt
+      DCGYB,  !! Ablauf  Profil unbekannt
+      DCGYC,  !! Verschlossener Anschluss Profil unbekannt
+      DCGZA,  !! Zulauf anderes Profil
+      DCGZB,  !! Ablauf anderes Profil
+      DCGZC,  !! Verschlossener Anschluss anderes Profil
+      DCHA,  !! Bankett mangelhaft
+      DCHAA,  !! A Bankett fehlt (ungültig: Ersatz DCHC)
+      DCHAB,  !! B Bankett zu niedrig (ungültig: Ersatz DCHA)
+      DCHB,  !! Bakett nicht mangelhaft
+      DCHC,  !! Kein Bankett
+      DCIA,  !! Durchlaufrinne mangelhaft (ungültig: Ersatz DCIAZ)
+      DCIAA,  !! Durchlaufrinne mangelhaft, in Fliessrichtung verengt
+      DCIAB,  !! Durchlaufrinne mangelhaft, in Fliessrichtung erweitert
+      DCIAC,  !! Durchlaufrinne mangelhaft, Hochpunkt
+      DCIAD,  !! Durchlaufrinne mangelhaft, Tiefpunkt
+      DCIAZ,  !! Durchlaufrinne mangelhaft
+      DCIB,  !! Durchlaufrinne
+      DCIBY,  !! Durchlaufrinne nicht mangelhaft
+      DCICY,  !! Keine Durchlaufrinne
+      DCLAA,  !!  Rohrdurchführung ohne Öffnungsmöglichkeit, schadhaft
+      DCLAB,  !!  Rohrdurchführung ohne Öffnungsmöglichkeit
+      DCLBA,  !!  Rohrdurchführung mit Öffnungsmöglichkeit, schadhaft
+      DCLBB,  !!  Rohrdurchführung mit Öffnungsmöglichkeit
+      DCLCA,  !!  Rohrdurchführung mit Öffnungsmöglichkeit, Verschluss fehlt, schadhaft
+      DCLCB,  !!  Rohrdurchführung mit Öffnungsmöglichkeit, Verschluss fehlt
+      DCMA,  !! Schlammeimer vorhanden
+      DCMB,  !! Schlammeimer fehlt
+      DCMC,  !! Schlammeimer defekt
+      DDA,  !! Allgemeinzustand, Fotobeispiel
+      DDB,  !!     <kein Text>
+      DDCA,  !! Untersuch nicht möglich: Deckel kann nicht geöffnet werden (ungültig: Ersatz DDCAZ)
+      DDCAB,  !! Inspektion nicht möglich: Deckel kann nicht geöffnet werden, Auftraggeber verzichtet auf weitere Inspektion
+      DDCAZ,  !! Inspektion nicht möglich: Deckel kann nicht geöffnet werden
+      DDCB,  !! Untersuch nicht möglich: Hindernis (ungültig: Ersatz DDCBZ)
+      DDCBA,  !! Inspektion nicht vollständig: Hindernis, Inspektionsziel erreicht
+      DDCBB,  !! Inspektion nicht vollständig: Hindernis, Auftraggeber verzichtet auf weitere Inspektion
+      DDCBZ,  !! Inspektion nicht vollständig: Hindernis
+      DDCC,  !! Untersuch nicht möglich: Hoher Wasserstand (ungültig: Ersatz DDCCZ)
+      DDCCA,  !! Inspektion nicht vollständig: Hoher Wasserstand, Inspektionsziel erreicht
+      DDCCB,  !! Inspektion nicht vollständig: Hoher Wasserstand, Auftraggeber verzichtet auf weitere Inspektion
+      DDCCZ,  !! Inspektion nicht vollständig: Hoher Wasserstand
+      DDCD,  !! Untersuch nicht möglich: Ausrüstung defekt (ungültig: Ersatz DDCDZ)
+      DDCDA,  !! Inspektion nicht vollständig:  Ausrüstung defekt, Inspektionsziel erreicht
+      DDCDB,  !! Inspektion nicht vollständig:  Ausrüstung defekt, Auftraggeber verzichtet auf weitere Inspektion
+      DDCDZ,  !! Inspektion nicht vollständig: Ausrüstung defekt
+      DDCZ,  !! Untersuch nicht möglich (ungültig: Ersatz DDCZZ)
+      DDCZA,  !! Inspektion nicht vollständig, Inspektionsziel erreicht
+      DDCZB,  !! Inspektion nicht vollständig, Auftraggeber verzichtet auf weitere Inspektion
+      DDCZZ,  !! Inspektion nicht vollständig
+      DDD,  !! Niveau Wasserspiegel
+      DDEAA,  !! Fehlanschluss, Abwasserzufluss klar, Schmutzabwasser fliesst in Regenabwasserleitung
+      DDEAB,  !! Fehlanschluss, Abwasserzufluss klar, Regenabwasser fliesst in Schmutzabwasserleitung 
+      DDEAC,  !! Abwasserzufluss klar
+      DDEBA,  !! Fehlanschluss, Abwasserzufluss trüb, Schmutzabwasser fliesst in Regenabwasserleitung (ungültig: Ersatz DDECA)
+      DDEBB,  !! Fehlanschluss, Abwasserzufluss trüb, Regenabwasser fliesst in Schmutzabwasserleitung (ungültig: Ersatz DDECA)
+      DDEBC,  !! Abwasserzufluss trüb (ungültig: Ersatz DDECC)
+      DDECA,  !! Fehlanschluss, Abwasserzufluss trüb, Schmutzabwasser fliesst in Regenabwasserleitung
+      DDECB,  !! Fehlanschluss, Abwasserzufluss trüb, Regenabwasser fliesst in Schmutzabwasserleitung 
+      DDECC,  !! Abwasserzufluss trüb
+      DDEDA,  !! Fehlanschluss, Abwasserzufluss gefärbt, Schmutzabwasser fliesst in Regenabwasserleitung
+      DDEDB,  !! Fehlanschluss, Abwasserzufluss gefärbt, Regenabwasser fliesst in Schmutzabwasserleitung 
+      DDEDC,  !! Abwasserzufluss gefärbt
+      DDEEA,  !! Fehlanschluss, Abwasserzufluss trüb und gefärbt, Schmutzabwasser fliesst in Regenabwasserleitung
+      DDEEB,  !! Fehlanschluss, Abwasserzufluss trüb und gefärbt, Regenabwasser fliesst in Schmutzabwasserleitung 
+      DDEEC,  !! Abwasserzufluss trüb und gefärbt
+      DDEYA,  !! Fehlanschluss, Schmutzabwasser fliesst in Regenabwasserleitung
+      DDEYB,  !! Fehlanschluss, Regenabwasser fliesst in Schmutzabwasserleitung
+      DDEYY,  !! Abwasserzufluss
+      DDFA,  !! Gefährdung vorhanden: Sauerstoffmangel
+      DDFB,  !! Gefährdung vorhanden: Schwefelwasserstoff
+      DDFC,  !! Gefährdung vorhanden: Methan
+      DDFZ,  !! Andersartige Gefährdung vorhanden
+      DDGA,  !! Keine Sicht, Kamera unter Wasser
+      DDGB,  !! Keine Sicht, Verschlammung
+      DDGC,  !! Keine Sicht, Dampf
+      DDGZ  !! Keine Sicht
+    );
+    SchadenlageAnfang: Ziffernblatt;  !! Lage am Umfang: Beginn des Schadens. Werte und Vorgehen sind unter Absatz 3.1.6 genau beschrieben.
+    SchadenlageEnde: Ziffernblatt;  !! Lage am Umfang: Ende des Schadens. Werte und Vorgehen sind unter Absatz 3.1.6 genau beschrieben.
+END Normschachtschaden;
+
+CLASS Datentraeger EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+!! Datenträger
+  ATTRIBUTE
+    Art: MANDATORY (          !! Beschreibt die Art des Datenträgers
+      andere,
+      CD,
+      Diskette,
+      DVD,
+      Festplatte,
+      Server,
+      Videoband
+    );
+    Bemerkung: TEXT*80;  !! Bemerkungen zum Datenträger
+    Bezeichnung: MANDATORY TEXT*60;  !! Name des Datenträgers. Bei elektronischen Datenträgern normalerweise das Volume-Label. Bei einem Server der Servername. Bei analogen Videobändern die Bandnummer.
+    Pfad: TEXT*100;  !! Zugriffspfad zum Datenträger. z.B. DVD-Laufwerk -> D: , Server -> //server/videos, Harddisk -> c:/videos . Kann auch eine URL sein. Bei einem analogen Videoband leer
+    Standort: TEXT*50;  !! Ort, wo sich der Datenträger befindet
+END Datentraeger;
+
+CLASS Datei EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+!! Die Klasse Datei kann eine Assoziation mit jeder Klasse des VSA-DSS Datenmodells eingehen.
+  ATTRIBUTE
+    Art: MANDATORY (          !! Beschreibt die Art der Datei. Für analoge Videos auf Bändern ist der Typ "Video" einzusetzen. Die Bezeichnung wird dann gleich gesetzt wie die Bezeichnung des Videobandes.
+      andere,
+      digitales_Video,
+      Foto,
+      Panoramofilm,
+      Scan,
+      Skizze,
+      Textdatei,
+      Video
+    );
+    Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
+    Bezeichnung: MANDATORY TEXT*60;  !! Name der Datei mit Dateiendung. Z.B video_01.mpg oder haltung_01.ipf
+    Klasse: MANDATORY (          !! Gibt an, zu welcher Klasse des VSA-DSS-Datenmodells die Datei gehört. Grundsätzlich alle Klassen möglich. Im Rahmen der Kanalfernsehaufnahmen hauptsächlich Kanal, Normschachtschaden, Kanalschaden und Untersuchung.
+      Abflusslose_Toilette,  !! Abflusslose Toilette
+      AbflussloseEntsorgung,
+      Absperr_Drosselorgan,
+      Abwasserbauwerk,
+      Abwasserbehandlung,
+      Abwasserknoten,
+      Abwassernetzelement,
+      Abwasserreinigungsanlage,
+      Abwasserverband,
+      Amt,
+      Anschlussobjekt,
+      ARABauwerk,
+      ARAEnergienutzung,
+      Badestelle,
+      Bankett,
+      BauwerksTeil,
+      Beckenentleerung,
+      Beckenreinigung,
+      Biol_oekol_Gesamtbeurteilung,
+      Brunnen,
+      Datei,
+      Datentraeger,
+      Deckel,
+      Durchlass,
+      Einleitstelle,
+      Einstiegshilfe,
+      Einzelflaeche,
+      Einzugsgebiet,
+      ElektrischeEinrichtung,
+      ElektromechanischeAusruestung,
+      Entsorgung,
+      EntsorgungMitAbfluss,
+      Entwaesserungssystem,
+      Erhaltungsereignis,
+      Feststoffrueckhalt,
+      Fischpass,
+      Fliessgewaesser,
+      FoerderAggregat,
+      Furt,
+      Gebaeude,
+      Gebaeudegruppe,
+      Gebaeudegruppe_BAUGWR,
+      Gefahrenquelle,
+      Gemeinde,
+      Genossenschaft_Korporation,
+      Gesamteinzugsgebiet,
+      Geschiebesperre,
+      Gewaesserabschnitt,
+      GewaesserAbsturz,
+      Gewaesserschutzbereich,
+      Gewaessersektor,
+      Gewaessersohle,
+      Gewaesserverbauung,
+      GewaesserWehr,
+      Grundwasserleiter,
+      Grundwasserschutzareal,
+      Grundwasserschutzzone,
+      Haltung,
+      Haltungspunkt,
+      HQ_Relation,
+      Hydr_Geometrie,
+      Hydr_GeomRelation,
+      Hydr_Kennwerte,
+      Kanal,
+      Kanalschaden,
+      Kanton,
+      KLARA,
+      Landwirtschaftsbetrieb,
+      Leapingwehr,
+      Massnahme,
+      MechanischeVorreinigung,
+      Messgeraet,
+      Messreihe,
+      Messresultat,
+      Messstelle,
+      Normschacht,
+      Normschachtschaden,
+      Oberflaechenabflussparameter,
+      Oberflaechengewaesser,
+      Organisation,
+      Planungszone,
+      Privat,
+      Reinigungseinrichtung,
+      Reservoir,
+      Retentionskoerper,
+      Rohrprofil,
+      Rohrprofil_Geometrie,
+      Rueckstausicherung,
+      Schaden,
+      Schlammbehandlung,
+      Schleuse,
+      See,
+      Sohlrampe,
+      Spezialbauwerk,
+      Spuelstutzen,
+      Stammkarte,
+      Steuerungszentrale,
+      Stoff,
+      Streichwehr,
+      Trockenwetterfallrohr,
+      Trockenwetterrinne,
+      Ueberlauf,
+      Ueberlaufcharakteristik,
+      Ufer,
+      Unfall,
+      Untersuchung,
+      Versickerungsanlage,
+      Versickerungsbereich,
+      Wasserfassung,
+      Zone
+    );
+    Objekt: MANDATORY TEXT*16;  !! Objekt-ID (OID) des Datensatzes zu dem die Datei gehört
+    Relativpfad: TEXT*200;  !! Zusätzlicher Relativer Pfad, wo die Datei auf dem Datenträger zu finden ist. Z.B. DVD_01.
+END Datei;
+
+ASSOCIATION Datei_DatentraegerAssoc =    !! Assoziation
+  DatentraegerRef  -- {1} Datentraeger;
+  Datei_DatentraegerAssocRef -- {0..*} Datei;
+END Datei_DatentraegerAssoc;
+
+
+!!@comment = "Ende des Topics / Fin du topic"
+END KEK;
+!!@comment = "Ende des Modells / Fin du modèle"
+END VSA_KEK_2019_LV95.
+

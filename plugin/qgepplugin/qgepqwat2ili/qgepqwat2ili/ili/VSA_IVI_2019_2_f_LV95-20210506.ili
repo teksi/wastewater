@@ -1,0 +1,1016 @@
+!! VSA_IVI_2015_2_f_LV95.ili
+!!  Elargissement de SIA 405 Eaux usées avec le modèle pour "Inspection visuelle des installations d'évacuation des eaux" (VSA-)
+!!  http://dss.vsa.ch
+
+INTERLIS 2.3;
+
+MODEL VSA_IVI_2019_LV95 (fr) AT "http://www.vsa.ch/models"
+  VERSION "06.05.2021" TRANSLATION OF VSA_KEK_2019_LV95 [ "16.04.2021" ] = 
+
+  IMPORTS UNQUALIFIED INTERLIS;
+  IMPORTS Units;
+  IMPORTS Base_f_LV95;
+  IMPORTS SIA405_Base_f_LV95;
+  IMPORTS SIA405_EAUX_USEES_2015_LV95;
+
+!! Copyright 2002 - 2021
+!! Association suisse des professionnels de la protection des eaux (VSA), Zürich
+!! www.vsa.ch
+!! en cooperation avec Société suisse des ingénieurs et architectes (sia), Zurich
+!! L'utilisation de ce fichier modèle INTERLIS a besoin une licence!
+
+!! Les fichiers modèles originaux VSA_IVI_2019_2_f_LV95.ili et les versions 
+!! modifiées à partir de ceux-ci ne peuvent pas être revendus.
+!! La distribution du fichier original (comme tout ou une partie de celui-ci) 
+!! n'est permise qu'avec l'achat d'une licence du VSA par le destinataire.
+
+
+!! libéré pour utilisation publique et application commerciale avec la licence.
+!!  Fichier modèle INTERLIS examiné avec Compiler INTERLIS Version 5.2.2 (30.04.2021)
+!! Sachbearbeiter: Stefan Burckhardt / SIA 405 Kommission
+
+UNIT
+
+STRUCTURE Releve_compteur_video =
+   SUBDIVISION Hours: 0 .. 23 CIRCULAR [h];
+   CONTINUOUS SUBDIVISION Minutes: 0 .. 59 CIRCULAR [min];
+   CONTINUOUS SUBDIVISION Seconds: 0 .. 59 CIRCULAR [INTERLIS.s];
+   CONTINUOUS SUBDIVISION Frames: 0 .. 24 CIRCULAR;
+END Releve_compteur_video;
+
+DOMAIN XMLReleve_compteur_video = FORMAT BASED ON Releve_compteur_video ( Hours ":" Minutes ":" Seconds ":" Frames );  !! [hh:mm:ss:ff]
+
+TOPIC IVI EXTENDS SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees =
+
+DOMAIN
+
+QuantificationCanalisation = 0 .. 100000;    !! [mm] ou [%], dependant du code EN
+
+Access_relatif = TEXT*200;    !! 
+
+Chemin_access = TEXT*100;    !! 
+
+Commentaire = TEXT*100;    !! 
+
+Parametres_projection = TEXT*200;    !! Paramètres de projection spéciaux pour le positionnement à l’intérieur d’un fichier film
+!! XML Tags dependant du système de XXX
+
+Designation_longue = TEXT*60;    !! 
+
+Quantification_chambre = TEXT*20;    !! variable, dependant du code EN
+
+Dommage_troncons = TEXT*3;    !! Codes pour le début et la fin d’un dommage tronçons
+
+
+CLASS EVENEMENT_MAINTENANCE (ABSTRACT) EXTENDS SIA405_Base_f_LV95.SIA405_BaseClass =  
+!! Evénement d'exploitation et d'entretien
+  ATTRIBUTE
+    GENRE: MANDATORY (          !! Genre d'événement
+      autres,
+      renouvellement,  !! Mise en place sur l’ancien tracé ou sur un nouveau de nouvelles canalisations d'eaux usées qui intègrent la fonction des anciennes (SN EN 752).
+      nettoyage,  !! Nettoyage ou vidange
+      renovation,  !! Mesures d’amélioration de la capacité fonctionnelle actuelle des canalisations d’eaux usées impliquant tout ou partie de leur substance originelle (SN EN 752). Dans des directives plus anciennes le terme "Assainissement" était utilisé.
+      reparation,  !! Mesures d’élimination de dommages d’étendue limitée (SN EN 752). Dans des directives plus anciennes  le terme "remise en état" était utilisé.
+      rehabilitation,  !! Toutes les mesures de remise en état ou d’amélioration des installations d’évacuation des eaux existantes. Ces mesures comprennent la réparation, la rénovation et le renouvellement (SN EN 752). Dans des directives plus anciennes le terme "conservation" était utilisé.
+      inconnu,
+      examen  !! Changement d’inspection (INSPECTION est un mot réservé en INTERLIS 2)
+    );
+    EXECUTANT: TEXT*50;  !! Responsable de saisie du bureau
+    REMARQUE: TEXT*80;  !! Remarques générales
+    DESIGNATION: MANDATORY TEXT*41;
+    BASE_INFORMATION: TEXT*50;  !! par ex. protocole de dommages
+    DUREE: 0 .. 10000 [Units.d];  !! Durée de l'événement en jours
+    DONNEES_DETAILLEES: TEXT*50;  !! Lieu où se trouvent les données détaillées (par ex. n° d'une bande vidéo);
+    RESULTAT: MTEXT*255;  !! Résultat ou commentaire importante de l'événement du point de vue de l'éditeur
+    CAUSES: TEXT*50;  !! xxx_Cause de l'événement. Folgende standartisierten Textvorgaben sind für VSA-KEK zu wernden: andere, Garantieabnahme, Neubauabnahme, Sanierungsabnahme, Zustandskontrolle
+    COUTS: 0.00 .. 99999999.99 [Units.CHF];
+    ETAT: (          !! Phase dans laquelle se trouve l'événement de maintenance
+      execute,
+      prevu,
+      impossible,  !! Si une inspection projetée n’a pu être réalisée
+      inconnu
+    );
+    DATE_HEURE: INTERLIS_1_DATE;  !! Date et heure de l'événement
+END EVENEMENT_MAINTENANCE;
+
+ASSOCIATION EVENEMENT_MAINTENANCE_OUVRAGE_RESEAU_ASAssoc =    !! Association
+  OUVRAGE_RESEAU_ASRef (EXTERNAL) -- {0..1} OUVRAGE_RESEAU_AS;
+  EVENEMENT_MAINTENANCE_OUVRAGE_RESEAU_ASAssocRef -- {0..*} EVENEMENT_MAINTENANCE;
+END EVENEMENT_MAINTENANCE_OUVRAGE_RESEAU_ASAssoc;
+
+ASSOCIATION EVENEMENT_MAINTENANCE_BUREAU_EXECUTANTAssoc =    !! Association
+  BUREAU_EXECUTANTRef (EXTERNAL) -- {0..1} SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.ORGANISATION;
+  EVENEMENT_MAINTENANCE_BUREAU_EXECUTANTAssocRef -- {0..*} EVENEMENT_MAINTENANCE;
+END EVENEMENT_MAINTENANCE_BUREAU_EXECUTANTAssoc;
+
+CLASS EXAMEN EXTENDS EVENEMENT_MAINTENANCE =  
+!! Enquêtes sur la télévision
+  ATTRIBUTE
+    DESIGNATION_POINT_VERS: TEXT*20;  !! Point (chambre ou noeud) d’où l’examen termine. Désignation du « point d’arrivée » (DESIGNATION_POINT_VERS) d’une examen comme elle figure sur le plan. Elle sert d’alternative à la clé externe OUVRAGE_RESEAU_AS lorsque la topologie n’est pas encore définie (saisie initiale). La DESIGNATION_POINT_VERS sera utilisée ultérieurement par l’hydraulicien pour la construction de la topologie du réseau. Cette valeur reste vide lors d’inspections de chambres.
+    TYPE_RELEVE: MANDATORY (          !! Technique de prise de vues, décrit le type de prise de vues
+      autre,
+      parcours,
+      mesure_deformation,
+      examen_etancheite,
+      georadar,
+      camera_canalisations,
+      inconnu
+    );
+    VEHICULE: TEXT*50;  !! Véhicule d’examen employé
+    APPAREIL: TEXT*50;  !! Appareil de prise de vues (caméra) employé
+    LONGUEUR_INSPECTEE: MANDATORY 0.00 .. 30000.00 [m];  !! Longueur totale examinée en mètres avec deux chiffres après la virgule
+    NUMERO_VIDEO: TEXT*20;  !! Pour les bandes vidéo figure ici le numéro de la bande (p. ex. 1/99) et, pour les supports de don-nées électroniques, sa désignation (p. ex. SG001). S’il n’existe qu’un fichier par examen, ce fichier est référencé par la classe Fichier et cet attribut peut être laissé vide.
+    DESIGNATION_POINT_DE: TEXT*20;  !! Point (chambre ou nœud) auquel l’examen commence. Désignation du « point départ » (DESIGNATION_POINT_DE) d’une examen comme elle figure sur le plan. Elle sert d’alternative à la clé externe POINT_TRONCON, lorsque la topologie n’est pas encore définie (saisie initiale). La DESIGNATION_POINT_DE sera utilisée ultérieurement par l’hydraulicien pour la construction de la topologie du réseau.
+    CONDITIONS_METEO: (          !! Conditions météorologiques pendant l’examen
+      couvert_pluvieux,
+      bruine,
+      pluie,
+      chute_neige,
+      beau_sec,
+      inconnu
+    );
+END EXAMEN;
+
+ASSOCIATION EXAMEN_POINT_TRONCONAssoc =    !! Association
+  POINT_TRONCONRef (EXTERNAL) -- {0..1} SIA405_EAUX_USEES_2015_LV95.SIA405_Eaux_usees.POINT_TRONCON;
+  EXAMEN_POINT_TRONCONAssocRef -- {0..*} EXAMEN;
+END EXAMEN_POINT_TRONCONAssoc;
+
+CLASS DOMMAGE (ABSTRACT) EXTENDS SIA405_Base_f_LV95.SIA405_BaseClass =  
+!! Cette classe est la classe de base de toutes les observations de dommages, tant de l’inspection visuelle de canalisations d’évacuation des eaux que de l’inspection de regards de visite.
+  ATTRIBUTE
+    COMMENTAIRES: TEXT*100;  !! Remarques libres concernant une observation
+    PARAMETRES_PROJECTION: TEXT*200;  !! Paramètres de projection spéciaux pour le positionnement à l’intérieur d’un fichier de film pour la technique vidéo scanner ou numérique.
+    CLASSE_DOMMAGE_UNIQUE: (          !! Définit la classe de dommages d’un dommage unique. La répartition en classes d’état (Z0-Z4) s’effectue sur la base de la nature et de l’étendue des dommages. Un ouvrage d'assainissement peut être classé directement ou chaque dommage peut d’abord être classé séparément. (A la fin, le dommage le plus important détermine le classement de l’ensemble de la canalisation (OUVRAGE_RESEAU_AS.ETAT_CONSTRUCTIF).
+      EZ0,
+      EZ1,
+      EZ2,
+      EZ3,
+      EZ4,
+      inconnu
+    );
+    DOMMAGE_TRONCONS: TEXT*3;  !! Codes pour le début et la fin d’un dommage à un tronçon. Indications exactes sous 2.1.2 resp. 3.1.2.
+    RACCORDEMENT: (          !! Indication d’une observation au niveau d’un assemblage (2.1.7) ou Observation entre deux éléments de regard de visite adjacents (3.1.7). Correspond dans la SN EN 13508 à oui = « A », non = vide
+      oui,
+      non
+    );
+    RELEVE_COMPTEUR_VIDEO: XMLReleve_compteur_video;  !! xxx_Zählerstand auf einem analogen Videoband oder in einer digitalen Videodatei, in Echtzeit
+END DOMMAGE;
+
+ASSOCIATION DOMMAGE_EXAMENAssoc =    !! Composition
+  EXAMENRef  -<#> {1} EXAMEN;
+  DOMMAGE_EXAMENAssocRef -- {0..*} DOMMAGE;
+END DOMMAGE_EXAMENAssoc;
+
+CLASS DOMMAGE_AUX_CANALISATIONS EXTENDS DOMMAGE =  
+!! Cette classe est déduite de la classe « Dommage », c.-à-d. qu’elle hérite tous les attributs de cette classe.
+  ATTRIBUTE
+    DISTANCE: MANDATORY 0.00 .. 30000.00 [m];  !! Longueur entre le début de la canalisation et l’observation (cf. paragraphe 2.1.1) en m avec deux chiffres après la virgule.
+    CODE_DOMMAGE_CANALISATIONS: MANDATORY (          !! Domaine de valeur prédéfini: Code valide sur la base de la SN EN 13508-2. Tous les codes valides sont mentionnés dans le chapitre 2 de la directive.
+      AECXA,  !! Modification de la section transversale de la canalisation
+      AECXB,  !! Modification de la section transversale de la canalisation: ovoïde
+      AECXC,  !! Modification de la section transversale de la canalisation: circulaire
+      AECXD,  !! Modification de la section transversale de la canalisation: fer à cheval
+      AECXE,  !! Modification de la section transversale de la canalisation: profil ouvert
+      AECXF,  !! Modification de la section transversale de la canalisation: rectangulaire
+      AECXG,  !! Modification de la section transversale de la canalisation: profil spéciale
+      AECXH,  !! Modification de la section transversale de la canalisation: profil inconnue
+      AEDXA,  !! Changement du matériau de la canalisation
+      AEDXB,  !! Changement du matériau de la canalisation: béton amianté
+      AEDXC,  !! Changement du matériau de la canalisation: béton normal
+      AEDXD,  !! Changement du matériau de la canalisation: béton local
+      AEDXE,  !! Changement du matériau de la canalisation: béton de tube de fonçage
+      AEDXF,  !! Changement du matériau de la canalisation: béton spécial
+      AEDXG,  !! Changement du matériau de la canalisation: béton
+      AEDXH,  !! Changement du matériau de la canalisation: fibrociment
+      AEDXI,  !! Changement du matériau de la canalisation: terre cuite
+      AEDXJ,  !! Changement du matériau de la canalisation: fonte ductile
+      AEDXK,  !! Changement du matériau de la canalisation: fonte grise
+      AEDXL,  !! Changement du matériau de la canalisation: résine époxyde
+      AEDXM,  !! Changement du matériau de la canalisation: polyéthylène dur
+      AEDXN,  !! Changement du matériau de la canalisation: polyester GUP
+      AEDXO,  !! Changement du matériau de la canalisation: polyéthylène
+      AEDXP,  !! Changement du matériau de la canalisation: polypropylène
+      AEDXQ,  !! Changement du matériau de la canalisation: chlorure de polyvinyle (PVC)
+      AEDXR,  !! Changement du matériau de la canalisation: plastique inconnu
+      AEDXS,  !! Changement du matériau de la canalisation: acier
+      AEDXT,  !! Changement du matériau de la canalisation: acier inoxydable
+      AEDXU,  !! Changement du matériau de la canalisation: grès céramique
+      AEDXV,  !! Changement du matériau de la canalisation: terre cuite
+      AEDXW,  !! Changement du matériau de la canalisation: matériau inconnu
+      AEDXX,  !! Changement du matériau de la canalisation: ciment
+      AEF,  !! Nouvelle longueur
+      BAAA,  !! Canalisation déformée verticalement
+      BAAB,  !! Canalisation déformée horizontalement
+      BABAA,  !! Fissure superficielle (micro-fissure) longitudinale
+      BABAB,  !! Fissure superficielle (micro-fissure) radiale
+      BABAC,  !! Fissure superficielle (micro-fissure), formation complexe de fissures
+      BABAD,  !! Fissure superficielle (micro-fissure), formation hélicoïdale de fissures
+      BABAE,  !! Fissure superficielle (microfissure), fissuration en étoile
+      BABBA,  !! Fissure longitudinale
+      BABBB,  !! Fissure radiale
+      BABBC,  !! Fissure, formation complexe de fissures
+      BABBD,  !! Fissure, formation hélicoïdale de fissures
+      BABBE,  !! Fissure, fissuration en étoile
+      BABCA,  !! Fissure béante, longitudinale
+      BABCB,  !! Fissure béante, radiale
+      BABCC,  !! Fissure béante, formation complexe de fissures
+      BABCD,  !! Fissure béante, formation hélicoïdale de fissures
+      BABCE,  !! Fissure béante, fissuration en étoile
+      BACA,  !! Formation d’éclats
+      BACB,  !! Éclat / partie de paroi manquants (trou)
+      BACC,  !! Rupture / effondrement
+      BADA,  !! Maçonnerie défectueuse, briques ou éléments de maçonnerie déplacés
+      BADB,  !! Maçonnerie défectueuse, briques ou éléments de maçonnerie manquants
+      BADC,  !! Maçonnerie défectueuse, radier affaissé
+      BADD,  !! Maçonnerie défectueuse, effondrement
+      BAE,  !! Tout ou partie du mortier de la maçonnerie est manquant(e)
+      BAFAA,  !! Paroi de la canalisation rugueuse par dégradation mécanique
+      BAFAB,  !! Paroi de la canalisation rugueuse par attaque chimique
+      BAFAC,  !! Paroi de la canalisation rugueuse par attaque chimique sur la partie supérieure du tuyau
+      BAFAD,  !! Paroi de la canalisation rugueuse par attaque chimique sur la partie inférieure du tuyau
+      BAFAE,  !! Paroi de la canalisation rugueuse, cause pas clairement identifiable
+      BAFAZ,  !! Paroi de la canalisation rugueuse, autre cause
+      BAFBA,  !! Écaillage par dégradation mécanique
+      BAFBE,  !! Écaillage, cause pas clairement identifiable
+      BAFBZ,  !! Écaillage, autre cause 
+      BAFCA,  !! Agrégats visibles par dégradation mécanique
+      BAFCB,  !! Agrégats visibles par attaque chimique
+      BAFCC,  !! Agrégats visibles par attaque chimique sur la partie supérieure du tuyau
+      BAFCD,  !! Agrégats visibles par attaque chimique sur la partie inférieure du tuyau
+      BAFCE,  !! Agrégats visibles, cause pas clairement identifiable
+      BAFCZ,  !! Agrégats visibles, autre cause 
+      BAFDA,  !! Agrégats intrusifs en raison de dommages mécaniques
+      BAFDB,  !! Agrégats intrusifs par attaque chimique
+      BAFDC,  !! Agrégats intrusifs par attaque chimique sur la partie supérieure du tuyau
+      BAFDD,  !! Agrégats intrusifs par attaque chimique sur la partie inférieure du tuyau
+      BAFDE,  !! Agrégats intrusifs, cause pas clairement identifiable
+      BAFDZ,  !! Agrégats intrusifs, autre cause
+      BAFEA,  !! Agrégats  manquants par dégradation mécanique
+      BAFEB,  !! Agrégats  manquants par attaque chimique
+      BAFEC,  !! Agrégats manquants par attaque chimique sur la partie supérieure du tuyau
+      BAFED,  !! Agrégats manquants par attaque chimique sur la partie inférieure du tuyau
+      BAFEE,  !! Agrégats manquants, cause pas clairement identifiable
+      BAFEZ,  !! Agrégats manquants, autre cause 
+      BAFFA,  !! Armature visible par dégradation mécanique
+      BAFFB,  !! Armature visible par attaque chimique
+      BAFFC,  !! Armature visible par attaque chimique sur la partie supérieure du tuyau
+      BAFFD,  !! Armature visible par attaque chimique sur la partie inférieure du tuyau
+      BAFFE,  !! Armature visible, cause pas clairement identifiable
+      BAFFZ,  !! Armature visible, autre cause 
+      BAFGA,  !! Armature dépassant de la surface par dégradation mécanique
+      BAFGB,  !! Armature dépassant de la surface par attaque chimique
+      BAFGC,  !! Armature dépassant de la surface par attaque chimique sur la partie supérieure du tuyau
+      BAFGD,  !! Armature dépassant de la surface par attaque chimique sur la partie inférieure du tuyau
+      BAFGE,  !! Armature dépassant de la surface, cause pas clairement identifiable
+      BAFGZ,  !! Armature dépassant de la surface, autre cause 
+      BAFHB,  !! Armature corrodée par attaque chimique
+      BAFHC,  !! Armature corrodée par attaque chimique sur la partie supérieure du tuyau
+      BAFHD,  !! Armature corrodée par attaque chimique sur la partie inférieure du tuyau
+      BAFHE,  !! Armature corrodée, cause pas clairement identifiable
+      BAFIA,  !! Paroi manquante par dégradation mécanique
+      BAFIB,  !! Paroi manquante par attaque chimique
+      BAFIC,  !! Paroi manquante par attaque chimique sur la partie supérieure du tuyau
+      BAFID,  !! Paroi manquante par attaquechimique sur la partie inférieure du tuyau
+      BAFIE,  !! Paroi manquante, cause pas clairement identifiable
+      BAFIZ,  !! Paroi manquante, autre cause 
+      BAFJB,  !! Paroi corrodée par attaque chimique
+      BAFJC,  !! Paroi corrodée par attaque chimique sur la partie supérieure du tuyau
+      BAFJD,  !! Paroi corrodée par attaque chimique sur la partie inférieure du tuyau
+      BAFJE,  !! Paroi corrodée, cause pas clairement identifiable
+      BAFJZ,  !! Paroi corrodée, autre cause
+      BAFKA,  !! Bosse par dégradation mécanique
+      BAFKE,  !! Bosse, cause pas clairement identifiable
+      BAFKZ,  !! Boss, autre cause 
+      BAFZA,  !! Dégradation de surface par dégradation mécanique
+      BAFZB,  !! Dégradation de surface par attaque chimique
+      BAFZC,  !! Dégradation de surface par attaque chimique sur la partie supérieure du tuyau 
+      BAFZD,  !! Dégradation de surface par attaque chimique sur la partie inférieure du tuyau
+      BAFZE,  !! Dégradation de surface, cause pas clairement identifiable 
+      BAFZZ,  !! Dégradation de surface, autre cause 
+      BAGA,  !! Branchement pénétrant
+      BAHA,  !! Raccordement à position incorrecte
+      BAHB,  !! Raccordement en retrait
+      BAHC,  !! Raccordement incomplet
+      BAHD,  !! Raccordement endommagé
+      BAHE,  !! Raccordement obstrué
+      BAHZ,  !! Raccordement défectueux
+      BAIAA,  !! Joint d’étanchéité déplacé
+      BAIAB,  !! Joint d’étanchéité saillant, mais non rompu, point le plus bas au-dessus du milieu de la canalisation
+      BAIAC,  !! Joint d’étanchéité saillant, mais non rompu, point le plus bas au-dessous du milieu de la canalisation
+      BAIAD,  !! Joint d’étanchéité rompu
+      BAIZ,  !! Joint d’étanchéité apparent
+      BAJA,  !! Assemblage déboîté
+      BAJB,  !! Assemblage déplacé
+      BAJC,  !! Assemblage dévié
+      BAKA,  !! Revêtement détaché
+      BAKB,  !! Revêtement décoloré
+      BAKC,  !! Extrémité du revêtement défectueuse
+      BAKDA,  !! Revêtement ondulé longitudinalement
+      BAKDB,  !! Revêtement ondulé radialement
+      BAKDC,  !! Revêtement ondulé de façon complexe
+      BAKDD,  !! Revêtement ondulé en forme de spirale
+      BAKE,  !! Bulles/bosses dans la doublure intérieure
+      BAKF,  !! Bosse de la doublure intérieure vers l’extérieur
+      BAKG,  !! Décollement de la peau intérieure/du revêtement
+      BAKH,  !! Dégradation de la couture de connexion
+      BAKI,  !! Fissure ou espace dans la doublure intérieure (y compris la soudure défectueuse)
+      BAKJ,  !! Trou dans la doublure intérieure
+      BAKK,  !! Connexion de la doublure défectueuse
+      BAKL,  !! Le matériau de la doublure semble mou
+      BAKM,  !! La résine manque dans le stratifié
+      BAKN,  !! La fin de la doublure n’est pas scellée
+      BAKZ,  !! Revêtement intérieur défectueux 
+      BALA,  !! Réparation défectueuse, paroi manquante
+      BALB,  !! Réparation d’un trou défectueuse
+      BALC,  !! Le matériau de réparation se désolidarise de l’ancien tuyau
+      BALD,  !! Le matériel de réparation est manquant à la surface de contact
+      BALE,  !! Matériel de réparation en excès, obstacle
+      BALF,  !! Trou dans le matériel de réparation
+      BALGA,  !! Fissure dans le matériau de réparation, longitudinal
+      BALGB,  !! Fissure dans le matériau de réparation, radial
+      BALGC,  !! Fissure dans le matériau de réparation, complexe
+      BALGD,  !! Fissure dans le matériau de réparation, en spirale
+      BALZ,  !! Autre réparation défectueuse
+      BAMA,  !! Défaut de soudage vertical
+      BAMB,  !! Défaut de soudage radial
+      BAMC,  !! Défaut de soudage hélicoïdal
+      BAN,  !! Conduite poreuse
+      BAO,  !! Sol visible
+      BAP,  !! Vide visible
+      BBAA,  !! Grosse racine isolée
+      BBAB,  !! Radicelles
+      BBAC,  !! Ensemble complexe de racines
+      BBBA,  !! Concrétions (calcifié)
+      BBBB,  !! Graisse
+      BBBC,  !! Encrassement
+      BBBZ,  !! Autres substances adhérentes
+      BBCA,  !! Dépôts lâches, sable
+      BBCB,  !! Dépôts lâches, gravier
+      BBCC,  !! Dépôts durs
+      BBCZ,  !! Autres dépôts 
+      BBDA,  !! Entrée de sable
+      BBDB,  !! Entrée d’humus
+      BBDC,  !! Entrée de matériau fin
+      BBDD,  !! Entrée de gravier
+      BBDZ,  !! Entrée de terre
+      BBEA,  !! Obstacle: briquetage ou élément de maçonnerie tombé
+      BBEB,  !! Obstacle: fragment de canalisation brisé
+      BBEC,  !! Objet gisant sur le radier
+      BBED,  !! Obstacle dépassant de la paroi
+      BBEE,  !! Obstacle coincé dans l’assemblage
+      BBEF,  !! Obstacle dépassant de l’assemblage dans la canalisation principale
+      BBEG,  !! Conduites externes ou câbles traversant la canalisation
+      BBEH,  !! Obstacle intégré à la structure
+      BBEZ,  !! Obstacle
+      BBFA,  !! Infiltration: suintement / entartrage
+      BBFB,  !! Infiltration: goutte à goutte
+      BBFC,  !! Infiltration: écoulement
+      BBFD,  !! Infiltration: jaillissement
+      BBG,  !! Fuite visible de la canalisation
+      BBHAA,  !! Rats dans la canalisation
+      BBHAB,  !! Rats dans le raccordement
+      BBHAC,  !! Rats dans l’assemblage ouvert
+      BBHAZ,  !! Rats
+      BBHBA,  !! Cafards dans la canalisation
+      BBHBB,  !! Cafards dans le raccordement
+      BBHBC,  !! Cafards dans l’assemblage ouvert
+      BBHBZ,  !! Cafards
+      BBHZA,  !! Animaux dans la canalisation
+      BBHZB,  !! Animaux dans le raccordement
+      BBHZC,  !! Animaux dans l’assemblage ouvert
+      BBHZZ,  !! Animaux
+      BCAAA,  !! Raccordement avec pièce préfabriquée
+      BCAAB,  !! Raccordement avec pièce préfabriquée fermée
+      BCABA,  !! Piquage latéral carotté
+      BCABB,  !! Piquage latéral carotté fermé
+      BCACA,  !! Piquage latéral buriné
+      BCACB,  !! Piquage latéral buriné fermé
+      BCADA,  !! Raccordement carotté
+      BCADB,  !! Raccordement carotté fermé
+      BCAEA,  !! Raccordement buriné
+      BCAEB,  !! Raccordement buriné fermé
+      BCAFA,  !! Raccord spécial
+      BCAFB,  !! Raccord spécial fermé
+      BCAGA,  !! Type de raccord inconnu
+      BCAGB,  !! Type de raccord inconnu fermé
+      BCAZA,  !! Raccordement autre
+      BCAZB,  !! Raccordement autre fermé
+      BCBA,  !! Réparation, remplacement de la canalisation
+      BCBB,  !! Réparation, revêtement intérieur localisé
+      BCBC,  !! Réparation, injection de mortier
+      BCBD,  !! Réparation, injection
+      BCBE,  !! Trou réparé
+      BCBF,  !! Réparation, revêtement intérieur du Raccordement localisé
+      BCBG,  !! Autre réparation du raccordement
+      BCBZ,  !! Autre réparation sans tranchée
+      BCCAA,  !! Courbure vers la gauche et vers le haut
+      BCCAB,  !! Courbure vers la gauche et vers le bas
+      BCCAY,  !! Courbure vers la gauche
+      BCCBA,  !! Courbure vers la droite et vers le haut
+      BCCBB,  !! Courbure vers la droite et vers le bas
+      BCCBY,  !! Courbure vers la droite
+      BCCYA,  !! Courbure vers le haut
+      BCCYB,  !! Courbure vers le bas
+      BCD,  !! Début de la canalisation
+      BCDXP,  !! Début de la mesure de distance
+      BCE,  !! Fin de la canalisation
+      BCEXP,  !! Fin de la mesure de distance
+      BDA,  !! Etat général, exemple de photo
+      BDB,  !!     <aucun texte>
+      BDBA,  !! A Début de l’examen avec une caméra (norme)
+      BDBB,  !! B Inspection possible seulement après nettoyage
+      BDBC,  !! C Inspection effectuée à une date ultérieure
+      BDBD,  !! D Objectif de l’inspection atteint (invalide: Substitut BDCZA)
+      BDBE,  !! E L’autorité responsable renonce à un autre examen (invalide: Substitut BDCZB)
+      BDBF,  !! F L’inspection se fait depuis l’autre côté
+      BDBG,  !! G Caméra non utilisable, regard de visite bloqué par un véhicule
+      BDBH,  !! H Caméra non utilisable, regard de visite non accessible
+      BDBI,  !! I Caméra non utilisable, regard de visite ne pouvant être ouvert
+      BDBJ,  !! J Caméra non utilisable
+      BDBK,  !! K Côté opposé atteint (invalide: Substitut BDCZC)
+      BDBL,  !! L Côté opposé non atteint (invalide: Substitut BDCZD)
+      BDBM,  !! M Inspection impossible depuis le côté opposé
+      BDCA,  !! Inspection abandonnée, obstruction (invalide: Substitut BDCAZ)
+      BDCAA,  !! Inspection abandonnée, obstruction, objectif d’inspection atteint
+      BDCAB,  !! Inspection abandonnée, obstruction, le client renonce à une inspection plus pous- sée
+      BDCAC,  !! Inspection abandonnée, obstruction, côté opposé atteint
+      BDCAD,  !! Inspection abandonnée, obstruction, côté opposé non atteint
+      BDCAE,  !! Inspection abandonnée, obstruction, pas clair si le côté opposé est atteint
+      BDCAZ,  !! Inspection abandonnée, obstruction
+      BDCB,  !! Inspection abandonnée, niveau d’eau trop élevé (invalide: Substitut BDCBZ)
+      BDCBA,  !! Inspection abandonnée, niveau d’eau trop élevé, objectif d’inspection atteint
+      BDCBB,  !! Inspection abandonnée, niveau d’eau trop élevé, le client renonce à une inspection plus poussée
+      BDCBC,  !! Inspection abandonnée, niveau d’eau trop élevé, côté opposé atteint
+      BDCBD,  !! Inspection abandonnée, niveau d’eau trop élevé, côté opposé non atteint
+      BDCBE,  !! Inspection abandonnée, niveau d’eau trop élevé, pas clair si le côté opposé est atteint
+      BDCBZ,  !! Inspection abandonnée, niveau d’eau trop élevé (plus de détails requis dans la note)
+      BDCC,  !! Inspection abandonnée, caméra défectueuse (invalide: Substitut BDCCZ)
+      BDCCA,  !! Inspection abandonnée, caméra défectueuse, objectif d’inspection atteint
+      BDCCB,  !! Inspection abandonnée, caméra défectueuse, le client renonce à une inspection plus poussée
+      BDCCC,  !! Inspection abandonnée, caméra défectueuse, côté opposé atteint
+      BDCCD,  !! Inspection abandonnée, caméra défectueuse, côté opposé non atteint
+      BDCCE,  !! Inspection abandonnée, caméra défectueuse, pas clair si le côté opposé est atteint
+      BDCCZ,  !! Inspection abandonnée, caméra défectueuse, (plus de détails requis dans la note)
+      BDCZ,  !! Inspection abandonnée (invalide: Substitut BDCZZ)
+      BDCZA,  !! Inspection abandonnée, autre raison ; (plus de détails requis dans la note)
+      BDCZB,  !! Inspection abandonnée, autre raison , le client s’abstient de toute autre inspec- tion, (plus de détails requis dans la note)
+      BDCZC,  !! Inspection abandonnée, autre raison, côté opposé atteint (plus de détails requis dans la note)
+      BDCZD,  !! Inspection abandonnée, autre raison, côté opposé non atteint (plus de détails requis dans la note)
+      BDCZE,  !! Inspection abandonnée, autre raison, pas clair si le côté opposé est atteint (plus de détails requis dans la note)
+      BDCZZ,  !! Inspection abandonnée, autre raison, (plus de détails requis dans la note)
+      BDDA,  !! Niveau d’eau, effluent clair
+      BDDB,  !! Niveau d’eau, effluent trouble (invalide: Substitut BDDC)
+      BDDC,  !! Niveau d’eau, effluent trouble
+      BDDD,  !! Niveau d’eau, effluent coloré
+      BDDE,  !! Niveau d’eau, effluent trouble et coloré
+      BDEAA,  !! Mauvais raccordement, arrivées d’eaux claires, des eaux usées se déversent dans les eaux pluviales
+      BDEAB,  !! Mauvais raccordement, arrivées d’eaux claires, des eaux pluviales se déversent dans les eaux usées
+      BDEAC,  !! Arrivées d’eaux claires
+      BDEBA,  !! Mauvais raccordement, arrivées d’eaux usées, des eaux usées se déversent dans les eaux pluviales (invalide: Substitut BDECA)
+      BDEBB,  !! Mauvais raccordement, arrivées d’eaux usées, des eaux pluviales se déversent dans les eaux usées (invalide: Substitut BDECB)
+      BDEBC,  !! Écoulement d’eaux usées (invalide: Substitut BDECC)
+      BDECA,  !! Mauvais raccordement, arrivées d’eaux troubles, des eaux usées se déversent dans les eaux pluviales
+      BDECB,  !! Mauvais raccordement, arrivées d’eaux troubles, des eaux pluviales se déversent dans les eaux usées
+      BDECC,  !! Arrivées d’eaux troubles
+      BDEDA,  !! Mauvais raccordement, arrivées d’eaux colorées, des eaux usées se déversent dans les eaux pluviales
+      BDEDB,  !! Mauvais raccordement, arrivées d’eaux colorées, des eaux pluviales se déversent dans les eaux usées
+      BDEDC,  !! Arrivées d’eaux troubles et colorées
+      BDEEA,  !! Mauvais raccordement, arrivées d’eaux troubles et colorées, des eaux usées se déversent dans les eaux pluviales
+      BDEEB,  !! Mauvais raccordement, arrivées d’eaux troubles et colorées, des eaux pluviales se déversent dans les eaux usées
+      BDEEC,  !! Arrivées d’eaux troubles et colorées
+      BDEYA,  !! Mauvais raccordement, des eaux usées se déversent dans les eaux pluviales
+      BDEYB,  !! Mauvais raccordement, les eaux de surface se déversent dans les eaux usées
+      BDEYY,  !! Arrivée d’eaux usées
+      BDFA,  !! Danger existant: manque d’oxygène
+      BDFB,  !! Danger existant: hydrogène sulfuré
+      BDFC,  !! Danger existant: méthane
+      BDFZ,  !! Autres Danger existant
+      BDGA,  !! Visibilité nulle, caméra sous l’eau
+      BDGB,  !! Visibilité nulle, envasement
+      BDGC,  !! Visibilité nulle, vapeur
+      BDGZ  !! Visibilité nulle, autre raison 
+    );
+    QUANTIFICATION1: 0 .. 100000;  !! Quantification 1 selon la SN EN 13508-2. Les entrées autorisées sont décrites dans les chapitres 2.3 - 2.6
+    QUANTIFICATION2: 0 .. 100000;  !! Quantification 2 selon la SN EN 13508. Les entrées autorisées sont décrites dans le chapitre 2.3 - 2.6
+    DEBUT_DOMMAGE: MANDATORY Cadran;  !! Emplacement circonférentiel: Début du dommage. Valeurs et procédure sont décrites en détail dans le paragraphe 2.1.6.
+    FIN_DOMMAGE: MANDATORY Cadran;  !! Emplacement circonférentiel: Fin du dommage. Valeurs et procédure sont décrites en détail dans le paragraphe 2.1.6.
+END DOMMAGE_AUX_CANALISATIONS;
+
+CLASS DOMMAGE_CHAMBRE_STANDARD EXTENDS DOMMAGE =  
+!! Cette classe est déduite de la classe « Dommage », c.-à-d. qu’elle reprend tous les attributs de cette classe.
+  ATTRIBUTE
+    DISTANCE: 0.00 .. 30000.00 [m];  !! Longueur entre le bord supérieur du couvercle et l’observation (cf. paragraphe 3.1.1) en m avec deux chiffres après la virgule.
+    QUANTIFICATION1: TEXT*20;  !! Quantification 1 selon la SN EN 13508. Les entrées autorisées sont décrites dans le chapitre 3.1.5. Type texte.
+    QUANTIFICATION2: TEXT*20;  !! Quantification 2 selon la SN EN 13508. Les entrées autorisées sont décrites dans le chapitre 3.1.5. Type texte
+    DOMAINE_REGARD_VISITE: (          !! Domaine où une observation est faite. Les valeurs sont décrites dans 3.1.9.
+      A,  !! A Tampon du regard et cadre
+      B,  !! B Col du regard de visite
+      D,  !! D Cône de réduction
+      F,  !! F Chambre
+      H,  !! H Banquette
+      I,  !! I Cunette
+      J  !! J Radier
+    );
+    CODE_DOMMAGE_CHAMBRE_STANDARD: MANDATORY (          !! Domaine de valeur prédéfini: Code valide sur la base de la SN EN 13508-2. Tous les codes valides sont mentionnés dans le chapitre 3 de la directive.
+      DAAA,  !! Déformation générale
+      DAAB,  !! Déformation localisée
+      DABAA,  !! Fissure superficielle (micro-fissure) verticale
+      DABAB,  !! Fissure superficielle (micro-fissure) horizontale
+      DABAC,  !! Fissure superficielle (micro-fissure), formation complexe de fissures
+      DABAD,  !! Fissure superficielle (micro-fissure), formation inclinée de fissures
+      DABAE,  !! Fissure superficielle (microfissure), fissuration en étoile
+      DABBA,  !! Fissure verticale
+      DABBB,  !! Fissure horizontale
+      DABBC,  !! Fissure, formation complexe de fissures
+      DABBD,  !! Fissure, formation inclinée de fissures
+      DABBE,  !! Fissure, fissuration en étoile
+      DABCA,  !! Fissure béante, verticale
+      DABCB,  !! Fissure béante, horizontale
+      DABCC,  !! Fissure béante, formation complexe de fissures
+      DABCD,  !! Fissure béante, formation inclinée de fissures
+      DABCE,  !! Fissure béante, fissuration en étoile
+      DACA,  !! Formation d’éclats
+      DACB,  !! Éclat / partie de paroi manquante
+      DACC,  !! Effondrement
+      DADA,  !! Maçonnerie défectueuse, briques ou éléments de maçonnerie déplacés
+      DADB,  !! Maçonnerie défectueuse, briques ou éléments de maçonnerie manquants
+      DADC,  !! Maçonnerie défectueuse, effondrement
+      DAE,  !! Tout ou partie du mortier de la maçonnerie est manquant(e)
+      DAFAA,  !! Paroi de la canalisation rugueuse par dégradation mécanique
+      DAFAB,  !! Paroi de la canalisation rugueuse par attaque chimique
+      DAFAC,  !! Paroi de la canalisation rugueuse par attaque chimique sur la partie supérieure du tuyau
+      DAFAD,  !! Paroi de la canalisation rugueuse par attaque chimique sur la partie inférieure du tuyau
+      DAFAE,  !! Paroi de la canalisation rugueuse, cause du dommage non définissable
+      DAFAZ,  !! Paroi de la canalisation rugueuse, autre cause, (plus de détails requis dans la note)
+      DAFBA,  !! Écaillage par dégradation mécanique
+      DAFBE,  !! Écaillage, cause du dommage non définissable
+      DAFBZ,  !! Écaillage, autre cause
+      DAFCA,  !! Agrégats visibles par dégradation mécanique
+      DAFCB,  !! Agrégats visibles par attaque chimique
+      DAFCC,  !! Agrégats visibles par attaque chimique sur la partie supérieure du tuyau
+      DAFCD,  !! Agrégats visibles par attaque chimique sur la partie inférieure du tuyau
+      DAFCE,  !! Agrégats visibles, cause du dommage non définissable
+      DAFCZ,  !! Agrégats visibles, autre cause
+      DAFDA,  !! Agrégats intrusifs par dégradation mécanique
+      DAFDB,  !! Agrégats intrusifs par attaque chimique
+      DAFDC,  !! Agrégats intrusifs par attaque chimique sur la partie supérieure du tuyau
+      DAFDD,  !! Agrégats intrusifs par attaque chimique sur la partie inférieure du tuyau
+      DAFDE,  !! Agrégats intrusifs, cause du dommage non définissable
+      DAFDZ,  !! Agrégats intrusifs, autre cause
+      DAFEA,  !! Granulats manquants par dégradation mécanique
+      DAFEB,  !! Agrégats manquants par attaque chimique
+      DAFEC,  !! Agrégats manquants par attaque chimique sur la partie supérieure du tuyau
+      DAFED,  !! Agrégats manquants par attaque chimique sur la partie inférieure du tuyau
+      DAFEE,  !! Agrégats manquants, cause du dommage non définissable
+      DAFEZ,  !! Agrégats manquants, autre cause 
+      DAFFA,  !! Armature visible par dégradation mécanique
+      DAFFB,  !! Armature visible par attaque chimique
+      DAFFC,  !! Armature visible par attaque chimique sur la partie supérieure du tuyau
+      DAFFD,  !! Armature visible par attaque chimique sur la partie inférieure du tuyau
+      DAFFE,  !! Armature visible, cause pas clairement identifiable
+      DAFFZ,  !! Armature visible, autre cause
+      DAFGA,  !! Armature dépassant de la surface par dégradation mécanique
+      DAFGB,  !! Armature dépassant de la surface par attaque chimique
+      DAFGC,  !! Armature dépassant de la surface par attaque chimique sur la partie supérieure du tuyau
+      DAFGD,  !! Armature dépassant de la surface par attaque chimique sur la partie inférieure du tuyau
+      DAFGE,  !! Armature dépassant de la surface, cause pas clairement identifiable
+      DAFGZ,  !! Armature dépassant de la surface, autre cause
+      DAFHB,  !! Armature corrodée par attaque chimique
+      DAFHC,  !! Armature corrodée par attaque chimique sur la partie supérieure du tuyau
+      DAFHD,  !! Armature corrodée par attaque chimique sur la partie inférieure du tuyau
+      DAFHE,  !! Armature corrodée, cause pas clairement identifiable
+      DAFIA,  !! Paroi manquante par dégradation mécanique
+      DAFIB,  !! Paroi manquante par attaque chimique
+      DAFIC,  !! Paroi manquante par attaque chimique sur la partie supérieure du tuyau
+      DAFID,  !! Paroi manquante par attaque chimique sur la partie inférieure du tuyau
+      DAFIE,  !! Paroi manquante, cause pas clairement identifiable
+      DAFIZ,  !! Paroi manquante, autre cause
+      DAFJB,  !! Corrosion par attaque chimique
+      DAFJC,  !! Corrosion par attaque chimique sur la partie supérieure du tuyau
+      DAFJD,  !! Corrosion par attaque chimique sur la partie inférieure du tuyau
+      DAFJE,  !! Corrosion, cause pas clairement identifiable
+      DAFJZ,  !! Corrosion, autre cause 
+      DAFKA,  !! Bosse due à des dommages mécaniques
+      DAFKE,  !! Bosse, cause pas clairement identifiable
+      DAFKZ,  !! Bosse, autre cause
+      DAFZA,  !! Autre dégradation de surface par dégradation mécanique
+      DAFZB,  !! Autre dégradation de surface par attaque chimique
+      DAFZC,  !! Autre dégradation de surface par attaque chimique sur la partie supérieure du tuyau
+      DAFZD,  !! Autre dégradation de surface par attaque chimique sur la partie inférieure du tuyau
+      DAFZE,  !! Autre dégradation de surface, cause pas clairement identifiable (plus de détails requis dans la note)
+      DAFZZ,  !! Autre dégradation de surface, autre cause
+      DAG,  !! Branchement pénétrant
+      DAHA,  !! Raccordement à position incorrecte
+      DAHB,  !! Raccordement en retrait
+      DAHC,  !! Raccordement incomplet ou non étanche
+      DAHD,  !! Raccordement endommagé
+      DAHE,  !! Raccordement obstrué
+      DAHZ,  !! Raccordement défectueux
+      DAIAA,  !! Joint d’étanchéité déplacé
+      DAIAB,  !! Joint d’étanchéité pendant, mais non rompu
+      DAIAC,  !! Joint d’étanchéité apparent, rompu
+      DAIZ,  !! Joint d’étanchéité apparent
+      DAJA,  !! Assemblage déboîté d’éléments du regard de visite
+      DAJB,  !! Elément du regard de visite déplacé
+      DAJC,  !! Eléments du regard de visite déviés
+      DAKA,  !! Revêtement détaché
+      DAKB,  !! Revêtement décoloré
+      DAKC,  !! Extrémité du revêtement défectueuse
+      DAKDA,  !! Revêtement ondulé verticalement
+      DAKDB,  !! Revêtement ondulé horizontalement
+      DAKDC,  !! Revêtement ondulé de façon complexe
+      DAKDD,  !! Revêtement ondulé en forme de spirale
+      DAKE,  !! Revêtement cloqué
+      DAKF,  !! Revêtement cloqué vers l’extérieur
+      DAKG,  !! Décollement de la peau intérieure / du revêtement
+      DAKH,  !! Décollement de la couture de connexion
+      DAKI,  !! Fissure ou espace dans la doublure intérieure (y compris la soudure défectueuse)
+      DAKJ,  !! Trou dans la doublure
+      DAKK,  !! Connexion de la doublure défectueuse
+      DAKL,  !! Le matériau de la doublure semble mou
+      DAKM,  !! La résine manque dans le stratifié
+      DAKN,  !! Fin de la doublure non scellée
+      DAKZ,  !! Revêtement défectueux
+      DALA,  !! Réparation défectueuse, paroi manquante
+      DALB,  !! Réparation d’un trou défectueuse
+      DALC,  !! Le matériau de réparation se décolle du mur
+      DALD,  !! Le matériau de réparation est manquant sur la surface de contact
+      DALE,  !! Excédent de matériel de réparation, obstacle
+      DALF,  !! Trou dans le matériau de réparation
+      DALG,  !! Fissure dans le matériau de réparation, longitudinal
+      DALZ,  !! Réparation défectueuse
+      DAMA,  !! Défaut de soudage vertical
+      DAMB,  !! Défaut de soudage horizontal
+      DAMC,  !! Défaut de soudage hélicoïdal
+      DAN,  !! Paroi du regard de visite poreuse
+      DAO,  !! Sol visible
+      DAP,  !! Vide visible
+      DAQA,  !! Échelon déboîté
+      DAQB,  !! Échelon manquant
+      DAQC,  !! Échelon corrodé
+      DAQD,  !! Échelon plié
+      DAQE,  !! Revêtement plastique de l'échelon brisé
+      DAQF,  !! Main-courante de l’échelle corrodée
+      DAQG,  !! Protection antichute déboîtée
+      DAQH,  !! Protection antichute manquante
+      DAQI,  !! Protection antichute corrodée
+      DAQJ,  !! Échelons d’échelle corrodés
+      DAQK,  !! Trou d'homme défectueux
+      DAQZ,  !! Échelle autrement défectueuse
+      DARA,  !! Couvercle cassé
+      DARB,  !! Couvercle oscillant
+      DARC,  !! Couvercle manquant
+      DARD,  !! Cadre brisé
+      DARE,  !! Cadre déboîté
+      DARF,  !! Cadre manquant
+      DARG,  !! Couvercle trop bas
+      DARH,  !! Couvercle trop haut
+      DARZ,  !! Couvercle défectueux
+      DBAA,  !! Grosse racine isolée
+      DBAB,  !! Radicelles
+      DBAC,  !! Ensemble complexe de racines
+      DBBA,  !! Concrétions (calcifié)
+      DBBB,  !! Graisse
+      DBBC,  !! Moisissement
+      DBBZ,  !! Autres substances adhérentes 
+      DBCA,  !! Dépôts lâches, sable
+      DBCB,  !! Dépôts lâches, gravier
+      DBCC,  !! Dépôts durs
+      DBCZ,  !! Autres Dépôts
+      DBD,  !! Entrée de terre
+      DBEA,  !! Obstacle à l’écoulement dans la cunette: briquetage ou élément de maçonnerie délogé
+      DBEB,  !! Obstacle à l’écoulement dans la cunette: fragment de canalisation brisé
+      DBEC,  !! Obstacle à l’écoulement dans la cunette
+      DBED,  !! Obstacle dépassant de la paroi
+      DBEE,  !! Obstacle coincé dans l’assemblage des éléments du regard
+      DBEF,  !! Obstacle dépassant du raccordement
+      DBEG,  !! Conduites externes ou câbles traversant le regard de visite
+      DBEH,  !! Obstacle intégré à la structure du regard
+      DBEZ,  !! Autres obstacle
+      DBFAA,  !! Infiltration: suintement / entartrage de la paroi du regard de visite
+      DBFAB,  !! Infiltration: suintement / entartrage de l’encastrement d’un raccordement au niveau du radier
+      DBFAC,  !! Infiltration: suintement / entartrage de l’encastrement d’un raccordement au-dessus de la banquette
+      DBFBA,  !! Infiltration: l’eau goutte de la paroi du regard de visite
+      DBFBB,  !! Infiltration: l’eau goutte de l’encastrement d’un raccordement au niveau du radier
+      DBFBC,  !! Infiltration: l’eau goutte de l’encastrement d’un raccordement au-dessus de la banquette
+      DBFCA,  !! Infiltration: l’eau s’écoule de la paroi du regard de visite
+      DBFCB,  !! Infiltration: l’eau s’écoule de l’encastrement d’un raccordement au niveau du radier
+      DBFCC,  !! Infiltration: l’eau s’écoule de l’encastrement d’un raccordement au-dessus de la banquette
+      DBFDA,  !! Infiltration: l’eau jaillit de la paroi du regard de visite
+      DBFDB,  !! Infiltration: l’eau jaillit de l’encastrement d’un raccordement au niveau du radier
+      DBFDC,  !! Infiltration: l’eau jaillit de l’encastrement d’un raccordement au-dessus de la banquette
+      DBG,  !! Fuite visible de la canalisation
+      DBHAA,  !! Rats dans le regard de visite
+      DBHAB,  !! Rats dans le raccordement
+      DBHAC,  !! Rats dans l’assemblage ouvert du regard de visite
+      DBHAZ,  !! Rats
+      DBHBA,  !! Cafards dans le regard de visite
+      DBHBB,  !! Cafards dans le raccordement
+      DBHBC,  !! Cafards dans l’assemblage ouvert du regard de visite
+      DBHBZ,  !! Cafards
+      DBHZA,  !! Animaux dans le regard de visite
+      DBHZB,  !! Animaux dans le raccordement
+      DBHZC,  !! Animaux dans l’assemblage ouvert du regard de visite
+      DBHZZ,  !! Animaux
+      DCAA,  !! Raccordement dans la banquette
+      DCAB,  !! Raccordement à la cunette
+      DCAC,  !! Raccordement au col de cygne
+      DCAD,  !! Raccordement au col de cygne interne
+      DCAE,  !! Raccordement incliné externe
+      DCAF,  !! Canalisation d’aération
+      DCAZ,  !! Raccordement
+      DCBA,  !! Réparation, partie de la paroi du regard de visite remplacée
+      DCBB,  !! Réparation, revêtement localisé
+      DCBC,  !! Réparation, injection
+      DCBD,  !! Trou réparé
+      DCBE,  !! Réparation, doublure du revêtement intérieur du raccordement localisé
+      DCBF,  !! Réparation autre du raccordement
+      DCBZ,  !! Réparation autre
+      DCFA,  !! <autre matériau>
+      DCFB,  !! Béton amianté
+      DCFC,  !! Béton normal
+      DCFD,  !! Béton frais
+      DCFE,  !! Béton de tube de fonçage
+      DCFF,  !! Béton spécial
+      DCFG,  !! Béton
+      DCFH,  !! Fibrociment
+      DCFI,  !! Terre cuites
+      DCFJ,  !! Fonte ductile
+      DCFK,  !! Fonte grise
+      DCFL,  !! Résine époxyde
+      DCFM,  !! Polyéthylène dur
+      DCFN,  !! Polyester GUP
+      DCFO,  !! Polyéthylène
+      DCFP,  !! Polypropylène
+      DCFQ,  !! Chlorure de polyvinyle (PVC)
+      DCFR,  !! Plastique inconnu
+      DCFS,  !! Acier
+      DCFT,  !! Acier inoxydable
+      DCFU,  !! Grès céramique
+      DCFV,  !! Argile
+      DCFW,  !! Matériau inconnu
+      DCFX,  !! Ciment
+      DCGAA,  !! Entrée de forme circulaire
+      DCGAB,  !! Sortie de forme circulaire
+      DCGAC,  !! Raccordement fermé de forme circulaire
+      DCGBA,  !! Entrée de forme rectangulaire
+      DCGBB,  !! Sortie de forme rectangulaire
+      DCGBC,  !! Raccordement fermé de forme rectangulaire
+      DCGCA,  !! Entrée de forme ovoïde
+      DCGCB,  !! Sortie ovoïde
+      DCGCC,  !! Raccordement fermé ovoïde
+      DCGXA,  !! Entrée de forme spéciale (invalide: Substitut DCGXAA)
+      DCGXAA,  !! Entrée de forme spéciale
+      DCGXAB,  !! Sortie de forme spéciale
+      DCGXAC,  !! Raccordement fermé de forme spéciale
+      DCGXB,  !! Sortie de forme spéciale (invalide: Substitut DCGXAB)
+      DCGXBA,  !! Entrée de forme fer à cheval
+      DCGXBB,  !! Sortie de forme fer à cheval
+      DCGXBC,  !! Raccordement fermé de forme fer à cheval
+      DCGXC,  !! Raccordement fermé de forme spéciale (invalide: Substitut DCGXAC)
+      DCGXCA,  !! Entrée de forme ouverte
+      DCGXCB,  !! Sortie de forme ouverte
+      DCGXCC,  !! Raccordement fermé de forme ouverte
+      DCGYA,  !! Entrée de forme inconnue
+      DCGYB,  !! Sortie de forme inconnue
+      DCGYC,  !! Raccordement fermé de forme inconnue
+      DCGZA,  !! Entrée d’une autre forme
+      DCGZB,  !! Sortie d’une autre forme
+      DCGZC,  !! Raccordement fermé d’une autre forme
+      DCHA,  !! Banquette défectueuse
+      DCHAA,  !! A Banquette absente (invalide: Substitut DCHC)
+      DCHAB,  !! B Banquette trop basse (invalide: Substitut DCHA)
+      DCHB,  !!  Banquette en état
+      DCHC,  !! Pas de banquette
+      DCIA,  !! Cunette défectueuse (invalide: Substitut DCIAZ)
+      DCIAA,  !! Cunette défectueuse, étranglement dans le sens de l’écoulement
+      DCIAB,  !! Cunette défectueuse, élargissement dans le sens de l’écoulement
+      DCIAC,  !! Cunette défectueuse, point haut
+      DCIAD,  !! Cunette défectueuse, point bas
+      DCIAZ,  !! Cunette défectueuse
+      DCIB,  !! Cunette
+      DCIBY,  !! Cunette non défectueux
+      DCICY,  !! Pas de cunette
+      DCLAA,  !! Canalisation fermée sans accès, défectueuse
+      DCLAB,  !! Canalisation fermée sans accès
+      DCLBA,  !! Canalisation fermée avec accès, défectueuse
+      DCLBB,  !! Canalisation fermée avec accès
+      DCLCA,  !! Canalisation fermée avec accès, fermeture manquant, défectueux
+      DCLCB,  !! Canalisation fermée avec accès, tampon manquant
+      DCMA,  !! sac à boues présent
+      DCMB,  !! sac à boues manquant
+      DCMC,  !! sac à boues défectueux
+      DDA,  !! Etat général, exemple de photo
+      DDB,  !!     <aucun texte>
+      DDCA,  !! Examen impossible: impossible d’ôter le tampon (invalide: Substitut DDCAZ)
+      DDCAB,  !! Examen incomplet: le couvercle ne peut pas être ouvert, le client renonce à une inspection supplémentaire
+      DDCAZ,  !! Examen incomplet: le couvercle ne peut pas être ouvert
+      DDCB,  !! Examen impossible: obstruction (invalide: Substitut DDCBZ)
+      DDCBA,  !! Examen incomplet: obstacle, cible d’inspection atteinte
+      DDCBB,  !! Examen incomplet: obstacle, le client renonce à une nouvelle inspection
+      DDCBZ,  !! Examen incomplet: obstacle
+      DDCC,  !! Examen impossible: niveau d’eau trop élevé (invalide: Substitut DDCCZ)
+      DDCCA,  !! Examen incomplet: niveau d’eau élevé, objectif d’inspection atteint
+      DDCCB,  !! Examen incomplet: niveau d’eau élevé, le client s’abstient de toute inspection ultérieure
+      DDCCZ,  !! Examen incomplet: niveau d’eau élevé
+      DDCD,  !! Examen impossible: équipement défectueux (invalide: Substitut DDCDZ)
+      DDCDA,  !! Examen incomplet: équipement défectueux, cible d’inspection atteinte
+      DDCDB,  !! Examen incomplet: équipement défectueux, le client renonce à une inspection supplémentaire
+      DDCDZ,  !! Examen incomplet: équipement défectueux
+      DDCZ,  !! Examen impossible (invalide: Substitut DDCZZ)
+      DDCZA,  !! Examen incomplet, objectif d’inspection atteint (plus de détails requis dans le commentaire)
+      DDCZB,  !! Examen incomplet, le client renonce à une inspection plus poussée (plus de détails requis dans le commentaire)
+      DDCZZ,  !! Examen incomplet
+      DDD,  !! Niveau d’eau
+      DDEAA,  !! Mauvais raccordement, arrivées d'eaux claires, des eaux usées se déversent dans une canalisation d’eaux pluviales
+      DDEAB,  !! Mauvais raccordement, arrivées d’eaux claires, des eaux pluviales se déversent dans une canalisation d’eaux usées
+      DDEAC,  !! Arrivées d’eaux claires
+      DDEBA,  !! Mauvais raccordement, arrivées d’eaux usées, des eaux usées se déversent dans une canalisation d’eaux pluviales (invalide: Substitut DDECA)
+      DDEBB,  !! Mauvais raccordement, arrivées d’eaux usées, les eaux pluviales se déversent dans une canalisation d’eaux usées (invalide: Substitut DDECA)
+      DDEBC,  !! Arrivées d’eaux usées (invalide: Substitut DDECC)
+      DDECA,  !! Mauvais raccordement, arrivées d’eaux troubles, eaux usées se déversant dans les eaux pluviales
+      DDECB,  !! Mauvais raccordement, arrivées d’eaux troubles, des eaux pluviales se trouvant dans les eaux usées
+      DDECC,  !! Arrivées d’eaux troubles
+      DDEDA,  !! Mauvais raccordement, arrivées d’eaux colorées, des eaux usées se déversant dans les eaux pluviales
+      DDEDB,  !! Mauvais raccordement, arrivées d’eaux colorées, des eaux pluviales dans les eaux usées
+      DDEDC,  !! Arrivées d’eaux colorées
+      DDEEA,  !! Mauvais raccordement, arrivées d’eaux troubles et colorées, des eaux usées se déversant dans les eaux pluviales
+      DDEEB,  !! Mauvais raccordement, arrivées d’eaux troubles et colorées, des eaux pluviales se déversant dans les eaux usées
+      DDEEC,  !! Arrivées d’eaux troubles et colorées
+      DDEYA,  !! Mauvais raccordement, des eaux usées se déversent dans une canalisation d’eaux pluviales
+      DDEYB,  !! Mauvais raccordement, des eaux pluviales se déversent dans une canalisation d’eaux usées
+      DDEYY,  !! Arrivées d’eaux usées
+      DDFA,  !! Danger existant: manque d’oxygène
+      DDFB,  !! Danger existant: hydrogène sulfuré
+      DDFC,  !! Danger existant: méthane
+      DDFZ,  !! Autres dangers présents 
+      DDGA,  !! Absence de visibilité, caméra sous l’eau
+      DDGB,  !! Absence de visibilité, vase
+      DDGC,  !! Absence de visibilité, vapeur
+      DDGZ  !! Absence de visibilité
+    );
+    DEBUT_DOMMAGE: Cadran;  !! Emplacement circonférentiel: Début du dommage. Valeurs et procédure sont décrites en détail dans le paragraphe 3.1.6.
+    FIN_DOMMAGE: Cadran;  !! Emplacement circonférentiel: Fin du dommage. Valeurs et procédure sont décrites en détail dans le paragraphe 3.1.6.
+END DOMMAGE_CHAMBRE_STANDARD;
+
+CLASS SUPPORT_DONNEES EXTENDS SIA405_Base_f_LV95.SIA405_BaseClass =  
+!! Support de données
+  ATTRIBUTE
+    GENRE: MANDATORY (          !! Décrit le genre de support de données
+      autre,
+      CD,
+      disquette,
+      DVD,
+      disque_dur,
+      serveur,
+      bande_video
+    );
+    REMARQUE: TEXT*80;  !! Remarques concernant le support de données
+    DESIGNATION: MANDATORY TEXT*60;  !! Nom du support de données. Pour les supports de données électroniques, normalement le label volume. Pour un serveur, le nom du serveur. Pour des bandes vidéo analogiques, les numéros de bandes.
+    CHEMIN_ACCES: TEXT*100;  !! Chemin d’accès au support de données, p. ex. lecteur DVD -> D: , - serveur -> //server/videos , disque dur -> c:/videos , Peut aussi être une URL. Pour une bande vidéo analogique: vide
+    EMPLACEMENT: TEXT*50;  !! Emplacement du support de données
+END SUPPORT_DONNEES;
+
+CLASS FICHIER EXTENDS SIA405_Base_f_LV95.SIA405_BaseClass =  
+!! La classe Fichier peut être associée avec chaque classe du modèle de données de VSA-SDEE.
+  ATTRIBUTE
+    GENRE: MANDATORY (          !! Décrit le type de fichier. Pour les vidéos analo-giques sur bandes, le type « vidéo » doit être entré. La désignation sera ensuite la même que celle de la bande vidéo.
+      autre,
+      video_numerique,
+      photo,
+      film_panoramique,
+      scan,
+      croquis,
+      fichier_texte,
+      video
+    );
+    REMARQUE: TEXT*80;  !! Remarques générales
+    DESIGNATION: MANDATORY TEXT*60;  !! Nom du fichier avec terminaison du fichier. P. ex. video_01.mpg ou canalisation_01.ipf
+    CLASSE: MANDATORY (          !! Indique à quelle classe du modèle de données de VSA-SDEE appartient le fichier. Toutes les classes sont possible. Surtout CANALISATION, DOMMAGE_CHAMBRE_STANDARD, DOMMAGE_CANALISATION, EXAMEN.
+      TOILETTE_SANS_VIDANGE,
+      EVACUATION_SANS_REJET,
+      LIMITEUR_DEBIT,
+      OUVRAGE_RESEAU_AS,
+      TRAITEMENT_EAUX_USEES,
+      NOEUD_RESEAU,
+      ELEMENT_RESEAU_EVACUATION,
+      STATION_EPURATION,
+      ASSOCIATION_EPURATION_EAU,
+      OFFICE,
+      OBJET_RACCORDE,
+      OUVRAGES_STEP,
+      CONSOMMATION_ENERGIE_STEP,
+      LIEU_BAIGNADE,
+      BANQUETTE,
+      ELEMENT_OUVRAGE,
+      VIDANGE_DE_BASSINS,
+      NETTOYAGE_DE_BASSINS,
+      EVALUATION_GENERALE_ECO_BIOL,
+      FONTAINE,
+      FICHIER,
+      SUPPORT_DONNEES,
+      COUVERCLE,
+      PASSAGE_SOUS_TUYAU,
+      EXUTOIRE,
+      DISPOSITIF_ACCES,
+      SURFACE_INDIVIDUELLE,
+      BASSIN_VERSANT,
+      EQUIPEMENT_ELECTRIQUE,
+      EQUIPEMENT_ELECTROMECA,
+      EVACUATION,
+      EVACUATION_AVEC_REJET,
+      systeme_evacuation_eaux,
+      EVENEMENT_MAINTENANCE,
+      RETENUE_DE_MATIERES_SOLIDES,
+      ECHELLE_POISSONS,
+      COURS_EAU,
+      INSTALLATION_REFOULEMENT,
+      PASSAGE_A_GUE,
+      BATIMENT,
+      BATIMENTS,
+      BATIMENTS_BAUREGBL,
+      SOURCE_DANGER,
+      COMMUNE,
+      COOPERATIVE,
+      BASSIN_VERSANT_COMPLET,
+      BARRAGE_ALLUVIONS,
+      TRONCON_COURS_EAU,
+      SEUIL,
+      SECTEUR_PROTECTION_EAUX,
+      SECTEUR_EAUX_SUP,
+      FOND_COURS_EAU,
+      AMENAGEMENT_COURS_EAU,
+      OUVRAGE_RETENUE,
+      AQUIFERE,
+      PERIMETRE_PROT_EAUX_SOUT,
+      ZONE_PROT_EAUX_SOUT,
+      TRONCON,
+      POINT_TRONCON,
+      RELATION_HQ,
+      GEOMETRIE_HYDR,
+      RELATION_GEOM_HYDR,
+      PARAMETRES_HYDR,
+      CANALISATION,
+      DOMMAGE_AUX_CANALISATIONS,
+      CANTON,
+      PETITE_STEP,
+      EXPLOITATION_AGRICOLE,
+      LEAPING_WEIR,
+      MESURE,
+      PRETRAITEMENT_MECANIQUE,
+      APPAREIL_MESURE,
+      SERIE_MESURES,
+      RESULTAT_MESURE,
+      STATION_MESURE,
+      CHAMBRE_STANDARD,
+      DOMMAGE_CHAMBRE_STANDARD,
+      PARAM_ECOULEMENT_SUP,
+      EAUX_SUPERFICIELLES,
+      ORGANISATION,
+      ZONE_RESERVEE,
+      PRIVE,
+      DISPOSITIF_NETTOYAGE,
+      RESERVOIR,
+      VOLUME_RETENTION,
+      PROFIL_TUYAU,
+      PROFIL_TUYAU_GEOM,
+      PROTECTION_REFOULEMENT,
+      DOMMAGE,
+      TRAITEMENT_BOUES,
+      ECLUSE,
+      LAC,
+      RAMPE,
+      OUVRAGE_SPECIAL,
+      xxx_BUSSE_DE_RINCAGE,
+      FICHE_TECHNIQUE,
+      CENTRALE_COMMANDE,
+      SUBSTANCE,
+      DEVERSOIR_LATERAL,
+      TUYAU_CHUTE,
+      CUNETTE_DEBIT_TEMPS_SEC,
+      DEVERSOIR,
+      CARACTERISTIQUES_DEVERSOIR,
+      RIVE,
+      ACCIDENT,
+      EXAMEN,
+      INSTALLATION_INFILTRATION,
+      ZONE_INFILTRATION,
+      CAPTAGE,
+      ZONE
+    );
+    OBJET: MANDATORY TEXT*16;  !! Identification de l’ensemble de données auquel le fichier appartient (OID);
+    ACCES_RELATIF: TEXT*200;  !! Accès relatif supplémentaire à l’emplacement du fichier sur le support de données. P. ex. DVD_01
+END FICHIER;
+
+ASSOCIATION FICHIER_SUPPORT_DONNEESAssoc =    !! Association
+  SUPPORT_DONNEESRef  -- {1} SUPPORT_DONNEES;
+  FICHIER_SUPPORT_DONNEESAssocRef -- {0..*} FICHIER;
+END FICHIER_SUPPORT_DONNEESAssoc;
+
+
+!!@comment = "Ende des Topics / Fin du topic"
+END IVI;
+!!@comment = "Ende des Modells / Fin du modèle"
+END VSA_IVI_2019_LV95.
+
