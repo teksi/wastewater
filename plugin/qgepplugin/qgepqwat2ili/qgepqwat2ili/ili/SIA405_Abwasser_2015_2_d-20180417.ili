@@ -1,0 +1,1826 @@
+!! SIA405_Abwasser_2015_2_d.ili
+!! Teilmenge aus der Datenstruktur Siedlungsentwässerung (VSA-DSS)
+
+INTERLIS 2.3;
+
+MODEL SIA405_ABWASSER_2015 (de) AT "http://www.sia.ch/405"
+  VERSION "17.04.2018" = 
+
+  IMPORTS UNQUALIFIED INTERLIS;     !! imports INTERLIS 2 Baseunits
+  IMPORTS Units;
+  IMPORTS Base;
+  IMPORTS SIA405_Base;
+
+!! Copyright 2002 - 2015
+!! Verband Schweizer Abwasser- und Gewässerschutzfachleute (VSA), Zürich
+!! www.vsa.ch
+!! in Zusammenarbeit mit schweizer ingenieur und architektenverein (sia), Zürich
+!! www.sia.ch
+
+!! Die Nutzung dieser INTERLIS-Datei ist lizenzpflichtig!
+
+!! Die Originalmodelldatei SIA405_Abwasser_2015_2_d.ili und darauf basierende 
+!! abgeänderte Versionen dürfen nicht weiterverkauft werden. 
+!! Die Weitergabe der Originaldatei (als Ganzes oder Teile davon) ist nur 
+!! zusammen mit dem Erwerb einer Lizenz beim sia / VSA durch den Empfänger erlaubt. 
+
+!! Freigegeben für öffentlichen Gebrauch und kommerzielle Anwendung mit Lizenz.
+!! Geprueft mit Compiler Version 4.7.7 (8.02.2018)
+!! Sachbearbeiter: Stefan Burckhardt / SIA 405 Kommission
+
+UNIT
+
+TOPIC SIA405_Abwasser =
+
+DOMAIN
+
+
+Verhaeltnis_H_B = 0.01 .. 100.00;    !! Verhältnis Höhe zu Breite, ohne Einheit
+!! Rohrprofil.HoehenBreitenverhaeltnis
+
+
+Statuswerte EXTENDS SIA405_Base.Status = (  !! Betriebs- und Planungszustand. 
+!! 11.2.2012 Anpassung auf neue Variante von SIA405_Base.Status - Erweiterung Basiswerte im Medium, hierarchische Modellierung und Anpassung auf Compiler 4.5.13
+      !! 17.7.2015 ausser_Betrieb,   !! fasst ausser_Betrieb und folgende Werte zusammen
+        !!  Reserve !! existiert nicht im Medium Abwasser
+      in_Betrieb (  !! fasst in_Betrieb und folgende Werte zusammen
+         !! 17.7.2015 in_Betrieb,
+         provisorisch,
+         wird_aufgehoben
+      ),
+      tot (  !! fasst tot und folgende Werte zusammen
+         !!  tot,   !! existiert nicht im Medium Abwasser
+        aufgehoben_nicht_verfuellt,
+        aufgehoben_unbekannt,
+        verfuellt
+      ),
+      !! 17.7.2015 unbekannt,
+      weitere ( !! fasst folgende Werte zusammen
+         Berechnungsvariante,
+         geplant,
+         Projekt
+      )
+    );    !! Erweitert Wertebereich von SIA405 Status
+!! neu 17.7.2015  
+    Status = ALL OF Statuswerte;    !! Erweitert Wertebereich von SIA405 Status
+!! Abwasserbauwerk.Status
+
+
+Intervall = 0.00 .. 20.00 [Units.CountedObjects];    !! Jahre [J]
+!! Abwasserbauwerk.Inspektionsintervall
+!! Kanal.Spuelintervall
+
+
+Gefaelle_Promille = -10000 .. 10000;    !! Promille [%o]
+!! 17.4.2014 neu für Plangefaelle (statt Promille), da grösser als 1000 sein kann
+!! Haltung.Plangefaelle
+
+
+Strickler = 0 .. 999;    !! Manning-Strickler K oder kstr [m^(1/3)/s]
+!! Haltung.Reibungsbeiwert
+
+
+Prandtl = 0.00 .. 100.00 [Units.mm];    !! Wandrauhigkeitsbeiwert nach Prandtl Colebrook (ks), Milimeter [mm]
+!! Haltung.Wandrauhigkeit
+
+
+Lichte_Hoehe = 0 .. 99999 [Units.mm];    !! Milimeter [mm]
+!! 18.2.2014 neu für Lichte_Hoehe (statt Abmessung)
+!! Haltung.Lichte_Hoehe
+!! Haltung.Reliner_Nennweite
+
+
+UID = TEXT*12;    !! 
+!! Organisation.UID
+
+
+Ziffernblatt = 0..12;    !! 
+!! gemäss Richtlinie
+!! Haltungspunkt.Lage_Anschluss
+
+
+CLASS Organisation EXTENDS SIA405_Base.SIA405_BaseClass =  
+!! Superklasse für in der Entwässerungsplanung relevante organisatorische Einheiten (z.B. Gemeinde, Kanton, etc.)
+  ATTRIBUTE
+    Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
+    Bezeichnung: MANDATORY SIA405_Base.OrganisationBezeichnung;  !! Es wird empfohlen reale Namen zu nehmen, z.B. Mustergemeinde und nicht Gemeinde. Oder Abwasserverband ARA Muster und nicht nur Abwasserverband, da es sonst Probleme gibt bei der Zusammenführung der Daten.
+    UID: UID;  !! Referenz zur Unternehmensidentifikation des Bundesamts fuer Statistik (www.uid.admin.ch), z.B. CHE123456789
+END Organisation;
+
+ASSOCIATION Organisation_Teil_vonAssoc =    !! Assoziation
+  Teil_vonRef  -- {0..*} Organisation; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  Organisation_Teil_vonAssocRef -- {0..*} Organisation; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
+END Organisation_Teil_vonAssoc;
+
+CLASS Abwasserbauwerk (ABSTRACT) EXTENDS SIA405_Base.SIA405_BaseClass =  
+!! Bauwerk in einem Entwässerungsnetz (dss)
+  ATTRIBUTE
+    Akten: MTEXT*255;  !! Plan Nr. der Ausführungsdokumentation. Kurzbeschrieb weiterer Akten (Betriebsanleitung vom …, etc.);
+    Baujahr: SIA405_Base.Jahr;  !! Jahr der Inbetriebsetzung (Schlussabnahme). Falls unbekannt = 1800 setzen (tiefster Wert des Wertebereichs);
+    BaulicherZustand: (          !! Zustandsklassen 0 bis 4 gemäss VSA-Richtline "Erhaltung von Kanalisationen". Beschreibung des baulichen Zustands des Abwasserbauwerks. Nicht zu verwechseln mit den Sanierungsstufen, welche die Prioritäten der Massnahmen bezeichnen (Attribut Sanierungsbedarf).
+      unbekannt,
+      Z0,  !! Nicht mehr funktionstüchtig: Das Abwasserbauwerk ist bereits oder demnächst nicht mehr durchgängig: Bauwerk eingestürzt, totale Verwurzelung oder andere Abflusshindernisse. Das Bauwerk verliert Wasser (Exfiltration / mögliche Grundwasserverschmutzung).
+      Z1,  !! Starke Mängel: Bauliche Schäden, bei welchen die statische Sicherheit, Hydraulik oder Dichtheit nicht mehr gewährleistet ist: Brüche axial oder radial, (Rohr-)deformationen, visuell sichtbare Wassereintritte oder Wasseraustritte, Löcher in der Wand, stark vorstehende seitliche Anschlüsse, starke Verwurzelungen, Wand stark ausgewaschen. Ungeeignetes (Rohr-)material.
+      Z2,  !! Mittlere Mängel: Bauliche Mängel, welche die Statik, Hydraulik oder Dichtheit beeinträchtigen: breite (Rohr-)fugen, nicht verputzte Einläufe, Risse, leichte Abflusshindernisse wie Verkalkungen, vorstehende seitliche Anschlüsse, leichte Wandbeschädigungen, einzelne Wurzeleinwüchse, (Rohr-)wand ausgewaschen usw.
+      Z3,  !! Leichte Mängel: Bauliche Mängel oder Vorkommnisse, welche für die Dichtheit, Hydraulik oder Statik einen unbedeutenden Einfluss haben: breite (Rohr-)fugen, schlecht verputzte seitlichen Anschlüsse, leichte Deformation bei Bauwerken aus Kunststoff, leichte Auswaschungen etc.
+      Z4  !! Keine Mängel
+    );
+    Baulos: TEXT*50;  !! Nummer des Bauloses
+    Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
+    Bezeichnung: MANDATORY TEXT*20;  !! Pro Datenherr eindeutige Bezeichnung
+    Bruttokosten: 0.00 .. 99999999.99 [Units.CHF];  !! Brutto Erstellungskosten
+    Detailgeometrie: Base.Surface;  !! Detaillierte Geometrie insbesondere bei Spezialbauwerken. Für Normschächte i.d. R.  Dimension1 und 2 verwenden. Dito bei normierten Versickerungsanlagen.  Kanäle haben normalerweise keine Detailgeometrie.
+    Ersatzjahr: SIA405_Base.Jahr;  !! Jahr, in dem die Lebensdauer des Bauwerks voraussichtlich abläuft
+    Finanzierung: (          !! Finanzierungart (Finanzierung gemäss GschG Art. 60a).
+      oeffentlich,  !! Gesamtheit aller erdverlegten Leitungen und Bauwerke, die über Abwassergebühren gemäss Art. 60a des Gewässerschutzgesetzes finanziert werden
+      privat,  !! Gesamtheit aller erdverlegten Leitungen und Bauwerke, die nicht über Abwassergebühren gemäss Art. 60a des Gewässerschutzgesetzes finanziert werden
+      unbekannt
+    );
+    Inspektionsintervall: Intervall;  !! Abstände, in welchen das Abwasserbauwerk inspiziert werden sollte (Jahre);
+    Sanierungsbedarf: (          !! Dringlichkeitsstufen und Zeithorizont für bauliche Massnahmen gemäss VSA-Richtline "Erhaltung von Kanalisationen"
+      dringend,  !! Die Massnahmen sind dringend auszuführen. Sofortmassnahmen wie bei kurzfristig sind zu prüfen. Zeithorizont 3-4 Jahre.
+      keiner,  !! Es sind keine Massnahmen bis zur nächsten Zustandserfassung und Zustandsbeurteilung erforderlich. Zeithorizont >= 10 Jahre.
+      kurzfristig,  !! Die Massnahmen sind sehr dringend und kurzfristig auszuführen. Im Sinne von Sofortmassnahmen können durch provisorische, lokale Reparaturen weitere Schäden temporär verhindert werden. Zeithorizont <= 2 Jahre
+      langfristig,  !! Die Massnahmen können längerfristig geplant werden. Zeithorizont 7-10 Jahre.
+      mittelfristig,  !! Die Massnahmen sind mittelfristig erforderlich. Zeithorizont 5-7 Jahre.
+      unbekannt
+    );
+    Standortname: TEXT*50;  !! Strassenname oder Ortsbezeichnung  zum Bauwerk
+    Status: Status;  !! Betriebs- bzw. Planungszustand des Bauwerks
+    Subventionen: 0.00 .. 99999999.99 [Units.CHF];  !! Staats- und Bundesbeiträge
+    WBW_Basisjahr: SIA405_Base.Jahr;  !! Basisjahr für die Kalkulation des Wiederbeschaffungswerts (siehe auch Attribut Wiederbeschaffungswert);
+    WBW_Bauart: (          !! Grobe Einteilung der Bauart des Abwasserbauwerks als Inputwert für die Berechnung des Wiederbeschaffungswerts.
+      andere,
+      Feld,  !! Im Feld (Profiltypen für Grabenarbeiten nach Norm SIA 190)
+      Sanierungsleitung_Bagger,  !! Bei Sanierungsleitungen, die mit einem Bagger gebaut wurden
+      Sanierungsleitung_Grabenfraese,  !! Bei Sanierungsleitungen, die mit einer Grabenfräse gebaut wurden
+      Strasse,  !! In der Strasse (Profiltypen für Grabenarbeiten nach Norm SIA 190)
+      unbekannt
+    );
+    Wiederbeschaffungswert: 0.00 .. 99999999.99 [Units.CHF];  !! Wiederbeschaffungswert des Bauwerks. Zusätzlich muss auch das Attribut WBW_Basisjahr erfasst werden
+    Zugaenglichkeit: (          !! Möglichkeit der Zugänglichkeit ins Innere eines Abwasserbauwerks für eine Person (nicht für ein Fahrzeug)
+      ueberdeckt,  !! Hier muss man z.B. zuerst graben, bis man  z.B. den Deckel öffnen kann
+      unbekannt,
+      unzugaenglich,
+      zugaenglich  !! Zugänglich für eine Person (und nicht unbedingt ein Fahrzeug)
+    );
+END Abwasserbauwerk;
+
+CLASS Abwasserbauwerk_Text EXTENDS SIA405_Base.SIA405_TextPos =
+END Abwasserbauwerk_Text;
+
+ASSOCIATION Abwasserbauwerk_TextAssoc =   !! Komposition
+  AbwasserbauwerkRef -<#> {1} Abwasserbauwerk;
+  Text -- {0 .. *} Abwasserbauwerk_Text;
+END Abwasserbauwerk_TextAssoc;
+
+CLASS Abwasserbauwerk_Symbol EXTENDS SIA405_Base.SIA405_SymbolPos =
+END Abwasserbauwerk_Symbol;
+
+ASSOCIATION Abwasserbauwerk_SymbolAssoc =   !! Komposition
+  AbwasserbauwerkRef -<#> {1} Abwasserbauwerk;
+  Symbol -- {0 .. *} Abwasserbauwerk_Symbol;
+END Abwasserbauwerk_SymbolAssoc;
+
+ASSOCIATION Abwasserbauwerk_EigentuemerAssoc =    !! Assoziation
+  EigentuemerRef  -- {0..1} Organisation; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  Abwasserbauwerk_EigentuemerAssocRef -- {0..*} Abwasserbauwerk; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
+END Abwasserbauwerk_EigentuemerAssoc;
+
+ASSOCIATION Abwasserbauwerk_BetreiberAssoc =    !! Assoziation
+  BetreiberRef  -- {0..1} Organisation; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  Abwasserbauwerk_BetreiberAssocRef -- {0..*} Abwasserbauwerk; !! Für den Unterhalt eines Bauwerks zuständige Stelle, Rolle2 - Klasse2 / Rôle2 - Classe2
+END Abwasserbauwerk_BetreiberAssoc;
+
+CLASS Kanal EXTENDS Abwasserbauwerk =  
+!! Offenes oder geschlossenes Gerinne zur Ableitung von Abwasser zwischen zwei Abwasserbauwerken
+  ATTRIBUTE
+    Bettung_Umhuellung: (          !! Art und Weise der unmittelbaren Rohrumgebung im Boden: Bettungsschicht (Unterlage der Leitung),  Verdämmung (seitliche Auffüllung), Schutzschicht
+      andere,
+      erdverlegt,  !! Entweder im Aushubmaterial gebettet oder Press-/Schlagvortrieb
+      in_Kanal_aufgehaengt,
+      in_Kanal_einbetoniert,
+      in_Leitungsgang,  !! SIA405 1998: inKulisse IKU
+      in_Vortriebsrohr_Beton,
+      in_Vortriebsrohr_Stahl,
+      Sand,
+      SIA_Typ1,  !! Gemäss Definition SIA Norm 190, Ausgabe 2000
+      SIA_Typ2,  !! Gemäss Definition SIA Norm 190, Ausgabe 2000
+      SIA_Typ3,  !! Gemäss Definition SIA Norm 190, Ausgabe 2000
+      SIA_Typ4,  !! Gemäss Definition SIA Norm 190, Ausgabe 2000
+      Sohlbrett,  !! Spezielle Art der Bettung bei Meliorationsleitungen
+      unbekannt
+    );
+    FunktionHierarchisch: (       !! Art des Kanals hinsichtlich Bedeutung im Entwässerungssystem
+      PAA (
+        andere,  !! Andere primäre Abwasseranlagen
+         Gewaesser,  !! Erfassung aus Kanalperspektive (z.B. weil hydraulische Berechnung notwendig)
+         Hauptsammelkanal,  !! Übergeordneter Sammelkanal. Kann je nach Netzhierarchie vorgenommen werden.
+         Hauptsammelkanal_regional,  !! Hauptsammelkanal mit regionaler Bedeutung zur Gliederung des Netzes bei Regionalem GEP, z.B. auf regionalem Übersichtsplan, da dies z.T. nicht über die Beziehung Eigentümer gelöst werden kann.
+         Liegenschaftsentwaesserung,  !! Liegenschaftsentwässerung (hydraulisch relevant). Abgrenzung Liegenschaftsentwässerung von Gebäudeentwässerung gemäss Norm "Planung und Erstellung von Anlagen für die Liegenschaftsentwässerung (SN 592 000)"
+         Sammelkanal,  !! Kanal, der das Abwasser aus Liegenschafts- und Strassenentwässerungen aufnimmt.
+         Sanierungsleitung,  !! Entwässerungsleitung (hydraulisch relevant) zum abwassertechnischen Anschluss von abgelegenen Liegenschaften an die Kanalisation, bei deren Planung und Erstellung gewisse Vereinfachungen zulässig sind.
+         Strassenentwaesserung,  !! Entwässerung von Strassen (hydraulisch relevant)
+         unbekannt
+      ),
+      SAA (
+         andere,  !! Andere sekundäre Abwasseranlage
+         Liegenschaftsentwaesserung,  !! Liegenschaftsentwässerung (hydraulisch nicht relevant). Abgrenzung Liegenschaftsentwässerung von Gebäudeentwässerung gemäss Norm "Planung und Erstellung von Anlagen für die Liegenschaftsentwässerung (SN 592 000)"
+         Sanierungsleitung,  !! Entwässerungsleitung (hydraulisch nicht relevant) zum abwassertechnischen Anschluss von abgelegenen Liegenschaften an die Kanalisation, bei deren Planung und Erstellung gewisse Vereinfachungen zulässig sind.
+         Strassenentwaesserung,  !! Entwässerung von Strassen (hydraulisch nicht relevant)
+         unbekannt  !! Entwässerung von Strassen (hydraulisch nicht relevant)
+      )
+    );
+    FunktionHydraulisch: (          !! Art des Kanals hinsichtlich hydraulischer Ausführung
+      andere,
+      Drainagetransportleitung,  !! Kanal, welcher Wasser aus Drainageleitungen transportiert
+      Drosselleitung,  !! Kanal mit vermindertem Querschnitt zur bewussten Begrenzung, resp. Verminderung des Abflusses. Die Funktionsweise basiert auf Abflussverhältnissen unter Druck.
+      Duekerleitung,  !! Geschlossenes Leitungssystem zur Unterfahrung eines Hindernisses als Abwasserdruckleitung.
+      Freispiegelleitung,  !! Die Freispiegelleitung ist eine Rohrleitung, in der das Wasser gemäss dem Gesetz der Schwerkraft von einem höher gelegenen Anfangspunkt zu einem tiefer gelegenen Endpunkt gelangt. (arb)
+      Pumpendruckleitung,  !! Druckleitung im Anschluss an ein Pumpwerk
+      Sickerleitung,  !! 1. Erdverlegte Leitung zur Sammlung und Ableitung von Hang- und Sickerwasser (SN 592 000) 2. Drainageleitung mit undichten Stossfugen, geschlitzten Rohren oder wasserdurchlässigem Rohrmaterial zur Entwässerung des Baugrundes. (arb)
+      Speicherleitung,  !! Zur bewussten Rückhaltung von Abwassermengen dimensionierte Leitung bei einem Regenrückhalte-, einem Fang- oder einem Stauraumkanal
+      Spuelleitung,  !! Leitung mit spezieller Funktion zum Spülen einer Entwässerungsanlage
+      unbekannt,
+      Vakuumleitung
+    );
+    Nutzungsart_geplant: (          !! Durch das Konzept vorgesehene Nutzung (vergleiche auch Nutzungsart_Ist)
+      andere,  !! Z.B. auch Zugang, Be- und Entlüftung
+      Bachwasser,  !! Wasser eines Fliessgewässers, das gemäss seinem natürlichen Zustand oberflächlich, aber an einigen Orten auch in unterirdischen Leitungen abfliesst.
+      entlastetes_Mischabwasser,  !! Wasser aus einem Entlastungsbauwerk, welches zum Vorfluter geführt wird. In diesen Kanal darf kein Schmutzabwasser eingeleitet werden.
+      Industrieabwasser,  !! Unter Industrieabwasser werden alle Abwässer verstanden, die bei Produktions- und Verarbeitungsprozessen in der Industrie anfallen. Industrieabwässer müssen i.d.R. vorbehandelt werden, bevor sie in öffentliche Kläranlagen eingeleitet werden können (siehe Indirekteinleiter). Bei direkter Einleitung in Gewässer (siehe Direkteinleiter) ist eine umfangreiche Reinigung in speziellen werkseigenen Kläranlagen erforderlich.
+      Mischabwasser,  !! 1. Mischung von Schmutz- und Regenabwasser, die gemeinsam abgeleitet werden 2. Abwasser welches aus einer Mischung von Schmutzabwasser und Regenabwasser besteht
+      Regenabwasser,  !! Wasser aus natürlichem Niederschlag, das nicht durch Gebrauch verunreinigt wurde. Die Zuordnung zu verschmutztem oder unverschmutztem Abwasser erfolgt nach der Gewässerschutzgesetzgebung bzw. nach Anleitung der VSA-Richtlinie "Regenwasserentsorgung"
+      Reinabwasser,  !! Sicker-, Grund-, Quell- und Brunnenwasser sowie Kühlwasser aus Durchlaufkühlungen. Gemäss Gewässerschutzgesetz gilt Reinabwasser als unverschmutztes Abwasser  (SN 592 000).
+      Schmutzabwasser,  !! Durch Gebrauch verändertes Wasser (häusliches, gewerbliches oder industrielles Abwasser), das in eine Entwässerungsanlage eingeleitet und einer Abwasserbehandlung zugeführt werden muss. Schmutzabwasser gilt als verschmutztes Abwasser im Sinne des Gewässerschutzgesetzes (SN 592 000)
+      unbekannt
+    );
+    Nutzungsart_Ist: (          !! Für primäre Abwasseranlagen gilt: Heute zulässige Nutzung. Für sekundäre Abwasseranlagen gilt: Heute tatsächliche Nutzung
+      andere,  !! Z.B. auch Zugang, Be- und Entlüftung
+      Bachwasser,  !! Wasser eines Fliessgewässers, das gemäss seinem natürlichen Zustand oberflächlich, aber an einigen Orten auch in unterirdischen Leitungen abfliesst.
+      entlastetes_Mischabwasser,  !! Wasser aus einem Entlastungsbauwerk, welches zum Vorfluter geführt wird. In diesen Kanal darf kein Schmutzabwasser eingeleitet werden.
+      Industrieabwasser,  !! Unter Industrieabwasser werden alle Abwässer verstanden, die bei Produktions- und Verarbeitungsprozessen in der Industrie anfallen. Industrieabwässer müssen i.d.R. vorbehandelt werden, bevor sie in öffentliche Kläranlagen eingeleitet werden können (siehe Indirekteinleiter). Bei direkter Einleitung in Gewässer (siehe Direkteinleiter) ist eine umfangreiche Reinigung in speziellen werkseigenen Kläranlagen erforderlich.
+      Mischabwasser,  !! 1. Mischung von Schmutz- und Regenabwasser, die gemeinsam abgeleitet werden 2. Abwasser welches aus einer Mischung von Schmutzabwasser und Regenabwasser besteht
+      Regenabwasser,  !! Wasser aus natürlichem Niederschlag, das nicht durch Gebrauch verunreinigt wurde. Die Zuordnung zu verschmutztem oder unverschmutztem Abwasser erfolgt nach der Gewässerschutzgesetzgebung bzw. nach Anleitung der VSA-Richtlinie "Regenwasserentsorgung"
+      Reinabwasser,  !! Sicker-, Grund-, Quell- und Brunnenwasser sowie Kühlwasser aus Durchlaufkühlungen. Gemäss Gewässerschutzgesetz gilt Reinabwasser als unverschmutztes Abwasser (SN 592 000).
+      Schmutzabwasser,  !! Durch Gebrauch verändertres Wasser (häusliches, gewerbliches oder industrielles Abwasser), das in eine Entwässerungsanlage eingeleitet und einer Abwasserbehandlung zugeführt werden muss. Schmutzabwasser gilt als verschmutztes Abwasser im Sinne des Gewässerschutzgesetzes (SN 592 000)
+      unbekannt
+    );
+    Rohrlaenge: 0.00 .. 30000.00 [m];  !! Baulänge der Einzelrohre oder Fugenabstände bei Ortsbetonkanälen
+    Spuelintervall: Intervall;  !! Abstände in welchen der Kanal gespült werden sollte
+    Verbindungsart: (          !! Verbindungstypen
+      andere,
+      Elektroschweissmuffen,
+      Flachmuffen,
+      Flansch,
+      Glockenmuffen,
+      Kupplung,
+      Schraubmuffen,
+      spiegelgeschweisst,
+      Spitzmuffen,
+      Steckmuffen,
+      Ueberschiebmuffen,
+      unbekannt,
+      Vortriebsrohrkupplung
+    );
+END Kanal;
+
+CLASS Normschacht EXTENDS Abwasserbauwerk =  
+!! Normiertes Schachtbauwerk mit abnehmbarem Deckel im Kanalnetz
+  ATTRIBUTE
+    Dimension1: SIA405_Base.Abmessung;  !! Dimension1 des Schachtes (grösstes Innenmass).
+    Dimension2: SIA405_Base.Abmessung;  !! Dimension2 des Schachtes (kleinstes Innenmass). Bei runden Schächten wird Dimension2 leer gelassen, bei ovalen abgefüllt. Für eckige Schächte Detailgeometrie verwenden.
+    Funktion: (          !! Art der Nutzung
+      Absturzbauwerk,  !! Ein Absturzschacht ist ein spezielles Bauwerk im Kanalisationsnetz zur Überwindung von Höhenunterschieden auf kurze Entfernung bei gleichzeitiger Energieumwandlung
+      andere,
+      Be_Entlueftung,  !! Vorrichtung zum gewünschten Luftaustausch in Abwasserbauwerken
+      Dachwasserschacht,  !! Schacht im Bereich der Lienschaftsentwässerung, in den in der Regel Abflussrohre vom Dach einmünden. Diese sind meist kleiner als die Einlaufschächte
+      Einlaufschacht,  !! Ablauf zur Fassung des Oberflächenwasssers bestehend aus einem Schacht mit einem Aufsatz aus einem Rahmen und einem Rost (VSS, SN 640 356)
+      Entwaesserungsrinne,  !! Längliches Bauelement mit geschlitzten Öffnungen zur Aufnahme von abfliessendem Oberflächenwasser
+      Geleiseschacht,  !! Normschacht zur Entwässerung von Geleiseanlagen
+      Kontrollschacht,  !! Bauwerk, das den Zugang für Unterhalts- und Kontrollzwecke zu Abwasser- und Sickerleitungen ermöglicht
+      Oelabscheider,  !! Ein Ölabscheider ist ein spezielles Bauwerk zum Abscheiden von Leichtflüssigkeiten von Abwasser. Es verhindert das Einleiten von Öl in den Vorfluter. Die Funktionsweise basiert auf dem Dichteunterschied von Wasser und Benzin, das zum Aufschwimmen des Öls führt.
+      Pumpwerk,  !! Anlage zum Heben von Abwasser innerhalb eines Kanalnetzes
+      Regenueberlauf,  !! Sonderbauwerk, welches Mischabwasser auftrennt und einen Teil davon direkt dem Gewaesser zuführt.
+      Schlammsammler,  !! 1. Einlaufschacht mit Schlammsack  2. Ablauf zur Fassung des Oberflächenwasssers auf der Strasse bestehend aus einem Schacht mit Absetzraum mit einem Aufsatz aus einem Rahmen und einem Rost (VSS, SN 640 356)
+      Schwimmstoffabscheider,  !! Ein Schwimmstoffabscheider ist ein Schlammsammler entweder mit einem verlängerten Tauchbogen oder einer Tauchwand. Wird insbesondere bei Versickerungsanlagen als Vorbehandlung gebraucht
+      Spuelschacht,  !! Schacht der zu Spülzwecken benötigt wird
+      Trennbauwerk,  !! Bauwerk, welches Abwasser im System auftrennt, aber nicht aus dem System entlastet. Ein oder mehrere Zuläufe, zwei oder mehr Abläufe
+      unbekannt
+    );
+    Material: (          !! Hauptmaterial aus dem das Bauwerk besteht zur groben Klassifizierung.
+      andere,
+      Beton,
+      Kunststoff,
+      unbekannt
+    );
+    Oberflaechenzulauf: (          !! Zuflussmöglichkeit  von Oberflächenwasser direkt in den Schacht
+      andere,
+      keiner,
+      Rost,
+      unbekannt,
+      Zulauf_seitlich
+    );
+END Normschacht;
+
+CLASS Einleitstelle EXTENDS Abwasserbauwerk =  
+!! Auslauf aus dem Kanal in das Fliessgewässer
+  ATTRIBUTE
+    Hochwasserkote: Base.Hoehe;  !! Massgebliche Hochwasserkote der Einleitstelle. Diese ist in der Regel grösser als der Wasserspiegel_Hydraulik.
+    Relevanz: (          !! Gewässerrelevanz der Einleitstelle
+      gewaesserrelevant,  !! Auslauf einer Kanalisationsleitung in ein Oberflächengewässer mit oder ohne Einleitbauwerk, der den Gewässerzustand oder die Verhältnisse im Gewässer beeinflusst. Neben den Einleitstellen von PAA-Netzen, die per Definition als gewässerrelevant gelten, können auch Einleitstellen von SAA-Leitungsnetzen gewässerrelevant sein
+      nicht_gewaesserrelevant  !! Auslauf einer SAA-Kanalisationsleitung in ein Oberflächengewässer mit oder ohne Einleitbauwerk, der den Gewässerzustand oder die Verhältnisse im Gewäs¬ser nicht wesentlich beeinflusst.
+    );
+    Terrainkote: Base.Hoehe;  !! Terrainkote, falls kein Deckel vorhanden bei Einleitstelle (Kanalende ohne Bauwerk oder Bauwerk ohne Deckel);
+    Wasserspiegel_Hydraulik: Base.Hoehe;  !! Wasserspiegelkote für die hydraulische Berechnung (IST-Zustand). Berechneter Wasserspiegel bei der Einleitstelle. Wo nichts anders gefordert, ist der Wasserspiegel bei einem HQ30 einzusetzen.
+END Einleitstelle;
+
+CLASS Spezialbauwerk EXTENDS Abwasserbauwerk =  
+!! Nicht normiertes Abwasserbauwerk mit spezieller Funktion, z.B zur Auftrennung von Abwassermengen, zur Überwindung von Höhenunterschieden oder zur Speicherung und Grobklärung
+  ATTRIBUTE
+    Bypass: (          !! Bypass zur Umleitung des Wassers (z.B. während Unterhalt oder  im Havariefall)
+      nicht_vorhanden,
+      unbekannt,
+      vorhanden
+    );
+    Funktion: (          !! Art der Nutzung
+      abflussloseGrube,  !! Abflusslose Grube
+      Absturzbauwerk,  !! Ein Absturzschacht ist ein spezielles Bauwerk im Kanalisationsnetz zur Überwindung von Höhenunterschieden auf kurze Entfernung bei gleichzeitiger Energieumwandlung
+      Abwasserfaulraum,  !! Abwasserfaulraum: 3 Kammern
+      andere,  !! Nur verwenden, wenn kein anderer Wert zutrifft. Die Funktion des Bauwerkes im Feld Bemerkung beschreiben
+      Be_Entlueftung,  !! Vorrichtung zum gewünschten Luftaustausch in Abwasserbauwerken
+      Duekerkammer,  !! Spezialbauwerk bei einem Abwasserdüker zur Entleerung der Leitungen am tiefsten Punkt
+      Duekeroberhaupt,  !! Bauwerk zur Aufteilung des Abflusses auf mehrere Dükerrohre
+      Faulgrube,  !! Faulgrube: 2 Kammern
+      Gelaendemulde,  !! Natürliche oder künstliche Vertiefung im Boden, um abfliessendes Wasser zurückzuhalten
+      Geschiebefang,  !! Spezialbauwerk zur Aufnahme von im Wasser mitgeführten Material. Häufig am Übergang zu einem eingedolten Abschnitt
+      Guellegrube,  !! Gülle- bzw. Jauchegrube
+      Klaergrube,  !! Eine Klärgrube (1 Kammer) dient der Entwässerung einer Liegenschaft, die nicht an die öffentliche Kanalisation angeschlossen ist. Eine Klärgrube ist üblicherweise ein beckenartiges, unterirdisches Bauwerk, in dem sich die festen Stoffe am Boden absetzen, Klärgruben müssen periodisch geleert werden.
+      Kontrollschacht,  !! Bauwerk, das den Zugang für Unterhalts- und Kontrollzwecke zu Abwasser- und Sickerleitungen ermöglicht (VSS, SN 640 364)
+      Oelabscheider,  !! Ein Ölabscheider ist ein spezielles Bauwerk zum Abscheiden von Leichtflüssigkeiten von Abwasser. Es verhindert das Einleiten von Öl in den Vorfluter. Die Funktionsweise basiert auf dem Dichteunterschied von Wasser und Benzin, das zum Aufschwimmen des Öls führt.
+      Pumpwerk,  !! Anlage zum Heben von Abwasser innerhalb eines Kanalnetzes
+      Regenbecken_Durchlaufbecken,  !! Bauwerk in Mischabwassernetzen zur Absetzung von partikulären Stoffen und zur Speicherung von Mischabwasser (Sekundärwirkung, es können nur kleine Regenmengen gespeichert werden)
+      Regenbecken_Fangbecken,  !! Regenüberlaufbecken, dass zum Fangen des ersten Schmutzstosses dient
+      Regenbecken_Fangkanal,  !! Speicherleitung mit oberhalb liegendem Überlauf ins Gewässer
+      Regenbecken_Regenklaerbecken,  !! Absetzbecken für Regenabwasser im Trennsystem
+      Regenbecken_Regenrueckhaltebecken,  !! Speicherraum für Regenabflussspitzen im Misch- oder Regenabwassernetz. Er dient der Entlastung der Kanalisation bei starkem Regen und hat im Gegensatz zu Regenüberlaufbecken keinen Überlauf oder nur einen Notüberlauf zum Gewässer
+      Regenbecken_Regenrueckhaltekanal,  !! Speicherkanal mit der gleichen Funktionsweise wie das Regenrückhaltebecken
+      Regenbecken_Stauraumkanal,  !! Speicherleitung mit unterhalb liegendem Überlauf ins Gewässer
+      Regenbecken_Verbundbecken,  !! Kombination von Fangbecken und Klärbecken
+      Regenueberlauf,  !! Sonderbauwerk, welches Mischabwasser auftrennt und einen Teil davon direkt dem Gewaesser zuführt.
+      Schwimmstoffabscheider,  !! Ein Schwimmstoffabscheider ist ein Schlammsammler entweder mit einem verlängerten Tauchbogen oder einer Tauchwand. Wird insbesondere bei Versickerungsanlagen als Vorbehandlung gebraucht
+      seitlicherZugang,  !! Ebenerdiger Zugang zu einem Bauwerk
+      Spuelschacht,  !! Schacht, der zu Spülzwecken benötigt wird
+      Trennbauwerk,  !! Bauwerk, welches Abwasser im System auftrennt, aber nicht aus dem System entlastet. Ein oder mehrere Zuläufe, zwei oder mehr Abläufe
+      unbekannt,
+      Wirbelfallschacht  !! Bauwerk zur möglichst schadlosen, geführten Ableitung von Wasser über eine gewisse  Höhenstufe. Das Bauwerk besteht aus Drallkammer, Fallrohr, Toskammer und Rezirkulationsbelüftungsrohr
+    );
+    Notueberlauf: (          !! Das Attribut beschreibt, wohin die das Volumen übersteigende Menge abgeleitet wird (bei Regenrückhaltebecken / Regenrückhaltekanal).
+      andere,
+      inMischabwasserkanalisation,
+      inRegenabwasserkanalisation,
+      inSchmutzabwasserkanalisation,
+      keiner,
+      unbekannt
+    );
+    Regenbecken_Anordnung: (          !! Anordnung des Regenbeckens im System. Zusätzlich zu erfassen falls Spezialbauwerk.Funktion = Regenbecken_*
+      Hauptschluss,  !! Durchfluss des Beckens bei Trockenwetter und teilweiser Durchfluss bei Regenwetter
+      Nebenschluss,  !! Durchfluss des Beckens nur bei Regenwetter
+      unbekannt
+    );
+END Spezialbauwerk;
+
+CLASS Versickerungsanlage EXTENDS Abwasserbauwerk =  
+!! Einbringen von Reinabwasser und wenig verschmutztem Regenabwasser in den Untergrund (Definition gemäss VSA Richtlinie Regenwasserentsorgung 2002)
+  ATTRIBUTE
+    Art: (          !! Arten von Versickerungsmethoden.
+      andere_mit_Bodenpassage,
+      andere_ohne_Bodenpassage,
+      Flaechenfoermige_Versickerung,  !! flächenförmige Versickerung
+      Kieskoerper,
+      Kombination_Schacht_Strang,
+      MuldenRigolenversickerung,
+      unbekannt,
+      Versickerung_ueber_die_Schulter,
+      Versickerungsbecken,
+      Versickerungsschacht,
+      Versickerungsstrang_Galerie
+    );
+    Beschriftung: (          !! Kennzeichnung der Schachtdeckel der Anlage als Versickerungsanlage.  Nur bei Anlagen mit Schächten.
+      beschriftet,
+      nichtbeschriftet,
+      unbekannt
+    );
+    Dimension1: SIA405_Base.Abmessung;  !! Dimension1 der Versickerungsanlage (grösstes Innenmass) bei der Verwendung von Normbauteilen. Sonst leer lassen und mit Detailgeometrie beschreiben.
+    Dimension2: SIA405_Base.Abmessung;  !! Dimension2 der Versickerungsanlage (kleinstes Innenmass) bei der Verwendung von Normbauteilen. Sonst leer lassen und mit Detailgeometrie beschreiben.
+    GWDistanz: 0.00 .. 30000.00 [m];  !! Flurabstand (Vertikale Distanz Terrainoberfläche zum Grundwasserleiter).
+    Maengel: (          !! Gibt die aktuellen Mängel der Versickerungsanlage an (IST-Zustand).
+      keine,
+      unwesentliche,  !! "unwesentliche" heisst, dass keine Nachkontrolle nötig ist
+      wesentliche  !! "wesentliche" heisst, dass eine Nachkontrolle nötig ist
+    );
+    Notueberlauf: (          !! Endpunkt allfälliger Verrohrung des Notüberlaufes der Versickerungsanlage
+      inMischwasserkanalisation,  !! "inMischwasserkanalisation" heisst, dass die Versickerung direkt verrohrt ist und nicht frei über das Gelände zwischendurch läuft (unerwünschter Zustand)
+      inRegenwasserkanalisation,  !! "inRegenwasserkanalisation" heisst, dass die Versickerung direkt verrohrt ist und nicht frei über das Gelände  zwischendurch läuft (unerwünschter Zustand)
+      inVorfluter,  !! Direkte Rohrverbindung zu einem Vorfluter (unerwünschte Konstruktion)
+      keiner,
+      oberflaechlichausmuendend,  !! Das Wasser überfliesst beim Einstau über die Versickerungsanlage hinaus an die Oberfläche (gewünschter Zustand / Hinweis auf verstopfte Anlage).
+      unbekannt
+    );
+    Saugwagen: (          !! Zugänglichkeit für Saugwagen. Sie bezieht sich auf die gesamte Versickerungsanlage / Vorbehandlungsanlagen und kann in den Bemerkungen weiter spezifiziert werden
+      unbekannt,
+      unzugaenglich,
+      zugaenglich
+    );
+    Schluckvermoegen: 0.000 .. 100000.000 [SIA405_Base.ls];  !! Schluckvermögen des Bodens.
+    Versickerungswasser: (          !! Arten des zu versickernden Wassers.
+      Regenabwasser,  !! Wasser aus natürlichem Niederschalg, das nicht durch Gebrauch verunreinigt wurde. Die Zuordnung zu verschmutztem oder unverschmutztem Abwasser erfolgt nach der Gewässerschutzgesetzgebung bzw. nach Anleitung der Richtlinie "Regenwasserentsorgung"
+      Reinabwasser,
+      unbekannt
+    );
+    Wasserdichtheit: (          !! Wasserdichtheit gegen Oberflächenwasser.  Nur bei Anlagen mit Schächten.
+      nichtwasserdicht,
+      unbekannt,
+      wasserdicht
+    );
+    Wirksameflaeche: 0.00 .. 100000.00 [Units.m2];  !! Für den Abfluss wirksame Fläche
+END Versickerungsanlage;
+
+CLASS Rohrprofil EXTENDS SIA405_Base.SIA405_BaseClass =  
+!! Form des Fliessquerschnittes mit Angabe der Dimension
+  ATTRIBUTE
+    Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
+    Bezeichnung: MANDATORY TEXT*20;
+    HoehenBreitenverhaeltnis: Verhaeltnis_H_B;  !! Verhältnis der Höhe zur Breite
+    Profiltyp: (          !! Typ des Profils
+      Eiprofil,  !! Nur für Norm-Eiprofile gemäss DIN 4263 mit Höhenbreitenverhältnis von 1.5 verwenden. Andere Eiprofile, auch solche mit Einbauten, sind als „Spezialprofil“ zu attributieren und die Profildefinition ist mitzuliefern.
+      Kreisprofil,  !! Nur für reine Kreisprofile ohne Trockenwetterrinne oder andere Einbauten verwenden. Sonst als „Spezialprofil“ attributieren und die Profildefinition mitliefern.
+      Maulprofil,  !! Nur für Norm-Maulprofile gemäss DIN 4263 verwenden. Abweichende Varianten, auch solche mit Einbauten, sind als „Spezialprofil“ zu attributieren und die Profildefinition ist mitzuliefern.
+      offenes_Profil,  !! Für offene Profile. Profildefinition mitliefern
+      Rechteckprofil,  !! Nur für reine Rechteckprofile ohne Trockenwetterrinne oder andere Einbauten verwenden. Sonst als „Spezialprofil“ attributieren und die Profildefinition mitliefern.
+      Spezialprofil,  !! Für geschlossene nicht-Normprofile. Profildefinition mitliefern.
+      unbekannt
+    );
+END Rohrprofil;
+
+CLASS Abwassernetzelement (ABSTRACT) EXTENDS SIA405_Base.SIA405_BaseClass =  
+!! Modelltechnischer Begriff für Abwasserknoten und Haltungen in der VSA-DSS
+  ATTRIBUTE
+    Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
+    Bezeichnung: MANDATORY TEXT*20;
+END Abwassernetzelement;
+
+ASSOCIATION Abwassernetzelement_AbwasserbauwerkAssoc =    !! Assoziation
+  AbwasserbauwerkRef  -- {0..1} Abwasserbauwerk; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  Abwassernetzelement_AbwasserbauwerkAssocRef -- {0..*} Abwassernetzelement; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
+END Abwassernetzelement_AbwasserbauwerkAssoc;
+
+CLASS Haltungspunkt EXTENDS SIA405_Base.SIA405_BaseClass =  
+!! Anfangs- oder Endpunkt einer Haltung mit Detailinformationen zur Verbindung zwischen Abwassernetzelementen.
+  ATTRIBUTE
+    Auslaufform: (          !! Art des Auslaufs
+      abgerundet,
+      blendenfoermig,
+      keine_Querschnittsaenderung,
+      scharfkantig,
+      unbekannt
+    );
+    Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
+    Bezeichnung: MANDATORY TEXT*20;
+    Hoehengenauigkeit: (          !! Quantifizierung der Genauigkeit der Höhenlage der Kote in Relation zum Höhenfixpunktnetz (z.B. Grundbuchvermessung oder Landesnivellement).
+      groesser_6cm,  !! Dies ist der Bereich der Höhengenauigkeit aller Punkte, die nur geschätzt sind
+      plusminus_1cm,  !! Dies ist der Bereich der Höhengenauigkeit eines nivellierten Punktes
+      plusminus_3cm,  !! Dies ist der Bereich der Höhengenauigkeit eines mit GPS eingemessenen Punktes
+      plusminus_6cm,  !! Dies ist die Höhengenauigkeit eines mit Vermessungswerkzeugen (Theodolit) eingemessenen Punktes
+      unbekannt
+    );
+    Kote: Base.Hoehe;  !! Sohlenhöhe des Haltungsendes
+    Lage: Base.LKoord;  !! Landeskoordinate Ost/Nord
+    Lage_Anschluss: Ziffernblatt;  !! Anschlussstelle bezogen auf Querschnitt im Kanal; in Fliessrichtung  (für Haus- und Strassenanschlüsse);
+END Haltungspunkt;
+
+ASSOCIATION Haltungspunkt_AbwassernetzelementAssoc =    !! Assoziation
+  AbwassernetzelementRef  -- {0..1} Abwassernetzelement; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  Haltungspunkt_AbwassernetzelementAssocRef -- {0..*} Haltungspunkt; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
+END Haltungspunkt_AbwassernetzelementAssoc;
+
+CLASS Abwasserknoten EXTENDS Abwassernetzelement =  
+!! Verbindung zwischen zwei Haltungen, hydraulischer Bezugspunkt des Abwasserbauwerks (dss)
+  ATTRIBUTE
+    Lage: Base.LKoord;  !! Lage des Knotens, massgebender Bezugspunkt für die Kanalnetzberechnung. (In der Regel Lage des Pickellochs oder Lage des Trockenwetterauslaufs);
+    Rueckstaukote: Base.Hoehe;  !! 1. Massgebende Rückstaukote bezogen auf den Berechnungsregen (dss)  2. Höhe, unter der innerhalb der Grundstücksentwässerung besondere Massnahmen gegen Rückstau zu treffen sind. (DIN 4045);
+    Sohlenkote: Base.Hoehe;  !! Tiefster Punkt des Abwasserbauwerks
+END Abwasserknoten;
+
+CLASS Haltung EXTENDS Abwassernetzelement =  
+!! Hydraulisch homogenes Transportelement des Kanalnetzes, Berechnungsabschnitt einer Abflusssimulation.
+  ATTRIBUTE
+    Innenschutz: (          !! Schutz der Innenwände des Kanals
+      andere,
+      Anstrich_Beschichtung,
+      Kanalklinkerauskleidung,
+      Steinzeugauskleidung,
+      unbekannt,
+      Zementmoertelauskleidung
+    );
+    LaengeEffektiv: 0.00 .. 30000.00 [m];  !! Tatsächliche schräge Länge (d.h. nicht in horizontale Ebene projiziert)  inklusive Kanalkrümmungen
+    Lagebestimmung: (          !! Definiert die Lagegenauigkeit der Verlaufspunkte.
+      genau,  !! +/- 10 cm, bei der Lagebestimmung aus unterschiedlichen Messungen das Dreifache, d.h. +/- 30 cm (Norm SIA405)
+      unbekannt,
+      ungenau  !! Siehe genau
+    );
+    Lichte_Hoehe: Lichte_Hoehe;  !! Maximale Innenhöhe des Kanalprofiles
+    Material: (          !! Rohrmaterial
+      andere,
+      Asbestzement,
+      Beton_Normalbeton,
+      Beton_Ortsbeton,
+      Beton_Pressrohrbeton,
+      Beton_Spezialbeton,
+      Beton_unbekannt,
+      Faserzement,
+      Gebrannte_Steine,
+      Guss_duktil,
+      Guss_Grauguss,
+      Kunststoff_Epoxydharz,
+      Kunststoff_Hartpolyethylen,
+      Kunststoff_Polyester_GUP,
+      Kunststoff_Polyethylen,
+      Kunststoff_Polypropylen,
+      Kunststoff_Polyvinilchlorid,  !! Ein Polymerisatkunstoff, der hart, weich oder niedrig­molekular eingestellt werden kann. In der Abwassertechnik als Rohstoff für Rohre verwendet. (arb)
+      Kunststoff_unbekannt,  !! Kunststoff unbekannter Art
+      Stahl,
+      Stahl_rostfrei,
+      Steinzeug,
+      Ton,
+      unbekannt,
+      Zement
+    );
+    Plangefaelle: Gefaelle_Promille;  !! Auf dem alten Plan eingezeichnetes Plangefälle [%o]. Nicht kontrolliert im Feld. Kann nicht für die hydraulische Berechnungen übernommen werden. Für Liegenschaftsentwässerung und Meliorationsleitungen. Darstellung als z.B. 3.5%oP auf Plänen.
+    Reibungsbeiwert: Strickler;  !! Hydraulische Kenngrösse zur Beschreibung der Beschaffenheit der Kanalwandung. Beiwert für die Formeln nach Manning-Strickler (K oder kstr);
+    Reliner_Art: (          !! Art des Relinings
+      ganze_Haltung,
+      partiell,
+      unbekannt
+    );
+    Reliner_Bautechnik: (          !! Bautechnik für das Relining. Zusätzlich wird der Einbau des Reliners als  Erhaltungsereignis abgebildet: Erhaltungsereignis.Art = Reparatur für Partieller_Liner, sonst Renovierung.
+      andere,
+      Close_Fit_Relining,
+      Kurzrohrrelining,
+      Noppenschlauchrelining,
+      Partieller_Liner,
+      Rohrstrangrelining,
+      Schlauchrelining,
+      unbekannt,
+      Wickelrohrrelining
+    );
+    Reliner_Material: (          !! Material des Reliners
+      andere,
+      Epoxidharz_Glasfaserlaminat,  !! Epoxidharz Glasfaserlaminat
+      Epoxidharz_Kunststofffilz,  !! Epoxidharz Kunststofffilz
+      GUP_Rohr,  !! Rohr aus glasfaserverstärktem, ungesättigtem Polyester : GUP oder GF-UP
+      HDPE,
+      Isocyanatharze_Glasfaserlaminat,  !! Isocynatharze Glasfaserlaminat
+      Isocyanatharze_Kunststofffilz,  !! Isocyanatharze_Kunststofffilz
+      Polyesterharz_Glasfaserlaminat,  !! Polyesterharz Glasfaserlaminat
+      Polyesterharz_Kunststofffilz,  !! Polyesterharz Kunststofffilz
+      Polypropylen,
+      Polyvinilchlorid,
+      Sohle_mit_Schale_aus_Polyesterbeton,  !! Sohle mit Schale aus Polyesterbeton
+      unbekannt,
+      UP_Harz_LED_Synthesefaserliner,  !! Synthesefaserliner mit ungesättigtes Polyesterharz (UP Harz), Härtung mit UV-LED
+      Vinylesterharz_Glasfaserlaminat,  !! Vinylesterharz Glasfaserlaminat
+      Vinylesterharz_Kunststofffilz  !! Vinylesterharz Kunststofffilz
+    );
+    Reliner_Nennweite: Lichte_Hoehe;  !! Profilhöhe des Inliners (innen). Beim Export in Hydrauliksoftware müsste dieser Wert statt Haltung.Lichte_Hoehe übernommen werden um korrekt zu simulieren.
+    Ringsteifigkeit: 0 .. 16;  !! Ringsteifigkeitsklasse - Druckfestigkeit gegen Belastungen von aussen (gemäss ISO 13966 );
+    Verlauf: Base.Polyline;  !! Anfangs-, Knick- und Endpunkte der Leitung
+    Wandrauhigkeit: Prandtl;  !! Hydraulische Kenngrösse zur Beschreibung der Beschaffenheit der Kanalwandung. Beiwert für die Formeln nach Prandtl-Colebrook (ks oder kb);
+END Haltung;
+
+CLASS Haltung_Text EXTENDS SIA405_Base.SIA405_TextPos =
+END Haltung_Text;
+
+ASSOCIATION Haltung_TextAssoc =   !! Komposition
+  HaltungRef -<#> {1} Haltung;
+  Text -- {0 .. *} Haltung_Text;
+END Haltung_TextAssoc;
+
+CLASS Haltung_AlternativVerlauf EXTENDS Base.BaseClass =
+   Verlauf: Base.Polyline;  !!  Anfangs-, Knick- und Endpunkte des Alternativ-Verlaufs der Leitung im gewählten Plantyp (z.B. Uebersichtsplan)
+   Plantyp: SIA405_Base.Plantyp;   !! Default: Uebersichtsplan
+END Haltung_AlternativVerlauf;
+
+ASSOCIATION Haltung_AlternativVerlaufAssoc =   !! Komposition
+  HaltungRef -<#> {1} Haltung;
+  Alternativverlauf -- {0 .. *} Haltung_AlternativVerlauf;
+END Haltung_AlternativVerlaufAssoc;
+
+ASSOCIATION Haltung_vonHaltungspunktAssoc =    !! Assoziation
+  vonHaltungspunktRef  -- {1} Haltungspunkt; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  Haltung_vonHaltungspunktAssocRef -- {0..1} Haltung; !! {XOR (Haltung)}, Rolle2 - Klasse2 / Rôle2 - Classe2
+END Haltung_vonHaltungspunktAssoc;
+
+ASSOCIATION Haltung_nachHaltungspunktAssoc =    !! Assoziation
+  nachHaltungspunktRef  -- {1} Haltungspunkt; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  Haltung_nachHaltungspunktAssocRef -- {0..1} Haltung; !! {XOR (Haltung)}, Rolle2 - Klasse2 / Rôle2 - Classe2
+END Haltung_nachHaltungspunktAssoc;
+
+ASSOCIATION Haltung_RohrprofilAssoc =    !! Assoziation
+  RohrprofilRef  -- {0..1} Rohrprofil; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  Haltung_RohrprofilAssocRef -- {0..*} Haltung; !! {XOR (Haltung)}, Rolle2 - Klasse2 / Rôle2 - Classe2
+END Haltung_RohrprofilAssoc;
+
+CLASS BauwerksTeil (ABSTRACT) EXTENDS SIA405_Base.SIA405_BaseClass =  
+!! Bauliche Bestandteile und Einrichtungen eines Abwasserbauwerkes
+  ATTRIBUTE
+    Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
+    Bezeichnung: MANDATORY TEXT*20;
+    Instandstellung: (          !! Zustandsinformation zum Bauwerksteil
+      nicht_notwendig,
+      notwendig,
+      unbekannt
+    );
+END BauwerksTeil;
+
+ASSOCIATION BauwerksTeil_AbwasserbauwerkAssoc =    !! Komposition
+  AbwasserbauwerkRef  -<#> {1} Abwasserbauwerk; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  BauwerksTeil_AbwasserbauwerkAssocRef -- {0..*} BauwerksTeil; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
+END BauwerksTeil_AbwasserbauwerkAssoc;
+
+CLASS Trockenwetterfallrohr EXTENDS BauwerksTeil =  
+!! Fallrohr in einem Absturzschacht zur Ableitung des Zuflusses bei Trockenwetter und Schwachregen
+  ATTRIBUTE
+    Durchmesser: SIA405_Base.Abmessung;  !! Abmessung des Deckels (bei eckigen Deckeln minimale Abmessung);
+END Trockenwetterfallrohr;
+
+CLASS Einstiegshilfe EXTENDS BauwerksTeil =  
+!! Element, welches den Zugang zu einem Abwasserbauwerk ermöglicht.
+  ATTRIBUTE
+    Art: (          !! Art des Einstiegs in das Bauwerk
+      andere,
+      Drucktuere,
+      keine,
+      Leiter,
+      Steigeisen,
+      Treppe,
+      Trittnischen,
+      Tuere,
+      unbekannt
+    );
+END Einstiegshilfe;
+
+CLASS Trockenwetterrinne EXTENDS BauwerksTeil =  
+!! Bauliche Einengung des Kanalquerschnittes zwecks Erhöhung der Fliessgeschwindigkeit für den Trockenwetteranfall
+  ATTRIBUTE
+    Material: (          !! Material der Ausbildung oder Auskleidung der Trockenwetterrinne
+      andere,
+      kombiniert,
+      Kunststoff,
+      Steinzeug,
+      unbekannt,
+      Zementmoertel
+    );
+END Trockenwetterrinne;
+
+CLASS Deckel EXTENDS BauwerksTeil =  
+!! Abnehmbare Abdeckung eines Schachtbauwerkes
+  ATTRIBUTE
+    Deckelform: (          !! Form des Deckels
+      andere,
+      eckig,
+      rund,
+      unbekannt
+    );
+    Durchmesser: SIA405_Base.Abmessung;  !! Abmessung des Deckels (bei eckigen Deckeln minimale Abmessung);
+    Entlueftung: (          !! Deckel mit Lüftungslöchern versehen
+      entlueftet,
+      nicht_entlueftet,
+      unbekannt
+    );
+    Fabrikat: TEXT*50;  !! Name der Herstellerfirma
+    Kote: Base.Hoehe;  !! Deckelhöhe
+    Lage: Base.LKoord;  !! Lage des Deckels (Pickelloch);
+    Lagegenauigkeit: (          !! Quantifizierung der Genauigkeit der Lage des Deckels (Pickelloch)
+      groesser_50cm,
+      plusminus_10cm,
+      plusminus_3cm,
+      plusminus_50cm,
+      unbekannt
+    );
+    Material: (          !! Deckelmaterial
+      andere,
+      Beton,
+      Guss,
+      Guss_mit_Belagsfuellung,
+      Guss_mit_Betonfuellung,
+      unbekannt
+    );
+    Schlammeimer: (          !! Angabe, ob der Deckel mit einem Schlammeimer versehen ist oder nicht
+      nicht_vorhanden,
+      unbekannt,
+      vorhanden
+    );
+    Verschluss: (          !! Befestigungsart des Deckels
+      nicht_verschraubt,
+      unbekannt,
+      verschraubt
+    );
+END Deckel;
+
+CLASS Bankett EXTENDS BauwerksTeil =  
+!! Bankett im Kanal oder Schacht
+  ATTRIBUTE
+    Art: (        
+      andere,
+      beidseitig,
+      einseitig,
+      kein,
+      unbekannt
+    );
+END Bankett;
+
+END SIA405_Abwasser; !! end of TOPIC SIA405_Abwasser
+
+VIEW TOPIC SIA405_Abwasser_LK =
+    DEPENDS ON SIA405_Abwasser;
+
+VIEW Abwassernetzelement
+  PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Abwassernetzelement;
+  =  
+  ATTRIBUTE
+END Abwassernetzelement;
+
+VIEW Abwassernetzelement_Abwasserbauwerk_Assoc 
+  PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Abwassernetzelement_AbwasserbauwerkAssoc;
+  =
+  ATTRIBUTE
+     ALL OF base;
+END Abwassernetzelement_Abwasserbauwerk_Assoc;
+
+VIEW Abwasserbauwerk
+  PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Abwasserbauwerk;
+  =  
+  ATTRIBUTE
+    Detailgeometrie :=base-> Detailgeometrie;
+    Status :=base-> Status;
+END Abwasserbauwerk;
+
+VIEW Abwasserbauwerk_Text
+  PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Abwasserbauwerk_Text;
+  =
+  ATTRIBUTE
+    ALL OF base;
+END Abwasserbauwerk_Text;
+
+VIEW Abwasserbauwerk_TextAssoc 
+  PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Abwasserbauwerk_TextAssoc;
+  =
+  ATTRIBUTE
+    ALL OF base;
+END Abwasserbauwerk_TextAssoc;
+
+VIEW Abwasserbauwerk_Eigentuemer_Assoc 
+  PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Abwasserbauwerk_EigentuemerAssoc;
+  =
+  ATTRIBUTE
+     ALL OF base;
+END Abwasserbauwerk_Eigentuemer_Assoc;
+
+VIEW Abwasserbauwerk_Betreiber_Assoc 
+  PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Abwasserbauwerk_BetreiberAssoc;
+  =
+  ATTRIBUTE
+     ALL OF base;
+END Abwasserbauwerk_Betreiber_Assoc;
+
+VIEW Abwasserknoten
+  PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Abwasserknoten;
+  =  
+  ATTRIBUTE
+END Abwasserknoten;
+
+VIEW Deckel
+  PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Deckel;
+  =  
+  ATTRIBUTE
+    Lage :=base-> Lage;
+    Lagegenauigkeit :=base-> Lagegenauigkeit;
+END Deckel;
+
+VIEW Einleitstelle
+  PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Einleitstelle;
+  =  
+  ATTRIBUTE
+END Einleitstelle;
+
+VIEW Haltung
+  PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Haltung;
+  =  
+  ATTRIBUTE
+    Lagebestimmung :=base-> Lagebestimmung;
+    Verlauf :=base-> Verlauf;
+END Haltung;
+
+VIEW Haltung_Text
+  PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Haltung_Text;
+  =
+  ATTRIBUTE
+    ALL OF base;
+END Haltung_Text;
+
+VIEW Haltung_TextAssoc 
+  PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Haltung_TextAssoc;
+  =
+  ATTRIBUTE
+    ALL OF base;
+END Haltung_TextAssoc;
+
+VIEW Haltung_vonHaltungspunkt_Assoc 
+  PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Haltung_vonHaltungspunktAssoc;
+  =
+  ATTRIBUTE
+     ALL OF base;
+END Haltung_vonHaltungspunkt_Assoc;
+
+VIEW Haltung_nachHaltungspunkt_Assoc 
+  PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Haltung_nachHaltungspunktAssoc;
+  =
+  ATTRIBUTE
+     ALL OF base;
+END Haltung_nachHaltungspunkt_Assoc;
+
+VIEW Haltung_Rohrprofil_Assoc 
+  PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Haltung_RohrprofilAssoc;
+  =
+  ATTRIBUTE
+     ALL OF base;
+END Haltung_Rohrprofil_Assoc;
+
+VIEW Haltungspunkt
+  PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Haltungspunkt;
+  =  
+  ATTRIBUTE
+    Lage :=base-> Lage;
+END Haltungspunkt;
+
+VIEW Haltungspunkt_Abwassernetzelement_Assoc 
+  PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Haltungspunkt_AbwassernetzelementAssoc;
+  =
+  ATTRIBUTE
+     ALL OF base;
+END Haltungspunkt_Abwassernetzelement_Assoc;
+
+VIEW Kanal
+  PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Kanal;
+  =  
+  ATTRIBUTE
+    FunktionHierarchisch :=base-> FunktionHierarchisch;
+END Kanal;
+
+VIEW Normschacht
+  PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Normschacht;
+  =  
+  ATTRIBUTE
+    Funktion :=base-> Funktion;
+END Normschacht;
+
+VIEW Rohrprofil
+  PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Rohrprofil;
+  =  
+  ATTRIBUTE
+    HoehenBreitenverhaeltnis :=base-> HoehenBreitenverhaeltnis;
+    Profiltyp :=base-> Profiltyp;
+END Rohrprofil;
+
+VIEW Spezialbauwerk
+  PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Spezialbauwerk;
+  =  
+  ATTRIBUTE
+    Funktion :=base-> Funktion;
+END Spezialbauwerk;
+
+VIEW Versickerungsanlage
+  PROJECTION OF base~SIA405_ABWASSER_2015.SIA405_Abwasser.Versickerungsanlage;
+  =  
+  ATTRIBUTE
+END Versickerungsanlage;
+
+END SIA405_Abwasser_LK;  !! Ende der View
+
+END SIA405_ABWASSER_2015.   !! Ende des Modells / Fin du modèle
+
+
+!! SIA405_Abwasser_2015_2_d_LV95.ili
+!! Teilmenge aus der Datenstruktur Siedlungsentwässerung (VSA-DSS)
+
+!! INTERLIS 2.3;
+
+MODEL SIA405_ABWASSER_2015_LV95 (de) AT "http://www.sia.ch/405"
+  VERSION "17.04.2018" = 
+
+  IMPORTS UNQUALIFIED INTERLIS;     !! imports INTERLIS 2 Baseunits
+  IMPORTS Units;
+  IMPORTS Base_LV95;
+  IMPORTS SIA405_Base_LV95;
+
+!! Copyright 2002 - 2015
+!! Verband Schweizer Abwasser- und Gewässerschutzfachleute (VSA), Zürich
+!! www.vsa.ch
+!! in Zusammenarbeit mit schweizer ingenieur und architektenverein (sia), Zürich
+!! www.sia.ch
+
+!! Die Nutzung dieser INTERLIS-Datei ist lizenzpflichtig!
+
+!! Die Originalmodelldatei SIA405_Abwasser_2015_2_d_LV95.ili und darauf basierende 
+!! abgeänderte Versionen dürfen nicht weiterverkauft werden. 
+!! Die Weitergabe der Originaldatei (als Ganzes oder Teile davon) ist nur 
+!! zusammen mit dem Erwerb einer Lizenz beim sia / VSA durch den Empfänger erlaubt. 
+
+!! Freigegeben für öffentlichen Gebrauch und kommerzielle Anwendung mit Lizenz.
+!! Geprueft mit Compiler Version 4.7.7 (8.02.2018)
+!! Sachbearbeiter: Stefan Burckhardt / SIA 405 Kommission
+
+UNIT
+
+TOPIC SIA405_Abwasser =
+
+DOMAIN
+
+
+Verhaeltnis_H_B = 0.01 .. 100.00;    !! Verhältnis Höhe zu Breite, ohne Einheit
+!! Rohrprofil.HoehenBreitenverhaeltnis
+
+
+Statuswerte EXTENDS SIA405_Base_LV95.Status = (  !! Betriebs- und Planungszustand. 
+!! 11.2.2012 Anpassung auf neue Variante von SIA405_Base_LV95.Status - Erweiterung Basiswerte im Medium, hierarchische Modellierung und Anpassung auf Compiler 4.5.13
+      !! 17.7.2015 ausser_Betrieb,   !! fasst ausser_Betrieb und folgende Werte zusammen
+        !!  Reserve !! existiert nicht im Medium Abwasser
+      in_Betrieb (  !! fasst in_Betrieb und folgende Werte zusammen
+         !! 17.7.2015 in_Betrieb,
+         provisorisch,
+         wird_aufgehoben
+      ),
+      tot (  !! fasst tot und folgende Werte zusammen
+         !!  tot,   !! existiert nicht im Medium Abwasser
+        aufgehoben_nicht_verfuellt,
+        aufgehoben_unbekannt,
+        verfuellt
+      ),
+      !! 17.7.2015 unbekannt,
+      weitere ( !! fasst folgende Werte zusammen
+         Berechnungsvariante,
+         geplant,
+         Projekt
+      )
+    );    !! Erweitert Wertebereich von SIA405 Status
+!! neu 17.7.2015  
+    Status = ALL OF Statuswerte;    !! Erweitert Wertebereich von SIA405 Status
+!! Abwasserbauwerk.Status
+
+
+Intervall = 0.00 .. 20.00 [Units.CountedObjects];    !! Jahre [J]
+!! Abwasserbauwerk.Inspektionsintervall
+!! Kanal.Spuelintervall
+
+
+Gefaelle_Promille = -10000 .. 10000;    !! Promille [%o]
+!! 17.4.2014 neu für Plangefaelle (statt Promille), da grösser als 1000 sein kann
+!! Haltung.Plangefaelle
+
+
+Strickler = 0 .. 999;    !! Manning-Strickler K oder kstr [m^(1/3)/s]
+!! Haltung.Reibungsbeiwert
+
+
+Prandtl = 0.00 .. 100.00 [Units.mm];    !! Wandrauhigkeitsbeiwert nach Prandtl Colebrook (ks), Milimeter [mm]
+!! Haltung.Wandrauhigkeit
+
+
+Lichte_Hoehe = 0 .. 99999 [Units.mm];    !! Milimeter [mm]
+!! 18.2.2014 neu für Lichte_Hoehe (statt Abmessung)
+!! Haltung.Lichte_Hoehe
+!! Haltung.Reliner_Nennweite
+
+
+UID = TEXT*12;    !! 
+!! Organisation.UID
+
+
+Ziffernblatt = 0..12;    !! 
+!! gemäss Richtlinie
+!! Haltungspunkt.Lage_Anschluss
+
+
+CLASS Organisation EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+!! Superklasse für in der Entwässerungsplanung relevante organisatorische Einheiten (z.B. Gemeinde, Kanton, etc.)
+  ATTRIBUTE
+    Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
+    Bezeichnung: MANDATORY SIA405_Base_LV95.OrganisationBezeichnung;  !! Es wird empfohlen reale Namen zu nehmen, z.B. Mustergemeinde und nicht Gemeinde. Oder Abwasserverband ARA Muster und nicht nur Abwasserverband, da es sonst Probleme gibt bei der Zusammenführung der Daten.
+    UID: UID;  !! Referenz zur Unternehmensidentifikation des Bundesamts fuer Statistik (www.uid.admin.ch), z.B. CHE123456789
+END Organisation;
+
+ASSOCIATION Organisation_Teil_vonAssoc =    !! Assoziation
+  Teil_vonRef  -- {0..*} Organisation; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  Organisation_Teil_vonAssocRef -- {0..*} Organisation; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
+END Organisation_Teil_vonAssoc;
+
+CLASS Abwasserbauwerk (ABSTRACT) EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+!! Bauwerk in einem Entwässerungsnetz (dss)
+  ATTRIBUTE
+    Akten: MTEXT*255;  !! Plan Nr. der Ausführungsdokumentation. Kurzbeschrieb weiterer Akten (Betriebsanleitung vom …, etc.);
+    Baujahr: SIA405_Base_LV95.Jahr;  !! Jahr der Inbetriebsetzung (Schlussabnahme). Falls unbekannt = 1800 setzen (tiefster Wert des Wertebereichs);
+    BaulicherZustand: (          !! Zustandsklassen 0 bis 4 gemäss VSA-Richtline "Erhaltung von Kanalisationen". Beschreibung des baulichen Zustands des Abwasserbauwerks. Nicht zu verwechseln mit den Sanierungsstufen, welche die Prioritäten der Massnahmen bezeichnen (Attribut Sanierungsbedarf).
+      unbekannt,
+      Z0,  !! Nicht mehr funktionstüchtig: Das Abwasserbauwerk ist bereits oder demnächst nicht mehr durchgängig: Bauwerk eingestürzt, totale Verwurzelung oder andere Abflusshindernisse. Das Bauwerk verliert Wasser (Exfiltration / mögliche Grundwasserverschmutzung).
+      Z1,  !! Starke Mängel: Bauliche Schäden, bei welchen die statische Sicherheit, Hydraulik oder Dichtheit nicht mehr gewährleistet ist: Brüche axial oder radial, (Rohr-)deformationen, visuell sichtbare Wassereintritte oder Wasseraustritte, Löcher in der Wand, stark vorstehende seitliche Anschlüsse, starke Verwurzelungen, Wand stark ausgewaschen. Ungeeignetes (Rohr-)material.
+      Z2,  !! Mittlere Mängel: Bauliche Mängel, welche die Statik, Hydraulik oder Dichtheit beeinträchtigen: breite (Rohr-)fugen, nicht verputzte Einläufe, Risse, leichte Abflusshindernisse wie Verkalkungen, vorstehende seitliche Anschlüsse, leichte Wandbeschädigungen, einzelne Wurzeleinwüchse, (Rohr-)wand ausgewaschen usw.
+      Z3,  !! Leichte Mängel: Bauliche Mängel oder Vorkommnisse, welche für die Dichtheit, Hydraulik oder Statik einen unbedeutenden Einfluss haben: breite (Rohr-)fugen, schlecht verputzte seitlichen Anschlüsse, leichte Deformation bei Bauwerken aus Kunststoff, leichte Auswaschungen etc.
+      Z4  !! Keine Mängel
+    );
+    Baulos: TEXT*50;  !! Nummer des Bauloses
+    Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
+    Bezeichnung: MANDATORY TEXT*20;  !! Pro Datenherr eindeutige Bezeichnung
+    Bruttokosten: 0.00 .. 99999999.99 [Units.CHF];  !! Brutto Erstellungskosten
+    Detailgeometrie: Base_LV95.Surface;  !! Detaillierte Geometrie insbesondere bei Spezialbauwerken. Für Normschächte i.d. R.  Dimension1 und 2 verwenden. Dito bei normierten Versickerungsanlagen.  Kanäle haben normalerweise keine Detailgeometrie.
+    Ersatzjahr: SIA405_Base_LV95.Jahr;  !! Jahr, in dem die Lebensdauer des Bauwerks voraussichtlich abläuft
+    Finanzierung: (          !! Finanzierungart (Finanzierung gemäss GschG Art. 60a).
+      oeffentlich,  !! Gesamtheit aller erdverlegten Leitungen und Bauwerke, die über Abwassergebühren gemäss Art. 60a des Gewässerschutzgesetzes finanziert werden
+      privat,  !! Gesamtheit aller erdverlegten Leitungen und Bauwerke, die nicht über Abwassergebühren gemäss Art. 60a des Gewässerschutzgesetzes finanziert werden
+      unbekannt
+    );
+    Inspektionsintervall: Intervall;  !! Abstände, in welchen das Abwasserbauwerk inspiziert werden sollte (Jahre);
+    Sanierungsbedarf: (          !! Dringlichkeitsstufen und Zeithorizont für bauliche Massnahmen gemäss VSA-Richtline "Erhaltung von Kanalisationen"
+      dringend,  !! Die Massnahmen sind dringend auszuführen. Sofortmassnahmen wie bei kurzfristig sind zu prüfen. Zeithorizont 3-4 Jahre.
+      keiner,  !! Es sind keine Massnahmen bis zur nächsten Zustandserfassung und Zustandsbeurteilung erforderlich. Zeithorizont >= 10 Jahre.
+      kurzfristig,  !! Die Massnahmen sind sehr dringend und kurzfristig auszuführen. Im Sinne von Sofortmassnahmen können durch provisorische, lokale Reparaturen weitere Schäden temporär verhindert werden. Zeithorizont <= 2 Jahre
+      langfristig,  !! Die Massnahmen können längerfristig geplant werden. Zeithorizont 7-10 Jahre.
+      mittelfristig,  !! Die Massnahmen sind mittelfristig erforderlich. Zeithorizont 5-7 Jahre.
+      unbekannt
+    );
+    Standortname: TEXT*50;  !! Strassenname oder Ortsbezeichnung  zum Bauwerk
+    Status: Status;  !! Betriebs- bzw. Planungszustand des Bauwerks
+    Subventionen: 0.00 .. 99999999.99 [Units.CHF];  !! Staats- und Bundesbeiträge
+    WBW_Basisjahr: SIA405_Base_LV95.Jahr;  !! Basisjahr für die Kalkulation des Wiederbeschaffungswerts (siehe auch Attribut Wiederbeschaffungswert);
+    WBW_Bauart: (          !! Grobe Einteilung der Bauart des Abwasserbauwerks als Inputwert für die Berechnung des Wiederbeschaffungswerts.
+      andere,
+      Feld,  !! Im Feld (Profiltypen für Grabenarbeiten nach Norm SIA 190)
+      Sanierungsleitung_Bagger,  !! Bei Sanierungsleitungen, die mit einem Bagger gebaut wurden
+      Sanierungsleitung_Grabenfraese,  !! Bei Sanierungsleitungen, die mit einer Grabenfräse gebaut wurden
+      Strasse,  !! In der Strasse (Profiltypen für Grabenarbeiten nach Norm SIA 190)
+      unbekannt
+    );
+    Wiederbeschaffungswert: 0.00 .. 99999999.99 [Units.CHF];  !! Wiederbeschaffungswert des Bauwerks. Zusätzlich muss auch das Attribut WBW_Basisjahr erfasst werden
+    Zugaenglichkeit: (          !! Möglichkeit der Zugänglichkeit ins Innere eines Abwasserbauwerks für eine Person (nicht für ein Fahrzeug)
+      ueberdeckt,  !! Hier muss man z.B. zuerst graben, bis man  z.B. den Deckel öffnen kann
+      unbekannt,
+      unzugaenglich,
+      zugaenglich  !! Zugänglich für eine Person (und nicht unbedingt ein Fahrzeug)
+    );
+END Abwasserbauwerk;
+
+CLASS Abwasserbauwerk_Text EXTENDS SIA405_Base_LV95.SIA405_TextPos =
+END Abwasserbauwerk_Text;
+
+ASSOCIATION Abwasserbauwerk_TextAssoc =   !! Komposition
+  AbwasserbauwerkRef -<#> {1} Abwasserbauwerk;
+  Text -- {0 .. *} Abwasserbauwerk_Text;
+END Abwasserbauwerk_TextAssoc;
+
+CLASS Abwasserbauwerk_Symbol EXTENDS SIA405_Base_LV95.SIA405_SymbolPos =
+END Abwasserbauwerk_Symbol;
+
+ASSOCIATION Abwasserbauwerk_SymbolAssoc =   !! Komposition
+  AbwasserbauwerkRef -<#> {1} Abwasserbauwerk;
+  Symbol -- {0 .. *} Abwasserbauwerk_Symbol;
+END Abwasserbauwerk_SymbolAssoc;
+
+ASSOCIATION Abwasserbauwerk_EigentuemerAssoc =    !! Assoziation
+  EigentuemerRef  -- {0..1} Organisation; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  Abwasserbauwerk_EigentuemerAssocRef -- {0..*} Abwasserbauwerk; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
+END Abwasserbauwerk_EigentuemerAssoc;
+
+ASSOCIATION Abwasserbauwerk_BetreiberAssoc =    !! Assoziation
+  BetreiberRef  -- {0..1} Organisation; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  Abwasserbauwerk_BetreiberAssocRef -- {0..*} Abwasserbauwerk; !! Für den Unterhalt eines Bauwerks zuständige Stelle, Rolle2 - Klasse2 / Rôle2 - Classe2
+END Abwasserbauwerk_BetreiberAssoc;
+
+CLASS Kanal EXTENDS Abwasserbauwerk =  
+!! Offenes oder geschlossenes Gerinne zur Ableitung von Abwasser zwischen zwei Abwasserbauwerken
+  ATTRIBUTE
+    Bettung_Umhuellung: (          !! Art und Weise der unmittelbaren Rohrumgebung im Boden: Bettungsschicht (Unterlage der Leitung),  Verdämmung (seitliche Auffüllung), Schutzschicht
+      andere,
+      erdverlegt,  !! Entweder im Aushubmaterial gebettet oder Press-/Schlagvortrieb
+      in_Kanal_aufgehaengt,
+      in_Kanal_einbetoniert,
+      in_Leitungsgang,  !! SIA405 1998: inKulisse IKU
+      in_Vortriebsrohr_Beton,
+      in_Vortriebsrohr_Stahl,
+      Sand,
+      SIA_Typ1,  !! Gemäss Definition SIA Norm 190, Ausgabe 2000
+      SIA_Typ2,  !! Gemäss Definition SIA Norm 190, Ausgabe 2000
+      SIA_Typ3,  !! Gemäss Definition SIA Norm 190, Ausgabe 2000
+      SIA_Typ4,  !! Gemäss Definition SIA Norm 190, Ausgabe 2000
+      Sohlbrett,  !! Spezielle Art der Bettung bei Meliorationsleitungen
+      unbekannt
+    );
+    FunktionHierarchisch: (       !! Art des Kanals hinsichtlich Bedeutung im Entwässerungssystem
+      PAA (
+        andere,  !! Andere primäre Abwasseranlagen
+         Gewaesser,  !! Erfassung aus Kanalperspektive (z.B. weil hydraulische Berechnung notwendig)
+         Hauptsammelkanal,  !! Übergeordneter Sammelkanal. Kann je nach Netzhierarchie vorgenommen werden.
+         Hauptsammelkanal_regional,  !! Hauptsammelkanal mit regionaler Bedeutung zur Gliederung des Netzes bei Regionalem GEP, z.B. auf regionalem Übersichtsplan, da dies z.T. nicht über die Beziehung Eigentümer gelöst werden kann.
+         Liegenschaftsentwaesserung,  !! Liegenschaftsentwässerung (hydraulisch relevant). Abgrenzung Liegenschaftsentwässerung von Gebäudeentwässerung gemäss Norm "Planung und Erstellung von Anlagen für die Liegenschaftsentwässerung (SN 592 000)"
+         Sammelkanal,  !! Kanal, der das Abwasser aus Liegenschafts- und Strassenentwässerungen aufnimmt.
+         Sanierungsleitung,  !! Entwässerungsleitung (hydraulisch relevant) zum abwassertechnischen Anschluss von abgelegenen Liegenschaften an die Kanalisation, bei deren Planung und Erstellung gewisse Vereinfachungen zulässig sind.
+         Strassenentwaesserung,  !! Entwässerung von Strassen (hydraulisch relevant)
+         unbekannt
+      ),
+      SAA (
+         andere,  !! Andere sekundäre Abwasseranlage
+         Liegenschaftsentwaesserung,  !! Liegenschaftsentwässerung (hydraulisch nicht relevant). Abgrenzung Liegenschaftsentwässerung von Gebäudeentwässerung gemäss Norm "Planung und Erstellung von Anlagen für die Liegenschaftsentwässerung (SN 592 000)"
+         Sanierungsleitung,  !! Entwässerungsleitung (hydraulisch nicht relevant) zum abwassertechnischen Anschluss von abgelegenen Liegenschaften an die Kanalisation, bei deren Planung und Erstellung gewisse Vereinfachungen zulässig sind.
+         Strassenentwaesserung,  !! Entwässerung von Strassen (hydraulisch nicht relevant)
+         unbekannt  !! Entwässerung von Strassen (hydraulisch nicht relevant)
+      )
+    );
+    FunktionHydraulisch: (          !! Art des Kanals hinsichtlich hydraulischer Ausführung
+      andere,
+      Drainagetransportleitung,  !! Kanal, welcher Wasser aus Drainageleitungen transportiert
+      Drosselleitung,  !! Kanal mit vermindertem Querschnitt zur bewussten Begrenzung, resp. Verminderung des Abflusses. Die Funktionsweise basiert auf Abflussverhältnissen unter Druck.
+      Duekerleitung,  !! Geschlossenes Leitungssystem zur Unterfahrung eines Hindernisses als Abwasserdruckleitung.
+      Freispiegelleitung,  !! Die Freispiegelleitung ist eine Rohrleitung, in der das Wasser gemäss dem Gesetz der Schwerkraft von einem höher gelegenen Anfangspunkt zu einem tiefer gelegenen Endpunkt gelangt. (arb)
+      Pumpendruckleitung,  !! Druckleitung im Anschluss an ein Pumpwerk
+      Sickerleitung,  !! 1. Erdverlegte Leitung zur Sammlung und Ableitung von Hang- und Sickerwasser (SN 592 000) 2. Drainageleitung mit undichten Stossfugen, geschlitzten Rohren oder wasserdurchlässigem Rohrmaterial zur Entwässerung des Baugrundes. (arb)
+      Speicherleitung,  !! Zur bewussten Rückhaltung von Abwassermengen dimensionierte Leitung bei einem Regenrückhalte-, einem Fang- oder einem Stauraumkanal
+      Spuelleitung,  !! Leitung mit spezieller Funktion zum Spülen einer Entwässerungsanlage
+      unbekannt,
+      Vakuumleitung
+    );
+    Nutzungsart_geplant: (          !! Durch das Konzept vorgesehene Nutzung (vergleiche auch Nutzungsart_Ist)
+      andere,  !! Z.B. auch Zugang, Be- und Entlüftung
+      Bachwasser,  !! Wasser eines Fliessgewässers, das gemäss seinem natürlichen Zustand oberflächlich, aber an einigen Orten auch in unterirdischen Leitungen abfliesst.
+      entlastetes_Mischabwasser,  !! Wasser aus einem Entlastungsbauwerk, welches zum Vorfluter geführt wird. In diesen Kanal darf kein Schmutzabwasser eingeleitet werden.
+      Industrieabwasser,  !! Unter Industrieabwasser werden alle Abwässer verstanden, die bei Produktions- und Verarbeitungsprozessen in der Industrie anfallen. Industrieabwässer müssen i.d.R. vorbehandelt werden, bevor sie in öffentliche Kläranlagen eingeleitet werden können (siehe Indirekteinleiter). Bei direkter Einleitung in Gewässer (siehe Direkteinleiter) ist eine umfangreiche Reinigung in speziellen werkseigenen Kläranlagen erforderlich.
+      Mischabwasser,  !! 1. Mischung von Schmutz- und Regenabwasser, die gemeinsam abgeleitet werden 2. Abwasser welches aus einer Mischung von Schmutzabwasser und Regenabwasser besteht
+      Regenabwasser,  !! Wasser aus natürlichem Niederschlag, das nicht durch Gebrauch verunreinigt wurde. Die Zuordnung zu verschmutztem oder unverschmutztem Abwasser erfolgt nach der Gewässerschutzgesetzgebung bzw. nach Anleitung der VSA-Richtlinie "Regenwasserentsorgung"
+      Reinabwasser,  !! Sicker-, Grund-, Quell- und Brunnenwasser sowie Kühlwasser aus Durchlaufkühlungen. Gemäss Gewässerschutzgesetz gilt Reinabwasser als unverschmutztes Abwasser  (SN 592 000).
+      Schmutzabwasser,  !! Durch Gebrauch verändertes Wasser (häusliches, gewerbliches oder industrielles Abwasser), das in eine Entwässerungsanlage eingeleitet und einer Abwasserbehandlung zugeführt werden muss. Schmutzabwasser gilt als verschmutztes Abwasser im Sinne des Gewässerschutzgesetzes (SN 592 000)
+      unbekannt
+    );
+    Nutzungsart_Ist: (          !! Für primäre Abwasseranlagen gilt: Heute zulässige Nutzung. Für sekundäre Abwasseranlagen gilt: Heute tatsächliche Nutzung
+      andere,  !! Z.B. auch Zugang, Be- und Entlüftung
+      Bachwasser,  !! Wasser eines Fliessgewässers, das gemäss seinem natürlichen Zustand oberflächlich, aber an einigen Orten auch in unterirdischen Leitungen abfliesst.
+      entlastetes_Mischabwasser,  !! Wasser aus einem Entlastungsbauwerk, welches zum Vorfluter geführt wird. In diesen Kanal darf kein Schmutzabwasser eingeleitet werden.
+      Industrieabwasser,  !! Unter Industrieabwasser werden alle Abwässer verstanden, die bei Produktions- und Verarbeitungsprozessen in der Industrie anfallen. Industrieabwässer müssen i.d.R. vorbehandelt werden, bevor sie in öffentliche Kläranlagen eingeleitet werden können (siehe Indirekteinleiter). Bei direkter Einleitung in Gewässer (siehe Direkteinleiter) ist eine umfangreiche Reinigung in speziellen werkseigenen Kläranlagen erforderlich.
+      Mischabwasser,  !! 1. Mischung von Schmutz- und Regenabwasser, die gemeinsam abgeleitet werden 2. Abwasser welches aus einer Mischung von Schmutzabwasser und Regenabwasser besteht
+      Regenabwasser,  !! Wasser aus natürlichem Niederschlag, das nicht durch Gebrauch verunreinigt wurde. Die Zuordnung zu verschmutztem oder unverschmutztem Abwasser erfolgt nach der Gewässerschutzgesetzgebung bzw. nach Anleitung der VSA-Richtlinie "Regenwasserentsorgung"
+      Reinabwasser,  !! Sicker-, Grund-, Quell- und Brunnenwasser sowie Kühlwasser aus Durchlaufkühlungen. Gemäss Gewässerschutzgesetz gilt Reinabwasser als unverschmutztes Abwasser (SN 592 000).
+      Schmutzabwasser,  !! Durch Gebrauch verändertres Wasser (häusliches, gewerbliches oder industrielles Abwasser), das in eine Entwässerungsanlage eingeleitet und einer Abwasserbehandlung zugeführt werden muss. Schmutzabwasser gilt als verschmutztes Abwasser im Sinne des Gewässerschutzgesetzes (SN 592 000)
+      unbekannt
+    );
+    Rohrlaenge: 0.00 .. 30000.00 [m];  !! Baulänge der Einzelrohre oder Fugenabstände bei Ortsbetonkanälen
+    Spuelintervall: Intervall;  !! Abstände in welchen der Kanal gespült werden sollte
+    Verbindungsart: (          !! Verbindungstypen
+      andere,
+      Elektroschweissmuffen,
+      Flachmuffen,
+      Flansch,
+      Glockenmuffen,
+      Kupplung,
+      Schraubmuffen,
+      spiegelgeschweisst,
+      Spitzmuffen,
+      Steckmuffen,
+      Ueberschiebmuffen,
+      unbekannt,
+      Vortriebsrohrkupplung
+    );
+END Kanal;
+
+CLASS Normschacht EXTENDS Abwasserbauwerk =  
+!! Normiertes Schachtbauwerk mit abnehmbarem Deckel im Kanalnetz
+  ATTRIBUTE
+    Dimension1: SIA405_Base_LV95.Abmessung;  !! Dimension1 des Schachtes (grösstes Innenmass).
+    Dimension2: SIA405_Base_LV95.Abmessung;  !! Dimension2 des Schachtes (kleinstes Innenmass). Bei runden Schächten wird Dimension2 leer gelassen, bei ovalen abgefüllt. Für eckige Schächte Detailgeometrie verwenden.
+    Funktion: (          !! Art der Nutzung
+      Absturzbauwerk,  !! Ein Absturzschacht ist ein spezielles Bauwerk im Kanalisationsnetz zur Überwindung von Höhenunterschieden auf kurze Entfernung bei gleichzeitiger Energieumwandlung
+      andere,
+      Be_Entlueftung,  !! Vorrichtung zum gewünschten Luftaustausch in Abwasserbauwerken
+      Dachwasserschacht,  !! Schacht im Bereich der Lienschaftsentwässerung, in den in der Regel Abflussrohre vom Dach einmünden. Diese sind meist kleiner als die Einlaufschächte
+      Einlaufschacht,  !! Ablauf zur Fassung des Oberflächenwasssers bestehend aus einem Schacht mit einem Aufsatz aus einem Rahmen und einem Rost (VSS, SN 640 356)
+      Entwaesserungsrinne,  !! Längliches Bauelement mit geschlitzten Öffnungen zur Aufnahme von abfliessendem Oberflächenwasser
+      Geleiseschacht,  !! Normschacht zur Entwässerung von Geleiseanlagen
+      Kontrollschacht,  !! Bauwerk, das den Zugang für Unterhalts- und Kontrollzwecke zu Abwasser- und Sickerleitungen ermöglicht
+      Oelabscheider,  !! Ein Ölabscheider ist ein spezielles Bauwerk zum Abscheiden von Leichtflüssigkeiten von Abwasser. Es verhindert das Einleiten von Öl in den Vorfluter. Die Funktionsweise basiert auf dem Dichteunterschied von Wasser und Benzin, das zum Aufschwimmen des Öls führt.
+      Pumpwerk,  !! Anlage zum Heben von Abwasser innerhalb eines Kanalnetzes
+      Regenueberlauf,  !! Sonderbauwerk, welches Mischabwasser auftrennt und einen Teil davon direkt dem Gewaesser zuführt.
+      Schlammsammler,  !! 1. Einlaufschacht mit Schlammsack  2. Ablauf zur Fassung des Oberflächenwasssers auf der Strasse bestehend aus einem Schacht mit Absetzraum mit einem Aufsatz aus einem Rahmen und einem Rost (VSS, SN 640 356)
+      Schwimmstoffabscheider,  !! Ein Schwimmstoffabscheider ist ein Schlammsammler entweder mit einem verlängerten Tauchbogen oder einer Tauchwand. Wird insbesondere bei Versickerungsanlagen als Vorbehandlung gebraucht
+      Spuelschacht,  !! Schacht der zu Spülzwecken benötigt wird
+      Trennbauwerk,  !! Bauwerk, welches Abwasser im System auftrennt, aber nicht aus dem System entlastet. Ein oder mehrere Zuläufe, zwei oder mehr Abläufe
+      unbekannt
+    );
+    Material: (          !! Hauptmaterial aus dem das Bauwerk besteht zur groben Klassifizierung.
+      andere,
+      Beton,
+      Kunststoff,
+      unbekannt
+    );
+    Oberflaechenzulauf: (          !! Zuflussmöglichkeit  von Oberflächenwasser direkt in den Schacht
+      andere,
+      keiner,
+      Rost,
+      unbekannt,
+      Zulauf_seitlich
+    );
+END Normschacht;
+
+CLASS Einleitstelle EXTENDS Abwasserbauwerk =  
+!! Auslauf aus dem Kanal in das Fliessgewässer
+  ATTRIBUTE
+    Hochwasserkote: Base_LV95.Hoehe;  !! Massgebliche Hochwasserkote der Einleitstelle. Diese ist in der Regel grösser als der Wasserspiegel_Hydraulik.
+    Relevanz: (          !! Gewässerrelevanz der Einleitstelle
+      gewaesserrelevant,  !! Auslauf einer Kanalisationsleitung in ein Oberflächengewässer mit oder ohne Einleitbauwerk, der den Gewässerzustand oder die Verhältnisse im Gewässer beeinflusst. Neben den Einleitstellen von PAA-Netzen, die per Definition als gewässerrelevant gelten, können auch Einleitstellen von SAA-Leitungsnetzen gewässerrelevant sein
+      nicht_gewaesserrelevant  !! Auslauf einer SAA-Kanalisationsleitung in ein Oberflächengewässer mit oder ohne Einleitbauwerk, der den Gewässerzustand oder die Verhältnisse im Gewäs¬ser nicht wesentlich beeinflusst.
+    );
+    Terrainkote: Base_LV95.Hoehe;  !! Terrainkote, falls kein Deckel vorhanden bei Einleitstelle (Kanalende ohne Bauwerk oder Bauwerk ohne Deckel);
+    Wasserspiegel_Hydraulik: Base_LV95.Hoehe;  !! Wasserspiegelkote für die hydraulische Berechnung (IST-Zustand). Berechneter Wasserspiegel bei der Einleitstelle. Wo nichts anders gefordert, ist der Wasserspiegel bei einem HQ30 einzusetzen.
+END Einleitstelle;
+
+CLASS Spezialbauwerk EXTENDS Abwasserbauwerk =  
+!! Nicht normiertes Abwasserbauwerk mit spezieller Funktion, z.B zur Auftrennung von Abwassermengen, zur Überwindung von Höhenunterschieden oder zur Speicherung und Grobklärung
+  ATTRIBUTE
+    Bypass: (          !! Bypass zur Umleitung des Wassers (z.B. während Unterhalt oder  im Havariefall)
+      nicht_vorhanden,
+      unbekannt,
+      vorhanden
+    );
+    Funktion: (          !! Art der Nutzung
+      abflussloseGrube,  !! Abflusslose Grube
+      Absturzbauwerk,  !! Ein Absturzschacht ist ein spezielles Bauwerk im Kanalisationsnetz zur Überwindung von Höhenunterschieden auf kurze Entfernung bei gleichzeitiger Energieumwandlung
+      Abwasserfaulraum,  !! Abwasserfaulraum: 3 Kammern
+      andere,  !! Nur verwenden, wenn kein anderer Wert zutrifft. Die Funktion des Bauwerkes im Feld Bemerkung beschreiben
+      Be_Entlueftung,  !! Vorrichtung zum gewünschten Luftaustausch in Abwasserbauwerken
+      Duekerkammer,  !! Spezialbauwerk bei einem Abwasserdüker zur Entleerung der Leitungen am tiefsten Punkt
+      Duekeroberhaupt,  !! Bauwerk zur Aufteilung des Abflusses auf mehrere Dükerrohre
+      Faulgrube,  !! Faulgrube: 2 Kammern
+      Gelaendemulde,  !! Natürliche oder künstliche Vertiefung im Boden, um abfliessendes Wasser zurückzuhalten
+      Geschiebefang,  !! Spezialbauwerk zur Aufnahme von im Wasser mitgeführten Material. Häufig am Übergang zu einem eingedolten Abschnitt
+      Guellegrube,  !! Gülle- bzw. Jauchegrube
+      Klaergrube,  !! Eine Klärgrube (1 Kammer) dient der Entwässerung einer Liegenschaft, die nicht an die öffentliche Kanalisation angeschlossen ist. Eine Klärgrube ist üblicherweise ein beckenartiges, unterirdisches Bauwerk, in dem sich die festen Stoffe am Boden absetzen, Klärgruben müssen periodisch geleert werden.
+      Kontrollschacht,  !! Bauwerk, das den Zugang für Unterhalts- und Kontrollzwecke zu Abwasser- und Sickerleitungen ermöglicht (VSS, SN 640 364)
+      Oelabscheider,  !! Ein Ölabscheider ist ein spezielles Bauwerk zum Abscheiden von Leichtflüssigkeiten von Abwasser. Es verhindert das Einleiten von Öl in den Vorfluter. Die Funktionsweise basiert auf dem Dichteunterschied von Wasser und Benzin, das zum Aufschwimmen des Öls führt.
+      Pumpwerk,  !! Anlage zum Heben von Abwasser innerhalb eines Kanalnetzes
+      Regenbecken_Durchlaufbecken,  !! Bauwerk in Mischabwassernetzen zur Absetzung von partikulären Stoffen und zur Speicherung von Mischabwasser (Sekundärwirkung, es können nur kleine Regenmengen gespeichert werden)
+      Regenbecken_Fangbecken,  !! Regenüberlaufbecken, dass zum Fangen des ersten Schmutzstosses dient
+      Regenbecken_Fangkanal,  !! Speicherleitung mit oberhalb liegendem Überlauf ins Gewässer
+      Regenbecken_Regenklaerbecken,  !! Absetzbecken für Regenabwasser im Trennsystem
+      Regenbecken_Regenrueckhaltebecken,  !! Speicherraum für Regenabflussspitzen im Misch- oder Regenabwassernetz. Er dient der Entlastung der Kanalisation bei starkem Regen und hat im Gegensatz zu Regenüberlaufbecken keinen Überlauf oder nur einen Notüberlauf zum Gewässer
+      Regenbecken_Regenrueckhaltekanal,  !! Speicherkanal mit der gleichen Funktionsweise wie das Regenrückhaltebecken
+      Regenbecken_Stauraumkanal,  !! Speicherleitung mit unterhalb liegendem Überlauf ins Gewässer
+      Regenbecken_Verbundbecken,  !! Kombination von Fangbecken und Klärbecken
+      Regenueberlauf,  !! Sonderbauwerk, welches Mischabwasser auftrennt und einen Teil davon direkt dem Gewaesser zuführt.
+      Schwimmstoffabscheider,  !! Ein Schwimmstoffabscheider ist ein Schlammsammler entweder mit einem verlängerten Tauchbogen oder einer Tauchwand. Wird insbesondere bei Versickerungsanlagen als Vorbehandlung gebraucht
+      seitlicherZugang,  !! Ebenerdiger Zugang zu einem Bauwerk
+      Spuelschacht,  !! Schacht, der zu Spülzwecken benötigt wird
+      Trennbauwerk,  !! Bauwerk, welches Abwasser im System auftrennt, aber nicht aus dem System entlastet. Ein oder mehrere Zuläufe, zwei oder mehr Abläufe
+      unbekannt,
+      Wirbelfallschacht  !! Bauwerk zur möglichst schadlosen, geführten Ableitung von Wasser über eine gewisse  Höhenstufe. Das Bauwerk besteht aus Drallkammer, Fallrohr, Toskammer und Rezirkulationsbelüftungsrohr
+    );
+    Notueberlauf: (          !! Das Attribut beschreibt, wohin die das Volumen übersteigende Menge abgeleitet wird (bei Regenrückhaltebecken / Regenrückhaltekanal).
+      andere,
+      inMischabwasserkanalisation,
+      inRegenabwasserkanalisation,
+      inSchmutzabwasserkanalisation,
+      keiner,
+      unbekannt
+    );
+    Regenbecken_Anordnung: (          !! Anordnung des Regenbeckens im System. Zusätzlich zu erfassen falls Spezialbauwerk.Funktion = Regenbecken_*
+      Hauptschluss,  !! Durchfluss des Beckens bei Trockenwetter und teilweiser Durchfluss bei Regenwetter
+      Nebenschluss,  !! Durchfluss des Beckens nur bei Regenwetter
+      unbekannt
+    );
+END Spezialbauwerk;
+
+CLASS Versickerungsanlage EXTENDS Abwasserbauwerk =  
+!! Einbringen von Reinabwasser und wenig verschmutztem Regenabwasser in den Untergrund (Definition gemäss VSA Richtlinie Regenwasserentsorgung 2002)
+  ATTRIBUTE
+    Art: (          !! Arten von Versickerungsmethoden.
+      andere_mit_Bodenpassage,
+      andere_ohne_Bodenpassage,
+      Flaechenfoermige_Versickerung,  !! flächenförmige Versickerung
+      Kieskoerper,
+      Kombination_Schacht_Strang,
+      MuldenRigolenversickerung,
+      unbekannt,
+      Versickerung_ueber_die_Schulter,
+      Versickerungsbecken,
+      Versickerungsschacht,
+      Versickerungsstrang_Galerie
+    );
+    Beschriftung: (          !! Kennzeichnung der Schachtdeckel der Anlage als Versickerungsanlage.  Nur bei Anlagen mit Schächten.
+      beschriftet,
+      nichtbeschriftet,
+      unbekannt
+    );
+    Dimension1: SIA405_Base_LV95.Abmessung;  !! Dimension1 der Versickerungsanlage (grösstes Innenmass) bei der Verwendung von Normbauteilen. Sonst leer lassen und mit Detailgeometrie beschreiben.
+    Dimension2: SIA405_Base_LV95.Abmessung;  !! Dimension2 der Versickerungsanlage (kleinstes Innenmass) bei der Verwendung von Normbauteilen. Sonst leer lassen und mit Detailgeometrie beschreiben.
+    GWDistanz: 0.00 .. 30000.00 [m];  !! Flurabstand (Vertikale Distanz Terrainoberfläche zum Grundwasserleiter).
+    Maengel: (          !! Gibt die aktuellen Mängel der Versickerungsanlage an (IST-Zustand).
+      keine,
+      unwesentliche,  !! "unwesentliche" heisst, dass keine Nachkontrolle nötig ist
+      wesentliche  !! "wesentliche" heisst, dass eine Nachkontrolle nötig ist
+    );
+    Notueberlauf: (          !! Endpunkt allfälliger Verrohrung des Notüberlaufes der Versickerungsanlage
+      inMischwasserkanalisation,  !! "inMischwasserkanalisation" heisst, dass die Versickerung direkt verrohrt ist und nicht frei über das Gelände zwischendurch läuft (unerwünschter Zustand)
+      inRegenwasserkanalisation,  !! "inRegenwasserkanalisation" heisst, dass die Versickerung direkt verrohrt ist und nicht frei über das Gelände  zwischendurch läuft (unerwünschter Zustand)
+      inVorfluter,  !! Direkte Rohrverbindung zu einem Vorfluter (unerwünschte Konstruktion)
+      keiner,
+      oberflaechlichausmuendend,  !! Das Wasser überfliesst beim Einstau über die Versickerungsanlage hinaus an die Oberfläche (gewünschter Zustand / Hinweis auf verstopfte Anlage).
+      unbekannt
+    );
+    Saugwagen: (          !! Zugänglichkeit für Saugwagen. Sie bezieht sich auf die gesamte Versickerungsanlage / Vorbehandlungsanlagen und kann in den Bemerkungen weiter spezifiziert werden
+      unbekannt,
+      unzugaenglich,
+      zugaenglich
+    );
+    Schluckvermoegen: 0.000 .. 100000.000 [SIA405_Base_LV95.ls];  !! Schluckvermögen des Bodens.
+    Versickerungswasser: (          !! Arten des zu versickernden Wassers.
+      Regenabwasser,  !! Wasser aus natürlichem Niederschalg, das nicht durch Gebrauch verunreinigt wurde. Die Zuordnung zu verschmutztem oder unverschmutztem Abwasser erfolgt nach der Gewässerschutzgesetzgebung bzw. nach Anleitung der Richtlinie "Regenwasserentsorgung"
+      Reinabwasser,
+      unbekannt
+    );
+    Wasserdichtheit: (          !! Wasserdichtheit gegen Oberflächenwasser.  Nur bei Anlagen mit Schächten.
+      nichtwasserdicht,
+      unbekannt,
+      wasserdicht
+    );
+    Wirksameflaeche: 0.00 .. 100000.00 [Units.m2];  !! Für den Abfluss wirksame Fläche
+END Versickerungsanlage;
+
+CLASS Rohrprofil EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+!! Form des Fliessquerschnittes mit Angabe der Dimension
+  ATTRIBUTE
+    Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
+    Bezeichnung: MANDATORY TEXT*20;
+    HoehenBreitenverhaeltnis: Verhaeltnis_H_B;  !! Verhältnis der Höhe zur Breite
+    Profiltyp: (          !! Typ des Profils
+      Eiprofil,  !! Nur für Norm-Eiprofile gemäss DIN 4263 mit Höhenbreitenverhältnis von 1.5 verwenden. Andere Eiprofile, auch solche mit Einbauten, sind als „Spezialprofil“ zu attributieren und die Profildefinition ist mitzuliefern.
+      Kreisprofil,  !! Nur für reine Kreisprofile ohne Trockenwetterrinne oder andere Einbauten verwenden. Sonst als „Spezialprofil“ attributieren und die Profildefinition mitliefern.
+      Maulprofil,  !! Nur für Norm-Maulprofile gemäss DIN 4263 verwenden. Abweichende Varianten, auch solche mit Einbauten, sind als „Spezialprofil“ zu attributieren und die Profildefinition ist mitzuliefern.
+      offenes_Profil,  !! Für offene Profile. Profildefinition mitliefern
+      Rechteckprofil,  !! Nur für reine Rechteckprofile ohne Trockenwetterrinne oder andere Einbauten verwenden. Sonst als „Spezialprofil“ attributieren und die Profildefinition mitliefern.
+      Spezialprofil,  !! Für geschlossene nicht-Normprofile. Profildefinition mitliefern.
+      unbekannt
+    );
+END Rohrprofil;
+
+CLASS Abwassernetzelement (ABSTRACT) EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+!! Modelltechnischer Begriff für Abwasserknoten und Haltungen in der VSA-DSS
+  ATTRIBUTE
+    Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
+    Bezeichnung: MANDATORY TEXT*20;
+END Abwassernetzelement;
+
+ASSOCIATION Abwassernetzelement_AbwasserbauwerkAssoc =    !! Assoziation
+  AbwasserbauwerkRef  -- {0..1} Abwasserbauwerk; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  Abwassernetzelement_AbwasserbauwerkAssocRef -- {0..*} Abwassernetzelement; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
+END Abwassernetzelement_AbwasserbauwerkAssoc;
+
+CLASS Haltungspunkt EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+!! Anfangs- oder Endpunkt einer Haltung mit Detailinformationen zur Verbindung zwischen Abwassernetzelementen.
+  ATTRIBUTE
+    Auslaufform: (          !! Art des Auslaufs
+      abgerundet,
+      blendenfoermig,
+      keine_Querschnittsaenderung,
+      scharfkantig,
+      unbekannt
+    );
+    Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
+    Bezeichnung: MANDATORY TEXT*20;
+    Hoehengenauigkeit: (          !! Quantifizierung der Genauigkeit der Höhenlage der Kote in Relation zum Höhenfixpunktnetz (z.B. Grundbuchvermessung oder Landesnivellement).
+      groesser_6cm,  !! Dies ist der Bereich der Höhengenauigkeit aller Punkte, die nur geschätzt sind
+      plusminus_1cm,  !! Dies ist der Bereich der Höhengenauigkeit eines nivellierten Punktes
+      plusminus_3cm,  !! Dies ist der Bereich der Höhengenauigkeit eines mit GPS eingemessenen Punktes
+      plusminus_6cm,  !! Dies ist die Höhengenauigkeit eines mit Vermessungswerkzeugen (Theodolit) eingemessenen Punktes
+      unbekannt
+    );
+    Kote: Base_LV95.Hoehe;  !! Sohlenhöhe des Haltungsendes
+    Lage: Base_LV95.LKoord;  !! Landeskoordinate Ost/Nord
+    Lage_Anschluss: Ziffernblatt;  !! Anschlussstelle bezogen auf Querschnitt im Kanal; in Fliessrichtung  (für Haus- und Strassenanschlüsse);
+END Haltungspunkt;
+
+ASSOCIATION Haltungspunkt_AbwassernetzelementAssoc =    !! Assoziation
+  AbwassernetzelementRef  -- {0..1} Abwassernetzelement; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  Haltungspunkt_AbwassernetzelementAssocRef -- {0..*} Haltungspunkt; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
+END Haltungspunkt_AbwassernetzelementAssoc;
+
+CLASS Abwasserknoten EXTENDS Abwassernetzelement =  
+!! Verbindung zwischen zwei Haltungen, hydraulischer Bezugspunkt des Abwasserbauwerks (dss)
+  ATTRIBUTE
+    Lage: Base_LV95.LKoord;  !! Lage des Knotens, massgebender Bezugspunkt für die Kanalnetzberechnung. (In der Regel Lage des Pickellochs oder Lage des Trockenwetterauslaufs);
+    Rueckstaukote: Base_LV95.Hoehe;  !! 1. Massgebende Rückstaukote bezogen auf den Berechnungsregen (dss)  2. Höhe, unter der innerhalb der Grundstücksentwässerung besondere Massnahmen gegen Rückstau zu treffen sind. (DIN 4045);
+    Sohlenkote: Base_LV95.Hoehe;  !! Tiefster Punkt des Abwasserbauwerks
+END Abwasserknoten;
+
+CLASS Haltung EXTENDS Abwassernetzelement =  
+!! Hydraulisch homogenes Transportelement des Kanalnetzes, Berechnungsabschnitt einer Abflusssimulation.
+  ATTRIBUTE
+    Innenschutz: (          !! Schutz der Innenwände des Kanals
+      andere,
+      Anstrich_Beschichtung,
+      Kanalklinkerauskleidung,
+      Steinzeugauskleidung,
+      unbekannt,
+      Zementmoertelauskleidung
+    );
+    LaengeEffektiv: 0.00 .. 30000.00 [m];  !! Tatsächliche schräge Länge (d.h. nicht in horizontale Ebene projiziert)  inklusive Kanalkrümmungen
+    Lagebestimmung: (          !! Definiert die Lagegenauigkeit der Verlaufspunkte.
+      genau,  !! +/- 10 cm, bei der Lagebestimmung aus unterschiedlichen Messungen das Dreifache, d.h. +/- 30 cm (Norm SIA405)
+      unbekannt,
+      ungenau  !! Siehe genau
+    );
+    Lichte_Hoehe: Lichte_Hoehe;  !! Maximale Innenhöhe des Kanalprofiles
+    Material: (          !! Rohrmaterial
+      andere,
+      Asbestzement,
+      Beton_Normalbeton,
+      Beton_Ortsbeton,
+      Beton_Pressrohrbeton,
+      Beton_Spezialbeton,
+      Beton_unbekannt,
+      Faserzement,
+      Gebrannte_Steine,
+      Guss_duktil,
+      Guss_Grauguss,
+      Kunststoff_Epoxydharz,
+      Kunststoff_Hartpolyethylen,
+      Kunststoff_Polyester_GUP,
+      Kunststoff_Polyethylen,
+      Kunststoff_Polypropylen,
+      Kunststoff_Polyvinilchlorid,  !! Ein Polymerisatkunstoff, der hart, weich oder niedrig­molekular eingestellt werden kann. In der Abwassertechnik als Rohstoff für Rohre verwendet. (arb)
+      Kunststoff_unbekannt,  !! Kunststoff unbekannter Art
+      Stahl,
+      Stahl_rostfrei,
+      Steinzeug,
+      Ton,
+      unbekannt,
+      Zement
+    );
+    Plangefaelle: Gefaelle_Promille;  !! Auf dem alten Plan eingezeichnetes Plangefälle [%o]. Nicht kontrolliert im Feld. Kann nicht für die hydraulische Berechnungen übernommen werden. Für Liegenschaftsentwässerung und Meliorationsleitungen. Darstellung als z.B. 3.5%oP auf Plänen.
+    Reibungsbeiwert: Strickler;  !! Hydraulische Kenngrösse zur Beschreibung der Beschaffenheit der Kanalwandung. Beiwert für die Formeln nach Manning-Strickler (K oder kstr);
+    Reliner_Art: (          !! Art des Relinings
+      ganze_Haltung,
+      partiell,
+      unbekannt
+    );
+    Reliner_Bautechnik: (          !! Bautechnik für das Relining. Zusätzlich wird der Einbau des Reliners als  Erhaltungsereignis abgebildet: Erhaltungsereignis.Art = Reparatur für Partieller_Liner, sonst Renovierung.
+      andere,
+      Close_Fit_Relining,
+      Kurzrohrrelining,
+      Noppenschlauchrelining,
+      Partieller_Liner,
+      Rohrstrangrelining,
+      Schlauchrelining,
+      unbekannt,
+      Wickelrohrrelining
+    );
+    Reliner_Material: (          !! Material des Reliners
+      andere,
+      Epoxidharz_Glasfaserlaminat,  !! Epoxidharz Glasfaserlaminat
+      Epoxidharz_Kunststofffilz,  !! Epoxidharz Kunststofffilz
+      GUP_Rohr,  !! Rohr aus glasfaserverstärktem, ungesättigtem Polyester : GUP oder GF-UP
+      HDPE,
+      Isocyanatharze_Glasfaserlaminat,  !! Isocynatharze Glasfaserlaminat
+      Isocyanatharze_Kunststofffilz,  !! Isocyanatharze_Kunststofffilz
+      Polyesterharz_Glasfaserlaminat,  !! Polyesterharz Glasfaserlaminat
+      Polyesterharz_Kunststofffilz,  !! Polyesterharz Kunststofffilz
+      Polypropylen,
+      Polyvinilchlorid,
+      Sohle_mit_Schale_aus_Polyesterbeton,  !! Sohle mit Schale aus Polyesterbeton
+      unbekannt,
+      UP_Harz_LED_Synthesefaserliner,  !! Synthesefaserliner mit ungesättigtes Polyesterharz (UP Harz), Härtung mit UV-LED
+      Vinylesterharz_Glasfaserlaminat,  !! Vinylesterharz Glasfaserlaminat
+      Vinylesterharz_Kunststofffilz  !! Vinylesterharz Kunststofffilz
+    );
+    Reliner_Nennweite: Lichte_Hoehe;  !! Profilhöhe des Inliners (innen). Beim Export in Hydrauliksoftware müsste dieser Wert statt Haltung.Lichte_Hoehe übernommen werden um korrekt zu simulieren.
+    Ringsteifigkeit: 0 .. 16;  !! Ringsteifigkeitsklasse - Druckfestigkeit gegen Belastungen von aussen (gemäss ISO 13966 );
+    Verlauf: Base_LV95.Polyline;  !! Anfangs-, Knick- und Endpunkte der Leitung
+    Wandrauhigkeit: Prandtl;  !! Hydraulische Kenngrösse zur Beschreibung der Beschaffenheit der Kanalwandung. Beiwert für die Formeln nach Prandtl-Colebrook (ks oder kb);
+END Haltung;
+
+CLASS Haltung_Text EXTENDS SIA405_Base_LV95.SIA405_TextPos =
+END Haltung_Text;
+
+ASSOCIATION Haltung_TextAssoc =   !! Komposition
+  HaltungRef -<#> {1} Haltung;
+  Text -- {0 .. *} Haltung_Text;
+END Haltung_TextAssoc;
+
+CLASS Haltung_AlternativVerlauf EXTENDS Base_LV95.BaseClass =
+   Verlauf: Base_LV95.Polyline;  !!  Anfangs-, Knick- und Endpunkte des Alternativ-Verlaufs der Leitung im gewählten Plantyp (z.B. Uebersichtsplan)
+   Plantyp: SIA405_Base_LV95.Plantyp;   !! Default: Uebersichtsplan
+END Haltung_AlternativVerlauf;
+
+ASSOCIATION Haltung_AlternativVerlaufAssoc =   !! Komposition
+  HaltungRef -<#> {1} Haltung;
+  Alternativverlauf -- {0 .. *} Haltung_AlternativVerlauf;
+END Haltung_AlternativVerlaufAssoc;
+
+ASSOCIATION Haltung_vonHaltungspunktAssoc =    !! Assoziation
+  vonHaltungspunktRef  -- {1} Haltungspunkt; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  Haltung_vonHaltungspunktAssocRef -- {0..1} Haltung; !! {XOR (Haltung)}, Rolle2 - Klasse2 / Rôle2 - Classe2
+END Haltung_vonHaltungspunktAssoc;
+
+ASSOCIATION Haltung_nachHaltungspunktAssoc =    !! Assoziation
+  nachHaltungspunktRef  -- {1} Haltungspunkt; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  Haltung_nachHaltungspunktAssocRef -- {0..1} Haltung; !! {XOR (Haltung)}, Rolle2 - Klasse2 / Rôle2 - Classe2
+END Haltung_nachHaltungspunktAssoc;
+
+ASSOCIATION Haltung_RohrprofilAssoc =    !! Assoziation
+  RohrprofilRef  -- {0..1} Rohrprofil; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  Haltung_RohrprofilAssocRef -- {0..*} Haltung; !! {XOR (Haltung)}, Rolle2 - Klasse2 / Rôle2 - Classe2
+END Haltung_RohrprofilAssoc;
+
+CLASS BauwerksTeil (ABSTRACT) EXTENDS SIA405_Base_LV95.SIA405_BaseClass =  
+!! Bauliche Bestandteile und Einrichtungen eines Abwasserbauwerkes
+  ATTRIBUTE
+    Bemerkung: TEXT*80;  !! Allgemeine Bemerkungen
+    Bezeichnung: MANDATORY TEXT*20;
+    Instandstellung: (          !! Zustandsinformation zum Bauwerksteil
+      nicht_notwendig,
+      notwendig,
+      unbekannt
+    );
+END BauwerksTeil;
+
+ASSOCIATION BauwerksTeil_AbwasserbauwerkAssoc =    !! Komposition
+  AbwasserbauwerkRef  -<#> {1} Abwasserbauwerk; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  BauwerksTeil_AbwasserbauwerkAssocRef -- {0..*} BauwerksTeil; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
+END BauwerksTeil_AbwasserbauwerkAssoc;
+
+CLASS Trockenwetterfallrohr EXTENDS BauwerksTeil =  
+!! Fallrohr in einem Absturzschacht zur Ableitung des Zuflusses bei Trockenwetter und Schwachregen
+  ATTRIBUTE
+    Durchmesser: SIA405_Base_LV95.Abmessung;  !! Abmessung des Deckels (bei eckigen Deckeln minimale Abmessung);
+END Trockenwetterfallrohr;
+
+CLASS Einstiegshilfe EXTENDS BauwerksTeil =  
+!! Element, welches den Zugang zu einem Abwasserbauwerk ermöglicht.
+  ATTRIBUTE
+    Art: (          !! Art des Einstiegs in das Bauwerk
+      andere,
+      Drucktuere,
+      keine,
+      Leiter,
+      Steigeisen,
+      Treppe,
+      Trittnischen,
+      Tuere,
+      unbekannt
+    );
+END Einstiegshilfe;
+
+CLASS Trockenwetterrinne EXTENDS BauwerksTeil =  
+!! Bauliche Einengung des Kanalquerschnittes zwecks Erhöhung der Fliessgeschwindigkeit für den Trockenwetteranfall
+  ATTRIBUTE
+    Material: (          !! Material der Ausbildung oder Auskleidung der Trockenwetterrinne
+      andere,
+      kombiniert,
+      Kunststoff,
+      Steinzeug,
+      unbekannt,
+      Zementmoertel
+    );
+END Trockenwetterrinne;
+
+CLASS Deckel EXTENDS BauwerksTeil =  
+!! Abnehmbare Abdeckung eines Schachtbauwerkes
+  ATTRIBUTE
+    Deckelform: (          !! Form des Deckels
+      andere,
+      eckig,
+      rund,
+      unbekannt
+    );
+    Durchmesser: SIA405_Base_LV95.Abmessung;  !! Abmessung des Deckels (bei eckigen Deckeln minimale Abmessung);
+    Entlueftung: (          !! Deckel mit Lüftungslöchern versehen
+      entlueftet,
+      nicht_entlueftet,
+      unbekannt
+    );
+    Fabrikat: TEXT*50;  !! Name der Herstellerfirma
+    Kote: Base_LV95.Hoehe;  !! Deckelhöhe
+    Lage: Base_LV95.LKoord;  !! Lage des Deckels (Pickelloch);
+    Lagegenauigkeit: (          !! Quantifizierung der Genauigkeit der Lage des Deckels (Pickelloch)
+      groesser_50cm,
+      plusminus_10cm,
+      plusminus_3cm,
+      plusminus_50cm,
+      unbekannt
+    );
+    Material: (          !! Deckelmaterial
+      andere,
+      Beton,
+      Guss,
+      Guss_mit_Belagsfuellung,
+      Guss_mit_Betonfuellung,
+      unbekannt
+    );
+    Schlammeimer: (          !! Angabe, ob der Deckel mit einem Schlammeimer versehen ist oder nicht
+      nicht_vorhanden,
+      unbekannt,
+      vorhanden
+    );
+    Verschluss: (          !! Befestigungsart des Deckels
+      nicht_verschraubt,
+      unbekannt,
+      verschraubt
+    );
+END Deckel;
+
+CLASS Bankett EXTENDS BauwerksTeil =  
+!! Bankett im Kanal oder Schacht
+  ATTRIBUTE
+    Art: (        
+      andere,
+      beidseitig,
+      einseitig,
+      kein,
+      unbekannt
+    );
+END Bankett;
+
+END SIA405_Abwasser; !! end of TOPIC SIA405_Abwasser
+
+VIEW TOPIC SIA405_Abwasser_LK =
+    DEPENDS ON SIA405_Abwasser;
+
+VIEW Abwassernetzelement
+  PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Abwassernetzelement;
+  =  
+  ATTRIBUTE
+END Abwassernetzelement;
+
+VIEW Abwassernetzelement_Abwasserbauwerk_Assoc 
+  PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Abwassernetzelement_AbwasserbauwerkAssoc;
+  =
+  ATTRIBUTE
+     ALL OF base;
+END Abwassernetzelement_Abwasserbauwerk_Assoc;
+
+VIEW Abwasserbauwerk
+  PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Abwasserbauwerk;
+  =  
+  ATTRIBUTE
+    Detailgeometrie :=base-> Detailgeometrie;
+    Status :=base-> Status;
+END Abwasserbauwerk;
+
+VIEW Abwasserbauwerk_Text
+  PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Abwasserbauwerk_Text;
+  =
+  ATTRIBUTE
+    ALL OF base;
+END Abwasserbauwerk_Text;
+
+VIEW Abwasserbauwerk_TextAssoc 
+  PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Abwasserbauwerk_TextAssoc;
+  =
+  ATTRIBUTE
+    ALL OF base;
+END Abwasserbauwerk_TextAssoc;
+
+VIEW Abwasserbauwerk_Eigentuemer_Assoc 
+  PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Abwasserbauwerk_EigentuemerAssoc;
+  =
+  ATTRIBUTE
+     ALL OF base;
+END Abwasserbauwerk_Eigentuemer_Assoc;
+
+VIEW Abwasserbauwerk_Betreiber_Assoc 
+  PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Abwasserbauwerk_BetreiberAssoc;
+  =
+  ATTRIBUTE
+     ALL OF base;
+END Abwasserbauwerk_Betreiber_Assoc;
+
+VIEW Abwasserknoten
+  PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Abwasserknoten;
+  =  
+  ATTRIBUTE
+END Abwasserknoten;
+
+VIEW Deckel
+  PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Deckel;
+  =  
+  ATTRIBUTE
+    Lage :=base-> Lage;
+    Lagegenauigkeit :=base-> Lagegenauigkeit;
+END Deckel;
+
+VIEW Einleitstelle
+  PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Einleitstelle;
+  =  
+  ATTRIBUTE
+END Einleitstelle;
+
+VIEW Haltung
+  PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Haltung;
+  =  
+  ATTRIBUTE
+    Lagebestimmung :=base-> Lagebestimmung;
+    Verlauf :=base-> Verlauf;
+END Haltung;
+
+VIEW Haltung_Text
+  PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Haltung_Text;
+  =
+  ATTRIBUTE
+    ALL OF base;
+END Haltung_Text;
+
+VIEW Haltung_TextAssoc 
+  PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Haltung_TextAssoc;
+  =
+  ATTRIBUTE
+    ALL OF base;
+END Haltung_TextAssoc;
+
+VIEW Haltung_vonHaltungspunkt_Assoc 
+  PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Haltung_vonHaltungspunktAssoc;
+  =
+  ATTRIBUTE
+     ALL OF base;
+END Haltung_vonHaltungspunkt_Assoc;
+
+VIEW Haltung_nachHaltungspunkt_Assoc 
+  PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Haltung_nachHaltungspunktAssoc;
+  =
+  ATTRIBUTE
+     ALL OF base;
+END Haltung_nachHaltungspunkt_Assoc;
+
+VIEW Haltung_Rohrprofil_Assoc 
+  PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Haltung_RohrprofilAssoc;
+  =
+  ATTRIBUTE
+     ALL OF base;
+END Haltung_Rohrprofil_Assoc;
+
+VIEW Haltungspunkt
+  PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Haltungspunkt;
+  =  
+  ATTRIBUTE
+    Lage :=base-> Lage;
+END Haltungspunkt;
+
+VIEW Haltungspunkt_Abwassernetzelement_Assoc 
+  PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Haltungspunkt_AbwassernetzelementAssoc;
+  =
+  ATTRIBUTE
+     ALL OF base;
+END Haltungspunkt_Abwassernetzelement_Assoc;
+
+VIEW Kanal
+  PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Kanal;
+  =  
+  ATTRIBUTE
+    FunktionHierarchisch :=base-> FunktionHierarchisch;
+END Kanal;
+
+VIEW Normschacht
+  PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Normschacht;
+  =  
+  ATTRIBUTE
+    Funktion :=base-> Funktion;
+END Normschacht;
+
+VIEW Rohrprofil
+  PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Rohrprofil;
+  =  
+  ATTRIBUTE
+    HoehenBreitenverhaeltnis :=base-> HoehenBreitenverhaeltnis;
+    Profiltyp :=base-> Profiltyp;
+END Rohrprofil;
+
+VIEW Spezialbauwerk
+  PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Spezialbauwerk;
+  =  
+  ATTRIBUTE
+    Funktion :=base-> Funktion;
+END Spezialbauwerk;
+
+VIEW Versickerungsanlage
+  PROJECTION OF base~SIA405_ABWASSER_2015_LV95.SIA405_Abwasser.Versickerungsanlage;
+  =  
+  ATTRIBUTE
+END Versickerungsanlage;
+
+END SIA405_Abwasser_LK;  !! Ende der View
+
+END SIA405_ABWASSER_2015_LV95.   !! Ende des Modells / Fin du modèle
+
+

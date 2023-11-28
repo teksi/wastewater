@@ -1,0 +1,2105 @@
+!! SIA405_Eaux_2015_2_f.ili
+
+INTERLIS 2.3;
+
+MODEL SIA405_EAUX_2015 (fr) AT "http://www.sia.ch/405"
+  VERSION "05.10.2018" TRANSLATION OF SIA405_WASSER_2015 [ "05.10.2018" ] = 
+
+  IMPORTS UNQUALIFIED INTERLIS;     !! imports INTERLIS 2 Baseunits
+  IMPORTS Units;
+  IMPORTS Base_f;
+  IMPORTS SIA405_Base_f;
+
+!! Copyright 2002 - 2015
+!! SVGW 
+!! www.svgw.ch
+!! en cooperation avec Société suisse des ingénieurs et architectes (sia), Zurich
+!! L'utilisation de ce fichier modèle INTERLIS a besoin une licence!
+
+!! Les fichiers modèles originaux SIA405_Eaux_2015_2_f.ili et les versions 
+!! modifiées à partir de ceux-ci ne peuvent pas être revendus.
+!! La distribution du fichier original (comme tout ou une partie de celui-ci) 
+!! n'est permise qu'avec l'achat d'une licence du sia / VSA par le destinataire.
+
+
+!! libéré pour utilisation publique et application commerciale avec la licence.
+!! Fichier modèle INTERLIS examiné avec Compiler INTERLIS Version 4.7.7 (8.02.2018)
+!! Sachbearbeiter: Stefan Burckhardt / SIA 405 Kommission
+
+UNIT
+
+TOPIC SIA405_Eaux =
+
+DOMAIN
+
+
+EtatValeurs EXTENDS SIA405_Base_f.Etat = (  !! Etat de fonctionnement et de planification de l’ouvrage. 
+!! 1.2.2013 Adaptation à la nouvelle version de SIA405_Base_f.Etat – Extension des valeurs de base du fluide, modélisation hiérarchique et compiler 4.5.13
+      hors_service ( !! comporte hors_service et les valeurs suivantes
+      !! 17.7.2015   hors_service,
+         reserve
+      ),
+      en_service (  !! comporte en_service et les valeurs suivantes 
+      !! 17.7.2015   en_service,
+         provisoire
+!!       sera_supprime
+      ),
+      !! 17.7.2915 abandonne,
+      !! 17.7.2915 inconnu,
+      autre ( !! comporte les valeurs suivantes
+         variante_de_calcul,
+         planifie,
+         projet
+      )
+    );
+    !! nouveau 17.7.2015  
+    Etat = ALL OF EtatValeurs;    !! Erweitert Wertebereich von SIA405 Status
+
+
+!! Copyright 2002 - 2015
+!! Association suisse des professionnels de la protection des eaux (VSA), Zürich
+!! www.vsa.ch
+!! L'utilisation de ce fichier modèle INTERLIS a besoin une licence!
+
+!! Les fichiers modèles originaux SIA405_Eaux_2015_2_f.ili et les versions 
+!! modifiées à partir de ceux-ci ne peuvent pas être revendus.
+!! La distribution du fichier original (comme tout ou une partie de celui-ci) 
+!! n'est permise qu'avec l'achat d'une licence du VSA par le destinataire.
+CLASS Noeud_hydraulique EXTENDS SIA405_Base_f.SIA405_BaseClass =  
+!! Points choisis provenant des tables noeud de conduite, organe de fermeture, composant, etc.
+  ATTRIBUTE
+    Nom_numero: MANDATORY TEXT*40;  !! par ex. numéro de noeud
+    Geometrie: Base_f.CoordNat;  !! facultative pour géométrie planifiée
+    Type_de_noeud: (        
+      inconnu,
+      noeud_normal,
+      point_injection
+    );
+    Consommation: 0 .. 99999999 [SIA405_Base_f.m3d];  !! valeur [m3/d]
+    Pression: 0.0 .. 99.9 [Units.bar];  !! valeur issue du calcul du réseau [bar]
+    Remarque: TEXT*80;
+END Noeud_hydraulique;
+
+CLASS Noeud_hydraulique_Texte EXTENDS SIA405_Base_f.SIA405_TextePos =
+END Noeud_hydraulique_Texte;
+
+!!  Correction 10.12.2014
+!!  ASSOCIATION Noeud_hydraulique_TextAssoc =   !! Composition
+ASSOCIATION Noeud_hydraulique_TexteAssoc =   !! Composition
+  Noeud_hydrauliqueRef -<#> {1} Noeud_hydraulique;
+  Texte -- {0 .. *} Noeud_hydraulique_Texte;
+!!  END Noeud_hydraulique_TextAssoc;
+END Noeud_hydraulique_TexteAssoc;
+
+CLASS Troncon_hydraulique EXTENDS SIA405_Base_f.SIA405_BaseClass =  
+!! du noeud au noeud
+  ATTRIBUTE
+    Nom_numero: MANDATORY TEXT*40;  !! n° de tronçon
+    Reference_longueur: MANDATORY 0 .. 999999 [Units.mm];  !! valeur calculée
+    Reference_rugosite: 0 .. 9999;  !! valeur mesurée (moyenne);
+    Reference_diametre: MANDATORY 0 .. 9999 [Units.mm];  !! valeur mesurée (moyenne);
+    Consommation: 0 .. 99999999 [SIA405_Base_f.m3d];
+    Debit: 0.00 .. 9999.99 [SIA405_Base_f.m3d];  !! du calcul réseau
+    Vitesse_ecoulement: 0.000 .. 9999.999[SIA405_Base_f.ms];  !! issue du calcul du réseau [m/s]
+    Condition: TEXT*40;
+    Remarque: TEXT*80;
+END Troncon_hydraulique;
+
+CLASS Troncon_hydraulique_Texte EXTENDS SIA405_Base_f.SIA405_TextePos =
+END Troncon_hydraulique_Texte;
+
+!!  Correction 10.12.2014
+!!  ASSOCIATION Troncon_hydraulique_TextAssoc =   !! Composition
+ASSOCIATION Troncon_hydraulique_TexteAssoc =   !! Composition
+  Troncon_hydrauliqueRef -<#> {1} Troncon_hydraulique;
+  Texte -- {0 .. *} Troncon_hydraulique_Texte;
+!!  END Troncon_hydraulique_TextAssoc;
+END Troncon_hydraulique_TexteAssoc;
+
+ASSOCIATION Troncon_hydraulique_duNoeudAssoc =    !! Association
+  duNoeudRef  -- {1} Noeud_hydraulique; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  Troncon_hydraulique_duNoeudAssocRef -- {1..*} Troncon_hydraulique; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
+END Troncon_hydraulique_duNoeudAssoc;
+
+ASSOCIATION Troncon_hydraulique_auNoeudAssoc =    !! Association
+  auNoeudRef  -- {1} Noeud_hydraulique; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  Troncon_hydraulique_auNoeudAssocRef -- {1..*} Troncon_hydraulique; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
+END Troncon_hydraulique_auNoeudAssoc;
+
+CLASS Conduite EXTENDS SIA405_Base_f.SIA405_BaseClass =  
+!! Conduite
+  ATTRIBUTE
+    Nom_numero: TEXT*40;
+    Geometrie: MANDATORY Base_f.Polyligne;  !! polyligne ouverte avec points d’appuis en coordonnées nationales [m]
+    Fonction: (     
+      inconnue,
+      conduite_de_transport,
+      conduite_adduction,
+      conduite_principale,
+      conduite_secondaire,
+      conduite_de_branchement (
+         normale,
+         commune
+      ),
+      purge_mise_a_air,
+      conduite_hydrant,
+      conduite_de_vidange,
+      conduite_de_source,
+      conduite_de_depart,
+      conduites_internes,
+      raccordement_de_batiment
+    );
+    Materiau: (     
+      inconnu,
+      fibrociment (
+         fibrociment,
+         amiante_ciment
+      ),
+      beton_ciment (
+         inconnu,
+         arme,
+         non_arme
+      ),
+      fonte (
+         inconnue,
+         fonte_grise,
+         fonte_ductile,
+         fonte_Ahrens
+      ),
+      matiere_synthetique (
+         resine_epoxy,
+         resine_epoxy_armee_de_fibres,
+         polypropylene,
+         chlorure_de_polyvinyle (
+            inconnu,
+            GFK,
+            chlorure_de_polyvinyle_dur,
+            chlorure_de_polyvinyle_u,
+            autre
+         ),
+         polyethylene  (
+            inconnu,
+            HDPE,  !! High Density Polyethylene
+            MDPE,  !! Medium Density Polyethylene
+            LDPE,  !! Low-density polyethylene
+            autre
+         )
+      ),
+      acier (
+         inconnu,
+         oxydable,
+         inoxydable,
+         mannesmann,
+         zingue
+      ),
+      gres,
+      bois,
+      terre_cuite
+    );
+    Diametre_interieur: 0 .. 9999 [Units.mm];  !! pour conduites en matière synthétique
+    Diametre_exterieur: 0 .. 9999 [Units.mm];  !! pour conduites en matière synthétique
+    Diametre: 0 .. 9999 [Units.mm];  !! pour conduites en fonte, acier, matière inconnue
+    Largeur_nominale: TEXT*10;  !! comme TEXTE, parcequ'on a aussi des valeurs doubles (par example 1500/800);
+    Qualite_eau: (        
+      inconnue,
+      eau_potable,
+      eau_industrielle,
+      eau_brute,
+      autre
+    );
+    Determination_planimetrique: (        
+      inconnue,
+      imprecise,
+      precise,
+      relevee
+    );
+    Etat: MANDATORY Etat;
+    Annee_de_construction: MANDATORY SIA405_Base_f.Annee;
+    Genre_de_raccordement: (     
+      inconnu,
+      manchon (
+         inconnu,
+         emboite,
+         bride,
+         soude,
+         visse,
+         force,
+         soude_miroir,
+         soude_a_arc,
+         manchon_a_plomb
+      ),
+      presse_etoupe,
+      filetage,
+      raccord_eternit,
+      raccord_Straub,  !! raccord Straub
+      raccord_Gibault  !! raccord Gibault
+    );
+    Isolation_exterieure: (        
+      inconnue,
+      aucune,
+      revetement_de_bitume,
+      caoutchouc_chlore,
+      mortier_de_fibrociment,
+      galvanise_polyurethane,
+      polyethylene_renforce,
+      film_de_polyethylene,
+      jute,
+      enveloppe_bitumineuse,
+      bande_matiere_synthetique,
+      bande_bitumineuse,
+      manchette_retractable
+    );
+    Isolation_interieure: (     
+      inconnue,
+      aucune,
+      polyurethane (
+         normal,
+         ecopur,
+         autre
+      ),
+      polyethylene,
+      mortier_de_ciment,
+      emaillee,
+      bitumee,
+      zinc_epoxy
+    );
+    Mode_de_pose: (        
+      inconnu,
+      fouille_ouverte,
+      sans_fouille,
+      pousse_tube,
+      pose_libre
+    );
+    Assurance_contre_la_poussee: (        
+      inconnue,
+      exterieure,
+      interieure,
+      aucune,
+      joint_Duker,
+      joint_Duro,
+      anneau_de_verrouillage
+    );
+    Couverture: SIA405_Base_f.Couverture;  !! valeur moyenne d’un objet [m]
+    Rehabilitation_renovation: (        
+      aucune,
+      gainage_interieur_PE,
+      revetement_ciment,
+      revetement_epoxy,
+      manchon_etanche,
+      tubage,
+      gainage_acier,
+      autre
+    );
+    Lit_de_pose: (        
+      inconnu,
+      gravier_beton,
+      beton,
+      sable,
+      materiau_de_recyclage,
+      geotextile
+    );
+    Protection_cathodique: (        
+      inconnue,
+      aucune,
+      courant_continu,
+      courant_alternatif,
+      anode_sacrificielle
+    );
+    Zone_de_pression: MANDATORY TEXT*30;
+    Pression_de_fonctionnement_admissible: 0.0 .. 99.9 [Units.bar];
+    Pression_exploitation: 0.0 .. 99.9 [Units.bar];
+    Rugosite_hydraulique: 0.00 .. 9999.99;
+    Longueur: MANDATORY 0 .. 999999 [Units.mm];
+    Entretien: TEXT*30;
+    Condition: MANDATORY TEXT*40;
+    Proprietaire: SIA405_Base_f.Organisation_Designation;
+    Exploitant: SIA405_Base_f.Organisation_Designation;
+    Concessionnaire: SIA405_Base_f.Organisation_Designation;
+    Responsable_entretien: SIA405_Base_f.Organisation_Designation;
+    Remarque: TEXT*80;
+END Conduite;
+
+CLASS Conduite_Texte EXTENDS SIA405_Base_f.SIA405_TextePos =
+END Conduite_Texte;
+
+!!  Correction 10.12.2014
+!!  ASSOCIATION Conduite_TextAssoc =   !! Composition
+ASSOCIATION Conduite_TexteAssoc =   !! Composition
+  ConduiteRef -<#> {1} Conduite;
+  Texte -- {0 .. *} Conduite_Texte;
+!!  END Conduite_TextAssoc;
+END Conduite_TexteAssoc;
+
+ASSOCIATION Conduite_TronconAssoc =    !! Association
+  TronconRef  -- {0..1} Troncon_hydraulique; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  Conduite_TronconAssocRef -- {1..*} Conduite; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
+END Conduite_TronconAssoc;
+
+CLASS Lieu_de_fuite EXTENDS SIA405_Base_f.SIA405_BaseClass =  
+!! Lieu de fuite
+  ATTRIBUTE
+    Numero_protocole: TEXT*40;  !! par ex. n° du procès-verbal
+    Geometrie: MANDATORY Base_f.CoordNat;  !! 2D, coordonnées nationales [m]
+    Genre: (     
+      inconnu,
+      rupture (
+         cassure,
+         bris
+      ),
+      fissure,
+      trou,
+      defaut,
+      autre
+    );
+    Cause: (        
+      tassement,
+      corrosion,
+      connexions,
+      influence_externe,
+      defaut_de_construction,
+      gel,
+      defaut_du_materiau,
+      diverse
+    );
+    Instigateur: SIA405_Base_f.Organisation_Designation;
+    Date_de_saisie: MANDATORY INTERLIS_1_DATE;  !! date, format yyyymmdd
+    Date_de_reparation: INTERLIS_1_DATE;  !! date, format yyyymmdd
+    Condition: TEXT*40;
+    Remarque: TEXT*80;
+END Lieu_de_fuite;
+
+ASSOCIATION Lieu_de_fuite_ConduiteAssoc =    !! Association
+  ConduiteRef  -- {1} Conduite; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  Lieu_de_fuite_ConduiteAssocRef -- {0..*} Lieu_de_fuite; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
+END Lieu_de_fuite_ConduiteAssoc;
+
+CLASS Noeud_de_conduite (ABSTRACT) EXTENDS SIA405_Base_f.SIA405_BaseClass =  
+!! Noeud de conduite
+  ATTRIBUTE
+    Geometrie: MANDATORY Base_f.CoordNat;  !! 2D, coordonnées nationales [m]
+    SymboleOri: MANDATORY 0.0 .. 359.9 CIRCULAR [Units.Angle_Degree];  !! degrée
+    Determination_planimetrique: MANDATORY SIA405_Base_f.Determination_planimetrique;
+    Altitude: Base_f.Altitude;
+    Determination_altimetrique: SIA405_Base_f.Determination_planimetrique;
+    Annee_de_construction: SIA405_Base_f.Annee;
+    Zone_de_pression: 0.0 .. 99.9 [Units.bar];
+    Proprietaire: SIA405_Base_f.Organisation_Designation;
+    Remarque: TEXT*80;
+END Noeud_de_conduite;
+
+CLASS Noeud_de_conduite_Texte EXTENDS SIA405_Base_f.SIA405_TextePos =
+END Noeud_de_conduite_Texte;
+
+!!  Correction 10.12.2014
+!!  ASSOCIATION Noeud_de_conduite_TextAssoc =   !! Composition
+ASSOCIATION Noeud_de_conduite_TexteAssoc =   !! Composition
+  Noeud_de_conduiteRef -<#> {1} Noeud_de_conduite;
+  Texte -- {0 .. *} Noeud_de_conduite_Texte;
+!!  END Noeud_de_conduite_TextAssoc;
+END Noeud_de_conduite_TexteAssoc;
+
+ASSOCIATION Noeud_de_conduite_NoeudAssoc =    !! Association
+  NoeudRef  -- {0..1} Noeud_hydraulique; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  Noeud_de_conduite_NoeudAssocRef -- {1..*} Noeud_de_conduite; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
+END Noeud_de_conduite_NoeudAssoc;
+
+CLASS Organe_de_fermeture EXTENDS Noeud_de_conduite =  
+!! Organe de fermeture
+  ATTRIBUTE
+    Nom_numero: TEXT*40;  !! numéro de l’organe de fermeture
+    Genre: (     
+      inconnu,
+      vanne (
+         inconnue,
+         vanne_normale (
+            te_une_sortie,
+            te_trois_sorties,
+            te_quatre_sorties
+         ),
+           vanne_de_raccordement,
+         vanne_hydrant,
+         vanne_de_troncon,
+         vanne_de_seperation,
+         vanne_de_zone,
+         vanne_collier_de_prise,
+         vanne_de_vidange
+      ),
+      clapet (
+         inconnu,
+         clapet_normal,
+         clapet_de_troncon,
+         clapet_de_zone
+      )
+    );
+    Etat_de_la_connexion: (        
+      inconnu,
+      ouvert,
+      ferme
+    );
+    Commande: (     
+      inconnue,
+      aucune,
+      motorisee (
+         inconnue,
+         avec_commande_a_distance,
+         sans_commande_a_distance
+      ),
+      mecanique
+    );
+    Materiau: (        
+      matiere_synthetique,
+      inconnu,
+      acier,
+      fonte
+    );
+    Pression_de_fonctionnement_admissible: 0.0 .. 99.9 [Units.bar];
+    Largeur_nominale: TEXT*10;  !! comme TEXTE, parcequ'on a aussi des valeurs doubles (par example 1500/800);
+    Fabricant: TEXT*30;
+    Type: TEXT*10;  !! Identification unique comme numéro de types du fabricant. Nom du fabricant dans l'tattribut fabricant.
+    Sens_de_fermeture: (        
+      a_droite,
+      a_gauche
+    );
+    Condition: TEXT*40;
+END Organe_de_fermeture;
+
+CLASS Hydrant EXTENDS Noeud_de_conduite =  
+!! 
+  ATTRIBUTE
+    Nom_numero: TEXT*40;
+    Genre: (     
+      inconnu,
+      borne_hydrant (
+         une_sortie,
+         deux_sorties,
+         trois_sorties,
+         avec_purge,
+         sans_purge
+      ),
+      hydrant_souterrain (
+         une_sortie,
+         deux_sorties,
+         avec_purge,
+         sans_purge
+      ),
+      bouche_arrosage,
+      hydrant_industriel,
+      tete_brulee,
+      raccordement_incendie,
+      gicleur_d_incendie,
+      reperage_hivernal
+    );
+    Materiau: (        
+      inconnu,
+      metal
+    );
+    Dimension: 0 .. 9999 [Units.mm];  !! diamètre
+    Fabricant: TEXT*40;
+    Pression_de_distribution: 0.0 .. 99.9 [Units.bar];
+    Pression_ecoulement: 0.0 .. 99.9 [Units.bar];
+    Soutirage: 0.000 .. 100000.000 [SIA405_Base_f.ls];  !! valeur destinée aux pompiers
+    Type: TEXT*10;  !! Identification unique comme numéro de types du fabricant. Nom du fabricant dans l'tattribut fabricant.
+    Condition: TEXT*40;
+END Hydrant;
+
+CLASS Composant EXTENDS Noeud_de_conduite =  
+!! Composant
+  ATTRIBUTE
+    Nom_numero: TEXT*40;
+    Genre: (     
+      element_de_raccordement (
+        inconnu,
+         collier_de_prise_avec_bride_raccordement,
+         collier_de_reparation,
+         weldend,
+         percage (
+            normal,
+            aveugle,
+            tourne
+         )
+      ),
+      piece_moulee (
+         inconnue,
+         reduction (
+            normale,
+            bride_de_reduction,
+            raccord_de_reduction
+         ),
+         coude  (
+            horizontal,  !! si différence horizontale > différence verticale du coude
+            vertical  !! si différence verticale > différence horizontale du coude
+         ),
+           compensateur,
+         te,
+         croix,
+         piece_de_raccordement
+      ),
+      bride_percee (
+         normale,
+         aveugle,
+         tournee
+      ),
+      element_obturation (
+         inconnu,
+         capuchon_de_bride_de_fermeture,
+         bride_de_fermeture,
+         robinet,
+         clapet_de_fermeture
+      ),
+      ventouse (
+         sur_tube,
+         sur_piece_moulee
+      ),
+      divers (
+         inconnu,
+         piece_isolante,
+         sonde_de_pression,
+         clapet_anti_retour,
+         compteur,
+         chambre_normalisee,
+         reducteur_de_pression
+      ),
+      tuyau_existant
+    );
+    Raccordement: (        
+      inconnu,
+      normal,
+      butee_exterieure,
+      butee_interieure,
+      bride,
+      emboite,
+      visse,
+      soude,
+      force
+    );
+    Materiau: (        
+      inconnu,
+      acier,
+      fonte,
+      matiere_synthetique
+    );
+    Dimension: 0 .. 9999 [Units.mm];  !! diamètre
+    Pression_exploitation_admissible: 0.0 .. 99.9 [Units.bar];
+    Deviation_angulaire: TEXT*10;  !! [°]
+    Condition: TEXT*40;
+END Composant;
+
+CLASS Branchement_d_immeuble EXTENDS Noeud_de_conduite =  
+!! Branchement d'immeuble
+  ATTRIBUTE
+    Nom_numero: TEXT*40;  !! texte identifiant
+    Emplacement: TEXT*10;  !! n° (par ex. adresse);
+    Genre: TEXT*30;
+    Branchement_d_immeuble: (        
+      inconnu,
+      fonte,
+      matiere_synthetique,
+      acier
+    );
+    Piece_isolante: (        
+      oui,
+      non
+    );
+    Type: TEXT*10;  !! Identification unique comme numéro de types du fabricant.
+    Dimension: 0 .. 9999 [Units.mm];  !! diamètre
+    Atribution_troncon_hydraulique: MANDATORY TEXT*40;
+    Attribution_noeud_hydraulique: MANDATORY TEXT*40;
+    Consommation: 0 .. 99999999 [SIA405_Base_f.ld];
+    Condition: TEXT*40;
+END Branchement_d_immeuble;
+
+CLASS Connexion_tubulaire EXTENDS Noeud_de_conduite =  
+!! Connexion tubulaire
+  ATTRIBUTE
+    Genre: (        
+      inconnu,
+      bride,
+      emboite,
+      visse,
+      soude,
+      force,
+      soude_miroir,
+      soude_a_arc,
+      presse_etoupe,
+      filetage,
+      raccord_eternit,
+      raccord_Straub,
+      raccord_Gibault
+    );
+    Assurance_contre_la_poussee: (        
+      inconnue,
+      exterieure,
+      interieure,
+      aucune,
+      joint_Duker,
+      joint_Duro,
+      anneau_de_verrouillage
+    );
+    Dimension: 0 .. 9999 [Units.mm];  !! diamètre
+    Condition: TEXT*40;
+END Connexion_tubulaire;
+
+CLASS Autres EXTENDS Noeud_de_conduite =  
+!! Autres noeuds de conduite
+  ATTRIBUTE
+    Nom_numero: TEXT*40;  !! par ex. nome de l’ouvrage
+    Genre: (        
+      inconnu,
+      prise_echantillon,
+      piezometre,
+      connexion_interne,
+      autre
+    );
+    Condition: TEXT*40;
+END Autres;
+
+CLASS Installation EXTENDS Noeud_de_conduite =  
+!! Installation
+  ATTRIBUTE
+    Nom_numero: TEXT*40;  !! par ex. nom de l’installation
+    Genre: (     
+      inconnu,
+      chambre (
+         inconnu,
+         chambre_de_regulation,
+         chambre_a_clapet,
+         separation_de_zone,
+         separation_de_zone_de_secours,
+         ecoulement_vidange,
+         ecoulement_continu,
+         reducteur_de_pression,
+         collecteur_chambre_speciale,
+         chambre_de_source
+      ),
+      compartiment,  !! LKMap matching par construction spéciale
+      station_de_mesure (
+         inconnue,
+         donnees_de_facturation,
+         informations_sur_le_reseau,
+         qualite,
+         environnement,
+         parametre_technique_general,
+         coffet_de_mesure,
+         sonde_de_mesure
+      ),
+      surveillance_a_distance_systeme_de_commande,
+      systeme_de_commande,
+      champ_application,
+      fontaine (
+         fontaine_eau_potable,  !! eau potable
+         fontaine_de_prelevement  !! eau potable  !! pas de l'eau potable
+      )
+    );
+    Materiau: (        
+      inconnu,
+      beton,
+      fibrociment,
+      matiere_synthetique,
+      metal,
+      pierre
+    );
+    Puissance: TEXT*30;
+    Exploitant: SIA405_Base_f.Organisation_Designation;
+    Concessionnaire: SIA405_Base_f.Organisation_Designation;
+    Responsable_entretien: SIA405_Base_f.Organisation_Designation;
+    Condition: TEXT*40;
+    Dimension1: SIA405_Base_f.Metrage;
+END Installation;
+
+CLASS Station_de_pompage EXTENDS Noeud_de_conduite =  
+!! Installation de refoulement de liquides
+  ATTRIBUTE
+    Nom_numero: TEXT*40;  !! par ex. nom de la station de pompage
+    Genre: (       !! LKMap matching par construction spéciale
+      inconnu,
+      installation_de_levage,
+      station_de_pompage (
+         station_principale,
+         station_intermediaire,
+         station_augmentation_de_pression
+      ),
+      belier,
+      autre
+    );
+    Puissance: MANDATORY TEXT*30;
+    Condition: TEXT*40;
+END Station_de_pompage;
+
+CLASS Reservoir_d_eau EXTENDS Noeud_de_conduite =  
+!! Reservoir eau
+  ATTRIBUTE
+    Nom_numero: TEXT*40;
+    Genre: (        
+      inconnu,
+      grand_reservoir,
+      reservoir_de_stockage,
+      reservoir_avec_pompe_a_etages,
+      autre
+    );
+    Materiau: (        
+      inconnu,
+      beton,
+      amiante_ciment,
+      matiere_synthetique,
+      metal,
+      pierre
+    );
+    Revetement: TEXT*40;
+    Hauteur_de_refoulement: MANDATORY Base_f.Altitude;
+    Capacite_de_stockage: MANDATORY 0.00 .. 10000000.00 [Units.m3];
+    Reserve_eau_alimentation: MANDATORY 0.00 .. 10000000.00 [Units.m3];
+    Reserve_eau_incendie: MANDATORY 0.00 .. 10000000.00 [Units.m3];
+    Puissance: TEXT*30;
+    Condition: TEXT*40;
+END Reservoir_d_eau;
+
+CLASS Installation_d_approvisionnement_en_eau EXTENDS Noeud_de_conduite =  
+!! Installation d'approvisionnement en eau
+  ATTRIBUTE
+    Nom_numero: TEXT*40;
+    Genre: (     
+      station_de_captage (
+        inconnue,
+         captage_eau_de_nappe,
+         captage_unique,
+         captage_eau_de_source,
+         source_non_captee,
+         source_particuliere,
+         captage_eau_de_riviere_ou_de_lac,
+         chambre_eau,
+         fontaine_horizontale,
+         fontaine_verticale,
+         captage_primaire,
+         alimentation_de_secours
+      ),
+      installation_de_traitement (
+         inconnue,
+         processus_multiple,
+         petite_installation,
+         installation_de_filtrage,
+         agregat_independant,
+         realimentation_nappe_phreatique
+      )
+    );
+    Puissance: TEXT*30;
+    Exploitant: SIA405_Base_f.Organisation_Designation;
+    Concessionnaire: SIA405_Base_f.Organisation_Designation;
+    Responsable_entretien: SIA405_Base_f.Organisation_Designation;
+    Condition: TEXT*40;
+END Installation_d_approvisionnement_en_eau;
+
+CLASS Construction_speciale EXTENDS SIA405_Base_f.SIA405_BaseClass =  
+!! Construction spéciale
+  ATTRIBUTE
+    Nom_numero: TEXT*40;
+    Genre: (     
+      Installation,
+      reservoir,
+      installation_approvisionnement_en_eau (
+         captage_eau_de_source_dans_fosse,
+         captage_eau_de_source_dans_galerie,
+         chambre_eau_collectrice,
+         autre
+      ),
+      station_de_pompage,
+      autre (
+         duker,
+         cunette,
+         tuyau_alimentation,
+         canalisation (
+            accessible,
+            non_accessible
+         ),
+         galerie  (
+            accessible,
+            non_accessible
+         ),
+           reste
+      )
+    );
+    Materiau: (        
+      inconnu,
+      beton,
+      matiere_synthetique,
+      metal
+    );
+    Annee_de_construction: SIA405_Base_f.Annee;
+    Proprietaire: SIA405_Base_f.Organisation_Designation;
+    Remarque: TEXT*80;
+END Construction_speciale;
+
+CLASS Construction_speciale_Surface =
+ATTRIBUTE
+!!   Geometrie: MANDATORY SURFACE WITH (STRAIGHTS, ARCS) VERTEX Base_f_LV95.CoordNat
+!!              WITHOUT OVERLAPS > 0.050;
+   Geometrie: MANDATORY Base_f.Surface;
+END Construction_speciale_Surface;
+
+ASSOCIATION Construction_speciale_SurfaceAssoc =
+   Construction_specialeRef  -<#> {1} Construction_speciale;
+   Surface --   {0 .. *} Construction_speciale_Surface;
+END Construction_speciale_SurfaceAssoc;
+
+CLASS Construction_speciale_Ligne =
+ATTRIBUTE
+    Geometrie: MANDATORY Base_f.Polyligne;
+END Construction_speciale_Ligne;
+
+ASSOCIATION Construction_speciale_LigneAssoc =
+   Construction_specialeRef  -<#> {1} Construction_speciale;
+   Ligne --   {0 .. *} Construction_speciale_Ligne;
+END Construction_speciale_LigneAssoc;
+
+CLASS Construction_speciale_Texte EXTENDS SIA405_Base_f.SIA405_TextePos =
+END Construction_speciale_Texte;
+
+!!  Correction 10.12.2014
+!!  ASSOCIATION Construction_speciale_TextAssoc =   !! Composition
+ASSOCIATION Construction_speciale_TexteAssoc =   !! Composition
+  Construction_specialeRef -<#> {1} Construction_speciale;
+  Texte -- {0 .. *} Construction_speciale_Texte;
+!!  END Construction_speciale_TextAssoc;
+END Construction_speciale_TexteAssoc;
+
+CLASS Position_plan_d_ensemble EXTENDS SIA405_Base_f.SIA405_SymbolePos =
+END Position_plan_d_ensemble;
+
+ASSOCIATION Noeud_de_conduite_Position_plan_d_ensembleAssoc =
+      Objet  -<#> {1} Noeud_de_conduite;
+      Symbole --   {0 .. *} Position_plan_d_ensemble;
+END Noeud_de_conduite_Position_plan_d_ensembleAssoc;
+
+END SIA405_Eaux; !! end of TOPIC SIA405_Eaux
+
+VIEW TOPIC SIA405_Eaux_CS =
+    DEPENDS ON SIA405_Eaux;
+
+VIEW Conduite
+  PROJECTION OF base~SIA405_EAUX_2015.SIA405_Eaux.Conduite;
+  =  
+  ATTRIBUTE
+    OBJ_ID := base -> OBJ_ID;
+    METAATTRIBUTS := base-> METAATTRIBUTS;
+    Geometrie :=base-> Geometrie;
+    Fonction :=base-> Fonction;
+    Materiau :=base-> Materiau;
+    Diametre :=base-> Diametre;
+    Determination_planimetrique :=base-> Determination_planimetrique;
+    Proprietaire :=base-> Proprietaire;
+END Conduite;
+
+VIEW Conduite_Texte
+  PROJECTION OF base~SIA405_EAUX_2015.SIA405_Eaux.Conduite_Texte;
+  =
+  ATTRIBUTE
+    ALL OF base;
+END Conduite_Texte;
+
+VIEW Conduite_TexteAssoc 
+  PROJECTION OF base~SIA405_EAUX_2015.SIA405_Eaux.Conduite_TexteAssoc;
+  =
+  ATTRIBUTE
+    ALL OF base;
+END Conduite_TexteAssoc;
+
+VIEW Conduite_Troncon_Assoc 
+  PROJECTION OF base~SIA405_EAUX_2015.SIA405_Eaux.Conduite_TronconAssoc;
+  =
+  ATTRIBUTE
+     ALL OF base;
+END Conduite_Troncon_Assoc;
+
+VIEW Noeud_de_conduite
+  PROJECTION OF base~SIA405_EAUX_2015.SIA405_Eaux.Noeud_de_conduite;
+  =  
+  ATTRIBUTE
+    OBJ_ID := base -> OBJ_ID;
+    METAATTRIBUTS := base-> METAATTRIBUTS;
+    Geometrie :=base-> Geometrie;
+    SymboleOri :=base-> SymboleOri;
+    Determination_planimetrique :=base-> Determination_planimetrique;
+    Altitude :=base-> Altitude;
+    Determination_altimetrique :=base-> Determination_altimetrique;
+    Proprietaire :=base-> Proprietaire;
+END Noeud_de_conduite;
+
+VIEW Noeud_de_conduite_Texte
+  PROJECTION OF base~SIA405_EAUX_2015.SIA405_Eaux.Noeud_de_conduite_Texte;
+  =
+  ATTRIBUTE
+    ALL OF base;
+END Noeud_de_conduite_Texte;
+
+VIEW Noeud_de_conduite_TexteAssoc 
+  PROJECTION OF base~SIA405_EAUX_2015.SIA405_Eaux.Noeud_de_conduite_TexteAssoc;
+  =
+  ATTRIBUTE
+    ALL OF base;
+END Noeud_de_conduite_TexteAssoc;
+
+VIEW Noeud_de_conduite_Noeud_Assoc 
+  PROJECTION OF base~SIA405_EAUX_2015.SIA405_Eaux.Noeud_de_conduite_NoeudAssoc;
+  =
+  ATTRIBUTE
+     ALL OF base;
+END Noeud_de_conduite_Noeud_Assoc;
+
+VIEW Point_de_conduite
+  UNION OF base1~SIA405_EAUX_2015.SIA405_Eaux.Organe_de_fermeture,
+         base2~SIA405_EAUX_2015.SIA405_Eaux.Hydrant;
+  =  
+  ATTRIBUTE
+    OBJ_ID := base1 -> OBJ_ID;
+    METAATTRIBUTS := base1-> METAATTRIBUTS;
+    Geometrie :=base1-> Geometrie;
+    Genre : (  !! Affectation de l'attribut du genre possible uniquement via une fonction
+          inconnu,
+          organe_de_fermeture,
+          borne_hydrant,
+          hydrant_souterrain,
+          bouche_arrosage,
+          autre
+    );
+    SymboleOri :=base1-> SymboleOri;
+    Determination_planimetrique :=base1-> Determination_planimetrique;
+    Altitude :=base1-> Altitude;
+    Determination_altimetrique :=base1-> Determination_altimetrique;
+    Proprietaire :=base1-> Proprietaire;
+END Point_de_conduite;
+
+VIEW Installation
+  PROJECTION OF base~SIA405_EAUX_2015.SIA405_Eaux.Installation;
+  =  
+  ATTRIBUTE
+    OBJ_ID := base -> OBJ_ID;
+    METAATTRIBUTS := base-> METAATTRIBUTS;
+    Geometrie :=base-> Geometrie;
+    Genre : (  !! Affectation de l'attribut du genre possible uniquement via une fonction
+          inconnu,
+          chambre,
+          chambre_speciale,
+          surveillance_a_distance,
+          systeme_de_commande,
+          station_de_pompage,
+          reservoir_eau,
+          approvisionnement_en_eau,
+          autre
+    );
+    SymboleOri :=base-> SymboleOri;
+    Determination_planimetrique :=base-> Determination_planimetrique;
+    Altitude :=base-> Altitude;
+    Determination_altimetrique :=base-> Determination_altimetrique;
+    Proprietaire :=base-> Proprietaire;
+    Dimension1 :=base-> Dimension1;
+END Installation;
+
+VIEW Construction_speciale
+  PROJECTION OF base~SIA405_EAUX_2015.SIA405_Eaux.Construction_speciale;
+  =  
+  ATTRIBUTE
+    OBJ_ID := base -> OBJ_ID;
+    METAATTRIBUTS := base-> METAATTRIBUTS;
+    Genre :=base-> Genre;
+    Proprietaire :=base-> Proprietaire;
+END Construction_speciale;
+
+VIEW Construction_speciale_Texte
+  PROJECTION OF base~SIA405_EAUX_2015.SIA405_Eaux.Construction_speciale_Texte;
+  =
+  ATTRIBUTE
+    ALL OF base;
+END Construction_speciale_Texte;
+
+VIEW Construction_speciale_TexteAssoc 
+  PROJECTION OF base~SIA405_EAUX_2015.SIA405_Eaux.Construction_speciale_TexteAssoc;
+  =
+  ATTRIBUTE
+    ALL OF base;
+END Construction_speciale_TexteAssoc;
+
+
+VIEW Construction_speciale_Surface
+  PROJECTION OF base~SIA405_EAUX_2015.SIA405_Eaux.Construction_speciale_Surface;
+  =
+  ATTRIBUTE
+     Geometrie := base->Geometrie;
+  END Construction_speciale_Surface;
+
+VIEW Construction_speciale_SurfaceAssoc
+  PROJECTION OF base~SIA405_EAUX_2015.SIA405_Eaux.Construction_speciale_SurfaceAssoc;
+  =
+  ATTRIBUTE
+     ALL OF base;
+END Construction_speciale_SurfaceAssoc;
+
+VIEW Construction_speciale_Ligne
+PROJECTION OF base~SIA405_EAUX_2015.SIA405_Eaux.Construction_speciale_Ligne;
+  =
+  ATTRIBUTE
+      Geometrie := base->Geometrie;
+END Construction_speciale_Ligne;
+
+VIEW Construction_speciale_LigneAssoc
+PROJECTION OF base~SIA405_EAUX_2015.SIA405_Eaux.Construction_speciale_LigneAssoc;
+  =
+  ATTRIBUTE
+     ALL OF base;
+END Construction_speciale_LigneAssoc;
+
+END SIA405_Eaux_CS;  !! Ende der View
+
+END SIA405_EAUX_2015.   !! Ende des Modells / Fin du modèle
+
+
+!! SIA405_Eaux_2015_2_f_LV95.ili
+
+!! INTERLIS 2.3;
+
+MODEL SIA405_EAUX_2015_LV95 (fr) AT "http://www.sia.ch/405"
+  VERSION "05.10.2018" TRANSLATION OF SIA405_WASSER_2015_LV95 [ "05.10.2018" ] = 
+
+  IMPORTS UNQUALIFIED INTERLIS;     !! imports INTERLIS 2 Baseunits
+  IMPORTS Units;
+  IMPORTS Base_f_LV95;
+  IMPORTS SIA405_Base_f_LV95;
+
+!! Copyright 2002 - 2015
+!! SVGW 
+!! www.svgw.ch
+!! en cooperation avec Société suisse des ingénieurs et architectes (sia), Zurich
+!! L'utilisation de ce fichier modèle INTERLIS a besoin une licence!
+
+!! Les fichiers modèles originaux SIA405_Eaux_2015_2_f_LV95.ili et les versions 
+!! modifiées à partir de ceux-ci ne peuvent pas être revendus.
+!! La distribution du fichier original (comme tout ou une partie de celui-ci) 
+!! n'est permise qu'avec l'achat d'une licence du sia / VSA par le destinataire.
+
+
+!! libéré pour utilisation publique et application commerciale avec la licence.
+!! Fichier modèle INTERLIS examiné avec Compiler INTERLIS Version 4.7.7 (8.02.2018)
+!! Sachbearbeiter: Stefan Burckhardt / SIA 405 Kommission
+
+UNIT
+
+TOPIC SIA405_Eaux =
+
+DOMAIN
+
+
+EtatValeurs EXTENDS SIA405_Base_f_LV95.Etat = (  !! Etat de fonctionnement et de planification de l’ouvrage. 
+!! 1.2.2013 Adaptation à la nouvelle version de SIA405_Base_f_LV95.Etat – Extension des valeurs de base du fluide, modélisation hiérarchique et compiler 4.5.13
+      hors_service ( !! comporte hors_service et les valeurs suivantes
+      !! 17.7.2015   hors_service,
+         reserve
+      ),
+      en_service (  !! comporte en_service et les valeurs suivantes 
+      !! 17.7.2015   en_service,
+         provisoire
+!!       sera_supprime
+      ),
+      !! 17.7.2915 abandonne,
+      !! 17.7.2915 inconnu,
+      autre ( !! comporte les valeurs suivantes
+         variante_de_calcul,
+         planifie,
+         projet
+      )
+    );
+    !! nouveau 17.7.2015  
+    Etat = ALL OF EtatValeurs;    !! Erweitert Wertebereich von SIA405 Status
+
+
+!! Copyright 2002 - 2015
+!! Association suisse des professionnels de la protection des eaux (VSA), Zürich
+!! www.vsa.ch
+!! L'utilisation de ce fichier modèle INTERLIS a besoin une licence!
+
+!! Les fichiers modèles originaux SIA405_Eaux_2015_2_f_LV95.ili et les versions 
+!! modifiées à partir de ceux-ci ne peuvent pas être revendus.
+!! La distribution du fichier original (comme tout ou une partie de celui-ci) 
+!! n'est permise qu'avec l'achat d'une licence du VSA par le destinataire.
+CLASS Noeud_hydraulique EXTENDS SIA405_Base_f_LV95.SIA405_BaseClass =  
+!! Points choisis provenant des tables noeud de conduite, organe de fermeture, composant, etc.
+  ATTRIBUTE
+    Nom_numero: MANDATORY TEXT*40;  !! par ex. numéro de noeud
+    Geometrie: Base_f_LV95.CoordNat;  !! facultative pour géométrie planifiée
+    Type_de_noeud: (        
+      inconnu,
+      noeud_normal,
+      point_injection
+    );
+    Consommation: 0 .. 99999999 [SIA405_Base_f_LV95.m3d];  !! valeur [m3/d]
+    Pression: 0.0 .. 99.9 [Units.bar];  !! valeur issue du calcul du réseau [bar]
+    Remarque: TEXT*80;
+END Noeud_hydraulique;
+
+CLASS Noeud_hydraulique_Texte EXTENDS SIA405_Base_f_LV95.SIA405_TextePos =
+END Noeud_hydraulique_Texte;
+
+!!  Correction 10.12.2014
+!!  ASSOCIATION Noeud_hydraulique_TextAssoc =   !! Composition
+ASSOCIATION Noeud_hydraulique_TexteAssoc =   !! Composition
+  Noeud_hydrauliqueRef -<#> {1} Noeud_hydraulique;
+  Texte -- {0 .. *} Noeud_hydraulique_Texte;
+!!  END Noeud_hydraulique_TextAssoc;
+END Noeud_hydraulique_TexteAssoc;
+
+CLASS Troncon_hydraulique EXTENDS SIA405_Base_f_LV95.SIA405_BaseClass =  
+!! du noeud au noeud
+  ATTRIBUTE
+    Nom_numero: MANDATORY TEXT*40;  !! n° de tronçon
+    Reference_longueur: MANDATORY 0 .. 999999 [Units.mm];  !! valeur calculée
+    Reference_rugosite: 0 .. 9999;  !! valeur mesurée (moyenne);
+    Reference_diametre: MANDATORY 0 .. 9999 [Units.mm];  !! valeur mesurée (moyenne);
+    Consommation: 0 .. 99999999 [SIA405_Base_f_LV95.m3d];
+    Debit: 0.00 .. 9999.99 [SIA405_Base_f_LV95.m3d];  !! du calcul réseau
+    Vitesse_ecoulement: 0.000 .. 9999.999[SIA405_Base_f_LV95.ms];  !! issue du calcul du réseau [m/s]
+    Condition: TEXT*40;
+    Remarque: TEXT*80;
+END Troncon_hydraulique;
+
+CLASS Troncon_hydraulique_Texte EXTENDS SIA405_Base_f_LV95.SIA405_TextePos =
+END Troncon_hydraulique_Texte;
+
+!!  Correction 10.12.2014
+!!  ASSOCIATION Troncon_hydraulique_TextAssoc =   !! Composition
+ASSOCIATION Troncon_hydraulique_TexteAssoc =   !! Composition
+  Troncon_hydrauliqueRef -<#> {1} Troncon_hydraulique;
+  Texte -- {0 .. *} Troncon_hydraulique_Texte;
+!!  END Troncon_hydraulique_TextAssoc;
+END Troncon_hydraulique_TexteAssoc;
+
+ASSOCIATION Troncon_hydraulique_duNoeudAssoc =    !! Association
+  duNoeudRef  -- {1} Noeud_hydraulique; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  Troncon_hydraulique_duNoeudAssocRef -- {1..*} Troncon_hydraulique; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
+END Troncon_hydraulique_duNoeudAssoc;
+
+ASSOCIATION Troncon_hydraulique_auNoeudAssoc =    !! Association
+  auNoeudRef  -- {1} Noeud_hydraulique; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  Troncon_hydraulique_auNoeudAssocRef -- {1..*} Troncon_hydraulique; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
+END Troncon_hydraulique_auNoeudAssoc;
+
+CLASS Conduite EXTENDS SIA405_Base_f_LV95.SIA405_BaseClass =  
+!! Conduite
+  ATTRIBUTE
+    Nom_numero: TEXT*40;
+    Geometrie: MANDATORY Base_f_LV95.Polyligne;  !! polyligne ouverte avec points d’appuis en coordonnées nationales [m]
+    Fonction: (     
+      inconnue,
+      conduite_de_transport,
+      conduite_adduction,
+      conduite_principale,
+      conduite_secondaire,
+      conduite_de_branchement (
+         normale,
+         commune
+      ),
+      purge_mise_a_air,
+      conduite_hydrant,
+      conduite_de_vidange,
+      conduite_de_source,
+      conduite_de_depart,
+      conduites_internes,
+      raccordement_de_batiment
+    );
+    Materiau: (     
+      inconnu,
+      fibrociment (
+         fibrociment,
+         amiante_ciment
+      ),
+      beton_ciment (
+         inconnu,
+         arme,
+         non_arme
+      ),
+      fonte (
+         inconnue,
+         fonte_grise,
+         fonte_ductile,
+         fonte_Ahrens
+      ),
+      matiere_synthetique (
+         resine_epoxy,
+         resine_epoxy_armee_de_fibres,
+         polypropylene,
+         chlorure_de_polyvinyle (
+            inconnu,
+            GFK,
+            chlorure_de_polyvinyle_dur,
+            chlorure_de_polyvinyle_u,
+            autre
+         ),
+         polyethylene  (
+            inconnu,
+            HDPE,  !! High Density Polyethylene
+            MDPE,  !! Medium Density Polyethylene
+            LDPE,  !! Low-density polyethylene
+            autre
+         )
+      ),
+      acier (
+         inconnu,
+         oxydable,
+         inoxydable,
+         mannesmann,
+         zingue
+      ),
+      gres,
+      bois,
+      terre_cuite
+    );
+    Diametre_interieur: 0 .. 9999 [Units.mm];  !! pour conduites en matière synthétique
+    Diametre_exterieur: 0 .. 9999 [Units.mm];  !! pour conduites en matière synthétique
+    Diametre: 0 .. 9999 [Units.mm];  !! pour conduites en fonte, acier, matière inconnue
+    Largeur_nominale: TEXT*10;  !! comme TEXTE, parcequ'on a aussi des valeurs doubles (par example 1500/800);
+    Qualite_eau: (        
+      inconnue,
+      eau_potable,
+      eau_industrielle,
+      eau_brute,
+      autre
+    );
+    Determination_planimetrique: (        
+      inconnue,
+      imprecise,
+      precise,
+      relevee
+    );
+    Etat: MANDATORY Etat;
+    Annee_de_construction: MANDATORY SIA405_Base_f_LV95.Annee;
+    Genre_de_raccordement: (     
+      inconnu,
+      manchon (
+         inconnu,
+         emboite,
+         bride,
+         soude,
+         visse,
+         force,
+         soude_miroir,
+         soude_a_arc,
+         manchon_a_plomb
+      ),
+      presse_etoupe,
+      filetage,
+      raccord_eternit,
+      raccord_Straub,  !! raccord Straub
+      raccord_Gibault  !! raccord Gibault
+    );
+    Isolation_exterieure: (        
+      inconnue,
+      aucune,
+      revetement_de_bitume,
+      caoutchouc_chlore,
+      mortier_de_fibrociment,
+      galvanise_polyurethane,
+      polyethylene_renforce,
+      film_de_polyethylene,
+      jute,
+      enveloppe_bitumineuse,
+      bande_matiere_synthetique,
+      bande_bitumineuse,
+      manchette_retractable
+    );
+    Isolation_interieure: (     
+      inconnue,
+      aucune,
+      polyurethane (
+         normal,
+         ecopur,
+         autre
+      ),
+      polyethylene,
+      mortier_de_ciment,
+      emaillee,
+      bitumee,
+      zinc_epoxy
+    );
+    Mode_de_pose: (        
+      inconnu,
+      fouille_ouverte,
+      sans_fouille,
+      pousse_tube,
+      pose_libre
+    );
+    Assurance_contre_la_poussee: (        
+      inconnue,
+      exterieure,
+      interieure,
+      aucune,
+      joint_Duker,
+      joint_Duro,
+      anneau_de_verrouillage
+    );
+    Couverture: SIA405_Base_f_LV95.Couverture;  !! valeur moyenne d’un objet [m]
+    Rehabilitation_renovation: (        
+      aucune,
+      gainage_interieur_PE,
+      revetement_ciment,
+      revetement_epoxy,
+      manchon_etanche,
+      tubage,
+      gainage_acier,
+      autre
+    );
+    Lit_de_pose: (        
+      inconnu,
+      gravier_beton,
+      beton,
+      sable,
+      materiau_de_recyclage,
+      geotextile
+    );
+    Protection_cathodique: (        
+      inconnue,
+      aucune,
+      courant_continu,
+      courant_alternatif,
+      anode_sacrificielle
+    );
+    Zone_de_pression: MANDATORY TEXT*30;
+    Pression_de_fonctionnement_admissible: 0.0 .. 99.9 [Units.bar];
+    Pression_exploitation: 0.0 .. 99.9 [Units.bar];
+    Rugosite_hydraulique: 0.00 .. 9999.99;
+    Longueur: MANDATORY 0 .. 999999 [Units.mm];
+    Entretien: TEXT*30;
+    Condition: MANDATORY TEXT*40;
+    Proprietaire: SIA405_Base_f_LV95.Organisation_Designation;
+    Exploitant: SIA405_Base_f_LV95.Organisation_Designation;
+    Concessionnaire: SIA405_Base_f_LV95.Organisation_Designation;
+    Responsable_entretien: SIA405_Base_f_LV95.Organisation_Designation;
+    Remarque: TEXT*80;
+END Conduite;
+
+CLASS Conduite_Texte EXTENDS SIA405_Base_f_LV95.SIA405_TextePos =
+END Conduite_Texte;
+
+!!  Correction 10.12.2014
+!!  ASSOCIATION Conduite_TextAssoc =   !! Composition
+ASSOCIATION Conduite_TexteAssoc =   !! Composition
+  ConduiteRef -<#> {1} Conduite;
+  Texte -- {0 .. *} Conduite_Texte;
+!!  END Conduite_TextAssoc;
+END Conduite_TexteAssoc;
+
+ASSOCIATION Conduite_TronconAssoc =    !! Association
+  TronconRef  -- {0..1} Troncon_hydraulique; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  Conduite_TronconAssocRef -- {1..*} Conduite; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
+END Conduite_TronconAssoc;
+
+CLASS Lieu_de_fuite EXTENDS SIA405_Base_f_LV95.SIA405_BaseClass =  
+!! Lieu de fuite
+  ATTRIBUTE
+    Numero_protocole: TEXT*40;  !! par ex. n° du procès-verbal
+    Geometrie: MANDATORY Base_f_LV95.CoordNat;  !! 2D, coordonnées nationales [m]
+    Genre: (     
+      inconnu,
+      rupture (
+         cassure,
+         bris
+      ),
+      fissure,
+      trou,
+      defaut,
+      autre
+    );
+    Cause: (        
+      tassement,
+      corrosion,
+      connexions,
+      influence_externe,
+      defaut_de_construction,
+      gel,
+      defaut_du_materiau,
+      diverse
+    );
+    Instigateur: SIA405_Base_f_LV95.Organisation_Designation;
+    Date_de_saisie: MANDATORY INTERLIS_1_DATE;  !! date, format yyyymmdd
+    Date_de_reparation: INTERLIS_1_DATE;  !! date, format yyyymmdd
+    Condition: TEXT*40;
+    Remarque: TEXT*80;
+END Lieu_de_fuite;
+
+ASSOCIATION Lieu_de_fuite_ConduiteAssoc =    !! Association
+  ConduiteRef  -- {1} Conduite; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  Lieu_de_fuite_ConduiteAssocRef -- {0..*} Lieu_de_fuite; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
+END Lieu_de_fuite_ConduiteAssoc;
+
+CLASS Noeud_de_conduite (ABSTRACT) EXTENDS SIA405_Base_f_LV95.SIA405_BaseClass =  
+!! Noeud de conduite
+  ATTRIBUTE
+    Geometrie: MANDATORY Base_f_LV95.CoordNat;  !! 2D, coordonnées nationales [m]
+    SymboleOri: MANDATORY 0.0 .. 359.9 CIRCULAR [Units.Angle_Degree];  !! degrée
+    Determination_planimetrique: MANDATORY SIA405_Base_f_LV95.Determination_planimetrique;
+    Altitude: Base_f_LV95.Altitude;
+    Determination_altimetrique: SIA405_Base_f_LV95.Determination_planimetrique;
+    Annee_de_construction: SIA405_Base_f_LV95.Annee;
+    Zone_de_pression: 0.0 .. 99.9 [Units.bar];
+    Proprietaire: SIA405_Base_f_LV95.Organisation_Designation;
+    Remarque: TEXT*80;
+END Noeud_de_conduite;
+
+CLASS Noeud_de_conduite_Texte EXTENDS SIA405_Base_f_LV95.SIA405_TextePos =
+END Noeud_de_conduite_Texte;
+
+!!  Correction 10.12.2014
+!!  ASSOCIATION Noeud_de_conduite_TextAssoc =   !! Composition
+ASSOCIATION Noeud_de_conduite_TexteAssoc =   !! Composition
+  Noeud_de_conduiteRef -<#> {1} Noeud_de_conduite;
+  Texte -- {0 .. *} Noeud_de_conduite_Texte;
+!!  END Noeud_de_conduite_TextAssoc;
+END Noeud_de_conduite_TexteAssoc;
+
+ASSOCIATION Noeud_de_conduite_NoeudAssoc =    !! Association
+  NoeudRef  -- {0..1} Noeud_hydraulique; !! Rolle1 - Klasse1 / Rôle1 - Classe1
+  Noeud_de_conduite_NoeudAssocRef -- {1..*} Noeud_de_conduite; !! , Rolle2 - Klasse2 / Rôle2 - Classe2
+END Noeud_de_conduite_NoeudAssoc;
+
+CLASS Organe_de_fermeture EXTENDS Noeud_de_conduite =  
+!! Organe de fermeture
+  ATTRIBUTE
+    Nom_numero: TEXT*40;  !! numéro de l’organe de fermeture
+    Genre: (     
+      inconnu,
+      vanne (
+         inconnue,
+         vanne_normale (
+            te_une_sortie,
+            te_trois_sorties,
+            te_quatre_sorties
+         ),
+           vanne_de_raccordement,
+         vanne_hydrant,
+         vanne_de_troncon,
+         vanne_de_seperation,
+         vanne_de_zone,
+         vanne_collier_de_prise,
+         vanne_de_vidange
+      ),
+      clapet (
+         inconnu,
+         clapet_normal,
+         clapet_de_troncon,
+         clapet_de_zone
+      )
+    );
+    Etat_de_la_connexion: (        
+      inconnu,
+      ouvert,
+      ferme
+    );
+    Commande: (     
+      inconnue,
+      aucune,
+      motorisee (
+         inconnue,
+         avec_commande_a_distance,
+         sans_commande_a_distance
+      ),
+      mecanique
+    );
+    Materiau: (        
+      matiere_synthetique,
+      inconnu,
+      acier,
+      fonte
+    );
+    Pression_de_fonctionnement_admissible: 0.0 .. 99.9 [Units.bar];
+    Largeur_nominale: TEXT*10;  !! comme TEXTE, parcequ'on a aussi des valeurs doubles (par example 1500/800);
+    Fabricant: TEXT*30;
+    Type: TEXT*10;  !! Identification unique comme numéro de types du fabricant. Nom du fabricant dans l'tattribut fabricant.
+    Sens_de_fermeture: (        
+      a_droite,
+      a_gauche
+    );
+    Condition: TEXT*40;
+END Organe_de_fermeture;
+
+CLASS Hydrant EXTENDS Noeud_de_conduite =  
+!! 
+  ATTRIBUTE
+    Nom_numero: TEXT*40;
+    Genre: (     
+      inconnu,
+      borne_hydrant (
+         une_sortie,
+         deux_sorties,
+         trois_sorties,
+         avec_purge,
+         sans_purge
+      ),
+      hydrant_souterrain (
+         une_sortie,
+         deux_sorties,
+         avec_purge,
+         sans_purge
+      ),
+      bouche_arrosage,
+      hydrant_industriel,
+      tete_brulee,
+      raccordement_incendie,
+      gicleur_d_incendie,
+      reperage_hivernal
+    );
+    Materiau: (        
+      inconnu,
+      metal
+    );
+    Dimension: 0 .. 9999 [Units.mm];  !! diamètre
+    Fabricant: TEXT*40;
+    Pression_de_distribution: 0.0 .. 99.9 [Units.bar];
+    Pression_ecoulement: 0.0 .. 99.9 [Units.bar];
+    Soutirage: 0.000 .. 100000.000 [SIA405_Base_f_LV95.ls];  !! valeur destinée aux pompiers
+    Type: TEXT*10;  !! Identification unique comme numéro de types du fabricant. Nom du fabricant dans l'tattribut fabricant.
+    Condition: TEXT*40;
+END Hydrant;
+
+CLASS Composant EXTENDS Noeud_de_conduite =  
+!! Composant
+  ATTRIBUTE
+    Nom_numero: TEXT*40;
+    Genre: (     
+      element_de_raccordement (
+        inconnu,
+         collier_de_prise_avec_bride_raccordement,
+         collier_de_reparation,
+         weldend,
+         percage (
+            normal,
+            aveugle,
+            tourne
+         )
+      ),
+      piece_moulee (
+         inconnue,
+         reduction (
+            normale,
+            bride_de_reduction,
+            raccord_de_reduction
+         ),
+         coude  (
+            horizontal,  !! si différence horizontale > différence verticale du coude
+            vertical  !! si différence verticale > différence horizontale du coude
+         ),
+           compensateur,
+         te,
+         croix,
+         piece_de_raccordement
+      ),
+      bride_percee (
+         normale,
+         aveugle,
+         tournee
+      ),
+      element_obturation (
+         inconnu,
+         capuchon_de_bride_de_fermeture,
+         bride_de_fermeture,
+         robinet,
+         clapet_de_fermeture
+      ),
+      ventouse (
+         sur_tube,
+         sur_piece_moulee
+      ),
+      divers (
+         inconnu,
+         piece_isolante,
+         sonde_de_pression,
+         clapet_anti_retour,
+         compteur,
+         chambre_normalisee,
+         reducteur_de_pression
+      ),
+      tuyau_existant
+    );
+    Raccordement: (        
+      inconnu,
+      normal,
+      butee_exterieure,
+      butee_interieure,
+      bride,
+      emboite,
+      visse,
+      soude,
+      force
+    );
+    Materiau: (        
+      inconnu,
+      acier,
+      fonte,
+      matiere_synthetique
+    );
+    Dimension: 0 .. 9999 [Units.mm];  !! diamètre
+    Pression_exploitation_admissible: 0.0 .. 99.9 [Units.bar];
+    Deviation_angulaire: TEXT*10;  !! [°]
+    Condition: TEXT*40;
+END Composant;
+
+CLASS Branchement_d_immeuble EXTENDS Noeud_de_conduite =  
+!! Branchement d'immeuble
+  ATTRIBUTE
+    Nom_numero: TEXT*40;  !! texte identifiant
+    Emplacement: TEXT*10;  !! n° (par ex. adresse);
+    Genre: TEXT*30;
+    Branchement_d_immeuble: (        
+      inconnu,
+      fonte,
+      matiere_synthetique,
+      acier
+    );
+    Piece_isolante: (        
+      oui,
+      non
+    );
+    Type: TEXT*10;  !! Identification unique comme numéro de types du fabricant.
+    Dimension: 0 .. 9999 [Units.mm];  !! diamètre
+    Atribution_troncon_hydraulique: MANDATORY TEXT*40;
+    Attribution_noeud_hydraulique: MANDATORY TEXT*40;
+    Consommation: 0 .. 99999999 [SIA405_Base_f_LV95.ld];
+    Condition: TEXT*40;
+END Branchement_d_immeuble;
+
+CLASS Connexion_tubulaire EXTENDS Noeud_de_conduite =  
+!! Connexion tubulaire
+  ATTRIBUTE
+    Genre: (        
+      inconnu,
+      bride,
+      emboite,
+      visse,
+      soude,
+      force,
+      soude_miroir,
+      soude_a_arc,
+      presse_etoupe,
+      filetage,
+      raccord_eternit,
+      raccord_Straub,
+      raccord_Gibault
+    );
+    Assurance_contre_la_poussee: (        
+      inconnue,
+      exterieure,
+      interieure,
+      aucune,
+      joint_Duker,
+      joint_Duro,
+      anneau_de_verrouillage
+    );
+    Dimension: 0 .. 9999 [Units.mm];  !! diamètre
+    Condition: TEXT*40;
+END Connexion_tubulaire;
+
+CLASS Autres EXTENDS Noeud_de_conduite =  
+!! Autres noeuds de conduite
+  ATTRIBUTE
+    Nom_numero: TEXT*40;  !! par ex. nome de l’ouvrage
+    Genre: (        
+      inconnu,
+      prise_echantillon,
+      piezometre,
+      connexion_interne,
+      autre
+    );
+    Condition: TEXT*40;
+END Autres;
+
+CLASS Installation EXTENDS Noeud_de_conduite =  
+!! Installation
+  ATTRIBUTE
+    Nom_numero: TEXT*40;  !! par ex. nom de l’installation
+    Genre: (     
+      inconnu,
+      chambre (
+         inconnu,
+         chambre_de_regulation,
+         chambre_a_clapet,
+         separation_de_zone,
+         separation_de_zone_de_secours,
+         ecoulement_vidange,
+         ecoulement_continu,
+         reducteur_de_pression,
+         collecteur_chambre_speciale,
+         chambre_de_source
+      ),
+      compartiment,  !! LKMap matching par construction spéciale
+      station_de_mesure (
+         inconnue,
+         donnees_de_facturation,
+         informations_sur_le_reseau,
+         qualite,
+         environnement,
+         parametre_technique_general,
+         coffet_de_mesure,
+         sonde_de_mesure
+      ),
+      surveillance_a_distance_systeme_de_commande,
+      systeme_de_commande,
+      champ_application,
+      fontaine (
+         fontaine_eau_potable,  !! eau potable
+         fontaine_de_prelevement  !! eau potable  !! pas de l'eau potable
+      )
+    );
+    Materiau: (        
+      inconnu,
+      beton,
+      fibrociment,
+      matiere_synthetique,
+      metal,
+      pierre
+    );
+    Puissance: TEXT*30;
+    Exploitant: SIA405_Base_f_LV95.Organisation_Designation;
+    Concessionnaire: SIA405_Base_f_LV95.Organisation_Designation;
+    Responsable_entretien: SIA405_Base_f_LV95.Organisation_Designation;
+    Condition: TEXT*40;
+    Dimension1: SIA405_Base_f_LV95.Metrage;
+END Installation;
+
+CLASS Station_de_pompage EXTENDS Noeud_de_conduite =  
+!! Installation de refoulement de liquides
+  ATTRIBUTE
+    Nom_numero: TEXT*40;  !! par ex. nom de la station de pompage
+    Genre: (       !! LKMap matching par construction spéciale
+      inconnu,
+      installation_de_levage,
+      station_de_pompage (
+         station_principale,
+         station_intermediaire,
+         station_augmentation_de_pression
+      ),
+      belier,
+      autre
+    );
+    Puissance: MANDATORY TEXT*30;
+    Condition: TEXT*40;
+END Station_de_pompage;
+
+CLASS Reservoir_d_eau EXTENDS Noeud_de_conduite =  
+!! Reservoir eau
+  ATTRIBUTE
+    Nom_numero: TEXT*40;
+    Genre: (        
+      inconnu,
+      grand_reservoir,
+      reservoir_de_stockage,
+      reservoir_avec_pompe_a_etages,
+      autre
+    );
+    Materiau: (        
+      inconnu,
+      beton,
+      amiante_ciment,
+      matiere_synthetique,
+      metal,
+      pierre
+    );
+    Revetement: TEXT*40;
+    Hauteur_de_refoulement: MANDATORY Base_f_LV95.Altitude;
+    Capacite_de_stockage: MANDATORY 0.00 .. 10000000.00 [Units.m3];
+    Reserve_eau_alimentation: MANDATORY 0.00 .. 10000000.00 [Units.m3];
+    Reserve_eau_incendie: MANDATORY 0.00 .. 10000000.00 [Units.m3];
+    Puissance: TEXT*30;
+    Condition: TEXT*40;
+END Reservoir_d_eau;
+
+CLASS Installation_d_approvisionnement_en_eau EXTENDS Noeud_de_conduite =  
+!! Installation d'approvisionnement en eau
+  ATTRIBUTE
+    Nom_numero: TEXT*40;
+    Genre: (     
+      station_de_captage (
+        inconnue,
+         captage_eau_de_nappe,
+         captage_unique,
+         captage_eau_de_source,
+         source_non_captee,
+         source_particuliere,
+         captage_eau_de_riviere_ou_de_lac,
+         chambre_eau,
+         fontaine_horizontale,
+         fontaine_verticale,
+         captage_primaire,
+         alimentation_de_secours
+      ),
+      installation_de_traitement (
+         inconnue,
+         processus_multiple,
+         petite_installation,
+         installation_de_filtrage,
+         agregat_independant,
+         realimentation_nappe_phreatique
+      )
+    );
+    Puissance: TEXT*30;
+    Exploitant: SIA405_Base_f_LV95.Organisation_Designation;
+    Concessionnaire: SIA405_Base_f_LV95.Organisation_Designation;
+    Responsable_entretien: SIA405_Base_f_LV95.Organisation_Designation;
+    Condition: TEXT*40;
+END Installation_d_approvisionnement_en_eau;
+
+CLASS Construction_speciale EXTENDS SIA405_Base_f_LV95.SIA405_BaseClass =  
+!! Construction spéciale
+  ATTRIBUTE
+    Nom_numero: TEXT*40;
+    Genre: (     
+      Installation,
+      reservoir,
+      installation_approvisionnement_en_eau (
+         captage_eau_de_source_dans_fosse,
+         captage_eau_de_source_dans_galerie,
+         chambre_eau_collectrice,
+         autre
+      ),
+      station_de_pompage,
+      autre (
+         duker,
+         cunette,
+         tuyau_alimentation,
+         canalisation (
+            accessible,
+            non_accessible
+         ),
+         galerie  (
+            accessible,
+            non_accessible
+         ),
+           reste
+      )
+    );
+    Materiau: (        
+      inconnu,
+      beton,
+      matiere_synthetique,
+      metal
+    );
+    Annee_de_construction: SIA405_Base_f_LV95.Annee;
+    Proprietaire: SIA405_Base_f_LV95.Organisation_Designation;
+    Remarque: TEXT*80;
+END Construction_speciale;
+
+CLASS Construction_speciale_Surface =
+ATTRIBUTE
+!!   Geometrie: MANDATORY SURFACE WITH (STRAIGHTS, ARCS) VERTEX Base_f_LV95.CoordNat
+!!              WITHOUT OVERLAPS > 0.050;
+   Geometrie: MANDATORY Base_f_LV95.Surface;
+END Construction_speciale_Surface;
+
+ASSOCIATION Construction_speciale_SurfaceAssoc =
+   Construction_specialeRef  -<#> {1} Construction_speciale;
+   Surface --   {0 .. *} Construction_speciale_Surface;
+END Construction_speciale_SurfaceAssoc;
+
+CLASS Construction_speciale_Ligne =
+ATTRIBUTE
+    Geometrie: MANDATORY Base_f_LV95.Polyligne;
+END Construction_speciale_Ligne;
+
+ASSOCIATION Construction_speciale_LigneAssoc =
+   Construction_specialeRef  -<#> {1} Construction_speciale;
+   Ligne --   {0 .. *} Construction_speciale_Ligne;
+END Construction_speciale_LigneAssoc;
+
+CLASS Construction_speciale_Texte EXTENDS SIA405_Base_f_LV95.SIA405_TextePos =
+END Construction_speciale_Texte;
+
+!!  Correction 10.12.2014
+!!  ASSOCIATION Construction_speciale_TextAssoc =   !! Composition
+ASSOCIATION Construction_speciale_TexteAssoc =   !! Composition
+  Construction_specialeRef -<#> {1} Construction_speciale;
+  Texte -- {0 .. *} Construction_speciale_Texte;
+!!  END Construction_speciale_TextAssoc;
+END Construction_speciale_TexteAssoc;
+
+CLASS Position_plan_d_ensemble EXTENDS SIA405_Base_f_LV95.SIA405_SymbolePos =
+END Position_plan_d_ensemble;
+
+ASSOCIATION Noeud_de_conduite_Position_plan_d_ensembleAssoc =
+      Objet  -<#> {1} Noeud_de_conduite;
+      Symbole --   {0 .. *} Position_plan_d_ensemble;
+END Noeud_de_conduite_Position_plan_d_ensembleAssoc;
+
+END SIA405_Eaux; !! end of TOPIC SIA405_Eaux
+
+VIEW TOPIC SIA405_Eaux_CS =
+    DEPENDS ON SIA405_Eaux;
+
+VIEW Conduite
+  PROJECTION OF base~SIA405_EAUX_2015_LV95.SIA405_Eaux.Conduite;
+  =  
+  ATTRIBUTE
+    OBJ_ID := base -> OBJ_ID;
+    METAATTRIBUTS := base-> METAATTRIBUTS;
+    Geometrie :=base-> Geometrie;
+    Fonction :=base-> Fonction;
+    Materiau :=base-> Materiau;
+    Diametre :=base-> Diametre;
+    Determination_planimetrique :=base-> Determination_planimetrique;
+    Proprietaire :=base-> Proprietaire;
+END Conduite;
+
+VIEW Conduite_Texte
+  PROJECTION OF base~SIA405_EAUX_2015_LV95.SIA405_Eaux.Conduite_Texte;
+  =
+  ATTRIBUTE
+    ALL OF base;
+END Conduite_Texte;
+
+VIEW Conduite_TexteAssoc 
+  PROJECTION OF base~SIA405_EAUX_2015_LV95.SIA405_Eaux.Conduite_TexteAssoc;
+  =
+  ATTRIBUTE
+    ALL OF base;
+END Conduite_TexteAssoc;
+
+VIEW Conduite_Troncon_Assoc 
+  PROJECTION OF base~SIA405_EAUX_2015_LV95.SIA405_Eaux.Conduite_TronconAssoc;
+  =
+  ATTRIBUTE
+     ALL OF base;
+END Conduite_Troncon_Assoc;
+
+VIEW Noeud_de_conduite
+  PROJECTION OF base~SIA405_EAUX_2015_LV95.SIA405_Eaux.Noeud_de_conduite;
+  =  
+  ATTRIBUTE
+    OBJ_ID := base -> OBJ_ID;
+    METAATTRIBUTS := base-> METAATTRIBUTS;
+    Geometrie :=base-> Geometrie;
+    SymboleOri :=base-> SymboleOri;
+    Determination_planimetrique :=base-> Determination_planimetrique;
+    Altitude :=base-> Altitude;
+    Determination_altimetrique :=base-> Determination_altimetrique;
+    Proprietaire :=base-> Proprietaire;
+END Noeud_de_conduite;
+
+VIEW Noeud_de_conduite_Texte
+  PROJECTION OF base~SIA405_EAUX_2015_LV95.SIA405_Eaux.Noeud_de_conduite_Texte;
+  =
+  ATTRIBUTE
+    ALL OF base;
+END Noeud_de_conduite_Texte;
+
+VIEW Noeud_de_conduite_TexteAssoc 
+  PROJECTION OF base~SIA405_EAUX_2015_LV95.SIA405_Eaux.Noeud_de_conduite_TexteAssoc;
+  =
+  ATTRIBUTE
+    ALL OF base;
+END Noeud_de_conduite_TexteAssoc;
+
+VIEW Noeud_de_conduite_Noeud_Assoc 
+  PROJECTION OF base~SIA405_EAUX_2015_LV95.SIA405_Eaux.Noeud_de_conduite_NoeudAssoc;
+  =
+  ATTRIBUTE
+     ALL OF base;
+END Noeud_de_conduite_Noeud_Assoc;
+
+VIEW Point_de_conduite
+  UNION OF base1~SIA405_EAUX_2015_LV95.SIA405_Eaux.Organe_de_fermeture,
+         base2~SIA405_EAUX_2015_LV95.SIA405_Eaux.Hydrant;
+  =  
+  ATTRIBUTE
+    OBJ_ID := base1 -> OBJ_ID;
+    METAATTRIBUTS := base1-> METAATTRIBUTS;
+    Geometrie :=base1-> Geometrie;
+    Genre : (  !! Affectation de l'attribut du genre possible uniquement via une fonction
+          inconnu,
+          organe_de_fermeture,
+          borne_hydrant,
+          hydrant_souterrain,
+          bouche_arrosage,
+          autre
+    );
+    SymboleOri :=base1-> SymboleOri;
+    Determination_planimetrique :=base1-> Determination_planimetrique;
+    Altitude :=base1-> Altitude;
+    Determination_altimetrique :=base1-> Determination_altimetrique;
+    Proprietaire :=base1-> Proprietaire;
+END Point_de_conduite;
+
+VIEW Installation
+  PROJECTION OF base~SIA405_EAUX_2015_LV95.SIA405_Eaux.Installation;
+  =  
+  ATTRIBUTE
+    OBJ_ID := base -> OBJ_ID;
+    METAATTRIBUTS := base-> METAATTRIBUTS;
+    Geometrie :=base-> Geometrie;
+    Genre : (  !! Affectation de l'attribut du genre possible uniquement via une fonction
+          inconnu,
+          chambre,
+          chambre_speciale,
+          surveillance_a_distance,
+          systeme_de_commande,
+          station_de_pompage,
+          reservoir_eau,
+          approvisionnement_en_eau,
+          autre
+    );
+    SymboleOri :=base-> SymboleOri;
+    Determination_planimetrique :=base-> Determination_planimetrique;
+    Altitude :=base-> Altitude;
+    Determination_altimetrique :=base-> Determination_altimetrique;
+    Proprietaire :=base-> Proprietaire;
+    Dimension1 :=base-> Dimension1;
+END Installation;
+
+VIEW Construction_speciale
+  PROJECTION OF base~SIA405_EAUX_2015_LV95.SIA405_Eaux.Construction_speciale;
+  =  
+  ATTRIBUTE
+    OBJ_ID := base -> OBJ_ID;
+    METAATTRIBUTS := base-> METAATTRIBUTS;
+    Genre :=base-> Genre;
+    Proprietaire :=base-> Proprietaire;
+END Construction_speciale;
+
+VIEW Construction_speciale_Texte
+  PROJECTION OF base~SIA405_EAUX_2015_LV95.SIA405_Eaux.Construction_speciale_Texte;
+  =
+  ATTRIBUTE
+    ALL OF base;
+END Construction_speciale_Texte;
+
+VIEW Construction_speciale_TexteAssoc 
+  PROJECTION OF base~SIA405_EAUX_2015_LV95.SIA405_Eaux.Construction_speciale_TexteAssoc;
+  =
+  ATTRIBUTE
+    ALL OF base;
+END Construction_speciale_TexteAssoc;
+
+
+VIEW Construction_speciale_Surface
+  PROJECTION OF base~SIA405_EAUX_2015_LV95.SIA405_Eaux.Construction_speciale_Surface;
+  =
+  ATTRIBUTE
+     Geometrie := base->Geometrie;
+  END Construction_speciale_Surface;
+
+VIEW Construction_speciale_SurfaceAssoc
+  PROJECTION OF base~SIA405_EAUX_2015_LV95.SIA405_Eaux.Construction_speciale_SurfaceAssoc;
+  =
+  ATTRIBUTE
+     ALL OF base;
+END Construction_speciale_SurfaceAssoc;
+
+VIEW Construction_speciale_Ligne
+PROJECTION OF base~SIA405_EAUX_2015_LV95.SIA405_Eaux.Construction_speciale_Ligne;
+  =
+  ATTRIBUTE
+      Geometrie := base->Geometrie;
+END Construction_speciale_Ligne;
+
+VIEW Construction_speciale_LigneAssoc
+PROJECTION OF base~SIA405_EAUX_2015_LV95.SIA405_Eaux.Construction_speciale_LigneAssoc;
+  =
+  ATTRIBUTE
+     ALL OF base;
+END Construction_speciale_LigneAssoc;
+
+END SIA405_Eaux_CS;  !! Ende der View
+
+END SIA405_EAUX_2015_LV95.   !! Ende des Modells / Fin du modèle
+

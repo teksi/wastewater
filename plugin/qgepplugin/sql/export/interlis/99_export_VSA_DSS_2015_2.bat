@@ -1,0 +1,1 @@
+java -jar ili2pg.jar --trace --export --log export_VSA_DSS_2015_2_d.log --models DSS_2015 --dbhost localhost --dbport 5432 --dbdatabase qgep --dbschema vsa_dss_2015_2_d --dbusr postgres --dbpwd yourpassword export.xtf
