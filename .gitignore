@@ -5,6 +5,10 @@ datamodel/artifacts
 project/*attachments.zip
 project/*.qgs~
 
+plugin/teksi_wastewater/libs/
+plugin*.zip
+
 .idea
 .pycache
 __pycache__
+.DS_Store
