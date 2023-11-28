@@ -290,9 +290,7 @@ class QgepSwmm:
         # Read template
         options_template = open(self.options_template_file).read()
         # Find and extract options
-        index_start = options_template.find(
-            f"[{parameter_name}]"
-        )
+        index_start = options_template.find(f"[{parameter_name}]")
         if index_start == -1:
             # The balise options is not found
             self.feedback_push(
