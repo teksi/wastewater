@@ -5,7 +5,7 @@ import uuid
 from functools import partial
 
 from PyQt5.QtCore import QCoreApplication
-from qgepplugin.processing_provider.qgep_algorithm import QgepAlgorithm
+from teksi_wastewater.processing_provider.qgep_algorithm import QgepAlgorithm
 from qgis import processing
 from qgis.core import (
     QgsProcessingContext,

@@ -34,7 +34,10 @@ from qgis.PyQt.QtWidgets import QAction, QApplication, QToolBar
 from qgis.utils import qgsfunction
 
 from .gui.qgepdatamodeldialog import QgepDatamodelInitToolDialog
-from .gui.qgepplotsvgwidget import QgepPlotSVGWidget
+try:
+    from .gui.qgepplotsvgwidget import QgepPlotSVGWidget
+except ImportError:
+    QgepPlotSVGWidget = None
 from .gui.qgepprofiledockwidget import QgepProfileDockWidget
 from .gui.qgepsettingsdialog import QgepSettingsDialog
 from .gui.qgepwizard import QgepWizard
@@ -401,13 +404,15 @@ class TeksiWastewaterPlugin:
             self.profile_dock.closed.connect(self.onDockClosed)
             self.profile_dock.showIt()
 
-            self.plotWidget = QgepPlotSVGWidget(self.profile_dock, self.network_analyzer)
-            self.plotWidget.specialStructureMouseOver.connect(self.highlightProfileElement)
-            self.plotWidget.specialStructureMouseOut.connect(self.unhighlightProfileElement)
-            self.plotWidget.reachMouseOver.connect(self.highlightProfileElement)
-            self.plotWidget.reachMouseOut.connect(self.unhighlightProfileElement)
-            self.profile_dock.addPlotWidget(self.plotWidget)
-            self.profile_dock.setTree(self.nodes, self.edges)
+            self.plotWidget = None
+            if QgepPlotSVGWidget is not None:
+                self.plotWidget = QgepPlotSVGWidget(self.profile_dock, self.network_analyzer)
+                self.plotWidget.specialStructureMouseOver.connect(self.highlightProfileElement)
+                self.plotWidget.specialStructureMouseOut.connect(self.unhighlightProfileElement)
+                self.plotWidget.reachMouseOver.connect(self.highlightProfileElement)
+                self.plotWidget.reachMouseOut.connect(self.unhighlightProfileElement)
+                self.profile_dock.addPlotWidget(self.plotWidget)
+                self.profile_dock.setTree(self.nodes, self.edges)
 
     def onDockClosed(self):  # used when Dock dialog is closed
         """
