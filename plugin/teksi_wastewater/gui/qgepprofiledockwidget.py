@@ -102,7 +102,11 @@ class QgepProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
     @pyqtSlot()
     def onPrintButtonClicked(self):
         if not self.plotWidget:
-            QMessageBox.critical(self, self.tr("Print function not available"), self.tr("Print function not available because of missing dependeny QtWebKit"))
+            QMessageBox.critical(
+                self,
+                self.tr("Print function not available"),
+                self.tr("Print function not available because of missing dependeny QtWebKit"),
+            )
             return
 
         self.plotWidget.printProfile()

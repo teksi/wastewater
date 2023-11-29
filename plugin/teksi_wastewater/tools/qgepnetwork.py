@@ -34,9 +34,9 @@ import time
 from collections import defaultdict
 
 import networkx as nx
-from teksi_wastewater.utils.qt_utils import OverrideCursor
 from qgis.core import NULL, Qgis, QgsGeometry, QgsMessageLog, QgsPointXY
 from qgis.PyQt.QtCore import QObject, Qt, pyqtSignal
+from teksi_wastewater.utils.qt_utils import OverrideCursor
 
 
 class QgepGraphManager(QObject):
