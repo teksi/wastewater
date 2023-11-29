@@ -250,7 +250,8 @@ class TeksiWastewaterPlugin:
         self.datamodelInitToolAction.triggered.connect(self.showDatamodelInitTool)
 
         # Add toolbar button and menu item
-        self.toolbar = QToolBar(QApplication.translate("TEKSI Wastewater", "TEKSI Wastewater"))
+        self.toolbar = QToolBar(self.tr("TEKSI Wastewater"))
+        self.toolbar.setObjectName(self.toolbar.windowTitle())
         self.toolbar.addAction(self.profileAction)
         self.toolbar.addAction(self.upstreamAction)
         self.toolbar.addAction(self.downstreamAction)
