@@ -72,7 +72,7 @@ class QgepRubberBand3D(QgsRubberBand):
         self.points = []
 
     def addPoint3D(self, point):
-        assert type(point) == QgsPoint
+        assert isinstance(point, QgsPoint)
         QgsRubberBand.addPoint(self, QgsPointXY(point.x(), point.y()))
         # Workaround crash with QGIS 3.10.2 (https://github.com/qgis/QGIS/issues/34557)
         new_point = QgsPoint(point.x(), point.y(), point.z(), point.m(), point.wkbType())
@@ -305,7 +305,7 @@ class QgepMapToolAddReach(QgepMapToolAddFeature):
                 (ok, vertex_id) = f.geometry().vertexIdFromVertexNr(match.vertexIndex())
                 assert ok
                 point = f.geometry().constGet().vertexAt(vertex_id)
-                assert type(point) == QgsPoint
+                assert isinstance(point, QgsPoint)
                 return point, match
             else:
                 return QgsPoint(match.point()), match
