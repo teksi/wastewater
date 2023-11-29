@@ -148,7 +148,7 @@ class QgepDatamodelInitToolDialog(QDialog, get_ui_class("qgepdatamodeldialog.ui"
         path_label = PG_CONFIG_PATH
         if not PG_CONFIG_PATH_KNOWN:
             self.pgservicePathLabel.setStyleSheet("color: rgb(170, 0, 0);\nfont-style: italic;")
-            path_label += f"<br/>Note: you must create a PGSYSCONFDIR variable for this configuration to work.</span>More info <a href='https://gis.stackexchange.com/a/393494'>here</a>."
+            path_label += "<br/>Note: you must create a PGSYSCONFDIR variable for this configuration to work.</span>More info <a href='https://gis.stackexchange.com/a/393494'>here</a>."
             self.pgservicePathLabel.setTextFormat(Qt.RichText)
             self.pgservicePathLabel.setTextInteractionFlags(Qt.TextBrowserInteraction)
             self.pgservicePathLabel.setWordWrap(True)
@@ -223,7 +223,7 @@ class QgepDatamodelInitToolDialog(QDialog, get_ui_class("qgepdatamodeldialog.ui"
         results = None
         connection_string = f"service={self.conf}"
         if master_db:
-            connection_string += f" dbname=postgres"
+            connection_string += " dbname=postgres"
         QgsMessageLog.logMessage(
             f"Running query against {connection_string}: {sql_command}", "QGEP"
         )
@@ -379,7 +379,7 @@ class QgepDatamodelInitToolDialog(QDialog, get_ui_class("qgepdatamodeldialog.ui"
                 pkg_resources.require(str(requirement))
             except pkg_resources.DistributionNotFound:
                 missing.append((requirement, "missing"))
-            except pkg_resources < Conflict:
+            except pkg_resources.VersionConflict:
                 missing.append((requirement, "conflict"))
 
         check = len(missing) == 0
@@ -417,7 +417,11 @@ class QgepDatamodelInitToolDialog(QDialog, get_ui_class("qgepdatamodeldialog.ui"
             f"Installing python dependencies from {REQUIREMENTS_PATH}", "QGEP"
         )
         dependencies = " ".join(
-            [f'"{l.strip()}"' for l in open(REQUIREMENTS_PATH).read().splitlines() if l.strip()]
+            [
+                f'"{requirement_line.strip()}"'
+                for requirement_line in open(REQUIREMENTS_PATH).read().splitlines()
+                if requirement_line.strip()
+            ]
         )
         command_line = "the OSGeo4W shell" if os.name == "nt" else "the terminal"
         self._run_cmd(
@@ -603,7 +607,7 @@ class QgepDatamodelInitToolDialog(QDialog, get_ui_class("qgepdatamodeldialog.ui"
 
             try:
                 try:
-                    conn = psycopg2.connect(f"service={self.conf}")
+                    psycopg2.connect(f"service={self.conf}")
                 except psycopg2.Error:
                     # It may be that the database doesn't exist yet
                     # in that case, we try to connect to the postgres database and to create it from there

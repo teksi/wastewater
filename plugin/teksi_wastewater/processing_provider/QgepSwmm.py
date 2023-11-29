@@ -21,6 +21,8 @@ import codecs
 import subprocess
 from datetime import datetime, timedelta
 
+import psycopg2
+
 MEASURING_POINT_KIND = "Diverse kind of SWMM simulation parameters"
 MEASURING_DEVICE_REMARK = "SWMM Simulation"
 
@@ -104,8 +106,6 @@ SWMM_RESULTS_PARAMETERS["head"] = {
 }
 
 NON_PHYSICAL_REM = "Non-physical point which materializes swmm simulations"
-
-import psycopg2
 
 
 class QgepSwmm:
