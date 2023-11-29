@@ -32,6 +32,7 @@ from qgis.PyQt.QtWidgets import (
     QDialogButtonBox,
     QDockWidget,
     QGridLayout,
+    QMessageBox,
 )
 
 from ..utils import get_ui_class
@@ -61,6 +62,8 @@ class QgepProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
         self.setAttribute(Qt.WA_DeleteOnClose)
         self.canvas = canvas
         self.addDockWidget = add_dock_widget
+
+        self.plotWidget = None
 
     def showIt(self):
         # self.setLocation( Qt.BottomDockWidgetArea )
@@ -92,10 +95,16 @@ class QgepProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
     def onVerticalExaggerationChanged(self, value):
         ve_val = self.veLUT[value]
         self.mLblVerticalExaggeration.setText(str(ve_val) + "x")
-        self.plotWidget.changeVerticalExaggeration(ve_val)
+
+        if self.plotWidget:
+            self.plotWidget.changeVerticalExaggeration(ve_val)
 
     @pyqtSlot()
     def onPrintButtonClicked(self):
+        if not self.plotWidget:
+            QMessageBox.critical(self, self.tr("Print function not available"), self.tr("Print function not available because of missing dependeny QtWebKit"))
+            return
+
         self.plotWidget.printProfile()
 
     @pyqtSlot()
