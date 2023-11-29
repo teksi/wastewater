@@ -63,7 +63,7 @@ def exec_(command, check=True, output_content=False):
     except subprocess.CalledProcessError as e:
         if check:
             logger.exception(e.output.decode("windows-1252" if os.name == "nt" else "utf-8"))
-            raise CmdException(f"Command errored ! See logs for more info.")
+            raise CmdException("Command errored ! See logs for more info.")
         return e.output if output_content else e.returncode
     return proc.stdout.decode().strip() if output_content else proc.returncode
 
@@ -173,9 +173,9 @@ def setup_test_db(template="full"):
         dexec_("psql -U postgres -d tpl_full -v ON_ERROR_STOP=1 -f /qwat_demodata_hotfix.sql")
 
     dexec_(
-        f'psql -U postgres -c "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE pid<>pg_backend_pid();"'
+        'psql -U postgres -c "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE pid<>pg_backend_pid();"'
     )
-    dexec_(f"dropdb -U postgres qgep_prod --if-exists")
+    dexec_("dropdb -U postgres qgep_prod --if-exists")
     dexec_(f"createdb -U postgres --template=tpl_{template} qgep_prod")
 
 

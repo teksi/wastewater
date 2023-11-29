@@ -29,8 +29,10 @@ class GuiExport(QDialog):
         )
 
         # Remember save next to file checkbox
-        s = QgsSettings().value("qgep_plugin/logs_next_to_file", False)
-        self.save_logs_next_to_file_checkbox.setChecked(s == True or s == "true")
+        settings_value = QgsSettings().value("qgep_plugin/logs_next_to_file", False)
+        self.save_logs_next_to_file_checkbox.setChecked(
+            settings_value is True or settings_value == "true"
+        )
 
         # Populate the labels list (restoring checked states of scaes)
         selected_scales = QgsSettings().value("qgep_plugin/last_selected_scales", "").split(",")

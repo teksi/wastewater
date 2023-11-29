@@ -70,8 +70,8 @@ def action_import(plugin):
     QgsSettings().setValue("qgep_pluging/last_interlis_path", os.path.dirname(file_name))
 
     # Configure logging
-    s = QgsSettings().value("qgep_plugin/logs_next_to_file", False)
-    logs_next_to_file = s == True or s == "true"
+    setting_value = QgsSettings().value("qgep_plugin/logs_next_to_file", False)
+    logs_next_to_file = setting_value is True or setting_value == "true"
     if logs_next_to_file:
         base_log_path = file_name
     else:
