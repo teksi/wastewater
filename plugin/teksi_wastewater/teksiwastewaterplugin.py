@@ -34,6 +34,7 @@ from qgis.PyQt.QtWidgets import QAction, QApplication, QToolBar
 from qgis.utils import qgsfunction
 
 from .gui.qgepdatamodeldialog import QgepDatamodelInitToolDialog
+
 try:
     from .gui.qgepplotsvgwidget import QgepPlotSVGWidget
 except ImportError:
