@@ -39,7 +39,7 @@ from qgis.PyQt.QtCore import QObject, Qt, pyqtSignal
 from teksi_wastewater.utils.qt_utils import OverrideCursor
 
 
-class QgepGraphManager(QObject):
+class TwwGraphManager(QObject):
     """
     Manages a graph
     """
@@ -319,7 +319,7 @@ class QgepGraphManager(QObject):
         """
         Get some features by their id
         """
-        feat_cache = QgepFeatureCache(layer)
+        feat_cache = TwwFeatureCache(layer)
         data_provider = layer.dataProvider()
 
         features = data_provider.getFeatures()
@@ -335,7 +335,7 @@ class QgepGraphManager(QObject):
         """
         Get some features by an attribute value
         """
-        feat_cache = QgepFeatureCache(layer)
+        feat_cache = TwwFeatureCache(layer)
         data_provider = feat_cache.layer.dataProvider()
 
         # Batch query and filter locally
@@ -355,7 +355,7 @@ class QgepGraphManager(QObject):
             print(name + ":" + str(spenttime))
 
 
-class QgepFeatureCache:
+class TwwFeatureCache:
     """
     A feature cache.
     The DB can be slow sometimes, so if we know, that we'll be using some features

@@ -32,7 +32,7 @@ class ExaminationEditor(Editor):
             self.session.add(exam_to_wastewater_structure)
 
     def init_widget(self):
-        self.reach_layer = QgsProject.instance().mapLayersByName("vw_qgep_reach")[0]
+        self.reach_layer = QgsProject.instance().mapLayersByName("vw_tww_reach")[0]
         self.widget.selectorWidget.set_layer(self.reach_layer)
         self.widget.selectorWidget.set_canvas(iface.mapCanvas())
         # self.widget.assignButton.pressed.connect(self.assign_button_clicked)  # doesn't work ?!

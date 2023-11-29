@@ -135,7 +135,7 @@ class SumUpUpstreamAlgorithm(QgepAlgorithm):
                 self.REACH_LAYER,
                 description=description,
                 types=[QgsProcessing.TypeVectorLine],
-                defaultValue="vw_qgep_reach",
+                defaultValue="vw_tww_reach",
             )
         )
         description = self.tr("Wastewater Node Layer")

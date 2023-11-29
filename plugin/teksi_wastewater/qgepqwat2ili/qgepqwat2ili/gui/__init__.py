@@ -227,12 +227,12 @@ def action_export(plugin):
 
             progress_dialog.setLabelText("Extracting labels...")
 
-            structures_lyr = QgepLayerManager.layer("vw_qgep_wastewater_structure")
-            reaches_lyr = QgepLayerManager.layer("vw_qgep_reach")
+            structures_lyr = QgepLayerManager.layer("vw_tww_wastewater_structure")
+            reaches_lyr = QgepLayerManager.layer("vw_tww_reach")
             if not structures_lyr or not reaches_lyr:
                 progress_dialog.close()
                 show_failure(
-                    "Could not find the vw_qgep_wastewater_structure and/or the vw_qgep_reach layers.",
+                    "Could not find the vw_tww_wastewater_structure and/or the vw_tww_reach layers.",
                     "Make sure your QGEP project is open.",
                     None,
                 )

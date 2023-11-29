@@ -124,8 +124,8 @@ class ExtractlabelsInterlisAlgorithm(QgepAlgorithm):
         reach_feats = reach_view_layer.getFeatures()
         structure_feats = structure_view_layer.getFeatures()
         rowid_to_obj_id = {
-            "vw_qgep_reach": {f.id(): f.attribute("obj_id") for f in reach_feats},
-            "vw_qgep_wastewater_structure": {
+            "vw_tww_reach": {f.id(): f.attribute("obj_id") for f in reach_feats},
+            "vw_tww_wastewater_structure": {
                 f.id(): f.attribute("obj_id") for f in structure_feats
             },
         }
@@ -171,9 +171,9 @@ class ExtractlabelsInterlisAlgorithm(QgepAlgorithm):
             # Annotate features with qgep_obj_id and scal
             lyr_name_to_key = {
                 QgepLayerManager.layer(
-                    "vw_qgep_wastewater_structure"
-                ).name(): "vw_qgep_wastewater_structure",
-                QgepLayerManager.layer("vw_qgep_reach").name(): "vw_qgep_reach",
+                    "vw_tww_wastewater_structure"
+                ).name(): "vw_tww_wastewater_structure",
+                QgepLayerManager.layer("vw_tww_reach").name(): "vw_tww_reach",
             }
             for label in geojson["features"]:
                 layer_name = label["properties"]["Layer"]

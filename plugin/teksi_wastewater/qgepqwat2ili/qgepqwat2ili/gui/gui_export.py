@@ -19,8 +19,8 @@ class GuiExport(QDialog):
         # Execute the dialog
         # self.resize(iface.mainWindow().size() * 0.75)
 
-        structures_layer = QgepLayerManager.layer("vw_qgep_wastewater_structure")
-        reaches_layer = QgepLayerManager.layer("vw_qgep_reach")
+        structures_layer = QgepLayerManager.layer("vw_tww_wastewater_structure")
+        reaches_layer = QgepLayerManager.layer("vw_tww_reach")
         self.structures = structures_layer.selectedFeatures() if structures_layer else []
         self.reaches = reaches_layer.selectedFeatures() if reaches_layer else []
 

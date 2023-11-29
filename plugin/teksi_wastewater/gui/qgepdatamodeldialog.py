@@ -723,7 +723,7 @@ class QgepDatamodelInitToolDialog(QDialog, get_ui_class("qgepdatamodeldialog.ui"
             contents = original_project.read()
 
         # replace the service name
-        contents = contents.replace("service='pg_qgep'", f"service='{self.conf}'")
+        contents = contents.replace("service='pg_tww'", f"service='{self.conf}'")
 
         output_file = tempfile.NamedTemporaryFile(suffix=".qgs", delete=False)
         output_file.write(contents.encode("utf8"))

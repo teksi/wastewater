@@ -1,6 +1,6 @@
 # -----------------------------------------------------------
 #
-# QGEP
+# TEKSI Wastewater
 #
 # Copyright (C) 2012  Matthias Kuhn
 # -----------------------------------------------------------
@@ -43,12 +43,12 @@ from .gui.qgepprofiledockwidget import QgepProfileDockWidget
 from .gui.qgepsettingsdialog import QgepSettingsDialog
 from .gui.qgepwizard import QgepWizard
 from .processing_provider.provider import QgepProcessingProvider
-from .tools.qgepmaptools import (
-    QgepMapToolConnectNetworkElements,
-    QgepProfileMapTool,
+from .tools.twwmaptools import (
     QgepTreeMapTool,
+    TwwMapToolConnectNetworkElements,
+    TwwProfileMapTool,
 )
-from .tools.qgepnetwork import QgepGraphManager
+from .tools.twwnetwork import TwwGraphManager
 from .utils.plugin_utils import plugin_root_path
 from .utils.qgeplayermanager import QgepLayerManager, QgepLayerNotifier
 from .utils.qgeplogging import QgepQgsLogHandler
@@ -154,7 +154,7 @@ class TeksiWastewaterPlugin:
             self.iface.mainWindow(), ["vw_network_node", "vw_network_segment"]
         )
         self.wastewater_networkelement_layer_notifier = QgepLayerNotifier(
-            self.iface.mainWindow(), ["vw_wastewater_node", "vw_qgep_reach"]
+            self.iface.mainWindow(), ["vw_wastewater_node", "vw_tww_reach"]
         )
         self.toolbarButtons = []
 
@@ -285,10 +285,10 @@ class TeksiWastewaterPlugin:
         self.network_layer_notifier.layersUnavailable.connect(self.onLayersUnavailable)
 
         # Init the object maintaining the network
-        self.network_analyzer = QgepGraphManager()
+        self.network_analyzer = TwwGraphManager()
         self.network_analyzer.message_emitted.connect(self.iface.messageBar().pushMessage)
         # Create the map tool for profile selection
-        self.profile_tool = QgepProfileMapTool(
+        self.profile_tool = TwwProfileMapTool(
             self.iface, self.profileAction, self.network_analyzer
         )
         self.profile_tool.profileChanged.connect(self.onProfileChanged)
@@ -304,7 +304,7 @@ class TeksiWastewaterPlugin:
         self.downstream_tree_tool.setDirection("downstream")
         self.downstream_tree_tool.treeChanged.connect(self.onTreeChanged)
 
-        self.maptool_connect_networkelements = QgepMapToolConnectNetworkElements(
+        self.maptool_connect_networkelements = TwwMapToolConnectNetworkElements(
             self.iface, self.connectNetworkElementsAction
         )
 
@@ -498,7 +498,7 @@ class TeksiWastewaterPlugin:
     def _configure_qgepqwat2ili_from_qgep_layer(self) -> dict:
         """Configures qgepqwat2ili using the currently loaded QGEP project layer"""
 
-        pg_layer = QgepLayerManager.layer("vw_qgep_wastewater_structure")
+        pg_layer = QgepLayerManager.layer("vw_tww_wastewater_structure")
         if not pg_layer:
             self.iface.messageBar().pushMessage(
                 "Error",
