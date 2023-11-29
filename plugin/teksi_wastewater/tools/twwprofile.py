@@ -29,7 +29,7 @@ This module provides objects which manage a QGEP profile.
 import json
 
 
-class QgepProfileElement:
+class TwwProfileElement:
     """
     Base class for all profile elements
     """
@@ -58,7 +58,7 @@ class QgepProfileElement:
         """
 
 
-class QgepProfileEdgeElement(QgepProfileElement):
+class QgepProfileEdgeElement(TwwProfileElement):
     """
     Define the base attributes for all edge elements (reaches and special structures)
     """
@@ -78,7 +78,7 @@ class QgepProfileEdgeElement(QgepProfileElement):
         end_offset,
         elem_type,
     ):
-        QgepProfileElement.__init__(self, elem_type)
+        TwwProfileElement.__init__(self, elem_type)
         self.reachPoints = {}
 
         edge = edge_cache.featureById(edge_id)
@@ -177,7 +177,7 @@ class QgepProfileEdgeElement(QgepProfileElement):
         fromlevel = reach_points[0]["level"] or 0
         tolevel = reach_points[-1]["level"] or fromlevel
 
-        el = QgepProfileElement.asDict(self)
+        el = TwwProfileElement.asDict(self)
         el.update(
             {
                 "startOffset": startoffset,
@@ -407,7 +407,7 @@ class QgepProfileSpecialStructureElement(QgepProfileEdgeElement):
         return el
 
 
-class QgepProfileNodeElement(QgepProfileElement):
+class QgepProfileNodeElement(TwwProfileElement):
     """
     A node (wastewater node or reach point)
     """
@@ -416,7 +416,7 @@ class QgepProfileNodeElement(QgepProfileElement):
     offset = None
 
     def __init__(self, point_id, node_cache, offset):
-        QgepProfileElement.__init__(self, "node")
+        TwwProfileElement.__init__(self, "node")
 
         point = node_cache.featureById(point_id)
 
@@ -425,7 +425,7 @@ class QgepProfileNodeElement(QgepProfileElement):
         self.backflow_level = node_cache.attrAsFloat(point, "backflow_level")
 
     def asDict(self):
-        el = QgepProfileElement.asDict(self)
+        el = TwwProfileElement.asDict(self)
         el.update(
             {
                 "offset": self.offset,

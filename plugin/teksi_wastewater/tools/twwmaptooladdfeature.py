@@ -1,6 +1,7 @@
 # -----------------------------------------------------------
 #
-# Qgep
+# TEKSI Wastewater
+#
 # Copyright (C) 2014  Matthias Kuhn
 # -----------------------------------------------------------
 #
@@ -98,7 +99,7 @@ class QgepRubberBand3D(QgsRubberBand):
         return QgsGeometry.fromWkt(wkt)
 
 
-class QgepMapToolAddFeature(QgsMapToolAdvancedDigitizing):
+class TwwMapToolAddFeature(QgsMapToolAdvancedDigitizing):
     """
     Base class for adding features
     """
@@ -196,7 +197,7 @@ class QgepMapToolAddFeature(QgsMapToolAdvancedDigitizing):
         pass
 
 
-class QgepMapToolAddReach(QgepMapToolAddFeature):
+class QgepMapToolAddReach(TwwMapToolAddFeature):
     """
     Create a new reach with the mouse.
     Will snap to wastewater nodes for the first and last point and auto-connect
@@ -208,11 +209,11 @@ class QgepMapToolAddReach(QgepMapToolAddFeature):
     last_feature_attributes = None
 
     def __init__(self, iface: QgisInterface, layer):
-        QgepMapToolAddFeature.__init__(self, iface, layer)
+        TwwMapToolAddFeature.__init__(self, iface, layer)
         self.snapping_marker = None
         self.node_layer = QgepLayerManager.layer("vw_wastewater_node")
         assert self.node_layer is not None
-        self.reach_layer = QgepLayerManager.layer("vw_qgep_reach")
+        self.reach_layer = QgepLayerManager.layer("vw_tww_reach")
         assert self.reach_layer is not None
         self.setAdvancedDigitizingAllowed(True)
         self.setAutoSnapEnabled(True)

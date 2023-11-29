@@ -167,9 +167,9 @@ class QgepProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
             if item["objType"] == "wastewater_node":
                 wastewater_nodes.append(item["objId"])
 
-        qgep_wastewater_structures_layer = QgepLayerManager.layer("vw_qgep_wastewater_structure")
+        qgep_wastewater_structures_layer = QgepLayerManager.layer("vw_tww_wastewater_structure")
         wastewater_nodes_layer = QgepLayerManager.layer("vw_wastewater_node")
-        qgep_reach_layer = QgepLayerManager.layer("vw_qgep_reach")
+        qgep_reach_layer = QgepLayerManager.layer("vw_tww_reach")
         catchment_areas_layer = QgepLayerManager.layer("od_catchment_area")
 
         wastewater_node_list = ",".join("'" + id + "'" for id in wastewater_nodes)

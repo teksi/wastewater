@@ -6,7 +6,7 @@ from QgepSwmm import QgepSwmm
 # Title of the simulation
 TITLE = "titre"
 # Name of the service used to connect to the database
-PGSERVICE = "pg_qgep"
+PGSERVICE = "pg_tww"
 # State of the simulation [current, planned]
 STATE = "current"
 # Path of the input INP file

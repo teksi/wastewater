@@ -1065,7 +1065,7 @@ def qgep_export(selection=None, labels_file=None):
             layer_name = label["properties"]["Layer"]
             obj_id = label["properties"]["qgep_obj_id"]
 
-            if layer_name == "vw_qgep_reach":
+            if layer_name == "vw_tww_reach":
                 if obj_id not in tid_for_obj_id["haltung"]:
                     logger.warning(
                         f"Label for haltung `{obj_id}` exists, but that object is not part of the export"
@@ -1076,7 +1076,7 @@ def qgep_export(selection=None, labels_file=None):
                     haltungref=tid_for_obj_id["haltung"][obj_id],
                 )
 
-            elif layer_name == "vw_qgep_wastewater_structure":
+            elif layer_name == "vw_tww_wastewater_structure":
                 if obj_id not in tid_for_obj_id["abwasserbauwerk"]:
                     logger.warning(
                         f"Label for abwasserbauwerk `{obj_id}` exists, but that object is not part of the export"

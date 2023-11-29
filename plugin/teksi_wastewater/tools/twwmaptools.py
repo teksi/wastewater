@@ -1,6 +1,7 @@
 # -----------------------------------------------------------
 #
-# Qgep
+# TEKSI Wastewater
+#
 # Copyright (C) 2012  Matthias Kuhn
 # -----------------------------------------------------------
 #
@@ -59,8 +60,8 @@ from qgis.PyQt.QtWidgets import (
 )
 
 from ..utils.qgeplayermanager import QgepLayerManager
-from .qgepnetwork import QgepGraphManager
-from .qgepprofile import (
+from .twwnetwork import TwwGraphManager
+from .twwprofile import (
     QgepProfile,
     QgepProfileNodeElement,
     QgepProfileReachElement,
@@ -78,7 +79,7 @@ class CounterMatchFilter(QgsPointLocator.MatchFilter):
         return True
 
 
-class QgepMapTool(QgsMapTool):
+class TwwMapTool(QgsMapTool):
     """
     Base class for all the map tools
     """
@@ -87,7 +88,7 @@ class QgepMapTool(QgsMapTool):
     logger = logging.getLogger(__name__)
     snapper = None
 
-    def __init__(self, iface: QgisInterface, button, network_analyzer: QgepGraphManager = None):
+    def __init__(self, iface: QgisInterface, button, network_analyzer: TwwGraphManager = None):
         QgsMapTool.__init__(self, iface.mapCanvas())
         self.canvas = iface.mapCanvas()
         self.cursor = QCursor(Qt.CrossCursor)
@@ -243,7 +244,7 @@ class QgepMapTool(QgsMapTool):
             return QgsPointLocator.Match()
 
 
-class QgepProfileMapTool(QgepMapTool):
+class TwwProfileMapTool(TwwMapTool):
     """
     The map tool used for PROFILE
 
@@ -258,7 +259,7 @@ class QgepProfileMapTool(QgepMapTool):
     pathPolyline = []
 
     def __init__(self, canvas, button, network_analyzer):
-        QgepMapTool.__init__(self, canvas, button, network_analyzer)
+        TwwMapTool.__init__(self, canvas, button, network_analyzer)
         settings = QSettings()
 
         helper_line_color = settings.value("/QGEP/HelperLineColor", "#FFD900")
@@ -289,7 +290,7 @@ class QgepProfileMapTool(QgepMapTool):
         Called whenever this map tool is deactivated.
         Used to clean up code
         """
-        QgepMapTool.deactivate(self)
+        TwwMapTool.deactivate(self)
         self.rubberBand.reset()
         self.rbHelperLine.reset()
         self.selectedPathPoints = []
@@ -474,7 +475,7 @@ class QgepProfileMapTool(QgepMapTool):
                 self.selectedPathPoints.append((match.featureId(), QgsPointXY(match.point())))
 
 
-class QgepTreeMapTool(QgepMapTool):
+class QgepTreeMapTool(TwwMapTool):
     """
     The map tool used to find TREES (upstream or downstream)
     """
@@ -482,7 +483,7 @@ class QgepTreeMapTool(QgepMapTool):
     treeChanged = pyqtSignal(list, list)
 
     def __init__(self, canvas, button, network_analyzer):
-        QgepMapTool.__init__(self, canvas, button, network_analyzer)
+        TwwMapTool.__init__(self, canvas, button, network_analyzer)
 
         self.direction = "downstream"
         self.saveTool = None
@@ -568,7 +569,7 @@ class QgepTreeMapTool(QgepMapTool):
         """
         Deactivates this map tool. Removes the rubberband etc.
         """
-        QgepMapTool.deactivate(self)
+        TwwMapTool.deactivate(self)
         self.rubberBand.reset()
 
         for marker in self.highlightedPoints:
@@ -577,7 +578,7 @@ class QgepTreeMapTool(QgepMapTool):
         self.highlightedPoints = []
 
 
-class QgepAreaSnapper(QgsMapCanvasSnappingUtils):
+class TwwAreaSnapper(QgsMapCanvasSnappingUtils):
     def __init__(self, map_canvas):
         QgsMapCanvasSnappingUtils.__init__(self, map_canvas)
         self.filter = CounterMatchFilter()
@@ -622,7 +623,7 @@ class QgepAreaSnapper(QgsMapCanvasSnappingUtils):
         return match
 
 
-class QgepMapToolConnectNetworkElements(QgsMapTool):
+class TwwMapToolConnectNetworkElements(QgsMapTool):
     """
     This map tool connects wastewater networkelements.
 
@@ -647,8 +648,8 @@ class QgepMapToolConnectNetworkElements(QgsMapTool):
         self.rbmarkers.setColor(QColor("#f4530e"))
         self.rbmarkers.setIconSize(6)
 
-        self.source_snapper = QgepAreaSnapper(self.iface.mapCanvas())
-        self.target_snapper = QgepAreaSnapper(self.iface.mapCanvas())
+        self.source_snapper = TwwAreaSnapper(self.iface.mapCanvas())
+        self.target_snapper = TwwAreaSnapper(self.iface.mapCanvas())
 
         self.source_feature = QgsFeature()
         self.rb_source_feature = QgsRubberBand(self.iface.mapCanvas())
@@ -679,7 +680,7 @@ class QgepMapToolConnectNetworkElements(QgsMapTool):
         # Reaches can be connected to reaches and nodes
         # Catchment areas only to nodes
         self.network_element_sources = {
-            QgepLayerManager.layer("vw_qgep_reach"): {
+            QgepLayerManager.layer("vw_tww_reach"): {
                 "fields": [
                     {
                         "id": "rp_from_fk_wastewater_networkelement",
@@ -687,7 +688,7 @@ class QgepMapToolConnectNetworkElements(QgsMapTool):
                             "QgepMapToolConnectNetworkElements", "Reach Point From"
                         ),
                         "filter": lambda source, target: target.layer()
-                        != QgepLayerManager.layer("vw_qgep_reach"),
+                        != QgepLayerManager.layer("vw_tww_reach"),
                         "is_checked": lambda source, target: is_closer_to_start_of_edge(
                             source, target
                         ),
@@ -704,7 +705,7 @@ class QgepMapToolConnectNetworkElements(QgsMapTool):
                 ],
                 "target_layers": [
                     QgepLayerManager.layer("vw_wastewater_node"),
-                    QgepLayerManager.layer("vw_qgep_reach"),
+                    QgepLayerManager.layer("vw_tww_reach"),
                 ],
             },
             QgepLayerManager.layer("catchment_area"): {

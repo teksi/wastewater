@@ -77,7 +77,7 @@ class SwmmImportResultsAlgorithm(QgepAlgorithm):
         description = self.tr("Database")
         self.addParameter(
             QgsProcessingParameterString(
-                self.DATABASE, description=description, defaultValue="pg_qgep"
+                self.DATABASE, description=description, defaultValue="pg_tww"
             )
         )
 

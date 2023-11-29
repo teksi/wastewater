@@ -1,6 +1,6 @@
 # Interlis / QGEP oddities
 
-## QGEP
+## TEKSI Wastewater
 
 - `qgep_od.file.fk_data_media` doesn't have a FK constraint to `qgep_od.data_media.obj_id`
 

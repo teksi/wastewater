@@ -81,7 +81,7 @@ class SwmmCreateInputAlgorithm(QgepAlgorithm):
         description = self.tr("Database")
         self.addParameter(
             QgsProcessingParameterString(
-                self.DATABASE, description=description, defaultValue="pg_qgep"
+                self.DATABASE, description=description, defaultValue="pg_tww"
             )
         )
 
@@ -142,7 +142,7 @@ class SwmmCreateInputAlgorithm(QgepAlgorithm):
         if only_selected:
             hierarchy = None
             structures_layers = QgsProject.instance().mapLayersByName(
-                "vw_qgep_wastewater_structure"
+                "vw_tww_wastewater_structure"
             )
             if structures_layers:
                 structures = structures_layers[0].selectedFeatures()
@@ -152,7 +152,7 @@ class SwmmCreateInputAlgorithm(QgepAlgorithm):
             else:
                 self.structures = []
 
-            reaches_layers = QgsProject.instance().mapLayersByName("vw_qgep_reach")
+            reaches_layers = QgsProject.instance().mapLayersByName("vw_tww_reach")
             if reaches_layers:
                 reaches = reaches_layers[0].selectedFeatures()
                 selected_reaches = []

@@ -3,7 +3,7 @@ from sqlalchemy.ext.automap import automap_base
 from .. import config, utils
 
 ###############################################
-# QGEP datamodel
+# TEKSI Wastewater datamodel
 # All tables will be loaded from the QGEP schema as a SqlAlchemy ORM class.
 # Only table specific relationships (e.g. inheritance) need to be manually
 # defined here. Other attributes will be loaded automatically.

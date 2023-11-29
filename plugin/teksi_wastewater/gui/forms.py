@@ -1,7 +1,7 @@
 import qgis
 from qgis.core import QgsProject
 
-from ..tools.qgepmaptooladdfeature import QgepMapToolDigitizeDrainageChannel
+from ..tools.twwmaptooladdfeature import QgepMapToolDigitizeDrainageChannel
 
 
 def geometryDigitized(fid, layer, tool):

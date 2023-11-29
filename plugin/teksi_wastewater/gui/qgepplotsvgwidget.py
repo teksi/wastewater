@@ -30,7 +30,7 @@ from qgis.PyQt.QtWebKit import QWebSettings
 from qgis.PyQt.QtWebKitWidgets import QWebPage, QWebView
 from qgis.PyQt.QtWidgets import QVBoxLayout, QWidget
 
-from ..tools.qgepnetwork import QgepGraphManager
+from ..tools.twwnetwork import TwwGraphManager
 from ..utils.translation import QgepJsTranslator
 from ..utils.ui import plugin_root_path
 
@@ -68,7 +68,7 @@ class QgepPlotSVGWidget(QWidget):
     profileChanged = pyqtSignal([str], name="profileChanged")
     verticalExaggerationChanged = pyqtSignal([int], name="verticalExaggerationChanged")
 
-    def __init__(self, parent, network_analyzer: QgepGraphManager, url: str = None):
+    def __init__(self, parent, network_analyzer: TwwGraphManager, url: str = None):
         QWidget.__init__(self, parent)
 
         self.webView = QWebView()
