@@ -12,7 +12,7 @@ on:
     branches:
       - main
     paths:
-      - datamodel
+      - datamodel/**
       - '.github/workflows/datamodel-create-dumps.yml'
   workflow_dispatch:
 

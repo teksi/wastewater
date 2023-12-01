@@ -9,13 +9,13 @@ on:
     branches:
       - main
     paths:
-      - datamodel
+      - datamodel/**
       - '.github/workflows/datamodel-test.yml'
   pull_request:
     branches:
       - main
     paths:
-      - datamodel
+      - datamodel/**
       - '.github/workflows/datamodel-test.yml'
   workflow_dispatch:
 
