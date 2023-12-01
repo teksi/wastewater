@@ -4,8 +4,6 @@
 -- Add attributes
 ALTER TABLE tww_od.reach ADD COLUMN swmm_default_coefficient_of_friction  smallint ;
 COMMENT ON COLUMN tww_od.reach.swmm_default_coefficient_of_friction IS '1 / N_Manning, value between 0 and 999. Value exported in SWMM if coefficient_of_friction and wall_roughness are not set. ';
-ALTER TABLE tww_od.reach ADD COLUMN dss2020_hydraulic_load_current smallint ;
-COMMENT ON COLUMN tww_od.reach.dss2020_hydraulic_load_current IS 'Dimensioning of the discharge divided by the normal discharge capacity of the reach [%]. / Dimensionierungsabfluss geteilt durch Normalabflusskapazität der Leitung [%]. / Débit de dimensionnement divisé par la capacité d''écoulement normale de la conduite [%].';
 
 -- Add table for defaults coefficients of friction
 CREATE TABLE tww_cfg.reach_coefficient_of_friction (fk_material integer, coefficient_of_friction smallint);
