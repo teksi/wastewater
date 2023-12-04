@@ -34,7 +34,7 @@ from ..utils.qgeplayermanager import QgepLayerManager
 DOCK_WIDGET = get_ui_class("qgepwizard.ui")
 
 
-class QgepWizard(QDockWidget, DOCK_WIDGET):
+class TwwWizard(QDockWidget, DOCK_WIDGET):
     logger = logging.getLogger(__name__)
 
     def __init__(self, parent, iface):

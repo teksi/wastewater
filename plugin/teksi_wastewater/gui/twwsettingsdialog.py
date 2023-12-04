@@ -36,7 +36,7 @@ DIALOG_UI = get_ui_class("qgepsettingsdialog.ui")
 LOGFORMAT = "%(asctime)s:%(levelname)s:%(module)s:%(message)s"
 
 
-class QgepSettingsDialog(QDialog, DIALOG_UI):
+class TwwSettingsDialog(QDialog, DIALOG_UI):
     settings = QSettings()
 
     def __init__(self, parent=None):

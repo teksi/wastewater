@@ -65,24 +65,24 @@ INIT_SCRIPT_PATH = DATAMODEL_PATH / "init" / "qgep_1.5.6-1_structure_with_value_
 QGISPROJECT_PATH = PLUGIN_FOLDER / "project" / "qgep.qgs"
 
 
-def qgep_datamodel_error_catcher(func):
+def tww_datamodel_error_catcher(func):
     """Display QGEPDatamodelError in error messages rather than normal exception dialog"""
 
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         try:
             return func(*args, **kwargs)
-        except QGEPDatamodelError as e:
+        except TwwDatamodelError as e:
             args[0]._show_error(str(e))
 
     return wrapper
 
 
-class QGEPDatamodelError(Exception):
+class TwwDatamodelError(Exception):
     pass
 
 
-class QgepPgserviceEditorDialog(QDialog, get_ui_class("qgeppgserviceeditordialog.ui")):
+class TwwPgserviceEditorDialog(QDialog, get_ui_class("qgeppgserviceeditordialog.ui")):
     def __init__(self, cur_name, cur_config, taken_names):
         super().__init__()
         self.setupUi(self)
@@ -137,7 +137,7 @@ class QgepPgserviceEditorDialog(QDialog, get_ui_class("qgeppgserviceeditordialog
         return retval
 
 
-class QgepDatamodelInitToolDialog(QDialog, get_ui_class("qgepdatamodeldialog.ui")):
+class TwwDatamodelInitToolDialog(QDialog, get_ui_class("qgepdatamodeldialog.ui")):
     def __init__(self, parent=None):
         QDialog.__init__(self, parent)
         self.setupUi(self)
@@ -240,7 +240,7 @@ class QgepDatamodelInitToolDialog(QDialog, get_ui_class("qgepdatamodeldialog.ui"
             conn.close()
         except psycopg2.Error as e:
             message = f"{error_message}\nCommand :\n{sql_command}\n{e}"
-            raise QGEPDatamodelError(message)
+            raise TwwDatamodelError(message)
         return results
 
     def _run_cmd(
@@ -275,7 +275,7 @@ class QgepDatamodelInitToolDialog(QDialog, get_ui_class("qgepdatamodeldialog.ui"
             message = f"{error_message}\nCommand :\n{shell_command}"
             message += f"\n\nOutput :\n{stdout}"
             message += f"\n\nError :\n{stderr}"
-            raise QGEPDatamodelError(message)
+            raise TwwDatamodelError(message)
         return stdout
 
     def _read_pgservice(self):
@@ -396,7 +396,7 @@ class QgepDatamodelInitToolDialog(QDialog, get_ui_class("qgepdatamodeldialog.ui"
 
         return check
 
-    @qgep_datamodel_error_catcher
+    @tww_datamodel_error_catcher
     def install_requirements(self):
         # TODO : Ideally, this should be done in a venv, as to avoid permission issues and/or modification
         # of libraries versions that could affect other parts of the system.
@@ -458,7 +458,7 @@ class QgepDatamodelInitToolDialog(QDialog, get_ui_class("qgepdatamodeldialog.ui"
         else:
             cur_config = {}
 
-        add_dialog = QgepPgserviceEditorDialog(self.conf, cur_config, taken_names)
+        add_dialog = TwwPgserviceEditorDialog(self.conf, cur_config, taken_names)
         if add_dialog.exec_() == QDialog.Accepted:
             name = add_dialog.conf_name()
             conf = add_dialog.conf_dict()
@@ -492,7 +492,7 @@ class QgepDatamodelInitToolDialog(QDialog, get_ui_class("qgepdatamodeldialog.ui"
 
     # Version
 
-    @qgep_datamodel_error_catcher
+    @tww_datamodel_error_catcher
     def check_version(self, _=None):
         check = False
 
@@ -521,7 +521,7 @@ class QgepDatamodelInitToolDialog(QDialog, get_ui_class("qgepdatamodeldialog.ui"
 
             try:
                 current_version = self._get_current_version()
-            except QGEPDatamodelError:
+            except TwwDatamodelError:
                 # Can happend if PUM is not initialized, unfortunately we can't really
                 # determine if this is a connection error or if PUM is not initailized
                 # see https://github.com/opengisch/pum/issues/96
@@ -532,7 +532,7 @@ class QgepDatamodelInitToolDialog(QDialog, get_ui_class("qgepdatamodeldialog.ui"
                         "SELECT 1;",
                         error_message="Errors when initializing the database.",
                     )
-                except QGEPDatamodelError:
+                except TwwDatamodelError:
                     error = "database does not exist"
                     try:
                         self._run_sql(
@@ -540,7 +540,7 @@ class QgepDatamodelInitToolDialog(QDialog, get_ui_class("qgepdatamodeldialog.ui"
                             master_db=True,
                             error_message="Errors when initializing the database.",
                         )
-                    except QGEPDatamodelError:
+                    except TwwDatamodelError:
                         error = "could not connect to database"
                         connection_works = False
 
@@ -573,7 +573,7 @@ class QgepDatamodelInitToolDialog(QDialog, get_ui_class("qgepdatamodeldialog.ui"
 
         return check
 
-    @qgep_datamodel_error_catcher
+    @tww_datamodel_error_catcher
     def initialize_version(self):
         confirm = QMessageBox()
         confirm.setText(f"You are about to initialize the datamodel on {self.conf}. ")
@@ -640,7 +640,7 @@ class QgepDatamodelInitToolDialog(QDialog, get_ui_class("qgepdatamodeldialog.ui"
                 )
 
             except psycopg2.Error as e:
-                raise QGEPDatamodelError(str(e))
+                raise TwwDatamodelError(str(e))
 
             self.check_version()
             self.check_project()
@@ -654,7 +654,7 @@ class QgepDatamodelInitToolDialog(QDialog, get_ui_class("qgepdatamodeldialog.ui"
 
             self.upgrade_version(skip_confirmation=True)
 
-    @qgep_datamodel_error_catcher
+    @tww_datamodel_error_catcher
     def upgrade_version(self, skip_confirmation=False):
         target_version = self._get_target_version()
 
@@ -693,11 +693,11 @@ class QgepDatamodelInitToolDialog(QDialog, get_ui_class("qgepdatamodeldialog.ui"
 
     # Project
 
-    @qgep_datamodel_error_catcher
+    @tww_datamodel_error_catcher
     def check_project(self):
         try:
             current_version = self._get_current_version()
-        except QGEPDatamodelError:
+        except TwwDatamodelError:
             # Can happend if PUM is not initialized, unfortunately we can't really
             # determine if this is a connection error or if PUM is not initailized
             # see https://github.com/opengisch/pum/issues/96
@@ -717,7 +717,7 @@ class QgepDatamodelInitToolDialog(QDialog, get_ui_class("qgepdatamodeldialog.ui"
 
         return check
 
-    @qgep_datamodel_error_catcher
+    @tww_datamodel_error_catcher
     def load_project(self):
         with open(QGISPROJECT_PATH) as original_project:
             contents = original_project.read()

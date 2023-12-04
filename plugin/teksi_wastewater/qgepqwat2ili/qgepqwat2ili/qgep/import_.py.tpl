@@ -7,7 +7,7 @@ from .model_qgep import get_qgep_model
 from .model_abwasser import get_abwasser_model
 
 
-def qgep_import():
+def tww_import():
 
     QGEP = get_qgep_model()
     ABWASSER = get_abwasser_model()

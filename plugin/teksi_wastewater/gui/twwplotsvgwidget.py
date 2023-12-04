@@ -35,7 +35,7 @@ from ..utils.translation import QgepJsTranslator
 from ..utils.ui import plugin_root_path
 
 
-class QgepWebPage(QWebPage):
+class TwwWebPage(QWebPage):
     logger = logging.getLogger(__name__)
 
     def __init__(self, parent):
@@ -45,7 +45,7 @@ class QgepWebPage(QWebPage):
         self.logger.debug(f"{source} line {line}: {msg}")
 
 
-class QgepPlotSVGWidget(QWidget):
+class TwwPlotSVGWidget(QWidget):
     webView = None
     webPage = None
     frame = None
@@ -72,7 +72,7 @@ class QgepPlotSVGWidget(QWidget):
         QWidget.__init__(self, parent)
 
         self.webView = QWebView()
-        self.webView.setPage(QgepWebPage(self.webView))
+        self.webView.setPage(TwwWebPage(self.webView))
 
         self.networkAnalyzer = network_analyzer
 
