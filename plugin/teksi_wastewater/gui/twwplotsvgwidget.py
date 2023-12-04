@@ -82,10 +82,10 @@ class TwwPlotSVGWidget(QWidget):
         if url is None:
             # Starting with QGIS 3.4, QWebView requires paths with / even on windows.
             default_url = plugin_root_path().replace("\\", "/") + "/svgprofile/index.html"
-            url = settings.value("/QGEP/SvgProfilePath", default_url)
+            url = settings.value("/TWW/SvgProfilePath", default_url)
             url = "file:///" + url
 
-        developer_mode = settings.value("/QGEP/DeveloperMode", False, type=bool)
+        developer_mode = settings.value("/TWW/DeveloperMode", False, type=bool)
 
         if developer_mode is True:
             self.webView.page().settings().setAttribute(QWebSettings.DeveloperExtrasEnabled, True)

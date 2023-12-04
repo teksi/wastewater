@@ -8,7 +8,8 @@ import xml.etree.ElementTree as ET
 
 from sqlalchemy.orm import Session
 from tww2ili import main, utils
-from tww2ili.qgep.model_qgep import get_qgep_model
+
+from plugin.teksi_wastewater.tww2ili.tww2ili.tww.model_tww import get_tww_model
 
 # Display logging in unittest output
 logger = logging.getLogger()
@@ -30,12 +31,12 @@ def findall_in_xml_sia_abwasser_2015(
     return root.findall(f"ili:DATASECTION/ili:{basket}/ili:{tag}", ns)
 
 
-class TestQGEPUseCases(unittest.TestCase):
+class TestTwwUseCases(unittest.TestCase):
     def test_case_a_import_wincan_xtf(self):
         """
-        # A. import Wincan-generated xtf data into QGEP
+        # A. import Wincan-generated xtf data into TWW
 
-        We recieve data from a TV inspection company as a Wincan exported .xtf file. We want this data loaded into QGEP.
+        We recieve data from a TV inspection company as a Wincan exported .xtf file. We want this data loaded into TWW.
         """
 
         path = os.path.join(
@@ -45,59 +46,59 @@ class TestQGEPUseCases(unittest.TestCase):
         # Prepare db (we import in a full schema)
         main(["setupdb", "full"])
 
-        QGEP = get_qgep_model()
+        TWW = get_tww_model()
         session = Session(utils.sqlalchemy.create_engine())
-        self.assertEqual(session.query(QGEP.damage_channel).count(), 0)
-        self.assertEqual(session.query(QGEP.examination).count(), 0)
-        self.assertEqual(session.query(QGEP.data_media).count(), 0)
-        self.assertEqual(session.query(QGEP.file).count(), 0)
-        self.assertEqual(session.query(QGEP.organisation).count(), 15)
+        self.assertEqual(session.query(TWW.damage_channel).count(), 0)
+        self.assertEqual(session.query(TWW.examination).count(), 0)
+        self.assertEqual(session.query(TWW.data_media).count(), 0)
+        self.assertEqual(session.query(TWW.file).count(), 0)
+        self.assertEqual(session.query(TWW.organisation).count(), 15)
         session.close()
 
-        main(["qgep", "import", path, "--recreate_schema"])
+        main(["tww", "import", path, "--recreate_schema"])
 
         # make sure all elements got imported
         session = Session(utils.sqlalchemy.create_engine())
-        self.assertEqual(session.query(QGEP.damage_channel).count(), 8)
-        self.assertEqual(session.query(QGEP.examination).count(), 1)
-        self.assertEqual(session.query(QGEP.data_media).count(), 2)
-        self.assertEqual(session.query(QGEP.file).count(), 4)
-        self.assertEqual(session.query(QGEP.organisation).count(), 18)
+        self.assertEqual(session.query(TWW.damage_channel).count(), 8)
+        self.assertEqual(session.query(TWW.examination).count(), 1)
+        self.assertEqual(session.query(TWW.data_media).count(), 2)
+        self.assertEqual(session.query(TWW.file).count(), 4)
+        self.assertEqual(session.query(TWW.organisation).count(), 18)
 
         # checking some properties
-        damage = session.query(QGEP.damage_channel).get("fk11abk6w70lrfne")
+        damage = session.query(TWW.damage_channel).get("fk11abk6w70lrfne")
         self.assertEqual(damage.quantification1, decimal.Decimal("300"))
 
-        data = session.query(QGEP.file).get("fk11abk6w70lrfnc")
+        data = session.query(TWW.file).get("fk11abk6w70lrfnc")
         self.assertEqual(data.identifier, "8486-8486.0010_0001.mpg")
         self.assertEqual(data.path_relative, "inspectiondata20210120/videos/")
         session.close()
 
         # assert idempotency
 
-        main(["qgep", "import", path, "--recreate_schema"])
+        main(["tww", "import", path, "--recreate_schema"])
         session = Session(utils.sqlalchemy.create_engine())
-        self.assertEqual(session.query(QGEP.damage_channel).count(), 8)
-        self.assertEqual(session.query(QGEP.examination).count(), 1)
-        self.assertEqual(session.query(QGEP.data_media).count(), 2)
-        self.assertEqual(session.query(QGEP.file).count(), 4)
-        self.assertEqual(session.query(QGEP.organisation).count(), 18)
+        self.assertEqual(session.query(TWW.damage_channel).count(), 8)
+        self.assertEqual(session.query(TWW.examination).count(), 1)
+        self.assertEqual(session.query(TWW.data_media).count(), 2)
+        self.assertEqual(session.query(TWW.file).count(), 4)
+        self.assertEqual(session.query(TWW.organisation).count(), 18)
         session.close()
 
-    def test_case_b_export_complete_qgep_to_xtf(self):
+    def test_case_b_export_complete_tww_to_xtf(self):
         """
-        # B. export the whole QGEP model to interlis
+        # B. export the whole TWW model to interlis
         """
 
         # Prepare db
         main(["setupdb", "full"])
 
         path = os.path.join(tempfile.mkdtemp(), "export.xtf")
-        main(["qgep", "export", path, "--recreate_schema"])
+        main(["tww", "export", path, "--recreate_schema"])
 
-    def test_case_d_import_complete_xtf_to_qgep(self):
+    def test_case_d_import_complete_xtf_to_tww(self):
         """
-        # D. import a whole valid interlis transfer file into QGEP
+        # D. import a whole valid interlis transfer file into TWW
         """
 
         # Incomming XTF case_c_import_all_without_errors.xtf
@@ -113,23 +114,23 @@ class TestQGEPUseCases(unittest.TestCase):
         # Prepare subset db (we import in an empty schema)
         main(["setupdb", "empty"])
 
-        QGEP = get_qgep_model()
+        TWW = get_tww_model()
 
         session = Session(utils.sqlalchemy.create_engine())
-        self.assertEqual(session.query(QGEP.channel).count(), 0)
-        self.assertEqual(session.query(QGEP.manhole).count(), 0)
+        self.assertEqual(session.query(TWW.channel).count(), 0)
+        self.assertEqual(session.query(TWW.manhole).count(), 0)
         session.close()
 
-        main(["qgep", "import", path, "--recreate_schema"])
+        main(["tww", "import", path, "--recreate_schema"])
 
         # make sure all elements got imported
         session = Session(utils.sqlalchemy.create_engine())
-        self.assertEqual(session.query(QGEP.channel).count(), 102)
-        self.assertEqual(session.query(QGEP.manhole).count(), 49)
+        self.assertEqual(session.query(TWW.channel).count(), 102)
+        self.assertEqual(session.query(TWW.manhole).count(), 49)
 
         # checking some properties  # TODO : add some more...
         self.assertEqual(
-            session.query(QGEP.manhole).get("ch080qwzNS000113").year_of_construction, 1950
+            session.query(TWW.manhole).get("ch080qwzNS000113").year_of_construction, 1950
         )
         session.close()
 
@@ -154,7 +155,7 @@ class TestQGEPUseCases(unittest.TestCase):
         labels_file = os.path.join(os.path.dirname(__file__), "data", "labels.geojson")
         main(
             [
-                "qgep",
+                "tww",
                 "export",
                 path,
                 "--recreate_schema",
@@ -216,7 +217,7 @@ class TestQGEPUseCases(unittest.TestCase):
         labels_file = os.path.join(os.path.dirname(__file__), "data", "labels.geojson")
         main(
             [
-                "qgep",
+                "tww",
                 "export",
                 path,
                 "--export_sia405",
@@ -286,17 +287,17 @@ class TestRegressions(unittest.TestCase):
         # Prepare db (we import in an empty schema)
         main(["setupdb", "empty"])
 
-        QGEP = get_qgep_model()
+        TWW = get_tww_model()
 
         session = Session(utils.sqlalchemy.create_engine())
-        self.assertEqual(session.query(QGEP.organisation).count(), 0)
+        self.assertEqual(session.query(TWW.organisation).count(), 0)
         session.close()
 
-        main(["qgep", "import", path, "--recreate_schema"])
+        main(["tww", "import", path, "--recreate_schema"])
 
         session = Session(utils.sqlalchemy.create_engine())
-        self.assertEqual(session.query(QGEP.organisation).count(), 1)
-        organisation = session.query(QGEP.organisation).first()
+        self.assertEqual(session.query(TWW.organisation).count(), 1)
+        organisation = session.query(TWW.organisation).first()
         self.assertEqual(organisation, organisation.fk_dataowner__REL)
         self.assertEqual(organisation, organisation.fk_provider__REL)
         session.close()

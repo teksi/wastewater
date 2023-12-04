@@ -39,29 +39,29 @@ DRY_ONLY     NO
 ;;              	                	                	Param   	Units   	Scale   	Baseline	Baseline
 ;;Node          	Parameter       	Time Series     	Type    	Factor  	Factor  	Value   	Pattern
 ;;--------------	----------------	----------------	--------	--------	--------	--------	--------
-default_qgep_node           	FLOW            	default_qgep_inflow_timeserie    	FLOW    	1.0     	1.0
+default_tww_node           	FLOW            	default_tww_inflow_timeserie    	FLOW    	1.0     	1.0
 
 
 [CURVES]
 ;;Name          	Type      	X-Value   	Y-Value
 ;;--------------	----------	----------	----------
-default_qgep_pump_curve	Pump1     	0         	5.0
+default_tww_pump_curve	Pump1     	0         	5.0
 
 
 [TIMESERIES]
 ;;Name          	Date      	Time      	Value
 ;;--------------	----------	----------	----------
-default_qgep_raingage_timeserie    	01/01/2000	00:00     	0.00000
-default_qgep_raingage_timeserie    	          	00:15     	40.00000
-default_qgep_raingage_timeserie    	          	03:00     	40.00000
-default_qgep_raingage_timeserie    	          	03:15     	0.00000
-default_qgep_raingage_timeserie    	          	12:00     	0.00000
+default_tww_raingage_timeserie    	01/01/2000	00:00     	0.00000
+default_tww_raingage_timeserie    	          	00:15     	40.00000
+default_tww_raingage_timeserie    	          	03:00     	40.00000
+default_tww_raingage_timeserie    	          	03:15     	0.00000
+default_tww_raingage_timeserie    	          	12:00     	0.00000
 
-default_qgep_inflow_timeserie    	01/01/2000	00:00     	0.00000
-default_qgep_inflow_timeserie     	          	00:15     	45.00000
-default_qgep_inflow_timeserie     	          	03:00     	45.00000
-default_qgep_inflow_timeserie     	          	03:15     	0.00000
-default_qgep_inflow_timeserie     	          	12:00     	0.00000
+default_tww_inflow_timeserie    	01/01/2000	00:00     	0.00000
+default_tww_inflow_timeserie     	          	00:15     	45.00000
+default_tww_inflow_timeserie     	          	03:00     	45.00000
+default_tww_inflow_timeserie     	          	03:15     	0.00000
+default_tww_inflow_timeserie     	          	12:00     	0.00000
 
 [PATTERNS]
 ;;Name           Type       Multipliers

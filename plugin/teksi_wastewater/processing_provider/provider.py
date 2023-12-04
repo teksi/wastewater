@@ -1,6 +1,6 @@
 """
 /***************************************************************************
- QGEP processing provider
+ TWW processing provider
                               -------------------
         begin                : 18.11.2017
         copyright            : (C) 2017 by OPENGIS.ch
@@ -114,7 +114,7 @@ class QgepProcessingProvider(QgsProcessingProvider):
         It is also used to create the command line name of all the
         algorithms from this provider.
         """
-        return "QGEP"
+        return "TWW"
 
     def icon(self):
         return QIcon(self.svgIconPath())

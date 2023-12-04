@@ -97,7 +97,7 @@ class TwwMapTool(QgsMapTool):
         self.network_analyzer = network_analyzer
 
         settings = QSettings()
-        current_profile_color = settings.value("/QGEP/CurrentProfileColor", "#FF9500")
+        current_profile_color = settings.value("/TWW/CurrentProfileColor", "#FF9500")
 
         self.rubberBand = QgsRubberBand(self.canvas)
         self.rubberBand.setColor(QColor(current_profile_color))
@@ -262,8 +262,8 @@ class TwwProfileMapTool(TwwMapTool):
         TwwMapTool.__init__(self, canvas, button, network_analyzer)
         settings = QSettings()
 
-        helper_line_color = settings.value("/QGEP/HelperLineColor", "#FFD900")
-        highlight_color = settings.value("/QGEP/HighlightColor", "#40FF40")
+        helper_line_color = settings.value("/TWW/HelperLineColor", "#FFD900")
+        highlight_color = settings.value("/TWW/HighlightColor", "#40FF40")
 
         # Init rubberband to visualize current status
         self.rbHelperLine = QgsRubberBand(self.canvas)

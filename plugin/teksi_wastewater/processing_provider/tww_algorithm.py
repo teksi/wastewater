@@ -1,6 +1,6 @@
 """
 /***************************************************************************
- QGEP processing provider
+ TWW processing provider
                               -------------------
         begin                : 15.08.2018
         copyright            : (C) 2018 by OPENGIS.ch

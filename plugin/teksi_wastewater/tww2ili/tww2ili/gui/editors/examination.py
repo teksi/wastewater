@@ -6,7 +6,7 @@ from qgis.PyQt.QtWidgets import QHeaderView, QListWidgetItem, QTreeWidgetItem
 from qgis.utils import iface
 from sqlalchemy.orm import aliased
 
-from ...qgep.model_qgep import get_qgep_model
+from ...tww.model_tww import get_tww_model
 from .base import Editor
 
 
@@ -18,7 +18,7 @@ class ExaminationEditor(Editor):
         # We auto assign all examinations that have exactly one suggested structure,
         # as 99% of the time, this will be a good match
 
-        QGEP = get_qgep_model()
+        QGEP = get_tww_model()
         suggested_structures = self._get_suggested_structures()
         # TODO : Only assign if there's no already assigned structures. For now, this is fine, as due to
         # ili2pg's limitations, assigned structures are not imported (see import_.py:968 near `if row.abwasserbauwerkref`)
@@ -110,7 +110,7 @@ class ExaminationEditor(Editor):
             # selectorWidget was empty
             return
 
-        QGEP = get_qgep_model()
+        QGEP = get_tww_model()
 
         exam_to_wastewater_structure = QGEP.re_maintenance_event_wastewater_structure(
             fk_wastewater_structure=feature["ws_obj_id"],
@@ -122,7 +122,7 @@ class ExaminationEditor(Editor):
         self.main_dialog.update_tree()
 
     def _unassign_button_clicked(self):
-        QGEP = get_qgep_model()
+        QGEP = get_tww_model()
 
         structure_id = self.widget.assignedWidget.currentItem().data(Qt.UserRole)
         self.session.query(QGEP.re_maintenance_event_wastewater_structure).filter(
@@ -148,7 +148,7 @@ class ExaminationEditor(Editor):
         self.main_dialog.update_tree()
 
     def _damages_item_changed(self, item, column):
-        QGEP = get_qgep_model()
+        QGEP = get_tww_model()
         check_state = item.checkState(0)
         damage_id = item.data(0, Qt.UserRole)
         for obj, editor in self.main_dialog.editors.items():
@@ -175,7 +175,7 @@ class ExaminationEditor(Editor):
             return []
 
     def _get_suggested_structures_for_channel(self, from_id, to_id):
-        QGEP = get_qgep_model()
+        QGEP = get_tww_model()
 
         wastewater_ne_from = aliased(QGEP.wastewater_networkelement)
         wastewater_ne_to = aliased(QGEP.wastewater_networkelement)
@@ -206,14 +206,14 @@ class ExaminationEditor(Editor):
         )
 
     def _get_suggested_structures_for_manhole(self, from_id):
-        QGEP = get_qgep_model()
+        QGEP = get_tww_model()
 
         return self.session.query(QGEP.wastewater_structure).filter(
             QGEP.wastewater_structure.identifier == from_id
         )
 
     def _get_assigned_structures(self):
-        QGEP = get_qgep_model()
+        QGEP = get_tww_model()
 
         structures_from_db = (
             self.session.query(QGEP.wastewater_structure)
@@ -239,7 +239,7 @@ class ExaminationEditor(Editor):
                 yield instance
 
     def _get_child_damages(self):
-        QGEP = get_qgep_model()
+        QGEP = get_tww_model()
 
         from_db = self.session.query(QGEP.damage_channel).filter(
             QGEP.damage_channel.fk_examination == self.obj.obj_id

@@ -3,11 +3,11 @@ import sys
 from logging import INFO, FileHandler, Formatter
 
 from . import config, utils
-from .qgep.export import qgep_export
-from .qgep.import_ import tww_import
-from .qgep.mapping import get_qgep_mapping
-from .qgep.model_abwasser import Base as BaseAbwasser
-from .qgep.model_qgep import Base as BaseQgep
+from .tww.export import qgep_export
+from .tww.import_ import tww_import
+from .tww.mapping import get_tww_mapping
+from .tww.model_abwasser import Base as BaseAbwasser
+from .tww.model_tww import Base as BaseQgep
 from .utils.various import make_log_path
 
 
@@ -20,45 +20,45 @@ def main(args):
     subparsers = parser.add_subparsers(title="subcommands", dest="parser")
     # subparsers.required = True
 
-    parser_qgep = subparsers.add_parser(
+    parser_tww = subparsers.add_parser(
         "qgep",
         help="import/export QGEP datamodel",
         description="ili2QGEP entrypoint",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
-    # group = parser_qgep.add_mutually_exclusive_group(required=True)
-    parser_qgep.add_argument("direction", choices=["import", "export"])
-    parser_qgep.add_argument(
+    # group = parser_tww.add_mutually_exclusive_group(required=True)
+    parser_tww.add_argument("direction", choices=["import", "export"])
+    parser_tww.add_argument(
         "--selection",
         help="if provided, limits the export to networkelements that are provided in the selection (comma separated list of ids)",
     )
     # TODO: this only makes sense for export
-    parser_qgep.add_argument(
+    parser_tww.add_argument(
         "--labels_file",
         help="if provided, includes the label positions in the export (the file should be the results of the provided `qgep:extractlabels_interlis` QGIS algorithm as geojson)",
     )
-    parser_qgep.add_argument(
+    parser_tww.add_argument(
         "--recreate_schema",
         action="store_true",
         help="drops schema and reruns ili2pg importschema",
     )
-    parser_qgep.add_argument(
+    parser_tww.add_argument(
         "--skip_validation",
         action="store_true",
         help="skips running ilivalidator on input/output xtf (required to import invalid files, invalid outputs are still generated)",
     )
-    parser_qgep.add_argument("path", help="path to the input/output .xtf file")
-    parser_qgep.add_argument(
+    parser_tww.add_argument("path", help="path to the input/output .xtf file")
+    parser_tww.add_argument(
         "--pgservice",
         help="name of the pgservice to use to connect to the database",
         default=config.QGEP_DEFAULT_PGSERVICE,
     )
-    parser_qgep.add_argument(
+    parser_tww.add_argument(
         "--log",
         action="store_true",
         help="saves the log files next to the input/output file",
     )
-    parser_qgep.add_argument(
+    parser_tww.add_argument(
         "--export_sia405",
         action="store_true",
         help="export the model SIA405_ABWASSER_2015_LV95 (instead of default VSA_KEK_2019_LV95)",
@@ -205,7 +205,7 @@ def main(args):
             utils.ili2db.create_ili_schema(
                 config.ABWASSER_SCHEMA, config.ABWASSER_ILI_MODEL, recreate_schema=True
             )
-            QGEPMAPPING = get_qgep_mapping()
+            QGEPMAPPING = get_tww_mapping()
             utils.templates.generate_template(
                 "qgep", "abwasser", BaseQgep, BaseAbwasser, QGEPMAPPING
             )
