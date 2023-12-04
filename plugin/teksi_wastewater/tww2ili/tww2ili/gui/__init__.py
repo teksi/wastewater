@@ -142,7 +142,7 @@ def action_import(plugin):
     progress_dialog.setValue(66)
 
     # Export to the temporary ili2pg model
-    progress_dialog.setLabelText("Converting to QGEP...")
+    progress_dialog.setLabelText("Converting to TWW...")
     QApplication.processEvents()
     import_dialog = GuiImport(plugin.iface.mainWindow())
     progress_dialog.setValue(100)
@@ -175,7 +175,7 @@ def action_export(plugin):
         file_name, _ = QFileDialog.getSaveFileName(
             None,
             plugin.tr("Export to file"),
-            os.path.join(default_folder, "qgep-export.xtf"),
+            os.path.join(default_folder, "tww-export.xtf"),
             plugin.tr("Interlis transfer files (*.xtf)"),
         )
         if not file_name:
@@ -233,14 +233,14 @@ def action_export(plugin):
                 progress_dialog.close()
                 show_failure(
                     "Could not find the vw_tww_wastewater_structure and/or the vw_tww_reach layers.",
-                    "Make sure your QGEP project is open.",
+                    "Make sure your TWW project is open.",
                     None,
                 )
                 return
 
             QApplication.processEvents()
             processing.run(
-                "qgep:extractlabels_interlis",
+                "tww:extractlabels_interlis",
                 {
                     "OUTPUT": labels_file_path,
                     "RESTRICT_TO_SELECTION": export_dialog.limit_to_selection,
@@ -252,7 +252,7 @@ def action_export(plugin):
             progress_dialog.setValue(35)
 
         # Export to the temporary ili2pg model
-        progress_dialog.setLabelText("Converting from QGEP...")
+        progress_dialog.setLabelText("Converting from TWW...")
         QApplication.processEvents()
 
         log_handler = logging.FileHandler(

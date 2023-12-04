@@ -143,7 +143,7 @@ def export_xtf_data(schema, model_name, export_model_name, xtf_file, log_path):
 class TidMaker:
     """
     Helper class that creates globally unique integer primary key forili2pg class (t_id)
-    from a a QGEP/QWAT id (obj_id or id).
+    from a a TWW/QWAT id (obj_id or id).
     """
 
     def __init__(self, id_attribute="id"):

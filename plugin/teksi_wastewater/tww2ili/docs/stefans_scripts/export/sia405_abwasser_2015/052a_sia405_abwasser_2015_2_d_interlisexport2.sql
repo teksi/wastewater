@@ -1,4 +1,4 @@
------- This file is sql code to Export QGEP (Modul SIA405Abwasser) in English to INTERLIS in German on QQIS
+------ This file is sql code to Export TWW (Modul SIA405Abwasser) in English to INTERLIS in German on QQIS
 ------ Second version using tid_generate and tid_lookup
 ------ For questions etc. please contact Stefan Burckhardt stefan.burckhardt@sjib.ch
 ------ version 15.03.2016 14:19:45
@@ -14,7 +14,7 @@ t_id, bezeichnung, bemerkung, uid)
 SELECT sia405_abwasser_2015_2_d.tid_lookup('organisation', obj_id), identifier, remark, uid
 FROM tww_od.organisation;
 
--- additional Table Assoc: Organisation_Teil_von/ no table hierarchy in qgep schema yet (check how to implement there)
+-- additional Table Assoc: Organisation_Teil_von/ no table hierarchy in tww schema yet (check how to implement there)
 -- INSERT INTO sia405_abwasser_2015_2_d.Organisation_Teil_vonassoc
 -- (
 -- t_id, Teil_vonref, Organisation_Teil_vonassocref)

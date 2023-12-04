@@ -65,12 +65,12 @@ class SwmmCreateInputAlgorithm(TwwAlgorithm):
         If \"Export only selected network\" is selected, the entire selected network is exported, including the secondary network.
         Note that at this stage of the development, export of special structures (pumps, weirs, dividers) and related curves must be checked.
         Advices to improve the export can be submited as github issues.
-        See: https://qgep.github.io/docs/qgep_swmm/Create-Input.html
+        See: https://qgep.github.io/docs/tww_swmm/Create-Input.html # TODO should point to new url // skip-keyword-check
         """
         )
 
     def helpUrl(self):
-        return "https://qgep.github.io/docs/qgep_swmm/Create-Input.html"
+        return "https://qgep.github.io/docs/tww_swmm/Create-Input.html"  # TODO should point to new url // skip-keyword-check
 
     def initAlgorithm(self, config=None):
         """Here we define the inputs and output of the algorithm, along

@@ -23,7 +23,7 @@
 # ---------------------------------------------------------------------
 
 """
-This module provides objects which manage a QGEP profile.
+This module provides objects which manage a TWW profile.
 """
 
 import json

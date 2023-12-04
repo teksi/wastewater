@@ -169,7 +169,7 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
             if labels_count == 0:
                 continue
 
-            # Annotate features with qgep_obj_id and scal
+            # Annotate features with tww_obj_id and scal
             lyr_name_to_key = {
                 TwwLayerManager.layer(
                     "vw_tww_wastewater_structure"
@@ -178,13 +178,13 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
             }
             for label in geojson["features"]:
                 layer_name = label["properties"]["Layer"]
-                # this is a non-QGEP layer, we don't annotate it
+                # this is a non-TWW layer, we don't annotate it
                 if layer_name not in lyr_name_to_key:
                     continue
                 lyr = lyr_name_to_key[layer_name]
                 rowid = label["properties"]["FeatureID"]
                 label["properties"]["Layer"] = lyr
-                label["properties"]["qgep_obj_id"] = rowid_to_obj_id[lyr][rowid]
+                label["properties"]["tww_obj_id"] = rowid_to_obj_id[lyr][rowid]
                 label["properties"]["scale"] = scale_id
 
             # Save

@@ -12,8 +12,8 @@ from sqlalchemy.orm import Session
 # Mock engine that dumps strings instead of executing
 # def mock_execute(sql, *multiparams, **params):
 #     print(sql.compile(dialect=engine.dialect))
-# engine = create_engine('postgresql://postgres:postgres@127.0.0.1:5432/qgep_prod', strategy='mock', executor=mock_execute)
-engine = create_engine("postgresql://postgres:postgres@127.0.0.1:5432/qgep_prod")
+# engine = create_engine('postgresql://postgres:postgres@127.0.0.1:5432/tww_prod', strategy='mock', executor=mock_execute)
+engine = create_engine("postgresql://postgres:postgres@127.0.0.1:5432/tww_prod")
 
 
 ######################################################################
@@ -61,7 +61,7 @@ def example_1():
 
 
 ######################################################################
-# Actual application : export from QGEP (datamodel) to Interlis (similar but different datamodel)
+# Actual application : export from TWW (datamodel) to Interlis (similar but different datamodel)
 ######################################################################
 
 MAPPING = {
@@ -107,16 +107,16 @@ MAPPING = {
 
 
 def export_a():
-    # Autoload QGEP datamodel
-    QGEPBase = automap_base()
-    QGEPBase.prepare(engine, reflect=True, schema="tww_od")
+    # Autoload TWW datamodel
+    TWWBase = automap_base()
+    TWWBase.prepare(engine, reflect=True, schema="tww_od")
 
     # Autoload Interlis datamodel
     SIABase = automap_base()
     SIABase.prepare(engine, reflect=True, schema="vsa_dss_2015_2_d")
 
     # Shortcuts
-    QGEP = QGEPBase.classes
+    TWW = TWWBase.classes
     SIA = SIABase.classes
 
     # Autoincrementing ID
@@ -126,7 +126,7 @@ def export_a():
     session = Session(engine)
 
     print("Exporting wastewater_networkelement -> baseclass")
-    for row in session.query(QGEP.wastewater_networkelement):
+    for row in session.query(TWW.wastewater_networkelement):
         session.add(
             SIA.baseclass(
                 t_id=oid2tid[row.obj_id],
@@ -138,7 +138,7 @@ def export_a():
     print("done !")
 
     print("Exporting wastewater_networkelement -> sia405_baseclass")
-    for row in session.query(QGEP.wastewater_networkelement):
+    for row in session.query(TWW.wastewater_networkelement):
         session.add(
             SIA.sia405_baseclass(
                 t_id=oid2tid[row.obj_id],
@@ -149,7 +149,7 @@ def export_a():
     print("done !")
 
     print("Exporting wastewater_networkelement -> abwassernetzelement")
-    for row in session.query(QGEP.wastewater_networkelement):
+    for row in session.query(TWW.wastewater_networkelement):
         session.add(
             SIA.abwassernetzelement(
                 t_id=oid2tid[row.obj_id],
@@ -160,7 +160,7 @@ def export_a():
     print("done !")
 
     print("Exporting wastewater_structure -> baseclass")
-    for row in session.query(QGEP.wastewater_structure):
+    for row in session.query(TWW.wastewater_structure):
         session.add(
             SIA.baseclass(
                 t_id=oid2tid[row.obj_id],
@@ -172,7 +172,7 @@ def export_a():
     print("done !")
 
     print("Exporting wastewater_structure -> sia405_baseclass")
-    for row in session.query(QGEP.wastewater_structure):
+    for row in session.query(TWW.wastewater_structure):
         session.add(
             SIA.sia405_baseclass(
                 t_id=oid2tid[row.obj_id],
@@ -183,7 +183,7 @@ def export_a():
     print("done !")
 
     print("Exporting wastewater_structure -> abwasserbauwerk")
-    for row in session.query(QGEP.wastewater_structure):
+    for row in session.query(TWW.wastewater_structure):
         session.add(
             SIA.abwasserbauwerk(
                 t_id=oid2tid[row.obj_id],
@@ -196,7 +196,7 @@ def export_a():
     print("done !")
 
     print("Exporting manhole -> normschacht")
-    for row in session.query(QGEP.manhole):
+    for row in session.query(TWW.manhole):
         session.add(
             SIA.normschacht(
                 t_id=oid2tid[row.obj_id],
@@ -227,16 +227,16 @@ def export_a():
 
 
 def export_b():
-    # Autoload QGEP datamodel
-    QGEPBase = automap_base()
-    QGEPBase.prepare(engine, reflect=True, schema="tww_od")
+    # Autoload TWW datamodel
+    TWWBase = automap_base()
+    TWWBase.prepare(engine, reflect=True, schema="tww_od")
 
     # Autoload Interlis datamodel
     SIABase = automap_base()
     SIABase.prepare(engine, reflect=True, schema="vsa_dss_2015_2_d")
 
     # Shortcuts
-    QGEP = QGEPBase.classes
+    TWW = TWWBase.classes
     SIA = SIABase.classes
 
     # Autoincrementing ID
@@ -247,11 +247,11 @@ def export_b():
 
     print("Exporting manhole -> normschacht")
     joined_query = (
-        session.query(QGEP.manhole, QGEP.wastewater_structure, QGEP.wastewater_networkelement)
-        .filter(QGEP.manhole.obj_id == QGEP.wastewater_structure.obj_id)
+        session.query(TWW.manhole, TWW.wastewater_structure, TWW.wastewater_networkelement)
+        .filter(TWW.manhole.obj_id == TWW.wastewater_structure.obj_id)
         .filter(
-            QGEP.wastewater_structure.obj_id
-            == QGEP.wastewater_networkelement.fk_wastewater_structure
+            TWW.wastewater_structure.obj_id
+            == TWW.wastewater_networkelement.fk_wastewater_structure
         )
     )
     for row in joined_query:
@@ -340,22 +340,22 @@ def export_c():
         # if this didn't work, revert to the default behavior
         return "REF_" + name_for_collection_relationship(base, local_cls, referred_cls, constraint)
 
-    # Define QGEP datamodel
-    QGEPBase = automap_base()
+    # Define TWW datamodel
+    TWWBase = automap_base()
 
-    class QGEPWastewaterNetworkelement(QGEPBase):
+    class TWWWastewaterNetworkelement(TWWBase):
         __tablename__ = "wastewater_networkelement"
         __table_args__ = {"schema": "tww_od"}
 
-    class QGEPWastewaterStructure(QGEPBase):
+    class TWWWastewaterStructure(TWWBase):
         __tablename__ = "wastewater_structure"
         __table_args__ = {"schema": "tww_od"}
 
-    class QGEPManhole(QGEPWastewaterStructure):
+    class TWWManhole(TWWWastewaterStructure):
         __tablename__ = "manhole"
         __table_args__ = {"schema": "tww_od"}
 
-    QGEPBase.prepare(
+    TWWBase.prepare(
         engine,
         reflect=True,
         schema="tww_od",
@@ -399,7 +399,7 @@ def export_c():
     session = Session(engine)
 
     print("Exporting wastewaternetworkelement -> abwassernetzelement")
-    for row in session.query(QGEPWastewaterNetworkelement):
+    for row in session.query(TWWWastewaterNetworkelement):
         session.add(
             SIAAbwassernetzelement(
                 t_id=oid2tid[row.obj_id],
@@ -413,7 +413,7 @@ def export_c():
     print("done !")
 
     print("Exporting manhole -> normschacht")
-    for row in session.query(QGEPManhole):
+    for row in session.query(TWWManhole):
         session.add(
             SIANormschacht(
                 t_id=oid2tid[row.obj_id],

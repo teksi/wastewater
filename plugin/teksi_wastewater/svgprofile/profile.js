@@ -281,7 +281,7 @@ require( ["dojo/on", "dojo/ready", "dojo/_base/json", "dojo/_base/lang", "profil
     tww.profilePlot.initSVG( d3.select("body") );
 
     // profileProxy is our bridge to the TWW plugin. It's inserted with teh use of black magic (and pyQt/QtWebKit bridge)
-    //profileProxy.profileChanged.connect( dojo.hitch( qgep.profilePlot, qgep.profilePlot.createReaches, dojo.fromJson( arguments[0] ) ) );
+    //profileProxy.profileChanged.connect( dojo.hitch( tww.profilePlot, tww.profilePlot.createReaches, dojo.fromJson( arguments[0] ) ) );
     if ( typeof profileProxy !== 'undefined' )
     {
       profileProxy.profileChanged.connect(

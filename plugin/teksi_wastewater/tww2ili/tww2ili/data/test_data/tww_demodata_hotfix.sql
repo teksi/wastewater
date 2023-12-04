@@ -1,5 +1,5 @@
 /*
-This fixes some invalid (according to SIA405) values in the QGEP demo data, so that
+This fixes some invalid (according to SIA405) values in the TWW demo data, so that
 we ilivalidator validates the exports.
 
 TODO this should probably be applied to the actual demo data if these are actual data errors.

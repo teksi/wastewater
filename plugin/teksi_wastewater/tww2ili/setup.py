@@ -3,7 +3,7 @@ from setuptools import find_packages, setup
 setup(
     name="tww2ili",
     version="999.dev0",  # DON'T CHANGE, WILL BE OVERRIDEN BY CI
-    description="Toolkit to import/export between QGEP/QWAT and their counterpart SIA405 interlis model exchange files",
+    description="Toolkit to import/export between TWW/QWAT and their counterpart SIA405 interlis model exchange files",
     author="Olivier Dalang",
     author_email="olivier@opengis.ch",
     url="https://github.com/TWW/tww2ili",

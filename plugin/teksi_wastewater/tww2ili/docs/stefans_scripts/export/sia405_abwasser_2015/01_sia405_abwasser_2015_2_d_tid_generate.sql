@@ -18,7 +18,7 @@ DECLARE
   -- myrec_seq record;
 BEGIN
   --get sequence for table
-  -- SELECT nextval('qgep.seq_' || table_name || '_oid') AS seqval INTO myrec_seq;
+  -- SELECT nextval('tww.seq_' || table_name || '_oid') AS seqval INTO myrec_seq;
   -- SELECT nextval('sia405_abwasser_2015_2_d.seq_' || table_name || '_tid') AS seqval INTO myrec_seq;
   -- 23.12.2015 SELECT t_lastuniqueid FROM sia405_abwasser_2015_2_d.t_key_object AS nexttid;
   SELECT t_lastuniqueid INTO nexttid FROM sia405_abwasser_2015_2_d.t_key_object;

@@ -10,7 +10,7 @@ from sqlalchemy import inspect
 
 class Editor:
     """
-    Base class to manage import options for QGEP classes.
+    Base class to manage import options for TWW classes.
 
     Editor subclasses are responsible of:
     - managing a listwidgetitem

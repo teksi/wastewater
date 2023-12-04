@@ -1,4 +1,4 @@
-﻿------ This file is sql code to Export QGEP (Modul SIA405Abwasser) in English to INTERLIS in German on QQIS
+﻿------ This file is sql code to Export TWW (Modul SIA405Abwasser) in English to INTERLIS in German on QQIS
 ------ Second version using tid_generate and tid_lookup
 ------ For questions etc. please contact Stefan Burckhardt stefan.burckhardt@sjib.ch
 ------ version 15.03.2016 14:19:45 / modified 15.8.2019 neue schemata
@@ -32,19 +32,19 @@ UPDATE sia405_abwasser_2015_2_d.t_key_object SET t_lastuniqueid = 0, t_createdat
 
 
 -- neu 15.8.2019 falls noch keine Daten drin
--- INSERT INTO sia405_abwasser_2015_2_d.t_ili2db_dataset (t_id, datasetname) VALUES (1, 'qgep.xtf-1');
+-- INSERT INTO sia405_abwasser_2015_2_d.t_ili2db_dataset (t_id, datasetname) VALUES (1, 'tww.xtf-1');
 
--- INSERT INTO sia405_abwasser_2015_2_d.t_ili2db_import (t_id, dataset, importdate, importuser, importfile) VALUES (2, 1, current_timestamp, 'postgres', 'qgep.xtf');
+-- INSERT INTO sia405_abwasser_2015_2_d.t_ili2db_import (t_id, dataset, importdate, importuser, importfile) VALUES (2, 1, current_timestamp, 'postgres', 'tww.xtf');
 
--- INSERT INTO sia405_abwasser_2015_2_d.t_ili2db_basket (t_id, dataset, topic, attachmentkey) VALUES (3, 1, 'SIA405_ABWASSER_2015.SIA405_Abwasser', 'qgep.xtf-3');
+-- INSERT INTO sia405_abwasser_2015_2_d.t_ili2db_basket (t_id, dataset, topic, attachmentkey) VALUES (3, 1, 'SIA405_ABWASSER_2015.SIA405_Abwasser', 'tww.xtf-3');
 
--- INSERT INTO sia405_abwasser_2015_2_d.t_ili2db_import_basket (t_id, dataset, importdate, importuser, importfile) VALUES (2, 1, current_timestamp, 'postgres', 'qgep.xtf');
+-- INSERT INTO sia405_abwasser_2015_2_d.t_ili2db_import_basket (t_id, dataset, importdate, importuser, importfile) VALUES (2, 1, current_timestamp, 'postgres', 'tww.xtf');
 
 --- OK: fk_Attributes
 --- OK: JOIN for fk_dataowner / provider
---- in Progress: organisation.fk_part_of data - prepared, but no qgep.table hierarchy and data, dito for all other class - class associations
+--- in Progress: organisation.fk_part_of data - prepared, but no tww.table hierarchy and data, dito for all other class - class associations
 --- Not tested: if data with reach - reach connection
---- abwasserbauwerk.detailgeometrie and haltung.verlauf commented out as long qgep has not geometry datatypes that allow ARCS
+--- abwasserbauwerk.detailgeometrie and haltung.verlauf commented out as long tww has not geometry datatypes that allow ARCS
 
 
 

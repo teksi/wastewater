@@ -3,19 +3,19 @@ from geoalchemy2.functions import ST_Transform, ST_Force2D
 
 from .. import utils
 
-from .model_qgep import get_qgep_model
+from .model_tww import get_tww_model
 from .model_abwasser import get_abwasser_model
 
 
 def tww_import():
 
-    QGEP = get_qgep_model()
+    TWW = get_tww_model()
     ABWASSER = get_abwasser_model()
 
     abwasser_session = Session(utils.sqlalchemy.create_engine(), autocommit=False, autoflush=False)
-    qgep_session = Session(utils.sqlalchemy.create_engine(), autocommit=False, autoflush=False)
+    tww_session = Session(utils.sqlalchemy.create_engine(), autocommit=False, autoflush=False)
 
-    print("Importing ABWASSER.organisation, ABWASSER.metaattribute -> QGEP.organisation")
+    print("Importing ABWASSER.organisation, ABWASSER.metaattribute -> TWW.organisation")
     for row, metaattribute in abwasser_session.query(ABWASSER.organisation, ABWASSER.metaattribute).join(ABWASSER.metaattribute):
 
         # baseclass --- organisation.t_ili_tid, organisation.t_type
@@ -25,7 +25,7 @@ def tww_import():
         # metaattribute --- metaattribute.datenherr, metaattribute.datenlieferant, metaattribute.letzte_aenderung, metaattribute.sia405_baseclass_metaattribute, metaattribute.t_id, metaattribute.t_ili_tid, metaattribute.t_seq
         # _rel_ --- metaattribute.sia405_baseclass_metaattribute__REL
 
-        organisation = QGEP.organisation(
+        organisation = TWW.organisation(
 
             # --- organisation ---
             # fk_dataowner=row.REPLACE_ME,  # VARCHAR(16)
@@ -40,7 +40,7 @@ def tww_import():
         print(".", end="")
     print("done")
 
-    print("Importing ABWASSER.kanal, ABWASSER.metaattribute -> QGEP.channel")
+    print("Importing ABWASSER.kanal, ABWASSER.metaattribute -> TWW.channel")
     for row, metaattribute in abwasser_session.query(ABWASSER.kanal, ABWASSER.metaattribute).join(ABWASSER.metaattribute):
 
         # baseclass --- kanal.t_ili_tid, kanal.t_type
@@ -53,7 +53,7 @@ def tww_import():
         # metaattribute --- metaattribute.datenherr, metaattribute.datenlieferant, metaattribute.letzte_aenderung, metaattribute.sia405_baseclass_metaattribute, metaattribute.t_id, metaattribute.t_ili_tid, metaattribute.t_seq
         # _rel_ --- metaattribute.sia405_baseclass_metaattribute__REL
 
-        channel = QGEP.channel(
+        channel = TWW.channel(
 
             # --- wastewater_structure ---
             # _bottom_label=row.REPLACE_ME,  # TEXT
@@ -106,7 +106,7 @@ def tww_import():
         print(".", end="")
     print("done")
 
-    print("Importing ABWASSER.normschacht, ABWASSER.metaattribute -> QGEP.manhole")
+    print("Importing ABWASSER.normschacht, ABWASSER.metaattribute -> TWW.manhole")
     for row, metaattribute in abwasser_session.query(ABWASSER.normschacht, ABWASSER.metaattribute).join(ABWASSER.metaattribute):
 
         # baseclass --- normschacht.t_ili_tid, normschacht.t_type
@@ -119,7 +119,7 @@ def tww_import():
         # metaattribute --- metaattribute.datenherr, metaattribute.datenlieferant, metaattribute.letzte_aenderung, metaattribute.sia405_baseclass_metaattribute, metaattribute.t_id, metaattribute.t_ili_tid, metaattribute.t_seq
         # _rel_ --- metaattribute.sia405_baseclass_metaattribute__REL
 
-        manhole = QGEP.manhole(
+        manhole = TWW.manhole(
 
             # --- wastewater_structure ---
             # _bottom_label=row.REPLACE_ME,  # TEXT
@@ -170,7 +170,7 @@ def tww_import():
         print(".", end="")
     print("done")
 
-    print("Importing ABWASSER.einleitstelle, ABWASSER.metaattribute -> QGEP.discharge_point")
+    print("Importing ABWASSER.einleitstelle, ABWASSER.metaattribute -> TWW.discharge_point")
     for row, metaattribute in abwasser_session.query(ABWASSER.einleitstelle, ABWASSER.metaattribute).join(ABWASSER.metaattribute):
 
         # baseclass --- einleitstelle.t_ili_tid, einleitstelle.t_type
@@ -183,7 +183,7 @@ def tww_import():
         # metaattribute --- metaattribute.datenherr, metaattribute.datenlieferant, metaattribute.letzte_aenderung, metaattribute.sia405_baseclass_metaattribute, metaattribute.t_id, metaattribute.t_ili_tid, metaattribute.t_seq
         # _rel_ --- metaattribute.sia405_baseclass_metaattribute__REL
 
-        discharge_point = QGEP.discharge_point(
+        discharge_point = TWW.discharge_point(
 
             # --- wastewater_structure ---
             # _bottom_label=row.REPLACE_ME,  # TEXT
@@ -234,7 +234,7 @@ def tww_import():
         print(".", end="")
     print("done")
 
-    print("Importing ABWASSER.spezialbauwerk, ABWASSER.metaattribute -> QGEP.special_structure")
+    print("Importing ABWASSER.spezialbauwerk, ABWASSER.metaattribute -> TWW.special_structure")
     for row, metaattribute in abwasser_session.query(ABWASSER.spezialbauwerk, ABWASSER.metaattribute).join(ABWASSER.metaattribute):
 
         # baseclass --- spezialbauwerk.t_ili_tid, spezialbauwerk.t_type
@@ -247,7 +247,7 @@ def tww_import():
         # metaattribute --- metaattribute.datenherr, metaattribute.datenlieferant, metaattribute.letzte_aenderung, metaattribute.sia405_baseclass_metaattribute, metaattribute.t_id, metaattribute.t_ili_tid, metaattribute.t_seq
         # _rel_ --- metaattribute.sia405_baseclass_metaattribute__REL
 
-        special_structure = QGEP.special_structure(
+        special_structure = TWW.special_structure(
 
             # --- wastewater_structure ---
             # _bottom_label=row.REPLACE_ME,  # TEXT
@@ -297,7 +297,7 @@ def tww_import():
         print(".", end="")
     print("done")
 
-    print("Importing ABWASSER.versickerungsanlage, ABWASSER.metaattribute -> QGEP.infiltration_installation")
+    print("Importing ABWASSER.versickerungsanlage, ABWASSER.metaattribute -> TWW.infiltration_installation")
     for row, metaattribute in abwasser_session.query(ABWASSER.versickerungsanlage, ABWASSER.metaattribute).join(ABWASSER.metaattribute):
 
         # baseclass --- versickerungsanlage.t_ili_tid, versickerungsanlage.t_type
@@ -310,7 +310,7 @@ def tww_import():
         # metaattribute --- metaattribute.datenherr, metaattribute.datenlieferant, metaattribute.letzte_aenderung, metaattribute.sia405_baseclass_metaattribute, metaattribute.t_id, metaattribute.t_ili_tid, metaattribute.t_seq
         # _rel_ --- metaattribute.sia405_baseclass_metaattribute__REL
 
-        infiltration_installation = QGEP.infiltration_installation(
+        infiltration_installation = TWW.infiltration_installation(
 
             # --- wastewater_structure ---
             # _bottom_label=row.REPLACE_ME,  # TEXT
@@ -369,7 +369,7 @@ def tww_import():
         print(".", end="")
     print("done")
 
-    print("Importing ABWASSER.rohrprofil, ABWASSER.metaattribute -> QGEP.pipe_profile")
+    print("Importing ABWASSER.rohrprofil, ABWASSER.metaattribute -> TWW.pipe_profile")
     for row, metaattribute in abwasser_session.query(ABWASSER.rohrprofil, ABWASSER.metaattribute).join(ABWASSER.metaattribute):
 
         # baseclass --- rohrprofil.t_ili_tid, rohrprofil.t_type
@@ -380,7 +380,7 @@ def tww_import():
         # metaattribute --- metaattribute.datenherr, metaattribute.datenlieferant, metaattribute.letzte_aenderung, metaattribute.sia405_baseclass_metaattribute, metaattribute.t_id, metaattribute.t_ili_tid, metaattribute.t_seq
         # _rel_ --- metaattribute.sia405_baseclass_metaattribute__REL
 
-        pipe_profile = QGEP.pipe_profile(
+        pipe_profile = TWW.pipe_profile(
 
             # --- pipe_profile ---
             # fk_dataowner=row.REPLACE_ME,  # VARCHAR(16)
@@ -396,7 +396,7 @@ def tww_import():
         print(".", end="")
     print("done")
 
-    print("Importing ABWASSER.haltungspunkt, ABWASSER.metaattribute -> QGEP.reach_point")
+    print("Importing ABWASSER.haltungspunkt, ABWASSER.metaattribute -> TWW.reach_point")
     for row, metaattribute in abwasser_session.query(ABWASSER.haltungspunkt, ABWASSER.metaattribute).join(ABWASSER.metaattribute):
 
         # baseclass --- haltungspunkt.t_ili_tid, haltungspunkt.t_type
@@ -408,7 +408,7 @@ def tww_import():
         # metaattribute --- metaattribute.datenherr, metaattribute.datenlieferant, metaattribute.letzte_aenderung, metaattribute.sia405_baseclass_metaattribute, metaattribute.t_id, metaattribute.t_ili_tid, metaattribute.t_seq
         # _rel_ --- metaattribute.sia405_baseclass_metaattribute__REL
 
-        reach_point = QGEP.reach_point(
+        reach_point = TWW.reach_point(
 
             # --- reach_point ---
             # elevation_accuracy=row.REPLACE_ME,  # INTEGER
@@ -428,7 +428,7 @@ def tww_import():
         print(".", end="")
     print("done")
 
-    print("Importing ABWASSER.abwasserknoten, ABWASSER.metaattribute -> QGEP.wastewater_node")
+    print("Importing ABWASSER.abwasserknoten, ABWASSER.metaattribute -> TWW.wastewater_node")
     for row, metaattribute in abwasser_session.query(ABWASSER.abwasserknoten, ABWASSER.metaattribute).join(ABWASSER.metaattribute):
 
         # baseclass --- abwasserknoten.t_ili_tid, abwasserknoten.t_type
@@ -441,7 +441,7 @@ def tww_import():
         # metaattribute --- metaattribute.datenherr, metaattribute.datenlieferant, metaattribute.letzte_aenderung, metaattribute.sia405_baseclass_metaattribute, metaattribute.t_id, metaattribute.t_ili_tid, metaattribute.t_seq
         # _rel_ --- metaattribute.sia405_baseclass_metaattribute__REL
 
-        wastewater_node = QGEP.wastewater_node(
+        wastewater_node = TWW.wastewater_node(
 
             # --- wastewater_networkelement ---
             # fk_dataowner=row.REPLACE_ME,  # VARCHAR(16)
@@ -462,7 +462,7 @@ def tww_import():
         print(".", end="")
     print("done")
 
-    print("Importing ABWASSER.haltung, ABWASSER.metaattribute -> QGEP.reach")
+    print("Importing ABWASSER.haltung, ABWASSER.metaattribute -> TWW.reach")
     for row, metaattribute in abwasser_session.query(ABWASSER.haltung, ABWASSER.metaattribute).join(ABWASSER.metaattribute):
 
         # baseclass --- haltung.t_ili_tid, haltung.t_type
@@ -475,7 +475,7 @@ def tww_import():
         # metaattribute --- metaattribute.datenherr, metaattribute.datenlieferant, metaattribute.letzte_aenderung, metaattribute.sia405_baseclass_metaattribute, metaattribute.t_id, metaattribute.t_ili_tid, metaattribute.t_seq
         # _rel_ --- metaattribute.sia405_baseclass_metaattribute__REL
 
-        reach = QGEP.reach(
+        reach = TWW.reach(
 
             # --- wastewater_networkelement ---
             # fk_dataowner=row.REPLACE_ME,  # VARCHAR(16)
@@ -510,7 +510,7 @@ def tww_import():
         print(".", end="")
     print("done")
 
-    print("Importing ABWASSER.trockenwetterfallrohr, ABWASSER.metaattribute -> QGEP.dryweather_downspout")
+    print("Importing ABWASSER.trockenwetterfallrohr, ABWASSER.metaattribute -> TWW.dryweather_downspout")
     for row, metaattribute in abwasser_session.query(ABWASSER.trockenwetterfallrohr, ABWASSER.metaattribute).join(ABWASSER.metaattribute):
 
         # baseclass --- trockenwetterfallrohr.t_ili_tid, trockenwetterfallrohr.t_type
@@ -523,7 +523,7 @@ def tww_import():
         # metaattribute --- metaattribute.datenherr, metaattribute.datenlieferant, metaattribute.letzte_aenderung, metaattribute.sia405_baseclass_metaattribute, metaattribute.t_id, metaattribute.t_ili_tid, metaattribute.t_seq
         # _rel_ --- metaattribute.sia405_baseclass_metaattribute__REL
 
-        dryweather_downspout = QGEP.dryweather_downspout(
+        dryweather_downspout = TWW.dryweather_downspout(
 
             # --- structure_part ---
             # fk_dataowner=row.REPLACE_ME,  # VARCHAR(16)
@@ -542,7 +542,7 @@ def tww_import():
         print(".", end="")
     print("done")
 
-    print("Importing ABWASSER.einstiegshilfe, ABWASSER.metaattribute -> QGEP.access_aid")
+    print("Importing ABWASSER.einstiegshilfe, ABWASSER.metaattribute -> TWW.access_aid")
     for row, metaattribute in abwasser_session.query(ABWASSER.einstiegshilfe, ABWASSER.metaattribute).join(ABWASSER.metaattribute):
 
         # baseclass --- einstiegshilfe.t_ili_tid, einstiegshilfe.t_type
@@ -555,7 +555,7 @@ def tww_import():
         # metaattribute --- metaattribute.datenherr, metaattribute.datenlieferant, metaattribute.letzte_aenderung, metaattribute.sia405_baseclass_metaattribute, metaattribute.t_id, metaattribute.t_ili_tid, metaattribute.t_seq
         # _rel_ --- metaattribute.sia405_baseclass_metaattribute__REL
 
-        access_aid = QGEP.access_aid(
+        access_aid = TWW.access_aid(
 
             # --- structure_part ---
             # fk_dataowner=row.REPLACE_ME,  # VARCHAR(16)
@@ -574,7 +574,7 @@ def tww_import():
         print(".", end="")
     print("done")
 
-    print("Importing ABWASSER.trockenwetterrinne, ABWASSER.metaattribute -> QGEP.dryweather_flume")
+    print("Importing ABWASSER.trockenwetterrinne, ABWASSER.metaattribute -> TWW.dryweather_flume")
     for row, metaattribute in abwasser_session.query(ABWASSER.trockenwetterrinne, ABWASSER.metaattribute).join(ABWASSER.metaattribute):
 
         # baseclass --- trockenwetterrinne.t_ili_tid, trockenwetterrinne.t_type
@@ -587,7 +587,7 @@ def tww_import():
         # metaattribute --- metaattribute.datenherr, metaattribute.datenlieferant, metaattribute.letzte_aenderung, metaattribute.sia405_baseclass_metaattribute, metaattribute.t_id, metaattribute.t_ili_tid, metaattribute.t_seq
         # _rel_ --- metaattribute.sia405_baseclass_metaattribute__REL
 
-        dryweather_flume = QGEP.dryweather_flume(
+        dryweather_flume = TWW.dryweather_flume(
 
             # --- structure_part ---
             # fk_dataowner=row.REPLACE_ME,  # VARCHAR(16)
@@ -606,7 +606,7 @@ def tww_import():
         print(".", end="")
     print("done")
 
-    print("Importing ABWASSER.deckel, ABWASSER.metaattribute -> QGEP.cover")
+    print("Importing ABWASSER.deckel, ABWASSER.metaattribute -> TWW.cover")
     for row, metaattribute in abwasser_session.query(ABWASSER.deckel, ABWASSER.metaattribute).join(ABWASSER.metaattribute):
 
         # baseclass --- deckel.t_ili_tid, deckel.t_type
@@ -619,7 +619,7 @@ def tww_import():
         # metaattribute --- metaattribute.datenherr, metaattribute.datenlieferant, metaattribute.letzte_aenderung, metaattribute.sia405_baseclass_metaattribute, metaattribute.t_id, metaattribute.t_ili_tid, metaattribute.t_seq
         # _rel_ --- metaattribute.sia405_baseclass_metaattribute__REL
 
-        cover = QGEP.cover(
+        cover = TWW.cover(
 
             # --- structure_part ---
             # fk_dataowner=row.REPLACE_ME,  # VARCHAR(16)
@@ -647,7 +647,7 @@ def tww_import():
         print(".", end="")
     print("done")
 
-    print("Importing ABWASSER.bankett, ABWASSER.metaattribute -> QGEP.benching")
+    print("Importing ABWASSER.bankett, ABWASSER.metaattribute -> TWW.benching")
     for row, metaattribute in abwasser_session.query(ABWASSER.bankett, ABWASSER.metaattribute).join(ABWASSER.metaattribute):
 
         # baseclass --- bankett.t_ili_tid, bankett.t_type
@@ -660,7 +660,7 @@ def tww_import():
         # metaattribute --- metaattribute.datenherr, metaattribute.datenlieferant, metaattribute.letzte_aenderung, metaattribute.sia405_baseclass_metaattribute, metaattribute.t_id, metaattribute.t_ili_tid, metaattribute.t_seq
         # _rel_ --- metaattribute.sia405_baseclass_metaattribute__REL
 
-        benching = QGEP.benching(
+        benching = TWW.benching(
 
             # --- structure_part ---
             # fk_dataowner=row.REPLACE_ME,  # VARCHAR(16)
@@ -679,7 +679,7 @@ def tww_import():
         print(".", end="")
     print("done")
 
-    print("Importing ABWASSER.untersuchung, ABWASSER.metaattribute -> QGEP.examination")
+    print("Importing ABWASSER.untersuchung, ABWASSER.metaattribute -> TWW.examination")
     for row, metaattribute in abwasser_session.query(ABWASSER.untersuchung, ABWASSER.metaattribute).join(ABWASSER.metaattribute):
 
         # baseclass --- untersuchung.t_ili_tid, untersuchung.t_type
@@ -692,7 +692,7 @@ def tww_import():
         # metaattribute --- metaattribute.datenherr, metaattribute.datenlieferant, metaattribute.letzte_aenderung, metaattribute.sia405_baseclass_metaattribute, metaattribute.t_id, metaattribute.t_ili_tid, metaattribute.t_seq
         # _rel_ --- metaattribute.sia405_baseclass_metaattribute__REL
 
-        examination = QGEP.examination(
+        examination = TWW.examination(
 
             # --- maintenance_event ---
             # active_zone=row.REPLACE_ME,  # VARCHAR(1)
@@ -729,7 +729,7 @@ def tww_import():
         print(".", end="")
     print("done")
 
-    print("Importing ABWASSER.normschachtschaden, ABWASSER.metaattribute -> QGEP.damage_manhole")
+    print("Importing ABWASSER.normschachtschaden, ABWASSER.metaattribute -> TWW.damage_manhole")
     for row, metaattribute in abwasser_session.query(ABWASSER.normschachtschaden, ABWASSER.metaattribute).join(ABWASSER.metaattribute):
 
         # baseclass --- normschachtschaden.t_ili_tid, normschachtschaden.t_type
@@ -742,7 +742,7 @@ def tww_import():
         # metaattribute --- metaattribute.datenherr, metaattribute.datenlieferant, metaattribute.letzte_aenderung, metaattribute.sia405_baseclass_metaattribute, metaattribute.t_id, metaattribute.t_ili_tid, metaattribute.t_seq
         # _rel_ --- metaattribute.sia405_baseclass_metaattribute__REL
 
-        damage_manhole = QGEP.damage_manhole(
+        damage_manhole = TWW.damage_manhole(
 
             # --- damage ---
             # comments=row.REPLACE_ME,  # VARCHAR(100)
@@ -770,7 +770,7 @@ def tww_import():
         print(".", end="")
     print("done")
 
-    print("Importing ABWASSER.kanalschaden, ABWASSER.metaattribute -> QGEP.damage_channel")
+    print("Importing ABWASSER.kanalschaden, ABWASSER.metaattribute -> TWW.damage_channel")
     for row, metaattribute in abwasser_session.query(ABWASSER.kanalschaden, ABWASSER.metaattribute).join(ABWASSER.metaattribute):
 
         # baseclass --- kanalschaden.t_ili_tid, kanalschaden.t_type
@@ -783,7 +783,7 @@ def tww_import():
         # metaattribute --- metaattribute.datenherr, metaattribute.datenlieferant, metaattribute.letzte_aenderung, metaattribute.sia405_baseclass_metaattribute, metaattribute.t_id, metaattribute.t_ili_tid, metaattribute.t_seq
         # _rel_ --- metaattribute.sia405_baseclass_metaattribute__REL
 
-        damage_channel = QGEP.damage_channel(
+        damage_channel = TWW.damage_channel(
 
             # --- damage ---
             # comments=row.REPLACE_ME,  # VARCHAR(100)
@@ -810,7 +810,7 @@ def tww_import():
         print(".", end="")
     print("done")
 
-    print("Importing ABWASSER.datentraeger, ABWASSER.metaattribute -> QGEP.data_media")
+    print("Importing ABWASSER.datentraeger, ABWASSER.metaattribute -> TWW.data_media")
     for row, metaattribute in abwasser_session.query(ABWASSER.datentraeger, ABWASSER.metaattribute).join(ABWASSER.metaattribute):
 
         # baseclass --- datentraeger.t_ili_tid, datentraeger.t_type
@@ -821,7 +821,7 @@ def tww_import():
         # metaattribute --- metaattribute.datenherr, metaattribute.datenlieferant, metaattribute.letzte_aenderung, metaattribute.sia405_baseclass_metaattribute, metaattribute.t_id, metaattribute.t_ili_tid, metaattribute.t_seq
         # _rel_ --- metaattribute.sia405_baseclass_metaattribute__REL
 
-        data_media = QGEP.data_media(
+        data_media = TWW.data_media(
 
             # --- data_media ---
             # fk_dataowner=row.REPLACE_ME,  # VARCHAR(16)
@@ -838,7 +838,7 @@ def tww_import():
         print(".", end="")
     print("done")
 
-    print("Importing ABWASSER.datei, ABWASSER.metaattribute -> QGEP.file")
+    print("Importing ABWASSER.datei, ABWASSER.metaattribute -> TWW.file")
     for row, metaattribute in abwasser_session.query(ABWASSER.datei, ABWASSER.metaattribute).join(ABWASSER.metaattribute):
 
         # baseclass --- datei.t_ili_tid, datei.t_type
@@ -850,7 +850,7 @@ def tww_import():
         # metaattribute --- metaattribute.datenherr, metaattribute.datenlieferant, metaattribute.letzte_aenderung, metaattribute.sia405_baseclass_metaattribute, metaattribute.t_id, metaattribute.t_ili_tid, metaattribute.t_seq
         # _rel_ --- metaattribute.sia405_baseclass_metaattribute__REL
 
-        file = QGEP.file(
+        file = TWW.file(
 
             # --- file ---
             # class=row.REPLACE_ME,  # INTEGER
@@ -869,7 +869,7 @@ def tww_import():
         print(".", end="")
     print("done")
 
-    qgep_session.commit()
+    tww_session.commit()
 
-    qgep_session.close()
+    tww_session.close()
     abwasser_session.close()

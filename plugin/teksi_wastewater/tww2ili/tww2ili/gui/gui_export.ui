@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>QGEP interlis export</string>
+   <string>TWW interlis export</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

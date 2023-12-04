@@ -1,4 +1,4 @@
------- This file is sql code to Export QGEP (Modul VSA-DSS) in English to INTERLIS in German on QQIS
+------ This file is sql code to Export TWW (Modul VSA-DSS) in English to INTERLIS in German on QQIS
 ------ Second version using tid_generate and tid_lookup
 ------ For questions etc. please contact Stefan Burckhardt stefan.burckhardt@sjib.ch
 ------ version 21.11.2016 21:07:32
@@ -337,7 +337,7 @@ WHEN kind = 3054 THEN 'unbekannt' ---- 3054  unknown
 END, km_down, km_up, ST_Force2D(progression_geometry), ref_length, remark, vsa_dss_2015_2_d.tid_lookup('Oberflaechengewaesser', fk_chute)
 FROM tww_od.sector_water_body;
 
--- additional Table Assoc: Gewaessersektor_VorherigerSektor/ no table hierarchy in qgep schema yet (check how to implement there)
+-- additional Table Assoc: Gewaessersektor_VorherigerSektor/ no table hierarchy in tww schema yet (check how to implement there)
 -- INSERT INTO vsa_dss_2015_2_d.Gewaessersektor_VorherigerSektorassoc
 -- (
 -- t_id, VorherigerSektorref, Gewaessersektor_VorherigerSektorassocref)
@@ -359,7 +359,7 @@ t_id, bezeichnung, bemerkung, uid)
 SELECT vsa_dss_2015_2_d.tid_lookup('organisation', obj_id), identifier, remark, uid
 FROM tww_od.organisation;
 
--- additional Table Assoc: Organisation_Teil_von/ no table hierarchy in qgep schema yet (check how to implement there)
+-- additional Table Assoc: Organisation_Teil_von/ no table hierarchy in tww schema yet (check how to implement there)
 -- INSERT INTO vsa_dss_2015_2_d.Organisation_Teil_vonassoc
 -- (
 -- t_id, Teil_vonref, Organisation_Teil_vonassocref)
@@ -1783,7 +1783,7 @@ WHEN purpose = 4592 THEN 'unbekannt' ---- 4592  unknown
 END, remark, ST_Force2D(situation_geometry), vsa_dss_2015_2_d.tid_lookup('Organisation', fk_operator), vsa_dss_2015_2_d.tid_lookup('Abwasserreinigungsanlage', fk_waste_water_treatment_plant), vsa_dss_2015_2_d.tid_lookup('Abwasserbauwerk', fk_wastewater_structure), vsa_dss_2015_2_d.tid_lookup('Gewaesserabschnitt', fk_water_course_segment)
 FROM tww_od.measuring_point;
 
--- additional Table Assoc: Messstelle_Referenzstelle/ no table hierarchy in qgep schema yet (check how to implement there)
+-- additional Table Assoc: Messstelle_Referenzstelle/ no table hierarchy in tww schema yet (check how to implement there)
 -- INSERT INTO vsa_dss_2015_2_d.Messstelle_Referenzstelleassoc
 -- (
 -- t_id, Referenzstelleref, Messstelle_Referenzstelleassocref)

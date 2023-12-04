@@ -25,16 +25,16 @@
       <layer-tree-layer name="vw_tww_wastewater_structure" checked="Qt::Unchecked" id="vw_tww_wastewater_structure_612bb67c_a2c4_4e0f_b98d_e440f9324ef1" source="service='pg_tww' sslmode=disable key='identifier' srid=2056 type=Point checkPrimaryKeyUnicity='1' table=&quot;tww_od&quot;.&quot;vw_tww_wastewater_structure&quot; (situation_geometry) sql=" legend_exp="" providerKey="postgres" expanded="1">
         <customproperties/>
       </layer-tree-layer>
-      <layer-tree-layer name="Maximum depth" checked="Qt::Checked" id="node_results_36522a14_4036_44b6_893a_46d903f11fb2" source="service='pg_tww' sslmode=disable key='mr_obj_id' srid=2056 type=PointZ checkPrimaryKeyUnicity='1' table=&quot;qgep_swmm&quot;.&quot;node_results&quot; (geom) sql=&quot;swmm_parameter&quot; ='maximum_depth'" legend_exp="" providerKey="postgres" expanded="0">
+      <layer-tree-layer name="Maximum depth" checked="Qt::Checked" id="node_results_36522a14_4036_44b6_893a_46d903f11fb2" source="service='pg_tww' sslmode=disable key='mr_obj_id' srid=2056 type=PointZ checkPrimaryKeyUnicity='1' table=&quot;tww_swmm&quot;.&quot;node_results&quot; (geom) sql=&quot;swmm_parameter&quot; ='maximum_depth'" legend_exp="" providerKey="postgres" expanded="0">
         <customproperties/>
       </layer-tree-layer>
-      <layer-tree-layer name="Average depth" checked="Qt::Unchecked" id="Maximum_depth_3c146b0f_2173_4b74_bddd_6a17b3293319" source="service='pg_tww' sslmode=disable key='mr_obj_id' srid=2056 type=PointZ checkPrimaryKeyUnicity='1' table=&quot;qgep_swmm&quot;.&quot;node_results&quot; (geom) sql=&quot;swmm_parameter&quot; = 'average_depth'" legend_exp="" providerKey="postgres" expanded="0">
+      <layer-tree-layer name="Average depth" checked="Qt::Unchecked" id="Maximum_depth_3c146b0f_2173_4b74_bddd_6a17b3293319" source="service='pg_tww' sslmode=disable key='mr_obj_id' srid=2056 type=PointZ checkPrimaryKeyUnicity='1' table=&quot;tww_swmm&quot;.&quot;node_results&quot; (geom) sql=&quot;swmm_parameter&quot; = 'average_depth'" legend_exp="" providerKey="postgres" expanded="0">
         <customproperties/>
       </layer-tree-layer>
-      <layer-tree-layer name="Maximum hgl" checked="Qt::Unchecked" id="Maximum_depth_copier_2068ac5c_dfcc_4f67_8841_41460f5afa56" source="service='pg_tww' sslmode=disable key='mr_obj_id' srid=2056 type=PointZ checkPrimaryKeyUnicity='1' table=&quot;qgep_swmm&quot;.&quot;node_results&quot; (geom) sql=&quot;swmm_parameter&quot; = 'maximum_hgl'" legend_exp="" providerKey="postgres" expanded="0">
+      <layer-tree-layer name="Maximum hgl" checked="Qt::Unchecked" id="Maximum_depth_copier_2068ac5c_dfcc_4f67_8841_41460f5afa56" source="service='pg_tww' sslmode=disable key='mr_obj_id' srid=2056 type=PointZ checkPrimaryKeyUnicity='1' table=&quot;tww_swmm&quot;.&quot;node_results&quot; (geom) sql=&quot;swmm_parameter&quot; = 'maximum_hgl'" legend_exp="" providerKey="postgres" expanded="0">
         <customproperties/>
       </layer-tree-layer>
-      <layer-tree-layer name="Reported max depth" checked="Qt::Unchecked" id="Maximum_depth_copier_copier_cda40c91_36b8_47a1_986f_30eb4bcaf911" source="service='pg_tww' sslmode=disable key='mr_obj_id' srid=2056 type=PointZ checkPrimaryKeyUnicity='1' table=&quot;qgep_swmm&quot;.&quot;node_results&quot; (geom) sql=&quot;swmm_parameter&quot; = 'reported_max_depth'" legend_exp="" providerKey="postgres" expanded="0">
+      <layer-tree-layer name="Reported max depth" checked="Qt::Unchecked" id="Maximum_depth_copier_copier_cda40c91_36b8_47a1_986f_30eb4bcaf911" source="service='pg_tww' sslmode=disable key='mr_obj_id' srid=2056 type=PointZ checkPrimaryKeyUnicity='1' table=&quot;tww_swmm&quot;.&quot;node_results&quot; (geom) sql=&quot;swmm_parameter&quot; = 'reported_max_depth'" legend_exp="" providerKey="postgres" expanded="0">
         <customproperties/>
       </layer-tree-layer>
     </layer-tree-group>
@@ -43,16 +43,16 @@
       <layer-tree-layer name="vw_tww_reach" checked="Qt::Unchecked" id="vw_tww_reach_8e068114_4e0e_4869_8a5b_7a545232c716" source="service='pg_tww' sslmode=disable key='obj_id' srid=2056 type=CompoundCurveZ checkPrimaryKeyUnicity='1' table=&quot;tww_od&quot;.&quot;vw_tww_reach&quot; (progression_geometry) sql=" legend_exp="" providerKey="postgres" expanded="1">
         <customproperties/>
       </layer-tree-layer>
-      <layer-tree-layer name="Maximum velocity" checked="Qt::Unchecked" id="link_results_ee91e167_81f4_4225_9979_56a82a1ba517" source="service='pg_tww' sslmode=disable key='mr_obj_id' srid=2056 type=CompoundCurveZ checkPrimaryKeyUnicity='1' table=&quot;qgep_swmm&quot;.&quot;link_results&quot; (geom) sql=&quot;swmm_parameter&quot; = 'maximum_velocity'  OR &quot;swmm_parameter&quot; IS NULL" legend_exp="" providerKey="postgres" expanded="0">
+      <layer-tree-layer name="Maximum velocity" checked="Qt::Unchecked" id="link_results_ee91e167_81f4_4225_9979_56a82a1ba517" source="service='pg_tww' sslmode=disable key='mr_obj_id' srid=2056 type=CompoundCurveZ checkPrimaryKeyUnicity='1' table=&quot;tww_swmm&quot;.&quot;link_results&quot; (geom) sql=&quot;swmm_parameter&quot; = 'maximum_velocity'  OR &quot;swmm_parameter&quot; IS NULL" legend_exp="" providerKey="postgres" expanded="0">
         <customproperties/>
       </layer-tree-layer>
-      <layer-tree-layer name="Maximum flow" checked="Qt::Unchecked" id="Maximum_velocity_a8429d21_edc5_4cc8_855d_c6b888443c5c" source="service='pg_tww' sslmode=disable key='mr_obj_id' srid=2056 type=CompoundCurveZ checkPrimaryKeyUnicity='1' table=&quot;qgep_swmm&quot;.&quot;link_results&quot; (geom) sql=&quot;swmm_parameter&quot; = 'maximum_flow'" legend_exp="" providerKey="postgres" expanded="0">
+      <layer-tree-layer name="Maximum flow" checked="Qt::Unchecked" id="Maximum_velocity_a8429d21_edc5_4cc8_855d_c6b888443c5c" source="service='pg_tww' sslmode=disable key='mr_obj_id' srid=2056 type=CompoundCurveZ checkPrimaryKeyUnicity='1' table=&quot;tww_swmm&quot;.&quot;link_results&quot; (geom) sql=&quot;swmm_parameter&quot; = 'maximum_flow'" legend_exp="" providerKey="postgres" expanded="0">
         <customproperties/>
       </layer-tree-layer>
-      <layer-tree-layer name="Max/Full flow" checked="Qt::Unchecked" id="Maximum_flow_224cea6b_c3f7_45be_93ef_249ecf3d9368" source="service='pg_tww' sslmode=disable key='mr_obj_id' srid=2056 type=CompoundCurveZ checkPrimaryKeyUnicity='1' table=&quot;qgep_swmm&quot;.&quot;link_results&quot; (geom) sql=&quot;swmm_parameter&quot; = 'max_over_full_flow'" legend_exp="" providerKey="postgres" expanded="1">
+      <layer-tree-layer name="Max/Full flow" checked="Qt::Unchecked" id="Maximum_flow_224cea6b_c3f7_45be_93ef_249ecf3d9368" source="service='pg_tww' sslmode=disable key='mr_obj_id' srid=2056 type=CompoundCurveZ checkPrimaryKeyUnicity='1' table=&quot;tww_swmm&quot;.&quot;link_results&quot; (geom) sql=&quot;swmm_parameter&quot; = 'max_over_full_flow'" legend_exp="" providerKey="postgres" expanded="1">
         <customproperties/>
       </layer-tree-layer>
-      <layer-tree-layer name="Max/Full depth" checked="Qt::Checked" id="Max_Full_flow_9c9278a9_4bca_4f09_90eb_60a327f77b2f" source="service='pg_tww' sslmode=disable key='mr_obj_id' srid=2056 type=CompoundCurveZ checkPrimaryKeyUnicity='1' table=&quot;qgep_swmm&quot;.&quot;link_results&quot; (geom) sql=&quot;swmm_parameter&quot; = 'max_over_full_depth'" legend_exp="" providerKey="postgres" expanded="1">
+      <layer-tree-layer name="Max/Full depth" checked="Qt::Checked" id="Max_Full_flow_9c9278a9_4bca_4f09_90eb_60a327f77b2f" source="service='pg_tww' sslmode=disable key='mr_obj_id' srid=2056 type=CompoundCurveZ checkPrimaryKeyUnicity='1' table=&quot;tww_swmm&quot;.&quot;link_results&quot; (geom) sql=&quot;swmm_parameter&quot; = 'max_over_full_depth'" legend_exp="" providerKey="postgres" expanded="1">
         <customproperties/>
       </layer-tree-layer>
     </layer-tree-group>
@@ -302,7 +302,7 @@
   <projectlayers>
     <maplayer type="vector" simplifyAlgorithm="0" labelsEnabled="0" refreshOnNotifyEnabled="0" simplifyDrawingHints="1" minScale="1e+08" maxScale="0" wkbType="CompoundCurveZ" autoRefreshTime="0" styleCategories="AllStyleCategories" simplifyMaxScale="1" readOnly="0" simplifyDrawingTol="1" refreshOnNotifyMessage="" hasScaleBasedVisibilityFlag="0" autoRefreshEnabled="0" simplifyLocal="1" geometry="Line">
       <id>Max_Full_flow_9c9278a9_4bca_4f09_90eb_60a327f77b2f</id>
-      <datasource>service='pg_tww' sslmode=disable key='mr_obj_id' srid=2056 type=CompoundCurveZ checkPrimaryKeyUnicity='1' table="qgep_swmm"."link_results" (geom) sql="swmm_parameter" = 'max_over_full_depth'</datasource>
+      <datasource>service='pg_tww' sslmode=disable key='mr_obj_id' srid=2056 type=CompoundCurveZ checkPrimaryKeyUnicity='1' table="tww_swmm"."link_results" (geom) sql="swmm_parameter" = 'max_over_full_depth'</datasource>
       <keywordList>
         <value></value>
       </keywordList>
@@ -745,7 +745,7 @@ def my_form_open(dialog, layer, feature):
     </maplayer>
     <maplayer type="vector" simplifyAlgorithm="0" labelsEnabled="0" refreshOnNotifyEnabled="0" simplifyDrawingHints="0" minScale="1e+08" maxScale="0" wkbType="PointZ" autoRefreshTime="0" styleCategories="AllStyleCategories" simplifyMaxScale="1" readOnly="0" simplifyDrawingTol="1" refreshOnNotifyMessage="" hasScaleBasedVisibilityFlag="0" autoRefreshEnabled="0" simplifyLocal="1" geometry="Point">
       <id>Maximum_depth_3c146b0f_2173_4b74_bddd_6a17b3293319</id>
-      <datasource>service='pg_tww' sslmode=disable key='mr_obj_id' srid=2056 type=PointZ checkPrimaryKeyUnicity='1' table="qgep_swmm"."node_results" (geom) sql="swmm_parameter" = 'average_depth'</datasource>
+      <datasource>service='pg_tww' sslmode=disable key='mr_obj_id' srid=2056 type=PointZ checkPrimaryKeyUnicity='1' table="tww_swmm"."node_results" (geom) sql="swmm_parameter" = 'average_depth'</datasource>
       <keywordList>
         <value></value>
       </keywordList>
@@ -1261,7 +1261,7 @@ def my_form_open(dialog, layer, feature):
     </maplayer>
     <maplayer type="vector" simplifyAlgorithm="0" labelsEnabled="0" refreshOnNotifyEnabled="0" simplifyDrawingHints="0" minScale="1e+08" maxScale="0" wkbType="PointZ" autoRefreshTime="0" styleCategories="AllStyleCategories" simplifyMaxScale="1" readOnly="0" simplifyDrawingTol="1" refreshOnNotifyMessage="" hasScaleBasedVisibilityFlag="0" autoRefreshEnabled="0" simplifyLocal="1" geometry="Point">
       <id>Maximum_depth_copier_2068ac5c_dfcc_4f67_8841_41460f5afa56</id>
-      <datasource>service='pg_tww' sslmode=disable key='mr_obj_id' srid=2056 type=PointZ checkPrimaryKeyUnicity='1' table="qgep_swmm"."node_results" (geom) sql="swmm_parameter" = 'maximum_hgl'</datasource>
+      <datasource>service='pg_tww' sslmode=disable key='mr_obj_id' srid=2056 type=PointZ checkPrimaryKeyUnicity='1' table="tww_swmm"."node_results" (geom) sql="swmm_parameter" = 'maximum_hgl'</datasource>
       <keywordList>
         <value></value>
       </keywordList>
@@ -1777,7 +1777,7 @@ def my_form_open(dialog, layer, feature):
     </maplayer>
     <maplayer type="vector" simplifyAlgorithm="0" labelsEnabled="0" refreshOnNotifyEnabled="0" simplifyDrawingHints="0" minScale="1e+08" maxScale="0" wkbType="PointZ" autoRefreshTime="0" styleCategories="AllStyleCategories" simplifyMaxScale="1" readOnly="0" simplifyDrawingTol="1" refreshOnNotifyMessage="" hasScaleBasedVisibilityFlag="0" autoRefreshEnabled="0" simplifyLocal="1" geometry="Point">
       <id>Maximum_depth_copier_copier_cda40c91_36b8_47a1_986f_30eb4bcaf911</id>
-      <datasource>service='pg_tww' sslmode=disable key='mr_obj_id' srid=2056 type=PointZ checkPrimaryKeyUnicity='1' table="qgep_swmm"."node_results" (geom) sql="swmm_parameter" = 'reported_max_depth'</datasource>
+      <datasource>service='pg_tww' sslmode=disable key='mr_obj_id' srid=2056 type=PointZ checkPrimaryKeyUnicity='1' table="tww_swmm"."node_results" (geom) sql="swmm_parameter" = 'reported_max_depth'</datasource>
       <keywordList>
         <value></value>
       </keywordList>
@@ -2293,7 +2293,7 @@ def my_form_open(dialog, layer, feature):
     </maplayer>
     <maplayer type="vector" simplifyAlgorithm="0" labelsEnabled="0" refreshOnNotifyEnabled="0" simplifyDrawingHints="1" minScale="1e+08" maxScale="0" wkbType="CompoundCurveZ" autoRefreshTime="0" styleCategories="AllStyleCategories" simplifyMaxScale="1" readOnly="0" simplifyDrawingTol="1" refreshOnNotifyMessage="" hasScaleBasedVisibilityFlag="0" autoRefreshEnabled="0" simplifyLocal="1" geometry="Line">
       <id>Maximum_flow_224cea6b_c3f7_45be_93ef_249ecf3d9368</id>
-      <datasource>service='pg_tww' sslmode=disable key='mr_obj_id' srid=2056 type=CompoundCurveZ checkPrimaryKeyUnicity='1' table="qgep_swmm"."link_results" (geom) sql="swmm_parameter" = 'max_over_full_flow'</datasource>
+      <datasource>service='pg_tww' sslmode=disable key='mr_obj_id' srid=2056 type=CompoundCurveZ checkPrimaryKeyUnicity='1' table="tww_swmm"."link_results" (geom) sql="swmm_parameter" = 'max_over_full_flow'</datasource>
       <keywordList>
         <value></value>
       </keywordList>
@@ -2739,7 +2739,7 @@ def my_form_open(dialog, layer, feature):
     </maplayer>
     <maplayer type="vector" simplifyAlgorithm="0" labelsEnabled="0" refreshOnNotifyEnabled="0" simplifyDrawingHints="1" minScale="1e+08" maxScale="0" wkbType="CompoundCurveZ" autoRefreshTime="0" styleCategories="AllStyleCategories" simplifyMaxScale="1" readOnly="0" simplifyDrawingTol="1" refreshOnNotifyMessage="" hasScaleBasedVisibilityFlag="0" autoRefreshEnabled="0" simplifyLocal="1" geometry="Line">
       <id>Maximum_velocity_a8429d21_edc5_4cc8_855d_c6b888443c5c</id>
-      <datasource>service='pg_tww' sslmode=disable key='mr_obj_id' srid=2056 type=CompoundCurveZ checkPrimaryKeyUnicity='1' table="qgep_swmm"."link_results" (geom) sql="swmm_parameter" = 'maximum_flow'</datasource>
+      <datasource>service='pg_tww' sslmode=disable key='mr_obj_id' srid=2056 type=CompoundCurveZ checkPrimaryKeyUnicity='1' table="tww_swmm"."link_results" (geom) sql="swmm_parameter" = 'maximum_flow'</datasource>
       <keywordList>
         <value></value>
       </keywordList>
@@ -3225,7 +3225,7 @@ def my_form_open(dialog, layer, feature):
     </maplayer>
     <maplayer type="vector" simplifyAlgorithm="0" labelsEnabled="0" refreshOnNotifyEnabled="0" simplifyDrawingHints="1" minScale="1e+08" maxScale="0" wkbType="CompoundCurveZ" autoRefreshTime="0" styleCategories="AllStyleCategories" simplifyMaxScale="1" readOnly="0" simplifyDrawingTol="1" refreshOnNotifyMessage="" hasScaleBasedVisibilityFlag="0" autoRefreshEnabled="0" simplifyLocal="1" geometry="Line">
       <id>link_results_ee91e167_81f4_4225_9979_56a82a1ba517</id>
-      <datasource>service='pg_tww' sslmode=disable key='mr_obj_id' srid=2056 type=CompoundCurveZ checkPrimaryKeyUnicity='1' table="qgep_swmm"."link_results" (geom) sql="swmm_parameter" = 'maximum_velocity'  OR "swmm_parameter" IS NULL</datasource>
+      <datasource>service='pg_tww' sslmode=disable key='mr_obj_id' srid=2056 type=CompoundCurveZ checkPrimaryKeyUnicity='1' table="tww_swmm"."link_results" (geom) sql="swmm_parameter" = 'maximum_velocity'  OR "swmm_parameter" IS NULL</datasource>
       <keywordList>
         <value></value>
       </keywordList>
@@ -4640,7 +4640,7 @@ def my_form_open(dialog, layer, feature):
     </maplayer>
     <maplayer type="vector" simplifyAlgorithm="0" labelsEnabled="0" refreshOnNotifyEnabled="0" simplifyDrawingHints="0" minScale="1e+08" maxScale="0" wkbType="PointZ" autoRefreshTime="0" styleCategories="AllStyleCategories" simplifyMaxScale="1" readOnly="0" simplifyDrawingTol="1" refreshOnNotifyMessage="" hasScaleBasedVisibilityFlag="0" autoRefreshEnabled="0" simplifyLocal="1" geometry="Point">
       <id>node_results_36522a14_4036_44b6_893a_46d903f11fb2</id>
-      <datasource>service='pg_tww' sslmode=disable key='mr_obj_id' srid=2056 type=PointZ checkPrimaryKeyUnicity='1' table="qgep_swmm"."node_results" (geom) sql="swmm_parameter" ='maximum_depth'</datasource>
+      <datasource>service='pg_tww' sslmode=disable key='mr_obj_id' srid=2056 type=PointZ checkPrimaryKeyUnicity='1' table="tww_swmm"."node_results" (geom) sql="swmm_parameter" ='maximum_depth'</datasource>
       <keywordList>
         <value></value>
       </keywordList>

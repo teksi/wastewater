@@ -17,7 +17,7 @@ DECLARE
   -- myrec_seq record;
 BEGIN
   --get sequence for table
-  -- SELECT nextval('qgep.seq_' || table_name || '_oid') AS seqval INTO myrec_seq;
+  -- SELECT nextval('tww.seq_' || table_name || '_oid') AS seqval INTO myrec_seq;
   -- SELECT nextval('abwa_2015neu_3122.seq_' || table_name || '_tid') AS seqval INTO myrec_seq;
   -- 23.12.2015 SELECT t_lastuniqueid FROM abwa_2015neu_3122.t_key_object AS nexttid;
   SELECT bezeichnung INTO datenherr_bezeichnung FROM abwa_2015neu_3122.organisation WHERE organisation.bezeichnung = bez;

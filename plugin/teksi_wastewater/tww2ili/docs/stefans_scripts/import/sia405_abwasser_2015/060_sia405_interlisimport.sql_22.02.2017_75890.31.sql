@@ -1,4 +1,4 @@
------- This file is sql code to Import INTERLIS (Modul SIA405Abwasser) in German to QGEP in Englisch on QQIS
+------ This file is sql code to Import INTERLIS (Modul SIA405Abwasser) in German to TWW in Englisch on QQIS
 ------ For questions etc. please contact Stefan Burckhardt stefan.burckhardt@sjib.ch
 ------ version 22.02.2017 21:04:50 / 11.7.2019 adapted to new schema
 -- 12.7.2019 - datenlieferant / datenherr angepasst
@@ -30,7 +30,7 @@ DELETE FROM tww_od.cover;
 DELETE FROM tww_od.benching;
 
 
--- 2. kopieren von ili2pg schema nach qgep schema - klasse organisation zuerst, da neu auch verkn�pft mit datenherr / datenlieferant
+-- 2. kopieren von ili2pg schema nach tww schema - klasse organisation zuerst, da neu auch verkn�pft mit datenherr / datenlieferant
 
 INSERT INTO tww_od.organisation
 (

@@ -1,10 +1,10 @@
-# QGEP2ili / QWAT2ili
+# tww2ili
 
-This is the toolkit to import/export between QGEP/QWAT and their counterpart SIA405 interlis model exchange files.
+This is the toolkit to import/export between TWW/QWAT and their counterpart SIA405 interlis model exchange files.
 
 It can be used as a command line tool or integrated in QGIS plugins.
 
-Note that this currently only supports up to date QGEP and QWAT (1.5.6/1.3.6 respectively at the time of writing).
+Note that this currently only supports up to date TWW and QWAT (1.5.6/1.3.6 respectively at the time of writing).
 
 ## Command line tool
 
@@ -15,23 +15,23 @@ The tool requires **python** (3.6 or newer) and **java** to be available. Then, 
 pip install --upgrade tww2ili
 ```
 
-### Import/export QGEP
+### Import/export TWW
 
 Import example
 ```
-python -m tww2ili qgep import data/test_without_abwasserbauwerkref.xtf
+python -m tww2ili tww import data/test_without_abwasserbauwerkref.xtf
 ```
 
 Export example
 ```
-python -m tww2ili qgep export desktop/my_export.xtf --selection "ch13p7mzRE001221,ch13p7mzWN003445,ch13p7mzWN008122"
+python -m tww2ili tww export desktop/my_export.xtf --selection "ch13p7mzRE001221,ch13p7mzWN003445,ch13p7mzWN008122"
 ```
 
 Full usage
 ```
-usage: python -m tww2ili qgep [-h] [--selection SELECTION] [--labels_file LABELS_FILE] [--recreate_schema] [--skip_validation] [--pgservice PGSERVICE] [--log] {import,export} path
+usage: python -m tww2ili tww [-h] [--selection SELECTION] [--labels_file LABELS_FILE] [--recreate_schema] [--skip_validation] [--pgservice PGSERVICE] [--log] {import,export} path
 
-ili2QGEP entrypoint
+ili2TWW entrypoint
 
 positional arguments:
   {import,export}
@@ -44,7 +44,7 @@ optional arguments:
                         (default: None)
   --labels_file LABELS_FILE
                         if provided, includes the label positions in the export (the file should be the results of the
-                        provided `qgep:extractlabels_interlis` QGIS algorithm as geojson) (default: None)
+                        provided `tww:extractlabels_interlis` QGIS algorithm as geojson) (default: None)
   --recreate_schema     drops schema and reruns ili2pg importschema (default: False)
   --skip_validation     skips running ilivalidator on input/output xtf (required to import invalid files, invalid outputs are still generated)
                         (default: False)
@@ -92,7 +92,7 @@ optional arguments:
 Logging output to a file can be achieved by adding `--log` to your command. The file will be saved next to the input/output xtf.
 
 ```
-python -m tww2ili qgep import data/test_without_abwasserbauwerkref.xtf --log
+python -m tww2ili tww import data/test_without_abwasserbauwerkref.xtf --log
 ```
 
 Please include this when reporting issues.
@@ -102,7 +102,7 @@ The above logs don't show full errors for ili2db and ilivalidator related output
 
 ## QGIS integration
 
-This will be integrated into the official QGEP and QWAT plugin installable through the QGIS plugin manager.
+This will be integrated into the official TWW and QWAT plugin installable through the QGIS plugin manager.
 
 
 ## Dev

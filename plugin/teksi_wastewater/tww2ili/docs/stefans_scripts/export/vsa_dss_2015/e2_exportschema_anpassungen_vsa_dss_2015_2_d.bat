@@ -1,5 +1,5 @@
 rem choose your database name
-set db=qgep_prod
+set db=tww_prod
 rem adapt port of your database
 set port=5434
 rem adapt postgres path to your system
