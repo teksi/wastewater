@@ -58,7 +58,7 @@ class TwwProfileElement:
         """
 
 
-class QgepProfileEdgeElement(TwwProfileElement):
+class TwwProfileEdgeElement(TwwProfileElement):
     """
     Define the base attributes for all edge elements (reaches and special structures)
     """
@@ -194,7 +194,7 @@ class QgepProfileEdgeElement(TwwProfileElement):
         return el
 
 
-class QgepProfileReachElement(QgepProfileEdgeElement):
+class TwwProfileReachElement(TwwProfileEdgeElement):
     """
     Define the profile for the REACH element
     """
@@ -225,7 +225,7 @@ class QgepProfileReachElement(QgepProfileEdgeElement):
         :param start_offset: The offset of the start node relative to the start of the profile
         :param end_offset:   The offset of the end node relative to the start of the profile
         """
-        QgepProfileEdgeElement.__init__(
+        TwwProfileEdgeElement.__init__(
             self,
             from_point_id,
             to_point_id,
@@ -260,7 +260,7 @@ class QgepProfileReachElement(QgepProfileEdgeElement):
         """
         Returns this element as a dict.
         """
-        el = QgepProfileEdgeElement.asDict(self)
+        el = TwwProfileEdgeElement.asDict(self)
 
         # Global length: whole reach
         el.update(
@@ -281,7 +281,7 @@ class QgepProfileReachElement(QgepProfileEdgeElement):
         rubberband.setToGeometry(self.detail_geometry, None)
 
 
-class QgepProfileSpecialStructureElement(QgepProfileEdgeElement):
+class TwwProfileSpecialStructureElement(TwwProfileEdgeElement):
     """
     The profile element for STRUCTURE elements.
     It's also responsible for manholes, as there is no particular
@@ -305,7 +305,7 @@ class QgepProfileSpecialStructureElement(QgepProfileEdgeElement):
         start_offset,
         end_offset,
     ):
-        QgepProfileEdgeElement.__init__(
+        TwwProfileEdgeElement.__init__(
             self,
             from_point_id,
             to_point_id,
@@ -351,7 +351,7 @@ class QgepProfileSpecialStructureElement(QgepProfileEdgeElement):
         :param start_offset: The offset of the start node relative to the start of the profile
         :param end_offset:   The offset of the end node relative to the start of the profile
         """
-        QgepProfileEdgeElement.addSegment(
+        TwwProfileEdgeElement.addSegment(
             self,
             from_point_id,
             to_point_id,
@@ -393,7 +393,7 @@ class QgepProfileSpecialStructureElement(QgepProfileEdgeElement):
         rubberband.setToGeometry(self.detailGeometry, None)
 
     def asDict(self):
-        el = QgepProfileEdgeElement.asDict(self)
+        el = TwwProfileEdgeElement.asDict(self)
         el.update(
             {
                 "bottomLevel": self.bottom_level,
@@ -407,7 +407,7 @@ class QgepProfileSpecialStructureElement(QgepProfileEdgeElement):
         return el
 
 
-class QgepProfileNodeElement(TwwProfileElement):
+class TwwProfileNodeElement(TwwProfileElement):
     """
     A node (wastewater node or reach point)
     """
@@ -436,7 +436,7 @@ class QgepProfileNodeElement(TwwProfileElement):
         return el
 
 
-class QgepProfile:
+class TwwProfile:
     """
     Manages a profile of reaches and special structures
     """
@@ -460,7 +460,7 @@ class QgepProfile:
         Create a deep copy of the profile
         :return: A copy of this profile
         """
-        new_profile = QgepProfile(self.elements.copy())
+        new_profile = TwwProfile(self.elements.copy())
         new_profile.setRubberband(self.rubberband)
         return new_profile
 
@@ -479,7 +479,7 @@ class QgepProfile:
         """
         Add an element to this profile
         :param key:  The object id
-        :param elem: A subclass of QgepProfileElement
+        :param elem: A subclass of TwwProfileElement
         """
         self.elements[key] = elem
 

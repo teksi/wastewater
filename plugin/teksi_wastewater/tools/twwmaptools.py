@@ -62,10 +62,10 @@ from qgis.PyQt.QtWidgets import (
 from ..utils.twwlayermanager import TwwLayerManager
 from .twwnetwork import TwwGraphManager
 from .twwprofile import (
-    QgepProfile,
-    QgepProfileNodeElement,
-    QgepProfileReachElement,
-    QgepProfileSpecialStructureElement,
+    TwwProfile,
+    TwwProfileNodeElement,
+    TwwProfileReachElement,
+    TwwProfileSpecialStructureElement,
 )
 
 
@@ -252,7 +252,7 @@ class TwwProfileMapTool(TwwMapTool):
     """
 
     profileChanged = pyqtSignal(object)
-    profile = QgepProfile()
+    profile = TwwProfile()
     segmentOffset = 0
 
     selectedPathPoints = []
@@ -360,7 +360,7 @@ class TwwProfileMapTool(TwwMapTool):
         if len(vertices) > 1:
             self.rubberBand.reset()
 
-            elem = QgepProfileNodeElement(vertices[0], node_features, self.segmentOffset)
+            elem = TwwProfileNodeElement(vertices[0], node_features, self.segmentOffset)
             self.profile.addElement(vertices[0], elem)
 
             for p1, p2, edge in edges:
@@ -379,7 +379,7 @@ class TwwProfileMapTool(TwwMapTool):
                             to_offset,
                         )
                     else:
-                        elem = QgepProfileReachElement(
+                        elem = TwwProfileReachElement(
                             p1,
                             p2,
                             edge["feature"],
@@ -402,7 +402,7 @@ class TwwProfileMapTool(TwwMapTool):
                             to_offset,
                         )
                     else:
-                        elem = QgepProfileSpecialStructureElement(
+                        elem = TwwProfileSpecialStructureElement(
                             p1,
                             p2,
                             edge["feature"],
@@ -413,7 +413,7 @@ class TwwProfileMapTool(TwwMapTool):
                         )
                         self.profile.addElement(elem.obj_id, elem)
 
-                elem = QgepProfileNodeElement(p2, node_features, to_offset)
+                elem = TwwProfileNodeElement(p2, node_features, to_offset)
                 self.profile.addElement(p2, elem)
 
                 self.segmentOffset = to_offset
@@ -685,7 +685,7 @@ class TwwMapToolConnectNetworkElements(QgsMapTool):
                     {
                         "id": "rp_from_fk_wastewater_networkelement",
                         "name": QCoreApplication.translate(
-                            "QgepMapToolConnectNetworkElements", "Reach Point From"
+                            "TwwMapToolConnectNetworkElements", "Reach Point From"
                         ),
                         "filter": lambda source, target: target.layer()
                         != TwwLayerManager.layer("vw_tww_reach"),
@@ -696,7 +696,7 @@ class TwwMapToolConnectNetworkElements(QgsMapTool):
                     {
                         "id": "rp_to_fk_wastewater_networkelement",
                         "name": QCoreApplication.translate(
-                            "QgepMapToolConnectNetworkElements", "Reach Point To"
+                            "TwwMapToolConnectNetworkElements", "Reach Point To"
                         ),
                         "is_checked": lambda source, target: not is_closer_to_start_of_edge(
                             source, target
@@ -713,25 +713,25 @@ class TwwMapToolConnectNetworkElements(QgsMapTool):
                     {
                         "id": "fk_wastewater_networkelement_rw_current",
                         "name": QCoreApplication.translate(
-                            "QgepMapToolConnectNetworkElements", "Rainwater current"
+                            "TwwMapToolConnectNetworkElements", "Rainwater current"
                         ),
                     },
                     {
                         "id": "fk_wastewater_networkelement_rw_planned",
                         "name": QCoreApplication.translate(
-                            "QgepMapToolConnectNetworkElements", "Rainwater planned"
+                            "TwwMapToolConnectNetworkElements", "Rainwater planned"
                         ),
                     },
                     {
                         "id": "fk_wastewater_networkelement_ww_current",
                         "name": QCoreApplication.translate(
-                            "QgepMapToolConnectNetworkElements", "Wastewater current"
+                            "TwwMapToolConnectNetworkElements", "Wastewater current"
                         ),
                     },
                     {
                         "id": "fk_wastewater_networkelement_ww_planned",
                         "name": QCoreApplication.translate(
-                            "QgepMapToolConnectNetworkElements", "Wastewater planned"
+                            "TwwMapToolConnectNetworkElements", "Wastewater planned"
                         ),
                     },
                 ],

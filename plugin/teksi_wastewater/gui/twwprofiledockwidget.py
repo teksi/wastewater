@@ -118,16 +118,16 @@ class TwwProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
         dlg.setLayout(QGridLayout())
 
         ww_current_checkbox = QCheckBox(self.tr("Wastewater current"))
-        status, _ = QgsProject.instance().readBoolEntry("Qgep", "FollowWastewaterCurrent", True)
+        status, _ = QgsProject.instance().readBoolEntry("Tww", "FollowWastewaterCurrent", True)
         ww_current_checkbox.setChecked(status)
         ww_planned_checkbox = QCheckBox(self.tr("Wastewater planned"))
-        status, _ = QgsProject.instance().readBoolEntry("Qgep", "FollowWastewaterPlanned", True)
+        status, _ = QgsProject.instance().readBoolEntry("Tww", "FollowWastewaterPlanned", True)
         ww_planned_checkbox.setChecked(status)
         rw_current_checkbox = QCheckBox(self.tr("Rainwater current"))
-        status, _ = QgsProject.instance().readBoolEntry("Qgep", "FollowRainwaterCurrent", True)
+        status, _ = QgsProject.instance().readBoolEntry("Tww", "FollowRainwaterCurrent", True)
         rw_current_checkbox.setChecked(status)
         rw_planned_checkbox = QCheckBox(self.tr("Rainwater planned"))
-        status, _ = QgsProject.instance().readBoolEntry("Qgep", "FollowRainwaterPlanned", True)
+        status, _ = QgsProject.instance().readBoolEntry("Tww", "FollowRainwaterPlanned", True)
         rw_planned_checkbox.setChecked(status)
         btn_box = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
         btn_box.accepted.connect(dlg.accept)
@@ -140,16 +140,16 @@ class TwwProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
 
         if dlg.exec_():
             QgsProject.instance().writeEntry(
-                "Qgep", "FollowWastewaterCurrent", ww_current_checkbox.isChecked()
+                "Tww", "FollowWastewaterCurrent", ww_current_checkbox.isChecked()
             )
             QgsProject.instance().writeEntry(
-                "Qgep", "FollowWastewaterPlanned", ww_planned_checkbox.isChecked()
+                "Tww", "FollowWastewaterPlanned", ww_planned_checkbox.isChecked()
             )
             QgsProject.instance().writeEntry(
-                "Qgep", "FollowRainwaterCurrent", rw_current_checkbox.isChecked()
+                "Tww", "FollowRainwaterCurrent", rw_current_checkbox.isChecked()
             )
             QgsProject.instance().writeEntry(
-                "Qgep", "FollowRainwaterPlanned", rw_planned_checkbox.isChecked()
+                "Tww", "FollowRainwaterPlanned", rw_planned_checkbox.isChecked()
             )
 
     @pyqtSlot()

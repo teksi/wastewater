@@ -31,7 +31,7 @@ from qgis.PyQt.QtWebKitWidgets import QWebPage, QWebView
 from qgis.PyQt.QtWidgets import QVBoxLayout, QWidget
 
 from ..tools.twwnetwork import TwwGraphManager
-from ..utils.translation import QgepJsTranslator
+from ..utils.translation import TwwJsTranslator
 from ..utils.ui import plugin_root_path
 
 
@@ -51,7 +51,7 @@ class TwwPlotSVGWidget(QWidget):
     frame = None
     profile = None
     verticalExaggeration = 10
-    jsTranslator = QgepJsTranslator()
+    jsTranslator = TwwJsTranslator()
 
     # Signals emitted triggered by javascript actions
     reachClicked = pyqtSignal([str], name="reachClicked")

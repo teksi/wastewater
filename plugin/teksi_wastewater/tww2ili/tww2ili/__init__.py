@@ -3,17 +3,17 @@ import sys
 from logging import INFO, FileHandler, Formatter
 
 from . import config, utils
-from .tww.export import qgep_export
+from .tww.export import tww_export
 from .tww.import_ import tww_import
 from .tww.mapping import get_tww_mapping
 from .tww.model_abwasser import Base as BaseAbwasser
-from .tww.model_tww import Base as BaseQgep
+from .tww.model_tww import Base as BaseTww
 from .utils.various import make_log_path
 
 
 def main(args):
     parser = argparse.ArgumentParser(
-        description="ili2QWAT / ili2QGEP entrypoint",
+        description="ili2tww entrypoint",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
 
@@ -21,9 +21,9 @@ def main(args):
     # subparsers.required = True
 
     parser_tww = subparsers.add_parser(
-        "qgep",
-        help="import/export QGEP datamodel",
-        description="ili2QGEP entrypoint",
+        "tww",
+        help="import/export TWW datamodel",
+        description="ili2tww entrypoint",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     # group = parser_tww.add_mutually_exclusive_group(required=True)
@@ -35,7 +35,7 @@ def main(args):
     # TODO: this only makes sense for export
     parser_tww.add_argument(
         "--labels_file",
-        help="if provided, includes the label positions in the export (the file should be the results of the provided `qgep:extractlabels_interlis` QGIS algorithm as geojson)",
+        help="if provided, includes the label positions in the export (the file should be the results of the provided `tww:extractlabels_interlis` QGIS algorithm as geojson)",
     )
     parser_tww.add_argument(
         "--recreate_schema",
@@ -51,7 +51,7 @@ def main(args):
     parser_tww.add_argument(
         "--pgservice",
         help="name of the pgservice to use to connect to the database",
-        default=config.QGEP_DEFAULT_PGSERVICE,
+        default=config.TWW_DEFAULT_PGSERVICE,
     )
     parser_tww.add_argument(
         "--log",
@@ -103,10 +103,10 @@ def main(args):
         help="generate code templates [dev]",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
-    parser_tpl.add_argument("model", choices=["qgep", "qwat"])
+    parser_tpl.add_argument("model", choices=["tww", "qwat"])
     parser_tpl.add_argument(
         "--pgservice",
-        help=f"name of the pgservice to use to connect to the database (defaults to {config.QGEP_DEFAULT_PGSERVICE} or {config.QWAT_DEFAULT_PGSERVICE})",
+        help=f"name of the pgservice to use to connect to the database (defaults to {config.TWW_DEFAULT_PGSERVICE} or {config.QWAT_DEFAULT_PGSERVICE})",
     )
 
     parser_setupdb = subparsers.add_parser(
@@ -122,7 +122,7 @@ def main(args):
         exit(1)
 
     # Set log path
-    log_path = args.path if args.parser in ["qgep", "qwat"] and args.log else None
+    log_path = args.path if args.parser in ["tww", "qwat"] and args.log else None
 
     # Write root logger to file
     filename = make_log_path(log_path, "tww2ili")
@@ -131,7 +131,7 @@ def main(args):
     file_handler.setFormatter(Formatter("%(levelname)-8s %(message)s"))
     utils.various.logger.addHandler(file_handler)
 
-    if args.parser == "qgep":
+    if args.parser == "tww":
         config.PGSERVICE = args.pgservice
         SCHEMA = config.ABWASSER_SCHEMA
         ILI_MODEL = config.ABWASSER_ILI_MODEL
@@ -149,7 +149,7 @@ def main(args):
                 make_log_path(log_path, "ilicreate"),
                 recreate_schema=args.recreate_schema,
             )
-            qgep_export(
+            tww_export(
                 selection=args.selection.split(",") if args.selection else None,
                 labels_file=args.labels_file,
             )
@@ -201,13 +201,13 @@ def main(args):
 
         if args.model == "qgep":
             if config.PGSERVICE is None:
-                config.PGSERVICE = config.QGEP_DEFAULT_PGSERVICE
+                config.PGSERVICE = config.TWW_DEFAULT_PGSERVICE
             utils.ili2db.create_ili_schema(
                 config.ABWASSER_SCHEMA, config.ABWASSER_ILI_MODEL, recreate_schema=True
             )
             QGEPMAPPING = get_tww_mapping()
             utils.templates.generate_template(
-                "qgep", "abwasser", BaseQgep, BaseAbwasser, QGEPMAPPING
+                "qgep", "abwasser", BaseTww, BaseAbwasser, QGEPMAPPING
             )
 
         else:

@@ -13,7 +13,7 @@ from QgisModelBaker.libili2db import globals, ili2dbconfig, ili2dbutils
 
 from ....utils.twwlayermanager import TwwLayerManager
 from .. import config
-from ..tww.export import qgep_export
+from ..tww.export import tww_export
 from ..tww.import_ import tww_import
 from ..utils.ili2db import (
     create_ili_schema,
@@ -261,7 +261,7 @@ def action_export(plugin):
         log_handler.setLevel(logging.INFO)
         log_handler.setFormatter(logging.Formatter("%(levelname)-8s %(message)s"))
         with LoggingHandlerContext(log_handler):
-            qgep_export(selection=export_dialog.selected_ids, labels_file=labels_file_path)
+            tww_export(selection=export_dialog.selected_ids, labels_file=labels_file_path)
         progress_dialog.setValue(50)
 
         # Cleanup

@@ -10,7 +10,7 @@ from .model_abwasser import get_abwasser_model
 from .model_tww import get_tww_model
 
 
-def qgep_export(selection=None, labels_file=None):
+def tww_export(selection=None, labels_file=None):
     """
     Export data from the QGEP model into the ili2pg model.
 
