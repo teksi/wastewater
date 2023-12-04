@@ -29,16 +29,16 @@ __copyright__ = "(C) 2018 by OPENGIS.ch"
 __revision__ = "$Format:%H$"
 
 
-class QgepAlgorithm(QgsProcessingAlgorithm):
+class TwwAlgorithm(QgsProcessingAlgorithm):
     """
-    Boilerplate code for QGEP algorithms
+    Boilerplate code for TWW algorithms
     """
 
     def group(self):
-        return "QGEP"
+        return "TWW"
 
     def groupId(self):
-        return "qgep"
+        return "tww"
 
     def tr(self, string, context=""):
         if context == "":

@@ -29,8 +29,8 @@ from qgis.core import (
     QgsProcessingParameterFileDestination,
 )
 
-from .qgep_algorithm import QgepAlgorithm
-from .QgepSwmm import QgepSwmm
+from .tww_algorithm import TwwAlgorithm
+from .TwwSwmm import TwwSwmm
 
 __author__ = "Timothée Produit"
 __date__ = "2019-08-01"
@@ -41,7 +41,7 @@ __copyright__ = "(C) 2019 by IG-Group.ch"
 __revision__ = "$Format:%H$"
 
 
-class SwmmExecuteAlgorithm(QgepAlgorithm):
+class SwmmExecuteAlgorithm(TwwAlgorithm):
     """"""
 
     INP_FILE = "INP_FILE"
@@ -103,7 +103,7 @@ class SwmmExecuteAlgorithm(QgepAlgorithm):
                 )
             )
 
-        with QgepSwmm(None, None, None, inp_file, None, rpt_file, swmm_cli, feedback) as qs:
+        with TwwSwmm(None, None, None, inp_file, None, rpt_file, swmm_cli, feedback) as qs:
             prompt = qs.execute_swmm()
 
         feedback.pushInfo(prompt)

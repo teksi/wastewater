@@ -5,7 +5,7 @@ from qgis.core import Qgis, QgsSettings
 from qgis.PyQt.QtWidgets import QCheckBox, QDialog
 from qgis.PyQt.uic import loadUi
 
-from ....utils.qgeplayermanager import QgepLayerManager
+from ....utils.twwlayermanager import TwwLayerManager
 from ..processing_algs.extractlabels_interlis import ExtractlabelsInterlisAlgorithm
 
 
@@ -19,8 +19,8 @@ class GuiExport(QDialog):
         # Execute the dialog
         # self.resize(iface.mainWindow().size() * 0.75)
 
-        structures_layer = QgepLayerManager.layer("vw_tww_wastewater_structure")
-        reaches_layer = QgepLayerManager.layer("vw_tww_reach")
+        structures_layer = TwwLayerManager.layer("vw_tww_wastewater_structure")
+        reaches_layer = TwwLayerManager.layer("vw_tww_reach")
         self.structures = structures_layer.selectedFeatures() if structures_layer else []
         self.reaches = reaches_layer.selectedFeatures() if reaches_layer else []
 

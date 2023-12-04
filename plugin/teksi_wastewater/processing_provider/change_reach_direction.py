@@ -19,7 +19,7 @@
 
 from qgis.core import QgsProcessingAlgorithm, QgsProcessingParameterVectorLayer
 
-from .qgep_algorithm import QgepAlgorithm
+from .tww_algorithm import TwwAlgorithm
 
 __author__ = "Matthias Kuhn & Maxime Trolliet"
 __date__ = "2018-08-07"
@@ -30,7 +30,7 @@ __copyright__ = "(C) 2018 by OPENGIS.ch"
 __revision__ = "$Format:%H$"
 
 
-class ChangeReachDirection(QgepAlgorithm):
+class ChangeReachDirection(TwwAlgorithm):
     """
     Change the direction of the selected reaches
     """

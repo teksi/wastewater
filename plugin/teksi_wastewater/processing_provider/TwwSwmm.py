@@ -108,10 +108,10 @@ SWMM_RESULTS_PARAMETERS["head"] = {
 NON_PHYSICAL_REM = "Non-physical point which materializes swmm simulations"
 
 
-class QgepSwmm:
+class TwwSwmm:
     def __init__(self, title, service, state, inpfile, inptemplate, rptfile, binfile, feedback):
         """
-        Initiate QgepSwmm
+        Initiate TwwSwmm
 
         Parameters:
         title (string): Title of the simulation
@@ -219,8 +219,8 @@ class QgepSwmm:
 
     def swmm_table(self, table_name, hierarchy=None, state=None, selected_structures=[]):
         """
-        Write swmm objects extracted from QGEP in swmm input file. Selects according
-        to the state planned or current. If the object is a qgep wastewater structure
+        Write swmm objects extracted from TWW in swmm input file. Selects according
+        to the state planned or current. If the object is a teksi wastewater structure
         when the state is "planned" both "planned" and "operational" wastewater structures are selected
 
         Parameters:

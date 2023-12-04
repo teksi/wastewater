@@ -31,8 +31,8 @@ from qgis.core import (
     QgsProject,
 )
 
-from .qgep_algorithm import QgepAlgorithm
-from .QgepSwmm import QgepSwmm
+from .tww_algorithm import TwwAlgorithm
+from .TwwSwmm import TwwSwmm
 
 __author__ = "Timothée Produit"
 __date__ = "2019-08-01"
@@ -43,7 +43,7 @@ __copyright__ = "(C) 2019 by IG-Group.ch"
 __revision__ = "$Format:%H$"
 
 
-class SwmmCreateInputAlgorithm(QgepAlgorithm):
+class SwmmCreateInputAlgorithm(TwwAlgorithm):
     """"""
 
     DATABASE = "DATABASE"
@@ -163,7 +163,7 @@ class SwmmCreateInputAlgorithm(QgepAlgorithm):
             selected_structures = None
             selected_reaches = None
         # Connect to QGEP database and perform translation
-        with QgepSwmm(
+        with TwwSwmm(
             datetime.datetime.today().isoformat(),
             database,
             state,

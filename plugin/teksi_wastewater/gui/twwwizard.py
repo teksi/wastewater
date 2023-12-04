@@ -27,9 +27,9 @@ import logging
 from qgis.PyQt.QtCore import pyqtSlot
 from qgis.PyQt.QtWidgets import QDockWidget
 
-from ..tools.twwmaptooladdfeature import QgepMapToolAddReach
+from ..tools.twwmaptooladdfeature import TwwMapToolAddReach
 from ..utils import get_ui_class
-from ..utils.qgeplayermanager import QgepLayerManager
+from ..utils.twwlayermanager import TwwLayerManager
 
 DOCK_WIDGET = get_ui_class("qgepwizard.ui")
 
@@ -51,15 +51,15 @@ class TwwWizard(QDockWidget, DOCK_WIDGET):
         self.layerComboBox.insertItem(self.layerComboBox.count(), self.tr("Reach"), "reach")
         self.stateButton.setProperty("state", "inactive")
 
-        self.mapToolAddReach = QgepMapToolAddReach(
-            self.iface, QgepLayerManager.layer("vw_tww_reach")
+        self.mapToolAddReach = TwwMapToolAddReach(
+            self.iface, TwwLayerManager.layer("vw_tww_reach")
         )
 
     @pyqtSlot(int)
     def layerChanged(self, index):
         for lyr in [
-            QgepLayerManager.layer("vw_tww_wastewater_structure"),
-            QgepLayerManager.layer("vw_tww_reach"),
+            TwwLayerManager.layer("vw_tww_wastewater_structure"),
+            TwwLayerManager.layer("vw_tww_reach"),
         ]:
             lyr.commitChanges()
 
@@ -67,13 +67,13 @@ class TwwWizard(QDockWidget, DOCK_WIDGET):
             self.layerComboBox.itemData(self.layerComboBox.currentIndex())
             == "wastewater_structure"
         ):
-            lyr = QgepLayerManager.layer("vw_tww_wastewater_structure")
+            lyr = TwwLayerManager.layer("vw_tww_wastewater_structure")
             lyr.startEditing()
             self.iface.setActiveLayer(lyr)
             self.iface.actionAddFeature().trigger()
 
         elif self.layerComboBox.itemData(self.layerComboBox.currentIndex()) == "reach":
-            lyr = QgepLayerManager.layer("vw_tww_reach")
+            lyr = TwwLayerManager.layer("vw_tww_reach")
             lyr.startEditing()
             self.iface.mapCanvas().setMapTool(self.mapToolAddReach)
 
@@ -86,8 +86,8 @@ class TwwWizard(QDockWidget, DOCK_WIDGET):
             self.stateButton.setProperty("state", "active")
         else:
             for lyr in [
-                QgepLayerManager.layer("vw_tww_reach"),
-                QgepLayerManager.layer("vw_tww_wastewater_structure"),
+                TwwLayerManager.layer("vw_tww_reach"),
+                TwwLayerManager.layer("vw_tww_wastewater_structure"),
             ]:
                 lyr.commitChanges()
             self.layerComboBox.setEnabled(False)

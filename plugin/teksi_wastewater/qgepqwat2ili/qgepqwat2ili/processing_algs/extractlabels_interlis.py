@@ -15,12 +15,13 @@ from qgis.core import (
     QgsProcessingParameterVectorLayer,
     QgsWkbTypes,
 )
-from teksi_wastewater.processing_provider.qgep_algorithm import QgepAlgorithm
 
-from ....utils.qgeplayermanager import QgepLayerManager
+from plugin.teksi_wastewater.processing_provider.tww_algorithm import TwwAlgorithm
+
+from ....utils.twwlayermanager import TwwLayerManager
 
 
-class ExtractlabelsInterlisAlgorithm(QgepAlgorithm):
+class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
     """This runs the native extractlabels algorithm for the given scales, and attaches obj_id and scale to the results.
 
     Otherwise, the output is difficult to use, because the FeatureID isn't stable (since it's the primary
@@ -170,10 +171,10 @@ class ExtractlabelsInterlisAlgorithm(QgepAlgorithm):
 
             # Annotate features with qgep_obj_id and scal
             lyr_name_to_key = {
-                QgepLayerManager.layer(
+                TwwLayerManager.layer(
                     "vw_tww_wastewater_structure"
                 ).name(): "vw_tww_wastewater_structure",
-                QgepLayerManager.layer("vw_tww_reach").name(): "vw_tww_reach",
+                TwwLayerManager.layer("vw_tww_reach").name(): "vw_tww_reach",
             }
             for label in geojson["features"]:
                 layer_name = label["properties"]["Layer"]

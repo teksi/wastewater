@@ -1,7 +1,7 @@
 import qgis
 from qgis.core import QgsProject
 
-from ..tools.twwmaptooladdfeature import QgepMapToolDigitizeDrainageChannel
+from ..tools.twwmaptooladdfeature import TwwMapToolDigitizeDrainageChannel
 
 
 def geometryDigitized(fid, layer, tool):
@@ -19,7 +19,7 @@ def mapToolDeactivated(tool):
 def digitizeDrainageChannel(fid, layerid):
     layer = QgsProject.instance().mapLayer(layerid)
     layer.startEditing()
-    tool = QgepMapToolDigitizeDrainageChannel(qgis.utils.plugins["qgepplugin"].iface, layer)
+    tool = TwwMapToolDigitizeDrainageChannel(qgis.utils.plugins["qgepplugin"].iface, layer)
     qgis.utils.plugins["qgepplugin"].iface.mapCanvas().setMapTool(tool)
     tool.geometryDigitized.connect(lambda: geometryDigitized(fid, layer, tool))
     # form.window().hide()

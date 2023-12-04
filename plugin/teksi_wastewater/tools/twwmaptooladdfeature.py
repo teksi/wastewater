@@ -64,10 +64,10 @@ from qgis.PyQt.QtWidgets import (
     QLineEdit,
 )
 
-from ..utils.qgeplayermanager import QgepLayerManager
+from ..utils.twwlayermanager import TwwLayerManager
 
 
-class QgepRubberBand3D(QgsRubberBand):
+class TwwRubberBand3D(QgsRubberBand):
     def __init__(self, map_canvas: QgsMapCanvas, geometry_type):
         QgsRubberBand.__init__(self, map_canvas, geometry_type)
         self.points = []
@@ -109,7 +109,7 @@ class TwwMapToolAddFeature(QgsMapToolAdvancedDigitizing):
         self.iface = iface
         self.canvas = iface.mapCanvas()
         self.layer = layer
-        self.rubberband = QgepRubberBand3D(iface.mapCanvas(), layer.geometryType())
+        self.rubberband = TwwRubberBand3D(iface.mapCanvas(), layer.geometryType())
         self.rubberband.setColor(QColor("#ee5555"))
         self.rubberband.setWidth(1)
         self.temp_rubberband = QgsRubberBand(iface.mapCanvas(), layer.geometryType())
@@ -197,7 +197,7 @@ class TwwMapToolAddFeature(QgsMapToolAdvancedDigitizing):
         pass
 
 
-class QgepMapToolAddReach(TwwMapToolAddFeature):
+class TwwMapToolAddReach(TwwMapToolAddFeature):
     """
     Create a new reach with the mouse.
     Will snap to wastewater nodes for the first and last point and auto-connect
@@ -211,9 +211,9 @@ class QgepMapToolAddReach(TwwMapToolAddFeature):
     def __init__(self, iface: QgisInterface, layer):
         TwwMapToolAddFeature.__init__(self, iface, layer)
         self.snapping_marker = None
-        self.node_layer = QgepLayerManager.layer("vw_wastewater_node")
+        self.node_layer = TwwLayerManager.layer("vw_wastewater_node")
         assert self.node_layer is not None
-        self.reach_layer = QgepLayerManager.layer("vw_tww_reach")
+        self.reach_layer = TwwLayerManager.layer("vw_tww_reach")
         assert self.reach_layer is not None
         self.setAdvancedDigitizingAllowed(True)
         self.setAutoSnapEnabled(True)
@@ -392,7 +392,7 @@ class QgepMapToolAddReach(TwwMapToolAddFeature):
         self.rubberband.reset3D()
 
 
-class QgepMapToolDigitizeDrainageChannel(QgsMapTool):
+class TwwMapToolDigitizeDrainageChannel(QgsMapTool):
     """
     This is used to digitize a drainage channel.
 

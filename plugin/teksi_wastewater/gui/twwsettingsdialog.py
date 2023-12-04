@@ -103,7 +103,7 @@ class TwwSettingsDialog(QDialog, DIALOG_UI):
 
     @pyqtSlot()
     def onAccept(self):
-        qgeplogger = logging.getLogger("qgep")
+        twwlogger = logging.getLogger("tww")
         # General settings
         if self.mGbOverrideDefaultProfileTemplate.isChecked() and self.mProfileTemplateFile.text():
             self.settings.setValue("/QGEP/SvgProfilePath", self.mProfileTemplateFile.text())
@@ -114,32 +114,32 @@ class TwwSettingsDialog(QDialog, DIALOG_UI):
         self.settings.setValue("/QGEP/AdminMode", self.mCbAdminMode.isChecked())
 
         # Logging
-        if hasattr(qgeplogger, "qgepFileHandler"):
-            qgeplogger.removeHandler(qgeplogger.qgepFileHandler)
-            del qgeplogger.qgepFileHandler
+        if hasattr(twwlogger, "qgepFileHandler"):
+            twwlogger.removeHandler(twwlogger.qgepFileHandler)
+            del twwlogger.qgepFileHandler
 
         if self.mGbLogToFile.isChecked():
             logfile = str(self.mLogFile.text())
             log_handler = logging.FileHandler(logfile)
             fmt = logging.Formatter(LOGFORMAT)
             log_handler.setFormatter(fmt)
-            qgeplogger.addHandler(log_handler)
-            qgeplogger.qgepFileHandler = log_handler
+            twwlogger.addHandler(log_handler)
+            twwlogger.qgepFileHandler = log_handler
             self.settings.setValue("/QGEP/LogFile", logfile)
         else:
             self.settings.setValue("/QGEP/LogFile", None)
 
         if self.tr("Debug") == self.mCbLogLevel.currentText():
-            qgeplogger.setLevel(logging.DEBUG)
+            twwlogger.setLevel(logging.DEBUG)
             self.settings.setValue("/QGEP/LogLevel", "Debug")
         elif self.tr("Info") == self.mCbLogLevel.currentText():
-            qgeplogger.setLevel(logging.INFO)
+            twwlogger.setLevel(logging.INFO)
             self.settings.setValue("/QGEP/LogLevel", "Info")
         elif self.tr("Warning") == self.mCbLogLevel.currentText():
-            qgeplogger.setLevel(logging.WARNING)
+            twwlogger.setLevel(logging.WARNING)
             self.settings.setValue("/QGEP/LogLevel", "Warning")
         elif self.tr("Error") == self.mCbLogLevel.currentText():
-            qgeplogger.setLevel(logging.ERROR)
+            twwlogger.setLevel(logging.ERROR)
             self.settings.setValue("/QGEP/LogLevel", "Error")
 
         # Save colors
