@@ -4,15 +4,10 @@ from logging import INFO, FileHandler, Formatter
 
 from . import config, utils
 from .qgep.export import qgep_export
-from .qgep.import_ import qgep_import
+from .qgep.import_ import tww_import
 from .qgep.mapping import get_qgep_mapping
 from .qgep.model_abwasser import Base as BaseAbwasser
 from .qgep.model_qgep import Base as BaseQgep
-from .qwat.export import qwat_export
-from .qwat.import_ import qwat_import
-from .qwat.mapping import get_qwat_mapping
-from .qwat.model_qwat import Base as BaseQwat
-from .qwat.model_wasser import Base as BaseWasser
 from .utils.various import make_log_path
 
 
@@ -199,63 +194,7 @@ def main(args):
                 recreate_schema=args.recreate_schema,
             )
             utils.ili2db.import_xtf_data(SCHEMA, args.path, make_log_path(log_path, "iliimport"))
-            qgep_import()
-
-    elif args.parser == "qwat":
-        config.PGSERVICE = args.pgservice
-        SCHEMA = config.WASSER_SCHEMA
-        ILI_MODEL = config.WASSER_ILI_MODEL
-        ILI_MODEL_NAME = config.WASSER_ILI_MODEL_NAME
-        ILI_EXPORT_MODEL_NAME = None
-
-        if args.direction == "export":
-            utils.ili2db.create_ili_schema(
-                SCHEMA,
-                ILI_MODEL,
-                make_log_path(log_path, "ilicreate"),
-                recreate_schema=args.recreate_schema,
-            )
-            qwat_export(include_hydraulics=args.include_hydraulics)
-            utils.ili2db.export_xtf_data(
-                SCHEMA,
-                ILI_MODEL_NAME,
-                ILI_EXPORT_MODEL_NAME,
-                args.path,
-                make_log_path(log_path, "iliexport"),
-            )
-            if not args.skip_validation:
-                try:
-                    utils.ili2db.validate_xtf_data(
-                        args.path, make_log_path(log_path, "ilivalidate")
-                    )
-                except utils.various.CmdException:
-                    print(
-                        "Ilivalidator doesn't recognize output as valid ! Run with --skip_validation to ignore"
-                    )
-                    exit(1)
-
-        elif args.direction == "import":
-            if args.include_hydraulics:
-                print("--include_hydraulics is only supported on export")
-                exit(1)
-            if not args.skip_validation:
-                try:
-                    utils.ili2db.validate_xtf_data(
-                        args.path, make_log_path(log_path, "ilivalidate")
-                    )
-                except utils.various.CmdException:
-                    print(
-                        "Ilivalidator doesn't recognize input as valid ! Run with --skip_validation to ignore"
-                    )
-                    exit(1)
-            utils.ili2db.create_ili_schema(
-                SCHEMA,
-                ILI_MODEL,
-                make_log_path(log_path, "ilicreate"),
-                recreate_schema=args.recreate_schema,
-            )
-            utils.ili2db.import_xtf_data(SCHEMA, args.path, make_log_path(log_path, "iliimport"))
-            qwat_import()
+            tww_import()
 
     elif args.parser == "tpl":
         config.PGSERVICE = args.pgservice
@@ -270,15 +209,6 @@ def main(args):
             utils.templates.generate_template(
                 "qgep", "abwasser", BaseQgep, BaseAbwasser, QGEPMAPPING
             )
-
-        elif args.model == "qwat":
-            if config.PGSERVICE is None:
-                config.PGSERVICE = config.QWAT_DEFAULT_PGSERVICE
-            utils.ili2db.create_ili_schema(
-                config.WASSER_SCHEMA, config.WASSER_ILI_MODEL, recreate_schema=True
-            )
-            QWATMAPPING = get_qwat_mapping()
-            utils.templates.generate_template("qwat", "wasser", BaseQwat, BaseWasser, QWATMAPPING)
 
         else:
             print("Unknown model")

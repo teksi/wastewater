@@ -14,7 +14,7 @@ from QgisModelBaker.libili2db import globals, ili2dbconfig, ili2dbutils
 from ....utils.qgeplayermanager import QgepLayerManager
 from .. import config
 from ..qgep.export import qgep_export
-from ..qgep.import_ import qgep_import
+from ..qgep.import_ import tww_import
 from ..utils.ili2db import (
     create_ili_schema,
     export_xtf_data,
@@ -153,7 +153,7 @@ def action_import(plugin):
     log_handler.setLevel(logging.INFO)
     log_handler.setFormatter(logging.Formatter("%(levelname)-8s %(message)s"))
     with LoggingHandlerContext(log_handler):
-        qgep_import(
+        tww_import(
             precommit_callback=import_dialog.init_with_session,
         )
 

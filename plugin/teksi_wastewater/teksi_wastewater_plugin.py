@@ -33,15 +33,15 @@ from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QApplication, QToolBar
 from qgis.utils import qgsfunction
 
-from .gui.qgepdatamodeldialog import QgepDatamodelInitToolDialog
+from .gui.twwdatamodeldialog import TwwDatamodelInitToolDialog
 
 try:
-    from .gui.qgepplotsvgwidget import QgepPlotSVGWidget
+    from .gui.twwplotsvgwidget import TwwPlotSVGWidget
 except ImportError:
-    QgepPlotSVGWidget = None
-from .gui.qgepprofiledockwidget import QgepProfileDockWidget
-from .gui.qgepsettingsdialog import QgepSettingsDialog
-from .gui.qgepwizard import QgepWizard
+    TwwPlotSVGWidget = None
+from .gui.twwprofiledockwidget import TwwProfileDockWidget
+from .gui.twwsettingsdialog import TwwSettingsDialog
+from .gui.twwwizard import TwwWizard
 from .processing_provider.provider import QgepProcessingProvider
 from .tools.twwmaptools import (
     QgepTreeMapTool,
@@ -384,7 +384,7 @@ class TeksiWastewaterPlugin:
     def wizard(self):
         """"""
         if not self.wizarddock:
-            self.wizarddock = QgepWizard(self.iface.mainWindow(), self.iface)
+            self.wizarddock = TwwWizard(self.iface.mainWindow(), self.iface)
         self.logger.debug("Opening Wizard")
         self.iface.addDockWidget(Qt.LeftDockWidgetArea, self.wizarddock)
         self.wizarddock.show()
@@ -398,7 +398,7 @@ class TeksiWastewaterPlugin:
         """
         if self.profile_dock is None:
             self.logger.debug("Open dock")
-            self.profile_dock = QgepProfileDockWidget(
+            self.profile_dock = TwwProfileDockWidget(
                 self.iface.mainWindow(),
                 self.iface.mapCanvas(),
                 self.iface.addDockWidget,
@@ -407,8 +407,8 @@ class TeksiWastewaterPlugin:
             self.profile_dock.showIt()
 
             self.plotWidget = None
-            if QgepPlotSVGWidget is not None:
-                self.plotWidget = QgepPlotSVGWidget(self.profile_dock, self.network_analyzer)
+            if TwwPlotSVGWidget is not None:
+                self.plotWidget = TwwPlotSVGWidget(self.profile_dock, self.network_analyzer)
                 self.plotWidget.specialStructureMouseOver.connect(self.highlightProfileElement)
                 self.plotWidget.specialStructureMouseOut.connect(self.unhighlightProfileElement)
                 self.plotWidget.reachMouseOver.connect(self.highlightProfileElement)
@@ -453,12 +453,12 @@ class TeksiWastewaterPlugin:
         DlgAbout(self.iface.mainWindow()).exec_()
 
     def showSettings(self):
-        settings_dlg = QgepSettingsDialog(self.iface.mainWindow())
+        settings_dlg = TwwSettingsDialog(self.iface.mainWindow())
         settings_dlg.exec_()
 
     def showDatamodelInitTool(self):
         if not hasattr(self, "_datamodel_dlg"):
-            self.datamodel_dlg = QgepDatamodelInitToolDialog(self.iface.mainWindow())
+            self.datamodel_dlg = TwwDatamodelInitToolDialog(self.iface.mainWindow())
         self.datamodel_dlg.show()
 
     def actionExportClicked(self):
