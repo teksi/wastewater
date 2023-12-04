@@ -12,7 +12,7 @@ from .model_tww import get_tww_model
 
 def tww_import(precommit_callback=None):
     """
-    Imports data from the ili2pg model into the QGEP model.
+    Imports data from the ili2pg model into the TWW model.
 
     Args:
         precommit_callback: optional callable that gets invoked with the sqlalchemy's session,
@@ -20,7 +20,7 @@ def tww_import(precommit_callback=None):
                             commit or rollback and close the session.
     """
 
-    QGEP = get_tww_model()
+    TWW = get_tww_model()
     ABWASSER = get_abwasser_model()
 
     pre_session = Session(utils.sqlalchemy.create_engine(), autocommit=False, autoflush=False)
@@ -35,10 +35,10 @@ def tww_import(precommit_callback=None):
     # review imports and to keep the door open to getting data from another
     # connection / database type.
     abwasser_session = Session(utils.sqlalchemy.create_engine(), autocommit=False, autoflush=False)
-    qgep_session = Session(utils.sqlalchemy.create_engine(), autocommit=False, autoflush=False)
+    tww_session = Session(utils.sqlalchemy.create_engine(), autocommit=False, autoflush=False)
 
     # Allow to insert rows with cyclic dependencies at once
-    qgep_session.execute("SET CONSTRAINTS ALL DEFERRED;")
+    tww_session.execute("SET CONSTRAINTS ALL DEFERRED;")
 
     def get_vl_instance(vl_table, value):
         """
@@ -46,7 +46,7 @@ def tww_import(precommit_callback=None):
         """
         # TODO : memoize (and get the whole table at once) to improve N+1 performance issue
         # TODO : return "other" (or other applicable value) rather than None, or even throwing an exception, would probably be better
-        row = qgep_session.query(vl_table).filter(vl_table.value_de == value).first()
+        row = tww_session.query(vl_table).filter(vl_table.value_de == value).first()
         if row is None:
             logger.warning(
                 f'Could not find value `{value}` in value list "{vl_table.__table__.schema}.{vl_table.__name__}". Setting to None instead.'
@@ -72,7 +72,7 @@ def tww_import(precommit_callback=None):
         # We try to get the instance from the session/database
         obj_id = kwargs.get("obj_id", None)
         if obj_id:
-            instance = qgep_session.query(cls).get(kwargs.get("obj_id", None))
+            instance = tww_session.query(cls).get(kwargs.get("obj_id", None))
 
         if instance:
             # We found it -> update
@@ -93,22 +93,20 @@ def tww_import(precommit_callback=None):
             return None
 
         instance = (
-            qgep_session.query(QGEP.organisation)
-            .filter(QGEP.organisation.identifier == name)
-            .first()
+            tww_session.query(TWW.organisation).filter(TWW.organisation.identifier == name).first()
         )
 
         # also look for non-flushed objects in the session
         if not instance:
-            for obj in qgep_session:
-                if obj.__class__ is QGEP.organisation and obj.identifier == name:
+            for obj in tww_session:
+                if obj.__class__ is TWW.organisation and obj.identifier == name:
                     instance = obj
                     break
 
         # if still nothing, we create it
         if not instance:
-            instance = create_or_update(QGEP.organisation, identifier=name)
-            qgep_session.add(instance)
+            instance = create_or_update(TWW.organisation, identifier=name)
+            tww_session.add(instance)
 
         return instance
 
@@ -136,12 +134,12 @@ def tww_import(precommit_callback=None):
         """
         return {
             "accessibility__REL": get_vl_instance(
-                QGEP.wastewater_structure_accessibility, row.zugaenglichkeit
+                TWW.wastewater_structure_accessibility, row.zugaenglichkeit
             ),
             "contract_section": row.baulos,
             "detail_geometry_geometry": ST_Force3D(row.detailgeometrie),
             "financing__REL": get_vl_instance(
-                QGEP.wastewater_structure_financing, row.finanzierung
+                TWW.wastewater_structure_financing, row.finanzierung
             ),
             # "fk_main_cover": row.REPLACE_ME,  # TODO : NOT MAPPED, but I think this is not standard SIA405 ?
             # "fk_main_wastewater_node": row.REPLACE_ME,  # TODO : NOT MAPPED, but I think this is not standard SIA405 ?
@@ -154,16 +152,16 @@ def tww_import(precommit_callback=None):
             "records": row.akten,
             "remark": row.bemerkung,
             "renovation_necessity__REL": get_vl_instance(
-                QGEP.wastewater_structure_renovation_necessity, row.sanierungsbedarf
+                TWW.wastewater_structure_renovation_necessity, row.sanierungsbedarf
             ),
             "replacement_value": row.wiederbeschaffungswert,
             "rv_base_year": row.wbw_basisjahr,
             "rv_construction_type__REL": get_vl_instance(
-                QGEP.wastewater_structure_rv_construction_type, row.wbw_bauart
+                TWW.wastewater_structure_rv_construction_type, row.wbw_bauart
             ),
-            "status__REL": get_vl_instance(QGEP.wastewater_structure_status, row.astatus),
+            "status__REL": get_vl_instance(TWW.wastewater_structure_status, row.astatus),
             "structure_condition__REL": get_vl_instance(
-                QGEP.wastewater_structure_structure_condition, row.baulicherzustand
+                TWW.wastewater_structure_structure_condition, row.baulicherzustand
             ),
             "subsidies": row.subventionen,
             "year_of_construction": row.baujahr,
@@ -189,17 +187,17 @@ def tww_import(precommit_callback=None):
             "identifier": row.bezeichnung,
             "remark": row.bemerkung,
             "renovation_demand__REL": get_vl_instance(
-                QGEP.structure_part_renovation_demand, row.instandstellung
+                TWW.structure_part_renovation_demand, row.instandstellung
             ),
         }
 
-    logger.info("Importing ABWASSER.organisation, ABWASSER.metaattribute -> QGEP.organisation")
+    logger.info("Importing ABWASSER.organisation, ABWASSER.metaattribute -> TWW.organisation")
     _imported_orgs = []
     for row, metaattribute in abwasser_session.query(
         ABWASSER.organisation, ABWASSER.metaattribute
     ).join(ABWASSER.metaattribute):
         organisation = create_or_update(
-            QGEP.organisation,
+            TWW.organisation,
             **base_common(row),
             # **metaattribute_common(metaattribute),  # see below
             # --- organisation ---
@@ -207,7 +205,7 @@ def tww_import(precommit_callback=None):
             remark=row.bemerkung,
             uid=row.auid,
         )
-        qgep_session.add(organisation)
+        tww_session.add(organisation)
 
         _imported_orgs.append((organisation, metaattribute))
 
@@ -218,7 +216,7 @@ def tww_import(precommit_callback=None):
             setattr(organisation, k, v)
     logger.info("done")
 
-    logger.info("Importing ABWASSER.kanal, ABWASSER.metaattribute -> QGEP.channel")
+    logger.info("Importing ABWASSER.kanal, ABWASSER.metaattribute -> TWW.channel")
     for row, metaattribute in abwasser_session.query(ABWASSER.kanal, ABWASSER.metaattribute).join(
         ABWASSER.metaattribute
     ):
@@ -251,34 +249,32 @@ def tww_import(precommit_callback=None):
         # sia405_baseclass_metaattribute__REL
 
         channel = create_or_update(
-            QGEP.channel,
+            TWW.channel,
             **base_common(row),
             **metaattribute_common(metaattribute),
             # --- wastewater_structure ---
             **wastewater_structure_common(row),
             # --- channel ---
             bedding_encasement__REL=get_vl_instance(
-                QGEP.channel_bedding_encasement, row.bettung_umhuellung
+                TWW.channel_bedding_encasement, row.bettung_umhuellung
             ),
-            connection_type__REL=get_vl_instance(QGEP.channel_connection_type, row.verbindungsart),
+            connection_type__REL=get_vl_instance(TWW.channel_connection_type, row.verbindungsart),
             function_hierarchic__REL=get_vl_instance(
-                QGEP.channel_function_hierarchic, row.funktionhierarchisch
+                TWW.channel_function_hierarchic, row.funktionhierarchisch
             ),
             function_hydraulic__REL=get_vl_instance(
-                QGEP.channel_function_hydraulic, row.funktionhydraulisch
+                TWW.channel_function_hydraulic, row.funktionhydraulisch
             ),
             jetting_interval=row.spuelintervall,
             pipe_length=row.rohrlaenge,
-            usage_current__REL=get_vl_instance(QGEP.channel_usage_current, row.nutzungsart_ist),
-            usage_planned__REL=get_vl_instance(
-                QGEP.channel_usage_planned, row.nutzungsart_geplant
-            ),
+            usage_current__REL=get_vl_instance(TWW.channel_usage_current, row.nutzungsart_ist),
+            usage_planned__REL=get_vl_instance(TWW.channel_usage_planned, row.nutzungsart_geplant),
         )
-        qgep_session.add(channel)
+        tww_session.add(channel)
         print(".", end="")
     logger.info("done")
 
-    logger.info("Importing ABWASSER.normschacht, ABWASSER.metaattribute -> QGEP.manhole")
+    logger.info("Importing ABWASSER.normschacht, ABWASSER.metaattribute -> TWW.manhole")
     for row, metaattribute in abwasser_session.query(
         ABWASSER.normschacht, ABWASSER.metaattribute
     ).join(ABWASSER.metaattribute):
@@ -311,7 +307,7 @@ def tww_import(precommit_callback=None):
         # sia405_baseclass_metaattribute__REL
 
         manhole = create_or_update(
-            QGEP.manhole,
+            TWW.manhole,
             **base_common(row),
             **metaattribute_common(metaattribute),
             # --- wastewater_structure ---
@@ -320,17 +316,17 @@ def tww_import(precommit_callback=None):
             # _orientation=row.REPLACE_ME,
             dimension1=row.dimension1,
             dimension2=row.dimension2,
-            function__REL=get_vl_instance(QGEP.manhole_function, row.funktion),
-            material__REL=get_vl_instance(QGEP.manhole_material, row.material),
+            function__REL=get_vl_instance(TWW.manhole_function, row.funktion),
+            material__REL=get_vl_instance(TWW.manhole_material, row.material),
             surface_inflow__REL=get_vl_instance(
-                QGEP.manhole_surface_inflow, row.oberflaechenzulauf
+                TWW.manhole_surface_inflow, row.oberflaechenzulauf
             ),
         )
-        qgep_session.add(manhole)
+        tww_session.add(manhole)
         print(".", end="")
     logger.info("done")
 
-    logger.info("Importing ABWASSER.einleitstelle, ABWASSER.metaattribute -> QGEP.discharge_point")
+    logger.info("Importing ABWASSER.einleitstelle, ABWASSER.metaattribute -> TWW.discharge_point")
     for row, metaattribute in abwasser_session.query(
         ABWASSER.einleitstelle, ABWASSER.metaattribute
     ).join(ABWASSER.metaattribute):
@@ -363,7 +359,7 @@ def tww_import(precommit_callback=None):
         # sia405_baseclass_metaattribute__REL
 
         discharge_point = create_or_update(
-            QGEP.discharge_point,
+            TWW.discharge_point,
             **base_common(row),
             **metaattribute_common(metaattribute),
             # --- wastewater_structure ---
@@ -371,17 +367,17 @@ def tww_import(precommit_callback=None):
             # --- discharge_point ---
             # fk_sector_water_body=row.REPLACE_ME, # TODO : NOT MAPPED
             highwater_level=row.hochwasserkote,
-            relevance__REL=get_vl_instance(QGEP.discharge_point_relevance, row.relevanz),
+            relevance__REL=get_vl_instance(TWW.discharge_point_relevance, row.relevanz),
             terrain_level=row.terrainkote,
             # upper_elevation=row.REPLACE_ME, # TODO : NOT MAPPED
             waterlevel_hydraulic=row.wasserspiegel_hydraulik,
         )
-        qgep_session.add(discharge_point)
+        tww_session.add(discharge_point)
         print(".", end="")
     logger.info("done")
 
     logger.info(
-        "Importing ABWASSER.spezialbauwerk, ABWASSER.metaattribute -> QGEP.special_structure"
+        "Importing ABWASSER.spezialbauwerk, ABWASSER.metaattribute -> TWW.special_structure"
     )
     for row, metaattribute in abwasser_session.query(
         ABWASSER.spezialbauwerk, ABWASSER.metaattribute
@@ -415,28 +411,28 @@ def tww_import(precommit_callback=None):
         # sia405_baseclass_metaattribute__REL
 
         special_structure = create_or_update(
-            QGEP.special_structure,
+            TWW.special_structure,
             **base_common(row),
             **metaattribute_common(metaattribute),
             # --- wastewater_structure ---
             **wastewater_structure_common(row),
             # --- special_structure ---
-            bypass__REL=get_vl_instance(QGEP.special_structure_bypass, row.bypass),
+            bypass__REL=get_vl_instance(TWW.special_structure_bypass, row.bypass),
             emergency_spillway__REL=get_vl_instance(
-                QGEP.special_structure_emergency_spillway, row.notueberlauf
+                TWW.special_structure_emergency_spillway, row.notueberlauf
             ),
-            function__REL=get_vl_instance(QGEP.special_structure_function, row.funktion),
+            function__REL=get_vl_instance(TWW.special_structure_function, row.funktion),
             stormwater_tank_arrangement__REL=get_vl_instance(
-                QGEP.special_structure_stormwater_tank_arrangement, row.regenbecken_anordnung
+                TWW.special_structure_stormwater_tank_arrangement, row.regenbecken_anordnung
             ),
             # upper_elevation=row.REPLACE_ME,   # TODO : NOT MAPPED
         )
-        qgep_session.add(special_structure)
+        tww_session.add(special_structure)
         print(".", end="")
     logger.info("done")
 
     logger.info(
-        "Importing ABWASSER.versickerungsanlage, ABWASSER.metaattribute -> QGEP.infiltration_installation"
+        "Importing ABWASSER.versickerungsanlage, ABWASSER.metaattribute -> TWW.infiltration_installation"
     )
     for row, metaattribute in abwasser_session.query(
         ABWASSER.versickerungsanlage, ABWASSER.metaattribute
@@ -470,42 +466,42 @@ def tww_import(precommit_callback=None):
         # sia405_baseclass_metaattribute__REL
 
         infiltration_installation = create_or_update(
-            QGEP.infiltration_installation,
+            TWW.infiltration_installation,
             **base_common(row),
             **metaattribute_common(metaattribute),
             # --- wastewater_structure ---
             **wastewater_structure_common(row),
             # --- infiltration_installation ---
             absorption_capacity=row.schluckvermoegen,
-            defects__REL=get_vl_instance(QGEP.infiltration_installation_defects, row.maengel),
+            defects__REL=get_vl_instance(TWW.infiltration_installation_defects, row.maengel),
             dimension1=row.dimension1,
             dimension2=row.dimension2,
             distance_to_aquifer=row.gwdistanz,
             effective_area=row.wirksameflaeche,
             emergency_spillway__REL=get_vl_instance(
-                QGEP.infiltration_installation_emergency_spillway, row.notueberlauf
+                TWW.infiltration_installation_emergency_spillway, row.notueberlauf
             ),
             # fk_aquifier=row.REPLACE_ME,  # TODO : NOT MAPPED
-            kind__REL=get_vl_instance(QGEP.infiltration_installation_kind, row.art),
+            kind__REL=get_vl_instance(TWW.infiltration_installation_kind, row.art),
             labeling__REL=get_vl_instance(
-                QGEP.infiltration_installation_labeling, row.beschriftung
+                TWW.infiltration_installation_labeling, row.beschriftung
             ),
             seepage_utilization__REL=get_vl_instance(
-                QGEP.infiltration_installation_seepage_utilization, row.versickerungswasser
+                TWW.infiltration_installation_seepage_utilization, row.versickerungswasser
             ),
             # upper_elevation=row.REPLACE_ME,  # TODO : NOT MAPPED
             vehicle_access__REL=get_vl_instance(
-                QGEP.infiltration_installation_vehicle_access, row.saugwagen
+                TWW.infiltration_installation_vehicle_access, row.saugwagen
             ),
             watertightness__REL=get_vl_instance(
-                QGEP.infiltration_installation_watertightness, row.wasserdichtheit
+                TWW.infiltration_installation_watertightness, row.wasserdichtheit
             ),
         )
-        qgep_session.add(infiltration_installation)
+        tww_session.add(infiltration_installation)
         print(".", end="")
     logger.info("done")
 
-    logger.info("Importing ABWASSER.rohrprofil, ABWASSER.metaattribute -> QGEP.pipe_profile")
+    logger.info("Importing ABWASSER.rohrprofil, ABWASSER.metaattribute -> TWW.pipe_profile")
     for row, metaattribute in abwasser_session.query(
         ABWASSER.rohrprofil, ABWASSER.metaattribute
     ).join(ABWASSER.metaattribute):
@@ -532,20 +528,20 @@ def tww_import(precommit_callback=None):
         # sia405_baseclass_metaattribute__REL
 
         pipe_profile = create_or_update(
-            QGEP.pipe_profile,
+            TWW.pipe_profile,
             **base_common(row),
             **metaattribute_common(metaattribute),
             # --- pipe_profile ---
             height_width_ratio=row.hoehenbreitenverhaeltnis,
             identifier=row.bezeichnung,
-            profile_type__REL=get_vl_instance(QGEP.pipe_profile_profile_type, row.profiltyp),
+            profile_type__REL=get_vl_instance(TWW.pipe_profile_profile_type, row.profiltyp),
             remark=row.bemerkung,
         )
-        qgep_session.add(pipe_profile)
+        tww_session.add(pipe_profile)
         print(".", end="")
     logger.info("done")
 
-    logger.info("Importing ABWASSER.haltungspunkt, ABWASSER.metaattribute -> QGEP.reach_point")
+    logger.info("Importing ABWASSER.haltungspunkt, ABWASSER.metaattribute -> TWW.reach_point")
     for row, metaattribute in abwasser_session.query(
         ABWASSER.haltungspunkt, ABWASSER.metaattribute
     ).join(ABWASSER.metaattribute):
@@ -575,32 +571,28 @@ def tww_import(precommit_callback=None):
         # sia405_baseclass_metaattribute__REL
 
         reach_point = create_or_update(
-            QGEP.reach_point,
+            TWW.reach_point,
             **base_common(row),
             **metaattribute_common(metaattribute),
             # --- reach_point ---
             elevation_accuracy__REL=get_vl_instance(
-                QGEP.reach_point_elevation_accuracy, row.hoehengenauigkeit
+                TWW.reach_point_elevation_accuracy, row.hoehengenauigkeit
             ),
             fk_wastewater_networkelement=get_pk(
                 row.abwassernetzelementref__REL
             ),  # TODO : this fails for now, but probably only because we flush too soon
             identifier=row.bezeichnung,
             level=row.kote,
-            outlet_shape__REL=get_vl_instance(
-                QGEP.reach_point_outlet_shape, row.hoehengenauigkeit
-            ),
+            outlet_shape__REL=get_vl_instance(TWW.reach_point_outlet_shape, row.hoehengenauigkeit),
             position_of_connection=row.lage_anschluss,
             remark=row.bemerkung,
             situation_geometry=ST_Force3D(row.lage),
         )
-        qgep_session.add(reach_point)
+        tww_session.add(reach_point)
         print(".", end="")
     logger.info("done")
 
-    logger.info(
-        "Importing ABWASSER.abwasserknoten, ABWASSER.metaattribute -> QGEP.wastewater_node"
-    )
+    logger.info("Importing ABWASSER.abwasserknoten, ABWASSER.metaattribute -> TWW.wastewater_node")
     for row, metaattribute in abwasser_session.query(
         ABWASSER.abwasserknoten, ABWASSER.metaattribute
     ).join(ABWASSER.metaattribute):
@@ -633,7 +625,7 @@ def tww_import(precommit_callback=None):
         # sia405_baseclass_metaattribute__REL
 
         wastewater_node = create_or_update(
-            QGEP.wastewater_node,
+            TWW.wastewater_node,
             **base_common(row),
             **metaattribute_common(metaattribute),
             # --- wastewater_networkelement ---
@@ -644,11 +636,11 @@ def tww_import(precommit_callback=None):
             bottom_level=row.sohlenkote,
             situation_geometry=ST_Force3D(row.lage),
         )
-        qgep_session.add(wastewater_node)
+        tww_session.add(wastewater_node)
         print(".", end="")
     logger.info("done")
 
-    logger.info("Importing ABWASSER.haltung, ABWASSER.metaattribute -> QGEP.reach")
+    logger.info("Importing ABWASSER.haltung, ABWASSER.metaattribute -> TWW.reach")
     for row, metaattribute in abwasser_session.query(
         ABWASSER.haltung, ABWASSER.metaattribute
     ).join(ABWASSER.metaattribute):
@@ -681,7 +673,7 @@ def tww_import(precommit_callback=None):
         # sia405_baseclass_metaattribute__REL
 
         reach = create_or_update(
-            QGEP.reach,
+            TWW.reach,
             **base_common(row),
             **metaattribute_common(metaattribute),
             # --- wastewater_networkelement ---
@@ -689,35 +681,35 @@ def tww_import(precommit_callback=None):
             # --- reach ---
             clear_height=row.lichte_hoehe,
             coefficient_of_friction=row.reibungsbeiwert,
-            # elevation_determination__REL=get_vl_instance(QGEP.reach_elevation_determination, row.REPLACE_ME),  # TODO : NOT MAPPED
+            # elevation_determination__REL=get_vl_instance(TWW.reach_elevation_determination, row.REPLACE_ME),  # TODO : NOT MAPPED
             fk_pipe_profile=get_pk(row.rohrprofilref__REL),
             fk_reach_point_from=get_pk(row.vonhaltungspunktref__REL),
             fk_reach_point_to=get_pk(row.nachhaltungspunktref__REL),
             horizontal_positioning__REL=get_vl_instance(
-                QGEP.reach_horizontal_positioning, row.lagebestimmung
+                TWW.reach_horizontal_positioning, row.lagebestimmung
             ),
-            inside_coating__REL=get_vl_instance(QGEP.reach_inside_coating, row.innenschutz),
+            inside_coating__REL=get_vl_instance(TWW.reach_inside_coating, row.innenschutz),
             length_effective=row.laengeeffektiv,
-            material__REL=get_vl_instance(QGEP.reach_material, row.material),
+            material__REL=get_vl_instance(TWW.reach_material, row.material),
             progression_geometry=ST_Force3D(row.verlauf),
             reliner_material__REL=get_vl_instance(
-                QGEP.reach_reliner_material, row.reliner_material
+                TWW.reach_reliner_material, row.reliner_material
             ),
             reliner_nominal_size=row.reliner_nennweite,
             relining_construction__REL=get_vl_instance(
-                QGEP.reach_relining_construction, row.reliner_bautechnik
+                TWW.reach_relining_construction, row.reliner_bautechnik
             ),
-            relining_kind__REL=get_vl_instance(QGEP.reach_relining_kind, row.reliner_art),
+            relining_kind__REL=get_vl_instance(TWW.reach_relining_kind, row.reliner_art),
             ring_stiffness=row.ringsteifigkeit,
             slope_building_plan=row.plangefaelle,  # TODO : check, does this need conversion ?
             wall_roughness=row.wandrauhigkeit,
         )
-        qgep_session.add(reach)
+        tww_session.add(reach)
         print(".", end="")
     logger.info("done")
 
     logger.info(
-        "Importing ABWASSER.trockenwetterfallrohr, ABWASSER.metaattribute -> QGEP.dryweather_downspout"
+        "Importing ABWASSER.trockenwetterfallrohr, ABWASSER.metaattribute -> TWW.dryweather_downspout"
     )
     for row, metaattribute in abwasser_session.query(
         ABWASSER.trockenwetterfallrohr, ABWASSER.metaattribute
@@ -751,7 +743,7 @@ def tww_import(precommit_callback=None):
         # sia405_baseclass_metaattribute__REL
 
         dryweather_downspout = create_or_update(
-            QGEP.dryweather_downspout,
+            TWW.dryweather_downspout,
             **base_common(row),
             **metaattribute_common(metaattribute),
             # --- structure_part ---
@@ -759,11 +751,11 @@ def tww_import(precommit_callback=None):
             # --- dryweather_downspout ---
             diameter=row.durchmesser,
         )
-        qgep_session.add(dryweather_downspout)
+        tww_session.add(dryweather_downspout)
         print(".", end="")
     logger.info("done")
 
-    logger.info("Importing ABWASSER.einstiegshilfe, ABWASSER.metaattribute -> QGEP.access_aid")
+    logger.info("Importing ABWASSER.einstiegshilfe, ABWASSER.metaattribute -> TWW.access_aid")
     for row, metaattribute in abwasser_session.query(
         ABWASSER.einstiegshilfe, ABWASSER.metaattribute
     ).join(ABWASSER.metaattribute):
@@ -796,20 +788,20 @@ def tww_import(precommit_callback=None):
         # sia405_baseclass_metaattribute__REL
 
         access_aid = create_or_update(
-            QGEP.access_aid,
+            TWW.access_aid,
             **base_common(row),
             **metaattribute_common(metaattribute),
             # --- structure_part ---
             **structure_part_common(row),
             # --- access_aid ---
-            kind__REL=get_vl_instance(QGEP.access_aid_kind, row.art),
+            kind__REL=get_vl_instance(TWW.access_aid_kind, row.art),
         )
-        qgep_session.add(access_aid)
+        tww_session.add(access_aid)
         print(".", end="")
     logger.info("done")
 
     logger.info(
-        "Importing ABWASSER.trockenwetterrinne, ABWASSER.metaattribute -> QGEP.dryweather_flume"
+        "Importing ABWASSER.trockenwetterrinne, ABWASSER.metaattribute -> TWW.dryweather_flume"
     )
     for row, metaattribute in abwasser_session.query(
         ABWASSER.trockenwetterrinne, ABWASSER.metaattribute
@@ -843,19 +835,19 @@ def tww_import(precommit_callback=None):
         # sia405_baseclass_metaattribute__REL
 
         dryweather_flume = create_or_update(
-            QGEP.dryweather_flume,
+            TWW.dryweather_flume,
             **base_common(row),
             **metaattribute_common(metaattribute),
             # --- structure_part ---
             **structure_part_common(row),
             # --- dryweather_flume ---
-            material__REL=get_vl_instance(QGEP.dryweather_flume_material, row.material),
+            material__REL=get_vl_instance(TWW.dryweather_flume_material, row.material),
         )
-        qgep_session.add(dryweather_flume)
+        tww_session.add(dryweather_flume)
         print(".", end="")
     logger.info("done")
 
-    logger.info("Importing ABWASSER.deckel, ABWASSER.metaattribute -> QGEP.cover")
+    logger.info("Importing ABWASSER.deckel, ABWASSER.metaattribute -> TWW.cover")
     for row, metaattribute in abwasser_session.query(ABWASSER.deckel, ABWASSER.metaattribute).join(
         ABWASSER.metaattribute
     ):
@@ -888,30 +880,30 @@ def tww_import(precommit_callback=None):
         # sia405_baseclass_metaattribute__REL
 
         cover = create_or_update(
-            QGEP.cover,
+            TWW.cover,
             **base_common(row),
             **metaattribute_common(metaattribute),
             # --- structure_part ---
             **structure_part_common(row),
             # --- cover ---
             brand=row.fabrikat,
-            cover_shape__REL=get_vl_instance(QGEP.cover_cover_shape, row.deckelform),
+            cover_shape__REL=get_vl_instance(TWW.cover_cover_shape, row.deckelform),
             diameter=row.durchmesser,
-            fastening__REL=get_vl_instance(QGEP.cover_fastening, row.verschluss),
+            fastening__REL=get_vl_instance(TWW.cover_fastening, row.verschluss),
             level=row.kote,
-            material__REL=get_vl_instance(QGEP.cover_material, row.material),
+            material__REL=get_vl_instance(TWW.cover_material, row.material),
             positional_accuracy__REL=get_vl_instance(
-                QGEP.cover_positional_accuracy, row.lagegenauigkeit
+                TWW.cover_positional_accuracy, row.lagegenauigkeit
             ),
             situation_geometry=ST_Force3D(row.lage),
-            sludge_bucket__REL=get_vl_instance(QGEP.cover_sludge_bucket, row.schlammeimer),
-            venting__REL=get_vl_instance(QGEP.cover_venting, row.entlueftung),
+            sludge_bucket__REL=get_vl_instance(TWW.cover_sludge_bucket, row.schlammeimer),
+            venting__REL=get_vl_instance(TWW.cover_venting, row.entlueftung),
         )
-        qgep_session.add(cover)
+        tww_session.add(cover)
         print(".", end="")
     logger.info("done")
 
-    logger.info("Importing ABWASSER.bankett, ABWASSER.metaattribute -> QGEP.benching")
+    logger.info("Importing ABWASSER.bankett, ABWASSER.metaattribute -> TWW.benching")
     for row, metaattribute in abwasser_session.query(
         ABWASSER.bankett, ABWASSER.metaattribute
     ).join(ABWASSER.metaattribute):
@@ -944,15 +936,15 @@ def tww_import(precommit_callback=None):
         # sia405_baseclass_metaattribute__REL
 
         benching = create_or_update(
-            QGEP.benching,
+            TWW.benching,
             **base_common(row),
             **metaattribute_common(metaattribute),
             # --- structure_part ---
             **structure_part_common(row),
             # --- benching ---
-            kind__REL=get_vl_instance(QGEP.benching_kind, row.art),
+            kind__REL=get_vl_instance(TWW.benching_kind, row.art),
         )
-        qgep_session.add(benching)
+        tww_session.add(benching)
         print(".", end="")
     logger.info("done")
 
@@ -960,15 +952,15 @@ def tww_import(precommit_callback=None):
     # VSA_KEK classes
     ########################################
 
-    logger.info("Importing ABWASSER.untersuchung, ABWASSER.metaattribute -> QGEP.examination")
+    logger.info("Importing ABWASSER.untersuchung, ABWASSER.metaattribute -> TWW.examination")
     for row, metaattribute in abwasser_session.query(
         ABWASSER.untersuchung, ABWASSER.metaattribute
     ).join(ABWASSER.metaattribute):
         logger.warning(
-            "QGEP examination.active_zone has no equivalent in the interlis model. This field will be null."
+            "TWW examination.active_zone has no equivalent in the interlis model. This field will be null."
         )
         examination = create_or_update(
-            QGEP.examination,
+            TWW.examination,
             **base_common(row),
             **metaattribute_common(metaattribute),
             # --- maintenance_event ---
@@ -981,29 +973,27 @@ def tww_import(precommit_callback=None):
             if row.ausfuehrende_firmaref__REL
             else None,
             identifier=row.bezeichnung,
-            kind__REL=get_vl_instance(QGEP.maintenance_event_kind, row.art),
+            kind__REL=get_vl_instance(TWW.maintenance_event_kind, row.art),
             operator=row.ausfuehrender,
             reason=row.grund,
             remark=row.bemerkung,
             result=row.ergebnis,
-            status__REL=get_vl_instance(QGEP.maintenance_event_status, row.astatus),
+            status__REL=get_vl_instance(TWW.maintenance_event_status, row.astatus),
             time_point=row.zeitpunkt,
             # --- examination ---
             equipment=row.geraet,
             fk_reach_point=row.haltungspunktref__REL.obj_id if row.haltungspunktref__REL else None,
             from_point_identifier=row.vonpunktbezeichnung,
             inspected_length=row.inspizierte_laenge,
-            recording_type__REL=get_vl_instance(
-                QGEP.examination_recording_type, row.erfassungsart
-            ),
+            recording_type__REL=get_vl_instance(TWW.examination_recording_type, row.erfassungsart),
             to_point_identifier=row.bispunktbezeichnung,
             vehicle=row.fahrzeug,
             videonumber=row.videonummer,
-            weather__REL=get_vl_instance(QGEP.examination_weather, row.witterung),
+            weather__REL=get_vl_instance(TWW.examination_weather, row.witterung),
         )
-        qgep_session.add(examination)
+        tww_session.add(examination)
 
-        # In QGEP, relation between maintenance_event and wastewater_structure is done with
+        # In TWW, relation between maintenance_event and wastewater_structure is done with
         # an association table instead of a foreign key on maintenance_event.
         # NOTE : this may change in future versions of VSA_KEK
         if row.abwasserbauwerkref:
@@ -1013,33 +1003,33 @@ def tww_import(precommit_callback=None):
             # to creating this association.
             # Soft matching based on from/to_point_identifier will be done in the GUI data checking process.
             exam_to_wastewater_structure = create_or_update(
-                QGEP.re_maintenance_event_wastewater_structure,
+                TWW.re_maintenance_event_wastewater_structure,
                 fk_wastewater_structure=row.abwasserbauwerkref,
                 fk_maintenance_event=row.obj_id,
             )
-            qgep_session.add(exam_to_wastewater_structure)
+            tww_session.add(exam_to_wastewater_structure)
 
         print(".", end="")
     logger.info("done")
 
     logger.info(
-        "Importing ABWASSER.normschachtschaden, ABWASSER.metaattribute -> QGEP.damage_manhole"
+        "Importing ABWASSER.normschachtschaden, ABWASSER.metaattribute -> TWW.damage_manhole"
     )
     for row, metaattribute in abwasser_session.query(
         ABWASSER.normschachtschaden, ABWASSER.metaattribute
     ).join(ABWASSER.metaattribute):
-        # Note : in QGEP, some attributes are on the base damage class,
+        # Note : in TWW, some attributes are on the base damage class,
         # while they are on the normschachtschaden/kanalschaden subclasses
         # in the ili2pg mode.
         # Concerned attributes : distanz, quantifizierung1, quantifizierung2, schadenlageanfang, schadenlageende
 
         damage_manhole = create_or_update(
-            QGEP.damage_manhole,
+            TWW.damage_manhole,
             **base_common(row),
             **metaattribute_common(metaattribute),
             # --- damage ---
             comments=row.anmerkung,
-            connection__REL=get_vl_instance(QGEP.damage_connection, row.verbindung),
+            connection__REL=get_vl_instance(TWW.damage_connection, row.verbindung),
             damage_begin=row.schadenlageanfang,
             damage_end=row.schadenlageende,
             damage_reach=row.streckenschaden,
@@ -1048,37 +1038,37 @@ def tww_import(precommit_callback=None):
             quantification1=row.quantifizierung1,
             quantification2=row.quantifizierung2,
             single_damage_class__REL=get_vl_instance(
-                QGEP.damage_single_damage_class, row.einzelschadenklasse
+                TWW.damage_single_damage_class, row.einzelschadenklasse
             ),
             video_counter=row.videozaehlerstand,
             view_parameters=row.ansichtsparameter,
             # --- damage_manhole ---
             manhole_damage_code__REL=get_vl_instance(
-                QGEP.damage_manhole_manhole_damage_code, row.schachtschadencode
+                TWW.damage_manhole_manhole_damage_code, row.schachtschadencode
             ),
             manhole_shaft_area__REL=get_vl_instance(
-                QGEP.damage_manhole_manhole_shaft_area, row.schachtbereich
+                TWW.damage_manhole_manhole_shaft_area, row.schachtbereich
             ),
         )
-        qgep_session.add(damage_manhole)
+        tww_session.add(damage_manhole)
         print(".", end="")
     logger.info("done")
 
-    logger.info("Importing ABWASSER.kanalschaden, ABWASSER.metaattribute -> QGEP.damage_channel")
+    logger.info("Importing ABWASSER.kanalschaden, ABWASSER.metaattribute -> TWW.damage_channel")
     for row, metaattribute in abwasser_session.query(
         ABWASSER.kanalschaden, ABWASSER.metaattribute
     ).join(ABWASSER.metaattribute):
-        # Note : in QGEP, some attributes are on the base damage class,
+        # Note : in TWW, some attributes are on the base damage class,
         # while they are on the normschachtschaden/kanalschaden subclasses
         # in the ili2pg mode.
         # Concerned attributes : distanz, quantifizierung1, quantifizierung2, schadenlageanfang, schadenlageende
         damage_channel = create_or_update(
-            QGEP.damage_channel,
+            TWW.damage_channel,
             **base_common(row),
             **metaattribute_common(metaattribute),
             # --- damage ---
             comments=row.anmerkung,
-            connection__REL=get_vl_instance(QGEP.damage_connection, row.verbindung),
+            connection__REL=get_vl_instance(TWW.damage_connection, row.verbindung),
             damage_begin=row.schadenlageanfang,
             damage_end=row.schadenlageende,
             damage_reach=row.streckenschaden,
@@ -1087,68 +1077,68 @@ def tww_import(precommit_callback=None):
             quantification1=row.quantifizierung1,
             quantification2=row.quantifizierung2,
             single_damage_class__REL=get_vl_instance(
-                QGEP.damage_single_damage_class, row.einzelschadenklasse
+                TWW.damage_single_damage_class, row.einzelschadenklasse
             ),
             video_counter=row.videozaehlerstand,
             view_parameters=row.ansichtsparameter,
             # --- damage_channel ---
             channel_damage_code__REL=get_vl_instance(
-                QGEP.damage_channel_channel_damage_code, row.kanalschadencode
+                TWW.damage_channel_channel_damage_code, row.kanalschadencode
             ),
         )
-        qgep_session.add(damage_channel)
+        tww_session.add(damage_channel)
         print(".", end="")
     logger.info("done")
 
-    logger.info("Importing ABWASSER.datentraeger, ABWASSER.metaattribute -> QGEP.data_media")
+    logger.info("Importing ABWASSER.datentraeger, ABWASSER.metaattribute -> TWW.data_media")
     for row, metaattribute in abwasser_session.query(
         ABWASSER.datentraeger, ABWASSER.metaattribute
     ).join(ABWASSER.metaattribute):
         data_media = create_or_update(
-            QGEP.data_media,
+            TWW.data_media,
             **base_common(row),
             **metaattribute_common(metaattribute),
             # --- data_media ---
             identifier=row.bezeichnung,
-            kind__REL=get_vl_instance(QGEP.data_media_kind, row.art),
+            kind__REL=get_vl_instance(TWW.data_media_kind, row.art),
             location=row.standort,
             path=row.pfad,
             remark=row.bemerkung,
         )
-        qgep_session.add(data_media)
+        tww_session.add(data_media)
         print(".", end="")
     logger.info("done")
 
-    logger.info("Importing ABWASSER.datei, ABWASSER.metaattribute -> QGEP.file")
+    logger.info("Importing ABWASSER.datei, ABWASSER.metaattribute -> TWW.file")
     for row, metaattribute in abwasser_session.query(ABWASSER.datei, ABWASSER.metaattribute).join(
         ABWASSER.metaattribute
     ):
         file = create_or_update(
-            QGEP.file,
+            TWW.file,
             **base_common(row),
             **metaattribute_common(metaattribute),
             # --- file ---
-            class__REL=get_vl_instance(QGEP.file_class, row.klasse),
+            class__REL=get_vl_instance(TWW.file_class, row.klasse),
             fk_data_media=row.datentraegerref__REL.obj_id,
             identifier=row.bezeichnung,
-            kind__REL=get_vl_instance(QGEP.file_kind, row.art),
+            kind__REL=get_vl_instance(TWW.file_kind, row.art),
             object=row.objekt,
             path_relative=row.relativpfad,
             remark=row.bemerkung,
         )
-        qgep_session.add(file)
+        tww_session.add(file)
         print(".", end="")
     logger.info("done")
 
     # Recreate the triggers
-    # qgep_session.execute('SELECT tww_sys.create_symbology_triggers();')
+    # tww_session.execute('SELECT tww_sys.create_symbology_triggers();')
 
     # Calling the precommit callback if provided, allowing to filter before final import
     if precommit_callback:
-        precommit_callback(qgep_session)
+        precommit_callback(tww_session)
     else:
-        qgep_session.commit()
-        qgep_session.close()
+        tww_session.commit()
+        tww_session.close()
     abwasser_session.close()
 
     # TODO : put this in an "finally" block (or context handler) to make sure it's executed

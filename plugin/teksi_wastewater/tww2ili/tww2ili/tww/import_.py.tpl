@@ -36,7 +36,7 @@ def tww_import():
             # remark=row.REPLACE_ME,  # VARCHAR(80)
             # uid=row.REPLACE_ME,  # VARCHAR(12)
         )
-        qgep_session.add(organisation)
+        tww_session.add(organisation)
         print(".", end="")
     print("done")
 
@@ -102,7 +102,7 @@ def tww_import():
             # usage_current=row.REPLACE_ME,  # INTEGER
             # usage_planned=row.REPLACE_ME,  # INTEGER
         )
-        qgep_session.add(channel)
+        tww_session.add(channel)
         print(".", end="")
     print("done")
 
@@ -166,7 +166,7 @@ def tww_import():
             # obj_id=row.REPLACE_ME,  # VARCHAR(16)
             # surface_inflow=row.REPLACE_ME,  # INTEGER
         )
-        qgep_session.add(manhole)
+        tww_session.add(manhole)
         print(".", end="")
     print("done")
 
@@ -230,7 +230,7 @@ def tww_import():
             # upper_elevation=row.REPLACE_ME,  # NUMERIC(7, 3)
             # waterlevel_hydraulic=row.REPLACE_ME,  # NUMERIC(7, 3)
         )
-        qgep_session.add(discharge_point)
+        tww_session.add(discharge_point)
         print(".", end="")
     print("done")
 
@@ -293,7 +293,7 @@ def tww_import():
             # stormwater_tank_arrangement=row.REPLACE_ME,  # INTEGER
             # upper_elevation=row.REPLACE_ME,  # NUMERIC(7, 3)
         )
-        qgep_session.add(special_structure)
+        tww_session.add(special_structure)
         print(".", end="")
     print("done")
 
@@ -365,7 +365,7 @@ def tww_import():
             # vehicle_access=row.REPLACE_ME,  # INTEGER
             # watertightness=row.REPLACE_ME,  # INTEGER
         )
-        qgep_session.add(infiltration_installation)
+        tww_session.add(infiltration_installation)
         print(".", end="")
     print("done")
 
@@ -392,7 +392,7 @@ def tww_import():
             # profile_type=row.REPLACE_ME,  # INTEGER
             # remark=row.REPLACE_ME,  # VARCHAR(80)
         )
-        qgep_session.add(pipe_profile)
+        tww_session.add(pipe_profile)
         print(".", end="")
     print("done")
 
@@ -424,7 +424,7 @@ def tww_import():
             # remark=row.REPLACE_ME,  # VARCHAR(80)
             # situation_geometry=row.REPLACE_ME,  # geometry(POINTZ,2056)
         )
-        qgep_session.add(reach_point)
+        tww_session.add(reach_point)
         print(".", end="")
     print("done")
 
@@ -458,7 +458,7 @@ def tww_import():
             # obj_id=row.REPLACE_ME,  # VARCHAR(16)
             # situation_geometry=row.REPLACE_ME,  # geometry(POINTZ,2056)
         )
-        qgep_session.add(wastewater_node)
+        tww_session.add(wastewater_node)
         print(".", end="")
     print("done")
 
@@ -506,7 +506,7 @@ def tww_import():
             # slope_building_plan=row.REPLACE_ME,  # SMALLINT
             # wall_roughness=row.REPLACE_ME,  # NUMERIC(5, 2)
         )
-        qgep_session.add(reach)
+        tww_session.add(reach)
         print(".", end="")
     print("done")
 
@@ -538,7 +538,7 @@ def tww_import():
             # diameter=row.REPLACE_ME,  # SMALLINT
             # obj_id=row.REPLACE_ME,  # VARCHAR(16)
         )
-        qgep_session.add(dryweather_downspout)
+        tww_session.add(dryweather_downspout)
         print(".", end="")
     print("done")
 
@@ -570,7 +570,7 @@ def tww_import():
             # kind=row.REPLACE_ME,  # INTEGER
             # obj_id=row.REPLACE_ME,  # VARCHAR(16)
         )
-        qgep_session.add(access_aid)
+        tww_session.add(access_aid)
         print(".", end="")
     print("done")
 
@@ -602,7 +602,7 @@ def tww_import():
             # material=row.REPLACE_ME,  # INTEGER
             # obj_id=row.REPLACE_ME,  # VARCHAR(16)
         )
-        qgep_session.add(dryweather_flume)
+        tww_session.add(dryweather_flume)
         print(".", end="")
     print("done")
 
@@ -643,7 +643,7 @@ def tww_import():
             # sludge_bucket=row.REPLACE_ME,  # INTEGER
             # venting=row.REPLACE_ME,  # INTEGER
         )
-        qgep_session.add(cover)
+        tww_session.add(cover)
         print(".", end="")
     print("done")
 
@@ -675,7 +675,7 @@ def tww_import():
             # kind=row.REPLACE_ME,  # INTEGER
             # obj_id=row.REPLACE_ME,  # VARCHAR(16)
         )
-        qgep_session.add(benching)
+        tww_session.add(benching)
         print(".", end="")
     print("done")
 
@@ -725,7 +725,7 @@ def tww_import():
             # videonumber=row.REPLACE_ME,  # VARCHAR(41)
             # weather=row.REPLACE_ME,  # INTEGER
         )
-        qgep_session.add(examination)
+        tww_session.add(examination)
         print(".", end="")
     print("done")
 
@@ -766,7 +766,7 @@ def tww_import():
             # manhole_shaft_area=row.REPLACE_ME,  # INTEGER
             # obj_id=row.REPLACE_ME,  # VARCHAR(16)
         )
-        qgep_session.add(damage_manhole)
+        tww_session.add(damage_manhole)
         print(".", end="")
     print("done")
 
@@ -806,7 +806,7 @@ def tww_import():
             # channel_damage_code=row.REPLACE_ME,  # INTEGER
             # obj_id=row.REPLACE_ME,  # VARCHAR(16)
         )
-        qgep_session.add(damage_channel)
+        tww_session.add(damage_channel)
         print(".", end="")
     print("done")
 
@@ -834,7 +834,7 @@ def tww_import():
             # path=row.REPLACE_ME,  # VARCHAR(100)
             # remark=row.REPLACE_ME,  # VARCHAR(80)
         )
-        qgep_session.add(data_media)
+        tww_session.add(data_media)
         print(".", end="")
     print("done")
 
@@ -865,7 +865,7 @@ def tww_import():
             # path_relative=row.REPLACE_ME,  # VARCHAR(200)
             # remark=row.REPLACE_ME,  # VARCHAR(80)
         )
-        qgep_session.add(file)
+        tww_session.add(file)
         print(".", end="")
     print("done")
 

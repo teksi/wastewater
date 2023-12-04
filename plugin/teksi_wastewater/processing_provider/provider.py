@@ -121,7 +121,7 @@ class TwwProcessingProvider(QgsProcessingProvider):
 
     def svgIconPath(self):
         basepath = os.path.dirname(os.path.abspath(__file__))
-        return os.path.join(basepath, "..", "icons", "qgepIcon.svg")
+        return os.path.join(basepath, "..", "icons", "twwIcon.svg")
 
     def loadAlgorithms(self):
         self.algs = self.getAlgs()

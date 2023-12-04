@@ -29,13 +29,13 @@ class GuiExport(QDialog):
         )
 
         # Remember save next to file checkbox
-        settings_value = QgsSettings().value("qgep_plugin/logs_next_to_file", False)
+        settings_value = QgsSettings().value("tww_plugin/logs_next_to_file", False)
         self.save_logs_next_to_file_checkbox.setChecked(
             settings_value is True or settings_value == "true"
         )
 
         # Populate the labels list (restoring checked states of scaes)
-        selected_scales = QgsSettings().value("qgep_plugin/last_selected_scales", "").split(",")
+        selected_scales = QgsSettings().value("tww_plugin/last_selected_scales", "").split(",")
         qgis_version_ok = Qgis.QGIS_VERSION_INT >= 32602
         self.labels_groupbox.setEnabled(qgis_version_ok)
         self.labels_qgis_warning_label.setVisible(not qgis_version_ok)
@@ -48,7 +48,7 @@ class GuiExport(QDialog):
 
     def on_finish(self):
         # Remember save next to file checkbox
-        QgsSettings().setValue("qgep_plugin/logs_next_to_file", self.logs_next_to_file)
+        QgsSettings().setValue("tww_plugin/logs_next_to_file", self.logs_next_to_file)
 
         # Save checked state of scales
         if self.labels_groupbox.isChecked():
@@ -56,7 +56,7 @@ class GuiExport(QDialog):
             for key, checkbox in self.scale_checkboxes.items():
                 if checkbox.isChecked():
                     selected_scales.append(key)
-            QgsSettings().setValue("qgep_plugin/last_selected_scales", ",".join(selected_scales))
+            QgsSettings().setValue("tww_plugin/last_selected_scales", ",".join(selected_scales))
 
     @property
     def logs_next_to_file(self):
