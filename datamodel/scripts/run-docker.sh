@@ -35,6 +35,7 @@ while getopts 'bdp:' opt; do
   esac
 done
 shift "$(($OPTIND -1))"
+
 if [[ $BUILD -eq 1 ]]; then
   docker build --build-arg RUN_TEST=True -f datamodel/.docker/Dockerfile --tag teksi/wastewater .
 fi
