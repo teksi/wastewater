@@ -174,7 +174,7 @@ class TwwGraphManager(QObject):
                     )
                     return
 
-            query_template = "SELECT qgep_network.refresh_network_simple();"
+            query_template = "SELECT tww_network.refresh_network_simple();"
             res, error = transaction.executeSql(query_template)
             if not res:
                 self.message_emitted.emit(self.tr("Error"), error, Qgis.Critical)
@@ -423,7 +423,7 @@ class TwwFeatureCache:
             else:
                 return feat[attr]
         except KeyError:
-            QgsMessageLog.logMessage(f"Unknown field {attr}", "qgep", Qgis.Critical)
+            QgsMessageLog.logMessage(f"Unknown field {attr}", "tww", Qgis.Critical)
             return None
 
     def attrAsGeometry(self, feat, attr):

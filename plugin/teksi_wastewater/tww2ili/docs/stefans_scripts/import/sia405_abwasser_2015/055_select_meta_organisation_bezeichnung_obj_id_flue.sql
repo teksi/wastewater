@@ -1,5 +1,5 @@
 ﻿-- 11.7.2919 Stefan Burckhardt
--- run this function before importing data from ili2pg to qgep schema, else you will have problems importing fk_dataowner / fk_provider fields if they are not with a valid obj_id but some form of identifier (e.g. with the Transferdatensatz_VSA_DSS.xtf)
+-- run this function before importing data from ili2pg to tww schema, else you will have problems importing fk_dataowner / fk_provider fields if they are not with a valid obj_id but some form of identifier (e.g. with the Transferdatensatz_VSA_DSS.xtf)
 
 -- set t_key_object to latest sequence of project so that tid (integer) is correct
 SELECT abwa_2015neu_3122.t_key_object_seq();

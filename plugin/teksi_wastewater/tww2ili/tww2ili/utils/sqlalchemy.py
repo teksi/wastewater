@@ -11,7 +11,7 @@ from .various import get_pgconf
 def create_engine(logger_name=None):
     logging_args = {}
     if logger_name:
-        handler = logging.FileHandler(f"qgep_export.{logger_name}.log", mode="w")
+        handler = logging.FileHandler(f"tww_export.{logger_name}.log", mode="w")
         handler.setLevel(logging.DEBUG)
         logging.getLogger(f"sqlalchemy.engine.base.Engine.{logger_name}").addHandler(handler)
         logging_args = {"logging_name": logger_name, "echo": True}

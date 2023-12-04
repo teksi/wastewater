@@ -1,5 +1,5 @@
 ﻿--View: abwa_2015neu_3122.vw_organisation
--- DROP VIEW IF EXISTS qgep.vw_organisation;
+-- DROP VIEW IF EXISTS tww.vw_organisation;
 CREATE OR REPLACE VIEW abwa_2015neu_3122.vw_organisation AS
   SELECT vw_sia405_baseclass_metaattribute.obj_id,
     vw_sia405_baseclass_metaattribute.datenherr,

@@ -24,7 +24,7 @@
 # ---------------------------------------------------------------------
 
 """
-This module implements several map tools for QGEP
+This module implements several map tools for TWW
 """
 
 import logging
@@ -902,7 +902,7 @@ class TwwMapToolConnectNetworkElements(QgsMapTool):
                     source_feature[cbx.objectName()] = target_feature["obj_id"]
             if not source.layer().isEditable():
                 self.iface.messageBar().pushMessage(
-                    "QGEP",
+                    "TWW",
                     self.tr('Layer "{layername}" is not in edit mode').format(
                         layername=source.layer().name()
                     ),
@@ -911,7 +911,7 @@ class TwwMapToolConnectNetworkElements(QgsMapTool):
                 )
             elif source.layer().updateFeature(source_feature):
                 self.iface.messageBar().pushMessage(
-                    "QGEP",
+                    "TWW",
                     self.tr("Connected {} to {}").format(
                         source_feature["identifier"], target_feature["identifier"]
                     ),
@@ -920,7 +920,7 @@ class TwwMapToolConnectNetworkElements(QgsMapTool):
                 )
             else:
                 self.iface.messageBar().pushMessage(
-                    "QGEP", self.tr("Error connecting features"), Qgis.Warning, 5
+                    "TWW", self.tr("Error connecting features"), Qgis.Warning, 5
                 )
 
         self.reset()

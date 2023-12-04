@@ -54,12 +54,12 @@ class SwmmSetFrictionAlgorithm(TwwAlgorithm):
             """
         Fill the attribute tww_od.reach.default_coefficient_of_friction where it is not filled.
         If \"Overwrite existing default values\" is selected, all the default_coefficient_of_friction will be reseted.
-        See: https://qgep.github.io/docs/qgep_swmm/coefficient_of_friction.html
+        See: https://qgep.github.io/docs/tww_swmm/coefficient_of_friction.html # TODO should point to new url // skip-keyword-check
         """
         )
 
     def helpUrl(self):
-        return "https://qgep.github.io/docs/qgep_swmm/coefficient_of_friction.html"
+        return "https://qgep.github.io/docs/tww_swmm/coefficient_of_friction.html"  # TODO should point to new url // skip-keyword-check
 
     def initAlgorithm(self, config=None):
         """Here we define the inputs and output of the algorithm, along
@@ -91,7 +91,7 @@ class SwmmSetFrictionAlgorithm(TwwAlgorithm):
         # init params
         database = self.parameterAsString(parameters, self.DATABASE, context)
         overwrite_values = self.parameterAsBoolean(parameters, self.OVERWRITE_VALUES, context)
-        # Connect to QGEP database and perform translation
+        # Connect to TWW database and perform translation
         with TwwSwmm(None, database, None, None, None, None, None, feedback) as qs:
             qs.disable_reach_trigger()
             if overwrite_values:

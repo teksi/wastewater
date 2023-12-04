@@ -1,7 +1,7 @@
 rem bat and sql in the same directory
 set PATH=%PATH%;C:\Program Files\PostgreSQL\9.3\bin
-rem base: psql -h %localhost% -p 5432 -U %postgres% -d %qgep% -f 'xy.sql'
-rem works for database "qgepe" on localhost
+rem base: psql -h %localhost% -p 5432 -U %postgres% -d %tww% -f 'xy.sql'
+rem works for database "twwe" on localhost
 
 
 rem set variable to ili2pg*.jar, dbdatabase, dbpwd, ilipath, xtf path etc.

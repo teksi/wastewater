@@ -185,12 +185,12 @@ define([ "dojo/_base/declare", "dojo/_base/lang", "profile/profileElement" ], fu
     pathPoints: function(d)
     {
       // TODO: remove this debugging stuff
-      if ( qgep.p === undefined )
+      if ( tww.p === undefined )
       {
-        qgep.p = []
+        tww.p = []
       }
 
-      qgep.p.push( d );
+      tww.p.push( d );
 
       var x1 = d.startOffset;
       var y1 = d.coverLevel;

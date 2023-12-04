@@ -199,16 +199,14 @@ def main(args):
     elif args.parser == "tpl":
         config.PGSERVICE = args.pgservice
 
-        if args.model == "qgep":
+        if args.model == "tww":
             if config.PGSERVICE is None:
                 config.PGSERVICE = config.TWW_DEFAULT_PGSERVICE
             utils.ili2db.create_ili_schema(
                 config.ABWASSER_SCHEMA, config.ABWASSER_ILI_MODEL, recreate_schema=True
             )
-            QGEPMAPPING = get_tww_mapping()
-            utils.templates.generate_template(
-                "qgep", "abwasser", BaseTww, BaseAbwasser, QGEPMAPPING
-            )
+            TWWMAPPING = get_tww_mapping()
+            utils.templates.generate_template("tww", "abwasser", BaseTww, BaseAbwasser, TWWMAPPING)
 
         else:
             print("Unknown model")

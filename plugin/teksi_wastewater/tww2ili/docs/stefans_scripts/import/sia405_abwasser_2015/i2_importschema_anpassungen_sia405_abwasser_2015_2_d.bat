@@ -1,4 +1,4 @@
-set db=qgep_gruner
+set db=tww_gruner
 set port=5432
 rem set PATH=%PATH%;C:\Program Files\PostgreSQL\9.6\bin
 set PATH=%PATH%;C:\Program Files\PostgreSQL\12\bin

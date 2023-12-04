@@ -58,12 +58,12 @@ class SwmmImportResultsAlgorithm(TwwAlgorithm):
         return self.tr(
             """
             Import SWMM results in TWW database.
-            See: https://qgep.github.io/docs/qgep_swmm/Extract-Results.html
+            See: https://qgep.github.io/docs/tww_swmm/Extract-Results.html # TODO should point to new url // skip-keyword-check
             """
         )
 
     def helpUrl(self):
-        return "https://qgep.github.io/docs/qgep_swmm/Import-Results.html"
+        return "https://qgep.github.io/docs/tww_swmm/Import-Results.html"  # TODO should point to new url // skip-keyword-check
 
     def initAlgorithm(self, config=None):
         """Here we define the inputs and output of the algorithm, along

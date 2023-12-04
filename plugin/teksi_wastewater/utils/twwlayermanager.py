@@ -1,5 +1,5 @@
 """
-This module helps managing the QGEP project layers.
+This module helps managing the TWW project layers.
 """
 
 from qgis.core import QgsProject
@@ -33,11 +33,11 @@ class TwwLayerNotifier(QObject):
         """
 
         if self.available:
-            for qgep_id in self.layers:
+            for tww_id in self.layers:
                 lyrs = [
                     lyr
                     for (lyr_id, lyr) in list(QgsProject.instance().mapLayers().items())
-                    if lyr_id.startswith(qgep_id)
+                    if lyr_id.startswith(tww_id)
                 ]
                 if not lyrs:
                     self.layersUnavailable.emit()
@@ -51,15 +51,15 @@ class TwwLayerNotifier(QObject):
         """
         if not self.available:
             lyrlist = dict()
-            for qgep_id in self.layers:
+            for tww_id in self.layers:
                 lyr = [
                     lyr
                     for (lyr_id, lyr) in list(QgsProject.instance().mapLayers().items())
-                    if lyr_id.startswith(qgep_id)
+                    if lyr_id.startswith(tww_id)
                 ]
                 if not lyr:
                     return
-                lyrlist[qgep_id] = lyr[0]
+                lyrlist[tww_id] = lyr[0]
 
             self.available = True
             self.layersAvailableChanged.emit(True)
@@ -79,7 +79,7 @@ class TwwLayerManager:
     def layer(tww_id):
         """
         Get a layer by its table name. Searches for the layer in the map layer registry.
-        :param qgep_id:  The id of the layer to look for
+        :param tww_id:  The id of the layer to look for
         :return:         A layer matching this id or None
         """
         lyr = [

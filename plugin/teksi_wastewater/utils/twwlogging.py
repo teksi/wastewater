@@ -23,7 +23,7 @@
 # ---------------------------------------------------------------------
 
 """
-This module is used for logging in QGEP.
+This module is used for logging in TWW.
 """
 import logging
 
@@ -47,4 +47,4 @@ class TwwQgsLogHandler(logging.Handler):
         # Should be adjusted to translate the levelno to QGIS debug levels once
         # QGIS agreed on standards.
         # See http://hub.qgis.org/issues/6965
-        QgsMessageLog.logMessage(record.name + ":" + record.msg, "qgep", record.levelno)
+        QgsMessageLog.logMessage(record.name + ":" + record.msg, "tww", record.levelno)

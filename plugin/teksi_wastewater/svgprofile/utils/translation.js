@@ -23,7 +23,7 @@
  *
  */
 
-/* Integrates closely with QGEP / Qt Linguist
+/* Integrates closely with TWW / Qt Linguist
  * Needs to be in the global namespace for lupdate-qt4 to recognize translation calls.
  * uses a named! dojo object as context.
  **/

@@ -60,12 +60,12 @@ class SwmmExtractResultsAlgorithm(TwwAlgorithm):
         return self.tr(
             """
         Import SWMM results in QGIS temporary tables.
-        See: https://qgep.github.io/docs/qgep_swmm/Extract-Results.html
+        See: https://qgep.github.io/docs/tww_swmm/Extract-Results.html # TODO should point to new url // skip-keyword-check
         """
         )
 
     def helpUrl(self):
-        return "https://qgep.github.io/docs/qgep_swmm/Extract-Results.html"
+        return "https://qgep.github.io/docs/tww_swmm/Extract-Results.html"  # TODO should point to new url // skip-keyword-check
 
     def initAlgorithm(self, config=None):
         """Here we define the inputs and output of the algorithm, along

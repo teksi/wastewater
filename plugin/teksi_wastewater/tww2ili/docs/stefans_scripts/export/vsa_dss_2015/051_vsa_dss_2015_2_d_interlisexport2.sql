@@ -1,4 +1,4 @@
------- This file is sql code to Export QGEP (Modul VSA-DSS) in English to INTERLIS in German on QQIS
+------ This file is sql code to Export TWW (Modul VSA-DSS) in English to INTERLIS in German on QQIS
 ------ Second version using tid_generate and tid_lookup
 ------ For questions etc. please contact Stefan Burckhardt stefan.burckhardt@sjib.ch
 ------ version 26.11.2016 15:42:44 / update 4.7.2017 od_text -> txt_text dito symbol, t_key_object auskommentiert
@@ -153,14 +153,14 @@ UPDATE vsa_dss_2015_2_d.t_key_object SET t_lastuniqueid = 4, t_createdate = curr
 --- t_ili2db_dataset initialisieren
 
 -- 26.11.2016 korrigiert
---UPDATE vsa_dss_2015_2_d.t_ili2db_dataset SET t_id = 1, datasetname = 'vsa_dss_2015_d_340_qgepexport';
-INSERT INTO vsa_dss_2015_2_d.t_ili2db_dataset (t_id, datasetname) VALUES ( 1, 'vsa_dss_2015_d_304_qgepexport');
+--UPDATE vsa_dss_2015_2_d.t_ili2db_dataset SET t_id = 1, datasetname = 'vsa_dss_2015_d_340_twwexport';
+INSERT INTO vsa_dss_2015_2_d.t_ili2db_dataset (t_id, datasetname) VALUES ( 1, 'vsa_dss_2015_d_304_twwexport');
 
 --- t_ili2db_import initialisieren
-INSERT INTO vsa_dss_2015_2_d.t_ili2db_import (t_id, dataset, importdate,  importuser, importfile) VALUES ( 2, 1, current_timestamp, 'postgres', 'qgepexport.xtf');
+INSERT INTO vsa_dss_2015_2_d.t_ili2db_import (t_id, dataset, importdate,  importuser, importfile) VALUES ( 2, 1, current_timestamp, 'postgres', 'twwexport.xtf');
 
 --- t_ili2db_basket initialisieren
-INSERT INTO vsa_dss_2015_2_d.t_ili2db_basket (t_id, dataset, topic, t_ili_tid, attachmentkey) VALUES ( 3, 1, 'DSS_2015.Siedlungsentwaesserung', 'xBASKET1', 'qgepexport.xtf-3');
+INSERT INTO vsa_dss_2015_2_d.t_ili2db_basket (t_id, dataset, topic, t_ili_tid, attachmentkey) VALUES ( 3, 1, 'DSS_2015.Siedlungsentwaesserung', 'xBASKET1', 'twwexport.xtf-3');
 
 --- t_ili2db_import_basket initialisieren
 INSERT INTO vsa_dss_2015_2_d.t_ili2db_import_basket (t_id, import, basket,  objectcount, start_t_id, end_t_id) VALUES ( 4, 2, 3, 0, 3, 3);
@@ -168,7 +168,7 @@ INSERT INTO vsa_dss_2015_2_d.t_ili2db_import_basket (t_id, import, basket,  obje
 
 --- OK: fk_Attributes
 --- OK: JOIN for fk_dataowner / provider
---- in Progress: organisation.fk_part_of data - prepared, but no qgep.table hierarchy and data, dito for all other class - class associations
+--- in Progress: organisation.fk_part_of data - prepared, but no tww.table hierarchy and data, dito for all other class - class associations
 --- Not tested: if data with reach - reach connection
 --- TO DO: create dataset, create import and create_import_basket data
 

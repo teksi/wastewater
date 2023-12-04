@@ -3,16 +3,16 @@ from geoalchemy2.functions import ST_Transform, ST_Force2D
 
 from .. import utils
 
-from .model_qgep import get_qgep_model
+from .model_tww import get_tww_model
 from .model_abwasser import get_abwasser_model
 
 
-def qgep_export():
+def tww_export():
 
-    QGEP = get_qgep_model()
+    TWW = get_tww_model()
     ABWASSER = get_abwasser_model()
 
-    qgep_session = Session(utils.sqlalchemy.create_engine(), autocommit=False, autoflush=False)
+    tww_session = Session(utils.sqlalchemy.create_engine(), autocommit=False, autoflush=False)
     abwasser_session = Session(utils.sqlalchemy.create_engine(), autocommit=False, autoflush=False)
     tid_maker = utils.ili2db.TidMaker(id_attribute='obj_id')
 
@@ -29,7 +29,7 @@ def qgep_export():
         )
         session.add(metaattribute)
 
-    print("Exporting QGEP.organisation -> ABWASSER.organisation, ABWASSER.metaattribute")
+    print("Exporting TWW.organisation -> ABWASSER.organisation, ABWASSER.metaattribute")
     for row in tww_session.query(TWW.organisation):
 
         # organisation --- organisation.fk_dataowner, organisation.fk_provider, organisation.identifier, organisation.last_modification, organisation.obj_id, organisation.remark, organisation.uid
@@ -56,7 +56,7 @@ def qgep_export():
         print(".", end="")
     print("done")
 
-    print("Exporting QGEP.channel -> ABWASSER.kanal, ABWASSER.metaattribute")
+    print("Exporting TWW.channel -> ABWASSER.kanal, ABWASSER.metaattribute")
     for row in tww_session.query(TWW.channel):
 
         # wastewater_structure --- channel._bottom_label, channel._cover_label, channel._depth, channel._function_hierarchic, channel._input_label, channel._label, channel._output_label, channel._usage_current, channel.accessibility, channel.contract_section, channel.detail_geometry_geometry, channel.financing, channel.fk_dataowner, channel.fk_main_cover, channel.fk_main_wastewater_node, channel.fk_operator, channel.fk_owner, channel.fk_provider, channel.gross_costs, channel.identifier, channel.inspection_interval, channel.last_modification, channel.location_name, channel.records, channel.remark, channel.renovation_necessity, channel.replacement_value, channel.rv_base_year, channel.rv_construction_type, channel.status, channel.structure_condition, channel.subsidies, channel.year_of_construction, channel.year_of_replacement
@@ -112,7 +112,7 @@ def qgep_export():
         print(".", end="")
     print("done")
 
-    print("Exporting QGEP.manhole -> ABWASSER.normschacht, ABWASSER.metaattribute")
+    print("Exporting TWW.manhole -> ABWASSER.normschacht, ABWASSER.metaattribute")
     for row in tww_session.query(TWW.manhole):
 
         # wastewater_structure --- manhole._bottom_label, manhole._cover_label, manhole._depth, manhole._function_hierarchic, manhole._input_label, manhole._label, manhole._output_label, manhole._usage_current, manhole.accessibility, manhole.contract_section, manhole.detail_geometry_geometry, manhole.financing, manhole.fk_dataowner, manhole.fk_main_cover, manhole.fk_main_wastewater_node, manhole.fk_operator, manhole.fk_owner, manhole.fk_provider, manhole.gross_costs, manhole.identifier, manhole.inspection_interval, manhole.last_modification, manhole.location_name, manhole.records, manhole.remark, manhole.renovation_necessity, manhole.replacement_value, manhole.rv_base_year, manhole.rv_construction_type, manhole.status, manhole.structure_condition, manhole.subsidies, manhole.year_of_construction, manhole.year_of_replacement
@@ -165,7 +165,7 @@ def qgep_export():
         print(".", end="")
     print("done")
 
-    print("Exporting QGEP.discharge_point -> ABWASSER.einleitstelle, ABWASSER.metaattribute")
+    print("Exporting TWW.discharge_point -> ABWASSER.einleitstelle, ABWASSER.metaattribute")
     for row in tww_session.query(TWW.discharge_point):
 
         # wastewater_structure --- discharge_point._bottom_label, discharge_point._cover_label, discharge_point._depth, discharge_point._function_hierarchic, discharge_point._input_label, discharge_point._label, discharge_point._output_label, discharge_point._usage_current, discharge_point.accessibility, discharge_point.contract_section, discharge_point.detail_geometry_geometry, discharge_point.financing, discharge_point.fk_dataowner, discharge_point.fk_main_cover, discharge_point.fk_main_wastewater_node, discharge_point.fk_operator, discharge_point.fk_owner, discharge_point.fk_provider, discharge_point.gross_costs, discharge_point.identifier, discharge_point.inspection_interval, discharge_point.last_modification, discharge_point.location_name, discharge_point.records, discharge_point.remark, discharge_point.renovation_necessity, discharge_point.replacement_value, discharge_point.rv_base_year, discharge_point.rv_construction_type, discharge_point.status, discharge_point.structure_condition, discharge_point.subsidies, discharge_point.year_of_construction, discharge_point.year_of_replacement
@@ -217,7 +217,7 @@ def qgep_export():
         print(".", end="")
     print("done")
 
-    print("Exporting QGEP.special_structure -> ABWASSER.spezialbauwerk, ABWASSER.metaattribute")
+    print("Exporting TWW.special_structure -> ABWASSER.spezialbauwerk, ABWASSER.metaattribute")
     for row in tww_session.query(TWW.special_structure):
 
         # wastewater_structure --- special_structure._bottom_label, special_structure._cover_label, special_structure._depth, special_structure._function_hierarchic, special_structure._input_label, special_structure._label, special_structure._output_label, special_structure._usage_current, special_structure.accessibility, special_structure.contract_section, special_structure.detail_geometry_geometry, special_structure.financing, special_structure.fk_dataowner, special_structure.fk_main_cover, special_structure.fk_main_wastewater_node, special_structure.fk_operator, special_structure.fk_owner, special_structure.fk_provider, special_structure.gross_costs, special_structure.identifier, special_structure.inspection_interval, special_structure.last_modification, special_structure.location_name, special_structure.records, special_structure.remark, special_structure.renovation_necessity, special_structure.replacement_value, special_structure.rv_base_year, special_structure.rv_construction_type, special_structure.status, special_structure.structure_condition, special_structure.subsidies, special_structure.year_of_construction, special_structure.year_of_replacement
@@ -269,7 +269,7 @@ def qgep_export():
         print(".", end="")
     print("done")
 
-    print("Exporting QGEP.infiltration_installation -> ABWASSER.versickerungsanlage, ABWASSER.metaattribute")
+    print("Exporting TWW.infiltration_installation -> ABWASSER.versickerungsanlage, ABWASSER.metaattribute")
     for row in tww_session.query(TWW.infiltration_installation):
 
         # wastewater_structure --- infiltration_installation._bottom_label, infiltration_installation._cover_label, infiltration_installation._depth, infiltration_installation._function_hierarchic, infiltration_installation._input_label, infiltration_installation._label, infiltration_installation._output_label, infiltration_installation._usage_current, infiltration_installation.accessibility, infiltration_installation.contract_section, infiltration_installation.detail_geometry_geometry, infiltration_installation.financing, infiltration_installation.fk_dataowner, infiltration_installation.fk_main_cover, infiltration_installation.fk_main_wastewater_node, infiltration_installation.fk_operator, infiltration_installation.fk_owner, infiltration_installation.fk_provider, infiltration_installation.gross_costs, infiltration_installation.identifier, infiltration_installation.inspection_interval, infiltration_installation.last_modification, infiltration_installation.location_name, infiltration_installation.records, infiltration_installation.remark, infiltration_installation.renovation_necessity, infiltration_installation.replacement_value, infiltration_installation.rv_base_year, infiltration_installation.rv_construction_type, infiltration_installation.status, infiltration_installation.structure_condition, infiltration_installation.subsidies, infiltration_installation.year_of_construction, infiltration_installation.year_of_replacement
@@ -329,7 +329,7 @@ def qgep_export():
         print(".", end="")
     print("done")
 
-    print("Exporting QGEP.pipe_profile -> ABWASSER.rohrprofil, ABWASSER.metaattribute")
+    print("Exporting TWW.pipe_profile -> ABWASSER.rohrprofil, ABWASSER.metaattribute")
     for row in tww_session.query(TWW.pipe_profile):
 
         # pipe_profile --- pipe_profile.fk_dataowner, pipe_profile.fk_provider, pipe_profile.height_width_ratio, pipe_profile.identifier, pipe_profile.last_modification, pipe_profile.obj_id, pipe_profile.profile_type, pipe_profile.remark
@@ -357,7 +357,7 @@ def qgep_export():
         print(".", end="")
     print("done")
 
-    print("Exporting QGEP.reach_point -> ABWASSER.haltungspunkt, ABWASSER.metaattribute")
+    print("Exporting TWW.reach_point -> ABWASSER.haltungspunkt, ABWASSER.metaattribute")
     for row in tww_session.query(TWW.reach_point):
 
         # reach_point --- reach_point.elevation_accuracy, reach_point.fk_dataowner, reach_point.fk_provider, reach_point.fk_wastewater_networkelement, reach_point.identifier, reach_point.last_modification, reach_point.level, reach_point.obj_id, reach_point.outlet_shape, reach_point.position_of_connection, reach_point.remark, reach_point.situation_geometry
@@ -389,7 +389,7 @@ def qgep_export():
         print(".", end="")
     print("done")
 
-    print("Exporting QGEP.wastewater_node -> ABWASSER.abwasserknoten, ABWASSER.metaattribute")
+    print("Exporting TWW.wastewater_node -> ABWASSER.abwasserknoten, ABWASSER.metaattribute")
     for row in tww_session.query(TWW.wastewater_node):
 
         # wastewater_networkelement --- wastewater_node.fk_dataowner, wastewater_node.fk_provider, wastewater_node.fk_wastewater_structure, wastewater_node.identifier, wastewater_node.last_modification, wastewater_node.remark
@@ -422,7 +422,7 @@ def qgep_export():
         print(".", end="")
     print("done")
 
-    print("Exporting QGEP.reach -> ABWASSER.haltung, ABWASSER.metaattribute")
+    print("Exporting TWW.reach -> ABWASSER.haltung, ABWASSER.metaattribute")
     for row in tww_session.query(TWW.reach):
 
         # wastewater_networkelement --- reach.fk_dataowner, reach.fk_provider, reach.fk_wastewater_structure, reach.identifier, reach.last_modification, reach.remark
@@ -469,7 +469,7 @@ def qgep_export():
         print(".", end="")
     print("done")
 
-    print("Exporting QGEP.dryweather_downspout -> ABWASSER.trockenwetterfallrohr, ABWASSER.metaattribute")
+    print("Exporting TWW.dryweather_downspout -> ABWASSER.trockenwetterfallrohr, ABWASSER.metaattribute")
     for row in tww_session.query(TWW.dryweather_downspout):
 
         # structure_part --- dryweather_downspout.fk_dataowner, dryweather_downspout.fk_provider, dryweather_downspout.fk_wastewater_structure, dryweather_downspout.identifier, dryweather_downspout.last_modification, dryweather_downspout.remark, dryweather_downspout.renovation_demand
@@ -501,7 +501,7 @@ def qgep_export():
         print(".", end="")
     print("done")
 
-    print("Exporting QGEP.access_aid -> ABWASSER.einstiegshilfe, ABWASSER.metaattribute")
+    print("Exporting TWW.access_aid -> ABWASSER.einstiegshilfe, ABWASSER.metaattribute")
     for row in tww_session.query(TWW.access_aid):
 
         # structure_part --- access_aid.fk_dataowner, access_aid.fk_provider, access_aid.fk_wastewater_structure, access_aid.identifier, access_aid.last_modification, access_aid.remark, access_aid.renovation_demand
@@ -533,7 +533,7 @@ def qgep_export():
         print(".", end="")
     print("done")
 
-    print("Exporting QGEP.dryweather_flume -> ABWASSER.trockenwetterrinne, ABWASSER.metaattribute")
+    print("Exporting TWW.dryweather_flume -> ABWASSER.trockenwetterrinne, ABWASSER.metaattribute")
     for row in tww_session.query(TWW.dryweather_flume):
 
         # structure_part --- dryweather_flume.fk_dataowner, dryweather_flume.fk_provider, dryweather_flume.fk_wastewater_structure, dryweather_flume.identifier, dryweather_flume.last_modification, dryweather_flume.remark, dryweather_flume.renovation_demand
@@ -565,7 +565,7 @@ def qgep_export():
         print(".", end="")
     print("done")
 
-    print("Exporting QGEP.cover -> ABWASSER.deckel, ABWASSER.metaattribute")
+    print("Exporting TWW.cover -> ABWASSER.deckel, ABWASSER.metaattribute")
     for row in tww_session.query(TWW.cover):
 
         # structure_part --- cover.fk_dataowner, cover.fk_provider, cover.fk_wastewater_structure, cover.identifier, cover.last_modification, cover.remark, cover.renovation_demand
@@ -606,7 +606,7 @@ def qgep_export():
         print(".", end="")
     print("done")
 
-    print("Exporting QGEP.benching -> ABWASSER.bankett, ABWASSER.metaattribute")
+    print("Exporting TWW.benching -> ABWASSER.bankett, ABWASSER.metaattribute")
     for row in tww_session.query(TWW.benching):
 
         # structure_part --- benching.fk_dataowner, benching.fk_provider, benching.fk_wastewater_structure, benching.identifier, benching.last_modification, benching.remark, benching.renovation_demand
@@ -638,7 +638,7 @@ def qgep_export():
         print(".", end="")
     print("done")
 
-    print("Exporting QGEP.examination -> ABWASSER.untersuchung, ABWASSER.metaattribute")
+    print("Exporting TWW.examination -> ABWASSER.untersuchung, ABWASSER.metaattribute")
     for row in tww_session.query(TWW.examination):
 
         # maintenance_event --- examination.active_zone, examination.base_data, examination.cost, examination.data_details, examination.duration, examination.fk_dataowner, examination.fk_operating_company, examination.fk_provider, examination.identifier, examination.kind, examination.last_modification, examination.operator, examination.reason, examination.remark, examination.result, examination.status, examination.time_point
@@ -688,7 +688,7 @@ def qgep_export():
         print(".", end="")
     print("done")
 
-    print("Exporting QGEP.damage_manhole -> ABWASSER.normschachtschaden, ABWASSER.metaattribute")
+    print("Exporting TWW.damage_manhole -> ABWASSER.normschachtschaden, ABWASSER.metaattribute")
     for row in tww_session.query(TWW.damage_manhole):
 
         # damage --- damage_manhole.comments, damage_manhole.connection, damage_manhole.damage_begin, damage_manhole.damage_end, damage_manhole.damage_reach, damage_manhole.distance, damage_manhole.fk_dataowner, damage_manhole.fk_examination, damage_manhole.fk_provider, damage_manhole.last_modification, damage_manhole.quantification1, damage_manhole.quantification2, damage_manhole.single_damage_class, damage_manhole.video_counter, damage_manhole.view_parameters
@@ -729,7 +729,7 @@ def qgep_export():
         print(".", end="")
     print("done")
 
-    print("Exporting QGEP.damage_channel -> ABWASSER.kanalschaden, ABWASSER.metaattribute")
+    print("Exporting TWW.damage_channel -> ABWASSER.kanalschaden, ABWASSER.metaattribute")
     for row in tww_session.query(TWW.damage_channel):
 
         # damage --- damage_channel.comments, damage_channel.connection, damage_channel.damage_begin, damage_channel.damage_end, damage_channel.damage_reach, damage_channel.distance, damage_channel.fk_dataowner, damage_channel.fk_examination, damage_channel.fk_provider, damage_channel.last_modification, damage_channel.quantification1, damage_channel.quantification2, damage_channel.single_damage_class, damage_channel.video_counter, damage_channel.view_parameters
@@ -769,7 +769,7 @@ def qgep_export():
         print(".", end="")
     print("done")
 
-    print("Exporting QGEP.data_media -> ABWASSER.datentraeger, ABWASSER.metaattribute")
+    print("Exporting TWW.data_media -> ABWASSER.datentraeger, ABWASSER.metaattribute")
     for row in tww_session.query(TWW.data_media):
 
         # data_media --- data_media.fk_dataowner, data_media.fk_provider, data_media.identifier, data_media.kind, data_media.last_modification, data_media.location, data_media.obj_id, data_media.path, data_media.remark
@@ -797,7 +797,7 @@ def qgep_export():
         print(".", end="")
     print("done")
 
-    print("Exporting QGEP.file -> ABWASSER.datei, ABWASSER.metaattribute")
+    print("Exporting TWW.file -> ABWASSER.datei, ABWASSER.metaattribute")
     for row in tww_session.query(TWW.file):
 
         # file --- file.class, file.fk_data_media, file.fk_dataowner, file.fk_provider, file.identifier, file.kind, file.last_modification, file.obj_id, file.object, file.path_relative, file.remark
@@ -829,5 +829,5 @@ def qgep_export():
 
     abwasser_session.commit()
 
-    qgep_session.close()
+    tww_session.close()
     abwasser_session.close()
