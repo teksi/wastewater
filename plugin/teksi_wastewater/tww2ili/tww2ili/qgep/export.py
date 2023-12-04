@@ -63,7 +63,7 @@ def qgep_export(selection=None, labels_file=None):
         """
         Converts blank strings to nulls and raises a warning
 
-        This is needed as is seems ili2pg 4.4.6 crashes with emptystrings under certain circumstances (see https://github.com/QGEP/qgepqwat2ili/issues/33)
+        This is needed as is seems ili2pg 4.4.6 crashes with emptystrings under certain circumstances (see https://github.com/QGEP/tww2ili/issues/33)
         """
         if val == "":
             logger.warning(

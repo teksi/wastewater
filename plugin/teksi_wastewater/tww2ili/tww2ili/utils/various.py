@@ -276,7 +276,7 @@ def make_log_path(next_to_path, step_name):
     if next_to_path:
         return f"{next_to_path}.{now}.{step_name}.log"
     else:
-        temp_path = os.path.join(tempfile.gettempdir(), "qgepqwat2ili")
+        temp_path = os.path.join(tempfile.gettempdir(), "tww2ili")
         os.makedirs(temp_path, exist_ok=True)
         return os.path.join(temp_path, f"{now}.{step_name}.log")
 

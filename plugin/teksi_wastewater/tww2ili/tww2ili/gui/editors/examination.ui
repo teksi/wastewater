@@ -136,7 +136,7 @@
   <customwidget>
    <class>FeatureSelectorWidget</class>
    <extends>QWidget</extends>
-   <header>qgepqwat2ili.gui.featureselectorwidget</header>
+   <header>tww2ili.gui.featureselectorwidget</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

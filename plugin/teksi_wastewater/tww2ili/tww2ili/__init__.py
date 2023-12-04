@@ -125,7 +125,7 @@ def main(args):
     log_path = args.path if args.parser in ["qgep", "qwat"] and args.log else None
 
     # Write root logger to file
-    filename = make_log_path(log_path, "qgepqwat2ili")
+    filename = make_log_path(log_path, "tww2ili")
     file_handler = FileHandler(filename, mode="w", encoding="utf-8")
     file_handler.setLevel(INFO)
     file_handler.setFormatter(Formatter("%(levelname)-8s %(message)s"))
