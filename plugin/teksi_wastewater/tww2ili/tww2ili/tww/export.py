@@ -12,19 +12,19 @@ from .model_tww import get_tww_model
 
 def tww_export(selection=None, labels_file=None):
     """
-    Export data from the QGEP model into the ili2pg model.
+    Export data from the TWW model into the ili2pg model.
 
     Args:
         selection:      if provided, limits the export to networkelements that are provided in the selection
     """
 
-    QGEP = get_tww_model()
+    TWW = get_tww_model()
     ABWASSER = get_abwasser_model()
 
     # Logging disabled (very slow)
-    # qgep_session = Session(utils.sqlalchemy.create_engine(logger_name="qgep"), autocommit=False, autoflush=False)
+    # tww_session = Session(utils.sqlalchemy.create_engine(logger_name="tww"), autocommit=False, autoflush=False)
     # abwasser_session = Session(utils.sqlalchemy.create_engine(logger_name="abwasser"), autocommit=False, autoflush=False)
-    qgep_session = Session(utils.sqlalchemy.create_engine(), autocommit=False, autoflush=False)
+    tww_session = Session(utils.sqlalchemy.create_engine(), autocommit=False, autoflush=False)
     abwasser_session = Session(utils.sqlalchemy.create_engine(), autocommit=False, autoflush=False)
     tid_maker = utils.ili2db.TidMaker(id_attribute="obj_id")
 
@@ -203,10 +203,10 @@ def tww_export(selection=None, labels_file=None):
         }
 
     # ADAPTED FROM 052a_sia405_abwasser_2015_2_d_interlisexport2.sql
-    logger.info("Exporting QGEP.organisation -> ABWASSER.organisation, ABWASSER.metaattribute")
-    query = qgep_session.query(QGEP.organisation)
+    logger.info("Exporting TWW.organisation -> ABWASSER.organisation, ABWASSER.metaattribute")
+    query = tww_session.query(TWW.organisation)
     for row in query:
-        # AVAILABLE FIELDS IN QGEP.organisation
+        # AVAILABLE FIELDS IN TWW.organisation
 
         # --- organisation ---
         # fk_dataowner, fk_provider, identifier, last_modification, obj_id, remark, uid
@@ -233,14 +233,14 @@ def tww_export(selection=None, labels_file=None):
     logger.info("done")
     abwasser_session.flush()
 
-    logger.info("Exporting QGEP.channel -> ABWASSER.kanal, ABWASSER.metaattribute")
-    query = qgep_session.query(QGEP.channel)
+    logger.info("Exporting TWW.channel -> ABWASSER.kanal, ABWASSER.metaattribute")
+    query = tww_session.query(TWW.channel)
     if filtered:
-        query = query.join(QGEP.wastewater_networkelement).filter(
-            QGEP.wastewater_networkelement.obj_id.in_(subset_ids)
+        query = query.join(TWW.wastewater_networkelement).filter(
+            TWW.wastewater_networkelement.obj_id.in_(subset_ids)
         )
     for row in query:
-        # AVAILABLE FIELDS IN QGEP.channel
+        # AVAILABLE FIELDS IN TWW.channel
 
         # --- wastewater_structure ---
         # _bottom_label, _cover_label, _depth, _function_hierarchic, _input_label, _label, _output_label, _usage_current, accessibility, contract_section, detail_geometry_geometry, financing, fk_dataowner, fk_main_cover, fk_main_wastewater_node, fk_operator, fk_owner, fk_provider, gross_costs, identifier, inspection_interval, last_modification, location_name, records, remark, renovation_necessity, replacement_value, rv_base_year, rv_construction_type, status, structure_condition, subsidies, year_of_construction, year_of_replacement
@@ -274,11 +274,11 @@ def tww_export(selection=None, labels_file=None):
     logger.info("done")
     abwasser_session.flush()
 
-    logger.info("Exporting QGEP.manhole -> ABWASSER.normschacht, ABWASSER.metaattribute")
-    query = qgep_session.query(QGEP.manhole)
+    logger.info("Exporting TWW.manhole -> ABWASSER.normschacht, ABWASSER.metaattribute")
+    query = tww_session.query(TWW.manhole)
     if filtered:
-        query = query.join(QGEP.wastewater_networkelement).filter(
-            QGEP.wastewater_networkelement.obj_id.in_(subset_ids)
+        query = query.join(TWW.wastewater_networkelement).filter(
+            TWW.wastewater_networkelement.obj_id.in_(subset_ids)
         )
     for row in query:
         normschacht = ABWASSER.normschacht(
@@ -300,11 +300,11 @@ def tww_export(selection=None, labels_file=None):
     logger.info("done")
     abwasser_session.flush()
 
-    logger.info("Exporting QGEP.discharge_point -> ABWASSER.einleitstelle, ABWASSER.metaattribute")
-    query = qgep_session.query(QGEP.discharge_point)
+    logger.info("Exporting TWW.discharge_point -> ABWASSER.einleitstelle, ABWASSER.metaattribute")
+    query = tww_session.query(TWW.discharge_point)
     if filtered:
-        query = query.join(QGEP.wastewater_networkelement).filter(
-            QGEP.wastewater_networkelement.obj_id.in_(subset_ids)
+        query = query.join(TWW.wastewater_networkelement).filter(
+            TWW.wastewater_networkelement.obj_id.in_(subset_ids)
         )
     for row in query:
         einleitstelle = ABWASSER.einleitstelle(
@@ -326,15 +326,15 @@ def tww_export(selection=None, labels_file=None):
     abwasser_session.flush()
 
     logger.info(
-        "Exporting QGEP.special_structure -> ABWASSER.spezialbauwerk, ABWASSER.metaattribute"
+        "Exporting TWW.special_structure -> ABWASSER.spezialbauwerk, ABWASSER.metaattribute"
     )
-    query = qgep_session.query(QGEP.special_structure)
+    query = tww_session.query(TWW.special_structure)
     if filtered:
-        query = query.join(QGEP.wastewater_networkelement).filter(
-            QGEP.wastewater_networkelement.obj_id.in_(subset_ids)
+        query = query.join(TWW.wastewater_networkelement).filter(
+            TWW.wastewater_networkelement.obj_id.in_(subset_ids)
         )
     for row in query:
-        # AVAILABLE FIELDS IN QGEP.special_structure
+        # AVAILABLE FIELDS IN TWW.special_structure
 
         # --- wastewater_structure ---
         # _bottom_label, _cover_label, _depth, _function_hierarchic, _input_label, _label, _output_label, _usage_current, accessibility, contract_section, detail_geometry_geometry, financing, fk_dataowner, fk_main_cover, fk_main_wastewater_node, fk_operator, fk_owner, fk_provider, gross_costs, identifier, inspection_interval, last_modification, location_name, records, remark, renovation_necessity, replacement_value, rv_base_year, rv_construction_type, status, structure_condition, subsidies, year_of_construction, year_of_replacement
@@ -348,7 +348,7 @@ def tww_export(selection=None, labels_file=None):
         # --- _rel_ ---
         # accessibility__REL, bypass__REL, emergency_spillway__REL, financing__REL, fk_dataowner__REL, fk_main_cover__REL, fk_main_wastewater_node__REL, fk_operator__REL, fk_owner__REL, fk_provider__REL, function__REL, renovation_necessity__REL, rv_construction_type__REL, status__REL, stormwater_tank_arrangement__REL, structure_condition__REL
         logger.warning(
-            "QGEP field special_structure.upper_elevation has no equivalent in the interlis model. It will be ignored."
+            "TWW field special_structure.upper_elevation has no equivalent in the interlis model. It will be ignored."
         )
         spezialbauwerk = ABWASSER.spezialbauwerk(
             # FIELDS TO MAP TO ABWASSER.spezialbauwerk
@@ -371,15 +371,15 @@ def tww_export(selection=None, labels_file=None):
     abwasser_session.flush()
 
     logger.info(
-        "Exporting QGEP.infiltration_installation -> ABWASSER.versickerungsanlage, ABWASSER.metaattribute"
+        "Exporting TWW.infiltration_installation -> ABWASSER.versickerungsanlage, ABWASSER.metaattribute"
     )
-    query = qgep_session.query(QGEP.infiltration_installation)
+    query = tww_session.query(TWW.infiltration_installation)
     if filtered:
-        query = query.join(QGEP.wastewater_networkelement).filter(
-            QGEP.wastewater_networkelement.obj_id.in_(subset_ids)
+        query = query.join(TWW.wastewater_networkelement).filter(
+            TWW.wastewater_networkelement.obj_id.in_(subset_ids)
         )
     for row in query:
-        # AVAILABLE FIELDS IN QGEP.infiltration_installation
+        # AVAILABLE FIELDS IN TWW.infiltration_installation
 
         # --- wastewater_structure ---
         # _bottom_label, _cover_label, _depth, _function_hierarchic, _input_label, _label, _output_label, _usage_current, accessibility, contract_section, detail_geometry_geometry, financing, fk_dataowner, fk_main_cover, fk_main_wastewater_node, fk_operator, fk_owner, fk_provider, gross_costs, identifier, inspection_interval, last_modification, location_name, records, remark, renovation_necessity, replacement_value, rv_base_year, rv_construction_type, status, structure_condition, subsidies, year_of_construction, year_of_replacement
@@ -394,7 +394,7 @@ def tww_export(selection=None, labels_file=None):
         # accessibility__REL, defects__REL, emergency_spillway__REL, financing__REL, fk_aquifier__REL, fk_dataowner__REL, fk_main_cover__REL, fk_main_wastewater_node__REL, fk_operator__REL, fk_owner__REL, fk_provider__REL, kind__REL, labeling__REL, renovation_necessity__REL, rv_construction_type__REL, seepage_utilization__REL, status__REL, structure_condition__REL, vehicle_access__REL, watertightness__REL
 
         logger.warning(
-            "QGEP field infiltration_installation.upper_elevation has no equivalent in the interlis model. It will be ignored."
+            "TWW field infiltration_installation.upper_elevation has no equivalent in the interlis model. It will be ignored."
         )
         versickerungsanlage = ABWASSER.versickerungsanlage(
             # FIELDS TO MAP TO ABWASSER.versickerungsanlage
@@ -424,14 +424,12 @@ def tww_export(selection=None, labels_file=None):
     logger.info("done")
     abwasser_session.flush()
 
-    logger.info("Exporting QGEP.pipe_profile -> ABWASSER.rohrprofil, ABWASSER.metaattribute")
-    query = qgep_session.query(QGEP.pipe_profile)
+    logger.info("Exporting TWW.pipe_profile -> ABWASSER.rohrprofil, ABWASSER.metaattribute")
+    query = tww_session.query(TWW.pipe_profile)
     if filtered:
-        query = query.join(QGEP.reach).filter(
-            QGEP.wastewater_networkelement.obj_id.in_(subset_ids)
-        )
+        query = query.join(TWW.reach).filter(TWW.wastewater_networkelement.obj_id.in_(subset_ids))
     for row in query:
-        # AVAILABLE FIELDS IN QGEP.pipe_profile
+        # AVAILABLE FIELDS IN TWW.pipe_profile
 
         # --- pipe_profile ---
         # fk_dataowner, fk_provider, height_width_ratio, identifier, last_modification, obj_id, profile_type, remark
@@ -459,18 +457,18 @@ def tww_export(selection=None, labels_file=None):
     logger.info("done")
     abwasser_session.flush()
 
-    logger.info("Exporting QGEP.reach_point -> ABWASSER.haltungspunkt, ABWASSER.metaattribute")
-    query = qgep_session.query(QGEP.reach_point)
+    logger.info("Exporting TWW.reach_point -> ABWASSER.haltungspunkt, ABWASSER.metaattribute")
+    query = tww_session.query(TWW.reach_point)
     if filtered:
         query = query.join(
-            QGEP.reach,
+            TWW.reach,
             or_(
-                QGEP.reach_point.obj_id == QGEP.reach.fk_reach_point_from,
-                QGEP.reach_point.obj_id == QGEP.reach.fk_reach_point_to,
+                TWW.reach_point.obj_id == TWW.reach.fk_reach_point_from,
+                TWW.reach_point.obj_id == TWW.reach.fk_reach_point_to,
             ),
-        ).filter(QGEP.wastewater_networkelement.obj_id.in_(subset_ids))
+        ).filter(TWW.wastewater_networkelement.obj_id.in_(subset_ids))
     for row in query:
-        # AVAILABLE FIELDS IN QGEP.reach_point
+        # AVAILABLE FIELDS IN TWW.reach_point
 
         # --- reach_point ---
         # elevation_accuracy, fk_dataowner, fk_provider, fk_wastewater_networkelement, identifier, last_modification, level, obj_id, outlet_shape, position_of_connection, remark, situation_geometry
@@ -502,14 +500,12 @@ def tww_export(selection=None, labels_file=None):
     logger.info("done")
     abwasser_session.flush()
 
-    logger.info(
-        "Exporting QGEP.wastewater_node -> ABWASSER.abwasserknoten, ABWASSER.metaattribute"
-    )
-    query = qgep_session.query(QGEP.wastewater_node)
+    logger.info("Exporting TWW.wastewater_node -> ABWASSER.abwasserknoten, ABWASSER.metaattribute")
+    query = tww_session.query(TWW.wastewater_node)
     if filtered:
-        query = query.filter(QGEP.wastewater_networkelement.obj_id.in_(subset_ids))
+        query = query.filter(TWW.wastewater_networkelement.obj_id.in_(subset_ids))
     for row in query:
-        # AVAILABLE FIELDS IN QGEP.wastewater_node
+        # AVAILABLE FIELDS IN TWW.wastewater_node
 
         # --- wastewater_networkelement ---
         # fk_dataowner, fk_provider, fk_wastewater_structure, identifier, last_modification, remark
@@ -523,7 +519,7 @@ def tww_export(selection=None, labels_file=None):
         # fk_dataowner__REL, fk_hydr_geometry__REL, fk_provider__REL, fk_wastewater_structure__REL
 
         logger.warning(
-            "QGEP field wastewater_node.fk_hydr_geometry has no equivalent in the interlis model. It will be ignored."
+            "TWW field wastewater_node.fk_hydr_geometry has no equivalent in the interlis model. It will be ignored."
         )
         abwasserknoten = ABWASSER.abwasserknoten(
             # FIELDS TO MAP TO ABWASSER.abwasserknoten
@@ -544,12 +540,12 @@ def tww_export(selection=None, labels_file=None):
     logger.info("done")
     abwasser_session.flush()
 
-    logger.info("Exporting QGEP.reach -> ABWASSER.haltung, ABWASSER.metaattribute")
-    query = qgep_session.query(QGEP.reach)
+    logger.info("Exporting TWW.reach -> ABWASSER.haltung, ABWASSER.metaattribute")
+    query = tww_session.query(TWW.reach)
     if filtered:
-        query = query.filter(QGEP.wastewater_networkelement.obj_id.in_(subset_ids))
+        query = query.filter(TWW.wastewater_networkelement.obj_id.in_(subset_ids))
     for row in query:
-        # AVAILABLE FIELDS IN QGEP.reach
+        # AVAILABLE FIELDS IN TWW.reach
 
         # --- wastewater_networkelement ---
         # fk_dataowner, fk_provider, fk_wastewater_structure, identifier, last_modification, remark
@@ -564,7 +560,7 @@ def tww_export(selection=None, labels_file=None):
         # elevation_determination__REL, fk_dataowner__REL, fk_pipe_profile__REL, fk_provider__REL, fk_reach_point_from__REL, fk_reach_point_to__REL, fk_wastewater_structure__REL, horizontal_positioning__REL, inside_coating__REL, material__REL, reliner_material__REL, relining_construction__REL, relining_kind__REL
 
         logger.warning(
-            "QGEP field reach.elevation_determination has no equivalent in the interlis model. It will be ignored."
+            "TWW field reach.elevation_determination has no equivalent in the interlis model. It will be ignored."
         )
         haltung = ABWASSER.haltung(
             # FIELDS TO MAP TO ABWASSER.haltung
@@ -600,15 +596,15 @@ def tww_export(selection=None, labels_file=None):
     abwasser_session.flush()
 
     logger.info(
-        "Exporting QGEP.dryweather_downspout -> ABWASSER.trockenwetterfallrohr, ABWASSER.metaattribute"
+        "Exporting TWW.dryweather_downspout -> ABWASSER.trockenwetterfallrohr, ABWASSER.metaattribute"
     )
-    query = qgep_session.query(QGEP.dryweather_downspout)
+    query = tww_session.query(TWW.dryweather_downspout)
     if filtered:
-        query = query.join(QGEP.wastewater_structure, QGEP.wastewater_networkelement).filter(
-            QGEP.wastewater_networkelement.obj_id.in_(subset_ids)
+        query = query.join(TWW.wastewater_structure, TWW.wastewater_networkelement).filter(
+            TWW.wastewater_networkelement.obj_id.in_(subset_ids)
         )
     for row in query:
-        # AVAILABLE FIELDS IN QGEP.dryweather_downspout
+        # AVAILABLE FIELDS IN TWW.dryweather_downspout
 
         # --- structure_part ---
         # fk_dataowner, fk_provider, fk_wastewater_structure, identifier, last_modification, remark, renovation_demand
@@ -638,14 +634,14 @@ def tww_export(selection=None, labels_file=None):
     logger.info("done")
     abwasser_session.flush()
 
-    logger.info("Exporting QGEP.access_aid -> ABWASSER.einstiegshilfe, ABWASSER.metaattribute")
-    query = qgep_session.query(QGEP.access_aid)
+    logger.info("Exporting TWW.access_aid -> ABWASSER.einstiegshilfe, ABWASSER.metaattribute")
+    query = tww_session.query(TWW.access_aid)
     if filtered:
-        query = query.join(QGEP.wastewater_structure, QGEP.wastewater_networkelement).filter(
-            QGEP.wastewater_networkelement.obj_id.in_(subset_ids)
+        query = query.join(TWW.wastewater_structure, TWW.wastewater_networkelement).filter(
+            TWW.wastewater_networkelement.obj_id.in_(subset_ids)
         )
     for row in query:
-        # AVAILABLE FIELDS IN QGEP.access_aid
+        # AVAILABLE FIELDS IN TWW.access_aid
 
         # --- structure_part ---
         # fk_dataowner, fk_provider, fk_wastewater_structure, identifier, last_modification, remark, renovation_demand
@@ -676,15 +672,15 @@ def tww_export(selection=None, labels_file=None):
     abwasser_session.flush()
 
     logger.info(
-        "Exporting QGEP.dryweather_flume -> ABWASSER.trockenwetterrinne, ABWASSER.metaattribute"
+        "Exporting TWW.dryweather_flume -> ABWASSER.trockenwetterrinne, ABWASSER.metaattribute"
     )
-    query = qgep_session.query(QGEP.dryweather_flume)
+    query = tww_session.query(TWW.dryweather_flume)
     if filtered:
-        query = query.join(QGEP.wastewater_structure, QGEP.wastewater_networkelement).filter(
-            QGEP.wastewater_networkelement.obj_id.in_(subset_ids)
+        query = query.join(TWW.wastewater_structure, TWW.wastewater_networkelement).filter(
+            TWW.wastewater_networkelement.obj_id.in_(subset_ids)
         )
     for row in query:
-        # AVAILABLE FIELDS IN QGEP.dryweather_flume
+        # AVAILABLE FIELDS IN TWW.dryweather_flume
 
         # --- structure_part ---
         # fk_dataowner, fk_provider, fk_wastewater_structure, identifier, last_modification, remark, renovation_demand
@@ -714,14 +710,14 @@ def tww_export(selection=None, labels_file=None):
     logger.info("done")
     abwasser_session.flush()
 
-    logger.info("Exporting QGEP.cover -> ABWASSER.deckel, ABWASSER.metaattribute")
-    query = qgep_session.query(QGEP.cover)
+    logger.info("Exporting TWW.cover -> ABWASSER.deckel, ABWASSER.metaattribute")
+    query = tww_session.query(TWW.cover)
     if filtered:
-        query = query.join(QGEP.wastewater_structure, QGEP.wastewater_networkelement).filter(
-            QGEP.wastewater_networkelement.obj_id.in_(subset_ids)
+        query = query.join(TWW.wastewater_structure, TWW.wastewater_networkelement).filter(
+            TWW.wastewater_networkelement.obj_id.in_(subset_ids)
         )
     for row in query:
-        # AVAILABLE FIELDS IN QGEP.cover
+        # AVAILABLE FIELDS IN TWW.cover
 
         # --- structure_part ---
         # fk_dataowner, fk_provider, fk_wastewater_structure, identifier, last_modification, remark, renovation_demand
@@ -760,14 +756,14 @@ def tww_export(selection=None, labels_file=None):
     logger.info("done")
     abwasser_session.flush()
 
-    logger.info("Exporting QGEP.benching -> ABWASSER.bankett, ABWASSER.metaattribute")
-    query = qgep_session.query(QGEP.benching)
+    logger.info("Exporting TWW.benching -> ABWASSER.bankett, ABWASSER.metaattribute")
+    query = tww_session.query(TWW.benching)
     if filtered:
-        query = query.join(QGEP.wastewater_structure, QGEP.wastewater_networkelement).filter(
-            QGEP.wastewater_networkelement.obj_id.in_(subset_ids)
+        query = query.join(TWW.wastewater_structure, TWW.wastewater_networkelement).filter(
+            TWW.wastewater_networkelement.obj_id.in_(subset_ids)
         )
     for row in query:
-        # AVAILABLE FIELDS IN QGEP.benching
+        # AVAILABLE FIELDS IN TWW.benching
 
         # --- structure_part ---
         # fk_dataowner, fk_provider, fk_wastewater_structure, identifier, last_modification, remark, renovation_demand
@@ -797,18 +793,18 @@ def tww_export(selection=None, labels_file=None):
     logger.info("done")
     abwasser_session.flush()
 
-    logger.info("Exporting QGEP.examination -> ABWASSER.untersuchung, ABWASSER.metaattribute")
-    query = qgep_session.query(QGEP.examination)
+    logger.info("Exporting TWW.examination -> ABWASSER.untersuchung, ABWASSER.metaattribute")
+    query = tww_session.query(TWW.examination)
     if filtered:
         query = (
-            query.join(QGEP.re_maintenance_event_wastewater_structure)
-            .join(QGEP.wastewater_structure)
-            .join(QGEP.wastewater_networkelement)
-            .filter(QGEP.wastewater_networkelement.obj_id.in_(subset_ids))
+            query.join(TWW.re_maintenance_event_wastewater_structure)
+            .join(TWW.wastewater_structure)
+            .join(TWW.wastewater_networkelement)
+            .filter(TWW.wastewater_networkelement.obj_id.in_(subset_ids))
         )
 
     for row in query:
-        # AVAILABLE FIELDS IN QGEP.examination
+        # AVAILABLE FIELDS IN TWW.examination
 
         # --- maintenance_event ---
         # --- examination ---
@@ -820,7 +816,7 @@ def tww_export(selection=None, labels_file=None):
         # --- _rel_ ---
         # fk_dataowner__REL, fk_operating_company__REL, fk_provider__REL, fk_reach_point__REL, kind__REL, recording_type__REL, status__REL, weather__REL
         logger.warning(
-            "QGEP field maintenance_event.active_zone has no equivalent in the interlis model. It will be ignored."
+            "TWW field maintenance_event.active_zone has no equivalent in the interlis model. It will be ignored."
         )
 
         untersuchung = ABWASSER.untersuchung(
@@ -861,19 +857,19 @@ def tww_export(selection=None, labels_file=None):
     abwasser_session.flush()
 
     logger.info(
-        "Exporting QGEP.damage_manhole -> ABWASSER.normschachtschaden, ABWASSER.metaattribute"
+        "Exporting TWW.damage_manhole -> ABWASSER.normschachtschaden, ABWASSER.metaattribute"
     )
-    query = qgep_session.query(QGEP.damage_manhole)
+    query = tww_session.query(TWW.damage_manhole)
     if filtered:
         query = (
-            query.join(QGEP.examination)
-            .join(QGEP.re_maintenance_event_wastewater_structure)
-            .join(QGEP.wastewater_structure)
-            .join(QGEP.wastewater_networkelement)
-            .filter(QGEP.wastewater_networkelement.obj_id.in_(subset_ids))
+            query.join(TWW.examination)
+            .join(TWW.re_maintenance_event_wastewater_structure)
+            .join(TWW.wastewater_structure)
+            .join(TWW.wastewater_networkelement)
+            .filter(TWW.wastewater_networkelement.obj_id.in_(subset_ids))
         )
     for row in query:
-        # AVAILABLE FIELDS IN QGEP.damage_manhole
+        # AVAILABLE FIELDS IN TWW.damage_manhole
 
         # --- damage ---
 
@@ -914,18 +910,18 @@ def tww_export(selection=None, labels_file=None):
     logger.info("done")
     abwasser_session.flush()
 
-    logger.info("Exporting QGEP.damage_channel -> ABWASSER.kanalschaden, ABWASSER.metaattribute")
-    query = qgep_session.query(QGEP.damage_channel)
+    logger.info("Exporting TWW.damage_channel -> ABWASSER.kanalschaden, ABWASSER.metaattribute")
+    query = tww_session.query(TWW.damage_channel)
     if filtered:
         query = (
-            query.join(QGEP.examination)
-            .join(QGEP.re_maintenance_event_wastewater_structure)
-            .join(QGEP.wastewater_structure)
-            .join(QGEP.wastewater_networkelement)
-            .filter(QGEP.wastewater_networkelement.obj_id.in_(subset_ids))
+            query.join(TWW.examination)
+            .join(TWW.re_maintenance_event_wastewater_structure)
+            .join(TWW.wastewater_structure)
+            .join(TWW.wastewater_networkelement)
+            .filter(TWW.wastewater_networkelement.obj_id.in_(subset_ids))
         )
     for row in query:
-        # AVAILABLE FIELDS IN QGEP.damage_channel
+        # AVAILABLE FIELDS IN TWW.damage_channel
 
         # --- damage ---
         # comments, connection, damage_begin, damage_end, damage_reach, distance, fk_dataowner, fk_examination, fk_provider, last_modification, quantification1, quantification2, single_damage_class, video_counter, view_parameters
@@ -966,10 +962,10 @@ def tww_export(selection=None, labels_file=None):
     logger.info("done")
     abwasser_session.flush()
 
-    logger.info("Exporting QGEP.data_media -> ABWASSER.datentraeger, ABWASSER.metaattribute")
-    query = qgep_session.query(QGEP.data_media)
+    logger.info("Exporting TWW.data_media -> ABWASSER.datentraeger, ABWASSER.metaattribute")
+    query = tww_session.query(TWW.data_media)
     for row in query:
-        # AVAILABLE FIELDS IN QGEP.data_media
+        # AVAILABLE FIELDS IN TWW.data_media
 
         # --- data_media ---
         # fk_dataowner, fk_provider, identifier, kind, last_modification, location, obj_id, path, remark
@@ -995,25 +991,25 @@ def tww_export(selection=None, labels_file=None):
     logger.info("done")
     abwasser_session.flush()
 
-    logger.info("Exporting QGEP.file -> ABWASSER.datei, ABWASSER.metaattribute")
-    query = qgep_session.query(QGEP.file)
+    logger.info("Exporting TWW.file -> ABWASSER.datei, ABWASSER.metaattribute")
+    query = tww_session.query(TWW.file)
     if filtered:
         query = (
-            query.outerjoin(QGEP.damage, QGEP.file.object == QGEP.damage.obj_id)
+            query.outerjoin(TWW.damage, TWW.file.object == TWW.damage.obj_id)
             .join(
-                QGEP.examination,
+                TWW.examination,
                 or_(
-                    QGEP.file.object == QGEP.damage.obj_id,
-                    QGEP.file.object == QGEP.examination.obj_id,
+                    TWW.file.object == TWW.damage.obj_id,
+                    TWW.file.object == TWW.examination.obj_id,
                 ),
             )
-            .join(QGEP.re_maintenance_event_wastewater_structure)
-            .join(QGEP.wastewater_structure)
-            .join(QGEP.wastewater_networkelement)
-            .filter(QGEP.wastewater_networkelement.obj_id.in_(subset_ids))
+            .join(TWW.re_maintenance_event_wastewater_structure)
+            .join(TWW.wastewater_structure)
+            .join(TWW.wastewater_networkelement)
+            .filter(TWW.wastewater_networkelement.obj_id.in_(subset_ids))
         )
     for row in query:
-        # AVAILABLE FIELDS IN QGEP.file
+        # AVAILABLE FIELDS IN TWW.file
 
         # --- file ---
         # class, fk_data_media, fk_dataowner, fk_provider, identifier, kind, last_modification, obj_id, object, path_relative, remark
@@ -1042,7 +1038,7 @@ def tww_export(selection=None, labels_file=None):
     abwasser_session.flush()
 
     # Labels
-    # Note: these are extracted from the optional labels file (not exported from the QGEP database)
+    # Note: these are extracted from the optional labels file (not exported from the TWW database)
     if labels_file:
         logger.info(f"Exporting label positions from {labels_file}")
 
@@ -1063,7 +1059,7 @@ def tww_export(selection=None, labels_file=None):
 
         for label in labels["features"]:
             layer_name = label["properties"]["Layer"]
-            obj_id = label["properties"]["qgep_obj_id"]
+            obj_id = label["properties"]["tww_obj_id"]
 
             if layer_name == "vw_tww_reach":
                 if obj_id not in tid_for_obj_id["haltung"]:
@@ -1100,5 +1096,5 @@ def tww_export(selection=None, labels_file=None):
 
     abwasser_session.commit()
 
-    qgep_session.close()
+    tww_session.close()
     abwasser_session.close()

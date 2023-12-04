@@ -82,29 +82,29 @@ def setup_test_db(template="full"):
     pgconf = get_pgconf()
 
     def dexec_(cmd, check=True):
-        return exec_(f"docker exec qgepqwat {cmd}", check)
+        return exec_(f"docker exec twwqwat {cmd}", check)
 
-    docker_image = os.getenv("QGEPQWAT2ILI_TESTDB_IMAGE", "postgis/postgis:13-3.2")
+    docker_image = os.getenv("TWWQWAT2ILI_TESTDB_IMAGE", "postgis/postgis:13-3.2")
 
-    logger.info(f"SETTING UP QGEP/QWAT DATABASE [{docker_image}]...")
+    logger.info(f"SETTING UP TWW/QWAT DATABASE [{docker_image}]...")
 
-    r = exec_("docker inspect -f '{{.State.Running}}' qgepqwat", check=False)
+    r = exec_("docker inspect -f '{{.State.Running}}' twwqwat", check=False)
     running = r == 0
     if running:
-        r = exec_("docker inspect -f {{.Config.Image}} qgepqwat", output_content=True)
+        r = exec_("docker inspect -f {{.Config.Image}} twwqwat", output_content=True)
         if r != docker_image:
             logger.info(f"Test container running `{r}`, we expect `{docker_image}`, we kill it")
-            exec_("docker rm qgepqwat --force")
+            exec_("docker rm twwqwat --force")
             running = False
 
     if not running:
         logger.info("Test container not running, we create it")
         exec_(
-            f"docker run -d --rm -p 5432:5432 --name qgepqwat -e POSTGRES_PASSWORD={pgconf['password'] or 'postgres'} -e POSTGRES_DB={pgconf['dbname'] or 'qgep_prod'} {docker_image}"
+            f"docker run -d --rm -p 5432:5432 --name twwqwat -e POSTGRES_PASSWORD={pgconf['password'] or 'postgres'} -e POSTGRES_DB={pgconf['dbname'] or 'tww_prod'} {docker_image}"
         )
 
     # Wait for PG
-    while exec_("docker exec qgepqwat pg_isready", check=False) != 0:
+    while exec_("docker exec twwqwat pg_isready", check=False) != 0:
         logger.info("Postgres not ready... we wait...")
         time.sleep(1)
 
@@ -123,10 +123,10 @@ def setup_test_db(template="full"):
 
         # Getting data
         dexec_(
-            "wget https://github.com/TWW/datamodel/releases/download/1.5.6-1/qgep_1.5.6-1_structure_and_demo_data.backup"
+            "wget https://github.com/TWW/datamodel/releases/download/1.5.6-1/tww_1.5.6-1_structure_and_demo_data.backup"
         )
         dexec_(
-            "wget https://github.com/TWW/datamodel/releases/download/1.5.6-1/qgep_1.5.6-1_structure_with_value_lists.sql"
+            "wget https://github.com/TWW/datamodel/releases/download/1.5.6-1/tww_1.5.6-1_structure_with_value_lists.sql"
         )
         dexec_(
             "wget https://github.com/qwat/qwat-data-model/releases/download/1.3.6/qwat_v1.3.6_data_and_structure_sample.backup"
@@ -139,44 +139,44 @@ def setup_test_db(template="full"):
         )
 
         # Creating the template DB with empty structure
-        dexec_("psql -f qgep_1.5.6-1_structure_with_value_lists.sql qgep_prod postgres")
-        dexec_("psql -f qwat_v1.3.6_structure_only.sql qgep_prod postgres")
-        dexec_("psql -f qwat_v1.3.6_value_list_data_only.sql qgep_prod postgres")
-        dexec_("createdb -U postgres --template=qgep_prod tpl_empty")
+        dexec_("psql -f tww_1.5.6-1_structure_with_value_lists.sql tww_prod postgres")
+        dexec_("psql -f qwat_v1.3.6_structure_only.sql tww_prod postgres")
+        dexec_("psql -f qwat_v1.3.6_value_list_data_only.sql tww_prod postgres")
+        dexec_("createdb -U postgres --template=tww_prod tpl_empty")
 
         # Creating the template DB with full data
         dexec_(
             'psql -U postgres -c "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE pid<>pg_backend_pid();"'
         )
-        dexec_("dropdb -U postgres qgep_prod --if-exists")
-        dexec_("createdb -U postgres qgep_prod")
+        dexec_("dropdb -U postgres tww_prod --if-exists")
+        dexec_("createdb -U postgres tww_prod")
         dexec_(
-            "pg_restore -U postgres --dbname qgep_prod --verbose --no-privileges --exit-on-error qgep_1.5.6-1_structure_and_demo_data.backup"
+            "pg_restore -U postgres --dbname tww_prod --verbose --no-privileges --exit-on-error tww_1.5.6-1_structure_and_demo_data.backup"
         )
         dexec_(
-            "pg_restore -U postgres --dbname qgep_prod --verbose --no-privileges --exit-on-error qwat_v1.3.6_data_and_structure_sample.backup"
+            "pg_restore -U postgres --dbname tww_prod --verbose --no-privileges --exit-on-error qwat_v1.3.6_data_and_structure_sample.backup"
         )
-        dexec_("createdb -U postgres --template=qgep_prod tpl_full")
+        dexec_("createdb -U postgres --template=tww_prod tpl_full")
 
-        # Hotfix qgep invalid demo data
+        # Hotfix tww invalid demo data
         delta_path = os.path.join(
-            os.path.dirname(__file__), "..", "data", "test_data", "qgep_demodata_hotfix.sql"
+            os.path.dirname(__file__), "..", "data", "test_data", "tww_demodata_hotfix.sql"
         )
-        exec_(f"docker cp {delta_path} qgepqwat:/qgep_demodata_hotfix.sql")
-        dexec_("psql -U postgres -d tpl_full -v ON_ERROR_STOP=1 -f /qgep_demodata_hotfix.sql")
+        exec_(f"docker cp {delta_path} twwqwat:/tww_demodata_hotfix.sql")
+        dexec_("psql -U postgres -d tpl_full -v ON_ERROR_STOP=1 -f /tww_demodata_hotfix.sql")
 
         # Hotfix qwat invalid demo data
         delta_path = os.path.join(
             os.path.dirname(__file__), "..", "data", "test_data", "qwat_demodata_hotfix.sql"
         )
-        exec_(f"docker cp {delta_path} qgepqwat:/qwat_demodata_hotfix.sql")
+        exec_(f"docker cp {delta_path} twwqwat:/qwat_demodata_hotfix.sql")
         dexec_("psql -U postgres -d tpl_full -v ON_ERROR_STOP=1 -f /qwat_demodata_hotfix.sql")
 
     dexec_(
         'psql -U postgres -c "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE pid<>pg_backend_pid();"'
     )
-    dexec_("dropdb -U postgres qgep_prod --if-exists")
-    dexec_(f"createdb -U postgres --template=tpl_{template} qgep_prod")
+    dexec_("dropdb -U postgres tww_prod --if-exists")
+    dexec_(f"createdb -U postgres --template=tpl_{template} tww_prod")
 
 
 def capfirst(s):

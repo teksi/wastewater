@@ -56,7 +56,7 @@ def action_import(plugin):
         return
 
     default_folder = QgsSettings().value(
-        "qgep_pluging/last_interlis_path", QgsProject.instance().absolutePath()
+        "tww_plugin/last_interlis_path", QgsProject.instance().absolutePath()
     )
     file_name, _ = QFileDialog.getOpenFileName(
         None,
@@ -67,10 +67,10 @@ def action_import(plugin):
     if not file_name:
         # Operation canceled
         return
-    QgsSettings().setValue("qgep_pluging/last_interlis_path", os.path.dirname(file_name))
+    QgsSettings().setValue("tww_plugin/last_interlis_path", os.path.dirname(file_name))
 
     # Configure logging
-    setting_value = QgsSettings().value("qgep_plugin/logs_next_to_file", False)
+    setting_value = QgsSettings().value("tww_plugin/logs_next_to_file", False)
     logs_next_to_file = setting_value is True or setting_value == "true"
     if logs_next_to_file:
         base_log_path = file_name
@@ -170,7 +170,7 @@ def action_export(plugin):
 
     def action_do_export():
         default_folder = QgsSettings().value(
-            "qgep_pluging/last_interlis_path", QgsProject.instance().absolutePath()
+            "tww_plugin/last_interlis_path", QgsProject.instance().absolutePath()
         )
         file_name, _ = QFileDialog.getSaveFileName(
             None,
@@ -181,7 +181,7 @@ def action_export(plugin):
         if not file_name:
             # Operation canceled
             return
-        QgsSettings().setValue("qgep_pluging/last_interlis_path", os.path.dirname(file_name))
+        QgsSettings().setValue("tww_plugin/last_interlis_path", os.path.dirname(file_name))
 
         # File name without extension (used later for export)
         file_name_base, _ = os.path.splitext(file_name)

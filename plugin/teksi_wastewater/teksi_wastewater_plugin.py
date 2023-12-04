@@ -116,8 +116,8 @@ class TeksiWastewaterPlugin:
         logfile = settings.value("/TWW/LogFile", None)
 
         if hasattr(self.logger, "twwFileHandler"):
-            self.logger.removeHandler(self.logger.qgepFileHandler)
-            del self.logger.qgepFileHandler
+            self.logger.removeHandler(self.logger.twwFileHandler)
+            del self.logger.twwFileHandler
 
         current_handlers = [h.__class__.__name__ for h in self.logger.handlers]
         if self.__class__.__name__ not in current_handlers:
@@ -201,7 +201,7 @@ class TeksiWastewaterPlugin:
 
         self.connectNetworkElementsAction = QAction(
             QIcon(os.path.join(plugin_root_path(), "icons/link-wastewater-networkelement.svg")),
-            QApplication.translate("qgepplugin", "Connect wastewater networkelements"),
+            QApplication.translate("twwplugin", "Connect wastewater networkelements"),
             self.iface.mainWindow(),
         )
         self.connectNetworkElementsAction.setEnabled(False)
@@ -496,13 +496,13 @@ class TeksiWastewaterPlugin:
         action_import(self)
 
     def _configure_tww2ili_from_tww_layer(self) -> dict:
-        """Configures tww2ili using the currently loaded QGEP project layer"""
+        """Configures tww2ili using the currently loaded TWW project layer"""
 
         pg_layer = TwwLayerManager.layer("vw_tww_wastewater_structure")
         if not pg_layer:
             self.iface.messageBar().pushMessage(
                 "Error",
-                "Could not determine the Postgres connection information. Make sure the QGEP project is loaded.",
+                "Could not determine the Postgres connection information. Make sure the TWW project is loaded.",
                 level=Qgis.Critical,
             )
 

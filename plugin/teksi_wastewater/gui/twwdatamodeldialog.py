@@ -61,8 +61,8 @@ PLUGIN_FOLDER = Path(__file__).parent.parent
 DATAMODEL_PATH = PLUGIN_FOLDER / "datamodel"
 REQUIREMENTS_PATH = DATAMODEL_PATH / "requirements.txt"
 DELTAS_PATH = DATAMODEL_PATH / "delta"
-INIT_SCRIPT_PATH = DATAMODEL_PATH / "init" / "qgep_1.5.6-1_structure_with_value_lists.sql"
-QGISPROJECT_PATH = PLUGIN_FOLDER / "project" / "qgep.qgs"
+INIT_SCRIPT_PATH = DATAMODEL_PATH / "init" / "tww_1.5.6-1_structure_with_value_lists.sql"
+QGISPROJECT_PATH = PLUGIN_FOLDER / "project" / "tww.qgs"
 
 
 def tww_datamodel_error_catcher(func):
@@ -82,7 +82,7 @@ class TwwDatamodelError(Exception):
     pass
 
 
-class TwwPgserviceEditorDialog(QDialog, get_ui_class("qgeppgserviceeditordialog.ui")):
+class TwwPgserviceEditorDialog(QDialog, get_ui_class("twwpgserviceeditordialog.ui")):
     def __init__(self, cur_name, cur_config, taken_names):
         super().__init__()
         self.setupUi(self)
@@ -137,7 +137,7 @@ class TwwPgserviceEditorDialog(QDialog, get_ui_class("qgeppgserviceeditordialog.
         return retval
 
 
-class TwwDatamodelInitToolDialog(QDialog, get_ui_class("qgepdatamodeldialog.ui")):
+class TwwDatamodelInitToolDialog(QDialog, get_ui_class("twwdatamodeldialog.ui")):
     def __init__(self, parent=None):
         QDialog.__init__(self, parent)
         self.setupUi(self)
@@ -524,7 +524,7 @@ class TwwDatamodelInitToolDialog(QDialog, get_ui_class("qgepdatamodeldialog.ui")
                 # determine if this is a connection error or if PUM is not initailized
                 # see https://github.com/opengisch/pum/issues/96
                 # We'll try to connect to see if it's a connection error
-                error = "qgep not initialized"
+                error = "tww not initialized"
                 try:
                     self._run_sql(
                         "SELECT 1;",
@@ -633,7 +633,7 @@ class TwwDatamodelInitToolDialog(QDialog, get_ui_class("qgepdatamodeldialog.ui")
                 )
                 # workaround until https://github.com/QGEP/QGEP/issues/612 is fixed // skip-keyword-check
                 self._run_sql(
-                    "SELECT qgep_network.refresh_network_simple();",
+                    "SELECT tww_network.refresh_network_simple();",
                     error_message="Errors when initializing the database.",
                 )
 

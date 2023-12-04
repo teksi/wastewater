@@ -30,79 +30,79 @@ SWMM_SUMMARY_PARAMETERS = {}
 SWMM_SUMMARY_PARAMETERS["average_depth"] = {
     "recorded": True,
     "dimension": "m",
-    "qgep_measurement_type": 5734,
+    "tww_measurement_type": 5734,
 }
 SWMM_SUMMARY_PARAMETERS["maximum_depth"] = {
     "recorded": True,
     "dimension": "m",
-    "qgep_measurement_type": 5734,
+    "tww_measurement_type": 5734,
 }
 SWMM_SUMMARY_PARAMETERS["maximum_hgl"] = {
     "recorded": True,
     "dimension": "m",
-    "qgep_measurement_type": 5732,
+    "tww_measurement_type": 5732,
 }
 SWMM_SUMMARY_PARAMETERS["reported_max_depth"] = {
     "recorded": True,
     "dimension": "m",
-    "qgep_measurement_type": 5734,
+    "tww_measurement_type": 5734,
 }
 SWMM_SUMMARY_PARAMETERS["maximum_flow"] = {
     "recorded": True,
     "dimension": "l/s",
-    "qgep_measurement_type": 5733,
+    "tww_measurement_type": 5733,
 }
 SWMM_SUMMARY_PARAMETERS["maximum_velocity"] = {
     "recorded": True,
     "dimension": "m/s",
-    "qgep_measurement_type": 5732,
+    "tww_measurement_type": 5732,
 }
 SWMM_SUMMARY_PARAMETERS["max_over_full_flow"] = {
     "recorded": True,
     "dimension": "-",
-    "qgep_measurement_type": 5733,
+    "tww_measurement_type": 5733,
 }
 SWMM_SUMMARY_PARAMETERS["max_over_full_depth"] = {
     "recorded": True,
     "dimension": "-",
-    "qgep_measurement_type": 5734,
+    "tww_measurement_type": 5734,
 }
 
 SWMM_RESULTS_PARAMETERS = {}
 SWMM_RESULTS_PARAMETERS["flow"] = {
     "recorded": True,
     "dimension": "l/s",
-    "qgep_measurement_type": 5733,
+    "tww_measurement_type": 5733,
 }
 SWMM_RESULTS_PARAMETERS["velocity"] = {
     "recorded": True,
     "dimension": "m/s",
-    "qgep_measurement_type": 5732,
+    "tww_measurement_type": 5732,
 }
 SWMM_RESULTS_PARAMETERS["depth"] = {
     "recorded": True,
     "dimension": "m",
-    "qgep_measurement_type": 5734,
+    "tww_measurement_type": 5734,
 }
 SWMM_RESULTS_PARAMETERS["capacity"] = {
     "recorded": True,
     "dimension": "-",
-    "qgep_measurement_type": 5732,
+    "tww_measurement_type": 5732,
 }
 SWMM_RESULTS_PARAMETERS["inflow"] = {
     "recorded": True,
     "dimension": "l/s",
-    "qgep_measurement_type": 5733,
+    "tww_measurement_type": 5733,
 }
 SWMM_RESULTS_PARAMETERS["flooding"] = {
     "recorded": True,
     "dimension": "l/s",
-    "qgep_measurement_type": 5733,
+    "tww_measurement_type": 5733,
 }
 SWMM_RESULTS_PARAMETERS["head"] = {
     "recorded": True,
     "dimension": "m",
-    "qgep_measurement_type": 5732,
+    "tww_measurement_type": 5732,
 }
 
 NON_PHYSICAL_REM = "Non-physical point which materializes swmm simulations"
@@ -194,7 +194,7 @@ class TwwSwmm:
             where_clauses.append(f"""hierarchy = '{hierarchy}'""")
 
         sql = """
-        select * from qgep_swmm.vw_{table_name}
+        select * from tww_swmm.vw_{table_name}
         """.format(
             table_name=table_name
         )
@@ -669,7 +669,7 @@ class TwwSwmm:
                                 )
                                 self.create_measurement_result(
                                     ms_obj_id,
-                                    SWMM_RESULTS_PARAMETERS[k]["qgep_measurement_type"],
+                                    SWMM_RESULTS_PARAMETERS[k]["tww_measurement_type"],
                                     measuring_duration,
                                     time,
                                     m[k],
@@ -833,7 +833,7 @@ class TwwSwmm:
                             time = (simulation_start_date + delta).isoformat()
                             self.create_measurement_result(
                                 ms_obj_id,
-                                SWMM_SUMMARY_PARAMETERS[k]["qgep_measurement_type"],
+                                SWMM_SUMMARY_PARAMETERS[k]["tww_measurement_type"],
                                 measuring_duration,
                                 time,
                                 ws[k],
@@ -1265,7 +1265,7 @@ class TwwSwmm:
         sql = """
         UPDATE tww_od.reach r
         SET swmm_default_coefficient_of_friction = f.coefficient_of_friction
-        FROM qgep_swmm.reach_coefficient_of_friction f
+        FROM tww_swmm.reach_coefficient_of_friction f
         WHERE r.swmm_default_coefficient_of_friction isnull AND f.fk_material = r.material;
         """
         try:
@@ -1289,7 +1289,7 @@ class TwwSwmm:
         sql = """
         UPDATE tww_od.reach r
         SET swmm_default_coefficient_of_friction = f.coefficient_of_friction
-        FROM qgep_swmm.reach_coefficient_of_friction f
+        FROM tww_swmm.reach_coefficient_of_friction f
         WHERE f.fk_material = r.material;
         """
         try:

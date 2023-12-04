@@ -44,10 +44,10 @@ function I(d)
 }
 
 // Global Object, where we'll declare all the useful stuff inside
-var qgep = { def: {}, test: {} };
+var tww = { def: {}, test: {} };
 
 require( ["dojo/on", "dojo/ready", "dojo/_base/json", "dojo/_base/lang", "profile/specialStructure", "profile/reach", "profile/surface"], function(  on, ready, dojo, lang, SpecialStructure, Reach, Surface ) {
-  qgep.def.ProfilePlot = dojo.declare( null,
+  tww.def.ProfilePlot = dojo.declare( null,
   {
     verticalExaggeration: 10,
 
@@ -264,7 +264,7 @@ require( ["dojo/on", "dojo/ready", "dojo/_base/json", "dojo/_base/lang", "profil
     }
   });
 
-  qgep.test.clickReach = function( selector ) {
+  tww.test.clickReach = function( selector ) {
     var event = document.createEvent( 'MouseEvents' );
     event.initMouseEvent( 'click' );
     var elem = d3.select( selector )[0][0];
@@ -277,35 +277,35 @@ require( ["dojo/on", "dojo/ready", "dojo/_base/json", "dojo/_base/lang", "profil
 
   ready(function(){
     // Create the profile we need
-    qgep.profilePlot = new qgep.def.ProfilePlot();
-    qgep.profilePlot.initSVG( d3.select("body") );
+    tww.profilePlot = new tww.def.ProfilePlot();
+    tww.profilePlot.initSVG( d3.select("body") );
 
-    // profileProxy is our bridge to the QGEP plugin. It's inserted with teh use of black magic (and pyQt/QtWebKit bridge)
+    // profileProxy is our bridge to the TWW plugin. It's inserted with teh use of black magic (and pyQt/QtWebKit bridge)
     //profileProxy.profileChanged.connect( dojo.hitch( qgep.profilePlot, qgep.profilePlot.createReaches, dojo.fromJson( arguments[0] ) ) );
     if ( typeof profileProxy !== 'undefined' )
     {
       profileProxy.profileChanged.connect(
         function(data) {
           var profileData = dojo.fromJson(data);
-          qgep.data = profileData;
+          tww.data = profileData;
           var reachData = profileData.filter ( function(d) { return d.type === 'reach'; } );
-          qgep.profilePlot.reach.data( reachData );
+          tww.profilePlot.reach.data( reachData );
           var specialStructureData = profileData.filter ( function(d) { return d.type === 'special_structure'; } );
-          qgep.profilePlot.specialStructure.data( specialStructureData );
+          tww.profilePlot.specialStructure.data( specialStructureData );
           var nodeData = profileData.filter( function(d) { return d.type === 'node'; } );
-          qgep.profilePlot.terrain.data( nodeData );
-          qgep.profilePlot.backflow.data( nodeData );
+          tww.profilePlot.terrain.data( nodeData );
+          tww.profilePlot.backflow.data( nodeData );
 
-          qgep.profilePlot.scaleDomain();
-          qgep.profilePlot.redraw();
+          tww.profilePlot.scaleDomain();
+          tww.profilePlot.redraw();
         }
       );
 
       profileProxy.verticalExaggerationChanged.connect(
         function(ve)
         {
-          qgep.profilePlot.verticalExaggeration = ve;
-          qgep.profilePlot.scaleDomain();
+          tww.profilePlot.verticalExaggeration = ve;
+          tww.profilePlot.scaleDomain();
         }
       );
 
