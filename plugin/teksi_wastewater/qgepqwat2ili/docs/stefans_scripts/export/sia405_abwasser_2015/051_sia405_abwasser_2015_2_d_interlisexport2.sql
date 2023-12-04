@@ -52,70 +52,70 @@ INSERT INTO sia405_abwasser_2015_2_d.baseclass
 (
 t_id, t_type, t_ili_tid)
 SELECT sia405_abwasser_2015_2_d.tid_generate('bauwerksteil', obj_id), 'bauwerksteil', obj_id
-FROM qgep_od.structure_part;
+FROM tww_od.structure_part;
 
 INSERT INTO sia405_abwasser_2015_2_d.sia405_baseclass
 (
 t_id, obj_id)
 SELECT sia405_abwasser_2015_2_d.tid_lookup('bauwerksteil', obj_id), obj_id
-FROM qgep_od.structure_part;
+FROM tww_od.structure_part;
 
 INSERT INTO sia405_abwasser_2015_2_d.baseclass
 (
 t_id, t_type, t_ili_tid)
 SELECT sia405_abwasser_2015_2_d.tid_generate('haltungspunkt', obj_id), 'haltungspunkt', obj_id
-FROM qgep_od.reach_point;
+FROM tww_od.reach_point;
 
 INSERT INTO sia405_abwasser_2015_2_d.sia405_baseclass
 (
 t_id, obj_id)
 SELECT sia405_abwasser_2015_2_d.tid_lookup('haltungspunkt', obj_id), obj_id
-FROM qgep_od.reach_point;
+FROM tww_od.reach_point;
 
 INSERT INTO sia405_abwasser_2015_2_d.baseclass
 (
 t_id, t_type, t_ili_tid)
 SELECT sia405_abwasser_2015_2_d.tid_generate('abwassernetzelement', obj_id), 'abwassernetzelement', obj_id
-FROM qgep_od.wastewater_networkelement;
+FROM tww_od.wastewater_networkelement;
 
 INSERT INTO sia405_abwasser_2015_2_d.sia405_baseclass
 (
 t_id, obj_id)
 SELECT sia405_abwasser_2015_2_d.tid_lookup('abwassernetzelement', obj_id), obj_id
-FROM qgep_od.wastewater_networkelement;
+FROM tww_od.wastewater_networkelement;
 
 INSERT INTO sia405_abwasser_2015_2_d.baseclass
 (
 t_id, t_type, t_ili_tid)
 SELECT sia405_abwasser_2015_2_d.tid_generate('rohrprofil', obj_id), 'rohrprofil', obj_id
-FROM qgep_od.pipe_profile;
+FROM tww_od.pipe_profile;
 
 INSERT INTO sia405_abwasser_2015_2_d.sia405_baseclass
 (
 t_id, obj_id)
 SELECT sia405_abwasser_2015_2_d.tid_lookup('rohrprofil', obj_id), obj_id
-FROM qgep_od.pipe_profile;
+FROM tww_od.pipe_profile;
 
 INSERT INTO sia405_abwasser_2015_2_d.baseclass
 (
 t_id, t_type, t_ili_tid)
 SELECT sia405_abwasser_2015_2_d.tid_generate('abwasserbauwerk', obj_id), 'abwasserbauwerk', obj_id
-FROM qgep_od.wastewater_structure;
+FROM tww_od.wastewater_structure;
 
 INSERT INTO sia405_abwasser_2015_2_d.sia405_baseclass
 (
 t_id, obj_id)
 SELECT sia405_abwasser_2015_2_d.tid_lookup('abwasserbauwerk', obj_id), obj_id
-FROM qgep_od.wastewater_structure;
+FROM tww_od.wastewater_structure;
 
 INSERT INTO sia405_abwasser_2015_2_d.baseclass
 (
 t_id, t_type, t_ili_tid)
 SELECT sia405_abwasser_2015_2_d.tid_generate('organisation', obj_id), 'organisation', obj_id
-FROM qgep_od.organisation;
+FROM tww_od.organisation;
 
 INSERT INTO sia405_abwasser_2015_2_d.sia405_baseclass
 (
 t_id, obj_id)
 SELECT sia405_abwasser_2015_2_d.tid_lookup('organisation', obj_id), obj_id
-FROM qgep_od.organisation;
+FROM tww_od.organisation;

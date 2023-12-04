@@ -842,7 +842,7 @@ class TwwSwmm:
 
     def populate_attribute(self, data, table_name, attribute_name, swmm_attribute):
         """
-        Update an attribute of a qgep_od table according to a swmm result
+        Update an attribute of a tww_od table according to a swmm result
 
         Parameters:
         data (array): data extracted from the node summary
@@ -860,7 +860,7 @@ class TwwSwmm:
             bf_level = ws[swmm_attribute]
             obj_id = ws["id"]
             sql = """
-            UPDATE qgep_od.{table_name}
+            UPDATE tww_od.{table_name}
             SET {attribute_name} = {bf_level}
             WHERE obj_id = '{obj_id}'
             RETURNING obj_id;
@@ -880,7 +880,7 @@ class TwwSwmm:
             if res is None:
                 self.feedback_push(
                     "info",
-                    """{obj_id} in the output file has no correspondance in qgep_od.{table_name}.""".format(
+                    """{obj_id} in the output file has no correspondance in tww_od.{table_name}.""".format(
                         obj_id=obj_id, table_name=table_name
                     ),
                 )
@@ -908,8 +908,8 @@ class TwwSwmm:
         # Test if the measuring point exists
         sql = """
         SELECT mp.obj_id
-        FROM qgep_od.measuring_point mp
-        JOIN qgep_od.wastewater_structure ws on mp.fk_wastewater_structure = ws.obj_id
+        FROM tww_od.measuring_point mp
+        JOIN tww_od.wastewater_structure ws on mp.fk_wastewater_structure = ws.obj_id
         WHERE ws.fk_main_wastewater_node = '{node_obj_id}'
         AND mp.remark = '{sim_description}'
         """.format(
@@ -922,12 +922,12 @@ class TwwSwmm:
             # Measuring point doesnt exists, must be created
             # 4594 = technical purpose [TO VALIDATE]
             sql = """
-            INSERT INTO qgep_od.measuring_point
+            INSERT INTO tww_od.measuring_point
             (damming_device, identifier, kind,
             purpose, remark, fk_wastewater_structure)
             SELECT 5721, NULL, '{MEASURING_POINT_KIND}', 4594,
             '{sim_description}', ws.obj_id
-            FROM qgep_od.wastewater_structure ws
+            FROM tww_od.wastewater_structure ws
             WHERE fk_main_wastewater_node = '{node_obj_id}'
             RETURNING obj_id
             """.format(
@@ -971,8 +971,8 @@ class TwwSwmm:
         # Test if the measuring point exists
         sql = """
         SELECT mp.obj_id
-        FROM qgep_od.measuring_point mp
-        JOIN qgep_od.wastewater_networkelement ne ON
+        FROM tww_od.measuring_point mp
+        JOIN tww_od.wastewater_networkelement ne ON
         ne.fk_wastewater_structure = mp.fk_wastewater_structure
         WHERE ne.obj_id = '{reach_obj_id}'
         AND mp.remark = '{sim_description}'
@@ -986,12 +986,12 @@ class TwwSwmm:
             # Measuring point doesnt exists, must be created
             # 4594 = technical purpose [TO VALIDATE]
             sql = """
-            INSERT INTO qgep_od.measuring_point
+            INSERT INTO tww_od.measuring_point
             (damming_device, identifier, kind, purpose, remark,
             fk_wastewater_structure)
             SELECT 5721, NULL, '{MEASURING_POINT_KIND}', 4594,
             '{sim_description}', ne.fk_wastewater_structure
-            FROM qgep_od.wastewater_networkelement ne
+            FROM tww_od.wastewater_networkelement ne
             WHERE ne.obj_id = '{reach_obj_id}'
             RETURNING obj_id
             """.format(
@@ -1030,7 +1030,7 @@ class TwwSwmm:
         # Test if the measuring device exists
         sql = """
         SELECT md.obj_id
-        FROM qgep_od.measuring_device md
+        FROM tww_od.measuring_device md
         WHERE md.fk_measuring_point = '{mp_obj_id}'
         AND remark = '{MEASURING_DEVICE_REMARK}'
         """.format(
@@ -1042,7 +1042,7 @@ class TwwSwmm:
         if res is None:
             # Measuring device doesnt exists, must be created
             sql = """
-            INSERT INTO qgep_od.measuring_device
+            INSERT INTO tww_od.measuring_device
             (kind, remark, fk_measuring_point)
             VALUES
             (5702, '{MEASURING_DEVICE_REMARK}','{mp_obj_id}')
@@ -1086,7 +1086,7 @@ class TwwSwmm:
 
         # Test if the measurement serie exists
         sql = """
-        SELECT obj_id FROM qgep_od.measurement_series
+        SELECT obj_id FROM tww_od.measurement_series
         WHERE remark = '{parameter_name}'
         AND fk_measuring_point = '{mp_obj_id}'
         """.format(
@@ -1101,7 +1101,7 @@ class TwwSwmm:
             # No dimension, else we would need to create four measurements
             # series l/s m/s m - [TO VALIDATE]
             sql = """
-            INSERT INTO qgep_od.measurement_series
+            INSERT INTO tww_od.measurement_series
             (identifier, dimension, kind, remark, fk_measuring_point)
             VALUES
             (null, '{parameter_dimension}', 3217,
@@ -1149,7 +1149,7 @@ class TwwSwmm:
 
         # Test if the measurement result exists (same measurement serie, same time, same type)
         sql = """
-        SELECT obj_id FROM qgep_od.measurement_result
+        SELECT obj_id FROM tww_od.measurement_result
         WHERE fk_measurement_series = '{ms_obj_id}'
         AND time = '{time}'
         AND measurement_type = {measurement_type}
@@ -1168,7 +1168,7 @@ class TwwSwmm:
             # Measurement result doesnt exists, must be created
 
             sql = """
-            INSERT INTO qgep_od.measurement_result
+            INSERT INTO tww_od.measurement_result
             (identifier, measurement_type, measuring_duration,
             time, value, fk_measurement_series)
             VALUES
@@ -1194,7 +1194,7 @@ class TwwSwmm:
             mr_obj_id = res[0]
             # Measurement result exists, must be updated
             sql = """
-            UPDATE qgep_od.measurement_result
+            UPDATE tww_od.measurement_result
             SET measuring_duration={measuring_duration}, value={value}
             WHERE obj_id = '{mr_obj_id}'
             RETURNING obj_id
@@ -1214,14 +1214,14 @@ class TwwSwmm:
 
     def disable_reach_trigger(self):
         """
-        Disable triggers on the table qgep_od.reach
+        Disable triggers on the table tww_od.reach
         """
 
         cur = self.con.cursor()
 
-        # Set value for qgep_od.reach.default_coefficient_friction where reach_material is known
+        # Set value for tww_od.reach.default_coefficient_friction where reach_material is known
         sql = """
-        ALTER TABLE qgep_od.reach DISABLE TRIGGER ALL;
+        ALTER TABLE tww_od.reach DISABLE TRIGGER ALL;
         """
         try:
             cur.execute(sql)
@@ -1235,14 +1235,14 @@ class TwwSwmm:
 
     def enable_reach_trigger(self):
         """
-        Enable triggers on the table qgep_od.reach
+        Enable triggers on the table tww_od.reach
         """
 
         cur = self.con.cursor()
 
-        # Set value for qgep_od.reach.default_coefficient_friction where reach_material is known
+        # Set value for tww_od.reach.default_coefficient_friction where reach_material is known
         sql = """
-        ALTER TABLE qgep_od.reach ENABLE TRIGGER ALL;
+        ALTER TABLE tww_od.reach ENABLE TRIGGER ALL;
         """
         try:
             cur.execute(sql)
@@ -1256,14 +1256,14 @@ class TwwSwmm:
 
     def set_reach_default_friction(self):
         """
-        Set default friction in qgep_od.reach where default friction is not set
+        Set default friction in tww_od.reach where default friction is not set
         """
 
         cur = self.con.cursor()
 
-        # Set value for qgep_od.reach.default_coefficient_friction where reach_material is known
+        # Set value for tww_od.reach.default_coefficient_friction where reach_material is known
         sql = """
-        UPDATE qgep_od.reach r
+        UPDATE tww_od.reach r
         SET swmm_default_coefficient_of_friction = f.coefficient_of_friction
         FROM qgep_swmm.reach_coefficient_of_friction f
         WHERE r.swmm_default_coefficient_of_friction isnull AND f.fk_material = r.material;
@@ -1280,14 +1280,14 @@ class TwwSwmm:
 
     def overwrite_reach_default_friction(self):
         """
-        Reset default friction in qgep_od.reach where default friction
+        Reset default friction in tww_od.reach where default friction
         """
 
         cur = self.con.cursor()
 
-        # Set value for qgep_od.reach.default_coefficient_friction where reach_material is known
+        # Set value for tww_od.reach.default_coefficient_friction where reach_material is known
         sql = """
-        UPDATE qgep_od.reach r
+        UPDATE tww_od.reach r
         SET swmm_default_coefficient_of_friction = f.coefficient_of_friction
         FROM qgep_swmm.reach_coefficient_of_friction f
         WHERE f.fk_material = r.material;

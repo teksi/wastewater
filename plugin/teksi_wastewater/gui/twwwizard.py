@@ -31,7 +31,7 @@ from ..tools.twwmaptooladdfeature import TwwMapToolAddReach
 from ..utils import get_ui_class
 from ..utils.twwlayermanager import TwwLayerManager
 
-DOCK_WIDGET = get_ui_class("qgepwizard.ui")
+DOCK_WIDGET = get_ui_class("twwwizard.ui")
 
 
 class TwwWizard(QDockWidget, DOCK_WIDGET):

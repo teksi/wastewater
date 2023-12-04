@@ -67,7 +67,7 @@ class GuiImport(QDialog):
             cls = obj.__class__
 
             # Hide unmodified value lists items that may have been added to the session
-            if editor.status == Editor.EXISTING and cls.__table__.schema == "qgep_vl":
+            if editor.status == Editor.EXISTING and cls.__table__.schema == "tww_vl":
                 continue
 
             if cls not in self.category_items:

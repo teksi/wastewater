@@ -38,7 +38,7 @@ from qgis.PyQt.QtWidgets import (
 from ..utils import get_ui_class
 from ..utils.twwlayermanager import TwwLayerManager
 
-DOCK_WIDGET_UI = get_ui_class("qgepdockwidget.ui")
+DOCK_WIDGET_UI = get_ui_class("twwdockwidget.ui")
 
 
 class TwwProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
@@ -167,9 +167,9 @@ class TwwProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
             if item["objType"] == "wastewater_node":
                 wastewater_nodes.append(item["objId"])
 
-        qgep_wastewater_structures_layer = TwwLayerManager.layer("vw_tww_wastewater_structure")
+        tww_wastewater_structures_layer = TwwLayerManager.layer("vw_tww_wastewater_structure")
         wastewater_nodes_layer = TwwLayerManager.layer("vw_wastewater_node")
-        qgep_reach_layer = TwwLayerManager.layer("vw_tww_reach")
+        tww_reach_layer = TwwLayerManager.layer("vw_tww_reach")
         catchment_areas_layer = TwwLayerManager.layer("od_catchment_area")
 
         wastewater_node_list = ",".join("'" + id + "'" for id in wastewater_nodes)
@@ -178,19 +178,19 @@ class TwwProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
         if catchment_areas_layer:
             request = QgsFeatureRequest()
             filters = list()
-            if QgsProject.instance().readBoolEntry("Qgep", "FollowWastewaterCurrent", True)[0]:
+            if QgsProject.instance().readBoolEntry("Tww", "FollowWastewaterCurrent", True)[0]:
                 filters.append(
                     f"fk_wastewater_networkelement_ww_current IN ({wastewater_node_list})"
                 )
-            if QgsProject.instance().readBoolEntry("Qgep", "FollowWastewaterPlanned", True)[0]:
+            if QgsProject.instance().readBoolEntry("Tww", "FollowWastewaterPlanned", True)[0]:
                 filters.append(
                     f"fk_wastewater_networkelement_ww_planned IN ({wastewater_node_list})"
                 )
-            if QgsProject.instance().readBoolEntry("Qgep", "FollowRainwaterCurrent", True)[0]:
+            if QgsProject.instance().readBoolEntry("Tww", "FollowRainwaterCurrent", True)[0]:
                 filters.append(
                     f"fk_wastewater_networkelement_rw_current IN ({wastewater_node_list})"
                 )
-            if QgsProject.instance().readBoolEntry("Qgep", "FollowRainwaterPlanned", True)[0]:
+            if QgsProject.instance().readBoolEntry("Tww", "FollowRainwaterPlanned", True)[0]:
                 filters.append(
                     f"fk_wastewater_networkelement_rw_planned IN ({wastewater_node_list})"
                 )
@@ -200,11 +200,11 @@ class TwwProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
                 features = catchment_areas_layer.getFeatures(request)
                 catchment_areas_layer.select([f.id() for f in features])
 
-        if qgep_reach_layer:
+        if tww_reach_layer:
             request = QgsFeatureRequest()
             request.setFilterExpression(f"obj_id IN ({reach_list})")
-            features = qgep_reach_layer.getFeatures(request)
-            qgep_reach_layer.select([f.id() for f in features])
+            features = tww_reach_layer.getFeatures(request)
+            tww_reach_layer.select([f.id() for f in features])
 
         if wastewater_nodes_layer:
             request = QgsFeatureRequest()
@@ -220,11 +220,11 @@ class TwwProfileDockWidget(QDockWidget, DOCK_WIDGET_UI):
             "'" + id + "'" for id in wastewater_structures if type(id) is str
         )
 
-        if qgep_wastewater_structures_layer:
+        if tww_wastewater_structures_layer:
             request = QgsFeatureRequest()
             request.setFilterExpression(f"obj_id IN ({wastewater_structure_list})")
-            features = qgep_wastewater_structures_layer.getFeatures(request)
-            qgep_wastewater_structures_layer.select([f.id() for f in features])
+            features = tww_wastewater_structures_layer.getFeatures(request)
+            tww_wastewater_structures_layer.select([f.id() for f in features])
 
     def setTree(self, nodes, edges):
         self.nodes = nodes

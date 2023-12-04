@@ -31,7 +31,7 @@ from qgis.PyQt.QtWidgets import QDialog, QFileDialog
 
 from ..utils import get_ui_class
 
-DIALOG_UI = get_ui_class("qgepsettingsdialog.ui")
+DIALOG_UI = get_ui_class("twwsettingsdialog.ui")
 
 LOGFORMAT = "%(asctime)s:%(levelname)s:%(module)s:%(message)s"
 
@@ -45,35 +45,35 @@ class TwwSettingsDialog(QDialog, DIALOG_UI):
 
         project = QgsProject.instance()
 
-        svgprofile_path = self.settings.value("/QGEP/SvgProfilePath", None)
+        svgprofile_path = self.settings.value("/TWW/SvgProfilePath", None)
         if svgprofile_path:
             self.mGbOverrideDefaultProfileTemplate.setChecked(True)
             self.mProfileTemplateFile.setText(svgprofile_path)
         else:
             self.mGbOverrideDefaultProfileTemplate.setChecked(False)
 
-        develmode = self.settings.value("/QGEP/DeveloperMode", False, type=bool)
+        develmode = self.settings.value("/TWW/DeveloperMode", False, type=bool)
         self.mCbDevelMode.setChecked(develmode)
 
-        adminmode = self.settings.value("/QGEP/AdminMode", False, type=bool)
+        adminmode = self.settings.value("/TWW/AdminMode", False, type=bool)
         self.mCbAdminMode.setChecked(adminmode)
 
-        lyr_special_structures, _ = project.readEntry("QGEP", "SpecialStructureLayer")
-        lyr_graph_edges, _ = project.readEntry("QGEP", "GraphEdgeLayer")
-        lyr_graph_nodes, _ = project.readEntry("QGEP", "GraphNodeLayer")
+        lyr_special_structures, _ = project.readEntry("TWW", "SpecialStructureLayer")
+        lyr_graph_edges, _ = project.readEntry("TWW", "GraphEdgeLayer")
+        lyr_graph_nodes, _ = project.readEntry("TWW", "GraphNodeLayer")
 
         self.initLayerCombobox(self.mCbSpecialStructures, lyr_special_structures)
         self.initLayerCombobox(self.mCbGraphEdges, lyr_graph_edges)
         self.initLayerCombobox(self.mCbGraphNodes, lyr_graph_nodes)
 
         self.mCurrentProfileColorButton.setColor(
-            QColor(self.settings.value("/QGEP/CurrentProfileColor", "#FF9500"))
+            QColor(self.settings.value("/TWW/CurrentProfileColor", "#FF9500"))
         )
         self.mHelperLineColorButton.setColor(
-            QColor(self.settings.value("/QGEP/HelperLineColor", "#FFD900"))
+            QColor(self.settings.value("/TWW/HelperLineColor", "#FFD900"))
         )
         self.mHighlightColorButton.setColor(
-            QColor(self.settings.value("/QGEP/HighlightColor", "#40FF40"))
+            QColor(self.settings.value("/TWW/HighlightColor", "#40FF40"))
         )
 
         self.mPbnChooseProfileTemplateFile.clicked.connect(self.onChooseProfileTemplateFileClicked)
@@ -81,10 +81,10 @@ class TwwSettingsDialog(QDialog, DIALOG_UI):
 
         self.accepted.connect(self.onAccept)
 
-        loglevel = self.settings.value("/QGEP/LogLevel", "Warning")
+        loglevel = self.settings.value("/TWW/LogLevel", "Warning")
         self.mCbLogLevel.setCurrentIndex(self.mCbLogLevel.findText(self.tr(loglevel)))
 
-        logfile = self.settings.value("/QGEP/LogFile", None)
+        logfile = self.settings.value("/TWW/LogFile", None)
 
         if logfile is not None:
             self.mGbLogToFile.setChecked(True)
@@ -106,17 +106,17 @@ class TwwSettingsDialog(QDialog, DIALOG_UI):
         twwlogger = logging.getLogger("tww")
         # General settings
         if self.mGbOverrideDefaultProfileTemplate.isChecked() and self.mProfileTemplateFile.text():
-            self.settings.setValue("/QGEP/SvgProfilePath", self.mProfileTemplateFile.text())
+            self.settings.setValue("/TWW/SvgProfilePath", self.mProfileTemplateFile.text())
         else:
-            self.settings.remove("/QGEP/SvgProfilePath")
+            self.settings.remove("/TWW/SvgProfilePath")
 
-        self.settings.setValue("/QGEP/DeveloperMode", self.mCbDevelMode.isChecked())
-        self.settings.setValue("/QGEP/AdminMode", self.mCbAdminMode.isChecked())
+        self.settings.setValue("/TWW/DeveloperMode", self.mCbDevelMode.isChecked())
+        self.settings.setValue("/TWW/AdminMode", self.mCbAdminMode.isChecked())
 
         # Logging
-        if hasattr(twwlogger, "qgepFileHandler"):
-            twwlogger.removeHandler(twwlogger.qgepFileHandler)
-            del twwlogger.qgepFileHandler
+        if hasattr(twwlogger, "twwFileHandler"):
+            twwlogger.removeHandler(twwlogger.twwFileHandler)
+            del twwlogger.twwFileHandler
 
         if self.mGbLogToFile.isChecked():
             logfile = str(self.mLogFile.text())
@@ -124,29 +124,29 @@ class TwwSettingsDialog(QDialog, DIALOG_UI):
             fmt = logging.Formatter(LOGFORMAT)
             log_handler.setFormatter(fmt)
             twwlogger.addHandler(log_handler)
-            twwlogger.qgepFileHandler = log_handler
-            self.settings.setValue("/QGEP/LogFile", logfile)
+            twwlogger.twwFileHandler = log_handler
+            self.settings.setValue("/TWW/LogFile", logfile)
         else:
-            self.settings.setValue("/QGEP/LogFile", None)
+            self.settings.setValue("/TWW/LogFile", None)
 
         if self.tr("Debug") == self.mCbLogLevel.currentText():
             twwlogger.setLevel(logging.DEBUG)
-            self.settings.setValue("/QGEP/LogLevel", "Debug")
+            self.settings.setValue("/TWW/LogLevel", "Debug")
         elif self.tr("Info") == self.mCbLogLevel.currentText():
             twwlogger.setLevel(logging.INFO)
-            self.settings.setValue("/QGEP/LogLevel", "Info")
+            self.settings.setValue("/TWW/LogLevel", "Info")
         elif self.tr("Warning") == self.mCbLogLevel.currentText():
             twwlogger.setLevel(logging.WARNING)
-            self.settings.setValue("/QGEP/LogLevel", "Warning")
+            self.settings.setValue("/TWW/LogLevel", "Warning")
         elif self.tr("Error") == self.mCbLogLevel.currentText():
             twwlogger.setLevel(logging.ERROR)
-            self.settings.setValue("/QGEP/LogLevel", "Error")
+            self.settings.setValue("/TWW/LogLevel", "Error")
 
         # Save colors
-        self.settings.setValue("/QGEP/HelperLineColor", self.mHelperLineColorButton.color().name())
-        self.settings.setValue("/QGEP/HighlightColor", self.mHighlightColorButton.color().name())
+        self.settings.setValue("/TWW/HelperLineColor", self.mHelperLineColorButton.color().name())
+        self.settings.setValue("/TWW/HighlightColor", self.mHighlightColorButton.color().name())
         self.settings.setValue(
-            "/QGEP/CurrentProfileColor", self.mCurrentProfileColorButton.color().name()
+            "/TWW/CurrentProfileColor", self.mCurrentProfileColorButton.color().name()
         )
 
         # Project specific settings
@@ -157,15 +157,15 @@ class TwwSettingsDialog(QDialog, DIALOG_UI):
         graph_nodelayer_idx = self.mCbGraphNodes.currentIndex()
 
         project.writeEntry(
-            "QGEP",
+            "TWW",
             "SpecialStructureLayer",
             self.mCbSpecialStructures.itemData(specialstructure_idx),
         )
         project.writeEntry(
-            "QGEP", "GraphEdgeLayer", self.mCbGraphEdges.itemData(graph_edgelayer_idx)
+            "TWW", "GraphEdgeLayer", self.mCbGraphEdges.itemData(graph_edgelayer_idx)
         )
         project.writeEntry(
-            "QGEP", "GraphNodeLayer", self.mCbGraphNodes.itemData(graph_nodelayer_idx)
+            "TWW", "GraphNodeLayer", self.mCbGraphNodes.itemData(graph_nodelayer_idx)
         )
 
     @pyqtSlot()

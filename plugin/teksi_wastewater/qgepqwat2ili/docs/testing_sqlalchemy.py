@@ -49,9 +49,9 @@ def example_0():
 
 def example_1():
     meta = MetaData()
-    meta.reflect(bind=engine, schema="qgep_od")
+    meta.reflect(bind=engine, schema="tww_od")
 
-    TableManhole = meta.tables["qgep_od.manhole"]
+    TableManhole = meta.tables["tww_od.manhole"]
 
     select_query = TableManhole.select()
     print(select_query)
@@ -109,7 +109,7 @@ MAPPING = {
 def export_a():
     # Autoload QGEP datamodel
     QGEPBase = automap_base()
-    QGEPBase.prepare(engine, reflect=True, schema="qgep_od")
+    QGEPBase.prepare(engine, reflect=True, schema="tww_od")
 
     # Autoload Interlis datamodel
     SIABase = automap_base()
@@ -229,7 +229,7 @@ def export_a():
 def export_b():
     # Autoload QGEP datamodel
     QGEPBase = automap_base()
-    QGEPBase.prepare(engine, reflect=True, schema="qgep_od")
+    QGEPBase.prepare(engine, reflect=True, schema="tww_od")
 
     # Autoload Interlis datamodel
     SIABase = automap_base()
@@ -345,20 +345,20 @@ def export_c():
 
     class QGEPWastewaterNetworkelement(QGEPBase):
         __tablename__ = "wastewater_networkelement"
-        __table_args__ = {"schema": "qgep_od"}
+        __table_args__ = {"schema": "tww_od"}
 
     class QGEPWastewaterStructure(QGEPBase):
         __tablename__ = "wastewater_structure"
-        __table_args__ = {"schema": "qgep_od"}
+        __table_args__ = {"schema": "tww_od"}
 
     class QGEPManhole(QGEPWastewaterStructure):
         __tablename__ = "manhole"
-        __table_args__ = {"schema": "qgep_od"}
+        __table_args__ = {"schema": "tww_od"}
 
     QGEPBase.prepare(
         engine,
         reflect=True,
-        schema="qgep_od",
+        schema="tww_od",
         name_for_collection_relationship=custom_name_for_collection_relationship,
     )
 

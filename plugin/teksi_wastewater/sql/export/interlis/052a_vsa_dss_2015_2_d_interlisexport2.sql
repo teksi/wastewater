@@ -12,7 +12,7 @@ INSERT INTO vsa_dss_2015_2_d.erhaltungsereignis_abwasserbauwerkassoc
 (
 t_id, abwasserbauwerkref, erhaltungsereignis_abwasserbauwerkassocref)
 SELECT vsa_dss_2015_2_d.tid_lookup('erhaltungsereignis_abwasserbauwerkassoc', obj_id), vsa_dss_2015_2_d.tid_lookup('Abwasserbauwerk', fk_wastewater_structure), vsa_dss_2015_2_d.tid_lookup('Erhaltungsereignis', fk_maintenance_event)
-FROM qgep_od.re_maintenance_event_wastewater_structure;
+FROM tww_od.re_maintenance_event_wastewater_structure;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
@@ -21,43 +21,43 @@ t_id, t_seq,
 -- datenlieferant,
 -- letzte_aenderung,
 sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('erhaltungsereignis_abwasserbauwerkassoc', qgep_od.re_maintenance_event_wastewater_structure.obj_id), '0',
+SELECT vsa_dss_2015_2_d.tid_lookup('erhaltungsereignis_abwasserbauwerkassoc', tww_od.re_maintenance_event_wastewater_structure.obj_id), '0',
 -- a.identifier as dataowner,
 -- b.identifier as provider,
 -- re_maintenance_event_wastewater_structure.last_modification,
-vsa_dss_2015_2_d.tid_lookup('erhaltungsereignis_abwasserbauwerkassoc', qgep_od.re_maintenance_event_wastewater_structure.obj_id)
-FROM qgep_od.re_maintenance_event_wastewater_structure;
---   LEFT JOIN qgep_od.organisation as a ON re_maintenance_event_wastewater_structure.fk_dataowner = a.obj_id
---   LEFT JOIN qgep_od.organisation as b ON re_maintenance_event_wastewater_structure.fk_provider = b.obj_id;
+vsa_dss_2015_2_d.tid_lookup('erhaltungsereignis_abwasserbauwerkassoc', tww_od.re_maintenance_event_wastewater_structure.obj_id)
+FROM tww_od.re_maintenance_event_wastewater_structure;
+--   LEFT JOIN tww_od.organisation as a ON re_maintenance_event_wastewater_structure.fk_dataowner = a.obj_id
+--   LEFT JOIN tww_od.organisation as b ON re_maintenance_event_wastewater_structure.fk_provider = b.obj_id;
 
 /*
 INSERT INTO vsa_dss_2015_2_d.symbol
 (
 t_id, klasse, plantyp, bemerkung, symbolskalierunghoch, symbolskalierunglaengs, symbolhali, symbolori, symbolpos, symbolvali)
 SELECT vsa_dss_2015_2_d.tid_lookup('symbol', obj_id), class, plantype, remark, symbol_scaling_heigth, symbol_scaling_width, symbolhali, symbolori, ST_Force2D(symbolpos_geometry), symbolvali
-FROM qgep_od.symbol;
+FROM tww_od.symbol;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('symbol', qgep_od.symbol.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_symbol.last_modification, vsa_dss_2015_2_d.tid_lookup('symbol', qgep_od.symbol.obj_id)
-FROM qgep_od.symbol
-   LEFT JOIN qgep_od.organisation as a ON od_symbol.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_symbol.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('symbol', tww_od.symbol.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_symbol.last_modification, vsa_dss_2015_2_d.tid_lookup('symbol', tww_od.symbol.obj_id)
+FROM tww_od.symbol
+   LEFT JOIN tww_od.organisation as a ON od_symbol.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_symbol.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.text
 (
 t_id, klasse, plantyp, bemerkung, textinhalt, texthali, textori, textpos, textvali)
 SELECT vsa_dss_2015_2_d.tid_lookup('text', obj_id), class, plantype, remark, text, texthali, textori, ST_Force2D(textpos_geometry), textvali
-FROM qgep_od.text;
+FROM tww_od.text;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('text', qgep_od.text.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_text.last_modification, vsa_dss_2015_2_d.tid_lookup('text', qgep_od.text.obj_id)
-FROM qgep_od.text
-   LEFT JOIN qgep_od.organisation as a ON od_text.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_text.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('text', tww_od.text.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_text.last_modification, vsa_dss_2015_2_d.tid_lookup('text', tww_od.text.obj_id)
+FROM tww_od.text
+   LEFT JOIN tww_od.organisation as a ON od_text.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_text.fk_provider = b.obj_id;
 */
 
 INSERT INTO vsa_dss_2015_2_d.mutation
@@ -68,43 +68,43 @@ CASE WHEN kind = 5523 THEN 'erstellt' ---- 5523  created
 WHEN kind = 5582 THEN 'geaendert' ---- 5582  changed
 WHEN kind = 5583 THEN 'geloescht' ---- 5583  deleted
 END, last_value, object, recorded_by, remark, system_user
-FROM qgep_od.mutation;
+FROM tww_od.mutation;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('mutation', qgep_od.mutation.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_mutation.last_modification, vsa_dss_2015_2_d.tid_lookup('mutation', qgep_od.mutation.obj_id)
-FROM qgep_od.mutation
-   LEFT JOIN qgep_od.organisation as a ON od_mutation.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_mutation.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('mutation', tww_od.mutation.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_mutation.last_modification, vsa_dss_2015_2_d.tid_lookup('mutation', tww_od.mutation.obj_id)
+FROM tww_od.mutation
+   LEFT JOIN tww_od.organisation as a ON od_mutation.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_mutation.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.grundwasserleiter
 (
 t_id, mittlerergwspiegel, bezeichnung, maxgwspiegel, mingwspiegel, perimeter, bemerkung)
 SELECT vsa_dss_2015_2_d.tid_lookup('grundwasserleiter', obj_id), average_groundwater_level, identifier, maximal_groundwater_level, minimal_groundwater_level, ST_Force2D(perimeter_geometry), remark
-FROM qgep_od.aquifier;
+FROM tww_od.aquifier;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('grundwasserleiter', qgep_od.aquifier.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_aquifier.last_modification, vsa_dss_2015_2_d.tid_lookup('grundwasserleiter', qgep_od.aquifier.obj_id)
-FROM qgep_od.aquifier
-   LEFT JOIN qgep_od.organisation as a ON od_aquifier.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_aquifier.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('grundwasserleiter', tww_od.aquifier.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_aquifier.last_modification, vsa_dss_2015_2_d.tid_lookup('grundwasserleiter', tww_od.aquifier.obj_id)
+FROM tww_od.aquifier
+   LEFT JOIN tww_od.organisation as a ON od_aquifier.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_aquifier.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.oberflaechengewaesser
 (
 t_id, bezeichnung, bemerkung)
 SELECT vsa_dss_2015_2_d.tid_lookup('oberflaechengewaesser', obj_id), identifier, remark
-FROM qgep_od.surface_water_bodies;
+FROM tww_od.surface_water_bodies;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('oberflaechengewaesser', qgep_od.surface_water_bodies.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_surface_water_bodies.last_modification, vsa_dss_2015_2_d.tid_lookup('oberflaechengewaesser', qgep_od.surface_water_bodies.obj_id)
-FROM qgep_od.surface_water_bodies
-   LEFT JOIN qgep_od.organisation as a ON od_surface_water_bodies.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_surface_water_bodies.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('oberflaechengewaesser', tww_od.surface_water_bodies.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_surface_water_bodies.last_modification, vsa_dss_2015_2_d.tid_lookup('oberflaechengewaesser', tww_od.surface_water_bodies.obj_id)
+FROM tww_od.surface_water_bodies
+   LEFT JOIN tww_od.organisation as a ON od_surface_water_bodies.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_surface_water_bodies.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.fliessgewaesser
 (
@@ -116,7 +116,7 @@ WHEN kind = 3398 THEN 'Seeausfluss' ---- 3398  lake_outflow
 WHEN kind = 3396 THEN 'Travertinbach' ---- 3396  travertine_river
 WHEN kind = 3400 THEN 'unbekannt' ---- 3400  unknown
 END
-FROM qgep_od.river;
+FROM tww_od.river;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'fliessgewaesser'
 FROM
@@ -128,7 +128,7 @@ INSERT INTO vsa_dss_2015_2_d.see
 (
 t_id, perimeter)
 SELECT vsa_dss_2015_2_d.tid_lookup('see', obj_id), ST_Force2D(perimeter_geometry)
-FROM qgep_od.lake;
+FROM tww_od.lake;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'see'
 FROM
@@ -213,15 +213,15 @@ WHEN width_variability = 177 THEN 'eingeschraenkt' ---- 177  limited
 WHEN width_variability = 178 THEN 'keine' ---- 178  none
 WHEN width_variability = 3078 THEN 'unbekannt' ---- 3078  unknown
 END, vsa_dss_2015_2_d.tid_lookup('Fliessgewaesser', fk_watercourse)
-FROM qgep_od.water_course_segment;
+FROM tww_od.water_course_segment;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('gewaesserabschnitt', qgep_od.water_course_segment.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_water_course_segment.last_modification, vsa_dss_2015_2_d.tid_lookup('gewaesserabschnitt', qgep_od.water_course_segment.obj_id)
-FROM qgep_od.water_course_segment
-   LEFT JOIN qgep_od.organisation as a ON od_water_course_segment.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_water_course_segment.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('gewaesserabschnitt', tww_od.water_course_segment.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_water_course_segment.last_modification, vsa_dss_2015_2_d.tid_lookup('gewaesserabschnitt', tww_od.water_course_segment.obj_id)
+FROM tww_od.water_course_segment
+   LEFT JOIN tww_od.organisation as a ON od_water_course_segment.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_water_course_segment.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.wasserfassung
 (
@@ -231,15 +231,15 @@ CASE WHEN kind = 24 THEN 'Brauchwasser' ---- 24  process_water
 WHEN kind = 25 THEN 'Trinkwasser' ---- 25  drinking_water
 WHEN kind = 3075 THEN 'unbekannt' ---- 3075  unknown
 END, remark, ST_Force2D(situation_geometry), vsa_dss_2015_2_d.tid_lookup('Grundwasserleiter', fk_aquifier), vsa_dss_2015_2_d.tid_lookup('Oberflaechengewaesser', fk_chute)
-FROM qgep_od.water_catchment;
+FROM tww_od.water_catchment;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('wasserfassung', qgep_od.water_catchment.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_water_catchment.last_modification, vsa_dss_2015_2_d.tid_lookup('wasserfassung', qgep_od.water_catchment.obj_id)
-FROM qgep_od.water_catchment
-   LEFT JOIN qgep_od.organisation as a ON od_water_catchment.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_water_catchment.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('wasserfassung', tww_od.water_catchment.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_water_catchment.last_modification, vsa_dss_2015_2_d.tid_lookup('wasserfassung', tww_od.water_catchment.obj_id)
+FROM tww_od.water_catchment
+   LEFT JOIN tww_od.organisation as a ON od_water_catchment.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_water_catchment.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.ufer
 (
@@ -282,15 +282,15 @@ WHEN vegetation = 323 THEN 'standorttypisch' ---- 323  typical_for_habitat
 WHEN vegetation = 324 THEN 'standortuntypisch' ---- 324  atypical_for_habitat
 WHEN vegetation = 3025 THEN 'unbekannt' ---- 3025  unknown
 END, width, vsa_dss_2015_2_d.tid_lookup('Gewaesserabschnitt', fk_water_course_segment)
-FROM qgep_od.river_bank;
+FROM tww_od.river_bank;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('ufer', qgep_od.river_bank.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_river_bank.last_modification, vsa_dss_2015_2_d.tid_lookup('ufer', qgep_od.river_bank.obj_id)
-FROM qgep_od.river_bank
-   LEFT JOIN qgep_od.organisation as a ON od_river_bank.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_river_bank.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('ufer', tww_od.river_bank.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_river_bank.last_modification, vsa_dss_2015_2_d.tid_lookup('ufer', tww_od.river_bank.obj_id)
+FROM tww_od.river_bank
+   LEFT JOIN tww_od.organisation as a ON od_river_bank.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_river_bank.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.gewaessersohle
 (
@@ -315,15 +315,15 @@ WHEN river_control_type = 3477 THEN 'keine_Verbauung' ---- 3477  no_control_stru
 WHEN river_control_type = 3478 THEN 'Steinschuettung_Blockwurf' ---- 3478  rock_fill_or_loose_boulders
 WHEN river_control_type = 3079 THEN 'unbekannt' ---- 3079  unknown
 END, width, vsa_dss_2015_2_d.tid_lookup('Gewaesserabschnitt', fk_water_course_segment)
-FROM qgep_od.river_bed;
+FROM tww_od.river_bed;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('gewaessersohle', qgep_od.river_bed.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_river_bed.last_modification, vsa_dss_2015_2_d.tid_lookup('gewaessersohle', qgep_od.river_bed.obj_id)
-FROM qgep_od.river_bed
-   LEFT JOIN qgep_od.organisation as a ON od_river_bed.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_river_bed.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('gewaessersohle', tww_od.river_bed.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_river_bed.last_modification, vsa_dss_2015_2_d.tid_lookup('gewaessersohle', tww_od.river_bed.obj_id)
+FROM tww_od.river_bed
+   LEFT JOIN tww_od.organisation as a ON od_river_bed.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_river_bed.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.gewaessersektor
 (
@@ -335,51 +335,51 @@ WHEN kind = 2728 THEN 'Seetraverse' ---- 2728  lake_traversal
 WHEN kind = 2656 THEN 'Ufer' ---- 2656  shore
 WHEN kind = 3054 THEN 'unbekannt' ---- 3054  unknown
 END, km_down, km_up, ST_Force2D(progression_geometry), ref_length, remark, vsa_dss_2015_2_d.tid_lookup('Oberflaechengewaesser', fk_chute)
-FROM qgep_od.sector_water_body;
+FROM tww_od.sector_water_body;
 
 -- additional Table Assoc: Gewaessersektor_VorherigerSektor/ no table hierarchy in qgep schema yet (check how to implement there)
 -- INSERT INTO vsa_dss_2015_2_d.Gewaessersektor_VorherigerSektorassoc
 -- (
 -- t_id, VorherigerSektorref, Gewaessersektor_VorherigerSektorassocref)
 -- SELECT vsa_dss_2015_2_d.tid_lookup('Gewaessersektor', obj_id), vsa_dss_2015_2_d.tid_lookup('Gewaessersektor', fk_sector_previous),vsa_dss_2015_2_d.tid_lookup('Gewaessersektor', obj_id)
--- FROM qgep_od.gewaessersektor;
+-- FROM tww_od.gewaessersektor;
 
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('gewaessersektor', qgep_od.sector_water_body.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_sector_water_body.last_modification, vsa_dss_2015_2_d.tid_lookup('gewaessersektor', qgep_od.sector_water_body.obj_id)
-FROM qgep_od.sector_water_body
-   LEFT JOIN qgep_od.organisation as a ON od_sector_water_body.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_sector_water_body.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('gewaessersektor', tww_od.sector_water_body.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_sector_water_body.last_modification, vsa_dss_2015_2_d.tid_lookup('gewaessersektor', tww_od.sector_water_body.obj_id)
+FROM tww_od.sector_water_body
+   LEFT JOIN tww_od.organisation as a ON od_sector_water_body.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_sector_water_body.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.organisation
 (
 t_id, bezeichnung, bemerkung, uid)
 SELECT vsa_dss_2015_2_d.tid_lookup('organisation', obj_id), identifier, remark, uid
-FROM qgep_od.organisation;
+FROM tww_od.organisation;
 
 -- additional Table Assoc: Organisation_Teil_von/ no table hierarchy in qgep schema yet (check how to implement there)
 -- INSERT INTO vsa_dss_2015_2_d.Organisation_Teil_vonassoc
 -- (
 -- t_id, Teil_vonref, Organisation_Teil_vonassocref)
 -- SELECT vsa_dss_2015_2_d.tid_lookup('Organisation', obj_id), vsa_dss_2015_2_d.tid_lookup('Organisation', fk_part_of),vsa_dss_2015_2_d.tid_lookup('Organisation', obj_id)
--- FROM qgep_od.organisation;
+-- FROM tww_od.organisation;
 
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('organisation', qgep_od.organisation.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_organisation.last_modification, vsa_dss_2015_2_d.tid_lookup('organisation', qgep_od.organisation.obj_id)
-FROM qgep_od.organisation
-   LEFT JOIN qgep_od.organisation as a ON od_organisation.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_organisation.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('organisation', tww_od.organisation.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_organisation.last_modification, vsa_dss_2015_2_d.tid_lookup('organisation', tww_od.organisation.obj_id)
+FROM tww_od.organisation
+   LEFT JOIN tww_od.organisation as a ON od_organisation.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_organisation.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.genossenschaft_korporation
 (
 t_id)
 SELECT vsa_dss_2015_2_d.tid_lookup('genossenschaft_korporation', obj_id)
-FROM qgep_od.cooperative;
+FROM tww_od.cooperative;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'genossenschaft_korporation'
 FROM
@@ -391,7 +391,7 @@ INSERT INTO vsa_dss_2015_2_d.kanton
 (
 t_id, perimeter)
 SELECT vsa_dss_2015_2_d.tid_lookup('kanton', obj_id), ST_Force2D(perimeter_geometry)
-FROM qgep_od.canton;
+FROM tww_od.canton;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'kanton'
 FROM
@@ -403,7 +403,7 @@ INSERT INTO vsa_dss_2015_2_d.abwasserverband
 (
 t_id)
 SELECT vsa_dss_2015_2_d.tid_lookup('abwasserverband', obj_id)
-FROM qgep_od.waste_water_association;
+FROM tww_od.waste_water_association;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'abwasserverband'
 FROM
@@ -415,7 +415,7 @@ INSERT INTO vsa_dss_2015_2_d.gemeinde
 (
 t_id, hoehe, gep_jahr, gemeindenummer, perimeter, einwohner, flaeche)
 SELECT vsa_dss_2015_2_d.tid_lookup('gemeinde', obj_id), altitude, gwdp_year, municipality_number, ST_Force2D(perimeter_geometry), population, total_surface
-FROM qgep_od.municipality;
+FROM tww_od.municipality;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'gemeinde'
 FROM
@@ -427,7 +427,7 @@ INSERT INTO vsa_dss_2015_2_d.amt
 (
 t_id)
 SELECT vsa_dss_2015_2_d.tid_lookup('amt', obj_id)
-FROM qgep_od.administrative_office;
+FROM tww_od.administrative_office;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'amt'
 FROM
@@ -439,7 +439,7 @@ INSERT INTO vsa_dss_2015_2_d.abwasserreinigungsanlage
 (
 t_id, bsb5, csb, eliminationcsb, eliminationn, eliminationnh4, eliminationp, anlagenummer, art, nh4, inbetriebnahme)
 SELECT vsa_dss_2015_2_d.tid_lookup('abwasserreinigungsanlage', obj_id), bod5, cod, elimination_cod, elimination_n, elimination_nh4, elimination_p, installation_number, kind, nh4, start_year
-FROM qgep_od.waste_water_treatment_plant;
+FROM tww_od.waste_water_treatment_plant;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'abwasserreinigungsanlage'
 FROM
@@ -451,7 +451,7 @@ INSERT INTO vsa_dss_2015_2_d.privat
 (
 t_id, art)
 SELECT vsa_dss_2015_2_d.tid_lookup('privat', obj_id), kind
-FROM qgep_od.private;
+FROM tww_od.private;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'privat'
 FROM
@@ -493,15 +493,15 @@ WHEN structure_condition = 3360 THEN 'Z2' ---- 3360  Z2
 WHEN structure_condition = 3361 THEN 'Z3' ---- 3361  Z3
 WHEN structure_condition = 3362 THEN 'Z4' ---- 3362  Z4
 END, subsidies, year_of_construction, year_of_replacement, vsa_dss_2015_2_d.tid_lookup('Organisation', fk_owner), vsa_dss_2015_2_d.tid_lookup('Organisation', fk_operator)
-FROM qgep_od.wastewater_structure;
+FROM tww_od.wastewater_structure;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('abwasserbauwerk', qgep_od.wastewater_structure.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_wastewater_structure.last_modification, vsa_dss_2015_2_d.tid_lookup('abwasserbauwerk', qgep_od.wastewater_structure.obj_id)
-FROM qgep_od.wastewater_structure
-   LEFT JOIN qgep_od.organisation as a ON od_wastewater_structure.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_wastewater_structure.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('abwasserbauwerk', tww_od.wastewater_structure.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_wastewater_structure.last_modification, vsa_dss_2015_2_d.tid_lookup('abwasserbauwerk', tww_od.wastewater_structure.obj_id)
+FROM tww_od.wastewater_structure
+   LEFT JOIN tww_od.organisation as a ON od_wastewater_structure.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_wastewater_structure.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.kanal
 (
@@ -568,7 +568,7 @@ WHEN usage_planned = 4515 THEN 'Reinabwasser' ---- 4515  clean_wastewater
 WHEN usage_planned = 4527 THEN 'Schmutzabwasser' ---- 4527  wastewater
 WHEN usage_planned = 4569 THEN 'unbekannt' ---- 4569  unknown
 END
-FROM qgep_od.channel;
+FROM tww_od.channel;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'kanal'
 FROM
@@ -608,7 +608,7 @@ WHEN surface_inflow = 2739 THEN 'Rost' ---- 2739  grid
 WHEN surface_inflow = 5343 THEN 'unbekannt' ---- 5343  unknown
 WHEN surface_inflow = 2740 THEN 'Zulauf_seitlich' ---- 2740  intake_from_side
 END
-FROM qgep_od.manhole;
+FROM tww_od.manhole;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'normschacht'
 FROM
@@ -623,7 +623,7 @@ SELECT vsa_dss_2015_2_d.tid_lookup('einleitstelle', obj_id), highwater_level,
 CASE WHEN relevance = 5580 THEN 'gewaesserrelevant' ---- 5580  relevant_for_water_course
 WHEN relevance = 5581 THEN 'nicht_gewaesserrelevant' ---- 5581  non_relevant_for_water_course
 END, terrain_level, waterlevel_hydraulic, vsa_dss_2015_2_d.tid_lookup('Gewaessersektor', fk_sector_water_body)
-FROM qgep_od.discharge_point;
+FROM tww_od.discharge_point;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'einleitstelle'
 FROM
@@ -681,7 +681,7 @@ CASE WHEN stormwater_tank_arrangement = 4608 THEN 'Hauptschluss' ---- 4608  main
 WHEN stormwater_tank_arrangement = 4609 THEN 'Nebenschluss' ---- 4609  side_connection
 WHEN stormwater_tank_arrangement = 4610 THEN 'unbekannt' ---- 4610  unknown
 END
-FROM qgep_od.special_structure;
+FROM tww_od.special_structure;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'spezialbauwerk'
 FROM
@@ -732,7 +732,7 @@ CASE WHEN watertightness = 3295 THEN 'nichtwasserdicht' ---- 3295  not_watertigh
 WHEN watertightness = 5360 THEN 'unbekannt' ---- 5360  unknown
 WHEN watertightness = 3294 THEN 'wasserdicht' ---- 3294  watertight
 END, vsa_dss_2015_2_d.tid_lookup('Grundwasserleiter', fk_aquifier)
-FROM qgep_od.infiltration_installation;
+FROM tww_od.infiltration_installation;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'versickerungsanlage'
 FROM
@@ -753,7 +753,7 @@ WHEN kind = 328 THEN 'Tropfkoerper' ---- 328  trickling_filter
 WHEN kind = 3032 THEN 'unbekannt' ---- 3032  unknown
 WHEN kind = 326 THEN 'Vorklaerbecken' ---- 326  primary_clarifier
 END
-FROM qgep_od.wwtp_structure;
+FROM tww_od.wwtp_structure;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'arabauwerk'
 FROM
@@ -784,29 +784,29 @@ WHEN status = 3047 THEN 'unbekannt' ---- 3047  unknown
 END, time_point,
 --vsa_dss_2015_2_d.tid_lookup('Abwasserbauwerk', fk_wastewater_structure),
 vsa_dss_2015_2_d.tid_lookup('Organisation', fk_operating_company)
-FROM qgep_od.maintenance_event;
+FROM tww_od.maintenance_event;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('erhaltungsereignis', qgep_od.maintenance_event.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_maintenance_event.last_modification, vsa_dss_2015_2_d.tid_lookup('erhaltungsereignis', qgep_od.maintenance_event.obj_id)
-FROM qgep_od.maintenance_event
-   LEFT JOIN qgep_od.organisation as a ON od_maintenance_event.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_maintenance_event.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('erhaltungsereignis', tww_od.maintenance_event.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_maintenance_event.last_modification, vsa_dss_2015_2_d.tid_lookup('erhaltungsereignis', tww_od.maintenance_event.obj_id)
+FROM tww_od.maintenance_event
+   LEFT JOIN tww_od.organisation as a ON od_maintenance_event.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_maintenance_event.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.zone
 (
 t_id, bezeichnung, bemerkung)
 SELECT vsa_dss_2015_2_d.tid_lookup('zone', obj_id), identifier, remark
-FROM qgep_od.zone;
+FROM tww_od.zone;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('zone', qgep_od.zone.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_zone.last_modification, vsa_dss_2015_2_d.tid_lookup('zone', qgep_od.zone.obj_id)
-FROM qgep_od.zone
-   LEFT JOIN qgep_od.organisation as a ON od_zone.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_zone.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('zone', tww_od.zone.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_zone.last_modification, vsa_dss_2015_2_d.tid_lookup('zone', tww_od.zone.obj_id)
+FROM tww_od.zone
+   LEFT JOIN tww_od.organisation as a ON od_zone.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_zone.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.planungszone
 (
@@ -819,7 +819,7 @@ WHEN kind = 30 THEN 'Landwirtschaftszone' ---- 30  agricultural_zone
 WHEN kind = 3077 THEN 'unbekannt' ---- 3077  unknown
 WHEN kind = 29 THEN 'Wohnzone' ---- 29  residential_zone
 END, ST_Force2D(perimeter_geometry)
-FROM qgep_od.planning_zone;
+FROM tww_od.planning_zone;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'planungszone'
 FROM
@@ -838,7 +838,7 @@ WHEN infiltration_capacity = 373 THEN 'schlecht' ---- 373  bad
 WHEN infiltration_capacity = 3073 THEN 'unbekannt' ---- 3073  unknown
 WHEN infiltration_capacity = 2996 THEN 'unzulaessig' ---- 2996  not_allowed
 END, ST_Force2D(perimeter_geometry)
-FROM qgep_od.infiltration_zone;
+FROM tww_od.infiltration_zone;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'versickerungsbereich'
 FROM
@@ -857,7 +857,7 @@ WHEN kind = 4544 THEN 'nicht_angeschlossen' ---- 4544  not_connected
 WHEN kind = 2723 THEN 'Trennsystem' ---- 2723  separated_system
 WHEN kind = 3060 THEN 'unbekannt' ---- 3060  unknown
 END, ST_Force2D(perimeter_geometry)
-FROM qgep_od.drainage_system;
+FROM tww_od.drainage_system;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'entwaesserungssystem'
 FROM
@@ -878,7 +878,7 @@ WHEN kind = 3069 THEN 'unbekannt' ---- 3069  unknown
 WHEN kind = 3651 THEN 'Zo' ---- 3651  Zo
 WHEN kind = 3650 THEN 'Zu' ---- 3650  Zu
 END, ST_Force2D(perimeter_geometry)
-FROM qgep_od.water_body_protection_sector;
+FROM tww_od.water_body_protection_sector;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'gewaesserschutzbereich'
 FROM
@@ -890,7 +890,7 @@ INSERT INTO vsa_dss_2015_2_d.grundwasserschutzareal
 (
 t_id, perimeter)
 SELECT vsa_dss_2015_2_d.tid_lookup('grundwasserschutzareal', obj_id), ST_Force2D(perimeter_geometry)
-FROM qgep_od.ground_water_protection_perimeter;
+FROM tww_od.ground_water_protection_perimeter;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'grundwasserschutzareal'
 FROM
@@ -907,7 +907,7 @@ WHEN kind = 441 THEN 'S2' ---- 441  S2
 WHEN kind = 442 THEN 'S3' ---- 442  S3
 WHEN kind = 3040 THEN 'unbekannt' ---- 3040  unknown
 END, ST_Force2D(perimeter_geometry)
-FROM qgep_od.groundwater_protection_zone;
+FROM tww_od.groundwater_protection_zone;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'grundwasserschutzzone'
 FROM
@@ -927,29 +927,29 @@ WHEN profile_type = 3353 THEN 'Rechteckprofil' ---- 3353  rectangular
 WHEN profile_type = 3355 THEN 'Spezialprofil' ---- 3355  special
 WHEN profile_type = 3357 THEN 'unbekannt' ---- 3357  unknown
 END, remark
-FROM qgep_od.pipe_profile;
+FROM tww_od.pipe_profile;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('rohrprofil', qgep_od.pipe_profile.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_pipe_profile.last_modification, vsa_dss_2015_2_d.tid_lookup('rohrprofil', qgep_od.pipe_profile.obj_id)
-FROM qgep_od.pipe_profile
-   LEFT JOIN qgep_od.organisation as a ON od_pipe_profile.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_pipe_profile.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('rohrprofil', tww_od.pipe_profile.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_pipe_profile.last_modification, vsa_dss_2015_2_d.tid_lookup('rohrprofil', tww_od.pipe_profile.obj_id)
+FROM tww_od.pipe_profile
+   LEFT JOIN tww_od.organisation as a ON od_pipe_profile.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_pipe_profile.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.araenergienutzung
 (
 t_id, gasmotor, waermepumpe, bezeichnung, bemerkung, turbinierung, abwasserreinigungsanlageref)
 SELECT vsa_dss_2015_2_d.tid_lookup('araenergienutzung', obj_id), gas_motor, heat_pump, identifier, remark, turbining, vsa_dss_2015_2_d.tid_lookup('Abwasserreinigungsanlage', fk_waste_water_treatment_plant)
-FROM qgep_od.wwtp_energy_use;
+FROM tww_od.wwtp_energy_use;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('araenergienutzung', qgep_od.wwtp_energy_use.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_wwtp_energy_use.last_modification, vsa_dss_2015_2_d.tid_lookup('araenergienutzung', qgep_od.wwtp_energy_use.obj_id)
-FROM qgep_od.wwtp_energy_use
-   LEFT JOIN qgep_od.organisation as a ON od_wwtp_energy_use.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_wwtp_energy_use.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('araenergienutzung', tww_od.wwtp_energy_use.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_wwtp_energy_use.last_modification, vsa_dss_2015_2_d.tid_lookup('araenergienutzung', tww_od.wwtp_energy_use.obj_id)
+FROM tww_od.wwtp_energy_use
+   LEFT JOIN tww_od.organisation as a ON od_wwtp_energy_use.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_wwtp_energy_use.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.abwasserbehandlung
 (
@@ -962,15 +962,15 @@ WHEN kind = 389 THEN 'Filtration' ---- 389  filtration
 WHEN kind = 366 THEN 'mechanisch' ---- 366  mechanical
 WHEN kind = 3076 THEN 'unbekannt' ---- 3076  unknown
 END, remark, vsa_dss_2015_2_d.tid_lookup('Abwasserreinigungsanlage', fk_waste_water_treatment_plant)
-FROM qgep_od.waste_water_treatment;
+FROM tww_od.waste_water_treatment;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('abwasserbehandlung', qgep_od.waste_water_treatment.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_waste_water_treatment.last_modification, vsa_dss_2015_2_d.tid_lookup('abwasserbehandlung', qgep_od.waste_water_treatment.obj_id)
-FROM qgep_od.waste_water_treatment
-   LEFT JOIN qgep_od.organisation as a ON od_waste_water_treatment.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_waste_water_treatment.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('abwasserbehandlung', tww_od.waste_water_treatment.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_waste_water_treatment.last_modification, vsa_dss_2015_2_d.tid_lookup('abwasserbehandlung', tww_od.waste_water_treatment.obj_id)
+FROM tww_od.waste_water_treatment
+   LEFT JOIN tww_od.organisation as a ON od_waste_water_treatment.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_waste_water_treatment.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.schlammbehandlung
 (
@@ -984,49 +984,49 @@ WHEN stabilisation = 335 THEN 'anaerobthermophil' ---- 335  anaerob_thermophil
 WHEN stabilisation = 2994 THEN 'andere' ---- 2994  other
 WHEN stabilisation = 3004 THEN 'unbekannt' ---- 3004  unknown
 END, stacking_of_dehydrated_sludge, stacking_of_liquid_sludge, vsa_dss_2015_2_d.tid_lookup('Abwasserreinigungsanlage', fk_waste_water_treatment_plant)
-FROM qgep_od.sludge_treatment;
+FROM tww_od.sludge_treatment;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('schlammbehandlung', qgep_od.sludge_treatment.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_sludge_treatment.last_modification, vsa_dss_2015_2_d.tid_lookup('schlammbehandlung', qgep_od.sludge_treatment.obj_id)
-FROM qgep_od.sludge_treatment
-   LEFT JOIN qgep_od.organisation as a ON od_sludge_treatment.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_sludge_treatment.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('schlammbehandlung', tww_od.sludge_treatment.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_sludge_treatment.last_modification, vsa_dss_2015_2_d.tid_lookup('schlammbehandlung', tww_od.sludge_treatment.obj_id)
+FROM tww_od.sludge_treatment
+   LEFT JOIN tww_od.organisation as a ON od_sludge_treatment.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_sludge_treatment.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.steuerungszentrale
 (
 t_id, bezeichnung, lage)
 SELECT vsa_dss_2015_2_d.tid_lookup('steuerungszentrale', obj_id), identifier, ST_Force2D(situation_geometry)
-FROM qgep_od.control_center;
+FROM tww_od.control_center;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('steuerungszentrale', qgep_od.control_center.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_control_center.last_modification, vsa_dss_2015_2_d.tid_lookup('steuerungszentrale', qgep_od.control_center.obj_id)
-FROM qgep_od.control_center
-   LEFT JOIN qgep_od.organisation as a ON od_control_center.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_control_center.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('steuerungszentrale', tww_od.control_center.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_control_center.last_modification, vsa_dss_2015_2_d.tid_lookup('steuerungszentrale', tww_od.control_center.obj_id)
+FROM tww_od.control_center
+   LEFT JOIN tww_od.organisation as a ON od_control_center.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_control_center.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.gewaesserverbauung
 (
 t_id, bezeichnung, bemerkung, lage, gewaesserabschnittref)
 SELECT vsa_dss_2015_2_d.tid_lookup('gewaesserverbauung', obj_id), identifier, remark, ST_Force2D(situation_geometry), vsa_dss_2015_2_d.tid_lookup('Gewaesserabschnitt', fk_water_course_segment)
-FROM qgep_od.water_control_structure;
+FROM tww_od.water_control_structure;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('gewaesserverbauung', qgep_od.water_control_structure.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_water_control_structure.last_modification, vsa_dss_2015_2_d.tid_lookup('gewaesserverbauung', qgep_od.water_control_structure.obj_id)
-FROM qgep_od.water_control_structure
-   LEFT JOIN qgep_od.organisation as a ON od_water_control_structure.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_water_control_structure.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('gewaesserverbauung', tww_od.water_control_structure.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_water_control_structure.last_modification, vsa_dss_2015_2_d.tid_lookup('gewaesserverbauung', tww_od.water_control_structure.obj_id)
+FROM tww_od.water_control_structure
+   LEFT JOIN tww_od.organisation as a ON od_water_control_structure.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_water_control_structure.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.furt
 (
 t_id)
 SELECT vsa_dss_2015_2_d.tid_lookup('furt', obj_id)
-FROM qgep_od.ford;
+FROM tww_od.ford;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'furt'
 FROM
@@ -1049,7 +1049,7 @@ WHEN material = 408 THEN 'Holz' ---- 408  wood
 WHEN material = 410 THEN 'natuerlich_kein' ---- 410  natural_none
 WHEN material = 3061 THEN 'unbekannt' ---- 3061  unknown
 END, vertical_drop
-FROM qgep_od.chute;
+FROM tww_od.chute;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'gewaesserabsturz'
 FROM
@@ -1061,7 +1061,7 @@ INSERT INTO vsa_dss_2015_2_d.schleuse
 (
 t_id, absturzhoehe)
 SELECT vsa_dss_2015_2_d.tid_lookup('schleuse', obj_id), vertical_drop
-FROM qgep_od.lock;
+FROM tww_od.lock;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'schleuse'
 FROM
@@ -1073,7 +1073,7 @@ INSERT INTO vsa_dss_2015_2_d.durchlass
 (
 t_id)
 SELECT vsa_dss_2015_2_d.tid_lookup('durchlass', obj_id)
-FROM qgep_od.passage;
+FROM tww_od.passage;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'durchlass'
 FROM
@@ -1085,7 +1085,7 @@ INSERT INTO vsa_dss_2015_2_d.geschiebesperre
 (
 t_id, absturzhoehe)
 SELECT vsa_dss_2015_2_d.tid_lookup('geschiebesperre', obj_id), vertical_drop
-FROM qgep_od.blocking_debris;
+FROM tww_od.blocking_debris;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'geschiebesperre'
 FROM
@@ -1103,7 +1103,7 @@ WHEN kind = 419 THEN 'Talsperre' ---- 419  dam
 WHEN kind = 418 THEN 'Tirolerwehr' ---- 418  tyrolean_weir
 WHEN kind = 3064 THEN 'unbekannt' ---- 3064  unknown
 END, vertical_drop
-FROM qgep_od.dam;
+FROM tww_od.dam;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'gewaesserwehr'
 FROM
@@ -1123,7 +1123,7 @@ WHEN stabilisation = 413 THEN 'gepflaestert' ---- 413  paved
 WHEN stabilisation = 414 THEN 'Holzbalken' ---- 414  wooden_beam
 WHEN stabilisation = 3063 THEN 'unbekannt' ---- 3063  unknown
 END, vertical_drop
-FROM qgep_od.rock_ramp;
+FROM tww_od.rock_ramp;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'sohlrampe'
 FROM
@@ -1135,57 +1135,57 @@ INSERT INTO vsa_dss_2015_2_d.fischpass
 (
 t_id, bezeichnung, bemerkung, absturzhoehe, gewaesserverbauungref)
 SELECT vsa_dss_2015_2_d.tid_lookup('fischpass', obj_id), identifier, remark, vertical_drop, vsa_dss_2015_2_d.tid_lookup('Gewaesserverbauung', fk_water_control_structure)
-FROM qgep_od.fish_pass;
+FROM tww_od.fish_pass;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('fischpass', qgep_od.fish_pass.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_fish_pass.last_modification, vsa_dss_2015_2_d.tid_lookup('fischpass', qgep_od.fish_pass.obj_id)
-FROM qgep_od.fish_pass
-   LEFT JOIN qgep_od.organisation as a ON od_fish_pass.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_fish_pass.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('fischpass', tww_od.fish_pass.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_fish_pass.last_modification, vsa_dss_2015_2_d.tid_lookup('fischpass', tww_od.fish_pass.obj_id)
+FROM tww_od.fish_pass
+   LEFT JOIN tww_od.organisation as a ON od_fish_pass.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_fish_pass.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.badestelle
 (
 t_id, bezeichnung, bemerkung, lage, oberflaechengewaesserref)
 SELECT vsa_dss_2015_2_d.tid_lookup('badestelle', obj_id), identifier, remark, ST_Force2D(situation_geometry), vsa_dss_2015_2_d.tid_lookup('Oberflaechengewaesser', fk_chute)
-FROM qgep_od.bathing_area;
+FROM tww_od.bathing_area;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('badestelle', qgep_od.bathing_area.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_bathing_area.last_modification, vsa_dss_2015_2_d.tid_lookup('badestelle', qgep_od.bathing_area.obj_id)
-FROM qgep_od.bathing_area
-   LEFT JOIN qgep_od.organisation as a ON od_bathing_area.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_bathing_area.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('badestelle', tww_od.bathing_area.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_bathing_area.last_modification, vsa_dss_2015_2_d.tid_lookup('badestelle', tww_od.bathing_area.obj_id)
+FROM tww_od.bathing_area
+   LEFT JOIN tww_od.organisation as a ON od_bathing_area.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_bathing_area.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.hydr_geometrie
 (
 t_id, bezeichnung, bemerkung, stauraum, nutzinhalt_fangteil, nutzinhalt_klaerteil, nutzinhalt, volumen_pumpensumpf)
 SELECT vsa_dss_2015_2_d.tid_lookup('hydr_geometrie', obj_id), identifier, remark, storage_volume, usable_capacity_storage, usable_capacity_treatment, utilisable_capacity, volume_pump_sump
-FROM qgep_od.hydr_geometry;
+FROM tww_od.hydr_geometry;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('hydr_geometrie', qgep_od.hydr_geometry.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_hydr_geometry.last_modification, vsa_dss_2015_2_d.tid_lookup('hydr_geometrie', qgep_od.hydr_geometry.obj_id)
-FROM qgep_od.hydr_geometry
-   LEFT JOIN qgep_od.organisation as a ON od_hydr_geometry.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_hydr_geometry.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('hydr_geometrie', tww_od.hydr_geometry.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_hydr_geometry.last_modification, vsa_dss_2015_2_d.tid_lookup('hydr_geometrie', tww_od.hydr_geometry.obj_id)
+FROM tww_od.hydr_geometry
+   LEFT JOIN tww_od.organisation as a ON od_hydr_geometry.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_hydr_geometry.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.abwassernetzelement
 (
 t_id, bezeichnung, bemerkung, abwasserbauwerkref)
 SELECT vsa_dss_2015_2_d.tid_lookup('abwassernetzelement', obj_id), identifier, remark, vsa_dss_2015_2_d.tid_lookup('Abwasserbauwerk', fk_wastewater_structure)
-FROM qgep_od.wastewater_networkelement;
+FROM tww_od.wastewater_networkelement;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('abwassernetzelement', qgep_od.wastewater_networkelement.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_wastewater_networkelement.last_modification, vsa_dss_2015_2_d.tid_lookup('abwassernetzelement', qgep_od.wastewater_networkelement.obj_id)
-FROM qgep_od.wastewater_networkelement
-   LEFT JOIN qgep_od.organisation as a ON od_wastewater_networkelement.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_wastewater_networkelement.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('abwassernetzelement', tww_od.wastewater_networkelement.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_wastewater_networkelement.last_modification, vsa_dss_2015_2_d.tid_lookup('abwassernetzelement', tww_od.wastewater_networkelement.obj_id)
+FROM tww_od.wastewater_networkelement
+   LEFT JOIN tww_od.organisation as a ON od_wastewater_networkelement.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_wastewater_networkelement.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.haltungspunkt
 (
@@ -1203,21 +1203,21 @@ WHEN outlet_shape = 3358 THEN 'keine_Querschnittsaenderung' ---- 3358  no_cross_
 WHEN outlet_shape = 286 THEN 'scharfkantig' ---- 286  sharp_edged
 WHEN outlet_shape = 5375 THEN 'unbekannt' ---- 5375  unknown
 END, position_of_connection, remark, ST_Force2D(situation_geometry), vsa_dss_2015_2_d.tid_lookup('Abwassernetzelement', fk_wastewater_networkelement)
-FROM qgep_od.reach_point;
+FROM tww_od.reach_point;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('haltungspunkt', qgep_od.reach_point.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_reach_point.last_modification, vsa_dss_2015_2_d.tid_lookup('haltungspunkt', qgep_od.reach_point.obj_id)
-FROM qgep_od.reach_point
-   LEFT JOIN qgep_od.organisation as a ON od_reach_point.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_reach_point.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('haltungspunkt', tww_od.reach_point.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_reach_point.last_modification, vsa_dss_2015_2_d.tid_lookup('haltungspunkt', tww_od.reach_point.obj_id)
+FROM tww_od.reach_point
+   LEFT JOIN tww_od.organisation as a ON od_reach_point.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_reach_point.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.abwasserknoten
 (
 t_id, rueckstaukote, sohlenkote, lage, hydr_geometrieref)
 SELECT vsa_dss_2015_2_d.tid_lookup('abwasserknoten', obj_id), backflow_level, bottom_level, ST_Force2D(situation_geometry), vsa_dss_2015_2_d.tid_lookup('Hydr_Geometrie', fk_hydr_geometry)
-FROM qgep_od.wastewater_node;
+FROM tww_od.wastewater_node;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'abwasserknoten'
 FROM
@@ -1296,7 +1296,7 @@ CASE WHEN relining_kind = 6455 THEN 'ganze_Haltung' ---- 6455  full_reach
 WHEN relining_kind = 6456 THEN 'partiell' ---- 6456  partial
 WHEN relining_kind = 6457 THEN 'unbekannt' ---- 6457  unknown
 END, ring_stiffness, slope_building_plan, wall_roughness, vsa_dss_2015_2_d.tid_lookup('Haltungspunkt', fk_reach_point_from), vsa_dss_2015_2_d.tid_lookup('Haltungspunkt', fk_reach_point_to), vsa_dss_2015_2_d.tid_lookup('Rohrprofil', fk_pipe_profile)
-FROM qgep_od.reach;
+FROM tww_od.reach;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'haltung'
 FROM
@@ -1308,29 +1308,29 @@ INSERT INTO vsa_dss_2015_2_d.rohrprofil_geometrie
 (
 t_id, aposition, x, y, rohrprofilref)
 SELECT vsa_dss_2015_2_d.tid_lookup('rohrprofil_geometrie', obj_id), position, x, y, vsa_dss_2015_2_d.tid_lookup('Rohrprofil', fk_pipe_profile)
-FROM qgep_od.profile_geometry;
+FROM tww_od.profile_geometry;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('rohrprofil_geometrie', qgep_od.profile_geometry.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_profile_geometry.last_modification, vsa_dss_2015_2_d.tid_lookup('rohrprofil_geometrie', qgep_od.profile_geometry.obj_id)
-FROM qgep_od.profile_geometry
-   LEFT JOIN qgep_od.organisation as a ON od_profile_geometry.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_profile_geometry.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('rohrprofil_geometrie', tww_od.profile_geometry.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_profile_geometry.last_modification, vsa_dss_2015_2_d.tid_lookup('rohrprofil_geometrie', tww_od.profile_geometry.obj_id)
+FROM tww_od.profile_geometry
+   LEFT JOIN tww_od.organisation as a ON od_profile_geometry.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_profile_geometry.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.hydr_geomrelation
 (
 t_id, wassertiefe, wasseroberflaeche, benetztequerschnittsflaeche, hydr_geometrieref)
 SELECT vsa_dss_2015_2_d.tid_lookup('hydr_geomrelation', obj_id), water_depth, water_surface, wet_cross_section_area, vsa_dss_2015_2_d.tid_lookup('Hydr_Geometrie', fk_hydr_geometry)
-FROM qgep_od.hydr_geom_relation;
+FROM tww_od.hydr_geom_relation;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('hydr_geomrelation', qgep_od.hydr_geom_relation.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_hydr_geom_relation.last_modification, vsa_dss_2015_2_d.tid_lookup('hydr_geomrelation', qgep_od.hydr_geom_relation.obj_id)
-FROM qgep_od.hydr_geom_relation
-   LEFT JOIN qgep_od.organisation as a ON od_hydr_geom_relation.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_hydr_geom_relation.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('hydr_geomrelation', tww_od.hydr_geom_relation.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_hydr_geom_relation.last_modification, vsa_dss_2015_2_d.tid_lookup('hydr_geomrelation', tww_od.hydr_geom_relation.obj_id)
+FROM tww_od.hydr_geom_relation
+   LEFT JOIN tww_od.organisation as a ON od_hydr_geom_relation.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_hydr_geom_relation.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.mechanischevorreinigung
 (
@@ -1343,15 +1343,15 @@ WHEN kind = 3320 THEN 'Schlammsammler' ---- 3320  slurry_collector
 WHEN kind = 3321 THEN 'Schwimmstoffabscheider' ---- 3321  floating_matter_separator
 WHEN kind = 3322 THEN 'unbekannt' ---- 3322  unknown
 END, remark, vsa_dss_2015_2_d.tid_lookup('Versickerungsanlage', fk_infiltration_installation), vsa_dss_2015_2_d.tid_lookup('Abwasserbauwerk', fk_wastewater_structure)
-FROM qgep_od.mechanical_pretreatment;
+FROM tww_od.mechanical_pretreatment;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('mechanischevorreinigung', qgep_od.mechanical_pretreatment.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_mechanical_pretreatment.last_modification, vsa_dss_2015_2_d.tid_lookup('mechanischevorreinigung', qgep_od.mechanical_pretreatment.obj_id)
-FROM qgep_od.mechanical_pretreatment
-   LEFT JOIN qgep_od.organisation as a ON od_mechanical_pretreatment.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_mechanical_pretreatment.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('mechanischevorreinigung', tww_od.mechanical_pretreatment.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_mechanical_pretreatment.last_modification, vsa_dss_2015_2_d.tid_lookup('mechanischevorreinigung', tww_od.mechanical_pretreatment.obj_id)
+FROM tww_od.mechanical_pretreatment
+   LEFT JOIN tww_od.organisation as a ON od_mechanical_pretreatment.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_mechanical_pretreatment.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.retentionskoerper
 (
@@ -1364,15 +1364,15 @@ WHEN kind = 348 THEN 'Parkplatz' ---- 348  parking_lot
 WHEN kind = 347 THEN 'Staukanal' ---- 347  accumulation_channel
 WHEN kind = 3031 THEN 'unbekannt' ---- 3031  unknown
 END, remark, volume, vsa_dss_2015_2_d.tid_lookup('Versickerungsanlage', fk_infiltration_installation)
-FROM qgep_od.retention_body;
+FROM tww_od.retention_body;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('retentionskoerper', qgep_od.retention_body.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_retention_body.last_modification, vsa_dss_2015_2_d.tid_lookup('retentionskoerper', qgep_od.retention_body.obj_id)
-FROM qgep_od.retention_body
-   LEFT JOIN qgep_od.organisation as a ON od_retention_body.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_retention_body.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('retentionskoerper', tww_od.retention_body.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_retention_body.last_modification, vsa_dss_2015_2_d.tid_lookup('retentionskoerper', tww_od.retention_body.obj_id)
+FROM tww_od.retention_body
+   LEFT JOIN tww_od.organisation as a ON od_retention_body.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_retention_body.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.ueberlaufcharakteristik
 (
@@ -1386,29 +1386,29 @@ CASE WHEN overflow_characteristic_digital = 6223 THEN 'ja' ---- 6223  yes
 WHEN overflow_characteristic_digital = 6224 THEN 'nein' ---- 6224  no
 WHEN overflow_characteristic_digital = 6225 THEN 'unbekannt' ---- 6225  unknown
 END, remark
-FROM qgep_od.overflow_characteristic;
+FROM tww_od.overflow_characteristic;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('ueberlaufcharakteristik', qgep_od.overflow_characteristic.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_overflow_characteristic.last_modification, vsa_dss_2015_2_d.tid_lookup('ueberlaufcharakteristik', qgep_od.overflow_characteristic.obj_id)
-FROM qgep_od.overflow_characteristic
-   LEFT JOIN qgep_od.organisation as a ON od_overflow_characteristic.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_overflow_characteristic.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('ueberlaufcharakteristik', tww_od.overflow_characteristic.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_overflow_characteristic.last_modification, vsa_dss_2015_2_d.tid_lookup('ueberlaufcharakteristik', tww_od.overflow_characteristic.obj_id)
+FROM tww_od.overflow_characteristic
+   LEFT JOIN tww_od.organisation as a ON od_overflow_characteristic.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_overflow_characteristic.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.hq_relation
 (
 t_id, hoehe, abfluss, zufluss, ueberlaufcharakteristikref)
 SELECT vsa_dss_2015_2_d.tid_lookup('hq_relation', obj_id), altitude, flow, flow_from, vsa_dss_2015_2_d.tid_lookup('Ueberlaufcharakteristik', fk_overflow_characteristic)
-FROM qgep_od.hq_relation;
+FROM tww_od.hq_relation;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('hq_relation', qgep_od.hq_relation.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_hq_relation.last_modification, vsa_dss_2015_2_d.tid_lookup('hq_relation', qgep_od.hq_relation.obj_id)
-FROM qgep_od.hq_relation
-   LEFT JOIN qgep_od.organisation as a ON od_hq_relation.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_hq_relation.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('hq_relation', tww_od.hq_relation.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_hq_relation.last_modification, vsa_dss_2015_2_d.tid_lookup('hq_relation', tww_od.hq_relation.obj_id)
+FROM tww_od.hq_relation
+   LEFT JOIN tww_od.organisation as a ON od_hq_relation.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_hq_relation.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.bauwerksteil
 (
@@ -1418,21 +1418,21 @@ CASE WHEN renovation_demand = 138 THEN 'nicht_notwendig' ---- 138  not_necessary
 WHEN renovation_demand = 137 THEN 'notwendig' ---- 137  necessary
 WHEN renovation_demand = 5358 THEN 'unbekannt' ---- 5358  unknown
 END, vsa_dss_2015_2_d.tid_lookup('Abwasserbauwerk', fk_wastewater_structure)
-FROM qgep_od.structure_part;
+FROM tww_od.structure_part;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('bauwerksteil', qgep_od.structure_part.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_structure_part.last_modification, vsa_dss_2015_2_d.tid_lookup('bauwerksteil', qgep_od.structure_part.obj_id)
-FROM qgep_od.structure_part
-   LEFT JOIN qgep_od.organisation as a ON od_structure_part.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_structure_part.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('bauwerksteil', tww_od.structure_part.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_structure_part.last_modification, vsa_dss_2015_2_d.tid_lookup('bauwerksteil', tww_od.structure_part.obj_id)
+FROM tww_od.structure_part
+   LEFT JOIN tww_od.organisation as a ON od_structure_part.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_structure_part.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.trockenwetterfallrohr
 (
 t_id, durchmesser)
 SELECT vsa_dss_2015_2_d.tid_lookup('trockenwetterfallrohr', obj_id), diameter
-FROM qgep_od.dryweather_downspout;
+FROM tww_od.dryweather_downspout;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'trockenwetterfallrohr'
 FROM
@@ -1454,7 +1454,7 @@ WHEN kind = 91 THEN 'Trittnischen' ---- 91  footstep_niches
 WHEN kind = 3230 THEN 'Tuere' ---- 3230  door
 WHEN kind = 3048 THEN 'unbekannt' ---- 3048  unknown
 END
-FROM qgep_od.access_aid;
+FROM tww_od.access_aid;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'einstiegshilfe'
 FROM
@@ -1473,7 +1473,7 @@ WHEN material = 238 THEN 'Steinzeug' ---- 238  stoneware
 WHEN material = 3017 THEN 'unbekannt' ---- 3017  unknown
 WHEN material = 237 THEN 'Zementmoertel' ---- 237  cement_mortar
 END
-FROM qgep_od.dryweather_flume;
+FROM tww_od.dryweather_flume;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'trockenwetterrinne'
 FROM
@@ -1515,7 +1515,7 @@ CASE WHEN venting = 229 THEN 'entlueftet' ---- 229  vented
 WHEN venting = 230 THEN 'nicht_entlueftet' ---- 230  not_vented
 WHEN venting = 5348 THEN 'unbekannt' ---- 5348  unknown
 END
-FROM qgep_od.cover;
+FROM tww_od.cover;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'deckel'
 FROM
@@ -1534,7 +1534,7 @@ WHEN kind = 378 THEN 'Funk' ---- 378  radio_unit
 WHEN kind = 377 THEN 'Telephon' ---- 377  phone
 WHEN kind = 3038 THEN 'unbekannt' ---- 3038  unknown
 END, year_of_replacement
-FROM qgep_od.electric_equipment;
+FROM tww_od.electric_equipment;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'elektrischeeinrichtung'
 FROM
@@ -1552,7 +1552,7 @@ WHEN kind = 337 THEN 'Luftentfeuchter' ---- 337  air_dehumidifier
 WHEN kind = 381 THEN 'Raeumeinrichtung' ---- 381  scraper_installation
 WHEN kind = 3072 THEN 'unbekannt' ---- 3072  unknown
 END, year_of_replacement
-FROM qgep_od.electromechanical_equipment;
+FROM tww_od.electromechanical_equipment;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'elektromechanischeausruestung'
 FROM
@@ -1570,7 +1570,7 @@ WHEN kind = 93 THEN 'einseitig' ---- 93  one_sided
 WHEN kind = 3231 THEN 'kein' ---- 3231  none
 WHEN kind = 3033 THEN 'unbekannt' ---- 3033  unknown
 END
-FROM qgep_od.benching;
+FROM tww_od.benching;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'bankett'
 FROM
@@ -1582,21 +1582,21 @@ INSERT INTO vsa_dss_2015_2_d.anschlussobjekt
 (
 t_id, bezeichnung, bemerkung, fremdwasseranfall, abwassernetzelementref, eigentuemerref, betreiberref)
 SELECT vsa_dss_2015_2_d.tid_lookup('anschlussobjekt', obj_id), identifier, remark, sewer_infiltration_water_production, vsa_dss_2015_2_d.tid_lookup('Abwassernetzelement', fk_wastewater_networkelement), vsa_dss_2015_2_d.tid_lookup('Organisation', fk_owner), vsa_dss_2015_2_d.tid_lookup('Organisation', fk_operator)
-FROM qgep_od.connection_object;
+FROM tww_od.connection_object;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('anschlussobjekt', qgep_od.connection_object.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_connection_object.last_modification, vsa_dss_2015_2_d.tid_lookup('anschlussobjekt', qgep_od.connection_object.obj_id)
-FROM qgep_od.connection_object
-   LEFT JOIN qgep_od.organisation as a ON od_connection_object.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_connection_object.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('anschlussobjekt', tww_od.connection_object.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_connection_object.last_modification, vsa_dss_2015_2_d.tid_lookup('anschlussobjekt', tww_od.connection_object.obj_id)
+FROM tww_od.connection_object
+   LEFT JOIN tww_od.organisation as a ON od_connection_object.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_connection_object.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.gebaeude
 (
 t_id, hausnummer, standortname, perimeter, referenzpunkt)
 SELECT vsa_dss_2015_2_d.tid_lookup('gebaeude', obj_id), house_number, location_name, ST_Force2D(perimeter_geometry), ST_Force2D(reference_point_geometry)
-FROM qgep_od.building;
+FROM tww_od.building;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'gebaeude'
 FROM
@@ -1608,7 +1608,7 @@ INSERT INTO vsa_dss_2015_2_d.reservoir
 (
 t_id, standortname, lage)
 SELECT vsa_dss_2015_2_d.tid_lookup('reservoir', obj_id), location_name, ST_Force2D(situation_geometry)
-FROM qgep_od.reservoir;
+FROM tww_od.reservoir;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'reservoir'
 FROM
@@ -1638,7 +1638,7 @@ WHEN pavement = 2033 THEN 'humusiert' ---- 2033  soil_covered
 WHEN pavement = 3030 THEN 'unbekannt' ---- 3030  unknown
 WHEN pavement = 2034 THEN 'vegetationslos' ---- 2034  barren
 END, ST_Force2D(perimeter_geometry)
-FROM qgep_od.individual_surface;
+FROM tww_od.individual_surface;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'einzelflaeche'
 FROM
@@ -1650,7 +1650,7 @@ INSERT INTO vsa_dss_2015_2_d.brunnen
 (
 t_id, standortname, lage)
 SELECT vsa_dss_2015_2_d.tid_lookup('brunnen', obj_id), location_name, ST_Force2D(situation_geometry)
-FROM qgep_od.fountain;
+FROM tww_od.fountain;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'brunnen'
 FROM
@@ -1662,43 +1662,43 @@ INSERT INTO vsa_dss_2015_2_d.gefahrenquelle
 (
 t_id, bezeichnung, bemerkung, lage, anschlussobjektref, eigentuemerref)
 SELECT vsa_dss_2015_2_d.tid_lookup('gefahrenquelle', obj_id), identifier, remark, ST_Force2D(situation_geometry), vsa_dss_2015_2_d.tid_lookup('Anschlussobjekt', fk_connection_object), vsa_dss_2015_2_d.tid_lookup('Organisation', fk_owner)
-FROM qgep_od.hazard_source;
+FROM tww_od.hazard_source;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('gefahrenquelle', qgep_od.hazard_source.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_hazard_source.last_modification, vsa_dss_2015_2_d.tid_lookup('gefahrenquelle', qgep_od.hazard_source.obj_id)
-FROM qgep_od.hazard_source
-   LEFT JOIN qgep_od.organisation as a ON od_hazard_source.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_hazard_source.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('gefahrenquelle', tww_od.hazard_source.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_hazard_source.last_modification, vsa_dss_2015_2_d.tid_lookup('gefahrenquelle', tww_od.hazard_source.obj_id)
+FROM tww_od.hazard_source
+   LEFT JOIN tww_od.organisation as a ON od_hazard_source.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_hazard_source.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.unfall
 (
 t_id, datum, bezeichnung, ort, bemerkung, verursacher, lage, gefahrenquelleref)
 SELECT vsa_dss_2015_2_d.tid_lookup('unfall', obj_id), date, identifier, place, remark, responsible, ST_Force2D(situation_geometry), vsa_dss_2015_2_d.tid_lookup('Gefahrenquelle', fk_hazard_source)
-FROM qgep_od.accident;
+FROM tww_od.accident;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('unfall', qgep_od.accident.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_accident.last_modification, vsa_dss_2015_2_d.tid_lookup('unfall', qgep_od.accident.obj_id)
-FROM qgep_od.accident
-   LEFT JOIN qgep_od.organisation as a ON od_accident.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_accident.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('unfall', tww_od.accident.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_accident.last_modification, vsa_dss_2015_2_d.tid_lookup('unfall', tww_od.accident.obj_id)
+FROM tww_od.accident
+   LEFT JOIN tww_od.organisation as a ON od_accident.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_accident.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.stoff
 (
 t_id, bezeichnung, art, bemerkung, lagerung, gefahrenquelleref)
 SELECT vsa_dss_2015_2_d.tid_lookup('stoff', obj_id), identifier, kind, remark, stockage, vsa_dss_2015_2_d.tid_lookup('Gefahrenquelle', fk_hazard_source)
-FROM qgep_od.substance;
+FROM tww_od.substance;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('stoff', qgep_od.substance.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_substance.last_modification, vsa_dss_2015_2_d.tid_lookup('stoff', qgep_od.substance.obj_id)
-FROM qgep_od.substance
-   LEFT JOIN qgep_od.organisation as a ON od_substance.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_substance.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('stoff', tww_od.substance.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_substance.last_modification, vsa_dss_2015_2_d.tid_lookup('stoff', tww_od.substance.obj_id)
+FROM tww_od.substance
+   LEFT JOIN tww_od.organisation as a ON od_substance.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_substance.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.einzugsgebiet
 (
@@ -1742,29 +1742,29 @@ CASE WHEN retention_planned = 5470 THEN 'ja' ---- 5470  yes
 WHEN retention_planned = 5471 THEN 'nein' ---- 5471  no
 WHEN retention_planned = 5472 THEN 'unbekannt' ---- 5472  unknown
 END, runoff_limit_current, runoff_limit_planned, seal_factor_rw_current, seal_factor_rw_planned, seal_factor_ww_current, seal_factor_ww_planned, sewer_infiltration_water_production_current, sewer_infiltration_water_production_planned, surface_area, waste_water_production_current, waste_water_production_planned, vsa_dss_2015_2_d.tid_lookup('Abwassernetzelement', fk_wastewater_networkelement_rw_current), vsa_dss_2015_2_d.tid_lookup('Abwassernetzelement', fk_wastewater_networkelement_rw_planned), vsa_dss_2015_2_d.tid_lookup('Abwassernetzelement', fk_wastewater_networkelement_ww_planned), vsa_dss_2015_2_d.tid_lookup('Abwassernetzelement', fk_wastewater_networkelement_ww_current)
-FROM qgep_od.catchment_area;
+FROM tww_od.catchment_area;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('einzugsgebiet', qgep_od.catchment_area.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_catchment_area.last_modification, vsa_dss_2015_2_d.tid_lookup('einzugsgebiet', qgep_od.catchment_area.obj_id)
-FROM qgep_od.catchment_area
-   LEFT JOIN qgep_od.organisation as a ON od_catchment_area.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_catchment_area.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('einzugsgebiet', tww_od.catchment_area.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_catchment_area.last_modification, vsa_dss_2015_2_d.tid_lookup('einzugsgebiet', tww_od.catchment_area.obj_id)
+FROM tww_od.catchment_area
+   LEFT JOIN tww_od.organisation as a ON od_catchment_area.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_catchment_area.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.oberflaechenabflussparameter
 (
 t_id, verdunstungsverlust, bezeichnung, versickerungsverlust, bemerkung, muldenverlust, benetzungsverlust, einzugsgebietref)
 SELECT vsa_dss_2015_2_d.tid_lookup('oberflaechenabflussparameter', obj_id), evaporation_loss, identifier, infiltration_loss, remark, surface_storage, wetting_loss, vsa_dss_2015_2_d.tid_lookup('Einzugsgebiet', fk_catchment_area)
-FROM qgep_od.surface_runoff_parameters;
+FROM tww_od.surface_runoff_parameters;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('oberflaechenabflussparameter', qgep_od.surface_runoff_parameters.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_surface_runoff_parameters.last_modification, vsa_dss_2015_2_d.tid_lookup('oberflaechenabflussparameter', qgep_od.surface_runoff_parameters.obj_id)
-FROM qgep_od.surface_runoff_parameters
-   LEFT JOIN qgep_od.organisation as a ON od_surface_runoff_parameters.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_surface_runoff_parameters.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('oberflaechenabflussparameter', tww_od.surface_runoff_parameters.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_surface_runoff_parameters.last_modification, vsa_dss_2015_2_d.tid_lookup('oberflaechenabflussparameter', tww_od.surface_runoff_parameters.obj_id)
+FROM tww_od.surface_runoff_parameters
+   LEFT JOIN tww_od.organisation as a ON od_surface_runoff_parameters.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_surface_runoff_parameters.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.messstelle
 (
@@ -1781,23 +1781,23 @@ WHEN purpose = 4593 THEN 'Kostenverteilung' ---- 4593  cost_sharing
 WHEN purpose = 4594 THEN 'technischer_Zweck' ---- 4594  technical_purpose
 WHEN purpose = 4592 THEN 'unbekannt' ---- 4592  unknown
 END, remark, ST_Force2D(situation_geometry), vsa_dss_2015_2_d.tid_lookup('Organisation', fk_operator), vsa_dss_2015_2_d.tid_lookup('Abwasserreinigungsanlage', fk_waste_water_treatment_plant), vsa_dss_2015_2_d.tid_lookup('Abwasserbauwerk', fk_wastewater_structure), vsa_dss_2015_2_d.tid_lookup('Gewaesserabschnitt', fk_water_course_segment)
-FROM qgep_od.measuring_point;
+FROM tww_od.measuring_point;
 
 -- additional Table Assoc: Messstelle_Referenzstelle/ no table hierarchy in qgep schema yet (check how to implement there)
 -- INSERT INTO vsa_dss_2015_2_d.Messstelle_Referenzstelleassoc
 -- (
 -- t_id, Referenzstelleref, Messstelle_Referenzstelleassocref)
 -- SELECT vsa_dss_2015_2_d.tid_lookup('Messstelle', obj_id), vsa_dss_2015_2_d.tid_lookup('Messstelle', fk_reference_station),vsa_dss_2015_2_d.tid_lookup('Messstelle', obj_id)
--- FROM qgep_od.messstelle;
+-- FROM tww_od.messstelle;
 
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('messstelle', qgep_od.measuring_point.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_measuring_point.last_modification, vsa_dss_2015_2_d.tid_lookup('messstelle', qgep_od.measuring_point.obj_id)
-FROM qgep_od.measuring_point
-   LEFT JOIN qgep_od.organisation as a ON od_measuring_point.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_measuring_point.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('messstelle', tww_od.measuring_point.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_measuring_point.last_modification, vsa_dss_2015_2_d.tid_lookup('messstelle', tww_od.measuring_point.obj_id)
+FROM tww_od.measuring_point
+   LEFT JOIN tww_od.organisation as a ON od_measuring_point.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_measuring_point.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.messgeraet
 (
@@ -1813,15 +1813,15 @@ WHEN kind = 5708 THEN 'Schwimmer' ---- 5708  float
 WHEN kind = 6322 THEN 'Ultraschall' ---- 6322  ultrasound
 WHEN kind = 5709 THEN 'unbekannt' ---- 5709  unknown
 END, remark, serial_number, vsa_dss_2015_2_d.tid_lookup('Messstelle', fk_measuring_point)
-FROM qgep_od.measuring_device;
+FROM tww_od.measuring_device;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('messgeraet', qgep_od.measuring_device.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_measuring_device.last_modification, vsa_dss_2015_2_d.tid_lookup('messgeraet', qgep_od.measuring_device.obj_id)
-FROM qgep_od.measuring_device
-   LEFT JOIN qgep_od.organisation as a ON od_measuring_device.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_measuring_device.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('messgeraet', tww_od.measuring_device.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_measuring_device.last_modification, vsa_dss_2015_2_d.tid_lookup('messgeraet', tww_od.measuring_device.obj_id)
+FROM tww_od.measuring_device
+   LEFT JOIN tww_od.organisation as a ON od_measuring_device.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_measuring_device.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.messreihe
 (
@@ -1832,15 +1832,15 @@ WHEN kind = 2646 THEN 'kontinuierlich' ---- 2646  continuous
 WHEN kind = 2647 THEN 'Regenwetter' ---- 2647  rain_weather
 WHEN kind = 3053 THEN 'unbekannt' ---- 3053  unknown
 END, remark, vsa_dss_2015_2_d.tid_lookup('Messstelle', fk_measuring_point)
-FROM qgep_od.measurement_series;
+FROM tww_od.measurement_series;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('messreihe', qgep_od.measurement_series.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_measurement_series.last_modification, vsa_dss_2015_2_d.tid_lookup('messreihe', qgep_od.measurement_series.obj_id)
-FROM qgep_od.measurement_series
-   LEFT JOIN qgep_od.organisation as a ON od_measurement_series.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_measurement_series.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('messreihe', tww_od.measurement_series.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_measurement_series.last_modification, vsa_dss_2015_2_d.tid_lookup('messreihe', tww_od.measurement_series.obj_id)
+FROM tww_od.measurement_series
+   LEFT JOIN tww_od.organisation as a ON od_measurement_series.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_measurement_series.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.messresultat
 (
@@ -1851,15 +1851,15 @@ WHEN measurement_type = 5733 THEN 'Durchfluss' ---- 5733  flow
 WHEN measurement_type = 5734 THEN 'Niveau' ---- 5734  level
 WHEN measurement_type = 5735 THEN 'unbekannt' ---- 5735  unknown
 END, measuring_duration, remark, time, value, vsa_dss_2015_2_d.tid_lookup('Messgeraet', fk_measuring_device), vsa_dss_2015_2_d.tid_lookup('Messreihe', fk_measurement_series)
-FROM qgep_od.measurement_result;
+FROM tww_od.measurement_result;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('messresultat', qgep_od.measurement_result.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_measurement_result.last_modification, vsa_dss_2015_2_d.tid_lookup('messresultat', qgep_od.measurement_result.obj_id)
-FROM qgep_od.measurement_result
-   LEFT JOIN qgep_od.organisation as a ON od_measurement_result.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_measurement_result.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('messresultat', tww_od.measurement_result.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_measurement_result.last_modification, vsa_dss_2015_2_d.tid_lookup('messresultat', tww_od.measurement_result.obj_id)
+FROM tww_od.measurement_result
+   LEFT JOIN tww_od.organisation as a ON od_measurement_result.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_measurement_result.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.ueberlauf
 (
@@ -1896,15 +1896,15 @@ WHEN signal_transmission = 2693 THEN 'senden' ---- 2693  sending
 WHEN signal_transmission = 2695 THEN 'senden_empfangen' ---- 2695  sending_receiving
 WHEN signal_transmission = 3056 THEN 'unbekannt' ---- 3056  unknown
 END, subsidies, vsa_dss_2015_2_d.tid_lookup('Abwasserknoten', fk_wastewater_node), vsa_dss_2015_2_d.tid_lookup('Abwasserknoten', fk_overflow_to), vsa_dss_2015_2_d.tid_lookup('Ueberlaufcharakteristik', fk_overflow_characteristic), vsa_dss_2015_2_d.tid_lookup('Steuerungszentrale', fk_control_center)
-FROM qgep_od.overflow;
+FROM tww_od.overflow;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('ueberlauf', qgep_od.overflow.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_overflow.last_modification, vsa_dss_2015_2_d.tid_lookup('ueberlauf', qgep_od.overflow.obj_id)
-FROM qgep_od.overflow
-   LEFT JOIN qgep_od.organisation as a ON od_overflow.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_overflow.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('ueberlauf', tww_od.overflow.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_overflow.last_modification, vsa_dss_2015_2_d.tid_lookup('ueberlauf', tww_od.overflow.obj_id)
+FROM tww_od.overflow
+   LEFT JOIN tww_od.organisation as a ON od_overflow.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_overflow.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.absperr_drosselorgan
 (
@@ -1950,15 +1950,15 @@ WHEN signal_transmission = 3172 THEN 'senden' ---- 3172  sending
 WHEN signal_transmission = 3169 THEN 'senden_empfangen' ---- 3169  sending_receiving
 WHEN signal_transmission = 3170 THEN 'unbekannt' ---- 3170  unknown
 END, subsidies, throttle_unit_opening_current, throttle_unit_opening_current_optimized, vsa_dss_2015_2_d.tid_lookup('Abwasserknoten', fk_wastewater_node), vsa_dss_2015_2_d.tid_lookup('Steuerungszentrale', fk_control_center), vsa_dss_2015_2_d.tid_lookup('Ueberlauf', fk_overflow)
-FROM qgep_od.throttle_shut_off_unit;
+FROM tww_od.throttle_shut_off_unit;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('absperr_drosselorgan', qgep_od.throttle_shut_off_unit.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_throttle_shut_off_unit.last_modification, vsa_dss_2015_2_d.tid_lookup('absperr_drosselorgan', qgep_od.throttle_shut_off_unit.obj_id)
-FROM qgep_od.throttle_shut_off_unit
-   LEFT JOIN qgep_od.organisation as a ON od_throttle_shut_off_unit.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_throttle_shut_off_unit.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('absperr_drosselorgan', tww_od.throttle_shut_off_unit.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_throttle_shut_off_unit.last_modification, vsa_dss_2015_2_d.tid_lookup('absperr_drosselorgan', tww_od.throttle_shut_off_unit.obj_id)
+FROM tww_od.throttle_shut_off_unit
+   LEFT JOIN tww_od.organisation as a ON od_throttle_shut_off_unit.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_throttle_shut_off_unit.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.streichwehr
 (
@@ -1973,7 +1973,7 @@ END,
 CASE WHEN weir_kind = 5772 THEN 'hochgezogen' ---- 5772  raised
 WHEN weir_kind = 5771 THEN 'niedrig' ---- 5771  low
 END
-FROM qgep_od.prank_weir;
+FROM tww_od.prank_weir;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'streichwehr'
 FROM
@@ -2011,7 +2011,7 @@ WHEN usage_current = 6200 THEN 'Reinabwasser' ---- 6200  clean_wastewater
 WHEN usage_current = 6206 THEN 'Schmutzabwasser' ---- 6206  wastewater
 WHEN usage_current = 6326 THEN 'unbekannt' ---- 6326  unknown
 END
-FROM qgep_od.pump;
+FROM tww_od.pump;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'foerderaggregat'
 FROM
@@ -2029,7 +2029,7 @@ WHEN opening_shape = 3585 THEN 'Parabel' ---- 3585  parable
 WHEN opening_shape = 3583 THEN 'Rechteck' ---- 3583  rectangular
 WHEN opening_shape = 3584 THEN 'unbekannt' ---- 3584  unknown
 END, width
-FROM qgep_od.leapingweir;
+FROM tww_od.leapingweir;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'leapingwehr'
 FROM
@@ -2069,15 +2069,15 @@ CASE WHEN status = 6371 THEN 'geplant' ---- 6371  planned
 WHEN status = 6372 THEN 'Ist' ---- 6372  current
 WHEN status = 6373 THEN 'Ist_optimiert' ---- 6373  current_optimized
 END, vsa_dss_2015_2_d.tid_lookup('Abwasserknoten', fk_wastewater_node), vsa_dss_2015_2_d.tid_lookup('Ueberlaufcharakteristik', fk_overflow_characteristic)
-FROM qgep_od.hydraulic_characteristic_data;
+FROM tww_od.hydraulic_characteristic_data;
 
 INSERT INTO vsa_dss_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT vsa_dss_2015_2_d.tid_lookup('hydr_kennwerte', qgep_od.hydraulic_characteristic_data.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_hydraulic_characteristic_data.last_modification, vsa_dss_2015_2_d.tid_lookup('hydr_kennwerte', qgep_od.hydraulic_characteristic_data.obj_id)
-FROM qgep_od.hydraulic_characteristic_data
-   LEFT JOIN qgep_od.organisation as a ON od_hydraulic_characteristic_data.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON od_hydraulic_characteristic_data.fk_provider = b.obj_id;
+SELECT vsa_dss_2015_2_d.tid_lookup('hydr_kennwerte', tww_od.hydraulic_characteristic_data.obj_id), '0', a.identifier as dataowner, b.identifier as provider, od_hydraulic_characteristic_data.last_modification, vsa_dss_2015_2_d.tid_lookup('hydr_kennwerte', tww_od.hydraulic_characteristic_data.obj_id)
+FROM tww_od.hydraulic_characteristic_data
+   LEFT JOIN tww_od.organisation as a ON od_hydraulic_characteristic_data.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON od_hydraulic_characteristic_data.fk_provider = b.obj_id;
 
 INSERT INTO vsa_dss_2015_2_d.rueckstausicherung
 (
@@ -2088,7 +2088,7 @@ WHEN kind = 5759 THEN 'Pumpe' ---- 5759  pump
 WHEN kind = 5757 THEN 'Rueckstauklappe' ---- 5757  backflow_flap
 WHEN kind = 5758 THEN 'Stauschild' ---- 5758  gate_shield
 END, year_of_replacement, vsa_dss_2015_2_d.tid_lookup('Absperr_Drosselorgan', fk_throttle_shut_off_unit), vsa_dss_2015_2_d.tid_lookup('FoerderAggregat', fk_pump)
-FROM qgep_od.backflow_prevention;
+FROM tww_od.backflow_prevention;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'rueckstausicherung'
 FROM
@@ -2107,7 +2107,7 @@ WHEN type = 5667 THEN 'Sieb' ---- 5667  sieve
 WHEN type = 5668 THEN 'Tauchwand' ---- 5668  scumboard
 WHEN type = 5669 THEN 'unbekannt' ---- 5669  unknown
 END, year_of_replacement
-FROM qgep_od.solids_retention;
+FROM tww_od.solids_retention;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'feststoffrueckhalt'
 FROM
@@ -2125,7 +2125,7 @@ WHEN type = 5622 THEN 'keine' ---- 5622  none
 WHEN type = 5623 THEN 'Schwallspuelung' ---- 5623  surge_flushing
 WHEN type = 5624 THEN 'Spuelkippe' ---- 5624  tipping_bucket
 END, year_of_replacement
-FROM qgep_od.tank_cleaning;
+FROM tww_od.tank_cleaning;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'beckenreinigung'
 FROM
@@ -2142,7 +2142,7 @@ WHEN type = 5627 THEN 'keine' ---- 5627  none
 WHEN type = 5628 THEN 'Pumpe' ---- 5628  pump
 WHEN type = 5629 THEN 'Schieber' ---- 5629  valve
 END, year_of_replacement, vsa_dss_2015_2_d.tid_lookup('Absperr_Drosselorgan', fk_throttle_shut_off_unit), vsa_dss_2015_2_d.tid_lookup('FoerderAggregat', fk_overflow)
-FROM qgep_od.tank_emptying;
+FROM tww_od.tank_emptying;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'beckenentleerung'
 FROM
@@ -2154,7 +2154,7 @@ INSERT INTO vsa_dss_2015_2_d.ezg_parameter_allg
 (
 t_id, trockenwetteranfall, fliessweglaenge, fliessweggefaelle, einwohnergleichwert, flaeche)
 SELECT vsa_dss_2015_2_d.tid_lookup('ezg_parameter_allg', obj_id), dry_wheather_flow, flow_path_length, flow_path_slope, population_equivalent, surface_ca
-FROM qgep_od.param_ca_general;
+FROM tww_od.param_ca_general;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'ezg_parameter_allg'
 FROM
@@ -2166,7 +2166,7 @@ INSERT INTO vsa_dss_2015_2_d.ezg_parameter_mouse1
 (
 t_id, trockenwetteranfall, fliessweglaenge, fliessweggefaelle, einwohnergleichwert, flaeche, nutzungsart)
 SELECT vsa_dss_2015_2_d.tid_lookup('ezg_parameter_mouse1', obj_id), dry_wheather_flow, flow_path_length, flow_path_slope, population_equivalent, surface_ca_mouse, usage
-FROM qgep_od.param_ca_mouse1;
+FROM tww_od.param_ca_mouse1;
 
 UPDATE vsa_dss_2015_2_d.baseclass SET t_type = 'ezg_parameter_mouse1'
 FROM

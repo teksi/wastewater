@@ -4,7 +4,7 @@
 ------ version 15.03.2016 14:19:45
 --- modified 15.8.2019 schema anpassung
 --- modified 15.8.2019 sia405_base_sia405_baseclass_metaattribute -> sia405_baseclass_metaattribute
---- ST_Force2D für Geometrien eingefügt: qgep_od.wastewater_structure.detail_geometry_geometry, qgep_od.reach_point.situation_geometry, qgep_od.wastewater_node.situation_geometry, qgep_od.reach.progression_geometry, qgep_od.cover.situation_geometry
+--- ST_Force2D für Geometrien eingefügt: tww_od.wastewater_structure.detail_geometry_geometry, tww_od.reach_point.situation_geometry, tww_od.wastewater_node.situation_geometry, tww_od.reach.progression_geometry, tww_od.cover.situation_geometry
 
 -- DELETE FROM sia405_abwasser_2015_2_d.organisation;
 
@@ -12,23 +12,23 @@ INSERT INTO sia405_abwasser_2015_2_d.organisation
 (
 t_id, bezeichnung, bemerkung, uid)
 SELECT sia405_abwasser_2015_2_d.tid_lookup('organisation', obj_id), identifier, remark, uid
-FROM qgep_od.organisation;
+FROM tww_od.organisation;
 
 -- additional Table Assoc: Organisation_Teil_von/ no table hierarchy in qgep schema yet (check how to implement there)
 -- INSERT INTO sia405_abwasser_2015_2_d.Organisation_Teil_vonassoc
 -- (
 -- t_id, Teil_vonref, Organisation_Teil_vonassocref)
 -- SELECT sia405_abwasser_2015_2_d.tid_lookup('Organisation', obj_id), sia405_abwasser_2015_2_d.tid_lookup('Organisation', fk_part_of),sia405_abwasser_2015_2_d.tid_lookup('Organisation', obj_id)
--- FROM qgep_od.organisation;
+-- FROM tww_od.organisation;
 
 
 INSERT INTO sia405_abwasser_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT sia405_abwasser_2015_2_d.tid_lookup('organisation', qgep_od.organisation.obj_id), '0', a.identifier as dataowner, b.identifier as provider, organisation.last_modification, sia405_abwasser_2015_2_d.tid_lookup('organisation', qgep_od.organisation.obj_id)
-FROM qgep_od.organisation
-   LEFT JOIN qgep_od.organisation as a ON organisation.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON organisation.fk_provider = b.obj_id;
+SELECT sia405_abwasser_2015_2_d.tid_lookup('organisation', tww_od.organisation.obj_id), '0', a.identifier as dataowner, b.identifier as provider, organisation.last_modification, sia405_abwasser_2015_2_d.tid_lookup('organisation', tww_od.organisation.obj_id)
+FROM tww_od.organisation
+   LEFT JOIN tww_od.organisation as a ON organisation.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON organisation.fk_provider = b.obj_id;
 
 
 INSERT INTO sia405_abwasser_2015_2_d.abwasserbauwerk
@@ -71,16 +71,16 @@ WHEN structure_condition = 3360 THEN 'Z2' ---- 3360  Z2
 WHEN structure_condition = 3361 THEN 'Z3' ---- 3361  Z3
 WHEN structure_condition = 3362 THEN 'Z4' ---- 3362  Z4
 END, subsidies, year_of_construction, year_of_replacement, sia405_abwasser_2015_2_d.tid_lookup('Organisation', fk_owner), sia405_abwasser_2015_2_d.tid_lookup('Organisation', fk_operator)
-FROM qgep_od.wastewater_structure;
+FROM tww_od.wastewater_structure;
 
 
 INSERT INTO sia405_abwasser_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT sia405_abwasser_2015_2_d.tid_lookup('abwasserbauwerk', qgep_od.wastewater_structure.obj_id), '0', a.identifier as dataowner, b.identifier as provider, wastewater_structure.last_modification, sia405_abwasser_2015_2_d.tid_lookup('abwasserbauwerk', qgep_od.wastewater_structure.obj_id)
-FROM qgep_od.wastewater_structure
-   LEFT JOIN qgep_od.organisation as a ON wastewater_structure.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON wastewater_structure.fk_provider = b.obj_id;
+SELECT sia405_abwasser_2015_2_d.tid_lookup('abwasserbauwerk', tww_od.wastewater_structure.obj_id), '0', a.identifier as dataowner, b.identifier as provider, wastewater_structure.last_modification, sia405_abwasser_2015_2_d.tid_lookup('abwasserbauwerk', tww_od.wastewater_structure.obj_id)
+FROM tww_od.wastewater_structure
+   LEFT JOIN tww_od.organisation as a ON wastewater_structure.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON wastewater_structure.fk_provider = b.obj_id;
 
 INSERT INTO sia405_abwasser_2015_2_d.kanal
 (
@@ -150,7 +150,7 @@ WHEN usage_planned = 4515 THEN 'Reinabwasser' ---- 4515  clean_wastewater
 WHEN usage_planned = 4527 THEN 'Schmutzabwasser' ---- 4527  wastewater
 WHEN usage_planned = 4569 THEN 'unbekannt' ---- 4569  unknown
 END
-FROM qgep_od.channel;
+FROM tww_od.channel;
 
 UPDATE sia405_abwasser_2015_2_d.baseclass SET t_type = 'kanal'
 FROM
@@ -190,7 +190,7 @@ WHEN surface_inflow = 2739 THEN 'Rost' ---- 2739  grid
 WHEN surface_inflow = 5343 THEN 'unbekannt' ---- 5343  unknown
 WHEN surface_inflow = 2740 THEN 'Zulauf_seitlich' ---- 2740  intake_from_side
 END
-FROM qgep_od.manhole;
+FROM tww_od.manhole;
 
 UPDATE sia405_abwasser_2015_2_d.baseclass SET t_type = 'normschacht'
 FROM
@@ -205,7 +205,7 @@ SELECT sia405_abwasser_2015_2_d.tid_lookup('einleitstelle', obj_id), highwater_l
 CASE WHEN relevance = 5580 THEN 'gewaesserrelevant' ---- 5580  relevant_for_water_course
 WHEN relevance = 5581 THEN 'nicht_gewaesserrelevant' ---- 5581  non_relevant_for_water_course
 END, terrain_level, waterlevel_hydraulic
-FROM qgep_od.discharge_point;
+FROM tww_od.discharge_point;
 
 UPDATE sia405_abwasser_2015_2_d.baseclass SET t_type = 'einleitstelle'
 FROM
@@ -263,7 +263,7 @@ CASE WHEN stormwater_tank_arrangement = 4608 THEN 'Hauptschluss' ---- 4608  main
 WHEN stormwater_tank_arrangement = 4609 THEN 'Nebenschluss' ---- 4609  side_connection
 WHEN stormwater_tank_arrangement = 4610 THEN 'unbekannt' ---- 4610  unknown
 END
-FROM qgep_od.special_structure;
+FROM tww_od.special_structure;
 
 UPDATE sia405_abwasser_2015_2_d.baseclass SET t_type = 'spezialbauwerk'
 FROM
@@ -314,7 +314,7 @@ CASE WHEN watertightness = 3295 THEN 'nichtwasserdicht' ---- 3295  not_watertigh
 WHEN watertightness = 5360 THEN 'unbekannt' ---- 5360  unknown
 WHEN watertightness = 3294 THEN 'wasserdicht' ---- 3294  watertight
 END
-FROM qgep_od.infiltration_installation;
+FROM tww_od.infiltration_installation;
 
 UPDATE sia405_abwasser_2015_2_d.baseclass SET t_type = 'versickerungsanlage'
 FROM
@@ -334,29 +334,29 @@ WHEN profile_type = 3353 THEN 'Rechteckprofil' ---- 3353  rectangular
 WHEN profile_type = 3355 THEN 'Spezialprofil' ---- 3355  special
 WHEN profile_type = 3357 THEN 'unbekannt' ---- 3357  unknown
 END, remark
-FROM qgep_od.pipe_profile;
+FROM tww_od.pipe_profile;
 
 INSERT INTO sia405_abwasser_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT sia405_abwasser_2015_2_d.tid_lookup('rohrprofil', qgep_od.pipe_profile.obj_id), '0', a.identifier as dataowner, b.identifier as provider, pipe_profile.last_modification, sia405_abwasser_2015_2_d.tid_lookup('rohrprofil', qgep_od.pipe_profile.obj_id)
-FROM qgep_od.pipe_profile
-   LEFT JOIN qgep_od.organisation as a ON pipe_profile.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON pipe_profile.fk_provider = b.obj_id;
+SELECT sia405_abwasser_2015_2_d.tid_lookup('rohrprofil', tww_od.pipe_profile.obj_id), '0', a.identifier as dataowner, b.identifier as provider, pipe_profile.last_modification, sia405_abwasser_2015_2_d.tid_lookup('rohrprofil', tww_od.pipe_profile.obj_id)
+FROM tww_od.pipe_profile
+   LEFT JOIN tww_od.organisation as a ON pipe_profile.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON pipe_profile.fk_provider = b.obj_id;
 
 INSERT INTO sia405_abwasser_2015_2_d.abwassernetzelement
 (
 t_id, bezeichnung, bemerkung, abwasserbauwerkref)
 SELECT sia405_abwasser_2015_2_d.tid_lookup('abwassernetzelement', obj_id), identifier, remark, sia405_abwasser_2015_2_d.tid_lookup('Abwasserbauwerk', fk_wastewater_structure)
-FROM qgep_od.wastewater_networkelement;
+FROM tww_od.wastewater_networkelement;
 
 INSERT INTO sia405_abwasser_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT sia405_abwasser_2015_2_d.tid_lookup('abwassernetzelement', qgep_od.wastewater_networkelement.obj_id), '0', a.identifier as dataowner, b.identifier as provider, wastewater_networkelement.last_modification, sia405_abwasser_2015_2_d.tid_lookup('abwassernetzelement', qgep_od.wastewater_networkelement.obj_id)
-FROM qgep_od.wastewater_networkelement
-   LEFT JOIN qgep_od.organisation as a ON wastewater_networkelement.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON wastewater_networkelement.fk_provider = b.obj_id;
+SELECT sia405_abwasser_2015_2_d.tid_lookup('abwassernetzelement', tww_od.wastewater_networkelement.obj_id), '0', a.identifier as dataowner, b.identifier as provider, wastewater_networkelement.last_modification, sia405_abwasser_2015_2_d.tid_lookup('abwassernetzelement', tww_od.wastewater_networkelement.obj_id)
+FROM tww_od.wastewater_networkelement
+   LEFT JOIN tww_od.organisation as a ON wastewater_networkelement.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON wastewater_networkelement.fk_provider = b.obj_id;
 
 INSERT INTO sia405_abwasser_2015_2_d.haltungspunkt
 (
@@ -377,15 +377,15 @@ END, position_of_connection, remark,
 --situation_geometry,
 ST_Force2D(situation_geometry),
 sia405_abwasser_2015_2_d.tid_lookup('Abwassernetzelement', fk_wastewater_networkelement)
-FROM qgep_od.reach_point;
+FROM tww_od.reach_point;
 
 INSERT INTO sia405_abwasser_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT sia405_abwasser_2015_2_d.tid_lookup('haltungspunkt', qgep_od.reach_point.obj_id), '0', a.identifier as dataowner, b.identifier as provider, reach_point.last_modification, sia405_abwasser_2015_2_d.tid_lookup('haltungspunkt', qgep_od.reach_point.obj_id)
-FROM qgep_od.reach_point
-   LEFT JOIN qgep_od.organisation as a ON reach_point.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON reach_point.fk_provider = b.obj_id;
+SELECT sia405_abwasser_2015_2_d.tid_lookup('haltungspunkt', tww_od.reach_point.obj_id), '0', a.identifier as dataowner, b.identifier as provider, reach_point.last_modification, sia405_abwasser_2015_2_d.tid_lookup('haltungspunkt', tww_od.reach_point.obj_id)
+FROM tww_od.reach_point
+   LEFT JOIN tww_od.organisation as a ON reach_point.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON reach_point.fk_provider = b.obj_id;
 
 INSERT INTO sia405_abwasser_2015_2_d.abwasserknoten
 (
@@ -393,7 +393,7 @@ t_id, rueckstaukote, sohlenkote, lage)
 SELECT sia405_abwasser_2015_2_d.tid_lookup('abwasserknoten', obj_id), backflow_level, bottom_level,
 --situation_geometry
 ST_Force2D(situation_geometry)
-FROM qgep_od.wastewater_node;
+FROM tww_od.wastewater_node;
 
 UPDATE sia405_abwasser_2015_2_d.baseclass SET t_type = 'abwasserknoten'
 FROM
@@ -474,7 +474,7 @@ CASE WHEN relining_kind = 6455 THEN 'ganze_Haltung' ---- 6455  full_reach
 WHEN relining_kind = 6456 THEN 'partiell' ---- 6456  partial
 WHEN relining_kind = 6457 THEN 'unbekannt' ---- 6457  unknown
 END, ring_stiffness, slope_building_plan, wall_roughness, sia405_abwasser_2015_2_d.tid_lookup('Haltungspunkt', fk_reach_point_from), sia405_abwasser_2015_2_d.tid_lookup('Haltungspunkt', fk_reach_point_to), sia405_abwasser_2015_2_d.tid_lookup('Rohrprofil', fk_pipe_profile)
-FROM qgep_od.reach;
+FROM tww_od.reach;
 
 UPDATE sia405_abwasser_2015_2_d.baseclass SET t_type = 'haltung'
 FROM
@@ -490,21 +490,21 @@ CASE WHEN renovation_demand = 138 THEN 'nicht_notwendig' ---- 138  not_necessary
 WHEN renovation_demand = 137 THEN 'notwendig' ---- 137  necessary
 WHEN renovation_demand = 5358 THEN 'unbekannt' ---- 5358  unknown
 END, sia405_abwasser_2015_2_d.tid_lookup('Abwasserbauwerk', fk_wastewater_structure)
-FROM qgep_od.structure_part;
+FROM tww_od.structure_part;
 
 INSERT INTO sia405_abwasser_2015_2_d.metaattribute
 (
 t_id, t_seq, datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute)
-SELECT sia405_abwasser_2015_2_d.tid_lookup('bauwerksteil', qgep_od.structure_part.obj_id), '0', a.identifier as dataowner, b.identifier as provider, structure_part.last_modification, sia405_abwasser_2015_2_d.tid_lookup('bauwerksteil', qgep_od.structure_part.obj_id)
-FROM qgep_od.structure_part
-   LEFT JOIN qgep_od.organisation as a ON structure_part.fk_dataowner = a.obj_id
-   LEFT JOIN qgep_od.organisation as b ON structure_part.fk_provider = b.obj_id;
+SELECT sia405_abwasser_2015_2_d.tid_lookup('bauwerksteil', tww_od.structure_part.obj_id), '0', a.identifier as dataowner, b.identifier as provider, structure_part.last_modification, sia405_abwasser_2015_2_d.tid_lookup('bauwerksteil', tww_od.structure_part.obj_id)
+FROM tww_od.structure_part
+   LEFT JOIN tww_od.organisation as a ON structure_part.fk_dataowner = a.obj_id
+   LEFT JOIN tww_od.organisation as b ON structure_part.fk_provider = b.obj_id;
 
 INSERT INTO sia405_abwasser_2015_2_d.trockenwetterfallrohr
 (
 t_id, durchmesser)
 SELECT sia405_abwasser_2015_2_d.tid_lookup('trockenwetterfallrohr', obj_id), diameter
-FROM qgep_od.dryweather_downspout;
+FROM tww_od.dryweather_downspout;
 
 UPDATE sia405_abwasser_2015_2_d.baseclass SET t_type = 'trockenwetterfallrohr'
 FROM
@@ -526,7 +526,7 @@ WHEN kind = 91 THEN 'Trittnischen' ---- 91  footstep_niches
 WHEN kind = 3230 THEN 'Tuere' ---- 3230  door
 WHEN kind = 3048 THEN 'unbekannt' ---- 3048  unknown
 END
-FROM qgep_od.access_aid;
+FROM tww_od.access_aid;
 
 UPDATE sia405_abwasser_2015_2_d.baseclass SET t_type = 'einstiegshilfe'
 FROM
@@ -545,7 +545,7 @@ WHEN material = 238 THEN 'Steinzeug' ---- 238  stoneware
 WHEN material = 3017 THEN 'unbekannt' ---- 3017  unknown
 WHEN material = 237 THEN 'Zementmoertel' ---- 237  cement_mortar
 END
-FROM qgep_od.dryweather_flume;
+FROM tww_od.dryweather_flume;
 
 UPDATE sia405_abwasser_2015_2_d.baseclass SET t_type = 'trockenwetterrinne'
 FROM
@@ -589,7 +589,7 @@ CASE WHEN venting = 229 THEN 'entlueftet' ---- 229  vented
 WHEN venting = 230 THEN 'nicht_entlueftet' ---- 230  not_vented
 WHEN venting = 5348 THEN 'unbekannt' ---- 5348  unknown
 END
-FROM qgep_od.cover;
+FROM tww_od.cover;
 
 UPDATE sia405_abwasser_2015_2_d.baseclass SET t_type = 'deckel'
 FROM
@@ -607,7 +607,7 @@ WHEN kind = 93 THEN 'einseitig' ---- 93  one_sided
 WHEN kind = 3231 THEN 'kein' ---- 3231  none
 WHEN kind = 3033 THEN 'unbekannt' ---- 3033  unknown
 END
-FROM qgep_od.benching;
+FROM tww_od.benching;
 
 UPDATE sia405_abwasser_2015_2_d.baseclass SET t_type = 'bankett'
 FROM

@@ -15,7 +15,7 @@ ILI_FOLDER = os.path.join(BASE, "ili")
 DATA_FOLDER = os.path.join(BASE, "data")
 
 QGEP_DEFAULT_PGSERVICE = "pg_tww"
-QGEP_SCHEMA = "qgep_od"
+QGEP_SCHEMA = "tww_od"
 ABWASSER_SCHEMA = "pg2ili_abwasser"
 ABWASSER_ILI_MODEL = os.path.join(ILI_FOLDER, "VSA_KEK_2019_2_d_LV95-20210120.ili")
 ABWASSER_ILI_MODEL_NAME = "VSA_KEK_2019_LV95"

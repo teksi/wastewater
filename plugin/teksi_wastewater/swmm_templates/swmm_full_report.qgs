@@ -22,7 +22,7 @@
     <customproperties/>
     <layer-tree-group checked="Qt::Checked" mutually-exclusive-child="1" expanded="1" mutually-exclusive="1" name="Wastewater structures">
       <customproperties/>
-      <layer-tree-layer checked="Qt::Unchecked" id="vw_tww_wastewater_structure_612bb67c_a2c4_4e0f_b98d_e440f9324ef1" providerKey="postgres" legend_exp="" expanded="1" source="service='pg_tww_gruner' sslmode=disable key='identifier' srid=2056 type=Point checkPrimaryKeyUnicity='1' table=&quot;qgep_od&quot;.&quot;vw_tww_wastewater_structure&quot; (situation_geometry) sql=" name="vw_tww_wastewater_structure">
+      <layer-tree-layer checked="Qt::Unchecked" id="vw_tww_wastewater_structure_612bb67c_a2c4_4e0f_b98d_e440f9324ef1" providerKey="postgres" legend_exp="" expanded="1" source="service='pg_tww_gruner' sslmode=disable key='identifier' srid=2056 type=Point checkPrimaryKeyUnicity='1' table=&quot;tww_od&quot;.&quot;vw_tww_wastewater_structure&quot; (situation_geometry) sql=" name="vw_tww_wastewater_structure">
         <customproperties/>
       </layer-tree-layer>
       <layer-tree-layer checked="Qt::Checked" id="node_results_36522a14_4036_44b6_893a_46d903f11fb2" providerKey="postgres" legend_exp="" expanded="0" source="service='pg_tww' sslmode=disable key='mr_obj_id' srid=2056 type=PointZ checkPrimaryKeyUnicity='1' table=&quot;qgep_swmm&quot;.&quot;node_results&quot; (geom) sql=&quot;swmm_parameter&quot; = 'inflow'" name="Inflow">
@@ -40,7 +40,7 @@
     </layer-tree-group>
     <layer-tree-group checked="Qt::Checked" mutually-exclusive-child="0" expanded="1" mutually-exclusive="1" name="Reaches">
       <customproperties/>
-      <layer-tree-layer checked="Qt::Checked" id="vw_tww_reach_8e068114_4e0e_4869_8a5b_7a545232c716" providerKey="postgres" legend_exp="" expanded="1" source="service='pg_tww' sslmode=disable key='obj_id' srid=2056 type=CompoundCurveZ checkPrimaryKeyUnicity='1' table=&quot;qgep_od&quot;.&quot;vw_tww_reach&quot; (progression_geometry) sql=" name="vw_tww_reach">
+      <layer-tree-layer checked="Qt::Checked" id="vw_tww_reach_8e068114_4e0e_4869_8a5b_7a545232c716" providerKey="postgres" legend_exp="" expanded="1" source="service='pg_tww' sslmode=disable key='obj_id' srid=2056 type=CompoundCurveZ checkPrimaryKeyUnicity='1' table=&quot;tww_od&quot;.&quot;vw_tww_reach&quot; (progression_geometry) sql=" name="vw_tww_reach">
         <customproperties/>
       </layer-tree-layer>
       <layer-tree-layer checked="Qt::Unchecked" id="link_results_ee91e167_81f4_4225_9979_56a82a1ba517" providerKey="postgres" legend_exp="" expanded="0" source="service='pg_tww' sslmode=disable key='mr_obj_id' srid=2056 type=CompoundCurveZ checkPrimaryKeyUnicity='1' table=&quot;qgep_swmm&quot;.&quot;link_results&quot; (geom) sql=&quot;swmm_parameter&quot; = 'velocity'" name="Velocity">
@@ -58,16 +58,16 @@
     </layer-tree-group>
     <layer-tree-group checked="Qt::Checked" expanded="1" name="Measurements">
       <customproperties/>
-      <layer-tree-layer checked="Qt::Unchecked" id="measuring_point_2b0d0924_408d_4b5b_857c_af8adbb23f57" providerKey="postgres" legend_exp="" expanded="1" source="service='pg_tww' sslmode=disable key='obj_id' srid=2056 type=Point checkPrimaryKeyUnicity='0' table=&quot;qgep_od&quot;.&quot;measuring_point&quot; (situation_geometry) sql=" name="measuring_point">
+      <layer-tree-layer checked="Qt::Unchecked" id="measuring_point_2b0d0924_408d_4b5b_857c_af8adbb23f57" providerKey="postgres" legend_exp="" expanded="1" source="service='pg_tww' sslmode=disable key='obj_id' srid=2056 type=Point checkPrimaryKeyUnicity='0' table=&quot;tww_od&quot;.&quot;measuring_point&quot; (situation_geometry) sql=" name="measuring_point">
         <customproperties/>
       </layer-tree-layer>
-      <layer-tree-layer checked="Qt::Unchecked" id="measuring_device_504aaab7_db0b_431a_9d26_eed3faba4dcb" providerKey="postgres" legend_exp="" expanded="1" source="service='pg_tww' sslmode=disable key='obj_id' checkPrimaryKeyUnicity='0' table=&quot;qgep_od&quot;.&quot;measuring_device&quot; sql=" name="measuring_device">
+      <layer-tree-layer checked="Qt::Unchecked" id="measuring_device_504aaab7_db0b_431a_9d26_eed3faba4dcb" providerKey="postgres" legend_exp="" expanded="1" source="service='pg_tww' sslmode=disable key='obj_id' checkPrimaryKeyUnicity='0' table=&quot;tww_od&quot;.&quot;measuring_device&quot; sql=" name="measuring_device">
         <customproperties/>
       </layer-tree-layer>
-      <layer-tree-layer checked="Qt::Unchecked" id="measurement_result_9c0c2d74_00c2_44d5_886b_5949f4febf6c" providerKey="postgres" legend_exp="" expanded="1" source="service='pg_tww' sslmode=disable key='obj_id' checkPrimaryKeyUnicity='0' table=&quot;qgep_od&quot;.&quot;measurement_result&quot; sql=" name="measurement_result">
+      <layer-tree-layer checked="Qt::Unchecked" id="measurement_result_9c0c2d74_00c2_44d5_886b_5949f4febf6c" providerKey="postgres" legend_exp="" expanded="1" source="service='pg_tww' sslmode=disable key='obj_id' checkPrimaryKeyUnicity='0' table=&quot;tww_od&quot;.&quot;measurement_result&quot; sql=" name="measurement_result">
         <customproperties/>
       </layer-tree-layer>
-      <layer-tree-layer checked="Qt::Unchecked" id="measurement_series_8c1c48ba_0683_419f_a518_32fb576ca695" providerKey="postgres" legend_exp="" expanded="1" source="service='pg_tww' sslmode=disable key='obj_id' checkPrimaryKeyUnicity='0' table=&quot;qgep_od&quot;.&quot;measurement_series&quot; sql=" name="measurement_series">
+      <layer-tree-layer checked="Qt::Unchecked" id="measurement_series_8c1c48ba_0683_419f_a518_32fb576ca695" providerKey="postgres" legend_exp="" expanded="1" source="service='pg_tww' sslmode=disable key='obj_id' checkPrimaryKeyUnicity='0' table=&quot;tww_od&quot;.&quot;measurement_series&quot; sql=" name="measurement_series">
         <customproperties/>
       </layer-tree-layer>
     </layer-tree-group>
@@ -4080,7 +4080,7 @@ def my_form_open(dialog, layer, feature):
     </maplayer>
     <maplayer refreshOnNotifyEnabled="0" geometry="No geometry" wkbType="NoGeometry" maxScale="0" autoRefreshTime="0" autoRefreshEnabled="0" hasScaleBasedVisibilityFlag="0" refreshOnNotifyMessage="" type="vector" minScale="1e+08" readOnly="0" styleCategories="AllStyleCategories">
       <id>measurement_result_9c0c2d74_00c2_44d5_886b_5949f4febf6c</id>
-      <datasource>service='pg_tww' sslmode=disable key='obj_id' checkPrimaryKeyUnicity='0' table="qgep_od"."measurement_result" sql=</datasource>
+      <datasource>service='pg_tww' sslmode=disable key='obj_id' checkPrimaryKeyUnicity='0' table="tww_od"."measurement_result" sql=</datasource>
       <keywordList>
         <value></value>
       </keywordList>
@@ -4332,7 +4332,7 @@ def my_form_open(dialog, layer, feature):
     </maplayer>
     <maplayer refreshOnNotifyEnabled="0" geometry="No geometry" wkbType="NoGeometry" maxScale="0" autoRefreshTime="0" autoRefreshEnabled="0" hasScaleBasedVisibilityFlag="0" refreshOnNotifyMessage="" type="vector" minScale="1e+08" readOnly="0" styleCategories="AllStyleCategories">
       <id>measurement_series_8c1c48ba_0683_419f_a518_32fb576ca695</id>
-      <datasource>service='pg_tww' sslmode=disable key='obj_id' checkPrimaryKeyUnicity='0' table="qgep_od"."measurement_series" sql=</datasource>
+      <datasource>service='pg_tww' sslmode=disable key='obj_id' checkPrimaryKeyUnicity='0' table="tww_od"."measurement_series" sql=</datasource>
       <keywordList>
         <value></value>
       </keywordList>
@@ -4548,7 +4548,7 @@ def my_form_open(dialog, layer, feature):
     </maplayer>
     <maplayer refreshOnNotifyEnabled="0" geometry="No geometry" wkbType="NoGeometry" maxScale="0" autoRefreshTime="0" autoRefreshEnabled="0" hasScaleBasedVisibilityFlag="0" refreshOnNotifyMessage="" type="vector" minScale="1e+08" readOnly="0" styleCategories="AllStyleCategories">
       <id>measuring_device_504aaab7_db0b_431a_9d26_eed3faba4dcb</id>
-      <datasource>service='pg_tww' sslmode=disable key='obj_id' checkPrimaryKeyUnicity='0' table="qgep_od"."measuring_device" sql=</datasource>
+      <datasource>service='pg_tww' sslmode=disable key='obj_id' checkPrimaryKeyUnicity='0' table="tww_od"."measuring_device" sql=</datasource>
       <keywordList>
         <value></value>
       </keywordList>
@@ -4762,7 +4762,7 @@ def my_form_open(dialog, layer, feature):
     </maplayer>
     <maplayer hasScaleBasedVisibilityFlag="0" refreshOnNotifyMessage="" maxScale="0" simplifyDrawingHints="1" autoRefreshTime="0" type="vector" styleCategories="AllStyleCategories" autoRefreshEnabled="0" refreshOnNotifyEnabled="0" simplifyDrawingTol="1" labelsEnabled="0" simplifyMaxScale="1" wkbType="Point" simplifyLocal="1" readOnly="0" simplifyAlgorithm="0" minScale="1e+08" geometry="Point">
       <id>measuring_point_2b0d0924_408d_4b5b_857c_af8adbb23f57</id>
-      <datasource>service='pg_tww' sslmode=disable key='obj_id' srid=2056 type=Point checkPrimaryKeyUnicity='0' table="qgep_od"."measuring_point" (situation_geometry) sql=</datasource>
+      <datasource>service='pg_tww' sslmode=disable key='obj_id' srid=2056 type=Point checkPrimaryKeyUnicity='0' table="tww_od"."measuring_point" (situation_geometry) sql=</datasource>
       <keywordList>
         <value></value>
       </keywordList>
@@ -5605,7 +5605,7 @@ def my_form_open(dialog, layer, feature):
         <ymax>1258332.25099999993108213</ymax>
       </extent>
       <id>vw_tww_reach_8e068114_4e0e_4869_8a5b_7a545232c716</id>
-      <datasource>service='pg_tww' sslmode=disable key='obj_id' srid=2056 type=CompoundCurveZ checkPrimaryKeyUnicity='1' table="qgep_od"."vw_tww_reach" (progression_geometry) sql=</datasource>
+      <datasource>service='pg_tww' sslmode=disable key='obj_id' srid=2056 type=CompoundCurveZ checkPrimaryKeyUnicity='1' table="tww_od"."vw_tww_reach" (progression_geometry) sql=</datasource>
       <keywordList>
         <value></value>
       </keywordList>
@@ -6930,7 +6930,7 @@ def my_form_open(dialog, layer, feature):
         <ymax>1258323.34700000006705523</ymax>
       </extent>
       <id>vw_tww_wastewater_structure_612bb67c_a2c4_4e0f_b98d_e440f9324ef1</id>
-      <datasource>service='pg_tww' sslmode=disable key='identifier' srid=2056 type=Point checkPrimaryKeyUnicity='1' table="qgep_od"."vw_tww_wastewater_structure" (situation_geometry) sql=</datasource>
+      <datasource>service='pg_tww' sslmode=disable key='identifier' srid=2056 type=Point checkPrimaryKeyUnicity='1' table="tww_od"."vw_tww_wastewater_structure" (situation_geometry) sql=</datasource>
       <keywordList>
         <value></value>
       </keywordList>
