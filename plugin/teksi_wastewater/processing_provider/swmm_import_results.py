@@ -25,8 +25,8 @@ from qgis.core import (
     QgsProcessingParameterString,
 )
 
-from .qgep_algorithm import QgepAlgorithm
-from .QgepSwmm import QgepSwmm
+from .tww_algorithm import TwwAlgorithm
+from .TwwSwmm import TwwSwmm
 
 __author__ = "Timothée Produit"
 __date__ = "2021-04-30"
@@ -37,7 +37,7 @@ __copyright__ = "(C) 2021 by map.ig-group.ch"
 __revision__ = "$Format:%H$"
 
 
-class SwmmImportResultsAlgorithm(QgepAlgorithm):
+class SwmmImportResultsAlgorithm(TwwAlgorithm):
     """"""
 
     RPT_FILE = "RPT_FILE"
@@ -146,7 +146,7 @@ class SwmmImportResultsAlgorithm(QgepAlgorithm):
         )
 
         # Get node summary from output file
-        with QgepSwmm(sim_description, database, None, None, None, rpt_file, None, feedback) as qs:
+        with TwwSwmm(sim_description, database, None, None, None, rpt_file, None, feedback) as qs:
             if import_summary:
                 qs.import_summary(sim_description)
             if import_full_result:

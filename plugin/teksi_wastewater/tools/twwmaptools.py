@@ -59,7 +59,7 @@ from qgis.PyQt.QtWidgets import (
     QMenu,
 )
 
-from ..utils.qgeplayermanager import QgepLayerManager
+from ..utils.twwlayermanager import TwwLayerManager
 from .twwnetwork import TwwGraphManager
 from .twwprofile import (
     QgepProfile,
@@ -475,7 +475,7 @@ class TwwProfileMapTool(TwwMapTool):
                 self.selectedPathPoints.append((match.featureId(), QgsPointXY(match.point())))
 
 
-class QgepTreeMapTool(TwwMapTool):
+class TwwTreeMapTool(TwwMapTool):
     """
     The map tool used to find TREES (upstream or downstream)
     """
@@ -680,7 +680,7 @@ class TwwMapToolConnectNetworkElements(QgsMapTool):
         # Reaches can be connected to reaches and nodes
         # Catchment areas only to nodes
         self.network_element_sources = {
-            QgepLayerManager.layer("vw_tww_reach"): {
+            TwwLayerManager.layer("vw_tww_reach"): {
                 "fields": [
                     {
                         "id": "rp_from_fk_wastewater_networkelement",
@@ -688,7 +688,7 @@ class TwwMapToolConnectNetworkElements(QgsMapTool):
                             "QgepMapToolConnectNetworkElements", "Reach Point From"
                         ),
                         "filter": lambda source, target: target.layer()
-                        != QgepLayerManager.layer("vw_tww_reach"),
+                        != TwwLayerManager.layer("vw_tww_reach"),
                         "is_checked": lambda source, target: is_closer_to_start_of_edge(
                             source, target
                         ),
@@ -704,11 +704,11 @@ class TwwMapToolConnectNetworkElements(QgsMapTool):
                     },
                 ],
                 "target_layers": [
-                    QgepLayerManager.layer("vw_wastewater_node"),
-                    QgepLayerManager.layer("vw_tww_reach"),
+                    TwwLayerManager.layer("vw_wastewater_node"),
+                    TwwLayerManager.layer("vw_tww_reach"),
                 ],
             },
-            QgepLayerManager.layer("catchment_area"): {
+            TwwLayerManager.layer("catchment_area"): {
                 "fields": [
                     {
                         "id": "fk_wastewater_networkelement_rw_current",
@@ -735,7 +735,7 @@ class TwwMapToolConnectNetworkElements(QgsMapTool):
                         ),
                     },
                 ],
-                "target_layers": [QgepLayerManager.layer("vw_wastewater_node")],
+                "target_layers": [TwwLayerManager.layer("vw_wastewater_node")],
             },
         }
 

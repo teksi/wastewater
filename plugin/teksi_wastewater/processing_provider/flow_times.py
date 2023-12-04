@@ -37,7 +37,7 @@ from qgis.core import (
     QgsWkbTypes,
 )
 
-from .qgep_algorithm import QgepAlgorithm
+from .tww_algorithm import TwwAlgorithm
 
 __author__ = "Denis Rouzaud"
 __date__ = "2018-07-19"
@@ -48,7 +48,7 @@ __copyright__ = "(C) 2018 by OPENGIS.ch"
 __revision__ = "$Format:%H$"
 
 
-class FlowTimesAlgorithm(QgepAlgorithm):
+class FlowTimesAlgorithm(TwwAlgorithm):
     """"""
 
     DISTANCE = "DISTANCE"

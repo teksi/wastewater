@@ -11,7 +11,7 @@ from qgis.PyQt.QtWidgets import QApplication, QFileDialog, QProgressDialog, QPus
 from qgis.utils import iface, plugins
 from QgisModelBaker.libili2db import globals, ili2dbconfig, ili2dbutils
 
-from ....utils.qgeplayermanager import QgepLayerManager
+from ....utils.twwlayermanager import TwwLayerManager
 from .. import config
 from ..qgep.export import qgep_export
 from ..qgep.import_ import tww_import
@@ -227,8 +227,8 @@ def action_export(plugin):
 
             progress_dialog.setLabelText("Extracting labels...")
 
-            structures_lyr = QgepLayerManager.layer("vw_tww_wastewater_structure")
-            reaches_lyr = QgepLayerManager.layer("vw_tww_reach")
+            structures_lyr = TwwLayerManager.layer("vw_tww_wastewater_structure")
+            reaches_lyr = TwwLayerManager.layer("vw_tww_reach")
             if not structures_lyr or not reaches_lyr:
                 progress_dialog.close()
                 show_failure(

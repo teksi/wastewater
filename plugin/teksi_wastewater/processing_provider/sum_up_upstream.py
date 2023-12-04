@@ -45,7 +45,7 @@ from qgis.core import (
     QgsWkbTypes,
 )
 
-from .qgep_algorithm import QgepAlgorithm
+from .tww_algorithm import TwwAlgorithm
 
 __author__ = "Matthias Kuhn"
 __date__ = "2019-04-09"
@@ -64,7 +64,7 @@ class Reach:
         self.geometry = geometry
 
 
-class SumUpUpstreamAlgorithm(QgepAlgorithm):
+class SumUpUpstreamAlgorithm(TwwAlgorithm):
     """"""
 
     REACH_LAYER = "REACH_LAYER"

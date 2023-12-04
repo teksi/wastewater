@@ -30,8 +30,8 @@ from qgis.core import (
     QgsProcessingParameterFile,
 )
 
-from .qgep_algorithm import QgepAlgorithm
-from .QgepSwmm import QgepSwmm
+from .tww_algorithm import TwwAlgorithm
+from .TwwSwmm import TwwSwmm
 
 __author__ = "Timothée Produit"
 __date__ = "2019-08-01"
@@ -42,7 +42,7 @@ __copyright__ = "(C) 2019 by IG-Group.ch"
 __revision__ = "$Format:%H$"
 
 
-class SwmmExtractResultsAlgorithm(QgepAlgorithm):
+class SwmmExtractResultsAlgorithm(TwwAlgorithm):
     """"""
 
     RPT_FILE = "RPT_FILE"
@@ -114,7 +114,7 @@ class SwmmExtractResultsAlgorithm(QgepAlgorithm):
             raise QgsProcessingException(self.invalidSinkError(parameters, self.NODE_SUMMARY))
 
         # Get node summary from output file
-        qs = QgepSwmm(None, None, None, None, None, rpt_file, None, feedback)
+        qs = TwwSwmm(None, None, None, None, None, rpt_file, None, feedback)
         node_summary = qs.extract_node_depth_summary()
 
         # Fill node summary with data

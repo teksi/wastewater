@@ -44,15 +44,15 @@ from .gui.twwsettingsdialog import TwwSettingsDialog
 from .gui.twwwizard import TwwWizard
 from .processing_provider.provider import QgepProcessingProvider
 from .tools.twwmaptools import (
-    QgepTreeMapTool,
     TwwMapToolConnectNetworkElements,
     TwwProfileMapTool,
+    TwwTreeMapTool,
 )
 from .tools.twwnetwork import TwwGraphManager
 from .utils.plugin_utils import plugin_root_path
-from .utils.qgeplayermanager import QgepLayerManager, QgepLayerNotifier
-from .utils.qgeplogging import QgepQgsLogHandler
 from .utils.translation import setup_i18n
+from .utils.twwlayermanager import TwwLayerManager, TwwLayerNotifier
+from .utils.twwlogging import TwwQgsLogHandler
 
 LOGFORMAT = "%(asctime)s:%(levelname)s:%(module)s:%(message)s"
 
@@ -121,7 +121,7 @@ class TeksiWastewaterPlugin:
 
         current_handlers = [h.__class__.__name__ for h in self.logger.handlers]
         if self.__class__.__name__ not in current_handlers:
-            self.logger.addHandler(QgepQgsLogHandler())
+            self.logger.addHandler(TwwQgsLogHandler())
 
         if logfile:
             log_handler = logging.FileHandler(logfile)
@@ -150,10 +150,10 @@ class TeksiWastewaterPlugin:
         """
         Called to setup the plugin GUI
         """
-        self.network_layer_notifier = QgepLayerNotifier(
+        self.network_layer_notifier = TwwLayerNotifier(
             self.iface.mainWindow(), ["vw_network_node", "vw_network_segment"]
         )
-        self.wastewater_networkelement_layer_notifier = QgepLayerNotifier(
+        self.wastewater_networkelement_layer_notifier = TwwLayerNotifier(
             self.iface.mainWindow(), ["vw_wastewater_node", "vw_tww_reach"]
         )
         self.toolbarButtons = []
@@ -293,12 +293,12 @@ class TeksiWastewaterPlugin:
         )
         self.profile_tool.profileChanged.connect(self.onProfileChanged)
 
-        self.upstream_tree_tool = QgepTreeMapTool(
+        self.upstream_tree_tool = TwwTreeMapTool(
             self.iface, self.upstreamAction, self.network_analyzer
         )
         self.upstream_tree_tool.setDirection("upstream")
         self.upstream_tree_tool.treeChanged.connect(self.onTreeChanged)
-        self.downstream_tree_tool = QgepTreeMapTool(
+        self.downstream_tree_tool = TwwTreeMapTool(
             self.iface, self.downstreamAction, self.network_analyzer
         )
         self.downstream_tree_tool.setDirection("downstream")
@@ -498,7 +498,7 @@ class TeksiWastewaterPlugin:
     def _configure_qgepqwat2ili_from_qgep_layer(self) -> dict:
         """Configures qgepqwat2ili using the currently loaded QGEP project layer"""
 
-        pg_layer = QgepLayerManager.layer("vw_tww_wastewater_structure")
+        pg_layer = TwwLayerManager.layer("vw_tww_wastewater_structure")
         if not pg_layer:
             self.iface.messageBar().pushMessage(
                 "Error",

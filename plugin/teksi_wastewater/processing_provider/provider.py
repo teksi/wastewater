@@ -106,7 +106,7 @@ class QgepProcessingProvider(QgsProcessingProvider):
         return algs
 
     def id(self):
-        return "qgep"
+        return "tww"
 
     def name(self):
         """This is the name that will appear on the toolbox group.

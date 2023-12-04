@@ -27,7 +27,7 @@ from qgis.core import (
     QgsProcessingParameterVectorLayer,
 )
 
-from .qgep_algorithm import QgepAlgorithm
+from .tww_algorithm import TwwAlgorithm
 
 __author__ = "Matthias Kuhn"
 __date__ = "2017-11-18"
@@ -38,7 +38,7 @@ __copyright__ = "(C) 2017 by OPENGIS.ch"
 __revision__ = "$Format:%H$"
 
 
-class SnapReachAlgorithm(QgepAlgorithm):
+class SnapReachAlgorithm(TwwAlgorithm):
     """"""
 
     DISTANCE = "DISTANCE"
