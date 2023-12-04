@@ -123,10 +123,10 @@ def setup_test_db(template="full"):
 
         # Getting data
         dexec_(
-            "wget https://github.com/QGEP/datamodel/releases/download/1.5.6-1/qgep_1.5.6-1_structure_and_demo_data.backup"
+            "wget https://github.com/TWW/datamodel/releases/download/1.5.6-1/qgep_1.5.6-1_structure_and_demo_data.backup"
         )
         dexec_(
-            "wget https://github.com/QGEP/datamodel/releases/download/1.5.6-1/qgep_1.5.6-1_structure_with_value_lists.sql"
+            "wget https://github.com/TWW/datamodel/releases/download/1.5.6-1/qgep_1.5.6-1_structure_with_value_lists.sql"
         )
         dexec_(
             "wget https://github.com/qwat/qwat-data-model/releases/download/1.3.6/qwat_v1.3.6_data_and_structure_sample.backup"

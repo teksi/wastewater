@@ -11,7 +11,7 @@ from qgis.utils import iface
 from sqlalchemy import inspect
 from sqlalchemy.orm import Session
 
-from ..qgep.model_qgep import get_qgep_model
+from ..tww.model_tww import get_tww_model
 from .editors.base import Editor
 
 # Required for loadUi to find the custom widget
@@ -31,7 +31,7 @@ class GuiImport(QDialog):
         header.setSectionResizeMode(0, QHeaderView.Stretch)
 
         # No required here, but this way we load before opening the dialog
-        get_qgep_model()
+        get_tww_model()
 
     def init_with_session(self, session: Session):
         """

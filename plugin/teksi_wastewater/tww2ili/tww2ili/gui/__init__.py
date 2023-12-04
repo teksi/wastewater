@@ -13,8 +13,8 @@ from QgisModelBaker.libili2db import globals, ili2dbconfig, ili2dbutils
 
 from ....utils.twwlayermanager import TwwLayerManager
 from .. import config
-from ..qgep.export import qgep_export
-from ..qgep.import_ import tww_import
+from ..tww.export import qgep_export
+from ..tww.import_ import tww_import
 from ..utils.ili2db import (
     create_ili_schema,
     export_xtf_data,

@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from .. import utils
 from ..utils.various import logger
 from .model_abwasser import get_abwasser_model
-from .model_qgep import get_qgep_model
+from .model_tww import get_tww_model
 
 
 def qgep_export(selection=None, labels_file=None):
@@ -18,7 +18,7 @@ def qgep_export(selection=None, labels_file=None):
         selection:      if provided, limits the export to networkelements that are provided in the selection
     """
 
-    QGEP = get_qgep_model()
+    QGEP = get_tww_model()
     ABWASSER = get_abwasser_model()
 
     # Logging disabled (very slow)
@@ -63,7 +63,7 @@ def qgep_export(selection=None, labels_file=None):
         """
         Converts blank strings to nulls and raises a warning
 
-        This is needed as is seems ili2pg 4.4.6 crashes with emptystrings under certain circumstances (see https://github.com/QGEP/tww2ili/issues/33)
+        This is needed as is seems ili2pg 4.4.6 crashes with emptystrings under certain circumstances (see https://github.com/TWW/tww2ili/issues/33)
         """
         if val == "":
             logger.warning(

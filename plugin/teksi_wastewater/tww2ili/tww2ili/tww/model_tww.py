@@ -145,7 +145,7 @@ class file(Base):
 _prepared = False
 
 
-def get_qgep_model():
+def get_tww_model():
     global _prepared
     if not _prepared:
         utils.sqlalchemy.prepare_automap_base(Base, SCHEMA)

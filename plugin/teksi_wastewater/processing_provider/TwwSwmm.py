@@ -1,6 +1,6 @@
 """
 /***************************************************************************
- QGEP-swmm processing provider
+ TWW-swmm processing provider
                               -------------------
         begin                : 07.2019
         copyright            : (C) 2019 by ig-group.ch
@@ -115,7 +115,7 @@ class TwwSwmm:
 
         Parameters:
         title (string): Title of the simulation
-        service (string): name of the service to be used to connect to the QGEP database
+        service (string): name of the service to be used to connect to the TWW database
         state (string): state for which the network is extracted (current or planned)
         inpfile (path): path of the INP file (input file for swmm)
         inptemplate (path): path of the INP file which store simulations parameters

@@ -1,6 +1,6 @@
 """
 /***************************************************************************
- QGEP-swmm processing provider
+ TWW-swmm processing provider
                               -------------------
         begin                : 07.2019
         copyright            : (C) 2019 by ig-group.ch
@@ -57,7 +57,7 @@ class SwmmImportResultsAlgorithm(TwwAlgorithm):
     def shortHelpString(self):
         return self.tr(
             """
-            Import SWMM results in QGEP database.
+            Import SWMM results in TWW database.
             See: https://qgep.github.io/docs/qgep_swmm/Extract-Results.html
             """
         )

@@ -4,7 +4,7 @@ from .base import Editor
 class DamageChannelEditor(Editor):
     class_name = "damage_channel"
 
-    # DISABLED FOR NOW AS PER https://github.com/QGEP/tww2ili/issues/8
+    # DISABLED FOR NOW AS PER https://github.com/TWW/tww2ili/issues/8
     # this would allow to deselect BCD inspections (start of inspection) by default,
     # as they don't provide valuable information. Once consensus is reached, we
     # can remove this Editor altogether.

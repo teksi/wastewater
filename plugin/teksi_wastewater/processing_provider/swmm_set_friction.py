@@ -1,6 +1,6 @@
 """
 /***************************************************************************
- QGEP-swmm processing provider
+ TWW-swmm processing provider
                               -------------------
         begin                : 07.2019
         copyright            : (C) 2019 by ig-group.ch

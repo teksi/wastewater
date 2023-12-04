@@ -1,6 +1,6 @@
 """
 /***************************************************************************
- QGEP-swmm processing provider
+ TWW-swmm processing provider
                               -------------------
         begin                : 07.2019
         copyright            : (C) 2019 by ig-group.ch
@@ -162,7 +162,7 @@ class SwmmCreateInputAlgorithm(TwwAlgorithm):
             hierarchy = "primary"
             selected_structures = None
             selected_reaches = None
-        # Connect to QGEP database and perform translation
+        # Connect to TWW database and perform translation
         with TwwSwmm(
             datetime.datetime.today().isoformat(),
             database,

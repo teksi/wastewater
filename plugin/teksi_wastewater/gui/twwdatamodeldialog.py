@@ -66,7 +66,7 @@ QGISPROJECT_PATH = PLUGIN_FOLDER / "project" / "qgep.qgs"
 
 
 def tww_datamodel_error_catcher(func):
-    """Display QGEPDatamodelError in error messages rather than normal exception dialog"""
+    """Display TwwDatamodelError in error messages rather than normal exception dialog"""
 
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
@@ -225,7 +225,7 @@ class TwwDatamodelInitToolDialog(QDialog, get_ui_class("qgepdatamodeldialog.ui")
         if master_db:
             connection_string += " dbname=postgres"
         QgsMessageLog.logMessage(
-            f"Running query against {connection_string}: {sql_command}", "QGEP"
+            f"Running query against {connection_string}: {sql_command}", "TWW"
         )
         try:
             conn = psycopg2.connect(connection_string)
@@ -253,7 +253,7 @@ class TwwDatamodelInitToolDialog(QDialog, get_ui_class("qgepdatamodeldialog.ui")
         """
         Helper to run commands through subprocess
         """
-        QgsMessageLog.logMessage(f"Running command : {shell_command}", "QGEP")
+        QgsMessageLog.logMessage(f"Running command : {shell_command}", "TWW")
         result = subprocess.run(
             shell_command,
             cwd=cwd,
@@ -263,12 +263,12 @@ class TwwDatamodelInitToolDialog(QDialog, get_ui_class("qgepdatamodeldialog.ui")
         )
         if result.stdout:
             stdout = result.stdout.decode("utf-8", errors="replace")
-            QgsMessageLog.logMessage(stdout, "QGEP")
+            QgsMessageLog.logMessage(stdout, "TWW")
         else:
             stdout = None
         if result.stderr:
             stderr = result.stderr.decode("utf-8", errors="replace")
-            QgsMessageLog.logMessage(stderr, "QGEP", level=Qgis.Critical)
+            QgsMessageLog.logMessage(stderr, "TWW", level=Qgis.Critical)
         else:
             stderr = None
         if result.returncode:
@@ -341,7 +341,7 @@ class TwwDatamodelInitToolDialog(QDialog, get_ui_class("qgepdatamodeldialog.ui")
         super().showEvent(event)
 
     def enable_buttons_if_ready(self):
-        QgsMessageLog.logMessage(f"Checks: {self.checks}", "QGEP")
+        QgsMessageLog.logMessage(f"Checks: {self.checks}", "TWW")
         self.installDepsButton.setEnabled(not self.checks["requirements"])
         self.versionUpgradeButton.setEnabled(all(self.checks.values()))
         self.loadProjectButton.setEnabled(self.checks["project"])
@@ -413,9 +413,7 @@ class TwwDatamodelInitToolDialog(QDialog, get_ui_class("qgepdatamodeldialog.ui")
         self._show_progress("Installing python dependencies with pip")
 
         # Install dependencies
-        QgsMessageLog.logMessage(
-            f"Installing python dependencies from {REQUIREMENTS_PATH}", "QGEP"
-        )
+        QgsMessageLog.logMessage(f"Installing python dependencies from {REQUIREMENTS_PATH}", "TWW")
         dependencies = " ".join(
             [
                 f'"{requirement_line.strip()}"'
@@ -633,7 +631,7 @@ class TwwDatamodelInitToolDialog(QDialog, get_ui_class("qgepdatamodeldialog.ui")
                     error_message="Errors when initializing the database.",
                     timeout=300,
                 )
-                # workaround until https://github.com/QGEP/QGEP/issues/612 is fixed
+                # workaround until https://github.com/QGEP/QGEP/issues/612 is fixed // skip-keyword-check
                 self._run_sql(
                     "SELECT qgep_network.refresh_network_simple();",
                     error_message="Errors when initializing the database.",

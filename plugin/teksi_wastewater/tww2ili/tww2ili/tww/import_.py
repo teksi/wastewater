@@ -7,7 +7,7 @@ from sqlalchemy.orm.attributes import flag_dirty
 from .. import utils
 from ..utils.various import logger
 from .model_abwasser import get_abwasser_model
-from .model_qgep import get_qgep_model
+from .model_tww import get_tww_model
 
 
 def tww_import(precommit_callback=None):
@@ -20,7 +20,7 @@ def tww_import(precommit_callback=None):
                             commit or rollback and close the session.
     """
 
-    QGEP = get_qgep_model()
+    QGEP = get_tww_model()
     ABWASSER = get_abwasser_model()
 
     pre_session = Session(utils.sqlalchemy.create_engine(), autocommit=False, autoflush=False)

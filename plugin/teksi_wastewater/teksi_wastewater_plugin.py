@@ -112,10 +112,10 @@ class TeksiWastewaterPlugin:
 
         settings = QSettings()
 
-        loglevel = settings.value("/QGEP/LogLevel", "Warning")
-        logfile = settings.value("/QGEP/LogFile", None)
+        loglevel = settings.value("/TWW/LogLevel", "Warning")
+        logfile = settings.value("/TWW/LogFile", None)
 
-        if hasattr(self.logger, "qgepFileHandler"):
+        if hasattr(self.logger, "twwFileHandler"):
             self.logger.removeHandler(self.logger.qgepFileHandler)
             del self.logger.qgepFileHandler
 
@@ -263,7 +263,7 @@ class TeksiWastewaterPlugin:
         self.iface.addPluginToMenu("TEKSI &Wastewater", self.settingsAction)
         self.iface.addPluginToMenu("TEKSI &Wastewater", self.aboutAction)
 
-        admin_mode = QSettings().value("/QGEP/AdminMode", False)
+        admin_mode = QSettings().value("/TWW/AdminMode", False)
         # seems QGIS loads True as "true" on restart ?!
         if admin_mode and admin_mode != "false":
             self.toolbar.addAction(self.importAction)
@@ -474,7 +474,7 @@ class TeksiWastewaterPlugin:
             self.logger.error(str(e))
             return
 
-        self._configure_tww2ili_from_qgep_layer()
+        self._configure_tww2ili_from_tww_layer()
 
         action_export(self)
 
@@ -491,11 +491,11 @@ class TeksiWastewaterPlugin:
             self.logger.error(str(e))
             return
 
-        self._configure_tww2ili_from_qgep_layer()
+        self._configure_tww2ili_from_tww_layer()
 
         action_import(self)
 
-    def _configure_tww2ili_from_qgep_layer(self) -> dict:
+    def _configure_tww2ili_from_tww_layer(self) -> dict:
         """Configures tww2ili using the currently loaded QGEP project layer"""
 
         pg_layer = TwwLayerManager.layer("vw_tww_wastewater_structure")
