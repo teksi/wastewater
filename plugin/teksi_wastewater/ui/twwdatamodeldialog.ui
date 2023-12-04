@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>QgepSettingsDialog</class>
- <widget class="QDialog" name="QgepSettingsDialog">
+ <class>TwwSettingsDialog</class>
+ <widget class="QDialog" name="TwwSettingsDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -341,7 +341,7 @@ font-weight: bold;</string>
   <connection>
    <sender>mBtnBoxOkCancel</sender>
    <signal>accepted()</signal>
-   <receiver>QgepSettingsDialog</receiver>
+   <receiver>TwwSettingsDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -357,7 +357,7 @@ font-weight: bold;</string>
   <connection>
    <sender>mBtnBoxOkCancel</sender>
    <signal>rejected()</signal>
-   <receiver>QgepSettingsDialog</receiver>
+   <receiver>TwwSettingsDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

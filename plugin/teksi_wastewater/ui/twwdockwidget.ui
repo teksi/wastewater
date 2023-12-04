@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>QgepDockWidget</class>
- <widget class="QDockWidget" name="QgepDockWidget">
+ <class>TwwDockWidget</class>
+ <widget class="QDockWidget" name="TwwDockWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>QGEP</string>
+   <string>TWW</string>
   </property>
   <widget class="QWidget" name="dockWidgetContents">
    <property name="sizePolicy">

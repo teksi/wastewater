@@ -4,14 +4,14 @@ from .. import config, utils
 
 ###############################################
 # TEKSI Wastewater datamodel
-# All tables will be loaded from the QGEP schema as a SqlAlchemy ORM class.
+# All tables will be loaded from the TWW schema as a SqlAlchemy ORM class.
 # Only table specific relationships (e.g. inheritance) need to be manually
 # defined here. Other attributes will be loaded automatically.
 ###############################################
 
 Base = automap_base()
 
-SCHEMA = config.QGEP_SCHEMA
+SCHEMA = config.TWW_SCHEMA
 
 
 class organisation(Base):

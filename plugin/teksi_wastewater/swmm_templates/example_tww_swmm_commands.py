@@ -1,7 +1,7 @@
-# This template file can be used to run the qgep-swmm functionalities
+# This template file can be used to run the tww-swmm functionalities
 # outside from QGIS
 
-from QgepSwmm import QgepSwmm
+from TwwSwmm import TwwSwmm
 
 # Title of the simulation
 TITLE = "titre"
@@ -18,7 +18,7 @@ REPORT = "C:/temp/summary.rpt"
 # Path of SWMM executable
 SWMM = "C:/Program Files (x86)/EPA SWMM 5.1.013/swmm5.exe"
 
-with QgepSwmm(
+with TwwSwmm(
     TITLE,
     PGSERVICE,
     STATE,

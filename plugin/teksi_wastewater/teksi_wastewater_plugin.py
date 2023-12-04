@@ -42,7 +42,7 @@ except ImportError:
 from .gui.twwprofiledockwidget import TwwProfileDockWidget
 from .gui.twwsettingsdialog import TwwSettingsDialog
 from .gui.twwwizard import TwwWizard
-from .processing_provider.provider import QgepProcessingProvider
+from .processing_provider.provider import TwwProcessingProvider
 from .tools.twwmaptools import (
     TwwMapToolConnectNetworkElements,
     TwwProfileMapTool,
@@ -102,7 +102,7 @@ class TeksiWastewaterPlugin:
         :param source_text: The text to translate
         :return: The translated text
         """
-        return QApplication.translate("QgepPlugin", source_text)
+        return QApplication.translate("TwwPlugin", source_text)
 
     def initLogger(self):
         """
@@ -312,7 +312,7 @@ class TeksiWastewaterPlugin:
             self.connectNetworkElementsAction.setEnabled
         )
 
-        self.processing_provider = QgepProcessingProvider()
+        self.processing_provider = TwwProcessingProvider()
         QgsApplication.processingRegistry().addProvider(self.processing_provider)
 
         self.network_layer_notifier.layersAdded([])

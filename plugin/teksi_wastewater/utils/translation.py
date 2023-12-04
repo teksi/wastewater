@@ -1,5 +1,5 @@
 """
-This module is used for translation of the QGEP project
+This module is used for translation of the TWW project
 """
 import logging
 import os
@@ -51,7 +51,7 @@ def setup_i18n(the_preferred_locale=None):
     # the same translation twice)
     translator = QTranslator(QCoreApplication.instance())
 
-    my_translator_file = "qgepplugin_" + my_locale_name
+    my_translator_file = "twwplugin_" + my_locale_name
     my_translator_path = os.path.join(
         os.path.dirname(os.path.dirname(__file__)), "i18n", my_translator_file
     )
@@ -63,7 +63,7 @@ def setup_i18n(the_preferred_locale=None):
 
 
 # pylint: disable=too-few-public-methods
-class QgepJsTranslator(QObject):
+class TwwJsTranslator(QObject):
     """
     Provides a callback method for the javascript code to support translation
     """
