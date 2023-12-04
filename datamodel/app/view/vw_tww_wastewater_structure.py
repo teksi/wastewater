@@ -261,8 +261,10 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
       UPDATE tww_od.wastewater_structure
         SET fk_main_wastewater_node = NEW.wn_obj_id
         WHERE obj_id = NEW.obj_id;
-
+    
+    CASE WHEN array_remove(ARRAY[{new_co_cols}]),NULL)<>'{}' -- no cover entries
     {insert_vw_cover}
+    END CASE;
 
       UPDATE tww_od.wastewater_structure
         SET fk_main_cover = NEW.co_obj_id
@@ -379,6 +381,18 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
                 "fk_dataowner": "NEW.fk_dataowner",
                 "fk_wastewater_structure": "NEW.obj_id",
             },
+        ),
+        new_co_cols=select_columns(
+            pg_cur=cursor,
+            table_schema="tww_od",
+            table_name="cover",
+            table_alias="NEW.co",
+            remove_pkey=False,
+            indent=4,
+            skip_columns=["situation3d_geometry"],
+            prefix="co_",
+            remap_columns={"cover_shape": "co_shape"},
+            columns_at_end=["obj_id"],
         ),
     )
 
