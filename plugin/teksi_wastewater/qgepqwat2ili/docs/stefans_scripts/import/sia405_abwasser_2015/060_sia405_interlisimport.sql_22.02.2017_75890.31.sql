@@ -7,32 +7,32 @@
 -- abwa_2015neu_3122.obj_id_identifer_organisation_lookup(datenlieferant)
 
 -- 1. loeschen vorhandener daten
-DELETE FROM qgep_od.organisation;
-DELETE FROM qgep_od.wastewater_structure;
-DELETE FROM qgep_od.wastewater_structure_text;
-DELETE FROM qgep_od.wastewater_structure_symbol;
-DELETE FROM qgep_od.channel;
-DELETE FROM qgep_od.manhole;
-DELETE FROM qgep_od.discharge_point;
-DELETE FROM qgep_od.special_structure;
-DELETE FROM qgep_od.infiltration_installation;
-DELETE FROM qgep_od.pipe_profile;
-DELETE FROM qgep_od.wastewater_networkelement;
-DELETE FROM qgep_od.reach_point;
-DELETE FROM qgep_od.wastewater_node;
-DELETE FROM qgep_od.reach;
-DELETE FROM qgep_od.reach_text;
-DELETE FROM qgep_od.structure_part;
-DELETE FROM qgep_od.dryweather_downspout;
-DELETE FROM qgep_od.access_aid;
-DELETE FROM qgep_od.dryweather_flume;
-DELETE FROM qgep_od.cover;
-DELETE FROM qgep_od.benching;
+DELETE FROM tww_od.organisation;
+DELETE FROM tww_od.wastewater_structure;
+DELETE FROM tww_od.wastewater_structure_text;
+DELETE FROM tww_od.wastewater_structure_symbol;
+DELETE FROM tww_od.channel;
+DELETE FROM tww_od.manhole;
+DELETE FROM tww_od.discharge_point;
+DELETE FROM tww_od.special_structure;
+DELETE FROM tww_od.infiltration_installation;
+DELETE FROM tww_od.pipe_profile;
+DELETE FROM tww_od.wastewater_networkelement;
+DELETE FROM tww_od.reach_point;
+DELETE FROM tww_od.wastewater_node;
+DELETE FROM tww_od.reach;
+DELETE FROM tww_od.reach_text;
+DELETE FROM tww_od.structure_part;
+DELETE FROM tww_od.dryweather_downspout;
+DELETE FROM tww_od.access_aid;
+DELETE FROM tww_od.dryweather_flume;
+DELETE FROM tww_od.cover;
+DELETE FROM tww_od.benching;
 
 
--- 2. kopieren von ili2pg schema nach qgep schema - klasse organisation zuerst, da neu auch verknüpft mit datenherr / datenlieferant
+-- 2. kopieren von ili2pg schema nach qgep schema - klasse organisation zuerst, da neu auch verknï¿½pft mit datenherr / datenlieferant
 
-INSERT INTO qgep_od.organisation
+INSERT INTO tww_od.organisation
 (
 obj_id, identifier, remark, uid, last_modification, fk_dataowner, fk_provider)
 SELECT obj_id, bezeichnung, bemerkung, uid, Letzte_Aenderung, Datenherr, datenlieferant
@@ -43,7 +43,7 @@ FROM abwa_2015neu_3122.Organisation
     LEFT JOIN abwa_2015neu_3122.vw_sia405_baseclass_metaattribute ON abwa_2015neu_3122.Organisation.t_id = vw_sia405_baseclass_metaattribute.t_id
 WHERE NOT obj_id isNull;
 
-INSERT INTO qgep_od.wastewater_structure
+INSERT INTO tww_od.wastewater_structure
 (
 obj_id, accessibility, contract_section, detail_geometry_geometry, financing, gross_costs, identifier, inspection_interval, location_name, records, remark, renovation_necessity, replacement_value, rv_base_year, rv_construction_type, status, structure_condition, subsidies, year_of_construction, year_of_replacement, fk_owner, fk_operator, last_modification, fk_dataowner, fk_provider)
 SELECT obj_id,
@@ -96,12 +96,12 @@ FROM abwa_2015neu_3122.Abwasserbauwerk
     LEFT JOIN abwa_2015neu_3122.vw_sia405_baseclass_metaattribute ON abwa_2015neu_3122.Abwasserbauwerk.t_id = vw_sia405_baseclass_metaattribute.t_id
 WHERE NOT obj_id isNull;
 
-INSERT INTO qgep_od.wastewater_structure_text
+INSERT INTO tww_od.wastewater_structure_text
 (
 obj_id, fk_wastewater_structure, plantype, text, remark, textori, texthali, textvali, textpos_geometry, last_modification)
 SELECT
 --abwa_2015neu_3122.objid_lookup('Abwasserbauwerk', Abwasserbauwerkref::int) as obj_id,
-qgep_sys.generate_oid('qgep_od','txt_text'),
+tww_sys.generate_oid('tww_od','txt_text'),
 abwa_2015neu_3122.objid_lookup('Abwasserbauwerk', abwasserbauwerkref::int) as abwasserbauwerkref,
 CASE WHEN a.Plantyp = 'Leitungskataster' THEN 7844 ---- 7844  pipeline_registry
 WHEN a.Plantyp = 'Uebersichtsplan.UeP10' THEN 7846 ---- 7846  overviewmap.om10
@@ -128,12 +128,12 @@ FROM abwa_2015neu_3122.Abwasserbauwerk_text
     LEFT JOIN abwa_2015neu_3122.sia405_textpos as a ON abwa_2015neu_3122.Abwasserbauwerk_text.t_id = a.t_id
     LEFT JOIN abwa_2015neu_3122.textpos as b ON abwa_2015neu_3122.Abwasserbauwerk_text.t_id = b.t_id;
 
-INSERT INTO qgep_od.wastewater_structure_symbol
+INSERT INTO tww_od.wastewater_structure_symbol
 (
 obj_id, fk_wastewater_structure, plantype, symbol_scaling_heigth, symbol_scaling_width, symbolori, symbolpos_geometry, last_modification)
 SELECT
 --abwa_2015neu_3122.objid_lookup('Abwasserbauwerk', Abwasserbauwerkref::int) as obj_id,
-qgep_sys.generate_oid('qgep_od','txt_symbol'),
+tww_sys.generate_oid('tww_od','txt_symbol'),
 abwa_2015neu_3122.objid_lookup('Abwasserbauwerk', abwasserbauwerkref::int) as abwasserbauwerkref,
 CASE WHEN a.Plantyp = 'Leitungskataster' THEN 7874 ---- 7874  pipeline_registry
 WHEN a.Plantyp = 'Uebersichtsplan.UeP10' THEN 7876 ---- 7876  overviewmap.om10
@@ -150,7 +150,7 @@ FROM abwa_2015neu_3122.Abwasserbauwerk_symbol
     LEFT JOIN abwa_2015neu_3122.sia405_symbolpos as a ON abwa_2015neu_3122.Abwasserbauwerk_symbol.t_id = a.t_id
     LEFT JOIN abwa_2015neu_3122.symbolpos as b ON abwa_2015neu_3122.Abwasserbauwerk_symbol.t_id = b.t_id;
 
-INSERT INTO qgep_od.channel
+INSERT INTO tww_od.channel
 (
 obj_id, bedding_encasement, connection_type, function_hierarchic, function_hydraulic, jetting_interval, pipe_length, usage_current, usage_planned)
 SELECT obj_id,
@@ -234,7 +234,7 @@ FROM abwa_2015neu_3122.Kanal
     LEFT JOIN abwa_2015neu_3122.vw_sia405_baseclass_metaattribute ON abwa_2015neu_3122.Kanal.t_id = vw_sia405_baseclass_metaattribute.t_id
 WHERE NOT obj_id isNull;
 
-INSERT INTO qgep_od.manhole
+INSERT INTO tww_od.manhole
 (
 obj_id, dimension1, dimension2, function, material, surface_inflow)
 SELECT obj_id, dimension1, dimension2,
@@ -270,7 +270,7 @@ FROM abwa_2015neu_3122.Normschacht
     LEFT JOIN abwa_2015neu_3122.vw_sia405_baseclass_metaattribute ON abwa_2015neu_3122.Normschacht.t_id = vw_sia405_baseclass_metaattribute.t_id
 WHERE NOT obj_id isNull;
 
-INSERT INTO qgep_od.discharge_point
+INSERT INTO tww_od.discharge_point
 (
 obj_id, highwater_level, relevance, terrain_level, waterlevel_hydraulic
 -- fuer sia405 auskommentiert
@@ -286,7 +286,7 @@ FROM abwa_2015neu_3122.Einleitstelle
     LEFT JOIN abwa_2015neu_3122.vw_sia405_baseclass_metaattribute ON abwa_2015neu_3122.Einleitstelle.t_id = vw_sia405_baseclass_metaattribute.t_id
 WHERE NOT obj_id isNull;
 
-INSERT INTO qgep_od.special_structure
+INSERT INTO tww_od.special_structure
 (
 obj_id, bypass, emergency_spillway, function, stormwater_tank_arrangement)
 SELECT obj_id,
@@ -340,7 +340,7 @@ FROM abwa_2015neu_3122.Spezialbauwerk
     LEFT JOIN abwa_2015neu_3122.vw_sia405_baseclass_metaattribute ON abwa_2015neu_3122.Spezialbauwerk.t_id = vw_sia405_baseclass_metaattribute.t_id
 WHERE NOT obj_id isNull;
 
-INSERT INTO qgep_od.infiltration_installation
+INSERT INTO tww_od.infiltration_installation
 (
 obj_id, absorption_capacity, defects, dimension1, dimension2, distance_to_aquifer, effective_area, emergency_spillway, kind, labeling, seepage_utilization, vehicle_access, watertightness
 -- fuer sia405 auskommentiert
@@ -392,7 +392,7 @@ FROM abwa_2015neu_3122.Versickerungsanlage
     LEFT JOIN abwa_2015neu_3122.vw_sia405_baseclass_metaattribute ON abwa_2015neu_3122.Versickerungsanlage.t_id = vw_sia405_baseclass_metaattribute.t_id
 WHERE NOT obj_id isNull;
 
-INSERT INTO qgep_od.pipe_profile
+INSERT INTO tww_od.pipe_profile
 (
 obj_id, height_width_ratio, identifier, profile_type, remark, last_modification, fk_dataowner, fk_provider)
 SELECT obj_id, hoehenbreitenverhaeltnis, bezeichnung,
@@ -411,7 +411,7 @@ FROM abwa_2015neu_3122.Rohrprofil
     LEFT JOIN abwa_2015neu_3122.vw_sia405_baseclass_metaattribute ON abwa_2015neu_3122.Rohrprofil.t_id = vw_sia405_baseclass_metaattribute.t_id
 WHERE NOT obj_id isNull;
 
-INSERT INTO qgep_od.wastewater_networkelement
+INSERT INTO tww_od.wastewater_networkelement
 (
 obj_id, identifier, remark, fk_wastewater_structure, last_modification, fk_dataowner, fk_provider)
 SELECT obj_id, bezeichnung, bemerkung, abwa_2015neu_3122.objid_lookup('Abwasserbauwerk', abwasserbauwerkref::int), Letzte_Aenderung,
@@ -422,7 +422,7 @@ FROM abwa_2015neu_3122.Abwassernetzelement
     LEFT JOIN abwa_2015neu_3122.vw_sia405_baseclass_metaattribute ON abwa_2015neu_3122.Abwassernetzelement.t_id = vw_sia405_baseclass_metaattribute.t_id
 WHERE NOT obj_id isNull;
 
-INSERT INTO qgep_od.reach_point
+INSERT INTO tww_od.reach_point
 (
 obj_id, elevation_accuracy, identifier, level, outlet_shape, position_of_connection, remark, situation_geometry, fk_wastewater_networkelement, last_modification, fk_dataowner, fk_provider)
 SELECT obj_id,
@@ -444,10 +444,10 @@ FROM abwa_2015neu_3122.Haltungspunkt
     LEFT JOIN abwa_2015neu_3122.vw_sia405_baseclass_metaattribute ON abwa_2015neu_3122.Haltungspunkt.t_id = vw_sia405_baseclass_metaattribute.t_id
 WHERE NOT obj_id isNull;
 
-INSERT INTO qgep_od.wastewater_node
+INSERT INTO tww_od.wastewater_node
 (
 obj_id, backflow_level, bottom_level, situation_geometry
--- rausgenommen für sia405 abwasser
+-- rausgenommen fï¿½r sia405 abwasser
 --, fk_hydr_geometry
 )
 SELECT obj_id, rueckstaukote, sohlenkote, ST_Force3D(lage)
@@ -456,7 +456,7 @@ FROM abwa_2015neu_3122.Abwasserknoten
     LEFT JOIN abwa_2015neu_3122.vw_sia405_baseclass_metaattribute ON abwa_2015neu_3122.Abwasserknoten.t_id = vw_sia405_baseclass_metaattribute.t_id
 WHERE NOT obj_id isNull;
 
-INSERT INTO qgep_od.reach
+INSERT INTO tww_od.reach
 (
 obj_id, clear_height, coefficient_of_friction, horizontal_positioning, inside_coating, length_effective, material, progression_geometry, reliner_material, reliner_nominal_size, relining_construction, relining_kind, ring_stiffness, slope_building_plan, wall_roughness, fk_reach_point_from, fk_reach_point_to, fk_pipe_profile)
 SELECT obj_id, lichte_hoehe, reibungsbeiwert,
@@ -531,12 +531,12 @@ FROM abwa_2015neu_3122.Haltung
     LEFT JOIN abwa_2015neu_3122.vw_sia405_baseclass_metaattribute ON abwa_2015neu_3122.Haltung.t_id = vw_sia405_baseclass_metaattribute.t_id
 WHERE NOT obj_id isNull;
 
-INSERT INTO qgep_od.reach_text
+INSERT INTO tww_od.reach_text
 (
 obj_id, fk_reach, plantype, text, remark, textori, texthali, textvali, textpos_geometry, last_modification)
 SELECT
 -- abwa_2015neu_3122.objid_lookup('Haltung', Haltungref::int) as obj_id,
-qgep_sys.generate_oid('qgep_od','txt_text'),
+tww_sys.generate_oid('tww_od','txt_text'),
  abwa_2015neu_3122.objid_lookup('Haltung', haltungref::int) as haltungref,
 CASE WHEN a.Plantyp = 'Leitungskataster' THEN 7844 ---- 7844  pipeline_registry
 WHEN a.Plantyp = 'Uebersichtsplan.UeP10' THEN 7846 ---- 7846  overviewmap.om10
@@ -563,7 +563,7 @@ FROM abwa_2015neu_3122.Haltung_text
     LEFT JOIN abwa_2015neu_3122.sia405_textpos as a ON abwa_2015neu_3122.Haltung_text.t_id = a.t_id
     LEFT JOIN abwa_2015neu_3122.textpos as b ON abwa_2015neu_3122.Haltung_text.t_id = b.t_id;
 
-INSERT INTO qgep_od.structure_part
+INSERT INTO tww_od.structure_part
 (
 obj_id, identifier, remark, renovation_demand, fk_wastewater_structure, last_modification, fk_dataowner, fk_provider)
 SELECT obj_id, bezeichnung, bemerkung,
@@ -578,7 +578,7 @@ FROM abwa_2015neu_3122.BauwerksTeil
     LEFT JOIN abwa_2015neu_3122.vw_sia405_baseclass_metaattribute ON abwa_2015neu_3122.BauwerksTeil.t_id = vw_sia405_baseclass_metaattribute.t_id
 WHERE NOT obj_id isNull;
 
-INSERT INTO qgep_od.dryweather_downspout
+INSERT INTO tww_od.dryweather_downspout
 (
 obj_id, diameter)
 SELECT obj_id, durchmesser
@@ -586,7 +586,7 @@ FROM abwa_2015neu_3122.Trockenwetterfallrohr
     LEFT JOIN abwa_2015neu_3122.vw_sia405_baseclass_metaattribute ON abwa_2015neu_3122.Trockenwetterfallrohr.t_id = vw_sia405_baseclass_metaattribute.t_id
 WHERE NOT obj_id isNull;
 
-INSERT INTO qgep_od.access_aid
+INSERT INTO tww_od.access_aid
 (
 obj_id, kind)
 SELECT obj_id,
@@ -604,7 +604,7 @@ FROM abwa_2015neu_3122.Einstiegshilfe
     LEFT JOIN abwa_2015neu_3122.vw_sia405_baseclass_metaattribute ON abwa_2015neu_3122.Einstiegshilfe.t_id = vw_sia405_baseclass_metaattribute.t_id
 WHERE NOT obj_id isNull;
 
-INSERT INTO qgep_od.dryweather_flume
+INSERT INTO tww_od.dryweather_flume
 (
 obj_id, material)
 SELECT obj_id,
@@ -619,7 +619,7 @@ FROM abwa_2015neu_3122.Trockenwetterrinne
     LEFT JOIN abwa_2015neu_3122.vw_sia405_baseclass_metaattribute ON abwa_2015neu_3122.Trockenwetterrinne.t_id = vw_sia405_baseclass_metaattribute.t_id
 WHERE NOT obj_id isNull;
 
-INSERT INTO qgep_od.cover
+INSERT INTO tww_od.cover
 (
 obj_id, brand, cover_shape, diameter, fastening, level, material, positional_accuracy, situation_geometry, sludge_bucket, venting)
 SELECT obj_id, fabrikat,
@@ -657,7 +657,7 @@ FROM abwa_2015neu_3122.Deckel
     LEFT JOIN abwa_2015neu_3122.vw_sia405_baseclass_metaattribute ON abwa_2015neu_3122.Deckel.t_id = vw_sia405_baseclass_metaattribute.t_id
 WHERE NOT obj_id isNull;
 
-INSERT INTO qgep_od.benching
+INSERT INTO tww_od.benching
 (
 obj_id, kind)
 SELECT obj_id,

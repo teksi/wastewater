@@ -305,7 +305,7 @@ class TwwDatamodelInitToolDialog(QDialog, get_ui_class("qgepdatamodeldialog.ui")
         max_version = None
 
         results = self._run_sql(
-            "SELECT version FROM qgep_sys.pum_info;",
+            "SELECT version FROM tww_sys.pum_info;",
             returns=True,
             error_message="Could not retrieve versions from pum_info table",
         )
@@ -675,7 +675,7 @@ class TwwDatamodelInitToolDialog(QDialog, get_ui_class("qgepdatamodeldialog.ui")
 
             self._show_progress("Running pum upgrade")
             self._run_cmd(
-                f"python3 -m pum upgrade -p {self.conf} -t qgep_sys.pum_info -d {DELTAS_PATH} -u {target_version} -v int SRID {srid}",
+                f"python3 -m pum upgrade -p {self.conf} -t tww_sys.pum_info -d {DELTAS_PATH} -u {target_version} -v int SRID {srid}",
                 cwd=os.path.dirname(DELTAS_PATH),
                 error_message="Errors when upgrading the database.",
                 timeout=300,

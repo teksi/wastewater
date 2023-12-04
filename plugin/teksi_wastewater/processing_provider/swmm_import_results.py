@@ -104,7 +104,7 @@ class SwmmImportResultsAlgorithm(TwwAlgorithm):
             )
         )
 
-        description = self.tr("Import Max HGL in qgep_od.wastewater_node.backflow_level")
+        description = self.tr("Import Max HGL in tww_od.wastewater_node.backflow_level")
         self.addParameter(
             QgsProcessingParameterBoolean(
                 self.POPULATE_BACKFLOW_LEVEL,
@@ -114,7 +114,7 @@ class SwmmImportResultsAlgorithm(TwwAlgorithm):
         )
 
         description = self.tr(
-            "Import Max/Full Flow in qgep_od.reach.dss2020_hydraulic_load_current"
+            "Import Max/Full Flow in tww_od.reach.dss2020_hydraulic_load_current"
         )
         self.addParameter(
             QgsProcessingParameterBoolean(

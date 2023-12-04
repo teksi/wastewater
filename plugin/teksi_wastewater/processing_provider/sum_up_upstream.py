@@ -81,7 +81,7 @@ class SumUpUpstreamAlgorithm(TwwAlgorithm):
     LOOP_OUTPUT = "LOOP_OUTPUT"
 
     def name(self):
-        return "qgep_values_upstream"
+        return "tww_values_upstream"
 
     def displayName(self):
         return self.tr("Sum up upstream")

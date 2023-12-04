@@ -59,7 +59,7 @@ class FlowTimesAlgorithm(TwwAlgorithm):
     OUTPUT = "OUTPUT"
 
     def name(self):
-        return "qgep_flow_times"
+        return "tww_flow_times"
 
     def displayName(self):
         return self.tr("Flow times downstream")
@@ -115,7 +115,7 @@ class FlowTimesAlgorithm(TwwAlgorithm):
         """Here is where the processing itself takes place."""
 
         feedback.setProgress(0)
-        na = qgis_utils.plugins["qgepplugin"].network_analyzer
+        na = qgis_utils.plugins["twwplugin"].network_analyzer
 
         # init params
         reach_layer = self.parameterAsVectorLayer(parameters, self.REACH_LAYER, context)
@@ -145,11 +145,11 @@ class FlowTimesAlgorithm(TwwAlgorithm):
         reach_feature = QgsFeature()
         iterator.nextFeature(reach_feature)
         assert reach_feature.isValid()
-        qgep_reach_obj_id = reach_feature.attribute("obj_id")
+        tww_reach_obj_id = reach_feature.attribute("obj_id")
 
         # get top node
         reach_features = na.getFeaturesByAttr(
-            na.getEdgeLayer(), "obj_id", [qgep_reach_obj_id]
+            na.getEdgeLayer(), "obj_id", [tww_reach_obj_id]
         ).asDict()
         assert len(reach_features) > 0
         from_pos = 1

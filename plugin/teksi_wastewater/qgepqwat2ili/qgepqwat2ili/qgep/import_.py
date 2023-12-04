@@ -27,7 +27,7 @@ def tww_import(precommit_callback=None):
 
     # We also drop symbology triggers as they badly affect performance. This must be done in a separate session as it
     # would deadlock other sessions.
-    pre_session.execute("SELECT qgep_sys.drop_symbology_triggers();")
+    pre_session.execute("SELECT tww_sys.drop_symbology_triggers();")
     pre_session.commit()
     pre_session.close()
 
@@ -1141,7 +1141,7 @@ def tww_import(precommit_callback=None):
     logger.info("done")
 
     # Recreate the triggers
-    # qgep_session.execute('SELECT qgep_sys.create_symbology_triggers();')
+    # qgep_session.execute('SELECT tww_sys.create_symbology_triggers();')
 
     # Calling the precommit callback if provided, allowing to filter before final import
     if precommit_callback:
@@ -1154,6 +1154,6 @@ def tww_import(precommit_callback=None):
     # TODO : put this in an "finally" block (or context handler) to make sure it's executed
     # even if there's an exception
     post_session = Session(utils.sqlalchemy.create_engine(), autocommit=False, autoflush=False)
-    post_session.execute("SELECT qgep_sys.create_symbology_triggers();")
+    post_session.execute("SELECT tww_sys.create_symbology_triggers();")
     post_session.commit()
     post_session.close()
