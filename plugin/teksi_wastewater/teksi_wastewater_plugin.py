@@ -464,39 +464,39 @@ class TeksiWastewaterPlugin:
     def actionExportClicked(self):
         # We only import now to avoid useless exception if dependencies aren't met
         try:
-            from .qgepqwat2ili.qgepqwat2ili.gui import action_export
+            from .tww2ili.tww2ili.gui import action_export
         except ImportError as e:
             self.iface.messageBar().pushMessage(
                 "Error",
-                "Could not load qgepqwat2ili due to unmet dependencies. See logs for more details.",
+                "Could not load tww2ili due to unmet dependencies. See logs for more details.",
                 level=Qgis.Critical,
             )
             self.logger.error(str(e))
             return
 
-        self._configure_qgepqwat2ili_from_qgep_layer()
+        self._configure_tww2ili_from_qgep_layer()
 
         action_export(self)
 
     def actionImportClicked(self):
         # We only import now to avoid useless exception if dependencies aren't met
         try:
-            from .qgepqwat2ili.qgepqwat2ili.gui import action_import
+            from .tww2ili.tww2ili.gui import action_import
         except ImportError as e:
             self.iface.messageBar().pushMessage(
                 "Error",
-                "Could not load qgepqwat2ili due to unmet dependencies. See logs for more details.",
+                "Could not load tww2ili due to unmet dependencies. See logs for more details.",
                 level=Qgis.Critical,
             )
             self.logger.error(str(e))
             return
 
-        self._configure_qgepqwat2ili_from_qgep_layer()
+        self._configure_tww2ili_from_qgep_layer()
 
         action_import(self)
 
-    def _configure_qgepqwat2ili_from_qgep_layer(self) -> dict:
-        """Configures qgepqwat2ili using the currently loaded QGEP project layer"""
+    def _configure_tww2ili_from_qgep_layer(self) -> dict:
+        """Configures tww2ili using the currently loaded QGEP project layer"""
 
         pg_layer = TwwLayerManager.layer("vw_tww_wastewater_structure")
         if not pg_layer:
@@ -506,7 +506,7 @@ class TeksiWastewaterPlugin:
                 level=Qgis.Critical,
             )
 
-        from .qgepqwat2ili.qgepqwat2ili import config
+        from .tww2ili.tww2ili import config
 
         config.PGSERVICE = pg_layer.dataProvider().uri().service()
         config.PGHOST = pg_layer.dataProvider().uri().host()

@@ -66,7 +66,7 @@ class QgepProcessingProvider(QgsProcessingProvider):
             SwmmSetFrictionAlgorithm(),
         ]
         try:
-            from ..qgepqwat2ili.qgepqwat2ili.processing_algs.extractlabels_interlis import (
+            from ..tww2ili.tww2ili.processing_algs.extractlabels_interlis import (
                 ExtractlabelsInterlisAlgorithm,
             )
 
@@ -90,7 +90,7 @@ class QgepProcessingProvider(QgsProcessingProvider):
             SwmmSetFrictionAlgorithm(),
         ]
         try:
-            from ..qgepqwat2ili.qgepqwat2ili.processing_algs.extractlabels_interlis import (
+            from ..tww2ili.tww2ili.processing_algs.extractlabels_interlis import (
                 ExtractlabelsInterlisAlgorithm,
             )
 
@@ -99,7 +99,7 @@ class QgepProcessingProvider(QgsProcessingProvider):
         except ImportError as e:
             iface.messageBar().pushMessage(
                 "Error",
-                "Could not load qgepqwat2ili due to unmet dependencies. See logs for more details.",
+                "Could not load tww2ili due to unmet dependencies. See logs for more details.",
                 level=Qgis.Critical,
             )
             logger.error(str(e))

@@ -6,9 +6,9 @@ import tempfile
 import unittest
 import xml.etree.ElementTree as ET
 
-from qgepqwat2ili import main, utils
-from qgepqwat2ili.qgep.model_qgep import get_qgep_model
 from sqlalchemy.orm import Session
+from tww2ili import main, utils
+from tww2ili.qgep.model_qgep import get_qgep_model
 
 # Display logging in unittest output
 logger = logging.getLogger()

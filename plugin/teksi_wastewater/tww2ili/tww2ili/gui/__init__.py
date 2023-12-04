@@ -148,7 +148,7 @@ def action_import(plugin):
     progress_dialog.setValue(100)
 
     log_handler = logging.FileHandler(
-        make_log_path(base_log_path, "qgepqwat2ili-import"), mode="w", encoding="utf-8"
+        make_log_path(base_log_path, "tww2ili-import"), mode="w", encoding="utf-8"
     )
     log_handler.setLevel(logging.INFO)
     log_handler.setFormatter(logging.Formatter("%(levelname)-8s %(message)s"))
@@ -256,7 +256,7 @@ def action_export(plugin):
         QApplication.processEvents()
 
         log_handler = logging.FileHandler(
-            make_log_path(file_name, "qgepqwat2ili-export"), mode="w", encoding="utf-8"
+            make_log_path(file_name, "tww2ili-export"), mode="w", encoding="utf-8"
         )
         log_handler.setLevel(logging.INFO)
         log_handler.setFormatter(logging.Formatter("%(levelname)-8s %(message)s"))
