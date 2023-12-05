@@ -16,7 +16,7 @@ services:
   schemaspy:
     image: schemaspy/schemaspy
     volumes:
-      - ./datamodel:/src
+      - .:/output
       - ./datamodel/schemaspy.properties:/schemaspy.properties
     depends_on:
       - db
@@ -27,4 +27,3 @@ services:
     ]
     profiles:
       - schemaspy
-    working_dir: "/src"
