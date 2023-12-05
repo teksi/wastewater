@@ -6,8 +6,7 @@ import argparse
 import os
 
 import psycopg2
-from pirogue.utils import insert_command, select_columns, table_parts, update_command
-from yaml import safe_load
+from pirogue.utils import insert_command, select_columns, update_command
 
 
 def vw_additional_wastewater_structure(srid: int, pg_service: str = None):
@@ -35,7 +34,7 @@ def vw_additional_wastewater_structure(srid: int, pg_service: str = None):
         CASE
           WHEN wt.obj_id IS NOT NULL THEN 'wwtp_structure'
           WHEN sm.obj_id IS NOT NULL THEN 'small_treatment_plant'
-          WHEN to.obj_id IS NOT NULL THEN 'drainless_toilet' 
+          WHEN to.obj_id IS NOT NULL THEN 'drainless_toilet'
           ELSE 'unknown'
         END AS ws_type
 
@@ -574,6 +573,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
     srid = args.srid or os.getenv("SRID")
     pg_service = args.pg_service or os.getenv("PGSERVICE")
-    vw_additional_wastewater_structure(
-        srid=srid, pg_service=pg_service
-    )
+    vw_additional_wastewater_structure(srid=srid, pg_service=pg_service)
