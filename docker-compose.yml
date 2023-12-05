@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  db:
+    build:
+      context: .
+      dockerfile: datamodel/.docker/Dockerfile
+    image: teksi/tww:${DOCKER_TAG:-unstable}
+    working_dir: /usr/src
+    volumes:
+      - ./datamodel:/src
+    ports:
+      # making the postgres database accessible for debugging
+      - ${TWW_PG_PORT}:${TWW_PG_PORT}
+
+  schemaspy:
+    image: schemaspy/schemaspy
+    volumes:
+      - ./datamodel:/src
+      - ./datamodel/schemaspy.properties:/schemaspy.properties
+    depends_on:
+      - db
+    network_mode: "service:db"
+    command: [
+      "-configFile",
+      "/schemaspy.properties"
+    ]
+    profiles:
+      - schemaspy
+    working_dir: "/src"
