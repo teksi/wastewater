@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: datamodel/.docker/Dockerfile
     image: teksi/tww:${DOCKER_TAG:-unstable}
-    working_dir: /usr/src
+    working_dir: /src
     volumes:
       - ./datamodel:/src
     ports:
