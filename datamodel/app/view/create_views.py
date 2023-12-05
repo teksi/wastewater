@@ -21,8 +21,8 @@ def run_sql(file_path: str, pg_service: str, variables: dict = {}):
 
 
 def create_views(
-    srid: int,
-    pg_service: str,
+    srid: int = 2056,
+    pg_service: str = "pg_teksi_wastewater",
     tww_reach_extra: str = None,
     tww_wastewater_structure_extra: str = None,
 ):
@@ -168,15 +168,15 @@ def create_views(
     ).create()
 
     MultipleInheritance(
-        safe_load(open("app/view/vw_maintenance_examination.yaml")),
+        safe_load(open("app/view/vw_maintenance_event.yaml")),
+        create_joins=True,
         drop=True,
+        variables=variables,
         pg_service=pg_service,
     ).create()
 
     MultipleInheritance(
-        safe_load(open("app/view/vw_damage.yaml")),
-        drop=True,
-        pg_service=pg_service,
+        safe_load(open("app/view/vw_damage.yaml")), drop=True, pg_service=pg_service
     ).create()
 
     vw_tww_wastewater_structure(
