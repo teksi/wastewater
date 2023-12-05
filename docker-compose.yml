@@ -16,7 +16,7 @@ services:
   schemaspy:
     image: schemaspy/schemaspy
     volumes:
-      - .:/output
+      - ./datamodel/schemaspy:/output
       - ./datamodel/schemaspy.properties:/schemaspy.properties
     depends_on:
       - db
