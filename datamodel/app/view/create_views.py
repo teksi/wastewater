@@ -168,7 +168,7 @@ def create_views(
     ).create()
 
     MultipleInheritance(
-        safe_load(open("app/view/vw_maintenance.yaml")),
+        safe_load(open("app/view/vw_maintenance_event.yaml")),
         create_joins=True,
         drop=True,
         variables=variables,
