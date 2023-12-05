@@ -11,7 +11,7 @@ services:
       - ./datamodel:/src
     ports:
       # making the postgres database accessible for debugging
-      - ${TWW_PG_PORT}:${TWW_PG_PORT}
+      - ${TWW_PG_PORT:-5432}:${TWW_PG_PORT:-5432}
 
   schemaspy:
     image: schemaspy/schemaspy
