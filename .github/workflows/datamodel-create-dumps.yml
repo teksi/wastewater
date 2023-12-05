@@ -42,3 +42,9 @@ jobs:
           name: datamodel-dumps
           path: datamodel/artifacts/
           if-no-files-found: error
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: datamodel-schemaspy
+          path: datamodel/schemaspy/
+          if-no-files-found: error
