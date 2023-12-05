@@ -26,4 +26,4 @@ CREATE OR REPLACE VIEW tww_app.vw_reach_relining AS
 ALTER TABLE tww_app.vw_reach_relining
   OWNER TO postgres;
 GRANT ALL ON TABLE tww_app.vw_reach_relining TO postgres;
-GRANT ALL ON TABLE tww_app.vw_reach_relining TO tww;
+GRANT ALL ON TABLE tww_app.vw_reach_relining TO tww_viewer;
