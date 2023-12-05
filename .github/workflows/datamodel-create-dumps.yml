@@ -33,7 +33,7 @@ jobs:
 
       - name: create dumps
         run: |
-          docker compose exec db -e PGSERVICE=pg_teksi_wastewater teksi-wastewater /src/scripts/create-dumps.py
+          docker compose exec db /src/scripts/create-dumps.py
           docker compose cp db:/src/artifacts datamodel/artifacts
 
       - name: schemaspy
