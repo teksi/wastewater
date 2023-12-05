@@ -126,7 +126,18 @@ def create_views(
         view_name="vw_wwtp_structure",
         **defaults,
     ).create()
-
+    SingleInheritance(
+        "tww_od.wastewater_structure",
+        "tww_od.drainless_toilet",
+        view_name="vw_drainless_toilet",
+        **defaults,
+    ).create()
+    SingleInheritance(
+        "tww_od.wastewater_structure",
+        "tww_od.small_treatment_plant",
+        view_name="vw_small_treatment_plant",
+        **defaults,
+    ).create()
     SingleInheritance(
         "tww_od.wastewater_networkelement", "tww_od.reach", view_name="vw_reach", **defaults
     ).create()
