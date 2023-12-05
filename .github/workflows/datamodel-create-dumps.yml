@@ -34,7 +34,7 @@ jobs:
       - name: create dumps
         run: |
           docker compose exec db /src/scripts/create-dumps.py
-          docker compose cp db:/src/artifacts datamodel/artifacts
+          docker compose cp db:/src/artifacts datamodel/
 
       - name: schemaspy
         run:  docker compose run schemaspy
