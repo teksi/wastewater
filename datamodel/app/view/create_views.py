@@ -6,6 +6,7 @@ import psycopg2
 from pirogue import MultipleInheritance, SimpleJoins, SingleInheritance
 from vw_tww_reach import vw_tww_reach
 from vw_tww_wastewater_structure import vw_tww_wastewater_structure
+from vw_additional_wastewater_structure import vw_additional_wastewater_structure
 from yaml import safe_load
 
 # sys.path.append(os.path.join(os.path.dirname(__file__)))
