@@ -3,7 +3,7 @@
 -- DROP VIEW tww_app.vw_tww_maint_evnt_on_reach;
 
 CREATE OR REPLACE VIEW tww_app.vw_tww_maint_evnt_on_reach AS
- SELECT 
+ SELECT
 	re_m_w.obj_id AS re_m_w_id,
     maint_evnt.obj_id,
     maint_evnt.identifier,
@@ -46,7 +46,7 @@ CREATE OR REPLACE VIEW tww_app.vw_tww_maint_evnt_on_reach AS
 	 LEFT JOIN tww_od.wastewater_node wn_from on rp_from.fk_wastewater_networkelement=wn_from.obj_id
 	 LEFT JOIN tww_od.wastewater_node wn_to on rp_to.fk_wastewater_networkelement=wn_to.obj_id
   WHERE ch.obj_id IS NOT NULL;
-  
+
 ALTER TABLE tww_app.vw_tww_maint_evnt_on_reach
   OWNER TO tww_sysadmin;
 GRANT SELECT ON TABLE tww_app.vw_tww_maint_evnt_on_reach TO tww_viewer;
