@@ -27,7 +27,6 @@ jobs:
 
       - name: "build dockerfile"
         run: |
-          mkdir datamodel/schemaspy
           docker compose --profile schemaspy up -d --build
 
       - name: "initialize container"
