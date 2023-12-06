@@ -19,7 +19,7 @@ on:
 
 jobs:
   datamodel-dumps:
-    name: Docker
+    name: Create dumps and schemaspy of datamodel
     runs-on: ubuntu-latest
 
     steps:
