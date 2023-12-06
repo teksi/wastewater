@@ -15,8 +15,7 @@ from qgis.core import (
     QgsProcessingParameterVectorLayer,
     QgsWkbTypes,
 )
-
-from plugin.teksi_wastewater.processing_provider.tww_algorithm import TwwAlgorithm
+from teksi_wastewater.processing_provider.tww_algorithm import TwwAlgorithm
 
 from ....utils.twwlayermanager import TwwLayerManager
 
