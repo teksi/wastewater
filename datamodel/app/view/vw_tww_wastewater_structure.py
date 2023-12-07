@@ -225,7 +225,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
     )
 
     cursor.execute(view_sql, variables)
-    
+
     trigger_insert_sql = """
     CREATE OR REPLACE FUNCTION tww_app.ft_vw_tww_wastewater_structure_INSERT()
       RETURNS trigger AS
@@ -385,14 +385,21 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
                 "fk_wastewater_structure": "NEW.obj_id",
             },
         ),
-        new_co_cols=', '.join(['NEW.co_shape' if x=='cover_shape' else 'NEW.co_'+x for x in list(columns(
-            pg_cur=cursor,
-            table_schema="tww_od",
-            table_name="cover",
-            remove_pkey=False,
-            indent=4,
-            skip_columns=["situation3d_geometry"],
-        ))]),
+        new_co_cols=", ".join(
+            [
+                "NEW.co_shape" if x == "cover_shape" else "NEW.co_" + x
+                for x in list(
+                    columns(
+                        pg_cur=cursor,
+                        table_schema="tww_od",
+                        table_name="cover",
+                        remove_pkey=False,
+                        indent=4,
+                        skip_columns=["situation3d_geometry"],
+                    )
+                )
+            ]
+        ),
     )
 
     cursor.execute(trigger_insert_sql)
