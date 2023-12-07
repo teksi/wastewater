@@ -34,11 +34,11 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
         CASE
           WHEN wt.obj_id IS NOT NULL THEN 'wwtp_structure'
           WHEN sm.obj_id IS NOT NULL THEN 'small_treatment_plant'
-          WHEN to.obj_id IS NOT NULL THEN 'drainless_toilet'
+          WHEN dt.obj_id IS NOT NULL THEN 'drainless_toilet'
           ELSE 'unknown'
         END AS ws_type
-
         , wt.kind AS wt_kind
+
         , sm.function as sm_function
         , ws.fk_owner
         , ws.status
@@ -74,7 +74,7 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
         LEFT JOIN tww_od.structure_part main_co_sp ON main_co_sp.obj_id = ws.fk_main_cover
         LEFT JOIN tww_od.wwtp_structure wt ON wt.obj_id = ws.obj_id
         LEFT JOIN tww_od.small_treatment_plant sm ON sm.obj_id = ws.obj_id
-        LEFT JOIN tww_od.drainless_toilet to ON to.obj_id = ws.obj_id
+        LEFT JOIN tww_od.drainless_toilet dt ON dt.obj_id = ws.obj_id
         LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = ws.fk_main_wastewater_node
         LEFT JOIN tww_od.wastewater_node wn ON wn.obj_id = ws.fk_main_wastewater_node
         LEFT JOIN tww_od.channel ch ON ch.obj_id = ws.obj_id
@@ -149,7 +149,7 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
             remove_pkey=True,
             indent=4,
             skip_columns=[],
-            prefix="to_",
+            prefix="dt_",
             remap_columns={},
         ),
         wn_cols=select_columns(
