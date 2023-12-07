@@ -7,7 +7,7 @@ import os
 
 import psycopg2
 from pirogue.utils import insert_command, select_columns, table_parts, update_command
-from pirogue import information_schema
+from pirogue.information_schema import columns
 from yaml import safe_load
 
 
