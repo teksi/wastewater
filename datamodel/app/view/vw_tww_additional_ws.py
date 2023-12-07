@@ -78,7 +78,11 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
         LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = ws.fk_main_wastewater_node
         LEFT JOIN tww_od.wastewater_node wn ON wn.obj_id = ws.fk_main_wastewater_node
         LEFT JOIN tww_od.channel ch ON ch.obj_id = ws.obj_id
-        WHERE ch.obj_id IS NULL;
+        LEFT JOIN tww_od.manhole ma ON ma.obj_id = ws.obj_id
+        LEFT JOIN tww_od.special_structure ss ON ss.obj_id = ws.obj_id
+        LEFT JOIN tww_od.discharge_point dp ON dp.obj_id = ws.obj_id
+        LEFT JOIN tww_od.infiltration_installation ii ON ii.obj_id = ws.obj_id
+        WHERE NULL = ALL(ARRAY[ch.obj_id,ma.obj_id,ss.obj_id,dp.obj_id,ii.obj_id]);
 
         ALTER VIEW tww_app.vw_tww_additional_ws ALTER obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_structure');
         ALTER VIEW tww_app.vw_tww_additional_ws ALTER co_obj_id SET DEFAULT tww_sys.generate_oid('tww_od','cover');
