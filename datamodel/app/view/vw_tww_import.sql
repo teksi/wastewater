@@ -52,7 +52,7 @@ CREATE OR REPLACE VIEW tww_app.import_vw_manhole AS
     (q.obj_id IS NOT NULL) AS in_quarantine,
     FALSE::boolean AS deleted
 
-    FROM tww_od.wastewater_structure ws 
+    FROM tww_od.wastewater_structure ws
     LEFT JOIN tww_od.cover main_co ON main_co.obj_id = ws.fk_main_cover
     LEFT JOIN tww_od.manhole ma ON ma.obj_id = ws.obj_id
     LEFT JOIN tww_od.special_structure ss ON ss.obj_id = ws.obj_id
