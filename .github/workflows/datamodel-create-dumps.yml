@@ -19,27 +19,33 @@ on:
 
 jobs:
   datamodel-dumps:
-    name: Docker
+    name: Create dumps and schemaspy of datamodel
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
 
       - name: "build dockerfile"
-        run:  docker build -f datamodel/.docker/Dockerfile --tag teksi/wastewater:unstable .
+        run: |
+          docker compose --profile schemaspy up -d --build
 
       - name: "initialize container"
-        run: |
-          docker run -d -p 5432:5432 --name teksi-wastewater teksi/wastewater:unstable
-          docker exec teksi-wastewater init_db.sh wait
+        run: docker compose exec db init_db.sh wait
 
       - name: create dumps
-        run: |
-          docker exec -e PGSERVICE=pg_teksi_wastewater teksi-wastewater /src/scripts/create-dumps.py
-          docker cp teksi-wastewater:/src/artifacts datamodel/artifacts
+        run: docker compose exec db /src/scripts/create-dumps.py
+
+      - name: schemaspy
+        run:  docker compose run schemaspy
 
       - uses: actions/upload-artifact@v3
         with:
           name: datamodel-dumps
           path: datamodel/artifacts/
+          if-no-files-found: error
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: datamodel-schemaspy
+          path: datamodel/schemaspy/
           if-no-files-found: error
