@@ -7,6 +7,7 @@ import os
 
 import psycopg2
 from pirogue.utils import insert_command, select_columns, table_parts, update_command
+from pirogue import information_schema
 from yaml import safe_load
 
 
@@ -224,7 +225,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
     )
 
     cursor.execute(view_sql, variables)
-
+    
     trigger_insert_sql = """
     CREATE OR REPLACE FUNCTION tww_app.ft_vw_tww_wastewater_structure_INSERT()
       RETURNS trigger AS
@@ -384,19 +385,14 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
                 "fk_wastewater_structure": "NEW.obj_id",
             },
         ),
-        new_co_cols=select_columns(
+        new_co_cols=', '.join(['NEW.co_shape' if x=='cover_shape' else 'NEW.co_'+x for x in list(columns(
             pg_cur=cursor,
             table_schema="tww_od",
             table_name="cover",
-            table_alias="NEW.co",
-            prepend_as=False,
-            alias_separator="_",
             remove_pkey=False,
             indent=4,
             skip_columns=["situation3d_geometry"],
-            remap_columns={"cover_shape": "co_shape"},
-            columns_at_end=["obj_id"],
-        ),
+        ))]),
     )
 
     cursor.execute(trigger_insert_sql)
