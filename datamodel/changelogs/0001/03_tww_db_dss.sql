@@ -2979,6 +2979,10 @@ FOR EACH ROW EXECUTE PROCEDURE
 
 -------
 ------------ Relationships and Value Tables ----------- ;
+ALTER TABLE tww_od.re_building_group_disposal ADD COLUMN fk_building_group varchar(16);
+ALTER TABLE tww_od.re_building_group_disposal ADD CONSTRAINT rel_building_group_disposal_building_group FOREIGN KEY (fk_building_group) REFERENCES tww_od.building_group(obj_id) ON UPDATE CASCADE ON DELETE cascade;
+ALTER TABLE tww_od.re_building_group_disposal ADD COLUMN fk_disposal varchar(16);
+ALTER TABLE tww_od.re_building_group_disposal ADD CONSTRAINT rel_building_group_disposal_disposal FOREIGN KEY (fk_disposal) REFERENCES tww_od.disposal(obj_id) ON UPDATE CASCADE ON DELETE cascade;
 ALTER TABLE tww_od.re_maintenance_event_wastewater_structure ADD COLUMN fk_wastewater_structure varchar(16);
 ALTER TABLE tww_od.re_maintenance_event_wastewater_structure ADD CONSTRAINT rel_maintenance_event_wastewater_structure_wastewater_structure FOREIGN KEY (fk_wastewater_structure) REFERENCES tww_od.wastewater_structure(obj_id) ON UPDATE CASCADE ON DELETE cascade;
 ALTER TABLE tww_od.re_maintenance_event_wastewater_structure ADD COLUMN fk_maintenance_event varchar(16);
