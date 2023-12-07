@@ -6,8 +6,8 @@ import argparse
 import os
 
 import psycopg2
-from pirogue.utils import insert_command, select_columns, table_parts, update_command
 from pirogue.information_schema import columns
+from pirogue.utils import insert_command, select_columns, table_parts, update_command
 from yaml import safe_load
 
 
