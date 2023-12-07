@@ -394,7 +394,6 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
                         table_schema="tww_od",
                         table_name="cover",
                         remove_pkey=False,
-                        indent=4,
                         skip_columns=["situation3d_geometry"],
                     )
                 )
