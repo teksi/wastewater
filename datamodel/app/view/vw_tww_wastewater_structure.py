@@ -392,7 +392,6 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             remove_pkey=False,
             indent=4,
             skip_columns=["situation3d_geometry"],
-            prefix="co_",
             remap_columns={"cover_shape": "co_shape"},
             columns_at_end=["obj_id"],
         ),
