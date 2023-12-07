@@ -39,7 +39,7 @@ jobs:
       - name: run tests
         run:  docker exec teksi-wastewater pytest
 
-      - name: logs
+      - name: failure logs
         if: failure()
         run: docker logs teksi-wastewater
 
