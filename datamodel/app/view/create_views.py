@@ -4,7 +4,7 @@ import argparse
 
 import psycopg2
 from pirogue import MultipleInheritance, SimpleJoins, SingleInheritance
-from vw_additional_wastewater_structure import vw_additional_wastewater_structure
+from vw_tww_additional_ws import vw_tww_additional_ws
 from vw_tww_reach import vw_tww_reach
 from vw_tww_wastewater_structure import vw_tww_wastewater_structure
 from yaml import safe_load
@@ -195,7 +195,7 @@ def create_views(
         srid, pg_service=pg_service, extra_definition=tww_wastewater_structure_extra
     )
     vw_tww_reach(pg_service=pg_service, extra_definition=tww_reach_extra)
-    vw_additional_wastewater_structure(srid, pg_service=pg_service)
+    vw_tww_additional_ws(srid, pg_service=pg_service)
     run_sql("app/view/vw_file.sql", pg_service, variables)
 
     MultipleInheritance(
