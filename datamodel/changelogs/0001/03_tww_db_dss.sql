@@ -1,6 +1,6 @@
 ------ This file generates the VSA-DSS database (Modul VSA-DSS (2020)) in en on QQIS
 ------ For questions etc. please contact Stefan Burckhardt stefan.burckhardt@sjib.ch
------- version 21.11.2023 17:42:42
+------ version 11.12.2023 15:52:18
 ------ with 3D coordinates
 
 ---------------------------
@@ -24,31 +24,31 @@ CONSTRAINT pkey_tww_value_list_code PRIMARY KEY (code)
 )
 WITH (
    OIDS = False
-);
+);						   
 -------
 CREATE TABLE tww_od.re_building_group_disposal
 (
-   obj_id varchar(16) NOT NULL,
-   CONSTRAINT pkey_tww_od_re_building_group_disposal_obj_id PRIMARY KEY (obj_id)
-)
-WITH (
-   OIDS = False
+   id uuid NOT NULL DEFAULT uuid_generate_v4(),
+   CONSTRAINT pkey_tww_od_re_building_group_disposal_id PRIMARY KEY (id)
+ 
+	  
+			   
 );
-CREATE SEQUENCE tww_od.seq_re_building_group_disposal_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.re_building_group_disposal ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','re_building_group_disposal');
-COMMENT ON COLUMN tww_od.re_building_group_disposal.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
+																										 
+																																		   
+COMMENT ON COLUMN tww_od.re_building_group_disposal.id IS 'UUID generated with uuid_generate_v4 see https://www.postgresql.org/docs/16/uuid-ossp.html#UUID-OSSP-FUNCTIONS-SECT';
 -------
 CREATE TABLE tww_od.re_maintenance_event_wastewater_structure
 (
-   obj_id varchar(16) NOT NULL,
-   CONSTRAINT pkey_tww_od_re_maintenance_event_wastewater_structure_obj_id PRIMARY KEY (obj_id)
-)
-WITH (
-   OIDS = False
+   id uuid NOT NULL DEFAULT uuid_generate_v4(),
+   CONSTRAINT pkey_tww_od_re_maintenance_event_wastewater_structure_id PRIMARY KEY (id)
+ 
+	  
+			   
 );
-CREATE SEQUENCE tww_od.seq_re_maintenance_event_wastewater_structure_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.re_maintenance_event_wastewater_structure ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','re_maintenance_event_wastewater_structure');
-COMMENT ON COLUMN tww_od.re_maintenance_event_wastewater_structure.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
+																																								
+																																										 
+COMMENT ON COLUMN tww_od.re_maintenance_event_wastewater_structure.id IS 'UUID generated with uuid_generate_v4 see https://www.postgresql.org/docs/16/uuid-ossp.html#UUID-OSSP-FUNCTIONS-SECT';
 -------
 CREATE TABLE tww_od.txt_symbol
 (
@@ -1176,7 +1176,7 @@ COMMENT ON COLUMN tww_od.reach.clear_height IS 'Clear height (inside) of profile
  ALTER TABLE tww_od.reach ADD COLUMN coefficient_of_friction  smallint ;
 COMMENT ON COLUMN tww_od.reach.coefficient_of_friction IS 'yyy http://www.linguee.com/english-german/search?source=auto&query=reibungsbeiwert / Hydraulische Kenngrösse zur Beschreibung der Beschaffenheit der Kanalwandung. Beiwert für die Formeln nach Manning-Strickler (K oder kstr) / Constante de rugosité selon Manning-Strickler (K ou kstr)';
  ALTER TABLE tww_od.reach ADD COLUMN elevation_determination  integer ;
-COMMENT ON COLUMN tww_od.reach.elevation_determination IS 'Defines the elevation_determination of the reach. / Definiert die Hoehenbestimmung einer Haltung. / Définition de la détermination altimétrique d''un tronçon.';
+COMMENT ON COLUMN tww_od.reach.elevation_determination IS 'Defines the elevation_determination of the reach (progression3D). / Definiert die Hoehenbestimmung einer Haltung (Verlauf3D). / Définition de la détermination altimétrique d''un tronçon (TRACE3D).';
  ALTER TABLE tww_od.reach ADD COLUMN flow_time_dry_weather  decimal(7,0) ;
 COMMENT ON COLUMN tww_od.reach.flow_time_dry_weather IS 'Flow time in dry weather (daily mean) / Fliesszeit bei Trockenwetter (Tagesmittel) / Temps d''écoulement par temps sec (moyenne journalière)';
  ALTER TABLE tww_od.reach ADD COLUMN horizontal_positioning  integer ;
@@ -5225,3 +5225,5 @@ ALTER TABLE tww_od.farm ADD CONSTRAINT rel_od_farm_fk_dataprovider FOREIGN KEY (
  CREATE UNIQUE INDEX in_od_hydraulic_char_data_identifier ON tww_od.hydraulic_char_data USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
  CREATE UNIQUE INDEX in_od_catchment_area_totals_identifier ON tww_od.catchment_area_totals USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
  CREATE UNIQUE INDEX in_od_building_group_identifier ON tww_od.building_group USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
+
+
