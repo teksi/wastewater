@@ -24,30 +24,30 @@ CONSTRAINT pkey_tww_value_list_code PRIMARY KEY (code)
 )
 WITH (
    OIDS = False
-);						   
+);
 -------
 CREATE TABLE tww_od.re_building_group_disposal
 (
    id uuid NOT NULL DEFAULT uuid_generate_v4(),
    CONSTRAINT pkey_tww_od_re_building_group_disposal_id PRIMARY KEY (id)
- 
-	  
-			   
+
+
+
 );
-																										 
-																																		   
+
+
 COMMENT ON COLUMN tww_od.re_building_group_disposal.id IS 'UUID generated with uuid_generate_v4 see https://www.postgresql.org/docs/16/uuid-ossp.html#UUID-OSSP-FUNCTIONS-SECT';
 -------
 CREATE TABLE tww_od.re_maintenance_event_wastewater_structure
 (
    id uuid NOT NULL DEFAULT uuid_generate_v4(),
    CONSTRAINT pkey_tww_od_re_maintenance_event_wastewater_structure_id PRIMARY KEY (id)
- 
-	  
-			   
+
+
+
 );
-																																								
-																																										 
+
+
 COMMENT ON COLUMN tww_od.re_maintenance_event_wastewater_structure.id IS 'UUID generated with uuid_generate_v4 see https://www.postgresql.org/docs/16/uuid-ossp.html#UUID-OSSP-FUNCTIONS-SECT';
 -------
 CREATE TABLE tww_od.txt_symbol
@@ -5225,5 +5225,3 @@ ALTER TABLE tww_od.farm ADD CONSTRAINT rel_od_farm_fk_dataprovider FOREIGN KEY (
  CREATE UNIQUE INDEX in_od_hydraulic_char_data_identifier ON tww_od.hydraulic_char_data USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
  CREATE UNIQUE INDEX in_od_catchment_area_totals_identifier ON tww_od.catchment_area_totals USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
  CREATE UNIQUE INDEX in_od_building_group_identifier ON tww_od.building_group USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
-
-
