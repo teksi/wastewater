@@ -3,12 +3,12 @@
 ------ version 12.12.2023 13:36:39
 ------ with 3D coordinates
 
-												  
 
-											
-								   
-											
-							
+
+
+
+
+
 
 
 CREATE TABLE tww_sys.dictionary_od_table
