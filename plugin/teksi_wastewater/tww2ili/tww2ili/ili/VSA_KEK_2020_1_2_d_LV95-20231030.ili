@@ -1,0 +1,1680 @@
+!!@ comment = "VSA_KEK_2020_1_2_d_LV95.ili"
+!!@ comment = "http://dss.vsa.ch"
+
+INTERLIS 2.3;
+
+MODEL VSA_KEK_2020_1_LV95 (de) AT "http://www.vsa.ch/models"
+  VERSION "30.10.2023" =
+
+  IMPORTS UNQUALIFIED INTERLIS;
+  IMPORTS Units;
+  IMPORTS Base_LV95;
+  IMPORTS SIA405_Base_Abwasser_1_LV95;
+  IMPORTS SIA405_ABWASSER_2020_1_LV95;
+
+!!@ comment = "Copyright 2002 - 2023"
+!!@ comment = "Verband Schweizer Abwasser- und Gewässerschutzfachleute (VSA), Zürich www.vsa.ch"
+
+!!@ comment = "Freigegeben für öffentlichen Gebrauch und kommerzielle Anwendung"
+!!@ comment = "Sachbearbeiter: Stefan Burckhardt / VSA CC Siedlungsentwässerung"
+!!@ comment = "Geprüft mit Compiler Version 5.3.3 (03.08.2023)"
+
+
+UNIT
+
+STRUCTURE Videozaehlerstand  =
+   SUBDIVISION Hours: 0 .. 23 CIRCULAR [h];
+   CONTINUOUS SUBDIVISION Minutes: 0 .. 59 CIRCULAR [min];
+   CONTINUOUS SUBDIVISION Seconds: 0 .. 59 CIRCULAR [INTERLIS.s];
+   CONTINUOUS SUBDIVISION Frames: 0 .. 24 CIRCULAR;
+END Videozaehlerstand;
+
+DOMAIN XMLVideozaehlerstand = FORMAT BASED ON Videozaehlerstand ( Hours ":" Minutes ":" Seconds ":" Frames );  !! [hh:mm:ss:ff]
+
+TOPIC KEK EXTENDS SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser = DEPENDS ON SIA405_Base_Abwasser_1_LV95.Administration;
+
+
+DOMAIN
+
+!!@ comment = "[mm] oder [%], je nach EN Schadencode"
+KanalQuantifizierung = 0 .. 100000;
+
+!!@ comment = ""
+Relativpfad = TEXT*200;
+
+!!@ comment = ""
+Pfad = TEXT*1023;
+
+!!@ comment = ""
+Anmerkung = TEXT*100;
+!!@ comment = "XML Tags abhängig vom Aufnahmesystem"
+
+!!@ comment = "Spezielle Ansichtsparameter für die Positionierung innerhalb einer Filmdatei"
+Ansichtsparameter = TEXT*200;
+
+!!@ comment = ""
+Bezeichnung_lang = TEXT*60;
+
+!!@ comment = "variabel, je nach EN Schadencode"
+SchachtQuantifizierung = TEXT*20;
+
+!!@ comment = "Codes für den Anfang und das Ende eines Streckenschadens"
+Streckenschaden = TEXT*3;
+
+!!@ comment = ""
+Datei_Bezeichnung = TEXT*120;
+
+
+!!@ comment = "Aussagen zu betrieblichem und baulichem Unterhalt eines Abwasserbauwerkes"
+CLASS Erhaltungsereignis (ABSTRACT) EXTENDS VSA_BaseClass =
+  ATTRIBUTE
+    !!@ comment = "Sachbearbeiter Firma oder Verwaltung (kann auch Operateur sein bei Untersuchung)"
+    Ausfuehrender: TEXT*50;
+    !!@ comment = "Allgemeine Bemerkungen"
+    Bemerkung: TEXT*80;
+    Bezeichnung: MANDATORY TEXT*41;
+    !!@ comment = "Z.B. Schadensprotokoll. Effektives Dokument via Klasse Datei und Datentraeger verlinken."
+    Datengrundlage: TEXT*50;
+    !!@ comment = "Dauer des Ereignisses in Tagen"
+    Dauer: 0 .. 10000 [Units.d];
+    !!@ comment = "Ort, wo sich weitere Detailinformationen zum Ereignis finden (z.B. Nr. eines Videobandes)"
+    Detaildaten: TEXT*50;
+    !!@ comment = "Resultat oder wichtige Bemerkungen aus Sicht des Bearbeiters"
+    Ergebnis: MTEXT*255;
+    !!@ comment = "Ursache für das Ereignis. Folgende standardisierten Textvorgaben sind für VSA-KEK zu verwenden: andere, Garantieabnahme, Neubauabnahme, Sanierungsabnahme, Zustandskontrolle"
+    Grund: TEXT*50;
+    Kosten: 0.00 .. 99999999.99 [Units.CHF];
+    !!@ comment = "Phase in der sich das Erhaltungsereignis befindet"
+    Status: MANDATORY (
+      ausgefuehrt,
+      geplant,
+      !!@ comment = "Falls eine geplante Untersuchung nicht durchgeführt werden konnte."
+      nicht_moeglich,
+      unbekannt
+    );
+    !!@ comment = "Zeitpunkt des Ereignisses"
+    Zeitpunkt: MANDATORY INTERLIS_1_DATE;
+UNIQUE
+    !!@ comment = "UNIQUE Kombination Bezeichnung, Zeitpunkt, DatenherrRef "
+    Bezeichnung, Zeitpunkt;
+END Erhaltungsereignis;
+
+!!@ comment = "Assoziation"
+ASSOCIATION Erhaltungsereignis_AbwasserbauwerkAssoc =
+  AbwasserbauwerkRef (EXTERNAL) -- {0..1} SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Abwasserbauwerk;
+  Erhaltungsereignis_AbwasserbauwerkAssocRef -- {0..*} Erhaltungsereignis;
+END Erhaltungsereignis_AbwasserbauwerkAssoc;
+
+!!@ comment = "Assoziation"
+ASSOCIATION Erhaltungsereignis_Ausfuehrende_FirmaAssoc =
+  Ausfuehrende_FirmaRef (EXTERNAL) -- {0..1} SIA405_Base_Abwasser_1_LV95.Administration.Organisation;
+  Erhaltungsereignis_Ausfuehrende_FirmaAssocRef -- {0..*} Erhaltungsereignis;
+END Erhaltungsereignis_Ausfuehrende_FirmaAssoc;
+
+!!@ comment = "Kanalfernsehuntersuchungen"
+CLASS Untersuchung EXTENDS Erhaltungsereignis =
+  ATTRIBUTE
+    !!@ comment = "Bezeichnung des 'bis Punktes' einer Untersuchung, so wie sie auf dem Plan erscheint. Alternative zum Fremdschlüssel Abwasserbauwerk, wenn Topologie noch nicht definiert ist (Ersterfassung). Die bisPunktBezeichnung wird später vom Hydrauliker für den Aufbau der Kanalnetztopologie verwendet. Bei Schachtuntersuchungen bleibt dieser Wert leer."
+    bisPunktBezeichnung: TEXT*20;
+    !!@ comment = "Aufnahmetechnik, beschreibt die Art der Aufnahme"
+    Erfassungsart: MANDATORY (
+      andere,
+      Begehung,
+      Deformationsmessung,
+      Dichtheitspruefung,
+      Georadar,
+      Kanalfernsehen,
+      unbekannt
+    );
+    !!@ comment = "Eingesetztes Inspektionsfahrzeug"
+    Fahrzeug: TEXT*50;
+    !!@ comment = "Eingesetztes Aufnahmegeräte (Kamera)"
+    Geraet: TEXT*50;
+    !!@ comment = "Total untersuchte Länge in Metern mit zwei Nachkommastellen"
+    Inspizierte_Laenge: MANDATORY 0.00 .. 30000.00 [m];
+    !!@ comment = "Bei Videobändern steht hier die Bandnummer (z.B. 1/99). Bei elektronischen Datenträgern ist dies die Datenträgerbezeichnung (z.B. SG001). Falls pro Untersuchung eine einzelne Datei zur Verfügung steht, dann wird diese aus der Klasse Datei referenziert und dieses Attribut kann leer gelassen werden."
+    Videonummer: TEXT*20;
+    !!@ comment = "Bezeichnung des 'von Punktes' einer Untersuchung, so wie sie auf dem Plan erscheint. Alternative zum Fremdschlüssel Haltungspunkt, wenn Topologie noch nicht definiert ist (Ersterfassung). Die vonPunktBezeichnung wird später vom Hydrauliker für den Aufbau der Kanalnetztopologie verwendet."
+    vonPunktBezeichnung: TEXT*20;
+    !!@ comment = "Wetterverhältnisse während der Inspektion"
+    Witterung: (
+      bedeckt_regnerisch,
+      Nieselregen,
+      Regen,
+      Schneefall,
+      schoen_trocken,
+      unbekannt
+    );
+END Untersuchung;
+
+!!@ comment = "Assoziation"
+ASSOCIATION Untersuchung_HaltungspunktAssoc =
+  HaltungspunktRef (EXTERNAL) -- {0..1} SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Haltungspunkt;
+  Untersuchung_HaltungspunktAssocRef -- {0..*} Untersuchung;
+END Untersuchung_HaltungspunktAssoc;
+
+!!@ comment = "Diese Klasse ist die Basisklasse für alle Schadensfeststellungen, sowohl aus der optischen Inspektion von Entwässerungsleitungen, als auch von Schachtinspektionen."
+CLASS Schaden (ABSTRACT) EXTENDS VSA_BaseClass =
+  ATTRIBUTE
+    !!@ comment = "Freie Bemerkungen zu einer Feststellung"
+    Anmerkung: Anmerkung;
+    !!@ comment = "Spezielle Ansichtsparameter für die Positionierung innerhalb einer Filmdatei für Scanner- oder digitale Videotechnik"
+    Ansichtsparameter: Ansichtsparameter;
+    !!@ comment = "Definiert die Schadensklasse eines Einzelschadens. Die Einteilung in die Zustandsklassen (Z0-Z4) erfolgt aufgrund des Schadenbilds und des Schadensausmasses. Dabei kann ein Abwasserbauwerk direkt einer Klasse zugeteilt werden oder zuerst jeder Schaden einzeln klassifiziert werden. (Am Schluss bestimmt dann z.B. der schwerste Einzelschaden die Klassifizierung des gesamten Kanals (Abwasserbauwerk.BaulicherZustand))."
+    Einzelschadenklasse: (
+      EZ0,
+      EZ1,
+      EZ2,
+      EZ3,
+      EZ4,
+      unbekannt
+    );
+    !!@ comment = "Codes für den Anfang und das Ende eines Streckenschadens. Genaue Angaben unter 2.1.2 resp. 3.1.2"
+    Streckenschaden: Streckenschaden;
+    !!@ comment = "Kennzeichen für eine Feststellung an einer Rohrverbindung (2.1.7). bzw. bei zwei aneinandergrenzenden Schachtelementen gemäss (3.1.7). Entspricht in SN EN 13508 ja = 'A', nein = leer"
+    Verbindung: (
+      ja,
+      nein
+    );
+    !!@ comment = "Zählerstand auf einem analogen Videoband oder in einer digitalen Videodatei, in Echtzeit"
+    Videozaehlerstand: XMLVideozaehlerstand;
+END Schaden;
+
+!!@ comment = "Komposition"
+ASSOCIATION Schaden_UntersuchungAssoc =
+  UntersuchungRef  -<#> {1} Untersuchung;
+  Schaden_UntersuchungAssocRef -- {0..*} Schaden;
+END Schaden_UntersuchungAssoc;
+
+!!@ comment = "Diese Klasse ist von der Klasse 'Schaden' abgeleitet. D.h. sie erbt alle Attribute dieser Klasse."
+CLASS Kanalschaden EXTENDS Schaden =
+  ATTRIBUTE
+    !!@ comment = "Länge von Rohranfang bis zur Feststellung (siehe Richtlinie Optische Inspektion von Entwässerungsanlagen: Schadencodierung und Datentransfer, Absatz 2.1.1) in m mit zwei Nachkommastellen"
+    Distanz: MANDATORY 0.00 .. 30000.00 [m];
+    !!@ comment = "Vorgegebener Wertebereich: Gültiger Code auf der Grundlage von SN EN 13508-2. Alle gültigen Codes sind in Kapitel 2 der Richtlinie 'Schadencodierung' abschliessend aufgeführt."
+    KanalSchadencode: MANDATORY (
+      !!@ comment = "Rohrprofilwechsel"
+      AECXA,
+      !!@ comment = "Rohrprofilwechsel: Eiprofil"
+      AECXB,
+      !!@ comment = "Rohrprofilwechsel: Kreisprofil"
+      AECXC,
+      !!@ comment = "Rohrprofilwechsel: Maulprofil"
+      AECXD,
+      !!@ comment = "Rohrprofilwechsel: offenes Profil"
+      AECXE,
+      !!@ comment = "Rohrprofilwechsel: Rechteckprofil"
+      AECXF,
+      !!@ comment = "Rohrprofilwechsel: Spezialprofil"
+      AECXG,
+      !!@ comment = "Rohrprofilwechsel: unbekanntes Profil"
+      AECXH,
+      !!@ comment = "Rohrmaterialwechsel"
+      AEDXA,
+      !!@ comment = "Rohrmaterialwechsel: Asbestzement"
+      AEDXB,
+      !!@ comment = "Rohrmaterialwechsel: Normalbeton"
+      AEDXC,
+      !!@ comment = "Rohrmaterialwechsel: Ortsbeton"
+      AEDXD,
+      !!@ comment = "Rohrmaterialwechsel: Pressrohrbeton"
+      AEDXE,
+      !!@ comment = "Rohrmaterialwechsel: Spezialbeton"
+      AEDXF,
+      !!@ comment = "Rohrmaterialwechsel: Beton"
+      AEDXG,
+      !!@ comment = "Rohrmaterialwechsel: Faserzement"
+      AEDXH,
+      !!@ comment = "Rohrmaterialwechsel: Gebrannte Steine"
+      AEDXI,
+      !!@ comment = "Rohrmaterialwechsel: Duktiler Guss"
+      AEDXJ,
+      !!@ comment = "Rohrmaterialwechsel: Grauguss"
+      AEDXK,
+      !!@ comment = "Rohrmaterialwechsel: Epoxidharz"
+      AEDXL,
+      !!@ comment = "Rohrmaterialwechsel: Hartpolyethylen"
+      AEDXM,
+      !!@ comment = "Rohrmaterialwechsel: Polyester GUP"
+      AEDXN,
+      !!@ comment = "Rohrmaterialwechsel: Polyethylen"
+      AEDXO,
+      !!@ comment = "Rohrmaterialwechsel: Polypropylen"
+      AEDXP,
+      !!@ comment = "Rohrmaterialwechsel: Polyvinylchlorid"
+      AEDXQ,
+      !!@ comment = "Rohrmaterialwechsel: Kunststoff unbekannt"
+      AEDXR,
+      !!@ comment = "Rohrmaterialwechsel: Stahl"
+      AEDXS,
+      !!@ comment = "Rohrmaterialwechsel: Rostfreier Stahl"
+      AEDXT,
+      !!@ comment = "Rohrmaterialwechsel: Steinzeug"
+      AEDXU,
+      !!@ comment = "Rohrmaterialwechsel: Ton"
+      AEDXV,
+      !!@ comment = "Rohrmaterialwechsel: unbekanntes Material"
+      AEDXW,
+      !!@ comment = "Rohrmaterialwechsel: Zement"
+      AEDXX,
+      !!@ comment = "Neue Baulänge"
+      AEF,
+      !!@ comment = "Rohr vertikal deformiert"
+      BAAA,
+      !!@ comment = "Rohr horizontal deformiert"
+      BAAB,
+      !!@ comment = "Oberflächenriss (Haarriss) längs"
+      BABAA,
+      !!@ comment = "Oberflächenriss (Haarriss) radial"
+      BABAB,
+      !!@ comment = "Oberflächenriss (Haarriss), komplexe Rissbildung"
+      BABAC,
+      !!@ comment = "Oberflächenriss (Haarriss), spiralförmige Rissbildung"
+      BABAD,
+      !!@ comment = "Oberflächenriss (Haarriss), sternförmige Rissbildung"
+      BABAE,
+      !!@ comment = "Riss längs"
+      BABBA,
+      !!@ comment = "Riss radial"
+      BABBB,
+      !!@ comment = "Riss, komplexe Rissbildung, Scherbenbildung"
+      BABBC,
+      !!@ comment = "Riss, spiralförmige Rissbildung"
+      BABBD,
+      !!@ comment = "Riss, sternförmige Rissbildung"
+      BABBE,
+      !!@ comment = "Klaffender Riss, längs"
+      BABCA,
+      !!@ comment = "Klaffender Riss, radial"
+      BABCB,
+      !!@ comment = "Klaffender Riss, komplexe Rissbildung, Scherbenbildung"
+      BABCC,
+      !!@ comment = "Klaffender Riss, spiralförmige Rissbildung"
+      BABCD,
+      !!@ comment = "Klaffender Riss, sternförmige Rissbildung"
+      BABCE,
+      !!@ comment = "In der Lage verschobene Scherbe"
+      BACA,
+      !!@ comment = "Fehlende Scherbe / Wandungsteil (Loch)"
+      BACB,
+      !!@ comment = "Leitungsbruch / Einsturz"
+      BACC,
+      !!@ comment = "Mauerwerk defekt, Mauer- / Backsteine verschoben"
+      BADA,
+      !!@ comment = "Mauerwerk defekt, Mauer- / Backsteine fehlen"
+      BADB,
+      !!@ comment = "Mauerwerk defekt, Sohle abgesackt"
+      BADC,
+      !!@ comment = "Mauerwerk defekt, Einsturz"
+      BADD,
+      !!@ comment = "Mörtel aus Mauerwerk fehlt ganz oder teilweise"
+      BAE,
+      !!@ comment = "Rauhe Rohrwandung durch mechanische Beschädigung"
+      BAFAA,
+      !!@ comment = "Rauhe Rohrwandung durch chemischen Angriff"
+      BAFAB,
+      !!@ comment = "Rauhe Rohrwandung durch chemischen Angriff im oberen Teil des Rohres"
+      BAFAC,
+      !!@ comment = "Rauhe Rohrwandung durch chemischen Angriff im unteren Teil des Rohres"
+      BAFAD,
+      !!@ comment = "Rauhe Rohrwandung, Ursache nicht eindeutig feststellbar"
+      BAFAE,
+      !!@ comment = "Rauhe Rohrwandung, andere Ursache"
+      BAFAZ,
+      !!@ comment = "Abplatzung durch mechanische Beschädigung"
+      BAFBA,
+      !!@ comment = "Abplatzung, Ursache nicht eindeutig feststellbar"
+      BAFBE,
+      !!@ comment = "Abplatzung, andere Ursache"
+      BAFBZ,
+      !!@ comment = "Zuschlagstoffe sichtbar durch mechanische Beschädigung"
+      BAFCA,
+      !!@ comment = "Zuschlagstoffe sichtbar durch chemischen Angriff"
+      BAFCB,
+      !!@ comment = "Zuschlagstoffe sichtbar durch chemischen Angriff im oberen Teil des Rohres"
+      BAFCC,
+      !!@ comment = "Zuschlagstoffe sichtbar durch chemischen Angriff im unteren Teil des Rohres"
+      BAFCD,
+      !!@ comment = "Zuschlagstoffe sichtbar, Ursache nicht eindeutig feststellbar"
+      BAFCE,
+      !!@ comment = "Zuschlagstoffe sichtbar, andere Ursache"
+      BAFCZ,
+      !!@ comment = "Zuschlagstoffe einragend durch mechanische Beschädigung"
+      BAFDA,
+      !!@ comment = "Zuschlagstoffe einragend durch chemischen Angriff"
+      BAFDB,
+      !!@ comment = "Zuschlagstoffe einragend durch chemischen Angriff im oberen Teil des Rohres"
+      BAFDC,
+      !!@ comment = "Zuschlagstoffe einragend durch chemischen Angriff im unteren Teil des Rohres"
+      BAFDD,
+      !!@ comment = "Zuschlagstoffe einragend, Ursache nicht eindeutig feststellbar"
+      BAFDE,
+      !!@ comment = "Zuschlagstoffe einragend, andere Ursache"
+      BAFDZ,
+      !!@ comment = "Zuschlagstoffe fehlen durch mechanische Beschädigung"
+      BAFEA,
+      !!@ comment = "Zuschlagstoffe fehlen durch chemischen Angriff"
+      BAFEB,
+      !!@ comment = "Zuschlagstoffe fehlen durch chemischen Angriff im oberen Teil des Rohres"
+      BAFEC,
+      !!@ comment = "Zuschlagstoffe fehlen durch chemischen Angriff im unteren Teil des Rohres"
+      BAFED,
+      !!@ comment = "Zuschlagstoffe fehlen, Ursache nicht eindeutig feststellbar"
+      BAFEE,
+      !!@ comment = "Zuschlagstoffe fehlen, andere Ursache"
+      BAFEZ,
+      !!@ comment = "Bewehrung sichtbar durch mechanische Beschädigung"
+      BAFFA,
+      !!@ comment = "Bewehrung sichtbar durch chemischen Angriff"
+      BAFFB,
+      !!@ comment = "Bewehrung sichtbar durch chemischen Angriff im oberen Teil des Rohres"
+      BAFFC,
+      !!@ comment = "Bewehrung sichtbar durch chemischen Angriff im unteren Teil des Rohres"
+      BAFFD,
+      !!@ comment = "Bewehrung sichtbar, Ursache nicht eindeutig feststellbar"
+      BAFFE,
+      !!@ comment = "Bewehrung sichtbar, andere Ursache"
+      BAFFZ,
+      !!@ comment = "Bewehrung einragend durch mechanische Beschädigung"
+      BAFGA,
+      !!@ comment = "Bewehrung einragend durch chemischen Angriff"
+      BAFGB,
+      !!@ comment = "Bewehrung einragend durch chemischen Angriff im oberen Teil des Rohres"
+      BAFGC,
+      !!@ comment = "Bewehrung einragend durch chemischen Angriff im unteren Teil des Rohres"
+      BAFGD,
+      !!@ comment = "Bewehrung einragend, Ursache nicht eindeutig feststellbar"
+      BAFGE,
+      !!@ comment = "Bewehrung einragend, andere Ursache"
+      BAFGZ,
+      !!@ comment = "Bewehrung korrodiert durch chemischen Angriff"
+      BAFHB,
+      !!@ comment = "Bewehrung korrodiert durch chemischen Angriff im oberen Teil des Rohres"
+      BAFHC,
+      !!@ comment = "Bewehrung korrodiert durch chemischen Angriff im unteren Teil des Rohres"
+      BAFHD,
+      !!@ comment = "Bewehrung korrodiert, Ursache nicht eindeutig feststellbar"
+      BAFHE,
+      !!@ comment = "Fehlende Rohrwandung durch mechanische Beschädigung"
+      BAFIA,
+      !!@ comment = "Fehlende Rohrwandung durch chemischen Angriff"
+      BAFIB,
+      !!@ comment = "Fehlende Rohrwandung durch chemischen Angriff im oberen Teil des Rohres"
+      BAFIC,
+      !!@ comment = "Fehlende Rohrwandung durch chemischen Angriff im unteren Teil des Rohres"
+      BAFID,
+      !!@ comment = "Fehlende Rohrwandung, Ursache nicht eindeutig feststellbar"
+      BAFIE,
+      !!@ comment = "Fehlende Rohrwandung, andere Ursache"
+      BAFIZ,
+      !!@ comment = "Rohrwand korrodiert durch chemischen Angriff"
+      BAFJB,
+      !!@ comment = "Rohrwand korrodiert durch chemischen Angriff im oberen Teil des Rohres"
+      BAFJC,
+      !!@ comment = "Rohrwand korrodiert durch chemischen Angriff im unteren Teil des Rohres"
+      BAFJD,
+      !!@ comment = "Rohrwand korrodiert, Ursache nicht eindeutig feststellbar"
+      BAFJE,
+      !!@ comment = "Rohrwand korrodiert, andere Ursache"
+      BAFJZ,
+      !!@ comment = "Beule durch mechanische Beschädigung"
+      BAFKA,
+      !!@ comment = "Beule, Ursache nicht eindeutig feststellbar"
+      BAFKE,
+      !!@ comment = "Beule, andere Ursache"
+      BAFKZ,
+      !!@ comment = "Andersartiger Oberflächenschaden durch mechanische Beschädigung"
+      BAFZA,
+      !!@ comment = "Andersartiger Oberflächenschaden durch chemischen Angriff"
+      BAFZB,
+      !!@ comment = "Andersartiger Oberflächenschaden durch chemischen Angriff im oberen Teil des Rohres"
+      BAFZC,
+      !!@ comment = "AndersartigerOberflächenschaden durch chemischen Angriff im unteren Teil des Rohres"
+      BAFZD,
+      !!@ comment = "Andersartiger Oberflächenschaden, Ursache nicht eindeutig feststellbar"
+      BAFZE,
+      !!@ comment = "Andersartiger Oberflächenschaden, andere Ursache"
+      BAFZZ,
+      !!@ comment = "Anschluss einragend"
+      BAGA,
+      !!@ comment = "Anschluss falsch eingeführt"
+      BAHA,
+      !!@ comment = "Anschluss zurückliegend"
+      BAHB,
+      !!@ comment = "Anschluss unvollständig oder nicht eingebunden"
+      BAHC,
+      !!@ comment = "Anschluss beschädigt"
+      BAHD,
+      !!@ comment = "Anschluss verstopft"
+      BAHE,
+      !!@ comment = "Anschluss andersartig schadhaft"
+      BAHZ,
+      !!@ comment = "Dichtring verschoben"
+      BAIAA,
+      !!@ comment = "Dichtring einragend, aber nicht gebrochen, tiefster Punkt oberhalb Rohrmitte "
+      BAIAB,
+      !!@ comment = "Dichtring einragend, aber nicht gebrochen, tiefster Punkt unterhalb Rohrmitte "
+      BAIAC,
+      !!@ comment = "Dichtring einragend, gebrochen "
+      BAIAD,
+      !!@ comment = "Einragendes Dichtungsmaterial"
+      BAIZ,
+      !!@ comment = "Breite Rohrverbindung"
+      BAJA,
+      !!@ comment = "Rohrverbindung versetzt"
+      BAJB,
+      !!@ comment = "Rohrverbindung Knick"
+      BAJC,
+      !!@ comment = "Innenauskleidung abgelöst"
+      BAKA,
+      !!@ comment = "Innenauskleidung verfärbt"
+      BAKB,
+      !!@ comment = "Endstelle der Innenauskleidung schadhaft"
+      BAKC,
+      !!@ comment = "Innenauskleidung Faltenbildung, längs"
+      BAKDA,
+      !!@ comment = "Innenauskleidung Faltenbildung, radial"
+      BAKDB,
+      !!@ comment = "Innenauskleidung Faltenbildung, komplex "
+      BAKDC,
+      !!@ comment = "Innenauskleidung Faltenbildung, spiralformig "
+      BAKDD,
+      !!@ comment = "Blasen/Beulen in der Innenauskleidung"
+      BAKE,
+      !!@ comment = "Beule der Innauskleidung nach aussen"
+      BAKF,
+      !!@ comment = "Ablösen der Innenhaut / Beschichtung"
+      BAKG,
+      !!@ comment = "Ablösen der Abdeckung der Verbindungsnaht"
+      BAKH,
+      !!@ comment = "Riss oder Splat in der Innauskleidung"
+      BAKI,
+      !!@ comment = "Loch in der Innauskleidung"
+      BAKJ,
+      !!@ comment = "Auskleidungsverbindung defekt"
+      BAKK,
+      !!@ comment = "Auskleidungswerkstoff erscheint weich"
+      BAKL,
+      !!@ comment = "Harz fehlt im Laminat"
+      BAKM,
+      !!@ comment = "Ende der Auskleidung ist nicht abgedichtet"
+      BAKN,
+      !!@ comment = "Innenauskleidung andersartig schadhaft"
+      BAKZ,
+      !!@ comment = "Reparatur mangelhaft, Wand fehlt teilweise"
+      BALA,
+      !!@ comment = "Reparatur Loch mangelhaft"
+      BALB,
+      !!@ comment = "Reparaturwerkstoff löst sich vom Altrohr"
+      BALC,
+      !!@ comment = "Reparaturwerkstoff fehlt an der Kontaktfläche"
+      BALD,
+      !!@ comment = "Überschüssiger Reparaturwerkstoff, Hindernis"
+      BALE,
+      !!@ comment = "Loch im Reparaturwerkstoff"
+      BALF,
+      !!@ comment = "Riss im Reparaturwerkstoff, längs"
+      BALGA,
+      !!@ comment = "Riss im Reparaturwerkstoff, radial"
+      BALGB,
+      !!@ comment = "Riss im Reparaturwerkstoff, komplex"
+      BALGC,
+      !!@ comment = "Riss im Reparaturwerkstoff, spiralförmig"
+      BALGD,
+      !!@ comment = "Reparatur andersartig mangelhaft"
+      BALZ,
+      !!@ comment = "Schweissnaht in Längsrichtung mangelhaft "
+      BAMA,
+      !!@ comment = "Schweissnaht radial mangelhaft "
+      BAMB,
+      !!@ comment = "Schweissnaht mit spiralförmigem Verlauf mangelhaft "
+      BAMC,
+      !!@ comment = "Leitung porös"
+      BAN,
+      !!@ comment = "anstehender Boden sichtbar "
+      BAO,
+      !!@ comment = "Hohlraum sichtbar "
+      BAP,
+      !!@ comment = "Pfahlwurzel"
+      BBAA,
+      !!@ comment = "Einzelner, feiner Wurzeleinwuchs"
+      BBAB,
+      !!@ comment = "Komplexes Wurzelwerk"
+      BBAC,
+      !!@ comment = "Inkrustation (verkalkt)"
+      BBBA,
+      !!@ comment = "Fett"
+      BBBB,
+      !!@ comment = "Fäulnis"
+      BBBC,
+      !!@ comment = "Andersartige anhaftende Stoffe"
+      BBBZ,
+      !!@ comment = "Lose Ablagerungen, Sand"
+      BBCA,
+      !!@ comment = "Lose Ablagerungen, Kies"
+      BBCB,
+      !!@ comment = "Harte Ablagerungen"
+      BBCC,
+      !!@ comment = "Andersartige Ablagerungen"
+      BBCZ,
+      !!@ comment = "Sand dringt ein"
+      BBDA,
+      !!@ comment = "organischen Bodenmaterial dringt ein"
+      BBDB,
+      !!@ comment = "Feinmaterial dringt ein"
+      BBDC,
+      !!@ comment = "Grobmaterial dringt ein"
+      BBDD,
+      !!@ comment = "Bodenmaterial dringt ein"
+      BBDZ,
+      !!@ comment = "Hindernis: Mauer- oder Backstein liegt in der Rohrsohle"
+      BBEA,
+      !!@ comment = "Hindernis: Leitungsstück liegt in der Rohrsohle"
+      BBEB,
+      !!@ comment = "Gegenstand liegt in der Rohrsohle"
+      BBEC,
+      !!@ comment = "Gegenstand ragt durch die Wand ein"
+      BBED,
+      !!@ comment = "Gegenstand ist in der Rohrverbindung eingeklemmt"
+      BBEE,
+      !!@ comment = "Gegenstand ragt aus Anschluss in Hauptleitung"
+      BBEF,
+      !!@ comment = "Fremde Werkleitungen oder Kabel durchqueren die Leitung"
+      BBEG,
+      !!@ comment = "Gegenstand ist in den Rohrkörper eingebaut"
+      BBEH,
+      !!@ comment = "Andersartiges Hindernis"
+      BBEZ,
+      !!@ comment = "Infiltration: Schwitzen / Verkalkung"
+      BBFA,
+      !!@ comment = "Infiltration: Wasser tropft"
+      BBFB,
+      !!@ comment = "Infiltration: Wasser fliesst"
+      BBFC,
+      !!@ comment = "Infiltration: Wasser spritzt"
+      BBFD,
+      !!@ comment = "Sichtbarer Wasseraustritt"
+      BBG,
+      !!@ comment = "Ratte in der Rohrleitung"
+      BBHAA,
+      !!@ comment = "Ratte im Anschluss"
+      BBHAB,
+      !!@ comment = "Ratte in der offenen Rohrverbindung"
+      BBHAC,
+      !!@ comment = "Ratte"
+      BBHAZ,
+      !!@ comment = "Kakerlake in der Rohrleitung"
+      BBHBA,
+      !!@ comment = "Kakerlake im Anschluss"
+      BBHBB,
+      !!@ comment = "Kakerlake in der offenen Rohrverbindung"
+      BBHBC,
+      !!@ comment = "Kakerlake"
+      BBHBZ,
+      !!@ comment = "Tier in der Rohrleitung"
+      BBHZA,
+      !!@ comment = "Tier im Anschluss"
+      BBHZB,
+      !!@ comment = "Tier in der offenen Rohrverbindung"
+      BBHZC,
+      !!@ comment = "Tier"
+      BBHZZ,
+      !!@ comment = "Anschluss mit Formstück"
+      BCAAA,
+      !!@ comment = "Anschluss mit Formstück verschlossen"
+      BCAAB,
+      !!@ comment = "Sattelanschluss gebohrt "
+      BCABA,
+      !!@ comment = "Sattelanschluss gebohrt verschlossen"
+      BCABB,
+      !!@ comment = "Sattelanschluss eingespitzt "
+      BCACA,
+      !!@ comment = "Sattelanschluss eingespitzt verschlossen"
+      BCACB,
+      !!@ comment = "Anschluss gebohrt "
+      BCADA,
+      !!@ comment = "Anschluss gebohrt verschlossen"
+      BCADB,
+      !!@ comment = "Anschluss eingespitzt "
+      BCAEA,
+      !!@ comment = "Anschluss eingespitzt verschlossen"
+      BCAEB,
+      !!@ comment = "Spezialanschluss "
+      BCAFA,
+      !!@ comment = "Spezialanschluss verschlossen"
+      BCAFB,
+      !!@ comment = "Anschluss unbekannter Bauart "
+      BCAGA,
+      !!@ comment = "Anschluss unbekannter Bauart verschlossen"
+      BCAGB,
+      !!@ comment = "Andersartiger Anschluss "
+      BCAZA,
+      !!@ comment = "Andersartiger Anschluss verschlossen"
+      BCAZB,
+      !!@ comment = "Reparatur, Rohr ausgetauscht"
+      BCBA,
+      !!@ comment = "Reparatur, örtlich begrenzte Innenauskleidung des Rohres"
+      BCBB,
+      !!@ comment = "Reparatur,  Mörtelinjizierung"
+      BCBC,
+      !!@ comment = "Reparatur,  Injizierung"
+      BCBD,
+      !!@ comment = "Loch repariert"
+      BCBE,
+      !!@ comment = "Reparatur, örtlich begrenzte Innenauskleidung des Rohres"
+      BCBF,
+      !!@ comment = "Andersartige Reparatur des Anschlusses"
+      BCBG,
+      !!@ comment = "Andersartige Reparatur mit grabenlosem Verfahren"
+      BCBZ,
+      !!@ comment = "Bogen nach links oben"
+      BCCAA,
+      !!@ comment = "Bogen nach links unten "
+      BCCAB,
+      !!@ comment = "Bogen nach links"
+      BCCAY,
+      !!@ comment = "Bogen nach rechts oben"
+      BCCBA,
+      !!@ comment = "Bogen nach rechts unten"
+      BCCBB,
+      !!@ comment = "Bogen nach rechts"
+      BCCBY,
+      !!@ comment = "Bogen nach oben"
+      BCCYA,
+      !!@ comment = "Bogen nach unten"
+      BCCYB,
+      !!@ comment = "Rohranfang"
+      BCD,
+      !!@ comment = "Distanzmessung Anfang"
+      BCDXP,
+      !!@ comment = "Rohrende"
+      BCE,
+      !!@ comment = "Distanzmessung Ende"
+      BCEXP,
+      !!@ comment = "Allgemeinzustand, Fotobeispiel"
+      BDA,
+      !!@ comment = "<kein Text>"
+      BDB,
+      !!@ comment = "A   Beginn TV-Untersuch (Vorgabe)"
+      BDBA,
+      !!@ comment = "B   Inspektion erst nach Reinigung möglich"
+      BDBB,
+      !!@ comment = "C   Inspektion erfolgt zu einem späteren Zeitpunkt"
+      BDBC,
+      !!@ comment = "F    Inspektion erfolgt von der Gegenseite"
+      BDBF,
+      !!@ comment = "G   Kamera nicht einsetzbar, Schacht durch ein Fahrzeug blockiert"
+      BDBG,
+      !!@ comment = "H   Kamera nicht einsetzbar, Schacht nicht erreichbar"
+      BDBH,
+      !!@ comment = "I     Kamera nicht einsetzbar, Schacht kann nicht geöffnet werden"
+      BDBI,
+      !!@ comment = "J   Kamera nicht einsetzbar"
+      BDBJ,
+      !!@ comment = "M   Inspektion von der Gegenseite nicht möglich"
+      BDBM,
+      !!@ comment = "Abbruch der Inspektion, Hindernis, Inspektionsziel erreicht"
+      BDCAA,
+      !!@ comment = "Abbruch der Inspektion, Hindernis, Auftraggeber verzichtet auf weitere Inspektion"
+      BDCAB,
+      !!@ comment = "Abbruch der Inspektion, Hindernis, Gegenseite erreicht"
+      BDCAC,
+      !!@ comment = "Abbruch der Inspektion, Hindernis, Gegenseite nicht erreicht"
+      BDCAD,
+      !!@ comment = "Abbruch der Inspektion, Hindernis, unklar, ob Gegenseite erreicht"
+      BDCAE,
+      !!@ comment = "Abbruch der Inspektion, Hindernis"
+      BDCAZ,
+      !!@ comment = "Abbruch der Inspektion, hoher Wasserstand, Inspektionsziel erreicht"
+      BDCBA,
+      !!@ comment = "Abbruch der Inspektion, hoher Wasserstand, Auftraggeber verzichtet auf weitere Inspektion"
+      BDCBB,
+      !!@ comment = "Abbruch der Inspektion, hoher Wasserstand, Gegenseite erreicht"
+      BDCBC,
+      !!@ comment = "Abbruch der Inspektion, hoher Wasserstand, Gegenseite nicht erreicht"
+      BDCBD,
+      !!@ comment = "Abbruch der Inspektion, hoher Wasserstand, unklar, ob Gegenseite erreicht"
+      BDCBE,
+      !!@ comment = "Abbruch der Inspektion, hoher Wasserstand"
+      BDCBZ,
+      !!@ comment = "Abbruch der Inspektion, Versagen der Ausrüstung, Inspektionsziel erreicht"
+      BDCCA,
+      !!@ comment = "Abbruch der Inspektion, Versagen der Ausrüstung, Auftraggeber verzichtet auf weitere Inspektion"
+      BDCCB,
+      !!@ comment = "Abbruch der Inspektion, Versagen der Ausrüstung, Gegenseite erreicht"
+      BDCCC,
+      !!@ comment = "Abbruch der Inspektion, Versagen der Ausrüstung, Gegenseite nicht erreicht"
+      BDCCD,
+      !!@ comment = "Abbruch der Inspektion, Versagen der Ausrüstung, unklar, ob Gegenseite erreicht"
+      BDCCE,
+      !!@ comment = "Abbruch der Inspektion, Versagen der Ausrüstung"
+      BDCCZ,
+      !!@ comment = "Anderer Grund für Abbruch der Inspektion, Inspektionsziel erreicht"
+      BDCZA,
+      !!@ comment = "Anderer Grund für Abbruch der Inspektion, Auftraggeber verzichtet auf weitere Inspektion"
+      BDCZB,
+      !!@ comment = "Anderer Grund für Abbruch der Inspektion, Gegenseite erreicht"
+      BDCZC,
+      !!@ comment = "Anderer Grund für Abbruch der Inspektion, Gegenseite nicht erreicht"
+      BDCZD,
+      !!@ comment = "Anderer Grund für Abbruch der Inspektion, unklar, ob Gegenseite erreicht"
+      BDCZE,
+      !!@ comment = "Anderer Grund für Abbruch der Inspektion,"
+      BDCZZ,
+      !!@ comment = "Wasserspiegel, Abwasser klar"
+      BDDA,
+      !!@ comment = "Wasserspiegel, Abwasser trüb"
+      BDDC,
+      !!@ comment = "Wasserspiegel, Abwasser gefärbt"
+      BDDD,
+      !!@ comment = "Wasserspiegel, Abwasser trüb und gefärbt"
+      BDDE,
+      !!@ comment = "Fehlanschluss, Abwasserzufluss klar, Schmutzabwasser fliesst in Regenabwasser"
+      BDEAA,
+      !!@ comment = "Fehlanschluss, Abwasserzufluss klar, Regenabwasser fliesst in Schmutzabwasser "
+      BDEAB,
+      !!@ comment = "Abwasserzufluss klar"
+      BDEAC,
+      !!@ comment = "Fehlanschluss, Abwasserzufluss trüb, Schmutzabwasser fliesst in Regenabwasser"
+      BDECA,
+      !!@ comment = "Fehlanschluss, Abwasserzufluss trüb, Regenabwasser fliesst in Schmutzabwasser "
+      BDECB,
+      !!@ comment = "Abwasserzufluss trüb"
+      BDECC,
+      !!@ comment = "Fehlanschluss, Abwasserzufluss gefärbt, Schmutzabwasser fliesst in Regenabwasser"
+      BDEDA,
+      !!@ comment = "Fehlanschluss, Abwasserzufluss gefärbt, Regenabwasser fliesst in Schmutzabwasser "
+      BDEDB,
+      !!@ comment = "Abwasserzufluss gefärbt"
+      BDEDC,
+      !!@ comment = "Fehlanschluss, Abwasserzufluss trüb und gefärbt, Schmutzabwasser fliesst in Regenabwasser"
+      BDEEA,
+      !!@ comment = "Fehlanschluss, Abwasserzufluss trüb und gefärbt, Regenabwasser fliesst in Schmutzabwasser "
+      BDEEB,
+      !!@ comment = "Abwasserzufluss trüb und gefärbt"
+      BDEEC,
+      !!@ comment = "Fehlanschluss, Schmutzabwasser fliesst in Regenabwasser"
+      BDEYA,
+      !!@ comment = "Fehlanschluss, Regenabwasser fliesst in Schmutzabwasser"
+      BDEYB,
+      !!@ comment = "Abwasserzufluss"
+      BDEYY,
+      !!@ comment = "Gefährdung vorhanden: Sauerstoffmangel"
+      BDFA,
+      !!@ comment = "Gefährdung vorhanden: Schwefelwasserstoff"
+      BDFB,
+      !!@ comment = "Gefährdung vorhanden:  Methan"
+      BDFC,
+      !!@ comment = "Andersartige Gefährdung vorhanden"
+      BDFZ,
+      !!@ comment = "Keine Sicht, Kamera unter Wasser"
+      BDGA,
+      !!@ comment = "Keine Sicht, Verschlammung"
+      BDGB,
+      !!@ comment = "Keine Sicht, Dampf"
+      BDGC,
+      !!@ comment = "Keine Sicht, anderer Grund"
+      BDGZ
+    );
+    !!@ comment = "Quantifizierung 1 gemäss SN EN 13508-2. Zulässige Eingaben sind in Kapitel 2.3 - 2.6 beschrieben"
+    Quantifizierung1: KanalQuantifizierung;
+    !!@ comment = "Quantifizierung 2 gemäss SN EN 13508. Zulässige Eingaben sind in Kapitel 2.3 - 2.6  beschrieben"
+    Quantifizierung2: KanalQuantifizierung;
+    !!@ comment = "Lage am Umfang: Beginn des Schadens. Werte und Vorgehen sind in Absatz 2.1.6 genau beschrieben."
+    SchadenlageAnfang: MANDATORY Ziffernblatt;
+    !!@ comment = "Lage am Umfang: Ende des Schadens. Werte und Vorgehen sind in Absatz 2.1.6 genau beschrieben"
+    SchadenlageEnde: MANDATORY Ziffernblatt;
+END Kanalschaden;
+
+!!@ comment = "Diese Klasse ist von der Klasse 'Schaden' abgeleitet. D.h. sie erbt alle Attribute dieser Klasse."
+CLASS Normschachtschaden EXTENDS Schaden =
+  ATTRIBUTE
+    !!@ comment = "Länge ab Oberkante Deckel bis zur Feststellung (siehe Absatz 3.1.1) in m mit zwei Nachkommastellen."
+    Distanz: 0.00 .. 30000.00 [m];
+    !!@ comment = "Quantifizierung 1 gemäss SN EN 13508. Zulässige Eingaben sind in Kapitel 3.1.5 beschrieben. Als Textattribut umgesetzt."
+    Quantifizierung1: SchachtQuantifizierung;
+    !!@ comment = "Quantifizierung 2 gemäss SN EN 13508. Zulässige Eingaben sind in Kapitel 3.1.5 beschrieben. Als Textattribut umgesetzt."
+    Quantifizierung2: SchachtQuantifizierung;
+    !!@ comment = "Bereich in dem eine Feststellung auftritt. Die Werte sind unter 3.1.9 abschliessend beschrieben."
+    Schachtbereich: (
+      !!@ comment = "A Abdeckung und Rahmen"
+      A,
+      !!@ comment = "B Schachthals"
+      B,
+      !!@ comment = "D Konus"
+      D,
+      !!@ comment = "F Schachtrohre"
+      F,
+      !!@ comment = "H Bankett"
+      H,
+      !!@ comment = "I Durchlaufrinne"
+      I,
+      !!@ comment = "J Sohle"
+      J
+    );
+    !!@ comment = "Vorgegebener Wertebereich: Gültiger Code auf der Grundlage von SN EN 13508-2. Alle gültigen Codes sind in Kapitel 3 der Richtlinie 'Schadencodierung' abschliessend aufgeführt."
+    SchachtSchadencode: MANDATORY (
+      !!@ comment = "Allgemeine Verformung"
+      DAAA,
+      !!@ comment = "Punktuelle Verformung"
+      DAAB,
+      !!@ comment = "Oberflächenriss (Haarriss) vertikal"
+      DABAA,
+      !!@ comment = "Oberflächenriss (Haarriss) horizontal"
+      DABAB,
+      !!@ comment = "Oberflächenriss (Haarriss), komplexe Rissbildung"
+      DABAC,
+      !!@ comment = "Oberflächenriss (Haarriss), geneigte Rissbildung"
+      DABAD,
+      !!@ comment = "Oberflächenriss (Haarriss), sternförmig Rissbildung"
+      DABAE,
+      !!@ comment = "Riss vertikal"
+      DABBA,
+      !!@ comment = "Riss horizontal"
+      DABBB,
+      !!@ comment = "Riss, komplexe Rissbildung"
+      DABBC,
+      !!@ comment = "Riss, geneigte Rissbildung"
+      DABBD,
+      !!@ comment = "Riss, sternförmige Rissbildung"
+      DABBE,
+      !!@ comment = "Klaffender Riss, vertikal"
+      DABCA,
+      !!@ comment = "Klaffender Riss, horizontal"
+      DABCB,
+      !!@ comment = "Klaffender Riss, komplexe Rissbildung"
+      DABCC,
+      !!@ comment = "Klaffender Riss, geneigte Rissbildung"
+      DABCD,
+      !!@ comment = "Klaffender Riss, sternförmige Rissbildung"
+      DABCE,
+      !!@ comment = "In der Lage verschobene Scherbe"
+      DACA,
+      !!@ comment = "Fehlende Scherbe / Wandungsteil (Loch)"
+      DACB,
+      !!@ comment = "Einsturz"
+      DACC,
+      !!@ comment = "Mauerwerk defekt, Mauer- / Backsteine verschoben"
+      DADA,
+      !!@ comment = "Mauerwerk defekt, Mauer- / Backsteine fehlen"
+      DADB,
+      !!@ comment = "Mauerwerk defekt, Einsturz"
+      DADC,
+      !!@ comment = "Mörtel aus Mauerwerk fehlt ganz oder teilweise"
+      DAE,
+      !!@ comment = "Erhöhte Rauheit durch mechanische Beschädigung"
+      DAFAA,
+      !!@ comment = "Erhöhte Rauheit durch chemischen Angriff"
+      DAFAB,
+      !!@ comment = "Erhöhte Rauheit durch chemischen Angriff im oberen Teil des Gerinnes oder weiter oben"
+      DAFAC,
+      !!@ comment = "Erhöhte Rauheit durch chemischen Angriff im unteren Teil des Gerinnes"
+      DAFAD,
+      !!@ comment = "Erhöhte Rauheit, Schadensursache nicht feststellbar"
+      DAFAE,
+      !!@ comment = "Erhöhte Rauheit, andere Ursache"
+      DAFAZ,
+      !!@ comment = "Abplatzung durch mechanische Beschädigung"
+      DAFBA,
+      !!@ comment = "Abplatzung, Schadensursache nicht feststellbar"
+      DAFBE,
+      !!@ comment = "Abplatzung, andere Ursache"
+      DAFBZ,
+      !!@ comment = "Zuschlagstoffe sichtbar durch mechanische Beschädigung"
+      DAFCA,
+      !!@ comment = "Zuschlagstoffe sichtbar durch chemischen Angriff"
+      DAFCB,
+      !!@ comment = "Zuschlagstoffe sichtbar durch chemischen Angriff im oberen Teil des Gerinnes oder weiter oben"
+      DAFCC,
+      !!@ comment = "Zuschlagstoffe sichtbar durch chemischen Angriff im unteren Teil des Gerinnes"
+      DAFCD,
+      !!@ comment = "Zuschlagstoffe sichtbar, Schadensursache nicht feststellbar"
+      DAFCE,
+      !!@ comment = "Zuschlagstoffe sichtbar, andere Ursache"
+      DAFCZ,
+      !!@ comment = "Zuschlagstoffe einragend durch mechanische Beschädigung"
+      DAFDA,
+      !!@ comment = "Zuschlagstoffe einragend durch chemischen Angriff"
+      DAFDB,
+      !!@ comment = "Zuschlagstoffe einragend durch chemischen Angriff im oberen Teil des Gerinnes oder weiter oben"
+      DAFDC,
+      !!@ comment = "Zuschlagstoffe einragend durch chemischen Angriff im unteren Teil des Gerinnes"
+      DAFDD,
+      !!@ comment = "Zuschlagstoffe einragend, Schadensursache nicht feststellbar"
+      DAFDE,
+      !!@ comment = "Zuschlagstoffe einragend, andere Ursache"
+      DAFDZ,
+      !!@ comment = "Zuschlagstoffe fehlen durch mechanische Beschädigung"
+      DAFEA,
+      !!@ comment = "Zuschlagstoffe fehlen durch chemischen Angriff"
+      DAFEB,
+      !!@ comment = "Zuschlagstoffe fehlen durch chemischen Angriff im oberen Teil des Gerinnes oder weiter oben"
+      DAFEC,
+      !!@ comment = "Zuschlagstoffe fehlen durch chemischen Angriff im unteren Teil des Gerinnes"
+      DAFED,
+      !!@ comment = "Zuschlagstoffe fehlen, Schadensursache nicht feststellbar"
+      DAFEE,
+      !!@ comment = "Zuschlagstoffe fehlen, andere Ursache"
+      DAFEZ,
+      !!@ comment = "Bewehrung sichtbar durch mechanische Beschädigung"
+      DAFFA,
+      !!@ comment = "Bewehrung sichtbar durch chemischen Angriff"
+      DAFFB,
+      !!@ comment = "Bewehrung sichtbar durch chemischen Angriff im oberen Teil des Gerinnes oder weiter oben"
+      DAFFC,
+      !!@ comment = "Bewehrung sichtbar durch chemischen Angriff im unteren Teil des Gerinnes"
+      DAFFD,
+      !!@ comment = "Bewehrung sichtbar, Schadensursache nicht feststellbar"
+      DAFFE,
+      !!@ comment = "Bewehrung sichtbar, andere Ursache"
+      DAFFZ,
+      !!@ comment = "Bewehrung einragend durch mechanische Beschädigung"
+      DAFGA,
+      !!@ comment = "Bewehrung einragend durch chemischen Angriff"
+      DAFGB,
+      !!@ comment = "Bewehrung einragend durch chemischen Angriff im oberen Teil des Gerinnes oder weiter oben"
+      DAFGC,
+      !!@ comment = "Bewehrung einragend durch chemischen Angriff im unteren Teil des Gerinnes"
+      DAFGD,
+      !!@ comment = "Bewehrung einragend, Schadensursache nicht feststellbar"
+      DAFGE,
+      !!@ comment = "Bewehrung einragend, andere Ursache"
+      DAFGZ,
+      !!@ comment = "Bewehrung korrodiert durch chemischen Angriff"
+      DAFHB,
+      !!@ comment = "Bewehrung korrodiert durch chemischen Angriff im oberen Teil des Gerinnes oder weiter oben"
+      DAFHC,
+      !!@ comment = "Bewehrung korrodiert durch chemischen Angriff im unteren Teil des Gerinnes"
+      DAFHD,
+      !!@ comment = "Bewehrung korrodiert, Schadensursache nicht feststellbar"
+      DAFHE,
+      !!@ comment = "Fehlende Wand durch mechanische Beschädigung"
+      DAFIA,
+      !!@ comment = "Fehlende Wand durch chemischen Angriff"
+      DAFIB,
+      !!@ comment = "Fehlende Wand  durch chemischen Angriff im oberen Teil des Gerinnes oder weiter oben"
+      DAFIC,
+      !!@ comment = "Fehlende Wand  durch chemischen Angriff im unteren Teil des Gerinnes"
+      DAFID,
+      !!@ comment = "Fehlende Wand, Schadensursache nicht feststellbar"
+      DAFIE,
+      !!@ comment = "Fehlende Wand, andere Ursache"
+      DAFIZ,
+      !!@ comment = "Korrosion durch chemischen Angriff"
+      DAFJB,
+      !!@ comment = "Korrosion durch chemischen Angriff im oberen Teil des Gerinnes oder weiter oben"
+      DAFJC,
+      !!@ comment = "Korrosion durch chemischen Angriff im unteren Teil des Gerinnes"
+      DAFJD,
+      !!@ comment = "Korrosion, Schadensursache nicht feststellbar"
+      DAFJE,
+      !!@ comment = "Korrosion, andere Ursache"
+      DAFJZ,
+      !!@ comment = "Beule durch mechanische Beschädigung"
+      DAFKA,
+      !!@ comment = "Beule, Schadensursache nicht feststellbar"
+      DAFKE,
+      !!@ comment = "Beule, andere Ursache"
+      DAFKZ,
+      !!@ comment = "Anderer Oberflächenschaden durch mechanische Beschädigung"
+      DAFZA,
+      !!@ comment = "Anderer Oberflächenschaden durch chemischen Angriff"
+      DAFZB,
+      !!@ comment = "Anderer Oberflächenschaden durch chemischen Angriff im oberen Teil des Gerinnes oder weiter oben"
+      DAFZC,
+      !!@ comment = "Anderer Oberflächenschaden durch chemischen Angriff im unteren Teil des Gerinnes"
+      DAFZD,
+      !!@ comment = "Anderer Oberflächenschaden, Schadensursache nicht feststellbar"
+      DAFZE,
+      !!@ comment = "Anderer Oberflächenschaden, andere Ursache"
+      DAFZZ,
+      !!@ comment = "Anschluss einragend"
+      DAG,
+      !!@ comment = "Anschluss falsch eingeführt"
+      DAHA,
+      !!@ comment = "Anschluss zurückliegend"
+      DAHB,
+      !!@ comment = "Anschluss unvollständig oder nicht eingebunden"
+      DAHC,
+      !!@ comment = "Anschluss beschädigt"
+      DAHD,
+      !!@ comment = "Anschluss verstopft"
+      DAHE,
+      !!@ comment = "Anschluss andersartig schadhaft"
+      DAHZ,
+      !!@ comment = "Dichtring verschoben"
+      DAIAA,
+      !!@ comment = "Dichtring hängend, aber nicht gebrochen "
+      DAIAB,
+      !!@ comment = "Dichtring einragend, gebrochen "
+      DAIAC,
+      !!@ comment = "Einragendes Dichtungsmaterial"
+      DAIZ,
+      !!@ comment = "Breite Schachtelementverbindung"
+      DAJA,
+      !!@ comment = "Schachtelement versetzt"
+      DAJB,
+      !!@ comment = "Schachtelemente Knick"
+      DAJC,
+      !!@ comment = "Auskleidung abgelöst"
+      DAKA,
+      !!@ comment = "Auskleidung verfärbt"
+      DAKB,
+      !!@ comment = "Endstelle der Auskleidung schadhaft"
+      DAKC,
+      !!@ comment = "Vertikale Faltenbildung in der Auskleidung"
+      DAKDA,
+      !!@ comment = "Horizontale Faltenbildung in der Auskleidung"
+      DAKDB,
+      !!@ comment = "Komplexe Faltenbildung in der Auskleidung"
+      DAKDC,
+      !!@ comment = "Spiralförmige Faltenbildung in der Auskleidung"
+      DAKDD,
+      !!@ comment = "Blasen / Beulen in der Auskleidung"
+      DAKE,
+      !!@ comment = "Beule derAuskleidung nach aussen"
+      DAKF,
+      !!@ comment = "Ablösen der Innenhaut / Beschichtung"
+      DAKG,
+      !!@ comment = "Ablösen der Abdeckung der Verbindungsnaht"
+      DAKH,
+      !!@ comment = "Riss oder Spalt in der Innenauskleidung"
+      DAKI,
+      !!@ comment = "Loch in der Innauskleidung"
+      DAKJ,
+      !!@ comment = "Auskleidungsverbindung defekt"
+      DAKK,
+      !!@ comment = "Auskleidungswerkstoff erscheint weich"
+      DAKL,
+      !!@ comment = "Harz fehlt im Laminat"
+      DAKM,
+      !!@ comment = "Ende der Auskleidung ist nicht abgedichtet"
+      DAKN,
+      !!@ comment = "Auskleidung andersartig mangelhaft"
+      DAKZ,
+      !!@ comment = "Reparatur mangelhaft, Wand fehlt teilweise"
+      DALA,
+      !!@ comment = "Reparatur Loch mangelhaft"
+      DALB,
+      !!@ comment = "Reparaturwerkstoff löst sich von der Wand"
+      DALC,
+      !!@ comment = "Reparaturwerkstoff fehlt an der Kontaktfläche"
+      DALD,
+      !!@ comment = "Überschüssiger Reparaturwerkstoff, Hindernis"
+      DALE,
+      !!@ comment = "Loch im Reparaturwerkstoff"
+      DALF,
+      !!@ comment = "Riss im Reparaturwerkstoff, längs"
+      DALG,
+      !!@ comment = "Reparatur andersartig mangelhaft"
+      DALZ,
+      !!@ comment = "Vertikale Schweissnaht mangelhaft "
+      DAMA,
+      !!@ comment = "Horizontale Schweissnaht mangelhaft "
+      DAMB,
+      !!@ comment = "Schweissnaht mit spiralförmigem Verlauf mangelhaft "
+      DAMC,
+      !!@ comment = "Schachtwand porös"
+      DAN,
+      !!@ comment = "anstehender Boden sichtbar "
+      DAO,
+      !!@ comment = "Hohlraum sichtbar "
+      DAP,
+      !!@ comment = "Steighilfe locker"
+      DAQA,
+      !!@ comment = "Steighilfe fehlt"
+      DAQB,
+      !!@ comment = "Steighilfe korrodiert"
+      DAQC,
+      !!@ comment = "Steighilfe verbogen"
+      DAQD,
+      !!@ comment = "Steighilfe Kunststoffverkleidung gebrochen"
+      DAQE,
+      !!@ comment = "Steighilfe Handlauf korrodiert"
+      DAQF,
+      !!@ comment = "Absturzsicherung locker"
+      DAQG,
+      !!@ comment = "Absturzsicherung fehlt "
+      DAQH,
+      !!@ comment = "Absturzsicherung korrodiert"
+      DAQI,
+      !!@ comment = "Leitersprossen korrodiert"
+      DAQJ,
+      !!@ comment = "Steigkasten schadhaft"
+      DAQK,
+      !!@ comment = "Steighilfe andersweitig schadhaft"
+      DAQZ,
+      !!@ comment = "Deckel gebrochen "
+      DARA,
+      !!@ comment = "Deckel wackelt"
+      DARB,
+      !!@ comment = "Deckel fehlt"
+      DARC,
+      !!@ comment = "Rahmen gebrochen"
+      DARD,
+      !!@ comment = "Rahmen locker"
+      DARE,
+      !!@ comment = "Rahmen fehlt"
+      DARF,
+      !!@ comment = "Abdeckung zu tief"
+      DARG,
+      !!@ comment = "Abdeckung zu hoch "
+      DARH,
+      !!@ comment = "Abdeckung andersweitig schadhaft"
+      DARZ,
+      !!@ comment = "Pfahlwurzel"
+      DBAA,
+      !!@ comment = "Einzelner, feiner Wurzeleinwuchs"
+      DBAB,
+      !!@ comment = "Komplexes Wurzelwerk"
+      DBAC,
+      !!@ comment = "Inkrustation (verkalkt)"
+      DBBA,
+      !!@ comment = "Fett"
+      DBBB,
+      !!@ comment = "Fäulnis"
+      DBBC,
+      !!@ comment = "Andersartige anhaftende Stoffe"
+      DBBZ,
+      !!@ comment = "Lose Ablagerungen, Sand"
+      DBCA,
+      !!@ comment = "Lose Ablagerungen, Kies"
+      DBCB,
+      !!@ comment = "Harte Ablagerungen"
+      DBCC,
+      !!@ comment = "Andersartige Ablagerungen"
+      DBCZ,
+      !!@ comment = "Bodenmaterial dringt ein"
+      DBD,
+      !!@ comment = "Abflusshindernis: Herausgefallener Mauer- oder Backstein"
+      DBEA,
+      !!@ comment = "Abflusshindernis: Herausgebrochenes Leitungsstück"
+      DBEB,
+      !!@ comment = "Abflusshindernis"
+      DBEC,
+      !!@ comment = "Gegenstand ragt durch die Wand ein"
+      DBED,
+      !!@ comment = "Gegenstand ist in der Schachtelementverbindung eingeklemmt"
+      DBEE,
+      !!@ comment = "Gegenstand ragt aus Anschluss"
+      DBEF,
+      !!@ comment = "Fremde Werkleitungen oder Kabel durchqueren den Schacht"
+      DBEG,
+      !!@ comment = "Gegenstand ist in den Schacht eingebaut"
+      DBEH,
+      !!@ comment = "Andersartiges Hindernis"
+      DBEZ,
+      !!@ comment = "Infiltration: Schwitzen / Verkalkung an der Schachtwand"
+      DBFAA,
+      !!@ comment = "Infiltration: Schwitzen / Verkalkung der Einbindung eines Anschluss im Sohlbereich "
+      DBFAB,
+      !!@ comment = "Infiltration: Schwitzen / Verkalkung der Einbindung eines Anschluss oberhalb des Banketts"
+      DBFAC,
+      !!@ comment = "Infiltration: Wasser tropft aus der Schachtwand"
+      DBFBA,
+      !!@ comment = "Infiltration: Wasser tropft aus der Einbindung eines Anschluss im Sohlbereich"
+      DBFBB,
+      !!@ comment = "Infiltration: Wasser tropft aus der Einbindung eines Anschluss oberhalb des Banketts"
+      DBFBC,
+      !!@ comment = "Infiltration: Wasser fliesst aus der Schachtwand"
+      DBFCA,
+      !!@ comment = "Infiltration: Wasser fliesst aus der Einbindung eines Anschluss im Sohlbereich"
+      DBFCB,
+      !!@ comment = "Infiltration: Wasser fliesst aus der Einbindung eines Anschluss oberhalb des Banketts"
+      DBFCC,
+      !!@ comment = "Infiltration: Wasser spritzt aus der Schachtwand"
+      DBFDA,
+      !!@ comment = "Infiltration: Wasser spritzt aus der Einbindung eines Anschluss im Sohlbereich"
+      DBFDB,
+      !!@ comment = "Infiltration: Wasser spritzt aus der Einbindung eines Anschluss oberhalb des Banketts"
+      DBFDC,
+      !!@ comment = "Sichtbarer Wasseraustritt"
+      DBG,
+      !!@ comment = "Ratte im Schacht"
+      DBHAA,
+      !!@ comment = "Ratte im Anschluss"
+      DBHAB,
+      !!@ comment = "Ratte in der offenen Schachtelementverbindung"
+      DBHAC,
+      !!@ comment = "Ratte"
+      DBHAZ,
+      !!@ comment = "Kakerlaken im Schacht"
+      DBHBA,
+      !!@ comment = "Kakerlaken im Anschluss"
+      DBHBB,
+      !!@ comment = "Kakerlaken in der offenen Schachtelementverbindung"
+      DBHBC,
+      !!@ comment = "Kakerlaken"
+      DBHBZ,
+      !!@ comment = "Tier im Schacht"
+      DBHZA,
+      !!@ comment = "Tier im Anschluss"
+      DBHZB,
+      !!@ comment = "Tier in der offenen Schachtelementverbindung"
+      DBHZC,
+      !!@ comment = "Tier"
+      DBHZZ,
+      !!@ comment = "Anschluss mit Gerinne im Bankett"
+      DCAA,
+      !!@ comment = "Anschluss in die Durchlaufrinne"
+      DCAB,
+      !!@ comment = "Anschluss Schwanenhals"
+      DCAC,
+      !!@ comment = "Anschluss Schwanenhals innenliegend"
+      DCAD,
+      !!@ comment = "Anschluss mit Schussgerinne"
+      DCAE,
+      !!@ comment = "Belüftungsrohr"
+      DCAF,
+      !!@ comment = "Anschluss "
+      DCAZ,
+      !!@ comment = "Reparatur, Teil der Schachtwand ausgetauscht"
+      DCBA,
+      !!@ comment = "Reparatur, örtlich begrenzte Innenauskleidung"
+      DCBB,
+      !!@ comment = "Reparatur, Injizierung"
+      DCBC,
+      !!@ comment = "Loch repariert"
+      DCBD,
+      !!@ comment = "Reparatur, ortlich begrenzet Innenauskleidung des Anschlusses"
+      DCBE,
+      !!@ comment = "Andersartige Reparatur des Anschlusses"
+      DCBF,
+      !!@ comment = "Andersartige Reparatur"
+      DCBZ,
+      !!@ comment = "<anderes Material> "
+      DCFA,
+      !!@ comment = "Asbestzement"
+      DCFB,
+      !!@ comment = "Normalbeton"
+      DCFC,
+      !!@ comment = "Ortsbeton"
+      DCFD,
+      !!@ comment = "Pressrohrbeton"
+      DCFE,
+      !!@ comment = "Spezialbeton"
+      DCFF,
+      !!@ comment = "Beton"
+      DCFG,
+      !!@ comment = "Faserzement"
+      DCFH,
+      !!@ comment = "Gebrannte Steine"
+      DCFI,
+      !!@ comment = "Duktiler Guss"
+      DCFJ,
+      !!@ comment = "Grauguss"
+      DCFK,
+      !!@ comment = "Epoxidharz"
+      DCFL,
+      !!@ comment = "Hartpolyethylen"
+      DCFM,
+      !!@ comment = "Polyester GUP"
+      DCFN,
+      !!@ comment = "Polyethylen"
+      DCFO,
+      !!@ comment = "Polypropylen"
+      DCFP,
+      !!@ comment = "Polyvinylchlorid"
+      DCFQ,
+      !!@ comment = "Kunststoff unbekannt"
+      DCFR,
+      !!@ comment = "Stahl"
+      DCFS,
+      !!@ comment = "Rostfreier Stahl"
+      DCFT,
+      !!@ comment = "Steinzeug"
+      DCFU,
+      !!@ comment = "Ton"
+      DCFV,
+      !!@ comment = "unbekanntes Material"
+      DCFW,
+      !!@ comment = "Zement"
+      DCFX,
+      !!@ comment = "Zulauf Kreisprofil"
+      DCGAA,
+      !!@ comment = "Ablauf Kreisprofil"
+      DCGAB,
+      !!@ comment = "Verschlossener Anschluss Kreisprofil"
+      DCGAC,
+      !!@ comment = "Zulauf Rechteckprofil"
+      DCGBA,
+      !!@ comment = "Ablauf Rechteckprofil"
+      DCGBB,
+      !!@ comment = "Verschlossener Anschluss Rechteckprofil"
+      DCGBC,
+      !!@ comment = "Zulauf Eiprofil"
+      DCGCA,
+      !!@ comment = "Ablauf Eiprofil"
+      DCGCB,
+      !!@ comment = "Verschlossener Anschluss Eiprofil"
+      DCGCC,
+      !!@ comment = "Zulauf  Spezialprofil"
+      DCGXAA,
+      !!@ comment = "Ablauf  Spezialprofil"
+      DCGXAB,
+      !!@ comment = "Verschlossener Anschluss Spezialprofil"
+      DCGXAC,
+      !!@ comment = "Zulauf  Maulprofil"
+      DCGXBA,
+      !!@ comment = "Ablauf  Maulprofil"
+      DCGXBB,
+      !!@ comment = "Verschlossener Anschluss Maulprofil"
+      DCGXBC,
+      !!@ comment = "Zulauf  offenes Profil"
+      DCGXCA,
+      !!@ comment = "Ablauf  offenes Profil"
+      DCGXCB,
+      !!@ comment = "Verschlossener Anschluss offenes Profil"
+      DCGXCC,
+      !!@ comment = "Zulauf  Profil unbekannt"
+      DCGYA,
+      !!@ comment = "Ablauf  Profil unbekannt"
+      DCGYB,
+      !!@ comment = "Verschlossener Anschluss Profil unbekannt"
+      DCGYC,
+      !!@ comment = "Zulauf anderes Profil"
+      DCGZA,
+      !!@ comment = "Ablauf anderes Profil"
+      DCGZB,
+      !!@ comment = "Verschlossener Anschluss anderes Profil"
+      DCGZC,
+      !!@ comment = "Bankett mangelhaft"
+      DCHA,
+      !!@ comment = "Bakett nicht mangelhaft"
+      DCHB,
+      !!@ comment = "Kein Bankett"
+      DCHC,
+      !!@ comment = "Durchlaufrinne mangelhaft, in Fliessrichtung verengt"
+      DCIAA,
+      !!@ comment = "Durchlaufrinne mangelhaft, in Fliessrichtung erweitert"
+      DCIAB,
+      !!@ comment = "Durchlaufrinne mangelhaft, Hochpunkt"
+      DCIAC,
+      !!@ comment = "Durchlaufrinne mangelhaft, Tiefpunkt"
+      DCIAD,
+      !!@ comment = "Durchlaufrinne mangelhaft"
+      DCIAZ,
+      !!@ comment = "Durchlaufrinne"
+      DCIB,
+      !!@ comment = "Durchlaufrinne nicht mangelhaft"
+      DCIBY,
+      !!@ comment = "Keine Durchlaufrinne"
+      DCICY,
+      !!@ comment = "Rohrdurchführung ohne Öffnungsmöglichkeit, schadhaft"
+      DCLAA,
+      !!@ comment = "Rohrdurchführung ohne Öffnungsmöglichkeit"
+      DCLAB,
+      !!@ comment = "Rohrdurchführung mit Öffnungsmöglichkeit, schadhaft"
+      DCLBA,
+      !!@ comment = "Rohrdurchführung mit Öffnungsmöglichkeit"
+      DCLBB,
+      !!@ comment = "Rohrdurchführung mit Öffnungsmöglichkeit, Verschluss fehlt, schadhaft"
+      DCLCA,
+      !!@ comment = "Rohrdurchführung mit Öffnungsmöglichkeit, Verschluss fehlt"
+      DCLCB,
+      !!@ comment = "Schlammeimer vorhanden"
+      DCMA,
+      !!@ comment = "Schlammeimer fehlt"
+      DCMB,
+      !!@ comment = "Schlammeimer defekt"
+      DCMC,
+      !!@ comment = "Allgemeinzustand, Fotobeispiel"
+      DDA,
+      !!@ comment = "<kein Text>"
+      DDB,
+      !!@ comment = "Inspektion nicht möglich: Deckel kann nicht geöffnet werden, Auftraggeber verzichtet auf weitere Inspektion"
+      DDCAB,
+      !!@ comment = "Inspektion nicht möglich: Deckel kann nicht geöffnet werden"
+      DDCAZ,
+      !!@ comment = "Inspektion nicht vollständig: Hindernis, Inspektionsziel erreicht"
+      DDCBA,
+      !!@ comment = "Inspektion nicht vollständig: Hindernis, Auftraggeber verzichtet auf weitere Inspektion"
+      DDCBB,
+      !!@ comment = "Inspektion nicht vollständig: Hindernis"
+      DDCBZ,
+      !!@ comment = "Inspektion nicht vollständig: Hoher Wasserstand, Inspektionsziel erreicht"
+      DDCCA,
+      !!@ comment = "Inspektion nicht vollständig: Hoher Wasserstand, Auftraggeber verzichtet auf weitere Inspektion"
+      DDCCB,
+      !!@ comment = "Inspektion nicht vollständig: Hoher Wasserstand"
+      DDCCZ,
+      !!@ comment = "Inspektion nicht vollständig:  Ausrüstung defekt, Inspektionsziel erreicht"
+      DDCDA,
+      !!@ comment = "Inspektion nicht vollständig:  Ausrüstung defekt, Auftraggeber verzichtet auf weitere Inspektion"
+      DDCDB,
+      !!@ comment = "Inspektion nicht vollständig: Ausrüstung defekt"
+      DDCDZ,
+      !!@ comment = "Inspektion nicht vollständig, Inspektionsziel erreicht"
+      DDCZA,
+      !!@ comment = "Inspektion nicht vollständig, Auftraggeber verzichtet auf weitere Inspektion"
+      DDCZB,
+      !!@ comment = "Inspektion nicht vollständig"
+      DDCZZ,
+      !!@ comment = "Niveau Wasserspiegel"
+      DDD,
+      !!@ comment = "Fehlanschluss, Abwasserzufluss klar, Schmutzabwasser fliesst in Regenabwasserleitung"
+      DDEAA,
+      !!@ comment = "Fehlanschluss, Abwasserzufluss klar, Regenabwasser fliesst in Schmutzabwasserleitung "
+      DDEAB,
+      !!@ comment = "Abwasserzufluss klar"
+      DDEAC,
+      !!@ comment = "Fehlanschluss, Abwasserzufluss trüb, Schmutzabwasser fliesst in Regenabwasserleitung"
+      DDECA,
+      !!@ comment = "Fehlanschluss, Abwasserzufluss trüb, Regenabwasser fliesst in Schmutzabwasserleitung "
+      DDECB,
+      !!@ comment = "Abwasserzufluss trüb"
+      DDECC,
+      !!@ comment = "Fehlanschluss, Abwasserzufluss gefärbt, Schmutzabwasser fliesst in Regenabwasserleitung"
+      DDEDA,
+      !!@ comment = "Fehlanschluss, Abwasserzufluss gefärbt, Regenabwasser fliesst in Schmutzabwasserleitung "
+      DDEDB,
+      !!@ comment = "Abwasserzufluss gefärbt"
+      DDEDC,
+      !!@ comment = "Fehlanschluss, Abwasserzufluss trüb und gefärbt, Schmutzabwasser fliesst in Regenabwasserleitung"
+      DDEEA,
+      !!@ comment = "Fehlanschluss, Abwasserzufluss trüb und gefärbt, Regenabwasser fliesst in Schmutzabwasserleitung "
+      DDEEB,
+      !!@ comment = "Abwasserzufluss trüb und gefärbt"
+      DDEEC,
+      !!@ comment = "Fehlanschluss, Schmutzabwasser fliesst in Regenabwasserleitung"
+      DDEYA,
+      !!@ comment = "Fehlanschluss, Regenabwasser fliesst in Schmutzabwasserleitung"
+      DDEYB,
+      !!@ comment = "Abwasserzufluss"
+      DDEYY,
+      !!@ comment = "Gefährdung vorhanden: Sauerstoffmangel"
+      DDFA,
+      !!@ comment = "Gefährdung vorhanden: Schwefelwasserstoff"
+      DDFB,
+      !!@ comment = "Gefährdung vorhanden: Methan"
+      DDFC,
+      !!@ comment = "Andersartige Gefährdung vorhanden"
+      DDFZ,
+      !!@ comment = "Keine Sicht, Kamera unter Wasser"
+      DDGA,
+      !!@ comment = "Keine Sicht, Verschlammung"
+      DDGB,
+      !!@ comment = "Keine Sicht, Dampf"
+      DDGC,
+      !!@ comment = "Keine Sicht"
+      DDGZ
+    );
+    !!@ comment = "Lage am Umfang: Beginn des Schadens. Werte und Vorgehen sind unter Absatz 3.1.6 genau beschrieben."
+    SchadenlageAnfang: Ziffernblatt;
+    !!@ comment = "Lage am Umfang: Ende des Schadens. Werte und Vorgehen sind unter Absatz 3.1.6 genau beschrieben."
+    SchadenlageEnde: Ziffernblatt;
+END Normschachtschaden;
+
+!!@ comment = "Datenträger"
+CLASS Datentraeger EXTENDS VSA_BaseClass =
+  ATTRIBUTE
+    !!@ comment = "Beschreibt die Art des Datenträgers"
+    Art: MANDATORY (
+      andere,
+      CD,
+      Diskette,
+      DVD,
+      Festplatte,
+      !!@ comment = "Lokaler Server (im Gegensatz zu Webserver)"
+      Server,
+      Videoband,
+      !!@ comment = "Webserver mit URI (https://de.wikipedia.org/wiki/Uniform_Resource_Identifier)"
+      Webserver
+    );
+    !!@ comment = "Bemerkungen zum Datenträger"
+    Bemerkung: TEXT*80;
+    Bezeichnung: MANDATORY TEXT*60;
+    !!@ comment = "Zugriffspfad zum Datenträger. z.B. DVD-Laufwerk -> D: , Server -> //server/videos, Harddisk -> c:/videos . Kann auch eine URL sein. Bei einem analogen Videoband leer"
+    Pfad: Pfad;
+    !!@ comment = "Ort, wo sich der Datenträger befindet"
+    Standort: TEXT*50;
+END Datentraeger;
+
+!!@ comment = "Die Klasse Datei kann eine Assoziation mit jeder Klasse des VSA-DSS Datenmodells eingehen."
+CLASS Datei EXTENDS VSA_BaseClass =
+  ATTRIBUTE
+    !!@ comment = "Beschreibt die Art der Datei. Für analoge Videos auf Bändern ist der Typ 'Video' einzusetzen. Die Bezeichnung wird dann gleich gesetzt wie die Bezeichnung des Videobandes."
+    Art: MANDATORY (
+      andere,
+      digitales_Video,
+      Foto,
+      Panoramofilm,
+      Scan,
+      Skizze,
+      Textdatei,
+      Video
+    );
+    !!@ comment = "Allgemeine Bemerkungen"
+    Bemerkung: TEXT*80;
+    Bezeichnung: MANDATORY TEXT*120;
+    !!@ comment = "Gibt an, zu welcher Klasse des VSA-DSS-Datenmodells die Datei gehört. Grundsätzlich alle Klassen möglich. Im Rahmen der Kanalfernsehaufnahmen hauptsächlich Kanal, Normschachtschaden, Kanalschaden und Untersuchung."
+    Klasse: MANDATORY (
+      !!@ comment = "Abflusslose Toilette"
+      Abflusslose_Toilette,
+      AbflussloseEntsorgung,
+      Absperr_Drosselorgan,
+      Abwasserbauwerk,
+      Abwasserbehandlung,
+      Abwasserknoten,
+      Abwassernetzelement,
+      Abwasserreinigungsanlage,
+      Abwasserverband,
+      Amt,
+      Anschlussobjekt,
+      ARABauwerk,
+      ARAEnergienutzung,
+      Badestelle,
+      Bankett,
+      BauwerksTeil,
+      Beckenentleerung,
+      Beckenreinigung,
+      Biol_oekol_Gesamtbeurteilung,
+      Brunnen,
+      Datei,
+      Datentraeger,
+      Deckel,
+      Durchlass,
+      Einleitstelle,
+      Einstiegshilfe,
+      Einzelflaeche,
+      Einzugsgebiet,
+      ElektrischeEinrichtung,
+      ElektromechanischeAusruestung,
+      Entsorgung,
+      EntsorgungMitAbfluss,
+      Entwaesserungssystem,
+      Erhaltungsereignis,
+      Feststoffrueckhalt,
+      Fischpass,
+      Fliessgewaesser,
+      FoerderAggregat,
+      Furt,
+      Gebaeude,
+      Gebaeudegruppe,
+      Gebaeudegruppe_BAUGWR,
+      Gefahrenquelle,
+      Gemeinde,
+      Genossenschaft_Korporation,
+      Gesamteinzugsgebiet,
+      Geschiebesperre,
+      Gewaesserabschnitt,
+      GewaesserAbsturz,
+      Gewaesserschutzbereich,
+      Gewaessersektor,
+      Gewaessersohle,
+      Gewaesserverbauung,
+      GewaesserWehr,
+      Grundwasserleiter,
+      Grundwasserschutzareal,
+      Grundwasserschutzzone,
+      Haltung,
+      Haltungspunkt,
+      HQ_Relation,
+      Hydr_Geometrie,
+      Hydr_GeomRelation,
+      Hydr_Kennwerte,
+      Kanal,
+      Kanalschaden,
+      Kanton,
+      KLARA,
+      Landwirtschaftsbetrieb,
+      Leapingwehr,
+      Massnahme,
+      MechanischeVorreinigung,
+      Messgeraet,
+      Messreihe,
+      Messresultat,
+      Messstelle,
+      Normschacht,
+      Normschachtschaden,
+      Oberflaechenabflussparameter,
+      Oberflaechengewaesser,
+      Organisation,
+      Planungszone,
+      Privat,
+      Reinigungseinrichtung,
+      Reservoir,
+      Retentionskoerper,
+      Rohrprofil,
+      Rohrprofil_Geometrie,
+      Rueckstausicherung,
+      Schaden,
+      Schlammbehandlung,
+      Schleuse,
+      See,
+      Sohlrampe,
+      Spezialbauwerk,
+      Spuelstutzen,
+      Stammkarte,
+      Steuerungszentrale,
+      Stoff,
+      Streichwehr,
+      Trockenwetterfallrohr,
+      Trockenwetterrinne,
+      Ueberlauf,
+      Ueberlaufcharakteristik,
+      Ufer,
+      Unfall,
+      Untersuchung,
+      Versickerungsanlage,
+      Versickerungsbereich,
+      Wasserfassung,
+      Zone
+    );
+    !!@ comment = "Objekt-ID (OID) des Datensatzes zu dem die Datei gehört"
+    Objekt: MANDATORY TEXT*16;
+    !!@ comment = "Zusätzlicher Relativer Pfad, wo die Datei auf dem Datenträger zu finden ist. Z.B. DVD_01."
+    Relativpfad: Relativpfad;
+END Datei;
+
+!!@ comment = "Assoziation"
+ASSOCIATION Datei_DatentraegerAssoc =
+  DatentraegerRef  -- {1} Datentraeger;
+  Datei_DatentraegerAssocRef -- {0..*} Datei;
+END Datei_DatentraegerAssoc;
+
+
+!!@comment = "Ende des Topics / Fin du topic"
+END KEK;
+!!@comment = "Ende des Modells / Fin du modèle"
+END VSA_KEK_2020_1_LV95.

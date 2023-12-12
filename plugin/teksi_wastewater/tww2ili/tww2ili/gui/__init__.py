@@ -9,7 +9,7 @@ from qgis import processing
 from qgis.core import Qgis, QgsProject, QgsSettings
 from qgis.PyQt.QtWidgets import QApplication, QFileDialog, QProgressDialog, QPushButton
 from qgis.utils import iface, plugins
-from QgisModelBaker.libili2db import globals, ili2dbconfig, ili2dbutils
+from QgisModelBaker.libs.modelbaker.iliwrapper import globals, ili2dbconfig, ili2dbutils
 
 from ....utils.twwlayermanager import TwwLayerManager
 from .. import config
@@ -120,6 +120,7 @@ def action_import(plugin):
         )
         return
     progress_dialog.setValue(33)
+    QApplication.processEvents()
 
     # Export from ili2pg model to file
     progress_dialog.setLabelText("Importing XTF data...")
@@ -142,7 +143,7 @@ def action_import(plugin):
     progress_dialog.setValue(66)
 
     # Export to the temporary ili2pg model
-    progress_dialog.setLabelText("Converting to TWW...")
+    progress_dialog.setLabelText("Converting to Teksi Wastewater...")
     QApplication.processEvents()
     import_dialog = GuiImport(plugin.iface.mainWindow())
     progress_dialog.setValue(100)
@@ -217,6 +218,7 @@ def action_export(plugin):
             )
             return
         progress_dialog.setValue(25)
+        QApplication.processEvents()
 
         # Export the labels file
         tempdir = tempfile.TemporaryDirectory()
@@ -226,6 +228,7 @@ def action_export(plugin):
             labels_file_path = os.path.join(tempdir.name, "labels.geojson")
 
             progress_dialog.setLabelText("Extracting labels...")
+            QApplication.processEvents()
 
             structures_lyr = TwwLayerManager.layer("vw_tww_wastewater_structure")
             reaches_lyr = TwwLayerManager.layer("vw_tww_reach")
@@ -233,7 +236,7 @@ def action_export(plugin):
                 progress_dialog.close()
                 show_failure(
                     "Could not find the vw_tww_wastewater_structure and/or the vw_tww_reach layers.",
-                    "Make sure your TWW project is open.",
+                    "Make sure your Teksi Wastewater project is open.",
                     None,
                 )
                 return
@@ -250,9 +253,10 @@ def action_export(plugin):
                 },
             )
             progress_dialog.setValue(35)
+            QApplication.processEvents()
 
         # Export to the temporary ili2pg model
-        progress_dialog.setLabelText("Converting from TWW...")
+        progress_dialog.setLabelText("Converting from Teksi Wastewater...")
         QApplication.processEvents()
 
         log_handler = logging.FileHandler(
@@ -263,6 +267,7 @@ def action_export(plugin):
         with LoggingHandlerContext(log_handler):
             tww_export(selection=export_dialog.selected_ids, labels_file=labels_file_path)
         progress_dialog.setValue(50)
+        QApplication.processEvents()
 
         # Cleanup
         tempdir.cleanup()
@@ -294,7 +299,6 @@ def action_export(plugin):
                 )
                 continue
             progress_dialog.setValue(progress + 10)
-
             progress_dialog.setLabelText(f"Validating the network output file [{model_name}]...")
             QApplication.processEvents()
             log_path = make_log_path(base_log_path, f"ilivalidator-{model_name}")
@@ -313,6 +317,7 @@ def action_export(plugin):
                 continue
 
             progress_dialog.setValue(progress + 20)
+            QApplication.processEvents()
 
         progress_dialog.setValue(100)
 
