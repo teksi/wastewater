@@ -38,6 +38,10 @@ jobs:
       - name: schemaspy
         run:  docker compose run schemaspy
 
+      - name: docker logs
+        if: failure()
+        run: docker logs teksi-wastewater
+
       - uses: actions/upload-artifact@v3
         with:
           name: datamodel-dumps
