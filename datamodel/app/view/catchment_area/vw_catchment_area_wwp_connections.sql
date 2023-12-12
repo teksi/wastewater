@@ -1,8 +1,8 @@
--- View: tww_app.vw_catchment_area_wwc_connections
+-- View: tww_app.vw_catchment_area_wwp_connections
 
--- DROP VIEW tww_app.vw_catchment_area_wwc_connections;
+-- DROP VIEW tww_app.vw_catchment_area_wwp_connections;
 
-CREATE OR REPLACE VIEW tww_app.vw_catchment_area_wwc_connections AS
+CREATE OR REPLACE VIEW tww_app.vw_catchment_area_wwp_connections AS
  SELECT ca.obj_id,
     st_force2d(st_makeline(st_centroid(st_curvetoline(ca.perimeter_geometry)), wn_ww_current.situation3d_geometry))::geometry(LineString,2056) AS connection_ww_current_geometry,
     st_length(st_force2d(st_makeline(st_centroid(st_curvetoline(ca.perimeter_geometry)), wn_ww_current.situation3d_geometry))::geometry(LineString,2056)) AS length_ww_current,
