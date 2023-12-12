@@ -4,12 +4,15 @@ import tempfile
 import webbrowser
 from types import SimpleNamespace
 
-from pkg_resources import parse_version
 from qgis import processing
 from qgis.core import Qgis, QgsProject, QgsSettings
 from qgis.PyQt.QtWidgets import QApplication, QFileDialog, QProgressDialog, QPushButton
-from qgis.utils import iface, plugins
-from QgisModelBaker.libs.modelbaker.iliwrapper import globals, ili2dbconfig, ili2dbutils
+from qgis.utils import iface
+from teksi_wastewater.libs.modelbaker.iliwrapper import (
+    globals,
+    ili2dbconfig,
+    ili2dbutils,
+)
 
 from ....utils.twwlayermanager import TwwLayerManager
 from .. import config
@@ -52,8 +55,7 @@ def action_import(plugin):
     """
     global import_dialog  # avoid garbage collection
 
-    if not configure_from_modelbaker(plugin.iface):
-        return
+    configure_from_modelbaker()
 
     default_folder = QgsSettings().value(
         "tww_plugin/last_interlis_path", QgsProject.instance().absolutePath()
@@ -164,8 +166,7 @@ def action_export(plugin):
     Is executed when the user clicks the exportAction tool
     """
 
-    if not configure_from_modelbaker(plugin.iface):
-        return
+    configure_from_modelbaker()
 
     export_dialog = GuiExport(plugin.iface.mainWindow())
 
@@ -332,30 +333,10 @@ def action_export(plugin):
     export_dialog.show()
 
 
-def configure_from_modelbaker(iface):
+def configure_from_modelbaker():
     """
     Configures config.JAVA/ILI2PG paths using modelbaker.
-    Returns whether modelbaker is available, and displays instructions if not.
     """
-    REQUIRED_VERSION = "v6.4.0"  # TODO : update once https://github.com/opengisch/QgisModelBaker/pull/473 is released
-    modelbaker = plugins.get("QgisModelBaker")
-    if modelbaker is None:
-        iface.messageBar().pushMessage(
-            "Error",
-            "This feature requires the ModelBaker plugin. Please install and activate it from the plugin manager.",
-            level=Qgis.Critical,
-        )
-        return False
-
-    elif modelbaker.__version__ != "dev" and parse_version(modelbaker.__version__) < parse_version(
-        REQUIRED_VERSION
-    ):
-        iface.messageBar().pushMessage(
-            "Error",
-            f"This feature requires a more recent version of the ModelBaker plugin (currently : {modelbaker.__version__}). Please install and activate version {REQUIRED_VERSION} or newer from the plugin manager.",
-            level=Qgis.Critical,
-        )
-        return False
 
     # We reuse modelbaker's logic to get the java path and ili2pg executables from withing QGIS
     # Maybe we could reuse even more (IliExecutable...) ?
@@ -367,5 +348,3 @@ def configure_from_modelbaker(iface):
 
     config.JAVA = ili2dbutils.get_java_path(ili2dbconfig.BaseConfiguration())
     config.ILI2PG = ili2dbutils.get_ili2db_bin(globals.DbIliMode.ili2pg, 4, stdout, stderr)
-
-    return True

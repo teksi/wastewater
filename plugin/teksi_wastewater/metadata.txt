@@ -18,7 +18,3 @@ icon=icons/teksi-abwasser-logo.svg
 
 experimental=False
 deprecated=False
-
-# DISABLED: under QGIS 3.22, this throws `KeyError: 'use_stable_version' (qgsplugindependenciesdialog.py", line 63)`
-# unfortunately this doesn't support >= yet...
-# plugin_dependencies=QGIS Model Baker==v6.4.0
