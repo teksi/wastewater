@@ -1,0 +1,173 @@
+!! SIA405_Base_Acque_di_scarico_1_2_i_LV95-20231019.ili
+
+INTERLIS 2.3;
+
+ MODEL SIA405_Base_Acque_di_scarico_1_LV95 (it) AT "http://www.vsa.ch/models"
+  VERSION "19.10.2023" TRANSLATION OF SIA405_Base_Abwasser_1_LV95 [ "18.10.2023" ] =
+
+   !!@comment = "importiert INTERLIS 2 Basisunits"
+   IMPORTS UNQUALIFIED INTERLIS;
+   IMPORTS Units;
+   IMPORTS Base_i_LV95;
+
+
+!!@comment = "Copyright 2020 - 2023 VSA"
+
+!!@comment = "Basandosi su SIA405_Base_i, il VSA completa SIA405_Base_i come SIA405_Base_Acque_di_scarico con la classe Organization in un argomento separato Amministrazione, in modo che le organizzazioni possano essere incluse come un set di dati esterno dal repository."
+
+!!@comment = "Esaminato con Compiler Commpiler Version 5.3.3 (03.08.2023)"
+!!@comment = "Elaboratore: Stefan Burckhardt"
+
+!!@comment = "21.4.2021 Erste Version"
+!!@comment = "23.4.2021 Übersetzungen ergänzt"
+
+!!@ comment = "19.10.2023 Issuer geändert auf www.vsa.ch/models"
+!!@ comment = "19.10.2023 Neuer Wert Organisation.Organisationstyp.Gemeindeabteilung.
+!!@comment = "119.10.2023 Anpassung Beschreibung Werte Gemeinde und Gemeindeabteilung"
+!!@comment = "19.10.2023 Neuer Minor Release SIA405_Base_Acque_di_scarico_1_LV95"
+!!@comment = "19.10.2023 Anpassung Notation Filenamen SIA405_Base_Acque_di_scarico_1_2_i_LV95-20231019.ili"
+
+
+  UNIT
+
+    kilowatt [kW] = 1000 [Units.W];
+    litro_al_secondo [ls] = (Units.L/s);
+    litro_al_giorno [lg] = (Units.L/Units.d);
+    grammo_al_metro_cubo [gm3] = (Units.g/Units.m3);
+    metro_cubo_al_secondo [m3s] = (Units.m3/s);
+    metro_cubo_al_giorno [m3g] = (Units.m3/Units.d);
+    metro_cubo_all_ora [m3h] = (Units.m3/Units.h);
+    metro_al_secondo [ms] EXTENDS Units.Velocity = (m/s);
+    centimetro_quadrato [cm2] EXTENDS Units.Area = (Units.cm*Units.cm);
+
+  DOMAIN
+
+    !!@comment = "Types généraux pour tous les fluides de la norme SIA405"
+
+    !!@comment = "Larghezza Unità Millimetro [mm]"
+    Larghezza = 0 .. 4000 [Units.mm];
+    ARANr = 1 .. 999999 [Units.CountedObjects];
+    !!@comment = "Dimensioni Unità Millimetro [mm]"
+    Dimensioni = 0 .. 4000 [Units.mm];
+
+    !!@comment = "Definisce la precisione della posizione e dell'altezza di un oggetto. Se un corso è definito, è sempre [preciso]."
+    Precisione_di_posizionamento = (
+                   !!@comment = "!! +/- 10 cm, per la determinazione della posizione da diverse misurazioni il triplo, cioè +/- 30 cm (norma SIA405 2012)"
+                   preciso,
+                   sconosciuto,
+                   !!@comment = "vedere preciso"
+                   impreciso
+                   );
+    !!@comment = "sconosciuto = 1800 (valore più basso)"
+    Anno = 1800 .. 2100;
+
+    !!@comment = "11.6.2012, nuovo positivo e negativo, Lo spessore risulta dalla differenza di KoteRef e KoteZ e può assumere un valore negativo o positivo."
+    Potenza  = -99999 .. 99999 [Units.mm];
+
+    !!@comment ="come TEXT, poiché in alcuni casi i valori doppi con slash in avanti, neu 21.2.2012"
+    Larghezza_nominale = TEXT*10;
+
+    !!@comment = "Nuovo tipo di dati per proprietario, operatore, proprietario di dati, fornitore di dati, ecc. Lunghezza preparata per la designazione a UID (www.uid.admin.ch). neu 21.2.2012"
+    Organizzazione_denominazione = TEXT*255;
+
+    !!@comment = "Tipo di panta di attività per il quale è definito il TestoPosPos / SimboloPos."
+    Tipo_di_pianta = (
+                      catasto_delle_canalizzazioni,  !! catasto delle canalizzazioni
+                      piano_di_impianto, !! piano di impianto
+                      piano_di_insieme ( !! piano di insieme
+                        pi10,  !! 1:10'000
+                        pi2,  !! 1:2'000
+                        pi5  !! 1:5'000
+                        )
+                    );
+
+    !!@comment = "Stato di funzionamento e di pianificazione del manufatto. novità 2010: definire le estensioni di questo nei singoli media"
+    Stato = (
+            fuori_servizio,
+            in_funzione,
+            abbandonato,
+            sconosciuto,
+            altro
+            );
+
+    !!@comment = "Valore medio di un oggetto (tubo di protezione / acqua / teleriscaldamento)"
+    Copertura = 0.0 .. 999.9 [INTERLIS.m];
+
+    !!@comment = "Esempio di UID: che123456789"
+    UID = TEXT*12;
+
+    no_della_comunita = 1 .. 9999 [Units.CountedObjects];
+
+
+    !!@comment = "SIA405_BaseClass per tutte le superclassi (Superclass) con meta attributi"
+    CLASS SIA405_BaseClass (ABSTRACT) EXTENDS Base_i_LV95.BaseClass =
+       !!@comment = "STANDARDOID è l'opzione selezionata per la definizione ANYOID da base.ili. Per ulteriori informazioni vedere il foglio 2015, capitolo 2.1.3.8 Identificatori di oggetti (OID). OBJ_ID non è più modellato in modo ridondante ed è stato rimosso."
+       OID AS STANDARDOID;
+       ATTRIBUTE
+         !!@comment = "Ultima modifica del set di dati, altri meta attributi nuovi come relazione. Data dell'ultima modifica del record, se disponibile. Altrimenti, indicare la data di creazione del record."
+         ultima_modifica: MANDATORY INTERLIS.INTERLIS_1_DATE;
+    END SIA405_BaseClass;
+
+    CLASS SIA405_TestoPos (ABSTRACT) EXTENDS Base_i_LV95.TestoPos =
+       !!@comment = "OID auch bei SIA405_TextPost neu 27.11.2019"
+       OID AS STANDARDOID;
+       tipo_di_pianta: MANDATORY Tipo_di_pianta;
+       !!@comment = "valore calcolato dagli attributi, MTEXT quindi anche possibile in più righe"
+       testo: MANDATORY MTEXT;
+       !!@comment = "per le specifiche bilaterali"
+       osservazione: TEXT*80;
+    END SIA405_TestoPos;
+
+    CLASS SIA405_SimboloPos (ABSTRACT) EXTENDS Base_i_LV95.SimboloPos =
+      !!@comment = "OID auch bei SIA405_SimboloPos neu 27.11.2019"
+      OID AS STANDARDOID;
+      tipo_di_pianta: MANDATORY Tipo_di_pianta;
+       !! 3.4.2013 adaption en français
+       ridimensionamento_lunghezza: 0.0..9.9;
+       ridimensionamento_altezza: 0.0..9.9;
+    END SIA405_SimboloPos;
+
+    TOPIC Amministrazione =
+
+    CLASS organizzazione EXTENDS SIA405_BaseClass =
+       ATTRIBUTE
+         !!@ comment = "Osservazioni generali"
+         osservazione: TEXT*255;
+         !!@ comment = "La designazione per i comuni è tratta dall'elenco dell'UST; per i privati dal registro UID, se necessario con l'aggiunta del luogo della filiale se non esiste un UID separato per essa."
+         denominazione: MANDATORY SIA405_Base_Acque_di_scarico_1_LV95.Organizzazione_denominazione;
+         !!@ comment = "Numero ufficiale del Comune secondo l'Ufficio federale di statistica, obbligatorio per i comuni, altrimenti lasciare vuoto."
+         numero_comune: no_della_comunita;
+         !!@ comment = "designazione abbreviata"
+         designazione_abbreviata: TEXT*12;
+         !!@comment = "Genere dell'organizzazione"
+         tipo_organizzazione: MANDATORY (
+           !!@ comment = "Consorzio depurazione acque"
+           consorzio_depurazione,
+           !!@ comment = "Parte di un'amministrazione federale (ad es. Ufficio federale dell'ambiente, USTRA, armasuisse)"
+           confederazione,
+           !!@ comment = "Comune secondo l'Ufficio federale di statistica"
+           comune,
+           !!@ comment = "Parte di un'amministrazione comunale che assume un ruolo ((ad esempio Geoinformation Stadt Bern) come sponsor, fornitore di dati, ecc. (ma non come proprietario dei dati / proprietario (pubblico))."
+           dipartimento_comunale,
+           !!@ comment = "Cooperativa o corporazione: corporazione di diritto pubblico. Se di diritto privato, segnare come privato."
+           cooperativa_corporazione,
+           !!@ comment = "Parte di un'amministrazione cantonale (es. Ufficio per la protezione dell'ambiente, Ufficio per lo smaltimento delle acque)"
+           cantone,
+           !!@ comment = "Persona od organizzazione privata attiva nella pianificazione dello smaltimento delle acque"
+           privato
+         );
+         !!@ comment = "Stato dell'organizzazione, affinché le organizzazioni decadute non debbano essere semplicemente cancellate e sia possibile vedere se esistono ancora relazioni con organizzazioni decadute, ad. es. in caso di aggregazione tra comuni o fallimento di una ditta."
+         stato: MANDATORY (
+           attivo,
+           decaduta
+         );
+         !!@ comment = "Riferimento all'identificativo aziendale dell'Ufficio federale di statistica (www.uid.admin.ch), ad es. CHE123456789"
+         UID: UID;
+    UNIQUE
+        !!@comment = "!! Neben UNIQUE OID zusätzlich auch Kombination Bezeichnung, Organisationstyp, UID (Wegleitung GEP-Daten 2020)"
+        denominazione, tipo_organizzazione, UID;
+    END organizzazione;
+
+END Amministrazione;
+
+END SIA405_Base_Acque_di_scarico_1_LV95.

@@ -13,16 +13,16 @@ TYPE MODEL Base (de) AT "http://www.sia.ch/405"
 
 !! Copyright 2003 - 2018 SIA
 
-!! ƒnderungen und Erg‰nzungen d¸rfen zum Eigengebrauch get‰tigt werden.
-!! Sie m¸ssen innerhalb der Datei so dokumentiert sein, dass sichtbar wird,
-!! welche ƒnderungen get‰tigt wurden (Einf¸gen von INTERLIS Kommentar).
+!! √Ñnderungen und Erg√§nzungen d√ºrfen zum Eigengebrauch get√§tigt werden.
+!! Sie m√ºssen innerhalb der Datei so dokumentiert sein, dass sichtbar wird,
+!! welche √Ñnderungen get√§tigt wurden (Einf√ºgen von INTERLIS Kommentar).
 !! Die Originalmodelldatei Base.ili und darauf basierende
-!! abge‰nderte Versionen d¸rfen nicht weiterverkauft werden.
+!! abge√§nderte Versionen d√ºrfen nicht weiterverkauft werden.
 
 !! Geprueft mit Compiler Version 4.7.7 vom 08.02.2018
 !! Sachbearbeiter: Stefan Burckhardt / SIA 405 Kommission
 
-!! 18.4.2014 Korrektur Wertebereich f¸r LKKoord / HKoord f¸r Bezugsrahmen LV95 (1070000.000 statt 170000.000 .. 1300000.000)
+!! 18.4.2014 Korrektur Wertebereich f√ºr LKKoord / HKoord f√ºr Bezugsrahmen LV95 (1070000.000 statt 170000.000 .. 1300000.000)
 
   DOMAIN
     !! Allgemeine Typen fuer alle Modelle
@@ -46,8 +46,8 @@ TYPE MODEL Base (de) AT "http://www.sia.ch/405"
     Polyline = POLYLINE WITH (STRAIGHTS, ARCS) VERTEX LKoord;
 
 !! neu 23.5.2012
-!!    Surface = SURFACE WITH (STRAIGHTS, ARCS) VERTEX LKoord WITHOUT OVERLAPS > 0.000;  !! Einzelfl‰chen
-	Surface = SURFACE WITH (STRAIGHTS, ARCS) VERTEX LKoord WITHOUT OVERLAPS > 0.050;  !! Einzelfl‰chen
+!!    Surface = SURFACE WITH (STRAIGHTS, ARCS) VERTEX LKoord WITHOUT OVERLAPS > 0.000;  !! Einzelfl√§chen
+	Surface = SURFACE WITH (STRAIGHTS, ARCS) VERTEX LKoord WITHOUT OVERLAPS > 0.050;  !! Einzelfl√§chen
 
 !! neu 2.8.2011
     Polyline3D = POLYLINE WITH (STRAIGHTS, ARCS) VERTEX HKoord;
@@ -58,13 +58,13 @@ TYPE MODEL Base (de) AT "http://www.sia.ch/405"
 
 !! neu 25.1.2012
    CLASS BaseClass (ABSTRACT) =
-   !! BaseClass f¸r alle Subklassen (Subclass - Vererbung)
+   !! BaseClass f√ºr alle Subklassen (Subclass - Vererbung)
 
    END BaseClass;
 
 !! neu 4.8.2011 / 21.2.2012 (geerbt von BaseClass)
    CLASS TextPos (ABSTRACT) EXTENDS BaseClass =
-!!      OID AS ANYOID; !! Hier definiert als ANY. Genaue Definition und Wahl durch die Transfergemeinschaft gem‰ss folgenden Varianten: Objektidentifikation gem‰ss INTERLIS 2 Definition f¸r OID (entweder als UUIDOID nach ISO 11578 oder INTERLIS 2 STANDARDOID), siehe auch INTERLIS 2 Referenzhandbuch www.interlis.ch
+!!      OID AS ANYOID; !! Hier definiert als ANY. Genaue Definition und Wahl durch die Transfergemeinschaft gem√§ss folgenden Varianten: Objektidentifikation gem√§ss INTERLIS 2 Definition f√ºr OID (entweder als UUIDOID nach ISO 11578 oder INTERLIS 2 STANDARDOID), siehe auch INTERLIS 2 Referenzhandbuch www.interlis.ch
       TextPos: MANDATORY LKoord;
       TextOri: MANDATORY Orientierung;
       TextHAli: MANDATORY HALIGNMENT;
@@ -73,7 +73,7 @@ TYPE MODEL Base (de) AT "http://www.sia.ch/405"
 
 !! neu 30.8.2011 / 21.2.2012 (geerbt von BaseClass)
    CLASS SymbolPos (ABSTRACT) EXTENDS BaseClass =
-!!      OID AS ANYOID; !! Hier definiert als ANY. Genaue Definition und Wahl durch die Transfergemeindschaft gem‰ss folgenden Varianten: Objektidentifikation gem‰ss INTERLIS 2 Definition f¸r OID (entweder als INTERLIS 2 STANDARD-OID oder UUID-OID nach ISO 11578), siehe auch INTERLIS 2 Referenzhandbuch www.interlis.ch
+!!      OID AS ANYOID; !! Hier definiert als ANY. Genaue Definition und Wahl durch die Transfergemeindschaft gem√§ss folgenden Varianten: Objektidentifikation gem√§ss INTERLIS 2 Definition f√ºr OID (entweder als INTERLIS 2 STANDARD-OID oder UUID-OID nach ISO 11578), siehe auch INTERLIS 2 Referenzhandbuch www.interlis.ch
       SymbolPos: MANDATORY LKoord;  !! Landeskoordinate Ost/Nord, 2D Koordinaten
       SymbolOri: MANDATORY Orientierung;  !! Default: 90 Grad
 !! 21.2.2012 verschoben in SIA405_Base.ili
@@ -96,16 +96,16 @@ TYPE MODEL Base_LV95 (de) AT "http://www.sia.ch/405"
 
 !! Copyright 2003 - 2018 SIA
 
-!! ƒnderungen und Erg‰nzungen d¸rfen zum Eigengebrauch get‰tigt werden.
-!! Sie m¸ssen innerhalb der Datei so dokumentiert sein, dass sichtbar wird,
-!! welche ƒnderungen get‰tigt wurden (Einf¸gen von INTERLIS Kommentar).
+!! √Ñnderungen und Erg√§nzungen d√ºrfen zum Eigengebrauch get√§tigt werden.
+!! Sie m√ºssen innerhalb der Datei so dokumentiert sein, dass sichtbar wird,
+!! welche √Ñnderungen get√§tigt wurden (Einf√ºgen von INTERLIS Kommentar).
 !! Die Originalmodelldatei Base.ili und darauf basierende
-!! abge‰nderte Versionen d¸rfen nicht weiterverkauft werden.
+!! abge√§nderte Versionen d√ºrfen nicht weiterverkauft werden.
 
 !! Geprueft mit Compiler Version 4.7.7 vom 08.02.2018
 !! Sachbearbeiter: Stefan Burckhardt / SIA 405 Kommission
 
-!! 18.4.2014 Korrektur Wertebereich f¸r LKKoord / HKoord f¸r Bezugsrahmen LV95 (1070000.000 statt 170000.000 .. 1300000.000)
+!! 18.4.2014 Korrektur Wertebereich f√ºr LKKoord / HKoord f√ºr Bezugsrahmen LV95 (1070000.000 statt 170000.000 .. 1300000.000)
 
   DOMAIN
     !! Allgemeine Typen fuer alle Modelle
@@ -113,7 +113,7 @@ TYPE MODEL Base_LV95 (de) AT "http://www.sia.ch/405"
     Orientierung = 0.0 .. 359.9 CIRCULAR [Units.Angle_Degree];  !! Anpassen auf Geobasisdatendefinition?
 
 
-!! f¸r Bezugsrahmen LV95 folgende Definition verwenden
+!! f√ºr Bezugsrahmen LV95 folgende Definition verwenden
 !! 18.4.2014
     LKoord = COORD 2480000.000 .. 2840000.000 [m], !!{CHLV95/1},
                    1070000.000 .. 1300000.000 [m],  !!{CHLV95/2},
@@ -129,8 +129,8 @@ TYPE MODEL Base_LV95 (de) AT "http://www.sia.ch/405"
     Polyline = POLYLINE WITH (STRAIGHTS, ARCS) VERTEX LKoord;
 
 !! neu 23.5.2012
-!!    Surface = SURFACE WITH (STRAIGHTS, ARCS) VERTEX LKoord WITHOUT OVERLAPS > 0.000;  !! Einzelfl‰chen
-	Surface = SURFACE WITH (STRAIGHTS, ARCS) VERTEX LKoord WITHOUT OVERLAPS > 0.050;  !! Einzelfl‰chen
+!!    Surface = SURFACE WITH (STRAIGHTS, ARCS) VERTEX LKoord WITHOUT OVERLAPS > 0.000;  !! Einzelfl√§chen
+	Surface = SURFACE WITH (STRAIGHTS, ARCS) VERTEX LKoord WITHOUT OVERLAPS > 0.050;  !! Einzelfl√§chen
 
 !! neu 2.8.2011
     Polyline3D = POLYLINE WITH (STRAIGHTS, ARCS) VERTEX HKoord;
@@ -141,13 +141,13 @@ TYPE MODEL Base_LV95 (de) AT "http://www.sia.ch/405"
 
 !! neu 25.1.2012
    CLASS BaseClass (ABSTRACT) =
-   !! BaseClass f¸r alle Subklassen (Subclass - Vererbung)
+   !! BaseClass f√ºr alle Subklassen (Subclass - Vererbung)
 
    END BaseClass;
 
 !! neu 4.8.2011 / 21.2.2012 (geerbt von BaseClass)
    CLASS TextPos (ABSTRACT) EXTENDS BaseClass =
-!!      OID AS ANYOID; !! Hier definiert als ANY. Genaue Definition und Wahl durch die Transfergemeinschaft gem‰ss folgenden Varianten: Objektidentifikation gem‰ss INTERLIS 2 Definition f¸r OID (entweder als UUIDOID nach ISO 11578 oder INTERLIS 2 STANDARDOID), siehe auch INTERLIS 2 Referenzhandbuch www.interlis.ch
+!!      OID AS ANYOID; !! Hier definiert als ANY. Genaue Definition und Wahl durch die Transfergemeinschaft gem√§ss folgenden Varianten: Objektidentifikation gem√§ss INTERLIS 2 Definition f√ºr OID (entweder als UUIDOID nach ISO 11578 oder INTERLIS 2 STANDARDOID), siehe auch INTERLIS 2 Referenzhandbuch www.interlis.ch
       TextPos: MANDATORY LKoord;
       TextOri: MANDATORY Orientierung;
       TextHAli: MANDATORY HALIGNMENT;
@@ -156,7 +156,7 @@ TYPE MODEL Base_LV95 (de) AT "http://www.sia.ch/405"
 
 !! neu 30.8.2011 / 21.2.2012 (geerbt von BaseClass)
    CLASS SymbolPos (ABSTRACT) EXTENDS BaseClass =
-!!      OID AS ANYOID; !! Hier definiert als ANY. Genaue Definition und Wahl durch die Transfergemeindschaft gem‰ss folgenden Varianten: Objektidentifikation gem‰ss INTERLIS 2 Definition f¸r OID (entweder als INTERLIS 2 STANDARD-OID oder UUID-OID nach ISO 11578), siehe auch INTERLIS 2 Referenzhandbuch www.interlis.ch
+!!      OID AS ANYOID; !! Hier definiert als ANY. Genaue Definition und Wahl durch die Transfergemeindschaft gem√§ss folgenden Varianten: Objektidentifikation gem√§ss INTERLIS 2 Definition f√ºr OID (entweder als INTERLIS 2 STANDARD-OID oder UUID-OID nach ISO 11578), siehe auch INTERLIS 2 Referenzhandbuch www.interlis.ch
       SymbolPos: MANDATORY LKoord;  !! Landeskoordinate Ost/Nord, 2D Koordinaten
       SymbolOri: MANDATORY Orientierung;  !! Default: 90 Grad
 !! 21.2.2012 verschoben in SIA405_Base.ili

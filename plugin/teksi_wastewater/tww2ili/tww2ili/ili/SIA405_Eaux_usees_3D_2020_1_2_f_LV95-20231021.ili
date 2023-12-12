@@ -1,0 +1,305 @@
+!!@ comment = "SIA405_Eaux_usees_3D_2020_1_2_f_LV95.ili"
+!! Extension 3D
+
+INTERLIS 2.3;
+
+MODEL SIA405_EAUX_USEES_3D_2020_1_LV95 (fr) AT "http://www.sia.ch/405"
+  VERSION "21.10.2023" TRANSLATION OF SIA405_ABWASSER_3D_2020_1_LV95 [ "21.10.2023" ] =
+
+  IMPORTS UNQUALIFIED INTERLIS;     !! imports INTERLIS 2 Baseunits
+  IMPORTS Units;
+  IMPORTS Base_f_LV95;
+  IMPORTS SIA405_Base_Eaux_usees_1_LV95;
+  IMPORTS SIA405_EAUX_USEES_2020_1_LV95;
+
+!!@ comment = "Copyright 2002 - 2023"
+!!@ comment = "Association suisse des professionnels de la protection des eaux (VSA), Zürich www.vsa.ch"
+!!@ comment = " en cooperation avec Société suisse des ingénieurs et architectes (sia), Zurich www.sia.ch"
+
+!!@ comment = "Libéré pour utilisation publique et application commerciale."
+!!@ comment = "Sachbearbeiter: Stefan Burckhardt / SIA 405 Kommission"
+!!@ comment = " Fichier modèle INTERLIS examiné avec Compiler INTERLIS Version 5.3.3 (03.08.2023)"
+
+TOPIC SIA405_Eaux_usees_3D(ABSTRACT) =
+
+CLASS OUVRAGE_RESEAU_AS (ABSTRACT) EXTENDS SIA405_EAUX_USEES_2020_1_LV95.SIA405_Eaux_usees.OUVRAGE_RESEAU_AS =
+END OUVRAGE_RESEAU_AS;
+CLASS OUVRAGE_RESEAU_AS_Texte EXTENDS SIA405_EAUX_USEES_2020_1_LV95.SIA405_Eaux_usees.OUVRAGE_RESEAU_AS_Texte =
+END OUVRAGE_RESEAU_AS_Texte;
+
+ASSOCIATION OUVRAGE_RESEAU_AS_TexteAssoc EXTENDS SIA405_EAUX_USEES_2020_1_LV95.SIA405_Eaux_usees.OUVRAGE_RESEAU_AS_TexteAssoc =
+END OUVRAGE_RESEAU_AS_TexteAssoc;
+
+CLASS CANALISATION EXTENDS SIA405_EAUX_USEES_2020_1_LV95.SIA405_Eaux_usees.CANALISATION =
+    !!@ comment = "Géométrie détaillée (3D) particulièrement pour un OUVRAGE_SPECIAL. Pour l’attribut CHAMBRE_STANDARD utilisez Dimension1 et 2, de même pour une INSTALLATION_INFILTRATION normée.Les canalisations n’ont en général pas de géométrie détaillée."
+    GEOMETRIE_DETAILLEE3D: Base_f_LV95.Surface3D;
+    !!@ comment = "Définition de la détermination altimétrique de la GEOMETRIE_DETAILLEE3D."
+    DETERMINATION_ALTIMETRIQUE: (
+      precise,
+      inconnu,
+      imprecise
+    );
+
+END CANALISATION;
+
+CLASS CHAMBRE_STANDARD EXTENDS SIA405_EAUX_USEES_2020_1_LV95.SIA405_Eaux_usees.CHAMBRE_STANDARD =
+    !!@ comment = "Géométrie détaillée (3D) particulièrement pour un OUVRAGE_SPECIAL. Pour l’attribut CHAMBRE_STANDARD utilisez Dimension1 et 2, de même pour une INSTALLATION_INFILTRATION normée.Les canalisations n’ont en général pas de géométrie détaillée."
+    GEOMETRIE_DETAILLEE3D: Base_f_LV95.Surface3D;
+    !!@ comment = "Définition de la détermination altimétrique de la GEOMETRIE_DETAILLEE3D."
+    DETERMINATION_ALTIMETRIQUE: (
+      precise,
+      inconnu,
+      imprecise
+    );
+    !!@ comment = "Fonction (valeur calculée) = NOEUD_RESEAU.COTE_RADIER correspondant moins COUVERCLE.COTE (si le radier n’est pas saisi séparément, c’est la POINT_TRONCON.COTE le plus bas). Cf. SIA 405 cahier technique 2015 4.3.4."
+    EPAISSEUR: SIA405_Base_Eaux_usees_1_LV95.Epaisseur;
+
+END CHAMBRE_STANDARD;
+
+CLASS EXUTOIRE EXTENDS SIA405_EAUX_USEES_2020_1_LV95.SIA405_Eaux_usees.EXUTOIRE =
+    !!@ comment = "Point le plus élevé de l'ouvrage"
+    COTE_PLAFOND: Base_f_LV95.Altitude;
+    !!@ comment = "Géométrie détaillée (3D) particulièrement pour un OUVRAGE_SPECIAL. Pour l’attribut CHAMBRE_STANDARD utilisez Dimension1 et 2, de même pour une INSTALLATION_INFILTRATION normée.Les canalisations n’ont en général pas de géométrie détaillée."
+    GEOMETRIE_DETAILLEE3D: Base_f_LV95.Surface3D;
+    !!@ comment = "Définition de la détermination altimétrique de la GEOMETRIE_DETAILLEE3D."
+    DETERMINATION_ALTIMETRIQUE: (
+      precise,
+      inconnu,
+      imprecise
+    );
+    !!@ comment = "Fonction (valeur calculée) = NOEUD_RESEAU.COTE_RADIER représentatif moins COTE_PLAFOND de l’ouvrage correspondant si la géométrie détaillée est disponible, sinon fonction (valeur calculée) = NŒUD_RESEAU.COT_RADIER moins COUVERCLE.COTE de l’ouvrage correspondant"
+    EPAISSEUR: SIA405_Base_Eaux_usees_1_LV95.Epaisseur;
+
+END EXUTOIRE;
+
+CLASS OUVRAGE_SPECIAL EXTENDS SIA405_EAUX_USEES_2020_1_LV95.SIA405_Eaux_usees.OUVRAGE_SPECIAL =
+    !!@ comment = "Point le plus élevé de la construction"
+    COTE_PLAFOND: Base_f_LV95.Altitude;
+    !!@ comment = "Géométrie détaillée (3D) particulièrement pour un OUVRAGE_SPECIAL. Pour l’attribut CHAMBRE_STANDARD utilisez Dimension1 et 2, de même pour une INSTALLATION_INFILTRATION normée.Les canalisations n’ont en général pas de géométrie détaillée."
+    GEOMETRIE_DETAILLEE3D: Base_f_LV95.Surface3D;
+    !!@ comment = "Définition de la détermination altimétrique de la GEOMETRIE_DETAILLEE3D."
+    DETERMINATION_ALTIMETRIQUE: (
+      precise,
+      inconnu,
+      imprecise
+    );
+    !!@ comment = "Fonction (valeur calculée) = NOEUD_RESEAU.COTE_RADIER représentatif moins COTE_PLAFOND de l’ouvrage correspondant si la géométrie détaillée est disponible, sinon fonction (valeur calculée) = NŒUD_RESEAU.COT_RADIER moins COUVERCLE.COTE de l’ouvrage correspondant"
+    EPAISSEUR: SIA405_Base_Eaux_usees_1_LV95.Epaisseur;
+
+END OUVRAGE_SPECIAL;
+
+CLASS INSTALLATION_INFILTRATION EXTENDS SIA405_EAUX_USEES_2020_1_LV95.SIA405_Eaux_usees.INSTALLATION_INFILTRATION =
+    !!@ comment = "Point le plus élevé de la construction"
+    COTE_PLAFOND: Base_f_LV95.Altitude;
+    !!@ comment = "Géométrie détaillée (3D) particulièrement pour un OUVRAGE_SPECIAL. Pour l’attribut CHAMBRE_STANDARD utilisez Dimension1 et 2, de même pour une INSTALLATION_INFILTRATION normée.Les canalisations n’ont en général pas de géométrie détaillée."
+    GEOMETRIE_DETAILLEE3D: Base_f_LV95.Surface3D;
+    !!@ comment = "Définition de la détermination altimétrique de la GEOMETRIE_DETAILLEE3D."
+    DETERMINATION_ALTIMETRIQUE: (
+      precise,
+      inconnu,
+      imprecise
+    );
+    !!@ comment = "Fonction (valeur calculée) = NOEUD_RESEAU.COTE_RADIER représentatif moins COTE_PLAFOND de l’ouvrage correspondant si la géométrie détaillée est disponible, sinon fonction (valeur calculée) = NŒUD_RESEAU.COT_RADIER moins COUVERCLE.COTE de l’ouvrage correspondant"
+    EPAISSEUR: SIA405_Base_Eaux_usees_1_LV95.Epaisseur;
+
+END INSTALLATION_INFILTRATION;
+
+CLASS PROFIL_TUYAU EXTENDS SIA405_EAUX_USEES_2020_1_LV95.SIA405_Eaux_usees.PROFIL_TUYAU =
+
+END PROFIL_TUYAU;
+CLASS ELEMENT_RESEAU_EVACUATION (ABSTRACT) EXTENDS SIA405_EAUX_USEES_2020_1_LV95.SIA405_Eaux_usees.ELEMENT_RESEAU_EVACUATION =
+
+END ELEMENT_RESEAU_EVACUATION;
+CLASS POINT_TRONCON EXTENDS SIA405_EAUX_USEES_2020_1_LV95.SIA405_Eaux_usees.POINT_TRONCON =
+
+END POINT_TRONCON;
+CLASS NOEUD_RESEAU EXTENDS SIA405_EAUX_USEES_2020_1_LV95.SIA405_Eaux_usees.NOEUD_RESEAU =
+
+END NOEUD_RESEAU;
+CLASS TRONCON EXTENDS SIA405_EAUX_USEES_2020_1_LV95.SIA405_Eaux_usees.TRONCON =
+    !!@ comment = "Définition de la détermination altimétrique d'un tronçon."
+    DETERMINATION_ALTIMETRIQUE: (
+      !!@ comment = "+/- 6 cm, lors de la détermination du tracé par différentes mesures, le triple, c'est-à-dire +/- 18 cm"
+      precise,
+      inconnue,
+      !!@ comment = "voir sous précis"
+      imprecise
+    );
+    !!@ comment = "Points de départ, intermédiaires et d’arrivée de la conduite (coordonnées 3D)"
+    TRACE3D: Base_f_LV95.Polyligne3D;
+
+END TRONCON;
+
+CLASS TRONCON_Texte EXTENDS SIA405_EAUX_USEES_2020_1_LV95.SIA405_Eaux_usees.TRONCON_Texte =
+END TRONCON_Texte;
+
+ASSOCIATION TRONCON_TexteAssoc EXTENDS SIA405_EAUX_USEES_2020_1_LV95.SIA405_Eaux_usees.TRONCON_TexteAssoc =
+END TRONCON_TexteAssoc;
+
+CLASS ELEMENT_OUVRAGE (ABSTRACT) EXTENDS SIA405_EAUX_USEES_2020_1_LV95.SIA405_Eaux_usees.ELEMENT_OUVRAGE =
+
+END ELEMENT_OUVRAGE;
+CLASS TUYAU_CHUTE EXTENDS SIA405_EAUX_USEES_2020_1_LV95.SIA405_Eaux_usees.TUYAU_CHUTE =
+
+END TUYAU_CHUTE;
+CLASS DISPOSITIF_D_ACCES EXTENDS SIA405_EAUX_USEES_2020_1_LV95.SIA405_Eaux_usees.DISPOSITIF_D_ACCES =
+
+END DISPOSITIF_D_ACCES;
+CLASS CUNETTE_DEBIT_TEMPS_SEC EXTENDS SIA405_EAUX_USEES_2020_1_LV95.SIA405_Eaux_usees.CUNETTE_DEBIT_TEMPS_SEC =
+
+END CUNETTE_DEBIT_TEMPS_SEC;
+CLASS COUVERCLE EXTENDS SIA405_EAUX_USEES_2020_1_LV95.SIA405_Eaux_usees.COUVERCLE =
+    !!@ comment = "Attribut de fonction EPAISSEUR redondant, numérique [mm]. Fonction (valeur calculée) = COUVERCLE.COTE correspondant moins NŒUD_RESEAU.COTE_RADIER (si la cote radier ne peut pas être saisie séparément, prendre la POINT_TRONCON.COTE la plus basse."
+    EPAISSEUR: SIA405_Base_Eaux_usees_1_LV95.Epaisseur;
+
+END COUVERCLE;
+
+CLASS BANQUETTE EXTENDS SIA405_EAUX_USEES_2020_1_LV95.SIA405_Eaux_usees.BANQUETTE =
+
+END BANQUETTE;
+CLASS TETE_DE_RINCAGE EXTENDS SIA405_EAUX_USEES_2020_1_LV95.SIA405_Eaux_usees.TETE_DE_RINCAGE =
+
+END TETE_DE_RINCAGE;
+END SIA405_Eaux_usees_3D; !! end of TOPIC SIA405_Eaux_usees_3D
+
+VIEW TOPIC SIA405_Eaux_usees_3D_CS =
+    DEPENDS ON SIA405_Eaux_usees_3D;
+
+VIEW ELEMENT_RESEAU_EVACUATION
+  PROJECTION OF base~SIA405_EAUX_USEES_3D_2020_1_LV95.SIA405_Eaux_usees_3D.ELEMENT_RESEAU_EVACUATION;
+  =
+  ATTRIBUTE
+END ELEMENT_RESEAU_EVACUATION;
+
+VIEW OUVRAGE_RESEAU_AS
+  PROJECTION OF base~SIA405_EAUX_USEES_3D_2020_1_LV95.SIA405_Eaux_usees_3D.OUVRAGE_RESEAU_AS;
+  =
+  ATTRIBUTE
+END OUVRAGE_RESEAU_AS;
+
+VIEW OUVRAGE_RESEAU_AS_Texte
+  PROJECTION OF base~SIA405_EAUX_USEES_3D_2020_1_LV95.SIA405_Eaux_usees_3D.OUVRAGE_RESEAU_AS_Texte;
+  =
+  ATTRIBUTE
+    ALL OF base;
+END OUVRAGE_RESEAU_AS_Texte;
+
+VIEW OUVRAGE_RESEAU_AS_TexteAssoc
+  PROJECTION OF base~SIA405_EAUX_USEES_3D_2020_1_LV95.SIA405_Eaux_usees_3D.OUVRAGE_RESEAU_AS_TexteAssoc;
+  =
+  ATTRIBUTE
+    ALL OF base;
+END OUVRAGE_RESEAU_AS_TexteAssoc;
+
+VIEW NOEUD_RESEAU
+  PROJECTION OF base~SIA405_EAUX_USEES_3D_2020_1_LV95.SIA405_Eaux_usees_3D.NOEUD_RESEAU;
+  =
+  ATTRIBUTE
+END NOEUD_RESEAU;
+
+VIEW COUVERCLE
+  PROJECTION OF base~SIA405_EAUX_USEES_3D_2020_1_LV95.SIA405_Eaux_usees_3D.COUVERCLE;
+  =
+  ATTRIBUTE
+    SITUATION := base-> SITUATION;
+    PRECISION_PLANIMETRIQUE := base-> PRECISION_PLANIMETRIQUE;
+    EPAISSEUR := base-> EPAISSEUR;
+END COUVERCLE;
+
+VIEW EXUTOIRE
+  PROJECTION OF base~SIA405_EAUX_USEES_3D_2020_1_LV95.SIA405_Eaux_usees_3D.EXUTOIRE;
+  =
+  ATTRIBUTE
+    GEOMETRIE_DETAILLEE := base-> GEOMETRIE_DETAILLEE;
+    GEOMETRIE_DETAILLEE3D := base-> GEOMETRIE_DETAILLEE3D;
+    ETAT := base-> ETAT;
+    COTE_PLAFOND := base-> COTE_PLAFOND;
+    EPAISSEUR := base-> EPAISSEUR;
+END EXUTOIRE;
+
+VIEW TRONCON
+  PROJECTION OF base~SIA405_EAUX_USEES_3D_2020_1_LV95.SIA405_Eaux_usees_3D.TRONCON;
+  =
+  ATTRIBUTE
+    DETERMINATION_ALTIMETRIQUE := base-> DETERMINATION_ALTIMETRIQUE;
+    DETERMINATION_PLANIMETRIQUE := base-> DETERMINATION_PLANIMETRIQUE;
+    HAUTEUR_MAX_PROFIL := base-> HAUTEUR_MAX_PROFIL;
+    TRACE := base-> TRACE;
+    TRACE3D := base-> TRACE3D;
+END TRONCON;
+
+VIEW TRONCON_Texte
+  PROJECTION OF base~SIA405_EAUX_USEES_3D_2020_1_LV95.SIA405_Eaux_usees_3D.TRONCON_Texte;
+  =
+  ATTRIBUTE
+    ALL OF base;
+END TRONCON_Texte;
+
+VIEW TRONCON_TexteAssoc
+  PROJECTION OF base~SIA405_EAUX_USEES_3D_2020_1_LV95.SIA405_Eaux_usees_3D.TRONCON_TexteAssoc;
+  =
+  ATTRIBUTE
+    ALL OF base;
+END TRONCON_TexteAssoc;
+
+VIEW POINT_TRONCON
+  PROJECTION OF base~SIA405_EAUX_USEES_3D_2020_1_LV95.SIA405_Eaux_usees_3D.POINT_TRONCON;
+  =
+  ATTRIBUTE
+    SITUATION := base-> SITUATION;
+END POINT_TRONCON;
+
+VIEW CANALISATION
+  PROJECTION OF base~SIA405_EAUX_USEES_3D_2020_1_LV95.SIA405_Eaux_usees_3D.CANALISATION;
+  =
+  ATTRIBUTE
+    GEOMETRIE_DETAILLEE := base-> GEOMETRIE_DETAILLEE;
+    GEOMETRIE_DETAILLEE3D := base-> GEOMETRIE_DETAILLEE3D;
+    ETAT := base-> ETAT;
+    FONCTION_HIERARCHIQUE := base-> FONCTION_HIERARCHIQUE;
+END CANALISATION;
+
+VIEW CHAMBRE_STANDARD
+  PROJECTION OF base~SIA405_EAUX_USEES_3D_2020_1_LV95.SIA405_Eaux_usees_3D.CHAMBRE_STANDARD;
+  =
+  ATTRIBUTE
+    GEOMETRIE_DETAILLEE := base-> GEOMETRIE_DETAILLEE;
+    GEOMETRIE_DETAILLEE3D := base-> GEOMETRIE_DETAILLEE3D;
+    ETAT := base-> ETAT;
+    FONCTION := base-> FONCTION;
+    EPAISSEUR := base-> EPAISSEUR;
+END CHAMBRE_STANDARD;
+
+VIEW PROFIL_TUYAU
+  PROJECTION OF base~SIA405_EAUX_USEES_3D_2020_1_LV95.SIA405_Eaux_usees_3D.PROFIL_TUYAU;
+  =
+  ATTRIBUTE
+    RAPPORT_HAUTEUR_LARGEUR := base-> RAPPORT_HAUTEUR_LARGEUR;
+    TYPE_PROFIL := base-> TYPE_PROFIL;
+END PROFIL_TUYAU;
+
+VIEW OUVRAGE_SPECIAL
+  PROJECTION OF base~SIA405_EAUX_USEES_3D_2020_1_LV95.SIA405_Eaux_usees_3D.OUVRAGE_SPECIAL;
+  =
+  ATTRIBUTE
+    GEOMETRIE_DETAILLEE := base-> GEOMETRIE_DETAILLEE;
+    GEOMETRIE_DETAILLEE3D := base-> GEOMETRIE_DETAILLEE3D;
+    ETAT := base-> ETAT;
+    COTE_PLAFOND := base-> COTE_PLAFOND;
+    FONCTION := base-> FONCTION;
+    EPAISSEUR := base-> EPAISSEUR;
+END OUVRAGE_SPECIAL;
+
+VIEW INSTALLATION_INFILTRATION
+  PROJECTION OF base~SIA405_EAUX_USEES_3D_2020_1_LV95.SIA405_Eaux_usees_3D.INSTALLATION_INFILTRATION;
+  =
+  ATTRIBUTE
+    GEOMETRIE_DETAILLEE := base-> GEOMETRIE_DETAILLEE;
+    GEOMETRIE_DETAILLEE3D := base-> GEOMETRIE_DETAILLEE3D;
+    ETAT := base-> ETAT;
+    COTE_PLAFOND := base-> COTE_PLAFOND;
+    EPAISSEUR := base-> EPAISSEUR;
+END INSTALLATION_INFILTRATION;
+
+END SIA405_Eaux_usees_3D_CS;  !! Ende der View
+END SIA405_EAUX_USEES_3D_2020_1_LV95.   !! Ende des Modells / Fin du modèle

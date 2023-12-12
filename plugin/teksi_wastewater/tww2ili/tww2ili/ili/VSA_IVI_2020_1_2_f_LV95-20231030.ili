@@ -1,0 +1,1679 @@
+!!@ comment = "VSA_IVI_2020_1_2_f_LV95.ili"
+!!@ comment = "http://dss.vsa.ch"
+
+INTERLIS 2.3;
+
+MODEL VSA_IVI_2020_1_LV95 (fr) AT "http://www.vsa.ch/models"
+  VERSION "30.10.2023" TRANSLATION OF VSA_KEK_2020_1_LV95 [ "30.10.2023" ] =
+
+  IMPORTS UNQUALIFIED INTERLIS;
+  IMPORTS Units;
+  IMPORTS Base_f_LV95;
+  IMPORTS SIA405_Base_Eaux_usees_1_LV95;
+  IMPORTS SIA405_EAUX_USEES_2020_1_LV95;
+
+!!@ comment = "Copyright 2002 - 2023"
+!!@ comment = "Association suisse des professionnels de la protection des eaux (VSA), Zürich www.vsa.ch"
+
+!!@ comment = "Libéré pour utilisation publique et application commerciale."
+!!@ comment = "Sachbearbeiter: Stefan Burckhardt / VSA CC Siedlungsentwässerung"
+!!@ comment = " Fichier modèle INTERLIS examiné avec Compiler INTERLIS Version 5.3.3 (03.08.2023)"
+
+
+UNIT
+
+STRUCTURE Releve_compteur_video =
+   SUBDIVISION Hours: 0 .. 23 CIRCULAR [h];
+   CONTINUOUS SUBDIVISION Minutes: 0 .. 59 CIRCULAR [min];
+   CONTINUOUS SUBDIVISION Seconds: 0 .. 59 CIRCULAR [INTERLIS.s];
+   CONTINUOUS SUBDIVISION Frames: 0 .. 24 CIRCULAR;
+END Releve_compteur_video;
+
+DOMAIN XMLReleve_compteur_video = FORMAT BASED ON Releve_compteur_video ( Hours ":" Minutes ":" Seconds ":" Frames );  !! [hh:mm:ss:ff]
+
+TOPIC IVI EXTENDS SIA405_EAUX_USEES_2020_1_LV95.SIA405_Eaux_usees = DEPENDS ON SIA405_Base_Eaux_usees_1_LV95.Administration;
+
+
+DOMAIN
+
+!!@ comment = "[mm] ou [%], dependant du code EN"
+QuantificationCanalisation = 0 .. 100000;
+
+!!@ comment = ""
+Access_relatif = TEXT*200;
+
+!!@ comment = ""
+Chemin_access = TEXT*1023;
+
+!!@ comment = ""
+Commentaire = TEXT*100;
+!!@ comment = "XML Tags dependant du système d’enregistrement"
+
+!!@ comment = "Paramètres de projection spéciaux pour le positionnement à l’intérieur d’un fichier film"
+Parametres_projection = TEXT*200;
+
+!!@ comment = ""
+Designation_longue = TEXT*60;
+
+!!@ comment = "variable, dependant du code EN"
+Quantification_chambre = TEXT*20;
+
+!!@ comment = "Codes pour le début et la fin d’un dommage tronçons"
+Dommage_troncons = TEXT*3;
+
+!!@ comment = ""
+Fichier_Designation = TEXT*120;
+
+
+!!@ comment = "Evénement d'exploitation et d'entretien"
+CLASS EVENEMENT_MAINTENANCE (ABSTRACT) EXTENDS VSA_BaseClass =
+  ATTRIBUTE
+    !!@ comment = "Responsable de saisie du bureau"
+    EXECUTANT: TEXT*50;
+    !!@ comment = "Remarques générales"
+    REMARQUE: TEXT*80;
+    DESIGNATION: MANDATORY TEXT*41;
+    !!@ comment = "par ex. protocole de dommages. Lier le document effectif via la classe FICHIER et SUPPORT_DONNEES."
+    BASE_INFORMATION: TEXT*50;
+    !!@ comment = "Durée de l'événement en jours"
+    DUREE: 0 .. 10000 [Units.d];
+    !!@ comment = "Lieu où se trouvent les données détaillées (par ex. n° d'une bande vidéo)"
+    DONNEES_DETAILLEES: TEXT*50;
+    !!@ comment = "Résultat ou commentaire importante de l'événement du point de vue de l'éditeur"
+    RESULTAT: MTEXT*255;
+    !!@ comment = "Les spécifications de texte normalisées suivantes doivent être utilisées : autre, réception de garantie, réception d’une nouvelle construction (réception d’ouvrage), réception de mesures correctives, contrôle d’état"
+    CAUSES: TEXT*50;
+    COUTS: 0.00 .. 99999999.99 [Units.CHF];
+    !!@ comment = "Phase dans laquelle se trouve l'événement de maintenance"
+    ETAT: MANDATORY (
+      execute,
+      prevu,
+      !!@ comment = "Si une inspection projetée n’a pu être réalisée"
+      impossible,
+      inconnu
+    );
+    !!@ comment = "Date et heure de l'événement"
+    DATE_HEURE: MANDATORY INTERLIS_1_DATE;
+UNIQUE
+    !!@ comment = "UNIQUE Kombination Bezeichnung, Zeitpunkt, DatenherrRef "
+    DESIGNATION, DATE_HEURE;
+END EVENEMENT_MAINTENANCE;
+
+!!@ comment = "Association"
+ASSOCIATION EVENEMENT_MAINTENANCE_OUVRAGE_RESEAU_ASAssoc =
+  OUVRAGE_RESEAU_ASRef (EXTERNAL) -- {0..1} SIA405_EAUX_USEES_2020_1_LV95.SIA405_Eaux_usees.OUVRAGE_RESEAU_AS;
+  EVENEMENT_MAINTENANCE_OUVRAGE_RESEAU_ASAssocRef -- {0..*} EVENEMENT_MAINTENANCE;
+END EVENEMENT_MAINTENANCE_OUVRAGE_RESEAU_ASAssoc;
+
+!!@ comment = "Association"
+ASSOCIATION EVENEMENT_MAINTENANCE_BUREAU_EXECUTANTAssoc =
+  BUREAU_EXECUTANTRef (EXTERNAL) -- {0..1} SIA405_Base_Eaux_usees_1_LV95.Administration.ORGANISATION;
+  EVENEMENT_MAINTENANCE_BUREAU_EXECUTANTAssocRef -- {0..*} EVENEMENT_MAINTENANCE;
+END EVENEMENT_MAINTENANCE_BUREAU_EXECUTANTAssoc;
+
+!!@ comment = "Enquêtes sur la télévision"
+CLASS EXAMEN EXTENDS EVENEMENT_MAINTENANCE =
+  ATTRIBUTE
+    !!@ comment = "Point (chambre ou noeud) d’où l’examen termine. Désignation du « point d’arrivée » (DESIGNATION_POINT_VERS) d’une examen comme elle figure sur le plan. Elle sert d’alternative à la clé externe OUVRAGE_RESEAU_AS lorsque la topologie n’est pas encore définie (saisie initiale). La DESIGNATION_POINT_VERS sera utilisée ultérieurement par l’hydraulicien pour la construction de la topologie du réseau. Cette valeur reste vide lors d’inspections de chambres."
+    DESIGNATION_POINT_VERS: TEXT*20;
+    !!@ comment = "Technique de prise de vues, décrit le type de prise de vues"
+    TYPE_RELEVE: MANDATORY (
+      autre,
+      parcours,
+      mesure_deformation,
+      examen_etancheite,
+      georadar,
+      camera_canalisations,
+      inconnu
+    );
+    !!@ comment = "Véhicule d’examen employé"
+    VEHICULE: TEXT*50;
+    !!@ comment = "Appareil de prise de vues (caméra) employé"
+    APPAREIL: TEXT*50;
+    !!@ comment = "Longueur totale examinée en mètres avec deux chiffres après la virgule"
+    LONGUEUR_INSPECTEE: MANDATORY 0.00 .. 30000.00 [m];
+    !!@ comment = "Pour les bandes vidéo figure ici le numéro de la bande (p. ex. 1/99) et, pour les supports de don-nées électroniques, sa désignation (p. ex. SG001). S’il n’existe qu’un fichier par examen, ce fichier est référencé par la classe Fichier et cet attribut peut être laissé vide."
+    NUMERO_VIDEO: TEXT*20;
+    !!@ comment = "Point (chambre ou nœud) auquel l’examen commence. Désignation du « point départ » (DESIGNATION_POINT_DE) d’une examen comme elle figure sur le plan. Elle sert d’alternative à la clé externe POINT_TRONCON, lorsque la topologie n’est pas encore définie (saisie initiale). La DESIGNATION_POINT_DE sera utilisée ultérieurement par l’hydraulicien pour la construction de la topologie du réseau."
+    DESIGNATION_POINT_DE: TEXT*20;
+    !!@ comment = "Conditions météorologiques pendant l’examen"
+    CONDITIONS_METEO: (
+      couvert_pluvieux,
+      bruine,
+      pluie,
+      chute_neige,
+      beau_sec,
+      inconnu
+    );
+END EXAMEN;
+
+!!@ comment = "Association"
+ASSOCIATION EXAMEN_POINT_TRONCONAssoc =
+  POINT_TRONCONRef (EXTERNAL) -- {0..1} SIA405_EAUX_USEES_2020_1_LV95.SIA405_Eaux_usees.POINT_TRONCON;
+  EXAMEN_POINT_TRONCONAssocRef -- {0..*} EXAMEN;
+END EXAMEN_POINT_TRONCONAssoc;
+
+!!@ comment = "Cette classe est la classe de base de toutes les observations de dommages, tant de l’inspection visuelle de canalisations d’évacuation des eaux que de l’inspection de regards de visite."
+CLASS DOMMAGE (ABSTRACT) EXTENDS VSA_BaseClass =
+  ATTRIBUTE
+    !!@ comment = "Remarques libres concernant une observation"
+    COMMENTAIRES: Commentaire;
+    !!@ comment = "Paramètres de projection spéciaux pour le positionnement à l’intérieur d’un fichier de film pour la technique vidéo scanner ou numérique."
+    PARAMETRES_PROJECTION: Parametres_projection;
+    !!@ comment = "Définit la classe de dommages d’un dommage unique. La répartition en classes d’état (Z0-Z4) s’effectue sur la base de la nature et de l’étendue des dommages. Un ouvrage d'assainissement peut être classé directement ou chaque dommage peut d’abord être classé séparément. (A la fin, le dommage le plus important détermine le classement de l’ensemble de la canalisation (OUVRAGE_RESEAU_AS.ETAT_CONSTRUCTIF)."
+    CLASSE_DOMMAGE_UNIQUE: (
+      EZ0,
+      EZ1,
+      EZ2,
+      EZ3,
+      EZ4,
+      inconnu
+    );
+    !!@ comment = "Codes pour le début et la fin d’un dommage à un tronçon. Indications exactes sous 2.1.2 resp. 3.1.2."
+    DOMMAGE_TRONCONS: Dommage_troncons;
+    !!@ comment = "Indication d’une observation au niveau d’un assemblage (2.1.7) ou Observation entre deux éléments de regard de visite adjacents (3.1.7). Correspond dans la SN EN 13508 à oui = « A », non = vide"
+    RACCORDEMENT: (
+      oui,
+      non
+    );
+    !!@ comment = "Zählerstand auf einem analogen Videoband oder in einer digitalen Videodatei, in Echtzeit"
+    RELEVE_COMPTEUR_VIDEO: XMLReleve_compteur_video;
+END DOMMAGE;
+
+!!@ comment = "Composition"
+ASSOCIATION DOMMAGE_EXAMENAssoc =
+  EXAMENRef  -<#> {1} EXAMEN;
+  DOMMAGE_EXAMENAssocRef -- {0..*} DOMMAGE;
+END DOMMAGE_EXAMENAssoc;
+
+!!@ comment = "Cette classe est déduite de la classe « Dommage », c.-à-d. qu’elle hérite tous les attributs de cette classe."
+CLASS DOMMAGE_AUX_CANALISATIONS EXTENDS DOMMAGE =
+  ATTRIBUTE
+    !!@ comment = "Longueur entre le début de la canalisation et l’observation (cf. paragraphe 2.1.1) en m avec deux chiffres après la virgule."
+    DISTANCE: MANDATORY 0.00 .. 30000.00 [m];
+    !!@ comment = "Domaine de valeur prédéfini: Code valide sur la base de la SN EN 13508-2. Tous les codes valides sont mentionnés dans le chapitre 2 de la directive."
+    CODE_DOMMAGE_CANALISATIONS: MANDATORY (
+      !!@ comment = "Modification de la section transversale de la canalisation"
+      AECXA,
+      !!@ comment = "Modification de la section transversale de la canalisation: ovoïde"
+      AECXB,
+      !!@ comment = "Modification de la section transversale de la canalisation: circulaire"
+      AECXC,
+      !!@ comment = "Modification de la section transversale de la canalisation: fer à cheval"
+      AECXD,
+      !!@ comment = "Modification de la section transversale de la canalisation: profil ouvert"
+      AECXE,
+      !!@ comment = "Modification de la section transversale de la canalisation: rectangulaire"
+      AECXF,
+      !!@ comment = "Modification de la section transversale de la canalisation: profil spéciale"
+      AECXG,
+      !!@ comment = "Modification de la section transversale de la canalisation: profil inconnue"
+      AECXH,
+      !!@ comment = "Changement du matériau de la canalisation"
+      AEDXA,
+      !!@ comment = "Changement du matériau de la canalisation: béton amianté"
+      AEDXB,
+      !!@ comment = "Changement du matériau de la canalisation: béton normal"
+      AEDXC,
+      !!@ comment = "Changement du matériau de la canalisation: béton local"
+      AEDXD,
+      !!@ comment = "Changement du matériau de la canalisation: béton de tube de fonçage"
+      AEDXE,
+      !!@ comment = "Changement du matériau de la canalisation: béton spécial"
+      AEDXF,
+      !!@ comment = "Changement du matériau de la canalisation: béton"
+      AEDXG,
+      !!@ comment = "Changement du matériau de la canalisation: fibrociment"
+      AEDXH,
+      !!@ comment = "Changement du matériau de la canalisation: terre cuite"
+      AEDXI,
+      !!@ comment = "Changement du matériau de la canalisation: fonte ductile"
+      AEDXJ,
+      !!@ comment = "Changement du matériau de la canalisation: fonte grise"
+      AEDXK,
+      !!@ comment = "Changement du matériau de la canalisation: résine époxyde"
+      AEDXL,
+      !!@ comment = "Changement du matériau de la canalisation: polyéthylène dur"
+      AEDXM,
+      !!@ comment = "Changement du matériau de la canalisation: polyester GUP"
+      AEDXN,
+      !!@ comment = "Changement du matériau de la canalisation: polyéthylène"
+      AEDXO,
+      !!@ comment = "Changement du matériau de la canalisation: polypropylène"
+      AEDXP,
+      !!@ comment = "Changement du matériau de la canalisation: chlorure de polyvinyle (PVC)"
+      AEDXQ,
+      !!@ comment = "Changement du matériau de la canalisation: plastique inconnu"
+      AEDXR,
+      !!@ comment = "Changement du matériau de la canalisation: acier"
+      AEDXS,
+      !!@ comment = "Changement du matériau de la canalisation: acier inoxydable"
+      AEDXT,
+      !!@ comment = "Changement du matériau de la canalisation: grès céramique"
+      AEDXU,
+      !!@ comment = "Changement du matériau de la canalisation: terre cuite"
+      AEDXV,
+      !!@ comment = "Changement du matériau de la canalisation: matériau inconnu"
+      AEDXW,
+      !!@ comment = "Changement du matériau de la canalisation: ciment"
+      AEDXX,
+      !!@ comment = "Nouvelle longueur"
+      AEF,
+      !!@ comment = "Canalisation déformée verticalement"
+      BAAA,
+      !!@ comment = "Canalisation déformée horizontalement"
+      BAAB,
+      !!@ comment = "Fissure superficielle (micro-fissure) longitudinale"
+      BABAA,
+      !!@ comment = "Fissure superficielle (micro-fissure) radiale"
+      BABAB,
+      !!@ comment = "Fissure superficielle (micro-fissure), formation complexe de fissures"
+      BABAC,
+      !!@ comment = "Fissure superficielle (micro-fissure), formation hélicoïdale de fissures"
+      BABAD,
+      !!@ comment = "Fissure superficielle (microfissure), fissuration en étoile"
+      BABAE,
+      !!@ comment = "Fissure longitudinale"
+      BABBA,
+      !!@ comment = "Fissure radiale"
+      BABBB,
+      !!@ comment = "Fissure, formation complexe de fissures"
+      BABBC,
+      !!@ comment = "Fissure, formation hélicoïdale de fissures"
+      BABBD,
+      !!@ comment = "Fissure, fissuration en étoile"
+      BABBE,
+      !!@ comment = "Fissure béante, longitudinale"
+      BABCA,
+      !!@ comment = "Fissure béante, radiale"
+      BABCB,
+      !!@ comment = "Fissure béante, formation complexe de fissures"
+      BABCC,
+      !!@ comment = "Fissure béante, formation hélicoïdale de fissures"
+      BABCD,
+      !!@ comment = "Fissure béante, fissuration en étoile"
+      BABCE,
+      !!@ comment = "Formation d’éclats"
+      BACA,
+      !!@ comment = "Éclat / partie de paroi manquants (trou)"
+      BACB,
+      !!@ comment = "Rupture / effondrement"
+      BACC,
+      !!@ comment = "Maçonnerie défectueuse, briques ou éléments de maçonnerie déplacés"
+      BADA,
+      !!@ comment = "Maçonnerie défectueuse, briques ou éléments de maçonnerie manquants"
+      BADB,
+      !!@ comment = "Maçonnerie défectueuse, radier affaissé"
+      BADC,
+      !!@ comment = "Maçonnerie défectueuse, effondrement"
+      BADD,
+      !!@ comment = "Tout ou partie du mortier de la maçonnerie est manquant(e)"
+      BAE,
+      !!@ comment = "Paroi de la canalisation rugueuse par dégradation mécanique"
+      BAFAA,
+      !!@ comment = "Paroi de la canalisation rugueuse par attaque chimique"
+      BAFAB,
+      !!@ comment = "Paroi de la canalisation rugueuse par attaque chimique sur la partie supérieure du tuyau"
+      BAFAC,
+      !!@ comment = "Paroi de la canalisation rugueuse par attaque chimique sur la partie inférieure du tuyau"
+      BAFAD,
+      !!@ comment = "Paroi de la canalisation rugueuse, cause pas clairement identifiable"
+      BAFAE,
+      !!@ comment = "Paroi de la canalisation rugueuse, autre cause"
+      BAFAZ,
+      !!@ comment = "Écaillage par dégradation mécanique"
+      BAFBA,
+      !!@ comment = "Écaillage, cause pas clairement identifiable"
+      BAFBE,
+      !!@ comment = "Écaillage, autre cause "
+      BAFBZ,
+      !!@ comment = "Agrégats visibles par dégradation mécanique"
+      BAFCA,
+      !!@ comment = "Agrégats visibles par attaque chimique"
+      BAFCB,
+      !!@ comment = "Agrégats visibles par attaque chimique sur la partie supérieure du tuyau"
+      BAFCC,
+      !!@ comment = "Agrégats visibles par attaque chimique sur la partie inférieure du tuyau"
+      BAFCD,
+      !!@ comment = "Agrégats visibles, cause pas clairement identifiable"
+      BAFCE,
+      !!@ comment = "Agrégats visibles, autre cause "
+      BAFCZ,
+      !!@ comment = "Agrégats intrusifs en raison de dommages mécaniques"
+      BAFDA,
+      !!@ comment = "Agrégats intrusifs par attaque chimique"
+      BAFDB,
+      !!@ comment = "Agrégats intrusifs par attaque chimique sur la partie supérieure du tuyau"
+      BAFDC,
+      !!@ comment = "Agrégats intrusifs par attaque chimique sur la partie inférieure du tuyau"
+      BAFDD,
+      !!@ comment = "Agrégats intrusifs, cause pas clairement identifiable"
+      BAFDE,
+      !!@ comment = "Agrégats intrusifs, autre cause"
+      BAFDZ,
+      !!@ comment = "Agrégats  manquants par dégradation mécanique"
+      BAFEA,
+      !!@ comment = "Agrégats  manquants par attaque chimique"
+      BAFEB,
+      !!@ comment = "Agrégats manquants par attaque chimique sur la partie supérieure du tuyau"
+      BAFEC,
+      !!@ comment = "Agrégats manquants par attaque chimique sur la partie inférieure du tuyau"
+      BAFED,
+      !!@ comment = "Agrégats manquants, cause pas clairement identifiable"
+      BAFEE,
+      !!@ comment = "Agrégats manquants, autre cause "
+      BAFEZ,
+      !!@ comment = "Armature visible par dégradation mécanique"
+      BAFFA,
+      !!@ comment = "Armature visible par attaque chimique"
+      BAFFB,
+      !!@ comment = "Armature visible par attaque chimique sur la partie supérieure du tuyau"
+      BAFFC,
+      !!@ comment = "Armature visible par attaque chimique sur la partie inférieure du tuyau"
+      BAFFD,
+      !!@ comment = "Armature visible, cause pas clairement identifiable"
+      BAFFE,
+      !!@ comment = "Armature visible, autre cause "
+      BAFFZ,
+      !!@ comment = "Armature dépassant de la surface par dégradation mécanique"
+      BAFGA,
+      !!@ comment = "Armature dépassant de la surface par attaque chimique"
+      BAFGB,
+      !!@ comment = "Armature dépassant de la surface par attaque chimique sur la partie supérieure du tuyau"
+      BAFGC,
+      !!@ comment = "Armature dépassant de la surface par attaque chimique sur la partie inférieure du tuyau"
+      BAFGD,
+      !!@ comment = "Armature dépassant de la surface, cause pas clairement identifiable"
+      BAFGE,
+      !!@ comment = "Armature dépassant de la surface, autre cause "
+      BAFGZ,
+      !!@ comment = "Armature corrodée par attaque chimique"
+      BAFHB,
+      !!@ comment = "Armature corrodée par attaque chimique sur la partie supérieure du tuyau"
+      BAFHC,
+      !!@ comment = "Armature corrodée par attaque chimique sur la partie inférieure du tuyau"
+      BAFHD,
+      !!@ comment = "Armature corrodée, cause pas clairement identifiable"
+      BAFHE,
+      !!@ comment = "Paroi manquante par dégradation mécanique"
+      BAFIA,
+      !!@ comment = "Paroi manquante par attaque chimique"
+      BAFIB,
+      !!@ comment = "Paroi manquante par attaque chimique sur la partie supérieure du tuyau"
+      BAFIC,
+      !!@ comment = "Paroi manquante par attaquechimique sur la partie inférieure du tuyau"
+      BAFID,
+      !!@ comment = "Paroi manquante, cause pas clairement identifiable"
+      BAFIE,
+      !!@ comment = "Paroi manquante, autre cause "
+      BAFIZ,
+      !!@ comment = "Paroi corrodée par attaque chimique"
+      BAFJB,
+      !!@ comment = "Paroi corrodée par attaque chimique sur la partie supérieure du tuyau"
+      BAFJC,
+      !!@ comment = "Paroi corrodée par attaque chimique sur la partie inférieure du tuyau"
+      BAFJD,
+      !!@ comment = "Paroi corrodée, cause pas clairement identifiable"
+      BAFJE,
+      !!@ comment = "Paroi corrodée, autre cause"
+      BAFJZ,
+      !!@ comment = "Bosse par dégradation mécanique"
+      BAFKA,
+      !!@ comment = "Bosse, cause pas clairement identifiable"
+      BAFKE,
+      !!@ comment = "Boss, autre cause "
+      BAFKZ,
+      !!@ comment = "Dégradation de surface par dégradation mécanique"
+      BAFZA,
+      !!@ comment = "Dégradation de surface par attaque chimique"
+      BAFZB,
+      !!@ comment = "Dégradation de surface par attaque chimique sur la partie supérieure du tuyau "
+      BAFZC,
+      !!@ comment = "Dégradation de surface par attaque chimique sur la partie inférieure du tuyau"
+      BAFZD,
+      !!@ comment = "Dégradation de surface, cause pas clairement identifiable "
+      BAFZE,
+      !!@ comment = "Dégradation de surface, autre cause "
+      BAFZZ,
+      !!@ comment = "Branchement pénétrant"
+      BAGA,
+      !!@ comment = "Raccordement à position incorrecte"
+      BAHA,
+      !!@ comment = "Raccordement en retrait"
+      BAHB,
+      !!@ comment = "Raccordement incomplet"
+      BAHC,
+      !!@ comment = "Raccordement endommagé"
+      BAHD,
+      !!@ comment = "Raccordement obstrué"
+      BAHE,
+      !!@ comment = "Raccordement défectueux"
+      BAHZ,
+      !!@ comment = "Joint d’étanchéité déplacé"
+      BAIAA,
+      !!@ comment = "Joint d’étanchéité saillant, mais non rompu, point le plus bas au-dessus du milieu de la canalisation"
+      BAIAB,
+      !!@ comment = "Joint d’étanchéité saillant, mais non rompu, point le plus bas au-dessous du milieu de la canalisation"
+      BAIAC,
+      !!@ comment = "Joint d’étanchéité rompu"
+      BAIAD,
+      !!@ comment = "Joint d’étanchéité apparent"
+      BAIZ,
+      !!@ comment = "Assemblage déboîté"
+      BAJA,
+      !!@ comment = "Assemblage déplacé"
+      BAJB,
+      !!@ comment = "Assemblage dévié"
+      BAJC,
+      !!@ comment = "Revêtement détaché"
+      BAKA,
+      !!@ comment = "Revêtement décoloré"
+      BAKB,
+      !!@ comment = "Extrémité du revêtement défectueuse"
+      BAKC,
+      !!@ comment = "Revêtement ondulé longitudinalement"
+      BAKDA,
+      !!@ comment = "Revêtement ondulé radialement"
+      BAKDB,
+      !!@ comment = "Revêtement ondulé de façon complexe"
+      BAKDC,
+      !!@ comment = "Revêtement ondulé en forme de spirale"
+      BAKDD,
+      !!@ comment = "Bulles/bosses dans la doublure intérieure"
+      BAKE,
+      !!@ comment = "Bosse de la doublure intérieure vers l’extérieur"
+      BAKF,
+      !!@ comment = "Décollement de la peau intérieure/du revêtement"
+      BAKG,
+      !!@ comment = "Dégradation de la couture de connexion"
+      BAKH,
+      !!@ comment = "Fissure ou espace dans la doublure intérieure (y compris la soudure défectueuse)"
+      BAKI,
+      !!@ comment = "Trou dans la doublure intérieure"
+      BAKJ,
+      !!@ comment = "Connexion de la doublure défectueuse"
+      BAKK,
+      !!@ comment = "Le matériau de la doublure semble mou"
+      BAKL,
+      !!@ comment = "La résine manque dans le stratifié"
+      BAKM,
+      !!@ comment = "La fin de la doublure n’est pas scellée"
+      BAKN,
+      !!@ comment = "Revêtement intérieur défectueux "
+      BAKZ,
+      !!@ comment = "Réparation défectueuse, paroi manquante"
+      BALA,
+      !!@ comment = "Réparation d’un trou défectueuse"
+      BALB,
+      !!@ comment = "Le matériau de réparation se désolidarise de l’ancien tuyau"
+      BALC,
+      !!@ comment = "Le matériel de réparation est manquant à la surface de contact"
+      BALD,
+      !!@ comment = "Matériel de réparation en excès, obstacle"
+      BALE,
+      !!@ comment = "Trou dans le matériel de réparation"
+      BALF,
+      !!@ comment = "Fissure dans le matériau de réparation, longitudinal"
+      BALGA,
+      !!@ comment = "Fissure dans le matériau de réparation, radial"
+      BALGB,
+      !!@ comment = "Fissure dans le matériau de réparation, complexe"
+      BALGC,
+      !!@ comment = "Fissure dans le matériau de réparation, en spirale"
+      BALGD,
+      !!@ comment = "Autre réparation défectueuse"
+      BALZ,
+      !!@ comment = "Défaut de soudage vertical"
+      BAMA,
+      !!@ comment = "Défaut de soudage radial"
+      BAMB,
+      !!@ comment = "Défaut de soudage hélicoïdal"
+      BAMC,
+      !!@ comment = "Conduite poreuse"
+      BAN,
+      !!@ comment = "Sol visible"
+      BAO,
+      !!@ comment = "Vide visible"
+      BAP,
+      !!@ comment = "Grosse racine isolée"
+      BBAA,
+      !!@ comment = "Radicelles"
+      BBAB,
+      !!@ comment = "Ensemble complexe de racines"
+      BBAC,
+      !!@ comment = "Concrétions (calcifié)"
+      BBBA,
+      !!@ comment = "Graisse"
+      BBBB,
+      !!@ comment = "Encrassement"
+      BBBC,
+      !!@ comment = "Autres substances adhérentes"
+      BBBZ,
+      !!@ comment = "Dépôts lâches, sable"
+      BBCA,
+      !!@ comment = "Dépôts lâches, gravier"
+      BBCB,
+      !!@ comment = "Dépôts durs"
+      BBCC,
+      !!@ comment = "Autres dépôts "
+      BBCZ,
+      !!@ comment = "Entrée de sable"
+      BBDA,
+      !!@ comment = "Entrée d’humus"
+      BBDB,
+      !!@ comment = "Entrée de matériau fin"
+      BBDC,
+      !!@ comment = "Entrée de gravier"
+      BBDD,
+      !!@ comment = "Entrée de terre"
+      BBDZ,
+      !!@ comment = "Obstacle: briquetage ou élément de maçonnerie tombé"
+      BBEA,
+      !!@ comment = "Obstacle: fragment de canalisation brisé"
+      BBEB,
+      !!@ comment = "Objet gisant sur le radier"
+      BBEC,
+      !!@ comment = "Obstacle dépassant de la paroi"
+      BBED,
+      !!@ comment = "Obstacle coincé dans l’assemblage"
+      BBEE,
+      !!@ comment = "Obstacle dépassant de l’assemblage dans la canalisation principale"
+      BBEF,
+      !!@ comment = "Conduites externes ou câbles traversant la canalisation"
+      BBEG,
+      !!@ comment = "Obstacle intégré à la structure"
+      BBEH,
+      !!@ comment = "Obstacle"
+      BBEZ,
+      !!@ comment = "Infiltration: suintement / entartrage"
+      BBFA,
+      !!@ comment = "Infiltration: goutte à goutte"
+      BBFB,
+      !!@ comment = "Infiltration: écoulement"
+      BBFC,
+      !!@ comment = "Infiltration: jaillissement"
+      BBFD,
+      !!@ comment = "Fuite visible de la canalisation"
+      BBG,
+      !!@ comment = "Rats dans la canalisation"
+      BBHAA,
+      !!@ comment = "Rats dans le raccordement"
+      BBHAB,
+      !!@ comment = "Rats dans l’assemblage ouvert"
+      BBHAC,
+      !!@ comment = "Rats"
+      BBHAZ,
+      !!@ comment = "Cafards dans la canalisation"
+      BBHBA,
+      !!@ comment = "Cafards dans le raccordement"
+      BBHBB,
+      !!@ comment = "Cafards dans l’assemblage ouvert"
+      BBHBC,
+      !!@ comment = "Cafards"
+      BBHBZ,
+      !!@ comment = "Animaux dans la canalisation"
+      BBHZA,
+      !!@ comment = "Animaux dans le raccordement"
+      BBHZB,
+      !!@ comment = "Animaux dans l’assemblage ouvert"
+      BBHZC,
+      !!@ comment = "Animaux"
+      BBHZZ,
+      !!@ comment = "Raccordement avec pièce préfabriquée"
+      BCAAA,
+      !!@ comment = "Raccordement avec pièce préfabriquée fermée"
+      BCAAB,
+      !!@ comment = "Piquage latéral carotté"
+      BCABA,
+      !!@ comment = "Piquage latéral carotté fermé"
+      BCABB,
+      !!@ comment = "Piquage latéral buriné"
+      BCACA,
+      !!@ comment = "Piquage latéral buriné fermé"
+      BCACB,
+      !!@ comment = "Raccordement carotté"
+      BCADA,
+      !!@ comment = "Raccordement carotté fermé"
+      BCADB,
+      !!@ comment = "Raccordement buriné"
+      BCAEA,
+      !!@ comment = "Raccordement buriné fermé"
+      BCAEB,
+      !!@ comment = "Raccord spécial"
+      BCAFA,
+      !!@ comment = "Raccord spécial fermé"
+      BCAFB,
+      !!@ comment = "Type de raccord inconnu"
+      BCAGA,
+      !!@ comment = "Type de raccord inconnu fermé"
+      BCAGB,
+      !!@ comment = "Raccordement autre"
+      BCAZA,
+      !!@ comment = "Raccordement autre fermé"
+      BCAZB,
+      !!@ comment = "Réparation, remplacement de la canalisation"
+      BCBA,
+      !!@ comment = "Réparation, revêtement intérieur localisé"
+      BCBB,
+      !!@ comment = "Réparation, injection de mortier"
+      BCBC,
+      !!@ comment = "Réparation, injection"
+      BCBD,
+      !!@ comment = "Trou réparé"
+      BCBE,
+      !!@ comment = "Réparation, revêtement intérieur du Raccordement localisé"
+      BCBF,
+      !!@ comment = "Autre réparation du raccordement"
+      BCBG,
+      !!@ comment = "Autre réparation sans tranchée"
+      BCBZ,
+      !!@ comment = "Courbure vers la gauche et vers le haut"
+      BCCAA,
+      !!@ comment = "Courbure vers la gauche et vers le bas"
+      BCCAB,
+      !!@ comment = "Courbure vers la gauche"
+      BCCAY,
+      !!@ comment = "Courbure vers la droite et vers le haut"
+      BCCBA,
+      !!@ comment = "Courbure vers la droite et vers le bas"
+      BCCBB,
+      !!@ comment = "Courbure vers la droite"
+      BCCBY,
+      !!@ comment = "Courbure vers le haut"
+      BCCYA,
+      !!@ comment = "Courbure vers le bas"
+      BCCYB,
+      !!@ comment = "Début de la canalisation"
+      BCD,
+      !!@ comment = "Début de la mesure de distance"
+      BCDXP,
+      !!@ comment = "Fin de la canalisation"
+      BCE,
+      !!@ comment = "Fin de la mesure de distance"
+      BCEXP,
+      !!@ comment = "Etat général, exemple de photo"
+      BDA,
+      !!@ comment = "<aucun texte>"
+      BDB,
+      !!@ comment = "A Début de l’examen avec une caméra (norme)"
+      BDBA,
+      !!@ comment = "B Inspection possible seulement après nettoyage"
+      BDBB,
+      !!@ comment = "C Inspection effectuée à une date ultérieure"
+      BDBC,
+      !!@ comment = "F L’inspection se fait depuis l’autre côté"
+      BDBF,
+      !!@ comment = "G Caméra non utilisable, regard de visite bloqué par un véhicule"
+      BDBG,
+      !!@ comment = "H Caméra non utilisable, regard de visite non accessible"
+      BDBH,
+      !!@ comment = "I Caméra non utilisable, regard de visite ne pouvant être ouvert"
+      BDBI,
+      !!@ comment = "J Caméra non utilisable"
+      BDBJ,
+      !!@ comment = "M Inspection impossible depuis le côté opposé"
+      BDBM,
+      !!@ comment = "Inspection abandonnée, obstruction, objectif d’inspection atteint"
+      BDCAA,
+      !!@ comment = "Inspection abandonnée, obstruction, le client renonce à une inspection plus pous- sée"
+      BDCAB,
+      !!@ comment = "Inspection abandonnée, obstruction, côté opposé atteint"
+      BDCAC,
+      !!@ comment = "Inspection abandonnée, obstruction, côté opposé non atteint"
+      BDCAD,
+      !!@ comment = "Inspection abandonnée, obstruction, pas clair si le côté opposé est atteint"
+      BDCAE,
+      !!@ comment = "Inspection abandonnée, obstruction"
+      BDCAZ,
+      !!@ comment = "Inspection abandonnée, niveau d’eau trop élevé, objectif d’inspection atteint"
+      BDCBA,
+      !!@ comment = "Inspection abandonnée, niveau d’eau trop élevé, le client renonce à une inspection plus poussée"
+      BDCBB,
+      !!@ comment = "Inspection abandonnée, niveau d’eau trop élevé, côté opposé atteint"
+      BDCBC,
+      !!@ comment = "Inspection abandonnée, niveau d’eau trop élevé, côté opposé non atteint"
+      BDCBD,
+      !!@ comment = "Inspection abandonnée, niveau d’eau trop élevé, pas clair si le côté opposé est atteint"
+      BDCBE,
+      !!@ comment = "Inspection abandonnée, niveau d’eau trop élevé (plus de détails requis dans la note)"
+      BDCBZ,
+      !!@ comment = "Inspection abandonnée, caméra défectueuse, objectif d’inspection atteint"
+      BDCCA,
+      !!@ comment = "Inspection abandonnée, caméra défectueuse, le client renonce à une inspection plus poussée"
+      BDCCB,
+      !!@ comment = "Inspection abandonnée, caméra défectueuse, côté opposé atteint"
+      BDCCC,
+      !!@ comment = "Inspection abandonnée, caméra défectueuse, côté opposé non atteint"
+      BDCCD,
+      !!@ comment = "Inspection abandonnée, caméra défectueuse, pas clair si le côté opposé est atteint"
+      BDCCE,
+      !!@ comment = "Inspection abandonnée, caméra défectueuse, (plus de détails requis dans la note)"
+      BDCCZ,
+      !!@ comment = "Inspection abandonnée, autre raison ; (plus de détails requis dans la note)"
+      BDCZA,
+      !!@ comment = "Inspection abandonnée, autre raison , le client s’abstient de toute autre inspec- tion, (plus de détails requis dans la note)"
+      BDCZB,
+      !!@ comment = "Inspection abandonnée, autre raison, côté opposé atteint (plus de détails requis dans la note)"
+      BDCZC,
+      !!@ comment = "Inspection abandonnée, autre raison, côté opposé non atteint (plus de détails requis dans la note)"
+      BDCZD,
+      !!@ comment = "Inspection abandonnée, autre raison, pas clair si le côté opposé est atteint (plus de détails requis dans la note)"
+      BDCZE,
+      !!@ comment = "Inspection abandonnée, autre raison, (plus de détails requis dans la note)"
+      BDCZZ,
+      !!@ comment = "Niveau d’eau, effluent clair"
+      BDDA,
+      !!@ comment = "Niveau d’eau, effluent trouble"
+      BDDC,
+      !!@ comment = "Niveau d’eau, effluent coloré"
+      BDDD,
+      !!@ comment = "Niveau d’eau, effluent trouble et coloré"
+      BDDE,
+      !!@ comment = "Mauvais raccordement, arrivées d’eaux claires, des eaux usées se déversent dans les eaux pluviales"
+      BDEAA,
+      !!@ comment = "Mauvais raccordement, arrivées d’eaux claires, des eaux pluviales se déversent dans les eaux usées"
+      BDEAB,
+      !!@ comment = "Arrivées d’eaux claires"
+      BDEAC,
+      !!@ comment = "Mauvais raccordement, arrivées d’eaux troubles, des eaux usées se déversent dans les eaux pluviales"
+      BDECA,
+      !!@ comment = "Mauvais raccordement, arrivées d’eaux troubles, des eaux pluviales se déversent dans les eaux usées"
+      BDECB,
+      !!@ comment = "Arrivées d’eaux troubles"
+      BDECC,
+      !!@ comment = "Mauvais raccordement, arrivées d’eaux colorées, des eaux usées se déversent dans les eaux pluviales"
+      BDEDA,
+      !!@ comment = "Mauvais raccordement, arrivées d’eaux colorées, des eaux pluviales se déversent dans les eaux usées"
+      BDEDB,
+      !!@ comment = "Arrivées d’eaux troubles et colorées"
+      BDEDC,
+      !!@ comment = "Mauvais raccordement, arrivées d’eaux troubles et colorées, des eaux usées se déversent dans les eaux pluviales"
+      BDEEA,
+      !!@ comment = "Mauvais raccordement, arrivées d’eaux troubles et colorées, des eaux pluviales se déversent dans les eaux usées"
+      BDEEB,
+      !!@ comment = "Arrivées d’eaux troubles et colorées"
+      BDEEC,
+      !!@ comment = "Mauvais raccordement, des eaux usées se déversent dans les eaux pluviales"
+      BDEYA,
+      !!@ comment = "Mauvais raccordement, les eaux de surface se déversent dans les eaux usées"
+      BDEYB,
+      !!@ comment = "Arrivée d’eaux usées"
+      BDEYY,
+      !!@ comment = "Danger existant: manque d’oxygène"
+      BDFA,
+      !!@ comment = "Danger existant: hydrogène sulfuré"
+      BDFB,
+      !!@ comment = "Danger existant: méthane"
+      BDFC,
+      !!@ comment = "Autres Danger existant"
+      BDFZ,
+      !!@ comment = "Visibilité nulle, caméra sous l’eau"
+      BDGA,
+      !!@ comment = "Visibilité nulle, envasement"
+      BDGB,
+      !!@ comment = "Visibilité nulle, vapeur"
+      BDGC,
+      !!@ comment = "Visibilité nulle, autre raison "
+      BDGZ
+    );
+    !!@ comment = "Quantification 1 selon la SN EN 13508-2. Les entrées autorisées sont décrites dans les chapitres 2.3 - 2.6"
+    QUANTIFICATION1: QuantificationCanalisation;
+    !!@ comment = "Quantification 2 selon la SN EN 13508. Les entrées autorisées sont décrites dans le chapitre 2.3 - 2.6"
+    QUANTIFICATION2: QuantificationCanalisation;
+    !!@ comment = "Emplacement circonférentiel: Début du dommage. Valeurs et procédure sont décrites en détail dans le paragraphe 2.1.6."
+    DEBUT_DOMMAGE: MANDATORY Cadran;
+    !!@ comment = "Emplacement circonférentiel: Fin du dommage. Valeurs et procédure sont décrites en détail dans le paragraphe 2.1.6."
+    FIN_DOMMAGE: MANDATORY Cadran;
+END DOMMAGE_AUX_CANALISATIONS;
+
+!!@ comment = "Cette classe est déduite de la classe « Dommage », c.-à-d. qu’elle reprend tous les attributs de cette classe."
+CLASS DOMMAGE_CHAMBRE_STANDARD EXTENDS DOMMAGE =
+  ATTRIBUTE
+    !!@ comment = "Longueur entre le bord supérieur du couvercle et l’observation (cf. paragraphe 3.1.1) en m avec deux chiffres après la virgule."
+    DISTANCE: 0.00 .. 30000.00 [m];
+    !!@ comment = "Quantification 1 selon la SN EN 13508. Les entrées autorisées sont décrites dans le chapitre 3.1.5. Type texte."
+    QUANTIFICATION1: Quantification_chambre;
+    !!@ comment = "Quantification 2 selon la SN EN 13508. Les entrées autorisées sont décrites dans le chapitre 3.1.5. Type texte"
+    QUANTIFICATION2: Quantification_chambre;
+    !!@ comment = "Domaine où une observation est faite. Les valeurs sont décrites dans 3.1.9."
+    DOMAINE_REGARD_VISITE: (
+      !!@ comment = "A Tampon du regard et cadre"
+      A,
+      !!@ comment = "B Col du regard de visite"
+      B,
+      !!@ comment = "D Cône de réduction"
+      D,
+      !!@ comment = "F Chambre"
+      F,
+      !!@ comment = "H Banquette"
+      H,
+      !!@ comment = "I Cunette"
+      I,
+      !!@ comment = "J Radier"
+      J
+    );
+    !!@ comment = "Domaine de valeur prédéfini: Code valide sur la base de la SN EN 13508-2. Tous les codes valides sont mentionnés dans le chapitre 3 de la directive."
+    CODE_DOMMAGE_CHAMBRE_STANDARD: MANDATORY (
+      !!@ comment = "Déformation générale"
+      DAAA,
+      !!@ comment = "Déformation localisée"
+      DAAB,
+      !!@ comment = "Fissure superficielle (micro-fissure) verticale"
+      DABAA,
+      !!@ comment = "Fissure superficielle (micro-fissure) horizontale"
+      DABAB,
+      !!@ comment = "Fissure superficielle (micro-fissure), formation complexe de fissures"
+      DABAC,
+      !!@ comment = "Fissure superficielle (micro-fissure), formation inclinée de fissures"
+      DABAD,
+      !!@ comment = "Fissure superficielle (microfissure), fissuration en étoile"
+      DABAE,
+      !!@ comment = "Fissure verticale"
+      DABBA,
+      !!@ comment = "Fissure horizontale"
+      DABBB,
+      !!@ comment = "Fissure, formation complexe de fissures"
+      DABBC,
+      !!@ comment = "Fissure, formation inclinée de fissures"
+      DABBD,
+      !!@ comment = "Fissure, fissuration en étoile"
+      DABBE,
+      !!@ comment = "Fissure béante, verticale"
+      DABCA,
+      !!@ comment = "Fissure béante, horizontale"
+      DABCB,
+      !!@ comment = "Fissure béante, formation complexe de fissures"
+      DABCC,
+      !!@ comment = "Fissure béante, formation inclinée de fissures"
+      DABCD,
+      !!@ comment = "Fissure béante, fissuration en étoile"
+      DABCE,
+      !!@ comment = "Formation d’éclats"
+      DACA,
+      !!@ comment = "Éclat / partie de paroi manquante"
+      DACB,
+      !!@ comment = "Effondrement"
+      DACC,
+      !!@ comment = "Maçonnerie défectueuse, briques ou éléments de maçonnerie déplacés"
+      DADA,
+      !!@ comment = "Maçonnerie défectueuse, briques ou éléments de maçonnerie manquants"
+      DADB,
+      !!@ comment = "Maçonnerie défectueuse, effondrement"
+      DADC,
+      !!@ comment = "Tout ou partie du mortier de la maçonnerie est manquant(e)"
+      DAE,
+      !!@ comment = "Paroi de la canalisation rugueuse par dégradation mécanique"
+      DAFAA,
+      !!@ comment = "Paroi de la canalisation rugueuse par attaque chimique"
+      DAFAB,
+      !!@ comment = "Paroi de la canalisation rugueuse par attaque chimique sur la partie supérieure du tuyau"
+      DAFAC,
+      !!@ comment = "Paroi de la canalisation rugueuse par attaque chimique sur la partie inférieure du tuyau"
+      DAFAD,
+      !!@ comment = "Paroi de la canalisation rugueuse, cause du dommage non définissable"
+      DAFAE,
+      !!@ comment = "Paroi de la canalisation rugueuse, autre cause, (plus de détails requis dans la note)"
+      DAFAZ,
+      !!@ comment = "Écaillage par dégradation mécanique"
+      DAFBA,
+      !!@ comment = "Écaillage, cause du dommage non définissable"
+      DAFBE,
+      !!@ comment = "Écaillage, autre cause"
+      DAFBZ,
+      !!@ comment = "Agrégats visibles par dégradation mécanique"
+      DAFCA,
+      !!@ comment = "Agrégats visibles par attaque chimique"
+      DAFCB,
+      !!@ comment = "Agrégats visibles par attaque chimique sur la partie supérieure du tuyau"
+      DAFCC,
+      !!@ comment = "Agrégats visibles par attaque chimique sur la partie inférieure du tuyau"
+      DAFCD,
+      !!@ comment = "Agrégats visibles, cause du dommage non définissable"
+      DAFCE,
+      !!@ comment = "Agrégats visibles, autre cause"
+      DAFCZ,
+      !!@ comment = "Agrégats intrusifs par dégradation mécanique"
+      DAFDA,
+      !!@ comment = "Agrégats intrusifs par attaque chimique"
+      DAFDB,
+      !!@ comment = "Agrégats intrusifs par attaque chimique sur la partie supérieure du tuyau"
+      DAFDC,
+      !!@ comment = "Agrégats intrusifs par attaque chimique sur la partie inférieure du tuyau"
+      DAFDD,
+      !!@ comment = "Agrégats intrusifs, cause du dommage non définissable"
+      DAFDE,
+      !!@ comment = "Agrégats intrusifs, autre cause"
+      DAFDZ,
+      !!@ comment = "Granulats manquants par dégradation mécanique"
+      DAFEA,
+      !!@ comment = "Agrégats manquants par attaque chimique"
+      DAFEB,
+      !!@ comment = "Agrégats manquants par attaque chimique sur la partie supérieure du tuyau"
+      DAFEC,
+      !!@ comment = "Agrégats manquants par attaque chimique sur la partie inférieure du tuyau"
+      DAFED,
+      !!@ comment = "Agrégats manquants, cause du dommage non définissable"
+      DAFEE,
+      !!@ comment = "Agrégats manquants, autre cause "
+      DAFEZ,
+      !!@ comment = "Armature visible par dégradation mécanique"
+      DAFFA,
+      !!@ comment = "Armature visible par attaque chimique"
+      DAFFB,
+      !!@ comment = "Armature visible par attaque chimique sur la partie supérieure du tuyau"
+      DAFFC,
+      !!@ comment = "Armature visible par attaque chimique sur la partie inférieure du tuyau"
+      DAFFD,
+      !!@ comment = "Armature visible, cause pas clairement identifiable"
+      DAFFE,
+      !!@ comment = "Armature visible, autre cause"
+      DAFFZ,
+      !!@ comment = "Armature dépassant de la surface par dégradation mécanique"
+      DAFGA,
+      !!@ comment = "Armature dépassant de la surface par attaque chimique"
+      DAFGB,
+      !!@ comment = "Armature dépassant de la surface par attaque chimique sur la partie supérieure du tuyau"
+      DAFGC,
+      !!@ comment = "Armature dépassant de la surface par attaque chimique sur la partie inférieure du tuyau"
+      DAFGD,
+      !!@ comment = "Armature dépassant de la surface, cause pas clairement identifiable"
+      DAFGE,
+      !!@ comment = "Armature dépassant de la surface, autre cause"
+      DAFGZ,
+      !!@ comment = "Armature corrodée par attaque chimique"
+      DAFHB,
+      !!@ comment = "Armature corrodée par attaque chimique sur la partie supérieure du tuyau"
+      DAFHC,
+      !!@ comment = "Armature corrodée par attaque chimique sur la partie inférieure du tuyau"
+      DAFHD,
+      !!@ comment = "Armature corrodée, cause pas clairement identifiable"
+      DAFHE,
+      !!@ comment = "Paroi manquante par dégradation mécanique"
+      DAFIA,
+      !!@ comment = "Paroi manquante par attaque chimique"
+      DAFIB,
+      !!@ comment = "Paroi manquante par attaque chimique sur la partie supérieure du tuyau"
+      DAFIC,
+      !!@ comment = "Paroi manquante par attaque chimique sur la partie inférieure du tuyau"
+      DAFID,
+      !!@ comment = "Paroi manquante, cause pas clairement identifiable"
+      DAFIE,
+      !!@ comment = "Paroi manquante, autre cause"
+      DAFIZ,
+      !!@ comment = "Corrosion par attaque chimique"
+      DAFJB,
+      !!@ comment = "Corrosion par attaque chimique sur la partie supérieure du tuyau"
+      DAFJC,
+      !!@ comment = "Corrosion par attaque chimique sur la partie inférieure du tuyau"
+      DAFJD,
+      !!@ comment = "Corrosion, cause pas clairement identifiable"
+      DAFJE,
+      !!@ comment = "Corrosion, autre cause "
+      DAFJZ,
+      !!@ comment = "Bosse due à des dommages mécaniques"
+      DAFKA,
+      !!@ comment = "Bosse, cause pas clairement identifiable"
+      DAFKE,
+      !!@ comment = "Bosse, autre cause"
+      DAFKZ,
+      !!@ comment = "Autre dégradation de surface par dégradation mécanique"
+      DAFZA,
+      !!@ comment = "Autre dégradation de surface par attaque chimique"
+      DAFZB,
+      !!@ comment = "Autre dégradation de surface par attaque chimique sur la partie supérieure du tuyau"
+      DAFZC,
+      !!@ comment = "Autre dégradation de surface par attaque chimique sur la partie inférieure du tuyau"
+      DAFZD,
+      !!@ comment = "Autre dégradation de surface, cause pas clairement identifiable (plus de détails requis dans la note)"
+      DAFZE,
+      !!@ comment = "Autre dégradation de surface, autre cause"
+      DAFZZ,
+      !!@ comment = "Branchement pénétrant"
+      DAG,
+      !!@ comment = "Raccordement à position incorrecte"
+      DAHA,
+      !!@ comment = "Raccordement en retrait"
+      DAHB,
+      !!@ comment = "Raccordement incomplet ou non étanche"
+      DAHC,
+      !!@ comment = "Raccordement endommagé"
+      DAHD,
+      !!@ comment = "Raccordement obstrué"
+      DAHE,
+      !!@ comment = "Raccordement défectueux"
+      DAHZ,
+      !!@ comment = "Joint d’étanchéité déplacé"
+      DAIAA,
+      !!@ comment = "Joint d’étanchéité pendant, mais non rompu"
+      DAIAB,
+      !!@ comment = "Joint d’étanchéité apparent, rompu"
+      DAIAC,
+      !!@ comment = "Joint d’étanchéité apparent"
+      DAIZ,
+      !!@ comment = "Assemblage déboîté d’éléments du regard de visite"
+      DAJA,
+      !!@ comment = "Elément du regard de visite déplacé"
+      DAJB,
+      !!@ comment = "Eléments du regard de visite déviés"
+      DAJC,
+      !!@ comment = "Revêtement détaché"
+      DAKA,
+      !!@ comment = "Revêtement décoloré"
+      DAKB,
+      !!@ comment = "Extrémité du revêtement défectueuse"
+      DAKC,
+      !!@ comment = "Revêtement ondulé verticalement"
+      DAKDA,
+      !!@ comment = "Revêtement ondulé horizontalement"
+      DAKDB,
+      !!@ comment = "Revêtement ondulé de façon complexe"
+      DAKDC,
+      !!@ comment = "Revêtement ondulé en forme de spirale"
+      DAKDD,
+      !!@ comment = "Revêtement cloqué"
+      DAKE,
+      !!@ comment = "Revêtement cloqué vers l’extérieur"
+      DAKF,
+      !!@ comment = "Décollement de la peau intérieure / du revêtement"
+      DAKG,
+      !!@ comment = "Décollement de la couture de connexion"
+      DAKH,
+      !!@ comment = "Fissure ou espace dans la doublure intérieure (y compris la soudure défectueuse)"
+      DAKI,
+      !!@ comment = "Trou dans la doublure"
+      DAKJ,
+      !!@ comment = "Connexion de la doublure défectueuse"
+      DAKK,
+      !!@ comment = "Le matériau de la doublure semble mou"
+      DAKL,
+      !!@ comment = "La résine manque dans le stratifié"
+      DAKM,
+      !!@ comment = "Fin de la doublure non scellée"
+      DAKN,
+      !!@ comment = "Revêtement défectueux"
+      DAKZ,
+      !!@ comment = "Réparation défectueuse, paroi manquante"
+      DALA,
+      !!@ comment = "Réparation d’un trou défectueuse"
+      DALB,
+      !!@ comment = "Le matériau de réparation se décolle du mur"
+      DALC,
+      !!@ comment = "Le matériau de réparation est manquant sur la surface de contact"
+      DALD,
+      !!@ comment = "Excédent de matériel de réparation, obstacle"
+      DALE,
+      !!@ comment = "Trou dans le matériau de réparation"
+      DALF,
+      !!@ comment = "Fissure dans le matériau de réparation, longitudinal"
+      DALG,
+      !!@ comment = "Réparation défectueuse"
+      DALZ,
+      !!@ comment = "Défaut de soudage vertical"
+      DAMA,
+      !!@ comment = "Défaut de soudage horizontal"
+      DAMB,
+      !!@ comment = "Défaut de soudage hélicoïdal"
+      DAMC,
+      !!@ comment = "Paroi du regard de visite poreuse"
+      DAN,
+      !!@ comment = "Sol visible"
+      DAO,
+      !!@ comment = "Vide visible"
+      DAP,
+      !!@ comment = "Échelon déboîté"
+      DAQA,
+      !!@ comment = "Échelon manquant"
+      DAQB,
+      !!@ comment = "Échelon corrodé"
+      DAQC,
+      !!@ comment = "Échelon plié"
+      DAQD,
+      !!@ comment = "Revêtement plastique de l'échelon brisé"
+      DAQE,
+      !!@ comment = "Main-courante de l’échelle corrodée"
+      DAQF,
+      !!@ comment = "Protection antichute déboîtée"
+      DAQG,
+      !!@ comment = "Protection antichute manquante"
+      DAQH,
+      !!@ comment = "Protection antichute corrodée"
+      DAQI,
+      !!@ comment = "Échelons d’échelle corrodés"
+      DAQJ,
+      !!@ comment = "Trou d'homme défectueux"
+      DAQK,
+      !!@ comment = "Échelle autrement défectueuse"
+      DAQZ,
+      !!@ comment = "Couvercle cassé"
+      DARA,
+      !!@ comment = "Couvercle oscillant"
+      DARB,
+      !!@ comment = "Couvercle manquant"
+      DARC,
+      !!@ comment = "Cadre brisé"
+      DARD,
+      !!@ comment = "Cadre déboîté"
+      DARE,
+      !!@ comment = "Cadre manquant"
+      DARF,
+      !!@ comment = "Couvercle trop bas"
+      DARG,
+      !!@ comment = "Couvercle trop haut"
+      DARH,
+      !!@ comment = "Couvercle défectueux"
+      DARZ,
+      !!@ comment = "Grosse racine isolée"
+      DBAA,
+      !!@ comment = "Radicelles"
+      DBAB,
+      !!@ comment = "Ensemble complexe de racines"
+      DBAC,
+      !!@ comment = "Concrétions (calcifié)"
+      DBBA,
+      !!@ comment = "Graisse"
+      DBBB,
+      !!@ comment = "Moisissement"
+      DBBC,
+      !!@ comment = "Autres substances adhérentes "
+      DBBZ,
+      !!@ comment = "Dépôts lâches, sable"
+      DBCA,
+      !!@ comment = "Dépôts lâches, gravier"
+      DBCB,
+      !!@ comment = "Dépôts durs"
+      DBCC,
+      !!@ comment = "Autres Dépôts"
+      DBCZ,
+      !!@ comment = "Entrée de terre"
+      DBD,
+      !!@ comment = "Obstacle à l’écoulement dans la cunette: briquetage ou élément de maçonnerie délogé"
+      DBEA,
+      !!@ comment = "Obstacle à l’écoulement dans la cunette: fragment de canalisation brisé"
+      DBEB,
+      !!@ comment = "Obstacle à l’écoulement dans la cunette"
+      DBEC,
+      !!@ comment = "Obstacle dépassant de la paroi"
+      DBED,
+      !!@ comment = "Obstacle coincé dans l’assemblage des éléments du regard"
+      DBEE,
+      !!@ comment = "Obstacle dépassant du raccordement"
+      DBEF,
+      !!@ comment = "Conduites externes ou câbles traversant le regard de visite"
+      DBEG,
+      !!@ comment = "Obstacle intégré à la structure du regard"
+      DBEH,
+      !!@ comment = "Autres obstacle"
+      DBEZ,
+      !!@ comment = "Infiltration: suintement / entartrage de la paroi du regard de visite"
+      DBFAA,
+      !!@ comment = "Infiltration: suintement / entartrage de l’encastrement d’un raccordement au niveau du radier"
+      DBFAB,
+      !!@ comment = "Infiltration: suintement / entartrage de l’encastrement d’un raccordement au-dessus de la banquette"
+      DBFAC,
+      !!@ comment = "Infiltration: l’eau goutte de la paroi du regard de visite"
+      DBFBA,
+      !!@ comment = "Infiltration: l’eau goutte de l’encastrement d’un raccordement au niveau du radier"
+      DBFBB,
+      !!@ comment = "Infiltration: l’eau goutte de l’encastrement d’un raccordement au-dessus de la banquette"
+      DBFBC,
+      !!@ comment = "Infiltration: l’eau s’écoule de la paroi du regard de visite"
+      DBFCA,
+      !!@ comment = "Infiltration: l’eau s’écoule de l’encastrement d’un raccordement au niveau du radier"
+      DBFCB,
+      !!@ comment = "Infiltration: l’eau s’écoule de l’encastrement d’un raccordement au-dessus de la banquette"
+      DBFCC,
+      !!@ comment = "Infiltration: l’eau jaillit de la paroi du regard de visite"
+      DBFDA,
+      !!@ comment = "Infiltration: l’eau jaillit de l’encastrement d’un raccordement au niveau du radier"
+      DBFDB,
+      !!@ comment = "Infiltration: l’eau jaillit de l’encastrement d’un raccordement au-dessus de la banquette"
+      DBFDC,
+      !!@ comment = "Fuite visible de la canalisation"
+      DBG,
+      !!@ comment = "Rats dans le regard de visite"
+      DBHAA,
+      !!@ comment = "Rats dans le raccordement"
+      DBHAB,
+      !!@ comment = "Rats dans l’assemblage ouvert du regard de visite"
+      DBHAC,
+      !!@ comment = "Rats"
+      DBHAZ,
+      !!@ comment = "Cafards dans le regard de visite"
+      DBHBA,
+      !!@ comment = "Cafards dans le raccordement"
+      DBHBB,
+      !!@ comment = "Cafards dans l’assemblage ouvert du regard de visite"
+      DBHBC,
+      !!@ comment = "Cafards"
+      DBHBZ,
+      !!@ comment = "Animaux dans le regard de visite"
+      DBHZA,
+      !!@ comment = "Animaux dans le raccordement"
+      DBHZB,
+      !!@ comment = "Animaux dans l’assemblage ouvert du regard de visite"
+      DBHZC,
+      !!@ comment = "Animaux"
+      DBHZZ,
+      !!@ comment = "Raccordement dans la banquette"
+      DCAA,
+      !!@ comment = "Raccordement à la cunette"
+      DCAB,
+      !!@ comment = "Raccordement au col de cygne"
+      DCAC,
+      !!@ comment = "Raccordement au col de cygne interne"
+      DCAD,
+      !!@ comment = "Raccordement incliné externe"
+      DCAE,
+      !!@ comment = "Canalisation d’aération"
+      DCAF,
+      !!@ comment = "Raccordement"
+      DCAZ,
+      !!@ comment = "Réparation, partie de la paroi du regard de visite remplacée"
+      DCBA,
+      !!@ comment = "Réparation, revêtement localisé"
+      DCBB,
+      !!@ comment = "Réparation, injection"
+      DCBC,
+      !!@ comment = "Trou réparé"
+      DCBD,
+      !!@ comment = "Réparation, doublure du revêtement intérieur du raccordement localisé"
+      DCBE,
+      !!@ comment = "Réparation autre du raccordement"
+      DCBF,
+      !!@ comment = "Réparation autre"
+      DCBZ,
+      !!@ comment = "<autre matériau>"
+      DCFA,
+      !!@ comment = "Béton amianté"
+      DCFB,
+      !!@ comment = "Béton normal"
+      DCFC,
+      !!@ comment = "Béton frais"
+      DCFD,
+      !!@ comment = "Béton de tube de fonçage"
+      DCFE,
+      !!@ comment = "Béton spécial"
+      DCFF,
+      !!@ comment = "Béton"
+      DCFG,
+      !!@ comment = "Fibrociment"
+      DCFH,
+      !!@ comment = "Terre cuites"
+      DCFI,
+      !!@ comment = "Fonte ductile"
+      DCFJ,
+      !!@ comment = "Fonte grise"
+      DCFK,
+      !!@ comment = "Résine époxyde"
+      DCFL,
+      !!@ comment = "Polyéthylène dur"
+      DCFM,
+      !!@ comment = "Polyester GUP"
+      DCFN,
+      !!@ comment = "Polyéthylène"
+      DCFO,
+      !!@ comment = "Polypropylène"
+      DCFP,
+      !!@ comment = "Chlorure de polyvinyle (PVC)"
+      DCFQ,
+      !!@ comment = "Plastique inconnu"
+      DCFR,
+      !!@ comment = "Acier"
+      DCFS,
+      !!@ comment = "Acier inoxydable"
+      DCFT,
+      !!@ comment = "Grès céramique"
+      DCFU,
+      !!@ comment = "Argile"
+      DCFV,
+      !!@ comment = "Matériau inconnu"
+      DCFW,
+      !!@ comment = "Ciment"
+      DCFX,
+      !!@ comment = "Entrée de forme circulaire"
+      DCGAA,
+      !!@ comment = "Sortie de forme circulaire"
+      DCGAB,
+      !!@ comment = "Raccordement fermé de forme circulaire"
+      DCGAC,
+      !!@ comment = "Entrée de forme rectangulaire"
+      DCGBA,
+      !!@ comment = "Sortie de forme rectangulaire"
+      DCGBB,
+      !!@ comment = "Raccordement fermé de forme rectangulaire"
+      DCGBC,
+      !!@ comment = "Entrée de forme ovoïde"
+      DCGCA,
+      !!@ comment = "Sortie ovoïde"
+      DCGCB,
+      !!@ comment = "Raccordement fermé ovoïde"
+      DCGCC,
+      !!@ comment = "Entrée de forme spéciale"
+      DCGXAA,
+      !!@ comment = "Sortie de forme spéciale"
+      DCGXAB,
+      !!@ comment = "Raccordement fermé de forme spéciale"
+      DCGXAC,
+      !!@ comment = "Entrée de forme fer à cheval"
+      DCGXBA,
+      !!@ comment = "Sortie de forme fer à cheval"
+      DCGXBB,
+      !!@ comment = "Raccordement fermé de forme fer à cheval"
+      DCGXBC,
+      !!@ comment = "Entrée de forme ouverte"
+      DCGXCA,
+      !!@ comment = "Sortie de forme ouverte"
+      DCGXCB,
+      !!@ comment = "Raccordement fermé de forme ouverte"
+      DCGXCC,
+      !!@ comment = "Entrée de forme inconnue"
+      DCGYA,
+      !!@ comment = "Sortie de forme inconnue"
+      DCGYB,
+      !!@ comment = "Raccordement fermé de forme inconnue"
+      DCGYC,
+      !!@ comment = "Entrée d’une autre forme"
+      DCGZA,
+      !!@ comment = "Sortie d’une autre forme"
+      DCGZB,
+      !!@ comment = "Raccordement fermé d’une autre forme"
+      DCGZC,
+      !!@ comment = "Banquette défectueuse"
+      DCHA,
+      !!@ comment = "Banquette en état"
+      DCHB,
+      !!@ comment = "Pas de banquette"
+      DCHC,
+      !!@ comment = "Cunette défectueuse, étranglement dans le sens de l’écoulement"
+      DCIAA,
+      !!@ comment = "Cunette défectueuse, élargissement dans le sens de l’écoulement"
+      DCIAB,
+      !!@ comment = "Cunette défectueuse, point haut"
+      DCIAC,
+      !!@ comment = "Cunette défectueuse, point bas"
+      DCIAD,
+      !!@ comment = "Cunette défectueuse"
+      DCIAZ,
+      !!@ comment = "Cunette"
+      DCIB,
+      !!@ comment = "Cunette non défectueux"
+      DCIBY,
+      !!@ comment = "Pas de cunette"
+      DCICY,
+      !!@ comment = "Canalisation fermée sans accès, défectueuse"
+      DCLAA,
+      !!@ comment = "Canalisation fermée sans accès"
+      DCLAB,
+      !!@ comment = "Canalisation fermée avec accès, défectueuse"
+      DCLBA,
+      !!@ comment = "Canalisation fermée avec accès"
+      DCLBB,
+      !!@ comment = "Canalisation fermée avec accès, fermeture manquant, défectueux"
+      DCLCA,
+      !!@ comment = "Canalisation fermée avec accès, tampon manquant"
+      DCLCB,
+      !!@ comment = "sac à boues présent"
+      DCMA,
+      !!@ comment = "sac à boues manquant"
+      DCMB,
+      !!@ comment = "sac à boues défectueux"
+      DCMC,
+      !!@ comment = "Etat général, exemple de photo"
+      DDA,
+      !!@ comment = "<aucun texte>"
+      DDB,
+      !!@ comment = "Examen incomplet: le couvercle ne peut pas être ouvert, le client renonce à une inspection supplémentaire"
+      DDCAB,
+      !!@ comment = "Examen incomplet: le couvercle ne peut pas être ouvert"
+      DDCAZ,
+      !!@ comment = "Examen incomplet: obstacle, cible d’inspection atteinte"
+      DDCBA,
+      !!@ comment = "Examen incomplet: obstacle, le client renonce à une nouvelle inspection"
+      DDCBB,
+      !!@ comment = "Examen incomplet: obstacle"
+      DDCBZ,
+      !!@ comment = "Examen incomplet: niveau d’eau élevé, objectif d’inspection atteint"
+      DDCCA,
+      !!@ comment = "Examen incomplet: niveau d’eau élevé, le client s’abstient de toute inspection ultérieure"
+      DDCCB,
+      !!@ comment = "Examen incomplet: niveau d’eau élevé"
+      DDCCZ,
+      !!@ comment = "Examen incomplet: équipement défectueux, cible d’inspection atteinte"
+      DDCDA,
+      !!@ comment = "Examen incomplet: équipement défectueux, le client renonce à une inspection supplémentaire"
+      DDCDB,
+      !!@ comment = "Examen incomplet: équipement défectueux"
+      DDCDZ,
+      !!@ comment = "Examen incomplet, objectif d’inspection atteint (plus de détails requis dans le commentaire)"
+      DDCZA,
+      !!@ comment = "Examen incomplet, le client renonce à une inspection plus poussée (plus de détails requis dans le commentaire)"
+      DDCZB,
+      !!@ comment = "Examen incomplet"
+      DDCZZ,
+      !!@ comment = "Niveau d’eau"
+      DDD,
+      !!@ comment = "Mauvais raccordement, arrivées d'eaux claires, des eaux usées se déversent dans une canalisation d’eaux pluviales"
+      DDEAA,
+      !!@ comment = "Mauvais raccordement, arrivées d’eaux claires, des eaux pluviales se déversent dans une canalisation d’eaux usées"
+      DDEAB,
+      !!@ comment = "Arrivées d’eaux claires"
+      DDEAC,
+      !!@ comment = "Mauvais raccordement, arrivées d’eaux troubles, eaux usées se déversant dans les eaux pluviales"
+      DDECA,
+      !!@ comment = "Mauvais raccordement, arrivées d’eaux troubles, des eaux pluviales se trouvant dans les eaux usées"
+      DDECB,
+      !!@ comment = "Arrivées d’eaux troubles"
+      DDECC,
+      !!@ comment = "Mauvais raccordement, arrivées d’eaux colorées, des eaux usées se déversant dans les eaux pluviales"
+      DDEDA,
+      !!@ comment = "Mauvais raccordement, arrivées d’eaux colorées, des eaux pluviales dans les eaux usées"
+      DDEDB,
+      !!@ comment = "Arrivées d’eaux colorées"
+      DDEDC,
+      !!@ comment = "Mauvais raccordement, arrivées d’eaux troubles et colorées, des eaux usées se déversant dans les eaux pluviales"
+      DDEEA,
+      !!@ comment = "Mauvais raccordement, arrivées d’eaux troubles et colorées, des eaux pluviales se déversant dans les eaux usées"
+      DDEEB,
+      !!@ comment = "Arrivées d’eaux troubles et colorées"
+      DDEEC,
+      !!@ comment = "Mauvais raccordement, des eaux usées se déversent dans une canalisation d’eaux pluviales"
+      DDEYA,
+      !!@ comment = "Mauvais raccordement, des eaux pluviales se déversent dans une canalisation d’eaux usées"
+      DDEYB,
+      !!@ comment = "Arrivées d’eaux usées"
+      DDEYY,
+      !!@ comment = "Danger existant: manque d’oxygène"
+      DDFA,
+      !!@ comment = "Danger existant: hydrogène sulfuré"
+      DDFB,
+      !!@ comment = "Danger existant: méthane"
+      DDFC,
+      !!@ comment = "Autres dangers présents "
+      DDFZ,
+      !!@ comment = "Absence de visibilité, caméra sous l’eau"
+      DDGA,
+      !!@ comment = "Absence de visibilité, vase"
+      DDGB,
+      !!@ comment = "Absence de visibilité, vapeur"
+      DDGC,
+      !!@ comment = "Absence de visibilité"
+      DDGZ
+    );
+    !!@ comment = "Emplacement circonférentiel: Début du dommage. Valeurs et procédure sont décrites en détail dans le paragraphe 3.1.6."
+    DEBUT_DOMMAGE: Cadran;
+    !!@ comment = "Emplacement circonférentiel: Fin du dommage. Valeurs et procédure sont décrites en détail dans le paragraphe 3.1.6."
+    FIN_DOMMAGE: Cadran;
+END DOMMAGE_CHAMBRE_STANDARD;
+
+!!@ comment = "Support de données"
+CLASS SUPPORT_DONNEES EXTENDS VSA_BaseClass =
+  ATTRIBUTE
+    !!@ comment = "Décrit le genre de support de données"
+    GENRE: MANDATORY (
+      autre,
+      CD,
+      disquette,
+      DVD,
+      disque_dur,
+      !!@ comment = "Serveur local (par opposition à serveur web)"
+      serveur,
+      bande_video,
+      !!@ comment = "Serveur web avec URI (https://de.wikipedia.org/wiki/Uniform_Resource_Identifier)"
+      serveur_web
+    );
+    !!@ comment = "Remarques concernant le support de données"
+    REMARQUE: TEXT*80;
+    DESIGNATION: MANDATORY TEXT*60;
+    !!@ comment = "Chemin d’accès au support de données, p. ex. lecteur DVD -> D: , - serveur -> //server/videos , disque dur -> c:/videos , Peut aussi être une URL. Pour une bande vidéo analogique: vide"
+    CHEMIN_ACCES: Chemin_access;
+    !!@ comment = "Emplacement du support de données"
+    EMPLACEMENT: TEXT*50;
+END SUPPORT_DONNEES;
+
+!!@ comment = "La classe Fichier peut être associée avec chaque classe du modèle de données de VSA-SDEE."
+CLASS FICHIER EXTENDS VSA_BaseClass =
+  ATTRIBUTE
+    !!@ comment = "Décrit le type de fichier. Pour les vidéos analo-giques sur bandes, le type « vidéo » doit être entré. La désignation sera ensuite la même que celle de la bande vidéo."
+    GENRE: MANDATORY (
+      autre,
+      video_numerique,
+      photo,
+      film_panoramique,
+      scan,
+      croquis,
+      fichier_texte,
+      video
+    );
+    !!@ comment = "Remarques générales"
+    REMARQUE: TEXT*80;
+    DESIGNATION: MANDATORY TEXT*120;
+    !!@ comment = "Indique à quelle classe du modèle de données de VSA-SDEE appartient le fichier. Toutes les classes sont possible. Surtout CANALISATION, DOMMAGE_CHAMBRE_STANDARD, DOMMAGE_CANALISATION, EXAMEN."
+    CLASSE: MANDATORY (
+      TOILETTE_SANS_VIDANGE,
+      EVACUATION_SANS_REJET,
+      LIMITEUR_DEBIT,
+      OUVRAGE_RESEAU_AS,
+      TRAITEMENT_EAUX_USEES,
+      NOEUD_RESEAU,
+      ELEMENT_RESEAU_EVACUATION,
+      STATION_EPURATION,
+      ASSOCIATION_EPURATION_EAU,
+      OFFICE,
+      OBJET_RACCORDE,
+      OUVRAGES_STEP,
+      CONSOMMATION_ENERGIE_STEP,
+      LIEU_BAIGNADE,
+      BANQUETTE,
+      ELEMENT_OUVRAGE,
+      VIDANGE_DE_BASSINS,
+      NETTOYAGE_DE_BASSINS,
+      EVALUATION_GENERALE_ECO_BIOL,
+      FONTAINE,
+      FICHIER,
+      SUPPORT_DONNEES,
+      COUVERCLE,
+      PASSAGE_SOUS_TUYAU,
+      EXUTOIRE,
+      DISPOSITIF_ACCES,
+      SURFACE_INDIVIDUELLE,
+      BASSIN_VERSANT,
+      EQUIPEMENT_ELECTRIQUE,
+      EQUIPEMENT_ELECTROMECA,
+      EVACUATION,
+      EVACUATION_AVEC_REJET,
+      systeme_evacuation_eaux,
+      EVENEMENT_MAINTENANCE,
+      RETENUE_DE_MATIERES_SOLIDES,
+      ECHELLE_POISSONS,
+      COURS_EAU,
+      INSTALLATION_REFOULEMENT,
+      PASSAGE_A_GUE,
+      BATIMENT,
+      BATIMENTS,
+      BATIMENTS_BAUREGBL,
+      SOURCE_DANGER,
+      COMMUNE,
+      COOPERATIVE,
+      BASSIN_VERSANT_COMPLET,
+      BARRAGE_ALLUVIONS,
+      TRONCON_COURS_EAU,
+      SEUIL,
+      SECTEUR_PROTECTION_EAUX,
+      SECTEUR_EAUX_SUP,
+      FOND_COURS_EAU,
+      AMENAGEMENT_COURS_EAU,
+      OUVRAGE_RETENUE,
+      AQUIFERE,
+      PERIMETRE_PROT_EAUX_SOUT,
+      ZONE_PROT_EAUX_SOUT,
+      TRONCON,
+      POINT_TRONCON,
+      RELATION_HQ,
+      GEOMETRIE_HYDR,
+      RELATION_GEOM_HYDR,
+      PARAMETRES_HYDR,
+      CANALISATION,
+      DOMMAGE_AUX_CANALISATIONS,
+      CANTON,
+      PETITE_STEP,
+      EXPLOITATION_AGRICOLE,
+      LEAPING_WEIR,
+      MESURE,
+      PRETRAITEMENT_MECANIQUE,
+      APPAREIL_MESURE,
+      SERIE_MESURES,
+      RESULTAT_MESURE,
+      STATION_MESURE,
+      CHAMBRE_STANDARD,
+      DOMMAGE_CHAMBRE_STANDARD,
+      PARAM_ECOULEMENT_SUP,
+      EAUX_SUPERFICIELLES,
+      ORGANISATION,
+      ZONE_RESERVEE,
+      PRIVE,
+      DISPOSITIF_NETTOYAGE,
+      RESERVOIR,
+      VOLUME_RETENTION,
+      PROFIL_TUYAU,
+      PROFIL_TUYAU_GEOM,
+      PROTECTION_REFOULEMENT,
+      DOMMAGE,
+      TRAITEMENT_BOUES,
+      ECLUSE,
+      LAC,
+      RAMPE,
+      OUVRAGE_SPECIAL,
+      TETE_DE_RINCAGE,
+      FICHE_TECHNIQUE,
+      CENTRALE_COMMANDE,
+      SUBSTANCE,
+      DEVERSOIR_LATERAL,
+      TUYAU_CHUTE,
+      CUNETTE_DEBIT_TEMPS_SEC,
+      DEVERSOIR,
+      CARACTERISTIQUES_DEVERSOIR,
+      RIVE,
+      ACCIDENT,
+      EXAMEN,
+      INSTALLATION_INFILTRATION,
+      ZONE_INFILTRATION,
+      CAPTAGE,
+      ZONE
+    );
+    !!@ comment = "Identification de l’ensemble de données auquel le fichier appartient (OID)"
+    OBJET: MANDATORY TEXT*16;
+    !!@ comment = "Accès relatif supplémentaire à l’emplacement du fichier sur le support de données. P. ex. DVD_01"
+    ACCES_RELATIF: Access_relatif;
+END FICHIER;
+
+!!@ comment = "Association"
+ASSOCIATION FICHIER_SUPPORT_DONNEESAssoc =
+  SUPPORT_DONNEESRef  -- {1} SUPPORT_DONNEES;
+  FICHIER_SUPPORT_DONNEESAssocRef -- {0..*} FICHIER;
+END FICHIER_SUPPORT_DONNEESAssoc;
+
+
+!!@comment = "Ende des Topics / Fin du topic"
+END IVI;
+!!@comment = "Ende des Modells / Fin du modèle"
+END VSA_IVI_2020_1_LV95.
