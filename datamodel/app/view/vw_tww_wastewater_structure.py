@@ -91,7 +91,8 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
         LEFT JOIN tww_od.wwtp_structure wt ON wt.obj_id = ws.obj_id
         LEFT JOIN tww_od.small_treatment_plant sm ON sm.obj_id = ws.obj_id
         LEFT JOIN tww_od.drainless_toilet dt ON dt.obj_id = ws.obj_id
-        WHERE NULL = ALL(ARRAY[ch.obj_id,dt.obj_id,sm.obj_id,wt.obj_id]);
+        WHERE '-1'=ALL(ARRAY[ch.obj_id,dt.obj_id,sm.obj_id,wt.obj_id]) IS NULL 
+		AND '-2'=ALL(ARRAY[ch.obj_id,dt.obj_id,sm.obj_id,wt.obj_id]) IS NULL;
 
         ALTER VIEW tww_app.vw_tww_wastewater_structure ALTER obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_structure');
         ALTER VIEW tww_app.vw_tww_wastewater_structure ALTER co_obj_id SET DEFAULT tww_sys.generate_oid('tww_od','cover');
