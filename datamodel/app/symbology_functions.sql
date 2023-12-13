@@ -310,7 +310,7 @@ CREATE OR REPLACE FUNCTION tww_app.update_wastewater_structure_fk_main_cover(_ob
   myrec record;
 
 BEGIN
-CASE 
+CASE
   UPDATE tww_od.wastewater_structure ws
   SET fk_main_cover = ws_covers.co_obj_id
   FROM (
