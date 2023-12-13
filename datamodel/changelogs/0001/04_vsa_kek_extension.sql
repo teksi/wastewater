@@ -1,8 +1,7 @@
 ------ This file generates the VSA-DSS database (Modul VSA-KEK (2020)) in en on QQIS
 ------ For questions etc. please contact Stefan Burckhardt stefan.burckhardt@sjib.ch
------- version 12.12.2023 13:58:05
+------ version 13.12.2023 17:35:31
 ------ with 3D coordinates
-
 BEGIN;
 
 -------
@@ -18,23 +17,23 @@ CREATE SEQUENCE tww_od.seq_examination_oid INCREMENT 1 MINVALUE 0 MAXVALUE 99999
  ALTER TABLE tww_od.examination ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','examination');
 COMMENT ON COLUMN tww_od.examination.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.examination ADD COLUMN equipment text;
- ALTER TABLE tww_od.examination ADD CONSTRAINT length_max_50_examination_equipment CHECK(char_length(equipment)<=50);
+ ALTER TABLE tww_od.examination ADD CONSTRAINT ex_equipment_length_max_50 CHECK(char_length(equipment)<=50);
 COMMENT ON COLUMN tww_od.examination.equipment IS 'Name of used camera / Eingesetztes Aufnahmegeräte (Kamera) / Appareil de prise de vues (caméra) employé';
  ALTER TABLE tww_od.examination ADD COLUMN from_point_identifier text;
- ALTER TABLE tww_od.examination ADD CONSTRAINT length_max_20_examination_from_point_identifier CHECK(char_length(from_point_identifier)<=20);
+ ALTER TABLE tww_od.examination ADD CONSTRAINT ex_from_point_identifier_length_max_20 CHECK(char_length(from_point_identifier)<=20);
 COMMENT ON COLUMN tww_od.examination.from_point_identifier IS 'yyy_Bezeichnung des "von Punktes" einer Untersuchung, so wie sie auf dem Plan erscheint. Alternative zum Foreign key Haltungspunkt, wenn Topologie noch nicht definiert ist (Ersterfassung). Die vonPunktBezeichnung wird später vom Hydrauliker für den Aufbau der Kanalnetztopologie verwendet. / Bezeichnung des "von Punktes" einer Untersuchung, so wie sie auf dem Plan erscheint. Alternative zum Fremdschlüssel Haltungspunkt, wenn Topologie noch nicht definiert ist (Ersterfassung). Die vonPunktBezeichnung wird später vom Hydrauliker für den Aufbau der Kanalnetztopologie verwendet. / Point (chambre ou nœud) auquel l’examen commence. Désignation du « point départ » (DESIGNATION_POINT_DE) d’une examen comme elle figure sur le plan. Elle sert d’alternative à la clé externe POINT_TRONCON, lorsque la topologie n’est pas encore définie (saisie initiale). La DESIGNATION_POINT_DE sera utilisée ultérieurement par l’hydraulicien pour la construction de la topologie du réseau.';
  ALTER TABLE tww_od.examination ADD COLUMN inspected_length  decimal(7,2) ;
 COMMENT ON COLUMN tww_od.examination.inspected_length IS 'yyy_Total untersuchte Länge in Metern mit zwei Nachkommastellen / Total untersuchte Länge in Metern mit zwei Nachkommastellen / Longueur totale examinée en mètres avec deux chiffres après la virgule';
  ALTER TABLE tww_od.examination ADD COLUMN recording_type  integer ;
 COMMENT ON COLUMN tww_od.examination.recording_type IS 'yyy_Aufnahmetechnik, beschreibt die Art der Aufnahme / Aufnahmetechnik, beschreibt die Art der Aufnahme / Technique de prise de vues, décrit le type de prise de vues';
  ALTER TABLE tww_od.examination ADD COLUMN to_point_identifier text;
- ALTER TABLE tww_od.examination ADD CONSTRAINT length_max_20_examination_to_point_identifier CHECK(char_length(to_point_identifier)<=20);
+ ALTER TABLE tww_od.examination ADD CONSTRAINT ex_to_point_identifier_length_max_20 CHECK(char_length(to_point_identifier)<=20);
 COMMENT ON COLUMN tww_od.examination.to_point_identifier IS 'yyy_Bezeichnung des "bis Punktes" einer Untersuchung, so wie sie auf dem Plan erscheint. Alternative zum Foreign key Abwasserbauwerk, wenn Topologie noch nicht definiert ist (Ersterfassung). Die bisPunktBezeichnung wird später vom Hydrauliker für den Aufbau der Kanalnetztopologie verwendet. Bei Schachtuntersuchungen bleibt dieser Wert leer / Bezeichnung des "bis Punktes" einer Untersuchung, so wie sie auf dem Plan erscheint. Alternative zum Fremdschlüssel Abwasserbauwerk, wenn Topologie noch nicht definiert ist (Ersterfassung). Die bisPunktBezeichnung wird später vom Hydrauliker für den Aufbau der Kanalnetztopologie verwendet. Bei Schachtuntersuchungen bleibt dieser Wert leer. / Point (chambre ou noeud) d’où l’examen termine. Désignation du « point d’arrivée » (DESIGNATION_POINT_VERS) d’une examen comme elle figure sur le plan. Elle sert d’alternative à la clé externe OUVRAGE_RESEAU_AS lorsque la topologie n’est pas encore définie (saisie initiale). La DESIGNATION_POINT_VERS sera utilisée ultérieurement par l’hydraulicien pour la construction de la topologie du réseau. Cette valeur reste vide lors d’inspections de chambres.';
  ALTER TABLE tww_od.examination ADD COLUMN vehicle text;
- ALTER TABLE tww_od.examination ADD CONSTRAINT length_max_50_examination_vehicle CHECK(char_length(vehicle)<=50);
+ ALTER TABLE tww_od.examination ADD CONSTRAINT ex_vehicle_length_max_50 CHECK(char_length(vehicle)<=50);
 COMMENT ON COLUMN tww_od.examination.vehicle IS 'yyy_Eingesetztes Inspektionsfahrzeug / Eingesetztes Inspektionsfahrzeug / Véhicule d’examen employé';
  ALTER TABLE tww_od.examination ADD COLUMN videonumber text;
- ALTER TABLE tww_od.examination ADD CONSTRAINT length_max_20_examination_videonumber CHECK(char_length(videonumber)<=20);
+ ALTER TABLE tww_od.examination ADD CONSTRAINT ex_videonumber_length_max_20 CHECK(char_length(videonumber)<=20);
 COMMENT ON COLUMN tww_od.examination.videonumber IS 'yyy_Bei Videobändern steht hier die Bandnummer (z.B. 1/99). Bei elektronischen Datenträgern ist dies die Datenträgerbezeichnung (z.B. SG001). Falls pro Untersuchung eine einzelne Datei zur Verfügung steht, dann wird diese aus der Klasse Datei referenziert und dieses Attribut kann leer gelassen werden. / Bei Videobändern steht hier die Bandnummer (z.B. 1/99). Bei elektronischen Datenträgern ist dies die Datenträgerbezeichnung (z.B. SG001). Falls pro Untersuchung eine einzelne Datei zur Verfügung steht, dann wird diese aus der Klasse Datei referenziert und dieses Attribut kann leer gelassen werden. / Pour les bandes vidéo figure ici le numéro de la bande (p. ex. 1/99) et, pour les supports de don-nées électroniques, sa désignation (p. ex. SG001). S’il n’existe qu’un fichier par examen, ce fichier est référencé par la classe Fichier et cet attribut peut être laissé vide.';
  ALTER TABLE tww_od.examination ADD COLUMN weather  integer ;
 COMMENT ON COLUMN tww_od.examination.weather IS 'Wheather conditions during inspection / Wetterverhältnisse während der Inspektion / Conditions météorologiques pendant l’examen';
@@ -60,20 +59,20 @@ CREATE SEQUENCE tww_od.seq_damage_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 STA
  ALTER TABLE tww_od.damage ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','damage');
 COMMENT ON COLUMN tww_od.damage.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.damage ADD COLUMN comments text;
- ALTER TABLE tww_od.damage ADD CONSTRAINT length_max_100_damage_comments CHECK(char_length(comments)<=100);
+ ALTER TABLE tww_od.damage ADD CONSTRAINT dg_comments_length_max_100 CHECK(char_length(comments)<=100);
 COMMENT ON COLUMN tww_od.damage.comments IS 'Free comments on a finding / Freie Bemerkungen zu einer Feststellung / Remarques libres concernant une observation';
  ALTER TABLE tww_od.damage ADD COLUMN connection  integer ;
 COMMENT ON COLUMN tww_od.damage.connection IS 'Indicator for a detection at a pipe connection (2.1.7). or in case of two adjacent manhole elements according to (3.1.7). Corresponds in SN EN 13508 yes = "A", no = empty / Kennzeichen für eine Feststellung an einer Rohrverbindung (2.1.7). bzw. bei zwei aneinandergrenzenden Schachtelementen gemäss (3.1.7). Entspricht in SN EN 13508 ja = "A", nein = leer / Indication d’une observation au niveau d’un assemblage (2.1.7) ou Observation entre deux éléments de regard de visite adjacents (3.1.7). Correspond dans la SN EN 13508 à oui = « A », non = vide';
  ALTER TABLE tww_od.damage ADD COLUMN line_damage text;
- ALTER TABLE tww_od.damage ADD CONSTRAINT length_max_3_damage_line_damage CHECK(char_length(line_damage)<=3);
+ ALTER TABLE tww_od.damage ADD CONSTRAINT dg_line_damage_length_max_3 CHECK(char_length(line_damage)<=3);
 COMMENT ON COLUMN tww_od.damage.line_damage IS 'Codes for the beginning and end of a line damage. Detailed information under 2.1.2 resp. 3.1.2 / Codes für den Anfang und das Ende eines Streckenschadens. Genaue Angaben unter 2.1.2 resp. 3.1.2 / Codes pour le début et la fin d’un dommage à un tronçon. Indications exactes sous 2.1.2 resp. 3.1.2.';
  ALTER TABLE tww_od.damage ADD COLUMN single_damage_class  integer ;
 COMMENT ON COLUMN tww_od.damage.single_damage_class IS 'Defines the damage class of an individual damage. The classification into condition classes (Z0-Z4) is based on the damage pattern and the extent of the damage. A wastewater structure can be directly assigned to a class or each damage can be classified individually first. (At the end, for example, the most severe individual damage determines the classification of the entire canalisation (wastewater_structure.structure_condition)). / Definiert die Schadensklasse eines Einzelschadens. Die Einteilung in die Zustandsklassen (Z0-Z4) erfolgt aufgrund des Schadenbilds und des Schadensausmasses. Dabei kann ein Abwasserbauwerk direkt einer Klasse zugeteilt werden oder zuerst jeder Schaden einzeln klassifiziert werden. (Am Schluss bestimmt dann z.B. der schwerste Einzelschaden die Klassifizierung des gesamten Kanals (Abwasserbauwerk.BaulicherZustand)). / Définit la classe de dommages d’un dommage unique. La répartition en classes d’état (Z0-Z4) s’effectue sur la base de la nature et de l’étendue des dommages. Un ouvrage d''assainissement peut être classé directement ou chaque dommage peut d’abord être classé séparément. (A la fin, le dommage le plus important détermine le classement de l’ensemble de la canalisation (OUVRAGE_RESEAU_AS.ETAT_CONSTRUCTIF).';
  ALTER TABLE tww_od.damage ADD COLUMN video_counter text;
- ALTER TABLE tww_od.damage ADD CONSTRAINT length_max_11_damage_video_counter CHECK(char_length(video_counter)<=11);
+ ALTER TABLE tww_od.damage ADD CONSTRAINT dg_video_counter_length_max_11 CHECK(char_length(video_counter)<=11);
 COMMENT ON COLUMN tww_od.damage.video_counter IS 'Meter reading on an analog videotape or in a digital video file, in real time / Zählerstand auf einem analogen Videoband oder in einer digitalen Videodatei, in Echtzeit / Zählerstand auf einem analogen Videoband oder in einer digitalen Videodatei, in Echtzeit';
  ALTER TABLE tww_od.damage ADD COLUMN view_parameters text;
- ALTER TABLE tww_od.damage ADD CONSTRAINT length_max_200_damage_view_parameters CHECK(char_length(view_parameters)<=200);
+ ALTER TABLE tww_od.damage ADD CONSTRAINT dg_view_parameters_length_max_200 CHECK(char_length(view_parameters)<=200);
 COMMENT ON COLUMN tww_od.damage.view_parameters IS 'Special view parameters for positioning within a film file for scanner or digital video technology / Spezielle Ansichtsparameter für die Positionierung innerhalb einer Filmdatei für Scanner- oder digitale Videotechnik / Paramètres de projection spéciaux pour le positionnement à l’intérieur d’un fichier de film pour la technique vidéo scanner ou numérique.';
  ALTER TABLE tww_od.damage ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
 COMMENT ON COLUMN tww_od.damage.last_modification IS 'Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE';
@@ -144,10 +143,10 @@ COMMENT ON COLUMN tww_od.damage_manhole.manhole_damage_code IS 'yyy_Vorgegebener
  ALTER TABLE tww_od.damage_manhole ADD COLUMN manhole_damage_end  smallint ;
 COMMENT ON COLUMN tww_od.damage_manhole.manhole_damage_end IS 'Location on the circumference: end of the damage. Values and procedure are described in detail in paragraph 3.1.6. / Lage am Umfang: Ende des Schadens. Werte und Vorgehen sind unter Absatz 3.1.6 genau beschrieben. / Emplacement circonférentiel: Fin du dommage. Valeurs et procédure sont décrites en détail dans le paragraphe 3.1.6.';
  ALTER TABLE tww_od.damage_manhole ADD COLUMN manhole_quantification1 text;
- ALTER TABLE tww_od.damage_manhole ADD CONSTRAINT length_max_20_damage_manhole_manhole_quantification1 CHECK(char_length(manhole_quantification1)<=20);
+ ALTER TABLE tww_od.damage_manhole ADD CONSTRAINT dm_manhole_quantification1_length_max_20 CHECK(char_length(manhole_quantification1)<=20);
 COMMENT ON COLUMN tww_od.damage_manhole.manhole_quantification1 IS 'Quantification 1 according to SN EN 13508. Permissible inputs are described in chapter 3.1.5. Implemented as text attribute. / Quantifizierung 1 gemäss SN EN 13508. Zulässige Eingaben sind in Kapitel 3.1.5 beschrieben. Als Textattribut umgesetzt. / Quantification 1 selon la SN EN 13508. Les entrées autorisées sont décrites dans le chapitre 3.1.5. Type texte.';
  ALTER TABLE tww_od.damage_manhole ADD COLUMN manhole_quantification2 text;
- ALTER TABLE tww_od.damage_manhole ADD CONSTRAINT length_max_20_damage_manhole_manhole_quantification2 CHECK(char_length(manhole_quantification2)<=20);
+ ALTER TABLE tww_od.damage_manhole ADD CONSTRAINT dm_manhole_quantification2_length_max_20 CHECK(char_length(manhole_quantification2)<=20);
 COMMENT ON COLUMN tww_od.damage_manhole.manhole_quantification2 IS 'Quantification 2 according to SN EN 13508. Permissible inputs are described in chapter 3.1.5. Implemented as text attribute. / Quantifizierung 2 gemäss SN EN 13508. Zulässige Eingaben sind in Kapitel 3.1.5 beschrieben. Als Textattribut umgesetzt. / Quantification 2 selon la SN EN 13508. Les entrées autorisées sont décrites dans le chapitre 3.1.5. Type texte';
  ALTER TABLE tww_od.damage_manhole ADD COLUMN manhole_shaft_area  integer ;
 COMMENT ON COLUMN tww_od.damage_manhole.manhole_shaft_area IS 'yyy_Bereich in dem eine Feststellung auftritt. Die Werte sind unter 3.1.9 abschliessend beschrieben. / Bereich in dem eine Feststellung auftritt. Die Werte sind unter 3.1.9 abschliessend beschrieben. / Domaine où une observation est faite. Les valeurs sont décrites dans 3.1.9.';
@@ -173,18 +172,18 @@ CREATE SEQUENCE tww_od.seq_data_media_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999
  ALTER TABLE tww_od.data_media ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','data_media');
 COMMENT ON COLUMN tww_od.data_media.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.data_media ADD COLUMN identifier text;
- ALTER TABLE tww_od.data_media ADD CONSTRAINT length_max_60_data_media_identifier CHECK(char_length(identifier)<=60);
+ ALTER TABLE tww_od.data_media ADD CONSTRAINT vo_identifier_length_max_60 CHECK(char_length(identifier)<=60);
 COMMENT ON COLUMN tww_od.data_media.identifier IS 'yyy_Name des Datenträgers. Bei elektronischen Datenträgern normalerweise das Volume-Label. Bei einem Server der Servername. Bei analogen Videobändern die Bandnummer. / Name des Datenträgers. Bei elektronischen Datenträgern normalerweise das Volume-Label. Bei einem Server der Servername. Bei analogen Videobändern die Bandnummer. / Nom du support de données. Pour les supports de données électroniques, normalement le label volume. Pour un serveur, le nom du serveur. Pour des bandes vidéo analogiques, les numéros de bandes.';
  ALTER TABLE tww_od.data_media ADD COLUMN kind  integer ;
 COMMENT ON COLUMN tww_od.data_media.kind IS 'Describes the type of data media / Beschreibt die Art des Datenträgers / Décrit le genre de support de données';
  ALTER TABLE tww_od.data_media ADD COLUMN location text;
- ALTER TABLE tww_od.data_media ADD CONSTRAINT length_max_50_data_media_location CHECK(char_length(location)<=50);
+ ALTER TABLE tww_od.data_media ADD CONSTRAINT vo_location_length_max_50 CHECK(char_length(location)<=50);
 COMMENT ON COLUMN tww_od.data_media.location IS 'Location of the data medium / Ort, wo sich der Datenträger befindet / Emplacement du support de données';
  ALTER TABLE tww_od.data_media ADD COLUMN path text;
- ALTER TABLE tww_od.data_media ADD CONSTRAINT length_max_1023_data_media_path CHECK(char_length(path)<=1023);
+ ALTER TABLE tww_od.data_media ADD CONSTRAINT vo_path_length_max_1023 CHECK(char_length(path)<=1023);
 COMMENT ON COLUMN tww_od.data_media.path IS 'Access path to the data carrier. e.g. DVD drive -> D: , server -> //server/videos, hard disk -> c:/videos . For web servers -> URI (URL). Empty for an analog video tape / Zugriffspfad zum Datenträger. z.B. DVD-Laufwerk -> D: , Server -> //server/videos, Harddisk -> c:/videos . Bei Webserver eine URI (URL). Bei einem analogen Videoband leer / Chemin d’accès au support de données, p. ex. lecteur DVD -> D: , - serveur -> //server/videos , disque dur -> c:/videos , serveur_web -> URI(URL). Pour une bande vidéo analogique: vide';
  ALTER TABLE tww_od.data_media ADD COLUMN remark text;
- ALTER TABLE tww_od.data_media ADD CONSTRAINT length_max_80_data_media_remark CHECK(char_length(remark)<=80);
+ ALTER TABLE tww_od.data_media ADD CONSTRAINT vo_remark_length_max_80 CHECK(char_length(remark)<=80);
 COMMENT ON COLUMN tww_od.data_media.remark IS 'General remarks / Bemerkungen zum Datenträger / Remarques concernant le support de données';
  ALTER TABLE tww_od.data_media ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
 COMMENT ON COLUMN tww_od.data_media.last_modification IS 'Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE';
@@ -216,18 +215,18 @@ COMMENT ON COLUMN tww_od.file.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Pr�
  ALTER TABLE tww_od.file ADD COLUMN class  integer ;
 COMMENT ON COLUMN tww_od.file.class IS 'yyy_Gibt an, zu welcher Klasse des VSA-DSS-Datenmodells die Datei gehört. Grundsätzlich alle Klassen möglich. Im Rahmen der Kanalfernsehaufnahmen hauptsächlich Kanal, Normschachtschaden, Kanalschaden und Untersuchung. / Gibt an, zu welcher Klasse des VSA-DSS-Datenmodells die Datei gehört. Grundsätzlich alle Klassen möglich. Im Rahmen der Kanalfernsehaufnahmen hauptsächlich Kanal, Normschachtschaden, Kanalschaden und Untersuchung. / Indique à quelle classe du modèle de données de VSA-SDEE appartient le fichier. Toutes les classes sont possible. Surtout CANALISATION, DOMMAGE_CHAMBRE_STANDARD, DOMMAGE_CANALISATION, EXAMEN.';
  ALTER TABLE tww_od.file ADD COLUMN identifier text;
- ALTER TABLE tww_od.file ADD CONSTRAINT length_max_120_file_identifier CHECK(char_length(identifier)<=120);
+ ALTER TABLE tww_od.file ADD CONSTRAINT fi_identifier_length_max_120 CHECK(char_length(identifier)<=120);
 COMMENT ON COLUMN tww_od.file.identifier IS 'yyy_Name der Datei mit Dateiendung. Z.B video_01.mpg oder haltung_01.ipf / Name der Datei mit Dateiendung. Z.B video_01.mpg oder haltung_01.ipf / Nom du fichier avec terminaison du fichier. P. ex. video_01.mpg ou canalisation_01.ipf';
  ALTER TABLE tww_od.file ADD COLUMN kind  integer ;
 COMMENT ON COLUMN tww_od.file.kind IS 'yyy_Beschreibt die Art der Datei. Für analoge Videos auf Bändern ist der Typ "Video" einzusetzen. Die Bezeichnung wird dann gleich gesetzt wie die Bezeichnung des Videobandes. / Beschreibt die Art der Datei. Für analoge Videos auf Bändern ist der Typ "Video" einzusetzen. Die Bezeichnung wird dann gleich gesetzt wie die Bezeichnung des Videobandes. / Décrit le type de fichier. Pour les vidéos analo-giques sur bandes, le type « vidéo » doit être entré. La désignation sera ensuite la même que celle de la bande vidéo.';
  ALTER TABLE tww_od.file ADD COLUMN object text;
- ALTER TABLE tww_od.file ADD CONSTRAINT length_max_16_file_object CHECK(char_length(object)<=16);
+ ALTER TABLE tww_od.file ADD CONSTRAINT fi_object_length_max_16 CHECK(char_length(object)<=16);
 COMMENT ON COLUMN tww_od.file.object IS 'yyy_Objekt-ID (OID) des Datensatzes zu dem die Datei gehört / Objekt-ID (OID) des Datensatzes zu dem die Datei gehört / Identification de l’ensemble de données auquel le fichier appartient (OID)';
  ALTER TABLE tww_od.file ADD COLUMN path_relative text;
- ALTER TABLE tww_od.file ADD CONSTRAINT length_max_200_file_path_relative CHECK(char_length(path_relative)<=200);
+ ALTER TABLE tww_od.file ADD CONSTRAINT fi_path_relative_length_max_200 CHECK(char_length(path_relative)<=200);
 COMMENT ON COLUMN tww_od.file.path_relative IS 'yyy_Zusätzlicher Relativer Pfad, wo die Datei auf dem Datenträger zu finden ist. Z.B. DVD_01. / Zusätzlicher Relativer Pfad, wo die Datei auf dem Datenträger zu finden ist. Z.B. DVD_01. / Accès relatif supplémentaire à l’emplacement du fichier sur le support de données. P. ex. DVD_01';
  ALTER TABLE tww_od.file ADD COLUMN remark text;
- ALTER TABLE tww_od.file ADD CONSTRAINT length_max_80_file_remark CHECK(char_length(remark)<=80);
+ ALTER TABLE tww_od.file ADD CONSTRAINT fi_remark_length_max_80 CHECK(char_length(remark)<=80);
 COMMENT ON COLUMN tww_od.file.remark IS 'General remarks / Allgemeine Bemerkungen / Remarques générales';
  ALTER TABLE tww_od.file ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
 COMMENT ON COLUMN tww_od.file.last_modification IS 'Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE';
