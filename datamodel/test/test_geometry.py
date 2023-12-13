@@ -632,7 +632,7 @@ class TestGeometry(unittest.TestCase, DbTestBase):
             == "01010000A0080800000000000020D6434100000000804F3241000000000000F87F"
         )
         assert new_row["level"] is None
-        
+
     def test_vw_tww_additional_ws_geometry_insert(self):
         # 1. insert geometry and no co_level and no wn_bottom_level
         # INSERT INTO tww_app.vw_tww_additional_ws (situation3d_geometry, wn_obj_id, co_obj_id) VALUES (ST_SetSRID(ST_MakePoint(2600000, 1200000), 2056), '1337_1001', '1337_1001');
@@ -719,7 +719,7 @@ class TestGeometry(unittest.TestCase, DbTestBase):
             row["situation3d_geometry"]
             == "01010000A0080800000000000020D6434100000000804F32410000000000006940"
         )
-        
+
     def test_vw_tww_additional_ws_geometry_update(self):
         # first insert
         # insert geometry with no co_level and no wn_bottom_level
@@ -809,7 +809,6 @@ class TestGeometry(unittest.TestCase, DbTestBase):
             new_row["situation3d_geometry"]
             == "01010000A0080800000000000020D6434100000000804F32410000000000C07240"
         )
-
 
 
 if __name__ == "__main__":

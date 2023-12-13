@@ -103,7 +103,7 @@ class TestViews(unittest.TestCase, DbTestBase):
         row = cur.fetchone()
 
         assert row["backflow_level_current"] == decimal.Decimal("100.000")
-        
+
     def test_vw_tww_additional_ws(self):
         row = {
             "identifier": "201_created",
