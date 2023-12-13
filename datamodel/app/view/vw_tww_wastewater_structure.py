@@ -387,7 +387,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
         ),
         new_co_cols=", ".join(
             [
-                "NEW.co_shape::text" if x == "cover_shape" else "NEW.main_co_" + x + "::text"
+                "NEW.co_shape::text" if x == "cover_shape" else "NEW.co_" + x + "::text"
                 for x in list(
                     columns(
                         pg_cur=cursor,
