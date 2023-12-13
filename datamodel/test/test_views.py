@@ -106,7 +106,7 @@ class TestViews(unittest.TestCase, DbTestBase):
         
     def test_vw_tww_additional_ws(self):
         row = {
-            "identifier": "20",
+            "identifier": "201_created",
             "ws_type": "drainless_toilet",
             "situation3d_geometry": self.execute(
                 "ST_SetSRID(ST_GeomFromText('POINT(2600000 1200000)'), 2056)"
@@ -123,13 +123,13 @@ class TestViews(unittest.TestCase, DbTestBase):
         obj_id = self.insert_check("vw_tww_additional_ws", row, expected_row)
 
         row = {
-            "identifier": "10",
+            "identifier": "202_accepted",
             "ws_type": "wwtp_structure",
             "co_material": 233,
             "wt_kind": 331,
         }
 
-        self.update_check("vw_tww_wastewater_structure", row, obj_id)
+        self.update_check("vw_tww_additional_ws", row, obj_id)
 
         cur = self.cursor()
 
