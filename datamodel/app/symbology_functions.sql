@@ -296,7 +296,37 @@ $BODY$
 LANGUAGE plpgsql
 VOLATILE;
 
+--------------------------------------------------------
+-- UPDATE wastewater structure fk_main_cover
+-- Argument:
+--  * obj_id of wastewater structure
+--  * all True to update all
+--------------------------------------------------------
 
+CREATE OR REPLACE FUNCTION tww_app.update_wastewater_structure_fk_main_cover(_obj_id text, _all boolean default false)
+  RETURNS VOID AS
+  $BODY$
+  DECLARE
+  myrec record;
+
+BEGIN
+CASE 
+  UPDATE tww_od.wastewater_structure ws
+  SET fk_main_cover = ws_covers.co_obj_id
+  FROM (
+    SELECT ws.obj_id, FIRST_VALUE(co.obj_id) OVER (PARTITION By ws.obj_id) AS co_obj_id
+      FROM tww_od.wastewater_structure ws
+	  LEFT JOIN tww_od.structure_part sp ON sp.fk_wastewater_structure =ws.obj_id
+      LEFT JOIN tww_od.cover co ON sp.obj_id = co.obj_id
+	  LEFT JOIN tww_od.channel ch ON ch.obj_id =ws.obj_id
+      WHERE (_all OR WS.obj_id = _obj_id ) AND ch.obj_id IS NULL AND ws.fk_main_cover IS NULL
+  ) ws_covers
+  where ws.obj_id = ws_covers.obj_id;
+END
+
+$BODY$
+LANGUAGE plpgsql
+VOLATILE;
 
 
 
@@ -415,6 +445,7 @@ BEGIN
 
   EXECUTE tww_app.update_wastewater_structure_label(affected_sp.fk_wastewater_structure);
   EXECUTE tww_app.update_depth(affected_sp.fk_wastewater_structure);
+  EXECUTE tww_app.update_wastewater_structure_fk_main_cover(affected_sp.fk_wastewater_structure);
 
   RETURN NEW;
 END; $BODY$
