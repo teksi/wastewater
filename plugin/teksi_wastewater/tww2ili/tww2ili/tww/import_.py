@@ -3,6 +3,7 @@ from functools import lru_cache
 from geoalchemy2.functions import ST_Force3D
 from sqlalchemy.orm import Session
 from sqlalchemy.orm.attributes import flag_dirty
+from sqlalchemy.sql import text
 
 from .. import utils
 from ..utils.various import logger
@@ -27,7 +28,7 @@ def tww_import(precommit_callback=None):
 
     # We also drop symbology triggers as they badly affect performance. This must be done in a separate session as it
     # would deadlock other sessions.
-    pre_session.execute("SELECT tww_sys.drop_symbology_triggers();")
+    pre_session.execute(text("SELECT tww_sys.drop_symbology_triggers();"))
     pre_session.commit()
     pre_session.close()
 
@@ -38,7 +39,7 @@ def tww_import(precommit_callback=None):
     tww_session = Session(utils.sqlalchemy.create_engine(), autocommit=False, autoflush=False)
 
     # Allow to insert rows with cyclic dependencies at once
-    tww_session.execute("SET CONSTRAINTS ALL DEFERRED;")
+    tww_session.execute(text("SET CONSTRAINTS ALL DEFERRED;"))
 
     def get_vl_instance(vl_table, value):
         """
@@ -125,7 +126,7 @@ def tww_import(precommit_callback=None):
         Returns common attributes for base
         """
         return {
-            "obj_id": row.obj_id,
+            "obj_id": row.t_ili_tid,
         }
 
     def wastewater_structure_common(row):
@@ -191,15 +192,14 @@ def tww_import(precommit_callback=None):
             ),
         }
 
-    logger.info("Importing ABWASSER.organisation, ABWASSER.metaattribute -> TWW.organisation")
+    logger.info("Importing ABWASSER.organisation -> TWW.organisation")
     _imported_orgs = []
-    for row, metaattribute in abwasser_session.query(
-        ABWASSER.organisation, ABWASSER.metaattribute
-    ).join(ABWASSER.metaattribute):
+
+    for row in abwasser_session.query(ABWASSER.organisation):
         organisation = create_or_update(
             TWW.organisation,
             **base_common(row),
-            # **metaattribute_common(metaattribute),  # see below
+            # **metaattribute_common(row),  # see below
             # --- organisation ---
             identifier=row.bezeichnung,
             remark=row.bemerkung,
@@ -207,26 +207,18 @@ def tww_import(precommit_callback=None):
         )
         tww_session.add(organisation)
 
-        _imported_orgs.append((organisation, metaattribute))
+        _imported_orgs.append(organisation)
 
         print(".", end="")
-    # we need to set metaattributes afterwards, to cater for the case were it's self-referencing
-    for organisation, metaattribute in _imported_orgs:
-        for k, v in metaattribute_common(metaattribute).items():
-            setattr(organisation, k, v)
+
     logger.info("done")
 
-    logger.info("Importing ABWASSER.kanal, ABWASSER.metaattribute -> TWW.channel")
-    for row, metaattribute in abwasser_session.query(ABWASSER.kanal, ABWASSER.metaattribute).join(
-        ABWASSER.metaattribute
-    ):
+    logger.info("Importing ABWASSER.kanal -> TWW.channel")
+    for row in abwasser_session.query(ABWASSER.kanal):
         # AVAILABLE FIELDS IN kanal
 
         # --- baseclass ---
         # t_ili_tid, t_type
-
-        # --- sia405_baseclass ---
-        # obj_id
 
         # --- abwasserbauwerk ---
         # akten, astatus, baujahr, baulicherzustand, baulos, bemerkung, betreiberref, bezeichnung, bruttokosten, detailgeometrie, eigentuemerref, ersatzjahr, finanzierung, inspektionsintervall, sanierungsbedarf, standortname, subventionen, wbw_basisjahr, wbw_bauart, wiederbeschaffungswert, zugaenglichkeit
@@ -251,7 +243,7 @@ def tww_import(precommit_callback=None):
         channel = create_or_update(
             TWW.channel,
             **base_common(row),
-            **metaattribute_common(metaattribute),
+            **metaattribute_common(row),
             # --- wastewater_structure ---
             **wastewater_structure_common(row),
             # --- channel ---
@@ -274,10 +266,8 @@ def tww_import(precommit_callback=None):
         print(".", end="")
     logger.info("done")
 
-    logger.info("Importing ABWASSER.normschacht, ABWASSER.metaattribute -> TWW.manhole")
-    for row, metaattribute in abwasser_session.query(
-        ABWASSER.normschacht, ABWASSER.metaattribute
-    ).join(ABWASSER.metaattribute):
+    logger.info("Importing ABWASSER.normschacht -> TWW.manhole")
+    for row in abwasser_session.query(ABWASSER.normschacht):
         # AVAILABLE FIELDS IN normschacht
 
         # --- baseclass ---
@@ -309,7 +299,7 @@ def tww_import(precommit_callback=None):
         manhole = create_or_update(
             TWW.manhole,
             **base_common(row),
-            **metaattribute_common(metaattribute),
+            **metaattribute_common(row),
             # --- wastewater_structure ---
             **wastewater_structure_common(row),
             # --- manhole ---
@@ -326,10 +316,8 @@ def tww_import(precommit_callback=None):
         print(".", end="")
     logger.info("done")
 
-    logger.info("Importing ABWASSER.einleitstelle, ABWASSER.metaattribute -> TWW.discharge_point")
-    for row, metaattribute in abwasser_session.query(
-        ABWASSER.einleitstelle, ABWASSER.metaattribute
-    ).join(ABWASSER.metaattribute):
+    logger.info("Importing ABWASSER.einleitstelle -> TWW.discharge_point")
+    for row in abwasser_session.query(ABWASSER.einleitstelle):
         # AVAILABLE FIELDS IN einleitstelle
 
         # --- baseclass ---
@@ -361,7 +349,7 @@ def tww_import(precommit_callback=None):
         discharge_point = create_or_update(
             TWW.discharge_point,
             **base_common(row),
-            **metaattribute_common(metaattribute),
+            **metaattribute_common(row),
             # --- wastewater_structure ---
             **wastewater_structure_common(row),
             # --- discharge_point ---
@@ -376,12 +364,8 @@ def tww_import(precommit_callback=None):
         print(".", end="")
     logger.info("done")
 
-    logger.info(
-        "Importing ABWASSER.spezialbauwerk, ABWASSER.metaattribute -> TWW.special_structure"
-    )
-    for row, metaattribute in abwasser_session.query(
-        ABWASSER.spezialbauwerk, ABWASSER.metaattribute
-    ).join(ABWASSER.metaattribute):
+    logger.info("Importing ABWASSER.spezialbauwerk -> TWW.special_structure")
+    for row in abwasser_session.query(ABWASSER.spezialbauwerk):
         # AVAILABLE FIELDS IN spezialbauwerk
 
         # --- baseclass ---
@@ -413,7 +397,7 @@ def tww_import(precommit_callback=None):
         special_structure = create_or_update(
             TWW.special_structure,
             **base_common(row),
-            **metaattribute_common(metaattribute),
+            **metaattribute_common(row),
             # --- wastewater_structure ---
             **wastewater_structure_common(row),
             # --- special_structure ---
@@ -431,12 +415,8 @@ def tww_import(precommit_callback=None):
         print(".", end="")
     logger.info("done")
 
-    logger.info(
-        "Importing ABWASSER.versickerungsanlage, ABWASSER.metaattribute -> TWW.infiltration_installation"
-    )
-    for row, metaattribute in abwasser_session.query(
-        ABWASSER.versickerungsanlage, ABWASSER.metaattribute
-    ).join(ABWASSER.metaattribute):
+    logger.info("Importing ABWASSER.versickerungsanlage -> TWW.infiltration_installation")
+    for row in abwasser_session.query(ABWASSER.versickerungsanlage):
         # AVAILABLE FIELDS IN versickerungsanlage
 
         # --- baseclass ---
@@ -468,7 +448,7 @@ def tww_import(precommit_callback=None):
         infiltration_installation = create_or_update(
             TWW.infiltration_installation,
             **base_common(row),
-            **metaattribute_common(metaattribute),
+            **metaattribute_common(row),
             # --- wastewater_structure ---
             **wastewater_structure_common(row),
             # --- infiltration_installation ---
@@ -501,10 +481,8 @@ def tww_import(precommit_callback=None):
         print(".", end="")
     logger.info("done")
 
-    logger.info("Importing ABWASSER.rohrprofil, ABWASSER.metaattribute -> TWW.pipe_profile")
-    for row, metaattribute in abwasser_session.query(
-        ABWASSER.rohrprofil, ABWASSER.metaattribute
-    ).join(ABWASSER.metaattribute):
+    logger.info("Importing ABWASSER.rohrprofil -> TWW.pipe_profile")
+    for row in abwasser_session.query(ABWASSER.rohrprofil):
         # AVAILABLE FIELDS IN rohrprofil
 
         # --- baseclass ---
@@ -530,7 +508,7 @@ def tww_import(precommit_callback=None):
         pipe_profile = create_or_update(
             TWW.pipe_profile,
             **base_common(row),
-            **metaattribute_common(metaattribute),
+            **metaattribute_common(row),
             # --- pipe_profile ---
             height_width_ratio=row.hoehenbreitenverhaeltnis,
             identifier=row.bezeichnung,
@@ -541,10 +519,8 @@ def tww_import(precommit_callback=None):
         print(".", end="")
     logger.info("done")
 
-    logger.info("Importing ABWASSER.haltungspunkt, ABWASSER.metaattribute -> TWW.reach_point")
-    for row, metaattribute in abwasser_session.query(
-        ABWASSER.haltungspunkt, ABWASSER.metaattribute
-    ).join(ABWASSER.metaattribute):
+    logger.info("Importing ABWASSER.haltungspunkt -> TWW.reach_point")
+    for row in abwasser_session.query(ABWASSER.haltungspunkt):
         # AVAILABLE FIELDS IN haltungspunkt
 
         # --- baseclass ---
@@ -573,7 +549,7 @@ def tww_import(precommit_callback=None):
         reach_point = create_or_update(
             TWW.reach_point,
             **base_common(row),
-            **metaattribute_common(metaattribute),
+            **metaattribute_common(row),
             # --- reach_point ---
             elevation_accuracy__REL=get_vl_instance(
                 TWW.reach_point_elevation_accuracy, row.hoehengenauigkeit
@@ -592,10 +568,8 @@ def tww_import(precommit_callback=None):
         print(".", end="")
     logger.info("done")
 
-    logger.info("Importing ABWASSER.abwasserknoten, ABWASSER.metaattribute -> TWW.wastewater_node")
-    for row, metaattribute in abwasser_session.query(
-        ABWASSER.abwasserknoten, ABWASSER.metaattribute
-    ).join(ABWASSER.metaattribute):
+    logger.info("Importing ABWASSER.abwasserknoten -> TWW.wastewater_node")
+    for row in abwasser_session.query(ABWASSER.abwasserknoten):
         # AVAILABLE FIELDS IN abwasserknoten
 
         # --- baseclass ---
@@ -627,7 +601,7 @@ def tww_import(precommit_callback=None):
         wastewater_node = create_or_update(
             TWW.wastewater_node,
             **base_common(row),
-            **metaattribute_common(metaattribute),
+            **metaattribute_common(row),
             # --- wastewater_networkelement ---
             **wastewater_networkelement_common(row),
             # --- wastewater_node ---
@@ -640,10 +614,8 @@ def tww_import(precommit_callback=None):
         print(".", end="")
     logger.info("done")
 
-    logger.info("Importing ABWASSER.haltung, ABWASSER.metaattribute -> TWW.reach")
-    for row, metaattribute in abwasser_session.query(
-        ABWASSER.haltung, ABWASSER.metaattribute
-    ).join(ABWASSER.metaattribute):
+    logger.info("Importing ABWASSER.haltung -> TWW.reach")
+    for row in abwasser_session.query(ABWASSER.haltung):
         # AVAILABLE FIELDS IN haltung
 
         # --- baseclass ---
@@ -675,7 +647,7 @@ def tww_import(precommit_callback=None):
         reach = create_or_update(
             TWW.reach,
             **base_common(row),
-            **metaattribute_common(metaattribute),
+            **metaattribute_common(row),
             # --- wastewater_networkelement ---
             **wastewater_networkelement_common(row),
             # --- reach ---
@@ -708,12 +680,8 @@ def tww_import(precommit_callback=None):
         print(".", end="")
     logger.info("done")
 
-    logger.info(
-        "Importing ABWASSER.trockenwetterfallrohr, ABWASSER.metaattribute -> TWW.dryweather_downspout"
-    )
-    for row, metaattribute in abwasser_session.query(
-        ABWASSER.trockenwetterfallrohr, ABWASSER.metaattribute
-    ).join(ABWASSER.metaattribute):
+    logger.info("Importing ABWASSER.trockenwetterfallrohr -> TWW.dryweather_downspout")
+    for row in abwasser_session.query(ABWASSER.trockenwetterfallrohr):
         # AVAILABLE FIELDS IN trockenwetterfallrohr
 
         # --- baseclass ---
@@ -745,7 +713,7 @@ def tww_import(precommit_callback=None):
         dryweather_downspout = create_or_update(
             TWW.dryweather_downspout,
             **base_common(row),
-            **metaattribute_common(metaattribute),
+            **metaattribute_common(row),
             # --- structure_part ---
             **structure_part_common(row),
             # --- dryweather_downspout ---
@@ -755,10 +723,8 @@ def tww_import(precommit_callback=None):
         print(".", end="")
     logger.info("done")
 
-    logger.info("Importing ABWASSER.einstiegshilfe, ABWASSER.metaattribute -> TWW.access_aid")
-    for row, metaattribute in abwasser_session.query(
-        ABWASSER.einstiegshilfe, ABWASSER.metaattribute
-    ).join(ABWASSER.metaattribute):
+    logger.info("Importing ABWASSER.einstiegshilfe -> TWW.access_aid")
+    for row in abwasser_session.query(ABWASSER.einstiegshilfe):
         # AVAILABLE FIELDS IN einstiegshilfe
 
         # --- baseclass ---
@@ -790,7 +756,7 @@ def tww_import(precommit_callback=None):
         access_aid = create_or_update(
             TWW.access_aid,
             **base_common(row),
-            **metaattribute_common(metaattribute),
+            **metaattribute_common(row),
             # --- structure_part ---
             **structure_part_common(row),
             # --- access_aid ---
@@ -800,12 +766,8 @@ def tww_import(precommit_callback=None):
         print(".", end="")
     logger.info("done")
 
-    logger.info(
-        "Importing ABWASSER.trockenwetterrinne, ABWASSER.metaattribute -> TWW.dryweather_flume"
-    )
-    for row, metaattribute in abwasser_session.query(
-        ABWASSER.trockenwetterrinne, ABWASSER.metaattribute
-    ).join(ABWASSER.metaattribute):
+    logger.info("Importing ABWASSER.trockenwetterrinne -> TWW.dryweather_flume")
+    for row in abwasser_session.query(ABWASSER.trockenwetterrinne):
         # AVAILABLE FIELDS IN trockenwetterrinne
 
         # --- baseclass ---
@@ -837,7 +799,7 @@ def tww_import(precommit_callback=None):
         dryweather_flume = create_or_update(
             TWW.dryweather_flume,
             **base_common(row),
-            **metaattribute_common(metaattribute),
+            **metaattribute_common(row),
             # --- structure_part ---
             **structure_part_common(row),
             # --- dryweather_flume ---
@@ -847,10 +809,8 @@ def tww_import(precommit_callback=None):
         print(".", end="")
     logger.info("done")
 
-    logger.info("Importing ABWASSER.deckel, ABWASSER.metaattribute -> TWW.cover")
-    for row, metaattribute in abwasser_session.query(ABWASSER.deckel, ABWASSER.metaattribute).join(
-        ABWASSER.metaattribute
-    ):
+    logger.info("Importing ABWASSER.deckel -> TWW.cover")
+    for row in abwasser_session.query(ABWASSER.deckel):
         # AVAILABLE FIELDS IN deckel
 
         # --- baseclass ---
@@ -882,7 +842,7 @@ def tww_import(precommit_callback=None):
         cover = create_or_update(
             TWW.cover,
             **base_common(row),
-            **metaattribute_common(metaattribute),
+            **metaattribute_common(row),
             # --- structure_part ---
             **structure_part_common(row),
             # --- cover ---
@@ -903,10 +863,8 @@ def tww_import(precommit_callback=None):
         print(".", end="")
     logger.info("done")
 
-    logger.info("Importing ABWASSER.bankett, ABWASSER.metaattribute -> TWW.benching")
-    for row, metaattribute in abwasser_session.query(
-        ABWASSER.bankett, ABWASSER.metaattribute
-    ).join(ABWASSER.metaattribute):
+    logger.info("Importing ABWASSER.bankett -> TWW.benching")
+    for row in abwasser_session.query(ABWASSER.bankett):
         # AVAILABLE FIELDS IN bankett
 
         # --- baseclass ---
@@ -938,7 +896,7 @@ def tww_import(precommit_callback=None):
         benching = create_or_update(
             TWW.benching,
             **base_common(row),
-            **metaattribute_common(metaattribute),
+            **metaattribute_common(row),
             # --- structure_part ---
             **structure_part_common(row),
             # --- benching ---
@@ -952,17 +910,15 @@ def tww_import(precommit_callback=None):
     # VSA_KEK classes
     ########################################
 
-    logger.info("Importing ABWASSER.untersuchung, ABWASSER.metaattribute -> TWW.examination")
-    for row, metaattribute in abwasser_session.query(
-        ABWASSER.untersuchung, ABWASSER.metaattribute
-    ).join(ABWASSER.metaattribute):
+    logger.info("Importing ABWASSER.untersuchung -> TWW.examination")
+    for row in abwasser_session.query(ABWASSER.untersuchung):
         logger.warning(
             "TWW examination.active_zone has no equivalent in the interlis model. This field will be null."
         )
         examination = create_or_update(
             TWW.examination,
             **base_common(row),
-            **metaattribute_common(metaattribute),
+            **metaattribute_common(row),
             # --- maintenance_event ---
             # active_zone=row.REPLACE_ME,  # TODO : found no matching field for this in interlis, confirm this is ok
             base_data=row.datengrundlage,
@@ -1012,12 +968,8 @@ def tww_import(precommit_callback=None):
         print(".", end="")
     logger.info("done")
 
-    logger.info(
-        "Importing ABWASSER.normschachtschaden, ABWASSER.metaattribute -> TWW.damage_manhole"
-    )
-    for row, metaattribute in abwasser_session.query(
-        ABWASSER.normschachtschaden, ABWASSER.metaattribute
-    ).join(ABWASSER.metaattribute):
+    logger.info("Importing ABWASSER.normschachtschaden -> TWW.damage_manhole")
+    for row in abwasser_session.query(ABWASSER.normschachtschaden):
         # Note : in TWW, some attributes are on the base damage class,
         # while they are on the normschachtschaden/kanalschaden subclasses
         # in the ili2pg mode.
@@ -1026,7 +978,7 @@ def tww_import(precommit_callback=None):
         damage_manhole = create_or_update(
             TWW.damage_manhole,
             **base_common(row),
-            **metaattribute_common(metaattribute),
+            **metaattribute_common(row),
             # --- damage ---
             comments=row.anmerkung,
             connection__REL=get_vl_instance(TWW.damage_connection, row.verbindung),
@@ -1054,10 +1006,8 @@ def tww_import(precommit_callback=None):
         print(".", end="")
     logger.info("done")
 
-    logger.info("Importing ABWASSER.kanalschaden, ABWASSER.metaattribute -> TWW.damage_channel")
-    for row, metaattribute in abwasser_session.query(
-        ABWASSER.kanalschaden, ABWASSER.metaattribute
-    ).join(ABWASSER.metaattribute):
+    logger.info("Importing ABWASSER.kanalschaden -> TWW.damage_channel")
+    for row in abwasser_session.query(ABWASSER.kanalschaden):
         # Note : in TWW, some attributes are on the base damage class,
         # while they are on the normschachtschaden/kanalschaden subclasses
         # in the ili2pg mode.
@@ -1065,7 +1015,7 @@ def tww_import(precommit_callback=None):
         damage_channel = create_or_update(
             TWW.damage_channel,
             **base_common(row),
-            **metaattribute_common(metaattribute),
+            **metaattribute_common(row),
             # --- damage ---
             comments=row.anmerkung,
             connection__REL=get_vl_instance(TWW.damage_connection, row.verbindung),
@@ -1090,14 +1040,12 @@ def tww_import(precommit_callback=None):
         print(".", end="")
     logger.info("done")
 
-    logger.info("Importing ABWASSER.datentraeger, ABWASSER.metaattribute -> TWW.data_media")
-    for row, metaattribute in abwasser_session.query(
-        ABWASSER.datentraeger, ABWASSER.metaattribute
-    ).join(ABWASSER.metaattribute):
+    logger.info("Importing ABWASSER.datentraeger -> TWW.data_media")
+    for row in abwasser_session.query(ABWASSER.datentraeger):
         data_media = create_or_update(
             TWW.data_media,
             **base_common(row),
-            **metaattribute_common(metaattribute),
+            **metaattribute_common(row),
             # --- data_media ---
             identifier=row.bezeichnung,
             kind__REL=get_vl_instance(TWW.data_media_kind, row.art),
@@ -1109,14 +1057,12 @@ def tww_import(precommit_callback=None):
         print(".", end="")
     logger.info("done")
 
-    logger.info("Importing ABWASSER.datei, ABWASSER.metaattribute -> TWW.file")
-    for row, metaattribute in abwasser_session.query(ABWASSER.datei, ABWASSER.metaattribute).join(
-        ABWASSER.metaattribute
-    ):
+    logger.info("Importing ABWASSER.datei -> TWW.file")
+    for row in abwasser_session.query(ABWASSER.datei):
         file = create_or_update(
             TWW.file,
             **base_common(row),
-            **metaattribute_common(metaattribute),
+            **metaattribute_common(row),
             # --- file ---
             class__REL=get_vl_instance(TWW.file_class, row.klasse),
             fk_data_media=row.datentraegerref__REL.obj_id,
@@ -1144,6 +1090,6 @@ def tww_import(precommit_callback=None):
     # TODO : put this in an "finally" block (or context handler) to make sure it's executed
     # even if there's an exception
     post_session = Session(utils.sqlalchemy.create_engine(), autocommit=False, autoflush=False)
-    post_session.execute("SELECT tww_sys.create_symbology_triggers();")
+    post_session.execute(text("SELECT tww_sys.create_symbology_triggers();"))
     post_session.commit()
     post_session.close()
