@@ -17,12 +17,17 @@ class sia405_baseclass(baseclass):
     __table_args__ = {"schema": SCHEMA}
 
 
+class vsa_baseclass(sia405_baseclass):
+    __tablename__ = "vsa_baseclass"
+    __table_args__ = {"schema": SCHEMA}
+
+
 class organisation(sia405_baseclass):
     __tablename__ = "organisation"
     __table_args__ = {"schema": SCHEMA}
 
 
-class abwasserbauwerk(sia405_baseclass):
+class abwasserbauwerk(vsa_baseclass):
     __tablename__ = "abwasserbauwerk"
     __table_args__ = {"schema": SCHEMA}
 
@@ -52,17 +57,17 @@ class versickerungsanlage(abwasserbauwerk):
     __table_args__ = {"schema": SCHEMA}
 
 
-class rohrprofil(sia405_baseclass):
+class rohrprofil(vsa_baseclass):
     __tablename__ = "rohrprofil"
     __table_args__ = {"schema": SCHEMA}
 
 
-class abwassernetzelement(sia405_baseclass):
+class abwassernetzelement(vsa_baseclass):
     __tablename__ = "abwassernetzelement"
     __table_args__ = {"schema": SCHEMA}
 
 
-class haltungspunkt(sia405_baseclass):
+class haltungspunkt(vsa_baseclass):
     __tablename__ = "haltungspunkt"
     __table_args__ = {"schema": SCHEMA}
 
@@ -77,7 +82,7 @@ class haltung(abwassernetzelement):
     __table_args__ = {"schema": SCHEMA}
 
 
-class bauwerksteil(sia405_baseclass):
+class bauwerksteil(vsa_baseclass):
     __tablename__ = "bauwerksteil"
     __table_args__ = {"schema": SCHEMA}
 
@@ -110,7 +115,7 @@ class bankett(bauwerksteil):
 # VSA_KEK
 
 
-class erhaltungsereignis(sia405_baseclass):
+class erhaltungsereignis(vsa_baseclass):
     __tablename__ = "erhaltungsereignis"
     __table_args__ = {"schema": SCHEMA}
 
@@ -120,7 +125,7 @@ class untersuchung(erhaltungsereignis):
     __table_args__ = {"schema": SCHEMA}
 
 
-class schaden(sia405_baseclass):
+class schaden(vsa_baseclass):
     __tablename__ = "schaden"
     __table_args__ = {"schema": SCHEMA}
 
@@ -135,21 +140,13 @@ class kanalschaden(schaden):
     __table_args__ = {"schema": SCHEMA}
 
 
-class datentraeger(sia405_baseclass):
+class datentraeger(vsa_baseclass):
     __tablename__ = "datentraeger"
     __table_args__ = {"schema": SCHEMA}
 
 
-class datei(sia405_baseclass):
+class datei(vsa_baseclass):
     __tablename__ = "datei"
-    __table_args__ = {"schema": SCHEMA}
-
-
-# STRUCTS
-
-
-class metaattribute(Base):
-    __tablename__ = "metaattribute"
     __table_args__ = {"schema": SCHEMA}
 
 
