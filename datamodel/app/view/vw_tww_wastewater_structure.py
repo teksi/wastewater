@@ -414,6 +414,9 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
       dy float;
     BEGIN
       {update_co}
+      IF  array_length(array_remove(ARRAY[{new_co_cols}],NULL),1)>0 AND NOT FOUND THEN
+      {insert_vw_cover}
+      END IF;
       {update_sp}
       {update_ws}
       {update_wn}
@@ -629,6 +632,42 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             prefix="wn_",
             indent=6,
             skip_columns=["situation3d_geometry"],
+        ),
+        insert_vw_cover=insert_command(
+            pg_cur=cursor,
+            table_schema="tww_app",
+            table_name="vw_cover",
+            table_type="view",
+            table_alias="co",
+            prefix="co_",
+            remove_pkey=False,
+            pkey="obj_id",
+            indent=6,
+            remap_columns={"cover_shape": "co_shape"},
+            insert_values={
+                "identifier": "COALESCE(NULLIF(NEW.co_identifier,''), NEW.identifier)",
+                "situation3d_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), 'nan'), {srid} )".format(
+                    srid=srid
+                ),
+                "last_modification": "NOW()",
+                "fk_provider": "NEW.fk_provider",
+                "fk_dataowner": "NEW.fk_dataowner",
+                "fk_wastewater_structure": "NEW.obj_id",
+            },
+        ),
+        new_co_cols=", ".join(
+            [
+                "NEW.co_shape::text" if x == "cover_shape" else "NEW.co_" + x + "::text"
+                for x in list(
+                    columns(
+                        pg_cur=cursor,
+                        table_schema="tww_od",
+                        table_name="cover",
+                        remove_pkey=False,
+                        skip_columns=["situation3d_geometry", "obj_id"],
+                    )
+                )
+            ]
         ),
     )
 
