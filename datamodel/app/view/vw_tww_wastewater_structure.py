@@ -414,8 +414,10 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
       dy float;
     BEGIN
       {update_co}
-      IF  array_length(array_remove(ARRAY[{new_co_cols}],NULL),1)>0 AND NOT FOUND THEN
-      {insert_vw_cover}
+      IF (NOT FOUND) THEN
+        CASE WHEN array_length(array_remove(ARRAY[{new_co_cols}],NULL),1)>0 THEN
+        {insert_vw_cover}
+        ELSE NULL END;
       END IF;
       {update_sp}
       {update_ws}
@@ -642,7 +644,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             prefix="co_",
             remove_pkey=False,
             pkey="obj_id",
-            indent=6,
+            indent=8,
             remap_columns={"cover_shape": "co_shape"},
             insert_values={
                 "identifier": "COALESCE(NULLIF(NEW.co_identifier,''), NEW.identifier)",
