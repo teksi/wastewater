@@ -223,7 +223,7 @@ class TestGeometry(unittest.TestCase, DbTestBase):
             "situation3d_geometry": "0101000020080800000000000020D6434100000000804F3241",
             "wn_obj_id": "1337_1001",
             "co_obj_id": "1337_1001",
-            "co_diameter":600 # needed to create a cover
+            "co_diameter": 600,  # needed to create a cover
         }
         expected_row = copy.deepcopy(row)
         # wastewaterstructure has the geometry but NaN as Z because of no co_level (geometry of cover): ST_SetSRID(ST_Collect(ST_MakePoint(2600000, 1200000, 'NaN')), 2056)

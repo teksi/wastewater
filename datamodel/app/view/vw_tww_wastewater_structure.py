@@ -265,12 +265,12 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
 
     CASE WHEN array_length(array_remove(ARRAY[{new_co_cols}],NULL),1)>0 THEN-- no cover entries
     {insert_vw_cover}
-    
+
        UPDATE tww_od.wastewater_structure
         SET fk_main_cover = NEW.co_obj_id
         WHERE obj_id = NEW.obj_id;
-   
-    
+
+
      ELSE
          RAISE WARNING 'Object_ID %: no cover created as all cover-related columns are NULL', NEW.obj_id; -- Warning
     END CASE;
