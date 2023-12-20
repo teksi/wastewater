@@ -93,21 +93,18 @@ def tww_export(selection=None, labels_file=None):
             val = 0
         return val
 
-    def create_metaattributes(row):
-        metaattribute = ABWASSER.metaattribute(
-            # FIELDS TO MAP TO ABWASSER.metaattribute
-            # --- metaattribute ---
-            datenherr=getattr(row.fk_dataowner__REL, "name", "unknown"),  # TODO : is unknown ok ?
-            datenlieferant=getattr(
-                row.fk_provider__REL, "name", "unknown"
-            ),  # TODO : is unknown ok ?
-            letzte_aenderung=row.last_modification,
-            sia405_baseclass_metaattribute=get_tid(row),
-            # OD : is this OK ? Don't we need a different t_id from what inserted above in organisation ? if so, consider adding a "for_class" arg to tid_for_row
-            t_id=get_tid(row),
-            t_seq=0,
-        )
-        abwasser_session.add(metaattribute)
+    def create_metaattributes(row, abwasser_row):
+        abwasser_row.datenherr = (
+            getattr(row.fk_dataowner__REL, "name", "unknown"),
+        )  # TODO : is unknown ok ?
+        abwasser_row.datenlieferant = (
+            getattr(row.fk_provider__REL, "name", "unknown"),
+        )  # TODO : is unknown ok ?
+        abwasser_row.letzte_aenderung = (row.last_modification,)
+        abwasser_row.sia405_baseclass_metaattribute = (get_tid(row),)
+        # OD : is this OK ? Don't we need a different t_id from what inserted above in organisation ? if so, consider adding a "for_class" arg to tid_for_row
+        abwasser_row.t_id = (get_tid(row),)
+        abwasser_row.t_seq = (0,)
 
     def base_common(row, type_name):
         """
@@ -116,7 +113,6 @@ def tww_export(selection=None, labels_file=None):
         return {
             "t_ili_tid": row.obj_id,
             "t_type": type_name,
-            "obj_id": row.obj_id,
             "t_id": get_tid(row),
         }
 
@@ -227,8 +223,9 @@ def tww_export(selection=None, labels_file=None):
             bemerkung=truncate(emptystr_to_null(row.remark), 80),
             bezeichnung=null_to_emptystr(row.identifier),
         )
+        create_metaattributes(row, organisation)
         abwasser_session.add(organisation)
-        create_metaattributes(row)
+
         print(".", end="")
     logger.info("done")
     abwasser_session.flush()
