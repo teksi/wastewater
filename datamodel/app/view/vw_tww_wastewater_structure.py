@@ -263,7 +263,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
         SET fk_main_wastewater_node = NEW.wn_obj_id
         WHERE obj_id = NEW.obj_id;
 
-    CASE WHEN array_length(array_remove(ARRAY[{new_co_cols}],NULL),1)>0 THEN-- no cover entries
+    CASE WHEN array_remove(ARRAY[{new_co_cols}],NULL)= '{}' THEN-- no cover entries
     {insert_vw_cover}
 
        UPDATE tww_od.wastewater_structure
@@ -415,7 +415,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
     BEGIN
       {update_co}
       IF NOT FOUND THEN
-        CASE WHEN array_length(array_remove(ARRAY[{new_co_cols}],NULL),1)>0 THEN
+        CASE WHEN array_remove(ARRAY[{new_co_cols}],NULL)<> '{}' THEN
         {insert_vw_cover}
         ELSE NULL;
         END CASE;
