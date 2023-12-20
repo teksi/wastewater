@@ -417,7 +417,8 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
       IF (NOT FOUND) THEN
         CASE WHEN array_length(array_remove(ARRAY[{new_co_cols}],NULL),1)>0 THEN
         {insert_vw_cover}
-        ELSE NULL END;
+        ELSE NULL; 
+        END CASE;
       END IF;
       {update_sp}
       {update_ws}
