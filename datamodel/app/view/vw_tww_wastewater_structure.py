@@ -230,8 +230,9 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
     CREATE OR REPLACE FUNCTION tww_app.ft_vw_tww_wastewater_structure_INSERT()
       RETURNS trigger AS
     $BODY$
+    DECLARE new_co bool;
     BEGIN
-
+      new_co= NOT(1=ALL(ARRAY[{new_co_cols}]) AND 2=ALL(ARRAY[{new_co_cols}]));
       NEW.identifier = COALESCE(NEW.identifier, NEW.obj_id);
 
     {insert_ws}
@@ -263,7 +264,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
         SET fk_main_wastewater_node = NEW.wn_obj_id
         WHERE obj_id = NEW.obj_id;
 
-    CASE WHEN array_remove(ARRAY[{new_co_cols}],NULL)= '{}' THEN-- no cover entries
+    CASE WHEN NOT new_co THEN-- no cover entries
     {insert_vw_cover}
 
        UPDATE tww_od.wastewater_structure
@@ -412,10 +413,13 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
     DECLARE
       dx float;
       dy float;
+      new_co bool;
     BEGIN
+      new_co = NOT(1=ALL(ARRAY[{new_co_cols}]) AND 2=ALL(ARRAY[{new_co_cols}]));
+      
       {update_co}
       IF NOT FOUND THEN
-        CASE WHEN array_remove(ARRAY[{new_co_cols}],NULL)<> '{}' THEN
+        CASE WHEN new_co THEN
         {insert_vw_cover}
         ELSE NULL;
         END CASE;
