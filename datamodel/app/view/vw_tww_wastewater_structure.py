@@ -265,9 +265,11 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
         WHERE obj_id = NEW.obj_id;
 
       -- Aggregate all co_* values in a jsonb
-      new_co := to_jsonb(NEW);
-      new_co := jsonb_object_agg(key, new_co->key)
-            FILTER (WHERE LEFT(key,3)= 'co_' AND key NOT IN ('co_identifier', 'co_obj_id'));
+      new_co := (
+          SELECT jsonb_object_agg(key, to_jsonb(NEW)->key)
+          FROM jsonb_object_keys(to_jsonb(NEW)) key
+          WHERE LEFT(key, 3) = 'co_' AND key NOT IN ('co_identifier', 'co_obj_id')
+        );;
 
       -- Check if all remaining values are NULL
       CASE WHEN jsonb_strip_nulls(new_co)::text <> '' THEN -- no cover entries
@@ -410,9 +412,11 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
       {update_co}
       IF NOT FOUND THEN
         -- Aggregate all co_* values in a jsonb
-        new_co := to_jsonb(NEW);
-        new_co := jsonb_object_agg(key, new_co->key)
-            FILTER (WHERE LEFT(key,3)= 'co_' AND key NOT IN ('co_identifier', 'co_obj_id'));
+        new_co := (
+          SELECT jsonb_object_agg(key, to_jsonb(NEW)->key)
+          FROM jsonb_object_keys(to_jsonb(NEW)) key
+          WHERE LEFT(key, 3) = 'co_' AND key NOT IN ('co_identifier', 'co_obj_id')
+        );
 
         -- Check if all remaining values are NULL
         CASE WHEN jsonb_strip_nulls(new_co)::text <> '' THEN
