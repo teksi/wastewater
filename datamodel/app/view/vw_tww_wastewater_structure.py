@@ -269,7 +269,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
           SELECT jsonb_object_agg(key, to_jsonb(NEW)->key)
           FROM jsonb_object_keys(to_jsonb(NEW)) key
           WHERE LEFT(key, 3) = 'co_' AND key NOT IN ('co_identifier', 'co_obj_id')
-        );;
+        );
 
       -- Check if all remaining values are NULL
       CASE WHEN jsonb_strip_nulls(new_co)::text <> '' THEN -- no cover entries
