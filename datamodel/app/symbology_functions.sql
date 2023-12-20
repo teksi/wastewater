@@ -313,11 +313,11 @@ BEGIN
   UPDATE tww_od.wastewater_structure ws
   SET fk_main_cover = ws_covers.co_obj_id
   FROM (
-    SELECT ws.obj_id, FIRST_VALUE(co.obj_id) OVER (PARTITION By ws.obj_id) AS co_obj_id
+    SELECT ws.obj_id, FIRST_VALUE(co.obj_id) OVER (PARTITION BY ws.obj_id) AS co_obj_id
       FROM tww_od.wastewater_structure ws
-	  LEFT JOIN tww_od.structure_part sp ON sp.fk_wastewater_structure =ws.obj_id
+      LEFT JOIN tww_od.structure_part sp ON sp.fk_wastewater_structure = ws.obj_id
       LEFT JOIN tww_od.cover co ON sp.obj_id = co.obj_id
-	  LEFT JOIN tww_od.channel ch ON ch.obj_id =ws.obj_id
+      LEFT JOIN tww_od.channel ch ON ch.obj_id = ws.obj_id
       WHERE (_all OR ws.obj_id = _obj_id ) AND ch.obj_id IS NULL AND ws.fk_main_cover IS NULL
   ) ws_covers
   where ws.obj_id = ws_covers.obj_id;
