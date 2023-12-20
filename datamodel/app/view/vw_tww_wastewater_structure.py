@@ -416,7 +416,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
       new_co bool;
     BEGIN
       new_co = NOT(1=ALL(ARRAY[{new_co_cols}]) AND 2=ALL(ARRAY[{new_co_cols}]));
-      
+
       {update_co}
       IF NOT FOUND THEN
         CASE WHEN new_co THEN
