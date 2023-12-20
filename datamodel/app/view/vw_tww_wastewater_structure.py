@@ -6,7 +6,6 @@ import argparse
 import os
 
 import psycopg2
-from pirogue.information_schema import columns
 from pirogue.utils import insert_command, select_columns, table_parts, update_command
 from yaml import safe_load
 
@@ -232,8 +231,8 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
     $BODY$
     DECLARE new_co jsonb;
     BEGIN
-              
-      
+
+
       NEW.identifier = COALESCE(NEW.identifier, NEW.obj_id);
 
     {insert_ws}
