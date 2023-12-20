@@ -270,7 +270,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             FILTER (WHERE key LIKE 'co_%' AND key NOT IN ('co_identifier', 'co_obj_id'));
 
       -- Check if all remaining values are NULL
-      CASE WHEN jsonb_strip_nulls(new_co)::text <> '' THEN THEN-- no cover entries
+      CASE WHEN jsonb_strip_nulls(new_co)::text <> '' THEN -- no cover entries
         {insert_vw_cover}
 
        UPDATE tww_od.wastewater_structure
