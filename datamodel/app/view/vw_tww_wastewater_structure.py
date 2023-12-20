@@ -267,7 +267,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
       -- Aggregate all co_* values in a jsonb
       new_co := to_jsonb(NEW);
       new_co := jsonb_object_agg(key, new_co->key)
-            FILTER (WHERE key LIKE 'co_%' AND key NOT IN ('co_identifier', 'co_obj_id'));
+            FILTER (WHERE LEFT(key,3)= 'co_' AND key NOT IN ('co_identifier', 'co_obj_id'));
 
       -- Check if all remaining values are NULL
       CASE WHEN jsonb_strip_nulls(new_co)::text <> '' THEN -- no cover entries
@@ -412,7 +412,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
         -- Aggregate all co_* values in a jsonb
         new_co := to_jsonb(NEW);
         new_co := jsonb_object_agg(key, new_co->key)
-            FILTER (WHERE key LIKE 'co_%' AND key NOT IN ('co_identifier', 'co_obj_id'));
+            FILTER (WHERE LEFT(key,3)= 'co_' AND key NOT IN ('co_identifier', 'co_obj_id'));
 
         -- Check if all remaining values are NULL
         CASE WHEN jsonb_strip_nulls(new_co)::text <> '' THEN
