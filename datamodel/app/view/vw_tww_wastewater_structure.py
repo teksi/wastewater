@@ -232,7 +232,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
     $BODY$
     DECLARE new_co bool;
     BEGIN
-      new_co= NOT(1=ALL(ARRAY[{new_co_cols}]) AND 2=ALL(ARRAY[{new_co_cols}]));
+      new_co= NOT('1'=ALL(ARRAY[{new_co_cols}]) AND '2'=ALL(ARRAY[{new_co_cols}]));
       NEW.identifier = COALESCE(NEW.identifier, NEW.obj_id);
 
     {insert_ws}
@@ -415,7 +415,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
       dy float;
       new_co bool;
     BEGIN
-      new_co = NOT(1=ALL(ARRAY[{new_co_cols}]) AND 2=ALL(ARRAY[{new_co_cols}]));
+      new_co = NOT('1'=ALL(ARRAY[{new_co_cols}]) AND '2'=ALL(ARRAY[{new_co_cols}]));
       
       {update_co}
       IF NOT FOUND THEN
