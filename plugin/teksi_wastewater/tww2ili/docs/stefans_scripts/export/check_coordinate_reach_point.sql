@@ -1,3 +1,0 @@
-SELECT
-ST_AsText(situation_geometry) as hpkoordinaten, obj_id
-			FROM tww_od.reach_point ORDER BY hpkoordinaten ASC;
