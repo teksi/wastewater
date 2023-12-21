@@ -37,7 +37,6 @@ jobs:
         run: plugin/scripts/package_pip_packages.sh
 
       - name: Package
-        working-directory: ./plugin
         run: |
           VERSION=0.0.0
           qgis-plugin-ci -v package ${VERSION} \
