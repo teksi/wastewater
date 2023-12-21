@@ -272,7 +272,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
         );
 
       -- Check if all remaining values are NULL
-      CASE WHEN jsonb_strip_nulls(new_co)::text <> '' THEN -- no cover entries
+      CASE WHEN jsonb_strip_nulls(new_co)::text <> '{{}}' THEN -- no cover entries
         {insert_vw_cover}
 
        UPDATE tww_od.wastewater_structure
@@ -419,7 +419,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
         );
 
         -- Check if all remaining values are NULL
-        CASE WHEN jsonb_strip_nulls(new_co)::text <> '' THEN
+        CASE WHEN jsonb_strip_nulls(new_co)::text <> '{{}}' THEN
         {insert_vw_cover}
         ELSE NULL;
         END CASE;
