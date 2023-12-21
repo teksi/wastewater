@@ -169,7 +169,7 @@ def main(args):
                     )
                 except utils.various.CmdException:
                     print(
-                        "Ilivalidator doesn't recognize output as valid ! Run with --skip_validation to ignore"
+                        "Ilivalidator doesn't recognize output as valid! Run with --skip_validation to ignore"
                     )
                     exit(1)
 
@@ -184,7 +184,7 @@ def main(args):
                     )
                 except utils.various.CmdException:
                     print(
-                        "Ilivalidator doesn't recognize input as valid ! Run with --skip_validation to ignore"
+                        "Ilivalidator doesn't recognize input as valid! Run with --skip_validation to ignore"
                     )
                     exit(1)
             utils.ili2db.create_ili_schema(

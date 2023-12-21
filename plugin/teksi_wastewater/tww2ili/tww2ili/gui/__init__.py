@@ -109,7 +109,12 @@ def action_import(plugin):
     try:
         create_ili_schema(
             config.ABWASSER_SCHEMA,
-            config.ABWASSER_ILI_MODEL,
+            config.ILI_FOLDER,
+            [
+                config.ABWASSER_ILI_MODEL_NAME,
+                config.ABWASSER_ILI_MODEL_NAME_SIA405,
+                config.ABWASSER_ILI_MODEL_NAME_DSS,
+            ],
             log_path,
             recreate_schema=True,
         )
@@ -206,7 +211,12 @@ def action_export(plugin):
         try:
             create_ili_schema(
                 config.ABWASSER_SCHEMA,
-                config.ABWASSER_ILI_MODEL,
+                config.ILI_FOLDER,
+                [
+                    config.ABWASSER_ILI_MODEL_NAME,
+                    config.ABWASSER_ILI_MODEL_NAME_SIA405,
+                    config.ABWASSER_ILI_MODEL_NAME_DSS,
+                ],
                 log_path,
                 recreate_schema=True,
             )
