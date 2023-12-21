@@ -7,7 +7,7 @@ from .. import config
 from .various import exec_, get_pgconf_as_ili_args, get_pgconf_as_psycopg2_dsn, logger
 
 
-def create_ili_schema(schema, model, log_path, recreate_schema=False):
+def create_ili_schema(schema, models_directory, models, log_path, recreate_schema=False):
     logger.info("CONNECTING TO DATABASE...")
 
     connection = psycopg2.connect(get_pgconf_as_psycopg2_dsn())
@@ -60,7 +60,10 @@ def create_ili_schema(schema, model, log_path, recreate_schema=False):
                 f'"{log_path}"',
                 "--nameLang",
                 "de",
-                f"{model}",
+                "--modeldir",
+                f'"%ILI_FROM_DB;%XTF_DIR;http://models.interlis.ch/;%JAR_DIR;{models_directory}"',
+                "--models",
+                f'"{";".join(models)}"',
             ]
         )
     )

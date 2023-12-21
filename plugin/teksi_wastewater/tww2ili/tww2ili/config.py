@@ -1,5 +1,13 @@
 import os
 
+
+class Model:
+    def __init__(self, name, filename, location):
+        self.name = name
+        self.filename = filename
+        self.location = location
+
+
 BASE = os.path.dirname(__file__)
 
 PGSERVICE = None  # overriden by PG* settings below
@@ -17,19 +25,6 @@ DATA_FOLDER = os.path.join(BASE, "data")
 TWW_DEFAULT_PGSERVICE = "pg_tww"
 TWW_SCHEMA = "tww_od"
 ABWASSER_SCHEMA = "pg2ili_abwasser"
-ABWASSER_ILI_MODEL = os.path.join(ILI_FOLDER, "VSA_KEK_2020_1_2_d_LV95-20231030.ili")
 ABWASSER_ILI_MODEL_NAME = "VSA_KEK_2020_1_LV95"
 ABWASSER_ILI_MODEL_NAME_SIA405 = "SIA405_ABWASSER_2020_1_LV95"
-ABWASSER_ILI_EXPORT_MODEL = os.path.join(
-    ILI_FOLDER, "SIA405_Abwasser_2020_1_2_d_LV95-20231021.ili"
-)
-
-QWAT_DEFAULT_PGSERVICE = "qwat"
-QWAT_SCHEMA = "qwat_od"
-WASSER_SCHEMA = "pg2ili_wasser"
-# Currently, ili2pg fails to export SIA405_Wasser_2015_2_d due to views
-# TODO Once https://github.com/claeis/ili2db/issues/397#issuecomment-821342568 is fixed
-# use the normal file instad
-# WASSER_ILI_MODEL = os.path.join(ILI_FOLDER, "SIA405_Wasser_2015_2_d-20181005.ili")
-WASSER_ILI_MODEL = os.path.join(ILI_FOLDER, "SIA405_Wasser_2015_2_d-20181005-WITHOUT_VIEWS.ili")
-WASSER_ILI_MODEL_NAME = "SIA405_WASSER_2015_LV95"
+ABWASSER_ILI_MODEL_NAME_DSS = "DSS_2020_1_LV95"

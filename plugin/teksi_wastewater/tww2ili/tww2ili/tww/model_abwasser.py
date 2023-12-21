@@ -120,12 +120,12 @@ class erhaltungsereignis(vsa_baseclass):
     __table_args__ = {"schema": SCHEMA}
 
 
-class untersuchung(erhaltungsereignis):
+class untersuchung(Base):
     __tablename__ = "untersuchung"
     __table_args__ = {"schema": SCHEMA}
 
 
-class schaden(vsa_baseclass):
+class schaden(untersuchung):
     __tablename__ = "schaden"
     __table_args__ = {"schema": SCHEMA}
 
@@ -140,12 +140,12 @@ class kanalschaden(schaden):
     __table_args__ = {"schema": SCHEMA}
 
 
-class datentraeger(vsa_baseclass):
+class datentraeger(Base):
     __tablename__ = "datentraeger"
     __table_args__ = {"schema": SCHEMA}
 
 
-class datei(vsa_baseclass):
+class datei(Base):
     __tablename__ = "datei"
     __table_args__ = {"schema": SCHEMA}
 
