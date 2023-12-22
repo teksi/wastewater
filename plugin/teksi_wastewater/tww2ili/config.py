@@ -10,8 +10,6 @@ PGUSER = os.getenv("PGUSER", None)
 PGPASS = os.getenv("PGPASS", None)
 
 ILIVALIDATOR = os.path.join(BASE, "bin", "ilivalidator-1.11.9", "ilivalidator-1.11.9.jar")
-ILI_FOLDER = os.path.join(BASE, "ili")
-DATA_FOLDER = os.path.join(BASE, "data")
 
 TWW_DEFAULT_PGSERVICE = "pg_tww"
 TWW_SCHEMA = "tww_od"

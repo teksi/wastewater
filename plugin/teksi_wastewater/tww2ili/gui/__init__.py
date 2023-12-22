@@ -71,7 +71,7 @@ def action_import(plugin):
     progress_dialog.setModal(True)
     progress_dialog.show()
 
-    twwIliTools = TwwIliTools(config.ILI_FOLDER)
+    twwIliTools = TwwIliTools()
 
     # Validating the input file
     progress_dialog.setLabelText("Validating the input file...")
@@ -190,7 +190,7 @@ def action_export(plugin):
         progress_dialog.setModal(True)
         progress_dialog.show()
 
-        twwIliTools = TwwIliTools(config.ILI_FOLDER)
+        twwIliTools = TwwIliTools()
 
         # Prepare the temporary ili2pg model
         progress_dialog.setLabelText("Creating ili schema...")

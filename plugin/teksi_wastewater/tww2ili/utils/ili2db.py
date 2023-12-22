@@ -14,9 +14,7 @@ from .various import exec_, get_pgconf_as_ili_args, get_pgconf_as_psycopg2_dsn, 
 
 
 class TwwIliTools:
-    def __init__(self, models_directory):
-        self.models_directory = models_directory
-
+    def __init__(self):
         self.java_executable_path = ili2dbutils.get_java_path(ili2dbconfig.BaseConfiguration())
 
         stdout = SimpleNamespace()
@@ -81,8 +79,6 @@ class TwwIliTools:
                     f'"{log_path}"',
                     "--nameLang",
                     "de",
-                    "--modeldir",
-                    f'"%ILI_FROM_DB;%XTF_DIR;http://models.interlis.ch/;%JAR_DIR;{self.models_directory}"',
                     "--models",
                     f'"{";".join(models)}"',
                 ]
@@ -92,7 +88,7 @@ class TwwIliTools:
     def validate_xtf_data(self, xtf_file, log_path):
         logger.info("VALIDATING XTF DATA...")
         exec_(
-            f'"{self.java_executable_path}" -jar "{config.ILIVALIDATOR}" --modeldir "{self.models_directory}" --log "{log_path}" "{xtf_file}"'
+            f'"{self.java_executable_path}" -jar "{config.ILIVALIDATOR}" --log "{log_path}" "{xtf_file}"'
         )
 
     def import_xtf_data(self, schema, xtf_file, log_path):
@@ -108,8 +104,6 @@ class TwwIliTools:
                     *get_pgconf_as_ili_args(),
                     "--dbschema",
                     f'"{schema}"',
-                    "--modeldir",
-                    f'"{config.ILI_FOLDER}"',
                     "--disableValidation",
                     "--skipReferenceErrors",
                     "--createTidCol",
@@ -145,8 +139,6 @@ class TwwIliTools:
                     *get_pgconf_as_ili_args(),
                     "--dbschema",
                     f"{schema}",
-                    "--modeldir",
-                    f'"{self.models_directory}"',
                     "--disableValidation",
                     "--skipReferenceErrors",
                     "--createTidCol",
