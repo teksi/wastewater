@@ -2,29 +2,18 @@ import logging
 import os
 import tempfile
 import webbrowser
-from types import SimpleNamespace
 
 from qgis import processing
 from qgis.core import Qgis, QgsProject, QgsSettings
 from qgis.PyQt.QtWidgets import QApplication, QFileDialog, QProgressDialog, QPushButton
 from qgis.utils import iface
-from teksi_wastewater.libs.modelbaker.iliwrapper import (
-    globals,
-    ili2dbconfig,
-    ili2dbutils,
-)
 
 from ....utils.twwlayermanager import TwwLayerManager
 from .. import config
 from ..tww.export import tww_export
 from ..tww.import_ import tww_import
-from ..utils.ili2db import (
-    create_ili_schema,
-    export_xtf_data,
-    import_xtf_data,
-    validate_xtf_data,
-)
-from ..utils.various import CmdException, LoggingHandlerContext, logger, make_log_path
+from ..utils.ili2db import TwwIliTools
+from ..utils.various import CmdException, LoggingHandlerContext, make_log_path
 from .gui_export import GuiExport
 from .gui_import import GuiImport
 
@@ -55,8 +44,6 @@ def action_import(plugin):
     """
     global import_dialog  # avoid garbage collection
 
-    configure_from_modelbaker()
-
     default_folder = QgsSettings().value(
         "tww_plugin/last_interlis_path", QgsProject.instance().absolutePath()
     )
@@ -84,12 +71,14 @@ def action_import(plugin):
     progress_dialog.setModal(True)
     progress_dialog.show()
 
+    twwIliTools = TwwIliTools(config.ILI_FOLDER)
+
     # Validating the input file
     progress_dialog.setLabelText("Validating the input file...")
     QApplication.processEvents()
     log_path = make_log_path(base_log_path, "ilivalidator")
     try:
-        validate_xtf_data(
+        twwIliTools.validate_xtf_data(
             file_name,
             log_path,
         )
@@ -107,9 +96,8 @@ def action_import(plugin):
     QApplication.processEvents()
     log_path = make_log_path(base_log_path, "ili2pg-schemaimport")
     try:
-        create_ili_schema(
+        twwIliTools.create_ili_schema(
             config.ABWASSER_SCHEMA,
-            config.ILI_FOLDER,
             [
                 config.ABWASSER_ILI_MODEL_NAME,
                 config.ABWASSER_ILI_MODEL_NAME_SIA405,
@@ -134,7 +122,7 @@ def action_import(plugin):
     QApplication.processEvents()
     log_path = make_log_path(base_log_path, "ili2pg-import")
     try:
-        import_xtf_data(
+        twwIliTools.import_xtf_data(
             config.ABWASSER_SCHEMA,
             file_name,
             log_path,
@@ -171,8 +159,6 @@ def action_export(plugin):
     Is executed when the user clicks the exportAction tool
     """
 
-    configure_from_modelbaker()
-
     export_dialog = GuiExport(plugin.iface.mainWindow())
 
     def action_do_export():
@@ -204,14 +190,15 @@ def action_export(plugin):
         progress_dialog.setModal(True)
         progress_dialog.show()
 
+        twwIliTools = TwwIliTools(config.ILI_FOLDER)
+
         # Prepare the temporary ili2pg model
         progress_dialog.setLabelText("Creating ili schema...")
         QApplication.processEvents()
         log_path = make_log_path(base_log_path, "ili2pg-schemaimport")
         try:
-            create_ili_schema(
+            twwIliTools.create_ili_schema(
                 config.ABWASSER_SCHEMA,
-                config.ILI_FOLDER,
                 [
                     config.ABWASSER_ILI_MODEL_NAME,
                     config.ABWASSER_ILI_MODEL_NAME_SIA405,
@@ -294,7 +281,7 @@ def action_export(plugin):
             QApplication.processEvents()
             log_path = make_log_path(base_log_path, f"ili2pg-export-{model_name}")
             try:
-                export_xtf_data(
+                twwIliTools.export_xtf_data(
                     config.ABWASSER_SCHEMA,
                     model_name,
                     export_model_name,
@@ -314,7 +301,7 @@ def action_export(plugin):
             QApplication.processEvents()
             log_path = make_log_path(base_log_path, f"ilivalidator-{model_name}")
             try:
-                validate_xtf_data(
+                twwIliTools.validate_xtf_data(
                     export_file_name,
                     log_path,
                 )
@@ -341,20 +328,3 @@ def action_export(plugin):
     export_dialog.accepted.connect(action_do_export)
     export_dialog.adjustSize()
     export_dialog.show()
-
-
-def configure_from_modelbaker():
-    """
-    Configures config.JAVA/ILI2PG paths using modelbaker.
-    """
-
-    # We reuse modelbaker's logic to get the java path and ili2pg executables from withing QGIS
-    # Maybe we could reuse even more (IliExecutable...) ?
-
-    stdout = SimpleNamespace()
-    stdout.emit = logger.info
-    stderr = SimpleNamespace()
-    stderr.emit = logger.error
-
-    config.JAVA = ili2dbutils.get_java_path(ili2dbconfig.BaseConfiguration())
-    config.ILI2PG = ili2dbutils.get_ili2db_bin(globals.DbIliMode.ili2pg, 4, stdout, stderr)
