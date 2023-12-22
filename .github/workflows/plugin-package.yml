@@ -41,3 +41,9 @@ jobs:
           VERSION=0.0.0
           qgis-plugin-ci -v package ${VERSION} \
             --allow-uncommitted-changes
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: plugin
+          path: plugin/teksi_wastewater.0.0.0.zip
+          if-no-files-found: error
