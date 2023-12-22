@@ -213,15 +213,13 @@ class SumUpUpstreamAlgorithm(TwwAlgorithm):
         create_loop_layer = self.parameterAsBool(parameters, self.CREATE_LOOP_LAYER, context)
 
         if branch_behavior == 0:
-            aggregate_method = lambda values: min(values) if values else 0
+            aggregate_method = self.aggregate_method_min
         elif branch_behavior == 1:
-            aggregate_method = lambda values: max(values) if values else 0
+            aggregate_method = self.aggregate_method_max
         elif branch_behavior == 2:
-            aggregate_method = lambda values: statistics.mean(values) if values else 0
+            aggregate_method = self.aggregate_method_mean
         else:
-            aggregate_method = lambda values: feedback.pushError(
-                "Aggregate method not implemented"
-            )
+            aggregate_method = self.aggregate_method_not_implemented
 
         # create feature sink
         fields = wastewater_node_layer.fields()
@@ -307,7 +305,7 @@ class SumUpUpstreamAlgorithm(TwwAlgorithm):
                     )
 
             if times:
-                time = aggregate_method(times)
+                time = aggregate_method(times, feedback)
             else:
                 time = 0
 
@@ -395,7 +393,7 @@ class SumUpUpstreamAlgorithm(TwwAlgorithm):
                         )
 
                     if times:
-                        time += aggregate_method(times)
+                        time += aggregate_method(times, feedback)
 
                     return time
 
@@ -423,3 +421,28 @@ class SumUpUpstreamAlgorithm(TwwAlgorithm):
             loop_nodes,
             feedback,
         )
+
+    @staticmethod
+    def aggregate_method_min(values, feedback=QgsProcessingFeedback()):
+        if values:
+            return min(values)
+
+        return 0
+
+    @staticmethod
+    def aggregate_method_max(values, feedback=QgsProcessingFeedback()):
+        if values:
+            return max(values)
+
+        return 0
+
+    @staticmethod
+    def aggregate_method_mean(values, feedback=QgsProcessingFeedback()):
+        if values:
+            return statistics.mean(values)
+
+        return 0
+
+    @staticmethod
+    def aggregate_method_not_implemented(values, feedback=QgsProcessingFeedback()):
+        feedback.pushError("Aggregate method not implemented")
