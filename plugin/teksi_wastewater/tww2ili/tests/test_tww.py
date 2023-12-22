@@ -47,7 +47,7 @@ class TestTwwUseCases(unittest.TestCase):
         main(["setupdb", "full"])
 
         TWW = get_tww_model()
-        session = Session(utils.sqlalchemy.create_engine())
+        session = Session(utils.tww_sqlalchemy.create_engine())
         self.assertEqual(session.query(TWW.damage_channel).count(), 0)
         self.assertEqual(session.query(TWW.examination).count(), 0)
         self.assertEqual(session.query(TWW.data_media).count(), 0)
@@ -58,7 +58,7 @@ class TestTwwUseCases(unittest.TestCase):
         main(["tww", "import", path, "--recreate_schema"])
 
         # make sure all elements got imported
-        session = Session(utils.sqlalchemy.create_engine())
+        session = Session(utils.tww_sqlalchemy.create_engine())
         self.assertEqual(session.query(TWW.damage_channel).count(), 8)
         self.assertEqual(session.query(TWW.examination).count(), 1)
         self.assertEqual(session.query(TWW.data_media).count(), 2)
@@ -77,7 +77,7 @@ class TestTwwUseCases(unittest.TestCase):
         # assert idempotency
 
         main(["tww", "import", path, "--recreate_schema"])
-        session = Session(utils.sqlalchemy.create_engine())
+        session = Session(utils.tww_sqlalchemy.create_engine())
         self.assertEqual(session.query(TWW.damage_channel).count(), 8)
         self.assertEqual(session.query(TWW.examination).count(), 1)
         self.assertEqual(session.query(TWW.data_media).count(), 2)
@@ -116,7 +116,7 @@ class TestTwwUseCases(unittest.TestCase):
 
         TWW = get_tww_model()
 
-        session = Session(utils.sqlalchemy.create_engine())
+        session = Session(utils.tww_sqlalchemy.create_engine())
         self.assertEqual(session.query(TWW.channel).count(), 0)
         self.assertEqual(session.query(TWW.manhole).count(), 0)
         session.close()
@@ -124,7 +124,7 @@ class TestTwwUseCases(unittest.TestCase):
         main(["tww", "import", path, "--recreate_schema"])
 
         # make sure all elements got imported
-        session = Session(utils.sqlalchemy.create_engine())
+        session = Session(utils.tww_sqlalchemy.create_engine())
         self.assertEqual(session.query(TWW.channel).count(), 102)
         self.assertEqual(session.query(TWW.manhole).count(), 49)
 
@@ -289,13 +289,13 @@ class TestRegressions(unittest.TestCase):
 
         TWW = get_tww_model()
 
-        session = Session(utils.sqlalchemy.create_engine())
+        session = Session(utils.tww_sqlalchemy.create_engine())
         self.assertEqual(session.query(TWW.organisation).count(), 0)
         session.close()
 
         main(["tww", "import", path, "--recreate_schema"])
 
-        session = Session(utils.sqlalchemy.create_engine())
+        session = Session(utils.tww_sqlalchemy.create_engine())
         self.assertEqual(session.query(TWW.organisation).count(), 1)
         organisation = session.query(TWW.organisation).first()
         self.assertEqual(organisation, organisation.fk_dataowner__REL)

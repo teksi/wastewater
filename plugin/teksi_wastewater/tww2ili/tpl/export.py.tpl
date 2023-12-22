@@ -12,8 +12,8 @@ def {{model_name}}_export():
     {{model_name|upper}} = get_{{model_name}}_model()
     {{ilimodel_name|upper}} = get_{{ilimodel_name}}_model()
 
-    {{model_name}}_session = Session(utils.sqlalchemy.create_engine(), autocommit=False, autoflush=False)
-    {{ilimodel_name}}_session = Session(utils.sqlalchemy.create_engine(), autocommit=False, autoflush=False)
+    {{model_name}}_session = Session(utils.tww_sqlalchemy.create_engine(), autocommit=False, autoflush=False)
+    {{ilimodel_name}}_session = Session(utils.tww_sqlalchemy.create_engine(), autocommit=False, autoflush=False)
     tid_maker = utils.ili2db.TidMaker(id_attribute='obj_id')
 
     def create_metaattributes(row, session):

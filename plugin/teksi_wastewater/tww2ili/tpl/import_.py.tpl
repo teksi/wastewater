@@ -12,8 +12,8 @@ def {{model_name}}_import():
     {{model_name|upper}} = get_{{model_name}}_model()
     {{ilimodel_name|upper}} = get_{{ilimodel_name}}_model()
 
-    {{ilimodel_name}}_session = Session(utils.sqlalchemy.create_engine(), autocommit=False, autoflush=False)
-    {{model_name}}_session = Session(utils.sqlalchemy.create_engine(), autocommit=False, autoflush=False)
+    {{ilimodel_name}}_session = Session(utils.tww_sqlalchemy.create_engine(), autocommit=False, autoflush=False)
+    {{model_name}}_session = Session(utils.tww_sqlalchemy.create_engine(), autocommit=False, autoflush=False)
 
 {% for class_to, classes_from in mapping.items() %}
     print("Importing {{classes_from|qualclassesnames}} -> {{model_name|upper}}.{{class_to.__name__}}")

@@ -24,7 +24,7 @@ def tww_import(precommit_callback=None):
     TWW = get_tww_model()
     ABWASSER = get_abwasser_model()
 
-    pre_session = Session(utils.sqlalchemy.create_engine(), autocommit=False, autoflush=False)
+    pre_session = Session(utils.tww_sqlalchemy.create_engine(), autocommit=False, autoflush=False)
 
     # We also drop symbology triggers as they badly affect performance. This must be done in a separate session as it
     # would deadlock other sessions.
@@ -35,8 +35,10 @@ def tww_import(precommit_callback=None):
     # We use two different sessions for reading and writing so it's easier to
     # review imports and to keep the door open to getting data from another
     # connection / database type.
-    abwasser_session = Session(utils.sqlalchemy.create_engine(), autocommit=False, autoflush=False)
-    tww_session = Session(utils.sqlalchemy.create_engine(), autocommit=False, autoflush=False)
+    abwasser_session = Session(
+        utils.tww_sqlalchemy.create_engine(), autocommit=False, autoflush=False
+    )
+    tww_session = Session(utils.tww_sqlalchemy.create_engine(), autocommit=False, autoflush=False)
 
     # Allow to insert rows with cyclic dependencies at once
     tww_session.execute(text("SET CONSTRAINTS ALL DEFERRED;"))
@@ -111,22 +113,15 @@ def tww_import(precommit_callback=None):
 
         return instance
 
-    def metaattribute_common(metaattribute):
-        """
-        Common parameters for metaattributes
-        """
-        return {
-            "fk_dataowner__REL": create_or_update_organisation(metaattribute.datenherr),
-            "fk_provider__REL": create_or_update_organisation(metaattribute.datenlieferant),
-            "last_modification": metaattribute.letzte_aenderung,
-        }
-
     def base_common(row):
         """
         Returns common attributes for base
         """
         return {
             "obj_id": row.t_ili_tid,
+            "fk_dataowner__REL": create_or_update_organisation(row.datenherrref),
+            "fk_provider__REL": create_or_update_organisation(row.datenlieferantref),
+            "last_modification": row.letzte_aenderung,
         }
 
     def wastewater_structure_common(row):
@@ -198,8 +193,7 @@ def tww_import(precommit_callback=None):
     for row in abwasser_session.query(ABWASSER.organisation):
         organisation = create_or_update(
             TWW.organisation,
-            **base_common(row),
-            # **metaattribute_common(row),  # see below
+            obj_id=row.t_ili_tid,
             # --- organisation ---
             identifier=row.bezeichnung,
             remark=row.bemerkung,
@@ -243,7 +237,6 @@ def tww_import(precommit_callback=None):
         channel = create_or_update(
             TWW.channel,
             **base_common(row),
-            **metaattribute_common(row),
             # --- wastewater_structure ---
             **wastewater_structure_common(row),
             # --- channel ---
@@ -299,7 +292,6 @@ def tww_import(precommit_callback=None):
         manhole = create_or_update(
             TWW.manhole,
             **base_common(row),
-            **metaattribute_common(row),
             # --- wastewater_structure ---
             **wastewater_structure_common(row),
             # --- manhole ---
@@ -349,7 +341,6 @@ def tww_import(precommit_callback=None):
         discharge_point = create_or_update(
             TWW.discharge_point,
             **base_common(row),
-            **metaattribute_common(row),
             # --- wastewater_structure ---
             **wastewater_structure_common(row),
             # --- discharge_point ---
@@ -397,7 +388,6 @@ def tww_import(precommit_callback=None):
         special_structure = create_or_update(
             TWW.special_structure,
             **base_common(row),
-            **metaattribute_common(row),
             # --- wastewater_structure ---
             **wastewater_structure_common(row),
             # --- special_structure ---
@@ -448,7 +438,6 @@ def tww_import(precommit_callback=None):
         infiltration_installation = create_or_update(
             TWW.infiltration_installation,
             **base_common(row),
-            **metaattribute_common(row),
             # --- wastewater_structure ---
             **wastewater_structure_common(row),
             # --- infiltration_installation ---
@@ -508,7 +497,6 @@ def tww_import(precommit_callback=None):
         pipe_profile = create_or_update(
             TWW.pipe_profile,
             **base_common(row),
-            **metaattribute_common(row),
             # --- pipe_profile ---
             height_width_ratio=row.hoehenbreitenverhaeltnis,
             identifier=row.bezeichnung,
@@ -549,7 +537,6 @@ def tww_import(precommit_callback=None):
         reach_point = create_or_update(
             TWW.reach_point,
             **base_common(row),
-            **metaattribute_common(row),
             # --- reach_point ---
             elevation_accuracy__REL=get_vl_instance(
                 TWW.reach_point_elevation_accuracy, row.hoehengenauigkeit
@@ -601,7 +588,6 @@ def tww_import(precommit_callback=None):
         wastewater_node = create_or_update(
             TWW.wastewater_node,
             **base_common(row),
-            **metaattribute_common(row),
             # --- wastewater_networkelement ---
             **wastewater_networkelement_common(row),
             # --- wastewater_node ---
@@ -647,7 +633,6 @@ def tww_import(precommit_callback=None):
         reach = create_or_update(
             TWW.reach,
             **base_common(row),
-            **metaattribute_common(row),
             # --- wastewater_networkelement ---
             **wastewater_networkelement_common(row),
             # --- reach ---
@@ -713,7 +698,6 @@ def tww_import(precommit_callback=None):
         dryweather_downspout = create_or_update(
             TWW.dryweather_downspout,
             **base_common(row),
-            **metaattribute_common(row),
             # --- structure_part ---
             **structure_part_common(row),
             # --- dryweather_downspout ---
@@ -756,7 +740,6 @@ def tww_import(precommit_callback=None):
         access_aid = create_or_update(
             TWW.access_aid,
             **base_common(row),
-            **metaattribute_common(row),
             # --- structure_part ---
             **structure_part_common(row),
             # --- access_aid ---
@@ -799,7 +782,6 @@ def tww_import(precommit_callback=None):
         dryweather_flume = create_or_update(
             TWW.dryweather_flume,
             **base_common(row),
-            **metaattribute_common(row),
             # --- structure_part ---
             **structure_part_common(row),
             # --- dryweather_flume ---
@@ -842,7 +824,6 @@ def tww_import(precommit_callback=None):
         cover = create_or_update(
             TWW.cover,
             **base_common(row),
-            **metaattribute_common(row),
             # --- structure_part ---
             **structure_part_common(row),
             # --- cover ---
@@ -896,7 +877,6 @@ def tww_import(precommit_callback=None):
         benching = create_or_update(
             TWW.benching,
             **base_common(row),
-            **metaattribute_common(row),
             # --- structure_part ---
             **structure_part_common(row),
             # --- benching ---
@@ -906,175 +886,170 @@ def tww_import(precommit_callback=None):
         print(".", end="")
     logger.info("done")
 
-    ########################################
-    # VSA_KEK classes
-    ########################################
+    # ########################################
+    # # VSA_KEK classes
+    # ########################################
 
-    logger.info("Importing ABWASSER.untersuchung -> TWW.examination")
-    for row in abwasser_session.query(ABWASSER.untersuchung):
-        logger.warning(
-            "TWW examination.active_zone has no equivalent in the interlis model. This field will be null."
-        )
-        examination = create_or_update(
-            TWW.examination,
-            **base_common(row),
-            **metaattribute_common(row),
-            # --- maintenance_event ---
-            # active_zone=row.REPLACE_ME,  # TODO : found no matching field for this in interlis, confirm this is ok
-            base_data=row.datengrundlage,
-            cost=row.kosten,
-            data_details=row.detaildaten,
-            duration=row.dauer,
-            fk_operating_company=row.ausfuehrende_firmaref__REL.obj_id
-            if row.ausfuehrende_firmaref__REL
-            else None,
-            identifier=row.bezeichnung,
-            kind__REL=get_vl_instance(TWW.maintenance_event_kind, row.art),
-            operator=row.ausfuehrender,
-            reason=row.grund,
-            remark=row.bemerkung,
-            result=row.ergebnis,
-            status__REL=get_vl_instance(TWW.maintenance_event_status, row.astatus),
-            time_point=row.zeitpunkt,
-            # --- examination ---
-            equipment=row.geraet,
-            fk_reach_point=row.haltungspunktref__REL.obj_id if row.haltungspunktref__REL else None,
-            from_point_identifier=row.vonpunktbezeichnung,
-            inspected_length=row.inspizierte_laenge,
-            recording_type__REL=get_vl_instance(TWW.examination_recording_type, row.erfassungsart),
-            to_point_identifier=row.bispunktbezeichnung,
-            vehicle=row.fahrzeug,
-            videonumber=row.videonummer,
-            weather__REL=get_vl_instance(TWW.examination_weather, row.witterung),
-        )
-        tww_session.add(examination)
+    # logger.info("Importing ABWASSER.untersuchung -> TWW.examination")
+    # for row in abwasser_session.query(ABWASSER.untersuchung):
+    #     logger.warning(
+    #         "TWW examination.active_zone has no equivalent in the interlis model. This field will be null."
+    #     )
+    #     examination = create_or_update(
+    #         TWW.examination,
+    #         **base_common(row),
+    #         # --- maintenance_event ---
+    #         # active_zone=row.REPLACE_ME,  # TODO : found no matching field for this in interlis, confirm this is ok
+    #         base_data=row.datengrundlage,
+    #         cost=row.kosten,
+    #         data_details=row.detaildaten,
+    #         duration=row.dauer,
+    #         fk_operating_company=row.ausfuehrende_firmaref__REL.obj_id
+    #         if row.ausfuehrende_firmaref__REL
+    #         else None,
+    #         identifier=row.bezeichnung,
+    #         kind__REL=get_vl_instance(TWW.maintenance_event_kind, row.art),
+    #         operator=row.ausfuehrender,
+    #         reason=row.grund,
+    #         remark=row.bemerkung,
+    #         result=row.ergebnis,
+    #         status__REL=get_vl_instance(TWW.maintenance_event_status, row.astatus),
+    #         time_point=row.zeitpunkt,
+    #         # --- examination ---
+    #         equipment=row.geraet,
+    #         fk_reach_point=row.haltungspunktref__REL.obj_id if row.haltungspunktref__REL else None,
+    #         from_point_identifier=row.vonpunktbezeichnung,
+    #         inspected_length=row.inspizierte_laenge,
+    #         recording_type__REL=get_vl_instance(TWW.examination_recording_type, row.erfassungsart),
+    #         to_point_identifier=row.bispunktbezeichnung,
+    #         vehicle=row.fahrzeug,
+    #         videonumber=row.videonummer,
+    #         weather__REL=get_vl_instance(TWW.examination_weather, row.witterung),
+    #     )
+    #     tww_session.add(examination)
 
-        # In TWW, relation between maintenance_event and wastewater_structure is done with
-        # an association table instead of a foreign key on maintenance_event.
-        # NOTE : this may change in future versions of VSA_KEK
-        if row.abwasserbauwerkref:
-            # TODO : for now, this will not work unless the related wastewaterstructures are part of the import,
-            # as ili2pg imports dangling references as NULL.
-            # The day ili2pg works, we probably need to double-check whether the referenced wastewater structure exists prior
-            # to creating this association.
-            # Soft matching based on from/to_point_identifier will be done in the GUI data checking process.
-            exam_to_wastewater_structure = create_or_update(
-                TWW.re_maintenance_event_wastewater_structure,
-                fk_wastewater_structure=row.abwasserbauwerkref,
-                fk_maintenance_event=row.obj_id,
-            )
-            tww_session.add(exam_to_wastewater_structure)
+    #     # In TWW, relation between maintenance_event and wastewater_structure is done with
+    #     # an association table instead of a foreign key on maintenance_event.
+    #     # NOTE : this may change in future versions of VSA_KEK
+    #     if row.abwasserbauwerkref:
+    #         # TODO : for now, this will not work unless the related wastewaterstructures are part of the import,
+    #         # as ili2pg imports dangling references as NULL.
+    #         # The day ili2pg works, we probably need to double-check whether the referenced wastewater structure exists prior
+    #         # to creating this association.
+    #         # Soft matching based on from/to_point_identifier will be done in the GUI data checking process.
+    #         exam_to_wastewater_structure = create_or_update(
+    #             TWW.re_maintenance_event_wastewater_structure,
+    #             fk_wastewater_structure=row.abwasserbauwerkref,
+    #             fk_maintenance_event=row.obj_id,
+    #         )
+    #         tww_session.add(exam_to_wastewater_structure)
 
-        print(".", end="")
-    logger.info("done")
+    #     print(".", end="")
+    # logger.info("done")
 
-    logger.info("Importing ABWASSER.normschachtschaden -> TWW.damage_manhole")
-    for row in abwasser_session.query(ABWASSER.normschachtschaden):
-        # Note : in TWW, some attributes are on the base damage class,
-        # while they are on the normschachtschaden/kanalschaden subclasses
-        # in the ili2pg mode.
-        # Concerned attributes : distanz, quantifizierung1, quantifizierung2, schadenlageanfang, schadenlageende
+    # logger.info("Importing ABWASSER.normschachtschaden -> TWW.damage_manhole")
+    # for row in abwasser_session.query(ABWASSER.normschachtschaden):
+    #     # Note : in TWW, some attributes are on the base damage class,
+    #     # while they are on the normschachtschaden/kanalschaden subclasses
+    #     # in the ili2pg mode.
+    #     # Concerned attributes : distanz, quantifizierung1, quantifizierung2, schadenlageanfang, schadenlageende
 
-        damage_manhole = create_or_update(
-            TWW.damage_manhole,
-            **base_common(row),
-            **metaattribute_common(row),
-            # --- damage ---
-            comments=row.anmerkung,
-            connection__REL=get_vl_instance(TWW.damage_connection, row.verbindung),
-            damage_begin=row.schadenlageanfang,
-            damage_end=row.schadenlageende,
-            damage_reach=row.streckenschaden,
-            distance=row.distanz,
-            fk_examination=row.untersuchungref__REL.obj_id if row.untersuchungref__REL else None,
-            quantification1=row.quantifizierung1,
-            quantification2=row.quantifizierung2,
-            single_damage_class__REL=get_vl_instance(
-                TWW.damage_single_damage_class, row.einzelschadenklasse
-            ),
-            video_counter=row.videozaehlerstand,
-            view_parameters=row.ansichtsparameter,
-            # --- damage_manhole ---
-            manhole_damage_code__REL=get_vl_instance(
-                TWW.damage_manhole_manhole_damage_code, row.schachtschadencode
-            ),
-            manhole_shaft_area__REL=get_vl_instance(
-                TWW.damage_manhole_manhole_shaft_area, row.schachtbereich
-            ),
-        )
-        tww_session.add(damage_manhole)
-        print(".", end="")
-    logger.info("done")
+    #     damage_manhole = create_or_update(
+    #         TWW.damage_manhole,
+    #         **base_common(row),
+    #         # --- damage ---
+    #         comments=row.anmerkung,
+    #         connection__REL=get_vl_instance(TWW.damage_connection, row.verbindung),
+    #         damage_begin=row.schadenlageanfang,
+    #         damage_end=row.schadenlageende,
+    #         damage_reach=row.streckenschaden,
+    #         distance=row.distanz,
+    #         fk_examination=row.untersuchungref__REL.obj_id if row.untersuchungref__REL else None,
+    #         quantification1=row.quantifizierung1,
+    #         quantification2=row.quantifizierung2,
+    #         single_damage_class__REL=get_vl_instance(
+    #             TWW.damage_single_damage_class, row.einzelschadenklasse
+    #         ),
+    #         video_counter=row.videozaehlerstand,
+    #         view_parameters=row.ansichtsparameter,
+    #         # --- damage_manhole ---
+    #         manhole_damage_code__REL=get_vl_instance(
+    #             TWW.damage_manhole_manhole_damage_code, row.schachtschadencode
+    #         ),
+    #         manhole_shaft_area__REL=get_vl_instance(
+    #             TWW.damage_manhole_manhole_shaft_area, row.schachtbereich
+    #         ),
+    #     )
+    #     tww_session.add(damage_manhole)
+    #     print(".", end="")
+    # logger.info("done")
 
-    logger.info("Importing ABWASSER.kanalschaden -> TWW.damage_channel")
-    for row in abwasser_session.query(ABWASSER.kanalschaden):
-        # Note : in TWW, some attributes are on the base damage class,
-        # while they are on the normschachtschaden/kanalschaden subclasses
-        # in the ili2pg mode.
-        # Concerned attributes : distanz, quantifizierung1, quantifizierung2, schadenlageanfang, schadenlageende
-        damage_channel = create_or_update(
-            TWW.damage_channel,
-            **base_common(row),
-            **metaattribute_common(row),
-            # --- damage ---
-            comments=row.anmerkung,
-            connection__REL=get_vl_instance(TWW.damage_connection, row.verbindung),
-            damage_begin=row.schadenlageanfang,
-            damage_end=row.schadenlageende,
-            damage_reach=row.streckenschaden,
-            distance=row.distanz,
-            fk_examination=row.untersuchungref__REL.obj_id if row.untersuchungref__REL else None,
-            quantification1=row.quantifizierung1,
-            quantification2=row.quantifizierung2,
-            single_damage_class__REL=get_vl_instance(
-                TWW.damage_single_damage_class, row.einzelschadenklasse
-            ),
-            video_counter=row.videozaehlerstand,
-            view_parameters=row.ansichtsparameter,
-            # --- damage_channel ---
-            channel_damage_code__REL=get_vl_instance(
-                TWW.damage_channel_channel_damage_code, row.kanalschadencode
-            ),
-        )
-        tww_session.add(damage_channel)
-        print(".", end="")
-    logger.info("done")
+    # logger.info("Importing ABWASSER.kanalschaden -> TWW.damage_channel")
+    # for row in abwasser_session.query(ABWASSER.kanalschaden):
+    #     # Note : in TWW, some attributes are on the base damage class,
+    #     # while they are on the normschachtschaden/kanalschaden subclasses
+    #     # in the ili2pg mode.
+    #     # Concerned attributes : distanz, quantifizierung1, quantifizierung2, schadenlageanfang, schadenlageende
+    #     damage_channel = create_or_update(
+    #         TWW.damage_channel,
+    #         **base_common(row),
+    #         # --- damage ---
+    #         comments=row.anmerkung,
+    #         connection__REL=get_vl_instance(TWW.damage_connection, row.verbindung),
+    #         damage_begin=row.schadenlageanfang,
+    #         damage_end=row.schadenlageende,
+    #         damage_reach=row.streckenschaden,
+    #         distance=row.distanz,
+    #         fk_examination=row.untersuchungref__REL.obj_id if row.untersuchungref__REL else None,
+    #         quantification1=row.quantifizierung1,
+    #         quantification2=row.quantifizierung2,
+    #         single_damage_class__REL=get_vl_instance(
+    #             TWW.damage_single_damage_class, row.einzelschadenklasse
+    #         ),
+    #         video_counter=row.videozaehlerstand,
+    #         view_parameters=row.ansichtsparameter,
+    #         # --- damage_channel ---
+    #         channel_damage_code__REL=get_vl_instance(
+    #             TWW.damage_channel_channel_damage_code, row.kanalschadencode
+    #         ),
+    #     )
+    #     tww_session.add(damage_channel)
+    #     print(".", end="")
+    # logger.info("done")
 
-    logger.info("Importing ABWASSER.datentraeger -> TWW.data_media")
-    for row in abwasser_session.query(ABWASSER.datentraeger):
-        data_media = create_or_update(
-            TWW.data_media,
-            **base_common(row),
-            **metaattribute_common(row),
-            # --- data_media ---
-            identifier=row.bezeichnung,
-            kind__REL=get_vl_instance(TWW.data_media_kind, row.art),
-            location=row.standort,
-            path=row.pfad,
-            remark=row.bemerkung,
-        )
-        tww_session.add(data_media)
-        print(".", end="")
-    logger.info("done")
+    # logger.info("Importing ABWASSER.datentraeger -> TWW.data_media")
+    # for row in abwasser_session.query(ABWASSER.datentraeger):
+    #     data_media = create_or_update(
+    #         TWW.data_media,
+    #         **base_common(row),
+    #         # --- data_media ---
+    #         identifier=row.bezeichnung,
+    #         kind__REL=get_vl_instance(TWW.data_media_kind, row.art),
+    #         location=row.standort,
+    #         path=row.pfad,
+    #         remark=row.bemerkung,
+    #     )
+    #     tww_session.add(data_media)
+    #     print(".", end="")
+    # logger.info("done")
 
-    logger.info("Importing ABWASSER.datei -> TWW.file")
-    for row in abwasser_session.query(ABWASSER.datei):
-        file = create_or_update(
-            TWW.file,
-            **base_common(row),
-            **metaattribute_common(row),
-            # --- file ---
-            class__REL=get_vl_instance(TWW.file_class, row.klasse),
-            fk_data_media=row.datentraegerref__REL.obj_id,
-            identifier=row.bezeichnung,
-            kind__REL=get_vl_instance(TWW.file_kind, row.art),
-            object=row.objekt,
-            path_relative=row.relativpfad,
-            remark=row.bemerkung,
-        )
-        tww_session.add(file)
-        print(".", end="")
-    logger.info("done")
+    # logger.info("Importing ABWASSER.datei -> TWW.file")
+    # for row in abwasser_session.query(ABWASSER.datei):
+    #     file = create_or_update(
+    #         TWW.file,
+    #         **base_common(row),
+    #         # --- file ---
+    #         class__REL=get_vl_instance(TWW.file_class, row.klasse),
+    #         fk_data_media=row.datentraegerref__REL.obj_id,
+    #         identifier=row.bezeichnung,
+    #         kind__REL=get_vl_instance(TWW.file_kind, row.art),
+    #         object=row.objekt,
+    #         path_relative=row.relativpfad,
+    #         remark=row.bemerkung,
+    #     )
+    #     tww_session.add(file)
+    #     print(".", end="")
+    # logger.info("done")
 
     # Recreate the triggers
     # tww_session.execute('SELECT tww_sys.create_symbology_triggers();')
@@ -1089,7 +1064,7 @@ def tww_import(precommit_callback=None):
 
     # TODO : put this in an "finally" block (or context handler) to make sure it's executed
     # even if there's an exception
-    post_session = Session(utils.sqlalchemy.create_engine(), autocommit=False, autoflush=False)
+    post_session = Session(utils.tww_sqlalchemy.create_engine(), autocommit=False, autoflush=False)
     post_session.execute(text("SELECT tww_sys.create_symbology_triggers();"))
     post_session.commit()
     post_session.close()

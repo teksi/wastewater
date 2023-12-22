@@ -21,7 +21,7 @@ class ExaminationEditor(Editor):
         TWW = get_tww_model()
         suggested_structures = self._get_suggested_structures()
         # TODO : Only assign if there's no already assigned structures. For now, this is fine, as due to
-        # ili2pg's limitations, assigned structures are not imported (see import_.py:968 near `if row.abwasserbauwerkref`)
+        # ili2pg's limitations, assigned structures are not imported (see tww_import.py:968 near `if row.abwasserbauwerkref`)
         if len(suggested_structures) == 1:
             assigned_structure = suggested_structures[0]
 

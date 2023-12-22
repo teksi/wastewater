@@ -1,6 +1,6 @@
 from sqlalchemy.ext.automap import automap_base
-
-from .. import config, utils
+from teksi_wastewater.tww2ili import config
+from teksi_wastewater.tww2ili.utils import tww_sqlalchemy
 
 SCHEMA = config.ABWASSER_SCHEMA
 
@@ -115,39 +115,39 @@ class bankett(bauwerksteil):
 # VSA_KEK
 
 
-class erhaltungsereignis(vsa_baseclass):
-    __tablename__ = "erhaltungsereignis"
-    __table_args__ = {"schema": SCHEMA}
+# class erhaltungsereignis(vsa_baseclass):
+#     __tablename__ = "erhaltungsereignis"
+#     __table_args__ = {"schema": SCHEMA}
 
 
-class untersuchung(Base):
-    __tablename__ = "untersuchung"
-    __table_args__ = {"schema": SCHEMA}
+# class untersuchung(Base):
+#     __tablename__ = "untersuchung"
+#     __table_args__ = {"schema": SCHEMA}
 
 
-class schaden(untersuchung):
-    __tablename__ = "schaden"
-    __table_args__ = {"schema": SCHEMA}
+# class schaden(untersuchung):
+#     __tablename__ = "schaden"
+#     __table_args__ = {"schema": SCHEMA}
 
 
-class normschachtschaden(schaden):
-    __tablename__ = "normschachtschaden"
-    __table_args__ = {"schema": SCHEMA}
+# class normschachtschaden(schaden):
+#     __tablename__ = "normschachtschaden"
+#     __table_args__ = {"schema": SCHEMA}
 
 
-class kanalschaden(schaden):
-    __tablename__ = "kanalschaden"
-    __table_args__ = {"schema": SCHEMA}
+# class kanalschaden(schaden):
+#     __tablename__ = "kanalschaden"
+#     __table_args__ = {"schema": SCHEMA}
 
 
-class datentraeger(Base):
-    __tablename__ = "datentraeger"
-    __table_args__ = {"schema": SCHEMA}
+# class datentraeger(Base):
+#     __tablename__ = "datentraeger"
+#     __table_args__ = {"schema": SCHEMA}
 
 
-class datei(Base):
-    __tablename__ = "datei"
-    __table_args__ = {"schema": SCHEMA}
+# class datei(Base):
+#     __tablename__ = "datei"
+#     __table_args__ = {"schema": SCHEMA}
 
 
 # TEXTS
@@ -179,6 +179,6 @@ _prepared = False
 def get_abwasser_model():
     global _prepared
     if not _prepared:
-        utils.sqlalchemy.prepare_automap_base(Base, SCHEMA)
+        tww_sqlalchemy.prepare_automap_base(Base, SCHEMA)
         _prepared = True
     return Base.classes

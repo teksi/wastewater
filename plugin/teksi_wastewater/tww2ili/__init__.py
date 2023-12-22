@@ -4,10 +4,7 @@ from logging import INFO, FileHandler, Formatter
 
 from . import config, utils
 from .tww.export import tww_export
-from .tww.import_ import tww_import
-from .tww.mapping import get_tww_mapping
-from .tww.model_abwasser import Base as BaseAbwasser
-from .tww.model_tww import Base as BaseTww
+from .tww.tww_import import tww_import
 from .utils.various import make_log_path
 
 
@@ -98,17 +95,6 @@ def main(args):
         help="saves a log file next to the input/output file",
     )
 
-    parser_tpl = subparsers.add_parser(
-        "tpl",
-        help="generate code templates [dev]",
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-    )
-    parser_tpl.add_argument("model", choices=["tww", "qwat"])
-    parser_tpl.add_argument(
-        "--pgservice",
-        help=f"name of the pgservice to use to connect to the database (defaults to {config.TWW_DEFAULT_PGSERVICE} or {config.QWAT_DEFAULT_PGSERVICE})",
-    )
-
     parser_setupdb = subparsers.add_parser(
         "setupdb", help="setup test db", formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
@@ -139,7 +125,7 @@ def main(args):
             ILI_MODEL_NAME = config.ABWASSER_ILI_MODEL_NAME_SIA405
             ILI_EXPORT_MODEL_NAME = config.ABWASSER_ILI_MODEL_NAME_SIA405
         else:
-            ILI_MODEL_NAME = config.ABWASSER_ILI_MODEL_NAME
+            ILI_MODEL_NAME = config.ABWASSER_ILI_MODEL_NAME_KEK
             ILI_EXPORT_MODEL_NAME = None
 
         if args.direction == "export":
@@ -195,22 +181,6 @@ def main(args):
             )
             utils.ili2db.import_xtf_data(SCHEMA, args.path, make_log_path(log_path, "iliimport"))
             tww_import()
-
-    elif args.parser == "tpl":
-        config.PGSERVICE = args.pgservice
-
-        if args.model == "tww":
-            if config.PGSERVICE is None:
-                config.PGSERVICE = config.TWW_DEFAULT_PGSERVICE
-            utils.ili2db.create_ili_schema(
-                config.ABWASSER_SCHEMA, config.ABWASSER_ILI_MODEL, recreate_schema=True
-            )
-            TWWMAPPING = get_tww_mapping()
-            utils.templates.generate_template("tww", "abwasser", BaseTww, BaseAbwasser, TWWMAPPING)
-
-        else:
-            print("Unknown model")
-            exit(1)
 
     elif args.parser == "setupdb":
         utils.various.setup_test_db(args.type)

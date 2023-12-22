@@ -22,10 +22,12 @@ def tww_export(selection=None, labels_file=None):
     ABWASSER = get_abwasser_model()
 
     # Logging disabled (very slow)
-    # tww_session = Session(utils.sqlalchemy.create_engine(logger_name="tww"), autocommit=False, autoflush=False)
-    # abwasser_session = Session(utils.sqlalchemy.create_engine(logger_name="abwasser"), autocommit=False, autoflush=False)
-    tww_session = Session(utils.sqlalchemy.create_engine(), autocommit=False, autoflush=False)
-    abwasser_session = Session(utils.sqlalchemy.create_engine(), autocommit=False, autoflush=False)
+    # tww_session = Session(utils.tww_sqlalchemy.create_engine(logger_name="tww"), autocommit=False, autoflush=False)
+    # abwasser_session = Session(utils.tww_sqlalchemy.create_engine(logger_name="abwasser"), autocommit=False, autoflush=False)
+    tww_session = Session(utils.tww_sqlalchemy.create_engine(), autocommit=False, autoflush=False)
+    abwasser_session = Session(
+        utils.tww_sqlalchemy.create_engine(), autocommit=False, autoflush=False
+    )
     tid_maker = utils.ili2db.TidMaker(id_attribute="obj_id")
 
     # Filtering
