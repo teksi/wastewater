@@ -17,7 +17,7 @@ from qgis.core import (
 )
 from teksi_wastewater.processing_provider.tww_algorithm import TwwAlgorithm
 
-from ....utils.twwlayermanager import TwwLayerManager
+from ...utils.twwlayermanager import TwwLayerManager
 
 
 class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):

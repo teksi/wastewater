@@ -5,7 +5,7 @@ from qgis.core import Qgis, QgsSettings
 from qgis.PyQt.QtWidgets import QCheckBox, QDialog
 from qgis.PyQt.uic import loadUi
 
-from ....utils.twwlayermanager import TwwLayerManager
+from ...utils.twwlayermanager import TwwLayerManager
 from ..processing_algs.extractlabels_interlis import ExtractlabelsInterlisAlgorithm
 
 

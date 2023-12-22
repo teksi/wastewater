@@ -9,7 +9,7 @@ import xml.etree.ElementTree as ET
 from sqlalchemy.orm import Session
 from tww2ili import main, utils
 
-from plugin.teksi_wastewater.tww2ili.tww2ili.tww.model_tww import get_tww_model
+from plugin.teksi_wastewater.tww2ili.tww.model_tww import get_tww_model
 
 # Display logging in unittest output
 logger = logging.getLogger()

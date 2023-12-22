@@ -49,6 +49,7 @@ from .tools.twwmaptools import (
     TwwTreeMapTool,
 )
 from .tools.twwnetwork import TwwGraphManager
+from .tww2ili import config
 from .utils.plugin_utils import plugin_root_path
 from .utils.translation import setup_i18n
 from .utils.twwlayermanager import TwwLayerManager, TwwLayerNotifier
@@ -464,7 +465,7 @@ class TeksiWastewaterPlugin:
     def actionExportClicked(self):
         # We only import now to avoid useless exception if dependencies aren't met
         try:
-            from .tww2ili.tww2ili.gui import action_export
+            from .tww2ili.gui import action_export
         except ImportError as e:
             self.iface.messageBar().pushMessage(
                 "Error",
@@ -481,7 +482,7 @@ class TeksiWastewaterPlugin:
     def actionImportClicked(self):
         # We only import now to avoid useless exception if dependencies aren't met
         try:
-            from .tww2ili.tww2ili.gui import action_import
+            from .tww2ili.gui import action_import
         except ImportError as e:
             self.iface.messageBar().pushMessage(
                 "Error",
@@ -505,8 +506,6 @@ class TeksiWastewaterPlugin:
                 "Could not determine the Postgres connection information. Make sure the TWW project is loaded.",
                 level=Qgis.Critical,
             )
-
-        from .tww2ili.tww2ili import config
 
         config.PGSERVICE = pg_layer.dataProvider().uri().service()
         config.PGHOST = pg_layer.dataProvider().uri().host()
