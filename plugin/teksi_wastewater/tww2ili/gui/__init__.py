@@ -11,7 +11,7 @@ from qgis.utils import iface
 from ...utils.twwlayermanager import TwwLayerManager
 from .. import config
 from ..tww.export import tww_export
-from ..tww.import_ import tww_import
+from ..tww.tww_import import tww_import
 from ..utils.ili2db import TwwIliTools
 from ..utils.various import CmdException, LoggingHandlerContext, make_log_path
 from .gui_export import GuiExport
@@ -99,7 +99,7 @@ def action_import(plugin):
         twwIliTools.create_ili_schema(
             config.ABWASSER_SCHEMA,
             [
-                config.ABWASSER_ILI_MODEL_NAME,
+                # config.ABWASSER_ILI_MODEL_NAME_KEK,
                 config.ABWASSER_ILI_MODEL_NAME_SIA405,
                 config.ABWASSER_ILI_MODEL_NAME_DSS,
             ],
@@ -200,7 +200,7 @@ def action_export(plugin):
             twwIliTools.create_ili_schema(
                 config.ABWASSER_SCHEMA,
                 [
-                    config.ABWASSER_ILI_MODEL_NAME,
+                    # config.ABWASSER_ILI_MODEL_NAME_KEK,
                     config.ABWASSER_ILI_MODEL_NAME_SIA405,
                     config.ABWASSER_ILI_MODEL_NAME_DSS,
                 ],
@@ -271,7 +271,7 @@ def action_export(plugin):
         tempdir.cleanup()
 
         for model_name, export_model_name, progress in [
-            (config.ABWASSER_ILI_MODEL_NAME, None, 50),
+            # (config.ABWASSER_ILI_MODEL_NAME_KEK, None, 50),
             (config.ABWASSER_ILI_MODEL_NAME_SIA405, config.ABWASSER_ILI_MODEL_NAME_SIA405, 70),
         ]:
             export_file_name = f"{file_name_base}_{model_name}.xtf"
