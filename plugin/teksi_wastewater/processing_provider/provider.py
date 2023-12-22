@@ -66,7 +66,7 @@ class TwwProcessingProvider(QgsProcessingProvider):
             SwmmSetFrictionAlgorithm(),
         ]
         try:
-            from ..tww2ili.tww2ili.processing_algs.extractlabels_interlis import (
+            from ..tww2ili.processing_algs.extractlabels_interlis import (
                 ExtractlabelsInterlisAlgorithm,
             )
 
@@ -90,7 +90,7 @@ class TwwProcessingProvider(QgsProcessingProvider):
             SwmmSetFrictionAlgorithm(),
         ]
         try:
-            from ..tww2ili.tww2ili.processing_algs.extractlabels_interlis import (
+            from ..tww2ili.processing_algs.extractlabels_interlis import (
                 ExtractlabelsInterlisAlgorithm,
             )
 

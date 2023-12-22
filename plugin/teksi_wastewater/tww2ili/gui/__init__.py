@@ -8,7 +8,7 @@ from qgis.core import Qgis, QgsProject, QgsSettings
 from qgis.PyQt.QtWidgets import QApplication, QFileDialog, QProgressDialog, QPushButton
 from qgis.utils import iface
 
-from ....utils.twwlayermanager import TwwLayerManager
+from ...utils.twwlayermanager import TwwLayerManager
 from .. import config
 from ..tww.export import tww_export
 from ..tww.import_ import tww_import
