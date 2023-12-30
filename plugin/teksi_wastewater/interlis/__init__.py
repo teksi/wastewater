@@ -6,7 +6,9 @@ from . import config, utils
 from .interlis_model_mapping.interlis_exporter_to_intermediate_schema import (
     InterlisExporterToIntermediateSchema,
 )
-from .interlis_model_mapping.interlis_importer_to_intermediate_schema import tww_import
+from .interlis_model_mapping.interlis_importer_to_intermediate_schema import (
+    InterlisImporterToIntermediateSchema,
+)
 from .utils.various import make_log_path
 
 
@@ -184,7 +186,8 @@ def main(args):
                 recreate_schema=args.recreate_schema,
             )
             utils.ili2db.import_xtf_data(SCHEMA, args.path, make_log_path(log_path, "iliimport"))
-            tww_import()
+            interlisImporterToIntermediateSchema = InterlisImporterToIntermediateSchema()
+            interlisImporterToIntermediateSchema.tww_import()
 
     elif args.parser == "setupdb":
         utils.various.setup_test_db(args.type)

@@ -7,14 +7,15 @@ from qgis import processing
 from qgis.core import Qgis, QgsProject, QgsSettings
 from qgis.PyQt.QtWidgets import QApplication, QFileDialog, QProgressDialog, QPushButton
 from qgis.utils import iface
-from sqlalchemy.orm import Session
 
 from ...utils.twwlayermanager import TwwLayerManager
 from .. import config
 from ..interlis_model_mapping.interlis_exporter_to_intermediate_schema import (
     InterlisExporterToIntermediateSchema,
 )
-from ..interlis_model_mapping.interlis_importer_to_intermediate_schema import tww_import
+from ..interlis_model_mapping.interlis_importer_to_intermediate_schema import (
+    InterlisImporterToIntermediateSchema,
+)
 from ..utils.ili2db import TwwIliTools
 from ..utils.various import CmdException, LoggingHandlerContext, make_log_path
 from .gui_import import GuiImport
@@ -143,22 +144,22 @@ class InterlisImporterExporter:
         progress_dialog.setValue(75)
         QApplication.processEvents()
 
+        interlisImporterToIntermediateSchema = InterlisImporterToIntermediateSchema()
+
         log_handler = logging.FileHandler(
             make_log_path(base_log_path, "tww2ili-import"), mode="w", encoding="utf-8"
         )
         log_handler.setLevel(logging.INFO)
         log_handler.setFormatter(logging.Formatter("%(levelname)-8s %(message)s"))
+
         with LoggingHandlerContext(log_handler):
-            tww_import(
-                precommit_callback=self._import_precommit_callback,
-            )
+            interlisImporterToIntermediateSchema.tww_import(skip_closing_tww_session=True)
 
         progress_dialog.setValue(100)
         progress_dialog.close()
 
-    def _import_precommit_callback(self, session: Session):
         self.import_dialog = GuiImport(self.plugin.iface.mainWindow())
-        self.import_dialog.init_with_session(session)
+        self.import_dialog.init_with_session(interlisImporterToIntermediateSchema.tww_session)
         self.import_dialog.resize(iface.mainWindow().size() * 0.75)
         self.import_dialog.show()
 
@@ -278,12 +279,8 @@ class InterlisImporterExporter:
             selection=export_dialog.selected_ids, labels_file=labels_file_path
         )
 
-        try:
-            with LoggingHandlerContext(log_handler):
-                twwInterlisExporter.tww_export()
-        except Exception as exception:
-            twwInterlisExporter.close_sessions()
-            raise exception
+        with LoggingHandlerContext(log_handler):
+            twwInterlisExporter.tww_export()
 
         progress_dialog.setValue(50)
         QApplication.processEvents()
