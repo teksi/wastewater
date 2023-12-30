@@ -40,6 +40,13 @@ class InterlisExporterToIntermediateSchema:
         self.t_ili2db_basket_administration = None
 
     def tww_export(self):
+        try:
+            self._tww_export()
+        except Exception as exception:
+            self.close_sessions()
+            raise exception
+
+    def _tww_export(self):
         # Create export baskets
         self.create_baskets()
 
