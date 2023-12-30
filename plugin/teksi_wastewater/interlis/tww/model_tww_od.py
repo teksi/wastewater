@@ -1,6 +1,6 @@
 from sqlalchemy.ext.automap import automap_base
-from teksi_wastewater.tww2ili import config
-from teksi_wastewater.tww2ili.utils import tww_sqlalchemy
+from teksi_wastewater.interlis import config
+from teksi_wastewater.interlis.utils import tww_sqlalchemy
 
 ###############################################
 # TEKSI Wastewater datamodel
