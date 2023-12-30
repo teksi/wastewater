@@ -11,7 +11,7 @@ from teksi_wastewater.tww2ili.utils import tww_sqlalchemy
 
 Base = automap_base()
 
-SCHEMA = config.TWW_SCHEMA
+SCHEMA = config.TWW_OD_SCHEMA
 
 
 class organisation(Base):
@@ -145,7 +145,7 @@ class file(Base):
 _prepared = False
 
 
-def get_tww_model():
+def get_tww_od_model():
     global _prepared
     if not _prepared:
         tww_sqlalchemy.prepare_automap_base(Base, SCHEMA)

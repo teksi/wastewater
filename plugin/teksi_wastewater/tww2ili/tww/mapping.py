@@ -1,9 +1,9 @@
 from .model_abwasser import get_abwasser_model
-from .model_tww import get_tww_model
+from .model_tww_od import get_tww_od_model
 
 
 def get_tww_mapping():
-    TWW = get_tww_model()
+    TWW = get_tww_od_model()
     ABWASSER = get_abwasser_model()
 
     return {
