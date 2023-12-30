@@ -10,7 +10,7 @@ from .model_abwasser import get_abwasser_model
 from .model_tww_od import get_tww_od_model
 
 
-class TwwInterlisExporter:
+class InterlisExporterToIntermediateSchema:
     def __init__(self, selection=None, labels_file=None):
         """
         Export data from the TWW model into the ili2pg model.

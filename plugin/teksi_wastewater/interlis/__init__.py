@@ -4,7 +4,7 @@ from logging import INFO, FileHandler, Formatter
 
 from . import config, utils
 from .interlis_model_mapping.interlis_exporter_to_intermediate_schema import (
-    TwwInterlisExporter,
+    InterlisExporterToIntermediateSchema,
 )
 from .interlis_model_mapping.interlis_importer_to_intermediate_schema import tww_import
 from .utils.various import make_log_path
@@ -138,7 +138,7 @@ def main(args):
                 recreate_schema=args.recreate_schema,
             )
 
-            twwInterlisExporter = TwwInterlisExporter(
+            twwInterlisExporter = InterlisExporterToIntermediateSchema(
                 selection=args.selection.split(",") if args.selection else None,
                 labels_file=args.labels_file,
             )

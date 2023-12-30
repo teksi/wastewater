@@ -50,10 +50,6 @@ class GuiImport(QDialog):
         self.treeWidget.itemChanged.connect(self.item_changed)
         self.treeWidget.currentItemChanged.connect(self.current_item_changed)
 
-        # Execute the dialog
-        self.resize(iface.mainWindow().size() * 0.75)
-        self.show()
-
     def update_tree(self):
         """
         Populates the tree, creating/updating items

@@ -92,6 +92,8 @@ class TeksiWastewaterPlugin:
         self.nodes = None
         self.edges = None
 
+        self.interlisImporterExporter = None
+
         self.initLogger()
         setup_i18n()
 
@@ -463,38 +465,46 @@ class TeksiWastewaterPlugin:
         self.datamodel_dlg.show()
 
     def actionExportClicked(self):
-        # We only import now to avoid useless exception if dependencies aren't met
-        try:
-            from .interlis.gui.interlis_importer_exporter import action_export
-        except ImportError as e:
-            self.iface.messageBar().pushMessage(
-                "Error",
-                "Could not load tww2ili due to unmet dependencies. See logs for more details.",
-                level=Qgis.Critical,
-            )
-            self.logger.error(str(e))
-            return
+        if self.interlisImporterExporter is None:
+            try:
+                # We only import now to avoid useless exception if dependencies aren't met
+                from .interlis.gui.interlis_importer_exporter import (
+                    InterlisImporterExporter,
+                )
+
+                self.interlisImporterExporter = InterlisImporterExporter(self)
+            except ImportError as e:
+                self.iface.messageBar().pushMessage(
+                    "Error",
+                    "Could not load Interlis exporter due to unmet dependencies. See logs for more details.",
+                    level=Qgis.Critical,
+                )
+                self.logger.error(str(e))
+                return
 
         self._configure_tww2ili_from_tww_layer()
-
-        action_export(self)
+        self.interlisImporterExporter.action_export()
 
     def actionImportClicked(self):
-        # We only import now to avoid useless exception if dependencies aren't met
-        try:
-            from .interlis.gui.interlis_importer_exporter import action_import
-        except ImportError as e:
-            self.iface.messageBar().pushMessage(
-                "Error",
-                "Could not load tww2ili due to unmet dependencies. See logs for more details.",
-                level=Qgis.Critical,
-            )
-            self.logger.error(str(e))
-            return
+        if self.interlisImporterExporter is None:
+            try:
+                # We only import now to avoid useless exception if dependencies aren't met
+                from .interlis.gui.interlis_importer_exporter import (
+                    InterlisImporterExporter,
+                )
+
+                self.interlisImporterExporter = InterlisImporterExporter(self)
+            except ImportError as e:
+                self.iface.messageBar().pushMessage(
+                    "Error",
+                    "Could not load Interlis importer due to unmet dependencies. See logs for more details.",
+                    level=Qgis.Critical,
+                )
+                self.logger.error(str(e))
+                return
 
         self._configure_tww2ili_from_tww_layer()
-
-        action_import(self)
+        self.interlisImporterExporter.action_import()
 
     def _configure_tww2ili_from_tww_layer(self) -> dict:
         """Configures tww2ili using the currently loaded TWW project layer"""
