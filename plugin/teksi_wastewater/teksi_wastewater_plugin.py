@@ -42,6 +42,7 @@ except ImportError:
 from .gui.twwprofiledockwidget import TwwProfileDockWidget
 from .gui.twwsettingsdialog import TwwSettingsDialog
 from .gui.twwwizard import TwwWizard
+from .interlis import config
 from .processing_provider.provider import TwwProcessingProvider
 from .tools.twwmaptools import (
     TwwMapToolConnectNetworkElements,
@@ -49,7 +50,6 @@ from .tools.twwmaptools import (
     TwwTreeMapTool,
 )
 from .tools.twwnetwork import TwwGraphManager
-from .tww2ili import config
 from .utils.plugin_utils import plugin_root_path
 from .utils.translation import setup_i18n
 from .utils.twwlayermanager import TwwLayerManager, TwwLayerNotifier
@@ -465,7 +465,7 @@ class TeksiWastewaterPlugin:
     def actionExportClicked(self):
         # We only import now to avoid useless exception if dependencies aren't met
         try:
-            from .tww2ili.gui import action_export
+            from .interlis.gui.interlis_importer_exporter import action_export
         except ImportError as e:
             self.iface.messageBar().pushMessage(
                 "Error",
@@ -482,7 +482,7 @@ class TeksiWastewaterPlugin:
     def actionImportClicked(self):
         # We only import now to avoid useless exception if dependencies aren't met
         try:
-            from .tww2ili.gui import action_import
+            from .interlis.gui.interlis_importer_exporter import action_import
         except ImportError as e:
             self.iface.messageBar().pushMessage(
                 "Error",

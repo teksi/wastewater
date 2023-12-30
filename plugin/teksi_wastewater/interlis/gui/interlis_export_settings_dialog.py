@@ -9,15 +9,12 @@ from ...utils.twwlayermanager import TwwLayerManager
 from ..processing_algs.extractlabels_interlis import ExtractlabelsInterlisAlgorithm
 
 
-class GuiExport(QDialog):
+class InterlisExportSettingsDialog(QDialog):
     def __init__(self, parent):
         super().__init__(parent)
-        loadUi(os.path.join(os.path.dirname(__file__), "gui_export.ui"), self)
+        loadUi(os.path.join(os.path.dirname(__file__), "interlis_export_settings_dialog.ui"), self)
 
         self.finished.connect(self.on_finish)
-
-        # Execute the dialog
-        # self.resize(iface.mainWindow().size() * 0.75)
 
         structures_layer = TwwLayerManager.layer("vw_tww_wastewater_structure")
         reaches_layer = TwwLayerManager.layer("vw_tww_reach")

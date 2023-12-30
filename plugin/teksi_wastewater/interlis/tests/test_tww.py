@@ -6,10 +6,10 @@ import tempfile
 import unittest
 import xml.etree.ElementTree as ET
 
+from interlis import main, utils
 from sqlalchemy.orm import Session
-from tww2ili import main, utils
 
-from plugin.teksi_wastewater.tww2ili.tww.model_tww_od import get_tww_od_model
+from plugin.teksi_wastewater.interlis.tww.model_tww_od import get_tww_od_model
 
 # Display logging in unittest output
 logger = logging.getLogger()

@@ -14,8 +14,8 @@ from ..tww.tww_export import TwwInterlisExporter
 from ..tww.tww_import import tww_import
 from ..utils.ili2db import TwwIliTools
 from ..utils.various import CmdException, LoggingHandlerContext, make_log_path
-from .gui_export import GuiExport
 from .gui_import import GuiImport
+from .interlis_export_settings_dialog import InterlisExportSettingsDialog
 
 
 def _show_results(title, message, log_path, level):
@@ -159,7 +159,11 @@ def action_export(plugin):
     Is executed when the user clicks the exportAction tool
     """
 
-    export_dialog = GuiExport(plugin.iface.mainWindow())
+    export_dialog = InterlisExportSettingsDialog(plugin.iface.mainWindow())
+    export_dialog.adjustSize()
+
+    if export_dialog.exec_() == export_dialog.Rejected:
+        return
 
     def action_do_export():
         default_folder = QgsSettings().value(
@@ -334,7 +338,3 @@ def action_export(plugin):
             f"Data successfully exported to {file_name_base}",
             os.path.dirname(log_path),
         )
-
-    export_dialog.accepted.connect(action_do_export)
-    export_dialog.adjustSize()
-    export_dialog.show()
