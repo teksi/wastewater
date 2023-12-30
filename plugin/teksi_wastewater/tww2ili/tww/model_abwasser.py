@@ -173,6 +173,12 @@ class abwasserbauwerk_text(sia405_textpos):
     __table_args__ = {"schema": SCHEMA}
 
 
+# INTERLIS
+class t_ili2db_basket(Base):
+    __tablename__ = "t_ili2db_basket"
+    __table_args__ = {"schema": SCHEMA}
+
+
 _prepared = False
 
 

@@ -9,7 +9,7 @@ import xml.etree.ElementTree as ET
 from sqlalchemy.orm import Session
 from tww2ili import main, utils
 
-from plugin.teksi_wastewater.tww2ili.tww.model_tww import get_tww_model
+from plugin.teksi_wastewater.tww2ili.tww.model_tww_od import get_tww_od_model
 
 # Display logging in unittest output
 logger = logging.getLogger()
@@ -46,7 +46,7 @@ class TestTwwUseCases(unittest.TestCase):
         # Prepare db (we import in a full schema)
         main(["setupdb", "full"])
 
-        TWW = get_tww_model()
+        TWW = get_tww_od_model()
         session = Session(utils.tww_sqlalchemy.create_engine())
         self.assertEqual(session.query(TWW.damage_channel).count(), 0)
         self.assertEqual(session.query(TWW.examination).count(), 0)
@@ -114,7 +114,7 @@ class TestTwwUseCases(unittest.TestCase):
         # Prepare subset db (we import in an empty schema)
         main(["setupdb", "empty"])
 
-        TWW = get_tww_model()
+        TWW = get_tww_od_model()
 
         session = Session(utils.tww_sqlalchemy.create_engine())
         self.assertEqual(session.query(TWW.channel).count(), 0)
@@ -287,7 +287,7 @@ class TestRegressions(unittest.TestCase):
         # Prepare db (we import in an empty schema)
         main(["setupdb", "empty"])
 
-        TWW = get_tww_model()
+        TWW = get_tww_od_model()
 
         session = Session(utils.tww_sqlalchemy.create_engine())
         self.assertEqual(session.query(TWW.organisation).count(), 0)

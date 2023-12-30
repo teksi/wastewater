@@ -8,7 +8,8 @@ from sqlalchemy.sql import text
 from .. import utils
 from ..utils.various import logger
 from .model_abwasser import get_abwasser_model
-from .model_tww import get_tww_model
+from .model_tww_od import get_tww_od_model
+from .model_tww_vl import ModelTwwVl
 
 
 def tww_import(precommit_callback=None):
@@ -21,7 +22,8 @@ def tww_import(precommit_callback=None):
                             commit or rollback and close the session.
     """
 
-    TWW = get_tww_model()
+    TWW_OD = get_tww_od_model()
+    modelTwwSys = ModelTwwVl()
     ABWASSER = get_abwasser_model()
 
     pre_session = Session(utils.tww_sqlalchemy.create_engine(), autocommit=False, autoflush=False)
@@ -96,19 +98,21 @@ def tww_import(precommit_callback=None):
             return None
 
         instance = (
-            tww_session.query(TWW.organisation).filter(TWW.organisation.identifier == name).first()
+            tww_session.query(TWW_OD.organisation)
+            .filter(TWW_OD.organisation.identifier == name)
+            .first()
         )
 
         # also look for non-flushed objects in the session
         if not instance:
             for obj in tww_session:
-                if obj.__class__ is TWW.organisation and obj.identifier == name:
+                if obj.__class__ is TWW_OD.organisation and obj.identifier == name:
                     instance = obj
                     break
 
         # if still nothing, we create it
         if not instance:
-            instance = create_or_update(TWW.organisation, identifier=name)
+            instance = create_or_update(TWW_OD.organisation, identifier=name)
             tww_session.add(instance)
 
         return instance
@@ -130,12 +134,12 @@ def tww_import(precommit_callback=None):
         """
         return {
             "accessibility__REL": get_vl_instance(
-                TWW.wastewater_structure_accessibility, row.zugaenglichkeit
+                TWW_OD.wastewater_structure_accessibility, row.zugaenglichkeit
             ),
             "contract_section": row.baulos,
             "detail_geometry_geometry": ST_Force3D(row.detailgeometrie),
             "financing__REL": get_vl_instance(
-                TWW.wastewater_structure_financing, row.finanzierung
+                TWW_OD.wastewater_structure_financing, row.finanzierung
             ),
             # "fk_main_cover": row.REPLACE_ME,  # TODO : NOT MAPPED, but I think this is not standard SIA405 ?
             # "fk_main_wastewater_node": row.REPLACE_ME,  # TODO : NOT MAPPED, but I think this is not standard SIA405 ?
@@ -148,16 +152,16 @@ def tww_import(precommit_callback=None):
             "records": row.akten,
             "remark": row.bemerkung,
             "renovation_necessity__REL": get_vl_instance(
-                TWW.wastewater_structure_renovation_necessity, row.sanierungsbedarf
+                TWW_OD.wastewater_structure_renovation_necessity, row.sanierungsbedarf
             ),
             "replacement_value": row.wiederbeschaffungswert,
             "rv_base_year": row.wbw_basisjahr,
             "rv_construction_type__REL": get_vl_instance(
-                TWW.wastewater_structure_rv_construction_type, row.wbw_bauart
+                TWW_OD.wastewater_structure_rv_construction_type, row.wbw_bauart
             ),
-            "status__REL": get_vl_instance(TWW.wastewater_structure_status, row.astatus),
+            "status__REL": get_vl_instance(TWW_OD.wastewater_structure_status, row.astatus),
             "structure_condition__REL": get_vl_instance(
-                TWW.wastewater_structure_structure_condition, row.baulicherzustand
+                TWW_OD.wastewater_structure_structure_condition, row.baulicherzustand
             ),
             "subsidies": row.subventionen,
             "year_of_construction": row.baujahr,
@@ -183,7 +187,7 @@ def tww_import(precommit_callback=None):
             "identifier": row.bezeichnung,
             "remark": row.bemerkung,
             "renovation_demand__REL": get_vl_instance(
-                TWW.structure_part_renovation_demand, row.instandstellung
+                TWW_OD.structure_part_renovation_demand, row.instandstellung
             ),
         }
 
@@ -192,13 +196,19 @@ def tww_import(precommit_callback=None):
 
     for row in abwasser_session.query(ABWASSER.organisation):
         organisation = create_or_update(
-            TWW.organisation,
+            TWW_OD.organisation,
             obj_id=row.t_ili_tid,
             # --- organisation ---
             identifier=row.bezeichnung,
             remark=row.bemerkung,
             uid=row.auid,
+            municipality_number=row.gemeindenummer,
         )
+        organisation.organisation_type = modelTwwSys.get_organisation_organisation_type_code(
+            row.organisationstyp
+        )
+        organisation.status = modelTwwSys.get_organisation_status_code(row.astatus)
+
         tww_session.add(organisation)
 
         _imported_orgs.append(organisation)
@@ -235,25 +245,29 @@ def tww_import(precommit_callback=None):
         # sia405_baseclass_metaattribute__REL
 
         channel = create_or_update(
-            TWW.channel,
+            TWW_OD.channel,
             **base_common(row),
             # --- wastewater_structure ---
             **wastewater_structure_common(row),
             # --- channel ---
             bedding_encasement__REL=get_vl_instance(
-                TWW.channel_bedding_encasement, row.bettung_umhuellung
+                TWW_OD.channel_bedding_encasement, row.bettung_umhuellung
             ),
-            connection_type__REL=get_vl_instance(TWW.channel_connection_type, row.verbindungsart),
+            connection_type__REL=get_vl_instance(
+                TWW_OD.channel_connection_type, row.verbindungsart
+            ),
             function_hierarchic__REL=get_vl_instance(
-                TWW.channel_function_hierarchic, row.funktionhierarchisch
+                TWW_OD.channel_function_hierarchic, row.funktionhierarchisch
             ),
             function_hydraulic__REL=get_vl_instance(
-                TWW.channel_function_hydraulic, row.funktionhydraulisch
+                TWW_OD.channel_function_hydraulic, row.funktionhydraulisch
             ),
             jetting_interval=row.spuelintervall,
             pipe_length=row.rohrlaenge,
-            usage_current__REL=get_vl_instance(TWW.channel_usage_current, row.nutzungsart_ist),
-            usage_planned__REL=get_vl_instance(TWW.channel_usage_planned, row.nutzungsart_geplant),
+            usage_current__REL=get_vl_instance(TWW_OD.channel_usage_current, row.nutzungsart_ist),
+            usage_planned__REL=get_vl_instance(
+                TWW_OD.channel_usage_planned, row.nutzungsart_geplant
+            ),
         )
         tww_session.add(channel)
         print(".", end="")
@@ -290,7 +304,7 @@ def tww_import(precommit_callback=None):
         # sia405_baseclass_metaattribute__REL
 
         manhole = create_or_update(
-            TWW.manhole,
+            TWW_OD.manhole,
             **base_common(row),
             # --- wastewater_structure ---
             **wastewater_structure_common(row),
@@ -298,10 +312,10 @@ def tww_import(precommit_callback=None):
             # _orientation=row.REPLACE_ME,
             dimension1=row.dimension1,
             dimension2=row.dimension2,
-            function__REL=get_vl_instance(TWW.manhole_function, row.funktion),
-            material__REL=get_vl_instance(TWW.manhole_material, row.material),
+            function__REL=get_vl_instance(TWW_OD.manhole_function, row.funktion),
+            material__REL=get_vl_instance(TWW_OD.manhole_material, row.material),
             surface_inflow__REL=get_vl_instance(
-                TWW.manhole_surface_inflow, row.oberflaechenzulauf
+                TWW_OD.manhole_surface_inflow, row.oberflaechenzulauf
             ),
         )
         tww_session.add(manhole)
@@ -339,14 +353,14 @@ def tww_import(precommit_callback=None):
         # sia405_baseclass_metaattribute__REL
 
         discharge_point = create_or_update(
-            TWW.discharge_point,
+            TWW_OD.discharge_point,
             **base_common(row),
             # --- wastewater_structure ---
             **wastewater_structure_common(row),
             # --- discharge_point ---
             # fk_sector_water_body=row.REPLACE_ME, # TODO : NOT MAPPED
             highwater_level=row.hochwasserkote,
-            relevance__REL=get_vl_instance(TWW.discharge_point_relevance, row.relevanz),
+            relevance__REL=get_vl_instance(TWW_OD.discharge_point_relevance, row.relevanz),
             terrain_level=row.terrainkote,
             # upper_elevation=row.REPLACE_ME, # TODO : NOT MAPPED
             waterlevel_hydraulic=row.wasserspiegel_hydraulik,
@@ -386,18 +400,18 @@ def tww_import(precommit_callback=None):
         # sia405_baseclass_metaattribute__REL
 
         special_structure = create_or_update(
-            TWW.special_structure,
+            TWW_OD.special_structure,
             **base_common(row),
             # --- wastewater_structure ---
             **wastewater_structure_common(row),
             # --- special_structure ---
-            bypass__REL=get_vl_instance(TWW.special_structure_bypass, row.bypass),
+            bypass__REL=get_vl_instance(TWW_OD.special_structure_bypass, row.bypass),
             emergency_spillway__REL=get_vl_instance(
-                TWW.special_structure_emergency_spillway, row.notueberlauf
+                TWW_OD.special_structure_emergency_spillway, row.notueberlauf
             ),
-            function__REL=get_vl_instance(TWW.special_structure_function, row.funktion),
+            function__REL=get_vl_instance(TWW_OD.special_structure_function, row.funktion),
             stormwater_tank_arrangement__REL=get_vl_instance(
-                TWW.special_structure_stormwater_tank_arrangement, row.regenbecken_anordnung
+                TWW_OD.special_structure_stormwater_tank_arrangement, row.regenbecken_anordnung
             ),
             # upper_elevation=row.REPLACE_ME,   # TODO : NOT MAPPED
         )
@@ -436,34 +450,34 @@ def tww_import(precommit_callback=None):
         # sia405_baseclass_metaattribute__REL
 
         infiltration_installation = create_or_update(
-            TWW.infiltration_installation,
+            TWW_OD.infiltration_installation,
             **base_common(row),
             # --- wastewater_structure ---
             **wastewater_structure_common(row),
             # --- infiltration_installation ---
             absorption_capacity=row.schluckvermoegen,
-            defects__REL=get_vl_instance(TWW.infiltration_installation_defects, row.maengel),
+            defects__REL=get_vl_instance(TWW_OD.infiltration_installation_defects, row.maengel),
             dimension1=row.dimension1,
             dimension2=row.dimension2,
             distance_to_aquifer=row.gwdistanz,
             effective_area=row.wirksameflaeche,
             emergency_spillway__REL=get_vl_instance(
-                TWW.infiltration_installation_emergency_spillway, row.notueberlauf
+                TWW_OD.infiltration_installation_emergency_spillway, row.notueberlauf
             ),
             # fk_aquifier=row.REPLACE_ME,  # TODO : NOT MAPPED
-            kind__REL=get_vl_instance(TWW.infiltration_installation_kind, row.art),
+            kind__REL=get_vl_instance(TWW_OD.infiltration_installation_kind, row.art),
             labeling__REL=get_vl_instance(
-                TWW.infiltration_installation_labeling, row.beschriftung
+                TWW_OD.infiltration_installation_labeling, row.beschriftung
             ),
             seepage_utilization__REL=get_vl_instance(
-                TWW.infiltration_installation_seepage_utilization, row.versickerungswasser
+                TWW_OD.infiltration_installation_seepage_utilization, row.versickerungswasser
             ),
             # upper_elevation=row.REPLACE_ME,  # TODO : NOT MAPPED
             vehicle_access__REL=get_vl_instance(
-                TWW.infiltration_installation_vehicle_access, row.saugwagen
+                TWW_OD.infiltration_installation_vehicle_access, row.saugwagen
             ),
             watertightness__REL=get_vl_instance(
-                TWW.infiltration_installation_watertightness, row.wasserdichtheit
+                TWW_OD.infiltration_installation_watertightness, row.wasserdichtheit
             ),
         )
         tww_session.add(infiltration_installation)
@@ -495,12 +509,12 @@ def tww_import(precommit_callback=None):
         # sia405_baseclass_metaattribute__REL
 
         pipe_profile = create_or_update(
-            TWW.pipe_profile,
+            TWW_OD.pipe_profile,
             **base_common(row),
             # --- pipe_profile ---
             height_width_ratio=row.hoehenbreitenverhaeltnis,
             identifier=row.bezeichnung,
-            profile_type__REL=get_vl_instance(TWW.pipe_profile_profile_type, row.profiltyp),
+            profile_type__REL=get_vl_instance(TWW_OD.pipe_profile_profile_type, row.profiltyp),
             remark=row.bemerkung,
         )
         tww_session.add(pipe_profile)
@@ -535,18 +549,20 @@ def tww_import(precommit_callback=None):
         # sia405_baseclass_metaattribute__REL
 
         reach_point = create_or_update(
-            TWW.reach_point,
+            TWW_OD.reach_point,
             **base_common(row),
             # --- reach_point ---
             elevation_accuracy__REL=get_vl_instance(
-                TWW.reach_point_elevation_accuracy, row.hoehengenauigkeit
+                TWW_OD.reach_point_elevation_accuracy, row.hoehengenauigkeit
             ),
             fk_wastewater_networkelement=get_pk(
                 row.abwassernetzelementref__REL
             ),  # TODO : this fails for now, but probably only because we flush too soon
             identifier=row.bezeichnung,
             level=row.kote,
-            outlet_shape__REL=get_vl_instance(TWW.reach_point_outlet_shape, row.hoehengenauigkeit),
+            outlet_shape__REL=get_vl_instance(
+                TWW_OD.reach_point_outlet_shape, row.hoehengenauigkeit
+            ),
             position_of_connection=row.lage_anschluss,
             remark=row.bemerkung,
             situation_geometry=ST_Force3D(row.lage),
@@ -586,7 +602,7 @@ def tww_import(precommit_callback=None):
         # sia405_baseclass_metaattribute__REL
 
         wastewater_node = create_or_update(
-            TWW.wastewater_node,
+            TWW_OD.wastewater_node,
             **base_common(row),
             # --- wastewater_networkelement ---
             **wastewater_networkelement_common(row),
@@ -631,7 +647,7 @@ def tww_import(precommit_callback=None):
         # sia405_baseclass_metaattribute__REL
 
         reach = create_or_update(
-            TWW.reach,
+            TWW_OD.reach,
             **base_common(row),
             # --- wastewater_networkelement ---
             **wastewater_networkelement_common(row),
@@ -643,20 +659,20 @@ def tww_import(precommit_callback=None):
             fk_reach_point_from=get_pk(row.vonhaltungspunktref__REL),
             fk_reach_point_to=get_pk(row.nachhaltungspunktref__REL),
             horizontal_positioning__REL=get_vl_instance(
-                TWW.reach_horizontal_positioning, row.lagebestimmung
+                TWW_OD.reach_horizontal_positioning, row.lagebestimmung
             ),
-            inside_coating__REL=get_vl_instance(TWW.reach_inside_coating, row.innenschutz),
+            inside_coating__REL=get_vl_instance(TWW_OD.reach_inside_coating, row.innenschutz),
             length_effective=row.laengeeffektiv,
-            material__REL=get_vl_instance(TWW.reach_material, row.material),
+            material__REL=get_vl_instance(TWW_OD.reach_material, row.material),
             progression_geometry=ST_Force3D(row.verlauf),
             reliner_material__REL=get_vl_instance(
-                TWW.reach_reliner_material, row.reliner_material
+                TWW_OD.reach_reliner_material, row.reliner_material
             ),
             reliner_nominal_size=row.reliner_nennweite,
             relining_construction__REL=get_vl_instance(
-                TWW.reach_relining_construction, row.reliner_bautechnik
+                TWW_OD.reach_relining_construction, row.reliner_bautechnik
             ),
-            relining_kind__REL=get_vl_instance(TWW.reach_relining_kind, row.reliner_art),
+            relining_kind__REL=get_vl_instance(TWW_OD.reach_relining_kind, row.reliner_art),
             ring_stiffness=row.ringsteifigkeit,
             slope_building_plan=row.plangefaelle,  # TODO : check, does this need conversion ?
             wall_roughness=row.wandrauhigkeit,
@@ -696,7 +712,7 @@ def tww_import(precommit_callback=None):
         # sia405_baseclass_metaattribute__REL
 
         dryweather_downspout = create_or_update(
-            TWW.dryweather_downspout,
+            TWW_OD.dryweather_downspout,
             **base_common(row),
             # --- structure_part ---
             **structure_part_common(row),
@@ -738,12 +754,12 @@ def tww_import(precommit_callback=None):
         # sia405_baseclass_metaattribute__REL
 
         access_aid = create_or_update(
-            TWW.access_aid,
+            TWW_OD.access_aid,
             **base_common(row),
             # --- structure_part ---
             **structure_part_common(row),
             # --- access_aid ---
-            kind__REL=get_vl_instance(TWW.access_aid_kind, row.art),
+            kind__REL=get_vl_instance(TWW_OD.access_aid_kind, row.art),
         )
         tww_session.add(access_aid)
         print(".", end="")
@@ -780,12 +796,12 @@ def tww_import(precommit_callback=None):
         # sia405_baseclass_metaattribute__REL
 
         dryweather_flume = create_or_update(
-            TWW.dryweather_flume,
+            TWW_OD.dryweather_flume,
             **base_common(row),
             # --- structure_part ---
             **structure_part_common(row),
             # --- dryweather_flume ---
-            material__REL=get_vl_instance(TWW.dryweather_flume_material, row.material),
+            material__REL=get_vl_instance(TWW_OD.dryweather_flume_material, row.material),
         )
         tww_session.add(dryweather_flume)
         print(".", end="")
@@ -822,23 +838,23 @@ def tww_import(precommit_callback=None):
         # sia405_baseclass_metaattribute__REL
 
         cover = create_or_update(
-            TWW.cover,
+            TWW_OD.cover,
             **base_common(row),
             # --- structure_part ---
             **structure_part_common(row),
             # --- cover ---
             brand=row.fabrikat,
-            cover_shape__REL=get_vl_instance(TWW.cover_cover_shape, row.deckelform),
+            cover_shape__REL=get_vl_instance(TWW_OD.cover_cover_shape, row.deckelform),
             diameter=row.durchmesser,
-            fastening__REL=get_vl_instance(TWW.cover_fastening, row.verschluss),
+            fastening__REL=get_vl_instance(TWW_OD.cover_fastening, row.verschluss),
             level=row.kote,
-            material__REL=get_vl_instance(TWW.cover_material, row.material),
+            material__REL=get_vl_instance(TWW_OD.cover_material, row.material),
             positional_accuracy__REL=get_vl_instance(
-                TWW.cover_positional_accuracy, row.lagegenauigkeit
+                TWW_OD.cover_positional_accuracy, row.lagegenauigkeit
             ),
             situation_geometry=ST_Force3D(row.lage),
-            sludge_bucket__REL=get_vl_instance(TWW.cover_sludge_bucket, row.schlammeimer),
-            venting__REL=get_vl_instance(TWW.cover_venting, row.entlueftung),
+            sludge_bucket__REL=get_vl_instance(TWW_OD.cover_sludge_bucket, row.schlammeimer),
+            venting__REL=get_vl_instance(TWW_OD.cover_venting, row.entlueftung),
         )
         tww_session.add(cover)
         print(".", end="")
@@ -875,12 +891,12 @@ def tww_import(precommit_callback=None):
         # sia405_baseclass_metaattribute__REL
 
         benching = create_or_update(
-            TWW.benching,
+            TWW_OD.benching,
             **base_common(row),
             # --- structure_part ---
             **structure_part_common(row),
             # --- benching ---
-            kind__REL=get_vl_instance(TWW.benching_kind, row.art),
+            kind__REL=get_vl_instance(TWW_OD.benching_kind, row.art),
         )
         tww_session.add(benching)
         print(".", end="")

@@ -10,7 +10,7 @@ from qgis.utils import iface
 
 from ...utils.twwlayermanager import TwwLayerManager
 from .. import config
-from ..tww.export import tww_export
+from ..tww.tww_export import TwwInterlisExporter
 from ..tww.tww_import import tww_import
 from ..utils.ili2db import TwwIliTools
 from ..utils.various import CmdException, LoggingHandlerContext, make_log_path
@@ -262,8 +262,18 @@ def action_export(plugin):
         )
         log_handler.setLevel(logging.INFO)
         log_handler.setFormatter(logging.Formatter("%(levelname)-8s %(message)s"))
-        with LoggingHandlerContext(log_handler):
-            tww_export(selection=export_dialog.selected_ids, labels_file=labels_file_path)
+
+        twwInterlisExporter = TwwInterlisExporter(
+            selection=export_dialog.selected_ids, labels_file=labels_file_path
+        )
+
+        try:
+            with LoggingHandlerContext(log_handler):
+                twwInterlisExporter.tww_export()
+        except Exception as exception:
+            twwInterlisExporter.close_sessions()
+            raise exception
+
         progress_dialog.setValue(50)
         QApplication.processEvents()
 

@@ -12,7 +12,8 @@ PGPASS = os.getenv("PGPASS", None)
 ILIVALIDATOR = os.path.join(BASE, "bin", "ilivalidator-1.11.9", "ilivalidator-1.11.9.jar")
 
 TWW_DEFAULT_PGSERVICE = "pg_tww"
-TWW_SCHEMA = "tww_od"
+TWW_OD_SCHEMA = "tww_od"
+TWW_VL_SCHEMA = "tww_vl"
 ABWASSER_SCHEMA = "pg2ili_abwasser"
 ABWASSER_ILI_MODEL_NAME_KEK = "VSA_KEK_2020_1_LV95"
 ABWASSER_ILI_MODEL_NAME_SIA405 = "SIA405_ABWASSER_2020_1_LV95"

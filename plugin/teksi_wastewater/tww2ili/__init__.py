@@ -3,7 +3,7 @@ import sys
 from logging import INFO, FileHandler, Formatter
 
 from . import config, utils
-from .tww.export import tww_export
+from .tww.tww_export import TwwInterlisExporter
 from .tww.tww_import import tww_import
 from .utils.various import make_log_path
 
@@ -135,10 +135,12 @@ def main(args):
                 make_log_path(log_path, "ilicreate"),
                 recreate_schema=args.recreate_schema,
             )
-            tww_export(
+
+            twwInterlisExporter = TwwInterlisExporter(
                 selection=args.selection.split(",") if args.selection else None,
                 labels_file=args.labels_file,
             )
+            twwInterlisExporter.tww_export()
 
             utils.ili2db.export_xtf_data(
                 SCHEMA,
