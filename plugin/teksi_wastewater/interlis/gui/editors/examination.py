@@ -6,7 +6,7 @@ from qgis.PyQt.QtWidgets import QHeaderView, QListWidgetItem, QTreeWidgetItem
 from qgis.utils import iface
 from sqlalchemy.orm import aliased
 
-from ...tww.model_tww_od import get_tww_od_model
+from ...interlis_model_mapping.model_tww_od import get_tww_od_model
 from .base import Editor
 
 

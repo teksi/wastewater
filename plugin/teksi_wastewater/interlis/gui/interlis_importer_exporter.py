@@ -10,8 +10,10 @@ from qgis.utils import iface
 
 from ...utils.twwlayermanager import TwwLayerManager
 from .. import config
-from ..tww.tww_export import TwwInterlisExporter
-from ..tww.tww_import import tww_import
+from ..interlis_model_mapping.interlis_exporter_to_intermediate_schema import (
+    TwwInterlisExporter,
+)
+from ..interlis_model_mapping.interlis_importer_to_intermediate_schema import tww_import
 from ..utils.ili2db import TwwIliTools
 from ..utils.various import CmdException, LoggingHandlerContext, make_log_path
 from .gui_import import GuiImport

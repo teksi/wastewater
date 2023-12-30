@@ -9,7 +9,9 @@ import xml.etree.ElementTree as ET
 from interlis import main, utils
 from sqlalchemy.orm import Session
 
-from plugin.teksi_wastewater.interlis.tww.model_tww_od import get_tww_od_model
+from plugin.teksi_wastewater.interlis.interlis_model_mapping.model_tww_od import (
+    get_tww_od_model,
+)
 
 # Display logging in unittest output
 logger = logging.getLogger()
