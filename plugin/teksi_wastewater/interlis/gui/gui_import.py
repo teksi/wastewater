@@ -11,7 +11,7 @@ from qgis.utils import iface
 from sqlalchemy import inspect
 from sqlalchemy.orm import Session
 
-from ..tww.model_tww_od import get_tww_od_model
+from ..interlis_model_mapping.model_tww_od import get_tww_od_model
 from .editors.base import Editor
 
 # Required for loadUi to find the custom widget
