@@ -472,7 +472,7 @@ class TeksiWastewaterPlugin:
                     InterlisImporterExporter,
                 )
 
-                self.interlisImporterExporter = InterlisImporterExporter(self)
+                self.interlisImporterExporter = InterlisImporterExporter()
             except ImportError as e:
                 self.iface.messageBar().pushMessage(
                     "Error",
@@ -493,7 +493,7 @@ class TeksiWastewaterPlugin:
                     InterlisImporterExporter,
                 )
 
-                self.interlisImporterExporter = InterlisImporterExporter(self)
+                self.interlisImporterExporter = InterlisImporterExporter()
             except ImportError as e:
                 self.iface.messageBar().pushMessage(
                     "Error",
