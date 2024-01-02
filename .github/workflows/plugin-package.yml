@@ -34,7 +34,7 @@ jobs:
         run: pip install qgis-plugin-ci
 
       - name: Package modelbaker
-        run: plugin/scripts/package_pip_packages.sh
+        run: scripts/package_pip_packages.sh
 
       - name: Package
         run: |
