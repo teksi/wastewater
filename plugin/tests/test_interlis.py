@@ -3,9 +3,8 @@ import os
 import sys
 
 from qgis.testing import start_app, unittest
-from teksi_wastewater.interlis.gui.interlis_importer_exporter import (
-    InterlisImporterExporter,
-)
+
+from ..interlis.gui.interlis_importer_exporter import InterlisImporterExporter
 
 # Display logging in unittest output
 logger = logging.getLogger()

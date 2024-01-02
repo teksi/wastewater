@@ -1,6 +1,7 @@
 from sqlalchemy.ext.automap import automap_base
-from teksi_wastewater.interlis import config
-from teksi_wastewater.interlis.utils import tww_sqlalchemy
+
+from ...interlis import config
+from ...interlis.utils import tww_sqlalchemy
 
 SCHEMA = config.ABWASSER_SCHEMA
 
