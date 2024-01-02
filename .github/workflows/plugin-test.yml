@@ -54,7 +54,7 @@ jobs:
           docker exec teksi-wastewater init_db.sh wait
 
       - name: "build dockerfile qgis"
-        run:  docker build -f /.docker/Dockerfile
+        run:  docker build -f /.docker/Dockerfile .
 
       - name: run tests
         run:  docker exec qgis pytest
