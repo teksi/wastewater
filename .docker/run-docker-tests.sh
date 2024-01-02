@@ -18,6 +18,16 @@
 
 set -e
 
+
+# rationale: Wait for postgres container to become available
+echo "Wait a moment while loading the database."
+while ! PGPASSWORD='postgres' psql -h db -U postgres -p 5432 -l &> /dev/null
+do
+  printf "."
+  sleep 2
+done
+echo ""
+
 pushd /usr/src
 DEFAULT_PARAMS='-v'
 xvfb-run pytest-3 plugin ${@:-`echo $DEFAULT_PARAMS`} $1
