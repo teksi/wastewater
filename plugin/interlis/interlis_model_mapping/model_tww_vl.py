@@ -1,8 +1,9 @@
 from sqlalchemy import select
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
-from teksi_wastewater.interlis import config
-from teksi_wastewater.interlis.utils import tww_sqlalchemy
+
+from ...interlis import config
+from ...interlis.utils import tww_sqlalchemy
 
 ###############################################
 # TEKSI Wastewater datamodel
