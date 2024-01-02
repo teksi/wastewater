@@ -3,12 +3,8 @@ from types import SimpleNamespace
 
 import psycopg2
 from sqlalchemy.ext.automap import AutomapBase
-from teksi_wastewater.libs.modelbaker.iliwrapper import (
-    globals,
-    ili2dbconfig,
-    ili2dbutils,
-)
 
+from ...libs.modelbaker.iliwrapper import globals, ili2dbconfig, ili2dbutils
 from .. import config
 from .various import exec_, get_pgconf_as_ili_args, get_pgconf_as_psycopg2_dsn, logger
 
