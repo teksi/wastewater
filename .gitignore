@@ -6,6 +6,7 @@ project/*attachments.zip
 project/*.qgs~
 
 plugin/libs/
+plugin*.zip
 
 .idea
 .pycache
