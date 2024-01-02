@@ -13,6 +13,10 @@ from .. import config
 from .various import exec_, get_pgconf_as_ili_args, get_pgconf_as_psycopg2_dsn, logger
 
 
+class InterlisToolsException(Exception):
+    pass
+
+
 class TwwIliTools:
     def __init__(self):
         self.java_executable_path = ili2dbutils.get_java_path(ili2dbconfig.BaseConfiguration())
@@ -117,8 +121,24 @@ class TwwIliTools:
             )
         )
 
-    def export_xtf_data(self, schema, model_name, export_model_name, xtf_file, log_path):
+    def export_xtf_data(
+        self, schema, xtf_file, log_path, model_name=None, export_model_name=None, topics=None
+    ):
         logger.info("EXPORT ILIDB...")
+
+        if model_name is None and topics is None:
+            raise InterlisToolsException(
+                "One parameter 'model_name' or 'topics' must be specified"
+            )
+
+        if model_name is not None and topics is not None:
+            raise InterlisToolsException(
+                "Only one parameter 'model_name' or 'topics' can be specified"
+            )
+
+        export_args = ["--models", model_name]
+        if topics is not None:
+            export_args = ["--topics", topics]
 
         # if optional export_model_name is set, add it to the args
         if export_model_name:
@@ -133,8 +153,7 @@ class TwwIliTools:
                     "-jar",
                     f'"{self.ili2pg_executable_path}"',
                     "--export",
-                    "--models",
-                    f"{model_name}",
+                    *export_args,
                     *export_model_name_args,
                     *get_pgconf_as_ili_args(),
                     "--dbschema",

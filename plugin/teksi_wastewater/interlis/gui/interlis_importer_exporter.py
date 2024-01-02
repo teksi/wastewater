@@ -33,6 +33,9 @@ class InterlisImporterExporter:
         self.progress_dialog = None
 
     def action_import(self):
+        """
+        Is executed when the user clicks the importAction tool
+        """
         try:
             self._action_import()
         except InterlisImporterExporterStopped:
@@ -44,6 +47,9 @@ class InterlisImporterExporter:
             raise exception
 
     def action_export(self):
+        """
+        Is executed when the user clicks the exportAction tool
+        """
         try:
             self._action_export()
         except InterlisImporterExporterStopped:
@@ -55,10 +61,6 @@ class InterlisImporterExporter:
             raise exception
 
     def _action_import(self):
-        """
-        Is executed when the user clicks the importAction tool
-        """
-
         default_folder = QgsSettings().value(
             "tww_plugin/last_interlis_path", QgsProject.instance().absolutePath()
         )
@@ -181,10 +183,6 @@ class InterlisImporterExporter:
         self.import_dialog.show()
 
     def _action_export(self):
-        """
-        Is executed when the user clicks the exportAction tool
-        """
-
         export_dialog = InterlisExportSettingsDialog(self.plugin.iface.mainWindow())
 
         if export_dialog.exec_() == export_dialog.Rejected:
@@ -328,11 +326,12 @@ class InterlisImporterExporter:
             log_path = make_log_path(base_log_path, f"ili2pg-export-{model_name}")
             try:
                 twwIliTools.export_xtf_data(
-                    config.ABWASSER_SCHEMA,
-                    model_name,
-                    export_model_name,
-                    export_file_name,
-                    log_path,
+                    schema=config.ABWASSER_SCHEMA,
+                    xtf_file=export_file_name,
+                    log_path=log_path,
+                    model_name=None,
+                    topics=config.TOPIC_ABWASSER_ADMINISTRATION,
+                    export_model_name=export_model_name,
                 )
             except CmdException:
                 xtf_export_errors.append(
@@ -383,7 +382,7 @@ class InterlisImporterExporter:
             return
 
         self.show_success(
-            "Sucess",
+            "Success",
             f"Data successfully exported to {file_name_base}",
             os.path.dirname(log_path),
         )
@@ -411,7 +410,5 @@ class InterlisImporterExporter:
             self.progress_dialog.close()
 
     def _progress_done(self):
-        if self.progress_dialog.wasCanceled():
-            raise InterlisImporterExporterStopped
-
+        self._check_for_canceled()
         self.progress_dialog.setValue(self.progress_dialog.value() + 1)

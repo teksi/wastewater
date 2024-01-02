@@ -147,11 +147,11 @@ def main(args):
             twwInterlisExporter.tww_export()
 
             utils.ili2db.export_xtf_data(
-                SCHEMA,
-                ILI_MODEL_NAME,
-                ILI_EXPORT_MODEL_NAME,
-                args.path,
-                make_log_path(log_path, "iliexport"),
+                schema=SCHEMA,
+                model_name=ILI_MODEL_NAME,
+                export_model_name=ILI_EXPORT_MODEL_NAME,
+                xtf_file=args.path,
+                log_path=make_log_path(log_path, "iliexport"),
             )
 
             if not args.skip_validation:

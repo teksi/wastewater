@@ -1118,7 +1118,7 @@ class InterlisExporterToIntermediateSchema:
     def create_baskets(self):
         self.t_ili2db_basket_administration = self.ABWASSER.t_ili2db_basket(
             t_id=self.tid_maker.next_tid(),
-            topic="Administration",
+            topic="SIA405_Base_Abwasser_1_LV95.Administration",
             attachmentkey="teksi_wastewater",
         )
         self.abwasser_session.add(self.t_ili2db_basket_administration)
