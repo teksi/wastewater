@@ -33,12 +33,32 @@ jobs:
     env:
       QGIS_TEST_VERSION: ${{ matrix.qgis_version }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          submodules: recursive
-      - name: Package PyPI Packages
+      # - name: Checkout
+      #   uses: actions/checkout@v4
+      #   with:
+      #     submodules: recursive
+      # - name: Package PyPI Packages
+      #   run: |
+      #     sudo ./scripts/package_pip_packages.sh
+      # - name: Test on QGIS
+      #   run: docker-compose -f .docker/docker-compose.gh.yml run qgis /usr/src/.docker/run-docker-tests.sh
+
+      - uses: actions/checkout@v4
+
+      - name: "build dockerfile db"
+        run:  docker build --build-arg RUN_TEST=True -f datamodel/.docker/Dockerfile --tag teksi/wastewater:unstable .
+
+      - name: "initialize container"
         run: |
-          sudo ./scripts/package_pip_packages.sh
-      - name: Test on QGIS
-        run: docker-compose -f .docker/docker-compose.gh.yml run qgis /usr/src/.docker/run-docker-tests.sh
+          docker run -d -p 5432:5432 --name teksi-wastewater teksi/wastewater:unstable
+          docker exec teksi-wastewater init_db.sh wait
+
+      - name: "build dockerfile qgis"
+        run:  docker build -f /.docker/Dockerfile
+
+      - name: run tests
+        run:  docker exec qgis pytest
+
+      - name: docker logs
+        if: failure()
+        run: docker logs qgis
