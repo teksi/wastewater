@@ -8,6 +8,8 @@ services:
     working_dir: /src
     volumes:
       - ./datamodel:/src
+    ports:
+      - 5432:5432
 
   qgis:
     build:
@@ -18,5 +20,5 @@ services:
     tty: true
     volumes:
       - ${GITHUB_WORKSPACE}:/usr/src
-    depends_on:
+    links:
       - db

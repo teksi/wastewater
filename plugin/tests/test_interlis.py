@@ -4,6 +4,7 @@ import sys
 
 from qgis.testing import start_app, unittest
 
+from ..interlis import config
 from ..interlis.gui.interlis_importer_exporter import InterlisImporterExporter
 
 # Display logging in unittest output
@@ -31,6 +32,11 @@ def findall_in_xml_sia_abwasser_2015(
 
 class TestInterlis(unittest.TestCase):
     def test_import_demo_organisations(self):
+        config.PGHOST = "db"
+        config.PGDATABASE = "teksi_wastewater"
+        config.PGUSER = "postgres"
+        config.PGPASS = "postgres"
+
         interlisImporterExporter = InterlisImporterExporter()
 
         os.path.abspath(os.path.dirname(__file__))
