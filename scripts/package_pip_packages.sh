@@ -1,5 +1,6 @@
-#!/bin/bash
-LIBS_DIR="plugin/teksi_wastewater/libs"
+#!/usr/bin/env bash
+
+LIBS_DIR="plugin/libs"
 
 MODELBAKER_LIBRARY=("modelbaker" "1.6.0")
 

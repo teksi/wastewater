@@ -4,7 +4,7 @@ name=TEKSI Wastewater
 description=Plugin to manage wastewater networks (formerly: QGEP) # // skip-keyword-check
 qgisMinimumVersion=3.2
 category=Vector
-version=dev
+version=0.0.0
 
 changelog=See repository for full changelog
 tags=teksi, gep, abwasser, wastewater, qgep, assainissement # // skip-keyword-check

@@ -5,6 +5,9 @@ datamodel/artifacts
 project/*attachments.zip
 project/*.qgs~
 
+plugin/libs/
+
 .idea
 .pycache
 __pycache__
+.DS_Store
