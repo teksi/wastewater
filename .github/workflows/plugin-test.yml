@@ -26,29 +26,19 @@ jobs:
   plugin-tests:
     name: Run unit tests on plugin
     runs-on: ubuntu-latest
-
+    strategy:
+      fail-fast: false
+      matrix:
+        qgis_version: [3.28-jammy, latest]
+    env:
+      QGIS_TEST_VERSION: ${{ matrix.qgis_version }}
     steps:
-      - uses: actions/checkout@v4
-
-      - name: "build dockerfile"
-        run:  docker build --build-arg RUN_TEST=True -f datamodel/.docker/Dockerfile --tag teksi/wastewater:unstable .
-
-      - name: "initialize container"
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Package PyPI Packages
         run: |
-          docker run -d -p 5432:5432 --name teksi-wastewater-plugin teksi/wastewater:unstable
-          docker exec teksi-wastewater-plugin init_db.sh wait
-
-      - name: run tests
-        run:  docker exec teksi-wastewater-plugin pytest plugin
-
-      - name: docker logs
-        if: failure()
-        run: docker logs teksi-wastewater-plugin
-
-  static-tests:
-    name: Run static tests on datamodel
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v4
-    - run: ./datamodel/test/static_tests.sh
+          sudo ./scripts/package_pip_packages.sh
+      - name: Test on QGIS
+        run: docker-compose -f .docker/docker-compose.gh.yml run qgis /usr/src/.docker/run-docker-tests.sh
