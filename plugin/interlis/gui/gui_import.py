@@ -19,7 +19,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "..", ".."))
 
 
 class GuiImport(QDialog):
-    def __init__(self, parent):
+    def __init__(self, parent=None):
         super().__init__(parent)
         loadUi(os.path.join(os.path.dirname(__file__), "gui_import.ui"), self)
 
