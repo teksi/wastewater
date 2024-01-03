@@ -370,7 +370,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
                 "fk_dataowner": "COALESCE(NULLIF(NEW.wn_fk_dataowner,''), NEW.fk_dataowner)",
                 "fk_wastewater_structure": "NEW.obj_id",
             },
-            returning='obj_id INTO NEW.wn_obj_id',
+            returning="obj_id INTO NEW.wn_obj_id",
         ),
         insert_vw_cover=insert_command(
             pg_cur=cursor,
@@ -393,7 +393,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
                 "fk_dataowner": "NEW.fk_dataowner",
                 "fk_wastewater_structure": "NEW.obj_id",
             },
-            returning='obj_id INTO NEW.co_obj_id',
+            returning="obj_id INTO NEW.co_obj_id",
         ),
     )
 
@@ -584,7 +584,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
                 "fk_main_wastewater_node",
                 "_depth",
             ],
-            update_values={"fk_main_cover":"OLD.co_obj_id"},
+            update_values={"fk_main_cover": "OLD.co_obj_id"},
         ),
         update_ma=update_command(
             pg_cur=cursor,
@@ -660,7 +660,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
                 "fk_dataowner": "NEW.fk_dataowner",
                 "fk_wastewater_structure": "NEW.obj_id",
             },
-            returning='obj_id INTO OLD.co_obj_id',
+            returning="obj_id INTO OLD.co_obj_id",
         ),
     )
 
