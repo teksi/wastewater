@@ -45,5 +45,5 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: teksi_wastewater_plugin_dev
-          path: plugin.0.0.0.zip
+          path: plugin/teksi_wastewater.0.0.0.zip
           if-no-files-found: error
