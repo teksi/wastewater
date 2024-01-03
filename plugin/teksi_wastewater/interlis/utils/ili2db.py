@@ -29,7 +29,9 @@ class TwwIliTools:
     def create_ili_schema(self, schema, models, log_path, recreate_schema=False):
         logger.info("CONNECTING TO DATABASE...")
 
-        connection = psycopg2.connect(get_pgconf_as_psycopg2_dsn())
+        connection = psycopg2.connect(
+            get_pgconf_as_psycopg2_dsn(), options="-c statement_timeout=1000"
+        )
         connection.set_session(autocommit=True)
         cursor = connection.cursor()
 

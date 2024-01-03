@@ -55,12 +55,12 @@ class pipe_profile(Base):
     __table_args__ = {"schema": SCHEMA}
 
 
-class wastewater_networkelement(Base):
+class wastewater_networkelement(wastewater_structure):
     __tablename__ = "wastewater_networkelement"
     __table_args__ = {"schema": SCHEMA}
 
 
-class reach_point(Base):
+class reach_point(wastewater_networkelement):
     __tablename__ = "reach_point"
     __table_args__ = {"schema": SCHEMA}
 
@@ -75,7 +75,7 @@ class reach(wastewater_networkelement):
     __table_args__ = {"schema": SCHEMA}
 
 
-class structure_part(Base):
+class structure_part(wastewater_structure):
     __tablename__ = "structure_part"
     __table_args__ = {"schema": SCHEMA}
 
