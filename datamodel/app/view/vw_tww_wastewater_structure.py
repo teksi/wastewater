@@ -274,7 +274,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
 
      ELSE
        NEW.co_obj_id=NULL;
-       RAISE WARNING 'Wastewater Structure %: no cover created as all cover-related columns are NULL', NEW.identifier; -- Warning
+       RAISE WARNING 'Wastewater Structure %: no cover created as all cover-related columns are NULL. If you want to add a cover please fill in at least one cover attribute value.', NEW.identifier; -- Warning
     END CASE;
 
     UPDATE tww_od.wastewater_structure
