@@ -5,7 +5,7 @@ datamodel/artifacts
 project/*attachments.zip
 project/*.qgs~
 
-plugin/libs/
+plugin/teksi_wastewater/libs/
 plugin*.zip
 
 .idea
