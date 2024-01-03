@@ -260,9 +260,6 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
 
     {insert_wn}
 
-      UPDATE tww_od.wastewater_structure
-        SET fk_main_wastewater_node = NEW.wn_obj_id
-        WHERE obj_id = NEW.obj_id;
 
       -- Aggregate all co_* values in a jsonb
       new_co := (
@@ -276,7 +273,8 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
         {insert_vw_cover}
 
        UPDATE tww_od.wastewater_structure
-        SET fk_main_cover = NEW.co_obj_id
+        SET fk_main_cover = NEW.co_obj_id,
+        fk_main_wastewater_node = NEW.wn_obj_id
         WHERE obj_id = NEW.obj_id;
 
      ELSE
@@ -372,6 +370,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
                 "fk_dataowner": "COALESCE(NULLIF(NEW.wn_fk_dataowner,''), NEW.fk_dataowner)",
                 "fk_wastewater_structure": "NEW.obj_id",
             },
+            returning='obj_id INTO NEW.wn_obj_id',
         ),
         insert_vw_cover=insert_command(
             pg_cur=cursor,
@@ -394,6 +393,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
                 "fk_dataowner": "NEW.fk_dataowner",
                 "fk_wastewater_structure": "NEW.obj_id",
             },
+            returning='obj_id INTO NEW.co_obj_id',
         ),
     )
 
@@ -420,7 +420,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
 
         -- Check if all remaining values are NULL
         CASE WHEN jsonb_strip_nulls(new_co)::text <> '{{}}' THEN
-        {insert_vw_cover}
+          {insert_vw_cover}
         ELSE NULL;
         END CASE;
       END IF;
@@ -581,11 +581,10 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
                 "_bottom_label",
                 "_input_label",
                 "_output_label",
-                "fk_main_cover",
                 "fk_main_wastewater_node",
                 "_depth",
             ],
-            update_values={},
+            update_values={"fk_main_cover":"OLD.co_obj_id"},
         ),
         update_ma=update_command(
             pg_cur=cursor,
@@ -649,7 +648,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             prefix="co_",
             remove_pkey=False,
             pkey="obj_id",
-            indent=8,
+            indent=10,
             remap_columns={"cover_shape": "co_shape"},
             insert_values={
                 "identifier": "COALESCE(NULLIF(NEW.co_identifier,''), NEW.identifier)",
@@ -661,6 +660,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
                 "fk_dataowner": "NEW.fk_dataowner",
                 "fk_wastewater_structure": "NEW.obj_id",
             },
+            returning='obj_id INTO OLD.co_obj_id',
         ),
     )
 
