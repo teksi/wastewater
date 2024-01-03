@@ -272,14 +272,15 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
       CASE WHEN jsonb_strip_nulls(new_co)::text <> '{{}}' THEN -- no cover entries
         {insert_vw_cover}
 
-       UPDATE tww_od.wastewater_structure
-        SET fk_main_cover = NEW.co_obj_id,
-        fk_main_wastewater_node = NEW.wn_obj_id
-        WHERE obj_id = NEW.obj_id;
-
      ELSE
-         RAISE WARNING 'Object_ID %: no cover created as all cover-related columns are NULL', NEW.obj_id; -- Warning
+       NEW.co_obj_id=NULL;
+       RAISE WARNING 'Wastewater Structure %: no cover created as all cover-related columns are NULL', NEW.identifier; -- Warning
     END CASE;
+
+    UPDATE tww_od.wastewater_structure
+      SET fk_main_cover = NEW.co_obj_id,
+      fk_main_wastewater_node = NEW.wn_obj_id
+      WHERE obj_id = NEW.obj_id;
 
       RETURN NEW;
     END; $BODY$ LANGUAGE plpgsql VOLATILE;
