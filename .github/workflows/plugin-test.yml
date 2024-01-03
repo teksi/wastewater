@@ -41,4 +41,4 @@ jobs:
         run: |
           sudo ./plugin/scripts/package_pip_packages.sh
       - name: Test on QGIS
-        run: docker-compose -f .docker/docker-compose.gh.yml run qgis /usr/src/.docker/run-docker-tests.sh
+        run: docker-compose -f ./plugin/.docker/docker-compose.gh.yml run qgis /usr/src/.docker/run-docker-tests.sh
