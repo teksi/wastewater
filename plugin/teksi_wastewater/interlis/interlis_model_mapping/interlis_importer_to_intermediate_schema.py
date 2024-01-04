@@ -17,13 +17,13 @@ class InterlisImporterToIntermediateSchema:
         self.callback_progress_done = callback_progress_done
 
         self.model_interlis = get_abwasser_model()
-        self.check_for_stop()
+        self._check_for_stop()
 
         self.model_tww_od = get_tww_od_model()
-        self.check_for_stop()
+        self._check_for_stop()
 
         self.model_tww_vl = ModelTwwVl()
-        self.check_for_stop()
+        self._check_for_stop()
 
         self.session_interlis = None
         self.session_tww = None
@@ -76,77 +76,77 @@ class InterlisImporterToIntermediateSchema:
         logger.info("Importing ABWASSER.organisation -> TWW.organisation")
         self._import_organisation()
         logger.info("Done")
-        self.check_for_stop()
+        self._check_for_stop()
 
         logger.info("Importing ABWASSER.kanal -> TWW.channel")
         self._import_kanal()
         logger.info("Done")
-        self.check_for_stop()
+        self._check_for_stop()
 
         logger.info("Importing ABWASSER.normschacht -> TWW.manhole")
         self._import_normschacht()
         logger.info("Done")
-        self.check_for_stop()
+        self._check_for_stop()
 
         logger.info("Importing ABWASSER.einleitstelle -> TWW.discharge_point")
         self._import_einleitstelle()
         logger.info("Done")
-        self.check_for_stop()
+        self._check_for_stop()
 
         logger.info("Importing ABWASSER.spezialbauwerk -> TWW.special_structure")
         self._import_spezialbauwerk()
         logger.info("Done")
-        self.check_for_stop()
+        self._check_for_stop()
 
         logger.info("Importing ABWASSER.versickerungsanlage -> TWW.infiltration_installation")
         self._import_versickerungsanlage()
         logger.info("Done")
-        self.check_for_stop()
+        self._check_for_stop()
 
         logger.info("Importing ABWASSER.rohrprofil -> TWW.pipe_profile")
         self._import_rohrprofil()
         logger.info("Done")
-        self.check_for_stop()
+        self._check_for_stop()
 
         logger.info("Importing ABWASSER.haltungspunkt -> TWW.reach_point")
         self._import_haltungspunkt()
         logger.info("Done")
-        self.check_for_stop()
+        self._check_for_stop()
 
         logger.info("Importing ABWASSER.abwasserknoten -> TWW.wastewater_node")
         self._import_abwasserknoten()
         logger.info("Done")
-        self.check_for_stop()
+        self._check_for_stop()
 
         logger.info("Importing ABWASSER.haltung -> TWW.reach")
         self._import_haltung()
         logger.info("Done")
-        self.check_for_stop()
+        self._check_for_stop()
 
         logger.info("Importing ABWASSER.trockenwetterfallrohr -> TWW.dryweather_downspout")
         self._import_trockenwetterfallrohr()
         logger.info("Done")
-        self.check_for_stop()
+        self._check_for_stop()
 
         logger.info("Importing ABWASSER.einstiegshilfe -> TWW.access_aid")
         self._import_einstiegshilfe()
         logger.info("Done")
-        self.check_for_stop()
+        self._check_for_stop()
 
         logger.info("Importing ABWASSER.trockenwetterrinne -> TWW.dryweather_flume")
         self._import_trockenwetterrinne()
         logger.info("Done")
-        self.check_for_stop()
+        self._check_for_stop()
 
         logger.info("Importing ABWASSER.deckel -> TWW.cover")
         self._import_deckel()
         logger.info("Done")
-        self.check_for_stop()
+        self._check_for_stop()
 
         logger.info("Importing ABWASSER.bankett -> TWW.benching")
         self._import_bankett()
         logger.info("Done")
-        self.check_for_stop()
+        self._check_for_stop()
 
         # VSA_KEK classes
         # logger.info("Importing ABWASSER.untersuchung -> TWW.examination")
@@ -1208,6 +1208,6 @@ class InterlisImporterToIntermediateSchema:
             self.session_tww.add(file)
             print(".", end="")
 
-    def check_for_stop(self):
+    def _check_for_stop(self):
         if self.callback_progress_done:
             self.callback_progress_done()

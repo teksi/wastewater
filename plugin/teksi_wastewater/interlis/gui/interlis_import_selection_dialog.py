@@ -11,17 +11,18 @@ from qgis.utils import iface
 from sqlalchemy import inspect
 from sqlalchemy.orm import Session
 
-from ..interlis_model_mapping.model_tww_od import get_tww_od_model
 from .editors.base import Editor
 
 # Required for loadUi to find the custom widget
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", ".."))
 
 
-class GuiImport(QDialog):
+class InterlisImportSelectionDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
-        loadUi(os.path.join(os.path.dirname(__file__), "gui_import.ui"), self)
+        loadUi(
+            os.path.join(os.path.dirname(__file__), "interlis_import_selection_dialog.ui"), self
+        )
 
         self.accepted.connect(self.commit_session)
         self.rejected.connect(self.rollback_session)
@@ -29,9 +30,6 @@ class GuiImport(QDialog):
         header = self.treeWidget.header()
         header.setSectionResizeMode(QHeaderView.ResizeToContents)
         header.setSectionResizeMode(0, QHeaderView.Stretch)
-
-        # No required here, but this way we load before opening the dialog
-        get_tww_od_model()
 
     def init_with_session(self, session: Session):
         """
@@ -68,7 +66,7 @@ class GuiImport(QDialog):
 
             if cls not in self.category_items:
                 self.category_items[cls].setText(0, cls.__name__)
-                # self.category_items[cls].setCheckState(0, Qt.Checked)  # for now we remove per class checkboxes
+                self.category_items[cls].setCheckState(0, Qt.Checked)
                 self.category_items[cls].setFont(
                     0, QFont(QFont().defaultFamily(), weight=QFont.Weight.Bold)
                 )

@@ -1,12 +1,11 @@
 import collections
 from types import SimpleNamespace
 
-import psycopg2
 from sqlalchemy.ext.automap import AutomapBase
 
 from ...libs.modelbaker.iliwrapper import globals, ili2dbconfig, ili2dbutils
 from .. import config
-from .various import exec_, get_pgconf_as_ili_args, get_pgconf_as_psycopg2_dsn, logger
+from .various import exec_, get_pgconf_as_ili_args, logger
 
 
 class InterlisToolsException(Exception):
@@ -26,36 +25,7 @@ class TwwIliTools:
             globals.DbIliMode.ili2pg, 4, stdout, stderr
         )
 
-    def create_ili_schema(self, schema, models, log_path, recreate_schema=False):
-        logger.info("CONNECTING TO DATABASE...")
-
-        connection = psycopg2.connect(
-            get_pgconf_as_psycopg2_dsn(), options="-c statement_timeout=1000"
-        )
-        connection.set_session(autocommit=True)
-        cursor = connection.cursor()
-
-        if not recreate_schema:
-            # If the schema already exists, we just truncate all tables
-            cursor.execute(
-                f"SELECT schema_name FROM information_schema.schemata WHERE schema_name = '{schema}';"
-            )
-            if cursor.rowcount > 0:
-                logger.info(f"Schema {schema} already exists, we truncate instead")
-                cursor.execute(
-                    f"SELECT table_name FROM information_schema.tables WHERE table_schema = '{schema}';"
-                )
-                for row in cursor.fetchall():
-                    cursor.execute(f"TRUNCATE TABLE {schema}.{row[0]} CASCADE;")
-                return
-
-        logger.info(f"DROPPING THE SCHEMA {schema}...")
-        cursor.execute(f'DROP SCHEMA IF EXISTS "{schema}" CASCADE ;')
-        logger.info(f"CREATING THE SCHEMA {schema}...")
-        cursor.execute(f'CREATE SCHEMA "{schema}";')
-        connection.commit()
-        connection.close()
-
+    def import_ili_schema(self, schema, models, log_path):
         logger.info(f"ILIDB SCHEMAIMPORT INTO {schema}...")
         exec_(
             " ".join(
@@ -74,7 +44,6 @@ class TwwIliTools:
                     "--createTidCol",
                     "--importTid",
                     "--noSmartMapping",
-                    "--createBasketCol",
                     "--defaultSrsCode",
                     "2056",
                     "--log",
@@ -119,24 +88,8 @@ class TwwIliTools:
             )
         )
 
-    def export_xtf_data(
-        self, schema, xtf_file, log_path, model_name=None, export_model_name=None, topics=None
-    ):
+    def export_xtf_data(self, schema, xtf_file, log_path, model_name, export_model_name):
         logger.info("EXPORT ILIDB...")
-
-        if model_name is None and topics is None:
-            raise InterlisToolsException(
-                "One parameter 'model_name' or 'topics' must be specified"
-            )
-
-        if model_name is not None and topics is not None:
-            raise InterlisToolsException(
-                "Only one parameter 'model_name' or 'topics' can be specified"
-            )
-
-        export_args = ["--models", model_name]
-        if topics is not None:
-            export_args = ["--topics", topics]
 
         # if optional export_model_name is set, add it to the args
         if export_model_name:
@@ -151,7 +104,8 @@ class TwwIliTools:
                     "-jar",
                     f'"{self.ili2pg_executable_path}"',
                     "--export",
-                    *export_args,
+                    "--models",
+                    f"{model_name}",
                     *export_model_name_args,
                     *get_pgconf_as_ili_args(),
                     "--dbschema",

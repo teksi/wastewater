@@ -11,13 +11,14 @@ from .model_tww_od import get_tww_od_model
 
 
 class InterlisExporterToIntermediateSchema:
-    def __init__(self, selection=None, labels_file=None):
+    def __init__(self, selection=None, labels_file=None, callback_progress_done=None):
         """
         Export data from the TWW model into the ili2pg model.
 
         Args:
             selection:      if provided, limits the export to networkelements that are provided in the selection
         """
+        self.callback_progress_done = callback_progress_done
 
         # Filtering
         self.filtered = selection is not None
@@ -25,8 +26,11 @@ class InterlisExporterToIntermediateSchema:
 
         self.labels_file = labels_file
 
-        self.TWW = get_tww_od_model()
-        self.ABWASSER = get_abwasser_model()
+        self.model_tww_od = get_tww_od_model()
+        self._check_for_stop()
+
+        self.model_interlis = get_abwasser_model()
+        self._check_for_stop()
 
         # Logging disabled (very slow)
         self.tww_session = Session(
@@ -37,8 +41,6 @@ class InterlisExporterToIntermediateSchema:
         )
         self.tid_maker = utils.ili2db.TidMaker(id_attribute="obj_id")
 
-        self.t_ili2db_basket_administration = None
-
     def tww_export(self):
         try:
             self._tww_export()
@@ -47,19 +49,119 @@ class InterlisExporterToIntermediateSchema:
             raise exception
 
     def _tww_export(self):
-        # Create export baskets
-        self.create_baskets()
-
-        # ADAPTED FROM 052a_sia405_abwasser_2015_2_d_interlisexport2.sql
         logger.info("Exporting TWW.organisation -> ABWASSER.organisation, ABWASSER.metaattribute")
-        query = self.tww_session.query(self.TWW.organisation)
+        self._export_organisation()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.channel -> ABWASSER.kanal, ABWASSER.metaattribute")
+        self._export_channel()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.manhole -> ABWASSER.normschacht, ABWASSER.metaattribute")
+        self._export_manhole()
+        self._check_for_stop()
+
+        logger.info(
+            "Exporting TWW.discharge_point -> ABWASSER.einleitstelle, ABWASSER.metaattribute"
+        )
+        self._export_discharge_point()
+        self._check_for_stop()
+
+        logger.info(
+            "Exporting TWW.special_structure -> ABWASSER.spezialbauwerk, ABWASSER.metaattribute"
+        )
+        self._export_special_structure()
+        self._check_for_stop()
+
+        logger.info(
+            "Exporting TWW.infiltration_installation -> ABWASSER.versickerungsanlage, ABWASSER.metaattribute"
+        )
+        self._export_infiltration_installation()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.pipe_profile -> ABWASSER.rohrprofil, ABWASSER.metaattribute")
+        self._export_pipe_profile()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.reach_point -> ABWASSER.haltungspunkt, ABWASSER.metaattribute")
+        self._export_reach_point()
+        self._check_for_stop()
+
+        logger.info(
+            "Exporting TWW.wastewater_node -> ABWASSER.abwasserknoten, ABWASSER.metaattribute"
+        )
+        self._export_wastewater_node()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.reach -> ABWASSER.haltung, ABWASSER.metaattribute")
+        self._export_reach()
+        self._check_for_stop()
+
+        logger.info(
+            "Exporting TWW.dryweather_downspout -> ABWASSER.trockenwetterfallrohr, ABWASSER.metaattribute"
+        )
+        self._export_dryweather_downspout()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.access_aid -> ABWASSER.einstiegshilfe, ABWASSER.metaattribute")
+        self._export_access_aid()
+        self._check_for_stop()
+
+        logger.info(
+            "Exporting TWW.dryweather_flume -> ABWASSER.trockenwetterrinne, ABWASSER.metaattribute"
+        )
+        self._export_dryweather_flume()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.cover -> ABWASSER.deckel, ABWASSER.metaattribute")
+        self._export_cover()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.benching -> ABWASSER.bankett, ABWASSER.metaattribute")
+        self._export_benching()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.examination -> ABWASSER.untersuchung, ABWASSER.metaattribute")
+        self._export_examination()
+        self._check_for_stop()
+
+        logger.info(
+            "Exporting TWW.damage_manhole -> ABWASSER.normschachtschaden, ABWASSER.metaattribute"
+        )
+        self._export_damage_manhole()
+        self._check_for_stop()
+
+        logger.info(
+            "Exporting TWW.damage_channel -> ABWASSER.kanalschaden, ABWASSER.metaattribute"
+        )
+        self._export_damage_channel()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.data_media -> ABWASSER.datentraeger, ABWASSER.metaattribute")
+        self._export_data_media()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.file -> ABWASSER.datei, ABWASSER.metaattribute")
+        self._export_file()
+        self._check_for_stop()
+
+        # Labels
+        # Note: these are extracted from the optional labels file (not exported from the TWW database)
+        if self.labels_file:
+            logger.info(f"Exporting label positions from {self.labels_file}")
+            self._export_label_positions()
+
+        self.abwasser_session.commit()
+        self.close_sessions()
+
+    def _export_organisation(self):
+        query = self.tww_session.query(self.model_tww_od.organisation)
         for row in query:
-            organisation = self.ABWASSER.organisation(
+            organisation = self.model_interlis.organisation(
                 # FIELDS TO MAP TO ABWASSER.organisation
                 # --- baseclass ---
                 # --- sia405_baseclass ---
                 **self.base_common(row, "organisation"),
-                t_basket=self.t_ili2db_basket_administration.t_id,
                 # --- organisation ---
                 auid=row.uid,
                 bemerkung=self.truncate(self.emptystr_to_null(row.remark), 80),
@@ -75,25 +177,14 @@ class InterlisExporterToIntermediateSchema:
         logger.info("done")
         self.abwasser_session.flush()
 
-        logger.info("Exporting TWW.channel -> ABWASSER.kanal, ABWASSER.metaattribute")
-        query = self.tww_session.query(self.TWW.channel)
+    def _export_channel(self):
+        query = self.tww_session.query(self.model_tww_od.channel)
         if self.filtered:
-            query = query.join(self.TWW.wastewater_networkelement).filter(
-                self.TWW.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            query = query.join(self.model_tww_od.wastewater_networkelement).filter(
+                self.model_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
         for row in query:
-            # AVAILABLE FIELDS IN self.TWW.channel
-
-            # --- wastewater_structure ---
-            # _bottom_label, _cover_label, _depth, _function_hierarchic, _input_label, _label, _output_label, _usage_current, accessibility, contract_section, detail_geometry_geometry, financing, fk_dataowner, fk_main_cover, fk_main_wastewater_node, fk_operator, fk_owner, fk_provider, gross_costs, identifier, inspection_interval, last_modification, location_name, records, remark, renovation_necessity, replacement_value, rv_base_year, rv_construction_type, status, structure_condition, subsidies, year_of_construction, year_of_replacement
-
-            # --- _bwrel_ ---
-            # measuring_point__BWREL_fk_wastewater_structure, mechanical_pretreatment__BWREL_fk_wastewater_structure, re_maintenance_event_wastewater_structure__BWREL_fk_wastewater_structure, structure_part__BWREL_fk_wastewater_structure, txt_symbol__BWREL_fk_wastewater_structure, txt_text__BWREL_fk_wastewater_structure, wastewater_networkelement__BWREL_fk_wastewater_structure, wastewater_structure_symbol__BWREL_fk_wastewater_structure, wastewater_structure_text__BWREL_fk_wastewater_structure, wwtp_structure_kind__BWREL_obj_id
-
-            # --- _rel_ ---
-            # accessibility__REL, bedding_encasement__REL, connection_type__REL, financing__REL, fk_dataowner__REL, fk_main_cover__REL, fk_main_wastewater_node__REL, fk_operator__REL, fk_owner__REL, fk_provider__REL, function_hierarchic__REL, function_hydraulic__REL, renovation_necessity__REL, rv_construction_type__REL, status__REL, structure_condition__REL, usage_current__REL, usage_planned__REL
-
-            kanal = self.ABWASSER.kanal(
+            kanal = self.model_interlis.kanal(
                 # FIELDS TO MAP TO ABWASSER.kanal
                 # --- baseclass ---
                 # --- sia405_baseclass ---
@@ -116,14 +207,14 @@ class InterlisExporterToIntermediateSchema:
         logger.info("done")
         self.abwasser_session.flush()
 
-        logger.info("Exporting TWW.manhole -> ABWASSER.normschacht, ABWASSER.metaattribute")
-        query = self.tww_session.query(self.TWW.manhole)
+    def _export_manhole(self):
+        query = self.tww_session.query(self.model_tww_od.manhole)
         if self.filtered:
-            query = query.join(self.TWW.wastewater_networkelement).filter(
-                self.TWW.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            query = query.join(self.model_tww_od.wastewater_networkelement).filter(
+                self.model_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
         for row in query:
-            normschacht = self.ABWASSER.normschacht(
+            normschacht = self.model_interlis.normschacht(
                 # --- baseclass ---
                 # --- sia405_baseclass ---
                 **self.base_common(row, "normschacht"),
@@ -142,16 +233,14 @@ class InterlisExporterToIntermediateSchema:
         logger.info("done")
         self.abwasser_session.flush()
 
-        logger.info(
-            "Exporting TWW.discharge_point -> ABWASSER.einleitstelle, ABWASSER.metaattribute"
-        )
-        query = self.tww_session.query(self.TWW.discharge_point)
+    def _export_discharge_point(self):
+        query = self.tww_session.query(self.model_tww_od.discharge_point)
         if self.filtered:
-            query = query.join(self.TWW.wastewater_networkelement).filter(
-                self.TWW.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            query = query.join(self.model_tww_od.wastewater_networkelement).filter(
+                self.model_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
         for row in query:
-            einleitstelle = self.ABWASSER.einleitstelle(
+            einleitstelle = self.model_interlis.einleitstelle(
                 # --- baseclass ---
                 # --- sia405_baseclass ---
                 **self.base_common(row, "einleitstelle"),
@@ -169,19 +258,14 @@ class InterlisExporterToIntermediateSchema:
         logger.info("done")
         self.abwasser_session.flush()
 
-        logger.info(
-            "Exporting TWW.special_structure -> ABWASSER.spezialbauwerk, ABWASSER.metaattribute"
-        )
-        query = self.tww_session.query(self.TWW.special_structure)
+    def _export_special_structure(self):
+        query = self.tww_session.query(self.model_tww_od.special_structure)
         if self.filtered:
-            query = query.join(self.TWW.wastewater_networkelement).filter(
-                self.TWW.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            query = query.join(self.model_tww_od.wastewater_networkelement).filter(
+                self.model_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
         for row in query:
             # AVAILABLE FIELDS IN TWW.special_structure
-
-            # --- wastewater_structure ---
-            # _bottom_label, _cover_label, _depth, _function_hierarchic, _input_label, _label, _output_label, _usage_current, accessibility, contract_section, detail_geometry_geometry, financing, fk_dataowner, fk_main_cover, fk_main_wastewater_node, fk_operator, fk_owner, fk_provider, gross_costs, identifier, inspection_interval, last_modification, location_name, records, remark, renovation_necessity, replacement_value, rv_base_year, rv_construction_type, status, structure_condition, subsidies, year_of_construction, year_of_replacement
 
             # --- special_structure ---
             # bypass, emergency_spillway, function, obj_id, stormwater_tank_arrangement, upper_elevation
@@ -194,7 +278,7 @@ class InterlisExporterToIntermediateSchema:
             logger.warning(
                 "TWW field special_structure.upper_elevation has no equivalent in the interlis model. It will be ignored."
             )
-            spezialbauwerk = self.ABWASSER.spezialbauwerk(
+            spezialbauwerk = self.model_interlis.spezialbauwerk(
                 # FIELDS TO MAP TO ABWASSER.spezialbauwerk
                 # --- baseclass ---
                 # --- sia405_baseclass ---
@@ -214,33 +298,17 @@ class InterlisExporterToIntermediateSchema:
         logger.info("done")
         self.abwasser_session.flush()
 
-        logger.info(
-            "Exporting TWW.infiltration_installation -> ABWASSER.versickerungsanlage, ABWASSER.metaattribute"
-        )
-        query = self.tww_session.query(self.TWW.infiltration_installation)
+    def _export_infiltration_installation(self):
+        query = self.tww_session.query(self.model_tww_od.infiltration_installation)
         if self.filtered:
-            query = query.join(self.TWW.wastewater_networkelement).filter(
-                self.TWW.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            query = query.join(self.model_tww_od.wastewater_networkelement).filter(
+                self.model_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
         for row in query:
-            # AVAILABLE FIELDS IN TWW.infiltration_installation
-
-            # --- wastewater_structure ---
-            # _bottom_label, _cover_label, _depth, _function_hierarchic, _input_label, _label, _output_label, _usage_current, accessibility, contract_section, detail_geometry_geometry, financing, fk_dataowner, fk_main_cover, fk_main_wastewater_node, fk_operator, fk_owner, fk_provider, gross_costs, identifier, inspection_interval, last_modification, location_name, records, remark, renovation_necessity, replacement_value, rv_base_year, rv_construction_type, status, structure_condition, subsidies, year_of_construction, year_of_replacement
-
-            # --- infiltration_installation ---
-            # absorption_capacity, defects, dimension1, dimension2, distance_to_aquifer, effective_area, emergency_spillway, fk_aquifier, kind, labeling, obj_id, seepage_utilization, upper_elevation, vehicle_access, watertightness
-
-            # --- _bwrel_ ---
-            # measuring_point__BWREL_fk_wastewater_structure, mechanical_pretreatment__BWREL_fk_infiltration_installation, mechanical_pretreatment__BWREL_fk_wastewater_structure, re_maintenance_event_wastewater_structure__BWREL_fk_wastewater_structure, retention_body__BWREL_fk_infiltration_installation, structure_part__BWREL_fk_wastewater_structure, txt_symbol__BWREL_fk_wastewater_structure, txt_text__BWREL_fk_wastewater_structure, wastewater_networkelement__BWREL_fk_wastewater_structure, wastewater_structure_symbol__BWREL_fk_wastewater_structure, wastewater_structure_text__BWREL_fk_wastewater_structure, wwtp_structure_kind__BWREL_obj_id
-
-            # --- _rel_ ---
-            # accessibility__REL, defects__REL, emergency_spillway__REL, financing__REL, fk_aquifier__REL, fk_dataowner__REL, fk_main_cover__REL, fk_main_wastewater_node__REL, fk_operator__REL, fk_owner__REL, fk_provider__REL, kind__REL, labeling__REL, renovation_necessity__REL, rv_construction_type__REL, seepage_utilization__REL, status__REL, structure_condition__REL, vehicle_access__REL, watertightness__REL
-
             logger.warning(
                 "TWW field infiltration_installation.upper_elevation has no equivalent in the interlis model. It will be ignored."
             )
-            versickerungsanlage = self.ABWASSER.versickerungsanlage(
+            versickerungsanlage = self.model_interlis.versickerungsanlage(
                 # FIELDS TO MAP TO ABWASSER.versickerungsanlage
                 # --- baseclass ---
                 # --- sia405_baseclass ---
@@ -268,11 +336,11 @@ class InterlisExporterToIntermediateSchema:
         logger.info("done")
         self.abwasser_session.flush()
 
-        logger.info("Exporting TWW.pipe_profile -> ABWASSER.rohrprofil, ABWASSER.metaattribute")
-        query = self.tww_session.query(self.TWW.pipe_profile)
+    def _export_pipe_profile(self):
+        query = self.tww_session.query(self.model_tww_od.pipe_profile)
         if self.filtered:
-            query = query.join(self.TWW.reach).filter(
-                self.TWW.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            query = query.join(self.model_tww_od.reach).filter(
+                self.model_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
         for row in query:
             # AVAILABLE FIELDS IN TWW.pipe_profile
@@ -286,7 +354,7 @@ class InterlisExporterToIntermediateSchema:
             # --- _rel_ ---
             # fk_dataowner__REL, fk_provider__REL, profile_type__REL
 
-            rohrprofil = self.ABWASSER.rohrprofil(
+            rohrprofil = self.model_interlis.rohrprofil(
                 # FIELDS TO MAP TO ABWASSER.rohrprofil
                 # --- baseclass ---
                 # --- sia405_baseclass ---
@@ -303,16 +371,18 @@ class InterlisExporterToIntermediateSchema:
         logger.info("done")
         self.abwasser_session.flush()
 
-        logger.info("Exporting TWW.reach_point -> ABWASSER.haltungspunkt, ABWASSER.metaattribute")
-        query = self.tww_session.query(self.TWW.reach_point)
+    def _export_reach_point(self):
+        query = self.tww_session.query(self.model_tww_od.reach_point)
         if self.filtered:
             query = query.join(
-                self.TWW.reach,
+                self.model_tww_od.reach,
                 or_(
-                    self.TWW.reach_point.obj_id == self.TWW.reach.fk_reach_point_from,
-                    self.TWW.reach_point.obj_id == self.TWW.reach.fk_reach_point_to,
+                    self.model_tww_od.reach_point.obj_id
+                    == self.model_tww_od.reach.fk_reach_point_from,
+                    self.model_tww_od.reach_point.obj_id
+                    == self.model_tww_od.reach.fk_reach_point_to,
                 ),
-            ).filter(self.TWW.wastewater_networkelement.obj_id.in_(self.subset_ids))
+            ).filter(self.model_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids))
         for row in query:
             # AVAILABLE FIELDS IN TWW.reach_point
 
@@ -325,7 +395,7 @@ class InterlisExporterToIntermediateSchema:
             # --- _rel_ ---
             # elevation_accuracy__REL, fk_dataowner__REL, fk_provider__REL, fk_wastewater_networkelement__REL, outlet_shape__REL
 
-            haltungspunkt = self.ABWASSER.haltungspunkt(
+            haltungspunkt = self.model_interlis.haltungspunkt(
                 # FIELDS TO MAP TO ABWASSER.haltungspunkt
                 # --- baseclass ---
                 # --- sia405_baseclass ---
@@ -346,12 +416,12 @@ class InterlisExporterToIntermediateSchema:
         logger.info("done")
         self.abwasser_session.flush()
 
-        logger.info(
-            "Exporting TWW.wastewater_node -> ABWASSER.abwasserknoten, ABWASSER.metaattribute"
-        )
-        query = self.tww_session.query(self.TWW.wastewater_node)
+    def _export_wastewater_node(self):
+        query = self.tww_session.query(self.model_tww_od.wastewater_node)
         if self.filtered:
-            query = query.filter(self.TWW.wastewater_networkelement.obj_id.in_(self.subset_ids))
+            query = query.filter(
+                self.model_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            )
         for row in query:
             # AVAILABLE FIELDS IN TWW.wastewater_node
 
@@ -369,7 +439,7 @@ class InterlisExporterToIntermediateSchema:
             logger.warning(
                 "TWW field wastewater_node.fk_hydr_geometry has no equivalent in the interlis model. It will be ignored."
             )
-            abwasserknoten = self.ABWASSER.abwasserknoten(
+            abwasserknoten = self.model_interlis.abwasserknoten(
                 # FIELDS TO MAP TO ABWASSER.abwasserknoten
                 # --- baseclass ---
                 # --- sia405_baseclass ---
@@ -388,10 +458,12 @@ class InterlisExporterToIntermediateSchema:
         logger.info("done")
         self.abwasser_session.flush()
 
-        logger.info("Exporting TWW.reach -> ABWASSER.haltung, ABWASSER.metaattribute")
-        query = self.tww_session.query(self.TWW.reach)
+    def _export_reach(self):
+        query = self.tww_session.query(self.model_tww_od.reach)
         if self.filtered:
-            query = query.filter(self.TWW.wastewater_networkelement.obj_id.in_(self.subset_ids))
+            query = query.filter(
+                self.model_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            )
         for row in query:
             # AVAILABLE FIELDS IN TWW.reach
 
@@ -410,7 +482,7 @@ class InterlisExporterToIntermediateSchema:
             logger.warning(
                 "TWW field reach.elevation_determination has no equivalent in the interlis model. It will be ignored."
             )
-            haltung = self.ABWASSER.haltung(
+            haltung = self.model_interlis.haltung(
                 # FIELDS TO MAP TO ABWASSER.haltung
                 # --- baseclass ---
                 # --- sia405_baseclass ---
@@ -443,14 +515,12 @@ class InterlisExporterToIntermediateSchema:
         logger.info("done")
         self.abwasser_session.flush()
 
-        logger.info(
-            "Exporting TWW.dryweather_downspout -> ABWASSER.trockenwetterfallrohr, ABWASSER.metaattribute"
-        )
-        query = self.tww_session.query(self.TWW.dryweather_downspout)
+    def _export_dryweather_downspout(self):
+        query = self.tww_session.query(self.model_tww_od.dryweather_downspout)
         if self.filtered:
             query = query.join(
-                self.TWW.wastewater_structure, self.TWW.wastewater_networkelement
-            ).filter(self.TWW.wastewater_networkelement.obj_id.in_(self.subset_ids))
+                self.model_tww_od.wastewater_structure, self.model_tww_od.wastewater_networkelement
+            ).filter(self.model_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids))
         for row in query:
             # AVAILABLE FIELDS IN TWW.dryweather_downspout
 
@@ -466,7 +536,7 @@ class InterlisExporterToIntermediateSchema:
             # --- _rel_ ---
             # fk_dataowner__REL, fk_provider__REL, fk_wastewater_structure__REL, renovation_demand__REL
 
-            trockenwetterfallrohr = self.ABWASSER.trockenwetterfallrohr(
+            trockenwetterfallrohr = self.model_interlis.trockenwetterfallrohr(
                 # FIELDS TO MAP TO ABWASSER.trockenwetterfallrohr
                 # --- baseclass ---
                 # --- sia405_baseclass ---
@@ -482,12 +552,12 @@ class InterlisExporterToIntermediateSchema:
         logger.info("done")
         self.abwasser_session.flush()
 
-        logger.info("Exporting TWW.access_aid -> ABWASSER.einstiegshilfe, ABWASSER.metaattribute")
-        query = self.tww_session.query(self.TWW.access_aid)
+    def _export_access_aid(self):
+        query = self.tww_session.query(self.model_tww_od.access_aid)
         if self.filtered:
             query = query.join(
-                self.TWW.wastewater_structure, self.TWW.wastewater_networkelement
-            ).filter(self.TWW.wastewater_networkelement.obj_id.in_(self.subset_ids))
+                self.model_tww_od.wastewater_structure, self.model_tww_od.wastewater_networkelement
+            ).filter(self.model_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids))
         for row in query:
             # AVAILABLE FIELDS IN TWW.access_aid
 
@@ -503,7 +573,7 @@ class InterlisExporterToIntermediateSchema:
             # --- _rel_ ---
             # fk_dataowner__REL, fk_provider__REL, fk_wastewater_structure__REL, kind__REL, renovation_demand__REL
 
-            einstiegshilfe = self.ABWASSER.einstiegshilfe(
+            einstiegshilfe = self.model_interlis.einstiegshilfe(
                 # FIELDS TO MAP TO ABWASSER.einstiegshilfe
                 # --- baseclass ---
                 # --- sia405_baseclass ---
@@ -519,14 +589,12 @@ class InterlisExporterToIntermediateSchema:
         logger.info("done")
         self.abwasser_session.flush()
 
-        logger.info(
-            "Exporting TWW.dryweather_flume -> ABWASSER.trockenwetterrinne, ABWASSER.metaattribute"
-        )
-        query = self.tww_session.query(self.TWW.dryweather_flume)
+    def _export_dryweather_flume(self):
+        query = self.tww_session.query(self.model_tww_od.dryweather_flume)
         if self.filtered:
             query = query.join(
-                self.TWW.wastewater_structure, self.TWW.wastewater_networkelement
-            ).filter(self.TWW.wastewater_networkelement.obj_id.in_(self.subset_ids))
+                self.model_tww_od.wastewater_structure, self.model_tww_od.wastewater_networkelement
+            ).filter(self.model_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids))
         for row in query:
             # AVAILABLE FIELDS IN TWW.dryweather_flume
 
@@ -542,7 +610,7 @@ class InterlisExporterToIntermediateSchema:
             # --- _rel_ ---
             # fk_dataowner__REL, fk_provider__REL, fk_wastewater_structure__REL, material__REL, renovation_demand__REL
 
-            trockenwetterrinne = self.ABWASSER.trockenwetterrinne(
+            trockenwetterrinne = self.model_interlis.trockenwetterrinne(
                 # FIELDS TO MAP TO ABWASSER.trockenwetterrinne
                 # --- baseclass ---
                 # --- sia405_baseclass ---
@@ -558,12 +626,12 @@ class InterlisExporterToIntermediateSchema:
         logger.info("done")
         self.abwasser_session.flush()
 
-        logger.info("Exporting TWW.cover -> ABWASSER.deckel, ABWASSER.metaattribute")
-        query = self.tww_session.query(self.TWW.cover)
+    def _export_cover(self):
+        query = self.tww_session.query(self.model_tww_od.cover)
         if self.filtered:
             query = query.join(
-                self.TWW.wastewater_structure, self.TWW.wastewater_networkelement
-            ).filter(self.TWW.wastewater_networkelement.obj_id.in_(self.subset_ids))
+                self.model_tww_od.wastewater_structure, self.model_tww_od.wastewater_networkelement
+            ).filter(self.model_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids))
         for row in query:
             # AVAILABLE FIELDS IN TWW.cover
 
@@ -579,7 +647,7 @@ class InterlisExporterToIntermediateSchema:
             # --- _rel_ ---
             # cover_shape__REL, fastening__REL, fk_dataowner__REL, fk_provider__REL, fk_wastewater_structure__REL, material__REL, positional_accuracy__REL, renovation_demand__REL, sludge_bucket__REL, venting__REL
 
-            deckel = self.ABWASSER.deckel(
+            deckel = self.model_interlis.deckel(
                 # FIELDS TO MAP TO ABWASSER.deckel
                 # --- baseclass ---
                 # --- sia405_baseclass ---
@@ -604,12 +672,12 @@ class InterlisExporterToIntermediateSchema:
         logger.info("done")
         self.abwasser_session.flush()
 
-        logger.info("Exporting TWW.benching -> ABWASSER.bankett, ABWASSER.metaattribute")
-        query = self.tww_session.query(self.TWW.benching)
+    def _export_benching(self):
+        query = self.tww_session.query(self.model_tww_od.benching)
         if self.filtered:
             query = query.join(
-                self.TWW.wastewater_structure, self.TWW.wastewater_networkelement
-            ).filter(self.TWW.wastewater_networkelement.obj_id.in_(self.subset_ids))
+                self.model_tww_od.wastewater_structure, self.model_tww_od.wastewater_networkelement
+            ).filter(self.model_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids))
         for row in query:
             # AVAILABLE FIELDS IN TWW.benching
 
@@ -625,7 +693,7 @@ class InterlisExporterToIntermediateSchema:
             # --- _rel_ ---
             # fk_dataowner__REL, fk_provider__REL, fk_wastewater_structure__REL, kind__REL, renovation_demand__REL
 
-            bankett = self.ABWASSER.bankett(
+            bankett = self.model_interlis.bankett(
                 # FIELDS TO MAP TO ABWASSER.bankett
                 # --- baseclass ---
                 # --- sia405_baseclass ---
@@ -641,14 +709,14 @@ class InterlisExporterToIntermediateSchema:
         logger.info("done")
         self.abwasser_session.flush()
 
-        logger.info("Exporting TWW.examination -> ABWASSER.untersuchung, ABWASSER.metaattribute")
-        query = self.tww_session.query(self.TWW.examination)
+    def _export_examination(self):
+        query = self.tww_session.query(self.model_tww_od.examination)
         if self.filtered:
             query = (
-                query.join(self.TWW.re_maintenance_event_wastewater_structure)
-                .join(self.TWW.wastewater_structure)
-                .join(self.TWW.wastewater_networkelement)
-                .filter(self.TWW.wastewater_networkelement.obj_id.in_(self.subset_ids))
+                query.join(self.model_tww_od.re_maintenance_event_wastewater_structure)
+                .join(self.model_tww_od.wastewater_structure)
+                .join(self.model_tww_od.wastewater_networkelement)
+                .filter(self.model_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids))
             )
 
         for row in query:
@@ -667,7 +735,7 @@ class InterlisExporterToIntermediateSchema:
                 "TWW field maintenance_event.active_zone has no equivalent in the interlis model. It will be ignored."
             )
 
-            untersuchung = self.ABWASSER.untersuchung(
+            untersuchung = self.model_interlis.untersuchung(
                 # FIELDS TO MAP TO ABWASSER.untersuchung
                 # --- baseclass ---
                 # --- sia405_baseclass ---
@@ -704,17 +772,15 @@ class InterlisExporterToIntermediateSchema:
         logger.info("done")
         self.abwasser_session.flush()
 
-        logger.info(
-            "Exporting TWW.damage_manhole -> ABWASSER.normschachtschaden, ABWASSER.metaattribute"
-        )
-        query = self.tww_session.query(self.TWW.damage_manhole)
+    def _export_damage_manhole(self):
+        query = self.tww_session.query(self.model_tww_od.damage_manhole)
         if self.filtered:
             query = (
-                query.join(self.TWW.examination)
-                .join(self.TWW.re_maintenance_event_wastewater_structure)
-                .join(self.TWW.wastewater_structure)
-                .join(self.TWW.wastewater_networkelement)
-                .filter(self.TWW.wastewater_networkelement.obj_id.in_(self.subset_ids))
+                query.join(self.model_tww_od.examination)
+                .join(self.model_tww_od.re_maintenance_event_wastewater_structure)
+                .join(self.model_tww_od.wastewater_structure)
+                .join(self.model_tww_od.wastewater_networkelement)
+                .filter(self.model_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids))
             )
         for row in query:
             # AVAILABLE FIELDS IN TWW.damage_manhole
@@ -730,7 +796,7 @@ class InterlisExporterToIntermediateSchema:
             # --- _rel_ ---
             # connection__REL, fk_dataowner__REL, fk_examination__REL, fk_provider__REL, manhole_damage_code__REL, manhole_shaft_area__REL, single_damage_class__REL
 
-            normschachtschaden = self.ABWASSER.normschachtschaden(
+            normschachtschaden = self.model_interlis.normschachtschaden(
                 # FIELDS TO MAP TO ABWASSER.normschachtschaden
                 # --- baseclass ---
                 # --- sia405_baseclass ---
@@ -758,17 +824,15 @@ class InterlisExporterToIntermediateSchema:
         logger.info("done")
         self.abwasser_session.flush()
 
-        logger.info(
-            "Exporting TWW.damage_channel -> ABWASSER.kanalschaden, ABWASSER.metaattribute"
-        )
-        query = self.tww_session.query(self.TWW.damage_channel)
+    def _export_damage_channel(self):
+        query = self.tww_session.query(self.model_tww_od.damage_channel)
         if self.filtered:
             query = (
-                query.join(self.TWW.examination)
-                .join(self.TWW.re_maintenance_event_wastewater_structure)
-                .join(self.TWW.wastewater_structure)
-                .join(self.TWW.wastewater_networkelement)
-                .filter(self.TWW.wastewater_networkelement.obj_id.in_(self.subset_ids))
+                query.join(self.model_tww_od.examination)
+                .join(self.model_tww_od.re_maintenance_event_wastewater_structure)
+                .join(self.model_tww_od.wastewater_structure)
+                .join(self.model_tww_od.wastewater_networkelement)
+                .filter(self.model_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids))
             )
         for row in query:
             # AVAILABLE FIELDS IN TWW.damage_channel
@@ -785,7 +849,7 @@ class InterlisExporterToIntermediateSchema:
             # --- _rel_ ---
             # channel_damage_code__REL, connection__REL, fk_dataowner__REL, fk_examination__REL, fk_provider__REL, single_damage_class__REL
 
-            kanalschaden = self.ABWASSER.kanalschaden(
+            kanalschaden = self.model_interlis.kanalschaden(
                 # FIELDS TO MAP TO ABWASSER.kanalschaden
                 # --- baseclass ---
                 # --- sia405_baseclass ---
@@ -812,8 +876,8 @@ class InterlisExporterToIntermediateSchema:
         logger.info("done")
         self.abwasser_session.flush()
 
-        logger.info("Exporting TWW.data_media -> ABWASSER.datentraeger, ABWASSER.metaattribute")
-        query = self.tww_session.query(self.TWW.data_media)
+    def _export_data_media(self):
+        query = self.tww_session.query(self.model_tww_od.data_media)
         for row in query:
             # AVAILABLE FIELDS IN TWW.data_media
 
@@ -823,7 +887,7 @@ class InterlisExporterToIntermediateSchema:
             # --- _rel_ ---
             # fk_dataowner__REL, fk_provider__REL, kind__REL
 
-            datentraeger = self.ABWASSER.datentraeger(
+            datentraeger = self.model_interlis.datentraeger(
                 # FIELDS TO MAP TO ABWASSER.datentraeger
                 # --- baseclass ---
                 # --- sia405_baseclass ---
@@ -841,22 +905,25 @@ class InterlisExporterToIntermediateSchema:
         logger.info("done")
         self.abwasser_session.flush()
 
-        logger.info("Exporting TWW.file -> ABWASSER.datei, ABWASSER.metaattribute")
-        query = self.tww_session.query(self.TWW.file)
+    def _export_file(self):
+        query = self.tww_session.query(self.model_tww_od.file)
         if self.filtered:
             query = (
-                query.outerjoin(self.TWW.damage, self.TWW.file.object == self.TWW.damage.obj_id)
+                query.outerjoin(
+                    self.model_tww_od.damage,
+                    self.model_tww_od.file.object == self.model_tww_od.damage.obj_id,
+                )
                 .join(
-                    self.TWW.examination,
+                    self.model_tww_od.examination,
                     or_(
-                        self.TWW.file.object == self.TWW.damage.obj_id,
-                        self.TWW.file.object == self.TWW.examination.obj_id,
+                        self.model_tww_od.file.object == self.model_tww_od.damage.obj_id,
+                        self.model_tww_od.file.object == self.model_tww_od.examination.obj_id,
                     ),
                 )
-                .join(self.TWW.re_maintenance_event_wastewater_structure)
-                .join(self.TWW.wastewater_structure)
-                .join(self.TWW.wastewater_networkelement)
-                .filter(self.TWW.wastewater_networkelement.obj_id.in_(self.subset_ids))
+                .join(self.model_tww_od.re_maintenance_event_wastewater_structure)
+                .join(self.model_tww_od.wastewater_structure)
+                .join(self.model_tww_od.wastewater_networkelement)
+                .filter(self.model_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids))
             )
         for row in query:
             # AVAILABLE FIELDS IN TWW.file
@@ -867,7 +934,7 @@ class InterlisExporterToIntermediateSchema:
             # --- _rel_ ---
             # class__REL, fk_dataowner__REL, fk_provider__REL, kind__REL
 
-            datei = self.ABWASSER.datei(
+            datei = self.model_interlis.datei(
                 # FIELDS TO MAP TO ABWASSER.datei
                 # --- baseclass ---
                 # --- sia405_baseclass ---
@@ -897,9 +964,9 @@ class InterlisExporterToIntermediateSchema:
                 "haltung": {},
                 "abwasserbauwerk": {},
             }
-            for row in self.abwasser_session.query(self.ABWASSER.haltung):
+            for row in self.abwasser_session.query(self.model_interlis.haltung):
                 tid_for_obj_id["haltung"][row.obj_id] = row.t_id
-            for row in self.abwasser_session.query(self.ABWASSER.abwasserbauwerk):
+            for row in self.abwasser_session.query(self.model_interlis.abwasserbauwerk):
                 tid_for_obj_id["abwasserbauwerk"][row.obj_id] = row.t_id
 
             with open(self.labels_file) as labels_file_handle:
@@ -917,7 +984,7 @@ class InterlisExporterToIntermediateSchema:
                             f"Label for haltung `{obj_id}` exists, but that object is not part of the export"
                         )
                         continue
-                    ili_label = self.ABWASSER.haltung_text(
+                    ili_label = self.model_interlis.haltung_text(
                         **self.textpos_common(label, "haltung_text", geojson_crs_def),
                         haltungref=tid_for_obj_id["haltung"][obj_id],
                     )
@@ -928,7 +995,7 @@ class InterlisExporterToIntermediateSchema:
                             f"Label for abwasserbauwerk `{obj_id}` exists, but that object is not part of the export"
                         )
                         continue
-                    ili_label = self.ABWASSER.abwasserbauwerk_text(
+                    ili_label = self.model_interlis.abwasserbauwerk_text(
                         **self.textpos_common(label, "abwasserbauwerk_text", geojson_crs_def),
                         abwasserbauwerkref=tid_for_obj_id["abwasserbauwerk"][obj_id],
                     )
@@ -943,10 +1010,6 @@ class InterlisExporterToIntermediateSchema:
                 print(".", end="")
             logger.info("done")
             self.abwasser_session.flush()
-
-        self.abwasser_session.commit()
-
-        self.close_sessions()
 
     def get_tid(self, relation):
         """
@@ -1050,7 +1113,7 @@ class InterlisExporterToIntermediateSchema:
             "betreiberref": self.get_tid(row.fk_operator__REL),
             "bezeichnung": self.null_to_emptystr(row.identifier),
             "bruttokosten": row.gross_costs,
-            "detailgeometrie": ST_Force2D(row.detail_geometry_geometry),
+            "detailgeometrie": ST_Force2D(row.detail_geometry3d_geometry),
             "eigentuemerref": self.get_tid(row.fk_owner__REL),
             "ersatzjahr": row.year_of_replacement,
             "finanzierung": self.get_vl(row.financing__REL),
@@ -1095,7 +1158,6 @@ class InterlisExporterToIntermediateSchema:
             "t_id": t_id,
             "t_type": t_type,
             "t_ili_tid": t_id,
-            "t_basket": 1,
             # --- TextPos ---
             "textpos": ST_GeomFromGeoJSON(
                 json.dumps(
@@ -1115,15 +1177,10 @@ class InterlisExporterToIntermediateSchema:
             "bemerkung": None,
         }
 
-    def create_baskets(self):
-        self.t_ili2db_basket_administration = self.ABWASSER.t_ili2db_basket(
-            t_id=self.tid_maker.next_tid(),
-            topic="SIA405_Base_Abwasser_1_LV95.Administration",
-            attachmentkey="teksi_wastewater",
-        )
-        self.abwasser_session.add(self.t_ili2db_basket_administration)
-        self.abwasser_session.flush()
-
     def close_sessions(self):
         self.tww_session.close()
         self.abwasser_session.close()
+
+    def _check_for_stop(self):
+        if self.callback_progress_done:
+            self.callback_progress_done()

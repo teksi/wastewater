@@ -75,6 +75,7 @@ class reach(wastewater_networkelement):
     __table_args__ = {"schema": SCHEMA}
 
 
+# class structure_part(Base):
 class structure_part(wastewater_structure):
     __tablename__ = "structure_part"
     __table_args__ = {"schema": SCHEMA}
