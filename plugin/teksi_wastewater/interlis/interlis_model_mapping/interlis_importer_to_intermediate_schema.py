@@ -334,8 +334,6 @@ class InterlisImporterToIntermediateSchema:
         }
 
     def _import_organisation(self):
-        _imported_orgs = []
-
         for row in self.session_interlis.query(self.model_interlis.organisation):
             organisation = self.create_or_update(
                 self.model_tww_od.organisation,
@@ -345,16 +343,13 @@ class InterlisImporterToIntermediateSchema:
                 remark=row.bemerkung,
                 uid=row.auid,
                 municipality_number=row.gemeindenummer,
+                organisation_type=self.get_vl_code(
+                    self.model_tww_vl.organisation_organisation_type, row.organisationstyp
+                ),
+                status=self.get_vl_code(self.model_tww_vl.organisation_status, row.astatus),
             )
-            organisation.organisation_type = (
-                self.model_tww_vl.get_organisation_organisation_type_code(row.organisationstyp)
-            )
-            organisation.status = self.model_tww_vl.get_organisation_status_code(row.astatus)
 
             self.session_tww.add(organisation)
-
-            _imported_orgs.append(organisation)
-
             print(".", end="")
 
     def _import_kanal(self):
