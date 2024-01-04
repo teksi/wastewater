@@ -31,7 +31,7 @@ jobs:
           python-version: '3.10'
 
       - name: Install qgis-plugin-ci
-        run: pip install qgis-plugin-ci
+        run: pip install qgis-plugin-ci==2.8.6b0
 
       - name: Package modelbaker
         run: plugin/scripts/package_pip_packages.sh
