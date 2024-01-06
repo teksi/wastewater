@@ -416,9 +416,6 @@ class InterlisImporterToIntermediateSchema:
             # --- baseclass ---
             # t_ili_tid, t_type
 
-            # --- sia405_baseclass ---
-            # obj_id
-
             # --- abwasserbauwerk ---
             # akten, astatus, baujahr, baulicherzustand, baulos, bemerkung, betreiberref, bezeichnung, bruttokosten, detailgeometrie, eigentuemerref, ersatzjahr, finanzierung, inspektionsintervall, sanierungsbedarf, standortname, subventionen, wbw_basisjahr, wbw_bauart, wiederbeschaffungswert, zugaenglichkeit
 
@@ -718,9 +715,6 @@ class InterlisImporterToIntermediateSchema:
 
             # --- baseclass ---
             # t_ili_tid, t_type
-
-            # --- sia405_baseclass ---
-            # obj_id
 
             # --- abwassernetzelement ---
             # abwasserbauwerkref, bemerkung, bezeichnung

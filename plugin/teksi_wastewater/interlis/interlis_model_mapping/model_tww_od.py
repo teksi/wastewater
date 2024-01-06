@@ -55,7 +55,7 @@ class pipe_profile(Base):
     __table_args__ = {"schema": SCHEMA}
 
 
-class wastewater_networkelement(wastewater_structure):
+class wastewater_networkelement(Base):
     __tablename__ = "wastewater_networkelement"
     __table_args__ = {"schema": SCHEMA}
 
