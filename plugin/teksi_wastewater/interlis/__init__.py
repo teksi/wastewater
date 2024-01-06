@@ -126,10 +126,10 @@ def main(args):
         SCHEMA = config.ABWASSER_SCHEMA
         ILI_MODEL = config.ABWASSER_ILI_MODEL
         if args.export_sia405:
-            ILI_MODEL_NAME = config.ABWASSER_ILI_MODEL_NAME_SIA405
-            ILI_EXPORT_MODEL_NAME = config.ABWASSER_ILI_MODEL_NAME_SIA405
+            ILI_MODEL_NAME = config.MODEL_NAME_SIA405_ABWASSER
+            ILI_EXPORT_MODEL_NAME = config.MODEL_NAME_SIA405_ABWASSER
         else:
-            ILI_MODEL_NAME = config.ABWASSER_ILI_MODEL_NAME_KEK
+            ILI_MODEL_NAME = config.MODEL_NAME_VSA_KEK
             ILI_EXPORT_MODEL_NAME = None
 
         if args.direction == "export":

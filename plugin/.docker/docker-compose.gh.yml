@@ -8,8 +8,6 @@ services:
     working_dir: /src
     volumes:
       - ./datamodel:/src
-    ports:
-      - 5432:5432
 
   qgis:
     build:

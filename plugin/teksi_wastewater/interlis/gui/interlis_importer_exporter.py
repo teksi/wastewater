@@ -19,7 +19,7 @@ from ..interlis_model_mapping.interlis_exporter_to_intermediate_schema import (
 from ..interlis_model_mapping.interlis_importer_to_intermediate_schema import (
     InterlisImporterToIntermediateSchema,
 )
-from ..utils.ili2db import TwwIliTools
+from ..utils.ili2db import InterlisTools
 from ..utils.various import (
     CmdException,
     LoggingHandlerContext,
@@ -43,12 +43,14 @@ class InterlisImporterExporterErrorWithLog(Exception):
 
 
 class InterlisImporterExporter(QObject):
+    _PROGRESS_DIALOG_MINIMUM_WIDTH = 350
+
     def __init__(self):
         super().__init__(parent=None)
         self.import_dialog = None
         self.progress_dialog = None
 
-        self.twwIliTools = TwwIliTools()
+        self.interlisTools = InterlisTools()
         self.base_log_path = None
 
     def action_import(self, xtf_file_input=None):
@@ -126,13 +128,21 @@ class InterlisImporterExporter(QObject):
 
         # Validating the input file
         self.progress_dialog = QProgressDialog("", "", 0, 100)
+        self.progress_dialog.setMinimumWidth(self._PROGRESS_DIALOG_MINIMUM_WIDTH)
         self.progress_dialog.setCancelButtonText("Cancel")
         self.progress_dialog.setMinimumDuration(0)
         self.progress_dialog.setWindowTitle("Import Interlis data...")
         self.progress_dialog.setLabelText("Validating the input file...")
         self.progress_dialog.setValue(5)
         QApplication.processEvents()
-        self._action_import_valideate_xtf_file(xtf_file_input)
+        self._import_validate_xtf_file(xtf_file_input)
+        self._check_for_canceled()
+
+        # Get model to import from xtf file
+        self.progress_dialog.setLabelText("Extract model from xtf...")
+        self.progress_dialog.setValue(10)
+        QApplication.processEvents()
+        import_model, _ = self.interlisTools.get_xtf_models(xtf_file_input)
         self._check_for_canceled()
 
         # Prepare the temporary ili2pg model
@@ -144,29 +154,17 @@ class InterlisImporterExporter(QObject):
 
         self.progress_dialog.setValue(25)
         QApplication.processEvents()
-        self._create_ili_schema()
+        self._create_ili_schema([import_model])
         self._check_for_canceled()
 
-        # Export from ili2pg model to file
+        # Import from xtf file to ili2pg model
         self.progress_dialog.setLabelText("Importing XTF data...")
         self.progress_dialog.setValue(50)
         QApplication.processEvents()
-        log_path = make_log_path(self.base_log_path, "ili2pg-import")
-        try:
-            self.twwIliTools.import_xtf_data(
-                config.ABWASSER_SCHEMA,
-                xtf_file_input,
-                log_path,
-            )
-        except CmdException:
-            raise InterlisImporterExporterErrorWithLog(
-                "Could not import data",
-                "Open the logs for more details on the error.",
-                log_path,
-            )
-
+        self._import_xtf_file(xtf_file_input=xtf_file_input)
         self._check_for_canceled()
-        # Export to the temporary ili2pg model
+
+        # Import to the temporary ili2pg model
         self.progress_dialog.setLabelText("Converting to Teksi Wastewater...")
         self.progress_dialog.setValue(75)
         QApplication.processEvents()
@@ -191,10 +189,10 @@ class InterlisImporterExporter(QObject):
         self.import_dialog.resize(iface.mainWindow().size() * 0.75)
         self.import_dialog.show()
 
-    def _action_import_valideate_xtf_file(self, xtf_file_input):
+    def _import_validate_xtf_file(self, xtf_file_input):
         log_path = make_log_path(self.base_log_path, "ilivalidator")
         try:
-            self.twwIliTools.validate_xtf_data(
+            self.interlisTools.validate_xtf_data(
                 xtf_file_input,
                 log_path,
             )
@@ -202,6 +200,21 @@ class InterlisImporterExporter(QObject):
             raise InterlisImporterExporterErrorWithLog(
                 "Invalid file",
                 "The input file is not a valid XTF file. Open the logs for more details on the error.",
+                log_path,
+            )
+
+    def _import_xtf_file(self, xtf_file_input):
+        log_path = make_log_path(self.base_log_path, "ili2pg-import")
+        try:
+            self.interlisTools.import_xtf_data(
+                config.ABWASSER_SCHEMA,
+                xtf_file_input,
+                log_path,
+            )
+        except CmdException:
+            raise InterlisImporterExporterErrorWithLog(
+                "Could not import data",
+                "Open the logs for more details on the error.",
                 log_path,
             )
 
@@ -236,6 +249,7 @@ class InterlisImporterExporter(QObject):
 
         # Prepare the temporary ili2pg model
         self.progress_dialog = QProgressDialog("", "", 0, 100)
+        self.progress_dialog.setMinimumWidth(self._PROGRESS_DIALOG_MINIMUM_WIDTH)
         self.progress_dialog.setCancelButtonText("Cancel")
         self.progress_dialog.setMinimumDuration(0)
         self.progress_dialog.setWindowTitle("Export Interlis data...")
@@ -248,115 +262,46 @@ class InterlisImporterExporter(QObject):
         self.progress_dialog.setLabelText("Creating ili schema...")
         self.progress_dialog.setValue(15)
         QApplication.processEvents()
-        self._create_ili_schema()
+        export_models = export_dialog.selected_models()
+        self._create_ili_schema(export_models)
         self._check_for_canceled()
 
         # Export the labels file
         tempdir = tempfile.TemporaryDirectory()
-        labels_file_path = os.path.join(tempdir.name, "labels.geojson")
-        self.progress_dialog.setValue(25)
-        QApplication.processEvents()
-        self._export_labels_file(export_dialog=export_dialog, labels_file_path=labels_file_path)
-        self._check_for_canceled()
+        labels_file_path = None
+        if len(export_dialog.selected_labels_scales_indices):
+            self.progress_dialog.setValue(25)
+            QApplication.processEvents()
+            labels_file_path = os.path.join(tempdir.name, "labels.geojson")
+            self._export_labels_file(
+                export_dialog=export_dialog, labels_file_path=labels_file_path
+            )
+            self._check_for_canceled()
 
         # Export to the temporary ili2pg model
         self.progress_dialog.setLabelText("Converting from Teksi Wastewater...")
         self.progress_dialog.setValue(35)
         QApplication.processEvents()
-
-        log_handler = logging.FileHandler(
-            make_log_path(file_name, "tww2ili-export"), mode="w", encoding="utf-8"
+        self._export_to_intermediate_schema(
+            file_name=file_name,
+            selected_ids=export_dialog.selected_ids,
+            labels_file_path=labels_file_path,
         )
-        log_handler.setLevel(logging.INFO)
-        log_handler.setFormatter(logging.Formatter("%(levelname)-8s %(message)s"))
-
-        twwInterlisExporter = InterlisExporterToIntermediateSchema(
-            selection=export_dialog.selected_ids,
-            labels_file=labels_file_path,
-            callback_progress_done=self._progress_done,
-        )
-
-        with LoggingHandlerContext(log_handler):
-            twwInterlisExporter.tww_export()
-
+        tempdir.cleanup()  # Cleanup
         self._check_for_canceled()
-        self.progress_dialog.setValue(50)
+
+        self.progress_dialog.setValue(60)
         QApplication.processEvents()
-
-        # Cleanup
-        tempdir.cleanup()
-
-        xtf_export_errors = []
-        for model_name, export_model_name, progress in [
-            # (config.ABWASSER_ILI_MODEL_NAME_KEK, None, 50),
-            (config.ABWASSER_ILI_MODEL_NAME_DSS, config.ABWASSER_ILI_MODEL_NAME_DSS, 70),
-        ]:
-            export_file_name = f"{file_name_base}_{model_name}.xtf"
-
-            # Export from ili2pg model to file
-            self.progress_dialog.setLabelText(f"Saving XTF file [{model_name}]...")
-            QApplication.processEvents()
-            log_path = make_log_path(self.base_log_path, f"ili2pg-export-{model_name}")
-            try:
-                self.twwIliTools.export_xtf_data(
-                    schema=config.ABWASSER_SCHEMA,
-                    xtf_file=export_file_name,
-                    log_path=log_path,
-                    model_name=model_name,
-                    export_model_name=export_model_name,
-                )
-            except CmdException:
-                xtf_export_errors.append(
-                    InterlisImporterExporterErrorWithLog(
-                        error=f"Could not export the model {model_name} from ili2pg schema",
-                        additional_text="Open the logs for more details on the error.",
-                        log_path=log_path,
-                    )
-                )
-                continue
-
-            self._check_for_canceled()
-            self.progress_dialog.setLabelText(
-                f"Validating the network output file [{model_name}]..."
-            )
-            self.progress_dialog.setValue(progress + 10)
-            QApplication.processEvents()
-
-            log_path = make_log_path(self.base_log_path, f"ilivalidator-{model_name}")
-            try:
-                self.twwIliTools.validate_xtf_data(
-                    export_file_name,
-                    log_path,
-                )
-            except CmdException:
-                xtf_export_errors.append(
-                    InterlisImporterExporterErrorWithLog(
-                        error=f"Validation of exported file '{export_file_name}' failed",
-                        additional_text=f"The created file is not a valid {model_name} XTF file.",
-                        log_path=log_path,
-                    )
-                )
-                continue
-
-            self._check_for_canceled()
-            self.progress_dialog.setValue(progress + 20)
-            QApplication.processEvents()
+        self._export_xtf_files(file_name_base, export_models)
 
         self.progress_dialog.setValue(self.progress_dialog.maximum())
-
-        if xtf_export_errors:
-            raise xtf_export_errors[0]
-
         self.show_success(
             "Success",
             f"Data successfully exported to {file_name_base}",
-            os.path.dirname(log_path),
+            None,
         )
 
     def _export_labels_file(self, export_dialog, labels_file_path):
-        if not len(export_dialog.selected_labels_scales_indices):
-            return
-
         self.progress_dialog.setLabelText("Extracting labels...")
         QApplication.processEvents()
 
@@ -382,6 +327,84 @@ class InterlisImporterExporter(QObject):
                 "SCALES": export_dialog.selected_labels_scales_indices,
             },
         )
+
+    def _export_to_intermediate_schema(self, file_name, selected_ids, labels_file_path):
+        log_handler = logging.FileHandler(
+            make_log_path(file_name, "tww2ili-export"), mode="w", encoding="utf-8"
+        )
+        log_handler.setLevel(logging.INFO)
+        log_handler.setFormatter(logging.Formatter("%(levelname)-8s %(message)s"))
+
+        twwInterlisExporter = InterlisExporterToIntermediateSchema(
+            selection=selected_ids,
+            labels_file=labels_file_path,
+            callback_progress_done=self._progress_done,
+        )
+
+        with LoggingHandlerContext(log_handler):
+            twwInterlisExporter.tww_export()
+
+    def _export_xtf_files(self, file_name_base, export_models):
+        progress_step = (self.progress_dialog.maximum() - self.progress_dialog.value()) / (
+            2 * len(export_models)
+        )
+        progress_step = int(progress_step)
+
+        xtf_export_errors = []
+        for index, export_model_name in enumerate(export_models):
+            export_file_name = f"{file_name_base}_{export_model_name}.xtf"
+
+            # Export from ili2pg model to file
+            self.progress_dialog.setLabelText(f"Saving XTF for '{export_model_name}'...")
+            QApplication.processEvents()
+
+            log_path = make_log_path(self.base_log_path, f"ili2pg-export-{export_model_name}")
+            try:
+                self.interlisTools.export_xtf_data(
+                    schema=config.ABWASSER_SCHEMA,
+                    xtf_file=export_file_name,
+                    log_path=log_path,
+                    model_name=export_model_name,
+                    export_model_name=export_model_name,
+                )
+            except CmdException:
+                xtf_export_errors.append(
+                    InterlisImporterExporterErrorWithLog(
+                        error=f"Could not export the model '{export_model_name}' from ili2pg schema",
+                        additional_text="Open the logs for more details on the error.",
+                        log_path=log_path,
+                    )
+                )
+                continue
+
+            self._check_for_canceled()
+            self.progress_dialog.setLabelText(f"Validating XTF for '{export_model_name}'...")
+            self.progress_dialog.setValue(self.progress_dialog.value() + progress_step)
+            QApplication.processEvents()
+
+            log_path = make_log_path(self.base_log_path, f"ilivalidator-{export_model_name}")
+            try:
+                self.interlisTools.validate_xtf_data(
+                    export_file_name,
+                    log_path,
+                )
+            except CmdException:
+                xtf_export_errors.append(
+                    InterlisImporterExporterErrorWithLog(
+                        error=f"Validation of exported file '{export_file_name}' failed",
+                        additional_text=f"The created file is not a valid {export_model_name} XTF file.",
+                        log_path=log_path,
+                    )
+                )
+                continue
+
+            self._check_for_canceled()
+            self.progress_dialog.setValue(self.progress_dialog.value() + progress_step)
+            QApplication.processEvents()
+
+        # In case some export had an error raise the first one
+        if xtf_export_errors:
+            raise xtf_export_errors[0]
 
     def _clear_ili_schema(self, recreate_schema=False):
         logger.info("CONNECTING TO DATABASE...")
@@ -413,16 +436,12 @@ class InterlisImporterExporter(QObject):
         connection.commit()
         connection.close()
 
-    def _create_ili_schema(self):
+    def _create_ili_schema(self, models):
         log_path = make_log_path(self.base_log_path, "ili2pg-schemaimport")
         try:
-            self.twwIliTools.import_ili_schema(
+            self.interlisTools.import_ili_schema(
                 config.ABWASSER_SCHEMA,
-                [
-                    # config.ABWASSER_ILI_MODEL_NAME_KEK,
-                    config.ABWASSER_ILI_MODEL_NAME_SIA405,
-                    config.ABWASSER_ILI_MODEL_NAME_DSS,
-                ],
+                models,
                 log_path,
             )
         except CmdException:

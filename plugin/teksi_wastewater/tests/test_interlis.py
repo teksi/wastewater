@@ -6,6 +6,7 @@ from qgis.testing import start_app, unittest
 
 from ..interlis import config
 from ..interlis.gui.interlis_importer_exporter import InterlisImporterExporter
+from ..interlis.utils.ili2db import InterlisTools
 
 # Display logging in unittest output
 logger = logging.getLogger()
@@ -18,28 +19,13 @@ logger.addHandler(handler)
 start_app()
 
 
-def findall_in_xml_kek_2019(root, tag, basket="VSA_KEK_2019_LV95.KEK"):
-    ns = {"ili": "http://www.interlis.ch/INTERLIS2.3"}
-    return root.findall(f"ili:DATASECTION/ili:{basket}/ili:{tag}", ns)
-
-
-def findall_in_xml_sia_abwasser_2015(
-    root, tag, basket="SIA405_ABWASSER_2015_LV95.SIA405_Abwasser"
-):
-    ns = {"ili": "http://www.interlis.ch/INTERLIS2.3"}
-    return root.findall(f"ili:DATASECTION/ili:{basket}/ili:{tag}", ns)
-
-
 class TestInterlis(unittest.TestCase):
+    @unittest.skip("Fix connection to DB container")
     def test_import_demo_organisations(self):
         config.PGHOST = "db"
         config.PGDATABASE = "teksi_wastewater"
         config.PGUSER = "postgres"
         config.PGPASS = "postgres"
-
-        interlisImporterExporter = InterlisImporterExporter()
-
-        os.path.abspath(os.path.dirname(__file__))
 
         xtf_file_input = os.path.join(
             os.path.dirname(__file__),
@@ -47,4 +33,17 @@ class TestInterlis(unittest.TestCase):
             "vsa_2020_1_organisationen_testdatensatz.xtf",
         )
 
+        interlisImporterExporter = InterlisImporterExporter()
         interlisImporterExporter.action_import(xtf_file_input=xtf_file_input)
+
+    def test_get_xtf_models(self):
+        xtf_file_input = os.path.join(
+            os.path.dirname(__file__),
+            "data",
+            "vsa_2020_1_organisationen_testdatensatz.xtf",
+        )
+
+        import_model, models = InterlisTools.get_xtf_models(xtf_file=xtf_file_input)
+
+        self.assertEqual(import_model, config.MODEL_NAME_SIA405_ABWASSER)
+        self.assertIn(config.MODEL_NAME_SIA405_BASE_ABWASSER, models)

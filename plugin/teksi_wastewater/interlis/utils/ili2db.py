@@ -1,4 +1,6 @@
 import collections
+import re
+import xml.etree.ElementTree as ET
 from types import SimpleNamespace
 
 from sqlalchemy.ext.automap import AutomapBase
@@ -12,7 +14,7 @@ class InterlisToolsException(Exception):
     pass
 
 
-class TwwIliTools:
+class InterlisTools:
     def __init__(self):
         self.java_executable_path = ili2dbutils.get_java_path(ili2dbconfig.BaseConfiguration())
 
@@ -123,6 +125,47 @@ class TwwIliTools:
                 ]
             )
         )
+
+    @staticmethod
+    def get_xtf_models(xtf_file):
+        logger.info(f"GET XTF MODELS from {xtf_file}...")
+
+        # from xml file
+        tree = ET.parse(xtf_file)
+        root = tree.getroot()
+
+        def get_namespace(element):
+            m = re.match(r"\{.*\}", element.tag)
+            return m.group(0) if m else ""
+
+        namespace = get_namespace(root)
+
+        model_elements = root.findall("./{0}HEADERSECTION/{0}MODELS/{0}MODEL".format(namespace))
+
+        if not model_elements:
+            raise InterlisToolsException(f"Couldn't find any model into '{xtf_file}'")
+
+        models = []
+        for model_element in model_elements:
+            models.append(model_element.attrib.get("NAME", None))
+
+        if config.MODEL_NAME_VSA_KEK in models:
+            import_model = config.MODEL_NAME_VSA_KEK
+
+        elif config.MODEL_NAME_SIA405_ABWASSER in models:
+            import_model = config.MODEL_NAME_SIA405_ABWASSER
+
+        elif config.MODEL_NAME_DSS in models:
+            import_model = config.MODEL_NAME_DSS
+
+        elif config.MODEL_NAME_SIA405_BASE_ABWASSER in models:
+            import_model = config.MODEL_NAME_SIA405_ABWASSER
+
+        else:
+            raise InterlisToolsException(f"No supported model was found among '{models}'")
+
+        logger.info(f"Model '{import_model}' was choosen for import among found models '{models}'")
+        return import_model, models
 
 
 class TidMaker:

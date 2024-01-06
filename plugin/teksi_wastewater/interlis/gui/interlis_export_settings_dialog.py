@@ -6,6 +6,7 @@ from qgis.PyQt.QtWidgets import QCheckBox, QDialog
 from qgis.PyQt.uic import loadUi
 
 from ...utils.twwlayermanager import TwwLayerManager
+from .. import config
 from ..processing_algs.extractlabels_interlis import ExtractlabelsInterlisAlgorithm
 
 
@@ -15,6 +16,18 @@ class InterlisExportSettingsDialog(QDialog):
         loadUi(os.path.join(os.path.dirname(__file__), "interlis_export_settings_dialog.ui"), self)
 
         self.finished.connect(self.on_finish)
+
+        # Fill models selection combobox
+        self.export_model_selection_comboBox.addItem(
+            config.MODEL_NAME_DSS, [config.MODEL_NAME_DSS]
+        )
+        self.export_model_selection_comboBox.addItem(
+            config.MODEL_NAME_SIA405_ABWASSER, [config.MODEL_NAME_SIA405_ABWASSER]
+        )
+        self.export_model_selection_comboBox.addItem(
+            config.MODEL_NAME_VSA_KEK,
+            [config.MODEL_NAME_VSA_KEK, config.MODEL_NAME_SIA405_ABWASSER],
+        )
 
         structures_layer = TwwLayerManager.layer("vw_tww_wastewater_structure")
         reaches_layer = TwwLayerManager.layer("vw_tww_reach")
@@ -87,3 +100,6 @@ class InterlisExportSettingsDialog(QDialog):
             return scales
         else:
             return []
+
+    def selected_models(self):
+        return self.export_model_selection_comboBox.currentData()

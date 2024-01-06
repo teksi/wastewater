@@ -99,39 +99,36 @@ class InterlisImportSelectionDialog(QDialog):
             else:
                 self.session.expunge(obj)
 
-        # For now we remove per class checkboxes
+        checked_state = item.checkState(0)
+        if checked_state == Qt.PartiallyChecked:
+            return
 
-        # checked_state = item.checkState(0)
+        # propagate to children
+        for child in [item.child(i) for i in range(item.childCount())]:
+            child.setCheckState(0, checked_state)
 
-        # if checked_state == Qt.PartiallyChecked:
-        #     return
+        # propagate to parent
+        parent = item.parent()
+        if parent:
+            has_checked = False
+            has_unchecked = False
+            for sibling in [parent.child(i) for i in range(parent.childCount())]:
+                if sibling.checkState(0) == Qt.Checked:
+                    has_checked = True
+                if sibling.checkState(0) == Qt.Unchecked:
+                    has_unchecked = True
+                if has_checked and has_unchecked:
+                    break
 
-        # # propagate to children
-        # for child in [item.child(i) for i in range(item.childCount())]:
-        #     child.setCheckState(0, checked_state)
-
-        # # propagate to parent
-        # parent = item.parent()
-        # if parent:
-        #     has_checked = False
-        #     has_unchecked = False
-        #     for sibling in [parent.child(i) for i in range(parent.childCount())]:
-        #         if sibling.checkState(0) == Qt.Checked:
-        #             has_checked = True
-        #         if sibling.checkState(0) == Qt.Unchecked:
-        #             has_unchecked = True
-        #         if has_checked and has_unchecked:
-        #             break
-
-        #     if has_checked and has_unchecked:
-        #         parent.setCheckState(0, Qt.PartiallyChecked)
-        #     elif has_checked:
-        #         parent.setCheckState(0, Qt.Checked)
-        #     elif has_unchecked:
-        #         parent.setCheckState(0, Qt.Unchecked)
-        #     else:
-        #         # no children at all !!
-        #         parent.setCheckState(0, Qt.PartiallyChecked)
+            if has_checked and has_unchecked:
+                parent.setCheckState(0, Qt.PartiallyChecked)
+            elif has_checked:
+                parent.setCheckState(0, Qt.Checked)
+            elif has_unchecked:
+                parent.setCheckState(0, Qt.Unchecked)
+            else:
+                # no children at all !!
+                parent.setCheckState(0, Qt.PartiallyChecked)
 
     def current_item_changed(self, current_item, previous_item):
         """
