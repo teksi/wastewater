@@ -11,6 +11,7 @@ from qgis.utils import iface
 from sqlalchemy import inspect
 from sqlalchemy.orm import Session
 
+from ...utils.qt_utils import OverrideCursor
 from .editors.base import Editor
 
 # Required for loadUi to find the custom widget
@@ -202,13 +203,15 @@ class InterlisImportSelectionDialog(QDialog):
         # TODO : rollback to pre-commit state, allowing user to try to fix issues
         # probably a matter of creating a savepoint before saving with
         # session.begin_nested() and one additionnal self.session.commit()
-        self.session.commit()
-        self.session.close()
+        with OverrideCursor(Qt.WaitCursor):
+            self.session.commit()
+            self.session.close()
         iface.messageBar().pushMessage("Sucess", "Data successfully imported", level=Qgis.Success)
 
     def rollback_session(self):
-        self.session.rollback()
-        self.session.close()
+        with OverrideCursor(Qt.WaitCursor):
+            self.session.rollback()
+            self.session.close()
         iface.messageBar().pushMessage("Error", "Import was canceled", level=Qgis.Warning)
 
     def get_obj_from_listitem(self, listitem):
