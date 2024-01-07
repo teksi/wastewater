@@ -6,8 +6,8 @@ from sqlalchemy.orm import Session
 
 from .. import utils
 from ..utils.various import logger
-from .model_abwasser import get_abwasser_model
-from .model_tww_od import get_tww_od_model
+from .model_interlis_sia405_abwasser import ModelInterlisSia405Abwasser
+from .model_tww_od import ModelTwwOd
 
 
 class InterlisExporterToIntermediateSchema:
@@ -26,10 +26,10 @@ class InterlisExporterToIntermediateSchema:
 
         self.labels_file = labels_file
 
-        self.model_tww_od = get_tww_od_model()
+        self.model_tww_od = ModelTwwOd.classes()
         self._check_for_stop()
 
-        self.model_interlis = get_abwasser_model()
+        self.model_interlis = ModelInterlisSia405Abwasser.classes()
         self._check_for_stop()
 
         # Logging disabled (very slow)

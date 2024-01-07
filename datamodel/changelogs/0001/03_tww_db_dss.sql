@@ -3139,7 +3139,7 @@ ALTER TABLE tww_vl.waste_water_treatment_plant_operator_type ADD CONSTRAINT pkey
 ALTER TABLE tww_od.wastewater_structure ADD COLUMN fk_owner varchar(16);
 ALTER TABLE tww_od.wastewater_structure ADD CONSTRAINT rel_wastewater_structure_owner FOREIGN KEY (fk_owner) REFERENCES tww_od.organisation(obj_id) ON UPDATE CASCADE ON DELETE set null DEFERRABLE;
 ALTER TABLE tww_od.wastewater_structure ADD COLUMN fk_operator varchar(16);
-ALTER TABLE tww_od.wastewater_structure ADD CONSTRAINT rel_wastewater_structure_operator FOREIGN KEY (fk_operator) REFERENCES tww_od.organisation(obj_id) ON UPDATE CASCADE ON DELETE set null;
+ALTER TABLE tww_od.wastewater_structure ADD CONSTRAINT rel_wastewater_structure_operator FOREIGN KEY (fk_operator) REFERENCES tww_od.organisation(obj_id) ON UPDATE CASCADE ON DELETE set null DEFERRABLE;
 ALTER TABLE tww_od.wastewater_structure ADD COLUMN fk_main_cover varchar(16);
 ALTER TABLE tww_od.wastewater_structure ADD CONSTRAINT rel_wastewater_structure_main_cover FOREIGN KEY (fk_main_cover) REFERENCES tww_od.cover(obj_id) ON UPDATE CASCADE ON DELETE set null;
 CREATE TABLE tww_vl.wastewater_structure_accessibility () INHERITS (tww_vl.value_list_base);

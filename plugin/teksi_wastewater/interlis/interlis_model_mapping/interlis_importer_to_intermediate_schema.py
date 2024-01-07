@@ -5,24 +5,31 @@ from sqlalchemy.orm import Session
 from sqlalchemy.orm.attributes import flag_dirty
 from sqlalchemy.sql import text
 
-from .. import utils
+from .. import config, utils
 from ..utils.various import logger
-from .model_abwasser import get_abwasser_model
-from .model_tww_od import get_tww_od_model
+from .model_interlis_dss import ModelInterlisDss
+from .model_interlis_sia405_abwasser import ModelInterlisSia405Abwasser
+from .model_tww_od import ModelTwwOd
 from .model_tww_vl import ModelTwwVl
 
 
 class InterlisImporterToIntermediateSchema:
-    def __init__(self, callback_progress_done=None):
+    def __init__(self, model, callback_progress_done=None):
+        self.model = model
         self.callback_progress_done = callback_progress_done
 
-        self.model_classes_interlis = get_abwasser_model()
+        ModelInterlis = ModelInterlisSia405Abwasser
+        if self.model == config.MODEL_NAME_DSS:
+            ModelInterlis = ModelInterlisDss
+        elif self.model == config.MODEL_NAME_VSA_KEK:
+            pass  # TODO implement KEK
+        self.model_classes_interlis = ModelInterlis().classes()
         self._check_for_stop()
 
-        self.model_classes_tww_od = get_tww_od_model()
+        self.model_classes_tww_od = ModelTwwOd().classes()
         self._check_for_stop()
 
-        self.model_classes_tww_vl = ModelTwwVl.classes()
+        self.model_classes_tww_vl = ModelTwwVl().classes()
         self._check_for_stop()
 
         self.session_interlis = None
@@ -73,6 +80,17 @@ class InterlisImporterToIntermediateSchema:
         # Allow to insert rows with cyclic dependencies at once
         self.session_tww.execute(text("SET CONSTRAINTS ALL DEFERRED;"))
 
+        self._import_sia_405_abwasser()
+
+        if self.model == config.MODEL_NAME_DSS:
+            self._import_dss()
+
+        if self.model == config.MODEL_NAME_VSA_KEK:
+            self._import_vsa_kek()
+
+        self.close_sessions(skip_closing_tww_session=skip_closing_tww_session)
+
+    def _import_sia_405_abwasser(self):
         logger.info("Importing ABWASSER.organisation -> TWW.organisation")
         self._import_organisation()
         logger.info("Done")
@@ -100,11 +118,6 @@ class InterlisImporterToIntermediateSchema:
 
         logger.info("Importing ABWASSER.versickerungsanlage -> TWW.infiltration_installation")
         self._import_versickerungsanlage()
-        logger.info("Done")
-        self._check_for_stop()
-
-        logger.info("Importing ABWASSER.arabauwerk -> TWW.wwtp_structure")
-        self._import_arabauwerk()
         logger.info("Done")
         self._check_for_stop()
 
@@ -153,6 +166,14 @@ class InterlisImporterToIntermediateSchema:
         logger.info("Done")
         self._check_for_stop()
 
+    def _import_dss(self):
+        logger.info("Importing ABWASSER.arabauwerk -> TWW.wwtp_structure")
+        self._import_arabauwerk()
+        logger.info("Done")
+        self._check_for_stop()
+
+    def _import_vsa_kek(self):
+        pass
         # VSA_KEK classes
         # logger.info("Importing ABWASSER.untersuchung -> TWW.examination")
         # self._import_untersuchung()
@@ -177,8 +198,6 @@ class InterlisImporterToIntermediateSchema:
         # logger.info("Importing ABWASSER.datei -> TWW.file")
         # self._import_datei()
         # logger.info("Done")
-
-        self.close_sessions(skip_closing_tww_session=skip_closing_tww_session)
 
     def close_sessions(self, skip_closing_tww_session=False):
         # Calling the precommit callback if provided, allowing to filter before final import

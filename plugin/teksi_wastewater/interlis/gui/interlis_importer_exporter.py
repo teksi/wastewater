@@ -170,7 +170,7 @@ class InterlisImporterExporter(QObject):
         QApplication.processEvents()
 
         interlisImporterToIntermediateSchema = InterlisImporterToIntermediateSchema(
-            callback_progress_done=self._progress_done
+            model=import_model, callback_progress_done=self._progress_done
         )
 
         log_handler = logging.FileHandler(
