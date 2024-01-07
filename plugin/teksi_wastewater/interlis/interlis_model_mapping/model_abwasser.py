@@ -58,6 +58,11 @@ class versickerungsanlage(abwasserbauwerk):
     __table_args__ = {"schema": SCHEMA}
 
 
+class arabauwerk(abwasserbauwerk):
+    __tablename__ = "arabauwerk"
+    __table_args__ = {"schema": SCHEMA}
+
+
 class rohrprofil(vsa_baseclass):
     __tablename__ = "rohrprofil"
     __table_args__ = {"schema": SCHEMA}

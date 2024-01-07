@@ -103,13 +103,13 @@ class InterlisImporterToIntermediateSchema:
         logger.info("Done")
         self._check_for_stop()
 
-        logger.info("Importing ABWASSER.rohrprofil -> TWW.pipe_profile")
-        self._import_rohrprofil()
+        logger.info("Importing ABWASSER.arabauwerk -> TWW.wwtp_structure")
+        self._import_arabauwerk()
         logger.info("Done")
         self._check_for_stop()
 
-        logger.info("Importing ABWASSER.haltungspunkt -> TWW.reach_point")
-        self._import_haltungspunkt()
+        logger.info("Importing ABWASSER.rohrprofil -> TWW.pipe_profile")
+        self._import_rohrprofil()
         logger.info("Done")
         self._check_for_stop()
 
@@ -120,6 +120,11 @@ class InterlisImporterToIntermediateSchema:
 
         logger.info("Importing ABWASSER.haltung -> TWW.reach")
         self._import_haltung()
+        logger.info("Done")
+        self._check_for_stop()
+
+        logger.info("Importing ABWASSER.haltungspunkt -> TWW.reach_point")
+        self._import_haltungspunkt()
         logger.info("Done")
         self._check_for_stop()
 
@@ -620,6 +625,20 @@ class InterlisImporterToIntermediateSchema:
                 ),
             )
             self.session_tww.add(infiltration_installation)
+            print(".", end="")
+
+    def _import_arabauwerk(self):
+        for row in self.session_interlis.query(self.model_interlis.arabauwerk):
+            wwtp_structure = self.create_or_update(
+                self.model_tww_od.wwtp_structure,
+                **self.base_common(row),
+                # --- wastewater_structure ---
+                **self.wastewater_structure_common(row),
+                # --- wwtp_structure ---
+                kind=self.get_vl_code(self.model_tww_od.wwtp_structure_kind, row.art),
+                # fk_waste_water_treatment_plant=self.get_pk(row.abwasserreinigungsanlageref__REL), TODO
+            )
+            self.session_tww.add(wwtp_structure)
             print(".", end="")
 
     def _import_rohrprofil(self):

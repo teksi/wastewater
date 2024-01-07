@@ -60,7 +60,7 @@ class wastewater_networkelement(Base):
     __table_args__ = {"schema": SCHEMA}
 
 
-class reach_point(wastewater_networkelement):
+class reach_point(Base):
     __tablename__ = "reach_point"
     __table_args__ = {"schema": SCHEMA}
 
@@ -103,6 +103,11 @@ class cover(structure_part):
 
 class benching(structure_part):
     __tablename__ = "benching"
+    __table_args__ = {"schema": SCHEMA}
+
+
+class wwtp_structure(wastewater_structure):
+    __tablename__ = "wwtp_structure"
     __table_args__ = {"schema": SCHEMA}
 
 
