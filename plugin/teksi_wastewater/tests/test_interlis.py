@@ -19,14 +19,16 @@ logger.addHandler(handler)
 
 start_app()
 
+PG_PORT = os.getenv("TWW_PG_PORT", 5432)
+
 
 class TestInterlis(unittest.TestCase):
-    @unittest.skip("Fix connection to DB container")
     def test_import_demo_organisations(self):
         config.PGHOST = "db"
         config.PGDATABASE = "teksi_wastewater"
         config.PGUSER = "postgres"
         config.PGPASS = "postgres"
+        config.PGPORT = str(PG_PORT)
 
         xtf_file_input = os.path.join(
             os.path.dirname(__file__),
