@@ -19,6 +19,12 @@ from ..interlis_model_mapping.interlis_exporter_to_intermediate_schema import (
 from ..interlis_model_mapping.interlis_importer_to_intermediate_schema import (
     InterlisImporterToIntermediateSchema,
 )
+from ..interlis_model_mapping.model_interlis_dss import ModelInterlisDss
+from ..interlis_model_mapping.model_interlis_sia405_abwasser import (
+    ModelInterlisSia405Abwasser,
+)
+from ..interlis_model_mapping.model_tww_od import ModelTwwOd
+from ..interlis_model_mapping.model_tww_vl import ModelTwwVl
 from ..utils.ili2db import InterlisTools
 from ..utils.various import (
     CmdException,
@@ -52,6 +58,10 @@ class InterlisImporterExporter(QObject):
 
         self.interlisTools = InterlisTools()
         self.base_log_path = None
+
+        self.model_classes_interlis = None
+        self.model_classes_tww_od = None
+        self.model_classes_tww_vl = None
 
     def action_import(self, xtf_file_input=None):
         """
@@ -157,6 +167,12 @@ class InterlisImporterExporter(QObject):
         self._create_ili_schema([import_model])
         self._check_for_canceled()
 
+        # # Partially export organisations to intermediate schema
+        # self.progress_dialog.setValue(35)
+        # QApplication.processEvents()
+        # self._export_to_intermediate_schema(import_model, organisations_only=True)
+        # self._check_for_canceled()
+
         # Import from xtf file to ili2pg model
         self.progress_dialog.setLabelText("Importing XTF data...")
         self.progress_dialog.setValue(50)
@@ -164,28 +180,17 @@ class InterlisImporterExporter(QObject):
         self._import_xtf_file(xtf_file_input=xtf_file_input)
         self._check_for_canceled()
 
-        # Import to the temporary ili2pg model
+        # Import from the temporary ili2pg model
         self.progress_dialog.setLabelText("Converting to Teksi Wastewater...")
         self.progress_dialog.setValue(75)
         QApplication.processEvents()
-
-        interlisImporterToIntermediateSchema = InterlisImporterToIntermediateSchema(
-            model=import_model, callback_progress_done=self._progress_done
-        )
-
-        log_handler = logging.FileHandler(
-            make_log_path(self.base_log_path, "tww2ili-import"), mode="w", encoding="utf-8"
-        )
-        log_handler.setLevel(logging.INFO)
-        log_handler.setFormatter(logging.Formatter("%(levelname)-8s %(message)s"))
-
-        with LoggingHandlerContext(log_handler):
-            interlisImporterToIntermediateSchema.tww_import(skip_closing_tww_session=True)
+        tww_session = self._import_from_intermediate_schema(import_model)
+        self._check_for_canceled()
 
         self.progress_dialog.setValue(self.progress_dialog.maximum())
 
         self.import_dialog = InterlisImportSelectionDialog()
-        self.import_dialog.init_with_session(interlisImporterToIntermediateSchema.session_tww)
+        self.import_dialog.init_with_session(tww_session)
         self.import_dialog.resize(iface.mainWindow().size() * 0.75)
         self.import_dialog.show()
 
@@ -217,6 +222,28 @@ class InterlisImporterExporter(QObject):
                 "Open the logs for more details on the error.",
                 log_path,
             )
+
+    def _import_from_intermediate_schema(self, import_model):
+        log_handler = logging.FileHandler(
+            make_log_path(self.base_log_path, "tww2ili-import"), mode="w", encoding="utf-8"
+        )
+        log_handler.setLevel(logging.INFO)
+        log_handler.setFormatter(logging.Formatter("%(levelname)-8s %(message)s"))
+
+        self._init_model_classes(import_model)
+
+        interlisImporterToIntermediateSchema = InterlisImporterToIntermediateSchema(
+            model=import_model,
+            model_classes_interlis=self.model_classes_interlis,
+            model_classes_tww_od=self.model_classes_tww_od,
+            model_classes_tww_vl=self.model_classes_tww_vl,
+            callback_progress_done=self._progress_done,
+        )
+
+        with LoggingHandlerContext(log_handler):
+            interlisImporterToIntermediateSchema.tww_import(skip_closing_tww_session=True)
+
+        return interlisImporterToIntermediateSchema.session_tww
 
     def _action_export(self):
         export_dialog = InterlisExportSettingsDialog(None)
@@ -283,6 +310,7 @@ class InterlisImporterExporter(QObject):
         self.progress_dialog.setValue(35)
         QApplication.processEvents()
         self._export_to_intermediate_schema(
+            export_model=export_dialog.selected_model(),
             file_name=file_name,
             selected_ids=export_dialog.selected_ids,
             labels_file_path=labels_file_path,
@@ -328,21 +356,34 @@ class InterlisImporterExporter(QObject):
             },
         )
 
-    def _export_to_intermediate_schema(self, file_name, selected_ids, labels_file_path):
+    def _export_to_intermediate_schema(
+        self,
+        export_model,
+        file_name=None,
+        selected_ids=None,
+        labels_file_path=None,
+        organisations_only=False,
+    ):
         log_handler = logging.FileHandler(
             make_log_path(file_name, "tww2ili-export"), mode="w", encoding="utf-8"
         )
         log_handler.setLevel(logging.INFO)
         log_handler.setFormatter(logging.Formatter("%(levelname)-8s %(message)s"))
 
+        self._init_model_classes(export_model)
+
         twwInterlisExporter = InterlisExporterToIntermediateSchema(
+            model=export_model,
+            model_classes_interlis=self.model_classes_interlis,
+            model_classes_tww_od=self.model_classes_tww_od,
+            model_classes_tww_vl=self.model_classes_tww_vl,
             selection=selected_ids,
             labels_file=labels_file_path,
             callback_progress_done=self._progress_done,
         )
 
         with LoggingHandlerContext(log_handler):
-            twwInterlisExporter.tww_export()
+            twwInterlisExporter.tww_export(organisations_only)
 
     def _export_xtf_files(self, file_name_base, export_models):
         progress_step = (self.progress_dialog.maximum() - self.progress_dialog.value()) / (
@@ -450,6 +491,23 @@ class InterlisImporterExporter(QObject):
                 "Open the logs for more details on the error.",
                 log_path,
             )
+
+    def _init_model_classes(self, model):
+        ModelInterlis = ModelInterlisSia405Abwasser
+        if model == config.MODEL_NAME_DSS:
+            ModelInterlis = ModelInterlisDss
+        elif model == config.MODEL_NAME_VSA_KEK:
+            pass  # TODO implement KEK
+        self.model_classes_interlis = ModelInterlis().classes()
+        self._check_for_canceled()
+
+        if self.model_classes_tww_od is None:
+            self.model_classes_tww_od = ModelTwwOd().classes()
+        self._check_for_canceled()
+
+        if self.model_classes_tww_vl is None:
+            self.model_classes_tww_vl = ModelTwwVl().classes()
+        self._check_for_canceled()
 
     def _show_results(self, title, message, log_path, level):
         widget = iface.messageBar().createMessage(title, message)

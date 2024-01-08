@@ -101,5 +101,8 @@ class InterlisExportSettingsDialog(QDialog):
         else:
             return []
 
+    def selected_model(self):
+        return self.export_model_selection_comboBox.currentText()
+
     def selected_models(self):
         return self.export_model_selection_comboBox.currentData()

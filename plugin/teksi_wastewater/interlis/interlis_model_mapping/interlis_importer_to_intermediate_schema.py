@@ -7,30 +7,23 @@ from sqlalchemy.sql import text
 
 from .. import config, utils
 from ..utils.various import logger
-from .model_interlis_dss import ModelInterlisDss
-from .model_interlis_sia405_abwasser import ModelInterlisSia405Abwasser
-from .model_tww_od import ModelTwwOd
-from .model_tww_vl import ModelTwwVl
 
 
 class InterlisImporterToIntermediateSchema:
-    def __init__(self, model, callback_progress_done=None):
+    def __init__(
+        self,
+        model,
+        model_classes_interlis,
+        model_classes_tww_od,
+        model_classes_tww_vl,
+        callback_progress_done=None,
+    ):
         self.model = model
         self.callback_progress_done = callback_progress_done
 
-        ModelInterlis = ModelInterlisSia405Abwasser
-        if self.model == config.MODEL_NAME_DSS:
-            ModelInterlis = ModelInterlisDss
-        elif self.model == config.MODEL_NAME_VSA_KEK:
-            pass  # TODO implement KEK
-        self.model_classes_interlis = ModelInterlis().classes()
-        self._check_for_stop()
-
-        self.model_classes_tww_od = ModelTwwOd().classes()
-        self._check_for_stop()
-
-        self.model_classes_tww_vl = ModelTwwVl().classes()
-        self._check_for_stop()
+        self.model_classes_interlis = model_classes_interlis
+        self.model_classes_tww_od = model_classes_tww_od
+        self.model_classes_tww_vl = model_classes_tww_vl
 
         self.session_interlis = None
         self.session_tww = None
