@@ -200,6 +200,11 @@ class InterlisImporterExporter(QObject):
 
         self.progress_dialog.setValue(self.progress_dialog.maximum())
 
+        # For the tests
+        if iface is None:
+            tww_session.commit()
+            return
+
         self.import_dialog = InterlisImportSelectionDialog()
         self.import_dialog.init_with_session(tww_session)
         self.import_dialog.resize(iface.mainWindow().size() * 0.75)
