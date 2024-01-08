@@ -1,5 +1,3 @@
-from functools import lru_cache
-
 from geoalchemy2.functions import ST_Force3D
 from sqlalchemy.orm import Session
 from sqlalchemy.orm.attributes import flag_dirty
@@ -260,30 +258,14 @@ class InterlisImporterToIntermediateSchema:
 
         return instance
 
-    @lru_cache(maxsize=None)
-    def get_organisation_obj_id(self, t_id):
-        """
-        Gets an organisation ID from it's name (and creates an entry if not existing)
-        """
-        if not t_id:
-            return None
-
-        instance = (
-            self.session_interlis.query(self.model_classes_interlis.organisation)
-            .filter(self.model_classes_interlis.organisation.t_id == t_id)
-            .first()
-        )
-
-        return instance.t_ili_tid
-
     def base_common(self, row):
         """
         Returns common attributes for base
         """
         return {
             "obj_id": row.t_ili_tid,
-            "fk_dataowner": self.get_organisation_obj_id(row.datenherrref),
-            "fk_provider": self.get_organisation_obj_id(row.datenlieferantref),
+            "fk_dataowner": row.datenherrref,
+            "fk_provider": row.datenlieferantref,
             "last_modification": row.letzte_aenderung,
         }
 
@@ -302,8 +284,8 @@ class InterlisImporterToIntermediateSchema:
             ),
             # "fk_main_cover": row.REPLACE_ME,  # TODO : NOT MAPPED, but I think this is not standard SIA405 ?
             # "fk_main_wastewater_node": row.REPLACE_ME,  # TODO : NOT MAPPED, but I think this is not standard SIA405 ?
-            "fk_operator": self.get_pk(row.betreiberref__REL),
-            "fk_owner": self.get_pk(row.eigentuemerref__REL),
+            "fk_operator": row.betreiberref,
+            "fk_owner": row.eigentuemerref,
             "gross_costs": row.bruttokosten,
             "identifier": row.bezeichnung,
             "inspection_interval": row.inspektionsintervall,
@@ -377,31 +359,6 @@ class InterlisImporterToIntermediateSchema:
 
     def _import_kanal(self):
         for row in self.session_interlis.query(self.model_classes_interlis.kanal):
-            # AVAILABLE FIELDS IN kanal
-
-            # --- baseclass ---
-            # t_ili_tid, t_type
-
-            # --- abwasserbauwerk ---
-            # akten, astatus, baujahr, baulicherzustand, baulos, bemerkung, betreiberref, bezeichnung, bruttokosten, detailgeometrie, eigentuemerref, ersatzjahr, finanzierung, inspektionsintervall, sanierungsbedarf, standortname, subventionen, wbw_basisjahr, wbw_bauart, wiederbeschaffungswert, zugaenglichkeit
-
-            # --- kanal ---
-            # bettung_umhuellung, funktionhierarchisch, funktionhydraulisch, nutzungsart_geplant, nutzungsart_ist, rohrlaenge, spuelintervall, t_id, verbindungsart
-
-            # --- _bwrel_ ---
-            # abwassernetzelement__BWREL_abwasserbauwerkref, bauwerksteil__BWREL_abwasserbauwerkref, erhaltungsereignis__BWREL_abwasserbauwerkref, haltung_alternativverlauf__BWREL_t_id, metaattribute__BWREL_sia405_baseclass_metaattribute, sia405_symbolpos__BWREL_abwasserbauwerkref, sia405_textpos__BWREL_abwasserbauwerkref, symbolpos__BWREL_t_id, textpos__BWREL_t_id
-
-            # --- _rel_ ---
-            # betreiberref__REL, eigentuemerref__REL
-
-            # AVAILABLE FIELDS IN metaattribute
-
-            # --- metaattribute ---
-            # datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute, t_id, t_seq
-
-            # --- _rel_ ---
-            # sia405_baseclass_metaattribute__REL
-
             channel = self.create_or_update(
                 self.model_classes_tww_od.channel,
                 **self.base_common(row),
@@ -434,31 +391,6 @@ class InterlisImporterToIntermediateSchema:
 
     def _import_normschacht(self):
         for row in self.session_interlis.query(self.model_classes_interlis.normschacht):
-            # AVAILABLE FIELDS IN normschacht
-
-            # --- baseclass ---
-            # t_ili_tid, t_type
-
-            # --- abwasserbauwerk ---
-            # akten, astatus, baujahr, baulicherzustand, baulos, bemerkung, betreiberref, bezeichnung, bruttokosten, detailgeometrie, eigentuemerref, ersatzjahr, finanzierung, inspektionsintervall, sanierungsbedarf, standortname, subventionen, wbw_basisjahr, wbw_bauart, wiederbeschaffungswert, zugaenglichkeit
-
-            # --- normschacht ---
-            # dimension1, dimension2, funktion, material, oberflaechenzulauf, t_id
-
-            # --- _bwrel_ ---
-            # abwassernetzelement__BWREL_abwasserbauwerkref, bauwerksteil__BWREL_abwasserbauwerkref, erhaltungsereignis__BWREL_abwasserbauwerkref, haltung_alternativverlauf__BWREL_t_id, metaattribute__BWREL_sia405_baseclass_metaattribute, sia405_symbolpos__BWREL_abwasserbauwerkref, sia405_textpos__BWREL_abwasserbauwerkref, symbolpos__BWREL_t_id, textpos__BWREL_t_id
-
-            # --- _rel_ ---
-            # betreiberref__REL, eigentuemerref__REL
-
-            # AVAILABLE FIELDS IN metaattribute
-
-            # --- metaattribute ---
-            # datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute, t_id, t_seq
-
-            # --- _rel_ ---
-            # sia405_baseclass_metaattribute__REL
-
             manhole = self.create_or_update(
                 self.model_classes_tww_od.manhole,
                 **self.base_common(row),
@@ -483,34 +415,6 @@ class InterlisImporterToIntermediateSchema:
 
     def _import_einleitstelle(self):
         for row in self.session_interlis.query(self.model_classes_interlis.einleitstelle):
-            # AVAILABLE FIELDS IN einleitstelle
-
-            # --- baseclass ---
-            # t_ili_tid, t_type
-
-            # --- sia405_baseclass ---
-            # obj_id
-
-            # --- abwasserbauwerk ---
-            # akten, astatus, baujahr, baulicherzustand, baulos, bemerkung, betreiberref, bezeichnung, bruttokosten, detailgeometrie, eigentuemerref, ersatzjahr, finanzierung, inspektionsintervall, sanierungsbedarf, standortname, subventionen, wbw_basisjahr, wbw_bauart, wiederbeschaffungswert, zugaenglichkeit
-
-            # --- einleitstelle ---
-            # hochwasserkote, relevanz, t_id, terrainkote, wasserspiegel_hydraulik
-
-            # --- _bwrel_ ---
-            # abwassernetzelement__BWREL_abwasserbauwerkref, bauwerksteil__BWREL_abwasserbauwerkref, erhaltungsereignis__BWREL_abwasserbauwerkref, haltung_alternativverlauf__BWREL_t_id, metaattribute__BWREL_sia405_baseclass_metaattribute, sia405_symbolpos__BWREL_abwasserbauwerkref, sia405_textpos__BWREL_abwasserbauwerkref, symbolpos__BWREL_t_id, textpos__BWREL_t_id
-
-            # --- _rel_ ---
-            # betreiberref__REL, eigentuemerref__REL
-
-            # AVAILABLE FIELDS IN metaattribute
-
-            # --- metaattribute ---
-            # datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute, t_id, t_seq
-
-            # --- _rel_ ---
-            # sia405_baseclass_metaattribute__REL
-
             discharge_point = self.create_or_update(
                 self.model_classes_tww_od.discharge_point,
                 **self.base_common(row),
@@ -531,34 +435,6 @@ class InterlisImporterToIntermediateSchema:
 
     def _import_spezialbauwerk(self):
         for row in self.session_interlis.query(self.model_classes_interlis.spezialbauwerk):
-            # AVAILABLE FIELDS IN spezialbauwerk
-
-            # --- baseclass ---
-            # t_ili_tid, t_type
-
-            # --- sia405_baseclass ---
-            # obj_id
-
-            # --- abwasserbauwerk ---
-            # akten, astatus, baujahr, baulicherzustand, baulos, bemerkung, betreiberref, bezeichnung, bruttokosten, detailgeometrie, eigentuemerref, ersatzjahr, finanzierung, inspektionsintervall, sanierungsbedarf, standortname, subventionen, wbw_basisjahr, wbw_bauart, wiederbeschaffungswert, zugaenglichkeit
-
-            # --- spezialbauwerk ---
-            # bypass, funktion, notueberlauf, regenbecken_anordnung, t_id
-
-            # --- _bwrel_ ---
-            # abwassernetzelement__BWREL_abwasserbauwerkref, bauwerksteil__BWREL_abwasserbauwerkref, erhaltungsereignis__BWREL_abwasserbauwerkref, haltung_alternativverlauf__BWREL_t_id, metaattribute__BWREL_sia405_baseclass_metaattribute, sia405_symbolpos__BWREL_abwasserbauwerkref, sia405_textpos__BWREL_abwasserbauwerkref, symbolpos__BWREL_t_id, textpos__BWREL_t_id
-
-            # --- _rel_ ---
-            # betreiberref__REL, eigentuemerref__REL
-
-            # AVAILABLE FIELDS IN metaattribute
-
-            # --- metaattribute ---
-            # datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute, t_id, t_seq
-
-            # --- _rel_ ---
-            # sia405_baseclass_metaattribute__REL
-
             special_structure = self.create_or_update(
                 self.model_classes_tww_od.special_structure,
                 **self.base_common(row),
@@ -586,34 +462,6 @@ class InterlisImporterToIntermediateSchema:
 
     def _import_versickerungsanlage(self):
         for row in self.session_interlis.query(self.model_classes_interlis.versickerungsanlage):
-            # AVAILABLE FIELDS IN versickerungsanlage
-
-            # --- baseclass ---
-            # t_ili_tid, t_type
-
-            # --- sia405_baseclass ---
-            # obj_id
-
-            # --- abwasserbauwerk ---
-            # akten, astatus, baujahr, baulicherzustand, baulos, bemerkung, betreiberref, bezeichnung, bruttokosten, detailgeometrie, eigentuemerref, ersatzjahr, finanzierung, inspektionsintervall, sanierungsbedarf, standortname, subventionen, wbw_basisjahr, wbw_bauart, wiederbeschaffungswert, zugaenglichkeit
-
-            # --- versickerungsanlage ---
-            # art, beschriftung, dimension1, dimension2, gwdistanz, maengel, notueberlauf, saugwagen, schluckvermoegen, t_id, versickerungswasser, wasserdichtheit, wirksameflaeche
-
-            # --- _bwrel_ ---
-            # abwassernetzelement__BWREL_abwasserbauwerkref, bauwerksteil__BWREL_abwasserbauwerkref, erhaltungsereignis__BWREL_abwasserbauwerkref, haltung_alternativverlauf__BWREL_t_id, metaattribute__BWREL_sia405_baseclass_metaattribute, sia405_symbolpos__BWREL_abwasserbauwerkref, sia405_textpos__BWREL_abwasserbauwerkref, symbolpos__BWREL_t_id, textpos__BWREL_t_id
-
-            # --- _rel_ ---
-            # betreiberref__REL, eigentuemerref__REL
-
-            # AVAILABLE FIELDS IN metaattribute
-
-            # --- metaattribute ---
-            # datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute, t_id, t_seq
-
-            # --- _rel_ ---
-            # sia405_baseclass_metaattribute__REL
-
             infiltration_installation = self.create_or_update(
                 self.model_classes_tww_od.infiltration_installation,
                 **self.base_common(row),
@@ -672,28 +520,6 @@ class InterlisImporterToIntermediateSchema:
 
     def _import_rohrprofil(self):
         for row in self.session_interlis.query(self.model_classes_interlis.rohrprofil):
-            # AVAILABLE FIELDS IN rohrprofil
-
-            # --- baseclass ---
-            # t_ili_tid, t_type
-
-            # --- sia405_baseclass ---
-            # obj_id
-
-            # --- rohrprofil ---
-            # bemerkung, bezeichnung, hoehenbreitenverhaeltnis, profiltyp, t_id
-
-            # --- _bwrel_ ---
-            # haltung__BWREL_rohrprofilref, haltung_alternativverlauf__BWREL_t_id, metaattribute__BWREL_sia405_baseclass_metaattribute, symbolpos__BWREL_t_id, textpos__BWREL_t_id
-
-            # AVAILABLE FIELDS IN metaattribute
-
-            # --- metaattribute ---
-            # datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute, t_id, t_seq
-
-            # --- _rel_ ---
-            # sia405_baseclass_metaattribute__REL
-
             pipe_profile = self.create_or_update(
                 self.model_classes_tww_od.pipe_profile,
                 **self.base_common(row),
@@ -710,31 +536,6 @@ class InterlisImporterToIntermediateSchema:
 
     def _import_haltungspunkt(self):
         for row in self.session_interlis.query(self.model_classes_interlis.haltungspunkt):
-            # AVAILABLE FIELDS IN haltungspunkt
-
-            # --- baseclass ---
-            # t_ili_tid, t_type
-
-            # --- sia405_baseclass ---
-            # obj_id
-
-            # --- haltungspunkt ---
-            # abwassernetzelementref, auslaufform, bemerkung, bezeichnung, hoehengenauigkeit, kote, lage, lage_anschluss, t_id
-
-            # --- _bwrel_ ---
-            # haltung__BWREL_nachhaltungspunktref, haltung__BWREL_vonhaltungspunktref, haltung_alternativverlauf__BWREL_t_id, metaattribute__BWREL_sia405_baseclass_metaattribute, symbolpos__BWREL_t_id, textpos__BWREL_t_id, untersuchung__BWREL_haltungspunktref
-
-            # --- _rel_ ---
-            # abwassernetzelementref__REL
-
-            # AVAILABLE FIELDS IN metaattribute
-
-            # --- metaattribute ---
-            # datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute, t_id, t_seq
-
-            # --- _rel_ ---
-            # sia405_baseclass_metaattribute__REL
-
             reach_point = self.create_or_update(
                 self.model_classes_tww_od.reach_point,
                 **self.base_common(row),
@@ -759,31 +560,6 @@ class InterlisImporterToIntermediateSchema:
 
     def _import_abwasserknoten(self):
         for row in self.session_interlis.query(self.model_classes_interlis.abwasserknoten):
-            # AVAILABLE FIELDS IN abwasserknoten
-
-            # --- baseclass ---
-            # t_ili_tid, t_type
-
-            # --- abwassernetzelement ---
-            # abwasserbauwerkref, bemerkung, bezeichnung
-
-            # --- abwasserknoten ---
-            # lage, rueckstaukote_ist, sohlenkote, t_id
-
-            # --- _bwrel_ ---
-            # haltung_alternativverlauf__BWREL_t_id, haltungspunkt__BWREL_abwassernetzelementref, metaattribute__BWREL_sia405_baseclass_metaattribute, symbolpos__BWREL_t_id, textpos__BWREL_t_id
-
-            # --- _rel_ ---
-            # abwasserbauwerkref__REL
-
-            # AVAILABLE FIELDS IN metaattribute
-
-            # --- metaattribute ---
-            # datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute, t_id, t_seq
-
-            # --- _rel_ ---
-            # sia405_baseclass_metaattribute__REL
-
             wastewater_node = self.create_or_update(
                 self.model_classes_tww_od.wastewater_node,
                 **self.base_common(row),
@@ -800,34 +576,6 @@ class InterlisImporterToIntermediateSchema:
 
     def _import_haltung(self):
         for row in self.session_interlis.query(self.model_classes_interlis.haltung):
-            # AVAILABLE FIELDS IN haltung
-
-            # --- baseclass ---
-            # t_ili_tid, t_type
-
-            # --- sia405_baseclass ---
-            # obj_id
-
-            # --- abwassernetzelement ---
-            # abwasserbauwerkref, bemerkung, bezeichnung
-
-            # --- haltung ---
-            # innenschutz, laengeeffektiv, lagebestimmung, lichte_hoehe, material, nachhaltungspunktref, plangefaelle, reibungsbeiwert, reliner_art, reliner_bautechnik, reliner_material, reliner_nennweite, ringsteifigkeit, rohrprofilref, t_id, verlauf, vonhaltungspunktref, wandrauhigkeit
-
-            # --- _bwrel_ ---
-            # haltung_alternativverlauf__BWREL_haltungref, haltung_alternativverlauf__BWREL_t_id, haltungspunkt__BWREL_abwassernetzelementref, metaattribute__BWREL_sia405_baseclass_metaattribute, sia405_textpos__BWREL_haltungref, symbolpos__BWREL_t_id, textpos__BWREL_t_id
-
-            # --- _rel_ ---
-            # abwasserbauwerkref__REL, nachhaltungspunktref__REL, rohrprofilref__REL, vonhaltungspunktref__REL
-
-            # AVAILABLE FIELDS IN metaattribute
-
-            # --- metaattribute ---
-            # datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute, t_id, t_seq
-
-            # --- _rel_ ---
-            # sia405_baseclass_metaattribute__REL
-
             reach = self.create_or_update(
                 self.model_classes_tww_od.reach,
                 **self.base_common(row),
@@ -868,34 +616,6 @@ class InterlisImporterToIntermediateSchema:
 
     def _import_trockenwetterfallrohr(self):
         for row in self.session_interlis.query(self.model_classes_interlis.trockenwetterfallrohr):
-            # AVAILABLE FIELDS IN trockenwetterfallrohr
-
-            # --- baseclass ---
-            # t_ili_tid, t_type
-
-            # --- sia405_baseclass ---
-            # obj_id
-
-            # --- bauwerksteil ---
-            # abwasserbauwerkref, bemerkung, bezeichnung, instandstellung
-
-            # --- trockenwetterfallrohr ---
-            # durchmesser, t_id
-
-            # --- _bwrel_ ---
-            # haltung_alternativverlauf__BWREL_t_id, metaattribute__BWREL_sia405_baseclass_metaattribute, symbolpos__BWREL_t_id, textpos__BWREL_t_id
-
-            # --- _rel_ ---
-            # abwasserbauwerkref__REL
-
-            # AVAILABLE FIELDS IN metaattribute
-
-            # --- metaattribute ---
-            # datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute, t_id, t_seq
-
-            # --- _rel_ ---
-            # sia405_baseclass_metaattribute__REL
-
             dryweather_downspout = self.create_or_update(
                 self.model_classes_tww_od.dryweather_downspout,
                 **self.base_common(row),
@@ -909,34 +629,6 @@ class InterlisImporterToIntermediateSchema:
 
     def _import_einstiegshilfe(self):
         for row in self.session_interlis.query(self.model_classes_interlis.einstiegshilfe):
-            # AVAILABLE FIELDS IN einstiegshilfe
-
-            # --- baseclass ---
-            # t_ili_tid, t_type
-
-            # --- sia405_baseclass ---
-            # obj_id
-
-            # --- bauwerksteil ---
-            # abwasserbauwerkref, bemerkung, bezeichnung, instandstellung
-
-            # --- einstiegshilfe ---
-            # art, t_id
-
-            # --- _bwrel_ ---
-            # haltung_alternativverlauf__BWREL_t_id, metaattribute__BWREL_sia405_baseclass_metaattribute, symbolpos__BWREL_t_id, textpos__BWREL_t_id
-
-            # --- _rel_ ---
-            # abwasserbauwerkref__REL
-
-            # AVAILABLE FIELDS IN metaattribute
-
-            # --- metaattribute ---
-            # datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute, t_id, t_seq
-
-            # --- _rel_ ---
-            # sia405_baseclass_metaattribute__REL
-
             access_aid = self.create_or_update(
                 self.model_classes_tww_od.access_aid,
                 **self.base_common(row),
@@ -950,34 +642,6 @@ class InterlisImporterToIntermediateSchema:
 
     def _import_trockenwetterrinne(self):
         for row in self.session_interlis.query(self.model_classes_interlis.trockenwetterrinne):
-            # AVAILABLE FIELDS IN trockenwetterrinne
-
-            # --- baseclass ---
-            # t_ili_tid, t_type
-
-            # --- sia405_baseclass ---
-            # obj_id
-
-            # --- bauwerksteil ---
-            # abwasserbauwerkref, bemerkung, bezeichnung, instandstellung
-
-            # --- trockenwetterrinne ---
-            # material, t_id
-
-            # --- _bwrel_ ---
-            # haltung_alternativverlauf__BWREL_t_id, metaattribute__BWREL_sia405_baseclass_metaattribute, symbolpos__BWREL_t_id, textpos__BWREL_t_id
-
-            # --- _rel_ ---
-            # abwasserbauwerkref__REL
-
-            # AVAILABLE FIELDS IN metaattribute
-
-            # --- metaattribute ---
-            # datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute, t_id, t_seq
-
-            # --- _rel_ ---
-            # sia405_baseclass_metaattribute__REL
-
             dryweather_flume = self.create_or_update(
                 self.model_classes_tww_od.dryweather_flume,
                 **self.base_common(row),
@@ -993,34 +657,6 @@ class InterlisImporterToIntermediateSchema:
 
     def _import_deckel(self):
         for row in self.session_interlis.query(self.model_classes_interlis.deckel):
-            # AVAILABLE FIELDS IN deckel
-
-            # --- baseclass ---
-            # t_ili_tid, t_type
-
-            # --- sia405_baseclass ---
-            # obj_id
-
-            # --- bauwerksteil ---
-            # abwasserbauwerkref, bemerkung, bezeichnung, instandstellung
-
-            # --- deckel ---
-            # deckelform, durchmesser, entlueftung, fabrikat, kote, lage, lagegenauigkeit, material, schlammeimer, t_id, verschluss
-
-            # --- _bwrel_ ---
-            # haltung_alternativverlauf__BWREL_t_id, metaattribute__BWREL_sia405_baseclass_metaattribute, symbolpos__BWREL_t_id, textpos__BWREL_t_id
-
-            # --- _rel_ ---
-            # abwasserbauwerkref__REL
-
-            # AVAILABLE FIELDS IN metaattribute
-
-            # --- metaattribute ---
-            # datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute, t_id, t_seq
-
-            # --- _rel_ ---
-            # sia405_baseclass_metaattribute__REL
-
             cover = self.create_or_update(
                 self.model_classes_tww_od.cover,
                 **self.base_common(row),
@@ -1051,34 +687,6 @@ class InterlisImporterToIntermediateSchema:
 
     def _import_bankett(self):
         for row in self.session_interlis.query(self.model_classes_interlis.bankett):
-            # AVAILABLE FIELDS IN bankett
-
-            # --- baseclass ---
-            # t_ili_tid, t_type
-
-            # --- sia405_baseclass ---
-            # obj_id
-
-            # --- bauwerksteil ---
-            # abwasserbauwerkref, bemerkung, bezeichnung, instandstellung
-
-            # --- bankett ---
-            # art, t_id
-
-            # --- _bwrel_ ---
-            # haltung_alternativverlauf__BWREL_t_id, metaattribute__BWREL_sia405_baseclass_metaattribute, symbolpos__BWREL_t_id, textpos__BWREL_t_id
-
-            # --- _rel_ ---
-            # abwasserbauwerkref__REL
-
-            # AVAILABLE FIELDS IN metaattribute
-
-            # --- metaattribute ---
-            # datenherr, datenlieferant, letzte_aenderung, sia405_baseclass_metaattribute, t_id, t_seq
-
-            # --- _rel_ ---
-            # sia405_baseclass_metaattribute__REL
-
             benching = self.create_or_update(
                 self.model_classes_tww_od.benching,
                 **self.base_common(row),

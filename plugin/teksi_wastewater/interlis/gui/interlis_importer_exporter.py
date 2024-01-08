@@ -152,8 +152,25 @@ class InterlisImporterExporter(QObject):
         self.progress_dialog.setLabelText("Extract model from xtf...")
         self.progress_dialog.setValue(10)
         QApplication.processEvents()
-        import_model, _ = self.interlisTools.get_xtf_models(xtf_file_input)
+        import_models = self.interlisTools.get_xtf_models(xtf_file_input)
         self._check_for_canceled()
+
+        import_model = ""
+        if config.MODEL_NAME_VSA_KEK in import_models:
+            import_model = config.MODEL_NAME_VSA_KEK
+        elif config.MODEL_NAME_SIA405_ABWASSER in import_models:
+            import_model = config.MODEL_NAME_SIA405_ABWASSER
+        elif config.MODEL_NAME_DSS in import_models:
+            import_model = config.MODEL_NAME_DSS
+        elif config.MODEL_NAME_SIA405_BASE_ABWASSER in import_models:
+            import_model = config.MODEL_NAME_SIA405_ABWASSER
+        else:
+            raise InterlisImporterExporterErrorWithLog(
+                "Error", f"No supported model was found among '{import_models}'", None
+            )
+        logger.info(
+            f"Model '{import_model}' was choosen for import among found models '{import_models}'"
+        )
 
         # Prepare the temporary ili2pg model
         self.progress_dialog.setLabelText("Creating ili schema...")
@@ -164,14 +181,8 @@ class InterlisImporterExporter(QObject):
 
         self.progress_dialog.setValue(25)
         QApplication.processEvents()
-        self._create_ili_schema([import_model])
+        self._create_ili_schema([import_model], ext_columns_no_constraints=True)
         self._check_for_canceled()
-
-        # # Partially export organisations to intermediate schema
-        # self.progress_dialog.setValue(35)
-        # QApplication.processEvents()
-        # self._export_to_intermediate_schema(import_model, organisations_only=True)
-        # self._check_for_canceled()
 
         # Import from xtf file to ili2pg model
         self.progress_dialog.setLabelText("Importing XTF data...")
@@ -362,7 +373,6 @@ class InterlisImporterExporter(QObject):
         file_name=None,
         selected_ids=None,
         labels_file_path=None,
-        organisations_only=False,
     ):
         log_handler = logging.FileHandler(
             make_log_path(file_name, "tww2ili-export"), mode="w", encoding="utf-8"
@@ -383,7 +393,7 @@ class InterlisImporterExporter(QObject):
         )
 
         with LoggingHandlerContext(log_handler):
-            twwInterlisExporter.tww_export(organisations_only)
+            twwInterlisExporter.tww_export()
 
     def _export_xtf_files(self, file_name_base, export_models):
         progress_step = (self.progress_dialog.maximum() - self.progress_dialog.value()) / (
@@ -477,13 +487,14 @@ class InterlisImporterExporter(QObject):
         connection.commit()
         connection.close()
 
-    def _create_ili_schema(self, models):
+    def _create_ili_schema(self, models, ext_columns_no_constraints=False):
         log_path = make_log_path(self.base_log_path, "ili2pg-schemaimport")
         try:
             self.interlisTools.import_ili_schema(
                 config.ABWASSER_SCHEMA,
                 models,
                 log_path,
+                ext_columns_no_constraints=ext_columns_no_constraints,
             )
         except CmdException:
             raise InterlisImporterExporterErrorWithLog(

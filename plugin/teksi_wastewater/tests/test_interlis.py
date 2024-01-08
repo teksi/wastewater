@@ -46,7 +46,6 @@ class TestInterlis(unittest.TestCase):
             "vsa_2020_1_organisationen_testdatensatz.xtf",
         )
 
-        import_model, models = InterlisTools.get_xtf_models(xtf_file=xtf_file_input)
+        models = InterlisTools.get_xtf_models(xtf_file=xtf_file_input)
 
-        self.assertEqual(import_model, config.MODEL_NAME_SIA405_ABWASSER)
         self.assertIn(config.MODEL_NAME_SIA405_BASE_ABWASSER, models)

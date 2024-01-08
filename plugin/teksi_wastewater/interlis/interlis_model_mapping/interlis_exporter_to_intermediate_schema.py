@@ -48,24 +48,22 @@ class InterlisExporterToIntermediateSchema:
         )
         self.tid_maker = utils.ili2db.TidMaker(id_attribute="obj_id")
 
-    def tww_export(self, organisations_only=False):
+    def tww_export(self):
         try:
-            self._tww_export(organisations_only)
+            self._tww_export()
             self.abwasser_session.commit()
             self.close_sessions()
         except Exception as exception:
             self.close_sessions()
             raise exception
 
-    def _tww_export(self, organisations_only):
+    def _tww_export(self):
         # Allow to insert rows with cyclic dependencies at once
         self.abwasser_session.execute(text("SET CONSTRAINTS ALL DEFERRED;"))
 
         logger.info("Exporting TWW.organisation -> ABWASSER.organisation")
         self._export_organisation()
         self._check_for_stop()
-        if organisations_only:
-            return
 
         logger.info("Exporting TWW.channel -> ABWASSER.kanal")
         self._export_channel()

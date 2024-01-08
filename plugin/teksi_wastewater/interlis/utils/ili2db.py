@@ -27,7 +27,11 @@ class InterlisTools:
             globals.DbIliMode.ili2pg, 4, stdout, stderr
         )
 
-    def import_ili_schema(self, schema, models, log_path):
+    def import_ili_schema(self, schema, models, log_path, ext_columns_no_constraints=False):
+        sql_ext_refs_cols = []
+        if ext_columns_no_constraints:
+            sql_ext_refs_cols = ["--sqlExtRefCols"]
+
         logger.info(f"ILIDB SCHEMAIMPORT INTO {schema}...")
         exec_(
             " ".join(
@@ -41,6 +45,7 @@ class InterlisTools:
                     f"{schema}",
                     "--setupPgExt",
                     "--createGeomIdx",
+                    *sql_ext_refs_cols,
                     "--createFk",
                     "--createFkIdx",
                     "--createTidCol",
@@ -149,23 +154,7 @@ class InterlisTools:
         for model_element in model_elements:
             models.append(model_element.attrib.get("NAME", None))
 
-        if config.MODEL_NAME_VSA_KEK in models:
-            import_model = config.MODEL_NAME_VSA_KEK
-
-        elif config.MODEL_NAME_SIA405_ABWASSER in models:
-            import_model = config.MODEL_NAME_SIA405_ABWASSER
-
-        elif config.MODEL_NAME_DSS in models:
-            import_model = config.MODEL_NAME_DSS
-
-        elif config.MODEL_NAME_SIA405_BASE_ABWASSER in models:
-            import_model = config.MODEL_NAME_SIA405_ABWASSER
-
-        else:
-            raise InterlisToolsException(f"No supported model was found among '{models}'")
-
-        logger.info(f"Model '{import_model}' was choosen for import among found models '{models}'")
-        return import_model, models
+        return models
 
 
 class TidMaker:
