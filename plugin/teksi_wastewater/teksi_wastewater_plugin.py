@@ -33,8 +33,6 @@ from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QApplication, QToolBar
 from qgis.utils import qgsfunction
 
-from .gui.twwdatamodeldialog import TwwDatamodelInitToolDialog
-
 try:
     from .gui.twwplotsvgwidget import TwwPlotSVGWidget
 except ImportError:
@@ -249,9 +247,6 @@ class TeksiWastewaterPlugin:
         self.exportAction.setCheckable(False)
         self.exportAction.triggered.connect(self.actionExportClicked)
 
-        self.datamodelInitToolAction = QAction(self.tr("Datamodel tool"), self.iface.mainWindow())
-        self.datamodelInitToolAction.triggered.connect(self.showDatamodelInitTool)
-
         # Add toolbar button and menu item
         self.toolbar = QToolBar(self.tr("TEKSI Wastewater"))
         self.toolbar.setObjectName(self.toolbar.windowTitle())
@@ -271,7 +266,6 @@ class TeksiWastewaterPlugin:
         if admin_mode and admin_mode != "false":
             self.toolbar.addAction(self.importAction)
             self.toolbar.addAction(self.exportAction)
-            self.iface.addPluginToMenu("TEKSI &Wastewater", self.datamodelInitToolAction)
 
         self.iface.addToolBar(self.toolbar)
 
@@ -341,7 +335,6 @@ class TeksiWastewaterPlugin:
         self.iface.removePluginMenu("TEKSI &Wastewater", self.profileAction)
         self.iface.removePluginMenu("TEKSI &Wastewater", self.settingsAction)
         self.iface.removePluginMenu("TEKSI &Wastewater", self.aboutAction)
-        self.iface.removePluginMenu("TEKSI &Wastewater", self.datamodelInitToolAction)
 
         QgsApplication.processingRegistry().removeProvider(self.processing_provider)
 
@@ -458,11 +451,6 @@ class TeksiWastewaterPlugin:
     def showSettings(self):
         settings_dlg = TwwSettingsDialog(self.iface.mainWindow())
         settings_dlg.exec_()
-
-    def showDatamodelInitTool(self):
-        if not hasattr(self, "_datamodel_dlg"):
-            self.datamodel_dlg = TwwDatamodelInitToolDialog(self.iface.mainWindow())
-        self.datamodel_dlg.show()
 
     def actionExportClicked(self):
         if self.interlisImporterExporter is None:
