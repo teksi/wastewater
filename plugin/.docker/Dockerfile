@@ -6,11 +6,8 @@ RUN add-apt-repository -r  https://qgis.org/ubuntu && \
     add-apt-repository -r  https://qgis.org/ubuntu-ltr
 
 RUN apt-get update && \
-    apt-get -y install openjdk-8-jre curl locales postgresql-client \
-    python3-pip \
+    apt-get -y install openjdk-8-jre curl locales postgresql-client python3-geoalchemy2 \
     && rm -rf /var/lib/apt/lists/*
-
-RUN pip3 install geoalchemy2
 
 ENV LANG=C.UTF-8
 

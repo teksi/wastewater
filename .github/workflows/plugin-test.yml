@@ -1,4 +1,4 @@
-name: Plugin | Tests
+name: 🪲 Plugin | Tests
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -32,13 +32,24 @@ jobs:
         qgis_version: [3.28-jammy, latest]
     env:
       QGIS_TEST_VERSION: ${{ matrix.qgis_version }}
+      COMPOSE_PROFILES: qgis
+
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           submodules: recursive
+
       - name: Package PyPI Packages
         run: |
           sudo ./plugin/scripts/package_pip_packages.sh
+
+      - name: Docker build
+        run: docker compose up -d --build
+
       - name: Test on QGIS
-        run: docker-compose -f ./plugin/.docker/docker-compose.gh.yml run qgis /usr/src/.docker/run-docker-tests.sh
+        run: docker-compose run qgis /usr/src/.docker/run-docker-tests.sh
+
+      - name: docker logs
+        #if: failure()
+        run: docker compose logs db

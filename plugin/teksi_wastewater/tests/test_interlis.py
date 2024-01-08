@@ -3,10 +3,11 @@ import os
 import sys
 
 from qgis.testing import start_app, unittest
-
-from ..interlis import config
-from ..interlis.gui.interlis_importer_exporter import InterlisImporterExporter
-from ..interlis.utils.ili2db import InterlisTools
+from teksi_wastewater.interlis import config
+from teksi_wastewater.interlis.gui.interlis_importer_exporter import (
+    InterlisImporterExporter,
+)
+from teksi_wastewater.interlis.utils.ili2db import InterlisTools
 
 # Display logging in unittest output
 logger = logging.getLogger()
