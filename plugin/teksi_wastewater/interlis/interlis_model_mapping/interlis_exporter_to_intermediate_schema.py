@@ -1034,7 +1034,7 @@ class InterlisExporterToIntermediateSchema:
 
     def sia_405_base_common(self, row, type_name):
         return {
-            **self.base_common(row, "organisation"),
+            **self.base_common(row, type_name),
             "letzte_aenderung": row.last_modification,
         }
 
