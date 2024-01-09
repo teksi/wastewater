@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generator: Adobe Illustrator 24.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+
+<svg
+   version="1.1"
+   id="svg2985"
+   inkscape:export-filename="/home/kk/Documents/svg/wastewater-profile.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   sodipodi:docname="interlis_import.svg"
+   x="0px"
+   y="0px"
+   viewBox="0 0 48 48"
+   style="enable-background:new 0 0 48 48;"
+   xml:space="preserve"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+   id="defs82" />
+<style
+   type="text/css"
+   id="style70">
+	.st0{fill:#264AA1;}
+	.st1{fill:#FFFFFF;}
+	.st2{fill:#004489;}
+	.st3{fill:#DA2520;}
+	.st4{fill:#231F20;}
+</style>
+<sodipodi:namedview
+   bordercolor="#666666"
+   borderopacity="1.0"
+   id="base"
+   inkscape:current-layer="svg2985"
+   inkscape:cx="11.711456"
+   inkscape:cy="14.053747"
+   inkscape:document-units="px"
+   inkscape:grid-bbox="true"
+   inkscape:pageopacity="0.0"
+   inkscape:pageshadow="2"
+   inkscape:window-height="1055"
+   inkscape:window-maximized="1"
+   inkscape:window-width="1920"
+   inkscape:window-x="1912"
+   inkscape:window-y="-8"
+   inkscape:zoom="11.313709"
+   pagecolor="#ffffff"
+   showgrid="true"
+   inkscape:showpageshadow="2"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#d1d1d1">
+	</sodipodi:namedview>
+
+<path
+   id="path3134"
+   inkscape:connector-curvature="0"
+   class="st1"
+   d="M30.1,38.2c-1.3-5,1.2-7.7,3.5-10.3c0.6,4.2-4.4,6.8,0.4,13.4  S31,41.7,30.1,38.2z" />
+<path
+   class="st2"
+   d="M0,10.5v11.1c11.9,0,21.6-9.7,21.6-21.6H10.5C10.5,5.8,5.8,10.5,0,10.5z"
+   id="path75" />
+<path
+   class="st3"
+   d="M10.5,0H0v10.5C5.8,10.5,10.5,5.8,10.5,0z"
+   id="path77" />
+<polygon
+   class="st4"
+   points="20.7,22.5 18.9,24.4 26.8,25.1 26.2,17.1 24.3,19 20,14.7 16.4,18.2 "
+   id="polygon79"
+   transform="translate(-1.6793785,-1.1490485)" />
+<g
+   id="g247"
+   transform="matrix(0.13458835,0,0,0.13458835,14.150618,17.426939)"><circle
+     class="cls-1"
+     cx="150"
+     cy="125"
+     r="100"
+     id="circle88"
+     style="fill:#c800d7" /><circle
+     class="cls-2"
+     cx="150"
+     cy="125"
+     r="100"
+     id="circle90"
+     style="fill:#996699" /><path
+     class="cls-3"
+     d="m 182.83,70.53 a 46.15,46.15 0 0 0 -32.91,-13.85 46.94,46.94 0 0 0 -46.79,46.87 158.2,158.2 0 0 0 20.43,77.29 c 0.87,1.51 2.3,3.82 4.25,6.85 a 12.25,12.25 0 0 0 10.34,5.63 h 23.7 a 12.25,12.25 0 0 0 10.34,-5.63 c 2,-3 3.39,-5.34 4.25,-6.85 a 158.28,158.28 0 0 0 20.43,-76.22 48.24,48.24 0 0 0 -14.04,-34.09 z m -9.85,33 A 135.88,135.88 0 0 1 155.7,169 a 0.91,0.91 0 0 1 -0.78,0.46 h -9.83 A 0.91,0.91 0 0 1 144.3,169 133.87,133.87 0 0 1 127,103.55 a 23,23 0 1 1 46,0 z"
+     id="path92"
+     style="fill:#ffffff" /></g></svg>
