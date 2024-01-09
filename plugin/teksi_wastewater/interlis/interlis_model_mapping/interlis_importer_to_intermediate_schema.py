@@ -164,31 +164,29 @@ class InterlisImporterToIntermediateSchema:
         self._check_for_stop()
 
     def _import_vsa_kek(self):
-        pass
-        # VSA_KEK classes
-        # logger.info("Importing ABWASSER.untersuchung -> TWW.examination")
-        # self._import_untersuchung()
-        # logger.info("Done")
-        # self.check_for_stop()
+        logger.info("Importing ABWASSER.untersuchung -> TWW.examination")
+        self._import_untersuchung()
+        logger.info("Done")
+        self.check_for_stop()
 
-        # logger.info("Importing ABWASSER.normschachtschaden -> TWW.damage_manhole")
-        # self._import_normschachtschaden()
-        # logger.info("Done")
-        # self.check_for_stop()
+        logger.info("Importing ABWASSER.normschachtschaden -> TWW.damage_manhole")
+        self._import_normschachtschaden()
+        logger.info("Done")
+        self.check_for_stop()
 
-        # logger.info("Importing ABWASSER.kanalschaden -> TWW.damage_channel")
-        # self._import_kanalschaden()
-        # logger.info("Done")
-        # self.check_for_stop()
+        logger.info("Importing ABWASSER.kanalschaden -> TWW.damage_channel")
+        self._import_kanalschaden()
+        logger.info("Done")
+        self.check_for_stop()
 
-        # logger.info("Importing ABWASSER.datentraeger -> TWW.data_media")
-        # self._import_datentraeger()
-        # logger.info("Done")
-        # self.check_for_stop()
+        logger.info("Importing ABWASSER.datentraeger -> TWW.data_media")
+        self._import_datentraeger()
+        logger.info("Done")
+        self.check_for_stop()
 
-        # logger.info("Importing ABWASSER.datei -> TWW.file")
-        # self._import_datei()
-        # logger.info("Done")
+        logger.info("Importing ABWASSER.datei -> TWW.file")
+        self._import_datei()
+        logger.info("Done")
 
     def close_sessions(self, skip_closing_tww_session=False):
         # Calling the precommit callback if provided, allowing to filter before final import
@@ -543,9 +541,7 @@ class InterlisImporterToIntermediateSchema:
                 elevation_accuracy=self.get_vl_code(
                     self.model_classes_tww_od.reach_point_elevation_accuracy, row.hoehengenauigkeit
                 ),
-                fk_wastewater_networkelement=self.get_pk(
-                    row.abwassernetzelementref__REL
-                ),  # TODO : this fails for now, but probably only because we flush too soon
+                fk_wastewater_networkelement=self.get_pk(row.abwassernetzelementref__REL),
                 identifier=row.bezeichnung,
                 level=row.kote,
                 outlet_shape=self.get_vl_code(

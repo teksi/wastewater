@@ -23,6 +23,7 @@ from ..interlis_model_mapping.model_interlis_dss import ModelInterlisDss
 from ..interlis_model_mapping.model_interlis_sia405_abwasser import (
     ModelInterlisSia405Abwasser,
 )
+from ..interlis_model_mapping.model_interlis_vsa_kek import ModelInterlisVsaKek
 from ..interlis_model_mapping.model_tww_od import ModelTwwOd
 from ..interlis_model_mapping.model_tww_vl import ModelTwwVl
 from ..utils.ili2db import InterlisTools
@@ -513,7 +514,7 @@ class InterlisImporterExporter(QObject):
         if model == config.MODEL_NAME_DSS:
             ModelInterlis = ModelInterlisDss
         elif model == config.MODEL_NAME_VSA_KEK:
-            pass  # TODO implement KEK
+            ModelInterlis = ModelInterlisVsaKek
         self.model_classes_interlis = ModelInterlis().classes()
         self._check_for_canceled()
 
