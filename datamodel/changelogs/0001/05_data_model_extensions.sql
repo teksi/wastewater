@@ -6,14 +6,6 @@
 
 -- TABLE wastewater_structure
 
-ALTER TABLE tww_od.wastewater_structure ADD COLUMN _usage_current integer;
-COMMENT ON COLUMN tww_od.wastewater_structure._usage_current IS 'not part of the VSA-DSS data model
-added solely for TEKSI Wastewater & GEP
-has to be updated by triggers';
-ALTER TABLE tww_od.wastewater_structure ADD COLUMN _function_hierarchic integer;
-COMMENT ON COLUMN tww_od.wastewater_structure._function_hierarchic IS 'not part of the VSA-DSS data model
-added solely for TEKSI Wastewater & GEP
-has to be updated by triggers';
 ALTER TABLE tww_od.manhole ADD COLUMN _orientation numeric;
 COMMENT ON COLUMN tww_od.manhole._orientation IS 'not part of the VSA-DSS data model
 added solely for TEKSI Wastewater & GEP';

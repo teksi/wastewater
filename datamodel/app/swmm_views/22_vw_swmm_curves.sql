@@ -32,7 +32,7 @@ LEFT JOIN tww_od.pump pu ON pu.obj_id = of.obj_id
 LEFT JOIN tww_od.wastewater_node wn ON wn.obj_id = of.fk_wastewater_node
 LEFT JOIN tww_od.wastewater_structure ws ON ws.fk_main_wastewater_node = wn.obj_id
 LEFT JOIN tww_vl.wastewater_structure_status ws_st ON ws.status = ws_st.code
-LEFT JOIN tww_vl.channel_function_hierarchic cfhi ON cfhi.code=ws._function_hierarchic
+LEFT JOIN tww_vl.channel_function_hierarchic cfhi ON cfhi.code=wn._function_hierarchic
 WHERE ws_st.vsacode IN (6530, 6533, 8493, 6529, 6526, 7959)
 -- Attribute overflow_characteristics_digital does not exist anymore in VSA-DSS 2020
 --AND vl_oc_dig.vsacode = 6223  --'yes;
@@ -71,7 +71,7 @@ LEFT JOIN tww_od.prank_weir pw ON pw.obj_id = of.obj_id
 LEFT JOIN tww_od.wastewater_node wn ON wn.obj_id = of.fk_wastewater_node
 LEFT JOIN tww_od.wastewater_structure ws ON ws.fk_main_wastewater_node = wn.obj_id
 LEFT JOIN tww_vl.wastewater_structure_status ws_st ON ws.status = ws_st.code
-LEFT JOIN tww_vl.channel_function_hierarchic cfhi ON cfhi.code=ws._function_hierarchic
+LEFT JOIN tww_vl.channel_function_hierarchic cfhi ON cfhi.code=wn._function_hierarchic
 WHERE ws_st.vsacode IN (6530, 6533, 8493, 6529, 6526, 7959)
 -- Attribute overflow_characteristics_digital does not exist anymore in VSA-DSS 2020
 --AND vl_oc_dig.vsacode = 6223  --'yes;
@@ -105,5 +105,5 @@ LEFT JOIN tww_od.hydr_geometry hg on hg.obj_id = hr.fk_hydr_geometry
 LEFT JOIN tww_od.wastewater_node wn on hg.obj_id = wn.fk_hydr_geometry
 LEFT JOIN tww_od.wastewater_structure ws ON ws.fk_main_wastewater_node = wn.obj_id
 LEFT JOIN tww_vl.wastewater_structure_status ws_st ON ws.status = ws_st.code
-LEFT JOIN tww_vl.channel_function_hierarchic cfhi ON cfhi.code=ws._function_hierarchic
+LEFT JOIN tww_vl.channel_function_hierarchic cfhi ON cfhi.code=wn._function_hierarchic
 ORDER BY wn.obj_id, hr.water_depth)
