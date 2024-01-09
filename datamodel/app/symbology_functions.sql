@@ -102,7 +102,7 @@ BEGIN
       LEFT JOIN tww_od.reach re ON ch_ne.obj_id = re.obj_id
       LEFT JOIN tww_od.reach_point rp ON re.fk_reach_point_to = rp.obj_id
       LEFT JOIN tww_od.wastewater_networkelement ne ON rp.fk_wastewater_networkelement = ne.obj_id
-      WHERE ch_ne.fk_wastewater_structure = ch_obj_id;^
+      WHERE ch_ne.fk_wastewater_structure = ch_obj_id;
     EXECUTE tww_app.update_wastewater_node_symbology(_ne_to_id);
   EXCEPTION
     WHEN NO_DATA_FOUND THEN
