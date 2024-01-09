@@ -46,5 +46,5 @@ LEFT JOIN tww_vl.overflow_char_kind_overflow_char vl_oc_ki ON oc.kind_overflow_c
 LEFT JOIN tww_od.wastewater_node wn ON wn.obj_id = of.fk_wastewater_node
 LEFT JOIN tww_od.wastewater_structure ws ON ws.fk_main_wastewater_node = wn.obj_id
 LEFT JOIN tww_vl.wastewater_structure_status ws_st ON ws.status = ws_st.code
-LEFT JOIN tww_vl.channel_function_hierarchic cfhi ON cfhi.code=ws._function_hierarchic
+LEFT JOIN tww_vl.channel_function_hierarchic cfhi ON cfhi.code=wn._function_hierarchic
 WHERE ws_st.vsacode IN (6530, 6533, 8493, 6529, 6526, 7959);
