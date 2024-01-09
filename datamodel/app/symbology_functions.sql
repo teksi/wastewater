@@ -1,47 +1,4 @@
 --------------------------------------------------------
--- UPDATE wastewater structure symbology
--- Argument:
---  * obj_id of wastewater structure or NULL to update all
---------------------------------------------------------
-
-CREATE OR REPLACE FUNCTION tww_app.update_wastewater_structure_symbology(_obj_id text, _all boolean default false)
-  RETURNS VOID AS
-  $BODY$
-BEGIN
-UPDATE tww_od.wastewater_structure ws
-SET
-  _function_hierarchic = function_hierarchic,
-  _usage_current = usage_current
-FROM(
-  SELECT DISTINCT ON (ws.obj_id) ws.obj_id AS ws_obj_id,
-      COALESCE(first_value(CH_from.function_hierarchic) OVER w, first_value(CH_to.function_hierarchic) OVER w) AS function_hierarchic,
-      COALESCE(first_value(CH_from.usage_current) OVER w, first_value(CH_to.usage_current) OVER w) AS usage_current,
-      rank() OVER w AS hierarchy_rank
-    FROM
-      tww_od.wastewater_structure ws
-      LEFT JOIN tww_od.wastewater_networkelement ne ON ne.fk_wastewater_structure = ws.obj_id
-      LEFT JOIN tww_od.reach_point rp ON ne.obj_id = rp.fk_wastewater_networkelement
-      LEFT JOIN tww_od.reach                       re_from           ON re_from.fk_reach_point_from = rp.obj_id
-      LEFT JOIN tww_od.wastewater_networkelement   ne_from           ON ne_from.obj_id = re_from.obj_id
-      LEFT JOIN tww_od.channel                     CH_from           ON CH_from.obj_id = ne_from.fk_wastewater_structure
-      LEFT JOIN tww_vl.channel_function_hierarchic vl_fct_hier_from  ON CH_from.function_hierarchic = vl_fct_hier_from.code
-      LEFT JOIN tww_vl.channel_usage_current       vl_usg_curr_from  ON CH_from.usage_current = vl_usg_curr_from.code
-      LEFT JOIN tww_od.reach                       re_to          ON re_to.fk_reach_point_to = rp.obj_id
-      LEFT JOIN tww_od.wastewater_networkelement   ne_to          ON ne_to.obj_id = re_to.obj_id
-      LEFT JOIN tww_od.channel                     CH_to          ON CH_to.obj_id = ne_to.fk_wastewater_structure
-      LEFT JOIN tww_vl.channel_function_hierarchic vl_fct_hier_to ON CH_to.function_hierarchic = vl_fct_hier_to.code
-      LEFT JOIN tww_vl.channel_usage_current       vl_usg_curr_to ON CH_to.usage_current = vl_usg_curr_to.code
-    WHERE _all OR ws.obj_id = _obj_id
-      WINDOW w AS ( PARTITION BY ws.obj_id ORDER BY vl_fct_hier_from.order_fct_hierarchic ASC NULLS LAST, vl_fct_hier_to.order_fct_hierarchic ASC NULLS LAST,
-                                vl_usg_curr_from.order_usage_current ASC NULLS LAST, vl_usg_curr_to.order_usage_current ASC NULLS LAST ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)
-) symbology_ws
-WHERE symbology_ws.ws_obj_id = ws.obj_id;
-END
-$BODY$
-LANGUAGE plpgsql
-VOLATILE;
-
---------------------------------------------------------
 -- UPDATE wastewater node symbology
 -- Argument:
 --  * obj_id of wastewater networkelement or NULL to update all
@@ -111,9 +68,7 @@ CREATE OR REPLACE FUNCTION tww_app.ws_symbology_update_by_channel()
   RETURNS trigger AS
 $BODY$
 DECLARE
-  _ws_from_id TEXT;
   _ne_from_id TEXT;
-  _ws_to_id TEXT;
   _ne_to_id TEXT;
   ch_obj_id TEXT;
 BEGIN
@@ -127,14 +82,12 @@ BEGIN
   END CASE;
 
   BEGIN
-    SELECT ws.obj_id, ne.obj_id INTO _ws_from_id, _ne_from_id
+    SELECT ne.obj_id INTO  _ne_from_id
       FROM tww_od.wastewater_networkelement ch_ne
       LEFT JOIN tww_od.reach re ON ch_ne.obj_id = re.obj_id
       LEFT JOIN tww_od.reach_point rp ON re.fk_reach_point_from = rp.obj_id
       LEFT JOIN tww_od.wastewater_networkelement ne ON rp.fk_wastewater_networkelement = ne.obj_id
-      LEFT JOIN tww_od.wastewater_structure ws ON ne.fk_wastewater_structure = ws.obj_id
       WHERE ch_ne.fk_wastewater_structure = ch_obj_id;
-    EXECUTE tww_app.update_wastewater_structure_symbology(_ws_from_id);
     EXECUTE tww_app.update_wastewater_node_symbology(_ne_from_id);
   EXCEPTION
     WHEN NO_DATA_FOUND THEN
@@ -144,14 +97,12 @@ BEGIN
   END;
 
   BEGIN
-    SELECT ws.obj_id, ne.obj_id INTO _ws_to_id, _ne_to_id
+    SELECT ne.obj_id INTO _ne_to_id
       FROM tww_od.wastewater_networkelement ch_ne
       LEFT JOIN tww_od.reach re ON ch_ne.obj_id = re.obj_id
       LEFT JOIN tww_od.reach_point rp ON re.fk_reach_point_to = rp.obj_id
       LEFT JOIN tww_od.wastewater_networkelement ne ON rp.fk_wastewater_networkelement = ne.obj_id
-      LEFT JOIN tww_od.wastewater_structure ws ON ne.fk_wastewater_structure = ws.obj_id
-      WHERE ch_ne.fk_wastewater_structure = ch_obj_id;
-    EXECUTE tww_app.update_wastewater_structure_symbology(_ws_to_id);
+      WHERE ch_ne.fk_wastewater_structure = ch_obj_id;^
     EXECUTE tww_app.update_wastewater_node_symbology(_ne_to_id);
   EXCEPTION
     WHEN NO_DATA_FOUND THEN
@@ -171,7 +122,6 @@ CREATE OR REPLACE FUNCTION tww_app.ws_symbology_update_by_reach_point()
   RETURNS trigger AS
 $BODY$
 DECLARE
-  _ws_id TEXT;
   _ne_id TEXT;
   rp_obj_id TEXT;
 BEGIN
@@ -185,13 +135,11 @@ BEGIN
   END CASE;
 
   BEGIN
-    SELECT ws.obj_id, ne.obj_id INTO STRICT _ws_id, _ne_id
+    SELECT ne.obj_id INTO STRICT _ne_id
       FROM tww_od.wastewater_structure ws
       LEFT JOIN tww_od.wastewater_networkelement ne ON ws.obj_id = ne.fk_wastewater_structure
       LEFT JOIN tww_od.reach_point rp ON ne.obj_id = rp.fk_wastewater_networkelement
       WHERE rp.obj_id = rp_obj_id;
-
-    EXECUTE tww_app.update_wastewater_structure_symbology(_ws_id);
     EXECUTE tww_app.update_wastewater_node_symbology(_ne_id);
   EXCEPTION
     WHEN NO_DATA_FOUND THEN
@@ -210,9 +158,7 @@ CREATE OR REPLACE FUNCTION tww_app.ws_symbology_update_by_reach()
   RETURNS trigger AS
 $BODY$
 DECLARE
-  _ws_from_id TEXT;
   _ne_from_id TEXT;
-  _ws_to_id TEXT;
   _ne_to_id TEXT;
   symb_attribs RECORD;
   re_obj_id TEXT;
@@ -227,13 +173,11 @@ BEGIN
   END CASE;
 
   BEGIN
-    SELECT ws.obj_id, ne.obj_id INTO STRICT _ws_from_id, _ne_from_id
+    SELECT ne.obj_id INTO STRICT _ne_from_id
       FROM tww_od.reach re
       LEFT JOIN tww_od.reach_point rp ON rp.obj_id = re.fk_reach_point_from
       LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = rp.fk_wastewater_networkelement
-      LEFT JOIN tww_od.wastewater_structure ws ON ws.obj_id = ne.fk_wastewater_structure
       WHERE re.obj_id = re_obj_id;
-    EXECUTE tww_app.update_wastewater_structure_symbology(_ws_from_id);
     EXECUTE tww_app.update_wastewater_node_symbology(_ne_from_id);
   EXCEPTION
     WHEN NO_DATA_FOUND THEN
@@ -243,13 +187,11 @@ BEGIN
   END;
 
   BEGIN
-    SELECT ws.obj_id, ne.obj_id INTO STRICT _ws_to_id, _ne_to_id
+    SELECT ne.obj_id INTO STRICT _ne_to_id
       FROM tww_od.reach re
       LEFT JOIN tww_od.reach_point rp ON rp.obj_id = re.fk_reach_point_to
       LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = rp.fk_wastewater_networkelement
-      LEFT JOIN tww_od.wastewater_structure ws ON ws.obj_id = ne.fk_wastewater_structure
       WHERE re.obj_id = re_obj_id;
-    EXECUTE tww_app.update_wastewater_structure_symbology(_ws_to_id);
     EXECUTE tww_app.update_wastewater_node_symbology(_ne_to_id);
   EXCEPTION
     WHEN NO_DATA_FOUND THEN
