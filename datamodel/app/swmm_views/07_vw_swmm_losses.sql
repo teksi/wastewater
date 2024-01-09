@@ -30,7 +30,8 @@ LEFT JOIN tww_od.reach_point rp_from ON rp_from.obj_id::text = re.fk_reach_point
 LEFT JOIN tww_od.wastewater_node from_wn on from_wn.obj_id = rp_from.fk_wastewater_networkelement
 LEFT JOIN tww_od.throttle_shut_off_unit ts ON ts.fk_wastewater_node = from_wn.obj_id
 LEFT JOIN tww_od.wastewater_structure ws ON ws.obj_id = ne.fk_wastewater_structure
+LEFT JOIN tww_od.channel ch ON ws.obj_id = ch.obj_id
 LEFT JOIN tww_vl.wastewater_structure_status ws_st ON ws.status = ws_st.code
-LEFT JOIN tww_vl.channel_function_hierarchic ch_fhi ON wn._function_hierarchic = ch_fhi.code
+LEFT JOIN tww_vl.channel_function_hierarchic ch_fhi ON ch.function_hierarchic = ch_fhi.code
 WHERE ws_st.vsacode IN (6530, 6533, 8493, 6529, 6526, 7959)
 ;  -- wastewater node of the downstream wastewater node
