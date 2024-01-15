@@ -412,7 +412,6 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             WHEN undefined_table THEN
               RAISE NOTICE 'table tww_od.%% does not exist, rolling back',NEW.ws_type;
               RETURN OLD;
-          END;
         END CASE;
       END IF;
 

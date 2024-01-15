@@ -353,7 +353,6 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
             WHEN undefined_table THEN
               RAISE NOTICE 'table tww_od.%% does not exist, rolling back',NEW.ws_type;
               RETURN OLD;
-          END;
         END CASE;
       END IF;
 
