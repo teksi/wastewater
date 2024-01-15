@@ -405,7 +405,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
         CASE WHEN OLD.ws_type <> 'unknown' THEN
           EXECUTE FORMAT('DELETE FROM tww_od.%I WHERE obj_id = %I',OLD.ws_type,OLD.obj_id);
         END CASE;
-        
+
         CASE WHEN NEW.ws_type <> 'unknown' THEN
           EXECUTE FORMAT('INSERT INTO FROM tww_od.%I(obj_id) VALUES (%I)',NEW.ws_type,OLD.obj_id);
           EXCEPTION
