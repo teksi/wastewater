@@ -343,18 +343,17 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
       {update_wn}
 
       IF OLD.ws_type <> NEW.ws_type THEN
-        CASE
-          WHEN OLD.ws_type = 'wwtp_structure' THEN DELETE FROM tww_od.wwtp_structure WHERE obj_id = OLD.obj_id;
-          WHEN OLD.ws_type = 'small_treatment_plant' THEN DELETE FROM tww_od.small_treatment_plant WHERE obj_id = OLD.obj_id;
-          WHEN OLD.ws_type = 'drainless_toilet' THEN DELETE FROM tww_od.drainless_toilet WHERE obj_id = OLD.obj_id;
-          ELSE -- do nothing
+        CASE WHEN OLD.ws_type <> 'unknown' THEN
+          EXECUTE FORMAT('DELETE FROM tww_od.%I WHERE obj_id = %I',OLD.ws_type,OLD.obj_id);
         END CASE;
-
-        CASE
-          WHEN NEW.ws_type = 'wwtp_structure' THEN INSERT INTO tww_od.wwtp_structure (obj_id) VALUES(OLD.obj_id);
-          WHEN NEW.ws_type = 'small_treatment_plant' THEN INSERT INTO tww_od.small_treatment_plant (obj_id) VALUES(OLD.obj_id);
-          WHEN NEW.ws_type = 'drainless_toilet' THEN INSERT INTO tww_od.drainless_toilet (obj_id) VALUES(OLD.obj_id);
-          ELSE -- do nothing
+        
+        CASE WHEN NEW.ws_type <> 'unknown' THEN
+          EXECUTE FORMAT('INSERT INTO FROM tww_od.%I(obj_id) VALUES (%I)',NEW.ws_type,OLD.obj_id);
+          EXCEPTION
+            WHEN undefined_table THEN
+              RAISE NOTICE 'table tww_od.% does not exist, rolling back',NEW.ws_type;
+              RETURN OLD;
+          END;
         END CASE;
       END IF;
 

@@ -257,7 +257,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
     {insert_ii}
 
         ELSE
-         RAISE NOTICE 'Wastewater structure type not known (%)', NEW.ws_type; -- ERROR
+         RAISE NOTICE 'Wastewater structure type not handled by this view (%)', NEW.ws_type; -- ERROR
       END CASE;
 
     {insert_wn}
@@ -402,20 +402,17 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
       {update_wn}
 
       IF OLD.ws_type <> NEW.ws_type THEN
-        CASE
-          WHEN OLD.ws_type = 'manhole' THEN DELETE FROM tww_od.manhole WHERE obj_id = OLD.obj_id;
-          WHEN OLD.ws_type = 'special_structure' THEN DELETE FROM tww_od.special_structure WHERE obj_id = OLD.obj_id;
-          WHEN OLD.ws_type = 'discharge_point' THEN DELETE FROM tww_od.discharge_point WHERE obj_id = OLD.obj_id;
-          WHEN OLD.ws_type = 'infiltration_installation' THEN DELETE FROM tww_od.infiltration_installation WHERE obj_id = OLD.obj_id;
-          ELSE -- do nothing
+        CASE WHEN OLD.ws_type <> 'unknown' THEN
+          EXECUTE FORMAT('DELETE FROM tww_od.%I WHERE obj_id = %I',OLD.ws_type,OLD.obj_id);
         END CASE;
-
-        CASE
-          WHEN NEW.ws_type = 'manhole' THEN INSERT INTO tww_od.manhole (obj_id) VALUES(OLD.obj_id);
-          WHEN NEW.ws_type = 'special_structure' THEN INSERT INTO tww_od.special_structure (obj_id) VALUES(OLD.obj_id);
-          WHEN NEW.ws_type = 'discharge_point' THEN INSERT INTO tww_od.discharge_point (obj_id) VALUES(OLD.obj_id);
-          WHEN NEW.ws_type = 'infiltration_installation' THEN INSERT INTO tww_od.infiltration_installation (obj_id) VALUES(OLD.obj_id);
-          ELSE -- do nothing
+        
+        CASE WHEN NEW.ws_type <> 'unknown' THEN
+          EXECUTE FORMAT('INSERT INTO FROM tww_od.%I(obj_id) VALUES (%I)',NEW.ws_type,OLD.obj_id);
+          EXCEPTION
+            WHEN undefined_table THEN
+              RAISE NOTICE 'table tww_od.% does not exist, rolling back',NEW.ws_type;
+              RETURN OLD;
+          END;
         END CASE;
       END IF;
 
