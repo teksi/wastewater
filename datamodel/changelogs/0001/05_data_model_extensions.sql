@@ -36,10 +36,9 @@ added solely for TEKSI Wastewater & GEP';
 
 -- this column is an extension to the VSA data model and puts the _function_hierarchic in order
 ALTER TABLE tww_vl.channel_function_hierarchic ADD COLUMN order_fct_hierarchic smallint;
--- integrate and adapt Alter order_fct_hierarchic in tww_vl.channel_function_hierarchic #224
--- https://github.com/QGEP/datamodel/pull/224 //skip-keyword-check
--- this column is an extension to the VSA data model and puts the _usage_current in order
-ALTER TABLE tww_vl.channel_usage_current ADD COLUMN order_usage_current smallint;
+COMMENT ON tww_vl.channel_function_hierarchic.order_fct_hierarchic IS 'this is an extension by tww used to order
+features by function hierarchic. Alterations by the tww_manager are possible and affect labeling and symbology'
+
 UPDATE tww_vl.channel_function_hierarchic
 SET order_fct_hierarchic=
  array_position(
@@ -58,6 +57,29 @@ SET order_fct_hierarchic=
 		 ,5073 --swwf.road_drainage
 		 ,5067 --swwf.other
 		 ,5075 --swwf.unknown
+		 ]
+	 ,code);
+-- integrate and adapt Alter order_fct_hierarchic in tww_vl.channel_function_hierarchic #224
+-- https://github.com/QGEP/datamodel/pull/224 //skip-keyword-check
+-- this column is an extension to the VSA data model and puts the _usage_current in order
+ALTER TABLE tww_vl.channel_usage_current ADD COLUMN order_usage_current smallint;
+COMMENT ON tww_vl.channel_function_hierarchic.order_fct_hierarchic IS 'this is an extension by tww used to order
+features by current usage. Alterations by the tww_manager are possible and affect labeling and symbology'
+
+
+UPDATE tww_vl.channel_usage_current
+SET order_usage_current=
+ array_position(
+	 ARRAY[
+  	       4522 -- combined_wastewater
+		 , 4526 -- wastewater
+ 		 , 4524 -- industrial_wastewater
+		 , 4518 -- creek_water
+		 , 4516 -- discharged_combined_wastewater
+		 , 9023 -- surface_water
+		 , 4514 -- clean_wastewater		 
+		 , 4571 -- unknown
+		 , 5322 -- other
 		 ]
 	 ,code);
 
@@ -79,3 +101,24 @@ ALTER TABLE tww_od.wastewater_node ADD COLUMN _status integer;
 COMMENT ON COLUMN tww_od.wastewater_node._status IS 'not part of the VSA-DSS data model
 added solely for TEKSI Wastewater & GEP
 has to be updated by triggers';
+
+-- this column is an extension to the VSA data model and defines whether connected channels are included in inflow/outflow labeling based on function_hierarchic
+ALTER TABLE tww_vl.channel_function_hierarchic ADD COLUMN cfg_include_in_ws_labels boolean DEFAULT FALSE;
+UPDATE tww_vl.channel_function_hierarchic SET cfg_include_in_ws_labels=TRUE WHERE code=ANY('{5062,5064,5066,5068,5069,5070,5071,5072,5074}');
+
+-- this column is an extension to the VSA data model and defines whether connected channels are included in inflow/outflow labeling based on function_hierarchic
+ALTER TABLE tww_vl.wastewater_structure_status ADD COLUMN cfg_include_in_ws_labels boolean DEFAULT FALSE;
+UPDATE tww_vl.wastewater_structure_status SET cfg_include_in_ws_labels=TRUE WHERE code=ANY('{8493,6530,6533}');
+
+CREATE TABLE IF NOT EXISTS tww_od.tww_labels
+(
+    id uuid NOT NULL DEFAULT uuid_generate_v4(),
+	obj_id character varying(16) COLLATE pg_catalog."default" NOT NULL,
+    label_type character varying(10),
+	label_text text COLLATE pg_catalog."default"
+	CONSTRAINT pkey_tww_od_labels_id PRIMARY KEY (id)
+	, CONSTRAINT unique_tww_od_labels UNIQUE (obj_id,label_type)
+);
+
+COMMENT ON TABLE tww_od.tww_labels IS 'stores all labels. not part of the VSA-DSS data model,
+added solely for TEKSI wastewater. has to be updated by triggers';
