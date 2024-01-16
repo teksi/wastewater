@@ -77,7 +77,7 @@ SET order_usage_current=
 		 , 4518 -- creek_water
 		 , 4516 -- discharged_combined_wastewater
 		 , 9023 -- surface_water
-		 , 4514 -- clean_wastewater		 
+		 , 4514 -- clean_wastewater
 		 , 4571 -- unknown
 		 , 5322 -- other
 		 ]
