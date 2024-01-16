@@ -333,11 +333,11 @@ CREATE OR REPLACE FUNCTION tww_app.update_reach_point_label(_obj_id text,
 
 -- check value lists for label inclusion
 SELECT array_agg(code) INTO _labeled_ws_status
-FROM qgep_vl.wastewater_structure_status
+FROM tww_vl.wastewater_structure_status
 WHERE cfg_include_in_ws_labels;
 
 SELECT array_agg(code) INTO _labeled_ch_func_hier
-FROM qgep_vl.channel_function_hierarchic
+FROM tww_vl.channel_function_hierarchic
 WHERE cfg_include_in_ws_labels;
 
     with
@@ -365,8 +365,8 @@ WHERE cfg_include_in_ws_labels;
       LEFT JOIN tww_od.wastewater_networkelement ne_re ON ne_re.obj_id = re.obj_id
       LEFT JOIN tww_od.channel ch ON ne_re.fk_wastewater_structure = ch.obj_id
 	  LEFT JOIN tww_od.wastewater_structure ws ON ne_re.fk_wastewater_structure = ws.obj_id
-	  LEFT JOIN qgep_vl.channel_function_hierarchic vl_fh ON vl_fh.code = ch.function_hierarchic
-	  LEFT JOIN qgep_vl.channel_usage_current vl_uc ON vl_uc.code = ch.usage_current
+	  LEFT JOIN tww_vl.channel_function_hierarchic vl_fh ON vl_fh.code = ch.function_hierarchic
+	  LEFT JOIN tww_vl.channel_usage_current vl_uc ON vl_uc.code = ch.usage_current
 	    WHERE ch_nd.obj_id is null -- do not label channels
 	  AND ch.function_hierarchic= ANY(_labeled_ch_func_hier)
 			AND ws.status = ANY(_labeled_ws_status)
