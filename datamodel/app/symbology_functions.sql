@@ -56,7 +56,7 @@ BEGIN
 -- being triggered for all rows. See https://github.com/QGEP/datamodel/pull/166#issuecomment-760245405 //skip-keyword-check
 IF _all THEN
   RAISE INFO 'Temporarily disabling symbology triggers';
-  PERFORM tww_sys.drop_symbology_triggers();
+  PERFORM tww_sys.disable_symbology_triggers();
 END IF;
 
 
@@ -96,7 +96,7 @@ WHERE symbology_ne.ne_obj_id = n.obj_id;
 -- See above
 IF _all THEN
   RAISE INFO 'Reenabling symbology triggers';
-  PERFORM tww_sys.create_symbology_triggers();
+  PERFORM tww_sys.enable_symbology_triggers();
 END IF;
 
 END
@@ -664,111 +664,34 @@ $BODY$
 -- To temporarily disable these cache refreshes for batch jobs like migrations
 -----------------------------------------------------------------------
 
-CREATE OR REPLACE FUNCTION tww_sys.drop_symbology_triggers() RETURNS VOID AS $$
+CREATE OR REPLACE FUNCTION tww_sys.disable_symbology_triggers() RETURNS VOID AS $$
+DECLARE
+    tbl text;
+	trig text;
 BEGIN
-  DROP TRIGGER IF EXISTS on_reach_point_update ON tww_od.reach_point;
-  DROP TRIGGER IF EXISTS on_reach_2_change ON tww_od.reach;
-  DROP TRIGGER IF EXISTS on_reach_1_delete ON tww_od.reach;
-  DROP TRIGGER IF EXISTS on_wastewater_structure_update ON tww_od.wastewater_structure;
-  DROP TRIGGER IF EXISTS ws_label_update_by_wastewater_networkelement ON tww_od.wastewater_networkelement;
-  DROP TRIGGER IF EXISTS on_structure_part_change ON tww_od.structure_part;
-  DROP TRIGGER IF EXISTS on_cover_change ON tww_od.cover;
-  DROP TRIGGER IF EXISTS on_wasterwaternode_change ON tww_od.wastewater_node;
-  DROP TRIGGER IF EXISTS ws_symbology_update_by_reach ON tww_od.reach;
-  DROP TRIGGER IF EXISTS ws_symbology_update_by_channel ON tww_od.channel;
-  DROP TRIGGER IF EXISTS ws_symbology_update_by_reach_point ON tww_od.reach_point;
-  DROP TRIGGER IF EXISTS calculate_reach_length ON tww_od.reach;
-  RETURN;
-END;
+   FOR tbl,trig IN SELECT table_name,trigger_name FROM tww_sys.symbology_triggers LOOP
+	EXECUTE FORMAT('ALTER TABLE %s DISABLE TRIGGER %I;', tbl,trig);
+   END LOOP;
+END; 
 $$ LANGUAGE plpgsql;
 
 -----------------------------------------------------------------------
 -- Create Symbology Triggers
 -----------------------------------------------------------------------
 
-CREATE OR REPLACE FUNCTION tww_sys.create_symbology_triggers() RETURNS VOID AS $$
+CREATE OR REPLACE FUNCTION tww_sys.enable_symbology_triggers() RETURNS VOID AS $$
+DECLARE
+    tbl text;
+	trig text;
 BEGIN
-  -- only update -> insert and delete are handled by reach trigger
-  CREATE TRIGGER on_reach_point_update
-  AFTER UPDATE
-    ON tww_od.reach_point
-  FOR EACH ROW
-    EXECUTE PROCEDURE tww_app.on_reach_point_update();
-
-  CREATE TRIGGER on_reach_2_change
-  AFTER INSERT OR UPDATE OR DELETE
-    ON tww_od.reach
-  FOR EACH ROW
-    EXECUTE PROCEDURE tww_app.on_reach_change();
-
-  CREATE TRIGGER on_reach_1_delete
-  AFTER DELETE
-    ON tww_od.reach
-  FOR EACH ROW
-    EXECUTE PROCEDURE tww_app.on_reach_delete();
-
-  CREATE TRIGGER calculate_reach_length
-  BEFORE INSERT OR UPDATE
-    ON tww_od.reach
-  FOR EACH ROW
-    EXECUTE PROCEDURE tww_app.calculate_reach_length();
-
-  CREATE TRIGGER ws_symbology_update_by_reach
-  AFTER INSERT OR UPDATE OR DELETE
-    ON tww_od.reach
-  FOR EACH ROW
-    EXECUTE PROCEDURE tww_app.ws_symbology_update_by_reach();
-
-  CREATE TRIGGER on_wastewater_structure_update
-  AFTER UPDATE
-    ON tww_od.wastewater_structure
-  FOR EACH ROW
-    EXECUTE PROCEDURE tww_app.on_wastewater_structure_update();
-
-  CREATE TRIGGER ws_label_update_by_wastewater_networkelement
-  AFTER INSERT OR UPDATE OR DELETE
-    ON tww_od.wastewater_networkelement
-  FOR EACH ROW
-    EXECUTE PROCEDURE tww_app.on_structure_part_change_networkelement();
-
-  CREATE TRIGGER on_structure_part_change
-  AFTER INSERT OR UPDATE OR DELETE
-    ON tww_od.structure_part
-  FOR EACH ROW
-    EXECUTE PROCEDURE tww_app.on_structure_part_change_networkelement();
-
-  CREATE TRIGGER on_cover_change
-  AFTER INSERT OR UPDATE OR DELETE
-    ON tww_od.cover
-  FOR EACH ROW
-    EXECUTE PROCEDURE tww_app.on_cover_change();
-
-  CREATE TRIGGER on_wasterwaternode_change
-  AFTER INSERT OR UPDATE
-    ON tww_od.wastewater_node
-  FOR EACH ROW
-    EXECUTE PROCEDURE tww_app.on_wasterwaternode_change();
-
-  CREATE TRIGGER ws_symbology_update_by_channel
-  AFTER INSERT OR UPDATE OR DELETE
-  ON tww_od.channel
-  FOR EACH ROW
-  EXECUTE PROCEDURE tww_app.ws_symbology_update_by_channel();
-
-  -- only update -> insert and delete are handled by reach trigger
-  CREATE TRIGGER ws_symbology_update_by_reach_point
-  AFTER UPDATE
-    ON tww_od.reach_point
-  FOR EACH ROW
-    EXECUTE PROCEDURE tww_app.ws_symbology_update_by_reach_point();
-
-
-  RETURN;
-END;
+   FOR tbl,trig IN SELECT table_name,trigger_name FROM tww_sys.symbology_triggers LOOP
+	EXECUTE FORMAT('ALTER TABLE %s ENABLE TRIGGER %I;', tbl,trig);
+   END LOOP;
+END; 
 $$ LANGUAGE plpgsql;
 
 -- Activate triggers by default
-SELECT tww_sys.create_symbology_triggers();
+SELECT tww_sys.enable_symbology_triggers();
 
 -- only update -> insert and delete are handled by reach trigger
 CREATE TRIGGER tr_symb_on_reach_point_update
