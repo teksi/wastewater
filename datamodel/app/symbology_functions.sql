@@ -673,7 +673,7 @@ BEGIN
 	EXECUTE FORMAT('ALTER TABLE %s DISABLE TRIGGER %I;', tbl,trig);
    END LOOP;
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
 
 -----------------------------------------------------------------------
 -- Create Symbology Triggers
@@ -688,7 +688,7 @@ BEGIN
 	EXECUTE FORMAT('ALTER TABLE %s ENABLE TRIGGER %I;', tbl,trig);
    END LOOP;
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
 
 -- only update -> insert and delete are handled by reach trigger
   CREATE TRIGGER on_reach_point_update
