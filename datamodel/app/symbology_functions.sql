@@ -672,7 +672,7 @@ BEGIN
    FOR tbl,trig IN SELECT table_name,trigger_name FROM tww_sys.symbology_triggers LOOP
 	EXECUTE FORMAT('ALTER TABLE %s DISABLE TRIGGER %I;', tbl,trig);
    END LOOP;
-END; 
+END;
 $$ LANGUAGE plpgsql;
 
 -----------------------------------------------------------------------
@@ -687,7 +687,7 @@ BEGIN
    FOR tbl,trig IN SELECT table_name,trigger_name FROM tww_sys.symbology_triggers LOOP
 	EXECUTE FORMAT('ALTER TABLE %s ENABLE TRIGGER %I;', tbl,trig);
    END LOOP;
-END; 
+END;
 $$ LANGUAGE plpgsql;
 
 -- only update -> insert and delete are handled by reach trigger
