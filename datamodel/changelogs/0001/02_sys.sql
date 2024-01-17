@@ -23,13 +23,13 @@ END;
 $$ LANGUAGE PLPGSQL;
 
 
-CREATE TABLE tww_sys.symbology_triggers( 
+CREATE TABLE tww_sys.symbology_triggers(
     id uuid PRIMARY KEY DEFAULT uuid_generate_v4()
   , table_name text
   , trigger_name text);
 COMMENT ON TABLE tww_sys.symbology_triggers IS 'Lists all symbology triggers to be disabled/enabled';
 INSERT INTO tww_sys.symbology_triggers(table_name, trigger_name)
-VALUES 
+VALUES
     ('tww_od.reach_point','on_reach_point_update')
   , ('tww_od.reach','on_reach_2_change')
   , ('tww_od.reach','on_reach_2_change')
@@ -42,4 +42,3 @@ VALUES
   , ('tww_od.channel','ws_symbology_update_by_channel')
   , ('tww_od.reach_point','ws_symbology_update_by_reach_point')
   , ('tww_od.reach','calculate_reach_length')
-  
