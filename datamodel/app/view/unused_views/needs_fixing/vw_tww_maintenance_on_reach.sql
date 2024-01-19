@@ -33,8 +33,3 @@ CREATE OR REPLACE VIEW tww_app.vw_tww_maintenance_on_reach AS
      LEFT JOIN tww_od.wastewater_networkelement ne ON ne.fk_wastewater_structure::text = ws.obj_id::text
      LEFT JOIN tww_od.reach reach ON reach.obj_id::text = ne.obj_id::text
   WHERE ch.obj_id IS NOT NULL;
-
-ALTER TABLE tww_app.vw_tww_maintenance_on_reach
-  OWNER TO postgres;
-GRANT ALL ON TABLE tww_app.vw_tww_maintenance_on_reach TO postgres;
-GRANT ALL ON TABLE tww_app.vw_tww_maintenance_on_reach TO tww;
