@@ -299,7 +299,7 @@ VOLATILE;
 --  * all True to update all
 --------------------------------------------------------
 
-CREATE OR REPLACE FUNCTION tww_app.update_wastewater_structure_fk_main_wastewater_node(_obj_id text, _all boolean default false)
+CREATE OR REPLACE FUNCTION tww_app.wastewater_structure_update_fk_main_wastewater_node(_obj_id text, _all boolean default false)
   RETURNS VOID AS
   $BODY$
   DECLARE
