@@ -354,9 +354,7 @@ class InterlisImporterExporter:
     def _clear_ili_schema(self, recreate_schema=False):
         logger.info("CONNECTING TO DATABASE...")
 
-        connection = psycopg2.connect(
-            get_pgconf_as_psycopg2_dsn(), options="-c statement_timeout=1000"
-        )
+        connection = psycopg2.connect(get_pgconf_as_psycopg2_dsn())
         connection.set_session(autocommit=True)
         cursor = connection.cursor()
 
