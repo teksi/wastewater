@@ -411,7 +411,7 @@ BEGIN
 
   EXECUTE tww_app.update_wastewater_structure_label(affected_sp.fk_wastewater_structure);
   EXECUTE tww_app.update_depth(affected_sp.fk_wastewater_structure);
-  EXECUTE tww_app.update_wastewater_structure_fk_main_cover(affected_sp.fk_wastewater_structure);
+  EXECUTE tww_app.wastewater_structure_update_fk_main_cover(affected_sp.fk_wastewater_structure);
 
   RETURN NEW;
 END; $BODY$
