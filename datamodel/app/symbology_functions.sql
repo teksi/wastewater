@@ -283,7 +283,7 @@ BEGIN
       LEFT JOIN tww_od.structure_part sp ON sp.fk_wastewater_structure = ws.obj_id
       LEFT JOIN tww_od.cover co ON sp.obj_id = co.obj_id
       LEFT JOIN tww_od.channel ch ON ch.obj_id = ws.obj_id
-      WHERE (_all OR ws.obj_id = _obj_id ) AND ch.obj_id IS NULL AND ws.fk_main_cover IS NULL
+      WHERE ch.obj_id IS NULL AND (_all OR ws.obj_id = _obj_id OR ( NOT _all AND _obj_id is NULL AND ws.fk_main_cover IS NULL))
   ) ws_covers
   WHERE ws.obj_id = ws_covers.obj_id;
 END
@@ -314,7 +314,7 @@ BEGIN
       LEFT JOIN tww_od.wastewater_networkelement ne ON ne.fk_wastewater_structure = ws.obj_id
       LEFT JOIN tww_od.wastewater_node wn ON ne.obj_id = wn.obj_id
       LEFT JOIN tww_od.channel ch ON ch.obj_id = ws.obj_id
-      WHERE (_all OR ws.obj_id = _obj_id ) AND ch.obj_id IS NULL AND ws.fk_main_wastewater_node IS NULL
+      WHERE ch.obj_id IS NULL AND (_all OR ws.obj_id = _obj_id OR ( NOT _all AND _obj_id is NULL AND ws.fk_main_wastewater_node IS NULL))
   ) ws_nodes
   WHERE ws.obj_id = ws_nodes.obj_id;
 END
