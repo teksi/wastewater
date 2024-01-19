@@ -669,9 +669,19 @@ DECLARE
     tbl text;
 	trig text;
 BEGIN
-   FOR tbl,trig IN SELECT table_name,trigger_name FROM tww_sys.symbology_triggers LOOP
-	EXECUTE FORMAT('ALTER TABLE %s DISABLE TRIGGER %I;', tbl,trig);
-   END LOOP;
+  ALTER TABLE tww_od.reach_point DISABLE TRIGGER on_reach_point_update;
+  ALTER TABLE tww_od.reach DISABLE TRIGGER on_reach_2_change;
+  ALTER TABLE tww_od.reach DISABLE TRIGGER on_reach_1_delete;
+  ALTER TABLE tww_od.wastewater_structure DISABLE TRIGGER on_wastewater_structure_update;
+  ALTER TABLE tww_od.wastewater_networkelement DISABLE TRIGGER ws_label_update_by_wastewater_networkelement;
+  ALTER TABLE tww_od.structure_part DISABLE TRIGGER on_structure_part_change;
+  ALTER TABLE tww_od.cover DISABLE TRIGGER on_cover_change;
+  ALTER TABLE tww_od.wastewater_node DISABLE TRIGGER on_wasterwaternode_change;
+  ALTER TABLE tww_od.reach DISABLE TRIGGER ws_symbology_update_by_reach;
+  ALTER TABLE tww_od.channel DISABLE TRIGGER ws_symbology_update_by_channel;
+  ALTER TABLE tww_od.reach_point DISABLE TRIGGER ws_symbology_update_by_reach_point;
+  ALTER TABLE tww_od.reach DISABLE TRIGGER calculate_reach_length;
+  RETURN;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
@@ -684,9 +694,18 @@ DECLARE
     tbl text;
 	trig text;
 BEGIN
-   FOR tbl,trig IN SELECT table_name,trigger_name FROM tww_sys.symbology_triggers LOOP
-	EXECUTE FORMAT('ALTER TABLE %s ENABLE TRIGGER %I;', tbl,trig);
-   END LOOP;
+  ALTER TABLE tww_od.reach_point ENABLE TRIGGER on_reach_point_update;
+  ALTER TABLE tww_od.reach ENABLE TRIGGER on_reach_2_change;
+  ALTER TABLE tww_od.reach ENABLE TRIGGER on_reach_1_delete;
+  ALTER TABLE tww_od.wastewater_structure ENABLE TRIGGER on_wastewater_structure_update;
+  ALTER TABLE tww_od.wastewater_networkelement ENABLE TRIGGER ws_label_update_by_wastewater_networkelement;
+  ALTER TABLE tww_od.structure_part ENABLE TRIGGER on_structure_part_change;
+  ALTER TABLE tww_od.cover ENABLE TRIGGER on_cover_change;
+  ALTER TABLE tww_od.wastewater_node ENABLE TRIGGER on_wasterwaternode_change;
+  ALTER TABLE tww_od.reach ENABLE TRIGGER ws_symbology_update_by_reach;
+  ALTER TABLE tww_od.channel ENABLE TRIGGER ws_symbology_update_by_channel;
+  ALTER TABLE tww_od.reach_point ENABLE TRIGGER ws_symbology_update_by_reach_point;
+  ALTER TABLE tww_od.reach ENABLE TRIGGER calculate_reach_length;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
