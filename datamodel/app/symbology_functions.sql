@@ -895,5 +895,3 @@ AFTER UPDATE
 ON tww_od.reach_point
 FOR EACH ROW
 EXECUTE PROCEDURE tww_app.ws_symbology_update_by_reach_point();
-
-
