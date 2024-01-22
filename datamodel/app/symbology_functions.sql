@@ -267,8 +267,9 @@ LANGUAGE plpgsql VOLATILE;
 -- Argument:
 --  * obj_id of wastewater structure
 --  * all True to update all
+--  * omit both arguments to update all where fk_main_cover is null
 --------------------------------------------------------
-CREATE OR REPLACE FUNCTION tww_app.wastewater_structure_update_fk_main_cover(_obj_id text, _all boolean default false)
+CREATE OR REPLACE FUNCTION tww_app.wastewater_structure_update_fk_main_cover(_obj_id text default NULL, _all boolean default false)
   RETURNS VOID AS
   $BODY$
   DECLARE
@@ -297,9 +298,10 @@ VOLATILE;
 -- Argument:
 --  * obj_id of wastewater structure
 --  * all True to update all
+--  * omit both arguments to update all where fk_main_wastewater_node is null
 --------------------------------------------------------
 
-CREATE OR REPLACE FUNCTION tww_app.wastewater_structure_update_fk_main_wastewater_node(_obj_id text, _all boolean default false)
+CREATE OR REPLACE FUNCTION tww_app.wastewater_structure_update_fk_main_wastewater_node(_obj_id text default NULL, _all boolean default false)
   RETURNS VOID AS
   $BODY$
   DECLARE
