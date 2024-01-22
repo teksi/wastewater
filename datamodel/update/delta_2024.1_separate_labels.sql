@@ -1,6 +1,6 @@
 --drop label COLUMNS
 
-ALTER TABLE tww_od.wastewater_structure 
+ALTER TABLE tww_od.wastewater_structure
 DROP COLUMN _label,
 DROP COLUMN cover_label,
 DROP COLUMN bottom_label,
