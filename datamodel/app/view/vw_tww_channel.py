@@ -6,7 +6,7 @@ import argparse
 import os
 
 import psycopg2
-from pirogue.utils import insert_command, select_columns, table_parts, update_command
+from pirogue.utils import select_columns, table_parts
 from yaml import safe_load
 
 
@@ -113,7 +113,6 @@ def vw_tww_channel(pg_service: str = None, extra_definition: dict = None):
     )
 
     cursor.execute(view_sql)
-
 
     extras = """
     COMMENT ON VIEW tww_app.vw_tww_channel IS 'Is Read only. Used to set channel identifiers';
