@@ -273,7 +273,7 @@ if __name__ == "__main__":
         "--tww_reach_extra",
         help="YAML definition file path for additions to vw_tww_reach view",
     )
-        parser.add_argument(
+    parser.add_argument(
         "--tww_channel_extra",
         help="YAML definition file path for additions to vw_tww_channel view",
     )
