@@ -25,7 +25,7 @@ def create_views(
     pg_service: str = "pg_teksi_wastewater",
     tww_reach_extra: str = None,
     tww_wastewater_structure_extra: str = None,
-    tww_channel_extra: str=None
+    tww_channel_extra: str = None,
 ):
     """
     Creates the views for TEKSI Wastewater & GEP
