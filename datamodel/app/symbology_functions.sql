@@ -301,15 +301,11 @@ VOLATILE;
 
 
 --------------------------------------------------------
--- UPDATE wastewater structure label
+-- UPDATE reach point label
 -- Argument:
 --  * obj_id of wastewater structure or NULL to update all
 --------------------------------------------------------
 
------- 14.9.2022 index labels by wastewater structure for VSA-DSS compliance /cymed
------- 14.9.2022 use idx only when more than one entry /cymed
------- 15.8.2018 uk adapted label display only for primary wastwater system
------- WHERE (_all OR NE.fk_wastewater_structure = _obj_id) and CH_to.function_hierarchic in (5062,5064,5066,5068,5069,5070,5071,5072,5074)  ----label only reaches with function_hierarchic=pwwf.*
 
 CREATE OR REPLACE FUNCTION tww_app.update_reach_point_label(_obj_id text,
 	_all boolean default false
@@ -430,7 +426,7 @@ WHERE cfg_include_in_ws_labels;
   , obj_id
   FROM null_label)
  --Upsert reach_point labels
-  INSERT INTO tww_od.tww_labels (obj_id,label_type,label_text)
+  INSERT INTO tww_app.tww_labels (obj_id,label_type,label_text)
   SELECT  rp_label.obj_id,'main',rp_label.new_label
   FROM rp_label
   ON CONFLICT ON CONSTRAINT unique_tww_od_labels
@@ -441,6 +437,14 @@ END;
 $BODY$
 LANGUAGE plpgsql
 VOLATILE;
+
+
+--------------------------------------------------------
+-- UPDATE wastewater structure label
+-- Argument:
+--  * obj_id of wastewater structure or NULL to update all
+--------------------------------------------------------
+
 
 CREATE OR REPLACE FUNCTION tww_app.update_wastewater_structure_label(_obj_id text, _all boolean default false)
   RETURNS VOID AS
@@ -518,7 +522,7 @@ WITH labeled_ws as
 		,  NULL::text AS rpo_label
       FROM tww_od.reach_point RP
       LEFT JOIN tww_od.wastewater_networkelement NE ON RP.fk_wastewater_networkelement = NE.obj_id
-	  LEFT JOIN tww_od.tww_labels lb on RP.obj_id=lb.obj_id and lb.label_type='main'
+	  LEFT JOIN tww_app.tww_labels lb on RP.obj_id=lb.obj_id and lb.label_type='main'
       WHERE (_all OR NE.fk_wastewater_structure = _obj_id) and left(lb.label_text,1)='I'
       -- output
       UNION
@@ -534,14 +538,14 @@ WITH labeled_ws as
 		,  NULL::text AS rpo_label
       FROM tww_od.reach_point RP
       LEFT JOIN tww_od.wastewater_networkelement NE ON RP.fk_wastewater_networkelement = NE.obj_id
-	  LEFT JOIN tww_od.tww_labels lb on RP.obj_id=lb.obj_id and lb.label_type='main'
+	  LEFT JOIN tww_app.tww_labels lb on RP.obj_id=lb.obj_id and lb.label_type='main'
       WHERE (_all OR NE.fk_wastewater_structure = _obj_id) and left(lb.label_text,1)='O'
 	) parts ON parts.ws = ws.obj_id
     WHERE _all OR ws.obj_id =_obj_id
     ) all_parts
 	GROUP BY ws_obj_id, COALESCE(ws_identifier, '')
 )
-  INSERT INTO tww_od.tww_labels lab (obj_id,label_type,label_text)
+  INSERT INTO tww_app.tww_labels lab (obj_id,label_type,label_text)
   SELECT
       ws_obj_id
     , unnest(
@@ -564,6 +568,7 @@ END
 $BODY$
 LANGUAGE plpgsql
 VOLATILE;
+
 
 --------------------------------------------------
 -- ON COVER CHANGE

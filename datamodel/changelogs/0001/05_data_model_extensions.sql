@@ -17,6 +17,7 @@ has to be updated by triggers';
 ALTER TABLE tww_od.manhole ADD COLUMN _orientation numeric;
 COMMENT ON COLUMN tww_od.manhole._orientation IS 'not part of the VSA-DSS data model
 added solely for TEKSI Wastewater & GEP';
+/*
 ALTER TABLE tww_od.wastewater_structure ADD COLUMN _label text;
 COMMENT ON COLUMN tww_od.wastewater_structure._label IS 'not part of the VSA-DSS data model
 added solely for TEKSI Wastewater & GEP';
@@ -32,7 +33,7 @@ added solely for TEKSI Wastewater & GEP';
 ALTER TABLE tww_od.wastewater_structure ADD COLUMN _bottom_label text;
 COMMENT ON COLUMN tww_od.wastewater_structure._bottom_label IS 'stores the bottom altitude to be used for labelling, not part of the VSA-DSS data model
 added solely for TEKSI Wastewater & GEP';
-
+*/
 
 -- this column is an extension to the VSA data model and puts the _function_hierarchic in order
 ALTER TABLE tww_vl.channel_function_hierarchic ADD COLUMN order_fct_hierarchic smallint;
@@ -110,7 +111,7 @@ UPDATE tww_vl.channel_function_hierarchic SET cfg_include_in_ws_labels=TRUE WHER
 ALTER TABLE tww_vl.wastewater_structure_status ADD COLUMN cfg_include_in_ws_labels boolean DEFAULT FALSE;
 UPDATE tww_vl.wastewater_structure_status SET cfg_include_in_ws_labels=TRUE WHERE code=ANY('{8493,6530,6533}');
 
-CREATE TABLE IF NOT EXISTS tww_od.tww_labels
+CREATE TABLE IF NOT EXISTS tww_app.tww_labels
 (
     id uuid NOT NULL DEFAULT uuid_generate_v4(),
 	obj_id character varying(16) COLLATE pg_catalog."default" NOT NULL,
@@ -120,5 +121,5 @@ CREATE TABLE IF NOT EXISTS tww_od.tww_labels
 	, CONSTRAINT unique_tww_od_labels UNIQUE (obj_id,label_type)
 );
 
-COMMENT ON TABLE tww_od.tww_labels IS 'stores all labels. not part of the VSA-DSS data model,
+COMMENT ON TABLE tww_app.tww_labels IS 'stores all labels. not part of the VSA-DSS data model,
 added solely for TEKSI wastewater. has to be updated by triggers';
