@@ -25,6 +25,7 @@ def create_views(
     pg_service: str = "pg_teksi_wastewater",
     tww_reach_extra: str = None,
     tww_wastewater_structure_extra: str = None,
+    tww_channel_extra: str=None
 ):
     """
     Creates the views for TEKSI Wastewater & GEP
@@ -32,6 +33,7 @@ def create_views(
     :param pg_service: the PostgreSQL service, if not given it will be determined from environment variable in Pirogue
     :param tww_reach_extra: YAML file path of the definition of additional columns for vw_tww_reach view
     :param tww_wastewater_structure_extra: YAML file path of the definition of additional columns for vw_tww_wastewater_structure_extra view
+    :param tww_channel_extra: YAML file path of the definition of additional columns for vw_tww_channel_extra view
     """  # noqa E501
 
     variables = {"SRID": srid}
@@ -41,6 +43,8 @@ def create_views(
         tww_reach_extra = safe_load(open(tww_reach_extra))
     if tww_wastewater_structure_extra:
         tww_wastewater_structure_extra = safe_load(open(tww_wastewater_structure_extra))
+    if tww_channel_extra:
+        tww_wastewater_structure_extra = safe_load(open(tww_channel_extra))
 
     run_sql("app/view/vw_dictionary_value_list.sql", pg_service, variables)
 
@@ -194,6 +198,7 @@ def create_views(
         srid, pg_service=pg_service, extra_definition=tww_wastewater_structure_extra
     )
     vw_tww_reach(pg_service=pg_service, extra_definition=tww_reach_extra)
+    vw_tww_channel(pg_service=pg_service, extra_definition=tww_channel_extra)
 
     run_sql("app/view/vw_file.sql", pg_service, variables)
 
@@ -268,6 +273,10 @@ if __name__ == "__main__":
         "--tww_reach_extra",
         help="YAML definition file path for additions to vw_tww_reach view",
     )
+        parser.add_argument(
+        "--tww_channel_extra",
+        help="YAML definition file path for additions to vw_tww_channel view",
+    )
     args = parser.parse_args()
 
     create_views(
@@ -275,4 +284,5 @@ if __name__ == "__main__":
         args.pg_service,
         tww_reach_extra=args.tww_reach_extra,
         tww_wastewater_structure_extra=args.tww_wastewater_structure_extra,
+        tww_channel_extra=args.tww_channel_extra,
     )
