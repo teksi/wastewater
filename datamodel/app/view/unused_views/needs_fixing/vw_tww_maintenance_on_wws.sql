@@ -29,9 +29,3 @@ CREATE OR REPLACE VIEW tww_app.vw_tww_maintenance_on_wws AS
      LEFT JOIN tww_od.wastewater_networkelement ne ON ne.fk_wastewater_structure::text = ws.obj_id::text
      LEFT JOIN tww_od.wastewater_node node ON node.obj_id::text = ne.obj_id::text
    WHERE node.obj_id is not null;
-
-
-ALTER TABLE tww_app.vw_tww_maintenance_on_wws
-  OWNER TO postgres;
-GRANT ALL ON TABLE tww_app.vw_tww_maintenance_on_wws TO postgres;
-GRANT ALL ON TABLE tww_app.vw_tww_maintenance_on_wws TO tww;

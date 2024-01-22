@@ -22,8 +22,3 @@ CREATE OR REPLACE VIEW tww_app.vw_reach_relining AS
    FROM tww_od.reach re
      LEFT JOIN tww_od.wastewater_networkelement we ON we.obj_id::text = re.obj_id::text
    Where re.relining_construction > 1 or re.material = 5078;
-
-ALTER TABLE tww_app.vw_reach_relining
-  OWNER TO postgres;
-GRANT ALL ON TABLE tww_app.vw_reach_relining TO postgres;
-GRANT ALL ON TABLE tww_app.vw_reach_relining TO tww_viewer;
