@@ -110,16 +110,3 @@ UPDATE tww_vl.channel_function_hierarchic SET cfg_include_in_ws_labels=TRUE WHER
 -- this column is an extension to the VSA data model and defines whether connected channels are included in inflow/outflow labeling based on function_hierarchic
 ALTER TABLE tww_vl.wastewater_structure_status ADD COLUMN cfg_include_in_ws_labels boolean DEFAULT FALSE;
 UPDATE tww_vl.wastewater_structure_status SET cfg_include_in_ws_labels=TRUE WHERE code=ANY('{8493,6530,6533}');
-
-CREATE TABLE IF NOT EXISTS tww_app.tww_labels
-(
-    id uuid NOT NULL DEFAULT uuid_generate_v4(),
-	obj_id character varying(16) COLLATE pg_catalog."default" NOT NULL,
-    label_type character varying(10),
-	label_text text COLLATE pg_catalog."default"
-	CONSTRAINT pkey_tww_od_labels_id PRIMARY KEY (id)
-	, CONSTRAINT unique_tww_od_labels UNIQUE (obj_id,label_type)
-);
-
-COMMENT ON TABLE tww_app.tww_labels IS 'stores all labels. not part of the VSA-DSS data model,
-added solely for TEKSI wastewater. has to be updated by triggers';
