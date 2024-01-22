@@ -150,10 +150,11 @@ class InterlisImporterExporterGui(QObject):
 
     def _show_results(self, title, message, log_path, level):
         widget = iface.messageBar().createMessage(title, message)
-        button = QPushButton(widget)
-        button.setText("Show logs")
-        button.pressed.connect(lambda p=log_path: webbrowser.open(p))
-        widget.layout().addWidget(button)
+        if log_path:
+            button = QPushButton(widget)
+            button.setText("Show logs")
+            button.pressed.connect(lambda p=log_path: webbrowser.open(p))
+            widget.layout().addWidget(button)
         iface.messageBar().pushWidget(widget, level)
 
     def show_failure(self, title, message, log_path):
