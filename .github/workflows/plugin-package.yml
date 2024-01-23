@@ -37,7 +37,7 @@ jobs:
         run: sudo ./plugin/scripts/package-pip-packages.sh
 
       - name: Download Interlis libs
-        run: ./plugin/scripts/download-interlis-libs.sh
+        run: sudo ./plugin/scripts/download-interlis-libs.sh
 
       - name: Package
         run: |
