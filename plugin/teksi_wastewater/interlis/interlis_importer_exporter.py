@@ -246,8 +246,7 @@ class InterlisImporterExporter:
         )
 
         logger.info("Refresh materialized views")
-        cursor.execute("REFRESH MATERIALIZED VIEW tww_app.vw_network_node;")
-        cursor.execute("REFRESH MATERIALIZED VIEW tww_app.vw_network_segment;")
+        cursor.execute("SELECT tww_app.network_refresh_network_simple();")
 
         connection.commit()
         connection.close()
