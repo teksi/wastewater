@@ -10,12 +10,9 @@ from ...utils.qt_utils import OverrideCursor
 from ..interlis_importer_exporter import (
     InterlisImporterExporter,
     InterlisImporterExporterError,
+    InterlisImporterExporterStopped,
 )
 from .interlis_export_settings_dialog import InterlisExportSettingsDialog
-
-
-class InterlisImporterExporterStopped(Exception):
-    pass
 
 
 class InterlisImporterExporterGui(QObject):
@@ -63,6 +60,7 @@ class InterlisImporterExporterGui(QObject):
                 self.interlis_importer_exporter.interlis_import(
                     xtf_file_input, show_selection_dialog=True, logs_next_to_file=logs_next_to_file
                 )
+                iface.mapCanvas().redrawAllLayers()
 
         except InterlisImporterExporterStopped:
             self._cleanup()

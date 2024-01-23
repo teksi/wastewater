@@ -206,7 +206,7 @@ class InterlisImporterToIntermediateSchema:
             post_session.close()
 
         except Exception as exception:
-            logger.warning(f"Could not re-enable symbology triggers: '{exception}'")
+            logger.error(f"Could not re-enable symbology triggers: '{exception}'")
 
     def get_vl_instance(self, vl_table, value_de):
         """

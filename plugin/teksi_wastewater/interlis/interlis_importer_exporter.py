@@ -3,6 +3,8 @@ import os
 import tempfile
 
 import psycopg2
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QApplication
 
 from . import config
 from .gui.interlis_import_selection_dialog import InterlisImportSelectionDialog
@@ -87,31 +89,42 @@ class InterlisImporterExporter:
         )
 
         # Prepare the temporary ili2pg model
-        self._progress_done(15, "Creating ili schema...")
+        self._progress_done(10, "Creating ili schema...")
         self._clear_ili_schema(recreate_schema=True)
 
-        self._progress_done(25)
+        self._progress_done(20)
         self._create_ili_schema(
             [import_model], ext_columns_no_constraints=True, create_basket_col=True
         )
 
         # Import from xtf file to ili2pg model
-        self._progress_done(50, "Importing XTF data...")
+        self._progress_done(40, "Importing XTF data...")
         self._import_xtf_file(xtf_file_input=xtf_file_input)
 
         # Import from the temporary ili2pg model
-        self._progress_done(75, "Converting to Teksi Wastewater...")
+        self._progress_done(50, "Converting to Teksi Wastewater...")
         tww_session = self._import_from_intermediate_schema(import_model)
 
-        self._progress_done(100)
-
-        if not show_selection_dialog:
+        if show_selection_dialog:
+            self._progress_done(80, "Import objects selection...")
+            import_dialog = InterlisImportSelectionDialog()
+            import_dialog.init_with_session(tww_session)
+            QApplication.restoreOverrideCursor()
+            if import_dialog.exec_() == import_dialog.Rejected:
+                tww_session.rollback()
+                tww_session.close()
+                raise InterlisImporterExporterStopped()
+            QApplication.setOverrideCursor(Qt.WaitCursor)
+        else:
+            self._progress_done(80, "Commit session...")
             tww_session.commit()
-            return
+        tww_session.close()
 
-        self.import_dialog = InterlisImportSelectionDialog()
-        self.import_dialog.init_with_session(tww_session)
-        self.import_dialog.show()
+        # Update main_cover and main_wastewater_node
+        self._progress_done(90, "Update main cover and refresh materialized views...")
+        self._import_update_main_cover_and_refresh_mat_views()
+
+        self._progress_done(100)
 
     def interlis_export(
         self,
@@ -218,6 +231,26 @@ class InterlisImporterExporter:
             interlisImporterToIntermediateSchema.tww_import(skip_closing_tww_session=True)
 
         return interlisImporterToIntermediateSchema.session_tww
+
+    def _import_update_main_cover_and_refresh_mat_views(self):
+        connection = psycopg2.connect(get_pgconf_as_psycopg2_dsn())
+        connection.set_session(autocommit=True)
+        cursor = connection.cursor()
+
+        logger.info("Update wastewater structure fk_main_cover")
+        cursor.execute("SELECT tww_app.wastewater_structure_update_fk_main_cover('', True);")
+
+        logger.info("Update wastewater structure fk_main_wastewater_node")
+        cursor.execute(
+            "SELECT tww_app.wastewater_structure_update_fk_main_wastewater_node('', True);"
+        )
+
+        logger.info("Refresh materialized views")
+        cursor.execute("REFRESH MATERIALIZED VIEW tww_app.vw_network_node;")
+        cursor.execute("REFRESH MATERIALIZED VIEW tww_app.vw_network_segment;")
+
+        connection.commit()
+        connection.close()
 
     def _export_labels_file(
         self, limit_to_selection, selected_labels_scales_indices, labels_file_path
