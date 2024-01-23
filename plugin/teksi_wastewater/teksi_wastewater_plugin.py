@@ -42,11 +42,7 @@ from .gui.twwsettingsdialog import TwwSettingsDialog
 from .gui.twwwizard import TwwWizard
 from .interlis import config
 from .processing_provider.provider import TwwProcessingProvider
-from .tools.twwmaptools import (
-    TwwMapToolConnectNetworkElements,
-    TwwProfileMapTool,
-    TwwTreeMapTool,
-)
+from .tools.twwmaptools import TwwMapToolConnectNetworkElements, TwwTreeMapTool
 from .tools.twwnetwork import TwwGraphManager
 from .utils.plugin_utils import plugin_root_path
 from .utils.translation import setup_i18n
@@ -160,15 +156,15 @@ class TeksiWastewaterPlugin:
         self.toolbarButtons = []
 
         # Create toolbar button
-        self.profileAction = QAction(
-            QIcon(os.path.join(plugin_root_path(), "icons/wastewater-profile.svg")),
-            self.tr("Profile"),
-            self.iface.mainWindow(),
-        )
-        self.profileAction.setWhatsThis(self.tr("Reach trace"))
-        self.profileAction.setEnabled(False)
-        self.profileAction.setCheckable(True)
-        self.profileAction.triggered.connect(self.profileToolClicked)
+        # self.profileAction = QAction(
+        #     QIcon(os.path.join(plugin_root_path(), "icons/wastewater-profile.svg")),
+        #     self.tr("Profile"),
+        #     self.iface.mainWindow(),
+        # )
+        # self.profileAction.setWhatsThis(self.tr("Reach trace"))
+        # self.profileAction.setEnabled(False)
+        # self.profileAction.setCheckable(True)
+        # self.profileAction.triggered.connect(self.profileToolClicked)
 
         self.downstreamAction = QAction(
             QIcon(os.path.join(plugin_root_path(), "icons/wastewater-downstream.svg")),
@@ -250,14 +246,14 @@ class TeksiWastewaterPlugin:
         # Add toolbar button and menu item
         self.toolbar = QToolBar(self.tr("TEKSI Wastewater"))
         self.toolbar.setObjectName(self.toolbar.windowTitle())
-        self.toolbar.addAction(self.profileAction)
+        # self.toolbar.addAction(self.profileAction)
         self.toolbar.addAction(self.upstreamAction)
         self.toolbar.addAction(self.downstreamAction)
         self.toolbar.addAction(self.wizardAction)
         self.toolbar.addAction(self.refreshNetworkTopologyAction)
         self.toolbar.addAction(self.connectNetworkElementsAction)
 
-        self.iface.addPluginToMenu("TEKSI &Wastewater", self.profileAction)
+        # self.iface.addPluginToMenu("TEKSI &Wastewater", self.profileAction)
         self.iface.addPluginToMenu("TEKSI &Wastewater", self.settingsAction)
         self.iface.addPluginToMenu("TEKSI &Wastewater", self.aboutAction)
 
@@ -270,7 +266,7 @@ class TeksiWastewaterPlugin:
         self.iface.addToolBar(self.toolbar)
 
         # Local array of buttons to enable / disable based on context
-        self.toolbarButtons.append(self.profileAction)
+        # self.toolbarButtons.append(self.profileAction)
         self.toolbarButtons.append(self.upstreamAction)
         self.toolbarButtons.append(self.downstreamAction)
         self.toolbarButtons.append(self.wizardAction)
@@ -285,10 +281,10 @@ class TeksiWastewaterPlugin:
         self.network_analyzer = TwwGraphManager()
         self.network_analyzer.message_emitted.connect(self.iface.messageBar().pushMessage)
         # Create the map tool for profile selection
-        self.profile_tool = TwwProfileMapTool(
-            self.iface, self.profileAction, self.network_analyzer
-        )
-        self.profile_tool.profileChanged.connect(self.onProfileChanged)
+        # self.profile_tool = TwwProfileMapTool(
+        #    self.iface, self.profileAction, self.network_analyzer
+        # )
+        # self.profile_tool.profileChanged.connect(self.onProfileChanged)
 
         self.upstream_tree_tool = TwwTreeMapTool(
             self.iface, self.upstreamAction, self.network_analyzer
@@ -318,7 +314,7 @@ class TeksiWastewaterPlugin:
         """
         Called when unloading
         """
-        self.toolbar.removeAction(self.profileAction)
+        # self.toolbar.removeAction(self.profileAction)
         self.toolbar.removeAction(self.upstreamAction)
         self.toolbar.removeAction(self.downstreamAction)
         self.toolbar.removeAction(self.wizardAction)
@@ -332,7 +328,7 @@ class TeksiWastewaterPlugin:
 
         self.toolbar.deleteLater()
 
-        self.iface.removePluginMenu("TEKSI &Wastewater", self.profileAction)
+        # self.iface.removePluginMenu("TEKSI &Wastewater", self.profileAction)
         self.iface.removePluginMenu("TEKSI &Wastewater", self.settingsAction)
         self.iface.removePluginMenu("TEKSI &Wastewater", self.aboutAction)
 
@@ -355,7 +351,7 @@ class TeksiWastewaterPlugin:
         """
         self.openDock()
         # Set the profile map tool
-        self.profile_tool.setActive()
+        # self.profile_tool.setActive()
 
     def upstreamToolClicked(self):
         """
