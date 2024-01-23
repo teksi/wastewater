@@ -34,10 +34,10 @@ jobs:
         run: pip install qgis-plugin-ci>=2.8.6
 
       - name: Package PyPI Packages
-        run: sudo ./plugin/scripts/package-pip-packages.sh
+        run: ./plugin/scripts/package-pip-packages.sh
 
       - name: Download Interlis libs
-        run: sudo ./plugin/scripts/download-interlis-libs.sh
+        run: ./plugin/scripts/download-interlis-libs.sh
 
       - name: Package
         run: |
