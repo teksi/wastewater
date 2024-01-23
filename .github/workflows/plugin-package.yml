@@ -43,7 +43,9 @@ jobs:
         run: |
           VERSION=0.0.0
           qgis-plugin-ci -v package ${VERSION} \
-            --allow-uncommitted-changes --asset-path plugin/teksi_wastewater/libs
+            --allow-uncommitted-changes \
+            --asset-path plugin/teksi_wastewater/libs \
+            --asset-path plugin/teksi_wastewater/interlis/bin
 
       - uses: actions/upload-artifact@v3
         with:
