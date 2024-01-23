@@ -60,7 +60,7 @@ class InterlisImporterExporterGui(QObject):
                 self.interlis_importer_exporter.interlis_import(
                     xtf_file_input, show_selection_dialog=True, logs_next_to_file=logs_next_to_file
                 )
-                iface.mapCanvas().redrawAllLayers()
+                iface.mapCanvas().refreshAllLayers()
 
         except InterlisImporterExporterStopped:
             self._cleanup()

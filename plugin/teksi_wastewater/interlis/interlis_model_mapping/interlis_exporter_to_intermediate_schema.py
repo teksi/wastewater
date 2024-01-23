@@ -1100,63 +1100,6 @@ class InterlisExporterToIntermediateSchema:
         logger.info("done")
         self.abwasser_session.flush()
 
-        # Labels
-        # Note: these are extracted from the optional labels file (not exported from the TWW database)
-        if self.labels_file:
-            logger.info(f"Exporting label positions from {self.labels_file}")
-
-            # Get t_id by obj_name to create the reference on the labels below
-            tid_for_obj_id = {
-                "haltung": {},
-                "abwasserbauwerk": {},
-            }
-            for row in self.abwasser_session.query(self.model_classes_interlis.haltung):
-                tid_for_obj_id["haltung"][row.obj_id] = row.t_id
-            for row in self.abwasser_session.query(self.model_classes_interlis.abwasserbauwerk):
-                tid_for_obj_id["abwasserbauwerk"][row.obj_id] = row.t_id
-
-            with open(self.labels_file) as labels_file_handle:
-                labels = json.load(labels_file_handle)
-
-            geojson_crs_def = labels["crs"]
-
-            for label in labels["features"]:
-                layer_name = label["properties"]["Layer"]
-                obj_id = label["properties"]["tww_obj_id"]
-
-                if layer_name == "vw_tww_reach":
-                    if obj_id not in tid_for_obj_id["haltung"]:
-                        logger.warning(
-                            f"Label for haltung `{obj_id}` exists, but that object is not part of the export"
-                        )
-                        continue
-                    ili_label = self.model_classes_interlis.haltung_text(
-                        **self.textpos_common(label, "haltung_text", geojson_crs_def),
-                        haltungref=tid_for_obj_id["haltung"][obj_id],
-                    )
-
-                elif layer_name == "vw_tww_wastewater_structure":
-                    if obj_id not in tid_for_obj_id["abwasserbauwerk"]:
-                        logger.warning(
-                            f"Label for abwasserbauwerk `{obj_id}` exists, but that object is not part of the export"
-                        )
-                        continue
-                    ili_label = self.model_classes_interlis.abwasserbauwerk_text(
-                        **self.textpos_common(label, "abwasserbauwerk_text", geojson_crs_def),
-                        abwasserbauwerkref=tid_for_obj_id["abwasserbauwerk"][obj_id],
-                    )
-
-                else:
-                    logger.warning(
-                        f"Unknown layer for label `{layer_name}`. Label will be ignored",
-                    )
-                    continue
-
-                self.abwasser_session.add(ili_label)
-                print(".", end="")
-            logger.info("done")
-            self.abwasser_session.flush()
-
     def get_tid(self, relation):
         """
         Makes a tid for a relation
@@ -1207,7 +1150,7 @@ class InterlisExporterToIntermediateSchema:
             logger.warning(f"Value '{val}' exceeds expected length ({max_length})", stacklevel=2)
         return val[0:max_length]
 
-    def modulo_angle(self, val):
+    def _modulo_angle(self, val):
         """
         Returns an angle between 0 and 359.9 (for Orientierung in Base_d-20181005.ili)
         """
@@ -1318,7 +1261,7 @@ class InterlisExporterToIntermediateSchema:
             "instandstellung": self.get_vl(row.renovation_demand__REL),
         }
 
-    def textpos_common(self, row, t_type, geojson_crs_def):
+    def _textpos_common(self, row, t_type, geojson_crs_def):
         """
         Returns common attributes for textpos
         """
@@ -1337,14 +1280,89 @@ class InterlisExporterToIntermediateSchema:
                     }
                 )
             ),
-            "textori": self.modulo_angle(row["properties"]["LabelRotation"]),
+            "textori": self._modulo_angle(row["properties"]["LabelRotation"]),
             "texthali": "Left",  # can be Left/Center/Right
-            "textvali": "Top",  # can be Top,Cap,Half,Base,Bottom
+            "textvali": "Bottom",  # can be Top,Cap,Half,Base,Bottom
             # --- SIA405_TextPos ---
             "plantyp": row["properties"]["scale"],
             "textinhalt": row["properties"]["LabelText"],
             "bemerkung": None,
         }
+
+    def _export_label_positions(self):
+        logger.info(f"Exporting label positions from {self.labels_file}")
+
+        # Get t_id by obj_name to create the reference on the labels below
+        tid_for_obj_id = {
+            "vw_tww_reach": {},
+            "vw_tww_wastewater_structure": {},
+            "catchment_area": {},
+        }
+        for row in self.abwasser_session.query(self.model_classes_interlis.haltung):
+            tid_for_obj_id["vw_tww_reach"][row.t_ili_tid] = row.t_id
+        for row in self.abwasser_session.query(self.model_classes_interlis.abwasserbauwerk):
+            tid_for_obj_id["vw_tww_wastewater_structure"][row.t_ili_tid] = row.t_id
+        for row in self.abwasser_session.query(self.model_classes_interlis.einzugsgebiet):
+            tid_for_obj_id["catchment_area"][row.t_ili_tid] = row.t_id
+
+        with open(self.labels_file) as labels_file_handle:
+            labels = json.load(labels_file_handle)
+
+        geojson_crs_def = labels["crs"]
+
+        for label in labels["features"]:
+            layer_name = label["properties"]["Layer"]
+            obj_id = label["properties"]["tww_obj_id"]
+
+            print(f"label[properties]: {label['properties']}")
+
+            if self.subset_ids and obj_id not in self.subset_ids:
+                logger.warning(
+                    f"Label for {layer_name} `{obj_id}` exists, but that object is not part of the export"
+                )
+                continue
+
+            if not label["properties"]["LabelText"]:
+                logger.warning(
+                    f"Label of object '{obj_id}' from layer '{layer_name}' is empty and will not be exported"
+                )
+                continue
+
+            t_id = tid_for_obj_id.get(layer_name, {}).get(obj_id, None)
+            if not t_id:
+                logger.warning(
+                    f"Label for '{layer_name}' '{obj_id}' exists, but that object is not part of the export"
+                )
+                continue
+
+            if layer_name == "vw_tww_reach":
+                ili_label = self.model_classes_interlis.haltung_text(
+                    **self._textpos_common(label, "haltung_text", geojson_crs_def),
+                    haltungref=t_id,
+                )
+
+            elif layer_name == "vw_tww_wastewater_structure":
+                ili_label = self.model_classes_interlis.abwasserbauwerk_text(
+                    **self._textpos_common(label, "abwasserbauwerk_text", geojson_crs_def),
+                    abwasserbauwerkref=t_id,
+                )
+
+            elif layer_name == "catchment_area":
+                ili_label = self.model_classes_interlis.einzugsgebiet_text(
+                    **self._textpos_common(label, "einzugsgebiet_text", geojson_crs_def),
+                    einzugsgebietref=t_id,
+                )
+
+            else:
+                logger.warning(
+                    f"Unknown layer `{layer_name}` for label with id '{obj_id}'. Label will be ignored",
+                )
+                continue
+
+            self.abwasser_session.add(ili_label)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
 
     def close_sessions(self):
         self.tww_session.close()
