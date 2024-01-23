@@ -84,77 +84,62 @@ class InterlisImporterToIntermediateSchema:
     def _import_sia405_abwasser(self):
         logger.info("Importing ABWASSER.organisation -> TWW.organisation")
         self._import_organisation()
-        logger.info("Done")
         self._check_for_stop()
 
         logger.info("Importing ABWASSER.kanal -> TWW.channel")
         self._import_kanal()
-        logger.info("Done")
         self._check_for_stop()
 
         logger.info("Importing ABWASSER.normschacht -> TWW.manhole")
         self._import_normschacht()
-        logger.info("Done")
         self._check_for_stop()
 
         logger.info("Importing ABWASSER.einleitstelle -> TWW.discharge_point")
         self._import_einleitstelle()
-        logger.info("Done")
         self._check_for_stop()
 
         logger.info("Importing ABWASSER.spezialbauwerk -> TWW.special_structure")
         self._import_spezialbauwerk()
-        logger.info("Done")
         self._check_for_stop()
 
         logger.info("Importing ABWASSER.versickerungsanlage -> TWW.infiltration_installation")
         self._import_versickerungsanlage()
-        logger.info("Done")
         self._check_for_stop()
 
         logger.info("Importing ABWASSER.rohrprofil -> TWW.pipe_profile")
         self._import_rohrprofil()
-        logger.info("Done")
         self._check_for_stop()
 
         logger.info("Importing ABWASSER.abwasserknoten -> TWW.wastewater_node")
         self._import_abwasserknoten()
-        logger.info("Done")
         self._check_for_stop()
 
         logger.info("Importing ABWASSER.haltung -> TWW.reach")
         self._import_haltung()
-        logger.info("Done")
         self._check_for_stop()
 
         logger.info("Importing ABWASSER.haltungspunkt -> TWW.reach_point")
         self._import_haltungspunkt()
-        logger.info("Done")
         self._check_for_stop()
 
         logger.info("Importing ABWASSER.trockenwetterfallrohr -> TWW.dryweather_downspout")
         self._import_trockenwetterfallrohr()
-        logger.info("Done")
         self._check_for_stop()
 
         logger.info("Importing ABWASSER.einstiegshilfe -> TWW.access_aid")
         self._import_einstiegshilfe()
-        logger.info("Done")
         self._check_for_stop()
 
         logger.info("Importing ABWASSER.trockenwetterrinne -> TWW.dryweather_flume")
         self._import_trockenwetterrinne()
-        logger.info("Done")
         self._check_for_stop()
 
         logger.info("Importing ABWASSER.deckel -> TWW.cover")
         self._import_deckel()
-        logger.info("Done")
         self._check_for_stop()
 
         logger.info("Importing ABWASSER.bankett -> TWW.benching")
         self._import_bankett()
-        logger.info("Done")
         self._check_for_stop()
 
     def _import_dss(self):
@@ -162,38 +147,48 @@ class InterlisImporterToIntermediateSchema:
             "Importing ABWASSER.abwasserreinigungsanlage -> TWW.waste_water_treatment_plant"
         )
         self._import_abwasserreinigungsanlage()
-        logger.info("Done")
+        self._check_for_stop()
+
+        logger.info("Importing ABWASSER.araenergienutzung -> TWW.wwtp_energy_use")
+        self._import_araenergienutzung()
+        self._check_for_stop()
+
+        logger.info("Importing ABWASSER.abwasserbehandlung -> TWW.waste_water_treatment")
+        self._import_abwasserbehandlung()
+        self._check_for_stop()
+
+        logger.info("Importing ABWASSER.schlammbehandlung -> TWW.sludge_treatment")
+        self._import_schlammbehandlung()
         self._check_for_stop()
 
         logger.info("Importing ABWASSER.arabauwerk -> TWW.wwtp_structure")
         self._import_arabauwerk()
-        logger.info("Done")
+        self._check_for_stop()
+
+        logger.info("Importing ABWASSER.steuerungszentrale -> TWW.control_center")
+        self._import_steuerungszentrale()
         self._check_for_stop()
 
     def _import_vsa_kek(self):
         logger.info("Importing ABWASSER.untersuchung -> TWW.examination")
         self._import_untersuchung()
-        logger.info("Done")
         self._check_for_stop()
 
         logger.info("Importing ABWASSER.normschachtschaden -> TWW.damage_manhole")
         self._import_normschachtschaden()
-        logger.info("Done")
         self._check_for_stop()
 
         logger.info("Importing ABWASSER.kanalschaden -> TWW.damage_channel")
         self._import_kanalschaden()
-        logger.info("Done")
         self._check_for_stop()
 
         logger.info("Importing ABWASSER.datentraeger -> TWW.data_media")
         self._import_datentraeger()
-        logger.info("Done")
         self._check_for_stop()
 
         logger.info("Importing ABWASSER.datei -> TWW.file")
         self._import_datei()
-        logger.info("Done")
+        self._check_for_stop()
 
     def close_sessions(self, skip_closing_tww_session=False):
         # Calling the precommit callback if provided, allowing to filter before final import
@@ -539,6 +534,65 @@ class InterlisImporterToIntermediateSchema:
             self.session_tww.add(waste_water_treatment_plant)
             print(".", end="")
 
+    def _import_araenergienutzung(self):
+        for row in self.session_interlis.query(self.model_classes_interlis.araenergienutzung):
+            wwtp_energy_use = self.create_or_update(
+                self.model_classes_tww_od.wwtp_energy_use,
+                **self.base_common(row),
+                # --- wwtp_energy_use ---
+                gas_motor=row.gasmotor,
+                heat_pump=row.waermepumpe,
+                identifier=row.bezeichnung,
+                remark=row.bemerkung,
+                turbining=row.turbinierung,
+                fk_waste_water_treatment_plant=self.get_pk(row.abwasserreinigungsanlageref__REL),
+            )
+            self.session_tww.add(wwtp_energy_use)
+            print(".", end="")
+
+    def _import_abwasserbehandlung(self):
+        for row in self.session_interlis.query(self.model_classes_interlis.abwasserbehandlung):
+            waste_water_treatment = self.create_or_update(
+                self.model_classes_tww_od.waste_water_treatment,
+                **self.base_common(row),
+                # --- waste_water_treatment ---
+                identifier=row.bezeichnung,
+                kind=self.get_vl_code(
+                    self.model_classes_tww_vl.waste_water_treatment_kind, row.art
+                ),
+                remark=row.bemerkung,
+                fk_waste_water_treatment_plant=self.get_pk(row.abwasserreinigungsanlageref__REL),
+            )
+            self.session_tww.add(waste_water_treatment)
+            print(".", end="")
+
+    def _import_schlammbehandlung(self):
+        for row in self.session_interlis.query(self.model_classes_interlis.schlammbehandlung):
+            sludge_treatment = self.create_or_update(
+                self.model_classes_tww_od.sludge_treatment,
+                **self.base_common(row),
+                # --- sludge_treatment ---
+                composting=row.kompostierung,
+                dehydration=row.entwaesserung,
+                digested_sludge_combustion=row.faulschlammverbrennung,
+                drying=row.trocknung,
+                fresh_sludge_combustion=row.frischschlammverbrennung,
+                hygenisation=row.hygienisierung,
+                identifier=row.bezeichnung,
+                predensification_of_excess_sludge=row.ueberschusschlammvoreindickung,
+                predensification_of_mixed_sludge=row.mischschlammvoreindickung,
+                predensification_of_primary_sludge=row.primaerschlammvoreindickung,
+                remark=row.bemerkung,
+                stabilisation=self.get_vl_code(
+                    self.model_classes_tww_vl.sludge_treatment_stabilisation, row.stabilisierung
+                ),
+                stacking_of_dehydrated_sludge=row.entwaessertklaerschlammstapelung,
+                stacking_of_liquid_sludge=row.fluessigklaerschlammstapelung,
+                fk_waste_water_treatment_plant=self.get_pk(row.abwasserreinigungsanlageref__REL),
+            )
+            self.session_tww.add(sludge_treatment)
+            print(".", end="")
+
     def _import_arabauwerk(self):
         for row in self.session_interlis.query(self.model_classes_interlis.arabauwerk):
             wwtp_structure = self.create_or_update(
@@ -551,6 +605,18 @@ class InterlisImporterToIntermediateSchema:
                 fk_waste_water_treatment_plant=self.get_pk(row.abwasserreinigungsanlageref__REL),
             )
             self.session_tww.add(wwtp_structure)
+            print(".", end="")
+
+    def _import_steuerungszentrale(self):
+        for row in self.session_interlis.query(self.model_classes_interlis.steuerungszentrale):
+            control_center = self.create_or_update(
+                self.model_classes_tww_od.control_center,
+                **self.base_common(row),
+                # --- control_center ---
+                identifier=row.bezeichnung,
+                situation_geometry=row.lage,
+            )
+            self.session_tww.add(control_center)
             print(".", end="")
 
     def _import_rohrprofil(self):

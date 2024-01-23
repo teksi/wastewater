@@ -159,8 +159,24 @@ class InterlisExporterToIntermediateSchema:
         self._export_waste_water_treatment_plant()
         self._check_for_stop()
 
+        logger.info("Exporting TWW.wwtp_energy_use -> ABWASSER.araenergienutzung")
+        self._export_wwtp_energy_use()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.waste_water_treatment -> ABWASSER.abwasserbehandlung")
+        self._export_waste_water_treatment()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.sludge_treatment -> ABWASSER.schlammbehandlung")
+        self._export_sludge_treatment()
+        self._check_for_stop()
+
         logger.info("Exporting TWW.wwtp_structure -> ABWASSER.arabauwerk")
         self._export_wwtp_structure()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.control_center -> ABWASSER.steuerungszentrale")
+        self._export_control_center()
         self._check_for_stop()
 
     def _export_vsa_kek(self):
@@ -723,6 +739,79 @@ class InterlisExporterToIntermediateSchema:
         logger.info("done")
         self.abwasser_session.flush()
 
+    def _export_wwtp_energy_use(self):
+        query = self.tww_session.query(self.model_classes_tww_od.wwtp_energy_use)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_od.wwtp_energy_use.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            araenergienutzung = self.model_classes_interlis.araenergienutzung(
+                **self.vsa_base_common(row, "araenergienutzung"),
+                # --- araenergienutzung ---
+                gasmotor=row.gas_motor,
+                waermepumpe=row.heat_pump,
+                bezeichnung=row.identifier,
+                bemerkung=row.remark,
+                turbinierung=row.turbining,
+                abwasserreinigungsanlageref=self.get_tid(row.fk_waste_water_treatment_plant__REL),
+            )
+            self.abwasser_session.add(araenergienutzung)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_waste_water_treatment(self):
+        query = self.tww_session.query(self.model_classes_tww_od.waste_water_treatment)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_od.waste_water_treatment.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            abwasserbehandlung = self.model_classes_interlis.abwasserbehandlung(
+                **self.vsa_base_common(row, "abwasserbehandlung"),
+                # --- abwasserbehandlung ---
+                bezeichnung=row.identifier,
+                art=self.get_vl(row.kind__REL),
+                bemerkung=row.remark,
+                abwasserreinigungsanlageref=self.get_tid(row.fk_waste_water_treatment_plant__REL),
+            )
+            self.abwasser_session.add(abwasserbehandlung)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_sludge_treatment(self):
+        query = self.tww_session.query(self.model_classes_tww_od.sludge_treatment)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_od.sludge_treatment.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            schlammbehandlung = self.model_classes_interlis.schlammbehandlung(
+                **self.vsa_base_common(row, "schlammbehandlung"),
+                # --- schlammbehandlung ---
+                kompostierung=row.composting,
+                entwaesserung=row.dehydration,
+                faulschlammverbrennung=row.digested_sludge_combustion,
+                trocknung=row.drying,
+                frischschlammverbrennung=row.fresh_sludge_combustion,
+                hygienisierung=row.hygenisation,
+                bezeichnung=row.identifier,
+                ueberschusschlammvoreindickung=row.predensification_of_excess_sludge,
+                mischschlammvoreindickung=row.predensification_of_mixed_sludge,
+                primaerschlammvoreindickung=row.predensification_of_primary_sludge,
+                bemerkung=row.remark,
+                stabilisierung=self.get_vl(row.stabilisation__REL),
+                entwaessertklaerschlammstapelung=row.stacking_of_dehydrated_sludge,
+                fluessigklaerschlammstapelung=row.stacking_of_liquid_sludge,
+                abwasserreinigungsanlageref=self.get_tid(row.fk_waste_water_treatment_plant__REL),
+            )
+            self.abwasser_session.add(schlammbehandlung)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
     def _export_wwtp_structure(self):
         query = self.tww_session.query(self.model_classes_tww_od.wwtp_structure)
         if self.filtered:
@@ -740,6 +829,24 @@ class InterlisExporterToIntermediateSchema:
                 abwasserreinigungsanlageref=self.get_tid(row.fk_waste_water_treatment_plant__REL),
             )
             self.abwasser_session.add(arabauwerk)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_control_center(self):
+        query = self.tww_session.query(self.model_classes_tww_od.control_center)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_od.control_center.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            steuerungszentrale = self.model_classes_interlis.steuerungszentrale(
+                **self.vsa_base_common(row, "steuerungszentrale"),
+                # --- steuerungszentrale ---
+                bezeichnung=row.identifier,
+                lage=row.situation_geometry,
+            )
+            self.abwasser_session.add(steuerungszentrale)
             print(".", end="")
         logger.info("done")
         self.abwasser_session.flush()
