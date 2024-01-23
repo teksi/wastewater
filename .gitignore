@@ -6,6 +6,7 @@ project/*attachments.zip
 project/*.qgs~
 
 plugin/teksi_wastewater/libs/
+plugin/teksi_wastewater/interlis/bin
 plugin*.zip
 
 .idea
