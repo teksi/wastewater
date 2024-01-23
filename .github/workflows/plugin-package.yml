@@ -33,8 +33,11 @@ jobs:
       - name: Install qgis-plugin-ci
         run: pip install qgis-plugin-ci>=2.8.6b2
 
-      - name: Package modelbaker
-        run: plugin/scripts/package_pip_packages.sh
+      - name: Package PyPI Packages
+        run: sudo ./plugin/scripts/package-pip-packages.sh
+
+      - name: Download Interlis libs
+        run: ./plugin/scripts/download-interlis-libs.sh
 
       - name: Package
         run: |

@@ -41,8 +41,10 @@ jobs:
           submodules: recursive
 
       - name: Package PyPI Packages
-        run: |
-          sudo ./plugin/scripts/package_pip_packages.sh
+        run: sudo ./plugin/scripts/package-pip-packages.sh
+
+      - name: Download Interlis libs
+        run: ./plugin/scripts/download-interlis-libs.sh
 
       - name: Docker build
         run: docker compose up -d --build
