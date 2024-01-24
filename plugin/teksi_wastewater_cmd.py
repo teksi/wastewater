@@ -1,11 +1,14 @@
 import argparse
 import sys
 
+from qgis.core import QgsApplication
 from teksi_wastewater.interlis import config
 from teksi_wastewater.interlis.interlis_importer_exporter import (
     InterlisImporterExporter,
     InterlisImporterExporterError,
 )
+
+QgsApplication.setPrefixPath("/usr", True)
 
 
 class TeksiWastewaterCmd:
@@ -16,14 +19,15 @@ class TeksiWastewaterCmd:
         self.parser = argparse.ArgumentParser()
         self.args = None
 
-        subparsers = self.parser.add_subparsers(dest="subparser_name", help="sub-command help")
+        subparsers = self.parser.add_subparsers(dest="subparser_name", help="sub-command --help")
 
         self._add_subparser_interlis_import(subparsers=subparsers)
         self._add_subparser_interlis_export(subparsers=subparsers)
 
     def _add_subparser_interlis_import(self, subparsers):
         subparser = subparsers.add_parser(
-            self.SUBPARSER_NAME_INTERLIS_IMPORT, help=f"{self.SUBPARSER_NAME_INTERLIS_IMPORT} help"
+            self.SUBPARSER_NAME_INTERLIS_IMPORT,
+            help=f"{self.SUBPARSER_NAME_INTERLIS_IMPORT} --help",
         )
 
         subparser.add_argument(
@@ -33,13 +37,11 @@ class TeksiWastewaterCmd:
 
     def _add_subparser_interlis_export(self, subparsers):
         subparser = subparsers.add_parser(
-            self.SUBPARSER_NAME_INTERLIS_EXPORT, help=f"{self.SUBPARSER_NAME_INTERLIS_EXPORT} help"
+            self.SUBPARSER_NAME_INTERLIS_EXPORT,
+            help=f"{self.SUBPARSER_NAME_INTERLIS_EXPORT} --help",
         )
 
-        subparser.add_argument(
-            "--xtf_file",
-            help="XTF outup file",
-        )
+        subparser.add_argument("--xtf_file", help="XTF outup file", required=True)
         subparser.add_argument(
             "--selection",
             help="if provided, limits the export to networkelements that are provided in the selection (comma separated list of ids)",
@@ -55,8 +57,6 @@ class TeksiWastewaterCmd:
         self.args = self.parser.parse_args()
 
     def execute(self):
-        print(self.args)
-
         if self.SUBPARSER_NAME_INTERLIS_IMPORT == self.args.subparser_name:
             self.execute_interlis_import()
         elif self.SUBPARSER_NAME_INTERLIS_EXPORT == self.args.subparser_name:
@@ -66,6 +66,8 @@ class TeksiWastewaterCmd:
             exit(1)
 
     def execute_interlis_import(self):
+        qgs = QgsApplication([], False)
+
         interlisImporterExporter = InterlisImporterExporter()
 
         try:
@@ -81,11 +83,22 @@ class TeksiWastewaterCmd:
                 print(f"Log file: {exception.log_path}", file=sys.stderr)
 
         except Exception as exception:
+            qgs.exitQgis()
             raise exception
 
-    def execute_interlis_export(self):
-        interlisImporterExporter = InterlisImporterExporter()
+        qgs.exitQgis()
 
+    def execute_interlis_export(self):
+        qgs = QgsApplication([], False)
+
+        config.PGSERVICE = "pg_tww"
+        # config.PGHOST = pg_layer.dataProvider().uri().host()
+        # config.PGPORT = pg_layer.dataProvider().uri().port()
+        # config.PGDATABASE = pg_layer.dataProvider().uri().database()
+        # config.PGUSER = pg_layer.dataProvider().uri().username()
+        # config.PGPASS = pg_layer.dataProvider().uri().password()
+
+        interlisImporterExporter = InterlisImporterExporter()
         try:
             interlisImporterExporter.interlis_export(
                 xtf_file_output=self.args.xtf_file,
@@ -102,7 +115,10 @@ class TeksiWastewaterCmd:
                 print(f"Log file: {exception.log_path}", file=sys.stderr)
 
         except Exception as exception:
+            qgs.exitQgis()
             raise exception
+
+        qgs.exitQgis()
 
 
 if __name__ == "__main__":
