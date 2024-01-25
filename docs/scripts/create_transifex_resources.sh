@@ -11,7 +11,7 @@
 # Sphinx documentation first
 #
 
-LOCALES='de fr it ro'
+LOCALES='de fr'
 
 # Exit on error
 set -e
