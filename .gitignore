@@ -5,6 +5,12 @@ datamodel/artifacts
 project/*attachments.zip
 project/*.qgs~
 
+plugin/teksi_wastewater/libs/
+plugin/teksi_wastewater/interlis/bin
+plugin*.zip
+plugin*.tar.gz
+
 .idea
 .pycache
 __pycache__
+.DS_Store
