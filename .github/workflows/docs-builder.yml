@@ -1,0 +1,56 @@
+name: 📚 Documentation builder
+
+on:
+  push:
+    branches:
+      - main
+      - docs # TODO: remove
+    paths:
+      - docs/**
+      - '.github/workflows/docs-builder.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - docs/**
+      - '.github/workflows/docs-builder.yml'
+  workflow_dispatch:
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: install requirements
+        working-directory: docs
+        run: |
+          pip install -r requirements.txt
+          sudo apt-get install -y gettext
+
+      - name: tx push / pull
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+        env:
+          TX_TOKEN: ${{ secrets.TX_TOKEN }}
+        working-directory: docs
+        run: |
+          curl -OL https://github.com/transifex/cli/releases/download/v1.6.10/tx-linux-amd64.tar.gz
+          tar -xvzf tx-linux-amd64.tar.gz
+          make gettext
+          make transifex_pull
+
+      - name: build
+        working-directory: docs
+        run: |
+          make html
+          touch build/html/.nojekyll
+
+      - name: Deploy 🚀
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: build/html
