@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="es" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.2.2. Digitizing Wastewater Structures &mdash; documentación de TWW - 0.8</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=1b70d6bb"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/translations.js?v=efdbd0b9"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="../../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../../search.html" />
+    <link rel="next" title="3.2.3. Digitizing detailed geometry" href="digitizingdetailedgeometry.html" />
+    <link rel="prev" title="3.2.1. Data entry" href="dataentry.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            TWW
+          </a>
+              <div class="version">
+                0.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Buscar documentos" aria-label="Buscar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">1. TEKSI wastewater module (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">2. TWW Installation Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. TWW User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">3.1. Overview of TWW</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">3.2. Digitizing in TWW</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="dataentry.html">3.2.1. Data entry</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">3.2.2. Digitizing Wastewater Structures</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#general">3.2.2.1. General</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#digitizing">3.2.2.2. Digitizing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#further-attributes-and-classes">3.2.2.3. Further attributes and classes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#geometry-synchronization">3.2.2.4. Geometry synchronization</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingdetailedgeometry.html">3.2.3. Digitizing detailed geometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingdrainagechannel.html">3.2.4. Digitizing Detailed Geometry as Drainage Channel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingchannels.html">3.2.5. Digitizing Channels</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deletingobjects.html">3.2.6. Deleting objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingcatchments.html">3.2.7. Digitizing Catchment Areas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="importingdata.html">3.2.8. Importing data</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../editing/index.html">3.3. Editing in TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">3.4. Length profiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">3.5. Network following tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">3.6. Plan plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/index.html">3.7. History in TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../How-To/index.html">3.8. How To</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">4. Admin Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vm/index.html">5. Demo Virtual Machine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">6. Translation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">TWW</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>TWW User Guide</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.2. </span>Digitizing in TWW</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">3.2.2. </span>Digitizing Wastewater Structures</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/user-guide/digitizing/digitizingwastewaterstructures.rst.txt" rel="nofollow"> Ver código fuente de la página</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="digitizing-wastewater-structures">
+<span id="id1"></span><h1><span class="section-number">3.2.2. </span>Digitizing Wastewater Structures<a class="headerlink" href="#digitizing-wastewater-structures" title="Link to this heading"></a></h1>
+<section id="general">
+<h2><span class="section-number">3.2.2.1. </span>General<a class="headerlink" href="#general" title="Link to this heading"></a></h2>
+<p>TWW has a wizard to correctly collect manholes and special structures. see the <a class="reference internal" href="dataentry.html#wizard"><span class="std std-ref">The TWW wizard</span></a> chapter.</p>
+<p>Select the <strong>Wizard</strong> button, then click <strong>Start Data Entry</strong> and choose <strong>Wastewater Structure</strong> in the pull down menu.</p>
+<figure class="align-default">
+<img alt="../../_images/wizard_data_entry.jpg" src="../../_images/wizard_data_entry.jpg" />
+</figure>
+</section>
+<section id="digitizing">
+<h2><span class="section-number">3.2.2.2. </span>Digitizing<a class="headerlink" href="#digitizing" title="Link to this heading"></a></h2>
+<p>Now the cursor changes to the digitizing symbol and you can select the location of the new point element.</p>
+<p>Then the <strong>vw_tww_wastewater_structure</strong> form opens and you can start adding data in the <strong>General</strong> tab:</p>
+<figure class="align-default">
+<img alt="../../_images/wizard_wastewater_structure_manhole_form_ws_type3.jpg" src="../../_images/wizard_wastewater_structure_manhole_form_ws_type3.jpg" />
+</figure>
+<p>Select the ws_type you want (preselected is “manhole”):</p>
+<ul class="simple">
+<li><p>manhole</p></li>
+<li><p>special_structure</p></li>
+<li><p>discharge_point</p></li>
+<li><p>infiltration_installation</p></li>
+</ul>
+<p>Depending on the <strong>ws_type</strong>, you will have different fields and tabs in the form.</p>
+<p>Then add the identifier (this is the attribute that will be displayed on the map).</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>If you do not enter an identifier, TWW will enter the obj_id also as identifier (you can change later). As default, the identifier of the wastewater structure is also the identifier of the cover and of the wastewater node.</p>
+</div>
+<p>Add other attributes in the <strong>General</strong> tab.
+You can also add attributes in the other tabs (Cover, Wastewater Structure, Manhole, WasteWater Node).</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>The idea of the <strong>General</strong> tab is, that in the normal digitizing process (95% of the manholes) the user has not to change the tabs to enter the attributes that are necessary.</p>
+</div>
+<div class="admonition attention">
+<p class="admonition-title">Atención</p>
+<p>You can not add new records in the tabs <strong>Covers</strong>, <strong>Structure Parts</strong>, <strong>Wastewater Nodes</strong> and <strong>Maintenance</strong>, because you have to save first the Wastewater Structure-record to the database before you can add additional records. You can not use <strong>Actions</strong> for the same reason. First safe the record.</p>
+</div>
+<p>Click <strong>OK</strong> to close the form.</p>
+<figure class="align-default">
+<img alt="../../_images/wizard_wastewater_structure_manhole_form_data_ok3.jpg" src="../../_images/wizard_wastewater_structure_manhole_form_data_ok3.jpg" />
+</figure>
+<p>Save the information of this layer by stopping the data entry wizard.</p>
+<figure class="align-default">
+<img alt="../../_images/stop_data_entry.jpg" src="../../_images/stop_data_entry.jpg" />
+</figure>
+<p>You can re-edit your point object selecting the edit mode and then click with the info cursor on the object you want to edit.
+If you do not select the edit mode, you can just look at the existing data.</p>
+<figure class="align-default">
+<img alt="../../_images/wastewater_structure_info_manhole3.jpg" src="../../_images/wastewater_structure_info_manhole3.jpg" />
+</figure>
+<p>For detailed information about editing see the <a class="reference internal" href="../editing/editing.html#editing-data"><span class="std std-ref">Editing of existing data</span></a> chapter.</p>
+</section>
+<section id="further-attributes-and-classes">
+<h2><span class="section-number">3.2.2.3. </span>Further attributes and classes<a class="headerlink" href="#further-attributes-and-classes" title="Link to this heading"></a></h2>
+<p>When a wastewater_structure object is digitized, a series of steps take place in the background in the QGIS database:</p>
+<ol class="loweralpha simple">
+<li><p>an new object in the class wastewater structure is added</p></li>
+<li><p>a new object in the respective subclass [discharge_point, infiltration_installation, manhole, special_structure] is added and linked</p></li>
+<li><p>a new cover object is added and linked to the wastewater structure</p></li>
+<li><p>a new wastewater node object is generated in wastewater network elements and its subclass wastewater nodes</p></li>
+</ol>
+<p>To add additional objects such as structure parts (besides covers there are access aids, back flow prevention etc) you have to save first and then edit the point object (see the <a class="reference internal" href="../editing/editing.html#editing-data"><span class="std std-ref">Editing of existing data</span></a> chapter).</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>To add a second cover or a second wastewater node to a wastewater structure, see the <a class="reference internal" href="../editing/editing.html#editing-data"><span class="std std-ref">Editing of existing data</span></a> chapter.</p>
+</div>
+</section>
+<section id="geometry-synchronization">
+<h2><span class="section-number">3.2.2.4. </span>Geometry synchronization<a class="headerlink" href="#geometry-synchronization" title="Link to this heading"></a></h2>
+<p>The added feature’s geometry defines the geometry of the connected tables like cover and wastewater node. The vw_tww_wastewater_structure-point itself has no Z value.
+When the level of the cover <cite>co_level</cite> is entered, this value is adapted to the Z value of the cover’s geometry. The bottom level of the wastewater node <cite>wn_bottom_level</cite> defines the Z value of the wastewater node’s geometry.</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>If a cover level changes, the Z value of the cover’s geometry will be adjusted. When the geometry changes, the co_level attribut is adjusted as well. If both values change, the level takes precedence. On an insert it’s like when both value change. Means the cover’s geometry is set according to the cover level and if it’s NULL, the Z value is set to NaN. The same situation is on editing the wastewater node directly.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pie de página">
+        <a href="dataentry.html" class="btn btn-neutral float-left" title="3.2.1. Data entry" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="digitizingdetailedgeometry.html" class="btn btn-neutral float-right" title="3.2.3. Digitizing detailed geometry" accesskey="n" rel="next">Siguiente <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Derechos de autor 2023, The TWW Project www.teksi.ch.</p>
+  </div>
+
+  Compilado con <a href="https://www.sphinx-doc.org/">Sphinx</a> usando un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    proporcionado por <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

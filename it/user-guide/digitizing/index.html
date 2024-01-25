@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="it" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.2. Digitizing in TWW &mdash; TWW 0.8 documentazione</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=c61c94a7"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/translations.js?v=0173e136"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Indice" href="../../genindex.html" />
+    <link rel="search" title="Cerca" href="../../search.html" />
+    <link rel="next" title="3.2.1. Data entry" href="dataentry.html" />
+    <link rel="prev" title="3.1.3. Naming conventions" href="../layerexplanations/namingconventions.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            TWW
+          </a>
+              <div class="version">
+                0.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Cerca documenti" aria-label="Cerca documenti" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu di navigazione">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">1. TEKSI wastewater module (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">2. TWW Installation Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. TWW User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">3.1. Overview of TWW</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3.2. Digitizing in TWW</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dataentry.html">3.2.1. Data entry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingwastewaterstructures.html">3.2.2. Digitizing Wastewater Structures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingdetailedgeometry.html">3.2.3. Digitizing detailed geometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingdrainagechannel.html">3.2.4. Digitizing Detailed Geometry as Drainage Channel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingchannels.html">3.2.5. Digitizing Channels</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deletingobjects.html">3.2.6. Deleting objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingcatchments.html">3.2.7. Digitizing Catchment Areas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="importingdata.html">3.2.8. Importing data</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../editing/index.html">3.3. Editing in TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">3.4. Length profiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">3.5. Network following tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">3.6. Plan plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/index.html">3.7. History in TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../How-To/index.html">3.8. How To</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">4. Admin Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vm/index.html">5. Demo Virtual Machine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">6. Translation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu navigazione dispositivi mobili" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">TWW</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Naviga tra le pagine">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>TWW User Guide</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">3.2. </span>Digitizing in TWW</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/user-guide/digitizing/index.rst.txt" rel="nofollow"> Visualizza sorgente pagina</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="digitizing-in-tww">
+<h1><span class="section-number">3.2. </span>Digitizing in TWW<a class="headerlink" href="#digitizing-in-tww" title="Link to this heading"></a></h1>
+<p>This represents a guide on how to correctly collect and digitize data of sewer networks including building the topology.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dataentry.html">3.2.1. Data entry</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dataentry.html#the-tww-wizard">3.2.1.1. The TWW wizard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataentry.html#qgis-standard-tools">3.2.1.2. QGIS standard tools</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="digitizingwastewaterstructures.html">3.2.2. Digitizing Wastewater Structures</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="digitizingwastewaterstructures.html#general">3.2.2.1. General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="digitizingwastewaterstructures.html#digitizing">3.2.2.2. Digitizing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="digitizingwastewaterstructures.html#further-attributes-and-classes">3.2.2.3. Further attributes and classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="digitizingwastewaterstructures.html#geometry-synchronization">3.2.2.4. Geometry synchronization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="digitizingdetailedgeometry.html">3.2.3. Digitizing detailed geometry</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="digitizingdetailedgeometry.html#general">3.2.3.1. General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="digitizingdetailedgeometry.html#digitizing-tool">3.2.3.2. Digitizing tool</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="digitizingdrainagechannel.html">3.2.4. Digitizing Detailed Geometry as Drainage Channel</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="digitizingdrainagechannel.html#general">3.2.4.1. General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="digitizingdrainagechannel.html#digitizing-tool">3.2.4.2. Digitizing tool</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="digitizingchannels.html">3.2.5. Digitizing Channels</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="digitizingchannels.html#general">3.2.5.1. General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="digitizingchannels.html#digitizing">3.2.5.2. Digitizing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="digitizingchannels.html#further-attributes-and-classes">3.2.5.3. Further attributes and classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="digitizingchannels.html#geometry-synchronization">3.2.5.4. Geometry synchronization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="deletingobjects.html">3.2.6. Deleting objects</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="deletingobjects.html#delete-reaches">3.2.6.1. Delete Reaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deletingobjects.html#delete-manholes-and-other-wastewater-structures">3.2.6.2. Delete Manholes and other Wastewater Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deletingobjects.html#delete-covers">3.2.6.3. Delete Covers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deletingobjects.html#delete-structure-parts">3.2.6.4. Delete Structure parts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deletingobjects.html#delete-detailed-geometries">3.2.6.5. Delete detailed geometries</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="digitizingcatchments.html">3.2.7. Digitizing Catchment Areas</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="digitizingcatchments.html#general">3.2.7.1. General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="digitizingcatchments.html#digitizing">3.2.7.2. Digitizing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="digitizingcatchments.html#editing">3.2.7.3. Editing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="digitizingcatchments.html#split-areas">3.2.7.4. Split Areas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="digitizingcatchments.html#merge-areas">3.2.7.5. Merge Areas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="digitizingcatchments.html#connect-catchment-area-to-wastewater-network-nodes">3.2.7.6. Connect Catchment area to Wastewater Network Nodes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="importingdata.html">3.2.8. Importing data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="importingdata.html#general">3.2.8.1. General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="importingdata.html#example-importing-manholes-from-a-txt-file">3.2.8.2. Example Importing manholes from a TXT-File:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="importingdata.html#example-importing-manholes-with-attributes">3.2.8.3. Example Importing manholes with attributes:</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Piè di pagina">
+        <a href="../layerexplanations/namingconventions.html" class="btn btn-neutral float-left" title="3.1.3. Naming conventions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Precedente</a>
+        <a href="dataentry.html" class="btn btn-neutral float-right" title="3.2.1. Data entry" accesskey="n" rel="next">Prossimo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, The TWW Project www.teksi.ch.</p>
+  </div>
+
+  Realizzato con <a href="https://www.sphinx-doc.org/">Sphinx</a> usando un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    fornito da <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="es" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Check SWMM File &mdash; documentación de TWW - 0.8</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=1b70d6bb"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/translations.js?v=efdbd0b9"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            TWW
+          </a>
+              <div class="version">
+                0.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Buscar documentos" aria-label="Buscar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">1. TEKSI wastewater module (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation-guide/index.html">2. TWW Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">3. TWW User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">4. Admin Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vm/index.html">5. Demo Virtual Machine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">6. Translation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">TWW</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Check SWMM File</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/qgep_swmm/Check-SWMM-File.rst.txt" rel="nofollow"> Ver código fuente de la página</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="check-swmm-file">
+<span id="id1"></span><h1>Check SWMM File<a class="headerlink" href="#check-swmm-file" title="Link to this heading"></a></h1>
+<p>The generated <code class="docutils literal notranslate"><span class="pre">.inp</span></code> file can be imported in SWMM GUI. It is likely that some errors will be raised. You will have to solve them (see hereunder a list of common errors)</p>
+<p>You have to solve the errors in the order in which they appear in the report. Some errors are interrelated (i.e. a node in a conduit is not defined =&gt; the conduit is not imported =&gt; Undefined link error)</p>
+<p>To fix an error you can search in the corresponding TWW layers in the QGIS project:</p>
+<ul class="simple">
+<li><p>vw_wastewater_node for undefined nodes</p></li>
+<li><p>catchment_area for subcatchment errors</p></li>
+<li><p>compare if the number of exported nodes (in vw_junctions) are what you expect it to be.</p></li>
+<li><p>Check if the function (manhole / special_structure) of wastewater_structure are all filled in</p></li>
+<li><p>etc.</p></li>
+</ul>
+<section id="common-import-errors">
+<span id="id2"></span><h2>Common import errors<a class="headerlink" href="#common-import-errors" title="Link to this heading"></a></h2>
+<section id="missing-status-or-function-hierarchic-wn-function-hierarchic">
+<h3>Missing status or _function_hierarchic (wn_function_hierarchic)<a class="headerlink" href="#missing-status-or-function-hierarchic-wn-function-hierarchic" title="Link to this heading"></a></h3>
+<p>The catchment area is linked to node which is not exported or a reach cannot be drawn because of a missing node:</p>
+<ul class="simple">
+<li><p>because of its status (abandonned etc.) or status is not defined (is Null)</p></li>
+<li><p>the node is not connected (correctly) to a conduit</p></li>
+<li><p>the node is secondary (the linked reach are secondary)</p></li>
+</ul>
+<p>and therefore not export in the vw_junctions.</p>
+<p>Check your data manually before the export if wastwater_structure.status is not empty. Check whether wastwater_structure._function_hierachic is filled in on Primary network nodes (PAA nodes).</p>
+<p><a class="reference external" href="https://github.com/TWW/TWW/issues/613">For more details see related Github issue</a></p>
+</section>
+<section id="catchment-area-connected-to-secondary-wastewater-structure">
+<h3>Catchment area connected to secondary wastewater structure<a class="headerlink" href="#catchment-area-connected-to-secondary-wastewater-structure" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Undefined</span> <span class="n">Node</span> <span class="p">(</span><span class="n">CHamtKnv00002706</span><span class="p">)</span> <span class="n">referenced</span> <span class="n">at</span> <span class="n">line</span> <span class="mi">20997</span><span class="p">:</span>
+<span class="p">[</span><span class="n">DWF</span><span class="p">]</span>
+<span class="n">CHamtKnv00002706</span>      <span class="n">FLOW</span>    <span class="mf">0.0204074074074074</span>      <span class="n">dailyPatternDWF</span>
+</pre></div>
+</div>
+<p>The catchment area is linked to a secondary wastewater structure</p>
+</section>
+<section id="missing-discharge-coefficients">
+<h3>Missing discharge coefficients<a class="headerlink" href="#missing-discharge-coefficients" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Too</span> <span class="n">few</span> <span class="n">items</span> <span class="n">at</span> <span class="n">line</span> <span class="mi">104</span><span class="p">:</span>
+<span class="p">[</span><span class="n">SUBCATCHMENT</span><span class="p">]</span>
+<span class="n">ch19ar68CA008855_ww_current</span>   <span class="n">raingage</span><span class="nd">@ch19ar68CA008855</span>       <span class="n">CHamtKnv00001992</span>        <span class="mf">0.0276</span>          <span class="mf">19.4322613668305</span>
+</pre></div>
+</div>
+<p>The subcatchement discharge coefficients are not filled in.
+You can find them using sql:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">select</span> <span class="n">obj_id</span><span class="p">,</span> <span class="n">fk_wastewater_networkelement_rw_current</span><span class="p">,</span> <span class="n">discharge_coefficient_rw_current</span>
+<span class="kn">from</span> <span class="nn">tww_od.catchment_area</span>
+<span class="n">where</span> <span class="n">fk_wastewater_networkelement_rw_current</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">null</span> <span class="ow">and</span> <span class="n">discharge_coefficient_rw_current</span> <span class="ow">is</span> <span class="n">null</span><span class="p">;</span>
+
+<span class="n">select</span> <span class="n">obj_id</span><span class="p">,</span> <span class="n">fk_wastewater_networkelement_rw_planned</span><span class="p">,</span> <span class="n">discharge_coefficient_rw_planned</span>
+<span class="kn">from</span> <span class="nn">tww_od.catchment_area</span>
+<span class="n">where</span> <span class="n">fk_wastewater_networkelement_rw_planned</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">null</span> <span class="ow">and</span> <span class="n">discharge_coefficient_rw_planned</span> <span class="ow">is</span> <span class="n">null</span><span class="p">;</span>
+
+<span class="n">select</span> <span class="n">obj_id</span><span class="p">,</span> <span class="n">fk_wastewater_networkelement_ww_current</span><span class="p">,</span> <span class="n">discharge_coefficient_ww_current</span>
+<span class="kn">from</span> <span class="nn">tww_od.catchment_area</span>
+<span class="n">where</span> <span class="n">fk_wastewater_networkelement_ww_current</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">null</span> <span class="ow">and</span> <span class="n">discharge_coefficient_ww_current</span> <span class="ow">is</span> <span class="n">null</span>
+
+<span class="n">select</span> <span class="n">obj_id</span><span class="p">,</span> <span class="n">fk_wastewater_networkelement_ww_planned</span><span class="p">,</span> <span class="n">discharge_coefficient_ww_planned</span>
+<span class="kn">from</span> <span class="nn">tww_od.catchment_area</span>
+<span class="n">where</span> <span class="n">fk_wastewater_networkelement_ww_planned</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">null</span> <span class="ow">and</span> <span class="n">discharge_coefficient_ww_planned</span> <span class="ow">is</span> <span class="n">null</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="missing-population-densities">
+<h3>Missing population densities<a class="headerlink" href="#missing-population-densities" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ERROR</span> <span class="mi">211</span><span class="p">:</span> <span class="n">invalid</span> <span class="n">number</span> <span class="n">dailyPatternDWF</span> <span class="n">at</span> <span class="n">line</span> <span class="mi">4288</span> <span class="n">of</span> <span class="p">[</span><span class="n">DWF</span><span class="p">]</span> <span class="n">section</span><span class="p">:</span>
+<span class="mi">00000000</span><span class="n">WN006032</span> <span class="n">FLOW</span>             <span class="n">dailyPatternDWF</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">tww_od.catchment_area.population_density_current</span></code> or <code class="docutils literal notranslate"><span class="pre">tww_od.catchment_area.population_density_planned</span></code> are not filled.</p>
+</section>
+</section>
+<section id="subcatchments-and-rain-gauges">
+<h2>Subcatchments and rain Gauges<a class="headerlink" href="#subcatchments-and-rain-gauges" title="Link to this heading"></a></h2>
+<p>If you want to attach every subcatchments to a single rain gauge, edit the file with SWMM interface:</p>
+<ul class="simple">
+<li><p>Edit &gt; Select All</p></li>
+<li><p>Edit &gt; Group Deletion &gt; All Rain Gages</p></li>
+<li><p>Create a new raingage</p></li>
+<li><p>Edit &gt; Select All</p></li>
+<li><p>Edit &gt; Group Edit</p>
+<ul>
+<li><dl class="simple">
+<dt>For objects of type: Subcatchment</dt><dd><ul>
+<li><p>Edit the property: Rain Gage</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>By replacing it with: Name of the new rain gage</p></li>
+</ul>
+</li>
+</ul>
+<p>To edit the rain serie:</p>
+<ul class="simple">
+<li><p>Click on Time Series</p></li>
+<li><p>Double click default_tww_raingage_timeserie</p></li>
+<li><p>Edit the serie</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Derechos de autor 2023, The TWW Project www.teksi.ch.</p>
+  </div>
+
+  Compilado con <a href="https://www.sphinx-doc.org/">Sphinx</a> usando un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    proporcionado por <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

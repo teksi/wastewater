@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4.5. Data-model tool &mdash; TWW 0.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=a0e24af7"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="4.6. Manual update of the datamodel" href="../db-update-pum/index.html" />
+    <link rel="prev" title="4.4. Customization of the data model" href="../db-customization/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            TWW
+          </a>
+              <div class="version">
+                0.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">1. TEKSI wastewater module (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">2. TWW Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user-guide/index.html">3. TWW User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">4. Admin Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../pgadmin/index.html">4.1. pgAdmin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.html">4.2. User Roles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interlis-io/index.html">4.3. INTERLIS Data exchange</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../db-customization/index.html">4.4. Customization of the data model</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.5. Data-model tool</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#setup">4.5.1. Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#usage">4.5.2. Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#main-dialog">4.5.2.1. Main dialog</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#troubleshooting">4.5.2.2. Troubleshooting</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../db-update-pum/index.html">4.6. Manual update of the datamodel</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../vm/index.html">5. Demo Virtual Machine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">6. Translation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">TWW</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">4. </span>Admin Guide</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">4.5. </span>Data-model tool</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/admin-guide/datamodel-tool/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="data-model-tool">
+<h1><span class="section-number">4.5. </span>Data-model tool<a class="headerlink" href="#data-model-tool" title="Link to this heading"></a></h1>
+<p>The plugin contains a data-model tool capable of initializing and upgrading a TWW database.</p>
+<p>It is aimed at system administrators and power users, and should not be used by end users, as it
+could lead to data loss if not used properly.</p>
+<p>For advanced cases, it is also possible to <a class="reference external" href="../db-update-pum/index.html">upgrade your database manually</a></p>
+<section id="setup">
+<h2><span class="section-number">4.5.1. </span>Setup<a class="headerlink" href="#setup" title="Link to this heading"></a></h2>
+<p>The data-model tool is hidden by default. To make it visible, you must first enable <code class="docutils literal notranslate"><span class="pre">Admin</span> <span class="pre">mode</span></code>
+in the plugin settings :</p>
+<ul class="simple">
+<li><p>Go to <code class="docutils literal notranslate"><span class="pre">Plugin</span> <span class="pre">&gt;</span> <span class="pre">TWW</span> <span class="pre">&gt;</span> <span class="pre">Settings</span></code></p></li>
+<li><p>Switch to the <code class="docutils literal notranslate"><span class="pre">Developer</span> <span class="pre">options</span></code> tab</p></li>
+<li><p>Check <code class="docutils literal notranslate"><span class="pre">Admin</span> <span class="pre">mode</span></code></p></li>
+<li><p>Restart QGIS</p></li>
+</ul>
+<p>The data-model tool should now appear under <code class="docutils literal notranslate"><span class="pre">Plugin</span> <span class="pre">&gt;</span> <span class="pre">TWW</span> <span class="pre">&gt;</span> <span class="pre">Datamodel</span> <span class="pre">tool</span></code></p>
+</section>
+<section id="usage">
+<h2><span class="section-number">4.5.2. </span>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h2>
+<section id="main-dialog">
+<h3><span class="section-number">4.5.2.1. </span>Main dialog<a class="headerlink" href="#main-dialog" title="Link to this heading"></a></h3>
+<p>The main dialog looks like this.</p>
+<figure class="align-default">
+<img alt="../../_images/datamodel-tool.png" src="../../_images/datamodel-tool.png" />
+</figure>
+<ul>
+<li><p><strong>Release</strong>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>Version</strong>: the version to retrieve the files from. Unless <code class="docutils literal notranslate"><span class="pre">developer</span> <span class="pre">mode</span></code> is enabled in the TWW settings, only the latest stable version is available. Selecting anything different from the latest stable version should only ever be used on a testing database, as it could upgrade the database to an inconsistent state.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>Dependencies</strong>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>Python requirements</strong>: If there are missing python requirements, click on the <strong>install button</strong> to try to install them automatically. Note that this will not work on all systems. If it fails, you can try to start QGIS with administrator privileges, or <a class="reference external" href="../db-update-pum/index.html#requirements">install the dependencies manually</a>.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>Postgres service configurations</strong>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>File location</strong>: shows the location of the <code class="docutils literal notranslate"><span class="pre">pg_service.conf</span></code> file being used</p></li>
+<li><p><strong>PG Config</strong>: allows to select the postgres service configuration of the database on which you want to operate. <strong>WARNING</strong>: by default, the first entry is selected, which may not match the database used by your currently open TWW project.</p></li>
+<li><p><strong>``+`` button</strong>: opens an utility to add or edit entries from your <code class="docutils literal notranslate"><span class="pre">pg_service.conf</span></code> file directly.</p></li>
+</ul>
+<p>Refer to the <a class="reference external" href="../../installation-guide/workstation.html">installation guide</a> to know more about the <code class="docutils literal notranslate"><span class="pre">pg_service.conf</span></code> file.</p>
+</div></blockquote>
+</li>
+<li><p><strong>Datamodel</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>Current version</strong>: shows the current version of the datamodel found in the selected database</p></li>
+<li><p><strong>SRID</strong>: allows to customize the SRID (this is only supported on database initialization)</p></li>
+<li><p><strong>Action</strong>: allows to initialize or upgrade a datamodel to a specific version. WARNING: this will alter the datamodel in the specified database. Make sure you have a full and working backup of your database before performing an upgrade.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>QGIS project</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>Load</strong>: opens the template QGIS project, already configured to work on the database selected above</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section id="troubleshooting">
+<h3><span class="section-number">4.5.2.2. </span>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h3>
+<p>In case you encounter issues or errors when using the datamodel tool, make sure to look at the
+TWW tab in the logs, as it may contain useful information (including errors returned by underlying tools).</p>
+<p>Make sure to include this information if submitting a bug report or asking for support.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../db-customization/index.html" class="btn btn-neutral float-left" title="4.4. Customization of the data model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../db-update-pum/index.html" class="btn btn-neutral float-right" title="4.6. Manual update of the datamodel" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, The TWW Project www.teksi.ch.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Match channels &mdash; TWW 0.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=a0e24af7"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            TWW
+          </a>
+              <div class="version">
+                0.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">1. TEKSI wastewater module (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation-guide/index.html">2. TWW Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">3. TWW User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">4. Admin Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vm/index.html">5. Demo Virtual Machine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">6. Translation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">TWW</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Match channels</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/wincan2qgep/match-channels.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="match-channels">
+<h1>Match channels<a class="headerlink" href="#match-channels" title="Link to this heading"></a></h1>
+<p>To import the inspection data, the inspected channels have to be matched with the TWW channels.
+This process can be done semi-automatically or manually.
+As long as channels are not matched to existing data, they will be highlighted in red in the main table.</p>
+<section id="automatic-matching">
+<h2>Automatic matching<a class="headerlink" href="#automatic-matching" title="Link to this heading"></a></h2>
+<p>An automatic matching can be performed by looking for a pattern in manhole identifiers.
+Enter a channel identifier in the corresponding field, and the plugin will search
+for the channels connecting the manhole as follows: <code class="docutils literal notranslate"><span class="pre">{channel_id}</span> <span class="pre">-</span> <span class="pre">{manhole_id}</span></code>
+(the manhole id being taken from the inspection data).</p>
+</section>
+<section id="manual-matching">
+<h2>Manual matching<a class="headerlink" href="#manual-matching" title="Link to this heading"></a></h2>
+<p>Manual matching can be performed as follows:</p>
+<ol class="arabic simple">
+<li><p>Select the desired channel in the table</p></li>
+<li><p>In the first channel widget, click on the <code class="docutils literal notranslate"><span class="pre">Select</span> <span class="pre">on</span> <span class="pre">map</span></code> button</p></li>
+</ol>
+<figure class="align-default">
+<img alt="../_images/match-channel-1.png" src="../_images/match-channel-1.png" />
+</figure>
+<ol class="arabic simple" start="3">
+<li><p>Find and click on the corresponding channel on the map.</p></li>
+<li><p>The channel ID is now listed and the line in the table is not highlighted anymore.</p></li>
+</ol>
+<figure class="align-default">
+<img alt="../_images/match-channel-2.png" src="../_images/match-channel-2.png" />
+</figure>
+</section>
+<section id="skipping-channels-or-observations">
+<h2>Skipping channels or observations<a class="headerlink" href="#skipping-channels-or-observations" title="Link to this heading"></a></h2>
+<p>If you want to skip some of the inspected channels, they simply need to be unchecked in the channel table and similarly for observations.</p>
+<figure class="align-default">
+<img alt="../_images/skip-data.png" src="../_images/skip-data.png" />
+</figure>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, The TWW Project www.teksi.ch.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

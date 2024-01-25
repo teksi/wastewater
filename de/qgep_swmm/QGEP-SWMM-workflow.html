@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="de" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TWW-SWMM workflow &mdash; TWW 0.8 Dokumentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=dd9d91fd"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/translations.js?v=70a09b52"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Stichwortverzeichnis" href="../genindex.html" />
+    <link rel="search" title="Suche" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            TWW
+          </a>
+              <div class="version">
+                0.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Dokumentation durchsuchen" aria-label="Dokumentation durchsuchen" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">1. TEKSI wastewater module (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation-guide/index.html">2. TWW Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">3. TWW User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">4. Admin Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vm/index.html">5. Demo Virtual Machine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">6. Translation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">TWW</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">TWW-SWMM workflow</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/qgep_swmm/QGEP-SWMM-workflow.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tww-swmm-workflow">
+<span id="id1"></span><h1>TWW-SWMM workflow<a class="headerlink" href="#tww-swmm-workflow" title="Link to this heading"></a></h1>
+<section id="workflow">
+<h2>Workflow<a class="headerlink" href="#workflow" title="Link to this heading"></a></h2>
+<figure class="align-default">
+<img alt="../_images/workflow.png" src="../_images/workflow.png" />
+</figure>
+<p>Each step of the workflow is explained in details in next chapters.</p>
+<section id="prepare-and-check-the-data">
+<h3>Prepare and check the data<a class="headerlink" href="#prepare-and-check-the-data" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>The function <code class="docutils literal notranslate"><span class="pre">SWMM</span> <span class="pre">Set</span> <span class="pre">default</span> <span class="pre">coefficient</span> <span class="pre">of</span> <span class="pre">friction</span></code> can be used to fill automatically default reach friction.</p></li>
+</ul>
+</section>
+<section id="generate-a-swmm-export">
+<h3>Generate a SWMM Export<a class="headerlink" href="#generate-a-swmm-export" title="Link to this heading"></a></h3>
+<p>Run <code class="docutils literal notranslate"><span class="pre">SWMM</span> <span class="pre">Create</span> <span class="pre">Input</span></code>. It:</p>
+<ul class="simple">
+<li><p>reads simulation parameters from a template <code class="docutils literal notranslate"><span class="pre">.inp</span></code> file,</p></li>
+<li><p>reads data from the TWW views (schema <code class="docutils literal notranslate"><span class="pre">tww_swmm</span></code>),</p></li>
+<li><p>generates an input file for SWMM (<code class="docutils literal notranslate"><span class="pre">.inp</span></code>).</p></li>
+</ul>
+</section>
+<section id="check-the-export">
+<h3>Check the Export<a class="headerlink" href="#check-the-export" title="Link to this heading"></a></h3>
+<p>Check generated <code class="docutils literal notranslate"><span class="pre">.inp</span></code> file.</p>
+<p>Its likely that the <code class="docutils literal notranslate"><span class="pre">.inp</span></code> file generated in the previous step contains errors or needs some parameters to be tuned.
+We recommend to first open the <code class="docutils literal notranslate"><span class="pre">.inp</span></code> file with the SWMM Graphical User Interface (GUI).
+Error summarized at the SWMM startup might highlight error in TWW. Other errors can be solved directly in SWMM.</p>
+<p>If you need to tune the simulation parameters, you have to edit the <code class="docutils literal notranslate"><span class="pre">.inp</span></code> file with SWMM GUI.</p>
+</section>
+<section id="run-the-simulation">
+<h3>Run the simulation<a class="headerlink" href="#run-the-simulation" title="Link to this heading"></a></h3>
+<p>Run <code class="docutils literal notranslate"><span class="pre">SWMM</span> <span class="pre">Execute</span></code>, it launches SWMM. Run it on a tested <code class="docutils literal notranslate"><span class="pre">.inp</span></code> file.
+It generates a report file <code class="docutils literal notranslate"><span class="pre">.rpt</span></code> which contains the summary and the full time series.
+Errors can also occur during the running time.</p>
+<p>Alternatively, you can run the simulation from the SWMM interface or with command line.</p>
+</section>
+<section id="stores-and-map-the-results">
+<h3>Stores and map the Results<a class="headerlink" href="#stores-and-map-the-results" title="Link to this heading"></a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>If you dont want to store the result in TWW database</strong>: Run <code class="docutils literal notranslate"><span class="pre">SWMM</span> <span class="pre">Extract</span> <span class="pre">Results</span></code>. It parses the report file and generates three QGIS table layers from the summary. The user has to join the computed values with the geometries and map them.</p></li>
+<li><p><strong>If you want to store the results in TWW and use the dedicated view for the mapping</strong>: .Run <code class="docutils literal notranslate"><span class="pre">SWMM</span> <span class="pre">Import</span> <span class="pre">Results</span></code>. It parses the report file. The results are imported in the measurements table, they populate a view dedicated for the mapping.</p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+<section id="gep-project">
+<h2>GEP project<a class="headerlink" href="#gep-project" title="Link to this heading"></a></h2>
+<p><strong>WORK IN PROGRESS: This section must be completed with end users</strong></p>
+<p>Usually, a GEP analysis has at least three steps:</p>
+<ol class="arabic simple">
+<li><p>The current state of the network is analysed</p></li>
+<li><p>The planned state is analysed.</p></li>
+<li><p>Several variants are tested and analysed</p></li>
+</ol>
+<p><strong>Minimal parameters to be set</strong></p>
+<p><code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">series</span></code>: Create a time serie for the rain. The time series have to be linked to the raingages <code class="docutils literal notranslate"><span class="pre">Hydrology</span> <span class="pre">&gt;</span> <span class="pre">Rain</span> <span class="pre">Gages</span></code> (which are linked to the subcatchments)</p>
+<p><code class="docutils literal notranslate"><span class="pre">Hydrology</span> <span class="pre">&gt;</span> <span class="pre">Subcatchment</span></code>: Set percent of of impervious area and infiltration parameters</p>
+<p><strong>Optional parameters</strong></p>
+<p><code class="docutils literal notranslate"><span class="pre">Climatology</span> <span class="pre">&gt;</span> <span class="pre">Evaporation</span></code></p>
+<p><strong>Run planned state simulation</strong></p>
+<ul class="simple">
+<li><p>In the function <code class="docutils literal notranslate"><span class="pre">SWMM</span> <span class="pre">Create</span> <span class="pre">Input</span></code> choose the state planned. It extract the planned wastewater structures.</p></li>
+</ul>
+<p><strong>Run variants (network is modified)</strong></p>
+<p>New links and new nodes are created directly in SWMM GUI</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, The TWW Project www.teksi.ch.</p>
+  </div>
+
+  Erstellt mit <a href="https://www.sphinx-doc.org/">Sphinx</a> mit einem
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    bereitgestellt von <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

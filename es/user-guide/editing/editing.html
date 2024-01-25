@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="es" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.3.1. Editing of existing data &mdash; documentación de TWW - 0.8</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=1b70d6bb"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/translations.js?v=efdbd0b9"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="../../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../../search.html" />
+    <link rel="next" title="3.3.2. Moving Wastewater Structures with Reaches, Covers and Nodes" href="moving.html" />
+    <link rel="prev" title="3.3. Editing in TWW" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            TWW
+          </a>
+              <div class="version">
+                0.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Buscar documentos" aria-label="Buscar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">1. TEKSI wastewater module (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">2. TWW Installation Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. TWW User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">3.1. Overview of TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../digitizing/index.html">3.2. Digitizing in TWW</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">3.3. Editing in TWW</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">3.3.1. Editing of existing data</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#demo-project">3.3.1.1. Demo project</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#layers">3.3.1.2. Layers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#changing-attributes-of-point-elements-manholes-special-structures">3.3.1.3. Changing attributes of point elements (manholes / special structures)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#changing-attributes-of-linear-elements-channels">3.3.1.4. Changing attributes of linear elements (channels)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-reach-direction">3.3.1.5. Change reach direction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#snap-reach-geometry">3.3.1.6. Snap reach geometry</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#working-with-codes-of-value-list">3.3.1.7. Working with codes of value list</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#an-other-way-to-choose-an-object">3.3.1.8. An other way to choose an object</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-additional-covers-and-nodes-to-an-existing-wastewater-structure">3.3.1.9. Adding additional covers and nodes to an existing wastewater structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-a-wastewater-node-to-an-existing-reach">3.3.1.10. Adding a wastewater node to an existing reach</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#multiedit">3.3.1.11. Multiedit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#saving-changes">3.3.1.12. Saving changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#changing-wastewater-structure-type">3.3.1.13. Changing Wastewater Structure Type</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#split-a-reach-channel-into-different-reaches">3.3.1.14. Split a reach (channel) into different reaches</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="moving.html">3.3.2. Moving Wastewater Structures with Reaches, Covers and Nodes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="maintenance_events.html">3.3.3. Adding or Editing of Maintenance Events</a></li>
+<li class="toctree-l3"><a class="reference internal" href="connect_wastewater_network_elements.html">3.3.4. Connect Wastewater Network Elements</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">3.4. Length profiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">3.5. Network following tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">3.6. Plan plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/index.html">3.7. History in TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../How-To/index.html">3.8. How To</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">4. Admin Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vm/index.html">5. Demo Virtual Machine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">6. Translation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">TWW</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>TWW User Guide</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.3. </span>Editing in TWW</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">3.3.1. </span>Editing of existing data</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/user-guide/editing/editing.rst.txt" rel="nofollow"> Ver código fuente de la página</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="editing-of-existing-data">
+<span id="editing-data"></span><h1><span class="section-number">3.3.1. </span>Editing of existing data<a class="headerlink" href="#editing-of-existing-data" title="Link to this heading"></a></h1>
+<p>This represents a guide on how to edit existing data in TWW.</p>
+<section id="demo-project">
+<h2><span class="section-number">3.3.1.1. </span>Demo project<a class="headerlink" href="#demo-project" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Make sure you have imported the demo project with pgAdminIII (see the <a class="reference internal" href="../../installation-guide/database-initialization.html#database-initialization"><span class="std std-ref">Database initialization</span></a> chapter)</p></li>
+<li><p>Open the demo project by going to the main menu and press <strong>Project</strong> –&gt; <strong>Open</strong>  or by pressing <code class="docutils literal notranslate"><span class="pre">CTRL</span></code>
++ <code class="docutils literal notranslate"><span class="pre">O</span></code> at the same time.</p></li>
+</ul>
+<figure class="align-default">
+<a class="reference internal image-reference" href="user-guide/editing/images/tww_demoproject_selection_tww_en_qgs.jpg"><img alt="user-guide/editing/images/tww_demoproject_selection_tww_en_qgs.jpg" src="user-guide/editing/images/tww_demoproject_selection_tww_en_qgs.jpg" /></a>
+</figure>
+<ul class="simple">
+<li><p>Login to the database</p></li>
+</ul>
+<figure class="align-default">
+<img alt="user-guide/editing/images/tww_demoproject_login.jpg" src="user-guide/editing/images/tww_demoproject_login.jpg" />
+</figure>
+<ul class="simple">
+<li><p>You should now have the demo project loaded</p></li>
+</ul>
+<figure class="align-default">
+<img alt="user-guide/editing/images/tww_demoproject_overview.jpg" src="user-guide/editing/images/tww_demoproject_overview.jpg" />
+</figure>
+<ul class="simple">
+<li><p>The project consists of different layers. Depending on your task what to edit or add you choose the layer.</p></li>
+</ul>
+</section>
+<section id="layers">
+<h2><span class="section-number">3.3.1.2. </span>Layers<a class="headerlink" href="#layers" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>TWW has different predefined layers. For explanations, see the <a class="reference internal" href="../layerexplanations/layerexplanation.html#layer-explanation"><span class="std std-ref">Layers explanation</span></a> chapter.</p></li>
+</ul>
+</section>
+<section id="changing-attributes-of-point-elements-manholes-special-structures">
+<h2><span class="section-number">3.3.1.3. </span>Changing attributes of point elements (manholes / special structures)<a class="headerlink" href="#changing-attributes-of-point-elements-manholes-special-structures" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>To change an attribute you first need to select the <strong>vw_tww_wastewater_structure</strong> layer.</p></li>
+<li><p>Switch to the edit mode or start the <strong>TWW Wizard</strong> and click on <strong>Start Data Entry</strong>.</p></li>
+<li><p>Then click on the <strong>Identify features</strong> button and click on the element you want to edit.</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/identify_feature_tool1.jpg" src="../../_images/identify_feature_tool1.jpg" />
+</figure>
+<ul class="simple">
+<li><p>The <strong>vw_tww_wastewater_structure</strong> form will open.</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/wizard_wastewater_structure_manhole_form_data_ok3.jpg" src="../../_images/wizard_wastewater_structure_manhole_form_data_ok3.jpg" />
+</figure>
+<ul class="simple">
+<li><p>On the first tab (General) you can change the most common attributes</p></li>
+<li><p>To change attributes of related tables (e.g. cover) you need to select the correspondent tab. Depending on the
+kind of wastewater structure you can edit additional attributes in the respective tab (<strong>special structure</strong>, <strong>manhole</strong>).</p></li>
+<li><p>In <strong>Structure parts</strong> tab you can add further parts such as <strong>access aids</strong>, <strong>backflow prevention</strong>, <strong>dryweather flume</strong> etc.</p></li>
+</ul>
+<figure class="align-default">
+<img alt="user-guide/editing/images/form_vw_tww_wastewater_structure_structure_parts.jpg" src="user-guide/editing/images/form_vw_tww_wastewater_structure_structure_parts.jpg" />
+</figure>
+<ul class="simple">
+<li><p>The <strong>covers</strong> and <strong>wastewater nodes</strong> tab allows you to look to all nodes or covers of a wastewater structure and to add further elements. See the <a class="reference internal" href="#adding-additional-covers-and-nodes-to-an-existing-wastewater-structure"><span class="std std-ref">Adding additional covers and nodes to an existing wastewater structure</span></a> chapter below.</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="changing-attributes-of-linear-elements-channels">
+<h2><span class="section-number">3.3.1.4. </span>Changing attributes of linear elements (channels)<a class="headerlink" href="#changing-attributes-of-linear-elements-channels" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>To change an attribute you first need to select the <strong>vw_tww_reach</strong></p></li>
+<li><p>Switch to the edit mode.</p></li>
+<li><p>Then click on the <strong>Identify features</strong> button and click the reach you want to edit.</p></li>
+<li><p>The <strong>vw_tww_reach</strong> form will open.</p></li>
+</ul>
+<blockquote>
+<div><figure class="align-default">
+<img alt="user-guide/editing/images/form_vw_tww_reach.jpg" src="user-guide/editing/images/form_vw_tww_reach.jpg" />
+</figure>
+</div></blockquote>
+<ul class="simple">
+<li><p>On the first tab (<strong>General</strong>) you can change the most common attributes.</p></li>
+<li><p>To change attributes of related tables (e.g. <strong>reach points</strong>) select the correspondent tab.</p></li>
+</ul>
+<blockquote>
+<div><figure class="align-default">
+<img alt="user-guide/editing/images/form_vw_tww_reach_reachpoints.jpg" src="user-guide/editing/images/form_vw_tww_reach_reachpoints.jpg" />
+</figure>
+</div></blockquote>
+</div></blockquote>
+</section>
+<section id="change-reach-direction">
+<h2><span class="section-number">3.3.1.5. </span>Change reach direction<a class="headerlink" href="#change-reach-direction" title="Link to this heading"></a></h2>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>The definition in VSA-DSS is, that reaches have to be defined in the flow direction (the start node is where the water comes from, the end node is where the water flows).</p>
+</div>
+<p>TWW has a tool to change the reach direction. With this tool you can change all selected reaches at once.
+Do not use the <strong>Reverse line</strong> button of QGIS, because this button do not change the reach points and their connection to wastewater network elements.</p>
+<ul class="simple">
+<li><p>To start you have to select all reaches that you want to change. There is no need to select the vw_tww_reach layer or to set this layer to the edit mode.</p></li>
+<li><p>Open the <strong>Processing Toolbox</strong></p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/toolbox.jpg" src="../../_images/toolbox.jpg" />
+</figure>
+<ul class="simple">
+<li><p>Double click the <strong>Change reach direction</strong> tool</p></li>
+</ul>
+<figure class="align-default">
+<img alt="user-guide/editing/images/tww_toolbox.jpg" src="user-guide/editing/images/tww_toolbox.jpg" />
+</figure>
+<ul class="simple">
+<li><p>In the tool window you have to choose the <strong>vw_tww_reach</strong> - Layer and then click on <strong>Run</strong></p></li>
+<li><p>If you zoom in or out, you see, that the slope-arrow and the slope has changed. The reach points level have not changed.</p></li>
+<li><p>Refresh network topology.</p></li>
+<li><p>You can save now the change.</p></li>
+</ul>
+</section>
+<section id="snap-reach-geometry">
+<h2><span class="section-number">3.3.1.6. </span>Snap reach geometry<a class="headerlink" href="#snap-reach-geometry" title="Link to this heading"></a></h2>
+<p>This tool snaps reaches graphically to the wastewater network element they are connected to. So they are not only logically, but also graphically connected.</p>
+<ul class="simple">
+<li><p>To start you have to select all reaches that you want to snap. There is no need to select the vw_tww_reach layer or to set this layer to the edit mode.</p></li>
+<li><p>Open the <strong>Processing Toolbox</strong></p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/toolbox.jpg" src="../../_images/toolbox.jpg" />
+</figure>
+<ul class="simple">
+<li><p>Double click the <strong>Snap reach geometry</strong> tool</p></li>
+</ul>
+<figure class="align-default">
+<img alt="user-guide/editing/images/tww_toolbox.jpg" src="user-guide/editing/images/tww_toolbox.jpg" />
+</figure>
+<ul class="simple">
+<li><p>In the tool window you have to choose the <strong>vw_tww_reach</strong> - layer and the <strong>vw_wastewater_node</strong> - layer, then click on <strong>Run</strong></p></li>
+<li><p>If you zoom in or out, you see the changes.</p></li>
+<li><p>If the result is not what you expect, try with a greater snapping distance</p></li>
+</ul>
+<p>If there are connections from reach to reach, the reach point moves at right angles to the other reach. If there is no way to do a right angle, it moves to the next end point of the reach.</p>
+<div class="admonition attention">
+<p class="admonition-title">Atención</p>
+<p>If there is snapping from reach to reach, you will get not the expected result, if the first reach snaps to a second reach, and afterwards this second reach snaps to a node or a third reach, there will be no more graphical connection between reach 1 and reach 2. You have to rerun the command.</p>
+</div>
+</section>
+<section id="working-with-codes-of-value-list">
+<h2><span class="section-number">3.3.1.7. </span>Working with codes of value list<a class="headerlink" href="#working-with-codes-of-value-list" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>The values of fields with value list are stored in the database with codes.</p></li>
+</ul>
+<blockquote>
+<div><div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>The codes are unique, also if there is the same text in different value lists. E.g. the code for «rain_wastewater» in the vl_channel_usage_current and in the vl_channel_usage_planned is different.</p>
+</div>
+</div></blockquote>
+<ul class="simple">
+<li><p>In a tww project with correct configuration you see in the table view or the form view the values in your language and not the codes.</p></li>
+<li><p>But if you want to define a selection by expression or if you want to define a rule-based symbology for your layer, you have to know the codes or you use the following expression: <strong>represent_value(«field»)</strong></p></li>
+</ul>
+<p>Examples for using <strong>represent_value</strong></p>
+<ul class="simple">
+<li><p>Search all primary wastewater facility reaches (function_hierarchic starts with pwwf)</p></li>
+</ul>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../../_images/represent_value1.jpg" src="../../_images/represent_value1.jpg" />
+</figure>
+</div></blockquote>
+<ul class="simple">
+<li><p>Search all reaches, that have not the same usage_planned as usage_current</p></li>
+</ul>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../../_images/represent_value2.jpg" src="../../_images/represent_value2.jpg" />
+</figure>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>The expression <cite>«ch_usage_current» &lt;&gt; «ch_usage planned»</cite> does not work because of the unique codes!</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>In the demo-project is no use of represent_value for rule-based symbols, because the rules will otherwise only work for one language.</p>
+</div>
+</section>
+<section id="an-other-way-to-choose-an-object">
+<h2><span class="section-number">3.3.1.8. </span>An other way to choose an object<a class="headerlink" href="#an-other-way-to-choose-an-object" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>With the <strong>Identify feature</strong> tool activated, right clicking an element outputs a selection of all existing objects at this place.</p></li>
+</ul>
+<blockquote>
+<div><figure class="align-default">
+<img alt="user-guide/editing/images/tww_info_button_rightclick.jpg" src="user-guide/editing/images/tww_info_button_rightclick.jpg" />
+</figure>
+<ul class="simple">
+<li><p>You can select then the object you want. This will get you to the correspondent form to see the details.</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="adding-additional-covers-and-nodes-to-an-existing-wastewater-structure">
+<span id="id1"></span><h2><span class="section-number">3.3.1.9. </span>Adding additional covers and nodes to an existing wastewater structure<a class="headerlink" href="#adding-additional-covers-and-nodes-to-an-existing-wastewater-structure" title="Link to this heading"></a></h2>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>The following description is for an additional cover. It works similar for additional wastewater nodes.</p>
+</div>
+<ul class="simple">
+<li><p>Be sure to have the relation between vw_cover (field fk_wastewater_structure) and vw_tww_wastewater_structure (field obj_id) in your project properties / relations.</p></li>
+<li><p>Define in layer vw_cover / Properties / <strong>Attribute Forms</strong> the field <strong>fk_wastewater_structure</strong> as value relation</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/vw_cover_properties_fields.jpg" src="../../_images/vw_cover_properties_fields.jpg" />
+</figure>
+<ul class="simple">
+<li><p>With QGIS 3.16 there is a new way: select layer vw_tww_wastewater_structure, set it editable, click the manhole you want to add a cover with the <strong>Identify feature</strong> tool. Go to tab <strong>covers</strong> and click the new child point-button. Now you can digitize a new cover for the wastewater structure.</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/new_cover_childpoint.jpg" src="../../_images/new_cover_childpoint.jpg" />
+</figure>
+<ul class="simple">
+<li><p>The other way (before QGIS 3.16)</p></li>
+<li><p>Start editing vw_cover and add the new cover</p></li>
+<li><p>In the form you find behind the field fk_wastewater_structure a button to connect the new cover to an existing wastewater structure</p></li>
+<li><p>After clicking this button, you get blue hint in the qgis-window. You can move the vw_cover - form-window and click on the wastewater_structure, that will be associated to the cover.</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/new_cover_connect_to_wws.jpg" src="../../_images/new_cover_connect_to_wws.jpg" />
+</figure>
+</section>
+<section id="adding-a-wastewater-node-to-an-existing-reach">
+<h2><span class="section-number">3.3.1.10. </span>Adding a wastewater node to an existing reach<a class="headerlink" href="#adding-a-wastewater-node-to-an-existing-reach" title="Link to this heading"></a></h2>
+<p>In some cases, you need to add a wastewater node between two or more reaches, although there is no manhole at this place.</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>This cases are mainly in pwwf_channels (primary wastewater facilities) if there is e.g. a change of slope or a change of the material or if there is a connection of two channels without manhole (in German: Blindanschluss).</p>
+</div>
+<p>In the data model, you can connect a node between reaches to a channel (because also a channel is a wastewater structure). There is in the moment a discussion, if it is necessary or optional or even forbidden to define a connection to a wastewater structure.</p>
+<p>In TWW, there is in the moment no tool, that helps you to connect a wastewater node to a channel. So you just connect the reach points to the node.</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>If you really want to connect the node to a channel, then type the obj_id of the channel manually in the fk_wasterwater_structure field of the node.</p>
+</div>
+</section>
+<section id="multiedit">
+<h2><span class="section-number">3.3.1.11. </span>Multiedit<a class="headerlink" href="#multiedit" title="Link to this heading"></a></h2>
+<p>If you want to edit attributes for multiple objects of the same class you can use the <a class="reference external" href="https://docs.qgis.org/latest/en/docs/user_manual/working_with_vector/attribute_table.html#multi-edit-fields">multiedit Tool of QGIS</a>.</p>
+</section>
+<section id="saving-changes">
+<h2><span class="section-number">3.3.1.12. </span>Saving changes<a class="headerlink" href="#saving-changes" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Click <strong>Save</strong> and then deactivate the edit mode or click on <strong>Stop data entry</strong> if you have worked with the <strong>TWW Data Entry</strong> wizard.</p></li>
+</ul>
+</section>
+<section id="changing-wastewater-structure-type">
+<h2><span class="section-number">3.3.1.13. </span>Changing Wastewater Structure Type<a class="headerlink" href="#changing-wastewater-structure-type" title="Link to this heading"></a></h2>
+<p>In the vw_tww_wastewater_structure form, you can change the subclass of the wastewater structure (e.g. from manhole to special structure or to infiltration installation). The old subclass-record will be deleted and you must enter those attributes, that are subclass specific. But all connections (they are defined to the class wastewater_structure and not to the subclass) or the obj_id or the identifier will not change.</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>You can not change a point - wastewater structure (e.g. manhole) to a line wastewater structure (channel) or vice versa.</p>
+</div>
+</section>
+<section id="split-a-reach-channel-into-different-reaches">
+<h2><span class="section-number">3.3.1.14. </span>Split a reach (channel) into different reaches<a class="headerlink" href="#split-a-reach-channel-into-different-reaches" title="Link to this heading"></a></h2>
+<p>This is a quite complex function and not jet implemented in TWW. There exists a QGIS-Tool to split objects, but if you use this tool with vw_tww_reach - layer, you will get a database error, because the obj_id of the split (= duplicated) records are no more unique.</p>
+<p>Temporary solution: Change the existing reach and draw the second reach manually. Control the connections.</p>
+<p>There will be later a tool in TWW to split reaches. The user has to decide, if splitting concerns only class reach or also the class channel, if there a new wastewater node shall be added and connected. The tool shall be able to calculate the new reachpoint - levels and should change the existing network-element-connections if necessary.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pie de página">
+        <a href="index.html" class="btn btn-neutral float-left" title="3.3. Editing in TWW" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="moving.html" class="btn btn-neutral float-right" title="3.3.2. Moving Wastewater Structures with Reaches, Covers and Nodes" accesskey="n" rel="next">Siguiente <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Derechos de autor 2023, The TWW Project www.teksi.ch.</p>
+  </div>
+
+  Compilado con <a href="https://www.sphinx-doc.org/">Sphinx</a> usando un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    proporcionado por <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="ro" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.2.3. Digitizing detailed geometry &mdash; TWW 0.8 documentație</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=58517320"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/translations.js?v=f855708e"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Căutare" href="../../search.html" />
+    <link rel="next" title="3.2.4. Digitizing Detailed Geometry as Drainage Channel" href="digitizingdrainagechannel.html" />
+    <link rel="prev" title="3.2.2. Digitizing Wastewater Structures" href="digitizingwastewaterstructures.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            TWW
+          </a>
+              <div class="version">
+                0.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">1. TEKSI wastewater module (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">2. TWW Installation Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. TWW User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">3.1. Overview of TWW</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">3.2. Digitizing in TWW</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="dataentry.html">3.2.1. Data entry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingwastewaterstructures.html">3.2.2. Digitizing Wastewater Structures</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">3.2.3. Digitizing detailed geometry</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#general">3.2.3.1. General</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#digitizing-tool">3.2.3.2. Digitizing tool</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingdrainagechannel.html">3.2.4. Digitizing Detailed Geometry as Drainage Channel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingchannels.html">3.2.5. Digitizing Channels</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deletingobjects.html">3.2.6. Deleting objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingcatchments.html">3.2.7. Digitizing Catchment Areas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="importingdata.html">3.2.8. Importing data</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../editing/index.html">3.3. Editing in TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">3.4. Length profiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">3.5. Network following tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">3.6. Plan plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/index.html">3.7. History in TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../How-To/index.html">3.8. How To</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">4. Admin Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vm/index.html">5. Demo Virtual Machine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">6. Translation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">TWW</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>TWW User Guide</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.2. </span>Digitizing in TWW</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">3.2.3. </span>Digitizing detailed geometry</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/user-guide/digitizing/digitizingdetailedgeometry.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="digitizing-detailed-geometry">
+<h1><span class="section-number">3.2.3. </span>Digitizing detailed geometry<a class="headerlink" href="#digitizing-detailed-geometry" title="Link to this heading"></a></h1>
+<section id="general">
+<h2><span class="section-number">3.2.3.1. </span>General<a class="headerlink" href="#general" title="Link to this heading"></a></h2>
+<p>You can add a detailed geometry to waste water structures.</p>
+<p>This is recommended for:</p>
+<ul class="simple">
+<li><p>Special structures and discharge points, because they are not normed structures like manholes,
+where you can define <strong>dimension1</strong> and <strong>dimension2</strong> to describe the extension.</p></li>
+<li><p>Infiltration installations where <strong>dimension1</strong> and <strong>dimension2</strong> are not enough to describe the geometry</p></li>
+</ul>
+<div class="admonition attention">
+<p class="admonition-title">Atenție</p>
+<p>Detailed geometry is usually not used for manholes or channels!</p>
+</div>
+</section>
+<section id="digitizing-tool">
+<h2><span class="section-number">3.2.3.2. </span>Digitizing tool<a class="headerlink" href="#digitizing-tool" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Select the <strong>vw_tww_wastewater_structure</strong> layer</p></li>
+<li><p>Select the object where you want to add a detailed geometry with the info tool</p></li>
+<li><p>Right click the object</p></li>
+<li><p>if there are several objects: select the <strong>vw_tww_wastewater_structure</strong> layer</p></li>
+<li><p>Choose <strong>Digitize</strong></p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/digitizing_detailedgeometry1.jpg" src="../../_images/digitizing_detailedgeometry1.jpg" />
+</figure>
+<ul class="simple">
+<li><p>You can now start digitizing the polygon.</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/digitizing_detailedgeometry2.jpg" src="../../_images/digitizing_detailedgeometry2.jpg" />
+</figure>
+<figure class="align-default">
+<img alt="../../_images/digitizing_detailedgeometry3.jpg" src="../../_images/digitizing_detailedgeometry3.jpg" />
+</figure>
+<ul class="simple">
+<li><p>Right click to stop.</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/digitizing_detailedgeometry4.jpg" src="../../_images/digitizing_detailedgeometry4.jpg" />
+</figure>
+<p>An other way is to open the <strong>vw_tww_wastewater_structure</strong> form with the info tool and then choose <strong>Digitize</strong> in the <strong>Actions</strong> menu of the form.</p>
+<div class="admonition note">
+<p class="admonition-title">Notă</p>
+<p>If the geometry disappears after digitizing or if you get an message (like «Add part»), you have probably tried to digitize over a catchment area (or an other polygon theme) and the layer has set the avoid overlap option in the snapping settings. Do change the avoid overlap settings.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="digitizingwastewaterstructures.html" class="btn btn-neutral float-left" title="3.2.2. Digitizing Wastewater Structures" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="digitizingdrainagechannel.html" class="btn btn-neutral float-right" title="3.2.4. Digitizing Detailed Geometry as Drainage Channel" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, The TWW Project www.teksi.ch.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
