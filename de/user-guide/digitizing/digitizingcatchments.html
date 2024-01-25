@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>3.2.7. Digitizing Catchment Areas &mdash; TWW 0.8 Dokumentation</title>
+  <title>3.2.7. Digitalisierung der Einzugsgebiete &mdash; TWW dev Dokumentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
 
@@ -15,15 +15,15 @@
   
         <script src="../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=dd9d91fd"></script>
+        <script src="../../_static/documentation_options.js?v=419ed147"></script>
         <script src="../../_static/doctools.js?v=888ff710"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../_static/translations.js?v=70a09b52"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Stichwortverzeichnis" href="../../genindex.html" />
     <link rel="search" title="Suche" href="../../search.html" />
-    <link rel="next" title="3.2.8. Importing data" href="importingdata.html" />
-    <link rel="prev" title="3.2.6. Deleting objects" href="deletingobjects.html" /> 
+    <link rel="next" title="3.2.8. Datenimport" href="importingdata.html" />
+    <link rel="prev" title="3.2.6. Objekte löschen" href="deletingobjects.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -38,7 +38,7 @@
             TWW
           </a>
               <div class="version">
-                0.7
+                dev
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -54,35 +54,36 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. TWW User Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">3.1. Overview of TWW</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">3.2. Digitizing in TWW</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="dataentry.html">3.2.1. Data entry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="digitizingwastewaterstructures.html">3.2.2. Digitizing Wastewater Structures</a></li>
-<li class="toctree-l3"><a class="reference internal" href="digitizingdetailedgeometry.html">3.2.3. Digitizing detailed geometry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="digitizingdrainagechannel.html">3.2.4. Digitizing Detailed Geometry as Drainage Channel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="digitizingchannels.html">3.2.5. Digitizing Channels</a></li>
-<li class="toctree-l3"><a class="reference internal" href="deletingobjects.html">3.2.6. Deleting objects</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">3.2.7. Digitizing Catchment Areas</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#general">3.2.7.1. General</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#digitizing">3.2.7.2. Digitizing</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#editing">3.2.7.3. Editing</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#split-areas">3.2.7.4. Split Areas</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#merge-areas">3.2.7.5. Merge Areas</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#connect-catchment-area-to-wastewater-network-nodes">3.2.7.6. Connect Catchment area to Wastewater Network Nodes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dataentry.html">3.2.1. Datenerfassung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingwastewaterstructures.html">3.2.2. Abwasserbauwerke digitalisieren</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingdetailedgeometry.html">3.2.3. Digitalisieren detaillierter Geometrie</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingdrainagechannel.html">3.2.4. Digitalisieren detaillierter Geometrie für Entwässerungsrinnen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingchannels.html">3.2.5. Kanäle Digitalisieren</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deletingobjects.html">3.2.6. Objekte löschen</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">3.2.7. Digitalisierung der Einzugsgebiete</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#general">3.2.7.1. Allgemeines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#digitizing">3.2.7.2. Digitalisieren</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#editing">3.2.7.3. Bearbeitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#split-areas">3.2.7.4. Einzugsgebiete teilen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#merge-areas">3.2.7.5. Einzugsgebiet zusammenführen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#connect-catchment-area-to-wastewater-network-nodes">3.2.7.6. Einzugsgebiete mit Abwasserknoten verbinden</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="importingdata.html">3.2.8. Importing data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="importingdata.html">3.2.8. Datenimport</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../editing/index.html">3.3. Editing in TWW</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">3.4. Length profiles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">3.5. Network following tools</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">3.6. Plan plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">3.4. Längsschnitte</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">3.5. Werkzeuge zur Netzwerkverfolgung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">3.6. Plandruck</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../history/index.html">3.7. History in TWW</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../How-To/index.html">3.8. How To</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">4. Administratorhandbuch</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../vm/index.html">5. Demo Virtual Machine</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">6. Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vm/index.html">5. Demo virtuelle Maschine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tww_swmm/index.html">6. SWMM Data Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">7. Übersetzungen</a></li>
 </ul>
 
         </div>
@@ -101,7 +102,7 @@
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>TWW User Guide</a></li>
           <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.2. </span>Digitizing in TWW</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">3.2.7. </span>Digitizing Catchment Areas</li>
+      <li class="breadcrumb-item active"><span class="section-number">3.2.7. </span>Digitalisierung der Einzugsgebiete</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/user-guide/digitizing/digitizingcatchments.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
       </li>
@@ -112,149 +113,149 @@
            <div itemprop="articleBody">
              
   <section id="digitizing-catchment-areas">
-<h1><span class="section-number">3.2.7. </span>Digitizing Catchment Areas<a class="headerlink" href="#digitizing-catchment-areas" title="Link to this heading"></a></h1>
+<h1><span class="section-number">3.2.7. </span>Digitalisierung der Einzugsgebiete<a class="headerlink" href="#digitizing-catchment-areas" title="Link to this heading"></a></h1>
 <section id="general">
-<h2><span class="section-number">3.2.7.1. </span>General<a class="headerlink" href="#general" title="Link to this heading"></a></h2>
-<p>Catchments can be digitized with QGIS standard tools.</p>
+<h2><span class="section-number">3.2.7.1. </span>Allgemeines<a class="headerlink" href="#general" title="Link to this heading"></a></h2>
+<p>Die Einzugsgebiete können mit den QGIS Standard Werkzeugen digitalisiert werden.</p>
 <figure class="align-default">
 <img alt="../../_images/qgis_standard_tools.jpg" src="../../_images/qgis_standard_tools.jpg" />
 </figure>
-<p>Catchment areas should not overlap and can have 4 connections to wastewater nodes.</p>
+<p>Einzugsgebiete dürfen sich nicht überlappen und können 4 Verknüpfungen zu Abwasserknoten haben.</p>
 </section>
 <section id="digitizing">
-<h2><span class="section-number">3.2.7.2. </span>Digitizing<a class="headerlink" href="#digitizing" title="Link to this heading"></a></h2>
+<h2><span class="section-number">3.2.7.2. </span>Digitalisieren<a class="headerlink" href="#digitizing" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>Select the <strong>Enable Snapping</strong> button</p></li>
+<li><p>Wähle den <strong>Einrasten einschalten</strong> Knopf</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/enable_snapping_button.jpg" src="../../_images/enable_snapping_button.jpg" />
 </figure>
 <ul class="simple">
-<li><p>Open the <strong>Project Snapping Option Settings</strong>, check the <strong>od_catchment_area</strong> layer and check the <strong>avoid intersection</strong> checkbox for the od_catchment_area layer</p></li>
+<li><p>Öffne die <strong>Projekt Objektfang Einstellungen</strong>, schalte den Layer <strong>Einzugsgebiet</strong> und schalte die <strong>Schnittpunkte vermeiden</strong> Checkbox für den Layer Einzugsgebiet ein</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/catchment_avoid_intersection2.jpg" src="../../_images/catchment_avoid_intersection2.jpg" />
 </figure>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>New digitized catchment areas will not overlap with existing areas with this settings.</p>
+<p>Neu erfasst Einzugsgebiete überlappen nicht mit bestehenden Einzugsgebieten dank diesen Einstellungen.</p>
 </div>
 <ul class="simple">
-<li><p>Set the layer <code class="docutils literal notranslate"><span class="pre">od_catchment_area</span></code> into the edit mode.</p></li>
-<li><p>Use the <strong>Add Feature</strong> tool to digitize a new area.</p></li>
+<li><p>Setzen Sie den Layer <code class="docutils literal notranslate"><span class="pre">Einzugsgebiet</span></code> in den Bearbeitungsmodus</p></li>
+<li><p>Benützen Sie das <strong>Objekt hinzufügen</strong> Werkzeug, um eine neue Fläche zu digitalisieren.</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/add_feature_tool.jpg" src="../../_images/add_feature_tool.jpg" />
 </figure>
 <ul class="simple">
-<li><p>Start digitizing with left click and continue with left click for every vertex of the polygon</p></li>
+<li><p>Starte das Digitalisieren mit einem Links-Klick und fahre mit Links-Klick für jeden Stützpunkt des Polygons fort</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/catchment_area_digitizing1.jpg" src="../../_images/catchment_area_digitizing1.jpg" />
 </figure>
 <ul class="simple">
-<li><p>Stop digitizing with right click</p></li>
+<li><p>Beende das Digitalisieren mit einem Rechts-Klick</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>Keep in mind, that the finishing point of the polygon is the last point where you <strong>left</strong> clicked.</p>
+<p>Beachte, dass der Endpunkt des Polygon der letzte Punkt ist, wo ein Links-Klick verwendet wurde.</p>
 </div>
 <ul class="simple">
-<li><p>The <strong>od_catchment_area</strong> form appears</p></li>
+<li><p>Das <strong>Einzugsgebiet Objektattribute</strong> Fenster erscheint</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/catchment_area_digitizing2.jpg" src="../../_images/catchment_area_digitizing2.jpg" />
 </figure>
 <ul class="simple">
-<li><p>When finished editing attributes, click the <strong>OK</strong> button</p></li>
+<li><p>Wenn Sie fertig sind klicken Sie den <strong>OK</strong> Knopf</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>The new area does not overlap the old areas.</p>
+<p>Das neue Einzugsgebiet überlappt nicht mit den bestehenden Einzugsgebieten.</p>
 </div>
 <figure class="align-default">
 <img alt="../../_images/catchment_area_digitizing3.jpg" src="../../_images/catchment_area_digitizing3.jpg" />
 </figure>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>To control the exact area of a selected polygon, see in the <strong>Identify Results</strong> window under <strong>(Derived)</strong>.</p>
+<p>Um die Fläche eines ausgewählten Einzugsgebietes zu kontrollieren, kann im <strong>Abfrageergebnisse</strong> Fenster unter <strong>(abgeleitet)</strong> nachgeschaut werden.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>To connect the area with wastewater nodes, see chapter <a class="reference internal" href="../editing/connect_wastewater_network_elements.html#connect-wastewater-network-elements"><span class="std std-ref">Connect Wastewater Network Elements</span></a>.</p>
+<p>Für das Verknüpfen der Einzugsgebiete mit Abwasserknoten, vgl. das Kapitel <a class="reference internal" href="../editing/connect_wastewater_network_elements.html#connect-wastewater-network-elements"><span class="std std-ref">Abwassernetzwerkselemente verbinden</span></a>.</p>
 </div>
 </section>
 <section id="editing">
-<h2><span class="section-number">3.2.7.3. </span>Editing<a class="headerlink" href="#editing" title="Link to this heading"></a></h2>
+<h2><span class="section-number">3.2.7.3. </span>Bearbeitung<a class="headerlink" href="#editing" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>You can edit existing areas with the <strong>Identify features</strong> tool.</p></li>
+<li><p>Sie können bestehende Bereiche mit dem <strong>Objekte abfragen</strong> Werkzeug bearbeiten.</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/identify_feature_tool.jpg" src="../../_images/identify_feature_tool.jpg" />
 </figure>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>There are ideas to have a menu in the feature attribute window, that allows you to copy all current-values to the planned-fields. Not realized yet.</p>
+<p>Es ist die Absicht, ein Menu im Eingabefenster zu erstellen, mit dem alle Ist-Zustand-Werte einfach in die Planungszustand-Felder übernommen werden können. Noch nicht realisiert.</p>
 </div>
 </section>
 <section id="split-areas">
-<h2><span class="section-number">3.2.7.4. </span>Split Areas<a class="headerlink" href="#split-areas" title="Link to this heading"></a></h2>
+<h2><span class="section-number">3.2.7.4. </span>Einzugsgebiete teilen<a class="headerlink" href="#split-areas" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>You can split existing areas with the <strong>Split</strong> tool.</p></li>
+<li><p>Einzugsgebiete können mit dem <strong>Objekte zerteilen</strong> Werkzeug geteilt werden.</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/split_tool.jpg" src="../../_images/split_tool.jpg" />
 </figure>
 <ul class="simple">
-<li><p>There is no need to select the area first. Left clicks to define the splitting line. Right click after having defined the last point of the splitting line.</p></li>
+<li><p>Das Einzugsgebiet muss nicht zuerst selektiert werden. Mit Links-Klicks wird die Trennlinie definiert. Mit einem Rechts-Klick wird abgeschlossen, wenn der letzte Punkt der Trennlinie abgesetzt ist.</p></li>
 </ul>
 </section>
 <section id="merge-areas">
-<h2><span class="section-number">3.2.7.5. </span>Merge Areas<a class="headerlink" href="#merge-areas" title="Link to this heading"></a></h2>
-<p>You can merge existing areas with the <strong>Merge selected Feature</strong> tool.</p>
+<h2><span class="section-number">3.2.7.5. </span>Einzugsgebiet zusammenführen<a class="headerlink" href="#merge-areas" title="Link to this heading"></a></h2>
+<p>Einzugsgebiet können mit dem <strong>Gewählte Objekte verschmelzen</strong> Tool zusammengeführt werden.</p>
 <figure class="align-default">
 <img alt="../../_images/merge_selected_feature_tool.jpg" src="../../_images/merge_selected_feature_tool.jpg" />
 </figure>
 <ul class="simple">
-<li><p>Selected the <strong>od_catchment_area</strong> layer an set it into the edit mode</p></li>
-<li><p>Select at least two areas you want to merge</p></li>
-<li><p>Click the <code class="docutils literal notranslate"><span class="pre">Merge</span> <span class="pre">selected</span> <span class="pre">Feature</span></code> tool. -&gt; The <strong>Merge Feature Attributes</strong> windows appears.</p></li>
+<li><p>Wählen Sie den Layer <strong>Einzugsgebiet</strong> und wechseln Sie zum Bearbeitungsmodus</p></li>
+<li><p>Mindestens zwei Einzugsgebiet auswählen, die zusammengeführt werden sollen</p></li>
+<li><p>Klicke das <strong>Gewählte Objekte verschmelzen</strong> Tool. -&gt;  Das <strong>Objektattribute verschmelzen</strong> Fenster erscheint.</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/merge_feature_attributes.jpg" src="../../_images/merge_feature_attributes.jpg" />
 </figure>
 <ul class="simple">
-<li><p>Choose which values will be taken from which old record and click <strong>OK</strong>.</p></li>
+<li><p>Wähle welche Werte von den alten Datensätzen übernommen werden sollen und klicke <strong>OK</strong>.</p></li>
 </ul>
 <div class="admonition attention">
 <p class="admonition-title">Achtung</p>
-<p>If you select one of the records and click on the <strong>Take attributes from the selected feature</strong> button, then the <strong>obj_id</strong> field will be skipped by default and the database will not accept the changes. After using this button, you have to choose one of the values in the <strong>obj_id</strong> field manually.</p>
+<p>Wenn einer der Datensätze gewählt wird und der Knopf <strong>Attribute des gewählten Objektes übernehmen</strong> geklickt wird, dann wird das Feld <strong>obj_id</strong> standardmässig übersprungen und die Datenbank wird die Änderung nicht akzeptieren. Wenn dieser Knopf benutzt wird, muss für das <strong>obj_id</strong>-Feld manuell ein Wert definiert werden.</p>
 </div>
 </section>
 <section id="connect-catchment-area-to-wastewater-network-nodes">
-<h2><span class="section-number">3.2.7.6. </span>Connect Catchment area to Wastewater Network Nodes<a class="headerlink" href="#connect-catchment-area-to-wastewater-network-nodes" title="Link to this heading"></a></h2>
+<h2><span class="section-number">3.2.7.6. </span>Einzugsgebiete mit Abwasserknoten verbinden<a class="headerlink" href="#connect-catchment-area-to-wastewater-network-nodes" title="Link to this heading"></a></h2>
 <p>You connect catchment areas with the tool <strong>Connect wastewater networkelements</strong> (it’s the same tool to connect reaches and nodes described in the chapter Editing in TWW).</p>
 <figure class="align-default">
 <img alt="../../_images/connect_wastewater_network_elements_button.jpg" src="../../_images/connect_wastewater_network_elements_button.jpg" />
 </figure>
 <ul class="simple">
-<li><p>It does not matter, which layer is selected</p></li>
-<li><p>The <strong>catchment_area</strong> layer has to be in edit mode</p></li>
-<li><p>Click the <strong>Connect wastewater networkelements</strong> button</p></li>
-<li><p>If you move the mouse over an catchment area near the border of the catchment area, it is marked: you can click to choose this record</p></li>
-<li><p>Move the mouse to the networkelement, to which the catchment area will by connected (again: selectable objects get marked) and click again</p></li>
+<li><p>Es spielt keine Rolle, welcher Layer ausgewählt ist</p></li>
+<li><p>Der Layer <strong>Einzugsgebiet</strong> muss im Bearbeitungsmodus sein</p></li>
+<li><p>Klicke den <strong>Verbinde Abwassernetzwerkelement</strong> Knopf</p></li>
+<li><p>Wenn der Mausezeiger über eine Einzugsgebiets-Grenze fährt,  dann wird das Einzugsgebiet markiert: jetzt kann man klicken</p></li>
+<li><p>Den Mausezeiger zu einem Abwassernetzelement führen, mit dem das Einzugsgebiet verknüpft werden soll (wieder werden wählbare Objekte markiert) und dort wieder klicken</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/catchment_area_connect1.jpg" src="../../_images/catchment_area_connect1.jpg" />
 </figure>
 <ul class="simple">
-<li><p>A window appears, where you can choose, which connection(s) will be defined.</p></li>
+<li><p>Ein Fenster erscheint, in dem gewählt werden kann, welche Verknüpfung(en) definiert wird.</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/catchment_area_connect2.jpg" src="../../_images/catchment_area_connect2.jpg" />
 </figure>
 <ul class="simple">
-<li><p>If everything is ok, you will see a message in a blue bar on top of the map-window</p></li>
+<li><p>Wenn die Verknüpfung gespeichert wurde, erscheint ein blauer Mitteilungsbalken oben im Kartenfenster</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/catchment_area_connect3.jpg" src="../../_images/catchment_area_connect3.jpg" />
@@ -265,10 +266,10 @@
 </div>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>The tool does not check, if your choosen wastewater node is a part of the pwwf-network (primary network). It’s only the user who decides, if a node is ok or not. If you are not sure, please check the <strong>VSA Wegleitung GEP-Daten</strong>, part <strong>Erfassungsgrundsätze</strong></p>
+<p>Das Tool prüft nicht, ob der gewählte Abwasserknoten im PAA-Netz (primäre Abwasseranlage) ist. Es ist Aufgabe des Benutzers, den richtigen Abwasserknoten zu wählen. Hinweise dazu finden sie in <strong>VSA Wegleitung GEP-Daten</strong>, Teil <strong>Erfassungsgrundsätze</strong></p>
 </div>
-<p>You can not connect multiple areas with the tool to a wastewater node at once. If you want to do so, you have to select the catchment areas, open the attribute table and then start the multi edit mode. There you can choose the wastewater node from the list of all nodes.</p>
-<p>Do delete a connection to a wastewater node, you can edit the area with the <strong>Identify features</strong> tool.</p>
+<p>Mit dem Tool können nicht mehrere Einzugsgebiete auf einmal mit einem Abwasserknoten verknüpft werden. Wenn das gewünscht ist, müssen die Einzugsgebiet ausgewählt werden, dann die Attributtabelle öffnen und den Mehrfach-Editier-Modus starten. Der gewünschte Abwasserknoten kann dann aus der Liste der vorhandenen Abwasserknoten gewählt werden</p>
+<p>Um eine Verknüpfung mit einem Abwasserknoten zu löschen, kann das Einzugsgebiet mit dem <strong>Objekte abfragen</strong> Werkzeug bearbeiten werden.</p>
 </section>
 </section>
 
@@ -276,8 +277,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="deletingobjects.html" class="btn btn-neutral float-left" title="3.2.6. Deleting objects" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
-        <a href="importingdata.html" class="btn btn-neutral float-right" title="3.2.8. Importing data" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="deletingobjects.html" class="btn btn-neutral float-left" title="3.2.6. Objekte löschen" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
+        <a href="importingdata.html" class="btn btn-neutral float-right" title="3.2.8. Datenimport" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

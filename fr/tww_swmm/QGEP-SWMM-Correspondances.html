@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TWW - SWMM correspondances &mdash; Documentation TWW dev</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=b46de64f"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/translations.js?v=d99ca74e"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Recherche" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            TWW
+          </a>
+              <div class="version">
+                dev
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">1. TEKSI wastewater module (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation-guide/index.html">2. TWW Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">3. TWW User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">4. Guide d’administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vm/index.html">5. Machine virtuelle de démonstration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">6. SWMM Data Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">7. Traduction</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">TWW</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">TWW - SWMM correspondances</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tww_swmm/QGEP-SWMM-Correspondances.rst.txt" rel="nofollow"> Afficher la source de la page</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tww-swmm-correspondances">
+<span id="id1"></span><h1>TWW - SWMM correspondances<a class="headerlink" href="#tww-swmm-correspondances" title="Link to this heading"></a></h1>
+<section id="title-notes">
+<h2>Title/Notes:<a class="headerlink" href="#title-notes" title="Link to this heading"></a></h2>
+<p>No correspondance in TWW. This parameter must be set by the user in the template <code class="docutils literal notranslate"><span class="pre">.inp</span></code> file or before running the simulation.</p>
+<ul class="simple">
+<li><p>Copied from the template input file if exists.</p></li>
+</ul>
+</section>
+<section id="options">
+<h2>Options:<a class="headerlink" href="#options" title="Link to this heading"></a></h2>
+<p>No correspondance in TWW. This parameter must be set by the user in the template <code class="docutils literal notranslate"><span class="pre">.inp</span></code> file or before running the simulation.</p>
+<ul class="simple">
+<li><p>Copied from the template input file if exists.</p></li>
+</ul>
+</section>
+<section id="climatology">
+<h2>Climatology:<a class="headerlink" href="#climatology" title="Link to this heading"></a></h2>
+<p>No correspondance in TWW. This parameter must be set by the user in the template <code class="docutils literal notranslate"><span class="pre">.inp</span></code> file or before running the simulation.</p>
+<ul class="simple">
+<li><p>Copied from the template input file if exists.</p></li>
+</ul>
+</section>
+<section id="hydrology">
+<h2>Hydrology:<a class="headerlink" href="#hydrology" title="Link to this heading"></a></h2>
+<p><strong>Rain Gauges [Gages in SWMM]:</strong></p>
+<p>TWW_SWMM creates one raingage for each subcatchment.</p>
+<p>By default:</p>
+<ul class="simple">
+<li><p>Time serie: Each raingage is related to a default rain time serie called <code class="docutils literal notranslate"><span class="pre">default_tww_raingage_timeserie</span></code>. The time serie must be created and the value Series Name updated accordingly.</p></li>
+<li><p>Other parameters have default SWMM values</p></li>
+</ul>
+<p>See <code class="docutils literal notranslate"><span class="pre">vw_swmm_raingages.sql</span></code> for details.</p>
+<p><strong>Aquifers:</strong></p>
+<p>TWW_SWMM creates an aquifer for each TWW <code class="docutils literal notranslate"><span class="pre">aquifiers</span></code>.</p>
+<p>By default:</p>
+<ul class="simple">
+<li><p>An aquifer is created for each TWW <code class="docutils literal notranslate"><span class="pre">aquifiers</span></code></p></li>
+<li><p>The bottom elevation is set to the <code class="docutils literal notranslate"><span class="pre">minimal_groundwater_level</span></code></p></li>
+<li><p>The water table elevation is set to the <code class="docutils literal notranslate"><span class="pre">average_groundwater_level</span></code></p></li>
+<li><p>Other parameters have default SWMM values</p></li>
+</ul>
+<p>See <code class="docutils literal notranslate"><span class="pre">vw_swmm_aquifers.sql</span></code> for details.</p>
+<p><strong>Subcatchment:</strong></p>
+<p>TWW_SWMM creates a subcatchment for each TWW catchment area.</p>
+<p>By default:</p>
+<ul>
+<li><p>A subcatchment is created for each TWW <code class="docutils literal notranslate"><span class="pre">wastewater_networkelement</span></code> linked to the <code class="docutils literal notranslate"><span class="pre">catchment</span> <span class="pre">area</span></code> (max. 4: <code class="docutils literal notranslate"><span class="pre">fk_wastewater_networkelement_rw_current</span></code>, <code class="docutils literal notranslate"><span class="pre">fk_wastewater_networkelement_rw_planned</span></code>, <code class="docutils literal notranslate"><span class="pre">fk_wastewater_networkelement_ww_current</span></code>, <code class="docutils literal notranslate"><span class="pre">fk_wastewater_networkelement_ww_planned</span></code>)</p></li>
+<li><p>it is linked to a rain gage.</p></li>
+<li><p>The width is computed from the mean of the minimal / maximal distance between the outlet and the catchment area contour. If the outlet is unknown the centroid is used rather than the outlet.</p></li>
+<li><p>The coverages (attribute land uses) are computed from the intersection between the catchment area and the planning zone (see <code class="docutils literal notranslate"><span class="pre">vw_swmm_coverages.sql</span></code>)</p></li>
+<li><p>SWMM Dry Weather Flow:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>are set to 0 for rain water subcatchments</p></li>
+<li><p>are set to <code class="docutils literal notranslate"><span class="pre">waste_water_production[_current,_planned]</span></code> if set</p></li>
+<li><p>else it computed from the subcatchement area and <code class="docutils literal notranslate"><span class="pre">population_density[_current,_planned]</span></code></p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>Other parameters have default SWMM values</p></li>
+</ul>
+<p>The subcatchment can be linked to an aquifer via the groundwater attribute.</p>
+<p>See <code class="docutils literal notranslate"><span class="pre">vw_swmm_subcatchments.sql</span></code>, <code class="docutils literal notranslate"><span class="pre">vw_swmm_subareas.sql</span></code>, <code class="docutils literal notranslate"><span class="pre">vw_swmm_dwf.sql</span></code> and <code class="docutils literal notranslate"><span class="pre">vw_swmm_coverages.sql</span></code> for details.</p>
+<p><strong>Snow Packs</strong></p>
+<p>No correspondance in TWW. This parameter must be set by the user in the template <code class="docutils literal notranslate"><span class="pre">.inp</span></code> file or before running the simulation.</p>
+<ul class="simple">
+<li><p>Copied from the template input file if exists.</p></li>
+</ul>
+<p><strong>Unit hydrographs</strong></p>
+<p>No correspondance in TWW. This parameter must be set by the user in the template <code class="docutils literal notranslate"><span class="pre">.inp</span></code> file or before running the simulation.</p>
+<ul class="simple">
+<li><p>Copied from the template input file if exists.</p></li>
+</ul>
+<p><strong>LID Controls</strong></p>
+<p>No correspondance in TWW. This parameter must be set by the user in the template <code class="docutils literal notranslate"><span class="pre">.inp</span></code> file or before running the simulation.</p>
+<ul class="simple">
+<li><p>Copied from the template input file if exists.</p></li>
+</ul>
+</section>
+<section id="hydraulics">
+<h2>Hydraulics<a class="headerlink" href="#hydraulics" title="Link to this heading"></a></h2>
+<p><strong>Junctions</strong></p>
+<ul class="simple">
+<li><p>TWW_SWMM creates a junction for each TWW manhole, some kind of special structures and the wastewater nodes linking primary pipes without a wastewater structure.</p></li>
+</ul>
+<p>See <code class="docutils literal notranslate"><span class="pre">vw_swmm_junctions.sql</span></code> for details.</p>
+<p><strong>Outfalls</strong></p>
+<ul class="simple">
+<li><p>TWW_SWMM creates an outfall for each TWW discharge_point.</p></li>
+</ul>
+<p>See <code class="docutils literal notranslate"><span class="pre">vw_swmm_outfalls.sql</span></code> for details.</p>
+<p><strong>Dividers</strong></p>
+<ul class="simple">
+<li><p>TWW_SWMM creates a divider for the manholes and special structures having the function <code class="docutils literal notranslate"><span class="pre">separating_structure</span></code></p></li>
+<li><p>See <code class="docutils literal notranslate"><span class="pre">vw_swmm_dividers.sql</span></code> for details.</p></li>
+</ul>
+<p><strong>Storage Units</strong></p>
+<ul class="simple">
+<li><p>TWW_SWMM creates a storage for some kind of TWW infiltration installations and some kind of TWW special structures.</p></li>
+<li><p>See <code class="docutils literal notranslate"><span class="pre">vw_swmm_storages.sql</span></code> for details.</p></li>
+</ul>
+<p><strong>Conduits</strong></p>
+<ul class="simple">
+<li><p>TWW_SWMM creates a conduit for each TWW reach.</p></li>
+<li><p>Roughness is created from <code class="docutils literal notranslate"><span class="pre">coefficient_of_friction</span></code>, <code class="docutils literal notranslate"><span class="pre">wall_roughness</span></code> or <code class="docutils literal notranslate"><span class="pre">swmm_default_coefficient_of_friction</span></code> (see: <a class="reference internal" href="Prepare-Data.html#coefficient-of-friction"><span class="std std-ref">Coefficient of friction</span></a>)</p></li>
+<li><p>TWW profile type are matched to SWMM profile type, dimensions are computed from <code class="docutils literal notranslate"><span class="pre">reach.clear_height</span></code> and <code class="docutils literal notranslate"><span class="pre">pipe_profile.height_width_ratio</span></code></p></li>
+<li><p>Custom pipe profile described by a curve are currently not exported</p></li>
+<li><p>See <code class="docutils literal notranslate"><span class="pre">vw_swmm_conduits.sql</span></code> and <code class="docutils literal notranslate"><span class="pre">vw_swmm_xsections.sql</span></code> for details.</p></li>
+</ul>
+<p><strong>Pumps</strong></p>
+<ul class="simple">
+<li><p>TWW_SWMM creates a pump for each TWW pump. When a curve <code class="docutils literal notranslate"><span class="pre">tww_od.hq_relation</span></code> is liked to the pump it is exported as a SWMM curve.</p></li>
+<li><p>See <code class="docutils literal notranslate"><span class="pre">vw_swmm_pumps.sql</span></code> and <code class="docutils literal notranslate"><span class="pre">vs_swmm_curves.sql</span></code> for details.</p></li>
+</ul>
+<p><strong>Orifices</strong></p>
+<p>No correspondance in TWW. Orifices are not created from TWW objects. An empty table is created</p>
+<ul class="simple">
+<li><p>See <code class="docutils literal notranslate"><span class="pre">vw_swmm_orifices.sql</span></code> for details.</p></li>
+</ul>
+<p><strong>Weirs</strong></p>
+<ul class="simple">
+<li><p>Are created from TWW prank weir (without H/Q relation) and leaping weir.</p></li>
+<li><p>See <code class="docutils literal notranslate"><span class="pre">vw_swmm_weirs.sql</span></code> for details.</p></li>
+</ul>
+<p><strong>Outlets</strong></p>
+<p>No correspondance in TWW. However, outlets are created to export TWW prank weir having a H/Q relation.</p>
+<ul class="simple">
+<li><p>See <code class="docutils literal notranslate"><span class="pre">vw_swmm_outlets.sql</span></code> for details.</p></li>
+</ul>
+<p><strong>Transects</strong></p>
+<p>No correspondance in TWW. This parameter must be set by the user in the template <code class="docutils literal notranslate"><span class="pre">.inp</span></code> file or before running the simulation.</p>
+<ul class="simple">
+<li><p>Copied from the template input file if exists.</p></li>
+</ul>
+<p><strong>Controls</strong></p>
+<p>No correspondance in TWW. This parameter must be set by the user in the template <code class="docutils literal notranslate"><span class="pre">.inp</span></code> file or before running the simulation.</p>
+<ul class="simple">
+<li><p>Copied from the template input file if exists.</p></li>
+</ul>
+</section>
+<section id="quality">
+<h2>Quality<a class="headerlink" href="#quality" title="Link to this heading"></a></h2>
+<p><strong>Land uses</strong></p>
+<ul class="simple">
+<li><p>TWW_SWMM creates a SWMM land use kind for each TWW planning zone kind.</p></li>
+<li><p>See <code class="docutils literal notranslate"><span class="pre">vw_swmm_landuses.sql</span></code></p></li>
+</ul>
+<p><strong>Pollutants</strong></p>
+<p>No correspondance in TWW. This parameter must be set by the user in the template <code class="docutils literal notranslate"><span class="pre">.inp</span></code> file or before running the simulation.</p>
+<ul class="simple">
+<li><p>Copied from the template input file if exists.</p></li>
+</ul>
+</section>
+<section id="curves">
+<h2>Curves<a class="headerlink" href="#curves" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Are created for pumps linked to a <code class="docutils literal notranslate"><span class="pre">tww_od.hq_relation</span></code> and for wastewater structures linked to a <code class="docutils literal notranslate"><span class="pre">tww_od.hydr_geom_relation</span></code></p></li>
+<li><p>See <code class="docutils literal notranslate"><span class="pre">vw_swmm_curves.sql</span></code> for details.</p></li>
+</ul>
+</section>
+<section id="time-series">
+<h2>Time series<a class="headerlink" href="#time-series" title="Link to this heading"></a></h2>
+<p>No correspondance in TWW. This parameter must be set by the user in the template <code class="docutils literal notranslate"><span class="pre">.inp</span></code> file or before running the simulation.</p>
+<ul class="simple">
+<li><p>Copied from the template input file if exists.</p></li>
+</ul>
+</section>
+<section id="time-patterns">
+<h2>Time patterns<a class="headerlink" href="#time-patterns" title="Link to this heading"></a></h2>
+<p>No correspondance in TWW. This parameter must be set by the user in the template <code class="docutils literal notranslate"><span class="pre">.inp</span></code> file or before running the simulation.</p>
+<ul class="simple">
+<li><p>Copied from the template input file if exists.</p></li>
+</ul>
+</section>
+<section id="labels">
+<h2>Labels<a class="headerlink" href="#labels" title="Link to this heading"></a></h2>
+<p>No correspondance in TWW. This parameter must be set by the user in the template <code class="docutils literal notranslate"><span class="pre">.inp</span></code> file or before running the simulation.</p>
+<ul class="simple">
+<li><p>Copied from the template input file if exists.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Droits d'auteur 2023, The TWW Project www.teksi.ch.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

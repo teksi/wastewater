@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="de" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>6.3. Generate SWMM File &mdash; TWW dev Dokumentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=419ed147"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/translations.js?v=70a09b52"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Stichwortverzeichnis" href="../genindex.html" />
+    <link rel="search" title="Suche" href="../search.html" />
+    <link rel="next" title="6.4. Check SWMM File" href="Check-SWMM-File.html" />
+    <link rel="prev" title="6.2. Prepare Data" href="Prepare-Data.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            TWW
+          </a>
+              <div class="version">
+                dev
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Dokumentation durchsuchen" aria-label="Dokumentation durchsuchen" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">1. TEKSI wastewater module (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation-guide/index.html">2. TWW Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">3. TWW User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">4. Administratorhandbuch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vm/index.html">5. Demo virtuelle Maschine</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">6. SWMM Data Exchange</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="SWMM.html">6.1. Storm Water Management Model (SWMM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Prepare-Data.html">6.2. Prepare Data</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">6.3. Generate SWMM File</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#swmm-create-input">6.3.1. SWMM Create Input</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#tww-plugin">6.3.1.1. TWW plugin</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#selection">6.3.2. Selection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#change-default-export-parameters">6.3.3. Change default export parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Check-SWMM-File.html">6.4. Check SWMM File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Run-SWMM-Simulation.html">6.5. Run SWMM Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Process-Results.html">6.6. Import results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Mapping.html">6.7. Mapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Developpers-Advanced-Users.html">6.8. For developpers and advanced users</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">7. Übersetzungen</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">TWW</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">6. </span>SWMM Data Exchange</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">6.3. </span>Generate SWMM File</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tww_swmm/Generate-SWMM-File.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="generate-swmm-file">
+<span id="id1"></span><h1><span class="section-number">6.3. </span>Generate SWMM File<a class="headerlink" href="#generate-swmm-file" title="Link to this heading"></a></h1>
+<section id="swmm-create-input">
+<span id="create-input"></span><h2><span class="section-number">6.3.1. </span>SWMM Create Input<a class="headerlink" href="#swmm-create-input" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>By default, the plugin extracts the entire primary wastewater structures. If you check <em>Export only selected network</em>, then both the selected primary and secondary network will be exported.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">.inp</span></code> file is the input file format for SWMM. It contains the wastewater network AND simulation parameters. The network can be extracted from the TWW data, but the simulation parameters must be set according to your study.</p></li>
+<li><p>The simulation parameters are copied from a provided template <code class="docutils literal notranslate"><span class="pre">.inp</span></code> file. A default file is provided in the plugin folder in <code class="docutils literal notranslate"><span class="pre">src\swmm_templates\default_tww_swmm_parameters.inp</span></code>, but you can create and use your own template file.</p></li>
+<li><p>By default, the export supposes that you use an <em>Horton Infiltration method</em>. If another method is set in the template <code class="docutils literal notranslate"><span class="pre">.inp</span></code>, you might need to adapt the generated <code class="docutils literal notranslate"><span class="pre">.inp</span></code>. See the linked <a class="reference external" href="https://github.com/TWW/TWW/issues/644/">issue</a></p></li>
+</ul>
+<section id="tww-plugin">
+<h3><span class="section-number">6.3.1.1. </span>TWW plugin<a class="headerlink" href="#tww-plugin" title="Link to this heading"></a></h3>
+<p>Launch <code class="docutils literal notranslate"><span class="pre">SWMM</span> <span class="pre">Create</span> <span class="pre">Input</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Database</span></code>: the name of the service used to connect to the database</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">State</span></code>: Current or Planned: extract the wastewater structure according to the status</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Template</span> <span class="pre">INP</span> <span class="pre">file</span></code>: a <code class="docutils literal notranslate"><span class="pre">.inp</span></code> from which simulation parameters will be copied</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Destination</span> <span class="pre">INP</span> <span class="pre">file</span></code>: the <code class="docutils literal notranslate"><span class="pre">.inp</span></code> generated from TWW data</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Export</span> <span class="pre">only</span> <span class="pre">selected</span> <span class="pre">network</span></code>: Export primary and secondary selected network</p></li>
+</ul>
+</section>
+</section>
+<section id="selection">
+<h2><span class="section-number">6.3.2. </span>Selection<a class="headerlink" href="#selection" title="Link to this heading"></a></h2>
+<p>Usually you will select a subnetwork to be exported with the TWW button <code class="docutils literal notranslate"><span class="pre">Upstream</span></code> and then <code class="docutils literal notranslate"><span class="pre">Select</span> <span class="pre">current</span> <span class="pre">path</span></code>.
+If you want to remove from this selection secondary structures:</p>
+<ul class="simple">
+<li><p>Open <code class="docutils literal notranslate"><span class="pre">Selection</span> <span class="pre">by</span> <span class="pre">expression</span></code>  on the layer <code class="docutils literal notranslate"><span class="pre">vw_tww_reach</span></code></p></li>
+<li><p>Expression:  <code class="docutils literal notranslate"><span class="pre">&quot;ch_function_hierarchic&quot;</span>&#160; <span class="pre">in</span> <span class="pre">(5066,</span> <span class="pre">5068,</span> <span class="pre">5069,</span> <span class="pre">5070,</span> <span class="pre">5064,</span> <span class="pre">5071,</span> <span class="pre">5062,</span> <span class="pre">5072,</span> <span class="pre">5074)</span></code></p></li>
+<li><p>Choose: <code class="docutils literal notranslate"><span class="pre">filter</span> <span class="pre">current</span> <span class="pre">selection</span></code></p></li>
+<li><p>Open <code class="docutils literal notranslate"><span class="pre">Selection</span> <span class="pre">by</span> <span class="pre">expression</span></code>  on the layer <code class="docutils literal notranslate"><span class="pre">vw_tww_wastewater_structure</span></code></p></li>
+<li><p>Expression:  <code class="docutils literal notranslate"><span class="pre">&quot;_channel_function_hierarchic&quot;</span> <span class="pre">in</span> <span class="pre">(5066,</span> <span class="pre">5068,</span> <span class="pre">5069,</span> <span class="pre">5070,</span> <span class="pre">5064,</span> <span class="pre">5071,</span> <span class="pre">5062,</span> <span class="pre">5072,</span> <span class="pre">5074)</span></code></p></li>
+<li><p>Choose: <code class="docutils literal notranslate"><span class="pre">filter</span> <span class="pre">current</span> <span class="pre">selection</span></code></p></li>
+</ul>
+</section>
+<section id="change-default-export-parameters">
+<span id="id2"></span><h2><span class="section-number">6.3.3. </span>Change default export parameters<a class="headerlink" href="#change-default-export-parameters" title="Link to this heading"></a></h2>
+<p>As mentionned earlier, most of the simulation parameters are copied from the template <code class="docutils literal notranslate"><span class="pre">.inp</span></code> file.</p>
+<p>Remaining default parameters are currently hard coded in the views within the database <code class="docutils literal notranslate"><span class="pre">tww_swmm</span></code> schema.
+The defaults parameters can be edited directly in the view (with PgAdmin).</p>
+<div class="admonition note">
+<p class="admonition-title">Bemerkung</p>
+<p>The default parameters modified in the views and modified views in general will be overwritten during a datamodel update.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Prepare-Data.html" class="btn btn-neutral float-left" title="6.2. Prepare Data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
+        <a href="Check-SWMM-File.html" class="btn btn-neutral float-right" title="6.4. Check SWMM File" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, The TWW Project www.teksi.ch.</p>
+  </div>
+
+  Erstellt mit <a href="https://www.sphinx-doc.org/">Sphinx</a> mit einem
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    bereitgestellt von <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

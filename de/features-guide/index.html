@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>1. TEKSI wastewater module (TWW) &mdash; TWW 0.8 Dokumentation</title>
+  <title>1. TEKSI wastewater module (TWW) &mdash; TWW dev Dokumentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
@@ -15,7 +15,7 @@
   
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=dd9d91fd"></script>
+        <script src="../_static/documentation_options.js?v=419ed147"></script>
         <script src="../_static/doctools.js?v=888ff710"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../_static/translations.js?v=70a09b52"></script>
@@ -38,7 +38,7 @@
             TWW
           </a>
               <div class="version">
-                0.7
+                dev
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -50,15 +50,16 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">1. TEKSI wastewater module (TWW)</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#main-features">1.1. Main features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#more-to-come">1.2. More to come</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#main-features">1.1. Die wichtigsten Merkmale</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#more-to-come">1.2. In Entwicklung</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../installation-guide/index.html">2. TWW Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">3. TWW User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">4. Administratorhandbuch</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../vm/index.html">5. Demo Virtual Machine</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">6. Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vm/index.html">5. Demo virtuelle Maschine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tww_swmm/index.html">6. SWMM Data Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">7. Übersetzungen</a></li>
 </ul>
 
         </div>
@@ -89,66 +90,66 @@
 <h1><span class="section-number">1. </span>TEKSI wastewater module (TWW)<a class="headerlink" href="#teksi-wastewater-module-tww" title="Link to this heading"></a></h1>
 <p>TEKSI wastewater module (project name: TWW) is a selection of tools and a database implementation that allows you to:</p>
 <ul class="simple">
-<li><p>manage and map your sewer network data with all its components in compliance with Swiss standards</p></li>
-<li><p>indicate the characteristics of networks objects in the form of attributes such as diameter, material, depth, damages, construction year, etc.</p></li>
-<li><p>produce plans and extract statistics from the database such as network values, total length of pipes, identification of future interventions, etc.</p></li>
-<li><p>export geodata in compliance with Swiss standards</p></li>
+<li><p>die Daten Ihres Kanalisationsnetzes mit all seinen Komponenten wie z. B. Sammler, Schächte, Regenüberläufe, Regenrückhaltebecken, Einleitstellen usw. verwalten und kartografieren.</p></li>
+<li><p>die Eigenschaften von Netzobjekten in Form von Attributen wie Durchmesser, Material, Verlegetiefe, Defekte, Verlegedatum usw. erfassen.</p></li>
+<li><p>Pläne zu erstellen und Statistiken aus der Datenbank zu extrahieren, wie z. B. den Wert des Netzes, die Gesamtlänge der Leitungen, die Identifizierung zukünftiger Massnahmen etc.</p></li>
+<li><p>Geodaten nach Schweizer Standards exportieren</p></li>
 </ul>
 <section id="main-features">
-<h2><span class="section-number">1.1. </span>Main features<a class="headerlink" href="#main-features" title="Link to this heading"></a></h2>
-<p><strong>Network objects</strong></p>
-<p>Creation, information and management of network elements according to the VSA-DSS model:</p>
+<h2><span class="section-number">1.1. </span>Die wichtigsten Merkmale<a class="headerlink" href="#main-features" title="Link to this heading"></a></h2>
+<p><strong>Elemente des Netzwerkes</strong></p>
+<p>Erstellung, Inhalte und Verwaltung von Netzelementen nach dem VSA-DSS-Modell:</p>
 <ul class="simple">
-<li><p>Wastewater structures</p></li>
-<li><p>Special structures</p></li>
-<li><p>Primary collectors</p></li>
-<li><p>Secondary collectors (ex : private connection)</p></li>
-<li><p>Catchments</p></li>
-<li><p>GEP mesures</p></li>
-<li><p>Maintenances</p></li>
-<li><p>Network inspection (VSA-DSS model extension VSA-KEK)</p></li>
+<li><p>Abwasserbauwerke</p></li>
+<li><p>Spezialbauwerke</p></li>
+<li><p>Primäre Leitungen</p></li>
+<li><p>Sekundäre Leitungen (z.B. private Liegenschaftsentwässerung)</p></li>
+<li><p>Einzugsgebiete</p></li>
+<li><p>GEP Massnahmen</p></li>
+<li><p>Erhaltungsereignisse</p></li>
+<li><p>Kanalfernsehinspektionen (Erweiterung VSA-KEK zur VSA-DSS)</p></li>
 </ul>
-<p><strong>Viewing and editing</strong></p>
-<p>A preconfigured QGIS project including the symbology, the forms and the relation between the objets is provided.</p>
+<p><strong>Darstellung und Bearbeitung</strong></p>
+<p>Ein vorkonfiguriertes QGIS-Projekt einschliesslich der Symbologie, der Formulare und der Beziehungen zwischen den Objekten wird bereitgestellt.</p>
 <p>The editing can be done directly using the QGIS natives tools and the TWW complementary toolbox (ex : inversion of the direction of the pipes and its related altitudes).</p>
-<p><strong>Files</strong></p>
-<p>Documents, pictures and videos can be linked to the network elements.</p>
-<p><strong>Networks following tools</strong></p>
-<p>Network topology management:</p>
+<p><strong>Dateien</strong></p>
+<p>Dokumente, Bilder und Videos können mit den Netzwerkelementen verknüpft werden.</p>
+<p><strong>Werkzeuge zur Netzverfolgung</strong></p>
+<p>Verwaltung der Netzwerktopologie:</p>
 <ul class="simple">
-<li><p>Topology creation between pipes, structures and catchments</p></li>
-<li><p>Upstream and downstream network tracking tools (water drop)</p></li>
-<li><p>Length profiles display</p></li>
+<li><p>Automatische Topologiebildung zwischen Leitungen (Kanal / Haltung), Bauwerken und Einzugsgebieten</p></li>
+<li><p>Netzverfolgung gegen und in Fliessrichtung</p></li>
+<li><p>Anzeige von Längenprofilen</p></li>
 </ul>
-<p><strong>Mapping and statistics production</strong></p>
+<p><strong>Darstellung als Karte und statistische Auswertungen</strong></p>
 <ul class="simple">
-<li><p>Map production with pre-configured layout</p></li>
-<li><p>Serial plotting of structures protocole</p></li>
-<li><p>Statistics production on all or part of the network</p></li>
+<li><p>Kartenerstellung mit vorkonfiguriertem Layout</p></li>
+<li><p>Seriendruck für Bauwerks-Protokolle</p></li>
+<li><p>Statistische Auswertungen über das Gesamtnetz oder nur einen Teil davon</p></li>
 </ul>
-<p><strong>Data import</strong></p>
+<p><strong>Datenimport</strong></p>
 <ul class="simple">
-<li><p>Field survey import tools [specific development in progress]</p></li>
-<li><p>Data survey with a mobile device and semi-automatic insertion of the informations</p></li>
-<li><p>Data import in INTERLIS format</p></li>
+<li><p>Importwerkzeuge für Feldmessung [in Entwicklung]</p></li>
+<li><p>Datenerfassung mit einem mobilen Endgerät (Tablet, Handy) und halbautomatische Integration in bestehende Datensätze</p></li>
+<li><p>Datenimport im INTERLIS-Format</p></li>
 </ul>
-<p><strong>Data export</strong></p>
+<p><strong>Datenexport</strong></p>
 <ul class="simple">
-<li><p>Direct connection with the network simulating software SWMM (Storm Water Management Model)</p></li>
-<li><p>Data export in CAD (dxf) and GIS format (all open data formats)</p></li>
-<li><p>Data export in interlis format</p></li>
+<li><p>Direkte Anbindung an Hydraulische Netzwerkberechnungssoftware SWMM (Storm Water Management Model)</p></li>
+<li><p>Datenexport im CAD- (dxf) und GIS-Format (alle offenen Datenformate)</p></li>
+<li><p>Datenexport im INTERLIS-Format</p></li>
 </ul>
-<p><strong>Historisation</strong></p>
+<p><strong>Historisierung</strong></p>
 <ul class="simple">
-<li><p>Modifications history viewer and possibility to roll back</p></li>
+<li><p>Erfassung der Änderungsgeschichte und Möglichkeit um zu einem bestimmten Zeitpunkt zurückzuspringen</p></li>
 </ul>
 </section>
 <section id="more-to-come">
-<h2><span class="section-number">1.2. </span>More to come<a class="headerlink" href="#more-to-come" title="Link to this heading"></a></h2>
+<h2><span class="section-number">1.2. </span>In Entwicklung<a class="headerlink" href="#more-to-come" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>Automatic integration of pipe inspection according to Wincan VX and VSA-DSS KEK format</p></li>
-<li><p>GEP mesures</p></li>
-<li><p>Log Cards (log_card, bio_ecol_assessment and catchment_area_totals)</p></li>
+<li><p>Automatische Integration der Kanalinspektion im Wincan VX und VSA-KEK-Format</p></li>
+<li><p>GEP Massnahmen</p></li>
+<li><p>Stammkarten (inkl. Biologisch ökologische Gesamtbeurteilung und Gesamteinzugsgebiet)</p></li>
 </ul>
 </section>
 </section>

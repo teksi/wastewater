@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SWMM Import Results &mdash; TWW dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            TWW
+          </a>
+              <div class="version">
+                dev
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">1. TEKSI wastewater module (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation-guide/index.html">2. TWW Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">3. TWW User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">4. Admin Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vm/index.html">5. Demo Virtual Machine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">6. SWMM Data Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">7. Translation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">TWW</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">SWMM Import Results</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tww_swmm/Import-Results.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="swmm-import-results">
+<span id="import-results"></span><h1>SWMM Import Results<a class="headerlink" href="#swmm-import-results" title="Link to this heading"></a></h1>
+<section id="measurement-tables">
+<h2>Measurement tables<a class="headerlink" href="#measurement-tables" title="Link to this heading"></a></h2>
+<p>If you want to store the results in TWW and use the dedicated view for the mapping then use SWMM Import Results.
+It parses the report file of SWMM.
+The results are imported in the measurements tables in the <code class="docutils literal notranslate"><span class="pre">tww_od</span></code> schema:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">measuring_point</span></code>: there is one <em>measuring point</em> for each <em>wastewater structure</em> and simulation,</p></li>
+</ul>
+<figure class="align-default" id="id1">
+<img alt="tww_swmm/images/tww_od_measuring_point.jpg" src="tww_swmm/images/tww_od_measuring_point.jpg" />
+<figcaption>
+<p><span class="caption-text">Measuring point: the name of the simulation appears in the remark</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">measuring_device</span></code> : there is one <em>measuring device</em> for each <em>measuring point</em>,</p></li>
+</ul>
+<figure class="align-default" id="id2">
+<img alt="tww_swmm/images/tww_od_measuring_device.jpg" src="tww_swmm/images/tww_od_measuring_device.jpg" />
+<figcaption>
+<p><span class="caption-text">Measuring device</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">measurement_series</span></code>: there is several <em>measurement series</em> for each <em>measuring point</em>, one for each measured parameter (i.e average depth, maximum depth, maximum hgl …),</p></li>
+</ul>
+<figure class="align-default" id="id3">
+<img alt="tww_swmm/images/tww_od_measurement_series.jpg" src="tww_swmm/images/tww_od_measurement_series.jpg" />
+<figcaption>
+<p><span class="caption-text">Measurement series</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">measurement_result</span></code>: there is one or several <em>measurement result</em> for each <em>measurement series</em>. There is one value if the summary only is imported and many values if the full time series are imported.</p></li>
+</ul>
+<figure class="align-default" id="id4">
+<img alt="tww_swmm/images/tww_od_measurement_result.jpg" src="tww_swmm/images/tww_od_measurement_result.jpg" />
+<figcaption>
+<p><span class="caption-text">Measurement result</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>and they populate a view dedicated for the mapping (see <a class="reference internal" href="Mapping.html#mapping-imported"><span class="std std-ref">Results are imported in TWW</span></a>).</p>
+</section>
+<section id="launch-import">
+<h2>Launch import<a class="headerlink" href="#launch-import" title="Link to this heading"></a></h2>
+<p>Launch <code class="docutils literal notranslate"><span class="pre">SWMM</span> <span class="pre">Import</span> <span class="pre">results</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">SWMM</span> <span class="pre">report</span> <span class="pre">file</span></code>: the <code class="docutils literal notranslate"><span class="pre">.rpt</span></code> file generated during the previous step</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Database</span></code>: The name of the PostgreSQL service hosting the TWW database.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Simulation</span> <span class="pre">name</span></code>: The name that you want to give to this simulation (it will appear in <code class="docutils literal notranslate"><span class="pre">tww_od.measuring_point.remark</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Import</span> <span class="pre">summary</span></code>: Only the summary is imported.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Import</span> <span class="pre">full</span> <span class="pre">results</span></code>: The full time series will be imported. Attention, if the report step is small, the import can take a long time.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Import</span> <span class="pre">Max</span> <span class="pre">HGL</span> <span class="pre">in</span> <span class="pre">tww_od.wastewater_node.backflow_level</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Import</span> <span class="pre">Max/Full</span> <span class="pre">Flow</span> <span class="pre">in</span> <span class="pre">tww_od.reach.dss2020_hydraulic_load_current</span></code></p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Attention, a report file created from the SWMM GUI don’t contain the full time series but only the summary.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, The TWW Project www.teksi.ch.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

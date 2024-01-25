@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>3.4. Length profiles &mdash; Documentation TWW 0.8</title>
+  <title>3.4. Profils en long &mdash; Documentation TWW dev</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
 
@@ -15,15 +15,15 @@
   
         <script src="../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=286ea6f5"></script>
+        <script src="../../_static/documentation_options.js?v=b46de64f"></script>
         <script src="../../_static/doctools.js?v=888ff710"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../_static/translations.js?v=d99ca74e"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Recherche" href="../../search.html" />
-    <link rel="next" title="3.5. Network following tools" href="../network-following/index.html" />
-    <link rel="prev" title="3.3.4. Connect Wastewater Network Elements" href="../editing/connect_wastewater_network_elements.html" /> 
+    <link rel="next" title="3.5. Outils de poursuite de réseau" href="../network-following/index.html" />
+    <link rel="prev" title="3.3.4. Connexion des éléments du réseau assainissement" href="../editing/connect_wastewater_network_elements.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -38,7 +38,7 @@
             TWW
           </a>
               <div class="version">
-                0.7
+                dev
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -55,20 +55,21 @@
 <li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">3.1. Overview of TWW</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../digitizing/index.html">3.2. Digitizing in TWW</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../editing/index.html">3.3. Editing in TWW</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">3.4. Length profiles</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#general">3.4.1. General</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#printing">3.4.2. Printing</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3.4. Profils en long</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#general">3.4.1. Généralités</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#printing">3.4.2. Impression</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">3.5. Network following tools</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">3.6. Plan plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">3.5. Outils de poursuite de réseau</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">3.6. Impression de plans</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../history/index.html">3.7. History in TWW</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../How-To/index.html">3.8. How To</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">4. Guide d’administration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../vm/index.html">5. Demo Virtual Machine</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">6. Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vm/index.html">5. Machine virtuelle de démonstration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tww_swmm/index.html">6. SWMM Data Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">7. Traduction</a></li>
 </ul>
 
         </div>
@@ -86,7 +87,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>TWW User Guide</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">3.4. </span>Length profiles</li>
+      <li class="breadcrumb-item active"><span class="section-number">3.4. </span>Profils en long</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/user-guide/length-profile/index.rst.txt" rel="nofollow"> Afficher la source de la page</a>
       </li>
@@ -97,15 +98,15 @@
            <div itemprop="articleBody">
              
   <section id="length-profiles">
-<h1><span class="section-number">3.4. </span>Length profiles<a class="headerlink" href="#length-profiles" title="Link to this heading"></a></h1>
-<p>This represents a guide on how to choose a section and display a length profile.</p>
+<h1><span class="section-number">3.4. </span>Profils en long<a class="headerlink" href="#length-profiles" title="Link to this heading"></a></h1>
+<p>Ceci représente un tutoriel pour sélectionner un tronçon et afficher un profil en long.</p>
 <section id="general">
-<h2><span class="section-number">3.4.1. </span>General<a class="headerlink" href="#general" title="Link to this heading"></a></h2>
+<h2><span class="section-number">3.4.1. </span>Généralités<a class="headerlink" href="#general" title="Link to this heading"></a></h2>
 <p>TWW has a unique function to display length profiles. Choose the length profile button to start.</p>
 <figure class="align-default">
 <img alt="../../_images/profile_button_selected.jpg" src="../../_images/profile_button_selected.jpg" />
 </figure>
-<p>The length profile window opens.</p>
+<p>La fenêtre « Profil en long » s’ouvre.</p>
 <figure class="align-default">
 <img alt="../../_images/profile_lenght_profile_empty.jpg" src="../../_images/profile_lenght_profile_empty.jpg" />
 </figure>
@@ -113,24 +114,22 @@
 <figure class="align-default">
 <img alt="../../_images/profile_selection_start.jpg" src="../../_images/profile_selection_start.jpg" />
 </figure>
-<p>Then select a next manhole - it is not needed to be the direct next one. The tool automatically selects the manholes in between.
-You can repeat this several times. If there is no continuity you will get a warning. Right click to finish your selection.</p>
+<p>Sélectionner ensuite la chambre suivante, qui ne doit pas nécessairement être contiguë. L’outil sélectionne automatiquement les chambres intermédiaires. Il est possible de répéter cette opération plusieurs fois. S’il n’y a pas de continuité, un message d’erreur va apparaître. Faire un clic droit pour terminer la sélection.</p>
 <figure class="align-default">
 <img alt="../../_images/profile_selection.jpg" src="../../_images/profile_selection.jpg" />
 </figure>
-<p>In the profile window you now have the length profile. You can see detail info about manholes.
-If you hover over a manhole in the profile window you can see that the canvas correspondent gets highlighted in green.</p>
+<p>Le profil en long s’affiche maintenant dans la fenêtre <strong>Profil en long</strong>. Vous pouvez voir des informations détaillées concernant les chambres. Si vous passez le curseur au-dessus d’une chambre dans cette fenêtre, vous pourrez voir l’objet correspondant dans le plan être surligné en vert.</p>
 <figure class="align-default">
 <img alt="../../_images/profile_connected_manhole.jpg" src="../../_images/profile_connected_manhole.jpg" />
 </figure>
-<p>Same goes for the reaches.</p>
+<p>Même chose pour les tronçons.</p>
 <figure class="align-default">
 <img alt="../../_images/profile_connected_reach.jpg" src="../../_images/profile_connected_reach.jpg" />
 </figure>
 </section>
 <section id="printing">
-<h2><span class="section-number">3.4.2. </span>Printing<a class="headerlink" href="#printing" title="Link to this heading"></a></h2>
-<p>Select the <strong>Print</strong> button to send the profile to your selected printer. If you have installed a pdf printer you can save it as a pdf file.</p>
+<h2><span class="section-number">3.4.2. </span>Impression<a class="headerlink" href="#printing" title="Link to this heading"></a></h2>
+<p>Sélectionnez le bouton <strong>Impression</strong> pour envoyer le profil à l’imprimante sélectionnée. Si vous avez installé une imprimante pdf, vous pouvez sauver ce profil en tant que fichier pdf.</p>
 </section>
 </section>
 
@@ -138,8 +137,8 @@ If you hover over a manhole in the profile window you can see that the canvas co
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
-        <a href="../editing/connect_wastewater_network_elements.html" class="btn btn-neutral float-left" title="3.3.4. Connect Wastewater Network Elements" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
-        <a href="../network-following/index.html" class="btn btn-neutral float-right" title="3.5. Network following tools" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../editing/connect_wastewater_network_elements.html" class="btn btn-neutral float-left" title="3.3.4. Connexion des éléments du réseau assainissement" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+        <a href="../network-following/index.html" class="btn btn-neutral float-right" title="3.5. Outils de poursuite de réseau" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

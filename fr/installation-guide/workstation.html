@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>2.4. Setup workstation &mdash; Documentation TWW 0.8</title>
+  <title>2.4. Configuration du poste de travail &mdash; Documentation TWW dev</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
@@ -15,7 +15,7 @@
   
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=286ea6f5"></script>
+        <script src="../_static/documentation_options.js?v=b46de64f"></script>
         <script src="../_static/doctools.js?v=888ff710"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../_static/translations.js?v=d99ca74e"></script>
@@ -23,7 +23,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Recherche" href="../search.html" />
     <link rel="next" title="3. TWW User Guide" href="../user-guide/index.html" />
-    <link rel="prev" title="2.3. Database initialization" href="database-initialization.html" /> 
+    <link rel="prev" title="2.3. Initialisation de la base de données" href="database-initialization.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -38,7 +38,7 @@
             TWW
           </a>
               <div class="version">
-                0.7
+                dev
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -51,30 +51,31 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">1. TEKSI wastewater module (TWW)</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">2. TWW Installation Guide</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="requirements.html">2.1. Requirements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="server.html">2.2. Setup database server</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database-initialization.html">2.3. Database initialization</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">2.4. Setup workstation</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#database-configuration">2.4.1. Database configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="requirements.html">2.1. Prérequis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server.html">2.2. Configuration du serveur de base de données</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database-initialization.html">2.3. Initialisation de la base de données</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2.4. Configuration du poste de travail</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#database-configuration">2.4.1. Configuration de la base de données</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#windows-pg-service">2.4.1.1. Windows pg_service</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#linux-macos-pg-service">2.4.1.2. Linux/macOS pg_service</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#all-systems">2.4.1.3. All systems</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#all-systems">2.4.1.3. Tous les systèmes</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#install-qgis">2.4.2. Install QGIS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-qgis">2.4.2. Installer QGIS</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#install-tww-plugin">2.4.3. Install TWW plugin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#install-the-demo-data">2.4.4. Install the demo data</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#install-the-demo-project">2.4.5. Install the demo project</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-the-demo-project">2.4.5. Installation du projet de démo</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#if-you-are-a-data-owner-add-your-own-oid-to-the-project">2.4.6. If you are a data owner: Add your own OID to the project</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#working-with-more-than-one-database">2.4.7. Working with more than one database</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#working-with-more-than-one-database">2.4.7. Travailler avec plusieurs base de  données</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">3. TWW User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">4. Guide d’administration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../vm/index.html">5. Demo Virtual Machine</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">6. Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vm/index.html">5. Machine virtuelle de démonstration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tww_swmm/index.html">6. SWMM Data Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">7. Traduction</a></li>
 </ul>
 
         </div>
@@ -92,7 +93,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html"><span class="section-number">2. </span>TWW Installation Guide</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">2.4. </span>Setup workstation</li>
+      <li class="breadcrumb-item active"><span class="section-number">2.4. </span>Configuration du poste de travail</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/installation-guide/workstation.rst.txt" rel="nofollow"> Afficher la source de la page</a>
       </li>
@@ -103,18 +104,18 @@
            <div itemprop="articleBody">
              
   <section id="setup-workstation">
-<h1><span class="section-number">2.4. </span>Setup workstation<a class="headerlink" href="#setup-workstation" title="Link to this heading"></a></h1>
+<h1><span class="section-number">2.4. </span>Configuration du poste de travail<a class="headerlink" href="#setup-workstation" title="Link to this heading"></a></h1>
 <section id="database-configuration">
-<h2><span class="section-number">2.4.1. </span>Database configuration<a class="headerlink" href="#database-configuration" title="Link to this heading"></a></h2>
+<h2><span class="section-number">2.4.1. </span>Configuration de la base de données<a class="headerlink" href="#database-configuration" title="Link to this heading"></a></h2>
 <p>To tell a workstation, where the database is (on the local system or on a
 network server) you will have to create some files initially on every device on
 which you will have QGIS/TWW running (client). It is not required to do that on the
 server itself.</p>
-<p>These instructions depend on your operating system.</p>
+<p>Ces étapes dépendent de votre système d’exploitation.</p>
 <section id="windows-pg-service">
 <h3><span class="section-number">2.4.1.1. </span>Windows pg_service<a class="headerlink" href="#windows-pg-service" title="Link to this heading"></a></h3>
-<p>Create a new directory where you want to store the configuration in. (E.g. a new folder <code class="docutils literal notranslate"><span class="pre">pgconfig</span></code> in your home folder). This directory will be referred to as <code class="docutils literal notranslate"><span class="pre">PGSYSCONFDIR</span></code> in this guide.</p>
-<p>Set the environment variable <code class="docutils literal notranslate"><span class="pre">PGSYSCONFDIR</span></code> to the path to <code class="docutils literal notranslate"><span class="pre">PGSYSCONFDIR</span></code>.</p>
+<p>Créer un nouveau dossier où vous souhaitez enregister la configuration. Par exemple <code class="docutils literal notranslate"><span class="pre">pgconfig</span></code> dans vos documents. Ce dossier sera connu sous le nom de <code class="docutils literal notranslate"><span class="pre">PGSYSCONFDIR</span></code> dans ce guide.</p>
+<p>Configurer la variable d’environnement <code class="docutils literal notranslate"><span class="pre">PGSYSCONFDIR</span></code> pour pointer sur le chemin de <code class="docutils literal notranslate"><span class="pre">PGSYSCONFDIR</span></code></p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Search for environment variable in your windows system settings, then click one of the following options, for either a user or a system variable:</p>
@@ -128,10 +129,10 @@ Click an existing variable, and then click <code class="docutils literal notrans
 </figure>
 <p>You can check your environment variables also within QGIS: Menu <code class="docutils literal notranslate"><span class="pre">Settings</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">Options...</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">System</span></code> Tab  –&gt; <code class="docutils literal notranslate"><span class="pre">Environment</span></code></p>
 </div>
-<p>Inside this folder, there will be two files</p>
+<p>Dans ce dossier, vous trouverez deux fichiers</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">pg_service.conf</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">pgpass</span></code> (If you do not want to enter the password for the db every time)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pgpass</span></code> (si vous ne souhaitez pas entrer le mot de passe à chaque connexion)</p></li>
 </ul>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
@@ -153,9 +154,8 @@ and <code class="docutils literal notranslate"><span class="pre">.pgpass</span><
 .. figure:: images/macEnvVarCheck.png</p>
 </section>
 <section id="all-systems">
-<h3><span class="section-number">2.4.1.3. </span>All systems<a class="headerlink" href="#all-systems" title="Link to this heading"></a></h3>
-<p>Put the following content in the file <code class="docutils literal notranslate"><span class="pre">pg_service.conf</span></code> or <code class="docutils literal notranslate"><span class="pre">.pg_service.conf</span></code>.
-You may have to adapt the variables for your setup.</p>
+<h3><span class="section-number">2.4.1.3. </span>Tous les systèmes<a class="headerlink" href="#all-systems" title="Link to this heading"></a></h3>
+<p>Placer les lignes suivantes dans le fichier <code class="docutils literal notranslate"><span class="pre">pg_service.conf</span></code> ou <code class="docutils literal notranslate"><span class="pre">.pg_service.conf</span></code>. Vous devrez peut-être apporter des modifications selon votre configuration.</p>
 <div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[pg_tww]</span>
 <span class="na">host</span><span class="o">=</span><span class="s">localhost</span>
 <span class="na">port</span><span class="o">=</span><span class="s">5432</span>
@@ -163,15 +163,13 @@ You may have to adapt the variables for your setup.</p>
 <span class="na">user</span><span class="o">=</span><span class="s">twwuser</span>
 </pre></div>
 </div>
-<p>To save the password as well on the system you may use the file <a class="reference external" href="http://www.postgresql.org/docs/current/static/libpq-pgpass.html">pgpass</a>.</p>
+<p>Pour enregistrer le mot de passe sur votre système, vous pouvez utiliser le fichier <a class="reference external" href="http://www.postgresql.org/docs/current/static/libpq-pgpass.html">pgpass</a>.</p>
 <div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="na">localhost</span><span class="o">:</span><span class="s">5432:*:twwuser:password</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If you don’t have the database on your local machine replace any
-occurence of <code class="docutils literal notranslate"><span class="pre">localhost</span></code> with the network address of your database
-server.</p>
+<p>Si la base de données n’est pas sur votre poste local, remplacer toutes les occurences de <code class="docutils literal notranslate"><span class="pre">localhost</span></code> par l’adresse réseau du serveur de base de données.</p>
 </div>
 <p>Alternative: put your password directly into the <code class="docutils literal notranslate"><span class="pre">pg_service.conf</span></code> (on Windows) / <code class="docutils literal notranslate"><span class="pre">.pg_service.conf</span></code> (on <a href="#id1"><span class="problematic" id="id2">*</span></a>nix) file:</p>
 <div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[pg_tww]</span>
@@ -185,9 +183,9 @@ server.</p>
 </section>
 </section>
 <section id="install-qgis">
-<h2><span class="section-number">2.4.2. </span>Install QGIS<a class="headerlink" href="#install-qgis" title="Link to this heading"></a></h2>
+<h2><span class="section-number">2.4.2. </span>Installer QGIS<a class="headerlink" href="#install-qgis" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>Minimum requirement 3.4</p></li>
+<li><p>Configuration minimale 3.4</p></li>
 <li><p>We recommend using the latest master build (called qgis-dev on Windows)
 which often offers a better experience in combination with TWW.
 For Windows installation, download the <a class="reference external" href="http://download.osgeo.org/osgeo4w/osgeo4w-setup-x86_64.exe">OSGeo4W Installer</a>
@@ -196,7 +194,7 @@ choose <em>advanced installation</em> and install qgis-dev.</p></li>
 </section>
 <section id="install-tww-plugin">
 <h2><span class="section-number">2.4.3. </span>Install TWW plugin<a class="headerlink" href="#install-tww-plugin" title="Link to this heading"></a></h2>
-<p>Plugin requirements:</p>
+<p>Exigences du plugin;</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://pypi.org/project/networkx/">networkx</a> &gt;= 2.1</p></li>
 </ul>
@@ -210,20 +208,20 @@ choose <em>advanced installation</em> and install qgis-dev.</p></li>
 </pre></div>
 </div>
 <ul class="simple">
-<li><p>Open QGIS</p></li>
-<li><p>Go to <code class="docutils literal notranslate"><span class="pre">Plugins</span></code></p>
+<li><p>Ouvrir QGIS</p></li>
+<li><p>Aller à « plugins »</p>
 <ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">Manage</span> <span class="pre">and</span> <span class="pre">Install</span> <span class="pre">Plugins</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Settings</span></code></p>
+<li><p>« installer/gérer les extensions »</p></li>
+<li><p>« Paramètres « </p>
 <ul>
-<li><p>Enable <code class="docutils literal notranslate"><span class="pre">Show</span> <span class="pre">also</span> <span class="pre">experimental</span> <span class="pre">plugins</span></code></p></li>
+<li><p>Activer l’onglet  <cite>Afficher les extensions expérimentales</cite></p></li>
 </ul>
 </li>
-<li><p>Activate the plugin (see image below):</p></li>
-<li><p>All</p>
+<li><p>Activer le plugin (voir l’image ci-dessous):</p></li>
+<li><p>Tous</p>
 <ul>
 <li><p>Search <cite>TWW</cite></p></li>
-<li><p>Click the checkbox next to it</p></li>
+<li><p>Cocher la case à côté</p></li>
 </ul>
 </li>
 </ul>
@@ -242,10 +240,10 @@ choose <em>advanced installation</em> and install qgis-dev.</p></li>
 <p>as described <a class="reference external" href="https://tww.github.io/docs/installation-guide/database-initialization.html#restore-demo-datamodel">here</a></p>
 </section>
 <section id="install-the-demo-project">
-<h2><span class="section-number">2.4.5. </span>Install the demo project<a class="headerlink" href="#install-the-demo-project" title="Link to this heading"></a></h2>
+<h2><span class="section-number">2.4.5. </span>Installation du projet de démo<a class="headerlink" href="#install-the-demo-project" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Download from <a class="reference external" href="https://github.com/TWW/tww/releases/latest">https://github.com/TWW/tww/releases/latest</a> the tww.zip</p></li>
-<li><p>Extract the file</p></li>
+<li><p>Extraire le ficher</p></li>
 <li><p>If you leave the tww_[language].qm files in the same directory as the tww.qgs file and start QGIS with one of these languages, your tww-project will be translated to that langue when you start the project. E.g. you start tww.qgs with a QGIS Installation that is set to German, then the tww.qgs project will appear in German.</p></li>
 </ul>
 <div class="admonition note">
@@ -278,9 +276,9 @@ choose <em>advanced installation</em> and install qgis-dev.</p></li>
 <span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">tww_sys</span><span class="p">.</span><span class="n">oid_prefixes</span><span class="w"> </span><span class="p">(</span><span class="k">prefix</span><span class="p">,</span><span class="n">organization</span><span class="p">,</span><span class="n">active</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;ch13p7mz&#39;</span><span class="p">,</span><span class="s1">&#39;Arbon&#39;</span><span class="p">,</span><span class="k">FALSE</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>and set the OID you want to use in your project to TRUE.</p>
+<p>et définir la valeur de l’IDO que vous voulez utiliser dans votre projet à VRAI.</p>
 <ul class="simple">
-<li><p>or add it locally to your project with an INSERT statement.</p></li>
+<li><p>ou ajoutez-le localement à votre projet avec une commande INSERER</p></li>
 <li><p>OID prefixes have to be ordered at <a class="reference external" href="https://www.interlis.ch/en/dienste/oid-bestellen">https://www.interlis.ch/en/dienste/oid-bestellen</a></p></li>
 </ul>
 <div class="admonition note">
@@ -289,12 +287,12 @@ choose <em>advanced installation</em> and install qgis-dev.</p></li>
 </div>
 </section>
 <section id="working-with-more-than-one-database">
-<h2><span class="section-number">2.4.7. </span>Working with more than one database<a class="headerlink" href="#working-with-more-than-one-database" title="Link to this heading"></a></h2>
+<h2><span class="section-number">2.4.7. </span>Travailler avec plusieurs base de  données<a class="headerlink" href="#working-with-more-than-one-database" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Create a new database in pgAdmin with a new name, e.g. communityA</p></li>
 <li><p>Create a new schema tww in this database (do not choose another name, because all scripts works with the schema-name tww)</p></li>
-<li><p>Go further on as described in 1.2 Database initialization</p></li>
-<li><p>Change the <code class="docutils literal notranslate"><span class="pre">pg_service.conf</span></code> - file</p></li>
+<li><p>Continuer comme indiqué dans 1.2 Initialisation de la base de données</p></li>
+<li><p>Modifier le fichier <code class="docutils literal notranslate"><span class="pre">pg_service.conf</span></code></p></li>
 </ul>
 <div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[pg_tww]</span>
 <span class="na">host</span><span class="o">=</span><span class="s">localhost</span>
@@ -318,7 +316,7 @@ choose <em>advanced installation</em> and install qgis-dev.</p></li>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
-        <a href="database-initialization.html" class="btn btn-neutral float-left" title="2.3. Database initialization" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+        <a href="database-initialization.html" class="btn btn-neutral float-left" title="2.3. Initialisation de la base de données" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
         <a href="../user-guide/index.html" class="btn btn-neutral float-right" title="3. TWW User Guide" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

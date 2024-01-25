@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>3.2.4. Digitizing Detailed Geometry as Drainage Channel &mdash; TWW 0.8 Dokumentation</title>
+  <title>3.2.4. Digitalisieren detaillierter Geometrie für Entwässerungsrinnen &mdash; TWW dev Dokumentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
 
@@ -15,15 +15,15 @@
   
         <script src="../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=dd9d91fd"></script>
+        <script src="../../_static/documentation_options.js?v=419ed147"></script>
         <script src="../../_static/doctools.js?v=888ff710"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../_static/translations.js?v=70a09b52"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Stichwortverzeichnis" href="../../genindex.html" />
     <link rel="search" title="Suche" href="../../search.html" />
-    <link rel="next" title="3.2.5. Digitizing Channels" href="digitizingchannels.html" />
-    <link rel="prev" title="3.2.3. Digitizing detailed geometry" href="digitizingdetailedgeometry.html" /> 
+    <link rel="next" title="3.2.5. Kanäle Digitalisieren" href="digitizingchannels.html" />
+    <link rel="prev" title="3.2.3. Digitalisieren detaillierter Geometrie" href="digitizingdetailedgeometry.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -38,7 +38,7 @@
             TWW
           </a>
               <div class="version">
-                0.7
+                dev
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -54,31 +54,32 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. TWW User Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">3.1. Overview of TWW</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">3.2. Digitizing in TWW</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="dataentry.html">3.2.1. Data entry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="digitizingwastewaterstructures.html">3.2.2. Digitizing Wastewater Structures</a></li>
-<li class="toctree-l3"><a class="reference internal" href="digitizingdetailedgeometry.html">3.2.3. Digitizing detailed geometry</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">3.2.4. Digitizing Detailed Geometry as Drainage Channel</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#general">3.2.4.1. General</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#digitizing-tool">3.2.4.2. Digitizing tool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dataentry.html">3.2.1. Datenerfassung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingwastewaterstructures.html">3.2.2. Abwasserbauwerke digitalisieren</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingdetailedgeometry.html">3.2.3. Digitalisieren detaillierter Geometrie</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">3.2.4. Digitalisieren detaillierter Geometrie für Entwässerungsrinnen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#general">3.2.4.1. Allgemeines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#digitizing-tool">3.2.4.2. Digitalisierungswerkzeug</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="digitizingchannels.html">3.2.5. Digitizing Channels</a></li>
-<li class="toctree-l3"><a class="reference internal" href="deletingobjects.html">3.2.6. Deleting objects</a></li>
-<li class="toctree-l3"><a class="reference internal" href="digitizingcatchments.html">3.2.7. Digitizing Catchment Areas</a></li>
-<li class="toctree-l3"><a class="reference internal" href="importingdata.html">3.2.8. Importing data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingchannels.html">3.2.5. Kanäle Digitalisieren</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deletingobjects.html">3.2.6. Objekte löschen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingcatchments.html">3.2.7. Digitalisierung der Einzugsgebiete</a></li>
+<li class="toctree-l3"><a class="reference internal" href="importingdata.html">3.2.8. Datenimport</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../editing/index.html">3.3. Editing in TWW</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">3.4. Length profiles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">3.5. Network following tools</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">3.6. Plan plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">3.4. Längsschnitte</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">3.5. Werkzeuge zur Netzwerkverfolgung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">3.6. Plandruck</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../history/index.html">3.7. History in TWW</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../How-To/index.html">3.8. How To</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">4. Administratorhandbuch</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../vm/index.html">5. Demo Virtual Machine</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">6. Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vm/index.html">5. Demo virtuelle Maschine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tww_swmm/index.html">6. SWMM Data Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">7. Übersetzungen</a></li>
 </ul>
 
         </div>
@@ -97,7 +98,7 @@
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>TWW User Guide</a></li>
           <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.2. </span>Digitizing in TWW</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">3.2.4. </span>Digitizing Detailed Geometry as Drainage Channel</li>
+      <li class="breadcrumb-item active"><span class="section-number">3.2.4. </span>Digitalisieren detaillierter Geometrie für Entwässerungsrinnen</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/user-guide/digitizing/digitizingdrainagechannel.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
       </li>
@@ -108,20 +109,20 @@
            <div itemprop="articleBody">
              
   <section id="digitizing-detailed-geometry-as-drainage-channel">
-<h1><span class="section-number">3.2.4. </span>Digitizing Detailed Geometry as Drainage Channel<a class="headerlink" href="#digitizing-detailed-geometry-as-drainage-channel" title="Link to this heading"></a></h1>
+<h1><span class="section-number">3.2.4. </span>Digitalisieren detaillierter Geometrie für Entwässerungsrinnen<a class="headerlink" href="#digitizing-detailed-geometry-as-drainage-channel" title="Link to this heading"></a></h1>
 <section id="general">
-<h2><span class="section-number">3.2.4.1. </span>General<a class="headerlink" href="#general" title="Link to this heading"></a></h2>
-<p>You can add a polygon to a wastewater structure just with drawing a simple line. The function creates a rectangle from the line with a width of 20cm. This is specially useful for manholes with function drainage channel.</p>
+<h2><span class="section-number">3.2.4.1. </span>Allgemeines<a class="headerlink" href="#general" title="Link to this heading"></a></h2>
+<p>Mit dem Zeichnen einer einfachen Linie kann eine Fläche zu einem Abwasserbauwerk hinzugefügt werden. Die Funktion erzeugt aus der Linie ein Rechteck mit 20cm Breite. Das ist speziell nützlich bei Entwässerungsrinnen (Klasse Normschacht).</p>
 </section>
 <section id="digitizing-tool">
-<h2><span class="section-number">3.2.4.2. </span>Digitizing tool<a class="headerlink" href="#digitizing-tool" title="Link to this heading"></a></h2>
+<h2><span class="section-number">3.2.4.2. </span>Digitalisierungswerkzeug<a class="headerlink" href="#digitizing-tool" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Select the <strong>vw_tww_wastewater_structure</strong> layer</p></li>
-<li><p>Use the <strong>Identify features</strong> tool on the object to which you want to add a drainage channel geometry</p></li>
+<li><p>Benutzen sie das <strong>Objekte abfragen</strong> Werkzeug auf dem Objekt, welchem Sie eine Entwässerungsrinnen-Geometrie hinzufügen wollen</p></li>
 <li><p>Right click the object and select the <strong>vw_tww_wastewater_structure</strong> layer</p></li>
-<li><p>Choose <strong>Digitize Drainage Channel</strong></p></li>
-<li><p>You can now start digitizing: draw a simple line with two clicks.</p></li>
-<li><p>The polygon is created in the <strong>od_wastewater_structure</strong> layer</p></li>
+<li><p>Wählen Sie <strong>Digitize Drainage Channel</strong></p></li>
+<li><p>Jetzt mit dem Digitalisieren beginnen: einfach eine Linie mit 2 Klicks definieren.</p></li>
+<li><p>Die Fläche wird im Layer <strong>od_wastewater_structure</strong> erstellt.</p></li>
 </ul>
 <p>An other way is to open the vw_tww_wastewater_structure form with the info tool and then choose <strong>Digitize Drainage Channel</strong> in the <strong>Actions</strong> menu of the form.</p>
 </section>
@@ -131,8 +132,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="digitizingdetailedgeometry.html" class="btn btn-neutral float-left" title="3.2.3. Digitizing detailed geometry" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
-        <a href="digitizingchannels.html" class="btn btn-neutral float-right" title="3.2.5. Digitizing Channels" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="digitizingdetailedgeometry.html" class="btn btn-neutral float-left" title="3.2.3. Digitalisieren detaillierter Geometrie" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
+        <a href="digitizingchannels.html" class="btn btn-neutral float-right" title="3.2.5. Kanäle Digitalisieren" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
