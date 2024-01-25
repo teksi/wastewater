@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>4. Admin Guide &mdash; TWW 0.8 Dokumentation</title>
+  <title>4. Administratorhandbuch &mdash; TWW 0.8 Dokumentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
@@ -52,13 +52,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">1. TEKSI wastewater module (TWW)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation-guide/index.html">2. TWW Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">3. TWW User Guide</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">4. Admin Guide</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">4. Administratorhandbuch</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="pgadmin/index.html">4.1. pgAdmin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="security/index.html">4.2. User Roles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interlis-io/index.html">4.3. INTERLIS Data exchange</a></li>
-<li class="toctree-l2"><a class="reference internal" href="db-customization/index.html">4.4. Customization of the data model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="datamodel-tool/index.html">4.5. Data-model tool</a></li>
-<li class="toctree-l2"><a class="reference internal" href="db-update-pum/index.html">4.6. Manual update of the datamodel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interlis-io/index.html">4.3. INTERLIS Datenaustausch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="db-customization/index.html">4.4. Anpassung des Datenmodells</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datamodel-tool/index.html">4.5. Datenmodell-Werkzeug</a></li>
+<li class="toctree-l2"><a class="reference internal" href="db-update-pum/index.html">4.6. Manuelles Update des Datenmodells</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../vm/index.html">5. Demo Virtual Machine</a></li>
@@ -79,7 +79,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active"><span class="section-number">4. </span>Admin Guide</li>
+      <li class="breadcrumb-item active"><span class="section-number">4. </span>Administratorhandbuch</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/admin-guide/index.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
       </li>
@@ -90,39 +90,39 @@
            <div itemprop="articleBody">
              
   <section id="admin-guide">
-<h1><span class="section-number">4. </span>Admin Guide<a class="headerlink" href="#admin-guide" title="Link to this heading"></a></h1>
-<p>This represents a guide on how to administrate the database, install a Virtual machine, import and export data</p>
+<h1><span class="section-number">4. </span>Administratorhandbuch<a class="headerlink" href="#admin-guide" title="Link to this heading"></a></h1>
+<p>Eine Anleitung zur Administration der Datenbank, zum Installieren einer virtuellen Maschine und zum Import und Export von Dateien</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="pgadmin/index.html">4.1. pgAdmin</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pgadmin/install.html">4.1.1. Install pgAdmin</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pgadmin/usage.html">4.1.2. Using pgAdmin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pgadmin/install.html">4.1.1. Installation von pgAdmin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pgadmin/usage.html">4.1.2. pgAdmin verwenden</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="security/index.html">4.2. User Roles</a></li>
-<li class="toctree-l1"><a class="reference internal" href="interlis-io/index.html">4.3. INTERLIS Data exchange</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="interlis-io/index.html#general">4.3.1. General</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interlis-io/index.html#prerequisites">4.3.2. Prerequisites</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interlis-io/index.html#usage-gui">4.3.3. Usage (GUI)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interlis-io/index.html#usage-command-line">4.3.4. Usage (command line)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interlis-io/index.html#quality-control">4.3.5. Quality control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interlis-io/index.html">4.3. INTERLIS Datenaustausch</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="interlis-io/index.html#general">4.3.1. Allgemeines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interlis-io/index.html#prerequisites">4.3.2. Voraussetzungen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interlis-io/index.html#usage-gui">4.3.3. Benutzung (GUI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interlis-io/index.html#usage-command-line">4.3.4. Benutzung (Befehlszeile)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interlis-io/index.html#quality-control">4.3.5. Qualitätskontrolle</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="db-customization/index.html">4.4. Customization of the data model</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="db-customization/index.html#introduction">4.4.1. Introduction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="db-customization/index.html#adding-fields">4.4.2. Adding fields</a></li>
-<li class="toctree-l2"><a class="reference internal" href="db-customization/index.html#joining-additional-tables">4.4.3. Joining additional tables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="db-customization/index.html#creating-custom-views">4.4.4. Creating custom views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="db-customization/index.html">4.4. Anpassung des Datenmodells</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="db-customization/index.html#introduction">4.4.1. Einleitung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="db-customization/index.html#adding-fields">4.4.2. Zusätzliche Felder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="db-customization/index.html#joining-additional-tables">4.4.3. Verknüpfung zusätzlicher Tabellen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="db-customization/index.html#creating-custom-views">4.4.4. Eigene views erstellen</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="datamodel-tool/index.html">4.5. Data-model tool</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="datamodel-tool/index.html#setup">4.5.1. Setup</a></li>
-<li class="toctree-l2"><a class="reference internal" href="datamodel-tool/index.html#usage">4.5.2. Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datamodel-tool/index.html">4.5. Datenmodell-Werkzeug</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="datamodel-tool/index.html#setup">4.5.1. Einstellungen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datamodel-tool/index.html#usage">4.5.2. Anwendung</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="db-update-pum/index.html">4.6. Manual update of the datamodel</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="db-update-pum/index.html#requirements">4.6.1. Requirements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="db-update-pum/index.html#database-update">4.6.2. Database update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="db-update-pum/index.html">4.6. Manuelles Update des Datenmodells</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="db-update-pum/index.html#requirements">4.6.1. Voraussetzungen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="db-update-pum/index.html#database-update">4.6.2. Datenbank Update</a></li>
 </ul>
 </li>
 </ul>
@@ -132,7 +132,7 @@
 <li><p>dxf (in progress)</p></li>
 <li><p>Shape</p></li>
 <li><p>MOUSE / MikeUrban (please connect with the developer team if you are interested in this)</p></li>
-<li><p>other</p></li>
+<li><p>andere</p></li>
 </ul>
 </section>
 
