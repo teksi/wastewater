@@ -48,7 +48,7 @@ jobs:
           TX_TOKEN: ${{ secrets.TX_TOKEN }}
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
         working-directory: docs
-        run: make transifex_push
+        run: make transifex_sync
 
       - name: build
         working-directory: docs
