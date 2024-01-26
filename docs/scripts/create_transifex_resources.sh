@@ -41,8 +41,8 @@ do
   RESOURCE=tww-docs.`echo $BASE | sed 's|i18n/pot/||g' | sed 's|[_ /\.]|-|g'`
   echo "*** RESOURCE: $RESOURCE"
   # Register each pot file as a transifex resource (an individual translatable file)
-  set -x
-  tx set -t PO -r $RESOURCE --source -l en "$GENERICFILE"
+
+  ./tx set -t PO -r $RESOURCE --source -l en "$GENERICFILE"
   #set +x
   # Now register the language translations for the localised po file against
   # this resource.
