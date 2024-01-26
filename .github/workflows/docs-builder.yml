@@ -47,7 +47,7 @@ jobs:
       - name: tx push
         env:
           TX_TOKEN: ${{ secrets.TX_TOKEN }}
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/docs' }} # TODO
         working-directory: docs
         run: make transifex_sync
 
@@ -58,7 +58,7 @@ jobs:
           touch build/html/.nojekyll
 
       - name: Deploy 🚀
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/docs' }} # TODO
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
