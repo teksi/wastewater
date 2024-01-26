@@ -38,7 +38,7 @@ do
   #   site/about/my_screenshots/index.po
   # we will get
   #   site_about_my-screenshots_index
-  RESOURCE=tww-documentation.`echo $BASE | sed 's|i18n/pot/||g' | sed 's|[_ /\.]|-|g'`
+  RESOURCE=tww-docs.`echo $BASE | sed 's|i18n/pot/||g' | sed 's|[_ /\.]|-|g'`
   echo "*** RESOURCE: $RESOURCE"
   # Register each pot file as a transifex resource (an individual translatable file)
   set -x
