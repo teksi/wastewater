@@ -1,0 +1,4 @@
+sphinx
+sphinx-rtd-theme
+Pygments>=2.0.1
+transifex-client
