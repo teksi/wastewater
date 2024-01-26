@@ -54,4 +54,3 @@ source_file = i18n/pot/translation.pot
 source_lang = en
 file_filter = i18n/<lang>/translation.po
 type = PO
-

@@ -12,7 +12,7 @@ No correspondance in TWW. This parameter must be set by the user in the template
 - Copied from the template input file if exists.
 
 
-Options: 
+Options:
 ^^^^^^^^
 No correspondance in TWW. This parameter must be set by the user in the template ``.inp`` file or before running the simulation.
 
@@ -29,7 +29,7 @@ Hydrology:
 ^^^^^^^^^^
 **Rain Gauges [Gages in SWMM]:**
 
-TWW_SWMM creates one raingage for each subcatchment. 
+TWW_SWMM creates one raingage for each subcatchment.
 
 By default:
 
@@ -37,7 +37,7 @@ By default:
 - Other parameters have default SWMM values
 
 See ``vw_swmm_raingages.sql`` for details.
-  
+
 **Aquifers:**
 
 TWW_SWMM creates an aquifer for each TWW ``aquifiers``.
@@ -67,7 +67,7 @@ By default:
     -  are set to 0 for rain water subcatchments
     -  are set to ``waste_water_production[_current,_planned]`` if set
     -  else it computed from the subcatchement area and ``population_density[_current,_planned]``
-  
+
 - Other parameters have default SWMM values
 
 The subcatchment can be linked to an aquifer via the groundwater attribute.
@@ -125,7 +125,7 @@ See ``vw_swmm_outfalls.sql`` for details.
 - Roughness is created from ``coefficient_of_friction``, ``wall_roughness`` or ``swmm_default_coefficient_of_friction`` (see: :ref:`Coefficient-Of-Friction`)
 - TWW profile type are matched to SWMM profile type, dimensions are computed from ``reach.clear_height`` and ``pipe_profile.height_width_ratio``
 - Custom pipe profile described by a curve are currently not exported
-  
+
 - See ``vw_swmm_conduits.sql`` and ``vw_swmm_xsections.sql`` for details.
 
 **Pumps**
@@ -136,7 +136,7 @@ See ``vw_swmm_outfalls.sql`` for details.
 
 **Orifices**
 
-No correspondance in TWW. Orifices are not created from TWW objects. An empty table is created 
+No correspondance in TWW. Orifices are not created from TWW objects. An empty table is created
 
 - See ``vw_swmm_orifices.sql`` for details.
 
@@ -171,7 +171,7 @@ Quality
 
 - TWW_SWMM creates a SWMM land use kind for each TWW planning zone kind.
 
-- See ``vw_swmm_landuses.sql`` 
+- See ``vw_swmm_landuses.sql``
 
 **Pollutants**
 
