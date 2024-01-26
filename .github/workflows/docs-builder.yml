@@ -8,7 +8,6 @@ on:
   push:
     branches:
       - main
-      - docs # TODO: remove
     paths:
       - docs/**
       - '.github/workflows/docs-builder.yml'
@@ -34,17 +33,22 @@ jobs:
         run: |
           pip install -r requirements.txt
           sudo apt-get install -y gettext
-
-      - name: tx push / pull
-        #if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }} TODO uncmoment
-        env:
-          TX_TOKEN: ${{ secrets.TX_TOKEN }}
-        working-directory: docs
-        run: |
           curl -OL https://github.com/transifex/cli/releases/download/v1.6.10/tx-linux-amd64.tar.gz
           tar -xvzf tx-linux-amd64.tar.gz
           make gettext
-          make transifex_pull
+
+      - name: tx pull
+        env:
+          TX_TOKEN: ${{ secrets.TX_TOKEN }}
+        working-directory: docs
+        run: make transifex_pull
+
+      - name: tx push
+        env:
+          TX_TOKEN: ${{ secrets.TX_TOKEN }}
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        working-directory: docs
+        run: make transifex_push
 
       - name: build
         working-directory: docs
@@ -53,7 +57,7 @@ jobs:
           touch build/html/.nojekyll
 
       - name: Deploy 🚀
-        #if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }} TODO: uncomment
+        # if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }} # remove when we want to publish on release only
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
