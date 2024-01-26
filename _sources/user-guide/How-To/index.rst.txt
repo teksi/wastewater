@@ -6,7 +6,7 @@ This represents a guide on different themes about configuring in TWW.
 Manual Label-positioning for different scales
 ---------------------------------------------
 
-QGIS label definition can handle different labels for different scales. This works very well if you work on the screen. 
+QGIS label definition can handle different labels for different scales. This works very well if you work on the screen.
 If you have to print plans with labels or if you have to export labels for data exchange (e.g. exchange with RegioGIS-platform), it will often be necessary to determine the label positions manually.
 If a label is positioned manually in QGIS, this fixed position applies to every scale. And that's not always a good result.
 
@@ -14,7 +14,7 @@ Solution
 
 * Extend the Auxiliary Storage File with new fields for different labelpositions
 
-* Use Rule-based labeling, then you can define different labelpositions for every rule 
+* Use Rule-based labeling, then you can define different labelpositions for every rule
 
 In the example below, we want to label the wastewater-structures with a detailed label for network_plan (1:500) and for overviewmap (1:2000).
 In the Auxiliary Storage we use the standard fields PositionX and PositionY for the  network_plan labels. For the overviewmap labels we add two new fields.
@@ -22,7 +22,7 @@ We name this fields posx2000 and posy2000.
 
 .. figure:: images/man_labeling_newfields.jpg
 
-Define now rule-based labeling with two rules. In the example the first rule is called WP-Labels (WP = Werkplan = network_plan). 
+Define now rule-based labeling with two rules. In the example the first rule is called WP-Labels (WP = Werkplan = network_plan).
 You have not the change something in the placement, because this rule uses the standard positioning-fields.
 
 .. figure:: images/man_labeling_rules.jpg
@@ -37,7 +37,7 @@ Click on Coordinate X menutool and choose in the field type-menu the auxiliary_s
 
 .. attention:: Do not use the **Edit...** menu for defining the coordinate-field. If you use a formula or choose the field via the Edit... menu, QGIS will overwrite the definition everytime you do a manual positioning.
 
-Now you can move or fix your labels for every rule with different positions with the QGIS **Moves a Label or Diagram**-Tool. 
+Now you can move or fix your labels for every rule with different positions with the QGIS **Moves a Label or Diagram**-Tool.
 
 .. figure:: images/man_labeling_labeltools.jpg
 
@@ -83,7 +83,7 @@ How to run symbology functions manually
 Sometimes the labels such as bottom, cover or entry/exit levels are not correctly displayed, even if the corresponding attribut is filled in. This happens for example when you import data by INTERLIS Import or another way. May be you also decativated the triggers to speed up the import process.
 
 * Activate / Deactivate symbology triggers::
- 
+
    SELECT tww_sys.create_symbology_triggers()
    SELECT tww_sys.drop_symbology_triggers()
 
@@ -151,7 +151,7 @@ Hydraulic modeling of an overflow (prank weir / leapingweir / pump)
 
 Action:
 
-In the case of weirs, a second sewage junction has to be created in the wastewater structure. 
+In the case of weirs, a second sewage junction has to be created in the wastewater structure.
 A second outlet has already been created (green = discharged combined wastewater) and has not yet been linked to any wastewater node in the overflow structure.
 
 1. Select the wastewater structure with the i-button
@@ -219,5 +219,5 @@ The Feature Attributes window for the overflow characteristic appears:
 Further informations
 --------------------
 
-Further Q & A's you can find in the 
+Further Q & A's you can find in the
 `TWW Discussion section <https://github.com/TWW/TWW/discussions/categories/q-a>`_

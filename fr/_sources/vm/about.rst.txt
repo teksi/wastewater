@@ -7,7 +7,7 @@ working TWW installation with a demo dataset. The VM also has a working demo of 
 The VM is based on Debian Testing with Cinnamon Desktop.
 
 Debian Testing was chosen in order to have GDAL 2.x and also benefit from latest linux kernel so that latest hardware
-won't be a problem for the case where the VM is used outside virtualization (e.g use the virtual disk as basis to create 
+won't be a problem for the case where the VM is used outside virtualization (e.g use the virtual disk as basis to create
 a non-virtualized usb-stick to be used for demo purposes).
 
 Installed software:

@@ -34,11 +34,3 @@ Skipping channels or observations
 If you want to skip some of the inspected channels, they simply need to be unchecked in the channel table and similarly for observations.
 
 .. figure:: images/skip-data.png
-
-
-
-
-
-
-
-

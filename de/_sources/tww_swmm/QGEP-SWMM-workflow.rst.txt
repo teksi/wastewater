@@ -12,7 +12,7 @@ Each step of the workflow is explained in details in next chapters.
 
 Prepare and check the data
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-   
+
 - The function ``SWMM Set default coefficient of friction`` can be used to fill automatically default reach friction.
 
 Generate a SWMM Export
@@ -22,21 +22,21 @@ Run ``SWMM Create Input``. It:
 
 - reads simulation parameters from a template ``.inp`` file,
 - reads data from the TWW views (schema ``tww_swmm``),
-- generates an input file for SWMM (``.inp``). 
+- generates an input file for SWMM (``.inp``).
 
 Check the Export
 ^^^^^^^^^^^^^^^^
-Check generated ``.inp`` file. 
+Check generated ``.inp`` file.
 
-Its likely that the ``.inp`` file generated in the previous step contains errors or needs some parameters to be tuned. 
-We recommend to first open the ``.inp`` file with the SWMM Graphical User Interface (GUI). 
-Error summarized at the SWMM startup might highlight error in TWW. Other errors can be solved directly in SWMM. 
+Its likely that the ``.inp`` file generated in the previous step contains errors or needs some parameters to be tuned.
+We recommend to first open the ``.inp`` file with the SWMM Graphical User Interface (GUI).
+Error summarized at the SWMM startup might highlight error in TWW. Other errors can be solved directly in SWMM.
 
 If you need to tune the simulation parameters, you have to edit the ``.inp`` file with SWMM GUI.
 
 Run the simulation
 ^^^^^^^^^^^^^^^^^^
-Run ``SWMM Execute``, it launches SWMM. Run it on a tested ``.inp`` file. 
+Run ``SWMM Execute``, it launches SWMM. Run it on a tested ``.inp`` file.
 It generates a report file ``.rpt`` which contains the summary and the full time series.
 Errors can also occur during the running time.
 
@@ -76,10 +76,3 @@ Usually, a GEP analysis has at least three steps:
 **Run variants (network is modified)**
 
 New links and new nodes are created directly in SWMM GUI
-
-
-
-
-
-
-

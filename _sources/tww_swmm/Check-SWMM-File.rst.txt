@@ -11,7 +11,7 @@ To fix an error you can search in the corresponding TWW layers in the QGIS proje
 
 - vw_wastewater_node for undefined nodes
 - catchment_area for subcatchment errors
-- compare if the number of exported nodes (in vw_junctions) are what you expect it to be. 
+- compare if the number of exported nodes (in vw_junctions) are what you expect it to be.
 - Check if the function (manhole / special_structure) of wastewater_structure are all filled in
 - etc.
 
@@ -34,7 +34,7 @@ The catchment area is linked to node which is not exported or a reach cannot be 
 and therefore not export in the vw_junctions.
 
 Check your data manually before the export if wastwater_structure.status is not empty. Check whether wastwater_structure._function_hierachic is filled in on Primary network nodes (PAA nodes).
-	
+
 `For more details see related Github issue <https://github.com/TWW/TWW/issues/613>`_
 
 Catchment area connected to secondary wastewater structure
@@ -59,7 +59,7 @@ Missing discharge coefficients
   ch19ar68CA008855_ww_current	raingage@ch19ar68CA008855	CHamtKnv00001992	0.0276		19.4322613668305
 
 
-The subcatchement discharge coefficients are not filled in. 
+The subcatchement discharge coefficients are not filled in.
 You can find them using sql:
 
 .. code::
@@ -85,7 +85,7 @@ Missing population densities
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code::
-  
+
   ERROR 211: invalid number dailyPatternDWF at line 4288 of [DWF] section:
   00000000WN006032 FLOW             dailyPatternDWF
 

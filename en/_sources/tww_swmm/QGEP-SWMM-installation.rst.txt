@@ -11,13 +11,3 @@ SWMM Installation
 QGIS configuration
 ------------------
 - In QGIS, check that the path recorded in ``Preferences > Processing > Processing providers > TWW > SWMM executable`` matches the path of the swmm executable (by default: ``C:/Program Files (x86)/EPA SWMM 5.1.013/swmm5.exe``)
-
-
-
-
-
-
-
-
-
-

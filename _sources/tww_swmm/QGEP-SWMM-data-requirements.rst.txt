@@ -43,6 +43,6 @@ XSECTIONS
 .. csv-table:: XSECTIONS
    :header: "SWMM attribute", "Description", "TWW equivalent"
    :widths: 30, 50, 30
-   
+
    "Shape", "geometric properties of the conduit's cross section e.g. CIRCULAR.", "pipe_profile.profile_type"
    "Geom1", "Maximum height of conduit", "reach.clear_height/1000 [m] to [mm]"

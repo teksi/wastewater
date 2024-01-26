@@ -7,7 +7,7 @@ Measurement tables
 ^^^^^^^^^^^^^^^^^^
 
 If you want to store the results in TWW and use the dedicated view for the mapping then use SWMM Import Results.
-It parses the report file of SWMM. 
+It parses the report file of SWMM.
 The results are imported in the measurements tables in the ``tww_od`` schema:
 
 - ``measuring_point``: there is one *measuring point* for each *wastewater structure* and simulation,
@@ -34,7 +34,7 @@ The results are imported in the measurements tables in the ``tww_od`` schema:
 
     Measurement result
 
-  
+
 and they populate a view dedicated for the mapping (see :ref:`mapping-imported`).
 
 
@@ -53,4 +53,3 @@ Launch ``SWMM Import results``:
 
 .. warning::
     Attention, a report file created from the SWMM GUI don't contain the full time series but only the summary.
-

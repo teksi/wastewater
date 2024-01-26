@@ -11,7 +11,7 @@ For advanced cases, it is also possible to `upgrade your database manually <../d
 Setup
 -----
 
-The data-model tool is hidden by default. To make it visible, you must first enable ``Admin mode`` 
+The data-model tool is hidden by default. To make it visible, you must first enable ``Admin mode``
 in the plugin settings :
 
 * Go to ``Plugin > TWW > Settings``
@@ -39,7 +39,7 @@ The main dialog looks like this.
     * **Version**: the version to retrieve the files from. Unless ``developer mode`` is enabled in the TWW settings, only the latest stable version is available. Selecting anything different from the latest stable version should only ever be used on a testing database, as it could upgrade the database to an inconsistent state.
 
 * **Dependencies**:
-    
+
     * **Python requirements**: If there are missing python requirements, click on the **install button** to try to install them automatically. Note that this will not work on all systems. If it fails, you can try to start QGIS with administrator privileges, or `install the dependencies manually <../db-update-pum/index.html#requirements>`_.
 
 * **Postgres service configurations**:
@@ -47,9 +47,9 @@ The main dialog looks like this.
     * **File location**: shows the location of the ``pg_service.conf`` file being used
 
     * **PG Config**: allows to select the postgres service configuration of the database on which you want to operate. **WARNING**: by default, the first entry is selected, which may not match the database used by your currently open TWW project.
-    
+
     * **``+`` button**: opens an utility to add or edit entries from your ``pg_service.conf`` file directly.
-    
+
     Refer to the `installation guide <../../installation-guide/workstation.html>`_ to know more about the ``pg_service.conf`` file.
 
 * **Datamodel**
@@ -68,7 +68,7 @@ The main dialog looks like this.
 Troubleshooting
 ^^^^^^^^^^^^^^^
 
-In case you encounter issues or errors when using the datamodel tool, make sure to look at the 
+In case you encounter issues or errors when using the datamodel tool, make sure to look at the
 TWW tab in the logs, as it may contain useful information (including errors returned by underlying tools).
 
 Make sure to include this information if submitting a bug report or asking for support.

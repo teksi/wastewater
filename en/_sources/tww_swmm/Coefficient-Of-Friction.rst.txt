@@ -14,13 +14,13 @@ Coefficient of friction
 
 
 ..  note::
-    The formula to convert from Strickler to Coolebrook is documented in `*ATV-DVWK STANDARD ATV-DVWK-A 110E, Hydraulic Dimensioning and Performance Verification of Sewers and Drains September 2001* <https://pdfslide.net/documents/atv-dvwk-a-110-e-55846635d4eef.html>`_ 
-    
+    The formula to convert from Strickler to Coolebrook is documented in `*ATV-DVWK STANDARD ATV-DVWK-A 110E, Hydraulic Dimensioning and Performance Verification of Sewers and Drains September 2001* <https://pdfslide.net/documents/atv-dvwk-a-110-e-55846635d4eef.html>`_
+
 
 Populate default coefficient of friction
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The table ``tww_swmm.reach_coefficient_of_friction`` contains default coefficient of Strickler for the reach materials. 
+The table ``tww_swmm.reach_coefficient_of_friction`` contains default coefficient of Strickler for the reach materials.
 The file ``../project/qml/reach_coefficient_of_friction.qml`` is the layer definition, that you can import in your QGIS project.
 If the default values don't match your needs you can edit them.
 The function ``SWMM Set default coefficient of friction`` will put in ``tww_od.reach.swmm_default_coefficient_of_friction`` these default values.

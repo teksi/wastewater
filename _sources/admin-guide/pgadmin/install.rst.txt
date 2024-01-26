@@ -34,4 +34,3 @@ Suse based distros
  sudo (admin) privileges.
  On certain systems it may be required to use the command ``su`` to become the
  *root* user and then issue the above command without the ``sudo`` prefix.
-

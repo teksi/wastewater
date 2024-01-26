@@ -18,11 +18,11 @@ Server installation
 * Install PostGIS (>=2.4)
 
   * E. g. by using the (Application) Stack Builder shipped with the EnterpriseDB version of posgreSQL on Windows and macOS
-  
+
 .. note::
 
  The following instructions are **optional**:
- 
+
  In a single desktop environment (no network database server) you can setup
  your database to trust local connections.
 

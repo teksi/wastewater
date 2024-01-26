@@ -9,5 +9,3 @@ and select the XML file generally located in ``XML > Project.xml``.
 You first have to specify the report document location by setting it in the PDF field. This will allow linking it in the feature forms.
 
 Channels are listed in red in the main table since they have to be matched with the TWW data before being imported.
-
-

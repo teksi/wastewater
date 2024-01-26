@@ -6,4 +6,3 @@ The maintenance events, inspections and observations can be seen in the channel 
 
 .. figure:: images/viewing-observations.png
 .. figure:: images/viewing-damages.png
-

@@ -8,11 +8,11 @@ Run a simulation from SWMM interface
 You can open the ``.inp`` file with SWMM and run the simulation from the interface.
 
 
-Run a simulation with command line 
+Run a simulation with command line
 ----------------------------------
 
 .. code::
-    
+
     {EXEPATH}\swmm5.exe {INPUTPATH}\{INPUTFILENAME}.inp {OUTPUTPATH}\{REPORTFILENAME}.rpt {OUTPUTPATH}\{OUTPUTFILENAME}.out
 
 

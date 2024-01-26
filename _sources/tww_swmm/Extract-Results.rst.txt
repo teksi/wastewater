@@ -3,7 +3,7 @@
 SWMM Extract Results
 --------------------
 
-If you don't want to store the results in TWW, this function generates two QGIS tables from a report file. 
+If you don't want to store the results in TWW, this function generates two QGIS tables from a report file.
 You can map the values with the geometries (see: :ref:`mapping-not-imported`).
 
 Launch ``SWMM Extract results``:

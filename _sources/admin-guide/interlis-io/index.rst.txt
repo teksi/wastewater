@@ -8,10 +8,10 @@ General
 ^^^^^^^^^^^^^
 
 The TWW plugin includes an experimental interlis import/export feature.
-It is currently capable of importing and exporting to the VSA-KEK 'VSA_KEK_2019_LV95', which is an extension to the SIA405 wastewater model `SIA405_ABWASSER_2015_LV95` (for more details see `config <https://github.com/TWW/twwqwat2ili/blob/master/twwqwat2ili/config.py>`_). 
+It is currently capable of importing and exporting to the VSA-KEK 'VSA_KEK_2019_LV95', which is an extension to the SIA405 wastewater model `SIA405_ABWASSER_2015_LV95` (for more details see `config <https://github.com/TWW/twwqwat2ili/blob/master/twwqwat2ili/config.py>`_).
 
 Note that currently, exports are possible in German only. Translated exports are on the roadmap, let us know if you are interested in this feature.
- 
+
 Prerequisites
 ^^^^^^^^^^^^^^
 
@@ -22,7 +22,7 @@ You need java on your system.
 Windows : `Java for windows download <https://javadl.oracle.com/webapps/download/AutoDL?BundleId=245058_d3c52aa6bfa54d3ca74e617f18309292>`_
 MacOS : `Java for MacOS download <https://javadl.oracle.com/webapps/download/AutoDL?BundleId=245051_d3c52aa6bfa54d3ca74e617f18309292>`_
 Linux : use the package manager
- 
+
 Python libraries
 -----------------
 You need `sqlalchemy` and `geoalchemy2`.
@@ -36,15 +36,15 @@ and type::
    >>> pip3 install "sqlalchemy~=1.3.22" "geoalchemy2>=0.9.0"
 
 If the command fails, try::
- 
+
    >>> pip3 install --upgrade pip
 
 .. note:: If pip cannot be found, make sure you’ve installed the python3-pip package using the OSGeo4W network installer (if you’ve installed the standalone version of QGIS, it should be included).
 
-If this command still fails, try:: 
+If this command still fails, try::
 
   >>> pip3 install --target=c:\somewhere\other\than\the\default --upgrade pip
-  
+
 where ``c:\somewhere\other\than\the\default`` is the path to your current pip package
 
 The same `--target` flag can be added to install `sqlalchemy` and `geoalchemy2` in another location.
@@ -66,7 +66,7 @@ Usage (GUI)
 Enable admin mode
 -------------------------------------------------
 
-In the `plugin>TWW>settings` dialog, under the `Developer options` tab, ensure `Admin mode` is enabled. Restart QGIS. 
+In the `plugin>TWW>settings` dialog, under the `Developer options` tab, ensure `Admin mode` is enabled. Restart QGIS.
 
 .. figure:: images/settings_dialog.png
 
@@ -105,7 +105,7 @@ Exports include a validation step using `ilivalidator`, which will inform you wh
 Import
 -------------------------------------------------
 
-To import `xtf`files, click on the `import` button and navigate to the `.xtf` file. 
+To import `xtf`files, click on the `import` button and navigate to the `.xtf` file.
 
 .. note:: Note that windows file pathes with empty strings in the directory path or filename are not supported at the moment.
 
@@ -138,4 +138,3 @@ Quality control with VSA online checker (Fachprüfung mit VSA Checker (online))
 
 
 `Information about access and licensing you can get here <https://vsa.ch/Mediathek/gep-datachecker-jahresgebuehr/?media_filter_two=lizenzen-software>`_
-

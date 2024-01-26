@@ -72,7 +72,7 @@ If you want to export data to the VSA-DSS 2015 model, you have to manually add t
  .. figure:: images/interlis_export_class_organisation_subclass_checkjpg.jpg
 
  Alternative: You can use vw_organisation instead of od_organisation. vw_organisation has the subclasses integrated and must be loaded manually to the project.
- 
+
 
 Maintenance events ``tww_od.vw_tww_maintenance``
 --------------------------------------------------
