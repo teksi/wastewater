@@ -1,6 +1,6 @@
 ------ This file generates the VSA-DSS database (Modul VSA-DSS (2020)) in en on QQIS
 ------ For questions etc. please contact Stefan Burckhardt stefan.burckhardt@sjib.ch
------- version 13.12.2023 17:33:32
+------ version 26.01.2024 19:15:39
 ------ with 3D coordinates
 
 ---------------------------
@@ -119,29 +119,29 @@ FOR EACH ROW EXECUTE PROCEDURE
 
 -------
 -------
-CREATE TABLE tww_od.progression_alternative
+CREATE TABLE tww_od.txt_alternativverlauf
 (
    obj_id varchar(16) NOT NULL,
-   CONSTRAINT pkey_tww_od_progression_alternative_obj_id PRIMARY KEY (obj_id)
+   CONSTRAINT pkey_tww_od_txt_alternativverlauf_obj_id PRIMARY KEY (obj_id)
 )
 WITH (
    OIDS = False
 );
-CREATE SEQUENCE tww_od.seq_progression_alternative_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.progression_alternative ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','progression_alternative');
-COMMENT ON COLUMN tww_od.progression_alternative.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
- ALTER TABLE tww_od.progression_alternative ADD COLUMN plantype  integer ;
-COMMENT ON COLUMN tww_od.progression_alternative.plantype IS '';
-ALTER TABLE tww_od.progression_alternative ADD COLUMN progression_geometry geometry('COMPOUNDCURVE', :SRID);
-CREATE INDEX in_tww_progression_alternative_progression_geometry ON tww_od.progression_alternative USING gist (progression_geometry );
-COMMENT ON COLUMN tww_od.progression_alternative.progression_geometry IS 'Start, inflextion and endpoints of a progression alterative for selected scale (e.g. overview map) / Anfangs-, Knick- und Endpunkte des Alternativverlaufs der Leitung im gewählten Plantyp (z.B. Uebersichtsplan) / Points de départ, intermédiaires et d’arrivée de la trace alternative de la conduite dans la type de plan selectionée';
- ALTER TABLE tww_od.progression_alternative ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
-COMMENT ON COLUMN tww_od.progression_alternative.last_modification IS 'Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE';
+CREATE SEQUENCE tww_od.seq_txt_alternativverlauf_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
+ ALTER TABLE tww_od.txt_alternativverlauf ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','txt_alternativverlauf');
+COMMENT ON COLUMN tww_od.txt_alternativverlauf.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
+ ALTER TABLE tww_od.txt_alternativverlauf ADD COLUMN plantype  integer ;
+COMMENT ON COLUMN tww_od.txt_alternativverlauf.plantype IS '';
+ALTER TABLE tww_od.txt_alternativverlauf ADD COLUMN progression_geometry geometry('COMPOUNDCURVE', :SRID);
+CREATE INDEX in_tww_txt_alternativverlauf_progression_geometry ON tww_od.txt_alternativverlauf USING gist (progression_geometry );
+COMMENT ON COLUMN tww_od.txt_alternativverlauf.progression_geometry IS 'Start, inflextion and endpoints of a progression alterative for selected scale (e.g. overview map) / Anfangs-, Knick- und Endpunkte des Alternativverlaufs der Leitung im gewählten Plantyp (z.B. Uebersichtsplan) / Points de départ, intermédiaires et d’arrivée de la trace alternative de la conduite dans la type de plan selectionée';
+ ALTER TABLE tww_od.txt_alternativverlauf ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
+COMMENT ON COLUMN tww_od.txt_alternativverlauf.last_modification IS 'Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE';
 -------
 CREATE TRIGGER
 update_last_modified_progression_alternative
 BEFORE UPDATE OR INSERT ON
- tww_od.progression_alternative
+ tww_od.txt_alternativverlauf
 FOR EACH ROW EXECUTE PROCEDURE
  tww_sys.update_last_modified();
 
@@ -5193,7 +5193,8 @@ FOR EACH ROW EXECUTE PROCEDURE
 -------
 
 ------------ Reach Progression Alternative Relationships ----------- ;
------------- already exists
+ALTER TABLE tww_od.reach_progression_alternative ADD COLUMN fk_reach varchar(16);
+ALTER TABLE tww_od.progression_alternative ADD CONSTRAINT rel_progression_alternative_reach FOREIGN KEY (fk_reach) REFERENCES tww_od.reach(obj_id) ON UPDATE CASCADE ON DELETE cascade;
 
 ------------ Reach Progression Alternative Table Values ----------- ;
 CREATE TABLE tww_vl.reach_progression_alternative_plantype () INHERITS (tww_vl.value_list_base);
@@ -5318,3 +5319,5 @@ ALTER TABLE tww_od.farm ADD CONSTRAINT rel_od_farm_fk_dataprovider FOREIGN KEY (
  CREATE UNIQUE INDEX in_od_hydraulic_char_data_identifier ON tww_od.hydraulic_char_data USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
  CREATE UNIQUE INDEX in_od_catchment_area_totals_identifier ON tww_od.catchment_area_totals USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
  CREATE UNIQUE INDEX in_od_building_group_identifier ON tww_od.building_group USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
+
+COMMIT;
