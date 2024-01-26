@@ -1,6 +1,6 @@
 ------ This file generates the VSA-DSS database (Modul VSA-DSS (2020)) in en on QQIS
 ------ For questions etc. please contact Stefan Burckhardt stefan.burckhardt@sjib.ch
------- version 26.01.2024 19:15:39
+------ version 26.01.2024 21:06:26
 ------ with 3D coordinates
 
 ---------------------------
@@ -3120,8 +3120,8 @@ ALTER TABLE tww_vl.text_textvali ADD CONSTRAINT pkey_tww_vl_text_textvali_code P
  ALTER TABLE tww_od.txt_text ADD CONSTRAINT fkey_vl_text_textvali FOREIGN KEY (textvali)
  REFERENCES tww_vl.text_textvali (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
-ALTER TABLE tww_od.progression_alternative ADD COLUMN fk_reach varchar(16);
-ALTER TABLE tww_od.progression_alternative ADD CONSTRAINT rel_progression_alternative_reach FOREIGN KEY (fk_reach) REFERENCES tww_od.reach(obj_id) ON UPDATE CASCADE ON DELETE cascade;
+ALTER TABLE tww_od.txt_progression_alternative ADD COLUMN fk_reach varchar(16);
+ALTER TABLE tww_od.txt_progression_alternative ADD CONSTRAINT rel_progression_alternative_reach FOREIGN KEY (fk_reach) REFERENCES tww_od.reach(obj_id) ON UPDATE CASCADE ON DELETE cascade;
 CREATE TABLE tww_vl.progression_alternative_plantype () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.progression_alternative_plantype ADD CONSTRAINT pkey_tww_vl_progression_alternative_plantype_code PRIMARY KEY (code);
  INSERT INTO tww_vl.progression_alternative_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9282,9282,'pipeline_registry','Leitungskataster','cadastre_des_conduites_souterraines', 'catasto_delle_canalizzazioni', 'rrr_Leitungskataster', '', '', '', '', '', 'true');
@@ -3129,7 +3129,7 @@ ALTER TABLE tww_vl.progression_alternative_plantype ADD CONSTRAINT pkey_tww_vl_p
  INSERT INTO tww_vl.progression_alternative_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9286,9286,'overviewmap.om2','Uebersichtsplan.UeP2','plan_d_ensemble.pe2', 'piano_di_insieme.pi2', 'rrr_Uebersichtsplan.UeP2', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.progression_alternative_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9287,9287,'overviewmap.om5','Uebersichtsplan.UeP5','plan_d_ensemble.pe5', 'piano_di_insieme.pi5', 'rrr_Uebersichtsplan.UeP5', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.progression_alternative_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9284,9284,'network_plan','Werkplan','plan_de_reseau', 'zzz_Werkplan', 'rrr_Werkplan', '', '', '', '', '', 'true');
- ALTER TABLE tww_od.progression_alternative ADD CONSTRAINT fkey_vl_progression_alternative_plantype FOREIGN KEY (plantype)
+ ALTER TABLE tww_od.txt_progression_alternative ADD CONSTRAINT fkey_vl_progression_alternative_plantype FOREIGN KEY (plantype)
  REFERENCES tww_vl.progression_alternative_plantype (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.organisation_organisation_type () INHERITS (tww_vl.value_list_base);
@@ -5194,7 +5194,7 @@ FOR EACH ROW EXECUTE PROCEDURE
 
 ------------ Reach Progression Alternative Relationships ----------- ;
 ALTER TABLE tww_od.reach_progression_alternative ADD COLUMN fk_reach varchar(16);
-ALTER TABLE tww_od.progression_alternative ADD CONSTRAINT rel_progression_alternative_reach FOREIGN KEY (fk_reach) REFERENCES tww_od.reach(obj_id) ON UPDATE CASCADE ON DELETE cascade;
+ALTER TABLE tww_od.txt_progression_alternative ADD CONSTRAINT rel_progression_alternative_reach FOREIGN KEY (fk_reach) REFERENCES tww_od.reach(obj_id) ON UPDATE CASCADE ON DELETE cascade;
 
 ------------ Reach Progression Alternative Table Values ----------- ;
 CREATE TABLE tww_vl.reach_progression_alternative_plantype () INHERITS (tww_vl.value_list_base);
