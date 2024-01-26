@@ -178,59 +178,6 @@ html_static_path = ["_static"]
 htmlhelp_basename = "TWWdoc"
 
 
-# -- Options for LaTeX output ---------------------------------------------
-
-latex_elements = {
-    # added by mkuhn: see https://travis-ci.org/TWW/docs/builds/78364932#L3944
-    # 'babel': r'\usepackage[german,romanian,english,french]{babel}',
-    # The paper size ('letterpaper' or 'a4paper').
-    "papersize": "a4paper",
-    # The font size ('10pt', '11pt' or '12pt').
-    #'pointsize': '10pt',
-    # Additional stuff for the LaTeX preamble.
-    "preamble": """\\usepackage{combelow}
-    \\usepackage{newunicodechar}
-
-    \\newunicodechar{Ș}{\\cb{S}}
-    \\newunicodechar{ș}{\\cb{s}}
-    \\newunicodechar{Ț}{\\cb{T}}
-    \\newunicodechar{ț}{\\cb{t}}
-    % old babel-italian does not have setactivedoublequote,
-    % avoid "undefined control sequence" error
-    \\providecommand{\\setactivedoublequote}{}
-    % switch new babel-italian to the old behavior
-    \\setactivedoublequote
-    """,
-}
-
-# Grouping the document tree into LaTeX files. List of tuples
-# (source start file, target name, title,
-#  author, documentclass [howto, manual, or own class]).
-latex_documents = [
-    ("index", "TWW.tex", "TWW Documentation", "The TWW Project/OPENGIS.ch", "manual"),
-]
-
-# The name of an image file (relative to this directory) to place at the top of
-# the title page.
-# latex_logo = None
-
-# For "manual" documents, if this is true, then toplevel headings are parts,
-# not chapters.
-# latex_use_parts = False
-
-# If true, show page references after internal links.
-# latex_show_pagerefs = False
-
-# If true, show URL addresses after external links.
-# latex_show_urls = False
-
-# Documents to append as an appendix to all manuals.
-# latex_appendices = []
-
-# If false, no module index is generated.
-# latex_domain_indices = True
-
-
 # -- Options for manual page output ---------------------------------------
 
 # One entry per manual page. List of tuples
