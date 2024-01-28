@@ -5194,7 +5194,7 @@ FOR EACH ROW EXECUTE PROCEDURE
 
 ------------ Reach Progression Alternative Relationships ----------- ;
 ALTER TABLE tww_od.reach_progression_alternative ADD COLUMN fk_reach varchar(16);
-ALTER TABLE tww_od.progression_alternative ADD CONSTRAINT rel_reach_progression_alternative_reach FOREIGN KEY (fk_reach) REFERENCES tww_od.reach(obj_id) ON UPDATE CASCADE ON DELETE cascade;
+ALTER TABLE tww_od.reach_progression_alternative ADD CONSTRAINT rel_reach_progression_alternative_reach FOREIGN KEY (fk_reach) REFERENCES tww_od.reach(obj_id) ON UPDATE CASCADE ON DELETE cascade;
 
 ------------ Reach Progression Alternative Table Values ----------- ;
 CREATE TABLE tww_vl.reach_progression_alternative_plantype () INHERITS (tww_vl.value_list_base);
