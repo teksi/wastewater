@@ -132,6 +132,12 @@ class ModelInterlisSia405Abwasser(ModelBase):
 
         ModelInterlisSia405Abwasser.bankett = bankett
 
+        class spuelstutzen(bauwerksteil):
+            __tablename__ = "spuelstutzen"
+            __table_args__ = {"schema": config.ABWASSER_SCHEMA}
+
+        ModelInterlisSia405Abwasser.spuelstutzen = spuelstutzen
+
         # TEXTS
 
         class textpos(baseclass):
