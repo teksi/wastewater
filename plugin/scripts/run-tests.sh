@@ -8,4 +8,4 @@
 # Run all test starting with test_array_
 # ./scripts/run-tests.sh -k test_array_
 
-docker-compose run qgis /usr/src/.docker/run-docker-tests.sh $@
+docker-compose run qgis /usr/src/plugin/.docker/run-docker-tests.sh $@
