@@ -135,7 +135,7 @@ def create_views(
         for file in files:
             filename = os.fsdecode(file)
             if filename.endswith(".sql"):
-                run_sql(os.path.join(folder, filename), pg_service, variables))
+                run_sql(os.path.join(folder, filename), pg_service, variables)
 
     SimpleJoins(safe_load(open("app/view/export/vw_export_reach.yaml")), pg_service).create()
     SimpleJoins(
