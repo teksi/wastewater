@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Match channels &mdash; Documentation TWW dev</title>
+  <title>Faire correspondre les conduites &mdash; Documentation TWW dev</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
@@ -70,7 +70,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Match channels</li>
+      <li class="breadcrumb-item active">Faire correspondre les conduites</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/wincan2qgep/match-channels.rst.txt" rel="nofollow"> Afficher la source de la page</a>
       </li>
@@ -81,38 +81,35 @@
            <div itemprop="articleBody">
              
   <section id="match-channels">
-<h1>Match channels<a class="headerlink" href="#match-channels" title="Link to this heading"></a></h1>
+<h1>Faire correspondre les conduites<a class="headerlink" href="#match-channels" title="Link to this heading"></a></h1>
 <p>To import the inspection data, the inspected channels have to be matched with the TWW channels.
 This process can be done semi-automatically or manually.
 As long as channels are not matched to existing data, they will be highlighted in red in the main table.</p>
 <section id="automatic-matching">
-<h2>Automatic matching<a class="headerlink" href="#automatic-matching" title="Link to this heading"></a></h2>
-<p>An automatic matching can be performed by looking for a pattern in manhole identifiers.
-Enter a channel identifier in the corresponding field, and the plugin will search
-for the channels connecting the manhole as follows: <code class="docutils literal notranslate"><span class="pre">{channel_id}</span> <span class="pre">-</span> <span class="pre">{manhole_id}</span></code>
-(the manhole id being taken from the inspection data).</p>
+<h2>Correspondance automatique<a class="headerlink" href="#automatic-matching" title="Link to this heading"></a></h2>
+<p>Une correspondance automatique peut être effectuée en recherchant une suite de caractéristique dans les identifiants du regard. Entrez un identifiant de conduite dans le champ correspondant et le plugin va rechercher les conduites connectées à ce regard de la manière suivante: <code class="docutils literal notranslate"><span class="pre">{channel_id}</span> <span class="pre">-</span> <span class="pre">{manhole_id}</span></code> (l’identifiant du regard est repris des données d’inspection).</p>
 </section>
 <section id="manual-matching">
-<h2>Manual matching<a class="headerlink" href="#manual-matching" title="Link to this heading"></a></h2>
-<p>Manual matching can be performed as follows:</p>
+<h2>Correspondance manuelle<a class="headerlink" href="#manual-matching" title="Link to this heading"></a></h2>
+<p>La correspondance manuelle peut être réalisée de la façon suivante:</p>
 <ol class="arabic simple">
-<li><p>Select the desired channel in the table</p></li>
-<li><p>In the first channel widget, click on the <code class="docutils literal notranslate"><span class="pre">Select</span> <span class="pre">on</span> <span class="pre">map</span></code> button</p></li>
+<li><p>Sélectionnez la conduite désirée dans la table</p></li>
+<li><p>Dans le premier widget de la conduite, cliquez sur le bouton <code class="docutils literal notranslate"><span class="pre">Sélectionner</span> <span class="pre">dans</span> <span class="pre">la</span> <span class="pre">carte</span></code></p></li>
 </ol>
 <figure class="align-default">
 <img alt="../_images/match-channel-1.png" src="../_images/match-channel-1.png" />
 </figure>
 <ol class="arabic simple" start="3">
-<li><p>Find and click on the corresponding channel on the map.</p></li>
-<li><p>The channel ID is now listed and the line in the table is not highlighted anymore.</p></li>
+<li><p>Trouvez et sélectionnez la conduite correspondante dans la carte.</p></li>
+<li><p>L’identifiant de la conduite est maintenant listé et la ligne n’est plus surlignée dans la table.</p></li>
 </ol>
 <figure class="align-default">
 <img alt="../_images/match-channel-2.png" src="../_images/match-channel-2.png" />
 </figure>
 </section>
 <section id="skipping-channels-or-observations">
-<h2>Skipping channels or observations<a class="headerlink" href="#skipping-channels-or-observations" title="Link to this heading"></a></h2>
-<p>If you want to skip some of the inspected channels, they simply need to be unchecked in the channel table and similarly for observations.</p>
+<h2>Ignorer des conduites ou des observations<a class="headerlink" href="#skipping-channels-or-observations" title="Link to this heading"></a></h2>
+<p>Si vous souhaitez ignorer certaines des conduites inspectées, décochez-les simplement dans la table conduites. Procédez de la même manière pour les observations.</p>
 <figure class="align-default">
 <img alt="../_images/skip-data.png" src="../_images/skip-data.png" />
 </figure>
