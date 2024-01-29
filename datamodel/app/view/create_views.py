@@ -57,7 +57,7 @@ def create_views(
         "dryweather_flume": "structure_part",
         "tank_emptying": "structure_part",
         "tank_cleaning": "structure_part",
-        "electrical_equipment": "structure_part",
+        "electric_equipment": "structure_part",
         "electromechanical_eqipment": "structure_part",
         "solids_retention": "structure_part",
         "flushing_nozzle": "structure_part",
