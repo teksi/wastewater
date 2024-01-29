@@ -1,0 +1,56 @@
+[main]
+host = https://app.transifex.com
+
+[o:teksi:p:tww-docs:r:index]
+source_file = i18n/pot/index.pot
+source_lang = en
+file_filter = i18n/<lang>/index.po
+type = PO
+
+[o:teksi:p:tww-docs:r:features-guide]
+source_file = i18n/pot/features-guide.pot
+source_lang = en
+file_filter = i18n/<lang>/features-guide.po
+type = PO
+
+[o:teksi:p:tww-docs:r:installation-guide]
+source_file = i18n/pot/installation-guide.pot
+source_lang = en
+file_filter = i18n/<lang>/installation-guide.po
+type = PO
+
+[o:teksi:p:tww-docs:r:vm]
+source_file = i18n/pot/vm.pot
+source_lang = en
+file_filter = i18n/<lang>/vm.po
+type = PO
+
+[o:teksi:p:tww-docs:r:user-guide]
+source_file = i18n/pot/user-guide.pot
+source_lang = en
+file_filter = i18n/<lang>/user-guide.po
+type = PO
+
+[o:teksi:p:tww-docs:r:tww_swmm]
+source_file = i18n/pot/tww_swmm.pot
+source_lang = en
+file_filter = i18n/<lang>/tww_swmm.po
+type = PO
+
+[o:teksi:p:tww-docs:r:wincan2qgep]
+source_file = i18n/pot/wincan2qgep.pot
+source_lang = en
+file_filter = i18n/<lang>/wincan2qgep.po
+type = PO
+
+[o:teksi:p:tww-docs:r:admin-guide]
+source_file = i18n/pot/admin-guide.pot
+source_lang = en
+file_filter = i18n/<lang>/admin-guide.po
+type = PO
+
+[o:teksi:p:tww-docs:r:translation]
+source_file = i18n/pot/translation.pot
+source_lang = en
+file_filter = i18n/<lang>/translation.po
+type = PO

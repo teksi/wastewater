@@ -13,6 +13,20 @@ services:
       # making the postgres database accessible for debugging
       - ${TWW_PG_PORT:-5432}:${TWW_PG_PORT:-5432}
 
+  qgis:
+    build:
+      context: .
+      dockerfile: plugin/.docker/Dockerfile
+      args:
+        QGIS_TEST_VERSION: ${QGIS_TEST_VERSION:-latest}
+    tty: true
+    volumes:
+      - ./plugin:/usr/src
+    links:
+      - db
+    profiles:
+      - qgis
+
   schemaspy:
     image: schemaspy/schemaspy
     volumes:

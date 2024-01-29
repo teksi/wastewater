@@ -1,0 +1,7 @@
+plugin_path: plugin/teksi_wastewater
+github_organization_slug: TEKSI
+project_slug: wastewater
+
+transifex_organization: teksi
+transifex_project: tww-plugin
+transifex_resource: tww-plugin
