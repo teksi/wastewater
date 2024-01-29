@@ -2008,7 +2008,7 @@ class InterlisExporterToIntermediateSchema:
         logger.info("done")
         self.abwasser_session.flush()
 
-    def _export_oferflow_char(self):
+    def _export_overflow_char(self):
         query = self.tww_session.query(self.model_classes_tww_od.control_center)
         if self.filtered:
             query = query.filter(

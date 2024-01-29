@@ -401,6 +401,9 @@ class InterlisImporterToIntermediateSchema:
         return instance
 
     def get_vl_code(self, vl_table, value_de):
+        if value_de is None:
+            return None
+
         instance = self.get_vl_instance(vl_table, value_de)
         if instance is None:
             return None
