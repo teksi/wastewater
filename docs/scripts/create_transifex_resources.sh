@@ -42,7 +42,7 @@ do
   echo "*** RESOURCE: $RESOURCE"
   # Register each pot file as a transifex resource (an individual translatable file)
 
-  ./tx set -t PO -r $RESOURCE --source -l en "$GENERICFILE"
+  ./tx -t PO -r $RESOURCE --source -l en "$GENERICFILE"
   #set +x
   # Now register the language translations for the localised po file against
   # this resource.
@@ -51,7 +51,7 @@ do
       echo $POFILE
       LOCALEFILE=`echo $BASE | sed "s|/pot/|/$LOCALE/|g"`.po
       #echo "$LOCALEFILE"
-      tx set -r $RESOURCE -l $LOCALE  "$LOCALEFILE"
+      ./tx -r $RESOURCE -l $LOCALE  "$LOCALEFILE"
   done
   # When we are done in this block we should have created a section in the
   # .tx/config file that looks like this:
