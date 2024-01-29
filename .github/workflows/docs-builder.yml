@@ -8,7 +8,6 @@ on:
   push:
     branches:
       - main
-      - docs
     paths:
       - docs/**
       - '.github/workflows/docs-builder.yml'
@@ -47,7 +46,7 @@ jobs:
       - name: tx push
         env:
           TX_TOKEN: ${{ secrets.TX_TOKEN }}
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/docs' }} # TODO
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
         working-directory: docs
         run: make transifex_sync
 
