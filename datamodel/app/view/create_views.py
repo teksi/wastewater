@@ -85,8 +85,8 @@ def create_views(
 
     for key in SingleInheritances:
         SingleInheritance(
-            "tww_od." + key,
             "tww_od." + SingleInheritances[key],
+            "tww_od." + key,
             view_name="vw_" + key,
             pkey_default_value=True,
             inner_defaults={"identifier": "obj_id"},
