@@ -45,12 +45,12 @@ def create_views(
     run_sql("app/view/vw_dictionary_value_list.sql", pg_service, variables)
 
     defaults = {"view_schema": "tww_app", "pg_service": pg_service}
-    
+
     SingleInheritances={
         # structure parts
         'access_aid':'structure_part',
         'benching':'structure_part',
-        'backflow_prevention':'structure_part', 
+        'backflow_prevention':'structure_part',
         'dryweather_downspout':'structure_part',
         'cover':'structure_part',
         'dryweather_flume':'structure_part',
@@ -60,7 +60,7 @@ def create_views(
         'electromechanical_eqipment':'structure_part',
         'solids_retention':'structure_part',
         'flushing_nozzle':'structure_part',
-        
+
         # wastewater structures
         'channel':'wastewater_structure',
         'manhole':'wastewater_structure',
@@ -70,22 +70,22 @@ def create_views(
         'wwtp_structure':'wastewater_structure',
         'drainless_toilet':'wastewater_structure',
         'small_treatment_plant':'wastewater_structure',
-        
+
         # wastewater_networkelement
         'wastewater_node':'wastewater_networkelement',
         'reach':'wastewater_networkelement',
-        
+
         #connection_object
         'building':'connection_object',
         'reservoir':'connection_object',
         'individual_surface':'connection_object',
         'fountain':'connection_object',
-        
+
         # zone
         'infiltration_zone':'zone',
         'drainage_system':'zone',
         }
-    
+
     for key in SingleInheritances:
         SingleInheritance(
             "tww_od."+key,
@@ -95,7 +95,7 @@ def create_views(
             inner_defaults={"identifier": "obj_id"},
             **defaults,
         ).create()
-  
+
 
     MultipleInheritance(
         safe_load(open("app/view/vw_maintenance_event.yaml")),
@@ -130,7 +130,7 @@ def create_views(
 
     directories = ['catchment_area','network','swmm_views']
     for folder in directories
-        files = os.listdir(os.path.join(folder,os.path.dirname(__file__))) 
+        files = os.listdir(os.path.join(folder,os.path.dirname(__file__)))
         files.sort()
         for file in files:
             filename = os.fsdecode(file)
