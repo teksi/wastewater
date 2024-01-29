@@ -50,7 +50,7 @@ jobs:
         run: docker compose up -d --build
 
       - name: Test on QGIS
-        run: docker-compose run qgis /usr/src/.docker/run-docker-tests.sh
+        run: docker-compose run qgis /usr/src/plugin/.docker/run-docker-tests.sh
 
       - name: docker logs
         #if: failure()

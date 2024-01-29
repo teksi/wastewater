@@ -1,0 +1,48 @@
+name: 🌎 Update project translations
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - main
+      - project-tx
+    paths:
+      - project/**
+      - '.github/workflows/project-translation.yml'
+  workflow_dispatch:
+
+
+jobs:
+  build:
+    name: Update project translations
+    runs-on: ubuntu-latest
+
+    env:
+      TX_TOKEN: ${{ secrets.TX_TOKEN }}
+      COMPOSE_PROFILES: qgis
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Transifex
+        working-directory: project
+        run: |
+          curl -OL https://github.com/transifex/cli/releases/download/v1.6.10/tx-linux-amd64.tar.gz
+          tar -xvzf tx-linux-amd64.tar.gz
+
+      - name: Start Docker compose
+        run: |
+          docker compose up --build -d
+          docker compose exec db init_db.sh wait
+
+      - name: Translate
+        run: |
+          docker compose run qgis sh -c 'xvfb-run /usr/src/project/scripts/project-translation-create-source.py /usr/src/project/teksi_wastewater.qgs'
+
+      - name: Push to TX
+        working-directory: project
+        run: ./tx push --source

@@ -41,7 +41,7 @@ if [[ $BUILD -eq 1 ]]; then
 fi
 
 docker rm -f teksi-wastewater
-docker run -d -p ${TWW_PG_PORT}:5432 -v $(pwd)/datamodel:/src  --name teksi-wastewater teksi/wastewater -c log_statement=all
+docker run -d -p ${TWW_PG_PORT}:5432 -v $(pwd):/src  --name teksi-wastewater teksi/wastewater -c log_statement=all
 docker exec teksi-wastewater init_db.sh wait
 if [[ $DEMO_DATA -eq 1 ]]; then
   docker exec teksi-wastewater init_db.sh build -d

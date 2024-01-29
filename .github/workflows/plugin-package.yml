@@ -31,7 +31,6 @@ jobs:
           python-version: '3.10'
 
       - name: Install Qt lrelease
-        if: ${{ github.event_name == 'push' }}
         run: |
           sudo apt-get update
           sudo apt-get install qtbase5-dev qttools5-dev-tools
