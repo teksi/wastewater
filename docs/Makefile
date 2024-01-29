@@ -89,7 +89,7 @@ init: en/*
 
 transifex_sync: gettext
 	@set -e;\
-	./tx push;
+	./tx push -s;
 	@echo "Transifex resources synchronized"
 
 transifex_pull:
