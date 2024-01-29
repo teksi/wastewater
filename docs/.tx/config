@@ -31,10 +31,10 @@ source_lang = en
 file_filter = i18n/<lang>/user-guide.po
 type = PO
 
-[o:teksi:p:tww-docs:r:qgep_swmm]
-source_file = i18n/pot/qgep_swmm.pot
+[o:teksi:p:tww-docs:r:tww_swmm]
+source_file = i18n/pot/tww_swmm.pot
 source_lang = en
-file_filter = i18n/<lang>/qgep_swmm.po
+file_filter = i18n/<lang>/tww_swmm.po
 type = PO
 
 [o:teksi:p:tww-docs:r:wincan2qgep]
