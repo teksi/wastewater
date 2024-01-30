@@ -119,19 +119,50 @@ def create_views(
         pg_service=pg_service,
         drop=True,
     ).create()
-
-    # These are not put in the for loop because there are other sql files in that folder. Reason unknown
+    
     run_sql("app/view/vw_change_points.sql", pg_service, variables)
     run_sql("app/view/vw_tww_import.sql", pg_service, variables)
+                
+    run_sql("app/view/catchment_area/vw_catchment_area_connections.sql", pg_service, variables)
+    run_sql("app/view/catchment_area/vw_catchment_area_additional.sql", pg_service, variables)
+    run_sql("app/view/catchment_area/vw_catchment_area_rwc_connections.sql", pg_service, variables)
+    run_sql("app/view/catchment_area/vw_catchment_area_wwc_connections.sql", pg_service, variables)
+    run_sql("app/view/catchment_area/vw_catchment_area_rwp_connections.sql", pg_service, variables)
+    run_sql("app/view/catchment_area/vw_catchment_area_wwp_connections.sql", pg_service, variables)
 
-    directories = ["catchment_area", "network", "swmm_views"]
-    for folder in directories:
-        files = os.listdir(os.path.join(os.path.dirname(os.path.abspath(__file__)), folder))
-        files.sort()
-        for file in files:
-            filename = os.fsdecode(file)
-            if filename.endswith(".sql"):
-                run_sql(os.path.join(folder, filename), pg_service, variables)
+    # Recreate network views
+    run_sql("app/view/network/vw_network_node.sql", pg_service, variables)
+    run_sql("app/view/network/vw_network_segment.sql", pg_service, variables)
+
+    # Recreate swmm views
+    # to do finish testing swmm views
+    run_sql("app/swmm_views/02_vw_swmm_junctions.sql", pg_service, variables)
+    run_sql("app/swmm_views/03_vw_swmm_aquifers.sql", pg_service, variables)
+    run_sql("app/swmm_views/04_vw_swmm_conduits.sql", pg_service, variables)
+    run_sql("app/swmm_views/05_vw_swmm_dividers.sql", pg_service, variables)
+    run_sql("app/swmm_views/06_vw_swmm_landuses.sql", pg_service, variables)
+    run_sql("app/swmm_views/07_vw_swmm_losses.sql", pg_service, variables)
+    run_sql("app/swmm_views/08_vw_swmm_outfalls.sql", pg_service, variables)
+    run_sql("app/swmm_views/09_vw_swmm_subcatchments.sql", pg_service, variables)
+    run_sql("app/swmm_views/10_vw_swmm_subareas.sql", pg_service, variables)
+    run_sql("app/swmm_views/11_vw_swmm_dwf.sql", pg_service, variables)
+    run_sql("app/swmm_views/12_vw_swmm_raingages.sql", pg_service, variables)
+    run_sql("app/swmm_views/13_vw_swmm_infiltrations.sql", pg_service, variables)
+    run_sql("app/swmm_views/14_vw_swmm_coverages.sql", pg_service, variables)
+    run_sql("app/swmm_views/15_vw_swmm_vertices.sql", pg_service, variables)
+    run_sql("app/swmm_views/16_vw_swmm_pumps.sql", pg_service, variables)
+    run_sql("app/swmm_views/17_vw_swmm_polygons.sql", pg_service, variables)
+    run_sql("app/swmm_views/18_vw_swmm_storages.sql", pg_service, variables)
+    run_sql("app/swmm_views/19_vw_swmm_outlets.sql", pg_service, variables)
+    run_sql("app/swmm_views/20_vw_swmm_orifices.sql", pg_service, variables)
+    run_sql("app/swmm_views/21_vw_swmm_weirs.sql", pg_service, variables)
+    run_sql("app/swmm_views/22_vw_swmm_curves.sql", pg_service, variables)
+    run_sql("app/swmm_views/23_vw_swmm_xsections.sql", pg_service, variables)
+    run_sql("app/swmm_views/24_vw_swmm_coordinates.sql", pg_service, variables)
+    run_sql("app/swmm_views/25_vw_swmm_tags.sql", pg_service, variables)
+    run_sql("app/swmm_views/26_vw_swmm_symbols.sql", pg_service, variables)
+    run_sql("app/swmm_views/27_vw_swmm_results.sql", pg_service, variables)
+   
 
     SimpleJoins(safe_load(open("app/view/export/vw_export_reach.yaml")), pg_service).create()
     SimpleJoins(
