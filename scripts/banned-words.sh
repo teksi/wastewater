@@ -15,7 +15,7 @@ DIR=$(git rev-parse --show-toplevel)
 pushd "${DIR}" >/dev/null || exit
 
 for i in "${!KEYWORDS[@]}"; do
-	FOUND=$(git grep "${KEYWORDS[$i]}" -- '*' -- ':!*banned-words.sh' | grep --invert-match skip-keyword-check)
+	FOUND=$(git grep "${KEYWORDS[$i]}" -- '*' -- ':!*banned-words.sh' ':!docs/en/wincan2qgep/**' ':!docs/.tx/config' | grep --invert-match skip-keyword-check)
 
 	if [[ ${FOUND} ]]; then
 		echo "Found source files with banned keyword: ${KEYWORDS[$i]}!"
