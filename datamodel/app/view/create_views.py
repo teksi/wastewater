@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import argparse
-import os
 
 import psycopg2
 from pirogue import MultipleInheritance, SimpleJoins, SingleInheritance
@@ -119,10 +118,10 @@ def create_views(
         pg_service=pg_service,
         drop=True,
     ).create()
-    
+
     run_sql("app/view/vw_change_points.sql", pg_service, variables)
     run_sql("app/view/vw_tww_import.sql", pg_service, variables)
-                
+
     run_sql("app/view/catchment_area/vw_catchment_area_connections.sql", pg_service, variables)
     run_sql("app/view/catchment_area/vw_catchment_area_additional.sql", pg_service, variables)
     run_sql("app/view/catchment_area/vw_catchment_area_rwc_connections.sql", pg_service, variables)
@@ -162,7 +161,6 @@ def create_views(
     run_sql("app/swmm_views/25_vw_swmm_tags.sql", pg_service, variables)
     run_sql("app/swmm_views/26_vw_swmm_symbols.sql", pg_service, variables)
     run_sql("app/swmm_views/27_vw_swmm_results.sql", pg_service, variables)
-   
 
     SimpleJoins(safe_load(open("app/view/export/vw_export_reach.yaml")), pg_service).create()
     SimpleJoins(
