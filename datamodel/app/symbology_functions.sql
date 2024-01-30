@@ -545,7 +545,7 @@ WITH labeled_ws as
     ) all_parts
 	GROUP BY ws_obj_id, COALESCE(ws_identifier, '')
 )
-  INSERT INTO tww_app.tww_labels lab (obj_id,label_type,label_text)
+  INSERT INTO tww_app.tww_labels (obj_id,label_type,label_text)
   SELECT
       ws_obj_id
     , unnest(
