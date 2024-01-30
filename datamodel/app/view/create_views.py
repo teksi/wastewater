@@ -126,7 +126,7 @@ def create_views(
 
     directories = ["catchment_area", "network", "swmm_views"]
     for folder in directories:
-        files = os.listdir(os.path.join(os.path.dirname(os.path.abspath(__file__)),folder))
+        files = os.listdir(os.path.join(os.path.dirname(os.path.abspath(__file__)), folder))
         files.sort()
         for file in files:
             filename = os.fsdecode(file)
