@@ -124,9 +124,10 @@ def create_views(
     run_sql("app/view/vw_change_points.sql", pg_service, variables)
     run_sql("app/view/vw_tww_import.sql", pg_service, variables)
 
-    directories = ["app/view/catchment_area", "app/view/network", "app/view/swmm_views"]
+    directories = ["catchment_area", "network", "swmm_views"]
     for folder in directories:
-        files = os.listdir(os.path.join(folder, os.path.dirname(__file__)))
+        files = os.listdir(os.path.join(os.path.abspath(__file__),folder))
+        print(files)
         files.sort()
         for file in files:
             filename = os.fsdecode(file)
