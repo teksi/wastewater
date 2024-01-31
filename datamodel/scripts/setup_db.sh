@@ -83,4 +83,3 @@ fi
 if [[ $rolex ]]; then
   psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f ${DIR}/12_2_roles.sql
 fi
-
