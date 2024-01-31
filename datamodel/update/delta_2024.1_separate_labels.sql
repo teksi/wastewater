@@ -11,11 +11,11 @@ DROP COLUMN output_label;
 CREATE TABLE IF NOT EXISTS tww_app.tww_labels
 (
     id uuid NOT NULL DEFAULT uuid_generate_v4(),
-	obj_id character varying(16) COLLATE pg_catalog."default" NOT NULL,
+	fk_parent_obj_id character varying(16) COLLATE pg_catalog."default" NOT NULL,
     label_type character varying(10),
-	label_text text COLLATE pg_catalog."default"
+	label_text text COLLATE pg_catalog."default",
 	CONSTRAINT pkey_tww_od_labels_id PRIMARY KEY (id)
-	, CONSTRAINT unique_tww_od_labels UNIQUE (obj_id,label_type)
+	, CONSTRAINT unique_tww_od_labels UNIQUE (fk_parent_obj_id,label_type)
 );
 
 COMMENT ON TABLE tww_app.tww_labels IS 'stores all labels. not part of the VSA-DSS data model,
@@ -147,7 +147,7 @@ WHERE cfg_include_in_ws_labels;
   , obj_id
   FROM null_label)
  --Upsert reach_point labels
-  INSERT INTO tww_app.tww_labels (obj_id,label_type,label_text)
+  INSERT INTO tww_app.tww_labels (fk_parent_obj_id,label_type,label_text)
   SELECT  rp_label.obj_id,'main',rp_label.new_label
   FROM rp_label
   ON CONFLICT ON CONSTRAINT unique_tww_od_labels
@@ -243,7 +243,7 @@ WITH labeled_ws as
 		,  NULL::text AS rpo_label
       FROM tww_od.reach_point RP
       LEFT JOIN tww_od.wastewater_networkelement NE ON RP.fk_wastewater_networkelement = NE.obj_id
-	  LEFT JOIN tww_app.tww_labels lb on RP.obj_id=lb.obj_id and lb.label_type='main'
+	  LEFT JOIN tww_app.tww_labels lb on RP.obj_id=lb.fk_parent_obj_id and lb.label_type='main'
       WHERE (_all OR NE.fk_wastewater_structure = _obj_id) and left(lb.label_text,1)='I'
       -- output
       UNION
@@ -259,14 +259,14 @@ WITH labeled_ws as
 		,  NULL::text AS rpo_label
       FROM tww_od.reach_point RP
       LEFT JOIN tww_od.wastewater_networkelement NE ON RP.fk_wastewater_networkelement = NE.obj_id
-	  LEFT JOIN tww_app.tww_labels lb on RP.obj_id=lb.obj_id and lb.label_type='main'
+	  LEFT JOIN tww_app.tww_labels lb on RP.obj_id=lb.fk_parent_obj_id and lb.label_type='main'
       WHERE (_all OR NE.fk_wastewater_structure = _obj_id) and left(lb.label_text,1)='O'
 	) parts ON parts.ws = ws.obj_id
     WHERE _all OR ws.obj_id =_obj_id
     ) all_parts
 	GROUP BY ws_obj_id, COALESCE(ws_identifier, '')
 )
-  INSERT INTO tww_app.tww_labels lab (obj_id,label_type,label_text)
+  INSERT INTO tww_app.tww_labels lab (fk_parent_obj_id,label_type,label_text)
   SELECT
       ws_obj_id
     , unnest(
