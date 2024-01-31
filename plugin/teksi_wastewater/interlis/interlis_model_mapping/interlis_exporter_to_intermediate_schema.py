@@ -179,6 +179,180 @@ class InterlisExporterToIntermediateSchema:
         self._export_control_center()
         self._check_for_stop()
 
+        logger.info("Exporting TWW.drainless_toilet -> ABWASSER.Abflusslose_Toilette")
+        self._export_drainless_toilet()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.throttle_shut_off_unit -> ABWASSER.Absperr_Drosselorgan")
+        self._export_throttle_shut_off_unit()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.tank_emptying -> ABWASSER.Beckenentleerung")
+        self._export_tank_emptying()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.tank_cleaning -> ABWASSER.Beckenreinigung")
+        self._export_tank_cleaning()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.bio_ecol_assessment -> ABWASSER.Biol_oekol_Gesamtbeurteilung")
+        self._export_bio_ecol_assessment()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.fountain -> ABWASSER.Brunnen")
+        self._export_fountain()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.param_ca_general -> ABWASSER.EZG_PARAMETER_ALLG")
+        self._export_param_ca_general()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.param_ca_mouse1 -> ABWASSER.EZG_PARAMETER_MOUSE1")
+        self._export_param_ca_mouse1()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.individual_surface -> ABWASSER.Einzelflaeche")
+        self._export_individual_surface()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.catchment_area -> ABWASSER.Einzugsgebiet")
+        self._export_catchment_area()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.electric_equipment -> ABWASSER.ElektrischeEinrichtung")
+        self._export_electric_equipment()
+        self._check_for_stop()
+
+        logger.info(
+            "Exporting TWW.electromechanical_equipment -> ABWASSER.ElektromechanischeAusruestung"
+        )
+        self._export_electromechanical_equipment()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.disposal -> ABWASSER.Entsorgung")
+        self._export_disposal()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.drainage_system -> ABWASSER.Entwaesserungssystem")
+        self._export_drainage_system()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.solids_retention -> ABWASSER.Feststoffrueckhalt")
+        self._export_solids_retention()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.pump -> ABWASSER.FoerderAggregat")
+        self._export_pump()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.building -> ABWASSER.Gebaeude")
+        self._export_building()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.building_group -> ABWASSER.Gebaeudegruppe")
+        self._export_building_group()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.building_group_baugwr -> ABWASSER.Gebaeudegruppe_BAUGWR")
+        self._export_building_group_baugwr()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.catchment_area_totals -> ABWASSER.Gesamteinzugsgebiet")
+        self._export_catchment_area_totals()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.hq_relation -> ABWASSER.HQ_Relation")
+        self._export_hq_relation()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.hydr_geom_relation -> ABWASSER.Hydr_GeomRelation")
+        self._export_hydr_geom_relation()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.hydr_geometry -> ABWASSER.Hydr_Geometrie")
+        self._export_hydr_geometry()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.hydraulic_char_data -> ABWASSER.Hydr_Kennwerte")
+        self._export_hydraulic_char_data()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.small_treatment_plant -> ABWASSER.KLARA")
+        self._export_small_treatment_plant()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.farm -> ABWASSER.Landwirtschaftsbetrieb")
+        self._export_farm()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.leapingweir -> ABWASSER.Leapingwehr")
+        self._export_leapingweir()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.measure -> ABWASSER.Massnahme")
+        self._export_measure()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.mechanical_pretreatment -> ABWASSER.MechanischeVorreinigung")
+        self._export_mechanical_pretreatment()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.measuring_device -> ABWASSER.Messgeraet")
+        self._export_measuring_device()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.measurement_series -> ABWASSER.Messreihe")
+        self._export_measurement_series()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.measurement_result -> ABWASSER.Messresultat")
+        self._export_measurement_result()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.measuring_point -> ABWASSER.Messstelle")
+        self._export_measuring_point()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.mutation -> ABWASSER.Mutation")
+        self._export_mutation()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.reservoir -> ABWASSER.Reservoir")
+        self._export_reservoir()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.retention_body -> ABWASSER.Retentionskoerper")
+        self._export_retention_body()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.profile_geometry -> ABWASSER.Rohrprofil_Geometrie")
+        self._export_profile_geometry()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.backflow_prevention -> ABWASSER.Rueckstausicherung")
+        self._export_backflow_prevention()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.log_card -> ABWASSER.Stammkarte")
+        self._export_log_card()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.prank_weir -> ABWASSER.Streichwehr")
+        self._export_prank_weir()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.overflow_char -> ABWASSER.Ueberlaufcharakteristik")
+        self._export_overflow_char()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.maintenance -> ABWASSER.Unterhalt")
+        self._export_maintenance()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.infiltration_zone -> ABWASSER.Versickerungsbereich")
+        self._export_infiltration_zone()
+        self._check_for_stop()
+
     def _export_vsa_kek(self):
         logger.info("Exporting TWW.examination -> ABWASSER.untersuchung")
         self._export_examination()
@@ -847,6 +1021,1046 @@ class InterlisExporterToIntermediateSchema:
                 lage=row.situation_geometry,
             )
             self.abwasser_session.add(steuerungszentrale)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_drainless_toilet(self):
+        query = self.tww_session.query(self.model_classes_tww_od.drainless_toilet)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_od.drainless_toilet.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            abflusslose_toilette = self.model_classes_interlis.abflusslose_toilette(
+                **self.wastewater_structure_common(row, "abflusslose_toilette"),
+                # --- drainless_toilet ---
+                art=self.get_vl(row.kind__REL),
+            )
+            self.abwasser_session.add(abflusslose_toilette)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_throttle_shut_off_unit(self):
+        query = self.tww_session.query(self.model_classes_tww_od.throttle_shut_off_unit)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_od.throttle_shut_off_unit.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            absperr_drosselorgan = self.model_classes_interlis.absperr_drosselorgan(
+                **self.vsa_base_common(row, "absperr_drosselorgan"),
+                # --- throttle_shut_off_unit ---
+                antrieb=self.get_vl(row.actuation__REL),
+                verstellbarkeit=self.get_vl(row.adjustability__REL),
+                steuerung=self.get_vl(row.control__REL),
+                querschnitt=row.cross_section,
+                wirksamer_qs=row.effective_cross_section,
+                bruttokosten=row.gross_costs,
+                bezeichnung=row.identifier,
+                art=self.get_vl(row.kind__REL),
+                fabrikat=row.manufacturer,
+                bemerkung=row.remark,
+                signaluebermittlung=self.get_vl(row.signal_transmission__REL),
+                subventionen=row.subsidies,
+                drosselorgan_oeffnung_ist=row.throttle_unit_opening_current,
+                drosselorgan_oeffnung_ist_optimiert=row.throttle_unit_opening_current_optimized,
+                abwasserknotenref=self.get_pk(row.fk_wastewater_node__REL),
+                steuerungszentraleref=self.get_pk(row.fk_control_center__REL),
+                ueberlaufref=self.get_pk(row.fk_overflow__REL),
+            )
+            self.abwasser_session.add(absperr_drosselorgan)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_tank_emptying(self):
+        query = self.tww_session.query(self.model_classes_tww_od.tank_emptying)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_od.tank_emptying.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            beckenentleerung = self.model_classes_interlis.beckenentleerung(
+                **self.vsa_base_common(row, "beckenentleerung"),
+                **self.structure_part_common(row),
+                # --- tank_emptying ---
+                leistung=row.flow,
+                bruttokosten=row.gross_costs,
+                art=self.get_vl(row.type__REL),
+                ersatzjahr=row.year_of_replacement,
+                absperr_drosselorganref=self.get_pk(row.fk_throttle_shut_off_unit__REL),
+                ueberlaufref=self.get_pk(row.fk_overflow__REL),
+            )
+            self.abwasser_session.add(beckenentleerung)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_tank_cleaning(self):
+        query = self.tww_session.query(self.model_classes_tww_od.tank_cleaning)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_od.tank_cleaning.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            beckenreinigung = self.model_classes_interlis.beckenreinigung(
+                **self.vsa_base_common(row, "beckenreinigung"),
+                **self.structure_part_common(row),
+                # --- tank_cleaning ---
+                bruttokosten=row.gross_costs,
+                art=self.get_vl(row.type__REL),
+                ersatzjahr=row.year_of_replacement,
+            )
+            self.abwasser_session.add(beckenreinigung)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_bio_ecol_assessment(self):
+        query = self.tww_session.query(self.model_classes_tww_od.bio_ecol_assessment)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_od.bio_ecol_assessment.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            biol_oekol_gesamtbeurteilung = self.model_classes_interlis.biol_oekol_gesamtbeurteilung(
+                **self.vsa_base_common(row, "biol_oekol_gesamtbeurteilung"),
+                **self.maintenance_event_common(row),
+                # --- bio_ecol_assessment ---
+                vergleich_letzte_untersuchung=self.get_vl(row.comparison_last__REL),
+                datum_letzte_untersuchung=row.date_last_examen,
+                einfluss_hilfsindikatoren=self.get_vl(row.impact_auxiliary_indic__REL),
+                einfluss_aeusserer_aspekt=self.get_vl(row.impact_external_aspect__REL),
+                einfluss_makroinvertebraten=self.get_vl(row.impact_macroinvertebrates__REL),
+                einfluss_wasserpflanzen=self.get_vl(row.impact_water_plants__REL),
+                handlungsbedarf=self.get_vl(row.intervention_demand__REL),
+                immissionsorientierte_berechnung=self.get_vl(row.io_calculation__REL),
+                auslaufrohr_lichte_hoehe=row.outlet_pipe_clear_height,
+                q347=row.q347,
+                relevanzmatrix=self.get_vl(row.relevance_matrix__REL),
+                relevantes_gefaelle=row.relevant_slope,
+                oberflaechengewaesser=row.surface_water_bodies,
+                gewaesserart=self.get_vl(row.type_water_body__REL),
+                gewaesserspezifische_entlastungsfracht_nh4_n_ist=row.water_specific_discharge_freight_nh4_n_current,
+                gewaesserspezifische_entlastungsfracht_nh4_n_ist_optimiert=row.water_specific_discharge_freight_nh4_n_current_opt,
+                gewaesserspezifische_entlastungsfracht_nh4_n_geplant=row.water_specific_discharge_freight_nh4_n_planned,
+            )
+            self.abwasser_session.add(biol_oekol_gesamtbeurteilung)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_fountain(self):
+        query = self.tww_session.query(self.model_classes_tww_od.fountain)
+        if self.filtered:
+            query = query.filter(self.model_classes_tww_od.fountain.obj_id.in_(self.subset_ids))
+        for row in query:
+            brunnen = self.model_classes_interlis.brunnen(
+                **self.vsa_base_common(row, "brunnen"),
+                **self.connection_object_common(row),
+                # --- fountain ---
+                standortname=row.location_name,
+                lage=row.situation_geometry,
+            )
+            self.abwasser_session.add(brunnen)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_param_ca_general(self):
+        query = self.tww_session.query(self.model_classes_tww_od.param_ca_general)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_od.param_ca_general.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            ezg_parameter_allg = self.model_classes_interlis.ezg_parameter_allg(
+                **self.vsa_base_common(row, "ezg_parameter_allg"),
+                **self.surface_runoff_parameters_common(row),
+                # --- param_ca_general ---
+                trockenwetteranfall=row.dry_wheather_flow,
+                fliessweglaenge=row.flow_path_length,
+                fliessweggefaelle=row.flow_path_slope,
+                einwohnergleichwert=row.population_equivalent,
+                flaeche=row.surface_ca,
+            )
+            self.abwasser_session.add(ezg_parameter_allg)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_param_ca_mouse1(self):
+        query = self.tww_session.query(self.model_classes_tww_od.param_ca_mouse1)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_od.param_ca_mouse1.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            ezg_parameter_mouse1 = self.model_classes_interlis.ezg_parameter_mouse1(
+                **self.vsa_base_common(row, "ezg_parameter_mouse1"),
+                **self.surface_runoff_parameters_common(row),
+                # --- param_ca_mouse1 ---
+                trockenwetteranfall=row.dry_wheather_flow,
+                fliessweglaenge=row.flow_path_length,
+                fliessweggefaelle=row.flow_path_slope,
+                einwohnergleichwert=row.population_equivalent,
+                flaeche=row.surface_ca_mouse,
+                nutzungsart=row.usage,
+            )
+            self.abwasser_session.add(ezg_parameter_mouse1)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_individual_surface(self):
+        query = self.tww_session.query(self.model_classes_tww_od.individual_surface)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_od.individual_surface.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            einzelflaeche = self.model_classes_interlis.einzelflaeche(
+                **self.vsa_base_common(row, "einzelflaeche"),
+                **self.connection_object_common(row),
+                # --- individual_surface ---
+                funktion=self.get_vl(row.function__REL),
+                neigung=row.inclination,
+                befestigung=self.get_vl(row.pavement__REL),
+                perimeter=row.perimeter_geometry,
+            )
+            self.abwasser_session.add(einzelflaeche)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_catchment_area(self):
+        query = self.tww_session.query(self.model_classes_tww_od.catchment_area)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_od.catchment_area.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            einzugsgebiet = self.model_classes_interlis.einzugsgebiet(
+                **self.vsa_base_common(row, "einzugsgebiet"),
+                # --- catchment_area ---
+                direkteinleitung_in_gewaesser_ist=self.get_vl(row.direct_discharge_current__REL),
+                direkteinleitung_in_gewaesser_geplant=self.get_vl(
+                    row.direct_discharge_planned__REL
+                ),
+                abflussbeiwert_rw_ist=row.discharge_coefficient_rw_current,
+                abflussbeiwert_rw_geplant=row.discharge_coefficient_rw_planned,
+                abflussbeiwert_sw_ist=row.discharge_coefficient_ww_current,
+                abflussbeiwert_sw_geplant=row.discharge_coefficient_ww_planned,
+                entwaesserungssystem_ist=self.get_vl(row.drainage_system_current__REL),
+                entwaesserungssystem_geplant=self.get_vl(row.drainage_system_planned__REL),
+                bezeichnung=row.identifier,
+                versickerung_ist=self.get_vl(row.infiltration_current__REL),
+                versickerung_geplant=self.get_vl(row.infiltration_planned__REL),
+                perimeter=row.perimeter_geometry,
+                einwohnerdichte_ist=row.population_density_current,
+                einwohnerdichte_geplant=row.population_density_planned,
+                bemerkung=row.remark,
+                retention_ist=self.get_vl(row.retention_current__REL),
+                retention_geplant=self.get_vl(row.retention_planned__REL),
+                abflussbegrenzung_ist=row.runoff_limit_current,
+                abflussbegrenzung_geplant=row.runoff_limit_planned,
+                befestigungsgrad_rw_ist=row.seal_factor_rw_current,
+                befestigungsgrad_rw_geplant=row.seal_factor_rw_planned,
+                befestigungsgrad_sw_ist=row.seal_factor_ww_current,
+                befestigungsgrad_sw_geplant=row.seal_factor_ww_planned,
+                fremdwasseranfall_ist=row.sewer_infiltration_water_production_current,
+                fremdwasseranfall_geplant=row.sewer_infiltration_water_production_planned,
+                flaeche=row.surface_area,
+                schmutzabwasseranfall_ist=row.waste_water_production_current,
+                schmutzabwasseranfall_geplant=row.waste_water_production_planned,
+                abwassernetzelement_rw_istref=self.get_pk(
+                    row.fk_wastewater_networkelement_rw_current__REL
+                ),
+                abwassernetzelement_rw_geplantref=self.get_pk(
+                    row.fk_wastewater_networkelement_rw_planned__REL
+                ),
+                abwassernetzelement_sw_geplantref=self.get_pk(
+                    row.fk_wastewater_networkelement_ww_planned__REL
+                ),
+                abwassernetzelement_sw_istref=self.get_pk(
+                    row.fk_wastewater_networkelement_ww_current__REL
+                ),
+                sbw_rw_geplantref=self.get_pk(row.fk_special_building_rw_planned__REL),
+                sbw_rw_istref=self.get_pk(row.fk_special_building_rw_current__REL),
+                sbw_sw_geplantref=self.get_pk(row.fk_special_building_ww_planned__REL),
+                sbw_sw_istref=self.get_pk(row.fk_special_building_ww_current__REL),
+            )
+            self.abwasser_session.add(einzugsgebiet)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_electric_equipment(self):
+        query = self.tww_session.query(self.model_classes_tww_od.electric_equipment)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_od.electric_equipment.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            elektrischeeinrichtung = self.model_classes_interlis.elektrischeeinrichtung(
+                **self.vsa_base_common(row, "elektrischeeinrichtung"),
+                **self.structure_part_common(row),
+                # --- electric_equipment ---
+                bruttokosten=row.gross_costs,
+                art=self.get_vl(row.kind__REL),
+                ersatzjahr=row.year_of_replacement,
+            )
+            self.abwasser_session.add(elektrischeeinrichtung)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_electromechanical_equipment(self):
+        query = self.tww_session.query(self.model_classes_tww_od.electromechanical_equipment)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_od.electromechanical_equipment.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            elektromechanischeausruestung = self.model_classes_interlis.elektromechanischeausruestung(
+                **self.vsa_base_common(row, "elektromechanischeausruestung"),
+                **self.structure_part_common(row),
+                # --- electromechanical_equipment ---
+                bruttokosten=row.gross_costs,
+                art=self.get_vl(row.kind__REL),
+                ersatzjahr=row.year_of_replacement,
+            )
+            self.abwasser_session.add(elektromechanischeausruestung)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_disposal(self):
+        query = self.tww_session.query(self.model_classes_tww_od.disposal)
+        if self.filtered:
+            query = query.filter(self.model_classes_tww_od.disposal.obj_id.in_(self.subset_ids))
+        for row in query:
+            entsorgung = self.model_classes_interlis.entsorgung(
+                **self.vsa_base_common(row, "entsorgung"),
+                # --- disposal ---
+                entsorgungsintervall_ist=row.disposal_interval_current,
+                entsorgungsintervall_soll=row.disposal_interval_nominal,
+                entsorgungsort_ist=self.get_vl(row.disposal_place_current__REL),
+                entsorgungsort_geplant=self.get_vl(row.disposal_place_planned__REL),
+                volumenabflusslosegrube=row.volume_pit_without_drain,
+                versickerungsanlageref=self.get_pk(row.fk_infiltration_installation__REL),
+                einleitstelleref=self.get_pk(row.fk_discharge_point__REL),
+                abwasserbauwerkref=self.get_pk(row.fk_wastewater_structure__REL),
+            )
+            self.abwasser_session.add(entsorgung)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_drainage_system(self):
+        query = self.tww_session.query(self.model_classes_tww_od.drainage_system)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_od.drainage_system.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            entwaesserungssystem = self.model_classes_interlis.entwaesserungssystem(
+                **self.vsa_base_common(row, "entwaesserungssystem"),
+                **self.zone_common(row),
+                # --- drainage_system ---
+                art=self.get_vl(row.kind__REL),
+                perimeter=row.perimeter_geometry,
+            )
+            self.abwasser_session.add(entwaesserungssystem)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_solids_retention(self):
+        query = self.tww_session.query(self.model_classes_tww_od.solids_retention)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_od.solids_retention.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            feststoffrueckhalt = self.model_classes_interlis.feststoffrueckhalt(
+                **self.vsa_base_common(row, "feststoffrueckhalt"),
+                **self.structure_part_common(row),
+                # --- solids_retention ---
+                dimensionierungswert=row.dimensioning_value,
+                bruttokosten=row.gross_costs,
+                anspringkote=row.overflow_level,
+                art=self.get_vl(row.type__REL),
+                ersatzjahr=row.year_of_replacement,
+            )
+            self.abwasser_session.add(feststoffrueckhalt)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_pump(self):
+        query = self.tww_session.query(self.model_classes_tww_od.pump)
+        if self.filtered:
+            query = query.filter(self.model_classes_tww_od.pump.obj_id.in_(self.subset_ids))
+        for row in query:
+            foerderaggregat = self.model_classes_interlis.foerderaggregat(
+                **self.vsa_base_common(row, "foerderaggregat"),
+                **self.overflow_common(row),
+                # --- pump ---
+                bauart=self.get_vl(row.construction_type__REL),
+                arbeitspunkt=row.operating_point,
+                aufstellungantrieb=self.get_vl(row.placement_of_actuation__REL),
+                aufstellungfoerderaggregat=self.get_vl(row.placement_of_pump__REL),
+                foerderstrommax_einzel=row.pump_flow_max_single,
+                foerderstrommin_einzel=row.pump_flow_min_single,
+                kotestart=row.start_level,
+                kotestop=row.stop_level,
+            )
+            self.abwasser_session.add(foerderaggregat)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_building(self):
+        query = self.tww_session.query(self.model_classes_tww_od.building)
+        if self.filtered:
+            query = query.filter(self.model_classes_tww_od.building.obj_id.in_(self.subset_ids))
+        for row in query:
+            gebaeude = self.model_classes_interlis.gebaeude(
+                **self.vsa_base_common(row, "gebaeude"),
+                **self.connection_object_common(row),
+                # --- building ---
+                hausnummer=row.house_number,
+                standortname=row.location_name,
+                perimeter=row.perimeter_geometry,
+                referenzpunkt=row.reference_point_geometry,
+            )
+            self.abwasser_session.add(gebaeude)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_building_group(self):
+        query = self.tww_session.query(self.model_classes_tww_od.building_group)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_od.building_group.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            gebaeudegruppe = self.model_classes_interlis.gebaeudegruppe(
+                **self.vsa_base_common(row, "gebaeudegruppe"),
+                # --- building_group ---
+                kinositzplaetze=row.movie_theater_seats,
+                kirchesitzplaetze=row.church_seats,
+                campingflaeche=row.camping_area,
+                campinguebernachtungen=row.camping_lodgings,
+                anschlusspflicht=self.get_vl(row.connecting_obligation__REL),
+                anschlussara=self.get_vl(row.connection_wwtp__REL),
+                gewerbebeschaeftigte=row.craft_employees,
+                schlafsaalbetten=row.dorm_beds,
+                schlafsaaluebernachtungen=row.dorm_overnight_stays,
+                entwaesserungsplan=self.get_vl(row.drainage_map__REL),
+                trinkwassernetzanschluss=self.get_vl(row.drinking_water_network__REL),
+                trinkwasserandere=self.get_vl(row.drinking_water_others__REL),
+                stromanschluss=self.get_vl(row.electric_connection__REL),
+                veranstaltungbesucher=row.event_visitors,
+                funktion=self.get_vl(row.function__REL),
+                turnhalleflaeche=row.gym_area,
+                ferienuebernachtungen=row.holiday_accomodation,
+                spitalbetten=row.hospital_beds,
+                hotelbetten=row.hotel_beds,
+                hoteluebernachtungen=row.hotel_overnight_stays,
+                bezeichnung=row.identifier,
+                anderenutzungegw=row.other_usage_population_equivalent,
+                anderenutzungart=row.other_usage_type,
+                einwohnerwerte=row.population_equivalent,
+                bemerkung=row.remark,
+                sanierungsdatum=row.renovation_date,
+                sanierungsbedarf=self.get_vl(row.renovation_necessity__REL),
+                raststaettesitzplaetze=row.restaurant_seats,
+                restaurantsitzplaetze_saalgarten=row.restaurant_seats_hall_garden,
+                restaurantsitzplaetze_permanent=row.restaurant_seats_permanent,
+                sanierungskonzept=row.restructuring_concept,
+                schuleschueler=row.school_students,
+                lage=row.situation_geometry,
+                # entsorgungref=self.get_pk(row.fk_disposal__REL), # TODO check why not available
+                massnahmeref=self.get_pk(row.fk_measure__REL),
+            )
+            self.abwasser_session.add(gebaeudegruppe)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_building_group_baugwr(self):
+        query = self.tww_session.query(self.model_classes_tww_od.building_group_baugwr)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_od.building_group_baugwr.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            gebaeudegruppe_baugwr = self.model_classes_interlis.gebaeudegruppe_baugwr(
+                **self.vsa_base_common(row, "gebaeudegruppe_baugwr"),
+                # --- building_group_baugwr ---
+                egid=row.egid,
+                gebaeudegrupperef=self.get_pk(row.fk_building_group__REL),
+            )
+            self.abwasser_session.add(gebaeudegruppe_baugwr)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_catchment_area_totals(self):
+        query = self.tww_session.query(self.model_classes_tww_od.catchment_area_totals)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_od.catchment_area_totals.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            gesamteinzugsgebiet = self.model_classes_interlis.gesamteinzugsgebiet(
+                **self.vsa_base_common(row, "gesamteinzugsgebiet"),
+                # --- catchment_area_totals ---
+                entlastungsfracht_nh4_n=row.discharge_freight_nh4_n,
+                entlastungsanteil_nh4_n=row.discharge_proportion_nh4_n,
+                bezeichnung=row.identifier,
+                einwohner=row.population,
+                einwohner_dim=row.population_dim,
+                fremdwasseranfall=row.sewer_infiltration_water,
+                flaeche=row.surface_area,
+                flaeche_dim=row.surface_dim,
+                flaeche_bef=row.surface_imp,
+                flaeche_bef_dim=row.surface_imp_dim,
+                flaeche_red=row.surface_red,
+                flaeche_red_dim=row.surface_red_dim,
+                schmutzabwasseranfall=row.waste_water_production,
+                einleitstelleref=self.get_pk(row.fk_discharge_point__REL),
+                hydr_kennwerteref=self.get_pk(row.fk_hydraulic_char_data__REL),
+            )
+            self.abwasser_session.add(gesamteinzugsgebiet)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_hq_relation(self):
+        query = self.tww_session.query(self.model_classes_tww_od.hq_relation)
+        if self.filtered:
+            query = query.filter(self.model_classes_tww_od.hq_relation.obj_id.in_(self.subset_ids))
+        for row in query:
+            hq_relation = self.model_classes_interlis.hq_relation(
+                **self.vsa_base_common(row, "hq_relation"),
+                # --- hq_relation ---
+                hoehe=row.altitude,
+                abfluss=row.flow,
+                zufluss=row.flow_from,
+                ueberlaufcharakteristikref=self.get_pk(row.fk_overflow_char__REL),
+            )
+            self.abwasser_session.add(hq_relation)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_hydr_geom_relation(self):
+        query = self.tww_session.query(self.model_classes_tww_od.hydr_geom_relation)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_od.hydr_geom_relation.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            hydr_geomrelation = self.model_classes_interlis.hydr_geomrelation(
+                **self.vsa_base_common(row, "hydr_geomrelation"),
+                # --- hydr_geom_relation ---
+                wassertiefe=row.water_depth,
+                wasseroberflaeche=row.water_surface,
+                benetztequerschnittsflaeche=row.wet_cross_section_area,
+                hydr_geometrieref=self.get_pk(row.fk_hydr_geometry__REL),
+            )
+            self.abwasser_session.add(hydr_geomrelation)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_hydr_geometry(self):
+        query = self.tww_session.query(self.model_classes_tww_od.hydr_geometry)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_od.hydr_geometry.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            hydr_geometrie = self.model_classes_interlis.hydr_geometrie(
+                **self.vsa_base_common(row, "hydr_geometrie"),
+                # --- hydr_geometry ---
+                bemerkung=row.remark,
+                stauraum=row.storage_volume,
+                nutzinhalt_fangteil=row.usable_capacity_storage,
+                nutzinhalt_klaerteil=row.usable_capacity_treatment,
+                nutzinhalt=row.utilisable_capacity,
+                volumen_pumpensumpf=row.volume_pump_sump,
+            )
+            self.abwasser_session.add(hydr_geometrie)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_hydraulic_char_data(self):
+        query = self.tww_session.query(self.model_classes_tww_od.hydraulic_char_data)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_od.hydraulic_char_data.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            hydr_kennwerte = self.model_classes_interlis.hydr_kennwerte(
+                **self.vsa_base_common(row, "hydr_kennwerte"),
+                # --- hydraulic_char_data ---
+                qan=row.qon,
+                bemerkung=row.remark,
+                status=self.get_vl_code(
+                    self.model_classes_tww_vl.hydraulic_char_data_status, row.astatus
+                ),
+                aggregatezahl=row.aggregate_number,
+                foerderhoehe_geodaetisch=row.delivery_height_geodaetic,
+                bezeichnung=row.identifier,
+                is_overflowing=self.get_vl_code(
+                    self.model_classes_tww_vl.hydraulic_char_data_is_overflowing, row.springt_an
+                ),
+                hauptwehrart=self.get_vl(row.main_weir_kind__REL),
+                mehrbelastung=row.overcharge,
+                ueberlaufdauer=row.overflow_duration,
+                ueberlauffracht=row.overflow_freight,
+                ueberlaufhaeufigkeit=row.overflow_frequency,
+                ueberlaufmenge=row.overflow_volume,
+                pumpenregime=self.get_vl(row.pump_characteristics__REL),
+                foerderstrommax=row.pump_flow_max,
+                foerderstrommin=row.pump_flow_min,
+                qab=row.q_discharge,
+                abwasserknotenref=self.get_pk(row.fk_wastewater_node__REL),
+                ueberlaufcharakteristikref=self.get_pk(row.fk_overflow_char__REL),
+                primaerrichtungref=self.get_pk(row.fk_primary_direction__REL),
+            )
+            self.abwasser_session.add(hydr_kennwerte)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_small_treatment_plant(self):
+        query = self.tww_session.query(self.model_classes_tww_od.small_treatment_plant)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_od.small_treatment_plant.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            klara = self.model_classes_interlis.klara(
+                **self.vsa_base_common(row, "klara"),
+                **self.wastewater_structure_common(row),
+                # --- small_treatment_plant ---
+                bewilligungsnummer=row.approval_number,
+                funktion=self.get_vl(row.function__REL),
+                anlagenummer=row.installation_number,
+                fernueberwachung=self.get_vl(row.remote_monitoring__REL),
+            )
+            self.abwasser_session.add(klara)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_farm(self):
+        query = self.tww_session.query(self.model_classes_tww_od.farm)
+        if self.filtered:
+            query = query.filter(self.model_classes_tww_od.farm.obj_id.in_(self.subset_ids))
+        for row in query:
+            landwirtschaftsbetrieb = self.model_classes_interlis.landwirtschaftsbetrieb(
+                **self.vsa_base_common(row, "landwirtschaftsbetrieb"),
+                # --- farm ---
+                nutzflaechelandwirtschaft=row.agriculture_arable_surface,
+                guellegrubebemerkung=row.cesspit_comment,
+                guellegrubevolumen=self.get_vl(row.cesspit_volume__REL),
+                guellegrubevolumen_ist=row.cesspit_volume_current,
+                guellegrubevolumen_soll=row.cesspit_volume_nominal,
+                guellegrubevolumen_sw_behandelt=row.cesspit_volume_ww_treated,
+                guellegrubebewilligungsjahr=row.cesspit_year_of_approval,
+                konformitaet=self.get_vl(row.conformity__REL),
+                fortbestand=self.get_vl(row.continuance__REL),
+                fortbestandbemerkung=row.continuance_comment,
+                mistplatzflaeche_ist=row.dung_heap_area_current,
+                mistplatzflaeche_soll=row.dung_heap_area_nominal,
+                bemerkung=row.remark,
+                hirtenhuettebemerkung=row.shepherds_hut_comment,
+                hirtenhuetteegw=row.shepherds_hut_population_equivalent,
+                hirtenhuetteabwasser=self.get_vl(row.shepherds_hut_wastewater__REL),
+                stallvieh=self.get_vl(row.stable_cattle__REL),
+                stallgrossvieheinheit_fremdvieh=row.stable_cattle_equivalent_other_cattle,
+                stallgrossvieheinheit_eigenesvieh=row.stable_cattle_equivalent_own_cattle,
+                gebaeudegrupperef=self.get_pk(row.fk_building_group__REL),
+            )
+            self.abwasser_session.add(landwirtschaftsbetrieb)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_leapingweir(self):
+        query = self.tww_session.query(self.model_classes_tww_od.leapingweir)
+        if self.filtered:
+            query = query.filter(self.model_classes_tww_od.leapingweir.obj_id.in_(self.subset_ids))
+        for row in query:
+            leapingwehr = self.model_classes_interlis.leapingwehr(
+                **self.vsa_base_common(row, "leapingwehr"),
+                **self.overflow_common(row),
+                # --- leapingweir ---
+                laenge=row.length,
+                oeffnungsform=self.get_vl(row.opening_shape__REL),
+                breite=row.width,
+            )
+            self.abwasser_session.add(leapingwehr)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_measure(self):
+        query = self.tww_session.query(self.model_classes_tww_od.measure)
+        if self.filtered:
+            query = query.filter(self.model_classes_tww_od.measure.obj_id.in_(self.subset_ids))
+        for row in query:
+            massnahme = self.model_classes_interlis.massnahme(
+                **self.vsa_base_common(row, "massnahme"),
+                # --- measure ---
+                datum_eingang=row.date_entry,
+                beschreibung=row.description,
+                kategorie=self.get_vl(row.category__REL),
+                bezeichnung=row.identifier,
+                handlungsbedarf=row.intervention_demand,
+                linie=row.line_geometry,
+                verweis=row.link,
+                perimeter=row.perimeter_geometry,
+                prioritaet=self.get_vl(row.priority__REL),
+                bemerkung=row.remark,
+                astatus=self.get_vl(row.status__REL),
+                symbolpos=row.symbolpos_geometry,
+                gesamtkosten=row.total_cost,
+                jahr_umsetzung_effektiv=row.year_implementation_effective,
+                jahr_umsetzung_geplant=row.year_implementation_planned,
+                traegerschaftref=row.fk_responsible_entity,
+                verantwortlich_ausloesungref=row.fk_responsible_start,
+            )
+            self.abwasser_session.add(massnahme)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_mechanical_pretreatment(self):
+        query = self.tww_session.query(self.model_classes_tww_od.mechanical_pretreatment)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_od.mechanical_pretreatment.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            mechanischevorreinigung = self.model_classes_interlis.mechanischevorreinigung(
+                **self.vsa_base_common(row, "mechanischevorreinigung"),
+                # --- mechanical_pretreatment ---
+                bezeichnung=row.identifier,
+                art=self.get_vl(row.kind__REL),
+                bemerkung=row.remark,
+                abwasserbauwerkref=self.get_pk(row.fk_wastewater_structure__REL),
+            )
+            self.abwasser_session.add(mechanischevorreinigung)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_measuring_device(self):
+        query = self.tww_session.query(self.model_classes_tww_od.measuring_device)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_od.measuring_device.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            messgeraet = self.model_classes_interlis.messgeraet(
+                **self.vsa_base_common(row, "messgeraet"),
+                # --- measuring_device ---
+                seriennummer=row.serial_number,
+                fabrikat=row.brand,
+                bezeichnung=row.identifier,
+                art=self.get_vl(row.kind__REL),
+                bemerkung=row.remark,
+                messstelleref=self.get_pk(row.fk_measuring_point__REL),
+            )
+            self.abwasser_session.add(messgeraet)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_measurement_series(self):
+        query = self.tww_session.query(self.model_classes_tww_od.measurement_series)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_od.measurement_series.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            messreihe = self.model_classes_interlis.messreihe(
+                **self.vsa_base_common(row, "messreihe"),
+                # --- measurement_series ---
+                dimension=row.dimension,
+                bezeichnung=row.identifier,
+                art=self.get_vl(row.kind__REL),
+                bemerkung=row.remark,
+                messstelleref=self.get_pk(row.fk_measuring_point__REL),
+                abwassernetzelementref=self.get_pk(row.fk_wastewater_networkelement__REL),
+            )
+            self.abwasser_session.add(messreihe)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_measurement_result(self):
+        query = self.tww_session.query(self.model_classes_tww_od.measurement_result)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_od.measurement_result.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            messresultat = self.model_classes_interlis.messresultat(
+                **self.vsa_base_common(row, "messresultat"),
+                # --- measurement_result ---
+                bezeichnung=row.identifier,
+                messart=self.get_vl(row.measurement_type__REL),
+                messdauer=row.measuring_duration,
+                bemerkung=row.remark,
+                zeit=row.time,
+                wert=row.value,
+                messgeraetref=self.get_pk(row.fk_measuring_device__REL),
+                messreiheref=self.get_pk(row.fk_measurement_series__REL),
+            )
+            self.abwasser_session.add(messresultat)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_measuring_point(self):
+        query = self.tww_session.query(self.model_classes_tww_od.measuring_point)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_od.measuring_point.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            messstelle = self.model_classes_interlis.messstelle(
+                **self.vsa_base_common(row, "messstelle"),
+                # --- measuring_point ---
+                zweck=row.purpose,
+                bemerkung=row.remark,
+                staukoerper=row.damming_device,
+                bezeichnung=row.identifier,
+                art=row.kind,
+                lage=row.situation_geometry,
+                betreiberref=row.fk_operator,
+                abwasserreinigungsanlageref=self.get_pk(row.fk_waste_water_treatment_plant__REL),
+                abwasserbauwerkref=self.get_pk(row.fk_wastewater_structure__REL),
+            )
+            self.abwasser_session.add(messstelle)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_mutation(self):
+        query = self.tww_session.query(self.model_classes_tww_od.mutation)
+        if self.filtered:
+            query = query.filter(self.model_classes_tww_od.mutation.obj_id.in_(self.subset_ids))
+        for row in query:
+            mutation = self.model_classes_interlis.mutation(
+                **self.vsa_base_common(row, "mutation"),
+                # --- mutation ---
+                attribut=row.attribute,
+                klasse=row.classname,
+                mutationsdatum=row.date_mutation,
+                aufnahmedatum=row.date_time,
+                art=self.get_vl(row.kind__REL),
+                letzter_wert=row.last_value,
+                objekt=row.object,
+                aufnehmer=row.recorded_by,
+                bemerkung=row.remark,
+                systembenutzer=row.system_user,
+            )
+            self.abwasser_session.add(mutation)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_reservoir(self):
+        query = self.tww_session.query(self.model_classes_tww_od.reservoir)
+        if self.filtered:
+            query = query.filter(self.model_classes_tww_od.reservoir.obj_id.in_(self.subset_ids))
+        for row in query:
+            reservoir = self.model_classes_interlis.reservoir(
+                **self.vsa_base_common(row, "reservoir"),
+                **self.connection_object_common(row),
+                # --- reservoir ---
+                standortname=row.location_name,
+                lage=row.situation_geometry,
+            )
+            self.abwasser_session.add(reservoir)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_retention_body(self):
+        query = self.tww_session.query(self.model_classes_tww_od.control_center)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_od.control_center.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            retentionskoerper = self.model_classes_interlis.retentionskoerper(
+                **self.vsa_base_common(row, "retentionskoerper"),
+                # --- retention_body ---
+                bezeichnung=row.identifier,
+                art=self.get_vl(row.kind__REL),
+                bemerkung=row.remark,
+                retention_volumen=row.volume,
+                versickerungsanlageref=self.get_pk(row.fk_infiltration_installation__REL),
+            )
+            self.abwasser_session.add(retentionskoerper)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_profile_geometry(self):
+        query = self.tww_session.query(self.model_classes_tww_od.control_center)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_od.control_center.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            rohrprofil_geometrie = self.model_classes_interlis.rohrprofil_geometrie(
+                **self.vsa_base_common(row, "rohrprofil_geometrie"),
+                # --- profile_geometry ---
+                reihenfolge=row.sequence,
+                x=row.x,
+                y=row.y,
+                rohrprofilref=self.get_pk(row.fk_pipe_profile__REL),
+            )
+            self.abwasser_session.add(rohrprofil_geometrie)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_backflow_prevention(self):
+        query = self.tww_session.query(self.model_classes_tww_od.control_center)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_od.control_center.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            rueckstausicherung = self.model_classes_interlis.rueckstausicherung(
+                **self.vsa_base_common(row, "rueckstausicherung"),
+                **self.structure_part_common(row),
+                # --- backflow_prevention ---
+                bruttokosten=row.gross_costs,
+                art=self.get_vl(row.kind__REL),
+                ersatzjahr=row.year_of_replacement,
+                fk_throttle_shut_off_unit=self.get_pk(row.absperr_drosselorganref),
+                fk_pump=self.get_pk(row.foerderaggregatref),
+            )
+            self.abwasser_session.add(rueckstausicherung)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_log_card(self):
+        query = self.tww_session.query(self.model_classes_tww_od.control_center)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_od.control_center.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            stammkarte = self.model_classes_interlis.stammkarte(
+                **self.vsa_base_common(row, "stammkarte"),
+                # --- log_card ---
+                steuerung_fernwirkung=self.get_vl(row.control_remote_control__REL),
+                informationsquelle=self.get_vl(row.information_source__REL),
+                sachbearbeiter=row.person_in_charge,
+                bemerkung=row.remark,
+                paa_knotenref=self.get_pk(row.fk_pwwf_wastewater_node__REL),
+                bueroref=row.fk_agency,
+                standortgemeinderef=row.fk_location_municipality,
+            )
+            self.abwasser_session.add(stammkarte)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_prank_weir(self):
+        query = self.tww_session.query(self.model_classes_tww_od.control_center)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_od.control_center.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            streichwehr = self.model_classes_interlis.streichwehr(
+                **self.vsa_base_common(row, "streichwehr"),
+                **self.overflow_common(row),
+                # --- prank_weir ---
+                hydrueberfalllaenge=row.hydraulic_overflow_length,
+                kotemax=row.level_max,
+                kotemin=row.level_min,
+                ueberfallkante=self.get_vl(row.weir_edge__REL),
+                wehr_art=self.get_vl(row.weir_kind__REL),
+            )
+            self.abwasser_session.add(streichwehr)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_overflow_char(self):
+        query = self.tww_session.query(self.model_classes_tww_od.control_center)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_od.control_center.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            ueberlaufcharakteristik = self.model_classes_interlis.ueberlaufcharakteristik(
+                **self.vsa_base_common(row, "ueberlaufcharakteristik"),
+                # --- overflow_char ---
+                bezeichnung=row.identifier,
+                kennlinie_typ=self.get_vl(row.kind_overflow_char__REL),
+                bemerkung=row.remark,
+            )
+            self.abwasser_session.add(ueberlaufcharakteristik)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_maintenance(self):
+        query = self.tww_session.query(self.model_classes_tww_od.control_center)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_od.control_center.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            unterhalt = self.model_classes_interlis.unterhalt(
+                **self.vsa_base_common(row, "unterhalt"),
+                **self.maintenance_event_common(row),
+                # --- maintenance ---
+                art=self.get_vl(row.kind__REL),
+            )
+            self.abwasser_session.add(unterhalt)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_infiltration_zone(self):
+        query = self.tww_session.query(self.model_classes_tww_od.control_center)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_od.control_center.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            versickerungsbereich = self.model_classes_interlis.versickerungsbereich(
+                **self.vsa_base_common(row, "versickerungsbereich"),
+                **self.zone_common(row),
+                # --- infiltration_zone ---
+                art=self.get_vl(row.kind__REL),
+                versickerungsmoeglichkeit=self.get_vl(row.infiltration_capacity__REL),
+                perimeter=row.perimeter_geometry,
+            )
+            self.abwasser_session.add(versickerungsbereich)
             print(".", end="")
         logger.info("done")
         self.abwasser_session.flush()
