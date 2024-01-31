@@ -1,14 +1,14 @@
 ------ this file generates the tww is_dictionary (Modul dss(2020)) in en on TEKSI
 ------ For questions etc. please contact Stefan Burckhardt stefan.burckhardt@sjib.ch
------- version 11.12.2023 15:54:17
+------ version 12.12.2023 13:36:39
 ------ with 3D coordinates
 
-DROP VIEW IF EXISTS tww_sys.dictionary_value_list;
 
-CREATE VIEW tww_sys.dictionary_value_list AS
-  SELECT p.relname AS vl_name, vl.*
-  FROM tww_vl.value_list_base vl, pg_class p
-  WHERE vl.tableoid = p.oid;
+
+
+
+
+
 
 
 CREATE TABLE tww_sys.dictionary_od_table

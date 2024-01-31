@@ -15,15 +15,15 @@ ARG RUN_TEST=False
 RUN apt-get update && apt-get install -y python3 python3-pip python3-venv libpq-dev wget exiftool bc && apt-get clean
 
 # Add source
-ADD ./datamodel /src
+ADD . /src
 WORKDIR /src
 
 # Python deps
 ENV VIRTUAL_ENV=/opt/venv
 RUN python3 -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
-RUN pip install -r requirements.txt
-RUN if [ "${RUN_TEST}" = "True" ]; then pip install -r requirements-test.txt; fi
+RUN pip install -r datamodel/requirements.txt
+RUN if [ "${RUN_TEST}" = "True" ]; then pip install -r datamodel/requirements-test.txt; fi
 
 
 # Configure the postgres connections
@@ -31,11 +31,11 @@ RUN printf '[postgres]\ndbname=postgres\nuser=postgres\n' >> $(pg_config --sysco
 RUN printf '[pg_teksi_wastewater]\ndbname=teksi_wastewater\nuser=postgres\n' >> $(pg_config --sysconfdir)/pg_service.conf
 RUN printf '[pg_teksi_wastewater_demo]\ndbname=teksi_wastewater_demo\nuser=postgres\n' >> $(pg_config --sysconfdir)/pg_service.conf
 
-RUN chmod +x /src/.docker/init_db.sh
-ENV PATH="/src/.docker:${PATH}"
+RUN chmod +x /src/datamodel/.docker/init_db.sh
+ENV PATH="/src/datamodel/.docker:${PATH}"
 
 # Execute the main script on database initialization (zzz to be after postgis init)
-RUN if [ "${AUTO_INIT}" = "True" ]; then ln -s /src/.docker/init_db.sh /docker-entrypoint-initdb.d/zzz_init_db.sh; fi
+RUN if [ "${AUTO_INIT}" = "True" ]; then ln -s /src/datamodel/.docker/init_db.sh /docker-entrypoint-initdb.d/zzz_init_db.sh; fi
 
 # Some defaults
 ENV POSTGRES_PASSWORD=postgres

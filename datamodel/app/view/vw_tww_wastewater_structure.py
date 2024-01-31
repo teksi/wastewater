@@ -74,8 +74,8 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
         , ws._bottom_label
         , ws._input_label
         , ws._output_label
-        , ws._usage_current AS _channel_usage_current
-        , ws._function_hierarchic AS _channel_function_hierarchic
+        , wn._usage_current AS _channel_usage_current
+        , wn._function_hierarchic AS _channel_function_hierarchic
 
         FROM tww_od.wastewater_structure ws
         LEFT JOIN tww_od.cover main_co ON main_co.obj_id = ws.fk_main_cover
@@ -125,8 +125,6 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
                 "_bottom_label",
                 "_input_label",
                 "_output_label",
-                "_usage_current",
-                "_function_hierarchic",
                 "fk_main_cover",
                 "fk_main_wastewater_node",
                 "detail_geometry3d_geometry",
@@ -289,8 +287,6 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
                 "_bottom_label",
                 "_input_label",
                 "_output_label",
-                "_usage_current",
-                "_function_hierarchic",
                 "fk_main_cover",
                 "fk_main_wastewater_node",
                 "detail_geometry3d_geometry",
@@ -543,8 +539,6 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             skip_columns=[
                 "detail_geometry3d_geometry",
                 "last_modification",
-                "_usage_current",
-                "_function_hierarchic",
                 "_label",
                 "_cover_label",
                 "_bottom_label",

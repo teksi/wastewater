@@ -30,7 +30,7 @@ LEFT JOIN tww_od.wastewater_node wn on wn.obj_id = we.obj_id
 LEFT JOIN tww_od.cover co on ws.fk_main_cover = co.obj_id
 LEFT JOIN tww_vl.manhole_function mf on ma.function = mf.code
 LEFT JOIN tww_vl.wastewater_structure_status ws_st on ws_st.code=ws.status
-LEFT JOIN tww_vl.channel_function_hierarchic ch_fh on ch_fh.code=ws._function_hierarchic
+LEFT JOIN tww_vl.channel_function_hierarchic ch_fh on ch_fh.code=wn._function_hierarchic
 WHERE wn.obj_id IS NOT NULL
 AND ws_st.vsacode IN (6530, 6533, 8493, 6529, 6526, 7959)
 
@@ -63,7 +63,7 @@ LEFT JOIN tww_od.wastewater_node wn on wn.obj_id = we.obj_id
 LEFT JOIN tww_od.cover co on ws.fk_main_cover = co.obj_id
 LEFT JOIN tww_vl.special_structure_function ss_fu on ss_fu.code=ss.function
 LEFT JOIN tww_vl.wastewater_structure_status ws_st on ws_st.code=ws.status
-LEFT JOIN tww_vl.channel_function_hierarchic ch_fh on ch_fh.code=ws._function_hierarchic
+LEFT JOIN tww_vl.channel_function_hierarchic ch_fh on ch_fh.code=wn._function_hierarchic
 WHERE wn.obj_id IS NOT NULL
 AND ws_st.vsacode IN (6530, 6533, 8493, 6529, 6526, 7959)
 AND ss_fu.vsacode NOT IN ( -- must be the same list in vw_swmm_storages

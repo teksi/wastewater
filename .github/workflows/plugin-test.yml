@@ -1,0 +1,57 @@
+name: 🪲 Plugin | Tests
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - datamodel/**
+      - plugin/**
+      - '.github/workflows/plugin-test.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - datamodel/**
+      - plugin/**
+      - '.github/workflows/plugin-test.yml'
+  workflow_dispatch:
+
+
+jobs:
+  plugin-tests:
+    name: Run unit tests on plugin
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        qgis_version: [3.28-jammy, latest]
+    env:
+      QGIS_TEST_VERSION: ${{ matrix.qgis_version }}
+      COMPOSE_PROFILES: qgis
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Package PyPI Packages
+        run: sudo ./plugin/scripts/package-pip-packages.sh
+
+      - name: Download Interlis libs
+        run: sudo ./plugin/scripts/download-interlis-libs.sh
+
+      - name: Docker build
+        run: docker compose up -d --build
+
+      - name: Test on QGIS
+        run: docker-compose run qgis /usr/src/plugin/.docker/run-docker-tests.sh
+
+      - name: docker logs
+        #if: failure()
+        run: docker compose logs db

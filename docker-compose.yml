@@ -8,10 +8,24 @@ services:
     image: teksi/tww:${DOCKER_TAG:-unstable}
     working_dir: /src
     volumes:
-      - ./datamodel:/src
+      - .:/src
     ports:
       # making the postgres database accessible for debugging
       - ${TWW_PG_PORT:-5432}:${TWW_PG_PORT:-5432}
+
+  qgis:
+    build:
+      context: .
+      dockerfile: plugin/.docker/Dockerfile
+      args:
+        QGIS_TEST_VERSION: ${QGIS_TEST_VERSION:-latest}
+    tty: true
+    volumes:
+      - .:/usr/src
+    links:
+      - db
+    profiles:
+      - qgis
 
   schemaspy:
     image: schemaspy/schemaspy
