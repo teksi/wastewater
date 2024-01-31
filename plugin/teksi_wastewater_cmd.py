@@ -7,6 +7,9 @@ from teksi_wastewater.interlis.interlis_importer_exporter import (
     InterlisImporterExporter,
     InterlisImporterExporterError,
 )
+from teksi_wastewater.interlis.processing_algs.extractlabels_interlis import (
+    ExtractlabelsInterlisAlgorithm,
+)
 
 QgsApplication.setPrefixPath("/usr", True)
 
@@ -33,7 +36,20 @@ class TeksiWastewaterCmd:
         subparser.add_argument(
             "--xtf_file",
             help="XTF input file",
+            required=True,
         )
+        subparser.add_argument(
+            "--show_selection_dialog",
+            help="Show the object selection dialog at import time",
+            action="store_true",
+        )
+        subparser.add_argument(
+            "--logs_next_to_file",
+            help="Put log files next to XTF import file",
+            action="store_true",
+        )
+
+        self._add_postgres_connection_args(subparser)
 
     def _add_subparser_interlis_export(self, subparsers):
         subparser = subparsers.add_parser(
@@ -47,8 +63,78 @@ class TeksiWastewaterCmd:
             help="if provided, limits the export to networkelements that are provided in the selection (comma separated list of ids)",
         )
         subparser.add_argument(
-            "--labels_file",
-            help="if provided, includes the label positions in the export (the file should be the results of the provided `tww:extractlabels_interlis` QGIS algorithm as geojson)",
+            "--export_model",
+            default=config.MODEL_NAME_DSS,
+            choices=[
+                config.MODEL_NAME_SIA405_ABWASSER,
+                config.MODEL_NAME_DSS,
+                config.MODEL_NAME_VSA_KEK,
+            ],
+            help="Model to export (default:  %(default)s)",
+        )
+        subparser.add_argument(
+            "--logs_next_to_file",
+            help="Put log files next to XTF output file",
+            action="store_true",
+        )
+
+        subparser.add_argument(
+            "--label_scale_pipeline_registry_1_1000",
+            help="Export labels in scale 1:1'000, can be combined with other scales (Leitungskataster/Cadastre des conduites souterraines)",
+            action="store_true",
+        )
+        subparser.add_argument(
+            "--label_scale_network_plan_1_500",
+            help="Export labels in scale 1:500, can be combined with other scales (Werkplan/Plan de reseau)",
+            action="store_true",
+        )
+        subparser.add_argument(
+            "--label_scale_overviewmap_1_10000",
+            help="Export labels in scale 1:10'000, can be combined with other scales (Uebersichtsplan/Plan d'ensemble)",
+            action="store_true",
+        )
+        subparser.add_argument(
+            "--label_scale_overviewmap_1_5000",
+            help="Export labels in scale 1:5'000, can be combined with other scales (Uebersichtsplan/Plan d'ensemble)",
+            action="store_true",
+        )
+        subparser.add_argument(
+            "--label_scale_overviewmap_1_2000",
+            help="Export labels in scale 1:2'000, can be combined with other scales (Uebersichtsplan/Plan d'ensemble)",
+            action="store_true",
+        )
+
+        subparser.add_argument(
+            "--selected_ids",
+            help="If provided, limits the export to networkelements that are provided in the selection (comma separated list of ids)",
+        )
+
+        self._add_postgres_connection_args(subparser)
+
+    def _add_postgres_connection_args(self, subparser):
+        subparser.add_argument(
+            "--pgservice",
+            help="Postgres service name",
+        )
+        subparser.add_argument(
+            "--pghost",
+            help="Postgres host",
+        )
+        subparser.add_argument(
+            "--pgport",
+            help="Postgres port",
+        )
+        subparser.add_argument(
+            "--pgdatabase",
+            help="Postgres database",
+        )
+        subparser.add_argument(
+            "--pguser",
+            help="Postgres user",
+        )
+        subparser.add_argument(
+            "--pgpass",
+            help="Postgres password",
         )
 
     def parse_arguments(
@@ -68,12 +154,23 @@ class TeksiWastewaterCmd:
     def execute_interlis_import(self):
         qgs = QgsApplication([], False)
 
+        config.PGSERVICE = self.args.pgservice
+        config.PGHOST = self.args.pghost
+        config.PGPORT = self.args.pgport
+        config.PGDATABASE = self.args.pgdatabase
+        config.PGUSER = self.args.pguser
+        config.PGPASS = self.args.pgpass
+
         interlisImporterExporter = InterlisImporterExporter()
 
         try:
-            interlisImporterExporter.interlis_import(xtf_file_input=self.args.xtf_file)
+            interlisImporterExporter.interlis_import(
+                xtf_file_input=self.args.xtf_file,
+                show_selection_dialog=self.args.show_selection_dialog,
+                logs_next_to_file=self.args.logs_next_to_file,
+            )
 
-            print(f"Data successfully imported from {self.args.xtf_file}")
+            print(f"\nData successfully imported from {self.args.xtf_file}")
 
         except InterlisImporterExporterError as exception:
             print(f"Export error: {exception.error}", file=sys.stderr)
@@ -91,21 +188,41 @@ class TeksiWastewaterCmd:
     def execute_interlis_export(self):
         qgs = QgsApplication([], False)
 
-        config.PGSERVICE = "pg_tww"
-        # config.PGHOST = pg_layer.dataProvider().uri().host()
-        # config.PGPORT = pg_layer.dataProvider().uri().port()
-        # config.PGDATABASE = pg_layer.dataProvider().uri().database()
-        # config.PGUSER = pg_layer.dataProvider().uri().username()
-        # config.PGPASS = pg_layer.dataProvider().uri().password()
+        config.PGSERVICE = self.args.pgservice
+        config.PGHOST = self.args.pghost
+        config.PGPORT = self.args.pgport
+        config.PGDATABASE = self.args.pgdatabase
+        config.PGUSER = self.args.pguser
+        config.PGPASS = self.args.pgpass
+
+        label_scales = []
+        if self.args.label_scale_pipeline_registry_1_1000:
+            label_scales.append(
+                ExtractlabelsInterlisAlgorithm.AVAILABLE_SCALE_PIPELINE_REGISTRY_1_1000
+            )
+        if self.args.label_scale_network_plan_1_500:
+            label_scales.append(ExtractlabelsInterlisAlgorithm.AVAILABLE_SCALE_NETWORK_PLAN_1_500)
+        if self.args.label_scale_overviewmap_1_10000:
+            label_scales.append(ExtractlabelsInterlisAlgorithm.AVAILABLE_SCALE_OVERVIEWMAP_1_10000)
+        if self.args.label_scale_overviewmap_1_5000:
+            label_scales.append(ExtractlabelsInterlisAlgorithm.AVAILABLE_SCALE_OVERVIEWMAP_1_5000)
+        if self.args.label_scale_overviewmap_1_2000:
+            label_scales.append(ExtractlabelsInterlisAlgorithm.AVAILABLE_SCALE_OVERVIEWMAP_1_2000)
+
+        selected_ids = []
+        if self.args.selected_ids:
+            selected_ids = self.args.selected_ids.split(",")
 
         interlisImporterExporter = InterlisImporterExporter()
         try:
             interlisImporterExporter.interlis_export(
                 xtf_file_output=self.args.xtf_file,
-                export_models=[config.MODEL_NAME_DSS],
-                logs_next_to_file=True,
+                export_models=[self.args.export_model],
+                logs_next_to_file=self.args.logs_next_to_file,
+                selected_labels_scales_indices=label_scales,
+                selected_ids=selected_ids,
             )
-            print(f"Data successfully exported to {self.args.xtf_file}")
+            print(f"\nData successfully exported to {self.args.xtf_file}")
 
         except InterlisImporterExporterError as exception:
             print(f"Export error: {exception.error}", file=sys.stderr)
