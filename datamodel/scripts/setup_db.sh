@@ -81,5 +81,5 @@ if [[ $permissions ]]; then
   psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f ${DIR}/12_1_roles.sql
 fi
 if [[ $rolex ]]; then
-  psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f ${DIR}/12_2_roles.sql
+  psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f ${DIR}/12_2_roles.sql -v db_identifier=$rolex
 fi
