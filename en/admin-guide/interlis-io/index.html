@@ -59,8 +59,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#prerequisites">4.3.2. Prerequisites</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#java">4.3.2.1. Java</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#python-libraries">4.3.2.2. Python libraries</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#modelbaker">4.3.2.3. Modelbaker</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#tww-version">4.3.2.4. TWW Version</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tww-version">4.3.2.3. TWW Version</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#usage-gui">4.3.3. Usage (GUI)</a><ul>
@@ -69,7 +68,12 @@
 <li class="toctree-l4"><a class="reference internal" href="#import">4.3.3.3. Import</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#usage-command-line">4.3.4. Usage (command line)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#usage-command-line">4.3.4. Usage (command line)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dependencies">4.3.4.1. Dependencies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">4.3.4.2. Import</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">4.3.4.3. Export</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#quality-control">4.3.5. Quality control</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#quality-control-with-vsa-online-checker-fachprufung-mit-vsa-checker-online">4.3.5.1. Quality control with VSA online checker (Fachprüfung mit VSA Checker (online))</a></li>
 </ul>
@@ -113,11 +117,14 @@
              
   <section id="interlis-data-exchange">
 <h1><span class="section-number">4.3. </span>INTERLIS Data exchange<a class="headerlink" href="#interlis-data-exchange" title="Link to this heading"></a></h1>
-<p>This represents a guide on how to import/export data between TWW and INTERLIS 2 Transfer Format (xtf).</p>
+<p>This represents a guide on how to import/export data between TWW and INTERLIS 2 Transfer Format (XTF).</p>
 <section id="general">
 <h2><span class="section-number">4.3.1. </span>General<a class="headerlink" href="#general" title="Link to this heading"></a></h2>
 <p>The TWW plugin includes an experimental interlis import/export feature.
-It is currently capable of importing and exporting to the VSA-KEK ‘VSA_KEK_2019_LV95’, which is an extension to the SIA405 wastewater model <cite>SIA405_ABWASSER_2015_LV95</cite> (for more details see <a class="reference external" href="https://github.com/TWW/twwqwat2ili/blob/master/twwqwat2ili/config.py">config</a>).</p>
+It is currently capable of importing and exporting the following models::
+* SIA405_ABWASSER_2020_1_LV95
+* DSS_2020_1_LV95
+* VSA_KEK_2020_1_LV95</p>
 <p>Note that currently, exports are possible in German only. Translated exports are on the roadmap, let us know if you are interested in this feature.</p>
 </section>
 <section id="prerequisites">
@@ -155,12 +162,8 @@ Linux : use the package manager</p>
 <p>where <code class="docutils literal notranslate"><span class="pre">c:\somewhere\other\than\the\default</span></code> is the path to your current pip package</p>
 <p>The same <cite>–target</cite> flag can be added to install <cite>sqlalchemy</cite> and <cite>geoalchemy2</cite> in another location.</p>
 </section>
-<section id="modelbaker">
-<h3><span class="section-number">4.3.2.3. </span>Modelbaker<a class="headerlink" href="#modelbaker" title="Link to this heading"></a></h3>
-<p>The TWW plugin will propose to install the Modelbaker plugin automatically. If that did not work, install the QGIS plugin <cite>Modelbaker</cite> manually from the QGIS plugin manager (version 6.4 or newer but older than 7.1).</p>
-</section>
 <section id="tww-version">
-<h3><span class="section-number">4.3.2.4. </span>TWW Version<a class="headerlink" href="#tww-version" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.3.2.3. </span>TWW Version<a class="headerlink" href="#tww-version" title="Link to this heading"></a></h3>
 <p>The export only supports up-to-date TWW datamodel (1.5.6 at the time of writing). Ensure your datamodel is fully updated before trying to import/export.</p>
 </section>
 </section>
@@ -183,6 +186,7 @@ Linux : use the package manager</p>
 <figure class="align-default">
 <img alt="../../_images/export_dialog.png" src="../../_images/export_dialog.png" />
 </figure>
+<p>At first, select the export model.</p>
 <p>If you have an active selection in the nodes and/or reaches layer, you can choose to restrict the export to that selection. This is especially useful in combination with the upstream/downstream selection tools.</p>
 <p>The export tools is capable of exporting label positions for different scales. You can choose which scales you are interested in exporting by selected/deselecting them.</p>
 <p>Then, confirm the dialog and choose where to save the <cite>.xtf</cite> file.</p>
@@ -225,7 +229,105 @@ Linux : use the package manager</p>
 </section>
 <section id="usage-command-line">
 <h2><span class="section-number">4.3.4. </span>Usage (command line)<a class="headerlink" href="#usage-command-line" title="Link to this heading"></a></h2>
-<p>For advanced usage, the import/export tool can also be used as a command line tool. Please refer to <a class="reference external" href="https://github.com/TWW/twwqwat2ili/">https://github.com/TWW/twwqwat2ili/</a> for documentation about this.</p>
+<p>For advanced usage, the import/export tool can also be used as a command line tool.</p>
+<section id="dependencies">
+<h3><span class="section-number">4.3.4.1. </span>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading"></a></h3>
+<p>The QGIS python classes must be available in the python interpreter.</p>
+<ul class="simple">
+<li><p>On windows you can use the OSGeo4W environment</p></li>
+<li><p>On linux you can extend the PYTHONPATH pointing to you QGIS installation, for example: <cite>export PYTHONPATH=”$PYTHONPATH:/usr/share/qgis/python”</cite></p></li>
+</ul>
+</section>
+<section id="id1">
+<h3><span class="section-number">4.3.4.2. </span>Import<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<p>Import example</p>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3<span class="w"> </span>plugin/teksi_wastewater_cmd.py<span class="w"> </span>interlis_import<span class="w"> </span>--xtf_file<span class="w"> </span>plugin/teksi_wastewater/tests/data/minimal-dataset-SIA405-ABWASSER.xtf<span class="w"> </span>--pgservice<span class="w"> </span>pg_tww
+</pre></div>
+</div>
+<p>Full usage</p>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3<span class="w"> </span>plugin/teksi_wastewater_cmd.py<span class="w"> </span>interlis_export<span class="w"> </span>--help
+
+<span class="go">usage: teksi_wastewater_cmd.py interlis_export [-h] --xtf_file XTF_FILE [--selection SELECTION] [--export_model {SIA405_ABWASSER_2020_1_LV95,DSS_2020_1_LV95,VSA_KEK_2020_1_LV95}] [--logs_next_to_file]</span>
+<span class="go">                                               [--label_scale_pipeline_registry_1_1000] [--label_scale_network_plan_1_500] [--label_scale_overviewmap_1_10000] [--label_scale_overviewmap_1_5000]</span>
+<span class="go">                                               [--label_scale_overviewmap_1_2000] [--selected_ids SELECTED_IDS] [--pgservice PGSERVICE] [--pghost PGHOST] [--pgport PGPORT] [--pgdatabase PGDATABASE]</span>
+<span class="go">                                               [--pguser PGUSER] [--pgpass PGPASS]</span>
+
+<span class="go">options:</span>
+<span class="go">  -h, --help            show this help message and exit</span>
+<span class="go">  --xtf_file XTF_FILE   XTF outup file</span>
+<span class="go">  --selection SELECTION</span>
+<span class="go">                        if provided, limits the export to networkelements that are provided in the selection (comma separated list of ids)</span>
+<span class="go">  --export_model {SIA405_ABWASSER_2020_1_LV95,DSS_2020_1_LV95,VSA_KEK_2020_1_LV95}</span>
+<span class="go">                        Model to export (default: DSS_2020_1_LV95)</span>
+<span class="go">  --logs_next_to_file   Put log files next to XTF output file</span>
+<span class="go">  --label_scale_pipeline_registry_1_1000</span>
+<span class="go">                        Export labels in scale 1:1&#39;000, can be combined with other scales (Leitungskataster/Cadastre des conduites souterraines)</span>
+<span class="go">  --label_scale_network_plan_1_500</span>
+<span class="go">                        Export labels in scale 1:500, can be combined with other scales (Werkplan/Plan de reseau)</span>
+<span class="go">  --label_scale_overviewmap_1_10000</span>
+<span class="go">                        Export labels in scale 1:10&#39;000, can be combined with other scales (Uebersichtsplan/Plan d&#39;ensemble)</span>
+<span class="go">  --label_scale_overviewmap_1_5000</span>
+<span class="go">                        Export labels in scale 1:5&#39;000, can be combined with other scales (Uebersichtsplan/Plan d&#39;ensemble)</span>
+<span class="go">  --label_scale_overviewmap_1_2000</span>
+<span class="go">                        Export labels in scale 1:2&#39;000, can be combined with other scales (Uebersichtsplan/Plan d&#39;ensemble)</span>
+<span class="go">  --selected_ids SELECTED_IDS</span>
+<span class="go">                        If provided, limits the export to networkelements that are provided in the selection (comma separated list of ids)</span>
+<span class="go">  --pgservice PGSERVICE</span>
+<span class="go">                        Postgres service name</span>
+<span class="go">  --pghost PGHOST       Postgres host</span>
+<span class="go">  --pgport PGPORT       Postgres port</span>
+<span class="go">  --pgdatabase PGDATABASE</span>
+<span class="go">                        Postgres database</span>
+<span class="go">  --pguser PGUSER       Postgres user</span>
+<span class="go">  --pgpass PGPASS       Postgres password</span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h3><span class="section-number">4.3.4.3. </span>Export<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<p>Export example</p>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="go">python3 plugin/teksi_wastewater_cmd.py interlis_export --xtf_file &quot;output.xtf&quot; --pgservice pg_tww</span>
+</pre></div>
+</div>
+<p>Full usage</p>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3<span class="w"> </span>plugin/teksi_wastewater_cmd.py<span class="w"> </span>interlis_export<span class="w"> </span>--help
+
+<span class="go">usage: teksi_wastewater_cmd.py interlis_export [-h] --xtf_file XTF_FILE [--selection SELECTION] [--export_model {SIA405_ABWASSER_2020_1_LV95,DSS_2020_1_LV95,VSA_KEK_2020_1_LV95}] [--logs_next_to_file]</span>
+<span class="go">                                               [--label_scale_pipeline_registry_1_1000] [--label_scale_network_plan_1_500] [--label_scale_overviewmap_1_10000] [--label_scale_overviewmap_1_5000]</span>
+<span class="go">                                               [--label_scale_overviewmap_1_2000] [--selected_ids SELECTED_IDS] [--pgservice PGSERVICE] [--pghost PGHOST] [--pgport PGPORT] [--pgdatabase PGDATABASE]</span>
+<span class="go">                                               [--pguser PGUSER] [--pgpass PGPASS]</span>
+
+<span class="go">options:</span>
+<span class="go">  -h, --help            show this help message and exit</span>
+<span class="go">  --xtf_file XTF_FILE   XTF outup file</span>
+<span class="go">  --selection SELECTION</span>
+<span class="go">                        if provided, limits the export to networkelements that are provided in the selection (comma separated list of ids)</span>
+<span class="go">  --export_model {SIA405_ABWASSER_2020_1_LV95,DSS_2020_1_LV95,VSA_KEK_2020_1_LV95}</span>
+<span class="go">                        Model to export (default: DSS_2020_1_LV95)</span>
+<span class="go">  --logs_next_to_file   Put log files next to XTF output file</span>
+<span class="go">  --label_scale_pipeline_registry_1_1000</span>
+<span class="go">                        Export labels in scale 1:1&#39;000, can be combined with other scales (Leitungskataster/Cadastre des conduites souterraines)</span>
+<span class="go">  --label_scale_network_plan_1_500</span>
+<span class="go">                        Export labels in scale 1:500, can be combined with other scales (Werkplan/Plan de reseau)</span>
+<span class="go">  --label_scale_overviewmap_1_10000</span>
+<span class="go">                        Export labels in scale 1:10&#39;000, can be combined with other scales (Uebersichtsplan/Plan d&#39;ensemble)</span>
+<span class="go">  --label_scale_overviewmap_1_5000</span>
+<span class="go">                        Export labels in scale 1:5&#39;000, can be combined with other scales (Uebersichtsplan/Plan d&#39;ensemble)</span>
+<span class="go">  --label_scale_overviewmap_1_2000</span>
+<span class="go">                        Export labels in scale 1:2&#39;000, can be combined with other scales (Uebersichtsplan/Plan d&#39;ensemble)</span>
+<span class="go">  --selected_ids SELECTED_IDS</span>
+<span class="go">                        If provided, limits the export to networkelements that are provided in the selection (comma separated list of ids)</span>
+<span class="go">  --pgservice PGSERVICE</span>
+<span class="go">                        Postgres service name</span>
+<span class="go">  --pghost PGHOST       Postgres host</span>
+<span class="go">  --pgport PGPORT       Postgres port</span>
+<span class="go">  --pgdatabase PGDATABASE</span>
+<span class="go">                        Postgres database</span>
+<span class="go">  --pguser PGUSER       Postgres user</span>
+<span class="go">  --pgpass PGPASS       Postgres password</span>
+</pre></div>
+</div>
+</section>
 </section>
 <section id="quality-control">
 <h2><span class="section-number">4.3.5. </span>Quality control<a class="headerlink" href="#quality-control" title="Link to this heading"></a></h2>
