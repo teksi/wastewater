@@ -18,7 +18,7 @@ BEGIN
     EXECUTE format('GRANT tww_viewer_%1$I TO tww_user_%1$I', current_catalog);
     EXECUTE format('GRANT tww_user_%1$I TO tww_manager_%1$I', current_catalog);
     EXECUTE format('GRANT tww_manager_%1$I TO tww_sysadmin_%1$I', current_catalog);
-	
+
     -- cascade database-specific grants to overall roles
     EXECUTE format('GRANT tww_viewer_%1$I TO tww_viewer', current_catalog);
     EXECUTE format('GRANT tww_user_%1$I TO tww_user', current_catalog);
