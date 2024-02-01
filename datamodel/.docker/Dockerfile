@@ -28,8 +28,8 @@ RUN if [ "${RUN_TEST}" = "True" ]; then pip install -r datamodel/requirements-te
 
 # Configure the postgres connections
 RUN printf '[postgres]\ndbname=postgres\nuser=postgres\n' >> $(pg_config --sysconfdir)/pg_service.conf
-RUN printf '[pg_tww]\ndbname=teksi_wastewater\nuser=postgres\n' >> $(pg_config --sysconfdir)/pg_service.conf
-RUN printf '[pg_tww_demo]\ndbname=teksi_wastewater_demo\nuser=postgres\n' >> $(pg_config --sysconfdir)/pg_service.conf
+RUN printf '[pg_tww]\ndbname=tww\nuser=postgres\n' >> $(pg_config --sysconfdir)/pg_service.conf
+RUN printf '[pg_tww_demo]\ndbname=tww_demo\nuser=postgres\n' >> $(pg_config --sysconfdir)/pg_service.conf
 
 RUN chmod +x /src/datamodel/.docker/init_db.sh
 ENV PATH="/src/datamodel/.docker:${PATH}"

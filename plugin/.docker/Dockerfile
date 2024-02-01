@@ -10,7 +10,7 @@ RUN apt-get update && \
     && rm -rf /var/lib/apt/lists/*
 
 RUN printf '[postgres]\ndbname=postgres\nuser=postgres\n' >> $(pg_config --sysconfdir)/pg_service.conf
-RUN printf '[pg_tww]\ndbname=teksi_wastewater\nuser=postgres\n' >> $(pg_config --sysconfdir)/pg_service.conf
+RUN printf '[pg_tww]\ndbname=tww\nuser=postgres\n' >> $(pg_config --sysconfdir)/pg_service.conf
 
 ENV LANG=C.UTF-8
 
