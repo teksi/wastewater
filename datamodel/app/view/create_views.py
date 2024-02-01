@@ -68,17 +68,16 @@ def get_multipleinheritances():
         "app/view/vw_maintenance_event.yaml":
         {"create_joins":True,
         "drop":True,
-        "variables"=variables,
-        "pg_service"=pg_service,},
-        "app/view/vw_damage.yaml":
+        "variables":variables,
+        "pg_service":pg_service,},
+        "app/view/vw_damage.yaml": 
         {drop=True
-        , pg_service=pg_service,},
-        "app/view/vw_oo_overflow.yaml":
-        {create_joins=True,
-        variables=variables,
-        pg_service=pg_service,
-        drop=True,},
-
+        , pg_service:pg_service,},
+        "app/view/vw_oo_overflow.yaml": 
+        {create_joins:True,
+        variables:variables,
+        pg_service:pg_service,
+        drop:True,},     
     }
 
 
