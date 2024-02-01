@@ -2305,7 +2305,7 @@ class InterlisExporterToIntermediateSchema:
                 bemerkung=self.truncate(self.emptystr_to_null(row.remark), 80),
                 bezeichnung=self.null_to_emptystr(row.identifier),
                 datentraegerref=self.get_tid(row.fk_data_media__REL),
-                klasse=self.get_vl(row.class_column__REL),
+                klasse=self.get_vl_by_code(self.model_classes_tww_vl.file_class, row.class_column),
                 objekt=self.null_to_emptystr(row.object),
                 relativpfad=row.path_relative,
             )
@@ -2329,6 +2329,16 @@ class InterlisExporterToIntermediateSchema:
         if relation is None:
             return None
         return relation.value_de
+
+    def get_vl_by_code(self, vl_table, vl_code):
+        instance = self.tww_session.query(vl_table).filter(vl_table.code == vl_code).first()
+        if instance is None:
+            logger.warning(
+                f'Could not find code `{vl_code}` in value list "{vl_table.__table__.schema}.{vl_table.__name__}". Setting to None instead.'
+            )
+            return None
+
+        return instance.value_de
 
     def null_to_emptystr(self, val):
         """
