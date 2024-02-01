@@ -2494,10 +2494,11 @@ class InterlisExporterToIntermediateSchema:
         Returns common attributes for textpos
         """
         t_id = self.tid_maker.next_tid()
+
         return {
             "t_id": t_id,
             "t_type": t_type,
-            "t_ili_tid": t_id,
+            "t_ili_tid": f"ch080txtPR0000{t_id}",
             # --- TextPos ---
             "textpos": ST_GeomFromGeoJSON(
                 json.dumps(
