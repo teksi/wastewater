@@ -4312,13 +4312,13 @@ ALTER TABLE tww_vl.measurement_result_measurement_type ADD CONSTRAINT pkey_tww_v
  REFERENCES tww_vl.measurement_result_measurement_type (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.overflow ADD COLUMN fk_wastewater_node varchar(16);
-ALTER TABLE tww_od.overflow ADD CONSTRAINT rel_overflow_wastewater_node FOREIGN KEY (fk_wastewater_node) REFERENCES tww_od.wastewater_node(obj_id) ON UPDATE CASCADE ON DELETE cascade;
+ALTER TABLE tww_od.overflow ADD CONSTRAINT rel_overflow_wastewater_node FOREIGN KEY (fk_wastewater_node) REFERENCES tww_od.wastewater_node(obj_id) ON UPDATE CASCADE ON DELETE cascade DEFERRABLE;
 ALTER TABLE tww_od.overflow ADD COLUMN fk_overflow_to varchar(16);
-ALTER TABLE tww_od.overflow ADD CONSTRAINT rel_overflow_overflow_to FOREIGN KEY (fk_overflow_to) REFERENCES tww_od.wastewater_node(obj_id) ON UPDATE CASCADE ON DELETE set null;
+ALTER TABLE tww_od.overflow ADD CONSTRAINT rel_overflow_overflow_to FOREIGN KEY (fk_overflow_to) REFERENCES tww_od.wastewater_node(obj_id) ON UPDATE CASCADE ON DELETE set null DEFERRABLE;
 ALTER TABLE tww_od.overflow ADD COLUMN fk_overflow_char varchar(16);
-ALTER TABLE tww_od.overflow ADD CONSTRAINT rel_overflow_overflow_char FOREIGN KEY (fk_overflow_char) REFERENCES tww_od.overflow_char(obj_id) ON UPDATE CASCADE ON DELETE set null;
+ALTER TABLE tww_od.overflow ADD CONSTRAINT rel_overflow_overflow_char FOREIGN KEY (fk_overflow_char) REFERENCES tww_od.overflow_char(obj_id) ON UPDATE CASCADE ON DELETE set null DEFERRABLE;
 ALTER TABLE tww_od.overflow ADD COLUMN fk_control_center varchar(16);
-ALTER TABLE tww_od.overflow ADD CONSTRAINT rel_overflow_control_center FOREIGN KEY (fk_control_center) REFERENCES tww_od.control_center(obj_id) ON UPDATE CASCADE ON DELETE set null;
+ALTER TABLE tww_od.overflow ADD CONSTRAINT rel_overflow_control_center FOREIGN KEY (fk_control_center) REFERENCES tww_od.control_center(obj_id) ON UPDATE CASCADE ON DELETE set null DEFERRABLE;
 CREATE TABLE tww_vl.overflow_actuation () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.overflow_actuation ADD CONSTRAINT pkey_tww_vl_overflow_actuation_code PRIMARY KEY (code);
  INSERT INTO tww_vl.overflow_actuation (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3667,3667,'other','andere','autres', 'altro', 'rrr_altul', '', '', '', '', '', 'true');
