@@ -59,26 +59,26 @@ def get_singleinheritances():
         "infiltration_zone": "zone",
         "drainage_system": "zone",
     }
-    
+
 def get_multipleinheritances():
     """
     Returns a dict with yaml path as key and config as value
     """
     return {
-        "app/view/vw_maintenance_event.yaml": 
+        "app/view/vw_maintenance_event.yaml":
         {"create_joins":True,
         "drop":True,
         "variables"=variables,
         "pg_service"=pg_service,},
-        "app/view/vw_damage.yaml": 
+        "app/view/vw_damage.yaml":
         {drop=True
         , pg_service=pg_service,},
-        "app/view/vw_oo_overflow.yaml": 
+        "app/view/vw_oo_overflow.yaml":
         {create_joins=True,
         variables=variables,
         pg_service=pg_service,
         drop=True,},
-      
+
     }
 
 
@@ -93,7 +93,7 @@ def drop_views(pg_service: str = "pg_teksi_wastewater", skip_warning: bool= Fals
         conn = psycopg2.connect(f"service={pg_service}")
         cursor = conn.cursor()
         cursor.execute("SELECT table_name from INFORMATION_SCHEMA.views WHERE table_schema ='tww_app'")
-        views=cursor.fetchall()   
+        views=cursor.fetchall()
         for view in views:
             cursor.execute(f"DROP VIEW tww_app.{view}")
         conn.commit()
@@ -103,9 +103,9 @@ def drop_views(pg_service: str = "pg_teksi_wastewater", skip_warning: bool= Fals
         inp=input()
         if inp=='Comic Sans is awesome':
             drop_views(pg_service,True)
-    
-    
-    
+
+
+
 def create_views(
     srid: int = 2056,
     pg_service: str = "pg_teksi_wastewater",
@@ -146,7 +146,7 @@ def create_views(
 
 
     MultiInheritances = get_multipleinheritances()
-    for key in MultiInheritances:  
+    for key in MultiInheritances:
         MultipleInheritance(
             safe_load(open(key)),
             MultiInheritances[key],
