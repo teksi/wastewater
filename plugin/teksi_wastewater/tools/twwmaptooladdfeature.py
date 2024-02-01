@@ -512,3 +512,279 @@ class TwwMapToolDigitizeDrainageChannel(QgsMapTool):
                 self.geometryDigitized.emit()
 
             self.firstPoint = mousepos
+
+
+
+class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
+    """
+    This is used to split a reach feature by creating a node.
+
+    It lets you create a node and then uses this node to split the reach layer 
+    and add a wastewater node/strucrure
+
+
+    Usage:
+      Connect to the signal deactivated()
+      deactivated() will be emitted after a right click
+    """
+
+
+    def __init__(self, iface: QgisInterface, layer):
+        QgsMapToolAdvancedDigitizing.__init__(self, iface.mapCanvas(), iface.cadDockWidget())
+        self.iface = iface
+        self.canvas = iface.mapCanvas()
+        self.layer = layer
+        self.snapping_marker = None
+        self.node_layer = layer
+        assert self.node_layer is not None
+        self.reach_layer = TwwLayerManager.layer("vw_tww_reach")
+        assert self.reach_layer is not None
+        self.setAdvancedDigitizingAllowed(True)
+        self.setAutoSnapEnabled(True)
+
+        layer_snapping_configs = [
+            {"layer": self.reach_layer, "mode": QgsSnappingConfig.VertexAndSegment},
+        ]
+        self.snapping_configs = []
+        self.snapping_utils = QgsMapCanvasSnappingUtils(self.iface.mapCanvas())
+
+        for lsc in layer_snapping_configs:
+            config = QgsSnappingConfig()
+            config.setMode(QgsSnappingConfig.AdvancedConfiguration)
+            config.setEnabled(True)
+            settings = QgsSnappingConfig.IndividualLayerSettings(
+                True, lsc["mode"], 10, QgsTolerance.Pixels
+            )
+            config.setIndividualLayerSettings(lsc["layer"], settings)
+            self.snapping_configs.append(config)
+
+    def activate(self):
+        """
+        Map tool is activated
+        """
+        QgsMapTool.activate(self)
+        self.canvas.setCursor(QCursor(Qt.CrossCursor))
+        msgtitle = self.tr(f"Split reach with {self.node_layer.name()}")
+        msg = self.tr("Digitize with left click. Rightclick to abort.")
+        self.messageBarItem = QgsMessageBar.createMessage(msgtitle, msg)
+        self.iface.messageBar().pushItem(self.messageBarItem)
+
+    def deactivate(self):
+        """
+        Map tool is deactivated
+        """
+        QgsMapTool.deactivate(self)
+        self.iface.messageBar().popWidget(self.messageBarItem)
+        self.canvas.unsetCursor()
+
+    def isZoomTool(self):
+        """
+        This is no zoom tool
+        """
+        return False
+
+    # ===========================================================================
+    # Events
+    # ===========================================================================
+  
+    def cadCanvasMoveEvent(self, event):
+        """
+        Mouse is moved: Update snap
+        :param event: coordinates etc.
+        """
+        _, match,_ = self.snap(event)
+        # snap indicator
+        if not match.isValid():
+            if self.snapping_marker is not None:
+                self.iface.mapCanvas().scene().removeItem(self.snapping_marker)
+                self.snapping_marker = None
+            return
+
+        # TODO QGIS 3: see if vertices can be removed
+
+        # we have a valid match
+        if self.snapping_marker is None:
+            self.snapping_marker = QgsVertexMarker(self.iface.mapCanvas())
+            self.snapping_marker.setPenWidth(3)
+            self.snapping_marker.setColor(QColor(Qt.magenta))
+
+        if match.hasVertex():
+            if match.layer():
+                icon_type = QgsVertexMarker.ICON_BOX  # vertex snap
+            else:
+                icon_type = QgsVertexMarker.ICON_X  # intersection snap
+        else:
+            icon_type = QgsVertexMarker.ICON_DOUBLE_TRIANGLE  # must be segment snap
+        self.snapping_marker.setIconType(icon_type)
+        self.snapping_marker.setCenter(match.point())
+
+    def left_clicked(self, event):
+        """
+        When the canvas is left clicked we add a new point to the rubberband.
+        :type event: QMouseEvent
+        """
+        self.finishEditing(event)
+
+    def right_clicked(self, _):
+        """
+        On a right click we cdeactivate
+        """
+        self.deactivate()
+
+    def cadcanvasReleaseEvent(self, event):
+        if event.button() == Qt.RightButton:
+            self.deactivate()
+        if event.button() == Qt.LeftButton:
+            self.finishEditing(event)
+    
+    def mouse_move(self, event):
+        _, match, _ = self.snap(event)
+        # snap indicator
+        if not match.isValid():
+            if self.snapping_marker is not None:
+                self.iface.mapCanvas().scene().removeItem(self.snapping_marker)
+                self.snapping_marker = None
+            return
+
+        # TODO QGIS 3: see if vertices can be removed
+
+        # we have a valid match
+        if self.snapping_marker is None:
+            self.snapping_marker = QgsVertexMarker(self.iface.mapCanvas())
+            self.snapping_marker.setPenWidth(3)
+            self.snapping_marker.setColor(QColor(Qt.magenta))
+
+        if match.hasVertex():
+            if match.layer():
+                icon_type = QgsVertexMarker.ICON_BOX  # vertex snap
+            else:
+                icon_type = QgsVertexMarker.ICON_X  # intersection snap
+        else:
+            icon_type = QgsVertexMarker.ICON_DOUBLE_TRIANGLE  # must be segment snap
+        self.snapping_marker.setIconType(icon_type)
+        self.snapping_marker.setCenter(match.point())
+
+    def snap(self, event):
+        """
+        Snap to nearby points on the reach layer which may be used as connection
+        points for this reach.
+        :param event: The mouse event
+        :return: The snapped position in map coordinates, snapped vertex id and previous ve
+        
+        """
+
+        for config in self.snapping_configs:
+            self.snapping_utils.setConfig(config) # only snap to reaches
+            match = self.snapping_utils.snapToMap(QgsPointXY(event.originalMapPoint()))
+            if match.isValid():
+                if match.layer():
+                    req = QgsFeatureRequest(match.featureId())
+                    f = next(match.layer().getFeatures(req))
+                    assert f.isValid()
+                    (ok, vertex_id) = f.geometry().vertexIdFromVertexNr(match.vertexIndex())
+                    assert ok
+                        
+                    if match.hasVertex():
+                        point = f.geometry().constGet().vertexAt(vertex_id)
+                        assert isinstance(point, QgsPoint)
+                        return point, match, vertex_id 
+                    else:
+                        return QgsPoint(match.point()), match , None
+                        
+                    if match.hasEdge():
+                        point = match.interpolatedPoint(match.layer().sourceCrs())
+                        assert isinstance(point, QgsPoint)
+                        return point, match , vertex_id
+                    else:
+                        return QgsPoint(match.point()), match , None
+
+            return QgsPoint(event.originalMapPoint()), match , None
+
+    def finishEditing(self,event):
+
+        # snap
+        point3d, match, vertex_id = self.snap(event)
+        if self.snapping_marker is not None:
+            self.iface.mapCanvas().scene().removeItem(self.snapping_marker)
+            self.snapping_marker = None
+        # create point feature
+        f = QgsFeature(self.node_layer.fields())
+        f.setGeometry(point3d)
+        if self.node_layer.id()=='vw_tww_wastewater_structure':
+            prefix = 'wn_'
+        else :
+            prefix = ''
+ 
+        f.setAttribute(lvlname, point3d.z())
+        dlg = self.iface.getFeatureForm(self.node_layer, f)
+        dlg.setMode(QgsAttributeEditorContext.AddFeatureMode)
+        dlg.exec_()
+        idx = self.node_layer.fieldNameIndex(prefix+'bottom_level')
+        oid_idx = self.node_layer.fieldNameIndex(prefix+'obj_id')
+        point3d.setZ(dlg.feature().attributes()[idx]) # update if level was altered in dlg
+        pt_oid = dlg.feature().attributes()[oid_idx]
+        
+        # split reach
+        if vertex_id is not None: # edge or vertex match           
+            req = QgsFeatureRequest(match.featureId())
+            f_old = next(match.layer().getFeatures(req))
+            assert f_old.isValid()
+            fields = self.reach_layer.fields()
+            alterations = [
+                "from",
+                "to"
+            ]
+            for dest in alterations:
+                f = QgsFeature(fields)
+                if not self.last_feature_attributes:
+                    self.last_feature_attributes = [None] * fields.count()
+                for idx, field in enumerate(fields):
+                    if not field.name() in [
+                        "id",
+                        "obj_id",
+                        "identifier",
+                        "length_effective",
+                        f"rp_{dest}_obj_id",
+                        f"rp_{dest}_level"
+                    ]:
+                        f.setAttribute(idx, f_old.attributes()[idx])
+                    else:
+                        # try client side default value first
+                        v = self.reach_layer.defaultValue(idx, f)
+                        if v != NULL:
+                            f.setAttribute(idx, v)
+                        else:
+                            f.setAttribute(idx, self.reach_layer.dataProvider().defaultValue(idx))
+                    
+                
+                pt_start = vertex_id if dest == "from" else 0
+                pt_end = -1 if dest == "from" else vertex_id
+                
+                geom=f_old.geometry().asPolyline()[pt_start:pt_end]
+                if match.hasEdge:
+                    if pt_start==0:
+                        geom.append(point3d)  # append point
+                    else:
+                        geom.insert(0, point3d)  # insert at start
+                f.setGeometry(geom)
+                ne = self.reach_layer.fields().indexFromName(
+                    f"rp_{dest}_fk_wastewater_networkelement"
+                )
+                f.setAttribute(ne, pt_oid)
+                lvl = self.reach_layer.fields().indexFromName(
+                    f"rp_{dest}_level"
+                )
+                f.setAttribute(lvl, point3d.z())
+                ne = self.reach_layer.fields().indexFromName(
+                    f"rp_{dest}_fk_wastewater_networkelement"
+                )
+                self.reach_layer.dataProvider().addFeatures([f])
+            
+            self.reach_layer.deleteFeature(f_old.id())
+            self.deactivate()
+            
+        else:
+            msg = self.tr("Only snapped reaches are split.")
+            self.messageBarItem = QgsMessageBar.createMessage(msgtitle, msg)
+            self.iface.messageBar().pushItem(self.messageBarItem)
+            self.deactivate()
