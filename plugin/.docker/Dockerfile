@@ -12,6 +12,14 @@ RUN apt-get update && \
 RUN printf '[postgres]\ndbname=postgres\nuser=postgres\n' >> $(pg_config --sysconfdir)/pg_service.conf
 RUN printf '[pg_tww]\ndbname=tww\nuser=postgres\n' >> $(pg_config --sysconfdir)/pg_service.conf
 
+# Some defaults
+ENV POSTGRES_PASSWORD=postgres
+# otherwise psycopg2 cannot connect
+ENV PGSERVICEFILE=/etc/postgresql-common/pg_service.conf
+
+ENV PGSERVICE=pg_tww
+
+
 ENV LANG=C.UTF-8
 
 WORKDIR /
