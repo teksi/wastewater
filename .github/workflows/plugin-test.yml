@@ -53,7 +53,7 @@ jobs:
         run: docker-compose run qgis /usr/src/plugin/.docker/run-docker-tests.sh
 
       - name: Test command line
-        run: docker-compose exec qgis xvfb-run /usr/src/plugin/tww_cmd.py interlis_import --xtf_file /usr/src/plugin/teksi_wastewater/tests/data/minimal-dataset-SIA405-ABWASSER.xtf --pgservice pg_tww
+        run: docker-compose run qgis xvfb-run /usr/src/plugin/tww_cmd.py interlis_import --xtf_file /usr/src/plugin/teksi_wastewater/tests/data/minimal-dataset-SIA405-ABWASSER.xtf --pgservice pg_tww
 
       - name: docker logs
         #if: failure()
