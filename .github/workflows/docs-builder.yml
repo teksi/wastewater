@@ -23,6 +23,9 @@ on:
 jobs:
   datamodel-documentation:
     uses: ./.github/workflows/datamodel-create-dumps.yml
+    concurrency:
+      group: ${{ github.workflow }}-schemaspy-${{ github.event.pull_request.number || github.ref }}
+      cancel-in-progress: true
 
   build:
     needs: datamodel-documentation
