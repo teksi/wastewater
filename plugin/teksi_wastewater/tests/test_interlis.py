@@ -40,7 +40,7 @@ class TestInterlis(unittest.TestCase):
 
     def setUp(self):
         config.PGHOST = "db"
-        config.PGDATABASE = "teksi_wastewater"
+        config.PGDATABASE = "tww"
         config.PGUSER = "postgres"
         config.PGPASS = "postgres"
         config.PGPORT = str(PG_PORT)
