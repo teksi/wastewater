@@ -50,6 +50,12 @@ class InterlisExporterToIntermediateSchema:
         self.abwasser_session = None
         self.tid_maker = utils.ili2db.TidMaker(id_attribute="obj_id")
 
+        self.current_basket = None
+        self.basket_topic_sia405_administration = None
+        self.basket_topic_sia405_abwasser = None
+        self.basket_topic_dss = None
+        self.basket_topic_kek = None
+
     def tww_export(self):
         # Logging disabled (very slow)
         self.tww_session = Session(
@@ -72,17 +78,17 @@ class InterlisExporterToIntermediateSchema:
         self.abwasser_session.execute(text("SET CONSTRAINTS ALL DEFERRED;"))
 
         if self.basket_enabled:
-            self.close_sessions()
-            raise InterlisExporterToIntermediateSchemaError(
-                "Export with baskets is not implemented (KEK export)"
-            )
+            self._create_basket()
+            self.current_basket = self.basket_topic_sia405_administration
 
         self._export_sia405_abwasser()
 
         if self.model == config.MODEL_NAME_DSS:
+            self.current_basket = self.basket_topic_dss
             self._export_dss()
 
         if self.model == config.MODEL_NAME_VSA_KEK:
+            self.current_basket = self.basket_topic_kek
             self._export_vsa_kek()
 
         # Labels
@@ -91,10 +97,60 @@ class InterlisExporterToIntermediateSchema:
             logger.info(f"Exporting label positions from {self.labels_file}")
             self._export_label_positions()
 
+    def _create_basket(self):
+        dataset = self.model_classes_interlis.t_ili2db_dataset(
+            t_id=1,
+            datasetname="teksi-wastewater-export",
+        )
+        self.abwasser_session.add(dataset)
+
+        self.basket_topic_sia405_administration = self.model_classes_interlis.t_ili2db_basket(
+            t_id=2,
+            dataset=dataset.t_id,
+            topic=config.TOPIC_NAME_SIA405_ADMINISTRATION,
+            t_ili_tid=None,
+            attachmentkey=dataset.datasetname,
+            domains="",
+        )
+        self.abwasser_session.add(self.basket_topic_sia405_administration)
+
+        self.basket_topic_sia405_abwasser = self.model_classes_interlis.t_ili2db_basket(
+            t_id=3,
+            dataset=dataset.t_id,
+            topic=config.TOPIC_NAME_SIA405_ABWASSER,
+            t_ili_tid=None,
+            attachmentkey=dataset.datasetname,
+            domains="",
+        )
+        self.abwasser_session.add(self.basket_topic_sia405_abwasser)
+
+        self.basket_topic_dss = self.model_classes_interlis.t_ili2db_basket(
+            t_id=4,
+            dataset=dataset.t_id,
+            topic=config.TOPIC_NAME_DSS,
+            t_ili_tid=None,
+            attachmentkey=dataset.datasetname,
+            domains="",
+        )
+        self.abwasser_session.add(self.basket_topic_dss)
+
+        self.basket_topic_kek = self.model_classes_interlis.t_ili2db_basket(
+            t_id=5,
+            dataset=dataset.t_id,
+            topic=config.TOPIC_NAME_KEK,
+            t_ili_tid=None,
+            attachmentkey=dataset.datasetname,
+            domains="",
+        )
+        self.abwasser_session.add(self.basket_topic_kek)
+        self.abwasser_session.flush()
+
     def _export_sia405_abwasser(self):
         logger.info("Exporting TWW.organisation -> ABWASSER.organisation")
         self._export_organisation()
         self._check_for_stop()
+
+        self.current_basket = self.basket_topic_sia405_abwasser
 
         logger.info("Exporting TWW.channel -> ABWASSER.kanal")
         self._export_channel()
@@ -2078,29 +2134,10 @@ class InterlisExporterToIntermediateSchema:
             )
 
         for row in query:
-            # AVAILABLE FIELDS IN TWW.examination
-
-            # --- maintenance_event ---
-            # --- examination ---
-            # equipment, fk_reach_point, from_point_identifier, inspected_length, obj_id, recording_type, to_point_identifier, vehicle, videonumber, weather
-
-            # --- _bwrel_ ---
-            # damage__BWREL_fk_examination, re_maintenance_event_wastewater_structure__BWREL_fk_maintenance_event
-
-            # --- _rel_ ---
-            # fk_dataowner__REL, fk_operating_company__REL, fk_provider__REL, fk_reach_point__REL, kind__REL, recording_type__REL, status__REL, weather__REL
-            logger.warning(
-                "TWW field maintenance_event.active_zone has no equivalent in the interlis model. It will be ignored."
-            )
-
             untersuchung = self.model_classes_interlis.untersuchung(
-                # FIELDS TO MAP TO ABWASSER.untersuchung
                 # --- baseclass ---
-                # --- sia405_baseclass ---
                 **self.vsa_base_common(row, "untersuchung"),
                 # --- erhaltungsereignis ---
-                # abwasserbauwerkref=row.REPLACE_ME,  # TODO : convert this to M2N relation through re_maintenance_event_wastewater_structure
-                art=self.get_vl(row.kind__REL),
                 astatus=self.get_vl(row.status__REL),
                 ausfuehrende_firmaref=self.get_tid(row.fk_operating_company__REL),
                 ausfuehrender=row.operator,
@@ -2142,19 +2179,6 @@ class InterlisExporterToIntermediateSchema:
                 )
             )
         for row in query:
-            # AVAILABLE FIELDS IN TWW.damage_manhole
-
-            # --- damage ---
-
-            # --- damage_manhole ---
-            # manhole_damage_code, manhole_shaft_area, obj_id
-
-            # --- _bwrel_ ---
-            # damage_channel_channel_damage_code__BWREL_obj_id
-
-            # --- _rel_ ---
-            # connection__REL, fk_dataowner__REL, fk_examination__REL, fk_provider__REL, manhole_damage_code__REL, manhole_shaft_area__REL, single_damage_class__REL
-
             normschachtschaden = self.model_classes_interlis.normschachtschaden(
                 # FIELDS TO MAP TO ABWASSER.normschachtschaden
                 # --- baseclass ---
@@ -2163,19 +2187,17 @@ class InterlisExporterToIntermediateSchema:
                 # --- schaden ---
                 anmerkung=row.comments,
                 ansichtsparameter=row.view_parameters,
-                einzelschadenklasse=self.get_vl(row.single_damage_class__REL),
-                streckenschaden=row.damage_reach,
                 untersuchungref=self.get_tid(row.fk_examination__REL),
                 verbindung=self.get_vl(row.connection__REL),
                 videozaehlerstand=row.video_counter,
                 # --- normschachtschaden ---
-                distanz=row.distance,
-                quantifizierung1=row.quantification1,
-                quantifizierung2=row.quantification2,
+                distanz=row.manhole_channel_distance,
+                quantifizierung1=row.manhole_quantification1,
+                quantifizierung2=row.manhole_quantification2,
                 schachtbereich=self.get_vl(row.manhole_shaft_area__REL),
                 schachtschadencode=self.get_vl(row.manhole_damage_code__REL),
-                schadenlageanfang=row.damage_begin,
-                schadenlageende=row.damage_end,
+                schadenlageanfang=row.manhole_damage_begin,
+                schadenlageende=row.manhole_damage_end,
             )
             self.abwasser_session.add(normschachtschaden)
             print(".", end="")
@@ -2195,20 +2217,6 @@ class InterlisExporterToIntermediateSchema:
                 )
             )
         for row in query:
-            # AVAILABLE FIELDS IN TWW.damage_channel
-
-            # --- damage ---
-            # comments, connection, damage_begin, damage_end, damage_reach, distance, fk_dataowner, fk_examination, fk_provider, last_modification, quantification1, quantification2, single_damage_class, video_counter, view_parameters
-
-            # --- damage_channel ---
-            # , obj_id
-
-            # --- _bwrel_ ---
-            # damage_channel_channel_damage_code__BWREL_obj_id
-
-            # --- _rel_ ---
-            # channel_damage_code__REL, connection__REL, fk_dataowner__REL, fk_examination__REL, fk_provider__REL, single_damage_class__REL
-
             kanalschaden = self.model_classes_interlis.kanalschaden(
                 # FIELDS TO MAP TO ABWASSER.kanalschaden
                 # --- baseclass ---
@@ -2223,12 +2231,12 @@ class InterlisExporterToIntermediateSchema:
                 verbindung=self.get_vl(row.connection__REL),
                 videozaehlerstand=row.video_counter,
                 # --- kanalschaden ---
-                distanz=row.distance,
+                distanz=row.channel_distance,
                 kanalschadencode=self.get_vl(row.channel_damage_code__REL),
-                quantifizierung1=row.quantification1,
-                quantifizierung2=row.quantification2,
-                schadenlageanfang=row.damage_begin,
-                schadenlageende=row.damage_end,
+                quantifizierung1=row.channel_quantification1,
+                quantifizierung2=row.channel_quantification2,
+                schadenlageanfang=row.channel_damage_begin,
+                schadenlageende=row.channel_damage_end,
             )
             self.abwasser_session.add(kanalschaden)
             print(".", end="")
@@ -2288,14 +2296,6 @@ class InterlisExporterToIntermediateSchema:
                 )
             )
         for row in query:
-            # AVAILABLE FIELDS IN TWW.file
-
-            # --- file ---
-            # class, fk_data_media, fk_dataowner, fk_provider, identifier, kind, last_modification, obj_id, object, path_relative, remark
-
-            # --- _rel_ ---
-            # class__REL, fk_dataowner__REL, fk_provider__REL, kind__REL
-
             datei = self.model_classes_interlis.datei(
                 # FIELDS TO MAP TO ABWASSER.datei
                 # --- vsa_baseclass ---
@@ -2305,7 +2305,7 @@ class InterlisExporterToIntermediateSchema:
                 bemerkung=self.truncate(self.emptystr_to_null(row.remark), 80),
                 bezeichnung=self.null_to_emptystr(row.identifier),
                 datentraegerref=self.get_tid(row.fk_data_media__REL),
-                klasse=self.get_vl(row.class__REL),
+                klasse=self.get_vl(row.class_column__REL),
                 objekt=self.null_to_emptystr(row.object),
                 relativpfad=row.path_relative,
             )
@@ -2379,11 +2379,15 @@ class InterlisExporterToIntermediateSchema:
         """
         Returns common attributes for base
         """
-        return {
+        base = {
             "t_ili_tid": row.obj_id,
             "t_type": type_name,
             "t_id": self.get_tid(row),
         }
+        if self.current_basket:
+            base["t_basket"] = self.current_basket.t_id
+
+        return base
 
     def sia_405_base_common(self, row, type_name):
         return {

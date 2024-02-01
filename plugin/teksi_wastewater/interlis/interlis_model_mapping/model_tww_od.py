@@ -1,3 +1,5 @@
+from sqlalchemy import INTEGER, Column, ForeignKey
+
 from ...interlis import config
 from .model_base import ModelBase
 
@@ -302,3 +304,10 @@ class ModelTwwOd(ModelBase):
             __table_args__ = {"schema": config.TWW_OD_SCHEMA}
 
         ModelTwwOd.backflow_prevention = backflow_prevention
+
+        class file(self.Base):
+            __tablename__ = "file"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+            class_column = Column("class", INTEGER(), ForeignKey("tww_vl.file_class.code"))
+
+        ModelTwwOd.file = file
