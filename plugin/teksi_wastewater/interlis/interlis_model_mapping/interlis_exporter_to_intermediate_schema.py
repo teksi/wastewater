@@ -2396,13 +2396,13 @@ class InterlisExporterToIntermediateSchema:
         Returns common attributes for base
         """
         datenherrref = self.get_tid(row.fk_dataowner__REL)
-        if not datenherrref:
+        if datenherrref is None:
             raise InterlisExporterToIntermediateSchemaError(
                 f"Invalid dataowner reference for object '{row.obj_id}' of type '{type_name}'"
             )
 
         datenlieferantref = self.get_tid(row.fk_provider__REL)
-        if not datenlieferantref:
+        if datenlieferantref is None:
             raise InterlisExporterToIntermediateSchemaError(
                 f"Invalid provider reference for object '{row.obj_id}' of type '{type_name}'"
             )
@@ -2422,7 +2422,7 @@ class InterlisExporterToIntermediateSchema:
         )
 
         eigentuemerref = self.get_tid(row.fk_owner__REL)
-        if not eigentuemerref:
+        if eigentuemerref is None:
             raise InterlisExporterToIntermediateSchemaError(
                 f"Invalid owner reference for object '{row.obj_id}' of type '{type_name}'"
             )
