@@ -1,6 +1,6 @@
 ------ This file generates the VSA-DSS database (Modul VSA-DSS (2020)) in en on QQIS
 ------ For questions etc. please contact Stefan Burckhardt stefan.burckhardt@sjib.ch
------- version 31.01.2024 20:26:30
+------ version 01.02.2024 21:18:24
 ------ with 3D coordinates
 
 ---------------------------
@@ -40,10 +40,76 @@ CREATE TABLE tww_od.re_maintenance_event_wastewater_structure
 );
 COMMENT ON COLUMN tww_od.re_maintenance_event_wastewater_structure.id IS 'UUID generated with uuid_generate_v4 see https://www.postgresql.org/docs/16/uuid-ossp.html#UUID-OSSP-FUNCTIONS-SECT';
 -------
+CREATE TABLE tww_od.reach_progression_alternative
+(
+   obj_id varchar(16) NOT NULL,
+   CONSTRAINT pkey_tww_od_reach_progression_alternative_obj_id PRIMARY KEY (obj_id)
+)
+WITH (
+   OIDS = False
+);
+CREATE SEQUENCE tww_od.seq_reach_progression_alternative_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
+ ALTER TABLE tww_od.reach_progression_alternative ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','reach_progression_alternative');
+COMMENT ON COLUMN tww_od.reach_progression_alternative.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
+ ALTER TABLE tww_od.reach_progression_alternative ADD COLUMN plantype  integer ;
+COMMENT ON COLUMN tww_od.reach_progression_alternative.plantype IS '';
+ALTER TABLE tww_od.reach_progression_alternative ADD COLUMN progression_geometry geometry('COMPOUNDCURVE', :SRID);
+CREATE INDEX in_tww_reach_progression_alternative_progression_geometry ON tww_od.reach_progression_alternative USING gist (progression_geometry );
+COMMENT ON COLUMN tww_od.reach_progression_alternative.progression_geometry IS 'Start, inflextion and endpoints of a progression alterative for selected scale (e.g. overview map) / Anfangs-, Knick- und Endpunkte des Alternativverlaufs der Leitung im gewählten Plantyp (z.B. Uebersichtsplan) / Points de départ, intermédiaires et d’arrivée de la trace alternative de la conduite dans la type de plan selectionée';
+ ALTER TABLE tww_od.reach_progression_alternative ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
+COMMENT ON COLUMN tww_od.reach_progression_alternative.last_modification IS 'Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE';
+ ALTER TABLE tww_od.reach_progression_alternative ADD COLUMN fk_dataowner varchar(16);
+COMMENT ON COLUMN tww_od.reach_progression_alternative.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
+ ALTER TABLE tww_od.reach_progression_alternative ADD COLUMN fk_provider varchar(16);
+COMMENT ON COLUMN tww_od.reach_progression_alternative.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
+-------
+CREATE TRIGGER
+update_last_modified_reach_progression_alternative
+BEFORE UPDATE OR INSERT ON
+ tww_od.reach_progression_alternative
+FOR EACH ROW EXECUTE PROCEDURE
+ tww_sys.update_last_modified();
 
+-------
+-------
+CREATE TABLE tww_od.wastewater_structure_symbol
+(
+   obj_id varchar(16) NOT NULL,
+   CONSTRAINT pkey_tww_od_wastewater_structure_symbol_obj_id PRIMARY KEY (obj_id)
+)
+WITH (
+   OIDS = False
+);
+CREATE SEQUENCE tww_od.seq_wastewater_structure_symbol_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
+ ALTER TABLE tww_od.wastewater_structure_symbol ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_structure_symbol');
+COMMENT ON COLUMN tww_od.wastewater_structure_symbol.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
+ ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN plantype  integer ;
+COMMENT ON COLUMN tww_od.wastewater_structure_symbol.plantype IS '';
+ ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN symbol_scaling_heigth  decimal(2,1) ;
+COMMENT ON COLUMN tww_od.wastewater_structure_symbol.symbol_scaling_heigth IS '';
+ ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN symbol_scaling_width  decimal(2,1) ;
+COMMENT ON COLUMN tww_od.wastewater_structure_symbol.symbol_scaling_width IS '';
+ ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN symbolori  decimal(4,1) ;
+COMMENT ON COLUMN tww_od.wastewater_structure_symbol.symbolori IS 'Default: 90 Degree / Default: 90 Grad / Default: 90 degree';
+ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN symbolpos_geometry geometry('POINT', :SRID);
+CREATE INDEX in_tww_wastewater_structure_symbol_symbolpos_geometry ON tww_od.wastewater_structure_symbol USING gist (symbolpos_geometry );
+COMMENT ON COLUMN tww_od.wastewater_structure_symbol.symbolpos_geometry IS '';
+ ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
+COMMENT ON COLUMN tww_od.wastewater_structure_symbol.last_modification IS 'Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE';
+ ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN fk_dataowner varchar(16);
+COMMENT ON COLUMN tww_od.wastewater_structure_symbol.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
+ ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN fk_provider varchar(16);
+COMMENT ON COLUMN tww_od.wastewater_structure_symbol.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
+-------
+CREATE TRIGGER
+update_last_modified_wastewater_structure_symbol
+BEFORE UPDATE OR INSERT ON
+ tww_od.wastewater_structure_symbol
+FOR EACH ROW EXECUTE PROCEDURE
+ tww_sys.update_last_modified();
 
-
-
+-------
+-------
 
 
 
@@ -3074,26 +3140,26 @@ ALTER TABLE tww_od.re_maintenance_event_wastewater_structure ADD COLUMN fk_waste
 ALTER TABLE tww_od.re_maintenance_event_wastewater_structure ADD CONSTRAINT rel_maintenance_event_wastewater_structure_wastewater_structure FOREIGN KEY (fk_wastewater_structure) REFERENCES tww_od.wastewater_structure(obj_id) ON UPDATE CASCADE ON DELETE cascade;
 ALTER TABLE tww_od.re_maintenance_event_wastewater_structure ADD COLUMN fk_maintenance_event varchar(16);
 ALTER TABLE tww_od.re_maintenance_event_wastewater_structure ADD CONSTRAINT rel_maintenance_event_wastewater_structure_maintenance_event FOREIGN KEY (fk_maintenance_event) REFERENCES tww_od.maintenance_event(obj_id) ON UPDATE CASCADE ON DELETE cascade;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+CREATE TABLE tww_vl.reach_progression_alternative_plantype () INHERITS (tww_vl.value_list_base);
+ALTER TABLE tww_vl.reach_progression_alternative_plantype ADD CONSTRAINT pkey_tww_vl_reach_progression_alternative_plantype_code PRIMARY KEY (code);
+ INSERT INTO tww_vl.reach_progression_alternative_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9282,9282,'pipeline_registry','Leitungskataster','cadastre_des_conduites_souterraines', 'catasto_delle_canalizzazioni', 'rrr_Leitungskataster', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.reach_progression_alternative_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9285,9285,'overviewmap.om10','Uebersichtsplan.UeP10','plan_d_ensemble.pe10', 'piano_di_insieme.pi10', 'rrr_Uebersichtsplan.UeP10', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.reach_progression_alternative_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9286,9286,'overviewmap.om2','Uebersichtsplan.UeP2','plan_d_ensemble.pe2', 'piano_di_insieme.pi2', 'rrr_Uebersichtsplan.UeP2', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.reach_progression_alternative_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9287,9287,'overviewmap.om5','Uebersichtsplan.UeP5','plan_d_ensemble.pe5', 'piano_di_insieme.pi5', 'rrr_Uebersichtsplan.UeP5', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.reach_progression_alternative_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9284,9284,'network_plan','Werkplan','plan_de_reseau', 'zzz_Werkplan', 'rrr_Werkplan', '', '', '', '', '', 'true');
+ ALTER TABLE tww_od.reach_progression_alternative ADD CONSTRAINT fkey_vl_reach_progression_alternative_plantype FOREIGN KEY (plantype)
+ REFERENCES tww_vl.reach_progression_alternative_plantype (code) MATCH SIMPLE
+ ON UPDATE RESTRICT ON DELETE RESTRICT;
+CREATE TABLE tww_vl.wastewater_structure_symbol_plantype () INHERITS (tww_vl.value_list_base);
+ALTER TABLE tww_vl.wastewater_structure_symbol_plantype ADD CONSTRAINT pkey_tww_vl_wastewater_structure_symbol_plantype_code PRIMARY KEY (code);
+ INSERT INTO tww_vl.wastewater_structure_symbol_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7874,7874,'pipeline_registry','Leitungskataster','cadastre_des_conduites_souterraines', 'catasto_delle_canalizzazioni', 'rrr_Leitungskataster', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.wastewater_structure_symbol_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7876,7876,'overviewmap.om10','Uebersichtsplan.UeP10','plan_d_ensemble.pe10', 'piano_di_insieme.pi10', 'rrr_Uebersichtsplan.UeP10', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.wastewater_structure_symbol_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7877,7877,'overviewmap.om2','Uebersichtsplan.UeP2','plan_d_ensemble.pe2', 'piano_di_insieme.pi2', 'rrr_Uebersichtsplan.UeP2', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.wastewater_structure_symbol_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7878,7878,'overviewmap.om5','Uebersichtsplan.UeP5','plan_d_ensemble.pe5', 'piano_di_insieme.pi5', 'rrr_Uebersichtsplan.UeP5', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.wastewater_structure_symbol_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7875,7875,'network_plan','Werkplan','plan_de_reseau', 'zzz_Werkplan', 'rrr_Werkplan', '', '', '', '', '', 'true');
+ ALTER TABLE tww_od.wastewater_structure_symbol ADD CONSTRAINT fkey_vl_wastewater_structure_symbol_plantype FOREIGN KEY (plantype)
+ REFERENCES tww_vl.wastewater_structure_symbol_plantype (code) MATCH SIMPLE
+ ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 
@@ -4905,15 +4971,15 @@ CREATE SEQUENCE tww_od.seq_wastewater_structure_text_oid INCREMENT 1 MINVALUE 0 
  ALTER TABLE tww_od.wastewater_structure_text ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_structure_text');
 COMMENT ON COLUMN tww_od.wastewater_structure_text.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.wastewater_structure_text ADD COLUMN classname text;
- ALTER TABLE tww_od.wastewater_structure_text ADD CONSTRAINT _classname_length_max_50 CHECK(char_length(classname)<=50);
+ ALTER TABLE tww_od.wastewater_structure_text ADD CONSTRAINT wx_classname_length_max_50 CHECK(char_length(classname)<=50);
 COMMENT ON COLUMN tww_od.wastewater_structure_text.classname IS 'Name of class that textclass is related to / Name der Klasse zu der die Textklasse gehört / nom de la classe à laquelle appartient la classe de texte';
  ALTER TABLE tww_od.wastewater_structure_text ADD COLUMN plantype  integer ;
 COMMENT ON COLUMN tww_od.wastewater_structure_text.plantype IS '';
  ALTER TABLE tww_od.wastewater_structure_text ADD COLUMN remark text;
- ALTER TABLE tww_od.wastewater_structure_text ADD CONSTRAINT _remark_length_max_80 CHECK(char_length(remark)<=80);
+ ALTER TABLE tww_od.wastewater_structure_text ADD CONSTRAINT wx_remark_length_max_80 CHECK(char_length(remark)<=80);
 COMMENT ON COLUMN tww_od.wastewater_structure_text.remark IS 'General remarks';
  ALTER TABLE tww_od.wastewater_structure_text ADD COLUMN text  text ;
-COMMENT ON COLUMN tww_od.wastewater_structure_text.text IS 'yyy_Aus Attributwerten zusammengesetzter Wert, mehrzeilig möglich / Aus Attributwerten zusammengesetzter Wert, mehrzeilig möglich / valeur calculée à partir d’attributs, plusieurs lignes possible';
+COMMENT ON COLUMN tww_od.wastewater_structure_text.text IS 'Value composed of attribute values, multiple lines possible / Aus Attributwerten zusammengesetzter Wert, mehrzeilig möglich / valeur calculée à partir d’attributs, plusieurs lignes possible';
  ALTER TABLE tww_od.wastewater_structure_text ADD COLUMN texthali  smallint ;
 COMMENT ON COLUMN tww_od.wastewater_structure_text.texthali IS '';
  ALTER TABLE tww_od.wastewater_structure_text ADD COLUMN textori  decimal(4,1) ;
@@ -4947,15 +5013,15 @@ CREATE SEQUENCE tww_od.seq_reach_text_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999
  ALTER TABLE tww_od.reach_text ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','reach_text');
 COMMENT ON COLUMN tww_od.reach_text.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.reach_text ADD COLUMN classname text;
- ALTER TABLE tww_od.reach_text ADD CONSTRAINT _classname_length_max_50 CHECK(char_length(classname)<=50);
+ ALTER TABLE tww_od.reach_text ADD CONSTRAINT rx_classname_length_max_50 CHECK(char_length(classname)<=50);
 COMMENT ON COLUMN tww_od.reach_text.classname IS 'Name of class that textclass is related to / Name der Klasse zu der die Textklasse gehört / nom de la classe à laquelle appartient la classe de texte';
  ALTER TABLE tww_od.reach_text ADD COLUMN plantype  integer ;
 COMMENT ON COLUMN tww_od.reach_text.plantype IS '';
  ALTER TABLE tww_od.reach_text ADD COLUMN remark text;
- ALTER TABLE tww_od.reach_text ADD CONSTRAINT _remark_length_max_80 CHECK(char_length(remark)<=80);
+ ALTER TABLE tww_od.reach_text ADD CONSTRAINT rx_remark_length_max_80 CHECK(char_length(remark)<=80);
 COMMENT ON COLUMN tww_od.reach_text.remark IS 'General remarks';
  ALTER TABLE tww_od.reach_text ADD COLUMN text  text ;
-COMMENT ON COLUMN tww_od.reach_text.text IS 'yyy_Aus Attributwerten zusammengesetzter Wert, mehrzeilig möglich / Aus Attributwerten zusammengesetzter Wert, mehrzeilig möglich / valeur calculée à partir d’attributs, plusieurs lignes possible';
+COMMENT ON COLUMN tww_od.reach_text.text IS 'Value composed of attribute values, multiple lines possible / Aus Attributwerten zusammengesetzter Wert, mehrzeilig möglich / valeur calculée à partir d’attributs, plusieurs lignes possible';
  ALTER TABLE tww_od.reach_text ADD COLUMN texthali  smallint ;
 COMMENT ON COLUMN tww_od.reach_text.texthali IS '';
  ALTER TABLE tww_od.reach_text ADD COLUMN textori  decimal(4,1) ;
@@ -4989,15 +5055,15 @@ CREATE SEQUENCE tww_od.seq_catchment_area_text_oid INCREMENT 1 MINVALUE 0 MAXVAL
  ALTER TABLE tww_od.catchment_area_text ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','catchment_area_text');
 COMMENT ON COLUMN tww_od.catchment_area_text.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.catchment_area_text ADD COLUMN classname text;
- ALTER TABLE tww_od.catchment_area_text ADD CONSTRAINT _classname_length_max_50 CHECK(char_length(classname)<=50);
+ ALTER TABLE tww_od.catchment_area_text ADD CONSTRAINT cx_classname_length_max_50 CHECK(char_length(classname)<=50);
 COMMENT ON COLUMN tww_od.catchment_area_text.classname IS 'Name of class that textclass is related to / Name der Klasse zu der die Textklasse gehört / nom de la classe à laquelle appartient la classe de texte';
  ALTER TABLE tww_od.catchment_area_text ADD COLUMN plantype  integer ;
 COMMENT ON COLUMN tww_od.catchment_area_text.plantype IS '';
  ALTER TABLE tww_od.catchment_area_text ADD COLUMN remark text;
- ALTER TABLE tww_od.catchment_area_text ADD CONSTRAINT _remark_length_max_80 CHECK(char_length(remark)<=80);
+ ALTER TABLE tww_od.catchment_area_text ADD CONSTRAINT cx_remark_length_max_80 CHECK(char_length(remark)<=80);
 COMMENT ON COLUMN tww_od.catchment_area_text.remark IS 'General remarks';
  ALTER TABLE tww_od.catchment_area_text ADD COLUMN text  text ;
-COMMENT ON COLUMN tww_od.catchment_area_text.text IS 'yyy_Aus Attributwerten zusammengesetzter Wert, mehrzeilig möglich / Aus Attributwerten zusammengesetzter Wert, mehrzeilig möglich / valeur calculée à partir d’attributs, plusieurs lignes possible';
+COMMENT ON COLUMN tww_od.catchment_area_text.text IS 'Value composed of attribute values, multiple lines possible / Aus Attributwerten zusammengesetzter Wert, mehrzeilig möglich / valeur calculée à partir d’attributs, plusieurs lignes possible';
  ALTER TABLE tww_od.catchment_area_text ADD COLUMN texthali  smallint ;
 COMMENT ON COLUMN tww_od.catchment_area_text.texthali IS '';
  ALTER TABLE tww_od.catchment_area_text ADD COLUMN textori  decimal(4,1) ;
@@ -5031,7 +5097,7 @@ CREATE SEQUENCE tww_od.seq_wastewater_structure_symbol_oid INCREMENT 1 MINVALUE 
  ALTER TABLE tww_od.wastewater_structure_symbol ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_structure_symbol');
 COMMENT ON COLUMN tww_od.wastewater_structure_symbol.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN classname text;
- ALTER TABLE tww_od.wastewater_structure_symbol ADD CONSTRAINT _classname_length_max_50 CHECK(char_length(classname)<=50);
+ ALTER TABLE tww_od.wastewater_structure_symbol ADD CONSTRAINT bx_classname_length_max_50 CHECK(char_length(classname)<=50);
 COMMENT ON COLUMN tww_od.wastewater_structure_symbol.classname IS 'Name of class that symbol class is related to / Name der Klasse zu der die Symbolklasse gehört / nom de la classe à laquelle appartient la classe de symbole';
  ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN plantype  integer ;
 COMMENT ON COLUMN tww_od.wastewater_structure_symbol.plantype IS '';
@@ -5210,6 +5276,10 @@ ALTER TABLE tww_vl.reach_progression_alternative_plantype ADD CONSTRAINT pkey_tw
 
 --------- Relations to class organisation for dataowner and provider (new 3.11.2014);
 
+ALTER TABLE tww_od.reach_progression_alternative ADD CONSTRAINT rel_od_reach_progression_alternative_fk_dataowner FOREIGN KEY (fk_dataowner) REFERENCES tww_od.organisation(obj_id)DEFERRABLE;
+ALTER TABLE tww_od.reach_progression_alternative ADD CONSTRAINT rel_od_reach_progression_alternative_fk_dataprovider FOREIGN KEY (fk_provider) REFERENCES tww_od.organisation(obj_id)DEFERRABLE;
+ALTER TABLE tww_od.wastewater_structure_symbol ADD CONSTRAINT rel_od_wastewater_structure_symbol_fk_dataowner FOREIGN KEY (fk_dataowner) REFERENCES tww_od.organisation(obj_id)DEFERRABLE;
+ALTER TABLE tww_od.wastewater_structure_symbol ADD CONSTRAINT rel_od_wastewater_structure_symbol_fk_dataprovider FOREIGN KEY (fk_provider) REFERENCES tww_od.organisation(obj_id)DEFERRABLE;
 ALTER TABLE tww_od.organisation ADD CONSTRAINT rel_od_organisation_fk_dataowner FOREIGN KEY (fk_dataowner) REFERENCES tww_od.organisation(obj_id)DEFERRABLE;
 ALTER TABLE tww_od.organisation ADD CONSTRAINT rel_od_organisation_fk_dataprovider FOREIGN KEY (fk_provider) REFERENCES tww_od.organisation(obj_id)DEFERRABLE;
 ALTER TABLE tww_od.measure ADD CONSTRAINT rel_od_measure_fk_dataowner FOREIGN KEY (fk_dataowner) REFERENCES tww_od.organisation(obj_id)DEFERRABLE;
@@ -5319,3 +5389,5 @@ ALTER TABLE tww_od.farm ADD CONSTRAINT rel_od_farm_fk_dataprovider FOREIGN KEY (
  CREATE UNIQUE INDEX in_od_hydraulic_char_data_identifier ON tww_od.hydraulic_char_data USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
  CREATE UNIQUE INDEX in_od_catchment_area_totals_identifier ON tww_od.catchment_area_totals USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
  CREATE UNIQUE INDEX in_od_building_group_identifier ON tww_od.building_group USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
+
+
