@@ -7,7 +7,7 @@
 
 set -e
 
-PGSERVICE=${PGSERVICE:-pg_teksi_wastewater}
+PGSERVICE=${PGSERVICE:-pg_tww}
 SRID=2056
 
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/..
