@@ -1,7 +1,7 @@
 name: 📚 Documentation builder
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: docs-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 on:
@@ -23,9 +23,6 @@ on:
 jobs:
   datamodel-documentation:
     uses: ./.github/workflows/datamodel-create-dumps.yml
-    concurrency:
-      group: ${{ github.workflow }}-schemaspy-${{ github.event.pull_request.number || github.ref }}
-      cancel-in-progress: true
 
   build:
     needs: datamodel-documentation
