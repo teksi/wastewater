@@ -241,13 +241,13 @@ Linux : use the package manager</p>
 <section id="id1">
 <h3><span class="section-number">4.3.4.2. </span>Import<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
 <p>Import example</p>
-<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3<span class="w"> </span>plugin/teksi_wastewater_cmd.py<span class="w"> </span>interlis_import<span class="w"> </span>--xtf_file<span class="w"> </span>plugin/teksi_wastewater/tests/data/minimal-dataset-SIA405-ABWASSER.xtf<span class="w"> </span>--pgservice<span class="w"> </span>pg_tww
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3<span class="w"> </span>plugin/tww_cmd.py<span class="w"> </span>interlis_import<span class="w"> </span>--xtf_file<span class="w"> </span>plugin/teksi_wastewater/tests/data/minimal-dataset-SIA405-ABWASSER.xtf<span class="w"> </span>--pgservice<span class="w"> </span>pg_tww
 </pre></div>
 </div>
 <p>Full usage</p>
-<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3<span class="w"> </span>plugin/teksi_wastewater_cmd.py<span class="w"> </span>interlis_export<span class="w"> </span>--help
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3<span class="w"> </span>plugin/tww_cmd.py<span class="w"> </span>interlis_export<span class="w"> </span>--help
 
-<span class="go">usage: teksi_wastewater_cmd.py interlis_export [-h] --xtf_file XTF_FILE [--selection SELECTION] [--export_model {SIA405_ABWASSER_2020_1_LV95,DSS_2020_1_LV95,VSA_KEK_2020_1_LV95}] [--logs_next_to_file]</span>
+<span class="go">usage: tww_cmd.py interlis_export [-h] --xtf_file XTF_FILE [--selection SELECTION] [--export_model {SIA405_ABWASSER_2020_1_LV95,DSS_2020_1_LV95,VSA_KEK_2020_1_LV95}] [--logs_next_to_file]</span>
 <span class="go">                                               [--label_scale_pipeline_registry_1_1000] [--label_scale_network_plan_1_500] [--label_scale_overviewmap_1_10000] [--label_scale_overviewmap_1_5000]</span>
 <span class="go">                                               [--label_scale_overviewmap_1_2000] [--selected_ids SELECTED_IDS] [--pgservice PGSERVICE] [--pghost PGHOST] [--pgport PGPORT] [--pgdatabase PGDATABASE]</span>
 <span class="go">                                               [--pguser PGUSER] [--pgpass PGPASS]</span>
@@ -286,13 +286,13 @@ Linux : use the package manager</p>
 <section id="id2">
 <h3><span class="section-number">4.3.4.3. </span>Export<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
 <p>Export example</p>
-<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="go">python3 plugin/teksi_wastewater_cmd.py interlis_export --xtf_file &quot;output.xtf&quot; --pgservice pg_tww</span>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="go">python3 plugin/tww_cmd.py interlis_export --xtf_file &quot;output.xtf&quot; --pgservice pg_tww</span>
 </pre></div>
 </div>
 <p>Full usage</p>
-<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3<span class="w"> </span>plugin/teksi_wastewater_cmd.py<span class="w"> </span>interlis_export<span class="w"> </span>--help
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3<span class="w"> </span>plugin/tww_cmd.py<span class="w"> </span>interlis_export<span class="w"> </span>--help
 
-<span class="go">usage: teksi_wastewater_cmd.py interlis_export [-h] --xtf_file XTF_FILE [--selection SELECTION] [--export_model {SIA405_ABWASSER_2020_1_LV95,DSS_2020_1_LV95,VSA_KEK_2020_1_LV95}] [--logs_next_to_file]</span>
+<span class="go">usage: tww_cmd.py interlis_export [-h] --xtf_file XTF_FILE [--selection SELECTION] [--export_model {SIA405_ABWASSER_2020_1_LV95,DSS_2020_1_LV95,VSA_KEK_2020_1_LV95}] [--logs_next_to_file]</span>
 <span class="go">                                               [--label_scale_pipeline_registry_1_1000] [--label_scale_network_plan_1_500] [--label_scale_overviewmap_1_10000] [--label_scale_overviewmap_1_5000]</span>
 <span class="go">                                               [--label_scale_overviewmap_1_2000] [--selected_ids SELECTED_IDS] [--pgservice PGSERVICE] [--pghost PGHOST] [--pgport PGPORT] [--pgdatabase PGDATABASE]</span>
 <span class="go">                                               [--pguser PGUSER] [--pgpass PGPASS]</span>

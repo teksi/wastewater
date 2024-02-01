@@ -140,15 +140,15 @@ Import example
 
 .. code-block:: shell-session
 
-   $ python3 plugin/teksi_wastewater_cmd.py interlis_import --xtf_file plugin/teksi_wastewater/tests/data/minimal-dataset-SIA405-ABWASSER.xtf --pgservice pg_tww
+   $ python3 plugin/tww_cmd.py interlis_import --xtf_file plugin/teksi_wastewater/tests/data/minimal-dataset-SIA405-ABWASSER.xtf --pgservice pg_tww
 
 Full usage
 
 .. code-block:: shell-session
 
-   $ python3 plugin/teksi_wastewater_cmd.py interlis_export --help
+   $ python3 plugin/tww_cmd.py interlis_export --help
 
-   usage: teksi_wastewater_cmd.py interlis_export [-h] --xtf_file XTF_FILE [--selection SELECTION] [--export_model {SIA405_ABWASSER_2020_1_LV95,DSS_2020_1_LV95,VSA_KEK_2020_1_LV95}] [--logs_next_to_file]
+   usage: tww_cmd.py interlis_export [-h] --xtf_file XTF_FILE [--selection SELECTION] [--export_model {SIA405_ABWASSER_2020_1_LV95,DSS_2020_1_LV95,VSA_KEK_2020_1_LV95}] [--logs_next_to_file]
                                                   [--label_scale_pipeline_registry_1_1000] [--label_scale_network_plan_1_500] [--label_scale_overviewmap_1_10000] [--label_scale_overviewmap_1_5000]
                                                   [--label_scale_overviewmap_1_2000] [--selected_ids SELECTED_IDS] [--pgservice PGSERVICE] [--pghost PGHOST] [--pgport PGPORT] [--pgdatabase PGDATABASE]
                                                   [--pguser PGUSER] [--pgpass PGPASS]
@@ -189,15 +189,15 @@ Export example
 
 .. code-block:: shell-session
 
-   python3 plugin/teksi_wastewater_cmd.py interlis_export --xtf_file "output.xtf" --pgservice pg_tww
+   python3 plugin/tww_cmd.py interlis_export --xtf_file "output.xtf" --pgservice pg_tww
 
 Full usage
 
 .. code-block:: shell-session
 
-   $ python3 plugin/teksi_wastewater_cmd.py interlis_export --help
+   $ python3 plugin/tww_cmd.py interlis_export --help
 
-   usage: teksi_wastewater_cmd.py interlis_export [-h] --xtf_file XTF_FILE [--selection SELECTION] [--export_model {SIA405_ABWASSER_2020_1_LV95,DSS_2020_1_LV95,VSA_KEK_2020_1_LV95}] [--logs_next_to_file]
+   usage: tww_cmd.py interlis_export [-h] --xtf_file XTF_FILE [--selection SELECTION] [--export_model {SIA405_ABWASSER_2020_1_LV95,DSS_2020_1_LV95,VSA_KEK_2020_1_LV95}] [--logs_next_to_file]
                                                   [--label_scale_pipeline_registry_1_1000] [--label_scale_network_plan_1_500] [--label_scale_overviewmap_1_10000] [--label_scale_overviewmap_1_5000]
                                                   [--label_scale_overviewmap_1_2000] [--selected_ids SELECTED_IDS] [--pgservice PGSERVICE] [--pghost PGHOST] [--pgport PGPORT] [--pgdatabase PGDATABASE]
                                                   [--pguser PGUSER] [--pgpass PGPASS]
