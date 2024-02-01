@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?><database name="tww" schema="tww_sys" type="PostgreSQL - 14.5 (Debian 14.5-1.pgdg110+1)">
+   <sequences>
+      <sequence increment="1" name="dictionary_od_field_id_seq" startValue="1"/>
+      <sequence increment="1" name="dictionary_od_values_id_seq" startValue="1"/>
+      <sequence increment="1" name="oid_prefixes_id_seq" startValue="1"/>
+   </sequences>
+   <tables>
+      <table name="dictionary_od_field" numRows="785" remarks="" schema="tww_sys" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('tww_sys.dictionary_od_field_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="class_id" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="attribute_id" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="table_name" nullable="true" remarks="" size="80" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="field_name" nullable="true" remarks="" size="80" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="field_name_en" nullable="true" remarks="" size="80" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="field_name_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="field_name_fr" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="field_name_it" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="field_name_ro" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="field_description_en" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="field_description_de" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="field_description_fr" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="field_description_it" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="field_description_ro" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="15" name="field_mandatory" nullable="true" remarks="" size="2147483647" type="&quot;tww_od&quot;.&quot;_plantype&quot;" typeCode="2003"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="16" name="field_visible" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="17" name="field_datatype" nullable="true" remarks="" size="40" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="18" name="field_unit_de" nullable="true" remarks="" size="20" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="19" name="field_unit_description_de" nullable="true" remarks="" size="90" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="20" name="field_unit_en" nullable="true" remarks="" size="20" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="21" name="field_unit_description_en" nullable="true" remarks="" size="90" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="22" name="field_unit_fr" nullable="true" remarks="" size="20" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="23" name="field_unit_description_fr" nullable="true" remarks="" size="90" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="24" name="field_unit_it" nullable="true" remarks="" size="20" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="25" name="field_unit_description_it" nullable="true" remarks="" size="90" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="26" name="field_unit_ro" nullable="true" remarks="" size="20" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="27" name="field_unit_description_ro" nullable="true" remarks="" size="90" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="28" name="field_min" nullable="true" remarks="" size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="29" name="field_max" nullable="true" remarks="" size="0" type="numeric" typeCode="2"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="is_dictionary_od_field_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="in_dictionary_od_field" unique="true">
+            <column ascending="true" name="class_id"/>
+            <column ascending="true" name="attribute_id"/>
+         </index>
+      </table>
+      <table name="dictionary_od_table" numRows="84" remarks="" schema="tww_sys" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="tablename" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="name_en" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="shortcut_en" nullable="true" remarks="" size="2" type="bpchar" typeCode="1"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="name_de" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="shortcut_de" nullable="true" remarks="" size="2" type="bpchar" typeCode="1"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="name_fr" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="shortcut_fr" nullable="true" remarks="" size="2" type="bpchar" typeCode="1"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="name_it" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="shortcut_it" nullable="true" remarks="" size="4" type="bpchar" typeCode="1"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="name_ro" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="shortcut_ro" nullable="true" remarks="" size="4" type="bpchar" typeCode="1"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="pkey_tww_is_dictonary_id" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="in_dictionary_od_table" unique="true">
+            <column ascending="true" name="tablename"/>
+         </index>
+         <index name="unq_tww_is_dictonary_name_de" unique="true">
+            <column ascending="true" name="name_de"/>
+         </index>
+         <index name="unq_tww_is_dictonary_name_en" unique="true">
+            <column ascending="true" name="name_en"/>
+         </index>
+         <index name="unq_tww_is_dictonary_name_fr" unique="true">
+            <column ascending="true" name="name_fr"/>
+         </index>
+         <index name="unq_tww_is_dictonary_shortcut_en" unique="true">
+            <column ascending="true" name="shortcut_en"/>
+         </index>
+         <index name="unq_tww_is_dictonary_tablename" unique="true">
+            <column ascending="true" name="tablename"/>
+         </index>
+      </table>
+      <table name="dictionary_od_values" numRows="1669" remarks="" schema="tww_sys" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('tww_sys.dictionary_od_values_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="class_id" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="attribute_id" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="value_id" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="table_name" nullable="true" remarks="" size="80" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="field_name" nullable="true" remarks="" size="80" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="value_name" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="value_name_en" nullable="true" remarks="" size="80" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="shortcut_en" nullable="true" remarks="" size="4" type="bpchar" typeCode="1"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="value_name_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="shortcut_de" nullable="true" remarks="" size="4" type="bpchar" typeCode="1"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="value_name_fr" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="shortcut_fr" nullable="true" remarks="" size="4" type="bpchar" typeCode="1"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="value_name_it" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="shortcut_it" nullable="true" remarks="" size="4" type="bpchar" typeCode="1"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="15" name="value_name_ro" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="16" name="shortcut_ro" nullable="true" remarks="" size="4" type="bpchar" typeCode="1"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="17" name="value_description_en" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="18" name="value_description_de" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="19" name="value_description_fr" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="20" name="value_description_it" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="21" name="value_description_ro" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="is_dictionary_od_values_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="in_dictionary_od_values" unique="true">
+            <column ascending="true" name="class_id"/>
+            <column ascending="true" name="attribute_id"/>
+            <column ascending="true" name="value_id"/>
+         </index>
+      </table>
+      <table name="oid_prefixes" numRows="10" remarks="This table contains OID prefixes for different communities or organizations. The application or administrator changing this table has to make sure that only one record is set to active." schema="tww_sys" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('tww_sys.oid_prefixes_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="prefix" nullable="true" remarks="" size="8" type="bpchar" typeCode="1"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="organization" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="active" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="pkey_tww_is_oid_prefixes_id" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="in_tww_is_oid_prefixes_active" unique="false">
+            <column ascending="true" name="active"/>
+         </index>
+         <index name="in_tww_is_oid_prefixes_id" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+   </tables>
+   <routines>
+      <routine dataAccess="MODIFIES" deterministic="false" name="disable_symbology_triggers()" returnType="void" securityType="DEFINER" type="FUNCTION">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[DECLARE
+    tbl text;
+	trig text;
+BEGIN
+  ALTER TABLE tww_od.reach_point DISABLE TRIGGER on_reach_point_update;
+  ALTER TABLE tww_od.reach DISABLE TRIGGER on_reach_2_change;
+  ALTER TABLE tww_od.reach DISABLE TRIGGER on_reach_1_delete;
+  ALTER TABLE tww_od.wastewater_structure DISABLE TRIGGER on_wastewater_structure_update;
+  ALTER TABLE tww_od.wastewater_networkelement DISABLE TRIGGER ws_label_update_by_wastewater_networkelement;
+  ALTER TABLE tww_od.structure_part DISABLE TRIGGER on_structure_part_change;
+  ALTER TABLE tww_od.cover DISABLE TRIGGER on_cover_change;
+  ALTER TABLE tww_od.wastewater_node DISABLE TRIGGER on_wasterwaternode_change;
+  ALTER TABLE tww_od.reach DISABLE TRIGGER ws_symbology_update_by_reach;
+  ALTER TABLE tww_od.channel DISABLE TRIGGER ws_symbology_update_by_channel;
+  ALTER TABLE tww_od.reach_point DISABLE TRIGGER ws_symbology_update_by_reach_point;
+  ALTER TABLE tww_od.reach DISABLE TRIGGER calculate_reach_length;
+  RETURN;
+END;]]></definition>
+         <parameters>
+            <parameter mode="IN"/>
+         </parameters>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="enable_symbology_triggers()" returnType="void" securityType="DEFINER" type="FUNCTION">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[DECLARE
+    tbl text;
+	trig text;
+BEGIN
+  ALTER TABLE tww_od.reach_point ENABLE TRIGGER on_reach_point_update;
+  ALTER TABLE tww_od.reach ENABLE TRIGGER on_reach_2_change;
+  ALTER TABLE tww_od.reach ENABLE TRIGGER on_reach_1_delete;
+  ALTER TABLE tww_od.wastewater_structure ENABLE TRIGGER on_wastewater_structure_update;
+  ALTER TABLE tww_od.wastewater_networkelement ENABLE TRIGGER ws_label_update_by_wastewater_networkelement;
+  ALTER TABLE tww_od.structure_part ENABLE TRIGGER on_structure_part_change;
+  ALTER TABLE tww_od.cover ENABLE TRIGGER on_cover_change;
+  ALTER TABLE tww_od.wastewater_node ENABLE TRIGGER on_wasterwaternode_change;
+  ALTER TABLE tww_od.reach ENABLE TRIGGER ws_symbology_update_by_reach;
+  ALTER TABLE tww_od.channel ENABLE TRIGGER ws_symbology_update_by_channel;
+  ALTER TABLE tww_od.reach_point ENABLE TRIGGER ws_symbology_update_by_reach_point;
+  ALTER TABLE tww_od.reach ENABLE TRIGGER calculate_reach_length;
+END;]]></definition>
+         <parameters>
+            <parameter mode="IN"/>
+         </parameters>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="generate_oid(schema_name text, table_name text)" returnType="text" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[DECLARE
+  myrec_prefix record;
+  myrec_shortcut record;
+  myrec_seq record;
+BEGIN
+  -- first we have to get the OID prefix
+  BEGIN
+    SELECT prefix::text INTO myrec_prefix FROM tww_sys.oid_prefixes WHERE active = TRUE;
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+           RAISE EXCEPTION 'no active record found in table tww_sys.oid_prefixes';
+        WHEN TOO_MANY_ROWS THEN
+	   RAISE EXCEPTION 'more than one active records found in table tww_sys.oid_prefixes';
+  END;
+  -- test if prefix is of correct length
+  IF char_length(myrec_prefix.prefix) != 8 THEN
+    RAISE EXCEPTION 'character length of prefix must be 8';
+  END IF;
+  --get table 2char shortcut
+  BEGIN
+    SELECT shortcut_en INTO STRICT myrec_shortcut FROM tww_sys.dictionary_od_table WHERE tablename = table_name;
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            RAISE EXCEPTION 'dictionary entry for table % not found', table_name;
+        WHEN TOO_MANY_ROWS THEN
+            RAISE EXCEPTION 'dictonary entry for table % not unique', table_name;
+  END;
+  --get sequence for table
+  EXECUTE format('SELECT nextval(''%1$I.seq_%2$I_oid'') AS seqval', schema_name, table_name) INTO myrec_seq;
+  IF NOT FOUND THEN
+    RAISE EXCEPTION 'sequence for table % not found', table_name;
+  END IF;
+  RETURN myrec_prefix.prefix || myrec_shortcut.shortcut_en || to_char(myrec_seq.seqval,'FM000000');
+END;]]></definition>
+         <parameters>
+            <parameter mode="IN" name="schema_name" type="text"/>
+            <parameter mode="IN" name="table_name" type="text"/>
+         </parameters>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="update_last_modified()" returnType="trigger" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[BEGIN
+ NEW.last_modification := TIMEOFDAY();
+
+ RETURN NEW;
+END;]]></definition>
+         <parameters>
+            <parameter mode="IN"/>
+         </parameters>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="update_last_modified_parent()" returnType="trigger" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[DECLARE
+ table_name TEXT;
+BEGIN
+ table_name = TG_ARGV[0];
+
+ EXECUTE '
+ UPDATE ' || table_name || '
+ SET last_modification = TIMEOFDAY()::timestamp
+ WHERE obj_id = ''' || NEW.obj_id || '''
+';
+ RETURN NEW;
+END;]]></definition>
+         <parameters>
+            <parameter mode="IN"/>
+         </parameters>
+      </routine>
+   </routines>
+</database>

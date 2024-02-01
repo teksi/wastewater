@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>tww.tww_app</title>
+        <!-- Tell the browser to be responsive to screen width -->
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        <link rel="icon" type="image/png" sizes="16x16" href="../favicon.png">
+        <!-- Bootstrap 3.3.5 -->
+        <link rel="stylesheet" href="../bower/admin-lte/bootstrap/css/bootstrap.min.css">
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="../bower/font-awesome/css/font-awesome.min.css">
+        <!-- Ionicons -->
+        <link rel="stylesheet" href="../bower/ionicons/css/ionicons.min.css">
+        <!-- DataTables -->
+        <link rel="stylesheet" href="../bower/datatables.net-bs/css/dataTables.bootstrap.min.css">
+        <link rel="stylesheet" href="../bower/datatables.net-buttons-bs/css/buttons.bootstrap.min.css">
+        <!-- Code Mirror -->
+        <link rel="stylesheet" href="../bower/codemirror/codemirror.css">
+        <!-- Fonts -->
+        <link href='../fonts/indieflower/indie-flower.css' rel='stylesheet' type='text/css'>
+        <link href='../fonts/source-sans-pro/source-sans-pro.css' rel='stylesheet' type='text/css'>
+
+        <!-- Theme style -->
+        <link rel="stylesheet" href="../bower/admin-lte/dist/css/AdminLTE.min.css">
+        <!-- Salvattore -->
+        <link rel="stylesheet" href="../bower/salvattore/salvattore.css">
+        <!-- AdminLTE Skins. Choose a skin from the css/skins
+           folder instead of downloading all of them to reduce the load. -->
+        <link rel="stylesheet" href="../bower/admin-lte/dist/css/skins/_all-skins.min.css">
+        <!-- SchemaSpy -->
+        <link rel="stylesheet" href="../schemaSpy.css">
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="../bower/html5shiv/html5shiv.min.js"></script>
+        <script src="../bower/respond/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <!-- ADD THE CLASS layout-top-nav TO REMOVE THE SIDEBAR. -->
+    <body class="hold-transition skin-blue layout-top-nav">
+        <div class="wrapper">
+            <header class="main-header">
+                <nav class="navbar navbar-static-top">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <a href="../../index.html" class="navbar-brand"><b>tww</b></a><span class="navbar-brand" style="padding-left: 0">.tww_app</span>
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse"><i class="fa fa-bars"></i></button>
+                        </div>
+
+                        <!-- Collect the nav links, forms, and other content for toggling -->
+                        <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
+                            <ul class="nav navbar-nav">
+                                <li><a href="../index.html">Tables <span class="sr-only">(current)</span></a></li>
+                                <li><a href="../columns.html" title="All of the columns in the schema">Columns</a></li>
+                                <li><a href="../constraints.html" title="Useful for diagnosing error messages that just give constraint name or number">Constraints</a></li>
+                                <li><a href="../relationships.html" title="Diagram of table relationships">Relationships</a></li>
+                                <li><a href="../orphans.html" title="View of tables with neither parents nor children">Orphan&nbsp;Tables</a></li>
+                                <li><a href="../anomalies.html" title="Things that might not be quite right">Anomalies</a></li>
+                                <li><a href="../routines.html" title="Procedures and functions">Routines</a></li>
+                            </ul>
+                        </div>
+                        <!-- /.navbar-collapse -->
+                        <!-- Navbar Right Menu -->
+                    </div>
+                    <!-- /.container-fluid -->
+                </nav>
+            </header>
+            <!-- Main content -->
+            <!-- Full Width Column -->
+            <div class="content-wrapper">
+                <!-- Content Header (Page header) -->
+                <section class="content-header">
+                    <h1>update_wastewater_structure_label(_obj_id text, _all boolean DEFAULT false)</h1><br />
+                </section>
+                <!-- Main content -->
+                <section class="content">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+                            <h3 id="Columns" class="box-title">Parameters</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <table id="standard_table" class="table table-bordered table-striped dataTable" role="grid">
+                                <thead align='left'>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Mode</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>_obj_id</td>
+                                    <td>text</td>
+                                    <td>IN</td>
+                                </tr>
+                                <tr>
+                                    <td>_all</td>
+                                    <td>boolean</td>
+                                    <td>IN</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <i class="fa fa-file-code-o"></i>
+                            <h3 id="RoutineDefinition" class="box-title">Definition</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <textarea id="sql-script-codemirror" name="sql-script-codemirror" rows="" style="display: none;">DECLARE&#10;  myrec record;&#10;&#10;BEGIN&#10;UPDATE tww_od.wastewater_structure ws&#10;SET _label &#61; label,&#10;    _cover_label &#61; cover_label,&#10;    _bottom_label &#61; bottom_label,&#10;    _input_label &#61; input_label,&#10;    _output_label &#61; output_label&#10;    FROM(&#10;SELECT   ws_obj_id,&#10;          COALESCE(ws_identifier, &#39;&#39;) as label,&#10;          CASE WHEN count(co_level)&lt;2 THEN array_to_string(array_agg(E&#39;\nC&#39; || &#39;&#61;&#39; || co_level ORDER BY idx DESC), &#39;&#39;, &#39;&#39;) ELSE&#10;&#9;&#9;  array_to_string(array_agg(E&#39;\nC&#39; || idx || &#39;&#61;&#39; || co_level ORDER BY idx ASC), &#39;&#39;, &#39;&#39;) END as cover_label,&#10;          array_to_string(array_agg(E&#39;\nB&#39; || &#39;&#61;&#39; || bottom_level), &#39;&#39;, &#39;&#39;) as bottom_label,&#10;          CASE WHEN count(rpi_level)&lt;2 THEN array_to_string(array_agg(E&#39;\nI&#39; || &#39;&#61;&#39; || rpi_level ORDER BY idx DESC), &#39;&#39;, &#39;&#39;) ELSE&#10;&#9;&#9;  array_to_string(array_agg(E&#39;\nI&#39; || idx || &#39;&#61;&#39; || rpi_level ORDER BY idx ASC), &#39;&#39;, &#39;&#39;) END as input_label,&#10;          CASE WHEN count(rpo_level)&lt;2 THEN array_to_string(array_agg(E&#39;\nO&#39; || &#39;&#61;&#39; || rpo_level ORDER BY idx DESC), &#39;&#39;, &#39;&#39;) ELSE&#10;&#9;&#9;  array_to_string(array_agg(E&#39;\nO&#39; || idx || &#39;&#61;&#39; || rpo_level ORDER BY idx ASC), &#39;&#39;, &#39;&#39;) END as output_label&#10;  FROM (&#10;&#9;&#9;  SELECT ws.obj_id AS ws_obj_id, ws.identifier AS ws_identifier, parts.co_level AS co_level, parts.rpi_level AS rpi_level, parts.rpo_level AS rpo_level, parts.obj_id, idx, bottom_level AS bottom_level&#10;    FROM tww_od.wastewater_structure WS&#10;&#10;    LEFT JOIN (&#10;      SELECT coalesce(round(CO.level, 2)::text, &#39;?&#39;) AS co_level, NULL::text AS rpi_level, NULL::text AS rpo_level, SP.fk_wastewater_structure ws, SP.obj_id, row_number() OVER(PARTITION BY SP.fk_wastewater_structure) AS idx, NULL::text AS bottom_level&#10;      FROM tww_od.structure_part SP&#10;      RIGHT JOIN tww_od.cover CO ON CO.obj_id &#61; SP.obj_id&#10;      WHERE _all OR SP.fk_wastewater_structure &#61; _obj_id&#10;      -- Inputs&#10;      UNION&#10;      SELECT NULL AS co_level, coalesce(round(RP.level, 2)::text, &#39;?&#39;) AS rpi_level, NULL::text AS rpo_level, NE.fk_wastewater_structure ws, RP.obj_id, row_number() OVER(PARTITION BY NE.fk_wastewater_structure ORDER BY ST_Azimuth(RP.situation3d_geometry,ST_PointN(RE_to.progression3d_geometry,-2))/pi()*180 ASC), NULL::text AS bottom_level&#10;      FROM tww_od.reach_point RP&#10;      LEFT JOIN tww_od.wastewater_networkelement NE ON RP.fk_wastewater_networkelement &#61; NE.obj_id&#10;      INNER JOIN tww_od.reach RE_to ON RP.obj_id &#61; RE_to.fk_reach_point_to&#10;      LEFT JOIN tww_od.wastewater_networkelement NE_to ON NE_to.obj_id &#61; RE_to.obj_id&#10;      LEFT JOIN tww_od.channel CH_to ON NE_to.fk_wastewater_structure &#61; CH_to.obj_id&#10;      WHERE (_all OR NE.fk_wastewater_structure &#61; _obj_id) and CH_to.function_hierarchic in (5062,5064,5066,5068,5069,5070,5071,5072,5074)  ----label only reaches with function_hierarchic&#61;pwwf.*&#10;      -- Outputs&#10;      UNION&#10;      SELECT NULL AS co_level, NULL::text AS rpi_level,&#10;&#9;&#9;coalesce(round(RP.level, 2)::text, &#39;?&#39;) AS rpo_level,&#10;&#9;&#9;NE.fk_wastewater_structure ws, RP.obj_id,&#10;&#9;&#9;row_number() OVER(PARTITION BY NE.fk_wastewater_structure&#10;&#9;&#9;&#9;&#9;&#9;&#9;  ORDER BY array_position(ARRAY[4522,4526,4524,4516,4514,4518,520,4571,5322], ch.usage_current),&#10;&#9;&#9;&#9;&#9;&#9;&#9;  ST_Azimuth(RP.situation3d_geometry,ST_PointN(RE_from.progression3d_geometry,2))/pi()*180 ASC),&#10;&#9;&#9;NULL::text AS bottom_level&#10;      FROM tww_od.reach_point RP&#10;      LEFT JOIN tww_od.wastewater_networkelement NE ON RP.fk_wastewater_networkelement &#61; NE.obj_id&#10;      INNER JOIN tww_od.reach RE_from ON RP.obj_id &#61; RE_from.fk_reach_point_from&#10;&#9;  LEFT JOIN tww_od.wastewater_networkelement NE_RE ON NE_RE.obj_id::text &#61; RE_from.obj_id::text&#10;&#9;  LEFT JOIN tww_od.wastewater_structure ws ON NE_RE.fk_wastewater_structure::text &#61; ws.obj_id::text&#10;      LEFT JOIN tww_od.channel ch ON ch.obj_id::text &#61; ws.obj_id::text&#10;      WHERE CASE WHEN _obj_id IS NULL THEN TRUE ELSE NE.fk_wastewater_structure &#61; _obj_id END&#10;      -- Bottom&#10;      UNION&#10;      SELECT NULL AS co_level, NULL::text AS rpi_level, NULL::text AS rpo_level, ws1.obj_id ws, NULL, NULL, round(wn.bottom_level, 2)::text AS wn_bottom_level&#10;      FROM tww_od.wastewater_structure ws1&#10;      LEFT JOIN tww_od.wastewater_node wn ON wn.obj_id &#61; ws1.fk_main_wastewater_node&#10;      WHERE _all OR ws1.obj_id &#61; _obj_id&#10;&#9;)AS parts ON ws &#61; ws.obj_id&#10;    WHERE _all OR ws.obj_id &#61; _obj_id&#10;&#9;  ) parts&#10;  GROUP BY ws_obj_id, COALESCE(ws_identifier, &#39;&#39;)&#10;) labeled_ws&#10;WHERE ws.obj_id &#61; labeled_ws.ws_obj_id;&#10;&#10;END</textarea>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <!-- /.content-wrapper -->
+            <footer class="main-footer">
+                <div>
+                    <div class="pull-right hidden-xs">
+                        <a href="https://github.com/schemaspy/schemaspy" title="GitHub for SchemaSpy"><i class="fa fa-github-square fa-2x"></i></a>
+                        <a href="http://stackoverflow.com/questions/tagged/schemaspy" title="StackOverflow for SchemaSpy"><i class="fa fa-stack-overflow fa-2x"></i></a>
+                    </div>
+                    <strong>Generated by <a href="http://schemaspy.org/" class="logo-text"><i class="fa fa-database"></i> SchemaSpy 6.2.4</a></strong>
+                </div>
+                <!-- /.container -->
+            </footer>
+        </div>
+        <!-- ./wrapper -->
+
+        <!-- jQuery 2.2.3 -->
+        <script src="../bower/admin-lte/plugins/jQuery/jquery-2.2.3.min.js"></script>
+        <script src="../bower/admin-lte/plugins/jQueryUI/jquery-ui.min.js"></script>
+        <!-- Bootstrap 3.3.5 -->
+        <script src="../bower/admin-lte/bootstrap/js/bootstrap.min.js"></script>
+        <!-- DataTables -->
+        <script src="../bower/datatables.net/jquery.dataTables.min.js"></script>
+        <script src="../bower/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+        <script src="../bower/datatables.net-buttons/dataTables.buttons.min.js"></script>
+        <script src="../bower/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+        <script src="../bower/datatables.net-buttons/buttons.html5.min.js"></script>
+        <script src="../bower/datatables.net-buttons/buttons.print.min.js"></script>
+        <script src="../bower/datatables.net-buttons/buttons.colVis.min.js"></script>
+        <!-- SheetJS -->
+        <script src="../bower/js-xlsx/xlsx.full.min.js"></script>
+        <!-- pdfmake -->
+        <script src="../bower/pdfmake/pdfmake.min.js"></script>
+        <script src="../bower/pdfmake/vfs_fonts.js"></script>
+        <!-- SlimScroll -->
+        <script src="../bower/admin-lte/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+        <!-- FastClick -->
+        <script src="../bower/admin-lte/plugins/fastclick/fastclick.js"></script>
+        <!-- Salvattore -->
+        <script src="../bower/salvattore/salvattore.min.js"></script>
+        <!-- AnchorJS -->
+        <script src="../bower/anchor-js/anchor.min.js"></script>
+        <!-- CodeMirror -->
+        <script src="../bower/codemirror/codemirror.js"></script>
+        <script src="../bower/codemirror/sql.js"></script>
+        <!-- AdminLTE App -->
+        <script src="../bower/admin-lte/dist/js/app.min.js"></script>
+        <script src="routine.js"></script>
+        <script src="../schemaSpy.js"></script>
+    </body>
+</html>

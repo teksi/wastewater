@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>swmm_vw_junctions - tww.tww_app</title>
+        <!-- Tell the browser to be responsive to screen width -->
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        <link rel="icon" type="image/png" sizes="16x16" href="../favicon.png">
+        <!-- Bootstrap 3.3.5 -->
+        <link rel="stylesheet" href="../bower/admin-lte/bootstrap/css/bootstrap.min.css">
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="../bower/font-awesome/css/font-awesome.min.css">
+        <!-- Ionicons -->
+        <link rel="stylesheet" href="../bower/ionicons/css/ionicons.min.css">
+        <!-- DataTables -->
+        <link rel="stylesheet" href="../bower/datatables.net-bs/css/dataTables.bootstrap.min.css">
+        <link rel="stylesheet" href="../bower/datatables.net-buttons-bs/css/buttons.bootstrap.min.css">
+        <!-- Code Mirror -->
+        <link rel="stylesheet" href="../bower/codemirror/codemirror.css">
+        <!-- Fonts -->
+        <link href='../fonts/indieflower/indie-flower.css' rel='stylesheet' type='text/css'>
+        <link href='../fonts/source-sans-pro/source-sans-pro.css' rel='stylesheet' type='text/css'>
+
+        <!-- Theme style -->
+        <link rel="stylesheet" href="../bower/admin-lte/dist/css/AdminLTE.min.css">
+        <!-- Salvattore -->
+        <link rel="stylesheet" href="../bower/salvattore/salvattore.css">
+        <!-- AdminLTE Skins. Choose a skin from the css/skins
+           folder instead of downloading all of them to reduce the load. -->
+        <link rel="stylesheet" href="../bower/admin-lte/dist/css/skins/_all-skins.min.css">
+        <!-- SchemaSpy -->
+        <link rel="stylesheet" href="../schemaSpy.css">
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="../bower/html5shiv/html5shiv.min.js"></script>
+        <script src="../bower/respond/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <!-- ADD THE CLASS layout-top-nav TO REMOVE THE SIDEBAR. -->
+    <body class="hold-transition skin-blue layout-top-nav">
+        <div class="wrapper">
+            <header class="main-header">
+                <nav class="navbar navbar-static-top">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <a href="../../index.html" class="navbar-brand"><b>tww</b></a><span class="navbar-brand" style="padding-left: 0">.tww_app</span>
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse"><i class="fa fa-bars"></i></button>
+                        </div>
+
+                        <!-- Collect the nav links, forms, and other content for toggling -->
+                        <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
+                            <ul class="nav navbar-nav">
+                                <li><a href="../index.html">Tables <span class="sr-only">(current)</span></a></li>
+                                <li><a href="../columns.html" title="All of the columns in the schema">Columns</a></li>
+                                <li><a href="../constraints.html" title="Useful for diagnosing error messages that just give constraint name or number">Constraints</a></li>
+                                <li><a href="../relationships.html" title="Diagram of table relationships">Relationships</a></li>
+                                <li><a href="../orphans.html" title="View of tables with neither parents nor children">Orphan&nbsp;Tables</a></li>
+                                <li><a href="../anomalies.html" title="Things that might not be quite right">Anomalies</a></li>
+                                <li><a href="../routines.html" title="Procedures and functions">Routines</a></li>
+                            </ul>
+                        </div>
+                        <!-- /.navbar-collapse -->
+                        <!-- Navbar Right Menu -->
+                    </div>
+                    <!-- /.container-fluid -->
+                </nav>
+            </header>
+            <!-- Main content -->
+            <!-- Full Width Column -->
+            <div class="content-wrapper">
+                <!-- Content Header (Page header) -->
+                <section class="content-header">
+                    <h1>swmm_vw_junctions</h1><p><span id="recordNumber">0</span> rows</p><br />
+                </section>
+                <!-- Main content -->
+                <section class="content">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+                            <h3 id="Columns" class="box-title">Columns</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <table
+                                    id="standard_table"
+                                    class="table table-bordered table-striped dataTable"
+                                    role="grid"
+                                    data-paging="true"
+                                    data-page-length="10"
+                                    data-length-change="false">
+                                <thead align='left'>
+                                <tr>
+                                    <th>Column</th>
+                                    <th>Type</th>
+                                    <th>Size</th>
+                                    <th title='Are nulls allowed?'>Nulls</th>
+                                    <th title='Is column automatically updated?'>Auto</th>
+                                    <th title='Default value'>Default</th>
+                                    <th title='Columns in tables that reference this column'>Children</th>
+                                    <th title='Columns in tables that are referenced by this column'>Parents</th>
+                                    <th title='Comments' class="toggle"><span>Comments</span></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><span id="name">name</span></td>
+                                    <td>varchar</td>
+                                    <td>2147483647</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span id="invertelev">invertelev</span></td>
+                                    <td>numeric</td>
+                                    <td>0</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span id="maxdepth">maxdepth</span></td>
+                                    <td>numeric</td>
+                                    <td>0</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span id="initdepth">initdepth</span></td>
+                                    <td>float8</td>
+                                    <td>17,17</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span id="surchargedepth">surchargedepth</span></td>
+                                    <td>float8</td>
+                                    <td>17,17</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span id="pondedarea">pondedarea</span></td>
+                                    <td>float8</td>
+                                    <td>17,17</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span id="description">description</span></td>
+                                    <td>text</td>
+                                    <td>2147483647</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span id="tag">tag</span></td>
+                                    <td>text</td>
+                                    <td>2147483647</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span id="geom">geom</span></td>
+                                    <td>geometry</td>
+                                    <td>2147483647</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span id="state">state</span></td>
+                                    <td>text</td>
+                                    <td>2147483647</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span id="hierarchy">hierarchy</span></td>
+                                    <td>text</td>
+                                    <td>2147483647</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span id="obj_id">obj_id</span></td>
+                                    <td>varchar</td>
+                                    <td>16</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <i class="fa fa-code-fork"></i>
+                            <h3 id="Relationships" class="box-title">Relationships</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <div class="nav-tabs-custom"><!-- Tabs within a box -->
+                                <h5>Close relationships within degrees of separation</h5>
+                                <ul class="nav nav-tabs pull-left ui-sortable-handle">
+                                    <li class="active"><a href="#oneDegreeImg-chart" data-toggle="tab" aria-expanded="true">One</a></li>
+                                </ul>
+                                <div class="tab-content no-padding">
+                                    <div class="chart tab-pane active" id="oneDegreeImg-chart" style="position: relative; overflow-x:auto;">
+                                        
+                                        <a name='diagram'><object type="image/svg+xml" id="oneDegreeImg" data="../diagrams/tables/swmm_vw_junctions.1degree.svg" class="diagram" border="0" align="left"></object></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- /.box-body -->
+                    </div>
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <i class="fa fa-file-code-o"></i>
+                            <h3 id="ViewDefinition" class="box-title">View Definition</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <textarea id="sql-script-codemirror" name="sql-script-codemirror" rows="" style="display: none;">SELECT wn.obj_id AS name,&#10;    COALESCE(wn.bottom_level, (0)::numeric) AS invertelev,&#10;    (co.level - wn.bottom_level) AS maxdepth,&#10;    NULL::double precision AS initdepth,&#10;    NULL::double precision AS surchargedepth,&#10;    NULL::double precision AS pondedarea,&#10;    ws.identifier AS description,&#10;    concat_ws(&#39;,&#39;::text, &#39;manhole&#39;, mf.value_en) AS tag,&#10;    wn.situation3d_geometry AS geom,&#10;        CASE&#10;            WHEN (ws_st.vsacode &#61; ANY (ARRAY[7959, 6529, 6526])) THEN &#39;planned&#39;::text&#10;            ELSE &#39;current&#39;::text&#10;        END AS state,&#10;        CASE&#10;            WHEN (ch_fh.vsacode &#61; ANY (ARRAY[5062, 5064, 5066, 5068, 5069, 5070, 5071, 5072, 5074])) THEN &#39;primary&#39;::text&#10;            ELSE &#39;secondary&#39;::text&#10;        END AS hierarchy,&#10;    wn.obj_id&#10;   FROM (((((((tww_od.manhole ma&#10;     LEFT JOIN tww_od.wastewater_structure ws ON (((ws.obj_id)::text &#61; (ma.obj_id)::text)))&#10;     LEFT JOIN tww_od.wastewater_networkelement we ON (((we.fk_wastewater_structure)::text &#61; (ws.obj_id)::text)))&#10;     LEFT JOIN tww_od.wastewater_node wn ON (((wn.obj_id)::text &#61; (we.obj_id)::text)))&#10;     LEFT JOIN tww_od.cover co ON (((ws.fk_main_cover)::text &#61; (co.obj_id)::text)))&#10;     LEFT JOIN tww_vl.manhole_function mf ON ((ma.function &#61; mf.code)))&#10;     LEFT JOIN tww_vl.wastewater_structure_status ws_st ON ((ws_st.code &#61; ws.status)))&#10;     LEFT JOIN tww_vl.channel_function_hierarchic ch_fh ON ((ch_fh.code &#61; wn._function_hierarchic)))&#10;  WHERE ((wn.obj_id IS NOT NULL) AND (ws_st.vsacode &#61; ANY (ARRAY[6530, 6533, 8493, 6529, 6526, 7959])))&#10;UNION&#10; SELECT wn.obj_id AS name,&#10;    COALESCE(wn.bottom_level, (0)::numeric) AS invertelev,&#10;    (co.level - wn.bottom_level) AS maxdepth,&#10;    NULL::double precision AS initdepth,&#10;    NULL::double precision AS surchargedepth,&#10;    NULL::double precision AS pondedarea,&#10;    ws.identifier AS description,&#10;    concat_ws(&#39;,&#39;::text, &#39;special_structure&#39;, ss_fu.value_en) AS tag,&#10;    wn.situation3d_geometry AS geom,&#10;        CASE&#10;            WHEN (ws_st.vsacode &#61; ANY (ARRAY[7959, 6529, 6526])) THEN &#39;planned&#39;::text&#10;            ELSE &#39;current&#39;::text&#10;        END AS state,&#10;        CASE&#10;            WHEN (ch_fh.vsacode &#61; ANY (ARRAY[5062, 5064, 5066, 5068, 5069, 5070, 5071, 5072, 5074])) THEN &#39;primary&#39;::text&#10;            ELSE &#39;secondary&#39;::text&#10;        END AS hierarchy,&#10;    wn.obj_id&#10;   FROM (((((((tww_od.special_structure ss&#10;     LEFT JOIN tww_od.wastewater_structure ws ON (((ws.obj_id)::text &#61; (ss.obj_id)::text)))&#10;     LEFT JOIN tww_od.wastewater_networkelement we ON (((we.fk_wastewater_structure)::text &#61; (ws.obj_id)::text)))&#10;     LEFT JOIN tww_od.wastewater_node wn ON (((wn.obj_id)::text &#61; (we.obj_id)::text)))&#10;     LEFT JOIN tww_od.cover co ON (((ws.fk_main_cover)::text &#61; (co.obj_id)::text)))&#10;     LEFT JOIN tww_vl.special_structure_function ss_fu ON ((ss_fu.code &#61; ss.function)))&#10;     LEFT JOIN tww_vl.wastewater_structure_status ws_st ON ((ws_st.code &#61; ws.status)))&#10;     LEFT JOIN tww_vl.channel_function_hierarchic ch_fh ON ((ch_fh.code &#61; wn._function_hierarchic)))&#10;  WHERE ((wn.obj_id IS NOT NULL) AND (ws_st.vsacode &#61; ANY (ARRAY[6530, 6533, 8493, 6529, 6526, 7959])) AND (ss_fu.vsacode &lt;&gt; ALL (ARRAY[6397, 6398, 3348, 336, 6478, 3673, 3674, 5574, 3675, 3676, 5575, 5576, 3677])))&#10;UNION&#10; SELECT COALESCE(from_wn.obj_id, (concat(&#39;from_node@&#39;, re.obj_id))::character varying) AS name,&#10;    COALESCE(from_wn.bottom_level, (0)::numeric) AS invertelev,&#10;    0 AS maxdepth,&#10;    NULL::double precision AS initdepth,&#10;    NULL::double precision AS surchargedepth,&#10;    NULL::double precision AS pondedarea,&#10;    COALESCE(from_wn.obj_id, (concat(&#39;from_node@&#39;, re.obj_id))::character varying) AS description,&#10;    &#39;junction without structure&#39;::text AS tag,&#10;    COALESCE(from_wn.situation3d_geometry, st_startpoint(re.progression3d_geometry)) AS geom,&#10;        CASE&#10;            WHEN (ws_st.vsacode &#61; ANY (ARRAY[7959, 6529, 6526])) THEN &#39;planned&#39;::text&#10;            ELSE &#39;current&#39;::text&#10;        END AS state,&#10;        CASE&#10;            WHEN (ch_fh.vsacode &#61; ANY (ARRAY[5062, 5064, 5066, 5068, 5069, 5070, 5071, 5072, 5074])) THEN &#39;primary&#39;::text&#10;            ELSE &#39;secondary&#39;::text&#10;        END AS hierarchy,&#10;    COALESCE(from_wn.obj_id, re.obj_id) AS obj_id&#10;   FROM (((((((((tww_od.reach re&#10;     LEFT JOIN tww_od.wastewater_networkelement ne ON (((ne.obj_id)::text &#61; (re.obj_id)::text)))&#10;     LEFT JOIN tww_od.wastewater_structure ws ON (((ws.obj_id)::text &#61; (ne.fk_wastewater_structure)::text)))&#10;     LEFT JOIN tww_od.reach_point rp_from ON (((rp_from.obj_id)::text &#61; (re.fk_reach_point_from)::text)))&#10;     LEFT JOIN tww_od.wastewater_node from_wn ON (((from_wn.obj_id)::text &#61; (rp_from.fk_wastewater_networkelement)::text)))&#10;     LEFT JOIN tww_od.channel ch ON (((ch.obj_id)::text &#61; (ws.obj_id)::text)))&#10;     LEFT JOIN tww_od.wastewater_networkelement we ON (((from_wn.obj_id)::text &#61; (we.obj_id)::text)))&#10;     LEFT JOIN tww_od.wastewater_structure ws_node ON (((we.fk_wastewater_structure)::text &#61; (ws_node.obj_id)::text)))&#10;     LEFT JOIN tww_vl.wastewater_structure_status ws_st ON ((ws_st.code &#61; ws.status)))&#10;     LEFT JOIN tww_vl.channel_function_hierarchic ch_fh ON ((ch_fh.code &#61; ch.function_hierarchic)))&#10;  WHERE ((ws_st.vsacode &#61; ANY (ARRAY[6530, 6533, 8493, 6529, 6526, 7959])) AND (ws_node.* IS NULL))&#10;UNION&#10; SELECT COALESCE(to_wn.obj_id, (concat(&#39;to_node@&#39;, re.obj_id))::character varying) AS name,&#10;    COALESCE(to_wn.bottom_level, (0)::numeric) AS invertelev,&#10;    0 AS maxdepth,&#10;    NULL::double precision AS initdepth,&#10;    NULL::double precision AS surchargedepth,&#10;    NULL::double precision AS pondedarea,&#10;    COALESCE(to_wn.obj_id, (concat(&#39;to_node@&#39;, re.obj_id))::character varying) AS description,&#10;    &#39;junction without structure&#39;::text AS tag,&#10;    COALESCE(to_wn.situation3d_geometry, st_endpoint(re.progression3d_geometry)) AS geom,&#10;        CASE&#10;            WHEN (ws_st.vsacode &#61; ANY (ARRAY[7959, 6529, 6526])) THEN &#39;planned&#39;::text&#10;            ELSE &#39;current&#39;::text&#10;        END AS state,&#10;        CASE&#10;            WHEN (ch_fh.vsacode &#61; ANY (ARRAY[5062, 5064, 5066, 5068, 5069, 5070, 5071, 5072, 5074])) THEN &#39;primary&#39;::text&#10;            ELSE &#39;secondary&#39;::text&#10;        END AS hierarchy,&#10;    COALESCE(to_wn.obj_id, re.obj_id) AS obj_id&#10;   FROM (((((((((tww_od.reach re&#10;     LEFT JOIN tww_od.wastewater_networkelement ne ON (((ne.obj_id)::text &#61; (re.obj_id)::text)))&#10;     LEFT JOIN tww_od.wastewater_structure ws ON (((ws.obj_id)::text &#61; (ne.fk_wastewater_structure)::text)))&#10;     LEFT JOIN tww_od.reach_point rp_to ON (((rp_to.obj_id)::text &#61; (re.fk_reach_point_to)::text)))&#10;     LEFT JOIN tww_od.wastewater_node to_wn ON (((to_wn.obj_id)::text &#61; (rp_to.fk_wastewater_networkelement)::text)))&#10;     LEFT JOIN tww_od.channel ch ON (((ch.obj_id)::text &#61; (ws.obj_id)::text)))&#10;     LEFT JOIN tww_od.wastewater_networkelement we ON (((to_wn.obj_id)::text &#61; (we.obj_id)::text)))&#10;     LEFT JOIN tww_od.wastewater_structure ws_node ON (((we.fk_wastewater_structure)::text &#61; (ws_node.obj_id)::text)))&#10;     LEFT JOIN tww_vl.wastewater_structure_status ws_st ON ((ws_st.code &#61; ws.status)))&#10;     LEFT JOIN tww_vl.channel_function_hierarchic ch_fh ON ((ch_fh.code &#61; ch.function_hierarchic)))&#10;  WHERE ((ws_st.vsacode &#61; ANY (ARRAY[6530, 6533, 8493, 6529, 6526, 7959])) AND (ws_node.* IS NULL));</textarea>
+                            <div style="padding-top: 5px;"><hr></div>
+                            <div class="box box-solid">
+                                <div class="box-header with-border">
+                                    <i class="fa fa-puzzle-piece"></i>
+                                    <h3 class="box-title">Possibly Referenced Tables/Views</h3>
+                                </div>
+                                <!-- /.box-header -->
+                                <div class="box-body">
+                                    <ul class="list-unstyled">
+                                    </ul>
+                                </div><!-- /.box-body -->
+                            </div>
+                        </div><!-- /.box-body -->
+                    </div>
+                </section>
+                <script>
+                    var config = {
+                        pagination: true
+                    }
+                </script>
+            </div>
+            <!-- /.content-wrapper -->
+            <footer class="main-footer">
+                <div>
+                    <div class="pull-right hidden-xs">
+                        <a href="https://github.com/schemaspy/schemaspy" title="GitHub for SchemaSpy"><i class="fa fa-github-square fa-2x"></i></a>
+                        <a href="http://stackoverflow.com/questions/tagged/schemaspy" title="StackOverflow for SchemaSpy"><i class="fa fa-stack-overflow fa-2x"></i></a>
+                    </div>
+                    <strong>Generated by <a href="http://schemaspy.org/" class="logo-text"><i class="fa fa-database"></i> SchemaSpy 6.2.4</a></strong>
+                </div>
+                <!-- /.container -->
+            </footer>
+        </div>
+        <!-- ./wrapper -->
+
+        <!-- jQuery 2.2.3 -->
+        <script src="../bower/admin-lte/plugins/jQuery/jquery-2.2.3.min.js"></script>
+        <script src="../bower/admin-lte/plugins/jQueryUI/jquery-ui.min.js"></script>
+        <!-- Bootstrap 3.3.5 -->
+        <script src="../bower/admin-lte/bootstrap/js/bootstrap.min.js"></script>
+        <!-- DataTables -->
+        <script src="../bower/datatables.net/jquery.dataTables.min.js"></script>
+        <script src="../bower/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+        <script src="../bower/datatables.net-buttons/dataTables.buttons.min.js"></script>
+        <script src="../bower/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+        <script src="../bower/datatables.net-buttons/buttons.html5.min.js"></script>
+        <script src="../bower/datatables.net-buttons/buttons.print.min.js"></script>
+        <script src="../bower/datatables.net-buttons/buttons.colVis.min.js"></script>
+        <!-- SheetJS -->
+        <script src="../bower/js-xlsx/xlsx.full.min.js"></script>
+        <!-- pdfmake -->
+        <script src="../bower/pdfmake/pdfmake.min.js"></script>
+        <script src="../bower/pdfmake/vfs_fonts.js"></script>
+        <!-- SlimScroll -->
+        <script src="../bower/admin-lte/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+        <!-- FastClick -->
+        <script src="../bower/admin-lte/plugins/fastclick/fastclick.js"></script>
+        <!-- Salvattore -->
+        <script src="../bower/salvattore/salvattore.min.js"></script>
+        <!-- AnchorJS -->
+        <script src="../bower/anchor-js/anchor.min.js"></script>
+        <!-- CodeMirror -->
+        <script src="../bower/codemirror/codemirror.js"></script>
+        <script src="../bower/codemirror/sql.js"></script>
+        <!-- AdminLTE App -->
+        <script src="../bower/admin-lte/dist/js/app.min.js"></script>
+        <script src="table.js"></script>
+        <script src="../schemaSpy.js"></script>
+    </body>
+</html>
