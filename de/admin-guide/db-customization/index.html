@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>4.4. Anpassung des Datenmodells &mdash; TWW dev Dokumentation</title>
+  <title>4.5. Anpassung des Datenmodells &mdash; TWW dev Dokumentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
 
@@ -22,8 +22,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Stichwortverzeichnis" href="../../genindex.html" />
     <link rel="search" title="Suche" href="../../search.html" />
-    <link rel="next" title="4.5. Datenmodell-Werkzeug" href="../datamodel-tool/index.html" />
-    <link rel="prev" title="4.3. INTERLIS Datenaustausch" href="../interlis-io/index.html" /> 
+    <link rel="next" title="4.6. Datenmodell-Werkzeug" href="../datamodel-tool/index.html" />
+    <link rel="prev" title="4.4. INTERLIS Datenaustausch" href="../interlis-io/index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -53,18 +53,19 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">2. TWW Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user-guide/index.html">3. TWW User Guide</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">4. Administratorhandbuch</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../pgadmin/index.html">4.1. pgAdmin</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../security/index.html">4.2. User Roles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../interlis-io/index.html">4.3. INTERLIS Datenaustausch</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">4.4. Anpassung des Datenmodells</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#introduction">4.4.1. Einleitung</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#adding-fields">4.4.2. Zusätzliche Felder</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#joining-additional-tables">4.4.3. Verknüpfung zusätzlicher Tabellen</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#creating-custom-views">4.4.4. Eigene views erstellen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../datamodel.html">4.1. Datamodel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pgadmin/index.html">4.2. pgAdmin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.html">4.3. User Roles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interlis-io/index.html">4.4. INTERLIS Datenaustausch</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.5. Anpassung des Datenmodells</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">4.5.1. Einleitung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#adding-fields">4.5.2. Zusätzliche Felder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#joining-additional-tables">4.5.3. Verknüpfung zusätzlicher Tabellen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#creating-custom-views">4.5.4. Eigene views erstellen</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../datamodel-tool/index.html">4.5. Datenmodell-Werkzeug</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../db-update-pum/index.html">4.6. Manuelles Update des Datenmodells</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../datamodel-tool/index.html">4.6. Datenmodell-Werkzeug</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../db-update-pum/index.html">4.7. Manuelles Update des Datenmodells</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../vm/index.html">5. Demo virtuelle Maschine</a></li>
@@ -87,7 +88,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">4. </span>Administratorhandbuch</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">4.4. </span>Anpassung des Datenmodells</li>
+      <li class="breadcrumb-item active"><span class="section-number">4.5. </span>Anpassung des Datenmodells</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/admin-guide/db-customization/index.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
       </li>
@@ -98,10 +99,10 @@
            <div itemprop="articleBody">
              
   <section id="customization-of-the-data-model">
-<h1><span class="section-number">4.4. </span>Anpassung des Datenmodells<a class="headerlink" href="#customization-of-the-data-model" title="Link to this heading"></a></h1>
+<h1><span class="section-number">4.5. </span>Anpassung des Datenmodells<a class="headerlink" href="#customization-of-the-data-model" title="Link to this heading"></a></h1>
 <p>Dieses Kapitel beschreibt die möglichen Anpassungen des Datenmodells.</p>
 <section id="introduction">
-<h2><span class="section-number">4.4.1. </span>Einleitung<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.5.1. </span>Einleitung<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
 <p>Das Datenmodell ist versioniert und Aktualisierungen werden mit dem Postgres Updates Manager (auch bekannt als <a class="reference external" href="https://github.com/opengisch/pum">PUM</a>) durchgeführt. Die zur Bearbeitung der Daten erforderlichen Ansichten werden automatisch mit der Bibliothek „Pirogue &lt;<a class="reference external" href="https://github.com/opengisch/pirogue">https://github.com/opengisch/pirogue</a>&gt;“ erzeugt.</p>
 <p>Die Kombination von beidem ermöglicht kleine Anpassungen des Datenmodells, wie das Hinzufügen von Feldern zu bestehenden Basistabellen oder die Erweiterung von Ansichten durch das Verbinden zusätzlicher Tabellen.</p>
 <p>Before going further, we strongly recommend to ask the community if you have any doubts about how to store any information in the database. TWW complies with <a class="reference external" href="http://www.sia.ch/405">SIA 405</a> Waste Water and <a class="reference external" href="http://dss.vsa.ch">VSA-DSS</a> datamodel.</p>
@@ -109,7 +110,7 @@
 <p>If a customization is still required, the following explanations and rules explain how to adapt TWW data model to your specific needs.</p>
 </section>
 <section id="adding-fields">
-<h2><span class="section-number">4.4.2. </span>Zusätzliche Felder<a class="headerlink" href="#adding-fields" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.5.2. </span>Zusätzliche Felder<a class="headerlink" href="#adding-fields" title="Link to this heading"></a></h2>
 <p>Es ist erlaubt, zusätzliche Felder zu Tabellen hinzuzufügen, indem man sie als <code class="docutils literal notranslate"><span class="pre">usr_...</span></code> benennt.</p>
 <p>Wenn sie in Basistabellen hinzugefügt werden, werden diese zusätzlichen Felder automatisch zu den Ansichten hinzugefügt, da es sich um ein bearbeitbares Feld handelt. Die Ansichten können jederzeit mit dem folgenden Befehl neu generiert werden:</p>
 <p><code class="docutils literal notranslate"><span class="pre">./view/create_views.py</span> <span class="pre">--pg_service</span> <span class="pre">pg_tww</span> <span class="pre">--srid</span> <span class="pre">2056</span></code></p>
@@ -119,7 +120,7 @@
 </div>
 </section>
 <section id="joining-additional-tables">
-<h2><span class="section-number">4.4.3. </span>Verknüpfung zusätzlicher Tabellen<a class="headerlink" href="#joining-additional-tables" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.5.3. </span>Verknüpfung zusätzlicher Tabellen<a class="headerlink" href="#joining-additional-tables" title="Link to this heading"></a></h2>
 <p>It is possible to join additional tables to the two main views (<code class="docutils literal notranslate"><span class="pre">vw_tww_wastewater_structure</span></code> and <code class="docutils literal notranslate"><span class="pre">vw_tww_reach</span></code>).
 This is done by using a YAML definition file for each view and defining a list of joined tables.
 Fields of these tables will be joined as read-only fields as they are discarded in edit triggers.
@@ -143,7 +144,7 @@ For joining a table to <code class="docutils literal notranslate"><span class="p
 <p>And similarly for <code class="docutils literal notranslate"><span class="pre">vw_tww_reach</span></code> view, by specifying <code class="docutils literal notranslate"><span class="pre">tww_reach_extra</span></code> variable to the corresponding YAML file path.</p>
 </section>
 <section id="creating-custom-views">
-<h2><span class="section-number">4.4.4. </span>Eigene views erstellen<a class="headerlink" href="#creating-custom-views" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.5.4. </span>Eigene views erstellen<a class="headerlink" href="#creating-custom-views" title="Link to this heading"></a></h2>
 <p>Es sit möglich, eigene views zu erstellen und sie zum Datenmodell zu hinzuzufügen.</p>
 <p>Um Upgrades des Datenmodells zu ermöglichen, sollte man ein Skript bereitstellen, um sie zu erstellen, und eines, um sie zu löschen. Diese Skripte (SQL oder Python) sollten in einem bestimmten Pfad abgelegt und als pre-all.{py,sql} und post-all.{py,sql} bezeichnet werden. Dieser Pfad muss als Variable an PUM übergeben werden, wenn das Datenmodell als Delta-Verzeichnis aktualisiert wird (siehe PUM-<a class="reference external" href="https://github.com/opengisch/pum">Dokumentation</a>).</p>
 <p>If one wants to have these views automatically updated when fields are added the data model, Pirogue can be used to dynamically generate the views. You can take example of the creation of the views in the data model.</p>
@@ -154,8 +155,8 @@ For joining a table to <code class="docutils literal notranslate"><span class="p
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../interlis-io/index.html" class="btn btn-neutral float-left" title="4.3. INTERLIS Datenaustausch" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
-        <a href="../datamodel-tool/index.html" class="btn btn-neutral float-right" title="4.5. Datenmodell-Werkzeug" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../interlis-io/index.html" class="btn btn-neutral float-left" title="4.4. INTERLIS Datenaustausch" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
+        <a href="../datamodel-tool/index.html" class="btn btn-neutral float-right" title="4.6. Datenmodell-Werkzeug" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

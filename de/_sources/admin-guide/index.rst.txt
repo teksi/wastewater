@@ -6,6 +6,7 @@ This represents a guide on how to administrate the database, install a Virtual m
 .. toctree::
    :maxdepth: 2
 
+   datamodel
    pgadmin/index
    security/index
    interlis-io/index
