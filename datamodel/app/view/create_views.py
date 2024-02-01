@@ -70,14 +70,14 @@ def get_multipleinheritances():
         "drop":True,
         "variables":variables,
         "pg_service":pg_service,},
-        "app/view/vw_damage.yaml": 
+        "app/view/vw_damage.yaml":
         {drop=True
         , pg_service:pg_service,},
-        "app/view/vw_oo_overflow.yaml": 
+        "app/view/vw_oo_overflow.yaml":
         {create_joins:True,
         variables:variables,
         pg_service:pg_service,
-        drop:True,},     
+        drop:True,},
     }
 
 
