@@ -79,10 +79,18 @@ class TestInterlis(unittest.TestCase):
         )
 
         # Export minimal dss
-        export_xtf_file = os.path.join(export_dir.path(), "minimal_dataset_sia405.xtf")
+        export_xtf_file = os.path.join(export_dir.path(), "minimal_dataset_dss.xtf")
         interlisImporterExporter.interlis_export(
             xtf_file_output=export_xtf_file,
             export_models=[config.MODEL_NAME_DSS],
+            logs_next_to_file=True,
+        )
+
+        # Export minimal kek
+        export_xtf_file = os.path.join(export_dir.path(), "minimal_dataset_kek.xtf")
+        interlisImporterExporter.interlis_export(
+            xtf_file_output=export_xtf_file,
+            export_models=[config.MODEL_NAME_VSA_KEK],
             logs_next_to_file=True,
         )
 

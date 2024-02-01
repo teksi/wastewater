@@ -2178,7 +2178,7 @@ class InterlisImporterToIntermediateSchema:
 
     def _import_datei(self):
         for row in self.session_interlis.query(self.model_classes_interlis.datei):
-            file = self.create_or_update(
+            file_table_row = self.create_or_update(
                 self.model_classes_tww_od.file,
                 **self.base_common(row),
                 # --- file ---
@@ -2188,10 +2188,10 @@ class InterlisImporterToIntermediateSchema:
                 object=row.objekt,
                 path_relative=row.relativpfad,
                 remark=row.bemerkung,
+                class_column=self.get_vl_code(self.model_classes_tww_vl.file_class, row.klasse),
             )
-            # file.class = self.get_vl_code(self.model_classes_tww_vl.file_class, row.klasse) TODO
 
-            self.session_tww.add(file)
+            self.session_tww.add(file_table_row)
             print(".", end="")
 
     def _check_for_stop(self):
