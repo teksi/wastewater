@@ -20,33 +20,11 @@ def run_sql(file_path: str, pg_service: str, variables: dict = {}):
     conn.close()
 
 
-def create_views(
-    srid: int = 2056,
-    pg_service: str = "pg_teksi_wastewater",
-    tww_reach_extra: str = None,
-    tww_wastewater_structure_extra: str = None,
-):
+def get_singleinheritances():
     """
-    Creates the views for TEKSI Wastewater & GEP
-    :param srid: the EPSG code for geometry columns
-    :param pg_service: the PostgreSQL service, if not given it will be determined from environment variable in Pirogue
-    :param tww_reach_extra: YAML file path of the definition of additional columns for vw_tww_reach view
-    :param tww_wastewater_structure_extra: YAML file path of the definition of additional columns for vw_tww_wastewater_structure_extra view
-    """  # noqa E501
-
-    variables = {"SRID": srid}
-
-    # open YAML files
-    if tww_reach_extra:
-        tww_reach_extra = safe_load(open(tww_reach_extra))
-    if tww_wastewater_structure_extra:
-        tww_wastewater_structure_extra = safe_load(open(tww_wastewater_structure_extra))
-
-    run_sql("app/view/vw_dictionary_value_list.sql", pg_service, variables)
-
-    defaults = {"view_schema": "tww_app", "pg_service": pg_service}
-
-    SingleInheritances = {
+    Returns a dict with child tables as key and parent as value
+    """
+    return {
         # structure parts
         "access_aid": "structure_part",
         "benching": "structure_part",
@@ -81,6 +59,80 @@ def create_views(
         "infiltration_zone": "zone",
         "drainage_system": "zone",
     }
+    
+def get_multipleinheritances():
+    """
+    Returns a dict with yaml path as key and config as value
+    """
+    return {
+        "app/view/vw_maintenance_event.yaml": 
+        {"create_joins":True,
+        "drop":True,
+        "variables"=variables,
+        "pg_service"=pg_service,},
+        "app/view/vw_damage.yaml": 
+        {drop=True
+        , pg_service=pg_service,},
+        "app/view/vw_oo_overflow.yaml": 
+        {create_joins=True,
+        variables=variables,
+        pg_service=pg_service,
+        drop=True,},
+      
+    }
+
+
+
+
+def drop_views(pg_service: str = "pg_teksi_wastewater", skip_warning: bool= False):
+    """
+    Drops all views in tww_app
+    :param pg_service: the PostgreSQL service, if not given it will be determined from environment variable in Pirogue
+    """
+    if skip_warning:
+        conn = psycopg2.connect(f"service={pg_service}")
+        cursor = conn.cursor()
+        cursor.execute("SELECT table_name from INFORMATION_SCHEMA.views WHERE table_schema ='tww_app'")
+        views=cursor.fetchall()   
+        for view in views:
+            cursor.execute(f"DROP VIEW tww_app.{view}")
+        conn.commit()
+        conn.close()
+    else:
+        print('You are about to drop all views from tww_app. If you created custom views, those are dropped too. To continue, write "Comic Sans is awesome"')
+        inp=input()
+        if inp=='Comic Sans is awesome':
+            drop_views(pg_service,True)
+    
+    
+    
+def create_views(
+    srid: int = 2056,
+    pg_service: str = "pg_teksi_wastewater",
+    tww_reach_extra: str = None,
+    tww_wastewater_structure_extra: str = None,
+):
+    """
+    Creates the views for TEKSI Wastewater & GEP
+    :param srid: the EPSG code for geometry columns
+    :param pg_service: the PostgreSQL service, if not given it will be determined from environment variable in Pirogue
+    :param tww_reach_extra: YAML file path of the definition of additional columns for vw_tww_reach view
+    :param tww_wastewater_structure_extra: YAML file path of the definition of additional columns for vw_tww_wastewater_structure_extra view
+    """  # noqa E501
+
+    variables = {"SRID": srid}
+
+    # open YAML files
+    if tww_reach_extra:
+        tww_reach_extra = safe_load(open(tww_reach_extra))
+    if tww_wastewater_structure_extra:
+        tww_wastewater_structure_extra = safe_load(open(tww_wastewater_structure_extra))
+
+    run_sql("app/view/vw_dictionary_value_list.sql", pg_service, variables)
+
+    defaults = {"view_schema": "tww_app", "pg_service": pg_service}
+
+    SingleInheritances = get_singleinheritances()
 
     for key in SingleInheritances:
         SingleInheritance(
@@ -92,17 +144,14 @@ def create_views(
             **defaults,
         ).create()
 
-    MultipleInheritance(
-        safe_load(open("app/view/vw_maintenance_event.yaml")),
-        create_joins=True,
-        drop=True,
-        variables=variables,
-        pg_service=pg_service,
-    ).create()
 
-    MultipleInheritance(
-        safe_load(open("app/view/vw_damage.yaml")), drop=True, pg_service=pg_service
-    ).create()
+    MultiInheritances = get_multipleinheritances()
+    for key in MultiInheritances:  
+        MultipleInheritance(
+            safe_load(open(key)),
+            MultiInheritances[key],
+        ).create()
+
 
     vw_tww_wastewater_structure(
         srid, pg_service=pg_service, extra_definition=tww_wastewater_structure_extra
@@ -110,15 +159,6 @@ def create_views(
     vw_tww_reach(pg_service=pg_service, extra_definition=tww_reach_extra)
 
     run_sql("app/view/vw_file.sql", pg_service, variables)
-
-    MultipleInheritance(
-        safe_load(open("app/view/vw_oo_overflow.yaml")),
-        create_joins=True,
-        variables=variables,
-        pg_service=pg_service,
-        drop=True,
-    ).create()
-
     run_sql("app/view/vw_change_points.sql", pg_service, variables)
     run_sql("app/view/vw_tww_import.sql", pg_service, variables)
 
