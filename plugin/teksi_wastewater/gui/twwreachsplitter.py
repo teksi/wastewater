@@ -24,9 +24,9 @@
 
 import logging
 
+from qgis.gui import QgsMessageBar
 from qgis.PyQt.QtCore import pyqtSlot
 from qgis.PyQt.QtWidgets import QDockWidget
-from qgis.gui import QgsMessageBar
 
 from ..tools.twwmaptooladdfeature import TwwMapToolSplitReachWithNode
 from ..utils import get_ui_class
@@ -55,15 +55,17 @@ class TwwReachSplitter(QDockWidget, DOCK_WIDGET):
             self.tr("Wastewater Structure"),
             "wastewater_structure",
         )
-        self.layerComboBox.insertItem(self.layerComboBox.count(), self.tr("Wastewater node"), "wastewater_node")
-        self.layerComboBox.setCurrentIndex(1)       
+        self.layerComboBox.insertItem(
+            self.layerComboBox.count(), self.tr("Wastewater node"), "wastewater_node"
+        )
+        self.layerComboBox.setCurrentIndex(1)
         self.stateButton.setProperty("state", "inactive")
-        self.msgtitle = self.tr(f"Split reach with {self.layerComboBox.itemData(self.layerComboBox.currentIndex())}")
+        self.msgtitle = self.tr(
+            f"Split reach with {self.layerComboBox.itemData(self.layerComboBox.currentIndex())}"
+        )
         self.msg = "Left Click to digitize"
         self.messageBarItem = QgsMessageBar.createMessage(self.msgtitle, self.msg)
         self.layerComboBox.currentIndexChanged.connect(self.layerChanged)
-
-
 
     @pyqtSlot(int)
     def layerChanged(self, index):
@@ -83,12 +85,14 @@ class TwwReachSplitter(QDockWidget, DOCK_WIDGET):
             lyr = TwwLayerManager.layer("vw_wastewater_node")
             lyr.startEditing()
             self.iface.mapCanvas().setMapTool(self.mapToolSplitReachWithWN)
-        else: # current index is not initialized
+        else:  # current index is not initialized
             # set current index for messageBar
             self.layerComboBox.setCurrentIndex(1)
-            
+
         if self.stateButton.property("state") == "active":
-            self.msgtitle = self.tr(f"Split reach with {self.layerComboBox.itemData(self.layerComboBox.currentIndex())}")
+            self.msgtitle = self.tr(
+                f"Split reach with {self.layerComboBox.itemData(self.layerComboBox.currentIndex())}"
+            )
             self.messageBarItem = QgsMessageBar.createMessage(self.msgtitle, self.msg)
             self.iface.messageBar().pushItem(self.messageBarItem)
 
@@ -98,13 +102,13 @@ class TwwReachSplitter(QDockWidget, DOCK_WIDGET):
             self.iface.messageBar().popWidget(self.messageBarItem)
         except Exception:
             pass
-            
+
         if self.stateButton.property("state") != "active":
             self.layerComboBox.setEnabled(True)
             self.layerChanged(0)
             self.stateButton.setText(self.tr("Stop Splitting Reaches"))
             self.stateButton.setProperty("state", "active")
-            self.messageBarItem = QgsMessageBar.createMessage(self.msgtitle,self.msg)
+            self.messageBarItem = QgsMessageBar.createMessage(self.msgtitle, self.msg)
             self.iface.messageBar().pushItem(self.messageBarItem)
         else:
             self.layerComboBox.setEnabled(False)

@@ -38,9 +38,9 @@ try:
 except ImportError:
     TwwPlotSVGWidget = None
 from .gui.twwprofiledockwidget import TwwProfileDockWidget
+from .gui.twwreachsplitter import TwwReachSplitter
 from .gui.twwsettingsdialog import TwwSettingsDialog
 from .gui.twwwizard import TwwWizard
-from .gui.twwreachsplitter import TwwReachSplitter
 from .interlis import config
 from .processing_provider.provider import TwwProcessingProvider
 from .tools.twwmaptools import TwwMapToolConnectNetworkElements, TwwTreeMapTool
@@ -72,7 +72,7 @@ class TeksiWastewaterPlugin:
 
     # Wizard
     wizarddock = None
-    
+
     # Reach splitter
     reachsplitterdock = None
 
@@ -199,7 +199,7 @@ class TeksiWastewaterPlugin:
         self.wizardAction.setEnabled(False)
         self.wizardAction.setCheckable(True)
         self.wizardAction.triggered.connect(self.wizard)
-        
+
         self.reachsplitterAction = QAction(
             QIcon(os.path.join(plugin_root_path(), "icons/reachsplitter.svg")),
             "Reach Splitter",

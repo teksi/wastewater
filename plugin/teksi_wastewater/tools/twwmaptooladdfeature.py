@@ -518,12 +518,11 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
     """
     This is used to split a reach feature by creating a node.
 
-    It lets you create a node and then uses this node to split the reach layer 
+    It lets you create a node and then uses this node to split the reach layer
     and add a wastewater node/strucrure
 
 
     """
-
 
     def __init__(self, iface: QgisInterface, layer):
         # TwwMapToolAddFeature __init__ without rubberband
@@ -531,7 +530,7 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
         self.iface = iface
         self.canvas = iface.mapCanvas()
         self.layer = layer
-        
+
         # see TwwMapToolAddReach __init__
         self.snapping_marker = None
         self.node_layer = layer
@@ -552,12 +551,12 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
             config.setMode(QgsSnappingConfig.AdvancedConfiguration)
             config.setEnabled(True)
             settings = QgsSnappingConfig.IndividualLayerSettings(
-                True, lsc["mode"], 10, QgsTolerance.ProjectUnits 
+                True, lsc["mode"], 10, QgsTolerance.ProjectUnits
             )
             config.setIndividualLayerSettings(lsc["layer"], settings)
             self.snapping_configs.append(config)
-        
-        #prepare messageBarItem
+
+        # prepare messageBarItem
         self.msgtitle = self.tr(f"Split reach with {self.node_layer.name()}")
         msg = None
         self.messageBarItem = QgsMessageBar.createMessage(self.msgtitle, msg)
@@ -568,7 +567,6 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
         """
         QgsMapToolAdvancedDigitizing.activate(self)
         self.canvas.setCursor(QCursor(Qt.CrossCursor))
-
 
     def deactivate(self):
         """
@@ -590,13 +588,13 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
     # ===========================================================================
     # Events
     # ===========================================================================
-  
+
     def cadCanvasMoveEvent(self, event):
         """
         Mouse is moved: Update snap
         :param event: coordinates etc.
         """
-        _, match,_ = self.snap(event)
+        _, match, _ = self.snap(event)
         # snap indicator
         if not match.isValid():
             if self.snapping_marker is not None:
@@ -617,19 +615,19 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
                 icon_type = QgsVertexMarker.ICON_BOX  # vertex snap
             else:
                 icon_type = QgsVertexMarker.ICON_X  # intersection snap
-        elif match.hasEdge():# more robust than a simple else clause for further usage
-            icon_type = QgsVertexMarker.ICON_DOUBLE_TRIANGLE 
-        else: #debug only
-            icon_type = QgsVertexMarker.CIRCLE 
+        elif match.hasEdge():  # more robust than a simple else clause for further usage
+            icon_type = QgsVertexMarker.ICON_DOUBLE_TRIANGLE
+        else:  # debug only
+            icon_type = QgsVertexMarker.CIRCLE
         self.snapping_marker.setIconType(icon_type)
         self.snapping_marker.setCenter(match.point())
 
-    def cadCanvasReleaseEvent(self, event):       
+    def cadCanvasReleaseEvent(self, event):
         if event.button() == Qt.RightButton:
             self.right_clicked()
         if event.button() == Qt.LeftButton:
             self.left_clicked(event)
-    
+
     def mouse_move(self, event):
         _, match, _ = self.snap(event)
         # snap indicator
@@ -660,7 +658,7 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
     # ===========================================================================
     # Actions
     # ===========================================================================
- 
+
     def left_clicked(self, event):
         """
         When the canvas is left clicked we add a new point.
@@ -672,19 +670,18 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
         """
         On a right click nothing happens
         """
-        pass
- 
+
     def snap(self, event):
         """
         Snap to nearby points on the reach layer which may be used as connection
         points for this reach.
         :param event: The mouse event
-        :return: The snapped position in map coordinates, match and snapped vertex id 
-        
+        :return: The snapped position in map coordinates, match and snapped vertex id
+
         """
 
         for config in self.snapping_configs:
-            self.snapping_utils.setConfig(config) # only snap to reaches
+            self.snapping_utils.setConfig(config)  # only snap to reaches
             match = self.snapping_utils.snapToMap(QgsPointXY(event.originalMapPoint()))
             if match.isValid():
                 if match.layer():
@@ -693,24 +690,24 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
                     assert f.isValid()
                     (ok, vertex_id) = f.geometry().vertexIdFromVertexNr(match.vertexIndex())
                     assert ok
-                    
+
                     if match.hasVertex():
                         point = f.geometry().constGet().vertexAt(vertex_id)
                         assert isinstance(point, QgsPoint)
-                        return point, match, vertex_id 
+                        return point, match, vertex_id
                     else:
-                        return QgsPoint(match.point()), match , None
-                        
+                        return QgsPoint(match.point()), match, None
+
                     if match.hasEdge():
                         point = match.interpolatedPoint(match.layer().sourceCrs())
                         assert isinstance(point, QgsPoint)
-                        return point, match , vertex_id
+                        return point, match, vertex_id
                     else:
-                        return QgsPoint(match.point()), match , None
+                        return QgsPoint(match.point()), match, None
 
-            return QgsPoint(event.originalMapPoint()), match , None
+            return QgsPoint(event.originalMapPoint()), match, None
 
-    def finishEditing(self,event):
+    def finishEditing(self, event):
         # snap
         point3d, match, vertex_id = self.snap(event)
         if self.snapping_marker is not None:
@@ -725,53 +722,58 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
                 f.setAttribute(idx, v)
             else:
                 f.setAttribute(idx, self.reach_layer.dataProvider().defaultValue(idx))
-        #alter geometry and bottom level
+        # alter geometry and bottom level
         f.setGeometry(point3d)
-        if self.node_layer.id()=='vw_tww_wastewater_structure':
-            prefix = 'wn_'
-        else :
-            prefix = ''
+        if self.node_layer.id() == "vw_tww_wastewater_structure":
+            prefix = "wn_"
+        else:
+            prefix = ""
         lvl_field = fields.indexFromName(f"{prefix}bottom_level")
-        if point3d.z()== point3d.z(): # check for nan
+        if point3d.z() == point3d.z():  # check for nan
             f.setAttribute(lvl_field, point3d.z())
         dlg = self.iface.getFeatureForm(self.node_layer, f)
         dlg.setMode(QgsAttributeEditorContext.AddFeatureMode)
         dlg.exec_()
         oid_idx = self.node_layer.fields().indexFromName(f"{prefix}obj_id")
         if dlg.feature().attributes()[lvl_field]:
-            point3d.setZ(dlg.feature().attributes()[lvl_field]) # update if level was altered in dlg
+            point3d.setZ(
+                dlg.feature().attributes()[lvl_field]
+            )  # update if level was altered in dlg
         pt_oid = dlg.feature().attributes()[oid_idx]
-        
+
         # split reach
-        if vertex_id is not None: # edge or vertex match           
+        if vertex_id is not None:  # edge or vertex match
             req = QgsFeatureRequest(match.featureId())
             f_old = next(match.layer().getFeatures(req))
             assert f_old.isValid()
             fields = self.reach_layer.fields()
-            for dest in ["from","to"]:
+            for dest in ["from", "to"]:
                 f = QgsFeature(fields)
-                if self.node_layer.id()=='vw_tww_wastewater_structure':
+                if self.node_layer.id() == "vw_tww_wastewater_structure":
                     keep_fields = [
-                    "ws_status",
-                    "ws_year_of_construction",
-                    "ws_fk_owner",
-                    "ws_fk_operator",
-                    "ch_usage_current",
-                    "ch_function_hierarchic",
-                    "ch_function_hydraulic",]
-                else :
+                        "ws_status",
+                        "ws_year_of_construction",
+                        "ws_fk_owner",
+                        "ws_fk_operator",
+                        "ch_usage_current",
+                        "ch_function_hierarchic",
+                        "ch_function_hydraulic",
+                    ]
+                else:
                     # keep all wastewater structure and channel fields
-                    keep_fields = [field for field in fields if field[0:2] in ["ch","ws"]]
-                keep_fields.extend ([
-                    "clear_height",
-                    "material",
-                    "horizontal_positioning",
-                    "inside_coating",
-                    "fk_pipe_profile",
-                    "remark",
-                    "rp_from_obj_id",
-                    "rp_to_obj_id",
-                ])
+                    keep_fields = [field for field in fields if field[0:2] in ["ch", "ws"]]
+                keep_fields.extend(
+                    [
+                        "clear_height",
+                        "material",
+                        "horizontal_positioning",
+                        "inside_coating",
+                        "fk_pipe_profile",
+                        "remark",
+                        "rp_from_obj_id",
+                        "rp_to_obj_id",
+                    ]
+                )
                 keep_fields.remove(f"rp_{dest}_obj_id")
                 for idx, field in enumerate(fields):
                     if field in keep_fields:
@@ -783,14 +785,13 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
                             f.setAttribute(idx, v)
                         else:
                             f.setAttribute(idx, self.reach_layer.dataProvider().defaultValue(idx))
-                    
-                
+
                 pt_start = vertex_id if dest == "from" else 0
                 pt_end = -1 if dest == "from" else vertex_id
-                
-                geom=f_old.geometry().asPolyline()[pt_start:pt_end]
+
+                geom = f_old.geometry().asPolyline()[pt_start:pt_end]
                 if match.hasEdge:
-                    if pt_start==0:
+                    if pt_start == 0:
                         geom.append(point3d)  # append point
                     else:
                         geom.insert(0, point3d)  # insert at start
@@ -799,26 +800,26 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
                     f"rp_{dest}_fk_wastewater_networkelement"
                 )
                 f.setAttribute(ne, pt_oid)
-                lvl = self.reach_layer.fields().indexFromName(
-                    f"rp_{dest}_level"
-                )
+                lvl = self.reach_layer.fields().indexFromName(f"rp_{dest}_level")
                 f.setAttribute(lvl, point3d.z())
                 ne = self.reach_layer.fields().indexFromName(
                     f"rp_{dest}_fk_wastewater_networkelement"
                 )
                 self.reach_layer.dataProvider().addFeatures([f])
-            
+
             self.reach_layer.deleteFeature(f_old.id())
             self.deactivate()
-            
-        elif match: # debug only
+
+        elif match:  # debug only
             req = QgsFeatureRequest(match.featureId())
             f_old = next(match.layer().getFeatures(req))
-            msg = self.tr(f"If you got here you found a bug: TWW matched OBJ_id {f_old.attributes()[0]} but did not split")
+            msg = self.tr(
+                f"If you got here you found a bug: TWW matched OBJ_id {f_old.attributes()[0]} but did not split"
+            )
             self.messageBarItem = QgsMessageBar.createMessage(self.msgtitle, msg)
             self.iface.messageBar().pushItem(self.messageBarItem)
             self.deactivate()
-        
+
         else:
             msg = self.tr("Only snapped reaches are split.")
             self.messageBarItem = QgsMessageBar.createMessage(self.msgtitle, msg)
