@@ -523,17 +523,17 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
     and add a wastewater node/strucrure
 
 
-    Usage:
-      Connect to the signal deactivated()
-      deactivated() will be emitted after a right click
     """
 
 
     def __init__(self, iface: QgisInterface, layer):
+        # TwwMapToolAddFeature __init__ without rubberband
         QgsMapToolAdvancedDigitizing.__init__(self, iface.mapCanvas(), iface.cadDockWidget())
         self.iface = iface
         self.canvas = iface.mapCanvas()
         self.layer = layer
+        
+        # see TwwMapToolAddReach __init__
         self.snapping_marker = None
         self.node_layer = layer
         assert self.node_layer is not None
@@ -562,7 +562,7 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
         """
         Map tool is activated
         """
-        QgsMapTool.activate(self)
+        QgsMapToolAdvancedDigitizing.activate(self)
         self.canvas.setCursor(QCursor(Qt.CrossCursor))
         msgtitle = self.tr(f"Split reach with {self.node_layer.name()}")
         msg = self.tr("Digitize with left click.")
@@ -573,8 +573,7 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
         """
         Map tool is deactivated
         """
-        QgsMapTool.deactivate(self)
-        self.iface.messageBar().popWidget(self.messageBarItem)
+        QgsMapToolAdvancedDigitizing.deactivate(self)
         self.canvas.unsetCursor()
 
     def isZoomTool(self):
@@ -618,20 +617,10 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
         self.snapping_marker.setIconType(icon_type)
         self.snapping_marker.setCenter(match.point())
 
-    def left_clicked(self, event):
-        """
-        When the canvas is left clicked we add a new point.
-        :type event: QMouseEvent
-        """
-        self.finishEditing(event)
-
-    def right_clicked(self, _):
-        """
-        On a right click nothing happens
-        """
-        pass
-
     def cadcanvasReleaseEvent(self, event):
+        msg = self.tr("cadcanvasReleaseEvent was triggered")
+        self.messageBarItem = QgsMessageBar.createMessage(msgtitle, msg)
+        self.iface.messageBar().pushItem(self.messageBarItem)        
         if event.button() == Qt.RightButton:
             self.right_clicked()
         if event.button() == Qt.LeftButton:
@@ -664,12 +653,29 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
         self.snapping_marker.setIconType(icon_type)
         self.snapping_marker.setCenter(match.point())
 
+    # ===========================================================================
+    # Actions
+    # ===========================================================================
+ 
+    def left_clicked(self, event):
+        """
+        When the canvas is left clicked we add a new point.
+        :type event: QMouseEvent
+        """
+        self.finishEditing(event)
+
+    def right_clicked(self, _):
+        """
+        On a right click nothing happens
+        """
+        pass
+ 
     def snap(self, event):
         """
         Snap to nearby points on the reach layer which may be used as connection
         points for this reach.
         :param event: The mouse event
-        :return: The snapped position in map coordinates, snapped vertex id and previous ve
+        :return: The snapped position in map coordinates, match and snapped vertex id 
         
         """
 
@@ -701,7 +707,9 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
             return QgsPoint(event.originalMapPoint()), match , None
 
     def finishEditing(self,event):
-
+        msg = self.tr("finishEditing was triggered")
+        self.messageBarItem = QgsMessageBar.createMessage(msgtitle, msg)
+        self.iface.messageBar().pushItem(self.messageBarItem) 
         # snap
         point3d, match, vertex_id = self.snap(event)
         if self.snapping_marker is not None:
