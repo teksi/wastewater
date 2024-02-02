@@ -733,11 +733,24 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
             for dest in ["from","to"]:
                 f = QgsFeature(fields)
                 if self.node_layer.id()=='vw_tww_wastewater_structure':
-                    keep_fields = []
+                    keep_fields = [
+                    "ws_status",
+                    "ws_year_of_construction",
+                    "ws_fk_owner",
+                    "ws_fk_operator",
+                    "ch_usage_current",
+                    "ch_function_hierarchic",
+                    "ch_function_hydraulic",]
                 else :
-                    # keep wastewater structure and channel fields
+                    # keep all wastewater structure and channel fields
                     keep_fields = [field for field in fields if field[0:2] in ["ch","ws"]]
                 keep_fields.extend ([
+                    "clear_height",
+                    "material",
+                    "horizontal_positioning",
+                    "inside_coating",
+                    "fk_pipe_profile",
+                    "remark",
                     "rp_from_obj_id",
                     "rp_to_obj_id",
                 ])
