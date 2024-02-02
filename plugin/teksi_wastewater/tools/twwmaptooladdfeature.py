@@ -730,23 +730,20 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
             f_old = next(match.layer().getFeatures(req))
             assert f_old.isValid()
             fields = self.reach_layer.fields()
-            alterations = [
-                "from",
-                "to"
-            ]
-            for dest in alterations:
+            for dest in ["from","to"]:
                 f = QgsFeature(fields)
-                if not self.last_feature_attributes:
-                    self.last_feature_attributes = [None] * fields.count()
+                if self.node_layer.id()=='vw_tww_wastewater_structure':
+                    keep_fields = []
+                else :
+                    # keep wastewater structure and channel fields
+                    keep_fields = [field for field in fields if field[0:2] in ["ch","ws"]]
+                keep_fields.extend ([
+                    "rp_from_obj_id",
+                    "rp_to_obj_id",
+                ])
+                keep_fields.remove(f"rp_{dest}_obj_id")
                 for idx, field in enumerate(fields):
-                    if not field.name() in [
-                        "id",
-                        "obj_id",
-                        "identifier",
-                        "length_effective",
-                        f"rp_{dest}_obj_id",
-                        f"rp_{dest}_level"
-                    ]:
+                    if field in keep_fields:
                         f.setAttribute(idx, f_old.attributes()[idx])
                     else:
                         # try client side default value first
