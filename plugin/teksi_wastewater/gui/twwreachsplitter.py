@@ -26,6 +26,7 @@ import logging
 
 from qgis.PyQt.QtCore import pyqtSlot
 from qgis.PyQt.QtWidgets import QDockWidget
+from qgis.gui import QgsMessageBar
 
 from ..tools.twwmaptooladdfeature import TwwMapToolSplitReachWithNode
 from ..utils import get_ui_class
@@ -40,17 +41,8 @@ class TwwReachSplitter(QDockWidget, DOCK_WIDGET):
     def __init__(self, parent, iface):
         QDockWidget.__init__(self, parent)
         self.setupUi(self)
-        self.layerComboBox.currentIndexChanged.connect(self.layerChanged)
         self.stateButton.clicked.connect(self.stateChanged)
         self.iface = iface
-        self.layerComboBox.insertItem(
-            self.layerComboBox.count(),
-            self.tr("Wastewater Structure"),
-            "wastewater_structure",
-        )
-        self.layerComboBox.insertItem(self.layerComboBox.count(), self.tr("Wastewater node"), "wastewater_node")
-        self.stateButton.setProperty("state", "inactive")
-
         self.mapToolSplitReachWithWN = TwwMapToolSplitReachWithNode(
             self.iface, TwwLayerManager.layer("vw_wastewater_node")
         )
@@ -58,15 +50,27 @@ class TwwReachSplitter(QDockWidget, DOCK_WIDGET):
             self.iface, TwwLayerManager.layer("vw_tww_wastewater_structure")
         )
 
+        self.layerComboBox.insertItem(
+            self.layerComboBox.count(),
+            self.tr("Wastewater Structure"),
+            "wastewater_structure",
+        )
+        self.layerComboBox.insertItem(self.layerComboBox.count(), self.tr("Wastewater node"), "wastewater_node")
+        self.layerComboBox.setCurrentIndex(1)       
+        self.stateButton.setProperty("state", "inactive")
+        self.msgtitle = self.tr(f"Split reach with {self.layerComboBox.itemData(self.layerComboBox.currentIndex())}")
+        self.msg = "Left Click to digitize"
+        self.messageBarItem = QgsMessageBar.createMessage(self.msgtitle, self.msg)
+        self.layerComboBox.currentIndexChanged.connect(self.layerChanged)
+
+
+
     @pyqtSlot(int)
     def layerChanged(self, index):
-        for lyr in [
-            TwwLayerManager.layer("vw_tww_reach"),
-            TwwLayerManager.layer("vw_wastewater_node"),
-            TwwLayerManager.layer("vw_tww_wastewater_structure"),
-        ]:
-            lyr.commitChanges()
-
+        try:
+            self.iface.messageBar().popWidget(self.messageBarItem)
+        except:
+            continue
         if (
             self.layerComboBox.itemData(self.layerComboBox.currentIndex())
             == "wastewater_structure"
@@ -79,21 +83,29 @@ class TwwReachSplitter(QDockWidget, DOCK_WIDGET):
             lyr = TwwLayerManager.layer("vw_wastewater_node")
             lyr.startEditing()
             self.iface.mapCanvas().setMapTool(self.mapToolSplitReachWithWN)
+        else: # current index is not initialized
+            # set current index for messageBar
+            self.layerComboBox.setCurrentIndex(1)
+            
+        if self.stateButton.property("state") == "active":
+            self.msgtitle = self.tr(f"Split reach with {self.layerComboBox.itemData(self.layerComboBox.currentIndex())}")
+            self.messageBarItem = QgsMessageBar.createMessage(self.msgtitle, self.msg)
+            self.iface.messageBar().pushItem(self.messageBarItem)
 
     @pyqtSlot()
     def stateChanged(self):
+        try:
+            self.iface.messageBar().popWidget(self.messageBarItem)
+        except:
+            continue
         if self.stateButton.property("state") != "active":
             self.layerComboBox.setEnabled(True)
             self.layerChanged(0)
             self.stateButton.setText(self.tr("Stop Splitting Reaches"))
             self.stateButton.setProperty("state", "active")
+            self.messageBarItem = QgsMessageBar.createMessage(self.msgtitle,self.msg)
+            self.iface.messageBar().pushItem(self.messageBarItem)
         else:
-            for lyr in [
-                TwwLayerManager.layer("vw_tww_reach"),
-                TwwLayerManager.layer("vw_wastewater_node"),
-                TwwLayerManager.layer("vw_tww_wastewater_structure"),
-            ]:
-                lyr.commitChanges()
             self.layerComboBox.setEnabled(False)
             self.stateButton.setText(self.tr("Start Splitting Reaches"))
             self.stateButton.setProperty("state", "inactive")

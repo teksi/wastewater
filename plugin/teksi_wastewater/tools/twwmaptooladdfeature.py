@@ -617,10 +617,7 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
         self.snapping_marker.setIconType(icon_type)
         self.snapping_marker.setCenter(match.point())
 
-    def cadcanvasReleaseEvent(self, event):
-        msg = self.tr("cadcanvasReleaseEvent was triggered")
-        self.messageBarItem = QgsMessageBar.createMessage(msgtitle, msg)
-        self.iface.messageBar().pushItem(self.messageBarItem)        
+    def cadCanvasReleaseEvent(self, event):   
         if event.button() == Qt.RightButton:
             self.right_clicked()
         if event.button() == Qt.LeftButton:
@@ -707,9 +704,6 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
             return QgsPoint(event.originalMapPoint()), match , None
 
     def finishEditing(self,event):
-        msg = self.tr("finishEditing was triggered")
-        self.messageBarItem = QgsMessageBar.createMessage(msgtitle, msg)
-        self.iface.messageBar().pushItem(self.messageBarItem) 
         # snap
         point3d, match, vertex_id = self.snap(event)
         if self.snapping_marker is not None:
