@@ -565,7 +565,7 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
         QgsMapTool.activate(self)
         self.canvas.setCursor(QCursor(Qt.CrossCursor))
         msgtitle = self.tr(f"Split reach with {self.node_layer.name()}")
-        msg = self.tr("Digitize with left click. Rightclick to abort.")
+        msg = self.tr("Digitize with left click.")
         self.messageBarItem = QgsMessageBar.createMessage(msgtitle, msg)
         self.iface.messageBar().pushItem(self.messageBarItem)
 
@@ -620,22 +620,22 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
 
     def left_clicked(self, event):
         """
-        When the canvas is left clicked we add a new point to the rubberband.
+        When the canvas is left clicked we add a new point.
         :type event: QMouseEvent
         """
         self.finishEditing(event)
 
     def right_clicked(self, _):
         """
-        On a right click we cdeactivate
+        On a right click nothing happens
         """
-        self.deactivate()
+        pass
 
     def cadcanvasReleaseEvent(self, event):
         if event.button() == Qt.RightButton:
-            self.deactivate()
+            self.right_clicked()
         if event.button() == Qt.LeftButton:
-            self.finishEditing(event)
+            self.left_clicked(event)
     
     def mouse_move(self, event):
         _, match, _ = self.snap(event)
