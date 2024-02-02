@@ -9,22 +9,23 @@ if [[ -z ${PROJECT} ]]; then
   exit 1
 fi
 
-PATH=$(dirname ${PROJECT})
+DIR=$(dirname ${PROJECT})
 
-echo $PATH
+echo $DIR
 
-if [[ ! -d ${PATH} ]]; then
-  echo "'${PATH}' directory does not exist"
+if [[ ! -d ${DIR} ]]; then
+  echo "'${DIR}' directory does not exist"
   exit 1
 fi
 
 FOUND=0
-for f in ${PATH}/*\_*.ts
+for f in ${DIR}/*\_*.ts
 do
   FOUND=1
 	lrelease $f ${f%.ts}.qm
+	rm $f # do not package ts files
 done
 
 if [[ ${FOUND} -eq 0 ]]; then
-  echo "No TS file found in '${PATH}'"
+  echo "No TS file found in '${DIR}'"
 fi
