@@ -514,7 +514,6 @@ class TwwMapToolDigitizeDrainageChannel(QgsMapTool):
             self.firstPoint = mousepos
 
 
-
 class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
     """
     This is used to split a reach feature by creating a node.
@@ -553,10 +552,15 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
             config.setMode(QgsSnappingConfig.AdvancedConfiguration)
             config.setEnabled(True)
             settings = QgsSnappingConfig.IndividualLayerSettings(
-                True, lsc["mode"], 10, QgsTolerance.Pixels
+                True, lsc["mode"], 10, QgsTolerance.ProjectUnits 
             )
             config.setIndividualLayerSettings(lsc["layer"], settings)
             self.snapping_configs.append(config)
+        
+        #prepare messageBarItem
+        self.msgtitle = self.tr(f"Split reach with {self.node_layer.name()}")
+        msg = None
+        self.messageBarItem = QgsMessageBar.createMessage(self.msgtitle, msg)
 
     def activate(self):
         """
@@ -564,15 +568,16 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
         """
         QgsMapToolAdvancedDigitizing.activate(self)
         self.canvas.setCursor(QCursor(Qt.CrossCursor))
-        msgtitle = self.tr(f"Split reach with {self.node_layer.name()}")
-        msg = self.tr("Digitize with left click.")
-        self.messageBarItem = QgsMessageBar.createMessage(msgtitle, msg)
-        self.iface.messageBar().pushItem(self.messageBarItem)
+
 
     def deactivate(self):
         """
         Map tool is deactivated
         """
+        try:
+            self.iface.messageBar().popWidget(self.messageBarItem)
+        except Exception:
+            pass
         QgsMapToolAdvancedDigitizing.deactivate(self)
         self.canvas.unsetCursor()
 
@@ -612,12 +617,14 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
                 icon_type = QgsVertexMarker.ICON_BOX  # vertex snap
             else:
                 icon_type = QgsVertexMarker.ICON_X  # intersection snap
-        else:
-            icon_type = QgsVertexMarker.ICON_DOUBLE_TRIANGLE  # must be segment snap
+        elif match.hasEdge():# more robust than a simple else clause for further usage
+            icon_type = QgsVertexMarker.ICON_DOUBLE_TRIANGLE 
+        else: #debug only
+            icon_type = QgsVertexMarker.CIRCLE 
         self.snapping_marker.setIconType(icon_type)
         self.snapping_marker.setCenter(match.point())
 
-    def cadCanvasReleaseEvent(self, event):   
+    def cadCanvasReleaseEvent(self, event):       
         if event.button() == Qt.RightButton:
             self.right_clicked()
         if event.button() == Qt.LeftButton:
@@ -686,7 +693,7 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
                     assert f.isValid()
                     (ok, vertex_id) = f.geometry().vertexIdFromVertexNr(match.vertexIndex())
                     assert ok
-                        
+                    
                     if match.hasVertex():
                         point = f.geometry().constGet().vertexAt(vertex_id)
                         assert isinstance(point, QgsPoint)
@@ -710,20 +717,29 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
             self.iface.mapCanvas().scene().removeItem(self.snapping_marker)
             self.snapping_marker = None
         # create point feature
-        f = QgsFeature(self.node_layer.fields())
+        fields = self.node_layer.fields()
+        f = QgsFeature(fields)
+        for idx, _ in enumerate(fields):
+            v = self.node_layer.defaultValue(idx, f)
+            if v != NULL:
+                f.setAttribute(idx, v)
+            else:
+                f.setAttribute(idx, self.reach_layer.dataProvider().defaultValue(idx))
+        #alter geometry and bottom level
         f.setGeometry(point3d)
         if self.node_layer.id()=='vw_tww_wastewater_structure':
             prefix = 'wn_'
         else :
             prefix = ''
- 
-        f.setAttribute(lvlname, point3d.z())
+        lvl_field = fields.indexFromName(f"{prefix}bottom_level")
+        if point3d.z()== point3d.z(): # check for nan
+            f.setAttribute(lvl_field, point3d.z())
         dlg = self.iface.getFeatureForm(self.node_layer, f)
         dlg.setMode(QgsAttributeEditorContext.AddFeatureMode)
         dlg.exec_()
-        idx = self.node_layer.fieldNameIndex(prefix+'bottom_level')
-        oid_idx = self.node_layer.fieldNameIndex(prefix+'obj_id')
-        point3d.setZ(dlg.feature().attributes()[idx]) # update if level was altered in dlg
+        oid_idx = self.node_layer.fields().indexFromName(f"{prefix}obj_id")
+        if dlg.feature().attributes()[lvl_field]:
+            point3d.setZ(dlg.feature().attributes()[lvl_field]) # update if level was altered in dlg
         pt_oid = dlg.feature().attributes()[oid_idx]
         
         # split reach
@@ -795,8 +811,16 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
             self.reach_layer.deleteFeature(f_old.id())
             self.deactivate()
             
+        elif match: # debug only
+            req = QgsFeatureRequest(match.featureId())
+            f_old = next(match.layer().getFeatures(req))
+            msg = self.tr(f"If you got here you found a bug: TWW matched OBJ_id {f_old.attributes()[0]} but did not split")
+            self.messageBarItem = QgsMessageBar.createMessage(self.msgtitle, msg)
+            self.iface.messageBar().pushItem(self.messageBarItem)
+            self.deactivate()
+        
         else:
             msg = self.tr("Only snapped reaches are split.")
-            self.messageBarItem = QgsMessageBar.createMessage(msgtitle, msg)
+            self.messageBarItem = QgsMessageBar.createMessage(self.msgtitle, msg)
             self.iface.messageBar().pushItem(self.messageBarItem)
             self.deactivate()

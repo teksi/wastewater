@@ -69,8 +69,8 @@ class TwwReachSplitter(QDockWidget, DOCK_WIDGET):
     def layerChanged(self, index):
         try:
             self.iface.messageBar().popWidget(self.messageBarItem)
-        except:
-            continue
+        except Exception:
+            pass
         if (
             self.layerComboBox.itemData(self.layerComboBox.currentIndex())
             == "wastewater_structure"
@@ -96,8 +96,9 @@ class TwwReachSplitter(QDockWidget, DOCK_WIDGET):
     def stateChanged(self):
         try:
             self.iface.messageBar().popWidget(self.messageBarItem)
-        except:
-            continue
+        except Exception:
+            pass
+            
         if self.stateButton.property("state") != "active":
             self.layerComboBox.setEnabled(True)
             self.layerChanged(0)
