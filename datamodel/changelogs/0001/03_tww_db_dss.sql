@@ -3071,9 +3071,9 @@ ALTER TABLE tww_od.re_building_group_disposal ADD CONSTRAINT rel_building_group_
 ALTER TABLE tww_od.re_building_group_disposal ADD COLUMN fk_disposal varchar(16);
 ALTER TABLE tww_od.re_building_group_disposal ADD CONSTRAINT rel_building_group_disposal_disposal FOREIGN KEY (fk_disposal) REFERENCES tww_od.disposal(obj_id) ON UPDATE CASCADE ON DELETE cascade;
 ALTER TABLE tww_od.re_maintenance_event_wastewater_structure ADD COLUMN fk_wastewater_structure varchar(16);
-ALTER TABLE tww_od.re_maintenance_event_wastewater_structure ADD CONSTRAINT rel_maintenance_event_wastewater_structure_wastewater_structure FOREIGN KEY (fk_wastewater_structure) REFERENCES tww_od.wastewater_structure(obj_id) ON UPDATE CASCADE ON DELETE cascade;
+ALTER TABLE tww_od.re_maintenance_event_wastewater_structure ADD CONSTRAINT rel_maintenance_event_wastewater_structure_wastewater_structure FOREIGN KEY (fk_wastewater_structure) REFERENCES tww_od.wastewater_structure(obj_id) ON UPDATE CASCADE ON DELETE cascade DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE tww_od.re_maintenance_event_wastewater_structure ADD COLUMN fk_maintenance_event varchar(16);
-ALTER TABLE tww_od.re_maintenance_event_wastewater_structure ADD CONSTRAINT rel_maintenance_event_wastewater_structure_maintenance_event FOREIGN KEY (fk_maintenance_event) REFERENCES tww_od.maintenance_event(obj_id) ON UPDATE CASCADE ON DELETE cascade;
+ALTER TABLE tww_od.re_maintenance_event_wastewater_structure ADD CONSTRAINT rel_maintenance_event_wastewater_structure_maintenance_event FOREIGN KEY (fk_maintenance_event) REFERENCES tww_od.maintenance_event(obj_id) ON UPDATE CASCADE ON DELETE cascade DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE tww_od.txt_symbol ADD COLUMN fk_wastewater_structure varchar(16);
 ALTER TABLE tww_od.txt_symbol ADD CONSTRAINT rel_symbol_wastewater_structure FOREIGN KEY (fk_wastewater_structure) REFERENCES tww_od.wastewater_structure(obj_id) ON DELETE cascade;
 CREATE TABLE tww_vl.symbol_plantype () INHERITS (tww_vl.value_list_base);
