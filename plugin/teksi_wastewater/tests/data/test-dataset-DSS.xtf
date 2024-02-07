@@ -10788,9 +10788,9 @@
 				<DatenherrRef REF="ch080qwzPR000018"/>
 				<DatenlieferantRef REF="ch080qwzPR000017"/>
 
-				<Bemerkung>Mittelaletsch3</Bemerkung>
+				<Bemerkung>Mittelaletsch5</Bemerkung>
 				<Benetzungsverlust>1</Benetzungsverlust>
-				<Bezeichnung>Mittelaletsch3</Bezeichnung>
+				<Bezeichnung>Mittelaletsch5</Bezeichnung>
 				<Muldenverlust>2</Muldenverlust>
 				<Verdunstungsverlust>0</Verdunstungsverlust>
 				<Versickerungsverlust>2</Versickerungsverlust>
@@ -105958,7 +105958,7 @@
 				<Naechstes_SBWRef REF="ch080qwzSK000001"/>
 				<!-- <StandortgemeindeRef REF="ch080qwzGE000003"/> -->
 				<!-- 25.10.2023 Test FP Untergegangene Organisation am Beispiel StandortgemeindeRef 1006-->
-				<StandortgemeindeRef REF="ch20p3q4GE000011"/>
+				<StandortgemeindeRef REF="ch080qwzGE000002"/>
 
 			</DSS_2020_1_LV95.Siedlungsentwaesserung.Stammkarte>
 

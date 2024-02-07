@@ -98,15 +98,15 @@ class InterlisImporterExporter:
         )
 
         # Import from xtf file to ili2pg model
-        self._progress_done(40, "Importing XTF data...")
+        self._progress_done(30, "Importing XTF data...")
         self._import_xtf_file(xtf_file_input=xtf_file_input)
 
         # Import from the temporary ili2pg model
-        self._progress_done(50, "Converting to Teksi Wastewater...")
+        self._progress_done(40, "Converting to Teksi Wastewater...")
         tww_session = self._import_from_intermediate_schema(import_model)
 
         if show_selection_dialog:
-            self._progress_done(80, "Import objects selection...")
+            self._progress_done(90, "Import objects selection...")
             import_dialog = InterlisImportSelectionDialog()
             import_dialog.init_with_session(tww_session)
             QApplication.restoreOverrideCursor()
@@ -116,12 +116,12 @@ class InterlisImporterExporter:
                 raise InterlisImporterExporterStopped()
             QApplication.setOverrideCursor(Qt.WaitCursor)
         else:
-            self._progress_done(80, "Commit session...")
+            self._progress_done(90, "Commit session...")
             tww_session.commit()
         tww_session.close()
 
         # Update main_cover and main_wastewater_node
-        self._progress_done(90, "Update main cover and refresh materialized views...")
+        self._progress_done(95, "Update main cover and refresh materialized views...")
         self._import_update_main_cover_and_refresh_mat_views()
 
         self._progress_done(100)
@@ -448,9 +448,9 @@ class InterlisImporterExporter:
             self._progress_done(self.current_progress + 1)
 
     def _progress_done_intermediate_schema(self):
-        self._progress_done(self.current_progress + 1)
+        self._progress_done(self.current_progress + 0.5)
 
     def _progress_done(self, progress, text=None):
         self.current_progress = progress
         if self.progress_done_callback:
-            self.progress_done_callback(progress, text)
+            self.progress_done_callback(int(progress), text)

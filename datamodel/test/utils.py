@@ -1,7 +1,7 @@
 import psycopg2
 import psycopg2.extras
 
-DEFAULT_PG_SERVICE = "pg_teksi_wastewater"
+DEFAULT_PG_SERVICE = "pg_tww"
 
 
 class DbTestBase:
