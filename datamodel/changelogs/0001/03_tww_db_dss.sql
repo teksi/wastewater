@@ -72,46 +72,7 @@ FOR EACH ROW EXECUTE PROCEDURE
 
 -------
 -------
-/* CREATE TABLE tww_od.wastewater_structure_symbol
-(
-   obj_id varchar(16) NOT NULL,
-   CONSTRAINT pkey_tww_od_wastewater_structure_symbol_obj_id PRIMARY KEY (obj_id)
-)
-WITH (
-   OIDS = False
-);
-CREATE SEQUENCE tww_od.seq_wastewater_structure_symbol_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.wastewater_structure_symbol ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_structure_symbol');
-COMMENT ON COLUMN tww_od.wastewater_structure_symbol.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
- ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN plantype  integer ;
-COMMENT ON COLUMN tww_od.wastewater_structure_symbol.plantype IS '';
- ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN symbol_scaling_heigth  decimal(2,1) ;
-COMMENT ON COLUMN tww_od.wastewater_structure_symbol.symbol_scaling_heigth IS '';
- ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN symbol_scaling_width  decimal(2,1) ;
-COMMENT ON COLUMN tww_od.wastewater_structure_symbol.symbol_scaling_width IS '';
- ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN symbolori  decimal(4,1) ;
-COMMENT ON COLUMN tww_od.wastewater_structure_symbol.symbolori IS 'Default: 90 Degree / Default: 90 Grad / Default: 90 degree';
-ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN symbolpos_geometry geometry('POINT', :SRID);
-CREATE INDEX in_tww_wastewater_structure_symbol_symbolpos_geometry ON tww_od.wastewater_structure_symbol USING gist (symbolpos_geometry );
-COMMENT ON COLUMN tww_od.wastewater_structure_symbol.symbolpos_geometry IS '';
- ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
-COMMENT ON COLUMN tww_od.wastewater_structure_symbol.last_modification IS 'Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE';
- ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN fk_dataowner varchar(16);
-COMMENT ON COLUMN tww_od.wastewater_structure_symbol.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
- ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN fk_provider varchar(16);
-COMMENT ON COLUMN tww_od.wastewater_structure_symbol.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_wastewater_structure_symbol
-BEFORE UPDATE OR INSERT ON
- tww_od.wastewater_structure_symbol
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
 
--------
--------
-
- */
 
 
 
