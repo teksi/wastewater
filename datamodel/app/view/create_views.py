@@ -77,6 +77,14 @@ def create_views(
         "reservoir": "connection_object",
         "individual_surface": "connection_object",
         "fountain": "connection_object",
+        # overflow
+        "leapingweir": "overflow",
+        "prank_weir": "overflow",
+        "pump": "overflow",
+        # maintenance_event
+        "bio_ecol_assessment": "maintenance_event",
+        "examination": "maintenance_event",
+        "maintenance": "maintenance_event",
         # zone
         "infiltration_zone": "zone",
         "drainage_system": "zone",
