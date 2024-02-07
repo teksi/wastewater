@@ -740,14 +740,42 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
                 dlg.feature().attributes()[lvl_field]
             )  # update if level was altered in dlg
         pt_oid = dlg.feature().attributes()[oid_idx]
-
+        
         # split reach
-        if vertex_id is not None:  # edge or vertex match
-            req = QgsFeatureRequest(match.featureId())
-            f_old = next(match.layer().getFeatures(req))
-            assert f_old.isValid()
-            fields = self.reach_layer.fields()
-            for dest in ["from", "to"]:
+        req = QgsFeatureRequest(match.featureId())
+        f_old = next(match.layer().getFeatures(req))
+        assert f_old.isValid()
+
+        """
+        Backup plan: 
+        split_line[QgsPoint(point3d.setX(point3d.x()+.00001),
+            ,QgsPoint(point3d.setX(point3d.x()-.00001)
+            ]
+        """
+        
+        # split using Point instead of PointXY is documented but fails with 3.28.11
+        try:
+            split_line = [point3d,point3d]
+            result, new_geometries, _ = f_old.geometry().splitGeometry(split_line, True, True)
+        except:
+            split_line = [QgsPointXY(point3d),QgsPointXY(point3d)]
+            result, new_geometries, _ = f_old.geometry().splitGeometry(split_line, True, True)
+        finally:
+        for geoms in new_geometries:
+            assert geoms
+            for geoms in new_geometries:
+
+                fields = self.reach_layer.fields()
+                if point3d.equals(geoms.vertexAt(0)):
+                    dest = "from"
+                elif point3d.equals(geoms.vertexAt(0)):
+                    dest="to"
+                else:
+                    msg = self.tr("Split returned a geometry that didn't start or end at split point.")
+                    self.messageBarItem = QgsMessageBar.createMessage(self.msgtitle, msg)
+                    self.iface.messageBar().pushItem(self.messageBarItem)
+                    self.deactivate()
+                
                 f = QgsFeature(fields)
                 if self.node_layer.id() == "vw_tww_wastewater_structure":
                     keep_fields = [
@@ -786,42 +814,16 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
                         else:
                             f.setAttribute(idx, self.reach_layer.dataProvider().defaultValue(idx))
 
-                pt_start = vertex_id if dest == "from" else 0
-                pt_end = -1 if dest == "from" else vertex_id
+                    f.setGeometry(geoms)
+                    ne = self.reach_layer.fields().indexFromName(
+                        f"rp_{dest}_fk_wastewater_networkelement"
+                    )
+                    f.setAttribute(ne, pt_oid)
+                    lvl = self.reach_layer.fields().indexFromName(f"rp_{dest}_level")
+                    f.setAttribute(lvl, point3d.z())
+                    ne = self.reach_layer.fields().indexFromName(
+                        f"rp_{dest}_fk_wastewater_networkelement"
+                    )
+                    self.reach_layer.dataProvider().addFeatures([f])
 
-                geom = f_old.geometry().asPolyline()[pt_start:pt_end]
-                if match.hasEdge:
-                    if pt_start == 0:
-                        geom.append(point3d)  # append point
-                    else:
-                        geom.insert(0, point3d)  # insert at start
-                f.setGeometry(geom)
-                ne = self.reach_layer.fields().indexFromName(
-                    f"rp_{dest}_fk_wastewater_networkelement"
-                )
-                f.setAttribute(ne, pt_oid)
-                lvl = self.reach_layer.fields().indexFromName(f"rp_{dest}_level")
-                f.setAttribute(lvl, point3d.z())
-                ne = self.reach_layer.fields().indexFromName(
-                    f"rp_{dest}_fk_wastewater_networkelement"
-                )
-                self.reach_layer.dataProvider().addFeatures([f])
-
-            self.reach_layer.deleteFeature(f_old.id())
-            self.deactivate()
-
-        elif match:  # debug only
-            req = QgsFeatureRequest(match.featureId())
-            f_old = next(match.layer().getFeatures(req))
-            msg = self.tr(
-                f"If you got here you found a bug: TWW matched OBJ_id {f_old.attributes()[0]} but did not split"
-            )
-            self.messageBarItem = QgsMessageBar.createMessage(self.msgtitle, msg)
-            self.iface.messageBar().pushItem(self.messageBarItem)
-            self.deactivate()
-
-        else:
-            msg = self.tr("Only snapped reaches are split.")
-            self.messageBarItem = QgsMessageBar.createMessage(self.msgtitle, msg)
-            self.iface.messageBar().pushItem(self.messageBarItem)
-            self.deactivate()
+                self.reach_layer.deleteFeature(f_old.id())
