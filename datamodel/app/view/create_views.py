@@ -1,18 +1,22 @@
 #!/usr/bin/env python3
 
 import argparse
+import os
 
 import psycopg
 from pirogue import MultipleInheritance, SimpleJoins, SingleInheritance
-from vw_tww_reach import vw_tww_reach
-from vw_tww_wastewater_structure import vw_tww_wastewater_structure
 from yaml import safe_load
 
+from .vw_tww_reach import vw_tww_reach
+from .vw_tww_wastewater_structure import vw_tww_wastewater_structure
+
 # sys.path.append(os.path.join(os.path.dirname(__file__)))
+scriptdir = os.path.dirname(os.path.abspath(__file__))
 
 
 def run_sql(file_path: str, pg_service: str, variables: dict = {}):
-    sql = open(file_path).read()
+    abs_file_path = os.path.join(scriptdir, file_path)
+    sql = open(abs_file_path).read()
     conn = psycopg.connect(f"service={pg_service}")
     cursor = conn.cursor()
     cursor.execute(psycopg.sql.SQL(sql).format(**variables))
@@ -35,14 +39,15 @@ def create_views(
     """  # noqa E501
 
     variables = {"SRID": srid}
-
     # open YAML files
     if tww_reach_extra:
-        tww_reach_extra = safe_load(open(tww_reach_extra))
+        tww_reach_extra = safe_load(open(os.path.join(scriptdir, tww_reach_extra)))
     if tww_wastewater_structure_extra:
-        tww_wastewater_structure_extra = safe_load(open(tww_wastewater_structure_extra))
+        tww_wastewater_structure_extra = safe_load(
+            open(os.path.join(scriptdir, tww_wastewater_structure_extra))
+        )
 
-    run_sql("app/view/vw_dictionary_value_list.sql", pg_service, variables)
+    run_sql("vw_dictionary_value_list.sql", pg_service, variables)
 
     defaults = {"view_schema": "tww_app", "pg_service": pg_service}
 
@@ -77,6 +82,14 @@ def create_views(
         "reservoir": "connection_object",
         "individual_surface": "connection_object",
         "fountain": "connection_object",
+        # overflow
+        "leapingweir": "overflow",
+        "prank_weir": "overflow",
+        "pump": "overflow",
+        # maintenance_event
+        "bio_ecol_assessment": "maintenance_event",
+        "examination": "maintenance_event",
+        "maintenance": "maintenance_event",
         # zone
         "infiltration_zone": "zone",
         "drainage_system": "zone",
@@ -93,7 +106,7 @@ def create_views(
         ).create()
 
     MultipleInheritance(
-        safe_load(open("app/view/vw_maintenance_event.yaml")),
+        safe_load(open(os.path.join(scriptdir, "vw_maintenance_event.yaml"))),
         create_joins=True,
         drop=True,
         variables=variables,
@@ -101,7 +114,9 @@ def create_views(
     ).create()
 
     MultipleInheritance(
-        safe_load(open("app/view/vw_damage.yaml")), drop=True, pg_service=pg_service
+        safe_load(open(os.path.join(scriptdir, "vw_damage.yaml"))),
+        drop=True,
+        pg_service=pg_service,
     ).create()
 
     vw_tww_wastewater_structure(
@@ -109,62 +124,65 @@ def create_views(
     )
     vw_tww_reach(pg_service=pg_service, extra_definition=tww_reach_extra)
 
-    run_sql("app/view/vw_file.sql", pg_service, variables)
+    run_sql("./vw_file.sql", pg_service, variables)
 
     MultipleInheritance(
-        safe_load(open("app/view/vw_oo_overflow.yaml")),
+        safe_load(open(os.path.join(scriptdir, "vw_oo_overflow.yaml"))),
         create_joins=True,
         variables=variables,
         pg_service=pg_service,
         drop=True,
     ).create()
 
-    run_sql("app/view/vw_change_points.sql", pg_service, variables)
-    run_sql("app/view/vw_tww_import.sql", pg_service, variables)
+    run_sql("vw_change_points.sql", pg_service, variables)
+    run_sql("vw_tww_import.sql", pg_service, variables)
 
-    run_sql("app/view/catchment_area/vw_catchment_area_connections.sql", pg_service, variables)
-    run_sql("app/view/catchment_area/vw_catchment_area_additional.sql", pg_service, variables)
-    run_sql("app/view/catchment_area/vw_catchment_area_rwc_connections.sql", pg_service, variables)
-    run_sql("app/view/catchment_area/vw_catchment_area_wwc_connections.sql", pg_service, variables)
-    run_sql("app/view/catchment_area/vw_catchment_area_rwp_connections.sql", pg_service, variables)
-    run_sql("app/view/catchment_area/vw_catchment_area_wwp_connections.sql", pg_service, variables)
+    run_sql("catchment_area/vw_catchment_area_connections.sql", pg_service, variables)
+    run_sql("catchment_area/vw_catchment_area_additional.sql", pg_service, variables)
+    run_sql("catchment_area/vw_catchment_area_rwc_connections.sql", pg_service, variables)
+    run_sql("catchment_area/vw_catchment_area_wwc_connections.sql", pg_service, variables)
+    run_sql("catchment_area/vw_catchment_area_rwp_connections.sql", pg_service, variables)
+    run_sql("catchment_area/vw_catchment_area_wwp_connections.sql", pg_service, variables)
 
     # Recreate network views
-    run_sql("app/view/network/vw_network_node.sql", pg_service, variables)
-    run_sql("app/view/network/vw_network_segment.sql", pg_service, variables)
+    run_sql("./network/vw_network_node.sql", pg_service, variables)
+    run_sql("./network/vw_network_segment.sql", pg_service, variables)
 
     # Recreate swmm views
     # to do finish testing swmm views
-    run_sql("app/swmm_views/02_vw_swmm_junctions.sql", pg_service, variables)
-    run_sql("app/swmm_views/03_vw_swmm_aquifers.sql", pg_service, variables)
-    run_sql("app/swmm_views/04_vw_swmm_conduits.sql", pg_service, variables)
-    run_sql("app/swmm_views/05_vw_swmm_dividers.sql", pg_service, variables)
-    run_sql("app/swmm_views/06_vw_swmm_landuses.sql", pg_service, variables)
-    run_sql("app/swmm_views/07_vw_swmm_losses.sql", pg_service, variables)
-    run_sql("app/swmm_views/08_vw_swmm_outfalls.sql", pg_service, variables)
-    run_sql("app/swmm_views/09_vw_swmm_subcatchments.sql", pg_service, variables)
-    run_sql("app/swmm_views/10_vw_swmm_subareas.sql", pg_service, variables)
-    run_sql("app/swmm_views/11_vw_swmm_dwf.sql", pg_service, variables)
-    run_sql("app/swmm_views/12_vw_swmm_raingages.sql", pg_service, variables)
-    run_sql("app/swmm_views/13_vw_swmm_infiltrations.sql", pg_service, variables)
-    run_sql("app/swmm_views/14_vw_swmm_coverages.sql", pg_service, variables)
-    run_sql("app/swmm_views/15_vw_swmm_vertices.sql", pg_service, variables)
-    run_sql("app/swmm_views/16_vw_swmm_pumps.sql", pg_service, variables)
-    run_sql("app/swmm_views/17_vw_swmm_polygons.sql", pg_service, variables)
-    run_sql("app/swmm_views/18_vw_swmm_storages.sql", pg_service, variables)
-    run_sql("app/swmm_views/19_vw_swmm_outlets.sql", pg_service, variables)
-    run_sql("app/swmm_views/20_vw_swmm_orifices.sql", pg_service, variables)
-    run_sql("app/swmm_views/21_vw_swmm_weirs.sql", pg_service, variables)
-    run_sql("app/swmm_views/22_vw_swmm_curves.sql", pg_service, variables)
-    run_sql("app/swmm_views/23_vw_swmm_xsections.sql", pg_service, variables)
-    run_sql("app/swmm_views/24_vw_swmm_coordinates.sql", pg_service, variables)
-    run_sql("app/swmm_views/25_vw_swmm_tags.sql", pg_service, variables)
-    run_sql("app/swmm_views/26_vw_swmm_symbols.sql", pg_service, variables)
-    run_sql("app/swmm_views/27_vw_swmm_results.sql", pg_service, variables)
+    run_sql("../swmm_views/02_vw_swmm_junctions.sql", pg_service, variables)
+    run_sql("../swmm_views/03_vw_swmm_aquifers.sql", pg_service, variables)
+    run_sql("../swmm_views/04_vw_swmm_conduits.sql", pg_service, variables)
+    run_sql("../swmm_views/05_vw_swmm_dividers.sql", pg_service, variables)
+    run_sql("../swmm_views/06_vw_swmm_landuses.sql", pg_service, variables)
+    run_sql("../swmm_views/07_vw_swmm_losses.sql", pg_service, variables)
+    run_sql("../swmm_views/08_vw_swmm_outfalls.sql", pg_service, variables)
+    run_sql("../swmm_views/09_vw_swmm_subcatchments.sql", pg_service, variables)
+    run_sql("../swmm_views/10_vw_swmm_subareas.sql", pg_service, variables)
+    run_sql("../swmm_views/11_vw_swmm_dwf.sql", pg_service, variables)
+    run_sql("../swmm_views/12_vw_swmm_raingages.sql", pg_service, variables)
+    run_sql("../swmm_views/13_vw_swmm_infiltrations.sql", pg_service, variables)
+    run_sql("../swmm_views/14_vw_swmm_coverages.sql", pg_service, variables)
+    run_sql("../swmm_views/15_vw_swmm_vertices.sql", pg_service, variables)
+    run_sql("../swmm_views/16_vw_swmm_pumps.sql", pg_service, variables)
+    run_sql("../swmm_views/17_vw_swmm_polygons.sql", pg_service, variables)
+    run_sql("../swmm_views/18_vw_swmm_storages.sql", pg_service, variables)
+    run_sql("../swmm_views/19_vw_swmm_outlets.sql", pg_service, variables)
+    run_sql("../swmm_views/20_vw_swmm_orifices.sql", pg_service, variables)
+    run_sql("../swmm_views/21_vw_swmm_weirs.sql", pg_service, variables)
+    run_sql("../swmm_views/22_vw_swmm_curves.sql", pg_service, variables)
+    run_sql("../swmm_views/23_vw_swmm_xsections.sql", pg_service, variables)
+    run_sql("../swmm_views/24_vw_swmm_coordinates.sql", pg_service, variables)
+    run_sql("../swmm_views/25_vw_swmm_tags.sql", pg_service, variables)
+    run_sql("../swmm_views/26_vw_swmm_symbols.sql", pg_service, variables)
+    run_sql("../swmm_views/27_vw_swmm_results.sql", pg_service, variables)
 
-    SimpleJoins(safe_load(open("app/view/export/vw_export_reach.yaml")), pg_service).create()
     SimpleJoins(
-        safe_load(open("app/view/export/vw_export_wastewater_structure.yaml")), pg_service
+        safe_load(open(os.path.join(scriptdir, "export/vw_export_reach.yaml"))), pg_service
+    ).create()
+    SimpleJoins(
+        safe_load(open(os.path.join(scriptdir, "export/vw_export_wastewater_structure.yaml"))),
+        pg_service,
     ).create()
 
 
