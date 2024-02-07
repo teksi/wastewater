@@ -28,7 +28,7 @@ BEGIN
 		GRANT SELECT, REFERENCES, TRIGGER ON ALL TABLES IN SCHEMA tww_app  TO tww_viewer_{db_identifier};
 		ALTER DEFAULT PRIVILEGES IN SCHEMA tww_app  GRANT SELECT, REFERENCES, TRIGGER ON TABLES TO tww_viewer_{db_identifier};
 	ELSE NULL;
-	END CASE;		
+	END CASE;
 	CASE WHEN EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'tww_user_{db_identifier}') THEN
 		GRANT ALL ON SCHEMA tww_app TO tww_user_{db_identifier};
 		GRANT ALL ON ALL TABLES IN SCHEMA tww_app TO tww_user_{db_identifier};

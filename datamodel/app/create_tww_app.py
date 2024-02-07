@@ -1,14 +1,17 @@
 import argparse
-import psycopg2
 import os
+
+import psycopg2
 from app.view.create_views import create_views
+
 
 def run_sql_file(file_path: str, pg_service: str, variables: dict = {}):
     script_directory = os.path.dirname(os.path.abspath(__file__))
     abs_file_path = os.path.join(script_directory, file_path)
     sql = open(abs_file_path).read()
-    run_sql(sql,pg_service,variables)
-    
+    run_sql(sql, pg_service, variables)
+
+
 def run_sql(sql: str, pg_service: str, variables: dict = {}):
     if variables:
         sql = sql.format(**variables)
@@ -16,14 +19,15 @@ def run_sql(sql: str, pg_service: str, variables: dict = {}):
     cursor = conn.cursor()
     cursor.execute(sql)
     conn.commit()
-    conn.close()    
+    conn.close()
+
 
 def create_tww_app(
     srid: int = 2056,
     pg_service: str = "pg_tww",
     tww_reach_extra: str = None,
     tww_wastewater_structure_extra: str = None,
-    db_identifier: str= None,
+    db_identifier: str = None,
 ):
     """
     Creates the schema tww_app for TEKSI Wastewater & GEP
@@ -33,13 +37,13 @@ def create_tww_app(
     :param tww_wastewater_structure_extra: YAML file path of the definition of additional columns for vw_tww_wastewater_structure_extra view
     """
     variables = {"SRID": srid, "db_identifier": db_identifier}
-    
-    run_sql("DROP SCHEMA IF EXISTS tww_app CASCADE;",pg_service)
-    
-    run_sql("CREATE SCHEMA tww_app;",pg_service)
-    run_sql_file("symbology_functions.sql",pg_service)
-    run_sql_file("reach_direction_change.sql",pg_service,variables)
-    run_sql_file("14_geometry_functions.sql",pg_service,variables)
+
+    run_sql("DROP SCHEMA IF EXISTS tww_app CASCADE;", pg_service)
+
+    run_sql("CREATE SCHEMA tww_app;", pg_service)
+    run_sql_file("symbology_functions.sql", pg_service)
+    run_sql_file("reach_direction_change.sql", pg_service, variables)
+    run_sql_file("14_geometry_functions.sql", pg_service, variables)
 
     create_views(
         srid,
@@ -47,10 +51,11 @@ def create_tww_app(
         tww_reach_extra,
         tww_wastewater_structure_extra,
     )
-    
-    run_sql_file("triggers/network.sql",pg_service)
-    run_sql_file("tww_app_roles.sql",pg_service,variables)
-    
+
+    run_sql_file("triggers/network.sql", pg_service)
+    run_sql_file("tww_app_roles.sql", pg_service, variables)
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-p", "--pg_service", help="postgres service")

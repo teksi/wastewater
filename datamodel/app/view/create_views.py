@@ -1,15 +1,18 @@
 #!/usr/bin/env python3
 
 import argparse
+import os
 
 import psycopg2
 from pirogue import MultipleInheritance, SimpleJoins, SingleInheritance
+from yaml import safe_load
+
 from .vw_tww_reach import vw_tww_reach
 from .vw_tww_wastewater_structure import vw_tww_wastewater_structure
-from yaml import safe_load
-import os
+
 # sys.path.append(os.path.join(os.path.dirname(__file__)))
 scriptdir = os.path.dirname(os.path.abspath(__file__))
+
 
 def run_sql(file_path: str, pg_service: str, variables: dict = {}):
     abs_file_path = os.path.join(scriptdir, file_path)
@@ -40,7 +43,9 @@ def create_views(
     if tww_reach_extra:
         tww_reach_extra = safe_load(open(os.path.join(scriptdir, tww_reach_extra)))
     if tww_wastewater_structure_extra:
-        tww_wastewater_structure_extra = safe_load(open(os.path.join(scriptdir, tww_wastewater_structure_extra)))
+        tww_wastewater_structure_extra = safe_load(
+            open(os.path.join(scriptdir, tww_wastewater_structure_extra))
+        )
 
     run_sql("vw_dictionary_value_list.sql", pg_service, variables)
 
@@ -109,7 +114,9 @@ def create_views(
     ).create()
 
     MultipleInheritance(
-        safe_load(open(os.path.join(scriptdir, "vw_damage.yaml"))), drop=True, pg_service=pg_service
+        safe_load(open(os.path.join(scriptdir, "vw_damage.yaml"))),
+        drop=True,
+        pg_service=pg_service,
     ).create()
 
     vw_tww_wastewater_structure(
@@ -170,9 +177,12 @@ def create_views(
     run_sql("../swmm_views/26_vw_swmm_symbols.sql", pg_service, variables)
     run_sql("../swmm_views/27_vw_swmm_results.sql", pg_service, variables)
 
-    SimpleJoins(safe_load(open(os.path.join(scriptdir, "export/vw_export_reach.yaml"))), pg_service).create()
     SimpleJoins(
-        safe_load(open(os.path.join(scriptdir, "export/vw_export_wastewater_structure.yaml"))), pg_service
+        safe_load(open(os.path.join(scriptdir, "export/vw_export_reach.yaml"))), pg_service
+    ).create()
+    SimpleJoins(
+        safe_load(open(os.path.join(scriptdir, "export/vw_export_wastewater_structure.yaml"))),
+        pg_service,
     ).create()
 
 
