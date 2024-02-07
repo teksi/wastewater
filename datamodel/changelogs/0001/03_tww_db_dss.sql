@@ -1,6 +1,6 @@
 ------ This file generates the VSA-DSS database (Modul VSA-DSS (2020)) in en on QQIS
 ------ For questions etc. please contact Stefan Burckhardt stefan.burckhardt@sjib.ch
------- version 13.12.2023 17:33:32
+------ version 07.02.2024 20:37:04
 ------ with 3D coordinates
 
 ---------------------------
@@ -40,113 +40,113 @@ CREATE TABLE tww_od.re_maintenance_event_wastewater_structure
 );
 COMMENT ON COLUMN tww_od.re_maintenance_event_wastewater_structure.id IS 'UUID generated with uuid_generate_v4 see https://www.postgresql.org/docs/16/uuid-ossp.html#UUID-OSSP-FUNCTIONS-SECT';
 -------
-CREATE TABLE tww_od.txt_symbol
-(
-   obj_id varchar(16) NOT NULL,
-   CONSTRAINT pkey_tww_od_txt_symbol_obj_id PRIMARY KEY (obj_id)
-)
-WITH (
-   OIDS = False
-);
-CREATE SEQUENCE tww_od.seq_txt_symbol_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.txt_symbol ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','txt_symbol');
-COMMENT ON COLUMN tww_od.txt_symbol.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
- ALTER TABLE tww_od.txt_symbol ADD COLUMN classname text;
- ALTER TABLE tww_od.txt_symbol ADD CONSTRAINT sx_classname_length_max_50 CHECK(char_length(classname)<=50);
-COMMENT ON COLUMN tww_od.txt_symbol.classname IS 'Name of class that symbol class is related to / Name der Klasse zu der die Symbolklasse gehört / nom de la classe à laquelle appartient la classe de symbole';
- ALTER TABLE tww_od.txt_symbol ADD COLUMN plantype  integer ;
-COMMENT ON COLUMN tww_od.txt_symbol.plantype IS '';
- ALTER TABLE tww_od.txt_symbol ADD COLUMN symbol_scaling_heigth  decimal(2,1) ;
-COMMENT ON COLUMN tww_od.txt_symbol.symbol_scaling_heigth IS '';
- ALTER TABLE tww_od.txt_symbol ADD COLUMN symbol_scaling_width  decimal(2,1) ;
-COMMENT ON COLUMN tww_od.txt_symbol.symbol_scaling_width IS '';
- ALTER TABLE tww_od.txt_symbol ADD COLUMN symbolori  decimal(4,1) ;
-COMMENT ON COLUMN tww_od.txt_symbol.symbolori IS 'Default: 90 Degree / Default: 90 Grad / Default: 90 degree';
-ALTER TABLE tww_od.txt_symbol ADD COLUMN symbolpos_geometry geometry('POINT', :SRID);
-CREATE INDEX in_tww_txt_symbol_symbolpos_geometry ON tww_od.txt_symbol USING gist (symbolpos_geometry );
-COMMENT ON COLUMN tww_od.txt_symbol.symbolpos_geometry IS '';
- ALTER TABLE tww_od.txt_symbol ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
-COMMENT ON COLUMN tww_od.txt_symbol.last_modification IS 'Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE';
--------
-CREATE TRIGGER
-update_last_modified_symbol
-BEFORE UPDATE OR INSERT ON
- tww_od.txt_symbol
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+							  
+ 
+							   
+																
+ 
+	  
+			   
+  
+																						 
+																										   
+																												  
+														 
+																										   
+																																																				  
+															 
+												   
+																			   
+																
+																			  
+															   
+																   
+																											  
+																					 
+																										
+															 
+																									  
+																																		 
+	   
+			  
+						   
+						  
+				  
+							  
+								
 
--------
--------
-CREATE TABLE tww_od.txt_text
-(
-   obj_id varchar(16) NOT NULL,
-   CONSTRAINT pkey_tww_od_txt_text_obj_id PRIMARY KEY (obj_id)
-)
-WITH (
-   OIDS = False
-);
-CREATE SEQUENCE tww_od.seq_txt_text_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.txt_text ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','txt_text');
-COMMENT ON COLUMN tww_od.txt_text.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
- ALTER TABLE tww_od.txt_text ADD COLUMN classname text;
- ALTER TABLE tww_od.txt_text ADD CONSTRAINT tx_classname_length_max_50 CHECK(char_length(classname)<=50);
-COMMENT ON COLUMN tww_od.txt_text.classname IS 'Name of class that textclass is related to / Name der Klasse zu der die Textklasse gehört / nom de la classe à laquelle appartient la classe de texte';
- ALTER TABLE tww_od.txt_text ADD COLUMN plantype  integer ;
-COMMENT ON COLUMN tww_od.txt_text.plantype IS '';
- ALTER TABLE tww_od.txt_text ADD COLUMN remark text;
- ALTER TABLE tww_od.txt_text ADD CONSTRAINT tx_remark_length_max_80 CHECK(char_length(remark)<=80);
-COMMENT ON COLUMN tww_od.txt_text.remark IS 'General remarks';
- ALTER TABLE tww_od.txt_text ADD COLUMN text  text ;
-COMMENT ON COLUMN tww_od.txt_text.text IS 'yyy_Aus Attributwerten zusammengesetzter Wert, mehrzeilig möglich / Aus Attributwerten zusammengesetzter Wert, mehrzeilig möglich / valeur calculée à partir d’attributs, plusieurs lignes possible';
- ALTER TABLE tww_od.txt_text ADD COLUMN texthali  smallint ;
-COMMENT ON COLUMN tww_od.txt_text.texthali IS '';
- ALTER TABLE tww_od.txt_text ADD COLUMN textori  decimal(4,1) ;
-COMMENT ON COLUMN tww_od.txt_text.textori IS '';
-ALTER TABLE tww_od.txt_text ADD COLUMN textpos_geometry geometry('POINT', :SRID);
-CREATE INDEX in_tww_txt_text_textpos_geometry ON tww_od.txt_text USING gist (textpos_geometry );
-COMMENT ON COLUMN tww_od.txt_text.textpos_geometry IS '';
- ALTER TABLE tww_od.txt_text ADD COLUMN textvali  smallint ;
-COMMENT ON COLUMN tww_od.txt_text.textvali IS '';
- ALTER TABLE tww_od.txt_text ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
-COMMENT ON COLUMN tww_od.txt_text.last_modification IS 'Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE';
--------
-CREATE TRIGGER
-update_last_modified_text
-BEFORE UPDATE OR INSERT ON
- tww_od.txt_text
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+	   
+	   
+							
+ 
+							   
+															  
+ 
+	  
+			   
+  
+																					   
+																									   
+																												
+													   
+																										 
+																																																		 
+														   
+												 
+													
+																								   
+															  
+													
+																																																													  
+															
+												 
+															   
+												
+																				 
+																								
+														 
+															
+												 
+																									
+																																	   
+	   
+			  
+						 
+						  
+				
+							  
+								
 
--------
--------
-CREATE TABLE tww_od.progression_alternative
-(
-   obj_id varchar(16) NOT NULL,
-   CONSTRAINT pkey_tww_od_progression_alternative_obj_id PRIMARY KEY (obj_id)
-)
-WITH (
-   OIDS = False
-);
-CREATE SEQUENCE tww_od.seq_progression_alternative_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.progression_alternative ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','progression_alternative');
-COMMENT ON COLUMN tww_od.progression_alternative.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
- ALTER TABLE tww_od.progression_alternative ADD COLUMN plantype  integer ;
-COMMENT ON COLUMN tww_od.progression_alternative.plantype IS '';
-ALTER TABLE tww_od.progression_alternative ADD COLUMN progression_geometry geometry('COMPOUNDCURVE', :SRID);
-CREATE INDEX in_tww_progression_alternative_progression_geometry ON tww_od.progression_alternative USING gist (progression_geometry );
-COMMENT ON COLUMN tww_od.progression_alternative.progression_geometry IS 'Start, inflextion and endpoints of a progression alterative for selected scale (e.g. overview map) / Anfangs-, Knick- und Endpunkte des Alternativverlaufs der Leitung im gewählten Plantyp (z.B. Uebersichtsplan) / Points de départ, intermédiaires et d’arrivée de la trace alternative de la conduite dans la type de plan selectionée';
- ALTER TABLE tww_od.progression_alternative ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
-COMMENT ON COLUMN tww_od.progression_alternative.last_modification IS 'Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE';
--------
-CREATE TRIGGER
-update_last_modified_progression_alternative
-BEFORE UPDATE OR INSERT ON
- tww_od.progression_alternative
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+	   
+	   
+										   
+ 
+							   
+																			 
+ 
+	  
+			   
+  
+																									  
+																						 
+																															   
+																		  
+																
+																											
+																						  
+																																																																																																							 
+																												   
+																																					  
+	   
+			  
+											
+						  
+							   
+							  
+								
 
--------
--------
+	   
+	   
 CREATE TABLE tww_od.organisation
 (
    obj_id varchar(16) NOT NULL,
@@ -3067,71 +3067,71 @@ FOR EACH ROW EXECUTE PROCEDURE
 -------
 ------------ Relationships and Value Tables ----------- ;
 ALTER TABLE tww_od.re_building_group_disposal ADD COLUMN fk_building_group varchar(16);
-ALTER TABLE tww_od.re_building_group_disposal ADD CONSTRAINT rel_building_group_disposal_building_group FOREIGN KEY (fk_building_group) REFERENCES tww_od.building_group(obj_id) ON UPDATE CASCADE ON DELETE cascade;
+ALTER TABLE tww_od.re_building_group_disposal ADD CONSTRAINT rel_building_group_disposal_building_group FOREIGN KEY (fk_building_group) REFERENCES tww_od.building_group(obj_id) ON UPDATE CASCADE ON DELETE cascade DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE tww_od.re_building_group_disposal ADD COLUMN fk_disposal varchar(16);
-ALTER TABLE tww_od.re_building_group_disposal ADD CONSTRAINT rel_building_group_disposal_disposal FOREIGN KEY (fk_disposal) REFERENCES tww_od.disposal(obj_id) ON UPDATE CASCADE ON DELETE cascade;
+ALTER TABLE tww_od.re_building_group_disposal ADD CONSTRAINT rel_building_group_disposal_disposal FOREIGN KEY (fk_disposal) REFERENCES tww_od.disposal(obj_id) ON UPDATE CASCADE ON DELETE cascade DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE tww_od.re_maintenance_event_wastewater_structure ADD COLUMN fk_wastewater_structure varchar(16);
 ALTER TABLE tww_od.re_maintenance_event_wastewater_structure ADD CONSTRAINT rel_maintenance_event_wastewater_structure_wastewater_structure FOREIGN KEY (fk_wastewater_structure) REFERENCES tww_od.wastewater_structure(obj_id) ON UPDATE CASCADE ON DELETE cascade DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE tww_od.re_maintenance_event_wastewater_structure ADD COLUMN fk_maintenance_event varchar(16);
 ALTER TABLE tww_od.re_maintenance_event_wastewater_structure ADD CONSTRAINT rel_maintenance_event_wastewater_structure_maintenance_event FOREIGN KEY (fk_maintenance_event) REFERENCES tww_od.maintenance_event(obj_id) ON UPDATE CASCADE ON DELETE cascade DEFERRABLE INITIALLY DEFERRED;
-ALTER TABLE tww_od.txt_symbol ADD COLUMN fk_wastewater_structure varchar(16);
-ALTER TABLE tww_od.txt_symbol ADD CONSTRAINT rel_symbol_wastewater_structure FOREIGN KEY (fk_wastewater_structure) REFERENCES tww_od.wastewater_structure(obj_id) ON DELETE cascade;
-CREATE TABLE tww_vl.symbol_plantype () INHERITS (tww_vl.value_list_base);
-ALTER TABLE tww_vl.symbol_plantype ADD CONSTRAINT pkey_tww_vl_symbol_plantype_code PRIMARY KEY (code);
- INSERT INTO tww_vl.symbol_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7874,7874,'pipeline_registry','Leitungskataster','cadastre_des_conduites_souterraines', 'catasto_delle_canalizzazioni', 'rrr_Leitungskataster', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.symbol_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7876,7876,'overviewmap.om10','Uebersichtsplan.UeP10','plan_d_ensemble.pe10', 'piano_di_insieme.pi10', 'rrr_Uebersichtsplan.UeP10', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.symbol_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7877,7877,'overviewmap.om2','Uebersichtsplan.UeP2','plan_d_ensemble.pe2', 'piano_di_insieme.pi2', 'rrr_Uebersichtsplan.UeP2', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.symbol_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7878,7878,'overviewmap.om5','Uebersichtsplan.UeP5','plan_d_ensemble.pe5', 'piano_di_insieme.pi5', 'rrr_Uebersichtsplan.UeP5', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.symbol_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7875,7875,'network_plan','Werkplan','plan_de_reseau', 'zzz_Werkplan', 'rrr_Werkplan', '', '', '', '', '', 'true');
- ALTER TABLE tww_od.txt_symbol ADD CONSTRAINT fkey_vl_symbol_plantype FOREIGN KEY (plantype)
- REFERENCES tww_vl.symbol_plantype (code) MATCH SIMPLE
- ON UPDATE RESTRICT ON DELETE RESTRICT;
-ALTER TABLE tww_od.txt_text ADD COLUMN fk_wastewater_structure varchar(16);
-ALTER TABLE tww_od.txt_text ADD CONSTRAINT rel_text_wastewater_structure FOREIGN KEY (fk_wastewater_structure) REFERENCES tww_od.wastewater_structure(obj_id) ON DELETE cascade;
-ALTER TABLE tww_od.txt_text ADD COLUMN fk_catchment_area varchar(16);
-ALTER TABLE tww_od.txt_text ADD CONSTRAINT rel_text_catchment_area FOREIGN KEY (fk_catchment_area) REFERENCES tww_od.catchment_area(obj_id) ON DELETE cascade;
-ALTER TABLE tww_od.txt_text ADD COLUMN fk_reach varchar(16);
-ALTER TABLE tww_od.txt_text ADD CONSTRAINT rel_text_reach FOREIGN KEY (fk_reach) REFERENCES tww_od.reach(obj_id) ON DELETE cascade;
-CREATE TABLE tww_vl.text_plantype () INHERITS (tww_vl.value_list_base);
-ALTER TABLE tww_vl.text_plantype ADD CONSTRAINT pkey_tww_vl_text_plantype_code PRIMARY KEY (code);
- INSERT INTO tww_vl.text_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7844,7844,'pipeline_registry','Leitungskataster','cadastre_des_conduites_souterraines', 'catasto_delle_canalizzazioni', 'rrr_Leitungskataster', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.text_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7846,7846,'overviewmap.om10','Uebersichtsplan.UeP10','plan_d_ensemble.pe10', 'piano_di_insieme.pi10', 'rrr_Uebersichtsplan.UeP10', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.text_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7847,7847,'overviewmap.om2','Uebersichtsplan.UeP2','plan_d_ensemble.pe2', 'piano_di_insieme.pi2', 'rrr_Uebersichtsplan.UeP2', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.text_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7848,7848,'overviewmap.om5','Uebersichtsplan.UeP5','plan_d_ensemble.pe5', 'piano_di_insieme.pi5', 'rrr_Uebersichtsplan.UeP5', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.text_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7845,7845,'network_plan','Werkplan','plan_de_reseau', 'zzz_Werkplan', 'rrr_Werkplan', '', '', '', '', '', 'true');
- ALTER TABLE tww_od.txt_text ADD CONSTRAINT fkey_vl_text_plantype FOREIGN KEY (plantype)
- REFERENCES tww_vl.text_plantype (code) MATCH SIMPLE
- ON UPDATE RESTRICT ON DELETE RESTRICT;
-CREATE TABLE tww_vl.text_texthali () INHERITS (tww_vl.value_list_base);
-ALTER TABLE tww_vl.text_texthali ADD CONSTRAINT pkey_tww_vl_text_texthali_code PRIMARY KEY (code);
- INSERT INTO tww_vl.text_texthali (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7850,7850,'0','0','0', '0', '0', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.text_texthali (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7851,7851,'1','1','1', '1', '1', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.text_texthali (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7852,7852,'2','2','2', '2', '2', '', '', '', '', '', 'true');
- ALTER TABLE tww_od.txt_text ADD CONSTRAINT fkey_vl_text_texthali FOREIGN KEY (texthali)
- REFERENCES tww_vl.text_texthali (code) MATCH SIMPLE
- ON UPDATE RESTRICT ON DELETE RESTRICT;
-CREATE TABLE tww_vl.text_textvali () INHERITS (tww_vl.value_list_base);
-ALTER TABLE tww_vl.text_textvali ADD CONSTRAINT pkey_tww_vl_text_textvali_code PRIMARY KEY (code);
- INSERT INTO tww_vl.text_textvali (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7853,7853,'0','0','0', '0', '0', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.text_textvali (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7854,7854,'1','1','1', '1', '1', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.text_textvali (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7855,7855,'2','2','2', '2', '2', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.text_textvali (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7856,7856,'3','3','3', '3', '3', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.text_textvali (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (7857,7857,'4','4','4', '4', '4', '', '', '', '', '', 'true');
- ALTER TABLE tww_od.txt_text ADD CONSTRAINT fkey_vl_text_textvali FOREIGN KEY (textvali)
- REFERENCES tww_vl.text_textvali (code) MATCH SIMPLE
- ON UPDATE RESTRICT ON DELETE RESTRICT;
-ALTER TABLE tww_od.progression_alternative ADD COLUMN fk_reach varchar(16);
-ALTER TABLE tww_od.progression_alternative ADD CONSTRAINT rel_progression_alternative_reach FOREIGN KEY (fk_reach) REFERENCES tww_od.reach(obj_id) ON UPDATE CASCADE ON DELETE cascade;
-CREATE TABLE tww_vl.progression_alternative_plantype () INHERITS (tww_vl.value_list_base);
-ALTER TABLE tww_vl.progression_alternative_plantype ADD CONSTRAINT pkey_tww_vl_progression_alternative_plantype_code PRIMARY KEY (code);
- INSERT INTO tww_vl.progression_alternative_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9282,9282,'pipeline_registry','Leitungskataster','cadastre_des_conduites_souterraines', 'catasto_delle_canalizzazioni', 'rrr_Leitungskataster', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.progression_alternative_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9285,9285,'overviewmap.om10','Uebersichtsplan.UeP10','plan_d_ensemble.pe10', 'piano_di_insieme.pi10', 'rrr_Uebersichtsplan.UeP10', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.progression_alternative_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9286,9286,'overviewmap.om2','Uebersichtsplan.UeP2','plan_d_ensemble.pe2', 'piano_di_insieme.pi2', 'rrr_Uebersichtsplan.UeP2', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.progression_alternative_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9287,9287,'overviewmap.om5','Uebersichtsplan.UeP5','plan_d_ensemble.pe5', 'piano_di_insieme.pi5', 'rrr_Uebersichtsplan.UeP5', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.progression_alternative_plantype (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9284,9284,'network_plan','Werkplan','plan_de_reseau', 'zzz_Werkplan', 'rrr_Werkplan', '', '', '', '', '', 'true');
- ALTER TABLE tww_od.progression_alternative ADD CONSTRAINT fkey_vl_progression_alternative_plantype FOREIGN KEY (plantype)
- REFERENCES tww_vl.progression_alternative_plantype (code) MATCH SIMPLE
- ON UPDATE RESTRICT ON DELETE RESTRICT;
+																			 
+																																																								 
+																		 
+																									  
+																																																																																			   
+																																																																																													   
+																																																																																												 
+																																																																																												 
+																																																																					 
+																							
+													  
+									   
+																		   
+																																												
+																	 
+																																							  
+															
+																																   
+																	   
+																								  
+																																																																																			 
+																																																																																													 
+																																																																																											   
+																																																																																											   
+																																																																				   
+																						
+													
+									   
+																	   
+																								  
+																																																							  
+																																																							  
+																																																							  
+																						
+													
+									   
+																	   
+																								  
+																																																							  
+																																																							  
+																																																							  
+																																																							  
+																																																							  
+																						
+													
+									   
+																		   
+																																													   
+																						  
+																																		
+																																																																																																				  
+																																																																																				   
+																																																																																			  
+																																																																																			  
+																																																																									  
+																														  
+																	   
+									   
 CREATE TABLE tww_vl.organisation_organisation_type () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.organisation_organisation_type ADD CONSTRAINT pkey_tww_vl_organisation_organisation_type_code PRIMARY KEY (code);
  INSERT INTO tww_vl.organisation_organisation_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8608,8608,'waste_water_association','Abwasserverband','association_epuration_eau', 'consorzio_depurazione', 'rrr_Abwasserverband', '', '', '', '', '', 'true');
@@ -3224,9 +3224,9 @@ ALTER TABLE tww_vl.waste_water_treatment_plant_operator_type ADD CONSTRAINT pkey
  REFERENCES tww_vl.waste_water_treatment_plant_operator_type (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.wastewater_structure ADD COLUMN fk_owner varchar(16);
-ALTER TABLE tww_od.wastewater_structure ADD CONSTRAINT rel_wastewater_structure_owner FOREIGN KEY (fk_owner) REFERENCES tww_od.organisation(obj_id) ON UPDATE CASCADE ON DELETE set null;
+ALTER TABLE tww_od.wastewater_structure ADD CONSTRAINT rel_wastewater_structure_owner FOREIGN KEY (fk_owner) REFERENCES tww_od.organisation(obj_id) ON UPDATE CASCADE ON DELETE set null DEFERRABLE;
 ALTER TABLE tww_od.wastewater_structure ADD COLUMN fk_operator varchar(16);
-ALTER TABLE tww_od.wastewater_structure ADD CONSTRAINT rel_wastewater_structure_operator FOREIGN KEY (fk_operator) REFERENCES tww_od.organisation(obj_id) ON UPDATE CASCADE ON DELETE set null;
+ALTER TABLE tww_od.wastewater_structure ADD CONSTRAINT rel_wastewater_structure_operator FOREIGN KEY (fk_operator) REFERENCES tww_od.organisation(obj_id) ON UPDATE CASCADE ON DELETE set null DEFERRABLE;
 ALTER TABLE tww_od.wastewater_structure ADD COLUMN fk_main_cover varchar(16);
 ALTER TABLE tww_od.wastewater_structure ADD CONSTRAINT rel_wastewater_structure_main_cover FOREIGN KEY (fk_main_cover) REFERENCES tww_od.cover(obj_id) ON UPDATE CASCADE ON DELETE set null;
 CREATE TABLE tww_vl.wastewater_structure_accessibility () INHERITS (tww_vl.value_list_base);
@@ -3676,7 +3676,7 @@ ALTER TABLE tww_vl.wwtp_structure_kind ADD CONSTRAINT pkey_tww_vl_wwtp_structure
  REFERENCES tww_vl.wwtp_structure_kind (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.maintenance_event ADD COLUMN fk_operating_company varchar(16);
-ALTER TABLE tww_od.maintenance_event ADD CONSTRAINT rel_maintenance_event_operating_company FOREIGN KEY (fk_operating_company) REFERENCES tww_od.organisation(obj_id) ON UPDATE CASCADE ON DELETE set null;
+ALTER TABLE tww_od.maintenance_event ADD CONSTRAINT rel_maintenance_event_operating_company FOREIGN KEY (fk_operating_company) REFERENCES tww_od.organisation(obj_id) ON UPDATE CASCADE ON DELETE set null DEFERRABLE;
 ALTER TABLE tww_od.maintenance_event ADD COLUMN fk_measure varchar(16);
 ALTER TABLE tww_od.maintenance_event ADD CONSTRAINT rel_maintenance_event_measure FOREIGN KEY (fk_measure) REFERENCES tww_od.measure(obj_id) ON UPDATE CASCADE ON DELETE set null;
 CREATE TABLE tww_vl.maintenance_event_status () INHERITS (tww_vl.value_list_base);
@@ -4905,15 +4905,15 @@ CREATE SEQUENCE tww_od.seq_wastewater_structure_text_oid INCREMENT 1 MINVALUE 0 
  ALTER TABLE tww_od.wastewater_structure_text ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_structure_text');
 COMMENT ON COLUMN tww_od.wastewater_structure_text.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.wastewater_structure_text ADD COLUMN classname text;
- ALTER TABLE tww_od.wastewater_structure_text ADD CONSTRAINT _classname_length_max_50 CHECK(char_length(classname)<=50);
+ ALTER TABLE tww_od.wastewater_structure_text ADD CONSTRAINT wx_classname_length_max_50 CHECK(char_length(classname)<=50);
 COMMENT ON COLUMN tww_od.wastewater_structure_text.classname IS 'Name of class that textclass is related to / Name der Klasse zu der die Textklasse gehört / nom de la classe à laquelle appartient la classe de texte';
  ALTER TABLE tww_od.wastewater_structure_text ADD COLUMN plantype  integer ;
 COMMENT ON COLUMN tww_od.wastewater_structure_text.plantype IS '';
  ALTER TABLE tww_od.wastewater_structure_text ADD COLUMN remark text;
- ALTER TABLE tww_od.wastewater_structure_text ADD CONSTRAINT _remark_length_max_80 CHECK(char_length(remark)<=80);
+ ALTER TABLE tww_od.wastewater_structure_text ADD CONSTRAINT wx_remark_length_max_80 CHECK(char_length(remark)<=80);
 COMMENT ON COLUMN tww_od.wastewater_structure_text.remark IS 'General remarks';
  ALTER TABLE tww_od.wastewater_structure_text ADD COLUMN text  text ;
-COMMENT ON COLUMN tww_od.wastewater_structure_text.text IS 'yyy_Aus Attributwerten zusammengesetzter Wert, mehrzeilig möglich / Aus Attributwerten zusammengesetzter Wert, mehrzeilig möglich / valeur calculée à partir d’attributs, plusieurs lignes possible';
+COMMENT ON COLUMN tww_od.wastewater_structure_text.text IS 'Value composed of attribute values, multiple lines possible / Aus Attributwerten zusammengesetzter Wert, mehrzeilig möglich / valeur calculée à partir d’attributs, plusieurs lignes possible';
  ALTER TABLE tww_od.wastewater_structure_text ADD COLUMN texthali  smallint ;
 COMMENT ON COLUMN tww_od.wastewater_structure_text.texthali IS '';
  ALTER TABLE tww_od.wastewater_structure_text ADD COLUMN textori  decimal(4,1) ;
@@ -4947,15 +4947,15 @@ CREATE SEQUENCE tww_od.seq_reach_text_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999
  ALTER TABLE tww_od.reach_text ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','reach_text');
 COMMENT ON COLUMN tww_od.reach_text.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.reach_text ADD COLUMN classname text;
- ALTER TABLE tww_od.reach_text ADD CONSTRAINT _classname_length_max_50 CHECK(char_length(classname)<=50);
+ ALTER TABLE tww_od.reach_text ADD CONSTRAINT rx_classname_length_max_50 CHECK(char_length(classname)<=50);
 COMMENT ON COLUMN tww_od.reach_text.classname IS 'Name of class that textclass is related to / Name der Klasse zu der die Textklasse gehört / nom de la classe à laquelle appartient la classe de texte';
  ALTER TABLE tww_od.reach_text ADD COLUMN plantype  integer ;
 COMMENT ON COLUMN tww_od.reach_text.plantype IS '';
  ALTER TABLE tww_od.reach_text ADD COLUMN remark text;
- ALTER TABLE tww_od.reach_text ADD CONSTRAINT _remark_length_max_80 CHECK(char_length(remark)<=80);
+ ALTER TABLE tww_od.reach_text ADD CONSTRAINT rx_remark_length_max_80 CHECK(char_length(remark)<=80);
 COMMENT ON COLUMN tww_od.reach_text.remark IS 'General remarks';
  ALTER TABLE tww_od.reach_text ADD COLUMN text  text ;
-COMMENT ON COLUMN tww_od.reach_text.text IS 'yyy_Aus Attributwerten zusammengesetzter Wert, mehrzeilig möglich / Aus Attributwerten zusammengesetzter Wert, mehrzeilig möglich / valeur calculée à partir d’attributs, plusieurs lignes possible';
+COMMENT ON COLUMN tww_od.reach_text.text IS 'Value composed of attribute values, multiple lines possible / Aus Attributwerten zusammengesetzter Wert, mehrzeilig möglich / valeur calculée à partir d’attributs, plusieurs lignes possible';
  ALTER TABLE tww_od.reach_text ADD COLUMN texthali  smallint ;
 COMMENT ON COLUMN tww_od.reach_text.texthali IS '';
  ALTER TABLE tww_od.reach_text ADD COLUMN textori  decimal(4,1) ;
@@ -4989,15 +4989,15 @@ CREATE SEQUENCE tww_od.seq_catchment_area_text_oid INCREMENT 1 MINVALUE 0 MAXVAL
  ALTER TABLE tww_od.catchment_area_text ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','catchment_area_text');
 COMMENT ON COLUMN tww_od.catchment_area_text.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.catchment_area_text ADD COLUMN classname text;
- ALTER TABLE tww_od.catchment_area_text ADD CONSTRAINT _classname_length_max_50 CHECK(char_length(classname)<=50);
+ ALTER TABLE tww_od.catchment_area_text ADD CONSTRAINT cx_classname_length_max_50 CHECK(char_length(classname)<=50);
 COMMENT ON COLUMN tww_od.catchment_area_text.classname IS 'Name of class that textclass is related to / Name der Klasse zu der die Textklasse gehört / nom de la classe à laquelle appartient la classe de texte';
  ALTER TABLE tww_od.catchment_area_text ADD COLUMN plantype  integer ;
 COMMENT ON COLUMN tww_od.catchment_area_text.plantype IS '';
  ALTER TABLE tww_od.catchment_area_text ADD COLUMN remark text;
- ALTER TABLE tww_od.catchment_area_text ADD CONSTRAINT _remark_length_max_80 CHECK(char_length(remark)<=80);
+ ALTER TABLE tww_od.catchment_area_text ADD CONSTRAINT cx_remark_length_max_80 CHECK(char_length(remark)<=80);
 COMMENT ON COLUMN tww_od.catchment_area_text.remark IS 'General remarks';
  ALTER TABLE tww_od.catchment_area_text ADD COLUMN text  text ;
-COMMENT ON COLUMN tww_od.catchment_area_text.text IS 'yyy_Aus Attributwerten zusammengesetzter Wert, mehrzeilig möglich / Aus Attributwerten zusammengesetzter Wert, mehrzeilig möglich / valeur calculée à partir d’attributs, plusieurs lignes possible';
+COMMENT ON COLUMN tww_od.catchment_area_text.text IS 'Value composed of attribute values, multiple lines possible / Aus Attributwerten zusammengesetzter Wert, mehrzeilig möglich / valeur calculée à partir d’attributs, plusieurs lignes possible';
  ALTER TABLE tww_od.catchment_area_text ADD COLUMN texthali  smallint ;
 COMMENT ON COLUMN tww_od.catchment_area_text.texthali IS '';
  ALTER TABLE tww_od.catchment_area_text ADD COLUMN textori  decimal(4,1) ;
@@ -5031,7 +5031,7 @@ CREATE SEQUENCE tww_od.seq_wastewater_structure_symbol_oid INCREMENT 1 MINVALUE 
  ALTER TABLE tww_od.wastewater_structure_symbol ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_structure_symbol');
 COMMENT ON COLUMN tww_od.wastewater_structure_symbol.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN classname text;
- ALTER TABLE tww_od.wastewater_structure_symbol ADD CONSTRAINT _classname_length_max_50 CHECK(char_length(classname)<=50);
+ ALTER TABLE tww_od.wastewater_structure_symbol ADD CONSTRAINT bx_classname_length_max_50 CHECK(char_length(classname)<=50);
 COMMENT ON COLUMN tww_od.wastewater_structure_symbol.classname IS 'Name of class that symbol class is related to / Name der Klasse zu der die Symbolklasse gehört / nom de la classe à laquelle appartient la classe de symbole';
  ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN plantype  integer ;
 COMMENT ON COLUMN tww_od.wastewater_structure_symbol.plantype IS '';
@@ -5193,7 +5193,8 @@ FOR EACH ROW EXECUTE PROCEDURE
 -------
 
 ------------ Reach Progression Alternative Relationships ----------- ;
------------- already exists
+ALTER TABLE tww_od.reach_progression_alternative ADD COLUMN fk_reach varchar(16);
+ALTER TABLE tww_od.reach_progression_alternative ADD CONSTRAINT rel_reach_progression_alternative_reach FOREIGN KEY (fk_reach) REFERENCES tww_od.reach(obj_id) ON UPDATE CASCADE ON DELETE cascade;
 
 ------------ Reach Progression Alternative Table Values ----------- ;
 CREATE TABLE tww_vl.reach_progression_alternative_plantype () INHERITS (tww_vl.value_list_base);
@@ -5209,8 +5210,8 @@ ALTER TABLE tww_vl.reach_progression_alternative_plantype ADD CONSTRAINT pkey_tw
 
 --------- Relations to class organisation for dataowner and provider (new 3.11.2014);
 
-ALTER TABLE tww_od.organisation ADD CONSTRAINT rel_od_organisation_fk_dataowner FOREIGN KEY (fk_dataowner) REFERENCES tww_od.organisation(obj_id);
-ALTER TABLE tww_od.organisation ADD CONSTRAINT rel_od_organisation_fk_dataprovider FOREIGN KEY (fk_provider) REFERENCES tww_od.organisation(obj_id);
+ALTER TABLE tww_od.organisation ADD CONSTRAINT rel_od_organisation_fk_dataowner FOREIGN KEY (fk_dataowner) REFERENCES tww_od.organisation(obj_id) DEFERRABLE;
+ALTER TABLE tww_od.organisation ADD CONSTRAINT rel_od_organisation_fk_dataprovider FOREIGN KEY (fk_provider) REFERENCES tww_od.organisation(obj_id) DEFERRABLE;
 ALTER TABLE tww_od.measure ADD CONSTRAINT rel_od_measure_fk_dataowner FOREIGN KEY (fk_dataowner) REFERENCES tww_od.organisation(obj_id);
 ALTER TABLE tww_od.measure ADD CONSTRAINT rel_od_measure_fk_dataprovider FOREIGN KEY (fk_provider) REFERENCES tww_od.organisation(obj_id);
 ALTER TABLE tww_od.mutation ADD CONSTRAINT rel_od_mutation_fk_dataowner FOREIGN KEY (fk_dataowner) REFERENCES tww_od.organisation(obj_id);
