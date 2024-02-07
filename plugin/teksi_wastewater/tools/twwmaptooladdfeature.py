@@ -740,19 +740,19 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
                 dlg.feature().attributes()[lvl_field]
             )  # update if level was altered in dlg
         pt_oid = dlg.feature().attributes()[oid_idx]
-        
+
         # split reach
         req = QgsFeatureRequest(match.featureId())
         f_old = next(match.layer().getFeatures(req))
         assert f_old.isValid()
 
         """
-        Backup plan: 
+        Backup plan:
         split_line[QgsPoint(point3d.setX(point3d.x()+.00001),
             ,QgsPoint(point3d.setX(point3d.x()-.00001)
             ]
         """
-        
+
         # split using Point instead of PointXY is documented but fails with 3.28.11
         try:
             split_line = [point3d,point3d]
@@ -775,7 +775,7 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
                     self.messageBarItem = QgsMessageBar.createMessage(self.msgtitle, msg)
                     self.iface.messageBar().pushItem(self.messageBarItem)
                     self.deactivate()
-                
+
                 f = QgsFeature(fields)
                 if self.node_layer.id() == "vw_tww_wastewater_structure":
                     keep_fields = [
