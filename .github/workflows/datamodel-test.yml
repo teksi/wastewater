@@ -37,7 +37,7 @@ jobs:
           docker exec teksi-wastewater init_db.sh wait
 
       - name: Run tests
-        run:  docker exec teksi-wastewater pytest
+        run:  docker exec teksi-wastewater pytest datamodel
 
       - name: Docker logs
         if: failure()
