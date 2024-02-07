@@ -60,7 +60,7 @@ ALTER TABLE tww_sys.dictionary_od_table ADD CONSTRAINT unq_tww_is_dictonary_name
  INSERT INTO tww_sys.dictionary_od_table (id, tablename, name_en, shortcut_en, name_de, shortcut_de, name_fr, shortcut_fr, name_it, shortcut_it, name_ro, shortcut_ro) VALUES (16,'throttle_shut_off_unit','throttle shut off unit','TS','Absperr-/Drosselorgan','DR','Limiteur de débit','LD','limitatore_portata','NULL','rrr_Absperr_Drosselorgan','NULL');
  INSERT INTO tww_sys.dictionary_od_table (id, tablename, name_en, shortcut_en, name_de, shortcut_de, name_fr, shortcut_fr, name_it, shortcut_it, name_ro, shortcut_ro) VALUES (18,'access_aid','access aid','AA','Einstiegshilfe','EF','Dispositif d''accès','DA','Aiuto all''ingresso','NULL','dispozitiv de acces','NULL');
  INSERT INTO tww_sys.dictionary_od_table (id, tablename, name_en, shortcut_en, name_de, shortcut_de, name_fr, shortcut_fr, name_it, shortcut_it, name_ro, shortcut_ro) VALUES (19,'catchment_area','catchment area','CA','Einzugsgebiet','EZ','Bassin versant','BV','Bacino gravitante','NULL','aria de captare','NULL');
-																																																																																										   
+
  INSERT INTO tww_sys.dictionary_od_table (id, tablename, name_en, shortcut_en, name_de, shortcut_de, name_fr, shortcut_fr, name_it, shortcut_it, name_ro, shortcut_ro) VALUES (2721,'drainage_system','drainage system','DS','Entwässerungssystem','ES','Système d''évacuation des eaux','SY','Sistema di smaltimento delle acque','NULL','rrr_Entwaesserungssystem','NULL');
  INSERT INTO tww_sys.dictionary_od_table (id, tablename, name_en, shortcut_en, name_de, shortcut_de, name_fr, shortcut_fr, name_it, shortcut_it, name_ro, shortcut_ro) VALUES (2723,'control_center','control center','CC','Steuerungszentrale','SZ','Centrale de commande','CC','Centro di controllo','NULL','rrr_Steuerungszentrale','NULL');
  INSERT INTO tww_sys.dictionary_od_table (id, tablename, name_en, shortcut_en, name_de, shortcut_de, name_fr, shortcut_fr, name_it, shortcut_it, name_ro, shortcut_ro) VALUES (2964,'profile_geometry','profile geometry','PG','Rohrprofil Geometrie','RG','Profil du tuyau geometrie','TG','Profilo tubogeometria','NULL','rrr_profil_conducta_geometry','NULL');
@@ -82,13 +82,13 @@ ALTER TABLE tww_sys.dictionary_od_table ADD CONSTRAINT unq_tww_is_dictonary_name
  INSERT INTO tww_sys.dictionary_od_table (id, tablename, name_en, shortcut_en, name_de, shortcut_de, name_fr, shortcut_fr, name_it, shortcut_it, name_ro, shortcut_ro) VALUES (47,'organisation','organisation','OG','Organisation','OG','Organisation','OG','Organizzazione','NULL','organizatia','NULL');
  INSERT INTO tww_sys.dictionary_od_table (id, tablename, name_en, shortcut_en, name_de, shortcut_de, name_fr, shortcut_fr, name_it, shortcut_it, name_ro, shortcut_ro) VALUES (49,'pipe_profile','pipe profile','PP','Rohrprofil','RP','Genre de profil de tuyau','GP','Profilo del tubo','NULL','profil conducta','NULL');
  INSERT INTO tww_sys.dictionary_od_table (id, tablename, name_en, shortcut_en, name_de, shortcut_de, name_fr, shortcut_fr, name_it, shortcut_it, name_ro, shortcut_ro) VALUES (5,'wastewater_networkelement','wastewater networkelement','WE','Abwassernetzelement','AN','Elément du réseau d''évacuation des eaux','ER','Elemento di rete delle acque acque reflue','NULL','element canalizare','NULL');
-																																																																												  
-																																																																																									   
-																																																																								 
-																																																																																																	
-																																																																																																			
-																																																																						   
-																																																																																													
+
+
+
+
+
+
+
  INSERT INTO tww_sys.dictionary_od_table (id, tablename, name_en, shortcut_en, name_de, shortcut_de, name_fr, shortcut_fr, name_it, shortcut_it, name_ro, shortcut_ro) VALUES (50,'pump','pump','PU','Förderaggregat','FA','Installation de refoulement','IR','Pompaggio','NULL','rrr_FoerderAggregat','NULL');
  INSERT INTO tww_sys.dictionary_od_table (id, tablename, name_en, shortcut_en, name_de, shortcut_de, name_fr, shortcut_fr, name_it, shortcut_it, name_ro, shortcut_ro) VALUES (5100,'log_card','log card','LC','Stammkarte Sonderbauwerk','SK','Fichier technique','FT','Scheda_tipo','NULL','rrr_Stammkarte','NULL');
  INSERT INTO tww_sys.dictionary_od_table (id, tablename, name_en, shortcut_en, name_de, shortcut_de, name_fr, shortcut_fr, name_it, shortcut_it, name_ro, shortcut_ro) VALUES (5101,'tank_emptying','tank emptying','TE','Beckenentleerung','BE','Vidange de bassins','VB','Vuotamento bacino','NULL','rrr_Beckenentleerung','NULL');
@@ -127,11 +127,11 @@ ALTER TABLE tww_sys.dictionary_od_table ADD CONSTRAINT unq_tww_is_dictonary_name
  INSERT INTO tww_sys.dictionary_od_table (id, tablename, name_en, shortcut_en, name_de, shortcut_de, name_fr, shortcut_fr, name_it, shortcut_it, name_ro, shortcut_ro) VALUES (99901,'reach_text','reach text','RX','Haltung Text','RX','Troncon Texte','RX','Tratta Testo','RX','tronson text','RX');
  INSERT INTO tww_sys.dictionary_od_table (id, tablename, name_en, shortcut_en, name_de, shortcut_de, name_fr, shortcut_fr, name_it, shortcut_it, name_ro, shortcut_ro) VALUES (99902,'catchment_area_text','catchment area text','CX','Einzugsgebiet Text','CX','Bassin versant Texte','CX','Bacino gravitante Testo','CX','aria de captare text','CX');
  INSERT INTO tww_sys.dictionary_od_table (id, tablename, name_en, shortcut_en, name_de, shortcut_de, name_fr, shortcut_fr, name_it, shortcut_it, name_ro, shortcut_ro) VALUES (9998,'mutation','mutation','MD','Mutation','MD','Mutation','MD','Mutazione','NULL','rrr_MUTATION','NULL');
-																																																																   
-																																																																																	 
+
+
  INSERT INTO tww_sys.dictionary_od_table (id, tablename, name_en, shortcut_en, name_de, shortcut_de, name_fr, shortcut_fr, name_it, shortcut_it, name_ro, shortcut_ro) VALUES (99982,'re_maintenance_event_wastewater_structure','maintenance event wastewater structure','MW','Erhaltungsereignis Abwasserbauwerk','RA','Evénement de maintenance Ouvrage réseau AS','EZ','zzz_evento_di_mantenimento_manufatto_smaltimento_acque','NULL','rrr_Erhaltungsereignis_structura_canalizare','NULL');
  INSERT INTO tww_sys.dictionary_od_table (id, tablename, name_en, shortcut_en, name_de, shortcut_de, name_fr, shortcut_fr, name_it, shortcut_it, name_ro, shortcut_ro) VALUES (99985,'re_building_group_disposal','building group disposal','ZZ','Gebaeudegruppe Entsorgung','ZZ','Bâtiments Evacuation','ZZ','Gruppo costruzione smaltimento','ZZ','rrr_Gebaeudegruppe_Entsorgung','ZZ');
-																																																																																							
+
 
 DROP TYPE IF EXISTS tww_od.plantype;
 CREATE TYPE tww_od.plantype AS ENUM ('Leitungskataster','Werkinformation', 'GEP_Verband', 'GEP_Traegerschaft', 'PAA', 'SAA', 'kein_Plantyp_definiert');
@@ -336,36 +336,36 @@ CREATE TABLE tww_sys.dictionary_od_field (
  INSERT INTO tww_sys.dictionary_od_field (class_id, attribute_id, table_name, field_name, field_name_en, field_name_de, field_name_fr, field_name_it, field_name_ro, field_description_en, field_description_de, field_description_fr, field_description_it, field_description_ro, field_mandatory, field_visible, field_datatype, field_unit_en, field_unit_description_en, field_unit_de, field_unit_description_de, field_unit_fr, field_unit_description_fr, field_unit_it, field_unit_description_it, field_unit_ro, field_unit_description_ro, field_max, field_min) VALUES (19,999998,'catchment_area','dataowner','dataowner','Datenherr','MAITRE_DES_DONNEES','proprietario_dati','rrr_Datenherr','dataowner - this is the person or body who is allowed to delete, change or maintain this object','Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten','Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe','zzz_Metaattribut L''attributo proprietario dati si riferisce alla persona o ente che è autorizzato a eliminare, modificare o gestire i dati','rrr_Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten',ARRAY['Werkinformation','Leitungskataster', 'GEP_Verband','GEP_Traegerschaft','SAA', 'PAA']::tww_od.plantype[],'true','varchar(80)','','','','','','','','','','',NULL,NULL);
  INSERT INTO tww_sys.dictionary_od_field (class_id, attribute_id, table_name, field_name, field_name_en, field_name_de, field_name_fr, field_name_it, field_name_ro, field_description_en, field_description_de, field_description_fr, field_description_it, field_description_ro, field_mandatory, field_visible, field_datatype, field_unit_en, field_unit_description_en, field_unit_de, field_unit_description_de, field_unit_fr, field_unit_description_fr, field_unit_it, field_unit_description_it, field_unit_ro, field_unit_description_ro, field_max, field_min) VALUES (19,999997,'catchment_area','provider','provider','Datenlieferant','FOURNISSEUR_DES_DONNEES','fornitore_dati','rrr_Datenlieferant','Metaattribute provider - this is the person or body who delivered the data','Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat','FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données','zzz_Metaattribut L''attributo fornitore dati si riferisce alla persona o ente che ha fornito i dati','rrr_Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat',ARRAY['Werkinformation','Leitungskataster', 'GEP_Verband','GEP_Traegerschaft','SAA', 'PAA']::tww_od.plantype[],'true','varchar(80)','','','','','','','','','','',NULL,NULL);
  INSERT INTO tww_sys.dictionary_od_field (class_id, attribute_id, table_name, field_name, field_name_en, field_name_de, field_name_fr, field_name_it, field_name_ro, field_description_en, field_description_de, field_description_fr, field_description_it, field_description_ro, field_mandatory, field_visible, field_datatype, field_unit_en, field_unit_description_en, field_unit_de, field_unit_description_de, field_unit_fr, field_unit_description_fr, field_unit_it, field_unit_description_it, field_unit_ro, field_unit_description_ro, field_max, field_min) VALUES (19,999996,'catchment_area','last_modification','last_modification','Letzte_Aenderung','DERNIERE_MODIFICATION','ultima_modifica','rrr_Letze_Aenderung','Last modification: INTERLIS_1_DATE','Letzte Änderung: INTERLIS_1_DATE','Dernière modification: INTERLIS_1_DATE','ultima_modifica: INTERLIS_1_DATE','rrr_Letzte Änderung: INTERLIS_1_DATE',ARRAY['Werkinformation','Leitungskataster', 'GEP_Verband','GEP_Traegerschaft','SAA', 'PAA']::tww_od.plantype[],'true','TIMESTAMP','','','','','','','','','','',NULL,NULL);
-																																																																																																																																																																																																																																																																																																																																																						
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																	
-																																																																																																																																																																																																																																																																
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																											  
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																								  
-																																																																																																																																																																																																																																																																																																																																										
-																																																																																																																																																																																																																																																																																																			  
-																																																																																																																																																																																																																																																																																																																  
-																																																																																																																																																																																																																																																																																	
-																																																																																																																																																																																																																																																																																																																																																							  
-																																																																																																																																																																																																																																																																																																													  
-																																																																																																																																																																																																																																																																																																																			
-																																																																																																																																																																																																																																																																																																																																																																														 
-																																																																																																																																																																																																																																																																							  
-																																																																																																																																																																																																																																																																																																																																																																																																																																																								
-																																																																																																																																																																																																																																																																																																																																																																																																									 
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																  
-																																																																																																																																																																																																																																																																																																																																																																																	   
-																																																																																																																																																																																																																																																																																																																																																																																								   
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																									 
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																	 
-																																																																																																																																																																																																																																																																																																			  
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																								
-																																																																																																																																																																																																																																																																																																																																																																																																																																																											 
-																																																																																																																																																																																																																																																																																																																																																																																																															 
 
-																																																																																																																																																																																																																																																															  
-																																																																																																																																																																																																																																																																																																																																																																																																																																		   
-																																																																																																																																																																																																																																																																																																																																																																								  
-																																																																																																																																																																																																																																																																																																											 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  INSERT INTO tww_sys.dictionary_od_field (class_id, attribute_id, table_name, field_name, field_name_en, field_name_de, field_name_fr, field_name_it, field_name_ro, field_description_en, field_description_de, field_description_fr, field_description_it, field_description_ro, field_mandatory, field_visible, field_datatype, field_unit_en, field_unit_description_en, field_unit_de, field_unit_description_de, field_unit_fr, field_unit_description_fr, field_unit_it, field_unit_description_it, field_unit_ro, field_unit_description_ro, field_max, field_min) VALUES (2721,2721,'drainage_system','kind','kind','Art','GENRE','tipo','tip','yyy_Art des Entwässerungssystems in dem ein bestimmtes Gebiet entwässert werden soll (SOLL Zustand)  im groben Überblick für Planung. Wird später auf einzelnem Kanal attributiert.','Art des Entwässerungssystems in dem ein bestimmtes Gebiet entwässert werden soll (SOLL Zustand) im groben Überblick für Planung. Wird später auf einzelnem Kanal attributiert.','Genre de système d''évacuation choisi pour une région déterminée (Etat prévu). Vue d''ensemble grossière pour planification. Sera défini pour chaque canal par la suite.','zzz_Art des Entwässerungssystems in dem ein bestimmtes Gebiet entwässert werden soll (SOLL Zustand) im groben Überblick für Planung. Wird später auf einzelnem Kanal attributiert.','rrr_Art des Entwässerungssystems in dem ein bestimmtes Gebiet entwässert werden soll (SOLL Zustand) im groben Überblick für Planung. Wird später auf einzelnem Kanal attributiert.',ARRAY['kein_Plantyp_definiert']::tww_od.plantype[],'true','integer',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
  INSERT INTO tww_sys.dictionary_od_field (class_id, attribute_id, table_name, field_name, field_name_en, field_name_de, field_name_fr, field_name_it, field_name_ro, field_description_en, field_description_de, field_description_fr, field_description_it, field_description_ro, field_mandatory, field_visible, field_datatype, field_unit_en, field_unit_description_en, field_unit_de, field_unit_description_de, field_unit_fr, field_unit_description_fr, field_unit_it, field_unit_description_it, field_unit_ro, field_unit_description_ro, field_max, field_min) VALUES (2721,2720,'drainage_system','perimeter','perimeter','Perimeter','PERIMETRE','perimetro','','Boundary points of the perimeter','Begrenzungspunkte der Fläche','Points de délimitation de la surface','punti di confine dell''area','rrr_Begrenzungspunkte der Fläche',ARRAY['kein_Plantyp_definiert']::tww_od.plantype[],'true','geometry','[LKoord]','points with coordinates in the swiss national grid','[LKoord]','Punkte mit Schweizer Landeskoordinaten','[CoordNat]','points avec coordonnées dans le système de coordonnées suisse','[LKoord]','zzz_Punkte mit Schweizer Landeskoordinaten','[LKoord]','rrr_Punkte mit Schweizer Landeskoordinaten',NULL,NULL);
  INSERT INTO tww_sys.dictionary_od_field (class_id, attribute_id, table_name, field_name, field_name_en, field_name_de, field_name_fr, field_name_it, field_name_ro, field_description_en, field_description_de, field_description_fr, field_description_it, field_description_ro, field_mandatory, field_visible, field_datatype, field_unit_en, field_unit_description_en, field_unit_de, field_unit_description_de, field_unit_fr, field_unit_description_fr, field_unit_it, field_unit_description_it, field_unit_ro, field_unit_description_ro, field_max, field_min) VALUES (2723,2726,'control_center','identifier','identifier','Bezeichnung','DESIGNATION','denominazione','identificator','NULL','NULL','NULL','NULL','rrr_Begrenzungspunkte der Fläche',ARRAY['kein_Plantyp_definiert']::tww_od.plantype[],'true','varchar(20)',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
@@ -554,52 +554,52 @@ CREATE TABLE tww_sys.dictionary_od_field (
  INSERT INTO tww_sys.dictionary_od_field (class_id, attribute_id, table_name, field_name, field_name_en, field_name_de, field_name_fr, field_name_it, field_name_ro, field_description_en, field_description_de, field_description_fr, field_description_it, field_description_ro, field_mandatory, field_visible, field_datatype, field_unit_en, field_unit_description_en, field_unit_de, field_unit_description_de, field_unit_fr, field_unit_description_fr, field_unit_it, field_unit_description_it, field_unit_ro, field_unit_description_ro, field_max, field_min) VALUES (5,999997,'wastewater_networkelement','provider','provider','Datenlieferant','FOURNISSEUR_DES_DONNEES','fornitore_dati','rrr_Datenlieferant','Metaattribute provider - this is the person or body who delivered the data','Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat','FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données','zzz_Metaattribut L''attributo fornitore dati si riferisce alla persona o ente che ha fornito i dati','rrr_Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat',ARRAY['Werkinformation','Leitungskataster', 'GEP_Verband','GEP_Traegerschaft','SAA', 'PAA']::tww_od.plantype[],'true','varchar(80)','','','','','','','','','','',NULL,NULL);
  INSERT INTO tww_sys.dictionary_od_field (class_id, attribute_id, table_name, field_name, field_name_en, field_name_de, field_name_fr, field_name_it, field_name_ro, field_description_en, field_description_de, field_description_fr, field_description_it, field_description_ro, field_mandatory, field_visible, field_datatype, field_unit_en, field_unit_description_en, field_unit_de, field_unit_description_de, field_unit_fr, field_unit_description_fr, field_unit_it, field_unit_description_it, field_unit_ro, field_unit_description_ro, field_max, field_min) VALUES (5,999996,'wastewater_networkelement','last_modification','last_modification','Letzte_Aenderung','DERNIERE_MODIFICATION','ultima_modifica','rrr_Letze_Aenderung','Last modification: INTERLIS_1_DATE','Letzte Änderung: INTERLIS_1_DATE','Dernière modification: INTERLIS_1_DATE','ultima_modifica: INTERLIS_1_DATE','rrr_Letzte Änderung: INTERLIS_1_DATE',ARRAY['Werkinformation','Leitungskataster', 'GEP_Verband','GEP_Traegerschaft','SAA', 'PAA']::tww_od.plantype[],'true','TIMESTAMP','','','','','','','','','','',NULL,NULL);
  INSERT INTO tww_sys.dictionary_od_field (class_id, attribute_id, table_name, field_name, field_name_en, field_name_de, field_name_fr, field_name_it, field_name_ro, field_description_en, field_description_de, field_description_fr, field_description_it, field_description_ro, field_mandatory, field_visible, field_datatype, field_unit_en, field_unit_description_en, field_unit_de, field_unit_description_de, field_unit_fr, field_unit_description_fr, field_unit_it, field_unit_description_it, field_unit_ro, field_unit_description_ro, field_max, field_min) VALUES (50,33,'pump','construction_type','construction_type','Bauart','GENRE_CONSTRUCTION','zzz_Bauart','tipul_constructiei','Types of pumps','Pumpenarten','Types de pompe','NULL','Observatii',ARRAY['kein_Plantyp_definiert']::tww_od.plantype[],'true','integer',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
-																																																																																																																																																																																																																																																 
-																																																																																																																																																																																																																																																																																																																																	  
-																																																																																																																																																																																																																																							   
-																																																																																																																																																																																																																																																																																																																																																							  
-																																																																																																																																																																																																																																																																  
-																																																																																																																																																																																																																																																																																																																																																																																																																																			   
-																																																																																																																																																																																																																																																																																																																																																																									  
-																																																																																																																																																																																																																																																																																																												   
-																																																																																																																																																																																																																																																																																																																						 
-																																																																																																																																																																																																																																																																																																																																																			
-																																																																																																																																																																																																																																																																																																								
-																																																																																																																																																																																																																																																																																																																				 
-																																																																																																																																																																																																																																																																																																							  
-																																																																																																																																																																																																																																																																																																																											  
-																																																																																																																																																																																																																																																																												   
-																																																																																																																																																																																																																																																																																																																																																																																																																																
-																																																																																																																																																																																																																																																																																																																																																																					   
-																																																																																																																																																																																																																																																																																																									
-																																																																																																																																																																																																																																							   
-																																																																																																																																																																																																																																																																																																	   
-																																																																																																																																																																																																																																															 
-																																																																																																																																																																																																																																																																													 
-																																																																																																																																																																																																																																																																																								 
-																																																																																																																																																																																																																																																																																			 
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																		  
-																																																																																																																																																																																																																																																																																																																																																																																																																																																		  
-																																																																																																																																																																																																																																																																																															  
-																																																																																																																																																																																																																														  
-																																																																																																																																																																																																																																																																																																							 
-																																																																																																																																																																																																																																																																																																																																						 
-																																																																																																																																																																																																																																																																										   
-																																																																																																																																																																																																																																																																																																																									
-																																																																																																																																																																																																																																																																																																							  
-																																																																																																																																																																																																																																																																											 
-																																																																																																																																																																																																																																																																																																																																																																																																																															  
-																																																																																																																																																																																																																																																																																																																																																							 
-																																																																																																																																																																																																																																																																																																								  
-																																																																																																																																																																																																																																	  
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																											  
-																																																																																																																																																																																																																																																																																																							
-																																																																																																																																																																																																																																																																													
-																																																																																																																																																																																																																																																																													  
-																																																																																																																																																																																																																																																																																																																																																																																																																																   
-																																																																																																																																																																																																																																																																																																																																																																						  
-																																																																																																																																																																																																																																																																																																									   
-																																																																																																																																																																																																																																																																								
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  INSERT INTO tww_sys.dictionary_od_field (class_id, attribute_id, table_name, field_name, field_name_en, field_name_de, field_name_fr, field_name_it, field_name_ro, field_description_en, field_description_de, field_description_fr, field_description_it, field_description_ro, field_mandatory, field_visible, field_datatype, field_unit_en, field_unit_description_en, field_unit_de, field_unit_description_de, field_unit_fr, field_unit_description_fr, field_unit_it, field_unit_description_it, field_unit_ro, field_unit_description_ro, field_max, field_min) VALUES (50,9162,'pump','operating_point','operating_point','Arbeitspunkt','POINT_TRAVAIL','zzz_Arbeitspunkt','punct_de_operare','Flow for pumps with fixed operating point','Fördermenge für Pumpen mit fixem Arbeitspunkt','Débit refoulé par la pompe avec point de travail fixe','NULL','NULL',ARRAY['kein_Plantyp_definiert']::tww_od.plantype[],'true','decimal(8,3)','[m3/s]','cubic meters per second [m3/s]','[m3/s]','Kubikmeter pro Sekunde [m3/s]','[m3/s]','cubicmetre par seconde [m3/s]','[m3/s]','Metri cubi al secondo [m3/s]','[m3/s]','rrr_Kubikmeter pro Sekunde [m3/s]',0,10000);
  INSERT INTO tww_sys.dictionary_od_field (class_id, attribute_id, table_name, field_name, field_name_en, field_name_de, field_name_fr, field_name_it, field_name_ro, field_description_en, field_description_de, field_description_fr, field_description_it, field_description_ro, field_mandatory, field_visible, field_datatype, field_unit_en, field_unit_description_en, field_unit_de, field_unit_description_de, field_unit_fr, field_unit_description_fr, field_unit_it, field_unit_description_it, field_unit_ro, field_unit_description_ro, field_max, field_min) VALUES (50,29,'pump','placement_of_actuation','placement_of_actuation','AufstellungAntrieb','MONTAGE_ENTRAINEMENT','zzz_AufstellungAntrieb','plasamentul_actionarii','Type of placement of the actuation','Art der Aufstellung des Motors','Genre de montage','NULL','NULL',ARRAY['kein_Plantyp_definiert']::tww_od.plantype[],'true','integer',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
  INSERT INTO tww_sys.dictionary_od_field (class_id, attribute_id, table_name, field_name, field_name_en, field_name_de, field_name_fr, field_name_it, field_name_ro, field_description_en, field_description_de, field_description_fr, field_description_it, field_description_ro, field_mandatory, field_visible, field_datatype, field_unit_en, field_unit_description_en, field_unit_de, field_unit_description_de, field_unit_fr, field_unit_description_fr, field_unit_it, field_unit_description_it, field_unit_ro, field_unit_description_ro, field_max, field_min) VALUES (50,30,'pump','placement_of_pump','placement_of_pump','AufstellungFoerderaggregat','MONTAGE_POMPE','zzz_AufstellungFoerderaggregat','plasamentul_pompei','Type of placement of the pomp','Art der Aufstellung der Pumpe','Genre de montage de la pompe','NULL','NULL',ARRAY['kein_Plantyp_definiert']::tww_od.plantype[],'true','integer',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
@@ -999,41 +999,41 @@ orientiert. Ein Einzugsgebiet setzt sich aus einer oder mehreren Gemeindefläche
  INSERT INTO tww_sys.dictionary_od_field (class_id, attribute_id, table_name, field_name, field_name_en, field_name_de, field_name_fr, field_name_it, field_name_ro, field_description_en, field_description_de, field_description_fr, field_description_it, field_description_ro, field_mandatory, field_visible, field_datatype, field_unit_en, field_unit_description_en, field_unit_de, field_unit_description_de, field_unit_fr, field_unit_description_fr, field_unit_it, field_unit_description_it, field_unit_ro, field_unit_description_ro, field_max, field_min) VALUES (9998,999997,'mutation','provider','provider','Datenlieferant','FOURNISSEUR_DES_DONNEES','fornitore_dati','rrr_Datenlieferant','Metaattribute provider - this is the person or body who delivered the data','Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat','FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données','zzz_Metaattribut L''attributo fornitore dati si riferisce alla persona o ente che ha fornito i dati','rrr_Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat',ARRAY['Werkinformation','Leitungskataster', 'GEP_Verband','GEP_Traegerschaft','SAA', 'PAA']::tww_od.plantype[],'true','varchar(80)','','','','','','','','','','',NULL,NULL);
  INSERT INTO tww_sys.dictionary_od_field (class_id, attribute_id, table_name, field_name, field_name_en, field_name_de, field_name_fr, field_name_it, field_name_ro, field_description_en, field_description_de, field_description_fr, field_description_it, field_description_ro, field_mandatory, field_visible, field_datatype, field_unit_en, field_unit_description_en, field_unit_de, field_unit_description_de, field_unit_fr, field_unit_description_fr, field_unit_it, field_unit_description_it, field_unit_ro, field_unit_description_ro, field_max, field_min) VALUES (9998,999996,'mutation','last_modification','last_modification','Letzte_Aenderung','DERNIERE_MODIFICATION','ultima_modifica','rrr_Letze_Aenderung','Last modification: INTERLIS_1_DATE','Letzte Änderung: INTERLIS_1_DATE','Dernière modification: INTERLIS_1_DATE','ultima_modifica: INTERLIS_1_DATE','rrr_Letzte Änderung: INTERLIS_1_DATE',ARRAY['Werkinformation','Leitungskataster', 'GEP_Verband','GEP_Traegerschaft','SAA', 'PAA']::tww_od.plantype[],'true','TIMESTAMP','','','','','','','','','','',NULL,NULL);
  INSERT INTO tww_sys.dictionary_od_field (class_id, attribute_id, table_name, field_name, field_name_en, field_name_de, field_name_fr, field_name_it, field_name_ro, field_description_en, field_description_de, field_description_fr, field_description_it, field_description_ro, field_mandatory, field_visible, field_datatype, field_unit_en, field_unit_description_en, field_unit_de, field_unit_description_de, field_unit_fr, field_unit_description_fr, field_unit_it, field_unit_description_it, field_unit_ro, field_unit_description_ro, field_max, field_min) VALUES (99982,999999,'re_maintenance_event_wastewater_structure','OBJ_ID','OBJ_ID','OBJ_ID','OBJ_ID','OBJ_ID','OBJ_ID','OBJ_ID - Unique ID','OBJ_ID - eindeutige Kennung','OBJ_ID - ID unique','OBJ_ID - identificatore univoco','rrr_OBJ_ID - eindeutige Kennung',ARRAY['Werkinformation','Leitungskataster', 'GEP_Verband','GEP_Traegerschaft','SAA', 'PAA']::tww_od.plantype[],'true','varchar(16)','','','','','','','','','','',NULL,NULL);
-																																																																																																																																																																																																																																									 
-																																																																																																																																																																																																																														
-																																																																																																																																																																																																																																																																																																		
-																																																																																																																																																																																																																																																								
-																																																																																																																																																																																																																																															 
-																																																																																																																																																																																																																																																																											
-																																																																																																																																																																																																																																								  
-																																																																																																																																																																																																																																																																											
-																																																																																																																																																																																																																																																																																																																																																																																																																															 
-																																																																																																																																																																																																																																																																																																																																																							
-																																																																																																																																																																																																																																																																																										 
-																																																																																																																																																																																																																																																																																						 
-																																																																																																																																																																																																																																																								   
-																																																																																																																																																																																																																																																																   
-																																																																																																																																																																																																																																																																	
-																																																																																																																																																																																																																																																																			 
-																																																																																																																																																																																																																																																																																	
-																																																																																																																																																																																																																																																																											  
-																																																																																																																																																																																																																																																																																																																																																																																																																															   
-																																																																																																																																																																																																																																																																																																																																																																					  
-																																																																																																																																																																																																																																																																																																								   
-																																																																																																																																																																																																																																																																					 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  INSERT INTO tww_sys.dictionary_od_field (class_id, attribute_id, table_name, field_name, field_name_en, field_name_de, field_name_fr, field_name_it, field_name_ro, field_description_en, field_description_de, field_description_fr, field_description_it, field_description_ro, field_mandatory, field_visible, field_datatype, field_unit_en, field_unit_description_en, field_unit_de, field_unit_description_de, field_unit_fr, field_unit_description_fr, field_unit_it, field_unit_description_it, field_unit_ro, field_unit_description_ro, field_max, field_min) VALUES (99982,999996,'re_maintenance_event_wastewater_structure','last_modification','last_modification','Letzte_Aenderung','DERNIERE_MODIFICATION','ultima_modifica','rrr_Letze_Aenderung','Last modification: INTERLIS_1_DATE','Letzte Änderung: INTERLIS_1_DATE','Dernière modification: INTERLIS_1_DATE','ultima_modifica: INTERLIS_1_DATE','rrr_Letzte Änderung: INTERLIS_1_DATE',ARRAY['Werkinformation','Leitungskataster', 'GEP_Verband','GEP_Traegerschaft','SAA', 'PAA']::tww_od.plantype[],'true','TIMESTAMP','','','','','','','','','','',NULL,NULL);
-																																																																																																																																																																																																																																																																																																																																																																														  
-																																																																																																																																																																																																																																																																																																		  
+
+
  INSERT INTO tww_sys.dictionary_od_field (class_id, attribute_id, table_name, field_name, field_name_en, field_name_de, field_name_fr, field_name_it, field_name_ro, field_description_en, field_description_de, field_description_fr, field_description_it, field_description_ro, field_mandatory, field_visible, field_datatype, field_unit_en, field_unit_description_en, field_unit_de, field_unit_description_de, field_unit_fr, field_unit_description_fr, field_unit_it, field_unit_description_it, field_unit_ro, field_unit_description_ro, field_max, field_min) VALUES (99985,999999,'re_building_group_disposal','OBJ_ID','OBJ_ID','OBJ_ID','OBJ_ID','OBJ_ID','OBJ_ID','OBJ_ID - Unique ID','OBJ_ID - eindeutige Kennung','OBJ_ID - ID unique','OBJ_ID - identificatore univoco','rrr_OBJ_ID - eindeutige Kennung',ARRAY['Werkinformation','Leitungskataster', 'GEP_Verband','GEP_Traegerschaft','SAA', 'PAA']::tww_od.plantype[],'true','varchar(16)','','','','','','','','','','',NULL,NULL);
  INSERT INTO tww_sys.dictionary_od_field (class_id, attribute_id, table_name, field_name, field_name_en, field_name_de, field_name_fr, field_name_it, field_name_ro, field_description_en, field_description_de, field_description_fr, field_description_it, field_description_ro, field_mandatory, field_visible, field_datatype, field_unit_en, field_unit_description_en, field_unit_de, field_unit_description_de, field_unit_fr, field_unit_description_fr, field_unit_it, field_unit_description_it, field_unit_ro, field_unit_description_ro, field_max, field_min) VALUES (99985,999996,'re_building_group_disposal','last_modification','last_modification','Letzte_Aenderung','DERNIERE_MODIFICATION','ultima_modifica','rrr_Letze_Aenderung','Last modification: INTERLIS_1_DATE','Letzte Änderung: INTERLIS_1_DATE','Dernière modification: INTERLIS_1_DATE','ultima_modifica: INTERLIS_1_DATE','rrr_Letzte Änderung: INTERLIS_1_DATE',ARRAY['Werkinformation','Leitungskataster', 'GEP_Verband','GEP_Traegerschaft','SAA', 'PAA']::tww_od.plantype[],'true','TIMESTAMP','','','','','','','','','','',NULL,NULL);
-																																																																																																																																																																																																																																																																																																																																																																										 
-																																																																																																																																																																																																																																																																																																													  
-																																																																																																																																																																																																																																					  
-																																																																																																																																																																																																																																																																																																																																																																								 
-																																																																																																																																																																																																																																																																	 
-																																																																																																																																																																																																																																																																																																																																																																																																																																				  
-																																																																																																																																																																																																																																																																																																																																																																										 
-																																																																																																																																																																																																																																																																																																													  
+
+
+
+
+
+
+
+
 
 CREATE TABLE tww_sys.dictionary_od_values (
   id serial NOT NULL,
@@ -1247,45 +1247,45 @@ CONSTRAINT is_dictionary_od_values_pkey PRIMARY KEY (id)
  INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id, table_name, field_name, value_name, value_name_en, shortcut_en, value_name_de, shortcut_de, value_name_fr, shortcut_fr, value_name_it, shortcut_it, value_name_ro, shortcut_ro, value_description_en, value_description_de, value_description_fr, value_description_it, value_description_ro) VALUES (19,5466,5470,'catchment_area','retention_planned','yes','yes',NULL,'ja',NULL,'oui',NULL,'si',NULL,'da',NULL,NULL,NULL,NULL,NULL,NULL);
  INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id, table_name, field_name, value_name, value_name_en, shortcut_en, value_name_de, shortcut_de, value_name_fr, shortcut_fr, value_name_it, shortcut_it, value_name_ro, shortcut_ro, value_description_en, value_description_de, value_description_fr, value_description_it, value_description_ro) VALUES (19,5466,5471,'catchment_area','retention_planned','no','no',NULL,'nein',NULL,'non',NULL,'no',NULL,'nu',NULL,NULL,NULL,NULL,NULL,NULL);
  INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id, table_name, field_name, value_name, value_name_en, shortcut_en, value_name_de, shortcut_de, value_name_fr, shortcut_fr, value_name_it, shortcut_it, value_name_ro, shortcut_ro, value_description_en, value_description_de, value_description_fr, value_description_it, value_description_ro) VALUES (19,5466,5472,'catchment_area','retention_planned','unknown','unknown',NULL,'unbekannt',NULL,'inconnu',NULL,'sconosciuto',NULL,'necunoscuta',NULL,NULL,NULL,NULL,NULL,NULL);
-																																																																																																																																																																																																																																										
-																																																																																																																																																						
-																																																																																																																																																																																																																																																																																																																																																														   
-																																																																																																																																																																																																																																									 
-																																																																																																																																																						   
-																																																																																																																																										 
-																																																																																																																																										   
-																																																																																																																																																																																																																																																																																																							   
-																																																																																																																																																																																																																																																																																																																																																																 
-																																																																																																																																																				   
-																																																																																																																																																																																																																																																																																																
-																																																																																																																																																																																																																																																																																  
-																																																																																																																																																																																																																																																																																																																																																																																																								  
-																																																																																																																																																																																																																																						
-																																																																																																																																																																																																																																	
-																																																																																																																																									
-																																																																																																																																																		   
-																																																																																																																																																																																																																								 
-																																																																																																																																																																																																																																																																									   
-																																																																																																																																																																																																																																																																																															  
-																																																																																																																																																																																																																						  
-																																																																																																																																									 
-																																																																																																																																												  
-																																																																																																																																																																																													
-																																																																																																																																																																																																																																																																							
-																																																																																																																																																																  
-																																																																																																																																																																																																																																																																		 
-																																																																																																																																																																																																																																																																																																			   
-																																																																																																																																																																																																																		  
-																																																																																																																																																				
-																																																																																																																																																														
-																																																																																																																																														  
-																																																																																																																																																																																																																																																																																																																																																																										 
-																																																																																																																																								   
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																									 
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																			  
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																											  
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																													 
-																																																																																																																																											  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id, table_name, field_name, value_name, value_name_en, shortcut_en, value_name_de, shortcut_de, value_name_fr, shortcut_fr, value_name_it, shortcut_it, value_name_ro, shortcut_ro, value_description_en, value_description_de, value_description_fr, value_description_it, value_description_ro) VALUES (2721,2721,4783,'drainage_system','kind','amelioration','amelioration',NULL,'Melioration',NULL,'melioration',NULL,'zzz_melizzazione',NULL,'rrr_Melioration',NULL,NULL,NULL,NULL,NULL,NULL);
  INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id, table_name, field_name, value_name, value_name_en, shortcut_en, value_name_de, shortcut_de, value_name_fr, shortcut_fr, value_name_it, shortcut_it, value_name_ro, shortcut_ro, value_description_en, value_description_de, value_description_fr, value_description_it, value_description_ro) VALUES (2721,2721,2722,'drainage_system','kind','mixed_system','mixed_system',NULL,'Mischsystem',NULL,'systeme_unitaire',NULL,'sistema_misto',NULL,'rrr_Mischsystem',NULL,'yyy_Im Mischsystem werden häusliches, gewerbliches und industrielles Schmutzwasser und das Niederschlagswasser im Gegensatz zur Trennkanalisation gemeinsam in einer Kanalisation abgeleitet. Aufgrund der begrenzten Leistungsfähigkeit der Kläranlage und um aus technischen und wirtschaftlichen Erfordernissen den Kanalquerschnitt zu begrenzen, werden im Mischsystem an geeigneten Stellen Regenentlastungsbauwerke oder Regenrückhalteräume angeordnet. Durch Regenüberläufe in den Hauptkanälen gelangen vor allem in der Anfangsphase von Starkniederschlägen wegen der Spülwirkung hohe Schmutzmengen in die Kläranlage. Deshalb werden verstärkt Regenrückhaltebecken gebaut, die diesen "Spülstoß" auffangen und allmählich an die Kläranlage abgeben sollen. Unverschmutztes Wasser - wie Abfluss von Außengebieten, Dränagewasser, Quellen, Brunnen, usw. - darf nicht in den Mischwasserkanal eingeleitet werden. Dies wird am Entstehungsort oder nach Ableitung verrieselt, versickert oder direkt in ein Oberflächengewässer eingeleitet.','Im Mischsystem werden häusliches, gewerbliches und industrielles Schmutzwasser und das Niederschlagswasser im Gegensatz zur Trennkanalisation gemeinsam in einer Kanalisation abgeleitet. Aufgrund der begrenzten Leistungsfähigkeit der Kläranlage und um aus technischen und wirtschaftlichen Erfordernissen den Kanalquerschnitt zu begrenzen, werden im Mischsystem an geeigneten Stellen Regenentlastungsbauwerke oder Regenrückhalteräume angeordnet. Durch Regenüberläufe in den Hauptkanälen gelangen vor allem in der Anfangsphase von Starkniederschlägen wegen der Spülwirkung hohe Schmutzmengen in die Kläranlage. Deshalb werden verstärkt Regenrückhaltebecken gebaut, die diesen "Spülstoß" auffangen und allmählich an die Kläranlage abgeben sollen. Unverschmutztes Wasser - wie Abfluss von Außengebieten, Dränagewasser, Quellen, Brunnen, usw. - darf nicht in den Mischwasserkanal eingeleitet werden. Dies wird am Entstehungsort oder nach Ableitung verrieselt, versickert oder direkt in ein Oberflächengewässer eingeleitet.','L’ensemble des eaux usées et pluviales est, en système unitaire, évacué par un réseau unique, généralement équipé de déversoirs d’orage, vannages, etc. permettant, en cas de pluies intenses, le rejet par surverse d’une partie des eaux, dirigées par un évacuateur vers le milieu naturel soit directement soit après traitement spécifique (selon M. Satin, B. Selmi, Guide technique de l’assainissement).','zzz_Im Mischsystem werden häusliches, gewerbliches und industrielles Schmutzwasser und das Niederschlagswasser im Gegensatz zur Trennkanalisation gemeinsam in einer Kanalisation abgeleitet. Aufgrund der begrenzten Leistungsfähigkeit der Kläranlage und um aus technischen und wirtschaftlichen Erfordernissen den Kanalquerschnitt zu begrenzen, werden im Mischsystem an geeigneten Stellen Regenentlastungsbauwerke oder Regenrückhalteräume angeordnet. Durch Regenüberläufe in den Hauptkanälen gelangen vor allem in der Anfangsphase von Starkniederschlägen wegen der Spülwirkung hohe Schmutzmengen in die Kläranlage. Deshalb werden verstärkt Regenrückhaltebecken gebaut, die diesen "Spülstoß" auffangen und allmählich an die Kläranlage abgeben sollen. Unverschmutztes Wasser - wie Abfluss von Außengebieten, Dränagewasser, Quellen, Brunnen, usw. - darf nicht in den Mischwasserkanal eingeleitet werden. Dies wird am Entstehungsort oder nach Ableitung verrieselt, versickert oder direkt in ein Oberflächengewässer eingeleitet.',NULL);
  INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id, table_name, field_name, value_name, value_name_en, shortcut_en, value_name_de, shortcut_de, value_name_fr, shortcut_fr, value_name_it, shortcut_it, value_name_ro, shortcut_ro, value_description_en, value_description_de, value_description_fr, value_description_it, value_description_ro) VALUES (2721,2721,2724,'drainage_system','kind','modified_system','modified_system',NULL,'ModifiziertesSystem',NULL,'systeme_modifie',NULL,'sistema_modificato',NULL,'rrr_ModifiziertesSystem',NULL,'yyy_Entwässerungssystem, üblicherweise bestehend aus zwei Leitungssystemen für die getrennte Ableitung von Misch- und Regenabwasser. Das niederschlagsabhängige Abwasser von Strassen und Plätzen wird zusammen mit dem Schmutzabwasser abgeleitet. Unverschmutztes Dach- und Sickerwasser wird in die Regenabwasserkanalisation abgeleitet. (dss)','Entwässerungssystem, üblicherweise bestehend aus zwei Leitungssystemen für die getrennte Ableitung von Misch- und Regenabwasser. Das niederschlagsabhängige Abwasser von Strassen und Plätzen wird zusammen mit dem Schmutzabwasser abgeleitet. Unverschmutztes Dach- und Sickerwasser wird in die Regenabwasserkanalisation abgeleitet. (dss)','Système d''assainissement composé normalement de deux réseaux de canalisations pour l''évacuation des eaux mixtes et pluviales. Les eaux pluviales des toitures sont évacuées avec les eaux mixtes.','zzz_Entwässerungssystem, üblicherweise bestehend aus zwei Leitungssystemen für die getrennte Ableitung von Misch- und Regenabwasser. Das niederschlagsabhängige Abwasser von Strassen und Plätzen wird zusammen mit dem Schmutzabwasser abgeleitet. Unverschmutztes Dach- und Sickerwasser wird in die Regenabwasserkanalisation abgeleitet. (dss)',NULL);
@@ -1546,70 +1546,70 @@ CONSTRAINT is_dictionary_od_values_pkey PRIMARY KEY (id)
  INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id, table_name, field_name, value_name, value_name_en, shortcut_en, value_name_de, shortcut_de, value_name_fr, shortcut_fr, value_name_it, shortcut_it, value_name_ro, shortcut_ro, value_description_en, value_description_de, value_description_fr, value_description_it, value_description_ro) VALUES (49,3232,3353,'pipe_profile','profile_type','rectangular','rectangular','R','Rechteckprofil','R','rectangulaire','R','rettangolare','R','dreptunghiular','D','Use only for rectangular profiles without dry weather fume or other modifications of the rectangular shape. Else use "special_profile" and send the profile geometry along with the dataset.','Nur für reine Rechteckprofile ohne Trockenwetterrinne oder andere Einbauten verwenden. Sonst als „Spezialprofil“ attributieren und die Profildefinition mitliefern.','A utiliser uniquement pour des profils rectangulaires normés, sans cunette de débit par temps sec ou autres modifications. Sinon la valeur devient « profil_special » et une définition du profil est à joindre.','Solo per profili rettangolari senza canaletta per tempo secco o altre installazioni. Altrimenti devono essere considerati come “profilo speciale” e forniti con la definizione del profilo.',NULL);
  INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id, table_name, field_name, value_name, value_name_en, shortcut_en, value_name_de, shortcut_de, value_name_fr, shortcut_fr, value_name_it, shortcut_it, value_name_ro, shortcut_ro, value_description_en, value_description_de, value_description_fr, value_description_it, value_description_ro) VALUES (49,3232,3355,'pipe_profile','profile_type','special','special','S','Spezialprofil','S','profil_special','PS','sezione_speciale','S','sectiune_speciala','S','For closed not normed profiles. The profile geometry always has to go along with this profile also.','Für geschlossene nicht-Normprofile. Profildefinition mitliefern.','Pour des profils fermés non conformes. Une définition du profil est à joindre.','Per profili chiusi non a norma. Fornire con la definizione del profilo.',NULL);
  INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id, table_name, field_name, value_name, value_name_en, shortcut_en, value_name_de, shortcut_de, value_name_fr, shortcut_fr, value_name_it, shortcut_it, value_name_ro, shortcut_ro, value_description_en, value_description_de, value_description_fr, value_description_it, value_description_ro) VALUES (49,3232,3357,'pipe_profile','profile_type','unknown','unknown','U','unbekannt','U','inconnu','I','sconosciuto','S','necunoscut','N',NULL,NULL,NULL,NULL,NULL);
-																																																																																																																																																		
-																																																																																																																																																																																															 
-																																																																																																																																																																															   
-																																																																																																																																																																																																																		  
-																																																																																																																																																																																												   
-																																																																																																																																																																												   
-																																																																																																																																																																																																																		   
-																																																																																																																																																																																																																						 
-																																																																																																																																																						  
-																																																																																																																																  
-																																																																																																																																  
-																																																																																																																																									   
-																																																																																																																																																		 
-																																																																																																																																																												
-																																																																																																																																																		 
-																																																																																																																																																																																																																																																																																											   
-																																																																																																																																																						   
-																																																																																																																																																																																																																																																						
-																																																																																																																																																		 
-																																																																																																																																																												
-																																																																																																																																																		 
-																																																																																																																																																																																																																																																																																												
-																																																																																																																																																						   
-																																																																																																																																																																																																																																																						
-																																																																																																																																															 
-																																																																																																																																																																
-																																																																																																																																																													
-																																																																																																																																																			   
-																																																																																																																																																																																							
-																																																																																																																															   
-																																																																																																																																																					  
-																																																																																																																																											
-																																																																																																																																																	 
-																																																																																																																																																			  
-																																																																																																																																													   
-																																																																																																																															  
-																																																																																																																																									
-																																																																																																																																									  
-																																																																																																																																												  
-																																																																																																																																																					
-																																																																																																																															 
-																																																																																																																																															
-																																																																																																																																																					
-																																																																																																																																																		
-																																																																																																																															   
-																																																																																																																																																			  
-																																																																																																																																								   
-																																																																																																																																																																																																																																																																																																																															
-																																																																																																																																																																																																																																																																	 
-																																																																																																																														   
-																																																																																																																																																	   
-																																																																																																																															  
-																																																																																																																																																																																																					  
-																																																																																																																																																																																																												  
-																																																																																																																																																																																																																																																																																																																											   
-																																																																																																																																																																																																																																   
-																																																																																																																																																		
-																																																																																																																																								   
-																																																																																																																																																				
-																																																																																																																																																																		   
-																																																																																																																																																					 
-																																																																																																																																																																																															 
-																																																																																																																																																																																														
-																																																																																																																																																						  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id, table_name, field_name, value_name, value_name_en, shortcut_en, value_name_de, shortcut_de, value_name_fr, shortcut_fr, value_name_it, shortcut_it, value_name_ro, shortcut_ro, value_description_en, value_description_de, value_description_fr, value_description_it, value_description_ro) VALUES (50,33,2983,'pump','construction_type','other','other',NULL,'andere',NULL,'autres',NULL,'altro',NULL,'rrr_altul',NULL,NULL,NULL,NULL,NULL,NULL);
  INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id, table_name, field_name, value_name, value_name_en, shortcut_en, value_name_de, shortcut_de, value_name_fr, shortcut_fr, value_name_it, shortcut_it, value_name_ro, shortcut_ro, value_description_en, value_description_de, value_description_fr, value_description_it, value_description_ro) VALUES (50,33,2662,'pump','construction_type','compressed_air_system','compressed_air_system',NULL,'Druckluftanlage',NULL,'systeme_a_air_comprime',NULL,'impianto_aria_compressa',NULL,'rrr_Druckluftanlage',NULL,NULL,NULL,NULL,NULL,NULL);
  INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id, table_name, field_name, value_name, value_name_en, shortcut_en, value_name_de, shortcut_de, value_name_fr, shortcut_fr, value_name_it, shortcut_it, value_name_ro, shortcut_ro, value_description_en, value_description_de, value_description_fr, value_description_it, value_description_ro) VALUES (50,33,314,'pump','construction_type','piston_pump','piston_pump',NULL,'Kolbenpumpe',NULL,'pompe_a_piston',NULL,'pompa_pistoni',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
@@ -2074,29 +2074,29 @@ CONSTRAINT is_dictionary_od_values_pkey PRIMARY KEY (id)
  INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id, table_name, field_name, value_name, value_name_en, shortcut_en, value_name_de, shortcut_de, value_name_fr, shortcut_fr, value_name_it, shortcut_it, value_name_ro, shortcut_ro, value_description_en, value_description_de, value_description_fr, value_description_it, value_description_ro) VALUES (9998,5522,5523,'mutation','kind','created','created',NULL,'erstellt',NULL,'cree',NULL,'creato',NULL,'creat',NULL,NULL,NULL,NULL,NULL,NULL);
  INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id, table_name, field_name, value_name, value_name_en, shortcut_en, value_name_de, shortcut_de, value_name_fr, shortcut_fr, value_name_it, shortcut_it, value_name_ro, shortcut_ro, value_description_en, value_description_de, value_description_fr, value_description_it, value_description_ro) VALUES (9998,5522,5582,'mutation','kind','changed','changed',NULL,'geaendert',NULL,'changee',NULL,'modificato',NULL,'modificat',NULL,NULL,NULL,NULL,NULL,NULL);
  INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id, table_name, field_name, value_name, value_name_en, shortcut_en, value_name_de, shortcut_de, value_name_fr, shortcut_fr, value_name_it, shortcut_it, value_name_ro, shortcut_ro, value_description_en, value_description_de, value_description_fr, value_description_it, value_description_ro) VALUES (9998,5522,5583,'mutation','kind','deleted','deleted',NULL,'geloescht',NULL,'effacee',NULL,'eliminata',NULL,'eliminate',NULL,NULL,NULL,NULL,NULL,NULL);
-																																																																																																																																																																						   
-																																																																																																																																																													
-																																																																																																																																																										 
-																																																																																																																																																										 
-																																																																																																																																																							
-																																																																																																																										  
-																																																																																																																												
-																																																																																																																											
-																																																																																																																									
-																																																																																																																									
-																																																																																																																										
-																																																																																																																										
-																																																																																																																												
-																																																																																																																																																																							 
-																																																																																																																																																													  
-																																																																																																																																																										   
-																																																																																																																																																										   
-																																																																																																																																								  
-																																																																																																																																																																										  
-																																																																																																																																																																																 
-																																																																																																																																																																													 
-																																																																																																																																																																													 
-																																																																																																																																												   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 CREATE UNIQUE INDEX in_dictionary_od_table ON tww_sys.dictionary_od_table USING btree (tablename ASC NULLS LAST);
 CREATE UNIQUE INDEX in_dictionary_od_field ON tww_sys.dictionary_od_field USING btree (class_id ASC NULLS LAST, attribute_id ASC NULLS LAST);
