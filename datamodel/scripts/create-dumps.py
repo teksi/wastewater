@@ -73,7 +73,7 @@ def create_plain_structure_only(database: str, version: str):
     dump_s = f"tww_{version}_structure.sql"
 
     print(f"Creating dump {dump_s}")
-    dump_file_s = f"artifacts/{dump_s}"
+    dump_file_s = f"datamodel/artifacts/{dump_s}"
     _cmd(
         [
             "pg_dump",
@@ -92,7 +92,7 @@ def create_plain_structure_only(database: str, version: str):
     # dump all from tww_sys except logged_actions
     dump_i = f"tww_{version}_pum_info.sql"
     print(f"Creating dump {dump_i}")
-    dump_file_i = f"artifacts/{dump_i}"
+    dump_file_i = f"datamodel/artifacts/{dump_i}"
     _cmd(
         [
             "pg_dump",
@@ -128,7 +128,7 @@ def create_plain_value_list(database: str, version: str, structure_dump_file: st
     dump = f"tww_{version}_structure_with_value_lists.sql"
 
     print(f"Creating dump {dump}")
-    dump_file = f"artifacts/{dump}"
+    dump_file = f"datamodel/artifacts/{dump}"
 
     _cmd(
         [
@@ -171,7 +171,7 @@ def create_backup_complete(database: str, version: str):
     dump = f"tww_{version}_structure_and_demo_data.backup"
     print(f"::group::{dump}")
     print(f"Creating dump {dump}")
-    dump_file = f"artifacts/{dump}"
+    dump_file = f"datamodel/artifacts/{dump}"
     _cmd(
         [
             "pg_dump",
@@ -198,9 +198,7 @@ def get_parser():
     """
     _parser = argparse.ArgumentParser("create-dumps.py")
     _parser.add_argument("--version", "-v", help="Sets the version", default="dev")
-    _parser.add_argument(
-        "--database", "-d", help="Sets the database name", default="teksi_wastewater"
-    )
+    _parser.add_argument("--database", "-d", help="Sets the database name", default="tww")
     return _parser
 
 
@@ -208,6 +206,6 @@ if __name__ == "__main__":
     parser = get_parser()
     args = parser.parse_args()
 
-    os.makedirs("artifacts", exist_ok=True)
+    os.makedirs("datamodel/artifacts", exist_ok=True)
     files = create_dumps(version=args.version, database=args.database)
     print("Dumps created: {}".format(", ".join(files)))

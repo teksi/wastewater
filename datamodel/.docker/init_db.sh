@@ -48,7 +48,7 @@ if [ "$#" == "0" ] || [ "$1" == "build" ]; then
   echo '----------------------------------------'
   echo "Building database normally (passing argument: ${@:2})"
 
-  /src/scripts/setup.sh ${@:2}
+  /src/datamodel/scripts/setup.sh ${@:2}
 
   echo "Done ! Database ${PGSERVICE} can now be used."
   echo '----------------------------------------'

@@ -22,7 +22,7 @@ def run_sql(file_path: str, pg_service: str, variables: dict = {}):
 
 def create_views(
     srid: int = 2056,
-    pg_service: str = "pg_teksi_wastewater",
+    pg_service: str = "pg_tww",
     tww_reach_extra: str = None,
     tww_wastewater_structure_extra: str = None,
 ):
@@ -46,137 +46,51 @@ def create_views(
 
     defaults = {"view_schema": "tww_app", "pg_service": pg_service}
 
-    SingleInheritance(
-        "tww_od.structure_part",
-        "tww_od.access_aid",
-        view_name="vw_access_aid",
-        pkey_default_value=True,
-        inner_defaults={"identifier": "obj_id"},
-        **defaults,
-    ).create()
+    SingleInheritances = {
+        # structure parts
+        "access_aid": "structure_part",
+        "benching": "structure_part",
+        "backflow_prevention": "structure_part",
+        "dryweather_downspout": "structure_part",
+        "cover": "structure_part",
+        "dryweather_flume": "structure_part",
+        "tank_emptying": "structure_part",
+        "tank_cleaning": "structure_part",
+        "electric_equipment": "structure_part",
+        "electromechanical_equipment": "structure_part",
+        "solids_retention": "structure_part",
+        "flushing_nozzle": "structure_part",
+        # wastewater structures
+        "channel": "wastewater_structure",
+        "manhole": "wastewater_structure",
+        "special_structure": "wastewater_structure",
+        "infiltration_installation": "wastewater_structure",
+        "discharge_point": "wastewater_structure",
+        "wwtp_structure": "wastewater_structure",
+        "drainless_toilet": "wastewater_structure",
+        "small_treatment_plant": "wastewater_structure",
+        # wastewater_networkelement
+        "wastewater_node": "wastewater_networkelement",
+        "reach": "wastewater_networkelement",
+        # connection_object
+        "building": "connection_object",
+        "reservoir": "connection_object",
+        "individual_surface": "connection_object",
+        "fountain": "connection_object",
+        # zone
+        "infiltration_zone": "zone",
+        "drainage_system": "zone",
+    }
 
-    SingleInheritance(
-        "tww_od.structure_part",
-        "tww_od.benching",
-        view_name="vw_benching",
-        pkey_default_value=True,
-        inner_defaults={"identifier": "obj_id"},
-        **defaults,
-    ).create()
-
-    SingleInheritance(
-        "tww_od.structure_part",
-        "tww_od.backflow_prevention",
-        view_name="vw_backflow_prevention",
-        pkey_default_value=True,
-        inner_defaults={"identifier": "obj_id"},
-        **defaults,
-    ).create()
-    SingleInheritance(
-        "tww_od.structure_part",
-        "tww_od.cover",
-        view_name="vw_cover",
-        pkey_default_value=True,
-        inner_defaults={"identifier": "obj_id"},
-        **defaults,
-    ).create()
-    SingleInheritance(
-        "tww_od.structure_part",
-        "tww_od.dryweather_downspout",
-        view_name="vw_dryweather_downspout",
-        pkey_default_value=True,
-        inner_defaults={"identifier": "obj_id"},
-        **defaults,
-    ).create()
-    SingleInheritance(
-        "tww_od.structure_part",
-        "tww_od.dryweather_flume",
-        view_name="vw_dryweather_flume",
-        pkey_default_value=True,
-        inner_defaults={"identifier": "obj_id"},
-        **defaults,
-    ).create()
-    SingleInheritance(
-        "tww_od.wastewater_structure", "tww_od.channel", view_name="vw_channel", **defaults
-    ).create()
-    SingleInheritance(
-        "tww_od.wastewater_structure", "tww_od.manhole", view_name="vw_manhole", **defaults
-    ).create()
-    SingleInheritance(
-        "tww_od.wastewater_structure",
-        "tww_od.discharge_point",
-        view_name="vw_discharge_point",
-        **defaults,
-    ).create()
-    SingleInheritance(
-        "tww_od.wastewater_structure",
-        "tww_od.special_structure",
-        view_name="vw_special_structure",
-        **defaults,
-    ).create()
-    SingleInheritance(
-        "tww_od.wastewater_structure",
-        "tww_od.infiltration_installation",
-        view_name="vw_infiltration_installation",
-        **defaults,
-    ).create()
-    SingleInheritance(
-        "tww_od.wastewater_structure",
-        "tww_od.wwtp_structure",
-        view_name="vw_wwtp_structure",
-        **defaults,
-    ).create()
-    SingleInheritance(
-        "tww_od.wastewater_structure",
-        "tww_od.drainless_toilet",
-        view_name="vw_drainless_toilet",
-        **defaults,
-    ).create()
-    SingleInheritance(
-        "tww_od.wastewater_structure",
-        "tww_od.small_treatment_plant",
-        view_name="vw_small_treatment_plant",
-        **defaults,
-    ).create()
-    SingleInheritance(
-        "tww_od.wastewater_networkelement", "tww_od.reach", view_name="vw_reach", **defaults
-    ).create()
-    SingleInheritance(
-        "tww_od.wastewater_networkelement",
-        "tww_od.wastewater_node",
-        view_name="vw_wastewater_node",
-        pkey_default_value=True,
-        **defaults,
-    ).create()
-
-    SingleInheritance(
-        "tww_od.connection_object",
-        "tww_od.individual_surface",
-        view_name="vw_individual_surface",
-        pkey_default_value=True,
-        **defaults,
-    ).create()
-    SingleInheritance(
-        "tww_od.connection_object",
-        "tww_od.building",
-        view_name="vw_building",
-        pkey_default_value=True,
-        **defaults,
-    ).create()
-    SingleInheritance(
-        "tww_od.connection_object",
-        "tww_od.reservoir",
-        view_name="vw_reservoir",
-        pkey_default_value=True,
-        **defaults,
-    ).create()
-    SingleInheritance(
-        "tww_od.connection_object",
-        "tww_od.fountain",
-        view_name="vw_fountain",
-        pkey_default_value=True,
-        **defaults,
-    ).create()
+    for key in SingleInheritances:
+        SingleInheritance(
+            "tww_od." + SingleInheritances[key],
+            "tww_od." + key,
+            view_name="vw_" + key,
+            pkey_default_value=True,
+            inner_defaults={"identifier": "obj_id"},
+            **defaults,
+        ).create()
 
     MultipleInheritance(
         safe_load(open("app/view/vw_maintenance_event.yaml")),
@@ -205,15 +119,15 @@ def create_views(
         drop=True,
     ).create()
 
+    run_sql("app/view/vw_change_points.sql", pg_service, variables)
+    run_sql("app/view/vw_tww_import.sql", pg_service, variables)
+
     run_sql("app/view/catchment_area/vw_catchment_area_connections.sql", pg_service, variables)
     run_sql("app/view/catchment_area/vw_catchment_area_additional.sql", pg_service, variables)
     run_sql("app/view/catchment_area/vw_catchment_area_rwc_connections.sql", pg_service, variables)
     run_sql("app/view/catchment_area/vw_catchment_area_wwc_connections.sql", pg_service, variables)
     run_sql("app/view/catchment_area/vw_catchment_area_rwp_connections.sql", pg_service, variables)
     run_sql("app/view/catchment_area/vw_catchment_area_wwp_connections.sql", pg_service, variables)
-
-    run_sql("app/view/vw_change_points.sql", pg_service, variables)
-    run_sql("app/view/vw_tww_import.sql", pg_service, variables)
 
     # Recreate network views
     run_sql("app/view/network/vw_network_node.sql", pg_service, variables)
