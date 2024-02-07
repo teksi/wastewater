@@ -72,7 +72,7 @@ FOR EACH ROW EXECUTE PROCEDURE
 
 -------
 -------
-CREATE TABLE tww_od.wastewater_structure_symbol
+/* CREATE TABLE tww_od.wastewater_structure_symbol
 (
    obj_id varchar(16) NOT NULL,
    CONSTRAINT pkey_tww_od_wastewater_structure_symbol_obj_id PRIMARY KEY (obj_id)
@@ -111,7 +111,7 @@ FOR EACH ROW EXECUTE PROCEDURE
 -------
 -------
 
-
+ */
 
 
 
