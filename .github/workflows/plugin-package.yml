@@ -51,13 +51,11 @@ jobs:
       - name: Package
         run: |
           VERSION=0.0.0
-          TRANSIFEX=
-          [[ -z "${{ secrets.TX_TOKEN }}" ]] && TRANSIFEX="--transifex-token ${{ secrets.TX_TOKEN }}"
           qgis-plugin-ci -v package ${VERSION} \
             --allow-uncommitted-changes \
             --asset-path plugin/teksi_wastewater/libs \
             --asset-path plugin/teksi_wastewater/interlis/bin \
-            ${TRANSIFEX}
+            --transifex-token "${{ secrets.TX_TOKEN }}"
 
       - uses: actions/upload-artifact@v4
         with:
