@@ -1957,10 +1957,10 @@ class InterlisExporterToIntermediateSchema:
         self.abwasser_session.flush()
 
     def _export_retention_body(self):
-        query = self.tww_session.query(self.model_classes_tww_od.control_center)
+        query = self.tww_session.query(self.model_classes_tww_od.retention_body)
         if self.filtered:
             query = query.filter(
-                self.model_classes_tww_od.control_center.obj_id.in_(self.subset_ids)
+                self.model_classes_tww_od.retention_body.obj_id.in_(self.subset_ids)
             )
         for row in query:
             retentionskoerper = self.model_classes_interlis.retentionskoerper(
@@ -1978,10 +1978,10 @@ class InterlisExporterToIntermediateSchema:
         self.abwasser_session.flush()
 
     def _export_profile_geometry(self):
-        query = self.tww_session.query(self.model_classes_tww_od.control_center)
+        query = self.tww_session.query(self.model_classes_tww_od.profile_geometry)
         if self.filtered:
             query = query.filter(
-                self.model_classes_tww_od.control_center.obj_id.in_(self.subset_ids)
+                self.model_classes_tww_od.profile_geometry.obj_id.in_(self.subset_ids)
             )
         for row in query:
             rohrprofil_geometrie = self.model_classes_interlis.rohrprofil_geometrie(
@@ -1998,10 +1998,10 @@ class InterlisExporterToIntermediateSchema:
         self.abwasser_session.flush()
 
     def _export_backflow_prevention(self):
-        query = self.tww_session.query(self.model_classes_tww_od.control_center)
+        query = self.tww_session.query(self.model_classes_tww_od.backflow_prevention)
         if self.filtered:
             query = query.filter(
-                self.model_classes_tww_od.control_center.obj_id.in_(self.subset_ids)
+                self.model_classes_tww_od.backflow_prevention.obj_id.in_(self.subset_ids)
             )
         for row in query:
             rueckstausicherung = self.model_classes_interlis.rueckstausicherung(
@@ -2020,11 +2020,9 @@ class InterlisExporterToIntermediateSchema:
         self.abwasser_session.flush()
 
     def _export_log_card(self):
-        query = self.tww_session.query(self.model_classes_tww_od.control_center)
+        query = self.tww_session.query(self.model_classes_tww_od.log_card)
         if self.filtered:
-            query = query.filter(
-                self.model_classes_tww_od.control_center.obj_id.in_(self.subset_ids)
-            )
+            query = query.filter(self.model_classes_tww_od.log_card.obj_id.in_(self.subset_ids))
         for row in query:
             stammkarte = self.model_classes_interlis.stammkarte(
                 **self.vsa_base_common(row, "stammkarte"),
@@ -2043,11 +2041,9 @@ class InterlisExporterToIntermediateSchema:
         self.abwasser_session.flush()
 
     def _export_prank_weir(self):
-        query = self.tww_session.query(self.model_classes_tww_od.control_center)
+        query = self.tww_session.query(self.model_classes_tww_od.prank_weir)
         if self.filtered:
-            query = query.filter(
-                self.model_classes_tww_od.control_center.obj_id.in_(self.subset_ids)
-            )
+            query = query.filter(self.model_classes_tww_od.prank_weir.obj_id.in_(self.subset_ids))
         for row in query:
             streichwehr = self.model_classes_interlis.streichwehr(
                 **self.vsa_base_common(row, "streichwehr"),
@@ -2065,10 +2061,10 @@ class InterlisExporterToIntermediateSchema:
         self.abwasser_session.flush()
 
     def _export_overflow_char(self):
-        query = self.tww_session.query(self.model_classes_tww_od.control_center)
+        query = self.tww_session.query(self.model_classes_tww_od.overflow_char)
         if self.filtered:
             query = query.filter(
-                self.model_classes_tww_od.control_center.obj_id.in_(self.subset_ids)
+                self.model_classes_tww_od.overflow_char.obj_id.in_(self.subset_ids)
             )
         for row in query:
             ueberlaufcharakteristik = self.model_classes_interlis.ueberlaufcharakteristik(
@@ -2084,11 +2080,9 @@ class InterlisExporterToIntermediateSchema:
         self.abwasser_session.flush()
 
     def _export_maintenance(self):
-        query = self.tww_session.query(self.model_classes_tww_od.control_center)
+        query = self.tww_session.query(self.model_classes_tww_od.maintenance)
         if self.filtered:
-            query = query.filter(
-                self.model_classes_tww_od.control_center.obj_id.in_(self.subset_ids)
-            )
+            query = query.filter(self.model_classes_tww_od.maintenance.obj_id.in_(self.subset_ids))
         for row in query:
             unterhalt = self.model_classes_interlis.unterhalt(
                 **self.vsa_base_common(row, "unterhalt"),
@@ -2102,10 +2096,10 @@ class InterlisExporterToIntermediateSchema:
         self.abwasser_session.flush()
 
     def _export_infiltration_zone(self):
-        query = self.tww_session.query(self.model_classes_tww_od.control_center)
+        query = self.tww_session.query(self.model_classes_tww_od.infiltration_zone)
         if self.filtered:
             query = query.filter(
-                self.model_classes_tww_od.control_center.obj_id.in_(self.subset_ids)
+                self.model_classes_tww_od.infiltration_zone.obj_id.in_(self.subset_ids)
             )
         for row in query:
             versickerungsbereich = self.model_classes_interlis.versickerungsbereich(
