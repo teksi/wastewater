@@ -2022,9 +2022,7 @@ class InterlisExporterToIntermediateSchema:
     def _export_log_card(self):
         query = self.tww_session.query(self.model_classes_tww_od.log_card)
         if self.filtered:
-            query = query.filter(
-                self.model_classes_tww_od.log_card.obj_id.in_(self.subset_ids)
-            )
+            query = query.filter(self.model_classes_tww_od.log_card.obj_id.in_(self.subset_ids))
         for row in query:
             stammkarte = self.model_classes_interlis.stammkarte(
                 **self.vsa_base_common(row, "stammkarte"),
@@ -2045,9 +2043,7 @@ class InterlisExporterToIntermediateSchema:
     def _export_prank_weir(self):
         query = self.tww_session.query(self.model_classes_tww_od.prank_weir)
         if self.filtered:
-            query = query.filter(
-                self.model_classes_tww_od.prank_weir.obj_id.in_(self.subset_ids)
-            )
+            query = query.filter(self.model_classes_tww_od.prank_weir.obj_id.in_(self.subset_ids))
         for row in query:
             streichwehr = self.model_classes_interlis.streichwehr(
                 **self.vsa_base_common(row, "streichwehr"),
@@ -2086,9 +2082,7 @@ class InterlisExporterToIntermediateSchema:
     def _export_maintenance(self):
         query = self.tww_session.query(self.model_classes_tww_od.maintenance)
         if self.filtered:
-            query = query.filter(
-                self.model_classes_tww_od.maintenance.obj_id.in_(self.subset_ids)
-            )
+            query = query.filter(self.model_classes_tww_od.maintenance.obj_id.in_(self.subset_ids))
         for row in query:
             unterhalt = self.model_classes_interlis.unterhalt(
                 **self.vsa_base_common(row, "unterhalt"),
