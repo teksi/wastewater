@@ -761,9 +761,9 @@ class InterlisExporterToIntermediateSchema:
             )
         for row in query:
             haltung_alternativverlauf = self.model_classes_interlis.haltung_alternativverlauf(
-                **self.vsa_base_common(row, "haltung_alternativverlauf"),
+                **self.base_common(row, "haltung_alternativverlauf"),
                 # --- haltung_alternativverlauf ---
-                plantyp=row.plantype,
+                plantyp=self.get_vl(row.plantype__REL),
                 verlauf=row.progression_geometry,
                 haltungref=self.get_pk(row.fk_reach__REL),
             )

@@ -1891,9 +1891,10 @@ class InterlisImporterToIntermediateSchema:
         ):
             reach_progression_alternative = self.create_or_update(
                 self.model_classes_tww_od.reach_progression_alternative,
-                **self.base_common(row),
-                # --- reach_progression_alternative ---
-                plantype=row.plantyp,
+                obj_id=row.t_ili_tid,
+                plantype=self.get_vl_code(
+                    self.model_classes_tww_od.reach_progression_alternative_plantype, row.plantyp
+                ),
                 progression_geometry=row.verlauf,
                 fk_reach=self.get_pk(row.haltungref__REL),
             )

@@ -96,7 +96,7 @@ class ModelInterlisSia405Abwasser(ModelBase):
 
         ModelInterlisSia405Abwasser.haltung = haltung
 
-        class haltung_alternativverlauf(vsa_baseclass):
+        class haltung_alternativverlauf(baseclass):
             __tablename__ = "haltung_alternativverlauf"
             __table_args__ = {"schema": config.ABWASSER_SCHEMA}
 
