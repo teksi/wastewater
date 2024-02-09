@@ -1,3 +1,5 @@
+from sqlalchemy import Column
+
 from ...interlis import config
 from .model_base import ModelBase
 
@@ -53,6 +55,12 @@ class ModelTwwOd(ModelBase):
             __table_args__ = {"schema": config.TWW_OD_SCHEMA}
 
         ModelTwwOd.reach_point = reach_point
+
+        class reach_progression_alternative(self.Base):
+            __tablename__ = "reach_progression_alternative"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.reach_progression_alternative = reach_progression_alternative
 
         class wastewater_node(wastewater_networkelement):
             __tablename__ = "wastewater_node"
@@ -140,3 +148,172 @@ class ModelTwwOd(ModelBase):
             __table_args__ = {"schema": config.TWW_OD_SCHEMA}
 
         ModelTwwOd.damage_channel = damage_channel
+
+        class flushing_nozzle(structure_part):
+            __tablename__ = "flushing_nozzle"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.flushing_nozzle = flushing_nozzle
+
+        class drainless_toilet(wastewater_structure):
+            __tablename__ = "drainless_toilet"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.drainless_toilet = drainless_toilet
+
+        class tank_emptying(structure_part):
+            __tablename__ = "tank_emptying"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.tank_emptying = tank_emptying
+
+        class tank_cleaning(structure_part):
+            __tablename__ = "tank_cleaning"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.tank_cleaning = tank_cleaning
+
+        class bio_ecol_assessment(maintenance_event):
+            __tablename__ = "bio_ecol_assessment"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.bio_ecol_assessment = bio_ecol_assessment
+
+        class maintenance(maintenance_event):
+            __tablename__ = "maintenance"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.maintenance = maintenance
+
+        class connection_object(wastewater_networkelement):
+            __tablename__ = "connection_object"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.connection_object = connection_object
+
+        class fountain(connection_object):
+            __tablename__ = "fountain"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.fountain = fountain
+
+        class reservoir(connection_object):
+            __tablename__ = "reservoir"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.reservoir = reservoir
+
+        class building(connection_object):
+            __tablename__ = "building"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.building = building
+
+        class individual_surface(connection_object):
+            __tablename__ = "individual_surface"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.individual_surface = individual_surface
+
+        class catchment_area(self.Base):
+            __tablename__ = "catchment_area"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.catchment_area = catchment_area
+
+        class surface_runoff_parameters(catchment_area):
+            __tablename__ = "surface_runoff_parameters"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.surface_runoff_parameters = surface_runoff_parameters
+
+        class param_ca_general(surface_runoff_parameters):
+            __tablename__ = "param_ca_general"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.param_ca_general = param_ca_general
+
+        class param_ca_mouse1(surface_runoff_parameters):
+            __tablename__ = "param_ca_mouse1"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.param_ca_mouse1 = param_ca_mouse1
+
+        class electric_equipment(structure_part):
+            __tablename__ = "electric_equipment"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.electric_equipment = electric_equipment
+
+        class electromechanical_equipment(structure_part):
+            __tablename__ = "electromechanical_equipment"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.electromechanical_equipment = electromechanical_equipment
+
+        class zone(self.Base):
+            __tablename__ = "zone"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.zone = zone
+
+        class drainage_system(zone):
+            __tablename__ = "drainage_system"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.drainage_system = drainage_system
+
+        class infiltration_zone(zone):
+            __tablename__ = "infiltration_zone"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.infiltration_zone = infiltration_zone
+
+        class solids_retention(structure_part):
+            __tablename__ = "solids_retention"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.solids_retention = solids_retention
+
+        class overflow(self.Base):
+            __tablename__ = "overflow"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.overflow = overflow
+
+        class pump(overflow):
+            __tablename__ = "pump"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.pump = pump
+
+        class leapingweir(overflow):
+            __tablename__ = "leapingweir"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.leapingweir = leapingweir
+
+        class prank_weir(overflow):
+            __tablename__ = "prank_weir"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.prank_weir = prank_weir
+
+        class small_treatment_plant(wastewater_structure):
+            __tablename__ = "small_treatment_plant"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.small_treatment_plant = small_treatment_plant
+
+        class backflow_prevention(structure_part):
+            __tablename__ = "backflow_prevention"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.backflow_prevention = backflow_prevention
+
+        class file(self.Base):
+            __tablename__ = "file"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+            class_column = Column("class")
+
+        ModelTwwOd.file = file
