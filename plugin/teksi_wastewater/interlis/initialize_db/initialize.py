@@ -9,9 +9,9 @@ from .. import config,utils
 import os
 # This file is wastewater/plugin/TEKSI2AG64_96/assets/tww_initialize.py
 # create_views.py is at wastewater/datamodel/app/view/create_views.py
-from ....datamodel.app.view import create_views
+from datamodel.app.view import create_views
 
-def tww_initialize(pgservice=config.TWW_DEFAULT_PGSERVICE):
+def tww_initialize(pgservice=config.TWW_DEFAULT_PGSERVICE, db_identifier: str=None):
     """
     initializes the TWW database for usage of the AG64/96 models.
 
@@ -25,6 +25,13 @@ def tww_initialize(pgservice=config.TWW_DEFAULT_PGSERVICE):
     schema_exists = init_session.execute(
         "SELECT schema_name FROM information_schema.schemata WHERE schema_name = %;".format(config.TWW_SCHEMA)
     )
+    # We also disable symbology triggers as they badly affect performance. This must be done in a separate session as it
+    # would deadlock other sessions.
+    init_session.execute("SELECT tww_sys.disable_symbology_triggers();")
+    init_session.commit()
+    init_session.close()
+
+    
     if schema_exists is None:
         directory = 'ag64_96_init'
         files = os.listdir(os.path.join(directory,os.pardir)) 
@@ -33,17 +40,13 @@ def tww_initialize(pgservice=config.TWW_DEFAULT_PGSERVICE):
             filename = os.fsdecode(file)
             if filename.endswith(".sql"):
                 sql = text(open(os.path.join(directory, filename)).read().format(ext_schema=config.TWW_SCHEMA,
-                                                                                 ilischema=config.AG96_SCHEMA))
+                                                                                 ilischema=config.AG96_SCHEMA,
+                                                                                 db_identifier=db_identifier))
                 init_session.execute(sql)
                 init_session.commit()
                 init_session.flush()
     del schema_exists
     
-    # We also drop symbology triggers as they badly affect performance. This must be done in a separate session as it
-    # would deadlock other sessions.
-    init_session.execute("SELECT tww_sys.disable_symbology_triggers();")
-    init_session.commit()
-    init_session.close()
 
     # ------------------------------------------ re-create all views --------------------------------------------------------------------
     create_views(2056,pgservice)

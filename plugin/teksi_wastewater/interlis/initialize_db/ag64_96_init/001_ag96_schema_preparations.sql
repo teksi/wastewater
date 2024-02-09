@@ -103,22 +103,6 @@ ALTER TABLE tww_od.infiltration_zone
 , ADD COLUMN IF NOT EXISTS ag96_q_check character varying(50);
 
 
-INSERT INTO tww_od.organisation(obj_id, 
-	identifier, 
-	remark, 
-	uid, 
-	last_modification, 
-	fk_dataowner, 
-	fk_provider) VALUES 
-	('ch113jqg00000000', -- Aargauer Organisations-OID sind 20 Zeichen lang
- 'AfU Aargau', 
- 'bei Import AG-64/AG-96 generiert',
-'CHE114809310', -- allgemeine UID Kt. Aargau, nicht AfU
-now(), 
-'ch113jqg00000000',
-'ch113jqg00000000')
-ON CONFLICT DO NOTHING;
-
 -- Value list mapping für Rückwärtsimport. Keine inheritance, da sonst pkey in value_list_base nicht eindeutig ist
 
 CREATE TABLE IF NOT EXISTS {ext_schema}.vl_special_structure_function (code integer, value_agxx TEXT PRIMARY KEY); --Werteliste
@@ -143,7 +127,9 @@ RETURNS varchar(16)
 AS 
 $BODY$
 BEGIN
-	CASE WHEN length(oid)=20 OR length(oid)=16 THEN
+	CASE 
+	WHEN oid IS NULL THEN return oid;
+	WHEN length(oid)=20 OR length(oid)=16 THEN
 		return 'ch20p3q4'||right(oid,8);
 	ELSE
 		RAISE WARNING 'OID % has not the right length. Might cause errors downstream', oid;
@@ -184,3 +170,14 @@ CREATE INDEX IF NOT EXISTS in_{ext_schema}_od_unconnected_node_bwrel_detailgeome
     ON {ext_schema}.od_unconnected_node_bwrel USING gist
     (detailgeometrie2d)
     TABLESPACE pg_default;
+
+-- Extensions in PR #152 TEKSI Wastewater	
+ALTER TABLE tww_od.organisation ADD COLUMN IF NOT EXISTS _active bool;
+COMMENT ON COLUMN tww_od.organisation._active IS 'not part of the VSA-DSS data model
+added solely for TEKSI Wastewater & GEP
+used to filter organisations';
+
+ALTER TABLE tww_od.organisation ADD COLUMN IF NOT EXISTS _local_extension bool;
+COMMENT ON COLUMN tww_od.organisation._local_extension IS 'not part of the VSA-DSS data model
+added solely for TEKSI Wastewater & GEP
+used to map non-harmonized organisations to private on export';
