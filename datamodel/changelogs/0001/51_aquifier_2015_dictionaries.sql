@@ -22,5 +22,3 @@
  INSERT INTO tww_sys.dictionary_od_field (class_id, attribute_id, table_name, field_name, field_name_en, field_name_de, field_name_fr, field_name_it, field_name_ro, field_description_en, field_description_de, field_description_fr, field_description_it, field_description_ro, field_mandatory, field_visible, field_datatype, field_unit_en, field_unit_description_en, field_unit_de, field_unit_description_de, field_unit_fr, field_unit_description_fr, field_unit_it, field_unit_description_it, field_unit_ro, field_unit_description_ro, field_max, field_min) VALUES (30,999996,'_aquifier','last_modification','last_modification','Letzte_Aenderung','DERNIERE_MODIFICATION','ultima_modifica','rrr_Letze_Aenderung','Last modification: INTERLIS_1_DATE','Letzte Änderung: INTERLIS_1_DATE','Dernière modification: INTERLIS_1_DATE','ultima_modifica: INTERLIS_1_DATE','rrr_Letzte Änderung: INTERLIS_1_DATE',ARRAY['Werkinformation','Leitungskataster', 'GEP_Verband','GEP_Traegerschaft','SAA', 'PAA']::tww_od.plantype[],'true','TIMESTAMP','','','','','','','','','','',NULL,NULL);
 
  -- CREATE TABLE tww_sys.dictionary_od_values already exists
-
-
