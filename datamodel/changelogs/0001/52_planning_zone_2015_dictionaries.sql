@@ -1,7 +1,7 @@
  ------ this file generates the tww is_dictionary (Table _planning_zone dss 2015) in en on TEKSI
 ------ For questions etc. please contact Stefan Burckhardt stefan.burckhardt@sjib.ch
 ------ version 9.2.2024 09:22:00
------- based on version 04.07.2017 23:28:49 09_qgep_dictionaries.sql
+------ // skip-keyword-check based on version 04.07.2017 23:28:49 09_qgep_dictionaries.sql
 ------ with 3D coordinates
 
 --- CREATE TABLE tww_sys.dictionary_od_table already exists
