@@ -1,8 +1,7 @@
 ------ This file generates the VSA-DSS database (Modul VSA-KEK (2020)) in en on QQIS
 ------ For questions etc. please contact Stefan Burckhardt stefan.burckhardt@sjib.ch
------- version 21.11.2023 17:54:20
+------ version 13.12.2023 17:35:31
 ------ with 3D coordinates
-
 BEGIN;
 
 -------
@@ -17,19 +16,24 @@ WITH (
 CREATE SEQUENCE tww_od.seq_examination_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
  ALTER TABLE tww_od.examination ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','examination');
 COMMENT ON COLUMN tww_od.examination.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
- ALTER TABLE tww_od.examination ADD COLUMN equipment  varchar(50) ;
+ ALTER TABLE tww_od.examination ADD COLUMN equipment text;
+ ALTER TABLE tww_od.examination ADD CONSTRAINT ex_equipment_length_max_50 CHECK(char_length(equipment)<=50);
 COMMENT ON COLUMN tww_od.examination.equipment IS 'Name of used camera / Eingesetztes Aufnahmegeräte (Kamera) / Appareil de prise de vues (caméra) employé';
- ALTER TABLE tww_od.examination ADD COLUMN from_point_identifier  varchar(20) ;
+ ALTER TABLE tww_od.examination ADD COLUMN from_point_identifier text;
+ ALTER TABLE tww_od.examination ADD CONSTRAINT ex_from_point_identifier_length_max_20 CHECK(char_length(from_point_identifier)<=20);
 COMMENT ON COLUMN tww_od.examination.from_point_identifier IS 'yyy_Bezeichnung des "von Punktes" einer Untersuchung, so wie sie auf dem Plan erscheint. Alternative zum Foreign key Haltungspunkt, wenn Topologie noch nicht definiert ist (Ersterfassung). Die vonPunktBezeichnung wird später vom Hydrauliker für den Aufbau der Kanalnetztopologie verwendet. / Bezeichnung des "von Punktes" einer Untersuchung, so wie sie auf dem Plan erscheint. Alternative zum Fremdschlüssel Haltungspunkt, wenn Topologie noch nicht definiert ist (Ersterfassung). Die vonPunktBezeichnung wird später vom Hydrauliker für den Aufbau der Kanalnetztopologie verwendet. / Point (chambre ou nœud) auquel l’examen commence. Désignation du « point départ » (DESIGNATION_POINT_DE) d’une examen comme elle figure sur le plan. Elle sert d’alternative à la clé externe POINT_TRONCON, lorsque la topologie n’est pas encore définie (saisie initiale). La DESIGNATION_POINT_DE sera utilisée ultérieurement par l’hydraulicien pour la construction de la topologie du réseau.';
  ALTER TABLE tww_od.examination ADD COLUMN inspected_length  decimal(7,2) ;
 COMMENT ON COLUMN tww_od.examination.inspected_length IS 'yyy_Total untersuchte Länge in Metern mit zwei Nachkommastellen / Total untersuchte Länge in Metern mit zwei Nachkommastellen / Longueur totale examinée en mètres avec deux chiffres après la virgule';
  ALTER TABLE tww_od.examination ADD COLUMN recording_type  integer ;
 COMMENT ON COLUMN tww_od.examination.recording_type IS 'yyy_Aufnahmetechnik, beschreibt die Art der Aufnahme / Aufnahmetechnik, beschreibt die Art der Aufnahme / Technique de prise de vues, décrit le type de prise de vues';
- ALTER TABLE tww_od.examination ADD COLUMN to_point_identifier  varchar(20) ;
+ ALTER TABLE tww_od.examination ADD COLUMN to_point_identifier text;
+ ALTER TABLE tww_od.examination ADD CONSTRAINT ex_to_point_identifier_length_max_20 CHECK(char_length(to_point_identifier)<=20);
 COMMENT ON COLUMN tww_od.examination.to_point_identifier IS 'yyy_Bezeichnung des "bis Punktes" einer Untersuchung, so wie sie auf dem Plan erscheint. Alternative zum Foreign key Abwasserbauwerk, wenn Topologie noch nicht definiert ist (Ersterfassung). Die bisPunktBezeichnung wird später vom Hydrauliker für den Aufbau der Kanalnetztopologie verwendet. Bei Schachtuntersuchungen bleibt dieser Wert leer / Bezeichnung des "bis Punktes" einer Untersuchung, so wie sie auf dem Plan erscheint. Alternative zum Fremdschlüssel Abwasserbauwerk, wenn Topologie noch nicht definiert ist (Ersterfassung). Die bisPunktBezeichnung wird später vom Hydrauliker für den Aufbau der Kanalnetztopologie verwendet. Bei Schachtuntersuchungen bleibt dieser Wert leer. / Point (chambre ou noeud) d’où l’examen termine. Désignation du « point d’arrivée » (DESIGNATION_POINT_VERS) d’une examen comme elle figure sur le plan. Elle sert d’alternative à la clé externe OUVRAGE_RESEAU_AS lorsque la topologie n’est pas encore définie (saisie initiale). La DESIGNATION_POINT_VERS sera utilisée ultérieurement par l’hydraulicien pour la construction de la topologie du réseau. Cette valeur reste vide lors d’inspections de chambres.';
- ALTER TABLE tww_od.examination ADD COLUMN vehicle  varchar(50) ;
+ ALTER TABLE tww_od.examination ADD COLUMN vehicle text;
+ ALTER TABLE tww_od.examination ADD CONSTRAINT ex_vehicle_length_max_50 CHECK(char_length(vehicle)<=50);
 COMMENT ON COLUMN tww_od.examination.vehicle IS 'yyy_Eingesetztes Inspektionsfahrzeug / Eingesetztes Inspektionsfahrzeug / Véhicule d’examen employé';
- ALTER TABLE tww_od.examination ADD COLUMN videonumber  varchar(20) ;
+ ALTER TABLE tww_od.examination ADD COLUMN videonumber text;
+ ALTER TABLE tww_od.examination ADD CONSTRAINT ex_videonumber_length_max_20 CHECK(char_length(videonumber)<=20);
 COMMENT ON COLUMN tww_od.examination.videonumber IS 'yyy_Bei Videobändern steht hier die Bandnummer (z.B. 1/99). Bei elektronischen Datenträgern ist dies die Datenträgerbezeichnung (z.B. SG001). Falls pro Untersuchung eine einzelne Datei zur Verfügung steht, dann wird diese aus der Klasse Datei referenziert und dieses Attribut kann leer gelassen werden. / Bei Videobändern steht hier die Bandnummer (z.B. 1/99). Bei elektronischen Datenträgern ist dies die Datenträgerbezeichnung (z.B. SG001). Falls pro Untersuchung eine einzelne Datei zur Verfügung steht, dann wird diese aus der Klasse Datei referenziert und dieses Attribut kann leer gelassen werden. / Pour les bandes vidéo figure ici le numéro de la bande (p. ex. 1/99) et, pour les supports de don-nées électroniques, sa désignation (p. ex. SG001). S’il n’existe qu’un fichier par examen, ce fichier est référencé par la classe Fichier et cet attribut peut être laissé vide.';
  ALTER TABLE tww_od.examination ADD COLUMN weather  integer ;
 COMMENT ON COLUMN tww_od.examination.weather IS 'Wheather conditions during inspection / Wetterverhältnisse während der Inspektion / Conditions météorologiques pendant l’examen';
@@ -54,17 +58,21 @@ WITH (
 CREATE SEQUENCE tww_od.seq_damage_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
  ALTER TABLE tww_od.damage ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','damage');
 COMMENT ON COLUMN tww_od.damage.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
- ALTER TABLE tww_od.damage ADD COLUMN comments  varchar(100) ;
+ ALTER TABLE tww_od.damage ADD COLUMN comments text;
+ ALTER TABLE tww_od.damage ADD CONSTRAINT dg_comments_length_max_100 CHECK(char_length(comments)<=100);
 COMMENT ON COLUMN tww_od.damage.comments IS 'Free comments on a finding / Freie Bemerkungen zu einer Feststellung / Remarques libres concernant une observation';
  ALTER TABLE tww_od.damage ADD COLUMN connection  integer ;
 COMMENT ON COLUMN tww_od.damage.connection IS 'Indicator for a detection at a pipe connection (2.1.7). or in case of two adjacent manhole elements according to (3.1.7). Corresponds in SN EN 13508 yes = "A", no = empty / Kennzeichen für eine Feststellung an einer Rohrverbindung (2.1.7). bzw. bei zwei aneinandergrenzenden Schachtelementen gemäss (3.1.7). Entspricht in SN EN 13508 ja = "A", nein = leer / Indication d’une observation au niveau d’un assemblage (2.1.7) ou Observation entre deux éléments de regard de visite adjacents (3.1.7). Correspond dans la SN EN 13508 à oui = « A », non = vide';
- ALTER TABLE tww_od.damage ADD COLUMN line_damage  varchar(3) ;
+ ALTER TABLE tww_od.damage ADD COLUMN line_damage text;
+ ALTER TABLE tww_od.damage ADD CONSTRAINT dg_line_damage_length_max_3 CHECK(char_length(line_damage)<=3);
 COMMENT ON COLUMN tww_od.damage.line_damage IS 'Codes for the beginning and end of a line damage. Detailed information under 2.1.2 resp. 3.1.2 / Codes für den Anfang und das Ende eines Streckenschadens. Genaue Angaben unter 2.1.2 resp. 3.1.2 / Codes pour le début et la fin d’un dommage à un tronçon. Indications exactes sous 2.1.2 resp. 3.1.2.';
  ALTER TABLE tww_od.damage ADD COLUMN single_damage_class  integer ;
 COMMENT ON COLUMN tww_od.damage.single_damage_class IS 'Defines the damage class of an individual damage. The classification into condition classes (Z0-Z4) is based on the damage pattern and the extent of the damage. A wastewater structure can be directly assigned to a class or each damage can be classified individually first. (At the end, for example, the most severe individual damage determines the classification of the entire canalisation (wastewater_structure.structure_condition)). / Definiert die Schadensklasse eines Einzelschadens. Die Einteilung in die Zustandsklassen (Z0-Z4) erfolgt aufgrund des Schadenbilds und des Schadensausmasses. Dabei kann ein Abwasserbauwerk direkt einer Klasse zugeteilt werden oder zuerst jeder Schaden einzeln klassifiziert werden. (Am Schluss bestimmt dann z.B. der schwerste Einzelschaden die Klassifizierung des gesamten Kanals (Abwasserbauwerk.BaulicherZustand)). / Définit la classe de dommages d’un dommage unique. La répartition en classes d’état (Z0-Z4) s’effectue sur la base de la nature et de l’étendue des dommages. Un ouvrage d''assainissement peut être classé directement ou chaque dommage peut d’abord être classé séparément. (A la fin, le dommage le plus important détermine le classement de l’ensemble de la canalisation (OUVRAGE_RESEAU_AS.ETAT_CONSTRUCTIF).';
- ALTER TABLE tww_od.damage ADD COLUMN video_counter  varchar(11) ;
+ ALTER TABLE tww_od.damage ADD COLUMN video_counter text;
+ ALTER TABLE tww_od.damage ADD CONSTRAINT dg_video_counter_length_max_11 CHECK(char_length(video_counter)<=11);
 COMMENT ON COLUMN tww_od.damage.video_counter IS 'Meter reading on an analog videotape or in a digital video file, in real time / Zählerstand auf einem analogen Videoband oder in einer digitalen Videodatei, in Echtzeit / Zählerstand auf einem analogen Videoband oder in einer digitalen Videodatei, in Echtzeit';
- ALTER TABLE tww_od.damage ADD COLUMN view_parameters  varchar(200) ;
+ ALTER TABLE tww_od.damage ADD COLUMN view_parameters text;
+ ALTER TABLE tww_od.damage ADD CONSTRAINT dg_view_parameters_length_max_200 CHECK(char_length(view_parameters)<=200);
 COMMENT ON COLUMN tww_od.damage.view_parameters IS 'Special view parameters for positioning within a film file for scanner or digital video technology / Spezielle Ansichtsparameter für die Positionierung innerhalb einer Filmdatei für Scanner- oder digitale Videotechnik / Paramètres de projection spéciaux pour le positionnement à l’intérieur d’un fichier de film pour la technique vidéo scanner ou numérique.';
  ALTER TABLE tww_od.damage ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
 COMMENT ON COLUMN tww_od.damage.last_modification IS 'Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE';
@@ -134,14 +142,14 @@ COMMENT ON COLUMN tww_od.damage_manhole.manhole_damage_begin IS 'Location on the
 COMMENT ON COLUMN tww_od.damage_manhole.manhole_damage_code IS 'yyy_Vorgegebener Wertebereich: Gültiger Code auf der Grundlage von SN EN 13508-2. Alle gültigen Codes sind in Kapitel 3 der Richtlinie "Schadencodierung" abschliessend aufgeführt. / Vorgegebener Wertebereich: Gültiger Code auf der Grundlage von SN EN 13508-2. Alle gültigen Codes sind in Kapitel 3 der Richtlinie "Schadencodierung" abschliessend aufgeführt. / Domaine de valeur prédéfini: Code valide sur la base de la SN EN 13508-2. Tous les codes valides sont mentionnés dans le chapitre 3 de la directive.';
  ALTER TABLE tww_od.damage_manhole ADD COLUMN manhole_damage_end  smallint ;
 COMMENT ON COLUMN tww_od.damage_manhole.manhole_damage_end IS 'Location on the circumference: end of the damage. Values and procedure are described in detail in paragraph 3.1.6. / Lage am Umfang: Ende des Schadens. Werte und Vorgehen sind unter Absatz 3.1.6 genau beschrieben. / Emplacement circonférentiel: Fin du dommage. Valeurs et procédure sont décrites en détail dans le paragraphe 3.1.6.';
- ALTER TABLE tww_od.damage_manhole ADD COLUMN manhole_quantification1  varchar(20) ;
+ ALTER TABLE tww_od.damage_manhole ADD COLUMN manhole_quantification1 text;
+ ALTER TABLE tww_od.damage_manhole ADD CONSTRAINT dm_manhole_quantification1_length_max_20 CHECK(char_length(manhole_quantification1)<=20);
 COMMENT ON COLUMN tww_od.damage_manhole.manhole_quantification1 IS 'Quantification 1 according to SN EN 13508. Permissible inputs are described in chapter 3.1.5. Implemented as text attribute. / Quantifizierung 1 gemäss SN EN 13508. Zulässige Eingaben sind in Kapitel 3.1.5 beschrieben. Als Textattribut umgesetzt. / Quantification 1 selon la SN EN 13508. Les entrées autorisées sont décrites dans le chapitre 3.1.5. Type texte.';
- ALTER TABLE tww_od.damage_manhole ADD COLUMN manhole_quantification2  varchar(20) ;
+ ALTER TABLE tww_od.damage_manhole ADD COLUMN manhole_quantification2 text;
+ ALTER TABLE tww_od.damage_manhole ADD CONSTRAINT dm_manhole_quantification2_length_max_20 CHECK(char_length(manhole_quantification2)<=20);
 COMMENT ON COLUMN tww_od.damage_manhole.manhole_quantification2 IS 'Quantification 2 according to SN EN 13508. Permissible inputs are described in chapter 3.1.5. Implemented as text attribute. / Quantifizierung 2 gemäss SN EN 13508. Zulässige Eingaben sind in Kapitel 3.1.5 beschrieben. Als Textattribut umgesetzt. / Quantification 2 selon la SN EN 13508. Les entrées autorisées sont décrites dans le chapitre 3.1.5. Type texte';
  ALTER TABLE tww_od.damage_manhole ADD COLUMN manhole_shaft_area  integer ;
 COMMENT ON COLUMN tww_od.damage_manhole.manhole_shaft_area IS 'yyy_Bereich in dem eine Feststellung auftritt. Die Werte sind unter 3.1.9 abschliessend beschrieben. / Bereich in dem eine Feststellung auftritt. Die Werte sind unter 3.1.9 abschliessend beschrieben. / Domaine où une observation est faite. Les valeurs sont décrites dans 3.1.9.';
-
-
 -------
 CREATE TRIGGER
 update_last_modified_damage_manhole
@@ -163,15 +171,19 @@ WITH (
 CREATE SEQUENCE tww_od.seq_data_media_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
  ALTER TABLE tww_od.data_media ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','data_media');
 COMMENT ON COLUMN tww_od.data_media.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
- ALTER TABLE tww_od.data_media ADD COLUMN identifier  varchar(60) ;
+ ALTER TABLE tww_od.data_media ADD COLUMN identifier text;
+ ALTER TABLE tww_od.data_media ADD CONSTRAINT vo_identifier_length_max_60 CHECK(char_length(identifier)<=60);
 COMMENT ON COLUMN tww_od.data_media.identifier IS 'yyy_Name des Datenträgers. Bei elektronischen Datenträgern normalerweise das Volume-Label. Bei einem Server der Servername. Bei analogen Videobändern die Bandnummer. / Name des Datenträgers. Bei elektronischen Datenträgern normalerweise das Volume-Label. Bei einem Server der Servername. Bei analogen Videobändern die Bandnummer. / Nom du support de données. Pour les supports de données électroniques, normalement le label volume. Pour un serveur, le nom du serveur. Pour des bandes vidéo analogiques, les numéros de bandes.';
  ALTER TABLE tww_od.data_media ADD COLUMN kind  integer ;
 COMMENT ON COLUMN tww_od.data_media.kind IS 'Describes the type of data media / Beschreibt die Art des Datenträgers / Décrit le genre de support de données';
- ALTER TABLE tww_od.data_media ADD COLUMN location  varchar(50) ;
+ ALTER TABLE tww_od.data_media ADD COLUMN location text;
+ ALTER TABLE tww_od.data_media ADD CONSTRAINT vo_location_length_max_50 CHECK(char_length(location)<=50);
 COMMENT ON COLUMN tww_od.data_media.location IS 'Location of the data medium / Ort, wo sich der Datenträger befindet / Emplacement du support de données';
- ALTER TABLE tww_od.data_media ADD COLUMN path TEXT;
-COMMENT ON COLUMN tww_od.data_media.path IS 'yyy_Zugriffspfad zum Datenträger. z.B. DVD-Laufwerk -> D: , Server -> //server/videos, Harddisk -> c:/videos . Kann auch eine URL sein. Bei einem analogen Videoband leer / Zugriffspfad zum Datenträger. z.B. DVD-Laufwerk -> D: , Server -> //server/videos, Harddisk -> c:/videos . Kann auch eine URL sein. Bei einem analogen Videoband leer / Chemin d’accès au support de données, p. ex. lecteur DVD -> D: , - serveur -> //server/videos , disque dur -> c:/videos , Peut aussi être une URL. Pour une bande vidéo analogique: vide';
- ALTER TABLE tww_od.data_media ADD COLUMN remark  varchar(80) ;
+ ALTER TABLE tww_od.data_media ADD COLUMN path text;
+ ALTER TABLE tww_od.data_media ADD CONSTRAINT vo_path_length_max_1023 CHECK(char_length(path)<=1023);
+COMMENT ON COLUMN tww_od.data_media.path IS 'Access path to the data carrier. e.g. DVD drive -> D: , server -> //server/videos, hard disk -> c:/videos . For web servers -> URI (URL). Empty for an analog video tape / Zugriffspfad zum Datenträger. z.B. DVD-Laufwerk -> D: , Server -> //server/videos, Harddisk -> c:/videos . Bei Webserver eine URI (URL). Bei einem analogen Videoband leer / Chemin d’accès au support de données, p. ex. lecteur DVD -> D: , - serveur -> //server/videos , disque dur -> c:/videos , serveur_web -> URI(URL). Pour une bande vidéo analogique: vide';
+ ALTER TABLE tww_od.data_media ADD COLUMN remark text;
+ ALTER TABLE tww_od.data_media ADD CONSTRAINT vo_remark_length_max_80 CHECK(char_length(remark)<=80);
 COMMENT ON COLUMN tww_od.data_media.remark IS 'General remarks / Bemerkungen zum Datenträger / Remarques concernant le support de données';
  ALTER TABLE tww_od.data_media ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
 COMMENT ON COLUMN tww_od.data_media.last_modification IS 'Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE';
@@ -202,15 +214,19 @@ CREATE SEQUENCE tww_od.seq_file_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START
 COMMENT ON COLUMN tww_od.file.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.file ADD COLUMN class  integer ;
 COMMENT ON COLUMN tww_od.file.class IS 'yyy_Gibt an, zu welcher Klasse des VSA-DSS-Datenmodells die Datei gehört. Grundsätzlich alle Klassen möglich. Im Rahmen der Kanalfernsehaufnahmen hauptsächlich Kanal, Normschachtschaden, Kanalschaden und Untersuchung. / Gibt an, zu welcher Klasse des VSA-DSS-Datenmodells die Datei gehört. Grundsätzlich alle Klassen möglich. Im Rahmen der Kanalfernsehaufnahmen hauptsächlich Kanal, Normschachtschaden, Kanalschaden und Untersuchung. / Indique à quelle classe du modèle de données de VSA-SDEE appartient le fichier. Toutes les classes sont possible. Surtout CANALISATION, DOMMAGE_CHAMBRE_STANDARD, DOMMAGE_CANALISATION, EXAMEN.';
- ALTER TABLE tww_od.file ADD COLUMN identifier  varchar(120) ;
+ ALTER TABLE tww_od.file ADD COLUMN identifier text;
+ ALTER TABLE tww_od.file ADD CONSTRAINT fi_identifier_length_max_120 CHECK(char_length(identifier)<=120);
 COMMENT ON COLUMN tww_od.file.identifier IS 'yyy_Name der Datei mit Dateiendung. Z.B video_01.mpg oder haltung_01.ipf / Name der Datei mit Dateiendung. Z.B video_01.mpg oder haltung_01.ipf / Nom du fichier avec terminaison du fichier. P. ex. video_01.mpg ou canalisation_01.ipf';
  ALTER TABLE tww_od.file ADD COLUMN kind  integer ;
 COMMENT ON COLUMN tww_od.file.kind IS 'yyy_Beschreibt die Art der Datei. Für analoge Videos auf Bändern ist der Typ "Video" einzusetzen. Die Bezeichnung wird dann gleich gesetzt wie die Bezeichnung des Videobandes. / Beschreibt die Art der Datei. Für analoge Videos auf Bändern ist der Typ "Video" einzusetzen. Die Bezeichnung wird dann gleich gesetzt wie die Bezeichnung des Videobandes. / Décrit le type de fichier. Pour les vidéos analo-giques sur bandes, le type « vidéo » doit être entré. La désignation sera ensuite la même que celle de la bande vidéo.';
- ALTER TABLE tww_od.file ADD COLUMN object  varchar(16) ;
+ ALTER TABLE tww_od.file ADD COLUMN object text;
+ ALTER TABLE tww_od.file ADD CONSTRAINT fi_object_length_max_16 CHECK(char_length(object)<=16);
 COMMENT ON COLUMN tww_od.file.object IS 'yyy_Objekt-ID (OID) des Datensatzes zu dem die Datei gehört / Objekt-ID (OID) des Datensatzes zu dem die Datei gehört / Identification de l’ensemble de données auquel le fichier appartient (OID)';
- ALTER TABLE tww_od.file ADD COLUMN path_relative  varchar(200) ;
+ ALTER TABLE tww_od.file ADD COLUMN path_relative text;
+ ALTER TABLE tww_od.file ADD CONSTRAINT fi_path_relative_length_max_200 CHECK(char_length(path_relative)<=200);
 COMMENT ON COLUMN tww_od.file.path_relative IS 'yyy_Zusätzlicher Relativer Pfad, wo die Datei auf dem Datenträger zu finden ist. Z.B. DVD_01. / Zusätzlicher Relativer Pfad, wo die Datei auf dem Datenträger zu finden ist. Z.B. DVD_01. / Accès relatif supplémentaire à l’emplacement du fichier sur le support de données. P. ex. DVD_01';
- ALTER TABLE tww_od.file ADD COLUMN remark  varchar(80) ;
+ ALTER TABLE tww_od.file ADD COLUMN remark text;
+ ALTER TABLE tww_od.file ADD CONSTRAINT fi_remark_length_max_80 CHECK(char_length(remark)<=80);
 COMMENT ON COLUMN tww_od.file.remark IS 'General remarks / Allgemeine Bemerkungen / Remarques générales';
  ALTER TABLE tww_od.file ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
 COMMENT ON COLUMN tww_od.file.last_modification IS 'Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE';
@@ -531,38 +547,30 @@ ALTER TABLE tww_vl.damage_channel_channel_damage_code ADD CONSTRAINT pkey_tww_vl
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4136,4136,'BDBA','BDBA','BDBA', 'BDBA', 'BDBA', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4137,4137,'BDBB','BDBB','BDBB', 'BDBB', 'BDBB', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4138,4138,'BDBC','BDBC','BDBC', 'BDBC', 'BDBC', '', '', '', '', '', 'true');
-
-
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4141,4141,'BDBF','BDBF','BDBF', 'BDBF', 'BDBF', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4142,4142,'BDBG','BDBG','BDBG', 'BDBG', 'BDBG', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4143,4143,'BDBH','BDBH','BDBH', 'BDBH', 'BDBH', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4144,4144,'BDBI','BDBI','BDBI', 'BDBI', 'BDBI', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4145,4145,'BDBJ','BDBJ','BDBJ', 'BDBJ', 'BDBJ', '', '', '', '', '', 'true');
-
-
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8872,8872,'BDBM','BDBM','BDBM', 'BDBM', 'BDBM', '', '', '', '', '', 'true');
-
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8873,8873,'BDCAA','BDCAA','BDCAA', 'BDCAA', 'BDCAA', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8874,8874,'BDCAB','BDCAB','BDCAB', 'BDCAB', 'BDCAB', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8875,8875,'BDCAC','BDCAC','BDCAC', 'BDCAC', 'BDCAC', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8876,8876,'BDCAD','BDCAD','BDCAD', 'BDCAD', 'BDCAD', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8877,8877,'BDCAE','BDCAE','BDCAE', 'BDCAE', 'BDCAE', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8878,8878,'BDCAZ','BDCAZ','BDCAZ', 'BDCAZ', 'BDCAZ', '', '', '', '', '', 'true');
-
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8879,8879,'BDCBA','BDCBA','BDCBA', 'BDCBA', 'BDCBA', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8880,8880,'BDCBB','BDCBB','BDCBB', 'BDCBB', 'BDCBB', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8881,8881,'BDCBC','BDCBC','BDCBC', 'BDCBC', 'BDCBC', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8882,8882,'BDCBD','BDCBD','BDCBD', 'BDCBD', 'BDCBD', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8883,8883,'BDCBE','BDCBE','BDCBE', 'BDCBE', 'BDCBE', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8884,8884,'BDCBZ','BDCBZ','BDCBZ', 'BDCBZ', 'BDCBZ', '', '', '', '', '', 'true');
-
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8885,8885,'BDCCA','BDCCA','BDCCA', 'BDCCA', 'BDCCA', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8886,8886,'BDCCB','BDCCB','BDCCB', 'BDCCB', 'BDCCB', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8887,8887,'BDCCC','BDCCC','BDCCC', 'BDCCC', 'BDCCC', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8888,8888,'BDCCD','BDCCD','BDCCD', 'BDCCD', 'BDCCD', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8889,8889,'BDCCE','BDCCE','BDCCE', 'BDCCE', 'BDCCE', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8890,8890,'BDCCZ','BDCCZ','BDCCZ', 'BDCCZ', 'BDCCZ', '', '', '', '', '', 'true');
-
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8891,8891,'BDCZA','BDCZA','BDCZA', 'BDCZA', 'BDCZA', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8892,8892,'BDCZB','BDCZB','BDCZB', 'BDCZB', 'BDCZB', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8893,8893,'BDCZC','BDCZC','BDCZC', 'BDCZC', 'BDCZC', '', '', '', '', '', 'true');
@@ -570,16 +578,12 @@ ALTER TABLE tww_vl.damage_channel_channel_damage_code ADD CONSTRAINT pkey_tww_vl
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8895,8895,'BDCZE','BDCZE','BDCZE', 'BDCZE', 'BDCZE', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8896,8896,'BDCZZ','BDCZZ','BDCZZ', 'BDCZZ', 'BDCZZ', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4084,4084,'BDDA','BDDA','BDDA', 'BDDA', 'BDDA', '', '', '', '', '', 'true');
-
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8897,8897,'BDDC','BDDC','BDDC', 'BDDC', 'BDDC', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8898,8898,'BDDD','BDDD','BDDD', 'BDDD', 'BDDD', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8899,8899,'BDDE','BDDE','BDDE', 'BDDE', 'BDDE', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4086,4086,'BDEAA','BDEAA','BDEAA', 'BDEAA', 'BDEAA', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4087,4087,'BDEAB','BDEAB','BDEAB', 'BDEAB', 'BDEAB', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4088,4088,'BDEAC','BDEAC','BDEAC', 'BDEAC', 'BDEAC', '', '', '', '', '', 'true');
-
-
-
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8900,8900,'BDECA','BDECA','BDECA', 'BDECA', 'BDECA', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8901,8901,'BDECB','BDECB','BDECB', 'BDECB', 'BDECB', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8902,8902,'BDECC','BDECC','BDECC', 'BDECC', 'BDECC', '', '', '', '', '', 'true');
@@ -853,15 +857,12 @@ ALTER TABLE tww_vl.damage_manhole_manhole_damage_code ADD CONSTRAINT pkey_tww_vl
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4358,4358,'DCGCA','DCGCA','DCGCA', 'DCGCA', 'DCGCA', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4359,4359,'DCGCB','DCGCB','DCGCB', 'DCGCB', 'DCGCB', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4360,4360,'DCGCC','DCGCC','DCGCC', 'DCGCC', 'DCGCC', '', '', '', '', '', 'true');
-
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4364,4364,'DCGXAA','DCGXAA','DCGXAA', 'DCGXAA', 'DCGXAA', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4365,4365,'DCGXAB','DCGXAB','DCGXAB', 'DCGXAB', 'DCGXAB', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4366,4366,'DCGXAC','DCGXAC','DCGXAC', 'DCGXAC', 'DCGXAC', '', '', '', '', '', 'true');
-
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4367,4367,'DCGXBA','DCGXBA','DCGXBA', 'DCGXBA', 'DCGXBA', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4368,4368,'DCGXBB','DCGXBB','DCGXBB', 'DCGXBB', 'DCGXBB', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4369,4369,'DCGXBC','DCGXBC','DCGXBC', 'DCGXBC', 'DCGXBC', '', '', '', '', '', 'true');
-
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4370,4370,'DCGXCA','DCGXCA','DCGXCA', 'DCGXCA', 'DCGXCA', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4371,4371,'DCGXCB','DCGXCB','DCGXCB', 'DCGXCB', 'DCGXCB', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4372,4372,'DCGXCC','DCGXCC','DCGXCC', 'DCGXCC', 'DCGXCC', '', '', '', '', '', 'true');
@@ -872,11 +873,8 @@ ALTER TABLE tww_vl.damage_manhole_manhole_damage_code ADD CONSTRAINT pkey_tww_vl
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4377,4377,'DCGZB','DCGZB','DCGZB', 'DCGZB', 'DCGZB', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4378,4378,'DCGZC','DCGZC','DCGZC', 'DCGZC', 'DCGZC', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4379,4379,'DCHA','DCHA','DCHA', 'DCHA', 'DCHA', '', '', '', '', '', 'true');
-
-
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4382,4382,'DCHB','DCHB','DCHB', 'DCHB', 'DCHB', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8943,8943,'DCHC','DCHC','DCHC', 'DCHC', 'DCHC', '', '', '', '', '', 'true');
-
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8944,8944,'DCIAA','DCIAA','DCIAA', 'DCIAA', 'DCIAA', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8945,8945,'DCIAB','DCIAB','DCIAB', 'DCIAB', 'DCIAB', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8946,8946,'DCIAC','DCIAC','DCIAC', 'DCIAC', 'DCIAC', '', '', '', '', '', 'true');
@@ -896,22 +894,17 @@ ALTER TABLE tww_vl.damage_manhole_manhole_damage_code ADD CONSTRAINT pkey_tww_vl
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4393,4393,'DCMC','DCMC','DCMC', 'DCMC', 'DCMC', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4394,4394,'DDA','DDA','DDA', 'DDA', 'DDA', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4395,4395,'DDB','DDB','DDB', 'DDB', 'DDB', '', '', '', '', '', 'true');
-
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8951,8951,'DDCAB','DDCAB','DDCAB', 'DDCAB', 'DDCAB', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8952,8952,'DDCAZ','DDCAZ','DDCAZ', 'DDCAZ', 'DDCAZ', '', '', '', '', '', 'true');
-
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8953,8953,'DDCBA','DDCBA','DDCBA', 'DDCBA', 'DDCBA', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8954,8954,'DDCBB','DDCBB','DDCBB', 'DDCBB', 'DDCBB', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8955,8955,'DDCBZ','DDCBZ','DDCBZ', 'DDCBZ', 'DDCBZ', '', '', '', '', '', 'true');
-
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8956,8956,'DDCCA','DDCCA','DDCCA', 'DDCCA', 'DDCCA', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8957,8957,'DDCCB','DDCCB','DDCCB', 'DDCCB', 'DDCCB', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8958,8958,'DDCCZ','DDCCZ','DDCCZ', 'DDCCZ', 'DDCCZ', '', '', '', '', '', 'true');
-
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8959,8959,'DDCDA','DDCDA','DDCDA', 'DDCDA', 'DDCDA', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8960,8960,'DDCDB','DDCDB','DDCDB', 'DDCDB', 'DDCDB', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8961,8961,'DDCDZ','DDCDZ','DDCDZ', 'DDCDZ', 'DDCDZ', '', '', '', '', '', 'true');
-
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8962,8962,'DDCZA','DDCZA','DDCZA', 'DDCZA', 'DDCZA', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8963,8963,'DDCZB','DDCZB','DDCZB', 'DDCZB', 'DDCZB', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8964,8964,'DDCZZ','DDCZZ','DDCZZ', 'DDCZZ', 'DDCZZ', '', '', '', '', '', 'true');
@@ -919,9 +912,6 @@ ALTER TABLE tww_vl.damage_manhole_manhole_damage_code ADD CONSTRAINT pkey_tww_vl
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4402,4402,'DDEAA','DDEAA','DDEAA', 'DDEAA', 'DDEAA', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4403,4403,'DDEAB','DDEAB','DDEAB', 'DDEAB', 'DDEAB', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4404,4404,'DDEAC','DDEAC','DDEAC', 'DDEAC', 'DDEAC', '', '', '', '', '', 'true');
-
-
-
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8965,8965,'DDECA','DDECA','DDECA', 'DDECA', 'DDECA', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8966,8966,'DDECB','DDECB','DDECB', 'DDECB', 'DDECB', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8967,8967,'DDECC','DDECC','DDECC', 'DDECC', 'DDECC', '', '', '', '', '', 'true');

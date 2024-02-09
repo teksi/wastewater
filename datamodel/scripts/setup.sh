@@ -7,10 +7,12 @@
 
 set -e
 
-PGSERVICE=${PGSERVICE:-pg_teksi_wastewater}
+PGSERVICE=${PGSERVICE:-pg_tww}
 SRID=2056
 
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/..
+
+cd $DIR
 
 psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f ${DIR}/changelogs/0001/01_schema.sql
 psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f ${DIR}/changelogs/0001/02_sys.sql

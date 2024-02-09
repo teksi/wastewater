@@ -1,0 +1,66 @@
+name: 🪲 Plugin | Tests
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - datamodel/**
+      - plugin/**
+      - '.github/workflows/plugin-test.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - datamodel/**
+      - plugin/**
+      - '.github/workflows/plugin-test.yml'
+  workflow_dispatch:
+
+
+jobs:
+  plugin-tests:
+    name: Run unit tests on plugin
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        qgis_version: [3.28-jammy, latest]
+    env:
+      QGIS_TEST_VERSION: ${{ matrix.qgis_version }}
+      COMPOSE_PROFILES: qgis
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Package PyPI Packages
+        run: sudo ./plugin/scripts/package-pip-packages.sh
+
+      - name: Download Interlis libs
+        run: sudo ./plugin/scripts/download-interlis-libs.sh
+
+      - name: Docker build
+        run: docker compose up -d --build
+
+      - name: Test on QGIS
+        run: docker-compose run qgis /usr/src/plugin/.docker/run-docker-tests.sh
+
+#      - name: Test command line import orgs
+#        run: docker-compose run qgis xvfb-run /usr/src/plugin/tww_cmd.py interlis_import --xtf_file /usr/src/plugin/teksi_wastewater/tests/data/minimal-dataset-organisation-arbon-only.xtf --pgservice pg_tww
+
+#      - name: Test command line import minimal sia405
+#        run: docker-compose run qgis xvfb-run /usr/src/plugin/tww_cmd.py interlis_import --xtf_file /usr/src/plugin/teksi_wastewater/tests/data/minimal-dataset-SIA405-ABWASSER.xtf --pgservice pg_tww
+
+#      - name: Test command line minimal export
+#        run: docker-compose run qgis xvfb-run /usr/src/plugin/tww_cmd.py interlis_export --xtf_file "output.xtf" --pgservice pg_tww
+
+      - name: docker logs
+        #if: failure()
+        run: docker compose logs db

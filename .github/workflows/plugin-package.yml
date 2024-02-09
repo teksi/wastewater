@@ -1,0 +1,64 @@
+name: 🔌 Plugin | Package and release
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+    paths:
+      - plugin/**
+      - '.github/workflows/datamodel-create-dumps.yml'
+  workflow_dispatch:
+
+
+jobs:
+  plugin-package:
+    name: Packages and releases plugin
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install Qt lrelease
+        run: |
+          sudo apt-get update
+          sudo apt-get install qtbase5-dev qttools5-dev-tools
+
+      - name: Install qgis-plugin-ci
+        run: pip install qgis-plugin-ci>=2.8.6
+
+      - name: 🌍 Push translations
+        if: ${{ github.event_name == 'push' }}
+        run: qgis-plugin-ci push-translation ${{ secrets.TX_TOKEN }}
+
+      - name: Package PyPI Packages
+        run: ./plugin/scripts/package-pip-packages.sh
+
+      - name: Download Interlis libs
+        run: ./plugin/scripts/download-interlis-libs.sh
+
+      - name: Package
+        run: |
+          VERSION=0.0.0
+          qgis-plugin-ci -v package ${VERSION} \
+            --allow-uncommitted-changes \
+            --asset-path plugin/teksi_wastewater/libs \
+            --asset-path plugin/teksi_wastewater/interlis/bin \
+            --transifex-token "${{ secrets.TX_TOKEN }}"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: teksi_wastewater_plugin_dev
+          path: plugin/teksi_wastewater.0.0.0.zip
+          if-no-files-found: error
