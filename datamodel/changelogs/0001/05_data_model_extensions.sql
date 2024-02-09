@@ -61,7 +61,7 @@ WHERE left(value_en, 4)='pwwf';
 UPDATE tww_vl.channel_function_hierarchic
 SET _is_primary=false
 WHERE left(value_en, 4)<>'pwwf';
-COMMENT ON COLUMN tww_vl.channel_function_hierarchic.is_primary IS 'True when part of the primary network. Facilitates exporting primary elements only.
+COMMENT ON COLUMN tww_vl.channel_function_hierarchic._is_primary IS 'True when part of the primary network. Facilitates exporting primary elements only.
 Not part of the VSA-DSS data model, added solely for TEKSI Wastewater & GEP';
 
 -- table wastewater_node is extended to hold additional attributes necessary for symbology reasons
