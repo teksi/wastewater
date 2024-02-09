@@ -1,5 +1,5 @@
 #!/bin/bash
-#!/usr/bin/env python 
+#!/usr/bin/env python
 
 # This script will create a clean datastructure for the
 # TEKSI Wastewater
