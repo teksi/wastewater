@@ -1,14 +1,17 @@
 INTERLIS Data exchange
 ======================
 
-This represents a guide on how to import/export data between TWW and INTERLIS 2 Transfer Format (xtf).
+This represents a guide on how to import/export data between TWW and INTERLIS 2 Transfer Format (XTF).
 
 
 General
 ^^^^^^^^^^^^^
 
 The TWW plugin includes an experimental interlis import/export feature.
-It is currently capable of importing and exporting to the VSA-KEK 'VSA_KEK_2019_LV95', which is an extension to the SIA405 wastewater model `SIA405_ABWASSER_2015_LV95` (for more details see `config <https://github.com/TWW/twwqwat2ili/blob/master/twwqwat2ili/config.py>`_).
+It is currently capable of importing and exporting the following models::
+* SIA405_ABWASSER_2020_1_LV95
+* DSS_2020_1_LV95
+* VSA_KEK_2020_1_LV95
 
 Note that currently, exports are possible in German only. Translated exports are on the roadmap, let us know if you are interested in this feature.
 
@@ -50,11 +53,6 @@ where ``c:\somewhere\other\than\the\default`` is the path to your current pip pa
 The same `--target` flag can be added to install `sqlalchemy` and `geoalchemy2` in another location.
 
 
-Modelbaker
------------
-The TWW plugin will propose to install the Modelbaker plugin automatically. If that did not work, install the QGIS plugin `Modelbaker` manually from the QGIS plugin manager (version 6.4 or newer but older than 7.1).
-
-
 TWW Version
 -------------
 The export only supports up-to-date TWW datamodel (1.5.6 at the time of writing). Ensure your datamodel is fully updated before trying to import/export.
@@ -80,6 +78,8 @@ Export
 To export your TWW data, click on the `export` button. The following dialog will appear.
 
 .. figure:: images/export_dialog.png
+
+At first, select the export model.
 
 If you have an active selection in the nodes and/or reaches layer, you can choose to restrict the export to that selection. This is especially useful in combination with the upstream/downstream selection tools.
 
@@ -123,7 +123,113 @@ Once you're happy with the import options, confirm the dialog to persist the cha
 Usage (command line)
 ^^^^^^^^^^^^^^^^^^^^^^
 
-For advanced usage, the import/export tool can also be used as a command line tool. Please refer to https://github.com/TWW/twwqwat2ili/ for documentation about this.
+For advanced usage, the import/export tool can also be used as a command line tool.
+
+Dependencies
+--------------
+
+The QGIS python classes must be available in the python interpreter.
+
+* On windows you can use the OSGeo4W environment
+* On linux you can extend the PYTHONPATH pointing to you QGIS installation, for example: `export PYTHONPATH="$PYTHONPATH:/usr/share/qgis/python"`
+
+Import
+--------
+
+Import example
+
+.. code-block:: shell-session
+
+   $ python3 plugin/tww_cmd.py interlis_import --xtf_file plugin/teksi_wastewater/tests/data/minimal-dataset-SIA405-ABWASSER.xtf --pgservice pg_tww
+
+Full usage
+
+.. code-block:: shell-session
+
+   $ python3 plugin/tww_cmd.py interlis_export --help
+
+   usage: tww_cmd.py interlis_export [-h] --xtf_file XTF_FILE [--selection SELECTION] [--export_model {SIA405_ABWASSER_2020_1_LV95,DSS_2020_1_LV95,VSA_KEK_2020_1_LV95}] [--logs_next_to_file]
+                                                  [--label_scale_pipeline_registry_1_1000] [--label_scale_network_plan_1_500] [--label_scale_overviewmap_1_10000] [--label_scale_overviewmap_1_5000]
+                                                  [--label_scale_overviewmap_1_2000] [--selected_ids SELECTED_IDS] [--pgservice PGSERVICE] [--pghost PGHOST] [--pgport PGPORT] [--pgdatabase PGDATABASE]
+                                                  [--pguser PGUSER] [--pgpass PGPASS]
+
+   options:
+     -h, --help            show this help message and exit
+     --xtf_file XTF_FILE   XTF outup file
+     --selection SELECTION
+                           if provided, limits the export to networkelements that are provided in the selection (comma separated list of ids)
+     --export_model {SIA405_ABWASSER_2020_1_LV95,DSS_2020_1_LV95,VSA_KEK_2020_1_LV95}
+                           Model to export (default: DSS_2020_1_LV95)
+     --logs_next_to_file   Put log files next to XTF output file
+     --label_scale_pipeline_registry_1_1000
+                           Export labels in scale 1:1'000, can be combined with other scales (Leitungskataster/Cadastre des conduites souterraines)
+     --label_scale_network_plan_1_500
+                           Export labels in scale 1:500, can be combined with other scales (Werkplan/Plan de reseau)
+     --label_scale_overviewmap_1_10000
+                           Export labels in scale 1:10'000, can be combined with other scales (Uebersichtsplan/Plan d'ensemble)
+     --label_scale_overviewmap_1_5000
+                           Export labels in scale 1:5'000, can be combined with other scales (Uebersichtsplan/Plan d'ensemble)
+     --label_scale_overviewmap_1_2000
+                           Export labels in scale 1:2'000, can be combined with other scales (Uebersichtsplan/Plan d'ensemble)
+     --selected_ids SELECTED_IDS
+                           If provided, limits the export to networkelements that are provided in the selection (comma separated list of ids)
+     --pgservice PGSERVICE
+                           Postgres service name
+     --pghost PGHOST       Postgres host
+     --pgport PGPORT       Postgres port
+     --pgdatabase PGDATABASE
+                           Postgres database
+     --pguser PGUSER       Postgres user
+     --pgpass PGPASS       Postgres password
+
+Export
+--------
+
+Export example
+
+.. code-block:: shell-session
+
+   python3 plugin/tww_cmd.py interlis_export --xtf_file "output.xtf" --pgservice pg_tww
+
+Full usage
+
+.. code-block:: shell-session
+
+   $ python3 plugin/tww_cmd.py interlis_export --help
+
+   usage: tww_cmd.py interlis_export [-h] --xtf_file XTF_FILE [--selection SELECTION] [--export_model {SIA405_ABWASSER_2020_1_LV95,DSS_2020_1_LV95,VSA_KEK_2020_1_LV95}] [--logs_next_to_file]
+                                                  [--label_scale_pipeline_registry_1_1000] [--label_scale_network_plan_1_500] [--label_scale_overviewmap_1_10000] [--label_scale_overviewmap_1_5000]
+                                                  [--label_scale_overviewmap_1_2000] [--selected_ids SELECTED_IDS] [--pgservice PGSERVICE] [--pghost PGHOST] [--pgport PGPORT] [--pgdatabase PGDATABASE]
+                                                  [--pguser PGUSER] [--pgpass PGPASS]
+
+   options:
+     -h, --help            show this help message and exit
+     --xtf_file XTF_FILE   XTF outup file
+     --selection SELECTION
+                           if provided, limits the export to networkelements that are provided in the selection (comma separated list of ids)
+     --export_model {SIA405_ABWASSER_2020_1_LV95,DSS_2020_1_LV95,VSA_KEK_2020_1_LV95}
+                           Model to export (default: DSS_2020_1_LV95)
+     --logs_next_to_file   Put log files next to XTF output file
+     --label_scale_pipeline_registry_1_1000
+                           Export labels in scale 1:1'000, can be combined with other scales (Leitungskataster/Cadastre des conduites souterraines)
+     --label_scale_network_plan_1_500
+                           Export labels in scale 1:500, can be combined with other scales (Werkplan/Plan de reseau)
+     --label_scale_overviewmap_1_10000
+                           Export labels in scale 1:10'000, can be combined with other scales (Uebersichtsplan/Plan d'ensemble)
+     --label_scale_overviewmap_1_5000
+                           Export labels in scale 1:5'000, can be combined with other scales (Uebersichtsplan/Plan d'ensemble)
+     --label_scale_overviewmap_1_2000
+                           Export labels in scale 1:2'000, can be combined with other scales (Uebersichtsplan/Plan d'ensemble)
+     --selected_ids SELECTED_IDS
+                           If provided, limits the export to networkelements that are provided in the selection (comma separated list of ids)
+     --pgservice PGSERVICE
+                           Postgres service name
+     --pghost PGHOST       Postgres host
+     --pgport PGPORT       Postgres port
+     --pgdatabase PGDATABASE
+                           Postgres database
+     --pguser PGUSER       Postgres user
+     --pgpass PGPASS       Postgres password
 
 
 Quality control

@@ -22,7 +22,7 @@ def run_sql(file_path: str, pg_service: str, variables: dict = {}):
 
 def create_views(
     srid: int = 2056,
-    pg_service: str = "pg_teksi_wastewater",
+    pg_service: str = "pg_tww",
     tww_reach_extra: str = None,
     tww_wastewater_structure_extra: str = None,
 ):
