@@ -23,4 +23,4 @@
 
  -- CREATE TABLE tww_sys.dictionary_od_values already exists
 
- INSERT INTO tww_sys.dictionary_od_table (id, tablename, name_en, shortcut_en, name_de, shortcut_de, name_fr, shortcut_fr, name_it, shortcut_it, name_ro, shortcut_ro) VALUES (30,'_aquifier','aquifier','AQ','Grundwasserleiter','GL','Aquifère','AQ','NULL','NULL','NULL','NULL');
+
