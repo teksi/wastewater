@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>4.6. Datenmodell-Werkzeug &mdash; TWW dev Dokumentation</title>
+  <title>4.6. Data-model tool &mdash; TWW dev Dokumentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
 
@@ -22,8 +22,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Stichwortverzeichnis" href="../../genindex.html" />
     <link rel="search" title="Suche" href="../../search.html" />
-    <link rel="next" title="4.7. Manuelles Update des Datenmodells" href="../db-update-pum/index.html" />
-    <link rel="prev" title="4.5. Anpassung des Datenmodells" href="../db-customization/index.html" /> 
+    <link rel="next" title="4.7. Manual update of the datamodel" href="../db-update-pum/index.html" />
+    <link rel="prev" title="4.5. Customization of the data model" href="../db-customization/index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -52,27 +52,27 @@
 <li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">1. TEKSI wastewater module (TWW)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">2. TWW Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user-guide/index.html">3. TWW User Guide</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">4. Administratorhandbuch</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">4. Admin Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../datamodel.html">4.1. Datamodel</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../pgadmin/index.html">4.2. pgAdmin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../security/index.html">4.3. User Roles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../interlis-io/index.html">4.4. INTERLIS Datenaustausch</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../db-customization/index.html">4.5. Anpassung des Datenmodells</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">4.6. Datenmodell-Werkzeug</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#setup">4.6.1. Einstellungen</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#usage">4.6.2. Anwendung</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#main-dialog">4.6.2.1. Hauptdialog</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#troubleshooting">4.6.2.2. Fehlerbehebung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interlis-io/index.html">4.4. INTERLIS Data exchange</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../db-customization/index.html">4.5. Customization of the data model</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.6. Data-model tool</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#setup">4.6.1. Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#usage">4.6.2. Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#main-dialog">4.6.2.1. Main dialog</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#troubleshooting">4.6.2.2. Troubleshooting</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../db-update-pum/index.html">4.7. Manuelles Update des Datenmodells</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../db-update-pum/index.html">4.7. Manual update of the datamodel</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../vm/index.html">5. Demo virtuelle Maschine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vm/index.html">5. Demo Virtual Machine</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tww_swmm/index.html">6. SWMM Data Exchange</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">7. Übersetzungen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">7. Translation</a></li>
 </ul>
 
         </div>
@@ -89,8 +89,8 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">4. </span>Administratorhandbuch</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">4.6. </span>Datenmodell-Werkzeug</li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">4. </span>Admin Guide</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">4.6. </span>Data-model tool</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/admin-guide/datamodel-tool/index.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
       </li>
@@ -101,26 +101,28 @@
            <div itemprop="articleBody">
              
   <section id="data-model-tool">
-<h1><span class="section-number">4.6. </span>Datenmodell-Werkzeug<a class="headerlink" href="#data-model-tool" title="Link to this heading"></a></h1>
+<h1><span class="section-number">4.6. </span>Data-model tool<a class="headerlink" href="#data-model-tool" title="Link to this heading"></a></h1>
 <p>The plugin contains a data-model tool capable of initializing and upgrading a TWW database.</p>
-<p>Es unterstützt Systemadministratoren und Power-User und sollte nicht von Anwendern verwendet werden, da es bei unsachgemässer Anwendung zu Datenverlusten führen kann.</p>
-<p>Für anspruchsvolle Fälle ist es auch möglich, die Datenbank manuell zu aktualisieren &lt;../db-update-pum/index.html&gt;“.</p>
+<p>It is aimed at system administrators and power users, and should not be used by end users, as it
+could lead to data loss if not used properly.</p>
+<p>For advanced cases, it is also possible to <a class="reference external" href="../db-update-pum/index.html">upgrade your database manually</a></p>
 <section id="setup">
-<h2><span class="section-number">4.6.1. </span>Einstellungen<a class="headerlink" href="#setup" title="Link to this heading"></a></h2>
-<p>Das Datenmodell-Tool ist standardmässig ausgeblendet. Um es zu aktivieren, müssen Sie zunächst den <code class="docutils literal notranslate"><span class="pre">Admin-Modus</span></code> in den Plugin-Einstellungen aktivieren:</p>
+<h2><span class="section-number">4.6.1. </span>Setup<a class="headerlink" href="#setup" title="Link to this heading"></a></h2>
+<p>The data-model tool is hidden by default. To make it visible, you must first enable <code class="docutils literal notranslate"><span class="pre">Admin</span> <span class="pre">mode</span></code>
+in the plugin settings :</p>
 <ul class="simple">
 <li><p>Go to <code class="docutils literal notranslate"><span class="pre">Plugin</span> <span class="pre">&gt;</span> <span class="pre">TWW</span> <span class="pre">&gt;</span> <span class="pre">Settings</span></code></p></li>
-<li><p>Wechseln Sie auf die Registerkarte <code class="docutils literal notranslate"><span class="pre">Entwickleroptionen</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Admin-Modus</span></code> wählen</p></li>
-<li><p>Starten Sie QGIS neu</p></li>
+<li><p>Switch to the <code class="docutils literal notranslate"><span class="pre">Developer</span> <span class="pre">options</span></code> tab</p></li>
+<li><p>Check <code class="docutils literal notranslate"><span class="pre">Admin</span> <span class="pre">mode</span></code></p></li>
+<li><p>Restart QGIS</p></li>
 </ul>
 <p>The data-model tool should now appear under <code class="docutils literal notranslate"><span class="pre">Plugin</span> <span class="pre">&gt;</span> <span class="pre">TWW</span> <span class="pre">&gt;</span> <span class="pre">Datamodel</span> <span class="pre">tool</span></code></p>
 </section>
 <section id="usage">
-<h2><span class="section-number">4.6.2. </span>Anwendung<a class="headerlink" href="#usage" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.6.2. </span>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h2>
 <section id="main-dialog">
-<h3><span class="section-number">4.6.2.1. </span>Hauptdialog<a class="headerlink" href="#main-dialog" title="Link to this heading"></a></h3>
-<p>Der Hauptdialog sieht so aus.</p>
+<h3><span class="section-number">4.6.2.1. </span>Main dialog<a class="headerlink" href="#main-dialog" title="Link to this heading"></a></h3>
+<p>The main dialog looks like this.</p>
 <figure class="align-default">
 <img alt="../../_images/datamodel-tool.png" src="../../_images/datamodel-tool.png" />
 </figure>
@@ -132,46 +134,46 @@
 </ul>
 </div></blockquote>
 </li>
-<li><p><strong>Abhängigkeiten</strong>:</p>
+<li><p><strong>Dependencies</strong>:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><strong>Python-Anforderungen</strong>: Wenn die Python-Anforderungen fehlen, klicken Sie auf die Schaltfläche <strong>Installieren</strong>, um zu versuchen, sie automatisch zu installieren. Beachten Sie, dass dies nicht auf allen Systemen funktionieren wird. Wenn dies fehlschlägt, können Sie versuchen, QGIS mit Administratorrechten zu starten, oder <a class="reference external" href="../db-update-pum/index.html#Anforderungen">die Abhängigkeiten manuell installieren</a>.</p></li>
+<li><p><strong>Python requirements</strong>: If there are missing python requirements, click on the <strong>install button</strong> to try to install them automatically. Note that this will not work on all systems. If it fails, you can try to start QGIS with administrator privileges, or <a class="reference external" href="../db-update-pum/index.html#requirements">install the dependencies manually</a>.</p></li>
 </ul>
 </div></blockquote>
 </li>
-<li><p><strong>Postgres-Dienstkonfigurationen</strong>:</p>
+<li><p><strong>Postgres service configurations</strong>:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><strong>Dateispeicherort</strong>: zeigt den Speicherort der verwendeten Datei <code class="docutils literal notranslate"><span class="pre">pg_service.conf</span></code> an</p></li>
+<li><p><strong>File location</strong>: shows the location of the <code class="docutils literal notranslate"><span class="pre">pg_service.conf</span></code> file being used</p></li>
 <li><p><strong>PG Config</strong>: allows to select the postgres service configuration of the database on which you want to operate. <strong>WARNING</strong>: by default, the first entry is selected, which may not match the database used by your currently open TWW project.</p></li>
-<li><p><strong>``+`` Schaltfläche</strong>: öffnet ein Dienstprogramm, um Einträge aus Ihrer <code class="docutils literal notranslate"><span class="pre">pg_service.conf</span></code> Datei direkt hinzuzufügen oder zu bearbeiten.</p></li>
+<li><p><strong>``+`` button</strong>: opens an utility to add or edit entries from your <code class="docutils literal notranslate"><span class="pre">pg_service.conf</span></code> file directly.</p></li>
 </ul>
-<p>Siehe auch <a class="reference external" href="../../installation-guide/workstation.html">Arbeitsplatzrechner Einrichten</a> um mehr über die  <code class="docutils literal notranslate"><span class="pre">pg_service.conf</span></code> Datei zu erfahren.</p>
+<p>Refer to the <a class="reference external" href="../../installation-guide/workstation.html">installation guide</a> to know more about the <code class="docutils literal notranslate"><span class="pre">pg_service.conf</span></code> file.</p>
 </div></blockquote>
 </li>
-<li><p><strong>Datenmodel</strong></p>
+<li><p><strong>Datamodel</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><p><strong>Aktuelle Version</strong>: zeigt die Datenmodell-Version der ausgewählten Datenbank an</p></li>
-<li><p><strong>SRID</strong>: ermöglicht die Anpassung der SRID (wird nur bei der Initialisierung der Datenbank unterstützt)</p></li>
-<li><p><strong>Aktion</strong>: ermöglicht die Initialisierung oder Aktualisierung eines Datenmodells auf eine bestimmte Version. WARNUNG: Dadurch wird das Datenmodell in der angegebenen Datenbank geändert. Stellen Sie sicher, dass Sie eine vollständige und funktionierende Sicherung Ihrer Datenbank haben, bevor Sie ein Upgrade durchführen.</p></li>
+<li><p><strong>Current version</strong>: shows the current version of the datamodel found in the selected database</p></li>
+<li><p><strong>SRID</strong>: allows to customize the SRID (this is only supported on database initialization)</p></li>
+<li><p><strong>Action</strong>: allows to initialize or upgrade a datamodel to a specific version. WARNING: this will alter the datamodel in the specified database. Make sure you have a full and working backup of your database before performing an upgrade.</p></li>
 </ul>
 </div></blockquote>
 </li>
-<li><p><strong>QGIS Projekt</strong></p>
+<li><p><strong>QGIS project</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><p><strong>Laden</strong>: öffnet das QGIS-Vorlagenprojekt, das bereits für die oben ausgewählte Datenbank konfiguriert ist</p></li>
+<li><p><strong>Load</strong>: opens the template QGIS project, already configured to work on the database selected above</p></li>
 </ul>
 </div></blockquote>
 </li>
 </ul>
 </section>
 <section id="troubleshooting">
-<h3><span class="section-number">4.6.2.2. </span>Fehlerbehebung<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.6.2.2. </span>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h3>
 <p>In case you encounter issues or errors when using the datamodel tool, make sure to look at the
 TWW tab in the logs, as it may contain useful information (including errors returned by underlying tools).</p>
-<p>Stellen Sie sicher, dass Sie diese Informationen angeben, wenn Sie einen Fehlerbericht einreichen oder um Unterstützung bei einem Dienstleister bitten.</p>
+<p>Make sure to include this information if submitting a bug report or asking for support.</p>
 </section>
 </section>
 </section>
@@ -180,8 +182,8 @@ TWW tab in the logs, as it may contain useful information (including errors retu
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../db-customization/index.html" class="btn btn-neutral float-left" title="4.5. Anpassung des Datenmodells" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
-        <a href="../db-update-pum/index.html" class="btn btn-neutral float-right" title="4.7. Manuelles Update des Datenmodells" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../db-customization/index.html" class="btn btn-neutral float-left" title="4.5. Customization of the data model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
+        <a href="../db-update-pum/index.html" class="btn btn-neutral float-right" title="4.7. Manual update of the datamodel" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

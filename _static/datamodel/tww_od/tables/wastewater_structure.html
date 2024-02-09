@@ -178,16 +178,6 @@
                                                 <td class="constraint detail"><span title='Cascade on delete:&#10;Deletion of parent deletes child'>C</span></td>
                                             </tr>
                                             <tr>
-                                                <td title="txt_symbol.fk_wastewater_structure references wastewater_structure.obj_id via rel_symbol_wastewater_structure"><a href='txt_symbol.html'>txt_symbol</a><span class='relatedKey'>.fk_wastewater_structure</span></td>
-                                                <td class="constraint detail">rel_symbol_wastewater_structure</td>
-                                                <td class="constraint detail"><span title='Cascade on delete:&#10;Deletion of parent deletes child'>C</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td title="txt_text.fk_wastewater_structure references wastewater_structure.obj_id via rel_text_wastewater_structure"><a href='txt_text.html'>txt_text</a><span class='relatedKey'>.fk_wastewater_structure</span></td>
-                                                <td class="constraint detail">rel_text_wastewater_structure</td>
-                                                <td class="constraint detail"><span title='Cascade on delete:&#10;Deletion of parent deletes child'>C</span></td>
-                                            </tr>
-                                            <tr>
                                                 <td title="wastewater_networkelement.fk_wastewater_structure references wastewater_structure.obj_id via rel_wastewater_networkelement_wastewater_structure"><a href='wastewater_networkelement.html'>wastewater_networkelement</a><span class='relatedKey'>.fk_wastewater_structure</span></td>
                                                 <td class="constraint detail">rel_wastewater_networkelement_wastewater_structure</td>
                                                 <td class="constraint detail"><span title='Cascade on delete:&#10;Deletion of parent deletes child'>C</span></td>
@@ -973,20 +963,20 @@
                                     <td>((char_length(identifier) &lt;&#61; 41))</td>
                                 </tr>
                                 <tr>
-                                    <td>ws_location_name_length_max_50</td>
-                                    <td>((char_length(location_name) &lt;&#61; 50))</td>
-                                </tr>
-                                <tr>
-                                    <td>ws_contract_section_length_max_50</td>
-                                    <td>((char_length(contract_section) &lt;&#61; 50))</td>
+                                    <td>ws_remark_length_max_80</td>
+                                    <td>((char_length(remark) &lt;&#61; 80))</td>
                                 </tr>
                                 <tr>
                                     <td>ws_records_length_max_255</td>
                                     <td>((char_length(records) &lt;&#61; 255))</td>
                                 </tr>
                                 <tr>
-                                    <td>ws_remark_length_max_80</td>
-                                    <td>((char_length(remark) &lt;&#61; 80))</td>
+                                    <td>ws_location_name_length_max_50</td>
+                                    <td>((char_length(location_name) &lt;&#61; 50))</td>
+                                </tr>
+                                <tr>
+                                    <td>ws_contract_section_length_max_50</td>
+                                    <td>((char_length(contract_section) &lt;&#61; 50))</td>
                                 </tr>
                                 </tbody>
                             </table>

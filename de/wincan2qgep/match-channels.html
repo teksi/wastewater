@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Haltungen abgleichen &mdash; TWW dev Dokumentation</title>
+  <title>Match channels &mdash; TWW dev Dokumentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
@@ -50,10 +50,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">1. TEKSI wastewater module (TWW)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation-guide/index.html">2. TWW Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">3. TWW User Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">4. Administratorhandbuch</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../vm/index.html">5. Demo virtuelle Maschine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">4. Admin Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vm/index.html">5. Demo Virtual Machine</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tww_swmm/index.html">6. SWMM Data Exchange</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">7. Übersetzungen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">7. Translation</a></li>
 </ul>
 
         </div>
@@ -70,7 +70,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Haltungen abgleichen</li>
+      <li class="breadcrumb-item active">Match channels</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/wincan2qgep/match-channels.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
       </li>
@@ -81,35 +81,38 @@
            <div itemprop="articleBody">
              
   <section id="match-channels">
-<h1>Haltungen abgleichen<a class="headerlink" href="#match-channels" title="Link to this heading"></a></h1>
+<h1>Match channels<a class="headerlink" href="#match-channels" title="Link to this heading"></a></h1>
 <p>To import the inspection data, the inspected channels have to be matched with the TWW channels.
 This process can be done semi-automatically or manually.
 As long as channels are not matched to existing data, they will be highlighted in red in the main table.</p>
 <section id="automatic-matching">
-<h2>Automatischer Abgleich<a class="headerlink" href="#automatic-matching" title="Link to this heading"></a></h2>
-<p>Ein automatischer Abgleich kann durchgeführt werden, indem nach einem Muster in den Schachtbezeichnungen gesucht wird. Geben Sie eine Kanal-ID in das entsprechende Feld ein und das Plugin sucht nach den Kanälen, die mit  Schacht verbinden, wie folgt: `` {channel_id} - {manhole_id} `` (die Schacht-Bezeichnungwird aus den Inspektionsdaten entnommen).</p>
+<h2>Automatic matching<a class="headerlink" href="#automatic-matching" title="Link to this heading"></a></h2>
+<p>An automatic matching can be performed by looking for a pattern in manhole identifiers.
+Enter a channel identifier in the corresponding field, and the plugin will search
+for the channels connecting the manhole as follows: <code class="docutils literal notranslate"><span class="pre">{channel_id}</span> <span class="pre">-</span> <span class="pre">{manhole_id}</span></code>
+(the manhole id being taken from the inspection data).</p>
 </section>
 <section id="manual-matching">
-<h2>Manueller Abgleich<a class="headerlink" href="#manual-matching" title="Link to this heading"></a></h2>
-<p>Der manuelle Abgleich geht wie folgt:</p>
+<h2>Manual matching<a class="headerlink" href="#manual-matching" title="Link to this heading"></a></h2>
+<p>Manual matching can be performed as follows:</p>
 <ol class="arabic simple">
-<li><p>Den gewünschten Untersuchungsbericht in der Tabelle auswählen</p></li>
-<li><p>In der ersten Haltungszeile auf den <code class="docutils literal notranslate"><span class="pre">Select</span> <span class="pre">on</span> <span class="pre">map</span></code> Knopf klicken</p></li>
+<li><p>Select the desired channel in the table</p></li>
+<li><p>In the first channel widget, click on the <code class="docutils literal notranslate"><span class="pre">Select</span> <span class="pre">on</span> <span class="pre">map</span></code> button</p></li>
 </ol>
 <figure class="align-default">
 <img alt="../_images/match-channel-1.png" src="../_images/match-channel-1.png" />
 </figure>
 <ol class="arabic simple" start="3">
-<li><p>Den zugehörigen Kanal in der Karte suchen und anklicken.</p></li>
-<li><p>Die Haltungs ID erscheint jetzt in der Liste und der Untersuchungsbericht ist nicht mehr rot hinterlegt.</p></li>
+<li><p>Find and click on the corresponding channel on the map.</p></li>
+<li><p>The channel ID is now listed and the line in the table is not highlighted anymore.</p></li>
 </ol>
 <figure class="align-default">
 <img alt="../_images/match-channel-2.png" src="../_images/match-channel-2.png" />
 </figure>
 </section>
 <section id="skipping-channels-or-observations">
-<h2>Untersuchungsbericht oder Beobachtungen weglassen<a class="headerlink" href="#skipping-channels-or-observations" title="Link to this heading"></a></h2>
-<p>Mit der Checkbox ganz links können ganze Untersuchungsbericht oder einzelne Beobachtungen einer Untersuchung weggelassen werden.</p>
+<h2>Skipping channels or observations<a class="headerlink" href="#skipping-channels-or-observations" title="Link to this heading"></a></h2>
+<p>If you want to skip some of the inspected channels, they simply need to be unchecked in the channel table and similarly for observations.</p>
 <figure class="align-default">
 <img alt="../_images/skip-data.png" src="../_images/skip-data.png" />
 </figure>

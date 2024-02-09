@@ -22,8 +22,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Stichwortverzeichnis" href="../../genindex.html" />
     <link rel="search" title="Suche" href="../../search.html" />
-    <link rel="next" title="3.3.1. Bearbeiten von bestehenden Daten" href="editing.html" />
-    <link rel="prev" title="3.2.8. Datenimport" href="../digitizing/importingdata.html" /> 
+    <link rel="next" title="3.3.1. Editing of existing data" href="editing.html" />
+    <link rel="prev" title="3.2.8. Importing data" href="../digitizing/importingdata.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -55,23 +55,23 @@
 <li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">3.1. Overview of TWW</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../digitizing/index.html">3.2. Digitizing in TWW</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">3.3. Editing in TWW</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="editing.html">3.3.1. Bearbeiten von bestehenden Daten</a></li>
-<li class="toctree-l3"><a class="reference internal" href="moving.html">3.3.2. Verschieben von Abwasserbauwerken zusammen mit Haltungen, Deckeln und Knoten</a></li>
-<li class="toctree-l3"><a class="reference internal" href="maintenance_events.html">3.3.3. Hinzufügen oder bearbeiten von Erhaltungsereignissen</a></li>
-<li class="toctree-l3"><a class="reference internal" href="connect_wastewater_network_elements.html">3.3.4. Abwassernetzwerkselemente verbinden</a></li>
+<li class="toctree-l3"><a class="reference internal" href="editing.html">3.3.1. Editing of existing data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="moving.html">3.3.2. Moving Wastewater Structures with Reaches, Covers and Nodes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="maintenance_events.html">3.3.3. Adding or Editing of Maintenance Events</a></li>
+<li class="toctree-l3"><a class="reference internal" href="connect_wastewater_network_elements.html">3.3.4. Connect Wastewater Network Elements</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">3.4. Längsschnitte</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">3.5. Werkzeuge zur Netzwerkverfolgung</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">3.6. Plandruck</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">3.4. Length profiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">3.5. Network following tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">3.6. Plan plotting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../history/index.html">3.7. History in TWW</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../How-To/index.html">3.8. How To</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">4. Administratorhandbuch</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../vm/index.html">5. Demo virtuelle Maschine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">4. Admin Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vm/index.html">5. Demo Virtual Machine</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tww_swmm/index.html">6. SWMM Data Exchange</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">7. Übersetzungen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">7. Translation</a></li>
 </ul>
 
         </div>
@@ -104,43 +104,43 @@
 <p>This represents a guide on how to add and edit data in TWW.</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="editing.html">3.3.1. Bearbeiten von bestehenden Daten</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="editing.html#demo-project">3.3.1.1. Demoprojekt</a></li>
-<li class="toctree-l2"><a class="reference internal" href="editing.html#layers">3.3.1.2. Layer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="editing.html#changing-attributes-of-point-elements-manholes-special-structures">3.3.1.3. Attribute der Punktelemente ändern (Normschächte / Spezialbauwerke)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="editing.html#changing-attributes-of-linear-elements-channels">3.3.1.4. Attribute der Linienelemente ändern (Kanäle)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="editing.html#change-reach-direction">3.3.1.5. Wechseln der Haltungs-Richtung</a></li>
-<li class="toctree-l2"><a class="reference internal" href="editing.html#snap-reach-geometry">3.3.1.6. Schnappe auf Haltungsgeometrie</a></li>
-<li class="toctree-l2"><a class="reference internal" href="editing.html#working-with-codes-of-value-list">3.3.1.7. Arbeiten mit den Codes der Wertelisten</a></li>
-<li class="toctree-l2"><a class="reference internal" href="editing.html#an-other-way-to-choose-an-object">3.3.1.8. Ein andere Möglichkeit ein Objekt auszuwählen</a></li>
-<li class="toctree-l2"><a class="reference internal" href="editing.html#adding-additional-covers-and-nodes-to-an-existing-wastewater-structure">3.3.1.9. Hinzufügen weiterer Deckel und Abwasserknoten zu bestehenden Abwasserbauwerken</a></li>
-<li class="toctree-l2"><a class="reference internal" href="editing.html#adding-a-wastewater-node-to-an-existing-reach">3.3.1.10. Einen Abwasserknoten mit einer bestehenden Haltung verknüpfen</a></li>
-<li class="toctree-l2"><a class="reference internal" href="editing.html#multiedit">3.3.1.11. Mehrfachänderung</a></li>
-<li class="toctree-l2"><a class="reference internal" href="editing.html#saving-changes">3.3.1.12. Änderungen Speichern</a></li>
-<li class="toctree-l2"><a class="reference internal" href="editing.html#changing-wastewater-structure-type">3.3.1.13. Abwasserbauwerk Typ ändern</a></li>
-<li class="toctree-l2"><a class="reference internal" href="editing.html#split-a-reach-channel-into-different-reaches">3.3.1.14. Kanäle in verschiedene Haltungen unterteilen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="editing.html">3.3.1. Editing of existing data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="editing.html#demo-project">3.3.1.1. Demo project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="editing.html#layers">3.3.1.2. Layers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="editing.html#changing-attributes-of-point-elements-manholes-special-structures">3.3.1.3. Changing attributes of point elements (manholes / special structures)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="editing.html#changing-attributes-of-linear-elements-channels">3.3.1.4. Changing attributes of linear elements (channels)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="editing.html#change-reach-direction">3.3.1.5. Change reach direction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="editing.html#snap-reach-geometry">3.3.1.6. Snap reach geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="editing.html#working-with-codes-of-value-list">3.3.1.7. Working with codes of value list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="editing.html#an-other-way-to-choose-an-object">3.3.1.8. An other way to choose an object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="editing.html#adding-additional-covers-and-nodes-to-an-existing-wastewater-structure">3.3.1.9. Adding additional covers and nodes to an existing wastewater structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="editing.html#adding-a-wastewater-node-to-an-existing-reach">3.3.1.10. Adding a wastewater node to an existing reach</a></li>
+<li class="toctree-l2"><a class="reference internal" href="editing.html#multiedit">3.3.1.11. Multiedit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="editing.html#saving-changes">3.3.1.12. Saving changes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="editing.html#changing-wastewater-structure-type">3.3.1.13. Changing Wastewater Structure Type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="editing.html#split-a-reach-channel-into-different-reaches">3.3.1.14. Split a reach (channel) into different reaches</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="moving.html">3.3.2. Verschieben von Abwasserbauwerken zusammen mit Haltungen, Deckeln und Knoten</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="moving.html#general">3.3.2.1. Allgemeines</a></li>
-<li class="toctree-l2"><a class="reference internal" href="moving.html#how-to">3.3.2.2. Anleitung</a></li>
+<li class="toctree-l1"><a class="reference internal" href="moving.html">3.3.2. Moving Wastewater Structures with Reaches, Covers and Nodes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="moving.html#general">3.3.2.1. General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moving.html#how-to">3.3.2.2. How to</a></li>
 <li class="toctree-l2"><a class="reference internal" href="moving.html#video-tutorial">3.3.2.3. Video Tutorial</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="maintenance_events.html">3.3.3. Hinzufügen oder bearbeiten von Erhaltungsereignissen</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="maintenance_events.html#general">3.3.3.1. Allgemeines</a></li>
-<li class="toctree-l2"><a class="reference internal" href="maintenance_events.html#adding-a-new-maintenance-event">3.3.3.2. Ein neues Erhaltungsereignis hinzufügen</a></li>
-<li class="toctree-l2"><a class="reference internal" href="maintenance_events.html#link-an-existing-maintenance-event">3.3.3.3. Verknüpfen mit einem bestehenden Erhaltungsereignis.</a></li>
-<li class="toctree-l2"><a class="reference internal" href="maintenance_events.html#unlink-maintenance-events">3.3.3.4. Verknüpfung zu Erhaltungsereignissen auflösen</a></li>
-<li class="toctree-l2"><a class="reference internal" href="maintenance_events.html#editing">3.3.3.5. Bearbeitung</a></li>
-<li class="toctree-l2"><a class="reference internal" href="maintenance_events.html#multi-edit">3.3.3.6. Mehrfachbearbeitung</a></li>
+<li class="toctree-l1"><a class="reference internal" href="maintenance_events.html">3.3.3. Adding or Editing of Maintenance Events</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="maintenance_events.html#general">3.3.3.1. General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance_events.html#adding-a-new-maintenance-event">3.3.3.2. Adding a new Maintenance Event</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance_events.html#link-an-existing-maintenance-event">3.3.3.3. Link an existing Maintenance Event</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance_events.html#unlink-maintenance-events">3.3.3.4. Unlink Maintenance Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance_events.html#editing">3.3.3.5. Editing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance_events.html#multi-edit">3.3.3.6. Multi Edit</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="connect_wastewater_network_elements.html">3.3.4. Abwassernetzwerkselemente verbinden</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="connect_wastewater_network_elements.html#general">3.3.4.1. Allgemeines</a></li>
-<li class="toctree-l2"><a class="reference internal" href="connect_wastewater_network_elements.html#how-to-connect-reaches-to-nodes-or-reaches-to-reaches">3.3.4.2. Ein Haltung mit einem Knoten oder einer anderen Haltung verbinden</a></li>
+<li class="toctree-l1"><a class="reference internal" href="connect_wastewater_network_elements.html">3.3.4. Connect Wastewater Network Elements</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="connect_wastewater_network_elements.html#general">3.3.4.1. General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="connect_wastewater_network_elements.html#how-to-connect-reaches-to-nodes-or-reaches-to-reaches">3.3.4.2. How to connect reaches to nodes or reaches to reaches</a></li>
 <li class="toctree-l2"><a class="reference internal" href="connect_wastewater_network_elements.html#video-tutorial">3.3.4.3. Video Tutorial</a></li>
-<li class="toctree-l2"><a class="reference internal" href="connect_wastewater_network_elements.html#how-to-delete-a-connection">3.3.4.4. Eine Verknüpfung löschen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="connect_wastewater_network_elements.html#how-to-delete-a-connection">3.3.4.4. How to delete a connection</a></li>
 </ul>
 </li>
 </ul>
@@ -151,8 +151,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../digitizing/importingdata.html" class="btn btn-neutral float-left" title="3.2.8. Datenimport" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
-        <a href="editing.html" class="btn btn-neutral float-right" title="3.3.1. Bearbeiten von bestehenden Daten" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../digitizing/importingdata.html" class="btn btn-neutral float-left" title="3.2.8. Importing data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
+        <a href="editing.html" class="btn btn-neutral float-right" title="3.3.1. Editing of existing data" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -113,7 +113,6 @@ overflow_signal_transmission
 pipe_profile_profile_type
 prank_weir_weir_edge
 prank_weir_weir_kind
-progression_alternative_plantype
 pump_construction_type
 pump_placement_of_actuation
 pump_placement_of_pump
@@ -144,12 +143,8 @@ special_structure_function
 special_structure_possibility_intervention
 special_structure_stormwater_tank_arrangement
 structure_part_renovation_demand
-symbol_plantype
 tank_cleaning_type
 tank_emptying_type
-text_plantype
-text_texthali
-text_textvali
 throttle_shut_off_unit_actuation
 throttle_shut_off_unit_adjustability
 throttle_shut_off_unit_control

@@ -20,12 +20,8 @@ throttle_shut_off_unit_kind
 throttle_shut_off_unit_control
 throttle_shut_off_unit_adjustability
 throttle_shut_off_unit_actuation
-text_textvali
-text_texthali
-text_plantype
 tank_emptying_type
 tank_cleaning_type
-symbol_plantype
 structure_part_renovation_demand
 special_structure_stormwater_tank_arrangement
 special_structure_possibility_intervention
@@ -56,7 +52,6 @@ reach_elevation_determination
 pump_placement_of_pump
 pump_placement_of_actuation
 pump_construction_type
-progression_alternative_plantype
 prank_weir_weir_kind
 prank_weir_weir_edge
 pipe_profile_profile_type

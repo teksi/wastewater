@@ -775,6 +775,40 @@
                                     </td>
                                     <td><p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données</p></td>
                                 </tr>
+                                <tr>
+                                    <td><span id="_active">_active</span></td>
+                                    <td>bool</td>
+                                    <td>1</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td><p>not part of the VSA-DSS data model added solely for TEKSI Wastewater &amp; GEP used to filter organisations</p></td>
+                                </tr>
+                                <tr>
+                                    <td><span id="_local_extension">_local_extension</span></td>
+                                    <td>bool</td>
+                                    <td>1</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td><p>not part of the VSA-DSS data model added solely for TEKSI Wastewater &amp; GEP used to map non-harmonized organisations to private on export</p></td>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -846,20 +880,20 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td>og_uid_length_max_12</td>
-                                    <td>((char_length(uid) &lt;&#61; 12))</td>
-                                </tr>
-                                <tr>
                                     <td>og_identifier_short_length_max_12</td>
                                     <td>((char_length(identifier_short) &lt;&#61; 12))</td>
+                                </tr>
+                                <tr>
+                                    <td>og_remark_length_max_255</td>
+                                    <td>((char_length(remark) &lt;&#61; 255))</td>
                                 </tr>
                                 <tr>
                                     <td>og_identifier_length_max_255</td>
                                     <td>((char_length(identifier) &lt;&#61; 255))</td>
                                 </tr>
                                 <tr>
-                                    <td>og_remark_length_max_255</td>
-                                    <td>((char_length(remark) &lt;&#61; 255))</td>
+                                    <td>og_uid_length_max_12</td>
+                                    <td>((char_length(uid) &lt;&#61; 12))</td>
                                 </tr>
                                 </tbody>
                             </table>

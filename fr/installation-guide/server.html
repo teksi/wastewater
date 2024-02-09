@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>2.2. Configuration du serveur de base de données &mdash; Documentation TWW dev</title>
+  <title>2.2. Setup database server &mdash; Documentation TWW dev</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
@@ -22,8 +22,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Recherche" href="../search.html" />
-    <link rel="next" title="2.3. Initialisation de la base de données" href="database-initialization.html" />
-    <link rel="prev" title="2.1. Prérequis" href="requirements.html" /> 
+    <link rel="next" title="2.3. Database initialization" href="database-initialization.html" />
+    <link rel="prev" title="2.1. Requirements" href="requirements.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -49,25 +49,25 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">1. TEKSI Module eaux usées et PGEE (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">1. TEKSI wastewater module (TWW)</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">2. TWW Installation Guide</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="requirements.html">2.1. Prérequis</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">2.2. Configuration du serveur de base de données</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#required-software">2.2.1. Logiciels requis</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#server-installation">2.2.1.1. Installation du serveur</a></li>
+<li class="toctree-l2"><a class="reference internal" href="requirements.html">2.1. Requirements</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2.2. Setup database server</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#required-software">2.2.1. Required Software</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#server-installation">2.2.1.1. Server installation</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="database-initialization.html">2.3. Initialisation de la base de données</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workstation.html">2.4. Configuration du poste de travail</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database-initialization.html">2.3. Database initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workstation.html">2.4. Setup workstation</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">3. TWW User Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">4. Guide d’administration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../vm/index.html">5. Machine virtuelle de démonstration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">4. Admin Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vm/index.html">5. Demo Virtual Machine</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tww_swmm/index.html">6. SWMM Data Exchange</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">7. Traduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">7. Translation</a></li>
 </ul>
 
         </div>
@@ -85,7 +85,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html"><span class="section-number">2. </span>TWW Installation Guide</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">2.2. </span>Configuration du serveur de base de données</li>
+      <li class="breadcrumb-item active"><span class="section-number">2.2. </span>Setup database server</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/installation-guide/server.rst.txt" rel="nofollow"> Afficher la source de la page</a>
       </li>
@@ -96,19 +96,21 @@
            <div itemprop="articleBody">
              
   <section id="setup-database-server">
-<h1><span class="section-number">2.2. </span>Configuration du serveur de base de données<a class="headerlink" href="#setup-database-server" title="Link to this heading"></a></h1>
-<p>Si vous souhaitez accéder aux données depuis plusieurs postes de travail, vous pouvez installer la base de données sur un serveur de votre réseau. Pour un accès local uniquement, elle peut être installée sur le même poste.</p>
+<h1><span class="section-number">2.2. </span>Setup database server<a class="headerlink" href="#setup-database-server" title="Link to this heading"></a></h1>
+<p>If you expect to access the data from several different workstations, you can
+install the database on a network accessible server. If it is just a single
+desktop you are working on, this can be installed on the same machine.</p>
 <section id="required-software">
-<h2><span class="section-number">2.2.1. </span>Logiciels requis<a class="headerlink" href="#required-software" title="Link to this heading"></a></h2>
+<h2><span class="section-number">2.2.1. </span>Required Software<a class="headerlink" href="#required-software" title="Link to this heading"></a></h2>
 <section id="server-installation">
-<h3><span class="section-number">2.2.1.1. </span>Installation du serveur<a class="headerlink" href="#server-installation" title="Link to this heading"></a></h3>
+<h3><span class="section-number">2.2.1.1. </span>Server installation<a class="headerlink" href="#server-installation" title="Link to this heading"></a></h3>
 <ul class="simple">
-<li><p>Installer PostgreSQL (&gt;=9.6)</p>
+<li><p>Install PostgreSQL (&gt;=9.6)</p>
 <ul>
 <li><p><a class="reference external" href="http://www.postgresql.org/download">Download page</a></p></li>
 </ul>
 </li>
-<li><p>Installer PostGIS (&gt;=2.4)</p>
+<li><p>Install PostGIS (&gt;=2.4)</p>
 <ul>
 <li><ol class="upperalpha simple" start="5">
 <li><ol class="loweralpha simple" start="7">
@@ -123,11 +125,17 @@
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The following instructions are <strong>optional</strong>:</p>
-<p>Pour un environnement de travail unique (pas de serveur en réseau), vous pouvez configurer votre base de données afin qu’elle accepte les connexions locales.</p>
-<p>Ainsi votre base de données ne vous redemandera par le mot de passe si vous êtes connecté depuis votre poste de travail. Il est aussi possible de n’utiliser aucun mot de passe.</p>
-<p>Cela peut être fait en éditant le fichier de configuration d’accès à la base de données <a class="reference external" href="http://www.postgresql.org/docs/devel/static/auth-pg-hba-conf.html">pg_hba.conf</a>. Pour cela changer l’option auth- de <code class="docutils literal notranslate"><span class="pre">md5</span></code> à <code class="docutils literal notranslate"><span class="pre">trust</span></code>. Il faut ensuite recharger le service de base de données pour activer les changements.</p>
+<p>In a single desktop environment (no network database server) you can setup
+your database to trust local connections.</p>
+<p>This way, the database won’t ask for a password if you’re connecting from your
+local workstation while no password is written  anywhere. You even can do
+with no database password at all.</p>
+<p>This can be done by editing the database access configuration file
+<a class="reference external" href="http://www.postgresql.org/docs/devel/static/auth-pg-hba-conf.html">pg_hba.conf</a>
+and set the auth-options from <code class="docutils literal notranslate"><span class="pre">md5</span></code> to <code class="docutils literal notranslate"><span class="pre">trust</span></code>. A database service reload
+is required to activate changes.</p>
 </div>
-<p>Pour optimiser l’espace RAM utilisé etc. sur votre machine postgreSQL, il faut utiliser <a class="reference external" href="http://www.pgtune.leopard.in.ua/#/">pgtune</a>. Il est possible d’adapter votre fichier postgresql.conf file.</p>
+<p>To optimise RAM size etc. of your machine postgreSQL is running on you can use <a class="reference external" href="http://www.pgtune.leopard.in.ua/#/">pgtune</a>. Adapt your postgresql.conf file.</p>
 </section>
 </section>
 </section>
@@ -136,8 +144,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
-        <a href="requirements.html" class="btn btn-neutral float-left" title="2.1. Prérequis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
-        <a href="database-initialization.html" class="btn btn-neutral float-right" title="2.3. Initialisation de la base de données" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="requirements.html" class="btn btn-neutral float-left" title="2.1. Requirements" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+        <a href="database-initialization.html" class="btn btn-neutral float-right" title="2.3. Database initialization" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

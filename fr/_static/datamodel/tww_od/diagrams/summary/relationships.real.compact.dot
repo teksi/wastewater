@@ -461,7 +461,7 @@ digraph "compactRelationshipsDiagram" {
       <TR><TD PORT="fk_special_building_ww_planned" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="272" HEIGHT="16">fk_special_building_ww_planned</TD></TR></TABLE></TD></TR>
       <TR><TD PORT="fk_special_building_ww_current" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="272" HEIGHT="16">fk_special_building_ww_current</TD></TR></TABLE></TD></TR>
       <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 18</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">3 &gt;</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 18</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">2 &gt;</TD></TR>
     </TABLE>>
     URL="../../tables/catchment_area.html"
     target="_top"
@@ -822,7 +822,7 @@ digraph "compactRelationshipsDiagram" {
       <TR><TD PORT="fk_main_cover" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="174" HEIGHT="16">fk_main_cover</TD></TR></TABLE></TD></TR>
       <TR><TD PORT="fk_main_wastewater_node" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="174" HEIGHT="16">fk_main_wastewater_node</TD></TR></TABLE></TD></TR>
       <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 13</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">18 &gt;</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 13</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">16 &gt;</TD></TR>
     </TABLE>>
     URL="../../tables/wastewater_structure.html"
     target="_top"
@@ -873,21 +873,6 @@ digraph "compactRelationshipsDiagram" {
     target="_top"
     tooltip="prank_weir"
   ];
-  "progression_alternative" [
-   label=<
-    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
-      <TR><TD COLSPAN="3"  BGCOLOR="#f5f5f5"><TABLE BORDER="0" CELLSPACING="0"><TR><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="142" HEIGHT="16"><B>progression_alternative</B></TD><TD ALIGN="RIGHT">[table]</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="obj_id" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/primaryKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="142" HEIGHT="16">obj_id</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="plantype" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="142" HEIGHT="16">plantype</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="progression_geometry" COLSPAN="3" BGCOLOR="#ffffff" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="142" HEIGHT="16">progression_geometry</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="fk_reach" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="142" HEIGHT="16">fk_reach</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 2</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD></TR>
-    </TABLE>>
-    URL="../../tables/progression_alternative.html"
-    target="_top"
-    tooltip="progression_alternative"
-  ];
   "pump" [
    label=<
     <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
@@ -910,8 +895,9 @@ digraph "compactRelationshipsDiagram" {
       <TR><TD PORT="obj_id" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/primaryKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="180" HEIGHT="16">obj_id</TD></TR></TABLE></TD></TR>
       <TR><TD PORT="plantype" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="180" HEIGHT="16">plantype</TD></TR></TABLE></TD></TR>
       <TR><TD PORT="progression_geometry" COLSPAN="3" BGCOLOR="#ffffff" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="180" HEIGHT="16">progression_geometry</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="fk_reach" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="180" HEIGHT="16">fk_reach</TD></TR></TABLE></TD></TR>
       <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 1</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 2</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD></TR>
     </TABLE>>
     URL="../../tables/reach_progression_alternative.html"
     target="_top"
@@ -1338,7 +1324,7 @@ digraph "compactRelationshipsDiagram" {
       <TR><TD PORT="fk_reach_point_to" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="222" HEIGHT="16">fk_reach_point_to</TD></TR></TABLE></TD></TR>
       <TR><TD PORT="fk_pipe_profile" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="222" HEIGHT="16">fk_pipe_profile</TD></TR></TABLE></TD></TR>
       <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 12</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">3 &gt;</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 12</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">2 &gt;</TD></TR>
     </TABLE>>
     URL="../../tables/reach.html"
     target="_top"
@@ -1453,21 +1439,6 @@ digraph "compactRelationshipsDiagram" {
     target="_top"
     tooltip="building_group"
   ];
-  "txt_symbol" [
-   label=<
-    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
-      <TR><TD COLSPAN="3"  BGCOLOR="#f5f5f5"><TABLE BORDER="0" CELLSPACING="0"><TR><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="65" HEIGHT="16"><B>txt_symbol</B></TD><TD ALIGN="RIGHT">[table]</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="obj_id" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/primaryKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="149" HEIGHT="16">obj_id</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="plantype" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="149" HEIGHT="16">plantype</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="symbolpos_geometry" COLSPAN="3" BGCOLOR="#ffffff" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="149" HEIGHT="16">symbolpos_geometry</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="fk_wastewater_structure" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="149" HEIGHT="16">fk_wastewater_structure</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 2</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD></TR>
-    </TABLE>>
-    URL="../../tables/txt_symbol.html"
-    target="_top"
-    tooltip="txt_symbol"
-  ];
   "hq_relation" [
    label=<
     <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
@@ -1482,25 +1453,6 @@ digraph "compactRelationshipsDiagram" {
     URL="../../tables/hq_relation.html"
     target="_top"
     tooltip="hq_relation"
-  ];
-  "txt_text" [
-   label=<
-    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
-      <TR><TD COLSPAN="3"  BGCOLOR="#f5f5f5"><TABLE BORDER="0" CELLSPACING="0"><TR><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="46" HEIGHT="16"><B>txt_text</B></TD><TD ALIGN="RIGHT">[table]</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="obj_id" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/primaryKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="149" HEIGHT="16">obj_id</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="plantype" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="149" HEIGHT="16">plantype</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="texthali" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="149" HEIGHT="16">texthali</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="textpos_geometry" COLSPAN="3" BGCOLOR="#ffffff" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="149" HEIGHT="16">textpos_geometry</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="textvali" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="149" HEIGHT="16">textvali</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="fk_wastewater_structure" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="149" HEIGHT="16">fk_wastewater_structure</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="fk_catchment_area" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="149" HEIGHT="16">fk_catchment_area</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="fk_reach" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="149" HEIGHT="16">fk_reach</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 6</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD></TR>
-    </TABLE>>
-    URL="../../tables/txt_text.html"
-    target="_top"
-    tooltip="txt_text"
   ];
   "_planning_zone" [
    label=<
@@ -1602,17 +1554,6 @@ digraph "compactRelationshipsDiagram" {
     URL="../../../tww_vl/tables/wastewater_structure_status.html"
     target="_top"
     tooltip="tww_vl.wastewater_structure_status"
-  ];
-  "tww_vl.progression_alternative_plantype" [
-   label=<
-    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
-      <TR><TD COLSPAN="3"  BGCOLOR="#f5f5f5"><TABLE BORDER="0" CELLSPACING="0"><TR><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="244" HEIGHT="16"><B>tww_vl.progression_alternative_plantype</B></TD><TD ALIGN="RIGHT">[table]</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">1 &gt;</TD></TR>
-    </TABLE>>
-    URL="../../../tww_vl/tables/progression_alternative_plantype.html"
-    target="_top"
-    tooltip="tww_vl.progression_alternative_plantype"
   ];
   "tww_vl.infiltration_installation_emergency_overflow" [
    label=<
@@ -1811,17 +1752,6 @@ digraph "compactRelationshipsDiagram" {
     URL="../../../tww_vl/tables/maintenance_event_status.html"
     target="_top"
     tooltip="tww_vl.maintenance_event_status"
-  ];
-  "tww_vl.text_textvali" [
-   label=<
-    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
-      <TR><TD COLSPAN="3"  BGCOLOR="#f5f5f5"><TABLE BORDER="0" CELLSPACING="0"><TR><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="119" HEIGHT="16"><B>tww_vl.text_textvali</B></TD><TD ALIGN="RIGHT">[table]</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">1 &gt;</TD></TR>
-    </TABLE>>
-    URL="../../../tww_vl/tables/text_textvali.html"
-    target="_top"
-    tooltip="tww_vl.text_textvali"
   ];
   "tww_vl.disposal_disposal_place_planned" [
    label=<
@@ -2296,17 +2226,6 @@ digraph "compactRelationshipsDiagram" {
     target="_top"
     tooltip="tww_vl.catchment_area_text_plantype"
   ];
-  "tww_vl.symbol_plantype" [
-   label=<
-    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
-      <TR><TD COLSPAN="3"  BGCOLOR="#f5f5f5"><TABLE BORDER="0" CELLSPACING="0"><TR><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="145" HEIGHT="16"><B>tww_vl.symbol_plantype</B></TD><TD ALIGN="RIGHT">[table]</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">1 &gt;</TD></TR>
-    </TABLE>>
-    URL="../../../tww_vl/tables/symbol_plantype.html"
-    target="_top"
-    tooltip="tww_vl.symbol_plantype"
-  ];
   "tww_vl.hydraulic_char_data_pump_characteristics" [
    label=<
     <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
@@ -2361,17 +2280,6 @@ digraph "compactRelationshipsDiagram" {
     URL="../../../tww_vl/tables/reach_material.html"
     target="_top"
     tooltip="tww_vl.reach_material"
-  ];
-  "tww_vl.text_texthali" [
-   label=<
-    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
-      <TR><TD COLSPAN="3"  BGCOLOR="#f5f5f5"><TABLE BORDER="0" CELLSPACING="0"><TR><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="120" HEIGHT="16"><B>tww_vl.text_texthali</B></TD><TD ALIGN="RIGHT">[table]</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">1 &gt;</TD></TR>
-    </TABLE>>
-    URL="../../../tww_vl/tables/text_texthali.html"
-    target="_top"
-    tooltip="tww_vl.text_texthali"
   ];
   "tww_vl.damage_manhole_manhole_shaft_area" [
    label=<
@@ -2647,17 +2555,6 @@ digraph "compactRelationshipsDiagram" {
     URL="../../../tww_vl/tables/leapingweir_opening_shape.html"
     target="_top"
     tooltip="tww_vl.leapingweir_opening_shape"
-  ];
-  "tww_vl.text_plantype" [
-   label=<
-    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
-      <TR><TD COLSPAN="3"  BGCOLOR="#f5f5f5"><TABLE BORDER="0" CELLSPACING="0"><TR><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="127" HEIGHT="16"><B>tww_vl.text_plantype</B></TD><TD ALIGN="RIGHT">[table]</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">1 &gt;</TD></TR>
-    </TABLE>>
-    URL="../../../tww_vl/tables/text_plantype.html"
-    target="_top"
-    tooltip="tww_vl.text_plantype"
   ];
   "tww_vl.mechanical_pretreatment_kind" [
    label=<
@@ -3677,8 +3574,6 @@ digraph "compactRelationshipsDiagram" {
   "profile_geometry":"fk_dataowner":w -> "organisation":"obj_id":e [arrowhead=none dir=back arrowtail=crowodot];
   "profile_geometry":"fk_pipe_profile":w -> "pipe_profile":"obj_id":e [arrowhead=none dir=back arrowtail=crowodot];
   "profile_geometry":"fk_provider":w -> "organisation":"obj_id":e [arrowhead=none dir=back arrowtail=crowodot];
-  "progression_alternative":"fk_reach":w -> "reach":"obj_id":e [arrowhead=none dir=back arrowtail=crowodot];
-  "progression_alternative":"plantype":w -> "tww_vl.progression_alternative_plantype":"code":e [arrowhead=none dir=back arrowtail=crowodot];
   "pump":"construction_type":w -> "tww_vl.pump_construction_type":"code":e [arrowhead=none dir=back arrowtail=crowodot];
   "pump":"obj_id":w -> "overflow":"obj_id":e [arrowhead=none dir=back arrowtail=teeodot];
   "pump":"placement_of_actuation":w -> "tww_vl.pump_placement_of_actuation":"code":e [arrowhead=none dir=back arrowtail=crowodot];
@@ -3705,6 +3600,7 @@ digraph "compactRelationshipsDiagram" {
   "reach_point":"fk_wastewater_networkelement":w -> "wastewater_networkelement":"obj_id":e [arrowhead=none dir=back arrowtail=crowodot];
   "reach_point":"outlet_shape":w -> "tww_vl.reach_point_outlet_shape":"code":e [arrowhead=none dir=back arrowtail=crowodot];
   "reach_point":"pipe_closure":w -> "tww_vl.reach_point_pipe_closure":"code":e [arrowhead=none dir=back arrowtail=crowodot];
+  "reach_progression_alternative":"fk_reach":w -> "reach":"obj_id":e [arrowhead=none dir=back arrowtail=crowodot];
   "reach_progression_alternative":"plantype":w -> "tww_vl.reach_progression_alternative_plantype":"code":e [arrowhead=none dir=back arrowtail=crowodot];
   "reach_text":"fk_reach":w -> "reach":"obj_id":e [arrowhead=none dir=back arrowtail=crowodot];
   "reach_text":"plantype":w -> "tww_vl.reach_text_plantype":"code":e [arrowhead=none dir=back arrowtail=crowodot];
@@ -3754,14 +3650,6 @@ digraph "compactRelationshipsDiagram" {
   "throttle_shut_off_unit":"fk_wastewater_node":w -> "wastewater_node":"obj_id":e [arrowhead=none dir=back arrowtail=crowodot];
   "throttle_shut_off_unit":"kind":w -> "tww_vl.throttle_shut_off_unit_kind":"code":e [arrowhead=none dir=back arrowtail=crowodot];
   "throttle_shut_off_unit":"signal_transmission":w -> "tww_vl.throttle_shut_off_unit_signal_transmission":"code":e [arrowhead=none dir=back arrowtail=crowodot];
-  "txt_symbol":"fk_wastewater_structure":w -> "wastewater_structure":"obj_id":e [arrowhead=none dir=back arrowtail=crowodot];
-  "txt_symbol":"plantype":w -> "tww_vl.symbol_plantype":"code":e [arrowhead=none dir=back arrowtail=crowodot];
-  "txt_text":"fk_catchment_area":w -> "catchment_area":"obj_id":e [arrowhead=none dir=back arrowtail=crowodot];
-  "txt_text":"fk_reach":w -> "reach":"obj_id":e [arrowhead=none dir=back arrowtail=crowodot];
-  "txt_text":"fk_wastewater_structure":w -> "wastewater_structure":"obj_id":e [arrowhead=none dir=back arrowtail=crowodot];
-  "txt_text":"plantype":w -> "tww_vl.text_plantype":"code":e [arrowhead=none dir=back arrowtail=crowodot];
-  "txt_text":"texthali":w -> "tww_vl.text_texthali":"code":e [arrowhead=none dir=back arrowtail=crowodot];
-  "txt_text":"textvali":w -> "tww_vl.text_textvali":"code":e [arrowhead=none dir=back arrowtail=crowodot];
   "waste_water_treatment":"fk_dataowner":w -> "organisation":"obj_id":e [arrowhead=none dir=back arrowtail=crowodot];
   "waste_water_treatment":"fk_provider":w -> "organisation":"obj_id":e [arrowhead=none dir=back arrowtail=crowodot];
   "waste_water_treatment":"fk_waste_water_treatment_plant":w -> "waste_water_treatment_plant":"obj_id":e [arrowhead=none dir=back arrowtail=crowodot];
