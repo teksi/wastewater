@@ -71,7 +71,7 @@
 
 -- CREATE TABLE tww_sys.dictionary_od_values already exists
 
-							   
+
 
 
  INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id, table_name, field_name, value_name, value_name_en, shortcut_en, value_name_de, shortcut_de, value_name_fr, shortcut_fr, value_name_it, shortcut_it, value_name_ro, shortcut_ro, value_description_en, value_description_de, value_description_fr, value_description_it, value_description_ro) VALUES (3679,3680,3681,'examination','recording_type','other','other',NULL,'andere',NULL,'autre',NULL,'altro',NULL,'rrr_altul',NULL,NULL,NULL,NULL,NULL,NULL);
