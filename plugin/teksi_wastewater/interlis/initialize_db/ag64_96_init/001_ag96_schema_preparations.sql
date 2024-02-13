@@ -54,7 +54,10 @@ COMMENT ON COLUMN tww_od.catchment_area_totals.ag96_waste_water_production_dim I
 
 -- Bauten Ausserhalb Baugebiet
 ALTER TABLE tww_od.building_group
-  ADD COLUMN IF NOT EXISTS ag96_owner_address varchar(80)
+  ADD COLUMN IF NOT EXISTS ag96_fk_provider varchar(16) -- Verweis auf Datenbewirtschafter_GEP in Organisationstabelle
+, ADD COLUMN IF NOT EXISTS ag96_last_modification TIMESTAMP without time zone DEFAULT now()
+, ADD COLUMN IF NOT EXISTS ag96_remark varchar(80)
+, ADD COLUMN IF NOT EXISTS ag96_owner_address varchar(80)
 , ADD COLUMN IF NOT EXISTS ag96_owner_name varchar(40)
 , ADD COLUMN IF NOT EXISTS ag96_label_number integer
 , ADD COLUMN IF NOT EXISTS ag96_disposal_wastewater bigint

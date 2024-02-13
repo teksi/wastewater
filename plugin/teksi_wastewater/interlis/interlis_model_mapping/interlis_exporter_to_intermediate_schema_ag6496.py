@@ -53,6 +53,7 @@ class InterlisExporterToIntermediateSchema:
 
     def tww_export(self):
         try:
+            
             self._tww_export()
             self.abwasser_session.commit()
             self.close_sessions()
@@ -60,7 +61,78 @@ class InterlisExporterToIntermediateSchema:
             self.close_sessions()
             raise exception
 
-    def _tww_export(self):
+    def _export(self):
+        # Allow to insert rows with cyclic dependencies at once
+        self.abwasser_session.execute(text("SET CONSTRAINTS ALL DEFERRED;"))
+
+        if self.basket_enabled:
+            self._create_basket()
+            self.current_basket = self.basket_topic_sia405_administration
+        
+
+        if self.model == config.MODEL_NAME_AG64:
+            self.current_basket = self.basket_topic_ag64
+            self._export_ag64()
+
+        if self.model == config.MODEL_NAME_AG96:
+            self.current_basket = self.basket_topic_96
+            self._export_ag64()
+
+        # Labels
+        # Note: these are extracted from the optional labels file (not exported from the TWW database)
+        if self.labels_file:
+            logger.info(f"Exporting label positions from {self.labels_file}")
+            self._export_label_positions()
+
+    def _create_basket(self):
+        dataset = self.model_classes_interlis.t_ili2db_dataset(
+            t_id=1,
+            datasetname="teksi-wastewater-export",
+        )
+        self.abwasser_session.add(dataset)
+
+        self.basket_topic_sia405_administration = self.model_classes_interlis.t_ili2db_basket(
+            t_id=2,
+            dataset=dataset.t_id,
+            topic=config.TOPIC_NAME_SIA405_ADMINISTRATION,
+            t_ili_tid=None,
+            attachmentkey=dataset.datasetname,
+            domains="",
+        )
+        self.abwasser_session.add(self.basket_topic_sia405_administration)
+
+        self.basket_topic_sia405_abwasser = self.model_classes_interlis.t_ili2db_basket(
+            t_id=3,
+            dataset=dataset.t_id,
+            topic=config.TOPIC_NAME_SIA405_ABWASSER,
+            t_ili_tid=None,
+            attachmentkey=dataset.datasetname,
+            domains="",
+        )
+        self.abwasser_session.add(self.basket_topic_sia405_abwasser)
+
+        self.basket_topic_dss = self.model_classes_interlis.t_ili2db_basket(
+            t_id=4,
+            dataset=dataset.t_id,
+            topic=config.TOPIC_NAME_DSS,
+            t_ili_tid=None,
+            attachmentkey=dataset.datasetname,
+            domains="",
+        )
+        self.abwasser_session.add(self.basket_topic_dss)
+
+        self.basket_topic_kek = self.model_classes_interlis.t_ili2db_basket(
+            t_id=5,
+            dataset=dataset.t_id,
+            topic=config.TOPIC_NAME_KEK,
+            t_ili_tid=None,
+            attachmentkey=dataset.datasetname,
+            domains="",
+        )
+        self.abwasser_session.add(self.basket_topic_kek)
+        self.abwasser_session.flush()
+
+    def _export_ag64(self):
         # Allow to insert rows with cyclic dependencies at once
         self.abwasser_session.execute(text("SET CONSTRAINTS ALL DEFERRED;"))
 
@@ -74,84 +146,53 @@ class InterlisExporterToIntermediateSchema:
         logger.info("Exporting TWW.gepmassnahme -> ABWASSER.gepmassnahme")
         self._export_gepmassnahme()
         self._check_for_stop()
+        
+        logger.info("Exporting TWW.gepknoten -> ABWASSER.gepknoten")
+        self._export_gepmassnahme()
+        self._check_for_stop()
+        
+        logger.info("Exporting TWW.gephaltung -> ABWASSER.gephaltung")
+        self._export_gepmassnahme()
+        self._check_for_stop()
+        
+         logger.info("Exporting TWW.gepmassnahme -> ABWASSER.gepmassnahme")
+        self._export_gepmassnahme()
+        self._check_for_stop()
+        
+    def _export_ag96(self):
+        # Allow to insert rows with cyclic dependencies at once
+        self.abwasser_session.execute(text("SET CONSTRAINTS ALL DEFERRED;"))
 
-        logger.info("Exporting TWW.manhole -> ABWASSER.normschacht")
-        self._export_manhole()
+        if self.basket_enabled:
+            raise Exception("Export with baskets is not implemented")
+
+        logger.info("Exporting TWW.organisation -> ABWASSER.organisation")
+        self._export_organisation()
         self._check_for_stop()
 
-        logger.info("Exporting TWW.discharge_point -> ABWASSER.einleitstelle")
-        self._export_discharge_point()
+        logger.info("Exporting TWW.gepmassnahme -> ABWASSER.gepmassnahme")
+        self._export_gepmassnahme()
+        self._check_for_stop()
+        
+        logger.info("Exporting TWW.gepknoten -> ABWASSER.gepknoten")
+        self._export_gepknoten()
+        self._check_for_stop()
+        
+        logger.info("Exporting TWW.gephaltung -> ABWASSER.gephaltung")
+        self._export_gephaltung()
+        self._check_for_stop()
+        
+        logger.info("Exporting TWW.ueberlauf_foerderaggregat -> ABWASSER.ueberlauf_foerderaggregat")
+        self._export_ueberlauf_foerderaggregat_ag96()
+        self._check_for_stop()
+        
+        logger.info("Exporting TWW.sbw_einzugsgebiet -> ABWASSER.sbw_einzugsgebiet")
+        self._export_sbw_einzugsgebiet()
         self._check_for_stop()
 
-        logger.info("Exporting TWW.special_structure -> ABWASSER.spezialbauwerk")
-        self._export_special_structure()
+        logger.info("Exporting TWW.versickerungsbereichag -> ABWASSER.versickerungsbereichag")
+        self._export_versickerungsbereichag()
         self._check_for_stop()
-
-        logger.info("Exporting TWW.infiltration_installation -> ABWASSER.versickerungsanlage")
-        self._export_infiltration_installation()
-        self._check_for_stop()
-
-        logger.info("Exporting TWW.pipe_profile -> ABWASSER.rohrprofil")
-        self._export_pipe_profile()
-        self._check_for_stop()
-
-        logger.info("Exporting TWW.reach_point -> ABWASSER.haltungspunkt")
-        self._export_reach_point()
-        self._check_for_stop()
-
-        logger.info("Exporting TWW.wastewater_node -> ABWASSER.abwasserknoten")
-        self._export_wastewater_node()
-        self._check_for_stop()
-
-        logger.info("Exporting TWW.reach -> ABWASSER.haltung")
-        self._export_reach()
-        self._check_for_stop()
-
-        logger.info("Exporting TWW.dryweather_downspout -> ABWASSER.trockenwetterfallrohr")
-        self._export_dryweather_downspout()
-        self._check_for_stop()
-
-        logger.info("Exporting TWW.access_aid -> ABWASSER.einstiegshilfe")
-        self._export_access_aid()
-        self._check_for_stop()
-
-        logger.info("Exporting TWW.dryweather_flume -> ABWASSER.trockenwetterrinne")
-        self._export_dryweather_flume()
-        self._check_for_stop()
-
-        logger.info("Exporting TWW.cover -> ABWASSER.deckel")
-        self._export_cover()
-        self._check_for_stop()
-
-        logger.info("Exporting TWW.benching -> ABWASSER.bankett")
-        self._export_benching()
-        self._check_for_stop()
-
-        logger.info("Exporting TWW.examination -> ABWASSER.untersuchung")
-        self._export_examination()
-        self._check_for_stop()
-
-        logger.info("Exporting TWW.damage_manhole -> ABWASSER.normschachtschaden")
-        self._export_damage_manhole()
-        self._check_for_stop()
-
-        logger.info("Exporting TWW.damage_channel -> ABWASSER.kanalschaden")
-        self._export_damage_channel()
-        self._check_for_stop()
-
-        logger.info("Exporting TWW.data_media -> ABWASSER.datentraeger")
-        self._export_data_media()
-        self._check_for_stop()
-
-        logger.info("Exporting TWW.file -> ABWASSER.datei")
-        self._export_file()
-        self._check_for_stop()
-
-        # Labels
-        # Note: these are extracted from the optional labels file (not exported from the TWW database)
-        if self.labels_file:
-            logger.info(f"Exporting label positions from {self.labels_file}")
-            self._export_label_positions()
 
 
     # Filter sind nicht implementiert
@@ -274,6 +315,7 @@ class InterlisExporterToIntermediateSchema:
                 **self.gep_metainformation_common(row,'gephaltung'),
                 **self.haltung_common(row,'gephaltung'),
                 hydraulischebelastung=row.hydraulischebelastung,
+                lichte_breite_ist=row.lichte_breite_ist,
                 lichte_breite_geplant=row.lichte_breite_geplant,
                 lichte_hoehe_geplant=row.lichte_hoehe_geplant,
                 nutzungsartag_geplant=get_vl(row.nutzungsartag_geplant),
@@ -295,6 +337,7 @@ class InterlisExporterToIntermediateSchema:
                 # --- abwasserbauwerk ---
                 **self.base_common(row,'infrastrukturhaltung'),
                 **self.haltung_common(row,'infrastrukturhaltung'),
+                lichte_breite=row.lichte_breite_ist,
             )
             self.abwasser_session.add(infrastrukturhaltung)
             print(".", end="")
@@ -680,7 +723,6 @@ class InterlisExporterToIntermediateSchema:
             kote_beginn=row.kote_beginn,
             kote_ende=row.kote_ende,
             letzte_aenderung_wi=row.letzte_aenderung_wi,
-            lichte_breite_ist=row.lichte_breite_ist,
             lichte_hoehe_ist=row.lichte_hoehe_ist,
             laengeeffektiv=row.laengeeffektiv,
             material=get_vl(row.material),
