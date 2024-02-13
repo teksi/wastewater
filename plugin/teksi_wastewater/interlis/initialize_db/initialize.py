@@ -7,16 +7,18 @@ from sqlalchemy.sql import text
 
 from .. import config,utils 
 import os
-# This file is wastewater/plugin/TEKSI2AG64_96/assets/tww_initialize.py
-# create_views.py is at wastewater/datamodel/app/view/create_views.py
-from datamodel.app.view import create_views
 
-def tww_initialize(pgservice=config.TWW_DEFAULT_PGSERVICE, db_identifier: str=None):
+# create_tww_app.py is at wastewater/datamodel/app/create_tww_app.py
+from datamodel.app import create_tww_app
+
+def tww_initialize(pgservice=config.TWW_DEFAULT_PGSERVICE, oid_definition=(), oid_dataowner: str ='ch20p3q4000094', db_identifier: str=None):
     """
     initializes the TWW database for usage of the AG64/96 models.
 
     Args:
-        oid_dataowner: object id of the data owner.
+        pgservice: pg service string
+        oid_definition: tuple (prefix, organization) to update oid prefix
+        
     """
 
     init_session = Session(utils.sqlalchemy.create_engine(), autocommit=False, autoflush=False)
@@ -29,8 +31,15 @@ def tww_initialize(pgservice=config.TWW_DEFAULT_PGSERVICE, db_identifier: str=No
     # would deadlock other sessions.
     init_session.execute("SELECT tww_sys.disable_symbology_triggers();")
     init_session.commit()
-    init_session.close()
-
+    init_session.flush()
+    
+    # We also disable symbology triggers as they badly affect performance. This must be done in a separate session as it
+    # would deadlock other sessions.
+    if oid_definition:
+        init_session.execute("UPDATE tww_sys.oid_prefixes SET active = False WHERE active;")
+        init_session.execute("INSERT INTO tww_sys.oid_prefixes (prefix, organization,active)VALUES (%,%,True);",oid_definition)
+        init_session.commit()
+        init_session.flush()
     
     if schema_exists is None:
         directory = 'ag64_96_init'
@@ -44,16 +53,16 @@ def tww_initialize(pgservice=config.TWW_DEFAULT_PGSERVICE, db_identifier: str=No
                                                                                  db_identifier=db_identifier))
                 init_session.execute(sql)
                 init_session.commit()
-                init_session.flush()
+                init_session.close()
     del schema_exists
     
 
     # ------------------------------------------ re-create all views --------------------------------------------------------------------
-    create_views(2056,pgservice)
+    create_tww_app(2056,pgservice)
 
 
     # re-create symbology triggers 
     post_session = Session(utils.sqlalchemy.create_engine(), autocommit=False, autoflush=False)
-    post_session.execute("SELECT tww_sys.enablee_symbology_triggers();")
+    post_session.execute("SELECT tww_sys.enable_symbology_triggers();")
     post_session.commit()
     post_session.close()

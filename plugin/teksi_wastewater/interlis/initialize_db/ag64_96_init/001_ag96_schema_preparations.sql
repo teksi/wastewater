@@ -170,14 +170,3 @@ CREATE INDEX IF NOT EXISTS in_{ext_schema}_od_unconnected_node_bwrel_detailgeome
     ON {ext_schema}.od_unconnected_node_bwrel USING gist
     (detailgeometrie2d)
     TABLESPACE pg_default;
-
--- Extensions in PR #152 TEKSI Wastewater	
-ALTER TABLE tww_od.organisation ADD COLUMN IF NOT EXISTS _active bool;
-COMMENT ON COLUMN tww_od.organisation._active IS 'not part of the VSA-DSS data model
-added solely for TEKSI Wastewater & GEP
-used to filter organisations';
-
-ALTER TABLE tww_od.organisation ADD COLUMN IF NOT EXISTS _local_extension bool;
-COMMENT ON COLUMN tww_od.organisation._local_extension IS 'not part of the VSA-DSS data model
-added solely for TEKSI Wastewater & GEP
-used to map non-harmonized organisations to private on export';
