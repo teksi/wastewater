@@ -80,6 +80,8 @@ def create_views(
         # zone
         "infiltration_zone": "zone",
         "drainage_system": "zone",
+        # building group
+        "farm": "building_group",
     }
 
     for key in SingleInheritances:
