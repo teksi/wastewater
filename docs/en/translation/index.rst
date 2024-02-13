@@ -8,7 +8,7 @@ The documentation is available in:
 - `Deutsch <https://teksi.github.io/wastewater/de/>`_
 - `Français <https://teksi.github.io/wastewater/fr/>`_
 
-It can be translated in other languages. 
+It can be translated in other languages.
 
 Please get in touch with us so you can contribute to the translation in another language!
 
