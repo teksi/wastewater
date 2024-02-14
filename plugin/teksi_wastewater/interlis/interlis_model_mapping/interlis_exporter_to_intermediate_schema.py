@@ -188,6 +188,12 @@ class InterlisExporterToIntermediateSchema:
         self._export_reach()
         self._check_for_stop()
 
+        logger.info(
+            "Exporting TWW.reach_progression_alternative -> ABWASSER.haltung_alternativverlauf"
+        )
+        self._export_reach_progression_alternative()
+        self._check_for_stop()
+
         logger.info("Exporting TWW.dryweather_downspout -> ABWASSER.trockenwetterfallrohr")
         self._export_dryweather_downspout()
         self._check_for_stop()
@@ -743,6 +749,25 @@ class InterlisExporterToIntermediateSchema:
                 wandrauhigkeit=row.wall_roughness,
             )
             self.abwasser_session.add(haltung)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_reach_progression_alternative(self):
+        query = self.tww_session.query(self.model_classes_tww_od.reach_progression_alternative)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_od.reach_progression_alternative.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            haltung_alternativverlauf = self.model_classes_interlis.haltung_alternativverlauf(
+                **self.base_common(row, "haltung_alternativverlauf"),
+                # --- haltung_alternativverlauf ---
+                plantyp=self.get_vl(row.plantype__REL),
+                verlauf=row.progression_geometry,
+                haltungref=self.get_pk(row.fk_reach__REL),
+            )
+            self.abwasser_session.add(haltung_alternativverlauf)
             print(".", end="")
         logger.info("done")
         self.abwasser_session.flush()
