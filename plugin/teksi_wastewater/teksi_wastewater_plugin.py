@@ -26,6 +26,7 @@
 
 import logging
 import os
+import shutil
 
 from qgis.core import Qgis, QgsApplication
 from qgis.PyQt.QtCore import QLocale, QSettings, Qt
@@ -81,6 +82,17 @@ class TeksiWastewaterPlugin:
     profile = None
 
     def __init__(self, iface):
+
+        if os.environ.get("QGIS_DEBUGPY_HAS_LOADED") is None:
+            try:
+                import debugpy
+                debugpy.configure(python=shutil.which("python"))
+                debugpy.listen(('localhost', 5678))
+            except Exception as e:
+                print("Unable to create debugpy debugger: {}".format(e))
+            else:
+                os.environ["QGIS_DEBUGPY_HAS_LOADED"] = '1'
+                
         self.iface = iface
         self.canvas = iface.mapCanvas()
         self.nodes = None
