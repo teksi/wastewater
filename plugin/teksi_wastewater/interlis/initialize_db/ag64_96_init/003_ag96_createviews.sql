@@ -398,7 +398,7 @@ CREATE OR REPLACE VIEW {ext_schema}.bautenausserhalbbaugebiet
 AS
 SELECT
 	  bg.obj_id
-	, bg.population_equivalent as anzstaendigeeinwohner
+	, bg.ag96_population as anzstaendigeeinwohner
 	, coalesce(bg_fct_rev.value_agxx, bg_fct.value_de)
 	  as arealnutzung
 	, bg_dt_ww.value_de as beseitigung_haeusliches_abwasser
@@ -408,7 +408,7 @@ SELECT
 	, bg.identifier as bezeichnung
 	, bg.ag96_owner_address as eigentuemeradresse
 	, bg.ag96_owner_name as eigentuemername
-	, bg.other_usage_population_equivalent as einwohnergleichwert
+	, bg.population_equivalent as einwohnergleichwert
 	, bg.situation_geometry as lage
 	, bg.ag96_label_number as nummer
 	, bg_rn.value_de as sanierungsbedarf
