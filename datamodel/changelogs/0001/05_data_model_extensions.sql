@@ -54,7 +54,7 @@ SET order_fct_hierarchic=
 	 ,code);
 
 -- this column is an extension to the VSA data model and facilitates filtering out primary features
-ALTER TABLE tww_vl.channel_function_hierarchic ADD COLUMN _is_primary bool;
+ALTER TABLE tww_vl.channel_function_hierarchic ADD COLUMN _is_primary bool DEFAULT FALSE;
 UPDATE tww_vl.channel_function_hierarchic
 SET _is_primary=true
 WHERE left(value_en, 4)='pwwf';
