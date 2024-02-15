@@ -39,7 +39,7 @@ FROM(
       rank() OVER w AS hierarchy_rank
     FROM
       tww_od.wastewater_node wn
-	  
+
 	  LEFT JOIN tww_od.reach_point                 rp                   ON wn.obj_id = rp.fk_wastewater_networkelement
       LEFT JOIN tww_od.reach                       re_from           	ON re_from.fk_reach_point_from = rp.obj_id
       LEFT JOIN tww_od.wastewater_networkelement   ne_from           	ON ne_from.obj_id = re_from.obj_id
@@ -54,7 +54,7 @@ FROM(
       LEFT JOIN tww_od.wastewater_structure        ws_to           	ON ws_to.obj_id = ne_to.fk_wastewater_structure
       LEFT JOIN tww_vl.channel_function_hierarchic vl_fct_hier_to 	ON CH_to.function_hierarchic = vl_fct_hier_to.code
       LEFT JOIN tww_vl.channel_usage_current       vl_usg_curr_to 	ON CH_to.usage_current = vl_usg_curr_to.code
-	  
+
 	  -- Update by Overflow
 	  LEFT JOIN tww_od.overflow                    ov         ON ov.fk_overflow_to=wn.obj_id
       LEFT JOIN tww_od.wastewater_networkelement   ne_ov      ON ne_ov.obj_id = ov.fk_wastewater_node
@@ -75,7 +75,7 @@ FROM(
       LEFT JOIN tww_vl.channel_function_hierarchic vl_fct_hier_ov_to	  ON CH_ov_to.function_hierarchic = vl_fct_hier_ov_to.code
       LEFT JOIN tww_vl.channel_usage_current       vl_usg_curr_ov_to	  ON CH_ov_to.usage_current = vl_usg_curr_ov_to.code
     WHERE _all OR wn.obj_id = _obj_id
-      WINDOW w AS ( PARTITION BY wn.obj_id 
+      WINDOW w AS ( PARTITION BY wn.obj_id
                     ORDER BY vl_fct_hier_from.order_fct_hierarchic ASC NULLS LAST
                            , vl_fct_hier_to.order_fct_hierarchic ASC NULLS LAST
                            , vl_fct_hier_ov_from.order_fct_hierarchic ASC NULLS LAST
