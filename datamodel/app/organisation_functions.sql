@@ -3,7 +3,7 @@ CREATE OR REPLACE FUNCTION tww_app.synchronize_level_with_altitude_on_cover()
   $BODY$
   BEGIN
 UPDATE tww_od.organisation
-SET _active=TRUE
+SET tww_active=TRUE
 WHERE obj_id = ANY(
 SELECT UNNEST(ARRAY[fk_provider,fk_dataowner])
 FROM tww_od.wastewater_networkelement
