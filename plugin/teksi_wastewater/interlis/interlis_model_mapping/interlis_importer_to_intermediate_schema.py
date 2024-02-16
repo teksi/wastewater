@@ -118,6 +118,12 @@ class InterlisImporterToIntermediateSchema:
         self._import_haltung()
         self._check_for_stop()
 
+        logger.info(
+            "Importing ABWASSER.haltung_alternativverlauf -> TWW.reach_progression_alternative"
+        )
+        self._import_haltung_alternativverlauf()
+        self._check_for_stop()
+
         logger.info("Importing ABWASSER.haltungspunkt -> TWW.reach_point")
         self._import_haltungspunkt()
         self._check_for_stop()
@@ -1877,6 +1883,22 @@ class InterlisImporterToIntermediateSchema:
                 situation3d_geometry=ST_Force3D(row.lage),
             )
             self.session_tww.add(reach_point)
+            print(".", end="")
+
+    def _import_haltung_alternativverlauf(self):
+        for row in self.session_interlis.query(
+            self.model_classes_interlis.haltung_alternativverlauf
+        ):
+            reach_progression_alternative = self.create_or_update(
+                self.model_classes_tww_od.reach_progression_alternative,
+                obj_id=row.t_ili_tid,
+                plantype=self.get_vl_code(
+                    self.model_classes_tww_od.reach_progression_alternative_plantype, row.plantyp
+                ),
+                progression_geometry=row.verlauf,
+                fk_reach=self.get_pk(row.haltungref__REL),
+            )
+            self.session_tww.add(reach_progression_alternative)
             print(".", end="")
 
     def _import_abwasserknoten(self):
