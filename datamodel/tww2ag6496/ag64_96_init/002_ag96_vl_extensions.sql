@@ -52,19 +52,19 @@ INSERT INTO tww_vl.measure_category (code,vsacode,value_de,value_en,active) VALU
 (1999984,8706,'Leitungsersatz_diverse_Gruende','reach_replacement_other',true) , -- 8706 = Erhaltung_Erneuerung 
 (1999983,8706,'Leitungsersatz_hydraulisch','reach_replacement_hydraulic',true) , -- 8706 = Erhaltung_Erneuerung 
 (1999982,8706,'Leitungsersatz_Zustand','reach_replacement_condition',true) , -- 8706 = Erhaltung_Erneuerung 
-(1999981,8648,'Reinigung','reach_replacement_condition',true) , -- 8648 = Erhaltung_Reinigung 
-(1999980,8646,'Renovierung','reach_replacement_condition',true) , -- 8646 = Erhaltung_Renovierung_Reparatur 
-(1999979,8646,'Reparatur','reach_replacement_condition',true) , -- 8646 = Erhaltung_Renovierung_Reparatur 
-(1999978,8649,'Retention','reach_replacement_condition',true) , -- 8649 = Abflussvermeidung_Retention_Versickerung 
-(1999977,8705,'Sonderbauwerk.Neubau','reach_replacement_condition',true) , -- 8705 = Sonderbauwerk_Neubau 
-(1999976,8707,'Sonderbauwerk.Aus_Umbau','reach_replacement_condition',true) , -- 8707 = Sonderbauwerk_Anpassung 
-(1999975,8707,'Sonderbauwerk.Anpassung_hydraulisch','reach_replacement_condition',true) , -- 8707 = Sonderbauwerk_Anpassung 
-(1999974,4654,'Sonderbauwerk.Rueckbau','reach_replacement_condition',true) , -- 4654 = Aufhebung 
-(1999973,4662,'Untersuchung.andere','reach_replacement_condition',true) , -- 4662 = Kontrolle_und_Ueberwachung 
-(1999972,4662,'Untersuchung.Begehung','reach_replacement_condition',true) , -- 4662 = Kontrolle_und_Ueberwachung 
-(1999971,4662,'Untersuchung.Dichtheitsprüfung','reach_replacement_condition',true) , -- 4662 = Kontrolle_und_Ueberwachung 
-(1999970,4662,'Untersuchung.Kanalfernsehen','reach_replacement_condition',true) , -- 4662 = Kontrolle_und_Ueberwachung 
-(1999969,4662,'Untersuchung.unbekannt','reach_replacement_condition',true) -- 4662 = Kontrolle_und_Ueberwachung 
+(1999981,8648,'Reinigung','maintenance_cleaning',true) , -- 8648 = Erhaltung_Reinigung 
+(1999980,8646,'Renovierung','maintenance_renovation_renovation',true) , -- 8646 = Erhaltung_Renovierung_Reparatur 
+(1999979,8646,'Reparatur','maintenance_renovation_repair',true) , -- 8646 = Erhaltung_Renovierung_Reparatur 
+(1999978,8649,'Retention','runoff_prevention_retention_infiltration',true) , -- 8649 = Abflussvermeidung_Retention_Versickerung 
+(1999977,8705,'Sonderbauwerk.Neubau','special_construction_new_buildung',true) , -- 8705 = Sonderbauwerk_Neubau 
+(1999976,8707,'Sonderbauwerk.Aus_Umbau','special_construction_extension',true) , -- 8707 = Sonderbauwerk_Anpassung 
+(1999975,8707,'Sonderbauwerk.Anpassung_hydraulisch','special_construction_customization_hydraulic',true) , -- 8707 = Sonderbauwerk_Anpassung 
+(1999974,4654,'Sonderbauwerk.Rueckbau','special_construction_abolishment',true) , -- 4654 = Aufhebung 
+(1999973,4662,'Untersuchung.andere','control_and_surveillance_other',true) , -- 4662 = Kontrolle_und_Ueberwachung 
+(1999972,4662,'Untersuchung.Begehung','control_and_surveillance_site_inspection',true) , -- 4662 = Kontrolle_und_Ueberwachung 
+(1999971,4662,'Untersuchung.Dichtheitsprüfung','control_and_surveillance_tightness_check',true) , -- 4662 = Kontrolle_und_Ueberwachung 
+(1999970,4662,'Untersuchung.Kanalfernsehen','control_and_surveillance_TV',true) , -- 4662 = Kontrolle_und_Ueberwachung 
+(1999969,4662,'Untersuchung.unbekannt','control_and_surveillance_unknown',true) -- 4662 = Kontrolle_und_Ueberwachung 
 ON CONFLICT DO NOTHING;
 
 
@@ -77,6 +77,7 @@ UPDATE tww_vl.measure_category SET active = FALSE where code = ANY( ARRAY[
 , 8647	-- Erhaltung_unbekannt
 , 4662  -- Kontrolle_und_Ueberwachung
 , 8639  -- Massnahme_im_Gewaesser 
+, 8649  -- Abflussvermeidung_Retention_Versickerung
 , 8707  -- Sonderbauwerk_Anpassung 
 , 8705  -- Sonderbauwerk_Neubau 
 ]);
