@@ -2210,7 +2210,7 @@ class InterlisImporterToIntermediateSchema:
                 object=row.objekt,
                 path_relative=row.relativpfad,
                 remark=row.bemerkung,
-                class_column=self.get_vl_code(self.model_classes_tww_vl.file_class, row.klasse),
+                class_column=self.get_vl_code(self.model_classes_tww_vl.file_classname, row.klasse),
             )
 
             self.session_tww.add(file_table_row)
