@@ -314,6 +314,6 @@ class ModelTwwOd(ModelBase):
         class file(self.Base):
             __tablename__ = "file"
             __table_args__ = {"schema": config.TWW_OD_SCHEMA}
-            class_column = Column("class")
+            class_column = Column("classname")
 
         ModelTwwOd.file = file
