@@ -1,5 +1,3 @@
-from sqlalchemy import Column
-
 from ...interlis import config
 from .model_base import ModelBase
 
@@ -314,6 +312,5 @@ class ModelTwwOd(ModelBase):
         class file(self.Base):
             __tablename__ = "file"
             __table_args__ = {"schema": config.TWW_OD_SCHEMA}
-            class_column = Column("class")
 
         ModelTwwOd.file = file
