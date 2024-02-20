@@ -25,22 +25,3 @@ BEGIN;
   END IF;
 END;
 $$
-
-
-/*
--- Revoke
-DO
-$$
-  IF EXISTS (SELECT 1 FROM pg_roles WHERE rolname='tww_user_{db_identifier}')
-	REVOKE ALL ON SCHEMA {ext_schema}  FROM tww_user;
-	REVOKE ALL ON ALL TABLES IN SCHEMA {ext_schema}  FROM tww_user_{db_identifier};
-	ALTER DEFAULT PRIVILEGES IN SCHEMA {ext_schema}  REVOKE ALL ON TABLES  FROM tww_user_{db_identifier};
-  ELSE
-	REVOKE ALL ON SCHEMA {ext_schema}  FROM tww_user;
-	REVOKE ALL ON ALL TABLES IN SCHEMA {ext_schema}  FROM tww_user;
-	ALTER DEFAULT PRIVILEGES IN SCHEMA {ext_schema}  REVOKE ALL ON TABLES  FROM tww_user;
-  END IF;
-$$
-
-
-*/
