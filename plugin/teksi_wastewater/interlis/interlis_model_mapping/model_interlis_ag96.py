@@ -5,18 +5,18 @@ from .model_base import ModelBase
 class ModelInterlisAG96(ModelBase):
     def __init__(self):
         super().__init__(config.ABWASSER_SCHEMA)
-        
+
         class baseclass(self.Base):
             __tablename__ = "baseclass"
-            __table_args__ = {"schema":config.ABWASSER_SCHEMA}
+            __table_args__ = {"schema": config.ABWASSER_SCHEMA}
 
         ModelInterlisAG96.baseclass = baseclass
 
-        class metainformation(baseclass):
+        class metainformation(self.Base):
             __tablename__ = "metainformation"
             __table_args__ = {"schema":config.ABWASSER_SCHEMA}
 
-        ModelInterlisAG96.metainformation = metainformation    
+        ModelInterlisAG96.metainformation = metainformation
         
         class organisation(self.Base):
             __tablename__ = "organisation"
