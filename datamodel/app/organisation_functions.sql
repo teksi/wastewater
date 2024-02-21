@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION tww_app.synchronize_level_with_altitude_on_cover()
+CREATE OR REPLACE FUNCTION tww_app.set_organisations_active()
   RETURNS void AS
   $BODY$
   BEGIN
