@@ -7,6 +7,7 @@ from sqlalchemy.sql import text
 
 from .. import config, utils
 from ..utils.various import logger
+from sqlalchemy import nullslast
 
 
 class InterlisExporterToIntermediateSchemaError(Exception):
