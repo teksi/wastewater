@@ -132,11 +132,11 @@ SELECT
 	, coalesce(rn.value_de,sanierungsbedarf) AS sanierungsbedarf
 	, wn.bottom_level AS sohlenkote
 	, coalesce(ac.value_de,unc.zugaenglichkeit) AS zugaenglichkeit
-	, concat_ws('','ch113jqg0000',right(coalesce(ws.fk_operator,unc.betreiber,'00000094'),8)) AS betreiber
-	, concat_ws('','ch113jqg0000',right(coalesce(ne.ag64_fk_provider,'00000094'),8)) AS datenbewirtschafter_wi
-	, concat_ws('','ch113jqg0000',right(coalesce(ws.fk_owner,unc.eigentuemer,'00000094'),8)) AS eigentuemer
+	, concat_ws('','ch113jqg0000',right(coalesce(ws.fk_operator,unc.betreiber,'00000107'),8)) AS betreiber
+	, concat_ws('','ch113jqg0000',right(coalesce(ne.ag64_fk_provider,'00000107'),8)) AS datenbewirtschafter_wi
+	, concat_ws('','ch113jqg0000',right(coalesce(ws.fk_owner,unc.eigentuemer,'00000107'),8)) AS eigentuemer
 	, coalesce(ws.ag96_fk_measure, unc.gepmassnahmeref) AS gepmassnahmeref
-	, concat_ws('','ch113jqg0000',right(coalesce(ne.ag96_fk_provider,'00000094'),8)) AS datenbewirtschafter_gep
+	, concat_ws('','ch113jqg0000',right(coalesce(ne.ag96_fk_provider,'00000107'),8)) AS datenbewirtschafter_gep
 	, ne.ag96_remark as bemerkung_gep
 	, ne.ag96_last_modification as letzte_aenderung_gep
 
@@ -223,13 +223,13 @@ SELECT
 	, ST_Force2D(re.progression3d_geometry) AS verlauf
 	, ws.rv_base_year AS wbw_basisjahr
 	, ws.replacement_value AS wiederbeschaffungswert
-	, concat_ws('','ch113jqg0000',right(coalesce(ws.fk_operator,'00000094'),8)) AS betreiber
-	, concat_ws('','ch113jqg0000',right(coalesce(ne.ag64_fk_provider,'00000094'),8)) AS datenbewirtschafter_wi
-	, concat_ws('','ch113jqg0000',right(coalesce(ws.fk_owner,'00000094'),8)) AS eigentuemer
+	, concat_ws('','ch113jqg0000',right(coalesce(ws.fk_operator,'00000107'),8)) AS betreiber
+	, concat_ws('','ch113jqg0000',right(coalesce(ne.ag64_fk_provider,'00000107'),8)) AS datenbewirtschafter_wi
+	, concat_ws('','ch113jqg0000',right(coalesce(ws.fk_owner,'00000107'),8)) AS eigentuemer
 	, rp_to.fk_wastewater_networkelement  AS endknoten
 	, rp_from.fk_wastewater_networkelement AS startknoten
 	, ws.ag96_fk_measure AS gepmassnahmeref
-	, concat_ws('','ch113jqg0000',right(coalesce(ne.ag96_fk_provider,'00000094'),8)) AS datenbewirtschafter_gep
+	, concat_ws('','ch113jqg0000',right(coalesce(ne.ag96_fk_provider,'00000107'),8)) AS datenbewirtschafter_gep
 	, ne.ag96_remark as bemerkung_gep
 	, ne.ag96_last_modification as letzte_aenderung_gep
 
@@ -285,9 +285,9 @@ SELECT
 	, msr_st.value_de AS status
 	, msr.symbolpos_geometry AS symbolpos
 	, msr.link AS verweis
-	, concat_ws('','ch113jqg0000',right(coalesce(msr.fk_responsible_entity,'00000094'),8)) AS traegerschaft
-	, concat_ws('','ch113jqg0000',right(coalesce(msr.fk_responsible_start,'00000094'),8)) AS verantwortlich_ausloesung
-	, concat_ws('','ch113jqg0000',right(coalesce(msr.fk_provider,'00000094'),8)) AS datenbewirtschafter_gep
+	, concat_ws('','ch113jqg0000',right(coalesce(msr.fk_responsible_entity,'00000107'),8)) AS traegerschaft
+	, concat_ws('','ch113jqg0000',right(coalesce(msr.fk_responsible_start,'00000107'),8)) AS verantwortlich_ausloesung
+	, concat_ws('','ch113jqg0000',right(coalesce(msr.fk_provider,'00000107'),8)) AS datenbewirtschafter_gep
 	, msr.remark as bemerkung_gep
 	, msr.last_modification as letzte_aenderung_gep
 
@@ -339,7 +339,7 @@ SELECT
 	, ca.fk_wastewater_networkelement_rw_current AS gepknoten_rw_istref
 	, ca.fk_wastewater_networkelement_ww_planned AS gepknoten_sw_geplantref
 	, ca.fk_wastewater_networkelement_ww_current AS gepknoten_sw_istref
-	, concat_ws('','ch113jqg0000',right(coalesce(ca.fk_provider,'00000094'),8)) AS datenbewirtschafter_gep
+	, concat_ws('','ch113jqg0000',right(coalesce(ca.fk_provider,'00000107'),8)) AS datenbewirtschafter_gep
 	, ca.remark as bemerkung_gep
 	, ca.last_modification as letzte_aenderung_gep
 
@@ -372,10 +372,10 @@ SELECT
 	, ov.identifier as bezeichnung
 	, ov.fk_wastewater_node as knotenref
 	, ov.fk_overflow_to as knoten_nachref
-	, concat_ws('','ch113jqg0000',right(coalesce(ne.ag64_fk_provider,'00000094'),8)) AS datenbewirtschafter_wi
+	, concat_ws('','ch113jqg0000',right(coalesce(ne.ag64_fk_provider,'00000107'),8)) AS datenbewirtschafter_wi
 	, ov.ag64_remark as bemerkung_wi
 	, ov.ag64_last_modification as letzte_aenderung_wi
-	, concat_ws('','ch113jqg0000',right(coalesce(ne.ag96_fk_provider,'00000094'),8)) AS datenbewirtschafter_gep
+	, concat_ws('','ch113jqg0000',right(coalesce(ne.ag96_fk_provider,'00000107'),8)) AS datenbewirtschafter_gep
 	, ov.ag96_remark as bemerkung_gep
 	, ov.ag96_last_modification as letzte_aenderung_gep
 
@@ -412,7 +412,7 @@ SELECT
 	, bg_rn.value_de as sanierungsbedarf
 	, bg.renovation_date as sanierungsdatum
 	, bg.restructuring_concept as sanierungskonzept
-	, concat_ws('','ch113jqg0000',right(coalesce(bg.fk_provider,'00000094'),8)) AS datenbewirtschafter_gep
+	, concat_ws('','ch113jqg0000',right(coalesce(bg.fk_provider,'00000107'),8)) AS datenbewirtschafter_gep
 	, bg.remark as bemerkung_gep
 	, bg.last_modification as letzte_aenderung_gep
 FROM tww_od.building_group bg
@@ -450,7 +450,7 @@ SELECT
 	, cat.waste_water_production AS schmutzabwasseranfall_ist
 	, cat.fk_discharge_point AS einleitstelleref
 	, wn.obj_id AS sonderbauwerk_ref
-	, concat_ws('','ch113jqg0000',right(coalesce(cat.fk_provider,'00000094'),8)) AS datenbewirtschafter_gep
+	, concat_ws('','ch113jqg0000',right(coalesce(cat.fk_provider,'00000107'),8)) AS datenbewirtschafter_gep
 	, hcd.remark as bemerkung_gep
 	, cat.last_modification as letzte_aenderung_gep
 
@@ -509,7 +509,7 @@ SELECT
 	, iz.perimeter_geometry as perimeter
 	, iz.ag96_q_check
 	, iz_ic.value_de as versickerungsmoeglichkeitag
-	, concat_ws('','ch113jqg0000',right(coalesce(zo.fk_provider,'00000094'),8)) AS datenbewirtschafter_gep
+	, concat_ws('','ch113jqg0000',right(coalesce(zo.fk_provider,'00000107'),8)) AS datenbewirtschafter_gep
 	, zo.remark as bemerkung_gep
 	, zo.last_modification as letzte_aenderung_gep
 FROM tww_od.infiltration_zone iz
