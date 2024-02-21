@@ -20,10 +20,10 @@ BEGIN
     GRANT tww_manager_{db_identifier} TO tww_sysadmin_{db_identifier};
 
     -- cascade database-specific grants to overall roles
-    GRANT tww_viewer{db_identifier} TO tww_viewer;
-    GRANT tww_user{db_identifier} TO tww_user;
-    GRANT tww_manager{db_identifier} TO tww_manager;
-    GRANT tww_sysadmin{db_identifier} TO tww_sysadmin;
+    GRANT tww_viewer_{db_identifier} TO tww_viewer;
+    GRANT tww_user_{db_identifier} TO tww_user;
+    GRANT tww_manager_{db_identifier} TO tww_manager;
+    GRANT tww_sysadmin_{db_identifier} TO tww_sysadmin;
 END
 $$;
 
@@ -66,7 +66,7 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA tww_od GRANT ALL ON TABLES TO tww_user_{db_id
 ALTER DEFAULT PRIVILEGES IN SCHEMA tww_od GRANT ALL ON SEQUENCES TO tww_user_{db_identifier};
 ALTER DEFAULT PRIVILEGES IN SCHEMA tww_app GRANT ALL ON TABLES TO tww_user_{db_identifier};
 ALTER DEFAULT PRIVILEGES IN SCHEMA tww_app GRANT ALL ON SEQUENCES TO tww_user_{db_identifier};
-EXECUTE FORMAT("GRANT CREATE ON DATABASE %1$I TO tww_user_{db_identifier}",current_catalog) ;  -- required for ili2pg imports/exports
+DO $$BEGIN EXECUTE FORMAT('GRANT CREATE ON DATABASE %1$I TO tww_user_{db_identifier}',current_catalog) ;END;$$  ;-- required for ili2pg imports/exports
 
 /* Manager */
 GRANT ALL ON SCHEMA tww_vl TO tww_manager_{db_identifier};
