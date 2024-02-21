@@ -3,15 +3,16 @@
 ------------------
 
 INSERT INTO tww_od.organisation(
-	obj_id, identifier, remark, uid, last_modification, fk_dataowner, fk_provider,organisation_type,status)
+	obj_id, identifier, remark, uid, last_modification, fk_dataowner, fk_provider,organisation_type,status,_local_extension)
 	VALUES 
-	('ch113jqg00000000',  'AfU Aargau',  'bei Import AG-64/AG-96 generiert','CHE114809310', now(), 'ch113jqg00000000','ch113jqg00000000',8605,9047),
-	('ch20p3q400000154', 'Gemeinde Wettingen', NULL, 'CHE115075438', '2016-02-05', 'ch113jqg00000000', 'ch113jqg00000000',8604,9047),
-	('ch20p3q400000315', 'Avia Tanklager Beteiligungs AG, Mellingen', NULL, 'CHE102501414', '2017-09-29', 'ch113jqg00000000', 'ch113jqg00000000',8606,9047),
-	('ch20p3q400000333', 'Kernkraftwerk Leibstadt AG', 'für_AraKKW_Leibstadt', 'CHE101719293', '2017-10-30', 'ch113jqg00000000', 'ch113jqg00000000',8606,9047),
-	('ch20p3q400000335', 'Axpo Power AG', 'u.a. für Ara Beznau', 'CHE105781196', '2017-10-30', 'ch113jqg00000000', 'ch113jqg00000000',8606,9047),
-	('ch20p3q400000343', 'Recyclingcenter Freiamt AG', NULL, 'CHE102501414', '2018-11-28', 'ch113jqg00000000', 'ch113jqg00000000',8606,9047),
-	('ch20p3q400000348', 'PDAG-Fonds-Verein', 'Areal Königsfelden', 'CHE116398921', '2020-07-02', 'ch113jqg00000000', 'ch113jqg00000000',8606,9047);
+	('ch113jqg00000000',  'AfU Aargau',  'bei Import AG-64/AG-96 generiert','CHE114809310', now(), 'ch113jqg00000000','ch113jqg00000000',8605,9047,TRUE),
+	('ch20p3q400000154', 'Gemeinde Wettingen', NULL, 'CHE115075438', '2016-02-05', 'ch113jqg00000000', 'ch113jqg00000000',8604,9047,TRUE),
+	('ch20p3q400000315', 'Avia Tanklager Beteiligungs AG, Mellingen', NULL, 'CHE102501414', '2017-09-29', 'ch113jqg00000000', 'ch113jqg00000000',8606,9047,TRUE),
+	('ch20p3q400000333', 'Kernkraftwerk Leibstadt AG', 'für_AraKKW_Leibstadt', 'CHE101719293', '2017-10-30', 'ch113jqg00000000', 'ch113jqg00000000',8606,9047,TRUE),
+	('ch20p3q400000335', 'Axpo Power AG', 'u.a. für Ara Beznau', 'CHE105781196', '2017-10-30', 'ch113jqg00000000', 'ch113jqg00000000',8606,9047,TRUE),
+	('ch20p3q400000343', 'Recyclingcenter Freiamt AG', NULL, 'CHE102501414', '2018-11-28', 'ch113jqg00000000', 'ch113jqg00000000',8606,9047,TRUE),
+	('ch20p3q400000348', 'PDAG-Fonds-Verein', 'Areal Königsfelden', 'CHE116398921', '2020-07-02', 'ch113jqg00000000', 'ch113jqg00000000',8606,9047,TRUE)
+	ON CONFLICT DO NOTHING;
 
 ------------------
 -- value list extensions

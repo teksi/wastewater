@@ -48,10 +48,11 @@ BEGIN
 			  END
 			, (CASE WHEN vw_val.lichte_breite_ist= 0 THEN 1
 			  ELSE vw_val.lichte_hoehe_ist::numeric/vw_val.lichte_breite_ist END)::numeric(5,2)
-			, {ext_schema}.convert_organisationid_to_vsa(vw_val.datenherr)
+			, downr.obj_id
 			, {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
 			FROM (SELECT NEW.*) vw_val
 			LEFT JOIN tww_vl.pipe_profile_profile_type ppt ON ppt.value_de =  vw_val.profiltyp 
+			LEFT JOIN {ext_schema}.vsadss_dataowner downr on 1=1
 			)
 			RETURNING obj_id INTO new_pipe_profile;
 		ELSE
@@ -78,7 +79,7 @@ BEGIN
     , reliner_nominal_size = vw_val.reliner_nennweite
     , relining_construction = re_rc.code
     , relining_kind = re_rk.code
-    , fk_dataowner = vw_val.datenherr
+    , fk_dataowner = downr.obj_id
     , fk_provider = {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
     , identifier = vw_val.bezeichnung
     , last_modification = vw_val.letzte_aenderung_wi
@@ -95,13 +96,13 @@ BEGIN
     , ws_structure_condition = ws_sc.code
     , ws_year_of_construction = vw_val.baujahr
     , rp_from_elevation_accuracy = rp_ea_fr.code
-    , rp_from_fk_dataowner = vw_val.datenherr
+    , rp_from_fk_dataowner = downr.obj_id
     , rp_from_fk_provider = {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
     , rp_from_fk_wastewater_networkelement = vw_val.startknoten
     , rp_from_last_modification = vw_val.letzte_aenderung_wi
     , rp_from_level = vw_val.kote_beginn
     , rp_to_elevation_accuracy = rp_ea_to.code
-    , rp_to_fk_dataowner = vw_val.datenherr
+    , rp_to_fk_dataowner = downr.obj_id
     , rp_to_fk_provider = {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
     , rp_to_fk_wastewater_networkelement = vw_val.endknoten
     , rp_to_last_modification = vw_val.letzte_aenderung_wi
@@ -129,6 +130,7 @@ BEGIN
 	LEFT JOIN tww_vl.reach_relining_kind re_rk ON re_rk.value_de=vw_val.reliner_art
 	LEFT JOIN tww_vl.reach_point_elevation_accuracy rp_ea_fr ON rp_ea_fr.value_de=vw_val.hoehengenauigkeit_von
 	LEFT JOIN tww_vl.reach_point_elevation_accuracy rp_ea_to ON rp_ea_to.value_de=vw_val.hoehengenauigkeit_nach
+	LEFT JOIN {ext_schema}.vsadss_dataowner downr on 1=1
 	WHERE vw_val.obj_id=re.obj_id
 	RETURNING ws_obj_id INTO ws_oid_for_measure;
 	IF NOT FOUND THEN
@@ -208,7 +210,7 @@ BEGIN
     , vw_val.reliner_nennweite
     , re_rc.code
     , re_rk.code
-    , vw_val.datenherr
+    , downr.obj_id
     , {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
     , vw_val.bezeichnung
     , vw_val.letzte_aenderung_wi
@@ -225,13 +227,13 @@ BEGIN
     , ws_sc.code
     , vw_val.baujahr
     , rp_ea_fr.code
-    , vw_val.datenherr
+    , downr.obj_id
     , {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
     , vw_val.startknoten
     , vw_val.letzte_aenderung_wi
     , vw_val.kote_beginn
     , rp_ea_to.code
-    , vw_val.datenherr
+    , downr.obj_id
     , {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
     , vw_val.endknoten
     , vw_val.letzte_aenderung_wi
@@ -259,6 +261,7 @@ BEGIN
 	LEFT JOIN tww_vl.reach_relining_kind re_rk ON re_rk.value_de=vw_val.reliner_art
 	LEFT JOIN tww_vl.reach_point_elevation_accuracy rp_ea_fr ON rp_ea_fr.value_de=vw_val.hoehengenauigkeit_von
 	LEFT JOIN tww_vl.reach_point_elevation_accuracy rp_ea_to ON rp_ea_to.value_de=vw_val.hoehengenauigkeit_nach
+	LEFT JOIN {ext_schema}.vsadss_dataowner downr on 1=1
 	)	RETURNING ws_obj_id INTO ws_oid_for_measure;
 	END IF;
 	------------ GEPMassnahme ------------ 
@@ -310,7 +313,7 @@ BEGIN
     , year_implementation_effective = vw_val.jahr_umsetzung_effektiv
     , year_implementation_planned = vw_val.jahr_umsetzung_geplant
     , last_modification = vw_val.letzte_aenderung_gep
-    , fk_dataowner = vw_val.datenherr
+    , fk_dataowner = downr.obj_id
     , fk_provider = {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_gep)
     , fk_responsible_entity = {ext_schema}.convert_organisationid_to_vsa(vw_val.traegerschaft)
     , fk_responsible_start = {ext_schema}.convert_organisationid_to_vsa(vw_val.verantwortlich_ausloesung)
@@ -318,6 +321,7 @@ BEGIN
 	LEFT JOIN tww_vl.measure_category msr_cat on msr_cat.value_de=vw_val.kategorie
 	LEFT JOIN tww_vl.measure_priority msr_pri on msr_pri.value_de = vw_val.prioritaetag
 	LEFT JOIN tww_vl.measure_status msr_st on msr_st.value_de = vw_val.status
+	LEFT JOIN {ext_schema}.vsadss_dataowner downr on 1=1
 	WHERE msr.obj_id=vw_val.obj_id;
 	IF NOT FOUND THEN
 	INSERT INTO tww_od.measure(
@@ -361,7 +365,7 @@ BEGIN
     , vw_val.jahr_umsetzung_effektiv
     , vw_val.jahr_umsetzung_geplant
     , vw_val.letzte_aenderung_gep
-    , vw_val.datenherr
+    , downr.obj_id
     , {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_gep)
     , {ext_schema}.convert_organisationid_to_vsa(vw_val.traegerschaft)
     , {ext_schema}.convert_organisationid_to_vsa(vw_val.verantwortlich_ausloesung)
@@ -369,6 +373,7 @@ BEGIN
 	LEFT JOIN tww_vl.measure_category msr_cat on msr_cat.value_de=vw_val.kategorie
 	LEFT JOIN tww_vl.measure_priority msr_pri on msr_pri.value_de = vw_val.prioritaetag
 	LEFT JOIN tww_vl.measure_status msr_st on msr_st.value_de = vw_val.status
+	LEFT JOIN {ext_schema}.vsadss_dataowner downr on 1=1
 	);
 	END IF
 	;
@@ -469,7 +474,7 @@ BEGIN
     , vw_val.abwasseranfall_ist
     , vw_val.abwasseranfall_geplant
     , vw_val.letzte_aenderung_gep
-    , vw_val.datenherr
+    , downr.obj_id
     , {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_gep)
     , vw_val.gepknoten_rw_istref
     , vw_val.gepknoten_rw_geplantref
@@ -483,7 +488,8 @@ BEGIN
 	LEFT JOIN tww_vl.catchment_area_infiltration_current ic on ic.code = vw_val.versickerung_ist
 	LEFT JOIN tww_vl.catchment_area_infiltration_planned ip on ip.code = vw_val.versickerung_geplant
 	LEFT JOIN tww_vl.catchment_area_retention_current rc on rc.code = vw_val.retention_ist
-	LEFT JOIN tww_vl.catchment_area_retention_planned rp on rp.code = vw_val.retention_geplant	
+	LEFT JOIN tww_vl.catchment_area_retention_planned rp on rp.code = vw_val.retention_geplant
+	LEFT JOIN {ext_schema}.vsadss_dataowner downr on 1=1
 	)
 	ON CONFLICT (obj_id)  DO UPDATE SET
 	(
@@ -710,7 +716,7 @@ BEGIN
     , vw_val.sanierungskonzept
     , vw_val.lage
     , vw_val.letzte_aenderung_gep
-    , vw_val.datenherr
+    , downr.obj_id
     , {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_gep)
     , vw_val.eigentuemeradresse
     , vw_val.eigentuemername
@@ -863,7 +869,7 @@ BEGIN
     , vw_val.flaeche_reduziert_geplant
     , vw_val.schmutzabwasseranfall_ist
     , vw_val.letzte_aenderung_gep
-    , vw_val.datenherr
+    , downr.obj_id
     , {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_gep)
     , vw_val.einleitstelleref
     , hcd_oid
@@ -872,6 +878,7 @@ BEGIN
 	FROM (SELECT NEW.*) as vw_val
 	LEFT JOIN tww_od.hydraulic_char_data hcd on hcd.obj_id = cat.fk_hydraulic_char_data
 	LEFT JOIN tww_od.wastewater_node wn on hcd.fk_wastewater_node=wn.obj_id
+	LEFT JOIN {ext_schema}.vsadss_dataowner downr on 1=1
 	)
 	ON CONFLICT(obj_id) DO UPDATE SET
 	(

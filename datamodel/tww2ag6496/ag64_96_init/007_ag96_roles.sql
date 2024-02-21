@@ -7,7 +7,7 @@
 
 DO
 $$
-BEGIN;
+BEGIN
   IF EXISTS (SELECT 1 FROM pg_roles WHERE rolname='tww_user_{db_identifier}') THEN
 	GRANT ALL ON SCHEMA {ext_schema} TO tww_user_{db_identifier};
 	GRANT ALL ON ALL TABLES IN SCHEMA {ext_schema} TO tww_user_{db_identifier};

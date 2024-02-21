@@ -23,7 +23,7 @@ ALTER TABLE tww_vl.wastewater_node_ag96_is_gateway ADD CONSTRAINT pkey_tww_vl_wa
 
 -- Ist_Schnittstelle
 CREATE TABLE IF NOT EXISTS tww_vl.wastewater_node_ag64_function () INHERITS (tww_vl.value_list_base); --Werteliste
-ALTER TABLE tww_vl.wastewater_node_ag64_function DROP CONSTRAINT IF EXISTS pkey_tww_vl_wastewater_node_ag96_function CASCADE;
+ALTER TABLE tww_vl.wastewater_node_ag64_function DROP CONSTRAINT IF EXISTS pkey_tww_vl_wastewater_node_ag64_function CASCADE;
 ALTER TABLE tww_vl.wastewater_node_ag64_function ADD CONSTRAINT pkey_tww_vl_wastewater_node_ag64_function PRIMARY KEY (code);
 
 ALTER TABLE tww_od.wastewater_node ADD COLUMN IF NOT EXISTS ag96_is_gateway bigint;
@@ -64,6 +64,7 @@ ALTER TABLE tww_od.building_group
 , ADD COLUMN IF NOT EXISTS ag96_disposal_industrial_wastewater bigint
 , ADD COLUMN IF NOT EXISTS ag96_disposal_square_water bigint
 , ADD COLUMN IF NOT EXISTS ag96_disposal_roof_water bigint
+, ADD COLUMN IF NOT EXISTS ag96_population bigint
 ;
 
 CREATE TABLE IF NOT EXISTS tww_vl.building_group_ag96_disposal_type () INHERITS (tww_vl.value_list_base);
@@ -94,7 +95,7 @@ ALTER TABLE tww_od.overflow
 , ADD COLUMN IF NOT EXISTS ag64_remark varchar(80);
 
 ALTER TABLE tww_od.overflow DROP CONSTRAINT IF EXISTS ag64_rel_overflow_provider CASCADE;
-ALTER TABLE tww_od.overflow ADD CONSTRAINT ag64_rel_overflow_provider FOREIGN KEY (ag96_fk_provider) REFERENCES tww_od.organisation(obj_id); 
+ALTER TABLE tww_od.overflow ADD CONSTRAINT ag64_rel_overflow_provider FOREIGN KEY (ag64_fk_provider) REFERENCES tww_od.organisation(obj_id); 
 ALTER TABLE tww_od.overflow DROP CONSTRAINT IF EXISTS ag96_rel_overflow_provider CASCADE;
 ALTER TABLE tww_od.overflow ADD CONSTRAINT ag96_rel_overflow_provider FOREIGN KEY (ag96_fk_provider) REFERENCES tww_od.organisation(obj_id); 
 
@@ -173,3 +174,5 @@ CREATE INDEX IF NOT EXISTS in_{ext_schema}_od_unconnected_node_bwrel_detailgeome
     ON {ext_schema}.od_unconnected_node_bwrel USING gist
     (detailgeometrie2d)
     TABLESPACE pg_default;
+	
+ALTER TABLE tww_od.organisation DISABLE TRIGGER update_last_modified_organisation;
