@@ -24,6 +24,7 @@ class InterlisExporterToIntermediateSchema:
         labels_file=None,
         basket_enabled=False,
         callback_progress_done=None,
+        use_vsacode=True,
     ):
         """
         Export data from the TWW model into the ili2pg model.
@@ -39,6 +40,7 @@ class InterlisExporterToIntermediateSchema:
         self.subset_ids = selection if selection is not None else []
 
         self.labels_file = labels_file
+        self.use_vsacode = use_vsacode
 
         self.basket_enabled = basket_enabled
 
@@ -2349,7 +2351,20 @@ class InterlisExporterToIntermediateSchema:
         """
         if relation is None:
             return None
-        return relation.value_de
+        elif relation.code==relation.vsacode:
+            return relation.value_de    
+        elif self.use_vsacode:
+            # use vsacode instead of code
+            
+            vsacode_value_de=self.get_vl_by_code(self.model_classes_tww_vl.value_list_base,relation.vsacode)
+            if vsacode_value_de is None:
+                logger.warning(
+                f"Code {relation.code}: Usage of vsacode returned none. Falling back to {relation.value_de}. This will probably cause validation errors",
+                )
+                return relation.value_de
+            return vsacode_value_de
+        else: # value list extension for other type
+            return relation.value_de
 
     def get_vl_by_code(self, vl_table, vl_code):
         instance = self.tww_session.query(vl_table).filter(vl_table.code == vl_code).first()
