@@ -20,7 +20,7 @@ CREATE OR REPLACE VIEW tww_app.vw_file AS
     f.identifier,
     f.kind,
     f.object,
-    f.class,
+    f.classname,
     -- dm.path,
     COALESCE(dm.path::text || f.path_relative::text, f.path_relative::text) AS _url,
     f.fk_dataowner as dataowner,
@@ -62,7 +62,7 @@ $BODY$
     NEW._url = replace(NEW._url, '\', '/');
 
     INSERT INTO tww_od.file(
-      class,
+      classname,
       identifier,
       kind,
       object,
@@ -73,7 +73,7 @@ $BODY$
       remark)
 
     SELECT
-      NEW.class,
+      NEW.classname,
       NEW.identifier,
       NEW.kind,
       NEW.object,
@@ -111,7 +111,7 @@ NEW._url = replace(NEW._url, '\', '/');
 
   UPDATE  tww_od.file
     SET
-    class = NEW.class,
+    classname = NEW.classname,
     identifier = NEW.identifier,
     kind = NEW.kind,
     object = NEW.object,
