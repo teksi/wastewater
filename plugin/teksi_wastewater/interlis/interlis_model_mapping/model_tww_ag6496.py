@@ -142,6 +142,16 @@ class ModelTwwAG6496(ModelBase):
         class versickerungsbereichag(self.Base):
             __tablename__ = "versickerungsbereichag"
             obj_id=Column(String, primary_key=True)
+            datenbewirtschafter_gep = Column(String)
+            bemerkung_gep = Column(String)
+            letzte_aenderung_gep = Column(DateTime)
+            bezeichnung = Column(String)
+            durchlaessigkeit = Column(String)
+            einschraenkung = Column(String)
+            maechtigkeit = Column(String)
+            perimeter = Column(Geometry)
+            ag96_q_check = Column(String)
+            versickerungsmoeglichkeitag = Column(String)
             __table_args__ = {"schema": config.TWW_AG_SCHEMA}   
         
         ModelTwwAG6496.versickerungsbereichag = versickerungsbereichag

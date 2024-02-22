@@ -728,13 +728,13 @@ class InterlisExporterToIntermediateSchema:
         for row in query:
             versickerungsbereichag = self.model_classes_interlis.versickerungsbereichag(
                 # --- abwasserbauwerk ---
-                **self.base_common(row,'versickerungsbereichag'),
+                **self.gep_metainformation_common_ag_xx(row,'versickerungsbereichag'),
                 bezeichnung=self.truncate(self.emptystr_to_null(row.bezeichnung), 20),
                 durchlaessigkeit=row.durchlaessigkeit,
                 einschraenkung=row.einschraenkung,
                 maechtigkeit=row.maechtigkeit,
                 perimeter=row.perimeter,
-                q_check=row.q_check,
+                q_check=row.ag96_q_check,
                 versickerungsmoeglichkeitag=row.versickerungsmoeglichkeitag,
             )
             self.abwasser_session.add(versickerungsbereichag)
