@@ -680,7 +680,7 @@ class InterlisExporterToIntermediateSchema:
         for row in query:
             ueberlauf_foerderaggregat = self.model_classes_interlis.ueberlauf_foerderaggregat(
                 **self.gep_metainformation_common_ag_xx(row,'ueberlauf_foerderaggregat'),
-                **self.ueberlauf_foerderaggregat_common(row),
+                **self.ueberlauf_foerderaggregat_common_ag_xx(row),
             )
             self.abwasser_session.add(ueberlauf_foerderaggregat)
             print(".", end="")
@@ -2969,4 +2969,15 @@ class InterlisExporterToIntermediateSchema:
             "betreiber": self.get_tid_by_obj_id(row.betreiber),
             "datenbewirtschafter_wi": self.get_tid_by_obj_id(row.datenbewirtschafter_wi),
             "eigentuemer": self.get_tid_by_obj_id(row.eigentuemer),
+        }
+
+    def ueberlauf_foerderaggregat_common_ag_xx(self, row):
+        """
+        Returns common attributes for ueberlauf_foerderaggregat
+        """
+        return {
+            "art": row.art,
+            "bezeichnung": self.truncate(self.emptystr_to_null(row.bezeichnung), 20),
+            "knotenref": self.get_tid_by_obj_id(row.knotenref),
+            "knoten_nachref": self.get_tid_by_obj_id(row.knoten_nachref),
         }

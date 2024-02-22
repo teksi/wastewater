@@ -119,6 +119,14 @@ class ModelTwwAG6496(ModelBase):
         class ueberlauf_foerderaggregat(self.Base):
             __tablename__ = "ueberlauf_foerderaggregat"
             obj_id=Column(String, primary_key=True)
+            datenbewirtschafter_gep = Column(String)
+            bemerkung_gep = Column(String)
+            letzte_aenderung_gep = Column(DateTime)
+            art = Column(String)
+            bezeichnung = Column(String)
+            knotenref = Column(String)
+            knoten_nachref = Column(String)
+
             __table_args__ = {"schema": config.TWW_AG_SCHEMA}
 
         ModelTwwAG6496.ueberlauf_foerderaggregat = ueberlauf_foerderaggregat
