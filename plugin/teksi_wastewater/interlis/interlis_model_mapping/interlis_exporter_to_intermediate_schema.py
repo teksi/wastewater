@@ -640,6 +640,7 @@ class InterlisExporterToIntermediateSchema:
                 maxrueckstauhoehe=row.maxrueckstauhoehe,
                 gepmassnahmeref=self.get_tid_by_obj_id(row.gepmassnahmeref),
             )
+            self.map_tid_ag_xx(row.obj_id, gepknoten.t_id)
             self.abwasser_session.add(gepknoten)
             print(".", end="")
         logger.info("done")
@@ -659,8 +660,11 @@ class InterlisExporterToIntermediateSchema:
                 lichte_breite_ist=row.lichte_breite_ist,
                 lichte_breite_geplant=row.lichte_breite_geplant,
                 lichte_hoehe_geplant=row.lichte_hoehe_geplant,
-                nutzungsartag_geplant=self.row.nutzungsartag_geplant,
-                gepmassnahmeref=getattr(row.gepmassnahmeref, "obj_id", "unbekannt"),
+                nutzungsartag_geplant=row.nutzungsartag_geplant,
+                wiederbeschaffungswert=row.wiederbeschaffungswert,
+                startknoten=self.get_tid_by_obj_id(row.startknoten),
+                endknoten=self.get_tid_by_obj_id(row.endknoten),
+                gepmassnahmeref=self.get_tid_by_obj_id(row.gepmassnahmeref),
             )
             self.abwasser_session.add(gephaltung)
             print(".", end="")
@@ -2954,12 +2958,15 @@ class InterlisExporterToIntermediateSchema:
             "laengeeffektiv": row.laengeeffektiv,
             "material": row.material,
             "profiltyp": row.profiltyp,
-            "nutzungsartag_ist": row.nutzungartag_ist,
+            "nutzungsartag_ist": row.nutzungsartag_ist,
             "reliner_art": row.reliner_art,
             "reliner_bautechnik": row.reliner_bautechnik,
             "reliner_material": row.reliner_material,
             "reliner_nennweite": row.reliner_nennweite,
             "sanierungsbedarf": row.sanierungsbedarf,
             "verlauf": row.verlauf,
-            "wbw_basisjahr": row.wbw_basisjahr
+            "wbw_basisjahr": row.wbw_basisjahr,
+            "betreiber": self.get_tid_by_obj_id(row.betreiber),
+            "datenbewirtschafter_wi": self.get_tid_by_obj_id(row.datenbewirtschafter_wi),
+            "eigentuemer": self.get_tid_by_obj_id(row.eigentuemer),
         }

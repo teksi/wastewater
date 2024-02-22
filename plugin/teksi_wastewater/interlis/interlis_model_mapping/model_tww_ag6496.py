@@ -1,6 +1,6 @@
 from .. import config
 from .model_base import ModelBase
-from sqlalchemy import Column, String, DateTime
+from sqlalchemy import Column, String, DateTime, Integer, Float
 from geoalchemy2 import Geometry
 
 
@@ -25,6 +25,32 @@ class ModelTwwAG6496(ModelBase):
         class gepknoten(self.Base):
             __tablename__ = "gepknoten"
             obj_id=Column(String, primary_key=True)
+            ara_nr = Column(Integer)
+            baujahr = Column(Integer)
+            baulicherzustand = Column(String)
+            bauwerkstatus = Column(String)
+            bemerkung_wi = Column(String)
+            bezeichnung = Column(String)
+            deckelkote = Column(Float)
+            detailgeometrie = Column(Geometry)
+            finanzierung = Column(String)
+            funktionag = Column(String)
+            funktionhierarchisch = Column(String)
+            istschnittstelle = Column(String)
+            jahr_zustandserhebung = Column(Integer)
+            lage = Column(Geometry)
+            letzte_aenderung_wi = Column(DateTime)
+            maxrueckstauhoehe = Column(Float)
+            sanierungsbedarf = Column(String)
+            sohlenkote = Column(Float)
+            zugaenglichkeit = Column(String)
+            betreiber = Column(String)
+            datenbewirtschafter_wi = Column(String)
+            eigentuemer = Column(String)
+            gepmassnahmeref = Column(String)
+            datenbewirtschafter_gep = Column(String)
+            bemerkung_gep = Column(String)
+            letzte_aenderung_gep = Column(DateTime)
             __table_args__ = {"schema": config.TWW_AG_SCHEMA}
 
         ModelTwwAG6496.gepknoten = gepknoten
@@ -32,6 +58,46 @@ class ModelTwwAG6496(ModelBase):
         class gephaltung(self.Base):
             __tablename__ = "gephaltung"
             obj_id=Column(String, primary_key=True)
+            baujahr = Column(Integer)
+            baulicherzustand = Column(String)
+            bauwerkstatus = Column(String)
+            bemerkung_wi = Column(String)
+            bezeichnung = Column(String)
+            finanzierung = Column(String)
+            funktionhierarchisch = Column(String)
+            funktionhydraulisch = Column(String)
+            hoehengenauigkeit_nach = Column(String)
+            hoehengenauigkeit_von = Column(String)
+            hydraulischebelastung = Column(Integer)
+            jahr_zustandserhebung = Column(Integer)
+            kote_beginn = Column(Float)
+            kote_ende = Column(Float)
+            letzte_aenderung_wi = Column(DateTime)
+            lichte_breite_ist = Column(Integer)
+            lichte_breite_geplant = Column(Integer)
+            lichte_hoehe_ist = Column(Integer)
+            lichte_hoehe_geplant = Column(Integer)
+            laengeeffektiv = Column(Float)
+            material = Column(String)
+            profiltyp = Column(String)
+            nutzungsartag_ist = Column(String)
+            nutzungsartag_geplant = Column(String)
+            reliner_art = Column(String)
+            reliner_bautechnik = Column(String)
+            reliner_material = Column(String)
+            reliner_nennweite = Column(Integer)
+            sanierungsbedarf = Column(String)
+            verlauf = Column(Geometry)
+            wbw_basisjahr = Column(Integer)
+            wiederbeschaffungswert = Column(Float)
+            betreiber = Column(String)
+            datenbewirtschafter_wi = Column(String)
+            eigentuemer = Column(String)
+            datenbewirtschafter_gep = Column(String)
+            bemerkung_gep = Column(String)
+            letzte_aenderung_gep = Column(DateTime)
+            startknoten = Column(String)
+            endknoten = Column(String)
             __table_args__ = {"schema": config.TWW_AG_SCHEMA}
 
         ModelTwwAG6496.gephaltung = gephaltung
