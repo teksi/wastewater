@@ -539,6 +539,7 @@ class InterlisExporterToIntermediateSchema:
                     letzte_aenderung=row.letzte_aenderung,
                     bemerkung=self.truncate(self.emptystr_to_null(row.bemerkung), 80),
                 )
+                self.map_tid_ag_xx(row.obj_id, organisation.t_id)
             else:
                 organisation = self.model_classes_interlis.organisation(
                     # FIELDS TO MAP TO ABWASSER.organisation
@@ -2876,11 +2877,30 @@ class InterlisExporterToIntermediateSchema:
         if self.callback_progress_done:
             self.callback_progress_done()
 
+    def map_tid_ag_xx(self, obj_id, t_id):
+        """
+        Creates a t_id for a given obj_id
+        """
+        if hasattr(self, "obj2tId") is False:
+            self.obj2tId = {}
+
+        if obj_id not in self.obj2tId.keys():
+            self.obj2tId[obj_id] = t_id
+
+    def get_tid_by_obj_id(self, obj_id):
+        """
+        Returns a t_id for a given obj_id
+        """
+        if obj_id in self.obj2tId.keys():
+            return self.obj2tId[obj_id]
+        else:
+            return None
+
     def gep_metainformation_common_ag_xx(self, row, type_name):
         return {
             **self.base_common(row, type_name),
             "bemerkung_gep": row.bemerkung_gep,
-            "datenbewirtschafter_gep": row.datenbewirtschafter_gep,
+            "datenbewirtschafter_gep": self.get_tid_by_obj_id(row.datenbewirtschafter_gep),
             "letzte_aenderung_gep": row.letzte_aenderung_gep,
         }
     
@@ -2906,9 +2926,9 @@ class InterlisExporterToIntermediateSchema:
             "sanierungsbedarf": row.sanierungsbedarf,
             "sohlenkote": row.sohlenkote,
             "zugaenglichkeit": row.zugaenglichkeit,
-            "betreiber": getattr(row.betreiber, "obj_id", "unbekannt"),
-            "datenbewirtschafter_wi": getattr(row.datenbewirtschafter_wi, "obj_id", "unbekannt"),
-            "eigentuemer": getattr(row.eigentuemer, "obj_id", "unbekannt"),
+            "betreiber": self.get_tid_by_obj_id(row.betreiber),
+            "datenbewirtschafter_wi": self.get_tid_by_obj_id(row.datenbewirtschafter_wi),
+            "eigentuemer": self.get_tid_by_obj_id(row.eigentuemer),
         }
 
     def haltung_common_ag_xx(self, row):
