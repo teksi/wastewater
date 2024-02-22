@@ -535,7 +535,7 @@ class InterlisExporterToIntermediateSchema:
                     bezeichnung=self.truncate(self.emptystr_to_null(row.bezeichnung), 80),
                     kurzbezeichnung=self.truncate(self.emptystr_to_null(row.kurzbezeichnung), 12),
                     datenbewirtschafter_kt=row.datenbewirtschafter_kt,
-                    organisationstyp=self.get_vl(row.organisationstyp),
+                    organisationtyp=row.organisationtyp,
                     letzte_aenderung=row.letzte_aenderung,
                     bemerkung=self.truncate(self.emptystr_to_null(row.bemerkung), 80),
                 )

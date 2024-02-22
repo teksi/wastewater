@@ -1,6 +1,7 @@
 from .. import config
 from .model_base import ModelBase
-from sqlalchemy import Column, String
+from sqlalchemy import Column, String, DateTime
+from geoalchemy2 import Geometry
 
 
 class ModelTwwAG6496(ModelBase):
@@ -10,6 +11,13 @@ class ModelTwwAG6496(ModelBase):
         class organisation(self.Base):
             __tablename__ = "organisation"
             obj_id=Column(String, primary_key=True)
+            uid = Column(String)
+            bezeichnung = Column(String)
+            kurzbezeichnung = Column(String)
+            datenbewirtschafter_kt = Column(String)
+            organisationtyp = Column(String)
+            letzte_aenderung = Column(DateTime)
+            bemerkung = Column(String)
             __table_args__ = {"schema": config.TWW_AG_SCHEMA}
 
         ModelTwwAG6496.organisation = organisation  
