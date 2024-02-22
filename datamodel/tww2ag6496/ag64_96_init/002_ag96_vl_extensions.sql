@@ -33,13 +33,13 @@ ON CONFLICT DO NOTHING;
 
 -- Kanal_Nutzungsart	
 INSERT INTO tww_vl.channel_usage_planned (code,vsacode,value_de,value_en,active) VALUES
-(1999992,4521,'Platzwasser','square_water',true) ON CONFLICT DO NOTHING;
+(1999992,9024,'Platzwasser','square_water',true) ON CONFLICT DO NOTHING; -- 9024 = Niederschlagsabwasser
 INSERT INTO tww_vl.channel_usage_current (code,vsacode,value_de,value_en,active) VALUES
-(1999993,4520,'Platzwasser','square_water',true) ON CONFLICT DO NOTHING;
+(1999993,9023,'Platzwasser','square_water',true) ON CONFLICT DO NOTHING; -- 9023 = Niederschlagsabwasser
 INSERT INTO tww_vl.channel_usage_planned (code,vsacode,value_de,value_en,active) VALUES
-(1999990,4521,'Strassenwasser','street_water',true) ON CONFLICT DO NOTHING;
+(1999990,9024,'Strassenwasser','street_water',true) ON CONFLICT DO NOTHING; -- 9024 = Niederschlagsabwasser
 INSERT INTO tww_vl.channel_usage_current (code,vsacode,value_de,value_en,active) VALUES
-(1999989,4520,'Strassenwasser','street_water',true) ON CONFLICT DO NOTHING;
+(1999989,9023,'Strassenwasser','street_water',true) ON CONFLICT DO NOTHING; -- 9023 = Niederschlagsabwasser
 --Kanal_FunktionHierarchisch
 INSERT INTO tww_vl.channel_function_hierarchic (code,vsacode,value_de,value_en,active) VALUES
 (1999991,5071,'PAA.Arealentwaesserung','pwwf.site_drainage',true)ON CONFLICT DO NOTHING;

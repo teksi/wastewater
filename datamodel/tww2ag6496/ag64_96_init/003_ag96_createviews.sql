@@ -122,9 +122,9 @@ SELECT
 		,'Versickerungsanlage.'||ii_ki_rev.value_agxx --Versickerungsanlage.andere wird auf unbekannt gemappt
 		,'Versickerungsanlage.'||ii_ki.value_de --Versickerungsanlage.andere wird auf unbekannt gemappt
 		, 'Leitungsknoten') AS funktionag
-	, coalesce(left(fhi.value_de,3),funktionhierarchisch)  AS funktionhierarchisch
+	, coalesce(left(fhi.value_de,3),unc.funktionhierarchisch)  AS funktionhierarchisch
 	, coalesce(isgate.value_de,'unbekannt') AS istschnittstelle
-	, coalesce(ws.status_survey_year,unc.jahr_zustandserhebung) AS jahr_zustandserhebung
+	, coalesce(ws.status_survey_year,unc.jahr_zustandserhebung,1800) AS jahr_zustandserhebung
 	, ST_Force2D(coalesce(main_co.situation3d_geometry,wn.situation3d_geometry)) AS lage
 	, ne.ag64_last_modification AS letzte_aenderung_wi
 	, coalesce(co_pa.value_de,unc.lagegenauigkeit) AS lagegenauigkeit
@@ -138,7 +138,7 @@ SELECT
 	, coalesce(ws.ag96_fk_measure, unc.gepmassnahmeref) AS gepmassnahmeref
 	, concat_ws('','ch113jqg0000',right(coalesce(ne.ag96_fk_provider,'00000107'),8)) AS datenbewirtschafter_gep
 	, ne.ag96_remark as bemerkung_gep
-	, ne.ag96_last_modification as letzte_aenderung_gep
+	, coalesce(ne.ag96_last_modification,TO_TIMESTAMP('1800-01-01','YYYY-MM-DD')) as letzte_aenderung_gep
 
 FROM tww_od.wastewater_node wn
 LEFT JOIN tww_od.wastewater_networkelement ne ON wn.obj_id = ne.obj_id
@@ -231,7 +231,7 @@ SELECT
 	, ws.ag96_fk_measure AS gepmassnahmeref
 	, concat_ws('','ch113jqg0000',right(coalesce(ne.ag96_fk_provider,'00000107'),8)) AS datenbewirtschafter_gep
 	, ne.ag96_remark as bemerkung_gep
-	, ne.ag96_last_modification as letzte_aenderung_gep
+	, coalesce(ne.ag96_last_modification,TO_TIMESTAMP('1800-01-01','YYYY-MM-DD')) as letzte_aenderung_gep
 
 FROM tww_od.reach re
 	LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id::text = re.obj_id::text
@@ -289,7 +289,7 @@ SELECT
 	, concat_ws('','ch113jqg0000',right(coalesce(msr.fk_responsible_start,'00000107'),8)) AS verantwortlich_ausloesung
 	, concat_ws('','ch113jqg0000',right(coalesce(msr.fk_provider,'00000107'),8)) AS datenbewirtschafter_gep
 	, msr.remark as bemerkung_gep
-	, msr.last_modification as letzte_aenderung_gep
+	, coalesce(msr.last_modification,TO_TIMESTAMP('1800-01-01','YYYY-MM-DD')) as letzte_aenderung_gep
 
 FROM tww_od.measure msr
 	LEFT JOIN tww_vl.measure_category msr_ct on msr_ct.code = msr.category
@@ -341,7 +341,7 @@ SELECT
 	, ca.fk_wastewater_networkelement_ww_current AS gepknoten_sw_istref
 	, concat_ws('','ch113jqg0000',right(coalesce(ca.fk_provider,'00000107'),8)) AS datenbewirtschafter_gep
 	, ca.remark as bemerkung_gep
-	, ca.last_modification as letzte_aenderung_gep
+	, coalesce(ca.last_modification,TO_TIMESTAMP('1800-01-01','YYYY-MM-DD')) as letzte_aenderung_gep
 
 FROM tww_od.catchment_area ca
 	LEFT JOIN tww_vl.catchment_area_direct_discharge_current ddc on ddc.code = ca.direct_discharge_current
@@ -377,7 +377,7 @@ SELECT
 	, ov.ag64_last_modification as letzte_aenderung_wi
 	, concat_ws('','ch113jqg0000',right(coalesce(ne.ag96_fk_provider,'00000107'),8)) AS datenbewirtschafter_gep
 	, ov.ag96_remark as bemerkung_gep
-	, ov.ag96_last_modification as letzte_aenderung_gep
+	, coalesce(ov.ag96_last_modification,TO_TIMESTAMP('1800-01-01','YYYY-MM-DD')) as letzte_aenderung_gep
 
 FROM tww_od.overflow ov
     LEFT JOIN tww_od.pump pu ON ov.obj_id = pu.obj_id
@@ -414,7 +414,7 @@ SELECT
 	, bg.restructuring_concept as sanierungskonzept
 	, concat_ws('','ch113jqg0000',right(coalesce(bg.fk_provider,'00000107'),8)) AS datenbewirtschafter_gep
 	, bg.remark as bemerkung_gep
-	, bg.last_modification as letzte_aenderung_gep
+	, coalesce(bg.last_modification,TO_TIMESTAMP('1800-01-01','YYYY-MM-DD')) as letzte_aenderung_gep
 FROM tww_od.building_group bg
 	LEFT JOIN tww_vl.building_group_function bg_fct on bg_fct.code = bg.function
 	LEFT JOIN {ext_schema}.vl_building_group_function bg_fct_rev on bg_fct_rev.code = bg.function
@@ -452,7 +452,7 @@ SELECT
 	, wn.obj_id AS sonderbauwerk_ref
 	, concat_ws('','ch113jqg0000',right(coalesce(cat.fk_provider,'00000107'),8)) AS datenbewirtschafter_gep
 	, hcd.remark as bemerkung_gep
-	, cat.last_modification as letzte_aenderung_gep
+	, coalesce(cat.last_modification,TO_TIMESTAMP('1800-01-01','YYYY-MM-DD')) as letzte_aenderung_gep
 
 FROM tww_od.catchment_area_totals cat
 	LEFT JOIN tww_od.hydraulic_char_data hcd on hcd.obj_id = cat.fk_hydraulic_char_data and hcd.status = 6372 --Ist
@@ -498,11 +498,11 @@ FROM tww_od.catchment_area_totals cat
 -- VersickerungsbereichAG
 ----------------------------
 DROP VIEW IF EXISTS {ext_schema}.versickerungsbereichag;
-CREATE OR REPLACE VIEW {ext_schema}.versickerungsbereichag
+CREATE VIEW {ext_schema}.versickerungsbereichag
 AS 
 SELECT
 	  iz.obj_id
-	, zo.identifier as bezeichung
+	, zo.identifier as bezeichnung
 	, iz.ag96_permeability as durchlaessigkeit
 	, iz.ag96_limitation as einschraenkung
 	, iz.ag96_thickness as maechtigkeit
@@ -511,7 +511,7 @@ SELECT
 	, iz_ic.value_de as versickerungsmoeglichkeitag
 	, concat_ws('','ch113jqg0000',right(coalesce(zo.fk_provider,'00000107'),8)) AS datenbewirtschafter_gep
 	, zo.remark as bemerkung_gep
-	, zo.last_modification as letzte_aenderung_gep
+	, coalesce(zo.last_modification,TO_TIMESTAMP('1800-01-01','YYYY-MM-DD')) as letzte_aenderung_gep
 FROM tww_od.infiltration_zone iz
   LEFT JOIN tww_od.zone zo on zo.obj_id = iz.obj_id
   LEFT JOIN tww_vl.infiltration_zone_infiltration_capacity iz_ic on iz_ic.code = iz.infiltration_capacity;
