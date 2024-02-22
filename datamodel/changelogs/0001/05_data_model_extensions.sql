@@ -71,3 +71,13 @@ ALTER TABLE tww_od.wastewater_node ADD COLUMN _status integer;
 COMMENT ON COLUMN tww_od.wastewater_node._status IS 'not part of the VSA-DSS data model
 added solely for TEKSI Wastewater & GEP
 has to be updated by triggers';
+
+ALTER TABLE tww_od.organisation ADD COLUMN _active bool;
+COMMENT ON COLUMN tww_od.organisation._active IS 'not part of the VSA-DSS data model
+added solely for TEKSI Wastewater & GEP
+used to filter organisations';
+
+ALTER TABLE tww_od.organisation ADD COLUMN _local_extension bool;
+COMMENT ON COLUMN tww_od.organisation._local_extension IS 'not part of the VSA-DSS data model
+added solely for TEKSI Wastewater & GEP
+used to map non-harmonized organisations to private on export';

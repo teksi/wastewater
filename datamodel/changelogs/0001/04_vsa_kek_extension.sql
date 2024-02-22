@@ -1,6 +1,6 @@
 ------ This file generates the VSA-DSS database (Modul VSA-KEK (2020)) in en on QQIS
 ------ For questions etc. please contact Stefan Burckhardt stefan.burckhardt@sjib.ch
------- version 13.12.2023 17:35:31
+------ version 10.02.2024 14:52:05
 ------ with 3D coordinates
 BEGIN;
 
@@ -212,8 +212,8 @@ WITH (
 CREATE SEQUENCE tww_od.seq_file_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
  ALTER TABLE tww_od.file ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','file');
 COMMENT ON COLUMN tww_od.file.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
- ALTER TABLE tww_od.file ADD COLUMN class  integer ;
-COMMENT ON COLUMN tww_od.file.class IS 'yyy_Gibt an, zu welcher Klasse des VSA-DSS-Datenmodells die Datei gehört. Grundsätzlich alle Klassen möglich. Im Rahmen der Kanalfernsehaufnahmen hauptsächlich Kanal, Normschachtschaden, Kanalschaden und Untersuchung. / Gibt an, zu welcher Klasse des VSA-DSS-Datenmodells die Datei gehört. Grundsätzlich alle Klassen möglich. Im Rahmen der Kanalfernsehaufnahmen hauptsächlich Kanal, Normschachtschaden, Kanalschaden und Untersuchung. / Indique à quelle classe du modèle de données de VSA-SDEE appartient le fichier. Toutes les classes sont possible. Surtout CANALISATION, DOMMAGE_CHAMBRE_STANDARD, DOMMAGE_CANALISATION, EXAMEN.';
+ ALTER TABLE tww_od.file ADD COLUMN classname  integer ;
+COMMENT ON COLUMN tww_od.file.classname IS 'Specifies the classname of the VSA-DSS data model to which the file belongs. In principle, all classes are possible. In the context of sewer television recordings, mainly channel, manhole damage, channel damage and examination. / Gibt an, zu welcher Klasse des VSA-DSS-Datenmodells die Datei gehört. Grundsätzlich alle Klassen möglich. Im Rahmen der Kanalfernsehaufnahmen hauptsächlich Kanal, Normschachtschaden, Kanalschaden und Untersuchung. / Indique à quelle classe du modèle de données de VSA-SDEE appartient le fichier. Toutes les classes sont possible. Surtout CANALISATION, DOMMAGE_CHAMBRE_STANDARD, DOMMAGE_CANALISATION, EXAMEN.';
  ALTER TABLE tww_od.file ADD COLUMN identifier text;
  ALTER TABLE tww_od.file ADD CONSTRAINT fi_identifier_length_max_120 CHECK(char_length(identifier)<=120);
 COMMENT ON COLUMN tww_od.file.identifier IS 'yyy_Name der Datei mit Dateiendung. Z.B video_01.mpg oder haltung_01.ipf / Name der Datei mit Dateiendung. Z.B video_01.mpg oder haltung_01.ipf / Nom du fichier avec terminaison du fichier. P. ex. video_01.mpg ou canalisation_01.ipf';
