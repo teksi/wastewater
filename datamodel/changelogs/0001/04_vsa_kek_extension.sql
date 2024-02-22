@@ -1074,7 +1074,7 @@ ALTER TABLE tww_vl.file_classname ADD CONSTRAINT pkey_tww_vl_file_classname_code
  INSERT INTO tww_vl.file_classname (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3888,3888,'infiltration_zone','Versickerungsbereich','ZONE_INFILTRATION', 'zzz_Versickerungsbereich', 'rrr_Versickerungsbereich', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.file_classname (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3890,3890,'water_catchment','Wasserfassung','CAPTAGE', 'zzz_Wasserfassung', 'rrr_Wasserfassung', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.file_classname (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3891,3891,'zone','Zone','ZONE', 'zzz_Zone', 'rrr_Zone', '', '', '', '', '', 'true');
- ALTER TABLE tww_od.file ADD CONSTRAINT fkey_vl_file_classname FOREIGN KEY (class)
+ ALTER TABLE tww_od.file ADD CONSTRAINT fkey_vl_file_classname FOREIGN KEY (classname)
  REFERENCES tww_vl.file_classname (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.file_kind () INHERITS (tww_vl.value_list_base);
