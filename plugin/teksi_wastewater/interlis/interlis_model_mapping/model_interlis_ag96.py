@@ -36,17 +36,17 @@ class ModelInterlisAG96(ModelBase):
         
         ModelInterlisAG96.einzugsgebiet = einzugsgebiet   
 
-        class gephaltung(metainformation):
+        class haltung(metainformation):
             __tablename__ = "gephaltung"
             __table_args__ = {"schema":config.ABWASSER_SCHEMA}
         # Nomenklatur .haltung, damit es für den Label-Export mit VSA-DSS übereinstimmt
-        ModelInterlisAG96.haltung = gephaltung   
+        ModelInterlisAG96.haltung = haltung   
 
-        class gepknoten(metainformation):
+        class abwasserbauwerk(metainformation):
             __tablename__ = "gepknoten"
             __table_args__ = {"schema":config.ABWASSER_SCHEMA}
-        # Nomenklatur .haltung, damit es für den Label-Export mit VSA-DSS übereinstimmt
-        ModelInterlisAG96.abwasserbauwerk = gepknoten   
+        # Nomenklatur .abwasserbauwerk, damit es für den Label-Export mit VSA-DSS übereinstimmt
+        ModelInterlisAG96.abwasserbauwerk = abwasserbauwerk
 
         class gepmassnahme(metainformation):
             __tablename__ = "gepmassnahme"
