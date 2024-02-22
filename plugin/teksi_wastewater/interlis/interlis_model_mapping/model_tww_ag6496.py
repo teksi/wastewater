@@ -103,13 +103,6 @@ class ModelTwwAG6496(ModelBase):
 
         ModelTwwAG6496.gephaltung = gephaltung
 
-        class gepmassnahme(self.Base):
-            __tablename__ = "gepmassnahme"
-            obj_id=Column(String, primary_key=True)
-            __table_args__ = {"schema": config.TWW_AG_SCHEMA}
-
-        ModelTwwAG6496.gepmassnahme = gepmassnahme
-
         class bautenausserhalbbaugebiet(self.Base):
             __tablename__ = "bautenausserhalbbaugebiet"
             obj_id=Column(String, primary_key=True)
@@ -131,13 +124,6 @@ class ModelTwwAG6496(ModelBase):
             __table_args__ = {"schema": config.TWW_AG_SCHEMA}
 
         ModelTwwAG6496.ueberlauf_foerderaggregat = ueberlauf_foerderaggregat
-
-        class sbw_einzugsgebiet(self.Base):
-            __tablename__ = "sbw_einzugsgebiet"
-            obj_id=Column(String, primary_key=True)
-            __table_args__ = {"schema": config.TWW_AG_SCHEMA}
-            
-        ModelTwwAG6496.sbw_einzugsgebiet = sbw_einzugsgebiet
 
         class versickerungsbereichag(self.Base):
             __tablename__ = "versickerungsbereichag"
