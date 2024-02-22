@@ -95,6 +95,7 @@ class ModelTwwAG6496(ModelBase):
             eigentuemer = Column(String)
             datenbewirtschafter_gep = Column(String)
             bemerkung_gep = Column(String)
+            gepmassnahmeref = Column(String)
             letzte_aenderung_gep = Column(DateTime)
             startknoten = Column(String)
             endknoten = Column(String)
