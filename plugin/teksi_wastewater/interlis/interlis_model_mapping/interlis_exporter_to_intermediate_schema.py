@@ -445,7 +445,7 @@ class InterlisExporterToIntermediateSchema:
                 **self.sia_405_base_common(row, "organisation"),
                 # --- organisation ---
                 auid=row.uid,
-                bemerkung=self.truncate(self.emptystr_to_null(row.remark), 80),
+                bemerkung=self.truncate(self.emptystr_to_null(row.remark), 255),
                 bezeichnung=self.null_to_emptystr(row.identifier),
                 organisationstyp=self.get_vl(row.organisation_type__REL),
                 astatus=self.get_vl(row.status__REL),
