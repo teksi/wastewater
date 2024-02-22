@@ -20,7 +20,7 @@ class ModelTwwAG6496(ModelBase):
             bemerkung = Column(String)
             __table_args__ = {"schema": config.TWW_AG_SCHEMA}
 
-        ModelTwwAG6496.organisation = organisation  
+        ModelTwwAG6496.organisation = organisation
 
         class gepknoten(self.Base):
             __tablename__ = "gepknoten"
@@ -138,6 +138,6 @@ class ModelTwwAG6496(ModelBase):
             perimeter = Column(Geometry)
             ag96_q_check = Column(String)
             versickerungsmoeglichkeitag = Column(String)
-            __table_args__ = {"schema": config.TWW_AG_SCHEMA}   
+            __table_args__ = {"schema": config.TWW_AG_SCHEMA}
         
         ModelTwwAG6496.versickerungsbereichag = versickerungsbereichag
