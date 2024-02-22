@@ -1,5 +1,5 @@
 --------
--- View for the swmm module class _aquifiers, in VSA-DSS 2020 not part of the datamodel anymore - therefore referenced on tww_od._aquifier
+-- View for the swmm module class _aquifiers, in VSA-DSS 2020 not part of the datamodel anymore - therefore referenced on tww_od.dss15_aquifier
 --------
 CREATE OR REPLACE VIEW tww_app.swmm_vw_aquifers AS
 
