@@ -1,14 +1,12 @@
 import json
 
 from geoalchemy2.functions import ST_Force2D, ST_GeomFromGeoJSON
-from sqlalchemy import or_
+from sqlalchemy import or_, nullslast
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import text
 
 from .. import config, utils
 from ..utils.various import logger
-from sqlalchemy import nullslast
-
 
 class InterlisExporterToIntermediateSchemaError(Exception):
     pass
