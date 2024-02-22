@@ -752,7 +752,7 @@ class InterlisImporterToIntermediateSchema:
                     self.model_classes_tww_od.infiltration_installation_emergency_overflow,
                     row.notueberlauf,
                 ),
-                # fk_aquifier=row.REPLACE_ME,  # TODO : NOT MAPPED
+                # fk_dss15_aquifier=row.REPLACE_ME,  # TODO : NOT MAPPED
                 kind=self.get_vl_code(
                     self.model_classes_tww_vl.infiltration_installation_kind, row.art
                 ),
