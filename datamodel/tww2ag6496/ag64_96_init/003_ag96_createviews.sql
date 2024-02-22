@@ -10,7 +10,7 @@ REGEXP_REPLACE(uid,'(^.{3})(.{3})(.{3})','\1-\2.\3.') AS uid,
 identifier AS bezeichnung,
 identifier_short AS kurzbezeichnung,
 'AfU Aargau' AS datenbewirtschafter_kt,
-ot.value_de  AS organisationstyp,
+ot.value_de  AS organisationtyp,
 last_modification  AS letzte_aenderung,
 remark AS bemerkung
 FROM tww_od.organisation org
@@ -74,7 +74,7 @@ FunktionBauwerkAG =   (
 		unbekannt),
 	  Wirbelfallschacht,    		             	--> special_structure  
 	  Abwasserreinigungsanlage,   		           	--> wastewater_node, wwtp                                    
-	  Anschluss,                   		           	--> wastewater_node, building                   
+	  Anschluss,                   		           	--> wastewater_node, ag64_function                   
 	  Bodenablauf,                                	--> manhole   
 	  Oelrueckhaltebecken,                         	--> special_structure                   
 	  Regenwasserrechen,                          	--> special_structure.other                     
