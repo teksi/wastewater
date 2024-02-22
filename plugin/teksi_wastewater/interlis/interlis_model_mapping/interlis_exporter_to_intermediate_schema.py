@@ -638,7 +638,7 @@ class InterlisExporterToIntermediateSchema:
                 **self.knoten_common_ag_xx(row),
                 istschnittstelle=row.istschnittstelle,
                 maxrueckstauhoehe=row.maxrueckstauhoehe,
-                gepmassnahmeref=getattr(row.gepmassnahmeref, "obj_id", "unbekannt"),
+                gepmassnahmeref=self.get_tid_by_obj_id(row.gepmassnahmeref),
             )
             self.abwasser_session.add(gepknoten)
             print(".", end="")
