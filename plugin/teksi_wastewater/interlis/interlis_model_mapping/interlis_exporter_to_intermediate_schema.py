@@ -986,7 +986,7 @@ class InterlisExporterToIntermediateSchema:
                 betreibertyp=self.get_vl(row.operator_type__REL),
                 einwohner_angeschlossen=row.population_connected,
                 einwohner_total=row.population_total,
-                bemerkung=row.remark,
+                bemerkung=self.truncate(self.emptystr_to_null(row.remark), 255),
                 lage=row.situation_geometry,
                 inbetriebnahme=row.start_year,
                 ara_nr=row.wwtp_number,
