@@ -97,7 +97,7 @@ SELECT
 	, wn.wwtp_number AS ara_nr
 	, coalesce(ws.year_of_construction,unc.baujahr,1800) AS baujahr
 	, coalesce(sc.value_de,unc.baulicherzustand) AS baulicherzustand
-	, CASE WHEN st.value_de = 'in_Betrieb' THEN 'in_Betrieb.in_Betrieb' ELSE coalesce(st.value_de,unc.bauwerkstatus) END AS bauwerkstatus
+	, CASE WHEN st.value_de = 'in_Betrieb' THEN 'in_Betrieb.in_Betrieb' ELSE coalesce(st.value_de,unc.bauwerkstatus,'unbekannt') END AS bauwerkstatus
 	, ne.ag64_remark AS bemerkung_wi
 	, ne.identifier AS bezeichnung
 	, coalesce(main_co.level,unc.deckelkote) AS deckelkote
@@ -122,7 +122,7 @@ SELECT
 		,'Versickerungsanlage.'||ii_ki_rev.value_agxx --Versickerungsanlage.andere wird auf unbekannt gemappt
 		,'Versickerungsanlage.'||ii_ki.value_de --Versickerungsanlage.andere wird auf unbekannt gemappt
 		, 'Leitungsknoten') AS funktionag
-	, coalesce(left(fhi.value_de,3),unc.funktionhierarchisch)  AS funktionhierarchisch
+	, coalesce(left(fhi.value_de,3),unc.funktionhierarchisch,'SAA')  AS funktionhierarchisch
 	, coalesce(isgate.value_de,'unbekannt') AS istschnittstelle
 	, coalesce(ws.status_survey_year,unc.jahr_zustandserhebung,1800) AS jahr_zustandserhebung
 	, ST_Force2D(coalesce(main_co.situation3d_geometry,wn.situation3d_geometry)) AS lage
