@@ -14,10 +14,10 @@ DECLARE
 BEGIN
   -- first we have to get the OID prefix
   BEGIN
-    SELECT value_obj_id::varchar(16) ,value_integer INTO myrec FROM tww_sys.default_organisations WHERE fieldname = field_name;
+    SELECT value_obj_id::varchar(16) ,value_integer INTO myrec FROM tww_sys.default_values WHERE fieldname = field_name;
     EXCEPTION
         WHEN NO_DATA_FOUND THEN
-           RAISE WARNING 'Field name % not found in table tww_sys.default_organisations. Returning NULL',field_name;
+           RAISE WARNING 'Field name % not found in table tww_sys.default_values. Returning NULL',field_name;
 		   RETURN NULL;
   END;
   RETURN myrec.value_obj_id;
