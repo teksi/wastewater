@@ -25,8 +25,8 @@ END;
 $BODY$
   LANGUAGE plpgsql STABLE
   COST 100;
-  
--- Set defaults on all fk_provider,fk_dataowner 
+
+-- Set defaults on all fk_provider,fk_dataowner
 DO $do$
 DECLARE
     tbl text;
