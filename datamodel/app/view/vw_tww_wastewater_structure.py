@@ -121,8 +121,6 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
                 "identifier",
                 "fk_owner",
                 "status",
-                "_usage_current",
-                "_function_hierarchic",
                 "fk_main_cover",
                 "fk_main_wastewater_node",
                 "detail_geometry3d_geometry",
