@@ -203,7 +203,7 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
 if __name__ == "__main__":
     # create the top-level parser
     parser = argparse.ArgumentParser()
-        parser.add_argument(
+    parser.add_argument(
         "-e",
         "--extra-definition",
         help="YAML file path for extra additions to the view",
