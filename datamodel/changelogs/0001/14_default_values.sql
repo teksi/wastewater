@@ -5,14 +5,13 @@ CREATE TABLE tww_sys.default_values
     CONSTRAINT pkey_tww_sys_default_values_fieldname PRIMARY KEY (fieldname)
 );
 
--- function for retrieving default organisations
+-- function for retrieving default obj_id
 CREATE OR REPLACE FUNCTION tww_sys.get_default_values(field_name text, data_type text)
   RETURNS varchar(16) AS
 $BODY$
 DECLARE
     myrec record;
 BEGIN
-  -- first we have to get the OID prefix
   BEGIN
     SELECT value_obj_id::varchar(16) INTO myrec FROM tww_sys.default_values WHERE fieldname = field_name;
     EXCEPTION
