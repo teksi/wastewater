@@ -85,31 +85,46 @@ UPDATE tww_vl.measure_category SET active = FALSE where code = ANY( ARRAY[
 
 
 INSERT INTO tww_vl.manhole_function (code,vsacode,value_de,value_en,active) VALUES
-(1999968,2742,'Schlammfang','sludge_trap',true)		-- Schlammsammler
+(1999968,2742,'Schlammfang','sludge_trap',true),		-- Schlammsammler
+(1999937,8736,'Kontrollschacht','manhole',true),  
+(1999936,8703,'Vorbehandlung','pretreatment',true)
 ON CONFLICT DO NOTHING;
 
 UPDATE tww_vl.manhole_function SET active = false WHERE code = ANY(Array[
   8828	-- Entwaesserungsrinne_mit_Schlammsack
 , 8601	-- Fettabscheider
-
+, 8654  -- Kombischacht
+, 8702  -- Behandlungsanlage  
+, 8736  -- Kontroll-Einstiegschacht,  
+, 8703  -- Vorbehandlungsanlage
 ]);
+
+
+INSERT INTO tww_vl.special_structure_function (code,vsacode,value_de,value_en,active) VALUES
+(1999967,8704,'Oelrueckhaltebecken','oil_retention_basin',true),  -- Mappt auf Behandlungsanlage
+(1999940,8704,'Strassenwasserbehandlungsanlage','streetwater_treatment_plant',true),  
+(1999935,8739,'Kontrollschacht','manhole',true),  
+(1999934,8704,'Vorbehandlung','pretreatment',true)
+ON CONFLICT DO NOTHING;
 
 UPDATE tww_vl.special_structure_function SET active = false WHERE code = ANY(Array[
   8600 	-- Fettabscheider
 , 8657	-- Havariebecken
+, 8704  -- Behandlungsanlage  
+, 8739  -- Kontroll-Einstiegschacht,  
+, 9089  -- Vorbehandlungsanlage
 ]);
-
-INSERT INTO tww_vl.special_structure_function (code,vsacode,value_de,value_en,active) VALUES
-(1999967,8702,'Oelrueckhaltebecken','oil_retention_basin',true)  -- Mappt auf Behandlungsanlage
-
-ON CONFLICT DO NOTHING;
-
-
 INSERT INTO tww_vl.infiltration_installation_kind (code,vsacode,value_de,value_en,active) VALUES
 (1999966,3087,'andere','other',true),  -- Mappt auf unbekannt
-(1999965,3282,'Retentionsfilterbecken','manhole',true)  -- Mappt auf andere_mit_Bodenpassage
+(1999965,3282,'Retentionsfilterbecken','retention_filter_basin',true),  -- Mappt auf andere_mit_Bodenpassage
+(1999942,3283,'Versickerungsstrang','infiltration_pipe',true),  -- andere_mit_Bodenpassage
+(1999941,3284,'Versickerungsschacht_Strang','infiltration_pipe_manhole',true) -- Kombination_Schacht_Strang
 ON CONFLICT DO NOTHING;
 
+UPDATE tww_vl.infiltration_installation_kind SET active = FALSE where code = ANY( ARRAY[
+  3283 	-- Versickerungsstrang_Galerie
+, 3284 	-- Kombination_Schacht_Strang
+]);
 
 
 
@@ -120,10 +135,6 @@ INSERT INTO tww_vl.building_group_ag96_disposal_type (code,vsacode,value_de,valu
 (1999961,1999961,'pendent','pending',true)  -- kein VSA mapping
 ON CONFLICT DO NOTHING;
 
-ALTER TABLE tww_od.building_group ADD CONSTRAINT fkey_vl_building_group_ag96_disposal_wastewater FOREIGN KEY (ag96_disposal_wastewater) REFERENCES tww_vl.building_group_ag96_disposal_type MATCH SIMPLE ON UPDATE RESTRICT ON DELETE RESTRICT; 
-ALTER TABLE tww_od.building_group ADD CONSTRAINT fkey_vl_building_group_ag96_disposal_industrial_wastewater FOREIGN KEY (ag96_disposal_industrial_wastewater) REFERENCES tww_vl.building_group_ag96_disposal_type MATCH SIMPLE ON UPDATE RESTRICT ON DELETE RESTRICT; 
-ALTER TABLE tww_od.building_group ADD CONSTRAINT fkey_vl_building_group_ag96_disposal_square_water FOREIGN KEY (ag96_disposal_square_water) REFERENCES tww_vl.building_group_ag96_disposal_type MATCH SIMPLE ON UPDATE RESTRICT ON DELETE RESTRICT; 
-ALTER TABLE tww_od.building_group ADD CONSTRAINT fkey_vl_building_group_ag96_disposal_roof_water FOREIGN KEY (ag96_disposal_roof_water) REFERENCES tww_vl.building_group_ag96_disposal_type MATCH SIMPLE ON UPDATE RESTRICT ON DELETE RESTRICT; 
 
 INSERT INTO tww_vl.organisation_organisation_type (code,vsacode,value_de,active) VALUES
 (1999952,8605,'Amt',true)  -- VSA mapping auf Kanton
@@ -134,12 +145,10 @@ INSERT INTO tww_vl.wastewater_node_ag96_is_gateway (code,vsacode,value_de,active
 (1999950,1999950,'keine_Schnittstelle',true),  
 (1999949,1999949,'unbekannt',true)
 ON CONFLICT DO NOTHING;
-ALTER TABLE tww_od.wastewater_node ADD CONSTRAINT fkey_vl_wastewater_node_ag96_is_gateway FOREIGN KEY (ag96_is_gateway) REFERENCES tww_vl.wastewater_node_ag96_is_gateway MATCH SIMPLE ON UPDATE RESTRICT ON DELETE RESTRICT; 
 
 INSERT INTO tww_vl.wastewater_node_ag64_function (code,vsacode,value_de,active) VALUES
 (1999948,1999948,'Anschluss',true)
 ON CONFLICT DO NOTHING;
-ALTER TABLE tww_od.wastewater_node ADD CONSTRAINT fkey_vl_wastewater_node_ag64_function FOREIGN KEY (ag64_function) REFERENCES tww_vl.wastewater_node_ag64_function MATCH SIMPLE ON UPDATE RESTRICT ON DELETE RESTRICT; 
 
 INSERT INTO tww_vl.pipe_profile_profile_type (code,vsacode,value_de,value_en,active) VALUES
 (1999947,3357,'andere','other',true) -- 3357 = unbekannt 
@@ -163,23 +172,11 @@ UPDATE tww_vl.infiltration_zone_infiltration_capacity SET active = FALSE where c
 ------------------------
 -- Backwards Matching --
 ------------------------
-
-INSERT INTO {ext_schema}.vl_infiltration_installation_kind (code,value_agxx) VALUES
-(3283,'Versickerungsstrang'),  
-(3284,'Versickerungsschacht_Strang')
-ON CONFLICT DO NOTHING;  
-
-INSERT INTO {ext_schema}.vl_special_structure_function (code,value_agxx) VALUES
-(8702,'Strassenwasserbehandlungsanlage'),  
-(8739,'Kontrollschacht'),  
-(9089,'Vorbehandlung')
-ON CONFLICT DO NOTHING; 
-
 INSERT INTO {ext_schema}.vl_manhole_function (code,value_agxx) VALUES
-(8736,'Kontrollschacht'),  
-(8703,'Vorbehandlung')
+(8654,'Kontrollschacht') -- Kombischacht
 ON CONFLICT DO NOTHING;
 
+-- Nutzungsarten werden nicht gematcht, damit die Visualilserungen übernommen werden können
 INSERT INTO {ext_schema}.vl_channel_usage_current (code,value_agxx) VALUES
 (4522,'Mischwasser'),  
 (4514,'Fremdwasser'),

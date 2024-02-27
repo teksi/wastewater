@@ -31,6 +31,11 @@ COMMENT ON COLUMN tww_od.wastewater_node.ag96_is_gateway IS 'xxx_en/ Erweiterung
 ALTER TABLE tww_od.wastewater_node ADD COLUMN IF NOT EXISTS ag64_function bigint;
 COMMENT ON COLUMN tww_od.wastewater_node.ag64_function IS 'xxx_en/ Erweiterung aus AG-96 zur Erfassung der Funktionag Anschluss /xxx_fr';
 
+ALTER TABLE tww_od.wastewater_node DROP CONSTRAINT IF EXISTS fkey_vl_wastewater_node_ag96_is_gateway CASCADE;
+ALTER TABLE tww_od.wastewater_node ADD CONSTRAINT fkey_vl_wastewater_node_ag96_is_gateway FOREIGN KEY (ag96_is_gateway) REFERENCES tww_vl.wastewater_node_ag96_is_gateway MATCH SIMPLE ON UPDATE RESTRICT ON DELETE RESTRICT; 
+ALTER TABLE tww_od.wastewater_node DROP CONSTRAINT IF EXISTS fkey_vl_wastewater_node_ag64_function CASCADE;
+ALTER TABLE tww_od.wastewater_node ADD CONSTRAINT fkey_vl_wastewater_node_ag64_function FOREIGN KEY (ag64_function) REFERENCES tww_vl.wastewater_node_ag64_function MATCH SIMPLE ON UPDATE RESTRICT ON DELETE RESTRICT; 
+
 ALTER TABLE tww_od.wastewater_structure ADD COLUMN IF NOT EXISTS ag96_fk_measure varchar(16); 
 -- Topologische Verknüpfung Massnahme/Abwasserbauwerk
 ALTER TABLE tww_od.wastewater_structure DROP CONSTRAINT IF EXISTS ag96_rel_wastewater_structure_measure;
@@ -70,6 +75,15 @@ ALTER TABLE tww_od.building_group
 CREATE TABLE IF NOT EXISTS tww_vl.building_group_ag96_disposal_type () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.building_group_ag96_disposal_type DROP CONSTRAINT IF EXISTS pkey_tww_vl_building_group_ag96_disposal_type CASCADE;
 ALTER TABLE tww_vl.building_group_ag96_disposal_type ADD CONSTRAINT pkey_tww_vl_building_group_ag96_disposal_type PRIMARY KEY (code);
+
+ALTER TABLE tww_od.building_group DROP CONSTRAINT IF EXISTS fkey_vl_building_group_ag96_disposal_wastewater CASCADE;
+ALTER TABLE tww_od.building_group ADD CONSTRAINT fkey_vl_building_group_ag96_disposal_wastewater FOREIGN KEY (ag96_disposal_wastewater) REFERENCES tww_vl.building_group_ag96_disposal_type MATCH SIMPLE ON UPDATE RESTRICT ON DELETE RESTRICT; 
+ALTER TABLE tww_od.building_group DROP CONSTRAINT IF EXISTS fkey_vl_building_group_ag96_disposal_industrial_wastewater CASCADE;
+ALTER TABLE tww_od.building_group ADD CONSTRAINT fkey_vl_building_group_ag96_disposal_industrial_wastewater FOREIGN KEY (ag96_disposal_industrial_wastewater) REFERENCES tww_vl.building_group_ag96_disposal_type MATCH SIMPLE ON UPDATE RESTRICT ON DELETE RESTRICT; 
+ALTER TABLE tww_od.building_group DROP CONSTRAINT IF EXISTS fkey_vl_building_group_ag96_disposal_square_water CASCADE;
+ALTER TABLE tww_od.building_group ADD CONSTRAINT fkey_vl_building_group_ag96_disposal_square_water FOREIGN KEY (ag96_disposal_square_water) REFERENCES tww_vl.building_group_ag96_disposal_type MATCH SIMPLE ON UPDATE RESTRICT ON DELETE RESTRICT; 
+ALTER TABLE tww_od.building_group DROP CONSTRAINT IF EXISTS fkey_vl_building_group_ag96_disposal_roof_water CASCADE;
+ALTER TABLE tww_od.building_group ADD CONSTRAINT fkey_vl_building_group_ag96_disposal_roof_water FOREIGN KEY (ag96_disposal_roof_water) REFERENCES tww_vl.building_group_ag96_disposal_type MATCH SIMPLE ON UPDATE RESTRICT ON DELETE RESTRICT; 
 
  
 ALTER TABLE tww_od.wastewater_networkelement

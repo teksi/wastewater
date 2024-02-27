@@ -272,11 +272,37 @@ BEGIN
     , ws_type = CASE
 		WHEN vw_val.funktionag LIKE 'Einleitstelle%' THEN 'discharge_point'
 		WHEN vw_val.funktionag LIKE 'Versickerungsanlage%' THEN 'infiltration_installation'
-		WHEN vw_val.detailgeometrie IS NOT NULL THEN 'special_structure'
-		ELSE 'manhole' 
+		WHEN vw_val.funktionag = ANY(
+		  ARRAY[
+		      'Bodenablauf'
+		    , 'Dachwasserschacht'
+			, 'Einlaufschacht'
+			, 'Entwaesserungsrinne'
+			, 'Faulgrube'
+			, 'Geleiseschacht'
+			, 'Schlammfang'
+			, 'Schlammsammler'
+			]
+		  ) THEN 'manhole' 
+		WHEN vw_val.funktionag = ANY(
+		  ARRAY[
+		      'Absturzbauwerk'
+			, 'andere'
+			, 'Be_Entlueftung'
+			, 'Kontrollschacht'
+			, 'Oelabscheider'
+			, 'Pumpwerk'
+			, 'Regeneuberlauf'
+			, 'Schwimmstoffabscheider'
+			, 'Spuelschacht'
+			, 'Trennbauwerk'
+			, 'Vorbehandlung'
+			]
+		  ) AND vw_val.detailgeometrie IS NULL THEN 'manhole' 
+		ELSE 'special_structure' 
 	  END
-    , ma_function = CASE WHEN  vw_val.detailgeometrie IS NULL THEN coalesce(ma_fu.code, ma_fu2.code) ELSE NULL END
-    , ss_function = CASE WHEN vw_val.detailgeometrie IS NOT NULL THEN coalesce(ss_fu.code, ss_fu2.code) ELSE NULL END
+    , ma_function = coalesce(ma_fu.code, ma_fu2.code) -- wird nur angewandt, wenn ws_type = manhole 
+    , ss_function = coalesce(ss_fu.code, ss_fu2.code) -- wird nur angewandt, wenn ws_type = special_structure
     , fk_owner = {ext_schema}.convert_organisationid_to_vsa(vw_val.eigentuemer)
     , status = ws_st.code
     , accessibility = ws_acc.code
@@ -365,12 +391,38 @@ BEGIN
 		  vw_val.bezeichnung
 		, CASE
 			WHEN vw_val.funktionag LIKE 'Einleitstelle%' THEN 'discharge_point'
-			WHEN vw_val.funktionag LIKE 'Versickerungsanlage%' THEN 'infiltration_installation'
-			WHEN vw_val.detailgeometrie IS NOT NULL THEN 'special_structure'
-			ELSE 'manhole' 
-		  END
-		, CASE WHEN vw_val.detailgeometrie IS NULL THEN coalesce(ma_fu.code, ma_fu2.code) ELSE NULL END
-		, CASE WHEN vw_val.detailgeometrie IS NOT NULL THEN coalesce(ss_fu.code, ss_fu2.code) ELSE NULL END
+		WHEN vw_val.funktionag LIKE 'Versickerungsanlage%' THEN 'infiltration_installation'
+		WHEN vw_val.funktionag = ANY(
+		  ARRAY[
+		      'Bodenablauf'
+		    , 'Dachwasserschacht'
+			, 'Einlaufschacht'
+			, 'Entwaesserungsrinne'
+			, 'Faulgrube'
+			, 'Geleiseschacht'
+			, 'Schlammfang'
+			, 'Schlammsammler'
+			]
+		  ) THEN 'manhole' 
+		WHEN vw_val.funktionag = ANY(
+		  ARRAY[
+		      'Absturzbauwerk'
+			, 'andere'
+			, 'Be_Entlueftung'
+			, 'Kontrollschacht'
+			, 'Oelabscheider'
+			, 'Pumpwerk'
+			, 'Regeneuberlauf'
+			, 'Schwimmstoffabscheider'
+			, 'Spuelschacht'
+			, 'Trennbauwerk'
+			, 'Vorbehandlung'
+			]
+		  ) AND vw_val.detailgeometrie IS NULL THEN 'manhole' 
+		ELSE 'special_structure' 
+	  END
+		, coalesce(ma_fu.code, ma_fu2.code) -- wird nur angewandt, wenn ws_type = manhole
+		, coalesce(ss_fu.code, ss_fu2.code) -- wird nur angewandt, wenn ws_type = special_structure
 		, {ext_schema}.convert_organisationid_to_vsa(vw_val.eigentuemer)
 		, ws_st.code
 		, ws_acc.code
