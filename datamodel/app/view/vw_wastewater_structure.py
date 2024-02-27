@@ -212,6 +212,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
     pg_service = args.pg_service or os.getenv("PGSERVICE")
     extra_definition = safe_load(open(args.extra_definition)) if args.extra_definition else {}
-    vw_wastewater_structure(
-        pg_service=pg_service, extra_definition=extra_definition
-    )
+    vw_wastewater_structure(pg_service=pg_service, extra_definition=extra_definition)
