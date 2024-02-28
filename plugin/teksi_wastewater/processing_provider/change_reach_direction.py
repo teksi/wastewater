@@ -78,7 +78,7 @@ class ChangeReachDirection(TwwAlgorithm):
         #    raise Exception: if there is no transaction, complain to the user!
         selected_obj_ids = [feature["obj_id"] for feature in iterator]
         transaction.executeSql(
-            "SELECT tww_od.reach_direction_change('{{{obj_ids}}}');".format(
+            "SELECT tww_app.reach_direction_change('{{{obj_ids}}}');".format(
                 obj_ids=",".join(selected_obj_ids)
             ),
             True,

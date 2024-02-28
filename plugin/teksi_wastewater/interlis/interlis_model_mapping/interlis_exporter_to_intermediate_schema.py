@@ -2324,7 +2324,9 @@ class InterlisExporterToIntermediateSchema:
                 bemerkung=self.truncate(self.emptystr_to_null(row.remark), 80),
                 bezeichnung=self.null_to_emptystr(row.identifier),
                 datentraegerref=self.get_tid(row.fk_data_media__REL),
-                klasse=self.get_vl_by_code(self.model_classes_tww_vl.file_class, row.class_column),
+                klasse=self.get_vl_by_code(
+                    self.model_classes_tww_vl.file_classname, row.class_column
+                ),
                 objekt=self.null_to_emptystr(row.object),
                 relativpfad=row.path_relative,
             )
