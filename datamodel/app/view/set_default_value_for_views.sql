@@ -6,8 +6,8 @@ DECLARE
 BEGIN
 	FOR tbl,col IN
 	SELECT
-       c.table_schema,
-       c.table_name
+       c.table_name,
+       c.column_name
     FROM information_schema.columns c
 	LEFT JOIN information_schema.tables t
 	ON c.table_name = t.table_name 
