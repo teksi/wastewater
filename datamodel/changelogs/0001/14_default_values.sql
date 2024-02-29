@@ -37,7 +37,7 @@ BEGIN
 	   c.column_name
     FROM information_schema.columns c
 	LEFT JOIN information_schema.tables t
-	ON c.table_name = t.table_name 
+	ON c.table_name = t.table_name
     and c.table_schema = t.table_schema
     WHERE c.column_name IN ('fk_provider','fk_dataowner')
       and c.table_schema ='tww_od'
