@@ -1,4 +1,13 @@
 ------------------
+-- System tables
+------------------
+INSERT INTO tww_sys.dictionary_od_table (id, tablename, shortcut_en) VALUES
+(2999998,'measure_text','MX'),
+(2999999,'building_group_text','GX')
+ON CONFLICT DO NOTHING;
+
+
+------------------
 -- Organisation extension
 ------------------
 
@@ -168,6 +177,28 @@ UPDATE tww_vl.infiltration_zone_infiltration_capacity SET active = FALSE where c
 , 372 	-- maessig
 ]);
 
+--------------
+-- Plantyp --
+--------------
+
+INSERT INTO tww_vl.building_group_text_plantype 
+SELECT * FROM tww_vl.wastewater_structure_text_plantype;
+
+INSERT INTO tww_vl.building_group_text_texthali
+SELECT * FROM tww_vl.wastewater_structure_text_texthali;
+
+INSERT INTO tww_vl.building_group_text_textvali 
+SELECT * FROM tww_vl.wastewater_structure_text_textvali;
+
+INSERT INTO tww_vl.measure_text_plantype
+SELECT * FROM tww_vl.wastewater_structure_text_plantype;
+
+INSERT INTO tww_vl.measure_text_texthali 
+SELECT * FROM tww_vl.wastewater_structure_text_texthali;
+
+
+INSERT INTO tww_vl.measure_text_textvali
+SELECT * FROM tww_vl.wastewater_structure_text_textvali;
 
 ------------------------
 -- Backwards Matching --

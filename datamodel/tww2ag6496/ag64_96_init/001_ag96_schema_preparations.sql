@@ -190,3 +190,151 @@ CREATE INDEX IF NOT EXISTS in_{ext_schema}_od_unconnected_node_bwrel_detailgeome
     TABLESPACE pg_default;
 	
 ALTER TABLE tww_od.organisation DISABLE TRIGGER update_last_modified_organisation;
+
+CREATE OR REPLACE FUNCTION {ext_schema}.generate_oid_prefix_and_schema(table_name text)
+ RETURNS text AS
+$BODY$
+DECLARE
+  myrec_prefix record;
+  myrec_shortcut record;
+BEGIN
+  -- first we have to get the OID prefix
+  BEGIN
+    SELECT prefix::text INTO myrec_prefix FROM tww_sys.oid_prefixes WHERE active = TRUE;
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+           RAISE EXCEPTION 'no active record found in table tww_sys.oid_prefixes';
+        WHEN TOO_MANY_ROWS THEN
+	   RAISE EXCEPTION 'more than one active records found in table tww_sys.oid_prefixes';
+  END;
+  -- test if prefix is of correct length
+  IF char_length(myrec_prefix.prefix) != 8 THEN
+    RAISE EXCEPTION 'character length of prefix must be 8';
+  END IF;
+  --get table 2char shortcut
+  BEGIN
+    SELECT shortcut_en INTO STRICT myrec_shortcut FROM tww_sys.dictionary_od_table WHERE tablename = table_name;
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            RAISE EXCEPTION 'dictionary entry for table % not found', table_name;
+        WHEN TOO_MANY_ROWS THEN
+            RAISE EXCEPTION 'dictonary entry for table % not unique', table_name;
+  END;
+  RETURN myrec_prefix.prefix || myrec_shortcut.shortcut_en;
+END;
+$BODY$
+  LANGUAGE plpgsql STABLE
+  COST 100;
+
+-- Textcontainer für Import
+CREATE TABLE IF NOT EXISTS tww_vl.building_group_text_plantype (
+    CONSTRAINT pkey_tww_vl_building_group_text_plantype_code PRIMARY KEY (code)
+)
+    INHERITS (tww_vl.value_list_base)
+TABLESPACE pg_default;
+
+CREATE TABLE IF NOT EXISTS tww_vl.building_group_text_texthali (
+    CONSTRAINT pkey_tww_vl_building_group_text_texthali_code PRIMARY KEY (code)
+)
+    INHERITS (tww_vl.value_list_base)
+TABLESPACE pg_default;
+
+CREATE TABLE IF NOT EXISTS tww_vl.building_group_text_textvali (
+    CONSTRAINT pkey_tww_vl_building_group_text_textvali_code PRIMARY KEY (code)
+)
+    INHERITS (tww_vl.value_list_base)
+TABLESPACE pg_default;
+
+CREATE TABLE IF NOT EXISTS tww_vl.measure_text_plantype (
+    CONSTRAINT pkey_tww_vl_measure_text_plantype_code PRIMARY KEY (code)
+)
+    INHERITS (tww_vl.value_list_base)
+TABLESPACE pg_default;
+
+CREATE TABLE IF NOT EXISTS tww_vl.measure_text_texthali (
+    CONSTRAINT pkey_tww_vl_measure_text_texthali_code PRIMARY KEY (code)
+)
+    INHERITS (tww_vl.value_list_base)
+TABLESPACE pg_default;
+
+CREATE TABLE IF NOT EXISTS tww_vl.measure_text_textvali (
+    CONSTRAINT pkey_tww_vl_measure_text_textvali_code PRIMARY KEY (code)
+)
+    INHERITS (tww_vl.value_list_base)
+TABLESPACE pg_default;
+
+
+CREATE TABLE IF NOT EXISTS tww_od.measure_text
+(
+    obj_id character varying(16) COLLATE pg_catalog."default" NOT NULL DEFAULT tww_sys.generate_oid('tww_od'::text, 'measure_text'::text),
+    classname text COLLATE pg_catalog."default",
+    plantype integer,
+    remark text COLLATE pg_catalog."default",
+    text text COLLATE pg_catalog."default",
+    texthali smallint,
+    textori numeric(4,1),
+    textpos_geometry geometry(Point,2056),
+    textvali smallint,
+    last_modification timestamp without time zone DEFAULT now(),
+    fk_measure character varying(16) COLLATE pg_catalog."default",
+    CONSTRAINT pkey_tww_od_measure_text_obj_id PRIMARY KEY (obj_id),
+    CONSTRAINT fkey_vl_measure_text_plantype FOREIGN KEY (plantype)
+        REFERENCES tww_vl.measure_text_plantype (code) MATCH SIMPLE
+        ON UPDATE RESTRICT
+        ON DELETE RESTRICT,
+    CONSTRAINT fkey_vl_measure_text_texthali FOREIGN KEY (texthali)
+        REFERENCES tww_vl.measure_text_texthali (code) MATCH SIMPLE
+        ON UPDATE RESTRICT
+        ON DELETE RESTRICT,
+    CONSTRAINT fkey_vl_measure_text_textvali FOREIGN KEY (textvali)
+        REFERENCES tww_vl.measure_text_textvali (code) MATCH SIMPLE
+        ON UPDATE RESTRICT
+        ON DELETE RESTRICT,
+    CONSTRAINT rel_measure_text_measure FOREIGN KEY (fk_measure)
+        REFERENCES tww_od.measure (obj_id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT mx_classname_length_max_50 CHECK (char_length(classname) <= 50),
+    CONSTRAINT mx_remark_length_max_80 CHECK (char_length(remark) <= 80)
+)
+
+TABLESPACE pg_default;
+COMMENT ON TABLE tww_od.measure_text IS 'Extension for AG-96/ Erweiterung für AG-96 / Extension pour AG-96';
+
+
+CREATE TABLE IF NOT EXISTS tww_od.building_group_text
+(
+    obj_id character varying(16) COLLATE pg_catalog."default" NOT NULL DEFAULT tww_sys.generate_oid('tww_od'::text, 'building_group_text'::text),
+    classname text COLLATE pg_catalog."default",
+    plantype integer,
+    remark text COLLATE pg_catalog."default",
+    text text COLLATE pg_catalog."default",
+    texthali smallint,
+    textori numeric(4,1),
+    textpos_geometry geometry(Point,2056),
+    textvali smallint,
+    last_modification timestamp without time zone DEFAULT now(),
+    fk_building_group character varying(16) COLLATE pg_catalog."default",
+    CONSTRAINT pkey_tww_od_building_group_text_obj_id PRIMARY KEY (obj_id),
+    CONSTRAINT fkey_vl_building_group_text_plantype FOREIGN KEY (plantype)
+        REFERENCES tww_vl.building_group_text_plantype (code) MATCH SIMPLE
+        ON UPDATE RESTRICT
+        ON DELETE RESTRICT,
+    CONSTRAINT fkey_vl_building_group_text_texthali FOREIGN KEY (texthali)
+        REFERENCES tww_vl.building_group_text_texthali (code) MATCH SIMPLE
+        ON UPDATE RESTRICT
+        ON DELETE RESTRICT,
+    CONSTRAINT fkey_vl_building_group_text_textvali FOREIGN KEY (textvali)
+        REFERENCES tww_vl.building_group_text_textvali (code) MATCH SIMPLE
+        ON UPDATE RESTRICT
+        ON DELETE RESTRICT,
+    CONSTRAINT rel_building_group_text_building_group FOREIGN KEY (fk_building_group)
+        REFERENCES tww_od.building_group (obj_id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT gx_classname_length_max_50 CHECK (char_length(classname) <= 50),
+    CONSTRAINT gx_remark_length_max_80 CHECK (char_length(remark) <= 80)
+)
+
+TABLESPACE pg_default;
+COMMENT ON TABLE tww_od.building_group_text IS 'Extension for AG-96/ Erweiterung für AG-96 / Extension pour AG-96';
