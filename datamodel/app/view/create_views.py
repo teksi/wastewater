@@ -166,6 +166,8 @@ def create_views(
     SimpleJoins(
         safe_load(open("app/view/export/vw_export_wastewater_structure.yaml")), pg_service
     ).create()
+    
+    run_sql("app/view/set_default_value_for_views.sql", pg_service, variables)
 
 
 if __name__ == "__main__":

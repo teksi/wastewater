@@ -36,8 +36,12 @@ BEGIN
        c.table_name,
 	   c.column_name
     FROM information_schema.columns c
+	LEFT JOIN information_schema.tables t
+	ON c.table_name = t.table_name 
+    and c.table_schema = t.table_schema
     WHERE c.column_name IN ('fk_provider','fk_dataowner')
       and c.table_schema ='tww_od'
+	  and t.table_type = 'BASE TABLE'
     LOOP
         EXECUTE format($$ ALTER TABLE tww_od.%1$I ALTER COLUMN %2$I SET DEFAULT tww_sys.get_default_values('''%2$s''') $$, tbl,col);
     END LOOP;
