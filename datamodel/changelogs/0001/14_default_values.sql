@@ -43,7 +43,7 @@ BEGIN
       and c.table_schema ='tww_od'
 	  and t.table_type = 'BASE TABLE'
     LOOP
-        EXECUTE format($$ ALTER TABLE tww_od.%1$I ALTER COLUMN %2$I SET DEFAULT tww_sys.get_default_values('''%2$s''') $$, tbl,col);
+        EXECUTE format($$ ALTER TABLE tww_od.%1$I ALTER COLUMN %2$I SET DEFAULT tww_sys.get_default_values('%2$s') $$, tbl,col);
     END LOOP;
 
 END;
