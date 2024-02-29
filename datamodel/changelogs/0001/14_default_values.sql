@@ -6,7 +6,7 @@ CREATE TABLE tww_sys.default_values
 );
 
 -- function for retrieving default obj_id
-CREATE OR REPLACE FUNCTION tww_sys.get_default_values(field_name text, data_type text)
+CREATE OR REPLACE FUNCTION tww_sys.get_default_values(field_name text)
   RETURNS varchar(16) AS
 $BODY$
 DECLARE
@@ -39,7 +39,7 @@ BEGIN
     WHERE c.column_name IN ('fk_provider','fk_dataowner')
       and c.table_schema ='tww_od'
     LOOP
-        EXECUTE format($$ ALTER TABLE tww_od.%1$I ALTER COLUMN %2$I SET DEFAULT tww_sys.get_default_values('''%2$s''','obj_id') $$, tbl,col);
+        EXECUTE format($$ ALTER TABLE tww_od.%1$I ALTER COLUMN %2$I SET DEFAULT tww_sys.get_default_values('''%2$s''') $$, tbl,col);
     END LOOP;
 
 END;
