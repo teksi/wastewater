@@ -1,10 +1,10 @@
 CREATE OR REPLACE FUNCTION tww_app.update_catchment_area_totals(_obj_id text, _all boolean default false)
-  RETURNS VOID 
+  RETURNS VOID
   SECURITY DEFINER
   AS
   $BODY$
 BEGIN
- 
+
  UPDATE tww_od.catchment_area_totals cat
  SET
       population=subquery.population
@@ -19,8 +19,8 @@ BEGIN
     , surface_red_dim=subquery.surface_red_dim
     -- , sewer_infiltration_water_dim=subquery.sewer_infiltration_water_dim
     -- , waste_water_production_dim=subquery.waste_water_production_dim
-   FROM 
-	( SELECT 
+   FROM
+	( SELECT
 		  ca_tot.obj_id
 		, ca_agg.population
 		, ca_agg.surface_area
@@ -37,9 +37,9 @@ BEGIN
 	 FROM tww_od.catchment_area_totals ca_tot
      LEFT JOIN tww_od.hydraulic_char_data hcd ON hcd.obj_id::text = ca_tot.fk_hydraulic_char_data::text
      LEFT JOIN tww_od.wastewater_node wn ON hcd.fk_wastewater_node::text = wn.obj_id::text
-     LEFT JOIN ( WITH ca AS 
+     LEFT JOIN ( WITH ca AS
 					(
-                 SELECT 
+                 SELECT
 		 			obj_id,
 		 			fk_special_building_ww_current AS fk_log_card,
 		 			population_density_current*surface_area AS population,
@@ -52,12 +52,12 @@ BEGIN
 		 			0 AS surface_dim,
 		 			0 AS surface_imp_dim,
 					0 AS surface_red_dim
-		 			-- ,0 AS sewer_infiltration_water_dim,  -- Not in datamodel (yet) 
+		 			-- ,0 AS sewer_infiltration_water_dim,  -- Not in datamodel (yet)
 		 			-- 0 AS waste_water_production_dim,    -- Not in datamodel (yet)
                    FROM tww_od.catchment_area
                   WHERE catchment_area.fk_special_building_ww_current IS NOT NULL
                 UNION ALL
-                 SELECT 
+                 SELECT
 		 			obj_id,
 		 			fk_special_building_rw_current AS fk_log_card,
 		 			population_density_current*surface_area AS population,
@@ -71,12 +71,12 @@ BEGIN
 		 			0 AS surface_dim,
 		 			0 AS surface_imp_dim,
 					0 AS surface_red_dim
-		 			-- ,0 AS sewer_infiltration_water_dim,  -- Not in datamodel (yet) 
+		 			-- ,0 AS sewer_infiltration_water_dim,  -- Not in datamodel (yet)
 		 			-- 0 AS waste_water_production_dim,    -- Not in datamodel (yet)
                   FROM tww_od.catchment_area
 				  WHERE catchment_area.fk_special_building_rw_current IS NOT NULL
 		 		UNION ALL
-                 SELECT 
+                 SELECT
 		 			obj_id,
 		 			fk_special_building_ww_planned AS fk_log_card,
 		 			0 AS population,
@@ -89,12 +89,12 @@ BEGIN
 		 			surface_area AS surface_dim,
 		 			surface_area*seal_factor_ww_planned/100 AS surface_imp_dim,
 		 			surface_area*discharge_coefficient_ww_planned/100 AS surface_red_dim
-		 			-- ,0 AS sewer_infiltration_water_dim,  -- Not in datamodel (yet) 
+		 			-- ,0 AS sewer_infiltration_water_dim,  -- Not in datamodel (yet)
 		 			-- 0 AS waste_water_production_dim,    -- Not in datamodel (yet)
                   FROM tww_od.catchment_area
 				  WHERE catchment_area.fk_special_building_ww_planned IS NOT NULL
 		 		UNION ALL
-                 SELECT 
+                 SELECT
 		 			obj_id,
 		 			fk_special_building_rw_planned AS fk_log_card,
 		 			0 AS population,
@@ -108,7 +108,7 @@ BEGIN
 		 			CASE WHEN fk_special_building_rw_planned=fk_special_building_ww_planned THEN 0 else surface_area END AS surface_dim,
 		 			surface_area*seal_factor_rw_planned/100 AS surface_imp_dim,
 		 			surface_area*discharge_coefficient_rw_planned/100 AS surface_red_dim
-		 			-- ,0 AS sewer_infiltration_water_dim,  -- Not in datamodel (yet) 
+		 			-- ,0 AS sewer_infiltration_water_dim,  -- Not in datamodel (yet)
 		 			-- 0 AS waste_water_production_dim,    -- Not in datamodel (yet)
                   FROM tww_od.catchment_area
 				  WHERE catchment_area.fk_special_building_ww_planned IS NOT NULL
@@ -132,12 +132,12 @@ BEGIN
                      LEFT JOIN tww_od.log_card main_lc ON main_lc.obj_id::text = lc.fk_main_structure::text
 				   GROUP BY main_lc.obj_id,
                     main_lc.fk_pwwf_wastewater_node
-                )ca_agg 
+                )ca_agg
 				ON ca_agg.fk_pwwf_wastewater_node::text = wn.obj_id::text
 	  WHERE (_all OR ca_tot.obj_id = _obj_id)
    ) subquery
 WHERE subquery.obj_id = cat.obj_id;
-	
+
 END
 $BODY$
 LANGUAGE plpgsql
