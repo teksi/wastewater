@@ -34,6 +34,7 @@ psql "service=${PGSERVICE}" -c "CREATE SCHEMA IF NOT EXISTS tww_app;"
 psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f ${DIR}/app/symbology_functions.sql
 psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f ${DIR}/app/reach_direction_change.sql -v SRID=$SRID
 psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f ${DIR}/app/14_geometry_functions.sql -v SRID=$SRID
+psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f ${DIR}/app/update_catchment_area_totals.sql
 
 ${DIR}/app/view/create_views.py --pg_service ${PGSERVICE} --srid ${SRID}
 psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f ${DIR}/app/triggers/network.sql
