@@ -5,7 +5,7 @@ CREATE OR REPLACE FUNCTION tww_app.update_catchment_area_totals(_obj_id text, _a
   $BODY$
 BEGIN
  
- UPDATE catchment_area_totals cat
+ UPDATE tww_od.catchment_area_totals cat
  SET
       population=subquery.population
 	, surface_area=subquery.surface_area
