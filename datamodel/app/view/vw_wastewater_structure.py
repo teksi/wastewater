@@ -88,7 +88,7 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
         ),
     )
 
-    cursor.execute(view_sql, variables)
+    cursor.execute(view_sql)
 
     trigger_insert_sql = """
     CREATE OR REPLACE FUNCTION tww_app.ft_vw_wastewater_structure_INSERT()
