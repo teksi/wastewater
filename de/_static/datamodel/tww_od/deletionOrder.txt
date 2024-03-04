@@ -39,14 +39,13 @@ leapingweir
 infiltration_zone
 electromechanical_equipment
 electric_equipment
+dss15_planning_zone
 dryweather_flume
 drainless_toilet
 drainage_system
 damage_channel
 benching
 access_aid
-_planning_zone
-_aquifier
 reservoir
 param_ca_mouse1
 param_ca_general
@@ -81,6 +80,7 @@ log_card
 reach_point
 maintenance_event
 waste_water_treatment_plant
+dss15_aquifer
 measure
 wastewater_structure
 cover

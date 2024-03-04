@@ -99,7 +99,7 @@ hydraulic_char_data_pump_characteristics
 hydraulic_char_data_main_weir_kind
 hydraulic_char_data_is_overflowing
 file_kind
-file_class
+file_classname
 farm_stable_cattle
 farm_shepherds_hut_wastewater
 farm_continuance
@@ -109,6 +109,7 @@ examination_weather
 examination_recording_type
 electromechanical_equipment_kind
 electric_equipment_kind
+dss15_planning_zone_kind
 dryweather_flume_material
 drainless_toilet_kind
 drainage_system_kind
@@ -166,4 +167,3 @@ bio_ecol_assessment_comparison_last
 benching_kind
 backflow_prevention_kind
 access_aid_kind
-_planning_zone_kind

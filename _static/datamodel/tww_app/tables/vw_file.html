@@ -177,7 +177,7 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td><span id="class">class</span></td>
+                                    <td><span id="classname">classname</span></td>
                                     <td>int4</td>
                                     <td>10</td>
                                     <td title='nullable'>√</td>
@@ -299,7 +299,7 @@
                             </div>
                         </div>
                         <div class="box-body">
-                            <textarea id="sql-script-codemirror" name="sql-script-codemirror" rows="" style="display: none;">SELECT f.obj_id,&#10;    f.identifier,&#10;    f.kind,&#10;    f.object,&#10;    f.class,&#10;    COALESCE((dm.path || f.path_relative), f.path_relative) AS _url,&#10;    f.fk_dataowner AS dataowner,&#10;    f.fk_provider AS provider,&#10;    f.remark&#10;   FROM (tww_od.file f&#10;     LEFT JOIN tww_od.data_media dm ON (((dm.obj_id)::text &#61; (f.fk_data_media)::text)));</textarea>
+                            <textarea id="sql-script-codemirror" name="sql-script-codemirror" rows="" style="display: none;">SELECT f.obj_id,&#10;    f.identifier,&#10;    f.kind,&#10;    f.object,&#10;    f.classname,&#10;    COALESCE((dm.path || f.path_relative), f.path_relative) AS _url,&#10;    f.fk_dataowner AS dataowner,&#10;    f.fk_provider AS provider,&#10;    f.remark&#10;   FROM (tww_od.file f&#10;     LEFT JOIN tww_od.data_media dm ON (((dm.obj_id)::text &#61; (f.fk_data_media)::text)));</textarea>
                             <div style="padding-top: 5px;"><hr></div>
                             <div class="box box-solid">
                                 <div class="box-header with-border">

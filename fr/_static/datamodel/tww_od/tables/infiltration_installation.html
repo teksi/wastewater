@@ -418,6 +418,28 @@
                                     </td>
                                     <td><p>yyy_Wasserdichtheit gegen Oberflächenwasser.  Nur bei Anlagen mit Schächten. / Wasserdichtheit gegen Oberflächenwasser.  Nur bei Anlagen mit Schächten. / Etanchéité contre des eaux superficielles. Uniquement pour des installations avec chambres</p></td>
                                 </tr>
+                                <tr>
+                                    <td class='foreignKey' title='Foreign Key'><i class='icon ion-key iconkey' style='padding-left: 5px;'></i><span id="fk_dss15_aquifer">fk_dss15_aquifer</span></td>
+                                    <td>varchar</td>
+                                    <td>16</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                            <tr>
+                                                <td title="infiltration_installation.fk_dss15_aquifer references dss15_aquifer.obj_id via rel_infiltration_installation_dss15_aquifer"><a href='dss15_aquifer.html'>dss15_aquifer</a><span class='relatedKey'>.obj_id</span></td>
+                                                <td class="constraint detail">rel_infiltration_installation_dss15_aquifer</td>
+                                                <td class="constraint detail"><span title='Null on delete:&#10;Foreign key to parent set to NULL when parent deleted'>N</span></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>

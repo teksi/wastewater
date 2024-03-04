@@ -4,7 +4,6 @@
       <sequence increment="1" name="network_node_id_seq" startValue="1"/>
       <sequence increment="1" name="network_segment_id_seq" startValue="1"/>
       <sequence increment="1" name="seq_access_aid_oid" startValue="0"/>
-      <sequence increment="1" name="seq_aquifier_oid" startValue="0"/>
       <sequence increment="1" name="seq_backflow_prevention_oid" startValue="0"/>
       <sequence increment="1" name="seq_benching_oid" startValue="0"/>
       <sequence increment="1" name="seq_bio_ecol_assessment_oid" startValue="0"/>
@@ -28,6 +27,8 @@
       <sequence increment="1" name="seq_drainless_toilet_oid" startValue="0"/>
       <sequence increment="1" name="seq_dryweather_downspout_oid" startValue="0"/>
       <sequence increment="1" name="seq_dryweather_flume_oid" startValue="0"/>
+      <sequence increment="1" name="seq_dss15_aquifer_oid" startValue="0"/>
+      <sequence increment="1" name="seq_dss15_planning_zone_oid" startValue="0"/>
       <sequence increment="1" name="seq_electric_equipment_oid" startValue="0"/>
       <sequence increment="1" name="seq_electromechanical_equipment_oid" startValue="0"/>
       <sequence increment="1" name="seq_examination_oid" startValue="0"/>
@@ -60,7 +61,6 @@
       <sequence increment="1" name="seq_param_ca_general_oid" startValue="0"/>
       <sequence increment="1" name="seq_param_ca_mouse1_oid" startValue="0"/>
       <sequence increment="1" name="seq_pipe_profile_oid" startValue="0"/>
-      <sequence increment="1" name="seq_planning_zone_oid" startValue="0"/>
       <sequence increment="1" name="seq_prank_weir_oid" startValue="0"/>
       <sequence increment="1" name="seq_profile_geometry_oid" startValue="0"/>
       <sequence increment="1" name="seq_pump_oid" startValue="0"/>
@@ -91,49 +91,6 @@
       <sequence increment="1" name="seq_zone_oid" startValue="0"/>
    </sequences>
    <tables>
-      <table name="_aquifier" remarks="" schema="tww_od" type="TABLE">
-         <column autoUpdated="false" defaultValue="tww_sys.generate_oid('tww_od'::text, 'aquifier'::text)" digits="0" id="0" name="obj_id" nullable="false" remarks="[primary_key] INTERLIS STANDARD OID (with Postfix/Präfix) or UUOID, see www.interlis.ch" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="null" digits="3" id="1" name="average_groundwater_level" nullable="true" remarks="Average level of groundwater table / Höhe des mittleren Grundwasserspiegels / Niveau moyen de la nappe" size="7" type="numeric" typeCode="2"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="identifier" nullable="true" remarks="" size="20" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="null" digits="3" id="3" name="maximal_groundwater_level" nullable="true" remarks="Maximal level of ground water table / Maximale Lage des Grundwasserspiegels / Niveau maximal de la nappe" size="7" type="numeric" typeCode="2"/>
-         <column autoUpdated="false" defaultValue="null" digits="3" id="4" name="minimal_groundwater_level" nullable="true" remarks="Minimal level of groundwater table / Minimale Lage des Grundwasserspiegels / Niveau minimal de la nappe" size="7" type="numeric" typeCode="2"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="perimeter_geometry" nullable="true" remarks="Boundary points of the perimeter / Begrenzungspunkte der Fläche / Points de délimitation de la surface" size="2147483647" type="geometry" typeCode="1111"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="remark" nullable="true" remarks="General remarks / Allgemeine Bemerkungen / Remarques générales" size="80" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="now()" digits="6" id="7" name="last_modification" nullable="true" remarks="Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE" size="29" type="timestamp" typeCode="93"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="fk_dataowner" nullable="true" remarks="Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l'organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe" size="16" type="varchar" typeCode="12">
-            <parent column="obj_id" foreignKey="rel_od_aquifier_fk_dataowner" implied="false" onDeleteCascade="false" schema="tww_od" table="organisation"/>
-         </column>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="fk_provider" nullable="true" remarks="Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données" size="16" type="varchar" typeCode="12">
-            <parent column="obj_id" foreignKey="rel_od_aquifier_fk_dataprovider" implied="false" onDeleteCascade="false" schema="tww_od" table="organisation"/>
-         </column>
-         <primaryKey column="obj_id" sequenceNumberInPK="1"/>
-         <index name="pkey_tww_od_aquifier_obj_id" unique="true">
-            <column ascending="true" name="obj_id"/>
-         </index>
-         <index name="in_od_aquifier_identifier" unique="true">
-            <column ascending="true" name="identifier"/>
-            <column ascending="true" name="fk_dataowner"/>
-         </index>
-         <index name="in_tww_od_aquifier_perimeter_geometry" unique="false">
-            <column ascending="true" name="perimeter_geometry"/>
-         </index>
-      </table>
-      <table name="_planning_zone" remarks="" schema="tww_od" type="TABLE">
-         <column autoUpdated="false" defaultValue="tww_sys.generate_oid('tww_od'::text, 'planning_zone'::text)" digits="0" id="0" name="obj_id" nullable="false" remarks="[primary_key] INTERLIS STANDARD OID (with Postfix/Präfix) or UUOID, see www.interlis.ch" size="16" type="varchar" typeCode="12">
-            <parent column="obj_id" foreignKey="oorel_od_planning_zone_zone" implied="false" onDeleteCascade="true" schema="tww_od" table="zone"/>
-         </column>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="kind" nullable="true" remarks="Type of planning zone / Art der Bauzone / Genre de zones à bâtir" size="10" type="int4" typeCode="4">
-            <parent column="code" foreignKey="fkey_vl_planning_zone_kind" implied="false" onDeleteCascade="false" schema="tww_vl" table="_planning_zone_kind"/>
-         </column>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="perimeter_geometry" nullable="true" remarks="Boundary points of the perimeter / Begrenzungspunkte der Fläche / Points de délimitation de la surface" size="2147483647" type="geometry" typeCode="1111"/>
-         <primaryKey column="obj_id" sequenceNumberInPK="1"/>
-         <index name="pkey_tww_od_planning_zone_obj_id" unique="true">
-            <column ascending="true" name="obj_id"/>
-         </index>
-         <index name="in_tww_od_planning_zone_perimeter_geometry" unique="false">
-            <column ascending="true" name="perimeter_geometry"/>
-         </index>
-      </table>
       <table name="access_aid" remarks="" schema="tww_od" type="TABLE">
          <column autoUpdated="false" defaultValue="tww_sys.generate_oid('tww_od'::text, 'access_aid'::text)" digits="0" id="0" name="obj_id" nullable="false" remarks="INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch" size="16" type="varchar" typeCode="12">
             <parent column="obj_id" foreignKey="oorel_od_access_aid_structure_part" implied="false" onDeleteCascade="true" schema="tww_od" table="structure_part"/>
@@ -852,6 +809,51 @@
             <column ascending="true" name="obj_id"/>
          </index>
       </table>
+      <table name="dss15_aquifer" remarks="" schema="tww_od" type="TABLE">
+         <column autoUpdated="false" defaultValue="tww_sys.generate_oid('tww_od'::text, 'dss15_aquifer'::text)" digits="0" id="0" name="obj_id" nullable="false" remarks="[primary_key] INTERLIS STANDARD OID (with Postfix/Präfix) or UUOID, see www.interlis.ch" size="16" type="varchar" typeCode="12">
+            <child column="fk_dss15_aquifer" foreignKey="rel_infiltration_installation_dss15_aquifer" implied="false" onDeleteCascade="false" schema="tww_od" table="infiltration_installation"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="1" name="average_groundwater_level" nullable="true" remarks="Average level of groundwater table / Höhe des mittleren Grundwasserspiegels / Niveau moyen de la nappe" size="7" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="identifier" nullable="true" remarks="" size="20" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="3" name="maximal_groundwater_level" nullable="true" remarks="Maximal level of ground water table / Maximale Lage des Grundwasserspiegels / Niveau maximal de la nappe" size="7" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="4" name="minimal_groundwater_level" nullable="true" remarks="Minimal level of groundwater table / Minimale Lage des Grundwasserspiegels / Niveau minimal de la nappe" size="7" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="perimeter_geometry" nullable="true" remarks="Boundary points of the perimeter / Begrenzungspunkte der Fläche / Points de délimitation de la surface" size="2147483647" type="geometry" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="remark" nullable="true" remarks="General remarks / Allgemeine Bemerkungen / Remarques générales" size="80" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="now()" digits="6" id="7" name="last_modification" nullable="true" remarks="Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="fk_dataowner" nullable="true" remarks="Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l'organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe" size="16" type="varchar" typeCode="12">
+            <parent column="obj_id" foreignKey="rel_od_dss15_aquifer_fk_dataowner" implied="false" onDeleteCascade="false" schema="tww_od" table="organisation"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="fk_provider" nullable="true" remarks="Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données" size="16" type="varchar" typeCode="12">
+            <parent column="obj_id" foreignKey="rel_od_dss15_aquifer_fk_dataprovider" implied="false" onDeleteCascade="false" schema="tww_od" table="organisation"/>
+         </column>
+         <primaryKey column="obj_id" sequenceNumberInPK="1"/>
+         <index name="pkey_tww_od_dss15_aquifer_obj_id" unique="true">
+            <column ascending="true" name="obj_id"/>
+         </index>
+         <index name="in_od_dss15_aquifer_identifier" unique="true">
+            <column ascending="true" name="identifier"/>
+            <column ascending="true" name="fk_dataowner"/>
+         </index>
+         <index name="in_tww_od_dss15_aquifer_perimeter_geometry" unique="false">
+            <column ascending="true" name="perimeter_geometry"/>
+         </index>
+      </table>
+      <table name="dss15_planning_zone" remarks="" schema="tww_od" type="TABLE">
+         <column autoUpdated="false" defaultValue="tww_sys.generate_oid('tww_od'::text, 'planning_zone'::text)" digits="0" id="0" name="obj_id" nullable="false" remarks="[primary_key] INTERLIS STANDARD OID (with Postfix/Präfix) or UUOID, see www.interlis.ch" size="16" type="varchar" typeCode="12">
+            <parent column="obj_id" foreignKey="oorel_od_dss15_planning_zone_zone" implied="false" onDeleteCascade="true" schema="tww_od" table="zone"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="kind" nullable="true" remarks="Type of planning zone / Art der Bauzone / Genre de zones à bâtir" size="10" type="int4" typeCode="4">
+            <parent column="code" foreignKey="fkey_vl_dss15_planning_zone_kind" implied="false" onDeleteCascade="false" schema="tww_vl" table="dss15_planning_zone_kind"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="perimeter_geometry" nullable="true" remarks="Boundary points of the perimeter / Begrenzungspunkte der Fläche / Points de délimitation de la surface" size="2147483647" type="geometry" typeCode="1111"/>
+         <primaryKey column="obj_id" sequenceNumberInPK="1"/>
+         <index name="pkey_tww_od_dss15_planning_zone_obj_id" unique="true">
+            <column ascending="true" name="obj_id"/>
+         </index>
+         <index name="in_tww_od_dss15_planning_zone_perimeter_geometry" unique="false">
+            <column ascending="true" name="perimeter_geometry"/>
+         </index>
+      </table>
       <table name="electric_equipment" remarks="" schema="tww_od" type="TABLE">
          <column autoUpdated="false" defaultValue="tww_sys.generate_oid('tww_od'::text, 'electric_equipment'::text)" digits="0" id="0" name="obj_id" nullable="false" remarks="INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch" size="16" type="varchar" typeCode="12">
             <parent column="obj_id" foreignKey="oorel_od_electric_equipment_structure_part" implied="false" onDeleteCascade="true" schema="tww_od" table="structure_part"/>
@@ -962,8 +964,8 @@
       </table>
       <table name="file" remarks="" schema="tww_od" type="TABLE">
          <column autoUpdated="false" defaultValue="tww_sys.generate_oid('tww_od'::text, 'file'::text)" digits="0" id="0" name="obj_id" nullable="false" remarks="INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="class" nullable="true" remarks="yyy_Gibt an, zu welcher Klasse des VSA-DSS-Datenmodells die Datei gehört. Grundsätzlich alle Klassen möglich. Im Rahmen der Kanalfernsehaufnahmen hauptsächlich Kanal, Normschachtschaden, Kanalschaden und Untersuchung. / Gibt an, zu welcher Klasse des VSA-DSS-Datenmodells die Datei gehört. Grundsätzlich alle Klassen möglich. Im Rahmen der Kanalfernsehaufnahmen hauptsächlich Kanal, Normschachtschaden, Kanalschaden und Untersuchung. / Indique à quelle classe du modèle de données de VSA-SDEE appartient le fichier. Toutes les classes sont possible. Surtout CANALISATION, DOMMAGE_CHAMBRE_STANDARD, DOMMAGE_CANALISATION, EXAMEN." size="10" type="int4" typeCode="4">
-            <parent column="code" foreignKey="fkey_vl_file_class" implied="false" onDeleteCascade="false" schema="tww_vl" table="file_class"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="classname" nullable="true" remarks="Specifies the classname of the VSA-DSS data model to which the file belongs. In principle, all classes are possible. In the context of sewer television recordings, mainly channel, manhole damage, channel damage and examination. / Gibt an, zu welcher Klasse des VSA-DSS-Datenmodells die Datei gehört. Grundsätzlich alle Klassen möglich. Im Rahmen der Kanalfernsehaufnahmen hauptsächlich Kanal, Normschachtschaden, Kanalschaden und Untersuchung. / Indique à quelle classe du modèle de données de VSA-SDEE appartient le fichier. Toutes les classes sont possible. Surtout CANALISATION, DOMMAGE_CHAMBRE_STANDARD, DOMMAGE_CANALISATION, EXAMEN." size="10" type="int4" typeCode="4">
+            <parent column="code" foreignKey="fkey_vl_file_classname" implied="false" onDeleteCascade="false" schema="tww_vl" table="file_classname"/>
          </column>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="identifier" nullable="true" remarks="yyy_Name der Datei mit Dateiendung. Z.B video_01.mpg oder haltung_01.ipf / Name der Datei mit Dateiendung. Z.B video_01.mpg oder haltung_01.ipf / Nom du fichier avec terminaison du fichier. P. ex. video_01.mpg ou canalisation_01.ipf" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="kind" nullable="true" remarks="yyy_Beschreibt die Art der Datei. Für analoge Videos auf Bändern ist der Typ &quot;Video&quot; einzusetzen. Die Bezeichnung wird dann gleich gesetzt wie die Bezeichnung des Videobandes. / Beschreibt die Art der Datei. Für analoge Videos auf Bändern ist der Typ &quot;Video&quot; einzusetzen. Die Bezeichnung wird dann gleich gesetzt wie die Bezeichnung des Videobandes. / Décrit le type de fichier. Pour les vidéos analo-giques sur bandes, le type « vidéo » doit être entré. La désignation sera ensuite la même que celle de la bande vidéo." size="10" type="int4" typeCode="4">
@@ -1256,6 +1258,9 @@
          </column>
          <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="watertightness" nullable="true" remarks="yyy_Wasserdichtheit gegen Oberflächenwasser.  Nur bei Anlagen mit Schächten. / Wasserdichtheit gegen Oberflächenwasser.  Nur bei Anlagen mit Schächten. / Etanchéité contre des eaux superficielles. Uniquement pour des installations avec chambres" size="10" type="int4" typeCode="4">
             <parent column="code" foreignKey="fkey_vl_infiltration_installation_watertightness" implied="false" onDeleteCascade="false" schema="tww_vl" table="infiltration_installation_watertightness"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="15" name="fk_dss15_aquifer" nullable="true" remarks="" size="16" type="varchar" typeCode="12">
+            <parent column="obj_id" foreignKey="rel_infiltration_installation_dss15_aquifer" implied="false" onDeleteCascade="false" schema="tww_od" table="dss15_aquifer"/>
          </column>
          <primaryKey column="obj_id" sequenceNumberInPK="1"/>
          <index name="pkey_tww_od_infiltration_installation_obj_id" unique="true">
@@ -1731,8 +1736,6 @@
       </table>
       <table name="organisation" remarks="" schema="tww_od" type="TABLE">
          <column autoUpdated="false" defaultValue="tww_sys.generate_oid('tww_od'::text, 'organisation'::text)" digits="0" id="0" name="obj_id" nullable="false" remarks="INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch" size="16" type="varchar" typeCode="12">
-            <child column="fk_dataowner" foreignKey="rel_od_aquifier_fk_dataowner" implied="false" onDeleteCascade="false" schema="tww_od" table="_aquifier"/>
-            <child column="fk_provider" foreignKey="rel_od_aquifier_fk_dataprovider" implied="false" onDeleteCascade="false" schema="tww_od" table="_aquifier"/>
             <child column="fk_dataowner" foreignKey="rel_od_building_group_fk_dataowner" implied="false" onDeleteCascade="false" schema="tww_od" table="building_group"/>
             <child column="fk_provider" foreignKey="rel_od_building_group_fk_dataprovider" implied="false" onDeleteCascade="false" schema="tww_od" table="building_group"/>
             <child column="fk_dataowner" foreignKey="rel_od_building_group_baugwr_fk_dataowner" implied="false" onDeleteCascade="false" schema="tww_od" table="building_group_baugwr"/>
@@ -1751,6 +1754,8 @@
             <child column="fk_provider" foreignKey="rel_od_data_media_fk_dataprovider" implied="false" onDeleteCascade="false" schema="tww_od" table="data_media"/>
             <child column="fk_dataowner" foreignKey="rel_od_disposal_fk_dataowner" implied="false" onDeleteCascade="false" schema="tww_od" table="disposal"/>
             <child column="fk_provider" foreignKey="rel_od_disposal_fk_dataprovider" implied="false" onDeleteCascade="false" schema="tww_od" table="disposal"/>
+            <child column="fk_dataowner" foreignKey="rel_od_dss15_aquifer_fk_dataowner" implied="false" onDeleteCascade="false" schema="tww_od" table="dss15_aquifer"/>
+            <child column="fk_provider" foreignKey="rel_od_dss15_aquifer_fk_dataprovider" implied="false" onDeleteCascade="false" schema="tww_od" table="dss15_aquifer"/>
             <child column="fk_dataowner" foreignKey="rel_od_farm_fk_dataowner" implied="false" onDeleteCascade="false" schema="tww_od" table="farm"/>
             <child column="fk_provider" foreignKey="rel_od_farm_fk_dataprovider" implied="false" onDeleteCascade="false" schema="tww_od" table="farm"/>
             <child column="fk_dataowner" foreignKey="rel_od_file_fk_dataowner" implied="false" onDeleteCascade="false" schema="tww_od" table="file"/>
@@ -2907,8 +2912,8 @@
       </table>
       <table name="zone" remarks="" schema="tww_od" type="TABLE">
          <column autoUpdated="false" defaultValue="tww_sys.generate_oid('tww_od'::text, 'zone'::text)" digits="0" id="0" name="obj_id" nullable="false" remarks="INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch" size="16" type="varchar" typeCode="12">
-            <child column="obj_id" foreignKey="oorel_od_planning_zone_zone" implied="false" onDeleteCascade="true" schema="tww_od" table="_planning_zone"/>
             <child column="obj_id" foreignKey="oorel_od_drainage_system_zone" implied="false" onDeleteCascade="true" schema="tww_od" table="drainage_system"/>
+            <child column="obj_id" foreignKey="oorel_od_dss15_planning_zone_zone" implied="false" onDeleteCascade="true" schema="tww_od" table="dss15_planning_zone"/>
             <child column="obj_id" foreignKey="oorel_od_infiltration_zone_zone" implied="false" onDeleteCascade="true" schema="tww_od" table="infiltration_zone"/>
          </column>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>

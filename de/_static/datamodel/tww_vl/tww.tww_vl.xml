@@ -1,26 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><database name="tww" schema="tww_vl" type="PostgreSQL - 14.5 (Debian 14.5-1.pgdg110+1)">
    <tables>
-      <table name="_planning_zone_kind" remarks="" schema="tww_vl" type="TABLE">
-         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
-            <child column="kind" foreignKey="fkey_vl_planning_zone_kind" implied="false" onDeleteCascade="false" schema="tww_od" table="_planning_zone"/>
-         </column>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="vsacode" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="value_en" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="value_fr" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="value_it" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="value_ro" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="abbr_en" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="abbr_de" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="abbr_fr" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="abbr_it" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="abbr_ro" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="active" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
-         <primaryKey column="code" sequenceNumberInPK="1"/>
-         <index name="pkey_tww_vl_planning_zone_kind_code" unique="true">
-            <column ascending="true" name="code"/>
-         </index>
-      </table>
       <table name="access_aid_kind" remarks="" schema="tww_vl" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
             <child column="kind" foreignKey="fkey_vl_access_aid_kind" implied="false" onDeleteCascade="false" schema="tww_od" table="access_aid"/>
@@ -1220,6 +1199,27 @@
             <column ascending="true" name="code"/>
          </index>
       </table>
+      <table name="dss15_planning_zone_kind" remarks="" schema="tww_vl" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <child column="kind" foreignKey="fkey_vl_dss15_planning_zone_kind" implied="false" onDeleteCascade="false" schema="tww_od" table="dss15_planning_zone"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="vsacode" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="value_en" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="value_fr" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="value_it" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="value_ro" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="abbr_en" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="abbr_de" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="abbr_fr" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="abbr_it" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="abbr_ro" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="active" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
+         <primaryKey column="code" sequenceNumberInPK="1"/>
+         <index name="pkey_tww_vl_dss15_planning_zone_kind_code" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
       <table name="electric_equipment_kind" remarks="" schema="tww_vl" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
             <child column="kind" foreignKey="fkey_vl_electric_equipment_kind" implied="false" onDeleteCascade="false" schema="tww_od" table="electric_equipment"/>
@@ -1409,9 +1409,9 @@
             <column ascending="true" name="code"/>
          </index>
       </table>
-      <table name="file_class" remarks="" schema="tww_vl" type="TABLE">
+      <table name="file_classname" remarks="" schema="tww_vl" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
-            <child column="class" foreignKey="fkey_vl_file_class" implied="false" onDeleteCascade="false" schema="tww_od" table="file"/>
+            <child column="classname" foreignKey="fkey_vl_file_classname" implied="false" onDeleteCascade="false" schema="tww_od" table="file"/>
          </column>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="vsacode" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="value_en" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
@@ -1426,7 +1426,7 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="abbr_ro" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="active" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
          <primaryKey column="code" sequenceNumberInPK="1"/>
-         <index name="pkey_tww_vl_file_class_code" unique="true">
+         <index name="pkey_tww_vl_file_classname_code" unique="true">
             <column ascending="true" name="code"/>
          </index>
       </table>

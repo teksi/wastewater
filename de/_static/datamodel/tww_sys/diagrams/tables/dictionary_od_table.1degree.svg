@@ -78,7 +78,7 @@
 <text text-anchor="start" x="13.5" y="-45.2" font-family="Helvetica,sans-Serif" font-size="11.00">&lt; 0</text>
 <polygon fill="#ffffff" stroke="transparent" points="66.5,-39 66.5,-57 147.5,-57 147.5,-39 66.5,-39"/>
 <polygon fill="none" stroke="black" points="66.5,-39 66.5,-57 147.5,-57 147.5,-39 66.5,-39"/>
-<text text-anchor="start" x="104.5" y="-45.2" font-family="Helvetica,sans-Serif" font-size="11.00">86 rows</text>
+<text text-anchor="start" x="104.5" y="-45.2" font-family="Helvetica,sans-Serif" font-size="11.00">88 rows</text>
 <polygon fill="#ffffff" stroke="transparent" points="147.5,-39 147.5,-57 241.5,-57 241.5,-39 147.5,-39"/>
 <polygon fill="none" stroke="black" points="147.5,-39 147.5,-57 241.5,-57 241.5,-39 147.5,-39"/>
 <text text-anchor="start" x="222.5" y="-45.2" font-family="Helvetica,sans-Serif" font-size="11.00">0 &gt;</text>

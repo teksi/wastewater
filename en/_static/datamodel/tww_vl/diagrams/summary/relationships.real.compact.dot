@@ -396,18 +396,6 @@ digraph "compactRelationshipsDiagram" {
     target="_top"
     tooltip="tank_cleaning_type"
   ];
-  "_planning_zone_kind" [
-   label=<
-    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
-      <TR><TD COLSPAN="3"  BGCOLOR="#f5f5f5"><TABLE BORDER="0" CELLSPACING="0"><TR><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="122" HEIGHT="16"><B>_planning_zone_kind</B></TD><TD ALIGN="RIGHT">[table]</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="code" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/primaryKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="122" HEIGHT="16">code</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">1 &gt;</TD></TR>
-    </TABLE>>
-    URL="../../tables/_planning_zone_kind.html"
-    target="_top"
-    tooltip="_planning_zone_kind"
-  ];
   "channel_function_hierarchic" [
    label=<
     <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
@@ -1416,18 +1404,6 @@ digraph "compactRelationshipsDiagram" {
     target="_top"
     tooltip="organisation_organisation_type"
   ];
-  "file_class" [
-   label=<
-    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
-      <TR><TD COLSPAN="3"  BGCOLOR="#f5f5f5"><TABLE BORDER="0" CELLSPACING="0"><TR><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="53" HEIGHT="16"><B>file_class</B></TD><TD ALIGN="RIGHT">[table]</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="code" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/primaryKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="53" HEIGHT="16">code</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">1 &gt;</TD></TR>
-    </TABLE>>
-    URL="../../tables/file_class.html"
-    target="_top"
-    tooltip="file_class"
-  ];
   "reach_relining_kind" [
    label=<
     <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
@@ -1644,6 +1620,18 @@ digraph "compactRelationshipsDiagram" {
     target="_top"
     tooltip="catchment_area_drainage_system_current"
   ];
+  "file_classname" [
+   label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
+      <TR><TD COLSPAN="3"  BGCOLOR="#f5f5f5"><TABLE BORDER="0" CELLSPACING="0"><TR><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="87" HEIGHT="16"><B>file_classname</B></TD><TD ALIGN="RIGHT">[table]</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="code" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/primaryKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="87" HEIGHT="16">code</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">1 &gt;</TD></TR>
+    </TABLE>>
+    URL="../../tables/file_classname.html"
+    target="_top"
+    tooltip="file_classname"
+  ];
   "hydraulic_char_data_main_weir_kind" [
    label=<
     <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
@@ -1859,6 +1847,18 @@ digraph "compactRelationshipsDiagram" {
     URL="../../tables/building_group_drinking_water_network.html"
     target="_top"
     tooltip="building_group_drinking_water_network"
+  ];
+  "dss15_planning_zone_kind" [
+   label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
+      <TR><TD COLSPAN="3"  BGCOLOR="#f5f5f5"><TABLE BORDER="0" CELLSPACING="0"><TR><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="155" HEIGHT="16"><B>dss15_planning_zone_kind</B></TD><TD ALIGN="RIGHT">[table]</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="code" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/primaryKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="155" HEIGHT="16">code</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">1 &gt;</TD></TR>
+    </TABLE>>
+    URL="../../tables/dss15_planning_zone_kind.html"
+    target="_top"
+    tooltip="dss15_planning_zone_kind"
   ];
   "log_card_control_remote_control" [
    label=<
@@ -2292,6 +2292,18 @@ digraph "compactRelationshipsDiagram" {
     target="_top"
     tooltip="tww_od.hydraulic_char_data"
   ];
+  "tww_od.dss15_planning_zone" [
+   label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
+      <TR><TD COLSPAN="3"  BGCOLOR="#f5f5f5"><TABLE BORDER="0" CELLSPACING="0"><TR><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="173" HEIGHT="16"><B>tww_od.dss15_planning_zone</B></TD><TD ALIGN="RIGHT">[table]</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="kind" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="123" HEIGHT="16">kind</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 1</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD></TR>
+    </TABLE>>
+    URL="../../../tww_od/tables/dss15_planning_zone.html"
+    target="_top"
+    tooltip="tww_od.dss15_planning_zone"
+  ];
   "tww_od.bio_ecol_assessment" [
    label=<
     <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
@@ -2485,18 +2497,6 @@ digraph "compactRelationshipsDiagram" {
     URL="../../../tww_od/tables/measurement_series.html"
     target="_top"
     tooltip="tww_od.measurement_series"
-  ];
-  "tww_od._planning_zone" [
-   label=<
-    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
-      <TR><TD COLSPAN="3"  BGCOLOR="#f5f5f5"><TABLE BORDER="0" CELLSPACING="0"><TR><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="139" HEIGHT="16"><B>tww_od._planning_zone</B></TD><TD ALIGN="RIGHT">[table]</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="kind" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="123" HEIGHT="16">kind</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 1</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD></TR>
-    </TABLE>>
-    URL="../../../tww_od/tables/_planning_zone.html"
-    target="_top"
-    tooltip="tww_od._planning_zone"
   ];
   "tww_od.cover" [
    label=<
@@ -2864,7 +2864,7 @@ digraph "compactRelationshipsDiagram" {
    label=<
     <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
       <TR><TD COLSPAN="3"  BGCOLOR="#f5f5f5"><TABLE BORDER="0" CELLSPACING="0"><TR><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="68" HEIGHT="16"><B>tww_od.file</B></TD><TD ALIGN="RIGHT">[table]</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="class" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="103" HEIGHT="16">class</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="classname" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="103" HEIGHT="16">classname</TD></TR></TABLE></TD></TR>
       <TR><TD PORT="kind" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="103" HEIGHT="16">kind</TD></TR></TABLE></TD></TR>
       <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
       <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 2</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD></TR>
@@ -2910,7 +2910,6 @@ digraph "compactRelationshipsDiagram" {
     target="_top"
     tooltip="tww_od.access_aid"
   ];
-  "tww_od._planning_zone":"kind":w -> "_planning_zone_kind":"code":e [arrowhead=none dir=back arrowtail=crowodot];
   "tww_od.access_aid":"kind":w -> "access_aid_kind":"code":e [arrowhead=none dir=back arrowtail=crowodot];
   "tww_od.backflow_prevention":"kind":w -> "backflow_prevention_kind":"code":e [arrowhead=none dir=back arrowtail=crowodot];
   "tww_od.benching":"kind":w -> "benching_kind":"code":e [arrowhead=none dir=back arrowtail=crowodot];
@@ -2968,6 +2967,7 @@ digraph "compactRelationshipsDiagram" {
   "tww_od.drainage_system":"kind":w -> "drainage_system_kind":"code":e [arrowhead=none dir=back arrowtail=crowodot];
   "tww_od.drainless_toilet":"kind":w -> "drainless_toilet_kind":"code":e [arrowhead=none dir=back arrowtail=crowodot];
   "tww_od.dryweather_flume":"material":w -> "dryweather_flume_material":"code":e [arrowhead=none dir=back arrowtail=crowodot];
+  "tww_od.dss15_planning_zone":"kind":w -> "dss15_planning_zone_kind":"code":e [arrowhead=none dir=back arrowtail=crowodot];
   "tww_od.electric_equipment":"kind":w -> "electric_equipment_kind":"code":e [arrowhead=none dir=back arrowtail=crowodot];
   "tww_od.electromechanical_equipment":"kind":w -> "electromechanical_equipment_kind":"code":e [arrowhead=none dir=back arrowtail=crowodot];
   "tww_od.examination":"recording_type":w -> "examination_recording_type":"code":e [arrowhead=none dir=back arrowtail=crowodot];
@@ -2977,7 +2977,7 @@ digraph "compactRelationshipsDiagram" {
   "tww_od.farm":"continuance":w -> "farm_continuance":"code":e [arrowhead=none dir=back arrowtail=crowodot];
   "tww_od.farm":"shepherds_hut_wastewater":w -> "farm_shepherds_hut_wastewater":"code":e [arrowhead=none dir=back arrowtail=crowodot];
   "tww_od.farm":"stable_cattle":w -> "farm_stable_cattle":"code":e [arrowhead=none dir=back arrowtail=crowodot];
-  "tww_od.file":"class":w -> "file_class":"code":e [arrowhead=none dir=back arrowtail=crowodot];
+  "tww_od.file":"classname":w -> "file_classname":"code":e [arrowhead=none dir=back arrowtail=crowodot];
   "tww_od.file":"kind":w -> "file_kind":"code":e [arrowhead=none dir=back arrowtail=crowodot];
   "tww_od.hydraulic_char_data":"is_overflowing":w -> "hydraulic_char_data_is_overflowing":"code":e [arrowhead=none dir=back arrowtail=crowodot];
   "tww_od.hydraulic_char_data":"main_weir_kind":w -> "hydraulic_char_data_main_weir_kind":"code":e [arrowhead=none dir=back arrowtail=crowodot];

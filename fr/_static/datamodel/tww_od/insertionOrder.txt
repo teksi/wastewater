@@ -6,6 +6,7 @@ wastewater_node
 cover
 wastewater_structure
 measure
+dss15_aquifer
 waste_water_treatment_plant
 maintenance_event
 reach_point
@@ -40,14 +41,13 @@ fountain
 param_ca_general
 param_ca_mouse1
 reservoir
-_aquifier
-_planning_zone
 access_aid
 benching
 damage_channel
 drainage_system
 drainless_toilet
 dryweather_flume
+dss15_planning_zone
 electric_equipment
 electromechanical_equipment
 infiltration_zone

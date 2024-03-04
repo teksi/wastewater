@@ -118,16 +118,6 @@
                                     <td>
                                         <table border='0' cellspacing='0' cellpadding='0'>
                                             <tr>
-                                                <td title="_aquifier.fk_dataowner references organisation.obj_id via rel_od_aquifier_fk_dataowner"><a href='_aquifier.html'>_aquifier</a><span class='relatedKey'>.fk_dataowner</span></td>
-                                                <td class="constraint detail">rel_od_aquifier_fk_dataowner</td>
-                                                <td class="constraint detail"><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>R</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td title="_aquifier.fk_provider references organisation.obj_id via rel_od_aquifier_fk_dataprovider"><a href='_aquifier.html'>_aquifier</a><span class='relatedKey'>.fk_provider</span></td>
-                                                <td class="constraint detail">rel_od_aquifier_fk_dataprovider</td>
-                                                <td class="constraint detail"><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>R</span></td>
-                                            </tr>
-                                            <tr>
                                                 <td title="building_group.fk_dataowner references organisation.obj_id via rel_od_building_group_fk_dataowner"><a href='building_group.html'>building_group</a><span class='relatedKey'>.fk_dataowner</span></td>
                                                 <td class="constraint detail">rel_od_building_group_fk_dataowner</td>
                                                 <td class="constraint detail"><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>R</span></td>
@@ -215,6 +205,16 @@
                                             <tr>
                                                 <td title="disposal.fk_provider references organisation.obj_id via rel_od_disposal_fk_dataprovider"><a href='disposal.html'>disposal</a><span class='relatedKey'>.fk_provider</span></td>
                                                 <td class="constraint detail">rel_od_disposal_fk_dataprovider</td>
+                                                <td class="constraint detail"><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>R</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td title="dss15_aquifer.fk_dataowner references organisation.obj_id via rel_od_dss15_aquifer_fk_dataowner"><a href='dss15_aquifer.html'>dss15_aquifer</a><span class='relatedKey'>.fk_dataowner</span></td>
+                                                <td class="constraint detail">rel_od_dss15_aquifer_fk_dataowner</td>
+                                                <td class="constraint detail"><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>R</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td title="dss15_aquifer.fk_provider references organisation.obj_id via rel_od_dss15_aquifer_fk_dataprovider"><a href='dss15_aquifer.html'>dss15_aquifer</a><span class='relatedKey'>.fk_provider</span></td>
+                                                <td class="constraint detail">rel_od_dss15_aquifer_fk_dataprovider</td>
                                                 <td class="constraint detail"><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>R</span></td>
                                             </tr>
                                             <tr>
@@ -880,6 +880,10 @@
                                 </thead>
                                 <tbody>
                                 <tr>
+                                    <td>og_uid_length_max_12</td>
+                                    <td>((char_length(uid) &lt;&#61; 12))</td>
+                                </tr>
+                                <tr>
                                     <td>og_identifier_short_length_max_12</td>
                                     <td>((char_length(identifier_short) &lt;&#61; 12))</td>
                                 </tr>
@@ -890,10 +894,6 @@
                                 <tr>
                                     <td>og_identifier_length_max_255</td>
                                     <td>((char_length(identifier) &lt;&#61; 255))</td>
-                                </tr>
-                                <tr>
-                                    <td>og_uid_length_max_12</td>
-                                    <td>((char_length(uid) &lt;&#61; 12))</td>
                                 </tr>
                                 </tbody>
                             </table>

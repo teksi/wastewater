@@ -1,4 +1,3 @@
-_planning_zone_kind
 access_aid_kind
 backflow_prevention_kind
 benching_kind
@@ -56,6 +55,7 @@ disposal_disposal_place_planned
 drainage_system_kind
 drainless_toilet_kind
 dryweather_flume_material
+dss15_planning_zone_kind
 electric_equipment_kind
 electromechanical_equipment_kind
 examination_recording_type
@@ -65,7 +65,7 @@ farm_conformity
 farm_continuance
 farm_shepherds_hut_wastewater
 farm_stable_cattle
-file_class
+file_classname
 file_kind
 hydraulic_char_data_is_overflowing
 hydraulic_char_data_main_weir_kind
