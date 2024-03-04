@@ -45,8 +45,8 @@ FOR EACH ROW EXECUTE PROCEDURE
 
 -------
 
-ALTER TABLE tww_od.water_catchment ADD COLUMN fk_dss15_aquifer varchar (16);
-ALTER TABLE tww_od.water_catchment ADD CONSTRAINT rel_water_catchment_dss15_aquifer FOREIGN KEY (fk_dss15_aquifer) REFERENCES tww_od.dss15_aquifer(obj_id) ON UPDATE CASCADE ON DELETE set null;
+/* ALTER TABLE tww_od.water_catchment ADD COLUMN fk_dss15_aquifer varchar (16);
+ALTER TABLE tww_od.water_catchment ADD CONSTRAINT rel_water_catchment_dss15_aquifer FOREIGN KEY (fk_dss15_aquifer) REFERENCES tww_od.dss15_aquifer(obj_id) ON UPDATE CASCADE ON DELETE set null; */
 
 
 ALTER TABLE tww_od.infiltration_installation ADD COLUMN fk_dss15_aquifer varchar (16);
