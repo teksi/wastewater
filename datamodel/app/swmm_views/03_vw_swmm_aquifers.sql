@@ -1,5 +1,5 @@
 --------
--- View for the swmm module class _aquifiers, in VSA-DSS 2020 not part of the datamodel anymore - therefore referenced on tww_od._aquifier
+-- // skip-keyword-check View for the swmm module class aquifer (in  qgep wrongly named aquifier), in VSA-DSS 2020 not part of the datamodel anymore - therefore referenced on tww_od.dss15_aquifer
 --------
 CREATE OR REPLACE VIEW tww_app.swmm_vw_aquifers AS
 
@@ -18,4 +18,4 @@ SELECT
 	average_groundwater_level as WaterTableElevation,
 	0.3 as UnsatZoneMoisture,
 	null as UpperEvapPattern
-FROM tww_od._aquifier as aq;
+FROM tww_od.dss15_aquifer as aq;
