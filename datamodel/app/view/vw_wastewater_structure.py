@@ -41,8 +41,6 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
         WHERE ch.obj_id IS NULL;
 
         ALTER VIEW tww_app.vw_wastewater_structure ALTER obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_structure');
-        ALTER VIEW tww_app.vw_wastewater_structure ALTER co_obj_id SET DEFAULT tww_sys.generate_oid('tww_od','cover');
-        ALTER VIEW tww_app.vw_wastewater_structure ALTER wn_obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_node');
     """.format(
         extra_cols="\n    ".join(
             [
