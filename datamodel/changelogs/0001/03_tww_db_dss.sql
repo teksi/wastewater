@@ -1,6 +1,6 @@
 ------ This file generates the VSA-DSS database (Modul VSA-DSS (2020)) in en on QQIS
 ------ For questions etc. please contact Stefan Burckhardt stefan.burckhardt@sjib.ch
------- version 07.02.2024 20:37:04
+------ version 10.02.2024 11:44:42
 ------ with 3D coordinates
 
 ---------------------------
@@ -4126,8 +4126,12 @@ ALTER TABLE tww_vl.individual_surface_pavement ADD CONSTRAINT pkey_tww_vl_indivi
 ALTER TABLE tww_od.fountain ADD CONSTRAINT oorel_od_fountain_connection_object FOREIGN KEY (obj_id) REFERENCES tww_od.connection_object(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE tww_od.log_card ADD COLUMN fk_pwwf_wastewater_node varchar(16);
 ALTER TABLE tww_od.log_card ADD CONSTRAINT rel_log_card_pwwf_wastewater_node FOREIGN KEY (fk_pwwf_wastewater_node) REFERENCES tww_od.wastewater_node(obj_id) ON UPDATE CASCADE ON DELETE set null;
+ALTER TABLE tww_od.log_card ADD COLUMN fk_main_structure varchar(16);
+ALTER TABLE tww_od.log_card ADD CONSTRAINT rel_log_card_main_structure FOREIGN KEY (fk_main_structure) REFERENCES tww_od.log_card(obj_id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE tww_od.log_card ADD COLUMN fk_agency varchar(16);
 ALTER TABLE tww_od.log_card ADD CONSTRAINT rel_log_card_agency FOREIGN KEY (fk_agency) REFERENCES tww_od.organisation(obj_id) ON UPDATE CASCADE ON DELETE set null;
+ALTER TABLE tww_od.log_card ADD COLUMN fk_next_special_building varchar(16);
+ALTER TABLE tww_od.log_card ADD CONSTRAINT rel_log_card_next_special_building FOREIGN KEY (fk_next_special_building) REFERENCES tww_od.log_card(obj_id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE tww_od.log_card ADD COLUMN fk_location_municipality varchar(16);
 ALTER TABLE tww_od.log_card ADD CONSTRAINT rel_log_card_location_municipality FOREIGN KEY (fk_location_municipality) REFERENCES tww_od.organisation(obj_id) ON UPDATE CASCADE ON DELETE set null;
 CREATE TABLE tww_vl.log_card_control_remote_control () INHERITS (tww_vl.value_list_base);
@@ -4243,6 +4247,8 @@ ALTER TABLE tww_vl.catchment_area_retention_planned ADD CONSTRAINT pkey_tww_vl_c
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.surface_runoff_parameters ADD COLUMN fk_catchment_area varchar(16);
 ALTER TABLE tww_od.surface_runoff_parameters ADD CONSTRAINT rel_surface_runoff_parameters_catchment_area FOREIGN KEY (fk_catchment_area) REFERENCES tww_od.catchment_area(obj_id) ON UPDATE CASCADE ON DELETE cascade;
+ALTER TABLE tww_od.measuring_point ADD COLUMN fk_reference_station varchar(16);
+ALTER TABLE tww_od.measuring_point ADD CONSTRAINT rel_measuring_point_reference_station FOREIGN KEY (fk_reference_station) REFERENCES tww_od.measuring_point(obj_id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE tww_od.measuring_point ADD COLUMN fk_operator varchar(16);
 ALTER TABLE tww_od.measuring_point ADD CONSTRAINT rel_measuring_point_operator FOREIGN KEY (fk_operator) REFERENCES tww_od.organisation(obj_id) ON UPDATE CASCADE ON DELETE set null;
 ALTER TABLE tww_od.measuring_point ADD COLUMN fk_waste_water_treatment_plant varchar(16);
