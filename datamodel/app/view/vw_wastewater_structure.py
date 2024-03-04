@@ -74,7 +74,6 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
                 "_output_label",
                 "fk_main_cover",
                 "fk_main_wastewater_node",
-                "situation3d_geometry",
             ],
         ),
         extra_joins="\n    ".join(
@@ -124,7 +123,6 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
                 "_output_label",
                 "fk_main_cover",
                 "fk_main_wastewater_node",
-                "situation3d_geometry",
             ],
         ),
     )
@@ -157,7 +155,6 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
             remove_pkey=False,
             indent=6,
             skip_columns=[
-                "situation3d_geometry",
                 "last_modification",
                 "_label",
                 "_cover_label",
