@@ -63,7 +63,7 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
             pg_cur=cursor,
             table_schema="tww_od",
             table_name="wastewater_structure",
-            table_alias="",
+            table_alias="ws",
             remove_pkey=False,
             indent=4,
             skip_columns=[
