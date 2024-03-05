@@ -173,7 +173,7 @@ BEGIN
 		  sum(ca_sums_c.population_dim) AS population_dim,
 		  sum(ca_sums_p.surface_dim) AS surface_dim,
 		  sum(ca_sums_p.surface_imp_dim) AS surface_imp_dim,
-		  sum(ca_sums_p.surface_red_dim) AS surface_red_dim 
+		  sum(ca_sums_p.surface_red_dim) AS surface_red_dim
 		FROM log_card_agg lca
 		  LEFT JOIN tww_od.log_card lc ON lca.parent::text = lc.obj_id::text
 		  LEFT JOIN ca_sums ca_sums_c ON ca_sums_c.obj_id = lca.child -- aggregate values of upstream log cards too
