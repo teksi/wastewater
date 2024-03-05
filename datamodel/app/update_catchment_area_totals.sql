@@ -37,7 +37,7 @@ BEGIN
 	 FROM tww_od.catchment_area_totals ca_tot
      LEFT JOIN tww_od.hydraulic_char_data hcd ON hcd.obj_id::text = ca_tot.fk_hydraulic_char_data::text
      LEFT JOIN tww_od.wastewater_node wn ON hcd.fk_wastewater_node::text = wn.obj_id::text
-     LEFT JOIN ( 
+     LEFT JOIN (
 	   WITH RECURSIVE log_card_tree AS
         (
         SELECT
@@ -61,7 +61,7 @@ BEGIN
           log_card_tree lt ON lc.fk_next_special_building = lt.obj_id
         )
         , log_card_agg as(
-        SELECT 
+        SELECT
           obj_id as child,
           unnest(log_card_path) as parent
         FROM
@@ -141,7 +141,7 @@ BEGIN
 			-- 0 AS waste_water_production_dim,    -- Not in datamodel (yet)
 		  FROM tww_od.catchment_area
 		  WHERE catchment_area.fk_special_building_rw_planned IS NOT NULL
-		), 
+		),
 		ca_sums as(
 		  SELECT main_lc.obj_id,
 			main_lc.fk_pwwf_wastewater_node,
