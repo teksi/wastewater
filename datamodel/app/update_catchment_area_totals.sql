@@ -164,19 +164,20 @@ BEGIN
 		)
 		SELECT  lca.parent as obj_id,
 		  lc.fk_pwwf_wastewater_node,
-		  sum(ca_sums.population) AS population,
-		  sum(ca_sums.surface_area) AS surface_area,
-		  sum(ca_sums.surface_imp) AS surface_imp,
-		  sum(ca_sums.surface_red) AS surface_red,
-		  sum(ca_sums.sewer_infiltration_water) AS sewer_infiltration_water,
-		  sum(ca_sums.waste_water_production) AS waste_water_production,
-		  sum(ca_sums.population_dim) AS population_dim,
-		  sum(ca_sums.surface_dim) AS surface_dim,
-		  sum(ca_sums.surface_imp_dim) AS surface_imp_dim,
-		  sum(ca_sums.surface_red_dim) AS surface_red_dim 
+		  sum(ca_sums_c.population) AS population,
+		  sum(ca_sums_p.surface_area) AS surface_area,
+		  sum(ca_sums_p.surface_imp) AS surface_imp,
+		  sum(ca_sums_p.surface_red) AS surface_red,
+		  sum(ca_sums_c.sewer_infiltration_water) AS sewer_infiltration_water,
+		  sum(ca_sums_c.waste_water_production) AS waste_water_production,
+		  sum(ca_sums_c.population_dim) AS population_dim,
+		  sum(ca_sums_p.surface_dim) AS surface_dim,
+		  sum(ca_sums_p.surface_imp_dim) AS surface_imp_dim,
+		  sum(ca_sums_p.surface_red_dim) AS surface_red_dim 
 		FROM log_card_agg lca
 		  LEFT JOIN tww_od.log_card lc ON lca.parent::text = lc.obj_id::text
-		  LEFT JOIN ca_sums ON ca_sums.obj_id = lca.child
+		  LEFT JOIN ca_sums ca_sums_c ON ca_sums_c.obj_id = lca.child -- aggregate values of upstream log cards too
+		  LEFT JOIN ca_sums ca_sums_p ON ca_sums_p.obj_id = lca.parent -- use only direct catchment
 		GROUP BY lca.parent,
 		  lc.fk_pwwf_wastewater_node
       )ca_agg
