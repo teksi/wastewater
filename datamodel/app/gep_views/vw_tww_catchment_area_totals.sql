@@ -27,6 +27,6 @@ CREATE OR REPLACE VIEW tww_app.vw_tww_catchment_area_totals
                 )
          SELECT collector.obj_id,
             collector.fk_pwwf_wastewater_node,
-            st_collect(collector.geom) AS perimeter_geometry
+            st_unaryunion(st_collect(collector.geom)) AS perimeter_geometry
            FROM collector
           GROUP BY collector.obj_id, collector.fk_pwwf_wastewater_node) ca_agg ON ca_agg.fk_pwwf_wastewater_node::text = wn.obj_id::text;
