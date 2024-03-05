@@ -191,7 +191,7 @@ CREATE INDEX IF NOT EXISTS in_{ext_schema}_od_unconnected_node_bwrel_detailgeome
 	
 ALTER TABLE tww_od.organisation DISABLE TRIGGER update_last_modified_organisation;
 
-CREATE OR REPLACE FUNCTION {ext_schema}.generate_oid_prefix_and_schema(table_name text)
+CREATE OR REPLACE FUNCTION {ext_schema}.generate_oid_prefix_and_shortcut(table_name text)
  RETURNS text AS
 $BODY$
 DECLARE
