@@ -19,9 +19,12 @@ from .interlis_model_mapping.model_interlis_dss import ModelInterlisDss
 from .interlis_model_mapping.model_interlis_sia405_abwasser import (
     ModelInterlisSia405Abwasser,
 )
+from .interlis_model_mapping.model_interlis_ag64 import ModelInterlisAG64
+from .interlis_model_mapping.model_interlis_ag96 import ModelInterlisAG96
 from .interlis_model_mapping.model_interlis_vsa_kek import ModelInterlisVsaKek
 from .interlis_model_mapping.model_tww_od import ModelTwwOd
 from .interlis_model_mapping.model_tww_vl import ModelTwwVl
+from .interlis_model_mapping.model_tww_ag6496 import ModelTwwAG6496
 from .utils.ili2db import InterlisTools
 from .utils.various import (
     CmdException,
@@ -52,6 +55,7 @@ class InterlisImporterExporter:
         self.model_classes_interlis = None
         self.model_classes_tww_od = None
         self.model_classes_tww_vl = None
+        self.model_classes_tww_ag6496 = None
 
         self.current_progress = 0
 
@@ -79,6 +83,10 @@ class InterlisImporterExporter:
             import_model = config.MODEL_NAME_DSS
         elif config.MODEL_NAME_SIA405_BASE_ABWASSER in import_models:
             import_model = config.MODEL_NAME_SIA405_ABWASSER
+        elif config.MODEL_NAME_AG96 in import_models:
+            import_model = config.MODEL_NAME_AG96
+        elif config.MODEL_NAME_AG64 in import_models:
+            import_model = config.MODEL_NAME_AG64
         else:
             error_text = f"No supported model was found among '{import_models}'."
             if len(import_models) == 1:
@@ -310,6 +318,7 @@ class InterlisImporterExporter:
             model_classes_interlis=self.model_classes_interlis,
             model_classes_tww_od=self.model_classes_tww_od,
             model_classes_tww_vl=self.model_classes_tww_vl,
+            model_classes_tww_ag6496=self.model_classes_tww_ag6496,
             selection=selected_ids,
             labels_file=labels_file_path,
             basket_enabled=basket_enabled,
@@ -431,11 +440,18 @@ class InterlisImporterExporter:
             )
 
     def _init_model_classes(self, model):
-        ModelInterlis = ModelInterlisSia405Abwasser
-        if model == config.MODEL_NAME_DSS:
-            ModelInterlis = ModelInterlisDss
-        elif model == config.MODEL_NAME_VSA_KEK:
-            ModelInterlis = ModelInterlisVsaKek
+        ModelInterlis = None
+        if model == config.MODEL_NAME_AG96:
+            ModelInterlis = ModelInterlisAG96
+        elif model == config.MODEL_NAME_AG64:
+            ModelInterlis = ModelInterlisAG64
+        else:
+            ModelInterlis = ModelInterlisSia405Abwasser
+            if model == config.MODEL_NAME_DSS:
+                ModelInterlis = ModelInterlisDss
+            elif model == config.MODEL_NAME_VSA_KEK:
+                ModelInterlis = ModelInterlisVsaKek
+
         self.model_classes_interlis = ModelInterlis().classes()
         self._progress_done(self.current_progress + 1)
 
@@ -445,6 +461,10 @@ class InterlisImporterExporter:
 
         if self.model_classes_tww_vl is None:
             self.model_classes_tww_vl = ModelTwwVl().classes()
+            self._progress_done(self.current_progress + 1)
+
+        if (model == config.MODEL_NAME_AG96 or model == config.MODEL_NAME_AG64) and self.model_classes_tww_ag6496 is None:
+            self.model_classes_tww_ag6496 = ModelTwwAG6496().classes()
             self._progress_done(self.current_progress + 1)
 
     def _progress_done_intermediate_schema(self):

@@ -28,6 +28,12 @@ class InterlisExportSettingsDialog(QDialog):
             config.MODEL_NAME_VSA_KEK,
             [config.MODEL_NAME_VSA_KEK, config.MODEL_NAME_SIA405_ABWASSER],
         )
+        self.export_model_selection_comboBox.addItem(
+            config.MODEL_NAME_AG96, [config.MODEL_NAME_AG96]
+        )
+        self.export_model_selection_comboBox.addItem(
+            config.MODEL_NAME_AG64, [config.MODEL_NAME_AG64]
+        )
 
         structures_layer = TwwLayerManager.layer("vw_tww_wastewater_structure")
         reaches_layer = TwwLayerManager.layer("vw_tww_reach")

@@ -1,13 +1,12 @@
 import json
 
 from geoalchemy2.functions import ST_Force2D, ST_GeomFromGeoJSON
-from sqlalchemy import or_
+from sqlalchemy import or_, nullslast
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import text
 
 from .. import config, utils
 from ..utils.various import logger
-
 
 class InterlisExporterToIntermediateSchemaError(Exception):
     pass
@@ -20,6 +19,7 @@ class InterlisExporterToIntermediateSchema:
         model_classes_interlis,
         model_classes_tww_od,
         model_classes_tww_vl,
+        model_classes_tww_ag6496=None,
         selection=None,
         labels_file=None,
         basket_enabled=False,
@@ -32,6 +32,7 @@ class InterlisExporterToIntermediateSchema:
             selection:      if provided, limits the export to networkelements that are provided in the selection
         """
         self.model = model
+        self.is_ag_xx_model = model in [config.MODEL_NAME_AG64, config.MODEL_NAME_AG96]
         self.callback_progress_done = callback_progress_done
 
         # Filtering
@@ -45,6 +46,7 @@ class InterlisExporterToIntermediateSchema:
         self.model_classes_interlis = model_classes_interlis
         self.model_classes_tww_od = model_classes_tww_od
         self.model_classes_tww_vl = model_classes_tww_vl
+        self.model_classes_tww_ag6496 = model_classes_tww_ag6496
 
         self.tww_session = None
         self.abwasser_session = None
@@ -55,6 +57,8 @@ class InterlisExporterToIntermediateSchema:
         self.basket_topic_sia405_abwasser = None
         self.basket_topic_dss = None
         self.basket_topic_kek = None
+        self.basket_topic_ag64 = None
+        self.basket_topic_ag96 = None
 
     def tww_export(self):
         # Logging disabled (very slow)
@@ -79,17 +83,24 @@ class InterlisExporterToIntermediateSchema:
 
         if self.basket_enabled:
             self._create_basket()
+
+        if self.model == config.MODEL_NAME_AG64:
+            self.current_basket = self.basket_topic_ag64
+            self._export_ag64()
+        elif self.model == config.MODEL_NAME_AG96:
+            self.current_basket = self.basket_topic_ag96
+            self._export_ag96()
+        else:
             self.current_basket = self.basket_topic_sia405_administration
+            self._export_sia405_abwasser()
 
-        self._export_sia405_abwasser()
+            if self.model == config.MODEL_NAME_DSS:
+                self.current_basket = self.basket_topic_dss
+                self._export_dss()
 
-        if self.model == config.MODEL_NAME_DSS:
-            self.current_basket = self.basket_topic_dss
-            self._export_dss()
-
-        if self.model == config.MODEL_NAME_VSA_KEK:
-            self.current_basket = self.basket_topic_kek
-            self._export_vsa_kek()
+            if self.model == config.MODEL_NAME_VSA_KEK:
+                self.current_basket = self.basket_topic_kek
+                self._export_vsa_kek()
 
         # Labels
         # Note: these are extracted from the optional labels file (not exported from the TWW database)
@@ -143,6 +154,26 @@ class InterlisExporterToIntermediateSchema:
             domains="",
         )
         self.abwasser_session.add(self.basket_topic_kek)
+
+        self.basket_topic_ag64 = self.model_classes_interlis.t_ili2db_basket(
+            t_id=5,
+            dataset=dataset.t_id,
+            topic=config.TOPIC_NAME_AG64,
+            t_ili_tid=None,
+            attachmentkey=dataset.datasetname,
+            domains="",
+        )
+        self.abwasser_session.add(self.basket_topic_ag64)
+
+        self.basket_topic_ag96 = self.model_classes_interlis.t_ili2db_basket(
+            t_id=5,
+            dataset=dataset.t_id,
+            topic=config.TOPIC_NAME_AG96,
+            t_ili_tid=None,
+            attachmentkey=dataset.datasetname,
+            domains="",
+        )
+        self.abwasser_session.add(self.basket_topic_96)
         self.abwasser_session.flush()
 
     def _export_sia405_abwasser(self):
@@ -436,20 +467,67 @@ class InterlisExporterToIntermediateSchema:
         self._export_file()
         self._check_for_stop()
 
+    def _export_ag64(self):
+        logger.info("Exporting TWW.organisation -> ABWASSER.organisation")
+        self._export_organisation()
+        self._check_for_stop()
+        
+    def _export_ag96(self):
+        logger.info("Exporting TWW.organisation -> ABWASSER.organisation")
+        self._export_organisation()
+        self._check_for_stop()
+        
+        logger.info("Exporting TWW.gepknoten -> ABWASSER.gepknoten")
+        self._export_gepknoten()
+        self._check_for_stop()
+        
+        logger.info("Exporting TWW.gephaltung -> ABWASSER.gephaltung")
+        self._export_gephaltung()
+        self._check_for_stop()
+        
+        logger.info("Exporting TWW.ueberlauf_foerderaggregat -> ABWASSER.ueberlauf_foerderaggregat")
+        self._export_ueberlauf_foerderaggregat_ag96()
+        self._check_for_stop()
+        
+        logger.info("Exporting TWW.versickerungsbereichag -> ABWASSER.versickerungsbereichag")
+        self._export_versickerungsbereichag()
+        self._check_for_stop()
+
     def _export_organisation(self):
-        query = self.tww_session.query(self.model_classes_tww_od.organisation)
+        if self.is_ag_xx_model:
+            queryModel = self.model_classes_tww_ag6496
+        else:
+            queryModel = self.model_classes_tww_od
+        query = self.tww_session.query(queryModel.organisation)
         for row in query:
-            organisation = self.model_classes_interlis.organisation(
-                # FIELDS TO MAP TO ABWASSER.organisation
-                # --- sia405_baseclass ---
-                **self.sia_405_base_common(row, "organisation"),
-                # --- organisation ---
-                auid=row.uid,
-                bemerkung=self.truncate(self.emptystr_to_null(row.remark), 80),
-                bezeichnung=self.null_to_emptystr(row.identifier),
-                organisationstyp=self.get_vl(row.organisation_type__REL),
-                astatus=self.get_vl(row.status__REL),
-            )
+            organisation = None
+            if self.is_ag_xx_model:
+                organisation = self.model_classes_interlis.organisation(
+                    # FIELDS TO MAP TO ABWASSER.organisation
+                    t_id=self.get_tid(row),
+                    t_ili_tid=row.obj_id,
+                    obj_id=row.obj_id,
+                    auid=row.uid,
+                    bezeichnung=self.truncate(self.emptystr_to_null(row.bezeichnung), 80),
+                    kurzbezeichnung=self.truncate(self.emptystr_to_null(row.kurzbezeichnung), 12),
+                    datenbewirtschafter_kt=row.datenbewirtschafter_kt,
+                    organisationtyp=row.organisationtyp,
+                    letzte_aenderung=row.letzte_aenderung,
+                    bemerkung=self.truncate(self.emptystr_to_null(row.bemerkung), 80),
+                )
+                self.map_tid_ag_xx(row.obj_id, organisation.t_id)
+            else:
+                organisation = self.model_classes_interlis.organisation(
+                    # FIELDS TO MAP TO ABWASSER.organisation
+                    # --- sia405_baseclass ---
+                    **self.sia_405_base_common(row, "organisation"),
+                    # --- organisation ---
+                    auid=row.uid,
+                    bemerkung=self.truncate(self.emptystr_to_null(row.remark), 80),
+                    bezeichnung=self.null_to_emptystr(row.identifier),
+                    organisationstyp=self.get_vl(row.organisation_type__REL),
+                    astatus=self.get_vl(row.status__REL),
+                )
             self.abwasser_session.add(organisation)
             print(".", end="")
         logger.info("done")
@@ -477,6 +555,99 @@ class InterlisExporterToIntermediateSchema:
                 verbindungsart=self.get_vl(row.connection_type__REL),
             )
             self.abwasser_session.add(kanal)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_gepknoten(self):
+        query = self.tww_session.query(self.model_classes_tww_ag6496.gepknoten)
+        if self.filtered:
+            query = query.join(self.model_classes_tww_ag6496.wastewater_networkelement).filter(
+                self.model_classes_tww_ag6496.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            )
+        
+        """
+        GEPKnoten werden nach Fläche sortiert hinzugefügt, damit bei der Triggerlogik
+        hinter {ext_schema}.gepknoten die Verknüpfung zu anderen Abwasserbauwerken 
+        basierend auf einem Spatial Join implementiert werden kann.
+        Dies ist relevant, da Zweitknoten der FunktionAG "andere", die innerhalb der Detailgeometrie
+        eines anderen Abwasserbauwerks liegen, als Deckel importiert werden.
+        """
+        query.order_by(nullslast(self.model_classes_tww_ag6496.gepknoten.detailgeometrie.ST_Area().asc()))
+        for row in query:
+            gepknoten = self.model_classes_interlis.abwasserbauwerk( #abwasserbauwerk wegen Kompatibiltät bei Label-Export
+                **self.gep_metainformation_common_ag_xx(row,'gepknoten'),
+                **self.knoten_common_ag_xx(row),
+                istschnittstelle=row.istschnittstelle,
+                maxrueckstauhoehe=row.maxrueckstauhoehe,
+                gepmassnahmeref=self.get_tid_by_obj_id(row.gepmassnahmeref),
+            )
+            self.map_tid_ag_xx(row.obj_id, gepknoten.t_id)
+            self.abwasser_session.add(gepknoten)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_gephaltung(self):
+        query = self.tww_session.query(self.model_classes_tww_ag6496.gephaltung)
+        if self.filtered:
+            query = query.join(self.model_classes_tww_ag6496.wastewater_networkelement).filter(
+                self.model_classes_tww_ag6496.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            gephaltung = self.model_classes_interlis.haltung(
+                **self.gep_metainformation_common_ag_xx(row,'gephaltung'),
+                **self.haltung_common_ag_xx(row),
+                hydraulischebelastung=row.hydraulischebelastung,
+                lichte_breite_ist=row.lichte_breite_ist,
+                lichte_breite_geplant=row.lichte_breite_geplant,
+                lichte_hoehe_geplant=row.lichte_hoehe_geplant,
+                nutzungsartag_geplant=row.nutzungsartag_geplant,
+                wiederbeschaffungswert=row.wiederbeschaffungswert,
+                startknoten=self.get_tid_by_obj_id(row.startknoten),
+                endknoten=self.get_tid_by_obj_id(row.endknoten),
+                gepmassnahmeref=self.get_tid_by_obj_id(row.gepmassnahmeref),
+            )
+            self.abwasser_session.add(gephaltung)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_ueberlauf_foerderaggregat_ag96(self):
+        query = self.tww_session.query(self.model_classes_tww_ag6496.ueberlauf_foerderaggregat)
+        if self.filtered:
+            query = query.join(self.model_classes_tww_ag6496.wastewater_networkelement).filter(
+                self.model_classes_tww_ag6496.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            ueberlauf_foerderaggregat = self.model_classes_interlis.ueberlauf_foerderaggregat(
+                **self.gep_metainformation_common_ag_xx(row,'ueberlauf_foerderaggregat'),
+                **self.ueberlauf_foerderaggregat_common_ag_xx(row),
+            )
+            self.abwasser_session.add(ueberlauf_foerderaggregat)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_versickerungsbereichag(self):
+        query = self.tww_session.query(self.model_classes_tww_ag6496.versickerungsbereichag)
+        if self.filtered:
+            query = query.join(self.model_classes_tww_ag6496.wastewater_networkelement).filter(
+                self.model_classes_tww_ag6496.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            versickerungsbereichag = self.model_classes_interlis.versickerungsbereichag(
+                # --- abwasserbauwerk ---
+                **self.gep_metainformation_common_ag_xx(row,'versickerungsbereichag'),
+                bezeichnung=self.truncate(self.emptystr_to_null(row.bezeichnung), 20),
+                durchlaessigkeit=row.durchlaessigkeit,
+                einschraenkung=row.einschraenkung,
+                maechtigkeit=row.maechtigkeit,
+                perimeter=row.perimeter,
+                q_check=row.ag96_q_check,
+                versickerungsmoeglichkeitag=row.versickerungsmoeglichkeitag,
+            )
+            self.abwasser_session.add(versickerungsbereichag)
             print(".", end="")
         logger.info("done")
         self.abwasser_session.flush()
@@ -2621,3 +2792,104 @@ class InterlisExporterToIntermediateSchema:
     def _check_for_stop(self):
         if self.callback_progress_done:
             self.callback_progress_done()
+
+    def map_tid_ag_xx(self, obj_id, t_id):
+        """
+        Creates a t_id for a given obj_id
+        """
+        if hasattr(self, "obj2tId") is False:
+            self.obj2tId = {}
+
+        if obj_id not in self.obj2tId.keys():
+            self.obj2tId[obj_id] = t_id
+
+    def get_tid_by_obj_id(self, obj_id):
+        """
+        Returns a t_id for a given obj_id
+        """
+        if obj_id in self.obj2tId.keys():
+            return self.obj2tId[obj_id]
+        else:
+            return None
+
+    def gep_metainformation_common_ag_xx(self, row, type_name):
+        return {
+            **self.base_common(row, type_name),
+            "bemerkung_gep": row.bemerkung_gep,
+            "datenbewirtschafter_gep": self.get_tid_by_obj_id(row.datenbewirtschafter_gep),
+            "letzte_aenderung_gep": row.letzte_aenderung_gep,
+        }
+    
+    def knoten_common_ag_xx(self, row):
+        """
+        Returns common attributes for wastewater_structure
+        """
+        return {
+            "ara_nr": row.ara_nr,
+            "baujahr": row.baujahr,
+            "baulicherzustand": row.baulicherzustand,
+            "bauwerkstatus": row.bauwerkstatus,
+            "bemerkung_wi": self.truncate(self.emptystr_to_null(row.bemerkung_wi), 80),
+            "bezeichnung": self.truncate(self.emptystr_to_null(row.bezeichnung), 20),
+            "deckelkote": row.deckelkote,
+            "detailgeometrie": row.detailgeometrie,
+            "finanzierung": row.finanzierung,
+            "funktionag": row.funktionag,
+            "funktionhierarchisch": row.funktionhierarchisch,
+            "jahr_zustandserhebung": row.jahr_zustandserhebung,
+            "lage": row.lage,
+            "letzte_aenderung_wi": row.letzte_aenderung_wi,
+            "sanierungsbedarf": row.sanierungsbedarf,
+            "sohlenkote": row.sohlenkote,
+            "zugaenglichkeit": row.zugaenglichkeit,
+            "betreiber": self.get_tid_by_obj_id(row.betreiber),
+            "datenbewirtschafter_wi": self.get_tid_by_obj_id(row.datenbewirtschafter_wi),
+            "eigentuemer": self.get_tid_by_obj_id(row.eigentuemer),
+        }
+
+    def haltung_common_ag_xx(self, row):
+        """
+        Returns common attributes for wastewater_structure
+        """
+        return {
+            "baujahr": row.baujahr,
+            "baulicherzustand": row.baulicherzustand,
+            "bauwerkstatus": row.bauwerkstatus,
+            "bemerkung_wi": self.truncate(self.emptystr_to_null(row.bemerkung_wi), 80),
+            "bezeichnung": self.truncate(self.emptystr_to_null(row.bezeichnung), 20),
+            "finanzierung": row.finanzierung,
+            "funktionhierarchisch": row.funktionhierarchisch,
+            "funktionhydraulisch": row.funktionhydraulisch,
+            "hoehengenauigkeit_nach": row.hoehengenauigkeit_nach,
+            "hoehengenauigkeit_von": row.hoehengenauigkeit_von,
+            "jahr_zustandserhebung": row.jahr_zustandserhebung,
+            "kote_beginn": row.kote_beginn,
+            "kote_ende": row.kote_ende,
+            "letzte_aenderung_wi": row.letzte_aenderung_wi,
+            "lichte_hoehe_ist": row.lichte_hoehe_ist,
+            "laengeeffektiv": row.laengeeffektiv,
+            "material": row.material,
+            "profiltyp": row.profiltyp,
+            "nutzungsartag_ist": row.nutzungsartag_ist,
+            "reliner_art": row.reliner_art,
+            "reliner_bautechnik": row.reliner_bautechnik,
+            "reliner_material": row.reliner_material,
+            "reliner_nennweite": row.reliner_nennweite,
+            "sanierungsbedarf": row.sanierungsbedarf,
+            "verlauf": row.verlauf,
+            "wbw_basisjahr": row.wbw_basisjahr,
+            "betreiber": self.get_tid_by_obj_id(row.betreiber),
+            "datenbewirtschafter_wi": self.get_tid_by_obj_id(row.datenbewirtschafter_wi),
+            "eigentuemer": self.get_tid_by_obj_id(row.eigentuemer),
+        }
+
+    def ueberlauf_foerderaggregat_common_ag_xx(self, row):
+        """
+        Returns common attributes for ueberlauf_foerderaggregat
+        """
+        return {
+            "art": row.art,
+            "bezeichnung": self.truncate(self.emptystr_to_null(row.bezeichnung), 20),
+            "knotenref": self.get_tid_by_obj_id(row.knotenref),
+            "knoten_nachref": self.get_tid_by_obj_id(row.knoten_nachref),
+        }
