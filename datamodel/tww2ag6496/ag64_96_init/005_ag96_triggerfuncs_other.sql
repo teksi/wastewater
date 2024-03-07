@@ -685,6 +685,7 @@ BEGIN
     , function
     , identifier
     , population_equivalent
+	, ag96_population
     , remark
     , renovation_date
     , renovation_necessity
