@@ -684,7 +684,6 @@ BEGIN
 	  obj_id
     , function
     , identifier
-    , other_usage_population_equivalent
     , population_equivalent
     , remark
     , renovation_date
@@ -708,11 +707,10 @@ BEGIN
     , coalesce(bg_fct_ag96.code,bg_fct.code)
     , vw_val.bezeichnung
     , vw_val.einwohnergleichwert
-    , vw_val.other_usage_type
     , vw_val.anzstaendigeeinwohner
     , vw_val.bemerkung_gep
     , vw_val.sanierungsdatum
-    , rn.code
+    , bg_rn.code
     , vw_val.sanierungskonzept
     , vw_val.lage
     , vw_val.letzte_aenderung_gep
@@ -729,17 +727,17 @@ BEGIN
 	LEFT JOIN tww_vl.building_group_function bg_fct on bg_fct.value_de = vw_val.arealnutzung
 	LEFT JOIN {ext_schema}.vl_building_group_function bg_fct_ag96 on bg_fct_ag96.value_agxx = vw_val.arealnutzung
 	LEFT JOIN tww_vl.building_group_renovation_necessity bg_rn on bg_rn.value_de = vw_val.sanierungsbedarf
-	LEFT JOIN {ext_schema}.vl_building_group_disposal_type bg_dt_ww ON bg_dt_ww.value_de = vw_val.beseitigung_haeusliches_abwasser 
-	LEFT JOIN {ext_schema}.vl_building_group_disposal_type bg_dt_iw ON bg_dt_iw.value_de = vw_val.beseitigung_gewerbliches_abwasser 
-	LEFT JOIN {ext_schema}.vl_building_group_disposal_type bg_dt_sw ON bg_dt_sw.value_de = vw_val.beseitigung_platzentwaesserung 
-	LEFT JOIN {ext_schema}.vl_building_group_disposal_type bg_dt_rw ON bg_dt_rw.value_de = vw_val.beseitigung_dachentwaesserung 
+	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_ww ON bg_dt_ww.value_de = vw_val.beseitigung_haeusliches_abwasser 
+	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_iw ON bg_dt_iw.value_de = vw_val.beseitigung_gewerbliches_abwasser 
+	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_sw ON bg_dt_sw.value_de = vw_val.beseitigung_platzentwaesserung 
+	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_rw ON bg_dt_rw.value_de = vw_val.beseitigung_dachentwaesserung 
 	LEFT JOIN {ext_schema}.vsadss_dataowner downr ON 1=1
 	)
 	ON CONFLICT(obj_id) DO UPDATE SET
 	(
       function
     , identifier
-    , other_usage_population_equivalent
+    , ag96_population
     , population_equivalent
     , remark
     , renovation_date
@@ -761,7 +759,7 @@ BEGIN
 	(
       EXCLUDED.function
     , EXCLUDED.identifier
-    , EXCLUDED.other_usage_population_equivalent
+    , EXCLUDED.ag96_population
     , EXCLUDED.population_equivalent
     , EXCLUDED.remark
     , EXCLUDED.renovation_date
