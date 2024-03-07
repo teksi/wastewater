@@ -234,12 +234,12 @@ SELECT
 	, coalesce(ne.ag96_last_modification,TO_TIMESTAMP('1800-01-01','YYYY-MM-DD')) as letzte_aenderung_gep
 
 FROM tww_od.reach re
-	LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id::text = re.obj_id::text
-    LEFT JOIN tww_od.reach_point rp_from ON rp_from.obj_id::text = re.fk_reach_point_from::text
-    LEFT JOIN tww_od.reach_point rp_to ON rp_to.obj_id::text = re.fk_reach_point_to::text
-    LEFT JOIN tww_od.wastewater_structure ws ON ne.fk_wastewater_structure::text = ws.obj_id::text
-    LEFT JOIN tww_od.channel ch ON ch.obj_id::text = ws.obj_id::text
-    LEFT JOIN tww_od.pipe_profile pp ON re.fk_pipe_profile::text = pp.obj_id::text
+	LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = re.obj_id
+    LEFT JOIN tww_od.reach_point rp_from ON rp_from.obj_id = re.fk_reach_point_from
+    LEFT JOIN tww_od.reach_point rp_to ON rp_to.obj_id = re.fk_reach_point_to
+    LEFT JOIN tww_od.wastewater_structure ws ON ne.fk_wastewater_structure = ws.obj_id
+    LEFT JOIN tww_od.channel ch ON ch.obj_id = ws.obj_id
+    LEFT JOIN tww_od.pipe_profile pp ON re.fk_pipe_profile = pp.obj_id
 
 	LEFT JOIN tww_vl.reach_reliner_material relmat ON relmat.code=re.reliner_material
 	LEFT JOIN tww_vl.reach_relining_construction relcons ON relcons.code=re.relining_construction
@@ -431,65 +431,54 @@ FROM tww_od.building_group bg
 ----------------------------
 DROP VIEW IF EXISTS {ext_schema}.sbw_einzugsgebiet;
 CREATE OR REPLACE VIEW {ext_schema}.sbw_einzugsgebiet
-AS 
-SELECT
-	  cat.obj_id
-	, cat.identifier AS bezeichnung
-	, cat.population_dim AS einwohner_geplant
-	, cat.population AS einwohner_ist
-	, cat.surface_dim AS flaeche_geplant
-	, cat.surface_area AS flaeche_ist
-	, cat.surface_imp_dim AS flaeche_befestigt_geplant
-	, cat.surface_imp AS flaeche_befestigt_ist
-	, cat.surface_red_dim AS flaeche_reduziert_geplant
-	, cat.surface_red AS flaeche_reduziert_ist
-	, cat.ag96_sewer_infiltration_water_dim AS fremdwasseranfall_geplant
-	, cat.sewer_infiltration_water AS fremdwasseranfall_ist
-	, ca_agg.perimeter_geometry AS perimeter_ist
-	, cat.ag96_waste_water_production_dim AS schmutzabwasseranfall_geplant
-	, cat.waste_water_production AS schmutzabwasseranfall_ist
-	, cat.fk_discharge_point AS einleitstelleref
-	, wn.obj_id AS sonderbauwerk_ref
-	, concat_ws('','ch113jqg0000',right(coalesce(cat.fk_provider,'00000107'),8)) AS datenbewirtschafter_gep
-	, hcd.remark as bemerkung_gep
-	, coalesce(cat.last_modification,TO_TIMESTAMP('1800-01-01','YYYY-MM-DD')) as letzte_aenderung_gep
-
-FROM tww_od.catchment_area_totals cat
-	LEFT JOIN tww_od.hydraulic_char_data hcd on hcd.obj_id = cat.fk_hydraulic_char_data and hcd.status = 6372 --Ist
-	LEFT JOIN tww_od.wastewater_node wn on hcd.fk_wastewater_node=wn.obj_id
-	LEFT JOIN ( WITH ca AS 
-				-- Lese Einzugsgebiete mit Verknüpfung aus  
-				(
-				SELECT 
-					fk_special_building_ww_current as fk_log_card 
-					, perimeter_geometry as geom
-				FROM tww_od.catchment_area
-				WHERE fk_special_building_ww_current is not null
-				UNION
-				SELECT
-					  fk_special_building_rw_current as fk_log_card
-					, perimeter_geometry as geom
-				FROM tww_od.catchment_area
-				WHERE fk_special_building_rw_current is not null
-				),
-				-- Aggregiere pro Sonderbauwerk, Puffer für Vereinigungen, dump für separate Teile
-				collector AS(
-				SELECT
-				main_lc.obj_id,
-				main_lc.fk_pwwf_wastewater_node,
-				ca.geom --ST_Dump(ST_Buffer(ST_Collect (geom),0.0001)) as geom_dump
-				FROM ca
-				LEFT JOIN tww_od.log_card lc ON ca.fk_log_card=lc.obj_id
-				LEFT JOIN tww_od.log_card main_lc ON main_lc.obj_id = lc.fk_main_structure
-				)
-				SELECT
-				obj_id,
-				fk_pwwf_wastewater_node,
-				ST_Collect(geom) as perimeter_geometry
-				FROM collector
-				GROUP BY obj_id,
-				fk_pwwf_wastewater_node
-			   ) ca_agg ON ca_agg.fk_pwwf_wastewater_node = wn.obj_id
+ AS
+ SELECT cat.obj_id,
+    cat.identifier AS bezeichnung,
+    cat.population_dim AS einwohner_geplant,
+    cat.population AS einwohner_ist,
+    cat.surface_dim AS flaeche_geplant,
+    cat.surface_area AS flaeche_ist,
+    cat.surface_imp_dim AS flaeche_befestigt_geplant,
+    cat.surface_imp AS flaeche_befestigt_ist,
+    cat.surface_red_dim AS flaeche_reduziert_geplant,
+    cat.surface_red AS flaeche_reduziert_ist,
+    cat.ag96_sewer_infiltration_water_dim AS fremdwasseranfall_geplant,
+    cat.sewer_infiltration_water AS fremdwasseranfall_ist,
+    ca_agg.perimeter_geometry AS perimeter_ist,
+    cat.ag96_waste_water_production_dim AS schmutzabwasseranfall_geplant,
+    cat.waste_water_production AS schmutzabwasseranfall_ist,
+    cat.fk_discharge_point AS einleitstelleref,
+    wn.obj_id AS sonderbauwerk_ref,
+    concat_ws('', 'ch113jqg0000', "right"(COALESCE(cat.fk_provider, '00000107'), 8)) AS datenbewirtschafter_gep,
+    hcd.remark AS bemerkung_gep,
+    COALESCE(cat.last_modification, to_timestamp('1800-01-01', 'YYYY-MM-DD')) AS letzte_aenderung_gep
+   FROM tww_od.catchment_area_totals cat
+     LEFT JOIN tww_od.hydraulic_char_data hcd ON hcd.obj_id = cat.fk_hydraulic_char_data
+     LEFT JOIN tww_od.wastewater_node wn ON hcd.fk_wastewater_node = wn.obj_id
+     LEFT JOIN ( WITH ca AS (
+                 SELECT catchment_area.fk_special_building_ww_current AS fk_log_card,
+                    catchment_area.perimeter_geometry AS geom
+                   FROM tww_od.catchment_area
+                  WHERE catchment_area.fk_special_building_ww_current IS NOT NULL
+                UNION
+                 SELECT catchment_area.fk_special_building_rw_current AS fk_log_card,
+                    catchment_area.perimeter_geometry AS geom
+                   FROM tww_od.catchment_area
+                  WHERE catchment_area.fk_special_building_rw_current IS NOT NULL
+                ), collector AS (
+                 SELECT main_lc.obj_id,
+                    main_lc.fk_pwwf_wastewater_node,
+                    ca.geom
+                   FROM ca
+                     LEFT JOIN tww_od.log_card lc ON ca.fk_log_card = lc.obj_id
+                     LEFT JOIN tww_od.log_card main_lc ON main_lc.obj_id = lc.fk_main_structure
+                )
+         SELECT collector.obj_id,
+            collector.fk_pwwf_wastewater_node,
+            st_unaryunion(st_collect(collector.geom)) AS perimeter_geometry
+           FROM collector
+          GROUP BY collector.obj_id, collector.fk_pwwf_wastewater_node) ca_agg ON ca_agg.fk_pwwf_wastewater_node = wn.obj_id
+ WHERE cat.surface_area IS NOT NULL;
 
 ;	
 
