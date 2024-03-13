@@ -2,9 +2,9 @@
 
 # arm builds are not available with 3.2
 #FROM imresamu/postgis-arm64:14-3.2 AS base-arm64
-FROM postgis/postgis:14-3.2 AS base-arm64
+FROM postgis/postgis:14-3.4 AS base-arm64
 
-FROM postgis/postgis:14-3.2 AS base-amd64
+FROM postgis/postgis:14-3.4 AS base-amd64
 
 FROM base-$BUILDARCH as common
 
