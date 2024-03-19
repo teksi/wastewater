@@ -74,7 +74,7 @@ INSERT INTO tww_vl.measure_category (code,vsacode,value_de,value_en,active) VALU
 (1999974,4654,'Sonderbauwerk.Rueckbau','special_construction_abolishment',true) , -- 4654 = Aufhebung 
 (1999973,4662,'Untersuchung.andere','control_and_surveillance_other',true) , -- 4662 = Kontrolle_und_Ueberwachung 
 (1999972,4662,'Untersuchung.Begehung','control_and_surveillance_site_inspection',true) , -- 4662 = Kontrolle_und_Ueberwachung 
-(1999971,4662,'Untersuchung.Dichtheitsprüfung','control_and_surveillance_tightness_check',true) , -- 4662 = Kontrolle_und_Ueberwachung 
+(1999971,4662,'Untersuchung.Dichtheitspruefung','control_and_surveillance_tightness_check',true) , -- 4662 = Kontrolle_und_Ueberwachung 
 (1999970,4662,'Untersuchung.Kanalfernsehen','control_and_surveillance_TV',true) , -- 4662 = Kontrolle_und_Ueberwachung 
 (1999969,4662,'Untersuchung.unbekannt','control_and_surveillance_unknown',true) -- 4662 = Kontrolle_und_Ueberwachung 
 ON CONFLICT DO NOTHING;
