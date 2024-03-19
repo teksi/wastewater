@@ -585,6 +585,7 @@ class InterlisExporterToIntermediateSchema:
                 traegerschaft=self.get_tid_by_obj_id(row.traegerschaft),
                 verantwortlich_ausloesung=self.get_tid_by_obj_id(row.verantwortlich_ausloesung),
             )
+            self.map_tid_ag_xx(row.obj_id, gepmassnahme.t_id)
             self.abwasser_session.add(gepmassnahme)
             print(".", end="")
         logger.info("done")
