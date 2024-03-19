@@ -106,6 +106,24 @@ class ModelTwwAG6496(ModelBase):
         class bautenausserhalbbaugebiet(self.Base):
             __tablename__ = "bautenausserhalbbaugebiet"
             obj_id=Column(String, primary_key=True)
+            anzstaendigeeinwohner = Column(Integer)
+            arealnutzung = Column(String)
+            beseitigung_haeusliches_abwasser = Column(String)
+            beseitigung_gewerbliches_abwasser = Column(String)
+            beseitigung_platzentwaesserung = Column(String)
+            beseitigung_dachentwaesserung = Column(String)
+            bezeichnung = Column(String)
+            eigentuemeradresse = Column(String)
+            eigentuemername = Column(String)
+            einwohnergleichwert = Column(Integer)
+            lage = Column(Geometry)
+            nummer = Column(Integer)
+            sanierungsbedarf = Column(String)
+            sanierungsdatum = Column(DateTime)
+            sanierungskonzept = Column(String)
+            datenbewirtschafter_gep = Column(String)
+            bemerkung_gep = Column(String)
+            letzte_aenderung_gep = Column(DateTime)
             __table_args__ = {"schema": config.TWW_AG_SCHEMA}
 
         ModelTwwAG6496.bautenausserhalbbaugebiet = bautenausserhalbbaugebiet

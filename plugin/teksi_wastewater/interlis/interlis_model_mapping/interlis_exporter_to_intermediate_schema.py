@@ -484,6 +484,10 @@ class InterlisExporterToIntermediateSchema:
         logger.info("Exporting TWW.gephaltung -> ABWASSER.gephaltung")
         self._export_gephaltung()
         self._check_for_stop()
+
+        logger.info("Exporting TWW.bautenausserhalbbaugebiet -> ABWASSER.bautenausserhalbbaugebiet")
+        self._export_bautenausserhalbbaugebiet()
+        self._check_for_stop()
         
         logger.info("Exporting TWW.ueberlauf_foerderaggregat -> ABWASSER.ueberlauf_foerderaggregat")
         self._export_ueberlauf_foerderaggregat_ag96()
@@ -609,6 +613,32 @@ class InterlisExporterToIntermediateSchema:
                 gepmassnahmeref=self.get_tid_by_obj_id(row.gepmassnahmeref),
             )
             self.abwasser_session.add(gephaltung)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_bautenausserhalbbaugebiet(self):
+        query = self.tww_session.query(self.model_classes_tww_ag6496.bautenausserhalbbaugebiet)
+        for row in query:
+            bautenausserhalbbaugebiet = self.model_classes_interlis.bautenausserhalbbaugebiet(
+                **self.gep_metainformation_common_ag_xx(row,'bautenausserhalbbaugebiet'),
+                anzstaendigeeinwohner=row.anzstaendigeeinwohner,
+                arealnutzung=row.arealnutzung,
+                beseitigung_haeusliches_abwasser=row.beseitigung_haeusliches_abwasser,
+                beseitigung_gewerbliches_abwasser=row.beseitigung_gewerbliches_abwasser,
+                beseitigung_platzentwaesserung=row.beseitigung_platzentwaesserung,
+                beseitigung_dachentwaesserung=row.beseitigung_dachentwaesserung,
+                bezeichnung=self.truncate(self.emptystr_to_null(row.bezeichnung), 20),
+                eigentuemeradresse=row.eigentuemeradresse,
+                eigentuemername=row.eigentuemername,
+                einwohnergleichwert=row.einwohnergleichwert,
+                lage=row.lage,
+                nummer=row.nummer,
+                sanierungsbedarf=row.sanierungsbedarf,
+                sanierungsdatum=row.sanierungsdatum,
+                sanierungskonzept=row.sanierungskonzept,
+            )
+            self.abwasser_session.add(bautenausserhalbbaugebiet)
             print(".", end="")
         logger.info("done")
         self.abwasser_session.flush()
