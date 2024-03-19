@@ -103,6 +103,48 @@ class ModelTwwAG6496(ModelBase):
 
         ModelTwwAG6496.gephaltung = gephaltung
 
+        class einzugsgebiet(self.Base):
+            __tablename__ = "einzugsgebiet"
+            obj_id=Column(String, primary_key=True)
+            abflussbegrenzung_geplant = Column(Float)
+            abflussbegrenzung_ist = Column(Float)
+            abflussbeiwert_rw_geplant = Column(Float)
+            abflussbeiwert_rw_ist = Column(Float)
+            abflussbeiwert_sw_geplant = Column(Float)
+            abflussbeiwert_sw_ist = Column(Float)
+            befestigungsgrad_rw_geplant = Column(Float)
+            befestigungsgrad_rw_ist = Column(Float)
+            befestigungsgrad_sw_geplant = Column(Float)
+            befestigungsgrad_sw_ist = Column(Float)
+            bezeichnung = Column(String)
+            direkteinleitung_in_gewaesser_geplant = Column(String)
+            direkteinleitung_in_gewaesser_ist = Column(String)
+            einwohnerdichte_geplant = Column(Integer)
+            einwohnerdichte_ist = Column(Integer)
+            entwaesserungssystemag_geplant = Column(String)
+            entwaesserungssystemag_ist = Column(String)
+            flaeche = Column(Float)
+            fremdwasseranfall_geplant = Column(Float)
+            fremdwasseranfall_ist = Column(Float)
+            perimeter = Column(Geometry)
+            perimetertype = Column(String)
+            retention_geplant = Column(String)
+            retention_ist = Column(String)
+            schmutzabwasseranfall_geplant = Column(Float)
+            schmutzabwasseranfall_ist = Column(Float)
+            versickerung_geplant = Column(String)
+            versickerung_ist = Column(String)
+            gepknoten_rw_geplantref = Column(String)
+            gepknoten_rw_istref = Column(String)
+            gepknoten_sw_geplantref = Column(String)
+            gepknoten_sw_istref = Column(String)
+            datenbewirtschafter_gep = Column(String)
+            bemerkung_gep = Column(String)
+            letzte_aenderung_gep = Column(DateTime)
+            __table_args__ = {"schema": config.TWW_AG_SCHEMA}
+
+        ModelTwwAG6496.einzugsgebiet = einzugsgebiet
+
         class bautenausserhalbbaugebiet(self.Base):
             __tablename__ = "bautenausserhalbbaugebiet"
             obj_id=Column(String, primary_key=True)
