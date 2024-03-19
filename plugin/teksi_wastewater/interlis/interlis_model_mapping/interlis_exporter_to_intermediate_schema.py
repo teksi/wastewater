@@ -471,6 +471,10 @@ class InterlisExporterToIntermediateSchema:
         logger.info("Exporting TWW.organisation -> ABWASSER.organisation")
         self._export_organisation()
         self._check_for_stop()
+
+        logger.info("Exporting TWW.gepknoten -> ABWASSER.infrastrukturknoten")
+        self._export_infrastrukturknoten()
+        self._check_for_stop()
         
     def _export_ag96(self):
         logger.info("Exporting TWW.organisation -> ABWASSER.organisation")
@@ -581,6 +585,31 @@ class InterlisExporterToIntermediateSchema:
                 istschnittstelle=row.istschnittstelle,
                 maxrueckstauhoehe=row.maxrueckstauhoehe,
                 gepmassnahmeref=self.get_tid_by_obj_id(row.gepmassnahmeref),
+            )
+            self.map_tid_ag_xx(row.obj_id, gepknoten.t_id)
+            self.abwasser_session.add(gepknoten)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_infrastrukturknoten(self):
+        query = self.tww_session.query(self.model_classes_tww_ag6496.gepknoten)
+        if self.filtered:
+            query = query.join(self.model_classes_tww_ag6496.gepknoten).filter(
+                self.model_classes_tww_ag6496.gepknoten.obj_id.in_(self.subset_ids)
+            )
+        
+        """
+        GEPKnoten werden nach Fläche sortiert hinzugefügt, damit bei der Triggerlogik
+        hinter {ext_schema}.gepknoten die Verknüpfung zu anderen Abwasserbauwerken 
+        basierend auf einem Spatial Join implementiert werden kann.
+        Dies ist relevant, da Zweitknoten der FunktionAG "andere", die innerhalb der Detailgeometrie
+        eines anderen Abwasserbauwerks liegen, als Deckel importiert werden.
+        """
+        query.order_by(nullslast(self.model_classes_tww_ag6496.gepknoten.detailgeometrie.ST_Area().asc()))
+        for row in query:
+            gepknoten = self.model_classes_interlis.abwasserbauwerk( #abwasserbauwerk wegen Kompatibiltät bei Label-Export
+                **self.knoten_common_ag_xx(row),
             )
             self.map_tid_ag_xx(row.obj_id, gepknoten.t_id)
             self.abwasser_session.add(gepknoten)
@@ -2838,6 +2867,7 @@ class InterlisExporterToIntermediateSchema:
             "funktionhierarchisch": row.funktionhierarchisch,
             "jahr_zustandserhebung": row.jahr_zustandserhebung,
             "lage": row.lage,
+            "lagegenauigkeit": row.lagegenauigkeit,
             "letzte_aenderung_wi": row.letzte_aenderung_wi,
             "sanierungsbedarf": row.sanierungsbedarf,
             "sohlenkote": row.sohlenkote,
