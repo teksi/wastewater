@@ -39,6 +39,7 @@ class ModelTwwAG6496(ModelBase):
             istschnittstelle = Column(String)
             jahr_zustandserhebung = Column(Integer)
             lage = Column(Geometry)
+            lagegenauigkeit = Column(String)
             letzte_aenderung_wi = Column(DateTime)
             maxrueckstauhoehe = Column(Float)
             sanierungsbedarf = Column(String)
