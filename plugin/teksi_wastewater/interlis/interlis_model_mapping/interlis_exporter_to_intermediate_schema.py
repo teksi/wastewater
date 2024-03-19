@@ -488,6 +488,10 @@ class InterlisExporterToIntermediateSchema:
         logger.info("Exporting TWW.ueberlauf_foerderaggregat -> ABWASSER.ueberlauf_foerderaggregat")
         self._export_ueberlauf_foerderaggregat_ag96()
         self._check_for_stop()
+
+        logger.info("Exporting TWW.sbw_einzugsgebiet -> ABWASSER.sbw_einzugsgebiet")
+        self._export_sbw_einzugsgebiet()
+        self._check_for_stop()
         
         logger.info("Exporting TWW.versickerungsbereichag -> ABWASSER.versickerungsbereichag")
         self._export_versickerungsbereichag()
@@ -625,6 +629,37 @@ class InterlisExporterToIntermediateSchema:
                 **self.ueberlauf_foerderaggregat_common_ag_xx(row),
             )
             self.abwasser_session.add(ueberlauf_foerderaggregat)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_sbw_einzugsgebiet(self):
+        query = self.tww_session.query(self.model_classes_tww_ag6496.sbw_einzugsgebiet)
+        if self.filtered:
+            query = query.join(self.model_classes_tww_ag6496.wastewater_networkelement).filter(
+                self.model_classes_tww_ag6496.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            )
+        for row in query:
+            sbw_einzugsgebiet = self.model_classes_interlis.sbw_einzugsgebiet(
+                **self.gep_metainformation_common_ag_xx(row,'sbw_einzugsgebiet'),
+                bezeichnung=self.truncate(self.emptystr_to_null(row.bezeichnung), 20),
+                einwohner_geplant=row.einwohner_geplant,
+                einwohner_ist=row.einwohner_ist,
+                flaeche_geplant=row.flaeche_geplant,
+                flaeche_ist=row.flaeche_ist,
+                flaeche_befestigt_geplant=row.flaeche_befestigt_geplant,
+                flaeche_befestigt_ist=row.flaeche_befestigt_ist,
+                flaeche_reduziert_geplant=row.flaeche_reduziert_geplant,
+                flaeche_reduziert_ist=row.flaeche_reduziert_ist,
+                fremdwasseranfall_geplant=row.fremdwasseranfall_geplant,
+                fremdwasseranfall_ist=row.fremdwasseranfall_ist,
+                perimeter_ist=row.perimeter_ist,
+                schmutzabwasseranfall_geplant=row.schmutzabwasseranfall_geplant,
+                schmutzabwasseranfall_ist=row.schmutzabwasseranfall_ist,
+                einleitstelleref=self.get_tid_by_obj_id(row.einleitstelleref),
+                sonderbauwerk_ref=self.get_tid_by_obj_id(row.sonderbauwerk_ref),
+            )
+            self.abwasser_session.add(sbw_einzugsgebiet)
             print(".", end="")
         logger.info("done")
         self.abwasser_session.flush()
