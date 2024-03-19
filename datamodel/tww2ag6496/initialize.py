@@ -1,15 +1,14 @@
 # Definitions for tww datamodel with delta >= 1.7.0
 # supposed usage: add TEKSI2AG64_96 into the plugin folder of TEKSI wastewater. 
 
-from functools import lru_cache
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import text
 
-from .. import config,utils 
+from ...plugin/teksi_wastewater/interlis import config,utils 
 import os
 
-# create_tww_app.py is at wastewater/datamodel/app/create_tww_app.py
-from datamodel.app import create_tww_app
+
+from ..app import create_tww_app # kommt mit Pull Request https://github.com/teksi/wastewater/pull/149
 
 def tww_initialize(pgservice=config.TWW_DEFAULT_PGSERVICE, oid_definition=(), oid_dataowner: str ='ch20p3q4000094', db_identifier: str=None):
     """
