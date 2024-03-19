@@ -160,7 +160,7 @@ For instance, run ``./scripts/db_setup.sh -s 2056`` for the **2056** SRID.
 If you already have a data model and you want to force the regeneration
 of the model you can also use the ``-f`` option: ``./scripts/db_setup.sh -f``.
 
-You can use the ``-r`` option to add roles (``tww_viewer``, ``tww_user``, ``tww_manager``, ``tww_sysadmin``).
+You can use the ``-r`` option to add roles (``tww_viewer``, ``tww_user``, ``tww_manager``, ``tww_sysadmin`` and their database specific variants).
 
 - Viewer: Can consult tables and views.
 - User: Can edit data.
