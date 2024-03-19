@@ -10,12 +10,12 @@ REGEXP_REPLACE(uid,'(^.{3})(.{3})(.{3})','\1-\2.\3.') AS uid,
 identifier AS bezeichnung,
 identifier_short AS kurzbezeichnung,
 'AfU Aargau' AS datenbewirtschafter_kt,
-ot.value_de  AS organisationstyp,
+ot.value_de  AS organisationtyp,
 last_modification  AS letzte_aenderung,
 remark AS bemerkung
 FROM tww_od.organisation org
 LEFT JOIN tww_vl.organisation_organisation_type  ot on ot.code = org.organisation_type
-WHERE obj_id!='ch113jqg00000000'
+WHERE tww_active
 ;
 
 ------------------
@@ -74,7 +74,7 @@ FunktionBauwerkAG =   (
 		unbekannt),
 	  Wirbelfallschacht,    		             	--> special_structure  
 	  Abwasserreinigungsanlage,   		           	--> wastewater_node, wwtp                                    
-	  Anschluss,                   		           	--> wastewater_node, building                   
+	  Anschluss,                   		           	--> wastewater_node, ag64_function                   
 	  Bodenablauf,                                	--> manhole   
 	  Oelrueckhaltebecken,                         	--> special_structure                   
 	  Regenwasserrechen,                          	--> special_structure.other                     
@@ -97,7 +97,7 @@ SELECT
 	, wn.wwtp_number AS ara_nr
 	, coalesce(ws.year_of_construction,unc.baujahr,1800) AS baujahr
 	, coalesce(sc.value_de,unc.baulicherzustand) AS baulicherzustand
-	, CASE WHEN st.value_de = 'in_Betrieb' THEN 'in_Betrieb.in_Betrieb' ELSE coalesce(st.value_de,unc.bauwerkstatus) END AS bauwerkstatus
+	, CASE WHEN st.value_de = 'in_Betrieb' THEN 'in_Betrieb.in_Betrieb' ELSE coalesce(st.value_de,unc.bauwerkstatus,'unbekannt') END AS bauwerkstatus
 	, ne.ag64_remark AS bemerkung_wi
 	, ne.identifier AS bezeichnung
 	, coalesce(main_co.level,unc.deckelkote) AS deckelkote
@@ -122,9 +122,9 @@ SELECT
 		,'Versickerungsanlage.'||ii_ki_rev.value_agxx --Versickerungsanlage.andere wird auf unbekannt gemappt
 		,'Versickerungsanlage.'||ii_ki.value_de --Versickerungsanlage.andere wird auf unbekannt gemappt
 		, 'Leitungsknoten') AS funktionag
-	, coalesce(left(fhi.value_de,3),funktionhierarchisch)  AS funktionhierarchisch
+	, coalesce(left(fhi.value_de,3),unc.funktionhierarchisch,'SAA')  AS funktionhierarchisch
 	, coalesce(isgate.value_de,'unbekannt') AS istschnittstelle
-	, coalesce(ws.status_survey_year,unc.jahr_zustandserhebung) AS jahr_zustandserhebung
+	, coalesce(ws.status_survey_year,unc.jahr_zustandserhebung,1800) AS jahr_zustandserhebung
 	, ST_Force2D(coalesce(main_co.situation3d_geometry,wn.situation3d_geometry)) AS lage
 	, ne.ag64_last_modification AS letzte_aenderung_wi
 	, coalesce(co_pa.value_de,unc.lagegenauigkeit) AS lagegenauigkeit
@@ -132,14 +132,13 @@ SELECT
 	, coalesce(rn.value_de,sanierungsbedarf) AS sanierungsbedarf
 	, wn.bottom_level AS sohlenkote
 	, coalesce(ac.value_de,unc.zugaenglichkeit) AS zugaenglichkeit
-	, concat_ws('','ch113jqg0000',right(coalesce(ws.fk_operator,unc.betreiber),8)) AS betreiber
-	, concat_ws('','ch113jqg0000',right(ne.ag64_fk_provider,8)) AS datenbewirtschafter_wi
-	, concat_ws('','ch113jqg0000',right(coalesce(ws.fk_owner,unc.eigentuemer),8)) AS eigentuemer
+	, concat_ws('','ch113jqg0000',right(coalesce(ws.fk_operator,unc.betreiber,'00000107'),8)) AS betreiber
+	, concat_ws('','ch113jqg0000',right(coalesce(ne.ag64_fk_provider,'00000107'),8)) AS datenbewirtschafter_wi
+	, concat_ws('','ch113jqg0000',right(coalesce(ws.fk_owner,unc.eigentuemer,'00000107'),8)) AS eigentuemer
 	, coalesce(ws.ag96_fk_measure, unc.gepmassnahmeref) AS gepmassnahmeref
-	, concat_ws('','ch113jqg0000',right(ne.ag96_fk_provider,8)) AS datenbewirtschafter_gep
+	, concat_ws('','ch113jqg0000',right(coalesce(ne.ag96_fk_provider,'00000107'),8)) AS datenbewirtschafter_gep
 	, ne.ag96_remark as bemerkung_gep
-	, ne.ag96_last_modification as letzte_aenderung_gep
-	, downr.obj_id as datenherr -- für Import in VSA DSS
+	, coalesce(ne.ag96_last_modification,TO_TIMESTAMP('1800-01-01','YYYY-MM-DD')) as letzte_aenderung_gep
 
 FROM tww_od.wastewater_node wn
 LEFT JOIN tww_od.wastewater_networkelement ne ON wn.obj_id = ne.obj_id
@@ -152,7 +151,6 @@ LEFT JOIN tww_od.building build on build.obj_id=conn_obj.obj_id
 LEFT JOIN tww_od.wwtp_structure wwtp on main_ws.obj_id=wwtp.obj_id --tbd: Filtern, dass nur ARA-Zulauf gemappt wird
 
 LEFT JOIN tww_vl.wastewater_node_ag96_is_gateway isgate ON wn.ag96_is_gateway=isgate.code
-LEFT JOIN {ext_schema}.vsadss_dataowner downr ON 1=1
 LEFT JOIN {ext_schema}.od_unconnected_node_bwrel unc on unc.obj_id=wn.obj_id
 
 LEFT JOIN tww_vl.wastewater_structure_status st ON st.code=ws.status
@@ -225,23 +223,23 @@ SELECT
 	, ST_Force2D(re.progression3d_geometry) AS verlauf
 	, ws.rv_base_year AS wbw_basisjahr
 	, ws.replacement_value AS wiederbeschaffungswert
-	, concat_ws('','ch113jqg0000',right(ws.fk_operator,8)) AS betreiber
-	, concat_ws('','ch113jqg0000',right(ne.ag64_fk_provider,8)) AS datenbewirtschafter_wi
-	, concat_ws('','ch113jqg0000',right(ws.fk_owner,8)) AS eigentuemer
+	, concat_ws('','ch113jqg0000',right(coalesce(ws.fk_operator,'00000107'),8)) AS betreiber
+	, concat_ws('','ch113jqg0000',right(coalesce(ne.ag64_fk_provider,'00000107'),8)) AS datenbewirtschafter_wi
+	, concat_ws('','ch113jqg0000',right(coalesce(ws.fk_owner,'00000107'),8)) AS eigentuemer
 	, rp_to.fk_wastewater_networkelement  AS endknoten
 	, rp_from.fk_wastewater_networkelement AS startknoten
 	, ws.ag96_fk_measure AS gepmassnahmeref
-	, concat_ws('','ch113jqg0000',right(ne.ag96_fk_provider,8)) AS datenbewirtschafter_gep
+	, concat_ws('','ch113jqg0000',right(coalesce(ne.ag96_fk_provider,'00000107'),8)) AS datenbewirtschafter_gep
 	, ne.ag96_remark as bemerkung_gep
-	, ne.ag96_last_modification as letzte_aenderung_gep
-	, downr.obj_id as datenherr -- für Import in VSA DSS
+	, coalesce(ne.ag96_last_modification,TO_TIMESTAMP('1800-01-01','YYYY-MM-DD')) as letzte_aenderung_gep
+
 FROM tww_od.reach re
-	LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id::text = re.obj_id::text
-    LEFT JOIN tww_od.reach_point rp_from ON rp_from.obj_id::text = re.fk_reach_point_from::text
-    LEFT JOIN tww_od.reach_point rp_to ON rp_to.obj_id::text = re.fk_reach_point_to::text
-    LEFT JOIN tww_od.wastewater_structure ws ON ne.fk_wastewater_structure::text = ws.obj_id::text
-    LEFT JOIN tww_od.channel ch ON ch.obj_id::text = ws.obj_id::text
-    LEFT JOIN tww_od.pipe_profile pp ON re.fk_pipe_profile::text = pp.obj_id::text
+	LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = re.obj_id
+    LEFT JOIN tww_od.reach_point rp_from ON rp_from.obj_id = re.fk_reach_point_from
+    LEFT JOIN tww_od.reach_point rp_to ON rp_to.obj_id = re.fk_reach_point_to
+    LEFT JOIN tww_od.wastewater_structure ws ON ne.fk_wastewater_structure = ws.obj_id
+    LEFT JOIN tww_od.channel ch ON ch.obj_id = ws.obj_id
+    LEFT JOIN tww_od.pipe_profile pp ON re.fk_pipe_profile = pp.obj_id
 
 	LEFT JOIN tww_vl.reach_reliner_material relmat ON relmat.code=re.reliner_material
 	LEFT JOIN tww_vl.reach_relining_construction relcons ON relcons.code=re.relining_construction
@@ -261,7 +259,7 @@ FROM tww_od.reach re
 	LEFT JOIN {ext_schema}.vl_channel_usage_current uc_rev ON uc_rev.code=ch.usage_current
 	LEFT JOIN tww_vl.channel_usage_planned up ON up.code=ch.usage_planned
 	LEFT JOIN {ext_schema}.vl_channel_usage_planned up_rev ON up_rev.code=ch.usage_planned
-	LEFT JOIN {ext_schema}.vsadss_dataowner downr ON 1=1
+
 ;
 
 
@@ -287,17 +285,17 @@ SELECT
 	, msr_st.value_de AS status
 	, msr.symbolpos_geometry AS symbolpos
 	, msr.link AS verweis
-	, concat_ws('','ch113jqg0000',right(msr.fk_responsible_entity,8)) AS traegerschaft
-	, concat_ws('','ch113jqg0000',right(msr.fk_responsible_start,8)) AS verantwortlich_ausloesung
-	, concat_ws('','ch113jqg0000',right(msr.fk_provider,8)) AS datenbewirtschafter_gep
+	, concat_ws('','ch113jqg0000',right(coalesce(msr.fk_responsible_entity,'00000107'),8)) AS traegerschaft
+	, concat_ws('','ch113jqg0000',right(coalesce(msr.fk_responsible_start,'00000107'),8)) AS verantwortlich_ausloesung
+	, concat_ws('','ch113jqg0000',right(coalesce(msr.fk_provider,'00000107'),8)) AS datenbewirtschafter_gep
 	, msr.remark as bemerkung_gep
-	, msr.last_modification as letzte_aenderung_gep
-	, downr.obj_id as datenherr -- für Import in VSA DSS
+	, coalesce(msr.last_modification,TO_TIMESTAMP('1800-01-01','YYYY-MM-DD')) as letzte_aenderung_gep
+
 FROM tww_od.measure msr
 	LEFT JOIN tww_vl.measure_category msr_ct on msr_ct.code = msr.category
 	LEFT JOIN tww_vl.measure_priority msr_pri on msr_pri.code = msr.priority
 	LEFT JOIN tww_vl.measure_status msr_st on msr_st.code = msr.status
-	LEFT JOIN {ext_schema}.vsadss_dataowner downr ON 1=1
+
 	;
 
 
@@ -341,10 +339,10 @@ SELECT
 	, ca.fk_wastewater_networkelement_rw_current AS gepknoten_rw_istref
 	, ca.fk_wastewater_networkelement_ww_planned AS gepknoten_sw_geplantref
 	, ca.fk_wastewater_networkelement_ww_current AS gepknoten_sw_istref
-	, concat_ws('','ch113jqg0000',right(ca.fk_provider,8)) AS datenbewirtschafter_gep
+	, concat_ws('','ch113jqg0000',right(coalesce(ca.fk_provider,'00000107'),8)) AS datenbewirtschafter_gep
 	, ca.remark as bemerkung_gep
-	, ca.last_modification as letzte_aenderung_gep
-	, downr.obj_id as datenherr -- für Import in VSA DSS
+	, coalesce(ca.last_modification,TO_TIMESTAMP('1800-01-01','YYYY-MM-DD')) as letzte_aenderung_gep
+
 FROM tww_od.catchment_area ca
 	LEFT JOIN tww_vl.catchment_area_direct_discharge_current ddc on ddc.code = ca.direct_discharge_current
 	LEFT JOIN tww_vl.catchment_area_direct_discharge_planned ddp on ddp.code = ca.direct_discharge_planned
@@ -374,19 +372,19 @@ SELECT
 	, ov.identifier as bezeichnung
 	, ov.fk_wastewater_node as knotenref
 	, ov.fk_overflow_to as knoten_nachref
-	, concat_ws('','ch113jqg0000',right(ne.ag64_fk_provider,8)) AS datenbewirtschafter_wi
+	, concat_ws('','ch113jqg0000',right(coalesce(ne.ag64_fk_provider,'00000107'),8)) AS datenbewirtschafter_wi
 	, ov.ag64_remark as bemerkung_wi
 	, ov.ag64_last_modification as letzte_aenderung_wi
-	, concat_ws('','ch113jqg0000',right(ne.ag96_fk_provider,8)) AS datenbewirtschafter_gep
+	, concat_ws('','ch113jqg0000',right(coalesce(ne.ag96_fk_provider,'00000107'),8)) AS datenbewirtschafter_gep
 	, ov.ag96_remark as bemerkung_gep
-	, ov.ag96_last_modification as letzte_aenderung_gep
-	, downr.obj_id as datenherr -- für Import in VSA DSS
+	, coalesce(ov.ag96_last_modification,TO_TIMESTAMP('1800-01-01','YYYY-MM-DD')) as letzte_aenderung_gep
+
 FROM tww_od.overflow ov
     LEFT JOIN tww_od.pump pu ON ov.obj_id = pu.obj_id
 	LEFT JOIN tww_od.leapingweir lw ON ov.obj_id = lw.obj_id
 	LEFT JOIN tww_od.prank_weir pw ON ov.obj_id = pw.obj_id
 	LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id=ov.fk_wastewater_node
-	LEFT JOIN {ext_schema}.vsadss_dataowner downr ON 1=1
+
 ;
 
 
@@ -414,10 +412,9 @@ SELECT
 	, bg_rn.value_de as sanierungsbedarf
 	, bg.renovation_date as sanierungsdatum
 	, bg.restructuring_concept as sanierungskonzept
-	, concat_ws('','ch113jqg0000',right(bg.fk_provider,8)) AS datenbewirtschafter_gep
+	, concat_ws('','ch113jqg0000',right(coalesce(bg.fk_provider,'00000107'),8)) AS datenbewirtschafter_gep
 	, bg.remark as bemerkung_gep
-	, bg.last_modification as letzte_aenderung_gep
-	, downr.obj_id as datenherr -- für Import in VSA DSS
+	, coalesce(bg.last_modification,TO_TIMESTAMP('1800-01-01','YYYY-MM-DD')) as letzte_aenderung_gep
 FROM tww_od.building_group bg
 	LEFT JOIN tww_vl.building_group_function bg_fct on bg_fct.code = bg.function
 	LEFT JOIN {ext_schema}.vl_building_group_function bg_fct_rev on bg_fct_rev.code = bg.function
@@ -426,7 +423,6 @@ FROM tww_od.building_group bg
 	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_iw ON bg_dt_iw.code = bg.ag96_disposal_industrial_wastewater 
 	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_sw ON bg_dt_sw.code = bg.ag96_disposal_square_water 
 	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_rw ON bg_dt_rw.code = bg.ag96_disposal_roof_water 
-	LEFT JOIN {ext_schema}.vsadss_dataowner downr ON 1=1
 ;
 
 
@@ -435,69 +431,55 @@ FROM tww_od.building_group bg
 ----------------------------
 DROP VIEW IF EXISTS {ext_schema}.sbw_einzugsgebiet;
 CREATE OR REPLACE VIEW {ext_schema}.sbw_einzugsgebiet
-AS 
-SELECT
-	  cat.obj_id
-	, cat.identifier AS bezeichnung
-	, cat.population_dim AS einwohner_geplant
-	, cat.population AS einwohner_ist
-	, cat.surface_dim AS flaeche_geplant
-	, cat.surface_area AS flaeche_ist
-	, cat.surface_imp_dim AS flaeche_befestigt_geplant
-	, cat.surface_imp AS flaeche_befestigt_ist
-	, cat.surface_red_dim AS flaeche_reduziert_geplant
-	, cat.surface_red AS flaeche_reduziert_ist
-	, cat.ag96_sewer_infiltration_water_dim AS fremdwasseranfall_geplant
-	, cat.sewer_infiltration_water AS fremdwasseranfall_ist
-	, ca_agg.perimeter_geometry AS perimeter_ist
-	, cat.ag96_waste_water_production_dim AS schmutzabwasseranfall_geplant
-	, cat.waste_water_production AS schmutzabwasseranfall_ist
-	, cat.fk_discharge_point AS einleitstelleref
-	, wn.obj_id AS sonderbauwerk_ref
-	, concat_ws('','ch113jqg0000',right(cat.fk_provider,8)) AS datenbewirtschafter_gep
-	, hcd.remark as bemerkung_gep
-	, cat.last_modification as letzte_aenderung_gep
-	, downr.obj_id as datenherr -- für Import in VSA DSS
-FROM tww_od.catchment_area_totals cat
-	LEFT JOIN tww_od.hydraulic_char_data hcd on hcd.obj_id = cat.fk_hydraulic_char_data and hcd.status = 6372 --Ist
-	LEFT JOIN tww_od.wastewater_node wn on hcd.fk_wastewater_node=wn.obj_id
-	LEFT JOIN ( WITH ca AS 
-				-- Lese Einzugsgebiete mit Verknüpfung aus 
-				(
-				SELECT 
-					fk_special_building_ww_current as obj_id
-					, perimeter_geometry as geom
-				FROM tww_od.catchment_area
-				WHERE fk_special_building_ww_current is not null
-				UNION
-				SELECT
-					  fk_special_building_rw_current as obj_id
-					, perimeter_geometry as geom
-				FROM tww_od.catchment_area
-				WHERE fk_special_building_rw_current is not null
-				),
-				-- Aggregiere pro Sonderbauwerk, Puffer für Vereinigungen, dump für separate Teile
-				dmp as (
-				SELECT
-				obj_id,
-				ST_Dump(ST_Buffer(ST_Collect (geom),0.0001)) as geom_dump
-				FROM ca
-				GROUP BY obj_id),
-				-- Ordne Multparts nach Fläche
-				rnkd as 
-				(SELECT obj_id,
-				DENSE_RANK() OVER( PARTITION BY obj_id 
-								  ORDER BY ST_Area((geom_dump).geom)) 
-								  as rnk,
-				(geom_dump).geom as perimeter_geometry
-				from dmp)
-				-- gib grösstes zurück
-				SELECT obj_id,
-				perimeter_geometry
-				FROM rnkd
-				WHERE rnk=1
-			   ) ca_agg ON ca_agg.obj_id = wn.obj_id
-	LEFT JOIN {ext_schema}.vsadss_dataowner downr ON 1=1
+ AS
+ SELECT cat.obj_id,
+    cat.identifier AS bezeichnung,
+    cat.population_dim AS einwohner_geplant,
+    cat.population AS einwohner_ist,
+    cat.surface_dim AS flaeche_geplant,
+    cat.surface_area AS flaeche_ist,
+    cat.surface_imp_dim AS flaeche_befestigt_geplant,
+    cat.surface_imp AS flaeche_befestigt_ist,
+    cat.surface_red_dim AS flaeche_reduziert_geplant,
+    cat.surface_red AS flaeche_reduziert_ist,
+    cat.ag96_sewer_infiltration_water_dim AS fremdwasseranfall_geplant,
+    cat.sewer_infiltration_water AS fremdwasseranfall_ist,
+    ca_agg.perimeter_geometry AS perimeter_ist,
+    cat.ag96_waste_water_production_dim AS schmutzabwasseranfall_geplant,
+    cat.waste_water_production AS schmutzabwasseranfall_ist,
+    cat.fk_discharge_point AS einleitstelleref,
+    wn.obj_id AS sonderbauwerk_ref,
+    concat_ws('', 'ch113jqg0000', "right"(COALESCE(cat.fk_provider, '00000107'), 8)) AS datenbewirtschafter_gep,
+    hcd.remark AS bemerkung_gep,
+    COALESCE(cat.last_modification, to_timestamp('1800-01-01', 'YYYY-MM-DD')) AS letzte_aenderung_gep
+   FROM tww_od.catchment_area_totals cat
+     LEFT JOIN tww_od.hydraulic_char_data hcd ON hcd.obj_id = cat.fk_hydraulic_char_data
+     LEFT JOIN tww_od.wastewater_node wn ON hcd.fk_wastewater_node = wn.obj_id
+     LEFT JOIN ( WITH ca AS (
+                 SELECT catchment_area.fk_special_building_ww_current AS fk_log_card,
+                    catchment_area.perimeter_geometry AS geom
+                   FROM tww_od.catchment_area
+                  WHERE catchment_area.fk_special_building_ww_current IS NOT NULL
+                UNION
+                 SELECT catchment_area.fk_special_building_rw_current AS fk_log_card,
+                    catchment_area.perimeter_geometry AS geom
+                   FROM tww_od.catchment_area
+                  WHERE catchment_area.fk_special_building_rw_current IS NOT NULL
+                ), collector AS (
+                 SELECT main_lc.obj_id,
+                    main_lc.fk_pwwf_wastewater_node,
+                    ca.geom
+                   FROM ca
+                     LEFT JOIN tww_od.log_card lc ON ca.fk_log_card = lc.obj_id
+                     LEFT JOIN tww_od.log_card main_lc ON main_lc.obj_id = lc.fk_main_structure
+                )
+         SELECT collector.obj_id,
+            collector.fk_pwwf_wastewater_node,
+            st_unaryunion(st_collect(collector.geom)) AS perimeter_geometry
+           FROM collector
+          GROUP BY collector.obj_id, collector.fk_pwwf_wastewater_node) ca_agg ON ca_agg.fk_pwwf_wastewater_node = wn.obj_id
+ WHERE cat.surface_area IS NOT NULL;
+
 ;	
 
 
@@ -505,20 +487,20 @@ FROM tww_od.catchment_area_totals cat
 -- VersickerungsbereichAG
 ----------------------------
 DROP VIEW IF EXISTS {ext_schema}.versickerungsbereichag;
-CREATE OR REPLACE VIEW {ext_schema}.versickerungsbereichag
+CREATE VIEW {ext_schema}.versickerungsbereichag
 AS 
 SELECT
 	  iz.obj_id
-	, zo.identifier as bezeichung
+	, zo.identifier as bezeichnung
 	, iz.ag96_permeability as durchlaessigkeit
 	, iz.ag96_limitation as einschraenkung
 	, iz.ag96_thickness as maechtigkeit
 	, iz.perimeter_geometry as perimeter
 	, iz.ag96_q_check
 	, iz_ic.value_de as versickerungsmoeglichkeitag
-	, concat_ws('','ch113jqg0000',right(zo.fk_provider,8)) AS datenbewirtschafter_gep
+	, concat_ws('','ch113jqg0000',right(coalesce(zo.fk_provider,'00000107'),8)) AS datenbewirtschafter_gep
 	, zo.remark as bemerkung_gep
-	, zo.last_modification as letzte_aenderung_gep
+	, coalesce(zo.last_modification,TO_TIMESTAMP('1800-01-01','YYYY-MM-DD')) as letzte_aenderung_gep
 FROM tww_od.infiltration_zone iz
   LEFT JOIN tww_od.zone zo on zo.obj_id = iz.obj_id
   LEFT JOIN tww_vl.infiltration_zone_infiltration_capacity iz_ic on iz_ic.code = iz.infiltration_capacity;
