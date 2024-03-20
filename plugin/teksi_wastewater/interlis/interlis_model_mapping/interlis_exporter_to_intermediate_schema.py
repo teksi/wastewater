@@ -491,8 +491,7 @@ class InterlisExporterToIntermediateSchema:
 
         logger.info("Exporting TWW.einzugsgebiet -> ABWASSER.einzugsgebiet")
         self._export_einzugsgebiet()
-        self._check_for_stop()
-        
+        self._check_for_stop()  
 
         logger.info("Exporting TWW.bautenausserhalbbaugebiet -> ABWASSER.bautenausserhalbbaugebiet")
         self._export_bautenausserhalbbaugebiet()
