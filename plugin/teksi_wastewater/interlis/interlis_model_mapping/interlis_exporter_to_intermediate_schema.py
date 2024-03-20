@@ -634,11 +634,7 @@ class InterlisExporterToIntermediateSchema:
 
     def _export_infrastrukturknoten(self):
         query = self.tww_session.query(self.model_classes_tww_ag6496.gepknoten)
-        if self.filtered:
-            query = query.join(self.model_classes_tww_ag6496.gepknoten).filter(
-                self.model_classes_tww_ag6496.gepknoten.obj_id.in_(self.subset_ids)
-            )
-        
+
         """
         GEPKnoten werden nach Fläche sortiert hinzugefügt, damit bei der Triggerlogik
         hinter {ext_schema}.gepknoten die Verknüpfung zu anderen Abwasserbauwerken 
