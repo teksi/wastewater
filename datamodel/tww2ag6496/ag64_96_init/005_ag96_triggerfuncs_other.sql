@@ -306,12 +306,12 @@ BEGIN
     , link = vw_val.verweis
     , perimeter_geometry = vw_val.perimeter
     , priority = msr_pri.code
-    , remark = vw_val.bemerkung
+    , remark = vw_val.bemerkung_gep
     , status = msr_st.code
     , symbolpos_geometry = vw_val.symbolpos
     , total_cost = vw_val.gesamtkosten
     , year_implementation_effective = vw_val.jahr_umsetzung_effektiv
-    , year_implementation_planned = vw_val.jahr_umsetzung_geplant
+    , year_implementation_planned = vw_val.jahr_umsetzung_planned
     , last_modification = vw_val.letzte_aenderung_gep
     , fk_dataowner = downr.obj_id
     , fk_provider = {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_gep)
@@ -358,12 +358,12 @@ BEGIN
     , vw_val.verweis
     , vw_val.perimeter
     , msr_pri.code
-    , vw_val.bemerkung
+    , vw_val.bemerkung_gep
     , msr_st.code
     , vw_val.symbolpos
     , vw_val.gesamtkosten
     , vw_val.jahr_umsetzung_effektiv
-    , vw_val.jahr_umsetzung_geplant
+    , vw_val.jahr_umsetzung_planned
     , vw_val.letzte_aenderung_gep
     , downr.obj_id
     , {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_gep)
