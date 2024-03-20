@@ -476,6 +476,10 @@ class InterlisExporterToIntermediateSchema:
         logger.info("Exporting TWW.organisation -> ABWASSER.organisation")
         self._export_organisation()
         self._check_for_stop()
+
+        logger.info("Exporting TWW.gepmassnahme -> ABWASSER.gepmassnahme")
+        self._export_gepmassnahme()
+        self._check_for_stop()
         
         logger.info("Exporting TWW.gepknoten -> ABWASSER.gepknoten")
         self._export_gepknoten()
@@ -559,6 +563,34 @@ class InterlisExporterToIntermediateSchema:
                 verbindungsart=self.get_vl(row.connection_type__REL),
             )
             self.abwasser_session.add(kanal)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_gepmassnahme(self):
+        query = self.tww_session.query(self.model_classes_tww_ag6496.gepmassnahme)
+        for row in query:
+            gepmassnahme = self.model_classes_interlis.gepmassnahme(
+                **self.gep_metainformation_common_ag_xx(row,'gepmassnahme'),
+                ausdehnung=row.ausdehnung,
+                beschreibung=self.truncate(self.emptystr_to_null(row.beschreibung), 100),
+                bezeichnung=self.truncate(self.emptystr_to_null(row.bezeichnung), 20),
+                datum_eingang=row.datum_eingang,
+                gesamtkosten=row.gesamtkosten,
+                handlungsbedarf=row.handlungsbedarf,
+                jahr_umsetzung_effektiv=row.jahr_umsetzung_effektiv,
+                jahr_umsetzung_geplant=row.jahr_umsetzung_planned,
+                kategorie=row.kategorie,
+                perimeter=row.perimeter,
+                prioritaetag=row.prioritaetag,
+                astatus=row.status,
+                symbolpos=row.symbolpos,
+                verweis=row.verweis,
+                traegerschaft=self.get_tid_by_obj_id(row.traegerschaft),
+                verantwortlich_ausloesung=self.get_tid_by_obj_id(row.verantwortlich_ausloesung),
+            )
+            self.map_tid_ag_xx(row.obj_id, gepmassnahme.t_id)
+            self.abwasser_session.add(gepmassnahme)
             print(".", end="")
         logger.info("done")
         self.abwasser_session.flush()

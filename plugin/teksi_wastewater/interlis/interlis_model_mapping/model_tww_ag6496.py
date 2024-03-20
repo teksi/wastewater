@@ -22,6 +22,32 @@ class ModelTwwAG6496(ModelBase):
 
         ModelTwwAG6496.organisation = organisation
 
+        class gepmassnahme(self.Base):
+            __tablename__ = "gepmassnahme"
+            obj_id=Column(String, primary_key=True)
+            ausdehnung = Column(Geometry)
+            beschreibung = Column(String)
+            bezeichnung = Column(String)
+            datum_eingang = Column(DateTime)
+            gesamtkosten = Column(Float)
+            handlungsbedarf = Column(String)
+            jahr_umsetzung_effektiv = Column(Integer)
+            jahr_umsetzung_planned = Column(Integer)
+            kategorie = Column(String)
+            perimeter = Column(Geometry)
+            prioritaetag = Column(String)
+            status = Column(String)
+            symbolpos = Column(Geometry)
+            verweis = Column(String)
+            traegerschaft = Column(String)
+            verantwortlich_ausloesung = Column(String)
+            datenbewirtschafter_gep = Column(String)
+            bemerkung_gep = Column(String)
+            letzte_aenderung_gep = Column(DateTime)
+            __table_args__ = {"schema": config.TWW_AG_SCHEMA}
+
+        ModelTwwAG6496.gepmassnahme = gepmassnahme
+
         class gepknoten(self.Base):
             __tablename__ = "gepknoten"
             obj_id=Column(String, primary_key=True)
