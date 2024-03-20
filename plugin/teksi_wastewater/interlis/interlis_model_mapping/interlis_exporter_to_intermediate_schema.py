@@ -480,6 +480,10 @@ class InterlisExporterToIntermediateSchema:
         self._export_infrastrukturhaltung()
         self._check_for_stop()
         
+        logger.info("Exporting TWW.ueberlauf_foerderaggregat -> ABWASSER.ueberlauf_foerderaggregat")
+        self._export_ueberlauf_foerderaggregat_ag64()
+        self._check_for_stop()
+        
     def _export_ag96(self):
         logger.info("Exporting TWW.organisation -> ABWASSER.organisation")
         self._export_organisation()
@@ -650,9 +654,9 @@ class InterlisExporterToIntermediateSchema:
         for row in query:
             gepknoten = self.model_classes_interlis.abwasserbauwerk( #abwasserbauwerk wegen Kompatibiltät bei Label-Export
                 **self.knoten_common_ag_xx(row),
-                obj_id= row.obj_id,
-                t_ili_tid= row.obj_id,
-                t_id= self.get_tid(row),
+                obj_id=row.obj_id,
+                t_ili_tid=row.obj_id,
+                t_id=self.get_tid(row),
             )
             self.map_tid_ag_xx(row.obj_id, gepknoten.t_id)
             self.abwasser_session.add(gepknoten)
@@ -687,9 +691,9 @@ class InterlisExporterToIntermediateSchema:
         for row in query:
             gephaltung = self.model_classes_interlis.haltung(
                 **self.haltung_common_ag_xx(row),
-                obj_id= row.obj_id,
-                t_ili_tid= row.obj_id,
-                t_id= self.get_tid(row),
+                obj_id=row.obj_id,
+                t_ili_tid=row.obj_id,
+                t_id=self.get_tid(row),
                 lichte_breite=row.lichte_breite_ist,
             )
             self.abwasser_session.add(gephaltung)
@@ -776,6 +780,22 @@ class InterlisExporterToIntermediateSchema:
             ueberlauf_foerderaggregat = self.model_classes_interlis.ueberlauf_foerderaggregat(
                 **self.gep_metainformation_common_ag_xx(row,'ueberlauf_foerderaggregat'),
                 **self.ueberlauf_foerderaggregat_common_ag_xx(row),
+            )
+            self.abwasser_session.add(ueberlauf_foerderaggregat)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_ueberlauf_foerderaggregat_ag64(self):
+        query = self.tww_session.query(self.model_classes_tww_ag6496.ueberlauf_foerderaggregat)
+        for row in query:
+            ueberlauf_foerderaggregat = self.model_classes_interlis.ueberlauf_foerderaggregat(
+                **self.ueberlauf_foerderaggregat_common_ag_xx(row),
+                obj_id=row.obj_id,
+                t_ili_tid=row.obj_id,
+                t_id=self.get_tid(row),
+                letzte_aenderung_wi=row.letzte_aenderung_wi,
+                bemerkung_wi=self.truncate(self.emptystr_to_null(row.bemerkung_wi), 80),
             )
             self.abwasser_session.add(ueberlauf_foerderaggregat)
             print(".", end="")
