@@ -618,7 +618,7 @@ class InterlisExporterToIntermediateSchema:
         self.abwasser_session.flush()
 
     def _export_einzugsgebiet(self):
-        query = self.tww_session.query(self.model_classes_tww_ag6496.gephaltung)
+        query = self.tww_session.query(self.model_classes_tww_ag6496.einzugsgebiet)
         for row in query:
             gephaltung = self.model_classes_interlis.einzugsgebiet(
                 **self.gep_metainformation_common_ag_xx(row,'einzugsgebiet'),
@@ -643,7 +643,7 @@ class InterlisExporterToIntermediateSchema:
                 fremdwasseranfall_geplant=row.fremdwasseranfall_geplant,
                 fremdwasseranfall_ist=row.fremdwasseranfall_ist,
                 perimeter=row.perimeter,
-                perimetertype=row.perimetertype,
+                perimetertyp=row.perimetertyp,
                 retention_geplant=row.retention_geplant,
                 retention_ist=row.retention_ist,
                 schmutzabwasseranfall_geplant=row.schmutzabwasseranfall_geplant,

@@ -127,7 +127,7 @@ class ModelTwwAG6496(ModelBase):
             fremdwasseranfall_geplant = Column(Float)
             fremdwasseranfall_ist = Column(Float)
             perimeter = Column(Geometry)
-            perimetertype = Column(String)
+            perimetertyp = Column(String)
             retention_geplant = Column(String)
             retention_ist = Column(String)
             schmutzabwasseranfall_geplant = Column(Float)
