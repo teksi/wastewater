@@ -666,7 +666,7 @@ class InterlisExporterToIntermediateSchema:
                 einwohnergleichwert=row.einwohnergleichwert,
                 lage=row.lage,
                 nummer=row.nummer,
-                sanierungsbedarf=row.sanierungsbedarf,
+                sanierungsbedarf=row.sanierungsbedarf.capitalize(),
                 sanierungsdatum=row.sanierungsdatum,
                 sanierungskonzept=row.sanierungskonzept,
             )
