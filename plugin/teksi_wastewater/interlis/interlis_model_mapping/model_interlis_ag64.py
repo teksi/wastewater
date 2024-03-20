@@ -25,7 +25,7 @@ class ModelInterlisAG64(ModelBase):
         ModelInterlisAG64.haltung = infrastrukturhaltung
 
         class abwasserbauwerk(self.Base):
-            __tablename__ = "gepknoten"
+            __tablename__ = "infrastrukturknoten"
             __table_args__ = {"schema":config.ABWASSER_SCHEMA}
 
         # Nomenklatur .abwasserbauwerk, damit es für den Label-Export mit VSA-DSS übereinstimmt
