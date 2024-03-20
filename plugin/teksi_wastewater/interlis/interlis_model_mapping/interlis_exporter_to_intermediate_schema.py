@@ -744,10 +744,6 @@ class InterlisExporterToIntermediateSchema:
 
     def _export_sbw_einzugsgebiet(self):
         query = self.tww_session.query(self.model_classes_tww_ag6496.sbw_einzugsgebiet)
-        if self.filtered:
-            query = query.join(self.model_classes_tww_ag6496.wastewater_networkelement).filter(
-                self.model_classes_tww_ag6496.wastewater_networkelement.obj_id.in_(self.subset_ids)
-            )
         for row in query:
             sbw_einzugsgebiet = self.model_classes_interlis.sbw_einzugsgebiet(
                 **self.gep_metainformation_common_ag_xx(row,'sbw_einzugsgebiet'),
