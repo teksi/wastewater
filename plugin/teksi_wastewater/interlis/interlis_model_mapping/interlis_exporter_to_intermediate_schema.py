@@ -471,6 +471,14 @@ class InterlisExporterToIntermediateSchema:
         logger.info("Exporting TWW.organisation -> ABWASSER.organisation")
         self._export_organisation()
         self._check_for_stop()
+
+        logger.info("Exporting TWW.gepknoten -> ABWASSER.infrastrukturknoten")
+        self._export_infrastrukturknoten()
+        self._check_for_stop()
+        
+        logger.info("Exporting TWW.gephaltung -> ABWASSER.infrastrukturhaltung")
+        self._export_infrastrukturhaltung()
+        self._check_for_stop()
         
     def _export_ag96(self):
         logger.info("Exporting TWW.organisation -> ABWASSER.organisation")
@@ -632,6 +640,30 @@ class InterlisExporterToIntermediateSchema:
         logger.info("done")
         self.abwasser_session.flush()
 
+    def _export_infrastrukturknoten(self):
+        query = self.tww_session.query(self.model_classes_tww_ag6496.gepknoten)
+
+        """
+        GEPKnoten werden nach Fläche sortiert hinzugefügt, damit bei der Triggerlogik
+        hinter {ext_schema}.gepknoten die Verknüpfung zu anderen Abwasserbauwerken 
+        basierend auf einem Spatial Join implementiert werden kann.
+        Dies ist relevant, da Zweitknoten der FunktionAG "andere", die innerhalb der Detailgeometrie
+        eines anderen Abwasserbauwerks liegen, als Deckel importiert werden.
+        """
+        query.order_by(nullslast(self.model_classes_tww_ag6496.gepknoten.detailgeometrie.ST_Area().asc()))
+        for row in query:
+            gepknoten = self.model_classes_interlis.abwasserbauwerk( #abwasserbauwerk wegen Kompatibiltät bei Label-Export
+                **self.knoten_common_ag_xx(row),
+                obj_id= row.obj_id,
+                t_ili_tid= row.obj_id,
+                t_id= self.get_tid(row),
+            )
+            self.map_tid_ag_xx(row.obj_id, gepknoten.t_id)
+            self.abwasser_session.add(gepknoten)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
     def _export_gephaltung(self):
         query = self.tww_session.query(self.model_classes_tww_ag6496.gephaltung)
         if self.filtered:
@@ -642,15 +674,27 @@ class InterlisExporterToIntermediateSchema:
             gephaltung = self.model_classes_interlis.haltung(
                 **self.gep_metainformation_common_ag_xx(row,'gephaltung'),
                 **self.haltung_common_ag_xx(row),
+                gepmassnahmeref=self.get_tid_by_obj_id(row.gepmassnahmeref),
                 hydraulischebelastung=row.hydraulischebelastung,
                 lichte_breite_ist=row.lichte_breite_ist,
                 lichte_breite_geplant=row.lichte_breite_geplant,
                 lichte_hoehe_geplant=row.lichte_hoehe_geplant,
                 nutzungsartag_geplant=row.nutzungsartag_geplant,
-                wiederbeschaffungswert=row.wiederbeschaffungswert,
-                startknoten=self.get_tid_by_obj_id(row.startknoten),
-                endknoten=self.get_tid_by_obj_id(row.endknoten),
-                gepmassnahmeref=self.get_tid_by_obj_id(row.gepmassnahmeref),
+            )
+            self.abwasser_session.add(gephaltung)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_infrastrukturhaltung(self):
+        query = self.tww_session.query(self.model_classes_tww_ag6496.gephaltung)
+        for row in query:
+            gephaltung = self.model_classes_interlis.haltung(
+                **self.haltung_common_ag_xx(row),
+                obj_id= row.obj_id,
+                t_ili_tid= row.obj_id,
+                t_id= self.get_tid(row),
+                lichte_breite=row.lichte_breite_ist,
             )
             self.abwasser_session.add(gephaltung)
             print(".", end="")
@@ -2978,6 +3022,7 @@ class InterlisExporterToIntermediateSchema:
             "funktionhierarchisch": row.funktionhierarchisch,
             "jahr_zustandserhebung": row.jahr_zustandserhebung,
             "lage": row.lage,
+            "lagegenauigkeit": row.lagegenauigkeit,
             "letzte_aenderung_wi": row.letzte_aenderung_wi,
             "sanierungsbedarf": row.sanierungsbedarf,
             "sohlenkote": row.sohlenkote,
@@ -2996,7 +3041,11 @@ class InterlisExporterToIntermediateSchema:
             "baulicherzustand": row.baulicherzustand,
             "bauwerkstatus": row.bauwerkstatus,
             "bemerkung_wi": self.truncate(self.emptystr_to_null(row.bemerkung_wi), 80),
+            "betreiber": self.get_tid_by_obj_id(row.betreiber),
             "bezeichnung": self.truncate(self.emptystr_to_null(row.bezeichnung), 20),
+            "datenbewirtschafter_wi": self.get_tid_by_obj_id(row.datenbewirtschafter_wi),
+            "eigentuemer": self.get_tid_by_obj_id(row.eigentuemer),
+            "endknoten":self.get_tid_by_obj_id(row.endknoten),
             "finanzierung": row.finanzierung,
             "funktionhierarchisch": row.funktionhierarchisch,
             "funktionhydraulisch": row.funktionhydraulisch,
@@ -3005,22 +3054,21 @@ class InterlisExporterToIntermediateSchema:
             "jahr_zustandserhebung": row.jahr_zustandserhebung,
             "kote_beginn": row.kote_beginn,
             "kote_ende": row.kote_ende,
+            "laengeeffektiv": row.laengeeffektiv,
             "letzte_aenderung_wi": row.letzte_aenderung_wi,
             "lichte_hoehe_ist": row.lichte_hoehe_ist,
-            "laengeeffektiv": row.laengeeffektiv,
             "material": row.material,
-            "profiltyp": row.profiltyp,
             "nutzungsartag_ist": row.nutzungsartag_ist,
+            "profiltyp": row.profiltyp,
             "reliner_art": row.reliner_art,
             "reliner_bautechnik": row.reliner_bautechnik,
             "reliner_material": row.reliner_material,
             "reliner_nennweite": row.reliner_nennweite,
             "sanierungsbedarf": row.sanierungsbedarf,
+            "startknoten":self.get_tid_by_obj_id(row.startknoten),
             "verlauf": row.verlauf,
             "wbw_basisjahr": row.wbw_basisjahr,
-            "betreiber": self.get_tid_by_obj_id(row.betreiber),
-            "datenbewirtschafter_wi": self.get_tid_by_obj_id(row.datenbewirtschafter_wi),
-            "eigentuemer": self.get_tid_by_obj_id(row.eigentuemer),
+            "wiederbeschaffungswert": row.wiederbeschaffungswert,
         }
 
     def ueberlauf_foerderaggregat_common_ag_xx(self, row):
