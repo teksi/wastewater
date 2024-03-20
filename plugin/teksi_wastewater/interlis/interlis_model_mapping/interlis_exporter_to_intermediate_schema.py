@@ -646,6 +646,8 @@ class InterlisExporterToIntermediateSchema:
         for row in query:
             gepknoten = self.model_classes_interlis.abwasserbauwerk( #abwasserbauwerk wegen Kompatibiltät bei Label-Export
                 **self.knoten_common_ag_xx(row),
+                t_ili_tid= row.obj_id,
+                t_id= self.get_tid(row),
             )
             self.map_tid_ag_xx(row.obj_id, gepknoten.t_id)
             self.abwasser_session.add(gepknoten)
