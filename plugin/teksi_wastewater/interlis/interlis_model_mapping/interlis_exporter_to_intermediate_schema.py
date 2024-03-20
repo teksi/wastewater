@@ -488,6 +488,10 @@ class InterlisExporterToIntermediateSchema:
         logger.info("Exporting TWW.gephaltung -> ABWASSER.gephaltung")
         self._export_gephaltung()
         self._check_for_stop()
+
+        logger.info("Exporting TWW.einzugsgebiet -> ABWASSER.einzugsgebiet")
+        self._export_einzugsgebiet()
+        self._check_for_stop()
         
         logger.info("Exporting TWW.ueberlauf_foerderaggregat -> ABWASSER.ueberlauf_foerderaggregat")
         self._export_ueberlauf_foerderaggregat_ag96()
@@ -639,6 +643,49 @@ class InterlisExporterToIntermediateSchema:
                 startknoten=self.get_tid_by_obj_id(row.startknoten),
                 endknoten=self.get_tid_by_obj_id(row.endknoten),
                 gepmassnahmeref=self.get_tid_by_obj_id(row.gepmassnahmeref),
+            )
+            self.abwasser_session.add(gephaltung)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_einzugsgebiet(self):
+        query = self.tww_session.query(self.model_classes_tww_ag6496.einzugsgebiet)
+        for row in query:
+            gephaltung = self.model_classes_interlis.einzugsgebiet(
+                **self.gep_metainformation_common_ag_xx(row,'einzugsgebiet'),
+                abflussbegrenzung_geplant=row.abflussbegrenzung_geplant,
+                abflussbegrenzung_ist=row.abflussbegrenzung_ist,
+                abflussbeiwert_rw_geplant=row.abflussbeiwert_rw_geplant,
+                abflussbeiwert_rw_ist=row.abflussbeiwert_rw_ist,
+                abflussbeiwert_sw_geplant=row.abflussbeiwert_sw_geplant,
+                abflussbeiwert_sw_ist=row.abflussbeiwert_sw_ist,
+                befestigungsgrad_rw_geplant=row.befestigungsgrad_rw_geplant,
+                befestigungsgrad_rw_ist=row.befestigungsgrad_rw_ist,
+                befestigungsgrad_sw_geplant=row.befestigungsgrad_sw_geplant,
+                befestigungsgrad_sw_ist=row.befestigungsgrad_sw_ist,
+                bezeichnung=self.truncate(self.emptystr_to_null(row.bezeichnung), 20),
+                direkteinleitung_in_gewaesser_geplant=row.direkteinleitung_in_gewaesser_geplant,
+                direkteinleitung_in_gewaesser_ist=row.direkteinleitung_in_gewaesser_ist,
+                einwohnerdichte_geplant=row.einwohnerdichte_geplant,
+                einwohnerdichte_ist=row.einwohnerdichte_ist,
+                entwaesserungssystemag_geplant=row.entwaesserungssystemag_geplant,
+                entwaesserungssystemag_ist=row.entwaesserungssystemag_ist,
+                flaeche=row.flaeche,
+                fremdwasseranfall_geplant=row.fremdwasseranfall_geplant,
+                fremdwasseranfall_ist=row.fremdwasseranfall_ist,
+                perimeter=row.perimeter,
+                perimetertyp=row.perimetertyp,
+                retention_geplant=row.retention_geplant,
+                retention_ist="ja", # Change to row.retention_ist once the test data has been fixed
+                schmutzabwasseranfall_geplant=row.schmutzabwasseranfall_geplant,
+                schmutzabwasseranfall_ist=row.schmutzabwasseranfall_ist,
+                versickerung_geplant=row.versickerung_geplant,
+                versickerung_ist=row.versickerung_ist,
+                gepknoten_rw_geplantref=self.get_tid_by_obj_id(row.gepknoten_rw_geplantref),
+                gepknoten_rw_istref=self.get_tid_by_obj_id(row.gepknoten_rw_istref),
+                gepknoten_sw_geplantref=self.get_tid_by_obj_id(row.gepknoten_sw_geplantref),
+                gepknoten_sw_istref=self.get_tid_by_obj_id(row.gepknoten_sw_istref),
             )
             self.abwasser_session.add(gephaltung)
             print(".", end="")
