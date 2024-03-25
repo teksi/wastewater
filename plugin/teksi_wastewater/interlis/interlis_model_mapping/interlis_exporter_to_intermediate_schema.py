@@ -617,10 +617,6 @@ class InterlisExporterToIntermediateSchema:
 
     def _export_gepknoten(self):
         query = self.tww_session.query(self.model_classes_tww_ag6496.gepknoten)
-        if self.filtered:
-            query = query.join(self.model_classes_tww_ag6496.wastewater_networkelement).filter(
-                self.model_classes_tww_ag6496.wastewater_networkelement.obj_id.in_(self.subset_ids)
-            )
         
         """
         GEPKnoten werden nach Fläche sortiert hinzugefügt, damit bei der Triggerlogik
@@ -670,10 +666,6 @@ class InterlisExporterToIntermediateSchema:
 
     def _export_gephaltung(self):
         query = self.tww_session.query(self.model_classes_tww_ag6496.gephaltung)
-        if self.filtered:
-            query = query.join(self.model_classes_tww_ag6496.wastewater_networkelement).filter(
-                self.model_classes_tww_ag6496.wastewater_networkelement.obj_id.in_(self.subset_ids)
-            )
         for row in query:
             gephaltung = self.model_classes_interlis.haltung(
                 **self.gep_metainformation_common_ag_xx(row,'gephaltung'),
@@ -776,10 +768,6 @@ class InterlisExporterToIntermediateSchema:
 
     def _export_ueberlauf_foerderaggregat_ag96(self):
         query = self.tww_session.query(self.model_classes_tww_ag6496.ueberlauf_foerderaggregat)
-        if self.filtered:
-            query = query.join(self.model_classes_tww_ag6496.wastewater_networkelement).filter(
-                self.model_classes_tww_ag6496.wastewater_networkelement.obj_id.in_(self.subset_ids)
-            )
         for row in query:
             ueberlauf_foerderaggregat = self.model_classes_interlis.ueberlauf_foerderaggregat(
                 **self.gep_metainformation_common_ag_xx(row,'ueberlauf_foerderaggregat'),
@@ -854,10 +842,6 @@ class InterlisExporterToIntermediateSchema:
 
     def _export_versickerungsbereichag(self):
         query = self.tww_session.query(self.model_classes_tww_ag6496.versickerungsbereichag)
-        if self.filtered:
-            query = query.join(self.model_classes_tww_ag6496.wastewater_networkelement).filter(
-                self.model_classes_tww_ag6496.wastewater_networkelement.obj_id.in_(self.subset_ids)
-            )
         for row in query:
             versickerungsbereichag = self.model_classes_interlis.versickerungsbereichag(
                 # --- abwasserbauwerk ---
