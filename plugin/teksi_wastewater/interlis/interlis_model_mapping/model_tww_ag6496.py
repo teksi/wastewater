@@ -214,6 +214,32 @@ class ModelTwwAG6496(ModelBase):
 
         ModelTwwAG6496.ueberlauf_foerderaggregat = ueberlauf_foerderaggregat
 
+        class sbw_einzugsgebiet(self.Base):
+            __tablename__ = "sbw_einzugsgebiet"
+            obj_id=Column(String, primary_key=True)
+            bezeichnung = Column(String)
+            einwohner_geplant = Column(Integer)
+            einwohner_ist = Column(Integer)
+            flaeche_geplant = Column(Float)
+            flaeche_ist = Column(Float)
+            flaeche_befestigt_geplant = Column(Float)
+            flaeche_befestigt_ist = Column(Float)
+            flaeche_reduziert_geplant = Column(Float)
+            flaeche_reduziert_ist = Column(Float)
+            fremdwasseranfall_geplant = Column(Float)
+            fremdwasseranfall_ist = Column(Float)
+            perimeter_ist = Column(Geometry)
+            schmutzabwasseranfall_geplant = Column(Float)
+            schmutzabwasseranfall_ist = Column(Float)
+            einleitstelleref = Column(String)
+            sonderbauwerk_ref = Column(String)
+            datenbewirtschafter_gep = Column(String)
+            bemerkung_gep = Column(String)
+            letzte_aenderung_gep = Column(DateTime)
+            __table_args__ = {"schema": config.TWW_AG_SCHEMA}
+        
+        ModelTwwAG6496.sbw_einzugsgebiet = sbw_einzugsgebiet
+
         class versickerungsbereichag(self.Base):
             __tablename__ = "versickerungsbereichag"
             obj_id=Column(String, primary_key=True)
