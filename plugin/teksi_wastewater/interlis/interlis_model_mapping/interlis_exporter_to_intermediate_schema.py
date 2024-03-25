@@ -808,7 +808,26 @@ class InterlisExporterToIntermediateSchema:
 
     def _export_sbw_einzugsgebiet(self):
         query = self.tww_session.query(self.model_classes_tww_ag6496.sbw_einzugsgebiet)
+        perimeter_query = text(
+            """
+            WITH geoms AS (
+                SELECT *, ST_ForceCurve((ST_Dump(perimeter_ist)).geom) AS geom 
+                FROM tww_ag6496.sbw_einzugsgebiet
+            )
+            SELECT DISTINCT ON (obj_id) obj_id, ST_Area(geom) AS area, geom, ST_GeometryType(geom) as type
+            FROM geoms
+            ORDER BY obj_id, area DESC;
+        """
+        )
+        perimeters = self.tww_session.execute(perimeter_query).fetchall()
+
         for row in query:
+            largest_perimeter = None
+            for perimeter in perimeters:
+                if perimeter[0] == row.obj_id:
+                    largest_perimeter = perimeter[2]
+                    break
+
             sbw_einzugsgebiet = self.model_classes_interlis.sbw_einzugsgebiet(
                 **self.gep_metainformation_common_ag_xx(row,'sbw_einzugsgebiet'),
                 bezeichnung=self.truncate(self.emptystr_to_null(row.bezeichnung), 20),
@@ -822,7 +841,7 @@ class InterlisExporterToIntermediateSchema:
                 flaeche_reduziert_ist=row.flaeche_reduziert_ist,
                 fremdwasseranfall_geplant=row.fremdwasseranfall_geplant,
                 fremdwasseranfall_ist=row.fremdwasseranfall_ist,
-                perimeter_ist=row.perimeter_ist,
+                perimeter_ist=largest_perimeter,
                 schmutzabwasseranfall_geplant=row.schmutzabwasseranfall_geplant,
                 schmutzabwasseranfall_ist=row.schmutzabwasseranfall_ist,
                 einleitstelleref=self.get_tid_by_obj_id(row.einleitstelleref),
