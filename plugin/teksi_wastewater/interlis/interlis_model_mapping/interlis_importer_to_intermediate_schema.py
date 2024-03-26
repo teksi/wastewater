@@ -118,6 +118,12 @@ class InterlisImporterToIntermediateSchema:
         self._import_haltung()
         self._check_for_stop()
 
+        logger.info(
+            "Importing ABWASSER.haltung_alternativverlauf -> TWW.reach_progression_alternative"
+        )
+        self._import_haltung_alternativverlauf()
+        self._check_for_stop()
+
         logger.info("Importing ABWASSER.haltungspunkt -> TWW.reach_point")
         self._import_haltungspunkt()
         self._check_for_stop()
@@ -746,7 +752,7 @@ class InterlisImporterToIntermediateSchema:
                     self.model_classes_tww_od.infiltration_installation_emergency_overflow,
                     row.notueberlauf,
                 ),
-                # fk_aquifier=row.REPLACE_ME,  # TODO : NOT MAPPED
+                # fk_dss15_aquifer=row.REPLACE_ME,  # TODO : NOT MAPPED
                 kind=self.get_vl_code(
                     self.model_classes_tww_vl.infiltration_installation_kind, row.art
                 ),
@@ -1879,6 +1885,22 @@ class InterlisImporterToIntermediateSchema:
             self.session_tww.add(reach_point)
             print(".", end="")
 
+    def _import_haltung_alternativverlauf(self):
+        for row in self.session_interlis.query(
+            self.model_classes_interlis.haltung_alternativverlauf
+        ):
+            reach_progression_alternative = self.create_or_update(
+                self.model_classes_tww_od.reach_progression_alternative,
+                obj_id=row.t_ili_tid,
+                plantype=self.get_vl_code(
+                    self.model_classes_tww_od.reach_progression_alternative_plantype, row.plantyp
+                ),
+                progression_geometry=row.verlauf,
+                fk_reach=self.get_pk(row.haltungref__REL),
+            )
+            self.session_tww.add(reach_progression_alternative)
+            print(".", end="")
+
     def _import_abwasserknoten(self):
         for row in self.session_interlis.query(self.model_classes_interlis.abwasserknoten):
             wastewater_node = self.create_or_update(
@@ -2188,7 +2210,7 @@ class InterlisImporterToIntermediateSchema:
                 object=row.objekt,
                 path_relative=row.relativpfad,
                 remark=row.bemerkung,
-                class_column=self.get_vl_code(self.model_classes_tww_vl.file_class, row.klasse),
+                classname=self.get_vl_code(self.model_classes_tww_vl.file_classname, row.klasse),
             )
 
             self.session_tww.add(file_table_row)
