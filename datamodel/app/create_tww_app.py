@@ -4,7 +4,6 @@ import argparse
 import os
 
 import psycopg2
-
 from view.create_views import create_views
 
 
