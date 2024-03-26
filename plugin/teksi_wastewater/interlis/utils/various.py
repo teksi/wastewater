@@ -84,7 +84,7 @@ def setup_test_db(template="full"):
     def dexec_(cmd, check=True):
         return exec_(f"docker exec twwqwat {cmd}", check)
 
-    docker_image = os.getenv("TWWQWAT2ILI_TESTDB_IMAGE", "postgis/postgis:13-3.2")
+    docker_image = os.getenv("TWWQWAT2ILI_TESTDB_IMAGE", "postgis/postgis:14-3.4")
 
     logger.info(f"SETTING UP TWW/QWAT DATABASE [{docker_image}]...")
 
