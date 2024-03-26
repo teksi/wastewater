@@ -3,22 +3,28 @@
 CREATE OR REPLACE VIEW tww_app.import_vw_manhole AS
  SELECT DISTINCT ON (ws.obj_id) ws.obj_id,
     ws.identifier,
-    ST_Force3D(ws.situation3d_geometry)::geometry(POINTZ, %(SRID)s) AS situation_geometry,
-    ws.co_shape,
-    ws.co_diameter,
-    ws.co_material,
-    ws.co_positional_accuracy,
-    ws.co_level,
+    COALESCE(wn.situation3d_geometry, main_co.situation3d_geometry)::geometry(POINTZ, %(SRID)s) AS situation_geometry,
+    main_co.cover_shape as co_shape,
+    main_co.diameter as co_diameter,
+    main_co.material as co_material,
+    main_co.positional_accuracy as co_positional_accuracy,
+    main_co.level as co_level,
     ws._depth::numeric(6, 3) AS _depth,
-    ws._channel_usage_current,
-    ws.ma_material,
-    ws.ma_dimension1,
-    ws.ma_dimension2,
-    ws.ws_type,
-    ws.ma_function,
-    ws.ss_function,
-    ws.remark,
-    ws.wn_bottom_level,
+    wn._usage_current AS _channel_usage_current,
+    ma.material as ma_material,
+    ma.dimension1 as ma_dimension1,
+    ma.dimension2 as ma_dimension2,
+    CASE
+          WHEN ma.obj_id IS NOT NULL THEN 'manhole'
+          WHEN ss.obj_id IS NOT NULL THEN 'special_structure'
+          WHEN dp.obj_id IS NOT NULL THEN 'discharge_point'
+          WHEN ii.obj_id IS NOT NULL THEN 'infiltration_installation'
+          ELSE 'unknown'
+        END AS ws_type,
+    ma.function as ma_function,
+    ss.function as ss_function,
+    ne.remark,
+    wn.bottom_level as wn_bottom_level,
     NULL::text AS photo1,
     NULL::text AS photo2,
     NULL::smallint AS inlet_3_material,
@@ -43,13 +49,23 @@ CREATE OR REPLACE VIEW tww_app.import_vw_manhole AS
     NULL::integer AS outlet_2_clear_height,
     NULL::numeric(7, 3) AS outlet_2_depth_m,
     FALSE::boolean AS verified,
-    (CASE WHEN EXISTS ( SELECT TRUE FROM tww_od.import_manhole_quarantine q WHERE q.obj_id = ws.obj_id )
-    THEN TRUE
-    ELSE FALSE
-    END) AS in_quarantine,
+    (q.obj_id IS NOT NULL) AS in_quarantine,
     FALSE::boolean AS deleted
 
-   FROM tww_app.vw_tww_wastewater_structure ws;
+    FROM tww_od.wastewater_structure ws
+    LEFT JOIN tww_od.cover main_co ON main_co.obj_id = ws.fk_main_cover
+    LEFT JOIN tww_od.manhole ma ON ma.obj_id = ws.obj_id
+    LEFT JOIN tww_od.special_structure ss ON ss.obj_id = ws.obj_id
+    LEFT JOIN tww_od.discharge_point dp ON dp.obj_id = ws.obj_id
+    LEFT JOIN tww_od.infiltration_installation ii ON ii.obj_id = ws.obj_id
+	LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = ws.fk_main_wastewater_node
+    LEFT JOIN tww_od.wastewater_node wn ON wn.obj_id = ws.fk_main_wastewater_node
+	LEFT JOIN (SELECT DISTINCT obj_id
+				, max(quarantine_serial)  as maximum
+				FROM tww_od.import_manhole_quarantine
+			    GROUP BY obj_id
+			  	) q ON q.obj_id = ws.obj_id
+   ;
 
 
 -- create trigger function and trigger for mobile view
