@@ -5,7 +5,7 @@ import os
 
 import psycopg2
 
-from .view.create_views import create_views
+from view.create_views import create_views
 
 
 def run_sql_file(file_path: str, pg_service: str, variables: dict = {}):
