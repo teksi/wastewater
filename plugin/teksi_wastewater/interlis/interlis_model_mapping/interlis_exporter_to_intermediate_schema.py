@@ -879,6 +879,19 @@ class InterlisExporterToIntermediateSchema:
 
     def _export_sbw_einzugsgebiet(self):
         query = self.tww_session.query(self.model_classes_tww_ag6496.sbw_einzugsgebiet)
+        if self.filtered:
+            query = query.join(
+                self.model_classes_tww_ag6496.gepknoten,
+                or_(
+                    self.model_classes_tww_ag6496.gepknoten.obj_id
+                    == self.model_classes_tww_ag6496.sbw_einzugsgebiet.einleitstelleref,
+                    self.model_classes_tww_ag6496.gepknoten.obj_id
+                    == self.model_classes_tww_ag6496.sbw_einzugsgebiet.sonderbauwerk_ref
+                ),
+            ).filter(
+                self.model_classes_tww_ag6496.gepknoten.obj_id.in_(self.subset_ids)
+            )
+
         perimeter_query = text(
             """
             WITH geoms AS (
