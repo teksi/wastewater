@@ -829,17 +829,10 @@ class InterlisExporterToIntermediateSchema:
             query = query.join(
                 self.model_classes_tww_ag6496.gepknoten,
                 or_(
-                    and_(
-                        self.model_classes_tww_ag6496.gepknoten.obj_id
-                        == self.model_classes_tww_ag6496.ueberlauf_foerderaggregat.knotenref,
-                        self.model_classes_tww_ag6496.ueberlauf_foerderaggregat.knoten_nachref.is_(None)
-                    ),
-                    and_(
-                        self.model_classes_tww_ag6496.gepknoten.obj_id
-                        == self.model_classes_tww_ag6496.ueberlauf_foerderaggregat.knotenref,
-                        self.model_classes_tww_ag6496.gepknoten.obj_id
-                        == self.model_classes_tww_ag6496.ueberlauf_foerderaggregat.knoten_nachref
-                    ),
+                    self.model_classes_tww_ag6496.gepknoten.obj_id
+                    == self.model_classes_tww_ag6496.ueberlauf_foerderaggregat.knotenref,
+                    self.model_classes_tww_ag6496.gepknoten.obj_id
+                    == self.model_classes_tww_ag6496.ueberlauf_foerderaggregat.knoten_nachref
                 ),
             ).filter(
                 self.model_classes_tww_ag6496.gepknoten.obj_id.in_(self.subset_ids)
@@ -861,17 +854,10 @@ class InterlisExporterToIntermediateSchema:
             query = query.join(
                 self.model_classes_tww_ag6496.gepknoten,
                 or_(
-                    and_(
-                        self.model_classes_tww_ag6496.gepknoten.obj_id
-                        == self.model_classes_tww_ag6496.ueberlauf_foerderaggregat.knotenref,
-                        self.model_classes_tww_ag6496.ueberlauf_foerderaggregat.knoten_nachref.is_(None)
-                    ),
-                    and_(
-                        self.model_classes_tww_ag6496.gepknoten.obj_id
-                        == self.model_classes_tww_ag6496.ueberlauf_foerderaggregat.knotenref,
-                        self.model_classes_tww_ag6496.gepknoten.obj_id
-                        == self.model_classes_tww_ag6496.ueberlauf_foerderaggregat.knoten_nachref
-                    ),
+                    self.model_classes_tww_ag6496.gepknoten.obj_id
+                    == self.model_classes_tww_ag6496.ueberlauf_foerderaggregat.knotenref,
+                    self.model_classes_tww_ag6496.gepknoten.obj_id
+                    == self.model_classes_tww_ag6496.ueberlauf_foerderaggregat.knoten_nachref
                 ),
             ).filter(
                 self.model_classes_tww_ag6496.gepknoten.obj_id.in_(self.subset_ids)
