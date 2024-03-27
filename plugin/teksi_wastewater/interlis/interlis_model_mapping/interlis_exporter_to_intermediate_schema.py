@@ -1,7 +1,7 @@
 import json
 
 from geoalchemy2.functions import ST_Force2D, ST_GeomFromGeoJSON
-from sqlalchemy import or_, nullslast
+from sqlalchemy import or_, and_, nullslast
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import text
 
@@ -677,7 +677,7 @@ class InterlisExporterToIntermediateSchema:
         if self.filtered:
             query = query.join(
                 self.model_classes_tww_ag6496.gepknoten,
-                or_(
+                and_(
                     self.model_classes_tww_ag6496.gepknoten.obj_id
                     == self.model_classes_tww_ag6496.gephaltung.startknoten,
                     self.model_classes_tww_ag6496.gepknoten.obj_id
@@ -711,7 +711,7 @@ class InterlisExporterToIntermediateSchema:
         if self.filtered:
             query = query.join(
                 self.model_classes_tww_ag6496.gepknoten,
-                or_(
+                and_(
                     self.model_classes_tww_ag6496.gepknoten.obj_id
                     == self.model_classes_tww_ag6496.gephaltung.startknoten,
                     self.model_classes_tww_ag6496.gepknoten.obj_id
@@ -829,10 +829,17 @@ class InterlisExporterToIntermediateSchema:
             query = query.join(
                 self.model_classes_tww_ag6496.gepknoten,
                 or_(
-                    self.model_classes_tww_ag6496.gepknoten.obj_id
-                    == self.model_classes_tww_ag6496.ueberlauf_foerderaggregat.knotenref,
-                    self.model_classes_tww_ag6496.gepknoten.obj_id
-                    == self.model_classes_tww_ag6496.ueberlauf_foerderaggregat.knoten_nachref
+                    and_(
+                        self.model_classes_tww_ag6496.gepknoten.obj_id
+                        == self.model_classes_tww_ag6496.ueberlauf_foerderaggregat.knotenref,
+                        self.model_classes_tww_ag6496.ueberlauf_foerderaggregat.knoten_nachref.is_(None)
+                    ),
+                    and_(
+                        self.model_classes_tww_ag6496.gepknoten.obj_id
+                        == self.model_classes_tww_ag6496.ueberlauf_foerderaggregat.knotenref,
+                        self.model_classes_tww_ag6496.gepknoten.obj_id
+                        == self.model_classes_tww_ag6496.ueberlauf_foerderaggregat.knoten_nachref
+                    ),
                 ),
             ).filter(
                 self.model_classes_tww_ag6496.gepknoten.obj_id.in_(self.subset_ids)
@@ -854,10 +861,17 @@ class InterlisExporterToIntermediateSchema:
             query = query.join(
                 self.model_classes_tww_ag6496.gepknoten,
                 or_(
-                    self.model_classes_tww_ag6496.gepknoten.obj_id
-                    == self.model_classes_tww_ag6496.ueberlauf_foerderaggregat.knotenref,
-                    self.model_classes_tww_ag6496.gepknoten.obj_id
-                    == self.model_classes_tww_ag6496.ueberlauf_foerderaggregat.knoten_nachref
+                    and_(
+                        self.model_classes_tww_ag6496.gepknoten.obj_id
+                        == self.model_classes_tww_ag6496.ueberlauf_foerderaggregat.knotenref,
+                        self.model_classes_tww_ag6496.ueberlauf_foerderaggregat.knoten_nachref.is_(None)
+                    ),
+                    and_(
+                        self.model_classes_tww_ag6496.gepknoten.obj_id
+                        == self.model_classes_tww_ag6496.ueberlauf_foerderaggregat.knotenref,
+                        self.model_classes_tww_ag6496.gepknoten.obj_id
+                        == self.model_classes_tww_ag6496.ueberlauf_foerderaggregat.knoten_nachref
+                    ),
                 ),
             ).filter(
                 self.model_classes_tww_ag6496.gepknoten.obj_id.in_(self.subset_ids)
