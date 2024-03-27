@@ -618,8 +618,19 @@ class InterlisExporterToIntermediateSchema:
     def _export_gepknoten(self):
         query = self.tww_session.query(self.model_classes_tww_ag6496.gepknoten)
         if self.filtered:
-            query = query.filter(
-                self.model_classes_tww_ag6496.gepknoten.obj_id.in_(self.subset_ids)
+            query = query.join(
+                self.model_classes_tww_ag6496.gephaltung,
+                or_(
+                    self.model_classes_tww_ag6496.gepknoten.obj_id
+                    == self.model_classes_tww_ag6496.gephaltung.startknoten,
+                    self.model_classes_tww_ag6496.gepknoten.obj_id
+                    == self.model_classes_tww_ag6496.gephaltung.endknoten,
+                ),
+            ).filter(
+                or_(
+                    self.model_classes_tww_ag6496.gephaltung.obj_id.in_(self.subset_ids),
+                    self.model_classes_tww_ag6496.gepknoten.obj_id.in_(self.subset_ids),
+                )
             )
         
         """
@@ -647,8 +658,19 @@ class InterlisExporterToIntermediateSchema:
     def _export_infrastrukturknoten(self):
         query = self.tww_session.query(self.model_classes_tww_ag6496.gepknoten)
         if self.filtered:
-            query = query.filter(
-                self.model_classes_tww_ag6496.gepknoten.obj_id.in_(self.subset_ids)
+            query = query.join(
+                self.model_classes_tww_ag6496.gephaltung,
+                or_(
+                    self.model_classes_tww_ag6496.gepknoten.obj_id
+                    == self.model_classes_tww_ag6496.gephaltung.startknoten,
+                    self.model_classes_tww_ag6496.gepknoten.obj_id
+                    == self.model_classes_tww_ag6496.gephaltung.endknoten,
+                ),
+            ).filter(
+                or_(
+                    self.model_classes_tww_ag6496.gephaltung.obj_id.in_(self.subset_ids),
+                    self.model_classes_tww_ag6496.gepknoten.obj_id.in_(self.subset_ids),
+                )
             )
 
         """
@@ -675,19 +697,8 @@ class InterlisExporterToIntermediateSchema:
     def _export_gephaltung(self):
         query = self.tww_session.query(self.model_classes_tww_ag6496.gephaltung)
         if self.filtered:
-            query = query.join(
-                self.model_classes_tww_ag6496.gepknoten,
-                and_(
-                    self.model_classes_tww_ag6496.gepknoten.obj_id
-                    == self.model_classes_tww_ag6496.gephaltung.startknoten,
-                    self.model_classes_tww_ag6496.gepknoten.obj_id
-                    == self.model_classes_tww_ag6496.gephaltung.endknoten,
-                ),
-            ).filter(
-                or_(
-                    self.model_classes_tww_ag6496.gephaltung.obj_id.in_(self.subset_ids),
-                    self.model_classes_tww_ag6496.gepknoten.obj_id.in_(self.subset_ids),
-                )
+            query = query.filter(
+                self.model_classes_tww_ag6496.gephaltung.obj_id.in_(self.subset_ids)
             )
 
         for row in query:
@@ -709,19 +720,8 @@ class InterlisExporterToIntermediateSchema:
     def _export_infrastrukturhaltung(self):
         query = self.tww_session.query(self.model_classes_tww_ag6496.gephaltung)
         if self.filtered:
-            query = query.join(
-                self.model_classes_tww_ag6496.gepknoten,
-                and_(
-                    self.model_classes_tww_ag6496.gepknoten.obj_id
-                    == self.model_classes_tww_ag6496.gephaltung.startknoten,
-                    self.model_classes_tww_ag6496.gepknoten.obj_id
-                    == self.model_classes_tww_ag6496.gephaltung.endknoten,
-                ),
-            ).filter(
-                or_(
-                    self.model_classes_tww_ag6496.gephaltung.obj_id.in_(self.subset_ids),
-                    self.model_classes_tww_ag6496.gepknoten.obj_id.in_(self.subset_ids),
-                )
+            query = query.filter(
+                self.model_classes_tww_ag6496.gephaltung.obj_id.in_(self.subset_ids)
             )
 
         for row in query:
@@ -2880,7 +2880,7 @@ class InterlisExporterToIntermediateSchema:
         if val is None:
             return None
         if len(val) > max_length:
-            logger.warning(f"Value '{val}' exceeds expected length ({max_length})", stacklevel=2)
+            logger.warning(f"Value '{val}' exceeds expected length ({max_length})")
         return val[0:max_length]
 
     def _modulo_angle(self, val):
