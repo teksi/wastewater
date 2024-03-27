@@ -616,31 +616,7 @@ class InterlisExporterToIntermediateSchema:
         self.abwasser_session.flush()
 
     def _export_gepknoten(self):
-        query = self.tww_session.query(self.model_classes_tww_ag6496.gepknoten)
-        if self.filtered:
-            query = query.join(
-                self.model_classes_tww_ag6496.gephaltung,
-                or_(
-                    self.model_classes_tww_ag6496.gepknoten.obj_id
-                    == self.model_classes_tww_ag6496.gephaltung.startknoten,
-                    self.model_classes_tww_ag6496.gepknoten.obj_id
-                    == self.model_classes_tww_ag6496.gephaltung.endknoten,
-                ),
-            ).filter(
-                or_(
-                    self.model_classes_tww_ag6496.gephaltung.obj_id.in_(self.subset_ids),
-                    self.model_classes_tww_ag6496.gepknoten.obj_id.in_(self.subset_ids),
-                )
-            )
-        
-        """
-        GEPKnoten werden nach Fläche sortiert hinzugefügt, damit bei der Triggerlogik
-        hinter {ext_schema}.gepknoten die Verknüpfung zu anderen Abwasserbauwerken 
-        basierend auf einem Spatial Join implementiert werden kann.
-        Dies ist relevant, da Zweitknoten der FunktionAG "andere", die innerhalb der Detailgeometrie
-        eines anderen Abwasserbauwerks liegen, als Deckel importiert werden.
-        """
-        query.order_by(nullslast(self.model_classes_tww_ag6496.gepknoten.detailgeometrie.ST_Area().asc()))
+        query = self.knoten_query_ag_xx()
         for row in query:
             gepknoten = self.model_classes_interlis.abwasserbauwerk( #abwasserbauwerk wegen Kompatibiltät bei Label-Export
                 **self.gep_metainformation_common_ag_xx(row,'gepknoten'),
@@ -656,31 +632,7 @@ class InterlisExporterToIntermediateSchema:
         self.abwasser_session.flush()
 
     def _export_infrastrukturknoten(self):
-        query = self.tww_session.query(self.model_classes_tww_ag6496.gepknoten)
-        if self.filtered:
-            query = query.join(
-                self.model_classes_tww_ag6496.gephaltung,
-                or_(
-                    self.model_classes_tww_ag6496.gepknoten.obj_id
-                    == self.model_classes_tww_ag6496.gephaltung.startknoten,
-                    self.model_classes_tww_ag6496.gepknoten.obj_id
-                    == self.model_classes_tww_ag6496.gephaltung.endknoten,
-                ),
-            ).filter(
-                or_(
-                    self.model_classes_tww_ag6496.gephaltung.obj_id.in_(self.subset_ids),
-                    self.model_classes_tww_ag6496.gepknoten.obj_id.in_(self.subset_ids),
-                )
-            )
-
-        """
-        GEPKnoten werden nach Fläche sortiert hinzugefügt, damit bei der Triggerlogik
-        hinter {ext_schema}.gepknoten die Verknüpfung zu anderen Abwasserbauwerken 
-        basierend auf einem Spatial Join implementiert werden kann.
-        Dies ist relevant, da Zweitknoten der FunktionAG "andere", die innerhalb der Detailgeometrie
-        eines anderen Abwasserbauwerks liegen, als Deckel importiert werden.
-        """
-        query.order_by(nullslast(self.model_classes_tww_ag6496.gepknoten.detailgeometrie.ST_Area().asc()))
+        query = self.knoten_query_ag_xx()
         for row in query:
             gepknoten = self.model_classes_interlis.abwasserbauwerk( #abwasserbauwerk wegen Kompatibiltät bei Label-Export
                 **self.knoten_common_ag_xx(row),
@@ -695,12 +647,7 @@ class InterlisExporterToIntermediateSchema:
         self.abwasser_session.flush()
 
     def _export_gephaltung(self):
-        query = self.tww_session.query(self.model_classes_tww_ag6496.gephaltung)
-        if self.filtered:
-            query = query.filter(
-                self.model_classes_tww_ag6496.gephaltung.obj_id.in_(self.subset_ids)
-            )
-
+        query = self.haltung_query_ag_xx()
         for row in query:
             gephaltung = self.model_classes_interlis.haltung(
                 **self.gep_metainformation_common_ag_xx(row,'gephaltung'),
@@ -718,12 +665,7 @@ class InterlisExporterToIntermediateSchema:
         self.abwasser_session.flush()
 
     def _export_infrastrukturhaltung(self):
-        query = self.tww_session.query(self.model_classes_tww_ag6496.gephaltung)
-        if self.filtered:
-            query = query.filter(
-                self.model_classes_tww_ag6496.gephaltung.obj_id.in_(self.subset_ids)
-            )
-
+        query = self.haltung_query_ag_xx()
         for row in query:
             gephaltung = self.model_classes_interlis.haltung(
                 **self.haltung_common_ag_xx(row),
@@ -824,20 +766,7 @@ class InterlisExporterToIntermediateSchema:
         self.abwasser_session.flush()
 
     def _export_ueberlauf_foerderaggregat_ag96(self):
-        query = self.tww_session.query(self.model_classes_tww_ag6496.ueberlauf_foerderaggregat)
-        if self.filtered:
-            query = query.join(
-                self.model_classes_tww_ag6496.gepknoten,
-                or_(
-                    self.model_classes_tww_ag6496.gepknoten.obj_id
-                    == self.model_classes_tww_ag6496.ueberlauf_foerderaggregat.knotenref,
-                    self.model_classes_tww_ag6496.gepknoten.obj_id
-                    == self.model_classes_tww_ag6496.ueberlauf_foerderaggregat.knoten_nachref
-                ),
-            ).filter(
-                self.model_classes_tww_ag6496.gepknoten.obj_id.in_(self.subset_ids)
-            )
-
+        query = self.ueberlauf_foerderaggregat_query_ag_xx()
         for row in query:
             ueberlauf_foerderaggregat = self.model_classes_interlis.ueberlauf_foerderaggregat(
                 **self.gep_metainformation_common_ag_xx(row,'ueberlauf_foerderaggregat'),
@@ -849,20 +778,7 @@ class InterlisExporterToIntermediateSchema:
         self.abwasser_session.flush()
 
     def _export_ueberlauf_foerderaggregat_ag64(self):
-        query = self.tww_session.query(self.model_classes_tww_ag6496.ueberlauf_foerderaggregat)
-        if self.filtered:
-            query = query.join(
-                self.model_classes_tww_ag6496.gepknoten,
-                or_(
-                    self.model_classes_tww_ag6496.gepknoten.obj_id
-                    == self.model_classes_tww_ag6496.ueberlauf_foerderaggregat.knotenref,
-                    self.model_classes_tww_ag6496.gepknoten.obj_id
-                    == self.model_classes_tww_ag6496.ueberlauf_foerderaggregat.knoten_nachref
-                ),
-            ).filter(
-                self.model_classes_tww_ag6496.gepknoten.obj_id.in_(self.subset_ids)
-            )
-
+        query = self.ueberlauf_foerderaggregat_query_ag_xx()
         for row in query:
             ueberlauf_foerderaggregat = self.model_classes_interlis.ueberlauf_foerderaggregat(
                 **self.ueberlauf_foerderaggregat_common_ag_xx(row),
@@ -3123,6 +3039,37 @@ class InterlisExporterToIntermediateSchema:
             "letzte_aenderung_gep": row.letzte_aenderung_gep,
         }
     
+    def knoten_query_ag_xx(self):
+        """
+        Returns a query for knoten
+        """
+        query = self.tww_session.query(self.model_classes_tww_ag6496.gepknoten)
+        if self.filtered:
+            query = query.join(
+                self.model_classes_tww_ag6496.gephaltung,
+                or_(
+                    self.model_classes_tww_ag6496.gepknoten.obj_id
+                    == self.model_classes_tww_ag6496.gephaltung.startknoten,
+                    self.model_classes_tww_ag6496.gepknoten.obj_id
+                    == self.model_classes_tww_ag6496.gephaltung.endknoten,
+                ),
+            ).filter(
+                or_(
+                    self.model_classes_tww_ag6496.gephaltung.obj_id.in_(self.subset_ids),
+                    self.model_classes_tww_ag6496.gepknoten.obj_id.in_(self.subset_ids),
+                )
+            )
+        
+        """
+        GEPKnoten werden nach Fläche sortiert hinzugefügt, damit bei der Triggerlogik
+        hinter {ext_schema}.gepknoten die Verknüpfung zu anderen Abwasserbauwerken 
+        basierend auf einem Spatial Join implementiert werden kann.
+        Dies ist relevant, da Zweitknoten der FunktionAG "andere", die innerhalb der Detailgeometrie
+        eines anderen Abwasserbauwerks liegen, als Deckel importiert werden.
+        """
+        query.order_by(nullslast(self.model_classes_tww_ag6496.gepknoten.detailgeometrie.ST_Area().asc()))
+        return query
+    
     def knoten_common_ag_xx(self, row):
         """
         Returns common attributes for wastewater_structure
@@ -3150,6 +3097,18 @@ class InterlisExporterToIntermediateSchema:
             "datenbewirtschafter_wi": self.get_tid_by_obj_id(row.datenbewirtschafter_wi),
             "eigentuemer": self.get_tid_by_obj_id(row.eigentuemer),
         }
+    
+    def haltung_query_ag_xx(self):
+        """
+        Returns a query for ueberlauf_foerderaggregat
+        """
+        query = self.tww_session.query(self.model_classes_tww_ag6496.gephaltung)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_ag6496.gephaltung.obj_id.in_(self.subset_ids)
+            )
+
+        return query
 
     def haltung_common_ag_xx(self, row):
         """
@@ -3189,6 +3148,26 @@ class InterlisExporterToIntermediateSchema:
             "wbw_basisjahr": row.wbw_basisjahr,
             "wiederbeschaffungswert": row.wiederbeschaffungswert,
         }
+    
+    def ueberlauf_foerderaggregat_query_ag_xx(self):
+        """
+        Returns a query for ueberlauf_foerderaggregat
+        """
+        query = self.tww_session.query(self.model_classes_tww_ag6496.ueberlauf_foerderaggregat)
+        if self.filtered:
+            query = query.join(
+                self.model_classes_tww_ag6496.gepknoten,
+                or_(
+                    self.model_classes_tww_ag6496.gepknoten.obj_id
+                    == self.model_classes_tww_ag6496.ueberlauf_foerderaggregat.knotenref,
+                    self.model_classes_tww_ag6496.gepknoten.obj_id
+                    == self.model_classes_tww_ag6496.ueberlauf_foerderaggregat.knoten_nachref
+                ),
+            ).filter(
+                self.model_classes_tww_ag6496.gepknoten.obj_id.in_(self.subset_ids)
+            )
+
+        return query
 
     def ueberlauf_foerderaggregat_common_ag_xx(self, row):
         """
