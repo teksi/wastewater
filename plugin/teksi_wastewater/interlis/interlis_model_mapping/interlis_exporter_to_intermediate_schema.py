@@ -617,6 +617,10 @@ class InterlisExporterToIntermediateSchema:
 
     def _export_gepknoten(self):
         query = self.tww_session.query(self.model_classes_tww_ag6496.gepknoten)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_ag6496.gepknoten.obj_id.in_(self.subset_ids)
+            )
         
         """
         GEPKnoten werden nach Fläche sortiert hinzugefügt, damit bei der Triggerlogik
@@ -642,6 +646,10 @@ class InterlisExporterToIntermediateSchema:
 
     def _export_infrastrukturknoten(self):
         query = self.tww_session.query(self.model_classes_tww_ag6496.gepknoten)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_ag6496.gepknoten.obj_id.in_(self.subset_ids)
+            )
 
         """
         GEPKnoten werden nach Fläche sortiert hinzugefügt, damit bei der Triggerlogik
@@ -666,6 +674,22 @@ class InterlisExporterToIntermediateSchema:
 
     def _export_gephaltung(self):
         query = self.tww_session.query(self.model_classes_tww_ag6496.gephaltung)
+        if self.filtered:
+            query = query.join(
+                self.model_classes_tww_ag6496.gepknoten,
+                or_(
+                    self.model_classes_tww_ag6496.gepknoten.obj_id
+                    == self.model_classes_tww_ag6496.gephaltung.startknoten,
+                    self.model_classes_tww_ag6496.gepknoten.obj_id
+                    == self.model_classes_tww_ag6496.gephaltung.endknoten,
+                ),
+            ).filter(
+                or_(
+                    self.model_classes_tww_ag6496.gephaltung.obj_id.in_(self.subset_ids),
+                    self.model_classes_tww_ag6496.gepknoten.obj_id.in_(self.subset_ids),
+                )
+            )
+
         for row in query:
             gephaltung = self.model_classes_interlis.haltung(
                 **self.gep_metainformation_common_ag_xx(row,'gephaltung'),
@@ -684,6 +708,22 @@ class InterlisExporterToIntermediateSchema:
 
     def _export_infrastrukturhaltung(self):
         query = self.tww_session.query(self.model_classes_tww_ag6496.gephaltung)
+        if self.filtered:
+            query = query.join(
+                self.model_classes_tww_ag6496.gepknoten,
+                or_(
+                    self.model_classes_tww_ag6496.gepknoten.obj_id
+                    == self.model_classes_tww_ag6496.gephaltung.startknoten,
+                    self.model_classes_tww_ag6496.gepknoten.obj_id
+                    == self.model_classes_tww_ag6496.gephaltung.endknoten,
+                ),
+            ).filter(
+                or_(
+                    self.model_classes_tww_ag6496.gephaltung.obj_id.in_(self.subset_ids),
+                    self.model_classes_tww_ag6496.gepknoten.obj_id.in_(self.subset_ids),
+                )
+            )
+
         for row in query:
             gephaltung = self.model_classes_interlis.haltung(
                 **self.haltung_common_ag_xx(row),
@@ -699,6 +739,23 @@ class InterlisExporterToIntermediateSchema:
 
     def _export_einzugsgebiet(self):
         query = self.tww_session.query(self.model_classes_tww_ag6496.einzugsgebiet)
+        if self.filtered:
+            query = query.join(
+                self.model_classes_tww_ag6496.gepknoten,
+                or_(
+                    self.model_classes_tww_ag6496.gepknoten.obj_id
+                    == self.model_classes_tww_ag6496.einzugsgebiet.gepknoten_rw_geplantref,
+                    self.model_classes_tww_ag6496.gepknoten.obj_id
+                    == self.model_classes_tww_ag6496.einzugsgebiet.gepknoten_rw_istref,
+                    self.model_classes_tww_ag6496.gepknoten.obj_id
+                    == self.model_classes_tww_ag6496.einzugsgebiet.gepknoten_sw_geplantref,
+                    self.model_classes_tww_ag6496.gepknoten.obj_id
+                    == self.model_classes_tww_ag6496.einzugsgebiet.gepknoten_sw_istref,
+                ),
+            ).filter(
+                self.model_classes_tww_ag6496.gepknoten.obj_id.in_(self.subset_ids)
+            )
+
         for row in query:
             einzugsgebiet = self.model_classes_interlis.einzugsgebiet(
                 **self.gep_metainformation_common_ag_xx(row,'einzugsgebiet'),
@@ -768,6 +825,19 @@ class InterlisExporterToIntermediateSchema:
 
     def _export_ueberlauf_foerderaggregat_ag96(self):
         query = self.tww_session.query(self.model_classes_tww_ag6496.ueberlauf_foerderaggregat)
+        if self.filtered:
+            query = query.join(
+                self.model_classes_tww_ag6496.gepknoten,
+                or_(
+                    self.model_classes_tww_ag6496.gepknoten.obj_id
+                    == self.model_classes_tww_ag6496.ueberlauf_foerderaggregat.knotenref,
+                    self.model_classes_tww_ag6496.gepknoten.obj_id
+                    == self.model_classes_tww_ag6496.ueberlauf_foerderaggregat.knoten_nachref
+                ),
+            ).filter(
+                self.model_classes_tww_ag6496.gepknoten.obj_id.in_(self.subset_ids)
+            )
+
         for row in query:
             ueberlauf_foerderaggregat = self.model_classes_interlis.ueberlauf_foerderaggregat(
                 **self.gep_metainformation_common_ag_xx(row,'ueberlauf_foerderaggregat'),
@@ -780,6 +850,19 @@ class InterlisExporterToIntermediateSchema:
 
     def _export_ueberlauf_foerderaggregat_ag64(self):
         query = self.tww_session.query(self.model_classes_tww_ag6496.ueberlauf_foerderaggregat)
+        if self.filtered:
+            query = query.join(
+                self.model_classes_tww_ag6496.gepknoten,
+                or_(
+                    self.model_classes_tww_ag6496.gepknoten.obj_id
+                    == self.model_classes_tww_ag6496.ueberlauf_foerderaggregat.knotenref,
+                    self.model_classes_tww_ag6496.gepknoten.obj_id
+                    == self.model_classes_tww_ag6496.ueberlauf_foerderaggregat.knoten_nachref
+                ),
+            ).filter(
+                self.model_classes_tww_ag6496.gepknoten.obj_id.in_(self.subset_ids)
+            )
+
         for row in query:
             ueberlauf_foerderaggregat = self.model_classes_interlis.ueberlauf_foerderaggregat(
                 **self.ueberlauf_foerderaggregat_common_ag_xx(row),
