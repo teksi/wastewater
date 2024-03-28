@@ -724,7 +724,7 @@ class InterlisExporterToIntermediateSchema:
                 perimeter=row.perimeter,
                 perimetertyp=row.perimetertyp,
                 retention_geplant=row.retention_geplant,
-                retention_ist="ja", # Change to row.retention_ist once the test data has been fixed
+                retention_ist=row.retention_ist,
                 schmutzabwasseranfall_geplant=row.schmutzabwasseranfall_geplant,
                 schmutzabwasseranfall_ist=row.schmutzabwasseranfall_ist,
                 versickerung_geplant=row.versickerung_geplant,
