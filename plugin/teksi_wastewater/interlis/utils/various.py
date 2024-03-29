@@ -23,7 +23,7 @@ class DeduplicatedLogger(logging.Logger):
         self._last_message = None
         self._repeated = 0
 
-    def _log(self, level, msg, args, exc_info=None, extra=None):
+    def _log(self, level, msg, args, exc_info=None, extra=None, stacklevel=1):
         this_message = (level, msg)
         if self._last_message is None or self._last_message != this_message:
             if self._repeated > 0:
@@ -33,6 +33,7 @@ class DeduplicatedLogger(logging.Logger):
                     args,
                     exc_info,
                     extra,
+                    stacklevel,
                 )
 
             super()._log(level, msg, args, exc_info, extra)
