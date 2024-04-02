@@ -1,10 +1,12 @@
 # requires buildkit (default from docker engine 23.0)
 
+ARG POSTGIS_IMAGE=postgis/postgis:14-3.4
+
 # arm builds are not available with 3.2
 #FROM imresamu/postgis-arm64:14-3.2 AS base-arm64
-FROM postgis/postgis:14-3.2 AS base-arm64
+FROM "${POSTGIS_IMAGE}" AS base-arm64
 
-FROM postgis/postgis:14-3.2 AS base-amd64
+FROM "${POSTGIS_IMAGE}" AS base-amd64
 
 FROM base-$BUILDARCH as common
 
