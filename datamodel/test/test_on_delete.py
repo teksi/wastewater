@@ -2,8 +2,8 @@ import decimal
 import os
 import unittest
 
-import psycopg3
-import psycopg3.extras
+import psycopg
+import psycopg.extras
 
 from .utils import DEFAULT_PG_SERVICE, DbTestBase
 
@@ -16,7 +16,7 @@ class TestOnDelete(unittest.TestCase, DbTestBase):
     @classmethod
     def setUpClass(cls):
         pgservice = os.environ.get("PGSERVICE") or DEFAULT_PG_SERVICE
-        cls.conn = psycopg3.connect(f"service={pgservice}")
+        cls.conn = psycopg.connect(f"service={pgservice}")
 
     def test_delete_wastewater_structure(self):
         # Create a new cover(structure part) with manhole(wastewater structure)

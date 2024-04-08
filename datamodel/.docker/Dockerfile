@@ -41,7 +41,7 @@ RUN if [ "${AUTO_INIT}" = "True" ]; then ln -s /src/datamodel/.docker/init_db.sh
 
 # Some defaults
 ENV POSTGRES_PASSWORD=postgres
-# otherwise psycopg3 cannot connect
+# otherwise psycopg cannot connect
 ENV PGSERVICEFILE=/etc/postgresql-common/pg_service.conf
 
 ENV PGSERVICE=pg_tww

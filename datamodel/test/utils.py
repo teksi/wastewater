@@ -1,5 +1,5 @@
-import psycopg3
-import psycopg3.extras
+import psycopg
+import psycopg.extras
 
 DEFAULT_PG_SERVICE = "pg_tww"
 
@@ -7,7 +7,7 @@ DEFAULT_PG_SERVICE = "pg_tww"
 class DbTestBase:
     @classmethod
     def assert_count(cls, table, schema, expected):
-        cur = cls.conn.cursor(cursor_factory=psycopg3.extras.DictCursor)
+        cur = cls.conn.cursor(cursor_factory=psycopg.extras.DictCursor)
         cur.execute(f"SELECT COUNT(*) FROM {schema}.{table}")
         count = cur.fetchone()[0]
         assert (
@@ -24,26 +24,26 @@ class DbTestBase:
 
     @classmethod
     def select(cls, table, obj_id, schema="tww_app"):
-        cur = cls.conn.cursor(cursor_factory=psycopg3.extras.DictCursor)
+        cur = cls.conn.cursor(cursor_factory=psycopg.extras.DictCursor)
         cur.execute(f"SELECT * FROM {schema}.{table} WHERE obj_id=%(obj_id)s", {"obj_id": obj_id})
         return cur.fetchone()
 
     @classmethod
     def execute(cls, sql: str, params=[]):
-        cur = cls.conn.cursor(cursor_factory=psycopg3.extras.DictCursor)
+        cur = cls.conn.cursor(cursor_factory=psycopg.extras.DictCursor)
         if not sql.startswith("SELECT"):
             sql = f"SELECT {sql}"
         cur.execute(sql, params)
         return cur.fetchone()[0]
 
     def check_empty(self, sql: str):
-        cur = self.conn.cursor(cursor_factory=psycopg3.extras.DictCursor)
+        cur = self.conn.cursor(cursor_factory=psycopg.extras.DictCursor)
         cur.execute(sql)
         self.assertIsNone(cur.fetchone())
 
     @classmethod
     def cursor(cls):
-        return cls.conn.cursor(cursor_factory=psycopg3.extras.DictCursor)
+        return cls.conn.cursor(cursor_factory=psycopg.extras.DictCursor)
 
     @classmethod
     def insert(cls, table, row, schema="tww_app"):

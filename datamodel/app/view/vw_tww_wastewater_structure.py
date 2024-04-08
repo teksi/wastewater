@@ -5,7 +5,7 @@
 import argparse
 import os
 
-import psycopg3
+import psycopg
 from pirogue.utils import insert_command, select_columns, table_parts, update_command
 from yaml import safe_load
 
@@ -24,7 +24,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
 
     variables = {"SRID": int(srid)}
 
-    conn = psycopg3.connect(f"service={pg_service}")
+    conn = psycopg.connect(f"service={pg_service}")
     cursor = conn.cursor()
 
     view_sql = """

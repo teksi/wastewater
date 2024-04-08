@@ -14,7 +14,7 @@ RUN printf '[pg_tww]\ndbname=tww\nuser=postgres\n' >> /etc/postgresql-common/pg_
 
 # Some defaults
 ENV POSTGRES_PASSWORD=postgres
-# otherwise psycopg3 cannot connect
+# otherwise psycopg cannot connect
 ENV PGSERVICEFILE=/etc/postgresql-common/pg_service.conf
 
 ENV PGSERVICE=pg_tww
