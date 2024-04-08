@@ -620,9 +620,15 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
     """
     cursor.execute(trigger_delete_sql, variables)
 
-    cursor.execute("ALTER VIEW tww_app.vw_tww_wastewater_structure ALTER obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_structure');")
-    cursor.execute("ALTER VIEW tww_app.vw_tww_wastewater_structure ALTER co_obj_id SET DEFAULT tww_sys.generate_oid('tww_od','cover');")
-    cursor.execute("ALTER VIEW tww_app.vw_tww_wastewater_structure ALTER wn_obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_node');")
+    cursor.execute(
+        "ALTER VIEW tww_app.vw_tww_wastewater_structure ALTER obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_structure');"
+    )
+    cursor.execute(
+        "ALTER VIEW tww_app.vw_tww_wastewater_structure ALTER co_obj_id SET DEFAULT tww_sys.generate_oid('tww_od','cover');"
+    )
+    cursor.execute(
+        "ALTER VIEW tww_app.vw_tww_wastewater_structure ALTER wn_obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_node');"
+    )
 
     conn.commit()
     conn.close()
