@@ -236,8 +236,8 @@ def get_pgconf():
     return collections.defaultdict(str, pgconf)
 
 
-def get_pgconf_as_psycopg2_dsn() -> List[str]:
-    """Returns the pgconf as a psycopg2 connection string"""
+def get_pgconf_as_psycopg3_dsn() -> List[str]:
+    """Returns the pgconf as a psycopg3 connection string"""
 
     pgconf = get_pgconf()
     parts = []

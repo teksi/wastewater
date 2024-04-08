@@ -2,8 +2,8 @@ import copy
 import os
 import unittest
 
-import psycopg2
-import psycopg2.extras
+import psycopg3
+import psycopg3.extras
 
 from .utils import DEFAULT_PG_SERVICE, DbTestBase
 
@@ -19,7 +19,7 @@ class TestGeometry(unittest.TestCase, DbTestBase):
     @classmethod
     def setUpClass(cls):
         pgservice = os.environ.get("PGSERVICE") or DEFAULT_PG_SERVICE
-        cls.conn = psycopg2.connect(f"service={pgservice}")
+        cls.conn = psycopg3.connect(f"service={pgservice}")
 
     def test_vw_tww_reach_geometry_insert(self):
         # 1. insert geometry with Z and no rp_from_level and no rp_to_level

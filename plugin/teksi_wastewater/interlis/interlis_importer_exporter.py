@@ -2,7 +2,7 @@ import logging
 import os
 import tempfile
 
-import psycopg2
+import psycopg3
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication
 
@@ -26,7 +26,7 @@ from .utils.ili2db import InterlisTools
 from .utils.various import (
     CmdException,
     LoggingHandlerContext,
-    get_pgconf_as_psycopg2_dsn,
+    get_pgconf_as_psycopg3_dsn,
     logger,
     make_log_path,
 )
@@ -233,7 +233,7 @@ class InterlisImporterExporter:
         return interlisImporterToIntermediateSchema.session_tww
 
     def _import_update_main_cover_and_refresh_mat_views(self):
-        connection = psycopg2.connect(get_pgconf_as_psycopg2_dsn())
+        connection = psycopg3.connect(get_pgconf_as_psycopg3_dsn())
         connection.set_session(autocommit=True)
         cursor = connection.cursor()
 
@@ -386,7 +386,7 @@ class InterlisImporterExporter:
     def _clear_ili_schema(self, recreate_schema=False):
         logger.info("CONNECTING TO DATABASE...")
 
-        connection = psycopg2.connect(get_pgconf_as_psycopg2_dsn())
+        connection = psycopg3.connect(get_pgconf_as_psycopg3_dsn())
         connection.set_session(autocommit=True)
         cursor = connection.cursor()
 
