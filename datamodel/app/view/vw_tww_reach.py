@@ -24,9 +24,9 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
     conn = psycopg.connect(f"service={pg_service}")
     cursor = conn.cursor()
 
-    view_sql = """
-    DROP VIEW IF EXISTS tww_app.vw_tww_reach;
+    cursor.execute("DROP VIEW IF EXISTS tww_app.vw_tww_reach;")
 
+    view_sql = """
     CREATE OR REPLACE VIEW tww_app.vw_tww_reach AS
 
     SELECT
@@ -389,14 +389,11 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
     """
     cursor.execute(trigger_delete_sql)
 
-    extras = """
-    ALTER VIEW tww_app.vw_tww_reach ALTER obj_id SET DEFAULT tww_sys.generate_oid('tww_od','reach');
+    cursor.execute("ALTER VIEW tww_app.vw_tww_reach ALTER obj_id SET DEFAULT tww_sys.generate_oid('tww_od','reach');")
 
-    ALTER VIEW tww_app.vw_tww_reach ALTER rp_from_obj_id SET DEFAULT tww_sys.generate_oid('tww_od','reach_point');
-    ALTER VIEW tww_app.vw_tww_reach ALTER rp_to_obj_id SET DEFAULT tww_sys.generate_oid('tww_od','reach_point');
-    ALTER VIEW tww_app.vw_tww_reach ALTER ws_obj_id SET DEFAULT tww_sys.generate_oid('tww_od','channel');
-    """
-    cursor.execute(extras)
+    cursor.execute("ALTER VIEW tww_app.vw_tww_reach ALTER rp_from_obj_id SET DEFAULT tww_sys.generate_oid('tww_od','reach_point');")
+    cursor.execute("ALTER VIEW tww_app.vw_tww_reach ALTER rp_to_obj_id SET DEFAULT tww_sys.generate_oid('tww_od','reach_point');")
+    cursor.execute("ALTER VIEW tww_app.vw_tww_reach ALTER ws_obj_id SET DEFAULT tww_sys.generate_oid('tww_od','channel');")
 
     conn.commit()
     conn.close()

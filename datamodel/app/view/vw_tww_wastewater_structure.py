@@ -27,9 +27,9 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
     conn = psycopg.connect(f"service={pg_service}")
     cursor = conn.cursor()
 
-    view_sql = """
-    DROP VIEW IF EXISTS tww_app.vw_tww_wastewater_structure;
+    cursor.execute("DROP VIEW IF EXISTS tww_app.vw_tww_wastewater_structure;")
 
+    view_sql = """
     CREATE OR REPLACE VIEW tww_app.vw_tww_wastewater_structure AS
      SELECT
         ws.identifier as identifier,
@@ -89,10 +89,6 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
         LEFT JOIN tww_od.channel ch ON ch.obj_id = ws.obj_id
         {extra_joins}
         WHERE ch.obj_id IS NULL;
-
-        ALTER VIEW tww_app.vw_tww_wastewater_structure ALTER obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_structure');
-        ALTER VIEW tww_app.vw_tww_wastewater_structure ALTER co_obj_id SET DEFAULT tww_sys.generate_oid('tww_od','cover');
-        ALTER VIEW tww_app.vw_tww_wastewater_structure ALTER wn_obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_node');
     """.format(
         extra_cols="\n    ".join(
             [
@@ -624,12 +620,9 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
     """
     cursor.execute(trigger_delete_sql, variables)
 
-    extras = """
-    ALTER VIEW tww_app.vw_tww_wastewater_structure ALTER obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_structure');
-    ALTER VIEW tww_app.vw_tww_wastewater_structure ALTER co_obj_id SET DEFAULT tww_sys.generate_oid('tww_od','cover');
-    ALTER VIEW tww_app.vw_tww_wastewater_structure ALTER wn_obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_node');
-    """
-    cursor.execute(extras)
+    cursor.execute("ALTER VIEW tww_app.vw_tww_wastewater_structure ALTER obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_structure');")
+    cursor.execute("ALTER VIEW tww_app.vw_tww_wastewater_structure ALTER co_obj_id SET DEFAULT tww_sys.generate_oid('tww_od','cover');")
+    cursor.execute("ALTER VIEW tww_app.vw_tww_wastewater_structure ALTER wn_obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_node');")
 
     conn.commit()
     conn.close()
