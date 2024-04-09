@@ -6,7 +6,7 @@ SELECT
   '0:15'::varchar as Interval,
   '1.0'::varchar as SCF,
   'TIMESERIES default_tww_raingage_timeserie'::varchar as Source,
-  st_centroid(perimeter_geometry)::geometry(Point, %(SRID)s) as geom,
+  st_centroid(perimeter_geometry)::geometry(Point, {SRID}) as geom,
   state,
   CASE
 		WHEN _function_hierarchic in (5062, 5064, 5066, 5068, 5069, 5070, 5071, 5072, 5074) THEN 'primary'

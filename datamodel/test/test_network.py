@@ -1,8 +1,7 @@
 import os
 import unittest
 
-import psycopg2
-import psycopg2.extras
+import psycopg
 
 from .utils import DEFAULT_PG_SERVICE, DbTestBase
 
@@ -28,7 +27,7 @@ class TestNetwork(unittest.TestCase, DbTestBase):
     @classmethod
     def setUpClass(cls):
         pgservice = os.environ.get("PGSERVICE") or DEFAULT_PG_SERVICE
-        cls.conn = psycopg2.connect(f"service={pgservice}")
+        cls.conn = psycopg.connect(f"service={pgservice}")
 
     def make_reach(self, identifier, x1, y1, x2, y2):
         """
@@ -89,7 +88,7 @@ class TestNetwork(unittest.TestCase, DbTestBase):
         SELECT obj_id, depth
         FROM downstream;
         """
-        cur = self.cursor()
+        cur = self.cursor(row_factory=psycopg.rows.dict_row)
         cur.execute(query, (node_id,))
         return {row["obj_id"]: row["depth"] for row in cur.fetchall()}
 
@@ -116,7 +115,7 @@ class TestNetwork(unittest.TestCase, DbTestBase):
         SELECT obj_id, depth
         FROM upstream
         """
-        cur = self.cursor()
+        cur = self.cursor(row_factory=psycopg.rows.dict_row)
         cur.execute(query, (node_id,))
         return {row["obj_id"]: row["depth"] for row in cur.fetchall()}
 

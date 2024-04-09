@@ -2,7 +2,7 @@
 
 import argparse
 
-import psycopg2
+import psycopg
 from pirogue import MultipleInheritance, SimpleJoins, SingleInheritance
 from vw_tww_reach import vw_tww_reach
 from vw_tww_wastewater_structure import vw_tww_wastewater_structure
@@ -13,9 +13,9 @@ from yaml import safe_load
 
 def run_sql(file_path: str, pg_service: str, variables: dict = {}):
     sql = open(file_path).read()
-    conn = psycopg2.connect(f"service={pg_service}")
+    conn = psycopg.connect(f"service={pg_service}")
     cursor = conn.cursor()
-    cursor.execute(sql, variables)
+    cursor.execute(psycopg.sql.SQL(sql).format(**variables))
     conn.commit()
     conn.close()
 

@@ -3,7 +3,7 @@
 CREATE OR REPLACE VIEW tww_app.import_vw_manhole AS
  SELECT DISTINCT ON (ws.obj_id) ws.obj_id,
     ws.identifier,
-    ST_Force3D(ws.situation3d_geometry)::geometry(POINTZ, %(SRID)s) AS situation_geometry,
+    ST_Force3D(ws.situation3d_geometry)::geometry(POINTZ, {SRID}) AS situation_geometry,
     ws.co_shape,
     ws.co_diameter,
     ws.co_material,
@@ -301,11 +301,11 @@ BEGIN
 
   -- catch
   EXCEPTION WHEN OTHERS THEN
-    RAISE NOTICE 'EXCEPTION: %%%%', SQLERRM;
+    RAISE NOTICE 'EXCEPTION: %%', SQLERRM;
     RETURN NEW;
 END; $BODY$
 LANGUAGE plpgsql;
-$TRIGGER$, %(SRID)s);
+$TRIGGER$, {SRID});
 END
 $DO$;
 
@@ -318,7 +318,7 @@ CREATE TRIGGER after_update_try_structure_update
   WHEN ( ( NEW.structure_okay IS NOT TRUE )
   AND NOT( OLD.inlet_okay IS NOT TRUE AND NEW.inlet_okay IS TRUE )
   AND NOT( OLD.outlet_okay IS NOT TRUE AND NEW.outlet_okay IS TRUE ) )
-  EXECUTE PROCEDURE tww_app.import_manhole_quarantine_try_structure_update(%(SRID)s);
+  EXECUTE PROCEDURE tww_app.import_manhole_quarantine_try_structure_update({SRID});
 
 DROP TRIGGER IF EXISTS after_insert_try_structure_update ON tww_od.import_manhole_quarantine;
 
@@ -326,7 +326,7 @@ CREATE TRIGGER after_insert_try_structure_update
   AFTER INSERT
   ON tww_od.import_manhole_quarantine
   FOR EACH ROW
-  EXECUTE PROCEDURE tww_app.import_manhole_quarantine_try_structure_update(%(SRID)s);
+  EXECUTE PROCEDURE tww_app.import_manhole_quarantine_try_structure_update({SRID});
 
 -- Some information:
 -- 1. new lets 0 - old lets 0 -> do nothing
@@ -370,14 +370,14 @@ BEGIN
   -- handle inlets
   IF ( new_lets > 1 AND old_lets > 0 ) OR old_lets > 1 THEN
     -- request for update because new lets are bigger 1 (and old lets not 0 ) or old lets are bigger 1
-    RAISE NOTICE 'Impossible to assign %%s - manual edit needed.', let_kind;
+    RAISE NOTICE 'Impossible to assign %s - manual edit needed.', let_kind;
   ELSE
     IF new_lets = 0 AND old_lets > 0 THEN
       -- request for delete because no new lets but old lets
-      RAISE NOTICE 'No new %%s but old ones - manual delete needed.', let_kind;
+      RAISE NOTICE 'No new %s but old ones - manual delete needed.', let_kind;
     ELSIF new_lets > 0 AND old_lets = 0 THEN
       -- request for create because no old lets but new lets
-      RAISE NOTICE 'No old %%s but new ones - manual create needed.', let_kind;
+      RAISE NOTICE 'No old %s but new ones - manual create needed.', let_kind;
     ELSE
       IF new_lets = 1 AND old_lets = 1 THEN
         IF let_kind='inlet' THEN
@@ -424,10 +424,10 @@ BEGIN
             WHERE ws.obj_id = NEW.obj_id );
         END IF;
 
-        RAISE NOTICE '%%s updated', let_kind;
+        RAISE NOTICE '%s updated', let_kind;
       ELSE
         -- do nothing
-        RAISE NOTICE 'No %%s - nothing to do', let_kind;
+        RAISE NOTICE 'No %s - nothing to do', let_kind;
       END IF;
 
       IF let_kind='inlet' THEN
@@ -448,7 +448,7 @@ BEGIN
 
   -- catch
   EXCEPTION WHEN OTHERS THEN
-    RAISE NOTICE 'EXCEPTION: %%', SQLERRM;
+    RAISE NOTICE 'EXCEPTION: %', SQLERRM;
     RETURN NEW;
 END; $BODY$
 LANGUAGE plpgsql;

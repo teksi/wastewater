@@ -27,7 +27,6 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 RUN pip install -r datamodel/requirements.txt
 RUN if [ "${RUN_TEST}" = "True" ]; then pip install -r datamodel/requirements-test.txt; fi
 
-
 # Configure the postgres connections
 RUN printf '[postgres]\ndbname=postgres\nuser=postgres\n' >> /etc/postgresql-common/pg_service.conf
 RUN printf '[pg_tww]\ndbname=tww\nuser=postgres\n' >> /etc/postgresql-common/pg_service.conf
@@ -41,7 +40,7 @@ RUN if [ "${AUTO_INIT}" = "True" ]; then ln -s /src/datamodel/.docker/init_db.sh
 
 # Some defaults
 ENV POSTGRES_PASSWORD=postgres
-# otherwise psycopg2 cannot connect
+# otherwise psycopg cannot connect
 ENV PGSERVICEFILE=/etc/postgresql-common/pg_service.conf
 
 ENV PGSERVICE=pg_tww
