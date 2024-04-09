@@ -2,7 +2,17 @@ import logging
 import os
 import tempfile
 
-import psycopg
+try:
+    import psycopg
+
+    PSYCOPG_VERSION = 3
+    DEFAULTS_CONN_ARG = {"autocommit": True}
+except ImportError:
+    import psycopg2 as psycopg
+
+    PSYCOPG_VERSION = 2
+    DEFAULTS_CONN_ARG = {}
+
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication
 
@@ -233,7 +243,9 @@ class InterlisImporterExporter:
         return interlisImporterToIntermediateSchema.session_tww
 
     def _import_update_main_cover_and_refresh_mat_views(self):
-        connection = psycopg.connect(get_pgconf_as_psycopg_dsn(), autocommit=True)
+        connection = psycopg.connect(get_pgconf_as_psycopg_dsn(), **DEFAULTS_CONN_ARG)
+        if PSYCOPG_VERSION == 2:
+            connection.set_session(autocommit=True)
         cursor = connection.cursor()
 
         logger.info("Update wastewater structure fk_main_cover")
@@ -385,7 +397,9 @@ class InterlisImporterExporter:
     def _clear_ili_schema(self, recreate_schema=False):
         logger.info("CONNECTING TO DATABASE...")
 
-        connection = psycopg.connect(get_pgconf_as_psycopg_dsn(), autocommit=True)
+        connection = psycopg.connect(get_pgconf_as_psycopg_dsn(), **DEFAULTS_CONN_ARG)
+        if PSYCOPG_VERSION == 2:
+            connection.set_session(autocommit=True)
         cursor = connection.cursor()
 
         if not recreate_schema:
