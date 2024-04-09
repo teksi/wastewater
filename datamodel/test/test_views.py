@@ -3,8 +3,7 @@ import decimal
 import os
 import unittest
 
-import psycopg2
-import psycopg2.extras
+import psycopg
 
 from .utils import DEFAULT_PG_SERVICE, DbTestBase
 
@@ -17,7 +16,7 @@ class TestViews(unittest.TestCase, DbTestBase):
     @classmethod
     def setUpClass(cls):
         pgservice = os.environ.get("PGSERVICE") or DEFAULT_PG_SERVICE
-        cls.conn = psycopg2.connect(f"service={pgservice}")
+        cls.conn = psycopg.connect(f"service={pgservice}")
 
     def test_vw_reach(self):
         row = {
@@ -93,7 +92,7 @@ class TestViews(unittest.TestCase, DbTestBase):
 
         self.update_check("vw_tww_wastewater_structure", row, obj_id)
 
-        cur = self.cursor()
+        cur = self.cursor(row_factory=psycopg.rows.dict_row)
 
         cur.execute(
             "SELECT * FROM tww_od.wastewater_networkelement NE LEFT JOIN tww_od.wastewater_node NO ON NO.obj_id = NE.obj_id WHERE fk_wastewater_structure='{obj_id}' ".format(
