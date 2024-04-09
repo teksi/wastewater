@@ -142,22 +142,22 @@
 <!-- catchment_area&#45;&gt;organisation -->
 <g id="edge1" class="edge">
 <title>catchment_area:w&#45;&gt;organisation:e</title>
-<path fill="none" stroke="black" d="M652.72,-658.17C511.57,-661.41 436.72,-708.47 332,-607 273.91,-550.7 345,-494.54 299,-428 277,-396.18 263.18,-383 224.5,-383"/>
-<polygon fill="black" stroke="black" points="659.5,-658.09 667.54,-661.6 663.5,-658.05 667.5,-658 667.5,-658 667.5,-658 663.5,-658.05 667.46,-654.4 659.5,-658.09 659.5,-658.09"/>
-<ellipse fill="none" stroke="black" cx="656.3" cy="-658.13" rx="3.2" ry="3.2"/>
+<path fill="none" stroke="black" d="M652.85,-658.25C512.94,-662.91 438.64,-731.55 332,-634 264.23,-572.01 349.65,-506.61 299,-430 277.41,-397.34 263.65,-383 224.5,-383"/>
+<polygon fill="black" stroke="black" points="659.5,-658.13 667.56,-661.6 663.5,-658.07 667.5,-658 667.5,-658 667.5,-658 663.5,-658.07 667.44,-654.4 659.5,-658.13 659.5,-658.13"/>
+<ellipse fill="none" stroke="black" cx="656.3" cy="-658.19" rx="3.2" ry="3.2"/>
 </g>
 <!-- catchment_area&#45;&gt;organisation -->
 <g id="edge2" class="edge">
 <title>catchment_area:w&#45;&gt;organisation:e</title>
-<path fill="none" stroke="black" d="M653.61,-632C644.82,-625.77 641.59,-613.88 627,-608 503.79,-558.35 429.78,-649.92 332,-560 287.49,-519.07 334.93,-476.64 299,-428 276.02,-396.89 263.18,-383 224.5,-383"/>
-<polygon fill="black" stroke="black" points="659.81,-633.78 666.5,-639.46 663.66,-634.89 667.5,-636 667.5,-636 667.5,-636 663.66,-634.89 668.5,-632.54 659.81,-633.78 659.81,-633.78"/>
-<ellipse fill="none" stroke="black" cx="656.74" cy="-632.9" rx="3.2" ry="3.2"/>
+<path fill="none" stroke="black" d="M652.97,-635.7C585.29,-633.59 357.2,-620.27 332,-597 276.42,-545.67 341.82,-492.38 299,-430 276.84,-397.72 263.65,-383 224.5,-383"/>
+<polygon fill="black" stroke="black" points="659.5,-635.84 667.43,-639.6 663.5,-635.92 667.5,-636 667.5,-636 667.5,-636 663.5,-635.92 667.57,-632.4 659.5,-635.84 659.5,-635.84"/>
+<ellipse fill="none" stroke="black" cx="656.3" cy="-635.77" rx="3.2" ry="3.2"/>
 </g>
 <!-- log_card -->
 <g id="node3" class="node">
 <title>log_card</title>
 <g id="a_node3"><a xlink:href="../../tables/log_card.html" xlink:title="log_card" target="_top">
-<polygon fill="#ffffff" stroke="transparent" points="340,-264 340,-550 619,-550 619,-264 340,-264"/>
+<polygon fill="#ffffff" stroke="transparent" points="340,-220 340,-550 619,-550 619,-220 340,-220"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="342.5,-526 342.5,-548 617.5,-548 617.5,-526 342.5,-526"/>
 <polygon fill="none" stroke="black" points="342.5,-526 342.5,-548 617.5,-548 617.5,-526 342.5,-526"/>
 <text text-anchor="start" x="347" y="-535.2" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00">log_card</text>
@@ -206,24 +206,34 @@
 <text text-anchor="start" x="526.5" y="-336.2" font-family="Helvetica,sans-Serif" font-size="11.00">varchar[16]</text>
 <polygon fill="none" stroke="black" points="342.5,-306 342.5,-328 523.5,-328 523.5,-306 342.5,-306"/>
 <image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="347.5" y="-323"/>
-<text text-anchor="start" x="362.5" y="-314.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_agency</text>
+<text text-anchor="start" x="362.5" y="-314.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_main_structure</text>
 <polygon fill="none" stroke="black" points="523.5,-306 523.5,-328 617.5,-328 617.5,-306 523.5,-306"/>
 <text text-anchor="start" x="526.5" y="-314.2" font-family="Helvetica,sans-Serif" font-size="11.00">varchar[16]</text>
 <polygon fill="none" stroke="black" points="342.5,-284 342.5,-306 523.5,-306 523.5,-284 342.5,-284"/>
 <image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="347.5" y="-301"/>
-<text text-anchor="start" x="362.5" y="-292.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_location_municipality</text>
+<text text-anchor="start" x="362.5" y="-292.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_agency</text>
 <polygon fill="none" stroke="black" points="523.5,-284 523.5,-306 617.5,-306 617.5,-284 523.5,-284"/>
 <text text-anchor="start" x="526.5" y="-292.2" font-family="Helvetica,sans-Serif" font-size="11.00">varchar[16]</text>
-<polygon fill="#ffffff" stroke="transparent" points="342.5,-266 342.5,-284 437.5,-284 437.5,-266 342.5,-266"/>
-<polygon fill="none" stroke="black" points="342.5,-266 342.5,-284 437.5,-284 437.5,-266 342.5,-266"/>
-<text text-anchor="start" x="345.5" y="-272.2" font-family="Helvetica,sans-Serif" font-size="11.00">&lt; 7</text>
-<polygon fill="#ffffff" stroke="transparent" points="437.5,-266 437.5,-284 523.5,-284 523.5,-266 437.5,-266"/>
-<polygon fill="none" stroke="black" points="437.5,-266 437.5,-284 523.5,-284 523.5,-266 437.5,-266"/>
-<text text-anchor="start" x="513.5" y="-272.2" font-family="Helvetica,sans-Serif" font-size="11.00"> &#160;</text>
-<polygon fill="#ffffff" stroke="transparent" points="523.5,-266 523.5,-284 617.5,-284 617.5,-266 523.5,-266"/>
-<polygon fill="none" stroke="black" points="523.5,-266 523.5,-284 617.5,-284 617.5,-266 523.5,-266"/>
-<text text-anchor="start" x="598.5" y="-272.2" font-family="Helvetica,sans-Serif" font-size="11.00">4 &gt;</text>
-<polygon fill="none" stroke="black" stroke-width="2" points="341,-265 341,-549 618,-549 618,-265 341,-265"/>
+<polygon fill="none" stroke="black" points="342.5,-262 342.5,-284 523.5,-284 523.5,-262 342.5,-262"/>
+<image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="347.5" y="-279"/>
+<text text-anchor="start" x="362.5" y="-270.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_next_special_building</text>
+<polygon fill="none" stroke="black" points="523.5,-262 523.5,-284 617.5,-284 617.5,-262 523.5,-262"/>
+<text text-anchor="start" x="526.5" y="-270.2" font-family="Helvetica,sans-Serif" font-size="11.00">varchar[16]</text>
+<polygon fill="none" stroke="black" points="342.5,-240 342.5,-262 523.5,-262 523.5,-240 342.5,-240"/>
+<image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="347.5" y="-257"/>
+<text text-anchor="start" x="362.5" y="-248.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_location_municipality</text>
+<polygon fill="none" stroke="black" points="523.5,-240 523.5,-262 617.5,-262 617.5,-240 523.5,-240"/>
+<text text-anchor="start" x="526.5" y="-248.2" font-family="Helvetica,sans-Serif" font-size="11.00">varchar[16]</text>
+<polygon fill="#ffffff" stroke="transparent" points="342.5,-222 342.5,-240 437.5,-240 437.5,-222 342.5,-222"/>
+<polygon fill="none" stroke="black" points="342.5,-222 342.5,-240 437.5,-240 437.5,-222 342.5,-222"/>
+<text text-anchor="start" x="345.5" y="-228.2" font-family="Helvetica,sans-Serif" font-size="11.00">&lt; 9</text>
+<polygon fill="#ffffff" stroke="transparent" points="437.5,-222 437.5,-240 523.5,-240 523.5,-222 437.5,-222"/>
+<polygon fill="none" stroke="black" points="437.5,-222 437.5,-240 523.5,-240 523.5,-222 437.5,-222"/>
+<text text-anchor="start" x="513.5" y="-228.2" font-family="Helvetica,sans-Serif" font-size="11.00"> &#160;</text>
+<polygon fill="#ffffff" stroke="transparent" points="523.5,-222 523.5,-240 617.5,-240 617.5,-222 523.5,-222"/>
+<polygon fill="none" stroke="black" points="523.5,-222 523.5,-240 617.5,-240 617.5,-222 523.5,-222"/>
+<text text-anchor="start" x="598.5" y="-228.2" font-family="Helvetica,sans-Serif" font-size="11.00">6 &gt;</text>
+<polygon fill="none" stroke="black" stroke-width="2" points="341,-221 341,-549 618,-549 618,-221 341,-221"/>
 </a>
 </g>
 </g>
@@ -258,9 +268,9 @@
 <!-- log_card&#45;&gt;organisation -->
 <g id="edge8" class="edge">
 <title>log_card:w&#45;&gt;organisation:e</title>
-<path fill="none" stroke="black" d="M327.11,-318.44C281.74,-328.09 278.96,-383 224.5,-383"/>
-<polygon fill="black" stroke="black" points="333.54,-317.8 341.86,-320.58 337.52,-317.4 341.5,-317 341.5,-317 341.5,-317 337.52,-317.4 341.14,-313.42 333.54,-317.8 333.54,-317.8"/>
-<ellipse fill="none" stroke="black" cx="330.36" cy="-318.12" rx="3.2" ry="3.2"/>
+<path fill="none" stroke="black" d="M326.98,-296.68C278.06,-308.85 284.23,-383 224.5,-383"/>
+<polygon fill="black" stroke="black" points="333.55,-295.92 341.91,-298.58 337.53,-295.46 341.5,-295 341.5,-295 341.5,-295 337.53,-295.46 341.09,-291.42 333.55,-295.92 333.55,-295.92"/>
+<ellipse fill="none" stroke="black" cx="330.37" cy="-296.29" rx="3.2" ry="3.2"/>
 </g>
 <!-- log_card&#45;&gt;organisation -->
 <g id="edge9" class="edge">
@@ -272,46 +282,60 @@
 <!-- log_card&#45;&gt;organisation -->
 <g id="edge10" class="edge">
 <title>log_card:w&#45;&gt;organisation:e</title>
-<path fill="none" stroke="black" d="M326.98,-296.68C278.06,-308.85 284.23,-383 224.5,-383"/>
-<polygon fill="black" stroke="black" points="333.55,-295.92 341.91,-298.58 337.53,-295.46 341.5,-295 341.5,-295 341.5,-295 337.53,-295.46 341.09,-291.42 333.55,-295.92 333.55,-295.92"/>
-<ellipse fill="none" stroke="black" cx="330.37" cy="-296.29" rx="3.2" ry="3.2"/>
+<path fill="none" stroke="black" d="M327,-252.77C267.99,-268.43 297.54,-383 224.5,-383"/>
+<polygon fill="black" stroke="black" points="333.56,-251.97 341.94,-254.57 337.53,-251.48 341.5,-251 341.5,-251 341.5,-251 337.53,-251.48 341.06,-247.43 333.56,-251.97 333.56,-251.97"/>
+<ellipse fill="none" stroke="black" cx="330.38" cy="-252.35" rx="3.2" ry="3.2"/>
 </g>
 <!-- log_card&#45;&gt;organisation -->
-<g id="edge11" class="edge">
+<g id="edge13" class="edge">
 <title>log_card:w&#45;&gt;organisation:e</title>
 <path fill="none" stroke="black" d="M326.85,-361.61C285.95,-365.16 272.14,-383 224.5,-383"/>
 <polygon fill="black" stroke="black" points="333.51,-361.33 341.65,-364.6 337.5,-361.17 341.5,-361 341.5,-361 341.5,-361 337.5,-361.17 341.35,-357.4 333.51,-361.33 333.51,-361.33"/>
 <ellipse fill="none" stroke="black" cx="330.31" cy="-361.47" rx="3.2" ry="3.2"/>
 </g>
+<!-- log_card&#45;&gt;log_card -->
+<g id="edge11" class="edge">
+<title>log_card:w&#45;&gt;log_card:e</title>
+<path fill="none" stroke="black" d="M331.46,-326.35C260.48,-395 270.31,-567 480,-567 700,-567 700,-558.33 617.5,-515"/>
+<polygon fill="black" stroke="black" points="336.39,-322.17 344.83,-319.75 339.45,-319.58 342.5,-317 342.5,-317 342.5,-317 339.45,-319.58 340.17,-314.25 336.39,-322.17 336.39,-322.17"/>
+<ellipse fill="none" stroke="black" cx="333.95" cy="-324.24" rx="3.2" ry="3.2"/>
+</g>
+<!-- log_card&#45;&gt;log_card -->
+<g id="edge12" class="edge">
+<title>log_card:w&#45;&gt;log_card:e</title>
+<path fill="none" stroke="black" d="M331.46,-282.63C260.48,-355.03 270.31,-567 480,-567 700,-567 700,-558.33 617.5,-515"/>
+<polygon fill="black" stroke="black" points="336.47,-278.26 344.87,-275.71 339.48,-275.63 342.5,-273 342.5,-273 342.5,-273 339.48,-275.63 340.13,-270.29 336.47,-278.26 336.47,-278.26"/>
+<ellipse fill="none" stroke="black" cx="334.06" cy="-280.36" rx="3.2" ry="3.2"/>
+</g>
 <!-- tww_vl.log_card_control_remote_control -->
 <g id="node4" class="node">
 <title>tww_vl.log_card_control_remote_control</title>
 <g id="a_node4"><a xlink:href="../../../tww_vl/tables/log_card_control_remote_control.html" xlink:title="tww_vl.log_card_control_remote_control" target="_top">
-<polygon fill="#ffffff" stroke="transparent" points="8,-518 8,-576 291,-576 291,-518 8,-518"/>
-<polygon fill="#f5f5f5" stroke="transparent" points="8.5,-554 8.5,-576 291.5,-576 291.5,-554 8.5,-554"/>
-<polygon fill="none" stroke="black" points="8.5,-554 8.5,-576 291.5,-576 291.5,-554 8.5,-554"/>
-<text text-anchor="start" x="13.5" y="-563.2" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00">tww_vl.log_card_control_remote_control</text>
-<text text-anchor="start" x="252.5" y="-562.2" font-family="Helvetica,sans-Serif" font-size="11.00">[table]</text>
-<polygon fill="none" stroke="black" points="8.5,-536 8.5,-554 291.5,-554 291.5,-536 8.5,-536"/>
-<text text-anchor="start" x="11.5" y="-542.2" font-family="Helvetica,sans-Serif" font-size="11.00">...</text>
-<polygon fill="#ffffff" stroke="transparent" points="8.5,-518 8.5,-536 125.5,-536 125.5,-518 8.5,-518"/>
-<polygon fill="none" stroke="black" points="8.5,-518 8.5,-536 125.5,-536 125.5,-518 8.5,-518"/>
-<text text-anchor="start" x="11.5" y="-524.2" font-family="Helvetica,sans-Serif" font-size="11.00"> &#160;</text>
-<polygon fill="#ffffff" stroke="transparent" points="125.5,-518 125.5,-536 217.5,-536 217.5,-518 125.5,-518"/>
-<polygon fill="none" stroke="black" points="125.5,-518 125.5,-536 217.5,-536 217.5,-518 125.5,-518"/>
-<text text-anchor="start" x="180.5" y="-524.2" font-family="Helvetica,sans-Serif" font-size="11.00">0 rows</text>
-<polygon fill="#ffffff" stroke="transparent" points="217.5,-518 217.5,-536 291.5,-536 291.5,-518 217.5,-518"/>
-<polygon fill="none" stroke="black" points="217.5,-518 217.5,-536 291.5,-536 291.5,-518 217.5,-518"/>
-<text text-anchor="start" x="272.5" y="-524.2" font-family="Helvetica,sans-Serif" font-size="11.00">1 &gt;</text>
+<polygon fill="#ffffff" stroke="transparent" points="8,-519 8,-577 291,-577 291,-519 8,-519"/>
+<polygon fill="#f5f5f5" stroke="transparent" points="8.5,-555 8.5,-577 291.5,-577 291.5,-555 8.5,-555"/>
+<polygon fill="none" stroke="black" points="8.5,-555 8.5,-577 291.5,-577 291.5,-555 8.5,-555"/>
+<text text-anchor="start" x="13.5" y="-564.2" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00">tww_vl.log_card_control_remote_control</text>
+<text text-anchor="start" x="252.5" y="-563.2" font-family="Helvetica,sans-Serif" font-size="11.00">[table]</text>
+<polygon fill="none" stroke="black" points="8.5,-537 8.5,-555 291.5,-555 291.5,-537 8.5,-537"/>
+<text text-anchor="start" x="11.5" y="-543.2" font-family="Helvetica,sans-Serif" font-size="11.00">...</text>
+<polygon fill="#ffffff" stroke="transparent" points="8.5,-519 8.5,-537 125.5,-537 125.5,-519 8.5,-519"/>
+<polygon fill="none" stroke="black" points="8.5,-519 8.5,-537 125.5,-537 125.5,-519 8.5,-519"/>
+<text text-anchor="start" x="11.5" y="-525.2" font-family="Helvetica,sans-Serif" font-size="11.00"> &#160;</text>
+<polygon fill="#ffffff" stroke="transparent" points="125.5,-519 125.5,-537 217.5,-537 217.5,-519 125.5,-519"/>
+<polygon fill="none" stroke="black" points="125.5,-519 125.5,-537 217.5,-537 217.5,-519 125.5,-519"/>
+<text text-anchor="start" x="180.5" y="-525.2" font-family="Helvetica,sans-Serif" font-size="11.00">0 rows</text>
+<polygon fill="#ffffff" stroke="transparent" points="217.5,-519 217.5,-537 291.5,-537 291.5,-519 217.5,-519"/>
+<polygon fill="none" stroke="black" points="217.5,-519 217.5,-537 291.5,-537 291.5,-519 217.5,-519"/>
+<text text-anchor="start" x="272.5" y="-525.2" font-family="Helvetica,sans-Serif" font-size="11.00">1 &gt;</text>
 </a>
 </g>
 </g>
 <!-- log_card&#45;&gt;tww_vl.log_card_control_remote_control -->
 <g id="edge7" class="edge">
 <title>log_card:w&#45;&gt;tww_vl.log_card_control_remote_control:e</title>
-<path fill="none" stroke="black" d="M326.97,-495C318.01,-497.82 312.25,-503.04 299,-507 291.33,-509.3 283.41,-511.6 275.42,-513.89"/>
-<polygon fill="black" stroke="black" points="333.57,-494.09 341.99,-496.57 337.54,-493.55 341.5,-493 341.5,-493 341.5,-493 337.54,-493.55 341.01,-489.43 333.57,-494.09 333.57,-494.09"/>
-<ellipse fill="none" stroke="black" cx="330.4" cy="-494.53" rx="3.2" ry="3.2"/>
+<path fill="none" stroke="black" d="M327.18,-495.25C318.06,-498.53 312.52,-504.69 299,-509 292.65,-511.02 286.13,-513.02 279.52,-514.98"/>
+<polygon fill="black" stroke="black" points="333.6,-494.24 342.06,-496.56 337.55,-493.62 341.5,-493 341.5,-493 341.5,-493 337.55,-493.62 340.94,-489.44 333.6,-494.24 333.6,-494.24"/>
+<ellipse fill="none" stroke="black" cx="330.44" cy="-494.74" rx="3.2" ry="3.2"/>
 </g>
 <!-- wastewater_node -->
 <g id="node5" class="node">
@@ -352,41 +376,41 @@
 </g>
 </g>
 <!-- log_card&#45;&gt;wastewater_node -->
-<g id="edge12" class="edge">
+<g id="edge14" class="edge">
 <title>log_card:w&#45;&gt;wastewater_node:e</title>
-<path fill="none" stroke="black" d="M326.88,-336.75C292.39,-323.79 329.07,-257.84 299,-215 281.47,-190.03 276.01,-172 245.5,-172"/>
-<polygon fill="black" stroke="black" points="333.59,-337.78 340.95,-342.56 337.55,-338.39 341.5,-339 341.5,-339 341.5,-339 337.55,-338.39 342.05,-335.44 333.59,-337.78 333.59,-337.78"/>
+<path fill="none" stroke="black" d="M326.97,-336.77C292.65,-323.95 328.67,-258.66 299,-216 281.42,-190.72 276.29,-172 245.5,-172"/>
+<polygon fill="black" stroke="black" points="333.59,-337.79 340.95,-342.56 337.55,-338.39 341.5,-339 341.5,-339 341.5,-339 337.55,-338.39 342.05,-335.44 333.59,-337.79 333.59,-337.79"/>
 <ellipse fill="none" stroke="black" cx="330.43" cy="-337.3" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.log_card_information_source -->
 <g id="node6" class="node">
 <title>tww_vl.log_card_information_source</title>
 <g id="a_node6"><a xlink:href="../../../tww_vl/tables/log_card_information_source.html" xlink:title="tww_vl.log_card_information_source" target="_top">
-<polygon fill="#ffffff" stroke="transparent" points="19.5,-439 19.5,-497 279.5,-497 279.5,-439 19.5,-439"/>
-<polygon fill="#f5f5f5" stroke="transparent" points="19.5,-475 19.5,-497 279.5,-497 279.5,-475 19.5,-475"/>
-<polygon fill="none" stroke="black" points="19.5,-475 19.5,-497 279.5,-497 279.5,-475 19.5,-475"/>
-<text text-anchor="start" x="24.5" y="-484.2" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00">tww_vl.log_card_information_source</text>
-<text text-anchor="start" x="240.5" y="-483.2" font-family="Helvetica,sans-Serif" font-size="11.00">[table]</text>
-<polygon fill="none" stroke="black" points="19.5,-457 19.5,-475 279.5,-475 279.5,-457 19.5,-457"/>
-<text text-anchor="start" x="22.5" y="-463.2" font-family="Helvetica,sans-Serif" font-size="11.00">...</text>
-<polygon fill="#ffffff" stroke="transparent" points="19.5,-439 19.5,-457 124.5,-457 124.5,-439 19.5,-439"/>
-<polygon fill="none" stroke="black" points="19.5,-439 19.5,-457 124.5,-457 124.5,-439 19.5,-439"/>
-<text text-anchor="start" x="22.5" y="-445.2" font-family="Helvetica,sans-Serif" font-size="11.00"> &#160;</text>
-<polygon fill="#ffffff" stroke="transparent" points="124.5,-439 124.5,-457 210.5,-457 210.5,-439 124.5,-439"/>
-<polygon fill="none" stroke="black" points="124.5,-439 124.5,-457 210.5,-457 210.5,-439 124.5,-439"/>
-<text text-anchor="start" x="173.5" y="-445.2" font-family="Helvetica,sans-Serif" font-size="11.00">0 rows</text>
-<polygon fill="#ffffff" stroke="transparent" points="210.5,-439 210.5,-457 279.5,-457 279.5,-439 210.5,-439"/>
-<polygon fill="none" stroke="black" points="210.5,-439 210.5,-457 279.5,-457 279.5,-439 210.5,-439"/>
-<text text-anchor="start" x="260.5" y="-445.2" font-family="Helvetica,sans-Serif" font-size="11.00">1 &gt;</text>
+<polygon fill="#ffffff" stroke="transparent" points="19.5,-440 19.5,-498 279.5,-498 279.5,-440 19.5,-440"/>
+<polygon fill="#f5f5f5" stroke="transparent" points="19.5,-476 19.5,-498 279.5,-498 279.5,-476 19.5,-476"/>
+<polygon fill="none" stroke="black" points="19.5,-476 19.5,-498 279.5,-498 279.5,-476 19.5,-476"/>
+<text text-anchor="start" x="24.5" y="-485.2" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00">tww_vl.log_card_information_source</text>
+<text text-anchor="start" x="240.5" y="-484.2" font-family="Helvetica,sans-Serif" font-size="11.00">[table]</text>
+<polygon fill="none" stroke="black" points="19.5,-458 19.5,-476 279.5,-476 279.5,-458 19.5,-458"/>
+<text text-anchor="start" x="22.5" y="-464.2" font-family="Helvetica,sans-Serif" font-size="11.00">...</text>
+<polygon fill="#ffffff" stroke="transparent" points="19.5,-440 19.5,-458 124.5,-458 124.5,-440 19.5,-440"/>
+<polygon fill="none" stroke="black" points="19.5,-440 19.5,-458 124.5,-458 124.5,-440 19.5,-440"/>
+<text text-anchor="start" x="22.5" y="-446.2" font-family="Helvetica,sans-Serif" font-size="11.00"> &#160;</text>
+<polygon fill="#ffffff" stroke="transparent" points="124.5,-440 124.5,-458 210.5,-458 210.5,-440 124.5,-440"/>
+<polygon fill="none" stroke="black" points="124.5,-440 124.5,-458 210.5,-458 210.5,-440 124.5,-440"/>
+<text text-anchor="start" x="173.5" y="-446.2" font-family="Helvetica,sans-Serif" font-size="11.00">0 rows</text>
+<polygon fill="#ffffff" stroke="transparent" points="210.5,-440 210.5,-458 279.5,-458 279.5,-440 210.5,-440"/>
+<polygon fill="none" stroke="black" points="210.5,-440 210.5,-458 279.5,-458 279.5,-440 210.5,-440"/>
+<text text-anchor="start" x="260.5" y="-446.2" font-family="Helvetica,sans-Serif" font-size="11.00">1 &gt;</text>
 </a>
 </g>
 </g>
 <!-- log_card&#45;&gt;tww_vl.log_card_information_source -->
-<g id="edge13" class="edge">
+<g id="edge15" class="edge">
 <title>log_card:w&#45;&gt;tww_vl.log_card_information_source:e</title>
-<path fill="none" stroke="black" d="M327.04,-470.97C314.1,-470.93 300.84,-470.82 287.69,-470.67"/>
-<polygon fill="black" stroke="black" points="333.5,-470.98 341.49,-474.6 337.5,-470.99 341.5,-471 341.5,-471 341.5,-471 337.5,-470.99 341.51,-467.4 333.5,-470.98 333.5,-470.98"/>
-<ellipse fill="none" stroke="black" cx="330.3" cy="-470.98" rx="3.2" ry="3.2"/>
+<path fill="none" stroke="black" d="M327.04,-470.98C314.1,-470.95 300.84,-470.88 287.69,-470.78"/>
+<polygon fill="black" stroke="black" points="333.5,-470.99 341.5,-474.6 337.5,-470.99 341.5,-471 341.5,-471 341.5,-471 337.5,-470.99 341.5,-467.4 333.5,-470.99 333.5,-470.99"/>
+<ellipse fill="none" stroke="black" cx="330.3" cy="-470.99" rx="3.2" ry="3.2"/>
 </g>
 </g>
 </svg>

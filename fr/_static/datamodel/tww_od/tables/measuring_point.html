@@ -127,6 +127,11 @@
                                                 <td class="constraint detail">rel_measuring_device_measuring_point</td>
                                                 <td class="constraint detail"><span title='Null on delete:&#10;Foreign key to parent set to NULL when parent deleted'>N</span></td>
                                             </tr>
+                                            <tr>
+                                                <td title="measuring_point.fk_reference_station references measuring_point.obj_id via rel_measuring_point_reference_station"><a href='measuring_point.html'>measuring_point</a><span class='relatedKey'>.fk_reference_station</span></td>
+                                                <td class="constraint detail">rel_measuring_point_reference_station</td>
+                                                <td class="constraint detail"><span title='Null on delete:&#10;Foreign key to parent set to NULL when parent deleted'>N</span></td>
+                                            </tr>
                                         </table>
                                     </td>
                                     <td>
@@ -309,6 +314,28 @@
                                     <td><p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données</p></td>
                                 </tr>
                                 <tr>
+                                    <td class='foreignKey' title='Foreign Key'><i class='icon ion-key iconkey' style='padding-left: 5px;'></i><span id="fk_reference_station">fk_reference_station</span></td>
+                                    <td>varchar</td>
+                                    <td>16</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                            <tr>
+                                                <td title="measuring_point.fk_reference_station references measuring_point.obj_id via rel_measuring_point_reference_station"><a href='measuring_point.html'>measuring_point</a><span class='relatedKey'>.obj_id</span></td>
+                                                <td class="constraint detail">rel_measuring_point_reference_station</td>
+                                                <td class="constraint detail"><span title='Null on delete:&#10;Foreign key to parent set to NULL when parent deleted'>N</span></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
                                     <td class='foreignKey' title='Foreign Key'><i class='icon ion-key iconkey' style='padding-left: 5px;'></i><span id="fk_operator">fk_operator</span></td>
                                     <td>varchar</td>
                                     <td>16</td>
@@ -451,16 +478,16 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td>mp_identifier_length_max_20</td>
-                                    <td>((char_length(identifier) &lt;&#61; 20))</td>
-                                </tr>
-                                <tr>
                                     <td>mp_kind_length_max_50</td>
                                     <td>((char_length(kind) &lt;&#61; 50))</td>
                                 </tr>
                                 <tr>
                                     <td>mp_remark_length_max_80</td>
                                     <td>((char_length(remark) &lt;&#61; 80))</td>
+                                </tr>
+                                <tr>
+                                    <td>mp_identifier_length_max_20</td>
+                                    <td>((char_length(identifier) &lt;&#61; 20))</td>
                                 </tr>
                                 </tbody>
                             </table>

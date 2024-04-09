@@ -5,12 +5,13 @@ hydr_geometry
 wastewater_node
 cover
 wastewater_structure
+log_card
+waste_water_treatment_plant
+measuring_point
 measure
 dss15_aquifer
-waste_water_treatment_plant
 maintenance_event
 reach_point
-log_card
 overflow_char
 control_center
 discharge_point
@@ -18,7 +19,6 @@ infiltration_installation
 overflow
 pipe_profile
 disposal
-measuring_point
 catchment_area
 examination
 connection_object

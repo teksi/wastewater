@@ -9251,7 +9251,7 @@
 <g id="node186" class="node">
 <title>tww_od.log_card</title>
 <g id="a_node186"><a xlink:href="../../../tww_od/tables/log_card.html" xlink:title="tww_od.log_card" target="_top">
-<polygon fill="#ffffff" stroke="transparent" points="470.5,-24622 470.5,-24904 651.5,-24904 651.5,-24622 470.5,-24622"/>
+<polygon fill="#ffffff" stroke="transparent" points="470.5,-24578 470.5,-24904 651.5,-24904 651.5,-24578 470.5,-24578"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="471,-24882 471,-24904 652,-24904 652,-24882 471,-24882"/>
 <polygon fill="none" stroke="black" points="471,-24882 471,-24904 652,-24904 652,-24882 471,-24882"/>
 <text text-anchor="start" x="476" y="-24891.2" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00">tww_od.log_card</text>
@@ -9277,18 +9277,22 @@
 <polygon fill="none" stroke="black" points="471,-24684 471,-24706 652,-24706 652,-24684 471,-24684"/>
 <text text-anchor="start" x="491" y="-24692.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_pwwf_wastewater_node</text>
 <polygon fill="none" stroke="black" points="471,-24662 471,-24684 652,-24684 652,-24662 471,-24662"/>
-<text text-anchor="start" x="491" y="-24670.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_agency</text>
+<text text-anchor="start" x="491" y="-24670.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_main_structure</text>
 <polygon fill="none" stroke="black" points="471,-24640 471,-24662 652,-24662 652,-24640 471,-24640"/>
-<text text-anchor="start" x="491" y="-24648.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_location_municipality</text>
-<polygon fill="#ffffff" stroke="transparent" points="471,-24622 471,-24640 546,-24640 546,-24622 471,-24622"/>
-<polygon fill="none" stroke="black" points="471,-24622 471,-24640 546,-24640 546,-24622 471,-24622"/>
-<text text-anchor="start" x="474" y="-24628.2" font-family="Helvetica,sans-Serif" font-size="11.00">&lt; 2</text>
-<polygon fill="#ffffff" stroke="transparent" points="546,-24622 546,-24640 612,-24640 612,-24622 546,-24622"/>
-<polygon fill="none" stroke="black" points="546,-24622 546,-24640 612,-24640 612,-24622 546,-24622"/>
-<text text-anchor="start" x="575" y="-24628.2" font-family="Helvetica,sans-Serif" font-size="11.00">0 rows</text>
-<polygon fill="#ffffff" stroke="transparent" points="612,-24622 612,-24640 652,-24640 652,-24622 612,-24622"/>
-<polygon fill="none" stroke="black" points="612,-24622 612,-24640 652,-24640 652,-24622 612,-24622"/>
-<text text-anchor="start" x="642" y="-24628.2" font-family="Helvetica,sans-Serif" font-size="11.00"> &#160;</text>
+<text text-anchor="start" x="491" y="-24648.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_agency</text>
+<polygon fill="none" stroke="black" points="471,-24618 471,-24640 652,-24640 652,-24618 471,-24618"/>
+<text text-anchor="start" x="491" y="-24626.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_next_special_building</text>
+<polygon fill="none" stroke="black" points="471,-24596 471,-24618 652,-24618 652,-24596 471,-24596"/>
+<text text-anchor="start" x="491" y="-24604.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_location_municipality</text>
+<polygon fill="#ffffff" stroke="transparent" points="471,-24578 471,-24596 546,-24596 546,-24578 471,-24578"/>
+<polygon fill="none" stroke="black" points="471,-24578 471,-24596 546,-24596 546,-24578 471,-24578"/>
+<text text-anchor="start" x="474" y="-24584.2" font-family="Helvetica,sans-Serif" font-size="11.00">&lt; 2</text>
+<polygon fill="#ffffff" stroke="transparent" points="546,-24578 546,-24596 612,-24596 612,-24578 546,-24578"/>
+<polygon fill="none" stroke="black" points="546,-24578 546,-24596 612,-24596 612,-24578 546,-24578"/>
+<text text-anchor="start" x="575" y="-24584.2" font-family="Helvetica,sans-Serif" font-size="11.00">0 rows</text>
+<polygon fill="#ffffff" stroke="transparent" points="612,-24578 612,-24596 652,-24596 652,-24578 612,-24578"/>
+<polygon fill="none" stroke="black" points="612,-24578 612,-24596 652,-24596 652,-24578 612,-24578"/>
+<text text-anchor="start" x="642" y="-24584.2" font-family="Helvetica,sans-Serif" font-size="11.00"> &#160;</text>
 </a>
 </g>
 </g>
@@ -10328,9 +10332,9 @@
 <polygon fill="none" stroke="black" points="477,-42413 477,-42435 645,-42435 645,-42413 477,-42413"/>
 <text text-anchor="start" x="507" y="-42421.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_provider</text>
 <polygon fill="none" stroke="black" points="477,-42391 477,-42413 645,-42413 645,-42391 477,-42391"/>
-<text text-anchor="start" x="507" y="-42399.2" font-family="Helvetica,sans-Serif" font-size="11.00">_active</text>
+<text text-anchor="start" x="507" y="-42399.2" font-family="Helvetica,sans-Serif" font-size="11.00">tww_active</text>
 <polygon fill="none" stroke="black" points="477,-42369 477,-42391 645,-42391 645,-42369 477,-42369"/>
-<text text-anchor="start" x="507" y="-42377.2" font-family="Helvetica,sans-Serif" font-size="11.00">_local_extension</text>
+<text text-anchor="start" x="507" y="-42377.2" font-family="Helvetica,sans-Serif" font-size="11.00">tww_local_extension</text>
 <polygon fill="#ffffff" stroke="transparent" points="477,-42351 477,-42369 545,-42369 545,-42351 477,-42351"/>
 <polygon fill="none" stroke="black" points="477,-42351 477,-42369 545,-42369 545,-42351 477,-42351"/>
 <text text-anchor="start" x="480" y="-42357.2" font-family="Helvetica,sans-Serif" font-size="11.00">&lt; 2</text>
@@ -11055,7 +11059,7 @@
 <g id="node214" class="node">
 <title>tww_od.measuring_point</title>
 <g id="a_node214"><a xlink:href="../../../tww_od/tables/measuring_point.html" xlink:title="tww_od.measuring_point" target="_top">
-<polygon fill="#ffffff" stroke="transparent" points="452.5,-53748 452.5,-54074 669.5,-54074 669.5,-53748 452.5,-53748"/>
+<polygon fill="#ffffff" stroke="transparent" points="452.5,-53726 452.5,-54074 669.5,-54074 669.5,-53726 452.5,-53726"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="453,-54052 453,-54074 670,-54074 670,-54052 453,-54052"/>
 <polygon fill="none" stroke="black" points="453,-54052 453,-54074 670,-54074 670,-54052 453,-54052"/>
 <text text-anchor="start" x="458" y="-54061.2" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00">tww_od.measuring_point</text>
@@ -11083,20 +11087,22 @@
 <polygon fill="none" stroke="black" points="453,-53832 453,-53854 670,-53854 670,-53832 453,-53832"/>
 <text text-anchor="start" x="473" y="-53840.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_provider</text>
 <polygon fill="none" stroke="black" points="453,-53810 453,-53832 670,-53832 670,-53810 453,-53810"/>
-<text text-anchor="start" x="473" y="-53818.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_operator</text>
+<text text-anchor="start" x="473" y="-53818.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_reference_station</text>
 <polygon fill="none" stroke="black" points="453,-53788 453,-53810 670,-53810 670,-53788 453,-53788"/>
-<text text-anchor="start" x="473" y="-53796.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_waste_water_treatment_plant</text>
+<text text-anchor="start" x="473" y="-53796.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_operator</text>
 <polygon fill="none" stroke="black" points="453,-53766 453,-53788 670,-53788 670,-53766 453,-53766"/>
-<text text-anchor="start" x="473" y="-53774.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_wastewater_structure</text>
-<polygon fill="#ffffff" stroke="transparent" points="453,-53748 453,-53766 546,-53766 546,-53748 453,-53748"/>
-<polygon fill="none" stroke="black" points="453,-53748 453,-53766 546,-53766 546,-53748 453,-53748"/>
-<text text-anchor="start" x="456" y="-53754.2" font-family="Helvetica,sans-Serif" font-size="11.00">&lt; 2</text>
-<polygon fill="#ffffff" stroke="transparent" points="546,-53748 546,-53766 621,-53766 621,-53748 546,-53748"/>
-<polygon fill="none" stroke="black" points="546,-53748 546,-53766 621,-53766 621,-53748 546,-53748"/>
-<text text-anchor="start" x="584" y="-53754.2" font-family="Helvetica,sans-Serif" font-size="11.00">0 rows</text>
-<polygon fill="#ffffff" stroke="transparent" points="621,-53748 621,-53766 670,-53766 670,-53748 621,-53748"/>
-<polygon fill="none" stroke="black" points="621,-53748 621,-53766 670,-53766 670,-53748 621,-53748"/>
-<text text-anchor="start" x="660" y="-53754.2" font-family="Helvetica,sans-Serif" font-size="11.00"> &#160;</text>
+<text text-anchor="start" x="473" y="-53774.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_waste_water_treatment_plant</text>
+<polygon fill="none" stroke="black" points="453,-53744 453,-53766 670,-53766 670,-53744 453,-53744"/>
+<text text-anchor="start" x="473" y="-53752.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_wastewater_structure</text>
+<polygon fill="#ffffff" stroke="transparent" points="453,-53726 453,-53744 546,-53744 546,-53726 453,-53726"/>
+<polygon fill="none" stroke="black" points="453,-53726 453,-53744 546,-53744 546,-53726 453,-53726"/>
+<text text-anchor="start" x="456" y="-53732.2" font-family="Helvetica,sans-Serif" font-size="11.00">&lt; 2</text>
+<polygon fill="#ffffff" stroke="transparent" points="546,-53726 546,-53744 621,-53744 621,-53726 546,-53726"/>
+<polygon fill="none" stroke="black" points="546,-53726 546,-53744 621,-53744 621,-53726 546,-53726"/>
+<text text-anchor="start" x="584" y="-53732.2" font-family="Helvetica,sans-Serif" font-size="11.00">0 rows</text>
+<polygon fill="#ffffff" stroke="transparent" points="621,-53726 621,-53744 670,-53744 670,-53726 621,-53726"/>
+<polygon fill="none" stroke="black" points="621,-53726 621,-53744 670,-53744 670,-53726 621,-53726"/>
+<text text-anchor="start" x="660" y="-53732.2" font-family="Helvetica,sans-Serif" font-size="11.00"> &#160;</text>
 </a>
 </g>
 </g>

@@ -1064,49 +1064,49 @@
 <polygon fill="none" stroke="black" points="276.5,-2591 276.5,-2613 399.5,-2613 399.5,-2591 276.5,-2591"/>
 <text text-anchor="start" x="279.5" y="-2599.2" font-family="Helvetica,sans-Serif" font-size="11.00">varchar[16]</text>
 <polygon fill="none" stroke="black" points="10.5,-2569 10.5,-2591 276.5,-2591 276.5,-2569 10.5,-2569"/>
-<text text-anchor="start" x="30.5" y="-2577.2" font-family="Helvetica,sans-Serif" font-size="11.00">owner__active</text>
+<text text-anchor="start" x="30.5" y="-2577.2" font-family="Helvetica,sans-Serif" font-size="11.00">owner_fk_dataowner</text>
 <polygon fill="none" stroke="black" points="276.5,-2569 276.5,-2591 399.5,-2591 399.5,-2569 276.5,-2569"/>
-<text text-anchor="start" x="279.5" y="-2577.2" font-family="Helvetica,sans-Serif" font-size="11.00">bool[1]</text>
+<text text-anchor="start" x="279.5" y="-2577.2" font-family="Helvetica,sans-Serif" font-size="11.00">varchar[16]</text>
 <polygon fill="none" stroke="black" points="10.5,-2547 10.5,-2569 276.5,-2569 276.5,-2547 10.5,-2547"/>
-<text text-anchor="start" x="30.5" y="-2555.2" font-family="Helvetica,sans-Serif" font-size="11.00">owner__local_extension</text>
+<text text-anchor="start" x="30.5" y="-2555.2" font-family="Helvetica,sans-Serif" font-size="11.00">owner_fk_provider</text>
 <polygon fill="none" stroke="black" points="276.5,-2547 276.5,-2569 399.5,-2569 399.5,-2547 276.5,-2547"/>
-<text text-anchor="start" x="279.5" y="-2555.2" font-family="Helvetica,sans-Serif" font-size="11.00">bool[1]</text>
+<text text-anchor="start" x="279.5" y="-2555.2" font-family="Helvetica,sans-Serif" font-size="11.00">varchar[16]</text>
 <polygon fill="none" stroke="black" points="10.5,-2525 10.5,-2547 276.5,-2547 276.5,-2525 10.5,-2525"/>
-<text text-anchor="start" x="30.5" y="-2533.2" font-family="Helvetica,sans-Serif" font-size="11.00">owner_fk_dataowner</text>
+<text text-anchor="start" x="30.5" y="-2533.2" font-family="Helvetica,sans-Serif" font-size="11.00">owner_identifier</text>
 <polygon fill="none" stroke="black" points="276.5,-2525 276.5,-2547 399.5,-2547 399.5,-2525 276.5,-2525"/>
-<text text-anchor="start" x="279.5" y="-2533.2" font-family="Helvetica,sans-Serif" font-size="11.00">varchar[16]</text>
+<text text-anchor="start" x="279.5" y="-2533.2" font-family="Helvetica,sans-Serif" font-size="11.00">text[2147483647]</text>
 <polygon fill="none" stroke="black" points="10.5,-2503 10.5,-2525 276.5,-2525 276.5,-2503 10.5,-2503"/>
-<text text-anchor="start" x="30.5" y="-2511.2" font-family="Helvetica,sans-Serif" font-size="11.00">owner_fk_provider</text>
+<text text-anchor="start" x="30.5" y="-2511.2" font-family="Helvetica,sans-Serif" font-size="11.00">owner_identifier_short</text>
 <polygon fill="none" stroke="black" points="276.5,-2503 276.5,-2525 399.5,-2525 399.5,-2503 276.5,-2503"/>
-<text text-anchor="start" x="279.5" y="-2511.2" font-family="Helvetica,sans-Serif" font-size="11.00">varchar[16]</text>
+<text text-anchor="start" x="279.5" y="-2511.2" font-family="Helvetica,sans-Serif" font-size="11.00">text[2147483647]</text>
 <polygon fill="none" stroke="black" points="10.5,-2481 10.5,-2503 276.5,-2503 276.5,-2481 10.5,-2481"/>
-<text text-anchor="start" x="30.5" y="-2489.2" font-family="Helvetica,sans-Serif" font-size="11.00">owner_identifier</text>
+<text text-anchor="start" x="30.5" y="-2489.2" font-family="Helvetica,sans-Serif" font-size="11.00">owner_last_modification</text>
 <polygon fill="none" stroke="black" points="276.5,-2481 276.5,-2503 399.5,-2503 399.5,-2481 276.5,-2481"/>
-<text text-anchor="start" x="279.5" y="-2489.2" font-family="Helvetica,sans-Serif" font-size="11.00">text[2147483647]</text>
+<text text-anchor="start" x="279.5" y="-2489.2" font-family="Helvetica,sans-Serif" font-size="11.00">timestamp[29,6]</text>
 <polygon fill="none" stroke="black" points="10.5,-2459 10.5,-2481 276.5,-2481 276.5,-2459 10.5,-2459"/>
-<text text-anchor="start" x="30.5" y="-2467.2" font-family="Helvetica,sans-Serif" font-size="11.00">owner_identifier_short</text>
+<text text-anchor="start" x="30.5" y="-2467.2" font-family="Helvetica,sans-Serif" font-size="11.00">owner_municipality_number</text>
 <polygon fill="none" stroke="black" points="276.5,-2459 276.5,-2481 399.5,-2481 399.5,-2459 276.5,-2459"/>
-<text text-anchor="start" x="279.5" y="-2467.2" font-family="Helvetica,sans-Serif" font-size="11.00">text[2147483647]</text>
+<text text-anchor="start" x="279.5" y="-2467.2" font-family="Helvetica,sans-Serif" font-size="11.00">int2[5]</text>
 <polygon fill="none" stroke="black" points="10.5,-2437 10.5,-2459 276.5,-2459 276.5,-2437 10.5,-2437"/>
-<text text-anchor="start" x="30.5" y="-2445.2" font-family="Helvetica,sans-Serif" font-size="11.00">owner_last_modification</text>
+<text text-anchor="start" x="30.5" y="-2445.2" font-family="Helvetica,sans-Serif" font-size="11.00">owner_organisation_type</text>
 <polygon fill="none" stroke="black" points="276.5,-2437 276.5,-2459 399.5,-2459 399.5,-2437 276.5,-2437"/>
-<text text-anchor="start" x="279.5" y="-2445.2" font-family="Helvetica,sans-Serif" font-size="11.00">timestamp[29,6]</text>
+<text text-anchor="start" x="279.5" y="-2445.2" font-family="Helvetica,sans-Serif" font-size="11.00">int4[10]</text>
 <polygon fill="none" stroke="black" points="10.5,-2415 10.5,-2437 276.5,-2437 276.5,-2415 10.5,-2415"/>
-<text text-anchor="start" x="30.5" y="-2423.2" font-family="Helvetica,sans-Serif" font-size="11.00">owner_municipality_number</text>
+<text text-anchor="start" x="30.5" y="-2423.2" font-family="Helvetica,sans-Serif" font-size="11.00">owner_remark</text>
 <polygon fill="none" stroke="black" points="276.5,-2415 276.5,-2437 399.5,-2437 399.5,-2415 276.5,-2415"/>
-<text text-anchor="start" x="279.5" y="-2423.2" font-family="Helvetica,sans-Serif" font-size="11.00">int2[5]</text>
+<text text-anchor="start" x="279.5" y="-2423.2" font-family="Helvetica,sans-Serif" font-size="11.00">text[2147483647]</text>
 <polygon fill="none" stroke="black" points="10.5,-2393 10.5,-2415 276.5,-2415 276.5,-2393 10.5,-2393"/>
-<text text-anchor="start" x="30.5" y="-2401.2" font-family="Helvetica,sans-Serif" font-size="11.00">owner_organisation_type</text>
+<text text-anchor="start" x="30.5" y="-2401.2" font-family="Helvetica,sans-Serif" font-size="11.00">owner_status</text>
 <polygon fill="none" stroke="black" points="276.5,-2393 276.5,-2415 399.5,-2415 399.5,-2393 276.5,-2393"/>
 <text text-anchor="start" x="279.5" y="-2401.2" font-family="Helvetica,sans-Serif" font-size="11.00">int4[10]</text>
 <polygon fill="none" stroke="black" points="10.5,-2371 10.5,-2393 276.5,-2393 276.5,-2371 10.5,-2371"/>
-<text text-anchor="start" x="30.5" y="-2379.2" font-family="Helvetica,sans-Serif" font-size="11.00">owner_remark</text>
+<text text-anchor="start" x="30.5" y="-2379.2" font-family="Helvetica,sans-Serif" font-size="11.00">owner_tww_active</text>
 <polygon fill="none" stroke="black" points="276.5,-2371 276.5,-2393 399.5,-2393 399.5,-2371 276.5,-2371"/>
-<text text-anchor="start" x="279.5" y="-2379.2" font-family="Helvetica,sans-Serif" font-size="11.00">text[2147483647]</text>
+<text text-anchor="start" x="279.5" y="-2379.2" font-family="Helvetica,sans-Serif" font-size="11.00">bool[1]</text>
 <polygon fill="none" stroke="black" points="10.5,-2349 10.5,-2371 276.5,-2371 276.5,-2349 10.5,-2349"/>
-<text text-anchor="start" x="30.5" y="-2357.2" font-family="Helvetica,sans-Serif" font-size="11.00">owner_status</text>
+<text text-anchor="start" x="30.5" y="-2357.2" font-family="Helvetica,sans-Serif" font-size="11.00">owner_tww_local_extension</text>
 <polygon fill="none" stroke="black" points="276.5,-2349 276.5,-2371 399.5,-2371 399.5,-2349 276.5,-2349"/>
-<text text-anchor="start" x="279.5" y="-2357.2" font-family="Helvetica,sans-Serif" font-size="11.00">int4[10]</text>
+<text text-anchor="start" x="279.5" y="-2357.2" font-family="Helvetica,sans-Serif" font-size="11.00">bool[1]</text>
 <polygon fill="none" stroke="black" points="10.5,-2327 10.5,-2349 276.5,-2349 276.5,-2327 10.5,-2327"/>
 <text text-anchor="start" x="30.5" y="-2335.2" font-family="Helvetica,sans-Serif" font-size="11.00">owner_uid</text>
 <polygon fill="none" stroke="black" points="276.5,-2327 276.5,-2349 399.5,-2349 399.5,-2327 276.5,-2327"/>
@@ -1116,49 +1116,49 @@
 <polygon fill="none" stroke="black" points="276.5,-2305 276.5,-2327 399.5,-2327 399.5,-2305 276.5,-2305"/>
 <text text-anchor="start" x="279.5" y="-2313.2" font-family="Helvetica,sans-Serif" font-size="11.00">varchar[16]</text>
 <polygon fill="none" stroke="black" points="10.5,-2283 10.5,-2305 276.5,-2305 276.5,-2283 10.5,-2283"/>
-<text text-anchor="start" x="30.5" y="-2291.2" font-family="Helvetica,sans-Serif" font-size="11.00">operator__active</text>
+<text text-anchor="start" x="30.5" y="-2291.2" font-family="Helvetica,sans-Serif" font-size="11.00">operator_fk_dataowner</text>
 <polygon fill="none" stroke="black" points="276.5,-2283 276.5,-2305 399.5,-2305 399.5,-2283 276.5,-2283"/>
-<text text-anchor="start" x="279.5" y="-2291.2" font-family="Helvetica,sans-Serif" font-size="11.00">bool[1]</text>
+<text text-anchor="start" x="279.5" y="-2291.2" font-family="Helvetica,sans-Serif" font-size="11.00">varchar[16]</text>
 <polygon fill="none" stroke="black" points="10.5,-2261 10.5,-2283 276.5,-2283 276.5,-2261 10.5,-2261"/>
-<text text-anchor="start" x="30.5" y="-2269.2" font-family="Helvetica,sans-Serif" font-size="11.00">operator__local_extension</text>
+<text text-anchor="start" x="30.5" y="-2269.2" font-family="Helvetica,sans-Serif" font-size="11.00">operator_fk_provider</text>
 <polygon fill="none" stroke="black" points="276.5,-2261 276.5,-2283 399.5,-2283 399.5,-2261 276.5,-2261"/>
-<text text-anchor="start" x="279.5" y="-2269.2" font-family="Helvetica,sans-Serif" font-size="11.00">bool[1]</text>
+<text text-anchor="start" x="279.5" y="-2269.2" font-family="Helvetica,sans-Serif" font-size="11.00">varchar[16]</text>
 <polygon fill="none" stroke="black" points="10.5,-2239 10.5,-2261 276.5,-2261 276.5,-2239 10.5,-2239"/>
-<text text-anchor="start" x="30.5" y="-2247.2" font-family="Helvetica,sans-Serif" font-size="11.00">operator_fk_dataowner</text>
+<text text-anchor="start" x="30.5" y="-2247.2" font-family="Helvetica,sans-Serif" font-size="11.00">operator_identifier</text>
 <polygon fill="none" stroke="black" points="276.5,-2239 276.5,-2261 399.5,-2261 399.5,-2239 276.5,-2239"/>
-<text text-anchor="start" x="279.5" y="-2247.2" font-family="Helvetica,sans-Serif" font-size="11.00">varchar[16]</text>
+<text text-anchor="start" x="279.5" y="-2247.2" font-family="Helvetica,sans-Serif" font-size="11.00">text[2147483647]</text>
 <polygon fill="none" stroke="black" points="10.5,-2217 10.5,-2239 276.5,-2239 276.5,-2217 10.5,-2217"/>
-<text text-anchor="start" x="30.5" y="-2225.2" font-family="Helvetica,sans-Serif" font-size="11.00">operator_fk_provider</text>
+<text text-anchor="start" x="30.5" y="-2225.2" font-family="Helvetica,sans-Serif" font-size="11.00">operator_identifier_short</text>
 <polygon fill="none" stroke="black" points="276.5,-2217 276.5,-2239 399.5,-2239 399.5,-2217 276.5,-2217"/>
-<text text-anchor="start" x="279.5" y="-2225.2" font-family="Helvetica,sans-Serif" font-size="11.00">varchar[16]</text>
+<text text-anchor="start" x="279.5" y="-2225.2" font-family="Helvetica,sans-Serif" font-size="11.00">text[2147483647]</text>
 <polygon fill="none" stroke="black" points="10.5,-2195 10.5,-2217 276.5,-2217 276.5,-2195 10.5,-2195"/>
-<text text-anchor="start" x="30.5" y="-2203.2" font-family="Helvetica,sans-Serif" font-size="11.00">operator_identifier</text>
+<text text-anchor="start" x="30.5" y="-2203.2" font-family="Helvetica,sans-Serif" font-size="11.00">operator_last_modification</text>
 <polygon fill="none" stroke="black" points="276.5,-2195 276.5,-2217 399.5,-2217 399.5,-2195 276.5,-2195"/>
-<text text-anchor="start" x="279.5" y="-2203.2" font-family="Helvetica,sans-Serif" font-size="11.00">text[2147483647]</text>
+<text text-anchor="start" x="279.5" y="-2203.2" font-family="Helvetica,sans-Serif" font-size="11.00">timestamp[29,6]</text>
 <polygon fill="none" stroke="black" points="10.5,-2173 10.5,-2195 276.5,-2195 276.5,-2173 10.5,-2173"/>
-<text text-anchor="start" x="30.5" y="-2181.2" font-family="Helvetica,sans-Serif" font-size="11.00">operator_identifier_short</text>
+<text text-anchor="start" x="30.5" y="-2181.2" font-family="Helvetica,sans-Serif" font-size="11.00">operator_municipality_number</text>
 <polygon fill="none" stroke="black" points="276.5,-2173 276.5,-2195 399.5,-2195 399.5,-2173 276.5,-2173"/>
-<text text-anchor="start" x="279.5" y="-2181.2" font-family="Helvetica,sans-Serif" font-size="11.00">text[2147483647]</text>
+<text text-anchor="start" x="279.5" y="-2181.2" font-family="Helvetica,sans-Serif" font-size="11.00">int2[5]</text>
 <polygon fill="none" stroke="black" points="10.5,-2151 10.5,-2173 276.5,-2173 276.5,-2151 10.5,-2151"/>
-<text text-anchor="start" x="30.5" y="-2159.2" font-family="Helvetica,sans-Serif" font-size="11.00">operator_last_modification</text>
+<text text-anchor="start" x="30.5" y="-2159.2" font-family="Helvetica,sans-Serif" font-size="11.00">operator_organisation_type</text>
 <polygon fill="none" stroke="black" points="276.5,-2151 276.5,-2173 399.5,-2173 399.5,-2151 276.5,-2151"/>
-<text text-anchor="start" x="279.5" y="-2159.2" font-family="Helvetica,sans-Serif" font-size="11.00">timestamp[29,6]</text>
+<text text-anchor="start" x="279.5" y="-2159.2" font-family="Helvetica,sans-Serif" font-size="11.00">int4[10]</text>
 <polygon fill="none" stroke="black" points="10.5,-2129 10.5,-2151 276.5,-2151 276.5,-2129 10.5,-2129"/>
-<text text-anchor="start" x="30.5" y="-2137.2" font-family="Helvetica,sans-Serif" font-size="11.00">operator_municipality_number</text>
+<text text-anchor="start" x="30.5" y="-2137.2" font-family="Helvetica,sans-Serif" font-size="11.00">operator_remark</text>
 <polygon fill="none" stroke="black" points="276.5,-2129 276.5,-2151 399.5,-2151 399.5,-2129 276.5,-2129"/>
-<text text-anchor="start" x="279.5" y="-2137.2" font-family="Helvetica,sans-Serif" font-size="11.00">int2[5]</text>
+<text text-anchor="start" x="279.5" y="-2137.2" font-family="Helvetica,sans-Serif" font-size="11.00">text[2147483647]</text>
 <polygon fill="none" stroke="black" points="10.5,-2107 10.5,-2129 276.5,-2129 276.5,-2107 10.5,-2107"/>
-<text text-anchor="start" x="30.5" y="-2115.2" font-family="Helvetica,sans-Serif" font-size="11.00">operator_organisation_type</text>
+<text text-anchor="start" x="30.5" y="-2115.2" font-family="Helvetica,sans-Serif" font-size="11.00">operator_status</text>
 <polygon fill="none" stroke="black" points="276.5,-2107 276.5,-2129 399.5,-2129 399.5,-2107 276.5,-2107"/>
 <text text-anchor="start" x="279.5" y="-2115.2" font-family="Helvetica,sans-Serif" font-size="11.00">int4[10]</text>
 <polygon fill="none" stroke="black" points="10.5,-2085 10.5,-2107 276.5,-2107 276.5,-2085 10.5,-2085"/>
-<text text-anchor="start" x="30.5" y="-2093.2" font-family="Helvetica,sans-Serif" font-size="11.00">operator_remark</text>
+<text text-anchor="start" x="30.5" y="-2093.2" font-family="Helvetica,sans-Serif" font-size="11.00">operator_tww_active</text>
 <polygon fill="none" stroke="black" points="276.5,-2085 276.5,-2107 399.5,-2107 399.5,-2085 276.5,-2085"/>
-<text text-anchor="start" x="279.5" y="-2093.2" font-family="Helvetica,sans-Serif" font-size="11.00">text[2147483647]</text>
+<text text-anchor="start" x="279.5" y="-2093.2" font-family="Helvetica,sans-Serif" font-size="11.00">bool[1]</text>
 <polygon fill="none" stroke="black" points="10.5,-2063 10.5,-2085 276.5,-2085 276.5,-2063 10.5,-2063"/>
-<text text-anchor="start" x="30.5" y="-2071.2" font-family="Helvetica,sans-Serif" font-size="11.00">operator_status</text>
+<text text-anchor="start" x="30.5" y="-2071.2" font-family="Helvetica,sans-Serif" font-size="11.00">operator_tww_local_extension</text>
 <polygon fill="none" stroke="black" points="276.5,-2063 276.5,-2085 399.5,-2085 399.5,-2063 276.5,-2063"/>
-<text text-anchor="start" x="279.5" y="-2071.2" font-family="Helvetica,sans-Serif" font-size="11.00">int4[10]</text>
+<text text-anchor="start" x="279.5" y="-2071.2" font-family="Helvetica,sans-Serif" font-size="11.00">bool[1]</text>
 <polygon fill="none" stroke="black" points="10.5,-2041 10.5,-2063 276.5,-2063 276.5,-2041 10.5,-2041"/>
 <text text-anchor="start" x="30.5" y="-2049.2" font-family="Helvetica,sans-Serif" font-size="11.00">operator_uid</text>
 <polygon fill="none" stroke="black" points="276.5,-2041 276.5,-2063 399.5,-2063 399.5,-2041 276.5,-2041"/>

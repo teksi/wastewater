@@ -68,7 +68,6 @@ zone
 connection_object
 examination
 catchment_area
-measuring_point
 disposal
 pipe_profile
 overflow
@@ -76,12 +75,13 @@ infiltration_installation
 discharge_point
 control_center
 overflow_char
-log_card
 reach_point
 maintenance_event
-waste_water_treatment_plant
 dss15_aquifer
 measure
+measuring_point
+waste_water_treatment_plant
+log_card
 wastewater_structure
 cover
 wastewater_node
