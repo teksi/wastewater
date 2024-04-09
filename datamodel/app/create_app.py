@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import argparse
+from argparse import ArgumentParser, BooleanOptionalAction
 from pathlib import Path
 from typing import Optional
 
@@ -31,12 +31,14 @@ def run_sql(sql: str, pg_service: str, variables: dict = None):
 def create_app(
     srid: int = 2056,
     pg_service: str = "pg_tww",
+    drop_schema: Optional[bool] = False,
     tww_reach_extra: Optional[Path] = None,
     tww_wastewater_structure_extra: Optional[Path] = None,
 ):
     """
     Creates the schema tww_app for TEKSI Wastewater & GEP
     :param srid: the EPSG code for geometry columns
+    :param drop_schema: will drop schema tww_app if it exists
     :param pg_service: the PostgreSQL service, if not given it will be determined from environment variable in Pirogue
     :param tww_reach_extra: YAML file path of the definition of additional columns for vw_tww_reach view
     :param tww_wastewater_structure_extra: YAML file path of the definition of additional columns for vw_tww_wastewater_structure_extra view
@@ -44,7 +46,8 @@ def create_app(
     cwd = Path(__file__).parent.resolve()
     variables = {"SRID": srid}
 
-    run_sql("DROP SCHEMA IF EXISTS tww_app CASCADE;", pg_service)
+    if drop_schema:
+        run_sql("DROP SCHEMA IF EXISTS tww_app CASCADE;", pg_service)
 
     run_sql("CREATE SCHEMA tww_app;", pg_service)
 
@@ -208,7 +211,7 @@ def create_app(
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
+    parser = ArgumentParser()
     parser.add_argument("-p", "--pg_service", help="postgres service")
     parser.add_argument(
         "-s", "--srid", help="SRID EPSG code, defaults to 2056", type=int, default=2056
@@ -221,11 +224,19 @@ if __name__ == "__main__":
         "--tww_reach_extra",
         help="YAML definition file path for additions to vw_tww_reach view",
     )
+    parser.add_argument(
+        "-d",
+        "--drop-schema",
+        help="Drops cascaded any existing tww_app schema",
+        default=False,
+        action=BooleanOptionalAction,
+    )
     args = parser.parse_args()
 
     create_app(
         args.srid,
         args.pg_service,
+        drop_schema=args.drop_schema,
         tww_reach_extra=args.tww_reach_extra,
         tww_wastewater_structure_extra=args.tww_wastewater_structure_extra,
     )
