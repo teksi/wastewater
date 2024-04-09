@@ -5,7 +5,11 @@
 import argparse
 import os
 
-import psycopg
+try:
+    import psycopg
+except ImportError:
+    import psycopg2 as psycopg
+
 from pirogue.utils import insert_command, select_columns, table_parts, update_command
 from yaml import safe_load
 

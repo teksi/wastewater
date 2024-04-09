@@ -1,4 +1,7 @@
-import psycopg
+try:
+    import psycopg
+except ImportError:
+    import psycopg2 as psycopg
 
 DEFAULT_PG_SERVICE = "pg_tww"
 

@@ -4,7 +4,11 @@ from argparse import ArgumentParser, BooleanOptionalAction
 from pathlib import Path
 from typing import Optional
 
-import psycopg
+try:
+    import psycopg
+except ImportError:
+    import psycopg2 as psycopg
+
 from pirogue import MultipleInheritance, SimpleJoins, SingleInheritance
 from view.vw_tww_reach import vw_tww_reach
 from view.vw_tww_wastewater_structure import vw_tww_wastewater_structure

@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 
 
-import psycopg
+try:
+    import psycopg
+except ImportError:
+    import psycopg2 as psycopg
+
 from pum.core.deltapy import DeltaPy
 from view.create_views import create_views
 
