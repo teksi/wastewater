@@ -48,7 +48,9 @@ def create_app(
     :param tww_wastewater_structure_extra: YAML file path of the definition of additional columns for vw_tww_wastewater_structure_extra view
     """
     cwd = Path(__file__).parent.resolve()
-    variables = {"SRID": srid}
+    variables = {
+        "SRID": psycopg.sql.SQL(f"{srid}")
+    }  # when dropping psycopg2 support, we can use the srid var directly
 
     if drop_schema:
         run_sql("DROP SCHEMA IF EXISTS tww_app CASCADE;", pg_service)

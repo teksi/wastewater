@@ -27,6 +27,7 @@ class DbTestBase:
     @classmethod
     def select(cls, table, obj_id, schema="tww_app"):
         cur = cls.conn.cursor(row_factory=psycopg.rows.dict_row)
+        # cur = cls.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
         cur.execute(f"SELECT * FROM {schema}.{table} WHERE obj_id=%(obj_id)s", {"obj_id": obj_id})
         return cur.fetchone()
 
