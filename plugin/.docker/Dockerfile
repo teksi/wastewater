@@ -9,9 +9,6 @@ RUN apt-get update && \
     apt-get -y install openjdk-8-jre curl locales postgresql-client python3-geoalchemy2 \
     && rm -rf /var/lib/apt/lists/*
 
-# remove when https://github.com/qgis/qgis-docker/pull/95 is merged
-RUN pip install psycopg
-
 RUN printf '[postgres]\ndbname=postgres\nuser=postgres\n' >> /etc/postgresql-common/pg_service.conf
 RUN printf '[pg_tww]\ndbname=tww\nuser=postgres\n' >> /etc/postgresql-common/pg_service.conf
 
