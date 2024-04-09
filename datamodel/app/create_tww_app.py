@@ -1,23 +1,24 @@
 #!/usr/bin/env python3
 
 import argparse
-import os
+from pathlib import Path
+from typing import Optional
 
-import psycopg2
+import psycopg
 from view.create_views import create_views
 
 
-def run_sql_file(file_path: str, pg_service: str, variables: dict = {}):
-    script_directory = os.path.dirname(os.path.abspath(__file__))
-    abs_file_path = os.path.join(script_directory, file_path)
-    sql = open(abs_file_path).read()
+def run_sql_file(file_path: str, pg_service: str, variables: dict = None):
+    abs_file_path = Path(__file__).parent.resolve() / file_path
+    with open(abs_file_path) as f:
+        sql = f.read()
     run_sql(sql, pg_service, variables)
 
 
-def run_sql(sql: str, pg_service: str, variables: dict = {}):
+def run_sql(sql: str, pg_service: str, variables: dict = None):
     if variables:
         sql = sql.format(**variables)
-    conn = psycopg2.connect(f"service={pg_service}")
+    conn = psycopg.connect(f"service={pg_service}")
     cursor = conn.cursor()
     cursor.execute(sql)
     conn.commit()
@@ -27,8 +28,8 @@ def run_sql(sql: str, pg_service: str, variables: dict = {}):
 def create_tww_app(
     srid: int = 2056,
     pg_service: str = "pg_tww",
-    tww_reach_extra: str = None,
-    tww_wastewater_structure_extra: str = None,
+    tww_reach_extra: Optional[Path] = None,
+    tww_wastewater_structure_extra: Optional[Path] = None,
     db_identifier: str = None,
 ):
     """
@@ -37,6 +38,7 @@ def create_tww_app(
     :param pg_service: the PostgreSQL service, if not given it will be determined from environment variable in Pirogue
     :param tww_reach_extra: YAML file path of the definition of additional columns for vw_tww_reach view
     :param tww_wastewater_structure_extra: YAML file path of the definition of additional columns for vw_tww_wastewater_structure_extra view
+    :param db_identifier: database identifier
     """
     variables = {"SRID": srid, "db_identifier": db_identifier}
 
