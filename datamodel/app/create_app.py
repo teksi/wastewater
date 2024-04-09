@@ -4,7 +4,11 @@ from argparse import ArgumentParser, BooleanOptionalAction
 from pathlib import Path
 from typing import Optional
 
-import psycopg
+try:
+    import psycopg
+except ImportError:
+    import psycopg2 as psycopg
+
 from pirogue import MultipleInheritance, SimpleJoins, SingleInheritance
 from view.vw_tww_reach import vw_tww_reach
 from view.vw_tww_wastewater_structure import vw_tww_wastewater_structure
@@ -44,7 +48,9 @@ def create_app(
     :param tww_wastewater_structure_extra: YAML file path of the definition of additional columns for vw_tww_wastewater_structure_extra view
     """
     cwd = Path(__file__).parent.resolve()
-    variables = {"SRID": srid}
+    variables = {
+        "SRID": psycopg.sql.SQL(f"{srid}")
+    }  # when dropping psycopg2 support, we can use the srid var directly
 
     if drop_schema:
         run_sql("DROP SCHEMA IF EXISTS tww_app CASCADE;", pg_service)

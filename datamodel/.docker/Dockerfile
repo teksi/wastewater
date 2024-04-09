@@ -12,6 +12,7 @@ FROM base-$BUILDARCH as common
 
 ARG AUTO_INIT=True
 ARG RUN_TEST=False
+ARG PSYCOPG_VERSION=3
 
 # System deps (bc + exiftool for testing)
 RUN apt-get update && apt-get install -y python3 python3-pip python3-venv libpq-dev wget exiftool bc && apt-get clean
@@ -25,6 +26,7 @@ ENV VIRTUAL_ENV=/opt/venv
 RUN python3 -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 RUN pip install -r datamodel/requirements.txt
+RUN pip install -r datamodel/requirements-psycopg${PSYCOPG_VERSION}.txt
 RUN if [ "${RUN_TEST}" = "True" ]; then pip install -r datamodel/requirements-test.txt; fi
 
 # Configure the postgres connections

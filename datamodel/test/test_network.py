@@ -1,7 +1,11 @@
 import os
 import unittest
 
-import psycopg
+try:
+    import psycopg
+except ImportError:
+    import psycopg2 as psycopg
+    import psycopg2.extras as psycopg_extras
 
 from .utils import DEFAULT_PG_SERVICE, DbTestBase
 
@@ -88,7 +92,11 @@ class TestNetwork(unittest.TestCase, DbTestBase):
         SELECT obj_id, depth
         FROM downstream;
         """
-        cur = self.cursor(row_factory=psycopg.rows.dict_row)
+        try:
+            cur = self.cursor(row_factory=psycopg.rows.dict_row)
+        except AttributeError:
+            # remove when dropping psycopg2 support
+            cur = self.cursor(cursor_factory=psycopg_extras.DictCursor)
         cur.execute(query, (node_id,))
         return {row["obj_id"]: row["depth"] for row in cur.fetchall()}
 
@@ -115,7 +123,11 @@ class TestNetwork(unittest.TestCase, DbTestBase):
         SELECT obj_id, depth
         FROM upstream
         """
-        cur = self.cursor(row_factory=psycopg.rows.dict_row)
+        try:
+            cur = self.cursor(row_factory=psycopg.rows.dict_row)
+        except AttributeError:
+            # remove when dropping psycopg2 support
+            cur = self.cursor(cursor_factory=psycopg_extras.DictCursor)
         cur.execute(query, (node_id,))
         return {row["obj_id"]: row["depth"] for row in cur.fetchall()}
 

@@ -1,4 +1,8 @@
-import psycopg
+try:
+    import psycopg
+except ImportError:
+    import psycopg2 as psycopg
+    import psycopg2.extras as psycopg_extras
 
 DEFAULT_PG_SERVICE = "pg_tww"
 
@@ -23,7 +27,11 @@ class DbTestBase:
 
     @classmethod
     def select(cls, table, obj_id, schema="tww_app"):
-        cur = cls.conn.cursor(row_factory=psycopg.rows.dict_row)
+        try:
+            cur = cls.conn.cursor(row_factory=psycopg.rows.dict_row)
+        except AttributeError:
+            # remove when dropping psycopg2 support
+            cur = cls.conn.cursor(cursor_factory=psycopg_extras.DictCursor)
         cur.execute(f"SELECT * FROM {schema}.{table} WHERE obj_id=%(obj_id)s", {"obj_id": obj_id})
         return cur.fetchone()
 
