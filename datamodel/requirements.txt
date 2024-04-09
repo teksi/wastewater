@@ -1,3 +1,2 @@
-pirogue>=2.0.1
-psycopg>=3.1.18
+pirogue>=2.1.0
 pyyaml
