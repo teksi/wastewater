@@ -17,7 +17,7 @@ def run_sql_file(file_path: str, pg_service: str, variables: dict = None):
 
 def run_sql(sql: str, pg_service: str, variables: dict = None):
     if variables:
-        sql = sql.format(**variables)
+        sql = psycopg.sql.SQL(sql).format(**variables)
     conn = psycopg.connect(f"service={pg_service}")
     cursor = conn.cursor()
     cursor.execute(sql)
