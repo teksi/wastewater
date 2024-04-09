@@ -33,7 +33,6 @@ def create_app(
     pg_service: str = "pg_tww",
     tww_reach_extra: Optional[Path] = None,
     tww_wastewater_structure_extra: Optional[Path] = None,
-    db_identifier: str = None,
 ):
     """
     Creates the schema tww_app for TEKSI Wastewater & GEP
@@ -41,10 +40,9 @@ def create_app(
     :param pg_service: the PostgreSQL service, if not given it will be determined from environment variable in Pirogue
     :param tww_reach_extra: YAML file path of the definition of additional columns for vw_tww_reach view
     :param tww_wastewater_structure_extra: YAML file path of the definition of additional columns for vw_tww_wastewater_structure_extra view
-    :param db_identifier: database identifier
     """
     cwd = Path(__file__).parent.resolve()
-    variables = {"SRID": srid, "db_identifier": db_identifier}
+    variables = {"SRID": srid}
 
     run_sql("DROP SCHEMA IF EXISTS tww_app CASCADE;", pg_service)
 
@@ -223,10 +221,6 @@ if __name__ == "__main__":
         "--tww_reach_extra",
         help="YAML definition file path for additions to vw_tww_reach view",
     )
-    parser.add_argument(
-        "--db_identifier",
-        help="identifier for database specific grant roles",
-    )
     args = parser.parse_args()
 
     create_app(
@@ -234,5 +228,4 @@ if __name__ == "__main__":
         args.pg_service,
         tww_reach_extra=args.tww_reach_extra,
         tww_wastewater_structure_extra=args.tww_wastewater_structure_extra,
-        db_identifier=args.db_identifier,
     )
