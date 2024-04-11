@@ -2532,7 +2532,7 @@ class InterlisExporterToIntermediateSchema:
             "benetzungsverlust": row.wetting_loss,
             "einzugsgebietref": self.get_tid(row.fk_catchment_area__REL),
         }
-    
+
     def zone_common(self, row, type_name):
         """
         Returns common attributes for zone
@@ -2542,7 +2542,7 @@ class InterlisExporterToIntermediateSchema:
             "bemerkung": row.remark,
             "bezeichnung": row.identifier,
         }
-    
+
     def overflow_common(self, row, type_name):
         """
         Returns common attributes for overflow
