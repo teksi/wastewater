@@ -219,7 +219,7 @@ class ModelTwwOd(ModelBase):
 
         ModelTwwOd.catchment_area = catchment_area
 
-        class surface_runoff_parameters(catchment_area):
+        class surface_runoff_parameters(self.Base):
             __tablename__ = "surface_runoff_parameters"
             __table_args__ = {"schema": config.TWW_OD_SCHEMA}
 
