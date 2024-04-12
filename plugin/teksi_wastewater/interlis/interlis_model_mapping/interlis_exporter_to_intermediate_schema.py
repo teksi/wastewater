@@ -2567,16 +2567,21 @@ class InterlisExporterToIntermediateSchema:
             "steuerungszentraleref": self.get_tid(row.fk_control_center__REL),
         }
 
-    def _textpos_common(self, row, t_type, geojson_crs_def):
+    def _textpos_common(self, row, t_type, geojson_crs_def, shortcut_en):
         """
         Returns common attributes for textpos
         """
         t_id = self.tid_maker.next_tid()
 
+        if t_id > 999999:
+            logger.warning(
+                f"Exporting more than 999999 labels will generate invalid OIDs. Currently exporting {t_id} label of type '{t_type}'."
+            )
+
         return {
             "t_id": t_id,
             "t_type": t_type,
-            "t_ili_tid": f"ch080txtPR0000{t_id}",
+            "t_ili_tid": f"ch080txt{shortcut_en}{t_id:06d}",
             # --- TextPos ---
             "textpos": ST_GeomFromGeoJSON(
                 json.dumps(
@@ -2644,19 +2649,19 @@ class InterlisExporterToIntermediateSchema:
 
             if layer_name == "vw_tww_reach":
                 ili_label = self.model_classes_interlis.haltung_text(
-                    **self._textpos_common(label, "haltung_text", geojson_crs_def),
+                    **self._textpos_common(label, "haltung_text", geojson_crs_def, "RX"),
                     haltungref=t_id,
                 )
 
             elif layer_name == "vw_tww_wastewater_structure":
                 ili_label = self.model_classes_interlis.abwasserbauwerk_text(
-                    **self._textpos_common(label, "abwasserbauwerk_text", geojson_crs_def),
+                    **self._textpos_common(label, "abwasserbauwerk_text", geojson_crs_def, "WX"),
                     abwasserbauwerkref=t_id,
                 )
 
             elif layer_name == "catchment_area":
                 ili_label = self.model_classes_interlis.einzugsgebiet_text(
-                    **self._textpos_common(label, "einzugsgebiet_text", geojson_crs_def),
+                    **self._textpos_common(label, "einzugsgebiet_text", geojson_crs_def, "CX"),
                     einzugsgebietref=t_id,
                 )
 
