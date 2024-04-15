@@ -4,7 +4,6 @@ import argparse
 
 import psycopg2
 from pirogue import MultipleInheritance, SimpleJoins, SingleInheritance
-from vw_tww_additional_ws import vw_tww_additional_ws
 from vw_tww_reach import vw_tww_reach
 from vw_tww_wastewater_structure import vw_tww_wastewater_structure
 from yaml import safe_load
