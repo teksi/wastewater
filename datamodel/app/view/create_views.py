@@ -194,6 +194,7 @@ def create_views(
         srid, pg_service=pg_service, extra_definition=tww_wastewater_structure_extra
     )
     vw_tww_reach(pg_service=pg_service, extra_definition=tww_reach_extra)
+
     run_sql("app/view/vw_file.sql", pg_service, variables)
 
     MultipleInheritance(
