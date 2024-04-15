@@ -1,47 +1,4 @@
 --------------------------------------------------------
--- UPDATE wastewater structure symbology
--- Argument:
---  * obj_id of wastewater structure or NULL to update all
---------------------------------------------------------
-
-CREATE OR REPLACE FUNCTION tww_app.update_wastewater_structure_symbology(_obj_id text, _all boolean default false)
-  RETURNS VOID AS
-  $BODY$
-BEGIN
-UPDATE tww_od.wastewater_structure ws
-SET
-  _function_hierarchic = function_hierarchic,
-  _usage_current = usage_current
-FROM(
-  SELECT DISTINCT ON (ws.obj_id) ws.obj_id AS ws_obj_id,
-      COALESCE(first_value(CH_from.function_hierarchic) OVER w, first_value(CH_to.function_hierarchic) OVER w) AS function_hierarchic,
-      COALESCE(first_value(CH_from.usage_current) OVER w, first_value(CH_to.usage_current) OVER w) AS usage_current,
-      rank() OVER w AS hierarchy_rank
-    FROM
-      tww_od.wastewater_structure ws
-      LEFT JOIN tww_od.wastewater_networkelement ne ON ne.fk_wastewater_structure = ws.obj_id
-      LEFT JOIN tww_od.reach_point rp ON ne.obj_id = rp.fk_wastewater_networkelement
-      LEFT JOIN tww_od.reach                       re_from           ON re_from.fk_reach_point_from = rp.obj_id
-      LEFT JOIN tww_od.wastewater_networkelement   ne_from           ON ne_from.obj_id = re_from.obj_id
-      LEFT JOIN tww_od.channel                     CH_from           ON CH_from.obj_id = ne_from.fk_wastewater_structure
-      LEFT JOIN tww_vl.channel_function_hierarchic vl_fct_hier_from  ON CH_from.function_hierarchic = vl_fct_hier_from.code
-      LEFT JOIN tww_vl.channel_usage_current       vl_usg_curr_from  ON CH_from.usage_current = vl_usg_curr_from.code
-      LEFT JOIN tww_od.reach                       re_to          ON re_to.fk_reach_point_to = rp.obj_id
-      LEFT JOIN tww_od.wastewater_networkelement   ne_to          ON ne_to.obj_id = re_to.obj_id
-      LEFT JOIN tww_od.channel                     CH_to          ON CH_to.obj_id = ne_to.fk_wastewater_structure
-      LEFT JOIN tww_vl.channel_function_hierarchic vl_fct_hier_to ON CH_to.function_hierarchic = vl_fct_hier_to.code
-      LEFT JOIN tww_vl.channel_usage_current       vl_usg_curr_to ON CH_to.usage_current = vl_usg_curr_to.code
-    WHERE _all OR ws.obj_id = _obj_id
-      WINDOW w AS ( PARTITION BY ws.obj_id ORDER BY vl_fct_hier_from.order_fct_hierarchic ASC NULLS LAST, vl_fct_hier_to.order_fct_hierarchic ASC NULLS LAST,
-                                vl_usg_curr_from.order_usage_current ASC NULLS LAST, vl_usg_curr_to.order_usage_current ASC NULLS LAST ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)
-) symbology_ws
-WHERE symbology_ws.ws_obj_id = ws.obj_id;
-END
-$BODY$
-LANGUAGE plpgsql
-VOLATILE;
-
---------------------------------------------------------
 -- UPDATE wastewater node symbology
 -- Argument:
 --  * obj_id of wastewater networkelement or NULL to update all
@@ -56,7 +13,7 @@ BEGIN
 -- being triggered for all rows. See https://github.com/QGEP/datamodel/pull/166#issuecomment-760245405 //skip-keyword-check
 IF _all THEN
   RAISE INFO 'Temporarily disabling symbology triggers';
-  PERFORM tww_sys.drop_symbology_triggers();
+  PERFORM tww_sys.disable_symbology_triggers();
 END IF;
 
 
@@ -96,7 +53,7 @@ WHERE symbology_ne.ne_obj_id = n.obj_id;
 -- See above
 IF _all THEN
   RAISE INFO 'Reenabling symbology triggers';
-  PERFORM tww_sys.create_symbology_triggers();
+  PERFORM tww_sys.enable_symbology_triggers();
 END IF;
 
 END
@@ -104,16 +61,13 @@ $BODY$
 LANGUAGE plpgsql
 VOLATILE;
 
-
   -------------------- SYMBOLOGY UPDATE ON CHANNEL TABLE CHANGES ----------------------
 
 CREATE OR REPLACE FUNCTION tww_app.ws_symbology_update_by_channel()
   RETURNS trigger AS
 $BODY$
 DECLARE
-  _ws_from_id TEXT;
   _ne_from_id TEXT;
-  _ws_to_id TEXT;
   _ne_to_id TEXT;
   ch_obj_id TEXT;
 BEGIN
@@ -127,14 +81,12 @@ BEGIN
   END CASE;
 
   BEGIN
-    SELECT ws.obj_id, ne.obj_id INTO _ws_from_id, _ne_from_id
+    SELECT ne.obj_id INTO  _ne_from_id
       FROM tww_od.wastewater_networkelement ch_ne
       LEFT JOIN tww_od.reach re ON ch_ne.obj_id = re.obj_id
       LEFT JOIN tww_od.reach_point rp ON re.fk_reach_point_from = rp.obj_id
       LEFT JOIN tww_od.wastewater_networkelement ne ON rp.fk_wastewater_networkelement = ne.obj_id
-      LEFT JOIN tww_od.wastewater_structure ws ON ne.fk_wastewater_structure = ws.obj_id
       WHERE ch_ne.fk_wastewater_structure = ch_obj_id;
-    EXECUTE tww_app.update_wastewater_structure_symbology(_ws_from_id);
     EXECUTE tww_app.update_wastewater_node_symbology(_ne_from_id);
   EXCEPTION
     WHEN NO_DATA_FOUND THEN
@@ -144,14 +96,12 @@ BEGIN
   END;
 
   BEGIN
-    SELECT ws.obj_id, ne.obj_id INTO _ws_to_id, _ne_to_id
+    SELECT ne.obj_id INTO _ne_to_id
       FROM tww_od.wastewater_networkelement ch_ne
       LEFT JOIN tww_od.reach re ON ch_ne.obj_id = re.obj_id
       LEFT JOIN tww_od.reach_point rp ON re.fk_reach_point_to = rp.obj_id
       LEFT JOIN tww_od.wastewater_networkelement ne ON rp.fk_wastewater_networkelement = ne.obj_id
-      LEFT JOIN tww_od.wastewater_structure ws ON ne.fk_wastewater_structure = ws.obj_id
       WHERE ch_ne.fk_wastewater_structure = ch_obj_id;
-    EXECUTE tww_app.update_wastewater_structure_symbology(_ws_to_id);
     EXECUTE tww_app.update_wastewater_node_symbology(_ne_to_id);
   EXCEPTION
     WHEN NO_DATA_FOUND THEN
@@ -171,7 +121,6 @@ CREATE OR REPLACE FUNCTION tww_app.ws_symbology_update_by_reach_point()
   RETURNS trigger AS
 $BODY$
 DECLARE
-  _ws_id TEXT;
   _ne_id TEXT;
   rp_obj_id TEXT;
 BEGIN
@@ -185,13 +134,11 @@ BEGIN
   END CASE;
 
   BEGIN
-    SELECT ws.obj_id, ne.obj_id INTO STRICT _ws_id, _ne_id
+    SELECT ne.obj_id INTO STRICT _ne_id
       FROM tww_od.wastewater_structure ws
       LEFT JOIN tww_od.wastewater_networkelement ne ON ws.obj_id = ne.fk_wastewater_structure
       LEFT JOIN tww_od.reach_point rp ON ne.obj_id = rp.fk_wastewater_networkelement
       WHERE rp.obj_id = rp_obj_id;
-
-    EXECUTE tww_app.update_wastewater_structure_symbology(_ws_id);
     EXECUTE tww_app.update_wastewater_node_symbology(_ne_id);
   EXCEPTION
     WHEN NO_DATA_FOUND THEN
@@ -210,9 +157,7 @@ CREATE OR REPLACE FUNCTION tww_app.ws_symbology_update_by_reach()
   RETURNS trigger AS
 $BODY$
 DECLARE
-  _ws_from_id TEXT;
   _ne_from_id TEXT;
-  _ws_to_id TEXT;
   _ne_to_id TEXT;
   symb_attribs RECORD;
   re_obj_id TEXT;
@@ -227,13 +172,11 @@ BEGIN
   END CASE;
 
   BEGIN
-    SELECT ws.obj_id, ne.obj_id INTO STRICT _ws_from_id, _ne_from_id
+    SELECT ne.obj_id INTO STRICT _ne_from_id
       FROM tww_od.reach re
       LEFT JOIN tww_od.reach_point rp ON rp.obj_id = re.fk_reach_point_from
       LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = rp.fk_wastewater_networkelement
-      LEFT JOIN tww_od.wastewater_structure ws ON ws.obj_id = ne.fk_wastewater_structure
       WHERE re.obj_id = re_obj_id;
-    EXECUTE tww_app.update_wastewater_structure_symbology(_ws_from_id);
     EXECUTE tww_app.update_wastewater_node_symbology(_ne_from_id);
   EXCEPTION
     WHEN NO_DATA_FOUND THEN
@@ -243,13 +186,11 @@ BEGIN
   END;
 
   BEGIN
-    SELECT ws.obj_id, ne.obj_id INTO STRICT _ws_to_id, _ne_to_id
+    SELECT ne.obj_id INTO STRICT _ne_to_id
       FROM tww_od.reach re
       LEFT JOIN tww_od.reach_point rp ON rp.obj_id = re.fk_reach_point_to
       LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = rp.fk_wastewater_networkelement
-      LEFT JOIN tww_od.wastewater_structure ws ON ws.obj_id = ne.fk_wastewater_structure
       WHERE re.obj_id = re_obj_id;
-    EXECUTE tww_app.update_wastewater_structure_symbology(_ws_to_id);
     EXECUTE tww_app.update_wastewater_node_symbology(_ne_to_id);
   EXCEPTION
     WHEN NO_DATA_FOUND THEN
@@ -262,6 +203,69 @@ BEGIN
   RETURN NEW;
 END; $BODY$
 LANGUAGE plpgsql VOLATILE;
+
+--------------------------------------------------------
+-- UPDATE wastewater structure fk_main_cover
+-- Argument:
+--  * obj_id of wastewater structure
+--  * all True to update all
+--  * omit both arguments to update all where fk_main_cover is null
+--------------------------------------------------------
+CREATE OR REPLACE FUNCTION tww_app.wastewater_structure_update_fk_main_cover(_obj_id text default NULL, _all boolean default false)
+  RETURNS VOID AS
+  $BODY$
+  DECLARE
+  myrec record;
+
+BEGIN
+  UPDATE tww_od.wastewater_structure ws
+  SET fk_main_cover = ws_covers.co_obj_id
+  FROM (
+    SELECT ws.obj_id, min(co.obj_id) OVER (PARTITION BY ws.obj_id) AS co_obj_id
+      FROM tww_od.wastewater_structure ws
+      LEFT JOIN tww_od.structure_part sp ON sp.fk_wastewater_structure = ws.obj_id
+      LEFT JOIN tww_od.cover co ON sp.obj_id = co.obj_id
+      LEFT JOIN tww_od.channel ch ON ch.obj_id = ws.obj_id
+      WHERE ch.obj_id IS NULL AND (_all OR ws.obj_id = _obj_id OR ( NOT _all AND _obj_id is NULL AND ws.fk_main_cover IS NULL))
+  ) ws_covers
+  WHERE ws.obj_id = ws_covers.obj_id;
+END
+
+$BODY$
+LANGUAGE plpgsql
+VOLATILE;
+
+--------------------------------------------------------
+-- UPDATE wastewater structure fk_main_wastewater_node
+-- Argument:
+--  * obj_id of wastewater structure
+--  * all True to update all
+--  * omit both arguments to update all where fk_main_wastewater_node is null
+--------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION tww_app.wastewater_structure_update_fk_main_wastewater_node(_obj_id text default NULL, _all boolean default false)
+  RETURNS VOID AS
+  $BODY$
+  DECLARE
+  myrec record;
+
+BEGIN
+  UPDATE tww_od.wastewater_structure ws
+  SET fk_main_wastewater_node = ws_nodes.wn_obj_id
+  FROM (
+    SELECT ws.obj_id, min(wn.obj_id) OVER (PARTITION BY ws.obj_id) AS wn_obj_id
+      FROM tww_od.wastewater_structure ws
+      LEFT JOIN tww_od.wastewater_networkelement ne ON ne.fk_wastewater_structure = ws.obj_id
+      LEFT JOIN tww_od.wastewater_node wn ON ne.obj_id = wn.obj_id
+      LEFT JOIN tww_od.channel ch ON ch.obj_id = ws.obj_id
+      WHERE ch.obj_id IS NULL AND (_all OR ws.obj_id = _obj_id OR ( NOT _all AND _obj_id is NULL AND ws.fk_main_wastewater_node IS NULL))
+  ) ws_nodes
+  WHERE ws.obj_id = ws_nodes.obj_id;
+END
+
+$BODY$
+LANGUAGE plpgsql
+VOLATILE;
 
 --------------------------------------------------------
 -- UPDATE wastewater structure depth
@@ -295,10 +299,6 @@ END
 $BODY$
 LANGUAGE plpgsql
 VOLATILE;
-
-
-
-
 
 --------------------------------------------------------
 -- UPDATE wastewater structure label
@@ -415,6 +415,7 @@ BEGIN
 
   EXECUTE tww_app.update_wastewater_structure_label(affected_sp.fk_wastewater_structure);
   EXECUTE tww_app.update_depth(affected_sp.fk_wastewater_structure);
+  EXECUTE tww_app.wastewater_structure_update_fk_main_cover(affected_sp.fk_wastewater_structure);
 
   RETURN NEW;
 END; $BODY$
@@ -664,31 +665,52 @@ $BODY$
 -- To temporarily disable these cache refreshes for batch jobs like migrations
 -----------------------------------------------------------------------
 
-CREATE OR REPLACE FUNCTION tww_sys.drop_symbology_triggers() RETURNS VOID AS $$
+CREATE OR REPLACE FUNCTION tww_sys.disable_symbology_triggers() RETURNS VOID AS $$
+DECLARE
+    tbl text;
+	trig text;
 BEGIN
-  DROP TRIGGER IF EXISTS on_reach_point_update ON tww_od.reach_point;
-  DROP TRIGGER IF EXISTS on_reach_2_change ON tww_od.reach;
-  DROP TRIGGER IF EXISTS on_reach_1_delete ON tww_od.reach;
-  DROP TRIGGER IF EXISTS on_wastewater_structure_update ON tww_od.wastewater_structure;
-  DROP TRIGGER IF EXISTS ws_label_update_by_wastewater_networkelement ON tww_od.wastewater_networkelement;
-  DROP TRIGGER IF EXISTS on_structure_part_change ON tww_od.structure_part;
-  DROP TRIGGER IF EXISTS on_cover_change ON tww_od.cover;
-  DROP TRIGGER IF EXISTS on_wasterwaternode_change ON tww_od.wastewater_node;
-  DROP TRIGGER IF EXISTS ws_symbology_update_by_reach ON tww_od.reach;
-  DROP TRIGGER IF EXISTS ws_symbology_update_by_channel ON tww_od.channel;
-  DROP TRIGGER IF EXISTS ws_symbology_update_by_reach_point ON tww_od.reach_point;
-  DROP TRIGGER IF EXISTS calculate_reach_length ON tww_od.reach;
+  ALTER TABLE tww_od.reach_point DISABLE TRIGGER on_reach_point_update;
+  ALTER TABLE tww_od.reach DISABLE TRIGGER on_reach_2_change;
+  ALTER TABLE tww_od.reach DISABLE TRIGGER on_reach_1_delete;
+  ALTER TABLE tww_od.wastewater_structure DISABLE TRIGGER on_wastewater_structure_update;
+  ALTER TABLE tww_od.wastewater_networkelement DISABLE TRIGGER ws_label_update_by_wastewater_networkelement;
+  ALTER TABLE tww_od.structure_part DISABLE TRIGGER on_structure_part_change;
+  ALTER TABLE tww_od.cover DISABLE TRIGGER on_cover_change;
+  ALTER TABLE tww_od.wastewater_node DISABLE TRIGGER on_wasterwaternode_change;
+  ALTER TABLE tww_od.reach DISABLE TRIGGER ws_symbology_update_by_reach;
+  ALTER TABLE tww_od.channel DISABLE TRIGGER ws_symbology_update_by_channel;
+  ALTER TABLE tww_od.reach_point DISABLE TRIGGER ws_symbology_update_by_reach_point;
+  ALTER TABLE tww_od.reach DISABLE TRIGGER calculate_reach_length;
   RETURN;
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
 
 -----------------------------------------------------------------------
 -- Create Symbology Triggers
 -----------------------------------------------------------------------
 
-CREATE OR REPLACE FUNCTION tww_sys.create_symbology_triggers() RETURNS VOID AS $$
+CREATE OR REPLACE FUNCTION tww_sys.enable_symbology_triggers() RETURNS VOID AS $$
+DECLARE
+    tbl text;
+	trig text;
 BEGIN
-  -- only update -> insert and delete are handled by reach trigger
+  ALTER TABLE tww_od.reach_point ENABLE TRIGGER on_reach_point_update;
+  ALTER TABLE tww_od.reach ENABLE TRIGGER on_reach_2_change;
+  ALTER TABLE tww_od.reach ENABLE TRIGGER on_reach_1_delete;
+  ALTER TABLE tww_od.wastewater_structure ENABLE TRIGGER on_wastewater_structure_update;
+  ALTER TABLE tww_od.wastewater_networkelement ENABLE TRIGGER ws_label_update_by_wastewater_networkelement;
+  ALTER TABLE tww_od.structure_part ENABLE TRIGGER on_structure_part_change;
+  ALTER TABLE tww_od.cover ENABLE TRIGGER on_cover_change;
+  ALTER TABLE tww_od.wastewater_node ENABLE TRIGGER on_wasterwaternode_change;
+  ALTER TABLE tww_od.reach ENABLE TRIGGER ws_symbology_update_by_reach;
+  ALTER TABLE tww_od.channel ENABLE TRIGGER ws_symbology_update_by_channel;
+  ALTER TABLE tww_od.reach_point ENABLE TRIGGER ws_symbology_update_by_reach_point;
+  ALTER TABLE tww_od.reach ENABLE TRIGGER calculate_reach_length;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- only update -> insert and delete are handled by reach trigger
   CREATE TRIGGER on_reach_point_update
   AFTER UPDATE
     ON tww_od.reach_point
@@ -761,85 +783,3 @@ BEGIN
     ON tww_od.reach_point
   FOR EACH ROW
     EXECUTE PROCEDURE tww_app.ws_symbology_update_by_reach_point();
-
-
-  RETURN;
-END;
-$$ LANGUAGE plpgsql;
-
--- Activate triggers by default
-SELECT tww_sys.create_symbology_triggers();
-
--- only update -> insert and delete are handled by reach trigger
-CREATE TRIGGER tr_symb_on_reach_point_update
-AFTER UPDATE
-ON tww_od.reach_point
-FOR EACH ROW
-EXECUTE PROCEDURE tww_app.on_reach_point_update();
-
-CREATE TRIGGER tr_symb_on_reach_2_change
-AFTER INSERT OR UPDATE OR DELETE
-ON tww_od.reach
-FOR EACH ROW
-EXECUTE PROCEDURE tww_app.on_reach_change();
-
-CREATE TRIGGER tr_symb_on_reach_1_delete
-AFTER DELETE
-ON tww_od.reach
-FOR EACH ROW
-EXECUTE PROCEDURE tww_app.on_reach_delete();
-
-CREATE TRIGGER tr_symb_calculate_reach_length
-BEFORE INSERT OR UPDATE
-ON tww_od.reach
-FOR EACH ROW
-EXECUTE PROCEDURE tww_app.calculate_reach_length();
-
-CREATE TRIGGER tr_symb_ws_symbology_update_by_reach
-AFTER INSERT OR UPDATE OR DELETE
-ON tww_od.reach
-FOR EACH ROW
-EXECUTE PROCEDURE tww_app.ws_symbology_update_by_reach();
-
-CREATE TRIGGER tr_symb_on_wastewater_structure_update
-AFTER UPDATE
-ON tww_od.wastewater_structure
-FOR EACH ROW
-EXECUTE PROCEDURE tww_app.on_wastewater_structure_update();
-
-CREATE TRIGGER tr_symb_ws_label_update_by_wastewater_networkelement
-AFTER INSERT OR UPDATE OR DELETE
-ON tww_od.wastewater_networkelement
-FOR EACH ROW
-EXECUTE PROCEDURE tww_app.on_structure_part_change_networkelement();
-
-CREATE TRIGGER tr_symb_on_structure_part_change
-AFTER INSERT OR UPDATE OR DELETE
-ON tww_od.structure_part
-FOR EACH ROW
-EXECUTE PROCEDURE tww_app.on_structure_part_change_networkelement();
-
-CREATE TRIGGER tr_symb_on_cover_change
-AFTER INSERT OR UPDATE OR DELETE
-ON tww_od.cover
-FOR EACH ROW
-EXECUTE PROCEDURE tww_app.on_cover_change();
-
-CREATE TRIGGER tr_symb_on_wasterwaternode_change
-AFTER INSERT OR UPDATE
-ON tww_od.wastewater_node
-FOR EACH ROW
-EXECUTE PROCEDURE tww_app.on_wasterwaternode_change();
-
-CREATE TRIGGER tr_symb_ws_symbology_update_by_channel
-AFTER INSERT OR UPDATE OR DELETE
-ON tww_od.channel
-FOR EACH ROW
-EXECUTE PROCEDURE tww_app.ws_symbology_update_by_channel();
-
--- only update -> insert and delete are handled by reach trigger
-CREATE TRIGGER tr_symb_ws_symbology_update_by_reach_point
-AFTER UPDATE
-ON tww_od.reach_point
-FOR EACH ROW
-EXECUTE PROCEDURE tww_app.ws_symbology_update_by_reach_point();

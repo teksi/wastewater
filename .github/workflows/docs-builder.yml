@@ -1,0 +1,81 @@
+name: 📚 Documentation builder
+
+concurrency:
+  group: docs-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - docs/**
+      - '.github/workflows/docs-builder.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - docs/**
+      - '.github/workflows/docs-builder.yml'
+  workflow_dispatch:
+
+
+jobs:
+  datamodel-documentation:
+    uses: ./.github/workflows/datamodel-create-dumps.yml
+
+  build:
+    needs: datamodel-documentation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: install requirements
+        working-directory: docs
+        run: |
+          pip install -r requirements.txt
+          sudo apt-get install -y gettext
+          curl -OL https://github.com/transifex/cli/releases/download/v1.6.10/tx-linux-amd64.tar.gz
+          tar -xvzf tx-linux-amd64.tar.gz
+          make gettext
+
+      - name: tx pull
+        if: ${{ github.event.pull_request.head.repo.full_name == 'teksi/wastewater' }}
+        env:
+          TX_TOKEN: ${{ secrets.TX_TOKEN }}
+        working-directory: docs
+        run: make transifex_pull
+
+      - name: tx push
+        env:
+          TX_TOKEN: ${{ secrets.TX_TOKEN }}
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        working-directory: docs
+        run: make transifex_sync
+
+      - name: copy datamodel documentation
+        uses: actions/download-artifact@v4
+        with:
+          name: datamodel-schemaspy
+          path: docs/_static/datamodel
+
+      - name: build documentation
+        working-directory: docs
+        run: |
+          make html
+          touch build/html/.nojekyll
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: documentation
+          path: docs/build/html
+          if-no-files-found: error
+
+      - name: Deploy 🚀
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: docs/build/html

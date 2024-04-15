@@ -1,4 +1,4 @@
-name: Datamodel | Tests
+name: 🐘 Datamodel | Tests
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -25,21 +25,31 @@ jobs:
     name: Run unit tests on datamodel
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        psycopg-version: [ 2, 3 ]
+      fail-fast: true
+
     steps:
       - uses: actions/checkout@v4
 
-      - name: "build dockerfile"
-        run:  docker build --build-arg RUN_TEST=True -f datamodel/.docker/Dockerfile --tag teksi/wastewater:unstable .
+      - name: Docker build
+        run: |
+          docker build \
+          --build-arg RUN_TEST=True \
+          --build-arg PSYCOPG_VERSION=${{ matrix.psycopg-version }} \
+          -f datamodel/.docker/Dockerfile \
+          --tag teksi/wastewater:unstable .
 
-      - name: "initialize container"
+      - name: Initialize container
         run: |
           docker run -d -p 5432:5432 --name teksi-wastewater teksi/wastewater:unstable
           docker exec teksi-wastewater init_db.sh wait
 
-      - name: run tests
-        run:  docker exec teksi-wastewater pytest
+      - name: Run tests
+        run:  docker exec teksi-wastewater pytest datamodel
 
-      - name: failure logs
+      - name: Docker logs
         if: failure()
         run: docker logs teksi-wastewater
 
