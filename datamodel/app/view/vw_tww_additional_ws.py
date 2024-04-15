@@ -5,7 +5,10 @@
 import argparse
 import os
 
-import psycopg2
+try:
+    import psycopg
+except ImportError:
+    import psycopg2 as psycopg
 from pirogue.utils import insert_command, select_columns, update_command
 
 
@@ -21,7 +24,7 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
 
     variables = {"SRID": int(srid)}
 
-    conn = psycopg2.connect(f"service={pg_service}")
+    conn = psycopg.connect(f"service={pg_service}")
     cursor = conn.cursor()
 
     view_sql = """
