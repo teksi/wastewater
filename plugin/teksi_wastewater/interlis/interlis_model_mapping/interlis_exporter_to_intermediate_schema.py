@@ -1155,7 +1155,7 @@ class InterlisExporterToIntermediateSchema:
                 # --- haltung_alternativverlauf ---
                 plantyp=self.get_vl(row.plantype__REL),
                 verlauf=row.progression_geometry,
-                haltungref=self.get_pk(row.fk_reach__REL),
+                haltungref=self.get_tid(row.fk_reach__REL),
             )
             self.abwasser_session.add(haltung_alternativverlauf)
             print(".", end="")
@@ -1537,9 +1537,9 @@ class InterlisExporterToIntermediateSchema:
                 subventionen=row.subsidies,
                 drosselorgan_oeffnung_ist=row.throttle_unit_opening_current,
                 drosselorgan_oeffnung_ist_optimiert=row.throttle_unit_opening_current_optimized,
-                abwasserknotenref=self.get_pk(row.fk_wastewater_node__REL),
-                steuerungszentraleref=self.get_pk(row.fk_control_center__REL),
-                ueberlaufref=self.get_pk(row.fk_overflow__REL),
+                abwasserknotenref=self.get_tid(row.fk_wastewater_node__REL),
+                steuerungszentraleref=self.get_tid(row.fk_control_center__REL),
+                ueberlaufref=self.get_tid(row.fk_overflow__REL),
             )
             self.abwasser_session.add(absperr_drosselorgan)
             print(".", end="")
@@ -1554,15 +1554,14 @@ class InterlisExporterToIntermediateSchema:
             )
         for row in query:
             beckenentleerung = self.model_classes_interlis.beckenentleerung(
-                **self.vsa_base_common(row, "beckenentleerung"),
-                **self.structure_part_common(row),
+                **self.structure_part_common(row, "beckenentleerung"),
                 # --- tank_emptying ---
                 leistung=row.flow,
                 bruttokosten=row.gross_costs,
                 art=self.get_vl(row.type__REL),
                 ersatzjahr=row.year_of_replacement,
-                absperr_drosselorganref=self.get_pk(row.fk_throttle_shut_off_unit__REL),
-                ueberlaufref=self.get_pk(row.fk_overflow__REL),
+                absperr_drosselorganref=self.get_tid(row.fk_throttle_shut_off_unit__REL),
+                ueberlaufref=self.get_tid(row.fk_overflow__REL),
             )
             self.abwasser_session.add(beckenentleerung)
             print(".", end="")
@@ -1577,8 +1576,7 @@ class InterlisExporterToIntermediateSchema:
             )
         for row in query:
             beckenreinigung = self.model_classes_interlis.beckenreinigung(
-                **self.vsa_base_common(row, "beckenreinigung"),
-                **self.structure_part_common(row),
+                **self.structure_part_common(row, "beckenreinigung"),
                 # --- tank_cleaning ---
                 bruttokosten=row.gross_costs,
                 art=self.get_vl(row.type__REL),
@@ -1597,8 +1595,7 @@ class InterlisExporterToIntermediateSchema:
             )
         for row in query:
             biol_oekol_gesamtbeurteilung = self.model_classes_interlis.biol_oekol_gesamtbeurteilung(
-                **self.vsa_base_common(row, "biol_oekol_gesamtbeurteilung"),
-                **self.maintenance_event_common(row),
+                **self.maintenance_event_common(row, "biol_oekol_gesamtbeurteilung"),
                 # --- bio_ecol_assessment ---
                 vergleich_letzte_untersuchung=self.get_vl(row.comparison_last__REL),
                 datum_letzte_untersuchung=row.date_last_examen,
@@ -1629,8 +1626,7 @@ class InterlisExporterToIntermediateSchema:
             query = query.filter(self.model_classes_tww_od.fountain.obj_id.in_(self.subset_ids))
         for row in query:
             brunnen = self.model_classes_interlis.brunnen(
-                **self.vsa_base_common(row, "brunnen"),
-                **self.connection_object_common(row),
+                **self.connection_object_common(row, "brunnen"),
                 # --- fountain ---
                 standortname=row.location_name,
                 lage=row.situation_geometry,
@@ -1648,8 +1644,7 @@ class InterlisExporterToIntermediateSchema:
             )
         for row in query:
             ezg_parameter_allg = self.model_classes_interlis.ezg_parameter_allg(
-                **self.vsa_base_common(row, "ezg_parameter_allg"),
-                **self.surface_runoff_parameters_common(row),
+                **self.surface_runoff_parameters_common(row, "ezg_parameter_allg"),
                 # --- param_ca_general ---
                 trockenwetteranfall=row.dry_wheather_flow,
                 fliessweglaenge=row.flow_path_length,
@@ -1670,8 +1665,7 @@ class InterlisExporterToIntermediateSchema:
             )
         for row in query:
             ezg_parameter_mouse1 = self.model_classes_interlis.ezg_parameter_mouse1(
-                **self.vsa_base_common(row, "ezg_parameter_mouse1"),
-                **self.surface_runoff_parameters_common(row),
+                **self.surface_runoff_parameters_common(row, "ezg_parameter_mouse1"),
                 # --- param_ca_mouse1 ---
                 trockenwetteranfall=row.dry_wheather_flow,
                 fliessweglaenge=row.flow_path_length,
@@ -1693,8 +1687,7 @@ class InterlisExporterToIntermediateSchema:
             )
         for row in query:
             einzelflaeche = self.model_classes_interlis.einzelflaeche(
-                **self.vsa_base_common(row, "einzelflaeche"),
-                **self.connection_object_common(row),
+                **self.connection_object_common(row, "einzelflaeche"),
                 # --- individual_surface ---
                 funktion=self.get_vl(row.function__REL),
                 neigung=row.inclination,
@@ -1746,22 +1739,22 @@ class InterlisExporterToIntermediateSchema:
                 flaeche=row.surface_area,
                 schmutzabwasseranfall_ist=row.waste_water_production_current,
                 schmutzabwasseranfall_geplant=row.waste_water_production_planned,
-                abwassernetzelement_rw_istref=self.get_pk(
+                abwassernetzelement_rw_istref=self.get_tid(
                     row.fk_wastewater_networkelement_rw_current__REL
                 ),
-                abwassernetzelement_rw_geplantref=self.get_pk(
+                abwassernetzelement_rw_geplantref=self.get_tid(
                     row.fk_wastewater_networkelement_rw_planned__REL
                 ),
-                abwassernetzelement_sw_geplantref=self.get_pk(
+                abwassernetzelement_sw_geplantref=self.get_tid(
                     row.fk_wastewater_networkelement_ww_planned__REL
                 ),
-                abwassernetzelement_sw_istref=self.get_pk(
+                abwassernetzelement_sw_istref=self.get_tid(
                     row.fk_wastewater_networkelement_ww_current__REL
                 ),
-                sbw_rw_geplantref=self.get_pk(row.fk_special_building_rw_planned__REL),
-                sbw_rw_istref=self.get_pk(row.fk_special_building_rw_current__REL),
-                sbw_sw_geplantref=self.get_pk(row.fk_special_building_ww_planned__REL),
-                sbw_sw_istref=self.get_pk(row.fk_special_building_ww_current__REL),
+                sbw_rw_geplantref=self.get_tid(row.fk_special_building_rw_planned__REL),
+                sbw_rw_istref=self.get_tid(row.fk_special_building_rw_current__REL),
+                sbw_sw_geplantref=self.get_tid(row.fk_special_building_ww_planned__REL),
+                sbw_sw_istref=self.get_tid(row.fk_special_building_ww_current__REL),
             )
             self.abwasser_session.add(einzugsgebiet)
             print(".", end="")
@@ -1776,8 +1769,7 @@ class InterlisExporterToIntermediateSchema:
             )
         for row in query:
             elektrischeeinrichtung = self.model_classes_interlis.elektrischeeinrichtung(
-                **self.vsa_base_common(row, "elektrischeeinrichtung"),
-                **self.structure_part_common(row),
+                **self.structure_part_common(row, "elektrischeeinrichtung"),
                 # --- electric_equipment ---
                 bruttokosten=row.gross_costs,
                 art=self.get_vl(row.kind__REL),
@@ -1796,8 +1788,7 @@ class InterlisExporterToIntermediateSchema:
             )
         for row in query:
             elektromechanischeausruestung = self.model_classes_interlis.elektromechanischeausruestung(
-                **self.vsa_base_common(row, "elektromechanischeausruestung"),
-                **self.structure_part_common(row),
+                **self.structure_part_common(row, "elektromechanischeausruestung"),
                 # --- electromechanical_equipment ---
                 bruttokosten=row.gross_costs,
                 art=self.get_vl(row.kind__REL),
@@ -1821,9 +1812,9 @@ class InterlisExporterToIntermediateSchema:
                 entsorgungsort_ist=self.get_vl(row.disposal_place_current__REL),
                 entsorgungsort_geplant=self.get_vl(row.disposal_place_planned__REL),
                 volumenabflusslosegrube=row.volume_pit_without_drain,
-                versickerungsanlageref=self.get_pk(row.fk_infiltration_installation__REL),
-                einleitstelleref=self.get_pk(row.fk_discharge_point__REL),
-                abwasserbauwerkref=self.get_pk(row.fk_wastewater_structure__REL),
+                versickerungsanlageref=self.get_tid(row.fk_infiltration_installation__REL),
+                einleitstelleref=self.get_tid(row.fk_discharge_point__REL),
+                abwasserbauwerkref=self.get_tid(row.fk_wastewater_structure__REL),
             )
             self.abwasser_session.add(entsorgung)
             print(".", end="")
@@ -1838,8 +1829,7 @@ class InterlisExporterToIntermediateSchema:
             )
         for row in query:
             entwaesserungssystem = self.model_classes_interlis.entwaesserungssystem(
-                **self.vsa_base_common(row, "entwaesserungssystem"),
-                **self.zone_common(row),
+                **self.zone_common(row, "entwaesserungssystem"),
                 # --- drainage_system ---
                 art=self.get_vl(row.kind__REL),
                 perimeter=row.perimeter_geometry,
@@ -1857,8 +1847,7 @@ class InterlisExporterToIntermediateSchema:
             )
         for row in query:
             feststoffrueckhalt = self.model_classes_interlis.feststoffrueckhalt(
-                **self.vsa_base_common(row, "feststoffrueckhalt"),
-                **self.structure_part_common(row),
+                **self.structure_part_common(row, "feststoffrueckhalt"),
                 # --- solids_retention ---
                 dimensionierungswert=row.dimensioning_value,
                 bruttokosten=row.gross_costs,
@@ -1877,8 +1866,7 @@ class InterlisExporterToIntermediateSchema:
             query = query.filter(self.model_classes_tww_od.pump.obj_id.in_(self.subset_ids))
         for row in query:
             foerderaggregat = self.model_classes_interlis.foerderaggregat(
-                **self.vsa_base_common(row, "foerderaggregat"),
-                **self.overflow_common(row),
+                **self.overflow_common(row, "foerderaggregat"),
                 # --- pump ---
                 bauart=self.get_vl(row.construction_type__REL),
                 arbeitspunkt=row.operating_point,
@@ -1900,8 +1888,7 @@ class InterlisExporterToIntermediateSchema:
             query = query.filter(self.model_classes_tww_od.building.obj_id.in_(self.subset_ids))
         for row in query:
             gebaeude = self.model_classes_interlis.gebaeude(
-                **self.vsa_base_common(row, "gebaeude"),
-                **self.connection_object_common(row),
+                **self.connection_object_common(row, "gebaeude"),
                 # --- building ---
                 hausnummer=row.house_number,
                 standortname=row.location_name,
@@ -1956,8 +1943,8 @@ class InterlisExporterToIntermediateSchema:
                 sanierungskonzept=row.restructuring_concept,
                 schuleschueler=row.school_students,
                 lage=row.situation_geometry,
-                # entsorgungref=self.get_pk(row.fk_disposal__REL), # TODO check why not available
-                massnahmeref=self.get_pk(row.fk_measure__REL),
+                # entsorgungref=self.get_tid(row.fk_disposal__REL), # TODO check why not available
+                massnahmeref=self.get_tid(row.fk_measure__REL),
             )
             self.abwasser_session.add(gebaeudegruppe)
             print(".", end="")
@@ -1975,7 +1962,7 @@ class InterlisExporterToIntermediateSchema:
                 **self.vsa_base_common(row, "gebaeudegruppe_baugwr"),
                 # --- building_group_baugwr ---
                 egid=row.egid,
-                gebaeudegrupperef=self.get_pk(row.fk_building_group__REL),
+                gebaeudegrupperef=self.get_tid(row.fk_building_group__REL),
             )
             self.abwasser_session.add(gebaeudegruppe_baugwr)
             print(".", end="")
@@ -2005,8 +1992,8 @@ class InterlisExporterToIntermediateSchema:
                 flaeche_red=row.surface_red,
                 flaeche_red_dim=row.surface_red_dim,
                 schmutzabwasseranfall=row.waste_water_production,
-                einleitstelleref=self.get_pk(row.fk_discharge_point__REL),
-                hydr_kennwerteref=self.get_pk(row.fk_hydraulic_char_data__REL),
+                einleitstelleref=self.get_tid(row.fk_discharge_point__REL),
+                hydr_kennwerteref=self.get_tid(row.fk_hydraulic_char_data__REL),
             )
             self.abwasser_session.add(gesamteinzugsgebiet)
             print(".", end="")
@@ -2024,7 +2011,7 @@ class InterlisExporterToIntermediateSchema:
                 hoehe=row.altitude,
                 abfluss=row.flow,
                 zufluss=row.flow_from,
-                ueberlaufcharakteristikref=self.get_pk(row.fk_overflow_char__REL),
+                ueberlaufcharakteristikref=self.get_tid(row.fk_overflow_char__REL),
             )
             self.abwasser_session.add(hq_relation)
             print(".", end="")
@@ -2044,7 +2031,7 @@ class InterlisExporterToIntermediateSchema:
                 wassertiefe=row.water_depth,
                 wasseroberflaeche=row.water_surface,
                 benetztequerschnittsflaeche=row.wet_cross_section_area,
-                hydr_geometrieref=self.get_pk(row.fk_hydr_geometry__REL),
+                hydr_geometrieref=self.get_tid(row.fk_hydr_geometry__REL),
             )
             self.abwasser_session.add(hydr_geomrelation)
             print(".", end="")
@@ -2061,6 +2048,7 @@ class InterlisExporterToIntermediateSchema:
             hydr_geometrie = self.model_classes_interlis.hydr_geometrie(
                 **self.vsa_base_common(row, "hydr_geometrie"),
                 # --- hydr_geometry ---
+                bezeichnung=row.identifier,
                 bemerkung=row.remark,
                 stauraum=row.storage_volume,
                 nutzinhalt_fangteil=row.usable_capacity_storage,
@@ -2085,15 +2073,11 @@ class InterlisExporterToIntermediateSchema:
                 # --- hydraulic_char_data ---
                 qan=row.qon,
                 bemerkung=row.remark,
-                status=self.get_vl_code(
-                    self.model_classes_tww_vl.hydraulic_char_data_status, row.astatus
-                ),
+                astatus=self.get_vl(row.status__REL),
                 aggregatezahl=row.aggregate_number,
                 foerderhoehe_geodaetisch=row.delivery_height_geodaetic,
                 bezeichnung=row.identifier,
-                is_overflowing=self.get_vl_code(
-                    self.model_classes_tww_vl.hydraulic_char_data_is_overflowing, row.springt_an
-                ),
+                springt_an=self.get_vl(row.is_overflowing__REL),
                 hauptwehrart=self.get_vl(row.main_weir_kind__REL),
                 mehrbelastung=row.overcharge,
                 ueberlaufdauer=row.overflow_duration,
@@ -2104,9 +2088,9 @@ class InterlisExporterToIntermediateSchema:
                 foerderstrommax=row.pump_flow_max,
                 foerderstrommin=row.pump_flow_min,
                 qab=row.q_discharge,
-                abwasserknotenref=self.get_pk(row.fk_wastewater_node__REL),
-                ueberlaufcharakteristikref=self.get_pk(row.fk_overflow_char__REL),
-                primaerrichtungref=self.get_pk(row.fk_primary_direction__REL),
+                abwasserknotenref=self.get_tid(row.fk_wastewater_node__REL),
+                ueberlaufcharakteristikref=self.get_tid(row.fk_overflow_char__REL),
+                primaerrichtungref=self.get_tid(row.fk_primary_direction__REL),
             )
             self.abwasser_session.add(hydr_kennwerte)
             print(".", end="")
@@ -2121,8 +2105,7 @@ class InterlisExporterToIntermediateSchema:
             )
         for row in query:
             klara = self.model_classes_interlis.klara(
-                **self.vsa_base_common(row, "klara"),
-                **self.wastewater_structure_common(row),
+                **self.wastewater_structure_common(row, "klara"),
                 # --- small_treatment_plant ---
                 bewilligungsnummer=row.approval_number,
                 funktion=self.get_vl(row.function__REL),
@@ -2161,7 +2144,7 @@ class InterlisExporterToIntermediateSchema:
                 stallvieh=self.get_vl(row.stable_cattle__REL),
                 stallgrossvieheinheit_fremdvieh=row.stable_cattle_equivalent_other_cattle,
                 stallgrossvieheinheit_eigenesvieh=row.stable_cattle_equivalent_own_cattle,
-                gebaeudegrupperef=self.get_pk(row.fk_building_group__REL),
+                gebaeudegrupperef=self.get_tid(row.fk_building_group__REL),
             )
             self.abwasser_session.add(landwirtschaftsbetrieb)
             print(".", end="")
@@ -2174,8 +2157,7 @@ class InterlisExporterToIntermediateSchema:
             query = query.filter(self.model_classes_tww_od.leapingweir.obj_id.in_(self.subset_ids))
         for row in query:
             leapingwehr = self.model_classes_interlis.leapingwehr(
-                **self.vsa_base_common(row, "leapingwehr"),
-                **self.overflow_common(row),
+                **self.overflow_common(row, "leapingwehr"),
                 # --- leapingweir ---
                 laenge=row.length,
                 oeffnungsform=self.get_vl(row.opening_shape__REL),
@@ -2209,8 +2191,8 @@ class InterlisExporterToIntermediateSchema:
                 gesamtkosten=row.total_cost,
                 jahr_umsetzung_effektiv=row.year_implementation_effective,
                 jahr_umsetzung_geplant=row.year_implementation_planned,
-                traegerschaftref=row.fk_responsible_entity,
-                verantwortlich_ausloesungref=row.fk_responsible_start,
+                traegerschaftref=self.get_tid(row.fk_responsible_entity__REL),
+                verantwortlich_ausloesungref=self.get_tid(row.fk_responsible_start__REL),
             )
             self.abwasser_session.add(massnahme)
             print(".", end="")
@@ -2230,7 +2212,7 @@ class InterlisExporterToIntermediateSchema:
                 bezeichnung=row.identifier,
                 art=self.get_vl(row.kind__REL),
                 bemerkung=row.remark,
-                abwasserbauwerkref=self.get_pk(row.fk_wastewater_structure__REL),
+                abwasserbauwerkref=self.get_tid(row.fk_wastewater_structure__REL),
             )
             self.abwasser_session.add(mechanischevorreinigung)
             print(".", end="")
@@ -2252,7 +2234,7 @@ class InterlisExporterToIntermediateSchema:
                 bezeichnung=row.identifier,
                 art=self.get_vl(row.kind__REL),
                 bemerkung=row.remark,
-                messstelleref=self.get_pk(row.fk_measuring_point__REL),
+                messstelleref=self.get_tid(row.fk_measuring_point__REL),
             )
             self.abwasser_session.add(messgeraet)
             print(".", end="")
@@ -2273,8 +2255,8 @@ class InterlisExporterToIntermediateSchema:
                 bezeichnung=row.identifier,
                 art=self.get_vl(row.kind__REL),
                 bemerkung=row.remark,
-                messstelleref=self.get_pk(row.fk_measuring_point__REL),
-                abwassernetzelementref=self.get_pk(row.fk_wastewater_networkelement__REL),
+                messstelleref=self.get_tid(row.fk_measuring_point__REL),
+                abwassernetzelementref=self.get_tid(row.fk_wastewater_networkelement__REL),
             )
             self.abwasser_session.add(messreihe)
             print(".", end="")
@@ -2297,8 +2279,8 @@ class InterlisExporterToIntermediateSchema:
                 bemerkung=row.remark,
                 zeit=row.time,
                 wert=row.value,
-                messgeraetref=self.get_pk(row.fk_measuring_device__REL),
-                messreiheref=self.get_pk(row.fk_measurement_series__REL),
+                messgeraetref=self.get_tid(row.fk_measuring_device__REL),
+                messreiheref=self.get_tid(row.fk_measurement_series__REL),
             )
             self.abwasser_session.add(messresultat)
             print(".", end="")
@@ -2321,9 +2303,9 @@ class InterlisExporterToIntermediateSchema:
                 bezeichnung=row.identifier,
                 art=row.kind,
                 lage=row.situation_geometry,
-                betreiberref=row.fk_operator,
-                abwasserreinigungsanlageref=self.get_pk(row.fk_waste_water_treatment_plant__REL),
-                abwasserbauwerkref=self.get_pk(row.fk_wastewater_structure__REL),
+                betreiberref=self.get_tid(row.fk_operator__REL),
+                abwasserreinigungsanlageref=self.get_tid(row.fk_waste_water_treatment_plant__REL),
+                abwasserbauwerkref=self.get_tid(row.fk_wastewater_structure__REL),
             )
             self.abwasser_session.add(messstelle)
             print(".", end="")
@@ -2360,8 +2342,7 @@ class InterlisExporterToIntermediateSchema:
             query = query.filter(self.model_classes_tww_od.reservoir.obj_id.in_(self.subset_ids))
         for row in query:
             reservoir = self.model_classes_interlis.reservoir(
-                **self.vsa_base_common(row, "reservoir"),
-                **self.connection_object_common(row),
+                **self.connection_object_common(row, "reservoir"),
                 # --- reservoir ---
                 standortname=row.location_name,
                 lage=row.situation_geometry,
@@ -2385,7 +2366,7 @@ class InterlisExporterToIntermediateSchema:
                 art=self.get_vl(row.kind__REL),
                 bemerkung=row.remark,
                 retention_volumen=row.volume,
-                versickerungsanlageref=self.get_pk(row.fk_infiltration_installation__REL),
+                versickerungsanlageref=self.get_tid(row.fk_infiltration_installation__REL),
             )
             self.abwasser_session.add(retentionskoerper)
             print(".", end="")
@@ -2405,7 +2386,7 @@ class InterlisExporterToIntermediateSchema:
                 reihenfolge=row.sequence,
                 x=row.x,
                 y=row.y,
-                rohrprofilref=self.get_pk(row.fk_pipe_profile__REL),
+                rohrprofilref=self.get_tid(row.fk_pipe_profile__REL),
             )
             self.abwasser_session.add(rohrprofil_geometrie)
             print(".", end="")
@@ -2420,14 +2401,13 @@ class InterlisExporterToIntermediateSchema:
             )
         for row in query:
             rueckstausicherung = self.model_classes_interlis.rueckstausicherung(
-                **self.vsa_base_common(row, "rueckstausicherung"),
-                **self.structure_part_common(row),
+                **self.structure_part_common(row, "rueckstausicherung"),
                 # --- backflow_prevention ---
                 bruttokosten=row.gross_costs,
                 art=self.get_vl(row.kind__REL),
                 ersatzjahr=row.year_of_replacement,
-                fk_throttle_shut_off_unit=self.get_pk(row.absperr_drosselorganref),
-                fk_pump=self.get_pk(row.foerderaggregatref),
+                absperr_drosselorganref=self.get_tid(row.fk_throttle_shut_off_unit__REL),
+                foerderaggregatref=self.get_tid(row.fk_pump__REL),
             )
             self.abwasser_session.add(rueckstausicherung)
             print(".", end="")
@@ -2446,9 +2426,9 @@ class InterlisExporterToIntermediateSchema:
                 informationsquelle=self.get_vl(row.information_source__REL),
                 sachbearbeiter=row.person_in_charge,
                 bemerkung=row.remark,
-                paa_knotenref=self.get_pk(row.fk_pwwf_wastewater_node__REL),
-                bueroref=row.fk_agency,
-                standortgemeinderef=row.fk_location_municipality,
+                paa_knotenref=self.get_tid(row.fk_pwwf_wastewater_node__REL),
+                bueroref=self.get_tid(row.fk_agency__REL),
+                standortgemeinderef=self.get_tid(row.fk_location_municipality__REL),
             )
             self.abwasser_session.add(stammkarte)
             print(".", end="")
@@ -2461,8 +2441,7 @@ class InterlisExporterToIntermediateSchema:
             query = query.filter(self.model_classes_tww_od.prank_weir.obj_id.in_(self.subset_ids))
         for row in query:
             streichwehr = self.model_classes_interlis.streichwehr(
-                **self.vsa_base_common(row, "streichwehr"),
-                **self.overflow_common(row),
+                **self.overflow_common(row, "streichwehr"),
                 # --- prank_weir ---
                 hydrueberfalllaenge=row.hydraulic_overflow_length,
                 kotemax=row.level_max,
@@ -2500,8 +2479,7 @@ class InterlisExporterToIntermediateSchema:
             query = query.filter(self.model_classes_tww_od.maintenance.obj_id.in_(self.subset_ids))
         for row in query:
             unterhalt = self.model_classes_interlis.unterhalt(
-                **self.vsa_base_common(row, "unterhalt"),
-                **self.maintenance_event_common(row),
+                **self.maintenance_event_common(row, "unterhalt"),
                 # --- maintenance ---
                 art=self.get_vl(row.kind__REL),
             )
@@ -2518,10 +2496,8 @@ class InterlisExporterToIntermediateSchema:
             )
         for row in query:
             versickerungsbereich = self.model_classes_interlis.versickerungsbereich(
-                **self.vsa_base_common(row, "versickerungsbereich"),
-                **self.zone_common(row),
+                **self.zone_common(row, "versickerungsbereich"),
                 # --- infiltration_zone ---
-                art=self.get_vl(row.kind__REL),
                 versickerungsmoeglichkeit=self.get_vl(row.infiltration_capacity__REL),
                 perimeter=row.perimeter_geometry,
             )
@@ -2900,16 +2876,102 @@ class InterlisExporterToIntermediateSchema:
             "instandstellung": self.get_vl(row.renovation_demand__REL),
         }
 
-    def _textpos_common(self, row, t_type, geojson_crs_def):
+    def maintenance_event_common(self, row, type_name):
+        """
+        Returns common attributes for maintenance_event
+        """
+        return {
+            **self.vsa_base_common(row, type_name),
+            "ausfuehrender": row.operator,
+            "bemerkung": row.remark,
+            "bezeichnung": row.identifier,
+            "datengrundlage": row.base_data,
+            "dauer": row.duration,
+            "detaildaten": row.data_details,
+            "ergebnis": row.result,
+            "grund": row.reason,
+            "kosten": row.cost,
+            "astatus": self.get_vl(row.status__REL),
+            "zeitpunkt": row.time_point,
+            "ausfuehrende_firmaref": self.get_tid(row.fk_operating_company__REL),
+            "massnahmeref": self.get_tid(row.fk_measure__REL),
+        }
+
+    def connection_object_common(self, row, type_name):
+        """
+        Returns common attributes for connection_object
+        """
+        return {
+            **self.vsa_base_common(row, type_name),
+            "bezeichnung": row.identifier,
+            "bemerkung": row.remark,
+            "fremdwasseranfall": row.sewer_infiltration_water_production,
+        }
+
+    def surface_runoff_parameters_common(self, row, type_name):
+        """
+        Returns common attributes for surface_runoff_parameters
+        """
+        return {
+            **self.vsa_base_common(row, type_name),
+            "verdunstungsverlust": row.evaporation_loss,
+            "bezeichnung": row.identifier,
+            "versickerungsverlust": row.infiltration_loss,
+            "bemerkung": row.remark,
+            "muldenverlust": row.surface_storage,
+            "benetzungsverlust": row.wetting_loss,
+            "einzugsgebietref": self.get_tid(row.fk_catchment_area__REL),
+        }
+
+    def zone_common(self, row, type_name):
+        """
+        Returns common attributes for zone
+        """
+        return {
+            **self.vsa_base_common(row, type_name),
+            "bemerkung": row.remark,
+            "bezeichnung": row.identifier,
+        }
+
+    def overflow_common(self, row, type_name):
+        """
+        Returns common attributes for overflow
+        """
+        return {
+            **self.vsa_base_common(row, type_name),
+            "bezeichnung": row.identifier,
+            "bemerkung": row.remark,
+            "antrieb": self.get_vl(row.actuation__REL),
+            "verstellbarkeit": self.get_vl(row.adjustability__REL),
+            "fabrikat": row.brand,
+            "steuerung": self.get_vl(row.control__REL),
+            "einleitstelle": row.discharge_point,
+            "funktion": self.get_vl(row.function__REL),
+            "bruttokosten": row.gross_costs,
+            "qan_dim": row.qon_dim,
+            "signaluebermittlung": self.get_vl(row.signal_transmission__REL),
+            "subventionen": row.subsidies,
+            "abwasserknotenref": self.get_tid(row.fk_wastewater_node__REL),
+            "ueberlaufnachref": self.get_tid(row.fk_overflow_to__REL),
+            "ueberlaufcharakteristikref": self.get_tid(row.fk_overflow_char__REL),
+            "steuerungszentraleref": self.get_tid(row.fk_control_center__REL),
+        }
+
+    def _textpos_common(self, row, t_type, geojson_crs_def, shortcut_en):
         """
         Returns common attributes for textpos
         """
         t_id = self.tid_maker.next_tid()
 
+        if t_id > 999999:
+            logger.warning(
+                f"Exporting more than 999999 labels will generate invalid OIDs. Currently exporting {t_id} label of type '{t_type}'."
+            )
+
         return {
             "t_id": t_id,
             "t_type": t_type,
-            "t_ili_tid": f"ch080txtPR0000{t_id}",
+            "t_ili_tid": f"ch080txt{shortcut_en}{t_id:06d}",
             # --- TextPos ---
             "textpos": ST_GeomFromGeoJSON(
                 json.dumps(
@@ -2977,19 +3039,19 @@ class InterlisExporterToIntermediateSchema:
 
             if layer_name == "vw_tww_reach":
                 ili_label = self.model_classes_interlis.haltung_text(
-                    **self._textpos_common(label, "haltung_text", geojson_crs_def),
+                    **self._textpos_common(label, "haltung_text", geojson_crs_def, "RX"),
                     haltungref=t_id,
                 )
 
             elif layer_name == "vw_tww_wastewater_structure":
                 ili_label = self.model_classes_interlis.abwasserbauwerk_text(
-                    **self._textpos_common(label, "abwasserbauwerk_text", geojson_crs_def),
+                    **self._textpos_common(label, "abwasserbauwerk_text", geojson_crs_def, "WX"),
                     abwasserbauwerkref=t_id,
                 )
 
             elif layer_name == "catchment_area":
                 ili_label = self.model_classes_interlis.einzugsgebiet_text(
-                    **self._textpos_common(label, "einzugsgebiet_text", geojson_crs_def),
+                    **self._textpos_common(label, "einzugsgebiet_text", geojson_crs_def, "CX"),
                     einzugsgebietref=t_id,
                 )
 
