@@ -12,6 +12,7 @@ except ImportError:
 from pirogue import MultipleInheritance, SimpleJoins, SingleInheritance
 from view.vw_tww_reach import vw_tww_reach
 from view.vw_tww_wastewater_structure import vw_tww_wastewater_structure
+from view.vw_wastewater_structure import vw_wastewater_structure
 from yaml import safe_load
 
 
@@ -38,6 +39,7 @@ def create_app(
     drop_schema: Optional[bool] = False,
     tww_reach_extra: Optional[Path] = None,
     tww_wastewater_structure_extra: Optional[Path] = None,
+    wastewater_structure_extra: Optional[Path] = None,
 ):
     """
     Creates the schema tww_app for TEKSI Wastewater & GEP
@@ -46,6 +48,7 @@ def create_app(
     :param pg_service: the PostgreSQL service, if not given it will be determined from environment variable in Pirogue
     :param tww_reach_extra: YAML file path of the definition of additional columns for vw_tww_reach view
     :param tww_wastewater_structure_extra: YAML file path of the definition of additional columns for vw_tww_wastewater_structure_extra view
+    :param wastewater_structure_extra: YAML file path of the definition of additional columns for vw_wastewater_structure_extra view
     """
     cwd = Path(__file__).parent.resolve()
     variables = {
@@ -66,6 +69,8 @@ def create_app(
         tww_reach_extra = safe_load(open(tww_reach_extra))
     if tww_wastewater_structure_extra:
         tww_wastewater_structure_extra = safe_load(open(tww_wastewater_structure_extra))
+    if wastewater_structure_extra:
+        wastewater_structure_extra = safe_load(open(wastewater_structure_extra)
 
     run_sql_file("view/vw_dictionary_value_list.sql", pg_service, variables)
 
@@ -139,6 +144,9 @@ def create_app(
         pg_service=pg_service,
     ).create()
 
+    vw_wastewater_structure(
+        pg_service=pg_service, extra_definition=wastewater_structure_extra
+    )
     vw_tww_wastewater_structure(
         srid, pg_service=pg_service, extra_definition=tww_wastewater_structure_extra
     )
