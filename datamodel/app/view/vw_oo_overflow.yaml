@@ -4,7 +4,7 @@ view_name: vw_tww_overflow
 view_schema: tww_app
 
 additional_columns:
-  geometry: n1.situation3d_geometry::geometry('PointZ',%(SRID)s)
+  geometry: n1.situation3d_geometry::geometry('PointZ',{SRID})
 additional_joins: >
   LEFT JOIN tww_od.wastewater_node n1 ON overflow.fk_wastewater_node::text = n1.obj_id::text
 
