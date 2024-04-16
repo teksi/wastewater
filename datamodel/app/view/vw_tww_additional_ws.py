@@ -53,7 +53,7 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
         , main_co_sp.renovation_demand AS co_renovation_demand
 
         , {main_co_cols}
-        , ST_Force2D(COALESCE(wn.situation3d_geometry, main_co.situation3d_geometry))::geometry(Point, %(SRID)s) AS situation3d_geometry
+        , ST_Force2D(COALESCE(wn.situation3d_geometry, main_co.situation3d_geometry))::geometry(Point, {srid}) AS situation3d_geometry
 
         , {wt_columns}
 
@@ -92,6 +92,7 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
         ALTER VIEW tww_app.vw_tww_additional_ws ALTER co_obj_id SET DEFAULT tww_sys.generate_oid('tww_od','cover');
         ALTER VIEW tww_app.vw_tww_additional_ws ALTER wn_obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_node');
     """.format(
+        srid=srid,
         ws_cols=select_columns(
             pg_cur=cursor,
             table_schema="tww_od",
@@ -346,12 +347,9 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
           EXECUTE FORMAT('DELETE FROM tww_od.%%I WHERE obj_id = %%L',OLD.ws_type,OLD.obj_id);
         END CASE;
 
-        CASE WHEN NEW.ws_type <> 'unknown' THEN
+        CASE WHEN NEW.ws_type = ANY(ARRAY['manhole','special_structure','discharge_point','infiltration_installation','drainless_toilet','wwtp_structure','small_treatment_plant']) THEN
           BEGIN
             EXECUTE FORMAT('INSERT INTO tww_od.%%I(obj_id) VALUES (%%L)',NEW.ws_type,OLD.obj_id);
-            EXCEPTION
-              WHEN undefined_table THEN
-                RAISE NOTICE 'table tww_od.%% does not exist',NEW.ws_type;
           END;
         END CASE;
       END IF;
@@ -380,7 +378,7 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
         SET situation3d_geometry = ST_SetSRID( ST_MakePoint(
         ST_X(ST_TRANSLATE(ST_MakePoint(ST_X(WN.situation3d_geometry), ST_Y(WN.situation3d_geometry)), dx, dy )),
         ST_Y(ST_TRANSLATE(ST_MakePoint(ST_X(WN.situation3d_geometry), ST_Y(WN.situation3d_geometry)), dx, dy )),
-        ST_Z(WN.situation3d_geometry)), %(SRID)s )
+        ST_Z(WN.situation3d_geometry)), {srid} )
         WHERE obj_id IN
         (
           SELECT obj_id FROM tww_od.wastewater_networkelement
@@ -392,7 +390,7 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
         SET situation3d_geometry = ST_SetSRID( ST_MakePoint(
         ST_X(ST_TRANSLATE(ST_MakePoint(ST_X(CO.situation3d_geometry), ST_Y(CO.situation3d_geometry)), dx, dy )),
         ST_Y(ST_TRANSLATE(ST_MakePoint(ST_X(CO.situation3d_geometry), ST_Y(CO.situation3d_geometry)), dx, dy )),
-        ST_Z(CO.situation3d_geometry)), %(SRID)s )
+        ST_Z(CO.situation3d_geometry)), {srid} )
         WHERE obj_id IN
         (
           SELECT obj_id FROM tww_od.structure_part
@@ -408,7 +406,7 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
             ST_SetSRID( ST_MakePoint(
                 ST_X(ST_TRANSLATE(ST_MakePoint(ST_X(ST_PointN(RE.progression3d_geometry, 1)), ST_Y(ST_PointN(RE.progression3d_geometry, 1))), dx, dy )),
                 ST_Y(ST_TRANSLATE(ST_MakePoint(ST_X(ST_PointN(RE.progression3d_geometry, 1)), ST_Y(ST_PointN(RE.progression3d_geometry, 1))), dx, dy )),
-                ST_Z(ST_PointN(RE.progression3d_geometry, 1))), %(SRID)s )
+                ST_Z(ST_PointN(RE.progression3d_geometry, 1))), {srid} )
           ) )
         WHERE fk_reach_point_from IN
         (
@@ -425,7 +423,7 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
             ST_SetSRID( ST_MakePoint(
                 ST_X(ST_TRANSLATE(ST_MakePoint(ST_X(ST_EndPoint(RE.progression3d_geometry)), ST_Y(ST_EndPoint(RE.progression3d_geometry))), dx, dy )),
                 ST_Y(ST_TRANSLATE(ST_MakePoint(ST_X(ST_EndPoint(RE.progression3d_geometry)), ST_Y(ST_EndPoint(RE.progression3d_geometry))), dx, dy )),
-                ST_Z(ST_PointN(RE.progression3d_geometry, 1))), %(SRID)s )
+                ST_Z(ST_PointN(RE.progression3d_geometry, 1))), {srid} )
           ) )
         WHERE fk_reach_point_to IN
         (
@@ -447,6 +445,7 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
     CREATE TRIGGER vw_tww_additional_ws_UPDATE INSTEAD OF UPDATE ON tww_app.vw_tww_additional_ws
       FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_tww_additional_ws_UPDATE();
     """.format(
+        srid=srid,
         update_co=update_command(
             pg_cur=cursor,
             table_schema="tww_od",
