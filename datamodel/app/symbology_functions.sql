@@ -426,7 +426,7 @@ WHERE tww_include_in_ws_labels;
   , obj_id
   FROM null_label)
  --Upsert reach_point labels
-  INSERT INTO tww_app.tww_labels (obj_id,label_type,label_text)
+  INSERT INTO tww_app.tww_labels (fk_parent_obj_id,label_type,label_text)
   SELECT  rp_label.obj_id,'main',rp_label.new_label
   FROM rp_label
   ON CONFLICT ON CONSTRAINT unique_tww_od_labels
@@ -545,7 +545,7 @@ WITH labeled_ws as
     ) all_parts
 	GROUP BY ws_obj_id, COALESCE(ws_identifier, '')
 )
-  INSERT INTO tww_app.tww_labels (obj_id,label_type,label_text)
+  INSERT INTO tww_app.tww_labels (fk_parent_obj_id,label_type,label_text)
   SELECT
       ws_obj_id
     , unnest(
