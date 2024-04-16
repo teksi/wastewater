@@ -211,13 +211,18 @@ class InterlisImportSelectionDialog(QDialog):
             QMessageBox.critical(self, "Import error", f"Details: {exception}")
             return
 
-        iface.messageBar().pushMessage("Sucess", "Data successfully imported", level=Qgis.Success)
+        if iface:
+            iface.messageBar().pushMessage(
+                "Sucess", "Data successfully imported", level=Qgis.Success
+            )
 
     def rollback_session(self):
         with OverrideCursor(Qt.WaitCursor):
             self.session.rollback()
             self.session.close()
-        iface.messageBar().pushMessage("Error", "Import was canceled", level=Qgis.Warning)
+
+        if iface:
+            iface.messageBar().pushMessage("Error", "Import was canceled", level=Qgis.Warning)
 
     def get_obj_from_listitem(self, listitem):
         for obj, editor in self.editors.items():

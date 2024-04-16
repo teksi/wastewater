@@ -96,6 +96,12 @@ class ModelInterlisSia405Abwasser(ModelBase):
 
         ModelInterlisSia405Abwasser.haltung = haltung
 
+        class haltung_alternativverlauf(baseclass):
+            __tablename__ = "haltung_alternativverlauf"
+            __table_args__ = {"schema": config.ABWASSER_SCHEMA}
+
+        ModelInterlisSia405Abwasser.haltung_alternativverlauf = haltung_alternativverlauf
+
         class bauwerksteil(vsa_baseclass):
             __tablename__ = "bauwerksteil"
             __table_args__ = {"schema": config.ABWASSER_SCHEMA}
@@ -131,6 +137,12 @@ class ModelInterlisSia405Abwasser(ModelBase):
             __table_args__ = {"schema": config.ABWASSER_SCHEMA}
 
         ModelInterlisSia405Abwasser.bankett = bankett
+
+        class spuelstutzen(bauwerksteil):
+            __tablename__ = "spuelstutzen"
+            __table_args__ = {"schema": config.ABWASSER_SCHEMA}
+
+        ModelInterlisSia405Abwasser.spuelstutzen = spuelstutzen
 
         # TEXTS
 

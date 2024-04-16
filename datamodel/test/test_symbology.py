@@ -1,8 +1,10 @@
 import os
 import unittest
 
-import psycopg2
-import psycopg2.extras
+try:
+    import psycopg
+except ImportError:
+    import psycopg2 as psycopg
 
 from .utils import DEFAULT_PG_SERVICE, DbTestBase
 
@@ -15,7 +17,7 @@ class TestViews(unittest.TestCase, DbTestBase):
     @classmethod
     def setUpClass(cls):
         pgservice = os.environ.get("PGSERVICE") or DEFAULT_PG_SERVICE
-        cls.conn = psycopg2.connect(f"service={pgservice}")
+        cls.conn = psycopg.connect(f"service={pgservice}")
 
     def test_create_drop_triggers(self):
         self.execute("tww_sys.disable_symbology_triggers()")

@@ -102,3 +102,13 @@ UPDATE tww_vl.channel_function_hierarchic SET cfg_include_in_ws_labels=TRUE WHER
 -- this column is an extension to the VSA data model and defines whether connected channels are included in inflow/outflow labeling based on function_hierarchic
 ALTER TABLE tww_vl.wastewater_structure_status ADD COLUMN cfg_include_in_ws_labels boolean DEFAULT FALSE;
 UPDATE tww_vl.wastewater_structure_status SET cfg_include_in_ws_labels=TRUE WHERE code=ANY('{8493,6530,6533}');
+
+ALTER TABLE tww_od.organisation ADD COLUMN tww_active bool DEFAULT FALSE;
+COMMENT ON COLUMN tww_od.organisation.tww_active IS 'not part of the VSA-DSS data model
+added solely for TEKSI Wastewater & GEP
+used to filter organisations';
+
+ALTER TABLE tww_od.organisation ADD COLUMN tww_local_extension bool DEFAULT FALSE;
+COMMENT ON COLUMN tww_od.organisation.tww_local_extension IS 'not part of the VSA-DSS data model
+added solely for TEKSI Wastewater & GEP
+used to map non-harmonized organisations to private on export';

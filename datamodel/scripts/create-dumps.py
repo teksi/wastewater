@@ -198,9 +198,7 @@ def get_parser():
     """
     _parser = argparse.ArgumentParser("create-dumps.py")
     _parser.add_argument("--version", "-v", help="Sets the version", default="dev")
-    _parser.add_argument(
-        "--database", "-d", help="Sets the database name", default="teksi_wastewater"
-    )
+    _parser.add_argument("--database", "-d", help="Sets the database name", default="tww")
     return _parser
 
 

@@ -25,11 +25,21 @@ jobs:
     name: Run unit tests on datamodel
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        psycopg-version: [ 2, 3 ]
+      fail-fast: true
+
     steps:
       - uses: actions/checkout@v4
 
       - name: Docker build
-        run:  docker build --build-arg RUN_TEST=True -f datamodel/.docker/Dockerfile --tag teksi/wastewater:unstable .
+        run: |
+          docker build \
+          --build-arg RUN_TEST=True \
+          --build-arg PSYCOPG_VERSION=${{ matrix.psycopg-version }} \
+          -f datamodel/.docker/Dockerfile \
+          --tag teksi/wastewater:unstable .
 
       - name: Initialize container
         run: |

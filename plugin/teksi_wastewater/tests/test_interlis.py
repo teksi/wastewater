@@ -12,9 +12,9 @@ from teksi_wastewater.interlis.utils.ili2db import InterlisTools
 
 # Display logging in unittest output
 logger = logging.getLogger()
-logger.setLevel(logging.WARNING)
+logger.setLevel(logging.DEBUG)
 handler = logging.StreamHandler(sys.stdout)
-handler.setLevel(logging.WARNING)
+handler.setLevel(logging.DEBUG)
 logger.addHandler(handler)
 
 
@@ -40,7 +40,7 @@ class TestInterlis(unittest.TestCase):
 
     def setUp(self):
         config.PGHOST = "db"
-        config.PGDATABASE = "teksi_wastewater"
+        config.PGDATABASE = "tww"
         config.PGUSER = "postgres"
         config.PGPASS = "postgres"
         config.PGPORT = str(PG_PORT)
@@ -79,10 +79,18 @@ class TestInterlis(unittest.TestCase):
         )
 
         # Export minimal dss
-        export_xtf_file = os.path.join(export_dir.path(), "minimal_dataset_sia405.xtf")
+        export_xtf_file = os.path.join(export_dir.path(), "minimal_dataset_dss.xtf")
         interlisImporterExporter.interlis_export(
             xtf_file_output=export_xtf_file,
             export_models=[config.MODEL_NAME_DSS],
+            logs_next_to_file=True,
+        )
+
+        # Export minimal kek
+        export_xtf_file = os.path.join(export_dir.path(), "minimal_dataset_kek.xtf")
+        interlisImporterExporter.interlis_export(
+            xtf_file_output=export_xtf_file,
+            export_models=[config.MODEL_NAME_VSA_KEK],
             logs_next_to_file=True,
         )
 

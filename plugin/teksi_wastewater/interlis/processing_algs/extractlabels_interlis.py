@@ -27,13 +27,22 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
     key of the reach and structure views is not an integer)"""
 
     tr = partial(QCoreApplication.translate, "ExtractlabelsInterlisAlgorithm")
+    AVAILABLE_SCALE_PIPELINE_REGISTRY_1_1000 = "Leitungskataster"
+    AVAILABLE_SCALE_NETWORK_PLAN_1_500 = "Werkplan"
+    AVAILABLE_SCALE_OVERVIEWMAP_1_10000 = "Uebersichtsplan.UeP10"
+    AVAILABLE_SCALE_OVERVIEWMAP_1_5000 = "Uebersichtsplan.UeP5"
+    AVAILABLE_SCALE_OVERVIEWMAP_1_2000 = "Uebersichtsplan.UeP2"
     AVAILABLE_SCALES = [
         # ili key, display name, scale value
-        ("Leitungskataster", tr("Leitungskataster"), 1000),  # TODO: check scale ?
-        ("Werkplan", tr("Werkplan"), 500),  # TODO: check scale ?
-        ("Uebersichtsplan.UeP10", tr("Uebersichtsplan 1:10000"), 10000),
-        ("Uebersichtsplan.UeP5", tr("Uebersichtsplan 1:5000"), 5000),
-        ("Uebersichtsplan.UeP2", tr("Uebersichtsplan 1:2000"), 2000),
+        (
+            AVAILABLE_SCALE_PIPELINE_REGISTRY_1_1000,
+            tr("Leitungskataster"),
+            1000,
+        ),  # TODO: check scale ?
+        (AVAILABLE_SCALE_NETWORK_PLAN_1_500, tr("Werkplan"), 500),  # TODO: check scale ?
+        (AVAILABLE_SCALE_OVERVIEWMAP_1_10000, tr("Uebersichtsplan 1:10000"), 10000),
+        (AVAILABLE_SCALE_OVERVIEWMAP_1_5000, tr("Uebersichtsplan 1:5000"), 5000),
+        (AVAILABLE_SCALE_OVERVIEWMAP_1_2000, tr("Uebersichtsplan 1:2000"), 2000),
     ]
 
     OUTPUT = "OUTPUT"
