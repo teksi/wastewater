@@ -344,7 +344,9 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
 
       IF OLD.ws_type <> NEW.ws_type THEN
         CASE WHEN OLD.ws_type <> 'unknown' THEN
-          EXECUTE FORMAT('DELETE FROM tww_od.%%I WHERE obj_id = %%L',OLD.ws_type,OLD.obj_id);
+          BEGIN
+            EXECUTE FORMAT('DELETE FROM tww_od.%%I WHERE obj_id = %%L',OLD.ws_type,OLD.obj_id);
+          END;
         END CASE;
 
         CASE WHEN NEW.ws_type = ANY(ARRAY['manhole','special_structure','discharge_point','infiltration_installation','drainless_toilet','wwtp_structure','small_treatment_plant']) THEN
