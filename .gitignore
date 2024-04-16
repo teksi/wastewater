@@ -10,6 +10,7 @@ plugin/teksi_wastewater/interlis/bin
 plugin*.zip
 plugin*.tar.gz
 
+.orig
 .idea
 .pycache
 __pycache__
