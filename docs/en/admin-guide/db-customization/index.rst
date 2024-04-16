@@ -80,6 +80,6 @@ Setting default values
 
 It is possible to define default values for repeated fields like fk_provider or fk_dataowner.
 
-The default values are set in the table ``tww_sys.default values``. Enter field name and value in the corresponding attributes and connect all entries to ``tww_sys.get_default_values(field_name)``. 
+The default values are set in the table ``tww_sys.default values``. Enter field name and value in the corresponding attributes and connect all entries to ``tww_sys.get_default_values(field_name)``.
 Per default, the fields ``fk_provider`` and ``fk_dataowner`` are already connected to the function ``tww_sys.get_default_values(field_name)``.
 An example how to insert the default value for a field name can be found `here <https://github.com/teksi/wastewater/blob/main/datamodel/changelogs/0001/14_default_values.sql>`_)
