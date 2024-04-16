@@ -172,6 +172,12 @@ def create_app(
         "view/catchment_area/vw_catchment_area_wwp_connections.sql", pg_service, variables
     )
 
+   # Recreate GEP views
+     run_sql_file(
+        "gep_views/vw_tww_catchment_area_totals.sql", pg_service, variables
+    )
+
+
     # Recreate network views
     run_sql_file("view/network/vw_network_node.sql", pg_service, variables)
     run_sql_file("view/network/vw_network_segment.sql", pg_service, variables)
