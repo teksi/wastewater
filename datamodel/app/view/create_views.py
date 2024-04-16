@@ -6,7 +6,6 @@ import psycopg2
 from pirogue import MultipleInheritance, SimpleJoins, SingleInheritance
 from vw_tww_reach import vw_tww_reach
 from vw_tww_wastewater_structure import vw_tww_wastewater_structure
-from vw_wastewater_structure import vw_wastewater_structure
 from yaml import safe_load
 
 # sys.path.append(os.path.join(os.path.dirname(__file__)))
@@ -26,7 +25,6 @@ def create_views(
     pg_service: str = "pg_tww",
     tww_reach_extra: str = None,
     tww_wastewater_structure_extra: str = None,
-    wastewater_structure_extra: str = None,
 ):
     """
     Creates the views for TEKSI Wastewater & GEP
@@ -34,7 +32,6 @@ def create_views(
     :param pg_service: the PostgreSQL service, if not given it will be determined from environment variable in Pirogue
     :param tww_reach_extra: YAML file path of the definition of additional columns for vw_tww_reach view
     :param tww_wastewater_structure_extra: YAML file path of the definition of additional columns for vw_tww_wastewater_structure_extra view
-    :param wastewater_structure_extra: YAML file path of the definition of additional columns for vw_wastewater_structure_extra view
     """  # noqa E501
 
     variables = {"SRID": srid}
@@ -44,8 +41,6 @@ def create_views(
         tww_reach_extra = safe_load(open(tww_reach_extra))
     if tww_wastewater_structure_extra:
         tww_wastewater_structure_extra = safe_load(open(tww_wastewater_structure_extra))
-    if wastewater_structure_extra:
-        wastewater_structure_extra = safe_load(open(wastewater_structure_extra))
 
     run_sql("app/view/vw_dictionary_value_list.sql", pg_service, variables)
 
@@ -109,7 +104,6 @@ def create_views(
         safe_load(open("app/view/vw_damage.yaml")), drop=True, pg_service=pg_service
     ).create()
 
-    vw_wastewater_structure(pg_service=pg_service, extra_definition=wastewater_structure_extra)
     vw_tww_wastewater_structure(
         srid, pg_service=pg_service, extra_definition=tww_wastewater_structure_extra
     )
