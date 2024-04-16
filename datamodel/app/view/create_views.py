@@ -162,9 +162,6 @@ def create_views(
     run_sql("app/swmm_views/26_vw_swmm_symbols.sql", pg_service, variables)
     run_sql("app/swmm_views/27_vw_swmm_results.sql", pg_service, variables)
 
-    # Recreate GEP views
-    run_sql("app/gep_views/vw_tww_catchment_area_totals.sql", pg_service, variables)
-
     SimpleJoins(safe_load(open("app/view/export/vw_export_reach.yaml")), pg_service).create()
     SimpleJoins(
         safe_load(open("app/view/export/vw_export_wastewater_structure.yaml")), pg_service
