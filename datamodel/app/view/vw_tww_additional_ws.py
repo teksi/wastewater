@@ -69,8 +69,8 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
         , ws._bottom_label
         , ws._input_label
         , ws._output_label
-        , ws._usage_current AS _channel_usage_current
-        , ws._function_hierarchic AS _channel_function_hierarchic
+        , wn._usage_current AS _channel_usage_current
+        , wn._function_hierarchic AS _channel_function_hierarchic
 
         FROM tww_od.wastewater_structure ws
         LEFT JOIN tww_od.cover main_co ON main_co.obj_id = ws.fk_main_cover
