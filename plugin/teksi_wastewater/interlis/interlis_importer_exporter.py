@@ -64,7 +64,6 @@ class InterlisImporterExporter:
         self.model_classes_tww_vl = None
         self.model_classes_tww_sys = None
 
-
         self.current_progress = 0
 
     def interlis_import(self, xtf_file_input, show_selection_dialog=False, logs_next_to_file=True):
