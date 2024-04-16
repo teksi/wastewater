@@ -341,13 +341,13 @@ WHERE tww_include_in_ws_labels;
 	outp as( SELECT
     ne.fk_wastewater_structure
     , rp.obj_id
-	, ST_Azimuth(rp.situation3d_geometry,ST_PointN(re.progression_geometry,2)) as azimuth
+	, ST_Azimuth(rp.situation3d_geometry,ST_PointN(re.progression3d_geometry,2)) as azimuth
     , row_number() OVER(PARTITION BY NE.fk_wastewater_structure
 			ORDER BY (rp.fk_wastewater_networkelement=ws_nd.fk_main_wastewater_node)::int*-1 -- prioritise main wastewater node, invert due to asc order
 	    			, vl_fh.order_fct_hierarchic
 				, vl_uc.order_usage_current
 	    			, ST_Azimuth(rp.situation3d_geometry
-	    				, ST_PointN(ST_CurveToLine(re.progression_geometry),2))/pi()*180 ASC)
+	    				, ST_PointN(ST_CurveToLine(re.progression3d_geometry),2))/pi()*180 ASC)
 					as idx
     , count	(*) OVER(PARTITION BY NE.fk_wastewater_structure ) as max_idx
       FROM tww_od.reach_point rp
@@ -375,7 +375,7 @@ WHERE tww_include_in_ws_labels;
     , rp.obj_id
     , row_number() OVER(PARTITION BY NE.fk_wastewater_structure
 					ORDER BY (mod((((ST_Azimuth(rp.situation3d_geometry
-												,ST_PointN(ST_CurveToLine(re.progression_geometry),-2)
+												,ST_PointN(ST_CurveToLine(re.progression3d_geometry),-2)
 											   )
 									 - coalesce(o.azimuth,0))/pi()*180)+360)::numeric
 								  ,360::numeric)
