@@ -173,7 +173,7 @@ def create_app(
     )
 
     # default values
-    run_sql_file("/view/set_default_value_for_views.sql", pg_service, variables)
+    run_sql_file("view/set_default_value_for_views.sql", pg_service, variables)
 
     # Recreate network views
     run_sql_file("view/network/vw_network_node.sql", pg_service, variables)
