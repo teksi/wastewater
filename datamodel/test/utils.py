@@ -82,8 +82,8 @@ class DbTestBase:
         cur.execute(f"DELETE FROM {schema}.{table} WHERE obj_id=%s", [obj_id])
 
     def insert_check(self, table, row, expected_row=None, schema="tww_app"):
-        obj_id = self.insert(table, row, schema)
-        result = self.select(table, obj_id, schema)
+        obj_id = self.insert(table, row, schema=schema)
+        result = self.select(table, obj_id, schema=schema)
 
         assert result, obj_id
 
@@ -95,8 +95,8 @@ class DbTestBase:
         return obj_id
 
     def update_check(self, table, row, obj_id, schema="tww_app"):
-        self.update(table, row, obj_id, schema)
-        result = self.select(table, obj_id, schema)
+        self.update(table, row, obj_id, schema=schema)
+        result = self.select(table, obj_id, schema=schema)
         self.check_result(row, result, table, "update", schema)
 
     def check_result(self, expected, result, table, test_name, schema="tww_app"):
