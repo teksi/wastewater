@@ -26,13 +26,13 @@ class DbTestBase:
         return cls.execute(f"ST_GeomAsText('{wkb}')")
 
     @classmethod
-    def select(cls, table, obj_id, schema="tww_app"):
+    def select(cls, table, attr_value, attrname='obj_id', schema="tww_app"):
         try:
             cur = cls.conn.cursor(row_factory=psycopg.rows.dict_row)
         except AttributeError:
             # remove when dropping psycopg2 support
             cur = cls.conn.cursor(cursor_factory=psycopg_extras.DictCursor)
-        cur.execute(f"SELECT * FROM {schema}.{table} WHERE obj_id=%(obj_id)s", {"obj_id": obj_id})
+        cur.execute(f"SELECT * FROM {schema}.{table} WHERE {attrname}=%(attr_value)s", {"attr_value": attr_value})
         return cur.fetchone()
 
     @classmethod
