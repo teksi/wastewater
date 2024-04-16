@@ -5,6 +5,8 @@ services:
     build:
       context: .
       dockerfile: datamodel/.docker/Dockerfile
+      args:
+        POSTGIS_IMAGE: ${POSTGIS_IMAGE:-postgis/postgis:14-3.4}
     image: teksi/tww:${DOCKER_TAG:-unstable}
     working_dir: /src
     volumes:
