@@ -113,7 +113,7 @@ SELECT
 	END
 	) as description,
 	cfhy.value_en as tag,
-	ST_CurveToLine(st_force3d(progression3d_geometry))::geometry(LineStringZ, %(SRID)s) as geom,
+	ST_CurveToLine(st_force3d(progression3d_geometry))::geometry(LineStringZ, {SRID}) as geom,
 	CASE
 		WHEN status IN (7959, 6529, 6526) THEN 'planned'
 		ELSE 'current'
