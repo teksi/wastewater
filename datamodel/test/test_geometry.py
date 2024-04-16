@@ -344,7 +344,7 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         self.assertEqual(new_row["co_diameter"], 600)
         # no change on cover geometry: ST_SetSRID(ST_MakePoint(2600000, 1200000, 'NaN'), 2056)
         new_row = self.select(
-            "vw_cover", "1337_1010", attrname="fk_wastewater_structure", schema="tww_app"
+            "vw_cover", obj_id, attrname="fk_wastewater_structure", schema="tww_app"
         )
         assert (
             new_row["situation3d_geometry"]
@@ -372,7 +372,7 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         self.assertEqual(new_row["wn_bottom_level"], 200.000)
         # no change on cover geometry: ST_SetSRID(ST_MakePoint(2600000, 1200000, 'NaN'), 2056)
         new_row = self.select(
-            "vw_cover", "1337_1010", attrname="fk_wastewater_structure", schema="tww_app"
+            "vw_cover", obj_id, attrname="fk_wastewater_structure", schema="tww_app"
         )
         assert (
             new_row["situation3d_geometry"]
@@ -400,7 +400,7 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         assert new_row["wn_bottom_level"] == 200.000
         # cover geometry has Z from new co_level: ST_SetSRID(ST_MakePoint(2600000, 1200000, 500), 2056)
         new_row = self.select(
-            "vw_cover", "1337_1010", attrname="fk_wastewater_structure", schema="tww_app"
+            "vw_cover", obj_id, attrname="fk_wastewater_structure", schema="tww_app"
         )
         assert (
             new_row["situation3d_geometry"]
@@ -428,7 +428,7 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         assert new_row["wn_bottom_level"] == 300.000
         # cover geometry has Z from new co_level: ST_SetSRID(ST_MakePoint(2600000, 1200000, 600), 2056)
         new_row = self.select(
-            "vw_cover", "1337_1010", attrname="fk_wastewater_structure", schema="tww_app"
+            "vw_cover", obj_id, attrname="fk_wastewater_structure", schema="tww_app"
         )
         assert (
             new_row["situation3d_geometry"]
