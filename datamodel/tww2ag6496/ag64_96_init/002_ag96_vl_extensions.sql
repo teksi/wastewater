@@ -146,6 +146,10 @@ INSERT INTO tww_vl.building_group_ag96_disposal_type (code,vsacode,value_de,valu
 (1999961,1999961,'pendent','pending',true)  -- kein VSA mapping
 ON CONFLICT DO NOTHING;
 
+UPDATE tww_vl.building_group_renovation_necessity SET active = FALSE where code = ANY( ARRAY[
+  8799 	-- unbekannt
+]);
+
 
 INSERT INTO tww_vl.organisation_organisation_type (code,vsacode,value_de,active) VALUES
 (1999952,8605,'Amt',true)  -- VSA mapping auf Kanton

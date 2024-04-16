@@ -409,7 +409,7 @@ SELECT
 	, bg.population_equivalent as einwohnergleichwert
 	, bg.situation_geometry as lage
 	, bg.ag96_label_number as nummer
-	, bg_rn.value_de as sanierungsbedarf
+	, INITCAP(bg_rn.value_de) as sanierungsbedarf
 	, bg.renovation_date as sanierungsdatum
 	, bg.restructuring_concept as sanierungskonzept
 	, concat_ws('','ch113jqg0000',right(coalesce(bg.fk_provider,'00000107'),8)) AS datenbewirtschafter_gep

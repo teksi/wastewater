@@ -727,7 +727,7 @@ BEGIN
 	FROM (SELECT NEW.*) as vw_val
 	LEFT JOIN tww_vl.building_group_function bg_fct on bg_fct.value_de = vw_val.arealnutzung
 	LEFT JOIN {ext_schema}.vl_building_group_function bg_fct_ag96 on bg_fct_ag96.value_agxx = vw_val.arealnutzung
-	LEFT JOIN tww_vl.building_group_renovation_necessity bg_rn on bg_rn.value_de = vw_val.sanierungsbedarf
+	LEFT JOIN tww_vl.building_group_renovation_necessity bg_rn on bg_rn.value_de = lower(vw_val.sanierungsbedarf)
 	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_ww ON bg_dt_ww.value_de = vw_val.beseitigung_haeusliches_abwasser 
 	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_iw ON bg_dt_iw.value_de = vw_val.beseitigung_gewerbliches_abwasser 
 	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_sw ON bg_dt_sw.value_de = vw_val.beseitigung_platzentwaesserung 
