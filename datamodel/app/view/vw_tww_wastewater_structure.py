@@ -405,12 +405,9 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
           EXECUTE FORMAT('DELETE FROM tww_od.%%I WHERE obj_id = %%L',OLD.ws_type,OLD.obj_id);
         END CASE;
 
-        CASE WHEN NEW.ws_type <> 'unknown' THEN
+        CASE WHEN NEW.ws_type = ANY['manhole','special_structure','discharge_point','infiltration_installation','drainless_toilet','wwtp_structure','small_treatment_plant'] THEN
           BEGIN
             EXECUTE FORMAT('INSERT INTO tww_od.%%I(obj_id) VALUES (%%L)',NEW.ws_type,OLD.obj_id);
-            EXCEPTION
-              WHEN undefined_table THEN
-                RAISE NOTICE 'table tww_od.%% does not exist',NEW.ws_type;
           END;
         END CASE;
       END IF;
