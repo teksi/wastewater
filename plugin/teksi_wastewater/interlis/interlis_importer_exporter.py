@@ -30,8 +30,8 @@ from .interlis_model_mapping.model_interlis_sia405_abwasser import (
     ModelInterlisSia405Abwasser,
 )
 from .interlis_model_mapping.model_interlis_vsa_kek import ModelInterlisVsaKek
+from .interlis_model_mapping.model_tww import ModelTwwSys, ModelTwwVl
 from .interlis_model_mapping.model_tww_od import ModelTwwOd
-from .interlis_model_mapping.model_tww import ModelTwwVl,ModelTwwSys
 from .utils.ili2db import InterlisTools
 from .utils.various import (
     CmdException,
@@ -459,7 +459,7 @@ class InterlisImporterExporter:
         if self.model_classes_tww_vl is None:
             self.model_classes_tww_vl = ModelTwwVl().classes()
             self._progress_done(self.current_progress + 1)
-        
+
         if self.model_classes_tww_sys is None:
             self.model_classes_tww_sys = ModelTwwSys().classes()
             self._progress_done(self.current_progress + 1)

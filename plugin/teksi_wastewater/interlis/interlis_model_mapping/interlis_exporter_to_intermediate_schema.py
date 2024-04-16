@@ -2407,7 +2407,7 @@ class InterlisExporterToIntermediateSchema:
             logger.warning(
                 f'Could not find an active entry in table"{oid_table.__table__.schema}.{oid_table.__name__}". Setting to default instead.'
             )
-            return 'ch080txt' #TODO: is this prefix owned by TEKSI?
+            return "ch080txt"  # TODO: is this prefix owned by TEKSI?
 
         return instance.prefix
 
