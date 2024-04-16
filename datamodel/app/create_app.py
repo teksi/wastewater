@@ -144,9 +144,7 @@ def create_app(
         pg_service=pg_service,
     ).create()
 
-    vw_wastewater_structure(
-        pg_service=pg_service, extra_definition=wastewater_structure_extra
-    )
+    vw_wastewater_structure(pg_service=pg_service, extra_definition=wastewater_structure_extra)
     vw_tww_wastewater_structure(
         srid, pg_service=pg_service, extra_definition=tww_wastewater_structure_extra
     )
