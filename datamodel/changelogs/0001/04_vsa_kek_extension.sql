@@ -1,6 +1,6 @@
 ------ This file generates the VSA-DSS database (Modul VSA-KEK (2020)) in en on QQIS
 ------ For questions etc. please contact Stefan Burckhardt stefan.burckhardt@sjib.ch
------- version 10.02.2024 14:52:05
+------ version 26.02.2024 21:02:11
 ------ with 3D coordinates
 BEGIN;
 
@@ -245,7 +245,7 @@ FOR EACH ROW EXECUTE PROCEDURE
 -------
 ------------ Relationships and Value Tables ----------- ;
 ALTER TABLE tww_od.examination ADD COLUMN fk_reach_point varchar(16);
-ALTER TABLE tww_od.examination ADD CONSTRAINT rel_examination_reach_point FOREIGN KEY (fk_reach_point) REFERENCES tww_od.reach_point(obj_id) ON UPDATE CASCADE ON DELETE set null;
+ALTER TABLE tww_od.examination ADD CONSTRAINT rel_examination_reach_point FOREIGN KEY (fk_reach_point) REFERENCES tww_od.reach_point(obj_id) ON UPDATE CASCADE ON DELETE set null DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE tww_od.examination ADD CONSTRAINT oorel_od_examination_maintenance_event FOREIGN KEY (obj_id) REFERENCES tww_od.maintenance_event(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
 CREATE TABLE tww_vl.examination_recording_type () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.examination_recording_type ADD CONSTRAINT pkey_tww_vl_examination_recording_type_code PRIMARY KEY (code);
@@ -271,7 +271,7 @@ ALTER TABLE tww_vl.examination_weather ADD CONSTRAINT pkey_tww_vl_examination_we
  REFERENCES tww_vl.examination_weather (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.damage ADD COLUMN fk_examination varchar(16);
-ALTER TABLE tww_od.damage ADD CONSTRAINT rel_damage_examination FOREIGN KEY (fk_examination) REFERENCES tww_od.examination(obj_id) ON UPDATE CASCADE ON DELETE cascade;
+ALTER TABLE tww_od.damage ADD CONSTRAINT rel_damage_examination FOREIGN KEY (fk_examination) REFERENCES tww_od.examination(obj_id) ON UPDATE CASCADE ON DELETE cascade DEFERRABLE INITIALLY DEFERRED;
 CREATE TABLE tww_vl.damage_connection () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.damage_connection ADD CONSTRAINT pkey_tww_vl_damage_connection_code PRIMARY KEY (code);
  INSERT INTO tww_vl.damage_connection (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8498,8498,'yes','ja','oui', 'si', 'da', '', '', '', '', '', 'true');
@@ -961,7 +961,7 @@ ALTER TABLE tww_vl.data_media_kind ADD CONSTRAINT pkey_tww_vl_data_media_kind_co
  REFERENCES tww_vl.data_media_kind (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.file ADD COLUMN fk_data_media varchar(16);
-ALTER TABLE tww_od.file ADD CONSTRAINT rel_file_data_media FOREIGN KEY (fk_data_media) REFERENCES tww_od.data_media(obj_id) ON UPDATE CASCADE ON DELETE set null;
+ALTER TABLE tww_od.file ADD CONSTRAINT rel_file_data_media FOREIGN KEY (fk_data_media) REFERENCES tww_od.data_media(obj_id) ON UPDATE CASCADE ON DELETE set null DEFERRABLE INITIALLY DEFERRED;
 CREATE TABLE tww_vl.file_classname () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.file_classname ADD CONSTRAINT pkey_tww_vl_file_classname_code PRIMARY KEY (code);
  INSERT INTO tww_vl.file_classname (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9044,9044,'drainless_toilet','Abflusslose_Toilette','TOILETTE_SANS_VIDANGE', 'toilette_senza_scarico', 'rrr_Abflusslose_Toilette', '', '', '', '', '', 'true');
@@ -1018,7 +1018,7 @@ ALTER TABLE tww_vl.file_classname ADD CONSTRAINT pkey_tww_vl_file_classname_code
  INSERT INTO tww_vl.file_classname (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3838,3838,'river_bed','Gewaessersohle','FOND_COURS_EAU', 'zzz_Gewaessersohle', 'rrr_Gewaessersohle', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.file_classname (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3839,3839,'water_control_structure','Gewaesserverbauung','AMENAGEMENT_COURS_EAU', 'zzz_Gewaesserverbauung', 'rrr_Gewaesserverbauung', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.file_classname (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3840,3840,'dam','GewaesserWehr','OUVRAGE_RETENUE', 'zzz_GewaesserWehr', 'rrr_GewaesserWehr', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.file_classname (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3841,3841,'aquifier','Grundwasserleiter','AQUIFERE', 'acquifero', 'rrr_Grundwasserleiter', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.file_classname (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3841,3841,'aquifer','Grundwasserleiter','AQUIFERE', 'acquifero', 'rrr_Grundwasserleiter', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.file_classname (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3842,3842,'ground_water_protection_perimeter','Grundwasserschutzareal','PERIMETRE_PROT_EAUX_SOUT', 'zzz_Grundwasserschutzareal', 'rrr_Grundwasserschutzareal', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.file_classname (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3843,3843,'groundwater_protection_zone','Grundwasserschutzzone','ZONE_PROT_EAUX_SOUT', 'zzz_Grundwasserschutzzone', 'rrr_Grundwasserschutzzone', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.file_classname (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3844,3844,'reach','Haltung','TRONCON', 'tratta', 'rrr_Haltung', '', '', '', '', '', 'true');

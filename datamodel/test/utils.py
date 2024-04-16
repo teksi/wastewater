@@ -1,5 +1,8 @@
-import psycopg2
-import psycopg2.extras
+try:
+    import psycopg
+except ImportError:
+    import psycopg2 as psycopg
+    import psycopg2.extras as psycopg_extras
 
 DEFAULT_PG_SERVICE = "pg_tww"
 
@@ -7,7 +10,7 @@ DEFAULT_PG_SERVICE = "pg_tww"
 class DbTestBase:
     @classmethod
     def assert_count(cls, table, schema, expected):
-        cur = cls.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        cur = cls.conn.cursor()
         cur.execute(f"SELECT COUNT(*) FROM {schema}.{table}")
         count = cur.fetchone()[0]
         assert (
@@ -24,26 +27,30 @@ class DbTestBase:
 
     @classmethod
     def select(cls, table, obj_id, schema="tww_app"):
-        cur = cls.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        try:
+            cur = cls.conn.cursor(row_factory=psycopg.rows.dict_row)
+        except AttributeError:
+            # remove when dropping psycopg2 support
+            cur = cls.conn.cursor(cursor_factory=psycopg_extras.DictCursor)
         cur.execute(f"SELECT * FROM {schema}.{table} WHERE obj_id=%(obj_id)s", {"obj_id": obj_id})
         return cur.fetchone()
 
     @classmethod
     def execute(cls, sql: str, params=[]):
-        cur = cls.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        cur = cls.conn.cursor()
         if not sql.startswith("SELECT"):
             sql = f"SELECT {sql}"
         cur.execute(sql, params)
         return cur.fetchone()[0]
 
     def check_empty(self, sql: str):
-        cur = self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        cur = self.conn.cursor()
         cur.execute(sql)
         self.assertIsNone(cur.fetchone())
 
     @classmethod
-    def cursor(cls):
-        return cls.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    def cursor(cls, **kwargs):
+        return cls.conn.cursor(**kwargs)
 
     @classmethod
     def insert(cls, table, row, schema="tww_app"):

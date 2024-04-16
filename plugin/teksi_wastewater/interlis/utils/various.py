@@ -23,7 +23,7 @@ class DeduplicatedLogger(logging.Logger):
         self._last_message = None
         self._repeated = 0
 
-    def _log(self, level, msg, args, exc_info=None, extra=None):
+    def _log(self, level, msg, args, exc_info=None, extra=None, stacklevel=1):
         this_message = (level, msg)
         if self._last_message is None or self._last_message != this_message:
             if self._repeated > 0:
@@ -33,6 +33,7 @@ class DeduplicatedLogger(logging.Logger):
                     args,
                     exc_info,
                     extra,
+                    stacklevel,
                 )
 
             super()._log(level, msg, args, exc_info, extra)
@@ -84,7 +85,7 @@ def setup_test_db(template="full"):
     def dexec_(cmd, check=True):
         return exec_(f"docker exec twwqwat {cmd}", check)
 
-    docker_image = os.getenv("TWWQWAT2ILI_TESTDB_IMAGE", "postgis/postgis:13-3.2")
+    docker_image = os.getenv("POSTGIS_IMAGE", "postgis/postgis:14-3.4")
 
     logger.info(f"SETTING UP TWW/QWAT DATABASE [{docker_image}]...")
 
@@ -235,8 +236,8 @@ def get_pgconf():
     return collections.defaultdict(str, pgconf)
 
 
-def get_pgconf_as_psycopg2_dsn() -> List[str]:
-    """Returns the pgconf as a psycopg2 connection string"""
+def get_pgconf_as_psycopg_dsn() -> List[str]:
+    """Returns the pgconf as a psycopg connection string"""
 
     pgconf = get_pgconf()
     parts = []

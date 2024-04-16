@@ -7,4 +7,4 @@ CREATE OR REPLACE VIEW tww_app.swmm_vw_landuses AS
     0 as sweepingInterval,
     0 as fractionAvailable,
     0 as lastSwept
-  FROM tww_vl._planning_zone_kind;
+  FROM tww_vl.dss15_planning_zone_kind;
