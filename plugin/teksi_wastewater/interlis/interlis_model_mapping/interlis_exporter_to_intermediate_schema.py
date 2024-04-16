@@ -20,6 +20,7 @@ class InterlisExporterToIntermediateSchema:
         model_classes_interlis,
         model_classes_tww_od,
         model_classes_tww_vl,
+        model_classes_tww_sys,
         selection=None,
         labels_file=None,
         basket_enabled=False,
@@ -47,6 +48,7 @@ class InterlisExporterToIntermediateSchema:
         self.model_classes_interlis = model_classes_interlis
         self.model_classes_tww_od = model_classes_tww_od
         self.model_classes_tww_vl = model_classes_tww_vl
+        self.model_classes_tww_sys = model_classes_tww_sys
 
         self.tww_session = None
         self.abwasser_session = None
@@ -2399,6 +2401,16 @@ class InterlisExporterToIntermediateSchema:
             val = 0
         return val
 
+    def get_oid_prefix(self, oid_table):
+        instance = self.tww_session.query(oid_table).filter(oid_table.active == True).first()
+        if instance is None:
+            logger.warning(
+                f'Could not find an active entry in table"{oid_table.__table__.schema}.{oid_table.__name__}". Setting to default instead.'
+            )
+            return 'ch080txt' #TODO: is this prefix owned by TEKSI?
+
+        return instance.prefix
+
     def base_common(self, row, type_name):
         """
         Returns common attributes for base
@@ -2589,7 +2601,7 @@ class InterlisExporterToIntermediateSchema:
         Returns common attributes for textpos
         """
         t_id = self.tid_maker.next_tid()
-
+        oid_prefix = self.get_oid_prefix(self.model_classes_tww_sys.oid_prefixes)
         if t_id > 999999:
             logger.warning(
                 f"Exporting more than 999999 labels will generate invalid OIDs. Currently exporting {t_id} label of type '{t_type}'."
@@ -2598,7 +2610,7 @@ class InterlisExporterToIntermediateSchema:
         return {
             "t_id": t_id,
             "t_type": t_type,
-            "t_ili_tid": f"ch080txt{shortcut_en}{t_id:06d}",
+            "t_ili_tid": f"{oid_prefix}{shortcut_en}{t_id:06d}",
             # --- TextPos ---
             "textpos": ST_GeomFromGeoJSON(
                 json.dumps(
