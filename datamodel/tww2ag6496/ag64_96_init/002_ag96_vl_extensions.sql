@@ -94,6 +94,9 @@ UPDATE tww_vl.measure_category SET active = FALSE where code = ANY( ARRAY[
 , 8705  -- Sonderbauwerk_Neubau 
 ]);
 
+UPDATE tww_vl.measure_priority SET active = FALSE where code = ANY( ARRAY[
+4763 	-- M4
+]);
 
 INSERT INTO tww_vl.manhole_function (code,vsacode,value_de,value_en,active) VALUES
 (1999968,2742,'Schlammfang','sludge_trap',true),		-- Schlammsammler
