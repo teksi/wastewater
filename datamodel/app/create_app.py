@@ -70,7 +70,7 @@ def create_app(
     if tww_wastewater_structure_extra:
         tww_wastewater_structure_extra = safe_load(open(tww_wastewater_structure_extra))
     if wastewater_structure_extra:
-        wastewater_structure_extra = safe_load(open(wastewater_structure_extra)
+        wastewater_structure_extra = safe_load(open(wastewater_structure_extra))
 
     run_sql_file("view/vw_dictionary_value_list.sql", pg_service, variables)
 
