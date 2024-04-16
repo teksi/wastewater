@@ -485,8 +485,6 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
             skip_columns=[
                 "detail_geometry3d_geometry",
                 "last_modification",
-                "_usage_current",
-                "_function_hierarchic",
                 "_label",
                 "_cover_label",
                 "_bottom_label",
