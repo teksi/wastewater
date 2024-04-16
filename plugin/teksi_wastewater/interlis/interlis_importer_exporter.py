@@ -62,6 +62,8 @@ class InterlisImporterExporter:
         self.model_classes_interlis = None
         self.model_classes_tww_od = None
         self.model_classes_tww_vl = None
+        self.model_classes_tww_sys = None
+
 
         self.current_progress = 0
 
