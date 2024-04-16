@@ -173,7 +173,7 @@ def create_app(
     )
 
    # Recreate GEP views
-     run_sql_file(
+    run_sql_file(
         "gep_views/vw_tww_catchment_area_totals.sql", pg_service, variables
     )
 
