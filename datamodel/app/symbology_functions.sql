@@ -330,11 +330,11 @@ CREATE OR REPLACE FUNCTION tww_app.update_reach_point_label(_obj_id text,
 -- check value lists for label inclusion
 SELECT array_agg(code) INTO _labeled_ws_status
 FROM tww_vl.wastewater_structure_status
-WHERE cfg_include_in_ws_labels;
+WHERE tww_include_in_ws_labels;
 
 SELECT array_agg(code) INTO _labeled_ch_func_hier
 FROM tww_vl.channel_function_hierarchic
-WHERE cfg_include_in_ws_labels;
+WHERE tww_include_in_ws_labels;
 
     with
 	--outputs

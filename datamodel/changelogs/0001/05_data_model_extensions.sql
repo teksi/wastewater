@@ -96,12 +96,12 @@ added solely for TEKSI Wastewater & GEP
 has to be updated by triggers';
 
 -- this column is an extension to the VSA data model and defines whether connected channels are included in inflow/outflow labeling based on function_hierarchic
-ALTER TABLE tww_vl.channel_function_hierarchic ADD COLUMN cfg_include_in_ws_labels boolean DEFAULT FALSE;
-UPDATE tww_vl.channel_function_hierarchic SET cfg_include_in_ws_labels=TRUE WHERE code=ANY('{5062,5064,5066,5068,5069,5070,5071,5072,5074}');
+ALTER TABLE tww_vl.channel_function_hierarchic ADD COLUMN tww_include_in_ws_labels boolean DEFAULT FALSE;
+UPDATE tww_vl.channel_function_hierarchic SET tww_include_in_ws_labels=TRUE WHERE code=ANY('{5062,5064,5066,5068,5069,5070,5071,5072,5074}');
 
 -- this column is an extension to the VSA data model and defines whether connected channels are included in inflow/outflow labeling based on function_hierarchic
-ALTER TABLE tww_vl.wastewater_structure_status ADD COLUMN cfg_include_in_ws_labels boolean DEFAULT FALSE;
-UPDATE tww_vl.wastewater_structure_status SET cfg_include_in_ws_labels=TRUE WHERE code=ANY('{8493,6530,6533}');
+ALTER TABLE tww_vl.wastewater_structure_status ADD COLUMN tww_include_in_ws_labels boolean DEFAULT FALSE;
+UPDATE tww_vl.wastewater_structure_status SET tww_include_in_ws_labels=TRUE WHERE code=ANY('{8493,6530,6533}');
 
 ALTER TABLE tww_od.organisation ADD COLUMN tww_active bool DEFAULT FALSE;
 COMMENT ON COLUMN tww_od.organisation.tww_active IS 'not part of the VSA-DSS data model
