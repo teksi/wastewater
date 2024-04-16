@@ -53,6 +53,17 @@ SET order_fct_hierarchic=
 		 ]
 	 ,code);
 
+-- this column is an extension to the VSA data model and facilitates filtering out primary features
+ALTER TABLE tww_vl.channel_function_hierarchic ADD COLUMN tww_is_primary bool DEFAULT FALSE;
+UPDATE tww_vl.channel_function_hierarchic
+SET tww_is_primary=true
+WHERE left(value_en, 4)='pwwf';
+UPDATE tww_vl.channel_function_hierarchic
+SET tww_is_primary=false
+WHERE left(value_en, 4)<>'pwwf';
+COMMENT ON COLUMN tww_vl.channel_function_hierarchic.tww_is_primary IS 'True when part of the primary network. Facilitates exporting primary elements only.
+Not part of the VSA-DSS data model, added solely for TEKSI Wastewater & GEP';
+
 -- table wastewater_node is extended to hold additional attributes necessary for symbology reasons
 -- extended attributes are started with an underscore
 -- _usage_current is necessary for coloring the wastewater_node symbols
