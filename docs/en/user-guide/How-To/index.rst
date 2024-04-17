@@ -223,7 +223,7 @@ It is possible to define default values for repeated fields such as fk_provider 
 
 1. Enter field name and value in the corresponding attributes in ``tww_od.default values``
 
-2. Connect all ccurences of your field name to ``tww_sys.get_default_values(field_name)``.
+2. Connect all occurences of your field name to ``tww_sys.get_default_values(field_name)``.
 Per default, the fields ``fk_provider`` and ``fk_dataowner`` are already connected to the function ``tww_sys.get_default_values(field_name)``.
 An example SQL script how to insert the default value for all occurences of a field name can be found `here <https://github.com/teksi/wastewater/blob/main/datamodel/changelogs/0001/14_default_values.sql>`_)
 
