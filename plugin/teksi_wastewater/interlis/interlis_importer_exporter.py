@@ -111,6 +111,10 @@ class InterlisImporterExporter:
         self._progress_done(30, "Importing XTF data...")
         self._import_xtf_file(xtf_file_input=xtf_file_input)
 
+        # Disable symbology triggers
+        self._progress_done(35, "Disable symbolgy triggers...")
+        self._import_disable_symbology_triggers()
+
         # Import from the temporary ili2pg model
         self._progress_done(40, "Converting to Teksi Wastewater...")
         tww_session = self._import_from_intermediate_schema(import_model)
@@ -123,6 +127,7 @@ class InterlisImporterExporter:
             if import_dialog.exec_() == import_dialog.Rejected:
                 tww_session.rollback()
                 tww_session.close()
+                self._import_enable_symbology_triggers()
                 raise InterlisImporterExporterStopped()
             QApplication.setOverrideCursor(Qt.WaitCursor)
         else:
@@ -134,7 +139,12 @@ class InterlisImporterExporter:
         self._progress_done(95, "Update main cover and refresh materialized views...")
         self._import_update_main_cover_and_refresh_mat_views()
 
+        # Reenable symbology triggers
+        self._progress_done(95, "Reenable symbology triggers...")
+        self._import_enable_symbology_triggers()
+
         self._progress_done(100)
+        logger.info("Interlis import finished.")
 
     def interlis_export(
         self,
@@ -190,6 +200,7 @@ class InterlisImporterExporter:
         self._export_xtf_files(file_name_base, export_models)
 
         self._progress_done(100)
+        logger.info("Interlis export finished.")
 
     def _import_validate_xtf_file(self, xtf_file_input):
         log_path = make_log_path(self.base_log_path, "ilivalidator")
@@ -258,6 +269,30 @@ class InterlisImporterExporter:
 
         logger.info("Refresh materialized views")
         cursor.execute("SELECT tww_app.network_refresh_network_simple();")
+
+        connection.commit()
+        connection.close()
+
+    def _import_disable_symbology_triggers(self):
+        connection = psycopg.connect(get_pgconf_as_psycopg_dsn(), **DEFAULTS_CONN_ARG)
+        if PSYCOPG_VERSION == 2:
+            connection.set_session(autocommit=True)
+        cursor = connection.cursor()
+
+        logger.info("Disable symbology triggers")
+        cursor.execute("SELECT tww_sys.disable_symbology_triggers();")
+
+        connection.commit()
+        connection.close()
+
+    def _import_enable_symbology_triggers(self):
+        connection = psycopg.connect(get_pgconf_as_psycopg_dsn(), **DEFAULTS_CONN_ARG)
+        if PSYCOPG_VERSION == 2:
+            connection.set_session(autocommit=True)
+        cursor = connection.cursor()
+
+        logger.info("Enable symbology triggers")
+        cursor.execute("SELECT tww_sys.enable_symbology_triggers();")
 
         connection.commit()
         connection.close()
