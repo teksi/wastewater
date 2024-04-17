@@ -221,7 +221,6 @@ Setting default values
 
 It is possible to define default values for repeated fields such as fk_provider or fk_dataowner.
 
-The default values are set in the table . 
 1. Enter field name and value in the corresponding attributes in ``tww_od.default values``
 
 2. Connect all ccurences of your field name to ``tww_sys.get_default_values(field_name)``.
