@@ -2,9 +2,10 @@ import decimal
 import os
 import unittest
 
-import psycopg2
-import psycopg2.extras
-import psycopg2.sql
+try:
+    import psycopg
+except ImportError:
+    import psycopg2 as psycopg
 
 from .utils import DEFAULT_PG_SERVICE, DbTestBase
 
@@ -17,7 +18,7 @@ class TestImport(unittest.TestCase, DbTestBase):
     @classmethod
     def setUpClass(cls):
         pgservice = os.environ.get("PGSERVICE") or DEFAULT_PG_SERVICE
-        cls.conn = psycopg2.connect(f"service={pgservice}")
+        cls.conn = psycopg.connect(f"service={pgservice}")
 
     # - level calculation failing because only no reference level
     #   -> not updated structure with calculated values
@@ -207,14 +208,14 @@ class TestImport(unittest.TestCase, DbTestBase):
         # it should be in the live table tww_od.reach and tww_od.reach_point
         cur = self.cursor()
         cur.execute(
-            psycopg2.sql.SQL(
+            psycopg.sql.SQL(
                 "SELECT re.material, re.clear_height, rp.level, ws.co_level\
             FROM {schema}.reach re\
             LEFT JOIN {schema}.reach_point rp ON rp.obj_id = re.fk_reach_point_from\
             LEFT JOIN {schema}.wastewater_networkelement wn ON wn.obj_id = rp.fk_wastewater_networkelement\
             LEFT JOIN {schema}.vw_tww_wastewater_structure ws ON ws.obj_id = wn.fk_wastewater_structure\
             WHERE ws.obj_id = %(obj_id)s"
-            ).format(schema=psycopg2.sql.Identifier("tww_od")),
+            ).format(schema=psycopg.sql.Identifier("tww_od")),
             {"obj_id": obj_id},
         )
         row = cur.fetchone()
@@ -227,11 +228,11 @@ class TestImport(unittest.TestCase, DbTestBase):
         row = self.select("file", obj_id, "tww_od")
         cur = self.cursor()
         cur.execute(
-            psycopg2.sql.SQL(
+            psycopg.sql.SQL(
                 "SELECT *\
             FROM {schema}.file\
             WHERE object = %(obj_id)s"
-            ).format(schema=psycopg2.sql.Identifier("tww_od")),
+            ).format(schema=psycopg.sql.Identifier("tww_od")),
             {"obj_id": obj_id},
         )
         row = cur.fetchone()
@@ -262,7 +263,7 @@ class TestImport(unittest.TestCase, DbTestBase):
         # it should be in the live table tww_od.reach and tww_od.reach_point
         cur = self.cursor()
         cur.execute(
-            psycopg2.sql.SQL(
+            psycopg.sql.SQL(
                 "SELECT re.material, re.clear_height, rp.level, ws.co_level\
             FROM tww_od.reach re\
             LEFT JOIN tww_od.reach_point rp ON rp.obj_id = re.fk_reach_point_from\
@@ -339,14 +340,14 @@ class TestImport(unittest.TestCase, DbTestBase):
         # it should be in the live table tww_od.reach and tww_od.reach_point
         cur = self.cursor()
         cur.execute(
-            psycopg2.sql.SQL(
+            psycopg.sql.SQL(
                 "SELECT re.material, re.clear_height, rp.level, ws.co_level\
             FROM {schema}.reach re\
             LEFT JOIN {schema}.reach_point rp ON rp.obj_id = re.fk_reach_point_from\
             LEFT JOIN {schema}.wastewater_networkelement wn ON wn.obj_id = rp.fk_wastewater_networkelement\
             LEFT JOIN {schema}.vw_tww_wastewater_structure ws ON ws.obj_id = wn.fk_wastewater_structure\
             WHERE ws.obj_id = %(obj_id)s"
-            ).format(schema=psycopg2.sql.Identifier("tww_od")),
+            ).format(schema=psycopg.sql.Identifier("tww_od")),
             {"obj_id": obj_id},
         )
         row = cur.fetchone()
@@ -442,14 +443,14 @@ class TestImport(unittest.TestCase, DbTestBase):
         # it should be in the live table tww_od.reach and tww_od.reach_point
         cur = self.cursor()
         cur.execute(
-            psycopg2.sql.SQL(
+            psycopg.sql.SQL(
                 "SELECT re.material, re.clear_height, rp.level, ws.co_level\
             FROM {schema}.reach re\
             LEFT JOIN {schema}.reach_point rp ON rp.obj_id = re.fk_reach_point_from\
             LEFT JOIN {schema}.wastewater_networkelement wn ON wn.obj_id = rp.fk_wastewater_networkelement\
             LEFT JOIN {schema}.vw_tww_wastewater_structure ws ON ws.obj_id = wn.fk_wastewater_structure\
             WHERE ws.obj_id = %(obj_id)s"
-            ).format(schema=psycopg2.sql.Identifier("tww_od")),
+            ).format(schema=psycopg.sql.Identifier("tww_od")),
             {"obj_id": obj_id},
         )
         row = cur.fetchone()
@@ -477,8 +478,8 @@ class TestImport(unittest.TestCase, DbTestBase):
         # it should be in the live table tww_od.reach and tww_od.reach_point
         cur = self.cursor()
         cur.execute(
-            psycopg2.sql.SQL("SELECT * FROM {schema}.wastewater_structure LIMIT 1").format(
-                schema=psycopg2.sql.Identifier("tww_od")
+            psycopg.sql.SQL("SELECT * FROM {schema}.wastewater_structure LIMIT 1").format(
+                schema=psycopg.sql.Identifier("tww_od")
             )
         )
         row = cur.fetchone()

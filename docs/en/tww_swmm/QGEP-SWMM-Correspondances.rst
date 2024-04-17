@@ -40,11 +40,11 @@ See ``vw_swmm_raingages.sql`` for details.
 
 **Aquifers:**
 
-TWW_SWMM creates an aquifer for each TWW ``aquifiers``.
+TWW_SWMM creates an aquifer for each TWW ``aquifer``.
 
 By default:
 
-- An aquifer is created for each TWW ``aquifiers``
+- An aquifer is created for each TWW ``aquifer``
 - The bottom elevation is set to the ``minimal_groundwater_level``
 - The water table elevation is set to the ``average_groundwater_level``
 - Other parameters have default SWMM values
