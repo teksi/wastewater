@@ -31,6 +31,12 @@ def run_sql(sql: str, pg_service: str, variables: dict = None):
     conn.commit()
     conn.close()
 
+def get_db_identifier(pg_service: str):
+    conn = psycopg.connect(f"service={pg_service}")
+    db_identifier =conn.info.dbname
+    conn.close()
+    return db_identifier
+
 
 def create_app(
     srid: int = 2056,
@@ -49,7 +55,8 @@ def create_app(
     """
     cwd = Path(__file__).parent.resolve()
     variables = {
-        "SRID": psycopg.sql.SQL(f"{srid}")
+        "SRID": psycopg.sql.SQL(f"{srid}"),
+        "db_identifier": get_db_identifier(pg_service),
     }  # when dropping psycopg2 support, we can use the srid var directly
 
     if drop_schema:
