@@ -57,7 +57,7 @@ def create_app(
     cwd = Path(__file__).parent.resolve()
     variables = {
         "SRID": psycopg.sql.SQL(f"{srid}"),
-        "db_identifier": get_db_identifier(pg_service)
+        "db_identifier": get_db_identifier(pg_service),
     }  # when dropping psycopg2 support, we can use the srid var directly
 
     if drop_schema:
