@@ -1,4 +1,4 @@
-CREATE TABLE tww_sys.default_values
+CREATE TABLE tww_od.default_values
 (
     fieldname text NOT NULL,
     value_obj_id varchar(16),
@@ -13,16 +13,16 @@ DECLARE
     myrec record;
 BEGIN
   BEGIN
-    SELECT value_obj_id::varchar(16) INTO myrec FROM tww_sys.default_values WHERE fieldname = field_name;
+    SELECT value_obj_id::varchar(16) INTO myrec FROM tww_od.default_values WHERE fieldname = field_name;
     EXCEPTION
         WHEN NO_DATA_FOUND THEN
-           RAISE WARNING 'Field name % not found in table tww_sys.default_values. Returning NULL',field_name;
+           RAISE WARNING 'Field name % not found in table tww_od.default_values. Returning NULL',field_name;
 		   RETURN NULL;
   END;
   RETURN myrec.value_obj_id;
 END;
 $BODY$
-  LANGUAGE plpgsql STABLE
+  LANGUAGE plpgsql STABLE SECURITY DEFINER
   COST 100;
 
 -- Set defaults on all fk_provider,fk_dataowner

@@ -74,12 +74,3 @@ These scripts (SQL or Python) should be placed in a specific path and name them 
 This path shall be given as argument to PUM when upgrading the data model as a delta directory (see PUM `documentation <https://github.com/opengisch/pum>`_).
 
 If one wants to have these views automatically updated when fields are added the data model, Pirogue can be used to dynamically generate the views. You can take example of the creation of the views in the data model.
-
-Setting default values
-^^^^^^^^^^^^^^^^^^^^^
-
-It is possible to define default values for repeated fields like fk_provider or fk_dataowner.
-
-The default values are set in the table ``tww_sys.default values``. Enter field name and value in the corresponding attributes and connect all entries to ``tww_sys.get_default_values(field_name)``.
-Per default, the fields ``fk_provider`` and ``fk_dataowner`` are already connected to the function ``tww_sys.get_default_values(field_name)``.
-An example how to insert the default value for a field name can be found `here <https://github.com/teksi/wastewater/blob/main/datamodel/changelogs/0001/14_default_values.sql>`_)
