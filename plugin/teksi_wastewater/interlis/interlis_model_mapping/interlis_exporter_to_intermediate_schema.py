@@ -2405,9 +2405,12 @@ class InterlisExporterToIntermediateSchema:
         instance = self.tww_session.query(oid_table).filter(oid_table.active is True).first()
         if instance is None:
             logger.warning(
-                f'Could not find an active entry in table"{oid_table.__table__.schema}.{oid_table.__name__}". Setting to default instead.'
+                f'Could not find an active entry in table"{oid_table.__table__.schema}.{oid_table.__name__}". \
+                Returning an empty string, which will lead to Interlis Errors. \
+                Set the value \'active\' in table"{oid_table.__table__.schema}.{oid_table.__name__}" to \
+                \'True\' to avoid this issue.'
             )
-            return "ch080txt"  # TODO: is this prefix owned by TEKSI?
+            return "" 
 
         return instance.prefix
 
