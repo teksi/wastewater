@@ -403,13 +403,13 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
       IF OLD.ws_type <> NEW.ws_type THEN
         CASE WHEN OLD.ws_type <> 'unknown' THEN
           BEGIN
-            EXECUTE FORMAT('DELETE FROM tww_od.%I WHERE obj_id = %L',OLD.ws_type,OLD.obj_id);
+            EXECUTE FORMAT({literal_delete_on_ws_change});
           END;
         END CASE;
 
         CASE WHEN NEW.ws_type = ANY(ARRAY['manhole','special_structure','discharge_point','infiltration_installation','drainless_toilet','wwtp_structure','small_treatment_plant']) THEN
           BEGIN
-            EXECUTE FORMAT('INSERT INTO tww_od.%I(obj_id) VALUES (%L)',NEW.ws_type,OLD.obj_id);
+            EXECUTE FORMAT({literal_insert_on_ws_change});
           END;
         END CASE;
       END IF;
@@ -509,6 +509,8 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
       FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_tww_wastewater_structure_UPDATE();
     """.format(
         srid=srid,
+        literal_delete_on_ws_change ="'DELETE FROM tww_od.%I WHERE obj_id = %L',OLD.ws_type,OLD.obj_id",
+        literal_insert_on_ws_change ="'INSERT INTO tww_od.%I(obj_id) VALUES (%L)',NEW.ws_type,OLD.obj_id",
         update_co=update_command(
             pg_cur=cursor,
             table_schema="tww_od",
