@@ -30,8 +30,8 @@ from .interlis_model_mapping.model_interlis_sia405_abwasser import (
     ModelInterlisSia405Abwasser,
 )
 from .interlis_model_mapping.model_interlis_vsa_kek import ModelInterlisVsaKek
+from .interlis_model_mapping.model_tww import ModelTwwSys, ModelTwwVl
 from .interlis_model_mapping.model_tww_od import ModelTwwOd
-from .interlis_model_mapping.model_tww_vl import ModelTwwVl
 from .utils.ili2db import InterlisTools
 from .utils.various import (
     CmdException,
@@ -62,6 +62,7 @@ class InterlisImporterExporter:
         self.model_classes_interlis = None
         self.model_classes_tww_od = None
         self.model_classes_tww_vl = None
+        self.model_classes_tww_sys = None
 
         self.current_progress = 0
 
@@ -356,6 +357,7 @@ class InterlisImporterExporter:
             model_classes_interlis=self.model_classes_interlis,
             model_classes_tww_od=self.model_classes_tww_od,
             model_classes_tww_vl=self.model_classes_tww_vl,
+            model_classes_tww_sys=self.model_classes_tww_sys,
             selection=selected_ids,
             labels_file=labels_file_path,
             basket_enabled=basket_enabled,
@@ -492,6 +494,10 @@ class InterlisImporterExporter:
 
         if self.model_classes_tww_vl is None:
             self.model_classes_tww_vl = ModelTwwVl().classes()
+            self._progress_done(self.current_progress + 1)
+
+        if self.model_classes_tww_sys is None:
+            self.model_classes_tww_sys = ModelTwwSys().classes()
             self._progress_done(self.current_progress + 1)
 
     def _progress_done_intermediate_schema(self):
