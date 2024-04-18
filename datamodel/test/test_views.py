@@ -138,7 +138,11 @@ class TestViews(unittest.TestCase, DbTestBase):
 
         self.update_check("vw_tww_additional_ws", row, obj_id)
 
-        cur = self.cursor()
+        try:
+            cur = self.cursor(row_factory=psycopg.rows.dict_row)
+        except AttributeError:
+            # remove when dropping psycopg2 support
+            cur = self.cursor(cursor_factory=psycopg_extras.DictCursor)
 
         cur.execute(
             "SELECT * FROM tww_od.wastewater_networkelement NE LEFT JOIN tww_od.wastewater_node NO ON NO.obj_id = NE.obj_id WHERE fk_wastewater_structure='{obj_id}' ".format(
