@@ -22,8 +22,6 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
         pg_service = os.getenv("PGSERVICE")
     assert pg_service
 
-    variables = {"SRID": int(srid)}
-
     conn = psycopg.connect(f"service={pg_service}")
     cursor = conn.cursor()
 
@@ -184,7 +182,7 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
         ),
     )
 
-    cursor.execute(view_sql, variables)
+    cursor.execute(view_sql)
 
     trigger_insert_sql = """
     CREATE OR REPLACE FUNCTION tww_app.ft_vw_tww_additional_ws_INSERT()
@@ -539,7 +537,7 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
         ),
     )
 
-    cursor.execute(update_trigger_sql, variables)
+    cursor.execute(update_trigger_sql)
 
     trigger_delete_sql = """
     CREATE OR REPLACE FUNCTION tww_app.ft_vw_tww_additional_ws_DELETE()
@@ -556,7 +554,7 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
     CREATE TRIGGER vw_tww_additional_ws_DELETE INSTEAD OF DELETE ON tww_app.vw_tww_additional_ws
       FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_tww_additional_ws_DELETE();
     """
-    cursor.execute(trigger_delete_sql, variables)
+    cursor.execute(trigger_delete_sql)
 
     extras = """
     ALTER VIEW tww_app.vw_tww_additional_ws ALTER obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_structure');
