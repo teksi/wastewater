@@ -48,16 +48,6 @@ class InterlisImporterToIntermediateSchema:
                                 commit or rollback and close the session.
         """
 
-        pre_session = Session(
-            utils.tww_sqlalchemy.create_engine(), autocommit=False, autoflush=False
-        )
-
-        # We also drop symbology triggers as they badly affect performance. This must be done in a separate session as it
-        # would deadlock other sessions.
-        pre_session.execute(text("SELECT tww_sys.disable_symbology_triggers();"))
-        pre_session.commit()
-        pre_session.close()
-
         # We use two different sessions for reading and writing so it's easier to
         # review imports and to keep the door open to getting data from another
         # connection / database type.
@@ -380,17 +370,6 @@ class InterlisImporterToIntermediateSchema:
             self.session_tww.commit()
             self.session_tww.close()
         self.session_interlis.close()
-
-        try:
-            post_session = Session(
-                utils.tww_sqlalchemy.create_engine(), autocommit=False, autoflush=False
-            )
-            post_session.execute(text("SELECT tww_sys.enable_symbology_triggers();"))
-            post_session.commit()
-            post_session.close()
-
-        except Exception as exception:
-            logger.error(f"Could not re-enable symbology triggers: '{exception}'")
 
     def get_vl_instance(self, vl_table, value_de):
         """
