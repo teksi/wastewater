@@ -28,10 +28,6 @@ added solely for TEKSI Wastewater & GEP';
 
 -- this column is an extension to the VSA data model and puts the _function_hierarchic in order
 ALTER TABLE tww_vl.channel_function_hierarchic ADD COLUMN order_fct_hierarchic smallint;
--- integrate and adapt Alter order_fct_hierarchic in tww_vl.channel_function_hierarchic #224
--- https://github.com/QGEP/datamodel/pull/224 //skip-keyword-check
--- this column is an extension to the VSA data model and puts the _usage_current in order
-ALTER TABLE tww_vl.channel_usage_current ADD COLUMN order_usage_current smallint;
 UPDATE tww_vl.channel_function_hierarchic
 SET order_fct_hierarchic=
  array_position(
@@ -50,6 +46,27 @@ SET order_fct_hierarchic=
 		 ,5073 --swwf.road_drainage
 		 ,5067 --swwf.other
 		 ,5075 --swwf.unknown
+		 ]
+	 ,code);
+
+-- integrate and adapt Alter order_fct_hierarchic in tww_vl.channel_function_hierarchic #224
+-- https://github.com/QGEP/datamodel/pull/224 //skip-keyword-check
+-- this column is an extension to the VSA data model and puts the _usage_current in order
+ALTER TABLE tww_vl.channel_usage_current ADD COLUMN order_usage_current smallint;
+
+UPDATE tww_vl.channel_usage_current
+SET order_usage_current=
+ array_position(
+	 ARRAY[
+		  4526 --wastewater
+  	     ,4522 --combined_wastewater
+		 ,4516 --discharged_combined_wastewater
+		 ,4524 --clean_wastewater
+		 ,4514 --clean_wastewater
+		 ,9023 --surface_water
+		 ,4518 --creek_water
+		 ,4571 --other
+		 ,5322 --unknown
 		 ]
 	 ,code);
 
