@@ -51,6 +51,26 @@ INSERT INTO tww_vl.channel_usage_planned (code,vsacode,value_de,value_en,active)
 (1999990,9024,'Strassenwasser','street_water',true) ON CONFLICT DO NOTHING; -- 9024 = Niederschlagsabwasser
 INSERT INTO tww_vl.channel_usage_current (code,vsacode,value_de,value_en,active) VALUES
 (1999989,9023,'Strassenwasser','street_water',true) ON CONFLICT DO NOTHING; -- 9023 = Niederschlagsabwasser
+
+UPDATE tww_vl.channel_usage_current
+SET order_usage_current=
+ array_position(
+	 ARRAY[
+		  4526 --wastewater
+  	     ,4522 --combined_wastewater
+		 ,4516 --discharged_combined_wastewater
+		 ,1999989 --street_water
+		 ,1999993 -- square_water
+		 ,4524 --clean_wastewater
+		 ,4514 --clean_wastewater
+		 ,9023 --surface_water
+		 ,4518 --creek_water
+		 ,4571 --other
+		 ,5322 --unknown
+		 ]
+	 ,code);
+
+
 --Kanal_FunktionHierarchisch
 INSERT INTO tww_vl.channel_function_hierarchic (code,vsacode,value_de,value_en,active) VALUES
 (1999991,5071,'PAA.Arealentwaesserung','pwwf.site_drainage',true)ON CONFLICT DO NOTHING;
