@@ -1,6 +1,6 @@
 ------ This file generates the VSA-DSS database (Modul VSA-DSS (2020)) in en for QQIS
 ------ For questions etc. please contact Stefan Burckhardt stefan.burckhardt@sjib.ch
------- version 21.04.2024 21:25:59
+------ version 22.04.2024 17:53:40
 ------ with 3D coordinates
 
 ---------------------------
@@ -2348,6 +2348,8 @@ COMMENT ON COLUMN tww_od.bio_ecol_assessment.impact_water_plants IS 'yyy_Nur fü
 COMMENT ON COLUMN tww_od.bio_ecol_assessment.intervention_demand IS 'Need for action resulting from the impairment of the discharge point on the water body, which leads to a measure in the action plan. The attribute is also used to derive the "total impairment" in the MGDM 129.1 of the FOEN, as long as it is still kept there. / Handlungsbedarf resultierend aus der Beeinträchtigung der Einleitstelle auf das Gewässer, der zu einer Massnahme im Massnahmenplan führt. Das Attribut dient auch zur Ableitung der "Gesamtbeeintraechtigung" im MGDM 129.1 des BAFU, solange dieses dort noch geführt wird. / Un besoin d’intervention résulte de l’atteinte du rejet sur les eaux qui mène à une mesure dans le plan d’action du PGEE. L''attribut sert aussi à la détermination de "l''attteinte globale" dans le MGDM 129.1 de l''OFEV si celui-ci est encore géré.';
  ALTER TABLE tww_od.bio_ecol_assessment ADD COLUMN io_calculation  integer ;
 COMMENT ON COLUMN tww_od.bio_ecol_assessment.io_calculation IS 'immission oriented calculation available / Immissionsorientierte Berechnung vorhanden. / calcul de performance de type immission disponible';
+ ALTER TABLE tww_od.bio_ecol_assessment ADD COLUMN kind_water_body  integer ;
+COMMENT ON COLUMN tww_od.bio_ecol_assessment.kind_water_body IS 'based on table 5.1 of STORM module in directive "Abwasserbewirtschaftung bei Regenwetter" of VSA (2019/2021) / gemäss Tabelle 5.1 des Moduls STORM der Richtlinie "Abwasserbewirtschaftung bei Regenwetter" des VSA (2019/2021) / selon table 5.1 du module STORM de la directive "Gestion des eaux urbaines par temps de pluie" (2019/2021)';
  ALTER TABLE tww_od.bio_ecol_assessment ADD COLUMN outlet_pipe_clear_height  integer ;
 COMMENT ON COLUMN tww_od.bio_ecol_assessment.outlet_pipe_clear_height IS 'Maximum internal height of the outlet. Helps to identify the correct discharge point in the field. / Maximale Innenhöhe des Auslaufes. Hilft bei der Identifikation der richtigen Einleitstelle im Feld. / Hauteur intérieure maximale de la sortie. Utile pour identifier le bon exutoire sur le terrain.';
  ALTER TABLE tww_od.bio_ecol_assessment ADD COLUMN q347  decimal(8,3) ;
@@ -2359,8 +2361,8 @@ COMMENT ON COLUMN tww_od.bio_ecol_assessment.relevant_slope IS 'zzz_Relevantes G
  ALTER TABLE tww_od.bio_ecol_assessment ADD COLUMN surface_water_bodies text;
  ALTER TABLE tww_od.bio_ecol_assessment ADD CONSTRAINT bo_surface_water_bodies_length_max_100 CHECK(char_length(surface_water_bodies)<=100);
 COMMENT ON COLUMN tww_od.bio_ecol_assessment.surface_water_bodies IS 'Name of surface water body corresponding to cantonal rules / Gewässername gemäss kantonalen Vorgaben / Nom du cours d’eau selon indications cantonales';
- ALTER TABLE tww_od.bio_ecol_assessment ADD COLUMN type_water_body  integer ;
-COMMENT ON COLUMN tww_od.bio_ecol_assessment.type_water_body IS 'based on table 5.1 of STORM module in directive "Abwasserbewirtschaftung bei Regenwetter" of VSA (2019/2021) / gemäss Tabelle 5.1 des Moduls STORM der Richtlinie "Abwasserbewirtschaftung bei Regenwetter" des VSA (2019/2021) / selon table 5.1 du module STORM de la directive "Gestion des eaux urbaines par temps de pluie" (2019/2021)';
+																			 
+																																																																																																				
  ALTER TABLE tww_od.bio_ecol_assessment ADD COLUMN water_specific_discharge_freight_nh4_n_current  smallint ;
 COMMENT ON COLUMN tww_od.bio_ecol_assessment.water_specific_discharge_freight_nh4_n_current IS 'based on base module chapter 8.4. of directive "Abwasserbewirtschaftung bei Regenwetter" of VSA (2019)" / gemäss Basismodul Kapitel 8.4 der Richtlinie "Abwasserbewirtschaftung bei Regenwetter" des VSA (2019) / Selon module de base chapitre 8.4 de la directive "Gestion des eaux urbaines par temps de pluie" du VSA (2019)';
  ALTER TABLE tww_od.bio_ecol_assessment ADD COLUMN water_specific_discharge_freight_nh4_n_current_opt  smallint ;
@@ -2482,10 +2484,12 @@ COMMENT ON COLUMN tww_od.solids_retention.obj_id IS 'INTERLIS STANDARD OID (with
 COMMENT ON COLUMN tww_od.solids_retention.dimensioning_value IS 'yyy_Wassermenge, Dimensionierungswert des Feststoffrückhaltes / Wassermenge, Dimensionierungswert des Feststoffrückhaltes / Volume, débit de dimensionnement';
  ALTER TABLE tww_od.solids_retention ADD COLUMN gross_costs  decimal(10,2) ;
 COMMENT ON COLUMN tww_od.solids_retention.gross_costs IS 'Gross costs of electromechanical equipment / Brutto Erstellungskosten der elektromechanischen Ausrüstung für den Feststoffrueckhalt / Coûts bruts des équipements électromécaniques';
+ ALTER TABLE tww_od.solids_retention ADD COLUMN kind  integer ;
+COMMENT ON COLUMN tww_od.solids_retention.kind IS 'yyy_(Elektromechanische) Teile zum Feststoffrückhalt eines Bauwerks / (Elektromechanische) Teile zum Feststoffrückhalt eines Bauwerks / Eléments (électromécaniques) pour la retenue de matières solides d’un ouvrage';
  ALTER TABLE tww_od.solids_retention ADD COLUMN overflow_level  decimal(7,3) ;
 COMMENT ON COLUMN tww_od.solids_retention.overflow_level IS 'Overflow level of solids retention in in m.a.sl. / Anspringkote Feststoffrückhalt in m.ü.M. / Cote du début du déversement de la retenue de matières solides en m.s.m.';
- ALTER TABLE tww_od.solids_retention ADD COLUMN type  integer ;
-COMMENT ON COLUMN tww_od.solids_retention.type IS 'yyy_(Elektromechanische) Teile zum Feststoffrückhalt eines Bauwerks / (Elektromechanische) Teile zum Feststoffrückhalt eines Bauwerks / Eléments (électromécaniques) pour la retenue de matières solides d’un ouvrage';
+															   
+																																																																				  
  ALTER TABLE tww_od.solids_retention ADD COLUMN year_of_replacement  smallint ;
 COMMENT ON COLUMN tww_od.solids_retention.year_of_replacement IS 'yyy_Jahr in dem die Lebensdauer der elektromechanischen Ausrüstung voraussichtlich abläuft / Jahr in dem die Lebensdauer der elektromechanischen Ausrüstung voraussichtlich abläuft / Année pour laquelle on prévoit que la durée de vie de l''équipement soit écoulée';
 -------
@@ -2511,8 +2515,8 @@ CREATE SEQUENCE tww_od.seq_tank_cleaning_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999
 COMMENT ON COLUMN tww_od.tank_cleaning.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.tank_cleaning ADD COLUMN gross_costs  decimal(10,2) ;
 COMMENT ON COLUMN tww_od.tank_cleaning.gross_costs IS 'Gross costs of electromechanical equipment of tank cleaning / Brutto Erstellungskosten der elektromechanischen Ausrüstung für die Beckenreinigung / Coûts bruts des équipements électromécaniques nettoyage de bassins';
- ALTER TABLE tww_od.tank_cleaning ADD COLUMN type  integer ;
-COMMENT ON COLUMN tww_od.tank_cleaning.type IS '';
+ ALTER TABLE tww_od.tank_cleaning ADD COLUMN kind  integer ;
+COMMENT ON COLUMN tww_od.tank_cleaning.kind IS '';
  ALTER TABLE tww_od.tank_cleaning ADD COLUMN year_of_replacement  smallint ;
 COMMENT ON COLUMN tww_od.tank_cleaning.year_of_replacement IS 'yyy_Jahr in dem die Lebensdauer der elektromechanischen Ausrüstung voraussichtlich abläuft / Jahr in dem die Lebensdauer der elektromechanischen Ausrüstung voraussichtlich abläuft / Année pour laquelle on prévoit que la durée de vie de l''équipement soit écoulée';
 -------
@@ -2540,8 +2544,8 @@ COMMENT ON COLUMN tww_od.tank_emptying.obj_id IS 'INTERLIS STANDARD OID (with Po
 COMMENT ON COLUMN tww_od.tank_emptying.flow IS 'yyy_Bei mehreren Pumpen / Schiebern muss die maximale Gesamtmenge erfasst werden. / Bei mehreren Pumpen / Schiebern muss die maximale Gesamtmenge erfasst werden. / Lors de présence de plusieurs pompes/vannes, indiquer le débit total.';
  ALTER TABLE tww_od.tank_emptying ADD COLUMN gross_costs  decimal(10,2) ;
 COMMENT ON COLUMN tww_od.tank_emptying.gross_costs IS 'Gross costs of electromechanical equipment of tank emptying / Brutto Erstellungskosten der elektromechanischen Ausrüstung für die Beckenentleerung / Coûts bruts des équipements électromécaniques vidange de bassins';
- ALTER TABLE tww_od.tank_emptying ADD COLUMN type  integer ;
-COMMENT ON COLUMN tww_od.tank_emptying.type IS '';
+ ALTER TABLE tww_od.tank_emptying ADD COLUMN kind  integer ;
+COMMENT ON COLUMN tww_od.tank_emptying.kind IS '';
  ALTER TABLE tww_od.tank_emptying ADD COLUMN year_of_replacement  smallint ;
 COMMENT ON COLUMN tww_od.tank_emptying.year_of_replacement IS 'yyy_Jahr in dem die Lebensdauer der elektromechanischen Ausrüstung voraussichtlich abläuft / Jahr in dem die Lebensdauer der elektromechanischen Ausrüstung voraussichtlich abläuft / Année pour laquelle on prévoit que la durée de vie de l''équipement soit écoulée';
 -------
@@ -4423,6 +4427,21 @@ ALTER TABLE tww_vl.bio_ecol_assessment_io_calculation ADD CONSTRAINT pkey_tww_vl
  ALTER TABLE tww_od.bio_ecol_assessment ADD CONSTRAINT fkey_vl_bio_ecol_assessment_io_calculation FOREIGN KEY (io_calculation)
  REFERENCES tww_vl.bio_ecol_assessment_io_calculation (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
+CREATE TABLE tww_vl.bio_ecol_assessment_kind_water_body () INHERITS (tww_vl.value_list_base);
+ALTER TABLE tww_vl.bio_ecol_assessment_kind_water_body ADD CONSTRAINT pkey_tww_vl_bio_ecol_assessment_kind_water_body_code PRIMARY KEY (code);
+ INSERT INTO tww_vl.bio_ecol_assessment_kind_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8492,8492,'river_backwater','Fluss_Stau','retention', 'corso_d_acqua_di_accummulo', 'rrr_Fluss_Stau', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.bio_ecol_assessment_kind_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5884,5884,'large_river','Groesseres_Fliessgewaesser','gros_cours_d_eau', 'grosso_fiume', 'rrr_Groesseres_Fliessgewaesser', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.bio_ecol_assessment_kind_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5883,5883,'large_midland_creek','Grosser_Mittellandbach','gros_ruisseau_du_Plateau', 'grande_corso_d_acqua_dell_altopiano', 'rrr_Grosser_Mittellandbach', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.bio_ecol_assessment_kind_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5885,5885,'large_prealps_creek','Grosser_Voralpenbach','gros_ruisseau_des_Prealpes', 'grande_corso_d_acqua_prealpino', 'rrr_Grosser_Voralpenbach', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.bio_ecol_assessment_kind_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8491,8491,'very_large_river','Grosses_Fliessgewaesser','tres_gros_cours_d_eau', 'fiume_molto_grande', 'rrr_Grosses_Fliessgewaesser', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.bio_ecol_assessment_kind_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5886,5886,'small_midland_creek','Kleiner_Mittellandbach','petit_ruisseau_du_Plateau', 'piccolo_corso_d_acqua_dell_altopiano', 'rrr_Kleiner_Mittellandbach', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.bio_ecol_assessment_kind_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5887,5887,'small_prealps_creek','Kleiner_Voralpenbach','petit_ruisseau_des_Prealpes', 'piccolo_corso_d_acqua_prealpino', 'rrr_Kleiner_Voralpenbach', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.bio_ecol_assessment_kind_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5888,5888,'spring_waters','Quellgewaesser','region_de_source', 'acque_sorgive', 'rrr_Quellgewaesser', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.bio_ecol_assessment_kind_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9149,9149,'lake','See','lac', 'lago', 'rrr_See', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.bio_ecol_assessment_kind_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5890,5890,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
+ ALTER TABLE tww_od.bio_ecol_assessment ADD CONSTRAINT fkey_vl_bio_ecol_assessment_kind_water_body FOREIGN KEY (kind_water_body)
+ REFERENCES tww_vl.bio_ecol_assessment_kind_water_body (code) MATCH SIMPLE
+ ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.bio_ecol_assessment_relevance_matrix () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.bio_ecol_assessment_relevance_matrix ADD CONSTRAINT pkey_tww_vl_bio_ecol_assessment_relevance_matrix_code PRIMARY KEY (code);
  INSERT INTO tww_vl.bio_ecol_assessment_relevance_matrix (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5949,5949,'yes','ja','oui', 'si', 'da', '', '', '', '', '', 'true');
@@ -4431,21 +4450,21 @@ ALTER TABLE tww_vl.bio_ecol_assessment_relevance_matrix ADD CONSTRAINT pkey_tww_
  ALTER TABLE tww_od.bio_ecol_assessment ADD CONSTRAINT fkey_vl_bio_ecol_assessment_relevance_matrix FOREIGN KEY (relevance_matrix)
  REFERENCES tww_vl.bio_ecol_assessment_relevance_matrix (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
-CREATE TABLE tww_vl.bio_ecol_assessment_type_water_body () INHERITS (tww_vl.value_list_base);
-ALTER TABLE tww_vl.bio_ecol_assessment_type_water_body ADD CONSTRAINT pkey_tww_vl_bio_ecol_assessment_type_water_body_code PRIMARY KEY (code);
- INSERT INTO tww_vl.bio_ecol_assessment_type_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8492,8492,'river_backwater','Fluss_Stau','retention', 'corso_d_acqua_di_accummulo', 'rrr_Fluss_Stau', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.bio_ecol_assessment_type_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5884,5884,'large_river','Groesseres_Fliessgewaesser','gros_cours_d_eau', 'grosso_fiume', 'rrr_Groesseres_Fliessgewaesser', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.bio_ecol_assessment_type_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5883,5883,'large_midland_creek','Grosser_Mittellandbach','gros_ruisseau_du_Plateau', 'grande_corso_d_acqua_dell_altopiano', 'rrr_Grosser_Mittellandbach', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.bio_ecol_assessment_type_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5885,5885,'large_prealps_creek','Grosser_Voralpenbach','gros_ruisseau_des_Prealpes', 'grande_corso_d_acqua_prealpino', 'rrr_Grosser_Voralpenbach', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.bio_ecol_assessment_type_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8491,8491,'very_large_river','Grosses_Fliessgewaesser','tres_gros_cours_d_eau', 'fiume_molto_grande', 'rrr_Grosses_Fliessgewaesser', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.bio_ecol_assessment_type_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5886,5886,'small_midland_creek','Kleiner_Mittellandbach','petit_ruisseau_du_Plateau', 'piccolo_corso_d_acqua_dell_altopiano', 'rrr_Kleiner_Mittellandbach', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.bio_ecol_assessment_type_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5887,5887,'small_prealps_creek','Kleiner_Voralpenbach','petit_ruisseau_des_Prealpes', 'piccolo_corso_d_acqua_prealpino', 'rrr_Kleiner_Voralpenbach', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.bio_ecol_assessment_type_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5888,5888,'spring_waters','Quellgewaesser','region_de_source', 'acque_sorgive', 'rrr_Quellgewaesser', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.bio_ecol_assessment_type_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9149,9149,'lake','See','lac', 'lago', 'rrr_See', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.bio_ecol_assessment_type_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5890,5890,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
- ALTER TABLE tww_od.bio_ecol_assessment ADD CONSTRAINT fkey_vl_bio_ecol_assessment_type_water_body FOREIGN KEY (type_water_body)
- REFERENCES tww_vl.bio_ecol_assessment_type_water_body (code) MATCH SIMPLE
- ON UPDATE RESTRICT ON DELETE RESTRICT;
+																							 
+																																			  
+																																																																																											 
+																																																																																			  
+																																																																																											 
+																																																																																									  
+																																																																																						
+																																																																																																								   
+																																																																																										
+																																																																																											 
+																																																																	
+																																																																							
+																																										  
+																		  
+									   
 ALTER TABLE tww_od.hydraulic_char_data ADD COLUMN fk_wastewater_node varchar(16);
 ALTER TABLE tww_od.hydraulic_char_data ADD CONSTRAINT rel_hydraulic_char_data_wastewater_node FOREIGN KEY (fk_wastewater_node) REFERENCES tww_od.wastewater_node(obj_id) ON UPDATE CASCADE ON DELETE set null DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE tww_od.hydraulic_char_data ADD COLUMN fk_overflow_char varchar(16);
@@ -4502,47 +4521,47 @@ ALTER TABLE tww_vl.backflow_prevention_kind ADD CONSTRAINT pkey_tww_vl_backflow_
  REFERENCES tww_vl.backflow_prevention_kind (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.solids_retention ADD CONSTRAINT oorel_od_solids_retention_structure_part FOREIGN KEY (obj_id) REFERENCES tww_od.structure_part(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
-CREATE TABLE tww_vl.solids_retention_type () INHERITS (tww_vl.value_list_base);
-ALTER TABLE tww_vl.solids_retention_type ADD CONSTRAINT pkey_tww_vl_solids_retention_type_code PRIMARY KEY (code);
- INSERT INTO tww_vl.solids_retention_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5664,5664,'other','andere','autres', 'altro', 'rrr_altul', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.solids_retention_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8624,8624,'brush_rakes','Buerstenrechen','degrilleur_a_brosses', 'Ranghinatori_a_spazzola', 'rrr_Buerstenrechen', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.solids_retention_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5665,5665,'fine_screen','Feinrechen','grille_fine', 'griglia_fine', '', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.solids_retention_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5666,5666,'coarse_screen','Grobrechen','grille_grossiere', 'griglia_grossa', 'rrr_Grobrechen', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.solids_retention_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5667,5667,'sieve','Sieb','tamis', 'filtro', 'rrr_Sieb', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.solids_retention_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8625,8625,'gate_shield','Stauschild','plaque_de_retenue', 'paratoia_cilindrica', 'rrr_Stauschild', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.solids_retention_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5668,5668,'scumboard','Tauchwand','paroi_plongeante', 'parete_sommersa', 'rrr_Tauchwand', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.solids_retention_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5669,5669,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
- ALTER TABLE tww_od.solids_retention ADD CONSTRAINT fkey_vl_solids_retention_type FOREIGN KEY (type)
- REFERENCES tww_vl.solids_retention_type (code) MATCH SIMPLE
+CREATE TABLE tww_vl.solids_retention_kind () INHERITS (tww_vl.value_list_base);
+ALTER TABLE tww_vl.solids_retention_kind ADD CONSTRAINT pkey_tww_vl_solids_retention_kind_code PRIMARY KEY (code);
+ INSERT INTO tww_vl.solids_retention_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5664,5664,'other','andere','autres', 'altro', 'rrr_altul', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.solids_retention_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8624,8624,'brush_rakes','Buerstenrechen','degrilleur_a_brosses', 'Ranghinatori_a_spazzola', 'rrr_Buerstenrechen', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.solids_retention_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5665,5665,'fine_screen','Feinrechen','grille_fine', 'griglia_fine', '', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.solids_retention_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5666,5666,'coarse_screen','Grobrechen','grille_grossiere', 'griglia_grossa', 'rrr_Grobrechen', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.solids_retention_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5667,5667,'sieve','Sieb','tamis', 'filtro', 'rrr_Sieb', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.solids_retention_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8625,8625,'gate_shield','Stauschild','plaque_de_retenue', 'paratoia_cilindrica', 'rrr_Stauschild', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.solids_retention_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5668,5668,'scumboard','Tauchwand','paroi_plongeante', 'parete_sommersa', 'rrr_Tauchwand', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.solids_retention_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5669,5669,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
+ ALTER TABLE tww_od.solids_retention ADD CONSTRAINT fkey_vl_solids_retention_kind FOREIGN KEY (kind)
+ REFERENCES tww_vl.solids_retention_kind (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.tank_cleaning ADD CONSTRAINT oorel_od_tank_cleaning_structure_part FOREIGN KEY (obj_id) REFERENCES tww_od.structure_part(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
-CREATE TABLE tww_vl.tank_cleaning_type () INHERITS (tww_vl.value_list_base);
-ALTER TABLE tww_vl.tank_cleaning_type ADD CONSTRAINT pkey_tww_vl_tank_cleaning_type_code PRIMARY KEY (code);
- INSERT INTO tww_vl.tank_cleaning_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5621,5621,'airjet','Air_Jet','aeration_et_brassage', 'airjet', 'rrr_Air_Jet', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.tank_cleaning_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5620,5620,'other','andere','autre', 'altro', 'rrr_altul', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.tank_cleaning_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8621,8621,'scraper_installation','Raeumereinrichtung','dispositif_de_curage', 'zzz_Raeumereinrichtung', 'rrr_Raeumereinrichtung', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.tank_cleaning_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8622,8622,'agitator','Ruehrwerk','agitateur', 'agitatore', 'rrr_Ruehrwerk', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.tank_cleaning_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8623,8623,'meandered_gutter','Schlaengelrinne','cunette_courbe', 'cunetta_curva', 'rrr_Schlaengelrinne', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.tank_cleaning_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5623,5623,'surge_flushing','Schwallspuelung','rincage_en_cascade', 'lavaggio_getto', 'rrr_Schwallspülung', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.tank_cleaning_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5624,5624,'tipping_bucket','Spuelkippe','bac_de_rincage', 'benna_ribaltabile', 'rrr_Spuelkippe', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.tank_cleaning_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8626,8626,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
- ALTER TABLE tww_od.tank_cleaning ADD CONSTRAINT fkey_vl_tank_cleaning_type FOREIGN KEY (type)
- REFERENCES tww_vl.tank_cleaning_type (code) MATCH SIMPLE
+CREATE TABLE tww_vl.tank_cleaning_kind () INHERITS (tww_vl.value_list_base);
+ALTER TABLE tww_vl.tank_cleaning_kind ADD CONSTRAINT pkey_tww_vl_tank_cleaning_kind_code PRIMARY KEY (code);
+ INSERT INTO tww_vl.tank_cleaning_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5621,5621,'airjet','Air_Jet','aeration_et_brassage', 'airjet', 'rrr_Air_Jet', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.tank_cleaning_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5620,5620,'other','andere','autre', 'altro', 'rrr_altul', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.tank_cleaning_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8621,8621,'scraper_installation','Raeumereinrichtung','dispositif_de_curage', 'zzz_Raeumereinrichtung', 'rrr_Raeumereinrichtung', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.tank_cleaning_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8622,8622,'agitator','Ruehrwerk','agitateur', 'agitatore', 'rrr_Ruehrwerk', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.tank_cleaning_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8623,8623,'meandered_gutter','Schlaengelrinne','cunette_courbe', 'cunetta_curva', 'rrr_Schlaengelrinne', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.tank_cleaning_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5623,5623,'surge_flushing','Schwallspuelung','rincage_en_cascade', 'lavaggio_getto', 'rrr_Schwallspülung', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.tank_cleaning_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5624,5624,'tipping_bucket','Spuelkippe','bac_de_rincage', 'benna_ribaltabile', 'rrr_Spuelkippe', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.tank_cleaning_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8626,8626,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
+ ALTER TABLE tww_od.tank_cleaning ADD CONSTRAINT fkey_vl_tank_cleaning_kind FOREIGN KEY (kind)
+ REFERENCES tww_vl.tank_cleaning_kind (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.tank_emptying ADD COLUMN fk_throttle_shut_off_unit varchar(16);
 ALTER TABLE tww_od.tank_emptying ADD CONSTRAINT rel_tank_emptying_throttle_shut_off_unit FOREIGN KEY (fk_throttle_shut_off_unit) REFERENCES tww_od.throttle_shut_off_unit(obj_id) ON UPDATE CASCADE ON DELETE set null DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE tww_od.tank_emptying ADD COLUMN fk_overflow varchar(16);
 ALTER TABLE tww_od.tank_emptying ADD CONSTRAINT rel_tank_emptying_overflow FOREIGN KEY (fk_overflow) REFERENCES tww_od.pump(obj_id) ON UPDATE CASCADE ON DELETE set null DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE tww_od.tank_emptying ADD CONSTRAINT oorel_od_tank_emptying_structure_part FOREIGN KEY (obj_id) REFERENCES tww_od.structure_part(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
-CREATE TABLE tww_vl.tank_emptying_type () INHERITS (tww_vl.value_list_base);
-ALTER TABLE tww_vl.tank_emptying_type ADD CONSTRAINT pkey_tww_vl_tank_emptying_type_code PRIMARY KEY (code);
- INSERT INTO tww_vl.tank_emptying_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5626,5626,'other','andere','autre', 'altro', 'rrr_altul', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.tank_emptying_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8638,8638,'gravitation','Gravitation','gravitation', 'gravitazione', 'rrr_Gravitation', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.tank_emptying_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5628,5628,'pump','Pumpe','pompe', 'pompa', '', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.tank_emptying_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5629,5629,'valve','Schieber','vanne', 'saracinesca', 'rrr_Schieber', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.tank_emptying_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8637,8637,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
- ALTER TABLE tww_od.tank_emptying ADD CONSTRAINT fkey_vl_tank_emptying_type FOREIGN KEY (type)
- REFERENCES tww_vl.tank_emptying_type (code) MATCH SIMPLE
+CREATE TABLE tww_vl.tank_emptying_kind () INHERITS (tww_vl.value_list_base);
+ALTER TABLE tww_vl.tank_emptying_kind ADD CONSTRAINT pkey_tww_vl_tank_emptying_kind_code PRIMARY KEY (code);
+ INSERT INTO tww_vl.tank_emptying_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5626,5626,'other','andere','autre', 'altro', 'rrr_altul', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.tank_emptying_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8638,8638,'gravitation','Gravitation','gravitation', 'gravitazione', 'rrr_Gravitation', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.tank_emptying_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5628,5628,'pump','Pumpe','pompe', 'pompa', '', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.tank_emptying_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5629,5629,'valve','Schieber','vanne', 'saracinesca', 'rrr_Schieber', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.tank_emptying_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8637,8637,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
+ ALTER TABLE tww_od.tank_emptying ADD CONSTRAINT fkey_vl_tank_emptying_kind FOREIGN KEY (kind)
+ REFERENCES tww_vl.tank_emptying_kind (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.catchment_area_totals ADD COLUMN fk_discharge_point varchar(16);
 ALTER TABLE tww_od.catchment_area_totals ADD CONSTRAINT rel_catchment_area_totals_discharge_point FOREIGN KEY (fk_discharge_point) REFERENCES tww_od.discharge_point(obj_id) ON UPDATE CASCADE ON DELETE set null DEFERRABLE INITIALLY DEFERRED;
