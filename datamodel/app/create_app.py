@@ -3,6 +3,7 @@
 from argparse import ArgumentParser, BooleanOptionalAction
 from pathlib import Path
 from typing import Optional
+import re
 
 try:
     import psycopg
@@ -34,7 +35,7 @@ def run_sql(sql: str, pg_service: str, variables: dict = None):
 
 def get_db_identifier(pg_service: str):
     conn = psycopg.connect(f"service={pg_service}")
-    db_identifier = conn.info.dbname
+    db_identifier = re.sub('tww_|teksi_', '',conn.info.dbname)
     conn.close()
     return db_identifier
 
