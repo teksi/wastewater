@@ -12,7 +12,7 @@ The base installation of TWW defines the following group roles over the entire d
 * **tww_manager**: user of TWW with extended privileges, can edit entities and values lists (`tww_vl` schema).
 * **tww_sysadmin**: superuser of TWW database, can edit TWW system tables (`tww_sys` schema).
 
-Their rights are cascaded to database specific group roles **tww_viewer_db_identifier** etc. if those have been set up. `db_identifier` is defined as `regexp_replace(databasename, 'tww_|teksi_', '')`.
+Their rights are cascaded to database specific group roles **tww_viewer_db_identifier** etc. if those have been set up. ``db_identifier`` is defined as ``regexp_replace(databasename, "tww_|teksi_", "")``.
 
 Data in TWW are stored in 3 schemas with default permissions for all of these users.
 
