@@ -9,30 +9,9 @@
 ALTER TABLE tww_od.manhole ADD COLUMN _orientation numeric;
 COMMENT ON COLUMN tww_od.manhole._orientation IS 'not part of the VSA-DSS data model
 added solely for TEKSI Wastewater & GEP';
-/*
-ALTER TABLE tww_od.wastewater_structure ADD COLUMN _label text;
-COMMENT ON COLUMN tww_od.wastewater_structure._label IS 'not part of the VSA-DSS data model
-added solely for TEKSI Wastewater & GEP';
-ALTER TABLE tww_od.wastewater_structure ADD COLUMN _cover_label text;
-COMMENT ON COLUMN tww_od.wastewater_structure._cover_label IS 'stores the cover altitude to be used for labelling, not part of the VSA-DSS data model
-added solely for TEKSI Wastewater & GEP';
-ALTER TABLE tww_od.wastewater_structure ADD COLUMN _input_label text;
-COMMENT ON COLUMN tww_od.wastewater_structure._input_label IS 'stores the list of input altitudes to be used for labelling, not part of the VSA-DSS data model
-added solely for TEKSI Wastewater & GEP';
-ALTER TABLE tww_od.wastewater_structure ADD COLUMN _output_label text;
-COMMENT ON COLUMN tww_od.wastewater_structure._output_label IS 'stores the list of output altitudes to be used for labelling, not part of the VSA-DSS data model
-added solely for TEKSI Wastewater & GEP';
-ALTER TABLE tww_od.wastewater_structure ADD COLUMN _bottom_label text;
-COMMENT ON COLUMN tww_od.wastewater_structure._bottom_label IS 'stores the bottom altitude to be used for labelling, not part of the VSA-DSS data model
-added solely for TEKSI Wastewater & GEP';
-*/
 
 -- this column is an extension to the VSA data model and puts the _function_hierarchic in order
 ALTER TABLE tww_vl.channel_function_hierarchic ADD COLUMN order_fct_hierarchic smallint;
-COMMENT ON COLUMN tww_vl.channel_function_hierarchic.order_fct_hierarchic IS 'this is an extension by tww used to order
-features by function hierarchic. Alterations by the tww_manager are possible and affect labeling and symbology';
-
-
 UPDATE tww_vl.channel_function_hierarchic
 SET order_fct_hierarchic=
  array_position(
@@ -51,29 +30,6 @@ SET order_fct_hierarchic=
 		 ,5073 --swwf.road_drainage
 		 ,5067 --swwf.other
 		 ,5075 --swwf.unknown
-		 ]
-	 ,code);
--- integrate and adapt Alter order_fct_hierarchic in tww_vl.channel_function_hierarchic #224
--- https://github.com/QGEP/datamodel/pull/224 //skip-keyword-check
--- this column is an extension to the VSA data model and puts the _usage_current in order
-ALTER TABLE tww_vl.channel_usage_current ADD COLUMN order_usage_current smallint;
-COMMENT ON COLUMN tww_vl.channel_usage_current.order_usage_current IS 'this is an extension by tww used to order
-features by current usage. Alterations by the tww_manager are possible and affect labeling and symbology';
-
-
-UPDATE tww_vl.channel_usage_current
-SET order_usage_current=
- array_position(
-	 ARRAY[
-  	       4522 -- combined_wastewater
-		 , 4526 -- wastewater
- 		 , 4524 -- industrial_wastewater
-		 , 4518 -- creek_water
-		 , 4516 -- discharged_combined_wastewater
-		 , 9023 -- surface_water
-		 , 4514 -- clean_wastewater
-		 , 4571 -- unknown
-		 , 5322 -- other
 		 ]
 	 ,code);
 
@@ -127,14 +83,6 @@ ALTER TABLE tww_od.wastewater_node ADD COLUMN _status integer;
 COMMENT ON COLUMN tww_od.wastewater_node._status IS 'not part of the VSA-DSS data model
 added solely for TEKSI Wastewater & GEP
 has to be updated by triggers';
-
--- this column is an extension to the VSA data model and defines whether connected channels are included in inflow/outflow labeling based on function_hierarchic
-ALTER TABLE tww_vl.channel_function_hierarchic ADD COLUMN tww_include_in_ws_labels boolean DEFAULT FALSE;
-UPDATE tww_vl.channel_function_hierarchic SET tww_include_in_ws_labels=TRUE WHERE code=ANY('{5062,5064,5066,5068,5069,5070,5071,5072,5074}');
-
--- this column is an extension to the VSA data model and defines whether connected channels are included in inflow/outflow labeling based on function_hierarchic
-ALTER TABLE tww_vl.wastewater_structure_status ADD COLUMN tww_include_in_ws_labels boolean DEFAULT FALSE;
-UPDATE tww_vl.wastewater_structure_status SET tww_include_in_ws_labels=TRUE WHERE code=ANY('{8493,6530,6533}');
 
 ALTER TABLE tww_od.organisation ADD COLUMN tww_active bool DEFAULT FALSE;
 COMMENT ON COLUMN tww_od.organisation.tww_active IS 'not part of the VSA-DSS data model
