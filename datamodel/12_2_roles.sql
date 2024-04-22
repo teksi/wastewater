@@ -34,7 +34,7 @@ $$;
 DO $$
 BEGIN
 	EXECUTE FORMAT('
-	
+
 /* Viewer */
 GRANT USAGE ON SCHEMA tww_od  TO tww_viewer_%1$I;
 GRANT USAGE ON SCHEMA tww_sys TO tww_viewer_%1$I;
@@ -101,6 +101,6 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA tww_sys REVOKE ALL ON TABLES  FROM tww_viewer
 ALTER DEFAULT PRIVILEGES IN SCHEMA tww_vl  REVOKE ALL ON TABLES  FROM tww_viewer_%1$I;
 ALTER DEFAULT PRIVILEGES IN SCHEMA tww_app REVOKE ALL ON TABLES  FROM tww_viewer_%1$I;
 */
-',regexp_replace(current_catalog, 'tww_|teksi_', ''); 
+',regexp_replace(current_catalog, 'tww_|teksi_', '');
 END
 $$;
