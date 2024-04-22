@@ -2361,8 +2361,8 @@ COMMENT ON COLUMN tww_od.bio_ecol_assessment.relevant_slope IS 'zzz_Relevantes G
  ALTER TABLE tww_od.bio_ecol_assessment ADD COLUMN surface_water_bodies text;
  ALTER TABLE tww_od.bio_ecol_assessment ADD CONSTRAINT bo_surface_water_bodies_length_max_100 CHECK(char_length(surface_water_bodies)<=100);
 COMMENT ON COLUMN tww_od.bio_ecol_assessment.surface_water_bodies IS 'Name of surface water body corresponding to cantonal rules / Gewässername gemäss kantonalen Vorgaben / Nom du cours d’eau selon indications cantonales';
-																			 
-																																																																																																				
+
+
  ALTER TABLE tww_od.bio_ecol_assessment ADD COLUMN water_specific_discharge_freight_nh4_n_current  smallint ;
 COMMENT ON COLUMN tww_od.bio_ecol_assessment.water_specific_discharge_freight_nh4_n_current IS 'based on base module chapter 8.4. of directive "Abwasserbewirtschaftung bei Regenwetter" of VSA (2019)" / gemäss Basismodul Kapitel 8.4 der Richtlinie "Abwasserbewirtschaftung bei Regenwetter" des VSA (2019) / Selon module de base chapitre 8.4 de la directive "Gestion des eaux urbaines par temps de pluie" du VSA (2019)';
  ALTER TABLE tww_od.bio_ecol_assessment ADD COLUMN water_specific_discharge_freight_nh4_n_current_opt  smallint ;
@@ -2488,8 +2488,8 @@ COMMENT ON COLUMN tww_od.solids_retention.gross_costs IS 'Gross costs of electro
 COMMENT ON COLUMN tww_od.solids_retention.kind IS 'yyy_(Elektromechanische) Teile zum Feststoffrückhalt eines Bauwerks / (Elektromechanische) Teile zum Feststoffrückhalt eines Bauwerks / Eléments (électromécaniques) pour la retenue de matières solides d’un ouvrage';
  ALTER TABLE tww_od.solids_retention ADD COLUMN overflow_level  decimal(7,3) ;
 COMMENT ON COLUMN tww_od.solids_retention.overflow_level IS 'Overflow level of solids retention in in m.a.sl. / Anspringkote Feststoffrückhalt in m.ü.M. / Cote du début du déversement de la retenue de matières solides en m.s.m.';
-															   
-																																																																				  
+
+
  ALTER TABLE tww_od.solids_retention ADD COLUMN year_of_replacement  smallint ;
 COMMENT ON COLUMN tww_od.solids_retention.year_of_replacement IS 'yyy_Jahr in dem die Lebensdauer der elektromechanischen Ausrüstung voraussichtlich abläuft / Jahr in dem die Lebensdauer der elektromechanischen Ausrüstung voraussichtlich abläuft / Année pour laquelle on prévoit que la durée de vie de l''équipement soit écoulée';
 -------
@@ -4450,21 +4450,21 @@ ALTER TABLE tww_vl.bio_ecol_assessment_relevance_matrix ADD CONSTRAINT pkey_tww_
  ALTER TABLE tww_od.bio_ecol_assessment ADD CONSTRAINT fkey_vl_bio_ecol_assessment_relevance_matrix FOREIGN KEY (relevance_matrix)
  REFERENCES tww_vl.bio_ecol_assessment_relevance_matrix (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
-																							 
-																																			  
-																																																																																											 
-																																																																																			  
-																																																																																											 
-																																																																																									  
-																																																																																						
-																																																																																																								   
-																																																																																										
-																																																																																											 
-																																																																	
-																																																																							
-																																										  
-																		  
-									   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ALTER TABLE tww_od.hydraulic_char_data ADD COLUMN fk_wastewater_node varchar(16);
 ALTER TABLE tww_od.hydraulic_char_data ADD CONSTRAINT rel_hydraulic_char_data_wastewater_node FOREIGN KEY (fk_wastewater_node) REFERENCES tww_od.wastewater_node(obj_id) ON UPDATE CASCADE ON DELETE set null DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE tww_od.hydraulic_char_data ADD COLUMN fk_overflow_char varchar(16);
