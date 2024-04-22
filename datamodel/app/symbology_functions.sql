@@ -522,7 +522,7 @@ WITH labeled_ws as
 		,  NULL::text AS rpo_label
       FROM tww_od.reach_point RP
       LEFT JOIN tww_od.wastewater_networkelement NE ON RP.fk_wastewater_networkelement = NE.obj_id
-	  LEFT JOIN tww_app.tww_labels lb on RP.obj_id=lb.obj_id and lb.label_type='main'
+	  LEFT JOIN tww_app.tww_labels lb on RP.obj_id=lb.fk_parent_obj_id and lb.label_type='main'
       WHERE (_all OR NE.fk_wastewater_structure = _obj_id) and left(lb.label_text,1)='I'
       -- output
       UNION
@@ -538,7 +538,7 @@ WITH labeled_ws as
 		,  NULL::text AS rpo_label
       FROM tww_od.reach_point RP
       LEFT JOIN tww_od.wastewater_networkelement NE ON RP.fk_wastewater_networkelement = NE.obj_id
-	  LEFT JOIN tww_app.tww_labels lb on RP.obj_id=lb.obj_id and lb.label_type='main'
+	  LEFT JOIN tww_app.tww_labels lb on RP.obj_id=lb.fk_parent_obj_id and lb.label_type='main'
       WHERE (_all OR NE.fk_wastewater_structure = _obj_id) and left(lb.label_text,1)='O'
 	) parts ON parts.ws = ws.obj_id
     WHERE _all OR ws.obj_id =_obj_id
