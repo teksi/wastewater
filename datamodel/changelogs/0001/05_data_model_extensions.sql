@@ -10,6 +10,20 @@ ALTER TABLE tww_od.manhole ADD COLUMN _orientation numeric;
 COMMENT ON COLUMN tww_od.manhole._orientation IS 'not part of the VSA-DSS data model
 added solely for TEKSI Wastewater & GEP';
 
+-- this column is an extension to the VSA data model and defines whether connected channels are included in inflow/outflow labeling based on function_hierarchic
+ALTER TABLE tww_vl.channel_function_hierarchic ADD COLUMN tww_include_in_ws_labels boolean DEFAULT FALSE;
+COMMENT ON COLUMN tww_vl.channel_function_hierarchic.tww_include_in_ws_labels IS 'not part of the VSA-DSS data model
+added solely for TEKSI Wastewater & GEP
+used to filter organisations';
+UPDATE tww_vl.channel_function_hierarchic SET tww_include_in_ws_labels=TRUE WHERE code=ANY('{5062,5064,5066,5068,5069,5070,5071,5072,5074}');
+
+-- this column is an extension to the VSA data model and defines whether connected channels are included in inflow/outflow labeling based on function_hierarchic
+ALTER TABLE tww_vl.wastewater_structure_status ADD COLUMN tww_include_in_ws_labels boolean DEFAULT FALSE;
+COMMENT ON COLUMN tww_vl.wastewater_structure_status.tww_include_in_ws_labels IS 'not part of the VSA-DSS data model
+added solely for TEKSI Wastewater & GEP
+used to filter organisations';
+UPDATE tww_vl.wastewater_structure_status SET tww_include_in_ws_labels=TRUE WHERE code=ANY('{8493,6530,6533}');
+
 -- this column is an extension to the VSA data model and puts the _function_hierarchic in order
 ALTER TABLE tww_vl.channel_function_hierarchic ADD COLUMN order_fct_hierarchic smallint;
 UPDATE tww_vl.channel_function_hierarchic
