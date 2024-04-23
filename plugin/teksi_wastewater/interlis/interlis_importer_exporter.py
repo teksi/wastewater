@@ -303,7 +303,11 @@ class InterlisImporterExporter:
         connection.close()
 
     def _export_labels_file(
-        self, limit_to_selection, export_orientation, selected_labels_scales_indices, labels_file_path
+        self,
+        limit_to_selection,
+        export_orientation,
+        selected_labels_scales_indices,
+        labels_file_path,
     ):
         self._progress_done(self.current_progress, "Extracting labels...")
 
