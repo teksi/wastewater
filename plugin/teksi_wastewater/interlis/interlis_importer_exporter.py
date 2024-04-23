@@ -153,6 +153,8 @@ class InterlisImporterExporter:
         export_models,
         logs_next_to_file=True,
         limit_to_selection=False,
+        # neu export_orientation
+        export_orientation=90,
         selected_labels_scales_indices=[],
         selected_ids=[],
     ):
@@ -182,6 +184,8 @@ class InterlisImporterExporter:
             labels_file_path = os.path.join(tempdir.name, "labels.geojson")
             self._export_labels_file(
                 limit_to_selection=limit_to_selection,
+                # neu export orientation
+                export_orientation=export_orientation,
                 selected_labels_scales_indices=selected_labels_scales_indices,
                 labels_file_path=labels_file_path,
             )
@@ -299,7 +303,7 @@ class InterlisImporterExporter:
         connection.close()
 
     def _export_labels_file(
-        self, limit_to_selection, selected_labels_scales_indices, labels_file_path
+        self, limit_to_selection, export_orientation, selected_labels_scales_indices, labels_file_path
     ):
         self._progress_done(self.current_progress, "Extracting labels...")
 
@@ -330,6 +334,7 @@ class InterlisImporterExporter:
             {
                 "OUTPUT": labels_file_path,
                 "RESTRICT_TO_SELECTION": limit_to_selection,
+                "EXPORT_ORIENTATION": export_orientation,
                 "STRUCTURE_VIEW_LAYER": structures_lyr,
                 "REACH_VIEW_LAYER": reaches_lyr,
                 "SCALES": selected_labels_scales_indices,
