@@ -31,9 +31,9 @@ class InterlisExportSettingsDialog(QDialog):
 
         # Fill orientation selection combobox
         self.export_orientation_selection_comboBox.clear()
-        self.export_orientation_selection_comboBox.addItem("90.0", "+90°")
-        self.export_orientation_selection_comboBox.addItem("0.0", "0°")
-        self.export_orientation_selection_comboBox.addItem("-90.0", "-90°")
+        self.export_orientation_selection_comboBox.addItem("90°", 90.0)
+        self.export_orientation_selection_comboBox.addItem("0°", 0.0)
+        self.export_orientation_selection_comboBox.addItem("-90°", -90.0)
 
         structures_layer = TwwLayerManager.layer("vw_tww_wastewater_structure")
         reaches_layer = TwwLayerManager.layer("vw_tww_reach")
