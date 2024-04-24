@@ -2396,10 +2396,10 @@ class InterlisExporterToIntermediateSchema:
         """
         if val is None:
             return None
-        
-        # add selected_orientation 
+
+        # add selected_orientation
         val = val + selected_orientation
-        
+
         val = val % 360.0
         if val > 359.9:
             val = 0
