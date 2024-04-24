@@ -112,7 +112,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         expected = {
             "_label": "A",
             "_cover_label": "\nC=100.00",
-            "_bottom_label": "",
+            "_bottom_label": "\nB=?",
             "_input_label": "",
             "_output_label": "",
         }
