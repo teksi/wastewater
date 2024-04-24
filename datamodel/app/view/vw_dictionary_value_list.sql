@@ -1,5 +1,5 @@
 
-CREATE VIEW tww_app.sys_dictionary_value_list AS
+CREATE OR REPLACE VIEW tww_app.sys_dictionary_value_list AS
   SELECT
   p.relname AS vl_name,
   vl.code,

@@ -20,5 +20,5 @@ set -e
 
 pushd /usr/src/plugin
 DEFAULT_PARAMS='-v'
-xvfb-run pytest-3 ${@:-`echo $DEFAULT_PARAMS`} $1
+xvfb-run pytest-3 ${@:-`echo $DEFAULT_PARAMS`}
 popd
