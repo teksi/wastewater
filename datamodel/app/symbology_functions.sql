@@ -477,7 +477,6 @@ WITH labeled_ws as
 		  , parts.obj_id, idx
 		  , parts.bottom_level AS bottom_level
     FROM tww_od.wastewater_structure WS
-	LEFT JOIN tww_od.channel ch on ch.obj_id=WS.obj_id
 
     LEFT JOIN (
 	  --cover
@@ -542,7 +541,7 @@ WITH labeled_ws as
 	  LEFT JOIN tww_od.tww_labels lb on RP.obj_id=lb.fk_parent_obj_id and lb.label_type='main'
       WHERE (_all OR NE.fk_wastewater_structure = _obj_id) and left(lb.label_text,1)='O'
 	) parts ON parts.ws = ws.obj_id
-    WHERE (_all AND ch.obj_id IS NULL) OR ws.obj_id =_obj_id
+    WHERE _all  OR ws.obj_id =_obj_id
     ) all_parts
 	GROUP BY ws_obj_id, COALESCE(ws_identifier, '')
 )

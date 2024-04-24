@@ -66,8 +66,8 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
          LEFT JOIN tww_od.wastewater_structure ws ON ne.fk_wastewater_structure = ws.obj_id
          LEFT JOIN tww_od.channel ch ON ch.obj_id = ws.obj_id
          LEFT JOIN tww_od.pipe_profile pp ON re.fk_pipe_profile = pp.obj_id
-         LEFT JOIN (SELECT fk_parent_obj_id, label_text from tww_app.tww_labels WHERE label_type='main') rp_from_lbl ON rp_from_lbl.fk_parent_obj_id = rp_from.obj_id
-         LEFT JOIN (SELECT fk_parent_obj_id, label_text from tww_app.tww_labels WHERE label_type='main') rp_to_lbl ON rp_to_lbl.fk_parent_obj_id = rp_to.obj_id
+         LEFT JOIN (SELECT fk_parent_obj_id, label_text from tww_od.tww_labels WHERE label_type='main') rp_from_lbl ON rp_from_lbl.fk_parent_obj_id = rp_from.obj_id
+         LEFT JOIN (SELECT fk_parent_obj_id, label_text from tww_od.tww_labels WHERE label_type='main') rp_to_lbl ON rp_to_lbl.fk_parent_obj_id = rp_to.obj_id
          {extra_joins};
     """.format(
         extra_cols="\n    , ".join(

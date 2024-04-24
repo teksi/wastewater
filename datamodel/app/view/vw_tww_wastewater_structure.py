@@ -89,7 +89,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
         LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = ws.fk_main_wastewater_node
         LEFT JOIN tww_od.wastewater_node wn ON wn.obj_id = ws.fk_main_wastewater_node
         LEFT JOIN tww_od.channel ch ON ch.obj_id = ws.obj_id
-        LEFT JOIN (SELECT fk_parent_obj_id, jsonb_object_agg(label_type, label_text) AS label_map from tww_app.tww_labels GROUP BY fk_parent_obj_id) lbl ON lbl.fk_parent_obj_id = ws.obj_id
+        LEFT JOIN (SELECT fk_parent_obj_id, jsonb_object_agg(label_type, label_text) AS label_map from tww_od.tww_labels GROUP BY fk_parent_obj_id) lbl ON lbl.fk_parent_obj_id = ws.obj_id
         {extra_joins}
         WHERE ch.obj_id IS NULL;
 
