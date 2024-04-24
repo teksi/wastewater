@@ -113,9 +113,9 @@ class InterlisExportSettingsDialog(QDialog):
     def selected_models(self):
         return self.export_model_selection_comboBox.currentData()
 
+    @property
     def selected_orientation(self):
         # neu 23.4.2024 added float()
         eorientation = self.export_orientation_selection_comboBox.currentData()
         print(eorientation)
-        # return self.export_orientation_selection_comboBox.currentText()
         return eorientation
