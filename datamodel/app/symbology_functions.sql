@@ -426,7 +426,7 @@ WHERE tww_include_in_ws_labels;
   , obj_id
   FROM null_label)
  --Upsert reach_point labels
-  INSERT INTO tww_app.tww_labels (fk_parent_obj_id,label_type,label_text)
+  INSERT INTO tww_od.tww_labels (fk_parent_obj_id,label_type,label_text)
   SELECT  rp_label.obj_id,'main',rp_label.new_label
   FROM rp_label
   ON CONFLICT ON CONSTRAINT unique_tww_od_labels
@@ -523,7 +523,7 @@ WITH labeled_ws as
 		,  NULL::text AS rpo_label
       FROM tww_od.reach_point RP
       LEFT JOIN tww_od.wastewater_networkelement NE ON RP.fk_wastewater_networkelement = NE.obj_id
-	  LEFT JOIN tww_app.tww_labels lb on RP.obj_id=lb.fk_parent_obj_id and lb.label_type='main'
+	  LEFT JOIN tww_od.tww_labels lb on RP.obj_id=lb.fk_parent_obj_id and lb.label_type='main'
       WHERE (_all OR NE.fk_wastewater_structure = _obj_id) and left(lb.label_text,1)='I'
       -- output
       UNION
@@ -539,14 +539,14 @@ WITH labeled_ws as
 		,  NULL::text AS rpo_label
       FROM tww_od.reach_point RP
       LEFT JOIN tww_od.wastewater_networkelement NE ON RP.fk_wastewater_networkelement = NE.obj_id
-	  LEFT JOIN tww_app.tww_labels lb on RP.obj_id=lb.fk_parent_obj_id and lb.label_type='main'
+	  LEFT JOIN tww_od.tww_labels lb on RP.obj_id=lb.fk_parent_obj_id and lb.label_type='main'
       WHERE (_all OR NE.fk_wastewater_structure = _obj_id) and left(lb.label_text,1)='O'
 	) parts ON parts.ws = ws.obj_id
     WHERE (_all AND ch.obj_id IS NULL) OR ws.obj_id =_obj_id
     ) all_parts
 	GROUP BY ws_obj_id, COALESCE(ws_identifier, '')
 )
-  INSERT INTO tww_app.tww_labels (fk_parent_obj_id,label_type,label_text)
+  INSERT INTO tww_od.tww_labels (fk_parent_obj_id,label_type,label_text)
   SELECT
       obj_id
     , unnest(

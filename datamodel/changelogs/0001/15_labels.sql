@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS tww_app.tww_labels
+CREATE TABLE IF NOT EXISTS tww_od.tww_labels
 (
     id uuid NOT NULL DEFAULT uuid_generate_v4(),
 	fk_parent_obj_id character varying(16) COLLATE pg_catalog."default" NOT NULL,
@@ -8,5 +8,5 @@ CREATE TABLE IF NOT EXISTS tww_app.tww_labels
 	, CONSTRAINT unique_tww_od_labels UNIQUE (fk_parent_obj_id,label_type)
 );
 
-COMMENT ON TABLE tww_app.tww_labels IS 'stores all labels. not part of the VSA-DSS data model,
+COMMENT ON TABLE tww_od.tww_labels IS 'stores all labels. not part of the VSA-DSS data model,
 added solely for TEKSI wastewater. has to be updated by triggers';
