@@ -2410,7 +2410,7 @@ class InterlisExporterToIntermediateSchema:
         if instance is None:
             logger.warning(
                 f'Could not find an active entry in table"{oid_table.__table__.schema}.{oid_table.__name__}". \
-                Returning an empty string, which will lead to Interlis Errors. \
+                Returning an empty string, which will lead to INTERLIS Errors. \
                 Set the value that you want to use as prefix to \'active\' in table"{oid_table.__table__.schema}.{oid_table.__name__}" \
                 to avoid this issue.'
             )

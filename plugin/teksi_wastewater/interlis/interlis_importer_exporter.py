@@ -145,7 +145,7 @@ class InterlisImporterExporter:
         self._import_enable_symbology_triggers()
 
         self._progress_done(100)
-        logger.info("Interlis import finished.")
+        logger.info("INTERLIS import finished.")
 
     def interlis_export(
         self,
@@ -206,7 +206,7 @@ class InterlisImporterExporter:
         self._export_xtf_files(file_name_base, export_models)
 
         self._progress_done(100)
-        logger.info("Interlis export finished.")
+        logger.info("INTERLIS export finished.")
 
     def _import_validate_xtf_file(self, xtf_file_input):
         log_path = make_log_path(self.base_log_path, "ilivalidator")
