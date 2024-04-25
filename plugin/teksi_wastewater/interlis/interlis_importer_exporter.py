@@ -154,7 +154,7 @@ class InterlisImporterExporter:
         logs_next_to_file=True,
         limit_to_selection=False,
         # neu export_orientation
-        export_orientation=90,
+        export_orientation=90.0,
         selected_labels_scales_indices=[],
         selected_ids=[],
     ):
