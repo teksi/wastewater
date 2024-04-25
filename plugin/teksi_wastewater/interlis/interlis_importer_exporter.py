@@ -117,7 +117,7 @@ class InterlisImporterExporter:
         self._import_disable_symbology_triggers()
 
         # Import from the temporary ili2pg model
-        self._progress_done(40, "Converting to Teksi Wastewater...")
+        self._progress_done(40, "Converting to TEKSI Wastewater...")
         tww_session = self._import_from_intermediate_schema(import_model)
 
         if show_selection_dialog:
@@ -191,11 +191,12 @@ class InterlisImporterExporter:
             )
 
         # Export to the temporary ili2pg model
-        self._progress_done(35, "Converting from Teksi Wastewater...")
+        self._progress_done(35, "Converting from TEKSI Wastewater...")
         self._export_to_intermediate_schema(
             export_model=export_models[0],
             file_name=xtf_file_output,
             selected_ids=selected_ids,
+            export_orientation=export_orientation,
             labels_file_path=labels_file_path,
             basket_enabled=create_basket_col,
         )
@@ -328,7 +329,7 @@ class InterlisImporterExporter:
         if not structures_lyr or not reaches_lyr:
             raise InterlisImporterExporterError(
                 "Could not find the vw_tww_wastewater_structure and/or the vw_tww_reach layers.",
-                "Make sure your Teksi Wastewater project is open.",
+                "Make sure your TEKSI Wastewater project is open.",
                 None,
             )
 
