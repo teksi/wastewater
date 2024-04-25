@@ -71,11 +71,11 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
         , {wn_cols}
         , {ne_cols}
 
-        , lbl.label_map->>'main' as _label
-        , lbl.label_map->>'cover' as _cover_label
-        , lbl.label_map->>'bottom' as _bottom_label
-        , lbl.label_map->>'input' as _input_label
-        , lbl.label_map->>'output' as _output_label
+        , lbl.label_def->>'main' as _label
+        , lbl.label_def->>'cover' as _cover_label
+        , lbl.label_def->>'bottom' as _bottom_label
+        , lbl.label_def->>'input' as _input_label
+        , lbl.label_def->>'output' as _output_label
         , wn._usage_current AS _channel_usage_current
         , wn._function_hierarchic AS _channel_function_hierarchic
 
@@ -89,7 +89,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
         LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = ws.fk_main_wastewater_node
         LEFT JOIN tww_od.wastewater_node wn ON wn.obj_id = ws.fk_main_wastewater_node
         LEFT JOIN tww_od.channel ch ON ch.obj_id = ws.obj_id
-        LEFT JOIN (SELECT fk_parent_obj_id, jsonb_object_agg(label_type, label_text) AS label_map from tww_od.tww_labels GROUP BY fk_parent_obj_id) lbl ON lbl.fk_parent_obj_id = ws.obj_id
+        LEFT JOIN  tww_od.tww_labels lbl ON lbl.fk_parent_obj_id = ws.obj_id
         {extra_joins}
         WHERE ch.obj_id IS NULL;
 

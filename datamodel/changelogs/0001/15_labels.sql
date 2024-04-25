@@ -1,11 +1,8 @@
 CREATE TABLE IF NOT EXISTS tww_od.tww_labels
 (
-    id uuid NOT NULL DEFAULT uuid_generate_v4(),
 	fk_parent_obj_id character varying(16) COLLATE pg_catalog."default" NOT NULL,
-    label_type character varying(10),
-	label_text text COLLATE pg_catalog."default",
-	CONSTRAINT pkey_tww_od_labels_id PRIMARY KEY (id)
-	, CONSTRAINT unique_tww_od_labels UNIQUE (fk_parent_obj_id,label_type)
+    label_def jsonb,
+	CONSTRAINT pkey_tww_od_labels_fk_parent_obj_id PRIMARY KEY (fk_parent_obj_id)
 );
 
 COMMENT ON TABLE tww_od.tww_labels IS 'stores all labels. not part of the VSA-DSS data model,

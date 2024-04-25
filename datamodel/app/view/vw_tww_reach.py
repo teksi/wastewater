@@ -57,8 +57,8 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
         , {ws_cols}
         , {rp_from_cols}
         , {rp_to_cols}
-        , rp_from_lbl.label_text as rp_from_label
-        , rp_to_lbl.label_text as rp_to_label
+        , rp_from_lbl.label_def ->> 'main' as rp_from_label
+        , rp_to_lbl.label_def ->> 'main' as rp_to_label
       FROM tww_od.reach re
          LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = re.obj_id
          LEFT JOIN tww_od.reach_point rp_from ON rp_from.obj_id = re.fk_reach_point_from
@@ -66,8 +66,8 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
          LEFT JOIN tww_od.wastewater_structure ws ON ne.fk_wastewater_structure = ws.obj_id
          LEFT JOIN tww_od.channel ch ON ch.obj_id = ws.obj_id
          LEFT JOIN tww_od.pipe_profile pp ON re.fk_pipe_profile = pp.obj_id
-         LEFT JOIN (SELECT fk_parent_obj_id, label_text from tww_od.tww_labels WHERE label_type='main') rp_from_lbl ON rp_from_lbl.fk_parent_obj_id = rp_from.obj_id
-         LEFT JOIN (SELECT fk_parent_obj_id, label_text from tww_od.tww_labels WHERE label_type='main') rp_to_lbl ON rp_to_lbl.fk_parent_obj_id = rp_to.obj_id
+         LEFT JOIN tww_od.tww_labels rp_from_lbl ON rp_from_lbl.fk_parent_obj_id = rp_from.obj_id
+         LEFT JOIN tww_od.tww_labels rp_to_lbl ON rp_to_lbl.fk_parent_obj_id = rp_to.obj_id
          {extra_joins};
     """.format(
         extra_cols="\n    , ".join(
