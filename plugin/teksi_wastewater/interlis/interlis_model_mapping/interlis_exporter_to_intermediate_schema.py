@@ -1173,7 +1173,7 @@ class InterlisExporterToIntermediateSchema:
                 # --- tank_emptying ---
                 leistung=row.flow,
                 bruttokosten=row.gross_costs,
-                art=self.get_vl(row.type__REL),
+                art=self.get_vl(row.kind__REL),
                 ersatzjahr=row.year_of_replacement,
                 absperr_drosselorganref=self.get_tid(row.fk_throttle_shut_off_unit__REL),
                 ueberlaufref=self.get_tid(row.fk_overflow__REL),
@@ -1194,7 +1194,7 @@ class InterlisExporterToIntermediateSchema:
                 **self.structure_part_common(row, "beckenreinigung"),
                 # --- tank_cleaning ---
                 bruttokosten=row.gross_costs,
-                art=self.get_vl(row.type__REL),
+                art=self.get_vl(row.kind__REL),
                 ersatzjahr=row.year_of_replacement,
             )
             self.abwasser_session.add(beckenreinigung)
@@ -1225,7 +1225,7 @@ class InterlisExporterToIntermediateSchema:
                 relevanzmatrix=self.get_vl(row.relevance_matrix__REL),
                 relevantes_gefaelle=row.relevant_slope,
                 oberflaechengewaesser=row.surface_water_bodies,
-                gewaesserart=self.get_vl(row.type_water_body__REL),
+                gewaesserart=self.get_vl(row.kind_water_body__REL),
                 gewaesserspezifische_entlastungsfracht_nh4_n_ist=row.water_specific_discharge_freight_nh4_n_current,
                 gewaesserspezifische_entlastungsfracht_nh4_n_ist_optimiert=row.water_specific_discharge_freight_nh4_n_current_opt,
                 gewaesserspezifische_entlastungsfracht_nh4_n_geplant=row.water_specific_discharge_freight_nh4_n_planned,
@@ -1467,7 +1467,7 @@ class InterlisExporterToIntermediateSchema:
                 dimensionierungswert=row.dimensioning_value,
                 bruttokosten=row.gross_costs,
                 anspringkote=row.overflow_level,
-                art=self.get_vl(row.type__REL),
+                art=self.get_vl(row.kind__REL),
                 ersatzjahr=row.year_of_replacement,
             )
             self.abwasser_session.add(feststoffrueckhalt)
