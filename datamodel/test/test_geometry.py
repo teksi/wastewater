@@ -335,10 +335,9 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         }
         obj_id = self.insert("vw_tww_wastewater_structure", row)
 
-       # no cover is created
-        new_row = self.select(
-            "vw_tww_wastewater_structure", obj_id)
-        
+        # no cover is created
+        new_row = self.select("vw_tww_wastewater_structure", obj_id)
+
         assert new_row["co_obj_id"] is None
 
         # 1. update no change on geometry but add co_diameter, cover should be added
