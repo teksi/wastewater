@@ -56,14 +56,14 @@
         <item>
          <widget class="QLabel" name="orientation_label">
           <property name="text">
-           <string>Angle for horizontal text in INTERLIS (default: 90.0°)</string>
+           <string>Angle for horizontal labels (default: 90.0°)</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QComboBox" name="export_orientation_selection_comboBox">
           <property name="toolTip">
-           <string>Angle for horizontal text in INTERLIS (default: 90.0°)</string>
+           <string>Angle for horizontal labels (default: 90.0°)</string>
           </property>
          </widget>
         </item>
