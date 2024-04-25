@@ -547,7 +547,7 @@ WITH labeled_ws as
 	GROUP BY ws_obj_id, COALESCE(ws_identifier, '')
 )
 
-  INSERT INTO tww_od.tww_labels (fk_parent_obj_id,label_type,label_text)
+  INSERT INTO tww_od.tww_labels (fk_parent_obj_id,label_def)
   SELECT
       obj_id
     , jsonb_build_object(
