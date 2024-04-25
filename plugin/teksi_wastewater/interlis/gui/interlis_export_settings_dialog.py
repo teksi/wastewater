@@ -115,7 +115,5 @@ class InterlisExportSettingsDialog(QDialog):
 
     @property
     def labels_orientation_offset(self):
-        # neu 23.4.2024 added float()
         eorientation = self.export_orientation_selection_comboBox.currentData()
-        print(eorientation)
         return eorientation
