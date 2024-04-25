@@ -113,7 +113,6 @@ class InterlisImporterExporterGui(QObject):
                 export_models=export_dialog.selected_models(),
                 logs_next_to_file=export_dialog.logs_next_to_file,
                 limit_to_selection=export_dialog.limit_to_selection,
-                # export orientation added
                 export_orientation=export_dialog.labels_orientation_offset,
                 selected_labels_scales_indices=export_dialog.selected_labels_scales_indices,
                 selected_ids=export_dialog.selected_ids,
