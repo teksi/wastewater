@@ -523,7 +523,7 @@ WITH labeled_ws as
 		,  NULL::text AS rpo_label
       FROM tww_od.reach_point RP
       LEFT JOIN tww_od.wastewater_networkelement NE ON RP.fk_wastewater_networkelement = NE.obj_id
-	  LEFT JOIN tww_od.tww_labels lb on RP.obj_id=lb.fk_parent_obj_id 
+	  LEFT JOIN tww_od.tww_labels lb on RP.obj_id=lb.fk_parent_obj_id
       WHERE (_all OR NE.fk_wastewater_structure = _obj_id) and left(lb.label_def ->> 'main',1) == 'I'
       -- output
       UNION
@@ -546,7 +546,7 @@ WITH labeled_ws as
     ) all_parts
 	GROUP BY ws_obj_id, COALESCE(ws_identifier, '')
 )
-  
+
   INSERT INTO tww_od.tww_labels (fk_parent_obj_id,label_type,label_text)
   SELECT
       obj_id
