@@ -42,8 +42,8 @@ class InterlisExporterToIntermediateSchema:
 
         self.labels_file = labels_file
         self.use_vsacode = use_vsacode
-        self.oid_prefix=None
-        
+        self.oid_prefix = None
+
         self.basket_enabled = basket_enabled
 
         self.model_classes_interlis = model_classes_interlis
@@ -60,7 +60,6 @@ class InterlisExporterToIntermediateSchema:
         self.basket_topic_sia405_abwasser = None
         self.basket_topic_dss = None
         self.basket_topic_kek = None
-        
 
     def tww_export(self):
         # Logging disabled (very slow)
@@ -2636,7 +2635,7 @@ class InterlisExporterToIntermediateSchema:
 
     def _export_label_positions(self):
         logger.info(f"Exporting label positions from {self.labels_file}")
-        
+
         # get oid prefix
         self.oid_prefix = self.get_oid_prefix(self.model_classes_tww_sys.oid_prefixes)
         # Get t_id by obj_name to create the reference on the labels below
@@ -2684,19 +2683,25 @@ class InterlisExporterToIntermediateSchema:
 
             if layer_name == "vw_tww_reach":
                 ili_label = self.model_classes_interlis.haltung_text(
-                    **self._textpos_common(label, "haltung_text", geojson_crs_def, "RX", self.oid_prefix),
+                    **self._textpos_common(
+                        label, "haltung_text", geojson_crs_def, "RX", self.oid_prefix
+                    ),
                     haltungref=t_id,
                 )
 
             elif layer_name == "vw_tww_wastewater_structure":
                 ili_label = self.model_classes_interlis.abwasserbauwerk_text(
-                    **self._textpos_common(label, "abwasserbauwerk_text", geojson_crs_def, "WX",self.oid_prefix),
+                    **self._textpos_common(
+                        label, "abwasserbauwerk_text", geojson_crs_def, "WX", self.oid_prefix
+                    ),
                     abwasserbauwerkref=t_id,
                 )
 
             elif layer_name == "catchment_area":
                 ili_label = self.model_classes_interlis.einzugsgebiet_text(
-                    **self._textpos_common(label, "einzugsgebiet_text", geojson_crs_def, "CX",self.oid_prefix),
+                    **self._textpos_common(
+                        label, "einzugsgebiet_text", geojson_crs_def, "CX", self.oid_prefix
+                    ),
                     einzugsgebietref=t_id,
                 )
 
