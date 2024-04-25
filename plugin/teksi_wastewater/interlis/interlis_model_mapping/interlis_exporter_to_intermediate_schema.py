@@ -2390,15 +2390,15 @@ class InterlisExporterToIntermediateSchema:
             logger.warning(f"Value '{val}' exceeds expected length ({max_length})", stacklevel=2)
         return val[0:max_length]
 
-    def _modulo_angle(self, val, selected_orientation):
+    def _modulo_angle(self, val, labels_orientation_offset):
         """
         Returns an angle between 0 and 359.9 (for Orientierung in Base_d-20181005.ili)
         """
         if val is None:
             return None
 
-        # add selected_orientation
-        val = val + selected_orientation
+        # add labels_orientation_offset
+        val = val + labels_orientation_offset
 
         val = val % 360.0
         if val > 359.9:
