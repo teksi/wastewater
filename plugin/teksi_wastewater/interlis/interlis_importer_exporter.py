@@ -153,7 +153,7 @@ class InterlisImporterExporter:
         export_models,
         logs_next_to_file=True,
         limit_to_selection=False,
-        export_orientation=selected_orientation,
+        export_orientation,
         selected_labels_scales_indices=[],
         selected_ids=[],
     ):
