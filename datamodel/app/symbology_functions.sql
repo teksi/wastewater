@@ -92,7 +92,7 @@ BEGIN
     WHEN NO_DATA_FOUND THEN
       -- DO NOTHING, THIS CAN HAPPEN
     WHEN TOO_MANY_ROWS THEN
-        RAISE EXCEPTION 'TRIGGER ERROR ws_symbology_update_by_channel. Subquery shoud return exactly one row. This is not supposed to happen and indicates an isue with the trigger. The issue must be fixed in TWW.';
+        RAISE EXCEPTION 'TRIGGER ERROR ws_symbology_update_by_channel. Subquery should return exactly one row. This is not supposed to happen and indicates an issue with the trigger. The issue must be fixed in TWW.';
   END;
 
   BEGIN
@@ -107,7 +107,7 @@ BEGIN
     WHEN NO_DATA_FOUND THEN
       -- DO NOTHING, THIS CAN HAPPEN
     WHEN TOO_MANY_ROWS THEN
-        RAISE EXCEPTION 'TRIGGER ERROR ws_symbology_update_by_channel. Subquery shoud return exactly one row. This is not supposed to happen and indicates an isue with the trigger. The issue must be fixed in TWW.';
+        RAISE EXCEPTION 'TRIGGER ERROR ws_symbology_update_by_channel. Subquery should return exactly one row. This is not supposed to happen and indicates an issue with the trigger. The issue must be fixed in TWW.';
   END;
 
   RETURN NEW;
@@ -144,7 +144,7 @@ BEGIN
     WHEN NO_DATA_FOUND THEN
       -- DO NOTHING, THIS CAN HAPPEN
     WHEN TOO_MANY_ROWS THEN
-        RAISE EXCEPTION 'TRIGGER ERROR ws_symbology_update_by_reach_point. Subquery shoud return exactly one row. This is not supposed to happen and indicates an isue with the trigger. The issue must be fixed in TWW.';
+        RAISE EXCEPTION 'TRIGGER ERROR ws_symbology_update_by_reach_point. Subquery should return exactly one row. This is not supposed to happen and indicates an issue with the trigger. The issue must be fixed in TWW.';
   END;
 
   RETURN NEW;
@@ -519,8 +519,7 @@ WITH labeled_ws as
 		, NULL::text AS bottom_level
 		, coalesce(round(RP.level, 2)::text, '?') AS rpi_level
 		, NULL::text AS rpo_level
-		, ,1) == 'O'
-	) parts ON parts.ws = ws.obj_id as rpi_label
+		, lb.label_def ->> 'main' as rpi_label
 		,  NULL::text AS rpo_label
       FROM tww_od.reach_point RP
       LEFT JOIN tww_od.wastewater_networkelement NE ON RP.fk_wastewater_networkelement = NE.obj_id
@@ -536,9 +535,8 @@ WITH labeled_ws as
 		, NULL::text AS bottom_level
 		, NULL::text AS rpi_level
 		, coalesce(round(RP.level, 2)::text, '?') AS rpo_level
-		,  NULL::text AS rpo_label
-		, ,1) == 'O'
-	) parts ON parts.ws = ws.obj_id as rpo_label
+		,  NULL::text AS rpio_label
+		, lb.label_def ->> 'main' as rpo_label
       FROM tww_od.reach_point RP
       LEFT JOIN tww_od.wastewater_networkelement NE ON RP.fk_wastewater_networkelement = NE.obj_id
 	  LEFT JOIN tww_od.tww_labels lb on RP.obj_id=lb.fk_parent_obj_id
