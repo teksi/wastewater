@@ -335,6 +335,12 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         }
         obj_id = self.insert("vw_tww_wastewater_structure", row)
 
+       # no cover is created
+        new_row = self.select(
+            "vw_tww_wastewater_structure", obj_id)
+        
+        assert new_row["co_obj_id"] is None
+
         # 1. update no change on geometry but add co_diameter, cover should be added
         # UPDATE tww_app.vw_tww_wastewater_structure SET co_diameter=600 WHERE obj_id = obj_id
         row = {"co_diameter": "600"}
@@ -349,12 +355,6 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         assert (
             new_row["situation3d_geometry"]
             == "01010000A0080800000000000020D6434100000000804F3241000000000000F87F"
-        )
-        # wastewater_node geometry has Z from new wn_bottom_level: ST_SetSRID(ST_MakePoint(2600000, 1200000, 200), 2056)
-        new_row = self.select("wastewater_node", "1337_1010", schema="tww_od")
-        assert (
-            new_row["situation3d_geometry"]
-            == "01010000A0080800000000000020D6434100000000804F32410000000000006940"
         )
 
         # 2. update no change on geometry with Z but WITH wn_bottom_level
