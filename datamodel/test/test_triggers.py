@@ -147,6 +147,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
             "ch_function_hierarchic": 5062,
             "rp_to_fk_wastewater_networkelement": strct_row["wn_obj_id"],
             "rp_to_level": 95,
+            "ws_status": 8493,
         }
         reach_a_id = self.insert("vw_tww_reach", row_reach_a)
 
@@ -165,6 +166,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
             "ch_function_hierarchic": 5062,
             "rp_from_fk_wastewater_networkelement": strct_row["wn_obj_id"],
             "rp_from_level": 92,
+            "ws_status": 8493,
         }
         reach_b_id = self.insert("vw_tww_reach", row_reach_b)
 
@@ -183,6 +185,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
             "ch_function_hierarchic": 5062,
             "rp_from_fk_wastewater_networkelement": strct_row["wn_obj_id"],
             "rp_from_level": 93,
+            "ws_status": 8493,
         }
         reach_c_id = self.insert("vw_tww_reach", row_reach_c)
 

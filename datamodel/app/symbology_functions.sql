@@ -506,8 +506,9 @@ WITH labeled_ws as
 		, NULL::text as rpi_label
 		, NULL::text  AS rpo_label
       FROM tww_od.wastewater_structure ws1
+	  LEFT JOIN tww_od.channel ch1 ON ch1.obj_id=ws1.obj_id
       LEFT JOIN tww_od.wastewater_node wn ON wn.obj_id = ws1.fk_main_wastewater_node
-      WHERE _all OR ws1.obj_id = _obj_id
+      WHERE (_all AND ch1.obj_id IS NULL) OR ws1.obj_id = _obj_id
 	  UNION
 	  --input
       SELECT
@@ -532,10 +533,10 @@ WITH labeled_ws as
 		, RP.obj_id
 		,NULL as idx
 		, NULL::text AS bottom_level
-		, coalesce(round(RP.level, 2)::text, '?') AS rpi_level
-		, NULL::text AS rpo_level
-		, lb.label_text as rpi_label
+		, NULL::text AS rpi_level
+		, coalesce(round(RP.level, 2)::text, '?') AS rpo_level
 		,  NULL::text AS rpo_label
+		, lb.label_text as rpo_label
       FROM tww_od.reach_point RP
       LEFT JOIN tww_od.wastewater_networkelement NE ON RP.fk_wastewater_networkelement = NE.obj_id
 	  LEFT JOIN tww_od.tww_labels lb on RP.obj_id=lb.fk_parent_obj_id and lb.label_type='main'
