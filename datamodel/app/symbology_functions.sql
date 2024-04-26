@@ -574,7 +574,7 @@ updated as(
   FROM labeled_ws lws
   LEFT JOIN tww_od.tww_labels lbls ON lbls.fk_parent_obj_id=lws.obj_id
   WHERE lbls.fk_parent_obj_id IS NULL;
-  
+
 
 END
 
