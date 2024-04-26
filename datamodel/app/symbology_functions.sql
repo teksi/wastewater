@@ -319,7 +319,7 @@ CREATE OR REPLACE FUNCTION tww_app.update_reach_point_label(_obj_id text,
   BEGIN
   -- Updates the reach_point labels of the wastewater_structure
   -- Function inputs
-  -- _obj_id: obj_id of the associatied wastewater structure
+  -- _obj_id: obj_id of the associated wastewater structure
   -- _all: optional boolean to update all reach points
 
   -- Function Variables
@@ -460,12 +460,12 @@ WITH labeled_ws as
 (
 
     SELECT   ws_obj_id as obj_id,
-          Array[COALESCE(ws_identifier, '') ,
+          COALESCE(ws_identifier, '')  as main_lbl,
           CASE WHEN count(co_level)<2 THEN array_to_string(array_agg(E'\nC' || '=' || co_level ORDER BY idx DESC), '', '') ELSE
-		  array_to_string(array_agg(E'\nC' || idx || '=' || co_level ORDER BY idx ASC), '', '') END,
-          array_to_string(array_agg(E'\nB' || '=' || bottom_level), '', ''),
-		  array_to_string(array_agg(E'\n'||rpi_label|| '=' || rpi_level ORDER BY rpi_label ASC), '', '') ,
-		  array_to_string(array_agg(E'\n'||rpo_label|| '=' || rpo_level ORDER BY rpo_label ASC), '', '')] as label_array
+		  array_to_string(array_agg(E'\nC' || idx || '=' || co_level ORDER BY idx ASC), '', '') END as cover_lbl,
+          array_to_string(array_agg(E'\nB' || '=' || bottom_level), '', '') as bottom_lbl,
+		  array_to_string(array_agg(E'\n'||rpi_label|| '=' || rpi_level ORDER BY rpi_label ASC), '', '')  as input_lbl,
+		  array_to_string(array_agg(E'\n'||rpo_label|| '=' || rpo_level ORDER BY rpo_label ASC), '', '') as output_lbl
 		  FROM (
 		  SELECT ws.obj_id AS ws_obj_id
 		  , ws.identifier AS ws_identifier
@@ -542,25 +542,39 @@ WITH labeled_ws as
 	  LEFT JOIN tww_od.tww_labels lb on RP.obj_id=lb.fk_parent_obj_id
       WHERE (_all OR NE.fk_wastewater_structure = _obj_id) and left(lb.label_def ->> 'main',1) = 'O'::text
 	) parts ON parts.ws = ws.obj_id
-    WHERE _all  OR ws.obj_id =_obj_id
+    WHERE _all  OR ws.obj_id = _obj_id
     ) all_parts
 	GROUP BY ws_obj_id, COALESCE(ws_identifier, '')
-)
-
-  INSERT INTO tww_od.tww_labels (fk_parent_obj_id,label_def)
-  SELECT
+),
+updated as(
+	UPDATE tww_od.tww_labels SET label_def = jbo
+	FROM(
+	SELECT
       obj_id
     , jsonb_build_object(
-	      'main', label_array[0]
-		, 'cover', label_array[1]
-		, 'bottom', label_array[2]
-		, 'input', label_array[3]
-		, 'output', label_array[4]
+	      'main', main_lbl
+		, 'cover', cover_lbl
+		, 'bottom', bottom_lbl
+		, 'input', input_lbl
+		, 'output', output_lbl
+		) as jbo
+  FROM labeled_ws) lws
+  WHERE fk_parent_obj_id = lws.obj_id
+)
+  INSERT INTO tww_od.tww_labels (fk_parent_obj_id,label_def)
+  SELECT
+      lws.obj_id
+    , jsonb_build_object(
+	      'main', main_lbl
+		, 'cover', cover_lbl
+		, 'bottom', bottom_lbl
+		, 'input', input_lbl
+		, 'output', output_lbl
 		)
-  FROM labeled_ws
-  ON CONFLICT ON CONSTRAINT pkey_tww_od_labels_fk_parent_obj_id
-  DO UPDATE
-  SET label_def=EXCLUDED.label_def;
+  FROM labeled_ws lws
+  LEFT JOIN tww_od.tww_labels lbls ON lbls.fk_parent_obj_id=lws.obj_id
+  WHERE lbls.fk_parent_obj_id IS NULL;
+  
 
 END
 
