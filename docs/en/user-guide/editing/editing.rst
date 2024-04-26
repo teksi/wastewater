@@ -172,6 +172,8 @@ Adding additional covers and nodes to an existing wastewater structure
 
 .. figure:: images/new_cover_childpoint.jpg
 
+* If a wastewater structure does not have a cover yet, one can also add a cover by filling a **co_** attribute in **vw_tww_wastewater_structure**. The cover is then created at the location of the **vw_tww_wastewater_structure**.
+
 * The other way (before QGIS 3.16)
 * Start editing vw_cover and add the new cover
 * In the form you find behind the field fk_wastewater_structure a button to connect the new cover to an existing wastewater structure
