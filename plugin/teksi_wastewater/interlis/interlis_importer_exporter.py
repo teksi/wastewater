@@ -289,6 +289,11 @@ class InterlisImporterExporter:
 
         structures_lyr = TwwLayerManager.layer("vw_tww_wastewater_structure")
         reaches_lyr = TwwLayerManager.layer("vw_tww_reach")
+        catch_lyr = TwwLayerManager.layer("catchment_area")
+        meas_pt_lyr = TwwLayerManager.layer("measure_point")
+        meas_lin_lyr = TwwLayerManager.layer("measure_line")
+        meas_ply_lyr = TwwLayerManager.layer("measure_polygon")
+        building_group_lyr = TwwLayerManager.layer("building_group")
         if not structures_lyr or not reaches_lyr:
             raise InterlisImporterExporterError(
                 "Could not find the vw_tww_wastewater_structure and/or the vw_tww_reach layers.",
@@ -304,6 +309,11 @@ class InterlisImporterExporter:
                 "RESTRICT_TO_SELECTION": limit_to_selection,
                 "STRUCTURE_VIEW_LAYER": structures_lyr,
                 "REACH_VIEW_LAYER": reaches_lyr,
+                "CATCHMENT_LAYER": catch_lyr,
+                "MEASURE_POINT_LAYER": meas_pt_lyr,
+                "MEASURE_LINE_LAYER": meas_lin_lyr,
+                "MEASURE_POLYGON_LAYER": meas_ply_lyr,
+                "BUILDING_GROUP_LAYER": building_group_lyr,
                 "SCALES": selected_labels_scales_indices,
             },
         )

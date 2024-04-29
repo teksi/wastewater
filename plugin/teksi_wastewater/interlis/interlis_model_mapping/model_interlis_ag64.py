@@ -49,15 +49,15 @@ class ModelInterlisAG64(ModelBase):
 
         ModelInterlisAG64.sia405_textpos = sia405_textpos
 
-        class infrastrukturhaltung_text(sia405_textpos):
+        class haltung_text(sia405_textpos):
             __tablename__ = "infrastrukturhaltung_text"
             __table_args__ = {"schema":config.ABWASSER_SCHEMA}
 
-        ModelInterlisAG64.infrastrukturhaltung_text = infrastrukturhaltung_text
+        ModelInterlisAG64.haltung_text = haltung_text
 
-        class infrastrukturknoten_text(sia405_textpos):
+        class abwasserbauwerk_text(sia405_textpos):
             __tablename__ = "infrastrukturknoten_text"
             __table_args__ = {"schema":config.ABWASSER_SCHEMA}
 
-        ModelInterlisAG64.infrastrukturknoten_text = infrastrukturknoten_text
+        ModelInterlisAG64.abwasserbauwerk_text = abwasserbauwerk_text
         

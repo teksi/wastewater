@@ -3,6 +3,7 @@ import os
 import tempfile
 import uuid
 from functools import partial
+from qgis.PyQt.QtCore import QSettings
 
 from PyQt5.QtCore import QCoreApplication
 from qgis import processing
@@ -50,6 +51,12 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
     INPUT_SCALES = "SCALES"
     INPUT_STRUCTURE_VIEW_LAYER = "STRUCTURE_VIEW_LAYER"
     INPUT_REACH_VIEW_LAYER = "REACH_VIEW_LAYER"
+    INPUT_CATCHMENT_LAYER = "CATCHMENT_LAYER"
+    INPUT_MEASURE_POINT_LAYER = "MEASURE_POINT_LAYER"
+    INPUT_MEASURE_LINE_LAYER = "MEASURE_LINE_LAYER"
+    INPUT_MEASURE_POLYGON_LAYER = "MEASURE_POLYGON_LAYER"
+    INPUT_BUILDING_GROUP_LAYER = "BUILDING_GROUP_LAYER"
+    
 
     def name(self):
         return "extractlabels_interlis"
@@ -98,6 +105,46 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
                 types=[QgsWkbTypes.LineGeometry],
             )
         )
+        
+        self.addParameter(
+            QgsProcessingParameterVectorLayer(
+                self.INPUT_CATCHMENT_LAYER,
+                description=self.tr("Catchment layer"),
+                types=[QgsWkbTypes.PolygonGeometry],
+            )
+        )
+        
+        self.addParameter(
+            QgsProcessingParameterVectorLayer(
+                self.INPUT_MEASURE_POINT_LAYER,
+                description=self.tr("Measure Point layer"),
+                types=[QgsWkbTypes.LineGeometry],
+            )
+        )
+        
+        self.addParameter(
+            QgsProcessingParameterVectorLayer(
+                self.INPUT_MEASURE_LINE_LAYER,
+                description=self.tr("Measure Line layer"),
+                types=[QgsWkbTypes.LineGeometry],
+            )
+        )
+        
+        self.addParameter(
+            QgsProcessingParameterVectorLayer(
+                self.INPUT_MEASURE_POLYGON_LAYER,
+                description=self.tr("Measure Polygon layer"),
+                types=[QgsWkbTypes.PolygonGeometry],
+            )
+        )
+        
+        self.addParameter(
+            QgsProcessingParameterVectorLayer(
+                self.INPUT_BUILDING_GROUP_LAYER,
+                description=self.tr("Building group layer"),
+                types=[QgsWkbTypes.PolygonGeometry],
+            )
+        )
 
     def processAlgorithm(
         self, parameters, context: QgsProcessingContext, feedback: QgsProcessingFeedback
@@ -112,6 +159,26 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
         reach_view_layer = self.parameterAsVectorLayer(
             parameters, self.INPUT_REACH_VIEW_LAYER, context
         )
+        
+        self.INPUT_AG64_96_EXTENSION=QSettings().value("/TWW/AGxxExtensions", False)
+        if self.INPUT_AG64_96_EXTENSION:
+            catchment_layer = self.parameterAsVectorLayer(
+                parameters, self.INPUT_CATCHMENT_LAYER, context
+            )
+            building_group_layer = self.parameterAsVectorLayer(
+                parameters, self.INPUT_BUILDING_GROUP_LAYER, context
+            )
+            measure_point_layer = self.parameterAsVectorLayer(
+                parameters, self.INPUT_MEASURE_POINT_LAYER, context
+            )
+            measure_line_layer = self.parameterAsVectorLayer(
+                parameters, self.INPUT_MEASURE_LINE_LAYER, context
+            )
+            measure_polygon_layer = self.parameterAsVectorLayer(
+                parameters, self.INPUT_MEASURE_POLYGON_LAYER, context
+            )
+            
+        
         scales = [
             self.AVAILABLE_SCALES[i]
             for i in self.parameterAsEnums(parameters, self.INPUT_SCALES, context)
@@ -132,12 +199,34 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
         # Store a mapping from FeatureID to obj_id (used below)
         reach_feats = reach_view_layer.getFeatures()
         structure_feats = structure_view_layer.getFeatures()
+        catchment_feats = catchment_layer.getFeatures()
+        building_group_feats = building_group_layer.getFeatures()
+        measure_point_feats = measure_point_layer.getFeatures()
+        measure_line_feats = measure_line_layer.getFeatures()
+        measure_polygon_feats = measure_polygon_layer.getFeatures()
+        
         rowid_to_obj_id = {
             "vw_tww_reach": {f.id(): f.attribute("obj_id") for f in reach_feats},
             "vw_tww_wastewater_structure": {
                 f.id(): f.attribute("obj_id") for f in structure_feats
             },
+            "catchment": {
+                f.id(): f.attribute("obj_id") for f in catchment_feats
+            },
+             "building_group": {
+                f.id(): f.attribute("obj_id") for f in building_group_feats
+            },
+            "measure_point": {
+                f.id(): f.attribute("obj_id") for f in measure_point_feats
+            },
+            "measure_line": {
+                f.id(): f.attribute("obj_id") for f in measure_line_feats
+            },
+            "measure_polygon": {
+                f.id(): f.attribute("obj_id") for f in measure_polygon_feats
+            },
         }
+        
 
         annotated_paths = []
 
@@ -183,7 +272,13 @@ class ExtractlabelsInterlisAlgorithm(TwwAlgorithm):
                     "vw_tww_wastewater_structure"
                 ).name(): "vw_tww_wastewater_structure",
                 TwwLayerManager.layer("vw_tww_reach").name(): "vw_tww_reach",
+                TwwLayerManager.layer("catchment").name(): "catchment",
+                TwwLayerManager.layer("building_group").name(): "building_group",
+                TwwLayerManager.layer("measure_point").name(): "measure_point",
+                TwwLayerManager.layer("measure_line").name(): "measure_line",
+                TwwLayerManager.layer("measure_polygon").name(): "measure_polygon",
             }
+            
             for label in geojson["features"]:
                 layer_name = label["properties"]["Layer"]
                 # this is a non-TWW layer, we don't annotate it
