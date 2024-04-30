@@ -114,11 +114,11 @@ FROM(
       LEFT JOIN tww_od.wastewater_networkelement   ne_ov      ON ne_ov.obj_id = ov.fk_wastewater_node
       LEFT JOIN tww_vl.channel_function_hierarchic vl_fct_hier	ON wn._function_hierarchic = vl_fct_hier.code
       LEFT JOIN tww_vl.channel_usage_current       vl_usg_curr	ON wn._usage_current = vl_usg_curr.code
-	  
+
 	  LEFT JOIN tww_od.wastewater_node			   wn_from	  ON ne_ov.obj_id = wn_from.obj_id
 	  LEFT JOIN tww_vl.channel_function_hierarchic vl_fct_hier_from	ON wn_from._function_hierarchic = vl_fct_hier_from.code
       LEFT JOIN tww_vl.channel_usage_current       vl_usg_curr_from	ON wn_from._usage_current = vl_usg_curr_from.code
-	  WHERE (_all OR wn.obj_id = _obj_id) 
+	  WHERE (_all OR wn.obj_id = _obj_id)
       WINDOW w AS ( PARTITION BY wn.obj_id
                     ORDER BY vl_fct_hier.order_fct_hierarchic ASC NULLS LAST
                            , vl_fct_hier_from.order_fct_hierarchic ASC NULLS LAST
@@ -127,7 +127,7 @@ FROM(
                            , vl_usg_curr_from.order_usage_current ASC NULLS LAST
                     ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)
 ) symbology_ne
-WHERE symbology_ne.wn_obj_id = n.obj_id 
+WHERE symbology_ne.wn_obj_id = n.obj_id
  	  AND TRUE = ANY(array[n._function_hierarchic IS NULL
 					  ,n._usage_current IS NULL
 					  ,n._status IS NULL]);
