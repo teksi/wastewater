@@ -263,7 +263,7 @@ class InterlisImporterExporter:
         if PSYCOPG_VERSION == 2:
             connection.set_session(autocommit=True)
         cursor = connection.cursor()
-        cursor.execute("PERFORM tww_sys.reset_od_seqval();")
+        cursor.execute("SELECT tww_sys.reset_od_seqval();")
         connection.commit()
         connection.close()
 
