@@ -1,5 +1,5 @@
 --------------------------------------------------------
--- UPDATE wastewater node symbology
+-- UPDATE wastewater node symbology by channel
 -- Argument:
 --  * obj_id of wastewater networkelement or NULL to update all
 --------------------------------------------------------
@@ -63,7 +63,7 @@ FROM(
 ) symbology_ne
 WHERE symbology_ne.wn_obj_id = n.obj_id;
 
-SELECT update_wn_symbology_by_overflow(_obj_id, _all);
+SELECT tww_app.update_wn_symbology_by_overflow(_obj_id, _all);
 
 -- See above
 IF _all THEN
@@ -77,7 +77,7 @@ LANGUAGE plpgsql
 VOLATILE;
 
 --------------------------------------------------------
--- UPDATE wastewater node symbology
+-- UPDATE wastewater node symbology by overflow
 -- Argument:
 --  * obj_id of wastewater networkelement or NULL to update all
 --------------------------------------------------------
