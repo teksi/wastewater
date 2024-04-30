@@ -263,33 +263,7 @@ class InterlisImporterExporter:
         if PSYCOPG_VERSION == 2:
             connection.set_session(autocommit=True)
         cursor = connection.cursor()
-        cursor.execute("SELECT tablename,shortcut_en FROM tww_sys.dictionary_od_table;")
-        tbl_instances = cursor.fetchall()
-        for instance in tbl_instances:
-            # check if a sequence exists
-            query = """SELECT 1
-            FROM information_schema.sequences
-            WHERE sequence_schema = 'tww_od'
-            AND sequence_name = 'seq_{tbl_name}_oid';
-            """.format(
-                tbl_name=instance[0]
-            )
-            cursor.execute(query)
-            is_seq = cursor.fetchone()
-            if is_seq:
-                logger.info(f"Update sequence of tww_od.{instance[0]}")
-                query = """
-                SELECT SETVAL('tww_od.seq_{tbl_name}_oid' ,(SELECT max(seqs) FROM(
-                SELECT RIGHT(obj_id, 6)::int as seqs FROM tww_od.{tbl_name} WHERE obj_id ~ '{rgx}'
-                UNION
-                SELECT last_value as seqs FROM tww_od.seq_{tbl_name}_oid)foo));
-                """.format(
-                    tbl_name=instance[0], rgx="".join([r"^.{8}", instance[1], r"\d{6}$"])
-                )
-                cursor.execute(query)
-                seqval = cursor.fetchone()
-                logger.info(f"Updated sequence of tww_od.{instance[0]} to {seqval[0]}")
-
+        cursor.execute("PERFORM tww_sys.reset_od_seqval();")
         connection.commit()
         connection.close()
 
