@@ -95,7 +95,7 @@ rgx text;
 BEGIN
 	BEGIN
 	   FOR tbl_name,rgx IN (
-			SELECT dot.tablename,pfx.prefix||dot.shortcut_en 
+			SELECT dot.tablename,pfx.prefix||dot.shortcut_en
 			FROM information_schema.sequences seq
 			LEFT JOIN tww_sys.dictionary_od_table dot ON seq.sequence_name = 'seq_'||dot.tablename||'_oid'
 			LEFT JOIN (SELECT prefix  FROM tww_sys.oid_prefixes WHERE active) pfx on True
@@ -105,7 +105,7 @@ BEGIN
 		UNION
 		SELECT last_value as seqs FROM tww_od.seq_%1$I_oid)foo));',tbl_name,rgx);
 	   END LOOP;
-	END; 
+	END;
 END;
 $BODY$;
 
@@ -122,7 +122,7 @@ END;
 $BODY$;
 
 CREATE TRIGGER update_od_seqval_from_prefixes
-    AFTER UPDATE 
+    AFTER UPDATE
     ON tww_sys.oid_prefixes
     FOR EACH STATEMENT
     EXECUTE FUNCTION tww_sys.tr_reset_od_seqval();
