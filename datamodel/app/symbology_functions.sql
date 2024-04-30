@@ -63,7 +63,7 @@ FROM(
 ) symbology_ne
 WHERE symbology_ne.wn_obj_id = n.obj_id;
 
-SELECT tww_app.update_wn_symbology_by_overflow(_obj_id, _all);
+EXECUTE tww_app.update_wn_symbology_by_overflow(_obj_id, _all);
 
 -- See above
 IF _all THEN
