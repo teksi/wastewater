@@ -3,6 +3,7 @@ import configparser
 import datetime
 import logging
 import os
+import re
 import subprocess
 import tempfile
 import time
@@ -23,7 +24,7 @@ class DeduplicatedLogger(logging.Logger):
         self._last_message = None
         self._repeated = 0
 
-    def _log(self, level, msg, args, exc_info=None, extra=None):
+    def _log(self, level, msg, args, exc_info=None, extra=None, stacklevel=1):
         this_message = (level, msg)
         if self._last_message is None or self._last_message != this_message:
             if self._repeated > 0:
@@ -33,6 +34,7 @@ class DeduplicatedLogger(logging.Logger):
                     args,
                     exc_info,
                     extra,
+                    stacklevel,
                 )
 
             super()._log(level, msg, args, exc_info, extra)
@@ -51,7 +53,8 @@ class CmdException(BaseException):
 
 
 def exec_(command, check=True, output_content=False):
-    logger.info(f"EXECUTING: {command}")
+    command_masked_pwd = re.sub(r"(--dbpwd)\s\"[\w\.*#?!@$%^&-]+\"", r'\1 "[PASSWORD]"', command)
+    logger.info(f"EXECUTING: {command_masked_pwd}")
     try:
         proc = subprocess.run(
             command,
@@ -84,7 +87,7 @@ def setup_test_db(template="full"):
     def dexec_(cmd, check=True):
         return exec_(f"docker exec twwqwat {cmd}", check)
 
-    docker_image = os.getenv("TWWQWAT2ILI_TESTDB_IMAGE", "postgis/postgis:13-3.2")
+    docker_image = os.getenv("POSTGIS_IMAGE", "postgis/postgis:14-3.4")
 
     logger.info(f"SETTING UP TWW/QWAT DATABASE [{docker_image}]...")
 
@@ -235,8 +238,8 @@ def get_pgconf():
     return collections.defaultdict(str, pgconf)
 
 
-def get_pgconf_as_psycopg2_dsn() -> List[str]:
-    """Returns the pgconf as a psycopg2 connection string"""
+def get_pgconf_as_psycopg_dsn() -> List[str]:
+    """Returns the pgconf as a psycopg connection string"""
 
     pgconf = get_pgconf()
     parts = []

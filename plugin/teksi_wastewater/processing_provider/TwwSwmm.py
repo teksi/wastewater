@@ -21,7 +21,10 @@ import codecs
 import subprocess
 from datetime import datetime, timedelta
 
-import psycopg2
+try:
+    import psycopg
+except ImportError:
+    import psycopg2 as psycopg
 
 MEASURING_POINT_KIND = "Diverse kind of SWMM simulation parameters"
 MEASURING_DEVICE_REMARK = "SWMM Simulation"
@@ -134,7 +137,7 @@ class TwwSwmm:
 
     def __enter__(self):
         if self.service is not None:
-            self.con = psycopg2.connect(service=self.service)
+            self.con = psycopg.connect(service=self.service)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -207,7 +210,7 @@ class TwwSwmm:
             )
         try:
             cur.execute(sql)
-        except psycopg2.ProgrammingError:
+        except psycopg.ProgrammingError:
             self.feedback_push("error", f"Error while executing: {sql}")
             return None, None
         self.feedback_push("info", f"Process vw_{table_name}")
@@ -872,9 +875,9 @@ class TwwSwmm:
             )
             try:
                 cur.execute(sql)
-            except psycopg2.ProgrammingError:
+            except psycopg.ProgrammingError:
                 self.feedback_push("error", f"Error while excecuting: {sql}")
-                self.feedback_push("error", str(psycopg2.ProgrammingError))
+                self.feedback_push("error", str(psycopg.ProgrammingError))
                 return None, None
             res = cur.fetchone()
             if res is None:
@@ -937,9 +940,9 @@ class TwwSwmm:
             )
             try:
                 cur.execute(sql)
-            except psycopg2.ProgrammingError:
+            except psycopg.ProgrammingError:
                 self.feedback_push("error", f"Error while excecuting: {sql}")
-                self.feedback_push("error", str(psycopg2.ProgrammingError))
+                self.feedback_push("error", str(psycopg.ProgrammingError))
                 return None, None
             res = cur.fetchone()
             if res is None:
@@ -1001,9 +1004,9 @@ class TwwSwmm:
             )
             try:
                 cur.execute(sql)
-            except psycopg2.ProgrammingError:
+            except psycopg.ProgrammingError:
                 self.feedback_push("error", f"Error while excecuting: {sql}")
-                self.feedback_push("error", str(psycopg2.ProgrammingError))
+                self.feedback_push("error", str(psycopg.ProgrammingError))
                 return None
             res = cur.fetchone()
             mp_obj_id = res[0]
@@ -1052,9 +1055,9 @@ class TwwSwmm:
             )
             try:
                 cur.execute(sql)
-            except psycopg2.ProgrammingError:
+            except psycopg.ProgrammingError:
                 self.feedback_push("error", f"Error while excecuting: {sql}")
-                self.feedback_push("error", str(psycopg2.ProgrammingError))
+                self.feedback_push("error", str(psycopg.ProgrammingError))
                 return None, None
             res = cur.fetchone()
             if res is None:
@@ -1115,9 +1118,9 @@ class TwwSwmm:
 
             try:
                 cur.execute(sql)
-            except psycopg2.ProgrammingError:
+            except psycopg.ProgrammingError:
                 self.feedback_push("error", f"Error while excecuting: {sql}")
-                self.feedback_push("error", str(psycopg2.ProgrammingError))
+                self.feedback_push("error", str(psycopg.ProgrammingError))
                 return None
             ms_obj_id = cur.fetchone()[0]
             self.con.commit()
@@ -1158,9 +1161,9 @@ class TwwSwmm:
         )
         try:
             cur.execute(sql)
-        except psycopg2.ProgrammingError:
+        except psycopg.ProgrammingError:
             self.feedback_push("error", f"Error while excecuting: {sql}")
-            self.feedback_push("error", (str(psycopg2.ProgrammingError)))
+            self.feedback_push("error", (str(psycopg.ProgrammingError)))
             return None
         res = cur.fetchone()
 
@@ -1184,9 +1187,9 @@ class TwwSwmm:
 
             try:
                 cur.execute(sql)
-            except psycopg2.ProgrammingError:
+            except psycopg.ProgrammingError:
                 self.feedback_push("error", f"Error while excecuting: {sql}")
-                self.feedback_push("error", (str(psycopg2.ProgrammingError)))
+                self.feedback_push("error", (str(psycopg.ProgrammingError)))
                 return None
             mr_obj_id = cur.fetchone()[0]
             self.con.commit()
@@ -1203,9 +1206,9 @@ class TwwSwmm:
             )
             try:
                 cur.execute(sql)
-            except psycopg2.ProgrammingError:
+            except psycopg.ProgrammingError:
                 self.feedback_push("error", f"Error while excecuting: {sql}")
-                self.feedback_push("error", (str(psycopg2.ProgrammingError)))
+                self.feedback_push("error", (str(psycopg.ProgrammingError)))
                 return None
             mr_obj_id = cur.fetchone()[0]
             self.con.commit()
@@ -1225,9 +1228,9 @@ class TwwSwmm:
         """
         try:
             cur.execute(sql)
-        except psycopg2.ProgrammingError:
+        except psycopg.ProgrammingError:
             self.feedback_push("error", f"Error while excecuting: {sql}")
-            self.feedback_push("error", (str(psycopg2.ProgrammingError)))
+            self.feedback_push("error", (str(psycopg.ProgrammingError)))
             return None
         self.con.commit()
         del cur
@@ -1246,9 +1249,9 @@ class TwwSwmm:
         """
         try:
             cur.execute(sql)
-        except psycopg2.ProgrammingError:
+        except psycopg.ProgrammingError:
             self.feedback_push("error", f"Error while excecuting: {sql}")
-            self.feedback_push("error", (str(psycopg2.ProgrammingError)))
+            self.feedback_push("error", (str(psycopg.ProgrammingError)))
             return None
         self.con.commit()
         del cur
@@ -1270,9 +1273,9 @@ class TwwSwmm:
         """
         try:
             cur.execute(sql)
-        except psycopg2.ProgrammingError:
+        except psycopg.ProgrammingError:
             self.feedback_push("error", f"Error while excecuting: {sql}")
-            self.feedback_push("error", (str(psycopg2.ProgrammingError)))
+            self.feedback_push("error", (str(psycopg.ProgrammingError)))
             return None
         self.con.commit()
         del cur
@@ -1294,9 +1297,9 @@ class TwwSwmm:
         """
         try:
             cur.execute(sql)
-        except psycopg2.ProgrammingError:
+        except psycopg.ProgrammingError:
             self.feedback_push("error", f"Error while excecuting: {sql}")
-            self.feedback_push("error", (str(psycopg2.ProgrammingError)))
+            self.feedback_push("error", (str(psycopg.ProgrammingError)))
             return None
         self.con.commit()
         del cur

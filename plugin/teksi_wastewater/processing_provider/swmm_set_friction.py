@@ -17,7 +17,6 @@
  ***************************************************************************/
 """
 
-
 from qgis.core import (
     QgsProcessingContext,
     QgsProcessingFeedback,

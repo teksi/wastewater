@@ -1,5 +1,3 @@
-from sqlalchemy import Column
-
 from ...interlis import config
 from .model_base import ModelBase
 
@@ -55,6 +53,12 @@ class ModelTwwOd(ModelBase):
             __table_args__ = {"schema": config.TWW_OD_SCHEMA}
 
         ModelTwwOd.reach_point = reach_point
+
+        class reach_progression_alternative(self.Base):
+            __tablename__ = "reach_progression_alternative"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.reach_progression_alternative = reach_progression_alternative
 
         class wastewater_node(wastewater_networkelement):
             __tablename__ = "wastewater_node"
@@ -215,7 +219,7 @@ class ModelTwwOd(ModelBase):
 
         ModelTwwOd.catchment_area = catchment_area
 
-        class surface_runoff_parameters(catchment_area):
+        class surface_runoff_parameters(self.Base):
             __tablename__ = "surface_runoff_parameters"
             __table_args__ = {"schema": config.TWW_OD_SCHEMA}
 
@@ -308,6 +312,5 @@ class ModelTwwOd(ModelBase):
         class file(self.Base):
             __tablename__ = "file"
             __table_args__ = {"schema": config.TWW_OD_SCHEMA}
-            class_column = Column("class")
 
         ModelTwwOd.file = file

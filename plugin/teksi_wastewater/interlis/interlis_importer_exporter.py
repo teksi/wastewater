@@ -2,7 +2,17 @@ import logging
 import os
 import tempfile
 
-import psycopg2
+try:
+    import psycopg
+
+    PSYCOPG_VERSION = 3
+    DEFAULTS_CONN_ARG = {"autocommit": True}
+except ImportError:
+    import psycopg2 as psycopg
+
+    PSYCOPG_VERSION = 2
+    DEFAULTS_CONN_ARG = {}
+
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication
 
@@ -20,13 +30,13 @@ from .interlis_model_mapping.model_interlis_sia405_abwasser import (
     ModelInterlisSia405Abwasser,
 )
 from .interlis_model_mapping.model_interlis_vsa_kek import ModelInterlisVsaKek
+from .interlis_model_mapping.model_tww import ModelTwwSys, ModelTwwVl
 from .interlis_model_mapping.model_tww_od import ModelTwwOd
-from .interlis_model_mapping.model_tww_vl import ModelTwwVl
 from .utils.ili2db import InterlisTools
 from .utils.various import (
     CmdException,
     LoggingHandlerContext,
-    get_pgconf_as_psycopg2_dsn,
+    get_pgconf_as_psycopg_dsn,
     logger,
     make_log_path,
 )
@@ -52,6 +62,7 @@ class InterlisImporterExporter:
         self.model_classes_interlis = None
         self.model_classes_tww_od = None
         self.model_classes_tww_vl = None
+        self.model_classes_tww_sys = None
 
         self.current_progress = 0
 
@@ -101,6 +112,10 @@ class InterlisImporterExporter:
         self._progress_done(30, "Importing XTF data...")
         self._import_xtf_file(xtf_file_input=xtf_file_input)
 
+        # Disable symbology triggers
+        self._progress_done(35, "Disable symbolgy triggers...")
+        self._import_disable_symbology_triggers()
+
         # Import from the temporary ili2pg model
         self._progress_done(40, "Converting to Teksi Wastewater...")
         tww_session = self._import_from_intermediate_schema(import_model)
@@ -113,6 +128,7 @@ class InterlisImporterExporter:
             if import_dialog.exec_() == import_dialog.Rejected:
                 tww_session.rollback()
                 tww_session.close()
+                self._import_enable_symbology_triggers()
                 raise InterlisImporterExporterStopped()
             QApplication.setOverrideCursor(Qt.WaitCursor)
         else:
@@ -124,7 +140,12 @@ class InterlisImporterExporter:
         self._progress_done(95, "Update main cover and refresh materialized views...")
         self._import_update_main_cover_and_refresh_mat_views()
 
+        # Reenable symbology triggers
+        self._progress_done(95, "Reenable symbology triggers...")
+        self._import_enable_symbology_triggers()
+
         self._progress_done(100)
+        logger.info("Interlis import finished.")
 
     def interlis_export(
         self,
@@ -180,6 +201,7 @@ class InterlisImporterExporter:
         self._export_xtf_files(file_name_base, export_models)
 
         self._progress_done(100)
+        logger.info("Interlis export finished.")
 
     def _import_validate_xtf_file(self, xtf_file_input):
         log_path = make_log_path(self.base_log_path, "ilivalidator")
@@ -233,8 +255,9 @@ class InterlisImporterExporter:
         return interlisImporterToIntermediateSchema.session_tww
 
     def _import_update_main_cover_and_refresh_mat_views(self):
-        connection = psycopg2.connect(get_pgconf_as_psycopg2_dsn())
-        connection.set_session(autocommit=True)
+        connection = psycopg.connect(get_pgconf_as_psycopg_dsn(), **DEFAULTS_CONN_ARG)
+        if PSYCOPG_VERSION == 2:
+            connection.set_session(autocommit=True)
         cursor = connection.cursor()
 
         logger.info("Update wastewater structure fk_main_cover")
@@ -247,6 +270,30 @@ class InterlisImporterExporter:
 
         logger.info("Refresh materialized views")
         cursor.execute("SELECT tww_app.network_refresh_network_simple();")
+
+        connection.commit()
+        connection.close()
+
+    def _import_disable_symbology_triggers(self):
+        connection = psycopg.connect(get_pgconf_as_psycopg_dsn(), **DEFAULTS_CONN_ARG)
+        if PSYCOPG_VERSION == 2:
+            connection.set_session(autocommit=True)
+        cursor = connection.cursor()
+
+        logger.info("Disable symbology triggers")
+        cursor.execute("SELECT tww_sys.disable_symbology_triggers();")
+
+        connection.commit()
+        connection.close()
+
+    def _import_enable_symbology_triggers(self):
+        connection = psycopg.connect(get_pgconf_as_psycopg_dsn(), **DEFAULTS_CONN_ARG)
+        if PSYCOPG_VERSION == 2:
+            connection.set_session(autocommit=True)
+        cursor = connection.cursor()
+
+        logger.info("Enable symbology triggers")
+        cursor.execute("SELECT tww_sys.enable_symbology_triggers();")
 
         connection.commit()
         connection.close()
@@ -310,6 +357,7 @@ class InterlisImporterExporter:
             model_classes_interlis=self.model_classes_interlis,
             model_classes_tww_od=self.model_classes_tww_od,
             model_classes_tww_vl=self.model_classes_tww_vl,
+            model_classes_tww_sys=self.model_classes_tww_sys,
             selection=selected_ids,
             labels_file=labels_file_path,
             basket_enabled=basket_enabled,
@@ -386,8 +434,9 @@ class InterlisImporterExporter:
     def _clear_ili_schema(self, recreate_schema=False):
         logger.info("CONNECTING TO DATABASE...")
 
-        connection = psycopg2.connect(get_pgconf_as_psycopg2_dsn())
-        connection.set_session(autocommit=True)
+        connection = psycopg.connect(get_pgconf_as_psycopg_dsn(), **DEFAULTS_CONN_ARG)
+        if PSYCOPG_VERSION == 2:
+            connection.set_session(autocommit=True)
         cursor = connection.cursor()
 
         if not recreate_schema:
@@ -445,6 +494,10 @@ class InterlisImporterExporter:
 
         if self.model_classes_tww_vl is None:
             self.model_classes_tww_vl = ModelTwwVl().classes()
+            self._progress_done(self.current_progress + 1)
+
+        if self.model_classes_tww_sys is None:
+            self.model_classes_tww_sys = ModelTwwSys().classes()
             self._progress_done(self.current_progress + 1)
 
     def _progress_done_intermediate_schema(self):
