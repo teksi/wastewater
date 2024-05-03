@@ -756,7 +756,7 @@ class InterlisExporterToIntermediateSchema:
                 einwohnergleichwert=row.einwohnergleichwert,
                 lage=row.lage,
                 nummer=row.nummer,
-                sanierungsbedarf=row.sanierungsbedarf,
+                sanierungsbedarf=row.sanierungsbedarf.capitalize(),
                 sanierungsdatum=row.sanierungsdatum,
                 sanierungskonzept=row.sanierungskonzept,
             )
@@ -3005,8 +3005,10 @@ class InterlisExporterToIntermediateSchema:
             tid_for_obj_id["vw_tww_reach"][row.t_ili_tid] = row.t_id
         for row in self.abwasser_session.query(self.model_classes_interlis.abwasserbauwerk):
             tid_for_obj_id["vw_tww_wastewater_structure"][row.t_ili_tid] = row.t_id
-        for row in self.abwasser_session.query(self.model_classes_interlis.einzugsgebiet):
-            tid_for_obj_id["catchment_area"][row.t_ili_tid] = row.t_id
+        
+        if self.model in [config.MODEL_NAME_DSS,config.MODEL_NAME_AG96]:
+            for row in self.abwasser_session.query(self.model_classes_interlis.einzugsgebiet):
+                tid_for_obj_id["catchment_area"][row.t_ili_tid] = row.t_id
         
         if self.is_ag_xx_model:
             tid_for_obj_id.update({
@@ -3105,7 +3107,7 @@ class InterlisExporterToIntermediateSchema:
                     elif layer_name == "vw_tww_wastewater_structure":
                         ili_label = self.model_classes_interlis.abwasserbauwerk_text(
                             **self._textpos_common(label, "gepknoten_text", geojson_crs_def, "WX"),
-                            gepknoten=t_id,
+                            gepknotenref=t_id,
                         )
 
                     elif layer_name == "catchment_area":
@@ -3114,25 +3116,25 @@ class InterlisExporterToIntermediateSchema:
                             einzugsgebietref=t_id,
                         )
                         
-                    if layer_name == "building_group" and self.is_ag_xx_model:
+                    elif layer_name == "building_group":
                         ili_label = self.model_classes_interlis.bautenausserhalbbaugebiet_text(
                             **self._textpos_common(label, "bautenausserhalbbaugebiet_text", geojson_crs_def, "BX"),
                             bautenausserhalbbaugebietref=t_id,
                         )
 
-                    elif layer_name == "measure_line" and self.is_ag_xx_model:
+                    elif layer_name == "measure_line":
                         ili_label = self.model_classes_interlis.gepmassnahme_text(
                             **self._textpos_common(label, "gepmassnahme_text", geojson_crs_def, "MX"),
                             gepmassnahmeref=t_id,
                         )
 
-                    elif layer_name == "measure_point" and self.is_ag_xx_model:
+                    elif layer_name == "measure_point":
                         ili_label = self.model_classes_interlis.gepmassnahme_text(
                             **self._textpos_common(label, "gepmassnahme_text", geojson_crs_def, "MX"),
                             gepmassnahmeref=t_id,
                         )
                     
-                    elif layer_name == "measure_polygon" and self.is_ag_xx_model:
+                    elif layer_name == "measure_polygon":
                         ili_label = self.model_classes_interlis.gepmassnahme_text(
                             **self._textpos_common(label, "gepmassnahme_text", geojson_crs_def, "MX"),
                             gepmassnahmeref=t_id,
@@ -3140,7 +3142,7 @@ class InterlisExporterToIntermediateSchema:
 
                     else:
                         logger.warning(
-                            f"Unknown layer `{layer_name}` for label with id '{obj_id}'. Label will be ignored",
+                            f"Unknown layer {layer_name} for label with id '{obj_id}'. Label will be ignored",
                         )
                         continue
 
