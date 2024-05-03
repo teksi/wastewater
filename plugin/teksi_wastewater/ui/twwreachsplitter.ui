@@ -40,6 +40,16 @@
      </widget>
     </item>
     <item row="2" column="0">
+	  <widget class="QCheckBox" name="mCbChannelSplitMode">
+	   <property name="toolTip">
+	    <string>Split the channel too. This field is ignored when splitting a reach with a manhole</string>
+	   </property>
+	   <property name="text">
+	    <string>Split channel</string>
+	   </property>
+	  </widget>
+   </item>
+	<item row="3" column="0">
      <spacer name="verticalSpacer">
       <property name="orientation">
        <enum>Qt::Vertical</enum>

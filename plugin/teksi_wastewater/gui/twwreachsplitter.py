@@ -44,12 +44,14 @@ class TwwReachSplitter(QDockWidget, DOCK_WIDGET):
         self.stateButton.clicked.connect(self.stateChanged)
         self.iface = iface
         self.mapToolSplitReachWithWN = TwwMapToolSplitReachWithNode(
-            self.iface, TwwLayerManager.layer("vw_wastewater_node")
+            self.iface, TwwLayerManager.layer("vw_wastewater_node"),self.mCbChannelSplitMode.isChecked()
         )
         self.mapToolSplitReachWithWS = TwwMapToolSplitReachWithNode(
             self.iface, TwwLayerManager.layer("vw_tww_wastewater_structure")
         )
-
+        self.mapToolSplitReachWithNoNode = TwwMapToolSplitReachWithNode(
+            self.iface, None, self.mCbChannelSplitMode.isChecked()
+        )
         self.layerComboBox.insertItem(
             self.layerComboBox.count(),
             self.tr("Wastewater Structure"),
@@ -57,6 +59,9 @@ class TwwReachSplitter(QDockWidget, DOCK_WIDGET):
         )
         self.layerComboBox.insertItem(
             self.layerComboBox.count(), self.tr("Wastewater node"), "wastewater_node"
+        )
+        self.layerComboBox.insertItem(
+            self.layerComboBox.count(), self.tr("No node"), "no node"
         )
         self.layerComboBox.setCurrentIndex(1)
         self.stateButton.setProperty("state", "inactive")

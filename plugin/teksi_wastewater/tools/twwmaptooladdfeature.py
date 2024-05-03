@@ -524,21 +524,22 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
 
     """
 
-    def __init__(self, iface: QgisInterface, layer):
+    def __init__(self, iface: QgisInterface, layer, split_channels = True):
         # TwwMapToolAddFeature __init__ without rubberband
         QgsMapToolAdvancedDigitizing.__init__(self, iface.mapCanvas(), iface.cadDockWidget())
         self.iface = iface
         self.canvas = iface.mapCanvas()
         self.layer = layer
+        self.split_channels=split_channels
 
         # see TwwMapToolAddReach __init__
         self.snapping_marker = None
         self.node_layer = layer
-        assert self.node_layer is not None
         self.reach_layer = TwwLayerManager.layer("vw_tww_reach")
         assert self.reach_layer is not None
         self.setAdvancedDigitizingAllowed(True)
         self.setAutoSnapEnabled(True)
+
 
         layer_snapping_configs = [
             {"layer": self.reach_layer, "mode": QgsSnappingConfig.VertexAndSegment},
@@ -557,7 +558,7 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
             self.snapping_configs.append(config)
 
         # prepare messageBarItem
-        self.msgtitle = self.tr(f"Split reach with {self.node_layer.name()}")
+        self.msgtitle = self.tr(f"Split reach with {self.node_layer.name() if self.node_layer else 'no wastewater node'}")
         msg = None
         self.messageBarItem = QgsMessageBar.createMessage(self.msgtitle, msg)
 
@@ -713,33 +714,35 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
         if self.snapping_marker is not None:
             self.iface.mapCanvas().scene().removeItem(self.snapping_marker)
             self.snapping_marker = None
+        
         # create point feature
-        fields = self.node_layer.fields()
-        f = QgsFeature(fields)
-        for idx, _ in enumerate(fields):
-            v = self.node_layer.defaultValue(idx, f)
-            if v != NULL:
-                f.setAttribute(idx, v)
+        if self.point_layer:
+            fields = self.node_layer.fields()
+            f = QgsFeature(fields)
+            for idx, _ in enumerate(fields):
+                v = self.node_layer.defaultValue(idx, f)
+                if v != NULL:
+                    f.setAttribute(idx, v)
+                else:
+                    f.setAttribute(idx, self.reach_layer.dataProvider().defaultValue(idx))
+            # alter geometry and bottom level
+            f.setGeometry(point3d)
+            if self.node_layer.id() == "vw_tww_wastewater_structure":
+                prefix = "wn_"
             else:
-                f.setAttribute(idx, self.reach_layer.dataProvider().defaultValue(idx))
-        # alter geometry and bottom level
-        f.setGeometry(point3d)
-        if self.node_layer.id() == "vw_tww_wastewater_structure":
-            prefix = "wn_"
-        else:
-            prefix = ""
-        lvl_field = fields.indexFromName(f"{prefix}bottom_level")
-        if point3d.z() == point3d.z():  # check for nan
-            f.setAttribute(lvl_field, point3d.z())
-        dlg = self.iface.getFeatureForm(self.node_layer, f)
-        dlg.setMode(QgsAttributeEditorContext.AddFeatureMode)
-        dlg.exec_()
-        oid_idx = self.node_layer.fields().indexFromName(f"{prefix}obj_id")
-        if dlg.feature().attributes()[lvl_field]:
-            point3d.setZ(
-                dlg.feature().attributes()[lvl_field]
-            )  # update if level was altered in dlg
-        pt_oid = dlg.feature().attributes()[oid_idx]
+                prefix = ""
+            lvl_field = fields.indexFromName(f"{prefix}bottom_level")
+            if point3d.z() == point3d.z():  # check for nan
+                f.setAttribute(lvl_field, point3d.z())
+            dlg = self.iface.getFeatureForm(self.node_layer, f)
+            dlg.setMode(QgsAttributeEditorContext.AddFeatureMode)
+            dlg.exec_()
+            oid_idx = self.node_layer.fields().indexFromName(f"{prefix}obj_id")
+            if dlg.feature().attributes()[lvl_field]:
+                point3d.setZ(
+                    dlg.feature().attributes()[lvl_field]
+                )  # update if level was altered in dlg
+            pt_oid = dlg.feature().attributes()[oid_idx]
 
         # split reach
         req = QgsFeatureRequest(match.featureId())
@@ -761,23 +764,20 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
             split_line = [QgsPointXY(point3d),QgsPointXY(point3d)]
             result, new_geometries, _ = f_old.geometry().splitGeometry(split_line, True, True)
         finally:
-        for geoms in new_geometries:
-            assert geoms
+            assert len(new_geometries) = 2 
+            re_oid_field=self.reach_layer.fields().indexFromName("obj_id")
+            re_oid_to = self.reach_layer.dataProvider().defaultValue(re_oid_field)
+            re_oid_from = self.reach_layer.dataProvider().defaultValue(re_oid_field)
             for geoms in new_geometries:
-
+                assert geoms
                 fields = self.reach_layer.fields()
                 if point3d.equals(geoms.vertexAt(0)):
                     dest = "from"
-                elif point3d.equals(geoms.vertexAt(0)):
-                    dest="to"
                 else:
-                    msg = self.tr("Split returned a geometry that didn't start or end at split point.")
-                    self.messageBarItem = QgsMessageBar.createMessage(self.msgtitle, msg)
-                    self.iface.messageBar().pushItem(self.messageBarItem)
-                    self.deactivate()
+                    dest="to"
 
                 f = QgsFeature(fields)
-                if self.node_layer.id() == "vw_tww_wastewater_structure":
+                if self.split_channels:
                     keep_fields = [
                         "ws_status",
                         "ws_year_of_construction",
@@ -790,6 +790,7 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
                 else:
                     # keep all wastewater structure and channel fields
                     keep_fields = [field for field in fields if field[0:2] in ["ch", "ws"]]
+                # now add the other fields you always want to keep
                 keep_fields.extend(
                     [
                         "clear_height",
@@ -806,6 +807,11 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
                 for idx, field in enumerate(fields):
                     if field in keep_fields:
                         f.setAttribute(idx, f_old.attributes()[idx])
+                    elif field = re_oid_field:
+                        if dest = "from":
+                            f.setAttribute(idx,re_oid_from)
+                        else:
+                            f.setAttribute(idx,re_oid_to)
                     else:
                         # try client side default value first
                         v = self.reach_layer.defaultValue(idx, f)
@@ -814,16 +820,23 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
                         else:
                             f.setAttribute(idx, self.reach_layer.dataProvider().defaultValue(idx))
 
-                    f.setGeometry(geoms)
-                    ne = self.reach_layer.fields().indexFromName(
-                        f"rp_{dest}_fk_wastewater_networkelement"
-                    )
+                f.setGeometry(geoms)
+                ne = self.reach_layer.fields().indexFromName(
+                    f"rp_{dest}_fk_wastewater_networkelement"
+                )
+                if self.point_layer:
                     f.setAttribute(ne, pt_oid)
-                    lvl = self.reach_layer.fields().indexFromName(f"rp_{dest}_level")
-                    f.setAttribute(lvl, point3d.z())
-                    ne = self.reach_layer.fields().indexFromName(
-                        f"rp_{dest}_fk_wastewater_networkelement"
-                    )
-                    self.reach_layer.dataProvider().addFeatures([f])
+                else:
+                    if dest = "from":
+                        f.setAttribute(ne,re_oid_to)
+                    else:
+                        f.setAttribute(ne,re_oid_from)
+                        
+                lvl = self.reach_layer.fields().indexFromName(f"rp_{dest}_level")
+                f.setAttribute(lvl, point3d.z())
+                ne = self.reach_layer.fields().indexFromName(
+                    f"rp_{dest}_fk_wastewater_networkelement"
+                )
+                self.reach_layer.dataProvider().addFeatures([f])
 
-                self.reach_layer.deleteFeature(f_old.id())
+            self.reach_layer.deleteFeature(f_old.id())
