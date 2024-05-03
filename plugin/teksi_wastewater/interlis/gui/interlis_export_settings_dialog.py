@@ -31,7 +31,7 @@ class InterlisExportSettingsDialog(QDialog):
         )
         
         ag6496extension = QSettings().value("/TWW/AGxxExtensions", False)
-        # seems QGIS loads True as "true" on restart ?!
+        # QGIS loads value as string on application restart
         if ag6496extension and ag6496extension != "false":
             self.export_model_selection_comboBox.addItem(
                 config.MODEL_NAME_AG96, [config.MODEL_NAME_AG96]
