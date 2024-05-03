@@ -185,13 +185,13 @@
          </property>
         </widget>
        </item>
-	   <item row="2" column="0">
+       <item row="2" column="0">
         <widget class="QCheckBox" name="mCbAg6496Extension">
          <property name="toolTip">
-          <string>Enables the functionalities for AG-64 and AG-96 extensions. The plugin needs to be reloaded.</string>
+          <string>Enables the functionalities for AG-64 and AG-96 extensions.</string>
          </property>
          <property name="text">
-          <string>Enable AG-64 and AG-96 extensions (restart required)</string>
+          <string>Enable AG-64 and AG-96 extensions</string>
          </property>
         </widget>
        </item>
