@@ -714,7 +714,7 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
         if self.snapping_marker is not None:
             self.iface.mapCanvas().scene().removeItem(self.snapping_marker)
             self.snapping_marker = None
-        
+
         # create point feature
         if self.point_layer:
             fields = self.node_layer.fields()
@@ -764,7 +764,7 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
             split_line = [QgsPointXY(point3d),QgsPointXY(point3d)]
             result, new_geometries, _ = f_old.geometry().splitGeometry(split_line, True, True)
         finally:
-            assert len(new_geometries) = 2 
+            assert len(new_geometries) = 2
             re_oid_field=self.reach_layer.fields().indexFromName("obj_id")
             re_oid_to = self.reach_layer.dataProvider().defaultValue(re_oid_field)
             re_oid_from = self.reach_layer.dataProvider().defaultValue(re_oid_field)
@@ -831,7 +831,7 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
                         f.setAttribute(ne,re_oid_to)
                     else:
                         f.setAttribute(ne,re_oid_from)
-                        
+
                 lvl = self.reach_layer.fields().indexFromName(f"rp_{dest}_level")
                 f.setAttribute(lvl, point3d.z())
                 ne = self.reach_layer.fields().indexFromName(
