@@ -2191,7 +2191,7 @@ class InterlisExporterToIntermediateSchema:
                 verbindung=self.get_vl(row.connection__REL),
                 videozaehlerstand=row.video_counter,
                 # --- normschachtschaden ---
-                distanz=row.manhole_channel_distance,
+                distanz=row.manhole_distance,
                 quantifizierung1=row.manhole_quantification1,
                 quantifizierung2=row.manhole_quantification2,
                 schachtbereich=self.get_vl(row.manhole_shaft_area__REL),

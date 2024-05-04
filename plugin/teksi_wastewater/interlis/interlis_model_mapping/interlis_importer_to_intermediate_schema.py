@@ -2107,7 +2107,7 @@ class InterlisImporterToIntermediateSchema:
                 manhole_damage_begin=row.schadenlageanfang,
                 manhole_damage_end=row.schadenlageende,
                 line_damage=row.streckenschaden,
-                manhole_channel_distance=row.distanz,
+                manhole_distance=row.distanz,
                 fk_examination=self.get_pk(row.untersuchungref__REL),
                 manhole_quantification1=row.quantifizierung1,
                 manhole_quantification2=row.quantifizierung2,
