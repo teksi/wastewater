@@ -4,7 +4,7 @@ Adding the urgency parameters and the structure condition parameters to the data
 -- this column is an extension to the VSA data model and assigns urgency weight to function hierarchic
 ALTER TABLE tww_vl.channel_function_hierarchic ADD COLUMN tww_weight_urgency numeric(3,1);
 UPDATE tww_vl.channel_function_hierarchic
-SET tww_weight_urgency= (dict->>code)::numeric
+SET tww_weight_urgency= (dict->>code::text)::numeric
 FROM (
 	SELECT
 	jsonb_build_object(
@@ -30,7 +30,7 @@ COMMENT ON COLUMN tww_vl.channel_function_hierarchic.tww_weight_urgency IS 'this
  -- this column is an extension to the VSA data model and assigns urgency weight to function hierarchic
 ALTER TABLE tww_vl.channel_usage_current ADD COLUMN tww_weight_urgency numeric(3,1);
 UPDATE tww_vl.channel_usage_current
-SET tww_weight_urgency= (dict->>code)::numeric
+SET tww_weight_urgency= (dict->>code::text)::numeric
 FROM (
 	SELECT jsonb_build_object(
                4526, .95,           -- wastewater
