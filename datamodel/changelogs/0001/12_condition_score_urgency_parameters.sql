@@ -2,7 +2,7 @@
 Adding the urgency parameters and the structure condition parameters to the database
 */
 -- this column is an extension to the VSA data model and assigns urgency weight to function hierarchic
-ALTER TABLE tww_vl.channel_function_hierarchic ADD COLUMN tww_weight_urgency numeric(3,1);
+ALTER TABLE tww_vl.channel_function_hierarchic ADD COLUMN tww_weight_urgency numeric(3,2);
 UPDATE tww_vl.channel_function_hierarchic
 SET tww_weight_urgency= (dict->>code::text)::numeric
 FROM (
@@ -28,7 +28,7 @@ COMMENT ON COLUMN tww_vl.channel_function_hierarchic.tww_weight_urgency IS 'this
  according to the VSA guidelines';
 
  -- this column is an extension to the VSA data model and assigns urgency weight to function hierarchic
-ALTER TABLE tww_vl.channel_usage_current ADD COLUMN tww_weight_urgency numeric(3,1);
+ALTER TABLE tww_vl.channel_usage_current ADD COLUMN tww_weight_urgency numeric(3,2);
 UPDATE tww_vl.channel_usage_current
 SET tww_weight_urgency= (dict->>code::text)::numeric
 FROM (
