@@ -44,5 +44,6 @@ FROM (
                5322, 1              -- unknown
            ) dict )as obj
 ;
+
 COMMENT ON COLUMN tww_vl.channel_usage_current.tww_weight_urgency IS 'this column is an extension to the VSA data model and assigns ugency weight
  according to the VSA guidelines';
