@@ -165,7 +165,7 @@
                                     <td><p>Gross costs of electromechanical equipment of tank emptying / Brutto Erstellungskosten der elektromechanischen Ausrüstung für die Beckenentleerung / Coûts bruts des équipements électromécaniques vidange de bassins</p></td>
                                 </tr>
                                 <tr>
-                                    <td class='foreignKey' title='Foreign Key'><i class='icon ion-key iconkey' style='padding-left: 5px;'></i><span id="type">type</span></td>
+                                    <td class='foreignKey' title='Foreign Key'><i class='icon ion-key iconkey' style='padding-left: 5px;'></i><span id="kind">kind</span></td>
                                     <td>int4</td>
                                     <td>10</td>
                                     <td title='nullable'>√</td>
@@ -178,8 +178,8 @@
                                     <td>
                                         <table border='0' cellspacing='0' cellpadding='0'>
                                             <tr>
-                                                <td title="tank_emptying.type references tww_vl.tank_emptying_type.code via fkey_vl_tank_emptying_type"><a href='../../tww_vl/tables/tank_emptying_type.html'>tank_emptying_type</a><span class='relatedKey'>.code</span></td>
-                                                <td class="constraint detail">fkey_vl_tank_emptying_type</td>
+                                                <td title="tank_emptying.kind references tww_vl.tank_emptying_kind.code via fkey_vl_tank_emptying_kind"><a href='../../tww_vl/tables/tank_emptying_kind.html'>tank_emptying_kind</a><span class='relatedKey'>.code</span></td>
+                                                <td class="constraint detail">fkey_vl_tank_emptying_kind</td>
                                                 <td class="constraint detail"><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>R</span></td>
                                             </tr>
                                         </table>

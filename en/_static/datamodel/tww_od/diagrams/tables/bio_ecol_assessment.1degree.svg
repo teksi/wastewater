@@ -64,31 +64,31 @@
 <polygon fill="none" stroke="black" points="772,-355 772,-377 866,-377 866,-355 772,-355"/>
 <text text-anchor="start" x="775" y="-363.2" font-family="Helvetica,sans-Serif" font-size="11.00">int4[10]</text>
 <polygon fill="none" stroke="black" points="442,-333 442,-355 772,-355 772,-333 442,-333"/>
-<text text-anchor="start" x="462" y="-341.2" font-family="Helvetica,sans-Serif" font-size="11.00">outlet_pipe_clear_height</text>
+<image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="447" y="-350"/>
+<text text-anchor="start" x="462" y="-341.2" font-family="Helvetica,sans-Serif" font-size="11.00">kind_water_body</text>
 <polygon fill="none" stroke="black" points="772,-333 772,-355 866,-355 866,-333 772,-333"/>
 <text text-anchor="start" x="775" y="-341.2" font-family="Helvetica,sans-Serif" font-size="11.00">int4[10]</text>
 <polygon fill="none" stroke="black" points="442,-311 442,-333 772,-333 772,-311 442,-311"/>
-<text text-anchor="start" x="462" y="-319.2" font-family="Helvetica,sans-Serif" font-size="11.00">q347</text>
+<text text-anchor="start" x="462" y="-319.2" font-family="Helvetica,sans-Serif" font-size="11.00">outlet_pipe_clear_height</text>
 <polygon fill="none" stroke="black" points="772,-311 772,-333 866,-333 866,-311 772,-311"/>
-<text text-anchor="start" x="775" y="-319.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[8,3]</text>
+<text text-anchor="start" x="775" y="-319.2" font-family="Helvetica,sans-Serif" font-size="11.00">int4[10]</text>
 <polygon fill="none" stroke="black" points="442,-289 442,-311 772,-311 772,-289 442,-289"/>
-<image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="447" y="-306"/>
-<text text-anchor="start" x="462" y="-297.2" font-family="Helvetica,sans-Serif" font-size="11.00">relevance_matrix</text>
+<text text-anchor="start" x="462" y="-297.2" font-family="Helvetica,sans-Serif" font-size="11.00">q347</text>
 <polygon fill="none" stroke="black" points="772,-289 772,-311 866,-311 866,-289 772,-289"/>
-<text text-anchor="start" x="775" y="-297.2" font-family="Helvetica,sans-Serif" font-size="11.00">int4[10]</text>
+<text text-anchor="start" x="775" y="-297.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[8,3]</text>
 <polygon fill="none" stroke="black" points="442,-267 442,-289 772,-289 772,-267 442,-267"/>
-<text text-anchor="start" x="462" y="-275.2" font-family="Helvetica,sans-Serif" font-size="11.00">relevant_slope</text>
+<image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="447" y="-284"/>
+<text text-anchor="start" x="462" y="-275.2" font-family="Helvetica,sans-Serif" font-size="11.00">relevance_matrix</text>
 <polygon fill="none" stroke="black" points="772,-267 772,-289 866,-289 866,-267 772,-267"/>
-<text text-anchor="start" x="775" y="-275.2" font-family="Helvetica,sans-Serif" font-size="11.00">int2[5]</text>
+<text text-anchor="start" x="775" y="-275.2" font-family="Helvetica,sans-Serif" font-size="11.00">int4[10]</text>
 <polygon fill="none" stroke="black" points="442,-245 442,-267 772,-267 772,-245 442,-245"/>
-<text text-anchor="start" x="462" y="-253.2" font-family="Helvetica,sans-Serif" font-size="11.00">surface_water_bodies</text>
+<text text-anchor="start" x="462" y="-253.2" font-family="Helvetica,sans-Serif" font-size="11.00">relevant_slope</text>
 <polygon fill="none" stroke="black" points="772,-245 772,-267 866,-267 866,-245 772,-245"/>
-<text text-anchor="start" x="775" y="-253.2" font-family="Helvetica,sans-Serif" font-size="11.00">text[2147483647]</text>
+<text text-anchor="start" x="775" y="-253.2" font-family="Helvetica,sans-Serif" font-size="11.00">int2[5]</text>
 <polygon fill="none" stroke="black" points="442,-223 442,-245 772,-245 772,-223 442,-223"/>
-<image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="447" y="-240"/>
-<text text-anchor="start" x="462" y="-231.2" font-family="Helvetica,sans-Serif" font-size="11.00">type_water_body</text>
+<text text-anchor="start" x="462" y="-231.2" font-family="Helvetica,sans-Serif" font-size="11.00">surface_water_bodies</text>
 <polygon fill="none" stroke="black" points="772,-223 772,-245 866,-245 866,-223 772,-223"/>
-<text text-anchor="start" x="775" y="-231.2" font-family="Helvetica,sans-Serif" font-size="11.00">int4[10]</text>
+<text text-anchor="start" x="775" y="-231.2" font-family="Helvetica,sans-Serif" font-size="11.00">text[2147483647]</text>
 <polygon fill="none" stroke="black" points="442,-201 442,-223 772,-223 772,-201 442,-201"/>
 <text text-anchor="start" x="462" y="-209.2" font-family="Helvetica,sans-Serif" font-size="11.00">water_specific_discharge_freight_nh4_n_current</text>
 <polygon fill="none" stroke="black" points="772,-201 772,-223 866,-223 866,-201 772,-201"/>
@@ -324,10 +324,40 @@
 <polygon fill="black" stroke="black" points="433.18,-364.31 440.24,-369.52 437.09,-365.15 441,-366 441,-366 441,-366 437.09,-365.15 441.76,-362.48 433.18,-364.31 433.18,-364.31"/>
 <ellipse fill="none" stroke="black" cx="430.05" cy="-363.63" rx="3.2" ry="3.2"/>
 </g>
-<!-- maintenance_event -->
+<!-- tww_vl.bio_ecol_assessment_kind_water_body -->
 <g id="node9" class="node">
+<title>tww_vl.bio_ecol_assessment_kind_water_body</title>
+<g id="a_node9"><a xlink:href="../../../tww_vl/tables/bio_ecol_assessment_kind_water_body.html" xlink:title="tww_vl.bio_ecol_assessment_kind_water_body" target="_top">
+<polygon fill="#ffffff" stroke="transparent" points="41,-116 41,-174 358,-174 358,-116 41,-116"/>
+<polygon fill="#f5f5f5" stroke="transparent" points="41.5,-152 41.5,-174 358.5,-174 358.5,-152 41.5,-152"/>
+<polygon fill="none" stroke="black" points="41.5,-152 41.5,-174 358.5,-174 358.5,-152 41.5,-152"/>
+<text text-anchor="start" x="46.5" y="-161.2" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00">tww_vl.bio_ecol_assessment_kind_water_body</text>
+<text text-anchor="start" x="319.5" y="-160.2" font-family="Helvetica,sans-Serif" font-size="11.00">[table]</text>
+<polygon fill="none" stroke="black" points="41.5,-134 41.5,-152 358.5,-152 358.5,-134 41.5,-134"/>
+<text text-anchor="start" x="44.5" y="-140.2" font-family="Helvetica,sans-Serif" font-size="11.00">...</text>
+<polygon fill="#ffffff" stroke="transparent" points="41.5,-116 41.5,-134 175.5,-134 175.5,-116 41.5,-116"/>
+<polygon fill="none" stroke="black" points="41.5,-116 41.5,-134 175.5,-134 175.5,-116 41.5,-116"/>
+<text text-anchor="start" x="44.5" y="-122.2" font-family="Helvetica,sans-Serif" font-size="11.00"> &#160;</text>
+<polygon fill="#ffffff" stroke="transparent" points="175.5,-116 175.5,-134 275.5,-134 275.5,-116 175.5,-116"/>
+<polygon fill="none" stroke="black" points="175.5,-116 175.5,-134 275.5,-134 275.5,-116 175.5,-116"/>
+<text text-anchor="start" x="238.5" y="-122.2" font-family="Helvetica,sans-Serif" font-size="11.00">0 rows</text>
+<polygon fill="#ffffff" stroke="transparent" points="275.5,-116 275.5,-134 358.5,-134 358.5,-116 275.5,-116"/>
+<polygon fill="none" stroke="black" points="275.5,-116 275.5,-134 358.5,-134 358.5,-116 275.5,-116"/>
+<text text-anchor="start" x="339.5" y="-122.2" font-family="Helvetica,sans-Serif" font-size="11.00">1 &gt;</text>
+</a>
+</g>
+</g>
+<!-- bio_ecol_assessment&#45;&gt;tww_vl.bio_ecol_assessment_kind_water_body -->
+<g id="edge8" class="edge">
+<title>bio_ecol_assessment:w&#45;&gt;tww_vl.bio_ecol_assessment_kind_water_body:e</title>
+<path fill="none" stroke="black" d="M426.61,-342.09C380.24,-327.35 448.04,-231.21 399,-185 389.28,-175.84 378.07,-168.52 366.03,-162.69"/>
+<polygon fill="black" stroke="black" points="433.07,-342.95 440.53,-347.57 437.03,-343.47 441,-344 441,-344 441,-344 437.03,-343.47 441.47,-340.43 433.07,-342.95 433.07,-342.95"/>
+<ellipse fill="none" stroke="black" cx="429.9" cy="-342.52" rx="3.2" ry="3.2"/>
+</g>
+<!-- maintenance_event -->
+<g id="node10" class="node">
 <title>maintenance_event</title>
-<g id="a_node9"><a xlink:href="../../tables/maintenance_event.html" xlink:title="maintenance_event" target="_top">
+<g id="a_node10"><a xlink:href="../../tables/maintenance_event.html" xlink:title="maintenance_event" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="118.5,-748 118.5,-960 280.5,-960 280.5,-748 118.5,-748"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="118.5,-938 118.5,-960 280.5,-960 280.5,-938 118.5,-938"/>
 <polygon fill="none" stroke="black" points="118.5,-938 118.5,-960 280.5,-960 280.5,-938 118.5,-938"/>
@@ -370,7 +400,7 @@
 </g>
 </g>
 <!-- bio_ecol_assessment&#45;&gt;maintenance_event -->
-<g id="edge8" class="edge">
+<g id="edge9" class="edge">
 <title>bio_ecol_assessment:w&#45;&gt;maintenance_event:e</title>
 <path fill="none" stroke="black" d="M430.87,-545.26C399.49,-567.75 414.24,-700.24 399,-738 361.98,-829.72 380.41,-927 281.5,-927"/>
 <polygon fill="black" stroke="black" points="439.01,-538.44 441.46,-546.05 439.94,-546.54 437.49,-538.93 439.01,-538.44"/>
@@ -378,64 +408,34 @@
 <ellipse fill="none" stroke="black" cx="434.15" cy="-544.2" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.bio_ecol_assessment_relevance_matrix -->
-<g id="node10" class="node">
+<g id="node11" class="node">
 <title>tww_vl.bio_ecol_assessment_relevance_matrix</title>
-<g id="a_node10"><a xlink:href="../../../tww_vl/tables/bio_ecol_assessment_relevance_matrix.html" xlink:title="tww_vl.bio_ecol_assessment_relevance_matrix" target="_top">
-<polygon fill="#ffffff" stroke="transparent" points="39.5,-116 39.5,-174 359.5,-174 359.5,-116 39.5,-116"/>
-<polygon fill="#f5f5f5" stroke="transparent" points="39.5,-152 39.5,-174 359.5,-174 359.5,-152 39.5,-152"/>
-<polygon fill="none" stroke="black" points="39.5,-152 39.5,-174 359.5,-174 359.5,-152 39.5,-152"/>
-<text text-anchor="start" x="44.5" y="-161.2" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00">tww_vl.bio_ecol_assessment_relevance_matrix</text>
-<text text-anchor="start" x="320.5" y="-160.2" font-family="Helvetica,sans-Serif" font-size="11.00">[table]</text>
-<polygon fill="none" stroke="black" points="39.5,-134 39.5,-152 359.5,-152 359.5,-134 39.5,-134"/>
-<text text-anchor="start" x="42.5" y="-140.2" font-family="Helvetica,sans-Serif" font-size="11.00">...</text>
-<polygon fill="#ffffff" stroke="transparent" points="39.5,-116 39.5,-134 174.5,-134 174.5,-116 39.5,-116"/>
-<polygon fill="none" stroke="black" points="39.5,-116 39.5,-134 174.5,-134 174.5,-116 39.5,-116"/>
-<text text-anchor="start" x="42.5" y="-122.2" font-family="Helvetica,sans-Serif" font-size="11.00"> &#160;</text>
-<polygon fill="#ffffff" stroke="transparent" points="174.5,-116 174.5,-134 275.5,-134 275.5,-116 174.5,-116"/>
-<polygon fill="none" stroke="black" points="174.5,-116 174.5,-134 275.5,-134 275.5,-116 174.5,-116"/>
-<text text-anchor="start" x="238.5" y="-122.2" font-family="Helvetica,sans-Serif" font-size="11.00">0 rows</text>
-<polygon fill="#ffffff" stroke="transparent" points="275.5,-116 275.5,-134 359.5,-134 359.5,-116 275.5,-116"/>
-<polygon fill="none" stroke="black" points="275.5,-116 275.5,-134 359.5,-134 359.5,-116 275.5,-116"/>
-<text text-anchor="start" x="340.5" y="-122.2" font-family="Helvetica,sans-Serif" font-size="11.00">1 &gt;</text>
+<g id="a_node11"><a xlink:href="../../../tww_vl/tables/bio_ecol_assessment_relevance_matrix.html" xlink:title="tww_vl.bio_ecol_assessment_relevance_matrix" target="_top">
+<polygon fill="#ffffff" stroke="transparent" points="39.5,-37 39.5,-95 359.5,-95 359.5,-37 39.5,-37"/>
+<polygon fill="#f5f5f5" stroke="transparent" points="39.5,-73 39.5,-95 359.5,-95 359.5,-73 39.5,-73"/>
+<polygon fill="none" stroke="black" points="39.5,-73 39.5,-95 359.5,-95 359.5,-73 39.5,-73"/>
+<text text-anchor="start" x="44.5" y="-82.2" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00">tww_vl.bio_ecol_assessment_relevance_matrix</text>
+<text text-anchor="start" x="320.5" y="-81.2" font-family="Helvetica,sans-Serif" font-size="11.00">[table]</text>
+<polygon fill="none" stroke="black" points="39.5,-55 39.5,-73 359.5,-73 359.5,-55 39.5,-55"/>
+<text text-anchor="start" x="42.5" y="-61.2" font-family="Helvetica,sans-Serif" font-size="11.00">...</text>
+<polygon fill="#ffffff" stroke="transparent" points="39.5,-37 39.5,-55 174.5,-55 174.5,-37 39.5,-37"/>
+<polygon fill="none" stroke="black" points="39.5,-37 39.5,-55 174.5,-55 174.5,-37 39.5,-37"/>
+<text text-anchor="start" x="42.5" y="-43.2" font-family="Helvetica,sans-Serif" font-size="11.00"> &#160;</text>
+<polygon fill="#ffffff" stroke="transparent" points="174.5,-37 174.5,-55 275.5,-55 275.5,-37 174.5,-37"/>
+<polygon fill="none" stroke="black" points="174.5,-37 174.5,-55 275.5,-55 275.5,-37 174.5,-37"/>
+<text text-anchor="start" x="238.5" y="-43.2" font-family="Helvetica,sans-Serif" font-size="11.00">0 rows</text>
+<polygon fill="#ffffff" stroke="transparent" points="275.5,-37 275.5,-55 359.5,-55 359.5,-37 275.5,-37"/>
+<polygon fill="none" stroke="black" points="275.5,-37 275.5,-55 359.5,-55 359.5,-37 275.5,-37"/>
+<text text-anchor="start" x="340.5" y="-43.2" font-family="Helvetica,sans-Serif" font-size="11.00">1 &gt;</text>
 </a>
 </g>
 </g>
 <!-- bio_ecol_assessment&#45;&gt;tww_vl.bio_ecol_assessment_relevance_matrix -->
-<g id="edge9" class="edge">
-<title>bio_ecol_assessment:w&#45;&gt;tww_vl.bio_ecol_assessment_relevance_matrix:e</title>
-<path fill="none" stroke="black" d="M426.76,-297.31C397.19,-283.13 435.76,-216.58 399,-185 389.53,-176.87 378.88,-170.22 367.54,-164.81"/>
-<polygon fill="black" stroke="black" points="433.14,-298.51 440.33,-303.54 437.07,-299.26 441,-300 441,-300 441,-300 437.07,-299.26 441.67,-296.46 433.14,-298.51 433.14,-298.51"/>
-<ellipse fill="none" stroke="black" cx="430" cy="-297.92" rx="3.2" ry="3.2"/>
-</g>
-<!-- tww_vl.bio_ecol_assessment_type_water_body -->
-<g id="node11" class="node">
-<title>tww_vl.bio_ecol_assessment_type_water_body</title>
-<g id="a_node11"><a xlink:href="../../../tww_vl/tables/bio_ecol_assessment_type_water_body.html" xlink:title="tww_vl.bio_ecol_assessment_type_water_body" target="_top">
-<polygon fill="#ffffff" stroke="transparent" points="41,-37 41,-95 358,-95 358,-37 41,-37"/>
-<polygon fill="#f5f5f5" stroke="transparent" points="41.5,-73 41.5,-95 358.5,-95 358.5,-73 41.5,-73"/>
-<polygon fill="none" stroke="black" points="41.5,-73 41.5,-95 358.5,-95 358.5,-73 41.5,-73"/>
-<text text-anchor="start" x="46.5" y="-82.2" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00">tww_vl.bio_ecol_assessment_type_water_body</text>
-<text text-anchor="start" x="319.5" y="-81.2" font-family="Helvetica,sans-Serif" font-size="11.00">[table]</text>
-<polygon fill="none" stroke="black" points="41.5,-55 41.5,-73 358.5,-73 358.5,-55 41.5,-55"/>
-<text text-anchor="start" x="44.5" y="-61.2" font-family="Helvetica,sans-Serif" font-size="11.00">...</text>
-<polygon fill="#ffffff" stroke="transparent" points="41.5,-37 41.5,-55 175.5,-55 175.5,-37 41.5,-37"/>
-<polygon fill="none" stroke="black" points="41.5,-37 41.5,-55 175.5,-55 175.5,-37 41.5,-37"/>
-<text text-anchor="start" x="44.5" y="-43.2" font-family="Helvetica,sans-Serif" font-size="11.00"> &#160;</text>
-<polygon fill="#ffffff" stroke="transparent" points="175.5,-37 175.5,-55 275.5,-55 275.5,-37 175.5,-37"/>
-<polygon fill="none" stroke="black" points="175.5,-37 175.5,-55 275.5,-55 275.5,-37 175.5,-37"/>
-<text text-anchor="start" x="238.5" y="-43.2" font-family="Helvetica,sans-Serif" font-size="11.00">0 rows</text>
-<polygon fill="#ffffff" stroke="transparent" points="275.5,-37 275.5,-55 358.5,-55 358.5,-37 275.5,-37"/>
-<polygon fill="none" stroke="black" points="275.5,-37 275.5,-55 358.5,-55 358.5,-37 275.5,-37"/>
-<text text-anchor="start" x="339.5" y="-43.2" font-family="Helvetica,sans-Serif" font-size="11.00">1 &gt;</text>
-</a>
-</g>
-</g>
-<!-- bio_ecol_assessment&#45;&gt;tww_vl.bio_ecol_assessment_type_water_body -->
 <g id="edge10" class="edge">
-<title>bio_ecol_assessment:w&#45;&gt;tww_vl.bio_ecol_assessment_type_water_body:e</title>
-<path fill="none" stroke="black" d="M426.75,-231.6C392.34,-217.23 439.39,-141.88 399,-106 389.28,-97.36 378.22,-90.39 366.41,-84.77"/>
-<polygon fill="black" stroke="black" points="433.11,-232.67 440.4,-237.55 437.06,-233.34 441,-234 441,-234 441,-234 437.06,-233.34 441.6,-230.45 433.11,-232.67 433.11,-232.67"/>
-<ellipse fill="none" stroke="black" cx="429.96" cy="-232.14" rx="3.2" ry="3.2"/>
+<title>bio_ecol_assessment:w&#45;&gt;tww_vl.bio_ecol_assessment_relevance_matrix:e</title>
+<path fill="none" stroke="black" d="M426.52,-276.23C375.03,-261.35 451.66,-156.56 399,-106 389.74,-97.11 379.09,-89.95 367.63,-84.19"/>
+<polygon fill="black" stroke="black" points="433.06,-277.03 440.56,-281.57 437.03,-277.51 441,-278 441,-278 441,-278 437.03,-277.51 441.44,-274.43 433.06,-277.03 433.06,-277.03"/>
+<ellipse fill="none" stroke="black" cx="429.88" cy="-276.64" rx="3.2" ry="3.2"/>
 </g>
 </g>
 </svg>

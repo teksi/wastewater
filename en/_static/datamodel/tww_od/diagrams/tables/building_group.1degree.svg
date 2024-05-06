@@ -27,7 +27,7 @@
 <polygon fill="none" stroke="black" points="584,-1375.05 584,-1397.05 817,-1397.05 817,-1375.05 584,-1375.05"/>
 <text text-anchor="start" x="604" y="-1383.25" font-family="Helvetica,sans-Serif" font-size="11.00">camping_area</text>
 <polygon fill="none" stroke="black" points="817,-1375.05 817,-1397.05 940,-1397.05 940,-1375.05 817,-1375.05"/>
-<text text-anchor="start" x="820" y="-1383.25" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[8,2]</text>
+<text text-anchor="start" x="820" y="-1383.25" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[10,4]</text>
 <polygon fill="none" stroke="black" points="584,-1353.05 584,-1375.05 817,-1375.05 817,-1353.05 584,-1353.05"/>
 <text text-anchor="start" x="604" y="-1361.25" font-family="Helvetica,sans-Serif" font-size="11.00">camping_lodgings</text>
 <polygon fill="none" stroke="black" points="817,-1353.05 817,-1375.05 940,-1375.05 940,-1353.05 817,-1353.05"/>

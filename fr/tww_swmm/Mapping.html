@@ -16,9 +16,9 @@
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="../_static/documentation_options.js?v=b46de64f"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../_static/translations.js?v=d99ca74e"></script>
+        <script src="../_static/translations.js?v=bf059b8c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Recherche" href="../search.html" />
@@ -101,9 +101,9 @@
            <div itemprop="articleBody">
              
   <section id="mapping">
-<span id="id1"></span><h1><span class="section-number">6.7. </span>Mapping<a class="headerlink" href="#mapping" title="Link to this heading"></a></h1>
+<span id="id1"></span><h1><span class="section-number">6.7. </span>Mapping<a class="headerlink" href="#mapping" title="Lien vers cette rubrique"></a></h1>
 <section id="results-are-not-imported-in-tww">
-<span id="mapping-not-imported"></span><h2><span class="section-number">6.7.1. </span>Results are not imported in TWW<a class="headerlink" href="#results-are-not-imported-in-tww" title="Link to this heading"></a></h2>
+<span id="mapping-not-imported"></span><h2><span class="section-number">6.7.1. </span>Results are not imported in TWW<a class="headerlink" href="#results-are-not-imported-in-tww" title="Lien vers cette rubrique"></a></h2>
 <p>Use processing tool <code class="docutils literal notranslate"><span class="pre">join</span> <span class="pre">attributes</span></code> to add the results stored in the tables <code class="docutils literal notranslate"><span class="pre">Node</span> <span class="pre">summary</span></code> and <code class="docutils literal notranslate"><span class="pre">Link</span> <span class="pre">summary</span></code> to the tables <code class="docutils literal notranslate"><span class="pre">tww_od.vw_wastewater_node</span></code> and <code class="docutils literal notranslate"><span class="pre">tww_od.vw_tww_reach</span></code>.
 The mapping should be done on the attribute <code class="docutils literal notranslate"><span class="pre">obj_id</span></code> of the <code class="docutils literal notranslate"><span class="pre">tww_od</span></code> tables and the attribute <code class="docutils literal notranslate"><span class="pre">id</span></code> of the summary tables.</p>
 <figure class="align-default">
@@ -114,7 +114,7 @@ The mapping should be done on the attribute <code class="docutils literal notran
 </figure>
 </section>
 <section id="results-are-imported-in-tww">
-<span id="mapping-imported"></span><h2><span class="section-number">6.7.2. </span>Results are imported in TWW<a class="headerlink" href="#results-are-imported-in-tww" title="Link to this heading"></a></h2>
+<span id="mapping-imported"></span><h2><span class="section-number">6.7.2. </span>Results are imported in TWW<a class="headerlink" href="#results-are-imported-in-tww" title="Lien vers cette rubrique"></a></h2>
 <ul class="simple">
 <li><p>Add the layers tww_swmm.node_results and / or tww_swmm.link_results to your QGIS project</p></li>
 <li><p>Filter by the name of the simulation and the name of the parameter to show: Right click on the layer &gt; filter &gt; Expression: <code class="docutils literal notranslate"><span class="pre">&quot;swmm_simulation_name&quot;</span> <span class="pre">=</span> <span class="pre">'name</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">simulation</span> <span class="pre">AND</span> <span class="pre">&quot;swmm_parameter&quot;</span> <span class="pre">=</span> <span class="pre">'inflow'</span></code></p></li>
@@ -122,7 +122,7 @@ The mapping should be done on the attribute <code class="docutils literal notran
 <p>Two template QGIS files are provided in the plugin folder <code class="docutils literal notranslate"><span class="pre">src\swmm_templates\*.qgs</span></code></p>
 <p>The project <code class="docutils literal notranslate"><span class="pre">swmm_summary.qgs</span></code> show how the summary indicators can be loaded in QGIS. The project <code class="docutils literal notranslate"><span class="pre">swmm_full_report.qgs</span></code> show how the full time series can be loaded in QGIS. You will need to adapt the services and the filters.</p>
 <section id="show-the-indicators-evolving-along-time">
-<h3><span class="section-number">6.7.2.1. </span>Show the indicators evolving along time<a class="headerlink" href="#show-the-indicators-evolving-along-time" title="Link to this heading"></a></h3>
+<h3><span class="section-number">6.7.2.1. </span>Show the indicators evolving along time<a class="headerlink" href="#show-the-indicators-evolving-along-time" title="Lien vers cette rubrique"></a></h3>
 <p>This manipulation only works with complete times series. Namely, you need to import the full results and not only the summary.</p>
 <p><strong>Play the simulation with Time Manager</strong></p>
 <ul class="simple">

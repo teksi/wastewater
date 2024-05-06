@@ -210,6 +210,27 @@
             <column ascending="true" name="code"/>
          </index>
       </table>
+      <table name="bio_ecol_assessment_kind_water_body" remarks="" schema="tww_vl" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <child column="kind_water_body" foreignKey="fkey_vl_bio_ecol_assessment_kind_water_body" implied="false" onDeleteCascade="false" schema="tww_od" table="bio_ecol_assessment"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="vsacode" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="value_en" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="value_fr" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="value_it" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="value_ro" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="abbr_en" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="abbr_de" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="abbr_fr" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="abbr_it" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="abbr_ro" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="active" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
+         <primaryKey column="code" sequenceNumberInPK="1"/>
+         <index name="pkey_tww_vl_bio_ecol_assessment_kind_water_body_code" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
       <table name="bio_ecol_assessment_relevance_matrix" remarks="" schema="tww_vl" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
             <child column="relevance_matrix" foreignKey="fkey_vl_bio_ecol_assessment_relevance_matrix" implied="false" onDeleteCascade="false" schema="tww_od" table="bio_ecol_assessment"/>
@@ -228,27 +249,6 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="active" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
          <primaryKey column="code" sequenceNumberInPK="1"/>
          <index name="pkey_tww_vl_bio_ecol_assessment_relevance_matrix_code" unique="true">
-            <column ascending="true" name="code"/>
-         </index>
-      </table>
-      <table name="bio_ecol_assessment_type_water_body" remarks="" schema="tww_vl" type="TABLE">
-         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
-            <child column="type_water_body" foreignKey="fkey_vl_bio_ecol_assessment_type_water_body" implied="false" onDeleteCascade="false" schema="tww_od" table="bio_ecol_assessment"/>
-         </column>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="vsacode" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="value_en" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="value_fr" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="value_it" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="value_ro" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="abbr_en" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="abbr_de" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="abbr_fr" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="abbr_it" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="abbr_ro" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="active" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
-         <primaryKey column="code" sequenceNumberInPK="1"/>
-         <index name="pkey_tww_vl_bio_ecol_assessment_type_water_body_code" unique="true">
             <column ascending="true" name="code"/>
          </index>
       </table>
@@ -731,6 +731,7 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="abbr_ro" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="active" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="order_fct_hierarchic" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="false" digits="0" id="14" name="tww_is_primary" nullable="true" remarks="True when part of the primary network. Facilitates exporting primary elements only.&#10;Not part of the VSA-DSS data model, added solely for TEKSI Wastewater &amp; GEP" size="1" type="bool" typeCode="-7"/>
          <primaryKey column="code" sequenceNumberInPK="1"/>
          <index name="pkey_tww_vl_channel_function_hierarchic_code" unique="true">
             <column ascending="true" name="code"/>
@@ -2879,9 +2880,9 @@
             <column ascending="true" name="code"/>
          </index>
       </table>
-      <table name="solids_retention_type" remarks="" schema="tww_vl" type="TABLE">
+      <table name="solids_retention_kind" remarks="" schema="tww_vl" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
-            <child column="type" foreignKey="fkey_vl_solids_retention_type" implied="false" onDeleteCascade="false" schema="tww_od" table="solids_retention"/>
+            <child column="kind" foreignKey="fkey_vl_solids_retention_kind" implied="false" onDeleteCascade="false" schema="tww_od" table="solids_retention"/>
          </column>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="vsacode" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="value_en" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
@@ -2896,7 +2897,7 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="abbr_ro" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="active" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
          <primaryKey column="code" sequenceNumberInPK="1"/>
-         <index name="pkey_tww_vl_solids_retention_type_code" unique="true">
+         <index name="pkey_tww_vl_solids_retention_kind_code" unique="true">
             <column ascending="true" name="code"/>
          </index>
       </table>
@@ -3047,9 +3048,9 @@
             <column ascending="true" name="code"/>
          </index>
       </table>
-      <table name="tank_cleaning_type" remarks="" schema="tww_vl" type="TABLE">
+      <table name="tank_cleaning_kind" remarks="" schema="tww_vl" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
-            <child column="type" foreignKey="fkey_vl_tank_cleaning_type" implied="false" onDeleteCascade="false" schema="tww_od" table="tank_cleaning"/>
+            <child column="kind" foreignKey="fkey_vl_tank_cleaning_kind" implied="false" onDeleteCascade="false" schema="tww_od" table="tank_cleaning"/>
          </column>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="vsacode" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="value_en" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
@@ -3064,13 +3065,13 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="abbr_ro" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="active" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
          <primaryKey column="code" sequenceNumberInPK="1"/>
-         <index name="pkey_tww_vl_tank_cleaning_type_code" unique="true">
+         <index name="pkey_tww_vl_tank_cleaning_kind_code" unique="true">
             <column ascending="true" name="code"/>
          </index>
       </table>
-      <table name="tank_emptying_type" remarks="" schema="tww_vl" type="TABLE">
+      <table name="tank_emptying_kind" remarks="" schema="tww_vl" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
-            <child column="type" foreignKey="fkey_vl_tank_emptying_type" implied="false" onDeleteCascade="false" schema="tww_od" table="tank_emptying"/>
+            <child column="kind" foreignKey="fkey_vl_tank_emptying_kind" implied="false" onDeleteCascade="false" schema="tww_od" table="tank_emptying"/>
          </column>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="vsacode" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="value_en" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
@@ -3085,7 +3086,7 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="abbr_ro" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="active" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
          <primaryKey column="code" sequenceNumberInPK="1"/>
-         <index name="pkey_tww_vl_tank_emptying_type_code" unique="true">
+         <index name="pkey_tww_vl_tank_emptying_kind_code" unique="true">
             <column ascending="true" name="code"/>
          </index>
       </table>

@@ -16,9 +16,9 @@
         <script src="../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="../../_static/documentation_options.js?v=b46de64f"></script>
-        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../../_static/translations.js?v=d99ca74e"></script>
+        <script src="../../_static/translations.js?v=bf059b8c"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Recherche" href="../../search.html" />
@@ -111,20 +111,20 @@
            <div itemprop="articleBody">
              
   <section id="manual-update-of-the-datamodel">
-<h1><span class="section-number">4.7. </span>Manual update of the datamodel<a class="headerlink" href="#manual-update-of-the-datamodel" title="Link to this heading"></a></h1>
+<h1><span class="section-number">4.7. </span>Manual update of the datamodel<a class="headerlink" href="#manual-update-of-the-datamodel" title="Lien vers cette rubrique"></a></h1>
 <p>This page explains how to update your datamodel manually. Alternatively, the <a class="reference external" href="../datamodel-tool/index.html">data-model tool</a> offers a graphical interface that automates these steps and is
 usually easier to use.</p>
 <p>The releases of the datamodel are available <a class="reference external" href="https://github.com/TWW/datamodel/releases/">here</a>.
 When a new datamodel is released, a TWW database can be updated with <a class="reference external" href="https://github.com/opengisch/pum">PUM</a>.
 In this documentation, the main steps and requirements are reproduced.</p>
 <section id="requirements">
-<h2><span class="section-number">4.7.1. </span>Requirements<a class="headerlink" href="#requirements" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.7.1. </span>Requirements<a class="headerlink" href="#requirements" title="Lien vers cette rubrique"></a></h2>
 <section id="client">
-<h3><span class="section-number">4.7.1.1. </span>Client<a class="headerlink" href="#client" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.7.1.1. </span>Client<a class="headerlink" href="#client" title="Lien vers cette rubrique"></a></h3>
 <p>Update is done using <a class="reference external" href="https://github.com/opengisch/pum">PUM</a> available on linux and windows environment. It does not require to be run on the server directly but can be run from a remote client or a virtual machine. <a class="reference external" href="https://github.com/opengisch/pirogue">Pirogue</a> is required for views regeneration.</p>
 </section>
 <section id="postgresql">
-<h3><span class="section-number">4.7.1.2. </span>PostgreSQL<a class="headerlink" href="#postgresql" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.7.1.2. </span>PostgreSQL<a class="headerlink" href="#postgresql" title="Lien vers cette rubrique"></a></h3>
 <p>The functions <code class="docutils literal notranslate"><span class="pre">pg_dump</span></code>, <code class="docutils literal notranslate"><span class="pre">pg_restore</span></code> must be available from the terminal, they are installed along with PostgreSQL. <strong>The version of the client postgresql and the server postgresql must match.</strong></p>
 <p>If several <code class="docutils literal notranslate"><span class="pre">pg_dump</span></code> and <code class="docutils literal notranslate"><span class="pre">pg_restore</span></code> are installed on the client, PUM has to use the proper version.
 You can either:</p>
@@ -134,11 +134,11 @@ You can either:</p>
 </ul>
 </section>
 <section id="python">
-<h3><span class="section-number">4.7.1.3. </span>Python<a class="headerlink" href="#python" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.7.1.3. </span>Python<a class="headerlink" href="#python" title="Lien vers cette rubrique"></a></h3>
 <p>The default python must be python 3.</p>
 </section>
 <section id="pum-installation">
-<h3><span class="section-number">4.7.1.4. </span>PUM installation<a class="headerlink" href="#pum-installation" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.7.1.4. </span>PUM installation<a class="headerlink" href="#pum-installation" title="Lien vers cette rubrique"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">pip3</span> <span class="pre">install</span> <span class="pre">pum</span></code></p>
 <p>To update PUM</p>
 <p><code class="docutils literal notranslate"><span class="pre">pip3</span> <span class="pre">install</span> <span class="pre">--upgrade</span> <span class="pre">pum</span></code></p>
@@ -146,17 +146,17 @@ You can either:</p>
 <p>If you encounter any problem with PUM installation or usage, check the <a class="reference external" href="https://github.com/opengisch/pum#pum">PUM documentation</a>.</p>
 </section>
 <section id="pirogue-installation">
-<h3><span class="section-number">4.7.1.5. </span>Pirogue installation<a class="headerlink" href="#pirogue-installation" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.7.1.5. </span>Pirogue installation<a class="headerlink" href="#pirogue-installation" title="Lien vers cette rubrique"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">pip3</span> <span class="pre">install</span> <span class="pre">pirogue</span></code></p>
 <p>To update pirogue</p>
 <p><code class="docutils literal notranslate"><span class="pre">pip3</span> <span class="pre">install</span> <span class="pre">--upgrade</span> <span class="pre">pirogue</span></code></p>
 </section>
 </section>
 <section id="database-update">
-<h2><span class="section-number">4.7.2. </span>Database update<a class="headerlink" href="#database-update" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.7.2. </span>Database update<a class="headerlink" href="#database-update" title="Lien vers cette rubrique"></a></h2>
 <p>For the following commands the database is connected with the service <code class="docutils literal notranslate"><span class="pre">tww_prod</span></code>.</p>
 <section id="postgresql-service">
-<h3><span class="section-number">4.7.2.1. </span>PostgreSQL service<a class="headerlink" href="#postgresql-service" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.7.2.1. </span>PostgreSQL service<a class="headerlink" href="#postgresql-service" title="Lien vers cette rubrique"></a></h3>
 <p>The parameters to connect to the databases are provided in a service file (for instance the file <code class="docutils literal notranslate"><span class="pre">~/.pg_service.conf</span></code>.)</p>
 <p>There are at least three services inside:
 * <code class="docutils literal notranslate"><span class="pre">tww_prod</span></code> database to be updated
@@ -164,12 +164,12 @@ You can either:</p>
 * <code class="docutils literal notranslate"><span class="pre">tww_comp</span></code> current model, after the update the <code class="docutils literal notranslate"><span class="pre">tww_prod</span></code> and <code class="docutils literal notranslate"><span class="pre">tww_comp</span></code> models should be similar.</p>
 </section>
 <section id="database-backup">
-<h3><span class="section-number">4.7.2.2. </span>Database backup<a class="headerlink" href="#database-backup" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.7.2.2. </span>Database backup<a class="headerlink" href="#database-backup" title="Lien vers cette rubrique"></a></h3>
 <p>It is recommended to backup the database before the update. In command line:</p>
 <p><code class="docutils literal notranslate"><span class="pre">pg_dump</span> <span class="pre">-Fc</span> <span class="pre">-f</span> <span class="pre">/path/to/dump/tww_prod.dump</span> <span class="pre">-d</span> <span class="pre">&quot;service=tww_prod&quot;</span></code></p>
 </section>
 <section id="download-and-install-current-database-release">
-<h3><span class="section-number">4.7.2.3. </span>Download and install current database release<a class="headerlink" href="#download-and-install-current-database-release" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.7.2.3. </span>Download and install current database release<a class="headerlink" href="#download-and-install-current-database-release" title="Lien vers cette rubrique"></a></h3>
 <ul class="simple">
 <li><p>Download current datamodel release from <code class="docutils literal notranslate"><span class="pre">https://github.com/TWW/datamodel/archive/refs/tags/&lt;release_number&gt;.zip</span></code> (replacing <code class="docutils literal notranslate"><span class="pre">&lt;release_number&gt;</span></code> with the desired version, such as <code class="docutils literal notranslate"><span class="pre">1.5.4</span></code>). Run the following commands from the unzipped directory.</p></li>
 <li><p>Create current database. It is used for comparison (target).</p></li>
@@ -181,14 +181,14 @@ You can either:</p>
 <p><code class="docutils literal notranslate"><span class="pre">./scripts/db_setup.sh</span> <span class="pre">-f</span> <span class="pre">-r</span> <span class="pre">-p</span> <span class="pre">tww_comp</span></code> Launched from the <code class="docutils literal notranslate"><span class="pre">datamodel</span></code> folder.</p>
 </section>
 <section id="create-empty-database">
-<h3><span class="section-number">4.7.2.4. </span>Create empty database<a class="headerlink" href="#create-empty-database" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.7.2.4. </span>Create empty database<a class="headerlink" href="#create-empty-database" title="Lien vers cette rubrique"></a></h3>
 <ul class="simple">
 <li><p>Create test database. It is used to test the update processus.</p></li>
 </ul>
 <p><code class="docutils literal notranslate"><span class="pre">psql</span> <span class="pre">-h</span> <span class="pre">host</span> <span class="pre">-p</span> <span class="pre">port</span> <span class="pre">-U</span> <span class="pre">postgres</span> <span class="pre">-c</span> <span class="pre">'CREATE</span> <span class="pre">DATABASE</span> <span class="pre">tww_test;'</span></code></p>
 </section>
 <section id="launch-update">
-<h3><span class="section-number">4.7.2.5. </span>Launch update<a class="headerlink" href="#launch-update" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.7.2.5. </span>Launch update<a class="headerlink" href="#launch-update" title="Lien vers cette rubrique"></a></h3>
 <p>The following command must be launched form the <code class="docutils literal notranslate"><span class="pre">datamodel</span></code> folder.</p>
 <p><code class="docutils literal notranslate"><span class="pre">pum</span> <span class="pre">test-and-upgrade</span> <span class="pre">-pp</span> <span class="pre">tww_prod</span> <span class="pre">-pt</span> <span class="pre">tww_test</span> <span class="pre">-pc</span> <span class="pre">tww_comp</span> <span class="pre">-t</span> <span class="pre">tww_sys.pum_info</span> <span class="pre">-f</span> <span class="pre">dump.dump</span> <span class="pre">-d</span> <span class="pre">delta/</span> <span class="pre">-i</span> <span class="pre">constraints</span> <span class="pre">views</span> <span class="pre">indexes</span> <span class="pre">--exclude-schema</span> <span class="pre">public</span> <span class="pre">--exclude-schema</span> <span class="pre">tww_migration</span> <span class="pre">-v</span> <span class="pre">int</span> <span class="pre">SRID</span> <span class="pre">2056</span> <span class="pre">-x</span></code>.</p>
 <ul class="simple">

@@ -216,6 +216,17 @@ The Feature Attributes window for the overflow characteristic appears:
 
 3. Go back in the field fk_overflow characteristic of the just created overflow characteristic with the button **switch to form view** and define the necessary HQ or QQ values with the **add child object** button.
 
+Setting default values
+-----------------------
+
+It is possible to define default values for repeated fields such as fk_provider or fk_dataowner.
+
+1. Enter field name and value in the corresponding attributes in ``tww_od.default values``
+
+2. Connect all occurences of your field name to ``tww_sys.get_default_values(field_name)``.
+Per default, the fields ``fk_provider`` and ``fk_dataowner`` are already connected to the function ``tww_sys.get_default_values(field_name)``.
+An example SQL script how to insert the default value for all occurences of a field name can be found `here <https://github.com/teksi/wastewater/blob/main/datamodel/changelogs/0001/14_default_values.sql>`_)
+
 Further informations
 --------------------
 

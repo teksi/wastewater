@@ -24,7 +24,7 @@
 <text text-anchor="start" x="2522" y="-2923.2" font-family="Helvetica,sans-Serif" font-size="11.00">obj_id</text>
 <polygon fill="none" stroke="black" points="2502,-2893 2502,-2915 2647,-2915 2647,-2893 2502,-2893"/>
 <image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="2507" y="-2910"/>
-<text text-anchor="start" x="2522" y="-2901.2" font-family="Helvetica,sans-Serif" font-size="11.00">type</text>
+<text text-anchor="start" x="2522" y="-2901.2" font-family="Helvetica,sans-Serif" font-size="11.00">kind</text>
 <polygon fill="none" stroke="black" points="2502,-2875 2502,-2893 2647,-2893 2647,-2875 2502,-2875"/>
 <text text-anchor="start" x="2505" y="-2881.2" font-family="Helvetica,sans-Serif" font-size="11.00">...</text>
 <polygon fill="#ffffff" stroke="transparent" points="2502,-2857 2502,-2875 2572,-2875 2572,-2857 2502,-2857"/>
@@ -82,21 +82,21 @@
 </g>
 </g>
 <!-- solids_retention&#45;&gt;structure_part -->
-<g id="edge308" class="edge">
+<g id="edge309" class="edge">
 <title>solids_retention:w&#45;&gt;structure_part:e</title>
 <path fill="none" stroke="black" d="M2490.3,-2925.63C2386.7,-2918.2 2385.67,-2803 2275,-2803"/>
 <polygon fill="black" stroke="black" points="2500.34,-2921.97 2500.06,-2929.97 2498.46,-2929.91 2498.74,-2921.92 2500.34,-2921.97"/>
 <polyline fill="none" stroke="black" points="2501,-2926 2497,-2925.86 "/>
 <ellipse fill="none" stroke="black" cx="2493.8" cy="-2925.75" rx="3.2" ry="3.2"/>
 </g>
-<!-- tww_vl.solids_retention_type -->
-<g id="node233" class="node">
-<title>tww_vl.solids_retention_type</title>
-<g id="a_node233"><a xlink:href="../../../tww_vl/tables/solids_retention_type.html" xlink:title="tww_vl.solids_retention_type" target="_top">
+<!-- tww_vl.solids_retention_kind -->
+<g id="node97" class="node">
+<title>tww_vl.solids_retention_kind</title>
+<g id="a_node97"><a xlink:href="../../../tww_vl/tables/solids_retention_kind.html" xlink:title="tww_vl.solids_retention_kind" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="2081,-2875 2081,-2933 2297,-2933 2297,-2875 2081,-2875"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="2081,-2911 2081,-2933 2297,-2933 2297,-2911 2081,-2911"/>
 <polygon fill="none" stroke="black" points="2081,-2911 2081,-2933 2297,-2933 2297,-2911 2081,-2911"/>
-<text text-anchor="start" x="2086" y="-2920.2" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00">tww_vl.solids_retention_type</text>
+<text text-anchor="start" x="2086" y="-2920.2" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00">tww_vl.solids_retention_kind</text>
 <text text-anchor="start" x="2258" y="-2919.2" font-family="Helvetica,sans-Serif" font-size="11.00">[table]</text>
 <polygon fill="none" stroke="black" points="2081,-2893 2081,-2911 2297,-2911 2297,-2893 2081,-2893"/>
 <text text-anchor="start" x="2084" y="-2899.2" font-family="Helvetica,sans-Serif" font-size="11.00">...</text>
@@ -112,9 +112,9 @@
 </a>
 </g>
 </g>
-<!-- solids_retention&#45;&gt;tww_vl.solids_retention_type -->
-<g id="edge309" class="edge">
-<title>solids_retention:w&#45;&gt;tww_vl.solids_retention_type:e</title>
+<!-- solids_retention&#45;&gt;tww_vl.solids_retention_kind -->
+<g id="edge308" class="edge">
+<title>solids_retention:w&#45;&gt;tww_vl.solids_retention_kind:e</title>
 <path fill="none" stroke="black" d="M2486.46,-2904C2425.54,-2904 2359.47,-2904 2305.2,-2904"/>
 <polygon fill="black" stroke="black" points="2493,-2904 2501,-2907.6 2497,-2904 2501,-2904 2501,-2904 2501,-2904 2497,-2904 2501,-2900.4 2493,-2904 2493,-2904"/>
 <ellipse fill="none" stroke="black" cx="2489.8" cy="-2904" rx="3.2" ry="3.2"/>
@@ -438,9 +438,9 @@
 <ellipse fill="none" stroke="black" cx="807.82" cy="-3136.37" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.measure_priority -->
-<g id="node104" class="node">
+<g id="node105" class="node">
 <title>tww_vl.measure_priority</title>
-<g id="a_node104"><a xlink:href="../../../tww_vl/tables/measure_priority.html" xlink:title="tww_vl.measure_priority" target="_top">
+<g id="a_node105"><a xlink:href="../../../tww_vl/tables/measure_priority.html" xlink:title="tww_vl.measure_priority" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="416,-3240 416,-3298 607,-3298 607,-3240 416,-3240"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="416.5,-3276 416.5,-3298 607.5,-3298 607.5,-3276 416.5,-3276"/>
 <polygon fill="none" stroke="black" points="416.5,-3276 416.5,-3298 607.5,-3298 607.5,-3276 416.5,-3276"/>
@@ -468,9 +468,9 @@
 <ellipse fill="none" stroke="black" cx="807.3" cy="-3265.01" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.measure_status -->
-<g id="node109" class="node">
+<g id="node111" class="node">
 <title>tww_vl.measure_status</title>
-<g id="a_node109"><a xlink:href="../../../tww_vl/tables/measure_status.html" xlink:title="tww_vl.measure_status" target="_top">
+<g id="a_node111"><a xlink:href="../../../tww_vl/tables/measure_status.html" xlink:title="tww_vl.measure_status" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="420,-3161 420,-3219 603,-3219 603,-3161 420,-3161"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="420.5,-3197 420.5,-3219 603.5,-3219 603.5,-3197 420.5,-3197"/>
 <polygon fill="none" stroke="black" points="420.5,-3197 420.5,-3219 603.5,-3219 603.5,-3197 420.5,-3197"/>
@@ -498,9 +498,9 @@
 <ellipse fill="none" stroke="black" cx="807.31" cy="-3242.56" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.measure_category -->
-<g id="node136" class="node">
+<g id="node138" class="node">
 <title>tww_vl.measure_category</title>
-<g id="a_node136"><a xlink:href="../../../tww_vl/tables/measure_category.html" xlink:title="tww_vl.measure_category" target="_top">
+<g id="a_node138"><a xlink:href="../../../tww_vl/tables/measure_category.html" xlink:title="tww_vl.measure_category" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="412.5,-3324 412.5,-3382 610.5,-3382 610.5,-3324 412.5,-3324"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="412.5,-3360 412.5,-3382 610.5,-3382 610.5,-3360 412.5,-3360"/>
 <polygon fill="none" stroke="black" points="412.5,-3360 412.5,-3382 610.5,-3382 610.5,-3360 412.5,-3360"/>
@@ -683,9 +683,9 @@
 <ellipse fill="none" stroke="black" cx="2072.89" cy="-2084.56" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.special_structure_amphibian_exit -->
-<g id="node113" class="node">
+<g id="node115" class="node">
 <title>tww_vl.special_structure_amphibian_exit</title>
-<g id="a_node113"><a xlink:href="../../../tww_vl/tables/special_structure_amphibian_exit.html" xlink:title="tww_vl.special_structure_amphibian_exit" target="_top">
+<g id="a_node115"><a xlink:href="../../../tww_vl/tables/special_structure_amphibian_exit.html" xlink:title="tww_vl.special_structure_amphibian_exit" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1635,-2237 1635,-2295 1923,-2295 1923,-2237 1635,-2237"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1635,-2273 1635,-2295 1923,-2295 1923,-2273 1635,-2273"/>
 <polygon fill="none" stroke="black" points="1635,-2273 1635,-2295 1923,-2295 1923,-2273 1635,-2273"/>
@@ -713,9 +713,9 @@
 <ellipse fill="none" stroke="black" cx="2072.85" cy="-2153" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.special_structure_bypass -->
-<g id="node165" class="node">
+<g id="node167" class="node">
 <title>tww_vl.special_structure_bypass</title>
-<g id="a_node165"><a xlink:href="../../../tww_vl/tables/special_structure_bypass.html" xlink:title="tww_vl.special_structure_bypass" target="_top">
+<g id="a_node167"><a xlink:href="../../../tww_vl/tables/special_structure_bypass.html" xlink:title="tww_vl.special_structure_bypass" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1660.5,-2158 1660.5,-2216 1897.5,-2216 1897.5,-2158 1660.5,-2158"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1661,-2194 1661,-2216 1898,-2216 1898,-2194 1661,-2194"/>
 <polygon fill="none" stroke="black" points="1661,-2194 1661,-2216 1898,-2216 1898,-2194 1661,-2194"/>
@@ -743,9 +743,9 @@
 <ellipse fill="none" stroke="black" cx="2072.89" cy="-2131.44" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.special_structure_possibility_intervention -->
-<g id="node176" class="node">
+<g id="node177" class="node">
 <title>tww_vl.special_structure_possibility_intervention</title>
-<g id="a_node176"><a xlink:href="../../../tww_vl/tables/special_structure_possibility_i_9eac9075.html" xlink:title="tww_vl.special_structure_possibility_intervention" target="_top">
+<g id="a_node177"><a xlink:href="../../../tww_vl/tables/special_structure_possibility_i_9eac9075.html" xlink:title="tww_vl.special_structure_possibility_intervention" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1610.5,-1921 1610.5,-1979 1947.5,-1979 1947.5,-1921 1610.5,-1921"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1611,-1957 1611,-1979 1948,-1979 1948,-1957 1611,-1957"/>
 <polygon fill="none" stroke="black" points="1611,-1957 1611,-1979 1948,-1979 1948,-1957 1611,-1957"/>
@@ -773,9 +773,9 @@
 <ellipse fill="none" stroke="black" cx="2072.85" cy="-2063" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.special_structure_stormwater_tank_arrangement -->
-<g id="node181" class="node">
+<g id="node182" class="node">
 <title>tww_vl.special_structure_stormwater_tank_arrangement</title>
-<g id="a_node181"><a xlink:href="../../../tww_vl/tables/special_structure_stormwater_ta_419625b4.html" xlink:title="tww_vl.special_structure_stormwater_tank_arrangement" target="_top">
+<g id="a_node182"><a xlink:href="../../../tww_vl/tables/special_structure_stormwater_ta_419625b4.html" xlink:title="tww_vl.special_structure_stormwater_tank_arrangement" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1587,-1842 1587,-1900 1971,-1900 1971,-1842 1587,-1842"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1587,-1878 1587,-1900 1971,-1900 1971,-1878 1587,-1878"/>
 <polygon fill="none" stroke="black" points="1587,-1878 1587,-1900 1971,-1900 1971,-1878 1587,-1878"/>
@@ -803,9 +803,9 @@
 <ellipse fill="none" stroke="black" cx="2072.85" cy="-2040.93" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.special_structure_emergency_overflow -->
-<g id="node232" class="node">
+<g id="node233" class="node">
 <title>tww_vl.special_structure_emergency_overflow</title>
-<g id="a_node232"><a xlink:href="../../../tww_vl/tables/special_structure_emergency_overflow.html" xlink:title="tww_vl.special_structure_emergency_overflow" target="_top">
+<g id="a_node233"><a xlink:href="../../../tww_vl/tables/special_structure_emergency_overflow.html" xlink:title="tww_vl.special_structure_emergency_overflow" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1619,-2079 1619,-2137 1939,-2137 1939,-2079 1619,-2079"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1619,-2115 1619,-2137 1939,-2137 1939,-2115 1619,-2115"/>
 <polygon fill="none" stroke="black" points="1619,-2115 1619,-2137 1939,-2137 1939,-2115 1619,-2115"/>
@@ -914,9 +914,9 @@
 <ellipse fill="none" stroke="black" cx="2474.81" cy="-3375.36" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.damage_manhole_manhole_damage_code -->
-<g id="node152" class="node">
+<g id="node154" class="node">
 <title>tww_vl.damage_manhole_manhole_damage_code</title>
-<g id="a_node152"><a xlink:href="../../../tww_vl/tables/damage_manhole_manhole_damage_code.html" xlink:title="tww_vl.damage_manhole_manhole_damage_code" target="_top">
+<g id="a_node154"><a xlink:href="../../../tww_vl/tables/damage_manhole_manhole_damage_code.html" xlink:title="tww_vl.damage_manhole_manhole_damage_code" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="2020,-3350 2020,-3408 2358,-3408 2358,-3350 2020,-3350"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="2020,-3386 2020,-3408 2358,-3408 2358,-3386 2020,-3386"/>
 <polygon fill="none" stroke="black" points="2020,-3386 2020,-3408 2358,-3408 2358,-3386 2020,-3386"/>
@@ -944,9 +944,9 @@
 <ellipse fill="none" stroke="black" cx="2470.8" cy="-3353.08" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.damage_manhole_manhole_shaft_area -->
-<g id="node164" class="node">
+<g id="node166" class="node">
 <title>tww_vl.damage_manhole_manhole_shaft_area</title>
-<g id="a_node164"><a xlink:href="../../../tww_vl/tables/damage_manhole_manhole_shaft_area.html" xlink:title="tww_vl.damage_manhole_manhole_shaft_area" target="_top">
+<g id="a_node166"><a xlink:href="../../../tww_vl/tables/damage_manhole_manhole_shaft_area.html" xlink:title="tww_vl.damage_manhole_manhole_shaft_area" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="2029,-3271 2029,-3329 2349,-3329 2349,-3271 2029,-3271"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="2029,-3307 2029,-3329 2349,-3329 2349,-3307 2029,-3307"/>
 <polygon fill="none" stroke="black" points="2029,-3307 2029,-3329 2349,-3329 2349,-3307 2029,-3307"/>
@@ -1074,9 +1074,9 @@
 <ellipse fill="none" stroke="black" cx="2123.8" cy="-9886.82" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.leapingweir_opening_shape -->
-<g id="node187" class="node">
+<g id="node189" class="node">
 <title>tww_vl.leapingweir_opening_shape</title>
-<g id="a_node187"><a xlink:href="../../../tww_vl/tables/leapingweir_opening_shape.html" xlink:title="tww_vl.leapingweir_opening_shape" target="_top">
+<g id="a_node189"><a xlink:href="../../../tww_vl/tables/leapingweir_opening_shape.html" xlink:title="tww_vl.leapingweir_opening_shape" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1653,-10037 1653,-10095 1905,-10095 1905,-10037 1653,-10037"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1653,-10073 1653,-10095 1905,-10095 1905,-10073 1653,-10073"/>
 <polygon fill="none" stroke="black" points="1653,-10073 1653,-10095 1905,-10095 1905,-10073 1653,-10073"/>
@@ -1409,9 +1409,9 @@
 <ellipse fill="none" stroke="black" cx="2473.84" cy="-3557.97" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.disposal_disposal_place_planned -->
-<g id="node117" class="node">
+<g id="node119" class="node">
 <title>tww_vl.disposal_disposal_place_planned</title>
-<g id="a_node117"><a xlink:href="../../../tww_vl/tables/disposal_disposal_place_planned.html" xlink:title="tww_vl.disposal_disposal_place_planned" target="_top">
+<g id="a_node119"><a xlink:href="../../../tww_vl/tables/disposal_disposal_place_planned.html" xlink:title="tww_vl.disposal_disposal_place_planned" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="2048,-3537 2048,-3595 2330,-3595 2330,-3537 2048,-3537"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="2048,-3573 2048,-3595 2330,-3595 2330,-3573 2048,-3573"/>
 <polygon fill="none" stroke="black" points="2048,-3573 2048,-3595 2330,-3595 2330,-3573 2048,-3573"/>
@@ -1439,9 +1439,9 @@
 <ellipse fill="none" stroke="black" cx="2473.81" cy="-3622.49" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.disposal_disposal_place_current -->
-<g id="node153" class="node">
+<g id="node155" class="node">
 <title>tww_vl.disposal_disposal_place_current</title>
-<g id="a_node153"><a xlink:href="../../../tww_vl/tables/disposal_disposal_place_current.html" xlink:title="tww_vl.disposal_disposal_place_current" target="_top">
+<g id="a_node155"><a xlink:href="../../../tww_vl/tables/disposal_disposal_place_current.html" xlink:title="tww_vl.disposal_disposal_place_current" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="2050,-3616 2050,-3674 2328,-3674 2328,-3616 2050,-3616"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="2050,-3652 2050,-3674 2328,-3674 2328,-3652 2050,-3652"/>
 <polygon fill="none" stroke="black" points="2050,-3652 2050,-3674 2328,-3674 2328,-3652 2050,-3652"/>
@@ -1511,9 +1511,9 @@
 <ellipse fill="none" stroke="black" cx="2064.83" cy="-1811.88" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.wastewater_structure_symbol_plantype -->
-<g id="node128" class="node">
+<g id="node130" class="node">
 <title>tww_vl.wastewater_structure_symbol_plantype</title>
-<g id="a_node128"><a xlink:href="../../../tww_vl/tables/wastewater_structure_symbol_plantype.html" xlink:title="tww_vl.wastewater_structure_symbol_plantype" target="_top">
+<g id="a_node130"><a xlink:href="../../../tww_vl/tables/wastewater_structure_symbol_plantype.html" xlink:title="tww_vl.wastewater_structure_symbol_plantype" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1615.5,-1763 1615.5,-1821 1942.5,-1821 1942.5,-1763 1615.5,-1763"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1616,-1799 1616,-1821 1943,-1821 1943,-1799 1616,-1799"/>
 <polygon fill="none" stroke="black" points="1616,-1799 1616,-1821 1943,-1821 1943,-1799 1616,-1799"/>
@@ -1681,9 +1681,9 @@
 <ellipse fill="none" stroke="black" cx="3120.59" cy="-10234.93" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.farm_continuance -->
-<g id="node150" class="node">
+<g id="node152" class="node">
 <title>tww_vl.farm_continuance</title>
-<g id="a_node150"><a xlink:href="../../../tww_vl/tables/farm_continuance.html" xlink:title="tww_vl.farm_continuance" target="_top">
+<g id="a_node152"><a xlink:href="../../../tww_vl/tables/farm_continuance.html" xlink:title="tww_vl.farm_continuance" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="2835,-10412 2835,-10470 3032,-10470 3032,-10412 2835,-10412"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="2835.5,-10448 2835.5,-10470 3032.5,-10470 3032.5,-10448 2835.5,-10448"/>
 <polygon fill="none" stroke="black" points="2835.5,-10448 2835.5,-10470 3032.5,-10470 3032.5,-10448 2835.5,-10448"/>
@@ -1711,9 +1711,9 @@
 <ellipse fill="none" stroke="black" cx="3114.84" cy="-10358.43" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.farm_shepherds_hut_wastewater -->
-<g id="node207" class="node">
+<g id="node208" class="node">
 <title>tww_vl.farm_shepherds_hut_wastewater</title>
-<g id="a_node207"><a xlink:href="../../../tww_vl/tables/farm_shepherds_hut_wastewater.html" xlink:title="tww_vl.farm_shepherds_hut_wastewater" target="_top">
+<g id="a_node208"><a xlink:href="../../../tww_vl/tables/farm_shepherds_hut_wastewater.html" xlink:title="tww_vl.farm_shepherds_hut_wastewater" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="2790,-10333 2790,-10391 3077,-10391 3077,-10333 2790,-10333"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="2790.5,-10369 2790.5,-10391 3077.5,-10391 3077.5,-10369 2790.5,-10369"/>
 <polygon fill="none" stroke="black" points="2790.5,-10369 2790.5,-10391 3077.5,-10391 3077.5,-10369 2790.5,-10369"/>
@@ -1741,9 +1741,9 @@
 <ellipse fill="none" stroke="black" cx="3114.3" cy="-10333.2" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.farm_conformity -->
-<g id="node211" class="node">
+<g id="node212" class="node">
 <title>tww_vl.farm_conformity</title>
-<g id="a_node211"><a xlink:href="../../../tww_vl/tables/farm_conformity.html" xlink:title="tww_vl.farm_conformity" target="_top">
+<g id="a_node212"><a xlink:href="../../../tww_vl/tables/farm_conformity.html" xlink:title="tww_vl.farm_conformity" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="2839,-10491 2839,-10549 3028,-10549 3028,-10491 2839,-10491"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="2839.5,-10527 2839.5,-10549 3028.5,-10549 3028.5,-10527 2839.5,-10527"/>
 <polygon fill="none" stroke="black" points="2839.5,-10527 2839.5,-10549 3028.5,-10549 3028.5,-10527 2839.5,-10527"/>
@@ -1771,9 +1771,9 @@
 <ellipse fill="none" stroke="black" cx="3114.53" cy="-10379.28" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.farm_stable_cattle -->
-<g id="node227" class="node">
+<g id="node228" class="node">
 <title>tww_vl.farm_stable_cattle</title>
-<g id="a_node227"><a xlink:href="../../../tww_vl/tables/farm_stable_cattle.html" xlink:title="tww_vl.farm_stable_cattle" target="_top">
+<g id="a_node228"><a xlink:href="../../../tww_vl/tables/farm_stable_cattle.html" xlink:title="tww_vl.farm_stable_cattle" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="2834.5,-10254 2834.5,-10312 3032.5,-10312 3032.5,-10254 2834.5,-10254"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="2834.5,-10290 2834.5,-10312 3032.5,-10312 3032.5,-10290 2834.5,-10290"/>
 <polygon fill="none" stroke="black" points="2834.5,-10290 2834.5,-10312 3032.5,-10312 3032.5,-10290 2834.5,-10290"/>
@@ -1930,9 +1930,9 @@
 <ellipse fill="none" stroke="black" cx="2068.84" cy="-10120.11" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.measuring_point_purpose -->
-<g id="node131" class="node">
+<g id="node133" class="node">
 <title>tww_vl.measuring_point_purpose</title>
-<g id="a_node131"><a xlink:href="../../../tww_vl/tables/measuring_point_purpose.html" xlink:title="tww_vl.measuring_point_purpose" target="_top">
+<g id="a_node133"><a xlink:href="../../../tww_vl/tables/measuring_point_purpose.html" xlink:title="tww_vl.measuring_point_purpose" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1657.5,-10260 1657.5,-10318 1900.5,-10318 1900.5,-10260 1657.5,-10260"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1658,-10296 1658,-10318 1901,-10318 1901,-10296 1658,-10296"/>
 <polygon fill="none" stroke="black" points="1658,-10296 1658,-10318 1901,-10318 1901,-10296 1658,-10296"/>
@@ -1960,9 +1960,9 @@
 <ellipse fill="none" stroke="black" cx="2068.8" cy="-10275.04" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.measuring_point_damming_device -->
-<g id="node212" class="node">
+<g id="node213" class="node">
 <title>tww_vl.measuring_point_damming_device</title>
-<g id="a_node212"><a xlink:href="../../../tww_vl/tables/measuring_point_damming_device.html" xlink:title="tww_vl.measuring_point_damming_device" target="_top">
+<g id="a_node213"><a xlink:href="../../../tww_vl/tables/measuring_point_damming_device.html" xlink:title="tww_vl.measuring_point_damming_device" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1632,-10339 1632,-10397 1926,-10397 1926,-10339 1632,-10339"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1632,-10375 1632,-10397 1926,-10397 1926,-10375 1632,-10375"/>
 <polygon fill="none" stroke="black" points="1632,-10375 1632,-10397 1926,-10397 1926,-10375 1632,-10375"/>
@@ -2039,9 +2039,9 @@
 <ellipse fill="none" stroke="black" cx="848.3" cy="-10923.87" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.mutation_kind -->
-<g id="node142" class="node">
+<g id="node144" class="node">
 <title>tww_vl.mutation_kind</title>
-<g id="a_node142"><a xlink:href="../../../tww_vl/tables/mutation_kind.html" xlink:title="tww_vl.mutation_kind" target="_top">
+<g id="a_node144"><a xlink:href="../../../tww_vl/tables/mutation_kind.html" xlink:title="tww_vl.mutation_kind" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="423.5,-10939 423.5,-10997 599.5,-10997 599.5,-10939 423.5,-10939"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="423.5,-10975 423.5,-10997 599.5,-10997 599.5,-10975 423.5,-10975"/>
 <polygon fill="none" stroke="black" points="423.5,-10975 423.5,-10997 599.5,-10997 599.5,-10975 423.5,-10975"/>
@@ -2132,9 +2132,9 @@
 <ellipse fill="none" stroke="black" cx="2475.49" cy="-7422.08" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.retention_body_kind -->
-<g id="node100" class="node">
+<g id="node101" class="node">
 <title>tww_vl.retention_body_kind</title>
-<g id="a_node100"><a xlink:href="../../../tww_vl/tables/retention_body_kind.html" xlink:title="tww_vl.retention_body_kind" target="_top">
+<g id="a_node101"><a xlink:href="../../../tww_vl/tables/retention_body_kind.html" xlink:title="tww_vl.retention_body_kind" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="2083.5,-7887 2083.5,-7945 2294.5,-7945 2294.5,-7887 2083.5,-7887"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="2084,-7923 2084,-7945 2295,-7945 2295,-7923 2084,-7923"/>
 <polygon fill="none" stroke="black" points="2084,-7923 2084,-7945 2295,-7945 2295,-7923 2084,-7923"/>
@@ -2290,9 +2290,9 @@
 <ellipse fill="none" stroke="black" cx="1244.3" cy="-8199.74" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.wastewater_node_elevation_accuracy -->
-<g id="node171" class="node">
+<g id="node172" class="node">
 <title>tww_vl.wastewater_node_elevation_accuracy</title>
-<g id="a_node171"><a xlink:href="../../../tww_vl/tables/wastewater_node_elevation_accuracy.html" xlink:title="tww_vl.wastewater_node_elevation_accuracy" target="_top">
+<g id="a_node172"><a xlink:href="../../../tww_vl/tables/wastewater_node_elevation_accuracy.html" xlink:title="tww_vl.wastewater_node_elevation_accuracy" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="766,-8261 766,-8319 1079,-8319 1079,-8261 766,-8261"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="766.5,-8297 766.5,-8319 1079.5,-8319 1079.5,-8297 766.5,-8297"/>
 <polygon fill="none" stroke="black" points="766.5,-8297 766.5,-8319 1079.5,-8319 1079.5,-8297 766.5,-8297"/>
@@ -2484,9 +2484,9 @@
 <ellipse fill="none" stroke="black" cx="2044.83" cy="-9464.14" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.throttle_shut_off_unit_adjustability -->
-<g id="node124" class="node">
+<g id="node126" class="node">
 <title>tww_vl.throttle_shut_off_unit_adjustability</title>
-<g id="a_node124"><a xlink:href="../../../tww_vl/tables/throttle_shut_off_unit_adjustability.html" xlink:title="tww_vl.throttle_shut_off_unit_adjustability" target="_top">
+<g id="a_node126"><a xlink:href="../../../tww_vl/tables/throttle_shut_off_unit_adjustability.html" xlink:title="tww_vl.throttle_shut_off_unit_adjustability" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1629.5,-9879 1629.5,-9937 1928.5,-9937 1928.5,-9879 1629.5,-9879"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1630,-9915 1630,-9937 1929,-9937 1929,-9915 1630,-9915"/>
 <polygon fill="none" stroke="black" points="1630,-9915 1630,-9937 1929,-9937 1929,-9915 1630,-9915"/>
@@ -2514,9 +2514,9 @@
 <ellipse fill="none" stroke="black" cx="2044.94" cy="-9642.79" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.throttle_shut_off_unit_control -->
-<g id="node167" class="node">
+<g id="node169" class="node">
 <title>tww_vl.throttle_shut_off_unit_control</title>
-<g id="a_node167"><a xlink:href="../../../tww_vl/tables/throttle_shut_off_unit_control.html" xlink:title="tww_vl.throttle_shut_off_unit_control" target="_top">
+<g id="a_node169"><a xlink:href="../../../tww_vl/tables/throttle_shut_off_unit_control.html" xlink:title="tww_vl.throttle_shut_off_unit_control" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1645.5,-9800 1645.5,-9858 1912.5,-9858 1912.5,-9800 1645.5,-9800"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1646,-9836 1646,-9858 1913,-9858 1913,-9836 1646,-9836"/>
 <polygon fill="none" stroke="black" points="1646,-9836 1646,-9858 1913,-9858 1913,-9836 1646,-9836"/>
@@ -2544,9 +2544,9 @@
 <ellipse fill="none" stroke="black" cx="2044.86" cy="-9620.16" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.throttle_shut_off_unit_signal_transmission -->
-<g id="node182" class="node">
+<g id="node183" class="node">
 <title>tww_vl.throttle_shut_off_unit_signal_transmission</title>
-<g id="a_node182"><a xlink:href="../../../tww_vl/tables/throttle_shut_off_unit_signal_t_efcd6086.html" xlink:title="tww_vl.throttle_shut_off_unit_signal_transmission" target="_top">
+<g id="a_node183"><a xlink:href="../../../tww_vl/tables/throttle_shut_off_unit_signal_t_efcd6086.html" xlink:title="tww_vl.throttle_shut_off_unit_signal_transmission" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1608,-9642 1608,-9700 1950,-9700 1950,-9642 1608,-9642"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1608,-9678 1608,-9700 1950,-9700 1950,-9678 1608,-9678"/>
 <polygon fill="none" stroke="black" points="1608,-9678 1608,-9700 1950,-9700 1950,-9678 1608,-9678"/>
@@ -2574,9 +2574,9 @@
 <ellipse fill="none" stroke="black" cx="2044.91" cy="-9554.55" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.throttle_shut_off_unit_kind -->
-<g id="node214" class="node">
+<g id="node215" class="node">
 <title>tww_vl.throttle_shut_off_unit_kind</title>
-<g id="a_node214"><a xlink:href="../../../tww_vl/tables/throttle_shut_off_unit_kind.html" xlink:title="tww_vl.throttle_shut_off_unit_kind" target="_top">
+<g id="a_node215"><a xlink:href="../../../tww_vl/tables/throttle_shut_off_unit_kind.html" xlink:title="tww_vl.throttle_shut_off_unit_kind" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1654,-9721 1654,-9779 1904,-9779 1904,-9721 1654,-9721"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1654,-9757 1654,-9779 1904,-9779 1904,-9757 1654,-9757"/>
 <polygon fill="none" stroke="black" points="1654,-9757 1654,-9779 1904,-9779 1904,-9757 1654,-9757"/>
@@ -2604,9 +2604,9 @@
 <ellipse fill="none" stroke="black" cx="2044.88" cy="-9576.35" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.throttle_shut_off_unit_actuation -->
-<g id="node219" class="node">
+<g id="node220" class="node">
 <title>tww_vl.throttle_shut_off_unit_actuation</title>
-<g id="a_node219"><a xlink:href="../../../tww_vl/tables/throttle_shut_off_unit_actuation.html" xlink:title="tww_vl.throttle_shut_off_unit_actuation" target="_top">
+<g id="a_node220"><a xlink:href="../../../tww_vl/tables/throttle_shut_off_unit_actuation.html" xlink:title="tww_vl.throttle_shut_off_unit_actuation" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1638.5,-9958 1638.5,-10016 1919.5,-10016 1919.5,-9958 1638.5,-9958"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1639,-9994 1639,-10016 1920,-10016 1920,-9994 1639,-9994"/>
 <polygon fill="none" stroke="black" points="1639,-9994 1639,-10016 1920,-10016 1920,-9994 1639,-9994"/>
@@ -2803,9 +2803,9 @@
 <ellipse fill="none" stroke="black" cx="1679.81" cy="-8850.41" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.hydraulic_char_data_main_weir_kind -->
-<g id="node156" class="node">
+<g id="node158" class="node">
 <title>tww_vl.hydraulic_char_data_main_weir_kind</title>
-<g id="a_node156"><a xlink:href="../../../tww_vl/tables/hydraulic_char_data_main_weir_kind.html" xlink:title="tww_vl.hydraulic_char_data_main_weir_kind" target="_top">
+<g id="a_node158"><a xlink:href="../../../tww_vl/tables/hydraulic_char_data_main_weir_kind.html" xlink:title="tww_vl.hydraulic_char_data_main_weir_kind" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1193,-8920 1193,-8978 1500,-8978 1500,-8920 1193,-8920"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1193.5,-8956 1193.5,-8978 1500.5,-8978 1500.5,-8956 1193.5,-8956"/>
 <polygon fill="none" stroke="black" points="1193.5,-8956 1193.5,-8978 1500.5,-8978 1500.5,-8956 1193.5,-8956"/>
@@ -2833,9 +2833,9 @@
 <ellipse fill="none" stroke="black" cx="1679.8" cy="-8981.93" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.hydraulic_char_data_pump_characteristics -->
-<g id="node159" class="node">
+<g id="node161" class="node">
 <title>tww_vl.hydraulic_char_data_pump_characteristics</title>
-<g id="a_node159"><a xlink:href="../../../tww_vl/tables/hydraulic_char_data_pump_characteristics.html" xlink:title="tww_vl.hydraulic_char_data_pump_characteristics" target="_top">
+<g id="a_node161"><a xlink:href="../../../tww_vl/tables/hydraulic_char_data_pump_characteristics.html" xlink:title="tww_vl.hydraulic_char_data_pump_characteristics" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1175.5,-8841 1175.5,-8899 1517.5,-8899 1517.5,-8841 1175.5,-8841"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1175.5,-8877 1175.5,-8899 1517.5,-8899 1517.5,-8877 1175.5,-8877"/>
 <polygon fill="none" stroke="black" points="1175.5,-8877 1175.5,-8899 1517.5,-8899 1517.5,-8877 1175.5,-8877"/>
@@ -2863,9 +2863,9 @@
 <ellipse fill="none" stroke="black" cx="1679.81" cy="-8959.59" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.hydraulic_char_data_status -->
-<g id="node208" class="node">
+<g id="node209" class="node">
 <title>tww_vl.hydraulic_char_data_status</title>
-<g id="a_node208"><a xlink:href="../../../tww_vl/tables/hydraulic_char_data_status.html" xlink:title="tww_vl.hydraulic_char_data_status" target="_top">
+<g id="a_node209"><a xlink:href="../../../tww_vl/tables/hydraulic_char_data_status.html" xlink:title="tww_vl.hydraulic_char_data_status" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1221,-8762 1221,-8820 1472,-8820 1472,-8762 1221,-8762"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1221.5,-8798 1221.5,-8820 1472.5,-8820 1472.5,-8798 1221.5,-8798"/>
 <polygon fill="none" stroke="black" points="1221.5,-8798 1221.5,-8820 1472.5,-8820 1472.5,-8798 1221.5,-8798"/>
@@ -2893,9 +2893,9 @@
 <ellipse fill="none" stroke="black" cx="1679.82" cy="-8937.3" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.hydraulic_char_data_is_overflowing -->
-<g id="node223" class="node">
+<g id="node224" class="node">
 <title>tww_vl.hydraulic_char_data_is_overflowing</title>
-<g id="a_node223"><a xlink:href="../../../tww_vl/tables/hydraulic_char_data_is_overflowing.html" xlink:title="tww_vl.hydraulic_char_data_is_overflowing" target="_top">
+<g id="a_node224"><a xlink:href="../../../tww_vl/tables/hydraulic_char_data_is_overflowing.html" xlink:title="tww_vl.hydraulic_char_data_is_overflowing" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1197,-8999 1197,-9057 1496,-9057 1496,-8999 1197,-8999"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1197.5,-9035 1197.5,-9057 1496.5,-9057 1496.5,-9035 1197.5,-9035"/>
 <polygon fill="none" stroke="black" points="1197.5,-9035 1197.5,-9057 1496.5,-9057 1496.5,-9035 1197.5,-9035"/>
@@ -3056,9 +3056,9 @@
 <ellipse fill="none" stroke="black" cx="2076.82" cy="-8012.31" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.mechanical_pretreatment_kind -->
-<g id="node188" class="node">
+<g id="node190" class="node">
 <title>tww_vl.mechanical_pretreatment_kind</title>
-<g id="a_node188"><a xlink:href="../../../tww_vl/tables/mechanical_pretreatment_kind.html" xlink:title="tww_vl.mechanical_pretreatment_kind" target="_top">
+<g id="a_node190"><a xlink:href="../../../tww_vl/tables/mechanical_pretreatment_kind.html" xlink:title="tww_vl.mechanical_pretreatment_kind" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1641,-8065 1641,-8123 1917,-8123 1917,-8065 1641,-8065"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1641,-8101 1641,-8123 1917,-8123 1917,-8101 1641,-8101"/>
 <polygon fill="none" stroke="black" points="1641,-8101 1641,-8123 1917,-8123 1917,-8101 1641,-8101"/>
@@ -3149,9 +3149,9 @@
 <ellipse fill="none" stroke="black" cx="2486.8" cy="-10404.15" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.measuring_device_kind -->
-<g id="node189" class="node">
+<g id="node191" class="node">
 <title>tww_vl.measuring_device_kind</title>
-<g id="a_node189"><a xlink:href="../../../tww_vl/tables/measuring_device_kind.html" xlink:title="tww_vl.measuring_device_kind" target="_top">
+<g id="a_node191"><a xlink:href="../../../tww_vl/tables/measuring_device_kind.html" xlink:title="tww_vl.measuring_device_kind" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="2075.5,-10467 2075.5,-10525 2302.5,-10525 2302.5,-10467 2075.5,-10467"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="2076,-10503 2076,-10525 2303,-10525 2303,-10503 2076,-10503"/>
 <polygon fill="none" stroke="black" points="2076,-10503 2076,-10525 2303,-10525 2303,-10503 2076,-10503"/>
@@ -3213,10 +3213,10 @@
 <text text-anchor="start" x="1634" y="-6357.2" font-family="Helvetica,sans-Serif" font-size="11.00">io_calculation</text>
 <polygon fill="none" stroke="black" points="1614,-6327 1614,-6349 1944,-6349 1944,-6327 1614,-6327"/>
 <image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="1619" y="-6344"/>
-<text text-anchor="start" x="1634" y="-6335.2" font-family="Helvetica,sans-Serif" font-size="11.00">relevance_matrix</text>
+<text text-anchor="start" x="1634" y="-6335.2" font-family="Helvetica,sans-Serif" font-size="11.00">kind_water_body</text>
 <polygon fill="none" stroke="black" points="1614,-6305 1614,-6327 1944,-6327 1944,-6305 1614,-6305"/>
 <image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="1619" y="-6322"/>
-<text text-anchor="start" x="1634" y="-6313.2" font-family="Helvetica,sans-Serif" font-size="11.00">type_water_body</text>
+<text text-anchor="start" x="1634" y="-6313.2" font-family="Helvetica,sans-Serif" font-size="11.00">relevance_matrix</text>
 <polygon fill="none" stroke="black" points="1614,-6287 1614,-6305 1944,-6305 1944,-6287 1614,-6287"/>
 <text text-anchor="start" x="1617" y="-6293.2" font-family="Helvetica,sans-Serif" font-size="11.00">...</text>
 <polygon fill="#ffffff" stroke="transparent" points="1614,-6269 1614,-6287 1780,-6287 1780,-6269 1614,-6269"/>
@@ -3277,47 +3277,17 @@
 </g>
 </g>
 <!-- bio_ecol_assessment&#45;&gt;maintenance_event -->
-<g id="edge16" class="edge">
+<g id="edge17" class="edge">
 <title>bio_ecol_assessment:w&#45;&gt;maintenance_event:e</title>
 <path fill="none" stroke="black" d="M1602.62,-6511.91C1548.15,-6488.25 1583.52,-6270.15 1579,-6205 1574.62,-6141.85 1577.9,-5120.68 1546,-5066 1515.25,-5013.3 1489.52,-4995 1428.5,-4995"/>
 <polygon fill="black" stroke="black" points="1613,-6509.92 1611.43,-6517.76 1609.86,-6517.45 1611.44,-6509.61 1613,-6509.92"/>
 <polyline fill="none" stroke="black" points="1613,-6514 1609.08,-6513.21 "/>
 <ellipse fill="none" stroke="black" cx="1605.94" cy="-6512.58" rx="3.2" ry="3.2"/>
 </g>
-<!-- tww_vl.bio_ecol_assessment_type_water_body -->
-<g id="node110" class="node">
-<title>tww_vl.bio_ecol_assessment_type_water_body</title>
-<g id="a_node110"><a xlink:href="../../../tww_vl/tables/bio_ecol_assessment_type_water_body.html" xlink:title="tww_vl.bio_ecol_assessment_type_water_body" target="_top">
-<polygon fill="#ffffff" stroke="transparent" points="1188,-5637 1188,-5695 1505,-5695 1505,-5637 1188,-5637"/>
-<polygon fill="#f5f5f5" stroke="transparent" points="1188.5,-5673 1188.5,-5695 1505.5,-5695 1505.5,-5673 1188.5,-5673"/>
-<polygon fill="none" stroke="black" points="1188.5,-5673 1188.5,-5695 1505.5,-5695 1505.5,-5673 1188.5,-5673"/>
-<text text-anchor="start" x="1193.5" y="-5682.2" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00">tww_vl.bio_ecol_assessment_type_water_body</text>
-<text text-anchor="start" x="1466.5" y="-5681.2" font-family="Helvetica,sans-Serif" font-size="11.00">[table]</text>
-<polygon fill="none" stroke="black" points="1188.5,-5655 1188.5,-5673 1505.5,-5673 1505.5,-5655 1188.5,-5655"/>
-<text text-anchor="start" x="1191.5" y="-5661.2" font-family="Helvetica,sans-Serif" font-size="11.00">...</text>
-<polygon fill="#ffffff" stroke="transparent" points="1188.5,-5637 1188.5,-5655 1322.5,-5655 1322.5,-5637 1188.5,-5637"/>
-<polygon fill="none" stroke="black" points="1188.5,-5637 1188.5,-5655 1322.5,-5655 1322.5,-5637 1188.5,-5637"/>
-<text text-anchor="start" x="1191.5" y="-5643.2" font-family="Helvetica,sans-Serif" font-size="11.00"> &#160;</text>
-<polygon fill="#ffffff" stroke="transparent" points="1322.5,-5637 1322.5,-5655 1422.5,-5655 1422.5,-5637 1322.5,-5637"/>
-<polygon fill="none" stroke="black" points="1322.5,-5637 1322.5,-5655 1422.5,-5655 1422.5,-5637 1322.5,-5637"/>
-<text text-anchor="start" x="1385.5" y="-5643.2" font-family="Helvetica,sans-Serif" font-size="11.00">0 rows</text>
-<polygon fill="#ffffff" stroke="transparent" points="1422.5,-5637 1422.5,-5655 1505.5,-5655 1505.5,-5637 1422.5,-5637"/>
-<polygon fill="none" stroke="black" points="1422.5,-5637 1422.5,-5655 1505.5,-5655 1505.5,-5637 1422.5,-5637"/>
-<text text-anchor="start" x="1486.5" y="-5643.2" font-family="Helvetica,sans-Serif" font-size="11.00">1 &gt;</text>
-</a>
-</g>
-</g>
-<!-- bio_ecol_assessment&#45;&gt;tww_vl.bio_ecol_assessment_type_water_body -->
-<g id="edge18" class="edge">
-<title>bio_ecol_assessment:w&#45;&gt;tww_vl.bio_ecol_assessment_type_water_body:e</title>
-<path fill="none" stroke="black" d="M1598.67,-6313.84C1488.37,-6277.96 1632.1,-5804.97 1546,-5706 1536.77,-5695.39 1525.58,-5687.12 1513.26,-5680.72"/>
-<polygon fill="black" stroke="black" points="1605.09,-6314.81 1612.46,-6319.56 1609.04,-6315.4 1613,-6316 1613,-6316 1613,-6316 1609.04,-6315.4 1613.54,-6312.44 1605.09,-6314.81 1605.09,-6314.81"/>
-<ellipse fill="none" stroke="black" cx="1601.92" cy="-6314.33" rx="3.2" ry="3.2"/>
-</g>
 <!-- tww_vl.bio_ecol_assessment_impact_external_aspect -->
-<g id="node114" class="node">
+<g id="node116" class="node">
 <title>tww_vl.bio_ecol_assessment_impact_external_aspect</title>
-<g id="a_node114"><a xlink:href="../../../tww_vl/tables/bio_ecol_assessment_impact_exte_5b9a3743.html" xlink:title="tww_vl.bio_ecol_assessment_impact_external_aspect" target="_top">
+<g id="a_node116"><a xlink:href="../../../tww_vl/tables/bio_ecol_assessment_impact_exte_5b9a3743.html" xlink:title="tww_vl.bio_ecol_assessment_impact_external_aspect" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1168,-6111 1168,-6169 1525,-6169 1525,-6111 1168,-6111"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1168.5,-6147 1168.5,-6169 1525.5,-6169 1525.5,-6147 1168.5,-6147"/>
 <polygon fill="none" stroke="black" points="1168.5,-6147 1168.5,-6169 1525.5,-6169 1525.5,-6147 1168.5,-6147"/>
@@ -3345,9 +3315,9 @@
 <ellipse fill="none" stroke="black" cx="1601.83" cy="-6447.23" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.bio_ecol_assessment_impact_macroinvertebrates -->
-<g id="node123" class="node">
+<g id="node125" class="node">
 <title>tww_vl.bio_ecol_assessment_impact_macroinvertebrates</title>
-<g id="a_node123"><a xlink:href="../../../tww_vl/tables/bio_ecol_assessment_impact_macr_f0c024dd.html" xlink:title="tww_vl.bio_ecol_assessment_impact_macroinvertebrates" target="_top">
+<g id="a_node125"><a xlink:href="../../../tww_vl/tables/bio_ecol_assessment_impact_macr_f0c024dd.html" xlink:title="tww_vl.bio_ecol_assessment_impact_macroinvertebrates" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1155,-6032 1155,-6090 1538,-6090 1538,-6032 1155,-6032"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1155.5,-6068 1155.5,-6090 1538.5,-6090 1538.5,-6068 1155.5,-6068"/>
 <polygon fill="none" stroke="black" points="1155.5,-6068 1155.5,-6090 1538.5,-6090 1538.5,-6068 1155.5,-6068"/>
@@ -3375,9 +3345,9 @@
 <ellipse fill="none" stroke="black" cx="1602.25" cy="-6422.86" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.bio_ecol_assessment_impact_water_plants -->
-<g id="node143" class="node">
+<g id="node145" class="node">
 <title>tww_vl.bio_ecol_assessment_impact_water_plants</title>
-<g id="a_node143"><a xlink:href="../../../tww_vl/tables/bio_ecol_assessment_impact_water_plants.html" xlink:title="tww_vl.bio_ecol_assessment_impact_water_plants" target="_top">
+<g id="a_node145"><a xlink:href="../../../tww_vl/tables/bio_ecol_assessment_impact_water_plants.html" xlink:title="tww_vl.bio_ecol_assessment_impact_water_plants" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1176.5,-5953 1176.5,-6011 1516.5,-6011 1516.5,-5953 1176.5,-5953"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1176.5,-5989 1176.5,-6011 1516.5,-6011 1516.5,-5989 1176.5,-5989"/>
 <polygon fill="none" stroke="black" points="1176.5,-5989 1176.5,-6011 1516.5,-6011 1516.5,-5989 1176.5,-5989"/>
@@ -3405,9 +3375,9 @@
 <ellipse fill="none" stroke="black" cx="1602.14" cy="-6401.27" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.bio_ecol_assessment_intervention_demand -->
-<g id="node169" class="node">
+<g id="node171" class="node">
 <title>tww_vl.bio_ecol_assessment_intervention_demand</title>
-<g id="a_node169"><a xlink:href="../../../tww_vl/tables/bio_ecol_assessment_intervention_demand.html" xlink:title="tww_vl.bio_ecol_assessment_intervention_demand" target="_top">
+<g id="a_node171"><a xlink:href="../../../tww_vl/tables/bio_ecol_assessment_intervention_demand.html" xlink:title="tww_vl.bio_ecol_assessment_intervention_demand" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1173.5,-5874 1173.5,-5932 1519.5,-5932 1519.5,-5874 1173.5,-5874"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1173.5,-5910 1173.5,-5932 1519.5,-5932 1519.5,-5910 1173.5,-5910"/>
 <polygon fill="none" stroke="black" points="1173.5,-5910 1173.5,-5932 1519.5,-5932 1519.5,-5910 1173.5,-5910"/>
@@ -3435,9 +3405,9 @@
 <ellipse fill="none" stroke="black" cx="1602.06" cy="-6379.6" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.bio_ecol_assessment_comparison_last -->
-<g id="node172" class="node">
+<g id="node173" class="node">
 <title>tww_vl.bio_ecol_assessment_comparison_last</title>
-<g id="a_node172"><a xlink:href="../../../tww_vl/tables/bio_ecol_assessment_comparison_last.html" xlink:title="tww_vl.bio_ecol_assessment_comparison_last" target="_top">
+<g id="a_node173"><a xlink:href="../../../tww_vl/tables/bio_ecol_assessment_comparison_last.html" xlink:title="tww_vl.bio_ecol_assessment_comparison_last" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1189.5,-6269 1189.5,-6327 1503.5,-6327 1503.5,-6269 1189.5,-6269"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1189.5,-6305 1189.5,-6327 1503.5,-6327 1503.5,-6305 1189.5,-6305"/>
 <polygon fill="none" stroke="black" points="1189.5,-6305 1189.5,-6327 1503.5,-6327 1503.5,-6305 1189.5,-6305"/>
@@ -3464,10 +3434,40 @@
 <polygon fill="black" stroke="black" points="1605.06,-6491.04 1612.57,-6495.57 1609.03,-6491.52 1613,-6492 1613,-6492 1613,-6492 1609.03,-6491.52 1613.43,-6488.43 1605.06,-6491.04 1605.06,-6491.04"/>
 <ellipse fill="none" stroke="black" cx="1601.88" cy="-6490.66" rx="3.2" ry="3.2"/>
 </g>
+<!-- tww_vl.bio_ecol_assessment_kind_water_body -->
+<g id="node184" class="node">
+<title>tww_vl.bio_ecol_assessment_kind_water_body</title>
+<g id="a_node184"><a xlink:href="../../../tww_vl/tables/bio_ecol_assessment_kind_water_body.html" xlink:title="tww_vl.bio_ecol_assessment_kind_water_body" target="_top">
+<polygon fill="#ffffff" stroke="transparent" points="1188,-5716 1188,-5774 1505,-5774 1505,-5716 1188,-5716"/>
+<polygon fill="#f5f5f5" stroke="transparent" points="1188.5,-5752 1188.5,-5774 1505.5,-5774 1505.5,-5752 1188.5,-5752"/>
+<polygon fill="none" stroke="black" points="1188.5,-5752 1188.5,-5774 1505.5,-5774 1505.5,-5752 1188.5,-5752"/>
+<text text-anchor="start" x="1193.5" y="-5761.2" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00">tww_vl.bio_ecol_assessment_kind_water_body</text>
+<text text-anchor="start" x="1466.5" y="-5760.2" font-family="Helvetica,sans-Serif" font-size="11.00">[table]</text>
+<polygon fill="none" stroke="black" points="1188.5,-5734 1188.5,-5752 1505.5,-5752 1505.5,-5734 1188.5,-5734"/>
+<text text-anchor="start" x="1191.5" y="-5740.2" font-family="Helvetica,sans-Serif" font-size="11.00">...</text>
+<polygon fill="#ffffff" stroke="transparent" points="1188.5,-5716 1188.5,-5734 1322.5,-5734 1322.5,-5716 1188.5,-5716"/>
+<polygon fill="none" stroke="black" points="1188.5,-5716 1188.5,-5734 1322.5,-5734 1322.5,-5716 1188.5,-5716"/>
+<text text-anchor="start" x="1191.5" y="-5722.2" font-family="Helvetica,sans-Serif" font-size="11.00"> &#160;</text>
+<polygon fill="#ffffff" stroke="transparent" points="1322.5,-5716 1322.5,-5734 1422.5,-5734 1422.5,-5716 1322.5,-5716"/>
+<polygon fill="none" stroke="black" points="1322.5,-5716 1322.5,-5734 1422.5,-5734 1422.5,-5716 1322.5,-5716"/>
+<text text-anchor="start" x="1385.5" y="-5722.2" font-family="Helvetica,sans-Serif" font-size="11.00">0 rows</text>
+<polygon fill="#ffffff" stroke="transparent" points="1422.5,-5716 1422.5,-5734 1505.5,-5734 1505.5,-5716 1422.5,-5716"/>
+<polygon fill="none" stroke="black" points="1422.5,-5716 1422.5,-5734 1505.5,-5734 1505.5,-5716 1422.5,-5716"/>
+<text text-anchor="start" x="1486.5" y="-5722.2" font-family="Helvetica,sans-Serif" font-size="11.00">1 &gt;</text>
+</a>
+</g>
+</g>
+<!-- bio_ecol_assessment&#45;&gt;tww_vl.bio_ecol_assessment_kind_water_body -->
+<g id="edge16" class="edge">
+<title>bio_ecol_assessment:w&#45;&gt;tww_vl.bio_ecol_assessment_kind_water_body:e</title>
+<path fill="none" stroke="black" d="M1598.76,-6335.63C1500.46,-6300.01 1624.29,-5874.08 1546,-5785 1536.72,-5774.44 1525.49,-5766.2 1513.15,-5759.82"/>
+<polygon fill="black" stroke="black" points="1605.11,-6336.69 1612.41,-6341.55 1609.05,-6337.34 1613,-6338 1613,-6338 1613,-6338 1609.05,-6337.34 1613.59,-6334.45 1605.11,-6336.69 1605.11,-6336.69"/>
+<ellipse fill="none" stroke="black" cx="1601.95" cy="-6336.16" rx="3.2" ry="3.2"/>
+</g>
 <!-- tww_vl.bio_ecol_assessment_impact_auxiliary_indic -->
-<g id="node213" class="node">
+<g id="node214" class="node">
 <title>tww_vl.bio_ecol_assessment_impact_auxiliary_indic</title>
-<g id="a_node213"><a xlink:href="../../../tww_vl/tables/bio_ecol_assessment_impact_auxi_af4c0477.html" xlink:title="tww_vl.bio_ecol_assessment_impact_auxiliary_indic" target="_top">
+<g id="a_node214"><a xlink:href="../../../tww_vl/tables/bio_ecol_assessment_impact_auxi_af4c0477.html" xlink:title="tww_vl.bio_ecol_assessment_impact_auxiliary_indic" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1172,-6190 1172,-6248 1521,-6248 1521,-6190 1172,-6190"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1172.5,-6226 1172.5,-6248 1521.5,-6248 1521.5,-6226 1172.5,-6226"/>
 <polygon fill="none" stroke="black" points="1172.5,-6226 1172.5,-6248 1521.5,-6248 1521.5,-6226 1172.5,-6226"/>
@@ -3495,9 +3495,9 @@
 <ellipse fill="none" stroke="black" cx="1601.84" cy="-6469.02" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.bio_ecol_assessment_io_calculation -->
-<g id="node216" class="node">
+<g id="node217" class="node">
 <title>tww_vl.bio_ecol_assessment_io_calculation</title>
-<g id="a_node216"><a xlink:href="../../../tww_vl/tables/bio_ecol_assessment_io_calculation.html" xlink:title="tww_vl.bio_ecol_assessment_io_calculation" target="_top">
+<g id="a_node217"><a xlink:href="../../../tww_vl/tables/bio_ecol_assessment_io_calculation.html" xlink:title="tww_vl.bio_ecol_assessment_io_calculation" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1197.5,-5795 1197.5,-5853 1495.5,-5853 1495.5,-5795 1197.5,-5795"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1197.5,-5831 1197.5,-5853 1495.5,-5853 1495.5,-5831 1197.5,-5831"/>
 <polygon fill="none" stroke="black" points="1197.5,-5831 1197.5,-5853 1495.5,-5853 1495.5,-5831 1197.5,-5831"/>
@@ -3528,31 +3528,31 @@
 <g id="node252" class="node">
 <title>tww_vl.bio_ecol_assessment_relevance_matrix</title>
 <g id="a_node252"><a xlink:href="../../../tww_vl/tables/bio_ecol_assessment_relevance_matrix.html" xlink:title="tww_vl.bio_ecol_assessment_relevance_matrix" target="_top">
-<polygon fill="#ffffff" stroke="transparent" points="1186.5,-5716 1186.5,-5774 1506.5,-5774 1506.5,-5716 1186.5,-5716"/>
-<polygon fill="#f5f5f5" stroke="transparent" points="1186.5,-5752 1186.5,-5774 1506.5,-5774 1506.5,-5752 1186.5,-5752"/>
-<polygon fill="none" stroke="black" points="1186.5,-5752 1186.5,-5774 1506.5,-5774 1506.5,-5752 1186.5,-5752"/>
-<text text-anchor="start" x="1191.5" y="-5761.2" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00">tww_vl.bio_ecol_assessment_relevance_matrix</text>
-<text text-anchor="start" x="1467.5" y="-5760.2" font-family="Helvetica,sans-Serif" font-size="11.00">[table]</text>
-<polygon fill="none" stroke="black" points="1186.5,-5734 1186.5,-5752 1506.5,-5752 1506.5,-5734 1186.5,-5734"/>
-<text text-anchor="start" x="1189.5" y="-5740.2" font-family="Helvetica,sans-Serif" font-size="11.00">...</text>
-<polygon fill="#ffffff" stroke="transparent" points="1186.5,-5716 1186.5,-5734 1321.5,-5734 1321.5,-5716 1186.5,-5716"/>
-<polygon fill="none" stroke="black" points="1186.5,-5716 1186.5,-5734 1321.5,-5734 1321.5,-5716 1186.5,-5716"/>
-<text text-anchor="start" x="1189.5" y="-5722.2" font-family="Helvetica,sans-Serif" font-size="11.00"> &#160;</text>
-<polygon fill="#ffffff" stroke="transparent" points="1321.5,-5716 1321.5,-5734 1422.5,-5734 1422.5,-5716 1321.5,-5716"/>
-<polygon fill="none" stroke="black" points="1321.5,-5716 1321.5,-5734 1422.5,-5734 1422.5,-5716 1321.5,-5716"/>
-<text text-anchor="start" x="1385.5" y="-5722.2" font-family="Helvetica,sans-Serif" font-size="11.00">0 rows</text>
-<polygon fill="#ffffff" stroke="transparent" points="1422.5,-5716 1422.5,-5734 1506.5,-5734 1506.5,-5716 1422.5,-5716"/>
-<polygon fill="none" stroke="black" points="1422.5,-5716 1422.5,-5734 1506.5,-5734 1506.5,-5716 1422.5,-5716"/>
-<text text-anchor="start" x="1487.5" y="-5722.2" font-family="Helvetica,sans-Serif" font-size="11.00">1 &gt;</text>
+<polygon fill="#ffffff" stroke="transparent" points="1186.5,-5637 1186.5,-5695 1506.5,-5695 1506.5,-5637 1186.5,-5637"/>
+<polygon fill="#f5f5f5" stroke="transparent" points="1186.5,-5673 1186.5,-5695 1506.5,-5695 1506.5,-5673 1186.5,-5673"/>
+<polygon fill="none" stroke="black" points="1186.5,-5673 1186.5,-5695 1506.5,-5695 1506.5,-5673 1186.5,-5673"/>
+<text text-anchor="start" x="1191.5" y="-5682.2" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00">tww_vl.bio_ecol_assessment_relevance_matrix</text>
+<text text-anchor="start" x="1467.5" y="-5681.2" font-family="Helvetica,sans-Serif" font-size="11.00">[table]</text>
+<polygon fill="none" stroke="black" points="1186.5,-5655 1186.5,-5673 1506.5,-5673 1506.5,-5655 1186.5,-5655"/>
+<text text-anchor="start" x="1189.5" y="-5661.2" font-family="Helvetica,sans-Serif" font-size="11.00">...</text>
+<polygon fill="#ffffff" stroke="transparent" points="1186.5,-5637 1186.5,-5655 1321.5,-5655 1321.5,-5637 1186.5,-5637"/>
+<polygon fill="none" stroke="black" points="1186.5,-5637 1186.5,-5655 1321.5,-5655 1321.5,-5637 1186.5,-5637"/>
+<text text-anchor="start" x="1189.5" y="-5643.2" font-family="Helvetica,sans-Serif" font-size="11.00"> &#160;</text>
+<polygon fill="#ffffff" stroke="transparent" points="1321.5,-5637 1321.5,-5655 1422.5,-5655 1422.5,-5637 1321.5,-5637"/>
+<polygon fill="none" stroke="black" points="1321.5,-5637 1321.5,-5655 1422.5,-5655 1422.5,-5637 1321.5,-5637"/>
+<text text-anchor="start" x="1385.5" y="-5643.2" font-family="Helvetica,sans-Serif" font-size="11.00">0 rows</text>
+<polygon fill="#ffffff" stroke="transparent" points="1422.5,-5637 1422.5,-5655 1506.5,-5655 1506.5,-5637 1422.5,-5637"/>
+<polygon fill="none" stroke="black" points="1422.5,-5637 1422.5,-5655 1506.5,-5655 1506.5,-5637 1422.5,-5637"/>
+<text text-anchor="start" x="1487.5" y="-5643.2" font-family="Helvetica,sans-Serif" font-size="11.00">1 &gt;</text>
 </a>
 </g>
 </g>
 <!-- bio_ecol_assessment&#45;&gt;tww_vl.bio_ecol_assessment_relevance_matrix -->
-<g id="edge17" class="edge">
+<g id="edge18" class="edge">
 <title>bio_ecol_assessment:w&#45;&gt;tww_vl.bio_ecol_assessment_relevance_matrix:e</title>
-<path fill="none" stroke="black" d="M1598.76,-6335.63C1500.46,-6300.01 1624.29,-5874.08 1546,-5785 1537.07,-5774.83 1526.33,-5766.82 1514.53,-5760.54"/>
-<polygon fill="black" stroke="black" points="1605.11,-6336.69 1612.41,-6341.55 1609.05,-6337.34 1613,-6338 1613,-6338 1613,-6338 1609.05,-6337.34 1613.59,-6334.45 1605.11,-6336.69 1605.11,-6336.69"/>
-<ellipse fill="none" stroke="black" cx="1601.95" cy="-6336.16" rx="3.2" ry="3.2"/>
+<path fill="none" stroke="black" d="M1598.67,-6313.84C1488.37,-6277.96 1632.1,-5804.97 1546,-5706 1537.12,-5695.79 1526.42,-5687.74 1514.64,-5681.45"/>
+<polygon fill="black" stroke="black" points="1605.09,-6314.81 1612.46,-6319.56 1609.04,-6315.4 1613,-6316 1613,-6316 1613,-6316 1609.04,-6315.4 1613.54,-6312.44 1605.09,-6314.81 1605.09,-6314.81"/>
+<ellipse fill="none" stroke="black" cx="1601.92" cy="-6314.33" rx="3.2" ry="3.2"/>
 </g>
 <!-- network_node -->
 <g id="node24" class="node">
@@ -3716,9 +3716,9 @@
 <ellipse fill="none" stroke="black" cx="1697.8" cy="-4110" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.examination_weather -->
-<g id="node145" class="node">
+<g id="node147" class="node">
 <title>tww_vl.examination_weather</title>
-<g id="a_node145"><a xlink:href="../../../tww_vl/tables/examination_weather.html" xlink:title="tww_vl.examination_weather" target="_top">
+<g id="a_node147"><a xlink:href="../../../tww_vl/tables/examination_weather.html" xlink:title="tww_vl.examination_weather" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1237,-4008 1237,-4066 1456,-4066 1456,-4008 1237,-4008"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1237.5,-4044 1237.5,-4066 1456.5,-4066 1456.5,-4044 1237.5,-4044"/>
 <polygon fill="none" stroke="black" points="1237.5,-4044 1237.5,-4066 1456.5,-4066 1456.5,-4044 1237.5,-4044"/>
@@ -3746,9 +3746,9 @@
 <ellipse fill="none" stroke="black" cx="1693.8" cy="-4065.94" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.examination_recording_type -->
-<g id="node177" class="node">
+<g id="node178" class="node">
 <title>tww_vl.examination_recording_type</title>
-<g id="a_node177"><a xlink:href="../../../tww_vl/tables/examination_recording_type.html" xlink:title="tww_vl.examination_recording_type" target="_top">
+<g id="a_node178"><a xlink:href="../../../tww_vl/tables/examination_recording_type.html" xlink:title="tww_vl.examination_recording_type" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1217.5,-4087 1217.5,-4145 1475.5,-4145 1475.5,-4087 1217.5,-4087"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1217.5,-4123 1217.5,-4145 1475.5,-4145 1475.5,-4123 1217.5,-4123"/>
 <polygon fill="none" stroke="black" points="1217.5,-4123 1217.5,-4145 1475.5,-4145 1475.5,-4123 1217.5,-4123"/>
@@ -4016,9 +4016,9 @@
 <ellipse fill="none" stroke="black" cx="2030.84" cy="-5750.99" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.catchment_area_drainage_system_planned -->
-<g id="node120" class="node">
+<g id="node122" class="node">
 <title>tww_vl.catchment_area_drainage_system_planned</title>
-<g id="a_node120"><a xlink:href="../../../tww_vl/tables/catchment_area_drainage_system_planned.html" xlink:title="tww_vl.catchment_area_drainage_system_planned" target="_top">
+<g id="a_node122"><a xlink:href="../../../tww_vl/tables/catchment_area_drainage_system_planned.html" xlink:title="tww_vl.catchment_area_drainage_system_planned" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1607,-5899 1607,-5957 1951,-5957 1951,-5899 1607,-5899"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1607,-5935 1607,-5957 1951,-5957 1951,-5935 1607,-5935"/>
 <polygon fill="none" stroke="black" points="1607,-5935 1607,-5957 1951,-5957 1951,-5935 1607,-5935"/>
@@ -4046,9 +4046,9 @@
 <ellipse fill="none" stroke="black" cx="2030.88" cy="-5729.3" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.catchment_area_direct_discharge_planned -->
-<g id="node134" class="node">
+<g id="node136" class="node">
 <title>tww_vl.catchment_area_direct_discharge_planned</title>
-<g id="a_node134"><a xlink:href="../../../tww_vl/tables/catchment_area_direct_discharge_planned.html" xlink:title="tww_vl.catchment_area_direct_discharge_planned" target="_top">
+<g id="a_node136"><a xlink:href="../../../tww_vl/tables/catchment_area_direct_discharge_planned.html" xlink:title="tww_vl.catchment_area_direct_discharge_planned" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1608.5,-6057 1608.5,-6115 1949.5,-6115 1949.5,-6057 1608.5,-6057"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1609,-6093 1609,-6115 1950,-6115 1950,-6093 1609,-6093"/>
 <polygon fill="none" stroke="black" points="1609,-6093 1609,-6115 1950,-6115 1950,-6093 1609,-6093"/>
@@ -4076,9 +4076,9 @@
 <ellipse fill="none" stroke="black" cx="2030.83" cy="-5772.77" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.catchment_area_infiltration_planned -->
-<g id="node154" class="node">
+<g id="node156" class="node">
 <title>tww_vl.catchment_area_infiltration_planned</title>
-<g id="a_node154"><a xlink:href="../../../tww_vl/tables/catchment_area_infiltration_planned.html" xlink:title="tww_vl.catchment_area_infiltration_planned" target="_top">
+<g id="a_node156"><a xlink:href="../../../tww_vl/tables/catchment_area_infiltration_planned.html" xlink:title="tww_vl.catchment_area_infiltration_planned" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1624.5,-5741 1624.5,-5799 1933.5,-5799 1933.5,-5741 1624.5,-5741"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1625,-5777 1625,-5799 1934,-5799 1934,-5777 1625,-5777"/>
 <polygon fill="none" stroke="black" points="1625,-5777 1625,-5799 1934,-5799 1934,-5777 1625,-5777"/>
@@ -4106,9 +4106,9 @@
 <ellipse fill="none" stroke="black" cx="2030.99" cy="-5664.03" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.catchment_area_direct_discharge_current -->
-<g id="node179" class="node">
+<g id="node180" class="node">
 <title>tww_vl.catchment_area_direct_discharge_current</title>
-<g id="a_node179"><a xlink:href="../../../tww_vl/tables/catchment_area_direct_discharge_current.html" xlink:title="tww_vl.catchment_area_direct_discharge_current" target="_top">
+<g id="a_node180"><a xlink:href="../../../tww_vl/tables/catchment_area_direct_discharge_current.html" xlink:title="tww_vl.catchment_area_direct_discharge_current" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1610,-6136 1610,-6194 1948,-6194 1948,-6136 1610,-6136"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1610,-6172 1610,-6194 1948,-6194 1948,-6172 1610,-6172"/>
 <polygon fill="none" stroke="black" points="1610,-6172 1610,-6194 1948,-6194 1948,-6172 1610,-6172"/>
@@ -4136,9 +4136,9 @@
 <ellipse fill="none" stroke="black" cx="2030.82" cy="-5794.63" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.catchment_area_retention_planned -->
-<g id="node186" class="node">
+<g id="node188" class="node">
 <title>tww_vl.catchment_area_retention_planned</title>
-<g id="a_node186"><a xlink:href="../../../tww_vl/tables/catchment_area_retention_planned.html" xlink:title="tww_vl.catchment_area_retention_planned" target="_top">
+<g id="a_node188"><a xlink:href="../../../tww_vl/tables/catchment_area_retention_planned.html" xlink:title="tww_vl.catchment_area_retention_planned" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1629,-5583 1629,-5641 1929,-5641 1929,-5583 1629,-5583"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1629,-5619 1629,-5641 1929,-5641 1929,-5619 1629,-5619"/>
 <polygon fill="none" stroke="black" points="1629,-5619 1629,-5641 1929,-5641 1929,-5619 1629,-5619"/>
@@ -4166,9 +4166,9 @@
 <ellipse fill="none" stroke="black" cx="2030.8" cy="-5596.06" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.catchment_area_retention_current -->
-<g id="node200" class="node">
+<g id="node201" class="node">
 <title>tww_vl.catchment_area_retention_current</title>
-<g id="a_node200"><a xlink:href="../../../tww_vl/tables/catchment_area_retention_current.html" xlink:title="tww_vl.catchment_area_retention_current" target="_top">
+<g id="a_node201"><a xlink:href="../../../tww_vl/tables/catchment_area_retention_current.html" xlink:title="tww_vl.catchment_area_retention_current" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1630.5,-5662 1630.5,-5720 1927.5,-5720 1927.5,-5662 1630.5,-5662"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1631,-5698 1631,-5720 1928,-5720 1928,-5698 1631,-5698"/>
 <polygon fill="none" stroke="black" points="1631,-5698 1631,-5720 1928,-5720 1928,-5698 1631,-5698"/>
@@ -4261,9 +4261,9 @@
 <ellipse fill="none" stroke="black" cx="2512.8" cy="-2566.22" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.access_aid_kind -->
-<g id="node147" class="node">
+<g id="node149" class="node">
 <title>tww_vl.access_aid_kind</title>
-<g id="a_node147"><a xlink:href="../../../tww_vl/tables/access_aid_kind.html" xlink:title="tww_vl.access_aid_kind" target="_top">
+<g id="a_node149"><a xlink:href="../../../tww_vl/tables/access_aid_kind.html" xlink:title="tww_vl.access_aid_kind" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="2098,-432 2098,-490 2280,-490 2280,-432 2098,-432"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="2098,-468 2098,-490 2280,-490 2280,-468 2098,-468"/>
 <polygon fill="none" stroke="black" points="2098,-468 2098,-490 2280,-490 2280,-468 2098,-468"/>
@@ -4305,9 +4305,9 @@
 <ellipse fill="none" stroke="black" cx="427.41" cy="-8147.85" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.organisation_status -->
-<g id="node196" class="node">
+<g id="node198" class="node">
 <title>tww_vl.organisation_status</title>
-<g id="a_node196"><a xlink:href="../../../tww_vl/tables/organisation_status.html" xlink:title="tww_vl.organisation_status" target="_top">
+<g id="a_node198"><a xlink:href="../../../tww_vl/tables/organisation_status.html" xlink:title="tww_vl.organisation_status" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="43,-8129 43,-8187 249,-8187 249,-8129 43,-8129"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="43,-8165 43,-8187 249,-8187 249,-8165 43,-8165"/>
 <polygon fill="none" stroke="black" points="43,-8165 43,-8187 249,-8187 249,-8165 43,-8165"/>
@@ -4335,9 +4335,9 @@
 <ellipse fill="none" stroke="black" cx="425.3" cy="-8186.91" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.organisation_organisation_type -->
-<g id="node226" class="node">
+<g id="node227" class="node">
 <title>tww_vl.organisation_organisation_type</title>
-<g id="a_node226"><a xlink:href="../../../tww_vl/tables/organisation_organisation_type.html" xlink:title="tww_vl.organisation_organisation_type" target="_top">
+<g id="a_node227"><a xlink:href="../../../tww_vl/tables/organisation_organisation_type.html" xlink:title="tww_vl.organisation_organisation_type" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="8,-8208 8,-8266 284,-8266 284,-8208 8,-8208"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="8,-8244 8,-8266 284,-8266 284,-8244 8,-8244"/>
 <polygon fill="none" stroke="black" points="8,-8244 8,-8266 284,-8266 284,-8244 8,-8244"/>
@@ -4414,9 +4414,9 @@
 <ellipse fill="none" stroke="black" cx="1679.32" cy="-5160.63" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.log_card_control_remote_control -->
-<g id="node127" class="node">
+<g id="node129" class="node">
 <title>tww_vl.log_card_control_remote_control</title>
-<g id="a_node127"><a xlink:href="../../../tww_vl/tables/log_card_control_remote_control.html" xlink:title="tww_vl.log_card_control_remote_control" target="_top">
+<g id="a_node129"><a xlink:href="../../../tww_vl/tables/log_card_control_remote_control.html" xlink:title="tww_vl.log_card_control_remote_control" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1205,-5342 1205,-5400 1488,-5400 1488,-5342 1205,-5342"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1205.5,-5378 1205.5,-5400 1488.5,-5400 1488.5,-5378 1205.5,-5378"/>
 <polygon fill="none" stroke="black" points="1205.5,-5378 1205.5,-5400 1488.5,-5400 1488.5,-5378 1205.5,-5378"/>
@@ -4444,9 +4444,9 @@
 <ellipse fill="none" stroke="black" cx="1676.88" cy="-5310.37" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.log_card_information_source -->
-<g id="node192" class="node">
+<g id="node194" class="node">
 <title>tww_vl.log_card_information_source</title>
-<g id="a_node192"><a xlink:href="../../../tww_vl/tables/log_card_information_source.html" xlink:title="tww_vl.log_card_information_source" target="_top">
+<g id="a_node194"><a xlink:href="../../../tww_vl/tables/log_card_information_source.html" xlink:title="tww_vl.log_card_information_source" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1216.5,-5263 1216.5,-5321 1476.5,-5321 1476.5,-5263 1216.5,-5263"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1216.5,-5299 1216.5,-5321 1476.5,-5321 1476.5,-5299 1216.5,-5299"/>
 <polygon fill="none" stroke="black" points="1216.5,-5299 1216.5,-5321 1476.5,-5321 1476.5,-5299 1216.5,-5299"/>
@@ -4555,9 +4555,9 @@
 <ellipse fill="none" stroke="black" cx="2105.81" cy="-4194.6" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.damage_connection -->
-<g id="node161" class="node">
+<g id="node163" class="node">
 <title>tww_vl.damage_connection</title>
-<g id="a_node161"><a xlink:href="../../../tww_vl/tables/damage_connection.html" xlink:title="tww_vl.damage_connection" target="_top">
+<g id="a_node163"><a xlink:href="../../../tww_vl/tables/damage_connection.html" xlink:title="tww_vl.damage_connection" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1675,-4243 1675,-4301 1883,-4301 1883,-4243 1675,-4243"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1675,-4279 1675,-4301 1883,-4301 1883,-4279 1675,-4279"/>
 <polygon fill="none" stroke="black" points="1675,-4279 1675,-4301 1883,-4301 1883,-4279 1675,-4279"/>
@@ -4585,9 +4585,9 @@
 <ellipse fill="none" stroke="black" cx="2105.8" cy="-4261.03" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.damage_single_damage_class -->
-<g id="node220" class="node">
+<g id="node221" class="node">
 <title>tww_vl.damage_single_damage_class</title>
-<g id="a_node220"><a xlink:href="../../../tww_vl/tables/damage_single_damage_class.html" xlink:title="tww_vl.damage_single_damage_class" target="_top">
+<g id="a_node221"><a xlink:href="../../../tww_vl/tables/damage_single_damage_class.html" xlink:title="tww_vl.damage_single_damage_class" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1648,-4164 1648,-4222 1910,-4222 1910,-4164 1648,-4164"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1648,-4200 1648,-4222 1910,-4222 1910,-4200 1648,-4200"/>
 <polygon fill="none" stroke="black" points="1648,-4200 1648,-4222 1910,-4222 1910,-4200 1648,-4200"/>
@@ -4650,9 +4650,9 @@
 <ellipse fill="none" stroke="black" cx="2488.81" cy="-1487.4" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.dryweather_flume_material -->
-<g id="node184" class="node">
+<g id="node186" class="node">
 <title>tww_vl.dryweather_flume_material</title>
-<g id="a_node184"><a xlink:href="../../../tww_vl/tables/dryweather_flume_material.html" xlink:title="tww_vl.dryweather_flume_material" target="_top">
+<g id="a_node186"><a xlink:href="../../../tww_vl/tables/dryweather_flume_material.html" xlink:title="tww_vl.dryweather_flume_material" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="2062,-353 2062,-411 2316,-411 2316,-353 2062,-353"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="2062,-389 2062,-411 2316,-411 2316,-389 2062,-389"/>
 <polygon fill="none" stroke="black" points="2062,-389 2062,-411 2316,-411 2316,-389 2062,-389"/>
@@ -4725,9 +4725,9 @@
 <ellipse fill="none" stroke="black" cx="2072.81" cy="-4071.57" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.wwtp_structure_kind -->
-<g id="node118" class="node">
+<g id="node120" class="node">
 <title>tww_vl.wwtp_structure_kind</title>
-<g id="a_node118"><a xlink:href="../../../tww_vl/tables/wwtp_structure_kind.html" xlink:title="tww_vl.wwtp_structure_kind" target="_top">
+<g id="a_node120"><a xlink:href="../../../tww_vl/tables/wwtp_structure_kind.html" xlink:title="tww_vl.wwtp_structure_kind" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1672,-3591 1672,-3649 1886,-3649 1886,-3591 1672,-3591"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1672,-3627 1672,-3649 1886,-3649 1886,-3627 1672,-3627"/>
 <polygon fill="none" stroke="black" points="1672,-3627 1672,-3649 1886,-3649 1886,-3627 1672,-3627"/>
@@ -4790,9 +4790,9 @@
 <ellipse fill="none" stroke="black" cx="1709.8" cy="-5031.94" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.maintenance_kind -->
-<g id="node133" class="node">
+<g id="node135" class="node">
 <title>tww_vl.maintenance_kind</title>
-<g id="a_node133"><a xlink:href="../../../tww_vl/tables/maintenance_kind.html" xlink:title="tww_vl.maintenance_kind" target="_top">
+<g id="a_node135"><a xlink:href="../../../tww_vl/tables/maintenance_kind.html" xlink:title="tww_vl.maintenance_kind" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1247,-5076 1247,-5134 1446,-5134 1446,-5076 1247,-5076"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1247.5,-5112 1247.5,-5134 1446.5,-5134 1446.5,-5112 1247.5,-5112"/>
 <polygon fill="none" stroke="black" points="1247.5,-5112 1247.5,-5134 1446.5,-5134 1446.5,-5112 1247.5,-5112"/>
@@ -4880,9 +4880,9 @@
 <ellipse fill="none" stroke="black" cx="2103.81" cy="-1564.46" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.channel_seepage -->
-<g id="node97" class="node">
+<g id="node98" class="node">
 <title>tww_vl.channel_seepage</title>
-<g id="a_node97"><a xlink:href="../../../tww_vl/tables/channel_seepage.html" xlink:title="tww_vl.channel_seepage" target="_top">
+<g id="a_node98"><a xlink:href="../../../tww_vl/tables/channel_seepage.html" xlink:title="tww_vl.channel_seepage" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1684,-1289 1684,-1347 1874,-1347 1874,-1289 1684,-1289"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1684,-1325 1684,-1347 1874,-1347 1874,-1325 1684,-1325"/>
 <polygon fill="none" stroke="black" points="1684,-1325 1684,-1347 1874,-1347 1874,-1325 1684,-1325"/>
@@ -4910,9 +4910,9 @@
 <ellipse fill="none" stroke="black" cx="2099.82" cy="-1431.31" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.channel_usage_planned -->
-<g id="node119" class="node">
+<g id="node121" class="node">
 <title>tww_vl.channel_usage_planned</title>
-<g id="a_node119"><a xlink:href="../../../tww_vl/tables/channel_usage_planned.html" xlink:title="tww_vl.channel_usage_planned" target="_top">
+<g id="a_node121"><a xlink:href="../../../tww_vl/tables/channel_usage_planned.html" xlink:title="tww_vl.channel_usage_planned" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1664,-1131 1664,-1189 1894,-1189 1894,-1131 1664,-1131"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1664,-1167 1664,-1189 1894,-1189 1894,-1167 1664,-1167"/>
 <polygon fill="none" stroke="black" points="1664,-1167 1664,-1189 1894,-1189 1894,-1167 1664,-1167"/>
@@ -4940,9 +4940,9 @@
 <ellipse fill="none" stroke="black" cx="2099.83" cy="-1387.17" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.channel_function_hydraulic -->
-<g id="node122" class="node">
+<g id="node124" class="node">
 <title>tww_vl.channel_function_hydraulic</title>
-<g id="a_node122"><a xlink:href="../../../tww_vl/tables/channel_function_hydraulic.html" xlink:title="tww_vl.channel_function_hydraulic" target="_top">
+<g id="a_node124"><a xlink:href="../../../tww_vl/tables/channel_function_hydraulic.html" xlink:title="tww_vl.channel_function_hydraulic" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1652.5,-1368 1652.5,-1426 1905.5,-1426 1905.5,-1368 1652.5,-1368"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1653,-1404 1653,-1426 1906,-1426 1906,-1404 1653,-1404"/>
 <polygon fill="none" stroke="black" points="1653,-1404 1653,-1426 1906,-1426 1906,-1404 1653,-1404"/>
@@ -4970,9 +4970,9 @@
 <ellipse fill="none" stroke="black" cx="2099.83" cy="-1453.12" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.channel_function_hierarchic -->
-<g id="node137" class="node">
+<g id="node139" class="node">
 <title>tww_vl.channel_function_hierarchic</title>
-<g id="a_node137"><a xlink:href="../../../tww_vl/tables/channel_function_hierarchic.html" xlink:title="tww_vl.channel_function_hierarchic" target="_top">
+<g id="a_node139"><a xlink:href="../../../tww_vl/tables/channel_function_hierarchic.html" xlink:title="tww_vl.channel_function_hierarchic" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1650.5,-1447 1650.5,-1505 1907.5,-1505 1907.5,-1447 1650.5,-1447"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1651,-1483 1651,-1505 1908,-1505 1908,-1483 1651,-1483"/>
 <polygon fill="none" stroke="black" points="1651,-1483 1651,-1505 1908,-1505 1908,-1483 1651,-1483"/>
@@ -5000,9 +5000,9 @@
 <ellipse fill="none" stroke="black" cx="2099.8" cy="-1476" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.channel_function_amelioration -->
-<g id="node141" class="node">
+<g id="node143" class="node">
 <title>tww_vl.channel_function_amelioration</title>
-<g id="a_node141"><a xlink:href="../../../tww_vl/tables/channel_function_amelioration.html" xlink:title="tww_vl.channel_function_amelioration" target="_top">
+<g id="a_node143"><a xlink:href="../../../tww_vl/tables/channel_function_amelioration.html" xlink:title="tww_vl.channel_function_amelioration" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1642,-1526 1642,-1584 1916,-1584 1916,-1526 1642,-1526"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1642,-1562 1642,-1584 1916,-1584 1916,-1562 1642,-1562"/>
 <polygon fill="none" stroke="black" points="1642,-1562 1642,-1584 1916,-1584 1916,-1562 1642,-1562"/>
@@ -5030,9 +5030,9 @@
 <ellipse fill="none" stroke="black" cx="2099.81" cy="-1498.42" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.channel_connection_type -->
-<g id="node146" class="node">
+<g id="node148" class="node">
 <title>tww_vl.channel_connection_type</title>
-<g id="a_node146"><a xlink:href="../../../tww_vl/tables/channel_connection_type.html" xlink:title="tww_vl.channel_connection_type" target="_top">
+<g id="a_node148"><a xlink:href="../../../tww_vl/tables/channel_connection_type.html" xlink:title="tww_vl.channel_connection_type" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1659.5,-1605 1659.5,-1663 1898.5,-1663 1898.5,-1605 1659.5,-1605"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1660,-1641 1660,-1663 1899,-1663 1899,-1641 1660,-1641"/>
 <polygon fill="none" stroke="black" points="1660,-1641 1660,-1663 1899,-1663 1899,-1641 1660,-1641"/>
@@ -5060,9 +5060,9 @@
 <ellipse fill="none" stroke="black" cx="2099.82" cy="-1520.68" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.channel_bedding_encasement -->
-<g id="node185" class="node">
+<g id="node187" class="node">
 <title>tww_vl.channel_bedding_encasement</title>
-<g id="a_node185"><a xlink:href="../../../tww_vl/tables/channel_bedding_encasement.html" xlink:title="tww_vl.channel_bedding_encasement" target="_top">
+<g id="a_node187"><a xlink:href="../../../tww_vl/tables/channel_bedding_encasement.html" xlink:title="tww_vl.channel_bedding_encasement" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1645.5,-1684 1645.5,-1742 1912.5,-1742 1912.5,-1684 1645.5,-1684"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1646,-1720 1646,-1742 1913,-1742 1913,-1720 1646,-1720"/>
 <polygon fill="none" stroke="black" points="1646,-1720 1646,-1742 1913,-1742 1913,-1720 1646,-1720"/>
@@ -5090,9 +5090,9 @@
 <ellipse fill="none" stroke="black" cx="2099.83" cy="-1542.84" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.channel_usage_current -->
-<g id="node228" class="node">
+<g id="node229" class="node">
 <title>tww_vl.channel_usage_current</title>
-<g id="a_node228"><a xlink:href="../../../tww_vl/tables/channel_usage_current.html" xlink:title="tww_vl.channel_usage_current" target="_top">
+<g id="a_node229"><a xlink:href="../../../tww_vl/tables/channel_usage_current.html" xlink:title="tww_vl.channel_usage_current" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1666,-1210 1666,-1268 1892,-1268 1892,-1210 1666,-1210"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1666,-1246 1666,-1268 1892,-1268 1892,-1246 1666,-1246"/>
 <polygon fill="none" stroke="black" points="1666,-1246 1666,-1268 1892,-1268 1892,-1246 1666,-1246"/>
@@ -5155,9 +5155,9 @@
 <ellipse fill="none" stroke="black" cx="2516.8" cy="-895.13" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.benching_kind -->
-<g id="node139" class="node">
+<g id="node141" class="node">
 <title>tww_vl.benching_kind</title>
-<g id="a_node139"><a xlink:href="../../../tww_vl/tables/benching_kind.html" xlink:title="tww_vl.benching_kind" target="_top">
+<g id="a_node141"><a xlink:href="../../../tww_vl/tables/benching_kind.html" xlink:title="tww_vl.benching_kind" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="2101.5,-274 2101.5,-332 2276.5,-332 2276.5,-274 2101.5,-274"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="2102,-310 2102,-332 2277,-332 2277,-310 2102,-310"/>
 <polygon fill="none" stroke="black" points="2102,-310 2102,-332 2277,-332 2277,-310 2102,-310"/>
@@ -5227,9 +5227,9 @@
 <ellipse fill="none" stroke="black" cx="1694.82" cy="-9270.61" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.overflow_adjustability -->
-<g id="node160" class="node">
+<g id="node162" class="node">
 <title>tww_vl.overflow_adjustability</title>
-<g id="a_node160"><a xlink:href="../../../tww_vl/tables/overflow_adjustability.html" xlink:title="tww_vl.overflow_adjustability" target="_top">
+<g id="a_node162"><a xlink:href="../../../tww_vl/tables/overflow_adjustability.html" xlink:title="tww_vl.overflow_adjustability" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1236,-9904 1236,-9962 1457,-9962 1457,-9904 1236,-9904"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1236.5,-9940 1236.5,-9962 1457.5,-9962 1457.5,-9940 1236.5,-9940"/>
 <polygon fill="none" stroke="black" points="1236.5,-9940 1236.5,-9962 1457.5,-9962 1457.5,-9940 1236.5,-9940"/>
@@ -5257,9 +5257,9 @@
 <ellipse fill="none" stroke="black" cx="1694.81" cy="-9490.39" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.overflow_control -->
-<g id="node173" class="node">
+<g id="node174" class="node">
 <title>tww_vl.overflow_control</title>
-<g id="a_node173"><a xlink:href="../../../tww_vl/tables/overflow_control.html" xlink:title="tww_vl.overflow_control" target="_top">
+<g id="a_node174"><a xlink:href="../../../tww_vl/tables/overflow_control.html" xlink:title="tww_vl.overflow_control" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1252,-9825 1252,-9883 1441,-9883 1441,-9825 1252,-9825"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1252.5,-9861 1252.5,-9883 1441.5,-9883 1441.5,-9861 1252.5,-9861"/>
 <polygon fill="none" stroke="black" points="1252.5,-9861 1252.5,-9883 1441.5,-9883 1441.5,-9861 1252.5,-9861"/>
@@ -5287,9 +5287,9 @@
 <ellipse fill="none" stroke="black" cx="1694.81" cy="-9468.49" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.overflow_actuation -->
-<g id="node193" class="node">
+<g id="node195" class="node">
 <title>tww_vl.overflow_actuation</title>
-<g id="a_node193"><a xlink:href="../../../tww_vl/tables/overflow_actuation.html" xlink:title="tww_vl.overflow_actuation" target="_top">
+<g id="a_node195"><a xlink:href="../../../tww_vl/tables/overflow_actuation.html" xlink:title="tww_vl.overflow_actuation" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1244.5,-9983 1244.5,-10041 1448.5,-10041 1448.5,-9983 1244.5,-9983"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1244.5,-10019 1244.5,-10041 1448.5,-10041 1448.5,-10019 1244.5,-10019"/>
 <polygon fill="none" stroke="black" points="1244.5,-10019 1244.5,-10041 1448.5,-10041 1448.5,-10019 1244.5,-10019"/>
@@ -5317,9 +5317,9 @@
 <ellipse fill="none" stroke="black" cx="1694.8" cy="-9512.23" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.overflow_function -->
-<g id="node204" class="node">
+<g id="node205" class="node">
 <title>tww_vl.overflow_function</title>
-<g id="a_node204"><a xlink:href="../../../tww_vl/tables/overflow_function.html" xlink:title="tww_vl.overflow_function" target="_top">
+<g id="a_node205"><a xlink:href="../../../tww_vl/tables/overflow_function.html" xlink:title="tww_vl.overflow_function" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1248,-9746 1248,-9804 1445,-9804 1445,-9746 1248,-9746"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1248.5,-9782 1248.5,-9804 1445.5,-9804 1445.5,-9782 1248.5,-9782"/>
 <polygon fill="none" stroke="black" points="1248.5,-9782 1248.5,-9804 1445.5,-9804 1445.5,-9782 1248.5,-9782"/>
@@ -5347,9 +5347,9 @@
 <ellipse fill="none" stroke="black" cx="1694.81" cy="-9446.55" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.overflow_signal_transmission -->
-<g id="node231" class="node">
+<g id="node232" class="node">
 <title>tww_vl.overflow_signal_transmission</title>
-<g id="a_node231"><a xlink:href="../../../tww_vl/tables/overflow_signal_transmission.html" xlink:title="tww_vl.overflow_signal_transmission" target="_top">
+<g id="a_node232"><a xlink:href="../../../tww_vl/tables/overflow_signal_transmission.html" xlink:title="tww_vl.overflow_signal_transmission" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1214.5,-9667 1214.5,-9725 1478.5,-9725 1478.5,-9667 1214.5,-9667"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1214.5,-9703 1214.5,-9725 1478.5,-9725 1478.5,-9703 1214.5,-9703"/>
 <polygon fill="none" stroke="black" points="1214.5,-9703 1214.5,-9725 1478.5,-9725 1478.5,-9703 1214.5,-9703"/>
@@ -5415,9 +5415,9 @@
 <ellipse fill="none" stroke="black" cx="1266.3" cy="-6683.15" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.drainage_system_kind -->
-<g id="node149" class="node">
+<g id="node151" class="node">
 <title>tww_vl.drainage_system_kind</title>
-<g id="a_node149"><a xlink:href="../../../tww_vl/tables/drainage_system_kind.html" xlink:title="tww_vl.drainage_system_kind" target="_top">
+<g id="a_node151"><a xlink:href="../../../tww_vl/tables/drainage_system_kind.html" xlink:title="tww_vl.drainage_system_kind" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="812.5,-6602 812.5,-6660 1032.5,-6660 1032.5,-6602 812.5,-6602"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="812.5,-6638 812.5,-6660 1032.5,-6660 1032.5,-6638 812.5,-6638"/>
 <polygon fill="none" stroke="black" points="812.5,-6638 812.5,-6660 1032.5,-6660 1032.5,-6638 812.5,-6638"/>
@@ -5697,9 +5697,9 @@
 <ellipse fill="none" stroke="black" cx="2112.81" cy="-6821.64" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.reach_text_plantype -->
-<g id="node210" class="node">
+<g id="node211" class="node">
 <title>tww_vl.reach_text_plantype</title>
-<g id="a_node210"><a xlink:href="../../../tww_vl/tables/reach_text_plantype.html" xlink:title="tww_vl.reach_text_plantype" target="_top">
+<g id="a_node211"><a xlink:href="../../../tww_vl/tables/reach_text_plantype.html" xlink:title="tww_vl.reach_text_plantype" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1674.5,-6898 1674.5,-6956 1883.5,-6956 1883.5,-6898 1674.5,-6898"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1675,-6934 1675,-6956 1884,-6956 1884,-6934 1675,-6934"/>
 <polygon fill="none" stroke="black" points="1675,-6934 1675,-6956 1884,-6956 1884,-6934 1675,-6934"/>
@@ -5839,9 +5839,9 @@
 <ellipse fill="none" stroke="black" cx="2074.82" cy="-914.65" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.wastewater_structure_text_plantype -->
-<g id="node108" class="node">
+<g id="node110" class="node">
 <title>tww_vl.wastewater_structure_text_plantype</title>
-<g id="a_node108"><a xlink:href="../../../tww_vl/tables/wastewater_structure_text_plantype.html" xlink:title="tww_vl.wastewater_structure_text_plantype" target="_top">
+<g id="a_node110"><a xlink:href="../../../tww_vl/tables/wastewater_structure_text_plantype.html" xlink:title="tww_vl.wastewater_structure_text_plantype" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1625,-973 1625,-1031 1933,-1031 1933,-973 1625,-973"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1625,-1009 1625,-1031 1933,-1031 1933,-1009 1625,-1009"/>
 <polygon fill="none" stroke="black" points="1625,-1009 1625,-1031 1933,-1031 1933,-1009 1625,-1009"/>
@@ -5869,9 +5869,9 @@
 <ellipse fill="none" stroke="black" cx="2074.8" cy="-1002" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.wastewater_structure_text_textvali -->
-<g id="node201" class="node">
+<g id="node202" class="node">
 <title>tww_vl.wastewater_structure_text_textvali</title>
-<g id="a_node201"><a xlink:href="../../../tww_vl/tables/wastewater_structure_text_textvali.html" xlink:title="tww_vl.wastewater_structure_text_textvali" target="_top">
+<g id="a_node202"><a xlink:href="../../../tww_vl/tables/wastewater_structure_text_textvali.html" xlink:title="tww_vl.wastewater_structure_text_textvali" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1628.5,-815 1628.5,-873 1929.5,-873 1929.5,-815 1628.5,-815"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1629,-851 1629,-873 1930,-873 1930,-851 1629,-851"/>
 <polygon fill="none" stroke="black" points="1629,-851 1629,-873 1930,-873 1930,-851 1629,-851"/>
@@ -5899,9 +5899,9 @@
 <ellipse fill="none" stroke="black" cx="2074.83" cy="-935.22" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.wastewater_structure_text_texthali -->
-<g id="node224" class="node">
+<g id="node225" class="node">
 <title>tww_vl.wastewater_structure_text_texthali</title>
-<g id="a_node224"><a xlink:href="../../../tww_vl/tables/wastewater_structure_text_texthali.html" xlink:title="tww_vl.wastewater_structure_text_texthali" target="_top">
+<g id="a_node225"><a xlink:href="../../../tww_vl/tables/wastewater_structure_text_texthali.html" xlink:title="tww_vl.wastewater_structure_text_texthali" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1628,-894 1628,-952 1930,-952 1930,-894 1628,-894"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1628,-930 1628,-952 1930,-952 1930,-930 1628,-930"/>
 <polygon fill="none" stroke="black" points="1628,-930 1628,-952 1930,-952 1930,-930 1628,-930"/>
@@ -5943,9 +5943,9 @@
 <ellipse fill="none" stroke="black" cx="842.3" cy="-10680.83" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.overflow_char_kind_overflow_char -->
-<g id="node229" class="node">
+<g id="node230" class="node">
 <title>tww_vl.overflow_char_kind_overflow_char</title>
-<g id="a_node229"><a xlink:href="../../../tww_vl/tables/overflow_char_kind_overflow_char.html" xlink:title="tww_vl.overflow_char_kind_overflow_char" target="_top">
+<g id="a_node230"><a xlink:href="../../../tww_vl/tables/overflow_char_kind_overflow_char.html" xlink:title="tww_vl.overflow_char_kind_overflow_char" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="364.5,-10696 364.5,-10754 658.5,-10754 658.5,-10696 364.5,-10696"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="364.5,-10732 364.5,-10754 658.5,-10754 658.5,-10732 364.5,-10732"/>
 <polygon fill="none" stroke="black" points="364.5,-10732 364.5,-10754 658.5,-10754 658.5,-10732 364.5,-10732"/>
@@ -5994,9 +5994,9 @@
 <ellipse fill="none" stroke="black" cx="1227.31" cy="-6910.55" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.reach_point_elevation_accuracy -->
-<g id="node105" class="node">
+<g id="node107" class="node">
 <title>tww_vl.reach_point_elevation_accuracy</title>
-<g id="a_node105"><a xlink:href="../../../tww_vl/tables/reach_point_elevation_accuracy.html" xlink:title="tww_vl.reach_point_elevation_accuracy" target="_top">
+<g id="a_node107"><a xlink:href="../../../tww_vl/tables/reach_point_elevation_accuracy.html" xlink:title="tww_vl.reach_point_elevation_accuracy" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="783.5,-7139 783.5,-7197 1061.5,-7197 1061.5,-7139 783.5,-7139"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="783.5,-7175 783.5,-7197 1061.5,-7197 1061.5,-7175 783.5,-7175"/>
 <polygon fill="none" stroke="black" points="783.5,-7175 783.5,-7197 1061.5,-7197 1061.5,-7175 783.5,-7175"/>
@@ -6024,9 +6024,9 @@
 <ellipse fill="none" stroke="black" cx="1227.32" cy="-7065.68" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.reach_point_outlet_shape -->
-<g id="node217" class="node">
+<g id="node218" class="node">
 <title>tww_vl.reach_point_outlet_shape</title>
-<g id="a_node217"><a xlink:href="../../../tww_vl/tables/reach_point_outlet_shape.html" xlink:title="tww_vl.reach_point_outlet_shape" target="_top">
+<g id="a_node218"><a xlink:href="../../../tww_vl/tables/reach_point_outlet_shape.html" xlink:title="tww_vl.reach_point_outlet_shape" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="802,-7060 802,-7118 1043,-7118 1043,-7060 802,-7060"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="802.5,-7096 802.5,-7118 1043.5,-7118 1043.5,-7096 802.5,-7096"/>
 <polygon fill="none" stroke="black" points="802.5,-7096 802.5,-7118 1043.5,-7118 1043.5,-7096 802.5,-7096"/>
@@ -6139,9 +6139,9 @@
 <ellipse fill="none" stroke="black" cx="1263.32" cy="-3005.69" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.cover_positional_accuracy -->
-<g id="node111" class="node">
+<g id="node112" class="node">
 <title>tww_vl.cover_positional_accuracy</title>
-<g id="a_node111"><a xlink:href="../../../tww_vl/tables/cover_positional_accuracy.html" xlink:title="tww_vl.cover_positional_accuracy" target="_top">
+<g id="a_node112"><a xlink:href="../../../tww_vl/tables/cover_positional_accuracy.html" xlink:title="tww_vl.cover_positional_accuracy" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="800.5,-2770 800.5,-2828 1044.5,-2828 1044.5,-2770 800.5,-2770"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="800.5,-2806 800.5,-2828 1044.5,-2828 1044.5,-2806 800.5,-2806"/>
 <polygon fill="none" stroke="black" points="800.5,-2806 800.5,-2828 1044.5,-2828 1044.5,-2806 800.5,-2806"/>
@@ -6169,9 +6169,9 @@
 <ellipse fill="none" stroke="black" cx="1258.31" cy="-2913.5" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.cover_fastening -->
-<g id="node178" class="node">
+<g id="node179" class="node">
 <title>tww_vl.cover_fastening</title>
-<g id="a_node178"><a xlink:href="../../../tww_vl/tables/cover_fastening.html" xlink:title="tww_vl.cover_fastening" target="_top">
+<g id="a_node179"><a xlink:href="../../../tww_vl/tables/cover_fastening.html" xlink:title="tww_vl.cover_fastening" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="831.5,-2928 831.5,-2986 1013.5,-2986 1013.5,-2928 831.5,-2928"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="831.5,-2964 831.5,-2986 1013.5,-2986 1013.5,-2964 831.5,-2964"/>
 <polygon fill="none" stroke="black" points="831.5,-2964 831.5,-2986 1013.5,-2986 1013.5,-2964 831.5,-2964"/>
@@ -6199,9 +6199,9 @@
 <ellipse fill="none" stroke="black" cx="1258.3" cy="-2958" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.cover_cover_shape -->
-<g id="node183" class="node">
+<g id="node185" class="node">
 <title>tww_vl.cover_cover_shape</title>
-<g id="a_node183"><a xlink:href="../../../tww_vl/tables/cover_cover_shape.html" xlink:title="tww_vl.cover_cover_shape" target="_top">
+<g id="a_node185"><a xlink:href="../../../tww_vl/tables/cover_cover_shape.html" xlink:title="tww_vl.cover_cover_shape" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="822.5,-3007 822.5,-3065 1022.5,-3065 1022.5,-3007 822.5,-3007"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="822.5,-3043 822.5,-3065 1022.5,-3065 1022.5,-3043 822.5,-3043"/>
 <polygon fill="none" stroke="black" points="822.5,-3043 822.5,-3065 1022.5,-3065 1022.5,-3043 822.5,-3043"/>
@@ -6229,9 +6229,9 @@
 <ellipse fill="none" stroke="black" cx="1258.31" cy="-2980.38" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.cover_material -->
-<g id="node191" class="node">
+<g id="node193" class="node">
 <title>tww_vl.cover_material</title>
-<g id="a_node191"><a xlink:href="../../../tww_vl/tables/cover_material.html" xlink:title="tww_vl.cover_material" target="_top">
+<g id="a_node193"><a xlink:href="../../../tww_vl/tables/cover_material.html" xlink:title="tww_vl.cover_material" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="834,-2849 834,-2907 1011,-2907 1011,-2849 834,-2849"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="834.5,-2885 834.5,-2907 1011.5,-2907 1011.5,-2885 834.5,-2885"/>
 <polygon fill="none" stroke="black" points="834.5,-2885 834.5,-2907 1011.5,-2907 1011.5,-2885 834.5,-2885"/>
@@ -6259,9 +6259,9 @@
 <ellipse fill="none" stroke="black" cx="1258.31" cy="-2935.61" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.cover_sludge_bucket -->
-<g id="node197" class="node">
+<g id="node199" class="node">
 <title>tww_vl.cover_sludge_bucket</title>
-<g id="a_node197"><a xlink:href="../../../tww_vl/tables/cover_sludge_bucket.html" xlink:title="tww_vl.cover_sludge_bucket" target="_top">
+<g id="a_node199"><a xlink:href="../../../tww_vl/tables/cover_sludge_bucket.html" xlink:title="tww_vl.cover_sludge_bucket" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="817,-2691 817,-2749 1028,-2749 1028,-2691 817,-2691"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="817.5,-2727 817.5,-2749 1028.5,-2749 1028.5,-2727 817.5,-2727"/>
 <polygon fill="none" stroke="black" points="817.5,-2727 817.5,-2749 1028.5,-2749 1028.5,-2727 817.5,-2727"/>
@@ -6332,7 +6332,7 @@
 <text text-anchor="start" x="2510" y="-9252.2" font-family="Helvetica,sans-Serif" font-size="11.00">obj_id</text>
 <polygon fill="none" stroke="black" points="2490,-9222 2490,-9244 2658,-9244 2658,-9222 2490,-9222"/>
 <image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="2495" y="-9239"/>
-<text text-anchor="start" x="2510" y="-9230.2" font-family="Helvetica,sans-Serif" font-size="11.00">type</text>
+<text text-anchor="start" x="2510" y="-9230.2" font-family="Helvetica,sans-Serif" font-size="11.00">kind</text>
 <polygon fill="none" stroke="black" points="2490,-9200 2490,-9222 2658,-9222 2658,-9200 2490,-9200"/>
 <image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="2495" y="-9217"/>
 <text text-anchor="start" x="2510" y="-9208.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_throttle_shut_off_unit</text>
@@ -6403,21 +6403,21 @@
 <ellipse fill="none" stroke="black" cx="2477.81" cy="-9188.58" rx="3.2" ry="3.2"/>
 </g>
 <!-- tank_emptying&#45;&gt;structure_part -->
-<g id="edge328" class="edge">
+<g id="edge329" class="edge">
 <title>tank_emptying:w&#45;&gt;structure_part:e</title>
 <path fill="none" stroke="black" d="M2478.38,-9254.01C2352.67,-9229.82 2409.15,-8769.39 2399,-8634 2393.01,-8554.1 2403.65,-2935.73 2366,-2865 2343,-2821.8 2323.94,-2803 2275,-2803"/>
 <polygon fill="black" stroke="black" points="2488.57,-9250.94 2487.83,-9258.91 2486.24,-9258.76 2486.98,-9250.79 2488.57,-9250.94"/>
 <polyline fill="none" stroke="black" points="2489,-9255 2485.02,-9254.63 "/>
 <ellipse fill="none" stroke="black" cx="2481.83" cy="-9254.33" rx="3.2" ry="3.2"/>
 </g>
-<!-- tww_vl.tank_emptying_type -->
-<g id="node170" class="node">
-<title>tww_vl.tank_emptying_type</title>
-<g id="a_node170"><a xlink:href="../../../tww_vl/tables/tank_emptying_type.html" xlink:title="tww_vl.tank_emptying_type" target="_top">
+<!-- tww_vl.tank_emptying_kind -->
+<g id="node113" class="node">
+<title>tww_vl.tank_emptying_kind</title>
+<g id="a_node113"><a xlink:href="../../../tww_vl/tables/tank_emptying_kind.html" xlink:title="tww_vl.tank_emptying_kind" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="2084.5,-9739 2084.5,-9797 2293.5,-9797 2293.5,-9739 2084.5,-9739"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="2085,-9775 2085,-9797 2294,-9797 2294,-9775 2085,-9775"/>
 <polygon fill="none" stroke="black" points="2085,-9775 2085,-9797 2294,-9797 2294,-9775 2085,-9775"/>
-<text text-anchor="start" x="2090" y="-9784.2" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00">tww_vl.tank_emptying_type</text>
+<text text-anchor="start" x="2090" y="-9784.2" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00">tww_vl.tank_emptying_kind</text>
 <text text-anchor="start" x="2255" y="-9783.2" font-family="Helvetica,sans-Serif" font-size="11.00">[table]</text>
 <polygon fill="none" stroke="black" points="2085,-9757 2085,-9775 2294,-9775 2294,-9757 2085,-9757"/>
 <text text-anchor="start" x="2088" y="-9763.2" font-family="Helvetica,sans-Serif" font-size="11.00">...</text>
@@ -6433,9 +6433,9 @@
 </a>
 </g>
 </g>
-<!-- tank_emptying&#45;&gt;tww_vl.tank_emptying_type -->
-<g id="edge329" class="edge">
-<title>tank_emptying:w&#45;&gt;tww_vl.tank_emptying_type:e</title>
+<!-- tank_emptying&#45;&gt;tww_vl.tank_emptying_kind -->
+<g id="edge328" class="edge">
+<title>tank_emptying:w&#45;&gt;tww_vl.tank_emptying_kind:e</title>
 <path fill="none" stroke="black" d="M2474.43,-9233.5C2273.64,-9248.07 2524.94,-9573.98 2366,-9729 2348.52,-9746.04 2325.36,-9756.32 2301.59,-9762.38"/>
 <polygon fill="black" stroke="black" points="2481,-9233.28 2489.12,-9236.6 2485,-9233.14 2489,-9233 2489,-9233 2489,-9233 2485,-9233.14 2488.88,-9229.4 2481,-9233.28 2481,-9233.28"/>
 <ellipse fill="none" stroke="black" cx="2477.81" cy="-9233.39" rx="3.2" ry="3.2"/>
@@ -6455,9 +6455,9 @@
 <ellipse fill="none" stroke="black" cx="799.32" cy="-8949.3" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.waste_water_treatment_plant_operator_type -->
-<g id="node125" class="node">
+<g id="node127" class="node">
 <title>tww_vl.waste_water_treatment_plant_operator_type</title>
-<g id="a_node125"><a xlink:href="../../../tww_vl/tables/waste_water_treatment_plant_ope_5d4cf10d.html" xlink:title="tww_vl.waste_water_treatment_plant_operator_type" target="_top">
+<g id="a_node127"><a xlink:href="../../../tww_vl/tables/waste_water_treatment_plant_ope_5d4cf10d.html" xlink:title="tww_vl.waste_water_treatment_plant_operator_type" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="333,-8987 333,-9045 690,-9045 690,-8987 333,-8987"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="333.5,-9023 333.5,-9045 690.5,-9045 690.5,-9023 333.5,-9023"/>
 <polygon fill="none" stroke="black" points="333.5,-9023 333.5,-9045 690.5,-9045 690.5,-9023 333.5,-9023"/>
@@ -6527,9 +6527,9 @@
 <ellipse fill="none" stroke="black" cx="1669.81" cy="-2385.41" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.wastewater_structure_status -->
-<g id="node98" class="node">
+<g id="node99" class="node">
 <title>tww_vl.wastewater_structure_status</title>
-<g id="a_node98"><a xlink:href="../../../tww_vl/tables/wastewater_structure_status.html" xlink:title="tww_vl.wastewater_structure_status" target="_top">
+<g id="a_node99"><a xlink:href="../../../tww_vl/tables/wastewater_structure_status.html" xlink:title="tww_vl.wastewater_structure_status" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1215,-2273 1215,-2331 1478,-2331 1478,-2273 1215,-2273"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1215.5,-2309 1215.5,-2331 1478.5,-2331 1478.5,-2309 1215.5,-2309"/>
 <polygon fill="none" stroke="black" points="1215.5,-2309 1215.5,-2331 1478.5,-2331 1478.5,-2309 1215.5,-2309"/>
@@ -6557,9 +6557,9 @@
 <ellipse fill="none" stroke="black" cx="1669.83" cy="-2516.22" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.wastewater_structure_elevation_determination -->
-<g id="node102" class="node">
+<g id="node103" class="node">
 <title>tww_vl.wastewater_structure_elevation_determination</title>
-<g id="a_node102"><a xlink:href="../../../tww_vl/tables/wastewater_structure_elevation__ef054d33.html" xlink:title="tww_vl.wastewater_structure_elevation_determination" target="_top">
+<g id="a_node103"><a xlink:href="../../../tww_vl/tables/wastewater_structure_elevation__ef054d33.html" xlink:title="tww_vl.wastewater_structure_elevation_determination" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1159.5,-2589 1159.5,-2647 1533.5,-2647 1533.5,-2589 1159.5,-2589"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1159.5,-2625 1159.5,-2647 1533.5,-2647 1533.5,-2625 1159.5,-2625"/>
 <polygon fill="none" stroke="black" points="1159.5,-2625 1159.5,-2647 1533.5,-2647 1533.5,-2625 1159.5,-2625"/>
@@ -6587,9 +6587,9 @@
 <ellipse fill="none" stroke="black" cx="1669.8" cy="-2626.98" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.wastewater_structure_renovation_necessity -->
-<g id="node140" class="node">
+<g id="node142" class="node">
 <title>tww_vl.wastewater_structure_renovation_necessity</title>
-<g id="a_node140"><a xlink:href="../../../tww_vl/tables/wastewater_structure_renovation__de0fe57.html" xlink:title="tww_vl.wastewater_structure_renovation_necessity" target="_top">
+<g id="a_node142"><a xlink:href="../../../tww_vl/tables/wastewater_structure_renovation__de0fe57.html" xlink:title="tww_vl.wastewater_structure_renovation_necessity" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1170.5,-2431 1170.5,-2489 1522.5,-2489 1522.5,-2431 1170.5,-2431"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1170.5,-2467 1170.5,-2489 1522.5,-2489 1522.5,-2467 1170.5,-2467"/>
 <polygon fill="none" stroke="black" points="1170.5,-2467 1170.5,-2489 1522.5,-2489 1522.5,-2467 1170.5,-2467"/>
@@ -6617,9 +6617,9 @@
 <ellipse fill="none" stroke="black" cx="1669.81" cy="-2560.44" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.wastewater_structure_financing -->
-<g id="node166" class="node">
+<g id="node168" class="node">
 <title>tww_vl.wastewater_structure_financing</title>
-<g id="a_node166"><a xlink:href="../../../tww_vl/tables/wastewater_structure_financing.html" xlink:title="tww_vl.wastewater_structure_financing" target="_top">
+<g id="a_node168"><a xlink:href="../../../tww_vl/tables/wastewater_structure_financing.html" xlink:title="tww_vl.wastewater_structure_financing" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1206,-2510 1206,-2568 1487,-2568 1487,-2510 1206,-2510"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1206.5,-2546 1206.5,-2568 1487.5,-2568 1487.5,-2546 1206.5,-2546"/>
 <polygon fill="none" stroke="black" points="1206.5,-2546 1206.5,-2568 1487.5,-2568 1487.5,-2546 1206.5,-2546"/>
@@ -6647,9 +6647,9 @@
 <ellipse fill="none" stroke="black" cx="1669.98" cy="-2603.02" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.wastewater_structure_accessibility -->
-<g id="node190" class="node">
+<g id="node192" class="node">
 <title>tww_vl.wastewater_structure_accessibility</title>
-<g id="a_node190"><a xlink:href="../../../tww_vl/tables/wastewater_structure_accessibility.html" xlink:title="tww_vl.wastewater_structure_accessibility" target="_top">
+<g id="a_node192"><a xlink:href="../../../tww_vl/tables/wastewater_structure_accessibility.html" xlink:title="tww_vl.wastewater_structure_accessibility" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1197.5,-2668 1197.5,-2726 1495.5,-2726 1495.5,-2668 1197.5,-2668"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1197.5,-2704 1197.5,-2726 1495.5,-2726 1495.5,-2704 1197.5,-2704"/>
 <polygon fill="none" stroke="black" points="1197.5,-2704 1197.5,-2726 1495.5,-2726 1495.5,-2704 1197.5,-2704"/>
@@ -6677,9 +6677,9 @@
 <ellipse fill="none" stroke="black" cx="1669.8" cy="-2671.06" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.wastewater_structure_structure_condition -->
-<g id="node206" class="node">
+<g id="node207" class="node">
 <title>tww_vl.wastewater_structure_structure_condition</title>
-<g id="a_node206"><a xlink:href="../../../tww_vl/tables/wastewater_structure_structure_condition.html" xlink:title="tww_vl.wastewater_structure_structure_condition" target="_top">
+<g id="a_node207"><a xlink:href="../../../tww_vl/tables/wastewater_structure_structure_condition.html" xlink:title="tww_vl.wastewater_structure_structure_condition" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1174.5,-2194 1174.5,-2252 1518.5,-2252 1518.5,-2194 1174.5,-2194"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1174.5,-2230 1174.5,-2252 1518.5,-2252 1518.5,-2230 1174.5,-2230"/>
 <polygon fill="none" stroke="black" points="1174.5,-2230 1174.5,-2252 1518.5,-2252 1518.5,-2230 1174.5,-2230"/>
@@ -6833,9 +6833,9 @@
 <ellipse fill="none" stroke="black" cx="2093.34" cy="-8730.45" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.prank_weir_weir_edge -->
-<g id="node129" class="node">
+<g id="node131" class="node">
 <title>tww_vl.prank_weir_weir_edge</title>
-<g id="a_node129"><a xlink:href="../../../tww_vl/tables/prank_weir_weir_edge.html" xlink:title="tww_vl.prank_weir_weir_edge" target="_top">
+<g id="a_node131"><a xlink:href="../../../tww_vl/tables/prank_weir_weir_edge.html" xlink:title="tww_vl.prank_weir_weir_edge" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1669,-8675 1669,-8733 1889,-8733 1889,-8675 1669,-8675"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1669,-8711 1669,-8733 1889,-8733 1889,-8711 1669,-8711"/>
 <polygon fill="none" stroke="black" points="1669,-8711 1669,-8733 1889,-8733 1889,-8711 1669,-8711"/>
@@ -6863,9 +6863,9 @@
 <ellipse fill="none" stroke="black" cx="2087.8" cy="-8704" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.prank_weir_weir_kind -->
-<g id="node225" class="node">
+<g id="node226" class="node">
 <title>tww_vl.prank_weir_weir_kind</title>
-<g id="a_node225"><a xlink:href="../../../tww_vl/tables/prank_weir_weir_kind.html" xlink:title="tww_vl.prank_weir_weir_kind" target="_top">
+<g id="a_node226"><a xlink:href="../../../tww_vl/tables/prank_weir_weir_kind.html" xlink:title="tww_vl.prank_weir_weir_kind" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1670,-8596 1670,-8654 1888,-8654 1888,-8596 1670,-8596"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1670,-8632 1670,-8654 1888,-8654 1888,-8632 1670,-8632"/>
 <polygon fill="none" stroke="black" points="1670,-8632 1670,-8654 1888,-8654 1888,-8632 1670,-8632"/>
@@ -6901,9 +6901,9 @@
 <ellipse fill="none" stroke="black" cx="2098.8" cy="-8568.18" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.pump_placement_of_pump -->
-<g id="node155" class="node">
+<g id="node157" class="node">
 <title>tww_vl.pump_placement_of_pump</title>
-<g id="a_node155"><a xlink:href="../../../tww_vl/tables/pump_placement_of_pump.html" xlink:title="tww_vl.pump_placement_of_pump" target="_top">
+<g id="a_node157"><a xlink:href="../../../tww_vl/tables/pump_placement_of_pump.html" xlink:title="tww_vl.pump_placement_of_pump" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1655,-8359 1655,-8417 1903,-8417 1903,-8359 1655,-8359"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1655,-8395 1655,-8417 1903,-8417 1903,-8395 1655,-8395"/>
 <polygon fill="none" stroke="black" points="1655,-8395 1655,-8417 1903,-8417 1903,-8395 1655,-8395"/>
@@ -6931,9 +6931,9 @@
 <ellipse fill="none" stroke="black" cx="2094.82" cy="-8501.28" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.pump_construction_type -->
-<g id="node194" class="node">
+<g id="node196" class="node">
 <title>tww_vl.pump_construction_type</title>
-<g id="a_node194"><a xlink:href="../../../tww_vl/tables/pump_construction_type.html" xlink:title="tww_vl.pump_construction_type" target="_top">
+<g id="a_node196"><a xlink:href="../../../tww_vl/tables/pump_construction_type.html" xlink:title="tww_vl.pump_construction_type" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1661,-8517 1661,-8575 1897,-8575 1897,-8517 1661,-8517"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1661,-8553 1661,-8575 1897,-8575 1897,-8553 1661,-8553"/>
 <polygon fill="none" stroke="black" points="1661,-8553 1661,-8575 1897,-8575 1897,-8553 1661,-8553"/>
@@ -6961,9 +6961,9 @@
 <ellipse fill="none" stroke="black" cx="2094.8" cy="-8546" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.pump_placement_of_actuation -->
-<g id="node203" class="node">
+<g id="node204" class="node">
 <title>tww_vl.pump_placement_of_actuation</title>
-<g id="a_node203"><a xlink:href="../../../tww_vl/tables/pump_placement_of_actuation.html" xlink:title="tww_vl.pump_placement_of_actuation" target="_top">
+<g id="a_node204"><a xlink:href="../../../tww_vl/tables/pump_placement_of_actuation.html" xlink:title="tww_vl.pump_placement_of_actuation" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1643,-8438 1643,-8496 1915,-8496 1915,-8438 1643,-8438"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1643,-8474 1643,-8496 1915,-8496 1915,-8474 1643,-8474"/>
 <polygon fill="none" stroke="black" points="1643,-8474 1643,-8496 1915,-8496 1915,-8474 1643,-8474"/>
@@ -7033,9 +7033,9 @@
 <ellipse fill="none" stroke="black" cx="2064.8" cy="-7501.81" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.reach_progression_alternative_plantype -->
-<g id="node209" class="node">
+<g id="node210" class="node">
 <title>tww_vl.reach_progression_alternative_plantype</title>
-<g id="a_node209"><a xlink:href="../../../tww_vl/tables/reach_progression_alternative_plantype.html" xlink:title="tww_vl.reach_progression_alternative_plantype" target="_top">
+<g id="a_node210"><a xlink:href="../../../tww_vl/tables/reach_progression_alternative_plantype.html" xlink:title="tww_vl.reach_progression_alternative_plantype" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1615.5,-7536 1615.5,-7594 1942.5,-7594 1942.5,-7536 1615.5,-7536"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1616,-7572 1616,-7594 1943,-7594 1943,-7572 1616,-7572"/>
 <polygon fill="none" stroke="black" points="1616,-7572 1616,-7594 1943,-7594 1943,-7572 1616,-7572"/>
@@ -7105,9 +7105,9 @@
 <ellipse fill="none" stroke="black" cx="1253.31" cy="-4907.4" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.maintenance_event_status -->
-<g id="node116" class="node">
+<g id="node118" class="node">
 <title>tww_vl.maintenance_event_status</title>
-<g id="a_node116"><a xlink:href="../../../tww_vl/tables/maintenance_event_status.html" xlink:title="tww_vl.maintenance_event_status" target="_top">
+<g id="a_node118"><a xlink:href="../../../tww_vl/tables/maintenance_event_status.html" xlink:title="tww_vl.maintenance_event_status" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="798,-5019 798,-5077 1047,-5077 1047,-5019 798,-5019"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="798.5,-5055 798.5,-5077 1047.5,-5077 1047.5,-5055 798.5,-5055"/>
 <polygon fill="none" stroke="black" points="798.5,-5055 798.5,-5077 1047.5,-5077 1047.5,-5055 798.5,-5055"/>
@@ -7208,9 +7208,9 @@
 <ellipse fill="none" stroke="black" cx="2455.78" cy="-9915.42" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.measurement_series_kind -->
-<g id="node168" class="node">
+<g id="node170" class="node">
 <title>tww_vl.measurement_series_kind</title>
-<g id="a_node168"><a xlink:href="../../../tww_vl/tables/measurement_series_kind.html" xlink:title="tww_vl.measurement_series_kind" target="_top">
+<g id="a_node170"><a xlink:href="../../../tww_vl/tables/measurement_series_kind.html" xlink:title="tww_vl.measurement_series_kind" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="2067,-9995 2067,-10053 2311,-10053 2311,-9995 2067,-9995"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="2067,-10031 2067,-10053 2311,-10053 2311,-10031 2067,-10031"/>
 <polygon fill="none" stroke="black" points="2067,-10031 2067,-10053 2311,-10053 2311,-10031 2067,-10031"/>
@@ -7359,9 +7359,9 @@
 <ellipse fill="none" stroke="black" cx="2091.8" cy="-2693" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.structure_part_renovation_demand -->
-<g id="node132" class="node">
+<g id="node134" class="node">
 <title>tww_vl.structure_part_renovation_demand</title>
-<g id="a_node132"><a xlink:href="../../../tww_vl/tables/structure_part_renovation_demand.html" xlink:title="tww_vl.structure_part_renovation_demand" target="_top">
+<g id="a_node134"><a xlink:href="../../../tww_vl/tables/structure_part_renovation_demand.html" xlink:title="tww_vl.structure_part_renovation_demand" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1629,-2801 1629,-2859 1929,-2859 1929,-2801 1629,-2801"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1629,-2837 1629,-2859 1929,-2859 1929,-2837 1629,-2837"/>
 <polygon fill="none" stroke="black" points="1629,-2837 1629,-2859 1929,-2859 1929,-2837 1629,-2837"/>
@@ -7437,9 +7437,9 @@
 <ellipse fill="none" stroke="black" cx="2476.8" cy="-3066.68" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.catchment_area_text_texthali -->
-<g id="node112" class="node">
+<g id="node114" class="node">
 <title>tww_vl.catchment_area_text_texthali</title>
-<g id="a_node112"><a xlink:href="../../../tww_vl/tables/catchment_area_text_texthali.html" xlink:title="tww_vl.catchment_area_text_texthali" target="_top">
+<g id="a_node114"><a xlink:href="../../../tww_vl/tables/catchment_area_text_texthali.html" xlink:title="tww_vl.catchment_area_text_texthali" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="2056,-3086 2056,-3144 2322,-3144 2322,-3086 2056,-3086"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="2056,-3122 2056,-3144 2322,-3144 2322,-3122 2056,-3122"/>
 <polygon fill="none" stroke="black" points="2056,-3122 2056,-3144 2322,-3144 2322,-3122 2056,-3122"/>
@@ -7467,9 +7467,9 @@
 <ellipse fill="none" stroke="black" cx="2476.8" cy="-3132.95" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.catchment_area_text_textvali -->
-<g id="node148" class="node">
+<g id="node150" class="node">
 <title>tww_vl.catchment_area_text_textvali</title>
-<g id="a_node148"><a xlink:href="../../../tww_vl/tables/catchment_area_text_textvali.html" xlink:title="tww_vl.catchment_area_text_textvali" target="_top">
+<g id="a_node150"><a xlink:href="../../../tww_vl/tables/catchment_area_text_textvali.html" xlink:title="tww_vl.catchment_area_text_textvali" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="2056.5,-3007 2056.5,-3065 2321.5,-3065 2321.5,-3007 2056.5,-3007"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="2057,-3043 2057,-3065 2322,-3065 2322,-3043 2057,-3043"/>
 <polygon fill="none" stroke="black" points="2057,-3043 2057,-3065 2322,-3065 2322,-3043 2057,-3043"/>
@@ -7497,9 +7497,9 @@
 <ellipse fill="none" stroke="black" cx="2476.81" cy="-3088.54" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.catchment_area_text_plantype -->
-<g id="node158" class="node">
+<g id="node160" class="node">
 <title>tww_vl.catchment_area_text_plantype</title>
-<g id="a_node158"><a xlink:href="../../../tww_vl/tables/catchment_area_text_plantype.html" xlink:title="tww_vl.catchment_area_text_plantype" target="_top">
+<g id="a_node160"><a xlink:href="../../../tww_vl/tables/catchment_area_text_plantype.html" xlink:title="tww_vl.catchment_area_text_plantype" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="2053,-3165 2053,-3223 2325,-3223 2325,-3165 2053,-3165"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="2053,-3201 2053,-3223 2325,-3223 2325,-3201 2053,-3201"/>
 <polygon fill="none" stroke="black" points="2053,-3201 2053,-3223 2325,-3223 2325,-3201 2053,-3201"/>
@@ -7684,9 +7684,9 @@
 <ellipse fill="none" stroke="black" cx="2085.82" cy="-4526.38" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.infiltration_installation_emergency_overflow -->
-<g id="node99" class="node">
+<g id="node100" class="node">
 <title>tww_vl.infiltration_installation_emergency_overflow</title>
-<g id="a_node99"><a xlink:href="../../../tww_vl/tables/infiltration_installation_emerg_740c6ac9.html" xlink:title="tww_vl.infiltration_installation_emergency_overflow" target="_top">
+<g id="a_node100"><a xlink:href="../../../tww_vl/tables/infiltration_installation_emerg_740c6ac9.html" xlink:title="tww_vl.infiltration_installation_emergency_overflow" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1601,-4823 1601,-4881 1957,-4881 1957,-4823 1601,-4823"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1601,-4859 1601,-4881 1957,-4881 1957,-4859 1601,-4859"/>
 <polygon fill="none" stroke="black" points="1601,-4859 1601,-4881 1957,-4881 1957,-4859 1601,-4859"/>
@@ -7714,9 +7714,9 @@
 <ellipse fill="none" stroke="black" cx="2085.84" cy="-4681.96" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.infiltration_installation_vehicle_access -->
-<g id="node107" class="node">
+<g id="node109" class="node">
 <title>tww_vl.infiltration_installation_vehicle_access</title>
-<g id="a_node107"><a xlink:href="../../../tww_vl/tables/infiltration_installation_vehicle_access.html" xlink:title="tww_vl.infiltration_installation_vehicle_access" target="_top">
+<g id="a_node109"><a xlink:href="../../../tww_vl/tables/infiltration_installation_vehicle_access.html" xlink:title="tww_vl.infiltration_installation_vehicle_access" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1620,-4428 1620,-4486 1938,-4486 1938,-4428 1620,-4428"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1620,-4464 1620,-4486 1938,-4486 1938,-4464 1620,-4464"/>
 <polygon fill="none" stroke="black" points="1620,-4464 1620,-4486 1938,-4486 1938,-4464 1620,-4464"/>
@@ -7744,9 +7744,9 @@
 <ellipse fill="none" stroke="black" cx="2085.83" cy="-4570.17" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.infiltration_installation_seepage_utilization -->
-<g id="node138" class="node">
+<g id="node140" class="node">
 <title>tww_vl.infiltration_installation_seepage_utilization</title>
-<g id="a_node138"><a xlink:href="../../../tww_vl/tables/infiltration_installation_seepa_9b5eaa0c.html" xlink:title="tww_vl.infiltration_installation_seepage_utilization" target="_top">
+<g id="a_node140"><a xlink:href="../../../tww_vl/tables/infiltration_installation_seepa_9b5eaa0c.html" xlink:title="tww_vl.infiltration_installation_seepage_utilization" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1605.5,-4507 1605.5,-4565 1952.5,-4565 1952.5,-4507 1605.5,-4507"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1606,-4543 1606,-4565 1953,-4565 1953,-4543 1606,-4543"/>
 <polygon fill="none" stroke="black" points="1606,-4543 1606,-4565 1953,-4565 1953,-4543 1606,-4543"/>
@@ -7774,9 +7774,9 @@
 <ellipse fill="none" stroke="black" cx="2085.84" cy="-4592.06" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.infiltration_installation_labeling -->
-<g id="node215" class="node">
+<g id="node216" class="node">
 <title>tww_vl.infiltration_installation_labeling</title>
-<g id="a_node215"><a xlink:href="../../../tww_vl/tables/infiltration_installation_labeling.html" xlink:title="tww_vl.infiltration_installation_labeling" target="_top">
+<g id="a_node216"><a xlink:href="../../../tww_vl/tables/infiltration_installation_labeling.html" xlink:title="tww_vl.infiltration_installation_labeling" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1639,-4586 1639,-4644 1919,-4644 1919,-4586 1639,-4586"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1639,-4622 1639,-4644 1919,-4644 1919,-4622 1639,-4622"/>
 <polygon fill="none" stroke="black" points="1639,-4622 1639,-4644 1919,-4644 1919,-4622 1639,-4622"/>
@@ -8170,9 +8170,9 @@
 <ellipse fill="none" stroke="black" cx="2453.8" cy="-547.25" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.electromechanical_equipment_kind -->
-<g id="node174" class="node">
+<g id="node175" class="node">
 <title>tww_vl.electromechanical_equipment_kind</title>
-<g id="a_node174"><a xlink:href="../../../tww_vl/tables/electromechanical_equipment_kind.html" xlink:title="tww_vl.electromechanical_equipment_kind" target="_top">
+<g id="a_node175"><a xlink:href="../../../tww_vl/tables/electromechanical_equipment_kind.html" xlink:title="tww_vl.electromechanical_equipment_kind" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="2038.5,-195 2038.5,-253 2339.5,-253 2339.5,-195 2038.5,-195"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="2039,-231 2039,-253 2340,-253 2340,-231 2039,-231"/>
 <polygon fill="none" stroke="black" points="2039,-231 2039,-253 2340,-253 2340,-231 2039,-231"/>
@@ -8257,9 +8257,9 @@
 <ellipse fill="none" stroke="black" cx="2481.81" cy="-8589.67" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.backflow_prevention_kind -->
-<g id="node230" class="node">
+<g id="node231" class="node">
 <title>tww_vl.backflow_prevention_kind</title>
-<g id="a_node230"><a xlink:href="../../../tww_vl/tables/backflow_prevention_kind.html" xlink:title="tww_vl.backflow_prevention_kind" target="_top">
+<g id="a_node231"><a xlink:href="../../../tww_vl/tables/backflow_prevention_kind.html" xlink:title="tww_vl.backflow_prevention_kind" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="2066.5,-8376 2066.5,-8434 2311.5,-8434 2311.5,-8376 2066.5,-8376"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="2067,-8412 2067,-8434 2312,-8434 2312,-8412 2067,-8412"/>
 <polygon fill="none" stroke="black" points="2067,-8412 2067,-8434 2312,-8434 2312,-8412 2067,-8412"/>
@@ -8300,7 +8300,7 @@
 <text text-anchor="start" x="2522" y="-299.2" font-family="Helvetica,sans-Serif" font-size="11.00">obj_id</text>
 <polygon fill="none" stroke="black" points="2502,-269 2502,-291 2647,-291 2647,-269 2502,-269"/>
 <image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="2507" y="-286"/>
-<text text-anchor="start" x="2522" y="-277.2" font-family="Helvetica,sans-Serif" font-size="11.00">type</text>
+<text text-anchor="start" x="2522" y="-277.2" font-family="Helvetica,sans-Serif" font-size="11.00">kind</text>
 <polygon fill="none" stroke="black" points="2502,-251 2502,-269 2647,-269 2647,-251 2502,-251"/>
 <text text-anchor="start" x="2505" y="-257.2" font-family="Helvetica,sans-Serif" font-size="11.00">...</text>
 <polygon fill="#ffffff" stroke="transparent" points="2502,-233 2502,-251 2572,-251 2572,-233 2502,-233"/>
@@ -8316,21 +8316,21 @@
 </g>
 </g>
 <!-- tank_cleaning&#45;&gt;structure_part -->
-<g id="edge324" class="edge">
+<g id="edge325" class="edge">
 <title>tank_cleaning:w&#45;&gt;structure_part:e</title>
 <path fill="none" stroke="black" d="M2490.4,-302.45C2415.46,-309.07 2422.3,-387.85 2399,-467 2344.05,-653.67 2382.83,-2024.14 2366,-2218 2354.62,-2349.07 2406.56,-2803 2275,-2803"/>
 <polygon fill="black" stroke="black" points="2500.03,-298.04 2500.37,-306.03 2498.77,-306.1 2498.43,-298.11 2500.03,-298.04"/>
 <polyline fill="none" stroke="black" points="2501,-302 2497,-302.17 "/>
 <ellipse fill="none" stroke="black" cx="2493.81" cy="-302.31" rx="3.2" ry="3.2"/>
 </g>
-<!-- tww_vl.tank_cleaning_type -->
-<g id="node198" class="node">
-<title>tww_vl.tank_cleaning_type</title>
-<g id="a_node198"><a xlink:href="../../../tww_vl/tables/tank_cleaning_type.html" xlink:title="tww_vl.tank_cleaning_type" target="_top">
+<!-- tww_vl.tank_cleaning_kind -->
+<g id="node106" class="node">
+<title>tww_vl.tank_cleaning_kind</title>
+<g id="a_node106"><a xlink:href="../../../tww_vl/tables/tank_cleaning_kind.html" xlink:title="tww_vl.tank_cleaning_kind" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="2087.5,-116 2087.5,-174 2290.5,-174 2290.5,-116 2087.5,-116"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="2088,-152 2088,-174 2291,-174 2291,-152 2088,-152"/>
 <polygon fill="none" stroke="black" points="2088,-152 2088,-174 2291,-174 2291,-152 2088,-152"/>
-<text text-anchor="start" x="2093" y="-161.2" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00">tww_vl.tank_cleaning_type</text>
+<text text-anchor="start" x="2093" y="-161.2" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00">tww_vl.tank_cleaning_kind</text>
 <text text-anchor="start" x="2252" y="-160.2" font-family="Helvetica,sans-Serif" font-size="11.00">[table]</text>
 <polygon fill="none" stroke="black" points="2088,-134 2088,-152 2291,-152 2291,-134 2088,-134"/>
 <text text-anchor="start" x="2091" y="-140.2" font-family="Helvetica,sans-Serif" font-size="11.00">...</text>
@@ -8346,9 +8346,9 @@
 </a>
 </g>
 </g>
-<!-- tank_cleaning&#45;&gt;tww_vl.tank_cleaning_type -->
-<g id="edge325" class="edge">
-<title>tank_cleaning:w&#45;&gt;tww_vl.tank_cleaning_type:e</title>
+<!-- tank_cleaning&#45;&gt;tww_vl.tank_cleaning_kind -->
+<g id="edge324" class="edge">
+<title>tank_cleaning:w&#45;&gt;tww_vl.tank_cleaning_kind:e</title>
 <path fill="none" stroke="black" d="M2486.6,-279.06C2427.84,-270.88 2428.55,-211.79 2366,-184 2344.98,-174.66 2321.52,-167.47 2298.76,-161.96"/>
 <polygon fill="black" stroke="black" points="2493.02,-279.48 2500.76,-283.59 2497.01,-279.74 2501,-280 2501,-280 2501,-280 2497.01,-279.74 2501.24,-276.41 2493.02,-279.48 2493.02,-279.48"/>
 <ellipse fill="none" stroke="black" cx="2489.82" cy="-279.27" rx="3.2" ry="3.2"/>
@@ -8539,9 +8539,9 @@
 <ellipse fill="none" stroke="black" cx="1694.8" cy="-3837.12" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.individual_surface_function -->
-<g id="node130" class="node">
+<g id="node132" class="node">
 <title>tww_vl.individual_surface_function</title>
-<g id="a_node130"><a xlink:href="../../../tww_vl/tables/individual_surface_function.html" xlink:title="tww_vl.individual_surface_function" target="_top">
+<g id="a_node132"><a xlink:href="../../../tww_vl/tables/individual_surface_function.html" xlink:title="tww_vl.individual_surface_function" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1220,-3823 1220,-3881 1473,-3881 1473,-3823 1220,-3823"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1220.5,-3859 1220.5,-3881 1473.5,-3881 1473.5,-3859 1220.5,-3859"/>
 <polygon fill="none" stroke="black" points="1220.5,-3859 1220.5,-3881 1473.5,-3881 1473.5,-3859 1220.5,-3859"/>
@@ -8569,9 +8569,9 @@
 <ellipse fill="none" stroke="black" cx="1690.8" cy="-3815.08" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.individual_surface_pavement -->
-<g id="node195" class="node">
+<g id="node197" class="node">
 <title>tww_vl.individual_surface_pavement</title>
-<g id="a_node195"><a xlink:href="../../../tww_vl/tables/individual_surface_pavement.html" xlink:title="tww_vl.individual_surface_pavement" target="_top">
+<g id="a_node197"><a xlink:href="../../../tww_vl/tables/individual_surface_pavement.html" xlink:title="tww_vl.individual_surface_pavement" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1215,-3744 1215,-3802 1478,-3802 1478,-3744 1215,-3744"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1215.5,-3780 1215.5,-3802 1478.5,-3802 1478.5,-3780 1215.5,-3780"/>
 <polygon fill="none" stroke="black" points="1215.5,-3780 1215.5,-3802 1478.5,-3802 1478.5,-3780 1215.5,-3780"/>
@@ -8815,9 +8815,9 @@
 <ellipse fill="none" stroke="black" cx="1226.31" cy="-9178.44" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.waste_water_treatment_kind -->
-<g id="node175" class="node">
+<g id="node176" class="node">
 <title>tww_vl.waste_water_treatment_kind</title>
-<g id="a_node175"><a xlink:href="../../../tww_vl/tables/waste_water_treatment_kind.html" xlink:title="tww_vl.waste_water_treatment_kind" target="_top">
+<g id="a_node176"><a xlink:href="../../../tww_vl/tables/waste_water_treatment_kind.html" xlink:title="tww_vl.waste_water_treatment_kind" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="791,-9216 791,-9274 1054,-9274 1054,-9216 791,-9216"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="791.5,-9252 791.5,-9274 1054.5,-9274 1054.5,-9252 791.5,-9252"/>
 <polygon fill="none" stroke="black" points="791.5,-9252 791.5,-9274 1054.5,-9274 1054.5,-9252 791.5,-9252"/>
@@ -8946,9 +8946,9 @@
 <ellipse fill="none" stroke="black" cx="2099.8" cy="-813.06" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.manhole_possibility_intervention -->
-<g id="node101" class="node">
+<g id="node102" class="node">
 <title>tww_vl.manhole_possibility_intervention</title>
-<g id="a_node101"><a xlink:href="../../../tww_vl/tables/manhole_possibility_intervention.html" xlink:title="tww_vl.manhole_possibility_intervention" target="_top">
+<g id="a_node102"><a xlink:href="../../../tww_vl/tables/manhole_possibility_intervention.html" xlink:title="tww_vl.manhole_possibility_intervention" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1635.5,-499 1635.5,-557 1922.5,-557 1922.5,-499 1635.5,-499"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1636,-535 1636,-557 1923,-557 1923,-535 1636,-535"/>
 <polygon fill="none" stroke="black" points="1636,-535 1636,-557 1923,-557 1923,-535 1636,-535"/>
@@ -8976,9 +8976,9 @@
 <ellipse fill="none" stroke="black" cx="2095.82" cy="-724.27" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.manhole_material -->
-<g id="node144" class="node">
+<g id="node146" class="node">
 <title>tww_vl.manhole_material</title>
-<g id="a_node144"><a xlink:href="../../../tww_vl/tables/manhole_material.html" xlink:title="tww_vl.manhole_material" target="_top">
+<g id="a_node146"><a xlink:href="../../../tww_vl/tables/manhole_material.html" xlink:title="tww_vl.manhole_material" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1680.5,-578 1680.5,-636 1877.5,-636 1877.5,-578 1680.5,-578"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1681,-614 1681,-636 1878,-636 1878,-614 1681,-614"/>
 <polygon fill="none" stroke="black" points="1681,-614 1681,-636 1878,-636 1878,-614 1681,-614"/>
@@ -9006,9 +9006,9 @@
 <ellipse fill="none" stroke="black" cx="2095.83" cy="-746.18" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.manhole_amphibian_exit -->
-<g id="node162" class="node">
+<g id="node164" class="node">
 <title>tww_vl.manhole_amphibian_exit</title>
-<g id="a_node162"><a xlink:href="../../../tww_vl/tables/manhole_amphibian_exit.html" xlink:title="tww_vl.manhole_amphibian_exit" target="_top">
+<g id="a_node164"><a xlink:href="../../../tww_vl/tables/manhole_amphibian_exit.html" xlink:title="tww_vl.manhole_amphibian_exit" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1660,-736 1660,-794 1898,-794 1898,-736 1660,-736"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1660,-772 1660,-794 1898,-794 1898,-772 1660,-772"/>
 <polygon fill="none" stroke="black" points="1660,-772 1660,-794 1898,-794 1898,-772 1660,-772"/>
@@ -9036,9 +9036,9 @@
 <ellipse fill="none" stroke="black" cx="2095.8" cy="-790.94" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.manhole_surface_inflow -->
-<g id="node199" class="node">
+<g id="node200" class="node">
 <title>tww_vl.manhole_surface_inflow</title>
-<g id="a_node199"><a xlink:href="../../../tww_vl/tables/manhole_surface_inflow.html" xlink:title="tww_vl.manhole_surface_inflow" target="_top">
+<g id="a_node200"><a xlink:href="../../../tww_vl/tables/manhole_surface_inflow.html" xlink:title="tww_vl.manhole_surface_inflow" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1662.5,-420 1662.5,-478 1895.5,-478 1895.5,-420 1662.5,-420"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1663,-456 1663,-478 1896,-478 1896,-456 1663,-456"/>
 <polygon fill="none" stroke="black" points="1663,-456 1663,-478 1896,-478 1896,-456 1663,-456"/>
@@ -9066,9 +9066,9 @@
 <ellipse fill="none" stroke="black" cx="2095.81" cy="-702.55" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.manhole_function -->
-<g id="node202" class="node">
+<g id="node203" class="node">
 <title>tww_vl.manhole_function</title>
-<g id="a_node202"><a xlink:href="../../../tww_vl/tables/manhole_function.html" xlink:title="tww_vl.manhole_function" target="_top">
+<g id="a_node203"><a xlink:href="../../../tww_vl/tables/manhole_function.html" xlink:title="tww_vl.manhole_function" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1680.5,-657 1680.5,-715 1877.5,-715 1877.5,-657 1680.5,-657"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1681,-693 1681,-715 1878,-715 1878,-693 1681,-693"/>
 <polygon fill="none" stroke="black" points="1681,-693 1681,-715 1878,-715 1878,-693 1681,-693"/>
@@ -9233,9 +9233,9 @@
 <ellipse fill="none" stroke="black" cx="1645.82" cy="-7394.73" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.reach_relining_kind -->
-<g id="node115" class="node">
+<g id="node117" class="node">
 <title>tww_vl.reach_relining_kind</title>
-<g id="a_node115"><a xlink:href="../../../tww_vl/tables/reach_relining_kind.html" xlink:title="tww_vl.reach_relining_kind" target="_top">
+<g id="a_node117"><a xlink:href="../../../tww_vl/tables/reach_relining_kind.html" xlink:title="tww_vl.reach_relining_kind" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1244.5,-7141 1244.5,-7199 1448.5,-7199 1448.5,-7141 1244.5,-7141"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1244.5,-7177 1244.5,-7199 1448.5,-7199 1448.5,-7177 1244.5,-7177"/>
 <polygon fill="none" stroke="black" points="1244.5,-7177 1244.5,-7199 1448.5,-7199 1448.5,-7177 1244.5,-7177"/>
@@ -9263,9 +9263,9 @@
 <ellipse fill="none" stroke="black" cx="1645.84" cy="-7283.09" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.reach_relining_construction -->
-<g id="node135" class="node">
+<g id="node137" class="node">
 <title>tww_vl.reach_relining_construction</title>
-<g id="a_node135"><a xlink:href="../../../tww_vl/tables/reach_relining_construction.html" xlink:title="tww_vl.reach_relining_construction" target="_top">
+<g id="a_node137"><a xlink:href="../../../tww_vl/tables/reach_relining_construction.html" xlink:title="tww_vl.reach_relining_construction" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1219.5,-7220 1219.5,-7278 1473.5,-7278 1473.5,-7220 1219.5,-7220"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1219.5,-7256 1219.5,-7278 1473.5,-7278 1473.5,-7256 1219.5,-7256"/>
 <polygon fill="none" stroke="black" points="1219.5,-7256 1219.5,-7278 1473.5,-7278 1473.5,-7256 1219.5,-7256"/>
@@ -9293,9 +9293,9 @@
 <ellipse fill="none" stroke="black" cx="1645.84" cy="-7305.03" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.reach_inside_coating -->
-<g id="node157" class="node">
+<g id="node159" class="node">
 <title>tww_vl.reach_inside_coating</title>
-<g id="a_node157"><a xlink:href="../../../tww_vl/tables/reach_inside_coating.html" xlink:title="tww_vl.reach_inside_coating" target="_top">
+<g id="a_node159"><a xlink:href="../../../tww_vl/tables/reach_inside_coating.html" xlink:title="tww_vl.reach_inside_coating" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1240.5,-7536 1240.5,-7594 1452.5,-7594 1452.5,-7536 1240.5,-7536"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1240.5,-7572 1240.5,-7594 1452.5,-7594 1452.5,-7572 1240.5,-7572"/>
 <polygon fill="none" stroke="black" points="1240.5,-7572 1240.5,-7594 1452.5,-7594 1452.5,-7572 1240.5,-7572"/>
@@ -9323,9 +9323,9 @@
 <ellipse fill="none" stroke="black" cx="1645.85" cy="-7417" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.reach_material -->
-<g id="node163" class="node">
+<g id="node165" class="node">
 <title>tww_vl.reach_material</title>
-<g id="a_node163"><a xlink:href="../../../tww_vl/tables/reach_material.html" xlink:title="tww_vl.reach_material" target="_top">
+<g id="a_node165"><a xlink:href="../../../tww_vl/tables/reach_material.html" xlink:title="tww_vl.reach_material" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1257.5,-7378 1257.5,-7436 1435.5,-7436 1435.5,-7378 1257.5,-7378"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1257.5,-7414 1257.5,-7436 1435.5,-7436 1435.5,-7414 1257.5,-7414"/>
 <polygon fill="none" stroke="black" points="1257.5,-7414 1257.5,-7436 1435.5,-7436 1435.5,-7414 1257.5,-7414"/>
@@ -9353,9 +9353,9 @@
 <ellipse fill="none" stroke="black" cx="1645.8" cy="-7372.09" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.reach_reliner_material -->
-<g id="node205" class="node">
+<g id="node206" class="node">
 <title>tww_vl.reach_reliner_material</title>
-<g id="a_node205"><a xlink:href="../../../tww_vl/tables/reach_reliner_material.html" xlink:title="tww_vl.reach_reliner_material" target="_top">
+<g id="a_node206"><a xlink:href="../../../tww_vl/tables/reach_reliner_material.html" xlink:title="tww_vl.reach_reliner_material" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1235,-7299 1235,-7357 1458,-7357 1458,-7299 1235,-7299"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1235.5,-7335 1235.5,-7357 1458.5,-7357 1458.5,-7335 1235.5,-7335"/>
 <polygon fill="none" stroke="black" points="1235.5,-7335 1235.5,-7357 1458.5,-7357 1458.5,-7335 1235.5,-7335"/>
@@ -9527,9 +9527,9 @@
 <ellipse fill="none" stroke="black" cx="2091.8" cy="-602.11" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.small_treatment_plant_remote_monitoring -->
-<g id="node180" class="node">
+<g id="node181" class="node">
 <title>tww_vl.small_treatment_plant_remote_monitoring</title>
-<g id="a_node180"><a xlink:href="../../../tww_vl/tables/small_treatment_plant_remote_monitoring.html" xlink:title="tww_vl.small_treatment_plant_remote_monitoring" target="_top">
+<g id="a_node181"><a xlink:href="../../../tww_vl/tables/small_treatment_plant_remote_monitoring.html" xlink:title="tww_vl.small_treatment_plant_remote_monitoring" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="1606.5,-262 1606.5,-320 1951.5,-320 1951.5,-262 1606.5,-262"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="1607,-298 1607,-320 1952,-320 1952,-298 1607,-298"/>
 <polygon fill="none" stroke="black" points="1607,-298 1607,-320 1952,-320 1952,-298 1607,-298"/>
@@ -9624,9 +9624,9 @@
 <ellipse fill="none" stroke="black" cx="2486.81" cy="-118.32" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.electric_equipment_kind -->
-<g id="node221" class="node">
+<g id="node222" class="node">
 <title>tww_vl.electric_equipment_kind</title>
-<g id="a_node221"><a xlink:href="../../../tww_vl/tables/electric_equipment_kind.html" xlink:title="tww_vl.electric_equipment_kind" target="_top">
+<g id="a_node222"><a xlink:href="../../../tww_vl/tables/electric_equipment_kind.html" xlink:title="tww_vl.electric_equipment_kind" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="2071.5,-37 2071.5,-95 2306.5,-95 2306.5,-37 2071.5,-37"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="2072,-73 2072,-95 2307,-95 2307,-73 2072,-73"/>
 <polygon fill="none" stroke="black" points="2072,-73 2072,-95 2307,-95 2307,-73 2072,-73"/>
@@ -9782,9 +9782,9 @@
 <ellipse fill="none" stroke="black" cx="2482.8" cy="-4699.75" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.damage_channel_channel_damage_code -->
-<g id="node218" class="node">
+<g id="node219" class="node">
 <title>tww_vl.damage_channel_channel_damage_code</title>
-<g id="a_node218"><a xlink:href="../../../tww_vl/tables/damage_channel_channel_damage_code.html" xlink:title="tww_vl.damage_channel_channel_damage_code" target="_top">
+<g id="a_node219"><a xlink:href="../../../tww_vl/tables/damage_channel_channel_damage_code.html" xlink:title="tww_vl.damage_channel_channel_damage_code" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="2025.5,-4401 2025.5,-4459 2352.5,-4459 2352.5,-4401 2025.5,-4401"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="2026,-4437 2026,-4459 2353,-4459 2353,-4437 2026,-4437"/>
 <polygon fill="none" stroke="black" points="2026,-4437 2026,-4459 2353,-4459 2353,-4437 2026,-4437"/>
@@ -9840,9 +9840,9 @@
 <ellipse fill="none" stroke="black" cx="2805.33" cy="-3996.23" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.building_group_electric_connection -->
-<g id="node103" class="node">
+<g id="node104" class="node">
 <title>tww_vl.building_group_electric_connection</title>
-<g id="a_node103"><a xlink:href="../../../tww_vl/tables/building_group_electric_connection.html" xlink:title="tww_vl.building_group_electric_connection" target="_top">
+<g id="a_node104"><a xlink:href="../../../tww_vl/tables/building_group_electric_connection.html" xlink:title="tww_vl.building_group_electric_connection" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="2425,-4157 2425,-4215 2723,-4215 2723,-4157 2425,-4157"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="2425,-4193 2425,-4215 2723,-4215 2723,-4193 2425,-4193"/>
 <polygon fill="none" stroke="black" points="2425,-4193 2425,-4215 2723,-4215 2723,-4193 2425,-4193"/>
@@ -9870,9 +9870,9 @@
 <ellipse fill="none" stroke="black" cx="2805.32" cy="-4129.72" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.building_group_drainage_map -->
-<g id="node106" class="node">
+<g id="node108" class="node">
 <title>tww_vl.building_group_drainage_map</title>
-<g id="a_node106"><a xlink:href="../../../tww_vl/tables/building_group_drainage_map.html" xlink:title="tww_vl.building_group_drainage_map" target="_top">
+<g id="a_node108"><a xlink:href="../../../tww_vl/tables/building_group_drainage_map.html" xlink:title="tww_vl.building_group_drainage_map" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="2441,-4394 2441,-4452 2707,-4452 2707,-4394 2441,-4394"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="2441,-4430 2441,-4452 2707,-4452 2707,-4430 2441,-4430"/>
 <polygon fill="none" stroke="black" points="2441,-4430 2441,-4452 2707,-4452 2707,-4430 2441,-4430"/>
@@ -9900,9 +9900,9 @@
 <ellipse fill="none" stroke="black" cx="2805.36" cy="-4196.12" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.building_group_function -->
-<g id="node121" class="node">
+<g id="node123" class="node">
 <title>tww_vl.building_group_function</title>
-<g id="a_node121"><a xlink:href="../../../tww_vl/tables/building_group_function.html" xlink:title="tww_vl.building_group_function" target="_top">
+<g id="a_node123"><a xlink:href="../../../tww_vl/tables/building_group_function.html" xlink:title="tww_vl.building_group_function" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="2457.5,-4078 2457.5,-4136 2690.5,-4136 2690.5,-4078 2457.5,-4078"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="2458,-4114 2458,-4136 2691,-4136 2691,-4114 2458,-4114"/>
 <polygon fill="none" stroke="black" points="2458,-4114 2458,-4136 2691,-4136 2691,-4114 2458,-4114"/>
@@ -9930,9 +9930,9 @@
 <ellipse fill="none" stroke="black" cx="2805.3" cy="-4107" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.building_group_drinking_water_others -->
-<g id="node126" class="node">
+<g id="node128" class="node">
 <title>tww_vl.building_group_drinking_water_others</title>
-<g id="a_node126"><a xlink:href="../../../tww_vl/tables/building_group_drinking_water_others.html" xlink:title="tww_vl.building_group_drinking_water_others" target="_top">
+<g id="a_node128"><a xlink:href="../../../tww_vl/tables/building_group_drinking_water_others.html" xlink:title="tww_vl.building_group_drinking_water_others" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="2416,-4236 2416,-4294 2732,-4294 2732,-4236 2416,-4236"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="2416,-4272 2416,-4294 2732,-4294 2732,-4272 2416,-4272"/>
 <polygon fill="none" stroke="black" points="2416,-4272 2416,-4294 2732,-4294 2732,-4272 2416,-4272"/>
@@ -9960,9 +9960,9 @@
 <ellipse fill="none" stroke="black" cx="2805.45" cy="-4152.85" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.building_group_drinking_water_network -->
-<g id="node151" class="node">
+<g id="node153" class="node">
 <title>tww_vl.building_group_drinking_water_network</title>
-<g id="a_node151"><a xlink:href="../../../tww_vl/tables/building_group_drinking_water_network.html" xlink:title="tww_vl.building_group_drinking_water_network" target="_top">
+<g id="a_node153"><a xlink:href="../../../tww_vl/tables/building_group_drinking_water_network.html" xlink:title="tww_vl.building_group_drinking_water_network" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="2410,-4315 2410,-4373 2738,-4373 2738,-4315 2410,-4315"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="2410,-4351 2410,-4373 2738,-4373 2738,-4351 2410,-4351"/>
 <polygon fill="none" stroke="black" points="2410,-4351 2410,-4373 2738,-4373 2738,-4351 2410,-4351"/>
@@ -9990,9 +9990,9 @@
 <ellipse fill="none" stroke="black" cx="2805.4" cy="-4174.48" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_vl.building_group_renovation_necessity -->
-<g id="node222" class="node">
+<g id="node223" class="node">
 <title>tww_vl.building_group_renovation_necessity</title>
-<g id="a_node222"><a xlink:href="../../../tww_vl/tables/building_group_renovation_necessity.html" xlink:title="tww_vl.building_group_renovation_necessity" target="_top">
+<g id="a_node223"><a xlink:href="../../../tww_vl/tables/building_group_renovation_necessity.html" xlink:title="tww_vl.building_group_renovation_necessity" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="2419.5,-3999 2419.5,-4057 2728.5,-4057 2728.5,-3999 2419.5,-3999"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="2420,-4035 2420,-4057 2729,-4057 2729,-4035 2420,-4035"/>
 <polygon fill="none" stroke="black" points="2420,-4035 2420,-4057 2729,-4057 2729,-4035 2420,-4035"/>

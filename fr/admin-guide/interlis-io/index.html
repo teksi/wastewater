@@ -16,9 +16,9 @@
         <script src="../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="../../_static/documentation_options.js?v=b46de64f"></script>
-        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../../_static/translations.js?v=d99ca74e"></script>
+        <script src="../../_static/translations.js?v=bf059b8c"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Recherche" href="../../search.html" />
@@ -118,10 +118,10 @@
            <div itemprop="articleBody">
              
   <section id="interlis-data-exchange">
-<h1><span class="section-number">4.4. </span>INTERLIS Data exchange<a class="headerlink" href="#interlis-data-exchange" title="Link to this heading"></a></h1>
+<h1><span class="section-number">4.4. </span>INTERLIS Data exchange<a class="headerlink" href="#interlis-data-exchange" title="Lien vers cette rubrique"></a></h1>
 <p>This represents a guide on how to import/export data between TWW and INTERLIS 2 Transfer Format (XTF).</p>
 <section id="general">
-<h2><span class="section-number">4.4.1. </span>General<a class="headerlink" href="#general" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.4.1. </span>General<a class="headerlink" href="#general" title="Lien vers cette rubrique"></a></h2>
 <p>The TWW plugin includes an experimental interlis import/export feature.
 It is currently capable of importing and exporting the following models::
 * SIA405_ABWASSER_2020_1_LV95
@@ -130,16 +130,16 @@ It is currently capable of importing and exporting the following models::
 <p>Note that currently, exports are possible in German only. Translated exports are on the roadmap, let us know if you are interested in this feature.</p>
 </section>
 <section id="prerequisites">
-<h2><span class="section-number">4.4.2. </span>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.4.2. </span>Prerequisites<a class="headerlink" href="#prerequisites" title="Lien vers cette rubrique"></a></h2>
 <section id="java">
-<h3><span class="section-number">4.4.2.1. </span>Java<a class="headerlink" href="#java" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.2.1. </span>Java<a class="headerlink" href="#java" title="Lien vers cette rubrique"></a></h3>
 <p>You need java on your system.</p>
 <p>Windows : <a class="reference external" href="https://javadl.oracle.com/webapps/download/AutoDL?BundleId=245058_d3c52aa6bfa54d3ca74e617f18309292">Java for windows download</a>
 MacOS : <a class="reference external" href="https://javadl.oracle.com/webapps/download/AutoDL?BundleId=245051_d3c52aa6bfa54d3ca74e617f18309292">Java for MacOS download</a>
 Linux : use the package manager</p>
 </section>
 <section id="python-libraries">
-<h3><span class="section-number">4.4.2.2. </span>Python libraries<a class="headerlink" href="#python-libraries" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.2.2. </span>Python libraries<a class="headerlink" href="#python-libraries" title="Lien vers cette rubrique"></a></h3>
 <p>You need <cite>sqlalchemy</cite> and <cite>geoalchemy2</cite>.</p>
 <p>To install : before launching QGIS, open OSGeo4W Shell</p>
 <figure class="align-default">
@@ -165,14 +165,14 @@ Linux : use the package manager</p>
 <p>The same <cite>–target</cite> flag can be added to install <cite>sqlalchemy</cite> and <cite>geoalchemy2</cite> in another location.</p>
 </section>
 <section id="tww-version">
-<h3><span class="section-number">4.4.2.3. </span>TWW Version<a class="headerlink" href="#tww-version" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.2.3. </span>TWW Version<a class="headerlink" href="#tww-version" title="Lien vers cette rubrique"></a></h3>
 <p>The export only supports up-to-date TWW datamodel (1.5.6 at the time of writing). Ensure your datamodel is fully updated before trying to import/export.</p>
 </section>
 </section>
 <section id="usage-gui">
-<h2><span class="section-number">4.4.3. </span>Usage (GUI)<a class="headerlink" href="#usage-gui" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.4.3. </span>Usage (GUI)<a class="headerlink" href="#usage-gui" title="Lien vers cette rubrique"></a></h2>
 <section id="enable-admin-mode">
-<h3><span class="section-number">4.4.3.1. </span>Enable admin mode<a class="headerlink" href="#enable-admin-mode" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.3.1. </span>Enable admin mode<a class="headerlink" href="#enable-admin-mode" title="Lien vers cette rubrique"></a></h3>
 <p>In the <cite>plugin&gt;TWW&gt;settings</cite> dialog, under the <cite>Developer options</cite> tab, ensure <cite>Admin mode</cite> is enabled. Restart QGIS.</p>
 <figure class="align-default">
 <img alt="../../_images/settings_dialog.png" src="../../_images/settings_dialog.png" />
@@ -183,7 +183,7 @@ Linux : use the package manager</p>
 </figure>
 </section>
 <section id="export">
-<h3><span class="section-number">4.4.3.2. </span>Export<a class="headerlink" href="#export" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.3.2. </span>Export<a class="headerlink" href="#export" title="Lien vers cette rubrique"></a></h3>
 <p>To export your TWW data, click on the <cite>export</cite> button. The following dialog will appear.</p>
 <figure class="align-default">
 <img alt="../../_images/export_dialog.png" src="../../_images/export_dialog.png" />
@@ -214,7 +214,7 @@ Linux : use the package manager</p>
 <p>Exports include a validation step using <cite>ilivalidator</cite>, which will inform you whether the export contains validation error.</p>
 </section>
 <section id="import">
-<h3><span class="section-number">4.4.3.3. </span>Import<a class="headerlink" href="#import" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.3.3. </span>Import<a class="headerlink" href="#import" title="Lien vers cette rubrique"></a></h3>
 <p>To import <cite>xtf`files, click on the `import</cite> button and navigate to the <cite>.xtf</cite> file.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -230,10 +230,10 @@ Linux : use the package manager</p>
 </section>
 </section>
 <section id="usage-command-line">
-<h2><span class="section-number">4.4.4. </span>Usage (command line)<a class="headerlink" href="#usage-command-line" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.4.4. </span>Usage (command line)<a class="headerlink" href="#usage-command-line" title="Lien vers cette rubrique"></a></h2>
 <p>For advanced usage, the import/export tool can also be used as a command line tool.</p>
 <section id="dependencies">
-<h3><span class="section-number">4.4.4.1. </span>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.4.1. </span>Dependencies<a class="headerlink" href="#dependencies" title="Lien vers cette rubrique"></a></h3>
 <p>The QGIS python classes must be available in the python interpreter.</p>
 <ul class="simple">
 <li><p>On windows you can use the OSGeo4W environment</p></li>
@@ -241,7 +241,7 @@ Linux : use the package manager</p>
 </ul>
 </section>
 <section id="id1">
-<h3><span class="section-number">4.4.4.2. </span>Import<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.4.2. </span>Import<a class="headerlink" href="#id1" title="Lien vers cette rubrique"></a></h3>
 <p>Import example</p>
 <div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3<span class="w"> </span>plugin/tww_cmd.py<span class="w"> </span>interlis_import<span class="w"> </span>--xtf_file<span class="w"> </span>plugin/teksi_wastewater/tests/data/minimal-dataset-SIA405-ABWASSER.xtf<span class="w"> </span>--pgservice<span class="w"> </span>pg_tww
 </pre></div>
@@ -286,7 +286,7 @@ Linux : use the package manager</p>
 </div>
 </section>
 <section id="id2">
-<h3><span class="section-number">4.4.4.3. </span>Export<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.4.3. </span>Export<a class="headerlink" href="#id2" title="Lien vers cette rubrique"></a></h3>
 <p>Export example</p>
 <div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="go">python3 plugin/tww_cmd.py interlis_export --xtf_file &quot;output.xtf&quot; --pgservice pg_tww</span>
 </pre></div>
@@ -332,9 +332,9 @@ Linux : use the package manager</p>
 </section>
 </section>
 <section id="quality-control">
-<h2><span class="section-number">4.4.5. </span>Quality control<a class="headerlink" href="#quality-control" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.4.5. </span>Quality control<a class="headerlink" href="#quality-control" title="Lien vers cette rubrique"></a></h2>
 <section id="quality-control-with-vsa-online-checker-fachprufung-mit-vsa-checker-online">
-<h3><span class="section-number">4.4.5.1. </span>Quality control with VSA online checker (Fachprüfung mit VSA Checker (online))<a class="headerlink" href="#quality-control-with-vsa-online-checker-fachprufung-mit-vsa-checker-online" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.5.1. </span>Quality control with VSA online checker (Fachprüfung mit VSA Checker (online))<a class="headerlink" href="#quality-control-with-vsa-online-checker-fachprufung-mit-vsa-checker-online" title="Lien vers cette rubrique"></a></h3>
 <figure class="align-default">
 <img alt="https://vsa.ch/wp-content/uploads/2020/04/Daten-checker-d-f-it.jpg" src="https://vsa.ch/wp-content/uploads/2020/04/Daten-checker-d-f-it.jpg" />
 </figure>

@@ -165,6 +165,28 @@
                                     <td><p>Gross costs of electromechanical equipment / Brutto Erstellungskosten der elektromechanischen Ausrüstung für den Feststoffrueckhalt / Coûts bruts des équipements électromécaniques</p></td>
                                 </tr>
                                 <tr>
+                                    <td class='foreignKey' title='Foreign Key'><i class='icon ion-key iconkey' style='padding-left: 5px;'></i><span id="kind">kind</span></td>
+                                    <td>int4</td>
+                                    <td>10</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                            <tr>
+                                                <td title="solids_retention.kind references tww_vl.solids_retention_kind.code via fkey_vl_solids_retention_kind"><a href='../../tww_vl/tables/solids_retention_kind.html'>solids_retention_kind</a><span class='relatedKey'>.code</span></td>
+                                                <td class="constraint detail">fkey_vl_solids_retention_kind</td>
+                                                <td class="constraint detail"><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>R</span></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td><p>yyy_(Elektromechanische) Teile zum Feststoffrückhalt eines Bauwerks / (Elektromechanische) Teile zum Feststoffrückhalt eines Bauwerks / Eléments (électromécaniques) pour la retenue de matières solides d’un ouvrage</p></td>
+                                </tr>
+                                <tr>
                                     <td><span id="overflow_level">overflow_level</span></td>
                                     <td>numeric</td>
                                     <td>7,3</td>
@@ -180,28 +202,6 @@
                                         </table>
                                     </td>
                                     <td><p>Overflow level of solids retention in in m.a.sl. / Anspringkote Feststoffrückhalt in m.ü.M. / Cote du début du déversement de la retenue de matières solides en m.s.m.</p></td>
-                                </tr>
-                                <tr>
-                                    <td class='foreignKey' title='Foreign Key'><i class='icon ion-key iconkey' style='padding-left: 5px;'></i><span id="type">type</span></td>
-                                    <td>int4</td>
-                                    <td>10</td>
-                                    <td title='nullable'>√</td>
-                                    <td title=''></td>
-                                    <td>null</td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                            <tr>
-                                                <td title="solids_retention.type references tww_vl.solids_retention_type.code via fkey_vl_solids_retention_type"><a href='../../tww_vl/tables/solids_retention_type.html'>solids_retention_type</a><span class='relatedKey'>.code</span></td>
-                                                <td class="constraint detail">fkey_vl_solids_retention_type</td>
-                                                <td class="constraint detail"><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>R</span></td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                    <td><p>yyy_(Elektromechanische) Teile zum Feststoffrückhalt eines Bauwerks / (Elektromechanische) Teile zum Feststoffrückhalt eines Bauwerks / Eléments (électromécaniques) pour la retenue de matières solides d’un ouvrage</p></td>
                                 </tr>
                                 <tr>
                                     <td><span id="year_of_replacement">year_of_replacement</span></td>

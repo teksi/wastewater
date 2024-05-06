@@ -122,18 +122,18 @@
                                         <td><span title='Cascade on delete:&#10;Deletion of parent deletes child'>Cascade on delete</span></td>
                                     </tr>
                                     <tr>
-                                        <td>fkey_vl_solids_retention_type</td>
+                                        <td>fkey_vl_solids_retention_kind</td>
                                         <td>
                                             <table border='0' cellspacing='0' cellpadding='0'>
                                                 <tr>
-                                                    <td><a href='tables/solids_retention.html'>solids_retention</a><span>.type</span></td>
+                                                    <td><a href='tables/solids_retention.html'>solids_retention</a><span>.kind</span></td>
                                                 </tr>
                                             </table>
                                         </td>
                                         <td>
                                             <table border='0' cellspacing='0' cellpadding='0'>
                                                 <tr>
-                                                    <td><a href='tables/solids_retention_type.html'>solids_retention_type</a><span>.code</span></td>
+                                                    <td><a href='tables/solids_retention_kind.html'>solids_retention_kind</a><span>.code</span></td>
                                                 </tr>
                                             </table>
                                         </td>
@@ -1994,24 +1994,6 @@
                                         <td><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>Restrict delete</span></td>
                                     </tr>
                                     <tr>
-                                        <td>fkey_vl_bio_ecol_assessment_type_water_body</td>
-                                        <td>
-                                            <table border='0' cellspacing='0' cellpadding='0'>
-                                                <tr>
-                                                    <td><a href='tables/bio_ecol_assessment.html'>bio_ecol_assessment</a><span>.type_water_body</span></td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                        <td>
-                                            <table border='0' cellspacing='0' cellpadding='0'>
-                                                <tr>
-                                                    <td><a href='tables/bio_ecol_assessment_type_water_body.html'>bio_ecol_assessment_type_water_body</a><span>.code</span></td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                        <td><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>Restrict delete</span></td>
-                                    </tr>
-                                    <tr>
                                         <td>fkey_vl_bio_ecol_assessment_impact_external_aspect</td>
                                         <td>
                                             <table border='0' cellspacing='0' cellpadding='0'>
@@ -2024,6 +2006,24 @@
                                             <table border='0' cellspacing='0' cellpadding='0'>
                                                 <tr>
                                                     <td><a href='tables/bio_ecol_assessment_impact_exte_5b9a3743.html'>bio_ecol_assessment_impact_external_aspect</a><span>.code</span></td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>Restrict delete</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>fkey_vl_bio_ecol_assessment_kind_water_body</td>
+                                        <td>
+                                            <table border='0' cellspacing='0' cellpadding='0'>
+                                                <tr>
+                                                    <td><a href='tables/bio_ecol_assessment.html'>bio_ecol_assessment</a><span>.kind_water_body</span></td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td>
+                                            <table border='0' cellspacing='0' cellpadding='0'>
+                                                <tr>
+                                                    <td><a href='tables/bio_ecol_assessment_kind_water_body.html'>bio_ecol_assessment_kind_water_body</a><span>.code</span></td>
                                                 </tr>
                                             </table>
                                         </td>
@@ -4028,18 +4028,18 @@
                                         <td><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>Restrict delete</span></td>
                                     </tr>
                                     <tr>
-                                        <td>fkey_vl_tank_emptying_type</td>
+                                        <td>fkey_vl_tank_emptying_kind</td>
                                         <td>
                                             <table border='0' cellspacing='0' cellpadding='0'>
                                                 <tr>
-                                                    <td><a href='tables/tank_emptying.html'>tank_emptying</a><span>.type</span></td>
+                                                    <td><a href='tables/tank_emptying.html'>tank_emptying</a><span>.kind</span></td>
                                                 </tr>
                                             </table>
                                         </td>
                                         <td>
                                             <table border='0' cellspacing='0' cellpadding='0'>
                                                 <tr>
-                                                    <td><a href='tables/tank_emptying_type.html'>tank_emptying_type</a><span>.code</span></td>
+                                                    <td><a href='tables/tank_emptying_kind.html'>tank_emptying_kind</a><span>.code</span></td>
                                                 </tr>
                                             </table>
                                         </td>
@@ -5558,24 +5558,6 @@
                                         <td><span title='Null on delete:&#10;Foreign key to parent set to NULL when parent deleted'>Null on delete</span></td>
                                     </tr>
                                     <tr>
-                                        <td>fkey_vl_tank_cleaning_type</td>
-                                        <td>
-                                            <table border='0' cellspacing='0' cellpadding='0'>
-                                                <tr>
-                                                    <td><a href='tables/tank_cleaning.html'>tank_cleaning</a><span>.type</span></td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                        <td>
-                                            <table border='0' cellspacing='0' cellpadding='0'>
-                                                <tr>
-                                                    <td><a href='tables/tank_cleaning_type.html'>tank_cleaning_type</a><span>.code</span></td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                        <td><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>Restrict delete</span></td>
-                                    </tr>
-                                    <tr>
                                         <td>oorel_od_tank_cleaning_structure_part</td>
                                         <td>
                                             <table border='0' cellspacing='0' cellpadding='0'>
@@ -5592,6 +5574,24 @@
                                             </table>
                                         </td>
                                         <td><span title='Cascade on delete:&#10;Deletion of parent deletes child'>Cascade on delete</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>fkey_vl_tank_cleaning_kind</td>
+                                        <td>
+                                            <table border='0' cellspacing='0' cellpadding='0'>
+                                                <tr>
+                                                    <td><a href='tables/tank_cleaning.html'>tank_cleaning</a><span>.kind</span></td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td>
+                                            <table border='0' cellspacing='0' cellpadding='0'>
+                                                <tr>
+                                                    <td><a href='tables/tank_cleaning_kind.html'>tank_cleaning_kind</a><span>.code</span></td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>Restrict delete</span></td>
                                     </tr>
                                     <tr>
                                         <td>rel_surface_runoff_parameters_catchment_area</td>

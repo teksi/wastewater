@@ -16,7 +16,7 @@
         <script src="../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="../../_static/documentation_options.js?v=419ed147"></script>
-        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../_static/translations.js?v=70a09b52"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -67,7 +67,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#collecting-a-hydr-geometry-corresponds-to-a-basin-geometry-in-mikeurban">3.8.5. Collecting a hydr_geometry (corresponds to a basin geometry in MikeUrban)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#hydraulic-modeling-of-an-overflow-prank-weir-leapingweir-pump">3.8.6. Hydraulic modeling of an overflow (prank weir / leapingweir / pump)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#overflow-characteristic">3.8.7. Overflow characteristic</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#further-informations">3.8.8. Further informations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-default-values">3.8.8. Setting default values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#further-informations">3.8.9. Further informations</a></li>
 </ul>
 </li>
 </ul>
@@ -317,8 +318,18 @@ The field fk_overflow_to must be filled manually. The Obj_ID of the previously c
 <li><p>Go back in the field fk_overflow characteristic of the just created overflow characteristic with the button <strong>switch to form view</strong> and define the necessary HQ or QQ values with the <strong>add child object</strong> button.</p></li>
 </ol>
 </section>
+<section id="setting-default-values">
+<h2><span class="section-number">3.8.8. </span>Setting default values<a class="headerlink" href="#setting-default-values" title="Link to this heading"></a></h2>
+<p>It is possible to define default values for repeated fields such as fk_provider or fk_dataowner.</p>
+<ol class="arabic simple">
+<li><p>Enter field name and value in the corresponding attributes in <code class="docutils literal notranslate"><span class="pre">tww_od.default</span> <span class="pre">values</span></code></p></li>
+</ol>
+<p>2. Connect all occurences of your field name to <code class="docutils literal notranslate"><span class="pre">tww_sys.get_default_values(field_name)</span></code>.
+Per default, the fields <code class="docutils literal notranslate"><span class="pre">fk_provider</span></code> and <code class="docutils literal notranslate"><span class="pre">fk_dataowner</span></code> are already connected to the function <code class="docutils literal notranslate"><span class="pre">tww_sys.get_default_values(field_name)</span></code>.
+An example SQL script how to insert the default value for all occurences of a field name can be found <a class="reference external" href="https://github.com/teksi/wastewater/blob/main/datamodel/changelogs/0001/14_default_values.sql">here</a>)</p>
+</section>
 <section id="further-informations">
-<h2><span class="section-number">3.8.8. </span>Further informations<a class="headerlink" href="#further-informations" title="Link to this heading"></a></h2>
+<h2><span class="section-number">3.8.9. </span>Further informations<a class="headerlink" href="#further-informations" title="Link to this heading"></a></h2>
 <p>Further Q &amp; A’s you can find in the
 <a class="reference external" href="https://github.com/TWW/TWW/discussions/categories/q-a">TWW Discussion section</a></p>
 </section>

@@ -16,9 +16,9 @@
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="../_static/documentation_options.js?v=b46de64f"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../_static/translations.js?v=d99ca74e"></script>
+        <script src="../_static/translations.js?v=bf059b8c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Recherche" href="../search.html" /> 
@@ -81,21 +81,21 @@
            <div itemprop="articleBody">
              
   <section id="tww-swmm-workflow">
-<span id="id1"></span><h1>TWW-SWMM workflow<a class="headerlink" href="#tww-swmm-workflow" title="Link to this heading"></a></h1>
+<span id="id1"></span><h1>TWW-SWMM workflow<a class="headerlink" href="#tww-swmm-workflow" title="Lien vers cette rubrique"></a></h1>
 <section id="workflow">
-<h2>Workflow<a class="headerlink" href="#workflow" title="Link to this heading"></a></h2>
+<h2>Workflow<a class="headerlink" href="#workflow" title="Lien vers cette rubrique"></a></h2>
 <figure class="align-default">
 <img alt="../_images/workflow.png" src="../_images/workflow.png" />
 </figure>
 <p>Each step of the workflow is explained in details in next chapters.</p>
 <section id="prepare-and-check-the-data">
-<h3>Prepare and check the data<a class="headerlink" href="#prepare-and-check-the-data" title="Link to this heading"></a></h3>
+<h3>Prepare and check the data<a class="headerlink" href="#prepare-and-check-the-data" title="Lien vers cette rubrique"></a></h3>
 <ul class="simple">
 <li><p>The function <code class="docutils literal notranslate"><span class="pre">SWMM</span> <span class="pre">Set</span> <span class="pre">default</span> <span class="pre">coefficient</span> <span class="pre">of</span> <span class="pre">friction</span></code> can be used to fill automatically default reach friction.</p></li>
 </ul>
 </section>
 <section id="generate-a-swmm-export">
-<h3>Generate a SWMM Export<a class="headerlink" href="#generate-a-swmm-export" title="Link to this heading"></a></h3>
+<h3>Generate a SWMM Export<a class="headerlink" href="#generate-a-swmm-export" title="Lien vers cette rubrique"></a></h3>
 <p>Run <code class="docutils literal notranslate"><span class="pre">SWMM</span> <span class="pre">Create</span> <span class="pre">Input</span></code>. It:</p>
 <ul class="simple">
 <li><p>reads simulation parameters from a template <code class="docutils literal notranslate"><span class="pre">.inp</span></code> file,</p></li>
@@ -104,7 +104,7 @@
 </ul>
 </section>
 <section id="check-the-export">
-<h3>Check the Export<a class="headerlink" href="#check-the-export" title="Link to this heading"></a></h3>
+<h3>Check the Export<a class="headerlink" href="#check-the-export" title="Lien vers cette rubrique"></a></h3>
 <p>Check generated <code class="docutils literal notranslate"><span class="pre">.inp</span></code> file.</p>
 <p>Its likely that the <code class="docutils literal notranslate"><span class="pre">.inp</span></code> file generated in the previous step contains errors or needs some parameters to be tuned.
 We recommend to first open the <code class="docutils literal notranslate"><span class="pre">.inp</span></code> file with the SWMM Graphical User Interface (GUI).
@@ -112,14 +112,14 @@ Error summarized at the SWMM startup might highlight error in TWW. Other errors 
 <p>If you need to tune the simulation parameters, you have to edit the <code class="docutils literal notranslate"><span class="pre">.inp</span></code> file with SWMM GUI.</p>
 </section>
 <section id="run-the-simulation">
-<h3>Run the simulation<a class="headerlink" href="#run-the-simulation" title="Link to this heading"></a></h3>
+<h3>Run the simulation<a class="headerlink" href="#run-the-simulation" title="Lien vers cette rubrique"></a></h3>
 <p>Run <code class="docutils literal notranslate"><span class="pre">SWMM</span> <span class="pre">Execute</span></code>, it launches SWMM. Run it on a tested <code class="docutils literal notranslate"><span class="pre">.inp</span></code> file.
 It generates a report file <code class="docutils literal notranslate"><span class="pre">.rpt</span></code> which contains the summary and the full time series.
 Errors can also occur during the running time.</p>
 <p>Alternatively, you can run the simulation from the SWMM interface or with command line.</p>
 </section>
 <section id="stores-and-map-the-results">
-<h3>Stores and map the Results<a class="headerlink" href="#stores-and-map-the-results" title="Link to this heading"></a></h3>
+<h3>Stores and map the Results<a class="headerlink" href="#stores-and-map-the-results" title="Lien vers cette rubrique"></a></h3>
 <blockquote>
 <div><ul class="simple">
 <li><p><strong>If you dont want to store the result in TWW database</strong>: Run <code class="docutils literal notranslate"><span class="pre">SWMM</span> <span class="pre">Extract</span> <span class="pre">Results</span></code>. It parses the report file and generates three QGIS table layers from the summary. The user has to join the computed values with the geometries and map them.</p></li>
@@ -129,7 +129,7 @@ Errors can also occur during the running time.</p>
 </section>
 </section>
 <section id="gep-project">
-<h2>GEP project<a class="headerlink" href="#gep-project" title="Link to this heading"></a></h2>
+<h2>GEP project<a class="headerlink" href="#gep-project" title="Lien vers cette rubrique"></a></h2>
 <p><strong>WORK IN PROGRESS: This section must be completed with end users</strong></p>
 <p>Usually, a GEP analysis has at least three steps:</p>
 <ol class="arabic simple">

@@ -16,9 +16,9 @@
         <script src="../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="../../_static/documentation_options.js?v=b46de64f"></script>
-        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../../_static/translations.js?v=d99ca74e"></script>
+        <script src="../../_static/translations.js?v=bf059b8c"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Recherche" href="../../search.html" />
@@ -99,10 +99,10 @@
            <div itemprop="articleBody">
              
   <section id="customization-of-the-data-model">
-<h1><span class="section-number">4.5. </span>Customization of the data model<a class="headerlink" href="#customization-of-the-data-model" title="Link to this heading"></a></h1>
+<h1><span class="section-number">4.5. </span>Customization of the data model<a class="headerlink" href="#customization-of-the-data-model" title="Lien vers cette rubrique"></a></h1>
 <p>This chapter describes the possible customization to the data model.</p>
 <section id="introduction">
-<h2><span class="section-number">4.5.1. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.5.1. </span>Introduction<a class="headerlink" href="#introduction" title="Lien vers cette rubrique"></a></h2>
 <p>The data model is versioned and updates are achieved using Postgres Updates Manager (aka <a class="reference external" href="https://github.com/opengisch/pum">PUM</a>).
 The views required to edit the data are automatically generated using <a class="reference external" href="https://github.com/opengisch/pirogue">Pirogue</a> library.</p>
 <p>The combination of both allows to introduce small customizations of the data model such as adding fields to existing base tables or extending views by joining additional tables.</p>
@@ -111,7 +111,7 @@ The views required to edit the data are automatically generated using <a class="
 <p>If a customization is still required, the following explanations and rules explain how to adapt TWW data model to your specific needs.</p>
 </section>
 <section id="adding-fields">
-<h2><span class="section-number">4.5.2. </span>Adding fields<a class="headerlink" href="#adding-fields" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.5.2. </span>Adding fields<a class="headerlink" href="#adding-fields" title="Lien vers cette rubrique"></a></h2>
 <p>It is allowed to add additional fields to tables by naming them as <code class="docutils literal notranslate"><span class="pre">usr_…</span></code>.</p>
 <p>If added in base tables, these additional fields will be automatically added to the views, being an editable field. The views can be re-generated any time using the following command:</p>
 <p><code class="docutils literal notranslate"><span class="pre">./view/create_views.py</span> <span class="pre">--pg_service</span> <span class="pre">pg_tww</span> <span class="pre">--srid</span> <span class="pre">2056</span></code></p>
@@ -121,7 +121,7 @@ The views required to edit the data are automatically generated using <a class="
 </div>
 </section>
 <section id="joining-additional-tables">
-<h2><span class="section-number">4.5.3. </span>Joining additional tables<a class="headerlink" href="#joining-additional-tables" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.5.3. </span>Joining additional tables<a class="headerlink" href="#joining-additional-tables" title="Lien vers cette rubrique"></a></h2>
 <p>It is possible to join additional tables to the two main views (<code class="docutils literal notranslate"><span class="pre">vw_tww_wastewater_structure</span></code> and <code class="docutils literal notranslate"><span class="pre">vw_tww_reach</span></code>).
 This is done by using a YAML definition file for each view and defining a list of joined tables.
 Fields of these tables will be joined as read-only fields as they are discarded in edit triggers.
@@ -145,7 +145,7 @@ For joining a table to <code class="docutils literal notranslate"><span class="p
 <p>And similarly for <code class="docutils literal notranslate"><span class="pre">vw_tww_reach</span></code> view, by specifying <code class="docutils literal notranslate"><span class="pre">tww_reach_extra</span></code> variable to the corresponding YAML file path.</p>
 </section>
 <section id="creating-custom-views">
-<h2><span class="section-number">4.5.4. </span>Creating custom views<a class="headerlink" href="#creating-custom-views" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.5.4. </span>Creating custom views<a class="headerlink" href="#creating-custom-views" title="Lien vers cette rubrique"></a></h2>
 <p>It is possible to create custom views and add them to the data model.</p>
 <p>In order to allow upgrades of the data model, one should provide a script to create them and one to delete them.
 These scripts (SQL or Python) should be placed in a specific path and name them as pre-all.{py,sql} and post-all.{py,sql}.

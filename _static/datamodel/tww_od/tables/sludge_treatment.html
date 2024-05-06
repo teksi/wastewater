@@ -247,7 +247,7 @@
                                 <tr>
                                     <td><span id="predensification_of_excess_sludge">predensification_of_excess_sludge</span></td>
                                     <td>numeric</td>
-                                    <td>9,2</td>
+                                    <td>10,2</td>
                                     <td title='nullable'>√</td>
                                     <td title=''></td>
                                     <td>null</td>
@@ -264,7 +264,7 @@
                                 <tr>
                                     <td><span id="predensification_of_mixed_sludge">predensification_of_mixed_sludge</span></td>
                                     <td>numeric</td>
-                                    <td>9,2</td>
+                                    <td>10,2</td>
                                     <td title='nullable'>√</td>
                                     <td title=''></td>
                                     <td>null</td>
@@ -281,7 +281,7 @@
                                 <tr>
                                     <td><span id="predensification_of_primary_sludge">predensification_of_primary_sludge</span></td>
                                     <td>numeric</td>
-                                    <td>9,2</td>
+                                    <td>10,2</td>
                                     <td title='nullable'>√</td>
                                     <td title=''></td>
                                     <td>null</td>
@@ -337,7 +337,7 @@
                                 <tr>
                                     <td><span id="stacking_of_dehydrated_sludge">stacking_of_dehydrated_sludge</span></td>
                                     <td>numeric</td>
-                                    <td>9,2</td>
+                                    <td>10,2</td>
                                     <td title='nullable'>√</td>
                                     <td title=''></td>
                                     <td>null</td>
@@ -354,7 +354,7 @@
                                 <tr>
                                     <td><span id="stacking_of_liquid_sludge">stacking_of_liquid_sludge</span></td>
                                     <td>numeric</td>
-                                    <td>9,2</td>
+                                    <td>10,2</td>
                                     <td title='nullable'>√</td>
                                     <td title=''></td>
                                     <td>null</td>
@@ -391,7 +391,7 @@
                                     <td>16</td>
                                     <td title='nullable'>√</td>
                                     <td title=''></td>
-                                    <td>null</td>
+                                    <td>tww_sys.get_default_values(&#39;fk_dataowner&#39;::text)</td>
                                     <td>
                                         <table border='0' cellspacing='0' cellpadding='0'>
                                         </table>
@@ -413,7 +413,7 @@
                                     <td>16</td>
                                     <td title='nullable'>√</td>
                                     <td title=''></td>
-                                    <td>null</td>
+                                    <td>tww_sys.get_default_values(&#39;fk_provider&#39;::text)</td>
                                     <td>
                                         <table border='0' cellspacing='0' cellpadding='0'>
                                         </table>
@@ -522,12 +522,12 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td>st_identifier_length_max_20</td>
-                                    <td>((char_length(identifier) &lt;&#61; 20))</td>
-                                </tr>
-                                <tr>
                                     <td>st_remark_length_max_80</td>
                                     <td>((char_length(remark) &lt;&#61; 80))</td>
+                                </tr>
+                                <tr>
+                                    <td>st_identifier_length_max_20</td>
+                                    <td>((char_length(identifier) &lt;&#61; 20))</td>
                                 </tr>
                                 </tbody>
                             </table>

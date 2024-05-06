@@ -160,9 +160,9 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td><span id="overflow_level">overflow_level</span></td>
-                                    <td>numeric</td>
-                                    <td>7,3</td>
+                                    <td><span id="kind">kind</span></td>
+                                    <td>int4</td>
+                                    <td>10</td>
                                     <td title='nullable'>√</td>
                                     <td title=''></td>
                                     <td>null</td>
@@ -177,9 +177,9 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td><span id="type">type</span></td>
-                                    <td>int4</td>
-                                    <td>10</td>
+                                    <td><span id="overflow_level">overflow_level</span></td>
+                                    <td>numeric</td>
+                                    <td>7,3</td>
                                     <td title='nullable'>√</td>
                                     <td title=''></td>
                                     <td>null</td>
@@ -216,7 +216,7 @@
                                     <td>16</td>
                                     <td title='nullable'>√</td>
                                     <td title=''></td>
-                                    <td>null</td>
+                                    <td>tww_sys.get_default_values(&#39;fk_dataowner&#39;::text)</td>
                                     <td>
                                         <table border='0' cellspacing='0' cellpadding='0'>
                                         </table>
@@ -233,7 +233,7 @@
                                     <td>16</td>
                                     <td title='nullable'>√</td>
                                     <td title=''></td>
-                                    <td>null</td>
+                                    <td>tww_sys.get_default_values(&#39;fk_provider&#39;::text)</td>
                                     <td>
                                         <table border='0' cellspacing='0' cellpadding='0'>
                                         </table>
@@ -367,7 +367,7 @@
                             </div>
                         </div>
                         <div class="box-body">
-                            <textarea id="sql-script-codemirror" name="sql-script-codemirror" rows="" style="display: none;">SELECT solids_retention.obj_id,&#10;    solids_retention.dimensioning_value,&#10;    solids_retention.gross_costs,&#10;    solids_retention.overflow_level,&#10;    solids_retention.type,&#10;    solids_retention.year_of_replacement,&#10;    structure_part.fk_dataowner,&#10;    structure_part.fk_provider,&#10;    structure_part.fk_wastewater_structure,&#10;    structure_part.identifier,&#10;    structure_part.last_modification,&#10;    structure_part.remark,&#10;    structure_part.renovation_demand&#10;   FROM (tww_od.solids_retention&#10;     LEFT JOIN tww_od.structure_part ON (((structure_part.obj_id)::text &#61; (solids_retention.obj_id)::text)));</textarea>
+                            <textarea id="sql-script-codemirror" name="sql-script-codemirror" rows="" style="display: none;">SELECT solids_retention.obj_id,&#10;    solids_retention.dimensioning_value,&#10;    solids_retention.gross_costs,&#10;    solids_retention.kind,&#10;    solids_retention.overflow_level,&#10;    solids_retention.year_of_replacement,&#10;    structure_part.fk_dataowner,&#10;    structure_part.fk_provider,&#10;    structure_part.fk_wastewater_structure,&#10;    structure_part.identifier,&#10;    structure_part.last_modification,&#10;    structure_part.remark,&#10;    structure_part.renovation_demand&#10;   FROM (tww_od.solids_retention&#10;     LEFT JOIN tww_od.structure_part ON (((structure_part.obj_id)::text &#61; (solids_retention.obj_id)::text)));</textarea>
                             <div style="padding-top: 5px;"><hr></div>
                             <div class="box box-solid">
                                 <div class="box-header with-border">

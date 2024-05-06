@@ -42,10 +42,10 @@
 <text text-anchor="start" x="397" y="-197.2" font-family="Helvetica,sans-Serif" font-size="11.00">io_calculation</text>
 <polygon fill="none" stroke="black" points="377,-167 377,-189 707,-189 707,-167 377,-167"/>
 <image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="382" y="-184"/>
-<text text-anchor="start" x="397" y="-175.2" font-family="Helvetica,sans-Serif" font-size="11.00">relevance_matrix</text>
+<text text-anchor="start" x="397" y="-175.2" font-family="Helvetica,sans-Serif" font-size="11.00">kind_water_body</text>
 <polygon fill="none" stroke="black" points="377,-145 377,-167 707,-167 707,-145 377,-145"/>
 <image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="382" y="-162"/>
-<text text-anchor="start" x="397" y="-153.2" font-family="Helvetica,sans-Serif" font-size="11.00">type_water_body</text>
+<text text-anchor="start" x="397" y="-153.2" font-family="Helvetica,sans-Serif" font-size="11.00">relevance_matrix</text>
 <polygon fill="none" stroke="black" points="377,-127 377,-145 707,-145 707,-127 377,-127"/>
 <text text-anchor="start" x="380" y="-133.2" font-family="Helvetica,sans-Serif" font-size="11.00">...</text>
 <polygon fill="#ffffff" stroke="transparent" points="377,-109 377,-127 526,-127 526,-109 377,-109"/>

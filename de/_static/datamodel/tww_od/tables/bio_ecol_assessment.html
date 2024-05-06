@@ -302,6 +302,28 @@
                                     <td><p>immission oriented calculation available / Immissionsorientierte Berechnung vorhanden. / calcul de performance de type immission disponible</p></td>
                                 </tr>
                                 <tr>
+                                    <td class='foreignKey' title='Foreign Key'><i class='icon ion-key iconkey' style='padding-left: 5px;'></i><span id="kind_water_body">kind_water_body</span></td>
+                                    <td>int4</td>
+                                    <td>10</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                            <tr>
+                                                <td title="bio_ecol_assessment.kind_water_body references tww_vl.bio_ecol_assessment_kind_water_body.code via fkey_vl_bio_ecol_assessment_kind_water_body"><a href='../../tww_vl/tables/bio_ecol_assessment_kind_water_body.html'>bio_ecol_assessment_kind_water_body</a><span class='relatedKey'>.code</span></td>
+                                                <td class="constraint detail">fkey_vl_bio_ecol_assessment_kind_water_body</td>
+                                                <td class="constraint detail"><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>R</span></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td><p>based on table 5.1 of STORM module in directive &ldquo;Abwasserbewirtschaftung bei Regenwetter&rdquo; of VSA (2019/2021) / gemäss Tabelle 5.1 des Moduls STORM der Richtlinie &ldquo;Abwasserbewirtschaftung bei Regenwetter&rdquo; des VSA (2019/2021) / selon table 5.1 du module STORM de la directive &ldquo;Gestion des eaux urbaines par temps de pluie&rdquo; (2019/2021)</p></td>
+                                </tr>
+                                <tr>
                                     <td><span id="outlet_pipe_clear_height">outlet_pipe_clear_height</span></td>
                                     <td>int4</td>
                                     <td>10</td>
@@ -390,28 +412,6 @@
                                         </table>
                                     </td>
                                     <td><p>Name of surface water body corresponding to cantonal rules / Gewässername gemäss kantonalen Vorgaben / Nom du cours d’eau selon indications cantonales</p></td>
-                                </tr>
-                                <tr>
-                                    <td class='foreignKey' title='Foreign Key'><i class='icon ion-key iconkey' style='padding-left: 5px;'></i><span id="type_water_body">type_water_body</span></td>
-                                    <td>int4</td>
-                                    <td>10</td>
-                                    <td title='nullable'>√</td>
-                                    <td title=''></td>
-                                    <td>null</td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                            <tr>
-                                                <td title="bio_ecol_assessment.type_water_body references tww_vl.bio_ecol_assessment_type_water_body.code via fkey_vl_bio_ecol_assessment_type_water_body"><a href='../../tww_vl/tables/bio_ecol_assessment_type_water_body.html'>bio_ecol_assessment_type_water_body</a><span class='relatedKey'>.code</span></td>
-                                                <td class="constraint detail">fkey_vl_bio_ecol_assessment_type_water_body</td>
-                                                <td class="constraint detail"><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>R</span></td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                    <td><p>based on table 5.1 of STORM module in directive &ldquo;Abwasserbewirtschaftung bei Regenwetter&rdquo; of VSA (2019/2021) / gemäss Tabelle 5.1 des Moduls STORM der Richtlinie &ldquo;Abwasserbewirtschaftung bei Regenwetter&rdquo; des VSA (2019/2021) / selon table 5.1 du module STORM de la directive &ldquo;Gestion des eaux urbaines par temps de pluie&rdquo; (2019/2021)</p></td>
                                 </tr>
                                 <tr>
                                     <td><span id="water_specific_discharge_freight_nh4_n_current">water_specific_discharge_freight_nh4_n_current</span></td>

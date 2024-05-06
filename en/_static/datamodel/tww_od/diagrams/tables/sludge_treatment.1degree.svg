@@ -56,15 +56,15 @@
 <polygon fill="none" stroke="black" points="530.5,-464 530.5,-486 763.5,-486 763.5,-464 530.5,-464"/>
 <text text-anchor="start" x="550.5" y="-472.2" font-family="Helvetica,sans-Serif" font-size="11.00">predensification_of_excess_sludge</text>
 <polygon fill="none" stroke="black" points="763.5,-464 763.5,-486 857.5,-486 857.5,-464 763.5,-464"/>
-<text text-anchor="start" x="766.5" y="-472.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[9,2]</text>
+<text text-anchor="start" x="766.5" y="-472.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[10,2]</text>
 <polygon fill="none" stroke="black" points="530.5,-442 530.5,-464 763.5,-464 763.5,-442 530.5,-442"/>
 <text text-anchor="start" x="550.5" y="-450.2" font-family="Helvetica,sans-Serif" font-size="11.00">predensification_of_mixed_sludge</text>
 <polygon fill="none" stroke="black" points="763.5,-442 763.5,-464 857.5,-464 857.5,-442 763.5,-442"/>
-<text text-anchor="start" x="766.5" y="-450.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[9,2]</text>
+<text text-anchor="start" x="766.5" y="-450.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[10,2]</text>
 <polygon fill="none" stroke="black" points="530.5,-420 530.5,-442 763.5,-442 763.5,-420 530.5,-420"/>
 <text text-anchor="start" x="550.5" y="-428.2" font-family="Helvetica,sans-Serif" font-size="11.00">predensification_of_primary_sludge</text>
 <polygon fill="none" stroke="black" points="763.5,-420 763.5,-442 857.5,-442 857.5,-420 763.5,-420"/>
-<text text-anchor="start" x="766.5" y="-428.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[9,2]</text>
+<text text-anchor="start" x="766.5" y="-428.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[10,2]</text>
 <polygon fill="none" stroke="black" points="530.5,-398 530.5,-420 763.5,-420 763.5,-398 530.5,-398"/>
 <text text-anchor="start" x="550.5" y="-406.2" font-family="Helvetica,sans-Serif" font-size="11.00">remark</text>
 <polygon fill="none" stroke="black" points="763.5,-398 763.5,-420 857.5,-420 857.5,-398 763.5,-398"/>
@@ -77,11 +77,11 @@
 <polygon fill="none" stroke="black" points="530.5,-354 530.5,-376 763.5,-376 763.5,-354 530.5,-354"/>
 <text text-anchor="start" x="550.5" y="-362.2" font-family="Helvetica,sans-Serif" font-size="11.00">stacking_of_dehydrated_sludge</text>
 <polygon fill="none" stroke="black" points="763.5,-354 763.5,-376 857.5,-376 857.5,-354 763.5,-354"/>
-<text text-anchor="start" x="766.5" y="-362.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[9,2]</text>
+<text text-anchor="start" x="766.5" y="-362.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[10,2]</text>
 <polygon fill="none" stroke="black" points="530.5,-332 530.5,-354 763.5,-354 763.5,-332 530.5,-332"/>
 <text text-anchor="start" x="550.5" y="-340.2" font-family="Helvetica,sans-Serif" font-size="11.00">stacking_of_liquid_sludge</text>
 <polygon fill="none" stroke="black" points="763.5,-332 763.5,-354 857.5,-354 857.5,-332 763.5,-332"/>
-<text text-anchor="start" x="766.5" y="-340.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[9,2]</text>
+<text text-anchor="start" x="766.5" y="-340.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[10,2]</text>
 <polygon fill="none" stroke="black" points="530.5,-310 530.5,-332 763.5,-332 763.5,-310 530.5,-310"/>
 <text text-anchor="start" x="550.5" y="-318.2" font-family="Helvetica,sans-Serif" font-size="11.00">last_modification</text>
 <polygon fill="none" stroke="black" points="763.5,-310 763.5,-332 857.5,-332 857.5,-310 763.5,-310"/>

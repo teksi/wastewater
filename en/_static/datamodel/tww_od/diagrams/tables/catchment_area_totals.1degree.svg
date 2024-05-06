@@ -52,27 +52,27 @@
 <polygon fill="none" stroke="black" points="460.5,-653 460.5,-675 649.5,-675 649.5,-653 460.5,-653"/>
 <text text-anchor="start" x="480.5" y="-661.2" font-family="Helvetica,sans-Serif" font-size="11.00">surface_area</text>
 <polygon fill="none" stroke="black" points="649.5,-653 649.5,-675 743.5,-675 743.5,-653 649.5,-653"/>
-<text text-anchor="start" x="652.5" y="-661.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[8,2]</text>
+<text text-anchor="start" x="652.5" y="-661.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[10,4]</text>
 <polygon fill="none" stroke="black" points="460.5,-631 460.5,-653 649.5,-653 649.5,-631 460.5,-631"/>
 <text text-anchor="start" x="480.5" y="-639.2" font-family="Helvetica,sans-Serif" font-size="11.00">surface_dim</text>
 <polygon fill="none" stroke="black" points="649.5,-631 649.5,-653 743.5,-653 743.5,-631 649.5,-631"/>
-<text text-anchor="start" x="652.5" y="-639.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[8,2]</text>
+<text text-anchor="start" x="652.5" y="-639.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[10,4]</text>
 <polygon fill="none" stroke="black" points="460.5,-609 460.5,-631 649.5,-631 649.5,-609 460.5,-609"/>
 <text text-anchor="start" x="480.5" y="-617.2" font-family="Helvetica,sans-Serif" font-size="11.00">surface_imp</text>
 <polygon fill="none" stroke="black" points="649.5,-609 649.5,-631 743.5,-631 743.5,-609 649.5,-609"/>
-<text text-anchor="start" x="652.5" y="-617.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[8,2]</text>
+<text text-anchor="start" x="652.5" y="-617.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[10,4]</text>
 <polygon fill="none" stroke="black" points="460.5,-587 460.5,-609 649.5,-609 649.5,-587 460.5,-587"/>
 <text text-anchor="start" x="480.5" y="-595.2" font-family="Helvetica,sans-Serif" font-size="11.00">surface_imp_dim</text>
 <polygon fill="none" stroke="black" points="649.5,-587 649.5,-609 743.5,-609 743.5,-587 649.5,-587"/>
-<text text-anchor="start" x="652.5" y="-595.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[8,2]</text>
+<text text-anchor="start" x="652.5" y="-595.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[10,4]</text>
 <polygon fill="none" stroke="black" points="460.5,-565 460.5,-587 649.5,-587 649.5,-565 460.5,-565"/>
 <text text-anchor="start" x="480.5" y="-573.2" font-family="Helvetica,sans-Serif" font-size="11.00">surface_red</text>
 <polygon fill="none" stroke="black" points="649.5,-565 649.5,-587 743.5,-587 743.5,-565 649.5,-565"/>
-<text text-anchor="start" x="652.5" y="-573.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[8,2]</text>
+<text text-anchor="start" x="652.5" y="-573.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[10,4]</text>
 <polygon fill="none" stroke="black" points="460.5,-543 460.5,-565 649.5,-565 649.5,-543 460.5,-543"/>
 <text text-anchor="start" x="480.5" y="-551.2" font-family="Helvetica,sans-Serif" font-size="11.00">surface_red_dim</text>
 <polygon fill="none" stroke="black" points="649.5,-543 649.5,-565 743.5,-565 743.5,-543 649.5,-543"/>
-<text text-anchor="start" x="652.5" y="-551.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[8,2]</text>
+<text text-anchor="start" x="652.5" y="-551.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[10,4]</text>
 <polygon fill="none" stroke="black" points="460.5,-521 460.5,-543 649.5,-543 649.5,-521 460.5,-521"/>
 <text text-anchor="start" x="480.5" y="-529.2" font-family="Helvetica,sans-Serif" font-size="11.00">waste_water_production</text>
 <polygon fill="none" stroke="black" points="649.5,-521 649.5,-543 743.5,-543 743.5,-521 649.5,-521"/>

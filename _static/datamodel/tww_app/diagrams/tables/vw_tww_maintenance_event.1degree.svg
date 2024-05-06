@@ -124,29 +124,29 @@
 <polygon fill="none" stroke="black" points="359,-457 359,-479 626,-479 626,-457 359,-457"/>
 <text text-anchor="start" x="362" y="-465.2" font-family="Helvetica,sans-Serif" font-size="11.00">int4[10]</text>
 <polygon fill="none" stroke="black" points="10,-435 10,-457 359,-457 359,-435 10,-435"/>
-<text text-anchor="start" x="30" y="-443.2" font-family="Helvetica,sans-Serif" font-size="11.00">ba_outlet_pipe_clear_height</text>
+<text text-anchor="start" x="30" y="-443.2" font-family="Helvetica,sans-Serif" font-size="11.00">ba_kind_water_body</text>
 <polygon fill="none" stroke="black" points="359,-435 359,-457 626,-457 626,-435 359,-435"/>
 <text text-anchor="start" x="362" y="-443.2" font-family="Helvetica,sans-Serif" font-size="11.00">int4[10]</text>
 <polygon fill="none" stroke="black" points="10,-413 10,-435 359,-435 359,-413 10,-413"/>
-<text text-anchor="start" x="30" y="-421.2" font-family="Helvetica,sans-Serif" font-size="11.00">ba_q347</text>
+<text text-anchor="start" x="30" y="-421.2" font-family="Helvetica,sans-Serif" font-size="11.00">ba_outlet_pipe_clear_height</text>
 <polygon fill="none" stroke="black" points="359,-413 359,-435 626,-435 626,-413 359,-413"/>
-<text text-anchor="start" x="362" y="-421.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[8,3]</text>
+<text text-anchor="start" x="362" y="-421.2" font-family="Helvetica,sans-Serif" font-size="11.00">int4[10]</text>
 <polygon fill="none" stroke="black" points="10,-391 10,-413 359,-413 359,-391 10,-391"/>
-<text text-anchor="start" x="30" y="-399.2" font-family="Helvetica,sans-Serif" font-size="11.00">ba_relevance_matrix</text>
+<text text-anchor="start" x="30" y="-399.2" font-family="Helvetica,sans-Serif" font-size="11.00">ba_q347</text>
 <polygon fill="none" stroke="black" points="359,-391 359,-413 626,-413 626,-391 359,-391"/>
-<text text-anchor="start" x="362" y="-399.2" font-family="Helvetica,sans-Serif" font-size="11.00">int4[10]</text>
+<text text-anchor="start" x="362" y="-399.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[8,3]</text>
 <polygon fill="none" stroke="black" points="10,-369 10,-391 359,-391 359,-369 10,-369"/>
-<text text-anchor="start" x="30" y="-377.2" font-family="Helvetica,sans-Serif" font-size="11.00">ba_relevant_slope</text>
+<text text-anchor="start" x="30" y="-377.2" font-family="Helvetica,sans-Serif" font-size="11.00">ba_relevance_matrix</text>
 <polygon fill="none" stroke="black" points="359,-369 359,-391 626,-391 626,-369 359,-369"/>
-<text text-anchor="start" x="362" y="-377.2" font-family="Helvetica,sans-Serif" font-size="11.00">int2[5]</text>
+<text text-anchor="start" x="362" y="-377.2" font-family="Helvetica,sans-Serif" font-size="11.00">int4[10]</text>
 <polygon fill="none" stroke="black" points="10,-347 10,-369 359,-369 359,-347 10,-347"/>
-<text text-anchor="start" x="30" y="-355.2" font-family="Helvetica,sans-Serif" font-size="11.00">ba_surface_water_bodies</text>
+<text text-anchor="start" x="30" y="-355.2" font-family="Helvetica,sans-Serif" font-size="11.00">ba_relevant_slope</text>
 <polygon fill="none" stroke="black" points="359,-347 359,-369 626,-369 626,-347 359,-347"/>
-<text text-anchor="start" x="362" y="-355.2" font-family="Helvetica,sans-Serif" font-size="11.00">text[2147483647]</text>
+<text text-anchor="start" x="362" y="-355.2" font-family="Helvetica,sans-Serif" font-size="11.00">int2[5]</text>
 <polygon fill="none" stroke="black" points="10,-325 10,-347 359,-347 359,-325 10,-325"/>
-<text text-anchor="start" x="30" y="-333.2" font-family="Helvetica,sans-Serif" font-size="11.00">ba_type_water_body</text>
+<text text-anchor="start" x="30" y="-333.2" font-family="Helvetica,sans-Serif" font-size="11.00">ba_surface_water_bodies</text>
 <polygon fill="none" stroke="black" points="359,-325 359,-347 626,-347 626,-325 359,-325"/>
-<text text-anchor="start" x="362" y="-333.2" font-family="Helvetica,sans-Serif" font-size="11.00">int4[10]</text>
+<text text-anchor="start" x="362" y="-333.2" font-family="Helvetica,sans-Serif" font-size="11.00">text[2147483647]</text>
 <polygon fill="none" stroke="black" points="10,-303 10,-325 359,-325 359,-303 10,-303"/>
 <text text-anchor="start" x="30" y="-311.2" font-family="Helvetica,sans-Serif" font-size="11.00">ba_water_specific_discharge_freight_nh4_n_current</text>
 <polygon fill="none" stroke="black" points="359,-303 359,-325 626,-325 626,-303 359,-303"/>

@@ -16,9 +16,9 @@
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="../_static/documentation_options.js?v=b46de64f"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../_static/translations.js?v=d99ca74e"></script>
+        <script src="../_static/translations.js?v=bf059b8c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Recherche" href="../search.html" />
@@ -102,9 +102,9 @@
            <div itemprop="articleBody">
              
   <section id="generate-swmm-file">
-<span id="id1"></span><h1><span class="section-number">6.3. </span>Generate SWMM File<a class="headerlink" href="#generate-swmm-file" title="Link to this heading"></a></h1>
+<span id="id1"></span><h1><span class="section-number">6.3. </span>Generate SWMM File<a class="headerlink" href="#generate-swmm-file" title="Lien vers cette rubrique"></a></h1>
 <section id="swmm-create-input">
-<span id="create-input"></span><h2><span class="section-number">6.3.1. </span>SWMM Create Input<a class="headerlink" href="#swmm-create-input" title="Link to this heading"></a></h2>
+<span id="create-input"></span><h2><span class="section-number">6.3.1. </span>SWMM Create Input<a class="headerlink" href="#swmm-create-input" title="Lien vers cette rubrique"></a></h2>
 <ul class="simple">
 <li><p>By default, the plugin extracts the entire primary wastewater structures. If you check <em>Export only selected network</em>, then both the selected primary and secondary network will be exported.</p></li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">.inp</span></code> file is the input file format for SWMM. It contains the wastewater network AND simulation parameters. The network can be extracted from the TWW data, but the simulation parameters must be set according to your study.</p></li>
@@ -112,7 +112,7 @@
 <li><p>By default, the export supposes that you use an <em>Horton Infiltration method</em>. If another method is set in the template <code class="docutils literal notranslate"><span class="pre">.inp</span></code>, you might need to adapt the generated <code class="docutils literal notranslate"><span class="pre">.inp</span></code>. See the linked <a class="reference external" href="https://github.com/TWW/TWW/issues/644/">issue</a></p></li>
 </ul>
 <section id="tww-plugin">
-<h3><span class="section-number">6.3.1.1. </span>TWW plugin<a class="headerlink" href="#tww-plugin" title="Link to this heading"></a></h3>
+<h3><span class="section-number">6.3.1.1. </span>TWW plugin<a class="headerlink" href="#tww-plugin" title="Lien vers cette rubrique"></a></h3>
 <p>Launch <code class="docutils literal notranslate"><span class="pre">SWMM</span> <span class="pre">Create</span> <span class="pre">Input</span></code>:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">Database</span></code>: the name of the service used to connect to the database</p></li>
@@ -124,7 +124,7 @@
 </section>
 </section>
 <section id="selection">
-<h2><span class="section-number">6.3.2. </span>Selection<a class="headerlink" href="#selection" title="Link to this heading"></a></h2>
+<h2><span class="section-number">6.3.2. </span>Selection<a class="headerlink" href="#selection" title="Lien vers cette rubrique"></a></h2>
 <p>Usually you will select a subnetwork to be exported with the TWW button <code class="docutils literal notranslate"><span class="pre">Upstream</span></code> and then <code class="docutils literal notranslate"><span class="pre">Select</span> <span class="pre">current</span> <span class="pre">path</span></code>.
 If you want to remove from this selection secondary structures:</p>
 <ul class="simple">
@@ -137,7 +137,7 @@ If you want to remove from this selection secondary structures:</p>
 </ul>
 </section>
 <section id="change-default-export-parameters">
-<span id="id2"></span><h2><span class="section-number">6.3.3. </span>Change default export parameters<a class="headerlink" href="#change-default-export-parameters" title="Link to this heading"></a></h2>
+<span id="id2"></span><h2><span class="section-number">6.3.3. </span>Change default export parameters<a class="headerlink" href="#change-default-export-parameters" title="Lien vers cette rubrique"></a></h2>
 <p>As mentionned earlier, most of the simulation parameters are copied from the template <code class="docutils literal notranslate"><span class="pre">.inp</span></code> file.</p>
 <p>Remaining default parameters are currently hard coded in the views within the database <code class="docutils literal notranslate"><span class="pre">tww_swmm</span></code> schema.
 The defaults parameters can be edited directly in the view (with PgAdmin).</p>

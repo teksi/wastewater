@@ -152,7 +152,7 @@
 <polygon fill="none" stroke="black" points="543.5,-900 543.5,-922 792.5,-922 792.5,-900 543.5,-900"/>
 <text text-anchor="start" x="563.5" y="-908.2" font-family="Helvetica,sans-Serif" font-size="11.00">agriculture_arable_surface</text>
 <polygon fill="none" stroke="black" points="792.5,-900 792.5,-922 886.5,-922 886.5,-900 792.5,-900"/>
-<text text-anchor="start" x="795.5" y="-908.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[8,2]</text>
+<text text-anchor="start" x="795.5" y="-908.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[10,4]</text>
 <polygon fill="none" stroke="black" points="543.5,-878 543.5,-900 792.5,-900 792.5,-878 543.5,-878"/>
 <text text-anchor="start" x="563.5" y="-886.2" font-family="Helvetica,sans-Serif" font-size="11.00">cesspit_comment</text>
 <polygon fill="none" stroke="black" points="792.5,-878 792.5,-900 886.5,-900 886.5,-878 792.5,-878"/>
@@ -165,15 +165,15 @@
 <polygon fill="none" stroke="black" points="543.5,-834 543.5,-856 792.5,-856 792.5,-834 543.5,-834"/>
 <text text-anchor="start" x="563.5" y="-842.2" font-family="Helvetica,sans-Serif" font-size="11.00">cesspit_volume_current</text>
 <polygon fill="none" stroke="black" points="792.5,-834 792.5,-856 886.5,-856 886.5,-834 792.5,-834"/>
-<text text-anchor="start" x="795.5" y="-842.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[9,2]</text>
+<text text-anchor="start" x="795.5" y="-842.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[10,2]</text>
 <polygon fill="none" stroke="black" points="543.5,-812 543.5,-834 792.5,-834 792.5,-812 543.5,-812"/>
 <text text-anchor="start" x="563.5" y="-820.2" font-family="Helvetica,sans-Serif" font-size="11.00">cesspit_volume_nominal</text>
 <polygon fill="none" stroke="black" points="792.5,-812 792.5,-834 886.5,-834 886.5,-812 792.5,-812"/>
-<text text-anchor="start" x="795.5" y="-820.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[9,2]</text>
+<text text-anchor="start" x="795.5" y="-820.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[10,2]</text>
 <polygon fill="none" stroke="black" points="543.5,-790 543.5,-812 792.5,-812 792.5,-790 543.5,-790"/>
 <text text-anchor="start" x="563.5" y="-798.2" font-family="Helvetica,sans-Serif" font-size="11.00">cesspit_volume_ww_treated</text>
 <polygon fill="none" stroke="black" points="792.5,-790 792.5,-812 886.5,-812 886.5,-790 792.5,-790"/>
-<text text-anchor="start" x="795.5" y="-798.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[9,2]</text>
+<text text-anchor="start" x="795.5" y="-798.2" font-family="Helvetica,sans-Serif" font-size="11.00">numeric[10,2]</text>
 <polygon fill="none" stroke="black" points="543.5,-768 543.5,-790 792.5,-790 792.5,-768 543.5,-768"/>
 <text text-anchor="start" x="563.5" y="-776.2" font-family="Helvetica,sans-Serif" font-size="11.00">cesspit_year_of_approval</text>
 <polygon fill="none" stroke="black" points="792.5,-768 792.5,-790 886.5,-790 886.5,-768 792.5,-768"/>

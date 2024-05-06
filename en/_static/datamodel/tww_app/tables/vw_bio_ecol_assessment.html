@@ -114,7 +114,7 @@
                                     <td>16</td>
                                     <td title='nullable'>√</td>
                                     <td title=''></td>
-                                    <td>null</td>
+                                    <td>tww_sys.generate_oid(&#39;tww_od&#39;::text, &#39;bio_ecol_assessment&#39;::text)</td>
                                     <td>
                                         <table border='0' cellspacing='0' cellpadding='0'>
                                         </table>
@@ -262,6 +262,23 @@
                                     <td></td>
                                 </tr>
                                 <tr>
+                                    <td><span id="kind_water_body">kind_water_body</span></td>
+                                    <td>int4</td>
+                                    <td>10</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
                                     <td><span id="outlet_pipe_clear_height">outlet_pipe_clear_height</span></td>
                                     <td>int4</td>
                                     <td>10</td>
@@ -333,23 +350,6 @@
                                     <td><span id="surface_water_bodies">surface_water_bodies</span></td>
                                     <td>text</td>
                                     <td>2147483647</td>
-                                    <td title='nullable'>√</td>
-                                    <td title=''></td>
-                                    <td>null</td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td><span id="type_water_body">type_water_body</span></td>
-                                    <td>int4</td>
-                                    <td>10</td>
                                     <td title='nullable'>√</td>
                                     <td title=''></td>
                                     <td>null</td>
@@ -488,7 +488,7 @@
                                     <td>16</td>
                                     <td title='nullable'>√</td>
                                     <td title=''></td>
-                                    <td>null</td>
+                                    <td>tww_sys.get_default_values(&#39;fk_dataowner&#39;::text)</td>
                                     <td>
                                         <table border='0' cellspacing='0' cellpadding='0'>
                                         </table>
@@ -539,7 +539,7 @@
                                     <td>16</td>
                                     <td title='nullable'>√</td>
                                     <td title=''></td>
-                                    <td>null</td>
+                                    <td>tww_sys.get_default_values(&#39;fk_provider&#39;::text)</td>
                                     <td>
                                         <table border='0' cellspacing='0' cellpadding='0'>
                                         </table>
@@ -724,7 +724,7 @@
                             </div>
                         </div>
                         <div class="box-body">
-                            <textarea id="sql-script-codemirror" name="sql-script-codemirror" rows="" style="display: none;">SELECT bio_ecol_assessment.obj_id,&#10;    bio_ecol_assessment.comparison_last,&#10;    bio_ecol_assessment.date_last_examen,&#10;    bio_ecol_assessment.impact_auxiliary_indic,&#10;    bio_ecol_assessment.impact_external_aspect,&#10;    bio_ecol_assessment.impact_macroinvertebrates,&#10;    bio_ecol_assessment.impact_water_plants,&#10;    bio_ecol_assessment.intervention_demand,&#10;    bio_ecol_assessment.io_calculation,&#10;    bio_ecol_assessment.outlet_pipe_clear_height,&#10;    bio_ecol_assessment.q347,&#10;    bio_ecol_assessment.relevance_matrix,&#10;    bio_ecol_assessment.relevant_slope,&#10;    bio_ecol_assessment.surface_water_bodies,&#10;    bio_ecol_assessment.type_water_body,&#10;    bio_ecol_assessment.water_specific_discharge_freight_nh4_n_current,&#10;    bio_ecol_assessment.water_specific_discharge_freight_nh4_n_current_opt,&#10;    bio_ecol_assessment.water_specific_discharge_freight_nh4_n_planned,&#10;    maintenance_event.base_data,&#10;    maintenance_event.cost,&#10;    maintenance_event.data_details,&#10;    maintenance_event.duration,&#10;    maintenance_event.fk_dataowner,&#10;    maintenance_event.fk_measure,&#10;    maintenance_event.fk_operating_company,&#10;    maintenance_event.fk_provider,&#10;    maintenance_event.identifier,&#10;    maintenance_event.last_modification,&#10;    maintenance_event.operator,&#10;    maintenance_event.reason,&#10;    maintenance_event.remark,&#10;    maintenance_event.result,&#10;    maintenance_event.status,&#10;    maintenance_event.time_point&#10;   FROM (tww_od.bio_ecol_assessment&#10;     LEFT JOIN tww_od.maintenance_event ON (((maintenance_event.obj_id)::text &#61; (bio_ecol_assessment.obj_id)::text)));</textarea>
+                            <textarea id="sql-script-codemirror" name="sql-script-codemirror" rows="" style="display: none;">SELECT bio_ecol_assessment.obj_id,&#10;    bio_ecol_assessment.comparison_last,&#10;    bio_ecol_assessment.date_last_examen,&#10;    bio_ecol_assessment.impact_auxiliary_indic,&#10;    bio_ecol_assessment.impact_external_aspect,&#10;    bio_ecol_assessment.impact_macroinvertebrates,&#10;    bio_ecol_assessment.impact_water_plants,&#10;    bio_ecol_assessment.intervention_demand,&#10;    bio_ecol_assessment.io_calculation,&#10;    bio_ecol_assessment.kind_water_body,&#10;    bio_ecol_assessment.outlet_pipe_clear_height,&#10;    bio_ecol_assessment.q347,&#10;    bio_ecol_assessment.relevance_matrix,&#10;    bio_ecol_assessment.relevant_slope,&#10;    bio_ecol_assessment.surface_water_bodies,&#10;    bio_ecol_assessment.water_specific_discharge_freight_nh4_n_current,&#10;    bio_ecol_assessment.water_specific_discharge_freight_nh4_n_current_opt,&#10;    bio_ecol_assessment.water_specific_discharge_freight_nh4_n_planned,&#10;    maintenance_event.base_data,&#10;    maintenance_event.cost,&#10;    maintenance_event.data_details,&#10;    maintenance_event.duration,&#10;    maintenance_event.fk_dataowner,&#10;    maintenance_event.fk_measure,&#10;    maintenance_event.fk_operating_company,&#10;    maintenance_event.fk_provider,&#10;    maintenance_event.identifier,&#10;    maintenance_event.last_modification,&#10;    maintenance_event.operator,&#10;    maintenance_event.reason,&#10;    maintenance_event.remark,&#10;    maintenance_event.result,&#10;    maintenance_event.status,&#10;    maintenance_event.time_point&#10;   FROM (tww_od.bio_ecol_assessment&#10;     LEFT JOIN tww_od.maintenance_event ON (((maintenance_event.obj_id)::text &#61; (bio_ecol_assessment.obj_id)::text)));</textarea>
                             <div style="padding-top: 5px;"><hr></div>
                             <div class="box box-solid">
                                 <div class="box-header with-border">
