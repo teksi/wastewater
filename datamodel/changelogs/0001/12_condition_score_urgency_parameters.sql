@@ -26,7 +26,7 @@ FROM (
 ;
 COMMENT ON COLUMN tww_vl.channel_function_hierarchic.tww_weight_urgency IS 'this column is an extension to the VSA data model and assigns ugency weight
  according to the VSA guidelines';
- 
+
  -- this column is an extension to the VSA data model and assigns urgency weight to function hierarchic
 ALTER TABLE tww_vl.channel_usage_current ADD COLUMN tww_weight_urgency numeric(3,1);
 UPDATE tww_vl.channel_usage_current
