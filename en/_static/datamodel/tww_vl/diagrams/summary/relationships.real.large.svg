@@ -11658,23 +11658,23 @@
 <text text-anchor="start" x="467" y="-41645.2" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00">tww_od.damage_manhole</text>
 <text text-anchor="start" x="621" y="-41644.2" font-family="Helvetica,sans-Serif" font-size="11.00">[table]</text>
 <polygon fill="none" stroke="black" points="462,-41614 462,-41636 660,-41636 660,-41614 462,-41614"/>
-<text text-anchor="start" x="490" y="-41622.2" font-family="Helvetica,sans-Serif" font-size="11.00">obj_id</text>
+<text text-anchor="start" x="496" y="-41622.2" font-family="Helvetica,sans-Serif" font-size="11.00">obj_id</text>
 <polygon fill="none" stroke="black" points="462,-41592 462,-41614 660,-41614 660,-41592 462,-41592"/>
-<text text-anchor="start" x="490" y="-41600.2" font-family="Helvetica,sans-Serif" font-size="11.00">manhole_channel_distance</text>
+<text text-anchor="start" x="496" y="-41600.2" font-family="Helvetica,sans-Serif" font-size="11.00">manhole_distance</text>
 <polygon fill="none" stroke="black" points="462,-41570 462,-41592 660,-41592 660,-41570 462,-41570"/>
-<text text-anchor="start" x="490" y="-41578.2" font-family="Helvetica,sans-Serif" font-size="11.00">manhole_damage_begin</text>
+<text text-anchor="start" x="496" y="-41578.2" font-family="Helvetica,sans-Serif" font-size="11.00">manhole_damage_begin</text>
 <polygon fill="none" stroke="black" points="462,-41548 462,-41570 660,-41570 660,-41548 462,-41548"/>
 <image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="467" y="-41565"/>
-<text text-anchor="start" x="490" y="-41556.2" font-family="Helvetica,sans-Serif" font-size="11.00">manhole_damage_code</text>
+<text text-anchor="start" x="496" y="-41556.2" font-family="Helvetica,sans-Serif" font-size="11.00">manhole_damage_code</text>
 <polygon fill="none" stroke="black" points="462,-41526 462,-41548 660,-41548 660,-41526 462,-41526"/>
-<text text-anchor="start" x="490" y="-41534.2" font-family="Helvetica,sans-Serif" font-size="11.00">manhole_damage_end</text>
+<text text-anchor="start" x="496" y="-41534.2" font-family="Helvetica,sans-Serif" font-size="11.00">manhole_damage_end</text>
 <polygon fill="none" stroke="black" points="462,-41504 462,-41526 660,-41526 660,-41504 462,-41504"/>
-<text text-anchor="start" x="490" y="-41512.2" font-family="Helvetica,sans-Serif" font-size="11.00">manhole_quantification1</text>
+<text text-anchor="start" x="496" y="-41512.2" font-family="Helvetica,sans-Serif" font-size="11.00">manhole_quantification1</text>
 <polygon fill="none" stroke="black" points="462,-41482 462,-41504 660,-41504 660,-41482 462,-41482"/>
-<text text-anchor="start" x="490" y="-41490.2" font-family="Helvetica,sans-Serif" font-size="11.00">manhole_quantification2</text>
+<text text-anchor="start" x="496" y="-41490.2" font-family="Helvetica,sans-Serif" font-size="11.00">manhole_quantification2</text>
 <polygon fill="none" stroke="black" points="462,-41460 462,-41482 660,-41482 660,-41460 462,-41460"/>
 <image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="467" y="-41477"/>
-<text text-anchor="start" x="490" y="-41468.2" font-family="Helvetica,sans-Serif" font-size="11.00">manhole_shaft_area</text>
+<text text-anchor="start" x="496" y="-41468.2" font-family="Helvetica,sans-Serif" font-size="11.00">manhole_shaft_area</text>
 <polygon fill="#ffffff" stroke="transparent" points="462,-41442 462,-41460 545,-41460 545,-41442 462,-41442"/>
 <polygon fill="none" stroke="black" points="462,-41442 462,-41460 545,-41460 545,-41442 462,-41442"/>
 <text text-anchor="start" x="465" y="-41448.2" font-family="Helvetica,sans-Serif" font-size="11.00">&lt; 2</text>

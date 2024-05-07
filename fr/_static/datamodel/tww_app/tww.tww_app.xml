@@ -1984,7 +1984,7 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="remark" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="renovation_demand" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
       </table>
-      <table name="vw_tww_damage" numRows="0" remarks="" schema="tww_app" type="VIEW" viewSql=" SELECT&#10;        CASE&#10;            WHEN (channel.obj_id IS NOT NULL) THEN 'channel'::tww_app.damage_type&#10;            WHEN (manhole.obj_id IS NOT NULL) THEN 'manhole'::tww_app.damage_type&#10;            ELSE 'damage'::tww_app.damage_type&#10;        END AS damage_type,&#10;    damage.obj_id,&#10;    damage.comments,&#10;    damage.connection,&#10;    damage.fk_dataowner,&#10;    damage.fk_examination,&#10;    damage.fk_provider,&#10;    damage.last_modification,&#10;    damage.line_damage,&#10;    damage.single_damage_class,&#10;    damage.video_counter,&#10;    damage.view_parameters,&#10;    channel.channel_damage_begin,&#10;    channel.channel_damage_code,&#10;    channel.channel_damage_end,&#10;    channel.channel_distance,&#10;    channel.channel_quantification1,&#10;    channel.channel_quantification2,&#10;    manhole.manhole_channel_distance,&#10;    manhole.manhole_damage_begin,&#10;    manhole.manhole_damage_code,&#10;    manhole.manhole_damage_end,&#10;    manhole.manhole_quantification1,&#10;    manhole.manhole_quantification2,&#10;    manhole.manhole_shaft_area&#10;   FROM ((tww_od.damage damage&#10;     LEFT JOIN tww_od.damage_channel channel ON (((channel.obj_id)::text = (damage.obj_id)::text)))&#10;     LEFT JOIN tww_od.damage_manhole manhole ON (((manhole.obj_id)::text = (damage.obj_id)::text)));">
+      <table name="vw_tww_damage" numRows="0" remarks="" schema="tww_app" type="VIEW" viewSql=" SELECT&#10;        CASE&#10;            WHEN (channel.obj_id IS NOT NULL) THEN 'channel'::tww_app.damage_type&#10;            WHEN (manhole.obj_id IS NOT NULL) THEN 'manhole'::tww_app.damage_type&#10;            ELSE 'damage'::tww_app.damage_type&#10;        END AS damage_type,&#10;    damage.obj_id,&#10;    damage.comments,&#10;    damage.connection,&#10;    damage.fk_dataowner,&#10;    damage.fk_examination,&#10;    damage.fk_provider,&#10;    damage.last_modification,&#10;    damage.line_damage,&#10;    damage.single_damage_class,&#10;    damage.video_counter,&#10;    damage.view_parameters,&#10;    channel.channel_damage_begin,&#10;    channel.channel_damage_code,&#10;    channel.channel_damage_end,&#10;    channel.channel_distance,&#10;    channel.channel_quantification1,&#10;    channel.channel_quantification2,&#10;    manhole.manhole_damage_begin,&#10;    manhole.manhole_damage_code,&#10;    manhole.manhole_damage_end,&#10;    manhole.manhole_distance,&#10;    manhole.manhole_quantification1,&#10;    manhole.manhole_quantification2,&#10;    manhole.manhole_shaft_area&#10;   FROM ((tww_od.damage damage&#10;     LEFT JOIN tww_od.damage_channel channel ON (((channel.obj_id)::text = (damage.obj_id)::text)))&#10;     LEFT JOIN tww_od.damage_manhole manhole ON (((manhole.obj_id)::text = (damage.obj_id)::text)));">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="damage_type" nullable="true" remarks="" size="2147483647" type="&quot;tww_app&quot;.&quot;damage_type&quot;" typeCode="12"/>
          <column autoUpdated="false" defaultValue="tww_sys.generate_oid('tww_od'::text, 'damage'::text)" digits="0" id="1" name="obj_id" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="comments" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
@@ -2003,10 +2003,10 @@
          <column autoUpdated="false" defaultValue="null" digits="2" id="15" name="channel_distance" nullable="true" remarks="" size="7" type="numeric" typeCode="2"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="16" name="channel_quantification1" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="17" name="channel_quantification2" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
-         <column autoUpdated="false" defaultValue="null" digits="2" id="18" name="manhole_channel_distance" nullable="true" remarks="" size="7" type="numeric" typeCode="2"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="19" name="manhole_damage_begin" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="20" name="manhole_damage_code" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="21" name="manhole_damage_end" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="18" name="manhole_damage_begin" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="19" name="manhole_damage_code" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="20" name="manhole_damage_end" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="2" id="21" name="manhole_distance" nullable="true" remarks="" size="7" type="numeric" typeCode="2"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="22" name="manhole_quantification1" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="23" name="manhole_quantification2" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="24" name="manhole_shaft_area" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
@@ -5966,19 +5966,19 @@ BEGIN
     WHEN NEW.damage_type = 'manhole'::tww_app.damage_type THEN
       INSERT INTO tww_od.damage_manhole (
           obj_id
-        , manhole_channel_distance
         , manhole_damage_begin
         , manhole_damage_code
         , manhole_damage_end
+        , manhole_distance
         , manhole_quantification1
         , manhole_quantification2
         , manhole_shaft_area
       ) VALUES (
           NEW.obj_id -- obj_id
-        , NEW.manhole_channel_distance
         , NEW.manhole_damage_begin
         , NEW.manhole_damage_code
         , NEW.manhole_damage_end
+        , NEW.manhole_distance
         , NEW.manhole_quantification1
         , NEW.manhole_quantification2
         , NEW.manhole_shaft_area
@@ -6032,10 +6032,10 @@ BEGIN
     WHEN NEW.damage_type = 'manhole'::tww_app.damage_type THEN
       UPDATE tww_od.damage_manhole manhole SET
         obj_id = OLD.obj_id
-        , manhole_channel_distance = NEW.manhole_channel_distance
         , manhole_damage_begin = NEW.manhole_damage_begin
         , manhole_damage_code = NEW.manhole_damage_code
         , manhole_damage_end = NEW.manhole_damage_end
+        , manhole_distance = NEW.manhole_distance
         , manhole_quantification1 = NEW.manhole_quantification1
         , manhole_quantification2 = NEW.manhole_quantification2
         , manhole_shaft_area = NEW.manhole_shaft_area

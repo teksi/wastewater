@@ -415,23 +415,6 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td><span id="manhole_channel_distance">manhole_channel_distance</span></td>
-                                    <td>numeric</td>
-                                    <td>7,2</td>
-                                    <td title='nullable'>√</td>
-                                    <td title=''></td>
-                                    <td>null</td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td></td>
-                                </tr>
-                                <tr>
                                     <td><span id="manhole_damage_begin">manhole_damage_begin</span></td>
                                     <td>int2</td>
                                     <td>5</td>
@@ -469,6 +452,23 @@
                                     <td><span id="manhole_damage_end">manhole_damage_end</span></td>
                                     <td>int2</td>
                                     <td>5</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span id="manhole_distance">manhole_distance</span></td>
+                                    <td>numeric</td>
+                                    <td>7,2</td>
                                     <td title='nullable'>√</td>
                                     <td title=''></td>
                                     <td>null</td>
@@ -571,7 +571,7 @@
                             </div>
                         </div>
                         <div class="box-body">
-                            <textarea id="sql-script-codemirror" name="sql-script-codemirror" rows="" style="display: none;">SELECT&#10;        CASE&#10;            WHEN (channel.obj_id IS NOT NULL) THEN &#39;channel&#39;::tww_app.damage_type&#10;            WHEN (manhole.obj_id IS NOT NULL) THEN &#39;manhole&#39;::tww_app.damage_type&#10;            ELSE &#39;damage&#39;::tww_app.damage_type&#10;        END AS damage_type,&#10;    damage.obj_id,&#10;    damage.comments,&#10;    damage.connection,&#10;    damage.fk_dataowner,&#10;    damage.fk_examination,&#10;    damage.fk_provider,&#10;    damage.last_modification,&#10;    damage.line_damage,&#10;    damage.single_damage_class,&#10;    damage.video_counter,&#10;    damage.view_parameters,&#10;    channel.channel_damage_begin,&#10;    channel.channel_damage_code,&#10;    channel.channel_damage_end,&#10;    channel.channel_distance,&#10;    channel.channel_quantification1,&#10;    channel.channel_quantification2,&#10;    manhole.manhole_channel_distance,&#10;    manhole.manhole_damage_begin,&#10;    manhole.manhole_damage_code,&#10;    manhole.manhole_damage_end,&#10;    manhole.manhole_quantification1,&#10;    manhole.manhole_quantification2,&#10;    manhole.manhole_shaft_area&#10;   FROM ((tww_od.damage damage&#10;     LEFT JOIN tww_od.damage_channel channel ON (((channel.obj_id)::text &#61; (damage.obj_id)::text)))&#10;     LEFT JOIN tww_od.damage_manhole manhole ON (((manhole.obj_id)::text &#61; (damage.obj_id)::text)));</textarea>
+                            <textarea id="sql-script-codemirror" name="sql-script-codemirror" rows="" style="display: none;">SELECT&#10;        CASE&#10;            WHEN (channel.obj_id IS NOT NULL) THEN &#39;channel&#39;::tww_app.damage_type&#10;            WHEN (manhole.obj_id IS NOT NULL) THEN &#39;manhole&#39;::tww_app.damage_type&#10;            ELSE &#39;damage&#39;::tww_app.damage_type&#10;        END AS damage_type,&#10;    damage.obj_id,&#10;    damage.comments,&#10;    damage.connection,&#10;    damage.fk_dataowner,&#10;    damage.fk_examination,&#10;    damage.fk_provider,&#10;    damage.last_modification,&#10;    damage.line_damage,&#10;    damage.single_damage_class,&#10;    damage.video_counter,&#10;    damage.view_parameters,&#10;    channel.channel_damage_begin,&#10;    channel.channel_damage_code,&#10;    channel.channel_damage_end,&#10;    channel.channel_distance,&#10;    channel.channel_quantification1,&#10;    channel.channel_quantification2,&#10;    manhole.manhole_damage_begin,&#10;    manhole.manhole_damage_code,&#10;    manhole.manhole_damage_end,&#10;    manhole.manhole_distance,&#10;    manhole.manhole_quantification1,&#10;    manhole.manhole_quantification2,&#10;    manhole.manhole_shaft_area&#10;   FROM ((tww_od.damage damage&#10;     LEFT JOIN tww_od.damage_channel channel ON (((channel.obj_id)::text &#61; (damage.obj_id)::text)))&#10;     LEFT JOIN tww_od.damage_manhole manhole ON (((manhole.obj_id)::text &#61; (damage.obj_id)::text)));</textarea>
                             <div style="padding-top: 5px;"><hr></div>
                             <div class="box box-solid">
                                 <div class="box-header with-border">
