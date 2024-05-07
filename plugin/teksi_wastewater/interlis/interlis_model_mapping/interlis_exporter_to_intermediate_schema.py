@@ -2391,12 +2391,16 @@ class InterlisExporterToIntermediateSchema:
             logger.warning(f"Value '{val}' exceeds expected length ({max_length})", stacklevel=2)
         return val[0:max_length]
 
-    def _modulo_angle(self, val):
+    def _modulo_angle(self, val, labels_orientation_offset):
         """
         Returns an angle between 0 and 359.9 (for Orientierung in Base_d-20181005.ili)
         """
         if val is None:
             return None
+
+        # add labels_orientation_offset
+        val = val + labels_orientation_offset
+
         val = val % 360.0
         if val > 359.9:
             val = 0
@@ -2407,7 +2411,7 @@ class InterlisExporterToIntermediateSchema:
         if instance is None:
             logger.warning(
                 f'Could not find an active entry in table"{oid_table.__table__.schema}.{oid_table.__name__}". \
-                Returning an empty string, which will lead to Interlis Errors. \
+                Returning an empty string, which will lead to INTERLIS Errors. \
                 Set the value that you want to use as prefix to \'active\' in table"{oid_table.__table__.schema}.{oid_table.__name__}" \
                 to avoid this issue.'
             )

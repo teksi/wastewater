@@ -117,7 +117,7 @@ class InterlisImporterExporter:
         self._import_disable_symbology_triggers()
 
         # Import from the temporary ili2pg model
-        self._progress_done(40, "Converting to Teksi Wastewater...")
+        self._progress_done(40, "Converting to TEKSI Wastewater...")
         tww_session = self._import_from_intermediate_schema(import_model)
 
         if show_selection_dialog:
@@ -145,7 +145,7 @@ class InterlisImporterExporter:
         self._import_enable_symbology_triggers()
 
         self._progress_done(100)
-        logger.info("Interlis import finished.")
+        logger.info("INTERLIS import finished.")
 
     def interlis_export(
         self,
@@ -153,6 +153,7 @@ class InterlisImporterExporter:
         export_models,
         logs_next_to_file=True,
         limit_to_selection=False,
+        export_orientation=90.0,
         selected_labels_scales_indices=[],
         selected_ids=[],
     ):
@@ -182,16 +183,19 @@ class InterlisImporterExporter:
             labels_file_path = os.path.join(tempdir.name, "labels.geojson")
             self._export_labels_file(
                 limit_to_selection=limit_to_selection,
+                # neu export orientation
+                export_orientation=export_orientation,
                 selected_labels_scales_indices=selected_labels_scales_indices,
                 labels_file_path=labels_file_path,
             )
 
         # Export to the temporary ili2pg model
-        self._progress_done(35, "Converting from Teksi Wastewater...")
+        self._progress_done(35, "Converting from TEKSI Wastewater...")
         self._export_to_intermediate_schema(
             export_model=export_models[0],
             file_name=xtf_file_output,
             selected_ids=selected_ids,
+            export_orientation=export_orientation,
             labels_file_path=labels_file_path,
             basket_enabled=create_basket_col,
         )
@@ -201,7 +205,7 @@ class InterlisImporterExporter:
         self._export_xtf_files(file_name_base, export_models)
 
         self._progress_done(100)
-        logger.info("Interlis export finished.")
+        logger.info("INTERLIS export finished.")
 
     def _import_validate_xtf_file(self, xtf_file_input):
         log_path = make_log_path(self.base_log_path, "ilivalidator")
@@ -299,7 +303,11 @@ class InterlisImporterExporter:
         connection.close()
 
     def _export_labels_file(
-        self, limit_to_selection, selected_labels_scales_indices, labels_file_path
+        self,
+        limit_to_selection,
+        export_orientation,
+        selected_labels_scales_indices,
+        labels_file_path,
     ):
         self._progress_done(self.current_progress, "Extracting labels...")
 
@@ -320,7 +328,7 @@ class InterlisImporterExporter:
         if not structures_lyr or not reaches_lyr:
             raise InterlisImporterExporterError(
                 "Could not find the vw_tww_wastewater_structure and/or the vw_tww_reach layers.",
-                "Make sure your Teksi Wastewater project is open.",
+                "Make sure your TEKSI Wastewater project is open.",
                 None,
             )
 
@@ -330,6 +338,7 @@ class InterlisImporterExporter:
             {
                 "OUTPUT": labels_file_path,
                 "RESTRICT_TO_SELECTION": limit_to_selection,
+                "EXPORT_ORIENTATION": export_orientation,
                 "STRUCTURE_VIEW_LAYER": structures_lyr,
                 "REACH_VIEW_LAYER": reaches_lyr,
                 "SCALES": selected_labels_scales_indices,
@@ -341,6 +350,7 @@ class InterlisImporterExporter:
         export_model,
         file_name=None,
         selected_ids=None,
+        export_orientation=90.0,
         labels_file_path=None,
         basket_enabled=False,
     ):
