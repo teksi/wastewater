@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Install &mdash; Documentation TWW dev</title>
+  <title>installer &mdash; Documentation TWW dev</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
@@ -50,10 +50,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">1. TEKSI wastewater (TWW)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation-guide/index.html">2. TWW Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">3. TWW User Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">4. Admin Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="index.html">5. Demo Virtual Machine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">4. Guide d’administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">5. Machine virtuelle de démonstration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tww_swmm/index.html">6. SWMM Data Exchange</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">7. Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">7. Traduction</a></li>
 </ul>
 
         </div>
@@ -70,7 +70,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Install</li>
+      <li class="breadcrumb-item active">installer</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/vm/install.rst.txt" rel="nofollow"> Afficher la source de la page</a>
       </li>
@@ -81,35 +81,32 @@
            <div itemprop="articleBody">
              
   <section id="install">
-<h1>Install<a class="headerlink" href="#install" title="Lien vers cette rubrique"></a></h1>
+<h1>installer<a class="headerlink" href="#install" title="Lien vers cette rubrique"></a></h1>
 <section id="download">
-<h2>Download<a class="headerlink" href="#download" title="Lien vers cette rubrique"></a></h2>
+<h2>Télécharger<a class="headerlink" href="#download" title="Lien vers cette rubrique"></a></h2>
 <p>Download the vm from <a class="reference external" href="https://docs.qtibia.ro/qgis.vdi.xz">here</a></p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The size of the VM is around 2GB compressed and up to 15GB uncompressed.</p>
+<p>La taille de la VM (compressée) est d’environ 2GB et peut atteindre 15GB (non compressée).</p>
 </div>
 </section>
 <section id="extract">
-<h2>Extract<a class="headerlink" href="#extract" title="Lien vers cette rubrique"></a></h2>
-<p>The virtual disk is archived using XZ compression.</p>
-<p>To extract the archive:</p>
+<h2>Extraire<a class="headerlink" href="#extract" title="Lien vers cette rubrique"></a></h2>
+<p>Le disque virtuel est archivé avec une compression XZ</p>
+<p>Pour extraire l’archive:</p>
 <ul class="simple">
-<li><p><strong>Windows:</strong> you can use <a class="reference external" href="http://7-zip.org/">7-Zip</a> to extract the archive.</p></li>
-<li><p><strong>Linux:</strong> cd to the download directory and run <code class="docutils literal notranslate"><span class="pre">xz</span> <span class="pre">-d</span> <span class="pre">qgis.vdi.xz</span></code></p></li>
+<li><p><strong>Windows:</strong> vous pouvez utiliser <a class="reference external" href="http://7-zip.org/">7-Zip</a> pour extraire l’archive.</p></li>
+<li><p><strong>Linux:</strong> cd vers le directoire de téléchargement et lancer <code class="docutils literal notranslate"><span class="pre">xz</span> <span class="pre">-d</span> <span class="pre">qgis.vdi.xz</span></code></p></li>
 </ul>
-<p>You can run the VM as you would do with any VirtualBox VM.</p>
+<p>Vous utilisez la MV comme vous le feriez avec n’importe quelle boîte virtuelle pour MV.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>As the VM is based on Linux it is fairly simple to convert the image to a raw disk
-and put it on a USB stick (minimum 16GB) or a faster storage. This would enable you
-to run the app without the virtualization penalty and enjoy the full speed of your hardware.</p>
+<p>Comme la VM est basée sur Linux, il est aisé de convertir l’image vers un disque “RAW” et de la déposer sur une clé USB (min. 16 GB) ou un autre support de stockage plus rapide. Ceci vous permettra de démarrer l’application sans être pénalisé en performance par la virtualisation et de profiter de la pleine vitesse de vos composants matériels.</p>
 </div>
 </section>
 <section id="run-tww">
 <h2>Run TWW<a class="headerlink" href="#run-tww" title="Lien vers cette rubrique"></a></h2>
-<p>After logging in with <code class="docutils literal notranslate"><span class="pre">qgis</span></code> user and the same password, by  clicking the QGIS icon located in the bottom bar
-you will get the following image:</p>
+<p>Après vous être connecté en tant qu” utilisateur <code class="docutils literal notranslate"><span class="pre">qgis</span></code> avec le même mot de passe, cliquez sur l’icône QGIS située dans la barre inférieure et vous obtiendrez l’image suivante:</p>
 <figure class="align-default">
 <img alt="../_images/vm_demo.jpg" src="../_images/vm_demo.jpg" />
 </figure>

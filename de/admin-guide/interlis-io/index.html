@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>4.4. INTERLIS Data exchange &mdash; TWW dev Dokumentation</title>
+  <title>4.4. INTERLIS Datenaustausch &mdash; TWW dev Dokumentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
 
@@ -22,7 +22,7 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Stichwortverzeichnis" href="../../genindex.html" />
     <link rel="search" title="Suche" href="../../search.html" />
-    <link rel="next" title="4.5. Customization of the data model" href="../db-customization/index.html" />
+    <link rel="next" title="4.5. Anpassung des Datenmodells" href="../db-customization/index.html" />
     <link rel="prev" title="4.3. User Roles" href="../security/index.html" /> 
 </head>
 
@@ -52,44 +52,44 @@
 <li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">1. TEKSI wastewater (TWW)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">2. TWW Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user-guide/index.html">3. TWW User Guide</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">4. Admin Guide</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">4. Administratorhandbuch</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../datamodel.html">4.1. Datamodel</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../pgadmin/index.html">4.2. pgAdmin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../security/index.html">4.3. User Roles</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">4.4. INTERLIS Data exchange</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#general">4.4.1. General</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#prerequisites">4.4.2. Prerequisites</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.4. INTERLIS Datenaustausch</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#general">4.4.1. Allgemeines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">4.4.2. Voraussetzungen</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#java">4.4.2.1. Java</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#python-libraries">4.4.2.2. Python libraries</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python-libraries">4.4.2.2. Python Bibliotheken</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#tww-version">4.4.2.3. TWW Version</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#usage-gui">4.4.3. Usage (GUI)</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#enable-admin-mode">4.4.3.1. Enable admin mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#usage-gui">4.4.3. Benutzung (GUI)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#enable-admin-mode">4.4.3.1. Aktivieren Sie den Admin-Modus</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#export">4.4.3.2. Export</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#import">4.4.3.3. Import</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#usage-command-line">4.4.4. Usage (command line)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#usage-command-line">4.4.4. Benutzung (Befehlszeile)</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#dependencies">4.4.4.1. Dependencies</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id1">4.4.4.2. Import</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id2">4.4.4.3. Export</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#quality-control">4.4.5. Quality control</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#quality-control-with-vsa-online-checker-fachprufung-mit-vsa-checker-online">4.4.5.1. Quality control with VSA online checker (Fachprüfung mit VSA Checker (online))</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#quality-control">4.4.5. Qualitätskontrolle</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#quality-control-with-vsa-online-checker-fachprufung-mit-vsa-checker-online">4.4.5.1. Qualitätskontrolle mit VSA Checker (Fachprüfung) (online)</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../db-customization/index.html">4.5. Customization of the data model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../datamodel-tool/index.html">4.6. Data-model tool</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../db-update-pum/index.html">4.7. Manual update of the datamodel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../db-customization/index.html">4.5. Anpassung des Datenmodells</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../datamodel-tool/index.html">4.6. Datenmodell-Werkzeug</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../db-update-pum/index.html">4.7. Manuelles Update des Datenmodells</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../vm/index.html">5. Demo Virtual Machine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vm/index.html">5. Demo virtuelle Maschine</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tww_swmm/index.html">6. SWMM Data Exchange</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">7. Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">7. Übersetzungen</a></li>
 </ul>
 
         </div>
@@ -106,8 +106,8 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">4. </span>Admin Guide</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">4.4. </span>INTERLIS Data exchange</li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">4. </span>Administratorhandbuch</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">4.4. </span>INTERLIS Datenaustausch</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/admin-guide/interlis-io/index.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
       </li>
@@ -118,10 +118,10 @@
            <div itemprop="articleBody">
              
   <section id="interlis-data-exchange">
-<h1><span class="section-number">4.4. </span>INTERLIS Data exchange<a class="headerlink" href="#interlis-data-exchange" title="Link to this heading"></a></h1>
+<h1><span class="section-number">4.4. </span>INTERLIS Datenaustausch<a class="headerlink" href="#interlis-data-exchange" title="Link to this heading"></a></h1>
 <p>This represents a guide on how to import/export data between TWW and INTERLIS 2 Transfer Format (XTF).</p>
 <section id="general">
-<h2><span class="section-number">4.4.1. </span>General<a class="headerlink" href="#general" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.4.1. </span>Allgemeines<a class="headerlink" href="#general" title="Link to this heading"></a></h2>
 <p>The TWW plugin includes an experimental interlis import/export feature.
 It is currently capable of importing and exporting the following models::
 * SIA405_ABWASSER_2020_1_LV95
@@ -130,17 +130,17 @@ It is currently capable of importing and exporting the following models::
 <p>Note that currently, exports are possible in German only. Translated exports are on the roadmap, let us know if you are interested in this feature.</p>
 </section>
 <section id="prerequisites">
-<h2><span class="section-number">4.4.2. </span>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.4.2. </span>Voraussetzungen<a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h2>
 <section id="java">
 <h3><span class="section-number">4.4.2.1. </span>Java<a class="headerlink" href="#java" title="Link to this heading"></a></h3>
-<p>You need java on your system.</p>
+<p>Sie benötigen Java auf ihrem System.</p>
 <p>Windows : <a class="reference external" href="https://javadl.oracle.com/webapps/download/AutoDL?BundleId=245058_d3c52aa6bfa54d3ca74e617f18309292">Java for windows download</a>
 MacOS : <a class="reference external" href="https://javadl.oracle.com/webapps/download/AutoDL?BundleId=245051_d3c52aa6bfa54d3ca74e617f18309292">Java for MacOS download</a>
 Linux : use the package manager</p>
 </section>
 <section id="python-libraries">
-<h3><span class="section-number">4.4.2.2. </span>Python libraries<a class="headerlink" href="#python-libraries" title="Link to this heading"></a></h3>
-<p>You need <cite>sqlalchemy</cite> and <cite>geoalchemy2</cite>.</p>
+<h3><span class="section-number">4.4.2.2. </span>Python Bibliotheken<a class="headerlink" href="#python-libraries" title="Link to this heading"></a></h3>
+<p>Sie benötigen <cite>sqlalchemy</cite> und <cite>geoalchemy2</cite>.</p>
 <p>To install : before launching QGIS, open OSGeo4W Shell</p>
 <figure class="align-default">
 <img alt="../../_images/osgeo4wshell.jpg" src="../../_images/osgeo4wshell.jpg" />
@@ -170,9 +170,9 @@ Linux : use the package manager</p>
 </section>
 </section>
 <section id="usage-gui">
-<h2><span class="section-number">4.4.3. </span>Usage (GUI)<a class="headerlink" href="#usage-gui" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.4.3. </span>Benutzung (GUI)<a class="headerlink" href="#usage-gui" title="Link to this heading"></a></h2>
 <section id="enable-admin-mode">
-<h3><span class="section-number">4.4.3.1. </span>Enable admin mode<a class="headerlink" href="#enable-admin-mode" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.3.1. </span>Aktivieren Sie den Admin-Modus<a class="headerlink" href="#enable-admin-mode" title="Link to this heading"></a></h3>
 <p>In the <cite>plugin&gt;TWW&gt;settings</cite> dialog, under the <cite>Developer options</cite> tab, ensure <cite>Admin mode</cite> is enabled. Restart QGIS.</p>
 <figure class="align-default">
 <img alt="../../_images/settings_dialog.png" src="../../_images/settings_dialog.png" />
@@ -191,14 +191,14 @@ Linux : use the package manager</p>
 <p>At first, select the export model.</p>
 <p>If you have an active selection in the nodes and/or reaches layer, you can choose to restrict the export to that selection. This is especially useful in combination with the upstream/downstream selection tools.</p>
 <p>The export tools is capable of exporting label positions for different scales. You can choose which scales you are interested in exporting by selected/deselecting them.</p>
-<p>Then, confirm the dialog and choose where to save the <cite>.xtf</cite> file.</p>
+<p>Bestätigen Sie das Dialogfeld und wählen Sie einen Speicherort für die <cite>.xtf</cite>-Datei.</p>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
 <p>Note that windows file pathes with empty strings in the directory path or filename are not supported at the moment.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>Note that for large/full exports, the command can take a long time.</p>
+<p>Beachten Sie, dass der Befehl bei grossen/vollständigen Exporten sehr lange dauern kann.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
@@ -211,7 +211,7 @@ Linux : use the package manager</p>
 <p class="admonition-title">Bemerkung</p>
 <p>Note that remark fields are truncated to 80 characters on INTERLIS Export, as the INTERLIS definition is like this. If you have remark fields with more text then consider to move this data to documentation with the classes „file“ and „data_media“ so it can be exported to INTERLIS completely where you can add any document, photo or video to a class.</p>
 </div>
-<p>Exports include a validation step using <cite>ilivalidator</cite>, which will inform you whether the export contains validation error.</p>
+<p>Die Exporte enthalten einen Validierungsschritt unter Verwendung von <cite>ilivalidator</cite>, der Sie darüber informiert, ob der Export einen Validierungsfehler enthält.</p>
 </section>
 <section id="import">
 <h3><span class="section-number">4.4.3.3. </span>Import<a class="headerlink" href="#import" title="Link to this heading"></a></h3>
@@ -224,13 +224,13 @@ Linux : use the package manager</p>
 <figure class="align-default">
 <img alt="../../_images/import_dialog.png" src="../../_images/import_dialog.png" />
 </figure>
-<p>The left part of this dialog lists all elements that are going to be imported from the <cite>.xtf</cite> file, allowing to review what is going to be imported and to deselect elements you may want to skip. It also shows the validation status of each object, showing whether further action is needed (INVALID) or recommended (WARNING) prior to importing.</p>
-<p>The right part of this dialog shows a form specific to the type of element selected in the list, allowing to adapt the import. For instance, it allows to attach „examinations“ to their pipes.</p>
-<p>Once you’re happy with the import options, confirm the dialog to persist the changes to your database.</p>
+<p>Im linken Teil dieses Dialogfelds werden alle Elemente aufgelistet, die aus der <cite>.xtf</cite>-Datei importiert werden sollen, so dass Sie überprüfen können, was importiert werden soll, und Elemente abwählen können, die Sie eventuell überspringen möchten. Ausserdem wird der Validierungsstatus jedes Objekts angezeigt, der angibt, ob vor dem Import weitere Massnahmen erforderlich (UNGÜLTIG) oder empfohlen (WARNUNG) sind.</p>
+<p>Im rechten Teil dieses Dialogs wird ein Formular angezeigt, das sich auf den in der Liste ausgewählten Elementtyp bezieht und die Anpassung des Imports ermöglicht. So können z. B. „Untersuchungen“ an ihre Kanäle angehängt werden.</p>
+<p>Wenn Sie mit den Importoptionen zufrieden sind, bestätigen Sie den Dialog, um die Änderungen in Ihrer Datenbank zu übernehmen.</p>
 </section>
 </section>
 <section id="usage-command-line">
-<h2><span class="section-number">4.4.4. </span>Usage (command line)<a class="headerlink" href="#usage-command-line" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.4.4. </span>Benutzung (Befehlszeile)<a class="headerlink" href="#usage-command-line" title="Link to this heading"></a></h2>
 <p>For advanced usage, the import/export tool can also be used as a command line tool.</p>
 <section id="dependencies">
 <h3><span class="section-number">4.4.4.1. </span>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading"></a></h3>
@@ -332,9 +332,9 @@ Linux : use the package manager</p>
 </section>
 </section>
 <section id="quality-control">
-<h2><span class="section-number">4.4.5. </span>Quality control<a class="headerlink" href="#quality-control" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.4.5. </span>Qualitätskontrolle<a class="headerlink" href="#quality-control" title="Link to this heading"></a></h2>
 <section id="quality-control-with-vsa-online-checker-fachprufung-mit-vsa-checker-online">
-<h3><span class="section-number">4.4.5.1. </span>Quality control with VSA online checker (Fachprüfung mit VSA Checker (online))<a class="headerlink" href="#quality-control-with-vsa-online-checker-fachprufung-mit-vsa-checker-online" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.5.1. </span>Qualitätskontrolle mit VSA Checker (Fachprüfung) (online)<a class="headerlink" href="#quality-control-with-vsa-online-checker-fachprufung-mit-vsa-checker-online" title="Link to this heading"></a></h3>
 <figure class="align-default">
 <img alt="https://vsa.ch/wp-content/uploads/2020/04/Daten-checker-d-f-it.jpg" src="https://vsa.ch/wp-content/uploads/2020/04/Daten-checker-d-f-it.jpg" />
 </figure>
@@ -349,7 +349,7 @@ Linux : use the package manager</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="../security/index.html" class="btn btn-neutral float-left" title="4.3. User Roles" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
-        <a href="../db-customization/index.html" class="btn btn-neutral float-right" title="4.5. Customization of the data model" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../db-customization/index.html" class="btn btn-neutral float-right" title="4.5. Anpassung des Datenmodells" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

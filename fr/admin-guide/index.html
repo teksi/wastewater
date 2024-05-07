@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>4. Admin Guide &mdash; Documentation TWW dev</title>
+  <title>4. Guide d’administration &mdash; Documentation TWW dev</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
@@ -52,19 +52,19 @@
 <li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">1. TEKSI wastewater (TWW)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation-guide/index.html">2. TWW Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">3. TWW User Guide</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">4. Admin Guide</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">4. Guide d’administration</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="datamodel.html">4.1. Datamodel</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pgadmin/index.html">4.2. pgAdmin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="security/index.html">4.3. User Roles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interlis-io/index.html">4.4. INTERLIS Data exchange</a></li>
-<li class="toctree-l2"><a class="reference internal" href="db-customization/index.html">4.5. Customization of the data model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interlis-io/index.html">4.4. Échange de données INTERLIS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="db-customization/index.html">4.5. Personnalisation du modèle de données</a></li>
 <li class="toctree-l2"><a class="reference internal" href="datamodel-tool/index.html">4.6. Data-model tool</a></li>
 <li class="toctree-l2"><a class="reference internal" href="db-update-pum/index.html">4.7. Manual update of the datamodel</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../vm/index.html">5. Demo Virtual Machine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vm/index.html">5. Machine virtuelle de démonstration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tww_swmm/index.html">6. SWMM Data Exchange</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">7. Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">7. Traduction</a></li>
 </ul>
 
         </div>
@@ -81,7 +81,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active"><span class="section-number">4. </span>Admin Guide</li>
+      <li class="breadcrumb-item active"><span class="section-number">4. </span>Guide d’administration</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/admin-guide/index.rst.txt" rel="nofollow"> Afficher la source de la page</a>
       </li>
@@ -92,30 +92,30 @@
            <div itemprop="articleBody">
              
   <section id="admin-guide">
-<h1><span class="section-number">4. </span>Admin Guide<a class="headerlink" href="#admin-guide" title="Lien vers cette rubrique"></a></h1>
-<p>This represents a guide on how to administrate the database, install a Virtual machine, import and export data</p>
+<h1><span class="section-number">4. </span>Guide d’administration<a class="headerlink" href="#admin-guide" title="Lien vers cette rubrique"></a></h1>
+<p>Ceci représente un guide pour l’administration de la base de données, l’installation de la machine virtuelle (MV) et l’import/ l’export de données</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="datamodel.html">4.1. Datamodel</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pgadmin/index.html">4.2. pgAdmin</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pgadmin/install.html">4.2.1. Install pgAdmin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pgadmin/install.html">4.2.1. Installer pgAdmin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pgadmin/usage.html">4.2.2. Using pgAdmin</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="security/index.html">4.3. User Roles</a></li>
-<li class="toctree-l1"><a class="reference internal" href="interlis-io/index.html">4.4. INTERLIS Data exchange</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="interlis-io/index.html#general">4.4.1. General</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interlis-io/index.html#prerequisites">4.4.2. Prerequisites</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interlis-io/index.html#usage-gui">4.4.3. Usage (GUI)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interlis-io/index.html#usage-command-line">4.4.4. Usage (command line)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interlis-io/index.html#quality-control">4.4.5. Quality control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interlis-io/index.html">4.4. Échange de données INTERLIS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="interlis-io/index.html#general">4.4.1. Général</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interlis-io/index.html#prerequisites">4.4.2. Prérequis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interlis-io/index.html#usage-gui">4.4.3. Utilisation (GUI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interlis-io/index.html#usage-command-line">4.4.4. Utilisation (ligne de commande)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interlis-io/index.html#quality-control">4.4.5. Contrôle de la qualité</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="db-customization/index.html">4.5. Customization of the data model</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="db-customization/index.html">4.5. Personnalisation du modèle de données</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="db-customization/index.html#introduction">4.5.1. Introduction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="db-customization/index.html#adding-fields">4.5.2. Adding fields</a></li>
-<li class="toctree-l2"><a class="reference internal" href="db-customization/index.html#joining-additional-tables">4.5.3. Joining additional tables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="db-customization/index.html#creating-custom-views">4.5.4. Creating custom views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="db-customization/index.html#adding-fields">4.5.2. Ajouter des champs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="db-customization/index.html#joining-additional-tables">4.5.3. Joindre des tables additionnelles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="db-customization/index.html#creating-custom-views">4.5.4. Créer des vues personnalisées</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="datamodel-tool/index.html">4.6. Data-model tool</a><ul>
@@ -130,12 +130,12 @@
 </li>
 </ul>
 </div>
-<p>In discussion:</p>
+<p>En discussion :</p>
 <ul class="simple">
-<li><p>dxf (in progress)</p></li>
-<li><p>Shape</p></li>
+<li><p>dxf (en cours)</p></li>
+<li><p>Forme</p></li>
 <li><p>MOUSE / MikeUrban (please connect with the developer team if you are interested in this)</p></li>
-<li><p>other</p></li>
+<li><p>autre</p></li>
 </ul>
 </section>
 

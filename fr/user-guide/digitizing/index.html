@@ -22,7 +22,7 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Recherche" href="../../search.html" />
-    <link rel="next" title="3.2.1. Data entry" href="dataentry.html" />
+    <link rel="next" title="3.2.1. Saisie de données" href="dataentry.html" />
     <link rel="prev" title="3.1.3. Naming conventions" href="../layerexplanations/namingconventions.html" /> 
 </head>
 
@@ -54,28 +54,28 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. TWW User Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">3.1. Overview of TWW</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">3.2. Digitizing in TWW</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="dataentry.html">3.2.1. Data entry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="digitizingwastewaterstructures.html">3.2.2. Digitizing Wastewater Structures</a></li>
-<li class="toctree-l3"><a class="reference internal" href="digitizingdetailedgeometry.html">3.2.3. Digitizing detailed geometry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="digitizingdrainagechannel.html">3.2.4. Digitizing Detailed Geometry as Drainage Channel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="digitizingchannels.html">3.2.5. Digitizing Channels</a></li>
-<li class="toctree-l3"><a class="reference internal" href="deletingobjects.html">3.2.6. Deleting objects</a></li>
-<li class="toctree-l3"><a class="reference internal" href="digitizingcatchments.html">3.2.7. Digitizing Catchment Areas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dataentry.html">3.2.1. Saisie de données</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingwastewaterstructures.html">3.2.2. Numériser les structures assainissement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingdetailedgeometry.html">3.2.3. Numérisation de géométries détaillées</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingdrainagechannel.html">3.2.4. Numériser une géométrie détaillée en tant que conduite de drainage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingchannels.html">3.2.5. Numérisation de canalisations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deletingobjects.html">3.2.6. Suppression d’objets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingcatchments.html">3.2.7. Numérisation des bassins versants</a></li>
 <li class="toctree-l3"><a class="reference internal" href="importingdata.html">3.2.8. Importing data</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../editing/index.html">3.3. Editing in TWW</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">3.4. Length profiles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">3.5. Network following tools</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">3.6. Plan plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">3.4. Profils en long</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">3.5. Outils de poursuite de réseau</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">3.6. Impression de plans</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../history/index.html">3.7. History in TWW</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../How-To/index.html">3.8. How To</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">4. Admin Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../vm/index.html">5. Demo Virtual Machine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">4. Guide d’administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vm/index.html">5. Machine virtuelle de démonstration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tww_swmm/index.html">6. SWMM Data Exchange</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">7. Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">7. Traduction</a></li>
 </ul>
 
         </div>
@@ -105,57 +105,57 @@
              
   <section id="digitizing-in-tww">
 <h1><span class="section-number">3.2. </span>Digitizing in TWW<a class="headerlink" href="#digitizing-in-tww" title="Lien vers cette rubrique"></a></h1>
-<p>This represents a guide on how to correctly collect and digitize data of sewer networks including building the topology.</p>
+<p>Ceci est une procédure pour numériser et extraire de manière correcte des données relatives au réseau d’assainissement, y compris la construction de la topologie.</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="dataentry.html">3.2.1. Data entry</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="dataentry.html">3.2.1. Saisie de données</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="dataentry.html#the-tww-wizard">3.2.1.1. The TWW wizard</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dataentry.html#qgis-standard-tools">3.2.1.2. QGIS standard tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataentry.html#qgis-standard-tools">3.2.1.2. Outils standards de QGIS</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="digitizingwastewaterstructures.html">3.2.2. Digitizing Wastewater Structures</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="digitizingwastewaterstructures.html#general">3.2.2.1. General</a></li>
-<li class="toctree-l2"><a class="reference internal" href="digitizingwastewaterstructures.html#digitizing">3.2.2.2. Digitizing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="digitizingwastewaterstructures.html#further-attributes-and-classes">3.2.2.3. Further attributes and classes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="digitizingwastewaterstructures.html#geometry-synchronization">3.2.2.4. Geometry synchronization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="digitizingwastewaterstructures.html">3.2.2. Numériser les structures assainissement</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="digitizingwastewaterstructures.html#general">3.2.2.1. Généralités</a></li>
+<li class="toctree-l2"><a class="reference internal" href="digitizingwastewaterstructures.html#digitizing">3.2.2.2. Numérisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="digitizingwastewaterstructures.html#further-attributes-and-classes">3.2.2.3. Autres classes et attributs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="digitizingwastewaterstructures.html#geometry-synchronization">3.2.2.4. Synchronisation de la géométrie</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="digitizingdetailedgeometry.html">3.2.3. Digitizing detailed geometry</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="digitizingdetailedgeometry.html#general">3.2.3.1. General</a></li>
-<li class="toctree-l2"><a class="reference internal" href="digitizingdetailedgeometry.html#digitizing-tool">3.2.3.2. Digitizing tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="digitizingdetailedgeometry.html">3.2.3. Numérisation de géométries détaillées</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="digitizingdetailedgeometry.html#general">3.2.3.1. Généralités</a></li>
+<li class="toctree-l2"><a class="reference internal" href="digitizingdetailedgeometry.html#digitizing-tool">3.2.3.2. Outil de numérisation</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="digitizingdrainagechannel.html">3.2.4. Digitizing Detailed Geometry as Drainage Channel</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="digitizingdrainagechannel.html#general">3.2.4.1. General</a></li>
-<li class="toctree-l2"><a class="reference internal" href="digitizingdrainagechannel.html#digitizing-tool">3.2.4.2. Digitizing tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="digitizingdrainagechannel.html">3.2.4. Numériser une géométrie détaillée en tant que conduite de drainage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="digitizingdrainagechannel.html#general">3.2.4.1. Généralités</a></li>
+<li class="toctree-l2"><a class="reference internal" href="digitizingdrainagechannel.html#digitizing-tool">3.2.4.2. Outil de numérisation</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="digitizingchannels.html">3.2.5. Digitizing Channels</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="digitizingchannels.html#general">3.2.5.1. General</a></li>
-<li class="toctree-l2"><a class="reference internal" href="digitizingchannels.html#digitizing">3.2.5.2. Digitizing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="digitizingchannels.html#further-attributes-and-classes">3.2.5.3. Further attributes and classes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="digitizingchannels.html#geometry-synchronization">3.2.5.4. Geometry synchronization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="digitizingchannels.html">3.2.5. Numérisation de canalisations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="digitizingchannels.html#general">3.2.5.1. Généralités</a></li>
+<li class="toctree-l2"><a class="reference internal" href="digitizingchannels.html#digitizing">3.2.5.2. Numérisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="digitizingchannels.html#further-attributes-and-classes">3.2.5.3. Autres classes et attributs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="digitizingchannels.html#geometry-synchronization">3.2.5.4. Synchronisation de la géométrie</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="deletingobjects.html">3.2.6. Deleting objects</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="deletingobjects.html#delete-reaches">3.2.6.1. Delete Reaches</a></li>
-<li class="toctree-l2"><a class="reference internal" href="deletingobjects.html#delete-manholes-and-other-wastewater-structures">3.2.6.2. Delete Manholes and other Wastewater Structures</a></li>
-<li class="toctree-l2"><a class="reference internal" href="deletingobjects.html#delete-covers">3.2.6.3. Delete Covers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="deletingobjects.html#delete-structure-parts">3.2.6.4. Delete Structure parts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deletingobjects.html">3.2.6. Suppression d’objets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="deletingobjects.html#delete-reaches">3.2.6.1. Suppression de tronçons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deletingobjects.html#delete-manholes-and-other-wastewater-structures">3.2.6.2. Supprimer des regards et d’autres structures assainissement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deletingobjects.html#delete-covers">3.2.6.3. Suppression de couvercles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deletingobjects.html#delete-structure-parts">3.2.6.4. Suppression d’éléments de structures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="deletingobjects.html#delete-detailed-geometries">3.2.6.5. Delete detailed geometries</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="digitizingcatchments.html">3.2.7. Digitizing Catchment Areas</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="digitizingcatchments.html#general">3.2.7.1. General</a></li>
-<li class="toctree-l2"><a class="reference internal" href="digitizingcatchments.html#digitizing">3.2.7.2. Digitizing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="digitizingcatchments.html#editing">3.2.7.3. Editing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="digitizingcatchments.html#split-areas">3.2.7.4. Split Areas</a></li>
-<li class="toctree-l2"><a class="reference internal" href="digitizingcatchments.html#merge-areas">3.2.7.5. Merge Areas</a></li>
-<li class="toctree-l2"><a class="reference internal" href="digitizingcatchments.html#connect-catchment-area-to-wastewater-network-nodes">3.2.7.6. Connect Catchment area to Wastewater Network Nodes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="digitizingcatchments.html">3.2.7. Numérisation des bassins versants</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="digitizingcatchments.html#general">3.2.7.1. Généralités</a></li>
+<li class="toctree-l2"><a class="reference internal" href="digitizingcatchments.html#digitizing">3.2.7.2. Numérisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="digitizingcatchments.html#editing">3.2.7.3. Édition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="digitizingcatchments.html#split-areas">3.2.7.4. Séparer des zones</a></li>
+<li class="toctree-l2"><a class="reference internal" href="digitizingcatchments.html#merge-areas">3.2.7.5. Fusionner des zones</a></li>
+<li class="toctree-l2"><a class="reference internal" href="digitizingcatchments.html#connect-catchment-area-to-wastewater-network-nodes">3.2.7.6. Connecter la zone du bassin versant aux noeuds du réseau assainissement</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="importingdata.html">3.2.8. Importing data</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="importingdata.html#general">3.2.8.1. General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="importingdata.html#general">3.2.8.1. Généralités</a></li>
 <li class="toctree-l2"><a class="reference internal" href="importingdata.html#example-importing-manholes-from-a-txt-file">3.2.8.2. Example Importing manholes from a TXT-File:</a></li>
 <li class="toctree-l2"><a class="reference internal" href="importingdata.html#example-importing-manholes-with-attributes">3.2.8.3. Example Importing manholes with attributes:</a></li>
 </ul>
@@ -169,7 +169,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
         <a href="../layerexplanations/namingconventions.html" class="btn btn-neutral float-left" title="3.1.3. Naming conventions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
-        <a href="dataentry.html" class="btn btn-neutral float-right" title="3.2.1. Data entry" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="dataentry.html" class="btn btn-neutral float-right" title="3.2.1. Saisie de données" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

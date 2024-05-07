@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>3.1.2. Layers explanation &mdash; Documentation TWW dev</title>
+  <title>3.1.2. Explication des couches &mdash; Documentation TWW dev</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
 
@@ -23,7 +23,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Recherche" href="../../search.html" />
     <link rel="next" title="3.1.3. Naming conventions" href="namingconventions.html" />
-    <link rel="prev" title="3.1.1. Introduction and Overview" href="overview.html" /> 
+    <link rel="prev" title="3.1.1. Introduction et aperçu" href="overview.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -53,14 +53,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">2. TWW Installation Guide</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. TWW User Guide</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">3.1. Overview of TWW</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="overview.html">3.1.1. Introduction and Overview</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">3.1.2. Layers explanation</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#main-layers">3.1.2.1. Main layers</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#wastewater-structures">3.1.2.2. Wastewater Structures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview.html">3.1.1. Introduction et aperçu</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">3.1.2. Explication des couches</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#main-layers">3.1.2.1. Couches principales</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#wastewater-structures">3.1.2.2. Ouvrages d’assainissement</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#maintenance-events-tww-od-vw-tww-maintenance">3.1.2.3. Maintenance events <code class="docutils literal notranslate"><span class="pre">tww_od.vw_tww_maintenance</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#value-lists-tww-vl">3.1.2.4. Value Lists <code class="docutils literal notranslate"><span class="pre">tww_vl.*</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#hydraulic">3.1.2.5. Hydraulic</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#topology">3.1.2.6. Topology</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hydraulic">3.1.2.5. Hydraulique</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#topology">3.1.2.6. Topologie</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#catchment-tww-od-catchment-area">3.1.2.7. Catchment <code class="docutils literal notranslate"><span class="pre">tww_od.catchment_area</span></code></a></li>
 </ul>
 </li>
@@ -69,17 +69,17 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../digitizing/index.html">3.2. Digitizing in TWW</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../editing/index.html">3.3. Editing in TWW</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">3.4. Length profiles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">3.5. Network following tools</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">3.6. Plan plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">3.4. Profils en long</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">3.5. Outils de poursuite de réseau</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">3.6. Impression de plans</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../history/index.html">3.7. History in TWW</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../How-To/index.html">3.8. How To</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">4. Admin Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../vm/index.html">5. Demo Virtual Machine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">4. Guide d’administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vm/index.html">5. Machine virtuelle de démonstration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tww_swmm/index.html">6. SWMM Data Exchange</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">7. Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">7. Traduction</a></li>
 </ul>
 
         </div>
@@ -98,7 +98,7 @@
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>TWW User Guide</a></li>
           <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.1. </span>Overview of TWW</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">3.1.2. </span>Layers explanation</li>
+      <li class="breadcrumb-item active"><span class="section-number">3.1.2. </span>Explication des couches</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/user-guide/layerexplanations/layerexplanation.rst.txt" rel="nofollow"> Afficher la source de la page</a>
       </li>
@@ -109,9 +109,9 @@
            <div itemprop="articleBody">
              
   <section id="layers-explanation">
-<span id="layer-explanation"></span><h1><span class="section-number">3.1.2. </span>Layers explanation<a class="headerlink" href="#layers-explanation" title="Lien vers cette rubrique"></a></h1>
+<span id="layer-explanation"></span><h1><span class="section-number">3.1.2. </span>Explication des couches<a class="headerlink" href="#layers-explanation" title="Lien vers cette rubrique"></a></h1>
 <section id="main-layers">
-<h2><span class="section-number">3.1.2.1. </span>Main layers<a class="headerlink" href="#main-layers" title="Lien vers cette rubrique"></a></h2>
+<h2><span class="section-number">3.1.2.1. </span>Couches principales<a class="headerlink" href="#main-layers" title="Lien vers cette rubrique"></a></h2>
 <p>TWW is constructed around two main layers :</p>
 <blockquote>
 <div><ul class="simple">
@@ -121,14 +121,14 @@
 </div></blockquote>
 <section id="wastewater-structures-tww-od-vw-tww-wastewater-structure">
 <h3><span class="section-number">3.1.2.1.1. </span>Wastewater structures <code class="docutils literal notranslate"><span class="pre">tww_od.vw_tww_wastewater_structure</span></code><a class="headerlink" href="#wastewater-structures-tww-od-vw-tww-wastewater-structure" title="Lien vers cette rubrique"></a></h3>
-<p>Main layer for manholes, special structures, infiltration installations, discharge points (and wastewater treatment plant (wwtp) structure). Creating a new record in this layer always creates a new wastewater structure, a new cover and a new wastewater node. In the edit form, you have access to a lot of the related tables (e.g. structure parts, maintenance events).</p>
+<p>Couche principale pour les ouvrages standards, installations spéciales, installations d’infiltration, exutoires (et stations d’épurations des eaux (STEP)). Créer une nouvelle entité dans cette couche crée toujours une nouvelle structure d’assainissement, un nouveau couvercle et un nouveau noeud réseau. Dans le formulaire d’édition, vous avez accès aux tables liées (ex. parties de structures, évènements de maintenance)</p>
 <figure class="align-default">
 <img alt="user-guide/layerexplanations/images/schema_vw_tww_wastewater_structure.jpg" src="user-guide/layerexplanations/images/schema_vw_tww_wastewater_structure.jpg" />
 </figure>
 <p>Even if there are several covers or wastewater nodes, there is just one point for every wastewater structure in this layer. By default, the position of the wastewater node created first is used as the point coordinate.</p>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
-<p>Do not export this point coordinates as covers. Use the layer vw_cover for this.</p>
+<p>Ne pas exporter les coordonnées de ces points comme couvercles. Utiliser la couche vw_cover pour cela.</p>
 </div>
 </section>
 <section id="reaches-tww-od-vw-tww-reach">
@@ -140,11 +140,11 @@
 </section>
 </section>
 <section id="wastewater-structures">
-<h2><span class="section-number">3.1.2.2. </span>Wastewater Structures<a class="headerlink" href="#wastewater-structures" title="Lien vers cette rubrique"></a></h2>
+<h2><span class="section-number">3.1.2.2. </span>Ouvrages d’assainissement<a class="headerlink" href="#wastewater-structures" title="Lien vers cette rubrique"></a></h2>
 <section id="wastewater-structures-details-tww-od-wastewater-structure">
 <h3><span class="section-number">3.1.2.2.1. </span>Wastewater Structures Details <code class="docutils literal notranslate"><span class="pre">tww_od.wastewater_structure</span></code><a class="headerlink" href="#wastewater-structures-details-tww-od-wastewater-structure" title="Lien vers cette rubrique"></a></h3>
 <p>This layer shows and enables you to edit the detailed geometries of wastewater structures. You can add a new detailed geometry using the layer <cite>vw_tww_wastewater_structure</cite> action called digitize detailed geometry.</p>
-<p>See <a class="reference external" href="../digitizing/digitizingdetailedgeometry.html">digitizing detailed geometries</a> for more information.</p>
+<p>Voir <a class="reference external" href="../digitizing/digitizingdetailedgeometry.html">digitalisation des géométries de détail</a> pour plus d’informations.</p>
 </section>
 <section id="structure-parts-tww-od-structure-part">
 <h3><span class="section-number">3.1.2.2.2. </span>Structure Parts <code class="docutils literal notranslate"><span class="pre">tww_od.structure_part</span></code><a class="headerlink" href="#structure-parts-tww-od-structure-part" title="Lien vers cette rubrique"></a></h3>
@@ -185,15 +185,15 @@
 <section id="maintenance-events-tww-od-vw-tww-maintenance">
 <h2><span class="section-number">3.1.2.3. </span>Maintenance events <code class="docutils literal notranslate"><span class="pre">tww_od.vw_tww_maintenance</span></code><a class="headerlink" href="#maintenance-events-tww-od-vw-tww-maintenance" title="Lien vers cette rubrique"></a></h2>
 <p>Maintenance events can be created through the view tww_od.vw_tww_maintenance.</p>
-<p>These maintenance events are used in the maintenance tabs in the main tables. They can be linked to one or several wastewater structures.</p>
-<p>See <a class="reference external" href="../editing/maintenance_events.html">editing maintenance events</a> for more information.</p>
+<p>Ces événements de maintenance sont utilisé dans l’onglet maintenance des tables principales. Ils peuvent être liés à un ou plusieurs ouvrages.</p>
+<p>Voir <a class="reference external" href="../editing/maintenance_events.html">Edition des événements de maintenance</a> pour plus d’information.</p>
 </section>
 <section id="value-lists-tww-vl">
 <h2><span class="section-number">3.1.2.4. </span>Value Lists <code class="docutils literal notranslate"><span class="pre">tww_vl.*</span></code><a class="headerlink" href="#value-lists-tww-vl" title="Lien vers cette rubrique"></a></h2>
-<p>These value lists are defined in the VSA-datamodel. Do not change.</p>
+<p>Ces listes de valeurs sont définies dans le modèle de données VSA. Ne pas changer.</p>
 </section>
 <section id="hydraulic">
-<h2><span class="section-number">3.1.2.5. </span>Hydraulic<a class="headerlink" href="#hydraulic" title="Lien vers cette rubrique"></a></h2>
+<h2><span class="section-number">3.1.2.5. </span>Hydraulique<a class="headerlink" href="#hydraulic" title="Lien vers cette rubrique"></a></h2>
 <section id="wastewater-nodes-tww-od-vw-wastewater-node">
 <h3><span class="section-number">3.1.2.5.1. </span>Wastewater nodes <code class="docutils literal notranslate"><span class="pre">tww_od.vw_wastewater_node</span></code><a class="headerlink" href="#wastewater-nodes-tww-od-vw-wastewater-node" title="Lien vers cette rubrique"></a></h3>
 <p>Use this layer to change the situation of one selected wastewater node (and not the whole wastewater structure) or if you want to add a new wastewater node to an existing wastewater structure. You can add additional wastewater nodes in the wastewater nodes-tab of the <cite>vw_tww_wastewater_structure</cite> too.</p>
@@ -204,7 +204,7 @@
 </section>
 </section>
 <section id="topology">
-<h2><span class="section-number">3.1.2.6. </span>Topology<a class="headerlink" href="#topology" title="Lien vers cette rubrique"></a></h2>
+<h2><span class="section-number">3.1.2.6. </span>Topologie<a class="headerlink" href="#topology" title="Lien vers cette rubrique"></a></h2>
 <section id="nodes-tww-network-node-and-segments-tww-network-segment">
 <h3><span class="section-number">3.1.2.6.1. </span>Nodes <code class="docutils literal notranslate"><span class="pre">tww_network.node</span></code> and segments <code class="docutils literal notranslate"><span class="pre">tww_network.segment</span></code><a class="headerlink" href="#nodes-tww-network-node-and-segments-tww-network-segment" title="Lien vers cette rubrique"></a></h3>
 <p>These two layers are used by the tww-extension for the profile and the network-following functionalities.
@@ -222,7 +222,7 @@ Use the tww_network.segment layer to show the flow direction, if you use a marke
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
-        <a href="overview.html" class="btn btn-neutral float-left" title="3.1.1. Introduction and Overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+        <a href="overview.html" class="btn btn-neutral float-left" title="3.1.1. Introduction et aperçu" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
         <a href="namingconventions.html" class="btn btn-neutral float-right" title="3.1.3. Naming conventions" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

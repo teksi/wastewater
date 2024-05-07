@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>3.2.7. Digitizing Catchment Areas &mdash; Documentation TWW dev</title>
+  <title>3.2.7. Numérisation des bassins versants &mdash; Documentation TWW dev</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
 
@@ -23,7 +23,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Recherche" href="../../search.html" />
     <link rel="next" title="3.2.8. Importing data" href="importingdata.html" />
-    <link rel="prev" title="3.2.6. Deleting objects" href="deletingobjects.html" /> 
+    <link rel="prev" title="3.2.6. Suppression d’objets" href="deletingobjects.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -54,36 +54,36 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. TWW User Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">3.1. Overview of TWW</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">3.2. Digitizing in TWW</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="dataentry.html">3.2.1. Data entry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="digitizingwastewaterstructures.html">3.2.2. Digitizing Wastewater Structures</a></li>
-<li class="toctree-l3"><a class="reference internal" href="digitizingdetailedgeometry.html">3.2.3. Digitizing detailed geometry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="digitizingdrainagechannel.html">3.2.4. Digitizing Detailed Geometry as Drainage Channel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="digitizingchannels.html">3.2.5. Digitizing Channels</a></li>
-<li class="toctree-l3"><a class="reference internal" href="deletingobjects.html">3.2.6. Deleting objects</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">3.2.7. Digitizing Catchment Areas</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#general">3.2.7.1. General</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#digitizing">3.2.7.2. Digitizing</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#editing">3.2.7.3. Editing</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#split-areas">3.2.7.4. Split Areas</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#merge-areas">3.2.7.5. Merge Areas</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#connect-catchment-area-to-wastewater-network-nodes">3.2.7.6. Connect Catchment area to Wastewater Network Nodes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dataentry.html">3.2.1. Saisie de données</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingwastewaterstructures.html">3.2.2. Numériser les structures assainissement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingdetailedgeometry.html">3.2.3. Numérisation de géométries détaillées</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingdrainagechannel.html">3.2.4. Numériser une géométrie détaillée en tant que conduite de drainage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="digitizingchannels.html">3.2.5. Numérisation de canalisations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deletingobjects.html">3.2.6. Suppression d’objets</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">3.2.7. Numérisation des bassins versants</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#general">3.2.7.1. Généralités</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#digitizing">3.2.7.2. Numérisation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#editing">3.2.7.3. Édition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#split-areas">3.2.7.4. Séparer des zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#merge-areas">3.2.7.5. Fusionner des zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#connect-catchment-area-to-wastewater-network-nodes">3.2.7.6. Connecter la zone du bassin versant aux noeuds du réseau assainissement</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="importingdata.html">3.2.8. Importing data</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../editing/index.html">3.3. Editing in TWW</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">3.4. Length profiles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">3.5. Network following tools</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">3.6. Plan plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">3.4. Profils en long</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">3.5. Outils de poursuite de réseau</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">3.6. Impression de plans</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../history/index.html">3.7. History in TWW</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../How-To/index.html">3.8. How To</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">4. Admin Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../vm/index.html">5. Demo Virtual Machine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">4. Guide d’administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vm/index.html">5. Machine virtuelle de démonstration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tww_swmm/index.html">6. SWMM Data Exchange</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">7. Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">7. Traduction</a></li>
 </ul>
 
         </div>
@@ -102,7 +102,7 @@
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>TWW User Guide</a></li>
           <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.2. </span>Digitizing in TWW</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">3.2.7. </span>Digitizing Catchment Areas</li>
+      <li class="breadcrumb-item active"><span class="section-number">3.2.7. </span>Numérisation des bassins versants</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/user-guide/digitizing/digitizingcatchments.rst.txt" rel="nofollow"> Afficher la source de la page</a>
       </li>
@@ -113,25 +113,25 @@
            <div itemprop="articleBody">
              
   <section id="digitizing-catchment-areas">
-<h1><span class="section-number">3.2.7. </span>Digitizing Catchment Areas<a class="headerlink" href="#digitizing-catchment-areas" title="Lien vers cette rubrique"></a></h1>
+<h1><span class="section-number">3.2.7. </span>Numérisation des bassins versants<a class="headerlink" href="#digitizing-catchment-areas" title="Lien vers cette rubrique"></a></h1>
 <section id="general">
-<h2><span class="section-number">3.2.7.1. </span>General<a class="headerlink" href="#general" title="Lien vers cette rubrique"></a></h2>
-<p>Catchments can be digitized with QGIS standard tools.</p>
+<h2><span class="section-number">3.2.7.1. </span>Généralités<a class="headerlink" href="#general" title="Lien vers cette rubrique"></a></h2>
+<p>Les bassins versants peuvent être numérisés avec les outils standards de QGIS.</p>
 <figure class="align-default">
 <img alt="../../_images/qgis_standard_tools.jpg" src="../../_images/qgis_standard_tools.jpg" />
 </figure>
-<p>Catchment areas should not overlap and can have 4 connections to wastewater nodes.</p>
+<p>Les bassins versants ne doivent pas se chevaucher et peuvent avoir 4 connexions avec des noeuds assainissement.</p>
 </section>
 <section id="digitizing">
-<h2><span class="section-number">3.2.7.2. </span>Digitizing<a class="headerlink" href="#digitizing" title="Lien vers cette rubrique"></a></h2>
+<h2><span class="section-number">3.2.7.2. </span>Numérisation<a class="headerlink" href="#digitizing" title="Lien vers cette rubrique"></a></h2>
 <ul class="simple">
-<li><p>Select the <strong>Enable Snapping</strong> button</p></li>
+<li><p>Sélectionnez le bouton <strong>Activer l’accrochage</strong></p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/enable_snapping_button.jpg" src="../../_images/enable_snapping_button.jpg" />
 </figure>
 <ul class="simple">
-<li><p>Open the <strong>Project Snapping Option Settings</strong>, check the <strong>od_catchment_area</strong> layer and check the <strong>avoid intersection</strong> checkbox for the od_catchment_area layer</p></li>
+<li><p>Ouvrez <strong>Réglages des options d’accrochage du projet</strong>, contrôlez la couche <strong>od_zone_bassin-versant</strong> et contrôlez la boîte à cocher <strong>éviter intersection</strong> dans cette même couche</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/catchment_avoid_intersection2.jpg" src="../../_images/catchment_avoid_intersection2.jpg" />
@@ -141,67 +141,67 @@
 <p>New digitized catchment areas will not overlap with existing areas with this settings.</p>
 </div>
 <ul class="simple">
-<li><p>Set the layer <code class="docutils literal notranslate"><span class="pre">od_catchment_area</span></code> into the edit mode.</p></li>
-<li><p>Use the <strong>Add Feature</strong> tool to digitize a new area.</p></li>
+<li><p>Passez la couche <em>od_aire_bassin_versant</em> en mode d’édition</p></li>
+<li><p>Utilisez l’outil <strong>Ajouter une entité</strong> pour numériser un bassin versant.</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/add_feature_tool.jpg" src="../../_images/add_feature_tool.jpg" />
 </figure>
 <ul class="simple">
-<li><p>Start digitizing with left click and continue with left click for every vertex of the polygon</p></li>
+<li><p>Commencer la numérisation avec un clic gauche et continuer avec un clic gauche pour chaque sommet du polygone</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/catchment_area_digitizing1.jpg" src="../../_images/catchment_area_digitizing1.jpg" />
 </figure>
 <ul class="simple">
-<li><p>Stop digitizing with right click</p></li>
+<li><p>Stoppez la numérisation avec un clic droit</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Keep in mind, that the finishing point of the polygon is the last point where you <strong>left</strong> clicked.</p>
+<p>Gardez en mémoire que le point final du polygone est le dernier point où vous avez effectué un clic <strong>gauche</strong>.</p>
 </div>
 <ul class="simple">
-<li><p>The <strong>od_catchment_area</strong> form appears</p></li>
+<li><p>Le formulaire <strong>od_zone_bassin-versant</strong> apparait</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/catchment_area_digitizing2.jpg" src="../../_images/catchment_area_digitizing2.jpg" />
 </figure>
 <ul class="simple">
-<li><p>When finished editing attributes, click the <strong>OK</strong> button</p></li>
+<li><p>Lorsque vous avez terminé l’édition des attributs, cliquez sur le bouton <strong>OK</strong></p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The new area does not overlap the old areas.</p>
+<p>La nouvelle zone ne chevauche pas les anciennes zones.</p>
 </div>
 <figure class="align-default">
 <img alt="../../_images/catchment_area_digitizing3.jpg" src="../../_images/catchment_area_digitizing3.jpg" />
 </figure>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>To control the exact area of a selected polygon, see in the <strong>Identify Results</strong> window under <strong>(Derived)</strong>.</p>
+<p>Pour contrôler la zone exacte du polygone sélectionné, regardez dans la fenêtre  <strong>(Dérivé)</strong> –&gt; <a href="#id1"><span class="problematic" id="id2">**</span></a>Identifier résultats* sous <a href="#id3"><span class="problematic" id="id4">**</span></a>.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>To connect the area with wastewater nodes, see chapter <a class="reference internal" href="../editing/connect_wastewater_network_elements.html#connect-wastewater-network-elements"><span class="std std-ref">Connect Wastewater Network Elements</span></a>.</p>
+<p>Pour connecter la zone avec les noeuds assainissement, voir le chapitre <span class="xref std std-ref">connecter-éléments-réseau-assainissement</span>.</p>
 </div>
 </section>
 <section id="editing">
-<h2><span class="section-number">3.2.7.3. </span>Editing<a class="headerlink" href="#editing" title="Lien vers cette rubrique"></a></h2>
+<h2><span class="section-number">3.2.7.3. </span>Édition<a class="headerlink" href="#editing" title="Lien vers cette rubrique"></a></h2>
 <ul class="simple">
-<li><p>You can edit existing areas with the <strong>Identify features</strong> tool.</p></li>
+<li><p>Vous pouvez éditer des bassins existants avec l’outil <strong>Sélectionner une entité</strong>.</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/identify_feature_tool.jpg" src="../../_images/identify_feature_tool.jpg" />
 </figure>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>There are ideas to have a menu in the feature attribute window, that allows you to copy all current-values to the planned-fields. Not realized yet.</p>
+<p>Des réflexions sont en cours afin d’intégrer un menu (dans la fenêtre attribut des entités) qui permettrait de recopier toutes les valeurs des champs “courant” dans les champs “planifié”. Option non réalisée pour le moment.</p>
 </div>
 </section>
 <section id="split-areas">
-<h2><span class="section-number">3.2.7.4. </span>Split Areas<a class="headerlink" href="#split-areas" title="Lien vers cette rubrique"></a></h2>
+<h2><span class="section-number">3.2.7.4. </span>Séparer des zones<a class="headerlink" href="#split-areas" title="Lien vers cette rubrique"></a></h2>
 <ul class="simple">
-<li><p>You can split existing areas with the <strong>Split</strong> tool.</p></li>
+<li><p>Vous pouvez séparer des zones existantes avec l’outil <strong>Séparer</strong>.</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/split_tool.jpg" src="../../_images/split_tool.jpg" />
@@ -211,51 +211,51 @@
 </ul>
 </section>
 <section id="merge-areas">
-<h2><span class="section-number">3.2.7.5. </span>Merge Areas<a class="headerlink" href="#merge-areas" title="Lien vers cette rubrique"></a></h2>
-<p>You can merge existing areas with the <strong>Merge selected Feature</strong> tool.</p>
+<h2><span class="section-number">3.2.7.5. </span>Fusionner des zones<a class="headerlink" href="#merge-areas" title="Lien vers cette rubrique"></a></h2>
+<p>Vous pouvez fusionner des zones existantes avec l’outil <strong>Fusionner objets sélectionnés</strong>.</p>
 <figure class="align-default">
 <img alt="../../_images/merge_selected_feature_tool.jpg" src="../../_images/merge_selected_feature_tool.jpg" />
 </figure>
 <ul class="simple">
-<li><p>Selected the <strong>od_catchment_area</strong> layer an set it into the edit mode</p></li>
-<li><p>Select at least two areas you want to merge</p></li>
-<li><p>Click the <code class="docutils literal notranslate"><span class="pre">Merge</span> <span class="pre">selected</span> <span class="pre">Feature</span></code> tool. -&gt; The <strong>Merge Feature Attributes</strong> windows appears.</p></li>
+<li><p>Sélectionnez la couche <strong>od_zone_bassin-versant</strong> et basculez dans le mode d’édition</p></li>
+<li><p>Sélectionnez au moins deux zones que vous voulez fusionner</p></li>
+<li><p>Cliquez sur l’outil « Fusionner les entités sélectionnés ». La fenêtre <strong>Fusionner attributs entités</strong> apparaît.</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/merge_feature_attributes.jpg" src="../../_images/merge_feature_attributes.jpg" />
 </figure>
 <ul class="simple">
-<li><p>Choose which values will be taken from which old record and click <strong>OK</strong>.</p></li>
+<li><p>Choisir quelles valeurs seront reprise à partir de quelle entrée existante et cliquer <strong>OK</strong>.</p></li>
 </ul>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
-<p>If you select one of the records and click on the <strong>Take attributes from the selected feature</strong> button, then the <strong>obj_id</strong> field will be skipped by default and the database will not accept the changes. After using this button, you have to choose one of the values in the <strong>obj_id</strong> field manually.</p>
+<p>Si vous sélectionnez l’une des entrées et cliquez sur le bouton <strong>Reprendre les attributs de l’objet sélectionné</strong>, le champ <strong>id_obj</strong> sera ignoré par défaut et la base de données n’acceptera pas les modifications. Après avoir utilisé ce bouton, vous devez choisir manuellement l’une des valeurs du champ <strong>id_obj</strong>.</p>
 </div>
 </section>
 <section id="connect-catchment-area-to-wastewater-network-nodes">
-<h2><span class="section-number">3.2.7.6. </span>Connect Catchment area to Wastewater Network Nodes<a class="headerlink" href="#connect-catchment-area-to-wastewater-network-nodes" title="Lien vers cette rubrique"></a></h2>
+<h2><span class="section-number">3.2.7.6. </span>Connecter la zone du bassin versant aux noeuds du réseau assainissement<a class="headerlink" href="#connect-catchment-area-to-wastewater-network-nodes" title="Lien vers cette rubrique"></a></h2>
 <p>You connect catchment areas with the tool <strong>Connect wastewater networkelements</strong> (it’s the same tool to connect reaches and nodes described in the chapter Editing in TWW).</p>
 <figure class="align-default">
 <img alt="../../_images/connect_wastewater_network_elements_button.jpg" src="../../_images/connect_wastewater_network_elements_button.jpg" />
 </figure>
 <ul class="simple">
-<li><p>It does not matter, which layer is selected</p></li>
-<li><p>The <strong>catchment_area</strong> layer has to be in edit mode</p></li>
-<li><p>Click the <strong>Connect wastewater networkelements</strong> button</p></li>
-<li><p>If you move the mouse over an catchment area near the border of the catchment area, it is marked: you can click to choose this record</p></li>
-<li><p>Move the mouse to the networkelement, to which the catchment area will by connected (again: selectable objects get marked) and click again</p></li>
+<li><p>Peu importe la couche sélectionnée</p></li>
+<li><p>La couche <strong>zone_bassin-versant</strong> doit être en mode d’édition</p></li>
+<li><p>Cliquez sur le bouton <strong>Connecter éléments réseau assainissement</strong></p></li>
+<li><p>Si vous déplacez la souris au-dessus d’un bassin versant, à proximité de sa périphérie, l’objet est mis en évidence: vous pouvez cliquer pour choisir cet objet.</p></li>
+<li><p>Déplacez la souris sur l’élément du réseau auquel le bassin versant sera connecté (rappel: les objets sélectionnables sont mis en évidence) et cliquez à nouveau</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/catchment_area_connect1.jpg" src="../../_images/catchment_area_connect1.jpg" />
 </figure>
 <ul class="simple">
-<li><p>A window appears, where you can choose, which connection(s) will be defined.</p></li>
+<li><p>Une fenêtre apparaît, dans laquelle vous pouvez choisir quelle(s) connexion(s) sera(ont) définie(s).</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/catchment_area_connect2.jpg" src="../../_images/catchment_area_connect2.jpg" />
 </figure>
 <ul class="simple">
-<li><p>If everything is ok, you will see a message in a blue bar on top of the map-window</p></li>
+<li><p>Si tout est OK, vous verrez apparaître un message dans une barre bleue, au-dessus de la vue de la carte</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/catchment_area_connect3.jpg" src="../../_images/catchment_area_connect3.jpg" />
@@ -266,10 +266,10 @@
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The tool does not check, if your choosen wastewater node is a part of the pwwf-network (primary network). It’s only the user who decides, if a node is ok or not. If you are not sure, please check the <strong>VSA Wegleitung GEP-Daten</strong>, part <strong>Erfassungsgrundsätze</strong></p>
+<p>L’outil ne contrôle pas si le noeud du réseau assainissement sélectionné fait partie du réseau pwwf (réseau principal). C’est exclusivement l’utilisateur qui décide si un noeud est correct ou pas. Si vous n’êtes pas sûr, consultez ** VSA Guide des données PGEE**, section <strong>Principes de saisie</strong></p>
 </div>
 <p>You can not connect multiple areas with the tool to a wastewater node at once. If you want to do so, you have to select the catchment areas, open the attribute table and then start the multi edit mode. There you can choose the wastewater node from the list of all nodes.</p>
-<p>Do delete a connection to a wastewater node, you can edit the area with the <strong>Identify features</strong> tool.</p>
+<p>Pour supprimer une connexion à un noeud assainissement, vous pouvez éditer la zone avec l’outil <strong>Identifier entités</strong>.</p>
 </section>
 </section>
 
@@ -277,7 +277,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
-        <a href="deletingobjects.html" class="btn btn-neutral float-left" title="3.2.6. Deleting objects" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+        <a href="deletingobjects.html" class="btn btn-neutral float-left" title="3.2.6. Suppression d’objets" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
         <a href="importingdata.html" class="btn btn-neutral float-right" title="3.2.8. Importing data" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

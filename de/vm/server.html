@@ -50,10 +50,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">1. TEKSI wastewater (TWW)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation-guide/index.html">2. TWW Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">3. TWW User Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">4. Admin Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="index.html">5. Demo Virtual Machine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">4. Administratorhandbuch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">5. Demo virtuelle Maschine</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tww_swmm/index.html">6. SWMM Data Exchange</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">7. Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">7. Übersetzungen</a></li>
 </ul>
 
         </div>
@@ -84,27 +84,20 @@
 <h1>QGIS Server<a class="headerlink" href="#qgis-server" title="Link to this heading"></a></h1>
 <p>You can download a VM with an older TWW setup that also
 has QGIS Server installed from <a class="reference external" href="http://docs.qtibia.ro/qgisplatform.vdi.xz">http://docs.qtibia.ro/qgisplatform.vdi.xz</a> .</p>
-<p>The VM has working installations of
-<a class="reference external" href="https://docs.qgis.org/latest/en/docs/user_manual/working_with_ogc/ogc_server_support.html">QGIS Server</a>
-and <a class="reference external" href="https://github.com/qgis/QGIS-Web-Client">QGIS Web Client (QWC).</a></p>
+<p>Die virtuelle Maschine hat funktionierende Installationen von dem QGIS Server &lt;<a class="reference external" href="https://docs.qgis.org/latest/en/docs/user_manual/working_with_ogc/ogc_server_support.html">https://docs.qgis.org/latest/en/docs/user_manual/working_with_ogc/ogc_server_support.html</a>&gt;` und dem <a class="reference external" href="https://github.com/qgis/QGIS-Web-Client">QGIS Web Client (QWC).</a></p>
 <section id="access-the-web-services">
-<h2>Access the Web Services<a class="headerlink" href="#access-the-web-services" title="Link to this heading"></a></h2>
-<p>The Apache server is setup to respond to requests pointing to the <cite>http://qgisplatform.demo</cite>.
-Accessing the above link with the Internet Browser of the VM will take you to the starting
-page of QWC depicted in the below image.</p>
+<h2>Betreten des Webservices<a class="headerlink" href="#access-the-web-services" title="Link to this heading"></a></h2>
+<p>Der Apache-Server ist eingerichtet, um auf Anfragen an <cite>http://qgisplatform.demo</cite> zu reagieren. Bei Zugriff über vorstehende Verlinkung per Webbrowser, wird man durch die VM auf die Startseite von QWC geleitet wie untenstehend ersichtlich.</p>
 <figure class="align-default" id="id2">
 <img alt="../_images/001_qwc.png" src="../_images/001_qwc.png" />
 <figcaption>
 <p><span class="caption-text"><strong>QGIS Web client starting page</strong></span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-<p>If you want to access the web services outside the VM, you need to edit the <code class="docutils literal notranslate"><span class="pre">hosts</span></code> file on
-your machine and point <code class="docutils literal notranslate"><span class="pre">qgisplatform.demo</span></code> to the IP of the VM.</p>
+<p>Wenn Sie den Webservice ausserhalb der VM betreten wollen, müssen Sie die <code class="docutils literal notranslate"><span class="pre">hosts</span></code> Datei auf Ihrer Maschine bearbeiten und <code class="docutils literal notranslate"><span class="pre">qgisplatform.demo</span></code> zur IP der VM richten.</p>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>If you’ve setup the VM with the network adapter in NAT mode only the VM host will
-be able to access the services. If you want all the devices on your LAN to do it,
-you need to setup the network adapter in bridge mode.</p>
+<p>Wenn Sie die VM mit dem Netzwerk Adapter innerhalb des NAT Modus aufgesetzt haben, dann ist nur der VM host in der Lage auf die Services zuzugreifen. Wenn Sie wollen, dass alle Geräte in der LAge sind dies zu tun dann müssen Sie den Netzwerk Adapter im Bridge Modus aufsetzten.</p>
 </div>
 </section>
 </section>

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>About &mdash; Documentation TWW dev</title>
+  <title>À propos &mdash; Documentation TWW dev</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
@@ -50,10 +50,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">1. TEKSI wastewater (TWW)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation-guide/index.html">2. TWW Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">3. TWW User Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">4. Admin Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="index.html">5. Demo Virtual Machine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">4. Guide d’administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">5. Machine virtuelle de démonstration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tww_swmm/index.html">6. SWMM Data Exchange</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">7. Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">7. Traduction</a></li>
 </ul>
 
         </div>
@@ -70,7 +70,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">About</li>
+      <li class="breadcrumb-item active">À propos</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/vm/about.rst.txt" rel="nofollow"> Afficher la source de la page</a>
       </li>
@@ -81,34 +81,32 @@
            <div itemprop="articleBody">
              
   <section id="about">
-<h1>About<a class="headerlink" href="#about" title="Lien vers cette rubrique"></a></h1>
+<h1>À propos<a class="headerlink" href="#about" title="Lien vers cette rubrique"></a></h1>
 <p>This represents a guide on how to download and install a virtual machine (VM) that has a
 working TWW installation with a demo dataset. The VM also has a working demo of the <a class="reference external" href="https://github.com/qwat/QWAT">QWAT water project</a> .</p>
-<p>The VM is based on Debian Testing with Cinnamon Desktop.</p>
-<p>Debian Testing was chosen in order to have GDAL 2.x and also benefit from latest linux kernel so that latest hardware
-won’t be a problem for the case where the VM is used outside virtualization (e.g use the virtual disk as basis to create
-a non-virtualized usb-stick to be used for demo purposes).</p>
-<p>Installed software:</p>
+<p>La VM est basée sur Debian Testing avec l’environnement de bureau “Cinnamon”.</p>
+<p>Debian Testing a été retenu dans le but de disposer de GDAL 2.x et de bénéficier également des derniers noyaux Linux, afin que les hardware les plus récents ne soient pas un problème  dans le cas d’une MV utilisée hors virtualisation (p. ex. pour le cas où un disque virtuel est utilisé comme support pour créer une clé usb  physique à utiliser à des fins de démonstration).</p>
+<p>Logiciels installés:</p>
 <ul class="simple">
-<li><p>PostgreSQL 9.6.0 with Postgis 2.3</p></li>
+<li><p>PostgreSQL 9.6.0 avec Postgis 2.3</p></li>
 <li><p>QGIS 2.18</p></li>
 <li><p>pgAdmin 4 (open the browser at <a class="reference external" href="http://localhost:5050">http://localhost:5050</a> to access it)</p></li>
 </ul>
-<p>Settings that are changed from a default software install:</p>
+<p>Paramètres différents d’une installation logicielle par défaut:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">pg_hba.conf</span></code> has <code class="docutils literal notranslate"><span class="pre">trust</span></code> for local connections</p></li>
-<li><p>QGIS is setup with <a class="reference external" href="http://www.lutraconsulting.co.uk/products/qgis-mtr">multithreaded rendering enabled</a></p></li>
+<li><p>QGIS est installé avec <a class="reference external" href="http://www.lutraconsulting.co.uk/products/qgis-mtr">multithreaded rendering enabled</a></p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The users <code class="docutils literal notranslate"><span class="pre">qgis</span></code> and <code class="docutils literal notranslate"><span class="pre">root</span></code> have the password <code class="docutils literal notranslate"><span class="pre">qgis</span></code></p>
+<p>Les utilisateurs <code class="docutils literal notranslate"><span class="pre">qgis</span></code> et <code class="docutils literal notranslate"><span class="pre">root</span></code> ont le mot de passe <code class="docutils literal notranslate"><span class="pre">qgis</span></code></p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If you decide to use the VM in production, it is recommended to:</p>
+<p>Si vous décidez d’utiliser la MV en production, il est recommandé de:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>change the passwords</p></li>
+<li><p>Changer les mots de passe</p></li>
 <li><p>regenerate the ssh keys by running in a terminal <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">rm</span> <span class="pre">/etc/ssh/ssh_host_*</span> <span class="pre">&amp;&amp;</span> <span class="pre">sudo</span> <span class="pre">dpkg-reconfigure</span> <span class="pre">openssh-server</span></code></p></li>
 </ul>
 </div></blockquote>
