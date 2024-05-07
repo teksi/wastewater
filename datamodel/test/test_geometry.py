@@ -2,8 +2,10 @@ import copy
 import os
 import unittest
 
-import psycopg2
-import psycopg2.extras
+try:
+    import psycopg
+except ImportError:
+    import psycopg2 as psycopg
 
 from .utils import DEFAULT_PG_SERVICE, DbTestBase
 
@@ -19,17 +21,17 @@ class TestGeometry(unittest.TestCase, DbTestBase):
     @classmethod
     def setUpClass(cls):
         pgservice = os.environ.get("PGSERVICE") or DEFAULT_PG_SERVICE
-        cls.conn = psycopg2.connect(f"service={pgservice}")
+        cls.conn = psycopg.connect(f"service={pgservice}")
 
     def test_vw_tww_reach_geometry_insert(self):
         # 1. insert geometry with Z and no rp_from_level and no rp_to_level
-        geom = f"COMPOUNDCURVEZ(({X+1} {Y+1} 1001,{X+2} {Y+2} 1002, {X+3} {Y+3} 1003))"
+        geom = f"COMPOUNDCURVEZ(({X + 1} {Y + 1} 1001,{X + 2} {Y + 2} 1002, {X + 3} {Y + 3} 1003))"
         row = {
             "progression3d_geometry": self.geom_from_text(geom),
             "rp_from_obj_id": "BBB 1337_0001",
             "rp_to_obj_id": "CCC 1337_0001",
         }
-        geom = f"COMPOUNDCURVEZ(({X+1} {Y+1} NaN,{X+2} {Y+2} 1002, {X+3} {Y+3} NaN))"
+        geom = f"COMPOUNDCURVEZ(({X + 1} {Y + 1} NaN,{X + 2} {Y + 2} 1002, {X + 3} {Y + 3} NaN))"
         expected_row = {
             "progression3d_geometry": self.geom_from_text(geom),
             "rp_from_level": None,
@@ -39,12 +41,12 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         # reach_point has on rp_to as Z NaN: SELECT ST_SetSRID( ST_MakePoint(1,2,'NaN'), 2056)
         row = self.select("reach_point", "BBB 1337_0001", schema="tww_od")
         assert row["situation3d_geometry"] == self.execute(
-            f"ST_SetSRID( ST_MakePoint({X+1}, {Y+1},'NaN'), 2056)"
+            f"ST_SetSRID( ST_MakePoint({X + 1}, {Y + 1},'NaN'), 2056)"
         )
         # reach_point has on rp_from as Z NaN: SELECT ST_SetSRID( ST_MakePoint(7,8,'NaN'), 2056)
         row = self.select("reach_point", "CCC 1337_0001", schema="tww_od")
         assert row["situation3d_geometry"] == self.execute(
-            f"ST_SetSRID( ST_MakePoint({X+3}, {Y+3},'NaN'), 2056)"
+            f"ST_SetSRID( ST_MakePoint({X + 3}, {Y + 3},'NaN'), 2056)"
         )
 
         # 2. insert geometry with Z and no rp_from_level and 66 as rp_to_level
@@ -57,9 +59,9 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         }
         expected_row = copy.deepcopy(row)
         # vw_tww_reach has the geometry but NaN as Z on start_point and 66 (rp_to_level) as Z on end_point: SELECT ST_SetSRID( ST_ForceCurve(ST_MakeLine(ARRAY[ST_MakePoint(1,2,'NaN'), ST_MakePoint(4,5,6), ST_MakePoint(7,8,66)])), 2056)
-        expected_row[
-            "progression3d_geometry"
-        ] = "01090000A00808000001000000010200008003000000000000000000F03F0000000000000040000000000000F87F0000000000001040000000000000144000000000000018400000000000001C4000000000000020400000000000805040"
+        expected_row["progression3d_geometry"] = (
+            "01090000A00808000001000000010200008003000000000000000000F03F0000000000000040000000000000F87F0000000000001040000000000000144000000000000018400000000000001C4000000000000020400000000000805040"
+        )
         # rp_from_level is NULL
         expected_row["rp_from_level"] = None
         # rp_to_level is 66.000
@@ -89,9 +91,9 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         }
         expected_row = copy.deepcopy(row)
         # vw_tww_reach has the geometry but 77 (rp_from_level) as Z on start_point and NaN as Z on end_point: SELECT ST_SetSRID( ST_ForceCurve(ST_MakeLine(ARRAY[ST_MakePoint(1,2,77), ST_MakePoint(4,5,6), ST_MakePoint(7,8,'NaN')])), 2056)
-        expected_row[
-            "progression3d_geometry"
-        ] = "01090000A00808000001000000010200008003000000000000000000F03F000000000000004000000000004053400000000000001040000000000000144000000000000018400000000000001C400000000000002040000000000000F87F"
+        expected_row["progression3d_geometry"] = (
+            "01090000A00808000001000000010200008003000000000000000000F03F000000000000004000000000004053400000000000001040000000000000144000000000000018400000000000001C400000000000002040000000000000F87F"
+        )
         # rp_from_level is 77.000
         expected_row["rp_from_level"] = "77.000"
         # rp_to_level is NULL
@@ -403,9 +405,9 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         expected_row = copy.deepcopy(row)
         # bottom_level 200 overwrites Z (NaN) results in: ST_SetSRID(ST_MakePoint(2600000, 1200000, 200), 2056)
         expected_row["bottom_level"] = "200.000"
-        expected_row[
-            "situation3d_geometry"
-        ] = "01010000A0080800000000000020D6434100000000804F32410000000000006940"
+        expected_row["situation3d_geometry"] = (
+            "01010000A0080800000000000020D6434100000000804F32410000000000006940"
+        )
         self.insert_check("vw_wastewater_node", row, expected_row)
 
         # 2. bottom level 200 and 555 Z
@@ -417,9 +419,9 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         expected_row = copy.deepcopy(row)
         # bottom_level 200 overwrites Z (555) results in: ST_SetSRID(ST_MakePoint(2600000, 1200000, 200), 2056)
         expected_row["bottom_level"] = "200.000"
-        expected_row[
-            "situation3d_geometry"
-        ] = "01010000A0080800000000000020D6434100000000804F32410000000000006940"
+        expected_row["situation3d_geometry"] = (
+            "01010000A0080800000000000020D6434100000000804F32410000000000006940"
+        )
         self.insert_check("vw_wastewater_node", row, expected_row)
 
         # 3. bottom level NULL and 555 Z
@@ -431,9 +433,9 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         expected_row = copy.deepcopy(row)
         # bottom_level NULL overwrites Z (555) (to NaN) results in: ST_SetSRID(ST_MakePoint(2600000, 1200000, 'NaN'), 2056)
         expected_row["bottom_level"] = None
-        expected_row[
-            "situation3d_geometry"
-        ] = "01010000A0080800000000000020D6434100000000804F3241000000000000F87F"
+        expected_row["situation3d_geometry"] = (
+            "01010000A0080800000000000020D6434100000000804F3241000000000000F87F"
+        )
         self.insert_check("vw_wastewater_node", row, expected_row)
 
         # 4. no bottom level and 555 Z
@@ -444,9 +446,9 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         expected_row = copy.deepcopy(row)
         # no bottom_level overwrites Z (555) (to NaN) results in: ST_SetSRID(ST_MakePoint(2600000, 1200000, 'NaN'), 2056)
         expected_row["bottom_level"] = None
-        expected_row[
-            "situation3d_geometry"
-        ] = "01010000A0080800000000000020D6434100000000804F3241000000000000F87F"
+        expected_row["situation3d_geometry"] = (
+            "01010000A0080800000000000020D6434100000000804F3241000000000000F87F"
+        )
         self.insert_check("vw_wastewater_node", row, expected_row)
 
     def test_wastewater_node_geometry_sync_on_update(self):
@@ -523,9 +525,9 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         expected_row = copy.deepcopy(row)
         # level 200 overwrites Z (NaN) results in: ST_SetSRID(ST_MakePoint(2600000, 1200000, 200), 2056)
         expected_row["level"] = "200.000"
-        expected_row[
-            "situation3d_geometry"
-        ] = "01010000A0080800000000000020D6434100000000804F32410000000000006940"
+        expected_row["situation3d_geometry"] = (
+            "01010000A0080800000000000020D6434100000000804F32410000000000006940"
+        )
         self.insert_check("vw_cover", row, expected_row)
 
         # 2. level 200 and 555 Z
@@ -537,9 +539,9 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         expected_row = copy.deepcopy(row)
         # level 200 overwrites Z (555) results in: ST_SetSRID(ST_MakePoint(2600000, 1200000, 200), 2056)
         expected_row["level"] = "200.000"
-        expected_row[
-            "situation3d_geometry"
-        ] = "01010000A0080800000000000020D6434100000000804F32410000000000006940"
+        expected_row["situation3d_geometry"] = (
+            "01010000A0080800000000000020D6434100000000804F32410000000000006940"
+        )
         self.insert_check("vw_cover", row, expected_row)
 
         # 3. level NULL and 555 Z
@@ -551,9 +553,9 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         expected_row = copy.deepcopy(row)
         # level NULL overwrites Z (555) (to NaN) results in: ST_SetSRID(ST_MakePoint(2600000, 1200000, 'NaN'), 2056)
         expected_row["level"] = None
-        expected_row[
-            "situation3d_geometry"
-        ] = "01010000A0080800000000000020D6434100000000804F3241000000000000F87F"
+        expected_row["situation3d_geometry"] = (
+            "01010000A0080800000000000020D6434100000000804F3241000000000000F87F"
+        )
         self.insert_check("vw_cover", row, expected_row)
 
         # 4. no level and 555 Z
@@ -564,9 +566,9 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         expected_row = copy.deepcopy(row)
         # no level overwrites Z (555) (to NaN) results in: ST_SetSRID(ST_MakePoint(2600000, 1200000, 'NaN'), 2056)
         expected_row["level"] = None
-        expected_row[
-            "situation3d_geometry"
-        ] = "01010000A0080800000000000020D6434100000000804F3241000000000000F87F"
+        expected_row["situation3d_geometry"] = (
+            "01010000A0080800000000000020D6434100000000804F3241000000000000F87F"
+        )
         self.insert_check("vw_cover", row, expected_row)
 
     def test_cover_geometry_sync_on_update(self):

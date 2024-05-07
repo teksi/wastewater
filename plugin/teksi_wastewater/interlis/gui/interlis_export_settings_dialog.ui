@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>381</width>
-    <height>175</height>
+    <height>322</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>TEKSI Wastewater Interlis export</string>
+   <string>TEKSI Wastewater INTERLIS export</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -52,16 +52,34 @@
        <property name="checkable">
         <bool>true</bool>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_2">
+       <layout class="QVBoxLayout" name="verticalLayout_4">
         <item>
-         <widget class="QLabel" name="labels_qgis_warning_label">
-          <property name="styleSheet">
-           <string notr="true">*{color: red; }</string>
-          </property>
+         <widget class="QLabel" name="orientation_label">
           <property name="text">
-           <string>This feature requires QGIS 3.26.2 or newer.</string>
+           <string>Angle for horizontal labels (default: 90.0°)</string>
           </property>
          </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="export_orientation_selection_comboBox">
+          <property name="toolTip">
+           <string>Angle for horizontal labels (default: 90.0°)</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <widget class="QLabel" name="labels_qgis_warning_label">
+            <property name="styleSheet">
+             <string notr="true">*{color: red; }</string>
+            </property>
+            <property name="text">
+             <string>This feature requires QGIS 3.26.2 or newer.</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </widget>

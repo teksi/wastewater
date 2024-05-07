@@ -5,7 +5,11 @@
 import argparse
 import os
 
-import psycopg2
+try:
+    import psycopg
+except ImportError:
+    import psycopg2 as psycopg
+
 from pirogue.utils import insert_command, select_columns, table_parts, update_command
 from yaml import safe_load
 
@@ -21,7 +25,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
     assert pg_service
     extra_definition = extra_definition or {}
 
-    conn = psycopg2.connect(f"service={pg_service}")
+    conn = psycopg.connect(f"service={pg_service}")
     cursor = conn.cursor()
 
     view_sql = """
@@ -201,7 +205,11 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             indent=2,
             skip_columns=[],
             coalesce_pkey_default=True,
-            insert_values={"situation3d_geometry": "ST_StartPoint(NEW.progression3d_geometry)"},
+            insert_values={
+                "situation3d_geometry": "ST_StartPoint(NEW.progression3d_geometry)",
+                "fk_provider": "COALESCE(NULLIF(NEW.rp_from_fk_provider,''), NEW.fk_provider)",
+                "fk_dataowner": "COALESCE(NULLIF(NEW.rp_from_fk_dataowner,''), NEW.fk_dataowner)",
+            },
             returning="obj_id INTO NEW.rp_from_obj_id",
         ),
         rp_to=insert_command(
@@ -213,7 +221,11 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             indent=2,
             skip_columns=[],
             coalesce_pkey_default=True,
-            insert_values={"situation3d_geometry": "ST_EndPoint(NEW.progression3d_geometry)"},
+            insert_values={
+                "situation3d_geometry": "ST_EndPoint(NEW.progression3d_geometry)",
+                "fk_provider": "COALESCE(NULLIF(NEW.rp_to_fk_provider,''), NEW.fk_provider)",
+                "fk_dataowner": "COALESCE(NULLIF(NEW.rp_to_fk_dataowner,''), NEW.fk_dataowner)",
+            },
             returning="obj_id INTO NEW.rp_to_obj_id",
         ),
         ws=insert_command(
@@ -225,12 +237,14 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             indent=2,
             skip_columns=[
                 "detail_geometry3d_geometry",
-                "fk_dataowner",
-                "fk_provider",
                 "_label",
                 "_depth",
                 "fk_main_cover",
             ],
+            insert_values={
+                "fk_provider": "NEW.fk_provider",
+                "fk_dataowner": "NEW.fk_dataowner",
+            },
         ),
         ch=insert_command(
             pg_cur=cursor,
