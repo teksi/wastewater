@@ -6,7 +6,7 @@ UPDATE tww_od.organisation
 SET tww_active=TRUE
 WHERE obj_id = ANY(
 SELECT UNNEST(ARRAY[fk_provider,fk_dataowner])
-FROM tww_od._aquifier
+FROM tww_od.dss15_aquifer
 UNION
 SELECT UNNEST(ARRAY[fk_provider,fk_dataowner])
 FROM tww_od.building_group
