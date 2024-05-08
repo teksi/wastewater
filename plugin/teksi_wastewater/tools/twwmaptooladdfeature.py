@@ -807,7 +807,7 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
                 for idx, field in enumerate(fields):
                     if field in keep_fields:
                         f.setAttribute(idx, f_old.attributes()[idx])
-                    elif field = re_oid_field:
+                    elif field == re_oid_field:
                         if dest = "from":
                             f.setAttribute(idx,re_oid_from)
                         else:
