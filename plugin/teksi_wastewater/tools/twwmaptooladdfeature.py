@@ -512,4 +512,3 @@ class TwwMapToolDigitizeDrainageChannel(QgsMapTool):
                 self.geometryDigitized.emit()
 
             self.firstPoint = mousepos
-
