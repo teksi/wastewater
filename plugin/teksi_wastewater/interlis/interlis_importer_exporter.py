@@ -272,55 +272,6 @@ class InterlisImporterExporter:
         connection.close()
 
     def _export_labels_file(
-        self, limit_to_selection, selected_labels_scales_indices, labels_file_path,export_model
-        ):
-        self._progress_done(self.current_progress, "Extracting labels...")
-
-        if export_model in [config.MODEL_NAME_AG96, config.MODEL_NAME_AG64]:
-            self._export_labels_file_agxx(
-                limit_to_selection, selected_labels_scales_indices, labels_file_path
-            )
-        else:
-            self._export_labels_file_vsa_sia(
-                limit_to_selection, selected_labels_scales_indices, labels_file_path
-            )
-
-    def _export_labels_file_vsa_sia(
-        self, limit_to_selection, selected_labels_scales_indices, labels_file_path
-        ):
-        try:
-            # We only import now to avoid useless exception if dependencies aren't met
-            from qgis import processing
-
-            from ..utils.twwlayermanager import TwwLayerManager
-        except ImportError:
-            raise InterlisImporterExporterError(
-                "Export labels error",
-                "Could not load export labels as qgis.processing module is not available.",
-                None,
-            )
-
-        structures_lyr = TwwLayerManager.layer("vw_tww_wastewater_structure")
-        reaches_lyr = TwwLayerManager.layer("vw_tww_reach")
-        if not structures_lyr or not reaches_lyr:
-            raise InterlisImporterExporterError(
-                "Could not find the vw_tww_wastewater_structure and/or the vw_tww_reach layers.",
-                "Make sure your Teksi Wastewater project is open.",
-                None,
-            )
-
-        self._progress_done(self.current_progress + 5)
-        processing.run(
-            "tww:extractlabels_interlis",
-            {
-                "OUTPUT": labels_file_path,
-                "RESTRICT_TO_SELECTION": limit_to_selection,
-                "STRUCTURE_VIEW_LAYER": structures_lyr,
-                "REACH_VIEW_LAYER": reaches_lyr,
-            },
-        )
-
-    def _export_labels_file(
         self, limit_to_selection, selected_labels_scales_indices, labels_file_path, export_model
         ):
         try:
