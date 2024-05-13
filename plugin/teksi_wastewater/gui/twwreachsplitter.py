@@ -28,7 +28,7 @@ from qgis.gui import QgsMessageBar
 from qgis.PyQt.QtCore import pyqtSlot
 from qgis.PyQt.QtWidgets import QDockWidget
 
-from ..tools.twwmaptooladdfeature import TwwMapToolSplitReachWithNode
+from ..tools.twwsplitreach import TwwMapToolSplitReachWithNode
 from ..utils import get_ui_class
 from ..utils.twwlayermanager import TwwLayerManager
 
