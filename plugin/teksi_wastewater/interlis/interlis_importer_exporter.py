@@ -271,7 +271,7 @@ class InterlisImporterExporter:
         connection.commit()
         connection.close()
 
-    def _export_labels_file_(
+    def _export_labels_file(
         self, limit_to_selection, selected_labels_scales_indices, labels_file_path,export_model
         ):
         self._progress_done(self.current_progress, "Extracting labels...")
