@@ -51,9 +51,52 @@ INSERT INTO tww_vl.channel_usage_planned (code,vsacode,value_de,value_en,active)
 (1999990,9024,'Strassenwasser','street_water',true) ON CONFLICT DO NOTHING; -- 9024 = Niederschlagsabwasser
 INSERT INTO tww_vl.channel_usage_current (code,vsacode,value_de,value_en,active) VALUES
 (1999989,9023,'Strassenwasser','street_water',true) ON CONFLICT DO NOTHING; -- 9023 = Niederschlagsabwasser
+
+UPDATE tww_vl.channel_usage_current
+SET order_usage_current=
+ array_position(
+	 ARRAY[
+		  4526 --wastewater
+  	     ,4522 --combined_wastewater
+		 ,4516 --discharged_combined_wastewater
+		 ,1999989 --street_water
+		 ,1999993 -- square_water
+		 ,4524 --clean_wastewater
+		 ,4514 --clean_wastewater
+		 ,9023 --surface_water
+		 ,4518 --creek_water
+		 ,4571 --other
+		 ,5322 --unknown
+		 ]
+	 ,code);
+
+
 --Kanal_FunktionHierarchisch
 INSERT INTO tww_vl.channel_function_hierarchic (code,vsacode,value_de,value_en,active) VALUES
 (1999991,5071,'PAA.Arealentwaesserung','pwwf.site_drainage',true)ON CONFLICT DO NOTHING;
+
+UPDATE tww_vl.channel_function_hierarchic
+SET order_fct_hierarchic=
+ array_position(
+	 ARRAY[
+		 5068 --pwwf.water_bodies
+  	     ,5070 --pwwf.main_drain_regional
+		 ,5069 --pwwf.main_drain
+		 ,5071 --pwwf.collector_sewer
+		 ,1999991 --pwwf.site_drainage
+		 ,5062 --pwwf.renovation_conduction
+		 ,5064 --pwwf.residential_drainage
+		 ,5072 --pwwf.road_drainage
+		 ,5066 --pwwf.other
+		 ,5074 --pwwf.unknown
+		 ,5063 --swwf.renovation_conduction
+		 ,5065 --swwf.residential_drainage
+		 ,5073 --swwf.road_drainage
+		 ,5067 --swwf.other
+		 ,5075 --swwf.unknown
+		 ]
+	 ,code);
+
 
 -- Massnahme
 INSERT INTO tww_vl.measure_category (code,vsacode,value_de,value_en,active) VALUES
