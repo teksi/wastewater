@@ -57,6 +57,9 @@ class TwwSettingsDialog(QDialog, DIALOG_UI):
 
         adminmode = self.settings.value("/TWW/AdminMode", False, type=bool)
         self.mCbAdminMode.setChecked(adminmode)
+        
+        ag6496extension = self.settings.value("/TWW/AGxxExtensions", False, type=bool)
+        self.mCbAg6496Extension.setChecked(ag6496extension)
 
         lyr_special_structures, _ = project.readEntry("TWW", "SpecialStructureLayer")
         lyr_graph_edges, _ = project.readEntry("TWW", "GraphEdgeLayer")
@@ -112,6 +115,7 @@ class TwwSettingsDialog(QDialog, DIALOG_UI):
 
         self.settings.setValue("/TWW/DeveloperMode", self.mCbDevelMode.isChecked())
         self.settings.setValue("/TWW/AdminMode", self.mCbAdminMode.isChecked())
+        self.settings.setValue("/TWW/AGxxExtensions", self.mCbAg6496Extension.isChecked())
 
         # Logging
         if hasattr(twwlogger, "twwFileHandler"):

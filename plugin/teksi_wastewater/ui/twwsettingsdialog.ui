@@ -185,7 +185,17 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="0">
+       <item row="2" column="0">
+        <widget class="QCheckBox" name="mCbAg6496Extension">
+         <property name="toolTip">
+          <string>Enables the functionalities for AG-64 and AG-96 extensions.</string>
+         </property>
+         <property name="text">
+          <string>Enable AG-64 and AG-96 extensions</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
         <widget class="QGroupBox" name="mGbLayout">
          <property name="title">
           <string>Layout</string>
@@ -222,7 +232,7 @@
          </layout>
         </widget>
        </item>
-       <item row="2" column="0">
+       <item row="3" column="0">
         <widget class="QGroupBox" name="groupBox">
          <property name="title">
           <string>Logging</string>
