@@ -181,6 +181,7 @@ class InterlisImporterExporter:
                 limit_to_selection=limit_to_selection,
                 selected_labels_scales_indices=selected_labels_scales_indices,
                 labels_file_path=labels_file_path,
+                export_model=export_models[0]
             )
 
         # Export to the temporary ili2pg model
@@ -271,10 +272,8 @@ class InterlisImporterExporter:
         connection.close()
 
     def _export_labels_file(
-        self, limit_to_selection, selected_labels_scales_indices, labels_file_path
-    ):
-        self._progress_done(self.current_progress, "Extracting labels...")
-
+        self, limit_to_selection, selected_labels_scales_indices, labels_file_path, export_model
+        ):
         try:
             # We only import now to avoid useless exception if dependencies aren't met
             from qgis import processing
@@ -295,18 +294,55 @@ class InterlisImporterExporter:
                 "Make sure your Teksi Wastewater project is open.",
                 None,
             )
-
+        
         self._progress_done(self.current_progress + 5)
-        processing.run(
-            "tww:extractlabels_interlis",
-            {
-                "OUTPUT": labels_file_path,
-                "RESTRICT_TO_SELECTION": limit_to_selection,
-                "STRUCTURE_VIEW_LAYER": structures_lyr,
-                "REACH_VIEW_LAYER": reaches_lyr,
-                "SCALES": selected_labels_scales_indices,
-            },
-        )
+        if export_model == config.MODEL_NAME_AG96:
+            catch_lyr = TwwLayerManager.layer("catchment_area")
+            meas_pt_lyr = TwwLayerManager.layer("measure_point")
+            meas_lin_lyr = TwwLayerManager.layer("measure_line")
+            meas_ply_lyr = TwwLayerManager.layer("measure_polygon")
+            building_group_lyr = TwwLayerManager.layer("building_group")
+            
+            processing.run(
+                "tww:extractlabels_interlis",
+                {
+                    "OUTPUT": labels_file_path,
+                    "RESTRICT_TO_SELECTION": limit_to_selection,
+                    "STRUCTURE_VIEW_LAYER": structures_lyr,
+                    "REACH_VIEW_LAYER": reaches_lyr,
+                    "CATCHMENT_LAYER": catch_lyr,
+                    "MEASURE_POINT_LAYER": meas_pt_lyr,
+                    "MEASURE_LINE_LAYER": meas_lin_lyr,
+                    "MEASURE_POLYGON_LAYER": meas_ply_lyr,
+                    "BUILDING_GROUP_LAYER": building_group_lyr,
+                    "SCALES": selected_labels_scales_indices,
+                    "REPLACE_WS_WITH_WN":True,
+                },
+            )
+        
+        elif export_model == config.MODEL_NAME_AG64:
+             processing.run(
+                "tww:extractlabels_interlis",
+                {
+                    "OUTPUT": labels_file_path,
+                    "RESTRICT_TO_SELECTION": limit_to_selection,
+                    "STRUCTURE_VIEW_LAYER": structures_lyr,
+                    "REACH_VIEW_LAYER": reaches_lyr,
+                    "SCALES": selected_labels_scales_indices,
+                    "REPLACE_WS_WITH_WN": True,
+                },
+            )
+        else:
+            processing.run(
+                "tww:extractlabels_interlis",
+                {
+                    "OUTPUT": labels_file_path,
+                    "RESTRICT_TO_SELECTION": limit_to_selection,
+                    "STRUCTURE_VIEW_LAYER": structures_lyr,
+                    "REACH_VIEW_LAYER": reaches_lyr,
+                    "SCALES": selected_labels_scales_indices,
+                },
+            )
 
     def _export_to_intermediate_schema(
         self,
