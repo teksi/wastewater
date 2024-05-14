@@ -156,7 +156,7 @@ class InterlisExporterToIntermediateSchema:
         self.abwasser_session.add(self.basket_topic_kek)
 
         self.basket_topic_ag64 = self.model_classes_interlis.t_ili2db_basket(
-            t_id=5,
+            t_id=6,
             dataset=dataset.t_id,
             topic=config.TOPIC_NAME_AG64,
             t_ili_tid=None,
@@ -166,14 +166,14 @@ class InterlisExporterToIntermediateSchema:
         self.abwasser_session.add(self.basket_topic_ag64)
 
         self.basket_topic_ag96 = self.model_classes_interlis.t_ili2db_basket(
-            t_id=5,
+            t_id=7,
             dataset=dataset.t_id,
             topic=config.TOPIC_NAME_AG96,
             t_ili_tid=None,
             attachmentkey=dataset.datasetname,
             domains="",
         )
-        self.abwasser_session.add(self.basket_topic_96)
+        self.abwasser_session.add(self.basket_topic_ag96)
         self.abwasser_session.flush()
 
     def _export_sia405_abwasser(self):
