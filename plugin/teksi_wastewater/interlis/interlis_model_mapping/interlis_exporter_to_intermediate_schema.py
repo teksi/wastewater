@@ -3243,16 +3243,32 @@ class InterlisExporterToIntermediateSchema:
             "vw_tww_wastewater_structure": {},
             "catchment_area": {},
         }
+        
         for row in self.abwasser_session.query(self.model_classes_interlis.haltung):
             tid_for_obj_id["vw_tww_reach"][row.t_ili_tid] = row.t_id
         for row in self.abwasser_session.query(
             self.model_classes_interlis.abwasserbauwerk
         ):
             tid_for_obj_id["vw_tww_wastewater_structure"][row.t_ili_tid] = row.t_id
-        for row in self.abwasser_session.query(
-            self.model_classes_interlis.einzugsgebiet
-        ):
-            tid_for_obj_id["catchment_area"][row.t_ili_tid] = row.t_id
+        
+        if self.model in [config.MODEL_NAME_DSS,config.MODEL_NAME_AG96]:
+            for row in self.abwasser_session.query(self.model_classes_interlis.einzugsgebiet):
+                tid_for_obj_id["catchment_area"][row.t_ili_tid] = row.t_id
+        
+        if self.is_ag_xx_model:
+            tid_for_obj_id.update({
+            "building_group": {},
+            "measure_line": {},
+            "measure_point": {},
+            "measure_polygon": {},
+            })
+            for row in self.abwasser_session.query(self.model_classes_interlis.bautenausserhalbbaugebiet):
+                tid_for_obj_id["building_group"][row.t_ili_tid] = row.t_id
+            for row in self.abwasser_session.query(self.model_classes_interlis.gepmassnahme):
+                tid_for_obj_id["measure_line"][row.t_ili_tid] = row.t_id
+                tid_for_obj_id["measure_point"][row.t_ili_tid] = row.t_id
+                tid_for_obj_id["measure_polygon"][row.t_ili_tid] = row.t_id
+
 
         with open(self.labels_file) as labels_file_handle:
             labels = json.load(labels_file_handle)
@@ -3267,7 +3283,7 @@ class InterlisExporterToIntermediateSchema:
 
             if self.subset_ids and obj_id not in self.subset_ids:
                 logger.warning(
-                    f"Label for {layer_name} `{obj_id}` exists, but that object is not part of the export"
+                    f"Label for {layer_name} `{obj_id}` exists, but that object is not part of the subset export"
                 )
                 continue
 
@@ -3284,43 +3300,96 @@ class InterlisExporterToIntermediateSchema:
                 )
                 continue
 
-            if layer_name == "vw_tww_reach":
-                ili_label = self.model_classes_interlis.haltung_text(
-                    **self._textpos_common(
-                        label, "haltung_text", geojson_crs_def, "RX", self.oid_prefix
-                    ),
-                    haltungref=t_id,
-                )
+            if not self.is_ag_xx_model:
+                if layer_name == "vw_tww_reach":
+                    ili_label = self.model_classes_interlis.haltung_text(
+                        **self._textpos_common(label, "haltung_text", geojson_crs_def, "RX", self.oid_prefix),
+                        haltungref=t_id,
+                    )
 
-            elif layer_name == "vw_tww_wastewater_structure":
-                ili_label = self.model_classes_interlis.abwasserbauwerk_text(
-                    **self._textpos_common(
-                        label,
-                        "abwasserbauwerk_text",
-                        geojson_crs_def,
-                        "WX",
-                        self.oid_prefix,
-                    ),
-                    abwasserbauwerkref=t_id,
-                )
+                elif layer_name == "vw_tww_wastewater_structure":
+                    ili_label = self.model_classes_interlis.abwasserbauwerk_text(
+                        **self._textpos_common(label, "abwasserbauwerk_text", geojson_crs_def, "WX", self.oid_prefix),
+                        abwasserbauwerkref=t_id,
+                    )
 
-            elif layer_name == "catchment_area":
-                ili_label = self.model_classes_interlis.einzugsgebiet_text(
-                    **self._textpos_common(
-                        label,
-                        "einzugsgebiet_text",
-                        geojson_crs_def,
-                        "CX",
-                        self.oid_prefix,
-                    ),
-                    einzugsgebietref=t_id,
-                )
-
+                elif layer_name == "catchment_area":
+                    ili_label = self.model_classes_interlis.einzugsgebiet_text(
+                        **self._textpos_common(label, "einzugsgebiet_text", geojson_crs_def, "CX", self.oid_prefix),
+                        einzugsgebietref=t_id,
+                    )
+                else:
+                    logger.warning(
+                        f"Unknown layer `{layer_name}` for label with id '{obj_id}'. Label will be ignored",
+                    )
+                    continue
             else:
-                logger.warning(
-                    f"Unknown layer `{layer_name}` for label with id '{obj_id}'. Label will be ignored",
-                )
-                continue
+                if self.model == config.MODEL_NAME_AG64:
+                    if layer_name == "vw_tww_reach":
+                        ili_label = self.model_classes_interlis.haltung_text(
+                            **self._textpos_common(label, "infrastrukturhaltung_text", geojson_crs_def, "RX", self.oid_prefix),
+                            infrastrukturhaltung=t_id,
+                        )
+
+                    elif layer_name == "vw_tww_wastewater_structure":
+                        ili_label = self.model_classes_interlis.abwasserbauwerk_text(
+                            **self._textpos_common(label, "infrastrukturknoten_text", geojson_crs_def, "WX", self.oid_prefix),
+                            infrastrukturknotenref=t_id,
+                        )
+                    
+                    else:
+                        logger.warning(
+                            f"Unknown layer `{layer_name}` for label with id '{obj_id}'. Label will be ignored",
+                        )
+                        continue
+                else: # AG-96
+                    if layer_name == "vw_tww_reach":
+                        ili_label = self.model_classes_interlis.haltung_text(
+                            **self._textpos_common(label, "gephaltung_text", geojson_crs_def, "RX", self.oid_prefix),
+                            gephaltungref=t_id,
+                        )
+
+                    elif layer_name == "vw_tww_wastewater_structure":
+                        ili_label = self.model_classes_interlis.abwasserbauwerk_text(
+                            **self._textpos_common(label, "gepknoten_text", geojson_crs_def, "WX", self.oid_prefix),
+                            gepknotenref=t_id,
+                        )
+
+                    elif layer_name == "catchment_area":
+                        ili_label = self.model_classes_interlis.einzugsgebiet_text(
+                            **self._textpos_common(label, "einzugsgebiet_text", geojson_crs_def, "CX", self.oid_prefix),
+                            einzugsgebietref=t_id,
+                        )
+                        
+                    elif layer_name == "building_group":
+                        ili_label = self.model_classes_interlis.bautenausserhalbbaugebiet_text(
+                            **self._textpos_common(label, "bautenausserhalbbaugebiet_text", geojson_crs_def, "BX", self.oid_prefix),
+                            bautenausserhalbbaugebietref=t_id,
+                        )
+
+                    elif layer_name == "measure_line":
+                        ili_label = self.model_classes_interlis.gepmassnahme_text(
+                            **self._textpos_common(label, "gepmassnahme_text", geojson_crs_def, "MX", self.oid_prefix),
+                            gepmassnahmeref=t_id,
+                        )
+
+                    elif layer_name == "measure_point":
+                        ili_label = self.model_classes_interlis.gepmassnahme_text(
+                            **self._textpos_common(label, "gepmassnahme_text", geojson_crs_def, "MX", self.oid_prefix),
+                            gepmassnahmeref=t_id,
+                        )
+                    
+                    elif layer_name == "measure_polygon":
+                        ili_label = self.model_classes_interlis.gepmassnahme_text(
+                            **self._textpos_common(label, "gepmassnahme_text", geojson_crs_def, "MX", self.oid_prefix),
+                            gepmassnahmeref=t_id,
+                        )
+
+                    else:
+                        logger.warning(
+                            f"Unknown layer {layer_name} for label with id '{obj_id}'. Label will be ignored",
+                        )
+                        continue
 
             self.abwasser_session.add(ili_label)
             print(".", end="")

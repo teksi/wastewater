@@ -83,17 +83,17 @@ class ModelInterlisAG96(ModelBase):
 
         ModelInterlisAG96.sia405_textpos = sia405_textpos
 
-        class gephaltung_text(sia405_textpos):
+        class haltung_text(sia405_textpos):
             __tablename__ = "gephaltung_text"
             __table_args__ = {"schema":config.ABWASSER_SCHEMA}
 
-        ModelInterlisAG96.gephaltung_text = gephaltung_text
+        ModelInterlisAG96.haltung_text = haltung_text
 
-        class gepknoten_text(sia405_textpos):
+        class abwasserbauwerk_text(sia405_textpos):
             __tablename__ = "gepknoten_text"
             __table_args__ = {"schema":config.ABWASSER_SCHEMA}
 
-        ModelInterlisAG96.gepknoten_text = gepknoten_text
+        ModelInterlisAG96.abwasserbauwerk_text = abwasserbauwerk_text
             
         class bautenausserhalbbaugebiet_text(sia405_textpos):
             __tablename__ = "bautenausserhalbbaugebiet_text"
