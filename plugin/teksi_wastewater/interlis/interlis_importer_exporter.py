@@ -372,7 +372,20 @@ class InterlisImporterExporter:
                     "REPLACE_WS_WITH_WN":True,
                 },
             )
-        
+        elif export_model == config.MODEL_NAME_DSS:
+            catch_lyr = TwwLayerManager.layer("catchment_area")
+            
+            processing.run(
+                "tww:extractlabels_interlis",
+                {
+                    "OUTPUT": labels_file_path,
+                    "RESTRICT_TO_SELECTION": limit_to_selection,
+                    "STRUCTURE_VIEW_LAYER": structures_lyr,
+                    "REACH_VIEW_LAYER": reaches_lyr,
+                    "CATCHMENT_LAYER": catch_lyr,
+                    "SCALES": selected_labels_scales_indices,
+                },
+            )       
         elif export_model == config.MODEL_NAME_AG64:
              processing.run(
                 "tww:extractlabels_interlis",
