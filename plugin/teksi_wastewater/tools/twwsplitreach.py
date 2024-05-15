@@ -26,26 +26,42 @@
 This module provides functions to split TWW reaches.
 """
 
+import math
 
 from qgis.core import (
     NULL,
+    Qgis,
     QgsFeature,
     QgsFeatureRequest,
+    QgsGeometry,
     QgsPoint,
     QgsPointXY,
+    QgsSettings,
     QgsSnappingConfig,
     QgsTolerance,
+    QgsWkbTypes,
 )
 from qgis.gui import (
     QgisInterface,
     QgsAttributeEditorContext,
+    QgsMapCanvas,
     QgsMapCanvasSnappingUtils,
+    QgsMapTool,
     QgsMapToolAdvancedDigitizing,
     QgsMessageBar,
+    QgsRubberBand,
     QgsVertexMarker,
 )
-from qgis.PyQt.QtCore import Qt
+from qgis.PyQt.QtCore import Qt, pyqtSignal
 from qgis.PyQt.QtGui import QColor, QCursor
+from qgis.PyQt.QtWidgets import (
+    QApplication,
+    QDialog,
+    QDialogButtonBox,
+    QGridLayout,
+    QLabel,
+    QLineEdit,
+)
 
 from ..utils.twwlayermanager import TwwLayerManager
 
@@ -60,13 +76,13 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
 
     """
 
-    def __init__(self, iface: QgisInterface, layer, split_channels=True):
+    def __init__(self, iface: QgisInterface, layer, split_channels = True):
         # TwwMapToolAddFeature __init__ without rubberband
         QgsMapToolAdvancedDigitizing.__init__(self, iface.mapCanvas(), iface.cadDockWidget())
         self.iface = iface
         self.canvas = iface.mapCanvas()
         self.layer = layer
-        self.split_channels = split_channels
+        self.split_channels=split_channels
 
         # see TwwMapToolAddReach __init__
         self.snapping_marker = None
@@ -75,6 +91,7 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
         assert self.reach_layer is not None
         self.setAdvancedDigitizingAllowed(True)
         self.setAutoSnapEnabled(True)
+
 
         layer_snapping_configs = [
             {"layer": self.reach_layer, "mode": QgsSnappingConfig.VertexAndSegment},
@@ -93,9 +110,7 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
             self.snapping_configs.append(config)
 
         # prepare messageBarItem
-        self.msgtitle = self.tr(
-            f"Split reach with {self.node_layer.name() if self.node_layer else 'no wastewater node'}"
-        )
+        self.msgtitle = self.tr(f"Split reach with {self.node_layer.name() if self.node_layer else 'no wastewater node'}")
         msg = None
         self.messageBarItem = QgsMessageBar.createMessage(self.msgtitle, msg)
 
@@ -287,86 +302,81 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
         assert f_old.isValid()
 
         # split using Point instead of PointXY is documented but fails with 3.28.11
-        try:
-            split_line = [point3d, point3d]
-            result, new_geometries, _ = f_old.geometry().splitGeometry(split_line, True, True)
-        except:
-            split_line = [QgsPointXY(point3d), QgsPointXY(point3d)]
-            result, new_geometries, _ = f_old.geometry().splitGeometry(split_line, True, True)
-        finally:
-            assert len(new_geometries) == 2
-            re_oid_field = self.reach_layer.fields().indexFromName("obj_id")
-            re_oid_to = self.reach_layer.dataProvider().defaultValue(re_oid_field)
-            re_oid_from = self.reach_layer.dataProvider().defaultValue(re_oid_field)
-            for geoms in new_geometries:
-                assert geoms
-                fields = self.reach_layer.fields()
-                if point3d.equals(geoms.vertexAt(0)):
-                    dest = "from"
-                else:
-                    dest = "to"
+        split_line = [QgsPointXY(point3d),QgsPointXY(point3d)]
+        result, new_geometries, _ = f_old.geometry().splitGeometry(split_line, True, True)
+        assert len(new_geometries) == 2
+        re_oid_field=self.reach_layer.fields().indexFromName("obj_id")
+        re_oid_to = self.reach_layer.dataProvider().defaultValue(re_oid_field)
+        re_oid_from = self.reach_layer.dataProvider().defaultValue(re_oid_field)
+        for geoms in new_geometries:
+            assert geoms
+            fields = self.reach_layer.fields()
+            if point3d.equals(geoms.vertexAt(0)):
+                dest = "from"
+            else:
+                dest="to"
 
-                f = QgsFeature(fields)
-                if self.split_channels:
-                    keep_fields = [
-                        "ws_status",
-                        "ws_year_of_construction",
-                        "ws_fk_owner",
-                        "ws_fk_operator",
-                        "ch_usage_current",
-                        "ch_function_hierarchic",
-                        "ch_function_hydraulic",
-                    ]
-                else:
-                    # keep all wastewater structure and channel fields
-                    keep_fields = [field for field in fields if field[0:2] in ["ch", "ws"]]
-                # now add the other fields you always want to keep
-                keep_fields.extend(
-                    [
-                        "clear_height",
-                        "material",
-                        "horizontal_positioning",
-                        "inside_coating",
-                        "fk_pipe_profile",
-                        "remark",
-                        "rp_from_obj_id",
-                        "rp_to_obj_id",
-                    ]
-                )
-                keep_fields.remove(f"rp_{dest}_obj_id")
-                for idx, field in enumerate(fields):
-                    if field in keep_fields:
-                        f.setAttribute(idx, f_old.attributes()[idx])
-                    elif field == re_oid_field:
-                        if dest == "from":
-                            f.setAttribute(idx, re_oid_from)
-                        else:
-                            f.setAttribute(idx, re_oid_to)
-                    else:
-                        # try client side default value first
-                        v = self.reach_layer.defaultValue(idx, f)
-                        if v != NULL:
-                            f.setAttribute(idx, v)
-                        else:
-                            f.setAttribute(idx, self.reach_layer.dataProvider().defaultValue(idx))
-
-                f.setGeometry(geoms)
-                ne = self.reach_layer.fields().indexFromName(
-                    f"rp_{dest}_fk_wastewater_networkelement"
-                )
-                if self.point_layer:
-                    f.setAttribute(ne, pt_oid)
-                else:
+            f = QgsFeature(fields)
+            if self.split_channels:
+                keep_fields = [
+                    "ws_status",
+                    "ws_year_of_construction",
+                    "ws_fk_owner",
+                    "ws_fk_operator",
+                    "ch_usage_current",
+                    "ch_function_hierarchic",
+                    "ch_function_hydraulic",
+                ]
+            else:
+                # keep all wastewater structure and channel fields
+                keep_fields = [field for field in fields if field[0:2] in ["ch", "ws"]]
+            # now add the other fields you always want to keep
+            keep_fields.extend(
+                [
+                    "clear_height",
+                    "material",
+                    "horizontal_positioning",
+                    "inside_coating",
+                    "fk_pipe_profile",
+                    "remark",
+                    "rp_from_obj_id",
+                    "rp_to_obj_id",
+                ]
+            )
+            keep_fields.remove(f"rp_{dest}_obj_id")
+            for idx, field in enumerate(fields):
+                if field in keep_fields:
+                    f.setAttribute(idx, f_old.attributes()[idx])
+                elif field == re_oid_field:
                     if dest == "from":
-                        f.setAttribute(ne, re_oid_to)
+                        f.setAttribute(idx,re_oid_from)
                     else:
-                        f.setAttribute(ne, re_oid_from)
+                        f.setAttribute(idx,re_oid_to)
+                else:
+                    # try client side default value first
+                    v = self.reach_layer.defaultValue(idx, f)
+                    if v != NULL:
+                        f.setAttribute(idx, v)
+                    else:
+                        f.setAttribute(idx, self.reach_layer.dataProvider().defaultValue(idx))
 
-                lvl = self.reach_layer.fields().indexFromName(f"rp_{dest}_level")
-                f.setAttribute(lvl, point3d.z())
-                ne = self.reach_layer.fields().indexFromName(
-                    f"rp_{dest}_fk_wastewater_networkelement"
-                )
-                self.reach_layer.dataProvider().addFeatures([f])
+            f.setGeometry(geoms)
+            ne = self.reach_layer.fields().indexFromName(
+                f"rp_{dest}_fk_wastewater_networkelement"
+            )
+            if self.point_layer:
+                f.setAttribute(ne, pt_oid)
+            else:
+                if dest == "from":
+                    f.setAttribute(ne,re_oid_to)
+                else:
+                    f.setAttribute(ne,re_oid_from)
 
-            self.reach_layer.deleteFeature(f_old.id())
+            lvl = self.reach_layer.fields().indexFromName(f"rp_{dest}_level")
+            f.setAttribute(lvl, point3d.z())
+            ne = self.reach_layer.fields().indexFromName(
+                f"rp_{dest}_fk_wastewater_networkelement"
+            )
+            self.reach_layer.dataProvider().addFeatures([f])
+
+        self.reach_layer.deleteFeature(f_old.id())
