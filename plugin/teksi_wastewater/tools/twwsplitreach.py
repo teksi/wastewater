@@ -26,42 +26,26 @@
 This module provides functions to split TWW reaches.
 """
 
-import math
 
 from qgis.core import (
     NULL,
-    Qgis,
     QgsFeature,
     QgsFeatureRequest,
-    QgsGeometry,
     QgsPoint,
     QgsPointXY,
-    QgsSettings,
     QgsSnappingConfig,
     QgsTolerance,
-    QgsWkbTypes,
 )
 from qgis.gui import (
     QgisInterface,
     QgsAttributeEditorContext,
-    QgsMapCanvas,
     QgsMapCanvasSnappingUtils,
-    QgsMapTool,
     QgsMapToolAdvancedDigitizing,
     QgsMessageBar,
-    QgsRubberBand,
     QgsVertexMarker,
 )
-from qgis.PyQt.QtCore import Qt, pyqtSignal
+from qgis.PyQt.QtCore import Qt
 from qgis.PyQt.QtGui import QColor, QCursor
-from qgis.PyQt.QtWidgets import (
-    QApplication,
-    QDialog,
-    QDialogButtonBox,
-    QGridLayout,
-    QLabel,
-    QLineEdit,
-)
 
 from ..utils.twwlayermanager import TwwLayerManager
 
@@ -76,13 +60,13 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
 
     """
 
-    def __init__(self, iface: QgisInterface, layer, split_channels = True):
+    def __init__(self, iface: QgisInterface, layer, split_channels=True):
         # TwwMapToolAddFeature __init__ without rubberband
         QgsMapToolAdvancedDigitizing.__init__(self, iface.mapCanvas(), iface.cadDockWidget())
         self.iface = iface
         self.canvas = iface.mapCanvas()
         self.layer = layer
-        self.split_channels=split_channels
+        self.split_channels = split_channels
 
         # see TwwMapToolAddReach __init__
         self.snapping_marker = None
@@ -91,7 +75,6 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
         assert self.reach_layer is not None
         self.setAdvancedDigitizingAllowed(True)
         self.setAutoSnapEnabled(True)
-
 
         layer_snapping_configs = [
             {"layer": self.reach_layer, "mode": QgsSnappingConfig.VertexAndSegment},
@@ -110,7 +93,9 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
             self.snapping_configs.append(config)
 
         # prepare messageBarItem
-        self.msgtitle = self.tr(f"Split reach with {self.node_layer.name() if self.node_layer else 'no wastewater node'}")
+        self.msgtitle = self.tr(
+            f"Split reach with {self.node_layer.name() if self.node_layer else 'no wastewater node'}"
+        )
         msg = None
         self.messageBarItem = QgsMessageBar.createMessage(self.msgtitle, msg)
 
@@ -302,10 +287,10 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
         assert f_old.isValid()
 
         # split using Point instead of PointXY is documented but fails with 3.28.11
-        split_line = [QgsPointXY(point3d),QgsPointXY(point3d)]
+        split_line = [QgsPointXY(point3d), QgsPointXY(point3d)]
         result, new_geometries, _ = f_old.geometry().splitGeometry(split_line, True, True)
         assert len(new_geometries) == 2
-        re_oid_field=self.reach_layer.fields().indexFromName("obj_id")
+        re_oid_field = self.reach_layer.fields().indexFromName("obj_id")
         re_oid_to = self.reach_layer.dataProvider().defaultValue(re_oid_field)
         re_oid_from = self.reach_layer.dataProvider().defaultValue(re_oid_field)
         for geoms in new_geometries:
@@ -314,7 +299,7 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
             if point3d.equals(geoms.vertexAt(0)):
                 dest = "from"
             else:
-                dest="to"
+                dest = "to"
 
             f = QgsFeature(fields)
             if self.split_channels:
@@ -349,9 +334,9 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
                     f.setAttribute(idx, f_old.attributes()[idx])
                 elif field == re_oid_field:
                     if dest == "from":
-                        f.setAttribute(idx,re_oid_from)
+                        f.setAttribute(idx, re_oid_from)
                     else:
-                        f.setAttribute(idx,re_oid_to)
+                        f.setAttribute(idx, re_oid_to)
                 else:
                     # try client side default value first
                     v = self.reach_layer.defaultValue(idx, f)
@@ -361,22 +346,18 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
                         f.setAttribute(idx, self.reach_layer.dataProvider().defaultValue(idx))
 
             f.setGeometry(geoms)
-            ne = self.reach_layer.fields().indexFromName(
-                f"rp_{dest}_fk_wastewater_networkelement"
-            )
+            ne = self.reach_layer.fields().indexFromName(f"rp_{dest}_fk_wastewater_networkelement")
             if self.point_layer:
                 f.setAttribute(ne, pt_oid)
             else:
                 if dest == "from":
-                    f.setAttribute(ne,re_oid_to)
+                    f.setAttribute(ne, re_oid_to)
                 else:
-                    f.setAttribute(ne,re_oid_from)
+                    f.setAttribute(ne, re_oid_from)
 
             lvl = self.reach_layer.fields().indexFromName(f"rp_{dest}_level")
             f.setAttribute(lvl, point3d.z())
-            ne = self.reach_layer.fields().indexFromName(
-                f"rp_{dest}_fk_wastewater_networkelement"
-            )
+            ne = self.reach_layer.fields().indexFromName(f"rp_{dest}_fk_wastewater_networkelement")
             self.reach_layer.dataProvider().addFeatures([f])
 
         self.reach_layer.deleteFeature(f_old.id())
