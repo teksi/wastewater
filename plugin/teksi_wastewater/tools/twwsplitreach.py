@@ -372,7 +372,7 @@ class TwwMapToolSplitReachWithNode(QgsMapToolAdvancedDigitizing):
                 if self.point_layer:
                     f.setAttribute(ne, pt_oid)
                 else:
-                    if dest = "from":
+                    if dest == "from":
                         f.setAttribute(ne,re_oid_to)
                     else:
                         f.setAttribute(ne,re_oid_from)
