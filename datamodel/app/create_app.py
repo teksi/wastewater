@@ -172,6 +172,9 @@ def create_app(
         "view/catchment_area/vw_catchment_area_wwp_connections.sql", pg_service, variables
     )
 
+    # default values
+    run_sql_file("view/set_default_value_for_views.sql", pg_service, variables)
+
     # Recreate network views
     run_sql_file("view/network/vw_network_node.sql", pg_service, variables)
     run_sql_file("view/network/vw_network_segment.sql", pg_service, variables)

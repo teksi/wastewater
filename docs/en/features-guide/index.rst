@@ -1,7 +1,7 @@
-TEKSI wastewater module (TWW)
+TEKSI wastewater (TWW)
 ============================================
 
-TEKSI wastewater module (project name: TWW) is a selection of tools and a database implementation that allows you to:
+TEKSI wastewater and general wastewater management plan (GWMP) is a selection of tools and a database implementation that allows you to:
 
 * manage and map your sewer network data with all its components in compliance with Swiss standards
 * indicate the characteristics of networks objects in the form of attributes such as diameter, material, depth, damages, construction year, etc.

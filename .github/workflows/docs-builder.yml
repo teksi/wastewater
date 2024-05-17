@@ -43,6 +43,7 @@ jobs:
 
       - name: tx pull
         if: ${{ github.event.pull_request.head.repo.full_name == 'teksi/wastewater' }}
+            || ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
         env:
           TX_TOKEN: ${{ secrets.TX_TOKEN }}
         working-directory: docs
