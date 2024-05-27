@@ -39,9 +39,9 @@ CREATE TABLE tww_sys.logged_actions (
     changed_fields hstore,
     statement_only BOOLEAN NOT NULL
 );
- 
+
 REVOKE ALL ON tww_sys.logged_actions FROM public;
- 
+
 COMMENT ON TABLE tww_sys.logged_actions IS 'History of auditable actions on audited tables, from tww_sys.if_modified_func()';
 COMMENT ON COLUMN tww_sys.logged_actions.event_id IS 'Unique identifier for each auditable event';
 COMMENT ON COLUMN tww_sys.logged_actions.schema_name IS 'Database schema audited table for this event is in';
@@ -60,7 +60,7 @@ COMMENT ON COLUMN tww_sys.logged_actions.action IS 'Action type; I = insert, D =
 COMMENT ON COLUMN tww_sys.logged_actions.row_data IS 'Record value. Null for statement-level trigger. For INSERT this is the new tuple. For DELETE and UPDATE it is the old tuple.';
 COMMENT ON COLUMN tww_sys.logged_actions.changed_fields IS 'New values of fields changed by UPDATE. Null except for row-level UPDATE events.';
 COMMENT ON COLUMN tww_sys.logged_actions.statement_only IS '''t'' if audit event is from an FOR EACH STATEMENT trigger, ''f'' for FOR EACH ROW';
- 
+
 CREATE INDEX logged_actions_relid_idx ON tww_sys.logged_actions(relid);
 CREATE INDEX logged_actions_action_tstamp_tx_stm_idx ON tww_sys.logged_actions(action_tstamp_stm);
 CREATE INDEX logged_actions_action_idx ON tww_sys.logged_actions(action);
@@ -130,12 +130,12 @@ BEGIN
         END IF;
   INSERT INTO tww_sys.logged_actions VALUES (audit_row.*);
   RETURN NEW;
-        
+
     ELSIF (TG_OP = 'DELETE' AND TG_LEVEL = 'ROW') THEN
         audit_row.row_data = hstore(OLD.*) - excluded_cols;
   INSERT INTO tww_sys.logged_actions VALUES (audit_row.*);
         RETURN OLD;
-        
+
     ELSIF (TG_OP = 'INSERT' AND TG_LEVEL = 'ROW') THEN
         audit_row.row_data = hstore(NEW.*) - excluded_cols;
   INSERT INTO tww_sys.logged_actions VALUES (audit_row.*);
@@ -200,13 +200,13 @@ DECLARE
 BEGIN
     EXECUTE 'DROP TRIGGER IF EXISTS audit_trigger_row ON ' || target_table::text;
     EXECUTE 'DROP TRIGGER IF EXISTS audit_trigger_stm ON ' || target_table::text;
- 
+
     IF audit_rows THEN
         IF array_length(ignored_cols,1) > 0 THEN
             _ignored_cols_snip = ', ' || quote_literal(ignored_cols);
         END IF;
-        _q_txt = 'CREATE TRIGGER audit_trigger_row AFTER INSERT OR UPDATE OR DELETE ON ' || 
-                 target_table::text || 
+        _q_txt = 'CREATE TRIGGER audit_trigger_row AFTER INSERT OR UPDATE OR DELETE ON ' ||
+                 target_table::text ||
                  ' FOR EACH ROW EXECUTE PROCEDURE tww_sys.if_modified_func(' ||
                  quote_literal(audit_query_text) || _ignored_cols_snip || ');';
         RAISE NOTICE '%',_q_txt;
@@ -214,7 +214,7 @@ BEGIN
         stm_targets = 'TRUNCATE';
     ELSE
     END IF;
- 
+
     _q_txt = 'CREATE TRIGGER audit_trigger_stm AFTER ' || stm_targets || ' ON ' ||
              target_table ||
              ' FOR EACH STATEMENT EXECUTE PROCEDURE tww_sys.if_modified_func('||
@@ -237,19 +237,19 @@ LANGUAGE plpgsql;
 
 COMMENT ON FUNCTION tww_sys.audit_table(regclass, BOOLEAN, BOOLEAN, text[]) IS $body$
 ADD auditing support TO a TABLE.
- 
+
 Arguments:
    target_table:     TABLE name, schema qualified IF NOT ON search_path
    audit_rows:       Record each row CHANGE, OR only audit at a statement level
    audit_query_text: Record the text of the client query that triggered the audit event?
    ignored_cols:     COLUMNS TO exclude FROM UPDATE diffs, IGNORE updates that CHANGE only ignored cols.
 $body$;
- 
+
 -- Pg doesn't allow variadic calls with 0 params, so provide a wrapper
 CREATE OR REPLACE FUNCTION tww_sys.audit_table(target_table regclass, audit_rows BOOLEAN, audit_query_text BOOLEAN) RETURNS void AS $body$
 SELECT tww_sys.audit_table($1, $2, $3, ARRAY[]::text[]);
 $body$ LANGUAGE SQL;
- 
+
 -- And provide a convenience call wrapper for the simplest case
 -- of row-level logging with no excluded cols and query logging enabled.
 --
@@ -301,7 +301,7 @@ BEGIN
     from
         event, where_pks
     ;
-    
+
     execute query;
 END;
 $body$
@@ -309,7 +309,7 @@ LANGUAGE plpgsql;
 
 COMMENT ON FUNCTION tww_sys.replay_event(int) IS $body$
 Replay a logged event.
- 
+
 Arguments:
    pevent_id:  The event_id of the event in tww_sys.logged_actions to replay
 $body$;
@@ -323,12 +323,12 @@ DECLARE
 BEGIN
     EXECUTE 'DROP TRIGGER IF EXISTS audit_trigger_row ON ' || target_view::text;
     EXECUTE 'DROP TRIGGER IF EXISTS audit_trigger_stm ON ' || target_view::text;
- 
+
 	IF array_length(ignored_cols,1) > 0 THEN
 	    _ignored_cols_snip = ', ' || quote_literal(ignored_cols);
 	END IF;
-	_q_txt = 'CREATE TRIGGER audit_trigger_row INSTEAD OF INSERT OR UPDATE OR DELETE ON ' || 
-		 target_view::TEXT || 
+	_q_txt = 'CREATE TRIGGER audit_trigger_row INSTEAD OF INSERT OR UPDATE OR DELETE ON ' ||
+		 target_view::TEXT ||
 		 ' FOR EACH ROW EXECUTE PROCEDURE tww_sys.if_modified_func(' ||
 		 quote_literal(audit_query_text) || _ignored_cols_snip || ');';
 	RAISE NOTICE '%',_q_txt;
@@ -338,7 +338,7 @@ BEGIN
   IF (select count(*) from tww_sys.logged_relations where relation_name = (select target_view)::text AND  uid_column= (select unnest(uid_cols))::text) = 0 THEN
       insert into tww_sys.logged_relations (relation_name, uid_column)
        select target_view, unnest(uid_cols);
-  END IF;    
+  END IF;
 
 END;
 $body$
@@ -346,7 +346,7 @@ LANGUAGE plpgsql;
 
 COMMENT ON FUNCTION tww_sys.audit_view(regclass, BOOLEAN, text[], text[]) IS $body$
 ADD auditing support TO a VIEW.
- 
+
 Arguments:
    target_view:      TABLE name, schema qualified IF NOT ON search_path
    audit_query_text: Record the text of the client query that triggered the audit event?
@@ -354,9 +354,9 @@ Arguments:
    uid_cols:         MANDATORY COLUMNS to use to uniquely identify a row from the view (in order to replay UPDATE and DELETE)
 
 Example:
-  SELECT tww_sys.audit_view('tww_app.vw_tww_wastewater_structure', 'true'::BOOLEAN, '{field_to_ignore}'::text[], '{obj_id}'::text[]) 
+  SELECT tww_sys.audit_view('tww_app.vw_tww_wastewater_structure', 'true'::BOOLEAN, '{field_to_ignore}'::text[], '{obj_id}'::text[])
 $body$;
- 
+
 CREATE OR REPLACE FUNCTION tww_sys.unaudit_view(target_view regclass) RETURNS void AS $body$
 BEGIN
     EXECUTE 'DROP TRIGGER IF EXISTS audit_trigger_row ON ' || target_view::text;
