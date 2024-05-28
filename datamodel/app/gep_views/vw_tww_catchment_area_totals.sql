@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW tww_app.vw_tww_catchment_area_totals
+CREATE MATERIALIZED VIEW tww_app.vw_tww_catchment_area_totals
  AS
  SELECT cat.*,
     ca_agg.perimeter_geometry,
@@ -29,4 +29,5 @@ CREATE OR REPLACE VIEW tww_app.vw_tww_catchment_area_totals
             collector.fk_pwwf_wastewater_node,
             st_unaryunion(st_collect(collector.geom)) AS perimeter_geometry
            FROM collector
-          GROUP BY collector.obj_id, collector.fk_pwwf_wastewater_node) ca_agg ON ca_agg.fk_pwwf_wastewater_node::text = wn.obj_id::text;
+          GROUP BY collector.obj_id, collector.fk_pwwf_wastewater_node) ca_agg ON ca_agg.fk_pwwf_wastewater_node::text = wn.obj_id::text
+		  WITH DATA;
