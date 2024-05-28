@@ -1,8 +1,11 @@
 import os
 import unittest
 
-import psycopg2
-import psycopg2.extras
+try:
+    import psycopg
+except ImportError:
+    import psycopg2 as psycopg
+    import psycopg2.extras as psycopg_extras
 
 from .utils import DEFAULT_PG_SERVICE, DbTestBase
 
@@ -15,7 +18,7 @@ class TestSys(unittest.TestCase, DbTestBase):
     @classmethod
     def setUpClass(cls):
         pgservice = os.environ.get("PGSERVICE") or DEFAULT_PG_SERVICE
-        cls.conn = psycopg2.connect(f"service={pgservice}")
+        cls.conn = psycopg.connect(f"service={pgservice}")
 
     def test_sys_table(self):
         list_tables = "SELECT table_name FROM information_schema.tables WHERE table_schema = 'tww_od' AND table_type != 'VIEW'"
