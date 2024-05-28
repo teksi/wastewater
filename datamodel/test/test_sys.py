@@ -39,7 +39,12 @@ class TestSys(unittest.TestCase, DbTestBase):
             if lt not in sys_tables:
                 missing_sys_tables.append(lt)
 
-        extra_sys_tables = []
+        extra_sys_tables = [
+            'network_node',
+            'default_values',
+            'import_manhole_quarantine',
+            'network_segment'
+        ]
         for st in sys_tables:
             if st not in list_tables:
                 extra_sys_tables.append(st)
