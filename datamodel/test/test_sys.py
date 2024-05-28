@@ -5,7 +5,6 @@ try:
     import psycopg
 except ImportError:
     import psycopg2 as psycopg
-    import psycopg2.extras as psycopg_extras
 
 from .utils import DEFAULT_PG_SERVICE, DbTestBase
 
