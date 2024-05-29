@@ -1,5 +1,3 @@
-BEGIN;
-
 --
 -- TODO : Is this comment still relevant :
 -- Audited data. Lots of information is available, it's just a matter of how much
@@ -18,6 +16,9 @@ BEGIN;
 -- you're interested in, into a temporary table where you CREATE any useful
 -- indexes and do your analysis.
 --
+
+BEGIN;
+
 DROP TABLE IF EXISTS tww_sys.logged_actions;
 
 CREATE TABLE tww_sys.logged_actions (
@@ -74,3 +75,5 @@ CREATE TABLE tww_sys.logged_relations (
 COMMENT ON TABLE tww_sys.logged_relations IS 'Table used to store unique identifier columns for table or views, so that events can be replayed';
 COMMENT ON COLUMN tww_sys.logged_relations.relation_name IS 'Relation (table or view) name (with schema if needed)';
 COMMENT ON COLUMN tww_sys.logged_relations.uid_column IS 'Name of a column that is used to uniquely identify a row in the relation';
+
+COMMIT;
