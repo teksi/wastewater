@@ -38,7 +38,7 @@ class InterlisImporterExporterGui(QObject):
             None,
             self.tr("Import file"),
             default_folder,
-            self.tr("Interlis transfer files (*.xtf)"),
+            self.tr("INTERLIS transfer files (*.xtf)"),
         )
         if not xtf_file_input:
             # Operation canceled
@@ -53,7 +53,7 @@ class InterlisImporterExporterGui(QObject):
         self.progress_dialog.setMinimumWidth(self._PROGRESS_DIALOG_MINIMUM_WIDTH)
         self.progress_dialog.setCancelButtonText("Cancel")
         self.progress_dialog.setMinimumDuration(0)
-        self.progress_dialog.setWindowTitle("Import Interlis data...")
+        self.progress_dialog.setWindowTitle("Import INTERLIS data...")
 
         try:
             with OverrideCursor(Qt.WaitCursor):
@@ -94,7 +94,7 @@ class InterlisImporterExporterGui(QObject):
             None,
             self.tr("Export to file"),
             os.path.join(default_folder, "tww-export.xtf"),
-            self.tr("Interlis transfer files (*.xtf)"),
+            self.tr("INTERLIS transfer files (*.xtf)"),
         )
         if not file_name:
             # Operation canceled
@@ -105,7 +105,7 @@ class InterlisImporterExporterGui(QObject):
         self.progress_dialog.setMinimumWidth(self._PROGRESS_DIALOG_MINIMUM_WIDTH)
         self.progress_dialog.setCancelButtonText("Cancel")
         self.progress_dialog.setMinimumDuration(0)
-        self.progress_dialog.setWindowTitle("Export Interlis data...")
+        self.progress_dialog.setWindowTitle("Export INTERLIS data...")
 
         try:
             self.interlis_importer_exporter.interlis_export(
@@ -113,6 +113,7 @@ class InterlisImporterExporterGui(QObject):
                 export_models=export_dialog.selected_models(),
                 logs_next_to_file=export_dialog.logs_next_to_file,
                 limit_to_selection=export_dialog.limit_to_selection,
+                export_orientation=export_dialog.labels_orientation_offset,
                 selected_labels_scales_indices=export_dialog.selected_labels_scales_indices,
                 selected_ids=export_dialog.selected_ids,
             )
