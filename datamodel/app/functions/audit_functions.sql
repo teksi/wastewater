@@ -283,7 +283,7 @@ Arguments:
    uid_cols:         MANDATORY COLUMNS to use to uniquely identify a row from the view (in order to replay UPDATE and DELETE)
 
 Example:
-  SELECT tww_sys.audit_view('tww_app.vw_tww_wastewater_structure', 'true'::BOOLEAN, '{field_to_ignore}'::text[], '{obj_id}'::text[])
+  SELECT tww_sys.audit_view('tww_app.vw_tww_wastewater_structure', 'true'::BOOLEAN, 'field_to_ignore'::text[], 'obj_id'::text[])
 $body$;
 
 CREATE OR REPLACE FUNCTION tww_sys.unaudit_view(target_view regclass) RETURNS void AS $body$
