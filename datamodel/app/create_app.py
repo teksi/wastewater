@@ -172,7 +172,6 @@ def create_app(
         "view/catchment_area/vw_catchment_area_wwp_connections.sql", pg_service, variables
     )
 
-
     # default values
     run_sql_file("view/set_default_value_for_views.sql", pg_service, variables)
 
