@@ -6,7 +6,7 @@
 
 CREATE OR REPLACE FUNCTION tww_sys.if_modified_func() RETURNS TRIGGER AS $body$
 DECLARE
-    audit_row tww_sys.logged_actions;
+    audit_row tww_sys.logged_actions%ROWTYPE;
     include_values BOOLEAN;
     log_diffs BOOLEAN;
     h_old hstore;
