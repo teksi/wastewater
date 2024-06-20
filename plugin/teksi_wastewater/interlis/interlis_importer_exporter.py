@@ -136,6 +136,10 @@ class InterlisImporterExporter:
             tww_session.commit()
         tww_session.close()
 
+        # Update the sequence values
+        self._progress_done(92, "Update sequence values...")
+        self._import_set_od_sequences()
+
         # Update main_cover and main_wastewater_node
         self._progress_done(95, "Update main cover and refresh materialized views...")
         self._import_update_main_cover_and_refresh_mat_views()
@@ -257,6 +261,15 @@ class InterlisImporterExporter:
             interlisImporterToIntermediateSchema.tww_import(skip_closing_tww_session=True)
 
         return interlisImporterToIntermediateSchema.session_tww
+
+    def _import_set_od_sequences(self):
+        connection = psycopg.connect(get_pgconf_as_psycopg_dsn(), **DEFAULTS_CONN_ARG)
+        if PSYCOPG_VERSION == 2:
+            connection.set_session(autocommit=True)
+        cursor = connection.cursor()
+        cursor.execute("SELECT tww_sys.reset_od_seqval();")
+        connection.commit()
+        connection.close()
 
     def _import_update_main_cover_and_refresh_mat_views(self):
         connection = psycopg.connect(get_pgconf_as_psycopg_dsn(), **DEFAULTS_CONN_ARG)
