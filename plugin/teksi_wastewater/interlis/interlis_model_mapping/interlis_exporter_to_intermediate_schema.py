@@ -1132,7 +1132,9 @@ class InterlisExporterToIntermediateSchema:
     def _export_throttle_shut_off_unit(self):
         query = self.tww_session.query(self.model_classes_tww_od.throttle_shut_off_unit)
         if self.filtered:
-            query = query.filter(
+            query = query.join(
+                self.model_classes_tww_od.throttle_shut_off_unit, self.model_classes_tww_od.wastewater_node
+                ).filter(
                 self.model_classes_tww_od.throttle_shut_off_unit.obj_id.in_(self.subset_ids)
             )
         for row in query:
