@@ -1192,9 +1192,8 @@ class InterlisExporterToIntermediateSchema:
         if self.filtered:
             query = query.join(
                 self.model_classes_tww_od.wastewater_structure,
-                self.model_classes_tww_od.wastewater_networkelement
-                ).filter(self.model_classes_tww_od.tank_cleaning.obj_id.in_(self.subset_ids)
-            )
+                self.model_classes_tww_od.wastewater_networkelement,
+            ).filter(self.model_classes_tww_od.tank_cleaning.obj_id.in_(self.subset_ids))
         for row in query:
             beckenreinigung = self.model_classes_interlis.beckenreinigung(
                 **self.structure_part_common(row, "beckenreinigung"),
