@@ -968,7 +968,6 @@ class InterlisExporterToIntermediateSchema:
 
     def _export_waste_water_treatment_plant(self):
         query = self.tww_session.query(self.model_classes_tww_od.waste_water_treatment_plant)
-        no filter - subclass of organisation
         if self.filtered:
             query = query.filter(
                 self.model_classes_tww_od.waste_water_treatment_plant.obj_id.in_(self.subset_ids)
