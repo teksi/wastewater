@@ -1134,10 +1134,9 @@ class InterlisExporterToIntermediateSchema:
         query = self.tww_session.query(self.model_classes_tww_od.throttle_shut_off_unit)
         if self.filtered:
             query = query.join(
-                self.model_classes_tww_od.throttle_shut_off_unit, self.model_classes_tww_od.wastewater_node
-                ).filter(
-                self.model_classes_tww_od.throttle_shut_off_unit.obj_id.in_(self.subset_ids)
-            )
+                self.model_classes_tww_od.throttle_shut_off_unit,
+                self.model_classes_tww_od.wastewater_node,
+            ).filter(self.model_classes_tww_od.throttle_shut_off_unit.obj_id.in_(self.subset_ids))
         for row in query:
             absperr_drosselorgan = self.model_classes_interlis.absperr_drosselorgan(
                 **self.vsa_base_common(row, "absperr_drosselorgan"),
@@ -1170,9 +1169,8 @@ class InterlisExporterToIntermediateSchema:
         if self.filtered:
             query = query.join(
                 self.model_classes_tww_od.wastewater_structure,
-                self.model_classes_tww_od.wastewater_networkelement
-                ).filter(self.model_classes_tww_od.tank_emptying.obj_id.in_(self.subset_ids)
-            )
+                self.model_classes_tww_od.wastewater_networkelement,
+            ).filter(self.model_classes_tww_od.tank_emptying.obj_id.in_(self.subset_ids))
         for row in query:
             beckenentleerung = self.model_classes_interlis.beckenentleerung(
                 **self.structure_part_common(row, "beckenentleerung"),
