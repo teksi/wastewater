@@ -1099,7 +1099,9 @@ class InterlisExporterToIntermediateSchema:
             query = query.join(
                 self.model_classes_tww_od.throttle_shut_off_unit,
                 self.model_classes_tww_od.wastewater_node,
-            ).filter(self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids))
+            ).filter(
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            )
         for row in query:
             steuerungszentrale = self.model_classes_interlis.steuerungszentrale(
                 **self.vsa_base_common(row, "steuerungszentrale"),
@@ -1136,7 +1138,9 @@ class InterlisExporterToIntermediateSchema:
             query = query.join(
                 self.model_classes_tww_od.throttle_shut_off_unit,
                 self.model_classes_tww_od.wastewater_node,
-            ).filter(self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids))
+            ).filter(
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            )
         for row in query:
             absperr_drosselorgan = self.model_classes_interlis.absperr_drosselorgan(
                 **self.vsa_base_common(row, "absperr_drosselorgan"),
@@ -1170,7 +1174,9 @@ class InterlisExporterToIntermediateSchema:
             query = query.join(
                 self.model_classes_tww_od.wastewater_structure,
                 self.model_classes_tww_od.wastewater_networkelement,
-            ).filter(self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids))
+            ).filter(
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            )
         for row in query:
             beckenentleerung = self.model_classes_interlis.beckenentleerung(
                 **self.structure_part_common(row, "beckenentleerung"),
@@ -1193,7 +1199,9 @@ class InterlisExporterToIntermediateSchema:
             query = query.join(
                 self.model_classes_tww_od.wastewater_structure,
                 self.model_classes_tww_od.wastewater_networkelement,
-            ).filter(self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids))
+            ).filter(
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            )
         for row in query:
             beckenreinigung = self.model_classes_interlis.beckenreinigung(
                 **self.structure_part_common(row, "beckenreinigung"),
@@ -1212,9 +1220,9 @@ class InterlisExporterToIntermediateSchema:
         if self.filtered:
             query = (
                 query.join(self.model_classes_tww_od.re_maintenance_event_wastewater_structure)
-            .join(self.model_classes_tww_od.wastewater_structure)
-            .join(self.model_classes_tww_od.wastewater_networkelement)
-            .filter(self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(subset_ids))
+                .join(self.model_classes_tww_od.wastewater_structure)
+                .join(self.model_classes_tww_od.wastewater_networkelement)
+                .filter(self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(subset_ids))
             )
         for row in query:
             biol_oekol_gesamtbeurteilung = self.model_classes_interlis.biol_oekol_gesamtbeurteilung(
