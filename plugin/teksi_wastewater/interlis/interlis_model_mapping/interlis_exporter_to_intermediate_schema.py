@@ -1114,9 +1114,10 @@ class InterlisExporterToIntermediateSchema:
 
     def _export_drainless_toilet(self):
         query = self.tww_session.query(self.model_classes_tww_od.drainless_toilet)
+        # subclass of wastewater_structure - therefore same as eg. manhole
         if self.filtered:
-            query = query.filter(
-                self.model_classes_tww_od.drainless_toilet.obj_id.in_(self.subset_ids)
+            query = query.join(self.model_classes_tww_od.wastewater_networkelement).filter(
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
         for row in query:
             abflusslose_toilette = self.model_classes_interlis.abflusslose_toilette(
