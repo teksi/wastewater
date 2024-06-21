@@ -1171,8 +1171,7 @@ class InterlisExporterToIntermediateSchema:
             query = query.join(
                 self.model_classes_tww_od.wastewater_structure,
                 self.model_classes_tww_od.wastewater_networkelement
-                ).filter(
-                self.model_classes_tww_od.tank_emptying.obj_id.in_(self.subset_ids)
+                ).filter(self.model_classes_tww_od.tank_emptying.obj_id.in_(self.subset_ids)
             )
         for row in query:
             beckenentleerung = self.model_classes_interlis.beckenentleerung(
