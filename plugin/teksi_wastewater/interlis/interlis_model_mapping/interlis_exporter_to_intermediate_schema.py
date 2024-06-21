@@ -1096,7 +1096,7 @@ class InterlisExporterToIntermediateSchema:
     def _export_control_center(self):
         query = self.tww_session.query(self.model_classes_tww_od.control_center)
         if self.filtered:
-            query = query.join(QGEP.throttle_shut_off_unit, QGEP.wastewater_node).filter(
+            query = query.join(self.model_classes_tww_od.throttle_shut_off_unit, self.model_classes_tww_od.wastewater_node).filter(
                 self.model_classes_tww_od.control_center.obj_id.in_(self.subset_ids)
             )
         for row in query:
