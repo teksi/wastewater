@@ -1210,8 +1210,10 @@ class InterlisExporterToIntermediateSchema:
     def _export_bio_ecol_assessment(self):
         query = self.tww_session.query(self.model_classes_tww_od.bio_ecol_assessment)
         if self.filtered:
-            query = query.filter(
-                self.model_classes_tww_od.bio_ecol_assessment.obj_id.in_(self.subset_ids)
+            query = query.join(self.model_classes_tww_od.re_maintenance_event_wastewater_structure)
+            .join(self.model_classes_tww_od.wastewater_structure)
+            .join(self.model_classes_tww_od.wastewater_networkelement)
+            .filter(self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(subset_ids))
             )
         for row in query:
             biol_oekol_gesamtbeurteilung = self.model_classes_interlis.biol_oekol_gesamtbeurteilung(
