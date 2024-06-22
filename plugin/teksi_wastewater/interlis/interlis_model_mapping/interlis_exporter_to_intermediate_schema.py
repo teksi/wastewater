@@ -1283,8 +1283,8 @@ class InterlisExporterToIntermediateSchema:
     def _export_param_ca_general(self):
         query = self.tww_session.query(self.model_classes_tww_od.param_ca_general)
         if self.filtered:
-            query = query.filter(
-                self.model_classes_tww_od.param_ca_general.obj_id.in_(self.subset_ids)
+            query = query.join(self.model_classes_tww_od.catchment_area).filter(
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
         for row in query:
             ezg_parameter_allg = self.model_classes_interlis.ezg_parameter_allg(
