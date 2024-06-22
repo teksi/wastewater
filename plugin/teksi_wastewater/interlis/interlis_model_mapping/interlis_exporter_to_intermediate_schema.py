@@ -1442,8 +1442,11 @@ class InterlisExporterToIntermediateSchema:
     def _export_electromechanical_equipment(self):
         query = self.tww_session.query(self.model_classes_tww_od.electromechanical_equipment)
         if self.filtered:
-            query = query.filter(
-                self.model_classes_tww_od.electromechanical_equipment.obj_id.in_(self.subset_ids)
+            query = query.join(
+                self.model_classes_tww_od.wastewater_structure,
+                self.model_classes_tww_od.wastewater_networkelement,
+            ).filter(
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
         for row in query:
             elektromechanischeausruestung = self.model_classes_interlis.elektromechanischeausruestung(
@@ -1501,8 +1504,11 @@ class InterlisExporterToIntermediateSchema:
     def _export_solids_retention(self):
         query = self.tww_session.query(self.model_classes_tww_od.solids_retention)
         if self.filtered:
-            query = query.filter(
-                self.model_classes_tww_od.solids_retention.obj_id.in_(self.subset_ids)
+            query = query.join(
+                self.model_classes_tww_od.wastewater_structure,
+                self.model_classes_tww_od.wastewater_networkelement,
+            ).filter(
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
         for row in query:
             feststoffrueckhalt = self.model_classes_interlis.feststoffrueckhalt(
@@ -2055,8 +2061,11 @@ class InterlisExporterToIntermediateSchema:
     def _export_backflow_prevention(self):
         query = self.tww_session.query(self.model_classes_tww_od.backflow_prevention)
         if self.filtered:
-            query = query.filter(
-                self.model_classes_tww_od.backflow_prevention.obj_id.in_(self.subset_ids)
+            query = query.join(
+                self.model_classes_tww_od.wastewater_structure,
+                self.model_classes_tww_od.wastewater_networkelement,
+            ).filter(
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
         for row in query:
             rueckstausicherung = self.model_classes_interlis.rueckstausicherung(
