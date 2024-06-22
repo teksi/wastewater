@@ -1464,12 +1464,10 @@ class InterlisExporterToIntermediateSchema:
     def _export_disposal(self):
         query = self.tww_session.query(self.model_classes_tww_od.disposal)
         if self.filtered:
-            query=query.join(
-                self.model_classes_tww_od.wastewater_structure, 
-                self.model_classes_tww_od.wastewater_networkelement
-            ).filter(
-                self.model_classes_tww_od.disposal.obj_id.in_(self.subset_ids)
-            )
+            query = query.join(
+                self.model_classes_tww_od.wastewater_structure,
+                self.model_classes_tww_od.wastewater_networkelement,
+            ).filter(self.model_classes_tww_od.disposal.obj_id.in_(self.subset_ids))
         for row in query:
             entsorgung = self.model_classes_interlis.entsorgung(
                 **self.vsa_base_common(row, "entsorgung"),
