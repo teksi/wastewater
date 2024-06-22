@@ -1147,7 +1147,9 @@ class InterlisExporterToIntermediateSchema:
                     self.model_classes_tww_od.wastewater_node.obj_id
                     == self.model_classes_tww_od.throttle_shut_off_unit.fk_wastewater_node,
                 ),
-            ).filter(self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids))
+            ).filter(
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            )
         for row in query:
             absperr_drosselorgan = self.model_classes_interlis.absperr_drosselorgan(
                 **self.vsa_base_common(row, "absperr_drosselorgan"),
