@@ -1420,8 +1420,10 @@ class InterlisExporterToIntermediateSchema:
     def _export_electric_equipment(self):
         query = self.tww_session.query(self.model_classes_tww_od.electric_equipment)
         if self.filtered:
-            query = query.filter(
-                self.model_classes_tww_od.electric_equipment.obj_id.in_(self.subset_ids)
+            query = query.join(
+                self.model_classes_tww_od.wastewater_structure,
+                self.model_classes_tww_od.wastewater_networkelement).filter(
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
         for row in query:
             elektrischeeinrichtung = self.model_classes_interlis.elektrischeeinrichtung(
