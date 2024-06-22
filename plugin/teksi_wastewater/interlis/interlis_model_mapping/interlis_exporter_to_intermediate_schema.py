@@ -1270,7 +1270,7 @@ class InterlisExporterToIntermediateSchema:
             # self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             # )
             query = query.filter(
-                self.model_classes_tww_od.drainage_system.obj_id.in_(self.subset_ids)
+                self.model_classes_tww_od.fountain.obj_id.in_(self.subset_ids)
             )
         for row in query:
             brunnen = self.model_classes_interlis.brunnen(
