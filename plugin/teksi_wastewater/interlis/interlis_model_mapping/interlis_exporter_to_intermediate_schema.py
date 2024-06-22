@@ -5,6 +5,10 @@ from sqlalchemy import or_
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import text
 
+
+from sqlalchemy.dialects import postgresql
+
+
 from .. import config, utils
 from ..utils.various import logger
 
@@ -1272,6 +1276,9 @@ class InterlisExporterToIntermediateSchema:
             query = query.filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
+        # for debugging
+        statement = query
+        print(statement.compile(dialect=postgresql.dialect()))
         for row in query:
             brunnen = self.model_classes_interlis.brunnen(
                 **self.connection_object_common(row, "brunnen"),
