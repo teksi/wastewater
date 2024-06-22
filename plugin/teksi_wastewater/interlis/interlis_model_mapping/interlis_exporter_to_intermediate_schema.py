@@ -1265,7 +1265,9 @@ class InterlisExporterToIntermediateSchema:
     def _export_fountain(self):
         query = self.tww_session.query(self.model_classes_tww_od.fountain)
         if self.filtered:
-            query = query.filter(self.model_classes_tww_od.fountain.obj_id.in_(self.subset_ids))
+            query = query.join(self.model_classes_tww_od.wastewater_networkelement).filter(
+            self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+        )
         for row in query:
             brunnen = self.model_classes_interlis.brunnen(
                 **self.connection_object_common(row, "brunnen"),
