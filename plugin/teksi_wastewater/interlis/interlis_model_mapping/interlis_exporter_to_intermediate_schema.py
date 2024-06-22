@@ -2,12 +2,9 @@ import json
 
 from geoalchemy2.functions import ST_Force2D, ST_GeomFromGeoJSON
 from sqlalchemy import or_
+from sqlalchemy.dialects import postgresql
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import text
-
-
-from sqlalchemy.dialects import postgresql
-
 
 from .. import config, utils
 from ..utils.various import logger
