@@ -1271,6 +1271,7 @@ class InterlisExporterToIntermediateSchema:
             # )
             query = query.filter(
                 self.model_classes_tww_od.drainage_system.obj_id.in_(self.subset_ids)
+            )
         for row in query:
             brunnen = self.model_classes_interlis.brunnen(
                 **self.connection_object_common(row, "brunnen"),
