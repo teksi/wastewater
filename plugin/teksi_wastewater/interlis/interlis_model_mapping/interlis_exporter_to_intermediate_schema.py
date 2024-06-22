@@ -1349,12 +1349,16 @@ class InterlisExporterToIntermediateSchema:
             query = query.join(
                 self.model_classes_tww_od.wastewater_networkelement,
                 or_(
-                    self.model_classes_tww_od.wastewater_networkelement.obj_id == self.model_classes_tww_od.catchment_area.fk_wastewater_networkelement_rw_planned,
-                    self.model_classes_tww_od.wastewater_networkelement.obj_id == self.model_classes_tww_od.catchment_area.fk_wastewater_networkelement_rw_current,
-                    self.model_classes_tww_od.wastewater_networkelement.obj_id == self.model_classes_tww_od.catchment_area.fk_wastewater_networkelement_ww_planned,
-                    self.model_classes_tww_od.wastewater_networkelement.obj_id == self.model_classes_tww_od.catchment_area.fk_wastewater_networkelement_ww_current,
+                    self.model_classes_tww_od.wastewater_networkelement.obj_id
+                    == self.model_classes_tww_od.catchment_area.fk_wastewater_networkelement_rw_planned,
+                    self.model_classes_tww_od.wastewater_networkelement.obj_id
+                    == self.model_classes_tww_od.catchment_area.fk_wastewater_networkelement_rw_current,
+                    self.model_classes_tww_od.wastewater_networkelement.obj_id
+                    == self.model_classes_tww_od.catchment_area.fk_wastewater_networkelement_ww_planned,
+                    self.model_classes_tww_od.wastewater_networkelement.obj_id
+                    == self.model_classes_tww_od.catchment_area.fk_wastewater_networkelement_ww_current,
                 ),
-                ).filter(
+            ).filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
         for row in query:
