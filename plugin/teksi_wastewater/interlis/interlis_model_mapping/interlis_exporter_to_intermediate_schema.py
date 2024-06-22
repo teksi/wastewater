@@ -1277,6 +1277,7 @@ class InterlisExporterToIntermediateSchema:
         statement = query.statement
         statementsql = statement.compile(dialect=postgresql.dialect())
         logger.info("query = {statementsql}")
+        print(statementsql)
         for row in query:
             brunnen = self.model_classes_interlis.brunnen(
                 **self.connection_object_common(row, "brunnen"),
