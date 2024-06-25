@@ -932,7 +932,7 @@ class InterlisImporterToIntermediateSchema:
                 # --- tank_emptying ---
                 flow=row.leistung,
                 gross_costs=row.bruttokosten,
-                type=self.get_vl_code(self.model_classes_tww_vl.tank_emptying_type, row.art),
+                kind=self.get_vl_code(self.model_classes_tww_vl.tank_emptying_kind, row.art),
                 year_of_replacement=row.ersatzjahr,
                 fk_throttle_shut_off_unit=self.get_pk(row.absperr_drosselorganref__REL),
                 fk_overflow=self.get_pk(row.ueberlaufref__REL),
@@ -948,7 +948,7 @@ class InterlisImporterToIntermediateSchema:
                 **self.structure_part_common(row),
                 # --- tank_cleaning ---
                 gross_costs=row.bruttokosten,
-                type=self.get_vl_code(self.model_classes_tww_vl.tank_cleaning_type, row.art),
+                kind=self.get_vl_code(self.model_classes_tww_vl.tank_cleaning_kind, row.art),
                 year_of_replacement=row.ersatzjahr,
             )
             self.session_tww.add(tank_cleaning)
@@ -1000,8 +1000,8 @@ class InterlisImporterToIntermediateSchema:
                 ),
                 relevant_slope=row.relevantes_gefaelle,
                 surface_water_bodies=row.oberflaechengewaesser,
-                type_water_body=self.get_vl_code(
-                    self.model_classes_tww_vl.bio_ecol_assessment_type_water_body, row.gewaesserart
+                kind_water_body=self.get_vl_code(
+                    self.model_classes_tww_vl.bio_ecol_assessment_kind_water_body, row.gewaesserart
                 ),
                 water_specific_discharge_freight_nh4_n_current=row.gewaesserspezifische_entlastungsfracht_nh4_n_ist,
                 water_specific_discharge_freight_nh4_n_current_opt=row.gewaesserspezifische_entlastungsfracht_nh4_n_ist_optimiert,
@@ -1231,7 +1231,7 @@ class InterlisImporterToIntermediateSchema:
                 dimensioning_value=row.dimensionierungswert,
                 gross_costs=row.bruttokosten,
                 overflow_level=row.anspringkote,
-                type=self.get_vl_code(self.model_classes_tww_vl.solids_retention_type, row.art),
+                kind=self.get_vl_code(self.model_classes_tww_vl.solids_retention_kind, row.art),
                 year_of_replacement=row.ersatzjahr,
             )
             self.session_tww.add(solids_retention)
@@ -2107,7 +2107,7 @@ class InterlisImporterToIntermediateSchema:
                 manhole_damage_begin=row.schadenlageanfang,
                 manhole_damage_end=row.schadenlageende,
                 line_damage=row.streckenschaden,
-                manhole_channel_distance=row.distanz,
+                manhole_distance=row.distanz,
                 fk_examination=self.get_pk(row.untersuchungref__REL),
                 manhole_quantification1=row.quantifizierung1,
                 manhole_quantification2=row.quantifizierung2,

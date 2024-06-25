@@ -5,12 +5,12 @@ This is the documentation for the TEKSI wastewater module (TWW project)
 
 The final product can be found here:
 
- * [English](https://tww.github.io/docs)
- * [Deutsch](https://tww.github.io/docs/de)
- * [Français](https://tww.github.io/docs/fr)
- * [Italiano](https://tww.github.io/docs/it)
- * [Română](https://tww.github.io/docs/ro)
- * [Español](https://tww.github.io/docs/es)
+ * [English](https://teksi.github.io/wastewater)
+ * [Deutsch](https://teksi.github.io/wastewater/de)
+ * [Français](https://teksi.github.io/wastewater/fr)
+ * [Italiano](https://teksi.github.io/wastewater/it) -- deactivated need translators
+ * [Română](https://teksi.github.io/wastewater/ro) --deactivated need translators
+ * [Español](https://teksi.github.io/wastewater/es) --deactivated need translators
 
 ## Process
 

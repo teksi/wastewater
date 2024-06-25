@@ -1,5 +1,5 @@
 --------------------------------------------------------
--- UPDATE wastewater node symbology
+-- UPDATE wastewater node symbology by channel
 -- Argument:
 --  * obj_id of wastewater networkelement or NULL to update all
 --------------------------------------------------------
@@ -23,14 +23,21 @@ SET
   _usage_current = usage_current,
   _status = status
 FROM(
-  SELECT DISTINCT ON (ne.obj_id) ne.obj_id AS ne_obj_id,
-      COALESCE(first_value(CH_from.function_hierarchic) OVER w, first_value(CH_to.function_hierarchic) OVER w) AS function_hierarchic,
-      COALESCE(first_value(CH_from.usage_current) OVER w, first_value(CH_to.usage_current) OVER w) AS usage_current,
-      COALESCE(first_value(ws_from.status) OVER w, first_value(ws_to.status) OVER w) AS status,
+  SELECT DISTINCT ON (wn.obj_id) wn.obj_id AS wn_obj_id,
+      COALESCE(first_value(CH_from.function_hierarchic) OVER w
+              , first_value(CH_to.function_hierarchic) OVER w) AS function_hierarchic,
+      COALESCE(first_value(CH_from.usage_current) OVER w
+              , first_value(CH_to.usage_current) OVER w) AS usage_current,
+      COALESCE(first_value(ws_node.status) OVER w
+             , first_value(ws_from.status) OVER w
+             , first_value(ws_to.status) OVER w) AS status,
       rank() OVER w AS hierarchy_rank
     FROM
-      tww_od.wastewater_networkelement ne
-      LEFT JOIN tww_od.reach_point rp ON ne.obj_id = rp.fk_wastewater_networkelement
+      tww_od.wastewater_node wn
+      LEFT JOIN tww_od.wastewater_networkelement   ne                   ON ne.obj_id = wn.obj_id
+	  LEFT JOIN tww_od.wastewater_structure        ws_node              ON ws_node.obj_id = ne.fk_wastewater_structure
+
+	  LEFT JOIN tww_od.reach_point                 rp                   ON wn.obj_id = rp.fk_wastewater_networkelement
       LEFT JOIN tww_od.reach                       re_from           	ON re_from.fk_reach_point_from = rp.obj_id
       LEFT JOIN tww_od.wastewater_networkelement   ne_from           	ON ne_from.obj_id = re_from.obj_id
       LEFT JOIN tww_od.channel                     CH_from           	ON CH_from.obj_id = ne_from.fk_wastewater_structure
@@ -44,11 +51,86 @@ FROM(
       LEFT JOIN tww_od.wastewater_structure        ws_to           	ON ws_to.obj_id = ne_to.fk_wastewater_structure
       LEFT JOIN tww_vl.channel_function_hierarchic vl_fct_hier_to 	ON CH_to.function_hierarchic = vl_fct_hier_to.code
       LEFT JOIN tww_vl.channel_usage_current       vl_usg_curr_to 	ON CH_to.usage_current = vl_usg_curr_to.code
-    WHERE _all OR ne.obj_id = _obj_id
-      WINDOW w AS ( PARTITION BY ne.obj_id ORDER BY vl_fct_hier_from.order_fct_hierarchic ASC NULLS LAST, vl_fct_hier_to.order_fct_hierarchic ASC NULLS LAST,
-                                vl_usg_curr_from.order_usage_current ASC NULLS LAST, vl_usg_curr_to.order_usage_current ASC NULLS LAST ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)
+
+    WHERE _all OR wn.obj_id = _obj_id
+      WINDOW w AS ( PARTITION BY wn.obj_id
+                    ORDER BY vl_fct_hier_from.order_fct_hierarchic ASC NULLS LAST
+                           , vl_fct_hier_to.order_fct_hierarchic ASC NULLS LAST
+
+                           , vl_usg_curr_from.order_usage_current ASC NULLS LAST
+                           , vl_usg_curr_to.order_usage_current ASC NULLS LAST
+                    ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)
 ) symbology_ne
-WHERE symbology_ne.ne_obj_id = n.obj_id;
+WHERE symbology_ne.wn_obj_id = n.obj_id;
+
+EXECUTE tww_app.update_wn_symbology_by_overflow(_obj_id, _all);
+
+-- See above
+IF _all THEN
+  RAISE INFO 'Reenabling symbology triggers';
+  PERFORM tww_sys.enable_symbology_triggers();
+END IF;
+
+END
+$BODY$
+LANGUAGE plpgsql
+VOLATILE;
+
+--------------------------------------------------------
+-- UPDATE wastewater node symbology by overflow
+-- Argument:
+--  * obj_id of wastewater networkelement or NULL to update all
+--------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION tww_app.update_wn_symbology_by_overflow(_obj_id text, _all boolean default false)
+  RETURNS VOID AS
+  $BODY$
+BEGIN
+
+-- Otherwise this will result in very slow query due to on_structure_part_change_networkelement
+-- being triggered for all rows. See https://github.com/QGEP/datamodel/pull/166#issuecomment-760245405 //skip-keyword-check
+IF _all THEN
+  RAISE INFO 'Temporarily disabling symbology triggers';
+  PERFORM tww_sys.disable_symbology_triggers();
+END IF;
+
+
+UPDATE tww_od.wastewater_node n
+SET
+  _function_hierarchic = function_hierarchic,
+  _usage_current = usage_current,
+  _status = status
+FROM(
+        SELECT DISTINCT ON (wn.obj_id) wn.obj_id AS wn_obj_id,
+      COALESCE(first_value(wn._function_hierarchic) OVER w
+              , first_value(wn_from._function_hierarchic) OVER w) AS function_hierarchic,
+      COALESCE(first_value(wn._usage_current) OVER w
+              , first_value(wn_from._usage_current) OVER w) AS usage_current,
+      COALESCE(first_value(wn._status) OVER w
+             , first_value(wn_from._status) OVER w) AS status
+    FROM
+	  tww_od.overflow                    ov
+	  LEFT JOIN tww_od.wastewater_node 			   wn	  	  ON ov.fk_overflow_to=wn.obj_id
+      LEFT JOIN tww_od.wastewater_networkelement   ne_ov      ON ne_ov.obj_id = ov.fk_wastewater_node
+      LEFT JOIN tww_vl.channel_function_hierarchic vl_fct_hier	ON wn._function_hierarchic = vl_fct_hier.code
+      LEFT JOIN tww_vl.channel_usage_current       vl_usg_curr	ON wn._usage_current = vl_usg_curr.code
+
+	  LEFT JOIN tww_od.wastewater_node			   wn_from	  ON ne_ov.obj_id = wn_from.obj_id
+	  LEFT JOIN tww_vl.channel_function_hierarchic vl_fct_hier_from	ON wn_from._function_hierarchic = vl_fct_hier_from.code
+      LEFT JOIN tww_vl.channel_usage_current       vl_usg_curr_from	ON wn_from._usage_current = vl_usg_curr_from.code
+	  WHERE (_all OR wn.obj_id = _obj_id)
+      WINDOW w AS ( PARTITION BY wn.obj_id
+                    ORDER BY vl_fct_hier.order_fct_hierarchic ASC NULLS LAST
+                           , vl_fct_hier_from.order_fct_hierarchic ASC NULLS LAST
+
+                           , vl_usg_curr.order_usage_current ASC NULLS LAST
+                           , vl_usg_curr_from.order_usage_current ASC NULLS LAST
+                    ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)
+) symbology_ne
+WHERE symbology_ne.wn_obj_id = n.obj_id
+ 	  AND TRUE = ANY(array[n._function_hierarchic IS NULL
+					  ,n._usage_current IS NULL
+					  ,n._status IS NULL]);
 
 -- See above
 IF _all THEN
