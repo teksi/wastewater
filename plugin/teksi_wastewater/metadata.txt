@@ -1,7 +1,7 @@
 
 [general]
 name=TEKSI Wastewater
-description=TEKSI Wastewater plugin to manage wastewater networks. Provide selection, connection and editing tools. Require a compatible TEKSI wastewater datamodel and project file. Support Swiss standards SIA405 wastewater, VSA-DSS and VSA-KEK (2020.x) for INTERLIS import / export.
+description=TEKSI Wastewater plugin to manage wastewater networks. Provides selection, connection and editing tools. Requires a compatible TEKSI wastewater datamodel and project file. Supports Swiss standards SIA405 wastewater, VSA-DSS and VSA-KEK (2020.x) for INTERLIS import / export.
 qgisMinimumVersion=3.34
 category=Vector
 version=2024.0.0
