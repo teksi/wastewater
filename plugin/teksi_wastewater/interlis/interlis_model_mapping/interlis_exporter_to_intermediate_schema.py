@@ -1705,9 +1705,15 @@ class InterlisExporterToIntermediateSchema:
     def _export_catchment_area_totals(self):
         query = self.tww_session.query(self.model_classes_tww_od.catchment_area_totals)
         if self.filtered:
-            query = query.filter(
-                self.model_classes_tww_od.catchment_area_totals.obj_id.in_(self.subset_ids)
+            query = query.join(
+                    self.model_classes_tww_od.hydraulic_char_data,
+                    self.model_classes_tww_od.wastewater_networkelement,
+                ).filter(
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             gesamteinzugsgebiet = self.model_classes_interlis.gesamteinzugsgebiet(
                 **self.vsa_base_common(row, "gesamteinzugsgebiet"),
