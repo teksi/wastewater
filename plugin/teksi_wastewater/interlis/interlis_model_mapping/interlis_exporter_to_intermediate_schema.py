@@ -1625,9 +1625,14 @@ class InterlisExporterToIntermediateSchema:
     def _export_building_group(self):
         query = self.tww_session.query(self.model_classes_tww_od.building_group)
         if self.filtered:
-            query = query.filter(
-                self.model_classes_tww_od.building_group.obj_id.in_(self.subset_ids)
-            )
+            query = query.join(
+                self.model_classes_tww_od.re_building_group_disposal,
+                self.model_classes_tww_od.wastewater_structure,
+                self.model_classes_tww_od.wastewater_networkelement,
+            ).filter(self.model_classes_tww_od.disposal.obj_id.in_(self.subset_ids))
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             gebaeudegruppe = self.model_classes_interlis.gebaeudegruppe(
                 **self.vsa_base_common(row, "gebaeudegruppe"),
@@ -2129,6 +2134,9 @@ class InterlisExporterToIntermediateSchema:
             ).filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             rueckstausicherung = self.model_classes_interlis.rueckstausicherung(
                 **self.structure_part_common(row, "rueckstausicherung"),
