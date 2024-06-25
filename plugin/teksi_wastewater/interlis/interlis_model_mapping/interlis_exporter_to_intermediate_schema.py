@@ -1524,6 +1524,9 @@ class InterlisExporterToIntermediateSchema:
             query = query.filter(
                 self.model_classes_tww_od.drainage_system.obj_id.in_(self.subset_ids)
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             entwaesserungssystem = self.model_classes_interlis.entwaesserungssystem(
                 **self.zone_common(row, "entwaesserungssystem"),
@@ -1545,6 +1548,9 @@ class InterlisExporterToIntermediateSchema:
             ).filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             feststoffrueckhalt = self.model_classes_interlis.feststoffrueckhalt(
                 **self.structure_part_common(row, "feststoffrueckhalt"),
@@ -1563,7 +1569,19 @@ class InterlisExporterToIntermediateSchema:
     def _export_pump(self):
         query = self.tww_session.query(self.model_classes_tww_od.pump)
         if self.filtered:
-            query = query.filter(self.model_classes_tww_od.pump.obj_id.in_(self.subset_ids))
+            # query = query.filter(self.model_classes_tww_od.pump.obj_id.in_(self.subset_ids))
+            query = query.join(
+                self.model_classes_tww_od.wastewater_node,
+                or_(
+                    self.model_classes_tww_od.wastewater_node.obj_id == self.model_classes_tww_od.prank_weir.fk_wastewater_node,
+                    self.model_classes_tww_od.wastewater_node.obj_id == self.model_classes_tww_od.prank_weir.fk_overflow_to,
+                ),
+            ).filter(
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             foerderaggregat = self.model_classes_interlis.foerderaggregat(
                 **self.overflow_common(row, "foerderaggregat"),
