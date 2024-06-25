@@ -1627,6 +1627,7 @@ class InterlisExporterToIntermediateSchema:
         if self.filtered:
             query = query.join(
                 self.model_classes_tww_od.re_building_group_disposal,
+                self.model_classes_tww_od.disposal,
                 self.model_classes_tww_od.wastewater_structure,
                 self.model_classes_tww_od.wastewater_networkelement,
             ).filter(
@@ -1686,6 +1687,7 @@ class InterlisExporterToIntermediateSchema:
             query = query.join(
                 self.model_classes_tww_od.building_group,
                 self.model_classes_tww_od.re_building_group_disposal,
+                self.model_classes_tww_od.disposal,
                 self.model_classes_tww_od.wastewater_structure,
                 self.model_classes_tww_od.wastewater_networkelement,
             ).filter(
