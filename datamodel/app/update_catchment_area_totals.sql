@@ -14,35 +14,35 @@ WITH ca AS (
 			, population_density_current*surface_area AS pop_current
 			, sewer_infiltration_water_production_current AS q_inf_current
 			, waste_water_production_current AS q_ww_current
-			
+
 			, NULL::numeric AS f_dim
 			, NULL::numeric AS fred_dim
 			, NULL::numeric AS fimp_dim
 			, NULL::numeric AS pop_dim
 			, NULL::numeric AS q_inf_dim
-			, NULL::numeric AS q_ww_dim	
+			, NULL::numeric AS q_ww_dim
 		FROM tww_od.catchment_area
 		WHERE catchment_area.fk_special_building_ww_current IS NOT NULL
 	UNION
 		SELECT obj_id
 			, fk_special_building_rw_current AS fk_log_card
-			, CASE 
-				WHEN fk_special_building_ww_current = fk_special_building_rw_current 
-				THEN 0 
-				else surface_area 
+			, CASE
+				WHEN fk_special_building_ww_current = fk_special_building_rw_current
+				THEN 0
+				else surface_area
 			  END AS f_current
 			, discharge_coefficient_rw_current/100*surface_area AS fred_current
 			, seal_factor_rw_current/100*surface_area AS fimp_current
 			, NULL::numeric AS pop_current
 			, NULL::numeric AS q_inf_current
 			, NULL::numeric AS q_ww_current
-			
+
 			, NULL::numeric AS f_dim
 			, NULL::numeric AS fred_dim
 			, NULL::numeric AS fimp_dim
 			, NULL::numeric AS pop_dim
 			, NULL::numeric AS q_inf_dim
-			, NULL::numeric AS q_ww_dim	
+			, NULL::numeric AS q_ww_dim
 		FROM tww_od.catchment_area
 		WHERE catchment_area.fk_special_building_rw_current IS NOT NULL
 	UNION
@@ -54,8 +54,8 @@ WITH ca AS (
 			, NULL::numeric AS pop_current
 			, NULL::numeric AS q_inf_current
 			, NULL::numeric AS q_ww_current
-			
-			, surface_area AS f_dim			
+
+			, surface_area AS f_dim
 			, discharge_coefficient_ww_planned/100*surface_area AS fred_dim
 			, seal_factor_ww_planned/100*surface_area AS fimp_dim
 			, population_density_planned*surface_area AS pop_dim
@@ -72,22 +72,22 @@ WITH ca AS (
 			, NULL::numeric AS pop_current
 			, NULL::numeric AS q_inf_current
 			, NULL::numeric AS q_ww_current
-			
-			, CASE 
+
+			, CASE
 				WHEN fk_special_building_ww_planned = fk_special_building_rw_planned
-				THEN 0 
-				else surface_area 
+				THEN 0
+				else surface_area
 			  END AS f_dim
 			, discharge_coefficient_rw_planned/100*surface_area AS fred_dim
 			, seal_factor_rw_current/100*surface_area AS fimp_dim
 			, NULL::numeric AS pop_dim
 			, NULL::numeric AS q_inf_dim
-			, NULL::numeric AS q_ww_dim	
+			, NULL::numeric AS q_ww_dim
 		FROM tww_od.catchment_area
 		WHERE catchment_area.fk_special_building_rw_planned IS NOT NULL
     )
 UPDATE tww_od.catchment_area_totals cat
-SET 
+SET
 
 	  population = ca_agg.pop_current
 	, population_dim = ca_agg.pop_dim
@@ -109,7 +109,7 @@ FROM
 	, SUM(pop_current) as pop_current
 	, SUM(q_inf_current) as q_inf_current
 	, SUM(q_ww_current) as q_ww_current
-	
+
 	, SUM(f_dim) as f_dim
 	, SUM(fred_dim) as fred_dim
 	, SUM(fimp_dim) as fimp_dim
@@ -119,7 +119,7 @@ FROM
    FROM ca
 	 LEFT JOIN tww_od.log_card lc_1 ON ca.fk_log_card::text = lc_1.obj_id::text
 	 LEFT JOIN tww_od.log_card main_lc ON main_lc.obj_id::text = lc_1.fk_main_structure::text
-	 
+
      LEFT JOIN tww_od.wastewater_node wn ON main_lc.fk_pwwf_wastewater_node::text = wn.obj_id::text
      LEFT JOIN tww_od.hydraulic_char_data hcd ON hcd.fk_wastewater_node::text = wn.obj_id::text AND hcd.status = 6372
 	LEFT JOIN tww_od.catchment_area_totals cat ON hcd.obj_id::text = cat.fk_hydraulic_char_data::text
