@@ -1436,6 +1436,9 @@ class InterlisExporterToIntermediateSchema:
         logger.info("done")
         self.abwasser_session.flush()
 
+
+** to continue
+
     def _export_electric_equipment(self):
         query = self.tww_session.query(self.model_classes_tww_od.electric_equipment)
         if self.filtered:
@@ -1445,6 +1448,9 @@ class InterlisExporterToIntermediateSchema:
             ).filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             elektrischeeinrichtung = self.model_classes_interlis.elektrischeeinrichtung(
                 **self.structure_part_common(row, "elektrischeeinrichtung"),
