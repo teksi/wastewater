@@ -1749,9 +1749,7 @@ class InterlisExporterToIntermediateSchema:
             # just check if overflow_char exists
             query = query.join(
                 self.model_classes_tww_od.overflow_char,
-            ).filter(
-                self.model_classes_tww_od.overflow_char.obj_id.in_(self.subset_ids)
-            )
+            ).filter(self.model_classes_tww_od.overflow_char.obj_id.in_(self.subset_ids))
             # add sql statement to logger
             statement = query.statement
             logger.info(f" selection query = {statement}")
