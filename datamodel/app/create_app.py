@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import re
 from argparse import ArgumentParser, BooleanOptionalAction
 from pathlib import Path
 from typing import Optional
@@ -32,6 +33,13 @@ def run_sql(sql: str, pg_service: str, variables: dict = None):
     conn.close()
 
 
+def get_db_identifier(pg_service: str):
+    conn = psycopg.connect(f"service={pg_service}")
+    db_identifier = re.sub("tww_|teksi_", "", conn.info.dbname)
+    conn.close()
+    return db_identifier
+
+
 def create_app(
     srid: int = 2056,
     pg_service: str = "pg_tww",
@@ -49,13 +57,15 @@ def create_app(
     """
     cwd = Path(__file__).parent.resolve()
     variables = {
-        "SRID": psycopg.sql.SQL(f"{srid}")
+        "SRID": psycopg.sql.SQL(f"{srid}"),
+        "db_identifier": psycopg.sql.SQL(get_db_identifier(pg_service)),
     }  # when dropping psycopg2 support, we can use the srid var directly
 
     if drop_schema:
         run_sql("DROP SCHEMA IF EXISTS tww_app CASCADE;", pg_service)
-
-    run_sql("CREATE SCHEMA tww_app;", pg_service)
+        run_sql("CREATE SCHEMA tww_app;", pg_service)
+    else:
+        run_sql("CREATE SCHEMA IF NOT EXISTS tww_app;", pg_service)
 
     run_sql_file("symbology_functions.sql", pg_service)
     run_sql_file("reach_direction_change.sql", pg_service, variables)
