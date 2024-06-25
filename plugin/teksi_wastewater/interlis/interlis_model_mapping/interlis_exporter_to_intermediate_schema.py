@@ -1436,9 +1436,6 @@ class InterlisExporterToIntermediateSchema:
         logger.info("done")
         self.abwasser_session.flush()
 
-
-** to continue
-
     def _export_electric_equipment(self):
         query = self.tww_session.query(self.model_classes_tww_od.electric_equipment)
         if self.filtered:
