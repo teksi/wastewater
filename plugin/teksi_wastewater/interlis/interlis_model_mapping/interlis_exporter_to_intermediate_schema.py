@@ -1746,7 +1746,15 @@ class InterlisExporterToIntermediateSchema:
     def _export_hq_relation(self):
         query = self.tww_session.query(self.model_classes_tww_od.hq_relation)
         if self.filtered:
-            query = query.filter(self.model_classes_tww_od.hq_relation.obj_id.in_(self.subset_ids))
+            # just check if overflow_char exists
+            query = query.join(
+                self.model_classes_tww_od.overflow_char,
+            ).filter(
+                self.model_classes_tww_od.overflow_char.obj_id.in_(self.subset_ids)
+            )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             hq_relation = self.model_classes_interlis.hq_relation(
                 **self.vsa_base_common(row, "hq_relation"),
@@ -2210,10 +2218,7 @@ class InterlisExporterToIntermediateSchema:
 
     def _export_overflow_char(self):
         query = self.tww_session.query(self.model_classes_tww_od.overflow_char)
-        if self.filtered:
-            query = query.filter(
-                self.model_classes_tww_od.overflow_char.obj_id.in_(self.subset_ids)
-            )
+        # always export all overflow_char datasets - no if self.filtered
         for row in query:
             ueberlaufcharakteristik = self.model_classes_interlis.ueberlaufcharakteristik(
                 **self.vsa_base_common(row, "ueberlaufcharakteristik"),
