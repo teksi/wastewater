@@ -1746,10 +1746,10 @@ class InterlisExporterToIntermediateSchema:
     def _export_hq_relation(self):
         query = self.tww_session.query(self.model_classes_tww_od.hq_relation)
         if self.filtered:
-            # just check if overflow_char exists
+            # just check if overflow_char exists, but no filter
             query = query.join(
                 self.model_classes_tww_od.overflow_char,
-            ).filter(self.model_classes_tww_od.overflow_char.obj_id.in_(self.subset_ids))
+            )
             # add sql statement to logger
             statement = query.statement
             logger.info(f" selection query = {statement}")
