@@ -2,7 +2,7 @@ import json
 
 from geoalchemy2.functions import ST_Force2D, ST_GeomFromGeoJSON
 from sqlalchemy import or_
-from sqlalchemy.dialects import postgresql
+# from sqlalchemy.dialects import postgresql
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import text
 
@@ -1273,12 +1273,9 @@ class InterlisExporterToIntermediateSchema:
             query = query.filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
-        # for debugging
+        # add sql statement to logger
         statement = query.statement
         logger.info(f"query = {statement}")
-        statementsql = statement.compile(dialect=postgresql.dialect())
-        logger.info(f"query = {statementsql}")
-        print(statementsql)
         for row in query:
             brunnen = self.model_classes_interlis.brunnen(
                 **self.connection_object_common(row, "brunnen"),
