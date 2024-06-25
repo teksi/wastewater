@@ -60,7 +60,7 @@ def locale(values, feature, parent):
 class TeksiWastewaterPlugin:
     """
     A plugin for wastewater management
-    https://github.com/teksi/teksi_wastewater
+    https://github.com/teksi/wastewater
     """
 
     # The networkAnalyzer will manage the networklayers and pathfinding
