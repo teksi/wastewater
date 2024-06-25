@@ -1570,8 +1570,10 @@ class InterlisExporterToIntermediateSchema:
             query = query.join(
                 self.model_classes_tww_od.wastewater_node,
                 or_(
-                    self.model_classes_tww_od.wastewater_node.obj_id == self.model_classes_tww_od.prank_weir.fk_wastewater_node,
-                    self.model_classes_tww_od.wastewater_node.obj_id == self.model_classes_tww_od.prank_weir.fk_overflow_to,
+                    self.model_classes_tww_od.wastewater_node.obj_id
+                    == self.model_classes_tww_od.prank_weir.fk_wastewater_node,
+                    self.model_classes_tww_od.wastewater_node.obj_id
+                    == self.model_classes_tww_od.prank_weir.fk_overflow_to,
                 ),
             ).filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
