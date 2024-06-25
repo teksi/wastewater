@@ -1473,6 +1473,9 @@ class InterlisExporterToIntermediateSchema:
             ).filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             elektromechanischeausruestung = self.model_classes_interlis.elektromechanischeausruestung(
                 **self.structure_part_common(row, "elektromechanischeausruestung"),
@@ -1493,6 +1496,9 @@ class InterlisExporterToIntermediateSchema:
                 self.model_classes_tww_od.wastewater_structure,
                 self.model_classes_tww_od.wastewater_networkelement,
             ).filter(self.model_classes_tww_od.disposal.obj_id.in_(self.subset_ids))
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             entsorgung = self.model_classes_interlis.entsorgung(
                 **self.vsa_base_common(row, "entsorgung"),
@@ -1513,6 +1519,7 @@ class InterlisExporterToIntermediateSchema:
 
     def _export_drainage_system(self):
         query = self.tww_session.query(self.model_classes_tww_od.drainage_system)
+        # keep filter?
         if self.filtered:
             query = query.filter(
                 self.model_classes_tww_od.drainage_system.obj_id.in_(self.subset_ids)
@@ -2042,7 +2049,7 @@ class InterlisExporterToIntermediateSchema:
             )
             # add sql statement to logger
             statement = query.statement
-            logger.info(f" selectin query = {statement}")
+            logger.info(f" selection query = {statement}")
         for row in query:
             reservoir = self.model_classes_interlis.reservoir(
                 **self.connection_object_common(row, "reservoir"),
@@ -2196,6 +2203,7 @@ class InterlisExporterToIntermediateSchema:
 
     def _export_infiltration_zone(self):
         query = self.tww_session.query(self.model_classes_tww_od.infiltration_zone)
+        # keep filter?
         if self.filtered:
             query = query.filter(
                 self.model_classes_tww_od.infiltration_zone.obj_id.in_(self.subset_ids)
