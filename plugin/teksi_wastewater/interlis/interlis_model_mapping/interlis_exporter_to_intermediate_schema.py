@@ -1686,7 +1686,7 @@ class InterlisExporterToIntermediateSchema:
                 self.model_classes_tww_od.re_building_group_disposal,
                 self.model_classes_tww_od.wastewater_structure,
                 self.model_classes_tww_od.wastewater_networkelement,
-                ).filter(
+            ).filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
             # add sql statement to logger
