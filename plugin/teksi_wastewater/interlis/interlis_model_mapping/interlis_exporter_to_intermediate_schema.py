@@ -1276,7 +1276,7 @@ class InterlisExporterToIntermediateSchema:
             )
             # add sql statement to logger
             statement = query.statement
-            logger.info(f" selectin query = {statement}")
+            logger.info(f" selection query = {statement}")
         for row in query:
             brunnen = self.model_classes_interlis.brunnen(
                 **self.connection_object_common(row, "brunnen"),
@@ -1342,6 +1342,9 @@ class InterlisExporterToIntermediateSchema:
             query = query.filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             einzelflaeche = self.model_classes_interlis.einzelflaeche(
                 **self.connection_object_common(row, "einzelflaeche"),
@@ -1374,6 +1377,9 @@ class InterlisExporterToIntermediateSchema:
             ).filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             einzugsgebiet = self.model_classes_interlis.einzugsgebiet(
                 **self.vsa_base_common(row, "einzugsgebiet"),
@@ -2020,7 +2026,12 @@ class InterlisExporterToIntermediateSchema:
     def _export_reservoir(self):
         query = self.tww_session.query(self.model_classes_tww_od.reservoir)
         if self.filtered:
-            query = query.filter(self.model_classes_tww_od.reservoir.obj_id.in_(self.subset_ids))
+            query = query.filter(
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selectin query = {statement}")
         for row in query:
             reservoir = self.model_classes_interlis.reservoir(
                 **self.connection_object_common(row, "reservoir"),
