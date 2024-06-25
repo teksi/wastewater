@@ -1273,9 +1273,9 @@ class InterlisExporterToIntermediateSchema:
             query = query.filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
-        # add sql statement to logger
-        statement = query.statement
-        logger.info(f"query = {statement}")
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selectin query = {statement}")
         for row in query:
             brunnen = self.model_classes_interlis.brunnen(
                 **self.connection_object_common(row, "brunnen"),
