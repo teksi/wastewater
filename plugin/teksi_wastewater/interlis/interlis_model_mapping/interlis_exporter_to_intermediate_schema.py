@@ -657,7 +657,8 @@ class InterlisExporterToIntermediateSchema:
                 # --- haltungspunkt ---
                 # changed call from get_tid to check_fk_in_subsetid so it does not write foreignkeys on elements that do not exist
                 # abwassernetzelementref=self.get_tid(row.fk_wastewater_networkelement__REL),
-                abwassernetzelementref=self.check_fk_in_subsetid(row.fk_wastewater_networkelement__REL
+                abwassernetzelementref=self.check_fk_in_subsetid(
+                    row.fk_wastewater_networkelement__REL
                 ),
                 auslaufform=self.get_vl(row.outlet_shape__REL),
                 bemerkung=self.truncate(self.emptystr_to_null(row.remark), 80),
@@ -2728,8 +2729,8 @@ class InterlisExporterToIntermediateSchema:
             val = 0
         return val
 
-#    def check_fk_in_subsetid (self, subset, relation):
-    def check_fk_in_subsetid (self, relation):
+    #    def check_fk_in_subsetid (self, subset, relation):
+    def check_fk_in_subsetid(self, relation):
         """
         checks, whether foreignkey is in the subset_ids - if yes it return the tid of the foreignkey, if no it will return None
         """
