@@ -1778,6 +1778,7 @@ class InterlisExporterToIntermediateSchema:
         if self.filtered:
             # to do check if join is ok or left/right join is needed
             query = query.join(
+                    self.model_classes_tww_od.hydr_geometry,
                     self.model_classes_tww_od.wastewater_node,
                     )
                 ).filter(
@@ -1803,9 +1804,16 @@ class InterlisExporterToIntermediateSchema:
     def _export_hydr_geometry(self):
         query = self.tww_session.query(self.model_classes_tww_od.hydr_geometry)
         if self.filtered:
-            query = query.filter(
-                self.model_classes_tww_od.hydr_geometry.obj_id.in_(self.subset_ids)
+            # to do check if join is ok or left/right join is needed
+            query = query.join(
+                    self.model_classes_tww_od.wastewater_node,
+                    )
+                ).filter(
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             hydr_geometrie = self.model_classes_interlis.hydr_geometrie(
                 **self.vsa_base_common(row, "hydr_geometrie"),
