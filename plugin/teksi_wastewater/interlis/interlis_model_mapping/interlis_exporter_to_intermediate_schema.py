@@ -2123,9 +2123,31 @@ class InterlisExporterToIntermediateSchema:
     def _export_measuring_point(self):
         query = self.tww_session.query(self.model_classes_tww_od.measuring_point)
         if self.filtered:
-            query = query.filter(
-                self.model_classes_tww_od.measuring_point.obj_id.in_(self.subset_ids)
+            query1 = query.join(
+                self.model_classes_tww_od.wastewater_structure,
+                self.model_classes_tww_od.wastewater_networkelement,
             )
+            # query2 via waste_water_treatment_plant
+            query2 = query.join(
+                self.model_classes_tww_od.waste_water_treatment_plant,
+                self.model_classes_tww_od.wwtp_structure,
+                self.model_classes_tww_od.wastewater_networkelement
+            )
+            # query2 via water_course_segment
+            query3 = query.join(
+                self.model_classes_tww_od.water_course_segment,
+                self.model_classes_tww_od.river,
+                self.model_classes_tww_od.sector_water_body,
+                self.model_classes_tww_od.discharge_point,
+                self.model_classes_tww_od.wastewater_networkelement
+            )
+            query = union(query1, query2, query3)
+            query = query.filter(
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             messstelle = self.model_classes_interlis.messstelle(
                 **self.vsa_base_common(row, "messstelle"),
