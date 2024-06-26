@@ -1974,7 +1974,7 @@ class InterlisExporterToIntermediateSchema:
 
     def _export_measure(self):
         query = self.tww_session.query(self.model_classes_tww_od.measure)
-        # always export all measure, therefore no if self.filtered. Adding filter here needs further investigation 
+        # always export all measure, therefore no if self.filtered. Adding filter here needs further investigation
         # if self.filtered:
         #    query = query.filter(self.model_classes_tww_od.measure.obj_id.in_(self.subset_ids))
         for row in query:
