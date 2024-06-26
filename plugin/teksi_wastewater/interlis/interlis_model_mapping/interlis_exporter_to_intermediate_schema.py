@@ -1951,7 +1951,7 @@ class InterlisExporterToIntermediateSchema:
                     self.model_classes_tww_od.wastewater_node.obj_id == self.model_classes_tww_od.leapingweir.fk_wastewater_node,
                     self.model_classes_tww_od.wastewater_node.obj_id == self.model_classes_tww_od.leapingweir.fk_overflow_to,
                 ),
-            ).filter(self.model_classes_tww_od.leapingweir.obj_id.in_(self.subset_ids))
+            ).filter(self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids))
             # add sql statement to logger
             statement = query.statement
             logger.info(f" selection query = {statement}")
@@ -2249,7 +2249,16 @@ class InterlisExporterToIntermediateSchema:
     def _export_prank_weir(self):
         query = self.tww_session.query(self.model_classes_tww_od.prank_weir)
         if self.filtered:
-            query = query.filter(self.model_classes_tww_od.prank_weir.obj_id.in_(self.subset_ids))
+            query = query.join(
+                self.model_classes_tww_od.wastewater_node,
+                or_(
+                    self.model_classes_tww_od.wastewater_node.obj_id == self.model_classes_tww_od.prank_weir.fk_wastewater_node,
+                    self.model_classes_tww_od.wastewater_node.obj_id == self.model_classes_tww_od.prank_weir.fk_overflow_to,
+                ),
+            ).filter(self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids))
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             streichwehr = self.model_classes_interlis.streichwehr(
                 **self.overflow_common(row, "streichwehr"),
