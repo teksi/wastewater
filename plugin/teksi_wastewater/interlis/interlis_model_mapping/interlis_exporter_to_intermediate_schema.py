@@ -2027,9 +2027,16 @@ class InterlisExporterToIntermediateSchema:
     def _export_measuring_device(self):
         query = self.tww_session.query(self.model_classes_tww_od.measuring_device)
         if self.filtered:
-            query = query.filter(
-                self.model_classes_tww_od.measuring_device.obj_id.in_(self.subset_ids)
+            query = query.join(
+                self.model_classes_tww_od.measuring_point, 
+                self.model_classes_tww_od.wastewater_structure, 
+                self.model_classes_tww_od.wastewater_networkelement
+            ).filter(
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             messgeraet = self.model_classes_interlis.messgeraet(
                 **self.vsa_base_common(row, "messgeraet"),
