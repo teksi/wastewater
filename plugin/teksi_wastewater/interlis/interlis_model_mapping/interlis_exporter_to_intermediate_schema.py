@@ -2719,7 +2719,7 @@ class InterlisExporterToIntermediateSchema:
             val = 0
         return val
 
-    def check_fk_in_subsetid (subset, relation):
+    def check_fk_in_subsetid (self, subset, relation):
         """
         checks, whether foreignkey is in the subset_ids - if yes it return the tid of the foreignkey, if no it will return None
         """
@@ -2735,7 +2735,8 @@ class InterlisExporterToIntermediateSchema:
         if fremdschluesselstr in subset:
             logger.info(f"check_fk_in_subsetid - '{fremdschluesselstr}' is in subset ")
             logger.info(f"check_fk_in_subsetid - tid = '{tid_maker.tid_for_row(relation)}' ")
-            return tid_maker.tid_for_row(relation)
+            # return tid_maker.tid_for_row(relation)
+            return self.tid_maker.tid_for_row(relation)
         else:
             logger.info(f"check_fk_in_subsetid - '{fremdschluesselstr}' is not in subset - replaced with None instead!")
             return None
