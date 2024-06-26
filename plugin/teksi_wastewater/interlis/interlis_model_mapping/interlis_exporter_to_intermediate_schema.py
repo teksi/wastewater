@@ -1713,6 +1713,10 @@ class InterlisExporterToIntermediateSchema:
         if self.filtered:
             query = query.join(
                 self.model_classes_tww_od.hydraulic_char_data,
+                or_(
+                    self.model_classes_tww_od.hydraulic_char_data.obj_id
+                    == self.model_classes_tww_od.catchment_area_totals.fk_hydraulic_char_data,
+                ),
                 self.model_classes_tww_od.wastewater_node,
                 or_(
                     self.model_classes_tww_od.wastewater_node.obj_id
