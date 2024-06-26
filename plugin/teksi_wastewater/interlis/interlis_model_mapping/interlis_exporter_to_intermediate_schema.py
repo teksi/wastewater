@@ -1776,9 +1776,16 @@ class InterlisExporterToIntermediateSchema:
     def _export_hydr_geom_relation(self):
         query = self.tww_session.query(self.model_classes_tww_od.hydr_geom_relation)
         if self.filtered:
-            query = query.filter(
-                self.model_classes_tww_od.hydr_geom_relation.obj_id.in_(self.subset_ids)
+            # to do check if join is ok or left/right join is needed
+            query = query.join(
+                    self.model_classes_tww_od.wastewater_node,
+                    )
+                ).filter(
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             hydr_geomrelation = self.model_classes_interlis.hydr_geomrelation(
                 **self.vsa_base_common(row, "hydr_geomrelation"),
@@ -1819,9 +1826,18 @@ class InterlisExporterToIntermediateSchema:
     def _export_hydraulic_char_data(self):
         query = self.tww_session.query(self.model_classes_tww_od.hydraulic_char_data)
         if self.filtered:
-            query = query.filter(
-                self.model_classes_tww_od.hydraulic_char_data.obj_id.in_(self.subset_ids)
+            query = query.join(
+                self.model_classes_tww_od.wastewater_networkelement,
+                or_(
+                    self.model_classes_tww_od.wastewater_networkelement.obj_id
+                    == self.model_classes_tww_od.hydraulic_char_data.fk_wastewater_networkelement,
+                ),
+            ).filter(
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             hydr_kennwerte = self.model_classes_interlis.hydr_kennwerte(
                 **self.vsa_base_common(row, "hydr_kennwerte"),
