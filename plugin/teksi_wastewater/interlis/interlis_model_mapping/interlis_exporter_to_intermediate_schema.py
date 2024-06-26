@@ -2291,7 +2291,11 @@ class InterlisExporterToIntermediateSchema:
     def _export_log_card(self):
         query = self.tww_session.query(self.model_classes_tww_od.log_card)
         if self.filtered:
-            query = query.filter(self.model_classes_tww_od.log_card.obj_id.in_(self.subset_ids))
+            query = query.join(
+                self.model_classes_tww_od.wastewater_node,
+            ).filter(
+                    self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            )
         for row in query:
             stammkarte = self.model_classes_interlis.stammkarte(
                 **self.vsa_base_common(row, "stammkarte"),
