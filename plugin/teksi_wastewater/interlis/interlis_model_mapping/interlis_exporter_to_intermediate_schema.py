@@ -2350,6 +2350,7 @@ class InterlisExporterToIntermediateSchema:
         # always export all overflow_char datasets
         if self.filtered
             # add sql statement to logger
+            statement = query.statement
             logger.info(f" always export all overflow_char datasets query = {statement}")
         for row in query:
             ueberlaufcharakteristik = self.model_classes_interlis.ueberlaufcharakteristik(
