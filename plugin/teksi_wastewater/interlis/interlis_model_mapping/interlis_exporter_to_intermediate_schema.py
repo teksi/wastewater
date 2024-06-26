@@ -1974,8 +1974,9 @@ class InterlisExporterToIntermediateSchema:
 
     def _export_measure(self):
         query = self.tww_session.query(self.model_classes_tww_od.measure)
-        if self.filtered:
-            query = query.filter(self.model_classes_tww_od.measure.obj_id.in_(self.subset_ids))
+        # always export all measure, therefore no if self.filtered. Adding filter here needs further investigation 
+        # if self.filtered:
+        #    query = query.filter(self.model_classes_tww_od.measure.obj_id.in_(self.subset_ids))
         for row in query:
             massnahme = self.model_classes_interlis.massnahme(
                 **self.vsa_base_common(row, "massnahme"),
