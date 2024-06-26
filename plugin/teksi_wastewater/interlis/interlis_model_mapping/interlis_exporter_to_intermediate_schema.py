@@ -1806,7 +1806,6 @@ class InterlisExporterToIntermediateSchema:
             # to do check if join is ok or left/right join is needed
             query = query.join(
                     self.model_classes_tww_od.wastewater_node,
-                    )
             ).filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
