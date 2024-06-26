@@ -2729,7 +2729,7 @@ class InterlisExporterToIntermediateSchema:
             val = 0
         return val
 
-    def check_fk_in_subsetid (self, subset, relation):
+    def check_fk_in_subsetid(self, subset, relation):
         """
         checks, whether foreignkey is in the subset_ids - if yes it return the tid of the foreignkey, if no it will return None
         """
