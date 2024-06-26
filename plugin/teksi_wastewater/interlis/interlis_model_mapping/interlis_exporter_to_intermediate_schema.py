@@ -2145,7 +2145,7 @@ class InterlisExporterToIntermediateSchema:
                 self.model_classes_tww_od.discharge_point,
                 self.model_classes_tww_od.wastewater_networkelement,
             )
-            query = union(query1, query2, query3)
+            query = query.union(query1, query2, query3)
             query = query.filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
