@@ -1945,7 +1945,15 @@ class InterlisExporterToIntermediateSchema:
     def _export_leapingweir(self):
         query = self.tww_session.query(self.model_classes_tww_od.leapingweir)
         if self.filtered:
-            query = query.filter(self.model_classes_tww_od.leapingweir.obj_id.in_(self.subset_ids))
+            query = query.join(
+                self.model_classes_tww_od.wastewater_node,
+                or_(
+                    self.model_classes_tww_od.wastewater_node.obj_id == QGEP.leapingweir.fk_wastewater_node,
+                    self.model_classes_tww_od.wastewater_node.obj_id == QGEP.leapingweir.fk_overflow_to,
+                ),
+            ).filter(
+                self.model_classes_tww_od.leapingweir.obj_id.in_(self.subset_ids)
+            )
             # add sql statement to logger
             statement = query.statement
             logger.info(f" selection query = {statement}")
