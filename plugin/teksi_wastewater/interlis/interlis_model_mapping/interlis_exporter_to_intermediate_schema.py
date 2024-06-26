@@ -2471,6 +2471,9 @@ class InterlisExporterToIntermediateSchema:
                     self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
                 )
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             normschachtschaden = self.model_classes_interlis.normschachtschaden(
                 # FIELDS TO MAP TO ABWASSER.normschachtschaden
@@ -2509,6 +2512,9 @@ class InterlisExporterToIntermediateSchema:
                     self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
                 )
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             kanalschaden = self.model_classes_interlis.kanalschaden(
                 # FIELDS TO MAP TO ABWASSER.kanalschaden
@@ -2538,6 +2544,10 @@ class InterlisExporterToIntermediateSchema:
 
     def _export_data_media(self):
         query = self.tww_session.query(self.model_classes_tww_od.data_media)
+        if self.filtered:
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" always export all data_media; query = {statement}")
         for row in query:
             # AVAILABLE FIELDS IN TWW.data_media
 
@@ -2588,6 +2598,9 @@ class InterlisExporterToIntermediateSchema:
                     self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
                 )
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" always export all data_media; query = {statement}")
         for row in query:
             datei = self.model_classes_interlis.datei(
                 # FIELDS TO MAP TO ABWASSER.datei
