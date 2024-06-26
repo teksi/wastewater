@@ -2348,7 +2348,7 @@ class InterlisExporterToIntermediateSchema:
     def _export_overflow_char(self):
         query = self.tww_session.query(self.model_classes_tww_od.overflow_char)
         # always export all overflow_char datasets
-        if self.filtered
+        if self.filtered:
             # add sql statement to logger
             statement = query.statement
             logger.info(f" always export all overflow_char datasets query = {statement}")
