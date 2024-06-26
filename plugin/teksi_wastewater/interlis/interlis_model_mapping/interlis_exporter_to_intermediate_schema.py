@@ -657,7 +657,7 @@ class InterlisExporterToIntermediateSchema:
                 # --- haltungspunkt ---
                 # changed call from get_tid to check_fk_in_subsetid so it does not write foreignkeys on elements that do not exist
                 # abwassernetzelementref=self.get_tid(row.fk_wastewater_networkelement__REL),
-                abwassernetzelementref=check_fk_in_subsetid(subset_ids, row.fk_wastewater_networkelement__REL),
+                abwassernetzelementref=check_fk_in_subsetid(self.subset_ids, row.fk_wastewater_networkelement__REL),
                 auslaufform=self.get_vl(row.outlet_shape__REL),
                 bemerkung=self.truncate(self.emptystr_to_null(row.remark), 80),
                 bezeichnung=self.null_to_emptystr(row.identifier),
@@ -1432,10 +1432,10 @@ class InterlisExporterToIntermediateSchema:
                     # row.fk_wastewater_networkelement_ww_current__REL
                 # ),
                 # changed call from get_tid to check_fk_in_subsetid so it does not write foreignkeys on elements that do not exist
-                abwassernetzelement_rw_geplantref=check_fk_in_subsetid(row.fk_wastewater_networkelement_rw_planned__REL),
-                abwassernetzelement_rw_istref=check_fk_in_subsetid(row.fk_wastewater_networkelement_rw_current__REL),
-                abwassernetzelement_sw_geplantref=check_fk_in_subsetid(row.fk_wastewater_networkelement_ww_planned__REL),
-                abwassernetzelement_sw_istref=check_fk_in_subsetid(row.fk_wastewater_networkelement_ww_current__REL),
+                abwassernetzelement_rw_geplantref=check_fk_in_subsetid(self.subset_ids, row.fk_wastewater_networkelement_rw_planned__REL),
+                abwassernetzelement_rw_istref=check_fk_in_subsetid(self.subset_ids, row.fk_wastewater_networkelement_rw_current__REL),
+                abwassernetzelement_sw_geplantref=check_fk_in_subsetid(self.subset_ids, row.fk_wastewater_networkelement_ww_planned__REL),
+                abwassernetzelement_sw_istref=check_fk_in_subsetid(self.subset_ids, row.fk_wastewater_networkelement_ww_current__REL),
                 sbw_rw_geplantref=self.get_tid(row.fk_special_building_rw_planned__REL),
                 sbw_rw_istref=self.get_tid(row.fk_special_building_rw_current__REL),
                 sbw_sw_geplantref=self.get_tid(row.fk_special_building_ww_planned__REL),
