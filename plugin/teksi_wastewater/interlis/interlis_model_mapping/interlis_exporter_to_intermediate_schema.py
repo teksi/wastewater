@@ -655,7 +655,9 @@ class InterlisExporterToIntermediateSchema:
                 # --- vsa_baseclass ---
                 **self.vsa_base_common(row, "haltungspunkt"),
                 # --- haltungspunkt ---
-                abwassernetzelementref=self.get_tid(row.fk_wastewater_networkelement__REL),
+                # changed call from get_tid to check_fk_in_subsetid so it does not write foreignkeys on elements that do not exist
+                # abwassernetzelementref=self.get_tid(row.fk_wastewater_networkelement__REL),
+                abwassernetzelementref=check_fk_in_subsetid(subset_ids, row.fk_wastewater_networkelement__REL),
                 auslaufform=self.get_vl(row.outlet_shape__REL),
                 bemerkung=self.truncate(self.emptystr_to_null(row.remark), 80),
                 bezeichnung=self.null_to_emptystr(row.identifier),
@@ -1417,18 +1419,23 @@ class InterlisExporterToIntermediateSchema:
                 flaeche=row.surface_area,
                 schmutzabwasseranfall_ist=row.waste_water_production_current,
                 schmutzabwasseranfall_geplant=row.waste_water_production_planned,
-                abwassernetzelement_rw_istref=self.get_tid(
-                    row.fk_wastewater_networkelement_rw_current__REL
-                ),
-                abwassernetzelement_rw_geplantref=self.get_tid(
-                    row.fk_wastewater_networkelement_rw_planned__REL
-                ),
-                abwassernetzelement_sw_geplantref=self.get_tid(
-                    row.fk_wastewater_networkelement_ww_planned__REL
-                ),
-                abwassernetzelement_sw_istref=self.get_tid(
-                    row.fk_wastewater_networkelement_ww_current__REL
-                ),
+                # abwassernetzelement_rw_istref=self.get_tid(
+                    # row.fk_wastewater_networkelement_rw_current__REL
+                # ),
+                # abwassernetzelement_rw_geplantref=self.get_tid(
+                    # row.fk_wastewater_networkelement_rw_planned__REL
+                # ),
+                # abwassernetzelement_sw_geplantref=self.get_tid(
+                    # row.fk_wastewater_networkelement_ww_planned__REL
+                # ),
+                # abwassernetzelement_sw_istref=self.get_tid(
+                    # row.fk_wastewater_networkelement_ww_current__REL
+                # ),
+                # changed call from get_tid to check_fk_in_subsetid so it does not write foreignkeys on elements that do not exist
+                abwassernetzelement_rw_geplantref=check_fk_in_subsetid(row.fk_wastewater_networkelement_rw_planned__REL),
+                abwassernetzelement_rw_istref=check_fk_in_subsetid(row.fk_wastewater_networkelement_rw_current__REL),
+                abwassernetzelement_sw_geplantref=check_fk_in_subsetid(row.fk_wastewater_networkelement_ww_planned__REL),
+                abwassernetzelement_sw_istref=check_fk_in_subsetid(row.fk_wastewater_networkelement_ww_current__REL),
                 sbw_rw_geplantref=self.get_tid(row.fk_special_building_rw_planned__REL),
                 sbw_rw_istref=self.get_tid(row.fk_special_building_rw_current__REL),
                 sbw_sw_geplantref=self.get_tid(row.fk_special_building_ww_planned__REL),
@@ -2711,6 +2718,27 @@ class InterlisExporterToIntermediateSchema:
         if val > 359.9:
             val = 0
         return val
+
+    def check_fk_in_subsetid (subset, relation):
+        """
+        checks, whether foreignkey is in the subset_ids - if yes it return the tid of the foreignkey, if no it will return None
+        """
+        # first check for None, as is get_tid
+        if relation is None:
+            return None
+
+        logger.info(f"check_fk_in_subsetid -  Subset ID's '{subset}'")
+        # get the value of the fk_ attribute as str out of the relation to be able to check whether it is in the subset
+        fremdschluesselstr = getattr(relation, "obj_id")
+        logger.info(f"check_fk_in_subsetid -  fremdschluesselstr '{fremdschluesselstr}'")
+        
+        if fremdschluesselstr in subset:
+            logger.info(f"check_fk_in_subsetid - '{fremdschluesselstr}' is in subset ")
+            logger.info(f"check_fk_in_subsetid - tid = '{tid_maker.tid_for_row(relation)}' ")
+            return tid_maker.tid_for_row(relation)
+        else:
+            logger.info(f"check_fk_in_subsetid - '{fremdschluesselstr}' is not in subset - replaced with None instead!")
+            return None
 
     def get_oid_prefix(self, oid_table):
         instance = self.tww_session.query(oid_table).filter(oid_table.active.is_(True)).first()
