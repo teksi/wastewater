@@ -16,13 +16,13 @@ WITH ca AS (
 			, population_density_current*surface_area AS pop_current
 --			, sewer_infiltration_water_production_current AS q_inf_current
 --			, waste_water_production_current AS q_ww_current
-			
+
 			, NULL::numeric AS f_dim
 			, NULL::numeric AS fred_dim
 			, NULL::numeric AS fimp_dim
 			, NULL::numeric AS pop_dim
 --			, NULL::numeric AS q_inf_dim
---			, NULL::numeric AS q_ww_dim	
+--			, NULL::numeric AS q_ww_dim
 		FROM tww_od.catchment_area
 		WHERE catchment_area.fk_special_building_ww_current IS NOT NULL
 	UNION
@@ -38,13 +38,13 @@ WITH ca AS (
 			, NULL::numeric AS pop_current
 --			, NULL::numeric AS q_inf_current
 --			, NULL::numeric AS q_ww_current
-			
+
 			, NULL::numeric AS f_dim
 			, NULL::numeric AS fred_dim
 			, NULL::numeric AS fimp_dim
 			, NULL::numeric AS pop_dim
 --			, NULL::numeric AS q_inf_dim
---			, NULL::numeric AS q_ww_dim	
+--			, NULL::numeric AS q_ww_dim
 		FROM tww_od.catchment_area
 		WHERE catchment_area.fk_special_building_rw_current IS NOT NULL
 	UNION
@@ -56,7 +56,7 @@ WITH ca AS (
 			, NULL::numeric AS pop_current
 --			, NULL::numeric AS q_inf_current
 --			, NULL::numeric AS q_ww_current
-			
+
 			, surface_area AS f_dim
 			, discharge_coefficient_ww_planned/100*surface_area AS fred_dim
 			, seal_factor_ww_planned/100*surface_area AS fimp_dim
@@ -74,8 +74,8 @@ WITH ca AS (
 			, NULL::numeric AS pop_current
 --			, NULL::numeric AS q_inf_current
 --			, NULL::numeric AS q_ww_current
-			
-			, CASE 
+
+			, CASE
 				WHEN fk_special_building_ww_planned = fk_special_building_rw_planned
 				THEN 0
 				else surface_area
@@ -84,7 +84,7 @@ WITH ca AS (
 			, seal_factor_rw_current/100*surface_area AS fimp_dim
 			, NULL::numeric AS pop_dim
 --			, NULL::numeric AS q_inf_dim
---			, NULL::numeric AS q_ww_dim	
+--			, NULL::numeric AS q_ww_dim
 		FROM tww_od.catchment_area
 		WHERE catchment_area.fk_special_building_rw_planned IS NOT NULL
     )
@@ -111,7 +111,7 @@ FROM
 	, SUM(pop_current) as pop_current
 	, aggr.sewer_infiltration_water as q_inf_current
 	, aggr.waste_water_production as  q_ww_current
-	
+
 	, SUM(f_dim) as f_dim
 	, SUM(fred_dim) as fred_dim
 	, SUM(fimp_dim) as fimp_dim
