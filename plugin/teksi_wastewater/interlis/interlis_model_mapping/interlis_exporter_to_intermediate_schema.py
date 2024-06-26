@@ -2294,7 +2294,7 @@ class InterlisExporterToIntermediateSchema:
             query = query.join(
                 self.model_classes_tww_od.wastewater_node,
             ).filter(
-                    self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
         for row in query:
             stammkarte = self.model_classes_interlis.stammkarte(
