@@ -1,4 +1,4 @@
-CREATE MATERIALIZED VIEW vw_catchment_area_totals_aggregated AS
+CREATE MATERIALIZED VIEW tww_app.vw_catchment_area_totals_aggregated AS
 	 SELECT
 		  ca_tot.obj_id
 		, round(ca_agg.population)::int as population
@@ -11,8 +11,8 @@ CREATE MATERIALIZED VIEW vw_catchment_area_totals_aggregated AS
 		, ca_agg.surface_dim
 		, ca_agg.surface_imp_dim
 		, ca_agg.surface_red_dim
-		-- , ca_agg.sewer_infiltration_water_dim
-		-- , ca_agg.waste_water_production_dim
+	    , ca_agg.sewer_infiltration_water_dim
+		, ca_agg.waste_water_production_dim
 	 FROM tww_od.catchment_area_totals ca_tot
      LEFT JOIN tww_od.hydraulic_char_data hcd ON hcd.obj_id::text = ca_tot.fk_hydraulic_char_data::text
      LEFT JOIN tww_od.wastewater_node wn ON hcd.fk_wastewater_node::text = wn.obj_id::text
@@ -59,9 +59,9 @@ CREATE MATERIALIZED VIEW vw_catchment_area_totals_aggregated AS
 			0 AS population_dim,
 			0 AS surface_dim,
 			0 AS surface_imp_dim,
-			0 AS surface_red_dim
-			-- ,0 AS sewer_infiltration_water_dim,  -- Not in datamodel (yet)
-			-- 0 AS waste_water_production_dim,    -- Not in datamodel (yet)
+			0 AS surface_red_dim,
+			0 AS sewer_infiltration_water_dim,  -- Not in datamodel (yet)
+			 0 AS waste_water_production_dim    -- Not in datamodel (yet)
 		  FROM tww_od.catchment_area
 		  WHERE catchment_area.fk_special_building_ww_current IS NOT NULL
 		  UNION ALL
@@ -78,9 +78,9 @@ CREATE MATERIALIZED VIEW vw_catchment_area_totals_aggregated AS
 			0 AS population_dim,
 			0 AS surface_dim,
 			0 AS surface_imp_dim,
-			0 AS surface_red_dim
-			-- ,0 AS sewer_infiltration_water_dim,  -- Not in datamodel (yet)
-			-- 0 AS waste_water_production_dim,    -- Not in datamodel (yet)
+			0 AS surface_red_dim,
+			0 AS sewer_infiltration_water_dim,  -- Not in datamodel (yet)
+			0 AS waste_water_production_dim    -- Not in datamodel (yet)
 		  FROM tww_od.catchment_area
 		  WHERE catchment_area.fk_special_building_rw_current IS NOT NULL
 		  UNION ALL
@@ -96,9 +96,9 @@ CREATE MATERIALIZED VIEW vw_catchment_area_totals_aggregated AS
 			population_density_planned*surface_area AS population_dim,
 			surface_area AS surface_dim,
 			surface_area*seal_factor_ww_planned/100 AS surface_imp_dim,
-			surface_area*discharge_coefficient_ww_planned/100 AS surface_red_dim
-			-- ,0 AS sewer_infiltration_water_dim,  -- Not in datamodel (yet)
-			-- 0 AS waste_water_production_dim,    -- Not in datamodel (yet)
+			surface_area*discharge_coefficient_ww_planned/100 AS surface_red_dim,
+			0 AS sewer_infiltration_water_dim,  -- Not in datamodel (yet)
+			0 AS waste_water_production_dim    -- Not in datamodel (yet)
 		  FROM tww_od.catchment_area
 		  WHERE catchment_area.fk_special_building_ww_planned IS NOT NULL
 		  UNION ALL
@@ -115,9 +115,9 @@ CREATE MATERIALIZED VIEW vw_catchment_area_totals_aggregated AS
 			-- do not count double
 			CASE WHEN fk_special_building_rw_planned=fk_special_building_ww_planned THEN 0 else surface_area END AS surface_dim,
 			surface_area*seal_factor_rw_planned/100 AS surface_imp_dim,
-			surface_area*discharge_coefficient_rw_planned/100 AS surface_red_dim
-			-- ,0 AS sewer_infiltration_water_dim,  -- Not in datamodel (yet)
-			-- 0 AS waste_water_production_dim,    -- Not in datamodel (yet)
+			surface_area*discharge_coefficient_rw_planned/100 AS surface_red_dim,
+			0 AS sewer_infiltration_water_dim,  -- Not in datamodel (yet)
+			0 AS waste_water_production_dim    -- Not in datamodel (yet)
 		  FROM tww_od.catchment_area
 		  WHERE catchment_area.fk_special_building_rw_planned IS NOT NULL
 		),
@@ -133,9 +133,9 @@ CREATE MATERIALIZED VIEW vw_catchment_area_totals_aggregated AS
 			sum(ca.population_dim) AS population_dim,
 			sum(ca.surface_dim) AS surface_dim,
 			sum(ca.surface_imp_dim) AS surface_imp_dim,
-			sum(ca.surface_red_dim) AS surface_red_dim
-			-- ,sum(ca.sewer_infiltration_water_dim) AS sewer_infiltration_water_dim,    -- Not in datamodel (yet)
-			-- sum(ca.waste_water_production_dim) AS waste_water_production_dim,    -- Not in datamodel (yet)
+			sum(ca.surface_red_dim) AS surface_red_dim,
+			sum(ca.sewer_infiltration_water_dim) AS sewer_infiltration_water_dim,    -- Not in datamodel (yet)
+			sum(ca.waste_water_production_dim) AS waste_water_production_dim    -- Not in datamodel (yet)
 		  FROM ca
 			 LEFT JOIN tww_od.log_card lc ON ca.fk_log_card::text = lc.obj_id::text
 			 LEFT JOIN tww_od.log_card main_lc ON main_lc.obj_id::text = lc.fk_main_structure::text
@@ -152,7 +152,9 @@ CREATE MATERIALIZED VIEW vw_catchment_area_totals_aggregated AS
 		  sum(ca_sums_c.population_dim) AS population_dim,
 		  sum(ca_sums_p.surface_dim) AS surface_dim,
 		  sum(ca_sums_p.surface_imp_dim) AS surface_imp_dim,
-		  sum(ca_sums_p.surface_red_dim) AS surface_red_dim
+		  sum(ca_sums_p.surface_red_dim) AS surface_red_dim,
+		  sum(ca_sums_c.sewer_infiltration_water_dim) AS sewer_infiltration_water_dim,
+		  sum(ca_sums_c.waste_water_production_dim) AS waste_water_production_dim
 		FROM log_card_agg lca
 		  LEFT JOIN tww_od.log_card lc ON lca.parent::text = lc.obj_id::text
 		  LEFT JOIN ca_sums ca_sums_c ON ca_sums_c.obj_id = lca.child -- aggregate values of upstream log cards too
@@ -161,5 +163,4 @@ CREATE MATERIALIZED VIEW vw_catchment_area_totals_aggregated AS
 		  lc.fk_pwwf_wastewater_node
       )ca_agg
         ON ca_agg.fk_pwwf_wastewater_node::text = wn.obj_id::text
-	  WHERE (_all OR ca_tot.obj_id = _obj_id)
    WITH DATA;
