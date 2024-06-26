@@ -1519,7 +1519,7 @@ class InterlisExporterToIntermediateSchema:
 
     def _export_drainage_system(self):
         query = self.tww_session.query(self.model_classes_tww_od.drainage_system)
-        # keep filter?
+        # no connection to sewer network - selected obj_id for drainage_system have to be added specifically
         if self.filtered:
             query = query.filter(
                 self.model_classes_tww_od.drainage_system.obj_id.in_(self.subset_ids)
@@ -2395,7 +2395,7 @@ class InterlisExporterToIntermediateSchema:
 
     def _export_infiltration_zone(self):
         query = self.tww_session.query(self.model_classes_tww_od.infiltration_zone)
-        # keep filter?
+        # no connection to sewer network - selected obj_id for infiltration_zone have to be added specifically
         if self.filtered:
             query = query.filter(
                 self.model_classes_tww_od.infiltration_zone.obj_id.in_(self.subset_ids)
@@ -2600,7 +2600,7 @@ class InterlisExporterToIntermediateSchema:
             )
             # add sql statement to logger
             statement = query.statement
-            logger.info(f" always export all data_media; query = {statement}")
+            logger.info(f" selection query = {statement}")
         for row in query:
             datei = self.model_classes_interlis.datei(
                 # FIELDS TO MAP TO ABWASSER.datei
