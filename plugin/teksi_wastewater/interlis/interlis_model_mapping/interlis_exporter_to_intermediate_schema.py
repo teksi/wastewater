@@ -1879,9 +1879,12 @@ class InterlisExporterToIntermediateSchema:
     def _export_small_treatment_plant(self):
         query = self.tww_session.query(self.model_classes_tww_od.small_treatment_plant)
         if self.filtered:
-            query = query.filter(
-                self.model_classes_tww_od.small_treatment_plant.obj_id.in_(self.subset_ids)
+            query = query.join(self.model_classes_tww_od.wastewater_networkelement).filter(
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             klara = self.model_classes_interlis.klara(
                 **self.wastewater_structure_common(row, "klara"),
