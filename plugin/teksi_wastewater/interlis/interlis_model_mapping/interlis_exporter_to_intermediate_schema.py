@@ -2137,7 +2137,7 @@ class InterlisExporterToIntermediateSchema:
                 self.model_classes_tww_od.wwtp_structure,
                 self.model_classes_tww_od.wastewater_networkelement,
             )
-            # query2 via water_course_segment
+            # query3 via water_course_segment
             query3 = query.join(
                 self.model_classes_tww_od.water_course_segment,
                 self.model_classes_tww_od.river,
@@ -2173,6 +2173,7 @@ class InterlisExporterToIntermediateSchema:
 
     def _export_mutation(self):
         query = self.tww_session.query(self.model_classes_tww_od.mutation)
+        # only export explicitly specified mutation objects if filtered
         if self.filtered:
             query = query.filter(self.model_classes_tww_od.mutation.obj_id.in_(self.subset_ids))
         for row in query:
@@ -2219,8 +2220,11 @@ class InterlisExporterToIntermediateSchema:
     def _export_retention_body(self):
         query = self.tww_session.query(self.model_classes_tww_od.retention_body)
         if self.filtered:
-            query = query.filter(
-                self.model_classes_tww_od.retention_body.obj_id.in_(self.subset_ids)
+            query = query.join(
+                self.model_classes_tww_od.infiltration_installation, 
+                self.model_classes_tww_od.wastewater_networkelement
+            ).filter(
+                    self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
         for row in query:
             retentionskoerper = self.model_classes_interlis.retentionskoerper(
