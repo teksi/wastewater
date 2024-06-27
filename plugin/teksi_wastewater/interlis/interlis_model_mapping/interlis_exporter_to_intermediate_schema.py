@@ -1862,9 +1862,7 @@ class InterlisExporterToIntermediateSchema:
                     self.model_classes_tww_od.wastewater_node.obj_id
                     == self.model_classes_tww_od.hydraulic_char_data.wastewater_node,
                 ),
-            ).filter(
-                self.model_classes_tww_od.wastewater_node.obj_id.in_(self.subset_ids)
-            )
+            ).filter(self.model_classes_tww_od.wastewater_node.obj_id.in_(self.subset_ids))
             # add sql statement to logger
             statement = query.statement
             logger.info(f" selection query = {statement}")
