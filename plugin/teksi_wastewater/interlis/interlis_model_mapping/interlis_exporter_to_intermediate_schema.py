@@ -1856,6 +1856,7 @@ class InterlisExporterToIntermediateSchema:
     def _export_hydraulic_char_data(self):
         query = self.tww_session.query(self.model_classes_tww_od.hydraulic_char_data)
         if self.filtered:
+            # side fk_overflow_char not considered in filter query
             query = query.join(
                 self.model_classes_tww_od.wastewater_node,
                 or_(
@@ -1863,7 +1864,7 @@ class InterlisExporterToIntermediateSchema:
                     == self.model_classes_tww_od.hydraulic_char_data.wastewater_node,
                 ),
             ).filter(
-                self.model_classes_tww_od.wastewater_node.obj_id.in_(self.subset_ids)
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
             # add sql statement to logger
             statement = query.statement
