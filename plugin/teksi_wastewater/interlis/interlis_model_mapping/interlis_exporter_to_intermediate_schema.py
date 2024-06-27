@@ -2738,12 +2738,12 @@ class InterlisExporterToIntermediateSchema:
         if relation is None:
             return None
 
-        logger.info(f"check_fk_in_subsetid -  Subset ID's '{subset}'")
+        logger.info(f"check_fk_in_subsetid -  Subset ID's '{self.subset}'")
         # get the value of the fk_ attribute as str out of the relation to be able to check whether it is in the subset
         fremdschluesselstr = getattr(relation, "obj_id")
         logger.info(f"check_fk_in_subsetid -  fremdschluesselstr '{fremdschluesselstr}'")
 
-        if fremdschluesselstr in subset:
+        if fremdschluesselstr in self.subset:
             logger.info(f"check_fk_in_subsetid - '{fremdschluesselstr}' is in subset ")
             logger.info(f"check_fk_in_subsetid - tid = '{self.tid_maker.tid_for_row(relation)}' ")
             # return tid_maker.tid_for_row(relation)
