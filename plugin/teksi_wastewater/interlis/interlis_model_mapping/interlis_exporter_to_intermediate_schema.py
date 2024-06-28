@@ -1274,14 +1274,14 @@ class InterlisExporterToIntermediateSchema:
     def _export_fountain(self):
         query = self.tww_session.query(self.model_classes_tww_od.fountain)
         if self.filtered:
-            # creates duplicate alias fountain / connection_object to wwn without _or
+            # creates duplicate alias fountain / connection_object to wwn without or_
             query = query.join(
                 self.model_classes_tww_od.wastewater_networkelement
                 or_(
                     self.model_classes_tww_od.wastewater_networkelement.obj_id
                     == self.model_classes_tww_od.connection_object.fk_wastewater_networkelement,
                 ),
-                ).filter(
+            ).filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
             # query = query.filter(
