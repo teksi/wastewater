@@ -1735,27 +1735,31 @@ class InterlisExporterToIntermediateSchema:
             query1 = query.join(
                 self.model_classes_tww_od.hydraulic_char_data,
                 or_(
-                    self.model_classes_tww_od.hydraulic_char_data.obj_id == self.model_classes_tww_od.catchment_area_totals.fk_hydraulic_char_data,
+                    self.model_classes_tww_od.hydraulic_char_data.obj_id
+                    == self.model_classes_tww_od.catchment_area_totals.fk_hydraulic_char_data,
                 ),
                 self.model_classes_tww_od.wastewater_node,
                 or_(
-                    self.model_classes_tww_od.wastewater_node.obj_id == self.model_classes_tww_od.hydraulic_char_data.fk_wastewater_node,
+                    self.model_classes_tww_od.wastewater_node.obj_id
+                    == self.model_classes_tww_od.hydraulic_char_data.fk_wastewater_node,
                 ),
             )
             # query2 via discharge_point
             query2 = query.join(
                 self.model_classes_tww_od.discharge_point,
                 or_(
-                    self.model_classes_tww_od.discharge_point.obj_id == self.model_classes_tww_od.catchment_area_totals.fk_discharge_point,
+                    self.model_classes_tww_od.discharge_point.obj_id
+                    == self.model_classes_tww_od.catchment_area_totals.fk_discharge_point,
                 ),
                 self.model_classes_tww_od.wastewater_node,
                 or_(
-                    self.model_classes_tww_od.wastewater_node.obj_id == self.model_classes_tww_od.hydraulic_char_data.fk_wastewater_node,
+                    self.model_classes_tww_od.wastewater_node.obj_id
+                    == self.model_classes_tww_od.hydraulic_char_data.fk_wastewater_node,
                 ),
             )
             query = query.union(query1, query2)
             query = query.filter(
-            self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
         # add sql statement to logger
         statement = query.statement
