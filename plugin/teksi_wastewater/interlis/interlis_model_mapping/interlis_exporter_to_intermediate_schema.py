@@ -1738,7 +1738,7 @@ class InterlisExporterToIntermediateSchema:
                 or_(
                     self.model_classes_tww_od.hydraulic_char_data.obj_id
                     == self.model_classes_tww_od.catchment_area_totals.fk_hydraulic_char_data,
-                )
+                ),
             )
             # second part of query1 join as there is other fk
             query1 = query1.join(
