@@ -1875,6 +1875,8 @@ class InterlisExporterToIntermediateSchema:
                 or_(
                     self.model_classes_tww_od.wastewater_node.obj_id
                     == self.model_classes_tww_od.hydraulic_char_data.fk_wastewater_node,
+                    self.model_classes_tww_od.wastewater_node.obj_id
+                    == self.model_classes_tww_od.hydraulic_char_data.fk_primary_direction,
                 ),
             ).filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
