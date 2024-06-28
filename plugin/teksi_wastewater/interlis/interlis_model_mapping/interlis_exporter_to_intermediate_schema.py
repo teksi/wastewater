@@ -1777,7 +1777,8 @@ class InterlisExporterToIntermediateSchema:
                 flaeche_red=row.surface_red,
                 flaeche_red_dim=row.surface_red_dim,
                 schmutzabwasseranfall=row.waste_water_production,
-                einleitstelleref=self.get_tid(row.fk_discharge_point__REL),
+                # discharge_point might no be in selection - therefore use check_fk_in_subsetid instead of get_tid
+                einleitstelleref=self.check_fk_in_subsetid(row.fk_discharge_point__REL),
                 hydr_kennwerteref=self.get_tid(row.fk_hydraulic_char_data__REL),
             )
             self.abwasser_session.add(gesamteinzugsgebiet)
