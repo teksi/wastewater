@@ -635,6 +635,183 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         )
         assert new_row["level"] is None
 
+    def test_vw_tww_additional_ws_geometry_insert(self):
+        # 1. insert geometry and no co_level and no wn_bottom_level
+        # INSERT INTO tww_app.vw_tww_additional_ws (situation3d_geometry, wn_obj_id, co_obj_id) VALUES (ST_SetSRID(ST_MakePoint(2600000, 1200000), 2056), '1338_1002', '1338_1002');
+        row = {
+            "situation3d_geometry": "0101000020080800000000000020D6434100000000804F3241",
+            "wn_obj_id": "1338_1002",
+            "co_obj_id": "1338_1002",
+        }
+        expected_row = copy.deepcopy(row)
+        # wastewaterstructure has the geometry but NaN as Z because of no co_level (geometry of cover): ST_SetSRID(ST_Collect(ST_MakePoint(2600000, 1200000, 'NaN')), 2056)
+        expected_row["situation3d_geometry"] = "0101000020080800000000000020D6434100000000804F3241"
+        # co_level is NULL
+        expected_row["co_level"] = None
+        # wn_bottom_level NULL
+        expected_row["wn_bottom_level"] = None
+        self.insert_check("vw_tww_additional_ws", row, expected_row)
+        # cover geometry has the geometry but NaN as Z: ST_SetSRID(ST_MakePoint(2600000, 1200000, 'NaN'), 2056)
+        row = self.select("cover", "1338_1002", schema="tww_od")
+        assert (
+            row["situation3d_geometry"]
+            == "01010000A0080800000000000020D6434100000000804F3241000000000000F87F"
+        )
+        # wastewater_node has the geometry but not 3d: ST_SetSRID(ST_MakePoint(2600000, 1200000), 2056)
+        row = self.select("wastewater_node", "1338_1002", schema="tww_od")
+        assert row["situation3d_geometry"] == self.execute(
+            "ST_SetSRID( ST_MakePoint(2600000, 1200000, 'NaN'), 2056)"
+        )
+
+        # 2. insert geometry with no co_level and WITH wn_bottom_level
+        # INSERT INTO tww_app.vw_tww_additional_ws (situation3d_geometry, wn_obj_id, co_obj_id, wn_bottom_level) VALUES (ST_SetSRID(ST_MakePoint(2600000, 1200000), 2056), '1338_1003', '1338_1003', 200.000);
+        row = {
+            "situation3d_geometry": "0101000020080800000000000020D6434100000000804F3241",
+            "wn_obj_id": "1338_1003",
+            "co_obj_id": "1338_1003",
+            "wn_bottom_level": "200.000",
+        }
+        expected_row = copy.deepcopy(row)
+        # wastewaterstructure has the 2D geometry: ST_SetSRID(ST_MakePoint(2600000, 1200000), 2056)
+        expected_row["situation3d_geometry"] = "0101000020080800000000000020D6434100000000804F3241"
+        # co_level is NULL
+        expected_row["co_level"] = None
+        # wn_bottom_level is new wn_bottom_level
+        expected_row["wn_bottom_level"] = "200.000"
+        self.insert_check("vw_tww_additional_ws", row, expected_row)
+        # cover geometry has the geometry but NaN as Z: ST_SetSRID(ST_MakePoint(2600000, 1200000, 'NaN'), 2056)
+        row = self.select("cover", "1338_1003", schema="tww_od")
+        assert (
+            row["situation3d_geometry"]
+            == "01010000A0080800000000000020D6434100000000804F3241000000000000F87F"
+        )
+        # wastewater_node has the geometry and  wn_buttom_level as Z: ST_SetSRID(ST_MakePoint(2600000, 1200000, 200), 2056)
+        row = self.select("wastewater_node", "1338_1003", schema="tww_od")
+        assert (
+            row["situation3d_geometry"]
+            == "01010000A0080800000000000020D6434100000000804F32410000000000006940"
+        )
+
+        # 3. insert geometry with Z and WITH co_level and WITH wn_bottom_level
+        # INSERT INTO tww_app.vw_tww_additional_ws (situation3d_geometry, wn_obj_id, co_obj_id, wn_bottom_level, co_level) VALUES (ST_SetSRID(ST_MakePoint(2600000, 1200000), 2056), '1338_1004', '1338_1004', 200.000, 500.000);
+        row = {
+            "situation3d_geometry": "0101000020080800000000000020D6434100000000804F3241",
+            "wn_obj_id": "1338_1004",
+            "co_obj_id": "1338_1004",
+            "wn_bottom_level": "200.000",
+            "co_level": "500.000",
+        }
+        expected_row = copy.deepcopy(row)
+        # wastewaterstructure has 2D geometry: ST_SetSRID(ST_MakePoint(2600000, 1200000), 2056)
+        expected_row["situation3d_geometry"] = "0101000020080800000000000020D6434100000000804F3241"
+        # co_level is new co_level
+        expected_row["co_level"] = "500.000"
+        # wn_bottom_level is new wn_bottom_level
+        expected_row["wn_bottom_level"] = "200.000"
+        self.insert_check("vw_tww_additional_ws", row, expected_row)
+        # cover geometry has the geometry and co_level as Z: ST_SetSRID(ST_MakePoint(2600000, 1200000, 500), 2056)
+        row = self.select("cover", "1338_1004", schema="tww_od")
+        assert (
+            row["situation3d_geometry"]
+            == "01010000A0080800000000000020D6434100000000804F32410000000000407F40"
+        )
+        # wastewater_node has the geometry and wn_buttom_level as Z: ST_SetSRID(ST_MakePoint(2600000, 1200000, 200), 2056)
+        row = self.select("wastewater_node", "1338_1004", schema="tww_od")
+        assert (
+            row["situation3d_geometry"]
+            == "01010000A0080800000000000020D6434100000000804F32410000000000006940"
+        )
+
+    def test_vw_tww_additional_ws_geometry_update(self):
+        # first insert
+        # insert geometry with no co_level and no wn_bottom_level
+        # INSERT INTO tww_app.vw_tww_additional_ws (situation3d_geometry, wn_obj_id, co_obj_id) VALUES (ST_SetSRID(ST_MakePoint(2600000, 1200000), 2056), '1338_1010', '1338_1010');
+        row = {
+            "situation3d_geometry": "0101000020080800000000000020D6434100000000804F3241",
+            "ws_type": "manhole",
+            "wn_obj_id": "1338_1010",
+            "co_obj_id": "1338_1010",
+        }
+        obj_id = self.insert("vw_tww_additional_ws", row)
+
+        # 1. update no change on geometry with Z but WITH wn_bottom_level
+        # UPDATE INTO tww_app.vw_wastewater_node SET wn_bottom_level=200.000 WHERE obj_id = obj_id
+        row = {"wn_bottom_level": "200.000"}
+        self.update("vw_tww_additional_ws", row, obj_id)
+        new_row = self.select("vw_tww_additional_ws", obj_id)
+        # no change on geometry of wastewaterstructure (because it's geometry of cover that does not change)
+        self.assertEqual(
+            new_row["situation3d_geometry"], "0101000020080800000000000020D6434100000000804F3241"
+        )
+        # no change on co_level
+        self.assertIsNone(new_row["co_level"])
+        # wn_bottom_level is new wn_bottom_level
+        self.assertEqual(new_row["wn_bottom_level"], 200.000)
+        # no change on cover geometry: ST_SetSRID(ST_MakePoint(2600000, 1200000, 'NaN'), 2056)
+        new_row = self.select("cover", "1338_1010", schema="tww_od")
+        assert (
+            new_row["situation3d_geometry"]
+            == "01010000A0080800000000000020D6434100000000804F3241000000000000F87F"
+        )
+        # wastewater_node geometry has Z from new wn_bottom_level: ST_SetSRID(ST_MakePoint(2600000, 1200000, 200), 2056)
+        new_row = self.select("wastewater_node", "1338_1010", schema="tww_od")
+        assert (
+            new_row["situation3d_geometry"]
+            == "01010000A0080800000000000020D6434100000000804F32410000000000006940"
+        )
+
+        # 2. update change co_level
+        # UPDATE INTO tww_app.vw_wastewater_node SET level=500.000 WHERE obj_id = obj_id
+        row = {"co_level": "500.000"}
+        self.update("vw_tww_additional_ws", row, obj_id)
+        new_row = self.select("vw_tww_additional_ws", obj_id)
+        # geometry of wastewaterstructure has 2D geometry: ST_SetSRID(ST_MakePoint(2600000, 1200000, 500), 2056)
+        assert (
+            new_row["situation3d_geometry"] == "0101000020080800000000000020D6434100000000804F3241"
+        )
+        # co_level is new co_level
+        assert new_row["co_level"] == 500.000
+        # no change on wn_bottom_level
+        assert new_row["wn_bottom_level"] == 200.000
+        # cover geometry has Z from new co_level: ST_SetSRID(ST_MakePoint(2600000, 1200000, 500), 2056)
+        new_row = self.select("cover", "1338_1010", schema="tww_od")
+        assert (
+            new_row["situation3d_geometry"]
+            == "01010000A0080800000000000020D6434100000000804F32410000000000407F40"
+        )
+        # no change on wastewater_node geometry: ST_SetSRID(ST_MakePoint(2600000, 1200000, 200), 2056)
+        new_row = self.select("wastewater_node", "1338_1010", schema="tww_od")
+        assert (
+            new_row["situation3d_geometry"]
+            == "01010000A0080800000000000020D6434100000000804F32410000000000006940"
+        )
+
+        # 3. update change WITH co_level and WITH wn_bottom_level
+        # UPDATE INTO tww_app.vw_wastewater_node SET co_level=600.000, wn_bottom_level=300.000 WHERE obj_id = obj_id
+        row = {"co_level": "600.000", "wn_bottom_level": "300.000"}
+        self.update("vw_tww_additional_ws", row, obj_id)
+        new_row = self.select("vw_tww_additional_ws", obj_id)
+        # geometry of wastewaterstructure unchanged: ST_SetSRID(ST_MakePoint(2600000, 1200000), 2056)
+        assert (
+            new_row["situation3d_geometry"] == "0101000020080800000000000020D6434100000000804F3241"
+        )
+        # co_level is new co_level
+        assert new_row["co_level"] == 600.000
+        # wn_bottom_level is new wn_bottom_level
+        assert new_row["wn_bottom_level"] == 300.000
+        # cover geometry has Z from new co_level: ST_SetSRID(ST_MakePoint(2600000, 1200000, 600), 2056)
+        new_row = self.select("cover", "1338_1010", schema="tww_od")
+        assert (
+            new_row["situation3d_geometry"]
+            == "01010000A0080800000000000020D6434100000000804F32410000000000C08240"
+        )
+        # no change on wastewater_node geometry: ST_SetSRID(ST_MakePoint(2600000, 1200000, 300), 2056)
+        new_row = self.select("wastewater_node", "1338_1010", schema="tww_od")
+        assert (
+            new_row["situation3d_geometry"]
+            == "01010000A0080800000000000020D6434100000000804F32410000000000C07240"
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
