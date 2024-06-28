@@ -1276,10 +1276,10 @@ class InterlisExporterToIntermediateSchema:
         if self.filtered:
             # creates duplicate alias fountain / connection_object to wwn
             query = query.join(self.model_classes_tww_od.wastewater_networkelement).filter(
-            self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
             # query = query.filter(
-                # self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            # self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             # )
             # add sql statement to logger
             statement = query.statement
