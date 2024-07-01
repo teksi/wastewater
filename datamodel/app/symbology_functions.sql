@@ -733,7 +733,7 @@ BEGIN
   SELECT rp_to.level INTO _rp_to_level
   FROM tww_od.reach_point rp_to
   WHERE NEW.fk_reach_point_to = rp_to.obj_id;
-  
+
   IF _rp_from_level=0 OR _rp_to_level=0 THEN
     NEW.length_effective = ST_Length(NEW.progression3d_geometry);
   ELSE
