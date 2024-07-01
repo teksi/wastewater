@@ -738,7 +738,7 @@ BEGIN
     NEW.length_effective = ST_Length(NEW.progression3d_geometry);
   ELSE
     NEW.length_effective = COALESCE(sqrt((_rp_from_level - _rp_to_level)^2 + ST_Length(NEW.progression3d_geometry)^2), ST_Length(NEW.progression3d_geometry) );
-  END IF:
+  END IF;
   RETURN NEW;
 
 END;
