@@ -69,5 +69,5 @@ Editing
 Multi Edit
 -----------------------------------------------------------
 
-There is in the moment no tool to create or to link a maintenance event to a selection of reaches or wastewater structures. If you open the form in multi edit mode, the **Maintenance** tab is empty.
-Multi edit with linked tables is not implemented in QGIS.
+Multi edit with linked tables is implemented in QGIS. It is possible to create or to link a maintenance event to a selection of reaches or wastewater structures im multiedit-mode.
+
