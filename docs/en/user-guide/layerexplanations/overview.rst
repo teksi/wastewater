@@ -21,7 +21,7 @@ Reaches are always created in flow-direction (flow direction in case of normal-f
 To support the digitizing, TWW uses two main-views: **vw_tww_wastewater_structure** and **vw_tww_reach**. To edit these main views, there is a special wizard and the preconfigured feature attribute windows of these views.
 The idea is, to support with the wizard the digitizing, so that 95% of the manholes and channels can be collected on the general-tab of the feature attribute-window, that means with as few mouse clicks as possible.
 
-Before starting with digitizing, think about the obj_id of the records you will create. A VSA-DSS record must have a OID composed of prefix and postfix. The postfix is created by TWW-database. The prefix has to be defined in tww_sys.oid_prefixes before starting digitizing (look chapter 'Setup workstation' in 'TWW Installation Guide'.
+Before starting with digitizing, think about the obj_id of the records you will create. A VSA-DSS record must have a OID composed of prefix and postfix. The postfix is created by TWW-database. The prefix has to be defined in tww_sys.oid_prefixes before starting digitizing (look chapter 'Setup workstation' in 'TWW Installation Guide').
 
 **TWW wizard**
 
