@@ -1726,40 +1726,10 @@ class InterlisExporterToIntermediateSchema:
 
     def _export_catchment_area_totals(self):
         query = self.tww_session.query(self.model_classes_tww_od.catchment_area_totals)
+        # only export catchment_area_totals if explicitly added
         if self.filtered:
-            # query1 via hydraulic_char_data
-            # first part of join
-            query1 = query.join(
-                self.model_classes_tww_od.hydraulic_char_data,
-                or_(
-                    self.model_classes_tww_od.hydraulic_char_data.obj_id
-                    == self.model_classes_tww_od.catchment_area_totals.fk_hydraulic_char_data,
-                ),
-            )
-            # second part of query1 join as there is other fk
-            query1 = query1.join(
-                self.model_classes_tww_od.wastewater_networkelement,
-                or_(
-                    self.model_classes_tww_od.wastewater_networkelement.obj_id
-                    == self.model_classes_tww_od.hydraulic_char_data.fk_wastewater_node,
-                ),
-            )
-            # query2 via discharge_point
-            # first part of join
-            query2 = query.join(
-                self.model_classes_tww_od.discharge_point,
-                or_(
-                    self.model_classes_tww_od.discharge_point.obj_id
-                    == self.model_classes_tww_od.catchment_area_totals.fk_discharge_point,
-                ),
-            )
-            # second part of of query2 join
-            query2 = query2.join(
-                self.model_classes_tww_od.wastewater_networkelement,
-            )
-            query = query.union(query1, query2)
             query = query.filter(
-                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+                self.model_classes_tww_od.catchment_area_totals.obj_id.in_(self.subset_ids)
             )
         # add sql statement to logger
         statement = query.statement
