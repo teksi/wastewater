@@ -230,7 +230,9 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
     CREATE OR REPLACE FUNCTION tww_app.ft_vw_tww_wastewater_structure_INSERT()
       RETURNS trigger AS
     $BODY$
+    DECLARE new_co jsonb;
     BEGIN
+
 
       NEW.identifier = COALESCE(NEW.identifier, NEW.obj_id);
 
@@ -259,15 +261,27 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
 
     {insert_wn}
 
-      UPDATE tww_od.wastewater_structure
-        SET fk_main_wastewater_node = NEW.wn_obj_id
-        WHERE obj_id = NEW.obj_id;
 
-    {insert_vw_cover}
+      -- Aggregate all co_* values in a jsonb
+      new_co := (
+          SELECT jsonb_object_agg(key, to_jsonb(NEW)->key)
+          FROM jsonb_object_keys(to_jsonb(NEW)) key
+          WHERE LEFT(key, 3) = 'co_' AND key NOT IN ('co_identifier', 'co_obj_id')
+        );
 
-      UPDATE tww_od.wastewater_structure
-        SET fk_main_cover = NEW.co_obj_id
-        WHERE obj_id = NEW.obj_id;
+      -- Check if all remaining values are NULL
+      CASE WHEN jsonb_strip_nulls(new_co)::text <> '{{}}' THEN -- no cover entries
+        {insert_vw_cover}
+
+     ELSE
+       NEW.co_obj_id=NULL;
+       RAISE WARNING 'Wastewater Structure %: no cover created as all cover-related columns are NULL. If you want to add a cover please fill in at least one cover attribute value.', NEW.identifier; -- Warning
+    END CASE;
+
+    UPDATE tww_od.wastewater_structure
+      SET fk_main_cover = NEW.co_obj_id,
+      fk_main_wastewater_node = NEW.wn_obj_id
+      WHERE obj_id = NEW.obj_id;
 
       RETURN NEW;
     END; $BODY$ LANGUAGE plpgsql VOLATILE;
@@ -356,6 +370,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
                 "fk_dataowner": "COALESCE(NULLIF(NEW.wn_fk_dataowner,''), NEW.fk_dataowner)",
                 "fk_wastewater_structure": "NEW.obj_id",
             },
+            returning="obj_id INTO NEW.wn_obj_id",
         ),
         insert_vw_cover=insert_command(
             pg_cur=cursor,
@@ -378,6 +393,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
                 "fk_dataowner": "NEW.fk_dataowner",
                 "fk_wastewater_structure": "NEW.obj_id",
             },
+            returning="obj_id INTO NEW.co_obj_id",
         ),
     )
 
@@ -390,11 +406,28 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
     DECLARE
       dx float;
       dy float;
+      new_co jsonb;
     BEGIN
+
       {update_co}
+      IF NOT FOUND THEN
+        -- Aggregate all co_* values in a jsonb
+        new_co := (
+          SELECT jsonb_object_agg(key, to_jsonb(NEW)->key)
+          FROM jsonb_object_keys(to_jsonb(NEW)) key
+          WHERE LEFT(key, 3) = 'co_' AND key NOT IN ('co_identifier', 'co_obj_id')
+        );
+
+        -- Check if all remaining values are NULL
+        CASE WHEN jsonb_strip_nulls(new_co)::text <> '{{}}' THEN
+          {insert_vw_cover}
+        ELSE NULL;
+        END CASE;
+      END IF;
       {update_sp}
       {update_ws}
       {update_wn}
+      {update_ne}
 
       IF OLD.ws_type <> NEW.ws_type THEN
         CASE
@@ -548,11 +581,10 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
                 "_bottom_label",
                 "_input_label",
                 "_output_label",
-                "fk_main_cover",
                 "fk_main_wastewater_node",
                 "_depth",
             ],
-            update_values={},
+            update_values={"fk_main_cover": "OLD.co_obj_id"},
         ),
         update_ma=update_command(
             pg_cur=cursor,
@@ -606,6 +638,38 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             prefix="wn_",
             indent=6,
             skip_columns=["situation3d_geometry"],
+        ),
+        update_ne=update_command(
+            pg_cur=cursor,
+            table_schema="tww_od",
+            table_name="wastewater_networkelement",
+            table_alias="ne",
+            prefix="wn_",
+            indent=6,
+            skip_columns=[],
+        ),
+        insert_vw_cover=insert_command(
+            pg_cur=cursor,
+            table_schema="tww_app",
+            table_name="vw_cover",
+            table_type="view",
+            table_alias="co",
+            prefix="co_",
+            remove_pkey=False,
+            pkey="obj_id",
+            indent=10,
+            remap_columns={"cover_shape": "co_shape"},
+            insert_values={
+                "identifier": "COALESCE(NULLIF(NEW.co_identifier,''), NEW.identifier)",
+                "situation3d_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), 'nan'), {srid} )".format(
+                    srid=srid
+                ),
+                "last_modification": "NOW()",
+                "fk_provider": "NEW.fk_provider",
+                "fk_dataowner": "NEW.fk_dataowner",
+                "fk_wastewater_structure": "NEW.obj_id",
+            },
+            returning="obj_id INTO OLD.co_obj_id",
         ),
     )
 

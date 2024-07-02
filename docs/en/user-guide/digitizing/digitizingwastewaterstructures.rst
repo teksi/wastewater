@@ -66,13 +66,13 @@ a) an new object in the class wastewater structure is added
 
 b) a new object in the respective subclass [discharge_point, infiltration_installation, manhole, special_structure] is added and linked
 
-c) a new cover object is added and linked to the wastewater structure
+c) a new cover object is added and linked to the wastewater structure if at least one cover attribute other than co_obj_id and co_identifier is filled out
 
 d) a new wastewater node object is generated in wastewater network elements and its subclass wastewater nodes
 
 To add additional objects such as structure parts (besides covers there are access aids, back flow prevention etc) you have to save first and then edit the point object (see the :ref:`editing-data` chapter).
 
-.. note:: To add a second cover or a second wastewater node to a wastewater structure, see the :ref:`editing-data` chapter.
+.. note:: To add a (second) cover or a second wastewater node to a wastewater structure, see the :ref:`editing-data` chapter.
 
 
 Geometry synchronization
