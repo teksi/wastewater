@@ -472,6 +472,9 @@ class InterlisExporterToIntermediateSchema:
             query = query.join(self.model_classes_tww_od.wastewater_networkelement).filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             kanal = self.model_classes_interlis.kanal(
                 # FIELDS TO MAP TO ABWASSER.kanal
@@ -498,6 +501,9 @@ class InterlisExporterToIntermediateSchema:
             query = query.join(self.model_classes_tww_od.wastewater_networkelement).filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             normschacht = self.model_classes_interlis.normschacht(
                 # --- abwasserbauwerk ---
@@ -520,6 +526,9 @@ class InterlisExporterToIntermediateSchema:
             query = query.join(self.model_classes_tww_od.wastewater_networkelement).filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             einleitstelle = self.model_classes_interlis.einleitstelle(
                 # --- abwasserbauwerk ---
@@ -541,6 +550,9 @@ class InterlisExporterToIntermediateSchema:
             query = query.join(self.model_classes_tww_od.wastewater_networkelement).filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             logger.warning(
                 "TWW field special_structure.upper_elevation has no equivalent in the interlis model. It will be ignored."
@@ -567,6 +579,9 @@ class InterlisExporterToIntermediateSchema:
             query = query.join(self.model_classes_tww_od.wastewater_networkelement).filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             logger.warning(
                 "TWW field infiltration_installation.upper_elevation has no equivalent in the interlis model. It will be ignored."
@@ -601,6 +616,9 @@ class InterlisExporterToIntermediateSchema:
             query = query.join(self.model_classes_tww_od.reach).filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             # AVAILABLE FIELDS IN TWW.pipe_profile
 
@@ -642,6 +660,9 @@ class InterlisExporterToIntermediateSchema:
             ).filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             # AVAILABLE FIELDS IN TWW.reach_point
 
@@ -683,6 +704,9 @@ class InterlisExporterToIntermediateSchema:
             query = query.filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             # AVAILABLE FIELDS IN TWW.wastewater_node
 
@@ -721,6 +745,9 @@ class InterlisExporterToIntermediateSchema:
             query = query.filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             # AVAILABLE FIELDS IN TWW.reach
 
@@ -774,6 +801,9 @@ class InterlisExporterToIntermediateSchema:
             query = query.filter(
                 self.model_classes_tww_od.reach_progression_alternative.obj_id.in_(self.subset_ids)
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             haltung_alternativverlauf = self.model_classes_interlis.haltung_alternativverlauf(
                 **self.base_common(row, "haltung_alternativverlauf"),
@@ -796,6 +826,9 @@ class InterlisExporterToIntermediateSchema:
             ).filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             # AVAILABLE FIELDS IN TWW.dryweather_downspout
 
@@ -832,6 +865,9 @@ class InterlisExporterToIntermediateSchema:
             ).filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             # AVAILABLE FIELDS IN TWW.access_aid
 
@@ -868,6 +904,9 @@ class InterlisExporterToIntermediateSchema:
             ).filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             # AVAILABLE FIELDS IN TWW.dryweather_flume
 
@@ -904,6 +943,9 @@ class InterlisExporterToIntermediateSchema:
             ).filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             # AVAILABLE FIELDS IN TWW.cover
 
@@ -949,6 +991,9 @@ class InterlisExporterToIntermediateSchema:
             ).filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             # AVAILABLE FIELDS IN TWW.benching
 
@@ -982,6 +1027,9 @@ class InterlisExporterToIntermediateSchema:
             query = query.filter(
                 self.model_classes_tww_od.waste_water_treatment_plant.obj_id.in_(self.subset_ids)
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             abwasserreinigungsanlage = self.model_classes_interlis.abwasserreinigungsanlage(
                 **self.vsa_base_common(row, "abwasserreinigungsanlage"),
@@ -1015,6 +1063,9 @@ class InterlisExporterToIntermediateSchema:
             query = query.filter(
                 self.model_classes_tww_od.wwtp_energy_use.obj_id.in_(self.subset_ids)
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             araenergienutzung = self.model_classes_interlis.araenergienutzung(
                 **self.vsa_base_common(row, "araenergienutzung"),
@@ -1037,6 +1088,9 @@ class InterlisExporterToIntermediateSchema:
             query = query.filter(
                 self.model_classes_tww_od.waste_water_treatment.obj_id.in_(self.subset_ids)
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             abwasserbehandlung = self.model_classes_interlis.abwasserbehandlung(
                 **self.vsa_base_common(row, "abwasserbehandlung"),
@@ -1057,6 +1111,9 @@ class InterlisExporterToIntermediateSchema:
             query = query.filter(
                 self.model_classes_tww_od.sludge_treatment.obj_id.in_(self.subset_ids)
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             schlammbehandlung = self.model_classes_interlis.schlammbehandlung(
                 **self.vsa_base_common(row, "schlammbehandlung"),
@@ -1090,6 +1147,9 @@ class InterlisExporterToIntermediateSchema:
             ).filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             arabauwerk = self.model_classes_interlis.arabauwerk(
                 # --- bauwerksteil ---
@@ -1112,6 +1172,9 @@ class InterlisExporterToIntermediateSchema:
             ).filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             steuerungszentrale = self.model_classes_interlis.steuerungszentrale(
                 **self.vsa_base_common(row, "steuerungszentrale"),
@@ -1131,6 +1194,9 @@ class InterlisExporterToIntermediateSchema:
             query = query.join(self.model_classes_tww_od.wastewater_networkelement).filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             abflusslose_toilette = self.model_classes_interlis.abflusslose_toilette(
                 **self.wastewater_structure_common(row, "abflusslose_toilette"),
@@ -1145,12 +1211,6 @@ class InterlisExporterToIntermediateSchema:
     def _export_throttle_shut_off_unit(self):
         query = self.tww_session.query(self.model_classes_tww_od.throttle_shut_off_unit)
         if self.filtered:
-            # query = query.join(
-            # self.model_classes_tww_od.throttle_shut_off_unit,
-            # self.model_classes_tww_od.wastewater_node,
-            # ).filter(
-            # self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
-            # )
             query = query.join(
                 self.model_classes_tww_od.wastewater_node,
                 or_(
@@ -1160,6 +1220,9 @@ class InterlisExporterToIntermediateSchema:
             ).filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             absperr_drosselorgan = self.model_classes_interlis.absperr_drosselorgan(
                 **self.vsa_base_common(row, "absperr_drosselorgan"),
@@ -1196,6 +1259,9 @@ class InterlisExporterToIntermediateSchema:
             ).filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             beckenentleerung = self.model_classes_interlis.beckenentleerung(
                 **self.structure_part_common(row, "beckenentleerung"),
@@ -1221,6 +1287,9 @@ class InterlisExporterToIntermediateSchema:
             ).filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
         for row in query:
             beckenreinigung = self.model_classes_interlis.beckenreinigung(
                 **self.structure_part_common(row, "beckenreinigung"),
