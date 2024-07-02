@@ -2968,9 +2968,9 @@ ALTER TABLE tww_od.re_building_group_disposal ADD CONSTRAINT rel_building_group_
 ALTER TABLE tww_od.re_building_group_disposal ADD COLUMN fk_disposal varchar(16);
 ALTER TABLE tww_od.re_building_group_disposal ADD CONSTRAINT rel_building_group_disposal_disposal FOREIGN KEY (fk_disposal) REFERENCES tww_od.disposal(obj_id) ON UPDATE CASCADE ON DELETE cascade DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE tww_od.re_maintenance_event_wastewater_structure ADD COLUMN fk_wastewater_structure varchar(16);
-ALTER TABLE tww_od.re_maintenance_event_wastewater_structure ADD CONSTRAINT rel_maintenance_event_wastewater_structure_wastewater_structure FOREIGN KEY (fk_wastewater_structure) REFERENCES tww_od.wastewater_structure(obj_id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE tww_od.re_maintenance_event_wastewater_structure ADD CONSTRAINT rel_maintenance_event_wastewater_structure_wastewater_structure FOREIGN KEY (fk_wastewater_structure) REFERENCES tww_od.wastewater_structure(obj_id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE tww_od.re_maintenance_event_wastewater_structure ADD COLUMN fk_maintenance_event varchar(16);
-ALTER TABLE tww_od.re_maintenance_event_wastewater_structure ADD CONSTRAINT rel_maintenance_event_wastewater_structure_maintenance_event FOREIGN KEY (fk_maintenance_event) REFERENCES tww_od.maintenance_event(obj_id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE tww_od.re_maintenance_event_wastewater_structure ADD CONSTRAINT rel_maintenance_event_wastewater_structure_maintenance_event FOREIGN KEY (fk_maintenance_event) REFERENCES tww_od.maintenance_event(obj_id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 CREATE TABLE tww_vl.organisation_organisation_type () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.organisation_organisation_type ADD CONSTRAINT pkey_tww_vl_organisation_organisation_type_code PRIMARY KEY (code);
  INSERT INTO tww_vl.organisation_organisation_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8608,8608,'waste_water_association','Abwasserverband','association_epuration_eau', 'consorzio_depurazione', 'rrr_Abwasserverband', '', '', '', '', '', 'true');
