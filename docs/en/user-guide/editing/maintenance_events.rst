@@ -70,4 +70,3 @@ Multi Edit
 -----------------------------------------------------------
 
 Multi edit with linked tables is implemented in QGIS. It is possible to create or to link a maintenance event to a selection of reaches or wastewater structures im multiedit-mode.
-
