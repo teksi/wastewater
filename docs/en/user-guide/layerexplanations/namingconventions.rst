@@ -22,7 +22,7 @@ If INTERLIS-import or -export is used, then there will be additional schema like
 Layer names
 -----------
 
-* Layer names without prefix  
+* Layer names without prefix
 
 This shows you, that you find the table in the tww_od-schema or (if the are in the layer-group "Value Lists", you find them in schema tww_vl.
 If you are not sure in which schema to look for the table: place the mouse over the layer and look in the yellow popup-box for 'table="tww_*'.
