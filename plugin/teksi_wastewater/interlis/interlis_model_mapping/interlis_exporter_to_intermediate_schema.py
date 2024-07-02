@@ -1280,7 +1280,7 @@ class InterlisExporterToIntermediateSchema:
             # or_(
             # self.model_classes_tww_od.wastewater_networkelement.obj_id
             # == self.model_classes_tww_od.connection_object.fk_wastewater_networkelement,
-            ),
+            #),
             ).filter(
              self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
