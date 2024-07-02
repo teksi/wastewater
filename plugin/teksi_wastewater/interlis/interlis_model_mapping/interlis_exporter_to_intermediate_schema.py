@@ -1275,7 +1275,7 @@ class InterlisExporterToIntermediateSchema:
         query = self.tww_session.query(self.model_classes_tww_od.fountain)
         if self.filtered:
             query = query.join(
-            self.model_classes_tww_od.wastewater_networkelement,
+                self.model_classes_tww_od.wastewater_networkelement,
             ).filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
@@ -1341,9 +1341,9 @@ class InterlisExporterToIntermediateSchema:
         query = self.tww_session.query(self.model_classes_tww_od.individual_surface)
         if self.filtered:
             query = query.join(
-            self.model_classes_tww_od.wastewater_networkelement,
+                self.model_classes_tww_od.wastewater_networkelement,
             ).filter(
-             self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
             # add sql statement to logger
             statement = query.statement
@@ -2241,9 +2241,9 @@ class InterlisExporterToIntermediateSchema:
         query = self.tww_session.query(self.model_classes_tww_od.reservoir)
         if self.filtered:
             query = query.join(
-            self.model_classes_tww_od.wastewater_networkelement,
+                self.model_classes_tww_od.wastewater_networkelement,
             ).filter(
-             self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
             # add sql statement to logger
             statement = query.statement
