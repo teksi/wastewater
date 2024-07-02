@@ -2968,9 +2968,9 @@ ALTER TABLE tww_od.re_building_group_disposal ADD CONSTRAINT rel_building_group_
 ALTER TABLE tww_od.re_building_group_disposal ADD COLUMN fk_disposal varchar(16);
 ALTER TABLE tww_od.re_building_group_disposal ADD CONSTRAINT rel_building_group_disposal_disposal FOREIGN KEY (fk_disposal) REFERENCES tww_od.disposal(obj_id) ON UPDATE CASCADE ON DELETE cascade DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE tww_od.re_maintenance_event_wastewater_structure ADD COLUMN fk_wastewater_structure varchar(16);
-ALTER TABLE tww_od.re_maintenance_event_wastewater_structure ADD CONSTRAINT rel_maintenance_event_wastewater_structure_wastewater_structure FOREIGN KEY (fk_wastewater_structure) REFERENCES tww_od.wastewater_structure(obj_id) ON UPDATE CASCADE ON DELETE cascade DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE tww_od.re_maintenance_event_wastewater_structure ADD CONSTRAINT rel_maintenance_event_wastewater_structure_wastewater_structure FOREIGN KEY (fk_wastewater_structure) REFERENCES tww_od.wastewater_structure(obj_id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE tww_od.re_maintenance_event_wastewater_structure ADD COLUMN fk_maintenance_event varchar(16);
-ALTER TABLE tww_od.re_maintenance_event_wastewater_structure ADD CONSTRAINT rel_maintenance_event_wastewater_structure_maintenance_event FOREIGN KEY (fk_maintenance_event) REFERENCES tww_od.maintenance_event(obj_id) ON UPDATE CASCADE ON DELETE cascade DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE tww_od.re_maintenance_event_wastewater_structure ADD CONSTRAINT rel_maintenance_event_wastewater_structure_maintenance_event FOREIGN KEY (fk_maintenance_event) REFERENCES tww_od.maintenance_event(obj_id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 CREATE TABLE tww_vl.organisation_organisation_type () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.organisation_organisation_type ADD CONSTRAINT pkey_tww_vl_organisation_organisation_type_code PRIMARY KEY (code);
  INSERT INTO tww_vl.organisation_organisation_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8608,8608,'waste_water_association','Abwasserverband','association_epuration_eau', 'consorzio_depurazione', 'rrr_Abwasserverband', '', '', '', '', '', 'true');
@@ -3593,9 +3593,9 @@ ALTER TABLE tww_vl.sludge_treatment_stabilisation ADD CONSTRAINT pkey_tww_vl_slu
  REFERENCES tww_vl.sludge_treatment_stabilisation (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.wastewater_networkelement ADD COLUMN fk_wastewater_structure varchar(16);
-ALTER TABLE tww_od.wastewater_networkelement ADD CONSTRAINT rel_wastewater_networkelement_wastewater_structure FOREIGN KEY (fk_wastewater_structure) REFERENCES tww_od.wastewater_structure(obj_id) ON UPDATE CASCADE ON DELETE cascade DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE tww_od.wastewater_networkelement ADD CONSTRAINT rel_wastewater_networkelement_wastewater_structure FOREIGN KEY (fk_wastewater_structure) REFERENCES tww_od.wastewater_structure(obj_id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE tww_od.reach_point ADD COLUMN fk_wastewater_networkelement varchar(16);
-ALTER TABLE tww_od.reach_point ADD CONSTRAINT rel_reach_point_wastewater_networkelement FOREIGN KEY (fk_wastewater_networkelement) REFERENCES tww_od.wastewater_networkelement(obj_id) ON UPDATE CASCADE ON DELETE set null DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE tww_od.reach_point ADD CONSTRAINT rel_reach_point_wastewater_networkelement FOREIGN KEY (fk_wastewater_networkelement) REFERENCES tww_od.wastewater_networkelement(obj_id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 CREATE TABLE tww_vl.reach_point_elevation_accuracy () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.reach_point_elevation_accuracy ADD CONSTRAINT pkey_tww_vl_reach_point_elevation_accuracy_code PRIMARY KEY (code);
  INSERT INTO tww_vl.reach_point_elevation_accuracy (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3248,3248,'more_than_6cm','groesser_6cm','plusque_6cm', 'piu_6cm', 'mai_mare_6cm', '', 'G06', 'S06', '', '', 'true');
@@ -3625,7 +3625,7 @@ ALTER TABLE tww_vl.reach_point_pipe_closure ADD CONSTRAINT pkey_tww_vl_reach_poi
  REFERENCES tww_vl.reach_point_pipe_closure (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.wastewater_node ADD COLUMN fk_hydr_geometry varchar(16);
-ALTER TABLE tww_od.wastewater_node ADD CONSTRAINT rel_wastewater_node_hydr_geometry FOREIGN KEY (fk_hydr_geometry) REFERENCES tww_od.hydr_geometry(obj_id) ON UPDATE CASCADE ON DELETE cascade DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE tww_od.wastewater_node ADD CONSTRAINT rel_wastewater_node_hydr_geometry FOREIGN KEY (fk_hydr_geometry) REFERENCES tww_od.hydr_geometry(obj_id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE tww_od.wastewater_node ADD CONSTRAINT oorel_od_wastewater_node_wastewater_networkelement FOREIGN KEY (obj_id) REFERENCES tww_od.wastewater_networkelement(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
 CREATE TABLE tww_vl.wastewater_node_elevation_accuracy () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.wastewater_node_elevation_accuracy ADD CONSTRAINT pkey_tww_vl_wastewater_node_elevation_accuracy_code PRIMARY KEY (code);
@@ -3651,11 +3651,11 @@ ALTER TABLE tww_vl.wastewater_node_function_node_amelioration ADD CONSTRAINT pke
  REFERENCES tww_vl.wastewater_node_function_node_amelioration (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.reach ADD COLUMN fk_reach_point_from varchar(16);
-ALTER TABLE tww_od.reach ADD CONSTRAINT rel_reach_reach_point_from FOREIGN KEY (fk_reach_point_from) REFERENCES tww_od.reach_point(obj_id) ON UPDATE CASCADE ON DELETE cascade DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE tww_od.reach ADD CONSTRAINT rel_reach_reach_point_from FOREIGN KEY (fk_reach_point_from) REFERENCES tww_od.reach_point(obj_id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE tww_od.reach ADD COLUMN fk_reach_point_to varchar(16);
-ALTER TABLE tww_od.reach ADD CONSTRAINT rel_reach_reach_point_to FOREIGN KEY (fk_reach_point_to) REFERENCES tww_od.reach_point(obj_id) ON UPDATE CASCADE ON DELETE cascade DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE tww_od.reach ADD CONSTRAINT rel_reach_reach_point_to FOREIGN KEY (fk_reach_point_to) REFERENCES tww_od.reach_point(obj_id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE tww_od.reach ADD COLUMN fk_pipe_profile varchar(16);
-ALTER TABLE tww_od.reach ADD CONSTRAINT rel_reach_pipe_profile FOREIGN KEY (fk_pipe_profile) REFERENCES tww_od.pipe_profile(obj_id) ON UPDATE CASCADE ON DELETE set null DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE tww_od.reach ADD CONSTRAINT rel_reach_pipe_profile FOREIGN KEY (fk_pipe_profile) REFERENCES tww_od.pipe_profile(obj_id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE tww_od.reach ADD CONSTRAINT oorel_od_reach_wastewater_networkelement FOREIGN KEY (obj_id) REFERENCES tww_od.wastewater_networkelement(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
 CREATE TABLE tww_vl.reach_elevation_determination () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.reach_elevation_determination ADD CONSTRAINT pkey_tww_vl_reach_elevation_determination_code PRIMARY KEY (code);
@@ -3765,9 +3765,9 @@ ALTER TABLE tww_vl.reach_relining_kind ADD CONSTRAINT pkey_tww_vl_reach_relining
  REFERENCES tww_vl.reach_relining_kind (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.profile_geometry ADD COLUMN fk_pipe_profile varchar(16);
-ALTER TABLE tww_od.profile_geometry ADD CONSTRAINT rel_profile_geometry_pipe_profile FOREIGN KEY (fk_pipe_profile) REFERENCES tww_od.pipe_profile(obj_id) ON UPDATE CASCADE ON DELETE cascade DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE tww_od.profile_geometry ADD CONSTRAINT rel_profile_geometry_pipe_profile FOREIGN KEY (fk_pipe_profile) REFERENCES tww_od.pipe_profile(obj_id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE tww_od.hydr_geom_relation ADD COLUMN fk_hydr_geometry varchar(16);
-ALTER TABLE tww_od.hydr_geom_relation ADD CONSTRAINT rel_hydr_geom_relation_hydr_geometry FOREIGN KEY (fk_hydr_geometry) REFERENCES tww_od.hydr_geometry(obj_id) ON UPDATE CASCADE ON DELETE cascade DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE tww_od.hydr_geom_relation ADD CONSTRAINT rel_hydr_geom_relation_hydr_geometry FOREIGN KEY (fk_hydr_geometry) REFERENCES tww_od.hydr_geometry(obj_id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE tww_od.mechanical_pretreatment ADD COLUMN fk_wastewater_structure varchar(16);
 ALTER TABLE tww_od.mechanical_pretreatment ADD CONSTRAINT rel_mechanical_pretreatment_wastewater_structure FOREIGN KEY (fk_wastewater_structure) REFERENCES tww_od.wastewater_structure(obj_id) ON UPDATE CASCADE ON DELETE cascade DEFERRABLE INITIALLY DEFERRED;
 CREATE TABLE tww_vl.mechanical_pretreatment_kind () INHERITS (tww_vl.value_list_base);
@@ -3803,7 +3803,7 @@ ALTER TABLE tww_vl.overflow_char_kind_overflow_char ADD CONSTRAINT pkey_tww_vl_o
  REFERENCES tww_vl.overflow_char_kind_overflow_char (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.hq_relation ADD COLUMN fk_overflow_char varchar(16);
-ALTER TABLE tww_od.hq_relation ADD CONSTRAINT rel_hq_relation_overflow_char FOREIGN KEY (fk_overflow_char) REFERENCES tww_od.overflow_char(obj_id) ON UPDATE CASCADE ON DELETE cascade DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE tww_od.hq_relation ADD CONSTRAINT rel_hq_relation_overflow_char FOREIGN KEY (fk_overflow_char) REFERENCES tww_od.overflow_char(obj_id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE tww_od.structure_part ADD COLUMN fk_wastewater_structure varchar(16);
 ALTER TABLE tww_od.structure_part ADD CONSTRAINT rel_structure_part_wastewater_structure FOREIGN KEY (fk_wastewater_structure) REFERENCES tww_od.wastewater_structure(obj_id) ON UPDATE CASCADE ON DELETE cascade DEFERRABLE INITIALLY DEFERRED;
 CREATE TABLE tww_vl.structure_part_renovation_demand () INHERITS (tww_vl.value_list_base);
@@ -4085,7 +4085,7 @@ ALTER TABLE tww_vl.catchment_area_retention_planned ADD CONSTRAINT pkey_tww_vl_c
  REFERENCES tww_vl.catchment_area_retention_planned (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.surface_runoff_parameters ADD COLUMN fk_catchment_area varchar(16);
-ALTER TABLE tww_od.surface_runoff_parameters ADD CONSTRAINT rel_surface_runoff_parameters_catchment_area FOREIGN KEY (fk_catchment_area) REFERENCES tww_od.catchment_area(obj_id) ON UPDATE CASCADE ON DELETE cascade DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE tww_od.surface_runoff_parameters ADD CONSTRAINT rel_surface_runoff_parameters_catchment_area FOREIGN KEY (fk_catchment_area) REFERENCES tww_od.catchment_area(obj_id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE tww_od.measuring_point ADD COLUMN fk_reference_station varchar(16);
 ALTER TABLE tww_od.measuring_point ADD CONSTRAINT rel_measuring_point_reference_station FOREIGN KEY (fk_reference_station) REFERENCES tww_od.measuring_point(obj_id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE tww_od.measuring_point ADD COLUMN fk_operator varchar(16);
@@ -4130,7 +4130,7 @@ ALTER TABLE tww_vl.measuring_device_kind ADD CONSTRAINT pkey_tww_vl_measuring_de
  REFERENCES tww_vl.measuring_device_kind (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.measurement_series ADD COLUMN fk_measuring_point varchar(16);
-ALTER TABLE tww_od.measurement_series ADD CONSTRAINT rel_measurement_series_measuring_point FOREIGN KEY (fk_measuring_point) REFERENCES tww_od.measuring_point(obj_id) ON UPDATE CASCADE ON DELETE cascade DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE tww_od.measurement_series ADD CONSTRAINT rel_measurement_series_measuring_point FOREIGN KEY (fk_measuring_point) REFERENCES tww_od.measuring_point(obj_id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE tww_od.measurement_series ADD COLUMN fk_wastewater_networkelement varchar(16);
 ALTER TABLE tww_od.measurement_series ADD CONSTRAINT rel_measurement_series_wastewater_networkelement FOREIGN KEY (fk_wastewater_networkelement) REFERENCES tww_od.wastewater_networkelement(obj_id) ON UPDATE CASCADE ON DELETE set null DEFERRABLE INITIALLY DEFERRED;
 CREATE TABLE tww_vl.measurement_series_kind () INHERITS (tww_vl.value_list_base);
@@ -4157,13 +4157,13 @@ ALTER TABLE tww_vl.measurement_result_measurement_type ADD CONSTRAINT pkey_tww_v
  REFERENCES tww_vl.measurement_result_measurement_type (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.overflow ADD COLUMN fk_wastewater_node varchar(16);
-ALTER TABLE tww_od.overflow ADD CONSTRAINT rel_overflow_wastewater_node FOREIGN KEY (fk_wastewater_node) REFERENCES tww_od.wastewater_node(obj_id) ON UPDATE CASCADE ON DELETE cascade DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE tww_od.overflow ADD CONSTRAINT rel_overflow_wastewater_node FOREIGN KEY (fk_wastewater_node) REFERENCES tww_od.wastewater_node(obj_id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE tww_od.overflow ADD COLUMN fk_overflow_to varchar(16);
-ALTER TABLE tww_od.overflow ADD CONSTRAINT rel_overflow_overflow_to FOREIGN KEY (fk_overflow_to) REFERENCES tww_od.wastewater_node(obj_id) ON UPDATE CASCADE ON DELETE set null DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE tww_od.overflow ADD CONSTRAINT rel_overflow_overflow_to FOREIGN KEY (fk_overflow_to) REFERENCES tww_od.wastewater_node(obj_id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE tww_od.overflow ADD COLUMN fk_overflow_char varchar(16);
-ALTER TABLE tww_od.overflow ADD CONSTRAINT rel_overflow_overflow_char FOREIGN KEY (fk_overflow_char) REFERENCES tww_od.overflow_char(obj_id) ON UPDATE CASCADE ON DELETE set null DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE tww_od.overflow ADD CONSTRAINT rel_overflow_overflow_char FOREIGN KEY (fk_overflow_char) REFERENCES tww_od.overflow_char(obj_id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE tww_od.overflow ADD COLUMN fk_control_center varchar(16);
-ALTER TABLE tww_od.overflow ADD CONSTRAINT rel_overflow_control_center FOREIGN KEY (fk_control_center) REFERENCES tww_od.control_center(obj_id) ON UPDATE CASCADE ON DELETE set null DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE tww_od.overflow ADD CONSTRAINT rel_overflow_control_center FOREIGN KEY (fk_control_center) REFERENCES tww_od.control_center(obj_id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 CREATE TABLE tww_vl.overflow_actuation () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.overflow_actuation ADD CONSTRAINT pkey_tww_vl_overflow_actuation_code PRIMARY KEY (code);
  INSERT INTO tww_vl.overflow_actuation (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3667,3667,'other','andere','autres', 'altro', 'rrr_altul', '', '', '', '', '', 'true');
@@ -4216,11 +4216,11 @@ ALTER TABLE tww_vl.overflow_signal_transmission ADD CONSTRAINT pkey_tww_vl_overf
  REFERENCES tww_vl.overflow_signal_transmission (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.throttle_shut_off_unit ADD COLUMN fk_wastewater_node varchar(16);
-ALTER TABLE tww_od.throttle_shut_off_unit ADD CONSTRAINT rel_throttle_shut_off_unit_wastewater_node FOREIGN KEY (fk_wastewater_node) REFERENCES tww_od.wastewater_node(obj_id) ON UPDATE CASCADE ON DELETE cascade DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE tww_od.throttle_shut_off_unit ADD CONSTRAINT rel_throttle_shut_off_unit_wastewater_node FOREIGN KEY (fk_wastewater_node) REFERENCES tww_od.wastewater_node(obj_id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE tww_od.throttle_shut_off_unit ADD COLUMN fk_control_center varchar(16);
-ALTER TABLE tww_od.throttle_shut_off_unit ADD CONSTRAINT rel_throttle_shut_off_unit_control_center FOREIGN KEY (fk_control_center) REFERENCES tww_od.control_center(obj_id) ON UPDATE CASCADE ON DELETE set null DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE tww_od.throttle_shut_off_unit ADD CONSTRAINT rel_throttle_shut_off_unit_control_center FOREIGN KEY (fk_control_center) REFERENCES tww_od.control_center(obj_id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE tww_od.throttle_shut_off_unit ADD COLUMN fk_overflow varchar(16);
-ALTER TABLE tww_od.throttle_shut_off_unit ADD CONSTRAINT rel_throttle_shut_off_unit_overflow FOREIGN KEY (fk_overflow) REFERENCES tww_od.overflow(obj_id) ON UPDATE CASCADE ON DELETE set null DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE tww_od.throttle_shut_off_unit ADD CONSTRAINT rel_throttle_shut_off_unit_overflow FOREIGN KEY (fk_overflow) REFERENCES tww_od.overflow(obj_id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 CREATE TABLE tww_vl.throttle_shut_off_unit_actuation () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.throttle_shut_off_unit_actuation ADD CONSTRAINT pkey_tww_vl_throttle_shut_off_unit_actuation_code PRIMARY KEY (code);
  INSERT INTO tww_vl.throttle_shut_off_unit_actuation (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3213,3213,'other','andere','autres', 'altro', 'altul', '', '', '', '', '', 'true');
