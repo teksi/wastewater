@@ -183,7 +183,7 @@ class ModelTwwOd(ModelBase):
 
         ModelTwwOd.maintenance = maintenance
 
-        class connection_object(wastewater_networkelement):
+        class connection_object(self.Base):
             __tablename__ = "connection_object"
             __table_args__ = {"schema": config.TWW_OD_SCHEMA}
 
