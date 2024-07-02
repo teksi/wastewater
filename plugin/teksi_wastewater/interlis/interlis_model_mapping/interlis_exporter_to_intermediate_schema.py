@@ -1277,7 +1277,7 @@ class InterlisExporterToIntermediateSchema:
             query = query.join(
             self.model_classes_tww_od.wastewater_networkelement,
             ).filter(
-             self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
             # add sql statement to logger
             statement = query.statement
