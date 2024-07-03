@@ -1370,7 +1370,7 @@ class InterlisExporterToIntermediateSchema:
     def _export_param_ca_general(self):
         query = self.tww_session.query(self.model_classes_tww_od.param_ca_general)
         if self.filtered:
-             query = query.join(
+            query = query.join(
                 self.model_classes_tww_od.catchment_area,
                 self.model_classes_tww_od.wastewater_networkelement,
                     or_(
