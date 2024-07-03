@@ -276,13 +276,13 @@ class InterlisExporterToIntermediateSchema:
         self._export_fountain()
         self._check_for_stop()
 
-        logger.info("Exporting TWW.param_ca_general -> ABWASSER.EZG_PARAMETER_ALLG")
-        self._export_param_ca_general()
-        self._check_for_stop()
+        # logger.info("Exporting TWW.param_ca_general -> ABWASSER.EZG_PARAMETER_ALLG")
+        # self._export_param_ca_general()
+        # self._check_for_stop()
 
-        logger.info("Exporting TWW.param_ca_mouse1 -> ABWASSER.EZG_PARAMETER_MOUSE1")
-        self._export_param_ca_mouse1()
-        self._check_for_stop()
+        # logger.info("Exporting TWW.param_ca_mouse1 -> ABWASSER.EZG_PARAMETER_MOUSE1")
+        # self._export_param_ca_mouse1()
+        # self._check_for_stop()
 
         logger.info("Exporting TWW.individual_surface -> ABWASSER.Einzelflaeche")
         self._export_individual_surface()
@@ -2246,11 +2246,19 @@ class InterlisExporterToIntermediateSchema:
                 self.model_classes_tww_od.wastewater_structure,
                 self.model_classes_tww_od.wastewater_networkelement,
             )
+            # 3.7.2024
+            query1 = query1.filter(
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            )
             # query2 via waste_water_treatment_plant
             query2 = query.join(
                 self.model_classes_tww_od.waste_water_treatment_plant,
                 self.model_classes_tww_od.wwtp_structure,
                 self.model_classes_tww_od.wastewater_networkelement,
+            )
+            # 3.7.2024
+            query2 = query2.filter(
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
             # query3 via water_course_segment - does not exist in VSA-DSS Release 2020 anymore
             # query3 = query.join(
@@ -2262,6 +2270,9 @@ class InterlisExporterToIntermediateSchema:
             # )
             # query = query.union(query1, query2, query3)
             query = query.union(query1, query2)
+            
+            # 3.7.2024
+            # filter has to be in each query1, 2
             query = query.filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
