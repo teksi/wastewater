@@ -1383,7 +1383,7 @@ class InterlisExporterToIntermediateSchema:
                         self.model_classes_tww_od.wastewater_networkelement.obj_id
                         == self.model_classes_tww_od.catchment_area.fk_wastewater_networkelement_ww_current,
                     ),
-            ).filter(
+                ).filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
             # add sql statement to logger
@@ -1420,7 +1420,7 @@ class InterlisExporterToIntermediateSchema:
                         self.model_classes_tww_od.wastewater_networkelement.obj_id
                         == self.model_classes_tww_od.catchment_area.fk_wastewater_networkelement_ww_current,
                     ),
-            ).filter(
+                ).filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
             # add sql statement to logger
