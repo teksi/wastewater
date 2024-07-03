@@ -2268,7 +2268,7 @@ class InterlisExporterToIntermediateSchema:
             # self.model_classes_tww_od.discharge_point,
             # self.model_classes_tww_od.wastewater_networkelement,
             # )
-            
+
             # 3.7.2024 union creates  datasets
             # query = query.union(query1, query2, query3)
             #query = query.union(query1, query2)
