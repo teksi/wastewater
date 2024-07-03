@@ -2834,7 +2834,7 @@ class InterlisExporterToIntermediateSchema:
         else:
             # Makes a tid for a relation, like in get_tid
             return self.tid_maker.tid_for_row(relation)
-            logger.info(f"check_fk_in_subsetid not filtered - give back tid!")
+            logger.info(f"check_fk_in_subsetid not filtered - give back tid = '{self.tid_maker.tid_for_row(relation)}'")
 
     def get_oid_prefix(self, oid_table):
         instance = self.tww_session.query(oid_table).filter(oid_table.active.is_(True)).first()
