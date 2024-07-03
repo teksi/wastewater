@@ -2242,23 +2242,23 @@ class InterlisExporterToIntermediateSchema:
     def _export_measuring_point(self):
         query = self.tww_session.query(self.model_classes_tww_od.measuring_point)
         if self.filtered:
-            query1 = query.join(
+            query = query.join(
                 self.model_classes_tww_od.wastewater_structure,
                 self.model_classes_tww_od.wastewater_networkelement,
             )
             # 3.7.2024
-            query1 = query1.filter(
+            query = query1.filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
             # query2 via waste_water_treatment_plant
-            query2 = query.join(
-                self.model_classes_tww_od.waste_water_treatment_plant,
-                self.model_classes_tww_od.wwtp_structure,
-                self.model_classes_tww_od.wastewater_networkelement,
-            )
-            # 3.7.2024
-            query2 = query2.filter(
-                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            # query2 = query.join(
+                # self.model_classes_tww_od.waste_water_treatment_plant,
+                # self.model_classes_tww_od.wwtp_structure,
+                # self.model_classes_tww_od.wastewater_networkelement,
+            # )
+            # # 3.7.2024
+            # query2 = query2.filter(
+                # self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
             # query3 via water_course_segment - does not exist in VSA-DSS Release 2020 anymore
             # query3 = query.join(
@@ -2268,8 +2268,10 @@ class InterlisExporterToIntermediateSchema:
             # self.model_classes_tww_od.discharge_point,
             # self.model_classes_tww_od.wastewater_networkelement,
             # )
+            
+            # 3.7.2024 union creates  datasets
             # query = query.union(query1, query2, query3)
-            query = query.union(query1, query2)
+            #query = query.union(query1, query2)
 
             # 3.7.2024
             # filter has to be in each query1, 2
