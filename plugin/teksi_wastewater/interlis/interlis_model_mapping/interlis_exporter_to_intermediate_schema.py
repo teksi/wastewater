@@ -2273,9 +2273,9 @@ class InterlisExporterToIntermediateSchema:
             
             # 3.7.2024
             # filter has to be in each query1, 2
-            query = query.filter(
-                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
-            )
+            # query = query.filter(
+                # self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            # )
             # add sql statement to logger
             statement = query.statement
             logger.info(f" selection query = {statement}")
