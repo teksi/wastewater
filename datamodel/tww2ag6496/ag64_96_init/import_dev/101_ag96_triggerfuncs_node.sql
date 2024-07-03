@@ -194,73 +194,82 @@ BEGIN
 	END IF;
     ELSE
     -- keine View, daher geht ON CONFLICT
-	INSERT INTO {ext_schema}.od_unconnected_node_bwrel(
-    obj_id,
-	baujahr,
-	baulicherzustand,
-	bauwerkstatus,
-	deckelkote,
-    detailgeometrie2d ,
-	finanzierung,
-    funktionhierarchisch,
-    jahr_zustandserhebung,
-    lagegenauigkeit,
-    sanierungsbedarf,
-    zugaenglichkeit,
-    betreiber,
-    eigentuemer,
-    gepmassnahmeref
-    )
-    VALUES(
-    NEW.obj_id,
-	NEW.baujahr,
-	NEW.baulicherzustand,
-	NEW.bauwerkstatus,
-	NEW.deckelkote,
-    NEW.detailgeometrie,
-	NEW.finanzierung,
-    NEW.funktionhierarchisch,
-    NEW.jahr_zustandserhebung,
-    NEW.lagegenauigkeit,
-    NEW.sanierungsbedarf,
-    NEW.zugaenglichkeit,
-    NEW.betreiber,
-    NEW.eigentuemer,
-    NEW.gepmassnahmeref
+	-- Rückfallebene für Knoten ohne Topologische Verknüpfung
+  INSERT INTO tww_od.agxx_unconnected_node_bwrel (
+	obj_id,
+	year_of_construction,
+	structure_condition,
+	status,
+	co_level,
+    detail_geometry3d_geometry,
+	financing,
+    ch_function_hierarchic,
+    status_survey_year,
+    co_positional_accuracy,
+    renovation_necessity,
+    accessibility,
+    fk_operator,
+    fk_owner,
+    ag96_fk_measure)
+	
+	SELECT vw_val.obj_id,
+	vw_val.baujahr,
+	sc.code,
+	st.code,
+	vw_val.deckelkote,
+	ST_Force3D(vw_val.detailgeometrie2d),
+	fin.code,
+	fhi.code,
+	vw_val.jahr_zustandserhebung,
+	co_pa.code,
+	rn.code,
+	acc.code,
+	tww_ag6496.convert_organisationid_to_vsa(betreiber),
+	tww_ag6496.convert_organisationid_to_vsa(eigentuemer),
+	vw_val.gepmassnahmeref
+	
+	FROM (SELECT NEW.*) vw_val
+	LEFT JOIN tww_vl.wastewater_structure_structure_condition sc ON sc.value_de=vw_val.baulicherzustand
+	LEFT JOIN tww_vl.wastewater_structure_renovation_necessity rn ON rn.value_de=vw_val.sanierungsbedarf
+	LEFT JOIN tww_vl.wastewater_structure_financing fin ON fin.value_de=vw_val.finanzierung
+	LEFT JOIN tww_vl.wastewater_structure_status st ON st.value_de=vw_val.bauwerkstatus
+	LEFT JOIN tww_vl.wastewater_structure_accessibility acc ON acc.value_de=vw_val.zugaenglichkeit
+	LEFT JOIN tww_vl.channel_function_hierarchic fhi ON fhi.value_de=(vw_val.funktionhierarchisch||'.unbekannt')
+	LEFT JOIN tww_vl.cover_positional_accuracy co_pa ON co_pa.value_de=vw_val.lagegenauigkeit
     ) 
     ON CONFLICT (obj_id) DO UPDATE SET
 	(
-	  baujahr,
-	  baulicherzustand,
-	  bauwerkstatus,
-	  deckelkote,
-      detailgeometrie2d ,
-	  finanzierung,
-      funktionhierarchisch,
-      jahr_zustandserhebung,
-      lagegenauigkeit,
-      sanierungsbedarf,
-      zugaenglichkeit,
-      betreiber,
-      eigentuemer,
-      gepmassnahmeref
+	  year_of_construction,
+	  structure_condition,
+	  status,
+	  co_level,
+      detail_geometry3d_geometry,
+	  financing,
+      ch_function_hierarchic,
+      status_survey_year,
+      co_positional_accuracy,
+      renovation_necessity,
+      accessibility,
+      fk_operator,
+      fk_owner,
+      ag96_fk_measure
 	)
 	=
 	(
-	  EXCLUDED.baujahr,
-	  EXCLUDED.baulicherzustand,
-	  EXCLUDED.bauwerkstatus,
-	  EXCLUDED.deckelkote,
-      EXCLUDED.detailgeometrie2d ,
-	  EXCLUDED.finanzierung,
-      EXCLUDED.funktionhierarchisch,
-      EXCLUDED.jahr_zustandserhebung,
-      EXCLUDED.lagegenauigkeit,
-      EXCLUDED.sanierungsbedarf,
-      EXCLUDED.zugaenglichkeit,
-      EXCLUDED.betreiber,
-      EXCLUDED.eigentuemer,
-      EXCLUDED.gepmassnahmeref
+	  EXCLUDED.year_of_construction,
+	  EXCLUDED.structure_condition,
+	  EXCLUDED.status,
+	  EXCLUDED.co_level,
+	  EXCLUDED.detail_geometry3d_geometry,
+	  EXCLUDED.financing,
+	  EXCLUDED.ch_function_hierarchic,
+	  EXCLUDED.status_survey_year,
+	  EXCLUDED.co_positional_accuracy,
+	  EXCLUDED.renovation_necessity,
+	  EXCLUDED.accessibility,
+	  EXCLUDED.fk_operator,
+	  EXCLUDED.fk_owner,
+	  EXCLUDED.ag96_fk_measure
 	);
 	
     END CASE;

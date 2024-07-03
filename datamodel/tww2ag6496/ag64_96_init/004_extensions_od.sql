@@ -1,35 +1,8 @@
-CREATE SCHEMA IF NOT EXISTS {ext_schema};
-
-GRANT ALL ON SCHEMA {ext_schema} TO postgres;
-
-GRANT ALL ON SCHEMA {ext_schema} TO tww_user;
-
-GRANT USAGE ON SCHEMA {ext_schema} TO tww_viewer;
-
-
-ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA {ext_schema}
-GRANT ALL ON TABLES TO tww_user;
-
-ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA {ext_schema}
-GRANT SELECT, TRIGGER, REFERENCES ON TABLES TO tww_viewer;
-
-ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA {ext_schema}
-GRANT ALL ON SEQUENCES TO tww_user;
-
--- Ist_Schnittstelle
-CREATE TABLE IF NOT EXISTS tww_vl.wastewater_node_ag96_is_gateway () INHERITS (tww_vl.value_list_base); --Werteliste
-ALTER TABLE tww_vl.wastewater_node_ag96_is_gateway DROP CONSTRAINT IF EXISTS pkey_tww_vl_wastewater_node_ag96_is_gateway CASCADE;
-ALTER TABLE tww_vl.wastewater_node_ag96_is_gateway ADD CONSTRAINT pkey_tww_vl_wastewater_node_ag96_is_gateway PRIMARY KEY (code);
-
--- Ist_Schnittstelle
-CREATE TABLE IF NOT EXISTS tww_vl.wastewater_node_ag64_function () INHERITS (tww_vl.value_list_base); --Werteliste
-ALTER TABLE tww_vl.wastewater_node_ag64_function DROP CONSTRAINT IF EXISTS pkey_tww_vl_wastewater_node_ag64_function CASCADE;
-ALTER TABLE tww_vl.wastewater_node_ag64_function ADD CONSTRAINT pkey_tww_vl_wastewater_node_ag64_function PRIMARY KEY (code);
-
+-- Abwasserknoten
 ALTER TABLE tww_od.wastewater_node ADD COLUMN IF NOT EXISTS ag96_is_gateway bigint;
-COMMENT ON COLUMN tww_od.wastewater_node.ag96_is_gateway IS 'xxx_en/ Erweiterung aus AG-96, IstSchnittstelle /xxx_fr';
+COMMENT ON COLUMN tww_od.wastewater_node.ag96_is_gateway IS 'Extension for AG-96/ Erweiterung aus AG-96, IstSchnittstelle /xxx_fr';
 ALTER TABLE tww_od.wastewater_node ADD COLUMN IF NOT EXISTS ag64_function bigint;
-COMMENT ON COLUMN tww_od.wastewater_node.ag64_function IS 'xxx_en/ Erweiterung aus AG-96 zur Erfassung der Funktionag Anschluss /xxx_fr';
+COMMENT ON COLUMN tww_od.wastewater_node.ag64_function IS 'Extension for AG-96/ Erweiterung aus AG-96 zur Erfassung der Funktionag Anschluss /xxx_fr';
 
 ALTER TABLE tww_od.wastewater_node DROP CONSTRAINT IF EXISTS fkey_vl_wastewater_node_ag96_is_gateway CASCADE;
 ALTER TABLE tww_od.wastewater_node ADD CONSTRAINT fkey_vl_wastewater_node_ag96_is_gateway FOREIGN KEY (ag96_is_gateway) REFERENCES tww_vl.wastewater_node_ag96_is_gateway MATCH SIMPLE ON UPDATE RESTRICT ON DELETE RESTRICT; 
@@ -40,21 +13,20 @@ ALTER TABLE tww_od.wastewater_structure ADD COLUMN IF NOT EXISTS ag96_fk_measure
 -- Topologische Verknüpfung Massnahme/Abwasserbauwerk
 ALTER TABLE tww_od.wastewater_structure DROP CONSTRAINT IF EXISTS ag96_rel_wastewater_structure_measure;
 ALTER TABLE tww_od.wastewater_structure ADD CONSTRAINT ag96_rel_wastewater_structure_measure FOREIGN KEY (ag96_fk_measure) REFERENCES tww_od.measure(obj_id) ON DELETE SET NULL; 
-COMMENT ON COLUMN tww_od.wastewater_structure.ag96_fk_measure IS 'xxx_en/ Erweiterung aus AG-96, 1:n-Beziehung /xxx_fr';
-
+COMMENT ON COLUMN tww_od.wastewater_structure.ag96_fk_measure IS 'Extension for AG-96/ Erweiterung aus AG-96, 1:n-Beziehung /xxx_fr';
 
 -- Topologische Verknüpfung Haltung Ist und Soll
 ALTER TABLE tww_od.reach ADD COLUMN IF NOT EXISTS ag96_clear_height_planned integer; 
 ALTER TABLE tww_od.reach ADD COLUMN IF NOT EXISTS ag96_clear_width_planned integer; 
-COMMENT ON COLUMN tww_od.reach.ag96_clear_height_planned IS 'xxx_en/ Erweiterung aus AG-96 /xxx_fr';
-COMMENT ON COLUMN tww_od.reach.ag96_clear_width_planned IS 'xxx_en/ Erweiterung aus AG-96 /xxx_fr';
+COMMENT ON COLUMN tww_od.reach.ag96_clear_height_planned IS 'Extension for AG-96/ Erweiterung aus AG-96 /xxx_fr';
+COMMENT ON COLUMN tww_od.reach.ag96_clear_width_planned IS 'Extension for AG-96/ Erweiterung aus AG-96 /xxx_fr';
 
 -- SBW_Einzugsgebiet.Fremdwasseranfall_geplant
 ALTER TABLE tww_od.catchment_area_totals ADD COLUMN IF NOT EXISTS ag96_sewer_infiltration_water_dim  decimal(9,3); 
-COMMENT ON COLUMN tww_od.catchment_area_totals.ag96_sewer_infiltration_water_dim IS 'xxx_en/ Erweiterung aus AG-96 /xxx_fr';
+COMMENT ON COLUMN tww_od.catchment_area_totals.ag96_sewer_infiltration_water_dim IS 'Extension for AG-96/ Erweiterung aus AG-96 /xxx_fr';
 
 ALTER TABLE tww_od.catchment_area_totals ADD COLUMN IF NOT EXISTS ag96_waste_water_production_dim  decimal(9,3); 
-COMMENT ON COLUMN tww_od.catchment_area_totals.ag96_waste_water_production_dim IS 'xxx_en/ Erweiterung aus AG-96 /xxx_fr';
+COMMENT ON COLUMN tww_od.catchment_area_totals.ag96_waste_water_production_dim IS 'Extension for AG-96/ Erweiterung aus AG-96 /xxx_fr';
 
 
 -- Bauten Ausserhalb Baugebiet
@@ -69,12 +41,19 @@ ALTER TABLE tww_od.building_group
 , ADD COLUMN IF NOT EXISTS ag96_disposal_industrial_wastewater bigint
 , ADD COLUMN IF NOT EXISTS ag96_disposal_square_water bigint
 , ADD COLUMN IF NOT EXISTS ag96_disposal_roof_water bigint
-, ADD COLUMN IF NOT EXISTS ag96_population bigint
-;
+, ADD COLUMN IF NOT EXISTS ag96_population bigint;
 
-CREATE TABLE IF NOT EXISTS tww_vl.building_group_ag96_disposal_type () INHERITS (tww_vl.value_list_base);
-ALTER TABLE tww_vl.building_group_ag96_disposal_type DROP CONSTRAINT IF EXISTS pkey_tww_vl_building_group_ag96_disposal_type CASCADE;
-ALTER TABLE tww_vl.building_group_ag96_disposal_type ADD CONSTRAINT pkey_tww_vl_building_group_ag96_disposal_type PRIMARY KEY (code);
+COMMENT ON COLUMN tww_od.building_group.ag96_fk_provider IS 'Extension for AG-96/ Erweiterung aus AG-96 /xxx_fr';
+COMMENT ON COLUMN tww_od.building_group.ag96_last_modification IS 'Extension for AG-96/ Erweiterung aus AG-96 /xxx_fr';
+COMMENT ON COLUMN tww_od.building_group.ag96_remark IS 'Extension for AG-96/ Erweiterung aus AG-96 /xxx_fr';
+COMMENT ON COLUMN tww_od.building_group.ag96_owner_address IS 'Extension for AG-96/ Erweiterung aus AG-96 /xxx_fr';
+COMMENT ON COLUMN tww_od.building_group.ag96_owner_name IS 'Extension for AG-96/ Erweiterung aus AG-96 /xxx_fr';
+COMMENT ON COLUMN tww_od.building_group.ag96_label_number IS 'Extension for AG-96/ Erweiterung aus AG-96 /xxx_fr';
+COMMENT ON COLUMN tww_od.building_group.ag96_disposal_wastewater IS 'Extension for AG-96/ Erweiterung aus AG-96 /xxx_fr';
+COMMENT ON COLUMN tww_od.building_group.ag96_disposal_industrial_wastewater IS 'Extension for AG-96/ Erweiterung aus AG-96 /xxx_fr';
+COMMENT ON COLUMN tww_od.building_group.ag96_disposal_square_water IS 'Extension for AG-96/ Erweiterung aus AG-96 /xxx_fr';
+COMMENT ON COLUMN tww_od.building_group.ag96_disposal_roof_water IS 'Extension for AG-96/ Erweiterung aus AG-96 /xxx_fr';
+COMMENT ON COLUMN tww_od.building_group.ag96_population IS 'Extension for AG-96/ Erweiterung aus AG-96 /xxx_fr';
 
 ALTER TABLE tww_od.building_group DROP CONSTRAINT IF EXISTS fkey_vl_building_group_ag96_disposal_wastewater CASCADE;
 ALTER TABLE tww_od.building_group ADD CONSTRAINT fkey_vl_building_group_ag96_disposal_wastewater FOREIGN KEY (ag96_disposal_wastewater) REFERENCES tww_vl.building_group_ag96_disposal_type MATCH SIMPLE ON UPDATE RESTRICT ON DELETE RESTRICT; 
@@ -119,54 +98,9 @@ ALTER TABLE tww_od.infiltration_zone
 , ADD COLUMN IF NOT EXISTS ag96_limitation varchar(100) 	-- Einschränkung
 , ADD COLUMN IF NOT EXISTS ag96_thickness varchar(50)		-- Mächtigkeit
 , ADD COLUMN IF NOT EXISTS ag96_q_check character varying(50);
-
-
--- Value list mapping für Rückwärtsimport. Keine inheritance, da sonst pkey in value_list_base nicht eindeutig ist
-
-CREATE TABLE IF NOT EXISTS {ext_schema}.vl_special_structure_function (code integer, value_agxx TEXT PRIMARY KEY); --Werteliste
-CREATE TABLE IF NOT EXISTS {ext_schema}.vl_manhole_function (code integer, value_agxx TEXT PRIMARY KEY); --Werteliste
-CREATE TABLE IF NOT EXISTS {ext_schema}.vl_infiltration_installation_kind (code integer, value_agxx TEXT PRIMARY KEY); --Werteliste
-CREATE TABLE IF NOT EXISTS {ext_schema}.vl_channel_usage_current (code integer, value_agxx TEXT PRIMARY KEY); --Werteliste
-CREATE TABLE IF NOT EXISTS {ext_schema}.vl_channel_usage_planned (code integer, value_agxx TEXT PRIMARY KEY); --Werteliste
-CREATE TABLE IF NOT EXISTS {ext_schema}.vl_building_group_function (code integer, value_agxx TEXT PRIMARY KEY); --Werteliste
-
-
-
--- 
-CREATE TABLE IF NOT EXISTS {ext_schema}.vsadss_dataowner (
-	onerow_id bool PRIMARY KEY DEFAULT true -- in Kombi mit Constraint verhindert der pkey, dass mehr als 1 Datenherr genutzt wird
-	,obj_id varchar(16) NOT NULL
-	, CONSTRAINT onerow_uni CHECK (onerow_id));
-
--- Funktion zum Mapping der Organisations-ID
-
-CREATE OR REPLACE FUNCTION {ext_schema}.convert_organisationid_to_vsa(oid varchar)
-RETURNS varchar(16)
-AS 
-$BODY$
-BEGIN
-	CASE 
-	WHEN oid IS NULL THEN return oid;
-	WHEN length(oid)=20 OR length(oid)=16 THEN
-		return 'ch20p3q4'||right(oid,8);
-	ELSE
-		RAISE WARNING 'OID % has not the right length. Might cause errors downstream', oid;
-		return 'ch20p3q4'||right(oid,8);
-	END CASE;
-END;
-$BODY$
-LANGUAGE plpgsql;
-
-
--- wird für Updates von letzte_aenderung_wi/gep genutzt
-CREATE TABLE IF NOT EXISTS {ext_schema}.update_manager(
-	username varchar(200) PRIMARY KEY
-	, ag_update_type varchar(3) NOT NULL
-	, CONSTRAINT ag_update_type_valid CHECK (ag_update_type = ANY(ARRAY['wi','gep'])));
 	
-	
--- Rückfallebene für Leitungsknoten ohne Topologie beim Import
-CREATE TABLE IF NOT EXISTS {ext_schema}.od_unconnected_node_bwrel (
+-- Rückfallebene für Knoten ohne Topologische Verknüpfung beim Import
+CREATE TABLE IF NOT EXISTS tww_od.agxx_unconnected_node_bwrel (
 	obj_id character varying(16),
 	baujahr integer,
 	baulicherzustand varchar(100),
@@ -182,88 +116,13 @@ CREATE TABLE IF NOT EXISTS {ext_schema}.od_unconnected_node_bwrel (
     betreiber varchar(20),
     eigentuemer varchar(20),
     gepmassnahmeref varchar(16),
-	CONSTRAINT pkey_{ext_schema}_od_unconnected_node_bwrel_obj_id PRIMARY KEY (obj_id)); --Werteliste
+	CONSTRAINT pkey_od_agxx_unconnected_node_bwrel_obj_id PRIMARY KEY (obj_id)); --Werteliste
 	
-CREATE INDEX IF NOT EXISTS in_{ext_schema}_od_unconnected_node_bwrel_detailgeometrie2d
-    ON {ext_schema}.od_unconnected_node_bwrel USING gist
+CREATE INDEX IF NOT EXISTS in_od_agxx_unconnected_node_bwrel_detailgeometrie2d
+    ON tww_od.agxx_unconnected_node_bwrel USING gist
     (detailgeometrie2d)
     TABLESPACE pg_default;
 	
-ALTER TABLE tww_od.organisation DISABLE TRIGGER update_last_modified_organisation;
-
-CREATE OR REPLACE FUNCTION {ext_schema}.generate_oid_prefix_and_shortcut(table_name text)
- RETURNS text AS
-$BODY$
-DECLARE
-  myrec_prefix record;
-  myrec_shortcut record;
-BEGIN
-  -- first we have to get the OID prefix
-  BEGIN
-    SELECT prefix::text INTO myrec_prefix FROM tww_sys.oid_prefixes WHERE active = TRUE;
-    EXCEPTION
-        WHEN NO_DATA_FOUND THEN
-           RAISE EXCEPTION 'no active record found in table tww_sys.oid_prefixes';
-        WHEN TOO_MANY_ROWS THEN
-	   RAISE EXCEPTION 'more than one active records found in table tww_sys.oid_prefixes';
-  END;
-  -- test if prefix is of correct length
-  IF char_length(myrec_prefix.prefix) != 8 THEN
-    RAISE EXCEPTION 'character length of prefix must be 8';
-  END IF;
-  --get table 2char shortcut
-  BEGIN
-    SELECT shortcut_en INTO STRICT myrec_shortcut FROM tww_sys.dictionary_od_table WHERE tablename = table_name;
-    EXCEPTION
-        WHEN NO_DATA_FOUND THEN
-            RAISE EXCEPTION 'dictionary entry for table % not found', table_name;
-        WHEN TOO_MANY_ROWS THEN
-            RAISE EXCEPTION 'dictonary entry for table % not unique', table_name;
-  END;
-  RETURN myrec_prefix.prefix || myrec_shortcut.shortcut_en;
-END;
-$BODY$
-  LANGUAGE plpgsql STABLE
-  COST 100;
-
--- Textcontainer für Import
-CREATE TABLE IF NOT EXISTS tww_vl.building_group_text_plantype (
-    CONSTRAINT pkey_tww_vl_building_group_text_plantype_code PRIMARY KEY (code)
-)
-    INHERITS (tww_vl.value_list_base)
-TABLESPACE pg_default;
-
-CREATE TABLE IF NOT EXISTS tww_vl.building_group_text_texthali (
-    CONSTRAINT pkey_tww_vl_building_group_text_texthali_code PRIMARY KEY (code)
-)
-    INHERITS (tww_vl.value_list_base)
-TABLESPACE pg_default;
-
-CREATE TABLE IF NOT EXISTS tww_vl.building_group_text_textvali (
-    CONSTRAINT pkey_tww_vl_building_group_text_textvali_code PRIMARY KEY (code)
-)
-    INHERITS (tww_vl.value_list_base)
-TABLESPACE pg_default;
-
-CREATE TABLE IF NOT EXISTS tww_vl.measure_text_plantype (
-    CONSTRAINT pkey_tww_vl_measure_text_plantype_code PRIMARY KEY (code)
-)
-    INHERITS (tww_vl.value_list_base)
-TABLESPACE pg_default;
-
-CREATE TABLE IF NOT EXISTS tww_vl.measure_text_texthali (
-    CONSTRAINT pkey_tww_vl_measure_text_texthali_code PRIMARY KEY (code)
-)
-    INHERITS (tww_vl.value_list_base)
-TABLESPACE pg_default;
-
-CREATE TABLE IF NOT EXISTS tww_vl.measure_text_textvali (
-    CONSTRAINT pkey_tww_vl_measure_text_textvali_code PRIMARY KEY (code)
-)
-    INHERITS (tww_vl.value_list_base)
-TABLESPACE pg_default;
-
-
 CREATE TABLE IF NOT EXISTS tww_od.measure_text
 (
     obj_id character varying(16) COLLATE pg_catalog."default" NOT NULL DEFAULT tww_sys.generate_oid('tww_od'::text, 'measure_text'::text),
@@ -338,3 +197,21 @@ CREATE TABLE IF NOT EXISTS tww_od.building_group_text
 
 TABLESPACE pg_default;
 COMMENT ON TABLE tww_od.building_group_text IS 'Extension for AG-96/ Erweiterung für AG-96 / Extension pour AG-96';
+
+------------------
+-- Organisation extension
+------------------
+
+-- 05.03.2024: Neuer OID-Prefix für Mapping durch Waldburger bestellt: ch24eax1
+
+INSERT INTO tww_od.organisation(
+	obj_id, identifier, remark, uid, last_modification, fk_dataowner, fk_provider,organisation_type,status,_local_extension)
+	VALUES 
+	('ch24eax100000000',  'AfU Aargau',  'bei Import AG-64/AG-96 generiert','CHE114809310', now(), 'ch24eax100000000','ch24eax100000000',8605,9047,TRUE),
+	('ch24eax100000154', 'Gemeinde Wettingen', NULL, 'CHE115075438', '2016-02-05', 'ch24eax100000000', 'ch24eax100000000',8604,9047,TRUE),
+	('ch24eax100000315', 'Avia Tanklager Beteiligungs AG, Mellingen', NULL, 'CHE102501414', '2017-09-29', 'ch24eax100000000', 'ch24eax100000000',8606,9047,TRUE),
+	('ch24eax100000333', 'Kernkraftwerk Leibstadt AG', 'für_AraKKW_Leibstadt', 'CHE101719293', '2017-10-30', 'ch24eax100000000', 'ch24eax100000000',8606,9047,TRUE),
+	('ch24eax100000335', 'Axpo Power AG', 'u.a. für Ara Beznau', 'CHE105781196', '2017-10-30', 'ch24eax100000000', 'ch24eax100000000',8606,9047,TRUE),
+	('ch24eax100000343', 'Recyclingcenter Freiamt AG', NULL, 'CHE102501414', '2018-11-28', 'ch24eax100000000', 'ch24eax100000000',8606,9047,TRUE),
+	('ch24eax100000348', 'PDAG-Fonds-Verein', 'Areal Königsfelden', 'CHE116398921', '2020-07-02', 'ch24eax100000000', 'ch24eax100000000',8606,9047,TRUE)
+	ON CONFLICT DO NOTHING;
