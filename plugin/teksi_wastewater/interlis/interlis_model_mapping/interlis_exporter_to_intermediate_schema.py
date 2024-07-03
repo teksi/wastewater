@@ -2247,7 +2247,7 @@ class InterlisExporterToIntermediateSchema:
                 self.model_classes_tww_od.wastewater_networkelement,
             )
             # 3.7.2024
-            query = query1.filter(
+            query = query.filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
             # query2 via waste_water_treatment_plant
@@ -2259,7 +2259,7 @@ class InterlisExporterToIntermediateSchema:
             # # 3.7.2024
             # query2 = query2.filter(
                 # self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
-            )
+            #)
             # query3 via water_course_segment - does not exist in VSA-DSS Release 2020 anymore
             # query3 = query.join(
             # self.model_classes_tww_od.water_course_segment,
