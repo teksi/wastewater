@@ -3025,7 +3025,6 @@ class InterlisExporterToIntermediateSchema:
             "bemerkung": row.remark,
             "fremdwasseranfall": row.sewer_infiltration_water_production,
             "abwassernetzelementrefref": self.get_tid(row.fk_wastewater_networkelement__REL),
-            
         }
 
     def surface_runoff_parameters_common(self, row, type_name):
