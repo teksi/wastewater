@@ -2810,23 +2810,31 @@ class InterlisExporterToIntermediateSchema:
         if relation is None:
             return None
 
-        # logger.info(f"check_fk_in_subsetid -  Subset ID's '{self.subset}'")
-        logger.info(f"check_fk_in_subsetid -  Subset ID's '{self.subset_ids}'")
-        # get the value of the fk_ attribute as str out of the relation to be able to check whether it is in the subset
-        fremdschluesselstr = getattr(relation, "obj_id")
-        logger.info(f"check_fk_in_subsetid -  fremdschluesselstr '{fremdschluesselstr}'")
+        # only if self.filtered
+        if self.filtered:
+            # logger.info(f"check_fk_in_subsetid -  Subset ID's '{self.subset}'")
+            logger.info(f"check_fk_in_subsetid -  Subset ID's '{self.subset_ids}'")
+            # get the value of the fk_ attribute as str out of the relation to be able to check whether it is in the subset
+            fremdschluesselstr = getattr(relation, "obj_id")
+            logger.info(f"check_fk_in_subsetid -  fremdschluesselstr '{fremdschluesselstr}'")
 
-        # if fremdschluesselstr in self.subset:
-        if fremdschluesselstr in self.subset_ids:
-            logger.info(f"check_fk_in_subsetid - '{fremdschluesselstr}' is in subset ")
-            logger.info(f"check_fk_in_subsetid - tid = '{self.tid_maker.tid_for_row(relation)}' ")
-            # return tid_maker.tid_for_row(relation)
-            return self.tid_maker.tid_for_row(relation)
+            # if fremdschluesselstr in self.subset:
+            if fremdschluesselstr in self.subset_ids:
+                logger.info(f"check_fk_in_subsetid - '{fremdschluesselstr}' is in subset ")
+                logger.info(f"check_fk_in_subsetid - tid = '{self.tid_maker.tid_for_row(relation)}' ")
+                # return tid_maker.tid_for_row(relation)
+                return self.tid_maker.tid_for_row(relation)
+            else:
+                logger.info(
+                    f"check_fk_in_subsetid - '{fremdschluesselstr}' is not in subset - replaced with None instead!"
+                )
+                return None
         else:
+        # Makes a tid for a relation, like in get_tid
+            return self.tid_maker.tid_for_row(relation)
             logger.info(
-                f"check_fk_in_subsetid - '{fremdschluesselstr}' is not in subset - replaced with None instead!"
-            )
-            return None
+                    f"check_fk_in_subsetid not filtered - give back tid!"
+                )
 
     def get_oid_prefix(self, oid_table):
         instance = self.tww_session.query(oid_table).filter(oid_table.active.is_(True)).first()
