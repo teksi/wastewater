@@ -1394,7 +1394,20 @@ class InterlisExporterToIntermediateSchema:
     def _export_param_ca_mouse1(self):
         query = self.tww_session.query(self.model_classes_tww_od.param_ca_mouse1)
         if self.filtered:
-            query = query.join(self.model_classes_tww_od.catchment_area).filter(
+            query = query.join(
+                self.model_classes_tww_od.catchment_area,
+                self.model_classes_tww_od.wastewater_networkelement,
+                    or_(
+                        self.model_classes_tww_od.wastewater_networkelement.obj_id
+                        == self.model_classes_tww_od.catchment_area.fk_wastewater_networkelement_rw_planned,
+                        self.model_classes_tww_od.wastewater_networkelement.obj_id
+                        == self.model_classes_tww_od.catchment_area.fk_wastewater_networkelement_rw_current,
+                        self.model_classes_tww_od.wastewater_networkelement.obj_id
+                        == self.model_classes_tww_od.catchment_area.fk_wastewater_networkelement_ww_planned,
+                        self.model_classes_tww_od.wastewater_networkelement.obj_id
+                        == self.model_classes_tww_od.catchment_area.fk_wastewater_networkelement_ww_current,
+                    ),
+            ).filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
             # add sql statement to logger
