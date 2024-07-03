@@ -2270,7 +2270,7 @@ class InterlisExporterToIntermediateSchema:
             # )
             # query = query.union(query1, query2, query3)
             query = query.union(query1, query2)
-            
+
             # 3.7.2024
             # filter has to be in each query1, 2
             # query = query.filter(
