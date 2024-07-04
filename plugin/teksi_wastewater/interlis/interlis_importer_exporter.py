@@ -183,8 +183,6 @@ class InterlisImporterExporter:
             labels_file_path = os.path.join(tempdir.name, "labels.geojson")
             self._export_labels_file(
                 limit_to_selection=limit_to_selection,
-                # neu export orientation
-                export_orientation=export_orientation,
                 selected_labels_scales_indices=selected_labels_scales_indices,
                 labels_file_path=labels_file_path,
             )
@@ -299,13 +297,19 @@ class InterlisImporterExporter:
         logger.info("Enable symbology triggers")
         cursor.execute("SELECT tww_sys.enable_symbology_triggers();")
 
+        logger.info("update_wastewater_node_symbology for all datasets - please be patient")
+        cursor.execute("SELECT tww_app.update_wastewater_node_symbology(NULL, True);")
+        logger.info("update_wastewater_structure_label for all datasets - please be patient")
+        cursor.execute("SELECT tww_app.update_wastewater_structure_label(NULL, True);")
+        logger.info("update_wn_symbology_by_overflow for all datasets - please be patient")
+        cursor.execute("SELECT tww_app.update_wn_symbology_by_overflow(NULL, True);")
+
         connection.commit()
         connection.close()
 
     def _export_labels_file(
         self,
         limit_to_selection,
-        export_orientation,
         selected_labels_scales_indices,
         labels_file_path,
     ):
@@ -338,7 +342,6 @@ class InterlisImporterExporter:
             {
                 "OUTPUT": labels_file_path,
                 "RESTRICT_TO_SELECTION": limit_to_selection,
-                "EXPORT_ORIENTATION": export_orientation,
                 "STRUCTURE_VIEW_LAYER": structures_lyr,
                 "REACH_VIEW_LAYER": reaches_lyr,
                 "SCALES": selected_labels_scales_indices,
@@ -368,6 +371,7 @@ class InterlisImporterExporter:
             model_classes_tww_od=self.model_classes_tww_od,
             model_classes_tww_vl=self.model_classes_tww_vl,
             model_classes_tww_sys=self.model_classes_tww_sys,
+            labels_orientation_offset=export_orientation,
             selection=selected_ids,
             labels_file=labels_file_path,
             basket_enabled=basket_enabled,
