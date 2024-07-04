@@ -51,7 +51,7 @@ class InterlisExporterToIntermediateSchema:
         self.model_classes_tww_od = model_classes_tww_od
         self.model_classes_tww_vl = model_classes_tww_vl
         self.model_classes_tww_sys = model_classes_tww_sys
-        self.labels_orientation_offset=labels_orientation_offset
+        self.labels_orientation_offset = labels_orientation_offset
 
         self.tww_session = None
         self.abwasser_session = None
@@ -2399,7 +2399,7 @@ class InterlisExporterToIntermediateSchema:
         """
         if val is None:
             return None
-        
+
         # add labels_orientation_offset
         val = val + self.labels_orientation_offset
 
