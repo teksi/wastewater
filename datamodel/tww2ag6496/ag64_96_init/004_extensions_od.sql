@@ -102,25 +102,25 @@ ALTER TABLE tww_od.infiltration_zone
 -- Rückfallebene für Knoten ohne Topologische Verknüpfung beim Import
 CREATE TABLE IF NOT EXISTS tww_od.agxx_unconnected_node_bwrel (
 	obj_id character varying(16),
-	baujahr integer,
-	baulicherzustand varchar(100),
-	bauwerkstatus varchar(100),
-	deckelkote numeric(7,3),
-    detailgeometrie2d geometry(CurvePolygon,2056),
-	finanzierung varchar(100),
-    funktionhierarchisch varchar(3),
-    jahr_zustandserhebung integer,
-    lagegenauigkeit varchar(100),
-    sanierungsbedarf varchar(100),
-    zugaenglichkeit varchar(100),
-    betreiber varchar(20),
-    eigentuemer varchar(20),
-    gepmassnahmeref varchar(16),
-	CONSTRAINT pkey_od_agxx_unconnected_node_bwrel_obj_id PRIMARY KEY (obj_id)); --Werteliste
+	year_of_construction integer,
+	structure_condition bigint,
+	status bigint,
+	co_level numeric(7,3),
+    detail_geometry3d_geometry geometry(CurvePolygonZ,2056),
+	financing bigint,
+    ch_function_hierarchic bigint,
+    status_survey_year integer,
+    co_positional_accuracy bigint,
+    renovation_necessity bigint,
+    accessibility bigint,
+    fk_operator varchar(16),
+    fk_owner varchar(16),
+    ag96_fk_measure varchar(16),
+	CONSTRAINT pkey_od_agxx_unconnected_node_bwrel_obj_id PRIMARY KEY (obj_id));  
 	
-CREATE INDEX IF NOT EXISTS in_od_agxx_unconnected_node_bwrel_detailgeometrie2d
+CREATE INDEX IF NOT EXISTS in_od_agxx_unconnected_node_bwrel_detail_geometry3d_geometry
     ON tww_od.agxx_unconnected_node_bwrel USING gist
-    (detailgeometrie2d)
+    (detail_geometry3d_geometry)
     TABLESPACE pg_default;
 	
 CREATE TABLE IF NOT EXISTS tww_od.measure_text

@@ -1008,37 +1008,3 @@ BEGIN
 END;
 $BODY$
 LANGUAGE plpgsql;
-
-	
-
----------------------------------
--------- Metainformation --------
----------------------------------
-
-CREATE OR REPLACE FUNCTION {ext_schema}.update_last_ag_modification()
-RETURNS trigger AS
-$BODY$
-  DECLARE
-	update_type varchar(3);
-  BEGIN
-    BEGIN
-	  SELECT 
-	   ag_update_type
-	  INTO STRICT update_type 
-	  FROM {ext_schema}.update_manager
-	  WHERE username=current_user;
-	  CASE 
-	   WHEN update_type ='wi' THEN NEW.ag64_last_modification=now();
-	   WHEN update_type ='gep' THEN NEW.ag96_last_modification=now();
-	   ELSE NULL;
-	  END CASE;
-	  EXCEPTION
-        WHEN NO_DATA_FOUND THEN
-		  RAISE WARNING 'Nutzer % existiert in Tabelle "{ext_schema}.update_manager" nicht. Letzte_Aenderung_WI resp. _GEP wurde nicht aktualisiert.', current_user;
-	    WHEN TOO_MANY_ROWS THEN
-          RAISE WARNING 'Nutzer % in {ext_schema}.update_manager nicht eindeutig', current_user;
-	END;
-	RETURN NEW;
-  END;
-$BODY$
-LANGUAGE plpgsql;
