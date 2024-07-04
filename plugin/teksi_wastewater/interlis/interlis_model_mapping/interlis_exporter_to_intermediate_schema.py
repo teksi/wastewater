@@ -278,13 +278,13 @@ class InterlisExporterToIntermediateSchema:
         self._export_fountain()
         self._check_for_stop()
 
-        # logger.info("Exporting TWW.param_ca_general -> ABWASSER.EZG_PARAMETER_ALLG")
-        # self._export_param_ca_general()
-        # self._check_for_stop()
+        logger.info("Exporting TWW.param_ca_general -> ABWASSER.EZG_PARAMETER_ALLG")
+        self._export_param_ca_general()
+        self._check_for_stop()
 
-        # logger.info("Exporting TWW.param_ca_mouse1 -> ABWASSER.EZG_PARAMETER_MOUSE1")
-        # self._export_param_ca_mouse1()
-        # self._check_for_stop()
+        logger.info("Exporting TWW.param_ca_mouse1 -> ABWASSER.EZG_PARAMETER_MOUSE1")
+        self._export_param_ca_mouse1()
+        self._check_for_stop()
 
         logger.info("Exporting TWW.individual_surface -> ABWASSER.Einzelflaeche")
         self._export_individual_surface()
