@@ -30,8 +30,8 @@ from .interlis_model_mapping.model_interlis_sia405_abwasser import (
     ModelInterlisSia405Abwasser,
 )
 from .interlis_model_mapping.model_interlis_vsa_kek import ModelInterlisVsaKek
+from .interlis_model_mapping.model_tww import ModelTwwSys, ModelTwwVl
 from .interlis_model_mapping.model_tww_od import ModelTwwOd
-from .interlis_model_mapping.model_tww_vl import ModelTwwVl
 from .utils.ili2db import InterlisTools
 from .utils.various import (
     CmdException,
@@ -62,6 +62,7 @@ class InterlisImporterExporter:
         self.model_classes_interlis = None
         self.model_classes_tww_od = None
         self.model_classes_tww_vl = None
+        self.model_classes_tww_sys = None
 
         self.current_progress = 0
 
@@ -111,8 +112,12 @@ class InterlisImporterExporter:
         self._progress_done(30, "Importing XTF data...")
         self._import_xtf_file(xtf_file_input=xtf_file_input)
 
+        # Disable symbology triggers
+        self._progress_done(35, "Disable symbolgy triggers...")
+        self._import_disable_symbology_triggers()
+
         # Import from the temporary ili2pg model
-        self._progress_done(40, "Converting to Teksi Wastewater...")
+        self._progress_done(40, "Converting to TEKSI Wastewater...")
         tww_session = self._import_from_intermediate_schema(import_model)
 
         if show_selection_dialog:
@@ -123,6 +128,7 @@ class InterlisImporterExporter:
             if import_dialog.exec_() == import_dialog.Rejected:
                 tww_session.rollback()
                 tww_session.close()
+                self._import_enable_symbology_triggers()
                 raise InterlisImporterExporterStopped()
             QApplication.setOverrideCursor(Qt.WaitCursor)
         else:
@@ -134,7 +140,12 @@ class InterlisImporterExporter:
         self._progress_done(95, "Update main cover and refresh materialized views...")
         self._import_update_main_cover_and_refresh_mat_views()
 
+        # Reenable symbology triggers
+        self._progress_done(95, "Reenable symbology triggers...")
+        self._import_enable_symbology_triggers()
+
         self._progress_done(100)
+        logger.info("INTERLIS import finished.")
 
     def interlis_export(
         self,
@@ -142,6 +153,7 @@ class InterlisImporterExporter:
         export_models,
         logs_next_to_file=True,
         limit_to_selection=False,
+        export_orientation=90.0,
         selected_labels_scales_indices=[],
         selected_ids=[],
     ):
@@ -171,16 +183,19 @@ class InterlisImporterExporter:
             labels_file_path = os.path.join(tempdir.name, "labels.geojson")
             self._export_labels_file(
                 limit_to_selection=limit_to_selection,
+                # neu export orientation
+                export_orientation=export_orientation,
                 selected_labels_scales_indices=selected_labels_scales_indices,
                 labels_file_path=labels_file_path,
             )
 
         # Export to the temporary ili2pg model
-        self._progress_done(35, "Converting from Teksi Wastewater...")
+        self._progress_done(35, "Converting from TEKSI Wastewater...")
         self._export_to_intermediate_schema(
             export_model=export_models[0],
             file_name=xtf_file_output,
             selected_ids=selected_ids,
+            export_orientation=export_orientation,
             labels_file_path=labels_file_path,
             basket_enabled=create_basket_col,
         )
@@ -190,6 +205,7 @@ class InterlisImporterExporter:
         self._export_xtf_files(file_name_base, export_models)
 
         self._progress_done(100)
+        logger.info("INTERLIS export finished.")
 
     def _import_validate_xtf_file(self, xtf_file_input):
         log_path = make_log_path(self.base_log_path, "ilivalidator")
@@ -262,8 +278,43 @@ class InterlisImporterExporter:
         connection.commit()
         connection.close()
 
+    def _import_disable_symbology_triggers(self):
+        connection = psycopg.connect(get_pgconf_as_psycopg_dsn(), **DEFAULTS_CONN_ARG)
+        if PSYCOPG_VERSION == 2:
+            connection.set_session(autocommit=True)
+        cursor = connection.cursor()
+
+        logger.info("Disable symbology triggers")
+        cursor.execute("SELECT tww_sys.disable_symbology_triggers();")
+
+        connection.commit()
+        connection.close()
+
+    def _import_enable_symbology_triggers(self):
+        connection = psycopg.connect(get_pgconf_as_psycopg_dsn(), **DEFAULTS_CONN_ARG)
+        if PSYCOPG_VERSION == 2:
+            connection.set_session(autocommit=True)
+        cursor = connection.cursor()
+
+        logger.info("Enable symbology triggers")
+        cursor.execute("SELECT tww_sys.enable_symbology_triggers();")
+
+        logger.info("update_wastewater_node_symbology for all datasets - please be patient")
+        cursor.execute("SELECT tww_app.update_wastewater_node_symbology(NULL, True);")
+        logger.info("update_wastewater_structure_label for all datasets - please be patient")
+        cursor.execute("SELECT tww_app.update_wastewater_structure_label(NULL, True);")
+        logger.info("update_wn_symbology_by_overflow for all datasets - please be patient")
+        cursor.execute("SELECT tww_app.update_wn_symbology_by_overflow(NULL, True);")
+
+        connection.commit()
+        connection.close()
+
     def _export_labels_file(
-        self, limit_to_selection, selected_labels_scales_indices, labels_file_path
+        self,
+        limit_to_selection,
+        export_orientation,
+        selected_labels_scales_indices,
+        labels_file_path,
     ):
         self._progress_done(self.current_progress, "Extracting labels...")
 
@@ -284,7 +335,7 @@ class InterlisImporterExporter:
         if not structures_lyr or not reaches_lyr:
             raise InterlisImporterExporterError(
                 "Could not find the vw_tww_wastewater_structure and/or the vw_tww_reach layers.",
-                "Make sure your Teksi Wastewater project is open.",
+                "Make sure your TEKSI Wastewater project is open.",
                 None,
             )
 
@@ -294,6 +345,7 @@ class InterlisImporterExporter:
             {
                 "OUTPUT": labels_file_path,
                 "RESTRICT_TO_SELECTION": limit_to_selection,
+                "EXPORT_ORIENTATION": export_orientation,
                 "STRUCTURE_VIEW_LAYER": structures_lyr,
                 "REACH_VIEW_LAYER": reaches_lyr,
                 "SCALES": selected_labels_scales_indices,
@@ -305,6 +357,7 @@ class InterlisImporterExporter:
         export_model,
         file_name=None,
         selected_ids=None,
+        export_orientation=90.0,
         labels_file_path=None,
         basket_enabled=False,
     ):
@@ -321,6 +374,7 @@ class InterlisImporterExporter:
             model_classes_interlis=self.model_classes_interlis,
             model_classes_tww_od=self.model_classes_tww_od,
             model_classes_tww_vl=self.model_classes_tww_vl,
+            model_classes_tww_sys=self.model_classes_tww_sys,
             selection=selected_ids,
             labels_file=labels_file_path,
             basket_enabled=basket_enabled,
@@ -457,6 +511,10 @@ class InterlisImporterExporter:
 
         if self.model_classes_tww_vl is None:
             self.model_classes_tww_vl = ModelTwwVl().classes()
+            self._progress_done(self.current_progress + 1)
+
+        if self.model_classes_tww_sys is None:
+            self.model_classes_tww_sys = ModelTwwSys().classes()
             self._progress_done(self.current_progress + 1)
 
     def _progress_done_intermediate_schema(self):

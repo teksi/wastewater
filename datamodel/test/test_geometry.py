@@ -25,13 +25,13 @@ class TestGeometry(unittest.TestCase, DbTestBase):
 
     def test_vw_tww_reach_geometry_insert(self):
         # 1. insert geometry with Z and no rp_from_level and no rp_to_level
-        geom = f"COMPOUNDCURVEZ(({X+1} {Y+1} 1001,{X+2} {Y+2} 1002, {X+3} {Y+3} 1003))"
+        geom = f"COMPOUNDCURVEZ(({X + 1} {Y + 1} 1001,{X + 2} {Y + 2} 1002, {X + 3} {Y + 3} 1003))"
         row = {
             "progression3d_geometry": self.geom_from_text(geom),
             "rp_from_obj_id": "BBB 1337_0001",
             "rp_to_obj_id": "CCC 1337_0001",
         }
-        geom = f"COMPOUNDCURVEZ(({X+1} {Y+1} NaN,{X+2} {Y+2} 1002, {X+3} {Y+3} NaN))"
+        geom = f"COMPOUNDCURVEZ(({X + 1} {Y + 1} NaN,{X + 2} {Y + 2} 1002, {X + 3} {Y + 3} NaN))"
         expected_row = {
             "progression3d_geometry": self.geom_from_text(geom),
             "rp_from_level": None,
@@ -41,12 +41,12 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         # reach_point has on rp_to as Z NaN: SELECT ST_SetSRID( ST_MakePoint(1,2,'NaN'), 2056)
         row = self.select("reach_point", "BBB 1337_0001", schema="tww_od")
         assert row["situation3d_geometry"] == self.execute(
-            f"ST_SetSRID( ST_MakePoint({X+1}, {Y+1},'NaN'), 2056)"
+            f"ST_SetSRID( ST_MakePoint({X + 1}, {Y + 1},'NaN'), 2056)"
         )
         # reach_point has on rp_from as Z NaN: SELECT ST_SetSRID( ST_MakePoint(7,8,'NaN'), 2056)
         row = self.select("reach_point", "CCC 1337_0001", schema="tww_od")
         assert row["situation3d_geometry"] == self.execute(
-            f"ST_SetSRID( ST_MakePoint({X+3}, {Y+3},'NaN'), 2056)"
+            f"ST_SetSRID( ST_MakePoint({X + 3}, {Y + 3},'NaN'), 2056)"
         )
 
         # 2. insert geometry with Z and no rp_from_level and 66 as rp_to_level
