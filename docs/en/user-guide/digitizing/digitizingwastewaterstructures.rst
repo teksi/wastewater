@@ -20,7 +20,7 @@ Now the cursor changes to the digitizing symbol and you can select the location 
 
 Then the **vw_tww_wastewater_structure** form opens and you can start adding data in the **General** tab:
 
-.. figure:: images/wizard_wastewater_structure_manhole_form_ws_type3.jpg
+.. figure:: images/wizard_wastewater_structure_manhole_form_ws_type4.jpg
 
 Select the ws_type you want (preselected is 'manhole'):
 
@@ -45,11 +45,11 @@ You can add additional records Structure Parts or a second wastewater node in Ta
 
 Click **OK** to close the form.
 
-.. figure:: images/wizard_wastewater_structure_manhole_form_data_ok3.jpg
+.. figure:: images/wizard_wastewater_structure_manhole_form_data_ok4.jpg
 
 Save the information of this layer by stopping the data entry wizard.
 
-.. figure:: images/stop_data_entry.jpg
+.. figure:: images/stop_data_entry4.jpg
 
 You can re-edit your point object selecting the edit mode and then click with the info cursor on the object you want to edit.
 If you do not select the edit mode, you can just look at the existing data.
