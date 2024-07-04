@@ -21,7 +21,7 @@ class InterlisExporterToIntermediateSchema:
         model_classes_tww_od,
         model_classes_tww_vl,
         model_classes_tww_sys,
-        labels_orientation_offset,
+        labels_orientation_offset=90,
         selection=None,
         labels_file=None,
         basket_enabled=False,
