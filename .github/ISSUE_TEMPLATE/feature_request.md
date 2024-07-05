@@ -8,11 +8,13 @@ assignees: ''
 ---
 
 ## General information
+_This document helps to collect information for a TEKSI project definition and afterwards the TEKSI projects specification that are the basis for passing with the new feature process thru the different decision takers.
 
-- TEKSI Provider : _Applicant and project manager_
-- TEKSI Developer : _Developer in charge of the development_
-- TEKSI User : _Client(s)_
+- Applicant (User. who would like this feature):
+- Author (Service provider, who is mandated to write this request):
+- Developer (suggested developer(s)):
 - TEKSI Code reviewer : _Developer responsible for the code review_
+
 
 ## Users and administrators needs
 
@@ -59,6 +61,15 @@ _Add a detailed timeline_
 - [x] 01.09.2024 : First draft
 - [ ] 01.10.2024 :
 - [ ] 01.11.2024 :
+- [ ] xx.xx.2024 : Presentation and review by User group
+- [ ] xx.xx.2024 : Presentation and review by Technical group
+- [ ] xx.xx.2024 : TEKSI project definition
+- [ ] xx.xx.2024 : Presentation and review by Board (strategic ok)
+- [ ] xx.xx.2024 : TEKSI requirements
+- [ ] xx.xx.2024 : Presentation and review by Technical group
+- [ ] xx.xx.2024 : Presentation and review by Board (technical ok)
+- [ ] xx.xx.2024 : Call for offers
+- [ ] xx.xx.2024 : ...
 
 ### Related softwares versions
 
