@@ -19,14 +19,14 @@ _How it can be configured_
 - **Parameters** :
 
 | Field | Type | Mandatory | Example |
-|------|-------|--------------|----------| 
+|------|-------|--------------|----------|
 | id     | int4   | Primary key|               |
 
 # Other
 _Additional informations/requirements_
 
 # Acceptation criteria
-| Identifier | Description                                | 
+| Identifier | Description                                |
 |-----------|-----------------------------------|
 | #ISSUE-1 | It works                                     |
 | #ISSUE-2 | It works everytime                    |
