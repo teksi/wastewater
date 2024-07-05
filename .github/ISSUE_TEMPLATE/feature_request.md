@@ -8,11 +8,11 @@ assignees: ''
 ---
 
 ## General information
+_This document helps to collect information for a TEKSI project definition and afterwards the TEKSI projects specification that are the basis for passing with the new feature process thru the different decision takers.
 
-- Applicant:
-- Developer:
-- User group referent:
-- Developments referent:
+- Applicant (who would like this feature):
+- Author (who is mandated to write this request):
+- Developer (suggested developer(s)):
 
 ## Users and administrators needs
 
@@ -52,13 +52,14 @@ Feasibility, options, alternatives and technical specificities
 _Mutualisation and possible impacts with other projects_
 
 
-## Specification and offers ( Developer )
-Not shared on Github.
+## Specifications for Development
 
-### Specifications
+### Specifications Phase A
+
+### Specifications Phase B
+etc.
 
 ### Tenders
-
 Not shared on Github.
 
 ### Timeline / deadlines
@@ -67,9 +68,19 @@ _Add a detailed timeline_
 - [x] 01.09.2024 : First draft
 - [ ] 01.10.2024 :
 - [ ] 01.11.2024 :
+- [ ] xx.xx.2024 : Presentation and review by User group
+- [ ] xx.xx.2024 : Presentation and review by Technical group
+- [ ] xx.xx.2024 : TEKSI project definition
+- [ ] xx.xx.2024 : Presentation and review by Board (strategic ok)
+- [ ] xx.xx.2024 : TEKSI requirements
+- [ ] xx.xx.2024 : Presentation and review by Technical group
+- [ ] xx.xx.2024 : Presentation and review by Board (technical ok)
+- [ ] xx.xx.2024 : Call for offers
+- [ ] xx.xx.2024 : ...
 
-
-- [ ] Warranty period : to be adressed
+## Warranty and Maintenance
+_who takes the warranty?
+_who maintains the feature after development?
 
 ### Related softwares versions
 
