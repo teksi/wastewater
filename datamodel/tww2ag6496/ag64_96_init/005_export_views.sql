@@ -576,7 +576,7 @@ CREATE OR REPLACE VIEW {ext_schema}.sbw_einzugsgebiet
     cat.surface_red AS flaeche_reduziert_ist,
     cat.ag96_sewer_infiltration_water_dim AS fremdwasseranfall_geplant,
     cat.sewer_infiltration_water AS fremdwasseranfall_ist,
-    ca_agg.perimeter_geometry AS perimeter_ist,
+    cat.ag96_perimeter_geometry AS perimeter_ist,
     cat.ag96_waste_water_production_dim AS schmutzabwasseranfall_geplant,
     cat.waste_water_production AS schmutzabwasseranfall_ist,
     cat.fk_discharge_point AS einleitstelleref,
@@ -587,30 +587,6 @@ CREATE OR REPLACE VIEW {ext_schema}.sbw_einzugsgebiet
    FROM tww_od.catchment_area_totals cat
      LEFT JOIN tww_od.hydraulic_char_data hcd ON hcd.obj_id = cat.fk_hydraulic_char_data
      LEFT JOIN tww_od.wastewater_node wn ON hcd.fk_wastewater_node = wn.obj_id
-     LEFT JOIN tww_od.log_card lc ON lc.fk_pwwf_wastewater_node::text = wn.obj_id::text
-     LEFT JOIN ( WITH ca AS (
-                 SELECT catchment_area.fk_special_building_ww_current AS fk_log_card,
-                    catchment_area.perimeter_geometry AS geom
-                   FROM tww_od.catchment_area
-                  WHERE catchment_area.fk_special_building_ww_current IS NOT NULL
-      																				             UNION
-                 SELECT catchment_area.fk_special_building_rw_current AS fk_log_card,
-                    catchment_area.perimeter_geometry AS geom
-                   FROM tww_od.catchment_area
-                  WHERE catchment_area.fk_special_building_rw_current IS NOT NULL
-                ), collector AS (
-                 SELECT main_lc.obj_id,
-                    ca.geom
-                   FROM ca
-                     LEFT JOIN tww_od.log_card lc ON ca.fk_log_card = lc.obj_id
-                     LEFT JOIN tww_od.log_card main_lc ON main_lc.obj_id = lc.fk_main_structure
-                )
-         SELECT collector.obj_id,
-            st_unaryunion(st_collect(collector.geom)) AS perimeter_geometry
-           FROM collector
-          GROUP BY collector.obj_id) ca_agg ON ca_agg.obj_id::text = lc.obj_id::text
- WHERE cat.surface_area IS NOT NULL;
-
 ;	
 
 

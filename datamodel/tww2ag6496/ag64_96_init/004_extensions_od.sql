@@ -28,6 +28,8 @@ COMMENT ON COLUMN tww_od.catchment_area_totals.ag96_sewer_infiltration_water_dim
 ALTER TABLE tww_od.catchment_area_totals ADD COLUMN IF NOT EXISTS ag96_waste_water_production_dim  decimal(9,3); 
 COMMENT ON COLUMN tww_od.catchment_area_totals.ag96_waste_water_production_dim IS 'Extension for AG-96/ Erweiterung aus AG-96 /xxx_fr';
 
+ALTER TABLE tww_od.catchment_area_totals ADD COLUMN IF NOT EXISTS ag96_perimeter_geometry  geometry(MultiSurface,2056); 
+COMMENT ON COLUMN tww_od.catchment_area_totals.ag96_waste_water_production_dim IS 'Extension for AG-96/ Erweiterung aus AG-96 /xxx_fr';
 
 -- Bauten Ausserhalb Baugebiet
 ALTER TABLE tww_od.building_group
