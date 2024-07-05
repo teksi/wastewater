@@ -10,9 +10,11 @@ assignees: ''
 ## General information
 _This document helps to collect information for a TEKSI project definition and afterwards the TEKSI projects specification that are the basis for passing with the new feature process thru the different decision takers.
 
-- Applicant (who would like this feature):
-- Author (who is mandated to write this request):
+- Applicant (User. who would like this feature):
+- Author (Service provider, who is mandated to write this request):
 - Developer (suggested developer(s)):
+- TEKSI Code reviewer : _Developer responsible for the code review_
+
 
 ## Users and administrators needs
 
