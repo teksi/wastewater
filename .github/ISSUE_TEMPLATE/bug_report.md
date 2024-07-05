@@ -24,9 +24,7 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots or data to help explain your problem.
 
 **Desktop (please complete the following information):**
- - TWW plugin version
- - TWW datamodel version
- - TWW project file version
+ - TWW version
  - QGIS Version
  - OS
 
