@@ -23,7 +23,7 @@
     <link rel="index" title="Stichwortverzeichnis" href="../../genindex.html" />
     <link rel="search" title="Suche" href="../../search.html" />
     <link rel="next" title="3.1.2. Layer Erläuterungen" href="layerexplanation.html" />
-    <link rel="prev" title="3.1. Overview of TWW" href="index.html" /> 
+    <link rel="prev" title="3.1. Übersicht über TWW" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -51,15 +51,15 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">1. TEKSI wastewater (TWW)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">2. TWW Installation Guide</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. TWW User Guide</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="index.html">3.1. Overview of TWW</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. TWW Benutzerhandbuch</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">3.1. Übersicht über TWW</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">3.1.1. Einleitung und Übersicht</a></li>
 <li class="toctree-l3"><a class="reference internal" href="layerexplanation.html">3.1.2. Layer Erläuterungen</a></li>
 <li class="toctree-l3"><a class="reference internal" href="namingconventions.html">3.1.3. Namenskonventionen</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../digitizing/index.html">3.2. Digitizing in TWW</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../editing/index.html">3.3. Editing in TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../digitizing/index.html">3.2. Digitalisieren in TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../editing/index.html">3.3. Bearbeiten in TWW</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">3.4. Längsschnitte</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">3.5. Werkzeuge zur Netzwerkverfolgung</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">3.6. Plandruck</a></li>
@@ -87,8 +87,8 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>TWW User Guide</a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.1. </span>Overview of TWW</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>TWW Benutzerhandbuch</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.1. </span>Übersicht über TWW</a></li>
       <li class="breadcrumb-item active"><span class="section-number">3.1.1. </span>Einleitung und Übersicht</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/user-guide/layerexplanations/overview.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
@@ -111,17 +111,18 @@
 </div>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>The current database implementation in PostgreSQL is for the Version 2015 of the VSA-DSS datamodel, including the extension for sewer TV inspections called VSA-KEK (2019).</p>
+<p>The current database implementation in PostgreSQL is for the Version 2020.1 of the VSA-DSS datamodel, including the extension for sewer TV inspections called VSA-KEK (2020).</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>We recommend you to get an access licence for the VSA-Wiki by purchasing it in the <a class="reference external" href="https://vsashop.ch/de/A~21_1100~1/Datenstruktur-Siedlungsentw%C3%A4sserung-VSA-DSS-Lizenz/Mitglied">VSA Shop</a>. You will get answers and access to all model related questions, like the datamodel in INTERLIS, object catalogues and additional description and introduction and transfer datasets, the Wegleitung GEP-Daten and information about changes and updates as well as the right to test and convert unlimited INTERLIS dataset for one year with the <a class="reference external" href="https://vsa.ch/fachbereiche-cc/siedlungsentwaesserung/generelle-entwaesserungsplanung/datenmanagement/#GEP-Datachecker">VSA Checker</a>. Some cantons offer this access for free for engineering companies and communities - please check with your Environmental office.</p>
+<p>We recommend you to get an access licence for the VSA-Wiki by purchasing it in the <a class="reference external" href="https://vsashop.ch/de/A~21_1100~1/Datenstruktur-Siedlungsentw%C3%A4sserung-VSA-DSS-Lizenz/Mitglied">VSA Shop</a>. You will get answers and access to all model related questions, like the datamodel in INTERLIS, object catalogues and additional description and introduction and transfer datasets, the Wegleitung Daten der Siedlungsentwässerung and information about changes and updates as well as the right to test and convert unlimited INTERLIS dataset for one year with the <a class="reference external" href="https://vsa.ch/fachbereiche-cc/siedlungsentwaesserung/generelle-entwaesserungsplanung/datenmanagement/#GEP-Datachecker">VSA Checker</a>. Some cantons offer this access for free for engineering companies and communities - please check with your Environmental office.</p>
 </div>
-<p>To work with TWW-tools, it is important to know also the following norm: <strong>Wegleitung GEP-Daten</strong> which is a practitioners guide to modelling reality into GIS and hydraulic datamodel of the VSA and there specially the annex „<strong>Erfassungsgrundsätze</strong>“ (data acquisition policy). The VSA offers it as a full package on the <a class="reference external" href="https://vsa.ch/Mediathek/gep-datachecker-jahresgebuehr/">VSA-Wiki</a> which also includes acces to the VSA-Checker (a tool to check INTERLIS files)</p>
+<p>To work with TWW-tools, it is important to know also the following norm: <strong>Wegleitung Daten der Siedlungsentwässerung</strong> which is a practitioners guide to modelling reality into GIS and hydraulic datamodel of the VSA and there specially the annex „<strong>Erfassungsrichtlinien</strong>“ (data acquisition policy) and „<strong>Erfassungsbeispiele</strong>“. The VSA offers it as a full package on the <a class="reference external" href="https://vsa.ch/Mediathek/gep-datachecker-jahresgebuehr/">VSA-Wiki</a> which also includes acces to the VSA-Checker (a tool to check INTERLIS files)</p>
 <p>Das ist wichtig, denn mit der VSA-DSS werden nicht nur Schächte und Kanäle (also der bauliche Teil der Abwasserbauwerke) erfasst, sondern mit den Abwasserknoten und Haltungen (Abwassernetzlemente) wird auch das hydraulische Modell des Abwassernetzes aufgebaut.</p>
 <p>Es ist wichtig, den Unterschied zwischen <strong>primären und sekundären Abwasseranlagen</strong> (PAA / SAA) zu kennen. In PAA- und SAA-Netzen gelten nicht die gleichen Regeln für das Platzieren von Abwasserknoten. Einzugsgebiete sollen nur auf PAA-Abwasserelemente verknüpft werden. Haltungen werden immer in Fliessrichtung (Fliessrichtung bei Normalabfluss), also von oben nach unten erzeugt.</p>
 <p>To support the digitizing, TWW uses two main-views: <strong>vw_tww_wastewater_structure</strong> and <strong>vw_tww_reach</strong>. To edit these main views, there is a special wizard and the preconfigured feature attribute windows of these views.
 The idea is, to support with the wizard the digitizing, so that 95% of the manholes and channels can be collected on the general-tab of the feature attribute-window, that means with as few mouse clicks as possible.</p>
+<p>Before starting with digitizing, think about the obj_id of the records you will create. A VSA-DSS record must have a OID composed of prefix and postfix. The postfix is created by TWW-database. The prefix has to be defined in tww_sys.oid_prefixes before starting digitizing (look chapter ‚Setup workstation‘ in ‚TWW Installation Guide‘).</p>
 <p><strong>TWW wizard</strong></p>
 <p>Die Benutzung des Wizard (<a class="reference internal" href="../digitizing/digitizingwastewaterstructures.html#digitizing-wastewater-structures"><span class="std std-ref">Abwasserbauwerke digitalisieren</span></a>) ist speziell für das Digitalisieren von Haltungen empohlen, weil damit das Schnappen und Verknüpfen auf Abwasserknoten bevorzugt unterstützt wird. Wenn das QGIS - Linienobjekt hinzufügen - Werkzeug verwendet wird, können die Abwasserknoten für das Verknüpfen nicht so einfach ausgewählt werden.</p>
 </section>
@@ -130,7 +131,7 @@ The idea is, to support with the wizard the digitizing, so that 95% of the manho
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="index.html" class="btn btn-neutral float-left" title="3.1. Overview of TWW" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="3.1. Übersicht über TWW" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
         <a href="layerexplanation.html" class="btn btn-neutral float-right" title="3.1.2. Layer Erläuterungen" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

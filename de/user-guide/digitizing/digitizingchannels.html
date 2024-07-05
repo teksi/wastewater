@@ -51,9 +51,9 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">1. TEKSI wastewater (TWW)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">2. TWW Installation Guide</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. TWW User Guide</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">3.1. Overview of TWW</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="index.html">3.2. Digitizing in TWW</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. TWW Benutzerhandbuch</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">3.1. Übersicht über TWW</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">3.2. Digitalisieren in TWW</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="dataentry.html">3.2.1. Datenerfassung</a></li>
 <li class="toctree-l3"><a class="reference internal" href="digitizingwastewaterstructures.html">3.2.2. Abwasserbauwerke digitalisieren</a></li>
 <li class="toctree-l3"><a class="reference internal" href="digitizingdetailedgeometry.html">3.2.3. Digitalisieren detaillierter Geometrie</a></li>
@@ -70,7 +70,7 @@
 <li class="toctree-l3"><a class="reference internal" href="importingdata.html">3.2.8. Datenimport</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../editing/index.html">3.3. Editing in TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../editing/index.html">3.3. Bearbeiten in TWW</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">3.4. Längsschnitte</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">3.5. Werkzeuge zur Netzwerkverfolgung</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">3.6. Plandruck</a></li>
@@ -98,8 +98,8 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>TWW User Guide</a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.2. </span>Digitizing in TWW</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>TWW Benutzerhandbuch</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.2. </span>Digitalisieren in TWW</a></li>
       <li class="breadcrumb-item active"><span class="section-number">3.2.5. </span>Kanäle Digitalisieren</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/user-guide/digitizing/digitizingchannels.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
@@ -114,7 +114,7 @@
 <h1><span class="section-number">3.2.5. </span>Kanäle Digitalisieren<a class="headerlink" href="#digitizing-channels" title="Link to this heading"></a></h1>
 <section id="general">
 <h2><span class="section-number">3.2.5.1. </span>Allgemeines<a class="headerlink" href="#general" title="Link to this heading"></a></h2>
-<p>TWW has a wizard to correctly build channels and connect them to wastewater structures respectively to wastewater nodes or other reaches (building up the topology for waste water nodes and reaches). See the <a class="reference internal" href="dataentry.html#wizard"><span class="std std-ref">Der TWW Wizard (Zauberer)</span></a> chapter.</p>
+<p>TWW hat einen Assistenten, um Kanäle korrekt zu erfassen und diese mit Schächten respektive Abwasserknoten oder Haltungen zu verbinden (und dabei die Abwasserknoten- und Haltungs-Topologie aufzubauen). Siehe Kapitel <a class="reference internal" href="dataentry.html#wizard"><span class="std std-ref">Der TWW Wizard (Zauberer)</span></a>.</p>
 <p>Wählen Sie die <strong>Wizard</strong> Schaltfläche, drücken <strong>Start Data Entry</strong> und wählen <strong>Reach</strong> im Pulldown-Menü.</p>
 <figure class="align-default">
 <img alt="../../_images/wizard_data_entry.jpg" src="../../_images/wizard_data_entry.jpg" />
@@ -157,7 +157,7 @@
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>If you do not enter an <cite>identifier</cite> (reach-identifier) in the General tab, TWW will enter the <cite>obj_id</cite> also as identifier (you can change later). As default, the <cite>identifier</cite> of the reach is also the <cite>ws_identifier</cite> of the channel. The reachpoint-identifier are build from the reach-identifier+‘F‘ or +‘T‘ (from- and to-reachpoint).</p>
+<p>Wenn im Feld Bezeichnung (reach-identifier) im Reiter Allgemein keine Eingabe gemacht wird, übernimmt TWW die <cite>obj_id</cite> als Bezeichnung (kann später geändert werden). Als Vorgabewert ist die Bezeichnung der Haltung gleich dem <cite>ws_identifier</cite> des Kanals. Die Bezeichnung der Haltungspunkte wird aus der Haltungsbezeichnung+‘F‘ oder +‘T‘ (von und nach Haltungspunkt) gebildet.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
@@ -193,7 +193,7 @@
 </section>
 <section id="further-attributes-and-classes">
 <h2><span class="section-number">3.2.5.3. </span>Weitere Attribute und Klassen<a class="headerlink" href="#further-attributes-and-classes" title="Link to this heading"></a></h2>
-<p>When a line object is digitized, a series of steps take place in the background in the TWW database:</p>
+<p>Wenn eine Haltung digitalisiert wird, finden im Hintergrund eine Reihe von Schritten in der TWW Datenbank statt:</p>
 <ul class="simple">
 <li><p>Ein neues Objekt wird in der Klasse <strong>Abwasserbauwerk</strong>  („od_wastewater_structure“) hinzugefügt</p></li>
 <li><p>Ein neues Objekt wird hinzugefügt und verknüpft in der Unterklasse <strong>Kanal</strong> (<code class="docutils literal notranslate"><span class="pre">od_channel</span></code>)</p></li>

@@ -51,9 +51,9 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">1. TEKSI wastewater (TWW)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">2. TWW Installation Guide</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. TWW User Guide</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">3.1. Overview of TWW</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="index.html">3.2. Digitizing in TWW</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. TWW Benutzerhandbuch</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">3.1. Übersicht über TWW</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">3.2. Digitalisieren in TWW</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="dataentry.html">3.2.1. Datenerfassung</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">3.2.2. Abwasserbauwerke digitalisieren</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#general">3.2.2.1. Allgemeines</a></li>
@@ -70,7 +70,7 @@
 <li class="toctree-l3"><a class="reference internal" href="importingdata.html">3.2.8. Datenimport</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../editing/index.html">3.3. Editing in TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../editing/index.html">3.3. Bearbeiten in TWW</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">3.4. Längsschnitte</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">3.5. Werkzeuge zur Netzwerkverfolgung</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">3.6. Plandruck</a></li>
@@ -98,8 +98,8 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>TWW User Guide</a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.2. </span>Digitizing in TWW</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>TWW Benutzerhandbuch</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.2. </span>Digitalisieren in TWW</a></li>
       <li class="breadcrumb-item active"><span class="section-number">3.2.2. </span>Abwasserbauwerke digitalisieren</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/user-guide/digitizing/digitizingwastewaterstructures.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
@@ -114,7 +114,7 @@
 <span id="id1"></span><h1><span class="section-number">3.2.2. </span>Abwasserbauwerke digitalisieren<a class="headerlink" href="#digitizing-wastewater-structures" title="Link to this heading"></a></h1>
 <section id="general">
 <h2><span class="section-number">3.2.2.1. </span>Allgemeines<a class="headerlink" href="#general" title="Link to this heading"></a></h2>
-<p>TWW has a wizard to correctly collect manholes and special structures. see the <a class="reference internal" href="dataentry.html#wizard"><span class="std std-ref">Der TWW Wizard (Zauberer)</span></a> chapter.</p>
+<p>TWW verfügt über einen Assistenten, um Schächte und Sonderbauwerke einfach zu erfassen. Siehe dazu Kapitel <a class="reference internal" href="dataentry.html#wizard"><span class="std std-ref">Der TWW Wizard (Zauberer)</span></a>.</p>
 <p>Wähle den <strong>Wizard</strong> Knopf, klicke dann auf <strong>Start Data Entry</strong> und wähle dann <strong>Wastewater Structure</strong> im Dropdown-Menu</p>
 <figure class="align-default">
 <img alt="../../_images/wizard_data_entry.jpg" src="../../_images/wizard_data_entry.jpg" />
@@ -123,7 +123,7 @@
 <section id="digitizing">
 <h2><span class="section-number">3.2.2.2. </span>Digitalisieren<a class="headerlink" href="#digitizing" title="Link to this heading"></a></h2>
 <p>Der Cursor ändert  zum Digitalisierungssymbol und es kann der Standort des neuen Punktelementes festgelegt werden.</p>
-<p>Then the <strong>vw_tww_wastewater_structure</strong> form opens and you can start adding data in the <strong>General</strong> tab:</p>
+<p>Es öffnet das <strong>vw_tww_wastewater_structure</strong> Formular und die Daten können im Reiter <strong>Allgemein</strong> eingetragen werden:</p>
 <figure class="align-default">
 <img alt="../../_images/wizard_wastewater_structure_manhole_form_ws_type3.jpg" src="../../_images/wizard_wastewater_structure_manhole_form_ws_type3.jpg" />
 </figure>
@@ -138,7 +138,7 @@
 <p>Fügen Sie dann die Bezeichnung (identifier) hinzu (dies ist das Attribut, das auf der Karte angezeigt wird).</p>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>If you do not enter an identifier, TWW will enter the obj_id also as identifier (you can change later). As default, the identifier of the wastewater structure is also the identifier of the cover and of the wastewater node.</p>
+<p>Wenn keine Bezeichnung eingegeben wird, übernimmt TWW die Obj_ID als Bezeichnung (kann später geändert werden). Die Bezeichnung des Abwasserbauwerks ist auch der Vorgabewert für die Bezeichnung des Deckels und die Bezeichnung des Abwasserknotens.</p>
 </div>
 <p>Fügen Sie weitere Attributwerte im Reiter <strong>Allgemein</strong> hinzu. Sie können auch Attributwerte in anderen Reitern hinzufügen (Deckel, Abwasserbauwerk, Normschacht, Abwasserknoten).</p>
 <div class="admonition note">
@@ -180,8 +180,7 @@
 </section>
 <section id="geometry-synchronization">
 <h2><span class="section-number">3.2.2.4. </span>Geometrieabgleichung<a class="headerlink" href="#geometry-synchronization" title="Link to this heading"></a></h2>
-<p>The added feature’s geometry defines the geometry of the connected tables like cover and wastewater node. The vw_tww_wastewater_structure-point itself has no Z value.
-When the level of the cover <cite>co_level</cite> is entered, this value is adapted to the Z value of the cover’s geometry. The bottom level of the wastewater node <cite>wn_bottom_level</cite> defines the Z value of the wastewater node’s geometry.</p>
+<p>Der digitalisierte Punkt wird auch für die verknüpften Klassen Deckel und Abwasserknoten übernommen. Der vw_tww_Abwasserbauwerk-Punkt selber hat aber keinen Z-Wert. Wenn die Deckelkote ‚DE_Kote‘ erfasst wird, wird diese Kote als Z Wert bei der Deckelgeometrie verwendet. Der Wert aus dem Feld ‚AK_Sohlenkote‘ wird als Z Wert der Abwasserknotengeometrie übernommen.</p>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
 <p>Wenn die Kote eines Deckels ändert, ändert sich auch der Z Wert seiner Geometrie. Wenn der Z Wert der Geometrie des Deckels ändert, ändert auch die Kote des Deckel. Wenn beide Werte gleichzeitig ändern, hat die Kote Vorrang. Beim Einfügen ist es wie wenn beide Werte ändern. Also wird die Geometrie des Deckels gemäss der Kote des Deckels gesetzt und falls diese NULL ist, wird der Z Werte der Geometrie auf NaN gesetzt. Das gleiche gilt für Abwasserknoten.</p>

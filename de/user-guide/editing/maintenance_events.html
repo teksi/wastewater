@@ -51,10 +51,10 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">1. TEKSI wastewater (TWW)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">2. TWW Installation Guide</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. TWW User Guide</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">3.1. Overview of TWW</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../digitizing/index.html">3.2. Digitizing in TWW</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="index.html">3.3. Editing in TWW</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. TWW Benutzerhandbuch</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">3.1. Übersicht über TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../digitizing/index.html">3.2. Digitalisieren in TWW</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">3.3. Bearbeiten in TWW</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="editing.html">3.3.1. Bearbeiten von bestehenden Daten</a></li>
 <li class="toctree-l3"><a class="reference internal" href="moving.html">3.3.2. Verschieben von Abwasserbauwerken zusammen mit Haltungen, Deckeln und Knoten</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">3.3.3. Hinzufügen oder bearbeiten von Erhaltungsereignissen</a><ul>
@@ -96,8 +96,8 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>TWW User Guide</a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.3. </span>Editing in TWW</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>TWW Benutzerhandbuch</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.3. </span>Bearbeiten in TWW</a></li>
       <li class="breadcrumb-item active"><span class="section-number">3.3.3. </span>Hinzufügen oder bearbeiten von Erhaltungsereignissen</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/user-guide/editing/maintenance_events.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
@@ -110,20 +110,18 @@
              
   <section id="adding-or-editing-of-maintenance-events">
 <span id="maintenance-events"></span><h1><span class="section-number">3.3.3. </span>Hinzufügen oder bearbeiten von Erhaltungsereignissen<a class="headerlink" href="#adding-or-editing-of-maintenance-events" title="Link to this heading"></a></h1>
-<p>This represents a guide on how to add or edit maintenance event data in TWW.</p>
+<p>Eine Anleitung zum hinzufügen oder bearbeiten vom  Erhaltungsereignis-Datensätzen in TWW.</p>
 <section id="general">
 <h2><span class="section-number">3.3.3.1. </span>Allgemeines<a class="headerlink" href="#general" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>Maintenance events can be connected to one structure or to many.
-Therefore TWW uses a intermediary RE_table to model the n:m relationship (<strong>re_maintenance_event_wastewater_structure</strong>)</p></li>
-<li><p>To avoid an error when adding a new Maintenance Event, you have to enable <strong>Buffered Transaction Groups</strong> in menu Project &gt; Transaction mode</p></li>
+<li><p>Erhaltungsereignissen können mit einem oder mehreren Abwasserbauwerken verbunden sein. In der Datenbank ist das mit einer re-Zwischentabelle umgesetzt, um die n:m-Beziehung abzubilden (<strong>re_maintenance_event_wastewater_structure</strong>)</p></li>
 </ul>
 </section>
 <section id="adding-a-new-maintenance-event">
 <h2><span class="section-number">3.3.3.2. </span>Ein neues Erhaltungsereignis hinzufügen<a class="headerlink" href="#adding-a-new-maintenance-event" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Aktivieren Sie den Bearbeitungsmodus.</p></li>
-<li><p>With the <strong>Identify Features</strong> tool you can select <strong>wastewater_structures</strong> or <strong>reaches</strong> by selecting their corresponding layer (<strong>vw_tww_wastewater_structure</strong> or <strong>vw_tww_reach</strong>).</p></li>
+<li><p>Mit dem <strong>Objekte abfragen</strong> Werkzeug können Sie <strong>Schächte</strong> oder <strong>Haltungen</strong> auswählen indem sie den zugehörigen Layer auswählen (<strong>vw_tww_Abwasserbauwerk</strong> oder <strong>vw_tww_Haltung</strong>)</p></li>
 <li><p>Das entsprechende Formular öffnet sich. Wechseln Sie zum Reiter <strong>Erhaltungsereignis</strong> .</p></li>
 <li><p>Erstellen Sie ein neues Erhaltungsereignis mit dem <strong>Kindobjekt hinzufügen</strong> Knopf.</p></li>
 </ul>
@@ -132,7 +130,7 @@ Therefore TWW uses a intermediary RE_table to model the n:m relationship (<stron
 <img alt="../../_images/maintenance_add_child.jpg" src="../../_images/maintenance_add_child.jpg" />
 </figure>
 <ul class="simple">
-<li><p>Edit the new record in the vw_tww_maintenance form, then click <strong>OK</strong></p></li>
+<li><p>Bearbeite den neuen Datensatz im vw_tww_maintenance Formular, dann klicke den <strong>OK</strong> Knopf</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/maintenance_new_record.jpg" src="../../_images/maintenance_new_record.jpg" />
@@ -146,7 +144,7 @@ Therefore TWW uses a intermediary RE_table to model the n:m relationship (<stron
 <h2><span class="section-number">3.3.3.3. </span>Verknüpfen mit einem bestehenden Erhaltungsereignis.<a class="headerlink" href="#link-an-existing-maintenance-event" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Aktivieren Sie den Bearbeitungsmodus.</p></li>
-<li><p>With the <strong>Identify Features</strong> tool you can select <strong>wastewater_structures</strong> or <strong>reaches</strong> by selecting their corresponding layer (<strong>vw_tww_wastewater_structure</strong> or <strong>vw_tww_reach</strong>).</p></li>
+<li><p>Mit dem <strong>Objekte abfragen</strong> Werkzeug können Sie <strong>Schächte</strong> oder <strong>Haltungen</strong> auswählen indem sie den zugehörigen Layer auswählen (<strong>vw_tww_Abwasserbauwerk</strong> oder <strong>vw_tww_Haltung</strong>)</p></li>
 <li><p>Das entsprechende Formular öffnet sich. Wechseln Sie zum Reiter <strong>Erhaltungsereignis</strong> .</p></li>
 <li><p>Klicke den <strong>Vorhandene Kindobjekte verknüpfen</strong> Knopf.</p></li>
 </ul>
@@ -164,7 +162,7 @@ Therefore TWW uses a intermediary RE_table to model the n:m relationship (<stron
 <h2><span class="section-number">3.3.3.4. </span>Verknüpfung zu Erhaltungsereignissen auflösen<a class="headerlink" href="#unlink-maintenance-events" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Aktivieren Sie den Bearbeitungsmodus.</p></li>
-<li><p>With the <strong>Identify Features</strong> tool you can select <strong>wastewater_structures</strong> or <strong>reaches</strong> by selecting their corresponding layer (<strong>vw_tww_wastewater_structure</strong> or <strong>vw_tww_reach</strong>).</p></li>
+<li><p>Mit dem <strong>Objekte abfragen</strong> Werkzeug können Sie <strong>Schächte</strong> oder <strong>Haltungen</strong> auswählen indem sie den zugehörigen Layer auswählen (<strong>vw_tww_Abwasserbauwerk</strong> oder <strong>vw_tww_Haltung</strong>)</p></li>
 <li><p>Das entsprechende Formular öffnet sich. Wechseln Sie zum Reiter <strong>Erhaltungsereignis</strong> .</p></li>
 <li><p>Wähle ein Erhaltungsereignis mit Klick in das Kästchen vor dem Datensatz (das Kästchen wird gelb), dann klicke den <strong>Kindobjekt löschen</strong> Knopf.</p></li>
 </ul>
@@ -182,13 +180,13 @@ Therefore TWW uses a intermediary RE_table to model the n:m relationship (<stron
 <h2><span class="section-number">3.3.3.5. </span>Bearbeitung<a class="headerlink" href="#editing" title="Link to this heading"></a></h2>
 <blockquote>
 <div><ul class="simple">
-<li><p>Do as described in adding - but just edit existing maintenance events. Or edit the <strong>vw_tww_maintenance</strong> table (layer group <strong>inspection</strong>)</p></li>
+<li><p>Machen Sie es wie es beim Hinzufügen beschrieben - aber bearbeiten Sie nur die bereits bestehenden Erhaltungsereignisse. Oder bearbeiten Sie die <strong>vw_tww_maintenance</strong> Tabelle (Layergruppe <strong>Inspektion</strong> )</p></li>
 </ul>
 </div></blockquote>
 </section>
 <section id="multi-edit">
 <h2><span class="section-number">3.3.3.6. </span>Mehrfachbearbeitung<a class="headerlink" href="#multi-edit" title="Link to this heading"></a></h2>
-<p>Zur Zeit gibt es kein Werkzeug um ein Erhaltungsereignis mit einer Auswahl von Haltungen oder Abwasserbauwerken zu verknüpfen. Wenn das Formular im Mehrfachbearbeiten-Modus geöffnet wird, ist der Reiter <strong>Erhaltungsereignis</strong> leer. Mehrfachbearbeiten mit verknüpften Tabellen ist zur Zeit in QGIS nicht umgesetzt.</p>
+<p>Multi edit with linked tables is implemented in QGIS. It is possible to create or to link a maintenance event to a selection of reaches or wastewater structures im multiedit-mode.</p>
 </section>
 </section>
 

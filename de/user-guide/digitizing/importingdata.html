@@ -22,7 +22,7 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Stichwortverzeichnis" href="../../genindex.html" />
     <link rel="search" title="Suche" href="../../search.html" />
-    <link rel="next" title="3.3. Editing in TWW" href="../editing/index.html" />
+    <link rel="next" title="3.3. Bearbeiten in TWW" href="../editing/index.html" />
     <link rel="prev" title="3.2.7. Digitalisierung der Einzugsgebiete" href="digitizingcatchments.html" /> 
 </head>
 
@@ -51,9 +51,9 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">1. TEKSI wastewater (TWW)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">2. TWW Installation Guide</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. TWW User Guide</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">3.1. Overview of TWW</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="index.html">3.2. Digitizing in TWW</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. TWW Benutzerhandbuch</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">3.1. Übersicht über TWW</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">3.2. Digitalisieren in TWW</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="dataentry.html">3.2.1. Datenerfassung</a></li>
 <li class="toctree-l3"><a class="reference internal" href="digitizingwastewaterstructures.html">3.2.2. Abwasserbauwerke digitalisieren</a></li>
 <li class="toctree-l3"><a class="reference internal" href="digitizingdetailedgeometry.html">3.2.3. Digitalisieren detaillierter Geometrie</a></li>
@@ -69,7 +69,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../editing/index.html">3.3. Editing in TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../editing/index.html">3.3. Bearbeiten in TWW</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">3.4. Längsschnitte</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">3.5. Werkzeuge zur Netzwerkverfolgung</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">3.6. Plandruck</a></li>
@@ -97,8 +97,8 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>TWW User Guide</a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.2. </span>Digitizing in TWW</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>TWW Benutzerhandbuch</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.2. </span>Digitalisieren in TWW</a></li>
       <li class="breadcrumb-item active"><span class="section-number">3.2.8. </span>Datenimport</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/user-guide/digitizing/importingdata.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
@@ -115,12 +115,11 @@
 <section id="general">
 <h2><span class="section-number">3.2.8.1. </span>Allgemeines<a class="headerlink" href="#general" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>You have to add the data you want to import as (vector) layer into the TWW project.</p></li>
-<li><p>The field names of the attributes have to be the same as the field names of the TWW Layer.
-Therefore it is normally not a good idea the use shp-files, because of the 10 letters limitation of the dbf-format (Alias field names do not work).</p></li>
+<li><p>Die zu importierenden Daten sind als (Vektor-)Layer im TWW Projekt hinzuzufügen.</p></li>
+<li><p>Die Feldnamen der Attribute müssen gleich sein wie die Feldnamen im TWW Layer. Deshalb sind Shp-Dateien meist nicht geeignet wegen der Beschränkung der Feldnamen im dbf-Format auf 10 Stellen (und Alias-Feldnamen funktionieren leider nicht).</p></li>
 <li><p>Wenn das QGEP Projekt ein übersetztes Projekt ist, müssen trotzdem die englischen Feldnamen verwendet werden (und nicht die übersetzten Feldnamen aus dem Alias).</p></li>
 <li><p>Wenn ein Attribut eine Werteliste hat, muss der Code-Wert verwendet werden und nicht der Volltext.</p></li>
-<li><p>If your fields are prepared as described above, then just copy and paste in the TWW-layer.</p></li>
+<li><p>Wenn die Felder entsprechend vorbereitet sind, dann können die Daten einfach kopiert und im TWW-Layer eingefügt werden.</p></li>
 </ul>
 </section>
 <section id="example-importing-manholes-from-a-txt-file">
@@ -138,7 +137,7 @@ Therefore it is normally not a good idea the use shp-files, because of the 10 le
 <img alt="../../_images/importdata_opentxtfile.jpg" src="../../_images/importdata_opentxtfile.jpg" />
 </figure>
 <ul class="simple">
-<li><p>You have now a vector-layer with your points in the TWW-project</p></li>
+<li><p>Es gibt jetzt einen Vektor-Layer mit den Punkten im TWW-Projekt</p></li>
 <li><p>Die Punkt im neuen Layer auswählen</p></li>
 </ul>
 <figure class="align-default">
@@ -146,7 +145,7 @@ Therefore it is normally not a good idea the use shp-files, because of the 10 le
 </figure>
 <ul class="simple">
 <li><p>Wähle <span class="menuselection">Bearbeiten ‣ Objekte kopieren</span>.</p></li>
-<li><p>Select the vw_tww_wastewater_structure layer and set it editable</p></li>
+<li><p>Wählen Sie vw_tww_wastewater_structure und wechseln Sie zum Bearbeitungsmodus.</p></li>
 <li><p>Wähle <span class="menuselection">Bearbeiten ‣ Objekte einfügen</span>.</p></li>
 </ul>
 <figure class="align-default">
@@ -181,7 +180,7 @@ Therefore it is normally not a good idea the use shp-files, because of the 10 le
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="digitizingcatchments.html" class="btn btn-neutral float-left" title="3.2.7. Digitalisierung der Einzugsgebiete" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
-        <a href="../editing/index.html" class="btn btn-neutral float-right" title="3.3. Editing in TWW" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../editing/index.html" class="btn btn-neutral float-right" title="3.3. Bearbeiten in TWW" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

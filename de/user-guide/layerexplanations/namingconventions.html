@@ -22,7 +22,7 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Stichwortverzeichnis" href="../../genindex.html" />
     <link rel="search" title="Suche" href="../../search.html" />
-    <link rel="next" title="3.2. Digitizing in TWW" href="../digitizing/index.html" />
+    <link rel="next" title="3.2. Digitalisieren in TWW" href="../digitizing/index.html" />
     <link rel="prev" title="3.1.2. Layer Erläuterungen" href="layerexplanation.html" /> 
 </head>
 
@@ -51,8 +51,8 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">1. TEKSI wastewater (TWW)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">2. TWW Installation Guide</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. TWW User Guide</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="index.html">3.1. Overview of TWW</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. TWW Benutzerhandbuch</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">3.1. Übersicht über TWW</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="overview.html">3.1.1. Einleitung und Übersicht</a></li>
 <li class="toctree-l3"><a class="reference internal" href="layerexplanation.html">3.1.2. Layer Erläuterungen</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">3.1.3. Namenskonventionen</a><ul>
@@ -63,8 +63,8 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../digitizing/index.html">3.2. Digitizing in TWW</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../editing/index.html">3.3. Editing in TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../digitizing/index.html">3.2. Digitalisieren in TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../editing/index.html">3.3. Bearbeiten in TWW</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">3.4. Längsschnitte</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">3.5. Werkzeuge zur Netzwerkverfolgung</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">3.6. Plandruck</a></li>
@@ -92,8 +92,8 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>TWW User Guide</a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.1. </span>Overview of TWW</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>TWW Benutzerhandbuch</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.1. </span>Übersicht über TWW</a></li>
       <li class="breadcrumb-item active"><span class="section-number">3.1.3. </span>Namenskonventionen</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/user-guide/layerexplanations/namingconventions.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
@@ -108,30 +108,29 @@
 <h1><span class="section-number">3.1.3. </span>Namenskonventionen<a class="headerlink" href="#naming-conventions" title="Link to this heading"></a></h1>
 <section id="schemas-in-the-tww-database">
 <h2><span class="section-number">3.1.3.1. </span>Schemas in the TWW-Database<a class="headerlink" href="#schemas-in-the-tww-database" title="Link to this heading"></a></h2>
-<p>The TWW-Database has six tww-schemas:</p>
+<p>Schema in TEKSI-Databases will follow all the same rules. To destinguish, every infrastructre has his own shortcut (3 letters). TWW (TEKSI wastewater) is the shortcut for module wastewater network management.
+The TWW-Database has five tww-schemas:</p>
 <ul class="simple">
-<li><p>tww_od: in this schema you find the tables, that correspond to the VSA-DSS-datamodel (cover, wastewaternode, channel, etc.) These are the tables you normally work with.</p></li>
+<li><p>tww_od: in this schema you find the tables, that correspond to the VSA-DSS-datamodel (cover, wastewater_node, channel, etc.) Also for sequences of these tables. Because of the new update-management, the views are no more in the <a href="#id1"><span class="problematic" id="id2">*</span></a>_od-schema, but in the <a href="#id3"><span class="problematic" id="id4">*</span></a>_app-schema.</p></li>
 <li><p>tww_vl: is the schema for value lists. There is a table for every value list of the VSA-DSS. As a TWW-user you can not edit these tables.</p></li>
-<li><p>tww_network: schema for the tables that are necessary to use the network-topology with the tww-tools. You can rebuild these tables from the TWW-tools.</p></li>
+<li><p>tww_app: schema for all module-specific views, materialized views, functions, triggers, etc. Also for views and function of additional plugins (SWMM, QField). In case of an update of the database, this schema will overwriten.</p></li>
 <li><p>tww_sys: special tables for administration of the database. As a TWW-User you can not edit these tables.</p></li>
-<li><p>tww_import and tww_swmm: schema for additional plugins/functions (QField and working with SWMM)</p></li>
+<li><p>tww_cfg: to do: good explanantion</p></li>
 </ul>
+<p>If INTERLIS-import or -export is used, then there will be additional schema like „pg2ili_abwasser“. The are recreated with every import or export. Do not add these schema to the tww-project.</p>
 </section>
 <section id="layer-names">
 <h2><span class="section-number">3.1.3.2. </span>Layer Bezeichnungen<a class="headerlink" href="#layer-names" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>Layer Namen haben oft Präfixe wie <a href="#id1"><span class="problematic" id="id2">od_</span></a> oder <a href="#id3"><span class="problematic" id="id4">vl_</span></a>.</p></li>
+<li><p>Layer names without prefix</p></li>
 </ul>
-<p>This shows you, in which schema to look for the table. od_organisation is the table organisation in the tww_od-schema.</p>
+<p>This shows you, that you find the table in the tww_od-schema or (if the are in the layer-group „Value Lists“, you find them in schema tww_vl).
+If you are not sure in which schema to look for the table: place the mouse over the layer and look in the yellow popup-box for ‚table=“tww_*‘.</p>
 <ul class="simple">
 <li><p>Layer Namen welche mit <a href="#id5"><span class="problematic" id="id6">vw_</span></a> beginnen</p></li>
 </ul>
 <p>Two or more VSA-DSS tables are joined in a view (vw). The layer has the name of the main-table. Example: vw_tww_reach: the main layer is the table reach (not the table channel).
-It is important to know the main-table to be sure, that you use the correct attributes.</p>
-<ul class="simple">
-<li><p>Layer <a href="#id7"><span class="problematic" id="id8">vw_network_</span></a></p></li>
-</ul>
-<p>These are views in the schema tww_network</p>
+It is important to know the main-table to be sure , that you use the correct attributes.</p>
 </section>
 <section id="attribute-names">
 <h2><span class="section-number">3.1.3.3. </span>Feldnamen<a class="headerlink" href="#attribute-names" title="Link to this heading"></a></h2>
@@ -143,14 +142,14 @@ With the prefix of the attribute name, you know to which table an attribute belo
 The convention is: attributes of the main table have no prefix, all other attributes have a prefix that points to the table they are from. In case of sub- and superclass, the two tables are taken together.
 Example in layer vw_tww_reach: identifier is the attribute of the table wastewater_networkelement (the superclass of maintable reach) and therefore has no prefix. Material is in table reach, has no prefix because its the maintable. ch_usage_current is an attribute of the table channel. ws_remark is the attribute remark of the table wastewater_structure.</p>
 <ul class="simple">
-<li><p><a href="#id9"><span class="problematic" id="id10">fk_</span></a> Felder</p></li>
+<li><p><a href="#id7"><span class="problematic" id="id8">fk_</span></a> Felder</p></li>
 </ul>
-<p><a href="#id11"><span class="problematic" id="id12">fk_</span></a> ist nicht eine Abkürzung für eine spezielle Tabelle. Es steht für Fremdschlüssel (foreign key). Das sind Fremdschlüsselfelder.</p>
+<p><a href="#id9"><span class="problematic" id="id10">fk_</span></a> ist nicht eine Abkürzung für eine spezielle Tabelle. Es steht für Fremdschlüssel (foreign key). Das sind Fremdschlüsselfelder.</p>
 <ul class="simple">
 <li><p>_ Felder</p></li>
 </ul>
 <p>Attributes that start with _ (underscore) are calculated fields. You can not find them in the schemas. Examples: _slope_per_mill in vw_tww_reach.
-_channel_usage_current in vw_qgwp_wastewater_structure is calculated from the field usage_current of the channel, that is connected with the foreign keys of the wastewater_networkelement as outlet to a manhole or special structure.</p>
+_channel_usage_current in vw_qgwp_wastewater_structure is calculated from the field usage_current of the channel, that is connected with the foreign key of the wastewater_networkelement as outlet to a manhole or special structure.</p>
 </section>
 </section>
 
@@ -159,7 +158,7 @@ _channel_usage_current in vw_qgwp_wastewater_structure is calculated from the fi
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="layerexplanation.html" class="btn btn-neutral float-left" title="3.1.2. Layer Erläuterungen" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
-        <a href="../digitizing/index.html" class="btn btn-neutral float-right" title="3.2. Digitizing in TWW" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../digitizing/index.html" class="btn btn-neutral float-right" title="3.2. Digitalisieren in TWW" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

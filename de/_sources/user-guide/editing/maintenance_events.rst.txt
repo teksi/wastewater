@@ -12,8 +12,6 @@ General
 * Maintenance events can be connected to one structure or to many.
   Therefore TWW uses a intermediary RE_table to model the n:m relationship (**re_maintenance_event_wastewater_structure**)
 
-* To avoid an error when adding a new Maintenance Event, you have to enable **Buffered Transaction Groups** in menu Project > Transaction mode
-
 
 Adding a new Maintenance Event
 -------------------------------------------------------------
@@ -71,5 +69,4 @@ Editing
 Multi Edit
 -----------------------------------------------------------
 
-There is in the moment no tool to create or to link a maintenance event to a selection of reaches or wastewater structures. If you open the form in multi edit mode, the **Maintenance** tab is empty.
-Multi edit with linked tables is not implemented in QGIS.
+Multi edit with linked tables is implemented in QGIS. It is possible to create or to link a maintenance event to a selection of reaches or wastewater structures im multiedit-mode.

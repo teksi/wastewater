@@ -51,10 +51,10 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">1. TEKSI wastewater (TWW)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">2. TWW Installation Guide</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. TWW User Guide</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">3.1. Overview of TWW</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../digitizing/index.html">3.2. Digitizing in TWW</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../editing/index.html">3.3. Editing in TWW</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. TWW Benutzerhandbuch</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">3.1. Übersicht über TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../digitizing/index.html">3.2. Digitalisieren in TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../editing/index.html">3.3. Bearbeiten in TWW</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">3.4. Längsschnitte</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">3.5. Werkzeuge zur Netzwerkverfolgung</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">3.6. Plandruck</a></li>
@@ -93,7 +93,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>TWW User Guide</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>TWW Benutzerhandbuch</a></li>
       <li class="breadcrumb-item active"><span class="section-number">3.8. </span>How To</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/user-guide/How-To/index.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
@@ -289,7 +289,7 @@ Das Feld fs_UeberlaufNach muss manuell ausgefüllt werden. Die Obj_ID des zuvor 
 <p>Jetzt muss nur noch der 2. Auslauf mit dem 2. Abwasserknoten verknüpft werden:</p>
 <p>Alle offenen Objektattribute Fenster schliessen.</p>
 <ol class="arabic simple">
-<li><p>Select the TWW tool <strong>Connect wastewater networkelements</strong>.</p></li>
+<li><p>Das TWW-Werkzeug <strong>Connect wastewater networkelements</strong> wählen.</p></li>
 <li><p>Klick auf der Haltung beim Auslauf</p></li>
 <li><p>Klick auf dem Abwasserknoten</p></li>
 <li><p>Bestätigen, dass die Verknüpfung für den <strong>von Haltungspunkt</strong> erstellt wird</p></li>
@@ -314,9 +314,9 @@ Das Feld fs_UeberlaufNach muss manuell ausgefüllt werden. Die Obj_ID des zuvor 
 </section>
 <section id="setting-default-values">
 <h2><span class="section-number">3.8.8. </span>Setting default values<a class="headerlink" href="#setting-default-values" title="Link to this heading"></a></h2>
-<p>It is possible to define default values for repeated fields such as fk_provider or fk_dataowner.</p>
+<p>Es können Vorgabe-Wert definiert werden für gleichbleibende Attribute wie FS_Datenlieferant oder FS_Datenherr</p>
 <ol class="arabic simple">
-<li><p>Enter field name and value in the corresponding attributes in <code class="docutils literal notranslate"><span class="pre">tww_od.default</span> <span class="pre">values</span></code></p></li>
+<li><p>Setze Feldname (fieldname) und Wert (value) in die Spalten der Tabelle  <code class="docutils literal notranslate"><span class="pre">tww_od.default</span> <span class="pre">values</span></code> ein.</p></li>
 </ol>
 <p>2. Connect all occurences of your field name to <code class="docutils literal notranslate"><span class="pre">tww_sys.get_default_values(field_name)</span></code>.
 Per default, the fields <code class="docutils literal notranslate"><span class="pre">fk_provider</span></code> and <code class="docutils literal notranslate"><span class="pre">fk_dataowner</span></code> are already connected to the function <code class="docutils literal notranslate"><span class="pre">tww_sys.get_default_values(field_name)</span></code>.
