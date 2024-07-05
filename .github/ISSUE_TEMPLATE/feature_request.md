@@ -1,20 +1,110 @@
 ---
 name: Feature request
-about: Suggest an idea for this project
-title: ''
-labels: ''
+about: Suggest a new feature for this project
+title: "[NEW FEATURE REQUEST]"
+labels: Feature
 assignees: ''
 
 ---
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+## General information
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+- Applicant:  
+- Developer: 
+- User group referent: 
+- Developments referent: 
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+## Users and administrators needs
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
+### Graphical identity / Logo
+
+_Illustrations if applicable._
+
+### Description of users and administrators feature requirements
+
+_Describe the new feature_
+
+#### General requirements
+
+
+#### Specific requirements
+
+Necessary features:
+### Illustrations of the features and the requirements
+
+_Schemes, screen captures, or any other illustrations._
+
+
+### Graphical User Interface (GUI)
+
+
+## Technical analysis and specifications
+
+### Feasibility study
+
+Feasibility, options, alternatives and technical specificities
+
+
+### Risks and constraints
+
+
+### Mutualisation 
+_Mutualisation and possible impacts with other projects_
+
+
+## Specification and offers ( Developer )
+Not shared on Github.
+
+### Specifications
+
+### Tenders
+
+Not shared on Github.
+
+### Timeline / deadlines
+_Add a detailed timeline_
+
+- [x] 01.09.2024 : First draft
+- [ ] 01.10.2024 : 
+- [ ] 01.11.2024 : 
+
+
+- [ ] Warranty period : to be adressed
+
+### Related softwares versions
+
+- QGIS version: 
+- Database model version: 
+- INTERLIS Model version: 
+
+Public issues links : 
+- …
+
+Helpdesk issues links : 
+- …
+
+### Realisation dates
+
+- Tender reception date : 
+- Tender validation date : 
+
+## Documentation
+
+Documentation links
+- User manual : 
+- Administrator manual :
+
+## Development and integration
+
+Link and comments from the developer about the product
+
+- Deliverable : 
+- Recommendations and comments : 
+- Future prospects : 
+
+## Conclusion
+
+Conclusions from applicant, users or admins group
+
+- Conclusion: 
+- Future prospects:
