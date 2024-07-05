@@ -9,10 +9,10 @@ assignees: ''
 
 ## General information
 
-- Applicant:  
-- Developer: 
-- User group referent: 
-- Developments referent: 
+- Applicant:
+- Developer:
+- User group referent:
+- Developments referent:
 
 ## Users and administrators needs
 
@@ -48,7 +48,7 @@ Feasibility, options, alternatives and technical specificities
 ### Risks and constraints
 
 
-### Mutualisation 
+### Mutualisation
 _Mutualisation and possible impacts with other projects_
 
 
@@ -65,46 +65,46 @@ Not shared on Github.
 _Add a detailed timeline_
 
 - [x] 01.09.2024 : First draft
-- [ ] 01.10.2024 : 
-- [ ] 01.11.2024 : 
+- [ ] 01.10.2024 :
+- [ ] 01.11.2024 :
 
 
 - [ ] Warranty period : to be adressed
 
 ### Related softwares versions
 
-- QGIS version: 
-- Database model version: 
-- INTERLIS Model version: 
+- QGIS version:
+- Database model version:
+- INTERLIS Model version:
 
-Public issues links : 
+Public issues links :
 - …
 
-Helpdesk issues links : 
+Helpdesk issues links :
 - …
 
 ### Realisation dates
 
-- Tender reception date : 
-- Tender validation date : 
+- Tender reception date :
+- Tender validation date :
 
 ## Documentation
 
 Documentation links
-- User manual : 
+- User manual :
 - Administrator manual :
 
 ## Development and integration
 
 Link and comments from the developer about the product
 
-- Deliverable : 
-- Recommendations and comments : 
-- Future prospects : 
+- Deliverable :
+- Recommendations and comments :
+- Future prospects :
 
 ## Conclusion
 
 Conclusions from applicant, users or admins group
 
-- Conclusion: 
+- Conclusion:
 - Future prospects:
