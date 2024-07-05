@@ -24,42 +24,34 @@ _Illustrations if applicable._
 
 _Describe the new feature_
 
-#### General requirements
+### Requirements
 
+_List of requirements_
 
-#### Specific requirements
-
-Necessary features:
 ### Illustrations of the features and the requirements
 
 _Schemes, screen captures, or any other illustrations._
 
-
 ### Graphical User Interface (GUI)
 
+_Provide a mockup of how it should look like_
 
 ## Technical analysis and specifications
 
+_Feedbacks from the technical group_
+
 ### Feasibility study
 
-Feasibility, options, alternatives and technical specificities
-
+_IF required, list the conclusions of the Feasibility study, options, alternatives and technical specificities_
 
 ### Risks and constraints
-
 
 ### Mutualisation
 _Mutualisation and possible impacts with other projects_
 
-
-## Specification and offers ( Developer )
-Not shared on Github.
-
 ### Specifications
 
-### Tenders
-
-Not shared on Github.
+_IF available, link advanced specifications of the features required_
 
 ### Timeline / deadlines
 _Add a detailed timeline_
@@ -68,25 +60,14 @@ _Add a detailed timeline_
 - [ ] 01.10.2024 :
 - [ ] 01.11.2024 :
 
-
-- [ ] Warranty period : to be adressed
-
 ### Related softwares versions
 
 - QGIS version:
 - Database model version:
 - INTERLIS Model version:
 
-Public issues links :
-- …
-
-Helpdesk issues links :
-- …
-
-### Realisation dates
-
-- Tender reception date :
-- Tender validation date :
+### Linked issues :
+- [ ] #XXX
 
 ## Documentation
 
