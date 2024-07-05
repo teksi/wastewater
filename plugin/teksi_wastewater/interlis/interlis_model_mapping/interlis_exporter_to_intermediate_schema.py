@@ -1357,6 +1357,10 @@ class InterlisExporterToIntermediateSchema:
             # add sql statement to logger
             statement = query.statement
             logger.info(f" selection query = {statement}")
+        else:
+            # add sql statement to logger
+            statement = query.statement
+            logger.debug(f" query = {statement}")
         for row in query:
             brunnen = self.model_classes_interlis.brunnen(
                 **self.connection_object_common(row, "brunnen"),
@@ -1429,6 +1433,10 @@ class InterlisExporterToIntermediateSchema:
             # add sql statement to logger
             statement = query.statement
             logger.info(f" selection query = {statement}")
+        else:
+            # add sql statement to logger
+            statement = query.statement
+            logger.debug(f" query = {statement}")
         for row in query:
             einzelflaeche = self.model_classes_interlis.einzelflaeche(
                 **self.connection_object_common(row, "einzelflaeche"),
@@ -1707,6 +1715,10 @@ class InterlisExporterToIntermediateSchema:
             # add sql statement to logger
             statement = query.statement
             logger.info(f" selection query = {statement}")
+        else:
+            # add sql statement to logger
+            statement = query.statement
+            logger.debug(f" query = {statement}")
         for row in query:
             gebaeude = self.model_classes_interlis.gebaeude(
                 **self.connection_object_common(row, "gebaeude"),
@@ -2314,6 +2326,10 @@ class InterlisExporterToIntermediateSchema:
             # add sql statement to logger
             statement = query.statement
             logger.info(f" selection query = {statement}")
+        else:
+            # add sql statement to logger
+            statement = query.statement
+            logger.debug(f" query = {statement}")
         for row in query:
             reservoir = self.model_classes_interlis.reservoir(
                 **self.connection_object_common(row, "reservoir"),
