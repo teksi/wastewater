@@ -9,10 +9,10 @@ assignees: ''
 
 ## General information
 
-- Applicant:
-- Developer:
-- User group referent:
-- Developments referent:
+- TEKSI Provider : _Applicant and project manager_
+- TEKSI Developer : _Developer in charge of the development_
+- TEKSI User : _Client(s)_
+- TEKSI Code reviewer : _Developer responsible for the code review_
 
 ## Users and administrators needs
 
