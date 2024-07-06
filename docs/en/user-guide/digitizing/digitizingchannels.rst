@@ -32,7 +32,7 @@ Digitizing
 
 * You finish digitizing the line by right clicking. This will make the **vw_qep_reach** feature attributes window appear and you can start adding data in the **General** tab:
 
-.. figure:: images/wizard_wastewater_structure_reach_form3.jpg
+.. figure:: images/wizard_reach_form.jpg
 
 .. note:: Keep in mind that the finishing point of the line is the last point where you **left** clicked.
   Thus, for digitizing a simple line with 2 points you need two **left clicks** to digitize the line and one
@@ -47,7 +47,7 @@ Digitizing
 * For the profile type you will get a list of defined profiles.
   You can edit the pipe profiles in **pipe_profile** table (layergroup Wastewater Structures).
 
-.. figure:: images/wizard_reach_form.jpg
+.. figure:: images/wizard_reach_form_profiletypes.jpg
 
 
 * When finished, then click the **OK** button.
