@@ -77,7 +77,6 @@ When a line object is digitized, a series of steps take place in the background 
   and its subclass **reach** (``reach``)
 * two new reach point objects are added and linked to the reach (**rp_from_node**, **rp_to_node**)
 
-.. figure:: images/reach_form_reach_points3.jpg
 
 
 .. _reach_geometrysync:
@@ -85,12 +84,10 @@ When a line object is digitized, a series of steps take place in the background 
 Geometry synchronization
 ------------------------
 
-The start- and the end-point of the added feature's geometry defines the reach point's geometries. The altitude (Z value of geometry) of the added feature's start- and the end-point is defined by the level values `rp_from_level` and `rp_to_level`. This means, the Z values of the reach point's geometry is set by the level as well. These values could be filled up by the snapped features:
+The start- and the end-point of the added feature's geometry defines the reach point's geometries. The altitude (Z value of geometry) of the added feature's start- and the end-point is defined by the level values `rp_from_level` and `rp_to_level`. This means, the Z values of the reach point's geometry is set by the level as well. These values could be filled up by the snapped features (as shown in the pictures above):
 
-.. figure:: images/reach_geometry_snapping_01.jpg
-
-The snapped features 9405 and 9390 have the altitude from the wastewater node bottom_level. These values are copied into the attributes `rp_from_level` and `rp_to_level` and can be edited there by the user. When the user changes these values, the Z value of the geometry of the digitized feature and its reach points will be changed as well.
-
-.. figure:: images/reach_geometry_snapping_02.jpg
+The snapped reachpoint of the new reach have the altitude from the wastewater node bottom_level of manhole new KS and manhole 1.030. These leveös are copied by teh wizard into the attributes `rp_from_level` and `rp_to_level` and can be edited there by the user. When the user changes these values, the Z value of the geometry of the digitized feature and its reach points will be changed as well.
 
 .. note:: If a reach point's level changes, the Z value of its geometry changes, and so does the start- or the end-point of the reach. When the Z value of the reach's geometry changes, the reach point's geometry and its level is ajusted as well. If both values change, the level takes precendence. On an insert it's like when both value change. Means the reach's geometry is set according to the reach point's levels and if they are NULL, the Z value of the reach's start- and end-point are set to NaN.
+
+Synchronization of levels works also for intermediate points (points between the reachpoints), if you snap while digitizing to 3d-points on another layer (e.g. a textfile as result of gps-measurement with x,y,z coordinates added to the QGIS-project). Be aware, that you have then a full 3d-reach, but on the export to INTERLIS these intermediate-levels will be lost, because VSA-DSS version 2020 does not support 3d for reach-geometry.
