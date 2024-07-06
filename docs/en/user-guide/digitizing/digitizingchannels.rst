@@ -30,7 +30,7 @@ Digitizing
 
 .. figure:: images/wizard_data_entry_reach_with_new_cursor2-3.jpg
 
-* You finish digitizing the line by right clicking. This will make the **vw_qep_reach** form appear and you can start adding data in the **General** tab:
+* You finish digitizing the line by right clicking. This will make the **vw_qep_reach** feature attributes window appear and you can start adding data in the **General** tab:
 
 .. figure:: images/wizard_wastewater_structure_reach_form3.jpg
 
@@ -40,14 +40,14 @@ Digitizing
 
 * Control the snapping to wastewater nodes or other reaches in the fields **rp_from/to_fk_wastewater_networkelement**
 
-.. note:: If you do not enter an `identifier` (reach-identifier) in the General tab, TWW will enter the `obj_id` also as identifier (you can change later). As default, the `identifier` of the reach is also the `ws_identifier` of the channel. The reachpoint-identifier are build from the reach-identifier+'F' or +'T' (from- and to-reachpoint).
+.. note:: If you do not enter an `identifier` (reach-identifier) in the General tab, TWW will enter the `obj_id` also as identifier (you can change later). As default, the `identifier` of the reach is also the `ws_identifier` of the channel. As default, the reachpoint-identifier is set to the reachpoint-obj_id.
 
 .. note:: See :ref:`reach_geometrysync` for automatic reachpoint levels when snapping to wastewater nodes with level.
 
 * For the profile type you will get a list of defined profiles.
-  You can edit those in **od_pipe_profile** table.
+  You can edit the pipe profiles in **pipe_profile** table (layergroup Wastewater Structures).
 
-.. figure:: images/wizard_wastewater_structure_reach_form_profiles3.jpg
+.. figure:: images/wizard_reach_form.jpg
 
 
 * When finished, then click the **OK** button.
@@ -71,10 +71,10 @@ Further attributes and classes
 
 When a line object is digitized, a series of steps take place in the background in the TWW database:
 
-* a new object is added in the **wastewater structure** class (``od_wastewater_structure``)
-* a new object is added and linked in the **channel** subclass (``od_channel``)
-* a new reach object is generated in the **wastewater network elements** class (``od_wastewater_networkelement``)
-  and its subclass **reach** (``od_reach``)
+* a new object is added in the **wastewater structure** class (``wastewater_structure``)
+* a new object is added and linked in the **channel** subclass (``channel``)
+* a new reach object is generated in the **wastewater network elements** class (``wastewater_networkelement``)
+  and its subclass **reach** (``reach``)
 * two new reach point objects are added and linked to the reach (**rp_from_node**, **rp_to_node**)
 
 .. figure:: images/reach_form_reach_points3.jpg
