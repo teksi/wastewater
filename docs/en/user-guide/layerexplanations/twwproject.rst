@@ -79,9 +79,28 @@ Map Themes
 ----------
 There are two map themes defined in the TWW-project as an invitation to use this great feature of QGIS to toggle between different layer-styles.
 
+.. figure:: images/mapthemes.jpg
+
+It is important to understand, what map themes do:
+
+A map theme is a snapshot of the current map legend that records:
+
+* the layers set as visible in the Layers panel
+
+* and for each visible layer:
+
+-- the reference to the style applied to the layer
+
+-- the visible classes of the style, ie the layer checked node items in the Layers panel. This applies to symbologies other than the single symbol rendering
+
+-- the collapsed/expanded state of the layer node(s) and the group(s) it’s placed inside
+
 Layer Order
 -----------
 TWW uses a lot of layers. Therefore it's a good idea to have the layer organised in a logical way. 
 
 On the other side defines the sequence of the layer, which symbol is drawn behind and which symbol is drawn before.
 With the layer order panel of QGIS it's possible to life with this conflict.
+
+.. figure:: images/layerorder.jpg
+
