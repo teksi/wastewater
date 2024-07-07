@@ -42,7 +42,11 @@ Often are symbols big or small or with different labels depending on attributs (
 
 In VSA-DSS are 5 plan-types defined (pipeline_registry, network_plan, 3 overview maps). Every plan has other rules for labeling and symbols. Therefore you have to define scales, where to show which plan-type. And these scales are used in reach labeldefinition, in reach symboldefinition, in manhole labeldefinition and manholesymboldefinition (and with several styles in every layer). If you work with variables, you can easy change the scales.
 
-Example of a symboldefinition: 
+Example in vw_tww_reach: 
+
+.. figure:: images/properties_variables_example1.jpg
+
+
 
 Styles/Project Colors
 ^^^^^^^^^^^^^^^^^^^^^
