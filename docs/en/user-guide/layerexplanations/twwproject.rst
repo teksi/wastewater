@@ -50,6 +50,10 @@ Example in vw_tww_reach:
 
 Styles/Project Colors
 ^^^^^^^^^^^^^^^^^^^^^
+The color for mixed_wastewater (as example) is used in vw_tww_reach symbols and labels, in vw_tww_wastewater_structures symbols and labels. To change the color (just a different shade of purple) is a lot of work and may result in errors, if you do not use project colors. 
+In the TWW-project are project colors defined for all value of valuelist channel.usage(_current/planned), wastewater_structure.status.inoperative, catchment_area.drainage_system(_current/planned) and wastewater structure.structure_condition/renovation_necessity (also useable for condition_score and urgency_figure).
+
+.. figure:: images/properties_projectcolors.jpg
 
 Map Themes
 ----------
