@@ -7,7 +7,7 @@ This represents a guide on how to import/export data between TWW and INTERLIS 2 
 General
 ^^^^^^^^^^^^^
 
-The TWW plugin includes an experimental interlis import/export feature.
+The TWW plugin includes an INTERLIS import/export feature.
 It is currently capable of importing and exporting the following models::
 * SIA405_ABWASSER_2020_1_LV95
 * DSS_2020_1_LV95
@@ -55,7 +55,7 @@ The same `--target` flag can be added to install `sqlalchemy` and `geoalchemy2` 
 
 TWW Version
 -------------
-The export only supports up-to-date TWW datamodel (1.5.6 at the time of writing). Ensure your datamodel is fully updated before trying to import/export.
+The export only supports up-to-date TWW datamodel (2024.0 at the time of writing). Ensure your datamodel is fully updated before trying to import/export.
 
 
 Usage (GUI)
@@ -77,11 +77,13 @@ Export
 
 To export your TWW data, click on the `export` button. The following dialog will appear.
 
-.. figure:: images/export_dialog.png
+.. figure:: images/tww_interlis_export.png
 
 At first, select the export model.
 
 If you have an active selection in the nodes and/or reaches layer, you can choose to restrict the export to that selection. This is especially useful in combination with the upstream/downstream selection tools.
+
+.. figure:: images/tww_interlis_export_selection.png
 
 The export tools is capable of exporting label positions for different scales. You can choose which scales you are interested in exporting by selected/deselecting them.
 
