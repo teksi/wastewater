@@ -40,8 +40,8 @@ You can also add attributes in the other tabs (Main Cover/Node, Wastewater Struc
 
 .. note:: The idea of the **General** tab is, that in the normal digitizing process (95% of the manholes) the user has not to change the tabs to enter the attributes that are necessary.
 
-.. attention:: You can not use **Actions** for digitize a detail geometry during creating a new manhole, because you have to save first the Wastewater Structure-record to the database before you can add a detail geometry. First safe the record. 
-You can add additional records Structure Parts or a second wastewater node in Tab Wastewater Nodes or Maintenance Events. But in the Tab Wastewater Nodes you will not see the main node, that is created with the new wastewater structure. You can see the main node in the tab Main Cover/Node. After saving the new wastewater structure, you will find two node in the tab Wastewater Nodes. 
+.. attention:: You can not use **Actions** for digitize a detail geometry during creating a new manhole, because you have to save first the Wastewater Structure-record to the database before you can add a detail geometry. First safe the record.
+You can add additional records Structure Parts or a second wastewater node in Tab Wastewater Nodes or Maintenance Events. But in the Tab Wastewater Nodes you will not see the main node, that is created with the new wastewater structure. You can see the main node in the tab Main Cover/Node. After saving the new wastewater structure, you will find two node in the tab Wastewater Nodes.
 
 Click **OK** to close the form.
 
