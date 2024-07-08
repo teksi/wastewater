@@ -3019,7 +3019,9 @@ class InterlisExporterToIntermediateSchema:
             "bemerkung": row.remark,
             "fremdwasseranfall": row.sewer_infiltration_water_production,
             # added check_fk_in_subsetid instead of get_tid to make sure on if filtered we do not write missing fk_wastewater_networkelement
-            "abwassernetzelementref":self.check_fk_in_subsetid(row.fk_wastewater_networkelement__REL),
+            "abwassernetzelementref": self.check_fk_in_subsetid(
+                row.fk_wastewater_networkelement__REL
+            ),
         }
 
     def surface_runoff_parameters_common(self, row, type_name):
