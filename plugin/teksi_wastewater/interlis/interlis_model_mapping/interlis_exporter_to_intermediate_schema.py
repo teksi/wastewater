@@ -3020,7 +3020,11 @@ class InterlisExporterToIntermediateSchema:
             "bezeichnung": row.identifier,
             "bemerkung": row.remark,
             "fremdwasseranfall": row.sewer_infiltration_water_production,
-            "abwassernetzelementref": self.get_tid(row.fk_wastewater_networkelement__REL),
+            abwassernetzelementref=self.check_fk_in_subsetid(
+                    row.fk_wastewater_networkelement__REL
+                ),
+            # 8.7.2024 
+            #"abwassernetzelementref": self.get_tid(row.fk_wastewater_networkelement__REL),
         }
 
     def surface_runoff_parameters_common(self, row, type_name):
