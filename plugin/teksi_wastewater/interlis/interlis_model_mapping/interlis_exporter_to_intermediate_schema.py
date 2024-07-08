@@ -3022,7 +3022,7 @@ class InterlisExporterToIntermediateSchema:
             "fremdwasseranfall": row.sewer_infiltration_water_production,
             abwassernetzelementref=self.check_fk_in_subsetid(
                     row.fk_wastewater_networkelement__REL),
-            # 8.7.2024 
+            # 8.7.2024
             #"abwassernetzelementref": self.get_tid(row.fk_wastewater_networkelement__REL),
         }
 
