@@ -641,24 +641,25 @@ CREATE OR REPLACE FUNCTION tww_app.on_wasterwaternode_change()
   RETURNS trigger AS
 $BODY$
 DECLARE
-  co_obj_id TEXT;
-  affected_sp RECORD;
+  wn_obj_id TEXT;
+  affected_ne RECORD;
 BEGIN
   CASE
     WHEN TG_OP = 'UPDATE' THEN
-      co_obj_id = OLD.obj_id;
+      wn_obj_id = OLD.obj_id;
     WHEN TG_OP = 'INSERT' THEN
-      co_obj_id = NEW.obj_id;
+      wn_obj_id = NEW.obj_id;
     WHEN TG_OP = 'DELETE' THEN
-      co_obj_id = OLD.obj_id;
+      wn_obj_id = OLD.obj_id;
   END CASE;
 
-  SELECT ne.fk_wastewater_structure INTO affected_sp
+  SELECT ne.fk_wastewater_structure INTO affected_ne
   FROM tww_od.wastewater_networkelement ne
-  WHERE obj_id = co_obj_id;
+  WHERE obj_id = wn_obj_id;
 
-  EXECUTE tww_app.update_depth(affected_sp.fk_wastewater_structure);
-  EXECUTE tww_app.update_wastewater_structure_label(affected_sp.fk_wastewater_structure);
+  EXECUTE tww_app.update_depth(affected_ne.fk_wastewater_structure);
+  EXECUTE tww_app.update_wastewater_structure_label(affected_ne.fk_wastewater_structure);
+  EXECUTE tww_app.wastewater_structure_update_fk_main_wastewater_node(affected_ne.fk_wastewater_structure);
 
   RETURN NEW;
 END; $BODY$
