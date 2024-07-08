@@ -124,7 +124,7 @@ After launching the import process your data set will be validated and imported 
 
 The left part of this dialog lists all elements that are going to be imported from the `.xtf` file, allowing to review what is going to be imported and to deselect elements you may want to skip. It also shows the validation status of each object, showing whether further action is needed (INVALID) or recommended (WARNING) prior to importing.
 
-The right part of this dialog shows a form specific to the type of element selected in the list, allowing to adapt the import. 
+The right part of this dialog shows a form specific to the type of element selected in the list, allowing to adapt the import.
 
 .. note:: Currently de-selecting and selecting objects might take a long time depending how many data sets are in that respective class.
 
