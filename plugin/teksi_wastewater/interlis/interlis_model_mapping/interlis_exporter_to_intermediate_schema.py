@@ -220,6 +220,10 @@ class InterlisExporterToIntermediateSchema:
         logger.info("Exporting TWW.benching -> ABWASSER.bankett")
         self._export_benching()
         self._check_for_stop()
+        
+        various.check_subclass_count(config.ABWASSER_SCHEMA,'abwassernetzelement',['haltung','abwasserknoten'])
+        various.check_subclass_count(config.ABWASSER_SCHEMA,'abwasserbauwerk',['kanal','normschacht','spezialbauwerk','versickerungsanlage','einleitstelle','arabauwerk','klara','abflusslose_toilette'])
+
 
     def _export_dss(self):
         logger.info(
