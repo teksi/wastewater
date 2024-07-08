@@ -22,8 +22,9 @@ Relations
 Relations are necessary for the Feature Attributes Windows to referende to connected tables (e.g. you can edit connected maintenance_events in Feature_Attribut window in vw_tww_reach).
 Where possible, in TWW are value relations used and not project relations. Value Relations ar used for Value Lists, but also for organisations and for pipe_profiles.
 
-Value Relations work perfect also with Multiedit, but is slow, if there are a lot records in the related table or list. And you can not choose a record on the map to connect to it (e.g to define a manhole-catchment area-connection).
-Project relations allow to select a record on the map and is faster with big datasets. But there is a serious bug when using Multiedit (as of today with QGIS 3.34.4). 
+**Value Relations** work perfect also with Multiedit, but is slow, if there are a lot records in the related table or list. And you can not choose a record on the map to connect to it (e.g to define a manhole-catchment area-connection).
+
+**Project relations** allow to select a record on the map and is faster with big datasets. But there is a serious bug when using Multiedit (as of today with QGIS 3.34.4). 
 If there is a good advantage to work with Multiedit, it's a good idea to define a style, that has no relation-field in the Feature Attributs window.
 
 
@@ -89,11 +90,11 @@ A map theme is a snapshot of the current map legend that records:
 
 * and for each visible layer:
 
--- the reference to the style applied to the layer
+  * the reference to the style applied to the layer
 
--- the visible classes of the style, ie the layer checked node items in the Layers panel. This applies to symbologies other than the single symbol rendering
+  * the visible classes of the style, ie the layer checked node items in the Layers panel. This applies to symbologies other than the single symbol rendering
 
--- the collapsed/expanded state of the layer node(s) and the group(s) it’s placed inside
+  * the collapsed/expanded state of the layer node(s) and the group(s) it’s placed inside
 
 Layer Order
 -----------
