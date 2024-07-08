@@ -274,7 +274,7 @@ class InterlisExporterToIntermediateSchema:
         self._export_bio_ecol_assessment()
         self._check_for_stop()
 
-# fountain gibt fehler
+        # fountain gibt fehler
         # logger.info("Exporting TWW.fountain -> ABWASSER.Brunnen")
         # self._export_fountain()
         # self._check_for_stop()
@@ -287,7 +287,7 @@ class InterlisExporterToIntermediateSchema:
         self._export_param_ca_mouse1()
         self._check_for_stop()
 
-# gibt fehler
+        # gibt fehler
         # logger.info("Exporting TWW.individual_surface -> ABWASSER.Einzelflaeche")
         # self._export_individual_surface()
         # self._check_for_stop()
