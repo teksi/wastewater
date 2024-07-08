@@ -274,9 +274,10 @@ class InterlisExporterToIntermediateSchema:
         self._export_bio_ecol_assessment()
         self._check_for_stop()
 
-        logger.info("Exporting TWW.fountain -> ABWASSER.Brunnen")
-        self._export_fountain()
-        self._check_for_stop()
+# fountain gibt fehler
+        # logger.info("Exporting TWW.fountain -> ABWASSER.Brunnen")
+        # self._export_fountain()
+        # self._check_for_stop()
 
         logger.info("Exporting TWW.param_ca_general -> ABWASSER.EZG_PARAMETER_ALLG")
         self._export_param_ca_general()
@@ -286,9 +287,10 @@ class InterlisExporterToIntermediateSchema:
         self._export_param_ca_mouse1()
         self._check_for_stop()
 
-        logger.info("Exporting TWW.individual_surface -> ABWASSER.Einzelflaeche")
-        self._export_individual_surface()
-        self._check_for_stop()
+# gibt fehler
+        # logger.info("Exporting TWW.individual_surface -> ABWASSER.Einzelflaeche")
+        # self._export_individual_surface()
+        # self._check_for_stop()
 
         logger.info("Exporting TWW.catchment_area -> ABWASSER.Einzugsgebiet")
         self._export_catchment_area()
@@ -320,9 +322,9 @@ class InterlisExporterToIntermediateSchema:
         self._export_pump()
         self._check_for_stop()
 
-        logger.info("Exporting TWW.building -> ABWASSER.Gebaeude")
-        self._export_building()
-        self._check_for_stop()
+        # logger.info("Exporting TWW.building -> ABWASSER.Gebaeude")
+        # self._export_building()
+        # self._check_for_stop()
 
         logger.info("Exporting TWW.building_group -> ABWASSER.Gebaeudegruppe")
         self._export_building_group()
@@ -392,9 +394,9 @@ class InterlisExporterToIntermediateSchema:
         self._export_mutation()
         self._check_for_stop()
 
-        logger.info("Exporting TWW.reservoir -> ABWASSER.Reservoir")
-        self._export_reservoir()
-        self._check_for_stop()
+        # logger.info("Exporting TWW.reservoir -> ABWASSER.Reservoir")
+        # self._export_reservoir()
+        # self._check_for_stop()
 
         logger.info("Exporting TWW.retention_body -> ABWASSER.Retentionskoerper")
         self._export_retention_body()
