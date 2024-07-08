@@ -118,13 +118,17 @@ If you have organisations that are not yet in that data set `please inform the V
 
 If you have additional own local organisations that are not (yet) in the VSA organisation data set continue with importing those before you start importing you network data. TV inspection data usually comes last, as it references your network data.
 
-The following dialog will appear.
+After launching the import process your data set will be validated and imported in a intermediatary schema. Then the following dialog will appear.
 
 .. figure:: images/import_dialog.png
 
 The left part of this dialog lists all elements that are going to be imported from the `.xtf` file, allowing to review what is going to be imported and to deselect elements you may want to skip. It also shows the validation status of each object, showing whether further action is needed (INVALID) or recommended (WARNING) prior to importing.
 
-The right part of this dialog shows a form specific to the type of element selected in the list, allowing to adapt the import. For instance, it allows to attach "examinations" to their pipes.
+The right part of this dialog shows a form specific to the type of element selected in the list, allowing to adapt the import. 
+
+.. note:: Currently de-selecting and selecting objects might take a long time depending how many data sets are in that respective class.
+
+.. note:: Special feature for TV Inspection import: For instance, it allows to attach "examinations" to their pipes.
 
 Once you're happy with the import options, confirm the dialog to persist the changes to your database.
 
