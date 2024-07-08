@@ -394,9 +394,9 @@ class InterlisExporterToIntermediateSchema:
         self._export_mutation()
         self._check_for_stop()
 
-        # logger.info("Exporting TWW.reservoir -> ABWASSER.Reservoir")
-        # self._export_reservoir()
-        # self._check_for_stop()
+        logger.info("Exporting TWW.reservoir -> ABWASSER.Reservoir")
+        self._export_reservoir()
+        self._check_for_stop()
 
         logger.info("Exporting TWW.retention_body -> ABWASSER.Retentionskoerper")
         self._export_retention_body()
