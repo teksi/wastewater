@@ -24,7 +24,7 @@ Where possible, in TWW are value relations used and not project relations. Value
 
 **Value Relations** work perfect also with Multiedit, but is slow, if there are a lot records in the related table or list. And you can not choose a record on the map to connect to it (e.g to define a manhole-catchment area-connection).
 
-**Project relations** allow to select a record on the map and is faster with big datasets. But there is a serious bug when using Multiedit (as of today with QGIS 3.34.4). 
+**Project relations** allow to select a record on the map and is faster with big datasets. But there is a serious bug when using Multiedit (as of today with QGIS 3.34.4).
 If there is a good advantage to work with Multiedit, it's a good idea to define a style, that has no relation-field in the Feature Attributs window.
 
 
@@ -40,7 +40,7 @@ In the project used variables have names that start with "tww".
 
 TWW uses 4 variables to translate the labeling of manholes into the desired language. Without changing the variables, the levels are labeled with "english" letters: "C" for cover level, "I" for Input level, "O" for Output level, "B" for Bottom level. In a german project, you will change these variables to "D" (Deckel), "E" (Einlauf), "A" (Auslauf) and "S" (Sohle) to get the expected labels.
 
-Background: the database uses always the "english" letters to write the _*_label fields in vw_tww_wastewater_structure. In the label-definition of vw_tww_wastewater_structure is a "replace" formula, that change the "english" letter to the letter defined in the project variables 
+Background: the database uses always the "english" letters to write the _*_label fields in vw_tww_wastewater_structure. In the label-definition of vw_tww_wastewater_structure is a "replace" formula, that change the "english" letter to the letter defined in the project variables
 
 'concat(_label, replace(_cover_label,'C',@tww_cover_prefix), replace(_bottom_label,'B',@tww_bottom_prefix), replace(_input_label,'I',@tww_input_prefix), replace(_output_label,'O',@tww_output_prefix))'
 
@@ -52,14 +52,14 @@ Often are symbols big or small or with different labels depending on attributs (
 
 In VSA-DSS are 5 plan-types defined (pipeline_registry, network_plan, 3 overview maps). Every plan has other rules for labeling and symbols. Therefore you have to define scales, where to show which plan-type. And these scales are used in reach labeldefinition, in reach symboldefinition, in manhole labeldefinition and manholesymboldefinition (and with several styles in every layer). If you work with variables, you can easy change the scales.
 
-Example in vw_tww_reach: 
+Example in vw_tww_reach:
 
 .. figure:: images/properties_variables_example1.jpg
 
 Styles/Project Colors
 ^^^^^^^^^^^^^^^^^^^^^
-The color for mixed_wastewater (as example) is used in vw_tww_reach symbols and labels, in vw_tww_wastewater_structures symbols and labels. To change the color (just a different shade of purple) is a lot of work and may result in errors, if you do not use project colors. 
-In the TWW-project are project colors defined for all value of valuelist 
+The color for mixed_wastewater (as example) is used in vw_tww_reach symbols and labels, in vw_tww_wastewater_structures symbols and labels. To change the color (just a different shade of purple) is a lot of work and may result in errors, if you do not use project colors.
+In the TWW-project are project colors defined for all value of valuelist
 
 * channel.usage(_current/planned)
 * wastewater_structure.status.inoperative
@@ -98,10 +98,9 @@ A map theme is a snapshot of the current map legend that records:
 
 Layer Order
 -----------
-TWW uses a lot of layers. Therefore it's a good idea to have the layer organised in a logical way. 
+TWW uses a lot of layers. Therefore it's a good idea to have the layer organised in a logical way.
 
 On the other side defines the sequence of the layer, which symbol is drawn behind and which symbol is drawn before.
 With the layer order panel of QGIS it's possible to life with this conflict.
 
 .. figure:: images/layerorder.jpg
-
