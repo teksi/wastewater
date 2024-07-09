@@ -110,7 +110,7 @@ This tool snaps reaches graphically to the wastewater network element they are c
 
 * Double click the **Snap reach geometry** tool
 
-.. figure:: images/tww_toolbox.jpg
+.. figure:: images/tww_toolbox2.jpg
 
 * In the tool window you have to choose the **vw_tww_reach** - layer and the **vw_wastewater_node** - layer, then click on **Run**
 
@@ -120,14 +120,14 @@ This tool snaps reaches graphically to the wastewater network element they are c
 
 If there are connections from reach to reach, the reach point moves at right angles to the other reach. If there is no way to do a right angle, it moves to the next end point of the reach.
 
-.. attention:: If there is snapping from reach to reach, you will get not the expected result, if the first reach snaps to a second reach, and afterwards this second reach snaps to a node or a third reach, there will be no more graphical connection between reach 1 and reach 2. You have to rerun the command.
+.. attention:: If there is snapping from reach to reach, you will get not the expected result, if the first reach snaps to a second reach, and afterwards this second reach snaps to a node or a third reach. There will be no more graphical connection between reach 1 and reach 2. You have to re-run the command.
 
 Working with codes of value list
 --------------------------------
 
 * The values of fields with value list are stored in the database with codes.
 
- .. note:: The codes are unique, also if there is the same text in different value lists. E.g. the code for "rain_wastewater" in the vl_channel_usage_current and in the vl_channel_usage_planned is different.
+ .. note:: The codes are unique, also if there is the same text in different value lists. E.g. the code for "surface_wastewater" in the vl_channel_usage_current and in the vl_channel_usage_planned is different.
 
 * In a tww project with correct configuration you see in the table view or the form view the values in your language and not the codes.
 * But if you want to define a selection by expression or if you want to define a rule-based symbology for your layer, you have to know the codes or you use the following expression: **represent_value("field")**
