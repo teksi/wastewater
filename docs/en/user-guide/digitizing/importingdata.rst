@@ -9,7 +9,7 @@ General
 
 * You have to add the data you want to import as (vector) layer into the TWW project.
 * The field names of the attributes have to be the same as the field names of the TWW Layer.
-  Therefore it is normally not a good idea to use shp-files, because of the 10 letters limitation of the dbf-format (Alias field names do not work).
+  If possible, prefer non limiting standard open formats like geopackage. When using shp-files, the 10 letters limitation of the dbf-format will fail to map correctly attributes (Alias field names do not work).
 * If you have a translated project, be sure to take the English field names (not the translated name that you find as Alias of the field).
 * If there is a field with value list, you have to use the code, not the plain text.
 * If your fields are prepared as described above, then just copy and paste in the TWW-layer.
