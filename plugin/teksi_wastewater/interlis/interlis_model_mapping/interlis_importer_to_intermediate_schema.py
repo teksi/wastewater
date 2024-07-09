@@ -2203,10 +2203,10 @@ class InterlisImporterToIntermediateSchema:
             self.callback_progress_done()
 
     def _check_subclass_counts(self):
-        check_subclass_count(
+        self.check_subclass_count(
             config.TWW_OD_SCHEMA, "wastewater_networkelement", ["reach", "wastewater_node"]
         )
-        check_subclass_count(
+        self.check_subclass_count(
             config.TWW_OD_SCHEMA,
             "wastewater_structure",
             [
@@ -2220,7 +2220,7 @@ class InterlisImporterToIntermediateSchema:
                 "drainless_toilet",
             ],
         )
-        check_subclass_count(
+        self.check_subclass_count(
             config.TWW_OD_SCHEMA,
             "structure_part",
             [
@@ -2238,25 +2238,25 @@ class InterlisImporterToIntermediateSchema:
                 "dryweather_downspout",
             ],
         )
-        check_subclass_count(
+        self.check_subclass_count(
             config.TWW_OD_SCHEMA, "overflow", ["pump", "leapingweir", "prank_weir"]
         )
-        check_subclass_count(
+        self.check_subclass_count(
             config.TWW_OD_SCHEMA,
             "maintenance_event",
             ["maintenance", "examination", "bio_ecol_assessment"],
         )
-        check_subclass_count(config.TWW_OD_SCHEMA, "damage", ["damage_channel", "damage_manhole"])
-        check_subclass_count(
+        self.check_subclass_count(config.TWW_OD_SCHEMA, "damage", ["damage_channel", "damage_manhole"])
+        self.check_subclass_count(
             config.TWW_OD_SCHEMA,
             "connection_object",
             ["fountain", "individual_surface", "building", "reservoir"],
         )
-        check_subclass_count(
+        self.check_subclass_count(
             config.TWW_OD_SCHEMA, "zone", ["infiltration_zone", "drainage_system"]
         )
 
-    def check_subclass_count(self, schema_name, parent_name, child_list):
+    def check_subclass_count(self,schema_name, parent_name, child_list):
 
         logger.info(f"INTEGRITY CHECK {parent_name} subclass data...")
 
@@ -2264,7 +2264,6 @@ class InterlisImporterToIntermediateSchema:
             text(f"SELECT obj_id FROM {schema_name}.{parent_name};")
         ).fetchall()
         self.abwasser_session.flush()
-        cursor.execute(f"SELECT obj_id FROM {schema_name}.{parent_name};")
         if len(parent_rows) > 0:
             parent_count = len(parent_rows)
             logger.info(f"Number of {parent_name} datasets: {parent_count}")
