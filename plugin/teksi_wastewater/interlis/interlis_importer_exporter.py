@@ -161,7 +161,7 @@ class InterlisImporterExporter:
         selected_ids=[],
     ):
         # Validate subclasses before export
-         self._check_subclass_counts()
+        self._check_subclass_counts()
 
         # File name without extension (used later for export)
         file_name_base, _ = os.path.splitext(xtf_file_output)
