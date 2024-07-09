@@ -565,6 +565,7 @@ class InterlisImporterExporter:
             connection.set_session(autocommit=True)
         cursor = connection.cursor()
 
+
         cursor.execute(
             f"SELECT obj_id FROM {schema_name}.{parent_name};"
         )
@@ -590,8 +591,6 @@ class InterlisImporterExporter:
                 logger.error(
                     f"ERROR: number of subclass elements of {parent_name} NOT CORRECT in schema {schema_name}: checksum = {parent_count} (positive number means missing entries, negative means too many subclass entries)"
                 )
-
-
 
     def _init_model_classes(self, model):
         ModelInterlis = ModelInterlisSia405Abwasser
