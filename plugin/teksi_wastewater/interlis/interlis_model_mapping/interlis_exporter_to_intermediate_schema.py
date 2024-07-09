@@ -6,8 +6,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.sql import text
 
 from .. import config, utils
-from ..utils.various import logger,check_subclass_count
-
+from ..utils.various import check_subclass_count, logger
 
 
 class InterlisExporterToIntermediateSchemaError(Exception):
