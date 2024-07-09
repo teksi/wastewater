@@ -164,21 +164,15 @@ Adding additional covers and nodes to an existing wastewater structure
 
 .. note:: The following description is for an additional cover. It works similar for additional wastewater nodes.
 
-* Be sure to have the relation between vw_cover (field fk_wastewater_structure) and vw_tww_wastewater_structure (field obj_id) in your project properties / relations.
-* Define in layer vw_cover / Properties / **Attribute Forms** the field **fk_wastewater_structure** as value relation
+The TWW project is configured that you can add an additional cover with the **Add Point Child Feature** button.
 
-.. figure:: images/vw_cover_properties_fields.jpg
-
-* With QGIS 3.16 there is a new way: select layer vw_tww_wastewater_structure, set it editable, click the manhole you want to add a cover with the **Identify feature** tool. Go to tab **covers** and click the new child point-button. Now you can digitize a new cover for the wastewater structure.
+* select layer vw_tww_wastewater_structure
+* Switch to the edit mode
+* click the manhole you want to add a cover with the **Identify feature** tool
+* Go to tab **covers** and click the Add Point Child Feature-button. Now you can digitize a new cover for the wastewater structure.
 
 .. figure:: images/new_cover_childpoint.jpg
 
-* The other way (before QGIS 3.16)
-* Start editing vw_cover and add the new cover
-* In the form you find behind the field fk_wastewater_structure a button to connect the new cover to an existing wastewater structure
-* After clicking this button, you get blue hint in the qgis-window. You can move the vw_cover - form-window and click on the wastewater_structure, that will be associated to the cover.
-
-.. figure:: images/new_cover_connect_to_wws.jpg
 
 Adding a wastewater node to an existing reach
 ---------------------------------------------
