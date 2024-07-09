@@ -1,17 +1,17 @@
-Important to know on the TWW-project
-====================================
+TWW-project properties and settings
+===================================
 
 Project Properties
 ------------------
-There are several important properties in a TWW-project:
+There are several relevant properties in a TWW-project:
 
 .. figure:: images/project_properties.jpg
 
 Data Sources
 ^^^^^^^^^^^^
-Important Settings:
+Main Settings:
 
-* Transaction mode has to be **Automatic Transaction Gropus**
+* Transaction mode is recommended to be set on **Automatic Transaction Groups**
 
 * **Evaluate default values on provider side** has to be checked
 
@@ -19,14 +19,18 @@ Important Settings:
 
 Relations
 ^^^^^^^^^^^^
-Relations are necessary for the Feature Attributes Windows to referende to connected tables (e.g. you can edit connected maintenance_events in Feature_Attribut window in vw_tww_reach).
-Where possible, in TWW are value relations used and not project relations. Value Relations ar used for Value Lists, but also for organisations and for pipe_profiles.
+Relations are necessary for the Feature Attributes Windows to reference to connected tables (e.g. you can edit connected maintenance_events in Feature_Attribut window in vw_tww_reach).
+Where possible, value relations widgets are used instead of project relations. Value Relations are used for Value Lists, but also for organisations and for pipe_profiles.
 
-**Value Relations** work perfect also with Multiedit, but is slow, if there are a lot records in the related table or list. And you can not choose a record on the map to connect to it (e.g to define a manhole-catchment area-connection).
+**Value Relations** works perfect also with Multiedit, but can be slow if there are a lot records in the related table or list. Does not provide the ability to link a record on the map (e.g to define a manhole-catchment area-connection).
 
-**Project relations** allow to select a record on the map and is faster with big datasets. But there is a serious bug when using Multiedit (as of today with QGIS 3.34.4).
-If there is a good advantage to work with Multiedit, it's a good idea to define a style, that has no relation-field in the Feature Attributs window.
+**Project relations** allows you to fully use the relation between two objects (parent and child(s)) and to link a record on the map. Is faster with large datasets.
 
+.. attention:: Using Multiedit with projet relations widgets encounters yet some bugs on QGIS side, handle with care when altering theses attributes. (as of today with QGIS 3.34.4)
+
+.. note:: If there is a good advantage to work with Multiedit, it's a good idea to define a style, that has no relation-field in the Feature Attributs window.
+
+.. note:: Project relations are not editable (yet) and are not copied when dealing with other .qgs projects.
 
 Variables
 ^^^^^^^^^^
@@ -44,7 +48,7 @@ Background: the database uses always the "english" letters to write the _*_label
 
 'concat(_label, replace(_cover_label,'C',@tww_cover_prefix), replace(_bottom_label,'B',@tww_bottom_prefix), replace(_input_label,'I',@tww_input_prefix), replace(_output_label,'O',@tww_output_prefix))'
 
-**Variables to define big or small symboles**
+**Variables to define symbols size**
 
 Often are symbols big or small or with different labels depending on attributs (primary or secondary network, owner of the wastewater_structures). Because there are also differences in the languages (pwwf / paa / oap ...), it's one way, to define in a variable, which value has big symbols. You can use this variable in rule based symboldefinitions or in the size definition of symbols or in value definition of labels etc. in differnet layers.
 
@@ -94,13 +98,13 @@ A map theme is a snapshot of the current map legend that records:
 
   * the visible classes of the style, ie the layer checked node items in the Layers panel. This applies to symbologies other than the single symbol rendering
 
-  * the collapsed/expanded state of the layer node(s) and the group(s) it’s placed inside
+  * the collapsed/expanded state of the layer node(s) and the group(s) placed inside
 
 Layer Order
 -----------
 TWW uses a lot of layers. Therefore it's a good idea to have the layer organised in a logical way.
 
-On the other side defines the sequence of the layer, which symbol is drawn behind and which symbol is drawn before.
-With the layer order panel of QGIS it's possible to life with this conflict.
+The layer order panel enables to manually define the order of the layers displayed on the map canvas without altering it in the layer panel.
+It is strongly relevant when digitizing with QGIS standard tools and can be very handy in many situations.
 
 .. figure:: images/layerorder.jpg
