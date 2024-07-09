@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.sql import text
 
 from .. import config, utils
-from ..utils.various import logger
+from ..utils.various import logger,check_subclass_counts
 
 
 class InterlisExporterToIntermediateSchemaError(Exception):
@@ -81,6 +81,9 @@ class InterlisExporterToIntermediateSchema:
             raise exception
 
     def _export(self):
+        # Check if subclass counts are correct
+        self._check_subclass_counts()
+        
         # Allow to insert rows with cyclic dependencies at once
         self.abwasser_session.execute(text("SET CONSTRAINTS ALL DEFERRED;"))
 
@@ -220,24 +223,6 @@ class InterlisExporterToIntermediateSchema:
         logger.info("Exporting TWW.benching -> ABWASSER.bankett")
         self._export_benching()
         self._check_for_stop()
-
-        various.check_subclass_count(
-            config.ABWASSER_SCHEMA, "abwassernetzelement", ["haltung", "abwasserknoten"]
-        )
-        various.check_subclass_count(
-            config.ABWASSER_SCHEMA,
-            "abwasserbauwerk",
-            [
-                "kanal",
-                "normschacht",
-                "spezialbauwerk",
-                "versickerungsanlage",
-                "einleitstelle",
-                "arabauwerk",
-                "klara",
-                "abflusslose_toilette",
-            ],
-        )
 
     def _export_dss(self):
         logger.info(
@@ -2747,3 +2732,17 @@ class InterlisExporterToIntermediateSchema:
     def _check_for_stop(self):
         if self.callback_progress_done:
             self.callback_progress_done()
+
+    def _check_subclass_counts(self):
+        check_subclass_count(config.TWW_OD_SCHEMA,'wastewater_networkelement',['reach','wastewater_node'])
+        check_subclass_count(config.TWW_OD_SCHEMA,'wastewater_structure',['channel','manhole','special_structure',
+            'infiltration_installation','discharge_point','wwtp_structure','small_treatment_plant','drainless_toilet'])
+        check_subclass_count(config.TWW_OD_SCHEMA,'structure_part',
+            ['benching','tank_emptying','tank_cleaning','cover','access_aid','electric_equipment',
+            'electromechanical_equipment','solids_retention','backflow_prevention','flushing_nozzle',
+            'dryweather_flume','dryweather_downspout'])
+        check_subclass_count(config.TWW_OD_SCHEMA,'overflow',['pump','leapingweir','prank_weir'])
+        check_subclass_count(config.TWW_OD_SCHEMA,'maintenance_event',['maintenance','examination','bio_ecol_assessment'])
+        check_subclass_count(config.TWW_OD_SCHEMA,'damage',['damage_channel','damage_manhole'])
+        check_subclass_count(config.TWW_OD_SCHEMA,'connection_object',['fountain','individual_surface','building','reservoir'])
+        check_subclass_count(config.TWW_OD_SCHEMA,'zone',['infiltration_zone','drainage_system'])

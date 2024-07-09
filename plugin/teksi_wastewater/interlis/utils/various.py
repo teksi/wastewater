@@ -283,22 +283,6 @@ def make_log_path(next_to_path, step_name):
         os.makedirs(temp_path, exist_ok=True)
         return os.path.join(temp_path, f"{now}.{step_name}.log")
 
-
-class LoggingHandlerContext:
-    """Temporarily sets a log handler, then removes it"""
-
-    def __init__(self, handler):
-        self.handler = handler
-
-    def __enter__(self):
-        logger.addHandler(self.handler)
-
-    def __exit__(self, et, ev, tb):
-        logger.removeHandler(self.handler)
-        self.handler.close()
-        # implicit return of None => don't swallow exceptions
-
-
 def check_subclass_count(schema_name, parent_name, child_list):
 
     logger.info(f"INTEGRITY CHECK {parent_name} subclass data...")
@@ -326,8 +310,22 @@ def check_subclass_count(schema_name, parent_name, child_list):
             )
         else:
             subclass_check = False
-            logger.info(
-                f"ERROR: number of subclass elements of {parent_name} NOT CORRECT in schema {schema_name}: checksum = {parent_count} (positive number means missing entries, negative means too many subclass entries)"
-            )
+            logger.error(f"ERROR: number of subclass elements of {parent_name} NOT CORRECT in schema {schema_name}: checksum = {parent_count} (positive number means missing entries, negative means too many subclass entries)")
 
     return subclass_check
+
+
+class LoggingHandlerContext:
+    """Temporarily sets a log handler, then removes it"""
+
+    def __init__(self, handler):
+        self.handler = handler
+
+    def __enter__(self):
+        logger.addHandler(self.handler)
+
+    def __exit__(self, et, ev, tb):
+        logger.removeHandler(self.handler)
+        self.handler.close()
+        # implicit return of None => don't swallow exceptions
+
