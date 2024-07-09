@@ -116,7 +116,7 @@ To import `xtf`files, click on the `import` button and navigate to the `.xtf` fi
 If you have organisations that are not yet in that data set `please inform the VSA and hand in an application to be added <https://vsa.ch/fachbereiche-cc/siedlungsentwaesserung/generelle-entwaesserungsplanung/datenmanagement/#Organisationstabelle>`_.
 
 
-If you have additional own local organisations that are not (yet) in the VSA organisation data set continue with importing those before you start importing you network data. TV inspection data usually comes last, as it references your network data.
+If you have additional own local organisations that are not (yet) in the VSA organisation data set continue with importing those before you start importing your network data. TV inspection data usually comes last, as it references your network data.
 
 After launching the import process your data set will be validated and imported in a intermediatary schema. Then the following dialog will appear.
 
