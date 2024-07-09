@@ -55,7 +55,7 @@ It is possible to use the **Advanced Digitizing** tools together with the wizard
 QGIS standard tools
 -------------------
 
-To digitize in other layers than vw_qep_wastewater_structure or vw_tww_reach, you work with the standard QGIS tools:
+To digitize in other layers than vw_tww_wastewater_structure or vw_tww_reach, you work with the standard QGIS tools:
 
 * Select the layer you want to edit
 * Toggle Editing if necessary
