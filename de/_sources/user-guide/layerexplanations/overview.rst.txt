@@ -1,4 +1,4 @@
-.. figure:: images/tww_title.png
+.. figure:: images/teksiabwasser.png
 
 Introduction and Overview
 =========================

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="de" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.1.4. TWW-project properties and settings &mdash; TWW dev Dokumentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=419ed147"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/translations.js?v=70a09b52"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Stichwortverzeichnis" href="../../genindex.html" />
+    <link rel="search" title="Suche" href="../../search.html" />
+    <link rel="next" title="3.2. Digitalisieren in TWW" href="../digitizing/index.html" />
+    <link rel="prev" title="3.1.3. Namenskonventionen" href="namingconventions.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            TWW
+          </a>
+              <div class="version">
+                dev
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Dokumentation durchsuchen" aria-label="Dokumentation durchsuchen" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">1. TEKSI wastewater (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">2. TWW Installation Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. TWW Benutzerhandbuch</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">3.1. Übersicht über TWW</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="overview.html">3.1.1. Einleitung und Übersicht</a></li>
+<li class="toctree-l3"><a class="reference internal" href="layerexplanation.html">3.1.2. Layer Erläuterungen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="namingconventions.html">3.1.3. Namenskonventionen</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">3.1.4. TWW-project properties and settings</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#project-properties">3.1.4.1. Project Properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#map-themes">3.1.4.2. Map Themes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#layer-order">3.1.4.3. Layer Order</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../digitizing/index.html">3.2. Digitalisieren in TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../editing/index.html">3.3. Bearbeiten in TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../length-profile/index.html">3.4. Längsschnitte</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../network-following/index.html">3.5. Werkzeuge zur Netzwerkverfolgung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">3.6. Plandruck</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../history/index.html">3.7. History in TWW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../How-To/index.html">3.8. How To</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">4. Administratorhandbuch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vm/index.html">5. Demo virtuelle Maschine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tww_swmm/index.html">6. SWMM Data Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">7. Übersetzungen</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">TWW</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>TWW Benutzerhandbuch</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.1. </span>Übersicht über TWW</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">3.1.4. </span>TWW-project properties and settings</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/user-guide/layerexplanations/twwproject.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tww-project-properties-and-settings">
+<h1><span class="section-number">3.1.4. </span>TWW-project properties and settings<a class="headerlink" href="#tww-project-properties-and-settings" title="Link to this heading"></a></h1>
+<section id="project-properties">
+<h2><span class="section-number">3.1.4.1. </span>Project Properties<a class="headerlink" href="#project-properties" title="Link to this heading"></a></h2>
+<p>There are several relevant properties in a TWW-project:</p>
+<figure class="align-default">
+<img alt="../../_images/project_properties.jpg" src="../../_images/project_properties.jpg" />
+</figure>
+<section id="data-sources">
+<h3><span class="section-number">3.1.4.1.1. </span>Data Sources<a class="headerlink" href="#data-sources" title="Link to this heading"></a></h3>
+<p>Main Settings:</p>
+<ul class="simple">
+<li><p>Transaction mode is recommended to be set on <strong>Automatic Transaction Groups</strong></p></li>
+<li><p><strong>Evaluate default values on provider side</strong> has to be checked</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/properties_datasources.jpg" src="../../_images/properties_datasources.jpg" />
+</figure>
+</section>
+<section id="relations">
+<h3><span class="section-number">3.1.4.1.2. </span>Relations<a class="headerlink" href="#relations" title="Link to this heading"></a></h3>
+<p>Relations are necessary for the Feature Attributes Windows to reference to connected tables (e.g. you can edit connected maintenance_events in Feature_Attribut window in vw_tww_reach).
+Where possible, value relations widgets are used instead of project relations. Value Relations are used for Value Lists, but also for organisations and for pipe_profiles.</p>
+<p><strong>Value Relations</strong> works perfect also with Multiedit, but can be slow if there are a lot records in the related table or list. Does not provide the ability to link a record on the map (e.g to define a manhole-catchment area-connection).</p>
+<p><strong>Project relations</strong> allows you to fully use the relation between two objects (parent and child(s)) and to link a record on the map. Is faster with large datasets.</p>
+<div class="admonition attention">
+<p class="admonition-title">Achtung</p>
+<p>Using Multiedit with projet relations widgets encounters yet some bugs on QGIS side, handle with care when altering theses attributes. (as of today with QGIS 3.34.4)</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Bemerkung</p>
+<p>If there is a good advantage to work with Multiedit, it’s a good idea to define a style, that has no relation-field in the Feature Attributs window.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Bemerkung</p>
+<p>Project relations are not editable (yet) and are not copied when dealing with other .qgs projects.</p>
+</div>
+</section>
+<section id="variables">
+<h3><span class="section-number">3.1.4.1.3. </span>Variables<a class="headerlink" href="#variables" title="Link to this heading"></a></h3>
+<p>The TWW-project uses project variables to simplify some of QGIS-functionalities. These approaches are not TWW specific and can be used also in other QGIS-projects.</p>
+<p>In the project used variables have names that start with „tww“.</p>
+<figure class="align-default">
+<img alt="../../_images/properties_variables.jpg" src="../../_images/properties_variables.jpg" />
+</figure>
+<p><strong>Variables for label translations</strong></p>
+<p>TWW uses 4 variables to translate the labeling of manholes into the desired language. Without changing the variables, the levels are labeled with „english“ letters: „C“ for cover level, „I“ for Input level, „O“ for Output level, „B“ for Bottom level. In a german project, you will change these variables to „D“ (Deckel), „E“ (Einlauf), „A“ (Auslauf) and „S“ (Sohle) to get the expected labels.</p>
+<p>Background: the database uses always the „english“ letters to write the _*_label fields in vw_tww_wastewater_structure. In the label-definition of vw_tww_wastewater_structure is a „replace“ formula, that change the „english“ letter to the letter defined in the project variables</p>
+<p>‚concat(_label, replace(_cover_label,‘C‘,&#64;tww_cover_prefix), replace(_bottom_label,‘B‘,&#64;tww_bottom_prefix), replace(_input_label,‘I‘,&#64;tww_input_prefix), replace(_output_label,‘O‘,&#64;tww_output_prefix))‘</p>
+<p><strong>Variables to define symbols size</strong></p>
+<p>Often are symbols big or small or with different labels depending on attributs (primary or secondary network, owner of the wastewater_structures). Because there are also differences in the languages (pwwf / paa / oap …), it’s one way, to define in a variable, which value has big symbols. You can use this variable in rule based symboldefinitions or in the size definition of symbols or in value definition of labels etc. in differnet layers.</p>
+<p><strong>Variables to define the scale, where the plansymbols change</strong></p>
+<p>In VSA-DSS are 5 plan-types defined (pipeline_registry, network_plan, 3 overview maps). Every plan has other rules for labeling and symbols. Therefore you have to define scales, where to show which plan-type. And these scales are used in reach labeldefinition, in reach symboldefinition, in manhole labeldefinition and manholesymboldefinition (and with several styles in every layer). If you work with variables, you can easy change the scales.</p>
+<p>Example in vw_tww_reach:</p>
+<figure class="align-default">
+<img alt="../../_images/properties_variables_example1.jpg" src="../../_images/properties_variables_example1.jpg" />
+</figure>
+</section>
+<section id="styles-project-colors">
+<h3><span class="section-number">3.1.4.1.4. </span>Styles/Project Colors<a class="headerlink" href="#styles-project-colors" title="Link to this heading"></a></h3>
+<p>The color for mixed_wastewater (as example) is used in vw_tww_reach symbols and labels, in vw_tww_wastewater_structures symbols and labels. To change the color (just a different shade of purple) is a lot of work and may result in errors, if you do not use project colors.
+In the TWW-project are project colors defined for all value of valuelist</p>
+<ul class="simple">
+<li><p>channel.usage(_current/planned)</p></li>
+<li><p>wastewater_structure.status.inoperative</p></li>
+<li><p>catchment_area.drainage_system(_current/planned)</p></li>
+<li><p>wastewater structure.structure_condition/renovation_necessity (also useable for condition_score and urgency_figure).</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/properties_projectcolors.jpg" src="../../_images/properties_projectcolors.jpg" />
+</figure>
+<p>To change a projectcolor, go to project/properties/styles/project color, double click the color to be changed and define your color. Then click OK and do not forget to click <strong>Apply</strong>.
+You can export and import Projectcolors in a GPL-File.</p>
+<p>Example in vw_tww_reach:</p>
+<figure class="align-default">
+<img alt="../../_images/properties_projectcolors_example1.jpg" src="../../_images/properties_projectcolors_example1.jpg" />
+</figure>
+</section>
+</section>
+<section id="map-themes">
+<h2><span class="section-number">3.1.4.2. </span>Map Themes<a class="headerlink" href="#map-themes" title="Link to this heading"></a></h2>
+<p>There are two map themes defined in the TWW-project as an invitation to use this great feature of QGIS to toggle between different layer-styles.</p>
+<figure class="align-default">
+<img alt="../../_images/mapthemes.jpg" src="../../_images/mapthemes.jpg" />
+</figure>
+<p>It is important to understand, what map themes do:</p>
+<p>A map theme is a snapshot of the current map legend that records:</p>
+<ul class="simple">
+<li><p>the layers set as visible in the Layers panel</p></li>
+<li><p>and for each visible layer:</p>
+<ul>
+<li><p>the reference to the style applied to the layer</p></li>
+<li><p>the visible classes of the style, ie the layer checked node items in the Layers panel. This applies to symbologies other than the single symbol rendering</p></li>
+<li><p>the collapsed/expanded state of the layer node(s) and the group(s) placed inside</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="layer-order">
+<h2><span class="section-number">3.1.4.3. </span>Layer Order<a class="headerlink" href="#layer-order" title="Link to this heading"></a></h2>
+<p>TWW uses a lot of layers. Therefore it’s a good idea to have the layer organised in a logical way.</p>
+<p>The layer order panel enables to manually define the order of the layers displayed on the map canvas without altering it in the layer panel.
+It is strongly relevant when digitizing with QGIS standard tools and can be very handy in many situations.</p>
+<figure class="align-default">
+<img alt="../../_images/layerorder.jpg" src="../../_images/layerorder.jpg" />
+</figure>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="namingconventions.html" class="btn btn-neutral float-left" title="3.1.3. Namenskonventionen" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
+        <a href="../digitizing/index.html" class="btn btn-neutral float-right" title="3.2. Digitalisieren in TWW" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, The TWW Project www.teksi.ch.</p>
+  </div>
+
+  Erstellt mit <a href="https://www.sphinx-doc.org/">Sphinx</a> mit einem
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    bereitgestellt von <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
