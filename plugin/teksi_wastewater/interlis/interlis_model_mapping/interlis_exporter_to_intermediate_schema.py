@@ -9,7 +9,6 @@ from .. import config, utils
 from ..utils.various import logger
 
 
-
 class InterlisExporterToIntermediateSchemaError(Exception):
     pass
 
@@ -2788,7 +2787,7 @@ class InterlisExporterToIntermediateSchema:
             config.TWW_OD_SCHEMA, "zone", ["infiltration_zone", "drainage_system"]
         )
 
-    def check_subclass_count(self,schema_name, parent_name, child_list):
+    def check_subclass_count(self, schema_name, parent_name, child_list):
 
         logger.info(f"INTEGRITY CHECK {parent_name} subclass data...")
 
