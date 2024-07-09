@@ -121,7 +121,7 @@
 <p>This represents a guide on how to import/export data between TWW and INTERLIS 2 Transfer Format (XTF).</p>
 <section id="general">
 <h2><span class="section-number">4.4.1. </span>General<a class="headerlink" href="#general" title="Link to this heading"></a></h2>
-<p>The TWW plugin includes an experimental interlis import/export feature.
+<p>The TWW plugin includes an INTERLIS import/export feature.
 It is currently capable of importing and exporting the following models::
 * SIA405_ABWASSER_2020_1_LV95
 * DSS_2020_1_LV95
@@ -165,7 +165,7 @@ Linux : use the package manager</p>
 </section>
 <section id="tww-version">
 <h3><span class="section-number">4.4.2.3. </span>TWW Version<a class="headerlink" href="#tww-version" title="Link to this heading"></a></h3>
-<p>The export only supports up-to-date TWW datamodel (1.5.6 at the time of writing). Ensure your datamodel is fully updated before trying to import/export.</p>
+<p>The export only supports up-to-date TWW datamodel (2024.0 at the time of writing). Ensure your datamodel is fully updated before trying to import/export.</p>
 </section>
 </section>
 <section id="usage-gui">
@@ -185,10 +185,13 @@ Linux : use the package manager</p>
 <h3><span class="section-number">4.4.3.2. </span>Export<a class="headerlink" href="#export" title="Link to this heading"></a></h3>
 <p>To export your TWW data, click on the <cite>export</cite> button. The following dialog will appear.</p>
 <figure class="align-default">
-<img alt="../../_images/export_dialog.png" src="../../_images/export_dialog.png" />
+<img alt="../../_images/tww_interlis_export.png" src="../../_images/tww_interlis_export.png" />
 </figure>
 <p>At first, select the export model.</p>
 <p>If you have an active selection in the nodes and/or reaches layer, you can choose to restrict the export to that selection. This is especially useful in combination with the upstream/downstream selection tools.</p>
+<figure class="align-default">
+<img alt="../../_images/tww_interlis_export_selection.png" src="../../_images/tww_interlis_export_selection.png" />
+</figure>
 <p>The export tools is capable of exporting label positions for different scales. You can choose which scales you are interested in exporting by selected/deselecting them.</p>
 <p>Then, confirm the dialog and choose where to save the <cite>.xtf</cite> file.</p>
 <div class="admonition note">
@@ -219,12 +222,26 @@ Linux : use the package manager</p>
 <p class="admonition-title">Note</p>
 <p>Note that windows file pathes with empty strings in the directory path or filename are not supported at the moment.</p>
 </div>
-<p>The following dialog will appear.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Starting with Release 2020 all organisations are in a separated dataset and need to be imported first, else a bunch of errors will be thrown on all references like fk_dataowner, fk_owner, fk_provider, etc. Download the VSA Organisation data set from <a class="reference external" href="https://www.vsa.ch/models/organisation/vsa_organisationen_2020_1.xtf">https://www.vsa.ch/models/organisation/vsa_organisationen_2020_1.xtf</a> and start with importing that data set. This data set is updated regularly - so please come back and check (and maybe re-import) at a later stage to have access to all available organisation.</p>
+</div>
+<p>If you have organisations that are not yet in that data set <a class="reference external" href="https://vsa.ch/fachbereiche-cc/siedlungsentwaesserung/generelle-entwaesserungsplanung/datenmanagement/#Organisationstabelle">please inform the VSA and hand in an application to be added</a>.</p>
+<p>If you have additional own local organisations that are not (yet) in the VSA organisation data set continue with importing those before you start importing your network data. TV inspection data usually comes last, as it references your network data.</p>
+<p>After launching the import process your data set will be validated and imported in a intermediatary schema. Then the following dialog will appear.</p>
 <figure class="align-default">
 <img alt="../../_images/import_dialog.png" src="../../_images/import_dialog.png" />
 </figure>
 <p>The left part of this dialog lists all elements that are going to be imported from the <cite>.xtf</cite> file, allowing to review what is going to be imported and to deselect elements you may want to skip. It also shows the validation status of each object, showing whether further action is needed (INVALID) or recommended (WARNING) prior to importing.</p>
-<p>The right part of this dialog shows a form specific to the type of element selected in the list, allowing to adapt the import. For instance, it allows to attach “examinations” to their pipes.</p>
+<p>The right part of this dialog shows a form specific to the type of element selected in the list, allowing to adapt the import.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Currently de-selecting and selecting objects might take a long time depending how many data sets are in that respective class.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Special feature for TV Inspection import: For instance, it allows to attach “examinations” to their pipes.</p>
+</div>
 <p>Once you’re happy with the import options, confirm the dialog to persist the changes to your database.</p>
 </section>
 </section>
