@@ -2285,4 +2285,3 @@ class InterlisImporterToIntermediateSchema:
                 logger.error(
                     f"ERROR: number of subclass elements of {parent_name} NOT CORRECT in schema {schema_name}: checksum = {parent_count} (positive number means missing entries, negative means too many subclass entries)"
                 )
-
