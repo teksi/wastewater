@@ -2777,7 +2777,9 @@ class InterlisExporterToIntermediateSchema:
             "maintenance_event",
             ["maintenance", "examination", "bio_ecol_assessment"],
         )
-        self.check_subclass_count(config.TWW_OD_SCHEMA, "damage", ["damage_channel", "damage_manhole"])
+        self.check_subclass_count(
+            config.TWW_OD_SCHEMA, "damage", ["damage_channel", "damage_manhole"]
+        )
         self.check_subclass_count(
             config.TWW_OD_SCHEMA,
             "connection_object",

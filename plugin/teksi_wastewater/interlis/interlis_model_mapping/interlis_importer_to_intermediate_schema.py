@@ -2246,7 +2246,9 @@ class InterlisImporterToIntermediateSchema:
             "maintenance_event",
             ["maintenance", "examination", "bio_ecol_assessment"],
         )
-        self.check_subclass_count(config.TWW_OD_SCHEMA, "damage", ["damage_channel", "damage_manhole"])
+        self.check_subclass_count(
+            config.TWW_OD_SCHEMA, "damage", ["damage_channel", "damage_manhole"]
+        )
         self.check_subclass_count(
             config.TWW_OD_SCHEMA,
             "connection_object",
@@ -2256,7 +2258,7 @@ class InterlisImporterToIntermediateSchema:
             config.TWW_OD_SCHEMA, "zone", ["infiltration_zone", "drainage_system"]
         )
 
-    def check_subclass_count(self,schema_name, parent_name, child_list):
+    def check_subclass_count(self, schema_name, parent_name, child_list):
 
         logger.info(f"INTEGRITY CHECK {parent_name} subclass data...")
 
