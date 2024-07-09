@@ -81,9 +81,6 @@ class InterlisExporterToIntermediateSchema:
             raise exception
 
     def _export(self):
-        # Check if subclass counts are correct
-        self._check_subclass_counts()
-
         # Allow to insert rows with cyclic dependencies at once
         self.abwasser_session.execute(text("SET CONSTRAINTS ALL DEFERRED;"))
 
@@ -2732,87 +2729,3 @@ class InterlisExporterToIntermediateSchema:
     def _check_for_stop(self):
         if self.callback_progress_done:
             self.callback_progress_done()
-
-    def _check_subclass_counts(self):
-        self.check_subclass_count(
-            config.TWW_OD_SCHEMA, "wastewater_networkelement", ["reach", "wastewater_node"]
-        )
-        self.check_subclass_count(
-            config.TWW_OD_SCHEMA,
-            "wastewater_structure",
-            [
-                "channel",
-                "manhole",
-                "special_structure",
-                "infiltration_installation",
-                "discharge_point",
-                "wwtp_structure",
-                "small_treatment_plant",
-                "drainless_toilet",
-            ],
-        )
-        self.check_subclass_count(
-            config.TWW_OD_SCHEMA,
-            "structure_part",
-            [
-                "benching",
-                "tank_emptying",
-                "tank_cleaning",
-                "cover",
-                "access_aid",
-                "electric_equipment",
-                "electromechanical_equipment",
-                "solids_retention",
-                "backflow_prevention",
-                "flushing_nozzle",
-                "dryweather_flume",
-                "dryweather_downspout",
-            ],
-        )
-        self.check_subclass_count(
-            config.TWW_OD_SCHEMA, "overflow", ["pump", "leapingweir", "prank_weir"]
-        )
-        self.check_subclass_count(
-            config.TWW_OD_SCHEMA,
-            "maintenance_event",
-            ["maintenance", "examination", "bio_ecol_assessment"],
-        )
-        self.check_subclass_count(
-            config.TWW_OD_SCHEMA, "damage", ["damage_channel", "damage_manhole"]
-        )
-        self.check_subclass_count(
-            config.TWW_OD_SCHEMA,
-            "connection_object",
-            ["fountain", "individual_surface", "building", "reservoir"],
-        )
-        self.check_subclass_count(
-            config.TWW_OD_SCHEMA, "zone", ["infiltration_zone", "drainage_system"]
-        )
-
-    def check_subclass_count(self, schema_name, parent_name, child_list):
-
-        logger.info(f"INTEGRITY CHECK {parent_name} subclass data...")
-
-        parent_rows = self.abwasser_session.execute(
-            text(f"SELECT obj_id FROM {schema_name}.{parent_name};")
-        ).fetchall()
-        self.abwasser_session.flush()
-        if len(parent_rows) > 0:
-            parent_count = len(parent_rows)
-            logger.info(f"Number of {parent_name} datasets: {parent_count}")
-            for child_name in child_list:
-                child_rows = self.abwasser_session.execute(
-                    text(f"SELECT obj_id FROM {schema_name}.{child_name};")
-                ).fetchall()
-                self.abwasser_session.flush()
-                logger.info(f"Number of {child_name} datasets: {len(child_rows)}")
-                parent_count = parent_count - len(child_rows)
-
-            if parent_count == 0:
-                logger.info(
-                    f"OK: number of subclass elements of class {parent_name} OK in schema {schema_name}!"
-                )
-            else:
-                logger.error(
-                    f"ERROR: number of subclass elements of {parent_name} NOT CORRECT in schema {schema_name}: checksum = {parent_count} (positive number means missing entries, negative means too many subclass entries)"
-                )

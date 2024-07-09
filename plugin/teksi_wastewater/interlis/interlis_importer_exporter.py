@@ -140,6 +140,9 @@ class InterlisImporterExporter:
         self._progress_done(95, "Update main cover and refresh materialized views...")
         self._import_update_main_cover_and_refresh_mat_views()
 
+        # Validate subclasses after import
+        self._check_subclass_counts()
+        
         # Reenable symbology triggers
         self._progress_done(95, "Reenable symbology triggers...")
         self._import_enable_symbology_triggers()
@@ -157,6 +160,9 @@ class InterlisImporterExporter:
         selected_labels_scales_indices=[],
         selected_ids=[],
     ):
+        # Validate subclasses before export
+         self._check_subclass_counts()
+        
         # File name without extension (used later for export)
         file_name_base, _ = os.path.splitext(xtf_file_output)
 
@@ -492,6 +498,98 @@ class InterlisImporterExporter:
                 "Open the logs for more details on the error.",
                 log_path,
             )
+
+    def _check_subclass_counts(self):
+        self._check_subclass_count(
+            config.TWW_OD_SCHEMA, "wastewater_networkelement", ["reach", "wastewater_node"]
+        )
+        self._check_subclass_count(
+            config.TWW_OD_SCHEMA,
+            "wastewater_structure",
+            [
+                "channel",
+                "manhole",
+                "special_structure",
+                "infiltration_installation",
+                "discharge_point",
+                "wwtp_structure",
+                "small_treatment_plant",
+                "drainless_toilet",
+            ],
+        )
+        self._check_subclass_count(
+            config.TWW_OD_SCHEMA,
+            "structure_part",
+            [
+                "benching",
+                "tank_emptying",
+                "tank_cleaning",
+                "cover",
+                "access_aid",
+                "electric_equipment",
+                "electromechanical_equipment",
+                "solids_retention",
+                "backflow_prevention",
+                "flushing_nozzle",
+                "dryweather_flume",
+                "dryweather_downspout",
+            ],
+        )
+        self._check_subclass_count(
+            config.TWW_OD_SCHEMA, "overflow", ["pump", "leapingweir", "prank_weir"]
+        )
+        self._check_subclass_count(
+            config.TWW_OD_SCHEMA,
+            "maintenance_event",
+            ["maintenance", "examination", "bio_ecol_assessment"],
+        )
+        self._check_subclass_count(
+            config.TWW_OD_SCHEMA, "damage", ["damage_channel", "damage_manhole"]
+        )
+        self._check_subclass_count(
+            config.TWW_OD_SCHEMA,
+            "connection_object",
+            ["fountain", "individual_surface", "building", "reservoir"],
+        )
+        self._check_subclass_count(
+            config.TWW_OD_SCHEMA, "zone", ["infiltration_zone", "drainage_system"]
+        )
+
+    def _check_subclass_count(self, schema_name, parent_name, child_list):
+
+        logger.info(f"INTEGRITY CHECK {parent_name} subclass data...")
+        logger.info("CONNECTING TO DATABASE...")
+
+        connection = psycopg.connect(get_pgconf_as_psycopg_dsn(), **DEFAULTS_CONN_ARG)
+        if PSYCOPG_VERSION == 2:
+            connection.set_session(autocommit=True)
+        cursor = connection.cursor()
+        
+        parent_rows = cursor.execute(
+            f"SELECT obj_id FROM {schema_name}.{parent_name};"
+        ).fetchall()
+        if len(parent_rows) > 0:
+            parent_count = len(parent_rows)
+            logger.info(f"Number of {parent_name} datasets: {parent_count}")
+            for child_name in child_list:
+                child_rows = cursor.execute(
+                    f"SELECT obj_id FROM {schema_name}.{child_name};"
+                ).fetchall()
+                logger.info(f"Number of {child_name} datasets: {len(child_rows)}")
+                parent_count = parent_count - len(child_rows)
+            connection.commit()
+            connection.close()
+        
+            if parent_count == 0:
+                logger.info(
+                    f"OK: number of subclass elements of class {parent_name} OK in schema {schema_name}!"
+                )
+            else:
+                logger.error(
+                    f"ERROR: number of subclass elements of {parent_name} NOT CORRECT in schema {schema_name}: checksum = {parent_count} (positive number means missing entries, negative means too many subclass entries)"
+                )
+                
+
 
     def _init_model_classes(self, model):
         ModelInterlis = ModelInterlisSia405Abwasser
