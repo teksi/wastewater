@@ -5,23 +5,23 @@ Editing of existing data
 
 This represents a guide on how to edit existing data in TWW.
 
-Demo project
+Demo project (Chapter not adjusted to TWW)
 ------------
 
 * Make sure you have imported the demo project with pgAdminIII (see the :ref:`database-initialization` chapter)
 * Open the demo project by going to the main menu and press **Project** --> **Open**  or by pressing ``CTRL``
   + ``O`` at the same time.
 
-.. figure:: images/tww_demoproject_selection_tww_en_qgs.jpg
+.. figure:: images/qgep_demoproject_selection_qgep_en_qgs.jpg
    :scale: 50 %
 
 * Login to the database
 
-.. figure:: images/tww_demoproject_login.jpg
+.. figure:: images/qgep_demoproject_login.jpg
 
 * You should now have the demo project loaded
 
-.. figure:: images/tww_demoproject_overview.jpg
+.. figure:: images/qgep_demoproject_overview.jpg
 
 * The project consists of different layers. Depending on your task what to edit or add you choose the layer.
 
@@ -45,28 +45,29 @@ Changing attributes of point elements (manholes / special structures)
  .. figure:: ../digitizing/images/wizard_wastewater_structure_manhole_form_data_ok3.jpg
 
  * On the first tab (General) you can change the most common attributes
- * To change attributes of related tables (e.g. cover) you need to select the correspondent tab. Depending on the
-   kind of wastewater structure you can edit additional attributes in the respective tab (**special structure**, **manhole**).
-
+ * Main Cover and Main Node are the first cover / node defined for the wastewater structure. 
+ * Additional attributes of table wastewater structure and fo the selected subclass can be changed on tab Wastewater structure
+ * To change attributes of related tables (e.g. cover) you need to select the correspondent tab. 
  * In **Structure parts** tab you can add further parts such as **access aids**, **backflow prevention**, **dryweather flume** etc.
 
  .. figure:: images/form_vw_tww_wastewater_structure_structure_parts.jpg
 
  * The **covers** and **wastewater nodes** tab allows you to look to all nodes or covers of a wastewater structure and to add further elements. See the :ref:`Adding-additional-covers-and-nodes-to-an-existing-wastewater-structure` chapter below.
 
+.. note:: **additional fields** means, that some fields of the class are in the general tab, others are in separat tabs. The fields of the general tab are not repeated, because Multiedit does not work correct when using a field on more than one tab.
 
 Changing attributes of linear elements (channels)
 -------------------------------------------------
 
- * To change an attribute you first need to select the **vw_tww_reach**
+ * To change an attribute you first need to select **vw_tww_reach**
  * Switch to the edit mode.
  * Then click on the **Identify features** button and click the reach you want to edit.
- * The **vw_tww_reach** form will open.
+ * The **vw_tww_reach** feature attributs window will open.
 
   .. figure:: images/form_vw_tww_reach.jpg
 
  * On the first tab (**General**) you can change the most common attributes.
- * To change attributes of related tables (e.g. **reach points**) select the correspondent tab.
+ * To change additional attributes of related tables (e.g. **reach points**) select the correspondent tab.
 
   .. figure:: images/form_vw_tww_reach_reachpoints.jpg
 
