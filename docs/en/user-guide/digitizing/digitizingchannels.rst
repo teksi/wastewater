@@ -30,7 +30,7 @@ Digitizing
 
 .. figure:: images/wizard_data_entry_reach_with_new_cursor2-3.jpg
 
-* You finish digitizing the line by right clicking. This will make the **vw_qep_reach** feature attributes window appear and you can start adding data in the **General** tab:
+* You finish digitizing the line by right clicking. This will make the **vw_tww_reach** feature attributes window appear and you can start adding data in the **General** tab:
 
 .. figure:: images/wizard_reach_form.jpg
 
