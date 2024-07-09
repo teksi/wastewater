@@ -565,18 +565,13 @@ class InterlisImporterExporter:
             connection.set_session(autocommit=True)
         cursor = connection.cursor()
 
-
-        cursor.execute(
-            f"SELECT obj_id FROM {schema_name}.{parent_name};"
-        )
+        cursor.execute(f"SELECT obj_id FROM {schema_name}.{parent_name};")
         parent_rows = cursor.fetchall()
         if len(parent_rows) > 0:
             parent_count = len(parent_rows)
             logger.info(f"Number of {parent_name} datasets: {parent_count}")
             for child_name in child_list:
-                cursor.execute(
-                    f"SELECT obj_id FROM {schema_name}.{child_name};"
-                )
+                cursor.execute(f"SELECT obj_id FROM {schema_name}.{child_name};")
                 child_rows = cursor.fetchall()
                 logger.info(f"Number of {child_name} datasets: {len(child_rows)}")
                 parent_count = parent_count - len(child_rows)
