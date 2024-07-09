@@ -2278,14 +2278,11 @@ class InterlisImporterToIntermediateSchema:
                 parent_count = parent_count - len(child_rows)
 
             if parent_count == 0:
-                subclass_check = True
                 logger.info(
                     f"OK: number of subclass elements of class {parent_name} OK in schema {schema_name}!"
                 )
             else:
-                subclass_check = False
                 logger.error(
                     f"ERROR: number of subclass elements of {parent_name} NOT CORRECT in schema {schema_name}: checksum = {parent_count} (positive number means missing entries, negative means too many subclass entries)"
                 )
 
-        return subclass_check
