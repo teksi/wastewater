@@ -115,7 +115,8 @@
 <p>Il est possible d’ajouter une forme géométrique à une structure assainissement.</p>
 <p>Ceci est recommandé pour:</p>
 <ul class="simple">
-<li><p>Les structures spéciales et les points de déversement, car ce ne sont pas des structures normées comme les regards, pour lesquels vous pouvez définir <em>dimension1</em> et <em>dimension2</em> pour en décrire l’emprise.</p></li>
+<li><p>Special structures and discharge points, because they are not normed structures like manholes,
+where you can define <strong>dimension1</strong> and <strong>dimension2</strong> to describe the geometry.</p></li>
 <li><p>Infiltration installations where <strong>dimension1</strong> and <strong>dimension2</strong> are not enough to describe the geometry</p></li>
 </ul>
 <div class="admonition attention">
@@ -126,14 +127,12 @@
 <section id="digitizing-tool">
 <h2><span class="section-number">3.2.3.2. </span>Outil de numérisation<a class="headerlink" href="#digitizing-tool" title="Lien vers cette rubrique"></a></h2>
 <ul class="simple">
-<li><p>Select the <strong>vw_tww_wastewater_structure</strong> layer</p></li>
-<li><p>Avec l’outil <strong>information</strong>, sélectionnez l’objet auquel vous voulez ajouter une géométrie détaillée</p></li>
-<li><p>Effectuez un clic droit sur l’objet</p></li>
-<li><p>if there are several objects: select the <strong>vw_tww_wastewater_structure</strong> layer</p></li>
+<li><p>Right click the object you want to add a detailed geometry (not necessary to select a layer or to toggle editiing)</p></li>
+<li><p>if there are several objects: select the <strong>vw_tww_wastewater_structure</strong> layer if necessary, select the record</p></li>
 <li><p>Choisissez l’option <strong>Numériser</strong></p></li>
 </ul>
 <figure class="align-default">
-<img alt="../../_images/digitizing_detailedgeometry1.jpg" src="../../_images/digitizing_detailedgeometry1.jpg" />
+<img alt="../../_images/digitize_detail_geom_select1.jpg" src="../../_images/digitize_detail_geom_select1.jpg" />
 </figure>
 <ul class="simple">
 <li><p>Vous pouvez maintenant dessiner le polygone.</p></li>
@@ -150,11 +149,17 @@
 <figure class="align-default">
 <img alt="../../_images/digitizing_detailedgeometry4.jpg" src="../../_images/digitizing_detailedgeometry4.jpg" />
 </figure>
-<p>An other way is to open the <strong>vw_tww_wastewater_structure</strong> form with the info tool and then choose <strong>Digitize</strong> in the <strong>Actions</strong> menu of the form.</p>
+<p>An other way is to open the <strong>vw_tww_wastewater_structure</strong> feature attribute window with the info tool and then choose <strong>Digitize</strong> in the <strong>Actions</strong> menu of the window.</p>
+<figure class="align-default">
+<img alt="../../_images/digitize_actionmenu.jpg" src="../../_images/digitize_actionmenu.jpg" />
+</figure>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>If the geometry disappears after digitizing or if you get an message (like “Add part”), you have probably tried to digitize over a catchment area (or an other polygon theme) and the layer has set the avoid overlap option in the snapping settings. Do change the avoid overlap settings.</p>
 </div>
+<figure class="align-default">
+<img alt="../../_images/overlapping_options.jpg" src="../../_images/overlapping_options.jpg" />
+</figure>
 </section>
 </section>
 

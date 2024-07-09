@@ -2377,8 +2377,11 @@ BEGIN
   FROM tww_od.reach_point rp_to
   WHERE NEW.fk_reach_point_to = rp_to.obj_id;
 
-  NEW.length_effective = COALESCE(sqrt((_rp_from_level - _rp_to_level)^2 + ST_Length(NEW.progression3d_geometry)^2), ST_Length(NEW.progression3d_geometry) );
-
+  IF _rp_from_level=0 OR _rp_to_level=0 THEN
+    NEW.length_effective = ST_Length(NEW.progression3d_geometry);
+  ELSE
+    NEW.length_effective = COALESCE(sqrt((_rp_from_level - _rp_to_level)^2 + ST_Length(NEW.progression3d_geometry)^2), ST_Length(NEW.progression3d_geometry) );
+  END IF;
   RETURN NEW;
 
 END;]]></definition>
@@ -2410,11 +2413,11 @@ INSERT INTO tww_od.structure_part (
       , remark
       , renovation_demand
     ) VALUES (
-        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'structure_part'::text) )
+        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'access_aid'::text) )
       , NEW.fk_dataowner
       , NEW.fk_provider
       , NEW.fk_wastewater_structure
-      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'structure_part'::text) ) END
+      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'access_aid'::text) ) END
       , NEW.last_modification
       , NEW.remark
       , NEW.renovation_demand
@@ -2482,11 +2485,11 @@ INSERT INTO tww_od.structure_part (
       , remark
       , renovation_demand
     ) VALUES (
-        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'structure_part'::text) )
+        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'backflow_prevention'::text) )
       , NEW.fk_dataowner
       , NEW.fk_provider
       , NEW.fk_wastewater_structure
-      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'structure_part'::text) ) END
+      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'backflow_prevention'::text) ) END
       , NEW.last_modification
       , NEW.remark
       , NEW.renovation_demand
@@ -2566,11 +2569,11 @@ INSERT INTO tww_od.structure_part (
       , remark
       , renovation_demand
     ) VALUES (
-        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'structure_part'::text) )
+        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'benching'::text) )
       , NEW.fk_dataowner
       , NEW.fk_provider
       , NEW.fk_wastewater_structure
-      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'structure_part'::text) ) END
+      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'benching'::text) ) END
       , NEW.last_modification
       , NEW.remark
       , NEW.renovation_demand
@@ -2647,7 +2650,7 @@ INSERT INTO tww_od.maintenance_event (
       , status
       , time_point
     ) VALUES (
-        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'maintenance_event'::text) )
+        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'bio_ecol_assessment'::text) )
       , NEW.base_data
       , NEW.cost
       , NEW.data_details
@@ -2785,11 +2788,11 @@ INSERT INTO tww_od.connection_object (
       , remark
       , sewer_infiltration_water_production
     ) VALUES (
-        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'connection_object'::text) )
+        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'building'::text) )
       , NEW.fk_dataowner
       , NEW.fk_provider
       , NEW.fk_wastewater_networkelement
-      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'connection_object'::text) ) END
+      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'building'::text) ) END
       , NEW.last_modification
       , NEW.remark
       , NEW.sewer_infiltration_water_production
@@ -2895,7 +2898,7 @@ INSERT INTO tww_od.wastewater_structure (
       , year_of_construction
       , year_of_replacement
     ) VALUES (
-        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'wastewater_structure'::text) )
+        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'channel'::text) )
       , NEW._bottom_label
       , NEW._cover_label
       , NEW._depth
@@ -2915,7 +2918,7 @@ INSERT INTO tww_od.wastewater_structure (
       , NEW.fk_owner
       , NEW.fk_provider
       , NEW.gross_costs
-      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'wastewater_structure'::text) ) END
+      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'channel'::text) ) END
       , NEW.inspection_interval
       , NEW.last_modification
       , NEW.location_name
@@ -3052,11 +3055,11 @@ INSERT INTO tww_od.structure_part (
       , remark
       , renovation_demand
     ) VALUES (
-        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'structure_part'::text) )
+        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'cover'::text) )
       , NEW.fk_dataowner
       , NEW.fk_provider
       , NEW.fk_wastewater_structure
-      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'structure_part'::text) ) END
+      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'cover'::text) ) END
       , NEW.last_modification
       , NEW.remark
       , NEW.renovation_demand
@@ -3180,7 +3183,7 @@ INSERT INTO tww_od.wastewater_structure (
       , year_of_construction
       , year_of_replacement
     ) VALUES (
-        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'wastewater_structure'::text) )
+        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'discharge_point'::text) )
       , NEW._bottom_label
       , NEW._cover_label
       , NEW._depth
@@ -3200,7 +3203,7 @@ INSERT INTO tww_od.wastewater_structure (
       , NEW.fk_owner
       , NEW.fk_provider
       , NEW.gross_costs
-      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'wastewater_structure'::text) ) END
+      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'discharge_point'::text) ) END
       , NEW.inspection_interval
       , NEW.last_modification
       , NEW.location_name
@@ -3326,10 +3329,10 @@ INSERT INTO tww_od.zone (
       , last_modification
       , remark
     ) VALUES (
-        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'zone'::text) )
+        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'drainage_system'::text) )
       , NEW.fk_dataowner
       , NEW.fk_provider
-      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'zone'::text) ) END
+      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'drainage_system'::text) ) END
       , NEW.last_modification
       , NEW.remark
     ) RETURNING obj_id INTO NEW.obj_id;
@@ -3426,7 +3429,7 @@ INSERT INTO tww_od.wastewater_structure (
       , year_of_construction
       , year_of_replacement
     ) VALUES (
-        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'wastewater_structure'::text) )
+        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'drainless_toilet'::text) )
       , NEW._bottom_label
       , NEW._cover_label
       , NEW._depth
@@ -3446,7 +3449,7 @@ INSERT INTO tww_od.wastewater_structure (
       , NEW.fk_owner
       , NEW.fk_provider
       , NEW.gross_costs
-      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'wastewater_structure'::text) ) END
+      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'drainless_toilet'::text) ) END
       , NEW.inspection_interval
       , NEW.last_modification
       , NEW.location_name
@@ -3556,11 +3559,11 @@ INSERT INTO tww_od.structure_part (
       , remark
       , renovation_demand
     ) VALUES (
-        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'structure_part'::text) )
+        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'dryweather_downspout'::text) )
       , NEW.fk_dataowner
       , NEW.fk_provider
       , NEW.fk_wastewater_structure
-      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'structure_part'::text) ) END
+      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'dryweather_downspout'::text) ) END
       , NEW.last_modification
       , NEW.remark
       , NEW.renovation_demand
@@ -3628,11 +3631,11 @@ INSERT INTO tww_od.structure_part (
       , remark
       , renovation_demand
     ) VALUES (
-        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'structure_part'::text) )
+        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'dryweather_flume'::text) )
       , NEW.fk_dataowner
       , NEW.fk_provider
       , NEW.fk_wastewater_structure
-      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'structure_part'::text) ) END
+      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'dryweather_flume'::text) ) END
       , NEW.last_modification
       , NEW.remark
       , NEW.renovation_demand
@@ -3700,11 +3703,11 @@ INSERT INTO tww_od.structure_part (
       , remark
       , renovation_demand
     ) VALUES (
-        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'structure_part'::text) )
+        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'electric_equipment'::text) )
       , NEW.fk_dataowner
       , NEW.fk_provider
       , NEW.fk_wastewater_structure
-      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'structure_part'::text) ) END
+      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'electric_equipment'::text) ) END
       , NEW.last_modification
       , NEW.remark
       , NEW.renovation_demand
@@ -3778,11 +3781,11 @@ INSERT INTO tww_od.structure_part (
       , remark
       , renovation_demand
     ) VALUES (
-        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'structure_part'::text) )
+        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'electromechanical_equipment'::text) )
       , NEW.fk_dataowner
       , NEW.fk_provider
       , NEW.fk_wastewater_structure
-      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'structure_part'::text) ) END
+      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'electromechanical_equipment'::text) ) END
       , NEW.last_modification
       , NEW.remark
       , NEW.renovation_demand
@@ -3865,7 +3868,7 @@ INSERT INTO tww_od.maintenance_event (
       , status
       , time_point
     ) VALUES (
-        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'maintenance_event'::text) )
+        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'examination'::text) )
       , NEW.base_data
       , NEW.cost
       , NEW.data_details
@@ -3979,11 +3982,11 @@ INSERT INTO tww_od.structure_part (
       , remark
       , renovation_demand
     ) VALUES (
-        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'structure_part'::text) )
+        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'flushing_nozzle'::text) )
       , NEW.fk_dataowner
       , NEW.fk_provider
       , NEW.fk_wastewater_structure
-      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'structure_part'::text) ) END
+      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'flushing_nozzle'::text) ) END
       , NEW.last_modification
       , NEW.remark
       , NEW.renovation_demand
@@ -4051,11 +4054,11 @@ INSERT INTO tww_od.connection_object (
       , remark
       , sewer_infiltration_water_production
     ) VALUES (
-        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'connection_object'::text) )
+        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'fountain'::text) )
       , NEW.fk_dataowner
       , NEW.fk_provider
       , NEW.fk_wastewater_networkelement
-      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'connection_object'::text) ) END
+      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'fountain'::text) ) END
       , NEW.last_modification
       , NEW.remark
       , NEW.sewer_infiltration_water_production
@@ -4126,11 +4129,11 @@ INSERT INTO tww_od.connection_object (
       , remark
       , sewer_infiltration_water_production
     ) VALUES (
-        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'connection_object'::text) )
+        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'individual_surface'::text) )
       , NEW.fk_dataowner
       , NEW.fk_provider
       , NEW.fk_wastewater_networkelement
-      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'connection_object'::text) ) END
+      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'individual_surface'::text) ) END
       , NEW.last_modification
       , NEW.remark
       , NEW.sewer_infiltration_water_production
@@ -4236,7 +4239,7 @@ INSERT INTO tww_od.wastewater_structure (
       , year_of_construction
       , year_of_replacement
     ) VALUES (
-        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'wastewater_structure'::text) )
+        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'infiltration_installation'::text) )
       , NEW._bottom_label
       , NEW._cover_label
       , NEW._depth
@@ -4256,7 +4259,7 @@ INSERT INTO tww_od.wastewater_structure (
       , NEW.fk_owner
       , NEW.fk_provider
       , NEW.gross_costs
-      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'wastewater_structure'::text) ) END
+      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'infiltration_installation'::text) ) END
       , NEW.inspection_interval
       , NEW.last_modification
       , NEW.location_name
@@ -4406,10 +4409,10 @@ INSERT INTO tww_od.zone (
       , last_modification
       , remark
     ) VALUES (
-        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'zone'::text) )
+        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'infiltration_zone'::text) )
       , NEW.fk_dataowner
       , NEW.fk_provider
-      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'zone'::text) ) END
+      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'infiltration_zone'::text) ) END
       , NEW.last_modification
       , NEW.remark
     ) RETURNING obj_id INTO NEW.obj_id;
@@ -4489,7 +4492,7 @@ INSERT INTO tww_od.overflow (
       , signal_transmission
       , subsidies
     ) VALUES (
-        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'overflow'::text) )
+        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'leapingweir'::text) )
       , NEW.actuation
       , NEW.adjustability
       , NEW.brand
@@ -4600,7 +4603,7 @@ INSERT INTO tww_od.maintenance_event (
       , status
       , time_point
     ) VALUES (
-        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'maintenance_event'::text) )
+        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'maintenance'::text) )
       , NEW.base_data
       , NEW.cost
       , NEW.data_details
@@ -4719,7 +4722,7 @@ INSERT INTO tww_od.wastewater_structure (
       , year_of_construction
       , year_of_replacement
     ) VALUES (
-        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'wastewater_structure'::text) )
+        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'manhole'::text) )
       , NEW._bottom_label
       , NEW._cover_label
       , NEW._depth
@@ -4739,7 +4742,7 @@ INSERT INTO tww_od.wastewater_structure (
       , NEW.fk_owner
       , NEW.fk_provider
       , NEW.gross_costs
-      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'wastewater_structure'::text) ) END
+      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'manhole'::text) ) END
       , NEW.inspection_interval
       , NEW.last_modification
       , NEW.location_name
@@ -4882,7 +4885,7 @@ INSERT INTO tww_od.overflow (
       , signal_transmission
       , subsidies
     ) VALUES (
-        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'overflow'::text) )
+        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'prank_weir'::text) )
       , NEW.actuation
       , NEW.adjustability
       , NEW.brand
@@ -5002,7 +5005,7 @@ INSERT INTO tww_od.overflow (
       , signal_transmission
       , subsidies
     ) VALUES (
-        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'overflow'::text) )
+        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'pump'::text) )
       , NEW.actuation
       , NEW.adjustability
       , NEW.brand
@@ -5118,11 +5121,11 @@ INSERT INTO tww_od.wastewater_networkelement (
       , last_modification
       , remark
     ) VALUES (
-        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'wastewater_networkelement'::text) )
+        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'reach'::text) )
       , NEW.fk_dataowner
       , NEW.fk_provider
       , NEW.fk_wastewater_structure
-      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'wastewater_networkelement'::text) ) END
+      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'reach'::text) ) END
       , NEW.last_modification
       , NEW.remark
     ) RETURNING obj_id INTO NEW.obj_id;
@@ -5251,11 +5254,11 @@ INSERT INTO tww_od.connection_object (
       , remark
       , sewer_infiltration_water_production
     ) VALUES (
-        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'connection_object'::text) )
+        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'reservoir'::text) )
       , NEW.fk_dataowner
       , NEW.fk_provider
       , NEW.fk_wastewater_networkelement
-      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'connection_object'::text) ) END
+      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'reservoir'::text) ) END
       , NEW.last_modification
       , NEW.remark
       , NEW.sewer_infiltration_water_production
@@ -5355,7 +5358,7 @@ INSERT INTO tww_od.wastewater_structure (
       , year_of_construction
       , year_of_replacement
     ) VALUES (
-        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'wastewater_structure'::text) )
+        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'small_treatment_plant'::text) )
       , NEW._bottom_label
       , NEW._cover_label
       , NEW._depth
@@ -5375,7 +5378,7 @@ INSERT INTO tww_od.wastewater_structure (
       , NEW.fk_owner
       , NEW.fk_provider
       , NEW.gross_costs
-      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'wastewater_structure'::text) ) END
+      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'small_treatment_plant'::text) ) END
       , NEW.inspection_interval
       , NEW.last_modification
       , NEW.location_name
@@ -5494,11 +5497,11 @@ INSERT INTO tww_od.structure_part (
       , remark
       , renovation_demand
     ) VALUES (
-        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'structure_part'::text) )
+        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'solids_retention'::text) )
       , NEW.fk_dataowner
       , NEW.fk_provider
       , NEW.fk_wastewater_structure
-      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'structure_part'::text) ) END
+      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'solids_retention'::text) ) END
       , NEW.last_modification
       , NEW.remark
       , NEW.renovation_demand
@@ -5607,7 +5610,7 @@ INSERT INTO tww_od.wastewater_structure (
       , year_of_construction
       , year_of_replacement
     ) VALUES (
-        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'wastewater_structure'::text) )
+        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'special_structure'::text) )
       , NEW._bottom_label
       , NEW._cover_label
       , NEW._depth
@@ -5627,7 +5630,7 @@ INSERT INTO tww_od.wastewater_structure (
       , NEW.fk_owner
       , NEW.fk_provider
       , NEW.gross_costs
-      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'wastewater_structure'::text) ) END
+      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'special_structure'::text) ) END
       , NEW.inspection_interval
       , NEW.last_modification
       , NEW.location_name
@@ -5755,11 +5758,11 @@ INSERT INTO tww_od.structure_part (
       , remark
       , renovation_demand
     ) VALUES (
-        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'structure_part'::text) )
+        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'tank_cleaning'::text) )
       , NEW.fk_dataowner
       , NEW.fk_provider
       , NEW.fk_wastewater_structure
-      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'structure_part'::text) ) END
+      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'tank_cleaning'::text) ) END
       , NEW.last_modification
       , NEW.remark
       , NEW.renovation_demand
@@ -5833,11 +5836,11 @@ INSERT INTO tww_od.structure_part (
       , remark
       , renovation_demand
     ) VALUES (
-        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'structure_part'::text) )
+        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'tank_emptying'::text) )
       , NEW.fk_dataowner
       , NEW.fk_provider
       , NEW.fk_wastewater_structure
-      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'structure_part'::text) ) END
+      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'tank_emptying'::text) ) END
       , NEW.last_modification
       , NEW.remark
       , NEW.renovation_demand
@@ -7437,11 +7440,11 @@ INSERT INTO tww_od.wastewater_networkelement (
       , last_modification
       , remark
     ) VALUES (
-        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'wastewater_networkelement'::text) )
+        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'wastewater_node'::text) )
       , NEW.fk_dataowner
       , NEW.fk_provider
       , NEW.fk_wastewater_structure
-      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'wastewater_networkelement'::text) ) END
+      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'wastewater_node'::text) ) END
       , NEW.last_modification
       , NEW.remark
     ) RETURNING obj_id INTO NEW.obj_id;
@@ -7563,7 +7566,7 @@ INSERT INTO tww_od.wastewater_structure (
       , year_of_construction
       , year_of_replacement
     ) VALUES (
-        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'wastewater_structure'::text) )
+        COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'wwtp_structure'::text) )
       , NEW._bottom_label
       , NEW._cover_label
       , NEW._depth
@@ -7583,7 +7586,7 @@ INSERT INTO tww_od.wastewater_structure (
       , NEW.fk_owner
       , NEW.fk_provider
       , NEW.gross_costs
-      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'wastewater_structure'::text) ) END
+      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_sys.generate_oid('tww_od'::text, 'wwtp_structure'::text) ) END
       , NEW.inspection_interval
       , NEW.last_modification
       , NEW.location_name

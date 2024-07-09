@@ -116,14 +116,18 @@
 <h2><span class="section-number">3.2.8.1. </span>Allgemeines<a class="headerlink" href="#general" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Die zu importierenden Daten sind als (Vektor-)Layer im TWW Projekt hinzuzufügen.</p></li>
-<li><p>Die Feldnamen der Attribute müssen gleich sein wie die Feldnamen im TWW Layer. Deshalb sind Shp-Dateien meist nicht geeignet wegen der Beschränkung der Feldnamen im dbf-Format auf 10 Stellen (und Alias-Feldnamen funktionieren leider nicht).</p></li>
+<li><p>The field names of the attributes have to be the same as the field names of the TWW Layer.
+If possible, prefer non limiting standard open formats like geopackage. When using shp-files, the 10 letters limitation of the dbf-format will fail to map correctly attributes (Alias field names do not work).</p></li>
 <li><p>Wenn das QGEP Projekt ein übersetztes Projekt ist, müssen trotzdem die englischen Feldnamen verwendet werden (und nicht die übersetzten Feldnamen aus dem Alias).</p></li>
 <li><p>Wenn ein Attribut eine Werteliste hat, muss der Code-Wert verwendet werden und nicht der Volltext.</p></li>
 <li><p>Wenn die Felder entsprechend vorbereitet sind, dann können die Daten einfach kopiert und im TWW-Layer eingefügt werden.</p></li>
 </ul>
+<p>Why all these regulations: You copy the data not in the layer in our QGIS-project, but direct in the view or table in the postgresql-database. The database does not know anything about the configuration of the QGIS-project (alias names or value relations). In the database work just the triggers that are defined. So an obj_id will be created automatic.</p>
+<p>If you want to import new values to existing records (e.g. update the field renovation_necessity of layer vw_tww_reach), you can not copy, because there are not new records. For these job you can work with QGIS fieldcalculator.</p>
 </section>
 <section id="example-importing-manholes-from-a-txt-file">
 <h2><span class="section-number">3.2.8.2. </span>Beispiel Import Schächte mit einer TXT-Datei:<a class="headerlink" href="#example-importing-manholes-from-a-txt-file" title="Link to this heading"></a></h2>
+<p>The pictures were created in QGEP, but the steps are still the same in TWW</p>
 <ul class="simple">
 <li><p>Ändern der Feldnamen auf identifier, x, y, co_level  (englische Feldnamen für Bezeichnung, X, Y, Deckelkote)</p></li>
 </ul>

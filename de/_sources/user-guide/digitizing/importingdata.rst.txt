@@ -9,13 +9,18 @@ General
 
 * You have to add the data you want to import as (vector) layer into the TWW project.
 * The field names of the attributes have to be the same as the field names of the TWW Layer.
-  Therefore it is normally not a good idea the use shp-files, because of the 10 letters limitation of the dbf-format (Alias field names do not work).
+  If possible, prefer non limiting standard open formats like geopackage. When using shp-files, the 10 letters limitation of the dbf-format will fail to map correctly attributes (Alias field names do not work).
 * If you have a translated project, be sure to take the English field names (not the translated name that you find as Alias of the field).
 * If there is a field with value list, you have to use the code, not the plain text.
 * If your fields are prepared as described above, then just copy and paste in the TWW-layer.
 
+Why all these regulations: You copy the data not in the layer in our QGIS-project, but direct in the view or table in the postgresql-database. The database does not know anything about the configuration of the QGIS-project (alias names or value relations). In the database work just the triggers that are defined. So an obj_id will be created automatic.
+
+If you want to import new values to existing records (e.g. update the field renovation_necessity of layer vw_tww_reach), you can not copy, because there are not new records. For these job you can work with QGIS fieldcalculator.
+
 Example Importing manholes from a TXT-File:
 -------------------------------------------
+The pictures were created in QGEP, but the steps are still the same in TWW
 
 * Change the field names to identifier, x, y, co_level
 

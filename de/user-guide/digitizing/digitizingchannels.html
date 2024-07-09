@@ -143,10 +143,10 @@
 <img alt="../../_images/wizard_data_entry_reach_with_new_cursor2-3.jpg" src="../../_images/wizard_data_entry_reach_with_new_cursor2-3.jpg" />
 </figure>
 <ul class="simple">
-<li><p>Mit einem Rechtsklick wird die Linienzeichnung beendet. Im Anschluss erscheint das <strong>vw_qgep_reach</strong> Formular in dem Sie Daten im Reiter <strong>Allgemein</strong> eingeben können:</p></li>
+<li><p>You finish digitizing the line by right clicking. This will make the <strong>vw_tww_reach</strong> feature attributes window appear and you can start adding data in the <strong>General</strong> tab:</p></li>
 </ul>
 <figure class="align-default">
-<img alt="../../_images/wizard_wastewater_structure_reach_form3.jpg" src="../../_images/wizard_wastewater_structure_reach_form3.jpg" />
+<img alt="../../_images/wizard_reach_form.jpg" src="../../_images/wizard_reach_form.jpg" />
 </figure>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
@@ -157,17 +157,18 @@
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>Wenn im Feld Bezeichnung (reach-identifier) im Reiter Allgemein keine Eingabe gemacht wird, übernimmt TWW die <cite>obj_id</cite> als Bezeichnung (kann später geändert werden). Als Vorgabewert ist die Bezeichnung der Haltung gleich dem <cite>ws_identifier</cite> des Kanals. Die Bezeichnung der Haltungspunkte wird aus der Haltungsbezeichnung+‘F‘ oder +‘T‘ (von und nach Haltungspunkt) gebildet.</p>
+<p>If you do not enter an <cite>identifier</cite> (reach-identifier) in the General tab, TWW will enter the <cite>obj_id</cite> also as identifier (you can change later). As default, the <cite>identifier</cite> of the reach is also the <cite>ws_identifier</cite> of the channel. As default, the reachpoint-identifier is set to the reachpoint-obj_id.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
 <p>Siehe <a class="reference internal" href="#reach-geometrysync"><span class="std std-ref">Geometrieabgleichung</span></a> für automatische Haltungspunkthöhen bei Schnappen auf Abwasserknoten mit Koten.</p>
 </div>
 <ul class="simple">
-<li><p>Für den Profiltyp erhalten Sie eine Liste von vordefinierten Profilen. Sie können diese in der <strong>od_pipe_profile</strong> Tabelle bearbeiten.</p></li>
+<li><p>For the profile type you will get a list of defined profiles.
+You can edit the pipe profiles in <strong>pipe_profile</strong> table (layergroup Wastewater Structures).</p></li>
 </ul>
 <figure class="align-default">
-<img alt="../../_images/wizard_wastewater_structure_reach_form_profiles3.jpg" src="../../_images/wizard_wastewater_structure_reach_form_profiles3.jpg" />
+<img alt="../../_images/wizard_reach_form_profiletypes.jpg" src="../../_images/wizard_reach_form_profiletypes.jpg" />
 </figure>
 <ul class="simple">
 <li><p>Wenn Sie fertig sind klicken Sie den <strong>OK</strong> Knopf</p></li>
@@ -195,29 +196,22 @@
 <h2><span class="section-number">3.2.5.3. </span>Weitere Attribute und Klassen<a class="headerlink" href="#further-attributes-and-classes" title="Link to this heading"></a></h2>
 <p>Wenn eine Haltung digitalisiert wird, finden im Hintergrund eine Reihe von Schritten in der TWW Datenbank statt:</p>
 <ul class="simple">
-<li><p>Ein neues Objekt wird in der Klasse <strong>Abwasserbauwerk</strong>  („od_wastewater_structure“) hinzugefügt</p></li>
-<li><p>Ein neues Objekt wird hinzugefügt und verknüpft in der Unterklasse <strong>Kanal</strong> (<code class="docutils literal notranslate"><span class="pre">od_channel</span></code>)</p></li>
-<li><p>Ein neues Haltungsobjekt wird in der Tabelle  <strong>Abwassernetzelement</strong> (<code class="docutils literal notranslate"><span class="pre">od_wastewater_networkelement</span></code>) und dessen Unterklasse <strong>Haltung</strong> (<code class="docutils literal notranslate"><span class="pre">od_reach</span></code>) generiert.</p></li>
+<li><p>a new object is added in the <strong>wastewater structure</strong> class (<code class="docutils literal notranslate"><span class="pre">wastewater_structure</span></code>)</p></li>
+<li><p>a new object is added and linked in the <strong>channel</strong> subclass (<code class="docutils literal notranslate"><span class="pre">channel</span></code>)</p></li>
+<li><p>a new reach object is generated in the <strong>wastewater network elements</strong> class (<code class="docutils literal notranslate"><span class="pre">wastewater_networkelement</span></code>)
+and its subclass <strong>reach</strong> (<code class="docutils literal notranslate"><span class="pre">reach</span></code>)</p></li>
 <li><p>Zwei neue Haltungspunktobjekte werden hinzugefügt und verknüpft mit der Haltung (<strong>rp_from_node</strong>, <strong>rp_to_node</strong>)</p></li>
 </ul>
-<figure class="align-default">
-<img alt="../../_images/reach_form_reach_points3.jpg" src="../../_images/reach_form_reach_points3.jpg" />
-</figure>
 </section>
 <section id="geometry-synchronization">
 <span id="reach-geometrysync"></span><h2><span class="section-number">3.2.5.4. </span>Geometrieabgleichung<a class="headerlink" href="#geometry-synchronization" title="Link to this heading"></a></h2>
-<p>Start- und Endpunkt der Linien-Geometrie bestimmen die Geometrie der Haltungspunkte. Die Höhe (Z Wert der Geometrie) des Start- und Endpunktes der hinzugefügten Linie wird über die Koten <cite>HP_von_Kote</cite> und <cite>HP_nach_Kote</cite> definiert. Das heisst, der Z Wert der Geometrie des Haltungspunktes wird ebenso über den Kote-Wert gesetzt. Diese Werte können über das „geschnappte“ Objekt gesetzt werden:</p>
-<figure class="align-default">
-<img alt="../../_images/reach_geometry_snapping_01.jpg" src="../../_images/reach_geometry_snapping_01.jpg" />
-</figure>
-<p>Die geschnappten Punkte (Abwasserknoten) 9405 und 9390 beziehen ihre Höhen von den Sohlenkote der Abwasserknoten. Diese Werte werden in die Attribute <cite>HP_von_Kote</cite> und <cite>HP_nach_Kote</cite> eingefügt und können dort von Benutzer verändert werden. Bei Änderung durch den Benutzer, werden die Z-Werte der digitalisierten Linien-Geometrie sowie der korrespondierenden Haltungspunkte auch geändert.</p>
-<figure class="align-default">
-<img alt="../../_images/reach_geometry_snapping_02.jpg" src="../../_images/reach_geometry_snapping_02.jpg" />
-</figure>
+<p>The start- and the end-point of the added feature’s geometry defines the reach point’s geometries. The altitude (Z value of geometry) of the added feature’s start- and the end-point is defined by the level values <cite>rp_from_level</cite> and <cite>rp_to_level</cite>. This means, the Z values of the reach point’s geometry is set by the level as well. These values could be filled up by the snapped features (as shown in the pictures above):</p>
+<p>The snapped reachpoint of the new reach have the altitude from the wastewater node bottom_level of manhole new KS and manhole 1.030. These leveös are copied by teh wizard into the attributes <cite>rp_from_level</cite> and <cite>rp_to_level</cite> and can be edited there by the user. When the user changes these values, the Z value of the geometry of the digitized feature and its reach points will be changed as well.</p>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
 <p>Wenn die Kote eines Haltungpunktes ändert, ändert sich auch der Z Wert seiner Punkt-Geometrie und somit auch die Geometrie des Start- bzw. Endpunktes der Haltungslinie. Wenn der Z Wert der Geometrie der Haltung ändert, ändert auch die Geometrie und die Kote der Haltungspunkte. Wenn beide Werte gleichzeitig ändern, hat das Feld Kote Vorrang. Beim Einfügen ist es wie wenn beide Werte ändern. Also wird die Geometrie der Haltung gemäss der Koten der Haltungspunkte gesetzt und falls diese NULL sind, werden die Z Werte des Start- und Endpunktes der Haltung auf NaN gesetzt.</p>
 </div>
+<p>Synchronization of levels works also for intermediate points (points between the reachpoints), if you snap while digitizing to 3d-points on another layer (e.g. a textfile as result of gps-measurement with x,y,z coordinates added to the QGIS-project). Be aware, that you have then a full 3d-reach, but on the export to INTERLIS these intermediate-levels will be lost, because VSA-DSS version 2020 does not support 3d for reach-geometry.</p>
 </section>
 </section>
 

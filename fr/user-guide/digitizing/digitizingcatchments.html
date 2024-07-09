@@ -116,7 +116,7 @@
 <h1><span class="section-number">3.2.7. </span>Numérisation des bassins versants<a class="headerlink" href="#digitizing-catchment-areas" title="Lien vers cette rubrique"></a></h1>
 <section id="general">
 <h2><span class="section-number">3.2.7.1. </span>Généralités<a class="headerlink" href="#general" title="Lien vers cette rubrique"></a></h2>
-<p>Les bassins versants peuvent être numérisés avec les outils standards de QGIS.</p>
+<p>Catchments can be digitized with QGIS standard tool <strong>Add Polygon Feature</strong>.</p>
 <figure class="align-default">
 <img alt="../../_images/qgis_standard_tools.jpg" src="../../_images/qgis_standard_tools.jpg" />
 </figure>
@@ -131,18 +131,18 @@
 <img alt="../../_images/enable_snapping_button.jpg" src="../../_images/enable_snapping_button.jpg" />
 </figure>
 <ul class="simple">
-<li><p>Ouvrez <strong>Réglages des options d’accrochage du projet</strong>, contrôlez la couche <strong>od_zone_bassin-versant</strong> et contrôlez la boîte à cocher <strong>éviter intersection</strong> dans cette même couche</p></li>
+<li><p>Open the <strong>Advanced Configuration</strong>, check the <strong>catchment_area</strong> layer and check the <strong>Avoid Overlap</strong> checkbox for the catchment_area layer</p></li>
 </ul>
 <figure class="align-default">
-<img alt="../../_images/catchment_avoid_intersection2.jpg" src="../../_images/catchment_avoid_intersection2.jpg" />
+<img alt="../../_images/avoid_overlap.jpg" src="../../_images/avoid_overlap.jpg" />
 </figure>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>New digitized catchment areas will not overlap with existing areas with this settings.</p>
 </div>
 <ul class="simple">
-<li><p>Passez la couche <em>od_aire_bassin_versant</em> en mode d’édition</p></li>
-<li><p>Utilisez l’outil <strong>Ajouter une entité</strong> pour numériser un bassin versant.</p></li>
+<li><p>Set the layer <code class="docutils literal notranslate"><span class="pre">catchment_area</span></code> into the edit mode.</p></li>
+<li><p>Use the <strong>Add Polygon Feature</strong> tool to digitize a new area.</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/add_feature_tool.jpg" src="../../_images/add_feature_tool.jpg" />
@@ -161,7 +161,7 @@
 <p>Gardez en mémoire que le point final du polygone est le dernier point où vous avez effectué un clic <strong>gauche</strong>.</p>
 </div>
 <ul class="simple">
-<li><p>Le formulaire <strong>od_zone_bassin-versant</strong> apparait</p></li>
+<li><p>The <strong>catchment_area</strong> feature attributes window appears</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/catchment_area_digitizing2.jpg" src="../../_images/catchment_area_digitizing2.jpg" />
@@ -201,7 +201,7 @@
 <section id="split-areas">
 <h2><span class="section-number">3.2.7.4. </span>Séparer des zones<a class="headerlink" href="#split-areas" title="Lien vers cette rubrique"></a></h2>
 <ul class="simple">
-<li><p>Vous pouvez séparer des zones existantes avec l’outil <strong>Séparer</strong>.</p></li>
+<li><p>You can split existing areas with the <strong>Split Features</strong> tool.</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/split_tool.jpg" src="../../_images/split_tool.jpg" />
@@ -212,24 +212,24 @@
 </section>
 <section id="merge-areas">
 <h2><span class="section-number">3.2.7.5. </span>Fusionner des zones<a class="headerlink" href="#merge-areas" title="Lien vers cette rubrique"></a></h2>
-<p>Vous pouvez fusionner des zones existantes avec l’outil <strong>Fusionner objets sélectionnés</strong>.</p>
+<p>You can merge existing areas with the <strong>Merge Selected Feature</strong> tool.</p>
 <figure class="align-default">
 <img alt="../../_images/merge_selected_feature_tool.jpg" src="../../_images/merge_selected_feature_tool.jpg" />
 </figure>
 <ul class="simple">
-<li><p>Sélectionnez la couche <strong>od_zone_bassin-versant</strong> et basculez dans le mode d’édition</p></li>
+<li><p>Selected the <strong>catchment_area</strong> layer and set it into the edit mode</p></li>
 <li><p>Sélectionnez au moins deux zones que vous voulez fusionner</p></li>
-<li><p>Cliquez sur l’outil « Fusionner les entités sélectionnés ». La fenêtre <strong>Fusionner attributs entités</strong> apparaît.</p></li>
+<li><p>Click the <code class="docutils literal notranslate"><span class="pre">Merge</span> <span class="pre">Selected</span> <span class="pre">Feature</span></code> tool. -&gt; The <strong>Merge Features</strong> windows appears.</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/merge_feature_attributes.jpg" src="../../_images/merge_feature_attributes.jpg" />
 </figure>
 <ul class="simple">
-<li><p>Choisir quelles valeurs seront reprise à partir de quelle entrée existante et cliquer <strong>OK</strong>.</p></li>
+<li><p>Choose which values will be taken from which old record. Control the values for fields <strong>obj_id</strong>, <strong>identifier</strong>. Then click <strong>OK</strong>. You can ignore the setting of field surface_area, because the surface_area of the combined area will be recalculated anyway.</p></li>
 </ul>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
-<p>Si vous sélectionnez l’une des entrées et cliquez sur le bouton <strong>Reprendre les attributs de l’objet sélectionné</strong>, le champ <strong>id_obj</strong> sera ignoré par défaut et la base de données n’acceptera pas les modifications. Après avoir utilisé ce bouton, vous devez choisir manuellement l’une des valeurs du champ <strong>id_obj</strong>.</p>
+<p>If you select one of the records and click on the <strong>Take attributes from the selected feature</strong> button, then your manual changes will be reset. After using this button, you have to choose one of the values in the <strong>identifier</strong> field manually (otherwise <strong>identifier</strong> is skipped and the value will be NULL).</p>
 </div>
 </section>
 <section id="connect-catchment-area-to-wastewater-network-nodes">
@@ -246,16 +246,12 @@
 <li><p>Déplacez la souris sur l’élément du réseau auquel le bassin versant sera connecté (rappel: les objets sélectionnables sont mis en évidence) et cliquez à nouveau</p></li>
 </ul>
 <figure class="align-default">
-<img alt="../../_images/catchment_area_connect1.jpg" src="../../_images/catchment_area_connect1.jpg" />
-</figure>
-<ul class="simple">
-<li><p>Une fenêtre apparaît, dans laquelle vous pouvez choisir quelle(s) connexion(s) sera(ont) définie(s).</p></li>
-</ul>
-<figure class="align-default">
 <img alt="../../_images/catchment_area_connect2.jpg" src="../../_images/catchment_area_connect2.jpg" />
 </figure>
 <ul class="simple">
+<li><p>Une fenêtre apparaît, dans laquelle vous pouvez choisir quelle(s) connexion(s) sera(ont) définie(s).</p></li>
 <li><p>Si tout est OK, vous verrez apparaître un message dans une barre bleue, au-dessus de la vue de la carte</p></li>
+<li><p>After saving, you will see the catchment connection line, if this layer is visible.</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/catchment_area_connect3.jpg" src="../../_images/catchment_area_connect3.jpg" />
@@ -266,7 +262,7 @@
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>L’outil ne contrôle pas si le noeud du réseau assainissement sélectionné fait partie du réseau pwwf (réseau principal). C’est exclusivement l’utilisateur qui décide si un noeud est correct ou pas. Si vous n’êtes pas sûr, consultez ** VSA Guide des données PGEE**, section <strong>Principes de saisie</strong></p>
+<p>The tool does not check, if your choosen wastewater node is a part of the pwwf-network (primary network). It’s only the user who decides, if a node is ok or not. If you are not sure, please check the <strong>VSA Wegleitung Daten der Siedlungsentwässerung</strong>, part <strong>Erfassungsrichtlinien</strong></p>
 </div>
 <p>You can not connect multiple areas with the tool to a wastewater node at once. If you want to do so, you have to select the catchment areas, open the attribute table and then start the multi edit mode. There you can choose the wastewater node from the list of all nodes.</p>
 <p>Pour supprimer une connexion à un noeud assainissement, vous pouvez éditer la zone avec l’outil <strong>Identifier entités</strong>.</p>

@@ -115,7 +115,8 @@
 <p>Sie können für Abwasserbauwerke eine detaillierte Geometrie ( Polygon) hinzufügen</p>
 <p>Das ist empfohlen für:</p>
 <ul class="simple">
-<li><p>Sonderbauwerken und Einleitstellen, wenn diese keine Standardbauwerke wie Normschächte sind, bei denen man <strong>Dimension1</strong> und <strong>Dimension2</strong> definieren kann, um die Geometrie zu beschreiben.</p></li>
+<li><p>Special structures and discharge points, because they are not normed structures like manholes,
+where you can define <strong>dimension1</strong> and <strong>dimension2</strong> to describe the geometry.</p></li>
 <li><p>Versickerungsanlagen bei welchen <strong>Dimension1</strong> und <strong>Dimension2</strong> nicht genügen, um die Geometrie zu beschreiben</p></li>
 </ul>
 <div class="admonition attention">
@@ -126,14 +127,12 @@
 <section id="digitizing-tool">
 <h2><span class="section-number">3.2.3.2. </span>Digitalisierungswerkzeug<a class="headerlink" href="#digitizing-tool" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>Wählen Sie den <strong>vw_tww_wastewater_structure</strong> Layer</p></li>
-<li><p>Wählen Sie das Objekt, bei welchem Sie detaillierte Geometrie hinzufügen wollen mit dem Info Werkzeug</p></li>
-<li><p>Rechtsklick auf das Objekt</p></li>
-<li><p>Wenn mehrere Objekte vorhanden sind: wählen Sie den <strong>vw_tww_wastewater_structure</strong> Layer</p></li>
+<li><p>Right click the object you want to add a detailed geometry (not necessary to select a layer or to toggle editiing)</p></li>
+<li><p>if there are several objects: select the <strong>vw_tww_wastewater_structure</strong> layer if necessary, select the record</p></li>
 <li><p>Wählen Sie <strong>Digitize</strong></p></li>
 </ul>
 <figure class="align-default">
-<img alt="../../_images/digitizing_detailedgeometry1.jpg" src="../../_images/digitizing_detailedgeometry1.jpg" />
+<img alt="../../_images/digitize_detail_geom_select1.jpg" src="../../_images/digitize_detail_geom_select1.jpg" />
 </figure>
 <ul class="simple">
 <li><p>Sie können nun mit der Digitalisierung des Polygons beginnen</p></li>
@@ -150,11 +149,17 @@
 <figure class="align-default">
 <img alt="../../_images/digitizing_detailedgeometry4.jpg" src="../../_images/digitizing_detailedgeometry4.jpg" />
 </figure>
-<p>Eine andere Möglichkeit besteht darin, die <strong>vw_tww_wastewater_structure</strong> Eingabemaske mit dem Info-Tool zu öffnen und dann im <strong>Aktionen</strong>-Menu der Eingabemaske <strong>Digitize</strong> wählen.</p>
+<p>An other way is to open the <strong>vw_tww_wastewater_structure</strong> feature attribute window with the info tool and then choose <strong>Digitize</strong> in the <strong>Actions</strong> menu of the window.</p>
+<figure class="align-default">
+<img alt="../../_images/digitize_actionmenu.jpg" src="../../_images/digitize_actionmenu.jpg" />
+</figure>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
 <p>Wenn die Geometrie nach dem Digitalisieren verschwindet oder ein Meldung (z.B. ‚Teil hinzufügen‘) erscheint, dann war vermutlich eine Einzugsgebietsfläche (oder ein anderes Flächenthema) bereits mit einem Datensatz an dieser Stelle vorhanden und für den Layer ist die Option Überlappung vermeiden in den Schnappen-Einstellungen  der Einrastwerkzeugleiste gewählt. Die Überlappung-Einstellungen in der Einrastwerkzeugleiste ändern hilft.</p>
 </div>
+<figure class="align-default">
+<img alt="../../_images/overlapping_options.jpg" src="../../_images/overlapping_options.jpg" />
+</figure>
 </section>
 </section>
 

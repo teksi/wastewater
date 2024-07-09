@@ -125,7 +125,7 @@
 <p>Der Cursor ändert  zum Digitalisierungssymbol und es kann der Standort des neuen Punktelementes festgelegt werden.</p>
 <p>Es öffnet das <strong>vw_tww_wastewater_structure</strong> Formular und die Daten können im Reiter <strong>Allgemein</strong> eingetragen werden:</p>
 <figure class="align-default">
-<img alt="../../_images/wizard_wastewater_structure_manhole_form_ws_type3.jpg" src="../../_images/wizard_wastewater_structure_manhole_form_ws_type3.jpg" />
+<img alt="../../_images/wizard_wastewater_structure_manhole_form_ws_type4.jpg" src="../../_images/wizard_wastewater_structure_manhole_form_ws_type4.jpg" />
 </figure>
 <p>Wähle den Abwasserbauwerk-Typ (vorgewählt ist ‚Normschacht‘):</p>
 <ul class="simple">
@@ -140,42 +140,45 @@
 <p class="admonition-title">Bemerkung</p>
 <p>Wenn keine Bezeichnung eingegeben wird, übernimmt TWW die Obj_ID als Bezeichnung (kann später geändert werden). Die Bezeichnung des Abwasserbauwerks ist auch der Vorgabewert für die Bezeichnung des Deckels und die Bezeichnung des Abwasserknotens.</p>
 </div>
-<p>Fügen Sie weitere Attributwerte im Reiter <strong>Allgemein</strong> hinzu. Sie können auch Attributwerte in anderen Reitern hinzufügen (Deckel, Abwasserbauwerk, Normschacht, Abwasserknoten).</p>
+<p>Add other attributes in the <strong>General</strong> tab.
+You can also add attributes in the other tabs (Main Cover/Node, Wastewater Structure, Manhole, Structure Parts etc.).</p>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
 <p>Die Idee hinter dem Reiter <strong>Allgemein</strong> ist, dass beim normalen Digitalisieren (95% der Normschächte) der Benutzer nicht zu einem anderen Reiter wechseln muss, um die notwendigen Felder abzufüllen.</p>
 </div>
 <div class="admonition attention">
 <p class="admonition-title">Achtung</p>
-<p>In den Reitern Deckel, Bauwerkteile, Abwasserknoten und Erhaltungsereignisse können keine neuen Datensätze hinzugefügt werden, weil zuerst der Abwasserbauwerk-Datensatz in der Datenbank gesichert werden muss. Die <strong>Aktionen</strong> können aus dem gleichen Grund auch noch nicht benutzen werden. Zuerst muss der Datensatz gesichert werden.</p>
+<p>You can not use <strong>Actions</strong> for digitize a detail geometry during creating a new manhole, because you have to save first the Wastewater Structure-record to the database before you can add a detail geometry. First safe the record.</p>
 </div>
+<p>You can add additional records Structure Parts or a second wastewater node in Tab Wastewater Nodes or Maintenance Events. But in the Tab Wastewater Nodes you will not see the main node, that is created with the new wastewater structure. You can see the main node in the tab Main Cover/Node. After saving the new wastewater structure, you will find two node in the tab Wastewater Nodes.</p>
 <p><strong>OK</strong> klicken um das Formular zu schliessen.</p>
 <figure class="align-default">
-<img alt="../../_images/wizard_wastewater_structure_manhole_form_data_ok3.jpg" src="../../_images/wizard_wastewater_structure_manhole_form_data_ok3.jpg" />
+<img alt="../../_images/wizard_wastewater_structure_manhole_form_data_ok4.jpg" src="../../_images/wizard_wastewater_structure_manhole_form_data_ok4.jpg" />
 </figure>
 <p>Speichern Sie die Informationen des Layers, indem Sie auf <a href="#id1"><span class="problematic" id="id2">**</span></a>Stop Data Entry ** klicken.</p>
 <figure class="align-default">
-<img alt="../../_images/stop_data_entry.jpg" src="../../_images/stop_data_entry.jpg" />
+<img alt="../../_images/stop_data_entry4.jpg" src="../../_images/stop_data_entry4.jpg" />
 </figure>
 <p>Sie können Ihr Punktobjekt bearbeiten, indem Sie den Bearbeitungsmodus auswählen und dann mit dem Info Tool auf das Objekt klicken, welches Sie bearbeiten möchten. Wenn Sie den  Bearbeitungsmodus nicht auswählen, können Sie nur die existierenden Daten anschauen.</p>
-<figure class="align-default">
-<img alt="../../_images/wastewater_structure_info_manhole3.jpg" src="../../_images/wastewater_structure_info_manhole3.jpg" />
-</figure>
 <p>Detaillierte Informationen zum Bearbeiten siehe das Kapitel <a class="reference internal" href="../editing/editing.html#editing-data"><span class="std std-ref">Bearbeiten von bestehenden Daten</span></a>.</p>
 </section>
 <section id="further-attributes-and-classes">
 <h2><span class="section-number">3.2.2.3. </span>Weitere Attribute und Klassen<a class="headerlink" href="#further-attributes-and-classes" title="Link to this heading"></a></h2>
-<p>Wenn ein Abwasserbauwerk-Punktobjekt digitalisiert wird, findet eine Reihe von Schritten im Hintergrund in der QGEP Datenbank statt:</p>
+<p>When a wastewater_structure object is digitized, a series of steps take place in the background in the TWW database:</p>
 <ol class="loweralpha simple">
 <li><p>ein neues Objekt Abwasserbauwerk wird hinzugefügt</p></li>
 <li><p>ein neues Objekt der entsprechenden Unterklasse [Normschacht, Spezialbauwerk, Versickerungsanlage, Einleitstelle] wird hinzugefügt und verknüpft</p></li>
 <li><p>ein neuer Deckel-Bauwerksteil wird hinzugefügt und mit dem Abwasserbauwerk verknüpft</p></li>
-<li><p>ein neuer Abwasserknoten wird in den Abwassernetzelementen und dessen Unterklasse Abwasserknoten erstellt</p></li>
+<li><p>a new wastewater node object is generated (in wastewater network elements and its subclass wastewater nodes) and linked to the wastewater structure</p></li>
+<li><p>the new cover and node are referred as main cover and main node of the wastewater structure</p></li>
 </ol>
-<p>Wenn Sie zusätzliche Objekte (Bauwerkteile wie Einstiegshilfe, Bankett, Rückstauklappen usw.) hinzufügen wollen, dann müssen sie zuerst den Datensatz sichern und danach das Abwasserbauwerk editieren (vgl. das Kapitel <a class="reference internal" href="../editing/editing.html#editing-data"><span class="std std-ref">Bearbeiten von bestehenden Daten</span></a> ).</p>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>Am einen zweiten/weiteren Deckel oder Abwasserknoten zum Abwasserbauwerk hinzuzufügen, vgl. Kapitel  <a class="reference internal" href="../editing/editing.html#editing-data"><span class="std std-ref">Bearbeiten von bestehenden Daten</span></a>.</p>
+<p>The main node is the place, where the symbol of the wastewater structure is shown in TWW.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Bemerkung</p>
+<p>delete this note?? To add a second cover or a second wastewater node to a wastewater structure, see the <a class="reference internal" href="../editing/editing.html#editing-data"><span class="std std-ref">Bearbeiten von bestehenden Daten</span></a> chapter.</p>
 </div>
 </section>
 <section id="geometry-synchronization">

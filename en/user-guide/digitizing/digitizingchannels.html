@@ -145,10 +145,10 @@ You can also directly select another manhole to draw a straight channel.</p></li
 <img alt="../../_images/wizard_data_entry_reach_with_new_cursor2-3.jpg" src="../../_images/wizard_data_entry_reach_with_new_cursor2-3.jpg" />
 </figure>
 <ul class="simple">
-<li><p>You finish digitizing the line by right clicking. This will make the <strong>vw_qep_reach</strong> form appear and you can start adding data in the <strong>General</strong> tab:</p></li>
+<li><p>You finish digitizing the line by right clicking. This will make the <strong>vw_tww_reach</strong> feature attributes window appear and you can start adding data in the <strong>General</strong> tab:</p></li>
 </ul>
 <figure class="align-default">
-<img alt="../../_images/wizard_wastewater_structure_reach_form3.jpg" src="../../_images/wizard_wastewater_structure_reach_form3.jpg" />
+<img alt="../../_images/wizard_reach_form.jpg" src="../../_images/wizard_reach_form.jpg" />
 </figure>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -161,7 +161,7 @@ Thus, for digitizing a simple line with 2 points you need two <strong>left click
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If you do not enter an <cite>identifier</cite> (reach-identifier) in the General tab, TWW will enter the <cite>obj_id</cite> also as identifier (you can change later). As default, the <cite>identifier</cite> of the reach is also the <cite>ws_identifier</cite> of the channel. The reachpoint-identifier are build from the reach-identifier+’F’ or +’T’ (from- and to-reachpoint).</p>
+<p>If you do not enter an <cite>identifier</cite> (reach-identifier) in the General tab, TWW will enter the <cite>obj_id</cite> also as identifier (you can change later). As default, the <cite>identifier</cite> of the reach is also the <cite>ws_identifier</cite> of the channel. As default, the reachpoint-identifier is set to the reachpoint-obj_id.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -169,10 +169,10 @@ Thus, for digitizing a simple line with 2 points you need two <strong>left click
 </div>
 <ul class="simple">
 <li><p>For the profile type you will get a list of defined profiles.
-You can edit those in <strong>od_pipe_profile</strong> table.</p></li>
+You can edit the pipe profiles in <strong>pipe_profile</strong> table (layergroup Wastewater Structures).</p></li>
 </ul>
 <figure class="align-default">
-<img alt="../../_images/wizard_wastewater_structure_reach_form_profiles3.jpg" src="../../_images/wizard_wastewater_structure_reach_form_profiles3.jpg" />
+<img alt="../../_images/wizard_reach_form_profiletypes.jpg" src="../../_images/wizard_reach_form_profiletypes.jpg" />
 </figure>
 <ul class="simple">
 <li><p>When finished, then click the <strong>OK</strong> button.</p></li>
@@ -200,30 +200,22 @@ You can edit those in <strong>od_pipe_profile</strong> table.</p></li>
 <h2><span class="section-number">3.2.5.3. </span>Further attributes and classes<a class="headerlink" href="#further-attributes-and-classes" title="Link to this heading"></a></h2>
 <p>When a line object is digitized, a series of steps take place in the background in the TWW database:</p>
 <ul class="simple">
-<li><p>a new object is added in the <strong>wastewater structure</strong> class (<code class="docutils literal notranslate"><span class="pre">od_wastewater_structure</span></code>)</p></li>
-<li><p>a new object is added and linked in the <strong>channel</strong> subclass (<code class="docutils literal notranslate"><span class="pre">od_channel</span></code>)</p></li>
-<li><p>a new reach object is generated in the <strong>wastewater network elements</strong> class (<code class="docutils literal notranslate"><span class="pre">od_wastewater_networkelement</span></code>)
-and its subclass <strong>reach</strong> (<code class="docutils literal notranslate"><span class="pre">od_reach</span></code>)</p></li>
+<li><p>a new object is added in the <strong>wastewater structure</strong> class (<code class="docutils literal notranslate"><span class="pre">wastewater_structure</span></code>)</p></li>
+<li><p>a new object is added and linked in the <strong>channel</strong> subclass (<code class="docutils literal notranslate"><span class="pre">channel</span></code>)</p></li>
+<li><p>a new reach object is generated in the <strong>wastewater network elements</strong> class (<code class="docutils literal notranslate"><span class="pre">wastewater_networkelement</span></code>)
+and its subclass <strong>reach</strong> (<code class="docutils literal notranslate"><span class="pre">reach</span></code>)</p></li>
 <li><p>two new reach point objects are added and linked to the reach (<strong>rp_from_node</strong>, <strong>rp_to_node</strong>)</p></li>
 </ul>
-<figure class="align-default">
-<img alt="../../_images/reach_form_reach_points3.jpg" src="../../_images/reach_form_reach_points3.jpg" />
-</figure>
 </section>
 <section id="geometry-synchronization">
 <span id="reach-geometrysync"></span><h2><span class="section-number">3.2.5.4. </span>Geometry synchronization<a class="headerlink" href="#geometry-synchronization" title="Link to this heading"></a></h2>
-<p>The start- and the end-point of the added feature’s geometry defines the reach point’s geometries. The altitude (Z value of geometry) of the added feature’s start- and the end-point is defined by the level values <cite>rp_from_level</cite> and <cite>rp_to_level</cite>. This means, the Z values of the reach point’s geometry is set by the level as well. These values could be filled up by the snapped features:</p>
-<figure class="align-default">
-<img alt="../../_images/reach_geometry_snapping_01.jpg" src="../../_images/reach_geometry_snapping_01.jpg" />
-</figure>
-<p>The snapped features 9405 and 9390 have the altitude from the wastewater node bottom_level. These values are copied into the attributes <cite>rp_from_level</cite> and <cite>rp_to_level</cite> and can be edited there by the user. When the user changes these values, the Z value of the geometry of the digitized feature and its reach points will be changed as well.</p>
-<figure class="align-default">
-<img alt="../../_images/reach_geometry_snapping_02.jpg" src="../../_images/reach_geometry_snapping_02.jpg" />
-</figure>
+<p>The start- and the end-point of the added feature’s geometry defines the reach point’s geometries. The altitude (Z value of geometry) of the added feature’s start- and the end-point is defined by the level values <cite>rp_from_level</cite> and <cite>rp_to_level</cite>. This means, the Z values of the reach point’s geometry is set by the level as well. These values could be filled up by the snapped features (as shown in the pictures above):</p>
+<p>The snapped reachpoint of the new reach have the altitude from the wastewater node bottom_level of manhole new KS and manhole 1.030. These leveös are copied by teh wizard into the attributes <cite>rp_from_level</cite> and <cite>rp_to_level</cite> and can be edited there by the user. When the user changes these values, the Z value of the geometry of the digitized feature and its reach points will be changed as well.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>If a reach point’s level changes, the Z value of its geometry changes, and so does the start- or the end-point of the reach. When the Z value of the reach’s geometry changes, the reach point’s geometry and its level is ajusted as well. If both values change, the level takes precendence. On an insert it’s like when both value change. Means the reach’s geometry is set according to the reach point’s levels and if they are NULL, the Z value of the reach’s start- and end-point are set to NaN.</p>
 </div>
+<p>Synchronization of levels works also for intermediate points (points between the reachpoints), if you snap while digitizing to 3d-points on another layer (e.g. a textfile as result of gps-measurement with x,y,z coordinates added to the QGIS-project). Be aware, that you have then a full 3d-reach, but on the export to INTERLIS these intermediate-levels will be lost, because VSA-DSS version 2020 does not support 3d for reach-geometry.</p>
 </section>
 </section>
 

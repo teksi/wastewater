@@ -59,11 +59,12 @@
 <li class="toctree-l3"><a class="reference internal" href="digitizingdrainagechannel.html">3.2.4. Digitizing Detailed Geometry as Drainage Channel</a></li>
 <li class="toctree-l3"><a class="reference internal" href="digitizingchannels.html">3.2.5. Digitizing Channels</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">3.2.6. Deleting objects</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#delete-reaches">3.2.6.1. Delete Reaches</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#delete-manholes-and-other-wastewater-structures">3.2.6.2. Delete Manholes and other Wastewater Structures</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#delete-covers">3.2.6.3. Delete Covers</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#delete-structure-parts">3.2.6.4. Delete Structure parts</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#delete-detailed-geometries">3.2.6.5. Delete detailed geometries</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#delete-reach">3.2.6.1. Delete Reach</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#delete-manhole-or-other-wastewater-structure">3.2.6.2. Delete Manhole or other Wastewater Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#delete-wastewater-structure-but-keep-the-wastewater-node-and-the-connections-to-the-wastewater-node">3.2.6.3. Delete Wastewater Structure, but keep the wastewater_node and the connections to the wastewater_node</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#delete-cover">3.2.6.4. Delete Cover</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#delete-structure-parts">3.2.6.5. Delete Structure parts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#delete-detailed-geometries">3.2.6.6. Delete detailed geometries</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="digitizingcatchments.html">3.2.7. Digitizing Catchment Areas</a></li>
@@ -114,8 +115,8 @@
 <h1><span class="section-number">3.2.6. </span>Deleting objects<a class="headerlink" href="#deleting-objects" title="Link to this heading"></a></h1>
 <p>You can delete point or line objects (with all associated objects) through the <strong>vw_tww_(wastewater_structure/reach)</strong> layers.
 You can also pick and delete only a specific object (e.g. cover).</p>
-<section id="delete-reaches">
-<h2><span class="section-number">3.2.6.1. </span>Delete Reaches<a class="headerlink" href="#delete-reaches" title="Link to this heading"></a></h2>
+<section id="delete-reach">
+<h2><span class="section-number">3.2.6.1. </span>Delete Reach<a class="headerlink" href="#delete-reach" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Select <strong>vw_tww_reach</strong> and change to edit mode.</p></li>
 <li><p>Select the reach(es) you want to delete. You can click on an object or draw an area.</p></li>
@@ -147,11 +148,11 @@ elsewhere.</p>
 </figure>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Delete reaches deletes also all connected structure parts. The connected channel is only deleted if there is no other wastewater networkelement is connected. If there are two reaches connected to one channel, the channel is only deleted if both reaches are deleted.</p>
+<p>Delete reach deletes also all connected structure parts (e.g. dryweather_downspout). The connected channel is only deleted if there is no other wastewater networkelement connected to the channel. If there are two reaches connected to one channel, the channel is only deleted if both reaches are deleted.</p>
 </div>
 </section>
-<section id="delete-manholes-and-other-wastewater-structures">
-<h2><span class="section-number">3.2.6.2. </span>Delete Manholes and other Wastewater Structures<a class="headerlink" href="#delete-manholes-and-other-wastewater-structures" title="Link to this heading"></a></h2>
+<section id="delete-manhole-or-other-wastewater-structure">
+<h2><span class="section-number">3.2.6.2. </span>Delete Manhole or other Wastewater Structure<a class="headerlink" href="#delete-manhole-or-other-wastewater-structure" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Select <strong>vw_tww_wastewater_structure</strong> and change to edit mode</p></li>
 <li><p>Select the objects (<strong>manholes</strong>, <strong>special structures</strong> etc.) you want to delete</p></li>
@@ -160,18 +161,44 @@ elsewhere.</p>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Delete wastewater structures deletes also all connected structure parts and all connected wastewater nodes.</p>
+<p>Delete wastewater structures deletes also all connected structure parts (cover, access_aid etc) and all connected wastewater nodes. fk_wastewater_networkelement in reachpoints, that where connected to the node, are set to NULL.</p>
 </div>
 </section>
-<section id="delete-covers">
-<h2><span class="section-number">3.2.6.3. </span>Delete Covers<a class="headerlink" href="#delete-covers" title="Link to this heading"></a></h2>
+<section id="delete-wastewater-structure-but-keep-the-wastewater-node-and-the-connections-to-the-wastewater-node">
+<h2><span class="section-number">3.2.6.3. </span>Delete Wastewater Structure, but keep the wastewater_node and the connections to the wastewater_node<a class="headerlink" href="#delete-wastewater-structure-but-keep-the-wastewater-node-and-the-connections-to-the-wastewater-node" title="Link to this heading"></a></h2>
+<p>First, you have to kill the connection between wastewater_node and wastewater_structure. Because the fk_wastewater_structure field is not visible in the wastewater_node feature attribut window (this field make no sense in other cases, where the form is also used), you have to follow this way:</p>
 <ul class="simple">
 <li><p>Select <strong>vw_tww_wastewater_structure</strong> and change to edit mode</p></li>
-<li><p>Select the object (<strong>manholes</strong>, <strong>special structures</strong> etc.) from which you want the cover deleted</p></li>
+<li><p>Use the <strong>Identify Features</strong> tool to open the form of the manhole you want to delete</p></li>
+<li><p>Switch to Wastewater Nodes tab</p></li>
+<li><p>Select the Node, that should not be deleted</p></li>
+<li><p>Use the button <strong>Unlink selected child record(s)</strong></p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/unlink_childe.jpg" src="../../_images/unlink_childe.jpg" />
+</figure>
+<ul class="simple">
+<li><p>Click <strong>OK</strong> and close the form window</p></li>
+</ul>
+<p>The wastewater node is no no more part of the wastewater_structure</p>
+<ul class="simple">
+<li><p>Select the object (<strong>manhole</strong>, <strong>special structure</strong> etc.) you want to delete</p></li>
+<li><p>Use <strong>Edit</strong> –&gt; <strong>Delete Selected</strong> to delete.</p></li>
+<li><p>Stop the editing mode and confirm changes to layer. All changes will be saved to database.</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/keep_node.jpg" src="../../_images/keep_node.jpg" />
+</figure>
+</section>
+<section id="delete-cover">
+<h2><span class="section-number">3.2.6.4. </span>Delete Cover<a class="headerlink" href="#delete-cover" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Select <strong>vw_tww_wastewater_structure</strong> and change to edit mode</p></li>
+<li><p>Select the object (<strong>manholes</strong>, <strong>special structures</strong> etc.) from which the cover is to be deleted</p></li>
 <li><p>Use the <strong>Identify Features</strong> tool to open the form</p></li>
 <li><p>Switch to the covers tab</p></li>
 <li><p>Select the cover(s) you want to delete</p></li>
-<li><p>Click the red x button to delete the covers</p></li>
+<li><p>Click the button <strong>delete selected child features</strong> to delete the covers</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/delete_covers.jpg" src="../../_images/delete_covers.jpg" />
@@ -179,14 +206,20 @@ elsewhere.</p>
 <ul class="simple">
 <li><p>Click save on the form</p></li>
 <li><p>Deselect the edit mode and confirm changes to layer. All changes will be saved to database.</p></li>
-<li><p>Second way to delete a cover: select the <strong>vw_cover</strong> layer and change to edit mode, select the cover, use <strong>Edit</strong> –&gt; <strong>Delete Selected</strong>, stop the editing mode</p></li>
+</ul>
+<p>Second way to delete a cover</p>
+<ul class="simple">
+<li><p>Select the <strong>vw_cover</strong> layer and change to edit mode</p></li>
+<li><p>Select the cover</p></li>
+<li><p>Use <strong>Edit</strong> –&gt; <strong>Delete Selected</strong></p></li>
+<li><p>Stop the editing mode</p></li>
 </ul>
 </section>
 <section id="delete-structure-parts">
-<h2><span class="section-number">3.2.6.4. </span>Delete Structure parts<a class="headerlink" href="#delete-structure-parts" title="Link to this heading"></a></h2>
+<h2><span class="section-number">3.2.6.5. </span>Delete Structure parts<a class="headerlink" href="#delete-structure-parts" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Select <strong>vw_tww_wastewater_structure</strong> and change to edit mode</p></li>
-<li><p>Select the object (<strong>manholes</strong>, <strong>special structures</strong> etc.) from which you want to delete a structure part</p></li>
+<li><p>Select the object (<strong>manholes</strong>, <strong>special structures</strong> etc.) from which a structure part is to be deleted</p></li>
 <li><p>Use the <strong>Identify Features</strong> tool to open the form</p></li>
 <li><p>Switch to the structure parts tab</p></li>
 <li><p>Select the structure part you want to delete</p></li>
@@ -196,15 +229,25 @@ elsewhere.</p>
 </ul>
 </section>
 <section id="delete-detailed-geometries">
-<h2><span class="section-number">3.2.6.5. </span>Delete detailed geometries<a class="headerlink" href="#delete-detailed-geometries" title="Link to this heading"></a></h2>
+<h2><span class="section-number">3.2.6.6. </span>Delete detailed geometries<a class="headerlink" href="#delete-detailed-geometries" title="Link to this heading"></a></h2>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
-<p>Deleting features directly from <strong>wastewater_structure</strong> will remove the complete wastewater structure from the database and not only the geometry of the wastewater structure!</p>
+<p>Deleting features directly from <strong>wastewater_structure</strong> (layergroup Wastewater Structures) will remove the complete wastewater structure from the database and not only the geometry of the wastewater structure!</p>
 </div>
 <ul class="simple">
-<li><p>Select <strong>wastewater_structure</strong> and change to edit mode</p></li>
-<li><p>Activate the <strong>Remove part</strong> tool from the Advanced digitizing toolbar</p></li>
-<li><p>Click on the parts you want to delete</p></li>
+<li><p>Select layer <strong>wastewater_structure</strong> and change to edit mode</p></li>
+<li><p>Activate the <strong>Delete part</strong> tool from the Advanced digitizing toolbar</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/delete_part_tool.jpg" src="../../_images/delete_part_tool.jpg" />
+</figure>
+<ul class="simple">
+<li><p>You get a cross-cursor. Click on the part you want to delete (there is no question if you really want… If you click, the part is deleted!)</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/delete_part_tool2.jpg" src="../../_images/delete_part_tool2.jpg" />
+</figure>
+<ul class="simple">
 <li><p>Stop the editing mode and confirm changes to layer. All changes will be saved to database.</p></li>
 </ul>
 </section>

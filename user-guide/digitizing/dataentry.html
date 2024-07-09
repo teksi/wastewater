@@ -111,7 +111,7 @@
 <h1><span class="section-number">3.2.1. </span>Data entry<a class="headerlink" href="#data-entry" title="Link to this heading"></a></h1>
 <p>There are basically two ways:</p>
 <ul>
-<li><p>Data entry by constructing or digitizing in the TWW with the TWW-wizard or QGIS-tools itself</p></li>
+<li><p>Data entry by constructing or digitizing in a TWW-project with the TWW-wizard or QGIS-tools itself</p></li>
 <li><p>Data entry in an external program or software and then importing the position and/or technical data into TWW e.g.:</p>
 <blockquote>
 <div><ul class="simple">
@@ -138,16 +138,16 @@
 <p>Click <strong>Start Data entry</strong> to enter the edit mode.</p>
 <p>Choose <strong>Wastewater Structure</strong> or <strong>Reach</strong>. Start adding new feature in vw_tww_wastewater_structure or vw_tww_reach.</p>
 <p>There is no need to select the correct layer in the layers-window, you do not need to toggle editing or to choose the add feature tool.</p>
-<p>When adding <strong>new wastewater structures</strong>, the wizard has no additional functionality. To <strong>Reuse the last entered attribute values</strong>, it is necessary (and recommended) to enable this option in <span class="menuselection">Settings ‣ Options ‣ Digitizing</span>.</p>
-<p>When adding <strong>new reaches</strong>, the wizard has some additional functionality:</p>
+<p>When adding new <strong>wastewater structure</strong>, the wizard has no additional functionality. In the layer form configuration, the option <strong>Reuse last entered value</strong> defines for every field, if the last value will be used again or not.</p>
+<p>When adding new <strong>reach</strong>, the wizard has some additional functionality:</p>
 <ul class="simple">
 <li><p>Snapping on wastewater nodes and other reaches is on, even if QGIS <strong>Enable Snapping</strong> is off.</p></li>
 <li><p>Snapping on nodes is always preferred to snapping on reaches.</p></li>
 <li><p>When the new reach snaps, then the obj_id_links are automatically entered in the fk_fields of the reach points.</p></li>
-<li><p>The <strong>Reuse the last entered attribute values</strong> - option of QGIS does not work. But the standard-fields on the general-tab (and only those fields) do reuse the last entered attribute value.</p></li>
+<li><p>The <strong>Reuse last entered value</strong> - option of QGIS does not work in this view. But the standard-fields on the general-tab (and only those fields) do reuse the last entered value.</p></li>
 </ul>
 <p>If you use another tool (e.g. the <strong>Identify Features</strong> tool) and then want to continue digitizing with the wizard, you can not select the wizard again. You have to click <strong>Stop Data Entry</strong> and then <strong>Start Data Entry</strong> and you can continue.</p>
-<p>If you change from digitizing wastewater structures to digitizing reaches, it is recommended to  stop and start data entry also. This saves the new manholes and enables the reaches to snap also on new digitized manholes.</p>
+<p>If you change from digitizing wastewater structures to digitizing reaches, it is recommended to stop and start data entry also. This saves the new manholes and enables the reaches to snap also on new digitized manholes.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>When digitizing, it is recommended to start with the point elements (wastewater structures such as manholes, special structures). Afterwards its easy to connect those points with line elements (channels with reaches).</p>
@@ -156,14 +156,14 @@
 </section>
 <section id="qgis-standard-tools">
 <h2><span class="section-number">3.2.1.2. </span>QGIS standard tools<a class="headerlink" href="#qgis-standard-tools" title="Link to this heading"></a></h2>
-<p>To digitize in other layers than vw_qep_wastewater_structure or vw_tww_reach, you work with the standard QGIS tools:</p>
+<p>To digitize in other layers than vw_tww_wastewater_structure or vw_tww_reach, you work with the standard QGIS tools:</p>
 <ul class="simple">
 <li><p>Select the layer you want to edit</p></li>
 <li><p>Toggle Editing if necessary</p></li>
 <li><p>Enable snapping if necessary</p></li>
 <li><p>Choose the add feature tool</p></li>
 </ul>
-<p>It is also possible to use the standard QGIS tools with the two vw_tww main layers. But there will be no automatic value in the fk-fields of the reach-points and no preferred snapping to wastewater nodes.</p>
+<p>It is also possible to use the standard QGIS tools with the two vw_tww-main layers. But there will be no automatic value in the fk-fields of the reach-points and no preferred snapping to wastewater nodes.</p>
 </section>
 </section>
 

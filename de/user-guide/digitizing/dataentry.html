@@ -112,7 +112,7 @@
 <h1><span class="section-number">3.2.1. </span>Datenerfassung<a class="headerlink" href="#data-entry" title="Link to this heading"></a></h1>
 <p>Es gibt grundsätzlich zwei Arten der Datenerfassung:</p>
 <ul>
-<li><p>Datenerfassung in der TWW Fachschale durch konstruieren oder digitalisieren mit dem TWW-Wizard oder QGIS-Standard Werkzeugen.</p></li>
+<li><p>Data entry by constructing or digitizing in a TWW-project with the TWW-wizard or QGIS-tools itself</p></li>
 <li><p>Datenerfassung in einem externen Programm oder Software mit nachfolgendem Import der Lage und/oder der Sachinformation in TWW. Zum Beispiel:</p>
 <blockquote>
 <div><ul class="simple">
@@ -139,16 +139,16 @@
 <p>Klicken Sie auf <strong>Start Data entry</strong> um den Bearbeitungsmodus zu starten.</p>
 <p>Wähle <strong>Wastewater Structure</strong> oder <strong>Reach</strong>. Starte mit dem Erfassen neuer Datensätze in vw_tww_wastewater_structure oder vw_tww_reach.</p>
 <p>Es ist nicht notwendig, den entsprechenden Layer im Layer-Fenster auszuwählen, der Bearbeitungsstatus muss nicht umgeschaltet werden und es muss kein Objekt hinzufügen-Werkzeug gewählt werden.</p>
-<p>Wenn in <strong>vw_qgep_wastewater_structure</strong> neue Schächte hinzugefügt werden, hat der Wizard keine zusätzlichen Funktionen. Es ist nützlich (und empfohlen), die Option <strong>Letzte Attributeingabe wiederverwenden</strong> in <span class="menuselection">Einstellungen‣ Optionen ‣ Digitisierung</span> einzuschalten.</p>
-<p>Wenn in <strong>vw_qgep_Haltung</strong> neue Haltungen hinzugefügt werden, hat der Wizard einige zusätzliche Funktionen.</p>
+<p>When adding new <strong>wastewater structure</strong>, the wizard has no additional functionality. In the layer form configuration, the option <strong>Reuse last entered value</strong> defines for every field, if the last value will be used again or not.</p>
+<p>When adding new <strong>reach</strong>, the wizard has some additional functionality:</p>
 <ul class="simple">
 <li><p>Schnappen auf Abwasserknoten und Haltungen ist aktiv, sogar wenn QGIS <strong>Einrasten einschalten</strong> ausgeschaltet ist.</p></li>
 <li><p>Schnappen auf Abwasserknoten hat immer höhere Priorität als das Schnappen auf Haltungen.</p></li>
 <li><p>Wenn die neue Haltung schnappt, dann wird die Verknüpfungs-Obj_id automatisch in die Fremdschlüsselfelder fk* der Haltungspunkt eingetragen.</p></li>
-<li><p>Die QGIS-Option <strong>Letzte Attributeingaben wiederverwenden</strong> funktioniert grundsätzlich nicht. Aber für die Standard-Felder im Allgemein Tab (und nur für diese Felder) werden die letzten Eingabewerte vom Wizard eingetragen.</p></li>
+<li><p>The <strong>Reuse last entered value</strong> - option of QGIS does not work in this view. But the standard-fields on the general-tab (and only those fields) do reuse the last entered value.</p></li>
 </ul>
 <p>Wenn während dem Digitalisieren ein anderes Tool benutzt wird (z.B. das <strong>Objekte abfragen</strong> Tool), dann genügt es nicht, den Wizard anzuklicken um mit dem Wizard weiter zu digitalisieren. Es muss <strong>Stop Data Entry</strong> und danach <strong>Start Data Entry</strong> angeklickt werden bevor weiter digitalisiert werden kann.</p>
-<p>Wenn vom Digitalisieren der Schächte vw_qgep_Abwasserbauwerk zum Digitalisieren der Haltungen vw_qgep_Haltung gewechselt wird, ist es empfehlenswert, Stop und Start Data Entry anzuklicken. Damit werden die neuen Schächte gespeichert und beim Digitalisieren der Haltungen kann auf diese neuen Schächte resp. deren Abwasserknoten geschnappt werden.</p>
+<p>If you change from digitizing wastewater structures to digitizing reaches, it is recommended to stop and start data entry also. This saves the new manholes and enables the reaches to snap also on new digitized manholes.</p>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
 <p>Beim Digitalisieren ist es empfehlenswert, zuerst die Schächte zu erfassen. Danach kann mit den Haltungen einfach auf die Schächte geschnappt werden.</p>
@@ -157,14 +157,14 @@
 </section>
 <section id="qgis-standard-tools">
 <h2><span class="section-number">3.2.1.2. </span>QGIS Standard Werkzeuge<a class="headerlink" href="#qgis-standard-tools" title="Link to this heading"></a></h2>
-<p>Wenn in anderen Layern als  vw_tww_wastewater_structure oder vw_tww_reach digitalisiert wird, werden die QGIS Standard Werkzeuge verwendet:</p>
+<p>To digitize in other layers than vw_tww_wastewater_structure or vw_tww_reach, you work with the standard QGIS tools:</p>
 <ul class="simple">
 <li><p>Wähle den Layer der bearbeitet werden soll</p></li>
 <li><p>Mit <strong>Bearbeitungsstatus umschalten</strong> die Bearbeitung starten falls notwendig</p></li>
 <li><p><strong>Einrasten einschalten</strong>  falls notwendig</p></li>
 <li><p>Wähle das <strong>Objekt hinzufügen</strong> Werkzeug</p></li>
 </ul>
-<p>Es ist auch möglich, in den beiden TWW Hauptlayern mit den QGIS Standardwerkzeugen zu arbeiten. Aber dann gibt es keine automatische Verknüpfung von Abwassenetzelementen in den Fremdschlüssel-Feldern der Haltungspunkte und kein bevorzugtes Schnappen auf Abwasserknoten.</p>
+<p>It is also possible to use the standard QGIS tools with the two vw_tww-main layers. But there will be no automatic value in the fk-fields of the reach-points and no preferred snapping to wastewater nodes.</p>
 </section>
 </section>
 

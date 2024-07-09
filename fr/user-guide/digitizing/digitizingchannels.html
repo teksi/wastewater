@@ -144,10 +144,10 @@ When left clicking a line starts to draw.</p></li>
 <img alt="../../_images/wizard_data_entry_reach_with_new_cursor2-3.jpg" src="../../_images/wizard_data_entry_reach_with_new_cursor2-3.jpg" />
 </figure>
 <ul class="simple">
-<li><p>You finish digitizing the line by right clicking. This will make the <strong>vw_qep_reach</strong> form appear and you can start adding data in the <strong>General</strong> tab:</p></li>
+<li><p>You finish digitizing the line by right clicking. This will make the <strong>vw_tww_reach</strong> feature attributes window appear and you can start adding data in the <strong>General</strong> tab:</p></li>
 </ul>
 <figure class="align-default">
-<img alt="../../_images/wizard_wastewater_structure_reach_form3.jpg" src="../../_images/wizard_wastewater_structure_reach_form3.jpg" />
+<img alt="../../_images/wizard_reach_form.jpg" src="../../_images/wizard_reach_form.jpg" />
 </figure>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -159,17 +159,18 @@ Ainsi, pour numériser une conduite simple comportant 2 points, il faudra deux c
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If you do not enter an <cite>identifier</cite> (reach-identifier) in the General tab, TWW will enter the <cite>obj_id</cite> also as identifier (you can change later). As default, the <cite>identifier</cite> of the reach is also the <cite>ws_identifier</cite> of the channel. The reachpoint-identifier are build from the reach-identifier+”F” or +”T” (from- and to-reachpoint).</p>
+<p>If you do not enter an <cite>identifier</cite> (reach-identifier) in the General tab, TWW will enter the <cite>obj_id</cite> also as identifier (you can change later). As default, the <cite>identifier</cite> of the reach is also the <cite>ws_identifier</cite> of the channel. As default, the reachpoint-identifier is set to the reachpoint-obj_id.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>See <a class="reference internal" href="#reach-geometrysync"><span class="std std-ref">Synchronisation de la géométrie</span></a> for automatic reachpoint levels when snapping to wastewater nodes with level.</p>
 </div>
 <ul class="simple">
-<li><p>Pour le type de profil, vous allez obtenir une liste de profils prédéfinis. Vous pouvez les éditer dans la table <strong>od_profil_tuyau</strong>.</p></li>
+<li><p>For the profile type you will get a list of defined profiles.
+You can edit the pipe profiles in <strong>pipe_profile</strong> table (layergroup Wastewater Structures).</p></li>
 </ul>
 <figure class="align-default">
-<img alt="../../_images/wizard_wastewater_structure_reach_form_profiles3.jpg" src="../../_images/wizard_wastewater_structure_reach_form_profiles3.jpg" />
+<img alt="../../_images/wizard_reach_form_profiletypes.jpg" src="../../_images/wizard_reach_form_profiletypes.jpg" />
 </figure>
 <ul class="simple">
 <li><p>Une fois que vous avez terminé, cliquez sur le bouton <strong>OK</strong>.</p></li>
@@ -197,29 +198,22 @@ Ainsi, pour numériser une conduite simple comportant 2 points, il faudra deux c
 <h2><span class="section-number">3.2.5.3. </span>Autres classes et attributs<a class="headerlink" href="#further-attributes-and-classes" title="Lien vers cette rubrique"></a></h2>
 <p>When a line object is digitized, a series of steps take place in the background in the TWW database:</p>
 <ul class="simple">
-<li><p>a new object is added in the <strong>wastewater structure</strong> class (<code class="docutils literal notranslate"><span class="pre">od_wastewater_structure</span></code>)</p></li>
-<li><p>Un nouvel objet est ajouté et lié dans la sous-classe <strong>tronçon</strong> (<code class="docutils literal notranslate"><span class="pre">od_troncon</span></code>)</p></li>
-<li><p>Un nouvel objet <strong>tronçon</strong> est généré dans la classe <strong>wastewater network elements</strong> (<code class="docutils literal notranslate"><span class="pre">od_wastewater_networkelement</span></code>) / <strong>éléments du réseau assainissement</strong> (<code class="docutils literal notranslate"><span class="pre">od_élément_réseau_assainissement</span></code>) et sa sous-classe <strong>reach</strong> (<code class="docutils literal notranslate"><span class="pre">od_reach</span></code>) / <strong>tronçon</strong> (<code class="docutils literal notranslate"><span class="pre">od_tronçon&quot;</span></code>)</p></li>
+<li><p>a new object is added in the <strong>wastewater structure</strong> class (<code class="docutils literal notranslate"><span class="pre">wastewater_structure</span></code>)</p></li>
+<li><p>a new object is added and linked in the <strong>channel</strong> subclass (<code class="docutils literal notranslate"><span class="pre">channel</span></code>)</p></li>
+<li><p>a new reach object is generated in the <strong>wastewater network elements</strong> class (<code class="docutils literal notranslate"><span class="pre">wastewater_networkelement</span></code>)
+and its subclass <strong>reach</strong> (<code class="docutils literal notranslate"><span class="pre">reach</span></code>)</p></li>
 <li><p>Deux objets de type <strong>reach point</strong> sont ajoutés et liés à la conduite (<code class="docutils literal notranslate"><span class="pre">rp_from_node</span></code>, <code class="docutils literal notranslate"><span class="pre">rp_to_node</span></code>)</p></li>
 </ul>
-<figure class="align-default">
-<img alt="../../_images/reach_form_reach_points3.jpg" src="../../_images/reach_form_reach_points3.jpg" />
-</figure>
 </section>
 <section id="geometry-synchronization">
 <span id="reach-geometrysync"></span><h2><span class="section-number">3.2.5.4. </span>Synchronisation de la géométrie<a class="headerlink" href="#geometry-synchronization" title="Lien vers cette rubrique"></a></h2>
-<p>Les points de départ et d’arrivée de la géométrie de la nouvelle entité définissent les géométries des points de tronçon. Les altitudes (valeur Z de la géométrie) des points de départ et d’arrivée de la nouvelle entité sont définies par les valeurs de cote “rp_from_level” et “rp_to_level”. Cela signifie que les valeurs Z des géométries du nouvel objet point de tronçon sont définies par ces cotes également. Ces valeurs peuvent être complétées par les entités auxquels on s’accroche:</p>
-<figure class="align-default">
-<img alt="../../_images/reach_geometry_snapping_01.jpg" src="../../_images/reach_geometry_snapping_01.jpg" />
-</figure>
-<p>The snapped features 9405 and 9390 have the altitude from the wastewater node bottom_level. These values are copied into the attributes <cite>rp_from_level</cite> and <cite>rp_to_level</cite> and can be edited there by the user. When the user changes these values, the Z value of the geometry of the digitized feature and its reach points will be changed as well.</p>
-<figure class="align-default">
-<img alt="../../_images/reach_geometry_snapping_02.jpg" src="../../_images/reach_geometry_snapping_02.jpg" />
-</figure>
+<p>The start- and the end-point of the added feature’s geometry defines the reach point’s geometries. The altitude (Z value of geometry) of the added feature’s start- and the end-point is defined by the level values <cite>rp_from_level</cite> and <cite>rp_to_level</cite>. This means, the Z values of the reach point’s geometry is set by the level as well. These values could be filled up by the snapped features (as shown in the pictures above):</p>
+<p>The snapped reachpoint of the new reach have the altitude from the wastewater node bottom_level of manhole new KS and manhole 1.030. These leveös are copied by teh wizard into the attributes <cite>rp_from_level</cite> and <cite>rp_to_level</cite> and can be edited there by the user. When the user changes these values, the Z value of the geometry of the digitized feature and its reach points will be changed as well.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Si le niveau d’un point de tronçon change, la valeur Z de sa géométrie change, ainsi que le point de départ ou d’arrivée du tronçon. Quant la valeur Z de la géométrie du tronçon change, la géométrie du point de tronçon et son niveau sont ajustés également. Si les deux valeurs changent, le niveau est prédominant. Lors d’une insertion, c’est comme lorsque les deux valeurs changent. Cela signifie que la géométrie du tronçon est définie selon les niveaux des points de tronçon et que s’ils sont NULL, les valeurs Z du départ et de la fin du tronçon sont définis à NaN.</p>
 </div>
+<p>Synchronization of levels works also for intermediate points (points between the reachpoints), if you snap while digitizing to 3d-points on another layer (e.g. a textfile as result of gps-measurement with x,y,z coordinates added to the QGIS-project). Be aware, that you have then a full 3d-reach, but on the export to INTERLIS these intermediate-levels will be lost, because VSA-DSS version 2020 does not support 3d for reach-geometry.</p>
 </section>
 </section>
 
