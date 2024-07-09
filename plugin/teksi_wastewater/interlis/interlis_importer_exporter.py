@@ -142,7 +142,7 @@ class InterlisImporterExporter:
 
         # Validate subclasses after import
         self._check_subclass_counts()
-        
+
         # Reenable symbology triggers
         self._progress_done(95, "Reenable symbology triggers...")
         self._import_enable_symbology_triggers()
@@ -162,7 +162,7 @@ class InterlisImporterExporter:
     ):
         # Validate subclasses before export
          self._check_subclass_counts()
-        
+
         # File name without extension (used later for export)
         file_name_base, _ = os.path.splitext(xtf_file_output)
 
@@ -564,7 +564,7 @@ class InterlisImporterExporter:
         if PSYCOPG_VERSION == 2:
             connection.set_session(autocommit=True)
         cursor = connection.cursor()
-        
+
         parent_rows = cursor.execute(
             f"SELECT obj_id FROM {schema_name}.{parent_name};"
         ).fetchall()
@@ -579,7 +579,7 @@ class InterlisImporterExporter:
                 parent_count = parent_count - len(child_rows)
             connection.commit()
             connection.close()
-        
+
             if parent_count == 0:
                 logger.info(
                     f"OK: number of subclass elements of class {parent_name} OK in schema {schema_name}!"
@@ -588,7 +588,7 @@ class InterlisImporterExporter:
                 logger.error(
                     f"ERROR: number of subclass elements of {parent_name} NOT CORRECT in schema {schema_name}: checksum = {parent_count} (positive number means missing entries, negative means too many subclass entries)"
                 )
-                
+
 
 
     def _init_model_classes(self, model):
