@@ -284,40 +284,6 @@ def make_log_path(next_to_path, step_name):
         return os.path.join(temp_path, f"{now}.{step_name}.log")
 
 
-def check_subclass_count(schema_name, parent_name, child_list):
-
-    logger.info(f"INTEGRITY CHECK {parent_name} subclass data...")
-
-    parent_rows = self.abwasser_session.execute(
-        text(f"SELECT obj_id FROM {schema_name}.{parent_name};")
-    ).fetchall()
-    self.abwasser_session.flush()
-    cursor.execute(f"SELECT obj_id FROM {schema_name}.{parent_name};")
-    if len(parent_rows) > 0:
-        parent_count = len(parent_rows)
-        logger.info(f"Number of {parent_name} datasets: {parent_count}")
-        for child_name in child_list:
-            child_rows = self.abwasser_session.execute(
-                text(f"SELECT obj_id FROM {schema_name}.{child_name};")
-            ).fetchall()
-            self.abwasser_session.flush()
-            logger.info(f"Number of {child_name} datasets: {len(child_rows)}")
-            parent_count = parent_count - len(child_rows)
-
-        if parent_count == 0:
-            subclass_check = True
-            logger.info(
-                f"OK: number of subclass elements of class {parent_name} OK in schema {schema_name}!"
-            )
-        else:
-            subclass_check = False
-            logger.error(
-                f"ERROR: number of subclass elements of {parent_name} NOT CORRECT in schema {schema_name}: checksum = {parent_count} (positive number means missing entries, negative means too many subclass entries)"
-            )
-
-    return subclass_check
-
-
 class LoggingHandlerContext:
     """Temporarily sets a log handler, then removes it"""
 
