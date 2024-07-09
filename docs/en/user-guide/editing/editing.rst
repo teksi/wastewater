@@ -173,6 +173,7 @@ The TWW project is configured that you can add an additional cover with the **Ad
 
 .. figure:: images/new_cover_childpoint.jpg
 
+.. figure:: images/new_cover_childpoint_message.jpg
 
 Adding a wastewater node to an existing reach
 ---------------------------------------------
