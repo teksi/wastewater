@@ -2262,18 +2262,18 @@ class InterlisImporterToIntermediateSchema:
 
         logger.info(f"INTEGRITY CHECK {parent_name} subclass data...")
 
-        parent_rows = self.abwasser_session.execute(
+        parent_rows = self.session_tww.execute(
             text(f"SELECT obj_id FROM {schema_name}.{parent_name};")
         ).fetchall()
-        self.abwasser_session.flush()
+        self.session_tww.flush()
         if len(parent_rows) > 0:
             parent_count = len(parent_rows)
             logger.info(f"Number of {parent_name} datasets: {parent_count}")
             for child_name in child_list:
-                child_rows = self.abwasser_session.execute(
+                child_rows = self.session_tww.execute(
                     text(f"SELECT obj_id FROM {schema_name}.{child_name};")
                 ).fetchall()
-                self.abwasser_session.flush()
+                self.session_tww.flush()
                 logger.info(f"Number of {child_name} datasets: {len(child_rows)}")
                 parent_count = parent_count - len(child_rows)
 
