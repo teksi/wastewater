@@ -62,10 +62,11 @@ def load_extension(
     definitions = [d for d in config.extension_def if d['id'] == extension_name] [0]
     variables = config.get('variables',{})
     # pass SRID and extension schema name per default
-    variables.update({'ext_schema': config.get('schema','tww_'||entry_id),'srid': psycopg.sql.SQL(f"{srid}")})
+    schemaname = config.get('schema','tww_'+entry_id)
+    variables.update({'ext_schema': schemaname,'srid': psycopg.sql.SQL(f"{srid}")})
 
     if drop_schema:
-        run_sql(f"DROP SCHEMA IF EXISTS {config.get('schema','tww_'||entry_id)} CASCADE;", pg_service)
+        run_sql(f"DROP SCHEMA IF EXISTS {schemaname} CASCADE;", pg_service)
 
     # We also disable symbology triggers as they can badly affect performance. This must be done in a separate session as it
     # would deadlock other sessions.
