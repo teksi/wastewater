@@ -3,6 +3,7 @@ import subprocess
 import sys
 from argparse import ArgumentParser, BooleanOptionalAction
 from pathlib import Path
+from typing import Optional
 
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import text
