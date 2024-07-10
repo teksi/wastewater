@@ -34,7 +34,7 @@ def _cmd(args):
         raise e
 
 
-def files_description(version,extension_name):
+def files_description(version, extension_name):
     return f"""
 
 ## Descriptions of the files
@@ -56,24 +56,23 @@ def create_dumps(**args):
     Creates all dumps
     :return: the files names in a list
     """
-    
-    files =[]
+
+    files = []
     files.extend(create_plain_structure_only(**args))
     files.append(create_plain_value_list(**args))
     files.append(create_backup_complete(**args))
-    
-    
+
     return files
 
 
-def create_plain_structure_only(database: str, version: str, extension_name: str=None):
+def create_plain_structure_only(database: str, version: str, extension_name: str = None):
     """
     Create a plain SQL dump of data structure
     of all schemas and the content of pum_sys.inf
     :return: the file name of the dump
     """
     print("::group::plain SQL structure only")
-    
+
     # structure
     dump_s = f"tww_{version}_structure{extension_name}.sql"
 
@@ -119,19 +118,19 @@ def create_plain_structure_only(database: str, version: str, extension_name: str
 
     print("::endgroup::")
 
-    return [dump_file_i,dump_file_s]
+    return [dump_file_i, dump_file_s]
 
 
-def create_plain_value_list(database: str, version: str, extension_name: str=None):
+def create_plain_value_list(database: str, version: str, extension_name: str = None):
     """
     Create a plain SQL dump of data structure (result of create_structure_only)
     with value list content
     :return: the file name of the dump
     """
     print("::group::value lists dump")
-        
+
     dump = f"tww_{version}_structure_with_value_lists{extension_name}.sql"
-    structure_dump_file =f"datamodel/artifacts/tww_{version}_structure{extension_name}.sql"
+    structure_dump_file = f"datamodel/artifacts/tww_{version}_structure{extension_name}.sql"
     print(f"Creating dump {dump}")
     dump_file = f"datamodel/artifacts/{dump}"
 
@@ -204,16 +203,18 @@ def get_parser():
     _parser = argparse.ArgumentParser("create-dumps.py")
     _parser.add_argument("--version", "-v", help="Sets the version", default="dev")
     _parser.add_argument("--database", "-d", help="Sets the database name", default="tww")
-    _parser.add_argument("--extensions", "-x", help="List names of the database extensions", default="",nargs='*')
+    _parser.add_argument(
+        "--extensions", "-x", help="List names of the database extensions", default="", nargs="*"
+    )
     return _parser
 
 
 if __name__ == "__main__":
     parser = get_parser()
     args = parser.parse_args()
-    if args.extensions != '': 
-        args.extensions=prepend(args.extensions,'_')
-    
+    if args.extensions != "":
+        args.extensions = prepend(args.extensions, "_")
+
     os.makedirs("datamodel/artifacts", exist_ok=True)
     files = create_dumps(version=args.version, database=args.database, extensions=args.extensions)
     print("Dumps created: {}".format(", ".join(files)))
