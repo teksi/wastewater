@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION tww_app.set_organisations_active()
+CREATE OR REPLACE FUNCTION tww_app.set_organisations_active(_undo_existing boolean default false)
   RETURNS void AS
 $BODY$
 DECLARE
@@ -6,8 +6,11 @@ schm text;
 tbl text;
 col text;
 BEGIN
-UPDATE tww_od.organisation
-SET tww_active=FALSE;
+IF _undo_existing THEN
+	UPDATE tww_od.organisation
+	SET tww_active=FALSE;
+ELSE NULL;
+END IF;
 FOR schm,tbl,col IN
 	SELECT   tc.table_schema,
 		tc.table_name,
