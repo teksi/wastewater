@@ -46,9 +46,9 @@ from .tools.twwmaptools import TwwMapToolConnectNetworkElements, TwwTreeMapTool
 from .tools.twwnetwork import TwwGraphManager
 from .utils.plugin_utils import plugin_root_path
 from .utils.translation import setup_i18n
+from .utils.tww_validity_check import tww_check_oid_prefix
 from .utils.twwlayermanager import TwwLayerManager, TwwLayerNotifier
 from .utils.twwlogging import TwwQgsLogHandler
-from .utils.tww_validity_check import tww_check_oid_prefix,tww_check_fk_defaults
 
 LOGFORMAT = "%(asctime)s:%(levelname)s:%(module)s:%(message)s"
 
@@ -329,7 +329,7 @@ class TeksiWastewaterPlugin:
                 msg,
                 level=Qgis.Critical,
             )
-    
+
     def unload(self):
         """
         Called when unloading
