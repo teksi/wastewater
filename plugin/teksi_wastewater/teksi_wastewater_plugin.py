@@ -48,6 +48,7 @@ from .utils.plugin_utils import plugin_root_path
 from .utils.translation import setup_i18n
 from .utils.twwlayermanager import TwwLayerManager, TwwLayerNotifier
 from .utils.twwlogging import TwwQgsLogHandler
+from .utils.tww_validity_check import tww_check_oid_prefix,tww_check_fk_defaults
 
 LOGFORMAT = "%(asctime)s:%(levelname)s:%(module)s:%(message)s"
 
@@ -310,6 +311,25 @@ class TeksiWastewaterPlugin:
 
         self.network_layer_notifier.layersAdded([])
 
+    def tww_validity_check(self):
+        pg_layer = TwwLayerManager.layer("vw_tww_wastewater_structure")
+        if not pg_layer:
+            self.iface.messageBar().pushMessage(
+                "Error",
+                "Could not determine the Postgres connection information. Make sure the TWW project is loaded.",
+                level=Qgis.Critical,
+            )
+
+        pgservice = pg_layer.dataProvider().uri().service()
+        msgs = tww_check_oid_prefix(pgservice)
+        msgs.extend(tww_check_oid_prefix(pgservice))
+        for msg in msgs:
+            self.iface.messageBar().pushMessage(
+                "Error",
+                msg,
+                level=Qgis.Critical,
+            )
+    
     def unload(self):
         """
         Called when unloading
