@@ -184,26 +184,28 @@ In some cases, you need to add a wastewater node between two or more reaches, al
 
 In the data model, you can connect a node between reaches to a channel (because also a channel is a wastewater structure). There is in the moment a discussion, if it is necessary or optional or even forbidden to define a connection to a wastewater structure.
 
-In TWW, there is in the moment no tool, that helps you to connect a wastewater node to a channel. So you just connect the reach points to the node.
+In TWW, there is in the moment no tool, that helps you to connect a wastewater node to a channel. So you just connect the reaches (reach points) to the node.
 
 .. note:: If you really want to connect the node to a channel, then type the obj_id of the channel manually in the fk_wasterwater_structure field of the node.
 
 
 Multiedit
 ---------
-If you want to edit attributes for multiple objects of the same class you can use the `multiedit Tool of QGIS <https://docs.qgis.org/latest/en/docs/user_manual/working_with_vector/attribute_table.html#multi-edit-fields>`_.
+If you want to edit attributes for multiple objects of the same layer you can use the `multiedit Tool of QGIS <https://docs.qgis.org/latest/en/docs/user_manual/working_with_vector/attribute_table.html#multi-edit-fields>`_. 
 
 
 Saving changes
 --------------
 
-* Click **Save** and then deactivate the edit mode or click on **Stop data entry** if you have worked with the **TWW Data Entry** wizard.
+* Click **Save** and then deactivate the edit mode or click on **Stop data entry** if you have worked with the TWW **Wizard**.
 
 
-Changing Wastewater Structure Type
+Changing Wastewater Structure Type (ws_type)
 ----------------------------------
 
-In the vw_tww_wastewater_structure form, you can change the subclass of the wastewater structure (e.g. from manhole to special structure or to infiltration installation). The old subclass-record will be deleted and you must enter those attributes, that are subclass specific. But all connections (they are defined to the class wastewater_structure and not to the subclass) or the obj_id or the identifier will not change.
+In the vw_tww_wastewater_structure form, you can change the subclass of the wastewater structure (e.g. from manhole to special structure or to infiltration installation) with the field **ws_type**. The old subclass-record will be deleted and you must enter those attributes, that are subclass specific. But all connections (they are defined to the class wastewater_structure and not to the subclass) or the obj_id or the identifier will not change.
+
+.. note:: There are just four subclasses supported in the moment: manhole, special_structure, infiltration_installation, discharge_point. Other subclasses (wwtp_structure, small_treatment_plant, drainless_toilett) will be supported in a next release of TWW.
 
 .. note:: You can not change a point - wastewater structure (e.g. manhole) to a line wastewater structure (channel) or vice versa.
 
@@ -211,7 +213,7 @@ In the vw_tww_wastewater_structure form, you can change the subclass of the wast
 Split a reach (channel) into different reaches
 -----------------------------------------------
 
-This is a quite complex function and not jet implemented in TWW. There exists a QGIS-Tool to split objects, but if you use this tool with vw_tww_reach - layer, you will get a database error, because the obj_id of the split (= duplicated) records are no more unique.
+This is a quite complex function and in the actual version not implemented in TWW. There exists a QGIS-Tool to split objects, but if you use this tool with vw_tww_reach - layer, you will get a database error, because the obj_id of the split (= duplicated) records are no more unique.
 
 Temporary solution: Change the existing reach and draw the second reach manually. Control the connections.
 
