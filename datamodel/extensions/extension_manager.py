@@ -1,6 +1,3 @@
-# Definitions for tww datamodel with delta >= 1.7.0
-# supposed usage: add TEKSI2AG64_96 into the plugin folder of TEKSI wastewater.
-
 import os
 import subprocess
 import sys
