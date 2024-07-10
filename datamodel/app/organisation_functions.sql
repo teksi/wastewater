@@ -10,16 +10,16 @@ UPDATE tww_od.organisation
 SET tww_active=FALSE;
 FOR schm,tbl,col IN
 	SELECT   tc.table_schema,
-		tc.table_name, 
-		kcu.column_name 
-	FROM (SELECT constraint_name FROM information_schema.constraint_column_usage 
+		tc.table_name,
+		kcu.column_name
+	FROM (SELECT constraint_name FROM information_schema.constraint_column_usage
 	WHERE table_schema='tww_od'
 		AND table_name='organisation'
 		AND column_name='obj_id'
 		AND constraint_name NOT LIKE'pkey%')ccu
 	INNER JOIN information_schema.key_column_usage AS kcu
 	ON ccu.constraint_name = kcu.constraint_name
-	INNER JOIN information_schema.table_constraints AS tc 
+	INNER JOIN information_schema.table_constraints AS tc
 		ON tc.constraint_name = kcu.constraint_name
 LOOP
 	        EXECUTE format($$ UPDATE tww_od.organisation

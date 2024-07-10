@@ -266,9 +266,7 @@ class InterlisImporterExporter:
         cursor = connection.cursor()
 
         logger.info("Update organisation tww_active")
-        cursor.execute(
-            "SELECT tww_app.set_organisations_active();"
-        )
+        cursor.execute("SELECT tww_app.set_organisations_active();")
 
         connection.commit()
         connection.close()
