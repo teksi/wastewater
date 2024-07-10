@@ -6,15 +6,14 @@ from pathlib import Path
 from typing import Optional
 
 from sqlalchemy.orm import Session
-from sqlalchemy.sql import text
 from yaml import safe_load
 
 
 def read_config(config_file: str, entry_id: str):
-    with open(config_file, 'r') as file:
+    with open(config_file) as file:
         config = safe_load(file)
-    for entry in config.get('extensions', []):
-        if entry.get('id') == entry_id:
+    for entry in config.get("extensions", []):
+        if entry.get("id") == entry_id:
             return entry
     raise ValueError(f"No entry found with id: {entry_id}")
 
@@ -26,11 +25,13 @@ def run_py_file(file_path: str):
     if result.returncode != 0:
         raise RuntimeError(f"Error running file: {result.stderr}")
 
+
 def run_sql_file(file_path: str, pg_service: str, variables: dict = None):
     abs_file_path = Path(__file__).parent.resolve() / file_path
     with open(abs_file_path) as f:
         sql = f.read()
     run_sql(sql, pg_service, variables)
+
 
 def run_sql(sql: str, pg_service: str, variables: dict = None):
     if variables:
@@ -41,12 +42,13 @@ def run_sql(sql: str, pg_service: str, variables: dict = None):
     conn.commit()
     conn.close()
 
+
 def load_extension(
     srid: int = 2056,
     pg_service: str = "pg_tww",
     extension_name: str = None,
-    drop_schema: Optional[bool] = False
-    ):
+    drop_schema: Optional[bool] = False,
+):
     """
     initializes the TWW database for usage of an extension
 
@@ -56,14 +58,13 @@ def load_extension(
 
     """
 
-
     # load definitions from config
     config = read_config("config.yaml", entry_id)
-    definitions = [d for d in config.extension_def if d['id'] == extension_name] [0]
-    variables = config.get('variables',{})
+    definitions = [d for d in config.extension_def if d["id"] == extension_name][0]
+    variables = config.get("variables", {})
     # pass SRID and extension schema name per default
-    schemaname = config.get('schema','tww_'+entry_id)
-    variables.update({'ext_schema': schemaname,'srid': psycopg.sql.SQL(f"{srid}")})
+    schemaname = config.get("schema", "tww_" + entry_id)
+    variables.update({"ext_schema": schemaname, "srid": psycopg.sql.SQL(f"{srid}")})
 
     if drop_schema:
         run_sql(f"DROP SCHEMA IF EXISTS {schemaname} CASCADE;", pg_service)
@@ -75,17 +76,16 @@ def load_extension(
     init_session.commit()
     init_session.flush()
 
-    directory = config.get('directory',None)
+    directory = config.get("directory", None)
     if directory:
-        files = os.listdir(os.path.join(directory,os.pardir))
+        files = os.listdir(os.path.join(directory, os.pardir))
         files.sort()
         for file in files:
             filename = os.fsdecode(file)
             if filename.endswith(".sql"):
-                run_sql_file(os.path.join(directory, filename),pg_service,variables)
+                run_sql_file(os.path.join(directory, filename), pg_service, variables)
             if filename.endswith(".py"):
                 run_py_file(os.path.join(directory, filename))
-
 
     # re-create symbology triggers
     post_session = Session(utils.sqlalchemy.create_engine(), autocommit=False, autoflush=False)
