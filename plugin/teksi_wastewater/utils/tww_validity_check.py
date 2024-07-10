@@ -26,7 +26,7 @@ def tww_check_oid_prefix(pgservice):
     msgtxt = []
     if len(prefixes) > 1:
         msgtxt.append(
-            "more than one oid_prefix set to active. Generation of Object-ID will not work"
+            "more than one oid_prefix set to active. Generation of Object-ID will not work. Set the OID prefix for your production database to active."
         )
     if active_pref == "ch000000":
         msgtxt.append("OID prefix set to 'ch000000'. Database not safe for production")
