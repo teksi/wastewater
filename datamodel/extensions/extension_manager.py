@@ -44,8 +44,8 @@ def run_sql(sql: str, pg_service: str, variables: dict = None):
 def load_extension(
     srid: int = 2056,
     pg_service: str = "pg_tww",
-    extension_name: str = None
-    drop_schema: Optional[bool] = False,
+    extension_name: str = None,
+    drop_schema: Optional[bool] = False
     ):
     """
     initializes the TWW database for usage of an extension
