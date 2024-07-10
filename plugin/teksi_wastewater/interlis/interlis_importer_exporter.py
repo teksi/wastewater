@@ -256,6 +256,20 @@ class InterlisImporterExporter:
 
         return interlisImporterToIntermediateSchema.session_tww
 
+    def _import_manage_organisations(self):
+        connection = psycopg.connect(get_pgconf_as_psycopg_dsn(), **DEFAULTS_CONN_ARG)
+        if PSYCOPG_VERSION == 2:
+            connection.set_session(autocommit=True)
+        cursor = connection.cursor()
+
+        logger.info("Update organisation tww_active")
+        cursor.execute(
+            "SELECT tww_app.set_organisations_active();"
+        )
+
+        connection.commit()
+        connection.close()
+
     def _import_update_main_cover_and_refresh_mat_views(self):
         connection = psycopg.connect(get_pgconf_as_psycopg_dsn(), **DEFAULTS_CONN_ARG)
         if PSYCOPG_VERSION == 2:
