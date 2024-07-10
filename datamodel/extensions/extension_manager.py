@@ -1,15 +1,16 @@
 # Definitions for tww datamodel with delta >= 1.7.0
-# supposed usage: add TEKSI2AG64_96 into the plugin folder of TEKSI wastewater. 
+# supposed usage: add TEKSI2AG64_96 into the plugin folder of TEKSI wastewater.
+
+import os
+import subprocess
+import sys
+from argparse import ArgumentParser, BooleanOptionalAction
+from pathlib import Path
 
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import text
-
-from argparse import ArgumentParser, BooleanOptionalAction
-from pathlib import Path
-import os
-import sys
-import subprocess
 from yaml import safe_load
+
 
 def read_config(config_file: str, entry_id: str):
     with open(config_file, 'r') as file:
@@ -54,9 +55,9 @@ def load_extension(
     Args:
         pgservice: pg service string
         extension_name: Name of the extension to load
-        
+
     """
-    
+
 
     # load definitions from config
     config = read_config("config.yaml", entry_id)
@@ -74,10 +75,10 @@ def load_extension(
     init_session.execute("SELECT tww_sys.disable_symbology_triggers();")
     init_session.commit()
     init_session.flush()
-    
+
     directory = config.get('directory',None)
     if directory:
-        files = os.listdir(os.path.join(directory,os.pardir)) 
+        files = os.listdir(os.path.join(directory,os.pardir))
         files.sort()
         for file in files:
             filename = os.fsdecode(file)
@@ -85,14 +86,14 @@ def load_extension(
                 run_sql_file(os.path.join(directory, filename),pg_service,variables)
             if filename.endswith(".py"):
                 run_py_file(os.path.join(directory, filename))
-    
 
-    # re-create symbology triggers 
+
+    # re-create symbology triggers
     post_session = Session(utils.sqlalchemy.create_engine(), autocommit=False, autoflush=False)
     post_session.execute("SELECT tww_sys.enable_symbology_triggers();")
     post_session.commit()
     post_session.close()
-    
+
 
 if __name__ == "__main__":
     parser = ArgumentParser()
