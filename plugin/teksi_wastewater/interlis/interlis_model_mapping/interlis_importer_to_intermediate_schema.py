@@ -1651,11 +1651,15 @@ class InterlisImporterToIntermediateSchema:
                 # --- measuring_point ---
                 # change to value list reference
                 # purpose=row.zweck,
-                purpose=self.get_vl_code(self.model_classes_tww_vl.measuring_point_purpose, row.zweck),
+                purpose=self.get_vl_code(
+                    self.model_classes_tww_vl.measuring_point_purpose, row.zweck
+                ),
                 remark=row.bemerkung,
                 # change to value list reference
                 # damming_device=row.staukoerper,
-                damming_device=self.get_vl_code(self.model_classes_tww_vl.measuring_point_damming_device, row.staukoerper),
+                damming_device=self.get_vl_code(
+                    self.model_classes_tww_vl.measuring_point_damming_device, row.staukoerper
+                ),
                 identifier=row.bezeichnung,
                 kind=row.art,
                 situation_geometry=row.lage,
