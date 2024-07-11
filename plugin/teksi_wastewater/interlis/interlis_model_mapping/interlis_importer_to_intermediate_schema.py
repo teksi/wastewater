@@ -2054,14 +2054,10 @@ class InterlisImporterToIntermediateSchema:
 
     def _import_untersuchung(self):
         for row in self.session_interlis.query(self.model_classes_interlis.untersuchung):
-            logger.warning(
-                "TWW examination.active_zone has no equivalent in the interlis model. This field will be null."
-            )
             examination = self.create_or_update(
                 self.model_classes_tww_od.examination,
                 **self.base_common(row),
                 # --- maintenance_event ---
-                # active_zone=row.REPLACE_ME,  # TODO : found no matching field for this in interlis, confirm this is ok
                 base_data=row.datengrundlage,
                 cost=row.kosten,
                 data_details=row.detaildaten,
