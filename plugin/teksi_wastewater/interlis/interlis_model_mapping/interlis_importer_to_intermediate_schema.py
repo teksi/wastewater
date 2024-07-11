@@ -2062,9 +2062,10 @@ class InterlisImporterToIntermediateSchema:
                 cost=row.kosten,
                 data_details=row.detaildaten,
                 duration=row.dauer,
-                fk_operating_company=(
-                    row.ausfuehrende_firmaref if row.ausfuehrende_firmaref else None
-                ),
+                # in VSA-KEK 2020 in class maintenance_event instead of examination
+                #fk_operating_company=(
+                #    row.ausfuehrende_firmaref if row.ausfuehrende_firmaref else None
+                #),
                 identifier=row.bezeichnung,
                 operator=row.ausfuehrender,
                 reason=row.grund,
