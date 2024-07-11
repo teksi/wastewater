@@ -684,7 +684,8 @@ class InterlisImporterToIntermediateSchema:
                     self.model_classes_tww_od.discharge_point_relevance, row.relevanz
                 ),
                 terrain_level=row.terrainkote,
-                # upper_elevation=row.REPLACE_ME, # TODO : NOT MAPPED VSA-DSS 3D
+                # TODO : NOT MAPPED VSA-DSS 3D
+                # upper_elevation=row.deckenkote,
                 waterlevel_hydraulic=row.wasserspiegel_hydraulik,
             )
             self.session_tww.add(discharge_point)
