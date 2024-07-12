@@ -8,9 +8,10 @@ export $(grep -v '^#' .env | xargs)
 
 BUILD=0
 DEMO_DATA=0
+EXT_NAME=""
 TWW_PG_PORT=${TWW_PG_PORT:-5432}
 
-while getopts 'bdp:' opt; do
+while getopts 'bdpx:' opt; do
   case "$opt" in
     b)
       echo "Rebuild docker image"
@@ -26,6 +27,11 @@ while getopts 'bdp:' opt; do
       echo "Overriding PG port to ${OPTARG}"
       TWW_PG_PORT=${OPTARG}
       ;;
+	  
+    x)
+      echo "Setting extension name to ${OPTARG}"
+      EXT_NAME=${OPTARG}
+      ;;  
 
 
     ?|h)
@@ -44,5 +50,5 @@ docker rm -f teksi-wastewater
 docker run -d -p ${TWW_PG_PORT}:5432 -v $(pwd):/src  --name teksi-wastewater teksi/wastewater -c log_statement=all
 docker exec teksi-wastewater init_db.sh wait
 if [[ $DEMO_DATA -eq 1 ]]; then
-  docker exec teksi-wastewater init_db.sh build -d
+  docker exec teksi-wastewater init_db.sh build -d -x
 fi

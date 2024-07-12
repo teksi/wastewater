@@ -7,9 +7,9 @@
 # It will create new schemata tww_* in a postgres database.
 
 set -e
-EXT_NAME = ${EXT_NAME}
 PGSERVICE=${PGSERVICE:-pg_tww}
-SRID=2056
+SRID=${SRID}
+EXT_NAME = ${EXT_NAME}
 
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/..
 

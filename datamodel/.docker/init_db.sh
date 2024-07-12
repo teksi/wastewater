@@ -44,9 +44,9 @@ if [ "$#" == "0" ] || [ "$1" == "build" ]; then
   # we expect the service be named as pg_[DB_NAME]
   recreate_db "${PGSERVICE/pg_/}"
   echo '----------------------------------------'
-  echo "Building database normally (passing argument: ${@:2})"
+  echo "Building database normally (passing argument: ${@:3})"
 
-  /src/datamodel/scripts/setup.sh ${@:2}
+  /src/datamodel/scripts/setup.sh ${@:3}
 
   echo "Done ! Database ${PGSERVICE} can now be used."
   echo '----------------------------------------'
