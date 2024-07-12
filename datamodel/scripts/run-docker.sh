@@ -27,11 +27,11 @@ while getopts 'bdpx:' opt; do
       echo "Overriding PG port to ${OPTARG}"
       TWW_PG_PORT=${OPTARG}
       ;;
-	  
+
     x)
       echo "Setting extension name to ${OPTARG}"
       EXT_NAME=${OPTARG}
-      ;;  
+      ;;
 
 
     ?|h)
