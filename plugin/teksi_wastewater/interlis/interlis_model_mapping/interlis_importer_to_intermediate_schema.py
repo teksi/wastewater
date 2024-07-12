@@ -2063,9 +2063,9 @@ class InterlisImporterToIntermediateSchema:
                 data_details=row.detaildaten,
                 duration=row.dauer,
                 # in VSA-KEK 2020 in class maintenance_event instead of examination
-                #fk_operating_company=(
+                # fk_operating_company=(
                 #    row.ausfuehrende_firmaref if row.ausfuehrende_firmaref else None
-                #),
+                # ),
                 identifier=row.bezeichnung,
                 operator=row.ausfuehrender,
                 reason=row.grund,
