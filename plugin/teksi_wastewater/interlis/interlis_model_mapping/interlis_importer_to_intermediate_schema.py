@@ -2063,9 +2063,9 @@ class InterlisImporterToIntermediateSchema:
                 data_details=row.detaildaten,
                 duration=row.dauer,
                 # in VSA-KEK 2020 in class maintenance_event instead of examination
-                # fk_operating_company=(
+                #fk_operating_company=(
                 #    row.ausfuehrende_firmaref if row.ausfuehrende_firmaref else None
-                # ),
+                #),
                 identifier=row.bezeichnung,
                 operator=row.ausfuehrender,
                 reason=row.grund,
@@ -2116,7 +2116,9 @@ class InterlisImporterToIntermediateSchema:
                 self.model_classes_tww_od.damage_manhole,
                 **self.base_common(row),
                 # --- damage ---
+                # to check Adaption VSA-KEK 2020 moved to superclass schaden
                 comments=row.anmerkung,
+                # to check Adaption VSA-KEK 2020 moved to superclass schaden
                 connection=self.get_vl_code(
                     self.model_classes_tww_vl.damage_connection, row.verbindung
                 ),
@@ -2127,10 +2129,13 @@ class InterlisImporterToIntermediateSchema:
                 fk_examination=self.get_pk(row.untersuchungref__REL),
                 manhole_quantification1=row.quantifizierung1,
                 manhole_quantification2=row.quantifizierung2,
+                # to check Adaption VSA-KEK 2020 moved to superclass schaden
                 single_damage_class=self.get_vl_code(
                     self.model_classes_tww_od.damage_single_damage_class, row.einzelschadenklasse
                 ),
+                # to check Adaption VSA-KEK 2020 moved to superclass schaden
                 video_counter=row.videozaehlerstand,
+                # to check Adaption VSA-KEK 2020 moved to superclass schaden
                 view_parameters=row.ansichtsparameter,
                 # --- damage_manhole ---
                 manhole_damage_code=self.get_vl_code(
