@@ -102,11 +102,7 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "-x --extension_name",
-        help="YAML definition file path for additions to vw_tww_wastewater_structure view",
-    )
-    parser.add_argument(
-        "--tww_reach_extra",
-        help="YAML definition file path for additions to vw_tww_reach view",
+        help="name of the database extension",
     )
     parser.add_argument(
         "-d",
