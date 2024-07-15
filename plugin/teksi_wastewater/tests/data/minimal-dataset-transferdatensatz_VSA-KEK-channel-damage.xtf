@@ -13,7 +13,7 @@
 	Ausfuehrende_FirmaRef REF="ch20p3q400002010" BID="Basket1"
 	von/bisPunktBezeichnung angepasst Test1 Test2
 	Untersuchung.AbwasserbauwerkRef / HaltungspunktRef angepasst
-	15.7.2024 Version that fits Transferdatensatz VSA-DSS 2020.1 - 
+	15.7.2024 Version that fits Transferdatensatz VSA-DSS 2020.1 -
 	15.7.2024 Adapt Ausfuehrende_FirmaRef and DatenlieferantRef to ch20p3q400001729
 	15.7.2024 Adapt DatenherrRef to ch080qwzAV000007 (Abwasserverband Aletsch) (fiktiv)</COMMENT>
 	</HEADERSECTION>
