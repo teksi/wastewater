@@ -3,7 +3,6 @@ import json
 from geoalchemy2.functions import ST_Force2D, ST_GeomFromGeoJSON
 from sqlalchemy import or_
 
-# from sqlalchemy.dialects import postgresql
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import text
 
@@ -683,7 +682,6 @@ class InterlisExporterToIntermediateSchema:
                 **self.vsa_base_common(row, "haltungspunkt"),
                 # --- haltungspunkt ---
                 # changed call from get_tid to check_fk_in_subsetid so it does not write foreignkeys on elements that do not exist
-                # abwassernetzelementref=self.get_tid(row.fk_wastewater_networkelement__REL),
                 abwassernetzelementref=self.check_fk_in_subsetid(
                     row.fk_wastewater_networkelement__REL
                 ),
@@ -1506,18 +1504,6 @@ class InterlisExporterToIntermediateSchema:
                 flaeche=row.surface_area,
                 schmutzabwasseranfall_ist=row.waste_water_production_current,
                 schmutzabwasseranfall_geplant=row.waste_water_production_planned,
-                # abwassernetzelement_rw_istref=self.get_tid(
-                # row.fk_wastewater_networkelement_rw_current__REL
-                # ),
-                # abwassernetzelement_rw_geplantref=self.get_tid(
-                # row.fk_wastewater_networkelement_rw_planned__REL
-                # ),
-                # abwassernetzelement_sw_geplantref=self.get_tid(
-                # row.fk_wastewater_networkelement_ww_planned__REL
-                # ),
-                # abwassernetzelement_sw_istref=self.get_tid(
-                # row.fk_wastewater_networkelement_ww_current__REL
-                # ),
                 # changed call from get_tid to check_fk_in_subsetid so it does not write foreignkeys on elements that do not exist
                 abwassernetzelement_rw_geplantref=self.check_fk_in_subsetid(
                     row.fk_wastewater_networkelement_rw_planned__REL
@@ -1671,7 +1657,6 @@ class InterlisExporterToIntermediateSchema:
     def _export_pump(self):
         query = self.tww_session.query(self.model_classes_tww_od.pump)
         if self.filtered:
-            # query = query.filter(self.model_classes_tww_od.pump.obj_id.in_(self.subset_ids))
             query = query.join(
                 self.model_classes_tww_od.wastewater_node,
                 or_(
@@ -2236,38 +2221,10 @@ class InterlisExporterToIntermediateSchema:
                 self.model_classes_tww_od.wastewater_structure,
                 self.model_classes_tww_od.wastewater_networkelement,
             )
-            # 3.7.2024
+            # only filter via wastewater_networkelement, union queries need further investigation
             query = query.filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
-            # query2 via waste_water_treatment_plant
-            # query2 = query.join(
-            # self.model_classes_tww_od.waste_water_treatment_plant,
-            # self.model_classes_tww_od.wwtp_structure,
-            # self.model_classes_tww_od.wastewater_networkelement,
-            # )
-            # # 3.7.2024
-            # query2 = query2.filter(
-            # self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
-            # )
-            # query3 via water_course_segment - does not exist in VSA-DSS Release 2020 anymore
-            # query3 = query.join(
-            # self.model_classes_tww_od.water_course_segment,
-            # self.model_classes_tww_od.river,
-            # self.model_classes_tww_od.sector_water_body,
-            # self.model_classes_tww_od.discharge_point,
-            # self.model_classes_tww_od.wastewater_networkelement,
-            # )
-
-            # 3.7.2024 union creates  datasets
-            # query = query.union(query1, query2, query3)
-            # query = query.union(query1, query2)
-
-            # 3.7.2024
-            # filter has to be in each query1, 2
-            # query = query.filter(
-            # self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
-            # )
             # add sql statement to logger
             statement = query.statement
             logger.info(f" selection query = {statement}")
