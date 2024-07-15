@@ -31,7 +31,7 @@
 		<!-- Example with both reference systems -->
 
         <!-- <OBJ_ID>fk11abk6EX000002</OBJ_ID> -->
-		<DatenherrRef REF="ch080qwzAV000007"></</DatenherrRef>
+		<DatenherrRef REF="ch080qwzAV000007"></DatenherrRef>
 		<DatenlieferantRef REF="ch20p3q400001729"></DatenlieferantRef>
 		<Letzte_Aenderung>20210120</Letzte_Aenderung> <!-- darf nicht leer sein -->
 		<!-- 8.1.2023 Untersuchung.Art verschoben in Klasse Unterhalt - darum gelöscht -->
@@ -65,7 +65,7 @@
 		<AbwasserbauwerkRef REF="ch080qwzNS000067" /> <!-- identifier Test1 -->
       </VSA_KEK_2020_1_LV95.KEK.Untersuchung>
       <VSA_KEK_2020_1_LV95.KEK.Normschachtschaden TID="fk11abk6SS000001">
-		<DatenherrRef REF="ch080qwzAV000007"></</DatenherrRef>
+		<DatenherrRef REF="ch080qwzAV000007"></DatenherrRef>
 		<DatenlieferantRef REF="ch20p3q400001729"></DatenlieferantRef>
 		<Letzte_Aenderung>20210120</Letzte_Aenderung> <!-- darf nicht leer sein -->
 		<Anmerkung></Anmerkung>
@@ -85,7 +85,7 @@
 
       </VSA_KEK_2020_1_LV95.KEK.Normschachtschaden>
       <VSA_KEK_2020_1_LV95.KEK.Normschachtschaden TID="fk11abk6SS000002">
-		<DatenherrRef REF="ch080qwzAV000007"></</DatenherrRef>
+		<DatenherrRef REF="ch080qwzAV000007"></DatenherrRef>
 		<DatenlieferantRef REF="ch20p3q400001729"></DatenlieferantRef>
 		<Letzte_Aenderung>20210120</Letzte_Aenderung> <!-- darf nicht leer sein -->
 		<Anmerkung>wurde auch schon vor 3 Jahren festgestellt</Anmerkung>
@@ -105,7 +105,7 @@
       </VSA_KEK_2020_1_LV95.KEK.Normschachtschaden>
 
       <VSA_KEK_2020_1_LV95.KEK.Datentraeger TID="fk11abk6w70lrfmz">
-		<DatenherrRef REF="ch080qwzAV000007"></</DatenherrRef>
+		<DatenherrRef REF="ch080qwzAV000007"></DatenherrRef>
 		<DatenlieferantRef REF="ch20p3q400001729"></DatenlieferantRef>
 		<Letzte_Aenderung>20210120</Letzte_Aenderung> <!-- darf nicht leer sein -->
 		<Pfad>D:/DVD_Laufwerk/</Pfad>
@@ -116,7 +116,7 @@
       </VSA_KEK_2020_1_LV95.KEK.Datentraeger>
 
       <VSA_KEK_2020_1_LV95.KEK.Datei TID="fk11abk6DA000001">
-		<DatenherrRef REF="ch080qwzAV000007"></</DatenherrRef>
+		<DatenherrRef REF="ch080qwzAV000007"></DatenherrRef>
 		<DatenlieferantRef REF="ch20p3q400001729"></DatenlieferantRef>
 		<Letzte_Aenderung>20210120</Letzte_Aenderung> <!-- darf nicht leer sein -->
 		<!-- <Art>digitalesVideo</Art> Anpassung Wert 2019/2020 -->
@@ -129,7 +129,7 @@
         <DatentraegerRef REF="fk11abk6w70lrfmz"></DatentraegerRef>
       </VSA_KEK_2020_1_LV95.KEK.Datei>
 	  <VSA_KEK_2020_1_LV95.KEK.Datei TID="fk11abk6DA000002">
-		<DatenherrRef REF="ch080qwzAV000007"></</DatenherrRef>
+		<DatenherrRef REF="ch080qwzAV000007"></DatenherrRef>
 		<DatenlieferantRef REF="ch20p3q400001729"></DatenlieferantRef>
 		<Letzte_Aenderung>20210120</Letzte_Aenderung> <!-- darf nicht leer sein -->
 		<Art>Foto</Art>
@@ -140,7 +140,7 @@
         <DatentraegerRef REF="fk11abk6w70lrfmz" />
       </VSA_KEK_2020_1_LV95.KEK.Datei>
 	  <VSA_KEK_2020_1_LV95.KEK.Datei TID="fk11abk6DA000003">
-		<DatenherrRef REF="ch080qwzAV000007"></</DatenherrRef>
+		<DatenherrRef REF="ch080qwzAV000007"></DatenherrRef>
 		<DatenlieferantRef REF="ch20p3q400001729"></DatenlieferantRef>
 		<Letzte_Aenderung>20210120</Letzte_Aenderung> <!-- darf nicht leer sein -->
 		<Art>Foto</Art>
