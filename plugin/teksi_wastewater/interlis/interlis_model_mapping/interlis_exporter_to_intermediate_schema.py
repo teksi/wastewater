@@ -2,7 +2,6 @@ import json
 
 from geoalchemy2.functions import ST_Force2D, ST_GeomFromGeoJSON
 from sqlalchemy import or_
-
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import text
 
