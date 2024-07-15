@@ -5,7 +5,7 @@ This page explains how to update your datamodel manually. Alternatively, the `da
 <../datamodel-tool/index.html>`_ offers a graphical interface that automates these steps and is
 usually easier to use.
 
-The releases of the datamodel are available `here <https://github.com/TWW/datamodel/releases/>`_.
+The releases of the datamodel are available `here <https://github.com/teksi/wastewater/releases/>`_.
 When a new datamodel is released, a TWW database can be updated with `PUM <https://github.com/opengisch/pum>`_.
 In this documentation, the main steps and requirements are reproduced.
 

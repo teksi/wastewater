@@ -21,6 +21,7 @@ class InterlisExporterToIntermediateSchema:
         model_classes_tww_od,
         model_classes_tww_vl,
         model_classes_tww_sys,
+        labels_orientation_offset=90,
         selection=None,
         labels_file=None,
         basket_enabled=False,
@@ -50,6 +51,7 @@ class InterlisExporterToIntermediateSchema:
         self.model_classes_tww_od = model_classes_tww_od
         self.model_classes_tww_vl = model_classes_tww_vl
         self.model_classes_tww_sys = model_classes_tww_sys
+        self.labels_orientation_offset = labels_orientation_offset
 
         self.tww_session = None
         self.abwasser_session = None
@@ -1912,10 +1914,15 @@ class InterlisExporterToIntermediateSchema:
             messstelle = self.model_classes_interlis.messstelle(
                 **self.vsa_base_common(row, "messstelle"),
                 # --- measuring_point ---
-                zweck=row.purpose,
+                # zweck is a valuelist
+                # zweck=row.purpose,
+                zweck=self.get_vl(row.purpose__REL),
                 bemerkung=row.remark,
-                staukoerper=row.damming_device,
+                # staukoerper is a valuelist
+                # staukoerper=row.damming_device,
+                staukoerper=self.get_vl(row.damming_device__REL),
                 bezeichnung=row.identifier,
+                # here art is not a value list
                 art=row.kind,
                 lage=row.situation_geometry,
                 betreiberref=self.get_tid(row.fk_operator__REL),
@@ -2391,7 +2398,7 @@ class InterlisExporterToIntermediateSchema:
             logger.warning(f"Value '{val}' exceeds expected length ({max_length})", stacklevel=2)
         return val[0:max_length]
 
-    def _modulo_angle(self, val, labels_orientation_offset):
+    def _modulo_angle(self, val):
         """
         Returns an angle between 0 and 359.9 (for Orientierung in Base_d-20181005.ili)
         """
@@ -2399,7 +2406,7 @@ class InterlisExporterToIntermediateSchema:
             return None
 
         # add labels_orientation_offset
-        val = val + labels_orientation_offset
+        val = val + self.labels_orientation_offset
 
         val = val % 360.0
         if val > 359.9:

@@ -20,7 +20,7 @@ Now the cursor changes to the digitizing symbol and you can select the location 
 
 Then the **vw_tww_wastewater_structure** form opens and you can start adding data in the **General** tab:
 
-.. figure:: images/wizard_wastewater_structure_manhole_form_ws_type3.jpg
+.. figure:: images/wizard_wastewater_structure_manhole_form_ws_type4.jpg
 
 Select the ws_type you want (preselected is 'manhole'):
 
@@ -36,31 +36,30 @@ Then add the identifier (this is the attribute that will be displayed on the map
 .. note:: If you do not enter an identifier, TWW will enter the obj_id also as identifier (you can change later). As default, the identifier of the wastewater structure is also the identifier of the cover and of the wastewater node.
 
 Add other attributes in the **General** tab.
-You can also add attributes in the other tabs (Cover, Wastewater Structure, Manhole, WasteWater Node).
+You can also add attributes in the other tabs (Main Cover/Node, Wastewater Structure, Manhole, Structure Parts etc.).
 
 .. note:: The idea of the **General** tab is, that in the normal digitizing process (95% of the manholes) the user has not to change the tabs to enter the attributes that are necessary.
 
-.. attention:: You can not add new records in the tabs **Covers**, **Structure Parts**, **Wastewater Nodes** and **Maintenance**, because you have to save first the Wastewater Structure-record to the database before you can add additional records. You can not use **Actions** for the same reason. First safe the record.
+.. attention:: You can not use **Actions** for digitize a detail geometry during creating a new manhole, because you have to save first the Wastewater Structure-record to the database before you can add a detail geometry. First safe the record.
+You can add additional records Structure Parts or a second wastewater node in Tab Wastewater Nodes or Maintenance Events. But in the Tab Wastewater Nodes you will not see the main node, that is created with the new wastewater structure. You can see the main node in the tab Main Cover/Node. After saving the new wastewater structure, you will find two node in the tab Wastewater Nodes.
 
 Click **OK** to close the form.
 
-.. figure:: images/wizard_wastewater_structure_manhole_form_data_ok3.jpg
+.. figure:: images/wizard_wastewater_structure_manhole_form_data_ok4.jpg
 
 Save the information of this layer by stopping the data entry wizard.
 
-.. figure:: images/stop_data_entry.jpg
+.. figure:: images/stop_data_entry4.jpg
 
 You can re-edit your point object selecting the edit mode and then click with the info cursor on the object you want to edit.
 If you do not select the edit mode, you can just look at the existing data.
-
-.. figure:: images/wastewater_structure_info_manhole3.jpg
 
 For detailed information about editing see the :ref:`editing-data` chapter.
 
 Further attributes and classes
 ------------------------------
 
-When a wastewater_structure object is digitized, a series of steps take place in the background in the QGIS database:
+When a wastewater_structure object is digitized, a series of steps take place in the background in the TWW database:
 
 a) an new object in the class wastewater structure is added
 
@@ -68,11 +67,13 @@ b) a new object in the respective subclass [discharge_point, infiltration_instal
 
 c) a new cover object is added and linked to the wastewater structure
 
-d) a new wastewater node object is generated in wastewater network elements and its subclass wastewater nodes
+d) a new wastewater node object is generated (in wastewater network elements and its subclass wastewater nodes) and linked to the wastewater structure
 
-To add additional objects such as structure parts (besides covers there are access aids, back flow prevention etc) you have to save first and then edit the point object (see the :ref:`editing-data` chapter).
+e) the new cover and node are referred as main cover and main node of the wastewater structure
 
-.. note:: To add a second cover or a second wastewater node to a wastewater structure, see the :ref:`editing-data` chapter.
+.. note:: The main node is the place, where the symbol of the wastewater structure is shown in TWW.
+
+.. note:: delete this note?? To add a second cover or a second wastewater node to a wastewater structure, see the :ref:`editing-data` chapter.
 
 
 Geometry synchronization
