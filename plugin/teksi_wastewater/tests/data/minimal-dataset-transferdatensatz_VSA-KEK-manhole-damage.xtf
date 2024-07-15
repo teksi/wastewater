@@ -135,7 +135,7 @@
 		<Art>Foto</Art>
         <Bezeichnung>1.040_0001.jpg</Bezeichnung>
         <Klasse>Normschachtschaden</Klasse>
-        <Objekt>fk11abk6EX000002</Objekt>
+        <Objekt>fk11abk6SS000001</Objekt>
         <Relativpfad>inspectiondata/20210120/fotos</Relativpfad>
         <DatentraegerRef REF="fk11abk6w70lrfmz" />
       </VSA_KEK_2020_1_LV95.KEK.Datei>
@@ -146,7 +146,7 @@
 		<Art>Foto</Art>
         <Bezeichnung>1.040_0002.jpg</Bezeichnung>
         <Klasse>Normschachtschaden</Klasse>
-        <Objekt>fk11abk6EX000002</Objekt>
+        <Objekt>fk11abk6SS000002</Objekt>
         <Relativpfad>inspectiondata20210120/fotos</Relativpfad>
         <DatentraegerRef REF="fk11abk6w70lrfmz" />
 	  </VSA_KEK_2020_1_LV95.KEK.Datei>
