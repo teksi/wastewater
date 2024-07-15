@@ -10,6 +10,7 @@ except ImportError:
     import psycopg2 as psycopg
 
 from pirogue import MultipleInheritance, SimpleJoins, SingleInheritance
+from view.vw_tww_additional_ws import vw_tww_additional_ws
 from view.vw_tww_reach import vw_tww_reach
 from view.vw_tww_wastewater_structure import vw_tww_wastewater_structure
 from view.vw_wastewater_structure import vw_wastewater_structure
@@ -149,6 +150,7 @@ def create_app(
         srid, pg_service=pg_service, extra_definition=tww_wastewater_structure_extra
     )
     vw_tww_reach(pg_service=pg_service, extra_definition=tww_reach_extra)
+    vw_tww_additional_ws(srid, pg_service=pg_service)
 
     run_sql_file("view/vw_file.sql", pg_service, variables)
 
@@ -177,6 +179,9 @@ def create_app(
     run_sql_file(
         "view/catchment_area/vw_catchment_area_wwp_connections.sql", pg_service, variables
     )
+
+    # default values
+    run_sql_file("view/set_default_value_for_views.sql", pg_service, variables)
 
     # Recreate network views
     run_sql_file("view/network/vw_network_node.sql", pg_service, variables)

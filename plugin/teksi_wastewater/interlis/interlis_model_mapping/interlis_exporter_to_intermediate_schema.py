@@ -20,6 +20,8 @@ class InterlisExporterToIntermediateSchema:
         model_classes_interlis,
         model_classes_tww_od,
         model_classes_tww_vl,
+        model_classes_tww_sys,
+        labels_orientation_offset=90,
         selection=None,
         labels_file=None,
         basket_enabled=False,
@@ -41,12 +43,15 @@ class InterlisExporterToIntermediateSchema:
 
         self.labels_file = labels_file
         self.use_vsacode = use_vsacode
+        self.oid_prefix = None
 
         self.basket_enabled = basket_enabled
 
         self.model_classes_interlis = model_classes_interlis
         self.model_classes_tww_od = model_classes_tww_od
         self.model_classes_tww_vl = model_classes_tww_vl
+        self.model_classes_tww_sys = model_classes_tww_sys
+        self.labels_orientation_offset = labels_orientation_offset
 
         self.tww_session = None
         self.abwasser_session = None
@@ -1170,7 +1175,7 @@ class InterlisExporterToIntermediateSchema:
                 # --- tank_emptying ---
                 leistung=row.flow,
                 bruttokosten=row.gross_costs,
-                art=self.get_vl(row.type__REL),
+                art=self.get_vl(row.kind__REL),
                 ersatzjahr=row.year_of_replacement,
                 absperr_drosselorganref=self.get_tid(row.fk_throttle_shut_off_unit__REL),
                 ueberlaufref=self.get_tid(row.fk_overflow__REL),
@@ -1191,7 +1196,7 @@ class InterlisExporterToIntermediateSchema:
                 **self.structure_part_common(row, "beckenreinigung"),
                 # --- tank_cleaning ---
                 bruttokosten=row.gross_costs,
-                art=self.get_vl(row.type__REL),
+                art=self.get_vl(row.kind__REL),
                 ersatzjahr=row.year_of_replacement,
             )
             self.abwasser_session.add(beckenreinigung)
@@ -1222,7 +1227,7 @@ class InterlisExporterToIntermediateSchema:
                 relevanzmatrix=self.get_vl(row.relevance_matrix__REL),
                 relevantes_gefaelle=row.relevant_slope,
                 oberflaechengewaesser=row.surface_water_bodies,
-                gewaesserart=self.get_vl(row.type_water_body__REL),
+                gewaesserart=self.get_vl(row.kind_water_body__REL),
                 gewaesserspezifische_entlastungsfracht_nh4_n_ist=row.water_specific_discharge_freight_nh4_n_current,
                 gewaesserspezifische_entlastungsfracht_nh4_n_ist_optimiert=row.water_specific_discharge_freight_nh4_n_current_opt,
                 gewaesserspezifische_entlastungsfracht_nh4_n_geplant=row.water_specific_discharge_freight_nh4_n_planned,
@@ -1464,7 +1469,7 @@ class InterlisExporterToIntermediateSchema:
                 dimensionierungswert=row.dimensioning_value,
                 bruttokosten=row.gross_costs,
                 anspringkote=row.overflow_level,
-                art=self.get_vl(row.type__REL),
+                art=self.get_vl(row.kind__REL),
                 ersatzjahr=row.year_of_replacement,
             )
             self.abwasser_session.add(feststoffrueckhalt)
@@ -1909,10 +1914,15 @@ class InterlisExporterToIntermediateSchema:
             messstelle = self.model_classes_interlis.messstelle(
                 **self.vsa_base_common(row, "messstelle"),
                 # --- measuring_point ---
-                zweck=row.purpose,
+                # zweck is a valuelist
+                # zweck=row.purpose,
+                zweck=self.get_vl(row.purpose__REL),
                 bemerkung=row.remark,
-                staukoerper=row.damming_device,
+                # staukoerper is a valuelist
+                # staukoerper=row.damming_device,
+                staukoerper=self.get_vl(row.damming_device__REL),
                 bezeichnung=row.identifier,
+                # here art is not a value list
                 art=row.kind,
                 lage=row.situation_geometry,
                 betreiberref=self.get_tid(row.fk_operator__REL),
@@ -2188,7 +2198,7 @@ class InterlisExporterToIntermediateSchema:
                 verbindung=self.get_vl(row.connection__REL),
                 videozaehlerstand=row.video_counter,
                 # --- normschachtschaden ---
-                distanz=row.manhole_channel_distance,
+                distanz=row.manhole_distance,
                 quantifizierung1=row.manhole_quantification1,
                 quantifizierung2=row.manhole_quantification2,
                 schachtbereich=self.get_vl(row.manhole_shaft_area__REL),
@@ -2394,10 +2404,27 @@ class InterlisExporterToIntermediateSchema:
         """
         if val is None:
             return None
+
+        # add labels_orientation_offset
+        val = val + self.labels_orientation_offset
+
         val = val % 360.0
         if val > 359.9:
             val = 0
         return val
+
+    def get_oid_prefix(self, oid_table):
+        instance = self.tww_session.query(oid_table).filter(oid_table.active.is_(True)).first()
+        if instance is None:
+            logger.warning(
+                f'Could not find an active entry in table"{oid_table.__table__.schema}.{oid_table.__name__}". \
+                Returning an empty string, which will lead to INTERLIS Errors. \
+                Set the value that you want to use as prefix to \'active\' in table"{oid_table.__table__.schema}.{oid_table.__name__}" \
+                to avoid this issue.'
+            )
+            return ""
+
+        return instance.prefix
 
     def base_common(self, row, type_name):
         """
@@ -2584,12 +2611,11 @@ class InterlisExporterToIntermediateSchema:
             "steuerungszentraleref": self.get_tid(row.fk_control_center__REL),
         }
 
-    def _textpos_common(self, row, t_type, geojson_crs_def, shortcut_en):
+    def _textpos_common(self, row, t_type, geojson_crs_def, shortcut_en, oid_prefix):
         """
         Returns common attributes for textpos
         """
         t_id = self.tid_maker.next_tid()
-
         if t_id > 999999:
             logger.warning(
                 f"Exporting more than 999999 labels will generate invalid OIDs. Currently exporting {t_id} label of type '{t_type}'."
@@ -2598,7 +2624,7 @@ class InterlisExporterToIntermediateSchema:
         return {
             "t_id": t_id,
             "t_type": t_type,
-            "t_ili_tid": f"ch080txt{shortcut_en}{t_id:06d}",
+            "t_ili_tid": f"{oid_prefix}{shortcut_en}{t_id:06d}",
             # --- TextPos ---
             "textpos": ST_GeomFromGeoJSON(
                 json.dumps(
@@ -2621,6 +2647,8 @@ class InterlisExporterToIntermediateSchema:
     def _export_label_positions(self):
         logger.info(f"Exporting label positions from {self.labels_file}")
 
+        # get oid prefix
+        self.oid_prefix = self.get_oid_prefix(self.model_classes_tww_sys.oid_prefixes)
         # Get t_id by obj_name to create the reference on the labels below
         tid_for_obj_id = {
             "vw_tww_reach": {},
@@ -2666,19 +2694,25 @@ class InterlisExporterToIntermediateSchema:
 
             if layer_name == "vw_tww_reach":
                 ili_label = self.model_classes_interlis.haltung_text(
-                    **self._textpos_common(label, "haltung_text", geojson_crs_def, "RX"),
+                    **self._textpos_common(
+                        label, "haltung_text", geojson_crs_def, "RX", self.oid_prefix
+                    ),
                     haltungref=t_id,
                 )
 
             elif layer_name == "vw_tww_wastewater_structure":
                 ili_label = self.model_classes_interlis.abwasserbauwerk_text(
-                    **self._textpos_common(label, "abwasserbauwerk_text", geojson_crs_def, "WX"),
+                    **self._textpos_common(
+                        label, "abwasserbauwerk_text", geojson_crs_def, "WX", self.oid_prefix
+                    ),
                     abwasserbauwerkref=t_id,
                 )
 
             elif layer_name == "catchment_area":
                 ili_label = self.model_classes_interlis.einzugsgebiet_text(
-                    **self._textpos_common(label, "einzugsgebiet_text", geojson_crs_def, "CX"),
+                    **self._textpos_common(
+                        label, "einzugsgebiet_text", geojson_crs_def, "CX", self.oid_prefix
+                    ),
                     einzugsgebietref=t_id,
                 )
 

@@ -14,6 +14,7 @@ ILIVALIDATOR = os.path.join(BASE, "bin", "ilivalidator-1.11.9", "ilivalidator-1.
 TWW_DEFAULT_PGSERVICE = "pg_tww"
 TWW_OD_SCHEMA = "tww_od"
 TWW_VL_SCHEMA = "tww_vl"
+TWW_SYS_SCHEMA = "tww_sys"
 ABWASSER_SCHEMA = "pg2ili_abwasser"
 MODEL_NAME_VSA_KEK = "VSA_KEK_2020_1_LV95"
 MODEL_NAME_SIA405_ABWASSER = "SIA405_ABWASSER_2020_1_LV95"

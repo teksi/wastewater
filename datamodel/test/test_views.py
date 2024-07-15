@@ -111,6 +111,48 @@ class TestViews(unittest.TestCase, DbTestBase):
 
         assert row["backflow_level_current"] == decimal.Decimal("100.000")
 
+    def test_vw_tww_additional_ws(self):
+        row = {
+            "identifier": "201_created",
+            "ws_type": "drainless_toilet",
+            "situation3d_geometry": self.execute(
+                "ST_SetSRID(ST_GeomFromText('POINT(2600000 1200000)'), 2056)"
+            ),
+            #    'co_material': 5355,
+            "wn_backflow_level_current": decimal.Decimal("100.000"),
+        }
+
+        expected_row = copy.deepcopy(row)
+        expected_row["situation3d_geometry"] = self.execute(
+            "ST_SetSRID(ST_MakePoint(2600000, 1200000), 2056)"
+        )
+
+        obj_id = self.insert_check("vw_tww_additional_ws", row, expected_row)
+
+        row = {
+            "identifier": "202_accepted",
+            "ws_type": "wwtp_structure",
+            "co_material": 233,
+            "wt_kind": 331,
+        }
+
+        self.update_check("vw_tww_additional_ws", row, obj_id)
+
+        try:
+            cur = self.cursor(row_factory=psycopg.rows.dict_row)
+        except AttributeError:
+            # remove when dropping psycopg2 support
+            cur = self.cursor(cursor_factory=psycopg_extras.DictCursor)
+
+        cur.execute(
+            "SELECT * FROM tww_od.wastewater_networkelement NE LEFT JOIN tww_od.wastewater_node NO ON NO.obj_id = NE.obj_id WHERE fk_wastewater_structure='{obj_id}' ".format(
+                obj_id=obj_id
+            )
+        )
+        row = cur.fetchone()
+
+        assert row["backflow_level_current"] == decimal.Decimal("100.000")
+
 
 if __name__ == "__main__":
     unittest.main()

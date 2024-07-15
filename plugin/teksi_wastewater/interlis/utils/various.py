@@ -3,6 +3,7 @@ import configparser
 import datetime
 import logging
 import os
+import re
 import subprocess
 import tempfile
 import time
@@ -29,7 +30,7 @@ class DeduplicatedLogger(logging.Logger):
             if self._repeated > 0:
                 super()._log(
                     self._last_message[0],
-                    f"[repeted {self._repeated} times]",
+                    f"[repeated {self._repeated} times]",
                     args,
                     exc_info,
                     extra,
@@ -52,7 +53,8 @@ class CmdException(BaseException):
 
 
 def exec_(command, check=True, output_content=False):
-    logger.info(f"EXECUTING: {command}")
+    command_masked_pwd = re.sub(r"(--dbpwd)\s\"[\w\.*#?!@$%^&-]+\"", r'\1 "[PASSWORD]"', command)
+    logger.info(f"EXECUTING: {command_masked_pwd}")
     try:
         proc = subprocess.run(
             command,
