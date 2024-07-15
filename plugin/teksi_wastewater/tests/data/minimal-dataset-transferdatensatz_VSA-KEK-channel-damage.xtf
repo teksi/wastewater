@@ -214,7 +214,7 @@
 				<DatenlieferantRef REF="ch20p3q400001729"/>
 				<Letzte_Aenderung>20210120</Letzte_Aenderung>
 				<!-- darf nicht leer sein -->
-				<Pfad>D:/DVD_Laufwerk/</Pfad>
+				<Pfad>D:\DVD_Laufwerk\</Pfad>
 				<Art>DVD</Art>
 				<Bemerkung/>
 				<Bezeichnung>Testdisk</Bezeichnung>
@@ -242,7 +242,7 @@
 				<Bezeichnung>1.045-1.040_0001.mpg</Bezeichnung>
 				<Klasse>Untersuchung</Klasse>
 				<Objekt>fk11abk6w70lohup</Objekt>
-				<Relativpfad>inspectiondata/20210120/videos/</Relativpfad>
+				<Relativpfad>inspectiondata\20210120\videos\</Relativpfad>
 				<DatentraegerRef REF="fk11abk6w70lrfmz"/>
 			</VSA_KEK_2020_1_LV95.KEK.Datei>
 			<VSA_KEK_2020_1_LV95.KEK.Datei TID="ch9a220f0c000007">
@@ -254,7 +254,7 @@
 				<Bezeichnung>1.045-1.040_0001.jpg</Bezeichnung>
 				<Klasse>Kanalschaden</Klasse>
 				<Objekt>fk11abk6w70lp75d</Objekt>
-				<Relativpfad>inspectiondata/20210120/fotos</Relativpfad>
+				<Relativpfad>inspectiondata\20210120\fotos\</Relativpfad>
 				<DatentraegerRef REF="fk11abk6w70lrfmz"/>
 			</VSA_KEK_2020_1_LV95.KEK.Datei>
 			<VSA_KEK_2020_1_LV95.KEK.Datei TID="ch9a220f0c000008">
@@ -266,7 +266,7 @@
 				<Bezeichnung>1.045-1.040_0002.jpg</Bezeichnung>
 				<Klasse>Kanalschaden</Klasse>
 				<Objekt>fk11abk6w70lpw2w</Objekt>
-				<Relativpfad>inspectiondata/20210120/fotos</Relativpfad>
+				<Relativpfad>inspectiondata\20210120\fotos\</Relativpfad>
 				<DatentraegerRef REF="fk11abk6w70lrfmz"/>
 			</VSA_KEK_2020_1_LV95.KEK.Datei>
 			<VSA_KEK_2020_1_LV95.KEK.Datei TID="ch9a220f0c000009">
@@ -278,7 +278,7 @@
 				<Bezeichnung>1.045-1.040_0003.jpg</Bezeichnung>
 				<Klasse>Kanalschaden</Klasse>
 				<Objekt>fk11abk6w70lpw2w</Objekt>
-				<Relativpfad>inspectiondata/20210120/fotos</Relativpfad>
+				<Relativpfad>inspectiondata\20210120\fotos\</Relativpfad>
 				<DatentraegerRef REF="fk11abk6w70lrfmz"/>
 			</VSA_KEK_2020_1_LV95.KEK.Datei>
 		</VSA_KEK_2020_1_LV95.KEK>

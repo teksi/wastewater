@@ -108,7 +108,7 @@
 		<DatenherrRef REF="ch080qwzAV000007"></DatenherrRef>
 		<DatenlieferantRef REF="ch20p3q400001729"></DatenlieferantRef>
 		<Letzte_Aenderung>20210120</Letzte_Aenderung> <!-- darf nicht leer sein -->
-		<Pfad>D:/DVD_Laufwerk/</Pfad>
+		<Pfad>D:\DVD_Laufwerk\</Pfad>
         <Art>DVD</Art>
         <Bemerkung></Bemerkung>
         <Bezeichnung>Testdisk</Bezeichnung>
@@ -125,7 +125,7 @@
         <Bezeichnung>1.040_0001.mpg</Bezeichnung>
         <Klasse>Untersuchung</Klasse>
         <Objekt>fk11abk6EX000002</Objekt>
-        <Relativpfad>inspectiondata/20210120/videos/</Relativpfad>
+        <Relativpfad>inspectiondata\20210120\videos\</Relativpfad>
         <DatentraegerRef REF="fk11abk6w70lrfmz"></DatentraegerRef>
       </VSA_KEK_2020_1_LV95.KEK.Datei>
 	  <VSA_KEK_2020_1_LV95.KEK.Datei TID="fk11abk6DA000002">
@@ -136,7 +136,7 @@
         <Bezeichnung>1.040_0001.jpg</Bezeichnung>
         <Klasse>Normschachtschaden</Klasse>
         <Objekt>fk11abk6SS000001</Objekt>
-        <Relativpfad>inspectiondata/20210120/fotos</Relativpfad>
+        <Relativpfad>inspectiondata\20210120\fotos\</Relativpfad>
         <DatentraegerRef REF="fk11abk6w70lrfmz" />
       </VSA_KEK_2020_1_LV95.KEK.Datei>
 	  <VSA_KEK_2020_1_LV95.KEK.Datei TID="fk11abk6DA000003">
@@ -147,7 +147,7 @@
         <Bezeichnung>1.040_0002.jpg</Bezeichnung>
         <Klasse>Normschachtschaden</Klasse>
         <Objekt>fk11abk6SS000002</Objekt>
-        <Relativpfad>inspectiondata20210120/fotos</Relativpfad>
+        <Relativpfad>inspectiondata\20210120\fotos\</Relativpfad>
         <DatentraegerRef REF="fk11abk6w70lrfmz" />
 	  </VSA_KEK_2020_1_LV95.KEK.Datei>
 
