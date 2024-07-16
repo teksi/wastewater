@@ -104,24 +104,9 @@ You also have the option to restore the latest empty data model (no demo data).
     createdb -U postgres -p %port% %db%
 
     psql -U postgres -h localhost -p %port% -d %db% -f %filename%
-    psql -U postgres -h localhost -p %port% -d %db% -c "GRANT USAGE ON SCHEMA public TO ""tww"""
-    psql -U postgres -h localhost -p %port% -d %db% -c "GRANT USAGE ON SCHEMA tww_vl TO ""tww"""
-    psql -U postgres -h localhost -p %port% -d %db% -c "GRANT USAGE ON SCHEMA tww_od TO ""tww"""
-    psql -U postgres -h localhost -p %port% -d %db% -c "GRANT USAGE ON SCHEMA tww_import TO ""tww"""
-    psql -U postgres -h localhost -p %port% -d %db% -c "GRANT USAGE ON SCHEMA tww_swmm TO ""tww"""
-    psql -U postgres -h localhost -p %port% -d %db% -c "GRANT USAGE ON SCHEMA tww_sys TO ""tww"""
 
-    psql -U postgres -h localhost -p %port% -d %db% -c "GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA tww_od TO ""tww""";
-    psql -U postgres -h localhost -p %port% -d %db% -c "GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA tww_swmm TO ""tww""";
-    psql -U postgres -h localhost -p %port% -d %db% -c "GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA tww_import TO ""tww""";
-    psql -U postgres -h localhost -p %port% -d %db% -c "GRANT SELECT ON ALL TABLES IN SCHEMA tww_vl TO ""tww""";
-    psql -U postgres -h localhost -p %port% -d %db% -c "GRANT SELECT ON ALL TABLES IN SCHEMA tww_sys TO ""tww""";
-    psql -U postgres -h localhost -p %port% -d %db% -c "GRANT SELECT ON ALL TABLES IN SCHEMA public TO ""tww"""
-
-    psql -U postgres -h localhost -p %port% -d %db% -c "GRANT USAGE ON ALL SEQUENCES IN SCHEMA tww_od TO ""tww"""
-
-    psql -U postgres -h localhost -p %port% -d %db% -c "REFRESH MATERIALIZED VIEW tww_od.vw_network_node"
-    psql -U postgres -h localhost -p %port% -d %db% -c "REFRESH MATERIALIZED VIEW tww_od.vw_network_segment"
+    psql -U postgres -h localhost -p %port% -d %db% -c "REFRESH MATERIALIZED VIEW tww_od.vw_network_node WITH DATA"
+    psql -U postgres -h localhost -p %port% -d %db% -c "REFRESH MATERIALIZED VIEW tww_od.vw_network_segment WITH DATA"
 
     PAUSE
 
