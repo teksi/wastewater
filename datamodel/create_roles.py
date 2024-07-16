@@ -36,6 +36,7 @@ def create_role(pg_service: str, role: str, in_role: str = None):
             """
             cur.execute(in_role_sql)
             print(f"granted {in_role} to role {role}")
+    conn.commit()
     conn.close()
 
 
@@ -111,6 +112,7 @@ def grant_privileges(pg_service: str, modelname: str, roles: list, ext_schema: s
          ALTER DEFAULT PRIVILEGES IN SCHEMA {ext_schema} GRANT ALL ON TABLES TO {roles[1]};
         """
         cur.execute(grant_sql)
+    conn.commit()
     conn.close()
 
 
@@ -141,6 +143,7 @@ def revoke_privileges(pg_service: str, modelname: str, roles: list, ext_schema: 
         ALTER DEFAULT PRIVILEGES IN SCHEMA {ext_schema} REVOKE ALL ON TABLES  FROM {roles[0]};
         """
         cur.execute(revoke_sql)
+    conn.commit()
     conn.close()
 
 
