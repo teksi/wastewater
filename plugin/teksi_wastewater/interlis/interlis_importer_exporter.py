@@ -30,8 +30,8 @@ from .interlis_model_mapping.model_interlis_sia405_abwasser import (
     ModelInterlisSia405Abwasser,
 )
 from .interlis_model_mapping.model_interlis_vsa_kek import ModelInterlisVsaKek
+from .interlis_model_mapping.model_tww import ModelTwwSys, ModelTwwVl
 from .interlis_model_mapping.model_tww_od import ModelTwwOd
-from .interlis_model_mapping.model_tww_vl import ModelTwwVl
 from .utils.ili2db import InterlisTools
 from .utils.various import (
     CmdException,
@@ -62,6 +62,7 @@ class InterlisImporterExporter:
         self.model_classes_interlis = None
         self.model_classes_tww_od = None
         self.model_classes_tww_vl = None
+        self.model_classes_tww_sys = None
 
         self.current_progress = 0
 
@@ -111,8 +112,12 @@ class InterlisImporterExporter:
         self._progress_done(30, "Importing XTF data...")
         self._import_xtf_file(xtf_file_input=xtf_file_input)
 
+        # Disable symbology triggers
+        self._progress_done(35, "Disable symbolgy triggers...")
+        self._import_disable_symbology_triggers()
+
         # Import from the temporary ili2pg model
-        self._progress_done(40, "Converting to Teksi Wastewater...")
+        self._progress_done(40, "Converting to TEKSI Wastewater...")
         tww_session = self._import_from_intermediate_schema(import_model)
 
         if show_selection_dialog:
@@ -123,6 +128,7 @@ class InterlisImporterExporter:
             if import_dialog.exec_() == import_dialog.Rejected:
                 tww_session.rollback()
                 tww_session.close()
+                self._import_enable_symbology_triggers()
                 raise InterlisImporterExporterStopped()
             QApplication.setOverrideCursor(Qt.WaitCursor)
         else:
@@ -134,7 +140,19 @@ class InterlisImporterExporter:
         self._progress_done(95, "Update main cover and refresh materialized views...")
         self._import_update_main_cover_and_refresh_mat_views()
 
+        # Validate subclasses after import
+        self._check_subclass_counts()
+
+        # Update organisations
+        self._progress_done(96, "Set organisations filter...")
+        self._import_manage_organisations()
+
+        # Reenable symbology triggers
+        self._progress_done(97, "Reenable symbology triggers...")
+        self._import_enable_symbology_triggers()
+
         self._progress_done(100)
+        logger.info("INTERLIS import finished.")
 
     def interlis_export(
         self,
@@ -142,9 +160,13 @@ class InterlisImporterExporter:
         export_models,
         logs_next_to_file=True,
         limit_to_selection=False,
+        export_orientation=90.0,
         selected_labels_scales_indices=[],
         selected_ids=[],
     ):
+        # Validate subclasses before export
+        self._check_subclass_counts()
+
         # File name without extension (used later for export)
         file_name_base, _ = os.path.splitext(xtf_file_output)
 
@@ -176,11 +198,12 @@ class InterlisImporterExporter:
             )
 
         # Export to the temporary ili2pg model
-        self._progress_done(35, "Converting from Teksi Wastewater...")
+        self._progress_done(35, "Converting from TEKSI Wastewater...")
         self._export_to_intermediate_schema(
             export_model=export_models[0],
             file_name=xtf_file_output,
             selected_ids=selected_ids,
+            export_orientation=export_orientation,
             labels_file_path=labels_file_path,
             basket_enabled=create_basket_col,
         )
@@ -190,6 +213,7 @@ class InterlisImporterExporter:
         self._export_xtf_files(file_name_base, export_models)
 
         self._progress_done(100)
+        logger.info("INTERLIS export finished.")
 
     def _import_validate_xtf_file(self, xtf_file_input):
         log_path = make_log_path(self.base_log_path, "ilivalidator")
@@ -242,6 +266,18 @@ class InterlisImporterExporter:
 
         return interlisImporterToIntermediateSchema.session_tww
 
+    def _import_manage_organisations(self):
+        connection = psycopg.connect(get_pgconf_as_psycopg_dsn(), **DEFAULTS_CONN_ARG)
+        if PSYCOPG_VERSION == 2:
+            connection.set_session(autocommit=True)
+        cursor = connection.cursor()
+
+        logger.info("Update organisation tww_active")
+        cursor.execute("SELECT tww_app.set_organisations_active();")
+
+        connection.commit()
+        connection.close()
+
     def _import_update_main_cover_and_refresh_mat_views(self):
         connection = psycopg.connect(get_pgconf_as_psycopg_dsn(), **DEFAULTS_CONN_ARG)
         if PSYCOPG_VERSION == 2:
@@ -262,8 +298,42 @@ class InterlisImporterExporter:
         connection.commit()
         connection.close()
 
+    def _import_disable_symbology_triggers(self):
+        connection = psycopg.connect(get_pgconf_as_psycopg_dsn(), **DEFAULTS_CONN_ARG)
+        if PSYCOPG_VERSION == 2:
+            connection.set_session(autocommit=True)
+        cursor = connection.cursor()
+
+        logger.info("Disable symbology triggers")
+        cursor.execute("SELECT tww_sys.disable_symbology_triggers();")
+
+        connection.commit()
+        connection.close()
+
+    def _import_enable_symbology_triggers(self):
+        connection = psycopg.connect(get_pgconf_as_psycopg_dsn(), **DEFAULTS_CONN_ARG)
+        if PSYCOPG_VERSION == 2:
+            connection.set_session(autocommit=True)
+        cursor = connection.cursor()
+
+        logger.info("Enable symbology triggers")
+        cursor.execute("SELECT tww_sys.enable_symbology_triggers();")
+
+        logger.info("update_wastewater_node_symbology for all datasets - please be patient")
+        cursor.execute("SELECT tww_app.update_wastewater_node_symbology(NULL, True);")
+        logger.info("update_wastewater_structure_label for all datasets - please be patient")
+        cursor.execute("SELECT tww_app.update_wastewater_structure_label(NULL, True);")
+        logger.info("update_wn_symbology_by_overflow for all datasets - please be patient")
+        cursor.execute("SELECT tww_app.update_wn_symbology_by_overflow(NULL, True);")
+
+        connection.commit()
+        connection.close()
+
     def _export_labels_file(
-        self, limit_to_selection, selected_labels_scales_indices, labels_file_path
+        self,
+        limit_to_selection,
+        selected_labels_scales_indices,
+        labels_file_path,
     ):
         self._progress_done(self.current_progress, "Extracting labels...")
 
@@ -284,7 +354,7 @@ class InterlisImporterExporter:
         if not structures_lyr or not reaches_lyr:
             raise InterlisImporterExporterError(
                 "Could not find the vw_tww_wastewater_structure and/or the vw_tww_reach layers.",
-                "Make sure your Teksi Wastewater project is open.",
+                "Make sure your TEKSI Wastewater project is open.",
                 None,
             )
 
@@ -305,6 +375,7 @@ class InterlisImporterExporter:
         export_model,
         file_name=None,
         selected_ids=None,
+        export_orientation=90.0,
         labels_file_path=None,
         basket_enabled=False,
     ):
@@ -321,6 +392,8 @@ class InterlisImporterExporter:
             model_classes_interlis=self.model_classes_interlis,
             model_classes_tww_od=self.model_classes_tww_od,
             model_classes_tww_vl=self.model_classes_tww_vl,
+            model_classes_tww_sys=self.model_classes_tww_sys,
+            labels_orientation_offset=export_orientation,
             selection=selected_ids,
             labels_file=labels_file_path,
             basket_enabled=basket_enabled,
@@ -442,6 +515,94 @@ class InterlisImporterExporter:
                 log_path,
             )
 
+    def _check_subclass_counts(self):
+        self._check_subclass_count(
+            config.TWW_OD_SCHEMA, "wastewater_networkelement", ["reach", "wastewater_node"]
+        )
+        self._check_subclass_count(
+            config.TWW_OD_SCHEMA,
+            "wastewater_structure",
+            [
+                "channel",
+                "manhole",
+                "special_structure",
+                "infiltration_installation",
+                "discharge_point",
+                "wwtp_structure",
+                "small_treatment_plant",
+                "drainless_toilet",
+            ],
+        )
+        self._check_subclass_count(
+            config.TWW_OD_SCHEMA,
+            "structure_part",
+            [
+                "benching",
+                "tank_emptying",
+                "tank_cleaning",
+                "cover",
+                "access_aid",
+                "electric_equipment",
+                "electromechanical_equipment",
+                "solids_retention",
+                "backflow_prevention",
+                "flushing_nozzle",
+                "dryweather_flume",
+                "dryweather_downspout",
+            ],
+        )
+        self._check_subclass_count(
+            config.TWW_OD_SCHEMA, "overflow", ["pump", "leapingweir", "prank_weir"]
+        )
+        self._check_subclass_count(
+            config.TWW_OD_SCHEMA,
+            "maintenance_event",
+            ["maintenance", "examination", "bio_ecol_assessment"],
+        )
+        self._check_subclass_count(
+            config.TWW_OD_SCHEMA, "damage", ["damage_channel", "damage_manhole"]
+        )
+        self._check_subclass_count(
+            config.TWW_OD_SCHEMA,
+            "connection_object",
+            ["fountain", "individual_surface", "building", "reservoir"],
+        )
+        self._check_subclass_count(
+            config.TWW_OD_SCHEMA, "zone", ["infiltration_zone", "drainage_system"]
+        )
+
+    def _check_subclass_count(self, schema_name, parent_name, child_list):
+
+        logger.info(f"INTEGRITY CHECK {parent_name} subclass data...")
+        logger.info("CONNECTING TO DATABASE...")
+
+        connection = psycopg.connect(get_pgconf_as_psycopg_dsn(), **DEFAULTS_CONN_ARG)
+        if PSYCOPG_VERSION == 2:
+            connection.set_session(autocommit=True)
+        cursor = connection.cursor()
+
+        cursor.execute(f"SELECT obj_id FROM {schema_name}.{parent_name};")
+        parent_rows = cursor.fetchall()
+        if len(parent_rows) > 0:
+            parent_count = len(parent_rows)
+            logger.info(f"Number of {parent_name} datasets: {parent_count}")
+            for child_name in child_list:
+                cursor.execute(f"SELECT obj_id FROM {schema_name}.{child_name};")
+                child_rows = cursor.fetchall()
+                logger.info(f"Number of {child_name} datasets: {len(child_rows)}")
+                parent_count = parent_count - len(child_rows)
+            connection.commit()
+            connection.close()
+
+            if parent_count == 0:
+                logger.info(
+                    f"OK: number of subclass elements of class {parent_name} OK in schema {schema_name}!"
+                )
+            else:
+                logger.error(
+                    f"ERROR: number of subclass elements of {parent_name} NOT CORRECT in schema {schema_name}: checksum = {parent_count} (positive number means missing entries, negative means too many subclass entries)"
+                )
+
     def _init_model_classes(self, model):
         ModelInterlis = ModelInterlisSia405Abwasser
         if model == config.MODEL_NAME_DSS:
@@ -457,6 +618,10 @@ class InterlisImporterExporter:
 
         if self.model_classes_tww_vl is None:
             self.model_classes_tww_vl = ModelTwwVl().classes()
+            self._progress_done(self.current_progress + 1)
+
+        if self.model_classes_tww_sys is None:
+            self.model_classes_tww_sys = ModelTwwSys().classes()
             self._progress_done(self.current_progress + 1)
 
     def _progress_done_intermediate_schema(self):

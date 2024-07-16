@@ -26,7 +26,7 @@ Restore demo datamodel
 Restore the latest data model that also includes demo data:
 
 * Download demo data
-  * https://github.com/TWW/datamodel/releases/latest
+  * https://github.com/teksi/wastewater/releases/latest
   * download `tww_vx.y.z_structure_and_demo_data.backup`
 
 Back in pgAdmin :
@@ -75,7 +75,7 @@ Empty data model
 
 You also have the option to restore the latest empty data model (no demo data).
 
-* Download the data model by going to https://github.com/TWW/datamodel/releases/latest
+* Download the data model by going to https://github.com/teksi/wastewater/releases/latest
   and by downloading the latest `tww_vx.y.z_structure_with_value_lists.sql`.
 
 .. note::

@@ -134,8 +134,8 @@ WITH (
 CREATE SEQUENCE tww_od.seq_damage_manhole_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
  ALTER TABLE tww_od.damage_manhole ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','damage_manhole');
 COMMENT ON COLUMN tww_od.damage_manhole.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
- ALTER TABLE tww_od.damage_manhole ADD COLUMN manhole_channel_distance  decimal(7,2) ;
-COMMENT ON COLUMN tww_od.damage_manhole.manhole_channel_distance IS 'Length from the top edge of the cover to the detection (see paragraph 3.1.1) in m with two decimal places. / Länge ab Oberkante Deckel bis zur Feststellung (siehe Absatz 3.1.1) in m mit zwei Nachkommastellen. / Longueur entre le bord supérieur du couvercle et l’observation (cf. paragraphe 3.1.1) en m avec deux chiffres après la virgule.';
+ ALTER TABLE tww_od.damage_manhole ADD COLUMN manhole_distance  decimal(7,2) ;
+COMMENT ON COLUMN tww_od.damage_manhole.manhole_distance IS 'Length from the top edge of the cover to the detection (see paragraph 3.1.1) in m with two decimal places. / Länge ab Oberkante Deckel bis zur Feststellung (siehe Absatz 3.1.1) in m mit zwei Nachkommastellen. / Longueur entre le bord supérieur du couvercle et l’observation (cf. paragraphe 3.1.1) en m avec deux chiffres après la virgule.';
  ALTER TABLE tww_od.damage_manhole ADD COLUMN manhole_damage_begin  smallint ;
 COMMENT ON COLUMN tww_od.damage_manhole.manhole_damage_begin IS 'Location on the circumference: beginning of the damage. Values and procedure are described in detail in paragraph 3.1.6. / Lage am Umfang: Beginn des Schadens. Werte und Vorgehen sind unter Absatz 3.1.6 genau beschrieben. / Emplacement circonférentiel: Début du dommage. Valeurs et procédure sont décrites en détail dans le paragraphe 3.1.6.';
  ALTER TABLE tww_od.damage_manhole ADD COLUMN manhole_damage_code  integer ;
