@@ -37,10 +37,10 @@ in AG-64/96, the last modification value of cadastre and general planning are se
 Infrastrukturknoten/GEPKnoten
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The base OID for the Infrastrukturknoten/GEPKnoten is taken from ``tww_od.wastewater_node``. 
+The base OID for the Infrastrukturknoten/GEPKnoten is taken from ``tww_od.wastewater_node``.
 
-The FunktionAG is mapped from 
- 
+The FunktionAG is mapped from
+
   * manhole.function
   * special_structure.function
   * infiltration_installation.kind
@@ -58,40 +58,40 @@ The following table explains the mapping of FunktionAG in detail. If there are m
 	 - value_de
    * - abflussloseGrube
      - special_structure.function
-	 - 
+	 -
    * - Absturzbauwerk
      - special_structure.function / manhole.function
-	 - 
+	 -
    * - Abwasserfaulraum
      - special_structure.function
-	 - 
+	 -
    * - Abwasserreinigungsanlage
      - wwtp_structure.kind
 	 - any value
    * - andere
      - special_structure.function / manhole.function
-	 - 
+	 -
    * - Anschluss
      - wastewater_node.ag64_function
-	 - 
+	 -
    * - Be_Entlueftung
      - special_structure.function / manhole.function
-	 - 
+	 -
    * - Bodenablauf
      - manhole.function
-	 - 
+	 -
    * - Dachwasserschacht
      - manhole.function
-	 - 
+	 -
    * - Duekerkammer
      - special_structure.function
-	 - 
+	 -
    * - Duekeroberhaupt
      - special_structure.function
-	 - 
+	 -
    * - Einlaufschacht
      - manhole.function
-	 - 
+	 -
    * - Einleitstelle_gewaesserrelevant
      - discharge_point.relevance
 	 - gewaesserrelevant
@@ -100,100 +100,100 @@ The following table explains the mapping of FunktionAG in detail. If there are m
 	 - nicht_gewaesserrelevant
    * - Entwaesserungsrinne
      - manhole.function
-	 - 
+	 -
    * - Faulgrube
      - special_structure.function
-	 - 
+	 -
    * - Gelaendemulde
      - special_structure.function
-	 - 
+	 -
    * - Geleiseschacht
      - manhole.function
-	 - 
+	 -
    * - Geschiebefang
      - special_structure.function
-	 - 
+	 -
    * - Guellegrube
      - special_structure.function
-	 - 
+	 -
    * - Klaergrube
      - special_structure.function
-	 - 
+	 -
    * - Kontrollschacht
      - manhole.function
 	 - Kontroll-Einstiegschacht or Kombischacht
    * - Leitungsknoten
      - no wastewater structure
-	 - 
+	 -
    * - Messstelle
      - measurement not in special construction
-	 - 
+	 -
    * - Oelabscheider
      - special_structure.function / manhole.function
-	 - 
+	 -
    * - Oelrueckhaltebecken
      - special_structure.function
-	 - 
+	 -
    * - Pumpwerk
      - special_structure.function / manhole.function
-	 - 
+	 -
    * - Regenbecken_Durchlaufbecken
      - special_structure.function
-	 - 
+	 -
    * - Regenbecken_Fangbecken
      - special_structure.function
-	 - 
+	 -
    * - Regenbecken_Fangkanal
      - special_structure.function
-	 - 
+	 -
    * - Regenbecken_Regenklaerbecken
      - special_structure.function
-	 - 
+	 -
    * - Regenbecken_Regenrueckhaltebecken
      - special_structure.function
-	 - 
+	 -
    * - Regenbecken_Regenrueckhaltekanal
      - special_structure.function
-	 - 
+	 -
    * - Regenbecken_Verbundbecken
      - special_structure.function
-	 - 
+	 -
    * - Regenueberlauf
-     - special_structure.function / manhole.function 
-	 - 
+     - special_structure.function / manhole.function
+	 -
    * - Regenwasserrechen
      - special_structure.function
-	 - 
+	 -
    * - Regenwassersieb
      - special_structure.function
-	 - 
+	 -
    * - Rohrbruecke
      - special_structure.function
-	 - 
+	 -
    * - Schlammfang
      - manhole.function
-	 - 
+	 -
    * - Schlammsammler
      - manhole.function
-	 - 
+	 -
    * - Schwimmstoffabscheider
      - special_structure.function / manhole.function
-	 - 
+	 -
    * - seitlicherZugang
      - special_structure.function
-	 - 
+	 -
    * - Spuelschacht
      - special_structure.function / manhole.function
-	 - 
+	 -
    * - Strassenwasserbehandlungsanlage
      - special_structure.function
-	 - 
+	 -
    * - Trennbauwerk
      - special_structure.function / manhole.function
-	 - 
+	 -
    * - unbekannt
      - special_structure.function / manhole.function
-	 - 
+	 -
    * - Versickerungsanlage.Versickerungsbecken
      - infiltration_installation.kind
 	 - Versickerungsbecken
@@ -223,7 +223,7 @@ The following table explains the mapping of FunktionAG in detail. If there are m
 	 - Vorbehandlungsanlage
    * - Wirbelfallschacht
      - special_structure.function
-     - 
+     -
 
 Infrastrukturhaltung/GEPHaltung
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -239,7 +239,7 @@ The layer Ueberlauf_Foerderaggregat is mapped to ´tww_od.overflow´ and its spe
 GEPMassnahme
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-GEPMassnahme is mapped to ´tww_od.measure´. The following categories can be mapped 1:1 onto a VSA DSS value and are therefore 
+GEPMassnahme is mapped to ´tww_od.measure´. The following categories can be mapped 1:1 onto a VSA DSS value and are therefore
 
 .. list-table:: Mapping of Kategorie
    :widths: 50 50

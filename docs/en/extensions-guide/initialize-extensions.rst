@@ -17,13 +17,13 @@ create an empty datamodel with an extension
 
 In order to use a database extension, we need to load them from the source code:
 
-* Load a standard TWW Database 
+* Load a standard TWW Database
   * https://github.com/TWW/datamodel/releases/latest
   * download `tww_{version}_structure_with_value_lists.sql`
 
 In the future, an adapted value list sql will be provided. For now, we will have to rely on the source code
 
-* Download the source code 
+* Download the source code
   * https://github.com/TWW/datamodel/releases/latest
   * download`Source Code(zip)`
 
@@ -49,7 +49,7 @@ In the future, an adapted value list sql will be provided. For now, we will have
 
 	python %tww_dir%\extensions\extension_manager.py --pg_service %myservice% --srid 2056 --drop-schema --extension_name "agxx"
 	python %tww_dir%\app\create_app.py --pg_service %myservice% --srid 2056 --drop-schema
-   
+
 
     PAUSE
 
@@ -75,7 +75,7 @@ You can also generate the data model extension under Linux.
 * Set the environment variables for the generation script::
 
    ./scripts/db_setup.sh
-  
+
 * Run the generation script::
 
    ./scripts/db_setup.sh
