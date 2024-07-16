@@ -445,6 +445,10 @@ class InterlisImporterToIntermediateSchema:
             ),
             "contract_section": row.baulos,
             "detail_geometry3d_geometry": ST_Force3D(row.detailgeometrie),
+            # TODO : NOT MAPPED VSA-DSS 3D
+            # "elevation_determination": self.get_vl_code(
+            #    self.model_classes_tww_od.wastewater_structure_elevation_determination, row.hoehenbestimmung
+            # ),
             "financing": self.get_vl_code(
                 self.model_classes_tww_od.wastewater_structure_financing, row.finanzierung
             ),
@@ -678,7 +682,8 @@ class InterlisImporterToIntermediateSchema:
                     self.model_classes_tww_od.discharge_point_relevance, row.relevanz
                 ),
                 terrain_level=row.terrainkote,
-                # upper_elevation=row.REPLACE_ME, # TODO : NOT MAPPED
+                # TODO : NOT MAPPED VSA-DSS 3D
+                # upper_elevation=row.deckenkote,
                 waterlevel_hydraulic=row.wasserspiegel_hydraulik,
             )
             self.session_tww.add(discharge_point)
@@ -706,7 +711,8 @@ class InterlisImporterToIntermediateSchema:
                     self.model_classes_tww_od.special_structure_stormwater_tank_arrangement,
                     row.regenbecken_anordnung,
                 ),
-                # upper_elevation=row.REPLACE_ME,   # TODO : NOT MAPPED
+                # TODO : NOT MAPPED VSA-DSS 3D
+                # upper_elevation=row.deckenkote,
             )
             self.session_tww.add(special_structure)
             print(".", end="")
@@ -742,7 +748,8 @@ class InterlisImporterToIntermediateSchema:
                     self.model_classes_tww_od.infiltration_installation_seepage_utilization,
                     row.versickerungswasser,
                 ),
-                # upper_elevation=row.REPLACE_ME,  # TODO : NOT MAPPED
+                # TODO : NOT MAPPED VSA-DSS 3D
+                # upper_elevation=row.deckenkote,
                 vehicle_access=self.get_vl_code(
                     self.model_classes_tww_od.infiltration_installation_vehicle_access,
                     row.saugwagen,
@@ -932,7 +939,7 @@ class InterlisImporterToIntermediateSchema:
                 # --- tank_emptying ---
                 flow=row.leistung,
                 gross_costs=row.bruttokosten,
-                type=self.get_vl_code(self.model_classes_tww_vl.tank_emptying_type, row.art),
+                kind=self.get_vl_code(self.model_classes_tww_vl.tank_emptying_kind, row.art),
                 year_of_replacement=row.ersatzjahr,
                 fk_throttle_shut_off_unit=self.get_pk(row.absperr_drosselorganref__REL),
                 fk_overflow=self.get_pk(row.ueberlaufref__REL),
@@ -948,7 +955,7 @@ class InterlisImporterToIntermediateSchema:
                 **self.structure_part_common(row),
                 # --- tank_cleaning ---
                 gross_costs=row.bruttokosten,
-                type=self.get_vl_code(self.model_classes_tww_vl.tank_cleaning_type, row.art),
+                kind=self.get_vl_code(self.model_classes_tww_vl.tank_cleaning_kind, row.art),
                 year_of_replacement=row.ersatzjahr,
             )
             self.session_tww.add(tank_cleaning)
@@ -1000,8 +1007,8 @@ class InterlisImporterToIntermediateSchema:
                 ),
                 relevant_slope=row.relevantes_gefaelle,
                 surface_water_bodies=row.oberflaechengewaesser,
-                type_water_body=self.get_vl_code(
-                    self.model_classes_tww_vl.bio_ecol_assessment_type_water_body, row.gewaesserart
+                kind_water_body=self.get_vl_code(
+                    self.model_classes_tww_vl.bio_ecol_assessment_kind_water_body, row.gewaesserart
                 ),
                 water_specific_discharge_freight_nh4_n_current=row.gewaesserspezifische_entlastungsfracht_nh4_n_ist,
                 water_specific_discharge_freight_nh4_n_current_opt=row.gewaesserspezifische_entlastungsfracht_nh4_n_ist_optimiert,
@@ -1231,7 +1238,7 @@ class InterlisImporterToIntermediateSchema:
                 dimensioning_value=row.dimensionierungswert,
                 gross_costs=row.bruttokosten,
                 overflow_level=row.anspringkote,
-                type=self.get_vl_code(self.model_classes_tww_vl.solids_retention_type, row.art),
+                kind=self.get_vl_code(self.model_classes_tww_vl.solids_retention_kind, row.art),
                 year_of_replacement=row.ersatzjahr,
             )
             self.session_tww.add(solids_retention)
@@ -1649,10 +1656,19 @@ class InterlisImporterToIntermediateSchema:
                 self.model_classes_tww_od.measuring_point,
                 **self.base_common(row),
                 # --- measuring_point ---
-                purpose=row.zweck,
+                # change to value list reference
+                # purpose=row.zweck,
+                purpose=self.get_vl_code(
+                    self.model_classes_tww_vl.measuring_point_purpose, row.zweck
+                ),
                 remark=row.bemerkung,
-                damming_device=row.staukoerper,
+                # change to value list reference
+                # damming_device=row.staukoerper,
+                damming_device=self.get_vl_code(
+                    self.model_classes_tww_vl.measuring_point_damming_device, row.staukoerper
+                ),
                 identifier=row.bezeichnung,
+                # kind is not a value list here
                 kind=row.art,
                 situation_geometry=row.lage,
                 fk_operator=row.betreiberref,
@@ -1907,7 +1923,10 @@ class InterlisImporterToIntermediateSchema:
                 # --- reach ---
                 clear_height=row.lichte_hoehe,
                 coefficient_of_friction=row.reibungsbeiwert,
-                # elevation_determination=self.get_vl_code(TWW.reach_elevation_determination, row.REPLACE_ME),  # TODO : NOT MAPPED
+                # TODO : NOT MAPPED VSA-DSS 3D
+                # self.get_vl_code(
+                #    self.model_classes_tww_od.wastewater_structure_elevation_determination, row.hoehenbestimmung
+                # ),
                 fk_pipe_profile=self.get_pk(row.rohrprofilref__REL),
                 fk_reach_point_from=self.get_pk(row.vonhaltungspunktref__REL),
                 fk_reach_point_to=self.get_pk(row.nachhaltungspunktref__REL),
@@ -2035,21 +2054,18 @@ class InterlisImporterToIntermediateSchema:
 
     def _import_untersuchung(self):
         for row in self.session_interlis.query(self.model_classes_interlis.untersuchung):
-            logger.warning(
-                "TWW examination.active_zone has no equivalent in the interlis model. This field will be null."
-            )
             examination = self.create_or_update(
                 self.model_classes_tww_od.examination,
                 **self.base_common(row),
                 # --- maintenance_event ---
-                # active_zone=row.REPLACE_ME,  # TODO : found no matching field for this in interlis, confirm this is ok
                 base_data=row.datengrundlage,
                 cost=row.kosten,
                 data_details=row.detaildaten,
                 duration=row.dauer,
-                fk_operating_company=(
-                    row.ausfuehrende_firmaref if row.ausfuehrende_firmaref else None
-                ),
+                # in VSA-KEK 2020 in class maintenance_event instead of examination
+                # fk_operating_company=(
+                #    row.ausfuehrende_firmaref if row.ausfuehrende_firmaref else None
+                # ),
                 identifier=row.bezeichnung,
                 operator=row.ausfuehrender,
                 reason=row.grund,
@@ -2100,21 +2116,26 @@ class InterlisImporterToIntermediateSchema:
                 self.model_classes_tww_od.damage_manhole,
                 **self.base_common(row),
                 # --- damage ---
+                # to check Adaption VSA-KEK 2020 moved to superclass schaden
                 comments=row.anmerkung,
+                # to check Adaption VSA-KEK 2020 moved to superclass schaden
                 connection=self.get_vl_code(
                     self.model_classes_tww_vl.damage_connection, row.verbindung
                 ),
                 manhole_damage_begin=row.schadenlageanfang,
                 manhole_damage_end=row.schadenlageende,
                 line_damage=row.streckenschaden,
-                manhole_channel_distance=row.distanz,
+                manhole_distance=row.distanz,
                 fk_examination=self.get_pk(row.untersuchungref__REL),
                 manhole_quantification1=row.quantifizierung1,
                 manhole_quantification2=row.quantifizierung2,
+                # to check Adaption VSA-KEK 2020 moved to superclass schaden
                 single_damage_class=self.get_vl_code(
                     self.model_classes_tww_od.damage_single_damage_class, row.einzelschadenklasse
                 ),
+                # to check Adaption VSA-KEK 2020 moved to superclass schaden
                 video_counter=row.videozaehlerstand,
+                # to check Adaption VSA-KEK 2020 moved to superclass schaden
                 view_parameters=row.ansichtsparameter,
                 # --- damage_manhole ---
                 manhole_damage_code=self.get_vl_code(

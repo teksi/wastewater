@@ -30,7 +30,7 @@ class DeduplicatedLogger(logging.Logger):
             if self._repeated > 0:
                 super()._log(
                     self._last_message[0],
-                    f"[repeted {self._repeated} times]",
+                    f"[repeated {self._repeated} times]",
                     args,
                     exc_info,
                     extra,
@@ -53,7 +53,7 @@ class CmdException(BaseException):
 
 
 def exec_(command, check=True, output_content=False):
-    command_masked_pwd = re.sub(r"(--dbpwd)\s\'.+\'", r"\1 '[PASSWORD]'", command)
+    command_masked_pwd = re.sub(r"(--dbpwd)\s\"[\w\.*#?!@$%^&-]+\"", r'\1 "[PASSWORD]"', command)
     logger.info(f"EXECUTING: {command_masked_pwd}")
     try:
         proc = subprocess.run(
@@ -261,15 +261,15 @@ def get_pgconf_as_ili_args() -> List[str]:
     pgconf = get_pgconf()
     args = []
     if pgconf["host"]:
-        args.extend(["--dbhost", f"'{pgconf['host']}'"])
+        args.extend(["--dbhost", '"' + pgconf["host"] + '"'])
     if pgconf["port"]:
-        args.extend(["--dbport", f"'{pgconf['port']}'"])
+        args.extend(["--dbport", '"' + pgconf["port"] + '"'])
     if pgconf["user"]:
-        args.extend(["--dbusr", f"'{pgconf['user']}'"])
+        args.extend(["--dbusr", '"' + pgconf["user"] + '"'])
     if pgconf["password"]:
-        args.extend(["--dbpwd", f"'{pgconf['password']}'"])
+        args.extend(["--dbpwd", '"' + pgconf["password"] + '"'])
     if pgconf["dbname"]:
-        args.extend(["--dbdatabase", f"'{pgconf['dbname']}'"])
+        args.extend(["--dbdatabase", '"' + pgconf["dbname"] + '"'])
     return args
 
 
