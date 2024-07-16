@@ -12,8 +12,8 @@ The base installation of TWW defines the following group roles over the entire d
 * **tww_manager**: user of TWW with extended privileges, can edit entities and values lists (`tww_vl` schema).
 * **tww_sysadmin**: superuser of TWW database, can edit TWW system tables (`tww_sys` schema).
 
-Their rights are cascaded to database specific group roles **tww_viewer_db_identifier** etc. if those have been set up. ``db_identifier`` is defined as ``regexp_replace(databasename, "tww_|teksi_", "")`` .
+There is an option to create database specific group roles **tww_viewer_[db_identifier]** etc. , where  ``db_identifier`` is defined as ``regexp_replace(databasename, "tww_|teksi_", "")`` .
 
-Data in TWW are stored in 3 schemas with default permissions for all of these users.
+In order to create them, run the `create_roles script <https://github.com/TWW/datamodel/blob/master/create_roles.py>` from the shell or a batch file using the "--database_specific_roles" flag.
 
-.. Note:: The SQL related to these roles is stored `here <https://github.com/TWW/datamodel/blob/master/12_0_roles.sql>`_, `here <https://github.com/TWW/datamodel/blob/master/12_1_roles.sql>`_ and `here <https://github.com/TWW/datamodel/blob/master/12_2_roles.sql>`_
+If you have set up a database extension schema, using the "--extension_schema myschema" flag on the create roles script creates the same grant on the extension schema as on ´tww_od´.
