@@ -30,10 +30,10 @@ def create_role(pg_service: str, role: str, in_role: str = None):
         cur.execute(f"SELECT 1 FROM pg_roles WHERE rolname='{in_role}'")
         inrole_exists = cur.fetchone()
         if inrole_exists:
-            role_sql = f"""
+            in_role_sql = f"""
                 GRANT {in_role} TO {role};
             """
-        cur.execute(role_sql)
+            cur.execute(in_role_sql)
     conn.close()
 
 
