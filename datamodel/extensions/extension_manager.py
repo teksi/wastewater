@@ -9,13 +9,18 @@ from sqlalchemy.orm import Session
 from yaml import safe_load
 
 
-def read_config(config_file: str, entry_id: str):
+try:
+    import psycopg
+except ImportError:
+    import psycopg2 as psycopg
+
+def read_config(config_file: str, extension_name: str):
     with open(config_file) as file:
         config = safe_load(file)
     for entry in config.get("extensions", []):
-        if entry.get("id") == entry_id:
+        if entry.get("id") == extension_name:
             return entry
-    raise ValueError(f"No entry found with id: {entry_id}")
+    raise ValueError(f"No entry found with id: {extension_name}")
 
 
 def run_py_file(file_path: str):
@@ -59,11 +64,10 @@ def load_extension(
     """
 
     # load definitions from config
-    config = read_config("config.yaml", entry_id)
-    definitions = [d for d in config.extension_def if d["id"] == extension_name][0]
+    config = read_config("config.yaml", extension_name)
     variables = config.get("variables", {})
     # pass SRID and extension schema name per default
-    schemaname = config.get("schema", "tww_" + entry_id)
+    schemaname = config.get("schema", "tww_" + extension_name)
     variables.update({"ext_schema": schemaname, "srid": psycopg.sql.SQL(f"{srid}")})
 
     if drop_schema:
@@ -71,10 +75,11 @@ def load_extension(
 
     # We also disable symbology triggers as they can badly affect performance. This must be done in a separate session as it
     # would deadlock other sessions.
-    init_session = Session(utils.sqlalchemy.create_engine(), autocommit=False, autoflush=False)
-    init_session.execute("SELECT tww_sys.disable_symbology_triggers();")
-    init_session.commit()
-    init_session.flush()
+    conn = psycopg.connect(f"service={pg_service}")
+    cursor = conn.cursor()
+    cursor.execute("SELECT tww_sys.disable_symbology_triggers();")
+    conn.commit()
+    conn.close()
 
     directory = config.get("directory", None)
     if directory:
@@ -88,10 +93,11 @@ def load_extension(
                 run_py_file(os.path.join(directory, filename))
 
     # re-create symbology triggers
-    post_session = Session(utils.sqlalchemy.create_engine(), autocommit=False, autoflush=False)
-    post_session.execute("SELECT tww_sys.enable_symbology_triggers();")
-    post_session.commit()
-    post_session.close()
+    conn = psycopg.connect(f"service={pg_service}")
+    cursor = conn.cursor()
+    cursor.execute("SELECT tww_sys.enable_symbology_triggers();")
+    conn.commit()
+    conn.close()
 
 
 if __name__ == "__main__":
