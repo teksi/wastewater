@@ -17,7 +17,7 @@ def get_db_identifier(pg_service: str, modelname: str ):
     conn.close()
     return db_identifier
 
-def create_role(pg_service: str, role: str,in_role str=None):
+def create_role(pg_service: str, role: str,in_role: str=None):
     conn = psycopg.connect(f"service={pg_service}")
     cur = conn.cursor()
     cur.execute(f"SELECT 1 FROM pg_roles WHERE rolname='{role}'")
