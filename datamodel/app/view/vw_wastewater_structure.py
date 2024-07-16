@@ -68,11 +68,6 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
             remove_pkey=False,
             indent=4,
             skip_columns=[
-                "_label",
-                "_cover_label",
-                "_bottom_label",
-                "_input_label",
-                "_output_label",
             ],
         ),
         extra_joins="\n    ".join(
@@ -115,11 +110,6 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
             remove_pkey=False,
             indent=2,
             skip_columns=[
-                "_label",
-                "_cover_label",
-                "_bottom_label",
-                "_input_label",
-                "_output_label",
             ],
         ),
     )
@@ -153,11 +143,6 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
             indent=6,
             skip_columns=[
                 "last_modification",
-                "_label",
-                "_cover_label",
-                "_bottom_label",
-                "_input_label",
-                "_output_label",
                 "_depth",
             ],
             update_values={},
