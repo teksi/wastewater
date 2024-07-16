@@ -115,19 +115,7 @@
         <Standort></Standort>
       </VSA_KEK_2020_1_LV95.KEK.Datentraeger>
 
-      <VSA_KEK_2020_1_LV95.KEK.Datei TID="fk11abk6DA000001">
-		<DatenherrRef REF="ch080qwzAV000007"></DatenherrRef>
-		<DatenlieferantRef REF="ch20p3q400001729"></DatenlieferantRef>
-		<Letzte_Aenderung>20210120</Letzte_Aenderung> <!-- darf nicht leer sein -->
-		<!-- <Art>digitalesVideo</Art> Anpassung Wert 2019/2020 -->
-        <Art>digitales_Video</Art>
-		<Bemerkung></Bemerkung>
-        <Bezeichnung>1.040_0001.mpg</Bezeichnung>
-        <Klasse>Untersuchung</Klasse>
-        <Objekt>fk11abk6EX000002</Objekt>
-        <Relativpfad>inspectiondata\20210120\videos\</Relativpfad>
-        <DatentraegerRef REF="fk11abk6w70lrfmz"></DatentraegerRef>
-      </VSA_KEK_2020_1_LV95.KEK.Datei>
+  
 	  <VSA_KEK_2020_1_LV95.KEK.Datei TID="fk11abk6DA000002">
 		<DatenherrRef REF="ch080qwzAV000007"></DatenherrRef>
 		<DatenlieferantRef REF="ch20p3q400001729"></DatenlieferantRef>
