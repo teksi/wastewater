@@ -24,7 +24,7 @@ def create_role(pg_service: str, role: str, in_role: str = None):
     role_exists = cur.fetchone()
     if not role_exists:
         role_sql = f"""
-            CREATE ROLE {role} NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION {('IN ROLE '+in_role) if in_role else ''};
+            CREATE ROLE {role} NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION {('IN ROLE ' + in_role) if in_role else ''};
         """
         cur.execute(role_sql)
     conn.close()
@@ -171,9 +171,9 @@ def create_roles(
         create_role(pg_service, role, in_role)
 
     if grant:
-        grant_privileges(pg_service, model_name, roles, ext_schema)
+        grant_privileges(pg_service, modelname, roles, ext_schema)
     else:
-        revoke_privileges(pg_service, model_name, roles, ext_schema)
+        revoke_privileges(pg_service, modelname, roles, ext_schema)
 
 
 if __name__ == "__main__":
