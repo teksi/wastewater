@@ -928,8 +928,11 @@ BEGIN
   FROM tww_od.reach_point rp_to
   WHERE NEW.fk_reach_point_to = rp_to.obj_id;
 
-  NEW.length_effective = COALESCE(sqrt((_rp_from_level - _rp_to_level)^2 + ST_Length(NEW.progression3d_geometry)^2), ST_Length(NEW.progression3d_geometry) );
-
+  IF _rp_from_level=0 OR _rp_to_level=0 THEN
+    NEW.length_effective = ST_Length(NEW.progression3d_geometry);
+  ELSE
+    NEW.length_effective = COALESCE(sqrt((_rp_from_level - _rp_to_level)^2 + ST_Length(NEW.progression3d_geometry)^2), ST_Length(NEW.progression3d_geometry) );
+  END IF;
   RETURN NEW;
 
 END;

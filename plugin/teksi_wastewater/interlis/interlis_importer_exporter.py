@@ -140,6 +140,9 @@ class InterlisImporterExporter:
         self._progress_done(95, "Update main cover and refresh materialized views...")
         self._import_update_main_cover_and_refresh_mat_views()
 
+        # Update organisations
+        self._progress_done(96, "Set organisations filter...")
+        self._import_manage_organisations()
         # Reenable symbology triggers
         self._progress_done(95, "Reenable symbology triggers...")
         self._import_enable_symbology_triggers()
@@ -183,8 +186,6 @@ class InterlisImporterExporter:
             labels_file_path = os.path.join(tempdir.name, "labels.geojson")
             self._export_labels_file(
                 limit_to_selection=limit_to_selection,
-                # neu export orientation
-                export_orientation=export_orientation,
                 selected_labels_scales_indices=selected_labels_scales_indices,
                 labels_file_path=labels_file_path,
             )
@@ -258,6 +259,18 @@ class InterlisImporterExporter:
 
         return interlisImporterToIntermediateSchema.session_tww
 
+    def _import_manage_organisations(self):
+        connection = psycopg.connect(get_pgconf_as_psycopg_dsn(), **DEFAULTS_CONN_ARG)
+        if PSYCOPG_VERSION == 2:
+            connection.set_session(autocommit=True)
+        cursor = connection.cursor()
+
+        logger.info("Update organisation tww_active")
+        cursor.execute("SELECT tww_app.set_organisations_active();")
+
+        connection.commit()
+        connection.close()
+
     def _import_update_main_cover_and_refresh_mat_views(self):
         connection = psycopg.connect(get_pgconf_as_psycopg_dsn(), **DEFAULTS_CONN_ARG)
         if PSYCOPG_VERSION == 2:
@@ -312,7 +325,6 @@ class InterlisImporterExporter:
     def _export_labels_file(
         self,
         limit_to_selection,
-        export_orientation,
         selected_labels_scales_indices,
         labels_file_path,
     ):
@@ -345,7 +357,6 @@ class InterlisImporterExporter:
             {
                 "OUTPUT": labels_file_path,
                 "RESTRICT_TO_SELECTION": limit_to_selection,
-                "EXPORT_ORIENTATION": export_orientation,
                 "STRUCTURE_VIEW_LAYER": structures_lyr,
                 "REACH_VIEW_LAYER": reaches_lyr,
                 "SCALES": selected_labels_scales_indices,
@@ -375,6 +386,7 @@ class InterlisImporterExporter:
             model_classes_tww_od=self.model_classes_tww_od,
             model_classes_tww_vl=self.model_classes_tww_vl,
             model_classes_tww_sys=self.model_classes_tww_sys,
+            labels_orientation_offset=export_orientation,
             selection=selected_ids,
             labels_file=labels_file_path,
             basket_enabled=basket_enabled,

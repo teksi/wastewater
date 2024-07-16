@@ -3,34 +3,35 @@ Naming conventions
 
 Schemas in the TWW-Database
 ----------------------------
-The TWW-Database has six tww-schemas:
+Schema in TEKSI-Databases will follow all the same rules. To destinguish, every infrastructre has his own shortcut (3 letters). TWW (TEKSI wastewater) is the shortcut for module wastewater network management.
+The TWW-Database has five tww-schemas:
 
-* tww_od: in this schema you find the tables, that correspond to the VSA-DSS-datamodel (cover, wastewaternode, channel, etc.) These are the tables you normally work with.
+* tww_od: in this schema you find the tables, that correspond to the VSA-DSS-datamodel (cover, wastewater_node, channel, etc.) Also for sequences of these tables. Because of the new update-management, the views are no more in the *_od-schema, but in the *_app-schema.
 
 * tww_vl: is the schema for value lists. There is a table for every value list of the VSA-DSS. As a TWW-user you can not edit these tables.
 
-* tww_network: schema for the tables that are necessary to use the network-topology with the tww-tools. You can rebuild these tables from the TWW-tools.
+* tww_app: schema for all module-specific views, materialized views, functions, triggers, etc. Also for views and function of additional plugins (SWMM, QField). In case of an update of the database, this schema will overwriten.
 
 * tww_sys: special tables for administration of the database. As a TWW-User you can not edit these tables.
 
-* tww_import and tww_swmm: schema for additional plugins/functions (QField and working with SWMM)
+* tww_cfg: to do: good explanantion
+
+If INTERLIS-import or -export is used, then there will be additional schema like "pg2ili_abwasser". The are recreated with every import or export. Do not add these schema to the tww-project.
 
 
 Layer names
 -----------
 
-* Layer names have often a prefix like od_ or vl_.
+* Layer names without prefix
 
-This shows you, in which schema to look for the table. od_organisation is the table organisation in the tww_od-schema.
+This shows you, that you find the table in the tww_od-schema or (if the are in the layer-group "Value Lists", you find them in schema tww_vl).
+If you are not sure in which schema to look for the table: place the mouse over the layer and look in the yellow popup-box for 'table="tww_*'.
 
 * Layer Names that begin with vw_
 
 Two or more VSA-DSS tables are joined in a view (vw). The layer has the name of the main-table. Example: vw_tww_reach: the main layer is the table reach (not the table channel).
-It is important to know the main-table to be sure, that you use the correct attributes.
+It is important to know the main-table to be sure , that you use the correct attributes.
 
-* Layer vw_network_
-
-These are views in the schema tww_network
 
 Attribute names
 ---------------
@@ -49,4 +50,4 @@ fk_ is not a shortcut for a special table. It stands for foreign key.
 * _ fields
 
 Attributes that start with _ (underscore) are calculated fields. You can not find them in the schemas. Examples: _slope_per_mill in vw_tww_reach.
-_channel_usage_current in vw_qgwp_wastewater_structure is calculated from the field usage_current of the channel, that is connected with the foreign keys of the wastewater_networkelement as outlet to a manhole or special structure.
+_channel_usage_current in vw_qgwp_wastewater_structure is calculated from the field usage_current of the channel, that is connected with the foreign key of the wastewater_networkelement as outlet to a manhole or special structure.
