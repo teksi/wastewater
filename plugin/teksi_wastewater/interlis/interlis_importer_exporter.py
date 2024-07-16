@@ -267,7 +267,7 @@ class InterlisImporterExporter:
         connection = psycopg.connect(get_pgconf_as_psycopg_dsn(), **DEFAULTS_CONN_ARG)
         if PSYCOPG_VERSION == 2:
             connection.set_session(autocommit=True)
-        cursor = connection.cursor()  
+        cursor = connection.cursor()
         cursor.execute("SELECT tww_sys.reset_od_seqval();")
         connection.commit()
         connection.close()
