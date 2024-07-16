@@ -213,7 +213,7 @@ if __name__ == "__main__":
     parser = get_parser()
     args = parser.parse_args()
     if args.extensions != "":
-        args.extensions = "_"+args.extensions
+        args.extensions = "_" + args.extensions
 
     os.makedirs("datamodel/artifacts", exist_ok=True)
     files = create_dumps(version=args.version, database=args.database, extensions=args.extensions)
