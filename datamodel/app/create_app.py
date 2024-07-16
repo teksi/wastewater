@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import re
 from argparse import ArgumentParser, BooleanOptionalAction
 from pathlib import Path
 from typing import Optional
@@ -33,12 +32,6 @@ def run_sql(sql: str, pg_service: str, variables: dict = None):
     conn.close()
 
 
-def get_db_identifier(pg_service: str):
-    conn = psycopg.connect(f"service={pg_service}")
-    db_identifier = re.sub("tww_|teksi_", "", conn.info.dbname)
-    conn.close()
-    return db_identifier
-
 
 def create_app(
     srid: int = 2056,
@@ -58,7 +51,6 @@ def create_app(
     cwd = Path(__file__).parent.resolve()
     variables = {
         "SRID": psycopg.sql.SQL(f"{srid}"),
-        "db_identifier": psycopg.sql.SQL(get_db_identifier(pg_service)),
     }  # when dropping psycopg2 support, we can use the srid var directly
 
     if drop_schema:
@@ -222,8 +214,6 @@ def create_app(
     ).create()
 
     run_sql_file("triggers/network.sql", pg_service)
-
-    run_sql_file("tww_app_roles.sql", pg_service, variables)
 
 
 if __name__ == "__main__":
