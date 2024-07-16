@@ -2231,10 +2231,15 @@ class InterlisExporterToIntermediateSchema:
             messstelle = self.model_classes_interlis.messstelle(
                 **self.vsa_base_common(row, "messstelle"),
                 # --- measuring_point ---
-                zweck=row.purpose,
+                # zweck is a valuelist
+                # zweck=row.purpose,
+                zweck=self.get_vl(row.purpose__REL),
                 bemerkung=row.remark,
-                staukoerper=row.damming_device,
+                # staukoerper is a valuelist
+                # staukoerper=row.damming_device,
+                staukoerper=self.get_vl(row.damming_device__REL),
                 bezeichnung=row.identifier,
+                # here art is not a value list
                 art=row.kind,
                 lage=row.situation_geometry,
                 betreiberref=self.get_tid(row.fk_operator__REL),
