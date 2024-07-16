@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>6.2. Prepare Data &mdash; TWW dev Dokumentation</title>
+  <title>7.2. Prepare Data &mdash; TWW dev Dokumentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
@@ -18,12 +18,12 @@
         <script src="../_static/documentation_options.js?v=419ed147"></script>
         <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../_static/translations.js?v=70a09b52"></script>
+        <script src="../_static/translations.js?v=79cc9f76"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Stichwortverzeichnis" href="../genindex.html" />
     <link rel="search" title="Suche" href="../search.html" />
-    <link rel="next" title="6.3. Generate SWMM File" href="Generate-SWMM-File.html" />
-    <link rel="prev" title="6.1. Storm Water Management Model (SWMM)" href="SWMM.html" /> 
+    <link rel="next" title="7.3. Generate SWMM File" href="Generate-SWMM-File.html" />
+    <link rel="prev" title="7.1. Storm Water Management Model (SWMM)" href="SWMM.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -53,25 +53,26 @@
 <li class="toctree-l1"><a class="reference internal" href="../installation-guide/index.html">2. TWW Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">3. TWW Benutzerhandbuch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">4. Administratorhandbuch</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../vm/index.html">5. Demo virtuelle Maschine</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">6. SWMM Data Exchange</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="SWMM.html">6.1. Storm Water Management Model (SWMM)</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">6.2. Prepare Data</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#coefficient-of-friction">6.2.1. Coefficient of friction</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#populate-default-coefficient-of-friction">6.2.1.1. Populate default coefficient of friction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extensions-guide/index.html">5. Official TWW extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vm/index.html">6. Demo virtuelle Maschine</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">7. SWMM Data Exchange</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="SWMM.html">7.1. Storm Water Management Model (SWMM)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">7.2. Prepare Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#coefficient-of-friction">7.2.1. Coefficient of friction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#populate-default-coefficient-of-friction">7.2.1.1. Populate default coefficient of friction</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="Generate-SWMM-File.html">6.3. Generate SWMM File</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Check-SWMM-File.html">6.4. Check SWMM File</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Run-SWMM-Simulation.html">6.5. Run SWMM Simulation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Process-Results.html">6.6. Import results</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Mapping.html">6.7. Mapping</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Developpers-Advanced-Users.html">6.8. For developpers and advanced users</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Generate-SWMM-File.html">7.3. Generate SWMM File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Check-SWMM-File.html">7.4. Check SWMM File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Run-SWMM-Simulation.html">7.5. Run SWMM Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Process-Results.html">7.6. Import results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Mapping.html">7.7. Mapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Developpers-Advanced-Users.html">7.8. For developpers and advanced users</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">7. Übersetzungen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">8. Übersetzungen</a></li>
 </ul>
 
         </div>
@@ -88,8 +89,8 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">6. </span>SWMM Data Exchange</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">6.2. </span>Prepare Data</li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">7. </span>SWMM Data Exchange</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">7.2. </span>Prepare Data</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/tww_swmm/Prepare-Data.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
       </li>
@@ -100,9 +101,9 @@
            <div itemprop="articleBody">
              
   <section id="prepare-data">
-<span id="id1"></span><h1><span class="section-number">6.2. </span>Prepare Data<a class="headerlink" href="#prepare-data" title="Link to this heading"></a></h1>
+<span id="id1"></span><h1><span class="section-number">7.2. </span>Prepare Data<a class="headerlink" href="#prepare-data" title="Link to this heading"></a></h1>
 <section id="coefficient-of-friction">
-<span id="id2"></span><h2><span class="section-number">6.2.1. </span>Coefficient of friction<a class="headerlink" href="#coefficient-of-friction" title="Link to this heading"></a></h2>
+<span id="id2"></span><h2><span class="section-number">7.2.1. </span>Coefficient of friction<a class="headerlink" href="#coefficient-of-friction" title="Link to this heading"></a></h2>
 <ul>
 <li><p>The plugin will export the roughness according to these priorities:</p>
 <blockquote>
@@ -121,7 +122,7 @@
 <p>The formula to convert from Strickler to Coolebrook is documented in <a class="reference external" href="https://pdfslide.net/documents/atv-dvwk-a-110-e-55846635d4eef.html">*ATV-DVWK STANDARD ATV-DVWK-A 110E, Hydraulic Dimensioning and Performance Verification of Sewers and Drains September 2001*</a></p>
 </div>
 <section id="populate-default-coefficient-of-friction">
-<h3><span class="section-number">6.2.1.1. </span>Populate default coefficient of friction<a class="headerlink" href="#populate-default-coefficient-of-friction" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.2.1.1. </span>Populate default coefficient of friction<a class="headerlink" href="#populate-default-coefficient-of-friction" title="Link to this heading"></a></h3>
 <p>The table <code class="docutils literal notranslate"><span class="pre">tww_swmm.reach_coefficient_of_friction</span></code> contains default coefficient of Strickler for the reach materials.
 The file <code class="docutils literal notranslate"><span class="pre">../project/qml/reach_coefficient_of_friction.qml</span></code> is the layer definition, that you can import in your QGIS project.
 If the default values don’t match your needs you can edit them.
@@ -139,8 +140,8 @@ You can choose if you want to overwrite or not the values existing in this attri
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="SWMM.html" class="btn btn-neutral float-left" title="6.1. Storm Water Management Model (SWMM)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
-        <a href="Generate-SWMM-File.html" class="btn btn-neutral float-right" title="6.3. Generate SWMM File" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="SWMM.html" class="btn btn-neutral float-left" title="7.1. Storm Water Management Model (SWMM)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
+        <a href="Generate-SWMM-File.html" class="btn btn-neutral float-right" title="7.3. Generate SWMM File" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

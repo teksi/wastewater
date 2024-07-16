@@ -18,7 +18,7 @@
         <script src="../../_static/documentation_options.js?v=b46de64f"></script>
         <script src="../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../../_static/translations.js?v=bf059b8c"></script>
+        <script src="../../_static/translations.js?v=041d0952"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Recherche" href="../../search.html" />
@@ -52,13 +52,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">1. TEKSI Assainissement (TWW)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">2. TWW Installation Guide</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. TWW User Guide</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="index.html">3.1. Overview of TWW</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">3.1. Aperçu de TWW</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="overview.html">3.1.1. Introduction et aperçu</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">3.1.2. Explication des couches</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#main-layers">3.1.2.1. Couches principales</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#wastewater-structures">3.1.2.2. Ouvrages d’assainissement</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#maintenance-events-tww-app-vw-tww-maintenance">3.1.2.3. Maintenance events <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_maintenance</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#value-lists-tww-vl">3.1.2.4. Value Lists <code class="docutils literal notranslate"><span class="pre">tww_vl.*</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#maintenance-events-tww-app-vw-tww-maintenance">3.1.2.3. Evénements de maintenance``tww_app.vw_tww_maintenance``</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#value-lists-tww-vl">3.1.2.4. Listes de valeurs <code class="docutils literal notranslate"><span class="pre">tww_vl.*</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#hydraulic">3.1.2.5. Hydraulique</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#topology">3.1.2.6. Topologie</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#catchment-tww-od-catchment-area">3.1.2.7. Catchment <code class="docutils literal notranslate"><span class="pre">tww_od.catchment_area</span></code></a></li>
@@ -78,9 +78,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">4. Guide d’administration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../vm/index.html">5. Machine virtuelle de démonstration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../tww_swmm/index.html">6. SWMM Data Exchange</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">7. Traduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../extensions-guide/index.html">5. Official TWW extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vm/index.html">6. Machine virtuelle de démonstration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tww_swmm/index.html">7. SWMM Data Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">8. Traduction</a></li>
 </ul>
 
         </div>
@@ -98,7 +99,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>TWW User Guide</a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.1. </span>Overview of TWW</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.1. </span>Aperçu de TWW</a></li>
       <li class="breadcrumb-item active"><span class="section-number">3.1.2. </span>Explication des couches</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/user-guide/layerexplanations/layerexplanation.rst.txt" rel="nofollow"> Afficher la source de la page</a>
@@ -113,28 +114,28 @@
 <span id="layer-explanation"></span><h1><span class="section-number">3.1.2. </span>Explication des couches<a class="headerlink" href="#layers-explanation" title="Lien vers cette rubrique"></a></h1>
 <section id="main-layers">
 <h2><span class="section-number">3.1.2.1. </span>Couches principales<a class="headerlink" href="#main-layers" title="Lien vers cette rubrique"></a></h2>
-<p>TWW is constructed around two main layers :</p>
+<p>TWW est construit autour de deux couches principales :</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>Wastewater structures <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_wastewater_structure</span></code></p></li>
-<li><p>Reaches <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_reach</span></code></p></li>
+<li><p>Les ouvrages d’assainissement <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_wastewater_structure</span></code></p></li>
+<li><p>Les tronçons <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_reach</span></code></p></li>
 </ul>
 </div></blockquote>
 <section id="wastewater-structures-tww-app-vw-tww-wastewater-structure">
-<h3><span class="section-number">3.1.2.1.1. </span>Wastewater structures <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_wastewater_structure</span></code><a class="headerlink" href="#wastewater-structures-tww-app-vw-tww-wastewater-structure" title="Lien vers cette rubrique"></a></h3>
+<h3><span class="section-number">3.1.2.1.1. </span>Les ouvrages d’assainissement <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_wastewater_structure</span></code><a class="headerlink" href="#wastewater-structures-tww-app-vw-tww-wastewater-structure" title="Lien vers cette rubrique"></a></h3>
 <p>Couche principale pour les ouvrages standards, installations spéciales, installations d’infiltration, exutoires (et stations d’épurations des eaux (STEP)). Créer une nouvelle entité dans cette couche crée toujours une nouvelle structure d’assainissement, un nouveau couvercle et un nouveau noeud réseau. Dans le formulaire d’édition, vous avez accès aux tables liées (ex. parties de structures, évènements de maintenance)</p>
 <figure class="align-default">
 <img alt="user-guide/layerexplanations/images/schema_vw_tww_wastewater_structure.jpg" src="user-guide/layerexplanations/images/schema_vw_tww_wastewater_structure.jpg" />
 </figure>
-<p>Even if there are several covers or wastewater nodes, there is just one point for every wastewater structure in this layer. By default, the position of the wastewater node created first is used as the point coordinate.</p>
+<p>Même si un ouvrage est composé de plusieurs couvercles et nœuds réseaux,  un seul point par ouvrage est représenté au sein de cette couche. Par défaut, la position du premier nœud réseau est utilisée comme coordonnées pour ce point.</p>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
 <p>Ne pas exporter les coordonnées de ces points comme couvercles. Utiliser la couche vw_cover pour cela.</p>
 </div>
 </section>
 <section id="reaches-tww-app-vw-tww-reach">
-<h3><span class="section-number">3.1.2.1.2. </span>Reaches <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_reach</span></code><a class="headerlink" href="#reaches-tww-app-vw-tww-reach" title="Lien vers cette rubrique"></a></h3>
-<p>Main layer for line-wastewater structures (channels). Creating a new record in this layer always creates a new reach and a new channel. In the edit form, you have access to a lot of the related tables (e.g. structure parts, maintenance events).</p>
+<h3><span class="section-number">3.1.2.1.2. </span>Les tronçons <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_reach</span></code><a class="headerlink" href="#reaches-tww-app-vw-tww-reach" title="Lien vers cette rubrique"></a></h3>
+<p>Couche principale pour les ouvrages linéaires d’assainissement (canalisations). Créer une nouvelle entité dans cette couche crée toujours un nouveau tronçon et une nouvelle canalisation. Dans le formulaire d’édition, vous avez accès aux tables liées (ex. parties de structures, évènements de maintenance, fichiers)</p>
 <figure class="align-default">
 <img alt="user-guide/layerexplanations/images/schema_vw_tww_reach.jpg" src="user-guide/layerexplanations/images/schema_vw_tww_reach.jpg" />
 </figure>
@@ -143,25 +144,25 @@
 <section id="wastewater-structures">
 <h2><span class="section-number">3.1.2.2. </span>Ouvrages d’assainissement<a class="headerlink" href="#wastewater-structures" title="Lien vers cette rubrique"></a></h2>
 <section id="wastewater-structures-details-tww-app-wastewater-structure">
-<h3><span class="section-number">3.1.2.2.1. </span>Wastewater Structures Details <code class="docutils literal notranslate"><span class="pre">tww_app.wastewater_structure</span></code><a class="headerlink" href="#wastewater-structures-details-tww-app-wastewater-structure" title="Lien vers cette rubrique"></a></h3>
-<p>This layer shows and enables you to edit the detailed geometries of wastewater structures. You can add a new detailed geometry using the layer <cite>vw_tww_wastewater_structure</cite> action called digitize detailed geometry.</p>
+<h3><span class="section-number">3.1.2.2.1. </span>Détails d’ouvrages d’assainissement <code class="docutils literal notranslate"><span class="pre">tww_od.wastewater_structure</span></code><a class="headerlink" href="#wastewater-structures-details-tww-app-wastewater-structure" title="Lien vers cette rubrique"></a></h3>
+<p>Cette couche permet de visualiser et d’éditer les détails de géométrie des ouvrages d’assainissement. Il est possible de digitaliser une nouvelle géométrie de détail en utilisation l’action digitize detailed geometry de la couche <cite>vw_tww_wastewater_structure</cite>.</p>
 <p>Voir <a class="reference external" href="../digitizing/digitizingdetailedgeometry.html">digitalisation des géométries de détail</a> pour plus d’informations.</p>
 </section>
 <section id="structure-parts-tww-app-structure-part">
-<h3><span class="section-number">3.1.2.2.2. </span>Structure Parts <code class="docutils literal notranslate"><span class="pre">tww_app.structure_part</span></code><a class="headerlink" href="#structure-parts-tww-app-structure-part" title="Lien vers cette rubrique"></a></h3>
-<p>Cover is the only structure part with a point-geometry itself. All other structure parts are just linked to their wastewater structures and should by only edited by the main layers (<cite>vw_tww_wastewater_structure</cite> and <cite>vw_tww_reach</cite>).</p>
+<h3><span class="section-number">3.1.2.2.2. </span>Parties d’ouvrages <code class="docutils literal notranslate"><span class="pre">tww_od.structure_part</span></code><a class="headerlink" href="#structure-parts-tww-app-structure-part" title="Lien vers cette rubrique"></a></h3>
+<p>Les couvercles sont la seule partie d’ouvrage comprenant une géométrie de type point. Toutes les autres parties d’ouvrages sont liées à leur ouvrage d’assainissement et ne devraient être éditées qu’à travers les couches principales (<cite>vw_tww_wastewater_structure</cite> and <cite>vw_tww_reach</cite>).</p>
 </section>
 <section id="covers-tww-app-vw-cover">
-<h3><span class="section-number">3.1.2.2.3. </span>Covers <code class="docutils literal notranslate"><span class="pre">tww_app.vw_cover</span></code><a class="headerlink" href="#covers-tww-app-vw-cover" title="Lien vers cette rubrique"></a></h3>
+<h3><span class="section-number">3.1.2.2.3. </span>Couvercles <code class="docutils literal notranslate"><span class="pre">tww_app.vw_cover</span></code><a class="headerlink" href="#covers-tww-app-vw-cover" title="Lien vers cette rubrique"></a></h3>
 <p>Use this layer to change the situation of some specific cover (and not the whole wastewater structure) or to add a new cover to an existing wastewater structure. You can add an additional covers in the covers-tab of the <cite>vw_tww_wastewater_structure</cite> too. Additionally, use this layer to show the detailed position of the covers (e.g. in network_plan or pipeline_registry) or to export the cover positions <cite>situation_geometry</cite>.</p>
 </section>
 <section id="channels-tww-app-vw-channel">
-<h3><span class="section-number">3.1.2.2.4. </span>Channels <code class="docutils literal notranslate"><span class="pre">tww_app.vw_channel</span></code><a class="headerlink" href="#channels-tww-app-vw-channel" title="Lien vers cette rubrique"></a></h3>
-<p>The channel-class has no geometry and is therefore mostly changed in the vw_tww_reach layer.</p>
+<h3><span class="section-number">3.1.2.2.4. </span>Canalisations <code class="docutils literal notranslate"><span class="pre">tww_app.vw_channel</span></code><a class="headerlink" href="#channels-tww-app-vw-channel" title="Lien vers cette rubrique"></a></h3>
+<p>La classe des canalisations n’a pas de géométries et est pour cela le plus souvent édité dans la couche tronçons <cite>vw_tww_reach</cite>.</p>
 </section>
 <section id="organisations-tww-od-organisation">
 <h3><span class="section-number">3.1.2.2.5. </span>Organisations <code class="docutils literal notranslate"><span class="pre">tww_od.organisation</span></code><a class="headerlink" href="#organisations-tww-od-organisation" title="Lien vers cette rubrique"></a></h3>
-<p>organisation contains the organisation that you can select in attributes like fk_dataowner, fk_operator, fk_provider, fk_owner, etc.</p>
+<p>La table organisations contient les organisations sélectionnables à l’aide des attributs fk_dataowner, fk_operator, fk_provider, fk_owner, etc.</p>
 <blockquote>
 <div><figure class="align-default">
 <img alt="../../_images/od_organisation.jpg" src="../../_images/od_organisation.jpg" />
@@ -171,19 +172,19 @@
 </section>
 </section>
 <section id="maintenance-events-tww-app-vw-tww-maintenance">
-<h2><span class="section-number">3.1.2.3. </span>Maintenance events <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_maintenance</span></code><a class="headerlink" href="#maintenance-events-tww-app-vw-tww-maintenance" title="Lien vers cette rubrique"></a></h2>
+<h2><span class="section-number">3.1.2.3. </span>Evénements de maintenance``tww_app.vw_tww_maintenance``<a class="headerlink" href="#maintenance-events-tww-app-vw-tww-maintenance" title="Lien vers cette rubrique"></a></h2>
 <p>Maintenance events can be created through the view tww_od.vw_tww_maintenance.</p>
 <p>Ces événements de maintenance sont utilisé dans l’onglet maintenance des tables principales. Ils peuvent être liés à un ou plusieurs ouvrages.</p>
 <p>Voir <a class="reference external" href="../editing/maintenance_events.html">Edition des événements de maintenance</a> pour plus d’information.</p>
 </section>
 <section id="value-lists-tww-vl">
-<h2><span class="section-number">3.1.2.4. </span>Value Lists <code class="docutils literal notranslate"><span class="pre">tww_vl.*</span></code><a class="headerlink" href="#value-lists-tww-vl" title="Lien vers cette rubrique"></a></h2>
+<h2><span class="section-number">3.1.2.4. </span>Listes de valeurs <code class="docutils literal notranslate"><span class="pre">tww_vl.*</span></code><a class="headerlink" href="#value-lists-tww-vl" title="Lien vers cette rubrique"></a></h2>
 <p>Ces listes de valeurs sont définies dans le modèle de données VSA. Ne pas changer.</p>
 </section>
 <section id="hydraulic">
 <h2><span class="section-number">3.1.2.5. </span>Hydraulique<a class="headerlink" href="#hydraulic" title="Lien vers cette rubrique"></a></h2>
 <section id="wastewater-nodes-tww-app-vw-wastewater-node">
-<h3><span class="section-number">3.1.2.5.1. </span>Wastewater nodes <code class="docutils literal notranslate"><span class="pre">tww_app.vw_wastewater_node</span></code><a class="headerlink" href="#wastewater-nodes-tww-app-vw-wastewater-node" title="Lien vers cette rubrique"></a></h3>
+<h3><span class="section-number">3.1.2.5.1. </span>Noeuds réseaux <code class="docutils literal notranslate"><span class="pre">tww_app.vw_wastewater_node</span></code><a class="headerlink" href="#wastewater-nodes-tww-app-vw-wastewater-node" title="Lien vers cette rubrique"></a></h3>
 <p>Use this layer to change the situation of one selected wastewater node (and not the whole wastewater structure) or if you want to add a new wastewater node to an existing wastewater structure. You can add additional wastewater nodes in the wastewater nodes-tab of the <cite>vw_tww_wastewater_structure</cite> too.</p>
 </section>
 <section id="overflow-tables-tww-app-vw-tww-overflow">

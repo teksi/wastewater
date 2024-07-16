@@ -24,6 +24,7 @@ Contents
    installation-guide/index
    user-guide/index
    admin-guide/index
+   extensions-guide/index
    vm/index
    wincan2tww/index
    tww_swmm/index

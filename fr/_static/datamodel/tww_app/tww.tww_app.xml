@@ -1984,6 +1984,82 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="remark" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="renovation_demand" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
       </table>
+      <table name="vw_tww_additional_ws" numRows="0" remarks="" schema="tww_app" type="VIEW" viewSql=" SELECT ws.identifier,&#10;        CASE&#10;            WHEN (wt.obj_id IS NOT NULL) THEN 'wwtp_structure'::text&#10;            WHEN (sm.obj_id IS NOT NULL) THEN 'small_treatment_plant'::text&#10;            WHEN (dt.obj_id IS NOT NULL) THEN 'drainless_toilet'::text&#10;            ELSE 'unknown'::text&#10;        END AS ws_type,&#10;    wt.kind AS wt_kind,&#10;    sm.function AS sm_function,&#10;    ws.fk_owner,&#10;    ws.status,&#10;    ws.obj_id,&#10;    ws._depth,&#10;    ws.accessibility,&#10;    ws.condition_score,&#10;    ws.contract_section,&#10;    ws.elevation_determination,&#10;    ws.financing,&#10;    ws.fk_dataowner,&#10;    ws.fk_operator,&#10;    ws.fk_provider,&#10;    ws.gross_costs,&#10;    ws.inspection_interval,&#10;    ws.last_modification,&#10;    ws.location_name,&#10;    ws.records,&#10;    ws.remark,&#10;    ws.renovation_necessity,&#10;    ws.replacement_value,&#10;    ws.rv_base_year,&#10;    ws.rv_construction_type,&#10;    ws.status_survey_year,&#10;    ws.structure_condition,&#10;    ws.subsidies,&#10;    ws.urgency_figure,&#10;    ws.year_of_construction,&#10;    ws.year_of_replacement,&#10;    main_co_sp.identifier AS co_identifier,&#10;    main_co_sp.remark AS co_remark,&#10;    main_co_sp.renovation_demand AS co_renovation_demand,&#10;    main_co.obj_id AS co_obj_id,&#10;    main_co.brand AS co_brand,&#10;    main_co.cover_shape AS co_shape,&#10;    main_co.diameter AS co_diameter,&#10;    main_co.fastening AS co_fastening,&#10;    main_co.level AS co_level,&#10;    main_co.material AS co_material,&#10;    main_co.positional_accuracy AS co_positional_accuracy,&#10;    main_co.sludge_bucket AS co_sludge_bucket,&#10;    main_co.venting AS co_venting,&#10;    (st_force2d(COALESCE(wn.situation3d_geometry, main_co.situation3d_geometry)))::geometry(Point,2056) AS situation3d_geometry,&#10;    wt.fk_waste_water_treatment_plant AS wt_fk_waste_water_treatment_plant,&#10;    sm.approval_number AS sm_approval_number,&#10;    sm.installation_number AS sm_installation_number,&#10;    sm.remote_monitoring AS sm_remote_monitoring,&#10;    dt.kind AS to_kind,&#10;    wn.obj_id AS wn_obj_id,&#10;    wn._function_hierarchic AS wn__function_hierarchic,&#10;    wn._status AS wn__status,&#10;    wn._usage_current AS wn__usage_current,&#10;    wn.backflow_level_current AS wn_backflow_level_current,&#10;    wn.bottom_level AS wn_bottom_level,&#10;    wn.elevation_accuracy AS wn_elevation_accuracy,&#10;    wn.fk_hydr_geometry AS wn_fk_hydr_geometry,&#10;    wn.function_node_amelioration AS wn_function_node_amelioration,&#10;    wn.wwtp_number AS wn_wwtp_number,&#10;    ne.fk_dataowner AS wn_fk_dataowner,&#10;    ne.fk_provider AS wn_fk_provider,&#10;    ne.fk_wastewater_structure AS wn_fk_wastewater_structure,&#10;    ne.identifier AS wn_identifier,&#10;    ne.last_modification AS wn_last_modification,&#10;    ne.remark AS wn_remark,&#10;    ws._label,&#10;    ws._cover_label,&#10;    ws._bottom_label,&#10;    ws._input_label,&#10;    ws._output_label,&#10;    wn._usage_current AS _channel_usage_current,&#10;    wn._function_hierarchic AS _channel_function_hierarchic&#10;   FROM ((((((((((((tww_od.wastewater_structure ws&#10;     LEFT JOIN tww_od.cover main_co ON (((main_co.obj_id)::text = (ws.fk_main_cover)::text)))&#10;     LEFT JOIN tww_od.structure_part main_co_sp ON (((main_co_sp.obj_id)::text = (ws.fk_main_cover)::text)))&#10;     LEFT JOIN tww_od.wwtp_structure wt ON (((wt.obj_id)::text = (ws.obj_id)::text)))&#10;     LEFT JOIN tww_od.small_treatment_plant sm ON (((sm.obj_id)::text = (ws.obj_id)::text)))&#10;     LEFT JOIN tww_od.drainless_toilet dt ON (((dt.obj_id)::text = (ws.obj_id)::text)))&#10;     LEFT JOIN tww_od.wastewater_networkelement ne ON (((ne.obj_id)::text = (ws.fk_main_wastewater_node)::text)))&#10;     LEFT JOIN tww_od.wastewater_node wn ON (((wn.obj_id)::text = (ws.fk_main_wastewater_node)::text)))&#10;     LEFT JOIN tww_od.channel ch ON (((ch.obj_id)::text = (ws.obj_id)::text)))&#10;     LEFT JOIN tww_od.manhole ma ON (((ma.obj_id)::text = (ws.obj_id)::text)))&#10;     LEFT JOIN tww_od.special_structure ss ON (((ss.obj_id)::text = (ws.obj_id)::text)))&#10;     LEFT JOIN tww_od.discharge_point dp ON (((dp.obj_id)::text = (ws.obj_id)::text)))&#10;     LEFT JOIN tww_od.infiltration_installation ii ON (((ii.obj_id)::text = (ws.obj_id)::text)))&#10;  WHERE ((('-1'::text = ALL ((ARRAY[ch.obj_id, ma.obj_id, ss.obj_id, dp.obj_id, ii.obj_id])::text[])) IS NULL) AND (('-2'::text = ALL ((ARRAY[ch.obj_id, ma.obj_id, ss.obj_id, dp.obj_id, ii.obj_id])::text[])) IS NULL));">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="ws_type" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="wt_kind" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="sm_function" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="fk_owner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="status" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="tww_sys.generate_oid('tww_od'::text, 'wastewater_structure'::text)" digits="0" id="6" name="obj_id" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="7" name="_depth" nullable="true" remarks="" size="6" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="accessibility" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="2" id="9" name="condition_score" nullable="true" remarks="" size="3" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="contract_section" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="elevation_determination" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="financing" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="13" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="fk_operator" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="15" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="2" id="16" name="gross_costs" nullable="true" remarks="" size="10" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="2" id="17" name="inspection_interval" nullable="true" remarks="" size="4" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="18" name="last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="19" name="location_name" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="20" name="records" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="21" name="remark" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="22" name="renovation_necessity" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="2" id="23" name="replacement_value" nullable="true" remarks="" size="10" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="24" name="rv_base_year" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="25" name="rv_construction_type" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="26" name="status_survey_year" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="27" name="structure_condition" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="2" id="28" name="subsidies" nullable="true" remarks="" size="10" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="29" name="urgency_figure" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="30" name="year_of_construction" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="31" name="year_of_replacement" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="32" name="co_identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="33" name="co_remark" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="34" name="co_renovation_demand" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="tww_sys.generate_oid('tww_od'::text, 'cover'::text)" digits="0" id="35" name="co_obj_id" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="36" name="co_brand" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="37" name="co_shape" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="38" name="co_diameter" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="39" name="co_fastening" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="40" name="co_level" nullable="true" remarks="" size="7" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="41" name="co_material" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="42" name="co_positional_accuracy" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="43" name="co_sludge_bucket" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="44" name="co_venting" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="45" name="situation3d_geometry" nullable="true" remarks="" size="2147483647" type="geometry" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="46" name="wt_fk_waste_water_treatment_plant" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="47" name="sm_approval_number" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="48" name="sm_installation_number" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="49" name="sm_remote_monitoring" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="50" name="to_kind" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="tww_sys.generate_oid('tww_od'::text, 'wastewater_node'::text)" digits="0" id="51" name="wn_obj_id" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="52" name="wn__function_hierarchic" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="53" name="wn__status" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="54" name="wn__usage_current" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="55" name="wn_backflow_level_current" nullable="true" remarks="" size="7" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="56" name="wn_bottom_level" nullable="true" remarks="" size="7" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="57" name="wn_elevation_accuracy" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="58" name="wn_fk_hydr_geometry" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="59" name="wn_function_node_amelioration" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="60" name="wn_wwtp_number" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="61" name="wn_fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="62" name="wn_fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="63" name="wn_fk_wastewater_structure" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="64" name="wn_identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="65" name="wn_last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="66" name="wn_remark" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="67" name="_label" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="68" name="_cover_label" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="69" name="_bottom_label" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="70" name="_input_label" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="71" name="_output_label" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="72" name="_channel_usage_current" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="73" name="_channel_function_hierarchic" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+      </table>
       <table name="vw_tww_damage" numRows="0" remarks="" schema="tww_app" type="VIEW" viewSql=" SELECT&#10;        CASE&#10;            WHEN (channel.obj_id IS NOT NULL) THEN 'channel'::tww_app.damage_type&#10;            WHEN (manhole.obj_id IS NOT NULL) THEN 'manhole'::tww_app.damage_type&#10;            ELSE 'damage'::tww_app.damage_type&#10;        END AS damage_type,&#10;    damage.obj_id,&#10;    damage.comments,&#10;    damage.connection,&#10;    damage.fk_dataowner,&#10;    damage.fk_examination,&#10;    damage.fk_provider,&#10;    damage.last_modification,&#10;    damage.line_damage,&#10;    damage.single_damage_class,&#10;    damage.video_counter,&#10;    damage.view_parameters,&#10;    channel.channel_damage_begin,&#10;    channel.channel_damage_code,&#10;    channel.channel_damage_end,&#10;    channel.channel_distance,&#10;    channel.channel_quantification1,&#10;    channel.channel_quantification2,&#10;    manhole.manhole_damage_begin,&#10;    manhole.manhole_damage_code,&#10;    manhole.manhole_damage_end,&#10;    manhole.manhole_distance,&#10;    manhole.manhole_quantification1,&#10;    manhole.manhole_quantification2,&#10;    manhole.manhole_shaft_area&#10;   FROM ((tww_od.damage damage&#10;     LEFT JOIN tww_od.damage_channel channel ON (((channel.obj_id)::text = (damage.obj_id)::text)))&#10;     LEFT JOIN tww_od.damage_manhole manhole ON (((manhole.obj_id)::text = (damage.obj_id)::text)));">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="damage_type" nullable="true" remarks="" size="2147483647" type="&quot;tww_app&quot;.&quot;damage_type&quot;" typeCode="12"/>
          <column autoUpdated="false" defaultValue="tww_sys.generate_oid('tww_od'::text, 'damage'::text)" digits="0" id="1" name="obj_id" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
@@ -2193,7 +2269,7 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="91" name="rp_to_position_of_connection" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="92" name="rp_to_remark" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
       </table>
-      <table name="vw_tww_wastewater_structure" numRows="0" remarks="" schema="tww_app" type="VIEW" viewSql=" SELECT ws.identifier,&#10;        CASE&#10;            WHEN (ma.obj_id IS NOT NULL) THEN 'manhole'::text&#10;            WHEN (ss.obj_id IS NOT NULL) THEN 'special_structure'::text&#10;            WHEN (dp.obj_id IS NOT NULL) THEN 'discharge_point'::text&#10;            WHEN (ii.obj_id IS NOT NULL) THEN 'infiltration_installation'::text&#10;            ELSE 'unknown'::text&#10;        END AS ws_type,&#10;    ma.function AS ma_function,&#10;    ss.function AS ss_function,&#10;    ws.fk_owner,&#10;    ws.status,&#10;    ws.obj_id,&#10;    ws._depth,&#10;    ws.accessibility,&#10;    ws.condition_score,&#10;    ws.contract_section,&#10;    ws.elevation_determination,&#10;    ws.financing,&#10;    ws.fk_dataowner,&#10;    ws.fk_operator,&#10;    ws.fk_provider,&#10;    ws.gross_costs,&#10;    ws.inspection_interval,&#10;    ws.last_modification,&#10;    ws.location_name,&#10;    ws.records,&#10;    ws.remark,&#10;    ws.renovation_necessity,&#10;    ws.replacement_value,&#10;    ws.rv_base_year,&#10;    ws.rv_construction_type,&#10;    ws.status_survey_year,&#10;    ws.structure_condition,&#10;    ws.subsidies,&#10;    ws.urgency_figure,&#10;    ws.year_of_construction,&#10;    ws.year_of_replacement,&#10;    main_co_sp.identifier AS co_identifier,&#10;    main_co_sp.remark AS co_remark,&#10;    main_co_sp.renovation_demand AS co_renovation_demand,&#10;    main_co.obj_id AS co_obj_id,&#10;    main_co.brand AS co_brand,&#10;    main_co.cover_shape AS co_shape,&#10;    main_co.diameter AS co_diameter,&#10;    main_co.fastening AS co_fastening,&#10;    main_co.level AS co_level,&#10;    main_co.material AS co_material,&#10;    main_co.positional_accuracy AS co_positional_accuracy,&#10;    main_co.sludge_bucket AS co_sludge_bucket,&#10;    main_co.venting AS co_venting,&#10;    (st_force2d(COALESCE(wn.situation3d_geometry, main_co.situation3d_geometry)))::geometry(Point,2056) AS situation3d_geometry,&#10;    ma._orientation AS ma_orientation,&#10;    ma.amphibian_exit AS ma_amphibian_exit,&#10;    ma.dimension1 AS ma_dimension1,&#10;    ma.dimension2 AS ma_dimension2,&#10;    ma.material AS ma_material,&#10;    ma.possibility_intervention AS ma_possibility_intervention,&#10;    ma.surface_inflow AS ma_surface_inflow,&#10;    ss.amphibian_exit AS ss_amphibian_exit,&#10;    ss.bypass AS ss_bypass,&#10;    ss.emergency_overflow AS ss_emergency_overflow,&#10;    ss.possibility_intervention AS ss_possibility_intervention,&#10;    ss.stormwater_tank_arrangement AS ss_stormwater_tank_arrangement,&#10;    ss.upper_elevation AS ss_upper_elevation,&#10;    ii.absorption_capacity AS ii_absorption_capacity,&#10;    ii.defects AS ii_defects,&#10;    ii.dimension1 AS ii_dimension1,&#10;    ii.dimension2 AS ii_dimension2,&#10;    ii.distance_to_aquifer AS ii_distance_to_aquifer,&#10;    ii.effective_area AS ii_effective_area,&#10;    ii.emergency_overflow AS ii_emergency_overflow,&#10;    ii.filling_material AS ii_filling_material,&#10;    ii.fk_dss15_aquifer AS ii_fk_dss15_aquifer,&#10;    ii.kind AS ii_kind,&#10;    ii.labeling AS ii_labeling,&#10;    ii.seepage_utilization AS ii_seepage_utilization,&#10;    ii.upper_elevation AS ii_upper_elevation,&#10;    ii.vehicle_access AS ii_vehicle_access,&#10;    ii.watertightness AS ii_watertightness,&#10;    dp.highwater_level AS dp_highwater_level,&#10;    dp.relevance AS dp_relevance,&#10;    dp.terrain_level AS dp_terrain_level,&#10;    dp.upper_elevation AS dp_upper_elevation,&#10;    dp.water_course_number AS dp_water_course_number,&#10;    dp.water_course_segment_canton AS dp_water_course_segment_canton,&#10;    dp.waterlevel_hydraulic AS dp_waterlevel_hydraulic,&#10;    wn.obj_id AS wn_obj_id,&#10;    wn._function_hierarchic AS wn__function_hierarchic,&#10;    wn._status AS wn__status,&#10;    wn._usage_current AS wn__usage_current,&#10;    wn.backflow_level_current AS wn_backflow_level_current,&#10;    wn.bottom_level AS wn_bottom_level,&#10;    wn.elevation_accuracy AS wn_elevation_accuracy,&#10;    wn.fk_hydr_geometry AS wn_fk_hydr_geometry,&#10;    wn.function_node_amelioration AS wn_function_node_amelioration,&#10;    wn.wwtp_number AS wn_wwtp_number,&#10;    ne.fk_dataowner AS wn_fk_dataowner,&#10;    ne.fk_provider AS wn_fk_provider,&#10;    ne.fk_wastewater_structure AS wn_fk_wastewater_structure,&#10;    ne.identifier AS wn_identifier,&#10;    ne.last_modification AS wn_last_modification,&#10;    ne.remark AS wn_remark,&#10;    ws._label,&#10;    ws._cover_label,&#10;    ws._bottom_label,&#10;    ws._input_label,&#10;    ws._output_label,&#10;    wn._usage_current AS _channel_usage_current,&#10;    wn._function_hierarchic AS _channel_function_hierarchic&#10;   FROM (((((((((tww_od.wastewater_structure ws&#10;     LEFT JOIN tww_od.cover main_co ON (((main_co.obj_id)::text = (ws.fk_main_cover)::text)))&#10;     LEFT JOIN tww_od.structure_part main_co_sp ON (((main_co_sp.obj_id)::text = (ws.fk_main_cover)::text)))&#10;     LEFT JOIN tww_od.manhole ma ON (((ma.obj_id)::text = (ws.obj_id)::text)))&#10;     LEFT JOIN tww_od.special_structure ss ON (((ss.obj_id)::text = (ws.obj_id)::text)))&#10;     LEFT JOIN tww_od.discharge_point dp ON (((dp.obj_id)::text = (ws.obj_id)::text)))&#10;     LEFT JOIN tww_od.infiltration_installation ii ON (((ii.obj_id)::text = (ws.obj_id)::text)))&#10;     LEFT JOIN tww_od.wastewater_networkelement ne ON (((ne.obj_id)::text = (ws.fk_main_wastewater_node)::text)))&#10;     LEFT JOIN tww_od.wastewater_node wn ON (((wn.obj_id)::text = (ws.fk_main_wastewater_node)::text)))&#10;     LEFT JOIN tww_od.channel ch ON (((ch.obj_id)::text = (ws.obj_id)::text)))&#10;  WHERE (ch.obj_id IS NULL);">
+      <table name="vw_tww_wastewater_structure" numRows="0" remarks="" schema="tww_app" type="VIEW" viewSql=" SELECT ws.identifier,&#10;        CASE&#10;            WHEN (ma.obj_id IS NOT NULL) THEN 'manhole'::text&#10;            WHEN (ss.obj_id IS NOT NULL) THEN 'special_structure'::text&#10;            WHEN (dp.obj_id IS NOT NULL) THEN 'discharge_point'::text&#10;            WHEN (ii.obj_id IS NOT NULL) THEN 'infiltration_installation'::text&#10;            ELSE 'unknown'::text&#10;        END AS ws_type,&#10;    ma.function AS ma_function,&#10;    ss.function AS ss_function,&#10;    ws.fk_owner,&#10;    ws.status,&#10;    ws.obj_id,&#10;    ws._depth,&#10;    ws.accessibility,&#10;    ws.condition_score,&#10;    ws.contract_section,&#10;    ws.elevation_determination,&#10;    ws.financing,&#10;    ws.fk_dataowner,&#10;    ws.fk_operator,&#10;    ws.fk_provider,&#10;    ws.gross_costs,&#10;    ws.inspection_interval,&#10;    ws.last_modification,&#10;    ws.location_name,&#10;    ws.records,&#10;    ws.remark,&#10;    ws.renovation_necessity,&#10;    ws.replacement_value,&#10;    ws.rv_base_year,&#10;    ws.rv_construction_type,&#10;    ws.status_survey_year,&#10;    ws.structure_condition,&#10;    ws.subsidies,&#10;    ws.urgency_figure,&#10;    ws.year_of_construction,&#10;    ws.year_of_replacement,&#10;    main_co_sp.identifier AS co_identifier,&#10;    main_co_sp.remark AS co_remark,&#10;    main_co_sp.renovation_demand AS co_renovation_demand,&#10;    main_co.obj_id AS co_obj_id,&#10;    main_co.brand AS co_brand,&#10;    main_co.cover_shape AS co_shape,&#10;    main_co.diameter AS co_diameter,&#10;    main_co.fastening AS co_fastening,&#10;    main_co.level AS co_level,&#10;    main_co.material AS co_material,&#10;    main_co.positional_accuracy AS co_positional_accuracy,&#10;    main_co.sludge_bucket AS co_sludge_bucket,&#10;    main_co.venting AS co_venting,&#10;    (st_force2d(COALESCE(wn.situation3d_geometry, main_co.situation3d_geometry)))::geometry(Point,2056) AS situation3d_geometry,&#10;    ma._orientation AS ma_orientation,&#10;    ma.amphibian_exit AS ma_amphibian_exit,&#10;    ma.dimension1 AS ma_dimension1,&#10;    ma.dimension2 AS ma_dimension2,&#10;    ma.material AS ma_material,&#10;    ma.possibility_intervention AS ma_possibility_intervention,&#10;    ma.surface_inflow AS ma_surface_inflow,&#10;    ss.amphibian_exit AS ss_amphibian_exit,&#10;    ss.bypass AS ss_bypass,&#10;    ss.emergency_overflow AS ss_emergency_overflow,&#10;    ss.possibility_intervention AS ss_possibility_intervention,&#10;    ss.stormwater_tank_arrangement AS ss_stormwater_tank_arrangement,&#10;    ss.upper_elevation AS ss_upper_elevation,&#10;    ii.absorption_capacity AS ii_absorption_capacity,&#10;    ii.defects AS ii_defects,&#10;    ii.dimension1 AS ii_dimension1,&#10;    ii.dimension2 AS ii_dimension2,&#10;    ii.distance_to_aquifer AS ii_distance_to_aquifer,&#10;    ii.effective_area AS ii_effective_area,&#10;    ii.emergency_overflow AS ii_emergency_overflow,&#10;    ii.filling_material AS ii_filling_material,&#10;    ii.fk_dss15_aquifer AS ii_fk_dss15_aquifer,&#10;    ii.kind AS ii_kind,&#10;    ii.labeling AS ii_labeling,&#10;    ii.seepage_utilization AS ii_seepage_utilization,&#10;    ii.upper_elevation AS ii_upper_elevation,&#10;    ii.vehicle_access AS ii_vehicle_access,&#10;    ii.watertightness AS ii_watertightness,&#10;    dp.highwater_level AS dp_highwater_level,&#10;    dp.relevance AS dp_relevance,&#10;    dp.terrain_level AS dp_terrain_level,&#10;    dp.upper_elevation AS dp_upper_elevation,&#10;    dp.water_course_number AS dp_water_course_number,&#10;    dp.water_course_segment_canton AS dp_water_course_segment_canton,&#10;    dp.waterlevel_hydraulic AS dp_waterlevel_hydraulic,&#10;    wn.obj_id AS wn_obj_id,&#10;    wn._function_hierarchic AS wn__function_hierarchic,&#10;    wn._status AS wn__status,&#10;    wn._usage_current AS wn__usage_current,&#10;    wn.backflow_level_current AS wn_backflow_level_current,&#10;    wn.bottom_level AS wn_bottom_level,&#10;    wn.elevation_accuracy AS wn_elevation_accuracy,&#10;    wn.fk_hydr_geometry AS wn_fk_hydr_geometry,&#10;    wn.function_node_amelioration AS wn_function_node_amelioration,&#10;    wn.wwtp_number AS wn_wwtp_number,&#10;    ne.fk_dataowner AS wn_fk_dataowner,&#10;    ne.fk_provider AS wn_fk_provider,&#10;    ne.fk_wastewater_structure AS wn_fk_wastewater_structure,&#10;    ne.identifier AS wn_identifier,&#10;    ne.last_modification AS wn_last_modification,&#10;    ne.remark AS wn_remark,&#10;    ws._label,&#10;    ws._cover_label,&#10;    ws._bottom_label,&#10;    ws._input_label,&#10;    ws._output_label,&#10;    wn._usage_current AS _channel_usage_current,&#10;    wn._function_hierarchic AS _channel_function_hierarchic&#10;   FROM ((((((((((((tww_od.wastewater_structure ws&#10;     LEFT JOIN tww_od.cover main_co ON (((main_co.obj_id)::text = (ws.fk_main_cover)::text)))&#10;     LEFT JOIN tww_od.structure_part main_co_sp ON (((main_co_sp.obj_id)::text = (ws.fk_main_cover)::text)))&#10;     LEFT JOIN tww_od.manhole ma ON (((ma.obj_id)::text = (ws.obj_id)::text)))&#10;     LEFT JOIN tww_od.special_structure ss ON (((ss.obj_id)::text = (ws.obj_id)::text)))&#10;     LEFT JOIN tww_od.discharge_point dp ON (((dp.obj_id)::text = (ws.obj_id)::text)))&#10;     LEFT JOIN tww_od.infiltration_installation ii ON (((ii.obj_id)::text = (ws.obj_id)::text)))&#10;     LEFT JOIN tww_od.wastewater_networkelement ne ON (((ne.obj_id)::text = (ws.fk_main_wastewater_node)::text)))&#10;     LEFT JOIN tww_od.wastewater_node wn ON (((wn.obj_id)::text = (ws.fk_main_wastewater_node)::text)))&#10;     LEFT JOIN tww_od.channel ch ON (((ch.obj_id)::text = (ws.obj_id)::text)))&#10;     LEFT JOIN tww_od.wwtp_structure wt ON (((wt.obj_id)::text = (ws.obj_id)::text)))&#10;     LEFT JOIN tww_od.small_treatment_plant sm ON (((sm.obj_id)::text = (ws.obj_id)::text)))&#10;     LEFT JOIN tww_od.drainless_toilet dt ON (((dt.obj_id)::text = (ws.obj_id)::text)))&#10;  WHERE ((('-1'::text = ALL ((ARRAY[ch.obj_id, dt.obj_id, sm.obj_id, wt.obj_id])::text[])) IS NULL) AND (('-2'::text = ALL ((ARRAY[ch.obj_id, dt.obj_id, sm.obj_id, wt.obj_id])::text[])) IS NULL));">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="ws_type" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="ma_function" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
@@ -2317,6 +2393,42 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="6" id="15" name="last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="16" name="remark" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+      </table>
+      <table name="vw_wastewater_structure" numRows="0" remarks="" schema="tww_app" type="VIEW" viewSql=" SELECT ws.obj_id,&#10;    ws._depth,&#10;    ws.accessibility,&#10;    ws.condition_score,&#10;    ws.contract_section,&#10;    ws.detail_geometry3d_geometry,&#10;    ws.elevation_determination,&#10;    ws.financing,&#10;    ws.fk_dataowner,&#10;    ws.fk_main_cover,&#10;    ws.fk_main_wastewater_node,&#10;    ws.fk_operator,&#10;    ws.fk_owner,&#10;    ws.fk_provider,&#10;    ws.gross_costs,&#10;    ws.identifier,&#10;    ws.inspection_interval,&#10;    ws.last_modification,&#10;    ws.location_name,&#10;    ws.records,&#10;    ws.remark,&#10;    ws.renovation_necessity,&#10;    ws.replacement_value,&#10;    ws.rv_base_year,&#10;    ws.rv_construction_type,&#10;    ws.status,&#10;    ws.status_survey_year,&#10;    ws.structure_condition,&#10;    ws.subsidies,&#10;    ws.urgency_figure,&#10;    ws.year_of_construction,&#10;    ws.year_of_replacement,&#10;    wn._usage_current AS _channel_usage_current,&#10;    wn._function_hierarchic AS _channel_function_hierarchic&#10;   FROM ((tww_od.wastewater_structure ws&#10;     LEFT JOIN tww_od.wastewater_node wn ON (((wn.obj_id)::text = (ws.fk_main_wastewater_node)::text)))&#10;     LEFT JOIN tww_od.channel ch ON (((ch.obj_id)::text = (ws.obj_id)::text)))&#10;  WHERE (ch.obj_id IS NULL);">
+         <column autoUpdated="false" defaultValue="tww_sys.generate_oid('tww_od'::text, 'wastewater_structure'::text)" digits="0" id="0" name="obj_id" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="1" name="_depth" nullable="true" remarks="" size="6" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="accessibility" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="2" id="3" name="condition_score" nullable="true" remarks="" size="3" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="contract_section" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="detail_geometry3d_geometry" nullable="true" remarks="" size="2147483647" type="geometry" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="elevation_determination" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="financing" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="8" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="fk_main_cover" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="fk_main_wastewater_node" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="fk_operator" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="fk_owner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="13" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="2" id="14" name="gross_costs" nullable="true" remarks="" size="10" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="15" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="2" id="16" name="inspection_interval" nullable="true" remarks="" size="4" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="17" name="last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="18" name="location_name" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="19" name="records" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="20" name="remark" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="21" name="renovation_necessity" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="2" id="22" name="replacement_value" nullable="true" remarks="" size="10" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="23" name="rv_base_year" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="24" name="rv_construction_type" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="25" name="status" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="26" name="status_survey_year" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="27" name="structure_condition" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="2" id="28" name="subsidies" nullable="true" remarks="" size="10" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="29" name="urgency_figure" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="30" name="year_of_construction" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="31" name="year_of_replacement" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="32" name="_channel_usage_current" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="33" name="_channel_function_hierarchic" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
       </table>
       <table name="vw_wwtp_structure" numRows="0" remarks="" schema="tww_app" type="VIEW" viewSql=" SELECT wwtp_structure.obj_id,&#10;    wwtp_structure.fk_waste_water_treatment_plant,&#10;    wwtp_structure.kind,&#10;    wastewater_structure._bottom_label,&#10;    wastewater_structure._cover_label,&#10;    wastewater_structure._depth,&#10;    wastewater_structure._input_label,&#10;    wastewater_structure._label,&#10;    wastewater_structure._output_label,&#10;    wastewater_structure.accessibility,&#10;    wastewater_structure.condition_score,&#10;    wastewater_structure.contract_section,&#10;    wastewater_structure.detail_geometry3d_geometry,&#10;    wastewater_structure.elevation_determination,&#10;    wastewater_structure.financing,&#10;    wastewater_structure.fk_dataowner,&#10;    wastewater_structure.fk_main_cover,&#10;    wastewater_structure.fk_main_wastewater_node,&#10;    wastewater_structure.fk_operator,&#10;    wastewater_structure.fk_owner,&#10;    wastewater_structure.fk_provider,&#10;    wastewater_structure.gross_costs,&#10;    wastewater_structure.identifier,&#10;    wastewater_structure.inspection_interval,&#10;    wastewater_structure.last_modification,&#10;    wastewater_structure.location_name,&#10;    wastewater_structure.records,&#10;    wastewater_structure.remark,&#10;    wastewater_structure.renovation_necessity,&#10;    wastewater_structure.replacement_value,&#10;    wastewater_structure.rv_base_year,&#10;    wastewater_structure.rv_construction_type,&#10;    wastewater_structure.status,&#10;    wastewater_structure.status_survey_year,&#10;    wastewater_structure.structure_condition,&#10;    wastewater_structure.subsidies,&#10;    wastewater_structure.urgency_figure,&#10;    wastewater_structure.year_of_construction,&#10;    wastewater_structure.year_of_replacement&#10;   FROM (tww_od.wwtp_structure&#10;     LEFT JOIN tww_od.wastewater_structure ON (((wastewater_structure.obj_id)::text = (wwtp_structure.obj_id)::text)));">
          <column autoUpdated="false" defaultValue="tww_sys.generate_oid('tww_od'::text, 'wwtp_structure'::text)" digits="0" id="0" name="obj_id" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
@@ -5899,6 +6011,431 @@ END;]]></definition>
             <parameter mode="IN"/>
          </parameters>
       </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="ft_vw_tww_additional_ws_delete()" returnType="trigger" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[DECLARE
+    BEGIN
+      DELETE FROM tww_od.wastewater_structure WHERE obj_id = OLD.obj_id;
+    RETURN OLD;
+    END;]]></definition>
+         <parameters>
+            <parameter mode="IN"/>
+         </parameters>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="ft_vw_tww_additional_ws_insert()" returnType="trigger" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[BEGIN
+
+      NEW.identifier = COALESCE(NEW.identifier, NEW.obj_id);
+
+    INSERT INTO tww_od.wastewater_structure (
+        obj_id
+      -- , _bottom_label
+      -- , _cover_label
+      , _depth
+      -- , _input_label
+      -- , _label
+      -- , _output_label
+      , accessibility
+      , condition_score
+      , contract_section
+      -- , detail_geometry3d_geometry
+      , elevation_determination
+      , financing
+      , fk_dataowner
+      -- , fk_main_cover
+      -- , fk_main_wastewater_node
+      , fk_operator
+      , fk_owner
+      , fk_provider
+      , gross_costs
+      , identifier
+      , inspection_interval
+      , last_modification
+      , location_name
+      , records
+      , remark
+      , renovation_necessity
+      , replacement_value
+      , rv_base_year
+      , rv_construction_type
+      , status
+      , status_survey_year
+      , structure_condition
+      , subsidies
+      , urgency_figure
+      , year_of_construction
+      , year_of_replacement
+    ) VALUES (
+        NEW.obj_id
+      -- , NEW._bottom_label
+      -- , NEW._cover_label
+      , NEW._depth
+      -- , NEW._input_label
+      -- , NEW._label
+      -- , NEW._output_label
+      , NEW.accessibility
+      , NEW.condition_score
+      , NEW.contract_section
+      -- , NEW.detail_geometry3d_geometry
+      , NEW.elevation_determination
+      , NEW.financing
+      , NEW.fk_dataowner
+      -- , NEW.fk_main_cover
+      -- , NEW.fk_main_wastewater_node
+      , NEW.fk_operator
+      , NEW.fk_owner
+      , NEW.fk_provider
+      , NEW.gross_costs
+      , NEW.identifier
+      , NEW.inspection_interval
+      , NEW.last_modification
+      , NEW.location_name
+      , NEW.records
+      , NEW.remark
+      , NEW.renovation_necessity
+      , NEW.replacement_value
+      , NEW.rv_base_year
+      , NEW.rv_construction_type
+      , NEW.status
+      , NEW.status_survey_year
+      , NEW.structure_condition
+      , NEW.subsidies
+      , NEW.urgency_figure
+      , NEW.year_of_construction
+      , NEW.year_of_replacement
+    );
+
+
+      CASE
+        WHEN NEW.ws_type = 'wwtp_structure' THEN
+        -- wwtp_structure
+    INSERT INTO tww_od.wwtp_structure (
+            obj_id
+          , fk_waste_water_treatment_plant
+          , kind
+        ) VALUES (
+            NEW.obj_id
+          , NEW.wt_fk_waste_water_treatment_plant
+          , NEW.wt_kind
+        );
+
+
+        -- small_treatment_plant
+        WHEN NEW.ws_type = 'small_treatment_plant' THEN
+    INSERT INTO tww_od.small_treatment_plant (
+            obj_id
+          , approval_number
+          , function
+          , installation_number
+          , remote_monitoring
+        ) VALUES (
+            NEW.obj_id
+          , NEW.sm_approval_number
+          , NEW.sm_function
+          , NEW.sm_installation_number
+          , NEW.sm_remote_monitoring
+        );
+
+
+        -- drainless_toilet
+        WHEN NEW.ws_type = 'drainless_toilet' THEN
+    INSERT INTO tww_od.drainless_toilet (
+            obj_id
+          , kind
+        ) VALUES (
+            NEW.obj_id
+          , NEW.to_kind
+        );
+
+
+
+        ELSE
+         RAISE NOTICE 'Wastewater structure type not known (%)', NEW.ws_type; -- ERROR
+      END CASE;
+
+    INSERT INTO tww_app.vw_wastewater_node (
+            _function_hierarchic
+          , _status
+          , _usage_current
+          , backflow_level_current
+          , bottom_level
+          , elevation_accuracy
+          , fk_dataowner
+          , fk_hydr_geometry
+          , fk_provider
+          , fk_wastewater_structure
+          , function_node_amelioration
+          , identifier
+          , last_modification
+          , obj_id
+          , remark
+          , situation3d_geometry
+          , wwtp_number
+        ) VALUES (
+            NEW.wn__function_hierarchic
+          , NEW.wn__status
+          , NEW.wn__usage_current
+          , NEW.wn_backflow_level_current
+          , NEW.wn_bottom_level
+          , NEW.wn_elevation_accuracy
+          , COALESCE(NULLIF(NEW.wn_fk_dataowner,''), NEW.fk_dataowner) -- fk_dataowner
+          , NEW.wn_fk_hydr_geometry
+          , COALESCE(NULLIF(NEW.wn_fk_provider,''), NEW.fk_provider) -- fk_provider
+          , NEW.obj_id -- fk_wastewater_structure
+          , NEW.wn_function_node_amelioration
+          , COALESCE(NULLIF(NEW.wn_identifier,''), NEW.identifier) -- identifier
+          , NOW() -- last_modification
+          , NEW.wn_obj_id
+          , NEW.wn_remark
+          , ST_SetSRID(ST_MakePoint(ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), 'nan'), 2056 ) -- situation3d_geometry
+          , NEW.wn_wwtp_number
+        );
+
+
+      UPDATE tww_od.wastewater_structure
+        SET fk_main_wastewater_node = NEW.wn_obj_id
+        WHERE obj_id = NEW.obj_id;
+
+    INSERT INTO tww_app.vw_cover (
+            brand
+          , cover_shape
+          , diameter
+          , fastening
+          , fk_dataowner
+          , fk_provider
+          , fk_wastewater_structure
+          , identifier
+          , last_modification
+          , level
+          , material
+          , obj_id
+          , positional_accuracy
+          , remark
+          , renovation_demand
+          , situation3d_geometry
+          , sludge_bucket
+          , venting
+        ) VALUES (
+            NEW.co_brand
+          , NEW.co_shape
+          , NEW.co_diameter
+          , NEW.co_fastening
+          , NEW.fk_dataowner -- fk_dataowner
+          , NEW.fk_provider -- fk_provider
+          , NEW.obj_id -- fk_wastewater_structure
+          , COALESCE(NULLIF(NEW.co_identifier,''), NEW.identifier) -- identifier
+          , NOW() -- last_modification
+          , NEW.co_level
+          , NEW.co_material
+          , NEW.co_obj_id
+          , NEW.co_positional_accuracy
+          , NEW.co_remark
+          , NEW.co_renovation_demand
+          , ST_SetSRID(ST_MakePoint(ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), 'nan'), 2056 ) -- situation3d_geometry
+          , NEW.co_sludge_bucket
+          , NEW.co_venting
+        );
+
+
+      UPDATE tww_od.wastewater_structure
+        SET fk_main_cover = NEW.co_obj_id
+        WHERE obj_id = NEW.obj_id;
+
+      RETURN NEW;
+    END;]]></definition>
+         <parameters>
+            <parameter mode="IN"/>
+         </parameters>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="ft_vw_tww_additional_ws_update()" returnType="trigger" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[DECLARE
+      dx float;
+      dy float;
+    BEGIN
+      UPDATE tww_od.cover co SET
+          brand = NEW.co_brand
+          , cover_shape = NEW.co_shape
+          , diameter = NEW.co_diameter
+          , fastening = NEW.co_fastening
+          , level = NEW.co_level
+          , material = NEW.co_material
+          , positional_accuracy = NEW.co_positional_accuracy
+          -- , situation3d_geometry = NEW.co_situation3d_geometry
+          , sludge_bucket = NEW.co_sludge_bucket
+          , venting = NEW.co_venting
+        WHERE obj_id = OLD.co_obj_id;
+      UPDATE tww_od.structure_part sp SET
+          fk_dataowner = NEW.fk_dataowner
+          , fk_provider = NEW.fk_provider
+          -- , fk_wastewater_structure = NEW.co_fk_wastewater_structure
+          , identifier = NEW.co_identifier
+          , last_modification = NEW.last_modification
+          , remark = NEW.co_remark
+          , renovation_demand = NEW.co_renovation_demand
+        WHERE obj_id = OLD.co_obj_id;
+      UPDATE tww_od.wastewater_structure ws SET
+          obj_id = NEW.obj_id
+          -- , _bottom_label = NEW._bottom_label
+          -- , _cover_label = NEW._cover_label
+          -- , _depth = NEW._depth
+          -- , _input_label = NEW._input_label
+          -- , _label = NEW._label
+          -- , _output_label = NEW._output_label
+          , accessibility = NEW.accessibility
+          , condition_score = NEW.condition_score
+          , contract_section = NEW.contract_section
+          -- , detail_geometry3d_geometry = NEW.detail_geometry3d_geometry
+          , elevation_determination = NEW.elevation_determination
+          , financing = NEW.financing
+          , fk_dataowner = NEW.fk_dataowner
+          -- , fk_main_cover = NEW.fk_main_cover
+          -- , fk_main_wastewater_node = NEW.fk_main_wastewater_node
+          , fk_operator = NEW.fk_operator
+          , fk_owner = NEW.fk_owner
+          , fk_provider = NEW.fk_provider
+          , gross_costs = NEW.gross_costs
+          , identifier = NEW.identifier
+          , inspection_interval = NEW.inspection_interval
+          -- , last_modification = NEW.last_modification
+          , location_name = NEW.location_name
+          , records = NEW.records
+          , remark = NEW.remark
+          , renovation_necessity = NEW.renovation_necessity
+          , replacement_value = NEW.replacement_value
+          , rv_base_year = NEW.rv_base_year
+          , rv_construction_type = NEW.rv_construction_type
+          , status = NEW.status
+          , status_survey_year = NEW.status_survey_year
+          , structure_condition = NEW.structure_condition
+          , subsidies = NEW.subsidies
+          , urgency_figure = NEW.urgency_figure
+          , year_of_construction = NEW.year_of_construction
+          , year_of_replacement = NEW.year_of_replacement
+        WHERE obj_id = OLD.obj_id;
+      UPDATE tww_od.wastewater_node wn SET
+          _function_hierarchic = NEW.wn__function_hierarchic
+          , _status = NEW.wn__status
+          , _usage_current = NEW.wn__usage_current
+          , backflow_level_current = NEW.wn_backflow_level_current
+          , bottom_level = NEW.wn_bottom_level
+          , elevation_accuracy = NEW.wn_elevation_accuracy
+          , fk_hydr_geometry = NEW.wn_fk_hydr_geometry
+          , function_node_amelioration = NEW.wn_function_node_amelioration
+          -- , situation3d_geometry = NEW.wn_situation3d_geometry
+          , wwtp_number = NEW.wn_wwtp_number
+        WHERE obj_id = OLD.wn_obj_id;
+
+      IF OLD.ws_type <> NEW.ws_type THEN
+        CASE WHEN OLD.ws_type <> 'unknown' THEN
+          BEGIN
+            EXECUTE FORMAT('DELETE FROM tww_od.%I WHERE obj_id = %L',OLD.ws_type,OLD.obj_id);
+          END;
+        END CASE;
+
+        CASE WHEN NEW.ws_type = ANY(ARRAY['manhole','special_structure','discharge_point','infiltration_installation','drainless_toilet','wwtp_structure','small_treatment_plant']) THEN
+          BEGIN
+            EXECUTE FORMAT('INSERT INTO tww_od.%I(obj_id) VALUES (%L)',NEW.ws_type,OLD.obj_id);
+          END;
+        END CASE;
+      END IF;
+
+      CASE
+        WHEN NEW.ws_type = 'wwtp_structure' THEN
+          UPDATE tww_od.wwtp_structure wt SET
+          fk_waste_water_treatment_plant = NEW.wt_fk_waste_water_treatment_plant
+          , kind = NEW.wt_kind
+        WHERE obj_id = OLD.obj_id;
+
+        WHEN NEW.ws_type = 'small_treatment_plant' THEN
+          UPDATE tww_od.small_treatment_plant sm SET
+          approval_number = NEW.sm_approval_number
+          , function = NEW.sm_function
+          , installation_number = NEW.sm_installation_number
+          , remote_monitoring = NEW.sm_remote_monitoring
+        WHERE obj_id = OLD.obj_id;
+
+        WHEN NEW.ws_type = 'drainless_toilet' THEN
+          UPDATE tww_od.drainless_toilet dt SET
+          kind = NEW.to_kind
+        WHERE obj_id = OLD.obj_id;
+
+        ELSE -- do nothing
+      END CASE;
+
+      -- Cover geometry has been moved
+      IF NOT ST_Equals( OLD.situation3d_geometry, NEW.situation3d_geometry) THEN
+        dx = ST_X(NEW.situation3d_geometry) - ST_X(OLD.situation3d_geometry);
+        dy = ST_Y(NEW.situation3d_geometry) - ST_Y(OLD.situation3d_geometry);
+
+        -- Move wastewater node as well
+        -- comment: TRANSLATE((ST_MakePoint(500, 900, 'NaN')), 10, 20, 0) would return NaN NaN NaN - so we have this workaround
+        UPDATE tww_od.wastewater_node WN
+        SET situation3d_geometry = ST_SetSRID( ST_MakePoint(
+        ST_X(ST_TRANSLATE(ST_MakePoint(ST_X(WN.situation3d_geometry), ST_Y(WN.situation3d_geometry)), dx, dy )),
+        ST_Y(ST_TRANSLATE(ST_MakePoint(ST_X(WN.situation3d_geometry), ST_Y(WN.situation3d_geometry)), dx, dy )),
+        ST_Z(WN.situation3d_geometry)), 2056 )
+        WHERE obj_id IN
+        (
+          SELECT obj_id FROM tww_od.wastewater_networkelement
+          WHERE fk_wastewater_structure = NEW.obj_id
+        );
+
+        -- Move covers
+        UPDATE tww_od.cover CO
+        SET situation3d_geometry = ST_SetSRID( ST_MakePoint(
+        ST_X(ST_TRANSLATE(ST_MakePoint(ST_X(CO.situation3d_geometry), ST_Y(CO.situation3d_geometry)), dx, dy )),
+        ST_Y(ST_TRANSLATE(ST_MakePoint(ST_X(CO.situation3d_geometry), ST_Y(CO.situation3d_geometry)), dx, dy )),
+        ST_Z(CO.situation3d_geometry)), 2056 )
+        WHERE obj_id IN
+        (
+          SELECT obj_id FROM tww_od.structure_part
+          WHERE fk_wastewater_structure = NEW.obj_id
+        );
+
+        -- Move reach(es) as well
+        UPDATE tww_od.reach RE
+        SET progression3d_geometry =
+          ST_ForceCurve (ST_SetPoint(
+            ST_CurveToLine (RE.progression3d_geometry ),
+            0, -- SetPoint index is 0 based, PointN index is 1 based.
+            ST_SetSRID( ST_MakePoint(
+                ST_X(ST_TRANSLATE(ST_MakePoint(ST_X(ST_PointN(RE.progression3d_geometry, 1)), ST_Y(ST_PointN(RE.progression3d_geometry, 1))), dx, dy )),
+                ST_Y(ST_TRANSLATE(ST_MakePoint(ST_X(ST_PointN(RE.progression3d_geometry, 1)), ST_Y(ST_PointN(RE.progression3d_geometry, 1))), dx, dy )),
+                ST_Z(ST_PointN(RE.progression3d_geometry, 1))), 2056 )
+          ) )
+        WHERE fk_reach_point_from IN
+        (
+          SELECT RP.obj_id FROM tww_od.reach_point RP
+          LEFT JOIN tww_od.wastewater_networkelement NE ON RP.fk_wastewater_networkelement = NE.obj_id
+          WHERE NE.fk_wastewater_structure = NEW.obj_id
+        );
+
+        UPDATE tww_od.reach RE
+        SET progression3d_geometry =
+          ST_ForceCurve( ST_SetPoint(
+            ST_CurveToLine( RE.progression3d_geometry ),
+            ST_NumPoints(RE.progression3d_geometry) - 1,
+            ST_SetSRID( ST_MakePoint(
+                ST_X(ST_TRANSLATE(ST_MakePoint(ST_X(ST_EndPoint(RE.progression3d_geometry)), ST_Y(ST_EndPoint(RE.progression3d_geometry))), dx, dy )),
+                ST_Y(ST_TRANSLATE(ST_MakePoint(ST_X(ST_EndPoint(RE.progression3d_geometry)), ST_Y(ST_EndPoint(RE.progression3d_geometry))), dx, dy )),
+                ST_Z(ST_PointN(RE.progression3d_geometry, 1))), 2056 )
+          ) )
+        WHERE fk_reach_point_to IN
+        (
+          SELECT RP.obj_id FROM tww_od.reach_point RP
+          LEFT JOIN tww_od.wastewater_networkelement NE ON RP.fk_wastewater_networkelement = NE.obj_id
+          WHERE NE.fk_wastewater_structure = NEW.obj_id
+        );
+      END IF;
+
+      RETURN NEW;
+    END;]]></definition>
+         <parameters>
+            <parameter mode="IN"/>
+         </parameters>
+      </routine>
       <routine dataAccess="MODIFIES" deterministic="false" name="ft_vw_tww_damage_delete()" returnType="trigger" securityType="INVOKER" type="FUNCTION">
          <comment/>
          <definition language="plpgsql"><![CDATA[BEGIN
@@ -7094,7 +7631,7 @@ END;]]></definition>
 
 
         ELSE
-         RAISE NOTICE 'Wastewater structure type not known (%)', NEW.ws_type; -- ERROR
+         RAISE NOTICE 'Wastewater structure type not handled by this view (%)', NEW.ws_type; -- ERROR
       END CASE;
 
     INSERT INTO tww_app.vw_wastewater_node (
@@ -7271,20 +7808,16 @@ END;]]></definition>
         WHERE obj_id = OLD.wn_obj_id;
 
       IF OLD.ws_type <> NEW.ws_type THEN
-        CASE
-          WHEN OLD.ws_type = 'manhole' THEN DELETE FROM tww_od.manhole WHERE obj_id = OLD.obj_id;
-          WHEN OLD.ws_type = 'special_structure' THEN DELETE FROM tww_od.special_structure WHERE obj_id = OLD.obj_id;
-          WHEN OLD.ws_type = 'discharge_point' THEN DELETE FROM tww_od.discharge_point WHERE obj_id = OLD.obj_id;
-          WHEN OLD.ws_type = 'infiltration_installation' THEN DELETE FROM tww_od.infiltration_installation WHERE obj_id = OLD.obj_id;
-          ELSE -- do nothing
+        CASE WHEN OLD.ws_type <> 'unknown' THEN
+          BEGIN
+            EXECUTE FORMAT('DELETE FROM tww_od.%I WHERE obj_id = %L',OLD.ws_type,OLD.obj_id);
+          END;
         END CASE;
 
-        CASE
-          WHEN NEW.ws_type = 'manhole' THEN INSERT INTO tww_od.manhole (obj_id) VALUES(OLD.obj_id);
-          WHEN NEW.ws_type = 'special_structure' THEN INSERT INTO tww_od.special_structure (obj_id) VALUES(OLD.obj_id);
-          WHEN NEW.ws_type = 'discharge_point' THEN INSERT INTO tww_od.discharge_point (obj_id) VALUES(OLD.obj_id);
-          WHEN NEW.ws_type = 'infiltration_installation' THEN INSERT INTO tww_od.infiltration_installation (obj_id) VALUES(OLD.obj_id);
-          ELSE -- do nothing
+        CASE WHEN NEW.ws_type = ANY(ARRAY['manhole','special_structure','discharge_point','infiltration_installation','drainless_toilet','wwtp_structure','small_treatment_plant']) THEN
+          BEGIN
+            EXECUTE FORMAT('INSERT INTO tww_od.%I(obj_id) VALUES (%L)',NEW.ws_type,OLD.obj_id);
+          END;
         END CASE;
       END IF;
 
@@ -7509,6 +8042,156 @@ UPDATE tww_od.wastewater_node SET
     WHERE obj_id = OLD.obj_id;
 RETURN NEW;
 END;]]></definition>
+         <parameters>
+            <parameter mode="IN"/>
+         </parameters>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="ft_vw_wastewater_structure_delete()" returnType="trigger" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[DECLARE
+    BEGIN
+      DELETE FROM tww_od.wastewater_structure WHERE obj_id = OLD.obj_id;
+    RETURN OLD;
+    END;]]></definition>
+         <parameters>
+            <parameter mode="IN"/>
+         </parameters>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="ft_vw_wastewater_structure_insert()" returnType="trigger" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[BEGIN
+
+      NEW.identifier = COALESCE(NEW.identifier, NEW.obj_id);
+
+    INSERT INTO tww_od.wastewater_structure (
+        obj_id
+      -- , _bottom_label
+      -- , _cover_label
+      , _depth
+      -- , _input_label
+      -- , _label
+      -- , _output_label
+      , accessibility
+      , condition_score
+      , contract_section
+      , detail_geometry3d_geometry
+      , elevation_determination
+      , financing
+      , fk_dataowner
+      , fk_main_cover
+      , fk_main_wastewater_node
+      , fk_operator
+      , fk_owner
+      , fk_provider
+      , gross_costs
+      , identifier
+      , inspection_interval
+      , last_modification
+      , location_name
+      , records
+      , remark
+      , renovation_necessity
+      , replacement_value
+      , rv_base_year
+      , rv_construction_type
+      , status
+      , status_survey_year
+      , structure_condition
+      , subsidies
+      , urgency_figure
+      , year_of_construction
+      , year_of_replacement
+    ) VALUES (
+        NEW.obj_id
+      -- , NEW._bottom_label
+      -- , NEW._cover_label
+      , NEW._depth
+      -- , NEW._input_label
+      -- , NEW._label
+      -- , NEW._output_label
+      , NEW.accessibility
+      , NEW.condition_score
+      , NEW.contract_section
+      , NEW.detail_geometry3d_geometry
+      , NEW.elevation_determination
+      , NEW.financing
+      , NEW.fk_dataowner
+      , NEW.fk_main_cover
+      , NEW.fk_main_wastewater_node
+      , NEW.fk_operator
+      , NEW.fk_owner
+      , NEW.fk_provider
+      , NEW.gross_costs
+      , NEW.identifier
+      , NEW.inspection_interval
+      , NEW.last_modification
+      , NEW.location_name
+      , NEW.records
+      , NEW.remark
+      , NEW.renovation_necessity
+      , NEW.replacement_value
+      , NEW.rv_base_year
+      , NEW.rv_construction_type
+      , NEW.status
+      , NEW.status_survey_year
+      , NEW.structure_condition
+      , NEW.subsidies
+      , NEW.urgency_figure
+      , NEW.year_of_construction
+      , NEW.year_of_replacement
+    );
+
+
+      RETURN NEW;
+    END;]]></definition>
+         <parameters>
+            <parameter mode="IN"/>
+         </parameters>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="ft_vw_wastewater_structure_update()" returnType="trigger" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[BEGIN
+      UPDATE tww_od.wastewater_structure SET
+          obj_id = NEW.obj_id
+          -- , _bottom_label = NEW._bottom_label
+          -- , _cover_label = NEW._cover_label
+          -- , _depth = NEW._depth
+          -- , _input_label = NEW._input_label
+          -- , _label = NEW._label
+          -- , _output_label = NEW._output_label
+          , accessibility = NEW.accessibility
+          , condition_score = NEW.condition_score
+          , contract_section = NEW.contract_section
+          , detail_geometry3d_geometry = NEW.detail_geometry3d_geometry
+          , elevation_determination = NEW.elevation_determination
+          , financing = NEW.financing
+          , fk_dataowner = NEW.fk_dataowner
+          , fk_main_cover = NEW.fk_main_cover
+          , fk_main_wastewater_node = NEW.fk_main_wastewater_node
+          , fk_operator = NEW.fk_operator
+          , fk_owner = NEW.fk_owner
+          , fk_provider = NEW.fk_provider
+          , gross_costs = NEW.gross_costs
+          , identifier = NEW.identifier
+          , inspection_interval = NEW.inspection_interval
+          -- , last_modification = NEW.last_modification
+          , location_name = NEW.location_name
+          , records = NEW.records
+          , remark = NEW.remark
+          , renovation_necessity = NEW.renovation_necessity
+          , replacement_value = NEW.replacement_value
+          , rv_base_year = NEW.rv_base_year
+          , rv_construction_type = NEW.rv_construction_type
+          , status = NEW.status
+          , status_survey_year = NEW.status_survey_year
+          , structure_condition = NEW.structure_condition
+          , subsidies = NEW.subsidies
+          , urgency_figure = NEW.urgency_figure
+          , year_of_construction = NEW.year_of_construction
+          , year_of_replacement = NEW.year_of_replacement
+        WHERE obj_id = OLD.obj_id;
+      RETURN NEW;
+    END;]]></definition>
          <parameters>
             <parameter mode="IN"/>
          </parameters>
@@ -8387,6 +9070,41 @@ UPDATE tww_od.reach
 END;]]></definition>
          <parameters>
             <parameter mode="IN" name="reach_obj_ids" type="text[]"/>
+         </parameters>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="set_organisations_active(_undo_existing boolean DEFAULT false)" returnType="void" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[DECLARE
+schm text;
+tbl text;
+col text;
+BEGIN
+IF _undo_existing THEN
+	UPDATE tww_od.organisation
+	SET tww_active=FALSE;
+ELSE NULL;
+END IF;
+FOR schm,tbl,col IN
+	SELECT   tc.table_schema,
+		tc.table_name,
+		kcu.column_name
+	FROM (SELECT constraint_name FROM information_schema.constraint_column_usage
+	WHERE table_schema='tww_od'
+		AND table_name='organisation'
+		AND column_name='obj_id'
+		AND constraint_name NOT LIKE'pkey%')ccu
+	INNER JOIN information_schema.key_column_usage AS kcu
+	ON ccu.constraint_name = kcu.constraint_name
+	INNER JOIN information_schema.table_constraints AS tc
+		ON tc.constraint_name = kcu.constraint_name
+LOOP
+	        EXECUTE format($$ UPDATE tww_od.organisation
+SET tww_active=TRUE
+WHERE obj_id IN (SELECT DISTINCT %I FROM %I.%I)$$, col,schm,tbl);
+END LOOP;
+END;]]></definition>
+         <parameters>
+            <parameter mode="IN" name="_undo_existing" type="boolean"/>
          </parameters>
       </routine>
       <routine dataAccess="MODIFIES" deterministic="false" name="synchronize_level_with_altitude_on_cover()" returnType="trigger" securityType="INVOKER" type="FUNCTION">

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5.1. Initialising Database extensions &mdash; TWW dev documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="5.2. Editing in TWW" href="agxx/index.html" />
+    <link rel="prev" title="5. Official TWW extensions" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            TWW
+          </a>
+              <div class="version">
+                dev
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../features-guide/index.html">1. TEKSI wastewater (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation-guide/index.html">2. TWW Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">3. TWW User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">4. Admin Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">5. Official TWW extensions</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5.1. Initialising Database extensions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#create-an-empty-datamodel-with-an-extension">5.1.1. create an empty datamodel with an extension</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#generate-the-data-model-under-linux">5.1.2. Generate the data model under Linux</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="agxx/index.html">5.2. Editing in TWW</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../vm/index.html">6. Demo Virtual Machine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tww_swmm/index.html">7. SWMM Data Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">8. Translation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">TWW</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">5. </span>Official TWW extensions</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">5.1. </span>Initialising Database extensions</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/extensions-guide/initialize-extensions.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="initialising-database-extensions">
+<h1><span class="section-number">5.1. </span>Initialising Database extensions<a class="headerlink" href="#initialising-database-extensions" title="Link to this heading"></a></h1>
+<p>TEKSI Wastewater maintains database extensions to serve the following models:</p>
+<ul class="simple">
+<li><p>AG-64 Abwasserkataster Version 2.1.0</p></li>
+<li><p>AG-96 Genereller_Entwaesserungsplan_AG Version 2.0.0</p></li>
+</ul>
+<section id="create-an-empty-datamodel-with-an-extension">
+<span id="empty-extension-model"></span><h2><span class="section-number">5.1.1. </span>create an empty datamodel with an extension<a class="headerlink" href="#create-an-empty-datamodel-with-an-extension" title="Link to this heading"></a></h2>
+<p>In order to use a database extension, we need to load them from the source code:</p>
+<ul class="simple">
+<li><p>Load a standard TWW Database
+* <a class="reference external" href="https://github.com/TWW/datamodel/releases/latest">https://github.com/TWW/datamodel/releases/latest</a>
+* download <cite>tww_{version}_structure_with_value_lists.sql</cite></p></li>
+</ul>
+<p>In the future, an adapted value list sql will be provided. For now, we will have to rely on the source code</p>
+<ul>
+<li><p>Download the source code
+* <a class="reference external" href="https://github.com/TWW/datamodel/releases/latest">https://github.com/TWW/datamodel/releases/latest</a>
+* download`Source Code(zip)`</p></li>
+<li><p>install pirogue if necessary: pip install pirogue</p></li>
+<li><p>if needed, temporarily alter your PGSYSCONFDIR environment variable</p></li>
+<li><p>create and run a batch file such as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@echo</span> <span class="n">off</span>
+
+<span class="nb">set</span> <span class="o">/</span><span class="n">p</span> <span class="n">tww_dir</span><span class="o">=</span><span class="s2">&quot;Set the directory your downloaded teksi wastewater to&quot;</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">exist</span> <span class="o">%</span><span class="n">tww_dir</span><span class="o">%</span> <span class="p">(</span>
+   <span class="n">echo</span> <span class="s2">&quot;Path %tww_dir</span><span class="si">% d</span><span class="s2">oes not exist. Please download the latest datamodel from https://github.com/TWW/datamodel/releases (structure_with_value_lists.sql) and adjust path in this batch file.&quot;</span>
+   <span class="n">PAUSE</span>
+   <span class="n">exit</span> <span class="o">-</span><span class="mi">1</span>
+<span class="p">)</span>
+
+<span class="n">pip</span> <span class="n">install</span> <span class="n">pirogue</span>
+
+<span class="nb">set</span> <span class="o">/</span><span class="n">p</span> <span class="n">myservice</span><span class="o">=</span><span class="s2">&quot;Please enter the service name? (e.g. tww_community) &quot;</span>
+
+    <span class="n">python</span> <span class="o">%</span><span class="n">tww_dir</span><span class="o">%</span>\<span class="n">extensions</span>\<span class="n">extension_manager</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">pg_service</span> <span class="o">%</span><span class="n">myservice</span><span class="o">%</span> <span class="o">--</span><span class="n">srid</span> <span class="mi">2056</span> <span class="o">--</span><span class="n">drop</span><span class="o">-</span><span class="n">schema</span> <span class="o">--</span><span class="n">extension_name</span> <span class="s2">&quot;agxx&quot;</span>
+    <span class="n">python</span> <span class="o">%</span><span class="n">tww_dir</span><span class="o">%</span>\<span class="n">app</span>\<span class="n">create_app</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">pg_service</span> <span class="o">%</span><span class="n">myservice</span><span class="o">%</span> <span class="o">--</span><span class="n">srid</span> <span class="mi">2056</span> <span class="o">--</span><span class="n">drop</span><span class="o">-</span><span class="n">schema</span>
+
+
+<span class="n">PAUSE</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="generate-the-data-model-under-linux">
+<h2><span class="section-number">5.1.2. </span>Generate the data model under Linux<a class="headerlink" href="#generate-the-data-model-under-linux" title="Link to this heading"></a></h2>
+<p>You can also generate the data model extension under Linux.</p>
+<ul>
+<li><p>Download the data model:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">TWW</span><span class="o">/</span><span class="n">datamodel</span>
+<span class="n">cd</span> <span class="n">datamodel</span>
+</pre></div>
+</div>
+</li>
+<li><p>Setup the <code class="docutils literal notranslate"><span class="pre">pg_service.conf</span></code> file and add the <code class="docutils literal notranslate"><span class="pre">pg_tww</span></code> service
+as in the <a class="reference internal" href="../installation-guide/workstation.html#pg-service-linux"><span class="std std-ref">Linux/macOS pg_service</span></a> section.</p></li>
+<li><p>Create the database:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psql</span> <span class="o">-</span><span class="n">U</span> <span class="n">postgres</span> <span class="o">-</span><span class="n">c</span> <span class="s1">&#39;CREATE DATABASE tww;&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Set the environment variables for the generation script:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">scripts</span><span class="o">/</span><span class="n">db_setup</span><span class="o">.</span><span class="n">sh</span>
+</pre></div>
+</div>
+</li>
+<li><p>Run the generation script:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">scripts</span><span class="o">/</span><span class="n">db_setup</span><span class="o">.</span><span class="n">sh</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="5. Official TWW extensions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="agxx/index.html" class="btn btn-neutral float-right" title="5.2. Editing in TWW" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, The TWW Project www.teksi.ch.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

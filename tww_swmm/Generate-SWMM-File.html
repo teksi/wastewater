@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>6.3. Generate SWMM File &mdash; TWW dev documentation</title>
+  <title>7.3. Generate SWMM File &mdash; TWW dev documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
@@ -21,8 +21,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="6.4. Check SWMM File" href="Check-SWMM-File.html" />
-    <link rel="prev" title="6.2. Prepare Data" href="Prepare-Data.html" /> 
+    <link rel="next" title="7.4. Check SWMM File" href="Check-SWMM-File.html" />
+    <link rel="prev" title="7.2. Prepare Data" href="Prepare-Data.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -52,27 +52,28 @@
 <li class="toctree-l1"><a class="reference internal" href="../installation-guide/index.html">2. TWW Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">3. TWW User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">4. Admin Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../vm/index.html">5. Demo Virtual Machine</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">6. SWMM Data Exchange</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="SWMM.html">6.1. Storm Water Management Model (SWMM)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Prepare-Data.html">6.2. Prepare Data</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">6.3. Generate SWMM File</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#swmm-create-input">6.3.1. SWMM Create Input</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#tww-plugin">6.3.1.1. TWW plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extensions-guide/index.html">5. Official TWW extensions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vm/index.html">6. Demo Virtual Machine</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">7. SWMM Data Exchange</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="SWMM.html">7.1. Storm Water Management Model (SWMM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Prepare-Data.html">7.2. Prepare Data</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">7.3. Generate SWMM File</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#swmm-create-input">7.3.1. SWMM Create Input</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#tww-plugin">7.3.1.1. TWW plugin</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#selection">6.3.2. Selection</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#change-default-export-parameters">6.3.3. Change default export parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#selection">7.3.2. Selection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#change-default-export-parameters">7.3.3. Change default export parameters</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="Check-SWMM-File.html">6.4. Check SWMM File</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Run-SWMM-Simulation.html">6.5. Run SWMM Simulation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Process-Results.html">6.6. Import results</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Mapping.html">6.7. Mapping</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Developpers-Advanced-Users.html">6.8. For developpers and advanced users</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Check-SWMM-File.html">7.4. Check SWMM File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Run-SWMM-Simulation.html">7.5. Run SWMM Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Process-Results.html">7.6. Import results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Mapping.html">7.7. Mapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Developpers-Advanced-Users.html">7.8. For developpers and advanced users</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">7. Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">8. Translation</a></li>
 </ul>
 
         </div>
@@ -89,8 +90,8 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">6. </span>SWMM Data Exchange</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">6.3. </span>Generate SWMM File</li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">7. </span>SWMM Data Exchange</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">7.3. </span>Generate SWMM File</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/tww_swmm/Generate-SWMM-File.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -101,9 +102,9 @@
            <div itemprop="articleBody">
              
   <section id="generate-swmm-file">
-<span id="id1"></span><h1><span class="section-number">6.3. </span>Generate SWMM File<a class="headerlink" href="#generate-swmm-file" title="Link to this heading"></a></h1>
+<span id="id1"></span><h1><span class="section-number">7.3. </span>Generate SWMM File<a class="headerlink" href="#generate-swmm-file" title="Link to this heading"></a></h1>
 <section id="swmm-create-input">
-<span id="create-input"></span><h2><span class="section-number">6.3.1. </span>SWMM Create Input<a class="headerlink" href="#swmm-create-input" title="Link to this heading"></a></h2>
+<span id="create-input"></span><h2><span class="section-number">7.3.1. </span>SWMM Create Input<a class="headerlink" href="#swmm-create-input" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>By default, the plugin extracts the entire primary wastewater structures. If you check <em>Export only selected network</em>, then both the selected primary and secondary network will be exported.</p></li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">.inp</span></code> file is the input file format for SWMM. It contains the wastewater network AND simulation parameters. The network can be extracted from the TWW data, but the simulation parameters must be set according to your study.</p></li>
@@ -111,7 +112,7 @@
 <li><p>By default, the export supposes that you use an <em>Horton Infiltration method</em>. If another method is set in the template <code class="docutils literal notranslate"><span class="pre">.inp</span></code>, you might need to adapt the generated <code class="docutils literal notranslate"><span class="pre">.inp</span></code>. See the linked <a class="reference external" href="https://github.com/TWW/TWW/issues/644/">issue</a></p></li>
 </ul>
 <section id="tww-plugin">
-<h3><span class="section-number">6.3.1.1. </span>TWW plugin<a class="headerlink" href="#tww-plugin" title="Link to this heading"></a></h3>
+<h3><span class="section-number">7.3.1.1. </span>TWW plugin<a class="headerlink" href="#tww-plugin" title="Link to this heading"></a></h3>
 <p>Launch <code class="docutils literal notranslate"><span class="pre">SWMM</span> <span class="pre">Create</span> <span class="pre">Input</span></code>:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">Database</span></code>: the name of the service used to connect to the database</p></li>
@@ -123,7 +124,7 @@
 </section>
 </section>
 <section id="selection">
-<h2><span class="section-number">6.3.2. </span>Selection<a class="headerlink" href="#selection" title="Link to this heading"></a></h2>
+<h2><span class="section-number">7.3.2. </span>Selection<a class="headerlink" href="#selection" title="Link to this heading"></a></h2>
 <p>Usually you will select a subnetwork to be exported with the TWW button <code class="docutils literal notranslate"><span class="pre">Upstream</span></code> and then <code class="docutils literal notranslate"><span class="pre">Select</span> <span class="pre">current</span> <span class="pre">path</span></code>.
 If you want to remove from this selection secondary structures:</p>
 <ul class="simple">
@@ -136,7 +137,7 @@ If you want to remove from this selection secondary structures:</p>
 </ul>
 </section>
 <section id="change-default-export-parameters">
-<span id="id2"></span><h2><span class="section-number">6.3.3. </span>Change default export parameters<a class="headerlink" href="#change-default-export-parameters" title="Link to this heading"></a></h2>
+<span id="id2"></span><h2><span class="section-number">7.3.3. </span>Change default export parameters<a class="headerlink" href="#change-default-export-parameters" title="Link to this heading"></a></h2>
 <p>As mentionned earlier, most of the simulation parameters are copied from the template <code class="docutils literal notranslate"><span class="pre">.inp</span></code> file.</p>
 <p>Remaining default parameters are currently hard coded in the views within the database <code class="docutils literal notranslate"><span class="pre">tww_swmm</span></code> schema.
 The defaults parameters can be edited directly in the view (with PgAdmin).</p>
@@ -151,8 +152,8 @@ The defaults parameters can be edited directly in the view (with PgAdmin).</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="Prepare-Data.html" class="btn btn-neutral float-left" title="6.2. Prepare Data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="Check-SWMM-File.html" class="btn btn-neutral float-right" title="6.4. Check SWMM File" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Prepare-Data.html" class="btn btn-neutral float-left" title="7.2. Prepare Data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Check-SWMM-File.html" class="btn btn-neutral float-right" title="7.4. Check SWMM File" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
