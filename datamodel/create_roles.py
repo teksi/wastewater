@@ -26,6 +26,7 @@ def create_role(pg_service: str, role: str, in_role: str = None):
         role_sql = f"""
             CREATE ROLE {role} NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;
         """
+        print(f"created role {role}")
         cur.execute(role_sql)
         cur.execute(f"SELECT 1 FROM pg_roles WHERE rolname='{in_role}'")
         inrole_exists = cur.fetchone()
@@ -34,6 +35,7 @@ def create_role(pg_service: str, role: str, in_role: str = None):
                 GRANT {in_role} TO {role};
             """
             cur.execute(in_role_sql)
+            print(f"granted {in_role} to role {role}")
     conn.close()
 
 
