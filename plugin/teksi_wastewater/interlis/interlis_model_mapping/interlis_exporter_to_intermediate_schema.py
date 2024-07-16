@@ -3082,8 +3082,10 @@ class InterlisExporterToIntermediateSchema:
             tid_for_obj_id["vw_tww_reach"][row.t_ili_tid] = row.t_id
         for row in self.abwasser_session.query(self.model_classes_interlis.abwasserbauwerk):
             tid_for_obj_id["vw_tww_wastewater_structure"][row.t_ili_tid] = row.t_id
-        for row in self.abwasser_session.query(self.model_classes_interlis.einzugsgebiet):
-            tid_for_obj_id["catchment_area"][row.t_ili_tid] = row.t_id
+
+        if self.model in [config.MODEL_NAME_DSS, config.MODEL_NAME_AG96]:
+            for row in self.abwasser_session.query(self.model_classes_interlis.einzugsgebiet):
+                tid_for_obj_id["catchment_area"][row.t_ili_tid] = row.t_id
 
         with open(self.labels_file) as labels_file_handle:
             labels = json.load(labels_file_handle)
