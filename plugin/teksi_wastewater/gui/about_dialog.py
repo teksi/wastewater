@@ -29,23 +29,24 @@ from qgis.PyQt.QtWidgets import QDialog
 
 from ..utils import get_ui_class
 
-DIALOG_UI = get_ui_class("dlgabout.ui")
+DIALOG_UI = get_ui_class("about_dialog.ui")
 
 
-class DlgAbout(QDialog, DIALOG_UI):
+class AboutDialog(QDialog, DIALOG_UI):
     def __init__(self, parent=None):
         QDialog.__init__(self, parent)
         self.setupUi(self)
 
-        fp = os.path.join(
+        metadata_file_path = os.path.join(
             os.path.abspath(os.path.join(os.path.dirname(__file__), "..")),
             "metadata.txt",
         )
 
-        ini_text = QSettings(fp, QSettings.IniFormat)
-        verno = ini_text.value("version")
+        ini_text = QSettings(metadata_file_path, QSettings.IniFormat)
+        version = ini_text.value("version")
         name = ini_text.value("name")
-        description = ini_text.value("description")
+        description = " ".join(ini_text.value("description"))
 
-        self.title.setText(name)
-        self.description.setText(description + " - " + verno)
+        self.setWindowTitle(f"{name} - {version}")
+        self.title.setText(self.windowTitle())
+        self.description.setText(f"{description}")

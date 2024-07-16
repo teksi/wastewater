@@ -440,9 +440,9 @@ class TeksiWastewaterPlugin:
             self.profile.highlight(None)
 
     def about(self):
-        from .gui.dlgabout import DlgAbout
+        from .gui.about_dialog import AboutDialog
 
-        DlgAbout(self.iface.mainWindow()).exec_()
+        AboutDialog(self.iface.mainWindow()).exec_()
 
     def showSettings(self):
         settings_dlg = TwwSettingsDialog(self.iface.mainWindow())
