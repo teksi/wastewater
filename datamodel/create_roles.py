@@ -97,11 +97,11 @@ def grant_privileges(model_name: str,roles: list,ext_schema: str = None):
         GRANT ALL ON SCHEMA {ext_schema} TO {roles[1]};
         GRANT ALL ON ALL TABLES IN SCHEMA {ext_schema} TO {roles[1]};
         GRANT ALL ON ALL SEQUENCES IN SCHEMA {ext_schema} TO {roles[1]};
-         ALTER DEFAULT PRIVILEGES IN SCHEMA {ext_schema} GRANT ALL ON TABLES TO {roles[1]};       
+         ALTER DEFAULT PRIVILEGES IN SCHEMA {ext_schema} GRANT ALL ON TABLES TO {roles[1]};
         """
         cur.execute(grant_sql)
     conn.close()
-    
+
 def revoke_privileges(model_name: str,roles: list,ext_schema: str = None):
     conn = psycopg.connect(f"service={pg_service}")
     cur = conn.cursor()
@@ -149,19 +149,19 @@ def create_roles(
     """
     if modelname and not pg_service:
         pg_service=f'pg_{modelname}'
-    
+
     roles=[f'{modelname}_viewer',f'{modelname}_user',f'{modelname}_manager',f'{modelname}_sysadmin']
-    
+
     if db_spec_roles:
         db_identifier =  '_'+get_db_identifier(pg_service, modelname )
         roles = [s + db_identifier for s in roles]
-    
+
     in_roles = [None]
     in_roles.extend(roles[:-1])
-    
+
     for role,in_role in zip(roles,in_roles):
         create_role(pg_service, role, in_role)
-        
+
     if grant:
         grant_privileges(model_name,roles,ext_schema)
     else:
@@ -170,11 +170,11 @@ def create_roles(
 
 if __name__ == "__main__":
     parser = ArgumentParser()
-    
+
     parser.add_argument("-m", "--modelname", help="Abbreviation of the TEKSI model")
-    
+
     parser.add_argument("-p", "--pg_service", help="postgres service")
-    
+
     parser.add_argument(
         "-d",
         "--database_specific_roles",
@@ -202,7 +202,7 @@ if __name__ == "__main__":
     parser.set_defaults(grant=True)
 
     parser.add_argument("-x", "--extension_schema", help="Name of the extension schema",required=False)
-    
+
     args = parser.parse_args()
 
     create_roles(
@@ -211,5 +211,5 @@ if __name__ == "__main__":
         grant = args.grant,
         ext_schema=args.extension_schema,
         db_spec_roles=args.database_specific_roles,
-        
+
     )

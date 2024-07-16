@@ -32,7 +32,6 @@ def run_sql(sql: str, pg_service: str, variables: dict = None):
     conn.close()
 
 
-
 def create_app(
     srid: int = 2056,
     pg_service: str = "pg_tww",
