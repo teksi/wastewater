@@ -67,7 +67,6 @@ def create_app(
     run_sql_file("update_catchment_area_totals.sql", pg_service, variables)
     run_sql_file("organisation_functions.sql", pg_service, variables)
 
-
     # open YAML files
     if tww_reach_extra:
         tww_reach_extra = safe_load(open(tww_reach_extra))
