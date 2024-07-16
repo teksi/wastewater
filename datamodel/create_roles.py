@@ -2,7 +2,6 @@
 
 import re
 from argparse import ArgumentParser, BooleanOptionalAction
-from pathlib import Path
 from typing import Optional
 
 try:
@@ -11,17 +10,18 @@ except ImportError:
     import psycopg2 as psycopg
 
 
-def get_db_identifier(pg_service: str, modelname: str ):
+def get_db_identifier(pg_service: str, modelname: str):
     conn = psycopg.connect(f"service={pg_service}")
     db_identifier = re.sub(f"{modelname}_|teksi_", "", conn.info.dbname)
     conn.close()
     return db_identifier
 
-def create_role(pg_service: str, role: str,in_role: str=None):
+
+def create_role(pg_service: str, role: str, in_role: str = None):
     conn = psycopg.connect(f"service={pg_service}")
     cur = conn.cursor()
     cur.execute(f"SELECT 1 FROM pg_roles WHERE rolname='{role}'")
-    role_exists= cur.fetchone()
+    role_exists = cur.fetchone()
     if not role_exists:
         role_sql = f"""
             CREATE ROLE {role} NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION {('IN ROLE '+in_role) if in_role else ''};
@@ -29,7 +29,8 @@ def create_role(pg_service: str, role: str,in_role: str=None):
         cur.execute(role_sql)
     conn.close()
 
-def grant_privileges(model_name: str,roles: list,ext_schema: str = None):
+
+def grant_privileges(model_name: str, roles: list, ext_schema: str = None):
     conn = psycopg.connect(f"service={pg_service}")
     cur = conn.cursor()
     grant_sql = f"""
@@ -103,7 +104,8 @@ def grant_privileges(model_name: str,roles: list,ext_schema: str = None):
         cur.execute(grant_sql)
     conn.close()
 
-def revoke_privileges(model_name: str,roles: list,ext_schema: str = None):
+
+def revoke_privileges(model_name: str, roles: list, ext_schema: str = None):
     conn = psycopg.connect(f"service={pg_service}")
     cur = conn.cursor()
     revoke_sql = f"""
@@ -132,13 +134,13 @@ def revoke_privileges(model_name: str,roles: list,ext_schema: str = None):
         cur.execute(revoke_sql)
     conn.close()
 
+
 def create_roles(
     modelname: str,
     pg_service: str = None,
     grant: bool = True,
     ext_schema: str = None,
-    db_spec_roles: Optional[bool] = False
-
+    db_spec_roles: Optional[bool] = False,
 ):
     """
     Creates the roles for usage in TEKSI Modules
@@ -149,24 +151,29 @@ def create_roles(
     :param db_spec_roles: will create database specific roles instead of cluster specific roles
     """
     if modelname and not pg_service:
-        pg_service=f'pg_{modelname}'
+        pg_service = f"pg_{modelname}"
 
-    roles=[f'{modelname}_viewer',f'{modelname}_user',f'{modelname}_manager',f'{modelname}_sysadmin']
+    roles = [
+        f"{modelname}_viewer",
+        f"{modelname}_user",
+        f"{modelname}_manager",
+        f"{modelname}_sysadmin",
+    ]
 
     if db_spec_roles:
-        db_identifier =  '_'+get_db_identifier(pg_service, modelname )
+        db_identifier = "_" + get_db_identifier(pg_service, modelname)
         roles = [s + db_identifier for s in roles]
 
     in_roles = [None]
     in_roles.extend(roles[:-1])
 
-    for role,in_role in zip(roles,in_roles):
+    for role, in_role in zip(roles, in_roles):
         create_role(pg_service, role, in_role)
 
     if grant:
-        grant_privileges(model_name,roles,ext_schema)
+        grant_privileges(model_name, roles, ext_schema)
     else:
-        revoke_privileges(model_name,roles,ext_schema)
+        revoke_privileges(model_name, roles, ext_schema)
 
 
 if __name__ == "__main__":
@@ -189,28 +196,29 @@ if __name__ == "__main__":
         "--grant_privileges",
         help="grant privileges for roles",
         default=True,
-        dest='grant',
-        action='store_true'
+        dest="grant",
+        action="store_true",
     )
 
     excl_group.add_argument(
         "-r",
         "--revoke_privileges",
         help="revoke privileges for roles",
-        dest='grant',
-        action='store_false'
+        dest="grant",
+        action="store_false",
     )
     parser.set_defaults(grant=True)
 
-    parser.add_argument("-x", "--extension_schema", help="Name of the extension schema",required=False)
+    parser.add_argument(
+        "-x", "--extension_schema", help="Name of the extension schema", required=False
+    )
 
     args = parser.parse_args()
 
     create_roles(
         args.modelname,
         args.pg_service,
-        grant = args.grant,
+        grant=args.grant,
         ext_schema=args.extension_schema,
         db_spec_roles=args.database_specific_roles,
-
     )
