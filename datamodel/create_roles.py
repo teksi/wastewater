@@ -30,7 +30,7 @@ def create_role(pg_service: str, role: str, in_role: str = None):
     conn.close()
 
 
-def grant_privileges(model_name: str, roles: list, ext_schema: str = None):
+def grant_privileges(pg_service: str, modelname: str, roles: list, ext_schema: str = None):
     conn = psycopg.connect(f"service={pg_service}")
     cur = conn.cursor()
     grant_sql = f"""
@@ -105,7 +105,7 @@ def grant_privileges(model_name: str, roles: list, ext_schema: str = None):
     conn.close()
 
 
-def revoke_privileges(model_name: str, roles: list, ext_schema: str = None):
+def revoke_privileges(pg_service: str, modelname: str, roles: list, ext_schema: str = None):
     conn = psycopg.connect(f"service={pg_service}")
     cur = conn.cursor()
     revoke_sql = f"""
@@ -171,9 +171,9 @@ def create_roles(
         create_role(pg_service, role, in_role)
 
     if grant:
-        grant_privileges(model_name, roles, ext_schema)
+        grant_privileges(pg_service, model_name, roles, ext_schema)
     else:
-        revoke_privileges(model_name, roles, ext_schema)
+        revoke_privileges(pg_service, model_name, roles, ext_schema)
 
 
 if __name__ == "__main__":
