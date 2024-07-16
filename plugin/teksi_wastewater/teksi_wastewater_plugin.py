@@ -38,6 +38,7 @@ try:
 except ImportError:
     TwwPlotSVGWidget = None
 from .gui.twwprofiledockwidget import TwwProfileDockWidget
+from .gui.twwreachsplitter import TwwReachSplitter
 from .gui.twwsettingsdialog import TwwSettingsDialog
 from .gui.twwwizard import TwwWizard
 from .interlis import config
@@ -72,6 +73,9 @@ class TeksiWastewaterPlugin:
 
     # Wizard
     wizarddock = None
+
+    # Reach splitter
+    reachsplitterdock = None
 
     # The layer ids the plugin will need
     edgeLayer = None
@@ -197,6 +201,16 @@ class TeksiWastewaterPlugin:
         self.wizardAction.setCheckable(True)
         self.wizardAction.triggered.connect(self.wizard)
 
+        self.reachsplitterAction = QAction(
+            QIcon(os.path.join(plugin_root_path(), "icons/reachsplitter.svg")),
+            "Reach Splitter",
+            self.iface.mainWindow(),
+        )
+        self.reachsplitterAction.setWhatsThis(self.tr("Split Reaches with nodes"))
+        self.reachsplitterAction.setEnabled(False)
+        self.reachsplitterAction.setCheckable(True)
+        self.reachsplitterAction.triggered.connect(self.reachsplitter)
+
         self.connectNetworkElementsAction = QAction(
             QIcon(os.path.join(plugin_root_path(), "icons/link-wastewater-networkelement.svg")),
             QApplication.translate("teksi_wastewater", "Connect wastewater networkelements"),
@@ -251,6 +265,7 @@ class TeksiWastewaterPlugin:
         self.toolbar.addAction(self.upstreamAction)
         self.toolbar.addAction(self.downstreamAction)
         self.toolbar.addAction(self.wizardAction)
+        self.toolbar.addAction(self.reachsplitterAction)
         self.toolbar.addAction(self.refreshNetworkTopologyAction)
         self.toolbar.addAction(self.connectNetworkElementsAction)
 
@@ -271,6 +286,7 @@ class TeksiWastewaterPlugin:
         self.toolbarButtons.append(self.upstreamAction)
         self.toolbarButtons.append(self.downstreamAction)
         self.toolbarButtons.append(self.wizardAction)
+        self.toolbarButtons.append(self.reachsplitterAction)
         self.toolbarButtons.append(self.refreshNetworkTopologyAction)
         self.toolbarButtons.append(self.importAction)
         self.toolbarButtons.append(self.exportAction)
@@ -338,6 +354,7 @@ class TeksiWastewaterPlugin:
         self.toolbar.removeAction(self.upstreamAction)
         self.toolbar.removeAction(self.downstreamAction)
         self.toolbar.removeAction(self.wizardAction)
+        self.toolbar.removeAction(self.reachsplitterAction)
         self.toolbar.removeAction(self.refreshNetworkTopologyAction)
         self.toolbar.removeAction(self.connectNetworkElementsAction)
 
@@ -400,6 +417,14 @@ class TeksiWastewaterPlugin:
         self.logger.debug("Opening Wizard")
         self.iface.addDockWidget(Qt.LeftDockWidgetArea, self.wizarddock)
         self.wizarddock.show()
+
+    def reachsplitter(self):
+        """"""
+        if not self.reachsplitterdock:
+            self.reachsplitterdock = TwwReachSplitter(self.iface.mainWindow(), self.iface)
+        self.logger.debug("Opening Reach Splitter")
+        self.iface.addDockWidget(Qt.LeftDockWidgetArea, self.reachsplitterdock)
+        self.reachsplitterdock.show()
 
     def connectNetworkElements(self, checked):
         self.iface.mapCanvas().setMapTool(self.maptool_connect_networkelements)
