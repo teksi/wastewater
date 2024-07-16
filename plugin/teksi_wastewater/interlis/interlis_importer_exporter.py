@@ -140,7 +140,7 @@ class InterlisImporterExporter:
         self._progress_done(95, "Update main cover and refresh materialized views...")
         self._import_update_main_cover_and_refresh_mat_views()
 
-        # Update main_cover and main_wastewater_node
+        # Update organisations
         self._progress_done(96, "Set organisations filter...")
         self._import_manage_organisations()
         # Reenable symbology triggers
