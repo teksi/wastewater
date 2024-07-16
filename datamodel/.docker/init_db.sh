@@ -25,8 +25,6 @@ recreate_db(){
   psql -U postgres -d postgres -o /dev/null -c "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = '$1'"
   dropdb -U postgres --if-exists $1
   createdb -U postgres $1
-  psql -c 'CREATE EXTENSION IF NOT EXISTS postgis'
-  psql -c 'CREATE EXTENSION IF NOT EXISTS "uuid-ossp"'
 }
 
 if [ "$1" == "wait" ]; then

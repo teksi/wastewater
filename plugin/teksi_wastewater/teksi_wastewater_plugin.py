@@ -46,6 +46,7 @@ from .tools.twwmaptools import TwwMapToolConnectNetworkElements, TwwTreeMapTool
 from .tools.twwnetwork import TwwGraphManager
 from .utils.plugin_utils import plugin_root_path
 from .utils.translation import setup_i18n
+from .utils.tww_validity_check import tww_check_oid_prefix
 from .utils.twwlayermanager import TwwLayerManager, TwwLayerNotifier
 from .utils.twwlogging import TwwQgsLogHandler
 
@@ -60,7 +61,7 @@ def locale(values, feature, parent):
 class TeksiWastewaterPlugin:
     """
     A plugin for wastewater management
-    https://github.com/teksi/teksi_wastewater
+    https://github.com/teksi/wastewater
     """
 
     # The networkAnalyzer will manage the networklayers and pathfinding
@@ -228,7 +229,7 @@ class TeksiWastewaterPlugin:
             self.tr("Import from interlis"),
             self.iface.mainWindow(),
         )
-        self.importAction.setWhatsThis(self.tr("Import from interlis"))
+        self.importAction.setWhatsThis(self.tr("Import from INTERLIS"))
         self.importAction.setEnabled(False)
         self.importAction.setCheckable(False)
         self.importAction.triggered.connect(self.actionImportClicked)
@@ -238,7 +239,7 @@ class TeksiWastewaterPlugin:
             self.tr("Export to interlis"),
             self.iface.mainWindow(),
         )
-        self.exportAction.setWhatsThis(self.tr("Export from interlis"))
+        self.exportAction.setWhatsThis(self.tr("Export to INTERLIS"))
         self.exportAction.setEnabled(False)
         self.exportAction.setCheckable(False)
         self.exportAction.triggered.connect(self.actionExportClicked)
@@ -309,6 +310,25 @@ class TeksiWastewaterPlugin:
         QgsApplication.processingRegistry().addProvider(self.processing_provider)
 
         self.network_layer_notifier.layersAdded([])
+
+    def tww_validity_check(self):
+        pg_layer = TwwLayerManager.layer("vw_tww_wastewater_structure")
+        if not pg_layer:
+            self.iface.messageBar().pushMessage(
+                "Error",
+                "Could not determine the Postgres connection information. Make sure the TWW project is loaded.",
+                level=Qgis.Critical,
+            )
+
+        pgservice = pg_layer.dataProvider().uri().service()
+        msgs = tww_check_oid_prefix(pgservice)
+        msgs.extend(tww_check_oid_prefix(pgservice))
+        for msg in msgs:
+            self.iface.messageBar().pushMessage(
+                "Error",
+                msg,
+                level=Qgis.Critical,
+            )
 
     def unload(self):
         """
