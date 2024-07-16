@@ -27,7 +27,7 @@ def create_role(pg_service: str, role: str, in_role: str = None):
             CREATE ROLE {role} NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;
         """
         cur.execute(role_sql)
-        cur.execute(f"SELECT 1 FROM pg_roles WHERE rolname='{inrole}'")
+        cur.execute(f"SELECT 1 FROM pg_roles WHERE rolname='{in_role}'")
         inrole_exists = cur.fetchone()
         if inrole_exists:
             role_sql = f"""
