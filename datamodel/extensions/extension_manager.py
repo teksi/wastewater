@@ -5,14 +5,13 @@ from argparse import ArgumentParser, BooleanOptionalAction
 from pathlib import Path
 from typing import Optional
 
-from sqlalchemy.orm import Session
 from yaml import safe_load
-
 
 try:
     import psycopg
 except ImportError:
     import psycopg2 as psycopg
+
 
 def read_config(config_file: str, extension_name: str):
     with open(config_file) as file:
