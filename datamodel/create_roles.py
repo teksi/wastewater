@@ -8,6 +8,7 @@ from typing import Optional
 try:
     import psycopg
 except ImportError:
+    import psycopg2 as psycopg
 
 
 def get_db_identifier(pg_service: str, modelname: str ):
