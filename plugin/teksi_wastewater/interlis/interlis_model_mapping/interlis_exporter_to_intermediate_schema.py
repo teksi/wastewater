@@ -91,9 +91,11 @@ class InterlisExporterToIntermediateSchema:
             self._create_basket()
 
         if self.model == config.MODEL_NAME_AG64:
+            self.abwasser_session.execute(text("REFRESH MATERIALIZED VIEW tww_ag6496.knoten_bauwerksattribute WITH DATA;"))
             self.current_basket = self.basket_topic_ag64
             self._export_ag64()
         elif self.model == config.MODEL_NAME_AG96:
+            self.abwasser_session.execute(text("REFRESH MATERIALIZED VIEW tww_ag6496.knoten_bauwerksattribute WITH DATA;"))
             self.current_basket = self.basket_topic_ag96
             self._export_ag96()
         else:
