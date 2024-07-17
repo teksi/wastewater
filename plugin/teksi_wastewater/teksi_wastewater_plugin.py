@@ -319,7 +319,6 @@ class TeksiWastewaterPlugin:
         if pg_layer:
             pgservice = pg_layer.dataProvider().uri().service()
             msgs = tww_check_oid_prefix(pgservice)
-            msgs.extend(tww_check_oid_prefix(pgservice))
             msgs.extend(tww_check_fk_defaults(pgservice))
             for msg in msgs:
                 self.iface.messageBar().pushMessage(
