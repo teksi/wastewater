@@ -1,4 +1,4 @@
-from .interlis.utils.various import get_pgconf_as_psycopg_dsn, logger
+from ..interlis.utils.various import get_pgconf_as_psycopg_dsn, logger
 
 try:
     import psycopg
