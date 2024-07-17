@@ -202,7 +202,7 @@ WITH re_meta AS(
 				 fk_operator,
 				 ch_function_hierarchic,
 				 ag96_fk_measure
-				 FROM tww_od.agxx_unconnected_node_bwrel) unc ON unc.obj_id=wn.obj_id
+				 FROM tww_od.agxx_unconnected_node_export_rel) unc ON unc.obj_id=wn.obj_id
 	  LEFT JOIN tww_vl.channel_function_hierarchic vl_fct_hier_unc 	ON unc.ch_function_hierarchic = vl_fct_hier_unc.code
 	  WINDOW w AS ( PARTITION BY wn.obj_id
                     ORDER BY re_from.order_fct_hierarchic ASC NULLS LAST
@@ -285,19 +285,19 @@ LEFT JOIN (SELECT
 		   detail_geometry3d_geometry,
 		   co_positional_accuracy
 		   FROM
-		   tww_od.agxx_unconnected_node_bwrel) unc ON unc.obj_id=wn.obj_id
+		   tww_od.agxx_unconnected_node_export_rel) unc ON unc.obj_id=wn.obj_id
 
 LEFT JOIN tww_vl.wastewater_structure_status st ON st.code=ws.status
 
 LEFT JOIN tww_od.manhole ma ON main_ws.obj_id = ma.obj_id
 LEFT JOIN tww_vl.manhole_function ma_fu ON ma_fu.code=ma.function
-LEFT JOIN tww_vl.manhole_function_bwrel_agxx ma_fu_rev ON ma_fu_rev.code=ma.function
+LEFT JOIN tww_vl.manhole_function_export_rel_agxx ma_fu_rev ON ma_fu_rev.code=ma.function
 LEFT JOIN tww_od.special_structure ss ON main_ws.obj_id = ss.obj_id
 LEFT JOIN tww_vl.special_structure_function ss_fu ON ss_fu.code=ss.function
-LEFT JOIN tww_vl.special_structure_function_bwrel_agxx ss_fu_rev ON ss_fu_rev.code=ss.function
+LEFT JOIN tww_vl.special_structure_function_export_rel_agxx ss_fu_rev ON ss_fu_rev.code=ss.function
 LEFT JOIN tww_od.infiltration_installation ii ON main_ws.obj_id = ii.obj_id
 LEFT JOIN tww_vl.infiltration_installation_kind ii_ki ON ii_ki.code=ii.kind
-LEFT JOIN tww_vl.infiltration_installation_kind_bwrel_agxx ii_ki_rev ON ii_ki_rev.code=ii.kind
+LEFT JOIN tww_vl.infiltration_installation_kind_export_rel_agxx ii_ki_rev ON ii_ki_rev.code=ii.kind
 LEFT JOIN tww_od.discharge_point dp ON main_ws.obj_id = dp.obj_id
 LEFT JOIN tww_vl.discharge_point_relevance dp_rel ON dp_rel.code=dp.relevance
 
@@ -389,9 +389,9 @@ FROM tww_od.reach re
 	LEFT JOIN tww_vl.pipe_profile_profile_type ppt ON ppt.code=pp.profile_type
 	LEFT JOIN tww_vl.wastewater_structure_status st ON st.code=ws.status
 	LEFT JOIN tww_vl.channel_usage_current uc ON uc.code=ch.usage_current
-	LEFT JOIN tww_vl.channel_usage_current_bwrel_agxx uc_rev ON uc_rev.code=ch.usage_current
+	LEFT JOIN tww_vl.channel_usage_current_export_rel_agxx uc_rev ON uc_rev.code=ch.usage_current
 	LEFT JOIN tww_vl.channel_usage_planned up ON up.code=ch.usage_planned
-	LEFT JOIN tww_vl.channel_usage_planned_bwrel_agxx up_rev ON up_rev.code=ch.usage_planned
+	LEFT JOIN tww_vl.channel_usage_planned_export_rel_agxx up_rev ON up_rev.code=ch.usage_planned
 
 ;
 
@@ -485,8 +485,8 @@ FROM tww_od.catchment_area ca
 	LEFT JOIN tww_vl.catchment_area_infiltration_planned ip ON ip.code = ca.infiltration_planned
 	LEFT JOIN tww_vl.catchment_area_retention_current rc ON rc.code = ca.retention_current
 	LEFT JOIN tww_vl.catchment_area_retention_planned rp ON rp.code = ca.retention_planned
-	LEFT JOIN tww_vl.catchment_area_drainage_system_planned_bwrel_agxx dsp_rev ON dsp_rev.code = ca.drainage_system_planned
-	LEFT JOIN tww_vl.catchment_area_drainage_system_current_bwrel_agxx dsc_rev ON dsc_rev.code = ca.drainage_system_current
+	LEFT JOIN tww_vl.catchment_area_drainage_system_planned_export_rel_agxx dsp_rev ON dsp_rev.code = ca.drainage_system_planned
+	LEFT JOIN tww_vl.catchment_area_drainage_system_current_export_rel_agxx dsc_rev ON dsc_rev.code = ca.drainage_system_current
 ;
 
 
@@ -549,7 +549,7 @@ SELECT
 	, COALESCE(bg.last_modification,TO_TIMESTAMP('1800-01-01','YYYY-MM-DD')) AS letzte_aenderung_gep
 FROM tww_od.building_group bg
 	LEFT JOIN tww_vl.building_group_function bg_fct ON bg_fct.code = bg.function
-	LEFT JOIN tww_vl.building_group_function_bwrel_agxx bg_fct_rev ON bg_fct_rev.code = bg.function
+	LEFT JOIN tww_vl.building_group_function_export_rel_agxx bg_fct_rev ON bg_fct_rev.code = bg.function
 	LEFT JOIN tww_vl.building_group_renovation_necessity bg_rn ON bg_rn.code = bg.renovation_necessity
 	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_ww ON bg_dt_ww.code = bg.ag96_disposal_wastewater 
 	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_iw ON bg_dt_iw.code = bg.ag96_disposal_industrial_wastewater 
@@ -611,4 +611,4 @@ SELECT
 FROM tww_od.infiltration_zone iz
   LEFT JOIN tww_od.zone zo ON zo.obj_id = iz.obj_id
   LEFT JOIN tww_vl.infiltration_zone_infiltration_capacity iz_ic ON iz_ic.code = iz.infiltration_capacity
-  LEFT JOIN tww_vl.infiltration_zone_infiltration_capacity_bwrel_agxx iz_ic_rev ON iz_ic_rev.code = iz.infiltration_capacity;
+  LEFT JOIN tww_vl.infiltration_zone_infiltration_capacity_export_rel_agxx iz_ic_rev ON iz_ic_rev.code = iz.infiltration_capacity;

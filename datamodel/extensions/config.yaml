@@ -1,0 +1,5 @@
+extensions:
+  - id: agxx
+    directory: tww2ag6496
+    schema: tww_ag6496
+    variables: {}

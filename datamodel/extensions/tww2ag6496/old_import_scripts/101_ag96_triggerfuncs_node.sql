@@ -23,7 +23,7 @@ BEGIN
 	, wwtp_number = vw_val.ara_nr
 	, ag96_is_gateway = gate.code
 	, ag64_function = wn_fct.code
-	, fk_dataowner = downr.obj_id
+	, fk_dataowner = downr.value_obj_id
 	, fk_provider = {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
 	, ag64_last_modification = vw_val.letzte_aenderung_wi
     , ag64_remark = vw_val.bemerkung_wi
@@ -34,7 +34,7 @@ BEGIN
   FROM (SELECT NEW.*) vw_val
 	LEFT JOIN tww_vl.wastewater_node_ag96_is_gateway gate ON gate.value_de=vw_val.istschnittstelle
 	LEFT JOIN tww_vl.wastewater_node_ag64_function wn_fct ON wn_fct.value_de=vw_val.funktionag
-	LEFT JOIN {ext_schema}.vsadss_dataowner downr on 1=1
+	LEFT JOIN tww_od.default_values downr on fieldname = 'fk_dataowner'
   WHERE wn.obj_id=vw_val.obj_id;
   IF NOT FOUND THEN
     INSERT INTO tww_app.vw_wastewater_node( 
@@ -64,7 +64,7 @@ BEGIN
 	, vw_val.ara_nr
 	, gate.code
 	, wn_fct.code
-    , downr.obj_id
+    , downr.value_obj_id
     , {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
     , vw_val.letzte_aenderung_wi
     , vw_val.bemerkung_wi
@@ -76,7 +76,7 @@ BEGIN
 	FROM (SELECT NEW.*) vw_val
 	LEFT JOIN tww_vl.wastewater_node_ag96_is_gateway gate ON gate.value_de=vw_val.istschnittstelle
 	LEFT JOIN tww_vl.wastewater_node_ag64_function wn_fct ON wn_fct.value_de=vw_val.funktionag
-	LEFT JOIN {ext_schema}.vsadss_dataowner downr on 1=1
+	LEFT JOIN tww_od.default_values downr on fieldname = 'fk_dataowner'
 	);
   END IF;
 
@@ -86,12 +86,12 @@ BEGIN
  	  level = vw_val.deckelkote
 	, positional_accuracy = co_posacc.code
 	, situation3d_geometry = ST_Force3D(vw_val.lage)
-	, fk_dataowner = downr.obj_id
+	, fk_dataowner = downr.value_obj_id
 	, fk_provider = {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
 	, last_modification = vw_val.letzte_aenderung_wi
   FROM (SELECT NEW.*) vw_val
     LEFT JOIN tww_vl.cover_positional_accuracy co_posacc ON co_posacc.value_de=vw_val.lagegenauigkeit
-	LEFT JOIN {ext_schema}.vsadss_dataowner downr on 1=1
+	LEFT JOIN tww_od.default_values downr on fieldname = 'fk_dataowner'
   WHERE co.identifier=vw_val.bezeichnung
   RETURNING co.obj_id into co_oid;
   IF NOT FOUND THEN
@@ -108,13 +108,13 @@ BEGIN
   	  vw_val.deckelkote
 	, co_posacc.code
 	, ST_Force3D(vw_val.lage)
-	, downr.obj_id
+	, downr.value_obj_id
     , {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
 	, vw_val.bezeichnung
 	, vw_val.letzte_aenderung_wi
 	FROM (SELECT NEW.*) vw_val
     LEFT JOIN tww_vl.cover_positional_accuracy co_posacc ON co_posacc.value_de=vw_val.lagegenauigkeit
-	LEFT JOIN {ext_schema}.vsadss_dataowner downr on 1=1
+	LEFT JOIN tww_od.default_values downr on fieldname = 'fk_dataowner'
 	)
 	RETURNING obj_id into co_oid;
   END IF;
@@ -125,7 +125,7 @@ BEGIN
 	, accessibility = ws_acc.code
 	, detail_geometry3d_geometry = ST_Force3D(vw_val.detailgeometrie)
 	, financing = ws_fin.code
-	, fk_dataowner = downr.obj_id
+	, fk_dataowner = downr.value_obj_id
 	, fk_main_cover = co_oid
 	, fk_operator = {ext_schema}.convert_organisationid_to_vsa(vw_val.betreiber)
 	, fk_owner = {ext_schema}.convert_organisationid_to_vsa(vw_val.eigentuemer)
@@ -143,7 +143,7 @@ BEGIN
 	LEFT JOIN tww_vl.wastewater_structure_renovation_necessity ws_rn ON ws_rn.value_de=vw_val.sanierungsbedarf
 	LEFT JOIN tww_vl.wastewater_structure_financing ws_fin ON ws_fin.value_de=vw_val.finanzierung
 	LEFT JOIN tww_vl.wastewater_structure_status ws_st ON ws_st.value_de=vw_val.bauwerkstatus
-	LEFT JOIN {ext_schema}.vsadss_dataowner downr on 1=1
+	LEFT JOIN tww_od.default_values downr on fieldname = 'fk_dataowner'
   WHERE wwtp.identifier = vw_val.bezeichnung;
   IF NOT FOUND THEN
 	INSERT INTO tww_app.vw_wwtp_stucture(
@@ -170,7 +170,7 @@ BEGIN
 	, ws_acc.code
 	, ST_Force3D(vw_val.detailgeometrie)
 	, ws_fin.code
-	, downr.obj_id
+	, downr.value_obj_id
 	, co_oid
 	, {ext_schema}.convert_organisationid_to_vsa(vw_val.betreiber)
 	, {ext_schema}.convert_organisationid_to_vsa(vw_val.eigentuemer)
@@ -189,7 +189,7 @@ BEGIN
 	LEFT JOIN tww_vl.wastewater_structure_renovation_necessity ws_rn ON ws_rn.value_de=vw_val.sanierungsbedarf
 	LEFT JOIN tww_vl.wastewater_structure_financing ws_fin ON ws_fin.value_de=vw_val.finanzierung
 	LEFT JOIN tww_vl.wastewater_structure_status ws_st ON ws_st.value_de=vw_val.bauwerkstatus
-	LEFT JOIN {ext_schema}.vsadss_dataowner downr on 1=1
+	LEFT JOIN tww_od.default_values downr on fieldname = 'fk_dataowner'
 	);
 	END IF;
     ELSE
@@ -317,7 +317,7 @@ BEGIN
     , accessibility = ws_acc.code
     , financing = ws_fin.code
 	, status_survey_year = vw_val.jahr_zustandserhebung
-    , fk_dataowner = downr.obj_id
+    , fk_dataowner = downr.value_obj_id
     , fk_operator = {ext_schema}.convert_organisationid_to_vsa(vw_val.betreiber)
     , fk_provider = {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
     , renovation_necessity = ws_rn.code
@@ -331,7 +331,7 @@ BEGIN
 	, wn_wwtp_number = vw_val.ara_nr
     , wn_backflow_level_current = vw_val.maxrueckstauhoehe
     , wn_bottom_level = vw_val.sohlenkote
-    , wn_fk_dataowner = downr.obj_id
+    , wn_fk_dataowner = downr.value_obj_id
     , wn_fk_provider = {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
     , wn_identifier = vw_val.bezeichnung
     , wn_ag64_last_modification = vw_val.letzte_aenderung_wi
@@ -356,7 +356,7 @@ BEGIN
 	LEFT JOIN tww_vl.wastewater_structure_financing ws_fin ON ws_fin.value_de=vw_val.finanzierung
 	LEFT JOIN tww_vl.wastewater_structure_status ws_st ON ws_st.value_de=vw_val.bauwerkstatus
 	LEFT JOIN tww_vl.wastewater_structure_accessibility ws_acc ON ws_acc.value_de=vw_val.zugaenglichkeit
-	LEFT JOIN {ext_schema}.vsadss_dataowner downr on 1=1
+	LEFT JOIN tww_od.default_values downr on fieldname = 'fk_dataowner'
   WHERE ws.co_obj_id=vw_val.obj_id;
   IF NOT FOUND THEN
     INSERT INTO tww_app.vw_tww_wastewater_structure(
@@ -437,7 +437,7 @@ BEGIN
 		, ws_acc.code
 		, ws_fin.code
 		, vw_val.jahr_zustandserhebung
-		, downr.obj_id
+		, downr.value_obj_id
 		, {ext_schema}.convert_organisationid_to_vsa(vw_val.betreiber)
 		, {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
 		, ws_rn.code
@@ -452,7 +452,7 @@ BEGIN
 		, vw_val.ara_nr
 		, vw_val.maxrueckstauhoehe
 		, vw_val.sohlenkote
-		, downr.obj_id
+		, downr.value_obj_id
 		, {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
 		, vw_val.bezeichnung
 		, vw_val.letzte_aenderung_wi
@@ -477,7 +477,7 @@ BEGIN
 	  LEFT JOIN tww_vl.wastewater_structure_financing ws_fin ON ws_fin.value_de=vw_val.finanzierung
 	  LEFT JOIN tww_vl.wastewater_structure_status ws_st ON ws_st.value_de=vw_val.bauwerkstatus
 	  LEFT JOIN tww_vl.wastewater_structure_accessibility ws_acc ON ws_acc.value_de=vw_val.zugaenglichkeit
-	  LEFT JOIN {ext_schema}.vsadss_dataowner downr on 1=1
+	  LEFT JOIN tww_od.default_values downr on fieldname = 'fk_dataowner'
 	  );
     END IF;  
 

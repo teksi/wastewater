@@ -1,4 +1,28 @@
 
+-----------------
+-- Forward relations for import
+-----------------
+
+CREATE TABLE IF NOT EXISTS tww_vl.value_list_agxx_import_rel_base
+(
+    code integer NOT NULL,
+    value_de character varying(100) COLLATE pg_catalog."default",
+    CONSTRAINT pkey_tww_value_list_agxx_import_rel_code PRIMARY KEY (code)
+)
+TABLESPACE pg_default;
+
+
+-----------------
+-- Backward relations for export
+-----------------
+
+CREATE TABLE IF NOT EXISTS tww_vl.value_list_agxx_export_rel_base
+(
+    code integer NOT NULL,
+    value_de character varying(100) COLLATE pg_catalog."default",
+    CONSTRAINT pkey_tww_value_list_agxx_export_rel_code PRIMARY KEY (code)
+)
+TABLESPACE pg_default;
 
 -----------------
 -- Organisation
@@ -33,14 +57,28 @@ UPDATE tww_vl.catchment_area_drainage_system_planned SET active = FALSE where co
 , 9067 	-- Drainagesystem
 ]);
 
-CREATE TABLE IF NOT EXISTS tww_vl.catchment_area_drainage_system_planned_bwrel_agxx (code integer, value_agxx TEXT, CONSTRAINT pkey_catchment_area_drainage_system_planned_bwrel_agxx_code PRIMARY KEY (code)); 
+CREATE TABLE IF NOT EXISTS tww_vl.catchment_area_drainage_system_planned_import_rel_agxx 
+(CONSTRAINT pkey_catchment_area_drainage_system_planned_import_rel_agxx_code PRIMARY KEY (code))
+INHERITS (tww_vl.value_list_agxx_import_rel_base)
+TABLESPACE pg_default;
 
-INSERT INTO tww_vl.catchment_area_drainage_system_planned_bwrel_agxx (code,value_agxx) VALUES
+INSERT INTO tww_vl.catchment_area_drainage_system_planned_import_rel_agxx (code,value_de)
+SELECT code,value_de FROM tww_vl.catchment_area_drainage_system_planned WHERE active
+ON CONFLICT (code) DO UPDATE SET 
+  value_de = EXCLUDED.value_de;
+  
+  
+CREATE TABLE IF NOT EXISTS tww_vl.catchment_area_drainage_system_planned_export_rel_agxx 
+(CONSTRAINT pkey_catchment_area_drainage_system_planned_export_rel_agxx_code PRIMARY KEY (code))
+INHERITS (tww_vl.value_list_agxx_export_rel_base)
+TABLESPACE pg_default;
+
+INSERT INTO tww_vl.catchment_area_drainage_system_planned_export_rel_agxx (code,value_de) VALUES
 (5193,'TeilTrennsystem_mit_Dachwasserversickerung_oder_Ableitung_in_Gewaesser'), 	
 (8692,'Trennsystem'), 	
 (9067,'unbekannt')
 ON CONFLICT (code) DO UPDATE SET 
-  value_agxx = EXCLUDED.value_agxx;
+  value_de = EXCLUDED.value_de;
 
 
 
@@ -61,14 +99,27 @@ UPDATE tww_vl.catchment_area_drainage_system_current SET active = FALSE where co
 , 9068 	-- Drainagesystem
 ]);
 
-CREATE TABLE IF NOT EXISTS tww_vl.catchment_area_drainage_system_current_bwrel_agxx (code integer, value_agxx TEXT, CONSTRAINT pkey_catchment_area_drainage_system_current_bwrel_agxx_code PRIMARY KEY (code)); 
+CREATE TABLE IF NOT EXISTS tww_vl.catchment_area_drainage_system_current_import_rel_agxx 
+(CONSTRAINT pkey_catchment_area_drainage_system_current_import_rel_agxx_code PRIMARY KEY (code))
+INHERITS (tww_vl.value_list_agxx_import_rel_base)
+TABLESPACE pg_default;
 
-INSERT INTO tww_vl.catchment_area_drainage_system_current_bwrel_agxx (code,value_agxx) VALUES
+INSERT INTO tww_vl.catchment_area_drainage_system_current_import_rel_agxx (code,value_de)
+SELECT code,value_de FROM tww_vl.catchment_area_drainage_system_current WHERE active
+ON CONFLICT (code) DO UPDATE SET 
+  value_de = EXCLUDED.value_de;
+
+CREATE TABLE IF NOT EXISTS tww_vl.catchment_area_drainage_system_current_export_rel_agxx 
+(CONSTRAINT pkey_catchment_area_drainage_system_current_export_rel_agxx_code PRIMARY KEY (code))
+INHERITS (tww_vl.value_list_agxx_export_rel_base)
+TABLESPACE pg_default;; 
+
+INSERT INTO tww_vl.catchment_area_drainage_system_current_export_rel_agxx (code,value_de) VALUES
 (5188,'TeilTrennsystem_mit_Dachwasserversickerung_oder_Ableitung_in_Gewaesser'), 	
 (8693,'Trennsystem'), 	
 (9068,'unbekannt')
 ON CONFLICT (code) DO UPDATE SET 
-  value_agxx = EXCLUDED.value_agxx;
+  value_de = EXCLUDED.value_de;
 
 
 -----------------
@@ -78,7 +129,11 @@ ON CONFLICT (code) DO UPDATE SET
 
 
 -- Ist_Schnittstelle
-CREATE TABLE IF NOT EXISTS tww_vl.wastewater_node_ag96_is_gateway (CONSTRAINT pkey_tww_vl_wastewater_node_ag96_is_gateway PRIMARY KEY (code)) INHERITS (tww_vl.value_list_base); --Werteliste
+CREATE TABLE IF NOT EXISTS tww_vl.wastewater_node_ag96_is_gateway 
+(CONSTRAINT pkey_tww_vl_wastewater_node_ag96_is_gateway PRIMARY KEY (code))
+ INHERITS (tww_vl.value_list_base)
+ TABLESPACE pg_default; --Werteliste
+ 
 ALTER TABLE tww_vl.wastewater_node_ag96_is_gateway DROP CONSTRAINT IF EXISTS pkey_tww_vl_wastewater_node_ag96_is_gateway CASCADE;
 ALTER TABLE tww_vl.wastewater_node_ag96_is_gateway ADD CONSTRAINT pkey_tww_vl_wastewater_node_ag96_is_gateway PRIMARY KEY (code);
 INSERT INTO tww_vl.wastewater_node_ag96_is_gateway (code,vsacode,value_de,value_en,active) VALUES
@@ -94,7 +149,10 @@ ON CONFLICT (code) DO UPDATE SET
 
 
 -- FunktionAG Anschluss
-CREATE TABLE IF NOT EXISTS tww_vl.wastewater_node_ag64_function (CONSTRAINT pkey_tww_vl_wastewater_node_ag64_function PRIMARY KEY (code)) INHERITS (tww_vl.value_list_base);
+CREATE TABLE IF NOT EXISTS tww_vl.wastewater_node_ag64_function 
+(CONSTRAINT pkey_tww_vl_wastewater_node_ag64_function PRIMARY KEY (code)) 
+INHERITS (tww_vl.value_list_base);
+
 ALTER TABLE tww_vl.wastewater_node_ag64_function DROP CONSTRAINT IF EXISTS pkey_tww_vl_wastewater_node_ag64_function CASCADE;
 ALTER TABLE tww_vl.wastewater_node_ag64_function ADD CONSTRAINT pkey_tww_vl_wastewater_node_ag64_function PRIMARY KEY (code);
 INSERT INTO tww_vl.wastewater_node_ag64_function (code,vsacode,value_de,active) VALUES
@@ -108,9 +166,9 @@ ON CONFLICT (code) DO UPDATE SET
 
 --FunktionAG Normschacht
 INSERT INTO tww_vl.manhole_function (code,vsacode,value_de,value_en,active) VALUES
-(1999968,2742,'Schlammfang','sludge_trap',true),		-- Schlammsammler
-(1999937,8736,'Kontrollschacht','manhole',true),  
-(1999936,8703,'Vorbehandlung','pretreatment',true)
+(1999968,2742,'Schlammfang','sludge_trap',true)		-- Schlammsammler
+-- (1999937,8736,'Kontrollschacht','manhole',true),     -- Wird auf Kontroll-Einstiegschacht gemappt
+--(1999936,8703,'Vorbehandlung','pretreatment',true)
 ON CONFLICT (code) DO UPDATE SET 
   vsacode = EXCLUDED.vsacode
 , value_de = EXCLUDED.value_de
@@ -120,14 +178,37 @@ ON CONFLICT (code) DO UPDATE SET
 UPDATE tww_vl.manhole_function SET active = false WHERE code = ANY(Array[
   8828	-- Entwaesserungsrinne_mit_Schlammsack
 , 8601	-- Fettabscheider
-, 8654  -- Kombischacht
+--, 8654  -- Kombischacht
 , 8702  -- Behandlungsanlage  
-, 8736  -- Kontroll-Einstiegschacht,  
-, 8703  -- Vorbehandlungsanlage
+--, 8736  -- Kontroll-Einstiegschacht,  
+--, 8703  -- Vorbehandlungsanlage
 ]);
 
-CREATE TABLE IF NOT EXISTS tww_vl.manhole_function_bwrel_agxx (code integer, value_agxx TEXT, CONSTRAINT pkey_manhole_function_bwrel_agxx_code PRIMARY KEY (code));
-INSERT INTO tww_vl.manhole_function_bwrel_agxx (code,value_agxx) VALUES
+CREATE TABLE IF NOT EXISTS tww_vl.manhole_function_import_rel_agxx 
+(CONSTRAINT pkey_manhole_function_import_rel_agxx_code PRIMARY KEY (code))
+INHERITS (tww_vl.value_list_agxx_import_rel_base)
+TABLESPACE pg_default;
+
+-- Copy the base
+INSERT INTO tww_vl.manhole_function_import_rel_agxx (code,value_de)
+SELECT code,value_de FROM tww_vl.manhole_function WHERE active
+ON CONFLICT (code) DO UPDATE SET 
+  value_de = EXCLUDED.value_de;
+
+-- alter 1:1 updated value_de
+INSERT INTO tww_vl.manhole_function_import_rel_agxx (code,value_de) VALUES
+(8736,'Kontrollschacht'),
+(8703,'Vorbehandlung')  
+ON CONFLICT (code) DO UPDATE SET 
+  value_de = EXCLUDED.value_de;
+
+
+CREATE TABLE IF NOT EXISTS tww_vl.manhole_function_export_rel_agxx
+(CONSTRAINT pkey_manhole_function_export_rel_agxx_code PRIMARY KEY (code))
+INHERITS (tww_vl.value_list_agxx_export_rel_base)
+TABLESPACE pg_default;
+
+INSERT INTO tww_vl.manhole_function_export_rel_agxx (code,value_de) VALUES
 (8828,'Entwaesserungsrinne'),  
 (8601,'Schwimmstoffabscheider'),
 (8654,'Kontrollschacht'),
@@ -135,14 +216,14 @@ INSERT INTO tww_vl.manhole_function_bwrel_agxx (code,value_agxx) VALUES
 (8736,'Kontrollschacht'),
 (8703,'Vorbehandlung')  
 ON CONFLICT (code) DO UPDATE SET 
-  value_agxx = EXCLUDED.value_agxx;
+  value_de = EXCLUDED.value_de;
 
 --FunktionAG Spezialbawerk
 INSERT INTO tww_vl.special_structure_function (code,vsacode,value_de,value_en,active) VALUES
 (1999967,8704,'Oelrueckhaltebecken','oil_retention_basin',true),  -- Mappt auf Behandlungsanlage
-(1999940,8704,'Strassenwasserbehandlungsanlage','streetwater_treatment_plant',true),  
-(1999935,8739,'Kontrollschacht','manhole',true),  
-(1999934,8704,'Vorbehandlung','pretreatment',true)
+(1999940,8704,'Strassenwasserbehandlungsanlage','streetwater_treatment_plant',true) 
+-- (1999935,8739,'Kontrollschacht','manhole',true),  -- Wird auf Kontroll-Einstiegschacht gemappt
+-- (1999934,8704,'Vorbehandlung','pretreatment',true)
 ON CONFLICT (code) DO UPDATE SET 
   vsacode = EXCLUDED.vsacode
 , value_de = EXCLUDED.value_de
@@ -150,46 +231,123 @@ ON CONFLICT (code) DO UPDATE SET
 , active = EXCLUDED.active
 ;
 UPDATE tww_vl.special_structure_function SET active = false WHERE code = ANY(Array[
-  8600 	-- Fettabscheider
+  8704  -- Behandlungsanlage  
+, 8600 	-- Fettabscheider
 , 8657	-- Havariebecken
-, 8704  -- Behandlungsanlage  
-, 8739  -- Kontroll-Einstiegschacht,  
-, 9089  -- Vorbehandlungsanlage
+--, 9302  -- Kombischacht
+--, 8739  -- Kontroll-Einstiegschacht,  
+--, 9089  -- Vorbehandlungsanlage
 ]);
 
-CREATE TABLE IF NOT EXISTS tww_vl.special_structure_function_bwrel_agxx (code integer, value_agxx TEXT, CONSTRAINT pkey_special_structure_function_bwrel_agxx_code PRIMARY KEY (code));
-INSERT INTO tww_vl.special_structure_function_bwrel_agxx (code,value_agxx) VALUES
-(8600,'Schwimmstoffabscheider'),  
-(8657,'andere'),
-(8704,'Vorbehandlung'),
-(8739,'Kontrollschacht'),
-(9089,'Vorbehandlung')
+CREATE TABLE IF NOT EXISTS tww_vl.special_structure_function_import_rel_agxx 
+(CONSTRAINT pkey_special_structure_function_import_rel_agxx_code PRIMARY KEY (code))
+INHERITS (tww_vl.value_list_agxx_import_rel_base)
+TABLESPACE pg_default;
+
+-- Copy the base
+INSERT INTO tww_vl.special_structure_function_import_rel_agxx (code,value_de)
+SELECT code,value_de FROM tww_vl.special_structure_function WHERE active
 ON CONFLICT (code) DO UPDATE SET 
-  value_agxx = EXCLUDED.value_agxx;
+  value_de = EXCLUDED.value_de;
+
+-- alter 1:1 updated value_de
+INSERT INTO tww_vl.special_structure_function_import_rel_agxx (code,value_de) VALUES
+(8739,'Kontrollschacht'),
+(9089,'Vorbehandlung')  
+ON CONFLICT (code) DO UPDATE SET 
+  value_de = EXCLUDED.value_de;
+  
+CREATE TABLE IF NOT EXISTS tww_vl.special_structure_function_export_rel_agxx 
+(CONSTRAINT pkey_special_structure_function_export_rel_agxx_code PRIMARY KEY (code))
+INHERITS (tww_vl.value_list_agxx_export_rel_base)
+TABLESPACE pg_default;
+
+INSERT INTO tww_vl.special_structure_function_export_rel_agxx (code,value_de) VALUES
+(8704,'Strassenwasserbehandlungsanlage'), -- Behandlungsanlage 
+(8600,'andere'),  -- Fettabscheider
+(8657,'andere'), --Havariebecken
+(9302,'Kontrollschacht'), --Kombischacht
+(8739,'Kontrollschacht'), -- Kontroll-Einstiegschacht
+(9089,'Vorbehandlung') -- Vorbehandlungsanlage
+ON CONFLICT (code) DO UPDATE SET 
+  value_de = EXCLUDED.value_de;
 
 --FunktionAG Versickerungsanlage
 INSERT INTO tww_vl.infiltration_installation_kind (code,vsacode,value_de,value_en,active) VALUES
 (1999966,3087,'andere','other',true),  -- Mappt auf unbekannt
-(1999965,3282,'Retentionsfilterbecken','retention_filter_basin',true),  -- Mappt auf andere_mit_Bodenpassage
-(1999942,3283,'Versickerungsstrang','infiltration_pipe',true),  -- andere_mit_Bodenpassage
-(1999941,3284,'Versickerungsschacht_Strang','infiltration_pipe_manhole',true) -- Kombination_Schacht_Strang
+(1999965,3282,'Retentionsfilterbecken','retention_filter_basin',true)  -- Mappt auf andere_mit_Bodenpassage
+--(1999942,3283,'Versickerungsstrang','infiltration_pipe',true),  -- Versickerungsstrang_Galerie
+--(1999941,3284,'Versickerungsschacht_Strang','infiltration_pipe_manhole',true) -- Kombination_Schacht_Strang
 ON CONFLICT (code) DO UPDATE SET 
   vsacode = EXCLUDED.vsacode
 , value_de = EXCLUDED.value_de
 , value_en = EXCLUDED.value_en
 , active = EXCLUDED.active
 ;
+
 UPDATE tww_vl.infiltration_installation_kind SET active = FALSE where code = ANY( ARRAY[
-  3283 	-- Versickerungsstrang_Galerie
-, 3284 	-- Kombination_Schacht_Strang
+  3279 	-- Flaechenfoermige_Versickerung
+, 3280 	-- Versickerung_ueber_die_Schulter
+, 3281 	-- MuldenRigolenversickerung
+, 3282 	-- andere_mit_Bodenpassage
+--, 3283 	-- Versickerungsstrang_Galerie
+--, 3284 	-- Kombination_Schacht_Strang
+, 3285 	-- andere_ohne_Bodenpassage
 ]);
 
-CREATE TABLE IF NOT EXISTS tww_vl.infiltration_installation_kind_bwrel_agxx (code integer, value_agxx TEXT, CONSTRAINT pkey_infiltration_installation_kind_bwrel_agxx_code PRIMARY KEY (code));
-INSERT INTO tww_vl.infiltration_installation_kind_bwrel_agxx (code,value_agxx) VALUES
-(3283,'Versickerungsstrang'), 	
-(3284,'Versickerungsschacht_Strang')
+CREATE TABLE IF NOT EXISTS tww_vl.infiltration_installation_kind_import_rel_agxx 
+(CONSTRAINT pkey_infiltration_installation_kind_import_rel_agxx_code PRIMARY KEY (code))
+INHERITS (tww_vl.value_list_agxx_import_rel_base)
+TABLESPACE pg_default;
+
+-- Copy the base
+INSERT INTO tww_vl.infiltration_installation_kind_import_rel_agxx (code,value_de)
+SELECT code,value_de FROM tww_vl.infiltration_installation_kind WHERE active
 ON CONFLICT (code) DO UPDATE SET 
-  value_agxx = EXCLUDED.value_agxx;
+  value_de = EXCLUDED.value_de;
+
+-- alter 1:1 updated value_de
+INSERT INTO tww_vl.infiltration_installation_kind_import_rel_agxx (code,value_de) VALUES
+(276,'Versickerungsanlage.Versickerungsbecken'),
+(277,'Versickerungsanlage.Kieskoerper'),
+(278,'Versickerungsanlage.Versickerungsschacht'),
+(3283,'Versickerungsanlage.Versickerungsstrang'),
+(3284,'Versickerungsanlage.Versickerungsschacht_Strang'),
+(1999965,'Versickerungsanlage.Retentionsfilterbecken'),
+(1999966,'Versickerungsanlage.andere'),
+(3087,'Versickerungsanlage.unbekannt'),
+ON CONFLICT (code) DO UPDATE SET 
+  value_de = EXCLUDED.value_de;
+
+CREATE TABLE IF NOT EXISTS tww_vl.infiltration_installation_kind_export_rel_agxx 
+(CONSTRAINT pkey_infiltration_installation_kind_export_rel_agxx_code PRIMARY KEY (code))
+INHERITS (tww_vl.value_list_agxx_export_rel_base)
+TABLESPACE pg_default;
+
+INSERT INTO tww_vl.infiltration_installation_kind_export_rel_agxx (code,value_de) VALUES
+(3279,'andere'), 
+(3280,'andere'), 
+(3281,'andere'), 
+(3282,'andere'), 
+--(3283,'Versickerungsstrang'), 	
+--(3284,'Versickerungsschacht_Strang'),
+(3285,'andere')
+ON CONFLICT (code) DO UPDATE SET 
+  value_de = EXCLUDED.value_de;
+
+
+CREATE TABLE IF NOT EXISTS tww_vl.discharge_point_relevance_import_rel_agxx 
+(CONSTRAINT pkey_discharge_point_relevance_import_rel_agxx_code PRIMARY KEY (code))
+INHERITS (tww_vl.value_list_agxx_import_rel_base)
+TABLESPACE pg_default;
+
+
+-- alter 1:1 updated value_de
+INSERT INTO tww_vl.discharge_point_relevance_import_rel_agxx (code,value_de) VALUES
+(5080,'Einleitstelle.gewaesserrelevant'),
+(5081,'Einleitstelle.nicht_gewaesserrelevant')
+ON CONFLICT (code) DO UPDATE SET 
+  value_de = EXCLUDED.value_de;
 
 -----------------
 -- Haltung
@@ -212,9 +370,9 @@ SET order_usage_current=
 		  4526 --wastewater
   	     ,4522 --combined_wastewater
 		 ,4516 --discharged_combined_wastewater
+		 ,4524 --industrial_wastewater
 		 ,1999989 --street_water
 		 ,1999993 -- square_water
-		 ,4524 --clean_wastewater
 		 ,4514 --clean_wastewater
 		 ,9023 --surface_water
 		 ,4518 --creek_water
@@ -223,10 +381,19 @@ SET order_usage_current=
 		 ]
 	 ,code);
 
+CREATE TABLE IF NOT EXISTS tww_vl.channel_usage_current_import_rel_agxx 
+(CONSTRAINT pkey_channel_usage_current_import_rel_agxx_code PRIMARY KEY (code))
+INHERITS (tww_vl.value_list_agxx_import_rel_base)
+TABLESPACE pg_default;
 
--- DSS-Nutzungsarten werden nur rückwärts gematcht, damit die Visualisierungen übernommen werden können
-CREATE TABLE IF NOT EXISTS tww_vl.channel_usage_current_bwrel_agxx (code integer, value_agxx TEXT, CONSTRAINT pkey_channel_usage_current_bwrel_agxx_code PRIMARY KEY (code));
-INSERT INTO tww_vl.channel_usage_current_bwrel_agxx (code,value_agxx) VALUES
+-- Copy the base
+INSERT INTO tww_vl.channel_usage_current_import_rel_agxx (code,value_de)
+SELECT code,value_de FROM tww_vl.channel_usage_current WHERE active
+ON CONFLICT (code) DO UPDATE SET 
+  value_de = EXCLUDED.value_de;
+
+-- alter 1:1 updated value_de
+INSERT INTO tww_vl.channel_usage_current_import_rel_agxx (code,value_de) VALUES
 (4522,'Mischwasser'),  
 (4514,'Fremdwasser'),
 (9023,'Sauberwasser'),
@@ -234,7 +401,22 @@ INSERT INTO tww_vl.channel_usage_current_bwrel_agxx (code,value_agxx) VALUES
 (4516,'Entlastetes_Mischwasser'),
 (4526,'Schmutzwasser')
 ON CONFLICT (code) DO UPDATE SET 
-  value_agxx = EXCLUDED.value_agxx;
+  value_de = EXCLUDED.value_de;
+
+CREATE TABLE IF NOT EXISTS tww_vl.channel_usage_current_export_rel_agxx
+(CONSTRAINT pkey_channel_usage_current_export_rel_agxx_code PRIMARY KEY (code))
+INHERITS (tww_vl.value_list_agxx_export_rel_base)
+TABLESPACE pg_default;
+
+INSERT INTO tww_vl.channel_usage_current_export_rel_agxx (code,value_de) VALUES
+(4522,'Mischwasser'),  
+(4514,'Fremdwasser'),
+(9023,'Sauberwasser'),
+(4518,'Gewaesser'),
+(4516,'Entlastetes_Mischwasser'),
+(4526,'Schmutzwasser')
+ON CONFLICT (code) DO UPDATE SET 
+  value_de = EXCLUDED.value_de;
 
 --NutzungsartAG_geplant
 INSERT INTO tww_vl.channel_usage_planned (code,vsacode,value_de,value_en,active) VALUES
@@ -247,9 +429,19 @@ ON CONFLICT (code) DO UPDATE SET
 , active = EXCLUDED.active
 ;
 
--- DSS-Nutzungsarten werden nur rückwärts gematcht, damit die Visualisierungen übernommen werden können
-CREATE TABLE IF NOT EXISTS tww_vl.channel_usage_planned_bwrel_agxx (code integer, value_agxx TEXT, CONSTRAINT pkey_channel_usage_planned_bwrel_agxx_code PRIMARY KEY (code));
-INSERT INTO tww_vl.channel_usage_planned_bwrel_agxx (code,value_agxx) VALUES
+CREATE TABLE IF NOT EXISTS tww_vl.channel_usage_planned_import_rel_agxx 
+(CONSTRAINT pkey_channel_usage_planned_import_rel_agxx_code PRIMARY KEY (code))
+INHERITS (tww_vl.value_list_agxx_import_rel_base)
+TABLESPACE pg_default;
+
+-- Copy the base
+INSERT INTO tww_vl.channel_usage_planned_import_rel_agxx (code,value_de)
+SELECT code,value_de FROM tww_vl.channel_usage_planned WHERE active
+ON CONFLICT (code) DO UPDATE SET 
+  value_de = EXCLUDED.value_de;
+
+-- alter 1:1 updated value_de
+INSERT INTO tww_vl.channel_usage_planned_import_rel_agxx (code,value_de) VALUES
 (4523,'Mischwasser'),  
 (4515,'Fremdwasser'),
 (9022,'Sauberwasser'),
@@ -257,7 +449,23 @@ INSERT INTO tww_vl.channel_usage_planned_bwrel_agxx (code,value_agxx) VALUES
 (4517,'Entlastetes_Mischwasser'),
 (4527,'Schmutzwasser')
 ON CONFLICT (code) DO UPDATE SET 
-  value_agxx = EXCLUDED.value_agxx;
+  value_de = EXCLUDED.value_de;
+
+-- DSS-Nutzungsarten werden nur rückwärts gematcht, damit die Visualisierungen übernommen werden können
+CREATE TABLE IF NOT EXISTS tww_vl.channel_usage_planned_export_rel_agxx
+(CONSTRAINT pkey_channel_usage_planned_export_rel_agxx_code PRIMARY KEY (code))
+INHERITS (tww_vl.value_list_agxx_export_rel_base)
+TABLESPACE pg_default;
+
+INSERT INTO tww_vl.channel_usage_planned_export_rel_agxx (code,value_de) VALUES
+(4523,'Mischwasser'),  
+(4515,'Fremdwasser'),
+(9022,'Sauberwasser'),
+(4519,'Gewaesser'),
+(4517,'Entlastetes_Mischwasser'),
+(4527,'Schmutzwasser')
+ON CONFLICT (code) DO UPDATE SET 
+  value_de = EXCLUDED.value_de;
 
 
 --Kanal_FunktionHierarchisch
@@ -316,11 +524,11 @@ INSERT INTO tww_vl.measure_category (code,vsacode,value_de,value_en,active) VALU
 (1999984,8706,'Leitungsersatz_diverse_Gruende','reach_replacement_other',true) , -- 8706 = Erhaltung_Erneuerung 
 (1999983,8706,'Leitungsersatz_hydraulisch','reach_replacement_hydraulic',true) , -- 8706 = Erhaltung_Erneuerung 
 (1999982,8706,'Leitungsersatz_Zustand','reach_replacement_condition',true) , -- 8706 = Erhaltung_Erneuerung 
-(1999981,8648,'Reinigung','maintenance_cleaning',true) , -- 8648 = Erhaltung_Reinigung 
+--(1999981,8648,'Reinigung','maintenance_cleaning',true) , -- 8648 = Erhaltung_Reinigung 
 (1999980,8646,'Renovierung','maintenance_renovation_renovation',true) , -- 8646 = Erhaltung_Renovierung_Reparatur 
 (1999979,8646,'Reparatur','maintenance_renovation_repair',true) , -- 8646 = Erhaltung_Renovierung_Reparatur 
-(1999978,8649,'Retention','runoff_prevention_retention_infiltration',true) , -- 8649 = Abflussvermeidung_Retention_Versickerung 
-(1999977,8705,'Sonderbauwerk.Neubau','special_construction_new_buildung',true) , -- 8705 = Sonderbauwerk_Neubau 
+-- (1999978,8649,'Retention','runoff_prevention_retention_infiltration',true) , -- 8649 = Abflussvermeidung_Retention_Versickerung 
+-- (1999977,8705,'Sonderbauwerk.Neubau','special_construction_new_buildung',true) , -- 8705 = Sonderbauwerk_Neubau 
 (1999976,8707,'Sonderbauwerk.Aus_Umbau','special_construction_extension',true) , -- 8707 = Sonderbauwerk_Anpassung 
 (1999975,8707,'Sonderbauwerk.Anpassung_hydraulisch','special_construction_customization_hydraulic',true) , -- 8707 = Sonderbauwerk_Anpassung 
 (1999974,4654,'Sonderbauwerk.Rueckbau','special_construction_abolishment',true) , -- 4654 = Aufhebung 
@@ -338,18 +546,41 @@ ON CONFLICT (code) DO UPDATE SET
 UPDATE tww_vl.measure_category SET active = FALSE where code = ANY( ARRAY[
 9144 	-- ALR
 , 8706 	-- Erhaltung_Erneuerung
-, 8648 	-- Erhaltung_Reinigung
+--, 8648 	-- Erhaltung_Reinigung
 , 8646	-- Erhaltung_Renovierung_Reparatur
 , 8647	-- Erhaltung_unbekannt
 , 4662  -- Kontrolle_und_Ueberwachung
 , 8639  -- Massnahme_im_Gewaesser 
-, 8649  -- Abflussvermeidung_Retention_Versickerung
+-- , 8649  -- Abflussvermeidung_Retention_Versickerung
 , 8707  -- Sonderbauwerk_Anpassung 
-, 8705  -- Sonderbauwerk_Neubau 
+--, 8705  -- Sonderbauwerk_Neubau 
 ]);
 
-CREATE TABLE IF NOT EXISTS tww_vl.measure_category_bwrel_agxx (code integer, value_agxx TEXT, CONSTRAINT pkey_measure_category_bwrel_agxx_code PRIMARY KEY (code));
-INSERT INTO tww_vl.measure_category_bwrel_agxx (code,value_agxx) VALUES
+CREATE TABLE IF NOT EXISTS tww_vl.measure_category_import_rel_agxx 
+(CONSTRAINT pkey_measure_category_import_rel_agxx_code PRIMARY KEY (code))
+INHERITS (tww_vl.value_list_agxx_import_rel_base)
+TABLESPACE pg_default;
+
+-- Copy the base
+INSERT INTO tww_vl.measure_category_import_rel_agxx (code,value_de)
+SELECT code,value_de FROM tww_vl.measure_category WHERE active
+ON CONFLICT (code) DO UPDATE SET 
+  value_de = EXCLUDED.value_de;
+
+-- alter 1:1 updated value_de
+INSERT INTO tww_vl.measure_category_import_rel_agxx (code,value_de) VALUES
+(8648,'Reinigung'),
+(8649,'Retention'),
+(8705,'Sonderbauwerk.Neubau')
+ON CONFLICT (code) DO UPDATE SET 
+  value_de = EXCLUDED.value_de;
+
+CREATE TABLE IF NOT EXISTS tww_vl.measure_category_export_rel_agxx
+(CONSTRAINT pkey_measure_category_export_rel_agxx_code PRIMARY KEY (code))
+INHERITS (tww_vl.value_list_agxx_export_rel_base)
+TABLESPACE pg_default;
+
+INSERT INTO tww_vl.measure_category_export_rel_agxx (code,value_de) VALUES
 (9144,'andere'),
 (8706,'andere'),
 (8648,'Reinigung'),
@@ -357,22 +588,26 @@ INSERT INTO tww_vl.measure_category_bwrel_agxx (code,value_agxx) VALUES
 (8647,'andere'),
 (4662,'Untersuchung.unbekannt'),
 (8639,'Bachsanierung'),
-(8649,'andere'),
+(8649,'Retention'),
 (8707,'Sonderbauwerk.Anpassung_hydraulisch'),
 (8705,'Sonderbauwerk.Neubau')
 ON CONFLICT (code) DO UPDATE SET 
-  value_agxx = EXCLUDED.value_agxx;
+  value_de = EXCLUDED.value_de;
 
 
 --Priorität
 UPDATE tww_vl.measure_priority SET active = FALSE where code = ANY( ARRAY[
 4763 	-- M4
 ]);
-CREATE TABLE IF NOT EXISTS tww_vl.measure_priority_bwrel_agxx (code integer, value_agxx TEXT, CONSTRAINT pkey_measure_priority_bwrel_agxx_code PRIMARY KEY (code));
-INSERT INTO tww_vl.measure_priority_bwrel_agxx (code,value_agxx) VALUES
+CREATE TABLE IF NOT EXISTS tww_vl.measure_priority_export_rel_agxx
+(CONSTRAINT pkey_measure_priority_export_rel_agxx_code PRIMARY KEY (code))
+INHERITS (tww_vl.value_list_agxx_export_rel_base)
+TABLESPACE pg_default;
+
+INSERT INTO tww_vl.measure_priority_export_rel_agxx (code,value_de) VALUES
 (4763,'unbekannt')
 ON CONFLICT (code) DO UPDATE SET 
-  value_agxx = EXCLUDED.value_agxx;
+  value_de = EXCLUDED.value_de;
 
 
 -----------------
@@ -382,8 +617,8 @@ ON CONFLICT (code) DO UPDATE SET
 INSERT INTO tww_vl.infiltration_zone_infiltration_capacity (code,vsacode,value_de,value_en,active) VALUES
 (1999946,371,'gut.Anlagenwahl_nicht_eingeschraenkt','good.free_choice',true), -- 371 = gut 
 (1999945,371,'gut.Anlagenwahl_eingeschraenkt','good.restricted_choice',true), -- 371 = gut 
-(1999944,371,'mittel.Anlagenwahl_nicht_eingeschraenkt','medium.free_choice',true), -- 372 = maessig  
-(1999943,371,'mittel.Anlagenwahl_eingeschraenkt','medium.restricted_choice',true)  -- 372 = maessig 
+(1999944,372,'mittel.Anlagenwahl_nicht_eingeschraenkt','medium.free_choice',true), -- 372 = maessig  
+(1999943,372,'mittel.Anlagenwahl_eingeschraenkt','medium.restricted_choice',true)  -- 372 = maessig 
 ON CONFLICT (code) DO UPDATE SET 
   vsacode = EXCLUDED.vsacode
 , value_de = EXCLUDED.value_de
@@ -395,12 +630,16 @@ UPDATE tww_vl.infiltration_zone_infiltration_capacity SET active = FALSE where c
 , 372 	-- maessig
 ]);
 
-CREATE TABLE IF NOT EXISTS tww_vl.infiltration_zone_infiltration_capacity_bwrel_agxx (code integer, value_agxx TEXT, CONSTRAINT pkey_infiltration_zone_infiltration_capacity_bwrel_agxx_code PRIMARY KEY (code)); 
-INSERT INTO tww_vl.infiltration_zone_infiltration_capacity_bwrel_agxx (code,value_agxx) VALUES
+CREATE TABLE IF NOT EXISTS tww_vl.infiltration_zone_infiltration_capacity_export_rel_agxx
+(CONSTRAINT pkey_infiltration_zone_infiltration_capacity_export_rel_agxx_code PRIMARY KEY (code))
+INHERITS (tww_vl.value_list_agxx_export_rel_base)
+TABLESPACE pg_default;
+
+INSERT INTO tww_vl.infiltration_zone_infiltration_capacity_export_rel_agxx (code,value_de) VALUES
 (371,'gut.Anlagenwahl_nicht_eingeschraenkt'),  
 (372,'mittel.Anlagenwahl_nicht_eingeschraenkt')
 ON CONFLICT (code) DO UPDATE SET 
-  value_agxx = EXCLUDED.value_agxx;
+  value_de = EXCLUDED.value_de;
 
 
 -----------------
@@ -427,15 +666,24 @@ ON CONFLICT (code) DO UPDATE SET
 UPDATE tww_vl.building_group_renovation_necessity SET active = FALSE where code = ANY( ARRAY[
   8799 	-- unbekannt
 ]);
+
 /*
-Bautenausserhalbbaugebiet nicht 100% matchbar
-CREATE TABLE IF NOT EXISTS tww_vl.building_group_renovation_necessity_bwrel_agxx (code integer, value_agxx TEXT, CONSTRAINT pkey_building_group_renovation_necessity_bwrel_agxx_code PRIMARY KEY (code)); 
-INSERT INTO tww_vl.building_group_renovation_necessity_bwrel_agxx (code,value_agxx) VALUES
+Bautenausserhalbbaugebiet für Export nicht 100% matchbar
+CREATE TABLE IF NOT EXISTS tww_vl.building_group_renovation_necessity_export_rel_agxx
+(CONSTRAINT pkey_building_group_renovation_necessity_export_rel_agxx_code PRIMARY KEY (code))
+INHERITS (tww_vl.value_list_agxx_export_rel_base)
+TABLESPACE pg_default;
+
+INSERT INTO tww_vl.building_group_renovation_necessity_export_rel_agxx (code,value_de) VALUES
   (8799,NULL) -- unbekannt, kann nicht auf Ja oder Nein gemappt werden
 ON CONFLICT DO NOTHING;*/
 
-CREATE TABLE IF NOT EXISTS tww_vl.building_group_function_bwrel_agxx (code integer, value_agxx TEXT, CONSTRAINT pkey_building_group_function_bwrel_agxx_code PRIMARY KEY (code)); 
-INSERT INTO tww_vl.building_group_function_bwrel_agxx (code,value_agxx) VALUES
+CREATE TABLE IF NOT EXISTS tww_vl.building_group_function_export_rel_agxx
+(CONSTRAINT pkey_building_group_function_export_rel_agxx_code PRIMARY KEY (code))
+INHERITS (tww_vl.value_list_agxx_export_rel_base)
+TABLESPACE pg_default;
+
+INSERT INTO tww_vl.building_group_function_export_rel_agxx (code,value_de) VALUES
 (4823,'andere'),  
 (4820,'Ferienhaus'),
 (4821,'Gewerbegebiet'),
@@ -443,7 +691,7 @@ INSERT INTO tww_vl.building_group_function_bwrel_agxx (code,value_agxx) VALUES
 (4818,'andere'),
 (4819,'Wohnhaus')
 ON CONFLICT (code) DO UPDATE SET 
-  value_agxx = EXCLUDED.value_agxx;
+  value_de = EXCLUDED.value_de;
 
 --------------
 -- Texte
