@@ -1,7 +1,4 @@
-import collections
-import configparser
 import datetime
-import logging
 import os
 import re
 import subprocess
@@ -9,43 +6,8 @@ import tempfile
 import time
 from typing import List
 
-from .. import config
-
-
-class DeduplicatedLogger(logging.Logger):
-    """Logger that deduplicates messages
-
-    Multiple subsequent logging with the same message/level will result in [repeated N times]
-    message instead of many lines.
-    """
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self._last_message = None
-        self._repeated = 0
-
-    def _log(self, level, msg, args, exc_info=None, extra=None, stacklevel=1):
-        this_message = (level, msg)
-        if self._last_message is None or self._last_message != this_message:
-            if self._repeated > 0:
-                super()._log(
-                    self._last_message[0],
-                    f"[repeated {self._repeated} times]",
-                    args,
-                    exc_info,
-                    extra,
-                    stacklevel,
-                )
-
-            super()._log(level, msg, args, exc_info, extra)
-            self._repeated = 0
-        else:
-            self._repeated += 1
-        self._last_message = this_message
-
-
-logging.setLoggerClass(DeduplicatedLogger)
-logger = logging.getLogger(__package__)
+from ...utils.database_utils import DatabaseUtils
+from ...utils.plugin_utils import logger
 
 
 class CmdException(BaseException):
@@ -82,7 +44,7 @@ def setup_test_db(template="full"):
     for testing.
     """
 
-    pgconf = get_pgconf()
+    pgconf = DatabaseUtils.get_pgconf()
 
     def dexec_(cmd, check=True):
         return exec_(f"docker exec twwqwat {cmd}", check)
@@ -190,75 +152,9 @@ def invert_dict(d):
     return {v: k for k, v in d.items()}
 
 
-def read_pgservice(service_name):
-    """
-    Returns a config object from a pg_service name (parsed from PGSERVICEFILE).
-    """
-
-    # Path for pg_service.conf
-    if os.environ.get("PGSERVICEFILE"):
-        PG_CONFIG_PATH = os.environ.get("PGSERVICEFILE")
-    elif os.environ.get("PGSYSCONFDIR"):
-        PG_CONFIG_PATH = os.path.join(os.environ.get("PGSYSCONFDIR"), "pg_service.conf")
-    else:
-        PG_CONFIG_PATH = os.path.expanduser("~/.pg_service.conf")
-
-    config = configparser.ConfigParser()
-    if os.path.exists(PG_CONFIG_PATH):
-        config.read(PG_CONFIG_PATH)
-
-    if service_name not in config:
-        logger.warning(f"Service `{service_name}` not found in {PG_CONFIG_PATH}.")
-        return {}
-
-    return config[service_name]
-
-
-def get_pgconf():
-    """
-    Returns the postgres configuration (parsed from the config.PGSERVICE service and overriden by config.PG* settings)
-    """
-
-    if config.PGSERVICE:
-        pgconf = read_pgservice(config.PGSERVICE)
-    else:
-        pgconf = {}
-
-    if config.PGHOST:
-        pgconf["host"] = config.PGHOST
-    if config.PGPORT:
-        pgconf["port"] = config.PGPORT
-    if config.PGDATABASE:
-        pgconf["dbname"] = config.PGDATABASE
-    if config.PGUSER:
-        pgconf["user"] = config.PGUSER
-    if config.PGPASS:
-        pgconf["password"] = config.PGPASS
-
-    return collections.defaultdict(str, pgconf)
-
-
-def get_pgconf_as_psycopg_dsn() -> List[str]:
-    """Returns the pgconf as a psycopg connection string"""
-
-    pgconf = get_pgconf()
-    parts = []
-    if pgconf["host"]:
-        parts.append(f"host={pgconf['host']}")
-    if pgconf["port"]:
-        parts.append(f"port={pgconf['port']}")
-    if pgconf["user"]:
-        parts.append(f"dbname={pgconf['dbname']}")
-    if pgconf["password"]:
-        parts.append(f"user={pgconf['user']}")
-    if pgconf["dbname"]:
-        parts.append(f"password={pgconf['password']}")
-    return " ".join(parts)
-
-
 def get_pgconf_as_ili_args() -> List[str]:
     """Returns the pgconf as a list of ili2db arguments"""
-    pgconf = get_pgconf()
+    pgconf = DatabaseUtils.get_pgconf()
     args = []
     if pgconf["host"]:
         args.extend(["--dbhost", '"' + pgconf["host"] + '"'])
