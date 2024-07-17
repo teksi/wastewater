@@ -3,6 +3,7 @@
 import re
 from argparse import ArgumentParser, BooleanOptionalAction
 from typing import Optional
+import pgserviceparser
 
 try:
     import psycopg
@@ -11,9 +12,8 @@ except ImportError:
 
 
 def get_db_identifier(pg_service: str, modelname: str):
-    conn = psycopg.connect(f"service={pg_service}")
-    db_identifier = re.sub(f"{modelname}_|teksi_", "", conn.info.dbname)
-    conn.close()
+    dbname = pgserviceparser.service_config(pg_service).get('dbname')
+    db_identifier = re.sub(f"{modelname}_|teksi_", "", dbname)
     return db_identifier
 
 
