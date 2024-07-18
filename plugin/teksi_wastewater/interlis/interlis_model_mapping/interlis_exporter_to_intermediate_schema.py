@@ -2095,7 +2095,7 @@ class InterlisExporterToIntermediateSchema:
 
     def _export_disposal(self):
         query = self.tww_session.query(self.model_classes_tww_od.disposal)
-        if self.filtered
+        if self.filtered:
             query = query.join(
                 self.model_classes_tww_od.wastewater_structure,
                 self.model_classes_tww_od.wastewater_networkelement,
