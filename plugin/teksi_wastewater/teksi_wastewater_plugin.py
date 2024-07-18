@@ -47,6 +47,7 @@ from .tools.twwmaptools import TwwMapToolConnectNetworkElements, TwwTreeMapTool
 from .tools.twwnetwork import TwwGraphManager
 from .utils.plugin_utils import plugin_root_path
 from .utils.translation import setup_i18n
+from .utils.tww_validity_check import tww_check_oid_prefix
 from .utils.twwlayermanager import TwwLayerManager, TwwLayerNotifier
 from .utils.twwlogging import TwwQgsLogHandler
 
@@ -322,6 +323,25 @@ class TeksiWastewaterPlugin:
 
         self.network_layer_notifier.layersAdded([])
 
+    def tww_validity_check(self):
+        pg_layer = TwwLayerManager.layer("vw_tww_wastewater_structure")
+        if not pg_layer:
+            self.iface.messageBar().pushMessage(
+                "Error",
+                "Could not determine the Postgres connection information. Make sure the TWW project is loaded.",
+                level=Qgis.Critical,
+            )
+
+        pgservice = pg_layer.dataProvider().uri().service()
+        msgs = tww_check_oid_prefix(pgservice)
+        msgs.extend(tww_check_oid_prefix(pgservice))
+        for msg in msgs:
+            self.iface.messageBar().pushMessage(
+                "Error",
+                msg,
+                level=Qgis.Critical,
+            )
+
     def unload(self):
         """
         Called when unloading
@@ -452,9 +472,9 @@ class TeksiWastewaterPlugin:
             self.profile.highlight(None)
 
     def about(self):
-        from .gui.dlgabout import DlgAbout
+        from .gui.about_dialog import AboutDialog
 
-        DlgAbout(self.iface.mainWindow()).exec_()
+        AboutDialog(self.iface.mainWindow()).exec_()
 
     def showSettings(self):
         settings_dlg = TwwSettingsDialog(self.iface.mainWindow())
