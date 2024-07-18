@@ -291,17 +291,7 @@ class TeksiWastewaterPlugin:
             QIcon(os.path.join(plugin_root_path(), "icons/teksi-abwasser-logo.svg")),
         )
 
-        admin_mode = QSettings().value("/TWW/AdminMode", False)
-        # seems QGIS loads True as "true" on restart ?!
-        if admin_mode and admin_mode != "false":
-            admin_mode = True
-            self.toolbar.addAction(self.importAction)
-            self.toolbar.addAction(self.exportAction)
-        else:
-            admin_mode = False
-
-        self.enableSymbologyTriggersAction.setEnabled(admin_mode)
-        self.disableSymbologyTriggersAction.setEnabled(admin_mode)
+        self.update_admin_mode()
 
         self.iface.addToolBar(self.toolbar)
 
@@ -572,6 +562,8 @@ class TeksiWastewaterPlugin:
         settings_dlg = TwwSettingsDialog(self.iface.mainWindow())
         settings_dlg.exec_()
 
+        self.update_admin_mode()
+
     def about(self):
         from .gui.dlgabout import DlgAbout
 
@@ -657,3 +649,19 @@ class TeksiWastewaterPlugin:
             self._configure_database_connection_config_from_tww_layer()
 
             self.tww_validity_check_startup()
+
+    def update_admin_mode(self):
+
+        admin_mode = QSettings().value("/TWW/AdminMode", False)
+        # seems QGIS loads True as "true" on restart ?!
+        if admin_mode and admin_mode != "false":
+            admin_mode = True
+            self.toolbar.addAction(self.importAction)
+            self.toolbar.addAction(self.exportAction)
+        else:
+            self.toolbar.removeAction(self.importAction)
+            self.toolbar.removeAction(self.exportAction)
+            admin_mode = False
+
+        self.enableSymbologyTriggersAction.setEnabled(admin_mode)
+        self.disableSymbologyTriggersAction.setEnabled(admin_mode)
