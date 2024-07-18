@@ -565,9 +565,9 @@ class TeksiWastewaterPlugin:
         self.update_admin_mode()
 
     def about(self):
-        from .gui.dlgabout import DlgAbout
+        from .gui.about_dialog import AboutDialog
 
-        DlgAbout(self.iface.mainWindow()).exec_()
+        AboutDialog(self.iface.mainWindow()).exec_()
 
     def actionExportClicked(self):
         if self.interlisImporterExporter is None:
