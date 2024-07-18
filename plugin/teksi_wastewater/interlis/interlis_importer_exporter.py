@@ -263,11 +263,8 @@ class InterlisImporterExporter:
         return interlisImporterToIntermediateSchema.session_tww
 
     def _import_manage_organisations(self):
-        with DatabaseUtils.PsycopgConnection() as connection:
-            cursor = connection.cursor()
-
-            logger.info("Update organisation tww_active")
-            cursor.execute("SELECT tww_app.set_organisations_active();")
+        logger.info("Update organisation tww_active")
+        DatabaseUtils.execute("SELECT tww_app.set_organisations_active();")
 
     def _import_update_main_cover_and_refresh_mat_views(self):
         with DatabaseUtils.PsycopgConnection() as connection:
