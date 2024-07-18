@@ -194,6 +194,17 @@ class DatabaseUtils:
             return msg_list
 
     @staticmethod
+    def get_validity_check_issues() -> List[str]:
+        messages = []
+        messages = DatabaseUtils.check_oid_prefix()
+        messages.extend(DatabaseUtils.check_fk_defaults())
+
+        if not DatabaseUtils.check_symbology_triggers_enabled():
+            messages.append("Symbology triggers are disabled")
+
+        return messages
+
+    @staticmethod
     def get_psycopg_connection():
         connection = psycopg.connect(
             DatabaseUtils.get_pgconf_as_psycopg_dsn(), **DEFAULTS_CONN_ARG

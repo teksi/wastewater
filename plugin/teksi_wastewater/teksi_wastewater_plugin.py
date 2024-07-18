@@ -30,7 +30,7 @@ import os
 from qgis.core import Qgis, QgsApplication
 from qgis.PyQt.QtCore import QLocale, QSettings, Qt
 from qgis.PyQt.QtGui import QIcon
-from qgis.PyQt.QtWidgets import QAction, QApplication, QToolBar
+from qgis.PyQt.QtWidgets import QAction, QApplication, QMessageBox, QToolBar
 from qgis.utils import qgsfunction
 
 try:
@@ -222,7 +222,7 @@ class TeksiWastewaterPlugin:
         self.updateSymbologyAction.triggered.connect(self.updateSymbology)
 
         self.validityCheckAction = QAction(self.tr("Validity check"), self.iface.mainWindow())
-        self.validityCheckAction.triggered.connect(self.tww_validity_check)
+        self.validityCheckAction.triggered.connect(self.tww_validity_check_action)
 
         self.enableSymbologyTriggersAction = QAction(
             self.tr("Enable symbology triggers"), self.iface.mainWindow()
@@ -350,25 +350,75 @@ class TeksiWastewaterPlugin:
 
         self.network_layer_notifier.layersAdded([])
 
-    def tww_validity_check(self):
-        msgs = DatabaseUtils.check_oid_prefix()
-        msgs.extend(DatabaseUtils.check_fk_defaults())
+    def tww_validity_check_startup(self):
+        messages = []
+        try:
+            messages = DatabaseUtils.get_validity_check_issues()
 
-        if not DatabaseUtils.check_symbology_triggers_enabled():
-            msgs.append(self.tr("Symbology triggers are disabled"))
+        except Exception as exception:
+            messages.append(self.tr(f"Could not check database validity: {exception}"))
 
-        for msg in msgs:
+        for message in messages:
             self.iface.messageBar().pushMessage(
                 "Error",
-                msg,
+                message,
                 level=Qgis.Critical,
             )
 
+    def tww_validity_check_action(self):
+        messages = []
+        try:
+            messages = DatabaseUtils.get_validity_check_issues()
+
+        except Exception as exception:
+            messages.append(self.tr(f"Could not check database validity: {exception}"))
+
+        if len(messages) == 0:
+            QMessageBox.information(
+                self.iface.mainWindow(),
+                self.validityCheckAction.text(),
+                self.tr("There are no database validity issues."),
+            )
+            return
+
+        messagesText = "\n".join(messages)
+        QMessageBox.critical(
+            self.iface.mainWindow(),
+            self.validityCheckAction.text(),
+            self.tr(f"Database has following validity issues:\n\n{messagesText}"),
+        )
+
     def enable_symbology_triggers(self):
-        DatabaseUtils.enable_symbology_triggers()
+        try:
+            DatabaseUtils.enable_symbology_triggers()
+            QMessageBox.information(
+                self.iface.mainWindow(),
+                self.enableSymbologyTriggersAction.text(),
+                self.tr("Symbology triggers have been successfully enabled"),
+            )
+
+        except Exception as exception:
+            QMessageBox.critical(
+                self.iface.mainWindow(),
+                self.enableSymbologyTriggersAction.text(),
+                self.tr(f"Symbology triggers cannot be enabled:\n\n{exception}"),
+            )
 
     def disable_symbology_triggers(self):
-        DatabaseUtils.disable_symbology_triggers()
+        try:
+            DatabaseUtils.disable_symbology_triggers()
+            QMessageBox.information(
+                self.iface.mainWindow(),
+                self.disableSymbologyTriggersAction.text(),
+                self.tr("Symbology triggers have been successfully disabled"),
+            )
+
+        except Exception as exception:
+            QMessageBox.critical(
+                self.iface.mainWindow(),
+                self.disableSymbologyTriggersAction.text(),
+                self.tr(f"Symbology triggers cannot be disabled:\n\n{exception}"),
+            )
 
     def unload(self):
         """
@@ -502,8 +552,21 @@ class TeksiWastewaterPlugin:
             self.profile.highlight(None)
 
     def updateSymbology(self):
-        with OverrideCursor(Qt.WaitCursor):
-            DatabaseUtils.update_symbology()
+        try:
+            with OverrideCursor(Qt.WaitCursor):
+                DatabaseUtils.update_symbology()
+            QMessageBox.information(
+                self.iface.mainWindow(),
+                self.updateSymbologyAction.text(),
+                self.tr("Symbology has been successfully updated"),
+            )
+
+        except Exception as exception:
+            QMessageBox.critical(
+                self.iface.mainWindow(),
+                self.updateSymbologyAction.text(),
+                self.tr(f"Symbology update failed:\n\n{exception}"),
+            )
 
     def showSettings(self):
         settings_dlg = TwwSettingsDialog(self.iface.mainWindow())
@@ -593,4 +656,4 @@ class TeksiWastewaterPlugin:
         if available:
             self._configure_database_connection_config_from_tww_layer()
 
-            self.tww_validity_check()
+            self.tww_validity_check_startup()
