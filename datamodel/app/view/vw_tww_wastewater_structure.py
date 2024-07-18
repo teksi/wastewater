@@ -30,6 +30,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
     cursor = conn.cursor()
 
     view_sql = """
+    LISTEN "vw_tww_ws_no_cover";
     DROP VIEW IF EXISTS tww_app.vw_tww_wastewater_structure;
 
     CREATE OR REPLACE VIEW tww_app.vw_tww_wastewater_structure AS
@@ -279,6 +280,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
 
      ELSE
        NEW.co_obj_id=NULL;
+       PERFORM pg_notify('vw_tww_ws_no_cover', format('Wastewater Structure %s: no cover created. If you want to add a cover please fill in at least one cover attribute value.',NEW.identifier));
        RAISE WARNING 'Wastewater Structure %: no cover created as all cover-related columns are NULL. If you want to add a cover please fill in at least one cover attribute value.', NEW.identifier; -- Warning
     END CASE;
 
