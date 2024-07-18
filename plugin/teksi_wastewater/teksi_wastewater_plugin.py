@@ -61,7 +61,7 @@ def locale(values, feature, parent):
 class TeksiWastewaterPlugin:
     """
     A plugin for wastewater management
-    https://github.com/teksi/teksi_wastewater
+    https://github.com/teksi/wastewater
     """
 
     # The networkAnalyzer will manage the networklayers and pathfinding
@@ -240,7 +240,7 @@ class TeksiWastewaterPlugin:
             self.tr("Import from interlis"),
             self.iface.mainWindow(),
         )
-        self.importAction.setWhatsThis(self.tr("Import from interlis"))
+        self.importAction.setWhatsThis(self.tr("Import from INTERLIS"))
         self.importAction.setEnabled(False)
         self.importAction.setCheckable(False)
         self.importAction.triggered.connect(self.actionImportClicked)
@@ -250,7 +250,7 @@ class TeksiWastewaterPlugin:
             self.tr("Export to interlis"),
             self.iface.mainWindow(),
         )
-        self.exportAction.setWhatsThis(self.tr("Export from interlis"))
+        self.exportAction.setWhatsThis(self.tr("Export to INTERLIS"))
         self.exportAction.setEnabled(False)
         self.exportAction.setCheckable(False)
         self.exportAction.triggered.connect(self.actionExportClicked)

@@ -316,6 +316,13 @@ class InterlisImporterExporter:
         logger.info("Enable symbology triggers")
         cursor.execute("SELECT tww_sys.enable_symbology_triggers();")
 
+        logger.info("update_wastewater_node_symbology for all datasets - please be patient")
+        cursor.execute("SELECT tww_app.update_wastewater_node_symbology(NULL, True);")
+        logger.info("update_wastewater_structure_label for all datasets - please be patient")
+        cursor.execute("SELECT tww_app.update_wastewater_structure_label(NULL, True);")
+        logger.info("update_wn_symbology_by_overflow for all datasets - please be patient")
+        cursor.execute("SELECT tww_app.update_wn_symbology_by_overflow(NULL, True);")
+
         connection.commit()
         connection.close()
 

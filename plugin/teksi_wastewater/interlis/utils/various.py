@@ -30,7 +30,7 @@ class DeduplicatedLogger(logging.Logger):
             if self._repeated > 0:
                 super()._log(
                     self._last_message[0],
-                    f"[repeted {self._repeated} times]",
+                    f"[repeated {self._repeated} times]",
                     args,
                     exc_info,
                     extra,
