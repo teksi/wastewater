@@ -2,13 +2,6 @@ import os
 
 BASE = os.path.dirname(__file__)
 
-PGSERVICE = None  # overriden by PG* settings below
-PGHOST = os.getenv("PGHOST", None)
-PGPORT = os.getenv("PGPORT", None)
-PGDATABASE = os.getenv("PGDATABASE", None)
-PGUSER = os.getenv("PGUSER", None)
-PGPASS = os.getenv("PGPASS", None)
-
 ILIVALIDATOR = os.path.join(BASE, "bin", "ilivalidator-1.11.9", "ilivalidator-1.11.9.jar")
 
 TWW_DEFAULT_PGSERVICE = "pg_tww"

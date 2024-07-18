@@ -5,8 +5,8 @@ from sqlalchemy import or_, and_, nullslast
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import text
 
+from ...utils.plugin_utils import logger
 from .. import config, utils
-from ..utils.various import logger
 
 
 class InterlisExporterToIntermediateSchemaError(Exception):
