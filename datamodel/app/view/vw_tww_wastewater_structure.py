@@ -399,6 +399,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
       {update_sp}
       {update_ws}
       {update_wn}
+      {update_ne}
 
       IF OLD.ws_type <> NEW.ws_type THEN
         CASE WHEN OLD.ws_type <> 'unknown' THEN
@@ -608,6 +609,15 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             prefix="wn_",
             indent=6,
             skip_columns=["situation3d_geometry"],
+        ),
+        update_ne=update_command(
+            pg_cur=cursor,
+            table_schema="tww_od",
+            table_name="wastewater_networkelement",
+            table_alias="ne",
+            prefix="wn_",
+            indent=6,
+            skip_columns=[],
         ),
     )
 
