@@ -3,8 +3,8 @@ from sqlalchemy.orm import Session
 from sqlalchemy.orm.attributes import flag_dirty
 from sqlalchemy.sql import text
 
+from ...utils.plugin_utils import logger
 from .. import config, utils
-from ..utils.various import logger
 
 
 class InterlisImporterToIntermediateSchema:
