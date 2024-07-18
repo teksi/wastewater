@@ -1,20 +1,22 @@
 
 [general]
 name=TEKSI Wastewater
-description=TEKSI Wastewater plugin to manage wastewater networks. Provides selection, connection and editing tools. Requires a compatible TEKSI wastewater datamodel and project file. Supports Swiss standards SIA405 wastewater, VSA-DSS and VSA-KEK (2020.x) for INTERLIS import / export.
-qgisMinimumVersion=3.34
+description=TEKSI Wastewater plugin to manage wastewater networks.
+about=Provides selection, connection and editing tools. Requires a compatible TEKSI wastewater datamodel and project file. Supports Swiss standards SIA405 wastewater, VSA-DSS and VSA-KEK (2020.x) for INTERLIS import / export.
+
+qgisMinimumVersion=3.34.8
 category=Vector
 version=2024.0.0
 
-changelog=See repository for full changelog
 tags=teksi, gep, pgee, abwasser, wastewater, assainissement, network, sewer, infrastructure, management
 
-author=TEKSI
+author=TEKSI open source contributors
 email=info@teksi.ch
-about=The TEKSI wastewater plugin adds functionality to manage wastewater networks in QGIS (selection, connection and editing tools.).
 homepage=https://www.teksi.ch/modules/abwasser-gep/
 tracker=https://github.com/teksi/wastewater/issues
 repository=https://github.com/teksi/wastewater
+changelog=https://github.com/teksi/wastewater/releases
+
 icon=icons/teksi-abwasser-logo.svg
 
 experimental=False

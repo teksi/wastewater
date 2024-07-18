@@ -30,7 +30,7 @@ import os
 from qgis.core import Qgis, QgsApplication
 from qgis.PyQt.QtCore import QLocale, QSettings, Qt
 from qgis.PyQt.QtGui import QIcon
-from qgis.PyQt.QtWidgets import QAction, QApplication, QToolBar
+from qgis.PyQt.QtWidgets import QAction, QApplication, QMessageBox, QToolBar
 from qgis.utils import qgsfunction
 
 try:
@@ -40,11 +40,12 @@ except ImportError:
 from .gui.twwprofiledockwidget import TwwProfileDockWidget
 from .gui.twwsettingsdialog import TwwSettingsDialog
 from .gui.twwwizard import TwwWizard
-from .interlis import config
 from .processing_provider.provider import TwwProcessingProvider
 from .tools.twwmaptools import TwwMapToolConnectNetworkElements, TwwTreeMapTool
 from .tools.twwnetwork import TwwGraphManager
+from .utils.database_utils import DatabaseUtils
 from .utils.plugin_utils import plugin_root_path
+from .utils.qt_utils import OverrideCursor
 from .utils.translation import setup_i18n
 from .utils.twwlayermanager import TwwLayerManager, TwwLayerNotifier
 from .utils.twwlogging import TwwQgsLogHandler
@@ -217,11 +218,35 @@ class TeksiWastewaterPlugin:
             self.refreshNetworkTopologyActionClicked
         )
 
-        self.aboutAction = QAction(self.tr("About"), self.iface.mainWindow())
-        self.aboutAction.triggered.connect(self.about)
+        self.updateSymbologyAction = QAction(self.tr("Update symbology"), self.iface.mainWindow())
+        self.updateSymbologyAction.triggered.connect(self.updateSymbology)
 
-        self.settingsAction = QAction(self.tr("Settings"), self.iface.mainWindow())
+        self.validityCheckAction = QAction(self.tr("Validity check"), self.iface.mainWindow())
+        self.validityCheckAction.triggered.connect(self.tww_validity_check_action)
+
+        self.enableSymbologyTriggersAction = QAction(
+            self.tr("Enable symbology triggers"), self.iface.mainWindow()
+        )
+        self.enableSymbologyTriggersAction.triggered.connect(self.enable_symbology_triggers)
+
+        self.disableSymbologyTriggersAction = QAction(
+            self.tr("Disable symbology triggers"), self.iface.mainWindow()
+        )
+        self.disableSymbologyTriggersAction.triggered.connect(self.disable_symbology_triggers)
+
+        self.settingsAction = QAction(
+            QIcon(QgsApplication.getThemeIcon("/mActionOptions.svg")),
+            self.tr("Settings"),
+            self.iface.mainWindow(),
+        )
         self.settingsAction.triggered.connect(self.showSettings)
+
+        self.aboutAction = QAction(
+            QIcon(os.path.join(plugin_root_path(), "icons/teksi-abwasser-logo.svg")),
+            self.tr("About"),
+            self.iface.mainWindow(),
+        )
+        self.aboutAction.triggered.connect(self.about)
 
         self.importAction = QAction(
             QIcon(os.path.join(plugin_root_path(), "icons/interlis_import.svg")),
@@ -253,15 +278,20 @@ class TeksiWastewaterPlugin:
         self.toolbar.addAction(self.refreshNetworkTopologyAction)
         self.toolbar.addAction(self.connectNetworkElementsAction)
 
-        # self.iface.addPluginToMenu("TEKSI &Wastewater", self.profileAction)
-        self.iface.addPluginToMenu("TEKSI &Wastewater", self.settingsAction)
-        self.iface.addPluginToMenu("TEKSI &Wastewater", self.aboutAction)
+        self.main_menu_name = "TEKSI &Wastewater"
+        # self.iface.addPluginToMenu(self.menu, self.profileAction)
+        self.iface.addPluginToMenu(self.main_menu_name, self.updateSymbologyAction)
+        self.iface.addPluginToMenu(self.main_menu_name, self.validityCheckAction)
+        self.iface.addPluginToMenu(self.main_menu_name, self.enableSymbologyTriggersAction)
+        self.iface.addPluginToMenu(self.main_menu_name, self.disableSymbologyTriggersAction)
+        self.iface.addPluginToMenu(self.main_menu_name, self.settingsAction)
+        self.iface.addPluginToMenu(self.main_menu_name, self.aboutAction)
 
-        admin_mode = QSettings().value("/TWW/AdminMode", False)
-        # seems QGIS loads True as "true" on restart ?!
-        if admin_mode and admin_mode != "false":
-            self.toolbar.addAction(self.importAction)
-            self.toolbar.addAction(self.exportAction)
+        self._get_main_menu_action().setIcon(
+            QIcon(os.path.join(plugin_root_path(), "icons/teksi-abwasser-logo.svg")),
+        )
+
+        self.update_admin_mode()
 
         self.iface.addToolBar(self.toolbar)
 
@@ -302,13 +332,83 @@ class TeksiWastewaterPlugin:
         )
 
         self.wastewater_networkelement_layer_notifier.layersAvailableChanged.connect(
-            self.connectNetworkElementsAction.setEnabled
+            self._wastewater_networkelement_layer_available_changed
         )
 
         self.processing_provider = TwwProcessingProvider()
         QgsApplication.processingRegistry().addProvider(self.processing_provider)
 
         self.network_layer_notifier.layersAdded([])
+
+    def tww_validity_check_startup(self):
+        messages = []
+        try:
+            messages = DatabaseUtils.get_validity_check_issues()
+
+        except Exception as exception:
+            messages.append(self.tr(f"Could not check database validity: {exception}"))
+
+        for message in messages:
+            self.iface.messageBar().pushMessage(
+                "Error",
+                message,
+                level=Qgis.Critical,
+            )
+
+    def tww_validity_check_action(self):
+        messages = []
+        try:
+            messages = DatabaseUtils.get_validity_check_issues()
+
+        except Exception as exception:
+            messages.append(self.tr(f"Could not check database validity: {exception}"))
+
+        if len(messages) == 0:
+            QMessageBox.information(
+                self.iface.mainWindow(),
+                self.validityCheckAction.text(),
+                self.tr("There are no database validity issues."),
+            )
+            return
+
+        messagesText = "\n".join(messages)
+        QMessageBox.critical(
+            self.iface.mainWindow(),
+            self.validityCheckAction.text(),
+            self.tr(f"Database has following validity issues:\n\n{messagesText}"),
+        )
+
+    def enable_symbology_triggers(self):
+        try:
+            DatabaseUtils.enable_symbology_triggers()
+            QMessageBox.information(
+                self.iface.mainWindow(),
+                self.enableSymbologyTriggersAction.text(),
+                self.tr("Symbology triggers have been successfully enabled"),
+            )
+
+        except Exception as exception:
+            QMessageBox.critical(
+                self.iface.mainWindow(),
+                self.enableSymbologyTriggersAction.text(),
+                self.tr(f"Symbology triggers cannot be enabled:\n\n{exception}"),
+            )
+
+    def disable_symbology_triggers(self):
+        try:
+            DatabaseUtils.disable_symbology_triggers()
+            QMessageBox.information(
+                self.iface.mainWindow(),
+                self.disableSymbologyTriggersAction.text(),
+                self.tr("Symbology triggers have been successfully disabled"),
+            )
+
+        except Exception as exception:
+            QMessageBox.critical(
+                self.iface.mainWindow(),
+                self.disableSymbologyTriggersAction.text(),
+                self.tr(f"Symbology triggers cannot be disabled:\n\n{exception}"),
+            )
 
     def unload(self):
         """
@@ -328,9 +428,11 @@ class TeksiWastewaterPlugin:
 
         self.toolbar.deleteLater()
 
-        # self.iface.removePluginMenu("TEKSI &Wastewater", self.profileAction)
-        self.iface.removePluginMenu("TEKSI &Wastewater", self.settingsAction)
-        self.iface.removePluginMenu("TEKSI &Wastewater", self.aboutAction)
+        # self.iface.removePluginMenu(self.menu, self.profileAction)
+        self.iface.removePluginMenu(self.main_menu_name, self.updateSymbologyAction)
+        self.iface.removePluginMenu(self.main_menu_name, self.validityCheckAction)
+        self.iface.removePluginMenu(self.main_menu_name, self.settingsAction)
+        self.iface.removePluginMenu(self.main_menu_name, self.aboutAction)
 
         QgsApplication.processingRegistry().removeProvider(self.processing_provider)
 
@@ -439,14 +541,33 @@ class TeksiWastewaterPlugin:
         if self.profile is not None:
             self.profile.highlight(None)
 
-    def about(self):
-        from .gui.dlgabout import DlgAbout
+    def updateSymbology(self):
+        try:
+            with OverrideCursor(Qt.WaitCursor):
+                DatabaseUtils.update_symbology()
+            QMessageBox.information(
+                self.iface.mainWindow(),
+                self.updateSymbologyAction.text(),
+                self.tr("Symbology has been successfully updated"),
+            )
 
-        DlgAbout(self.iface.mainWindow()).exec_()
+        except Exception as exception:
+            QMessageBox.critical(
+                self.iface.mainWindow(),
+                self.updateSymbologyAction.text(),
+                self.tr(f"Symbology update failed:\n\n{exception}"),
+            )
 
     def showSettings(self):
         settings_dlg = TwwSettingsDialog(self.iface.mainWindow())
         settings_dlg.exec_()
+
+        self.update_admin_mode()
+
+    def about(self):
+        from .gui.dlgabout import DlgAbout
+
+        DlgAbout(self.iface.mainWindow()).exec_()
 
     def actionExportClicked(self):
         if self.interlisImporterExporter is None:
@@ -466,7 +587,6 @@ class TeksiWastewaterPlugin:
                 self.logger.error(str(e))
                 return
 
-        self._configure_tww2ili_from_tww_layer()
         self.interlisImporterExporter.action_export()
 
     def actionImportClicked(self):
@@ -487,10 +607,9 @@ class TeksiWastewaterPlugin:
                 self.logger.error(str(e))
                 return
 
-        self._configure_tww2ili_from_tww_layer()
         self.interlisImporterExporter.action_import()
 
-    def _configure_tww2ili_from_tww_layer(self) -> dict:
+    def _configure_database_connection_config_from_tww_layer(self) -> dict:
         """Configures tww2ili using the currently loaded TWW project layer"""
 
         pg_layer = TwwLayerManager.layer("vw_tww_wastewater_structure")
@@ -501,9 +620,48 @@ class TeksiWastewaterPlugin:
                 level=Qgis.Critical,
             )
 
-        config.PGSERVICE = pg_layer.dataProvider().uri().service()
-        config.PGHOST = pg_layer.dataProvider().uri().host()
-        config.PGPORT = pg_layer.dataProvider().uri().port()
-        config.PGDATABASE = pg_layer.dataProvider().uri().database()
-        config.PGUSER = pg_layer.dataProvider().uri().username()
-        config.PGPASS = pg_layer.dataProvider().uri().password()
+        DatabaseUtils.databaseConfig.PGSERVICE = pg_layer.dataProvider().uri().service()
+        DatabaseUtils.databaseConfig.PGHOST = pg_layer.dataProvider().uri().host()
+        DatabaseUtils.databaseConfig.PGPORT = pg_layer.dataProvider().uri().port()
+        DatabaseUtils.databaseConfig.PGDATABASE = pg_layer.dataProvider().uri().database()
+        DatabaseUtils.databaseConfig.PGUSER = pg_layer.dataProvider().uri().username()
+        DatabaseUtils.databaseConfig.PGPASS = pg_layer.dataProvider().uri().password()
+
+    def _get_main_menu_action(self):
+        actions = self.iface.pluginMenu().actions()
+        result_actions = [action for action in actions if action.text() == self.main_menu_name]
+
+        # OSX does not support & in the menu title
+        if not result_actions:
+            result_actions = [
+                action
+                for action in actions
+                if action.text() == self.main_menu_name.replace("&", "")
+            ]
+
+        return result_actions[0]
+
+    def _wastewater_networkelement_layer_available_changed(self, available):
+
+        self.connectNetworkElementsAction.setEnabled(available)
+
+        if available:
+            self._configure_database_connection_config_from_tww_layer()
+
+            self.tww_validity_check_startup()
+
+    def update_admin_mode(self):
+
+        admin_mode = QSettings().value("/TWW/AdminMode", False)
+        # seems QGIS loads True as "true" on restart ?!
+        if admin_mode and admin_mode != "false":
+            admin_mode = True
+            self.toolbar.addAction(self.importAction)
+            self.toolbar.addAction(self.exportAction)
+        else:
+            self.toolbar.removeAction(self.importAction)
+            self.toolbar.removeAction(self.exportAction)
+            admin_mode = False
+
+        self.enableSymbologyTriggersAction.setEnabled(admin_mode)
+        self.disableSymbologyTriggersAction.setEnabled(admin_mode)
