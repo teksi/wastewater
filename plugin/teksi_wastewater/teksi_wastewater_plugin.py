@@ -48,7 +48,6 @@ from .utils.database_utils import DatabaseUtils
 from .utils.plugin_utils import plugin_root_path
 from .utils.qt_utils import OverrideCursor
 from .utils.translation import setup_i18n
-from .utils.tww_validity_check import tww_check_fk_defaults, tww_check_oid_prefix
 from .utils.twwlayermanager import TwwLayerManager, TwwLayerNotifier
 from .utils.twwlogging import TwwQgsLogHandler
 
@@ -344,7 +343,7 @@ class TeksiWastewaterPlugin:
         )
 
         self.wastewater_networkelement_layer_notifier.layersAvailableChanged.connect(
-            self.connectNetworkElementsAction.setEnabled
+            self._wastewater_networkelement_layer_available_changed
         )
 
         self.processing_provider = TwwProcessingProvider()
@@ -353,10 +352,8 @@ class TeksiWastewaterPlugin:
         self.network_layer_notifier.layersAdded([])
 
     def tww_validity_check(self):
-        self._configure_database_connection_config_from_tww_layer()
-
-        msgs = tww_check_oid_prefix()
-        msgs.extend(tww_check_fk_defaults())
+        msgs = DatabaseUtils.check_oid_prefix()
+        msgs.extend(DatabaseUtils.check_fk_defaults())
 
         if not DatabaseUtils.check_symbology_triggers_enabled():
             msgs.append(self.tr("Symbology triggers are disabled"))
@@ -369,11 +366,9 @@ class TeksiWastewaterPlugin:
             )
 
     def enable_symbology_triggers(self):
-        self._configure_database_connection_config_from_tww_layer()
         DatabaseUtils.enable_symbology_triggers()
 
     def disable_symbology_triggers(self):
-        self._configure_database_connection_config_from_tww_layer()
         DatabaseUtils.disable_symbology_triggers()
 
     def unload(self):
@@ -509,7 +504,6 @@ class TeksiWastewaterPlugin:
 
     def updateSymbology(self):
         with OverrideCursor(Qt.WaitCursor):
-            self._configure_database_connection_config_from_tww_layer()
             DatabaseUtils.update_symbology()
 
     def showSettings(self):
@@ -539,7 +533,6 @@ class TeksiWastewaterPlugin:
                 self.logger.error(str(e))
                 return
 
-        self._configure_database_connection_config_from_tww_layer()
         self.interlisImporterExporter.action_export()
 
     def actionImportClicked(self):
@@ -560,7 +553,6 @@ class TeksiWastewaterPlugin:
                 self.logger.error(str(e))
                 return
 
-        self._configure_database_connection_config_from_tww_layer()
         self.interlisImporterExporter.action_import()
 
     def _configure_database_connection_config_from_tww_layer(self) -> dict:
@@ -594,3 +586,12 @@ class TeksiWastewaterPlugin:
             ]
 
         return result_actions[0]
+
+    def _wastewater_networkelement_layer_available_changed(self, available):
+
+        self.connectNetworkElementsAction.setEnabled(available)
+
+        if available:
+            self._configure_database_connection_config_from_tww_layer()
+
+            self.tww_validity_check()
