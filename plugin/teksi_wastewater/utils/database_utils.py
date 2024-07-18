@@ -3,7 +3,6 @@ import configparser
 import os
 from typing import List
 
-from ..interlis import config
 from .plugin_utils import logger
 
 try:
@@ -18,7 +17,19 @@ except ImportError:
     DEFAULTS_CONN_ARG = {}
 
 
+class DatabaseConfig:
+    def __init__(self) -> None:
+        self.PGSERVICE = None  # overriden by PG* settings below
+        self.PGHOST = os.getenv("PGHOST", None)
+        self.PGPORT = os.getenv("PGPORT", None)
+        self.PGDATABASE = os.getenv("PGDATABASE", None)
+        self.PGUSER = os.getenv("PGUSER", None)
+        self.PGPASS = os.getenv("PGPASS", None)
+
+
 class DatabaseUtils:
+
+    databaseConfig = DatabaseConfig()
 
     class PsycopgConnection:
         def __init__(self) -> None:
@@ -67,21 +78,21 @@ class DatabaseUtils:
         Returns the postgres configuration (parsed from the config.PGSERVICE service and overriden by config.PG* settings)
         """
 
-        if config.PGSERVICE:
-            pgconf = DatabaseUtils.read_pgservice(config.PGSERVICE)
+        if DatabaseUtils.databaseConfig.PGSERVICE:
+            pgconf = DatabaseUtils.read_pgservice(DatabaseUtils.databaseConfig.PGSERVICE)
         else:
             pgconf = {}
 
-        if config.PGHOST:
-            pgconf["host"] = config.PGHOST
-        if config.PGPORT:
-            pgconf["port"] = config.PGPORT
-        if config.PGDATABASE:
-            pgconf["dbname"] = config.PGDATABASE
-        if config.PGUSER:
-            pgconf["user"] = config.PGUSER
-        if config.PGPASS:
-            pgconf["password"] = config.PGPASS
+        if DatabaseUtils.databaseConfig.PGHOST:
+            pgconf["host"] = DatabaseUtils.databaseConfig.PGHOST
+        if DatabaseUtils.databaseConfig.PGPORT:
+            pgconf["port"] = DatabaseUtils.databaseConfig.PGPORT
+        if DatabaseUtils.databaseConfig.PGDATABASE:
+            pgconf["dbname"] = DatabaseUtils.databaseConfig.PGDATABASE
+        if DatabaseUtils.databaseConfig.PGUSER:
+            pgconf["user"] = DatabaseUtils.databaseConfig.PGUSER
+        if DatabaseUtils.databaseConfig.PGPASS:
+            pgconf["password"] = DatabaseUtils.databaseConfig.PGPASS
 
         return collections.defaultdict(str, pgconf)
 

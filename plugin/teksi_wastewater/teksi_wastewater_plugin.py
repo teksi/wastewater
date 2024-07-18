@@ -40,7 +40,6 @@ except ImportError:
 from .gui.twwprofiledockwidget import TwwProfileDockWidget
 from .gui.twwsettingsdialog import TwwSettingsDialog
 from .gui.twwwizard import TwwWizard
-from .interlis import config
 from .processing_provider.provider import TwwProcessingProvider
 from .tools.twwmaptools import TwwMapToolConnectNetworkElements, TwwTreeMapTool
 from .tools.twwnetwork import TwwGraphManager
@@ -566,12 +565,12 @@ class TeksiWastewaterPlugin:
                 level=Qgis.Critical,
             )
 
-        config.PGSERVICE = pg_layer.dataProvider().uri().service()
-        config.PGHOST = pg_layer.dataProvider().uri().host()
-        config.PGPORT = pg_layer.dataProvider().uri().port()
-        config.PGDATABASE = pg_layer.dataProvider().uri().database()
-        config.PGUSER = pg_layer.dataProvider().uri().username()
-        config.PGPASS = pg_layer.dataProvider().uri().password()
+        DatabaseUtils.databaseConfig.PGSERVICE = pg_layer.dataProvider().uri().service()
+        DatabaseUtils.databaseConfig.PGHOST = pg_layer.dataProvider().uri().host()
+        DatabaseUtils.databaseConfig.PGPORT = pg_layer.dataProvider().uri().port()
+        DatabaseUtils.databaseConfig.PGDATABASE = pg_layer.dataProvider().uri().database()
+        DatabaseUtils.databaseConfig.PGUSER = pg_layer.dataProvider().uri().username()
+        DatabaseUtils.databaseConfig.PGPASS = pg_layer.dataProvider().uri().password()
 
     def _get_main_menu_action(self):
         actions = self.iface.pluginMenu().actions()
