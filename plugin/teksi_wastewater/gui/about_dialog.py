@@ -25,9 +25,11 @@
 import os
 
 from qgis.PyQt.QtCore import QSettings
+from qgis.PyQt.QtGui import QPixmap
 from qgis.PyQt.QtWidgets import QDialog
 
 from ..utils import get_ui_class
+from ..utils.plugin_utils import plugin_root_path
 
 DIALOG_UI = get_ui_class("about_dialog.ui")
 
@@ -45,8 +47,16 @@ class AboutDialog(QDialog, DIALOG_UI):
         ini_text = QSettings(metadata_file_path, QSettings.IniFormat)
         version = ini_text.value("version")
         name = ini_text.value("name")
-        description = " ".join(ini_text.value("description"))
+        description = "".join(ini_text.value("description"))
+        about = " ".join(ini_text.value("about"))
+        qgisMinimumVersion = ini_text.value("qgisMinimumVersion")
 
         self.setWindowTitle(f"{name} - {version}")
-        self.title.setText(self.windowTitle())
-        self.description.setText(f"{description}")
+        self.titleLabel.setText(self.windowTitle())
+        self.descriptionLabel.setText(description)
+        self.aboutLabel.setText(about)
+        self.qgisMinimumVersionLabel.setText(qgisMinimumVersion)
+
+        self.iconLabel.setPixmap(
+            QPixmap(os.path.join(plugin_root_path(), "icons/teksi-abwasser-logo.svg"))
+        )
