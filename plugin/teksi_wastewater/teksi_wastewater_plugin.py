@@ -154,6 +154,10 @@ class TeksiWastewaterPlugin:
         self.wastewater_networkelement_layer_notifier = TwwLayerNotifier(
             self.iface.mainWindow(), ["vw_wastewater_node", "vw_tww_reach"]
         )
+        self.wastewater_structure_layer_notifier = TwwLayerNotifier(
+            self.iface.mainWindow(), ["vw_wastewater_structure"]
+        )
+        
         self.toolbarButtons = []
 
         # Create toolbar button
@@ -333,6 +337,10 @@ class TeksiWastewaterPlugin:
 
         self.wastewater_networkelement_layer_notifier.layersAvailableChanged.connect(
             self._wastewater_networkelement_layer_available_changed
+        )
+        
+        self.wastewater_structure_layer_notifier.layersAvailableChanged.connect(
+            self._wastewater_structure_layer_available_changed
         )
 
         self.processing_provider = TwwProcessingProvider()
@@ -649,6 +657,26 @@ class TeksiWastewaterPlugin:
             self._configure_database_connection_config_from_tww_layer()
 
             self.tww_validity_check_startup()
+            no_cover_payload = DatabaseUtils.dblisten('vw_tww_ws_no_cover')
+            for payload in no_cover_payload:
+                self.iface.messageBar().pushMessage(
+                            "Warning",
+                            payload,
+                            level=Qgis.Warning,
+                        )
+                        
+    def _wastewater_structure_layer_available_changed(self, available):
+
+        if available:
+            self._configure_database_connection_config_from_tww_layer()
+
+            no_cover_payload = DatabaseUtils.dblisten('vw_tww_ws_no_cover')
+            for payload in no_cover_payload:
+                self.iface.messageBar().pushMessage(
+                            "Warning",
+                            payload,
+                            level=Qgis.Warning,
+                        )
 
     def update_admin_mode(self):
 
