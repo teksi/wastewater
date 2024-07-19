@@ -231,13 +231,12 @@ class DatabaseUtils:
                 try:
                     while True:
                         if select.select([connection], [], [], timeout) == ([], [], []):
-                            print (f'Timeout on Channel {channel}')
+                            print(f"Timeout on Channel {channel}")
                         else:
                             connection.poll()
-                            events = []
                             while connection.notifies:
                                 notify = connection.notifies.pop()
                                 yield notify.payload
                 finally:
-                    cursor.execute(f'UNLISTEN {channel}')
+                    cursor.execute(f"UNLISTEN {channel}")
                     cursor.close()
