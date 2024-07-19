@@ -174,14 +174,25 @@ class DatabaseUtils:
     def check_oid_prefix() -> List[str]:
         """Check whether the oid_prefix is set up for production"""
         logger.info("Checking setup of oid prefix")
-        prefixes = DatabaseUtils.fetchall("SELECT prefix FROM tww_sys.oid_prefixes WHERE active;")
+        pgconf = DatabaseUtils.get_pgconf()
+        current_usr=pgconf['user']
+        prefixes = DatabaseUtils.fetchall(f"""
+            SELECT prefix FROM tww_sys.oid_prefixes pf
+            LEFT JOIN tww_od.oid_manager om on om.t_basket =pf.id
+            WHERE ub.usr_name='{current_usr}';
+            """)
 
         msg_list = []
-        if len(prefixes) > 1:
+        if len(prefixes) = 0:
             msg_list.append(
-                "more than one oid_prefix set to active. Generation of Object-ID will not work. Set the OID prefix for your production database to active."
+                "OID prefix cannot be set because the default basket is not defined. Generation of Object-ID will not work. Add your user to tww_od.oid_manager and set a basket."
             )
-
+            
+        elif len(prefixes) > 1: # only possible if someone tampered with the database
+            msg_list.append(
+                "OID prefix cannot be set because the multiple baskets are defined for the current user. Generation of Object-ID will not work. Add your user to tww_od.oid_manager and set a basket."
+            )
+            
         if len(prefixes) > 0:
             active_pref = prefixes[0][0]
             if active_pref == "ch000000":

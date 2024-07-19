@@ -9,13 +9,14 @@ CREATE TABLE tww_sys.oid_prefixes
   prefix character(8),
   organization text,
   active boolean,
-  CONSTRAINT pkey_tww_is_oid_prefixes_id PRIMARY KEY (id )
+  CONSTRAINT pkey_tww_is_oid_prefixes_id PRIMARY KEY (id ),
+  CONSTRAINT chk_prefix_length CHECK (char_length(prefix) = 8)
 )
 WITH (
   OIDS=FALSE
 );
 COMMENT ON TABLE tww_sys.oid_prefixes
-  IS 'This table contains OID prefixes for different communities or organizations. The application or administrator changing this table has to make sure that only one record is set to active.';
+  IS 'This table contains OID prefixes for different communities or organizations.';
 
 -- sample entry for Invalid - you need to adapt this entry later for your own organization
 INSERT INTO tww_sys.oid_prefixes (prefix,organization,active) VALUES ('ch000000','Invalid',TRUE);
@@ -37,9 +38,27 @@ CREATE INDEX in_tww_is_oid_prefixes_active
 CREATE UNIQUE INDEX in_tww_is_oid_prefixes_id
   ON tww_sys.oid_prefixes
   USING btree
-  (id );
+  (id);
 
--- function for generating StandardOIDs
+CREATE TABLE tww_od.oid_manager
+(
+  id serial NOT NULL,
+  usr_name text NOT NULL,
+  t_basket int NOT NULL
+  CONSTRAINT pkey_tww_od_oid_manager_id PRIMARY KEY (id),
+  CONSTRAINT uniq_tww_od_oid_manager_usr_name UNIQUE (usr_name),
+  CONSTRAINT fkey_od_oid_manager_t_basket FOREIGN KEY (t_basket)
+        REFERENCES tww_sys.oid_prefixes (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE SET NULL;
+);
+COMMENT ON TABLE tww_sys.oid_prefixes
+  IS 'This table contains OID prefixes for different communities or organizations.';
+
+CREATE UNIQUE INDEX in_tww_oid_manager_usr_name
+  ON tww_od.oid_manager
+  USING btree
+  (usr_name);
 
 CREATE OR REPLACE FUNCTION tww_sys.generate_oid(schema_name text, table_name text)
   RETURNS text AS
@@ -48,20 +67,20 @@ DECLARE
   myrec_prefix record;
   myrec_shortcut record;
   myrec_seq record;
+  basket int;
 BEGIN
-  -- first we have to get the OID prefix
-  BEGIN
-    SELECT prefix::text INTO myrec_prefix FROM tww_sys.oid_prefixes WHERE active = TRUE;
-    EXCEPTION
-        WHEN NO_DATA_FOUND THEN
-           RAISE EXCEPTION 'no active record found in table tww_sys.oid_prefixes';
-        WHEN TOO_MANY_ROWS THEN
-	   RAISE EXCEPTION 'more than one active records found in table tww_sys.oid_prefixes';
-  END;
-  -- test if prefix is of correct length
-  IF char_length(myrec_prefix.prefix) != 8 THEN
-    RAISE EXCEPTION 'character length of prefix must be 8';
+  
+  SELECT t_basket INTO basket FROM tww_od.oid_manager WHERE usr_name=current_user;
+  IF NOT FOUND THEN 
+	SELECT id INTO STRICT basket FROM tww_sys.oid_prefixes WHERE active;
+
+	INSERT INTO tww_od.oid_manager(usr_name,t_basket) VALUES (current_user,basket)
   END IF;
+  
+  -- first get the OID prefix
+  BEGIN
+      SELECT prefix::text INTO myrec_prefix FROM tww_sys.oid_prefixes WHERE id = basket;
+  END;
   --get table 2char shortcut
   BEGIN
     SELECT shortcut_en INTO STRICT myrec_shortcut FROM tww_sys.dictionary_od_table WHERE tablename = table_name;
