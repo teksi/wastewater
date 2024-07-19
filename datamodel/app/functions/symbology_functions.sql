@@ -734,8 +734,11 @@ BEGIN
   FROM tww_od.reach_point rp_to
   WHERE NEW.fk_reach_point_to = rp_to.obj_id;
 
-  NEW.length_effective = COALESCE(sqrt((_rp_from_level - _rp_to_level)^2 + ST_Length(NEW.progression3d_geometry)^2), ST_Length(NEW.progression3d_geometry) );
-
+  IF _rp_from_level=0 OR _rp_to_level=0 THEN
+    NEW.length_effective = ST_Length(NEW.progression3d_geometry);
+  ELSE
+    NEW.length_effective = COALESCE(sqrt((_rp_from_level - _rp_to_level)^2 + ST_Length(NEW.progression3d_geometry)^2), ST_Length(NEW.progression3d_geometry) );
+  END IF;
   RETURN NEW;
 
 END;
@@ -748,9 +751,6 @@ $BODY$
 -----------------------------------------------------------------------
 
 CREATE OR REPLACE FUNCTION tww_sys.disable_symbology_triggers() RETURNS VOID AS $$
-DECLARE
-    tbl text;
-	trig text;
 BEGIN
   ALTER TABLE tww_od.reach_point DISABLE TRIGGER on_reach_point_update;
   ALTER TABLE tww_od.reach DISABLE TRIGGER on_reach_2_change;
@@ -773,9 +773,6 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 -----------------------------------------------------------------------
 
 CREATE OR REPLACE FUNCTION tww_sys.enable_symbology_triggers() RETURNS VOID AS $$
-DECLARE
-    tbl text;
-	trig text;
 BEGIN
   ALTER TABLE tww_od.reach_point ENABLE TRIGGER on_reach_point_update;
   ALTER TABLE tww_od.reach ENABLE TRIGGER on_reach_2_change;
@@ -789,6 +786,38 @@ BEGIN
   ALTER TABLE tww_od.channel ENABLE TRIGGER ws_symbology_update_by_channel;
   ALTER TABLE tww_od.reach_point ENABLE TRIGGER ws_symbology_update_by_reach_point;
   ALTER TABLE tww_od.reach ENABLE TRIGGER calculate_reach_length;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-----------------------------------------------------------------------
+-- Check if Symbology Triggers are enabled
+-----------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION tww_sys.check_symbology_triggers_enabled() RETURNS BOOL AS $$
+DECLARE _disabled_count numeric;
+BEGIN
+
+  SELECT count(*) into _disabled_count FROM pg_trigger WHERE (
+    tgname='on_reach_point_update' or
+    tgname='on_reach_2_change' or
+    tgname='on_reach_1_delete' or
+    tgname='on_wastewater_structure_update' or
+    tgname='ws_label_update_by_wastewater_networkelement' or
+    tgname='on_structure_part_change' or
+    tgname='on_cover_change' or
+    tgname='on_wasterwaternode_change' or
+    tgname='ws_symbology_update_by_reach' or
+    tgname='ws_symbology_update_by_channel' or
+    tgname='ws_symbology_update_by_reach_point' or
+    tgname='calculate_reach_length'
+  ) AND tgenabled = 'D';
+
+  IF _disabled_count=0 THEN
+    return true;
+  ELSE
+    return false;
+  END IF;
+
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
