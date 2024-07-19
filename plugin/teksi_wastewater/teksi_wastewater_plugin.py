@@ -155,7 +155,7 @@ class TeksiWastewaterPlugin:
             self.iface.mainWindow(), ["vw_wastewater_node", "vw_tww_reach"]
         )
         self.wastewater_structure_layer_notifier = TwwLayerNotifier(
-            self.iface.mainWindow(), ["vw_wastewater_structure"]
+            self.iface.mainWindow(), ["vw_tww_wastewater_structure"]
         )
 
         self.toolbarButtons = []
