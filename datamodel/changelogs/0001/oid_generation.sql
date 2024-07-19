@@ -69,14 +69,14 @@ DECLARE
   myrec_seq record;
   basket int;
 BEGIN
-  
+
   SELECT t_basket INTO basket FROM tww_od.oid_manager WHERE usr_name=current_user;
-  IF NOT FOUND THEN 
+  IF NOT FOUND THEN
 	SELECT id INTO STRICT basket FROM tww_sys.oid_prefixes WHERE active;
 
 	INSERT INTO tww_od.oid_manager(usr_name,t_basket) VALUES (current_user,basket)
   END IF;
-  
+
   -- first get the OID prefix
   BEGIN
       SELECT prefix::text INTO myrec_prefix FROM tww_sys.oid_prefixes WHERE id = basket;
