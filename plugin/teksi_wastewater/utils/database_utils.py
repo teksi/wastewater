@@ -1,8 +1,8 @@
 import collections
 import configparser
 import os
-from typing import List
 import select
+from typing import List
 
 from .plugin_utils import logger
 
@@ -230,7 +230,7 @@ class DatabaseUtils:
             try:
                 while True:
                     if select.select([connection], [], [], timeout) == ([], [], []):
-                        print (f'Timeout on Channel {channel}') 
+                        print (f'Timeout on Channel {channel}')
                     else:
                         connection.poll()
                         events = []
