@@ -657,13 +657,6 @@ class TeksiWastewaterPlugin:
             self._configure_database_connection_config_from_tww_layer()
 
             self.tww_validity_check_startup()
-            no_cover_payload = DatabaseUtils.dblisten("vw_tww_ws_no_cover")
-            for payload in no_cover_payload:
-                self.iface.messageBar().pushMessage(
-                    "Warning",
-                    payload,
-                    level=Qgis.Warning,
-                )
 
     def _wastewater_structure_layer_available_changed(self, available):
 
