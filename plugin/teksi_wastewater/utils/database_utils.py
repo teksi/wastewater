@@ -223,7 +223,7 @@ class DatabaseUtils:
         return messages
 
     @staticmethod
-    def dblisten(channel str,timeout int = 5):
+    def dblisten(channel str,timeout: float = 5.0):
         with DatabaseUtils.PsycopgConnection() as connection:
             cursor = connection.cursor()
             cursor.execute(f"LISTEN {channel}")
