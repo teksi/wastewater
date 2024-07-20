@@ -65,7 +65,7 @@ Back in pgAdmin :
 .. note::
 
    If the Restore failed and the detail reads something like "pg_restore: error: could not execute query: FEHLER: role »tww_viewer« does not exist then you have not created the minimal roles (see above)
-   
+
   * Close the Restoring-Window
 
 * Right click the database and click `Refresh`
