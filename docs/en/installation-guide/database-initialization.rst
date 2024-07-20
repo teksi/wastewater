@@ -82,7 +82,7 @@ Empty data model
 
 You also have the option to restore the latest empty data model (no demo data).
 
-* Download the data model by going to https://github.com/teksi/wastewater/releases/latest
+* Download the data model by going to https://github.com/teksi/wastewater/releases
   and by downloading the latest `tww_vx.y.z_structure_with_value_lists.sql`.
 
 .. note::
@@ -105,7 +105,7 @@ You also have the option to restore the latest empty data model (no demo data).
     set /p password="Please enter the password for user postgres? "
 
     set port=5432
-    set PATH=%PATH%;C:\Program Files\PostgreSQL\12\bin
+    set PATH=%PATH%;C:\Program Files\PostgreSQL\15\bin
     set PGPASSWORD=%password%
 
     createdb -U postgres -p %port% %db%
@@ -137,7 +137,7 @@ You also have the option to restore the latest empty data model (no demo data).
 
  You are free to choose any database name.
 
-* Update privileges for the tww_od, tww_sys, tww_vl, tww_network, tww_import, tww_swmm schema as described in the chapter `Create  minimal roles and access`.
+* Update privileges for the tww_od, tww_sys, tww_vl, tww_network, tww_import, tww_swmm schema as described in the chapter `Create minimal roles and access`.
 
 
 Generate the data model under Linux
