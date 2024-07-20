@@ -107,7 +107,7 @@ Install TWW plugin
 
 Plugin requirements:
 
-- `networkx <https://pypi.org/project/networkx/>`_ >= 2.1
+- `networkx <https://pypi.org/project/networkx/>`_ >= 3.3
 
 You can install them on Debian based systems with::
 
