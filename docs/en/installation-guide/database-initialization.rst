@@ -18,6 +18,15 @@ In pgAdmin4
 
 * Create a new database with UTF8 encoding (e.g. `tww_prod`).
 
+
+Create  minimal roles and access
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. note:: The TWW roles are defined in the https://github.com/TWW/datamodel/blob/master/12_0_roles.sql (per cluster) and https://github.com/TWW/datamodel/blob/master/12_1_roles.sql (per database) files. It is recommended to use these when using TWW in a production environment.
+
+Copy paste and run the two .sql one after the other in the query editor of pgAdmin4 (Tools > Query Tool).
+
+
 .. _restore-demomodel:
 
 Restore demo datamodel
@@ -53,6 +62,10 @@ Back in pgAdmin :
 
    If the Restore is failed and the detail reads something like "pg_restore: [archiver] unsupported version (1.13) in file header" or in German "pg_restore: [Archivierer] nicht unterstützte Version (1.13) im Dateikopf" try updating your PostgreSQL, see https://stackoverflow.com/questions/49064209/getting-archiver-unsupported-version-1-13-in-file-header-when-running-pg-r
 
+.. note::
+
+   If the Restore failed and the detail reads something like "pg_restore: error: could not execute query: FEHLER: role »tww_viewer« does not exist then you have not created the minimal roles (see above)
+   
   * Close the Restoring-Window
 
 * Right click the database and click `Refresh`
@@ -61,14 +74,8 @@ Back in pgAdmin :
 
 * Propably you want to rename the database: Right click the database, click `Properties...` and rename the database.
 
-There are now 7 schemas in the database (public, tww_import, tww_network, tww_swmm, tww_od, tww_sys, tww_vl)
+There are now 6 schemas in the database (public, tww_app, tww_cfg, tww_od, tww_sys, tww_vl)
 
-Create  minimal roles and access
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. note:: The TWW roles are defined in the https://github.com/TWW/datamodel/blob/master/12_0_roles.sql (per cluster) and https://github.com/TWW/datamodel/blob/master/12_1_roles.sql (per database) files. It is recommended to use these when using TWW in a production environment.
-
-Copy paste and run the two .sql one after the other in the query editor of pgAdmin4 (Tools > Query Tool).
 
 Empty data model
 ^^^^^^^^^^^^^^^^
