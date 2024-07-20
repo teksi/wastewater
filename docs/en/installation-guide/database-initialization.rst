@@ -27,7 +27,7 @@ Create  minimal roles and access
 Copy paste and run the two .sql one after the other in the query editor of pgAdmin4 (Tools > Query Tool).
 
 
-.. _restore-demomodel:
+.. _restore-datamodel-demodata:
 
 Restore data model with demodata
 ^^^^^^^^^^^^^^^^^^^^^^

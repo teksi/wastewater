@@ -148,7 +148,7 @@ TWW uses a data historization process. The ``pg history viewer`` `plugin <http:/
 Install the demo data
 ---------------------
 
-as described `here <https://tww.github.io/docs/installation-guide/database-initialization.html#restore-demo-datamodel>`_
+as described `here <https://tww.github.io/docs/installation-guide/database-initialization.html#restore-datamodel-demodata>`_
 
 Install the demo project
 ------------------------
