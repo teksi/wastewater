@@ -153,7 +153,7 @@ as described `here <https://tww.github.io/docs/installation-guide/database-initi
 Install the demo project
 ------------------------
 
-* Download from https://github.com/TWW/tww/releases the qgs project file and its translations 
+* Download from https://github.com/TWW/tww/releases the qgs project file and its translations
 project-translations.zip
 
 * Extract the file
