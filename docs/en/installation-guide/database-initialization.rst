@@ -29,7 +29,7 @@ Copy paste and run the two .sql one after the other in the query editor of pgAdm
 
 .. _restore-demomodel:
 
-Restore demo datamodel
+Restore data model with demodata
 ^^^^^^^^^^^^^^^^^^^^^^
 
 Restore the latest data model that also includes demo data:
@@ -40,7 +40,7 @@ Restore the latest data model that also includes demo data:
 
 Back in pgAdmin :
 
-* Right click the `tww_prod` database
+* Right click the `tww_demo` database
 
   * Click `Restore`
 
