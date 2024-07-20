@@ -95,7 +95,7 @@ Alternative: put your password directly into the ``pg_service.conf`` (on Windows
 Install QGIS
 ------------
 
-* Minimum requirement 3.4
+* Minimum requirement 3.34.8
 
 * We recommend using the latest master build (called qgis-dev on Windows)
   which often offers a better experience in combination with TWW.
@@ -153,7 +153,7 @@ as described `here <https://tww.github.io/docs/installation-guide/database-initi
 Install the demo project
 ------------------------
 
-* Download from https://github.com/TWW/tww/releases/latest the tww.zip
+* Download from https://github.com/TWW/tww/releases the tww.zip
 
 * Extract the file
 
