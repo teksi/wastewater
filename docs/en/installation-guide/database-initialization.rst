@@ -16,7 +16,7 @@ In pgAdmin4
 
 * Connect to the database server
 
-* Create a new database with UTF8 encoding (e.g. `tww_prod`).
+* Create a new database with UTF8 encoding (e.g. `tww_demo`).
 
 
 Create  minimal roles and access
