@@ -124,17 +124,17 @@ DECLARE
     intval bigint  := abs(base10);
     char0z char[]  := regexp_split_to_array('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ', '');
 BEGIN
-    IF base10 = 0 
-	THEN 
-		base36 := '0'; 
+    IF base10 = 0
+	THEN
+		base36 := '0';
 	ELSE
 		WHILE intval != 0 LOOP
 			base36 := char0z[(intval % 36)+1] || base36;
 			intval := intval / 36;
 		END LOOP;
 	END IF;
-	IF min_width > 0 AND char_length(base36) < min_width THEN 
-			base36 := lpad(base36, min_width, '0'); 
+	IF min_width > 0 AND char_length(base36) < min_width THEN
+			base36 := lpad(base36, min_width, '0');
 		END IF;
     RETURN base36;
 END;
