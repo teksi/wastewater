@@ -183,7 +183,7 @@ class DatabaseUtils:
             """)
 
         msg_list = []
-        if len(prefixes) = 0:
+        if len(prefixes) == 0:
             msg_list.append(
                 "OID prefix cannot be set because the default basket is not defined. Generation of Object-ID will not work. Add your user to tww_od.oid_manager and set a basket."
             )
