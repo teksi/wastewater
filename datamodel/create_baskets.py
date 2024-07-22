@@ -24,12 +24,12 @@ def create_od_baskets(pg_service: str):
     for tbl in tables:
         cursor.execute(
             f"""
-    	ALTER TABLE tww_od.{tablename} ADD COLUMN IF NOT EXISTS t_basket INTEGER,
-        CONSTRAINT fkey_od_{tablename}_t_basket FOREIGN KEY (t_basket)
-        REFERENCES tww_sys.oid_prefixes (id) MATCH SIMPLE
-        ON UPDATE CASCADE
-        ON DELETE SET NULL;
-        """
+                ALTER TABLE tww_od.{tbl} ADD COLUMN IF NOT EXISTS t_basket INTEGER,
+                CONSTRAINT fkey_od_{tbl}_t_basket FOREIGN KEY (t_basket)
+                REFERENCES tww_sys.oid_prefixes (id) MATCH SIMPLE
+                ON UPDATE CASCADE
+                ON DELETE SET NULL;
+            """
         )
     conn.commit()
     conn.close()
