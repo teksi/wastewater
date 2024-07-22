@@ -44,13 +44,13 @@ CREATE TABLE tww_od.oid_manager
 (
   id serial NOT NULL,
   usr_name text NOT NULL,
-  t_basket int NOT NULL
+  t_basket int NOT NULL,
   CONSTRAINT pkey_tww_od_oid_manager_id PRIMARY KEY (id),
   CONSTRAINT uniq_tww_od_oid_manager_usr_name UNIQUE (usr_name),
   CONSTRAINT fkey_od_oid_manager_t_basket FOREIGN KEY (t_basket)
         REFERENCES tww_sys.oid_prefixes (id) MATCH SIMPLE
         ON UPDATE CASCADE
-        ON DELETE SET NULL;
+        ON DELETE SET NULL
 );
 COMMENT ON TABLE tww_sys.oid_prefixes
   IS 'This table contains OID prefixes for different communities or organizations.';
