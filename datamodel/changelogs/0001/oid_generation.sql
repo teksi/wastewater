@@ -67,7 +67,9 @@ DECLARE
   myrec_prefix record;
   myrec_shortcut record;
   myrec_seq record;
+  myrec_oid record;
   basket int;
+  oid varchar(16);
 BEGIN
 
   SELECT t_basket INTO basket FROM tww_od.oid_manager WHERE usr_name=current_user;
@@ -94,8 +96,46 @@ BEGIN
   IF NOT FOUND THEN
     RAISE EXCEPTION 'sequence for table % not found', table_name;
   END IF;
-  RETURN myrec_prefix.prefix || myrec_shortcut.shortcut_en || to_char(myrec_seq.seqval,'FM000000');
+  oid = myrec_prefix.prefix || myrec_shortcut.shortcut_en || tww_sys.base36_encode(myrec_seq.seqval)
+  -- check if oid exists already (necessary for backwards compatibility with old oid scheme)
+  EXECUTE format('SELECT TRUE as _exists FROM %1$I.%2$I WHERE obj_id=%3$I;', schema_name, table_name,oid) INTO myrec_oid;
+  IF myrec_oid._exists THEN
+	RETURN tww_sys.generate_oid(schema_name, table_name);
+  ELSE
+	RETURN oid:
+  END IF;
+
 END;
 $BODY$
   LANGUAGE plpgsql STABLE
   COST 100;
+
+
+CREATE OR REPLACE FUNCTION tww_sys.base36_encode(
+	digits bigint,
+	min_width integer DEFAULT 6)
+    RETURNS character varying
+    LANGUAGE 'plpgsql'
+    COST 100
+    IMMUTABLE PARALLEL UNSAFE
+AS $BODY$
+DECLARE
+    base36 varchar := '';
+    intval bigint  := abs(base10);
+    char0z char[]  := regexp_split_to_array('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ', '');
+BEGIN
+    IF base10 = 0 
+	THEN 
+		base36 := '0'; 
+	ELSE
+		WHILE intval != 0 LOOP
+			base36 := char0z[(intval % 36)+1] || base36;
+			intval := intval / 36;
+		END LOOP;
+	END IF;
+	IF min_width > 0 AND char_length(base36) < min_width THEN 
+			base36 := lpad(base36, min_width, '0'); 
+		END IF;
+    RETURN base36;
+END;
+$BODY$;
