@@ -15,11 +15,11 @@ $BODY$
 	  FROM tww_cfg.agxx_last_modification_updater
 	  WHERE username=current_user;
 	  CASE 
-	   WHEN update_type IN('wi','both') THEN NEW.ag64_last_modification=now();
+	   WHEN update_type IN('WI','Both') THEN NEW.ag64_last_modification=now();
 	   ELSE NULL;
 	   END CASE;
 	    CASE 
-	   WHEN update_type IN('gep','both') THEN NEW.ag96_last_modification=now();
+	   WHEN update_type IN('GEP','Both') THEN NEW.ag96_last_modification=now();
 	   ELSE NULL;
 	  END CASE;
 	END;
