@@ -51,7 +51,7 @@ Back in pgAdmin :
 
 .. note::
 
-   If the Restore is failed and the detail reads something like "pg_restore: [archiver] unsupported version (1.13) in file header" or in German "pg_restore: [Archivierer] nicht unterstützte Version (1.13) im Dateikopf" try updating your PostgreSQL, see https://stackoverflow.com/questions/49064209/getting-archiver-unsupported-version-1-13-in-file-header-when-running-pg-r
+   If the Restore is failed and the detail reads something like "pg_restore: [archiver] unsupported version (1.13) in file header" try updating your PostgreSQL, see https://stackoverflow.com/questions/49064209/getting-archiver-unsupported-version-1-13-in-file-header-when-running-pg-r
 
   * Close the Restoring-Window
 
@@ -63,12 +63,27 @@ Back in pgAdmin :
 
 There are now 7 schemas in the database (public, tww_import, tww_network, tww_swmm, tww_od, tww_sys, tww_vl)
 
-Create  minimal roles and access
+Create minimal roles and access
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+There are four default roles in TEKSI databases
 
-.. note:: The TWW roles are defined in the https://github.com/TWW/datamodel/blob/master/12_0_roles.sql (per cluster) and https://github.com/TWW/datamodel/blob/master/12_1_roles.sql (per database) files. It is recommended to use these when using TWW in a production environment.
+- Viewer: Can consult tables and views.
+- User: Can edit data.
+- Manager: Can edit data and value lists.
+- Admin: Database administrator.
 
-Copy paste and run the two .sql one after the other in the query editor of pgAdmin4 (Tools > Query Tool).
+.. note:: The TWW roles are defined in the python script https://github.com/TWW/datamodel/blob/master/create_roles.py. The script requires the pgserviceparser package from OpenGIS https://github.com/opengisch/pgserviceparser/.
+
+You can call the script from the command line with the following arguments:
+
+* ´-m´ or ´--modelname´: Abbreviation of the datamodel (here: tww)
+* ´-p´ or ´--pg_service´: Name of the pg_service
+* ´-d´ or ´--database_specific_roles´: Add this flag to add database specific roles instead of cluster specific roles.
+* ´-x´ or ´--extension_schema´: Optional flag to define the name of the extension schema.
+* ´-g´ or ´--grant_privileges´: Add this flag to grant privileges to roles.
+* ´-r´ or ´--revoke_privileges´: Add this flag to revoke privileges to roles. Either grant or revoke are necessary
+
+The database specific group roles are defined as  **tww_viewer_[db_identifier]** etc. , where ``db_identifier`` is defined as ``regexp_replace(databasename, "tww_|teksi_", "")`` .
 
 Empty data model
 ^^^^^^^^^^^^^^^^
@@ -139,15 +154,5 @@ You can also generate the data model under Linux.
 
    ./scripts/db_setup.sh
 
-If you want to use a different SRID you need to use the ``-s`` option.
-For instance, run ``./scripts/db_setup.sh -s 2056`` for the **2056** SRID.
-
-If you already have a data model and you want to force the regeneration
-of the model you can also use the ``-f`` option: ``./scripts/db_setup.sh -f``.
-
-You can use the ``-r`` option to add roles (``tww_viewer``, ``tww_user``, ``tww_manager``, ``tww_sysadmin`` and their database specific variants).
-
-- Viewer: Can consult tables and views.
-- User: Can edit data.
-- Manager: Can edit data and value lists.
-- Admin: Database administrator.
+If you want to use a different SRID, alter the SRID definition.
+If you want to alter the role grants, see  `here <https://tww.github.io/docs/installation-guide/database-initialization.html#create-minimal-roles-and-access>`_
