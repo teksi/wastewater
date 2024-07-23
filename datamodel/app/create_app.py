@@ -60,11 +60,12 @@ def create_app(
         run_sql("DROP SCHEMA IF EXISTS tww_app CASCADE;", pg_service)
 
     run_sql("CREATE SCHEMA tww_app;", pg_service)
-
+    
     run_sql_file("functions/symbology_functions.sql", pg_service)
     run_sql_file("functions/reach_direction_change.sql", pg_service, variables)
     run_sql_file("functions/geometry_functions.sql", pg_service, variables)
     run_sql_file("functions/organisation_functions.sql", pg_service, variables)
+
 
     # open YAML files
     if tww_reach_extra:
@@ -179,6 +180,9 @@ def create_app(
     )
     run_sql_file(
         "view/catchment_area/vw_catchment_area_wwp_connections.sql", pg_service, variables
+    )
+    run_sql_file(
+        "view/catchment_area/vw_catchment_area_totals_aggregated.sql", pg_service, variables
     )
 
     # default values
