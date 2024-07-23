@@ -64,6 +64,7 @@ def create_app(
     run_sql_file("symbology_functions.sql", pg_service)
     run_sql_file("reach_direction_change.sql", pg_service, variables)
     run_sql_file("14_geometry_functions.sql", pg_service, variables)
+    run_sql_file("update_catchment_area_totals.sql", pg_service, variables)
     run_sql_file("organisation_functions.sql", pg_service, variables)
 
     # open YAML files
@@ -180,9 +181,15 @@ def create_app(
     run_sql_file(
         "view/catchment_area/vw_catchment_area_wwp_connections.sql", pg_service, variables
     )
+    run_sql_file(
+        "view/catchment_area/vw_catchment_area_totals_aggregated.sql", pg_service, variables
+    )
 
     # default values
     run_sql_file("view/set_default_value_for_views.sql", pg_service, variables)
+
+    # Recreate GEP views
+    run_sql_file("gep_views/vw_tww_catchment_area_totals.sql", pg_service, variables)
 
     # Recreate network views
     run_sql_file("view/network/vw_network_node.sql", pg_service, variables)

@@ -9,6 +9,7 @@ from teksi_wastewater.interlis.interlis_importer_exporter import (
     InterlisImporterExporter,
 )
 from teksi_wastewater.interlis.utils.ili2db import InterlisTools
+from teksi_wastewater.utils.database_utils import DatabaseUtils
 
 # Display logging in unittest output
 logger = logging.getLogger()
@@ -39,11 +40,11 @@ class TestInterlis(unittest.TestCase):
         )
 
     def setUp(self):
-        config.PGHOST = "db"
-        config.PGDATABASE = "tww"
-        config.PGUSER = "postgres"
-        config.PGPASS = "postgres"
-        config.PGPORT = str(PG_PORT)
+        DatabaseUtils.databaseConfig.PGHOST = "db"
+        DatabaseUtils.databaseConfig.PGDATABASE = "tww"
+        DatabaseUtils.databaseConfig.PGUSER = "postgres"
+        DatabaseUtils.databaseConfig.PGPASS = "postgres"
+        DatabaseUtils.databaseConfig.PGPORT = str(PG_PORT)
 
     def test_minimal_import_export(self):
         # Import organisation
