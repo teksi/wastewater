@@ -123,7 +123,7 @@ class InterlisImporterExporter:
             # Update the sequence values
             self._progress_done(92, "Update sequence values...")
             self._import_set_od_sequences()
-            
+
             # Update main_cover and main_wastewater_node
             self._progress_done(95, "Update main cover and refresh materialized views...")
             self._import_update_main_cover_and_refresh_mat_views()
