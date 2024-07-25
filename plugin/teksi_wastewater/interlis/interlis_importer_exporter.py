@@ -267,7 +267,7 @@ class InterlisImporterExporter:
         return interlisImporterToIntermediateSchema.session_tww
 
     def _import_set_od_sequences(self):
-         logger.info("Set Sequence values")
+        logger.info("Set Sequence values")
         DatabaseUtils.execute("SELECT tww_sys.reset_od_seqval();")
 
     def _import_manage_organisations(self):
