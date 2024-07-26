@@ -117,7 +117,7 @@ Exports include a validation step at the end using `ilivalidator`, which will in
 If the export was successful a green success message appears.
 If the export is not successfull you will get either error messages during the export process or an error warning at the end of the process.
 
-You can check the protocol window and the text logs for further details. 
+You can check the protocol window and the text logs for further details.
 
 There are four different log files:
 
