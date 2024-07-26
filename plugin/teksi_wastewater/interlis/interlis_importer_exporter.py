@@ -554,9 +554,9 @@ class InterlisImporterExporter:
                     )
                 else:
                     if parent_count > 0:
-                        errormsg = f"Too many subclass entries for {schema_name}.{parent_name}"
-                    else:
                         errormsg = f"Too few subclass entries for {schema_name}.{parent_name}"
+                    else:
+                        errormsg = f"Too many subclass entries for {schema_name}.{parent_name}"
                     logger.error(f"Subclass Count error: {errormsg}")
                     raise InterlisImporterExporterError(
                         "Subclass Count error",
