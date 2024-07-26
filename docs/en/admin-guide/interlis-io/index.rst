@@ -105,7 +105,29 @@ Then, confirm the dialog and choose where to save the `.xtf` file.
 
 .. note:: Note that remark fields are truncated to 80 characters on INTERLIS Export, as the INTERLIS definition is like this. If you have remark fields with more text then consider to move this data to documentation with the classes "file" and "data_media" so it can be exported to INTERLIS completely where you can add any document, photo or video to a class.
 
-Exports include a validation step using `ilivalidator`, which will inform you whether the export contains validation error.
+The following validations are run as pre-process:
+* Validate subclasses before export: check_subclass_counts
+
+.. note:: Currently you will only find an ERROR message in the tww procotol tab if this check fails:
+`2024-07-26T10:29:03        teksi_wastewater.utils:ERROR: number of subclass elements of structure_part NOT CORRECT in schema tww_od: checksum = 1 (positive number means missing entries, negative means too many subclass entries)`
+
+
+Exports include a validation step at the end using `ilivalidator`, which will inform you whether the export contains INTERLIS validation errors.
+
+If the export was successful a green success message appears.
+If the export is not successfull you will get either error messages during the export process or an error warning at the end of the process.
+
+You can check the protocol window and the text logs for further details. 
+
+There are four different log files:
+
+Export step | Description | Log File
+-------- | -------- | --------
+Export schema   | Creation of export schema with ili2db and the selected INTERLIS model file | *.ili2pg-schemaimport.log
+Data export intermediatary schema   | Export of data from tww_od to the new intermediary schema, translation from English to German | *.tww2ili-export.log
+Data export to xtf | Data export from intermediary schema to INTERLIS Transfer file (xtf)   | *.ili2pg-export-MODELNAME.log
+INTERLIS validation   | Validation of the created xtf file(s) with ilivalidator   | *.ilivalidator-DSS_2020_1_LV95.log
+
 
 
 INTERLIS Import
@@ -140,7 +162,7 @@ The right part of this dialog shows a form specific to the type of element selec
 
 Once you're happy with the import options, confirm the dialog to persist the changes to your database.
 
-If the import was successful a green confirmation message appears.
+If the import was successful a green success message appears.
 
 
 
