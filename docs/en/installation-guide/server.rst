@@ -11,11 +11,11 @@ Required Software
 Server installation
 ~~~~~~~~~~~~~~~~~~~
 
-* Install PostgreSQL (>=9.6)
+* Install PostgreSQL (>=12.0)
 
   * `Download page <http://www.postgresql.org/download>`_
 
-* Install PostGIS (>=2.4)
+* Install PostGIS (>=3.4.2)
 
   * E. g. by using the (Application) Stack Builder shipped with the EnterpriseDB version of posgreSQL on Windows and macOS
 

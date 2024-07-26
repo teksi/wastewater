@@ -95,7 +95,7 @@ Alternative: put your password directly into the ``pg_service.conf`` (on Windows
 Install QGIS
 ------------
 
-* Minimum requirement 3.4
+* Minimum requirement 3.34.8
 
 * We recommend using the latest master build (called qgis-dev on Windows)
   which often offers a better experience in combination with TWW.
@@ -107,7 +107,7 @@ Install TWW plugin
 
 Plugin requirements:
 
-- `networkx <https://pypi.org/project/networkx/>`_ >= 2.1
+- `networkx <https://pypi.org/project/networkx/>`_ >= 3.3
 
 You can install them on Debian based systems with::
 
@@ -148,22 +148,23 @@ TWW uses a data historization process. The ``pg history viewer`` `plugin <http:/
 Install the demo data
 ---------------------
 
-as described `here <https://tww.github.io/docs/installation-guide/database-initialization.html#restore-demo-datamodel>`_
+as described `here <https://tww.github.io/docs/installation-guide/database-initialization.html#restore-datamodel-demodata>`_
 
 Install the demo project
 ------------------------
 
-* Download from https://github.com/TWW/tww/releases/latest the tww.zip
+* Download from https://github.com/TWW/tww/releases the qgs project file and its translations
+project-translations.zip
 
 * Extract the file
 
-* If you leave the tww_[language].qm files in the same directory as the tww.qgs file and start QGIS with one of these languages, your tww-project will be translated to that langue when you start the project. E.g. you start tww.qgs with a QGIS Installation that is set to German, then the tww.qgs project will appear in German.
+* If you leave the teksi_wastewater_[language].qm files in the same directory as the teksi_wastewater.qgs file and start QGIS with one of these languages, your project will be translated to that langue when you start the project. E.g. you start teksi_wastewater.qgs with a QGIS Installation that is set to German, then the teksi_wastewater.qgs project will appear in German.
 
 .. note:: You need to explicitly set the language in QGIS in settings. If QGIS is configured to take the system language, the TWW translation is not loaded.
 
 .. figure:: images/tww_project_qm_language_files.jpg
 
-* Open `project/tww.qgs` with QGIS
+* Open `project-translations/teksi_wastewater.qgs` with QGIS
 * When you save that project it will keep it's language and it cannot be changed in the same way.
 
 
