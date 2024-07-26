@@ -531,7 +531,6 @@ class InterlisImporterExporter:
         )
 
     def _check_subclass_count(self, schema_name, parent_name, child_list):
-
         logger.info(f"INTEGRITY CHECK {parent_name} subclass data...")
         logger.info("CONNECTING TO DATABASE...")
 
@@ -554,9 +553,19 @@ class InterlisImporterExporter:
                         f"OK: number of subclass elements of class {parent_name} OK in schema {schema_name}!"
                     )
                 else:
+                    if parent_count > 0:
+                        errormsg = f'Too many subclass entries for {schema_name}.{parent_name}'
+                    else:
+                        errormsg = f'Too few subclass entries for {schema_name}.{parent_name}'
                     logger.error(
-                        f"ERROR: number of subclass elements of {parent_name} NOT CORRECT in schema {schema_name}: checksum = {parent_count} (positive number means missing entries, negative means too many subclass entries)"
+                        f"Subclass Count error: {errormsg}"
                     )
+                    raise InterlisImporterExporterError(
+                        "Subclass Count error",
+                        errormsg,
+                        None,
+                    )
+                    
 
     def _init_model_classes(self, model):
         ModelInterlis = ModelInterlisSia405Abwasser
