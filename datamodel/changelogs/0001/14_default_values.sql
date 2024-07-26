@@ -1,9 +1,12 @@
 CREATE TABLE tww_od.default_values
 (
-    fieldname text NOT NULL,
+    id serial,
+	fieldname text NOT NULL,
     value_obj_id varchar(16),
-    CONSTRAINT pkey_tww_sys_default_values_fieldname PRIMARY KEY (fieldname)
+    CONSTRAINT pkey_tww_sys_default_values_id PRIMARY KEY (id)
 );
+
+ CREATE UNIQUE INDEX in_od_default_values_fieldname ON tww_od.default_values USING btree (fieldname ASC NULLS LAST);
 
 -- function for retrieving default obj_id
 CREATE OR REPLACE FUNCTION tww_sys.get_default_values(field_name text)
@@ -39,7 +42,7 @@ BEGIN
 	LEFT JOIN information_schema.tables t
 	ON c.table_name = t.table_name
     and c.table_schema = t.table_schema
-    WHERE c.column_name IN ('fk_provider','fk_dataowner')
+    WHERE c.column_name IN ('fk_provider','fk_dataowner','fk_owner','fk_dataprovider ')
       and c.table_schema ='tww_od'
 	  and t.table_type = 'BASE TABLE'
     LOOP
