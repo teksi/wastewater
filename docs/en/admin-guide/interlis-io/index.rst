@@ -72,10 +72,15 @@ You should now see new `import` and `export` buttons in the TWW toolbar.
 
 .. figure:: images/toolbar.png
 
-Export
+INTERLIS Export
 -------------------------------------------------
 
-To export your TWW data, click on the `export` button. The following dialog will appear.
+.. figure:: images/tww_interlis_export_button.png
+
+To export your TWW data, click on the `INTERLIS export` button.
+
+
+The following dialog will appear.
 
 .. figure:: images/tww_interlis_export.png
 
@@ -100,20 +105,21 @@ Then, confirm the dialog and choose where to save the `.xtf` file.
 
 .. note:: Note that remark fields are truncated to 80 characters on INTERLIS Export, as the INTERLIS definition is like this. If you have remark fields with more text then consider to move this data to documentation with the classes "file" and "data_media" so it can be exported to INTERLIS completely where you can add any document, photo or video to a class.
 
-
 Exports include a validation step using `ilivalidator`, which will inform you whether the export contains validation error.
 
 
-Import
+INTERLIS Import
 -------------------------------------------------
 
-To import `xtf`files, click on the `import` button and navigate to the `.xtf` file.
+.. figure:: images/tww_interlis_import_button.png
+
+To import `xtf`files, click on the `INTERLIS import` button and navigate to the `.xtf` file.
 
 .. note:: Note that windows file pathes with empty strings in the directory path or filename are not supported at the moment.
 
-Organisations before data
+__Organisations before data !__
 
-.. note:: Starting with Release 2020 all organisations are in a separated dataset and need to be imported first, else a bunch of errors will be thrown on all references like fk_dataowner, fk_owner, fk_provider, etc. Download the VSA Organisation data set from https://www.vsa.ch/models/organisation/vsa_organisationen_2020_1.xtf and start with importing that data set. This data set is updated regularly - so please come back and check (and maybe re-import) at a later stage to have access to all available organisation.
+.. note:: Starting with release 2020 all organisations are in a separated dataset and need to be imported first, else a bunch of errors will be thrown on all references like fk_dataowner, fk_owner, fk_provider, etc. Download the VSA Organisation data set from https://www.vsa.ch/models/organisation/vsa_organisationen_2020_1.xtf and start with importing that data set. This data set is updated regularly - so please come back and check (and maybe re-import) at a later stage to have access to all available organisation.
 
 If you have organisations that are not yet in that data set `please inform the VSA and hand in an application to be added <https://vsa.ch/fachbereiche-cc/siedlungsentwaesserung/generelle-entwaesserungsplanung/datenmanagement/#Organisationstabelle>`_.
 
@@ -133,6 +139,9 @@ The right part of this dialog shows a form specific to the type of element selec
 .. note:: Special feature for TV Inspection import: For instance, it allows to attach "examinations" to their pipes.
 
 Once you're happy with the import options, confirm the dialog to persist the changes to your database.
+
+If the import was successful a green confirmation message appears.
+
 
 
 Usage (command line)
