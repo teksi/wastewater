@@ -219,11 +219,23 @@ The Feature Attributes window for the overflow characteristic appears:
 Setting default values
 -----------------------
 
-It is possible to define default values for repeated fields such as fk_provider or fk_dataowner.
+It is possible to define default values for repeated fields such as fk_provider or fk_dataowner. There is a new layer group 'configuration' in the project:
 
-1. Enter field name and value in the corresponding attributes in ``tww_od.default values``
+.. figure:: images/configuration_default_values
 
-2. Connect all occurences of your field name to ``tww_sys.get_default_values(field_name)``.
+1. Open the attribute table 'Default values'
+2. Change to edit mode and choose select new object
+3. Select field name (currently fk_dataowner and fk_provider are supported in the form)
+
+.. figure:: images/default_values_fieldname_selection.png
+
+4. Select organisation that should be used (the corresponding obj_id will be added in the table itself).
+
+.. figure:: images/default_values_organisation_obj_id_selection.png
+
+
+
+Connect all occurences of your field name to ``tww_sys.get_default_values(field_name)``.
 Per default, the fields ``fk_provider`` and ``fk_dataowner`` are already connected to the function ``tww_sys.get_default_values(field_name)``.
 An example SQL script how to insert the default value for all occurences of a field name can be found `here <https://github.com/teksi/wastewater/blob/main/datamodel/changelogs/0001/14_default_values.sql>`_)
 
