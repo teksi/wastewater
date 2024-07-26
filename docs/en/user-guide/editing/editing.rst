@@ -8,7 +8,7 @@ This represents a guide on how to edit existing data in TWW.
 Demo project
 ------------
 
-* Make sure you have imported the demo project with pgAdminIII (see the :ref:`database-initialization` chapter)
+* Make sure you have imported the demo project with pgAdmin (see the :ref:`database-initialization` chapter)
 * Open the demo project by going to the main menu and press **Project** --> **Open**  or by pressing ``CTRL``
   + ``O`` at the same time.
 
@@ -172,12 +172,6 @@ Adding additional covers and nodes to an existing wastewater structure
 
 .. figure:: images/new_cover_childpoint.jpg
 
-* The other way (before QGIS 3.16)
-* Start editing vw_cover and add the new cover
-* In the form you find behind the field fk_wastewater_structure a button to connect the new cover to an existing wastewater structure
-* After clicking this button, you get blue hint in the qgis-window. You can move the vw_cover - form-window and click on the wastewater_structure, that will be associated to the cover.
-
-.. figure:: images/new_cover_connect_to_wws.jpg
 
 Adding a wastewater node to an existing reach
 ---------------------------------------------
