@@ -196,11 +196,11 @@ class DatabaseUtils:
 
         defaults = []
         vals = []
-        for item in DatabaseUtils.fetchall(
+        for row in DatabaseUtils.fetchall(
             "SELECT fieldname,value_obj_id from tww_od.default_values;"
         ):
-            defaults.append(item["fieldname"])
-            vals.append(item["value_obj_id"])
+            defaults.append(item[0])
+            vals.append(item[1])
 
         msg_list = []
         if None in vals:
