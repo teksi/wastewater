@@ -111,6 +111,8 @@ To import `xtf`files, click on the `import` button and navigate to the `.xtf` fi
 
 .. note:: Note that windows file pathes with empty strings in the directory path or filename are not supported at the moment.
 
+Organisations before data
+
 .. note:: Starting with Release 2020 all organisations are in a separated dataset and need to be imported first, else a bunch of errors will be thrown on all references like fk_dataowner, fk_owner, fk_provider, etc. Download the VSA Organisation data set from https://www.vsa.ch/models/organisation/vsa_organisationen_2020_1.xtf and start with importing that data set. This data set is updated regularly - so please come back and check (and maybe re-import) at a later stage to have access to all available organisation.
 
 If you have organisations that are not yet in that data set `please inform the VSA and hand in an application to be added <https://vsa.ch/fachbereiche-cc/siedlungsentwaesserung/generelle-entwaesserungsplanung/datenmanagement/#Organisationstabelle>`_.
