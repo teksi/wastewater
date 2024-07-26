@@ -55,7 +55,7 @@ The same `--target` flag can be added to install `sqlalchemy` and `geoalchemy2` 
 
 TWW Version
 -------------
-The export only supports up-to-date TWW datamodel (2024.0 at the time of writing). Ensure your datamodel is fully updated before trying to import/export.
+The export only supports up-to-date TWW data model (2024.1 at the time of writing). Ensure your data model is fully updated before trying to import/export.
 
 
 Usage (GUI)
