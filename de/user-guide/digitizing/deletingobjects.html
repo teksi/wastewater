@@ -60,10 +60,10 @@
 <li class="toctree-l3"><a class="reference internal" href="digitizingdrainagechannel.html">3.2.4. Digitalisieren detaillierter Geometrie für Entwässerungsrinnen</a></li>
 <li class="toctree-l3"><a class="reference internal" href="digitizingchannels.html">3.2.5. Kanäle Digitalisieren</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">3.2.6. Objekte löschen</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#delete-reach">3.2.6.1. Delete Reach</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#delete-manhole-or-other-wastewater-structure">3.2.6.2. Delete Manhole or other Wastewater Structure</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#delete-wastewater-structure-but-keep-the-wastewater-node-and-the-connections-to-the-wastewater-node">3.2.6.3. Delete Wastewater Structure, but keep the wastewater_node and the connections to the wastewater_node</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#delete-cover">3.2.6.4. Delete Cover</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#delete-reach">3.2.6.1. Haltung löschen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#delete-manhole-or-other-wastewater-structure">3.2.6.2. Normschacht oder anderes Abwasserbauwerk löschen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#delete-wastewater-structure-but-keep-the-wastewater-node-and-the-connections-to-the-wastewater-node">3.2.6.3. Lösche ein Abwasserbauwerk, aber behalte den Abwasserknoten und die Verknüpfungen auf diesen Abwasserknoten</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#delete-cover">3.2.6.4. Deckel löschen</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#delete-structure-parts">3.2.6.5. Bauwerksteile löschen</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#delete-detailed-geometries">3.2.6.6. Detailgeometrie löschen</a></li>
 </ul>
@@ -117,7 +117,7 @@
 <h1><span class="section-number">3.2.6. </span>Objekte löschen<a class="headerlink" href="#deleting-objects" title="Link to this heading"></a></h1>
 <p>Sie können Punkt- oder Linienobjekte (mit allen verknüpften Objekten) mit den <strong>vw_tww_(Abwasserbauwerk/Haltung)</strong> Layern löschen. Sie können auch nur ein spezifisches Objekt auswählen und löschen (z.B. einen Deckel).</p>
 <section id="delete-reach">
-<h2><span class="section-number">3.2.6.1. </span>Delete Reach<a class="headerlink" href="#delete-reach" title="Link to this heading"></a></h2>
+<h2><span class="section-number">3.2.6.1. </span>Haltung löschen<a class="headerlink" href="#delete-reach" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Wählen Sie <strong>vw_tww_Haltung</strong> und wechseln Sie zum Bearbeitungsmodus.</p></li>
 <li><p>Wählen Sie die Haltung(en), die Sie löschen möchten, z.B. mit Einzelklick oder mit einem Auswahlwerkzeug.</p></li>
@@ -147,11 +147,11 @@
 </figure>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>Delete reach deletes also all connected structure parts (e.g. dryweather_downspout). The connected channel is only deleted if there is no other wastewater networkelement connected to the channel. If there are two reaches connected to one channel, the channel is only deleted if both reaches are deleted.</p>
+<p>Das Löschen von Haltung entfernt ebenfalls alle verbundenen Bauwerkteile (z.B. Trockenwetterfallrohre). Der verknüpfte Kanal wird nur gelöscht, falls kein weiteres Abwassernetzelement verbunden ist. Wenn zwei Haltungen mit einen Kanal verknüpft sind, wird der Kanal nur gelöscht, wenn beide Haltungen entfernt wurden.</p>
 </div>
 </section>
 <section id="delete-manhole-or-other-wastewater-structure">
-<h2><span class="section-number">3.2.6.2. </span>Delete Manhole or other Wastewater Structure<a class="headerlink" href="#delete-manhole-or-other-wastewater-structure" title="Link to this heading"></a></h2>
+<h2><span class="section-number">3.2.6.2. </span>Normschacht oder anderes Abwasserbauwerk löschen<a class="headerlink" href="#delete-manhole-or-other-wastewater-structure" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Wählen Sie <strong>vw_tww_Abwasserbauwerk</strong> und wechseln Sie zum Bearbeitungsmodus.</p></li>
 <li><p>Wählen Sie das Schachtobjekt aus, welches Sie löschen möchten</p></li>
@@ -160,28 +160,28 @@
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>Delete wastewater structures deletes also all connected structure parts (cover, access_aid etc) and all connected wastewater nodes. fk_wastewater_networkelement in reachpoints, that where connected to the node, are set to NULL.</p>
+<p>Das Löschen von Schachtbauwerken entfernt ebenfalls alle verbundenen Bauwerkteile (z.B. Deckel, Einstiegshilfen etc.) und alle verknüpften Abwasserknoten. Fremdschlüssel FS_Abwassernetzelement in Haltungspunkten, die mit einem solchen Abwasserknoten verknüpft waren, werden NULL gesetzt.</p>
 </div>
 </section>
 <section id="delete-wastewater-structure-but-keep-the-wastewater-node-and-the-connections-to-the-wastewater-node">
-<h2><span class="section-number">3.2.6.3. </span>Delete Wastewater Structure, but keep the wastewater_node and the connections to the wastewater_node<a class="headerlink" href="#delete-wastewater-structure-but-keep-the-wastewater-node-and-the-connections-to-the-wastewater-node" title="Link to this heading"></a></h2>
-<p>First, you have to kill the connection between wastewater_node and wastewater_structure. Because the fk_wastewater_structure field is not visible in the wastewater_node feature attribut window (this field make no sense in other cases, where the form is also used), you have to follow this way:</p>
+<h2><span class="section-number">3.2.6.3. </span>Lösche ein Abwasserbauwerk, aber behalte den Abwasserknoten und die Verknüpfungen auf diesen Abwasserknoten<a class="headerlink" href="#delete-wastewater-structure-but-keep-the-wastewater-node-and-the-connections-to-the-wastewater-node" title="Link to this heading"></a></h2>
+<p>Zuerst muss die Verknüpfung zwischen Abwasserbauwerk und Abwasserknoten gelöscht werden. Weil das Feld FS_Abwasserbauwerk im Abwasserknoten Objekt Attribut Fenster nicht sichtbar ist (dieses Feld würde in anderen Fällen, wo dieses Formular ebenfalls eingesetzt wird, keinen Sinn machen), muss folgendes Vorgehen gewählt werden:</p>
 <ul class="simple">
 <li><p>Wählen Sie <strong>vw_tww_Abwasserbauwerk</strong> und wechseln Sie zum Bearbeitungsmodus.</p></li>
-<li><p>Use the <strong>Identify Features</strong> tool to open the form of the manhole you want to delete</p></li>
-<li><p>Switch to Wastewater Nodes tab</p></li>
-<li><p>Select the Node, that should not be deleted</p></li>
-<li><p>Use the button <strong>Unlink selected child record(s)</strong></p></li>
+<li><p>Benutze das Werkzeug <strong>Objekte abfragen</strong>, um das Formular des zu löschenden Schachtes zu öffnen</p></li>
+<li><p>Wechseln zum Reiter „Abwasserknoten“</p></li>
+<li><p>Wähle den(die) Abwasserknoten, welche nicht gelöscht werden sollen</p></li>
+<li><p>Klicke den Knopf <strong>Gewählte(s) Kindobjekt(e) lösen</strong></p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/unlink_childe.jpg" src="../../_images/unlink_childe.jpg" />
 </figure>
 <ul class="simple">
-<li><p>Click <strong>OK</strong> and close the form window</p></li>
+<li><p><strong>OK</strong> klicken um das Formular zu schliessen.</p></li>
 </ul>
-<p>The wastewater node is no no more part of the wastewater_structure</p>
+<p>Der Abwasserknoten ist jetzt nicht mehr Teil des Abwasserbauwerks</p>
 <ul class="simple">
-<li><p>Select the object (<strong>manhole</strong>, <strong>special structure</strong> etc.) you want to delete</p></li>
+<li><p>Wählen Sie das Schachtobjekt aus, welches Sie löschen möchten</p></li>
 <li><p>Zum löschen benutzen Sie <strong>Bearbeiten</strong> –&gt;**Ausgewähltes löschen** .</p></li>
 <li><p>Beenden Sie den Bearbeitungsmodus und bestätigen Sie die Änderungen an den Layern. Alle Änderungen werden in der Datenbank gespeichert.</p></li>
 </ul>
@@ -190,14 +190,14 @@
 </figure>
 </section>
 <section id="delete-cover">
-<h2><span class="section-number">3.2.6.4. </span>Delete Cover<a class="headerlink" href="#delete-cover" title="Link to this heading"></a></h2>
+<h2><span class="section-number">3.2.6.4. </span>Deckel löschen<a class="headerlink" href="#delete-cover" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Wählen Sie <strong>vw_tww_Abwasserbauwerk</strong> und wechseln Sie zum Bearbeitungsmodus.</p></li>
-<li><p>Select the object (<strong>manholes</strong>, <strong>special structures</strong> etc.) from which the cover is to be deleted</p></li>
+<li><p>Wählen Sie das Schachtobjekt aus, von welchem Sie den/einen Deckel löschen möchten.</p></li>
 <li><p>Benutzen Sie das Werkzeug <strong>Objekte abfragen</strong>, um das Formular zu öffnen</p></li>
 <li><p>Wechseln Sie zum Deckel -Reiter</p></li>
 <li><p>Wählen Sie den(die) Deckel, welche Sie löschen möchten</p></li>
-<li><p>Click the button <strong>delete selected child features</strong> to delete the covers</p></li>
+<li><p>Klicke den Knopf <strong>Gewählte(s) Kindobjekt(e) löschen</strong> um den/die Deckel zu löschen</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/delete_covers.jpg" src="../../_images/delete_covers.jpg" />
@@ -206,19 +206,19 @@
 <li><p>Klicken Sie im Formular auf Speichern</p></li>
 <li><p>Deaktivieren Sie den Bearbeitungsmodus und bestätigen Sie die Änderungen an den Layern. Alle Änderungen werden in der Datenbank gespeichert.</p></li>
 </ul>
-<p>Second way to delete a cover</p>
+<p>Zweiter Weg um einen Deckel zu löschen</p>
 <ul class="simple">
-<li><p>Select the <strong>vw_cover</strong> layer and change to edit mode</p></li>
-<li><p>Select the cover</p></li>
-<li><p>Use <strong>Edit</strong> –&gt; <strong>Delete Selected</strong></p></li>
-<li><p>Stop the editing mode</p></li>
+<li><p>Wähle den Layer <strong>vw_cover</strong> und aktiviere den Bearbeitungsmodus</p></li>
+<li><p>Deckel auswählen</p></li>
+<li><p>Benutzen Sie <strong>Bearbeiten</strong> –&gt;**Ausgewähltes löschen** .</p></li>
+<li><p>Den Editiermodus beenden</p></li>
 </ul>
 </section>
 <section id="delete-structure-parts">
 <h2><span class="section-number">3.2.6.5. </span>Bauwerksteile löschen<a class="headerlink" href="#delete-structure-parts" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Wählen Sie <strong>vw_tww_Abwasserbauwerk</strong> und wechseln Sie zum Bearbeitungsmodus.</p></li>
-<li><p>Select the object (<strong>manholes</strong>, <strong>special structures</strong> etc.) from which a structure part is to be deleted</p></li>
+<li><p>Wählen Sie das Schachtobjekt aus, von welchem Sie Bauwerksteile löschen möchten.</p></li>
 <li><p>Benutzen Sie das Werkzeug <strong>Objekte abfragen</strong>, um das Formular zu öffnen</p></li>
 <li><p>Wechseln Sie zum Reiter „Bauwerksteile“</p></li>
 <li><p>Wählen Sie die Bauwerksteile, welche Sie löschen möchten</p></li>
@@ -231,17 +231,17 @@
 <h2><span class="section-number">3.2.6.6. </span>Detailgeometrie löschen<a class="headerlink" href="#delete-detailed-geometries" title="Link to this heading"></a></h2>
 <div class="admonition attention">
 <p class="admonition-title">Achtung</p>
-<p>Deleting features directly from <strong>wastewater_structure</strong> (layergroup Wastewater Structures) will remove the complete wastewater structure from the database and not only the geometry of the wastewater structure!</p>
+<p>Wenn ein Objekt im Layer <strong>Abwasserbauwerk</strong> (Layergruppe Abwasserbauwerk) gelöscht wird, wird das ganze Abwasserbauwerk mit den zugehörigen Datensätzen in der Datenbank gelöscht und nicht nur die Detailgeometrie des Bauwerks!</p>
 </div>
 <ul class="simple">
-<li><p>Select layer <strong>wastewater_structure</strong> and change to edit mode</p></li>
-<li><p>Activate the <strong>Delete part</strong> tool from the Advanced digitizing toolbar</p></li>
+<li><p>Wähle <strong>Abwasserbauwerke</strong> (nicht vw_tww_Abwasserbauwerke) und wechsle in den Bearbeitungsmodus</p></li>
+<li><p>Benutze das <strong>Teil löschen</strong> Tool aus der <strong>Erweiterte Digitalisierungswerkzeugleiste</strong></p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/delete_part_tool.jpg" src="../../_images/delete_part_tool.jpg" />
 </figure>
 <ul class="simple">
-<li><p>You get a cross-cursor. Click on the part you want to delete (there is no question if you really want… If you click, the part is deleted!)</p></li>
+<li><p>Es erscheint der Kreuz-Cursor. Klicke auf das Teil, das gelöscht werden soll (es gibt keine Rückfrage ‚wollen sie wirklich…‘ mit einem Click ist der angeklickte Teil gelöscht!)</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/delete_part_tool2.jpg" src="../../_images/delete_part_tool2.jpg" />

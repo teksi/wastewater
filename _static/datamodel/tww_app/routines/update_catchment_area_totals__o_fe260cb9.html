@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>tww.tww_app</title>
+        <!-- Tell the browser to be responsive to screen width -->
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        <link rel="icon" type="image/png" sizes="16x16" href="../favicon.png">
+        <!-- Bootstrap 3.3.5 -->
+        <link rel="stylesheet" href="../bower/admin-lte/bootstrap/css/bootstrap.min.css">
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="../bower/font-awesome/css/font-awesome.min.css">
+        <!-- Ionicons -->
+        <link rel="stylesheet" href="../bower/ionicons/css/ionicons.min.css">
+        <!-- DataTables -->
+        <link rel="stylesheet" href="../bower/datatables.net-bs/css/dataTables.bootstrap.min.css">
+        <link rel="stylesheet" href="../bower/datatables.net-buttons-bs/css/buttons.bootstrap.min.css">
+        <!-- Code Mirror -->
+        <link rel="stylesheet" href="../bower/codemirror/codemirror.css">
+        <!-- Fonts -->
+        <link href='../fonts/indieflower/indie-flower.css' rel='stylesheet' type='text/css'>
+        <link href='../fonts/source-sans-pro/source-sans-pro.css' rel='stylesheet' type='text/css'>
+
+        <!-- Theme style -->
+        <link rel="stylesheet" href="../bower/admin-lte/dist/css/AdminLTE.min.css">
+        <!-- Salvattore -->
+        <link rel="stylesheet" href="../bower/salvattore/salvattore.css">
+        <!-- AdminLTE Skins. Choose a skin from the css/skins
+           folder instead of downloading all of them to reduce the load. -->
+        <link rel="stylesheet" href="../bower/admin-lte/dist/css/skins/_all-skins.min.css">
+        <!-- SchemaSpy -->
+        <link rel="stylesheet" href="../schemaSpy.css">
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="../bower/html5shiv/html5shiv.min.js"></script>
+        <script src="../bower/respond/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <!-- ADD THE CLASS layout-top-nav TO REMOVE THE SIDEBAR. -->
+    <body class="hold-transition skin-blue layout-top-nav">
+        <div class="wrapper">
+            <header class="main-header">
+                <nav class="navbar navbar-static-top">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <a href="../../index.html" class="navbar-brand"><b>tww</b></a><span class="navbar-brand" style="padding-left: 0">.tww_app</span>
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse"><i class="fa fa-bars"></i></button>
+                        </div>
+
+                        <!-- Collect the nav links, forms, and other content for toggling -->
+                        <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
+                            <ul class="nav navbar-nav">
+                                <li><a href="../index.html">Tables <span class="sr-only">(current)</span></a></li>
+                                <li><a href="../columns.html" title="All of the columns in the schema">Columns</a></li>
+                                <li><a href="../constraints.html" title="Useful for diagnosing error messages that just give constraint name or number">Constraints</a></li>
+                                <li><a href="../relationships.html" title="Diagram of table relationships">Relationships</a></li>
+                                <li><a href="../orphans.html" title="View of tables with neither parents nor children">Orphan&nbsp;Tables</a></li>
+                                <li><a href="../anomalies.html" title="Things that might not be quite right">Anomalies</a></li>
+                                <li><a href="../routines.html" title="Procedures and functions">Routines</a></li>
+                            </ul>
+                        </div>
+                        <!-- /.navbar-collapse -->
+                        <!-- Navbar Right Menu -->
+                    </div>
+                    <!-- /.container-fluid -->
+                </nav>
+            </header>
+            <!-- Main content -->
+            <!-- Full Width Column -->
+            <div class="content-wrapper">
+                <!-- Content Header (Page header) -->
+                <section class="content-header">
+                    <h1>update_catchment_area_totals(_obj_id text, _all boolean DEFAULT false)</h1><br />
+                </section>
+                <!-- Main content -->
+                <section class="content">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+                            <h3 id="Columns" class="box-title">Parameters</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <table id="standard_table" class="table table-bordered table-striped dataTable" role="grid">
+                                <thead align='left'>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Mode</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>_obj_id</td>
+                                    <td>text</td>
+                                    <td>IN</td>
+                                </tr>
+                                <tr>
+                                    <td>_all</td>
+                                    <td>boolean</td>
+                                    <td>IN</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <i class="fa fa-file-code-o"></i>
+                            <h3 id="RoutineDefinition" class="box-title">Definition</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <textarea id="sql-script-codemirror" name="sql-script-codemirror" rows="" style="display: none;">BEGIN&#10;&#10;REFRESH MATERIALIZED VIEW tww_app.vw_catchment_area_totals_aggregated WITH DATA;&#10;&#10;WITH ca AS (&#10;&#9;SELECT obj_id&#10;&#9;&#9;&#9;, fk_special_building_ww_current AS fk_log_card&#10;&#9;&#9;&#9;, surface_area AS f_current&#10;&#9;&#9;&#9;, discharge_coefficient_ww_current/100*surface_area AS fred_current&#10;&#9;&#9;&#9;, seal_factor_ww_current/100*surface_area AS fimp_current&#10;&#9;&#9;&#9;, population_density_current*surface_area AS pop_current&#10;--&#9;&#9;&#9;, sewer_infiltration_water_production_current AS q_inf_current&#10;--&#9;&#9;&#9;, waste_water_production_current AS q_ww_current&#10;&#10;&#9;&#9;&#9;, NULL::numeric AS f_dim&#10;&#9;&#9;&#9;, NULL::numeric AS fred_dim&#10;&#9;&#9;&#9;, NULL::numeric AS fimp_dim&#10;&#9;&#9;&#9;, NULL::numeric AS pop_dim&#10;--&#9;&#9;&#9;, NULL::numeric AS q_inf_dim&#10;--&#9;&#9;&#9;, NULL::numeric AS q_ww_dim&#10;&#9;&#9;FROM tww_od.catchment_area&#10;&#9;&#9;WHERE catchment_area.fk_special_building_ww_current IS NOT NULL&#10;&#9;UNION&#10;&#9;&#9;SELECT obj_id&#10;&#9;&#9;&#9;, fk_special_building_rw_current AS fk_log_card&#10;&#9;&#9;&#9;, CASE&#10;&#9;&#9;&#9;&#9;WHEN fk_special_building_ww_current &#61; fk_special_building_rw_current&#10;&#9;&#9;&#9;&#9;THEN 0&#10;&#9;&#9;&#9;&#9;else surface_area&#10;&#9;&#9;&#9;  END AS f_current&#10;&#9;&#9;&#9;, discharge_coefficient_rw_current/100*surface_area AS fred_current&#10;&#9;&#9;&#9;, seal_factor_rw_current/100*surface_area AS fimp_current&#10;&#9;&#9;&#9;, NULL::numeric AS pop_current&#10;--&#9;&#9;&#9;, NULL::numeric AS q_inf_current&#10;--&#9;&#9;&#9;, NULL::numeric AS q_ww_current&#10;&#10;&#9;&#9;&#9;, NULL::numeric AS f_dim&#10;&#9;&#9;&#9;, NULL::numeric AS fred_dim&#10;&#9;&#9;&#9;, NULL::numeric AS fimp_dim&#10;&#9;&#9;&#9;, NULL::numeric AS pop_dim&#10;--&#9;&#9;&#9;, NULL::numeric AS q_inf_dim&#10;--&#9;&#9;&#9;, NULL::numeric AS q_ww_dim&#10;&#9;&#9;FROM tww_od.catchment_area&#10;&#9;&#9;WHERE catchment_area.fk_special_building_rw_current IS NOT NULL&#10;&#9;UNION&#10;&#9;&#9;SELECT obj_id&#10;&#9;&#9;&#9;, fk_special_building_ww_planned AS fk_log_card&#10;&#9;&#9;&#9;, NULL::numeric AS f_current&#10;&#9;&#9;&#9;, NULL::numeric AS fred_current&#10;&#9;&#9;&#9;, NULL::numeric AS fimp_current&#10;&#9;&#9;&#9;, NULL::numeric AS pop_current&#10;--&#9;&#9;&#9;, NULL::numeric AS q_inf_current&#10;--&#9;&#9;&#9;, NULL::numeric AS q_ww_current&#10;&#10;&#9;&#9;&#9;, surface_area AS f_dim&#10;&#9;&#9;&#9;, discharge_coefficient_ww_planned/100*surface_area AS fred_dim&#10;&#9;&#9;&#9;, seal_factor_ww_planned/100*surface_area AS fimp_dim&#10;&#9;&#9;&#9;, population_density_planned*surface_area AS pop_dim&#10;--&#9;&#9;&#9;, sewer_infiltration_water_production_planned AS q_inf_dim&#10;--&#9;&#9;&#9;, waste_water_production_planned AS q_ww_dim&#10;&#9;&#9;FROM tww_od.catchment_area&#10;&#9;&#9;WHERE catchment_area.fk_special_building_ww_planned IS NOT NULL&#10;&#9;UNION&#10;&#9;&#9;SELECT obj_id&#10;&#9;&#9;&#9;, fk_special_building_rw_planned AS fk_log_card&#10;&#9;&#9;&#9;, NULL::numeric AS f_current&#10;&#9;&#9;&#9;, NULL::numeric AS fred_current&#10;&#9;&#9;&#9;, NULL::numeric AS fimp_current&#10;&#9;&#9;&#9;, NULL::numeric AS pop_current&#10;--&#9;&#9;&#9;, NULL::numeric AS q_inf_current&#10;--&#9;&#9;&#9;, NULL::numeric AS q_ww_current&#10;&#10;&#9;&#9;&#9;, CASE&#10;&#9;&#9;&#9;&#9;WHEN fk_special_building_ww_planned &#61; fk_special_building_rw_planned&#10;&#9;&#9;&#9;&#9;THEN 0&#10;&#9;&#9;&#9;&#9;else surface_area&#10;&#9;&#9;&#9;  END AS f_dim&#10;&#9;&#9;&#9;, discharge_coefficient_rw_planned/100*surface_area AS fred_dim&#10;&#9;&#9;&#9;, seal_factor_rw_current/100*surface_area AS fimp_dim&#10;&#9;&#9;&#9;, NULL::numeric AS pop_dim&#10;--&#9;&#9;&#9;, NULL::numeric AS q_inf_dim&#10;--&#9;&#9;&#9;, NULL::numeric AS q_ww_dim&#10;&#9;&#9;FROM tww_od.catchment_area&#10;&#9;&#9;WHERE catchment_area.fk_special_building_rw_planned IS NOT NULL&#10;    )&#10;UPDATE tww_od.catchment_area_totals cat&#10;SET&#10;&#10;&#9;  population &#61; ca_agg.pop_current&#10;&#9;, population_dim &#61; ca_agg.pop_dim&#10;&#9;, sewer_infiltration_water &#61; ca_agg.q_inf_current&#10;&#9;, surface_area &#61; ca_agg.f_current&#10;&#9;, surface_dim &#61; ca_agg.f_dim&#10;&#9;, surface_red &#61; ca_agg.fred_current&#10;&#9;, surface_red_dim &#61; ca_agg.fred_dim&#10;&#9;, surface_imp &#61; ca_agg.fimp_current&#10;&#9;, surface_imp_dim &#61; ca_agg.fimp_dim&#10;&#9;, waste_water_production &#61; ca_agg.q_ww_current&#10;&#9;--, ag96_sewer_infiltration_water_dim &#61; ca_agg.q_inf_dim&#10;&#9;--, ag96_waste_water_production_dim &#61; ca_agg.q_ww_dim&#10;FROM&#10;( SELECT cat.obj_id&#10;&#9;, SUM(f_current) as f_current&#10;&#9;, SUM(fred_current) as fred_current&#10;&#9;, SUM(fimp_current) as fimp_current&#10;&#9;, SUM(pop_current) as pop_current&#10;&#9;, aggr.sewer_infiltration_water as q_inf_current&#10;&#9;, aggr.waste_water_production as  q_ww_current&#10;&#10;&#9;, SUM(f_dim) as f_dim&#10;&#9;, SUM(fred_dim) as fred_dim&#10;&#9;, SUM(fimp_dim) as fimp_dim&#10;&#9;, SUM(pop_dim) as pop_dim&#10;&#9;, aggr.sewer_infiltration_water_dim as q_inf_dim&#10;&#9;, aggr.waste_water_production_dim as q_ww_dim&#10;   FROM ca&#10;&#9; LEFT JOIN tww_od.log_card lc_1 ON ca.fk_log_card::text &#61; lc_1.obj_id::text&#10;&#9; LEFT JOIN tww_od.log_card main_lc ON main_lc.obj_id::text &#61; lc_1.fk_main_structure::text&#10;     LEFT JOIN tww_od.wastewater_node wn ON main_lc.fk_pwwf_wastewater_node::text &#61; wn.obj_id::text&#10;     LEFT JOIN tww_od.hydraulic_char_data hcd ON hcd.fk_wastewater_node::text &#61; wn.obj_id::text AND hcd.status &#61; 6372&#10;&#9;LEFT JOIN tww_od.catchment_area_totals cat ON hcd.obj_id::text &#61; cat.fk_hydraulic_char_data::text&#10;&#9;LEFT JOIN tww_app.vw_catchment_area_totals_aggregated aggr ON aggr.obj_id &#61; cat.obj_id&#10;  GROUP BY cat.obj_id&#10;  , aggr.sewer_infiltration_water&#10;  , aggr.waste_water_production&#10;  , aggr.sewer_infiltration_water_dim&#10;  , aggr.waste_water_production_dim)ca_agg&#10;WHERE cat.obj_id&#61;ca_agg.obj_id&#10;;&#10;&#10;END</textarea>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <!-- /.content-wrapper -->
+            <footer class="main-footer">
+                <div>
+                    <div class="pull-right hidden-xs">
+                        <a href="https://github.com/schemaspy/schemaspy" title="GitHub for SchemaSpy"><i class="fa fa-github-square fa-2x"></i></a>
+                        <a href="http://stackoverflow.com/questions/tagged/schemaspy" title="StackOverflow for SchemaSpy"><i class="fa fa-stack-overflow fa-2x"></i></a>
+                    </div>
+                    <strong>Generated by <a href="http://schemaspy.org/" class="logo-text"><i class="fa fa-database"></i> SchemaSpy 6.2.4</a></strong>
+                </div>
+                <!-- /.container -->
+            </footer>
+        </div>
+        <!-- ./wrapper -->
+
+        <!-- jQuery 2.2.3 -->
+        <script src="../bower/admin-lte/plugins/jQuery/jquery-2.2.3.min.js"></script>
+        <script src="../bower/admin-lte/plugins/jQueryUI/jquery-ui.min.js"></script>
+        <!-- Bootstrap 3.3.5 -->
+        <script src="../bower/admin-lte/bootstrap/js/bootstrap.min.js"></script>
+        <!-- DataTables -->
+        <script src="../bower/datatables.net/jquery.dataTables.min.js"></script>
+        <script src="../bower/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+        <script src="../bower/datatables.net-buttons/dataTables.buttons.min.js"></script>
+        <script src="../bower/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+        <script src="../bower/datatables.net-buttons/buttons.html5.min.js"></script>
+        <script src="../bower/datatables.net-buttons/buttons.print.min.js"></script>
+        <script src="../bower/datatables.net-buttons/buttons.colVis.min.js"></script>
+        <!-- SheetJS -->
+        <script src="../bower/js-xlsx/xlsx.full.min.js"></script>
+        <!-- pdfmake -->
+        <script src="../bower/pdfmake/pdfmake.min.js"></script>
+        <script src="../bower/pdfmake/vfs_fonts.js"></script>
+        <!-- SlimScroll -->
+        <script src="../bower/admin-lte/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+        <!-- FastClick -->
+        <script src="../bower/admin-lte/plugins/fastclick/fastclick.js"></script>
+        <!-- Salvattore -->
+        <script src="../bower/salvattore/salvattore.min.js"></script>
+        <!-- AnchorJS -->
+        <script src="../bower/anchor-js/anchor.min.js"></script>
+        <!-- CodeMirror -->
+        <script src="../bower/codemirror/codemirror.js"></script>
+        <script src="../bower/codemirror/sql.js"></script>
+        <!-- AdminLTE App -->
+        <script src="../bower/admin-lte/dist/js/app.min.js"></script>
+        <script src="routine.js"></script>
+        <script src="../schemaSpy.js"></script>
+    </body>
+</html>

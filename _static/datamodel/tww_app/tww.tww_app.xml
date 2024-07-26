@@ -510,6 +510,21 @@
          <column autoUpdated="false" defaultValue="null" digits="17" id="2" name="length_rw_planned" nullable="true" remarks="" size="17" type="float8" typeCode="8"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="node_rw_planned_obj_id" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
       </table>
+      <table name="vw_catchment_area_totals_aggregated" numRows="0" remarks="" schema="tww_app" type="VIEW" viewSql=" SELECT ca_tot.obj_id,&#10;    (round(ca_agg.population))::integer AS population,&#10;    ca_agg.surface_area,&#10;    ca_agg.surface_imp,&#10;    ca_agg.surface_red,&#10;    ca_agg.sewer_infiltration_water,&#10;    ca_agg.waste_water_production,&#10;    (round(ca_agg.population_dim))::integer AS population_dim,&#10;    ca_agg.surface_dim,&#10;    ca_agg.surface_imp_dim,&#10;    ca_agg.surface_red_dim,&#10;    ca_agg.sewer_infiltration_water_dim,&#10;    ca_agg.waste_water_production_dim&#10;   FROM (((tww_od.catchment_area_totals ca_tot&#10;     LEFT JOIN tww_od.hydraulic_char_data hcd ON (((hcd.obj_id)::text = (ca_tot.fk_hydraulic_char_data)::text)))&#10;     LEFT JOIN tww_od.wastewater_node wn ON (((hcd.fk_wastewater_node)::text = (wn.obj_id)::text)))&#10;     LEFT JOIN ( WITH RECURSIVE log_card_tree AS (&#10;                 SELECT log_card.obj_id,&#10;                    log_card.fk_next_special_building,&#10;                    ARRAY[(log_card.obj_id)::character varying] AS log_card_path&#10;                   FROM tww_od.log_card&#10;                  WHERE (log_card.fk_next_special_building IS NULL)&#10;                UNION ALL&#10;                 SELECT lc_1.obj_id,&#10;                    lc_1.fk_next_special_building,&#10;                    (lt.log_card_path || lc_1.obj_id)&#10;                   FROM (tww_od.log_card lc_1&#10;                     JOIN log_card_tree lt ON (((lc_1.fk_next_special_building)::text = (lt.obj_id)::text)))&#10;                ), log_card_agg AS (&#10;                 SELECT log_card_tree.obj_id AS child,&#10;                    unnest(log_card_tree.log_card_path) AS parent&#10;                   FROM log_card_tree&#10;                ), ca AS (&#10;                 SELECT catchment_area.obj_id,&#10;                    catchment_area.fk_special_building_ww_current AS fk_log_card,&#10;                    ((catchment_area.population_density_current)::numeric * catchment_area.surface_area) AS population,&#10;                    catchment_area.surface_area,&#10;                    ((catchment_area.surface_area * catchment_area.seal_factor_ww_current) / (100)::numeric) AS surface_imp,&#10;                    ((catchment_area.surface_area * catchment_area.discharge_coefficient_ww_current) / (100)::numeric) AS surface_red,&#10;                    catchment_area.sewer_infiltration_water_production_current AS sewer_infiltration_water,&#10;                    catchment_area.waste_water_production_current AS waste_water_production,&#10;                    0 AS population_dim,&#10;                    0 AS surface_dim,&#10;                    0 AS surface_imp_dim,&#10;                    0 AS surface_red_dim,&#10;                    0 AS sewer_infiltration_water_dim,&#10;                    0 AS waste_water_production_dim&#10;                   FROM tww_od.catchment_area&#10;                  WHERE (catchment_area.fk_special_building_ww_current IS NOT NULL)&#10;                UNION ALL&#10;                 SELECT catchment_area.obj_id,&#10;                    catchment_area.fk_special_building_rw_current AS fk_log_card,&#10;                    0 AS population,&#10;                        CASE&#10;                            WHEN ((catchment_area.fk_special_building_rw_current)::text = (catchment_area.fk_special_building_ww_current)::text) THEN (0)::numeric&#10;                            ELSE catchment_area.surface_area&#10;                        END AS surface_area,&#10;                    ((catchment_area.surface_area * catchment_area.seal_factor_rw_current) / (100)::numeric) AS surface_imp,&#10;                    ((catchment_area.surface_area * catchment_area.discharge_coefficient_rw_current) / (100)::numeric) AS surface_red,&#10;                    0 AS sewer_infiltration_water,&#10;                    0 AS waste_water_production,&#10;                    0 AS population_dim,&#10;                    0 AS surface_dim,&#10;                    0 AS surface_imp_dim,&#10;                    0 AS surface_red_dim,&#10;                    0 AS sewer_infiltration_water_dim,&#10;                    0 AS waste_water_production_dim&#10;                   FROM tww_od.catchment_area&#10;                  WHERE (catchment_area.fk_special_building_rw_current IS NOT NULL)&#10;                UNION ALL&#10;                 SELECT catchment_area.obj_id,&#10;                    catchment_area.fk_special_building_ww_planned AS fk_log_card,&#10;                    0 AS population,&#10;                    0 AS surface_area,&#10;                    0 AS surface_imp,&#10;                    0 AS surface_red,&#10;                    0 AS sewer_infiltration_water,&#10;                    0 AS waste_water_production,&#10;                    ((catchment_area.population_density_planned)::numeric * catchment_area.surface_area) AS population_dim,&#10;                    catchment_area.surface_area AS surface_dim,&#10;                    ((catchment_area.surface_area * catchment_area.seal_factor_ww_planned) / (100)::numeric) AS surface_imp_dim,&#10;                    ((catchment_area.surface_area * catchment_area.discharge_coefficient_ww_planned) / (100)::numeric) AS surface_red_dim,&#10;                    0 AS sewer_infiltration_water_dim,&#10;                    0 AS waste_water_production_dim&#10;                   FROM tww_od.catchment_area&#10;                  WHERE (catchment_area.fk_special_building_ww_planned IS NOT NULL)&#10;                UNION ALL&#10;                 SELECT catchment_area.obj_id,&#10;                    catchment_area.fk_special_building_rw_planned AS fk_log_card,&#10;                    0 AS population,&#10;                    0 AS surface_area,&#10;                    0 AS surface_imp,&#10;                    0 AS surface_red,&#10;                    0 AS sewer_infiltration_water,&#10;                    0 AS waste_water_production,&#10;                    0 AS population_dim,&#10;                        CASE&#10;                            WHEN ((catchment_area.fk_special_building_rw_planned)::text = (catchment_area.fk_special_building_ww_planned)::text) THEN (0)::numeric&#10;                            ELSE catchment_area.surface_area&#10;                        END AS surface_dim,&#10;                    ((catchment_area.surface_area * catchment_area.seal_factor_rw_planned) / (100)::numeric) AS surface_imp_dim,&#10;                    ((catchment_area.surface_area * catchment_area.discharge_coefficient_rw_planned) / (100)::numeric) AS surface_red_dim,&#10;                    0 AS sewer_infiltration_water_dim,&#10;                    0 AS waste_water_production_dim&#10;                   FROM tww_od.catchment_area&#10;                  WHERE (catchment_area.fk_special_building_rw_planned IS NOT NULL)&#10;                ), ca_sums AS (&#10;                 SELECT main_lc.obj_id,&#10;                    main_lc.fk_pwwf_wastewater_node,&#10;                    sum(ca.population) AS population,&#10;                    sum(ca.surface_area) AS surface_area,&#10;                    sum(ca.surface_imp) AS surface_imp,&#10;                    sum(ca.surface_red) AS surface_red,&#10;                    sum(ca.sewer_infiltration_water) AS sewer_infiltration_water,&#10;                    sum(ca.waste_water_production) AS waste_water_production,&#10;                    sum(ca.population_dim) AS population_dim,&#10;                    sum(ca.surface_dim) AS surface_dim,&#10;                    sum(ca.surface_imp_dim) AS surface_imp_dim,&#10;                    sum(ca.surface_red_dim) AS surface_red_dim,&#10;                    sum(ca.sewer_infiltration_water_dim) AS sewer_infiltration_water_dim,&#10;                    sum(ca.waste_water_production_dim) AS waste_water_production_dim&#10;                   FROM ((ca&#10;                     LEFT JOIN tww_od.log_card lc_1 ON (((ca.fk_log_card)::text = (lc_1.obj_id)::text)))&#10;                     LEFT JOIN tww_od.log_card main_lc ON (((main_lc.obj_id)::text = (lc_1.fk_main_structure)::text)))&#10;                  GROUP BY main_lc.obj_id&#10;                )&#10;         SELECT lca.parent AS obj_id,&#10;            lc.fk_pwwf_wastewater_node,&#10;            sum(ca_sums_c.population) AS population,&#10;            sum(ca_sums_p.surface_area) AS surface_area,&#10;            sum(ca_sums_p.surface_imp) AS surface_imp,&#10;            sum(ca_sums_p.surface_red) AS surface_red,&#10;            sum(ca_sums_c.sewer_infiltration_water) AS sewer_infiltration_water,&#10;            sum(ca_sums_c.waste_water_production) AS waste_water_production,&#10;            sum(ca_sums_c.population_dim) AS population_dim,&#10;            sum(ca_sums_p.surface_dim) AS surface_dim,&#10;            sum(ca_sums_p.surface_imp_dim) AS surface_imp_dim,&#10;            sum(ca_sums_p.surface_red_dim) AS surface_red_dim,&#10;            sum(ca_sums_c.sewer_infiltration_water_dim) AS sewer_infiltration_water_dim,&#10;            sum(ca_sums_c.waste_water_production_dim) AS waste_water_production_dim&#10;           FROM (((log_card_agg lca&#10;             LEFT JOIN tww_od.log_card lc ON (((lca.parent)::text = (lc.obj_id)::text)))&#10;             LEFT JOIN ca_sums ca_sums_c ON (((ca_sums_c.obj_id)::text = (lca.child)::text)))&#10;             LEFT JOIN ca_sums ca_sums_p ON (((ca_sums_p.obj_id)::text = (lca.parent)::text)))&#10;          GROUP BY lca.parent, lc.fk_pwwf_wastewater_node) ca_agg ON (((ca_agg.fk_pwwf_wastewater_node)::text = (wn.obj_id)::text)));">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="obj_id" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="population" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="surface_area" nullable="true" remarks="" size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="surface_imp" nullable="true" remarks="" size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="surface_red" nullable="true" remarks="" size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="sewer_infiltration_water" nullable="true" remarks="" size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="waste_water_production" nullable="true" remarks="" size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="population_dim" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="surface_dim" nullable="true" remarks="" size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="surface_imp_dim" nullable="true" remarks="" size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="surface_red_dim" nullable="true" remarks="" size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="sewer_infiltration_water_dim" nullable="true" remarks="" size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="waste_water_production_dim" nullable="true" remarks="" size="0" type="numeric" typeCode="2"/>
+      </table>
       <table name="vw_catchment_area_wwc_connections" numRows="0" remarks="" schema="tww_app" type="VIEW" viewSql=" SELECT ca.obj_id,&#10;    (st_force2d(st_makeline(st_centroid(st_curvetoline(ca.perimeter_geometry)), wn_ww_current.situation3d_geometry)))::geometry(LineString,2056) AS connection_ww_current_geometry,&#10;    st_length((st_force2d(st_makeline(st_centroid(st_curvetoline(ca.perimeter_geometry)), wn_ww_current.situation3d_geometry)))::geometry(LineString,2056)) AS length_ww_current,&#10;    wn_ww_current.obj_id AS node_ww_current_obj_id&#10;   FROM (tww_od.catchment_area ca&#10;     LEFT JOIN tww_od.wastewater_node wn_ww_current ON (((ca.fk_wastewater_networkelement_ww_current)::text = (wn_ww_current.obj_id)::text)));">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="obj_id" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="connection_ww_current_geometry" nullable="true" remarks="" size="2147483647" type="geometry" typeCode="1111"/>
@@ -2059,6 +2074,31 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="71" name="_output_label" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="72" name="_channel_usage_current" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="73" name="_channel_function_hierarchic" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+      </table>
+      <table name="vw_tww_catchment_area_totals" numRows="0" remarks="" schema="tww_app" type="VIEW" viewSql=" SELECT cat.obj_id,&#10;    cat.discharge_freight_nh4_n,&#10;    cat.discharge_proportion_nh4_n,&#10;    cat.identifier,&#10;    cat.population,&#10;    cat.population_dim,&#10;    cat.sewer_infiltration_water,&#10;    cat.surface_area,&#10;    cat.surface_dim,&#10;    cat.surface_imp,&#10;    cat.surface_imp_dim,&#10;    cat.surface_red,&#10;    cat.surface_red_dim,&#10;    cat.waste_water_production,&#10;    cat.last_modification,&#10;    cat.fk_dataowner,&#10;    cat.fk_provider,&#10;    cat.fk_discharge_point,&#10;    cat.fk_hydraulic_char_data,&#10;    lc.obj_id AS fk_log_card,&#10;    ca_agg.perimeter_geometry,&#10;    wn.situation3d_geometry,&#10;    wn.obj_id AS wn_obj_id&#10;   FROM ((((tww_od.catchment_area_totals cat&#10;     LEFT JOIN tww_od.hydraulic_char_data hcd ON ((((hcd.obj_id)::text = (cat.fk_hydraulic_char_data)::text) AND (hcd.status = 6372))))&#10;     LEFT JOIN tww_od.wastewater_node wn ON (((hcd.fk_wastewater_node)::text = (wn.obj_id)::text)))&#10;     LEFT JOIN tww_od.log_card lc ON (((lc.fk_pwwf_wastewater_node)::text = (wn.obj_id)::text)))&#10;     LEFT JOIN ( WITH ca AS (&#10;                 SELECT catchment_area.fk_special_building_ww_current AS fk_log_card,&#10;                    catchment_area.perimeter_geometry AS geom&#10;                   FROM tww_od.catchment_area&#10;                  WHERE (catchment_area.fk_special_building_ww_current IS NOT NULL)&#10;                UNION&#10;                 SELECT catchment_area.fk_special_building_rw_current AS fk_log_card,&#10;                    catchment_area.perimeter_geometry AS geom&#10;                   FROM tww_od.catchment_area&#10;                  WHERE (catchment_area.fk_special_building_rw_current IS NOT NULL)&#10;                ), collector AS (&#10;                 SELECT main_lc.obj_id,&#10;                    ca.geom&#10;                   FROM ((ca&#10;                     LEFT JOIN tww_od.log_card lc_1 ON (((ca.fk_log_card)::text = (lc_1.obj_id)::text)))&#10;                     LEFT JOIN tww_od.log_card main_lc ON (((main_lc.obj_id)::text = (lc_1.fk_main_structure)::text)))&#10;                )&#10;         SELECT collector.obj_id,&#10;            st_unaryunion(st_collect(collector.geom)) AS perimeter_geometry&#10;           FROM collector&#10;          GROUP BY collector.obj_id) ca_agg ON (((ca_agg.obj_id)::text = (lc.obj_id)::text)));">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="obj_id" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="discharge_freight_nh4_n" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="2" id="2" name="discharge_proportion_nh4_n" nullable="true" remarks="" size="5" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="population" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="population_dim" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="6" name="sewer_infiltration_water" nullable="true" remarks="" size="9" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="4" id="7" name="surface_area" nullable="true" remarks="" size="10" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="4" id="8" name="surface_dim" nullable="true" remarks="" size="10" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="4" id="9" name="surface_imp" nullable="true" remarks="" size="10" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="4" id="10" name="surface_imp_dim" nullable="true" remarks="" size="10" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="4" id="11" name="surface_red" nullable="true" remarks="" size="10" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="4" id="12" name="surface_red_dim" nullable="true" remarks="" size="10" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="13" name="waste_water_production" nullable="true" remarks="" size="9" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="14" name="last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="15" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="16" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="17" name="fk_discharge_point" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="18" name="fk_hydraulic_char_data" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="19" name="fk_log_card" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="20" name="perimeter_geometry" nullable="true" remarks="" size="2147483647" type="geometry" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="21" name="situation3d_geometry" nullable="true" remarks="" size="2147483647" type="geometry" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="22" name="wn_obj_id" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
       </table>
       <table name="vw_tww_damage" numRows="0" remarks="" schema="tww_app" type="VIEW" viewSql=" SELECT&#10;        CASE&#10;            WHEN (channel.obj_id IS NOT NULL) THEN 'channel'::tww_app.damage_type&#10;            WHEN (manhole.obj_id IS NOT NULL) THEN 'manhole'::tww_app.damage_type&#10;            ELSE 'damage'::tww_app.damage_type&#10;        END AS damage_type,&#10;    damage.obj_id,&#10;    damage.comments,&#10;    damage.connection,&#10;    damage.fk_dataowner,&#10;    damage.fk_examination,&#10;    damage.fk_provider,&#10;    damage.last_modification,&#10;    damage.line_damage,&#10;    damage.single_damage_class,&#10;    damage.video_counter,&#10;    damage.view_parameters,&#10;    channel.channel_damage_begin,&#10;    channel.channel_damage_code,&#10;    channel.channel_damage_end,&#10;    channel.channel_distance,&#10;    channel.channel_quantification1,&#10;    channel.channel_quantification2,&#10;    manhole.manhole_damage_begin,&#10;    manhole.manhole_damage_code,&#10;    manhole.manhole_damage_end,&#10;    manhole.manhole_distance,&#10;    manhole.manhole_quantification1,&#10;    manhole.manhole_quantification2,&#10;    manhole.manhole_shaft_area&#10;   FROM ((tww_od.damage damage&#10;     LEFT JOIN tww_od.damage_channel channel ON (((channel.obj_id)::text = (damage.obj_id)::text)))&#10;     LEFT JOIN tww_od.damage_manhole manhole ON (((manhole.obj_id)::text = (damage.obj_id)::text)));">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="damage_type" nullable="true" remarks="" size="2147483647" type="&quot;tww_app&quot;.&quot;damage_type&quot;" typeCode="12"/>
@@ -7806,6 +7846,14 @@ END;]]></definition>
           -- , situation3d_geometry = NEW.wn_situation3d_geometry
           , wwtp_number = NEW.wn_wwtp_number
         WHERE obj_id = OLD.wn_obj_id;
+      UPDATE tww_od.wastewater_networkelement ne SET
+          fk_dataowner = NEW.wn_fk_dataowner
+          , fk_provider = NEW.wn_fk_provider
+          , fk_wastewater_structure = NEW.wn_fk_wastewater_structure
+          , identifier = NEW.wn_identifier
+          , last_modification = NEW.wn_last_modification
+          , remark = NEW.wn_remark
+        WHERE obj_id = OLD.wn_obj_id;
 
       IF OLD.ws_type <> NEW.ws_type THEN
         CASE WHEN OLD.ws_type <> 'unknown' THEN
@@ -9149,6 +9197,144 @@ END;]]></definition>
 END;]]></definition>
          <parameters>
             <parameter mode="IN"/>
+         </parameters>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="update_catchment_area_totals(_obj_id text, _all boolean DEFAULT false)" returnType="void" securityType="DEFINER" type="FUNCTION">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[BEGIN
+
+REFRESH MATERIALIZED VIEW tww_app.vw_catchment_area_totals_aggregated WITH DATA;
+
+WITH ca AS (
+	SELECT obj_id
+			, fk_special_building_ww_current AS fk_log_card
+			, surface_area AS f_current
+			, discharge_coefficient_ww_current/100*surface_area AS fred_current
+			, seal_factor_ww_current/100*surface_area AS fimp_current
+			, population_density_current*surface_area AS pop_current
+--			, sewer_infiltration_water_production_current AS q_inf_current
+--			, waste_water_production_current AS q_ww_current
+
+			, NULL::numeric AS f_dim
+			, NULL::numeric AS fred_dim
+			, NULL::numeric AS fimp_dim
+			, NULL::numeric AS pop_dim
+--			, NULL::numeric AS q_inf_dim
+--			, NULL::numeric AS q_ww_dim
+		FROM tww_od.catchment_area
+		WHERE catchment_area.fk_special_building_ww_current IS NOT NULL
+	UNION
+		SELECT obj_id
+			, fk_special_building_rw_current AS fk_log_card
+			, CASE
+				WHEN fk_special_building_ww_current = fk_special_building_rw_current
+				THEN 0
+				else surface_area
+			  END AS f_current
+			, discharge_coefficient_rw_current/100*surface_area AS fred_current
+			, seal_factor_rw_current/100*surface_area AS fimp_current
+			, NULL::numeric AS pop_current
+--			, NULL::numeric AS q_inf_current
+--			, NULL::numeric AS q_ww_current
+
+			, NULL::numeric AS f_dim
+			, NULL::numeric AS fred_dim
+			, NULL::numeric AS fimp_dim
+			, NULL::numeric AS pop_dim
+--			, NULL::numeric AS q_inf_dim
+--			, NULL::numeric AS q_ww_dim
+		FROM tww_od.catchment_area
+		WHERE catchment_area.fk_special_building_rw_current IS NOT NULL
+	UNION
+		SELECT obj_id
+			, fk_special_building_ww_planned AS fk_log_card
+			, NULL::numeric AS f_current
+			, NULL::numeric AS fred_current
+			, NULL::numeric AS fimp_current
+			, NULL::numeric AS pop_current
+--			, NULL::numeric AS q_inf_current
+--			, NULL::numeric AS q_ww_current
+
+			, surface_area AS f_dim
+			, discharge_coefficient_ww_planned/100*surface_area AS fred_dim
+			, seal_factor_ww_planned/100*surface_area AS fimp_dim
+			, population_density_planned*surface_area AS pop_dim
+--			, sewer_infiltration_water_production_planned AS q_inf_dim
+--			, waste_water_production_planned AS q_ww_dim
+		FROM tww_od.catchment_area
+		WHERE catchment_area.fk_special_building_ww_planned IS NOT NULL
+	UNION
+		SELECT obj_id
+			, fk_special_building_rw_planned AS fk_log_card
+			, NULL::numeric AS f_current
+			, NULL::numeric AS fred_current
+			, NULL::numeric AS fimp_current
+			, NULL::numeric AS pop_current
+--			, NULL::numeric AS q_inf_current
+--			, NULL::numeric AS q_ww_current
+
+			, CASE
+				WHEN fk_special_building_ww_planned = fk_special_building_rw_planned
+				THEN 0
+				else surface_area
+			  END AS f_dim
+			, discharge_coefficient_rw_planned/100*surface_area AS fred_dim
+			, seal_factor_rw_current/100*surface_area AS fimp_dim
+			, NULL::numeric AS pop_dim
+--			, NULL::numeric AS q_inf_dim
+--			, NULL::numeric AS q_ww_dim
+		FROM tww_od.catchment_area
+		WHERE catchment_area.fk_special_building_rw_planned IS NOT NULL
+    )
+UPDATE tww_od.catchment_area_totals cat
+SET
+
+	  population = ca_agg.pop_current
+	, population_dim = ca_agg.pop_dim
+	, sewer_infiltration_water = ca_agg.q_inf_current
+	, surface_area = ca_agg.f_current
+	, surface_dim = ca_agg.f_dim
+	, surface_red = ca_agg.fred_current
+	, surface_red_dim = ca_agg.fred_dim
+	, surface_imp = ca_agg.fimp_current
+	, surface_imp_dim = ca_agg.fimp_dim
+	, waste_water_production = ca_agg.q_ww_current
+	--, ag96_sewer_infiltration_water_dim = ca_agg.q_inf_dim
+	--, ag96_waste_water_production_dim = ca_agg.q_ww_dim
+FROM
+( SELECT cat.obj_id
+	, SUM(f_current) as f_current
+	, SUM(fred_current) as fred_current
+	, SUM(fimp_current) as fimp_current
+	, SUM(pop_current) as pop_current
+	, aggr.sewer_infiltration_water as q_inf_current
+	, aggr.waste_water_production as  q_ww_current
+
+	, SUM(f_dim) as f_dim
+	, SUM(fred_dim) as fred_dim
+	, SUM(fimp_dim) as fimp_dim
+	, SUM(pop_dim) as pop_dim
+	, aggr.sewer_infiltration_water_dim as q_inf_dim
+	, aggr.waste_water_production_dim as q_ww_dim
+   FROM ca
+	 LEFT JOIN tww_od.log_card lc_1 ON ca.fk_log_card::text = lc_1.obj_id::text
+	 LEFT JOIN tww_od.log_card main_lc ON main_lc.obj_id::text = lc_1.fk_main_structure::text
+     LEFT JOIN tww_od.wastewater_node wn ON main_lc.fk_pwwf_wastewater_node::text = wn.obj_id::text
+     LEFT JOIN tww_od.hydraulic_char_data hcd ON hcd.fk_wastewater_node::text = wn.obj_id::text AND hcd.status = 6372
+	LEFT JOIN tww_od.catchment_area_totals cat ON hcd.obj_id::text = cat.fk_hydraulic_char_data::text
+	LEFT JOIN tww_app.vw_catchment_area_totals_aggregated aggr ON aggr.obj_id = cat.obj_id
+  GROUP BY cat.obj_id
+  , aggr.sewer_infiltration_water
+  , aggr.waste_water_production
+  , aggr.sewer_infiltration_water_dim
+  , aggr.waste_water_production_dim)ca_agg
+WHERE cat.obj_id=ca_agg.obj_id
+;
+
+END]]></definition>
+         <parameters>
+            <parameter mode="IN" name="_obj_id" type="text"/>
+            <parameter mode="IN" name="_all" type="boolean"/>
          </parameters>
       </routine>
       <routine dataAccess="MODIFIES" deterministic="false" name="update_depth(_obj_id text, _all boolean DEFAULT false)" returnType="void" securityType="INVOKER" type="FUNCTION">
