@@ -554,18 +554,15 @@ class InterlisImporterExporter:
                     )
                 else:
                     if parent_count > 0:
-                        errormsg = f'Too many subclass entries for {schema_name}.{parent_name}'
+                        errormsg = f"Too many subclass entries for {schema_name}.{parent_name}"
                     else:
-                        errormsg = f'Too few subclass entries for {schema_name}.{parent_name}'
-                    logger.error(
-                        f"Subclass Count error: {errormsg}"
-                    )
+                        errormsg = f"Too few subclass entries for {schema_name}.{parent_name}"
+                    logger.error(f"Subclass Count error: {errormsg}")
                     raise InterlisImporterExporterError(
                         "Subclass Count error",
                         errormsg,
                         None,
                     )
-                    
 
     def _init_model_classes(self, model):
         ModelInterlis = ModelInterlisSia405Abwasser
