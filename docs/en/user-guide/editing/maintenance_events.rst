@@ -12,6 +12,8 @@ General
 * Maintenance events can be connected to one structure or to many.
   Therefore TWW uses a intermediary RE_table to model the n:m relationship (**re_maintenance_event_wastewater_structure**)
 
+* Maintenance events can be created or linked at the same time a new wastewater structure or a new reach is created.
+
 
 Adding a new Maintenance Event
 -------------------------------------------------------------
@@ -57,13 +59,13 @@ Unlink Maintenance Events
 
  .. figure:: images/maintenance_unlink_child.jpg
 
- .. attention:: Unlink means, that there is only the record in the RE-table deleted. The maintenance event record itself is not deleted and can by linked with other wastewater structures. When using the **Delete selected child feature(s)** button, the maintenance_event- and the re_maintenance_event_wastewater_structure-record is deleted.
+ .. attention:: Unlink means, that there is only the record in the RE-table deleted. The maintenance event record itself is not deleted and can by linked with other wastewater structures. When using the **Delete selected child feature(s)** button, the maintenance_event- and the re_maintenance_event_wastewater_structure-record are deleted.
 
 
 Editing
 --------
 
- * Do as described in adding - but just edit existing maintenance events. Or edit the **vw_tww_maintenance** table (layer group **inspection**)
+ * Do as described in adding - but just edit existing maintenance events. Or edit the **vw_tww_maintenance_event** table (layer group **inspection**)
 
 
 Multi Edit
