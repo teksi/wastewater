@@ -65,7 +65,7 @@ Unlink Maintenance Events
 Editing
 --------
 
- * Do as described in adding - but just edit existing maintenance events. 
+ * Do as described in adding - but just edit existing maintenance events.
  * Or edit the **vw_tww_maintenance_event** table (in layer group **inspection**)
 
 

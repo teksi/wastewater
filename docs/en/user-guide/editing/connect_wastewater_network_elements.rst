@@ -23,7 +23,7 @@ How to connect reaches to nodes or reaches to reaches
 
 .. figure:: images/connecting_1.jpg
 
-.. note:: the topology-layers are turned on in the screenshot to show the effect of the connection. 
+.. note:: the topology-layers are turned on in the screenshot to show the effect of the connection.
 
 * A window appears, where you can choose, which connection will be defined. If you connect a reach, the window looks like this:
 

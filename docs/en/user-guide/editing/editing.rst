@@ -45,9 +45,9 @@ Changing attributes of point elements (manholes / special structures)
  .. figure:: ../digitizing/images/wizard_wastewater_structure_manhole_form_data_ok3.jpg
 
  * On the first tab (General) you can change the most common attributes
- * Main Cover and Main Node are the first cover / node defined for the wastewater structure. 
+ * Main Cover and Main Node are the first cover / node defined for the wastewater structure.
  * Additional attributes of table wastewater structure and fo the selected subclass can be changed on tab Wastewater structure
- * To change attributes of related tables (e.g. cover) you need to select the correspondent tab. 
+ * To change attributes of related tables (e.g. cover) you need to select the correspondent tab.
  * In **Structure parts** tab you can add further parts such as **access aids**, **backflow prevention**, **dryweather flume** etc.
 
  .. figure:: images/form_vw_tww_wastewater_structure_structure_parts.jpg
@@ -191,7 +191,7 @@ In TWW, there is in the moment no tool, that helps you to connect a wastewater n
 
 Multiedit
 ---------
-If you want to edit attributes for multiple objects of the same layer you can use the `multiedit Tool of QGIS <https://docs.qgis.org/latest/en/docs/user_manual/working_with_vector/attribute_table.html#multi-edit-fields>`_. 
+If you want to edit attributes for multiple objects of the same layer you can use the `multiedit Tool of QGIS <https://docs.qgis.org/latest/en/docs/user_manual/working_with_vector/attribute_table.html#multi-edit-fields>`_.
 
 
 Saving changes
