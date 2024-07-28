@@ -65,10 +65,11 @@ Unlink Maintenance Events
 Editing
 --------
 
- * Do as described in adding - but just edit existing maintenance events. Or edit the **vw_tww_maintenance_event** table (layer group **inspection**)
+ * Do as described in adding - but just edit existing maintenance events. 
+ * Or edit the **vw_tww_maintenance_event** table (in layer group **inspection**)
 
 
 Multi Edit
 -----------------------------------------------------------
 
-Multi edit with linked tables is implemented in QGIS. It is possible to create or to link a maintenance event to a selection of reaches or wastewater structures im multiedit-mode.
+Multi edit with linked tables is implemented in QGIS. It is possible to create or to link a maintenance event to a selection of reaches or wastewater structures in multiedit-mode.
