@@ -31,13 +31,16 @@ How to connect reaches to nodes or reaches to reaches
 
 .. note:: there is no options 'Reach Point From' in this example, because in a connection from reach to reach, it is not allowed to connect a From-reach point to another reach.
 
+
 * If everything is ok, you will see a message in a blue bar on top of the map-window
 
 .. figure:: images/connecting_3.jpg
 
+
 * To show the new connection, save your edits, click on the TWW-SQL-Button (refresh network topology) and refresh the screen. Now you can see the new connection in the topology-layers
 
 .. figure:: images/connecting_4.jpg
+
 
 Video Tutorial
 --------------
