@@ -18,23 +18,31 @@ How to connect reaches to nodes or reaches to reaches
 * It does not matter, which layer is selected
 * The **vw_tww_reach** layer has to be in edit mode
 * Click the **Connect wastewater network elements** button
-* If you move the mouse over an reach, that can be connected, it is marked: you can click
+* If you move the mouse over a reach, that can be connected, it is marked (orange color): you can click
 * Move the mouse to the network element, to which the first object will be connected (again: selectable objects get marked) and click again
 
 .. figure:: images/connecting_1.jpg
+
+.. note:: the topology-layers are turned on in the screenshot to show the effect of the connection. 
 
 * A window appears, where you can choose, which connection will be defined. If you connect a reach, the window looks like this:
 
 .. figure:: images/connecting_2.jpg
 
+.. note:: there is no options 'Reach Point From' in this example, because in a connection from reach to reach, it is not allowed to connect a From-reach point to another reach.
+
 * If everything is ok, you will see a message in a blue bar on top of the map-window
 
 .. figure:: images/connecting_3.jpg
 
+* To show the new connection, save your edits, click on the TWW-SQL-Button (refresh network topology) and refresh the screen. Now you can see the new connection in the topology-layers
+
+.. figure:: images/connecting_4.jpg
+
 Video Tutorial
 --------------
 
-* See `this video tutorial (QGIS version 2): <https://vimeo.com/171536774>`_
+* See `this video tutorial (QGEP and QGIS version 2): <https://vimeo.com/171536774>`_
 
 
 How to delete a connection
@@ -51,4 +59,4 @@ There is no special tool in the moment to delete a connection between network el
 .. note:: Be aware of the 'VSA Erfassungsgrundsätze': A reach point from (rp_from_fk_wastewater_networkelement) should never be connected to another reach.
 
 For example, when you have a reach discharging directly into another one without a structure between the two, the upstream reach should be connected to the downstream reach (rp_from_fk_wastewater_networkelement = downstream reach).
-But inversely, the downstream reach shouldn't be connected to the upstream one. This rule is for swwf-channels (secondary network). In pwwf-network, there must be always a node between to reaches.
+But inversely, the downstream reach shouldn't be connected to the upstream one. This rule is for swwf-channels (secondary network). In pwwf-network, there must be always a node between two reaches.
