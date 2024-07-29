@@ -2885,16 +2885,20 @@ class InterlisExporterToIntermediateSchema:
             "t_type": type_name,
             "t_id": self.get_tid(row),
         }
-        if self.current_basket:
-            base["t_basket"] = self.current_basket.t_id
+        # if self.current_basket:
+        # base["t_basket"] = self.current_basket.t_id
 
         return base
 
     def sia_405_base_common(self, row, type_name):
-        return {
+        base = {
             **self.base_common(row, type_name),
             "letzte_aenderung": row.last_modification,
         }
+        if self.current_basket:
+            base["t_basket_sia405_baseclass"] = self.current_basket.t_id
+
+        return base
 
     def vsa_base_common(self, row, type_name):
         """
