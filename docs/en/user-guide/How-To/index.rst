@@ -229,7 +229,7 @@ CRITICAL: Error fk_provider or fk_dataowner not set in tww_od.default_values
 
 then your database is not yet production ready.
 
-It is possible to define default values for repeated fields such as fk_provider or fk_dataowner, so that you not have to add those manually for each object that you are creating. 
+It is possible to define default values for repeated fields such as fk_provider or fk_dataowner, so that you not have to add those manually for each object that you are creating.
 
 There is a new layer group 'configuration' in the project:
 
