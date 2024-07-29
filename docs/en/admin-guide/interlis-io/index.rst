@@ -126,7 +126,7 @@ Export step | Description | Log File
 Export schema   | Creation of export schema with ili2db and the selected INTERLIS model file | *.ili2pg-schemaimport.log
 Data export intermediatary schema   | Export of data from tww_od to the new intermediary schema, translation from English to German | *.tww2ili-export.log
 Data export to xtf | Data export from intermediary schema to INTERLIS Transfer file (xtf)   | *.ili2pg-export-MODELNAME.log
-INTERLIS validation   | Validation of the created xtf file(s) with ilivalidator   | *.ilivalidator-DSS_2020_1_LV95.log
+INTERLIS validation   | Validation of the created xtf file(s) with ilivalidator   | *.ilivalidator-MODELNAME.log
 
 
 
