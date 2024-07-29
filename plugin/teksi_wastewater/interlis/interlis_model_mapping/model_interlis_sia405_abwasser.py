@@ -11,6 +11,7 @@ class ModelInterlisSia405Abwasser(ModelBase):
         class baseclass(self.Base):
             __tablename__ = "baseclass"
             __table_args__ = {"schema": config.ABWASSER_SCHEMA}
+            t_basket_baseclass = Column("t_basket", Integer)
 
         ModelInterlisSia405Abwasser.baseclass = baseclass
 
