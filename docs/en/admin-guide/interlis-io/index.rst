@@ -1,7 +1,7 @@
 INTERLIS Data exchange
 ======================
 
-This represents a guide on how to import/export data between TWW and INTERLIS 2 Transfer Format (XTF).
+This represents a guide on how to import/export data between TWW and `INTERLIS 2 Transfer Format (XTF) <https://www.interlis.ch>`_.
 
 
 General

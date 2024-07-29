@@ -216,10 +216,22 @@ The Feature Attributes window for the overflow characteristic appears:
 
 3. Go back in the field fk_overflow characteristic of the just created overflow characteristic with the button **switch to form view** and define the necessary HQ or QQ values with the **add child object** button.
 
+
+.. _settingdefaultvalues:
+
 Setting default values
 -----------------------
 
-It is possible to define default values for repeated fields such as fk_provider or fk_dataowner. There is a new layer group 'configuration' in the project:
+If you get the following error message on startup of the TEKSI project during the 'Database production ready check':
+
+.. attention::
+CRITICAL: Error fk_provider or fk_dataowner not set in tww_od.default_values
+
+then your database is not yet production ready.
+
+It is possible to define default values for repeated fields such as fk_provider or fk_dataowner, so that you not have to add those manually for each object that you are creating. 
+
+There is a new layer group 'configuration' in the project:
 
 .. figure:: images/configuration_default_values
 
@@ -234,6 +246,14 @@ It is possible to define default values for repeated fields such as fk_provider 
 .. figure:: images/default_values_organisation_obj_id_selection.png
 
 
+For the second warning, please contact your TEKSI system administrator
+
+.. attention::
+CRITICAL: Error OID prefix set to 'ch000000'. Database not safe for production.
+
+and ask him/her to set the prefix to fit your project.
+
+For more information see :ref:`productionreadiness`
 
 Connect all occurences of your field name to ``tww_sys.get_default_values(field_name)``.
 Per default, the fields ``fk_provider`` and ``fk_dataowner`` are already connected to the function ``tww_sys.get_default_values(field_name)``.
