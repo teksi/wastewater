@@ -42,10 +42,10 @@ How to connect reaches to nodes or reaches to reaches
 .. figure:: images/connecting_4.jpg
 
 
-Video Tutorial
+Video Tutorial (not adapted for TWW)
 --------------
 
-* See `this video tutorial (QGEP and QGIS version 2): <https://vimeo.com/171536774>`_
+* See `this video tutorial (QGIS version 2): <https://vimeo.com/171536774>`_
 
 
 How to delete a connection
