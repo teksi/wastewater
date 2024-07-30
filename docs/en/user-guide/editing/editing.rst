@@ -12,7 +12,7 @@ Demo project (chapter / pictures not adjusted to TWW)
 * Open the demo project by going to the main menu and press **Project** --> **Open**  or by pressing ``CTRL``
   + ``O`` at the same time.
 
-.. figure:: images/tww_demoproject_old_selection.jpg
+.. figure:: images/tww_demoproject_old_selection_.jpg
    :scale: 50 %
 
 * Login to the database
