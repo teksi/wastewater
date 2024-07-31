@@ -56,7 +56,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../digitizing/index.html">3.2. Digitalisieren in TWW</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">3.3. Bearbeiten in TWW</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">3.3.1. Bearbeiten von bestehenden Daten</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#demo-project">3.3.1.1. Demoprojekt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#demo-project-chapter-pictures-not-adjusted-to-tww">3.3.1.1. Demo project (chapter / pictures not adjusted to TWW)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#layers">3.3.1.2. Layer</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#changing-attributes-of-point-elements-manholes-special-structures">3.3.1.3. Attribute der Punktelemente ändern (Normschächte / Spezialbauwerke)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#changing-attributes-of-linear-elements-channels">3.3.1.4. Attribute der Linienelemente ändern (Kanäle)</a></li>
@@ -68,7 +68,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#adding-a-wastewater-node-to-an-existing-reach">3.3.1.10. Einen Abwasserknoten mit einer bestehenden Haltung verknüpfen</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#multiedit">3.3.1.11. Mehrfachänderung</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#saving-changes">3.3.1.12. Änderungen Speichern</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#changing-wastewater-structure-type">3.3.1.13. Abwasserbauwerk Typ ändern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#changing-wastewater-structure-type-ws-type">3.3.1.13. Changing Wastewater Structure Type (ws_type)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#split-a-reach-channel-into-different-reaches">3.3.1.14. Kanäle in verschiedene Haltungen unterteilen</a></li>
 </ul>
 </li>
@@ -120,26 +120,26 @@
   <section id="editing-of-existing-data">
 <span id="editing-data"></span><h1><span class="section-number">3.3.1. </span>Bearbeiten von bestehenden Daten<a class="headerlink" href="#editing-of-existing-data" title="Link to this heading"></a></h1>
 <p>Eine Anleitung zum Bearbeiten von vorhandenen Daten in TWW.</p>
-<section id="demo-project">
-<h2><span class="section-number">3.3.1.1. </span>Demoprojekt<a class="headerlink" href="#demo-project" title="Link to this heading"></a></h2>
+<section id="demo-project-chapter-pictures-not-adjusted-to-tww">
+<h2><span class="section-number">3.3.1.1. </span>Demo project (chapter / pictures not adjusted to TWW)<a class="headerlink" href="#demo-project-chapter-pictures-not-adjusted-to-tww" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Gehen Sie sicher, dass sie das Demoprojekt mit pgAdminIII (siehe <a class="reference internal" href="../../installation-guide/database-initialization.html#database-initialization"><span class="std std-ref">Initialisierung der Datenbank</span></a> Kapitel) importiert haben</p></li>
 <li><p>Öffnen sie das Demoprojekt indem Sie ins Hauptmenu gehen und dann <strong>Project</strong> –&gt; <strong>Open</strong> drücken oder indem sie „STRG“ + „O“ gemeinsam drücken.</p></li>
 </ul>
 <figure class="align-default">
-<a class="reference internal image-reference" href="user-guide/editing/images/tww_demoproject_selection_tww_en_qgs.jpg"><img alt="user-guide/editing/images/tww_demoproject_selection_tww_en_qgs.jpg" src="user-guide/editing/images/tww_demoproject_selection_tww_en_qgs.jpg" /></a>
+<a class="reference internal image-reference" href="../../_images/tww_demoproject_old_selection_.jpg"><img alt="../../_images/tww_demoproject_old_selection_.jpg" src="../../_images/tww_demoproject_old_selection_.jpg" style="width: 800.0px; height: 450.0px;" /></a>
 </figure>
 <ul class="simple">
 <li><p>In der Datenbank anmelden</p></li>
 </ul>
 <figure class="align-default">
-<img alt="user-guide/editing/images/tww_demoproject_login.jpg" src="user-guide/editing/images/tww_demoproject_login.jpg" />
+<img alt="../../_images/tww_demoproject_old_login.jpg" src="../../_images/tww_demoproject_old_login.jpg" />
 </figure>
 <ul class="simple">
 <li><p>Sie sollten nun das Demoprojekt geladen haben</p></li>
 </ul>
 <figure class="align-default">
-<img alt="user-guide/editing/images/tww_demoproject_overview.jpg" src="user-guide/editing/images/tww_demoproject_overview.jpg" />
+<img alt="../../_images/tww_demoproject_old_overview.jpg" src="../../_images/tww_demoproject_old_overview.jpg" />
 </figure>
 <ul class="simple">
 <li><p>Das Projekt besteht aus verschiedenen Layern. Je nach Aufgaben wählen Sie die Layer, um Objekte zu bearbeiten oder hinzuzufügen.</p></li>
@@ -170,38 +170,44 @@
 </figure>
 <ul class="simple">
 <li><p>Auf dem ersten Reiter (Allgemein) können Sie die am häufigsten benutzten Attribute erfassen</p></li>
-<li><p>Um die Attribute von in Verbindung stehenden Tabellen (z.B Deckel) zu ändern, müssen Sie den entsprechenden Reiter auswählen. Abhängig von der Art des Abwasserbauwerks können Sie zusätzliche Attribute im zugehörigen Reiter bearbeiten (<strong>Spezialbauwerk</strong>, <strong>Normschacht</strong>).</p></li>
+<li><p>Main Cover and Main Node are the first cover / node defined for the wastewater structure.</p></li>
+<li><p>Additional attributes of table wastewater structure and fo the selected subclass can be changed on tab Wastewater structure</p></li>
+<li><p>To change attributes of related tables (e.g. cover) you need to select the correspondent tab.</p></li>
 <li><p>Unter dem Reiter <strong>Bauwerkteile/structure parts</strong> können Sie weitere Bauwerksteile wie zum Beispiel <strong>Einstiegshilfen/access aids</strong>, <strong>Rückstausicherung/backflow prevention</strong>, <strong>Trockenwetterrinne/dryweather flume</strong> etc. hinzufügen</p></li>
 </ul>
 <figure class="align-default">
-<img alt="user-guide/editing/images/form_vw_tww_wastewater_structure_structure_parts.jpg" src="user-guide/editing/images/form_vw_tww_wastewater_structure_structure_parts.jpg" />
+<img alt="../../_images/form_vw_tww_wastewater_structure_structure_parts.jpg" src="../../_images/form_vw_tww_wastewater_structure_structure_parts.jpg" />
 </figure>
 <ul class="simple">
 <li><p>Die Reiter <strong>Deckel</strong> und <strong>Abwasserknoten</strong> zeigen alle Knoten und Deckel eines Abwasserbauwerks und erlauben, weitere Datensätze hinzuzufügen. Siehe dazu das Kapitel <a class="reference internal" href="#adding-additional-covers-and-nodes-to-an-existing-wastewater-structure"><span class="std std-ref">Hinzufügen weiterer Deckel und Abwasserknoten zu bestehenden Abwasserbauwerken</span></a> .</p></li>
 </ul>
 </div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Bemerkung</p>
+<p><strong>additional fields</strong> means, that some fields of the class are in the general tab, others are in separat tabs. The fields of the general tab are not repeated, because Multiedit does not work correct when using a field on more than one tab.</p>
+</div>
 </section>
 <section id="changing-attributes-of-linear-elements-channels">
 <h2><span class="section-number">3.3.1.4. </span>Attribute der Linienelemente ändern (Kanäle)<a class="headerlink" href="#changing-attributes-of-linear-elements-channels" title="Link to this heading"></a></h2>
 <blockquote>
 <div><ul class="simple">
-<li><p>Um einen Attribut zu ändern müssen Sie zuerst den <strong>vw_tww_reach</strong> Layer auswählen.</p></li>
+<li><p>To change an attribute you first need to select <strong>vw_tww_reach</strong></p></li>
 <li><p>Aktivieren Sie den Bearbeitungsmodus.</p></li>
 <li><p>Dann klicken Sie auf den <strong>Objekte abfragen</strong> Knopf und wählen die Haltung, welches Sie bearbeiten wollen, mit einem Klick</p></li>
-<li><p>Das <strong>vw_tww_reach</strong> Formular öffnet sich.</p></li>
+<li><p>The <strong>vw_tww_reach</strong> feature attributs window will open.</p></li>
 </ul>
 <blockquote>
 <div><figure class="align-default">
-<img alt="user-guide/editing/images/form_vw_tww_reach.jpg" src="user-guide/editing/images/form_vw_tww_reach.jpg" />
+<img alt="../../_images/form_vw_tww_reach.jpg" src="../../_images/form_vw_tww_reach.jpg" />
 </figure>
 </div></blockquote>
 <ul class="simple">
 <li><p>Auf dem ersten Reiter (<strong>Allgemein</strong>) können die am häufigsten benutzten Attribute geändert werden.</p></li>
-<li><p>Um die Attribute von in Verbindung stehenden Tabellen (z.B <strong>Haltungspunkte/reach points</strong>) zu ändern, wählen Sie den entsprechenden Reiter.</p></li>
+<li><p>To change additional attributes of related tables (e.g. <strong>reach points</strong>) select the correspondent tab.</p></li>
 </ul>
 <blockquote>
 <div><figure class="align-default">
-<img alt="user-guide/editing/images/form_vw_tww_reach_reachpoints.jpg" src="user-guide/editing/images/form_vw_tww_reach_reachpoints.jpg" />
+<img alt="../../_images/form_vw_tww_reach_reachpoints.jpg" src="../../_images/form_vw_tww_reach_reachpoints.jpg" />
 </figure>
 </div></blockquote>
 </div></blockquote>
@@ -224,7 +230,7 @@
 <li><p>Doppelklick auf das Tool <strong>Change reach direction</strong></p></li>
 </ul>
 <figure class="align-default">
-<img alt="user-guide/editing/images/tww_toolbox.jpg" src="user-guide/editing/images/tww_toolbox.jpg" />
+<img alt="../../_images/tww_toolbox.jpg" src="../../_images/tww_toolbox.jpg" />
 </figure>
 <ul class="simple">
 <li><p>Im Toolfenster muss der <strong>vw_tww_reach</strong> - Layer gewählt werden, dann auf  <strong>Start</strong> klicken</p></li>
@@ -247,7 +253,7 @@
 <li><p>Doppelklick auf das <strong>Snap reach geometry</strong> Tool</p></li>
 </ul>
 <figure class="align-default">
-<img alt="user-guide/editing/images/tww_toolbox.jpg" src="user-guide/editing/images/tww_toolbox.jpg" />
+<img alt="../../_images/tww_toolbox2.jpg" src="../../_images/tww_toolbox2.jpg" />
 </figure>
 <ul class="simple">
 <li><p>Im Toolfenster muss der <strong>vw_tww_reach</strong> - Layer und der <strong>vw_wastewater_node</strong> - Layer gewählt werden, dann auf  <strong>Start</strong> klicken</p></li>
@@ -257,7 +263,7 @@
 <p>Bei Verknüpfungen von Haltung zu Haltung wird der Haltungspunkt rechtwinklig auf die andere Haltung verschoben. Wenn es keine Möglichkeit für ein Verschieben mit rechtem Winkel gibt, wird zum nächsten Endpunkt der Haltung verschoben.</p>
 <div class="admonition attention">
 <p class="admonition-title">Achtung</p>
-<p>Wenn zwei Haltungen miteinander verknüpft sind (Blindanschluss ohne Abwasserknoten) wird das Resultat unter Umständen nicht den Erwartungen entsprechen. Wenn  Haltung 1 auf Haltung 2 schnappt, und danach Haltung 2 auch noch auf einen Knoten oder eine weitere Haltung schnappt, ist die graphische Verknüpfung zwischen Haltung 1 und 2 nicht mehr garantiert. Der Befehl muss noch einmal gestartet werden.</p>
+<p>If there is snapping from reach to reach, you will get not the expected result, if the first reach snaps to a second reach, and afterwards this second reach snaps to a node or a third reach. There will be no more graphical connection between reach 1 and reach 2. You have to re-run the command.</p>
 </div>
 </section>
 <section id="working-with-codes-of-value-list">
@@ -268,7 +274,7 @@
 <blockquote>
 <div><div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>Die Zahlencodes sind einmalig, auch wenn in verschiedenen Wertelisten die gleichen Texte vorkommen. Beispiel: Der Zahlencode für „Regenabwasser“ ist in den Wertelisten für Nutzungsart_Ist und Nutzungsart_geplant nicht gleich.</p>
+<p>The codes are unique, also if there is the same text in different value lists. E.g. the code for „surface_wastewater“ in the vl_channel_usage_current and in the vl_channel_usage_planned is different.</p>
 </div>
 </div></blockquote>
 <ul class="simple">
@@ -308,7 +314,7 @@
 </ul>
 <blockquote>
 <div><figure class="align-default">
-<img alt="user-guide/editing/images/tww_info_button_rightclick.jpg" src="user-guide/editing/images/tww_info_button_rightclick.jpg" />
+<img alt="../../_images/tww_info_button_rightclick.jpg" src="../../_images/tww_info_button_rightclick.jpg" />
 </figure>
 <ul class="simple">
 <li><p>Sie können dann das gewünschte Objekt auswählen. Es erscheint das zugehörige Formular um die Details einzusehen</p></li>
@@ -321,27 +327,18 @@
 <p class="admonition-title">Bemerkung</p>
 <p>Die folgende Beschreibung ist für das Hinzufügen eines weiteren Deckels. Es funktioniert analog auch für das Hinzufügen eines weiteren Abwasserknotens.</p>
 </div>
+<p>The TWW project is configured that you can add an additional cover with the <strong>Add Point Child Feature</strong> button.</p>
 <ul class="simple">
-<li><p>Voraussetzung: Unter Projekt/Projekteigenschaften/Beziehungen muss die Beziehung zwischen vw_cover (Feld fk_wastewater_structure) und vw_tww_wastewater_structure (Feld obj_id) vorhanden sein.</p></li>
-<li><p>Im Layer vw_cover / Eigenschaften / <strong>Attribute Forms</strong> muss das Feld <strong>fk_wastewater_structure</strong> als Beziehungsreferenz definiert sein</p></li>
-</ul>
-<figure class="align-default">
-<img alt="../../_images/vw_cover_properties_fields.jpg" src="../../_images/vw_cover_properties_fields.jpg" />
-</figure>
-<ul class="simple">
-<li><p>Seit QGIS 3.16 gibt es folgende neue Möglichkeit: Wähle den Layer vw_tww_Abwasserbauwerk, setzte den Layer editierbar, klicke den Schacht, bei dem ein Deckel hinzugefügt werden soll mit dem  <strong>Objekte abfragen</strong> Werkzeug. Wechsle zum Reiter <strong>Deckel</strong> und klicke den Neues Kind Punkt-Knopf. Jetzt kann ein ein neuer Deckel für das Abwasserbauwerk digitalisiert werden.</p></li>
+<li><p>select layer vw_tww_wastewater_structure</p></li>
+<li><p>Switch to the edit mode</p></li>
+<li><p>click the manhole you want to add a cover with the <strong>Identify feature</strong> tool</p></li>
+<li><p>Go to tab <strong>covers</strong> and click the Add Point Child Feature-button. Now you can digitize a new cover for the wastewater structure.</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/new_cover_childpoint.jpg" src="../../_images/new_cover_childpoint.jpg" />
 </figure>
-<ul class="simple">
-<li><p>Der alte Weg (vor QGIS 3.16)</p></li>
-<li><p>Die Bearbeitung des Layer vw_cover starten und einen neuen Deckel definieren.</p></li>
-<li><p>In der Form hat es hinter dem Feld fk_wastewater_structure einen  Knopf, mit dem der neue Deckel mit einem bestehenden Abwasserbauwerk verknüpft werden kann.</p></li>
-<li><p>Nach dem Klick auf den Knopf erscheint ein blauer Hinweis im QGIS-Fenster. Das vw_cover-Formularfenster falls notwendig verschieben und mit einem Klick auf das Abwasserbauwerk die Verknüpfung des Deckels mit dem Bauwerk definieren.</p></li>
-</ul>
 <figure class="align-default">
-<img alt="../../_images/new_cover_connect_to_wws.jpg" src="../../_images/new_cover_connect_to_wws.jpg" />
+<img alt="../../_images/new_cover_childpoint_message.jpg" src="../../_images/new_cover_childpoint_message.jpg" />
 </figure>
 </section>
 <section id="adding-a-wastewater-node-to-an-existing-reach">
@@ -352,7 +349,7 @@
 <p>Diese Fälle sind vorwiegend in PAA-Kanälen (primäre Abwasseranlagen) z.B. bei Gefällswechsel oder Materialwechsel oder bei einem Blindanschluss.</p>
 </div>
 <p>Im VSA-Datenmodell kann ein Abwasserknoten auch mit einem Kanal verknüpft werden (weil ein Kanal auch ein Abwasserbauwerk ist). Im Moment wird diskutiert, ob ein Abwasserknoten zwischen Haltungen zwingend oder optional oder nie mit einem Abwasserbauwerk verbunden werden soll.</p>
-<p>In TWW existiert im Moment kein Werkzeug, um einen Abwasserknoten mit einem Kanal zu verknüpfen.  Es werden also vorläufig nur die Haltungspunkte mit dem Abwasserknoten verknüpft.</p>
+<p>In TWW, there is in the moment no tool, that helps you to connect a wastewater node to a channel. So you just connect the reaches (reach points) to the node.</p>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
 <p>Wenn ein Abwasserknoten zwingend mit einem Kanal verknüpft werden soll, dann kann die Obj_ID des Kanals manuell in das Feld fk_wasterwater_structure des Abwasserknotens eingetippt werden.</p>
@@ -360,17 +357,21 @@
 </section>
 <section id="multiedit">
 <h2><span class="section-number">3.3.1.11. </span>Mehrfachänderung<a class="headerlink" href="#multiedit" title="Link to this heading"></a></h2>
-<p>Wenn Sie Attribute für mehrere Objekte der gleichen Klasse bearbeiten wollen, können Sie das <a class="reference external" href="https://docs.qgis.org/latest/de/docs/user_manual/working_with_vector/attribute_table.html#multi-edit-fields">multiedit Tool von QGIS</a> verwenden.</p>
+<p>If you want to edit attributes for multiple objects of the same layer you can use the <a class="reference external" href="https://docs.qgis.org/latest/en/docs/user_manual/working_with_vector/attribute_table.html#multi-edit-fields">multiedit Tool of QGIS</a>.</p>
 </section>
 <section id="saving-changes">
 <h2><span class="section-number">3.3.1.12. </span>Änderungen Speichern<a class="headerlink" href="#saving-changes" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>Drücken Sie <strong>Save</strong> und dann deaktivieren Sie den Bearbeitungsmodus oder klicken Sie auf <strong>Stop data entry</strong> wenn Sie mit dem <strong>TWW Data Entry</strong> Arbeitsassistenten gearbeitet haben.</p></li>
+<li><p>Click <strong>Save</strong> and then deactivate the edit mode or click on <strong>Stop data entry</strong> if you have worked with the TWW <strong>Wizard</strong>.</p></li>
 </ul>
 </section>
-<section id="changing-wastewater-structure-type">
-<h2><span class="section-number">3.3.1.13. </span>Abwasserbauwerk Typ ändern<a class="headerlink" href="#changing-wastewater-structure-type" title="Link to this heading"></a></h2>
-<p>Im vw_tww_wastewater_structure Formular kann die Subklasse das Abwasserbauwerks geändert werden (z.B. von Normschacht zu Spezialbauwerk oder Versickerungsanlage). Der alte Subklassen-Datensatz wird dabei gelöscht und die Subklassen-spezifischen Felder müssen neu eingegeben werden. Aber alle Verknüpfungen (die beziehen sich auf die Klasse Abwasserbauwerk und nicht auf die Subklasse) und auch die Obj_ID oder die Bezeichnung bleiben unverändert.</p>
+<section id="changing-wastewater-structure-type-ws-type">
+<h2><span class="section-number">3.3.1.13. </span>Changing Wastewater Structure Type (ws_type)<a class="headerlink" href="#changing-wastewater-structure-type-ws-type" title="Link to this heading"></a></h2>
+<p>In the vw_tww_wastewater_structure form, you can change the subclass of the wastewater structure (e.g. from manhole to special structure or to infiltration installation) with the field <strong>ws_type</strong>. The old subclass-record will be deleted and you must enter those attributes, that are subclass specific. But all connections (they are defined to the class wastewater_structure and not to the subclass) or the obj_id or the identifier will not change.</p>
+<div class="admonition note">
+<p class="admonition-title">Bemerkung</p>
+<p>There are just four subclasses supported in the moment: manhole, special_structure, infiltration_installation, discharge_point. Other subclasses (wwtp_structure, small_treatment_plant, drainless_toilett) will be supported in a next release of TWW.</p>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
 <p>Ein Schacht-Abwasserbauwerk kann nicht in ein Kanal-Abwasserbauwerk geändert werden oder umgekehrt.</p>
@@ -378,7 +379,7 @@
 </section>
 <section id="split-a-reach-channel-into-different-reaches">
 <h2><span class="section-number">3.3.1.14. </span>Kanäle in verschiedene Haltungen unterteilen<a class="headerlink" href="#split-a-reach-channel-into-different-reaches" title="Link to this heading"></a></h2>
-<p>Das ist eine ziemlich komplexe Funktion und zur Zeit nicht implementiert in TWW. Es gibt ein QGIS-Werkzeug, um Objekte aufzuteilen, aber wenn dieses Werkzeug auf den Layer vw_tww_reach angewendet wird, resultiert ein Datenbank-Fehler, weil die Obj_IDs des aufgeteilten (= duplizierten) Datensatzes nicht mehr eindeutig sind.</p>
+<p>This is a quite complex function and in the actual version not implemented in TWW. There exists a QGIS-Tool to split objects, but if you use this tool with vw_tww_reach - layer, you will get a database error, because the obj_id of the split (= duplicated) records are no more unique.</p>
 <p>Temporäre Lösung: Die bestehende Haltung ändern und eine zweite Haltung manuell erstellen. Dann auch die Verknüpfungen kontrollieren.</p>
 <p>In TWW ist ein Werkzeug geplant, mit dem Haltung aufgeteilt werden können. Der Benutzer kann wählen ob nur die Haltung aufgeteilt werden soll oder auch die Kanäle, ob ein neuer Abwasserknoten zwischen den Haltung eingefügt und verbunden werden soll. Mit dem Werkzeug sollen die neuen Haltungspunktkoten berechnet werden können die bestehenden Abwassernetzelement-Verknüpfungen sind anzupassen falls notwendig.</p>
 </section>

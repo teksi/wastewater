@@ -61,7 +61,7 @@
 <li class="toctree-l3 current"><a class="current reference internal" href="#">3.3.4. Connexion des éléments du réseau assainissement</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#general">3.3.4.1. Généralités</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#how-to-connect-reaches-to-nodes-or-reaches-to-reaches">3.3.4.2. Comment connecter les tronçons aux noeuds ou les noeuds à d’autres noeuds</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#video-tutorial">3.3.4.3. Tutoriel vidéo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#video-tutorial-not-adapted-for-tww">3.3.4.3. Video Tutorial (not adapted for TWW)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#how-to-delete-a-connection">3.3.4.4. Comment supprimer une connection</a></li>
 </ul>
 </li>
@@ -125,27 +125,41 @@
 <li><p>Peu importe la couche sélectionnée</p></li>
 <li><p>The <strong>vw_tww_reach</strong> layer has to be in edit mode</p></li>
 <li><p>Cliquez sur le bouton <strong>Connecter les éléments du réseau assainissement</strong></p></li>
-<li><p>Si vous passez avec la souris au-dessus d’un tronçon qui peut être connecté, le message “vous pouvez cliquer” s’affiche.</p></li>
+<li><p>If you move the mouse over a reach, that can be connected, it is marked (orange color): you can click</p></li>
 <li><p>Déplacez la souris sur l’élément du réseau auquel le premier objet doit être connecté (rappel: les objets sélectionnables sont surlignés) et cliquez à nouveau</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/connecting_1.jpg" src="../../_images/connecting_1.jpg" />
 </figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>the topology-layers are turned on in the screenshot to show the effect of the connection.</p>
+</div>
 <ul class="simple">
 <li><p>Une fenêtre apparaît, dans laquelle cous pouvez choisir quelle connexion sera définie. Si vous connectez un tronçon, la fenêtre aura cet aspect:</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/connecting_2.jpg" src="../../_images/connecting_2.jpg" />
 </figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>there is no options “Reach Point From” in this example, because in a connection from reach to reach, it is not allowed to connect a From-reach point to another reach.</p>
+</div>
 <ul class="simple">
 <li><p>Si tout est OK, vous verrez apparaître un message dans une barre bleue, au-dessus de la vue de la carte</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/connecting_3.jpg" src="../../_images/connecting_3.jpg" />
 </figure>
+<ul class="simple">
+<li><p>To show the new connection, save your edits, click on the TWW-SQL-Button (refresh network topology) and refresh the screen. Now you can see the new connection in the topology-layers</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/connecting_4.jpg" src="../../_images/connecting_4.jpg" />
+</figure>
 </section>
-<section id="video-tutorial">
-<h2><span class="section-number">3.3.4.3. </span>Tutoriel vidéo<a class="headerlink" href="#video-tutorial" title="Lien vers cette rubrique"></a></h2>
+<section id="video-tutorial-not-adapted-for-tww">
+<h2><span class="section-number">3.3.4.3. </span>Video Tutorial (not adapted for TWW)<a class="headerlink" href="#video-tutorial-not-adapted-for-tww" title="Lien vers cette rubrique"></a></h2>
 <ul class="simple">
 <li><p>Regardez <a class="reference external" href="https://vimeo.com/171536774">ce tutoriel vidéo (QGIS version 2):</a></p></li>
 </ul>
@@ -165,7 +179,8 @@
 <p class="admonition-title">Note</p>
 <p>Soyez conscient des principes de saisie selon le VSA : Un point de tronçon « depuis » (rp_from_fk_wastewater_networkelement) ne devrait jamais être connecté à un autre tronçon.</p>
 </div>
-<p>Par exemple, lorsque un tronçon se déverse directement dans un autre sans structure entre les deux, le tronçon amont devrait être connecté au tronçon aval (rp_from_fk_wastewater_networkelement = downstream reach). Inversement, le tronçon aval ne devrait pas être connecté avec celui en amont. Cette règle s’applique pour les tronçons swwf (réseau secondaire). Pour le réseau pwwf (réseau principal) par contre, il doit toujours y avoir un noeud entre deux tronçons.</p>
+<p>For example, when you have a reach discharging directly into another one without a structure between the two, the upstream reach should be connected to the downstream reach (rp_from_fk_wastewater_networkelement = downstream reach).
+But inversely, the downstream reach shouldn’t be connected to the upstream one. This rule is for swwf-channels (secondary network). In pwwf-network, there must be always a node between two reaches.</p>
 </section>
 </section>
 

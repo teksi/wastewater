@@ -61,7 +61,7 @@
 <li class="toctree-l3 current"><a class="current reference internal" href="#">3.3.4. Abwassernetzwerkselemente verbinden</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#general">3.3.4.1. Allgemeines</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#how-to-connect-reaches-to-nodes-or-reaches-to-reaches">3.3.4.2. Ein Haltung mit einem Knoten oder einer anderen Haltung verbinden</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#video-tutorial">3.3.4.3. Video Tutorial</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#video-tutorial-not-adapted-for-tww">3.3.4.3. Video Tutorial (not adapted for TWW)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#how-to-delete-a-connection">3.3.4.4. Eine Verknüpfung löschen</a></li>
 </ul>
 </li>
@@ -125,27 +125,41 @@
 <li><p>Es spielt keine Rolle, welcher Layer ausgewählt ist</p></li>
 <li><p>Der Layer <strong>vw_tww_reach</strong> muss im Bearbeitungsmodus sein</p></li>
 <li><p>Klicke den <strong>Connect wastewater network elements</strong> Knopf</p></li>
-<li><p>Wenn der Mausezeiger über ein Haltung fährt, die verknüpft werden kann, dann wird die Haltung markiert: jetzt kann man klicken</p></li>
+<li><p>If you move the mouse over a reach, that can be connected, it is marked (orange color): you can click</p></li>
 <li><p>Den Mausezeiger zu einem Abwassernetzelement führen, mit dem das erste Objekt verknüpft werden soll (wieder werden wählbare Objekte markiert) und dort wieder klicken</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/connecting_1.jpg" src="../../_images/connecting_1.jpg" />
 </figure>
+<div class="admonition note">
+<p class="admonition-title">Bemerkung</p>
+<p>the topology-layers are turned on in the screenshot to show the effect of the connection.</p>
+</div>
 <ul class="simple">
 <li><p>Ein Fenster erscheint, in dem gewählt werden kann, welche Verknüpfung definiert wird. Wenn eine Haltung verknüpft wird, sieht das Fenster so aus:</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/connecting_2.jpg" src="../../_images/connecting_2.jpg" />
 </figure>
+<div class="admonition note">
+<p class="admonition-title">Bemerkung</p>
+<p>there is no options ‚Reach Point From‘ in this example, because in a connection from reach to reach, it is not allowed to connect a From-reach point to another reach.</p>
+</div>
 <ul class="simple">
 <li><p>Wenn die Verknüpfung gespeichert wurde, erscheint ein blauer Mitteilungsbalken oben im Kartenfenster</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/connecting_3.jpg" src="../../_images/connecting_3.jpg" />
 </figure>
+<ul class="simple">
+<li><p>To show the new connection, save your edits, click on the TWW-SQL-Button (refresh network topology) and refresh the screen. Now you can see the new connection in the topology-layers</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/connecting_4.jpg" src="../../_images/connecting_4.jpg" />
+</figure>
 </section>
-<section id="video-tutorial">
-<h2><span class="section-number">3.3.4.3. </span>Video Tutorial<a class="headerlink" href="#video-tutorial" title="Link to this heading"></a></h2>
+<section id="video-tutorial-not-adapted-for-tww">
+<h2><span class="section-number">3.3.4.3. </span>Video Tutorial (not adapted for TWW)<a class="headerlink" href="#video-tutorial-not-adapted-for-tww" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Vgl <a class="reference external" href="https://vimeo.com/171536774">das Video Tutorial (QGIS version 2):</a></p></li>
 </ul>
@@ -165,7 +179,8 @@
 <p class="admonition-title">Bemerkung</p>
 <p>Beachte die ‚VSA Erfassungsgrundsätze‘: Ein von-Haltungspunkt (rp_from_fk_wastewater_networkelement) soll nie mit einer anderen Haltung verknüpft werden.</p>
 </div>
-<p>Beispiel: Wenn eine Haltung direkt mit einer anderen Haltung verknüpft ist ohne ein Schachtbauwerk, dann soll die obere Haltung mit der unteren Haltung verknüpft werden (rp_from_fk_wastewater_networkelement = downstream reach). Aber die untere Haltung darf in diesem Fall nicht mit der oberen Haltung verknüpft werden. Diese Regel gilt für SAA-Kanäle (sekundäres Netzwerk). In einem PAA-Netzwerk sind immer Knoten zwischen den Haltungen verknüpft.</p>
+<p>For example, when you have a reach discharging directly into another one without a structure between the two, the upstream reach should be connected to the downstream reach (rp_from_fk_wastewater_networkelement = downstream reach).
+But inversely, the downstream reach shouldn’t be connected to the upstream one. This rule is for swwf-channels (secondary network). In pwwf-network, there must be always a node between two reaches.</p>
 </section>
 </section>
 

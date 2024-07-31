@@ -116,6 +116,7 @@
 <h2><span class="section-number">3.3.3.1. </span>Allgemeines<a class="headerlink" href="#general" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Erhaltungsereignissen können mit einem oder mehreren Abwasserbauwerken verbunden sein. In der Datenbank ist das mit einer re-Zwischentabelle umgesetzt, um die n:m-Beziehung abzubilden (<strong>re_maintenance_event_wastewater_structure</strong>)</p></li>
+<li><p>Maintenance events can be created or linked at the same time a new wastewater structure or a new reach is created.</p></li>
 </ul>
 </section>
 <section id="adding-a-new-maintenance-event">
@@ -123,7 +124,7 @@
 <ul class="simple">
 <li><p>Aktivieren Sie den Bearbeitungsmodus.</p></li>
 <li><p>Mit dem <strong>Objekte abfragen</strong> Werkzeug können Sie <strong>Schächte</strong> oder <strong>Haltungen</strong> auswählen indem sie den zugehörigen Layer auswählen (<strong>vw_tww_Abwasserbauwerk</strong> oder <strong>vw_tww_Haltung</strong>)</p></li>
-<li><p>Das entsprechende Formular öffnet sich. Wechseln Sie zum Reiter <strong>Erhaltungsereignis</strong> .</p></li>
+<li><p>The respective form will open. Change to the <strong>Maintenance_Events</strong> tab.</p></li>
 <li><p>Erstellen Sie ein neues Erhaltungsereignis mit dem <strong>Kindobjekt hinzufügen</strong> Knopf.</p></li>
 </ul>
 <blockquote>
@@ -131,7 +132,7 @@
 <img alt="../../_images/maintenance_add_child.jpg" src="../../_images/maintenance_add_child.jpg" />
 </figure>
 <ul class="simple">
-<li><p>Bearbeite den neuen Datensatz im vw_tww_maintenance Formular, dann klicke den <strong>OK</strong> Knopf</p></li>
+<li><p>Edit the new record in the vw_tww_maintenance_event form, then click <strong>OK</strong></p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/maintenance_new_record.jpg" src="../../_images/maintenance_new_record.jpg" />
@@ -146,15 +147,15 @@
 <ul class="simple">
 <li><p>Aktivieren Sie den Bearbeitungsmodus.</p></li>
 <li><p>Mit dem <strong>Objekte abfragen</strong> Werkzeug können Sie <strong>Schächte</strong> oder <strong>Haltungen</strong> auswählen indem sie den zugehörigen Layer auswählen (<strong>vw_tww_Abwasserbauwerk</strong> oder <strong>vw_tww_Haltung</strong>)</p></li>
-<li><p>Das entsprechende Formular öffnet sich. Wechseln Sie zum Reiter <strong>Erhaltungsereignis</strong> .</p></li>
-<li><p>Klicke den <strong>Vorhandene Kindobjekte verknüpfen</strong> Knopf.</p></li>
+<li><p>The respective form will open. Change to the <strong>Maintenance_Events</strong> tab.</p></li>
+<li><p>Click the <strong>Link existing child feature(s)</strong> button.</p></li>
 </ul>
 <blockquote>
 <div><figure class="align-default">
 <img alt="../../_images/maintenance_link_child.jpg" src="../../_images/maintenance_link_child.jpg" />
 </figure>
 <ul class="simple">
-<li><p>Wähle ein Erhaltungsereignis aus dem <strong>Dialog</strong> Fenster mit Klick in in das Kästchen vor dem Datensatz. Das Kästchen muss gelb sein. Dann auf <strong>OK</strong> klicken</p></li>
+<li><p>Choose a maintenance event from the <strong>Manage linked features for …</strong> window by choosing a record. Then click the <strong>Link selected</strong> button and <strong>OK</strong></p></li>
 <li><p>Schliessen Sie die Fenster mit <strong>OK</strong> und  beenden Sie den Bearbeitungsmodus um die Änderungen zu speichern</p></li>
 </ul>
 </div></blockquote>
@@ -164,16 +165,16 @@
 <ul class="simple">
 <li><p>Aktivieren Sie den Bearbeitungsmodus.</p></li>
 <li><p>Mit dem <strong>Objekte abfragen</strong> Werkzeug können Sie <strong>Schächte</strong> oder <strong>Haltungen</strong> auswählen indem sie den zugehörigen Layer auswählen (<strong>vw_tww_Abwasserbauwerk</strong> oder <strong>vw_tww_Haltung</strong>)</p></li>
-<li><p>Das entsprechende Formular öffnet sich. Wechseln Sie zum Reiter <strong>Erhaltungsereignis</strong> .</p></li>
-<li><p>Wähle ein Erhaltungsereignis mit Klick in das Kästchen vor dem Datensatz (das Kästchen wird gelb), dann klicke den <strong>Kindobjekt löschen</strong> Knopf.</p></li>
+<li><p>The respective form will open. Change to the <strong>Maintenance_Events</strong> tab.</p></li>
+<li><p>Select a maintenance event by clicking in the box (box gets yellow), then click the <strong>Unlink selected child feature(s)</strong> button.</p></li>
 </ul>
 <blockquote>
 <div><figure class="align-default">
-<img alt="../../_images/maintenance_delete_link.jpg" src="../../_images/maintenance_delete_link.jpg" />
+<img alt="../../_images/maintenance_unlink_child.jpg" src="../../_images/maintenance_unlink_child.jpg" />
 </figure>
 <div class="admonition attention">
 <p class="admonition-title">Achtung</p>
-<p>Es wird nur der Datensatz in der RE-Tabelle gelöscht. Der Erhaltungsereignis-Datensatz selbst wird nicht gelöscht. Er kann weiterhin mit anderen Abwasserbauwerken verknüpft werden.</p>
+<p>Unlink means, that there is only the record in the RE-table deleted. The maintenance event record itself is not deleted and can by linked with other wastewater structures. When using the <strong>Delete selected child feature(s)</strong> button, the maintenance_event- and the re_maintenance_event_wastewater_structure-record are deleted.</p>
 </div>
 </div></blockquote>
 </section>
@@ -181,13 +182,14 @@
 <h2><span class="section-number">3.3.3.5. </span>Bearbeitung<a class="headerlink" href="#editing" title="Link to this heading"></a></h2>
 <blockquote>
 <div><ul class="simple">
-<li><p>Machen Sie es wie es beim Hinzufügen beschrieben - aber bearbeiten Sie nur die bereits bestehenden Erhaltungsereignisse. Oder bearbeiten Sie die <strong>vw_tww_maintenance</strong> Tabelle (Layergruppe <strong>Inspektion</strong> )</p></li>
+<li><p>Do as described in adding - but just edit existing maintenance events.</p></li>
+<li><p>Or edit the <strong>vw_tww_maintenance_event</strong> table (in layer group <strong>inspection</strong>)</p></li>
 </ul>
 </div></blockquote>
 </section>
 <section id="multi-edit">
 <h2><span class="section-number">3.3.3.6. </span>Mehrfachbearbeitung<a class="headerlink" href="#multi-edit" title="Link to this heading"></a></h2>
-<p>Multi edit with linked tables is implemented in QGIS. It is possible to create or to link a maintenance event to a selection of reaches or wastewater structures im multiedit-mode.</p>
+<p>Multi edit with linked tables is implemented in QGIS. It is possible to create or to link a maintenance event to a selection of reaches or wastewater structures in multiedit-mode.</p>
 </section>
 </section>
 

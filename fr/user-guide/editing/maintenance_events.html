@@ -117,6 +117,7 @@
 <ul class="simple">
 <li><p>Maintenance events can be connected to one structure or to many.
 Therefore TWW uses a intermediary RE_table to model the n:m relationship (<strong>re_maintenance_event_wastewater_structure</strong>)</p></li>
+<li><p>Maintenance events can be created or linked at the same time a new wastewater structure or a new reach is created.</p></li>
 </ul>
 </section>
 <section id="adding-a-new-maintenance-event">
@@ -124,7 +125,7 @@ Therefore TWW uses a intermediary RE_table to model the n:m relationship (<stron
 <ul class="simple">
 <li><p>Activez le mode d’édition.</p></li>
 <li><p>With the <strong>Identify Features</strong> tool you can select <strong>wastewater_structures</strong> or <strong>reaches</strong> by selecting their corresponding layer (<strong>vw_tww_wastewater_structure</strong> or <strong>vw_tww_reach</strong>).</p></li>
-<li><p>Le formulaire correspondant va s’ouvrir. Allez dans l’onglet <strong>Evénement de maintenance</strong>.</p></li>
+<li><p>The respective form will open. Change to the <strong>Maintenance_Events</strong> tab.</p></li>
 <li><p>Créér un nouvel incident de maintenance avec le bouton <strong>Ajout entité-enfant</strong>.</p></li>
 </ul>
 <blockquote>
@@ -132,7 +133,7 @@ Therefore TWW uses a intermediary RE_table to model the n:m relationship (<stron
 <img alt="../../_images/maintenance_add_child.jpg" src="../../_images/maintenance_add_child.jpg" />
 </figure>
 <ul class="simple">
-<li><p>Edit the new record in the vw_tww_maintenance form, then click <strong>OK</strong></p></li>
+<li><p>Edit the new record in the vw_tww_maintenance_event form, then click <strong>OK</strong></p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/maintenance_new_record.jpg" src="../../_images/maintenance_new_record.jpg" />
@@ -147,15 +148,15 @@ Therefore TWW uses a intermediary RE_table to model the n:m relationship (<stron
 <ul class="simple">
 <li><p>Activez le mode d’édition.</p></li>
 <li><p>With the <strong>Identify Features</strong> tool you can select <strong>wastewater_structures</strong> or <strong>reaches</strong> by selecting their corresponding layer (<strong>vw_tww_wastewater_structure</strong> or <strong>vw_tww_reach</strong>).</p></li>
-<li><p>Le formulaire correspondant va s’ouvrir. Allez dans l’onglet <strong>Evénement de maintenance</strong>.</p></li>
-<li><p>Cliquez sur le bouton <strong>Lier entités-enfant existantes</strong>.</p></li>
+<li><p>The respective form will open. Change to the <strong>Maintenance_Events</strong> tab.</p></li>
+<li><p>Click the <strong>Link existing child feature(s)</strong> button.</p></li>
 </ul>
 <blockquote>
 <div><figure class="align-default">
 <img alt="../../_images/maintenance_link_child.jpg" src="../../_images/maintenance_link_child.jpg" />
 </figure>
 <ul class="simple">
-<li><p>Choose a maintenance event from the <strong>Dialog</strong> window by clicking in the box of the record. The box must by yellow. Then click <strong>OK</strong></p></li>
+<li><p>Choose a maintenance event from the <strong>Manage linked features for …</strong> window by choosing a record. Then click the <strong>Link selected</strong> button and <strong>OK</strong></p></li>
 <li><p>Fermez la fenêtre en cliquant sur <strong>OK</strong> et désélectionnez le mode d’édition pour enregistrer les modifications.</p></li>
 </ul>
 </div></blockquote>
@@ -165,16 +166,16 @@ Therefore TWW uses a intermediary RE_table to model the n:m relationship (<stron
 <ul class="simple">
 <li><p>Activez le mode d’édition.</p></li>
 <li><p>With the <strong>Identify Features</strong> tool you can select <strong>wastewater_structures</strong> or <strong>reaches</strong> by selecting their corresponding layer (<strong>vw_tww_wastewater_structure</strong> or <strong>vw_tww_reach</strong>).</p></li>
-<li><p>Le formulaire correspondant va s’ouvrir. Allez dans l’onglet <strong>Evénement de maintenance</strong>.</p></li>
-<li><p>Sélectionner un incident de maintenance en cliquant dans le case (la case devient jaune), puis cliquez sur le bouton <strong>Delete child feature</strong></p></li>
+<li><p>The respective form will open. Change to the <strong>Maintenance_Events</strong> tab.</p></li>
+<li><p>Select a maintenance event by clicking in the box (box gets yellow), then click the <strong>Unlink selected child feature(s)</strong> button.</p></li>
 </ul>
 <blockquote>
 <div><figure class="align-default">
-<img alt="../../_images/maintenance_delete_link.jpg" src="../../_images/maintenance_delete_link.jpg" />
+<img alt="../../_images/maintenance_unlink_child.jpg" src="../../_images/maintenance_unlink_child.jpg" />
 </figure>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
-<p>Seul la liaison stockée dans la RE-table est supprimé. Les événements de maintenance ne sont pas supprimés et peuvent toujours être reliés à d’autres ouvrages.</p>
+<p>Unlink means, that there is only the record in the RE-table deleted. The maintenance event record itself is not deleted and can by linked with other wastewater structures. When using the <strong>Delete selected child feature(s)</strong> button, the maintenance_event- and the re_maintenance_event_wastewater_structure-record are deleted.</p>
 </div>
 </div></blockquote>
 </section>
@@ -182,13 +183,14 @@ Therefore TWW uses a intermediary RE_table to model the n:m relationship (<stron
 <h2><span class="section-number">3.3.3.5. </span>Édition<a class="headerlink" href="#editing" title="Lien vers cette rubrique"></a></h2>
 <blockquote>
 <div><ul class="simple">
-<li><p>Do as described in adding - but just edit existing maintenance events. Or edit the <strong>vw_tww_maintenance</strong> table (layer group <strong>inspection</strong>)</p></li>
+<li><p>Do as described in adding - but just edit existing maintenance events.</p></li>
+<li><p>Or edit the <strong>vw_tww_maintenance_event</strong> table (in layer group <strong>inspection</strong>)</p></li>
 </ul>
 </div></blockquote>
 </section>
 <section id="multi-edit">
 <h2><span class="section-number">3.3.3.6. </span>Multi Edit<a class="headerlink" href="#multi-edit" title="Lien vers cette rubrique"></a></h2>
-<p>Multi edit with linked tables is implemented in QGIS. It is possible to create or to link a maintenance event to a selection of reaches or wastewater structures im multiedit-mode.</p>
+<p>Multi edit with linked tables is implemented in QGIS. It is possible to create or to link a maintenance event to a selection of reaches or wastewater structures in multiedit-mode.</p>
 </section>
 </section>
 

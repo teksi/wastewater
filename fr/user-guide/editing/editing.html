@@ -56,7 +56,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../digitizing/index.html">3.2. Digitizing in TWW</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">3.3. Editing in TWW</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">3.3.1. Modification de données existantes</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#demo-project">3.3.1.1. Projet Demo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#demo-project-chapter-pictures-not-adjusted-to-tww">3.3.1.1. Demo project (chapter / pictures not adjusted to TWW)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#layers">3.3.1.2. Couches</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#changing-attributes-of-point-elements-manholes-special-structures">3.3.1.3. Changer les attributs des éléments de type point (chambres / structures spéciales)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#changing-attributes-of-linear-elements-channels">3.3.1.4. Modification des attributs des éléments linéaires (conduites)</a></li>
@@ -68,7 +68,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#adding-a-wastewater-node-to-an-existing-reach">3.3.1.10. Ajouter un noeud assainissement à un tronçon existant</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#multiedit">3.3.1.11. Edition multiple</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#saving-changes">3.3.1.12. Sauver les modifications</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#changing-wastewater-structure-type">3.3.1.13. Changing Wastewater Structure Type</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#changing-wastewater-structure-type-ws-type">3.3.1.13. Changing Wastewater Structure Type (ws_type)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#split-a-reach-channel-into-different-reaches">3.3.1.14. Séparer un tronçon (conduite) en différents tronçons</a></li>
 </ul>
 </li>
@@ -120,27 +120,27 @@
   <section id="editing-of-existing-data">
 <span id="editing-data"></span><h1><span class="section-number">3.3.1. </span>Modification de données existantes<a class="headerlink" href="#editing-of-existing-data" title="Lien vers cette rubrique"></a></h1>
 <p>This represents a guide on how to edit existing data in TWW.</p>
-<section id="demo-project">
-<h2><span class="section-number">3.3.1.1. </span>Projet Demo<a class="headerlink" href="#demo-project" title="Lien vers cette rubrique"></a></h2>
+<section id="demo-project-chapter-pictures-not-adjusted-to-tww">
+<h2><span class="section-number">3.3.1.1. </span>Demo project (chapter / pictures not adjusted to TWW)<a class="headerlink" href="#demo-project-chapter-pictures-not-adjusted-to-tww" title="Lien vers cette rubrique"></a></h2>
 <ul class="simple">
 <li><p>Assurez-vous d’avoir bien importé le projet demo dans pgAdminIII (voir le chapitre <span class="xref std std-ref">initialisation-base de données</span>)</p></li>
 <li><p>Open the demo project by going to the main menu and press <strong>Project</strong> –&gt; <strong>Open</strong>  or by pressing <code class="docutils literal notranslate"><span class="pre">CTRL</span></code>
 + <code class="docutils literal notranslate"><span class="pre">O</span></code> at the same time.</p></li>
 </ul>
 <figure class="align-default">
-<a class="reference internal image-reference" href="user-guide/editing/images/tww_demoproject_selection_tww_en_qgs.jpg"><img alt="user-guide/editing/images/tww_demoproject_selection_tww_en_qgs.jpg" src="user-guide/editing/images/tww_demoproject_selection_tww_en_qgs.jpg" /></a>
+<a class="reference internal image-reference" href="../../_images/tww_demoproject_old_selection_.jpg"><img alt="../../_images/tww_demoproject_old_selection_.jpg" src="../../_images/tww_demoproject_old_selection_.jpg" style="width: 800.0px; height: 450.0px;" /></a>
 </figure>
 <ul class="simple">
 <li><p>Identifiez-vous à la base de données</p></li>
 </ul>
 <figure class="align-default">
-<img alt="user-guide/editing/images/tww_demoproject_login.jpg" src="user-guide/editing/images/tww_demoproject_login.jpg" />
+<img alt="../../_images/tww_demoproject_old_login.jpg" src="../../_images/tww_demoproject_old_login.jpg" />
 </figure>
 <ul class="simple">
 <li><p>You should now have the demo project loaded</p></li>
 </ul>
 <figure class="align-default">
-<img alt="user-guide/editing/images/tww_demoproject_overview.jpg" src="user-guide/editing/images/tww_demoproject_overview.jpg" />
+<img alt="../../_images/tww_demoproject_old_overview.jpg" src="../../_images/tww_demoproject_old_overview.jpg" />
 </figure>
 <ul class="simple">
 <li><p>Le projet consiste en différentes couches. Choisissez les couches à éditer selon votre tâche.</p></li>
@@ -171,38 +171,44 @@
 </figure>
 <ul class="simple">
 <li><p>On the first tab (General) you can change the most common attributes</p></li>
-<li><p>Pour modifier les attributs de tables liées aux structures d’assainissement (p. ex. couvercle), vous devez sélectionnez l’onglet correspondant. Des attributs additionnels peuvent être édités selon le type de structures (<strong>structure spéciale</strong>, <strong>regard</strong>).</p></li>
+<li><p>Main Cover and Main Node are the first cover / node defined for the wastewater structure.</p></li>
+<li><p>Additional attributes of table wastewater structure and fo the selected subclass can be changed on tab Wastewater structure</p></li>
+<li><p>To change attributes of related tables (e.g. cover) you need to select the correspondent tab.</p></li>
 <li><p>In <strong>Structure parts</strong> tab you can add further parts such as <strong>access aids</strong>, <strong>backflow prevention</strong>, <strong>dryweather flume</strong> etc.</p></li>
 </ul>
 <figure class="align-default">
-<img alt="user-guide/editing/images/form_vw_tww_wastewater_structure_structure_parts.jpg" src="user-guide/editing/images/form_vw_tww_wastewater_structure_structure_parts.jpg" />
+<img alt="../../_images/form_vw_tww_wastewater_structure_structure_parts.jpg" src="../../_images/form_vw_tww_wastewater_structure_structure_parts.jpg" />
 </figure>
 <ul class="simple">
 <li><p>The <strong>covers</strong> and <strong>wastewater nodes</strong> tab allows you to look to all nodes or covers of a wastewater structure and to add further elements. See the <a class="reference internal" href="#adding-additional-covers-and-nodes-to-an-existing-wastewater-structure"><span class="std std-ref">Ajouter des couvercles et noeuds additionnels à une structure assainissement existante</span></a> chapter below.</p></li>
 </ul>
 </div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>additional fields</strong> means, that some fields of the class are in the general tab, others are in separat tabs. The fields of the general tab are not repeated, because Multiedit does not work correct when using a field on more than one tab.</p>
+</div>
 </section>
 <section id="changing-attributes-of-linear-elements-channels">
 <h2><span class="section-number">3.3.1.4. </span>Modification des attributs des éléments linéaires (conduites)<a class="headerlink" href="#changing-attributes-of-linear-elements-channels" title="Lien vers cette rubrique"></a></h2>
 <blockquote>
 <div><ul class="simple">
-<li><p>To change an attribute you first need to select the <strong>vw_tww_reach</strong></p></li>
+<li><p>To change an attribute you first need to select <strong>vw_tww_reach</strong></p></li>
 <li><p>Basculez en mode d’édition.</p></li>
 <li><p>Then click on the <strong>Identify features</strong> button and click the reach you want to edit.</p></li>
-<li><p>The <strong>vw_tww_reach</strong> form will open.</p></li>
+<li><p>The <strong>vw_tww_reach</strong> feature attributs window will open.</p></li>
 </ul>
 <blockquote>
 <div><figure class="align-default">
-<img alt="user-guide/editing/images/form_vw_tww_reach.jpg" src="user-guide/editing/images/form_vw_tww_reach.jpg" />
+<img alt="../../_images/form_vw_tww_reach.jpg" src="../../_images/form_vw_tww_reach.jpg" />
 </figure>
 </div></blockquote>
 <ul class="simple">
 <li><p>On the first tab (<strong>General</strong>) you can change the most common attributes.</p></li>
-<li><p>Pour modifier les attributs des tables liées (p. ex. <strong>points de tronçon</strong>), sélectionnez l’onglet correspondant.</p></li>
+<li><p>To change additional attributes of related tables (e.g. <strong>reach points</strong>) select the correspondent tab.</p></li>
 </ul>
 <blockquote>
 <div><figure class="align-default">
-<img alt="user-guide/editing/images/form_vw_tww_reach_reachpoints.jpg" src="user-guide/editing/images/form_vw_tww_reach_reachpoints.jpg" />
+<img alt="../../_images/form_vw_tww_reach_reachpoints.jpg" src="../../_images/form_vw_tww_reach_reachpoints.jpg" />
 </figure>
 </div></blockquote>
 </div></blockquote>
@@ -226,7 +232,7 @@ Do not use the <strong>Reverse line</strong> button of QGIS, because this button
 <li><p>Faites un double clic sur l’outil <strong>Changer la direction du tronçon</strong></p></li>
 </ul>
 <figure class="align-default">
-<img alt="user-guide/editing/images/tww_toolbox.jpg" src="user-guide/editing/images/tww_toolbox.jpg" />
+<img alt="../../_images/tww_toolbox.jpg" src="../../_images/tww_toolbox.jpg" />
 </figure>
 <ul class="simple">
 <li><p>In the tool window you have to choose the <strong>vw_tww_reach</strong> - Layer and then click on <strong>Run</strong></p></li>
@@ -249,7 +255,7 @@ Do not use the <strong>Reverse line</strong> button of QGIS, because this button
 <li><p>Double click the <strong>Snap reach geometry</strong> tool</p></li>
 </ul>
 <figure class="align-default">
-<img alt="user-guide/editing/images/tww_toolbox.jpg" src="user-guide/editing/images/tww_toolbox.jpg" />
+<img alt="../../_images/tww_toolbox2.jpg" src="../../_images/tww_toolbox2.jpg" />
 </figure>
 <ul class="simple">
 <li><p>In the tool window you have to choose the <strong>vw_tww_reach</strong> - layer and the <strong>vw_wastewater_node</strong> - layer, then click on <strong>Run</strong></p></li>
@@ -259,7 +265,7 @@ Do not use the <strong>Reverse line</strong> button of QGIS, because this button
 <p>If there are connections from reach to reach, the reach point moves at right angles to the other reach. If there is no way to do a right angle, it moves to the next end point of the reach.</p>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
-<p>If there is snapping from reach to reach, you will get not the expected result, if the first reach snaps to a second reach, and afterwards this second reach snaps to a node or a third reach, there will be no more graphical connection between reach 1 and reach 2. You have to rerun the command.</p>
+<p>If there is snapping from reach to reach, you will get not the expected result, if the first reach snaps to a second reach, and afterwards this second reach snaps to a node or a third reach. There will be no more graphical connection between reach 1 and reach 2. You have to re-run the command.</p>
 </div>
 </section>
 <section id="working-with-codes-of-value-list">
@@ -270,7 +276,7 @@ Do not use the <strong>Reverse line</strong> button of QGIS, because this button
 <blockquote>
 <div><div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The codes are unique, also if there is the same text in different value lists. E.g. the code for « rain_wastewater » in the vl_channel_usage_current and in the vl_channel_usage_planned is different.</p>
+<p>The codes are unique, also if there is the same text in different value lists. E.g. the code for « surface_wastewater » in the vl_channel_usage_current and in the vl_channel_usage_planned is different.</p>
 </div>
 </div></blockquote>
 <ul class="simple">
@@ -310,7 +316,7 @@ Do not use the <strong>Reverse line</strong> button of QGIS, because this button
 </ul>
 <blockquote>
 <div><figure class="align-default">
-<img alt="user-guide/editing/images/tww_info_button_rightclick.jpg" src="user-guide/editing/images/tww_info_button_rightclick.jpg" />
+<img alt="../../_images/tww_info_button_rightclick.jpg" src="../../_images/tww_info_button_rightclick.jpg" />
 </figure>
 <ul class="simple">
 <li><p>Vous pouvez alors sélectionner l’objet désiré. Ceci ouvrira le formulaire correspondant contenant les informations détaillées.</p></li>
@@ -323,27 +329,18 @@ Do not use the <strong>Reverse line</strong> button of QGIS, because this button
 <p class="admonition-title">Note</p>
 <p>The following description is for an additional cover. It works similar for additional wastewater nodes.</p>
 </div>
+<p>The TWW project is configured that you can add an additional cover with the <strong>Add Point Child Feature</strong> button.</p>
 <ul class="simple">
-<li><p>Be sure to have the relation between vw_cover (field fk_wastewater_structure) and vw_tww_wastewater_structure (field obj_id) in your project properties / relations.</p></li>
-<li><p>Define in layer vw_cover / Properties / <strong>Attribute Forms</strong> the field <strong>fk_wastewater_structure</strong> as value relation</p></li>
-</ul>
-<figure class="align-default">
-<img alt="../../_images/vw_cover_properties_fields.jpg" src="../../_images/vw_cover_properties_fields.jpg" />
-</figure>
-<ul class="simple">
-<li><p>With QGIS 3.16 there is a new way: select layer vw_tww_wastewater_structure, set it editable, click the manhole you want to add a cover with the <strong>Identify feature</strong> tool. Go to tab <strong>covers</strong> and click the new child point-button. Now you can digitize a new cover for the wastewater structure.</p></li>
+<li><p>select layer vw_tww_wastewater_structure</p></li>
+<li><p>Switch to the edit mode</p></li>
+<li><p>click the manhole you want to add a cover with the <strong>Identify feature</strong> tool</p></li>
+<li><p>Go to tab <strong>covers</strong> and click the Add Point Child Feature-button. Now you can digitize a new cover for the wastewater structure.</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/new_cover_childpoint.jpg" src="../../_images/new_cover_childpoint.jpg" />
 </figure>
-<ul class="simple">
-<li><p>The other way (before QGIS 3.16)</p></li>
-<li><p>Commencez par éditer la couche <strong>vw_couvercle</strong> et ajoutez le nouveau couvercle</p></li>
-<li><p>Dans le formulaire, derrière le champ <strong>fk_structure_assainissement</strong>, vous trouverez un bouton pour connecter le nouveau couvercle à une structure assainissement existante.</p></li>
-<li><p>After clicking this button, you get blue hint in the qgis-window. You can move the vw_cover - form-window and click on the wastewater_structure, that will be associated to the cover.</p></li>
-</ul>
 <figure class="align-default">
-<img alt="../../_images/new_cover_connect_to_wws.jpg" src="../../_images/new_cover_connect_to_wws.jpg" />
+<img alt="../../_images/new_cover_childpoint_message.jpg" src="../../_images/new_cover_childpoint_message.jpg" />
 </figure>
 </section>
 <section id="adding-a-wastewater-node-to-an-existing-reach">
@@ -354,7 +351,7 @@ Do not use the <strong>Reverse line</strong> button of QGIS, because this button
 <p>This cases are mainly in pwwf_channels (primary wastewater facilities) if there is e.g. a change of slope or a change of the material or if there is a connection of two channels without manhole (in German: Blindanschluss).</p>
 </div>
 <p>In the data model, you can connect a node between reaches to a channel (because also a channel is a wastewater structure). There is in the moment a discussion, if it is necessary or optional or even forbidden to define a connection to a wastewater structure.</p>
-<p>In TWW, there is in the moment no tool, that helps you to connect a wastewater node to a channel. So you just connect the reach points to the node.</p>
+<p>In TWW, there is in the moment no tool, that helps you to connect a wastewater node to a channel. So you just connect the reaches (reach points) to the node.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>If you really want to connect the node to a channel, then type the obj_id of the channel manually in the fk_wasterwater_structure field of the node.</p>
@@ -362,17 +359,21 @@ Do not use the <strong>Reverse line</strong> button of QGIS, because this button
 </section>
 <section id="multiedit">
 <h2><span class="section-number">3.3.1.11. </span>Edition multiple<a class="headerlink" href="#multiedit" title="Lien vers cette rubrique"></a></h2>
-<p>If you want to edit attributes for multiple objects of the same class you can use the <a class="reference external" href="https://docs.qgis.org/latest/en/docs/user_manual/working_with_vector/attribute_table.html#multi-edit-fields">multiedit Tool of QGIS</a>.</p>
+<p>If you want to edit attributes for multiple objects of the same layer you can use the <a class="reference external" href="https://docs.qgis.org/latest/en/docs/user_manual/working_with_vector/attribute_table.html#multi-edit-fields">multiedit Tool of QGIS</a>.</p>
 </section>
 <section id="saving-changes">
 <h2><span class="section-number">3.3.1.12. </span>Sauver les modifications<a class="headerlink" href="#saving-changes" title="Lien vers cette rubrique"></a></h2>
 <ul class="simple">
-<li><p>Click <strong>Save</strong> and then deactivate the edit mode or click on <strong>Stop data entry</strong> if you have worked with the <strong>TWW Data Entry</strong> wizard.</p></li>
+<li><p>Click <strong>Save</strong> and then deactivate the edit mode or click on <strong>Stop data entry</strong> if you have worked with the TWW <strong>Wizard</strong>.</p></li>
 </ul>
 </section>
-<section id="changing-wastewater-structure-type">
-<h2><span class="section-number">3.3.1.13. </span>Changing Wastewater Structure Type<a class="headerlink" href="#changing-wastewater-structure-type" title="Lien vers cette rubrique"></a></h2>
-<p>In the vw_tww_wastewater_structure form, you can change the subclass of the wastewater structure (e.g. from manhole to special structure or to infiltration installation). The old subclass-record will be deleted and you must enter those attributes, that are subclass specific. But all connections (they are defined to the class wastewater_structure and not to the subclass) or the obj_id or the identifier will not change.</p>
+<section id="changing-wastewater-structure-type-ws-type">
+<h2><span class="section-number">3.3.1.13. </span>Changing Wastewater Structure Type (ws_type)<a class="headerlink" href="#changing-wastewater-structure-type-ws-type" title="Lien vers cette rubrique"></a></h2>
+<p>In the vw_tww_wastewater_structure form, you can change the subclass of the wastewater structure (e.g. from manhole to special structure or to infiltration installation) with the field <strong>ws_type</strong>. The old subclass-record will be deleted and you must enter those attributes, that are subclass specific. But all connections (they are defined to the class wastewater_structure and not to the subclass) or the obj_id or the identifier will not change.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There are just four subclasses supported in the moment: manhole, special_structure, infiltration_installation, discharge_point. Other subclasses (wwtp_structure, small_treatment_plant, drainless_toilett) will be supported in a next release of TWW.</p>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Vous ne pouvez pas changer un élément ponctuel assainissement (p.ex. regard) en élément linéaire assainissement (p.ex. conduite) ou vice versa.</p>
@@ -380,7 +381,7 @@ Do not use the <strong>Reverse line</strong> button of QGIS, because this button
 </section>
 <section id="split-a-reach-channel-into-different-reaches">
 <h2><span class="section-number">3.3.1.14. </span>Séparer un tronçon (conduite) en différents tronçons<a class="headerlink" href="#split-a-reach-channel-into-different-reaches" title="Lien vers cette rubrique"></a></h2>
-<p>This is a quite complex function and not jet implemented in TWW. There exists a QGIS-Tool to split objects, but if you use this tool with vw_tww_reach - layer, you will get a database error, because the obj_id of the split (= duplicated) records are no more unique.</p>
+<p>This is a quite complex function and in the actual version not implemented in TWW. There exists a QGIS-Tool to split objects, but if you use this tool with vw_tww_reach - layer, you will get a database error, because the obj_id of the split (= duplicated) records are no more unique.</p>
 <p>Solution temporaire: Changez le tronçon existant et dessinez le second tronçon manuellement. Contrôlez les connexions.</p>
 <p>There will be later a tool in TWW to split reaches. The user has to decide, if splitting concerns only class reach or also the class channel, if there a new wastewater node shall be added and connected. The tool shall be able to calculate the new reachpoint - levels and should change the existing network-element-connections if necessary.</p>
 </section>
