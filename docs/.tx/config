@@ -54,9 +54,3 @@ source_file = i18n/pot/translation.pot
 source_lang = en
 file_filter = i18n/<lang>/translation.po
 type = PO
-
-[o:teksi:p:tww-docs:r:extension-guide]
-source_file = i18n/pot/extension-guide.pot
-source_lang = en
-file_filter = i18n/<lang>/extension-guide.po
-type = PO
