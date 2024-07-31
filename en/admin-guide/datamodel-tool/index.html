@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>4.6. Data-model tool &mdash; TWW dev documentation</title>
+  <title>4.6. Data model tool &mdash; TWW dev documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
 
@@ -57,7 +57,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../security/index.html">4.3. User Roles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../interlis-io/index.html">4.4. INTERLIS Data exchange</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../db-customization/index.html">4.5. Customization of the data model</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">4.6. Data-model tool</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.6. Data model tool</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#setup">4.6.1. Setup</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#usage">4.6.2. Usage</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#main-dialog">4.6.2.1. Main dialog</a></li>
@@ -90,7 +90,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">4. </span>Admin Guide</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">4.6. </span>Data-model tool</li>
+      <li class="breadcrumb-item active"><span class="section-number">4.6. </span>Data model tool</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/admin-guide/datamodel-tool/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -101,14 +101,15 @@
            <div itemprop="articleBody">
              
   <section id="data-model-tool">
-<h1><span class="section-number">4.6. </span>Data-model tool<a class="headerlink" href="#data-model-tool" title="Link to this heading"></a></h1>
-<p>The plugin contains a data-model tool capable of initializing and upgrading a TWW database.</p>
+<h1><span class="section-number">4.6. </span>Data model tool<a class="headerlink" href="#data-model-tool" title="Link to this heading"></a></h1>
+<p>Data model tool not yet integrated in TEKSI wastewater</p>
+<p>The plugin contains a data model tool capable of initializing and upgrading a TWW database.</p>
 <p>It is aimed at system administrators and power users, and should not be used by end users, as it
 could lead to data loss if not used properly.</p>
 <p>For advanced cases, it is also possible to <a class="reference external" href="../db-update-pum/index.html">upgrade your database manually</a></p>
 <section id="setup">
 <h2><span class="section-number">4.6.1. </span>Setup<a class="headerlink" href="#setup" title="Link to this heading"></a></h2>
-<p>The data-model tool is hidden by default. To make it visible, you must first enable <code class="docutils literal notranslate"><span class="pre">Admin</span> <span class="pre">mode</span></code>
+<p>The data model tool is hidden by default. To make it visible, you must first enable <code class="docutils literal notranslate"><span class="pre">Admin</span> <span class="pre">mode</span></code>
 in the plugin settings :</p>
 <ul class="simple">
 <li><p>Go to <code class="docutils literal notranslate"><span class="pre">Plugin</span> <span class="pre">&gt;</span> <span class="pre">TWW</span> <span class="pre">&gt;</span> <span class="pre">Settings</span></code></p></li>
@@ -116,7 +117,7 @@ in the plugin settings :</p>
 <li><p>Check <code class="docutils literal notranslate"><span class="pre">Admin</span> <span class="pre">mode</span></code></p></li>
 <li><p>Restart QGIS</p></li>
 </ul>
-<p>The data-model tool should now appear under <code class="docutils literal notranslate"><span class="pre">Plugin</span> <span class="pre">&gt;</span> <span class="pre">TWW</span> <span class="pre">&gt;</span> <span class="pre">Datamodel</span> <span class="pre">tool</span></code></p>
+<p>The data model tool should now appear under <code class="docutils literal notranslate"><span class="pre">Plugin</span> <span class="pre">&gt;</span> <span class="pre">TWW</span> <span class="pre">&gt;</span> <span class="pre">Data</span> <span class="pre">model</span> <span class="pre">tool</span></code></p>
 </section>
 <section id="usage">
 <h2><span class="section-number">4.6.2. </span>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h2>
@@ -151,7 +152,7 @@ in the plugin settings :</p>
 <p>Refer to the <a class="reference external" href="../../installation-guide/workstation.html">installation guide</a> to know more about the <code class="docutils literal notranslate"><span class="pre">pg_service.conf</span></code> file.</p>
 </div></blockquote>
 </li>
-<li><p><strong>Datamodel</strong></p>
+<li><p><strong>Data model</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><p><strong>Current version</strong>: shows the current version of the datamodel found in the selected database</p></li>
@@ -171,7 +172,7 @@ in the plugin settings :</p>
 </section>
 <section id="troubleshooting">
 <h3><span class="section-number">4.6.2.2. </span>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h3>
-<p>In case you encounter issues or errors when using the datamodel tool, make sure to look at the
+<p>In case you encounter issues or errors when using the data model tool, make sure to look at the
 TWW tab in the logs, as it may contain useful information (including errors returned by underlying tools).</p>
 <p>Make sure to include this information if submitting a bug report or asking for support.</p>
 </section>
@@ -189,7 +190,7 @@ TWW tab in the logs, as it may contain useful information (including errors retu
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2023, The TWW Project www.teksi.ch.</p>
+    <p>&#169; Copyright 2024, The TWW Project www.teksi.ch.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
