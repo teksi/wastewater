@@ -8,7 +8,7 @@ This represents a guide on how to edit existing data in TWW.
 Demo project (chapter / pictures not adjusted to TWW)
 ------------
 
-* Make sure you have imported the demo project with pgAdminIII (see the :ref:`database-initialization` chapter)
+* Make sure you have imported the demo project with pgAdmin (see the :ref:`database-initialization` chapter)
 * Open the demo project by going to the main menu and press **Project** --> **Open**  or by pressing ``CTRL``
   + ``O`` at the same time.
 
@@ -174,6 +174,7 @@ The TWW project is configured that you can add an additional cover with the **Ad
 .. figure:: images/new_cover_childpoint.jpg
 
 .. figure:: images/new_cover_childpoint_message.jpg
+
 
 Adding a wastewater node to an existing reach
 ---------------------------------------------
