@@ -196,7 +196,7 @@ class DatabaseUtils:
 
         defaults = []
         vals = []
-        for row in DatabaseUtils.fetchall(
+        for igem in DatabaseUtils.fetchall(
             "SELECT fieldname,value_obj_id from tww_od.default_values;"
         ):
             defaults.append(item[0])
