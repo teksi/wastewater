@@ -61,14 +61,26 @@ Back in pgAdmin :
 
 * Propably you want to rename the database: Right click the database, click `Properties...` and rename the database.
 
-There are now 7 schemas in the database (public, tww_import, tww_network, tww_swmm, tww_od, tww_sys, tww_vl)
+There are now 7 `schemas <https://teksi.github.io/wastewater/en/user-guide/layerexplanations/namingconventions.html#schemas-in-the-tww-database>`_ in the database
+
++ public
++ tww_import
++ tww_network
++ tww_swmm
++ tww_od
++ tww_sys
++ tww_vl
+
 
 Create  minimal roles and access
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. note:: The TWW roles are defined in the https://github.com/TWW/datamodel/blob/master/12_0_roles.sql (per cluster) and https://github.com/TWW/datamodel/blob/master/12_1_roles.sql (per database) files. It is recommended to use these when using TWW in a production environment.
+.. note:: The TWW roles are defined in the `12_0_roles.sql <https://github.com/TWW/datamodel/blob/master/12_0_roles.sql>`_ (per cluster) 
+and `12_1_roles.sql <https://github.com/TWW/datamodel/blob/master/12_1_roles.sql>`_ (per database) files. 
 
-Copy paste and run the two .sql one after the other in the query editor of pgAdmin4 (Tools > Query Tool).
+It is recommended to use these when using TWW in a production environment.
+
+Copy paste and run the two .sql one after the other in the query editor of pgAdmin (Tools > Query Tool).
 
 Empty data model
 ^^^^^^^^^^^^^^^^
