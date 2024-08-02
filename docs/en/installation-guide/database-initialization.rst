@@ -75,8 +75,8 @@ There are now 7 `schemas <https://teksi.github.io/wastewater/en/user-guide/layer
 Create  minimal roles and access
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. note:: The TWW roles are defined in the `12_0_roles.sql <https://github.com/TWW/datamodel/blob/master/12_0_roles.sql>`_ (per cluster) 
-and `12_1_roles.sql <https://github.com/TWW/datamodel/blob/master/12_1_roles.sql>`_ (per database) files. 
+.. note:: The TWW roles are defined in the `12_0_roles.sql <https://github.com/TWW/datamodel/blob/master/12_0_roles.sql>`_ (per cluster)
+and `12_1_roles.sql <https://github.com/TWW/datamodel/blob/master/12_1_roles.sql>`_ (per database) files.
 
 It is recommended to use these when using TWW in a production environment.
 
