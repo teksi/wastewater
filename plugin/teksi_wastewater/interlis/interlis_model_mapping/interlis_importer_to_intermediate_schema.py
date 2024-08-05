@@ -2227,7 +2227,7 @@ class InterlisImporterToIntermediateSchema:
 
     def _import_erhaltungsereignis_abwasserbauwerkassoc(self):
         for row in self.session_interlis.query(self.model_classes_interlis.erhaltungsereignis_abwasserbauwerkassoc):
-            file_table_row = self.create_or_update(
+            re_maintenance_event_wastewater_structure = self.create_or_update(
                 self.model_classes_tww_od.re_maintenance_event_wastewater_structure,
                 **self.base_common(row),
                 # --- re_maintenance_event_wastewater_structure ---
