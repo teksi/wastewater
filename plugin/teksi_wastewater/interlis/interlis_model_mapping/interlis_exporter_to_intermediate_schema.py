@@ -2410,7 +2410,7 @@ class InterlisExporterToIntermediateSchema:
             # fk_dataowner, fk_provider, fk_wastewater_structure, identifier, last_modification, remark, renovation_demand
 
             # --- backflow_prevention ---
-            # gross_costs, kind, year_of_replacement, obj_id
+            # gross_costs, kind, obj_id, year_of_replacement
 
             # --- _bwrel_ ---
             # access_aid_kind__BWREL_obj_id, backflow_prevention__BWREL_obj_id, benching_kind__BWREL_obj_id, dryweather_flume_material__BWREL_obj_id, electric_equipment__BWREL_obj_id, electromechanical_equipment__BWREL_obj_id, solids_retention__BWREL_obj_id, flushing_nozzle__BWREL_obj_id, tank_cleaning__BWREL_obj_id, tank_emptying__BWREL_obj_id
