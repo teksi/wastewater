@@ -349,6 +349,10 @@ class InterlisImporterToIntermediateSchema:
         self._import_versickerungsbereich()
         self._check_for_stop()
 
+        logger.info("\nImporting ABWASSER.erhaltungsereignis_abwasserbauwerkassoc  -> TWW.re_maintenance_event_wastewater_structure")
+        self._import_erhaltungsereignis_abwasserbauwerkassoc ()
+        self._check_for_stop()
+
     def _import_vsa_kek(self):
         logger.info("\nImporting ABWASSER.untersuchung -> TWW.examination")
         self._import_untersuchung()
@@ -368,6 +372,10 @@ class InterlisImporterToIntermediateSchema:
 
         logger.info("\nImporting ABWASSER.datei -> TWW.file")
         self._import_datei()
+        self._check_for_stop()
+
+        logger.info("\nImporting ABWASSER.erhaltungsereignis_abwasserbauwerkassoc  -> TWW.re_maintenance_event_wastewater_structure")
+        self._import_erhaltungsereignis_abwasserbauwerkassoc ()
         self._check_for_stop()
 
     def close_sessions(self, skip_closing_tww_session=False):
