@@ -141,8 +141,10 @@ class InterlisImporterToIntermediateSchema:
         logger.info("\nImporting ABWASSER.Spuelstutzen -> TWW.flushing_nozzle")
         self._import_spuelstutzen()
         self._check_for_stop()
-        
-        logger.info("\nImporting ABWASSER.abwasserbauwerk_symbol -> TWW.wastewater_structure_symbol")
+
+        logger.info(
+            "\nImporting ABWASSER.abwasserbauwerk_symbol -> TWW.wastewater_structure_symbol"
+        )
         self._import_abwasserbauwerk_symbol()
         self._check_for_stop()
 
@@ -2062,7 +2064,9 @@ class InterlisImporterToIntermediateSchema:
                 self.model_classes_tww_od.wastewater_structure_symbol,
                 **self.base_common(row),
                 # --- wastewater_structure_symbol ---
-                plantype=self.get_vl_code(self.model_classes_tww_vl.wastewater_structure_symbol_plantype, row.plantyp),
+                plantype=self.get_vl_code(
+                    self.model_classes_tww_vl.wastewater_structure_symbol_plantype, row.plantyp
+                ),
                 symbol_scaling_height=row.symbolskalierunghoch,
                 symbol_scaling_width=row.symbolskalierunglaengs,
                 symbolori=row.symbolori,
