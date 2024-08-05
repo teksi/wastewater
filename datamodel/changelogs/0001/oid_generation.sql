@@ -9,13 +9,14 @@ CREATE TABLE tww_sys.oid_prefixes
   prefix character(8),
   organization text,
   active boolean,
-  CONSTRAINT pkey_tww_is_oid_prefixes_id PRIMARY KEY (id )
+  CONSTRAINT pkey_tww_is_oid_prefixes_id PRIMARY KEY (id ),
+  CONSTRAINT chk_prefix_length CHECK (char_length(prefix) = 8)
 )
 WITH (
   OIDS=FALSE
 );
 COMMENT ON TABLE tww_sys.oid_prefixes
-  IS 'This table contains OID prefixes for different communities or organizations. The application or administrator changing this table has to make sure that only one record is set to active.';
+  IS 'This table contains OID prefixes for different communities or organizations.';
 
 -- sample entry for Invalid - you need to adapt this entry later for your own organization
 INSERT INTO tww_sys.oid_prefixes (prefix,organization,active) VALUES ('ch000000','Invalid',TRUE);
@@ -37,9 +38,27 @@ CREATE INDEX in_tww_is_oid_prefixes_active
 CREATE UNIQUE INDEX in_tww_is_oid_prefixes_id
   ON tww_sys.oid_prefixes
   USING btree
-  (id );
+  (id);
 
--- function for generating StandardOIDs
+CREATE TABLE tww_od.oid_manager
+(
+  id serial NOT NULL,
+  usr_name text NOT NULL,
+  t_basket int NOT NULL,
+  CONSTRAINT pkey_tww_od_oid_manager_id PRIMARY KEY (id),
+  CONSTRAINT uniq_tww_od_oid_manager_usr_name UNIQUE (usr_name),
+  CONSTRAINT fkey_od_oid_manager_t_basket FOREIGN KEY (t_basket)
+        REFERENCES tww_sys.oid_prefixes (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
+);
+COMMENT ON TABLE tww_sys.oid_prefixes
+  IS 'This table contains OID prefixes for different communities or organizations.';
+
+CREATE UNIQUE INDEX in_tww_oid_manager_usr_name
+  ON tww_od.oid_manager
+  USING btree
+  (usr_name);
 
 CREATE OR REPLACE FUNCTION tww_sys.generate_oid(schema_name text, table_name text)
   RETURNS text AS
@@ -48,20 +67,21 @@ DECLARE
   myrec_prefix record;
   myrec_shortcut record;
   myrec_seq record;
+  myrec_oid record;
+  basket int;
+  oid varchar(16);
 BEGIN
-  -- first we have to get the OID prefix
-  BEGIN
-    SELECT prefix::text INTO myrec_prefix FROM tww_sys.oid_prefixes WHERE active = TRUE;
-    EXCEPTION
-        WHEN NO_DATA_FOUND THEN
-           RAISE EXCEPTION 'no active record found in table tww_sys.oid_prefixes';
-        WHEN TOO_MANY_ROWS THEN
-	   RAISE EXCEPTION 'more than one active records found in table tww_sys.oid_prefixes';
-  END;
-  -- test if prefix is of correct length
-  IF char_length(myrec_prefix.prefix) != 8 THEN
-    RAISE EXCEPTION 'character length of prefix must be 8';
+
+  SELECT t_basket INTO basket FROM tww_od.oid_manager WHERE usr_name=current_user;
+  IF NOT FOUND THEN
+	SELECT id INTO STRICT basket FROM tww_sys.oid_prefixes WHERE active;
+	INSERT INTO tww_od.oid_manager(usr_name,t_basket) VALUES (current_user,basket);
   END IF;
+
+  -- first get the OID prefix
+  BEGIN
+      SELECT prefix::text INTO myrec_prefix FROM tww_sys.oid_prefixes WHERE id = basket;
+  END;
   --get table 2char shortcut
   BEGIN
     SELECT shortcut_en INTO STRICT myrec_shortcut FROM tww_sys.dictionary_od_table WHERE tablename = table_name;
@@ -76,8 +96,46 @@ BEGIN
   IF NOT FOUND THEN
     RAISE EXCEPTION 'sequence for table % not found', table_name;
   END IF;
-  RETURN myrec_prefix.prefix || myrec_shortcut.shortcut_en || to_char(myrec_seq.seqval,'FM000000');
+  oid = myrec_prefix.prefix || myrec_shortcut.shortcut_en || tww_sys.base36_encode(myrec_seq.seqval)
+  -- check if oid exists already (necessary for backwards compatibility with old oid scheme)
+  EXECUTE format('SELECT TRUE as _exists FROM %1$I.%2$I WHERE obj_id=%3$I;', schema_name, table_name,oid) INTO myrec_oid;
+  IF myrec_oid._exists THEN
+	RETURN tww_sys.generate_oid(schema_name, table_name);
+  ELSE
+	RETURN oid:
+  END IF;
+
 END;
 $BODY$
   LANGUAGE plpgsql STABLE
   COST 100;
+
+
+CREATE OR REPLACE FUNCTION tww_sys.base36_encode(
+	digits bigint,
+	min_width integer DEFAULT 6)
+    RETURNS character varying
+    LANGUAGE 'plpgsql'
+    COST 100
+    IMMUTABLE PARALLEL UNSAFE
+AS $BODY$
+DECLARE
+    base36 varchar := '';
+    intval bigint  := abs(base10);
+    char0z char[]  := regexp_split_to_array('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ', '');
+BEGIN
+    IF base10 = 0
+	THEN
+		base36 := '0';
+	ELSE
+		WHILE intval != 0 LOOP
+			base36 := char0z[(intval % 36)+1] || base36;
+			intval := intval / 36;
+		END LOOP;
+	END IF;
+	IF min_width > 0 AND char_length(base36) < min_width THEN
+			base36 := lpad(base36, min_width, '0');
+		END IF;
+    RETURN base36;
+END;
+$BODY$;
