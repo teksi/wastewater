@@ -426,7 +426,9 @@ class InterlisExporterToIntermediateSchema:
         self._export_infiltration_zone()
         self._check_for_stop()
 
-        logger.info("Exporting TWW.re_maintenance_event_wastewater_structure -> ABWASSER.erhaltungsereignis_abwasserbauwerkassoc")
+        logger.info(
+            "Exporting TWW.re_maintenance_event_wastewater_structure -> ABWASSER.erhaltungsereignis_abwasserbauwerkassoc"
+        )
         self._export_re_maintenance_event_wastewater_structure()
         self._check_for_stop()
 
@@ -451,7 +453,9 @@ class InterlisExporterToIntermediateSchema:
         self._export_file()
         self._check_for_stop()
 
-        logger.info("Exporting TWW.re_maintenance_event_wastewater_structure -> ABWASSER.erhaltungsereignis_abwasserbauwerkassoc")
+        logger.info(
+            "Exporting TWW.re_maintenance_event_wastewater_structure -> ABWASSER.erhaltungsereignis_abwasserbauwerkassoc"
+        )
         self._export_re_maintenance_event_wastewater_structure()
         self._check_for_stop()
 
@@ -2714,7 +2718,9 @@ class InterlisExporterToIntermediateSchema:
         self.abwasser_session.flush()
 
     def _export_re_maintenance_event_wastewater_structure(self):
-        query = self.tww_session.query(self.model_classes_tww_od.re_maintenance_event_wastewater_structure)
+        query = self.tww_session.query(
+            self.model_classes_tww_od.re_maintenance_event_wastewater_structure
+        )
         if self.filtered:
             query = (
                 query.join(self.model_classes_tww_od.examination)
@@ -2736,7 +2742,9 @@ class InterlisExporterToIntermediateSchema:
                 **self.vsa_base_common(row, "erhaltungsereignis_abwasserbauwerkassoc"),
                 # --- erhaltungsereignis_abwasserbauwerkassoc ---
                 abwasserbauwerkref=self.get_tid(row.fk_wastewater_structure__REL),
-                erhaltungsereignis_abwasserbauwerkassocref=self.get_tid(row.fk_maintenance_event__REL),
+                erhaltungsereignis_abwasserbauwerkassocref=self.get_tid(
+                    row.fk_maintenance_event__REL
+                ),
             )
             self.abwasser_session.add(erhaltungsereignis_abwasserbauwerkassoc)
             print(".", end="")
