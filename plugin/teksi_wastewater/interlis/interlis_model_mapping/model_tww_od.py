@@ -314,3 +314,11 @@ class ModelTwwOd(ModelBase):
             __table_args__ = {"schema": config.TWW_OD_SCHEMA}
 
         ModelTwwOd.file = file
+
+        class re_maintenance_event_wastewater_structure(self.Base):
+            __tablename__ = "re_maintenance_event_wastewater_structure"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.re_maintenance_event_wastewater_structure = re_maintenance_event_wastewater_structure
+        
+
