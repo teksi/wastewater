@@ -65,6 +65,7 @@ class InterlisImporterToIntermediateSchema:
 
         if self.model == config.MODEL_NAME_DSS:
             self._import_dss()
+            self._import_vsa_kek()
 
         if self.model == config.MODEL_NAME_VSA_KEK:
             self._import_vsa_kek()
