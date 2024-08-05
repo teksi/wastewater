@@ -2067,7 +2067,7 @@ class InterlisImporterToIntermediateSchema:
                 symbol_scaling_width=row.symbolskalierunglaengs,
                 symbolori=row.symbolori,
                 symbolpos_geometry=row.symbolpos,
-                
+                fk_wastewater_structure=row.abwasserbauwerkref,
             )
             self.session_tww.add(wastewater_structure_symbol)
             print(".", end="")
