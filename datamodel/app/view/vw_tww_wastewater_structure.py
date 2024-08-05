@@ -448,7 +448,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
           SELECT obj_id FROM tww_od.wastewater_networkelement
           WHERE fk_wastewater_structure = NEW.obj_id
         );
-        
+
         -- Move reach point node as well
         UPDATE tww_od.reach_point RP
         SET situation3d_geometry = ST_SetSRID( ST_MakePoint(
