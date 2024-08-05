@@ -225,6 +225,11 @@ class InterlisExporterToIntermediateSchema:
         self._export_benching()
         self._check_for_stop()
 
+        logger.info("Exporting TWW.flushing_nozzle -> ABWASSER.spuelstutzen")
+        self._export_flushing_nozzle()
+        self._check_for_stop()
+
+
     def _export_dss(self):
         logger.info(
             "Exporting TWW.waste_water_treatment_plant -> ABWASSER.abwasserreinigungsanlage"
