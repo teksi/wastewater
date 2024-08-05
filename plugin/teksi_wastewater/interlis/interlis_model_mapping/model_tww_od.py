@@ -319,6 +319,6 @@ class ModelTwwOd(ModelBase):
             __tablename__ = "re_maintenance_event_wastewater_structure"
             __table_args__ = {"schema": config.TWW_OD_SCHEMA}
 
-        ModelTwwOd.re_maintenance_event_wastewater_structure = re_maintenance_event_wastewater_structure
-        
-
+        ModelTwwOd.re_maintenance_event_wastewater_structure = (
+            re_maintenance_event_wastewater_structure
+        )

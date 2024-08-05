@@ -349,8 +349,10 @@ class InterlisImporterToIntermediateSchema:
         self._import_versickerungsbereich()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.erhaltungsereignis_abwasserbauwerkassoc  -> TWW.re_maintenance_event_wastewater_structure")
-        self._import_erhaltungsereignis_abwasserbauwerkassoc ()
+        logger.info(
+            "\nImporting ABWASSER.erhaltungsereignis_abwasserbauwerkassoc  -> TWW.re_maintenance_event_wastewater_structure"
+        )
+        self._import_erhaltungsereignis_abwasserbauwerkassoc()
         self._check_for_stop()
 
     def _import_vsa_kek(self):
@@ -374,8 +376,10 @@ class InterlisImporterToIntermediateSchema:
         self._import_datei()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.erhaltungsereignis_abwasserbauwerkassoc  -> TWW.re_maintenance_event_wastewater_structure")
-        self._import_erhaltungsereignis_abwasserbauwerkassoc ()
+        logger.info(
+            "\nImporting ABWASSER.erhaltungsereignis_abwasserbauwerkassoc  -> TWW.re_maintenance_event_wastewater_structure"
+        )
+        self._import_erhaltungsereignis_abwasserbauwerkassoc()
         self._check_for_stop()
 
     def close_sessions(self, skip_closing_tww_session=False):
@@ -2250,6 +2254,23 @@ class InterlisImporterToIntermediateSchema:
             )
 
             self.session_tww.add(file_table_row)
+            print(".", end="")
+
+    def _import_erhaltungsereignis_abwasserbauwerkassoc(self):
+        for row in self.session_interlis.query(
+            self.model_classes_interlis.erhaltungsereignis_abwasserbauwerkassoc
+        ):
+            re_maintenance_event_wastewater_structure = self.create_or_update(
+                self.model_classes_tww_od.re_maintenance_event_wastewater_structure,
+                **self.base_common(row),
+                # --- re_maintenance_event_wastewater_structure ---
+                fk_maintenance_event=self.get_pk(
+                    row.erhaltungsereignis_abwasserbauwerkassocref__REL
+                ),
+                fk_wastewater_structure=self.get_pk(row.abwasserbauwerkref__REL),
+            )
+
+            self.session_tww.add(re_maintenance_event_wastewater_structure)
             print(".", end="")
 
     def _check_for_stop(self):
