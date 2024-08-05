@@ -28,7 +28,7 @@ $BODY$
   LANGUAGE plpgsql STABLE SECURITY DEFINER
   COST 100;
 
--- Set defaults on all fk_provider,fk_dataowner
+-- Set defaults on all fk_provider,fk_dataowner,fk_owner
 DO $do$
 DECLARE
     tbl text;
@@ -42,7 +42,7 @@ BEGIN
 	LEFT JOIN information_schema.tables t
 	ON c.table_name = t.table_name
     and c.table_schema = t.table_schema
-    WHERE c.column_name IN ('fk_provider','fk_dataowner','fk_owner','fk_dataprovider ')
+    WHERE c.column_name IN ('fk_provider','fk_dataowner','fk_owner')
       and c.table_schema ='tww_od'
 	  and t.table_type = 'BASE TABLE'
     LOOP
