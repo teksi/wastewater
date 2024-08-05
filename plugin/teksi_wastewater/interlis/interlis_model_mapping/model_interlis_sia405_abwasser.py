@@ -169,3 +169,23 @@ class ModelInterlisSia405Abwasser(ModelBase):
             __table_args__ = {"schema": config.ABWASSER_SCHEMA}
 
         ModelInterlisSia405Abwasser.abwasserbauwerk_text = abwasserbauwerk_text
+
+        # SymbolPos
+
+        class symbolpos(baseclass):
+            __tablename__ = "symbolpos"
+            __table_args__ = {"schema": config.ABWASSER_SCHEMA}
+
+        ModelInterlisSia405Abwasser.symbolpos = symbolpos
+
+        class sia405_symbolpos(symbolpos):
+            __tablename__ = "sia405_symbolpos"
+            __table_args__ = {"schema": config.ABWASSER_SCHEMA}
+
+        ModelInterlisSia405Abwasser.sia405_symbolpos = sia405_symbolpos
+
+        class abwasserbauwerk_symbol(sia405_symbolpos):
+            __tablename__ = "abwasserbauwerk_symbol"
+            __table_args__ = {"schema": config.ABWASSER_SCHEMA}
+
+        ModelInterlisSia405Abwasser.abwasserbauwerk_symbol = abwasserbauwerk_symbol
