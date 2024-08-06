@@ -2283,15 +2283,12 @@ class InterlisImporterToIntermediateSchema:
                 # this class does not inherit base_commmon
                 # **self.base_common(row),
                 # --- re_building_group_disposal ---
-                fk_building_group=self.get_pk(
-                    row.gebaeudegruppe_entsorgungassocref__REL
-                ),
+                fk_building_group=self.get_pk(row.gebaeudegruppe_entsorgungassocref__REL),
                 fk_disposal=self.get_pk(row.entsorgungref__REL),
             )
 
             self.session_tww.add(re_building_group_disposal)
             print(".", end="")
-
 
     def _check_for_stop(self):
         if self.callback_progress_done:

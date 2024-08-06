@@ -2845,6 +2845,39 @@ class InterlisExporterToIntermediateSchema:
         logger.info("done")
         self.abwasser_session.flush()
 
+    def _export_re_building_group_disposal(self):
+        query = self.tww_session.query(self.model_classes_tww_od.re_building_group_disposal)
+        if self.filtered:
+            query = (
+                query.join(self.model_classes_tww_od.examination)
+                .join(self.model_classes_tww_od.re_maintenance_event_wastewater_structure)
+                .join(self.model_classes_tww_od.wastewater_structure)
+                .join(self.model_classes_tww_od.wastewater_networkelement)
+                .filter(
+                    self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+                )
+            )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
+        for row in query:
+            gebaeudegruppe_entsorgungassoc = self.model_classes_interlis.gebaeudegruppe_entsorgungassoc(
+                # FIELDS TO MAP TO ABWASSER.gebaeudegruppe_entsorgungassoc
+                # --- baseclass ---
+                # --- sia405_baseclass ---
+                # this class does not inherit vsa_base_common
+                # **self.vsa_base_common(row, "gebaeudegruppe_entsorgungassoc"),
+                # --- gebaeudegruppe_entsorgungassoc ---
+                abwasserbauwerkref=self.get_tid(row.fk_wastewater_structure__REL),
+                erhaltungsereignis_abwasserbauwerkassocref=self.get_tid(
+                    row.fk_maintenance_event__REL
+                ),
+            )
+            self.abwasser_session.add(gebaeudegruppe_entsorgungassoc)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
     def get_tid(self, relation):
         """
         Makes a tid for a relation
