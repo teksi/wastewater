@@ -2274,6 +2274,25 @@ class InterlisImporterToIntermediateSchema:
             self.session_tww.add(re_maintenance_event_wastewater_structure)
             print(".", end="")
 
+    def _import_gebaeudegruppe_entsorgungassoc(self):
+        for row in self.session_interlis.query(
+            self.model_classes_interlis.gebaeudegruppe_entsorgungassoc
+        ):
+            re_building_group_disposal = self.create_or_update(
+                self.model_classes_tww_od.re_building_group_disposal,
+                # this class does not inherit base_commmon
+                # **self.base_common(row),
+                # --- re_building_group_disposal ---
+                fk_building_group=self.get_pk(
+                    row.gebaeudegruppe_entsorgungassocref__REL
+                ),
+                fk_disposal=self.get_pk(row.entsorgungref__REL),
+            )
+
+            self.session_tww.add(re_building_group_disposal)
+            print(".", end="")
+
+
     def _check_for_stop(self):
         if self.callback_progress_done:
             self.callback_progress_done()

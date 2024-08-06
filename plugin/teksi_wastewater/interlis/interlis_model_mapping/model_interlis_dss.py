@@ -348,6 +348,4 @@ class ModelInterlisDss(ModelInterlisSia405Abwasser):
             __tablename__ = "gebaeudegruppe_entsorgungassoc"
             __table_args__ = {"schema": config.ABWASSER_SCHEMA}
 
-        ModelInterlisDss.gebaeudegruppe_entsorgungassoc = (
-            gebaeudegruppe_entsorgungassoc
-        )
+        ModelInterlisDss.gebaeudegruppe_entsorgungassoc = gebaeudegruppe_entsorgungassoc
