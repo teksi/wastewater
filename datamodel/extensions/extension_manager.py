@@ -14,7 +14,8 @@ except ImportError:
 
 
 def read_config(config_file: str, extension_name: str):
-    with open(config_file) as file:
+    abs_file_path = Path(__file__).parent.resolve() / config_file
+    with open(abs_file_path) as file:
         config = safe_load(file)
     for entry in config.get("extensions", []):
         if entry.get("id") == extension_name:
@@ -67,7 +68,7 @@ def load_extension(
     variables = config.get("variables", {})
     # pass SRID and extension schema name per default
     schemaname = config.get("schema", "tww_" + extension_name)
-    variables.update({"ext_schema": schemaname, "srid": psycopg.sql.SQL(f"{srid}")})
+    variables.update({"ext_schema": psycopg.sql.SQL(f"{schemaname}"), "srid": psycopg.sql.SQL(f"{srid}")})
 
     if drop_schema:
         run_sql(f"DROP SCHEMA IF EXISTS {schemaname} CASCADE;", pg_service)
@@ -82,11 +83,12 @@ def load_extension(
 
     directory = config.get("directory", None)
     if directory:
-        files = os.listdir(os.path.join(directory, os.pardir))
+        files = os.listdir( Path(__file__).parent.resolve() / directory)
         files.sort()
         for file in files:
             filename = os.fsdecode(file)
             if filename.endswith(".sql"):
+                print(f"Running {filename}")
                 run_sql_file(os.path.join(directory, filename), pg_service, variables)
             if filename.endswith(".py"):
                 run_py_file(os.path.join(directory, filename))
@@ -106,8 +108,8 @@ if __name__ == "__main__":
         "-s", "--srid", help="SRID EPSG code, defaults to 2056", type=int, default=2056
     )
     parser.add_argument(
-        "-x --extension_name",
-        help="name of the database extension",
+        "-x", "--extension_name",
+        help="name of the database extension", type=str, default='demo'
     )
     parser.add_argument(
         "-d",
