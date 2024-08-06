@@ -435,7 +435,7 @@ SELECT   ws_obj_id,
       INNER JOIN tww_od.reach RE_to ON RP.obj_id = RE_to.fk_reach_point_to
       LEFT JOIN tww_od.wastewater_networkelement NE_to ON NE_to.obj_id = RE_to.obj_id
       LEFT JOIN tww_od.channel CH_to ON NE_to.fk_wastewater_structure = CH_to.obj_id
-      LEFT JOIN tww_vl.channel_function_hierarchic fh ON ch.function_hierarchic  = fh.code
+      LEFT JOIN tww_vl.channel_function_hierarchic fh ON CH_to.function_hierarchic  = fh.code
       WHERE (_all OR NE.fk_wastewater_structure = _obj_id) and fh.tww_is_primary  ----label only reaches with function_hierarchic=pwwf.*
       -- Outputs
       UNION
