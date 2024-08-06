@@ -2816,9 +2816,7 @@ class InterlisExporterToIntermediateSchema:
         )
         if self.filtered:
             query = (
-                query.join(self.model_classes_tww_od.examination)
-                .join(self.model_classes_tww_od.re_maintenance_event_wastewater_structure)
-                .join(self.model_classes_tww_od.wastewater_structure)
+                query.join(self.model_classes_tww_od.wastewater_structure)
                 .join(self.model_classes_tww_od.wastewater_networkelement)
                 .filter(
                     self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
