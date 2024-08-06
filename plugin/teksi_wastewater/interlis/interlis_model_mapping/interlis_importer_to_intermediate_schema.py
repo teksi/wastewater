@@ -2262,6 +2262,7 @@ class InterlisImporterToIntermediateSchema:
         ):
             re_maintenance_event_wastewater_structure = self.create_or_update(
                 self.model_classes_tww_od.re_maintenance_event_wastewater_structure,
+                # this class does not inherit base_commmon
                 # **self.base_common(row),
                 # --- re_maintenance_event_wastewater_structure ---
                 fk_maintenance_event=self.get_pk(

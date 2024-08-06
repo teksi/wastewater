@@ -2832,7 +2832,8 @@ class InterlisExporterToIntermediateSchema:
                 # FIELDS TO MAP TO ABWASSER.erhaltungsereignis_abwasserbauwerkassoc
                 # --- baseclass ---
                 # --- sia405_baseclass ---
-                **self.vsa_base_common(row, "erhaltungsereignis_abwasserbauwerkassoc"),
+                # this class does not inherit vsa_base_common
+                # **self.vsa_base_common(row, "erhaltungsereignis_abwasserbauwerkassoc"),
                 # --- erhaltungsereignis_abwasserbauwerkassoc ---
                 abwasserbauwerkref=self.get_tid(row.fk_wastewater_structure__REL),
                 erhaltungsereignis_abwasserbauwerkassocref=self.get_tid(
