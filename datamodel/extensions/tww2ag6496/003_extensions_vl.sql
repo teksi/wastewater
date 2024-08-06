@@ -315,7 +315,7 @@ INSERT INTO tww_vl.infiltration_installation_kind_import_rel_agxx (code,value_de
 (3284,'Versickerungsanlage.Versickerungsschacht_Strang'),
 (1999965,'Versickerungsanlage.Retentionsfilterbecken'),
 (1999966,'Versickerungsanlage.andere'),
-(3087,'Versickerungsanlage.unbekannt'),
+(3087,'Versickerungsanlage.unbekannt')
 ON CONFLICT (code) DO UPDATE SET 
   value_de = EXCLUDED.value_de;
 

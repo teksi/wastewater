@@ -6,7 +6,7 @@ CREATE VIEW {ext_schema}.organisation
 AS
 SELECT
 concat_ws('','ch113jqg0000',right(obj_id,8)) AS obj_id,
-REGEXP_REPLACE(uid,'(^.{3})(.{3})(.{3})','\1-\2.\3.') AS uid,
+REGEXP_REPLACE(uid,'(^.{{3}})(.{{3}})(.{{3}})','\1-\2.\3.') AS uid,
 identifier AS bezeichnung,
 identifier_short AS kurzbezeichnung,
 'AfU Aargau' AS datenbewirtschafter_kt,
@@ -202,7 +202,7 @@ WITH re_meta AS(
 				 fk_operator,
 				 ch_function_hierarchic,
 				 ag96_fk_measure
-				 FROM tww_od.agxx_unconnected_node_export_rel) unc ON unc.obj_id=wn.obj_id
+				 FROM tww_od.agxx_unconnected_node_bwrel) unc ON unc.obj_id=wn.obj_id
 	  LEFT JOIN tww_vl.channel_function_hierarchic vl_fct_hier_unc 	ON unc.ch_function_hierarchic = vl_fct_hier_unc.code
 	  WINDOW w AS ( PARTITION BY wn.obj_id
                     ORDER BY re_from.order_fct_hierarchic ASC NULLS LAST
@@ -242,12 +242,12 @@ SELECT
 		when wwtp.obj_id IS NOT NULL THEN 'Abwasserreinigungsanlage' 
 		ELSE NULL 
 		END
-		, ma_fu_rev.value_agxx 
+		, ma_fu_rev.value_de 
 		, ma_fu.value_de 
-		, ss_fu_rev.value_agxx
+		, ss_fu_rev.value_de
 		, ss_fu.value_de
 		,'Einleitstelle_'||dp_rel.value_de
-		,'Versickerungsanlage.'||ii_ki_rev.value_agxx --Versickerungsanlage.andere wird auf unbekannt gemappt
+		,'Versickerungsanlage.'||ii_ki_rev.value_de --Versickerungsanlage.andere wird auf unbekannt gemappt
 		,'Versickerungsanlage.'||ii_ki.value_de --Versickerungsanlage.andere wird auf unbekannt gemappt
 		, 'Leitungsknoten') AS funktionag
 	, COALESCE(left(fhi.value_de,3),'SAA')  AS funktionhierarchisch
@@ -285,7 +285,7 @@ LEFT JOIN (SELECT
 		   detail_geometry3d_geometry,
 		   co_positional_accuracy
 		   FROM
-		   tww_od.agxx_unconnected_node_export_rel) unc ON unc.obj_id=wn.obj_id
+		   tww_od.agxx_unconnected_node_bwrel) unc ON unc.obj_id=wn.obj_id
 
 LEFT JOIN tww_vl.wastewater_structure_status st ON st.code=ws.status
 
@@ -346,8 +346,8 @@ SELECT
 	, re.length_effective AS laengeeffektiv
 	, mat.value_de AS material
 	, ppt.value_de AS profiltyp
-	, COALESCE (up_rev.value_agxx,up.value_de) AS nutzungsartag_geplant
-	, COALESCE (uc_rev.value_agxx, uc.value_de) AS nutzungsartag_ist
+	, COALESCE (up_rev.value_de,up.value_de) AS nutzungsartag_geplant
+	, COALESCE (uc_rev.value_de, uc.value_de) AS nutzungsartag_ist
 	, relkind.value_de AS reliner_art
 	, relcons.value_de AS reliner_bautechnik
 	, relmat.value_de AS reliner_material
@@ -455,8 +455,8 @@ SELECT
 	, ddc.value_de AS direkteinleitung_in_gewaesser_ist
 	, ca.population_density_planned AS einwohnerdichte_geplant
 	, ca.population_density_current AS einwohnerdichte_ist
-	, COALESCE (dsp_rev.value_agxx,dsp.value_de) AS entwaesserungssystemag_geplant
-	, COALESCE (dsc_rev.value_agxx,dsc.value_de) AS entwaesserungssystemag_ist
+	, COALESCE (dsp_rev.value_de,dsp.value_de) AS entwaesserungssystemag_geplant
+	, COALESCE (dsc_rev.value_de,dsc.value_de) AS entwaesserungssystemag_ist
 	, ca.surface_area AS flaeche
 	, ca.sewer_infiltration_water_production_planned AS fremdwasseranfall_geplant
 	, ca.sewer_infiltration_water_production_current AS fremdwasseranfall_ist
@@ -530,7 +530,7 @@ AS
 SELECT
 	  bg.obj_id
 	, bg.ag96_population AS anzstaendigeeinwohner
-	, COALESCE(bg_fct_rev.value_agxx, bg_fct.value_de) AS arealnutzung
+	, COALESCE(bg_fct_rev.value_de, bg_fct.value_de) AS arealnutzung
 	, bg_dt_ww.value_de AS beseitigung_haeusliches_abwasser
 	, bg_dt_iw.value_de AS beseitigung_gewerbliches_abwasser
 	, bg_dt_sw.value_de AS beseitigung_platzentwaesserung
@@ -604,7 +604,7 @@ SELECT
 	, iz.ag96_thickness AS maechtigkeit
 	, iz.perimeter_geometry AS perimeter
 	, iz.ag96_q_check
-	, COALESCE (iz_ic_rev.value_agxx,iz_ic.value_de) AS versickerungsmoeglichkeitag
+	, COALESCE (iz_ic_rev.value_de,iz_ic.value_de) AS versickerungsmoeglichkeitag
 	, concat_ws('','ch113jqg0000',right(COALESCE(zo.fk_provider,'00000107'),8)) AS datenbewirtschafter_gep
 	, zo.remark AS bemerkung_gep
 	, COALESCE(zo.last_modification,TO_TIMESTAMP('1800-01-01','YYYY-MM-DD')) AS letzte_aenderung_gep
