@@ -474,9 +474,12 @@ class InterlisImporterExporter:
                 log_path,
             )
 
-    def _check_subclass_counts(self,limit_to_selection):
+    def _check_subclass_counts(self, limit_to_selection):
         self._check_subclass_count(
-            config.TWW_OD_SCHEMA, "wastewater_networkelement", ["reach", "wastewater_node"],limit_to_selection,
+            config.TWW_OD_SCHEMA,
+            "wastewater_networkelement",
+            ["reach", "wastewater_node"],
+            limit_to_selection,
         )
         self._check_subclass_count(
             config.TWW_OD_SCHEMA,
@@ -513,23 +516,34 @@ class InterlisImporterExporter:
             limit_to_selection,
         )
         self._check_subclass_count(
-            config.TWW_OD_SCHEMA, "overflow", ["pump", "leapingweir", "prank_weir"],limit_to_selection,
+            config.TWW_OD_SCHEMA,
+            "overflow",
+            ["pump", "leapingweir", "prank_weir"],
+            limit_to_selection,
         )
         self._check_subclass_count(
             config.TWW_OD_SCHEMA,
             "maintenance_event",
-            ["maintenance", "examination", "bio_ecol_assessment"],limit_to_selection,
+            ["maintenance", "examination", "bio_ecol_assessment"],
+            limit_to_selection,
         )
         self._check_subclass_count(
-            config.TWW_OD_SCHEMA, "damage", ["damage_channel", "damage_manhole"],limit_to_selection,
+            config.TWW_OD_SCHEMA,
+            "damage",
+            ["damage_channel", "damage_manhole"],
+            limit_to_selection,
         )
         self._check_subclass_count(
             config.TWW_OD_SCHEMA,
             "connection_object",
-            ["fountain", "individual_surface", "building", "reservoir"],limit_to_selection,
+            ["fountain", "individual_surface", "building", "reservoir"],
+            limit_to_selection,
         )
         self._check_subclass_count(
-            config.TWW_OD_SCHEMA, "zone", ["infiltration_zone", "drainage_system"],limit_to_selection,
+            config.TWW_OD_SCHEMA,
+            "zone",
+            ["infiltration_zone", "drainage_system"],
+            limit_to_selection,
         )
 
     def _check_subclass_count(self, schema_name, parent_name, child_list, limit_to_selection):
@@ -560,7 +574,9 @@ class InterlisImporterExporter:
                     else:
                         errormsg = f"Too many subclass entries for {schema_name}.{parent_name}"
                     if limit_to_selection:
-                        logger.warning(f"Overall Subclass Count: {errormsg}. The problem might lie outside the selection")
+                        logger.warning(
+                            f"Overall Subclass Count: {errormsg}. The problem might lie outside the selection"
+                        )
                     else:
                         logger.error(f"Subclass Count error: {errormsg}")
                         raise InterlisImporterExporterError(
