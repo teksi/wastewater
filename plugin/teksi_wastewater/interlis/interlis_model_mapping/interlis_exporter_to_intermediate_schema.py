@@ -2778,9 +2778,7 @@ class InterlisExporterToIntermediateSchema:
                 # **self.vsa_base_common(row, "gebaeudegruppe_entsorgungassoc"),
                 # --- gebaeudegruppe_entsorgungassoc ---
                 entsorgungref=self.get_tid(row.fk_disposal__REL),
-                gebaeudegruppe_entsorgungassocref=self.get_tid(
-                    row.fk_building_group__REL
-                ),
+                gebaeudegruppe_entsorgungassocref=self.get_tid(row.fk_building_group__REL),
             )
             self.abwasser_session.add(gebaeudegruppe_entsorgungassoc)
             print(".", end="")
