@@ -327,6 +327,4 @@ class ModelTwwOd(ModelBase):
             __tablename__ = "re_building_group_disposal"
             __table_args__ = {"schema": config.TWW_OD_SCHEMA}
 
-        ModelTwwOd.re_building_group_disposal = (
-            re_building_group_disposal
-        )
+        ModelTwwOd.re_building_group_disposal = re_building_group_disposal
