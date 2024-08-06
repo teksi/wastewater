@@ -343,3 +343,11 @@ class ModelInterlisDss(ModelInterlisSia405Abwasser):
         ModelInterlisDss.erhaltungsereignis_abwasserbauwerkassoc = (
             erhaltungsereignis_abwasserbauwerkassoc
         )
+
+        class gebaeudegruppe_entsorgungassoc(ModelInterlisSia405Abwasser):
+            __tablename__ = "gebaeudegruppe_entsorgungassoc"
+            __table_args__ = {"schema": config.ABWASSER_SCHEMA}
+
+        ModelInterlisDss.gebaeudegruppe_entsorgungassoc = (
+            gebaeudegruppe_entsorgungassoc
+        )
