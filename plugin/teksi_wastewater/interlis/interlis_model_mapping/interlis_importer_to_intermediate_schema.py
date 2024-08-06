@@ -2262,7 +2262,7 @@ class InterlisImporterToIntermediateSchema:
         ):
             re_maintenance_event_wastewater_structure = self.create_or_update(
                 self.model_classes_tww_od.re_maintenance_event_wastewater_structure,
-                **self.base_common(row),
+                # **self.base_common(row),
                 # --- re_maintenance_event_wastewater_structure ---
                 fk_maintenance_event=self.get_pk(
                     row.erhaltungsereignis_abwasserbauwerkassocref__REL
