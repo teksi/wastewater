@@ -2870,10 +2870,8 @@ class InterlisExporterToIntermediateSchema:
                 # this class does not inherit vsa_base_common
                 # **self.vsa_base_common(row, "gebaeudegruppe_entsorgungassoc"),
                 # --- gebaeudegruppe_entsorgungassoc ---
-                abwasserbauwerkref=self.get_tid(row.fk_wastewater_structure__REL),
-                erhaltungsereignis_abwasserbauwerkassocref=self.get_tid(
-                    row.fk_maintenance_event__REL
-                ),
+                entsorgungref=self.get_tid(row.fk_disposal__REL),
+                gebaeudegruppe_entsorgungassocref=self.get_tid(row.fk_building_group__REL),
             )
             self.abwasser_session.add(gebaeudegruppe_entsorgungassoc)
             print(".", end="")
