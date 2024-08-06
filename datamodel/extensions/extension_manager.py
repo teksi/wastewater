@@ -68,7 +68,9 @@ def load_extension(
     variables = config.get("variables", {})
     # pass SRID and extension schema name per default
     schemaname = config.get("schema", "tww_" + extension_name)
-    variables.update({"ext_schema": psycopg.sql.SQL(f"{schemaname}"), "srid": psycopg.sql.SQL(f"{srid}")})
+    variables.update(
+        {"ext_schema": psycopg.sql.SQL(f"{schemaname}"), "srid": psycopg.sql.SQL(f"{srid}")}
+    )
 
     if drop_schema:
         run_sql(f"DROP SCHEMA IF EXISTS {schemaname} CASCADE;", pg_service)
@@ -83,7 +85,7 @@ def load_extension(
 
     directory = config.get("directory", None)
     if directory:
-        files = os.listdir( Path(__file__).parent.resolve() / directory)
+        files = os.listdir(Path(__file__).parent.resolve() / directory)
         files.sort()
         for file in files:
             filename = os.fsdecode(file)
@@ -108,8 +110,7 @@ if __name__ == "__main__":
         "-s", "--srid", help="SRID EPSG code, defaults to 2056", type=int, default=2056
     )
     parser.add_argument(
-        "-x", "--extension_name",
-        help="name of the database extension", type=str, default='demo'
+        "-x", "--extension_name", help="name of the database extension", type=str, default="demo"
     )
     parser.add_argument(
         "-d",
