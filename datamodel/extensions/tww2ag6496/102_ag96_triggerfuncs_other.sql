@@ -65,7 +65,7 @@ BEGIN
 	, ag96_clear_height_planned = vw_val.lichte_hoehe_geplant
 	, ag96_clear_width_planned = vw_val.lichte_breite_geplant
     , material = re_mat.code
-    , ch_usage_current = coalesce(ch_uc.code,ch_uc2.code)
+    , ch_usage_current = ch_uc.code
     , ch_function_hierarchic = ch_fhi.code
     , ws_status = ws_st.code
     , ws_fk_owner = {ext_schema}.convert_organisationid_to_vsa(vw_val.eigentuemer)
@@ -79,12 +79,12 @@ BEGIN
     , reliner_nominal_size = vw_val.reliner_nennweite
     , relining_construction = re_rc.code
     , relining_kind = re_rk.code
-    , fk_dataowner = downr.value_obj_id
+--    , fk_dataowner = downr.value_obj_id
     , fk_provider = {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
     , identifier = vw_val.bezeichnung
     , last_modification = vw_val.letzte_aenderung_wi
     , remark = vw_val.bemerkung_wi
-    , ch_usage_planned = coalesce(ch_up.code,ch_up2.code)
+    , ch_usage_planned = ch_up.code
     , ws_financing = ws_fin.code
     , ws_fk_operator = {ext_schema}.convert_organisationid_to_vsa(vw_val.betreiber)
     , ws_identifier = vw_val.bezeichnung
@@ -96,13 +96,13 @@ BEGIN
     , ws_structure_condition = ws_sc.code
     , ws_year_of_construction = vw_val.baujahr
     , rp_from_elevation_accuracy = rp_ea_fr.code
-    , rp_from_fk_dataowner = downr.value_obj_id
+--    , rp_from_fk_dataowner = downr.value_obj_id
     , rp_from_fk_provider = {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
     , rp_from_fk_wastewater_networkelement = vw_val.startknoten
     , rp_from_last_modification = vw_val.letzte_aenderung_wi
     , rp_from_level = vw_val.kote_beginn
     , rp_to_elevation_accuracy = rp_ea_to.code
-    , rp_to_fk_dataowner = downr.value_obj_id
+    --, rp_to_fk_dataowner = downr.value_obj_id
     , rp_to_fk_provider = {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
     , rp_to_fk_wastewater_networkelement = vw_val.endknoten
     , rp_to_last_modification = vw_val.letzte_aenderung_wi
@@ -115,12 +115,10 @@ BEGIN
 	, ag96_fk_provider = {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_gep)
 	FROM (SELECT NEW.*) vw_val
 	LEFT JOIN tww_vl.reach_material re_mat ON re_mat.value_de=vw_val.material
-	LEFT JOIN tww_vl.channel_usage_current ch_uc ON ch_uc.value_de=vw_val.nutzungsartag_ist
-	LEFT JOIN {ext_schema}.vl_channel_usage_current ch_uc2 ON ch_uc2.value_agxx=vw_val.nutzungsartag_ist
+	LEFT JOIN tww_vl.channel_usage_current_import_rel_agxx ch_uc ON ch_uc.value_de=vw_val.nutzungsartag_ist
 	LEFT JOIN tww_vl.channel_function_hierarchic ch_fhi ON ch_fhi.value_de=vw_val.funktionhierarchisch
 	LEFT JOIN tww_vl.channel_function_hydraulic ch_fhy ON ch_fhy.value_de=vw_val.funktionhydraulisch
-	LEFT JOIN tww_vl.channel_usage_planned ch_up ON ch_up.value_de=vw_val.nutzungsartag_geplant
-	LEFT JOIN {ext_schema}.vl_channel_usage_planned ch_up2 ON ch_up2.value_agxx=vw_val.nutzungsartag_geplant
+	LEFT JOIN tww_vl.channel_usage_planned_import_rel_agxx ch_up ON ch_up.value_de=vw_val.nutzungsartag_geplant
 	LEFT JOIN tww_vl.wastewater_structure_status ws_st ON ws_st.value_de=vw_val.bauwerkstatus
 	LEFT JOIN tww_vl.wastewater_structure_structure_condition ws_sc ON ws_sc.value_de=vw_val.baulicherzustand
 	LEFT JOIN tww_vl.wastewater_structure_renovation_necessity ws_rn ON ws_rn.value_de=vw_val.sanierungsbedarf
@@ -130,7 +128,6 @@ BEGIN
 	LEFT JOIN tww_vl.reach_relining_kind re_rk ON re_rk.value_de=vw_val.reliner_art
 	LEFT JOIN tww_vl.reach_point_elevation_accuracy rp_ea_fr ON rp_ea_fr.value_de=vw_val.hoehengenauigkeit_von
 	LEFT JOIN tww_vl.reach_point_elevation_accuracy rp_ea_to ON rp_ea_to.value_de=vw_val.hoehengenauigkeit_nach
-	LEFT JOIN tww_od.default_values downr on fieldname = 'fk_dataowner'
 	WHERE vw_val.obj_id=re.obj_id
 	RETURNING ws_obj_id INTO ws_oid_for_measure;
 	IF NOT FOUND THEN
@@ -196,7 +193,7 @@ BEGIN
 	, vw_val.lichte_hoehe_geplant
 	, vw_val.lichte_breite_geplant
     , re_mat.code
-    , coalesce(ch_uc.code,ch_uc2.code)
+    , ch_uc.code
     , ch_fhi.code
     , ws_st.code
     , {ext_schema}.convert_organisationid_to_vsa(vw_val.eigentuemer)
@@ -215,7 +212,7 @@ BEGIN
     , vw_val.bezeichnung
     , vw_val.letzte_aenderung_wi
     , vw_val.bemerkung_wi
-    , coalesce(ch_up.code,ch_up2.code)
+    , ch_up.code
     , ws_fin.code
     , {ext_schema}.convert_organisationid_to_vsa(vw_val.betreiber)
     , vw_val.bezeichnung
@@ -246,12 +243,10 @@ BEGIN
 	, {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_gep)
 	FROM (SELECT NEW.*) vw_val
 	LEFT JOIN tww_vl.reach_material re_mat ON re_mat.value_de=vw_val.material
-	LEFT JOIN tww_vl.channel_usage_current ch_uc ON ch_uc.value_de=vw_val.nutzungsartag_ist
-	LEFT JOIN {ext_schema}.vl_channel_usage_current ch_uc2 ON ch_uc2.value_agxx=vw_val.nutzungsartag_ist
+	LEFT JOIN tww_vl.channel_usage_current_import_rel_agxx ch_uc ON ch_uc.value_de=vw_val.nutzungsartag_ist
 	LEFT JOIN tww_vl.channel_function_hierarchic ch_fhi ON ch_fhi.value_de=vw_val.funktionhierarchisch
 	LEFT JOIN tww_vl.channel_function_hydraulic ch_fhy ON ch_fhy.value_de=vw_val.funktionhydraulisch
-	LEFT JOIN tww_vl.channel_usage_planned ch_up ON ch_up.value_de=vw_val.nutzungsartag_geplant
-	LEFT JOIN {ext_schema}.vl_channel_usage_planned ch_up2 ON ch_up2.value_agxx=vw_val.nutzungsartag_geplant
+	LEFT JOIN tww_vl.channel_usage_planned_import_rel_agxx ch_up ON ch_up.value_de=vw_val.nutzungsartag_geplant
 	LEFT JOIN tww_vl.wastewater_structure_status ws_st ON ws_st.value_de=vw_val.bauwerkstatus
 	LEFT JOIN tww_vl.wastewater_structure_structure_condition ws_sc ON ws_sc.value_de=vw_val.baulicherzustand
 	LEFT JOIN tww_vl.wastewater_structure_renovation_necessity ws_rn ON ws_rn.value_de=vw_val.sanierungsbedarf
@@ -313,15 +308,14 @@ BEGIN
     , year_implementation_effective = vw_val.jahr_umsetzung_effektiv
     , year_implementation_planned = vw_val.jahr_umsetzung_planned
     , last_modification = vw_val.letzte_aenderung_gep
-    , fk_dataowner = downr.value_obj_id
+--    , fk_dataowner = downr.value_obj_id
     , fk_provider = {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_gep)
     , fk_responsible_entity = {ext_schema}.convert_organisationid_to_vsa(vw_val.traegerschaft)
     , fk_responsible_start = {ext_schema}.convert_organisationid_to_vsa(vw_val.verantwortlich_ausloesung)
 	FROM (SELECT NEW.*) vw_val
-	LEFT JOIN tww_vl.measure_category msr_cat on msr_cat.value_de=vw_val.kategorie
+	LEFT JOIN tww_vl.measure_category_import_rel_agxx msr_cat on msr_cat.value_de=vw_val.kategorie
 	LEFT JOIN tww_vl.measure_priority msr_pri on msr_pri.value_de = vw_val.prioritaetag
 	LEFT JOIN tww_vl.measure_status msr_st on msr_st.value_de = vw_val.status
-	LEFT JOIN tww_od.default_values downr on fieldname = 'fk_dataowner'
 	WHERE msr.obj_id=vw_val.obj_id;
 	IF NOT FOUND THEN
 	INSERT INTO tww_od.measure(
@@ -370,7 +364,7 @@ BEGIN
     , {ext_schema}.convert_organisationid_to_vsa(vw_val.traegerschaft)
     , {ext_schema}.convert_organisationid_to_vsa(vw_val.verantwortlich_ausloesung)
 	FROM (SELECT NEW.*) vw_val
-	LEFT JOIN tww_vl.measure_category msr_cat on msr_cat.value_de=vw_val.kategorie
+	LEFT JOIN tww_vl.measure_category_import_rel_agxx msr_cat on msr_cat.value_de=vw_val.kategorie
 	LEFT JOIN tww_vl.measure_priority msr_pri on msr_pri.value_de = vw_val.prioritaetag
 	LEFT JOIN tww_vl.measure_status msr_st on msr_st.value_de = vw_val.status
 	LEFT JOIN tww_od.default_values downr on fieldname = 'fk_dataowner'
@@ -483,8 +477,8 @@ BEGIN
 	FROM (SELECT NEW.*) as vw_val
 	LEFT JOIN tww_vl.catchment_area_direct_discharge_current ddc on ddc.code = vw_val.direkteinleitung_in_gewaesser_ist
 	LEFT JOIN tww_vl.catchment_area_direct_discharge_planned ddp on ddp.code = vw_val.direkteinleitung_in_gewaesser_geplant
-	LEFT JOIN tww_vl.catchment_area_drainage_system_current dsc on dsc.code = vw_val.entwaesserungssystemag_ist
-	LEFT JOIN tww_vl.catchment_area_drainage_system_planned dsp on dsp.code = vw_val.entwaesserungssystemag_geplant
+	LEFT JOIN tww_vl.catchment_area_drainage_system_current_import_rel_agxx dsc on dsc.code = vw_val.entwaesserungssystemag_ist
+	LEFT JOIN tww_vl.catchment_area_drainage_system_planned_import_rel_agxx dsp on dsp.code = vw_val.entwaesserungssystemag_geplant
 	LEFT JOIN tww_vl.catchment_area_infiltration_current ic on ic.code = vw_val.versickerung_ist
 	LEFT JOIN tww_vl.catchment_area_infiltration_planned ip on ip.code = vw_val.versickerung_geplant
 	LEFT JOIN tww_vl.catchment_area_retention_current rc on rc.code = vw_val.retention_ist
@@ -522,7 +516,7 @@ BEGIN
     , waste_water_production_current
     , waste_water_production_planned
     , last_modification
-    , fk_dataowner
+--    , fk_dataowner
     , fk_provider
     , fk_wastewater_networkelement_rw_current
     , fk_wastewater_networkelement_rw_planned
@@ -560,7 +554,7 @@ BEGIN
     , EXCLUDED.waste_water_production_current
     , EXCLUDED.waste_water_production_planned
     , EXCLUDED.last_modification
-    , EXCLUDED.fk_dataowner
+--    , EXCLUDED.fk_dataowner
     , EXCLUDED.fk_provider
     , EXCLUDED.fk_wastewater_networkelement_rw_current
     , EXCLUDED.fk_wastewater_networkelement_rw_planned
