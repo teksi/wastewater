@@ -2753,9 +2753,7 @@ class InterlisExporterToIntermediateSchema:
         self.abwasser_session.flush()
 
     def _export_re_building_group_disposal(self):
-        query = self.tww_session.query(
-            self.model_classes_tww_od.re_building_group_disposal
-        )
+        query = self.tww_session.query(self.model_classes_tww_od.re_building_group_disposal)
         if self.filtered:
             query = (
                 query.join(self.model_classes_tww_od.examination)
