@@ -440,6 +440,12 @@ class InterlisExporterToIntermediateSchema:
         self._export_re_maintenance_event_wastewater_structure()
         self._check_for_stop()
 
+        logger.info(
+            "Exporting TWW.re_building_group_disposal -> ABWASSER.gebaeudegruppe_entsorgungassoc"
+        )
+        self._export_re_building_group_disposal()
+        self._check_for_stop()
+
     def _export_vsa_kek(self):
         logger.info("Exporting TWW.examination -> ABWASSER.untersuchung")
         self._export_examination()
