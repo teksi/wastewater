@@ -93,6 +93,7 @@ def load_extension(
                 print(f"Running {filename}")
                 run_sql_file(os.path.join(directory, filename), pg_service, variables)
             if filename.endswith(".py"):
+                print(f"Running {filename}")
                 run_py_file(os.path.join(directory, filename))
 
     # re-create symbology triggers
