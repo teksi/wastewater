@@ -322,3 +322,9 @@ class ModelTwwOd(ModelBase):
         ModelTwwOd.re_maintenance_event_wastewater_structure = (
             re_maintenance_event_wastewater_structure
         )
+
+        class re_building_group_disposal(self.Base):
+            __tablename__ = "re_building_group_disposal"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.re_building_group_disposal = re_building_group_disposal
