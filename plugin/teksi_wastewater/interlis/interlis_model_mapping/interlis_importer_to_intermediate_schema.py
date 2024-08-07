@@ -2064,7 +2064,6 @@ class InterlisImporterToIntermediateSchema:
                 self.model_classes_tww_od.wastewater_structure_symbol,
                 # --- wastewater_structure_symbol ---
                 obj_id=row.t_ili_tid,
-                last_modification=row.letzte_aenderung,
                 plantype=self.get_vl_code(
                     self.model_classes_tww_vl.wastewater_structure_symbol_plantype, row.plantyp
                 ),
