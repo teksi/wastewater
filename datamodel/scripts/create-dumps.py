@@ -216,5 +216,7 @@ if __name__ == "__main__":
         args.extension_name = "_" + args.extension_name
 
     os.makedirs("datamodel/artifacts", exist_ok=True)
-    files = create_dumps(version=args.version, database=args.database, extension_name=args.extension_name)
+    files = create_dumps(
+        version=args.version, database=args.database, extension_name=args.extension_name
+    )
     print("Dumps created: {}".format(", ".join(files)))
