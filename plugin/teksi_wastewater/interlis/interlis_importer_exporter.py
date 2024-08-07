@@ -474,7 +474,7 @@ class InterlisImporterExporter:
                 log_path,
             )
 
-    def _check_subclass_counts(self, limit_to_selection):
+    def _check_subclass_counts(self, limit_to_selection=False):
         self._check_subclass_count(
             config.TWW_OD_SCHEMA,
             "wastewater_networkelement",
