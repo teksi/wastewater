@@ -62,11 +62,11 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
         , {wn_cols}
         , {ne_cols}
 
-        , ws._label
-        , ws._cover_label
-        , ws._bottom_label
-        , ws._input_label
-        , ws._output_label
+        , lbl.label_def->>'main' as _label
+        , lbl.label_def->>'cover' as _cover_label
+        , lbl.label_def->>'bottom' as _bottom_label
+        , lbl.label_def->>'input' as _input_label
+        , lbl.label_def->>'output' as _output_label
         , wn._usage_current AS _channel_usage_current
         , wn._function_hierarchic AS _channel_function_hierarchic
 
@@ -83,6 +83,7 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
         LEFT JOIN tww_od.special_structure ss ON ss.obj_id = ws.obj_id
         LEFT JOIN tww_od.discharge_point dp ON dp.obj_id = ws.obj_id
         LEFT JOIN tww_od.infiltration_installation ii ON ii.obj_id = ws.obj_id
+        LEFT JOIN  tww_od.tww_labels lbl ON lbl.fk_parent_obj_id = ws.obj_id
         WHERE '-1'= ALL(ARRAY[ch.obj_id,ma.obj_id,ss.obj_id,dp.obj_id,ii.obj_id]) IS NULL
         AND '-2'= ALL(ARRAY[ch.obj_id,ma.obj_id,ss.obj_id,dp.obj_id,ii.obj_id]) IS NULL;
 
@@ -102,11 +103,6 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
                 "identifier",
                 "fk_owner",
                 "status",
-                "_label",
-                "_cover_label",
-                "_bottom_label",
-                "_input_label",
-                "_output_label",
                 "fk_main_cover",
                 "fk_main_wastewater_node",
                 "detail_geometry3d_geometry",
@@ -240,11 +236,6 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
             remove_pkey=False,
             indent=2,
             skip_columns=[
-                "_label",
-                "_cover_label",
-                "_bottom_label",
-                "_input_label",
-                "_output_label",
                 "fk_main_cover",
                 "fk_main_wastewater_node",
                 "detail_geometry3d_geometry",
@@ -482,11 +473,6 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
             skip_columns=[
                 "detail_geometry3d_geometry",
                 "last_modification",
-                "_label",
-                "_cover_label",
-                "_bottom_label",
-                "_input_label",
-                "_output_label",
                 "fk_main_cover",
                 "fk_main_wastewater_node",
                 "_depth",
