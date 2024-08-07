@@ -226,7 +226,7 @@ class InterlisExporterToIntermediateSchema:
         self._check_for_stop()
 
         logger.info("Exporting TWW.wastewater_structure_symbol -> ABWASSER.abwasserbauwerk_symbol")
-        self._wastewater_structure_symbol()
+        self._export_wastewater_structure_symbol()
         self._check_for_stop()
 
     def _export_dss(self):
