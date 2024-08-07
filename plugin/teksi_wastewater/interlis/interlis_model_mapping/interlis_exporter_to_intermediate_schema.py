@@ -224,7 +224,7 @@ class InterlisExporterToIntermediateSchema:
         logger.info("Exporting TWW.benching -> ABWASSER.bankett")
         self._export_benching()
         self._check_for_stop()
-        
+
         logger.info("Exporting TWW.wastewater_structure_symbol -> ABWASSER.abwasserbauwerk_symbol")
         self._wastewater_structure_symbol()
         self._check_for_stop()
@@ -1027,8 +1027,10 @@ class InterlisExporterToIntermediateSchema:
     def _export_wastewater_structure_symbol(self):
         query = self.tww_session.query(self.model_classes_tww_od.wastewater_structure_symbol)
         if self.filtered:
-            query = query.join(self.model_classes_tww_od.wastewater_structure,
-                self.model_classes_tww_od.wastewater_networkelement).filter(
+            query = query.join(
+                self.model_classes_tww_od.wastewater_structure,
+                self.model_classes_tww_od.wastewater_networkelement,
+            ).filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
             # add sql statement to logger
@@ -1044,7 +1046,7 @@ class InterlisExporterToIntermediateSchema:
                 symbolskalierunglaengs=row.symbol_scaling_width,
                 symbolori=row.symbolori,
                 symbolpos=row.symbolpos_geometry,
-                abwasserbauwerkref= self.get_tid(row.fk_wastewater_structure__REL),
+                abwasserbauwerkref=self.get_tid(row.fk_wastewater_structure__REL),
             )
             self.abwasser_session.add(abwasserbauwerk_symbol)
             print(".", end="")
