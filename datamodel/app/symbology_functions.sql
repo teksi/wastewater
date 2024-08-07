@@ -54,11 +54,11 @@ FROM(
 
     WHERE _all OR wn.obj_id = _obj_id
       WINDOW w AS ( PARTITION BY wn.obj_id
-                    ORDER BY vl_fct_hier_from.order_fct_hierarchic ASC NULLS LAST
-                           , vl_fct_hier_to.order_fct_hierarchic ASC NULLS LAST
+                    ORDER BY vl_fct_hier_from.tww_symbology_order ASC NULLS LAST
+                           , vl_fct_hier_to.tww_symbology_order ASC NULLS LAST
 
-                           , vl_usg_curr_from.order_usage_current ASC NULLS LAST
-                           , vl_usg_curr_to.order_usage_current ASC NULLS LAST
+                           , vl_usg_curr_from.tww_symbology_order ASC NULLS LAST
+                           , vl_usg_curr_to.tww_symbology_order ASC NULLS LAST
                     ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)
 ) symbology_ne
 WHERE symbology_ne.wn_obj_id = n.obj_id;
@@ -120,11 +120,11 @@ FROM(
       LEFT JOIN tww_vl.channel_usage_current       vl_usg_curr_from	ON wn_from._usage_current = vl_usg_curr_from.code
 	  WHERE (_all OR wn.obj_id = _obj_id)
       WINDOW w AS ( PARTITION BY wn.obj_id
-                    ORDER BY vl_fct_hier.order_fct_hierarchic ASC NULLS LAST
-                           , vl_fct_hier_from.order_fct_hierarchic ASC NULLS LAST
+                    ORDER BY vl_fct_hier.tww_symbology_order ASC NULLS LAST
+                           , vl_fct_hier_from.tww_symbology_order ASC NULLS LAST
 
-                           , vl_usg_curr.order_usage_current ASC NULLS LAST
-                           , vl_usg_curr_from.order_usage_current ASC NULLS LAST
+                           , vl_usg_curr.tww_symbology_order ASC NULLS LAST
+                           , vl_usg_curr_from.tww_symbology_order ASC NULLS LAST
                     ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)
 ) symbology_ne
 WHERE symbology_ne.wn_obj_id = n.obj_id
@@ -443,7 +443,7 @@ SELECT   ws_obj_id,
 		coalesce(round(RP.level, 2)::text, '?') AS rpo_level,
 		NE.fk_wastewater_structure ws, RP.obj_id,
 		row_number() OVER(PARTITION BY NE.fk_wastewater_structure
-						  ORDER BY uc.order_fct_hierarchic,
+						  ORDER BY uc.tww_symbology_order,
 						  ST_Azimuth(RP.situation3d_geometry,ST_PointN(RE_from.progression3d_geometry,2))/pi()*180 ASC),
 		NULL::text AS bottom_level
       FROM tww_od.reach_point RP
