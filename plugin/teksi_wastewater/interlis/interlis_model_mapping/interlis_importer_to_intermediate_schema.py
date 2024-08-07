@@ -453,13 +453,14 @@ class InterlisImporterToIntermediateSchema:
         fk_1 = kwargs.get("fk_1", None)
         fk_2 = kwargs.get("fk_2", None)
 
-        if obj_id:
-            instance = self.session_tww.query(cls).get(kwargs.get("obj_id", None))
-
+        if fk_1 and fk_2:
+            # instance = self.session_tww.query(cls).get(kwargs.get("obj_id", None))
+            instance = self.session_tww.query(cls).get(kwargs.get("fk_1", "fk_2", None))
+            
         if instance:
-            # We found it -> update
-            instance.__dict__.update(kwargs)
-            flag_dirty(instance)  # we flag it as dirty so it stays in the session
+            # We found it -> skip
+            # instance.__dict__.update(kwargs)
+            # flag_dirty(instance)  # we flag it as dirty so it stays in the session
         else:
             # We didn't find it -> create
             instance = cls(**kwargs)
