@@ -1,6 +1,7 @@
 import collections
 import configparser
 import os
+import select
 from typing import List
 
 from .plugin_utils import logger
@@ -220,3 +221,22 @@ class DatabaseUtils:
             messages.append("Symbology triggers are disabled")
 
         return messages
+
+    @staticmethod
+    def dblisten(channel: str = None, timeout: float = 5.0):
+        if channel:
+            with DatabaseUtils.PsycopgConnection() as connection:
+                cursor = connection.cursor()
+                cursor.execute(f"LISTEN {channel}")
+                try:
+                    while True:
+                        if select.select([connection], [], [], timeout) == ([], [], []):
+                            print(f"Timeout on Channel {channel}")
+                        else:
+                            connection.poll()
+                            while connection.notifies:
+                                notify = connection.notifies.pop()
+                                yield notify.payload
+                finally:
+                    cursor.execute(f"UNLISTEN {channel}")
+                    cursor.close()
