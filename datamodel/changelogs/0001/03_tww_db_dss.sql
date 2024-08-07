@@ -4895,8 +4895,8 @@ COMMENT ON COLUMN tww_od.wastewater_structure_symbol.obj_id IS 'INTERLIS STANDAR
 COMMENT ON COLUMN tww_od.wastewater_structure_symbol.classname IS 'Name of class that symbol class is related to / Name der Klasse zu der die Symbolklasse gehört / nom de la classe à laquelle appartient la classe de symbole';
  ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN plantype  integer ;
 COMMENT ON COLUMN tww_od.wastewater_structure_symbol.plantype IS '';
- ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN symbol_scaling_heigth  decimal(2,1) ;
-COMMENT ON COLUMN tww_od.wastewater_structure_symbol.symbol_scaling_heigth IS '';
+ ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN symbol_scaling_height  decimal(2,1) ;
+COMMENT ON COLUMN tww_od.wastewater_structure_symbol.symbol_scaling_height IS '';
  ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN symbol_scaling_width  decimal(2,1) ;
 COMMENT ON COLUMN tww_od.wastewater_structure_symbol.symbol_scaling_width IS '';
  ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN symbolori  decimal(4,1) ;
