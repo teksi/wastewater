@@ -209,7 +209,7 @@ BEGIN
     fk_operator,
     fk_owner,
     ag96_fk_measure)
-	
+	(
 	SELECT vw_val.obj_id,
 	vw_val.baujahr,
 	sc.code,

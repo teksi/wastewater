@@ -87,6 +87,7 @@ FunktionBauwerkAG =   (
 
 
 */
+DROP MATERIALIZED VIEW  IF EXISTS {ext_schema}.knoten_bauwerksattribute CASCADE;
 
 CREATE MATERIALIZED VIEW {ext_schema}.knoten_bauwerksattribute
 AS
