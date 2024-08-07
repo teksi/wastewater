@@ -442,66 +442,6 @@ class InterlisImporterToIntermediateSchema:
 
         return instance
 
-    def create_re_class_entry(self, cls, **kwargs):
-        """
-        Checks if an existing instance (if fk_1, fk_2 combination is found) or creates an instance of the provided re_class
-        with given kwargs, and returns it.
-        """
-        instance = None
-
-        # We try to get the instance from the session/database
-        # does not work as we can then not run instance = cls(**kwargs) to create object at the end
-        # fk_1_value = kwargs.get("fk_1", None)
-        # fk_2_value = kwargs.get("fk_2", None)
-
-        if cls == "re_maintenance_event_wastewater_structure":
-            fk_1_value = kwargs.get("fk_wastewater_structure", None)
-            fk_2_value = kwargs.get("fk_maintenance_event", None)
-        elif cls == "re_building_group_disposal":
-            fk_1_value = kwargs.get("fk_disposal", None)
-            fk_2_value = kwargs.get("fk_building_group", None)
-        else:
-            fk_1_value = None
-            fk_2_value = None
-
-            logger.warning(
-                f"Not supported n:m relation class: {cls} - please open an issue to add this to interlis_importer_to_intermediate_schema configuration"
-            )
-
-        if fk_1_value and fk_2_value:
-            # instance = self.session_tww.query(cls).get(kwargs.get("obj_id", None))
-            # instance = self.session_tww.query(cls).get(kwargs.get("fk_1", "fk_2", None))
-
-            # try with filter
-            # filter(or_(db.users.name=='Ryan', db.users.country=='England'))
-            # filter should be and not or see https://docs.sqlalchemy.org/en/14/orm/query.html#sqlalchemy.orm.Query.filter_by
-
-            if cls == "re_maintenance_event_wastewater_structure":
-                instance = self.session_tww.query(cls).filter_by(
-                    fk_wastewater_structure=fk_1_value, fk_maintenance_event=fk_2_value
-                )
-
-            elif cls == "re_building_group_disposal":
-                instance = self.session_tww.query(cls).filter_by(
-                    fk_disposal=fk_1_value, fk_building_group=fk_2_value
-                )
-
-            else:
-                logger.warning(
-                    f"Not supported n:m relation class: {cls} - please open an issue to add this to interlis_importer_to_intermediate_schema configuration"
-                )
-
-        if instance is None:
-
-            # We found it -> skip
-            # instance.__dict__.update(kwargs)
-            # flag_dirty(instance)  # we flag it as dirty so it stays in the session
-            # else:
-            # We didn't find it -> create
-            instance = cls(**kwargs)
-
-        return instance
-
     def base_common(self, row):
         """
         Returns common attributes for base
@@ -2299,32 +2239,17 @@ class InterlisImporterToIntermediateSchema:
         for row in self.session_interlis.query(
             self.model_classes_interlis.erhaltungsereignis_abwasserbauwerkassoc
         ):
-            # test with create_re_class_entry
 
-            re_maintenance_event_wastewater_structure = self.create_re_class_entry(
-                self.model_classes_tww_od.re_maintenance_event_wastewater_structure,
-                # this class does not inherit base_commmon
-                # **self.base_common(row),
-                # --- re_maintenance_event_wastewater_structure ---
-                # does not work
-                # fk_1=self.get_pk(row.erhaltungsereignis_abwasserbauwerkassocref__REL),
-                # fk_2=self.get_pk(row.abwasserbauwerkref__REL),
-                fk_maintenance_event=self.get_pk(
-                    row.erhaltungsereignis_abwasserbauwerkassocref__REL
-                ),
-                fk_wastewater_structure=self.get_pk(row.abwasserbauwerkref__REL),
+            re_maintenance_event_wastewater_structure = self.create_or_update(
+            self.model_classes_tww_od.re_maintenance_event_wastewater_structure,
+            # this class does not inherit base_commmon
+            # **self.base_common(row),
+            # --- re_maintenance_event_wastewater_structure ---
+            fk_maintenance_event=self.get_pk(
+            row.erhaltungsereignis_abwasserbauwerkassocref__REL
+            ),
+            fk_wastewater_structure=self.get_pk(row.abwasserbauwerkref__REL),
             )
-
-            # re_maintenance_event_wastewater_structure = self.create_or_update(
-            # self.model_classes_tww_od.re_maintenance_event_wastewater_structure,
-            # # this class does not inherit base_commmon
-            # # **self.base_common(row),
-            # # --- re_maintenance_event_wastewater_structure ---
-            # fk_maintenance_event=self.get_pk(
-            # row.erhaltungsereignis_abwasserbauwerkassocref__REL
-            # ),
-            # fk_wastewater_structure=self.get_pk(row.abwasserbauwerkref__REL),
-            # )
 
             self.session_tww.add(re_maintenance_event_wastewater_structure)
             print(".", end="")
