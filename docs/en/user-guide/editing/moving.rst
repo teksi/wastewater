@@ -8,19 +8,29 @@ This represents a guide on how to move wastewater structures with reaches and wa
 General
 ------------
 
-It's not unusual, that manholes are digitized the first time with low precision. Later the manholes are measured, and there is the need, to move the whole wastewater structure (means cover, node and reachpoints of all reaches) to the measured point.
+It's not unusual, that manholes are digitized the first time with low precision. Later the manholes are measured, and there is the need, to move the whole wastewater structure (means cover(s), node(s) and reachpoints of all reaches) to the measured point.
+
+There are two tools to move a manhole: **Vertex Tool** and **Move Feature** Tool. And there is a very important option in the **Snapping Toolbar**: **Enable Topological Editing**.
+
+.. figure:: images/tools_moving.jpg
+
+**Vertex Tool** and **Move Feature** work similar for (single)-point layers.
+
+Because with DSS-datamodel, cover, wastewater node and reachpoints are connected not by location, but by foreign keys in the database, TWW is prepared to move cover(s), node(s) and reachpoints (and therefore also reaches) together by the same distance. This means, it's better not to enable topological editing in several cases.
+
 
 .. note:: You need to turn on the advanced digitizing toolbar in your project to be able to select the **Move Feature** tool.
 
 .. figure:: images/advanced_digitizing_tools.jpg
 
 
-How to
+Moving a manhole
 ------------
 
 * Select the **vw_tww_wastewater_structure** layer
 * Set the layer to edit mode
-* Select the **Move Feature** tool (standard QGIS tool in the advanced digitizing toolbar)
+* Select the **Move Feature** tool (standard QGIS tool in the advanced digitizing toolbar) or the **Vertex Tool**
+* Deselect the button **Enable Topological Editing**
 
 .. figure:: images/moving_wws_before.jpg
 
