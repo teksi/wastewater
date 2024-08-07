@@ -32,6 +32,9 @@ CREATE TABLE tww_od.re_building_group_disposal
    CONSTRAINT pkey_tww_od_re_building_group_disposal_id PRIMARY KEY (id)
 );
 COMMENT ON COLUMN tww_od.re_building_group_disposal.id IS 'UUID generated with uuid_generate_v4 see https://www.postgresql.org/docs/16/uuid-ossp.html#UUID-OSSP-FUNCTIONS-SECT';
+
+CREATE UNIQUE INDEX in_re_building_group_disposal_fks ON tww_od.re_building_group_disposal USING btree (fk_building_group ASC NULLS LAST, fk_disposal ASC NULLS LAST); 
+
 -------
 CREATE TABLE tww_od.re_maintenance_event_wastewater_structure
 (
