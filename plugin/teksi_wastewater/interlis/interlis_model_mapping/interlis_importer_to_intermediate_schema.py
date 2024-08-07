@@ -455,7 +455,7 @@ class InterlisImporterToIntermediateSchema:
 
         if (fk_1_value and fk_2_value):
             # instance = self.session_tww.query(cls).get(kwargs.get("obj_id", None))
-            ## instance = self.session_tww.query(cls).get(kwargs.get("fk_1", "fk_2", None))
+            # instance = self.session_tww.query(cls).get(kwargs.get("fk_1", "fk_2", None))
 
             # try with filter 
             # filter(or_(db.users.name=='Ryan', db.users.country=='England'))
