@@ -4,12 +4,12 @@
 # This script will create a clean datastructure for the
 # TEKSI Wastewater
 # based on the VSA-DSS 2020 datamodel (see www.vsa.ch/model)
-# It will create new schemata tww_* in a postgres database.
+# It will create new schemats tww_* in a postgres database.
 
 set -e
+
 PGSERVICE=${PGSERVICE:-pg_tww}
-SRID=${SRID}
-EXT_NAME = ${EXT_NAME}
+SRID=2056
 
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/..
 
@@ -36,9 +36,5 @@ psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f ${DIR}/changelogs/0001/51_dss1
 psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f ${DIR}/changelogs/0001/52_dss15_planning_zone_dictionaries.sql -v SRID=$SRID
 psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f ${DIR}/12_0_roles.sql
 psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f ${DIR}/12_1_roles.sql
-
-if [[ -n $EXT_NAME ]]; then
-  ${DIR}/extensions/extension_manager.py --pg_service ${PGSERVICE} --srid ${SRID} --ext_name ${EXT_NAME}
-fi
 
 ${DIR}/app/create_app.py --pg_service ${PGSERVICE} --srid ${SRID}
