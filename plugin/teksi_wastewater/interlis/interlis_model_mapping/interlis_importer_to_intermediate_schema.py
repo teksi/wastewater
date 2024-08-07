@@ -463,11 +463,11 @@ class InterlisImporterToIntermediateSchema:
         else:
             fk_1_value = None
             fk_2_value = None
-            
+
             logger.warning(
-            f"Not supported n:m relation class: {cls} - please open an issue to add this to interlis_importer_to_intermediate_schema configuration"
-        )
-                
+                f"Not supported n:m relation class: {cls} - please open an issue to add this to interlis_importer_to_intermediate_schema configuration"
+            )
+
         if fk_1_value and fk_2_value:
             # instance = self.session_tww.query(cls).get(kwargs.get("obj_id", None))
             # instance = self.session_tww.query(cls).get(kwargs.get("fk_1", "fk_2", None))
@@ -2306,13 +2306,11 @@ class InterlisImporterToIntermediateSchema:
                 # this class does not inherit base_commmon
                 # **self.base_common(row),
                 # --- re_maintenance_event_wastewater_structure ---
-
                 # does not work
                 # fk_1=self.get_pk(row.erhaltungsereignis_abwasserbauwerkassocref__REL),
                 # fk_2=self.get_pk(row.abwasserbauwerkref__REL),
-
                 fk_maintenance_event=self.get_pk(
-                row.erhaltungsereignis_abwasserbauwerkassocref__REL
+                    row.erhaltungsereignis_abwasserbauwerkassocref__REL
                 ),
                 fk_wastewater_structure=self.get_pk(row.abwasserbauwerkref__REL),
             )
