@@ -53,13 +53,14 @@ def create_app(
     """
     cwd = Path(__file__).parent.resolve()
     variables = {
-        "SRID": psycopg.sql.SQL(f"{srid}")
+        "SRID": psycopg.sql.SQL(f"{srid}"),
     }  # when dropping psycopg2 support, we can use the srid var directly
 
     if drop_schema:
         run_sql("DROP SCHEMA IF EXISTS tww_app CASCADE;", pg_service)
-
-    run_sql("CREATE SCHEMA tww_app;", pg_service)
+        run_sql("CREATE SCHEMA tww_app;", pg_service)
+    else:
+        run_sql("CREATE SCHEMA IF NOT EXISTS tww_app;", pg_service)
 
     run_sql_file("symbology_functions.sql", pg_service)
     run_sql_file("reach_direction_change.sql", pg_service, variables)
@@ -231,8 +232,6 @@ def create_app(
     ).create()
 
     run_sql_file("triggers/network.sql", pg_service)
-
-    run_sql_file("tww_app_roles.sql", pg_service, variables)
 
 
 if __name__ == "__main__":
