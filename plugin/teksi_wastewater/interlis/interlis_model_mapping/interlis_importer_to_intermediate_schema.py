@@ -598,14 +598,15 @@ class InterlisImporterToIntermediateSchema:
                 obj_id=row.t_ili_tid,
                 # --- organisation ---
                 identifier=row.bezeichnung,
-                remark=row.bemerkung,
-                uid=row.auid,
+                identifier_short=row.kurzbezeichnung,
                 municipality_number=row.gemeindenummer,
                 organisation_type=self.get_vl_code(
                     self.model_classes_tww_vl.organisation_organisation_type, row.organisationstyp
                 ),
+                remark=row.bemerkung,
                 status=self.get_vl_code(
                     self.model_classes_tww_vl.organisation_status, row.astatus
+                uid=row.auid,
                 ),
             )
 
