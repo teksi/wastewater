@@ -172,7 +172,7 @@ class ModelInterlisSia405Abwasser(ModelBase):
 
         # SymbolPos
 
-        class symbolpos(baseclass):
+        class symbolpos(self.Base):
             __tablename__ = "symbolpos"
             __table_args__ = {"schema": config.ABWASSER_SCHEMA}
 

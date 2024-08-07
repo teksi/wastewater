@@ -2062,8 +2062,9 @@ class InterlisImporterToIntermediateSchema:
         for row in self.session_interlis.query(self.model_classes_interlis.abwasserbauwerk_symbol):
             wastewater_structure_symbol = self.create_or_update(
                 self.model_classes_tww_od.wastewater_structure_symbol,
-                **self.base_common(row),
                 # --- wastewater_structure_symbol ---
+                obj_id = row.t_ili_tid,
+                last_modification= row.letzte_aenderung,
                 plantype=self.get_vl_code(
                     self.model_classes_tww_vl.wastewater_structure_symbol_plantype, row.plantyp
                 ),
