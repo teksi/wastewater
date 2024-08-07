@@ -21,7 +21,8 @@ Because with DSS-datamodel, cover, wastewater node and reachpoints are connected
 
 .. note:: You need to turn on the advanced digitizing toolbar in your project to be able to select the **Move Feature** tool.
 
-.. figure:: images/advanced_digitizing_tools.jpg
+.. figure:: images/advanced_digitizing_tools.jpg 
+   :scale: 50 %
 
 
 Moving a manhole
@@ -42,9 +43,10 @@ In this example, the manhole has one cover, two wastewater nodes, four reaches t
 '1.070' manhole moved. Cover, 2 nodes and all 5 reachpoints (reaches) are moved to a new place. The distance between the points is still the same.
 The detail geometry does not move (layer wastewater_structure in layergroup Wastewatser Structures). The detail geometry must be moved extra with the **Move Feature** tool. There is in the moment no good help, to do this automatically.
 
-To show the move, it's a good way to set the **Topology** layers visible:
+* To show the move, it's a good way to set the **Topology** layers visible:
 
 .. figure:: images/moving_wws_manhole1topology.jpg
+
 
 
 * To update the topology, click on the TWW - **SQL** Button
@@ -70,6 +72,7 @@ Nodes: Layergroup Hydraulic, layer vw_wastewater_node
 Moving a reachpoint
 ------------
 There is no reachpoint layer in the TWW-project. You edit reachpoints as part of the reach in layer **vw_tww_reach**.
+
 * Select the **vw_tww_rach** layer
 * Set the layer to edit mode
 * Select the **Vertex Tool** (the Move Feature Tool moves the whole reach)
