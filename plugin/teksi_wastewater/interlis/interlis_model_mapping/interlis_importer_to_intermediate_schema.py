@@ -608,7 +608,6 @@ class InterlisImporterToIntermediateSchema:
                     self.model_classes_tww_vl.organisation_status, row.astatus
                 ),
                 uid=row.auid,
-                ),
             )
 
             self.session_tww.add(organisation)
