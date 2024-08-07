@@ -166,13 +166,13 @@ def create_plain_value_list(database: str, version: str, extension_name: str = N
     return dump_file
 
 
-def create_backup_complete(database: str, version: str):
+def create_backup_complete(database: str, version: str, extension_name: str = None):
     """
     Create data + structure dump
     :return: the file name
     """
     # Create data + structure dumps (with sample data)
-    dump = f"tww_{version}_structure_and_demo_data.backup"
+    dump = f"tww_{version}_structure_and_demo_data{extension_name}.backup"
     print(f"::group::{dump}")
     print(f"Creating dump {dump}")
     dump_file = f"datamodel/artifacts/{dump}"
