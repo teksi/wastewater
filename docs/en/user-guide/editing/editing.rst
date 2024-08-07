@@ -162,6 +162,9 @@ An other way to choose an object
 Adding additional covers and nodes to an existing wastewater structure
 ----------------------------------------------------------------------
 
+If a wastewater structure does not have a cover yet, one can add a cover by filling a **co_** attribute in **vw_tww_wastewater_structure**. The cover is then created at the location of the **vw_tww_wastewater_structure**.
+
+
 .. note:: The following description is for an additional cover. It works similar for additional wastewater nodes.
 
 The TWW project is configured that you can add an additional cover with the **Add Point Child Feature** button.
