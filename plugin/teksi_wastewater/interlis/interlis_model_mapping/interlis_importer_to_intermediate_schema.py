@@ -456,8 +456,23 @@ class InterlisImporterToIntermediateSchema:
         instance = None
 
         # We try to get the instance from the session/database
-        fk_1_value = kwargs.get("fk_1", None)
-        fk_2_value = kwargs.get("fk_2", None)
+        # does not work as we can then not run instance = cls(**kwargs) to create object at the end
+        # fk_1_value = kwargs.get("fk_1", None)
+        # fk_2_value = kwargs.get("fk_2", None)
+
+        if cls == "re_maintenance_event_wastewater_structure":
+            fk_1_value = kwargs.get("fk_wastewater_structure", None)
+            fk_2_value = kwargs.get("fk_maintenance_event", None)
+        elif cls == "re_building_group_disposal":
+            fk_1_value = kwargs.get("fk_disposal", None)
+            fk_2_value = kwargs.get("fk_building_group", None)
+        else:
+            fk_1_value = None
+            fk_2_value = None
+
+            logger.warning(
+                f"Not supported n:m relation class: {cls} - please open an issue to add this to interlis_importer_to_intermediate_schema configuration"
+            )
 
         if fk_1_value and fk_2_value:
             # instance = self.session_tww.query(cls).get(kwargs.get("obj_id", None))
@@ -2302,8 +2317,13 @@ class InterlisImporterToIntermediateSchema:
                 # this class does not inherit base_commmon
                 # **self.base_common(row),
                 # --- re_maintenance_event_wastewater_structure ---
-                fk_1=self.get_pk(row.erhaltungsereignis_abwasserbauwerkassocref__REL),
-                fk_2=self.get_pk(row.abwasserbauwerkref__REL),
+                # does not work
+                # fk_1=self.get_pk(row.erhaltungsereignis_abwasserbauwerkassocref__REL),
+                # fk_2=self.get_pk(row.abwasserbauwerkref__REL),
+                fk_maintenance_event=self.get_pk(
+                    row.erhaltungsereignis_abwasserbauwerkassocref__REL
+                ),
+                fk_wastewater_structure=self.get_pk(row.abwasserbauwerkref__REL),
             )
 
             # re_maintenance_event_wastewater_structure = self.create_or_update(
