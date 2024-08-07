@@ -461,8 +461,15 @@ class InterlisImporterToIntermediateSchema:
             # filter(or_(db.users.name=='Ryan', db.users.country=='England'))
             # filter should be and not or see https://docs.sqlalchemy.org/en/14/orm/query.html#sqlalchemy.orm.Query.filter_by
 
-            instance = self.session_tww.query(cls).filter_by(fk_1 = fk_1_value, fk_2 = fk_2_value)
-
+            if cls = 're_maintenance_event_wastewater_structure':
+                instance = self.session_tww.query(cls).filter_by(fk_wastewater_structure = fk_1_value, fk_maintenance_event = fk_2_value)
+            
+            elif:
+                cls = 're_maintenance_event_wastewater_structure':
+                instance = self.session_tww.query(cls).filter_by(fk_disposal = fk_1_value, fk_building_group = fk_2_value)
+                
+            else:
+                logger.warning(f"Not supported n:m relation class: {cls} - please open an issue to add this to interlis_importer_to_intermediate_schema configuration")
 
         if instance is None:
 
