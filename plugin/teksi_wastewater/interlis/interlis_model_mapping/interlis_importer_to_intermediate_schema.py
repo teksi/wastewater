@@ -596,6 +596,7 @@ class InterlisImporterToIntermediateSchema:
             organisation = self.create_or_update(
                 self.model_classes_tww_od.organisation,
                 obj_id=row.t_ili_tid,
+                last_modification=row.letzte_aenderung,
                 # --- organisation ---
                 identifier=row.bezeichnung,
                 identifier_short=row.kurzbezeichnung,
