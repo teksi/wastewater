@@ -460,7 +460,9 @@ class InterlisImporterToIntermediateSchema:
             # try with filter
             # filter(or_(db.users.name=='Ryan', db.users.country=='England'))
             # filter should be and not or see https://docs.sqlalchemy.org/en/14/orm/query.html#sqlalchemy.orm.Query.filter_by
+
             instance = self.session_tww.query(cls).filter_by(fk_1 = fk_1_value, fk_2 = fk_2_value)
+
 
         if instance is None:
 
