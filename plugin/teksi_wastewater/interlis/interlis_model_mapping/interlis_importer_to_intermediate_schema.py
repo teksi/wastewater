@@ -456,7 +456,7 @@ class InterlisImporterToIntermediateSchema:
         if fk_1 and fk_2:
             # instance = self.session_tww.query(cls).get(kwargs.get("obj_id", None))
             instance = self.session_tww.query(cls).get(kwargs.get("fk_1", "fk_2", None))
-            
+
         if instance:
             # We found it -> skip
             # instance.__dict__.update(kwargs)
