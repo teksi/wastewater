@@ -1,0 +1,11 @@
+extensions:
+  - id: demo
+    directory: demo_extension
+    schema: tww_demo
+    variables:
+      var1: value3
+      var2: value4
+  - id: agxx
+    directory: tww2ag6496
+    schema: tww_ag6496
+    variables: {}
