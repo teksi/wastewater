@@ -605,8 +605,9 @@ class InterlisImporterToIntermediateSchema:
                 ),
                 remark=row.bemerkung,
                 status=self.get_vl_code(
-                    self.model_classes_tww_vl.organisation_status, row.astatus,
-                uid=row.auid,
+                    self.model_classes_tww_vl.organisation_status,
+                    row.astatus,
+                    uid=row.auid,
                 ),
             )
 
