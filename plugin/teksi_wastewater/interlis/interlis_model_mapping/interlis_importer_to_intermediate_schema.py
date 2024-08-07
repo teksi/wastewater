@@ -464,8 +464,8 @@ class InterlisImporterToIntermediateSchema:
             instance = self.session_tww.query(cls).get(kwargs.get("fk_1", "fk_2", None))
             # try with filter 
             # filter(or_(db.users.name=='Ryan', db.users.country=='England'))
-            instance = self.session_tww.query(cls).filter_by(
-                or_(fk_1_value == fk_1, fk_2_value == fk_2)
+            # filter should be and not or see https://docs.sqlalchemy.org/en/14/orm/query.html#sqlalchemy.orm.Query.filter_by
+            instance = self.session_tww.query(cls).filter_by(fk_1_value = fk_1, fk_2_value = fk_2)
             )
 
         if instance is None:
