@@ -39,8 +39,7 @@ ON CONFLICT DO NOTHING;
 
 CREATE OR REPLACE FUNCTION tww_sys.disable_symbology_triggers() RETURNS VOID AS $$
 DECLARE
-    tbl text;
-	trig text;
+	nm text;
 BEGIN
   ALTER TABLE tww_od.reach_point DISABLE TRIGGER on_reach_point_update;
   ALTER TABLE tww_od.reach DISABLE TRIGGER on_reach_2_change;
@@ -55,8 +54,22 @@ BEGIN
   ALTER TABLE tww_od.reach_point DISABLE TRIGGER ws_symbology_update_by_reach_point;
   ALTER TABLE tww_od.reach DISABLE TRIGGER calculate_reach_length;
   -- AG-64/96 extension
-  ALTER TABLE tww_od.wastewater_networkelement DISABLE TRIGGER before_networkelement_change;
-  ALTER TABLE tww_od.overflow DISABLE TRIGGER before_overflow_change;
+  IF EXISTS
+  ( SELECT 1 FROM information_schema.triggers WHERE event_object_schema = 'tww_od'
+    AND event_object_table = 'wastewater_networkelement'
+    AND trigger_name = 'before_networkelement_change'
+  ) THEN
+    ALTER TABLE tww_od.wastewater_networkelement DISABLE TRIGGER before_networkelement_change;
+  ELSE NULL;
+  END IF;
+    IF EXISTS
+  ( SELECT 1 FROM information_schema.triggers WHERE event_object_schema = 'tww_od'
+    AND event_object_table = 'overflow'
+    AND trigger_name = 'before_overflow_change'
+  ) THEN
+     ALTER TABLE tww_od.overflow DISABLE TRIGGER before_overflow_change;
+  ELSE NULL;
+  END IF;
   RETURN;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
@@ -83,8 +96,23 @@ BEGIN
   ALTER TABLE tww_od.reach_point ENABLE TRIGGER ws_symbology_update_by_reach_point;
   ALTER TABLE tww_od.reach ENABLE TRIGGER calculate_reach_length;
   -- AG-64/96 extension
-  ALTER TABLE tww_od.wastewater_networkelement ENABLE TRIGGER before_networkelement_change;
-  ALTER TABLE tww_od.overflow ENABLE TRIGGER before_overflow_change;
+  IF EXISTS
+  ( SELECT 1 FROM information_schema.triggers WHERE event_object_schema = 'tww_od'
+    AND event_object_table = 'wastewater_networkelement'
+    AND trigger_name = 'before_networkelement_change'
+  ) THEN
+    ALTER TABLE tww_od.wastewater_networkelement ENABLE TRIGGER before_networkelement_change;
+  ELSE NULL;
+  END IF;
+    IF EXISTS
+  ( SELECT 1 FROM information_schema.triggers WHERE event_object_schema = 'tww_od'
+    AND event_object_table = 'overflow'
+    AND trigger_name = 'before_overflow_change'
+  ) THEN
+     ALTER TABLE tww_od.overflow ENABLE TRIGGER before_overflow_change;
+  ELSE NULL;
+  END IF;
+  RETURN;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
