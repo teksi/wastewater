@@ -596,17 +596,20 @@ class InterlisImporterToIntermediateSchema:
             organisation = self.create_or_update(
                 self.model_classes_tww_od.organisation,
                 obj_id=row.t_ili_tid,
+                # manually add for organisation (instead of adding **self.base_common(row) as this would also add fk_dataowner and fk_provider, that are not in INTERLIS for class organisation (change to VSA-DSS 2015, as organisation is now a separate external class maintained by the VSA (or its successor organisation for this)
+                last_modification=row.letzte_aenderung,
                 # --- organisation ---
                 identifier=row.bezeichnung,
-                remark=row.bemerkung,
-                uid=row.auid,
+                identifier_short=row.kurzbezeichnung,
                 municipality_number=row.gemeindenummer,
                 organisation_type=self.get_vl_code(
                     self.model_classes_tww_vl.organisation_organisation_type, row.organisationstyp
                 ),
+                remark=row.bemerkung,
                 status=self.get_vl_code(
                     self.model_classes_tww_vl.organisation_status, row.astatus
                 ),
+                uid=row.auid,
             )
 
             self.session_tww.add(organisation)

@@ -458,6 +458,7 @@ class InterlisExporterToIntermediateSchema:
                 auid=row.uid,
                 bemerkung=self.truncate(self.emptystr_to_null(row.remark), 255),
                 bezeichnung=self.null_to_emptystr(row.identifier),
+                kurzbezeichnung=row.identifier_short,
                 organisationstyp=self.get_vl(row.organisation_type__REL),
                 astatus=self.get_vl(row.status__REL),
             )
