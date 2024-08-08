@@ -1,5 +1,9 @@
 About
 =====
+.. warning::
+
+This part of the documentation is outdated and needs a review
+
 
 This represents a guide on how to download and install a virtual machine (VM) that has a
 working TWW installation with a demo dataset. The VM also has a working demo of the `QWAT water project <https://github.com/qwat/QWAT>`_ .
