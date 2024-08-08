@@ -268,6 +268,7 @@ class InterlisImporterExporter:
             model_classes_tww_od=self.model_classes_tww_od,
             model_classes_tww_vl=self.model_classes_tww_vl,
             callback_progress_done=self._progress_done_intermediate_schema,
+            model_classes_tww_ag6496=self.model_classes_tww_ag6496,
         )
 
         with LoggingHandlerContext(log_handler):

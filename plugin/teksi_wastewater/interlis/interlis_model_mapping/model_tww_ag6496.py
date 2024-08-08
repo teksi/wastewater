@@ -251,7 +251,7 @@ class ModelTwwAG6496(ModelBase):
             einschraenkung = Column(String)
             maechtigkeit = Column(String)
             perimeter = Column(Geometry)
-            ag96_q_check = Column(String)
+            q_check = Column(String)
             versickerungsmoeglichkeitag = Column(String)
             __table_args__ = {"schema": config.TWW_AG_SCHEMA}
         

@@ -936,7 +936,7 @@ class InterlisExporterToIntermediateSchema:
                 einschraenkung=row.einschraenkung,
                 maechtigkeit=row.maechtigkeit,
                 perimeter=row.perimeter,
-                q_check=row.ag96_q_check,
+                q_check=row.q_check,
                 versickerungsmoeglichkeitag=row.versickerungsmoeglichkeitag,
             )
             self.abwasser_session.add(versickerungsbereichag)
