@@ -61,12 +61,11 @@ Back in pgAdmin :
 
 * Propably you want to rename the database: Right click the database, click `Properties...` and rename the database.
 
-There are now 7 `schemas <https://teksi.github.io/wastewater/en/user-guide/layerexplanations/namingconventions.html#schemas-in-the-tww-database>`_ in the database
+There are now 6 `schemas <https://teksi.github.io/wastewater/en/user-guide/layerexplanations/namingconventions.html#schemas-in-the-tww-database>`_ in the database
 
 + public
-+ tww_import
-+ tww_network
-+ tww_swmm
++ tww_app
++ tww_cfg
 + tww_od
 + tww_sys
 + tww_vl
