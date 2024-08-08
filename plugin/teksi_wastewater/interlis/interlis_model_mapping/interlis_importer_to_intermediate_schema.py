@@ -142,6 +142,12 @@ class InterlisImporterToIntermediateSchema:
         self._import_spuelstutzen()
         self._check_for_stop()
 
+        logger.info(
+            "\nImporting ABWASSER.abwasserbauwerk_symbol -> TWW.wastewater_structure_symbol"
+        )
+        self._import_abwasserbauwerk_symbol()
+        self._check_for_stop()
+
     def _import_dss(self):
         logger.info(
             "\nImporting ABWASSER.abwasserreinigungsanlage -> TWW.waste_water_treatment_plant"
@@ -2053,6 +2059,24 @@ class InterlisImporterToIntermediateSchema:
                 situation_geometry=row.lage,
             )
             self.session_tww.add(flushing_nozzle)
+            print(".", end="")
+
+    def _import_abwasserbauwerk_symbol(self):
+        for row in self.session_interlis.query(self.model_classes_interlis.abwasserbauwerk_symbol):
+            wastewater_structure_symbol = self.create_or_update(
+                self.model_classes_tww_od.wastewater_structure_symbol,
+                # --- wastewater_structure_symbol ---
+                obj_id=row.t_ili_tid,
+                plantype=self.get_vl_code(
+                    self.model_classes_tww_vl.wastewater_structure_symbol_plantype, row.plantyp
+                ),
+                symbol_scaling_height=row.symbolskalierunghoch,
+                symbol_scaling_width=row.symbolskalierunglaengs,
+                symbolori=row.symbolori,
+                symbolpos_geometry=row.symbolpos,
+                fk_wastewater_structure=self.get_pk(row.abwasserbauwerkref__REL),
+            )
+            self.session_tww.add(wastewater_structure_symbol)
             print(".", end="")
 
     def _import_untersuchung(self):

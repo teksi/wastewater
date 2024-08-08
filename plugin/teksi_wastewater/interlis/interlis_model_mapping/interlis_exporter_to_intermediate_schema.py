@@ -225,6 +225,10 @@ class InterlisExporterToIntermediateSchema:
         self._export_benching()
         self._check_for_stop()
 
+        logger.info("Exporting TWW.wastewater_structure_symbol -> ABWASSER.abwasserbauwerk_symbol")
+        self._export_wastewater_structure_symbol()
+        self._check_for_stop()
+
         logger.info("Exporting TWW.flushing_nozzle -> ABWASSER.spuelstutzen")
         self._export_flushing_nozzle()
         self._check_for_stop()
@@ -1021,6 +1025,35 @@ class InterlisExporterToIntermediateSchema:
                 art=self.get_vl(row.kind__REL),
             )
             self.abwasser_session.add(bankett)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_wastewater_structure_symbol(self):
+        query = self.tww_session.query(self.model_classes_tww_od.wastewater_structure_symbol)
+        if self.filtered:
+            query = query.join(
+                self.model_classes_tww_od.wastewater_structure,
+                self.model_classes_tww_od.wastewater_networkelement,
+            ).filter(
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
+        for row in query:
+            abwasserbauwerk_symbol = self.model_classes_interlis.abwasserbauwerk_symbol(
+                # FIELDS TO MAP TO ABWASSER.abwasserbauwerk_symbol
+                # --- abwasserbauwerk_symbol ---
+                t_ili_tid=row.obj_id,
+                plantyp=self.get_vl(row.plantype__REL),
+                symbolskalierunghoch=row.symbol_scaling_height,
+                symbolskalierunglaengs=row.symbol_scaling_width,
+                symbolori=row.symbolori,
+                symbolpos=row.symbolpos_geometry,
+                abwasserbauwerkref=self.get_tid(row.fk_wastewater_structure__REL),
+            )
+            self.abwasser_session.add(abwasserbauwerk_symbol)
             print(".", end="")
         logger.info("done")
         self.abwasser_session.flush()
