@@ -399,7 +399,7 @@ RETURNS trigger AS
 $BODY$
 BEGIN
 	UPDATE tww_od.catchment_area SET
-    , direct_discharge_current = ddc.code
+      direct_discharge_current = ddc.code
     , direct_discharge_planned = ddp.code
     , discharge_coefficient_rw_current = vw_val.abflussbeiwert_rw_ist
     , discharge_coefficient_rw_planned = vw_val.abflussbeiwert_rw_geplant
