@@ -1057,7 +1057,7 @@ class InterlisExporterToIntermediateSchema:
             print(".", end="")
         logger.info("done")
         self.abwasser_session.flush()
-        
+
     def _export_flushing_nozzle(self):
         query = self.tww_session.query(self.model_classes_tww_od.flushing_nozzle)
         if self.filtered:
