@@ -21,7 +21,7 @@ Because with DSS-datamodel, cover, wastewater node and reachpoints are connected
 
 .. note:: You need to turn on the advanced digitizing toolbar in your project to be able to select the **Move Feature** tool.
 
-.. figure:: images/advanced_digitizing_tools.jpg 
+.. figure:: images/advanced_digitizing_tools.jpg
    :scale: 50 %
 
 
