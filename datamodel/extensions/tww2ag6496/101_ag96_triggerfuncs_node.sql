@@ -191,8 +191,33 @@ BEGIN
 	);
 	END IF;
     ELSE
-    -- keine View, daher geht ON CONFLICT
 	-- Rückfallebene für Knoten ohne Topologische Verknüpfung
+  UPDATE agxx_unconnected_node_bwrel un
+  SET
+  	year_of_construction = vw_val.baujahr,
+	structure_condition = sc.code,
+	status = st.code,
+	co_level = vw_val.deckelkote,
+	detail_geometry3d_geometry = ST_Force3D(vw_val.detailgeometrie2d),
+	financing = fin.code,
+	ch_function_hierarchic = fhi.code,
+	status_survey_year = vw_val.jahr_zustandserhebung,
+	co_positional_accuracy = co_pa.code,
+	renovation_necessity = rn.code,
+	accessibility = acc.code,
+	fk_operator = tww_ag6496.convert_organisationid_to_vsa(betreiber),
+	fk_owner = tww_ag6496.convert_organisationid_to_vsa(eigentuemer),
+	ag96_fk_measure = vw_val.gepmassnahmeref
+	FROM (SELECT NEW.*) vw_val
+	LEFT JOIN tww_vl.wastewater_structure_structure_condition sc ON sc.value_de=vw_val.baulicherzustand
+	LEFT JOIN tww_vl.wastewater_structure_renovation_necessity rn ON rn.value_de=vw_val.sanierungsbedarf
+	LEFT JOIN tww_vl.wastewater_structure_financing fin ON fin.value_de=vw_val.finanzierung
+	LEFT JOIN tww_vl.wastewater_structure_status st ON st.value_de=vw_val.bauwerkstatus
+	LEFT JOIN tww_vl.wastewater_structure_accessibility acc ON acc.value_de=vw_val.zugaenglichkeit
+	LEFT JOIN tww_vl.channel_function_hierarchic fhi ON fhi.value_de=(vw_val.funktionhierarchisch||'.unbekannt')
+	LEFT JOIN tww_vl.cover_positional_accuracy co_pa ON co_pa.value_de=vw_val.lagegenauigkeit
+  WHERE un.obj_id = vw_val.obj_id
+  IF NOT FOUND THEN
   INSERT INTO tww_od.agxx_unconnected_node_bwrel (
 	obj_id,
 	year_of_construction,
@@ -234,42 +259,8 @@ BEGIN
 	LEFT JOIN tww_vl.wastewater_structure_accessibility acc ON acc.value_de=vw_val.zugaenglichkeit
 	LEFT JOIN tww_vl.channel_function_hierarchic fhi ON fhi.value_de=(vw_val.funktionhierarchisch||'.unbekannt')
 	LEFT JOIN tww_vl.cover_positional_accuracy co_pa ON co_pa.value_de=vw_val.lagegenauigkeit
-    ) 
-    ON CONFLICT (obj_id) DO UPDATE SET
-	(
-	  year_of_construction,
-	  structure_condition,
-	  status,
-	  co_level,
-      detail_geometry3d_geometry,
-	  financing,
-      ch_function_hierarchic,
-      status_survey_year,
-      co_positional_accuracy,
-      renovation_necessity,
-      accessibility,
-      fk_operator,
-      fk_owner,
-      ag96_fk_measure
-	)
-	=
-	(
-	  EXCLUDED.year_of_construction,
-	  EXCLUDED.structure_condition,
-	  EXCLUDED.status,
-	  EXCLUDED.co_level,
-	  EXCLUDED.detail_geometry3d_geometry,
-	  EXCLUDED.financing,
-	  EXCLUDED.ch_function_hierarchic,
-	  EXCLUDED.status_survey_year,
-	  EXCLUDED.co_positional_accuracy,
-	  EXCLUDED.renovation_necessity,
-	  EXCLUDED.accessibility,
-	  EXCLUDED.fk_operator,
-	  EXCLUDED.fk_owner,
-	  EXCLUDED.ag96_fk_measure
-	);
-	
+    );
+	END IF;
     END CASE;
 	
   ELSE

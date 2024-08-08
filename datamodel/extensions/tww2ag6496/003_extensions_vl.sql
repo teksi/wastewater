@@ -364,7 +364,7 @@ ON CONFLICT (code) DO UPDATE SET
 ;
 
 UPDATE tww_vl.channel_usage_current
-SET order_usage_current=
+SET tww_symbology_order=
  array_position(
 	 ARRAY[
 		  4526 --wastewater
@@ -479,7 +479,7 @@ ON CONFLICT (code) DO UPDATE SET
 ;
 
 UPDATE tww_vl.channel_function_hierarchic
-SET order_fct_hierarchic=
+SET tww_symbology_order=
  array_position(
 	 ARRAY[
 		 5068 --pwwf.water_bodies
@@ -684,6 +684,28 @@ INHERITS (tww_vl.value_list_agxx_export_rel_base)
 TABLESPACE pg_default;
 
 INSERT INTO tww_vl.building_group_function_export_rel_agxx (code,value_de) VALUES
+(4823,'andere'),  
+(4820,'Ferienhaus'),
+(4821,'Gewerbegebiet'),
+(4822,'Landwirtschaftsgebiet'),
+(4818,'andere'),
+(4819,'Wohnhaus')
+ON CONFLICT (code) DO UPDATE SET 
+  value_de = EXCLUDED.value_de;
+
+CREATE TABLE IF NOT EXISTS tww_vl.building_group_function_import_rel_agxx 
+(CONSTRAINT pkey_building_group_function_import_rel_agxx_code PRIMARY KEY (code))
+INHERITS (tww_vl.value_list_agxx_import_rel_base)
+TABLESPACE pg_default;
+
+-- Copy the base
+INSERT INTO tww_vl.building_group_function_import_rel_agxx (code,value_de)
+SELECT code,value_de FROM tww_vl.building_group_function WHERE active
+ON CONFLICT (code) DO UPDATE SET 
+  value_de = EXCLUDED.value_de;
+
+-- alter 1:1 updated value_de
+INSERT INTO tww_vl.building_group_function_import_rel_agxx (code,value_de) VALUES
 (4823,'andere'),  
 (4820,'Ferienhaus'),
 (4821,'Gewerbegebiet'),

@@ -398,6 +398,53 @@ CREATE OR REPLACE FUNCTION {ext_schema}.ft_einzugsgebiet_upsert()
 RETURNS trigger AS
 $BODY$
 BEGIN
+	UPDATE tww_od.catchment_area SET
+    , direct_discharge_current = ddc.code
+    , direct_discharge_planned = ddp.code
+    , discharge_coefficient_rw_current = vw_val.abflussbeiwert_rw_ist
+    , discharge_coefficient_rw_planned = vw_val.abflussbeiwert_rw_geplant
+    , discharge_coefficient_ww_current = vw_val.abflussbeiwert_sw_ist
+    , discharge_coefficient_ww_planned = vw_val.abflussbeiwert_sw_geplant
+    , drainage_system_current = dsc.code
+    , drainage_system_planned = dsp.code
+    , identifier = vw_val.bezeichnung
+    , infiltration_current = ic.code
+    , infiltration_planned = ip.code
+    , perimeter_geometry = vw_val.perimeter
+    , population_density_current = vw_val.einwohnerdichte_ist
+    , population_density_planned = vw_val.einwohnerdichte_geplant
+    , remark = vw_val.bemerkung_gep
+    , retention_current = rc.code
+    , retention_planned = rp.code
+    , runoff_limit_current = vw_val.abflussbegrenzung_ist
+    , runoff_limit_planned = vw_val.abflussbegrenzung_geplant
+    , seal_factor_rw_current = vw_val.befestigungsgrad_rw_ist
+    , seal_factor_rw_planned = vw_val.befestigungsgrad_rw_geplant
+    , seal_factor_ww_current = vw_val.befestigungsgrad_sw_ist
+    , seal_factor_ww_planned = vw_val.befestigungsgrad_sw_geplant
+    , sewer_infiltration_water_production_current = vw_val.fremdwasseranfall_ist
+    , sewer_infiltration_water_production_planned = vw_val.fremdwasseranfall_geplant
+    , surface_area = vw_val.flaeche
+    , waste_water_production_current = vw_val.abwasseranfall_ist
+    , waste_water_production_planned = vw_val.abwasseranfall_geplant
+    , last_modification = vw_val.letzte_aenderung_gep
+    , fk_dataowner = downr.value_obj_id
+    , fk_provider = {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_gep)
+    , fk_wastewater_networkelement_rw_current = vw_val.gepknoten_rw_istref
+    , fk_wastewater_networkelement_rw_planned = vw_val.gepknoten_rw_geplantref
+    , fk_wastewater_networkelement_ww_planned = vw_val.gepknoten_sw_geplantref
+    , fk_wastewater_networkelement_ww_current = vw_val.gepknoten_sw_istref
+	FROM (SELECT NEW.*) as vw_val
+	LEFT JOIN tww_vl.catchment_area_direct_discharge_current ddc on ddc.code = vw_val.direkteinleitung_in_gewaesser_ist
+	LEFT JOIN tww_vl.catchment_area_direct_discharge_planned ddp on ddp.code = vw_val.direkteinleitung_in_gewaesser_geplant
+	LEFT JOIN tww_vl.catchment_area_drainage_system_current_import_rel_agxx dsc on dsc.code = vw_val.entwaesserungssystemag_ist
+	LEFT JOIN tww_vl.catchment_area_drainage_system_planned_import_rel_agxx dsp on dsp.code = vw_val.entwaesserungssystemag_geplant
+	LEFT JOIN tww_vl.catchment_area_infiltration_current ic on ic.code = vw_val.versickerung_ist
+	LEFT JOIN tww_vl.catchment_area_infiltration_planned ip on ip.code = vw_val.versickerung_geplant
+	LEFT JOIN tww_vl.catchment_area_retention_current rc on rc.code = vw_val.retention_ist
+	LEFT JOIN tww_vl.catchment_area_retention_planned rp on rp.code = vw_val.retention_geplant
+	WHERE ca.obj_id = vw_val.obj_id
+	IF NOT FOUND THEN
 	INSERT INTO tww_od.catchment_area(
 	  obj_id
     , direct_discharge_current
@@ -484,84 +531,8 @@ BEGIN
 	LEFT JOIN tww_vl.catchment_area_retention_current rc on rc.code = vw_val.retention_ist
 	LEFT JOIN tww_vl.catchment_area_retention_planned rp on rp.code = vw_val.retention_geplant
 	LEFT JOIN tww_od.default_values downr on fieldname = 'fk_dataowner'
-	)
-	ON CONFLICT (obj_id)  DO UPDATE SET
-	(
-	 direct_discharge_current
-    , direct_discharge_planned
-    , discharge_coefficient_rw_current
-    , discharge_coefficient_rw_planned
-    , discharge_coefficient_ww_current
-    , discharge_coefficient_ww_planned
-    , drainage_system_current
-    , drainage_system_planned
-    , identifier
-    , infiltration_current
-    , infiltration_planned
-    , perimeter_geometry
-    , population_density_current
-    , population_density_planned
-    , remark
-    , retention_current
-    , retention_planned
-    , runoff_limit_current
-    , runoff_limit_planned
-    , seal_factor_rw_current
-    , seal_factor_rw_planned
-    , seal_factor_ww_current
-    , seal_factor_ww_planned
-    , sewer_infiltration_water_production_current
-    , sewer_infiltration_water_production_planned
-    , surface_area
-    , waste_water_production_current
-    , waste_water_production_planned
-    , last_modification
---    , fk_dataowner
-    , fk_provider
-    , fk_wastewater_networkelement_rw_current
-    , fk_wastewater_networkelement_rw_planned
-    , fk_wastewater_networkelement_ww_planned
-    , fk_wastewater_networkelement_ww_current
-	)
-	=
-	(
-	  EXCLUDED.direct_discharge_current
-    , EXCLUDED.direct_discharge_planned
-    , EXCLUDED.discharge_coefficient_rw_current
-    , EXCLUDED.discharge_coefficient_rw_planned
-    , EXCLUDED.discharge_coefficient_ww_current
-    , EXCLUDED.discharge_coefficient_ww_planned
-    , EXCLUDED.drainage_system_current
-    , EXCLUDED.drainage_system_planned
-    , EXCLUDED.identifier
-    , EXCLUDED.infiltration_current
-    , EXCLUDED.infiltration_planned
-    , EXCLUDED.perimeter_geometry
-    , EXCLUDED.population_density_current
-    , EXCLUDED.population_density_planned
-    , EXCLUDED.remark
-    , EXCLUDED.retention_current
-    , EXCLUDED.retention_planned
-    , EXCLUDED.runoff_limit_current
-    , EXCLUDED.runoff_limit_planned
-    , EXCLUDED.seal_factor_rw_current
-    , EXCLUDED.seal_factor_rw_planned
-    , EXCLUDED.seal_factor_ww_current
-    , EXCLUDED.seal_factor_ww_planned
-    , EXCLUDED.sewer_infiltration_water_production_current
-    , EXCLUDED.sewer_infiltration_water_production_planned
-    , EXCLUDED.surface_area
-    , EXCLUDED.waste_water_production_current
-    , EXCLUDED.waste_water_production_planned
-    , EXCLUDED.last_modification
---    , EXCLUDED.fk_dataowner
-    , EXCLUDED.fk_provider
-    , EXCLUDED.fk_wastewater_networkelement_rw_current
-    , EXCLUDED.fk_wastewater_networkelement_rw_planned
-    , EXCLUDED.fk_wastewater_networkelement_ww_planned
-    , EXCLUDED.fk_wastewater_networkelement_ww_current
-	)
-	;
+	);
+	END IF;
 	  RETURN NEW;
 END;
 $BODY$
@@ -673,6 +644,36 @@ CREATE OR REPLACE FUNCTION {ext_schema}.ft_bautenausserhalbbaugebiet_upsert()
 RETURNS trigger AS
 $BODY$
 BEGIN
+	UPDATE tww_od.building_groupbg
+	SET 
+	  function = bg_fct.code
+    , identifier = vw_val.bezeichnung
+    , population_equivalent = vw_val.einwohnergleichwert
+	, ag96_population = vw_val.anzstaendigeeinwohner
+    , remark = vw_val.bemerkung_gep
+    , renovation_date = vw_val.sanierungsdatum
+    , renovation_necessity = bg_rn.code
+    , restructuring_concept = vw_val.sanierungskonzept
+    , situation_geometry = vw_val.lage
+    , last_modification = vw_val.letzte_aenderung_gep
+    , fk_provider = {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_gep)
+    , ag96_owner_address = vw_val.eigentuemeradresse 
+    , ag96_owner_name = vw_val.eigentuemername
+    , ag96_label_number = vw_val.nummer
+    , ag96_disposal_wastewater = bg_dt_ww.code
+    , ag96_disposal_industrial_wastewater = bg_dt_iw.code
+    , ag96_disposal_square_water = bg_dt_sw.code
+    , ag96_disposal_roof_water = bg_dt_rw.code
+	FROM (SELECT NEW.*) as vw_val
+	LEFT JOIN tww_vl.building_group_function_import_rel_agxx bg_fct on bg_fct.value_de = vw_val.arealnutzung
+	LEFT JOIN tww_vl.building_group_renovation_necessity bg_rn on bg_rn.value_de = lower(vw_val.sanierungsbedarf)
+	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_ww ON bg_dt_ww.value_de = vw_val.beseitigung_haeusliches_abwasser 
+	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_iw ON bg_dt_iw.value_de = vw_val.beseitigung_gewerbliches_abwasser 
+	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_sw ON bg_dt_sw.value_de = vw_val.beseitigung_platzentwaesserung 
+	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_rw ON bg_dt_rw.value_de = vw_val.beseitigung_dachentwaesserung 
+	LEFT JOIN tww_od.default_values downr on fieldname = 'fk_dataowner'
+	WHERE bg.obj_id=vw_val.obj_id
+	IF NOT FOUND THEN
 	INSERT INTO tww_od.building_group
 	(
 	  obj_id
@@ -699,7 +700,7 @@ BEGIN
 	(
 	SELECT
 	  vw_val.obj_id
-    , coalesce(bg_fct_ag96.code,bg_fct.code)
+    , bg_fct.code
     , vw_val.bezeichnung
     , vw_val.einwohnergleichwert
     , vw_val.anzstaendigeeinwohner
@@ -719,61 +720,16 @@ BEGIN
     , bg_dt_sw.code
     , bg_dt_rw.code
 	FROM (SELECT NEW.*) as vw_val
-	LEFT JOIN tww_vl.building_group_function bg_fct on bg_fct.value_de = vw_val.arealnutzung
-	LEFT JOIN {ext_schema}.vl_building_group_function bg_fct_ag96 on bg_fct_ag96.value_agxx = vw_val.arealnutzung
+	LEFT JOIN tww_vl.building_group_function_import_rel_agxx bg_fct on bg_fct.value_de = vw_val.arealnutzung
 	LEFT JOIN tww_vl.building_group_renovation_necessity bg_rn on bg_rn.value_de = lower(vw_val.sanierungsbedarf)
 	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_ww ON bg_dt_ww.value_de = vw_val.beseitigung_haeusliches_abwasser 
 	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_iw ON bg_dt_iw.value_de = vw_val.beseitigung_gewerbliches_abwasser 
 	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_sw ON bg_dt_sw.value_de = vw_val.beseitigung_platzentwaesserung 
 	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_rw ON bg_dt_rw.value_de = vw_val.beseitigung_dachentwaesserung 
 	LEFT JOIN tww_od.default_values downr on fieldname = 'fk_dataowner'
-	)
-	ON CONFLICT(obj_id) DO UPDATE SET
-	(
-      function
-    , identifier
-    , ag96_population
-    , population_equivalent
-    , remark
-    , renovation_date
-    , renovation_necessity
-    , restructuring_concept
-    , situation_geometry
-    , last_modification
-    , fk_dataowner
-    , fk_provider
-    , ag96_owner_address
-    , ag96_owner_name
-    , ag96_label_number
-    , ag96_disposal_wastewater
-    , ag96_disposal_industrial_wastewater
-    , ag96_disposal_square_water
-    , ag96_disposal_roof_water
-	)
-	=
-	(
-      EXCLUDED.function
-    , EXCLUDED.identifier
-    , EXCLUDED.ag96_population
-    , EXCLUDED.population_equivalent
-    , EXCLUDED.remark
-    , EXCLUDED.renovation_date
-    , EXCLUDED.renovation_necessity
-    , EXCLUDED.restructuring_concept
-    , EXCLUDED.situation_geometry
-    , EXCLUDED.last_modification
-    , EXCLUDED.fk_dataowner
-    , EXCLUDED.fk_provider
-    , EXCLUDED.ag96_owner_address
-    , EXCLUDED.ag96_owner_name
-    , EXCLUDED.ag96_label_number
-    , EXCLUDED.ag96_disposal_wastewater
-    , EXCLUDED.ag96_disposal_industrial_wastewater
-    , EXCLUDED.ag96_disposal_square_water
-    , EXCLUDED.ag96_disposal_roof_water
-	)
-	;
-  RETURN NEW;
+	);
+	END IF;
+  RETURN NEW;	
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -825,7 +781,29 @@ BEGIN
 		)
 		RETURNING obj_id into hcd_oid;
 	END IF;
-
+	UPDATE tww_od.catchment_area_totals cat
+	SET 
+	  identifier = vw_val.bezeichnung
+    , population = vw_val.einwohner_ist
+    , population_dim = vw_val.einwohner_geplant
+    , sewer_infiltration_water = vw_val.fremdwasseranfall_ist
+    , surface_area = vw_val.flaeche_ist
+    , surface_dim = vw_val.flaeche_geplant
+    , surface_imp = vw_val.flaeche_befestigt_ist
+    , surface_imp_dim = vw_val.flaeche_befestigt_geplant
+    , surface_red = vw_val.flaeche_reduziert_ist
+    , surface_red_dim = vw_val.flaeche_reduziert_geplant
+    , waste_water_production = vw_val.schmutzabwasseranfall_ist
+    , last_modification = vw_val.letzte_aenderung_gep
+    , fk_provider = {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_gep)
+    , fk_discharge_point = vw_val.einleitstelleref
+    , fk_hydraulic_char_data = hcd_oid
+    , ag96_sewer_infiltration_water_dim = vw_val.fremdwasseranfall_geplant
+    , ag96_waste_water_production_dim = vw_val.schmutzabwasseranfall_geplant
+	FROM (SELECT NEW.*) as vw_val
+	LEFT JOIN tww_od.hydraulic_char_data hcd on hcd.obj_id = cat.fk_hydraulic_char_data
+	WHERE cat.obj_id = vw_val.obj_id
+	IF NOT FOUND THEN
 	INSERT INTO tww_od.catchment_area_totals
 	(
 	  obj_id
@@ -870,52 +848,9 @@ BEGIN
     , vw_val.schmutzabwasseranfall_geplant
 	FROM (SELECT NEW.*) as vw_val
 	LEFT JOIN tww_od.hydraulic_char_data hcd on hcd.obj_id = cat.fk_hydraulic_char_data
-	LEFT JOIN tww_od.wastewater_node wn on hcd.fk_wastewater_node=wn.obj_id
 	LEFT JOIN tww_od.default_values downr on fieldname = 'fk_dataowner'
-	)
-	ON CONFLICT(obj_id) DO UPDATE SET
-	(
-	  identifier
-    , population
-    , population_dim
-    , sewer_infiltration_water
-    , surface_area
-    , surface_dim
-    , surface_imp
-    , surface_imp_dim
-    , surface_red
-    , surface_red_dim
-    , waste_water_production
-    , last_modification
-    , fk_dataowner
-    , fk_provider
-    , fk_discharge_point
-    , fk_hydraulic_char_data
-    , ag96_sewer_infiltration_water_dim
-    , ag96_waste_water_production_dim
-	)
-	=
-	(
-	  EXCLUDED.identifier
-    , EXCLUDED.population
-    , EXCLUDED.population_dim
-    , EXCLUDED.sewer_infiltration_water
-    , EXCLUDED.surface_area
-    , EXCLUDED.surface_dim
-    , EXCLUDED.surface_imp
-    , EXCLUDED.surface_imp_dim
-    , EXCLUDED.surface_red
-    , EXCLUDED.surface_red_dim
-    , EXCLUDED.waste_water_production
-    , EXCLUDED.last_modification
-    , EXCLUDED.fk_dataowner
-    , EXCLUDED.fk_provider
-    , EXCLUDED.fk_discharge_point
-    , EXCLUDED.fk_hydraulic_char_data
-    , EXCLUDED.ag96_sewer_infiltration_water_dim
-    , EXCLUDED.ag96_waste_water_production_dim
-	)
-	;
+	);
+	END IF;
   RETURN NEW;
 END;
 $BODY$
