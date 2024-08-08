@@ -104,7 +104,7 @@ WITH re_meta AS(
 	ws.fk_owner,
 	ws.fk_operator,
 	CH.function_hierarchic as ch_function_hierarchic,
-	order_fct_hierarchic,
+	tww_symbology_order,
 	ag96_fk_measure
 	FROM 
 	(SELECT obj_id,
@@ -125,7 +125,7 @@ WITH re_meta AS(
 				 fk_operator,
 				 ag96_fk_measure
 				 FROM tww_od.wastewater_structure  )      ws ON ws.obj_id = ne.fk_wastewater_structure
-      LEFT JOIN (SELECT code, order_fct_hierarchic
+      LEFT JOIN (SELECT code, tww_symbology_order
 				 FROM tww_vl.channel_function_hierarchic) vl_fct_hier	ON CH.function_hierarchic = vl_fct_hier.code )
 	SELECT DISTINCT ON (wn.obj_id) wn.obj_id AS obj_id,
 	  COALESCE(first_value(ws.year_of_construction) OVER w
@@ -206,9 +206,9 @@ WITH re_meta AS(
 				 FROM tww_od.agxx_unconnected_node_bwrel) unc ON unc.obj_id=wn.obj_id
 	  LEFT JOIN tww_vl.channel_function_hierarchic vl_fct_hier_unc 	ON unc.ch_function_hierarchic = vl_fct_hier_unc.code
 	  WINDOW w AS ( PARTITION BY wn.obj_id
-                    ORDER BY re_from.order_fct_hierarchic ASC NULLS LAST
-                           , re_to.order_fct_hierarchic ASC NULLS LAST
-                          , vl_fct_hier_unc.order_fct_hierarchic ASC NULLS LAST
+                    ORDER BY re_from.tww_symbology_order ASC NULLS LAST
+                           , re_to.tww_symbology_order ASC NULLS LAST
+                          , vl_fct_hier_unc.tww_symbology_order ASC NULLS LAST
                     ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)
 
 WITH DATA;
