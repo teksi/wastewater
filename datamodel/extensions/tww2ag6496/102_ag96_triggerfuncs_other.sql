@@ -443,7 +443,7 @@ BEGIN
 	LEFT JOIN tww_vl.catchment_area_infiltration_planned ip on ip.code = vw_val.versickerung_geplant
 	LEFT JOIN tww_vl.catchment_area_retention_current rc on rc.code = vw_val.retention_ist
 	LEFT JOIN tww_vl.catchment_area_retention_planned rp on rp.code = vw_val.retention_geplant
-	WHERE ca.obj_id = vw_val.obj_id
+	WHERE ca.obj_id = vw_val.obj_id;
 	IF NOT FOUND THEN
 	INSERT INTO tww_od.catchment_area(
 	  obj_id
@@ -672,7 +672,7 @@ BEGIN
 	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_sw ON bg_dt_sw.value_de = vw_val.beseitigung_platzentwaesserung 
 	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_rw ON bg_dt_rw.value_de = vw_val.beseitigung_dachentwaesserung 
 	LEFT JOIN tww_od.default_values downr on fieldname = 'fk_dataowner'
-	WHERE bg.obj_id=vw_val.obj_id
+	WHERE bg.obj_id=vw_val.obj_id;
 	IF NOT FOUND THEN
 	INSERT INTO tww_od.building_group
 	(
@@ -802,7 +802,7 @@ BEGIN
     , ag96_waste_water_production_dim = vw_val.schmutzabwasseranfall_geplant
 	FROM (SELECT NEW.*) as vw_val
 	LEFT JOIN tww_od.hydraulic_char_data hcd on hcd.obj_id = cat.fk_hydraulic_char_data
-	WHERE cat.obj_id = vw_val.obj_id
+	WHERE cat.obj_id = vw_val.obj_id;
 	IF NOT FOUND THEN
 	INSERT INTO tww_od.catchment_area_totals
 	(

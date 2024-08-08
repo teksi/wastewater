@@ -216,7 +216,7 @@ BEGIN
 	LEFT JOIN tww_vl.wastewater_structure_accessibility acc ON acc.value_de=vw_val.zugaenglichkeit
 	LEFT JOIN tww_vl.channel_function_hierarchic fhi ON fhi.value_de=(vw_val.funktionhierarchisch||'.unbekannt')
 	LEFT JOIN tww_vl.cover_positional_accuracy co_pa ON co_pa.value_de=vw_val.lagegenauigkeit
-  WHERE un.obj_id = vw_val.obj_id
+  WHERE un.obj_id = vw_val.obj_id;
   IF NOT FOUND THEN
   INSERT INTO tww_od.agxx_unconnected_node_bwrel (
 	obj_id,
