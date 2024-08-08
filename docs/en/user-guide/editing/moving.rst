@@ -41,7 +41,7 @@ In this example, the manhole has one cover, two wastewater nodes, four reaches t
 .. figure:: images/moving_wws_manhole1.jpg
 
 '1.070' manhole moved. Cover, 2 nodes and all 5 reachpoints (reaches) are moved to a new place. The distance between the points is still the same.
-The detail geometry does not move (layer wastewater_structure in layergroup Wastewatser Structures). The detail geometry must be moved extra with the **Move Feature** tool. There is in the moment no good help, to do this automatically.
+The detail geometry does not move (layer wastewater_structure in layergroup Wastewater Structures). The detail geometry must be moved extra with the **Move Feature** tool. There is in the moment no good help, to do this automatically.
 
 * To show the move, it's a good way to set the **Topology** layers visible:
 
