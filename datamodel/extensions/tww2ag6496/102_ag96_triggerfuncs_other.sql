@@ -644,7 +644,7 @@ CREATE OR REPLACE FUNCTION {ext_schema}.ft_bautenausserhalbbaugebiet_upsert()
 RETURNS trigger AS
 $BODY$
 BEGIN
-	UPDATE tww_od.building_groupbg
+	UPDATE tww_od.building_group bg
 	SET 
 	  function = bg_fct.code
     , identifier = vw_val.bezeichnung

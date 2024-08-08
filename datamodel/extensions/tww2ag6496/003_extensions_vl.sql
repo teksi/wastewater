@@ -710,7 +710,6 @@ INSERT INTO tww_vl.building_group_function_import_rel_agxx (code,value_de) VALUE
 (4820,'Ferienhaus'),
 (4821,'Gewerbegebiet'),
 (4822,'Landwirtschaftsgebiet'),
-(4818,'andere'),
 (4819,'Wohnhaus')
 ON CONFLICT (code) DO UPDATE SET 
   value_de = EXCLUDED.value_de;
