@@ -19,5 +19,7 @@ changelog=https://github.com/teksi/wastewater/releases
 
 icon=icons/teksi-abwasser-logo.svg
 
+plugin_dependencies=Linking Relation Editor, Document Management System
+
 experimental=False
 deprecated=False
