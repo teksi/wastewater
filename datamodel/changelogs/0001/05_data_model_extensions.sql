@@ -27,9 +27,9 @@ added solely for TEKSI Wastewater & GEP';
 
 
 -- this column is an extension to the VSA data model and puts the _function_hierarchic in order
-ALTER TABLE tww_vl.channel_function_hierarchic ADD COLUMN order_fct_hierarchic smallint;
+ALTER TABLE tww_vl.channel_function_hierarchic ADD COLUMN tww_symbology_order smallint;
 UPDATE tww_vl.channel_function_hierarchic
-SET order_fct_hierarchic=
+SET tww_symbology_order=
  array_position(
 	 ARRAY[
 		 5068 --pwwf.water_bodies
@@ -49,13 +49,19 @@ SET order_fct_hierarchic=
 		 ]
 	 ,code);
 
+-- this column is an extension to the VSA data model defines which function_hierarchic to use in labels
+ALTER TABLE tww_vl.channel_function_hierarchic ADD COLUMN tww_use_in_labels bool DEFAULT false;
+UPDATE tww_vl.channel_function_hierarchic
+SET tww_use_in_labels= true WHERE value_en like 'pwwf%';
+
+
 -- integrate and adapt Alter order_fct_hierarchic in tww_vl.channel_function_hierarchic #224
 -- https://github.com/QGEP/datamodel/pull/224 //skip-keyword-check
 -- this column is an extension to the VSA data model and puts the _usage_current in order
-ALTER TABLE tww_vl.channel_usage_current ADD COLUMN order_usage_current smallint;
+ALTER TABLE tww_vl.channel_usage_current ADD COLUMN tww_symbology_order smallint;
 
 UPDATE tww_vl.channel_usage_current
-SET order_usage_current=
+SET tww_symbology_order=
  array_position(
 	 ARRAY[
 		  4526 --wastewater
