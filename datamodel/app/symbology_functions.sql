@@ -433,9 +433,9 @@ SELECT   ws_obj_id,
 							  ORDER BY
 							  fh.tww_symbology_order,
 							  uc.tww_symbology_order,
-							  ST_Azimuth(RP.situation3d_geometry,ST_PointN(RE_from.progression3d_geometry,2))/pi()*180 ASC) AS idx,
+							  ST_Azimuth(RP.situation3d_geometry,ST_PointN(RE_from.progression3d_geometry,2)) ASC) AS idx,
 		  NULL::text AS bottom_level,
-		  ST_Azimuth(RP.situation3d_geometry,ST_PointN(RE_from.progression3d_geometry,2))/pi()*180 AS azimuth
+		  ST_Azimuth(RP.situation3d_geometry,ST_PointN(RE_from.progression3d_geometry,2)) AS azimuth  
 		  FROM tww_od.reach_point RP
 		  LEFT JOIN tww_od.wastewater_networkelement NE ON RP.fk_wastewater_networkelement = NE.obj_id
 		  INNER JOIN tww_od.reach RE_from ON RP.obj_id = RE_from.fk_reach_point_from
@@ -452,12 +452,13 @@ SELECT   ws_obj_id,
       WHERE _all OR SP.fk_wastewater_structure = _obj_id
       -- Inputs
       UNION
-      SELECT NULL AS co_level,
-	  coalesce(round(RP.level, 2)::text, '?') AS rpi_level,
-	  NULL::text AS rpo_level,
-	  NE.fk_wastewater_structure ws, RP.obj_id,
-	  row_number() OVER(PARTITION BY NE.fk_wastewater_structure
-						ORDER BY (mod((2*pi()+(ST_Azimuth(RP.situation3d_geometry,ST_PointN(RE_to.progression3d_geometry,-2))-outs.azimuth))::numeric , 2*pi()::numeric)  ASC) AS idx,
+
+      SELECT NULL AS co_level, 
+	  coalesce(round(RP.level, 2)::text, '?') AS rpi_level, 
+	  NULL::text AS rpo_level, 
+	  NE.fk_wastewater_structure ws, RP.obj_id, 
+	  row_number() OVER(PARTITION BY NE.fk_wastewater_structure 
+						ORDER BY (mod((2*pi()+(ST_Azimuth(RP.situation3d_geometry,ST_PointN(RE_to.progression3d_geometry,-2))-outs.azimuth))::numeric , 2*pi()::numeric)  ASC)) AS idx,
 	  NULL::text AS bottom_level
       FROM tww_od.reach_point RP
       LEFT JOIN tww_od.wastewater_networkelement NE ON RP.fk_wastewater_networkelement = NE.obj_id
