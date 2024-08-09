@@ -434,6 +434,18 @@ class InterlisExporterToIntermediateSchema:
         self._export_infiltration_zone()
         self._check_for_stop()
 
+        logger.info(
+            "Exporting TWW.re_maintenance_event_wastewater_structure -> ABWASSER.erhaltungsereignis_abwasserbauwerkassoc"
+        )
+        self._export_re_maintenance_event_wastewater_structure()
+        self._check_for_stop()
+
+        logger.info(
+            "Exporting TWW.re_building_group_disposal -> ABWASSER.gebaeudegruppe_entsorgungassoc"
+        )
+        self._export_re_building_group_disposal()
+        self._check_for_stop()
+
     def _export_vsa_kek(self):
         logger.info("Exporting TWW.examination -> ABWASSER.untersuchung")
         self._export_examination()
@@ -453,6 +465,12 @@ class InterlisExporterToIntermediateSchema:
 
         logger.info("Exporting TWW.file -> ABWASSER.datei")
         self._export_file()
+        self._check_for_stop()
+
+        logger.info(
+            "Exporting TWW.re_maintenance_event_wastewater_structure -> ABWASSER.erhaltungsereignis_abwasserbauwerkassoc"
+        )
+        self._export_re_maintenance_event_wastewater_structure()
         self._check_for_stop()
 
     def _export_organisation(self):
@@ -2794,6 +2812,68 @@ class InterlisExporterToIntermediateSchema:
                 relativpfad=row.path_relative,
             )
             self.abwasser_session.add(datei)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_re_maintenance_event_wastewater_structure(self):
+        query = self.tww_session.query(
+            self.model_classes_tww_od.re_maintenance_event_wastewater_structure
+        )
+        if self.filtered:
+            query = (
+                query.join(self.model_classes_tww_od.wastewater_structure)
+                .join(self.model_classes_tww_od.wastewater_networkelement)
+                .filter(
+                    self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+                )
+            )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
+        for row in query:
+            erhaltungsereignis_abwasserbauwerkassoc = self.model_classes_interlis.erhaltungsereignis_abwasserbauwerkassoc(
+                # FIELDS TO MAP TO ABWASSER.erhaltungsereignis_abwasserbauwerkassoc
+                # --- baseclass ---
+                # --- sia405_baseclass ---
+                # this class does not inherit vsa_base_common
+                # **self.vsa_base_common(row, "erhaltungsereignis_abwasserbauwerkassoc"),
+                # --- erhaltungsereignis_abwasserbauwerkassoc ---
+                abwasserbauwerkref=self.get_tid(row.fk_wastewater_structure__REL),
+                erhaltungsereignis_abwasserbauwerkassocref=self.get_tid(
+                    row.fk_maintenance_event__REL
+                ),
+            )
+            self.abwasser_session.add(erhaltungsereignis_abwasserbauwerkassoc)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_re_building_group_disposal(self):
+        query = self.tww_session.query(self.model_classes_tww_od.re_building_group_disposal)
+        if self.filtered:
+            query = query.join(
+                self.model_classes_tww_od.disposal,
+                self.model_classes_tww_od.wastewater_structure,
+                self.model_classes_tww_od.wastewater_networkelement,
+            ).filter(
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
+        for row in query:
+            gebaeudegruppe_entsorgungassoc = self.model_classes_interlis.gebaeudegruppe_entsorgungassoc(
+                # FIELDS TO MAP TO ABWASSER.gebaeudegruppe_entsorgungassoc
+                # --- baseclass ---
+                # --- sia405_baseclass ---
+                # this class does not inherit vsa_base_common
+                # **self.vsa_base_common(row, "gebaeudegruppe_entsorgungassoc"),
+                # --- gebaeudegruppe_entsorgungassoc ---
+                entsorgungref=self.get_tid(row.fk_disposal__REL),
+                gebaeudegruppe_entsorgungassocref=self.get_tid(row.fk_building_group__REL),
+            )
+            self.abwasser_session.add(gebaeudegruppe_entsorgungassoc)
             print(".", end="")
         logger.info("done")
         self.abwasser_session.flush()
