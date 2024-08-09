@@ -4,15 +4,11 @@ CREATE OR REPLACE FUNCTION {ext_schema}.convert_organisationid_to_vsa(oid varcha
 RETURNS varchar(16)
 AS 
 $BODY$
+DECLARE
+	out_oid varchar(16);
 BEGIN
-	CASE 
-	WHEN oid IS NULL THEN return oid;
-	WHEN length(oid)=20 OR length(oid)=16 THEN
-		return 'ch20p3q4'||right(oid,8);
-	ELSE
-		RAISE WARNING 'OID % has not the right length. Might cause errors downstream', oid;
-		return 'ch20p3q4'||right(oid,8);
-	END CASE;
+	SELECT obj_id INTO out_oid FROM tww_od.organisation WHERE right(obj_id,8) = right(oid,8);
+	return out_oid;
 END;
 $BODY$
 LANGUAGE plpgsql;

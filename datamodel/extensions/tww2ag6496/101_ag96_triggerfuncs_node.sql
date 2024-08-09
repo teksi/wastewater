@@ -192,13 +192,13 @@ BEGIN
 	END IF;
     ELSE
 	-- Rückfallebene für Knoten ohne Topologische Verknüpfung
-  UPDATE agxx_unconnected_node_bwrel un
+  UPDATE tww_od.agxx_unconnected_node_bwrel un
   SET
   	year_of_construction = vw_val.baujahr,
 	structure_condition = sc.code,
 	status = st.code,
 	co_level = vw_val.deckelkote,
-	detail_geometry3d_geometry = ST_Force3D(vw_val.detailgeometrie2d),
+	detail_geometry3d_geometry = ST_Force3D(vw_val.detailgeometrie),
 	financing = fin.code,
 	ch_function_hierarchic = fhi.code,
 	status_survey_year = vw_val.jahr_zustandserhebung,
@@ -240,7 +240,7 @@ BEGIN
 	sc.code,
 	st.code,
 	vw_val.deckelkote,
-	ST_Force3D(vw_val.detailgeometrie2d),
+	ST_Force3D(vw_val.detailgeometrie),
 	fin.code,
 	fhi.code,
 	vw_val.jahr_zustandserhebung,
@@ -458,8 +458,7 @@ BEGIN
 	  LEFT JOIN tww_vl.wastewater_structure_accessibility ws_acc ON ws_acc.value_de=vw_val.zugaenglichkeit
 	  );
     END IF;  
-
-  END CASE;
+ END CASE;
 
 ------------ fk_wastewater_structure ------------
 /*
@@ -470,7 +469,7 @@ BEGIN
 		WHERE fk_main_wastewater_node = NEW.obj_id;
 
 
-    SELECT ws.obj_id, wn.obj_id, array_agg(sp.obj_id) INTO STRICT ws_oid, wn_oid, sp_oids
+    SELECT ws.obj_id, wn.obj_id, array_agg(sp.obj_id) INTO  ws_oid, wn_oid, sp_oids
 	  FROM tww_od.wastewater_node wn 
 	  LEFT JOIN  
 	    (SELECT ws.obj_id, st_buffer(detail_geometry3d_geometry,0.0001)as detail_geometry3d_geometry 

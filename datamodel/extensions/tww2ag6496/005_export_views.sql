@@ -604,7 +604,7 @@ SELECT
 	, iz.ag96_limitation AS einschraenkung
 	, iz.ag96_thickness AS maechtigkeit
 	, iz.perimeter_geometry AS perimeter
-	, iz.ag96_q_check
+	, iz.ag96_q_check as q_check
 	, COALESCE (iz_ic_rev.value_de,iz_ic.value_de) AS versickerungsmoeglichkeitag
 	, concat_ws('','ch113jqg0000',right(COALESCE(zo.fk_provider,'00000107'),8)) AS datenbewirtschafter_gep
 	, zo.remark AS bemerkung_gep

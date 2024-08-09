@@ -17,10 +17,17 @@ BEGIN
 	INTO pipe_profile_record
 	FROM (SELECT NEW.*) vw_val
 	LEFT JOIN tww_vl.pipe_profile_profile_type ppt ON ppt.value_de =  vw_val.profiltyp 
-	LEFT JOIN tww_od.pipe_profile pp ON pp.profile_type=ppt.code 
-									 AND (vw_val.lichte_breite_ist = 0 OR
-										 pp.height_width_ratio=vw_val.lichte_hoehe_ist/vw_val.lichte_breite_ist
-										 ) 
+	LEFT JOIN tww_od.pipe_profile pp 
+		ON pp.profile_type=ppt.code 
+		AND pp.identifier = 
+			CASE WHEN vw_val.lichte_breite_ist= 0 OR vw_val.lichte_hoehe_ist=vw_val.lichte_breite_ist
+			THEN ppt.value_de
+			ELSE
+				array_to_string(
+				  array[ppt.abbr_de,vw_val.lichte_hoehe_ist::varchar,vw_val.lichte_breite_ist::varchar]
+				  ,'_' -- delimiter
+				)
+			END 
 	;
 	
 	CASE 
@@ -46,7 +53,7 @@ BEGIN
 				  ,'_' -- delimiter
 				)
 			  END
-			, (CASE WHEN vw_val.lichte_breite_ist= 0 THEN 1
+			, (CASE WHEN vw_val.lichte_breite_ist= 0 OR vw_val.lichte_breite_ist IS NULL THEN 1
 			  ELSE vw_val.lichte_hoehe_ist::numeric/vw_val.lichte_breite_ist END)::numeric(5,2)
 			, downr.value_obj_id
 			, {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
@@ -398,7 +405,7 @@ CREATE OR REPLACE FUNCTION {ext_schema}.ft_einzugsgebiet_upsert()
 RETURNS trigger AS
 $BODY$
 BEGIN
-	UPDATE tww_od.catchment_area SET
+	UPDATE tww_od.catchment_area ca SET
       direct_discharge_current = ddc.code
     , direct_discharge_planned = ddp.code
     , discharge_coefficient_rw_current = vw_val.abflussbeiwert_rw_ist
@@ -425,24 +432,23 @@ BEGIN
     , sewer_infiltration_water_production_current = vw_val.fremdwasseranfall_ist
     , sewer_infiltration_water_production_planned = vw_val.fremdwasseranfall_geplant
     , surface_area = vw_val.flaeche
-    , waste_water_production_current = vw_val.abwasseranfall_ist
-    , waste_water_production_planned = vw_val.abwasseranfall_geplant
+    , waste_water_production_current = vw_val.schmutzabwasseranfall_ist
+    , waste_water_production_planned = vw_val.schmutzabwasseranfall_geplant
     , last_modification = vw_val.letzte_aenderung_gep
-    , fk_dataowner = downr.value_obj_id
     , fk_provider = {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_gep)
     , fk_wastewater_networkelement_rw_current = vw_val.gepknoten_rw_istref
     , fk_wastewater_networkelement_rw_planned = vw_val.gepknoten_rw_geplantref
     , fk_wastewater_networkelement_ww_planned = vw_val.gepknoten_sw_geplantref
     , fk_wastewater_networkelement_ww_current = vw_val.gepknoten_sw_istref
 	FROM (SELECT NEW.*) as vw_val
-	LEFT JOIN tww_vl.catchment_area_direct_discharge_current ddc on ddc.code = vw_val.direkteinleitung_in_gewaesser_ist
-	LEFT JOIN tww_vl.catchment_area_direct_discharge_planned ddp on ddp.code = vw_val.direkteinleitung_in_gewaesser_geplant
-	LEFT JOIN tww_vl.catchment_area_drainage_system_current_import_rel_agxx dsc on dsc.code = vw_val.entwaesserungssystemag_ist
-	LEFT JOIN tww_vl.catchment_area_drainage_system_planned_import_rel_agxx dsp on dsp.code = vw_val.entwaesserungssystemag_geplant
-	LEFT JOIN tww_vl.catchment_area_infiltration_current ic on ic.code = vw_val.versickerung_ist
-	LEFT JOIN tww_vl.catchment_area_infiltration_planned ip on ip.code = vw_val.versickerung_geplant
-	LEFT JOIN tww_vl.catchment_area_retention_current rc on rc.code = vw_val.retention_ist
-	LEFT JOIN tww_vl.catchment_area_retention_planned rp on rp.code = vw_val.retention_geplant
+	LEFT JOIN tww_vl.catchment_area_direct_discharge_current ddc on ddc.value_de = vw_val.direkteinleitung_in_gewaesser_ist
+	LEFT JOIN tww_vl.catchment_area_direct_discharge_planned ddp on ddp.value_de = vw_val.direkteinleitung_in_gewaesser_geplant
+	LEFT JOIN tww_vl.catchment_area_drainage_system_current_import_rel_agxx dsc on dsc.value_de = vw_val.entwaesserungssystemag_ist
+	LEFT JOIN tww_vl.catchment_area_drainage_system_planned_import_rel_agxx dsp on dsp.value_de = vw_val.entwaesserungssystemag_geplant
+	LEFT JOIN tww_vl.catchment_area_infiltration_current ic on ic.value_de = vw_val.versickerung_ist
+	LEFT JOIN tww_vl.catchment_area_infiltration_planned ip on ip.value_de = vw_val.versickerung_geplant
+	LEFT JOIN tww_vl.catchment_area_retention_current rc on rc.value_de = vw_val.retention_ist
+	LEFT JOIN tww_vl.catchment_area_retention_planned rp on rp.value_de = vw_val.retention_geplant
 	WHERE ca.obj_id = vw_val.obj_id;
 	IF NOT FOUND THEN
 	INSERT INTO tww_od.catchment_area(
@@ -512,8 +518,8 @@ BEGIN
     , vw_val.fremdwasseranfall_ist
     , vw_val.fremdwasseranfall_geplant
     , vw_val.flaeche
-    , vw_val.abwasseranfall_ist
-    , vw_val.abwasseranfall_geplant
+    , vw_val.schmutzabwasseranfall_ist
+    , vw_val.schmutzabwasseranfall_geplant
     , vw_val.letzte_aenderung_gep
     , downr.value_obj_id
     , {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_gep)
@@ -522,14 +528,14 @@ BEGIN
     , vw_val.gepknoten_sw_geplantref
     , vw_val.gepknoten_sw_istref
 	FROM (SELECT NEW.*) as vw_val
-	LEFT JOIN tww_vl.catchment_area_direct_discharge_current ddc on ddc.code = vw_val.direkteinleitung_in_gewaesser_ist
-	LEFT JOIN tww_vl.catchment_area_direct_discharge_planned ddp on ddp.code = vw_val.direkteinleitung_in_gewaesser_geplant
-	LEFT JOIN tww_vl.catchment_area_drainage_system_current_import_rel_agxx dsc on dsc.code = vw_val.entwaesserungssystemag_ist
-	LEFT JOIN tww_vl.catchment_area_drainage_system_planned_import_rel_agxx dsp on dsp.code = vw_val.entwaesserungssystemag_geplant
-	LEFT JOIN tww_vl.catchment_area_infiltration_current ic on ic.code = vw_val.versickerung_ist
-	LEFT JOIN tww_vl.catchment_area_infiltration_planned ip on ip.code = vw_val.versickerung_geplant
-	LEFT JOIN tww_vl.catchment_area_retention_current rc on rc.code = vw_val.retention_ist
-	LEFT JOIN tww_vl.catchment_area_retention_planned rp on rp.code = vw_val.retention_geplant
+	LEFT JOIN tww_vl.catchment_area_direct_discharge_current ddc on ddc.value_de = vw_val.direkteinleitung_in_gewaesser_ist
+	LEFT JOIN tww_vl.catchment_area_direct_discharge_planned ddp on ddp.value_de = vw_val.direkteinleitung_in_gewaesser_geplant
+	LEFT JOIN tww_vl.catchment_area_drainage_system_current_import_rel_agxx dsc on dsc.value_de = vw_val.entwaesserungssystemag_ist
+	LEFT JOIN tww_vl.catchment_area_drainage_system_planned_import_rel_agxx dsp on dsp.value_de = vw_val.entwaesserungssystemag_geplant
+	LEFT JOIN tww_vl.catchment_area_infiltration_current ic on ic.value_de = vw_val.versickerung_ist
+	LEFT JOIN tww_vl.catchment_area_infiltration_planned ip on ip.value_de = vw_val.versickerung_geplant
+	LEFT JOIN tww_vl.catchment_area_retention_current rc on rc.value_de = vw_val.retention_ist
+	LEFT JOIN tww_vl.catchment_area_retention_planned rp on rp.value_de = vw_val.retention_geplant
 	LEFT JOIN tww_od.default_values downr on fieldname = 'fk_dataowner'
 	);
 	END IF;
@@ -562,12 +568,11 @@ BEGIN
 	  overflow_type  = CASE WHEN NEW.art  = 'Foerderaggregat' THEN 'pump'::tww_app.overflow_type
 	    WHEN NEW.art  = 'Leapingwehr' THEN 'leapingweir'::tww_app.overflow_type
 	    WHEN NEW.art  = 'Streichwehr' THEN 'prank_weir'::tww_app.overflow_type
-	    ELSE 'overflow'::tww_app.overflow_type
+	    ELSE 'unknown'::tww_app.overflow_type
 	    END
 	, fk_wastewater_node = NEW.knotenref
 	, fk_overflow_to = NEW.knoten_nachref
 	, fk_provider = {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
-	, fk_dataowner = (SELECT obj_id FROM {ext_schema}.vsadss_dataowner downr)
 	, remark = NEW.bemerkung_wi
 	, identifier = NEW.bezeichnung
 	, last_modification = NEW.letzte_aenderung_wi
@@ -585,7 +590,6 @@ BEGIN
 	, fk_wastewater_node
 	, fk_overflow_to
 	, fk_provider
-	, fk_dataowner
 	, remark
 	, identifier
 	, last_modification
@@ -602,12 +606,11 @@ BEGIN
 	, CASE WHEN NEW.art  = 'Foerderaggregat' THEN 'pump'::tww_app.overflow_type
 	    WHEN NEW.art  = 'Leapingwehr' THEN 'leapingweir'::tww_app.overflow_type
 	    WHEN NEW.art  = 'Streichwehr' THEN 'prank_weir'::tww_app.overflow_type
-	    ELSE 'overflow'::tww_app.overflow_type
+	    ELSE 'unknown'::tww_app.overflow_type
 	    END
 	, NEW.knotenref
 	, NEW.knoten_nachref
 	, {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
-	, (SELECT obj_id FROM {ext_schema}.vsadss_dataowner downr)
 	, NEW.bemerkung_wi
 	, NEW.bezeichnung
 	, NEW.letzte_aenderung_wi
@@ -760,7 +763,7 @@ DECLARE
 BEGIN
 	UPDATE tww_od.hydraulic_char_data
 	SET remark=NEW.bemerkung_gep
-	WHERE fk_wastewater_node=NEW.sonderbauwerkref
+	WHERE fk_wastewater_node=NEW.sonderbauwerk_ref
 	AND status = 6372 --Ist
 	RETURNING obj_id into hcd_oid;
 	
@@ -774,9 +777,9 @@ BEGIN
 		)
 		VALUES
 		(
-		  tww_sys.generate_oid('tww_od',hydraulic_char_data)
+		  tww_sys.generate_oid('tww_od','hydraulic_char_data')
 		, NEW.bemerkung_gep
-		, NEW.sonderbauwerkref
+		, NEW.sonderbauwerk_ref
 		, 6372
 		)
 		RETURNING obj_id into hcd_oid;
@@ -800,8 +803,8 @@ BEGIN
     , fk_hydraulic_char_data = hcd_oid
     , ag96_sewer_infiltration_water_dim = vw_val.fremdwasseranfall_geplant
     , ag96_waste_water_production_dim = vw_val.schmutzabwasseranfall_geplant
+	, ag96_perimeter_geometry = vw_val.perimeter_ist
 	FROM (SELECT NEW.*) as vw_val
-	LEFT JOIN tww_od.hydraulic_char_data hcd on hcd.obj_id = cat.fk_hydraulic_char_data
 	WHERE cat.obj_id = vw_val.obj_id;
 	IF NOT FOUND THEN
 	INSERT INTO tww_od.catchment_area_totals
@@ -825,6 +828,7 @@ BEGIN
     , fk_hydraulic_char_data
     , ag96_sewer_infiltration_water_dim
     , ag96_waste_water_production_dim
+	, ag96_perimeter_geometry
 	)
 	(SELECT
 	  vw_val.obj_id
@@ -846,8 +850,8 @@ BEGIN
     , hcd_oid
     , vw_val.fremdwasseranfall_geplant
     , vw_val.schmutzabwasseranfall_geplant
+	, vw_val.perimeter_ist
 	FROM (SELECT NEW.*) as vw_val
-	LEFT JOIN tww_od.hydraulic_char_data hcd on hcd.obj_id = cat.fk_hydraulic_char_data
 	LEFT JOIN tww_od.default_values downr on fieldname = 'fk_dataowner'
 	);
 	END IF;
@@ -884,12 +888,12 @@ BEGIN
 	, ag96_thickness = vw_val.maechtigkeit
 	, perimeter_geometry = vw_val.perimeter
 	, ag96_q_check = vw_val.q_check
-	, infiltration_possibility = ia_ip.code 
+	, infiltration_capacity = iz_ic.code 
 	, fk_provider = {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_gep)
 	, remark = vw_val.bemerkung_gep
 	, last_modification = vw_val.letzte_aenderung_gep
 	FROM (SELECT NEW.*) as vw_val
-	LEFT JOIN tww_vl.infiltration_area_infiltration_possibility ia_ip on ia_ip.value_de = vw_val.versickerungsmoeglichkeitag
+	LEFT JOIN tww_vl.infiltration_zone_infiltration_capacity iz_ic on iz_ic.value_de = vw_val.versickerungsmoeglichkeitag
 	WHERE iz.obj_id=vw_val.obj_id;
 	IF NOT FOUND THEN
 	INSERT INTO tww_app.vw_infiltration_zone
@@ -901,7 +905,7 @@ BEGIN
 	, ag96_thickness
 	, perimeter_geometry
 	, ag96_q_check
-	, infiltration_possibility
+	, infiltration_capacity
 	, fk_provider
 	, remark
 	, last_modification
@@ -915,12 +919,12 @@ BEGIN
 	, vw_val.maechtigkeit
 	, vw_val.perimeter
 	, vw_val.q_check
-	, ia_ip.code 
+	, iz_ic.code 
 	, {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_gep)
 	, vw_val.bemerkung_gep
 	, vw_val.letzte_aenderung_gep
 	FROM (SELECT NEW.*) as vw_val
-	LEFT JOIN tww_vl.infiltration_area_infiltration_possibility ia_ip on ia_ip.value_de = vw_val.versickerungsmoeglichkeitag
+	LEFT JOIN tww_vl.infiltration_zone_infiltration_capacity iz_ic on iz_ic.value_de = vw_val.versickerungsmoeglichkeitag
 	);
 	END IF;
   RETURN NEW;	
