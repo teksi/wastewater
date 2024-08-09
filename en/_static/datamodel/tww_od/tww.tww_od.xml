@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><database name="tww" schema="tww_od" type="PostgreSQL - 14.12 (Debian 14.12-1.pgdg110+1)">
    <sequences>
+      <sequence increment="1" name="default_values_id_seq" startValue="1"/>
       <sequence increment="1" name="import_manhole_quarantine_quarantine_serial_seq" startValue="1"/>
       <sequence increment="1" name="network_node_id_seq" startValue="1"/>
       <sequence increment="1" name="network_segment_id_seq" startValue="1"/>
@@ -703,10 +704,14 @@
          <checkConstraint constraint="((char_length(remark) &lt;= 80))" name="vo_remark_length_max_80"/>
       </table>
       <table name="default_values" remarks="" schema="tww_od" type="TABLE">
-         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="fieldname" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="value_obj_id" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <primaryKey column="fieldname" sequenceNumberInPK="1"/>
-         <index name="pkey_tww_sys_default_values_fieldname" unique="true">
+         <column autoUpdated="true" defaultValue="nextval('tww_od.default_values_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="fieldname" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="value_obj_id" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="pkey_tww_sys_default_values_id" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="in_od_default_values_fieldname" unique="true">
             <column ascending="true" name="fieldname"/>
          </index>
       </table>
@@ -2799,7 +2804,7 @@
          <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="26" name="fk_provider" nullable="true" remarks="Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données" size="16" type="varchar" typeCode="12">
             <parent column="obj_id" foreignKey="rel_od_wastewater_structure_fk_dataprovider" implied="false" onDeleteCascade="false" schema="tww_od" table="organisation"/>
          </column>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="27" name="fk_owner" nullable="true" remarks="" size="16" type="varchar" typeCode="12">
+         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_owner'::text)" digits="0" id="27" name="fk_owner" nullable="true" remarks="" size="16" type="varchar" typeCode="12">
             <parent column="obj_id" foreignKey="rel_wastewater_structure_owner" implied="false" onDeleteCascade="false" schema="tww_od" table="organisation"/>
          </column>
          <column autoUpdated="false" defaultValue="null" digits="0" id="28" name="fk_operator" nullable="true" remarks="" size="16" type="varchar" typeCode="12">
@@ -2840,7 +2845,7 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="plantype" nullable="true" remarks="" size="10" type="int4" typeCode="4">
             <parent column="code" foreignKey="fkey_vl_wastewater_structure_symbol_plantype" implied="false" onDeleteCascade="false" schema="tww_vl" table="wastewater_structure_symbol_plantype"/>
          </column>
-         <column autoUpdated="false" defaultValue="null" digits="1" id="3" name="symbol_scaling_heigth" nullable="true" remarks="" size="2" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="1" id="3" name="symbol_scaling_height" nullable="true" remarks="" size="2" type="numeric" typeCode="2"/>
          <column autoUpdated="false" defaultValue="null" digits="1" id="4" name="symbol_scaling_width" nullable="true" remarks="" size="2" type="numeric" typeCode="2"/>
          <column autoUpdated="false" defaultValue="null" digits="1" id="5" name="symbolori" nullable="true" remarks="Default: 90 Degree / Default: 90 Grad / Default: 90 degree" size="4" type="numeric" typeCode="2"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="symbolpos_geometry" nullable="true" remarks="" size="2147483647" type="geometry" typeCode="1111"/>

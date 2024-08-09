@@ -402,8 +402,8 @@
       <table name="vw_access_aid" numRows="0" remarks="" schema="tww_app" type="VIEW" viewSql=" SELECT access_aid.obj_id,&#10;    access_aid.kind,&#10;    structure_part.fk_dataowner,&#10;    structure_part.fk_provider,&#10;    structure_part.fk_wastewater_structure,&#10;    structure_part.identifier,&#10;    structure_part.last_modification,&#10;    structure_part.remark,&#10;    structure_part.renovation_demand&#10;   FROM (tww_od.access_aid&#10;     LEFT JOIN tww_od.structure_part ON (((structure_part.obj_id)::text = (access_aid.obj_id)::text)));">
          <column autoUpdated="false" defaultValue="tww_sys.generate_oid('tww_od'::text, 'access_aid'::text)" digits="0" id="0" name="obj_id" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="kind" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="2" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="3" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="fk_wastewater_structure" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="6" id="6" name="last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
@@ -417,8 +417,8 @@
          <column autoUpdated="false" defaultValue="null" digits="2" id="3" name="gross_costs" nullable="true" remarks="" size="10" type="numeric" typeCode="2"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="kind" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="year_of_replacement" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="6" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="7" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="fk_wastewater_structure" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="6" id="10" name="last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
@@ -428,8 +428,8 @@
       <table name="vw_benching" numRows="0" remarks="" schema="tww_app" type="VIEW" viewSql=" SELECT benching.obj_id,&#10;    benching.kind,&#10;    structure_part.fk_dataowner,&#10;    structure_part.fk_provider,&#10;    structure_part.fk_wastewater_structure,&#10;    structure_part.identifier,&#10;    structure_part.last_modification,&#10;    structure_part.remark,&#10;    structure_part.renovation_demand&#10;   FROM (tww_od.benching&#10;     LEFT JOIN tww_od.structure_part ON (((structure_part.obj_id)::text = (benching.obj_id)::text)));">
          <column autoUpdated="false" defaultValue="tww_sys.generate_oid('tww_od'::text, 'benching'::text)" digits="0" id="0" name="obj_id" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="kind" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="2" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="3" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="fk_wastewater_structure" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="6" id="6" name="last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
@@ -459,10 +459,10 @@
          <column autoUpdated="false" defaultValue="null" digits="2" id="19" name="cost" nullable="true" remarks="" size="10" type="numeric" typeCode="2"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="20" name="data_details" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="21" name="duration" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="22" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="22" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="23" name="fk_measure" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="24" name="fk_operating_company" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="25" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="25" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="26" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="6" id="27" name="last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="28" name="operator" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
@@ -478,8 +478,8 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="location_name" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="perimeter_geometry" nullable="true" remarks="" size="2147483647" type="geometry" typeCode="1111"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="reference_point_geometry" nullable="true" remarks="" size="2147483647" type="geometry" typeCode="1111"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="5" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="6" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="fk_wastewater_networkelement" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="6" id="9" name="last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
@@ -568,12 +568,12 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="20" name="detail_geometry3d_geometry" nullable="true" remarks="" size="2147483647" type="geometry" typeCode="1111"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="21" name="elevation_determination" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="22" name="financing" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="23" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="23" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="24" name="fk_main_cover" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="25" name="fk_main_wastewater_node" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="26" name="fk_operator" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="27" name="fk_owner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="28" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="28" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="2" id="29" name="gross_costs" nullable="true" remarks="" size="10" type="numeric" typeCode="2"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="30" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="2" id="31" name="inspection_interval" nullable="true" remarks="" size="4" type="numeric" typeCode="2"/>
@@ -605,8 +605,8 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="situation3d_geometry" nullable="true" remarks="" size="2147483647" type="geometry" typeCode="1111"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="sludge_bucket" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="venting" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="11" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="12" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="fk_wastewater_structure" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="6" id="15" name="last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
@@ -634,12 +634,12 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="17" name="detail_geometry3d_geometry" nullable="true" remarks="" size="2147483647" type="geometry" typeCode="1111"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="18" name="elevation_determination" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="19" name="financing" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="20" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="20" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="21" name="fk_main_cover" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="22" name="fk_main_wastewater_node" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="23" name="fk_operator" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="24" name="fk_owner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="25" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="25" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="2" id="26" name="gross_costs" nullable="true" remarks="" size="10" type="numeric" typeCode="2"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="27" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="2" id="28" name="inspection_interval" nullable="true" remarks="" size="4" type="numeric" typeCode="2"/>
@@ -663,8 +663,8 @@
          <column autoUpdated="false" defaultValue="tww_sys.generate_oid('tww_od'::text, 'drainage_system'::text)" digits="0" id="0" name="obj_id" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="kind" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="perimeter_geometry" nullable="true" remarks="" size="2147483647" type="geometry" typeCode="1111"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="3" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="4" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="6" id="6" name="last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="remark" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
@@ -684,12 +684,12 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="detail_geometry3d_geometry" nullable="true" remarks="" size="2147483647" type="geometry" typeCode="1111"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="elevation_determination" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="financing" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="14" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="15" name="fk_main_cover" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="16" name="fk_main_wastewater_node" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="17" name="fk_operator" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="18" name="fk_owner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="19" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="19" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="2" id="20" name="gross_costs" nullable="true" remarks="" size="10" type="numeric" typeCode="2"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="21" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="2" id="22" name="inspection_interval" nullable="true" remarks="" size="4" type="numeric" typeCode="2"/>
@@ -712,8 +712,8 @@
       <table name="vw_dryweather_downspout" numRows="0" remarks="" schema="tww_app" type="VIEW" viewSql=" SELECT dryweather_downspout.obj_id,&#10;    dryweather_downspout.diameter,&#10;    structure_part.fk_dataowner,&#10;    structure_part.fk_provider,&#10;    structure_part.fk_wastewater_structure,&#10;    structure_part.identifier,&#10;    structure_part.last_modification,&#10;    structure_part.remark,&#10;    structure_part.renovation_demand&#10;   FROM (tww_od.dryweather_downspout&#10;     LEFT JOIN tww_od.structure_part ON (((structure_part.obj_id)::text = (dryweather_downspout.obj_id)::text)));">
          <column autoUpdated="false" defaultValue="tww_sys.generate_oid('tww_od'::text, 'dryweather_downspout'::text)" digits="0" id="0" name="obj_id" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="diameter" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="2" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="3" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="fk_wastewater_structure" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="6" id="6" name="last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
@@ -723,8 +723,8 @@
       <table name="vw_dryweather_flume" numRows="0" remarks="" schema="tww_app" type="VIEW" viewSql=" SELECT dryweather_flume.obj_id,&#10;    dryweather_flume.material,&#10;    structure_part.fk_dataowner,&#10;    structure_part.fk_provider,&#10;    structure_part.fk_wastewater_structure,&#10;    structure_part.identifier,&#10;    structure_part.last_modification,&#10;    structure_part.remark,&#10;    structure_part.renovation_demand&#10;   FROM (tww_od.dryweather_flume&#10;     LEFT JOIN tww_od.structure_part ON (((structure_part.obj_id)::text = (dryweather_flume.obj_id)::text)));">
          <column autoUpdated="false" defaultValue="tww_sys.generate_oid('tww_od'::text, 'dryweather_flume'::text)" digits="0" id="0" name="obj_id" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="material" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="2" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="3" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="fk_wastewater_structure" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="6" id="6" name="last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
@@ -736,8 +736,8 @@
          <column autoUpdated="false" defaultValue="null" digits="2" id="1" name="gross_costs" nullable="true" remarks="" size="10" type="numeric" typeCode="2"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="kind" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="year_of_replacement" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="4" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="5" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="fk_wastewater_structure" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="6" id="8" name="last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
@@ -749,8 +749,8 @@
          <column autoUpdated="false" defaultValue="null" digits="2" id="1" name="gross_costs" nullable="true" remarks="" size="10" type="numeric" typeCode="2"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="kind" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="year_of_replacement" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="4" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="5" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="fk_wastewater_structure" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="6" id="8" name="last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
@@ -772,10 +772,10 @@
          <column autoUpdated="false" defaultValue="null" digits="2" id="11" name="cost" nullable="true" remarks="" size="10" type="numeric" typeCode="2"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="data_details" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="duration" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="14" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="15" name="fk_measure" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="16" name="fk_operating_company" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="17" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="17" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="18" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="6" id="19" name="last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="20" name="operator" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
@@ -1544,8 +1544,8 @@
       <table name="vw_flushing_nozzle" numRows="0" remarks="" schema="tww_app" type="VIEW" viewSql=" SELECT flushing_nozzle.obj_id,&#10;    flushing_nozzle.situation_geometry,&#10;    structure_part.fk_dataowner,&#10;    structure_part.fk_provider,&#10;    structure_part.fk_wastewater_structure,&#10;    structure_part.identifier,&#10;    structure_part.last_modification,&#10;    structure_part.remark,&#10;    structure_part.renovation_demand&#10;   FROM (tww_od.flushing_nozzle&#10;     LEFT JOIN tww_od.structure_part ON (((structure_part.obj_id)::text = (flushing_nozzle.obj_id)::text)));">
          <column autoUpdated="false" defaultValue="tww_sys.generate_oid('tww_od'::text, 'flushing_nozzle'::text)" digits="0" id="0" name="obj_id" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="situation_geometry" nullable="true" remarks="" size="2147483647" type="geometry" typeCode="1111"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="2" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="3" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="fk_wastewater_structure" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="6" id="6" name="last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
@@ -1556,8 +1556,8 @@
          <column autoUpdated="false" defaultValue="tww_sys.generate_oid('tww_od'::text, 'fountain'::text)" digits="0" id="0" name="obj_id" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="location_name" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="situation_geometry" nullable="true" remarks="" size="2147483647" type="geometry" typeCode="1111"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="3" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="4" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="fk_wastewater_networkelement" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="6" id="7" name="last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
@@ -1570,8 +1570,8 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="inclination" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="pavement" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="perimeter_geometry" nullable="true" remarks="" size="2147483647" type="geometry" typeCode="1111"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="5" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="6" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="fk_wastewater_networkelement" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="6" id="9" name="last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
@@ -1607,12 +1607,12 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="25" name="detail_geometry3d_geometry" nullable="true" remarks="" size="2147483647" type="geometry" typeCode="1111"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="26" name="elevation_determination" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="27" name="financing" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="28" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="28" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="29" name="fk_main_cover" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="30" name="fk_main_wastewater_node" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="31" name="fk_operator" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="32" name="fk_owner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="33" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="33" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="2" id="34" name="gross_costs" nullable="true" remarks="" size="10" type="numeric" typeCode="2"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="35" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="2" id="36" name="inspection_interval" nullable="true" remarks="" size="4" type="numeric" typeCode="2"/>
@@ -1636,8 +1636,8 @@
          <column autoUpdated="false" defaultValue="tww_sys.generate_oid('tww_od'::text, 'infiltration_zone'::text)" digits="0" id="0" name="obj_id" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="infiltration_capacity" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="perimeter_geometry" nullable="true" remarks="" size="2147483647" type="geometry" typeCode="1111"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="3" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="4" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="6" id="6" name="last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="remark" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
@@ -1653,10 +1653,10 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="control" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="discharge_point" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="fk_control_center" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="10" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="fk_overflow_char" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="fk_overflow_to" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="13" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="fk_wastewater_node" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="15" name="function" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="2" id="16" name="gross_costs" nullable="true" remarks="" size="10" type="numeric" typeCode="2"/>
@@ -1674,10 +1674,10 @@
          <column autoUpdated="false" defaultValue="null" digits="2" id="3" name="cost" nullable="true" remarks="" size="10" type="numeric" typeCode="2"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="data_details" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="duration" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="6" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="fk_measure" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="fk_operating_company" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="9" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="6" id="11" name="last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="operator" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
@@ -1709,12 +1709,12 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="18" name="detail_geometry3d_geometry" nullable="true" remarks="" size="2147483647" type="geometry" typeCode="1111"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="19" name="elevation_determination" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="20" name="financing" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="21" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="21" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="22" name="fk_main_cover" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="23" name="fk_main_wastewater_node" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="24" name="fk_operator" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="25" name="fk_owner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="26" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="26" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="2" id="27" name="gross_costs" nullable="true" remarks="" size="10" type="numeric" typeCode="2"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="28" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="2" id="29" name="inspection_interval" nullable="true" remarks="" size="4" type="numeric" typeCode="2"/>
@@ -1779,10 +1779,10 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="control" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="discharge_point" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="fk_control_center" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="12" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="fk_overflow_char" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="fk_overflow_to" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="15" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="15" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="16" name="fk_wastewater_node" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="17" name="function" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="2" id="18" name="gross_costs" nullable="true" remarks="" size="10" type="numeric" typeCode="2"/>
@@ -1809,10 +1809,10 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="control" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="discharge_point" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="fk_control_center" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="15" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="15" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="16" name="fk_overflow_char" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="17" name="fk_overflow_to" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="18" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="18" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="19" name="fk_wastewater_node" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="20" name="function" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="2" id="21" name="gross_costs" nullable="true" remarks="" size="10" type="numeric" typeCode="2"/>
@@ -1847,8 +1847,8 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="20" name="slope_building_plan" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="21" name="swmm_default_coefficient_of_friction" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
          <column autoUpdated="false" defaultValue="null" digits="2" id="22" name="wall_roughness" nullable="true" remarks="" size="5" type="numeric" typeCode="2"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="23" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="24" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="23" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="24" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="25" name="fk_wastewater_structure" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="26" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="6" id="27" name="last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
@@ -1858,8 +1858,8 @@
          <column autoUpdated="false" defaultValue="tww_sys.generate_oid('tww_od'::text, 'reservoir'::text)" digits="0" id="0" name="obj_id" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="location_name" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="situation_geometry" nullable="true" remarks="" size="2147483647" type="geometry" typeCode="1111"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="3" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="4" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="fk_wastewater_networkelement" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="6" id="7" name="last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
@@ -1884,12 +1884,12 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="detail_geometry3d_geometry" nullable="true" remarks="" size="2147483647" type="geometry" typeCode="1111"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="15" name="elevation_determination" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="16" name="financing" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="17" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="17" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="18" name="fk_main_cover" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="19" name="fk_main_wastewater_node" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="20" name="fk_operator" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="21" name="fk_owner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="22" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="22" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="2" id="23" name="gross_costs" nullable="true" remarks="" size="10" type="numeric" typeCode="2"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="24" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="2" id="25" name="inspection_interval" nullable="true" remarks="" size="4" type="numeric" typeCode="2"/>
@@ -1916,8 +1916,8 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="kind" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="3" id="4" name="overflow_level" nullable="true" remarks="" size="7" type="numeric" typeCode="2"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="year_of_replacement" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="6" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="7" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="fk_wastewater_structure" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="6" id="10" name="last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
@@ -1945,12 +1945,12 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="17" name="detail_geometry3d_geometry" nullable="true" remarks="" size="2147483647" type="geometry" typeCode="1111"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="18" name="elevation_determination" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="19" name="financing" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="20" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="20" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="21" name="fk_main_cover" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="22" name="fk_main_wastewater_node" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="23" name="fk_operator" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="24" name="fk_owner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="25" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="25" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="2" id="26" name="gross_costs" nullable="true" remarks="" size="10" type="numeric" typeCode="2"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="27" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="2" id="28" name="inspection_interval" nullable="true" remarks="" size="4" type="numeric" typeCode="2"/>
@@ -1975,8 +1975,8 @@
          <column autoUpdated="false" defaultValue="null" digits="2" id="1" name="gross_costs" nullable="true" remarks="" size="10" type="numeric" typeCode="2"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="kind" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="year_of_replacement" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="4" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="5" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="fk_wastewater_structure" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="6" id="8" name="last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
@@ -1991,8 +1991,8 @@
          <column autoUpdated="false" defaultValue="null" digits="2" id="4" name="gross_costs" nullable="true" remarks="" size="10" type="numeric" typeCode="2"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="kind" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="year_of_replacement" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="7" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="8" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="fk_wastewater_structure" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="6" id="11" name="last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
@@ -2013,9 +2013,9 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="contract_section" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="elevation_determination" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="financing" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="13" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="fk_operator" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="15" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="15" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="2" id="16" name="gross_costs" nullable="true" remarks="" size="10" type="numeric" typeCode="2"/>
          <column autoUpdated="false" defaultValue="null" digits="2" id="17" name="inspection_interval" nullable="true" remarks="" size="4" type="numeric" typeCode="2"/>
          <column autoUpdated="false" defaultValue="null" digits="6" id="18" name="last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
@@ -2105,9 +2105,9 @@
          <column autoUpdated="false" defaultValue="tww_sys.generate_oid('tww_od'::text, 'damage'::text)" digits="0" id="1" name="obj_id" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="comments" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="connection" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="4" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="fk_examination" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="6" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="6" id="7" name="last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="line_damage" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="single_damage_class" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
@@ -2134,10 +2134,10 @@
          <column autoUpdated="false" defaultValue="null" digits="2" id="3" name="cost" nullable="true" remarks="" size="10" type="numeric" typeCode="2"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="data_details" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="duration" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="6" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="fk_measure" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="fk_operating_company" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="9" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="6" id="11" name="last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="operator" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
@@ -2183,10 +2183,10 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="control" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="discharge_point" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="fk_control_center" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="8" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="fk_overflow_char" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="fk_overflow_to" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="11" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="fk_wastewater_node" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="function" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="2" id="14" name="gross_costs" nullable="true" remarks="" size="10" type="numeric" typeCode="2"/>
@@ -2243,8 +2243,8 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="25" name="slope_building_plan" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="26" name="swmm_default_coefficient_of_friction" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
          <column autoUpdated="false" defaultValue="null" digits="2" id="27" name="wall_roughness" nullable="true" remarks="" size="5" type="numeric" typeCode="2"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="28" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="29" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="28" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="29" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="30" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="6" id="31" name="last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="32" name="remark" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
@@ -2323,9 +2323,9 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="contract_section" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="elevation_determination" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="financing" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="13" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="fk_operator" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="15" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="15" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="2" id="16" name="gross_costs" nullable="true" remarks="" size="10" type="numeric" typeCode="2"/>
          <column autoUpdated="false" defaultValue="null" digits="2" id="17" name="inspection_interval" nullable="true" remarks="" size="4" type="numeric" typeCode="2"/>
          <column autoUpdated="false" defaultValue="null" digits="6" id="18" name="last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
@@ -2427,8 +2427,8 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="function_node_amelioration" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="situation3d_geometry" nullable="true" remarks="" size="2147483647" type="geometry" typeCode="1111"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="wwtp_number" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="11" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="12" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="fk_wastewater_structure" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="6" id="15" name="last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
@@ -2443,12 +2443,12 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="detail_geometry3d_geometry" nullable="true" remarks="" size="2147483647" type="geometry" typeCode="1111"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="elevation_determination" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="financing" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="8" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="fk_main_cover" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="fk_main_wastewater_node" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="fk_operator" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="fk_owner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="13" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="2" id="14" name="gross_costs" nullable="true" remarks="" size="10" type="numeric" typeCode="2"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="15" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="2" id="16" name="inspection_interval" nullable="true" remarks="" size="4" type="numeric" typeCode="2"/>
@@ -2486,12 +2486,12 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="detail_geometry3d_geometry" nullable="true" remarks="" size="2147483647" type="geometry" typeCode="1111"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="elevation_determination" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="financing" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="15" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="15" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="16" name="fk_main_cover" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="17" name="fk_main_wastewater_node" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="18" name="fk_operator" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="19" name="fk_owner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="20" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="20" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="2" id="21" name="gross_costs" nullable="true" remarks="" size="10" type="numeric" typeCode="2"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="22" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="2" id="23" name="inspection_interval" nullable="true" remarks="" size="4" type="numeric" typeCode="2"/>
