@@ -458,7 +458,7 @@ SELECT   ws_obj_id,
 	  NULL::text AS rpo_level,
 	  NE.fk_wastewater_structure ws, RP.obj_id,
 	  row_number() OVER(PARTITION BY NE.fk_wastewater_structure
-						ORDER BY (mod((2*pi()+(ST_Azimuth(RP.situation3d_geometry,ST_PointN(RE_to.progression3d_geometry,-2))-outs.azimuth))::numeric , 2*pi()::numeric)  ASC)) AS idx,
+						ORDER BY (mod((2*pi()+(ST_Azimuth(RP.situation3d_geometry,ST_PointN(RE_to.progression3d_geometry,-2))-outs.azimuth))::numeric , 2*pi()::numeric)) ASC) AS idx,
 	  NULL::text AS bottom_level
       FROM tww_od.reach_point RP
       LEFT JOIN tww_od.wastewater_networkelement NE ON RP.fk_wastewater_networkelement = NE.obj_id
