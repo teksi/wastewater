@@ -49,7 +49,13 @@ SET tww_symbology_order=
 		 ]
 	 ,code);
 
--- integrate and adapt Alter tww_symbology_order in tww_vl.channel_function_hierarchic #224
+-- this column is an extension to the VSA data model defines which function_hierarchic to use in labels
+ALTER TABLE tww_vl.channel_function_hierarchic ADD COLUMN tww_use_in_labels bool DEFAULT false;
+UPDATE tww_vl.channel_function_hierarchic
+SET tww_use_in_labels= true WHERE value_en like 'pwwf%';
+
+
+-- integrate and adapt Alter order_fct_hierarchic in tww_vl.channel_function_hierarchic #224
 -- https://github.com/QGEP/datamodel/pull/224 //skip-keyword-check
 -- this column is an extension to the VSA data model and puts the _usage_current in order
 ALTER TABLE tww_vl.channel_usage_current ADD COLUMN tww_symbology_order smallint;
