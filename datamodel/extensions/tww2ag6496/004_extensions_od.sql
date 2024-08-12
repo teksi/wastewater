@@ -9,6 +9,12 @@ ALTER TABLE tww_od.wastewater_node ADD CONSTRAINT fkey_vl_wastewater_node_ag96_i
 ALTER TABLE tww_od.wastewater_node DROP CONSTRAINT IF EXISTS fkey_vl_wastewater_node_ag64_function CASCADE;
 ALTER TABLE tww_od.wastewater_node ADD CONSTRAINT fkey_vl_wastewater_node_ag64_function FOREIGN KEY (ag64_function) REFERENCES tww_vl.wastewater_node_ag64_function MATCH SIMPLE ON UPDATE RESTRICT ON DELETE RESTRICT; 
 
+-- Deckel
+ALTER TABLE tww_od.cover ADD COLUMN IF NOT EXISTS ag64_fk_wastewater_node varchar(16);
+COMMENT ON COLUMN tww_od.cover.ag64_fk_wastewater_node IS 'Extension for AG-64/ Erweiterung für AG-64, Export von Zweitdeckeln /xxx_fr';
+ALTER TABLE tww_od.cover DROP CONSTRAINT IF EXISTS rel_cover_wastewater_node CASCADE;
+ALTER TABLE tww_od.cover ADD CONSTRAINT rel_cover_wastewater_node FOREIGN KEY (ag64_fk_wastewater_node) REFERENCES tww_od.wastewater_node MATCH SIMPLE ON UPDATE CASCADE ON DELETE SET NULL; 
+
 ALTER TABLE tww_od.wastewater_structure ADD COLUMN IF NOT EXISTS ag96_fk_measure varchar(16); 
 -- Topologische Verknüpfung Massnahme/Abwasserbauwerk
 ALTER TABLE tww_od.wastewater_structure DROP CONSTRAINT IF EXISTS ag96_rel_wastewater_structure_measure;

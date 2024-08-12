@@ -229,7 +229,7 @@ SELECT
 	, CASE WHEN st.value_de = 'in_Betrieb' THEN 'in_Betrieb.in_Betrieb' ELSE COALESCE(st.value_de,'unbekannt') END AS bauwerkstatus
 	, ne.ag64_remark AS bemerkung_wi
 	, ne.identifier AS bezeichnung
-	, COALESCE(main_co.level,unc.co_level) AS deckelkote
+	, COALESCE(co.level,main_co.level,unc.co_level) AS deckelkote
 	, ST_Force2D(COALESCE(main_ws.detail_geometry3d_geometry,unc.detail_geometry3d_geometry)) AS detailgeometrie
 	, COALESCE(fi.value_de,'unbekannt') AS finanzierung 
 	, COALESCE(
@@ -254,9 +254,9 @@ SELECT
 	, COALESCE(left(fhi.value_de,3),'SAA')  AS funktionhierarchisch
 	, COALESCE(isgate.value_de,'unbekannt') AS istschnittstelle
 	, COALESCE(ws.status_survey_year,1800) AS jahr_zustandserhebung
-	, ST_Force2D(COALESCE(main_co.situation3d_geometry,wn.situation3d_geometry)) AS lage
+	, ST_Force2D(COALESCE(co.situation3d_geometry,wn.situation3d_geometry)) AS lage
 	, ne.ag64_last_modification AS letzte_aenderung_wi
-	, COALESCE(co_pa.value_de,unc_pa.value_de) AS lagegenauigkeit
+	, co_pa.value_de AS lagegenauigkeit
 	, wn.backflow_level_current AS maxrueckstauhoehe
 	, COALESCE(rn.value_de,'unbekannt') AS sanierungsbedarf
 	, wn.bottom_level AS sohlenkote
@@ -307,9 +307,9 @@ LEFT JOIN tww_vl.wastewater_structure_renovation_necessity rn ON rn.code=ws.reno
 LEFT JOIN tww_vl.wastewater_structure_financing fi ON fi.code=ws.financing
 LEFT JOIN tww_vl.channel_function_hierarchic fhi ON fhi.code=wn._function_hierarchic	
 
+LEFT JOIN tww_od.cover co ON co.agxx_fk_wastewater_node = wn.obj_id -- only overwrite position of main wn
 LEFT JOIN tww_od.cover main_co ON main_co.obj_id=ws.fk_main_cover
-LEFT JOIN tww_vl.cover_positional_accuracy co_pa ON co_pa.code=main_co.positional_accuracy
-LEFT JOIN tww_vl.cover_positional_accuracy unc_pa ON unc_pa.code=unc.co_positional_accuracy
+LEFT JOIN tww_vl.cover_positional_accuracy co_pa ON co_pa.code=coalesce(co.positional_accuracy,main_co.positional_accuracy,unc.co_positional_accuracy)
 LEFT JOIN tww_vl.wastewater_structure_accessibility  ac ON ac.code=ws.accessibility;
 
 ------------------
