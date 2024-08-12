@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><database name="tww" schema="tww_od" type="PostgreSQL - 14.12 (Debian 14.12-1.pgdg110+1)">
+<?xml version="1.0" encoding="UTF-8"?><database name="tww" schema="tww_od" type="PostgreSQL - 14.13 (Debian 14.13-1.pgdg110+1)">
    <sequences>
       <sequence increment="1" name="default_values_id_seq" startValue="1"/>
       <sequence increment="1" name="import_manhole_quarantine_quarantine_serial_seq" startValue="1"/>
@@ -2111,6 +2111,10 @@
          <index name="pkey_tww_od_re_building_group_disposal_id" unique="true">
             <column ascending="true" name="id"/>
          </index>
+         <index name="in_re_building_group_disposal_fks" unique="true">
+            <column ascending="true" name="fk_building_group"/>
+            <column ascending="true" name="fk_disposal"/>
+         </index>
       </table>
       <table name="re_maintenance_event_wastewater_structure" remarks="" schema="tww_od" type="TABLE">
          <column autoUpdated="false" defaultValue="uuid_generate_v4()" digits="0" id="0" name="id" nullable="false" remarks="UUID generated with uuid_generate_v4 see https://www.postgresql.org/docs/16/uuid-ossp.html#UUID-OSSP-FUNCTIONS-SECT" size="2147483647" type="uuid" typeCode="1111"/>
@@ -2123,6 +2127,10 @@
          <primaryKey column="id" sequenceNumberInPK="1"/>
          <index name="pkey_tww_od_re_maintenance_event_wastewater_structure_id" unique="true">
             <column ascending="true" name="id"/>
+         </index>
+         <index name="in_re_maintenance_event_wastewater_structure_fks" unique="true">
+            <column ascending="true" name="fk_maintenance_event"/>
+            <column ascending="true" name="fk_wastewater_structure"/>
          </index>
       </table>
       <table name="reach" remarks="" schema="tww_od" type="TABLE">

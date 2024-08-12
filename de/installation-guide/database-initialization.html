@@ -161,15 +161,28 @@
 <ul class="simple">
 <li><p>Vermutlich wollen sie die Datenbank jetzt umbenennen: Rechtsklick auf die Datenbank, klick auf <cite>Eigenschaften…</cite> und geben sie einen neuen Namen ein.</p></li>
 </ul>
-<p>There are now 7 schemas in the database (public, tww_import, tww_network, tww_swmm, tww_od, tww_sys, tww_vl)</p>
+<p>There are now 6 <a class="reference external" href="https://teksi.github.io/wastewater/en/user-guide/layerexplanations/namingconventions.html#schemas-in-the-tww-database">schemas</a> in the database</p>
+<ul class="simple">
+<li><p>public</p></li>
+<li><p>tww_app</p></li>
+<li><p>tww_cfg</p></li>
+<li><p>tww_od</p></li>
+<li><p>tww_sys</p></li>
+<li><p>tww_vl</p></li>
+</ul>
 </section>
 <section id="create-minimal-roles-and-access">
 <h3><span class="section-number">2.3.1.2. </span>Rollen und Zugriffsrechte erstellen<a class="headerlink" href="#create-minimal-roles-and-access" title="Link to this heading"></a></h3>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>The TWW roles are defined in the <a class="reference external" href="https://github.com/TWW/datamodel/blob/master/12_0_roles.sql">https://github.com/TWW/datamodel/blob/master/12_0_roles.sql</a> (per cluster) and <a class="reference external" href="https://github.com/TWW/datamodel/blob/master/12_1_roles.sql">https://github.com/TWW/datamodel/blob/master/12_1_roles.sql</a> (per database) files. It is recommended to use these when using TWW in a production environment.</p>
+<p>The TWW roles are defined in the</p>
 </div>
-<p>Kopieren Einsetzen und Starten der beiden .sql nacheinander im Query Editor von pgAdmin4 (Tools &gt; Query Tool).</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/TWW/datamodel/blob/master/12_0_roles.sql">12_0_roles.sql</a> (per cluster) and</p></li>
+<li><p><a class="reference external" href="https://github.com/TWW/datamodel/blob/master/12_1_roles.sql">12_1_roles.sql</a> (per database) files.</p></li>
+</ul>
+<p>It is recommended to use these when using TWW in a production environment.</p>
+<p>Copy paste and run the two .sql one after the other in the query editor of pgAdmin (Tools &gt; Query Tool).</p>
 </section>
 <section id="empty-data-model">
 <h3><span class="section-number">2.3.1.3. </span>Leeres Datenbank-Schema<a class="headerlink" href="#empty-data-model" title="Link to this heading"></a></h3>
