@@ -1,6 +1,6 @@
 import unittest
 
-from teksi_wastewater.interlis.utils.various import logger
+from teksi_wastewater.utils.plugin_utils import logger
 
 
 class TestVarious(unittest.TestCase):

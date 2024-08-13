@@ -12,6 +12,7 @@ from teksi_wastewater.interlis.interlis_importer_exporter import (
 from teksi_wastewater.interlis.processing_algs.extractlabels_interlis import (
     ExtractlabelsInterlisAlgorithm,
 )
+from teksi_wastewater.utils.database_utils import DatabaseUtils
 
 QgsApplication.setPrefixPath("/usr", True)
 
@@ -158,12 +159,12 @@ class TeksiWastewaterCmd:
     def execute_interlis_import(self):
         qgs = QgsApplication([], False)
 
-        config.PGSERVICE = self.args.pgservice
-        config.PGHOST = self.args.pghost
-        config.PGPORT = self.args.pgport
-        config.PGDATABASE = self.args.pgdatabase
-        config.PGUSER = self.args.pguser
-        config.PGPASS = self.args.pgpass
+        DatabaseUtils.databaseConfig.PGSERVICE = self.args.pgservice
+        DatabaseUtils.databaseConfig.PGHOST = self.args.pghost
+        DatabaseUtils.databaseConfig.PGPORT = self.args.pgport
+        DatabaseUtils.databaseConfig.PGDATABASE = self.args.pgdatabase
+        DatabaseUtils.databaseConfig.PGUSER = self.args.pguser
+        DatabaseUtils.databaseConfig.PGPASS = self.args.pgpass
 
         interlisImporterExporter = InterlisImporterExporter()
 
@@ -192,12 +193,12 @@ class TeksiWastewaterCmd:
     def execute_interlis_export(self):
         qgs = QgsApplication([], False)
 
-        config.PGSERVICE = self.args.pgservice
-        config.PGHOST = self.args.pghost
-        config.PGPORT = self.args.pgport
-        config.PGDATABASE = self.args.pgdatabase
-        config.PGUSER = self.args.pguser
-        config.PGPASS = self.args.pgpass
+        DatabaseUtils.databaseConfig.PGSERVICE = self.args.pgservice
+        DatabaseUtils.databaseConfig.PGHOST = self.args.pghost
+        DatabaseUtils.databaseConfig.PGPORT = self.args.pgport
+        DatabaseUtils.databaseConfig.PGDATABASE = self.args.pgdatabase
+        DatabaseUtils.databaseConfig.PGUSER = self.args.pguser
+        DatabaseUtils.databaseConfig.PGPASS = self.args.pgpass
 
         label_scales = []
         if self.args.label_scale_pipeline_registry_1_1000:
