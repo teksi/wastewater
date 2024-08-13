@@ -69,7 +69,7 @@ The following table explains the mapping of FunktionAG in detail. If there are m
      - wwtp_structure.kind
 	 - any value
    * - andere
-     - special_structure.function / manhole.function
+     - special_structure.function / manhole.function / wastewater_node.ag64_function
 	 -
    * - Anschluss
      - wastewater_node.ag64_function
@@ -224,6 +224,22 @@ The following table explains the mapping of FunktionAG in detail. If there are m
    * - Wirbelfallschacht
      - special_structure.function
      -
+Handling of building connections
+---------------
+Building connections are defined in the datamodel as Infrastrukturknoten/GEPKnoten with funktionag "Anschluss". As these are no wastewater structures, the function is attributed to the wastewater node (``wastewater_node.ag64_function``).
+
+
+Handling of covers
+---------------
+The AG-64/AG-96 data collection guidelines state the following:
+
+  * The main wastewater node of a manhole or special structure must be mapped to the location of the main cover.
+  * Secondary covers are mapped as Infrastrukturknoten/GEPKnoten with funktionag "andere".
+
+As topological relations to a node of funktionag "andere" are technically possible, we need to link all covers to a wastewater node linked to every cover. 
+In order to follow these limitations, there is an additional foreign key on ``tww_od.cover`` pointing to ``tww_od.wastewater_node``. A wastewater node's situation geometry is only overruled if it is referenced from a cover. 
+Additionally, the attribute ``wastewater_node.ag64_function`` can be set to "andere".
+
 
 Infrastrukturhaltung/GEPHaltung
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
