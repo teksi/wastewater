@@ -3,6 +3,108 @@ How To
 
 This represents a guide on different themes about configuring in TWW.
 
+.. _settingdefaultvalues:
+
+Setting default values
+-----------------------
+
+If you get the following error message on startup of the TEKSI project during the 'Database production ready check':
+
+.. attention::
+CRITICAL: Error fk_provider or fk_dataowner not set in tww_od.default_values
+
+then your database is not yet production ready.
+
+It is possible to define default values for repeated fields such as fk_provider or fk_dataowner, so that you not have to add those manually for each object that you are creating.
+
+There is a new layer group 'configuration' in the project:
+
+.. figure:: images/configuration_default_values
+
+1. Open the attribute table 'Default values'
+2. Change to edit mode and choose select new object
+3. Select field name (currently fk_dataowner and fk_provider are supported in the form)
+
+.. figure:: images/default_values_fieldname_selection.png
+
+4. Select organisation that should be used (the corresponding obj_id will be added in the table itself).
+
+.. figure:: images/default_values_organisation_obj_id_selection.png
+
+
+For the second warning, please contact your TEKSI system administrator
+
+.. attention::
+CRITICAL: Error OID prefix set to 'ch000000'. Database not safe for production.
+
+and ask him/her to set the prefix to fit your project.
+
+For more information see :ref:`productionreadiness`
+
+Connect all occurences of your field name to ``tww_sys.get_default_values(field_name)``.
+Per default, the fields ``fk_provider`` and ``fk_dataowner`` are already connected to the function ``tww_sys.get_default_values(field_name)``.
+
+An example SQL script how to insert the default value for all occurences of a field name can be found `here <https://github.com/teksi/wastewater/blob/main/datamodel/changelogs/0001/14_default_values.sql>`_)
+
+
+How vw_tww_wastewater_structure labels work
+-------------------------------
+
+Labeling a manhole with his levels is quite a complex thing. Levels are not stored in the wastewater_structure class it self, but in the cover table and as reachpoint levels with the connected reaches. TWW has therefore so some calculated field to be able to label this levels:
+- _cover_label: shows the level / the levels of the cover/s.level of the wastewater structure
+- _bottom_label: shows the level / the levels of the wastewater_node(s).bottom_level of the wastewater structure 
+- _input_label: shows the levels of the reachpoints connected as to_reachpoints to one of the wastewater_nodes of the wastewater_structure
+- _output_lebel: shows the levels of the reachpoints connected as from_reachpoints to one of the wastewater_nodes of the wastewater_structure
+
+.. figure:: images/tww_labels.jpg
+
+In this example, there are 4 input-reaches to the manhole, but there are only two input-labels (I1, I2). Why?
+Answer: in the function, where the _input_label is calculated, can be set a filter so that only reaches with specified function_hierachic (e.g. only pwwf-reaches) are labeled (uses a specific field in the vl-channel_function_hierarchic, documentation follows). In the example, the 200mm-reaches are swwf-reaches and therefore not labeled.
+Which reach is I1, which is I2?
+Answer: TWW uses the azimut of the last segment of the reach (for inputs) or the first segement of the reach (for outputs) to define the order of the labels. If you stand in the North to the manhole and go clockwise around the manhole, you will first come to I1 and then later to I2. In the example, 300 combined-wastewater-reach is I1, 400 wastewater-reach is I2.
+
+How to translate a label prefix (C, B, I, O)
+--------------------------------------------
+
+To easily translate label prefixes a series of QGIS project variables have been added. If you want to change the prefixes for cover level, bottom level and entry and exit levels, change the following project settings:
+
+.. figure:: images/tww_label_prefix_settings.png
+
+To see your changes, you have to rerun the symbology functions manually (see next chapter)
+
+
+How to run symbology functions manually
+---------------------------------------
+
+Sometimes the labels such as bottom, cover or entry/exit levels are not correctly displayed, even if the corresponding attribut is filled in. This happens for example when you import data by INTERLIS Import or another way. May be you also decativated the triggers to speed up the import process.
+
+* Activate / Deactivate symbology triggers::
+
+   SELECT tww_sys.create_symbology_triggers()
+   SELECT tww_sys.drop_symbology_triggers()
+
+* Run **label function** for all entities (_label, _cover_label, _bottom_label, _input_label and _output_label)::
+   SELECT tww_od.update_wastewater_structure_label(NULL, true)
+
+.. figure:: images/tww_label_attributes.png
+
+* Run depth calculation for all entities (wastewater_structure._depth)::
+   SELECT tww_od.update_depth(NULL, true);
+
+.. figure:: images/tww_system_attributes_depth.png
+
+For symbolizing point elements (manholes, special structures etc. and  wastewater_nodes)  with _function_hierarchic and _usage_current the following two functions calculate the two tww attributes from the connected reach(es).
+
+* Run **symbology function** for all entites (calculates function_hierarchic and usage_current from connected reach(es) and adds result to  wastewater_structure._function_hierarchic and _usage_current)::
+
+   SELECT tww_od.update_wastewater_structure_symbology(NULL,true)
+
+* Run **wastewater node symbology** for all entities (calculates function_hierarchic and usage_current from connected reaches and adds result to  wastewater_node._function_hierarchic and   _usage_current)::
+
+   SELECT tww_od.update_wastewater_node_symbology(NULL, true);
+
+
+
 Manual Label-positioning for different scales
 ---------------------------------------------
 
@@ -65,47 +167,7 @@ If you can not find a .qgd-file, then you have probably not moved or rotated a l
 
 * If necessary define the horizontal/vertical alignment of your label-coordinates in the placement of the label definition.
 
-How to translate a label prefix
--------------------------------
 
-TWW automatically creates labels for wastewater-structures and reaches:
-
-.. figure:: images/tww_labels.png
-
-To easily translate label prefixes a series of QGIS project variables have been added. If you want to change the prefixes for cover level, bottom level and entry and exit levels, change the following project settings:
-
-.. figure:: images/tww_label_prefix_settings.png
-
-
-How to run symbology functions manually
----------------------------------------
-
-Sometimes the labels such as bottom, cover or entry/exit levels are not correctly displayed, even if the corresponding attribut is filled in. This happens for example when you import data by INTERLIS Import or another way. May be you also decativated the triggers to speed up the import process.
-
-* Activate / Deactivate symbology triggers::
-
-   SELECT tww_sys.create_symbology_triggers()
-   SELECT tww_sys.drop_symbology_triggers()
-
-* Run **label function** for all entities (_label, _cover_label, _bottom_label, _input_label and _output_label)::
-   SELECT tww_od.update_wastewater_structure_label(NULL, true)
-
-.. figure:: images/tww_label_attributes.png
-
-* Run depth calculation for all entities (wastewater_structure._depth)::
-   SELECT tww_od.update_depth(NULL, true);
-
-.. figure:: images/tww_system_attributes_depth.png
-
-For symbolizing point elements (manholes, special structures etc. and  wastewater_nodes)  with _function_hierarchic and _usage_current the following two functions calculate the two tww attributes from the connected reach(es).
-
-* Run **symbology function** for all entites (calculates function_hierarchic and usage_current from connected reach(es) and adds result to  wastewater_structure._function_hierarchic and _usage_current)::
-
-   SELECT tww_od.update_wastewater_structure_symbology(NULL,true)
-
-* Run **wastewater node symbology** for all entities (calculates function_hierarchic and usage_current from connected reaches and adds result to  wastewater_node._function_hierarchic and   _usage_current)::
-
-   SELECT tww_od.update_wastewater_node_symbology(NULL, true);
 
 
 Collecting a hydr_geometry (corresponds to a basin geometry in MikeUrban)
@@ -217,48 +279,7 @@ The Feature Attributes window for the overflow characteristic appears:
 3. Go back in the field fk_overflow characteristic of the just created overflow characteristic with the button **switch to form view** and define the necessary HQ or QQ values with the **add child object** button.
 
 
-.. _settingdefaultvalues:
 
-Setting default values
------------------------
-
-If you get the following error message on startup of the TEKSI project during the 'Database production ready check':
-
-.. attention::
-CRITICAL: Error fk_provider or fk_dataowner not set in tww_od.default_values
-
-then your database is not yet production ready.
-
-It is possible to define default values for repeated fields such as fk_provider or fk_dataowner, so that you not have to add those manually for each object that you are creating.
-
-There is a new layer group 'configuration' in the project:
-
-.. figure:: images/configuration_default_values
-
-1. Open the attribute table 'Default values'
-2. Change to edit mode and choose select new object
-3. Select field name (currently fk_dataowner and fk_provider are supported in the form)
-
-.. figure:: images/default_values_fieldname_selection.png
-
-4. Select organisation that should be used (the corresponding obj_id will be added in the table itself).
-
-.. figure:: images/default_values_organisation_obj_id_selection.png
-
-
-For the second warning, please contact your TEKSI system administrator
-
-.. attention::
-CRITICAL: Error OID prefix set to 'ch000000'. Database not safe for production.
-
-and ask him/her to set the prefix to fit your project.
-
-For more information see :ref:`productionreadiness`
-
-Connect all occurences of your field name to ``tww_sys.get_default_values(field_name)``.
-Per default, the fields ``fk_provider`` and ``fk_dataowner`` are already connected to the function ``tww_sys.get_default_values(field_name)``.
-
-An example SQL script how to insert the default value for all occurences of a field name can be found `here <https://github.com/teksi/wastewater/blob/main/datamodel/changelogs/0001/14_default_values.sql>`_)
 
 Further informations
 --------------------
