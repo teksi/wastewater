@@ -19,7 +19,7 @@ It is possible to define default values for repeated fields such as fk_provider 
 
 There is a new layer group 'configuration' in the project:
 
-.. figure:: images/configuration_default_values
+.. figure:: images/configuration_default_values.jpg
 
 1. Open the attribute table 'Default values'
 2. Change to edit mode and choose select new object
@@ -50,25 +50,34 @@ An example SQL script how to insert the default value for all occurences of a fi
 How vw_tww_wastewater_structure labels work
 -------------------------------
 
-Labeling a manhole with his levels is quite a complex thing. Levels are not stored in the wastewater_structure class it self, but in the cover table and as reachpoint levels with the connected reaches. TWW has therefore so some calculated field to be able to label this levels:
+Labeling a manhole with his levels is quite a complex thing. Levels are not stored in the wastewater_structure class it self, but in the cover table and as reachpoint levels with the connected reaches. TWW has therefore 4 calculated fields to be able to label this levels:
+
 - _cover_label: shows the level / the levels of the cover/s.level of the wastewater structure
 - _bottom_label: shows the level / the levels of the wastewater_node(s).bottom_level of the wastewater structure 
 - _input_label: shows the levels of the reachpoints connected as to_reachpoints to one of the wastewater_nodes of the wastewater_structure
 - _output_lebel: shows the levels of the reachpoints connected as from_reachpoints to one of the wastewater_nodes of the wastewater_structure
 
+
 .. figure:: images/tww_labels.jpg
 
+
 In this example, there are 4 input-reaches to the manhole, but there are only two input-labels (I1, I2). Why?
-Answer: in the function, where the _input_label is calculated, can be set a filter so that only reaches with specified function_hierachic (e.g. only pwwf-reaches) are labeled (uses a specific field in the vl-channel_function_hierarchic, documentation follows). In the example, the 200mm-reaches are swwf-reaches and therefore not labeled.
+
+Answer: in the function, where the _input_label is calculated, can be set a filter so that only reaches with specified function_hierachic (e.g. only pwwf-reaches) are labeled (uses a specific field in the vl-channel_function_hierarchic, documentation follows). 
+In the example, the 200mm-reaches are swwf-reaches and therefore not labeled.
+
 Which reach is I1, which is I2?
-Answer: TWW uses the azimut of the last segment of the reach (for inputs) or the first segement of the reach (for outputs) to define the order of the labels. If you stand in the North to the manhole and go clockwise around the manhole, you will first come to I1 and then later to I2. In the example, 300 combined-wastewater-reach is I1, 400 wastewater-reach is I2.
+
+Answer: TWW uses the azimut of the last segment of the reach (for inputs) or the first segement of the reach (for outputs) to define the order of the labels. If you stand in the North to the manhole and go clockwise around the manhole, you will first come to I1 and then later to I2. 
+In the example, 300 combined-wastewater-reach is I1, 400 wastewater-reach is I2.
+
 
 How to translate a label prefix (C, B, I, O)
 --------------------------------------------
 
 To easily translate label prefixes a series of QGIS project variables have been added. If you want to change the prefixes for cover level, bottom level and entry and exit levels, change the following project settings:
 
-.. figure:: images/tww_label_prefix_settings.png
+.. figure:: images/tww_label_prefix_settings.jpg
 
 To see your changes, you have to rerun the symbology functions manually (see next chapter)
 
