@@ -19,7 +19,7 @@ It is possible to define default values for repeated fields such as fk_provider 
 
 There is a new layer group 'configuration' in the project:
 
-.. figure:: images/configuration_default_values.jpg
+.. figure:: images/configuration_default_values.png
 
 1. Open the attribute table 'Default values'
 2. Change to edit mode and choose select new object
@@ -95,12 +95,12 @@ Sometimes the labels such as bottom, cover or entry/exit levels are not correctl
 * Run **label function** for all entities (_label, _cover_label, _bottom_label, _input_label and _output_label)::
    SELECT tww_od.update_wastewater_structure_label(NULL, true)
 
-.. figure:: images/tww_label_attributes.png
+.. figure:: images/label_attributes.png
 
 * Run depth calculation for all entities (wastewater_structure._depth)::
    SELECT tww_od.update_depth(NULL, true);
 
-.. figure:: images/tww_system_attributes_depth.png
+.. figure:: images/system_attributes_depth.png
 
 For symbolizing point elements (manholes, special structures etc. and  wastewater_nodes)  with _function_hierarchic and _usage_current the following two functions calculate the two tww attributes from the connected reach(es).
 
