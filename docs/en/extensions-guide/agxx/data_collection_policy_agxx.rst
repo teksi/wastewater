@@ -225,12 +225,13 @@ The following table explains the mapping of FunktionAG in detail. If there are m
      - special_structure.function
      -
 Handling of building connections
-"""""""""""""""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Building connections are defined in the datamodel as Infrastrukturknoten/GEPKnoten with funktionag "Anschluss". As these are no wastewater structures, the function is attributed to the wastewater node (``wastewater_node.ag64_function``).
 
 
 Handling of covers
-""""""""""""""""""The AG-64/AG-96 data collection guidelines state the following:
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The AG-64/AG-96 data collection guidelines state the following:
 
   * The main wastewater node of a manhole or special structure must be mapped to the location of the main cover.
   * Secondary covers are mapped as Infrastrukturknoten/GEPKnoten with funktionag "andere".
