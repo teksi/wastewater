@@ -236,8 +236,8 @@ The AG-64/AG-96 data collection guidelines state the following:
   * The main wastewater node of a manhole or special structure must be mapped to the location of the main cover.
   * Secondary covers are mapped as Infrastrukturknoten/GEPKnoten with funktionag "andere".
 
-As topological relations to a node of funktionag "andere" are technically possible, we need to link all covers to a wastewater node linked to every cover. 
-In order to follow these limitations, there is an additional foreign key on ``tww_od.cover`` pointing to ``tww_od.wastewater_node``. A wastewater node's situation geometry is only overruled if it is referenced from a cover. 
+As topological relations to a node of funktionag "andere" are technically possible, we need to link all covers to a wastewater node linked to every cover.
+In order to follow these limitations, there is an additional foreign key on ``tww_od.cover`` pointing to ``tww_od.wastewater_node``. A wastewater node's situation geometry is only overruled if it is referenced from a cover.
 Additionally, the attribute ``wastewater_node.ag64_function`` can be set to "andere".
 
 
