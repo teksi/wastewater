@@ -35,7 +35,8 @@ In the database, there is a table from which that value is taken on startup, so 
 Project setup
 ^^^^^^^^^^^^^^^^^^^^^^
 
-The attribute forms of AG-64/AG-96 are not loaded automatically when starting the template .qgs project. The necessary forms are available in source code of the  `latest release <https://github.com/teksi/wastewater/releases/latest>_`
+The attribute forms of AG-64/AG-96 are stored in a specific layer style automatically when starting the template .qgs project. In order to access them, right-click on the layer, select "styles" and cascade to ""AG-64/96"
 
-* download source code
-* in the folder project/agxx there are qml files with the necessary attribute forms
+ .. figure:: images/selectstyle.png
+
+From there, you can copy/paste the forms if necessary
