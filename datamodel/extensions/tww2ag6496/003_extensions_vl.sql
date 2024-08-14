@@ -156,7 +156,8 @@ INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.wastewater_node_ag64_function DROP CONSTRAINT IF EXISTS pkey_tww_vl_wastewater_node_ag64_function CASCADE;
 ALTER TABLE tww_vl.wastewater_node_ag64_function ADD CONSTRAINT pkey_tww_vl_wastewater_node_ag64_function PRIMARY KEY (code);
 INSERT INTO tww_vl.wastewater_node_ag64_function (code,vsacode,value_de,active) VALUES
-(1999948,1999948,'Anschluss',true)
+(1999948,1999948,'Anschluss',true),
+(1999933,1999933,'andere',true) -- für Zweitdeckel
 ON CONFLICT (code) DO UPDATE SET 
   vsacode = EXCLUDED.vsacode
 , value_de = EXCLUDED.value_de
@@ -346,6 +347,25 @@ TABLESPACE pg_default;
 INSERT INTO tww_vl.discharge_point_relevance_import_rel_agxx (code,value_de) VALUES
 (5080,'Einleitstelle.gewaesserrelevant'),
 (5081,'Einleitstelle.nicht_gewaesserrelevant')
+ON CONFLICT (code) DO UPDATE SET 
+  value_de = EXCLUDED.value_de;
+
+
+-- bauwerkstatus
+CREATE TABLE IF NOT EXISTS tww_vl.wastewater_structure_status_import_rel_agxx 
+(CONSTRAINT pkey_wastewater_structure_status_import_rel_agxx_code PRIMARY KEY (code))
+INHERITS (tww_vl.value_list_agxx_import_rel_base)
+TABLESPACE pg_default;
+
+-- Copy the base
+INSERT INTO tww_vl.wastewater_structure_status_import_rel_agxx (code,value_de)
+SELECT code,value_de FROM tww_vl.wastewater_structure_status WHERE active
+ON CONFLICT (code) DO UPDATE SET 
+  value_de = EXCLUDED.value_de;
+
+-- alter 1:1 updated value_de
+INSERT INTO tww_vl.wastewater_structure_status_import_rel_agxx (code,value_de) VALUES
+(8493,'in_Betrieb.in_Betrieb')
 ON CONFLICT (code) DO UPDATE SET 
   value_de = EXCLUDED.value_de;
 
