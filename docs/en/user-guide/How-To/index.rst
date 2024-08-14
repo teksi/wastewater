@@ -95,12 +95,12 @@ Sometimes the labels such as bottom, cover or entry/exit levels are not correctl
 * Run **label function** for all entities (_label, _cover_label, _bottom_label, _input_label and _output_label)::
    SELECT tww_od.update_wastewater_structure_label(NULL, true)
 
-.. figure:: images/label_attributes.png
+.. figure:: images/tww_label_attributes.jpg
 
 * Run depth calculation for all entities (wastewater_structure._depth)::
    SELECT tww_od.update_depth(NULL, true);
 
-.. figure:: images/system_attributes_depth.png
+.. figure:: images/tww_system_attributes_depth.jpg
 
 For symbolizing point elements (manholes, special structures etc. and  wastewater_nodes)  with _function_hierarchic and _usage_current the following two functions calculate the two tww attributes from the connected reach(es).
 
