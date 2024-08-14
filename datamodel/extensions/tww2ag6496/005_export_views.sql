@@ -412,7 +412,7 @@ SELECT
 	, msr.total_cost AS gesamtkosten
 	, msr.intervention_demand AS handlungsbedarf
 	, msr.year_implementation_effective AS jahr_umsetzung_effektiv
-	, msr.year_implementation_planned AS jahr_umsetzung_planned
+	, msr.year_implementation_planned AS jahr_umsetzung_geplant
 	, msr_ct.value_de AS kategorie
 	, msr.perimeter_geometry AS perimeter
 	, msr_pri.value_de AS prioritaetag
