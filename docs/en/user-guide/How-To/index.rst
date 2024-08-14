@@ -53,7 +53,7 @@ How vw_tww_wastewater_structure labels work
 Labeling a manhole with his levels is quite a complex thing. Levels are not stored in the wastewater_structure class it self, but in the cover table and as reachpoint levels with the connected reaches. TWW has therefore 4 calculated fields to be able to label this levels:
 
 - _cover_label: shows the level / the levels of the cover/s.level of the wastewater structure
-- _bottom_label: shows the level / the levels of the wastewater_node(s).bottom_level of the wastewater structure 
+- _bottom_label: shows the level / the levels of the wastewater_node(s).bottom_level of the wastewater structure
 - _input_label: shows the levels of the reachpoints connected as to_reachpoints to one of the wastewater_nodes of the wastewater_structure
 - _output_lebel: shows the levels of the reachpoints connected as from_reachpoints to one of the wastewater_nodes of the wastewater_structure
 
@@ -63,12 +63,12 @@ Labeling a manhole with his levels is quite a complex thing. Levels are not stor
 
 In this example, there are 4 input-reaches to the manhole, but there are only two input-labels (I1, I2). Why?
 
-Answer: in the function, where the _input_label is calculated, can be set a filter so that only reaches with specified function_hierachic (e.g. only pwwf-reaches) are labeled (uses a specific field in the vl-channel_function_hierarchic, documentation follows). 
+Answer: in the function, where the _input_label is calculated, can be set a filter so that only reaches with specified function_hierachic (e.g. only pwwf-reaches) are labeled (uses a specific field in the vl-channel_function_hierarchic, documentation follows).
 In the example, the 200mm-reaches are swwf-reaches and therefore not labeled.
 
 Which reach is I1, which is I2?
 
-Answer: TWW uses the azimut of the last segment of the reach (for inputs) or the first segement of the reach (for outputs) to define the order of the labels. If you stand in the North to the manhole and go clockwise around the manhole, you will first come to I1 and then later to I2. 
+Answer: TWW uses the azimut of the last segment of the reach (for inputs) or the first segement of the reach (for outputs) to define the order of the labels. If you stand in the North to the manhole and go clockwise around the manhole, you will first come to I1 and then later to I2.
 In the example, 300 combined-wastewater-reach is I1, 400 wastewater-reach is I2.
 
 
@@ -206,7 +206,7 @@ or direct way: Select in layer vw_wastewater_node the node with the i-button
 
 .. figure:: images/hydr_geometry2.jpg
 
-6. With the **Add child object** button, you can now generate the records with which the hydr_geometry is defined analogously to the basin geometry of MikeUrban/+ (H, As surface, Ac cross-sectional area). 
+6. With the **Add child object** button, you can now generate the records with which the hydr_geometry is defined analogously to the basin geometry of MikeUrban/+ (H, As surface, Ac cross-sectional area).
 
 In the table view, the overview of the values is easier.
 
@@ -258,7 +258,7 @@ To define a new prank weir:
 
 .. hint:: Because an overflow itself has no geometry, the place you click has no meaning. The geometry will be defined be the linked from- and to-wastewater nodes, see point 9
 
-The overflow Feature Attributes window opens. 
+The overflow Feature Attributes window opens.
 
 8. Enter an identifier and choose the overflow_type.
 
@@ -269,7 +269,7 @@ The attributes in the upper hydraulic section must be filled in, they will be tr
 
 .. figure:: images/overflow4.jpg
 
-Close all open Feature Attributes windows. 
+Close all open Feature Attributes windows.
 
 .. hint:: The new overflow is drawn as dotted line with arrow. If the line does not appear: the line is defined with the QGIS geometry generator symbol. Control the formula of the geometry generator (layer properties/symbology, select the symbol), control first the name of the **vw_wastewater_node** layer. If this layer is renamed, the formula has to be changed with the new name (e.g. **vw_Abwasserknoten**).
 
