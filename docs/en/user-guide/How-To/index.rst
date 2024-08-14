@@ -256,11 +256,14 @@ To define a new prank weir:
 
 7. Choose the QGIS standard **Add Point Feature** button and click anyware near to the wastewater_structure
 
+.. hint:: Because an overflow itself has no geometry, the place you click has no meaning. The geometry will be defined be the linked from- and to-wastewater nodes, see point 9
+
 The overflow Feature Attributes window opens. 
 
 8. Enter an identifier and choose the overflow_type.
 
-9. Define the two wastewater nodes of the overflow (fk_wastewater_node = from node, fk_overflow_to = to node) by selecting them on the map with the tool.
+9. Define the two wastewater nodes of the overflow (fk_wastewater_node = from node, fk_overflow_to = to node) by selecting them on the map with the **map identification**-tool.
+
 The attributes in the upper hydraulic section must be filled in, they will be transferred to MikeUrban/+.
 
 
@@ -292,17 +295,15 @@ Overflow characteristic
 
 In the case of a leaping weir, a pump or under special conditions, an overflow characteristic can be defined for the overflow:
 
-You can select an existing characteristic in the field fk_overflow_char or you creat a new one characteristic with the green + button.
+You can select an existing characteristic in the field fk_overflow_char or you create a new characteristic with the green + button.
 
 The Feature Attributes window for the overflow characteristic appears:
 
 .. figure:: images/overflow_char1.jpg
 
-1. Here too, the identifer is later adopted in MikeUrban as a table name for a QH relationship, which is used, for example, in a local controller.
+1. Here too, the identifer is later adopted in MikeUrban/+ as a table name for a QH relationship, which is used, for example, in a local controller.
 
-2. Because the new record overflow characteristic has not yet been saved, it must first be saved with OK before the records of the HQ relation can be created.
-
-3. Go back in the field fk_overflow characteristic of the just created overflow characteristic with the button **switch to form view** and define the necessary HQ or QQ values with the **add child object** button.
+2. Define the necessary HQ or QQ values with the **add child object** button. Be sure to choose the correct tab corresponding to the choice in **kind_overflow_char**
 
 
 
