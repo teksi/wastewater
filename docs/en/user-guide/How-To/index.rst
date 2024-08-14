@@ -179,7 +179,7 @@ If you can not find a .qgd-file, then you have probably not moved or rotated a l
 
 
 
-Collecting a hydr_geometry (corresponds to a basin geometry in MikeUrban)
+Collecting a hydr_geometry (corresponds to a basin geometry in MikeUrban/Mike+)
 -------------------------------------------------------------------------
 
 Note:
@@ -190,23 +190,25 @@ Note:
 
 Action:
 
-1. Select the wastewater structure with the i-button
+1. Select in layer vw_tww_wastewater_structure the wastewater structure with the i-button
 
-2. Select the wastewater nodes tab in the Feature Attributes window
+2. Select the **Wastewater Nodes** tab in the Feature Attributes window
 
-3. Select a hydr_geometry in the fk_hydr_geometry field or use the + button to create a new hydr_geometry.
+or direct way: Select in layer vw_wastewater_node the node with the i-button
+
+3. Expand the part ** additional attributes in special structures**
+
+4. Select a hydr_geometry in the fk_hydr_geometry field or use the **+** button to create a new hydr_geometry.
 
 .. figure:: images/hydr_geometry1.jpg
 
-4. Enter a description in the hydr_geometry - Feature Attributes window. This name is also the name of the table in MikeUrban.
-
-5. Before you can create a hydr: geom_relation, the new record hydr_geometry must be saved: -> click OK
-
-6. Go back to the hydr_geometry you just created with the button **switch to form view** in the field fk_hydr_geometry .
+5. For a new record: Enter a description in the hydr_geometry - Feature Attributes window. This name is also the name of the table in MikeUrban/+.
 
 .. figure:: images/hydr_geometry2.jpg
 
-7. With the **Add child object** button, you can now generate the records with which the hydr_geometry is defined analogously to the basin geometry of MikeUrban (H, As surface, Ac cross-sectional area).
+6. With the **Add child object** button, you can now generate the records with which the hydr_geometry is defined analogously to the basin geometry of MikeUrban/+ (H, As surface, Ac cross-sectional area). 
+
+In the table view, the overview of the values is easier.
 
 .. figure:: images/hydr_geometry3.jpg
 
@@ -214,7 +216,9 @@ Note:
 
 * The water depth is the value above the bottom level or the outlet. A hydr_geometry can thus be used for several wastewater structure if they are built similar.
 
-* In the table view, the overview of the values is easier.
+* Be aware to respect the rules in Mike (e.g. continuous encreasing cross_section_area)
+
+* As long as the hydr_geometry record is not saved, you see in the Features Attribute window just the Obj_Id in brackets. After saving, you will see the identifier you have entered.
 
 
 Hydraulic modeling of an overflow (prank weir / leapingweir / pump)
