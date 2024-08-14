@@ -652,7 +652,7 @@ class InterlisExporterToIntermediateSchema:
                 gesamtkosten=row.gesamtkosten,
                 handlungsbedarf=row.handlungsbedarf,
                 jahr_umsetzung_effektiv=row.jahr_umsetzung_effektiv,
-                jahr_umsetzung_geplant=row.jahr_umsetzung_planned,
+                jahr_umsetzung_geplant=row.jahr_umsetzung_geplant,
                 kategorie=row.kategorie,
                 perimeter=row.perimeter,
                 prioritaetag=row.prioritaetag,

@@ -32,7 +32,7 @@ class ModelTwwAG6496(ModelBase):
             gesamtkosten = Column(Float)
             handlungsbedarf = Column(String)
             jahr_umsetzung_effektiv = Column(Integer)
-            jahr_umsetzung_planned = Column(Integer)
+            jahr_umsetzung_geplant = Column(Integer)
             kategorie = Column(String)
             perimeter = Column(Geometry)
             prioritaetag = Column(String)
