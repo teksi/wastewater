@@ -7,7 +7,7 @@ from sqlalchemy.ext.automap import AutomapBase
 
 from ...libs.modelbaker.iliwrapper import globals, ili2dbutils
 from .. import config
-from .various import exec_, get_pgconf_as_ili_args, logger
+from .various import execute_subprocess, get_pgconf_as_ili_args, logger
 
 
 class InterlisToolsException(Exception):
@@ -42,12 +42,12 @@ class InterlisTools:
             create_basket_col_args = "--createBasketCol"
 
         logger.info(f"ILIDB SCHEMAIMPORT INTO {schema}...")
-        exec_(
+        execute_subprocess(
             " ".join(
                 [
-                    f"'{self.java_executable_path}'",
+                    f'"{self.java_executable_path}"',
                     "-jar",
-                    f"'{self.ili2pg_executable_path}'",
+                    f'"{self.ili2pg_executable_path}"',
                     "--schemaimport",
                     *get_pgconf_as_ili_args(),
                     "--dbschema",
@@ -64,34 +64,34 @@ class InterlisTools:
                     "--defaultSrsCode",
                     "2056",
                     "--log",
-                    f"'{log_path}'",
+                    f'"{log_path}"',
                     "--nameLang",
                     "de",
                     "--models",
-                    f"'{';'.join(models)}'",
+                    f'"{";".join(models)}"',
                 ]
             )
         )
 
     def validate_xtf_data(self, xtf_file, log_path):
         logger.info("VALIDATING XTF DATA...")
-        exec_(
-            f"'{self.java_executable_path}' -jar '{config.ILIVALIDATOR}' --log '{log_path}' '{xtf_file}'"
+        execute_subprocess(
+            f'"{self.java_executable_path}" -jar "{config.ILIVALIDATOR}" --log "{log_path}" "{xtf_file}"'
         )
 
     def import_xtf_data(self, schema, xtf_file, log_path):
         logger.info("IMPORTING XTF DATA...")
-        exec_(
+        execute_subprocess(
             " ".join(
                 [
-                    f"'{self.java_executable_path}'",
+                    f'"{self.java_executable_path}"',
                     "-jar",
-                    f"'{self.ili2pg_executable_path}'",
+                    f'"{self.ili2pg_executable_path}"',
                     "--import",
                     "--deleteData",
                     *get_pgconf_as_ili_args(),
                     "--dbschema",
-                    f"'{schema}'",
+                    f'"{schema}"',
                     "--disableValidation",
                     "--skipReferenceErrors",
                     "--createTidCol",
@@ -99,8 +99,8 @@ class InterlisTools:
                     "--defaultSrsCode",
                     "2056",
                     "--log",
-                    f"'{log_path}'",
-                    f"'{xtf_file}'",
+                    f'"{log_path}"',
+                    f'"{xtf_file}"',
                 ]
             )
         )
@@ -114,12 +114,12 @@ class InterlisTools:
         else:
             export_model_name_args = []
 
-        exec_(
+        execute_subprocess(
             " ".join(
                 [
-                    f"'{self.java_executable_path}'",
+                    f'"{self.java_executable_path}"',
                     "-jar",
-                    f"'{self.ili2pg_executable_path}'",
+                    f'"{self.ili2pg_executable_path}"',
                     "--export",
                     "--models",
                     f"{model_name}",
@@ -134,9 +134,9 @@ class InterlisTools:
                     "--defaultSrsCode",
                     "2056",
                     "--log",
-                    f"'{log_path}'",
+                    f'"{log_path}"',
                     "--trace",
-                    f"'{xtf_file}'",
+                    f'"{xtf_file}"',
                 ]
             )
         )

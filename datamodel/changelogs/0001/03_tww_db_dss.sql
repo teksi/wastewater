@@ -1,6 +1,6 @@
------- This file generates the VSA-DSS database (Modul VSA-DSS (2020)) in en on QQIS
+------ This file generates the VSA-DSS database (Modul VSA-DSS (2020)) in en for QQIS
 ------ For questions etc. please contact Stefan Burckhardt stefan.burckhardt@sjib.ch
------- version 26.02.2024 20:59:17
+------ version 22.04.2024 17:53:40
 ------ with 3D coordinates
 
 ---------------------------
@@ -32,6 +32,7 @@ CREATE TABLE tww_od.re_building_group_disposal
    CONSTRAINT pkey_tww_od_re_building_group_disposal_id PRIMARY KEY (id)
 );
 COMMENT ON COLUMN tww_od.re_building_group_disposal.id IS 'UUID generated with uuid_generate_v4 see https://www.postgresql.org/docs/16/uuid-ossp.html#UUID-OSSP-FUNCTIONS-SECT';
+
 -------
 CREATE TABLE tww_od.re_maintenance_event_wastewater_structure
 (
@@ -862,20 +863,20 @@ COMMENT ON COLUMN tww_od.sludge_treatment.hygenisation IS 'Dimensioning value / 
  ALTER TABLE tww_od.sludge_treatment ADD COLUMN identifier text;
  ALTER TABLE tww_od.sludge_treatment ADD CONSTRAINT st_identifier_length_max_20 CHECK(char_length(identifier)<=20);
 COMMENT ON COLUMN tww_od.sludge_treatment.identifier IS '';
- ALTER TABLE tww_od.sludge_treatment ADD COLUMN predensification_of_excess_sludge  decimal(9,2) ;
+ ALTER TABLE tww_od.sludge_treatment ADD COLUMN predensification_of_excess_sludge  decimal(10,2) ;
 COMMENT ON COLUMN tww_od.sludge_treatment.predensification_of_excess_sludge IS 'Dimensioning value / Dimensionierungswert / Valeur de dimensionnement';
- ALTER TABLE tww_od.sludge_treatment ADD COLUMN predensification_of_mixed_sludge  decimal(9,2) ;
+ ALTER TABLE tww_od.sludge_treatment ADD COLUMN predensification_of_mixed_sludge  decimal(10,2) ;
 COMMENT ON COLUMN tww_od.sludge_treatment.predensification_of_mixed_sludge IS 'Dimensioning value / Dimensionierungswert / Valeur de dimensionnement';
- ALTER TABLE tww_od.sludge_treatment ADD COLUMN predensification_of_primary_sludge  decimal(9,2) ;
+ ALTER TABLE tww_od.sludge_treatment ADD COLUMN predensification_of_primary_sludge  decimal(10,2) ;
 COMMENT ON COLUMN tww_od.sludge_treatment.predensification_of_primary_sludge IS 'Dimensioning value / Dimensionierungswert / Valeur de dimensionnement';
  ALTER TABLE tww_od.sludge_treatment ADD COLUMN remark text;
  ALTER TABLE tww_od.sludge_treatment ADD CONSTRAINT st_remark_length_max_80 CHECK(char_length(remark)<=80);
 COMMENT ON COLUMN tww_od.sludge_treatment.remark IS 'General remarks / Allgemeine Bemerkungen / Remarques générales';
  ALTER TABLE tww_od.sludge_treatment ADD COLUMN stabilisation  integer ;
 COMMENT ON COLUMN tww_od.sludge_treatment.stabilisation IS 'yyy_Art der Schlammstabilisierung / Art der Schlammstabilisierung / Type de stabilisation des boues';
- ALTER TABLE tww_od.sludge_treatment ADD COLUMN stacking_of_dehydrated_sludge  decimal(9,2) ;
+ ALTER TABLE tww_od.sludge_treatment ADD COLUMN stacking_of_dehydrated_sludge  decimal(10,2) ;
 COMMENT ON COLUMN tww_od.sludge_treatment.stacking_of_dehydrated_sludge IS 'Dimensioning value / Dimensionierungswert / Valeur de dimensionnement';
- ALTER TABLE tww_od.sludge_treatment ADD COLUMN stacking_of_liquid_sludge  decimal(9,2) ;
+ ALTER TABLE tww_od.sludge_treatment ADD COLUMN stacking_of_liquid_sludge  decimal(10,2) ;
 COMMENT ON COLUMN tww_od.sludge_treatment.stacking_of_liquid_sludge IS 'Dimensioning value / Dimensionierungswert / Valeur de dimensionnement';
  ALTER TABLE tww_od.sludge_treatment ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
 COMMENT ON COLUMN tww_od.sludge_treatment.last_modification IS 'Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE';
@@ -943,15 +944,15 @@ COMMENT ON COLUMN tww_od.hydr_geometry.identifier IS '';
  ALTER TABLE tww_od.hydr_geometry ADD COLUMN remark text;
  ALTER TABLE tww_od.hydr_geometry ADD CONSTRAINT hg_remark_length_max_80 CHECK(char_length(remark)<=80);
 COMMENT ON COLUMN tww_od.hydr_geometry.remark IS 'General remarks / Allgemeine Bemerkungen / Remarques générales';
- ALTER TABLE tww_od.hydr_geometry ADD COLUMN storage_volume  decimal(9,2) ;
+ ALTER TABLE tww_od.hydr_geometry ADD COLUMN storage_volume  decimal(10,2) ;
 COMMENT ON COLUMN tww_od.hydr_geometry.storage_volume IS 'yyy_Storage content in the basin and in the inlet between the weir crest and the water level at Qan. For stormwater overflow basins in the bypass, the storage capacity at the upstream separating structure or stormwater overflow must be recorded (cf. explanations Contents_catchment section reps. _catchment section). For pumps: Reservoir content in the inlet channel below the water level when the pump is switched on (highest switch-on level for several pumps). / Speicherinhalt im Becken und im Zulauf zwischen Wehrkrone und dem Wasserspiegel bei Qan. Bei Regenbeckenüberlaufbecken im Nebenschluss ist der Stauraum beim vorgelagerten Trennbauwerk bzw. Regenüberlauf zu erfassen (vgl. Erläuterungen Inhalt_Fangteil reps. _Klaerteil). Bei Pumpen: Speicherinhalt im Zulaufkanal unter dem Wasserspiegel beim Einschalten der Pumpe (höchstes Einschaltniveau bei mehreren Pumpen) / Volume de stockage dans un bassin et dans la canalisation d’amenée entre la crête et le niveau d’eau de Qdim (débit conservé). Lors de bassins d’eaux pluviales en connexion latérale, le volume de stockage est à saisir à l’ouvrage de répartition, resp. déversoir d’orage précédant (cf. explications volume utile clarification, resp. volume utile stockage). Pour les pompes, il s’agit du volume de stockage dans la canalisation d’amenée sous le niveau d’eau lorsque la pompe s’enclenche (niveau max d’enclenchement lorsqu’il y a plusieurs pompes). Pour les bassins d’eaux pluviales, à saisir uniquement en connexion directe.';
- ALTER TABLE tww_od.hydr_geometry ADD COLUMN usable_capacity_storage  decimal(9,2) ;
+ ALTER TABLE tww_od.hydr_geometry ADD COLUMN usable_capacity_storage  decimal(10,2) ;
 COMMENT ON COLUMN tww_od.hydr_geometry.usable_capacity_storage IS 'yyy_Inhalt der Kammer unterhalb der Wehrkrone ohne Stauraum im Zulaufkanal. Letzterer wird unter dem Attribut Stauraum erfasst (bei Anordnung im Hauptschluss auf der Stammkarte des Hauptbauwerkes, bei Anordnung im Nebenschluss auf der Stammkarte des vorgelagerten Trennbauwerkes oder Regenüberlaufs). / Inhalt der Kammer unterhalb der Wehrkrone ohne Stauraum im Zulaufkanal. Letzterer wird unter dem Attribut Stauraum erfasst (bei Anordnung im Hauptschluss auf der Stammkarte des Hauptbauwerkes, bei Anordnung im Nebenschluss auf der Stammkarte des vorgelagerten Trennbauwerkes oder Regenüberlaufs) / Volume de la chambre sous la crête, sans volume de stockage de la canalisation d’amenée. Ce dernier est saisi par l’attribut volume de stockage (lors de disposition en connexion directe ceci se fait dans la fiche technique de l’ouvrage principal, lors de connexion latérale, l’attribution se fait dans la fiche technique de l’ouvrage de répartition ou déversoir d’orage précédant).';
- ALTER TABLE tww_od.hydr_geometry ADD COLUMN usable_capacity_treatment  decimal(9,2) ;
+ ALTER TABLE tww_od.hydr_geometry ADD COLUMN usable_capacity_treatment  decimal(10,2) ;
 COMMENT ON COLUMN tww_od.hydr_geometry.usable_capacity_treatment IS 'yyy_Inhalt der Kammer unterhalb der Wehrkrone inkl. Einlaufbereich, Auslaufbereich und Sedimentationsbereich, ohne Stauraum im Zulaufkanal.  Letzterer wird unter dem Attribut Stauraum erfasst (bei Anordnung im Hauptschluss auf der Stammkarte des Hauptbauwerkes, bei Anordnung im Nebenschluss auf der Stammkarte des vorgelagerten Trennbauwerkes oder Regenüberlaufs) / Inhalt der Kammer unterhalb der Wehrkrone inkl. Einlaufbereich, Auslaufbereich und Sedimentationsbereich, ohne Stauraum im Zulaufkanal. Letzterer wird unter dem Attribut Stauraum erfasst (bei Anordnung im Hauptschluss auf der Stammkarte des Hauptbauwerkes, bei Anordnung im Nebenschluss auf der Stammkarte des vorgelagerten Trennbauwerkes oder Regenüberlaufs) / Volume de la chambre sous la crête, incl. l’entrée, la sortie et la partie de sédimentation, sans volume de stockage de la canalisation d’amenée. Ce dernier est saisi par l’attribut volume de stockage (lors de disposition en connexion directe ceci se fait dans la fiche technique de l’ouvrage principal, lors de connexion latérale, l’attribution se fait dans la fiche technique de l’ouvrage de répartition ou déversoir d’orage précédant).';
- ALTER TABLE tww_od.hydr_geometry ADD COLUMN utilisable_capacity  decimal(9,2) ;
+ ALTER TABLE tww_od.hydr_geometry ADD COLUMN utilisable_capacity  decimal(10,2) ;
 COMMENT ON COLUMN tww_od.hydr_geometry.utilisable_capacity IS 'yyy_Inhalt der Kammer unterhalb Notüberlauf oder Bypass (maximal mobilisierbares Volumen, exkl. Stauraum im Zulaufkanal). Bei Regenrückhaltekanälen und Stauraumkanälen im Hauptschluss ist der Nutzinhalt = 0. Es ist nur Stauraum vorhanden, der im entsprechenden Attribut zu erfassen ist. / Inhalt der Kammer unterhalb Notüberlauf oder Bypass (maximal mobilisierbares Volumen, exkl. Stauraum im Zulaufkanal). Bei Regenrückhaltekanälen und Stauraumkanälen im Hauptschluss ist der Nutzinhalt = 0. Es ist nur Stauraum vorhanden, der im entsprechenden Attribut zu erfassen ist. / Volume de la chambre sous la surverse de secours ou bypass (volume mobilisable maximum, hors volume de stockage de la canalisation d’amenée). Pour les canaux d''accumulation disposés en série, le VOLUME_UTILE = 0. Seul le volume de stockage est disponible, à saisir dans l''attribut correspondant.';
- ALTER TABLE tww_od.hydr_geometry ADD COLUMN volume_pump_sump  decimal(9,2) ;
+ ALTER TABLE tww_od.hydr_geometry ADD COLUMN volume_pump_sump  decimal(10,2) ;
 COMMENT ON COLUMN tww_od.hydr_geometry.volume_pump_sump IS 'Volume of the pump sump from the bottom to the maximum possible water level (excluding channel storage volume in the inlet channel). / Volumen des Pumpensumpfs von der Sohle bis zur maximal möglichen Wasserspiegellage (ohne Kanalspeichervolumen im Zulaufkanal). / Volume du puisard calculée à partir du radier jusqu’au niveau d’eau maximum possible (sans le volume de stockage de la canalisation d’amenée).';
  ALTER TABLE tww_od.hydr_geometry ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
 COMMENT ON COLUMN tww_od.hydr_geometry.last_modification IS 'Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE';
@@ -1271,7 +1272,7 @@ COMMENT ON COLUMN tww_od.retention_body.kind IS 'Type of retention / Arten der R
  ALTER TABLE tww_od.retention_body ADD COLUMN remark text;
  ALTER TABLE tww_od.retention_body ADD CONSTRAINT rb_remark_length_max_80 CHECK(char_length(remark)<=80);
 COMMENT ON COLUMN tww_od.retention_body.remark IS 'General remarks / Allgemeine Bemerkungen / Remarques générales';
- ALTER TABLE tww_od.retention_body ADD COLUMN volume  decimal(9,2) ;
+ ALTER TABLE tww_od.retention_body ADD COLUMN volume  decimal(10,2) ;
 COMMENT ON COLUMN tww_od.retention_body.volume IS 'yyy_Nutzbares Volumen des Retentionskörpers / Nutzbares Volumen des Retentionskörpers / Volume effectif du volume de rétention';
  ALTER TABLE tww_od.retention_body ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
 COMMENT ON COLUMN tww_od.retention_body.last_modification IS 'Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE';
@@ -1864,7 +1865,7 @@ COMMENT ON COLUMN tww_od.catchment_area.seal_factor_ww_planned IS 'yyy_Befestigu
 COMMENT ON COLUMN tww_od.catchment_area.sewer_infiltration_water_production_current IS 'yyy_Mittlerer Fremdwasseranfall, der im Ist-Zustand in die Schmutz- oder Mischabwasserkanalisation eingeleitet wird / Mittlerer Fremdwasseranfall, der im Ist-Zustand in die Schmutz- oder Mischabwasserkanalisation eingeleitet wird / Débit  d''eaux claires parasites (ECP) moyen actuel, rejeté dans les canalisation d’eaux usées ou mixtes';
  ALTER TABLE tww_od.catchment_area ADD COLUMN sewer_infiltration_water_production_planned  decimal(9,3) ;
 COMMENT ON COLUMN tww_od.catchment_area.sewer_infiltration_water_production_planned IS 'yyy_Mittlerer Fremdwasseranfall, der im Planungszustand in die Schmutz- oder Mischabwasserkanalisation eingeleitet wird. / Mittlerer Fremdwasseranfall, der im Planungszustand in die Schmutz- oder Mischabwasserkanalisation eingeleitet wird. / Débit  d''eaux claires parasites (ECP) moyen prévu, rejeté dans les canalisation d’eaux usées ou mixtes';
- ALTER TABLE tww_od.catchment_area ADD COLUMN surface_area  decimal(8,2) ;
+ ALTER TABLE tww_od.catchment_area ADD COLUMN surface_area  decimal(10,4) ;
 COMMENT ON COLUMN tww_od.catchment_area.surface_area IS 'yyy_redundantes Attribut Flaeche, welches die aus dem Perimeter errechnete Flaeche [ha] enthält / Redundantes Attribut Flaeche, welches die aus dem Perimeter errechnete Flaeche [ha] enthält / Attribut redondant indiquant la surface calculée à partir du périmètre en ha';
  ALTER TABLE tww_od.catchment_area ADD COLUMN waste_water_production_current  decimal(9,3) ;
 COMMENT ON COLUMN tww_od.catchment_area.waste_water_production_current IS 'yyy_Mittlerer Schmutzabwasseranfall, der im Ist-Zustand in die Schmutz- oder Mischabwasserkanalisation eingeleitet wird / Mittlerer Schmutzabwasseranfall, der im Ist-Zustand in die Schmutz- oder Mischabwasserkanalisation eingeleitet wird / Débit moyen actuel des eaux usées rejetées dans les canalisations d’eaux usées ou d''eaux mixtes';
@@ -2348,6 +2349,8 @@ COMMENT ON COLUMN tww_od.bio_ecol_assessment.impact_water_plants IS 'yyy_Nur fü
 COMMENT ON COLUMN tww_od.bio_ecol_assessment.intervention_demand IS 'Need for action resulting from the impairment of the discharge point on the water body, which leads to a measure in the action plan. The attribute is also used to derive the "total impairment" in the MGDM 129.1 of the FOEN, as long as it is still kept there. / Handlungsbedarf resultierend aus der Beeinträchtigung der Einleitstelle auf das Gewässer, der zu einer Massnahme im Massnahmenplan führt. Das Attribut dient auch zur Ableitung der "Gesamtbeeintraechtigung" im MGDM 129.1 des BAFU, solange dieses dort noch geführt wird. / Un besoin d’intervention résulte de l’atteinte du rejet sur les eaux qui mène à une mesure dans le plan d’action du PGEE. L''attribut sert aussi à la détermination de "l''attteinte globale" dans le MGDM 129.1 de l''OFEV si celui-ci est encore géré.';
  ALTER TABLE tww_od.bio_ecol_assessment ADD COLUMN io_calculation  integer ;
 COMMENT ON COLUMN tww_od.bio_ecol_assessment.io_calculation IS 'immission oriented calculation available / Immissionsorientierte Berechnung vorhanden. / calcul de performance de type immission disponible';
+ ALTER TABLE tww_od.bio_ecol_assessment ADD COLUMN kind_water_body  integer ;
+COMMENT ON COLUMN tww_od.bio_ecol_assessment.kind_water_body IS 'based on table 5.1 of STORM module in directive "Abwasserbewirtschaftung bei Regenwetter" of VSA (2019/2021) / gemäss Tabelle 5.1 des Moduls STORM der Richtlinie "Abwasserbewirtschaftung bei Regenwetter" des VSA (2019/2021) / selon table 5.1 du module STORM de la directive "Gestion des eaux urbaines par temps de pluie" (2019/2021)';
  ALTER TABLE tww_od.bio_ecol_assessment ADD COLUMN outlet_pipe_clear_height  integer ;
 COMMENT ON COLUMN tww_od.bio_ecol_assessment.outlet_pipe_clear_height IS 'Maximum internal height of the outlet. Helps to identify the correct discharge point in the field. / Maximale Innenhöhe des Auslaufes. Hilft bei der Identifikation der richtigen Einleitstelle im Feld. / Hauteur intérieure maximale de la sortie. Utile pour identifier le bon exutoire sur le terrain.';
  ALTER TABLE tww_od.bio_ecol_assessment ADD COLUMN q347  decimal(8,3) ;
@@ -2359,8 +2362,8 @@ COMMENT ON COLUMN tww_od.bio_ecol_assessment.relevant_slope IS 'zzz_Relevantes G
  ALTER TABLE tww_od.bio_ecol_assessment ADD COLUMN surface_water_bodies text;
  ALTER TABLE tww_od.bio_ecol_assessment ADD CONSTRAINT bo_surface_water_bodies_length_max_100 CHECK(char_length(surface_water_bodies)<=100);
 COMMENT ON COLUMN tww_od.bio_ecol_assessment.surface_water_bodies IS 'Name of surface water body corresponding to cantonal rules / Gewässername gemäss kantonalen Vorgaben / Nom du cours d’eau selon indications cantonales';
- ALTER TABLE tww_od.bio_ecol_assessment ADD COLUMN type_water_body  integer ;
-COMMENT ON COLUMN tww_od.bio_ecol_assessment.type_water_body IS 'based on table 5.1 of STORM module in directive "Abwasserbewirtschaftung bei Regenwetter" of VSA (2019/2021) / gemäss Tabelle 5.1 des Moduls STORM der Richtlinie "Abwasserbewirtschaftung bei Regenwetter" des VSA (2019/2021) / selon table 5.1 du module STORM de la directive "Gestion des eaux urbaines par temps de pluie" (2019/2021)';
+
+
  ALTER TABLE tww_od.bio_ecol_assessment ADD COLUMN water_specific_discharge_freight_nh4_n_current  smallint ;
 COMMENT ON COLUMN tww_od.bio_ecol_assessment.water_specific_discharge_freight_nh4_n_current IS 'based on base module chapter 8.4. of directive "Abwasserbewirtschaftung bei Regenwetter" of VSA (2019)" / gemäss Basismodul Kapitel 8.4 der Richtlinie "Abwasserbewirtschaftung bei Regenwetter" des VSA (2019) / Selon module de base chapitre 8.4 de la directive "Gestion des eaux urbaines par temps de pluie" du VSA (2019)';
  ALTER TABLE tww_od.bio_ecol_assessment ADD COLUMN water_specific_discharge_freight_nh4_n_current_opt  smallint ;
@@ -2390,7 +2393,7 @@ CREATE SEQUENCE tww_od.seq_hydraulic_char_data_oid INCREMENT 1 MINVALUE 0 MAXVAL
 COMMENT ON COLUMN tww_od.hydraulic_char_data.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.hydraulic_char_data ADD COLUMN aggregate_number  smallint ;
 COMMENT ON COLUMN tww_od.hydraulic_char_data.aggregate_number IS 'Number of aggregates / Anzahl Förderaggregate / Nombre d''installations de refoulement';
- ALTER TABLE tww_od.hydraulic_char_data ADD COLUMN delivery_height_geodaetic  decimal(6,2) ;
+ ALTER TABLE tww_od.hydraulic_char_data ADD COLUMN delivery_height_geodaetic  decimal(7,2) ;
 COMMENT ON COLUMN tww_od.hydraulic_char_data.delivery_height_geodaetic IS '';
  ALTER TABLE tww_od.hydraulic_char_data ADD COLUMN identifier text;
  ALTER TABLE tww_od.hydraulic_char_data ADD CONSTRAINT hc_identifier_length_max_20 CHECK(char_length(identifier)<=20);
@@ -2405,9 +2408,9 @@ COMMENT ON COLUMN tww_od.hydraulic_char_data.overcharge IS 'yyy_Ist: Mehrbelastu
 COMMENT ON COLUMN tww_od.hydraulic_char_data.overflow_duration IS 'yyy_Mittlere Überlaufdauer pro Jahr. Bei Ist_Zustand: Berechnung mit geplanten Massnahmen. Bei Ist_optimiert:  Berechnung mit optimierten Einstellungen im Ist-Zustand vor der Umsetzung von allfälligen weiteren Massnahmen. Planungszustand: Berechnung mit geplanten Massnahmen / Mittlere Überlaufdauer pro Jahr. Bei Ist_Zustand: Mittlere Überlaufdauer pro Jahr gemäss Langzeitsimulation oder Messung. Bei Ist_optimiert:  Berechnung mit optimierten Einstellungen im Ist-Zustand vor der Umsetzung von allfälligen weiteren Massnahmen. Planungszustand: Berechnung mit geplanten Massnahmen / Durée moyenne de déversement par an.  Actuel: Durée moyenne de déversement par an selon des simulations à long terme ou des mesures (Messungen). Actuel optimizé: Calcul en mode optimal à l’état actuel avant la réalisation d’éventuelles mesures (Massnahmen). Prévu: Calcul selon les mesures planifiées';
  ALTER TABLE tww_od.hydraulic_char_data ADD COLUMN overflow_freight  integer ;
 COMMENT ON COLUMN tww_od.hydraulic_char_data.overflow_freight IS 'Average freight during overflows per year / Mittlere Ueberlaufschmutzfracht pro Jahr / Charge polluante moyenne déversée par année';
- ALTER TABLE tww_od.hydraulic_char_data ADD COLUMN overflow_frequency  decimal(3,1) ;
+ ALTER TABLE tww_od.hydraulic_char_data ADD COLUMN overflow_frequency  decimal(4,1) ;
 COMMENT ON COLUMN tww_od.hydraulic_char_data.overflow_frequency IS 'yyy_Mittlere Überlaufhäufigkeit pro Jahr. Ist Zustand: Durchschnittliche Überlaufhäufigkeit pro Jahr von Entlastungsanlagen gemäss Langzeitsimulation oder Messungen. Ist optimiert: Berechnung mit optimierten Einstellungen im Ist-Zustand vor der Umsetzung von allfälligen weiteren Massnahmen. Planungszustand: Berechnung mit Einstellungen nach der Umsetzung der Massnahmen / Mittlere Überlaufhäufigkeit pro Jahr. Ist Zustand: Durchschnittliche Überlaufhäufigkeit pro Jahr von Entlastungsanlagen gemäss Langzeitsimulation oder Messungen. Ist optimiert: Berechnung mit optimierten Einstellungen im Ist-Zustand vor der Umsetzung von allfälligen weiteren Massnahmen. Planungszustand: Berechnung mit Einstellungen nach der Umsetzung der Massnahmen / Fréquence moyenne de déversement par an. Fréquence moyenne de déversement par an selon des simulations pour de longs temps de retour (z > 10). Actuel optimizé: Calcul en mode optimal à l’état actuel avant la réalisation d’éventuelles mesures (Massnahmen). Prévu: Calcul après la réalisation d’éventuelles mesures.';
- ALTER TABLE tww_od.hydraulic_char_data ADD COLUMN overflow_volume  decimal(9,2) ;
+ ALTER TABLE tww_od.hydraulic_char_data ADD COLUMN overflow_volume  decimal(10,2) ;
 COMMENT ON COLUMN tww_od.hydraulic_char_data.overflow_volume IS 'yyy_Mittlere Überlaufwassermenge pro Jahr. Durchschnittliche Überlaufmenge pro Jahr von Entlastungsanlagen gemäss Langzeitsimulation oder Messungen. Ist optimiert: Berechnung mit optimierten Einstellungen im Ist-Zustand vor der Umsetzung von allfälligen weiteren Massnahmen. Planungszustand: Berechnung mit Einstellungen nach der Umsetzung der Massnahmen. / Mittlere Überlaufwassermenge pro Jahr. Durchschnittliche Überlaufmenge pro Jahr von Entlastungsanlagen gemäss Langzeitsimulation oder Messungen. Ist optimiert: Berechnung mit optimierten Einstellungen im Ist-Zustand vor der Umsetzung von allfälligen weiteren Massnahmen. Planungszustand: Berechnung mit Einstellungen nach der Umsetzung der Massnahmen. / Volume moyen déversé par an. Volume moyen déversé par an selon des simulations pour de longs temps de retour (z > 10). Actuel optimizé: Calcul en mode optimal à l’état actuel avant la réalisation d’éventuelles mesures (Massnahmen). Prévu: Calcul après la réalisation d’éventuelles mesures (Massnahmen).';
  ALTER TABLE tww_od.hydraulic_char_data ADD COLUMN pump_characteristics  integer ;
 COMMENT ON COLUMN tww_od.hydraulic_char_data.pump_characteristics IS 'yyy_Bei speziellen Betriebsarten ist die Funktion separat zu dokumentieren und der Stammkarte beizulegen. / Bei speziellen Betriebsarten ist die Funktion separat zu dokumentieren und der Stammkarte beizulegen. / Pour de régime de fonctionnement spéciaux, cette fonction doit être documentée séparément et annexée à la fiche technique';
@@ -2482,10 +2485,12 @@ COMMENT ON COLUMN tww_od.solids_retention.obj_id IS 'INTERLIS STANDARD OID (with
 COMMENT ON COLUMN tww_od.solids_retention.dimensioning_value IS 'yyy_Wassermenge, Dimensionierungswert des Feststoffrückhaltes / Wassermenge, Dimensionierungswert des Feststoffrückhaltes / Volume, débit de dimensionnement';
  ALTER TABLE tww_od.solids_retention ADD COLUMN gross_costs  decimal(10,2) ;
 COMMENT ON COLUMN tww_od.solids_retention.gross_costs IS 'Gross costs of electromechanical equipment / Brutto Erstellungskosten der elektromechanischen Ausrüstung für den Feststoffrueckhalt / Coûts bruts des équipements électromécaniques';
+ ALTER TABLE tww_od.solids_retention ADD COLUMN kind  integer ;
+COMMENT ON COLUMN tww_od.solids_retention.kind IS 'yyy_(Elektromechanische) Teile zum Feststoffrückhalt eines Bauwerks / (Elektromechanische) Teile zum Feststoffrückhalt eines Bauwerks / Eléments (électromécaniques) pour la retenue de matières solides d’un ouvrage';
  ALTER TABLE tww_od.solids_retention ADD COLUMN overflow_level  decimal(7,3) ;
 COMMENT ON COLUMN tww_od.solids_retention.overflow_level IS 'Overflow level of solids retention in in m.a.sl. / Anspringkote Feststoffrückhalt in m.ü.M. / Cote du début du déversement de la retenue de matières solides en m.s.m.';
- ALTER TABLE tww_od.solids_retention ADD COLUMN type  integer ;
-COMMENT ON COLUMN tww_od.solids_retention.type IS 'yyy_(Elektromechanische) Teile zum Feststoffrückhalt eines Bauwerks / (Elektromechanische) Teile zum Feststoffrückhalt eines Bauwerks / Eléments (électromécaniques) pour la retenue de matières solides d’un ouvrage';
+
+
  ALTER TABLE tww_od.solids_retention ADD COLUMN year_of_replacement  smallint ;
 COMMENT ON COLUMN tww_od.solids_retention.year_of_replacement IS 'yyy_Jahr in dem die Lebensdauer der elektromechanischen Ausrüstung voraussichtlich abläuft / Jahr in dem die Lebensdauer der elektromechanischen Ausrüstung voraussichtlich abläuft / Année pour laquelle on prévoit que la durée de vie de l''équipement soit écoulée';
 -------
@@ -2511,8 +2516,8 @@ CREATE SEQUENCE tww_od.seq_tank_cleaning_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999
 COMMENT ON COLUMN tww_od.tank_cleaning.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.tank_cleaning ADD COLUMN gross_costs  decimal(10,2) ;
 COMMENT ON COLUMN tww_od.tank_cleaning.gross_costs IS 'Gross costs of electromechanical equipment of tank cleaning / Brutto Erstellungskosten der elektromechanischen Ausrüstung für die Beckenreinigung / Coûts bruts des équipements électromécaniques nettoyage de bassins';
- ALTER TABLE tww_od.tank_cleaning ADD COLUMN type  integer ;
-COMMENT ON COLUMN tww_od.tank_cleaning.type IS '';
+ ALTER TABLE tww_od.tank_cleaning ADD COLUMN kind  integer ;
+COMMENT ON COLUMN tww_od.tank_cleaning.kind IS '';
  ALTER TABLE tww_od.tank_cleaning ADD COLUMN year_of_replacement  smallint ;
 COMMENT ON COLUMN tww_od.tank_cleaning.year_of_replacement IS 'yyy_Jahr in dem die Lebensdauer der elektromechanischen Ausrüstung voraussichtlich abläuft / Jahr in dem die Lebensdauer der elektromechanischen Ausrüstung voraussichtlich abläuft / Année pour laquelle on prévoit que la durée de vie de l''équipement soit écoulée';
 -------
@@ -2540,8 +2545,8 @@ COMMENT ON COLUMN tww_od.tank_emptying.obj_id IS 'INTERLIS STANDARD OID (with Po
 COMMENT ON COLUMN tww_od.tank_emptying.flow IS 'yyy_Bei mehreren Pumpen / Schiebern muss die maximale Gesamtmenge erfasst werden. / Bei mehreren Pumpen / Schiebern muss die maximale Gesamtmenge erfasst werden. / Lors de présence de plusieurs pompes/vannes, indiquer le débit total.';
  ALTER TABLE tww_od.tank_emptying ADD COLUMN gross_costs  decimal(10,2) ;
 COMMENT ON COLUMN tww_od.tank_emptying.gross_costs IS 'Gross costs of electromechanical equipment of tank emptying / Brutto Erstellungskosten der elektromechanischen Ausrüstung für die Beckenentleerung / Coûts bruts des équipements électromécaniques vidange de bassins';
- ALTER TABLE tww_od.tank_emptying ADD COLUMN type  integer ;
-COMMENT ON COLUMN tww_od.tank_emptying.type IS '';
+ ALTER TABLE tww_od.tank_emptying ADD COLUMN kind  integer ;
+COMMENT ON COLUMN tww_od.tank_emptying.kind IS '';
  ALTER TABLE tww_od.tank_emptying ADD COLUMN year_of_replacement  smallint ;
 COMMENT ON COLUMN tww_od.tank_emptying.year_of_replacement IS 'yyy_Jahr in dem die Lebensdauer der elektromechanischen Ausrüstung voraussichtlich abläuft / Jahr in dem die Lebensdauer der elektromechanischen Ausrüstung voraussichtlich abläuft / Année pour laquelle on prévoit que la durée de vie de l''équipement soit écoulée';
 -------
@@ -2578,17 +2583,17 @@ COMMENT ON COLUMN tww_od.catchment_area_totals.population IS 'Number of inhabita
 COMMENT ON COLUMN tww_od.catchment_area_totals.population_dim IS 'yyy_Anzahl Einwohner im direkten Einzugsgebiet (Dimensionierung) als informativer Wert. Der massgebende Schmutzabwasseranfall ist im gleichnamigen entsprechenden Attribut anzugeben. / Anzahl Einwohner im direkten Einzugsgebiet (Dimensionierung) als informativer Wert. Der massgebende Schmutzabwasseranfall ist im gleichnamigen entsprechenden Attribut anzugeben. / Nombre d’habitants dans le bassin versant direct (dimensionnement), valeur indicative. Le débit des eaux usées doit être indiqué dans l’attribut du même nom.';
  ALTER TABLE tww_od.catchment_area_totals ADD COLUMN sewer_infiltration_water  decimal(9,3) ;
 COMMENT ON COLUMN tww_od.catchment_area_totals.sewer_infiltration_water IS 'yyy_Totaler Fremdwasseranfall beim Bauwerk inkl. aller obenliegenden Gebiete. Angabe Jahresmittelwert (24 Std.-Mittel) in l/s. / Totaler Fremdwasseranfall beim Bauwerk inkl. aller obenliegenden Gebiete. Angabe Jahresmittelwert (24 Std.-Mittel) in l/s. / Débit total d’eaux claires parasites à l’ouvrage, incluant les surfaces en amont. Moyenne annuelle sur 24 h en l/s.';
- ALTER TABLE tww_od.catchment_area_totals ADD COLUMN surface_area  decimal(8,2) ;
+ ALTER TABLE tww_od.catchment_area_totals ADD COLUMN surface_area  decimal(10,4) ;
 COMMENT ON COLUMN tww_od.catchment_area_totals.surface_area IS 'yyy_Bruttofläche des direkten Einzugsgebietes im Misch- resp. Trennsystem gemäss Abbildung. / Bruttofläche des direkten Einzugsgebietes im Misch- resp. Trennsystem gemäss Abbildung. / Surface brute du bassin versant direct en système unitaire, resp. séparatif, selon illustration.';
- ALTER TABLE tww_od.catchment_area_totals ADD COLUMN surface_dim  decimal(8,2) ;
+ ALTER TABLE tww_od.catchment_area_totals ADD COLUMN surface_dim  decimal(10,4) ;
 COMMENT ON COLUMN tww_od.catchment_area_totals.surface_dim IS 'yyy_Bruttofläche des Einzugsgebiets Dimensionierung. Dieses Einzugsgebiet umfasst in der Regel alle obenliegenden Flächen des Regenbeckenüberlaufbeckens (inkl. denjenigen von Regenüberläufen, Pumpwerken, etc.) oder alle obenliegenden Flächen bis zum nächsten Regenüberlaufbecken. / Bruttofläche des Einzugsgebiets Dimensionierung. Dieses Einzugsgebiet umfasst in der Regel alle obenliegenden Flächen des Regenbeckenüberlaufbeckens (inkl. denjenigen von Regenüberläufen, Pumpwerken, etc.) oder alle obenliegenden Flächen bis zum nächsten Regenüberlaufbecken. / Surface brute du bassin versant de dimensionnement. Lors de la saisie des bassins d’eaux pluviales, il faut également indiquer le bassin versant de dimensionnement. Ce bassin versant contient toutes les surfaces en amont du BEP (incl. en amont les déversoirs d’orage, stations de pompage, etc.) jusqu''au prochain BEP.';
- ALTER TABLE tww_od.catchment_area_totals ADD COLUMN surface_imp  decimal(8,2) ;
+ ALTER TABLE tww_od.catchment_area_totals ADD COLUMN surface_imp  decimal(10,4) ;
 COMMENT ON COLUMN tww_od.catchment_area_totals.surface_imp IS 'yyy_Impermeable suface des direkten Einzugsgebiets im Misch- resp. Trennsystem gemäss Abbildung. Im Trennsystem ist für die Stammkarte die an das Schmutzabwasser ange-schlossene befestigte Fläche anzugeben. Es muss mindestens eine Fläche (befestigt oder reduziert) angegeben werden. / Befestigte Fläche des direkten Einzugsgebiets im Misch- resp. Trennsystem gemäss Abbildung. Im Trennsystem ist für die Stammkarte die an das Schmutzabwasser ange-schlossene befestigte Fläche anzugeben. Es muss mindestens eine Fläche (befestigt oder reduziert) angegeben werden. / Surface imperméabilisée du bassin versant  direct pour un système unitaire, resp. séparatif selon illustration. Dans un système séparatif, il faut saisir dans la fiche technique la surface réduite raccordée aux eaux usées. Au minimum une surface (imperméabilisée ou réduite) doit être indiquée.';
- ALTER TABLE tww_od.catchment_area_totals ADD COLUMN surface_imp_dim  decimal(8,2) ;
+ ALTER TABLE tww_od.catchment_area_totals ADD COLUMN surface_imp_dim  decimal(10,4) ;
 COMMENT ON COLUMN tww_od.catchment_area_totals.surface_imp_dim IS 'yyy_Befestigte Fläche des Einzugsgebiets Dimensionierung im Misch- resp. Trennsystem (nur Regenüberlaufbecken). Im Trennsystem ist für die Stammkarte die an das Schmutzabwasser angeschlossene befestigte Fläche anzugeben. Es muss mindestens eine Fläche (befestigt oder reduziert) angegeben werden. / Befestigte Fläche des Einzugsgebiets Dimensionierung im Misch- resp. Trennsystem (nur Regenüberlaufbecken). Im Trennsystem ist für die Stammkarte die an das Schmutzabwasser angeschlossene befestigte Fläche anzugeben. Es muss mindestens eine Fläche (befestigt oder reduziert) angegeben werden. / Surface imperméabilisée du bassin versant de dimensionnement dans le système unitaire, resp. séparatif (BEP uniquement). Dans un système séparatif, il faut saisir dans la fiche technique la surface imperméabilisée raccordée aux eaux usées. Au minimum une surface (imperméabilisée ou réduite) doit être indiquée.';
- ALTER TABLE tww_od.catchment_area_totals ADD COLUMN surface_red  decimal(8,2) ;
+ ALTER TABLE tww_od.catchment_area_totals ADD COLUMN surface_red  decimal(10,4) ;
 COMMENT ON COLUMN tww_od.catchment_area_totals.surface_red IS 'yyy_Reduzierte Fläche des direkten Einzugsgebiets im Misch- resp. Trennsystem gemäss Abbildung. Im Trennsystem ist für die Stammkarte die an das Schmutzabwasser ange-schlossene reduzierte Fläche anzugeben. Es muss mindestens eine Fläche (befestigt oder reduziert) angegeben werden. / Reduzierte Fläche des direkten Einzugsgebiets im Misch- resp. Trennsystem gemäss Abbildung. Im Trennsystem ist für die Stammkarte die an das Schmutzabwasser ange-schlossene reduzierte Fläche anzugeben. Es muss mindestens eine Fläche (befestigt oder reduziert) angegeben werden. / Surface réduite du bassin versant direct pour un système unitaire, resp. séparatif selon illustration. Dans un système séparatif, il faut saisir la surface réduite raccordée aux eaux usées. Au minimum une surface (imperméabilisée ou réduite) doit être indiquée.';
- ALTER TABLE tww_od.catchment_area_totals ADD COLUMN surface_red_dim  decimal(8,2) ;
+ ALTER TABLE tww_od.catchment_area_totals ADD COLUMN surface_red_dim  decimal(10,4) ;
 COMMENT ON COLUMN tww_od.catchment_area_totals.surface_red_dim IS 'yyy_Reduzierte Fläche des Einzugsgebiets Dimensionierung im Misch- resp. Trennsystem (nur Regenüberlaufbecken). Im Trennsystem ist für die Stammkarte die an das Schmutzabwasser angeschlossene reduzierte Fläche anzugeben. Es muss mindestens eine Fläche (befestigt oder reduziert) angegeben werden. / Reduzierte Fläche des Einzugsgebiets Dimensionierung im Misch- resp. Trennsystem (nur Regenüberlaufbecken). Im Trennsystem ist für die Stammkarte die an das Schmutzabwasser angeschlossene reduzierte Fläche anzugeben. Es muss mindestens eine Fläche (befestigt oder reduziert) angegeben werden. / Surface réduite du bassin versant de dimensionnement dans le système unitaire, resp. séparatif. Dans un système séparatif, il faut saisir la surface réduite raccordée aux eaux usées. Au minimum une surface (imperméabilisée ou réduite) doit être indiquée.';
  ALTER TABLE tww_od.catchment_area_totals ADD COLUMN waste_water_production  decimal(9,3) ;
 COMMENT ON COLUMN tww_od.catchment_area_totals.waste_water_production IS 'Total waste water production at construction of all areas above. Yearly average (of 24h average) in l/s. / Totaler Schmutzabwasseranfall beim Bauwerk inkl. aller obenliegenden Gebiete. Angabe Jahresmittelwert (24 Std.-Mittel) in l/s. / Débit total d’eaux usées à l’ouvrage, incluant les surfaces en amont. Moyenne annuelle sur 24 h en l/s.';
@@ -2692,7 +2697,7 @@ COMMENT ON COLUMN tww_od.disposal.disposal_interval_nominal IS 'yyy_Abstände, i
 COMMENT ON COLUMN tww_od.disposal.disposal_place_current IS 'yyy_Ort der Schlammentsorgung im heutigen Zustand / Ort der Schlammentsorgung im heutigen Zustand / Lieu d''élimination des boues en état actuel';
  ALTER TABLE tww_od.disposal ADD COLUMN disposal_place_planned  integer ;
 COMMENT ON COLUMN tww_od.disposal.disposal_place_planned IS 'yyy_Ort der Schlammentsorgung im Planungszustand (gemäss GEP) / Ort der Schlammentsorgung im Planungszustand (gemäss GEP) / Lieu d''élimination des boues en état planifié (selon PGEE)';
- ALTER TABLE tww_od.disposal ADD COLUMN volume_pit_without_drain  decimal(9,2) ;
+ ALTER TABLE tww_od.disposal ADD COLUMN volume_pit_without_drain  decimal(10,2) ;
 COMMENT ON COLUMN tww_od.disposal.volume_pit_without_drain IS 'yyy_Abflusslose Grube: Stapelraum in m3 / Abflusslose Grube: Stapelraum in m3 / Fosse étanche: volume de stockage en m3';
  ALTER TABLE tww_od.disposal ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
 COMMENT ON COLUMN tww_od.disposal.last_modification IS 'Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE';
@@ -2721,7 +2726,7 @@ WITH (
 CREATE SEQUENCE tww_od.seq_building_group_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
  ALTER TABLE tww_od.building_group ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','building_group');
 COMMENT ON COLUMN tww_od.building_group.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
- ALTER TABLE tww_od.building_group ADD COLUMN camping_area  decimal(8,2) ;
+ ALTER TABLE tww_od.building_group ADD COLUMN camping_area  decimal(10,4) ;
 COMMENT ON COLUMN tww_od.building_group.camping_area IS 'Camping: Area of camping in hectars / Camping: Fläche Campingplatz in ha / Camping: surface du camping en ha';
  ALTER TABLE tww_od.building_group ADD COLUMN camping_lodgings  smallint ;
 COMMENT ON COLUMN tww_od.building_group.camping_lodgings IS 'Camping: Number of overnight stays per year / Camping: Anzahl Übernachtungen pro Jahr / Camping: nombre de nuitées par an';
@@ -2848,18 +2853,18 @@ WITH (
 CREATE SEQUENCE tww_od.seq_farm_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
  ALTER TABLE tww_od.farm ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','farm');
 COMMENT ON COLUMN tww_od.farm.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
- ALTER TABLE tww_od.farm ADD COLUMN agriculture_arable_surface  decimal(8,2) ;
+ ALTER TABLE tww_od.farm ADD COLUMN agriculture_arable_surface  decimal(10,4) ;
 COMMENT ON COLUMN tww_od.farm.agriculture_arable_surface IS 'Arable agricultural area in ha / Landwirtschaftliche Nutzfläche in ha / Surface agricole utile en ha';
  ALTER TABLE tww_od.farm ADD COLUMN cesspit_comment text;
  ALTER TABLE tww_od.farm ADD CONSTRAINT fa_cesspit_comment_length_max_100 CHECK(char_length(cesspit_comment)<=100);
 COMMENT ON COLUMN tww_od.farm.cesspit_comment IS 'Further remarks cesspit volume / Weitere Anmerkungen zur Güllegrube / Remarques additionnel volume fosse à purin';
  ALTER TABLE tww_od.farm ADD COLUMN cesspit_volume  integer ;
 COMMENT ON COLUMN tww_od.farm.cesspit_volume IS 'yyy_Klassifizierung, ob das Volumen (teilweise) in einem Fremdbetrieb in der gleichen oder einer anderen Gemeinde vorhanden ist / Klassifizierung, ob das Volumen (teilweise) in einem Fremdbetrieb in der gleichen oder einer anderen Gemeinde vorhanden ist / Classification, si le volume est disponible (même partiellement) dans une exploitation externe dans la même commune ou dans une autre commune';
- ALTER TABLE tww_od.farm ADD COLUMN cesspit_volume_current  decimal(9,2) ;
+ ALTER TABLE tww_od.farm ADD COLUMN cesspit_volume_current  decimal(10,2) ;
 COMMENT ON COLUMN tww_od.farm.cesspit_volume_current IS 'yyy_Güllegrube: aktuell vorhandenes Volumen in m3 / Güllegrube: aktuell vorhandenes Volumen in m3 / Fosse à purin: volume actuel en m3';
- ALTER TABLE tww_od.farm ADD COLUMN cesspit_volume_nominal  decimal(9,2) ;
+ ALTER TABLE tww_od.farm ADD COLUMN cesspit_volume_nominal  decimal(10,2) ;
 COMMENT ON COLUMN tww_od.farm.cesspit_volume_nominal IS 'yyy_Güllegrube: erforderliches Volumen in m3  (Sollzustand); Vorgabe aus GEP / Güllegrube: erforderliches Volumen in m3  (Sollzustand); Vorgabe aus GEP / Fosse à purin: volume requis en m3; exigence selon PGEE';
- ALTER TABLE tww_od.farm ADD COLUMN cesspit_volume_ww_treated  decimal(9,2) ;
+ ALTER TABLE tww_od.farm ADD COLUMN cesspit_volume_ww_treated  decimal(10,2) ;
 COMMENT ON COLUMN tww_od.farm.cesspit_volume_ww_treated IS 'yyy_Güllegrube: erforderliches Volumen in m3, falls häusliches Abwasser separat behandelt würde / Güllegrube: erforderliches Volumen in m3, falls häusliches Abwasser separat behandelt würde / Fosse à purin: volume en m3 requis en cas de traitement séparé des eaux ménagères';
  ALTER TABLE tww_od.farm ADD COLUMN cesspit_year_of_approval  smallint ;
 COMMENT ON COLUMN tww_od.farm.cesspit_year_of_approval IS 'yyy_Güllegrube: Bewilligungsjahr / Güllegrube: Bewilligungsjahr / Fosse à purin: année d''autorisation';
@@ -3076,7 +3081,7 @@ ALTER TABLE tww_vl.wastewater_structure_accessibility ADD CONSTRAINT pkey_tww_vl
 CREATE TABLE tww_vl.wastewater_structure_elevation_determination () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.wastewater_structure_elevation_determination ADD CONSTRAINT pkey_tww_vl_wastewater_structure_elevation_determination_code PRIMARY KEY (code);
  INSERT INTO tww_vl.wastewater_structure_elevation_determination (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9321,9321,'accurate','genau','precise', 'precisa', 'precisa', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.wastewater_structure_elevation_determination (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9323,9323,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.wastewater_structure_elevation_determination (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9323,9323,'unknown','unbekannt','inconnue', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.wastewater_structure_elevation_determination (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9322,9322,'inaccurate','ungenau','imprecise', 'impreciso', 'imprecisa', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.wastewater_structure ADD CONSTRAINT fkey_vl_wastewater_structure_elevation_determination FOREIGN KEY (elevation_determination)
  REFERENCES tww_vl.wastewater_structure_elevation_determination (code) MATCH SIMPLE
@@ -3279,7 +3284,7 @@ ALTER TABLE tww_vl.manhole_function ADD CONSTRAINT pkey_tww_vl_manhole_function_
  INSERT INTO tww_vl.manhole_function (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3472,3472,'drainage_channel','Entwaesserungsrinne','rigole_de_drainage', 'canaletta_drenaggio', 'rigola', '', 'ER', 'RD', '', '', 'true');
  INSERT INTO tww_vl.manhole_function (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8828,8828,'drainage_channel_with_mud_bag','Entwaesserungsrinne_mit_Schlammsack','rigole_de_drainage_avec_depotoir', 'zzz_canaletta_drenaggio_mit_Schlammsack', 'rrr_Entwaesserungsrinne_mit_Schlammsack', '', 'ERS', '', '', '', 'true');
  INSERT INTO tww_vl.manhole_function (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8601,8601,'grease_separator','Fettabscheider','separateur_de_graisse', 'separatore_di_grasso', 'rrr_Fettabscheider', '', 'FA', '', '', '', 'true');
- INSERT INTO tww_vl.manhole_function (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (228,228,'rail_track_gully','Geleiseschacht','evacuation_des_eaux_des_voies_ferrees', 'zzz_Geleiseschacht', 'evacuare_ape_cale_ferata', '', 'GL', 'EVF', '', '', 'true');
+ INSERT INTO tww_vl.manhole_function (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (228,228,'rail_track_gully','Geleiseschacht','evacuation_des_eaux_des_voies_ferrees', 'pozzetto_binario', 'evacuare_ape_cale_ferata', '', 'GL', 'EVF', '', '', 'true');
  INSERT INTO tww_vl.manhole_function (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8654,8654,'combined_manhole','Kombischacht','chambre_combine', 'pozzetto_doppio', 'rrr_Kombischacht', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.manhole_function (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8736,8736,'manhole','Kontroll_Einsteigschacht','chambre_de_visite_ou_d_inspection', 'pozzetto_di_ispezione', 'rrr_Kontroll_Einsteigschacht', '', 'KS', '', '', '', 'true');
  INSERT INTO tww_vl.manhole_function (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (1008,1008,'oil_separator','Oelabscheider','separateur_d_hydrocarbures', 'separatore_olii', 'separator_hidrocarburi', 'OS', 'OA', 'SH', '', '', 'true');
@@ -3298,7 +3303,7 @@ CREATE TABLE tww_vl.manhole_material () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.manhole_material ADD CONSTRAINT pkey_tww_vl_manhole_material_code PRIMARY KEY (code);
  INSERT INTO tww_vl.manhole_material (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4540,4540,'other','andere','autre', 'altro', 'altul', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.manhole_material (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4541,4541,'concrete','Beton','beton', 'calcestruzzo', 'beton', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.manhole_material (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4542,4542,'plastic','Kunststoff','matiere_plastique', 'zzz_Kunststoff', 'materie_plastica', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.manhole_material (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4542,4542,'plastic','Kunststoff','matiere_plastique', 'materiale_sintetico', 'materie_plastica', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.manhole_material (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (4543,4543,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscut', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.manhole ADD CONSTRAINT fkey_vl_manhole_material FOREIGN KEY (material)
  REFERENCES tww_vl.manhole_material (code) MATCH SIMPLE
@@ -3831,7 +3836,7 @@ CREATE TABLE tww_vl.dryweather_flume_material () INHERITS (tww_vl.value_list_bas
 ALTER TABLE tww_vl.dryweather_flume_material ADD CONSTRAINT pkey_tww_vl_dryweather_flume_material_code PRIMARY KEY (code);
  INSERT INTO tww_vl.dryweather_flume_material (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3221,3221,'other','andere','autres', 'altro', 'alta', 'O', 'A', 'AU', '', '', 'true');
  INSERT INTO tww_vl.dryweather_flume_material (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (354,354,'combined','kombiniert','combine', 'zzz_kombiniert', 'combinata', '', 'KOM', 'COM', '', '', 'true');
- INSERT INTO tww_vl.dryweather_flume_material (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5356,5356,'plastic','Kunststoff','matiere_synthetique', 'zzz_Kunststoff', 'materie_sintetica', '', 'KU', 'MS', '', '', 'true');
+ INSERT INTO tww_vl.dryweather_flume_material (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5356,5356,'plastic','Kunststoff','matiere_synthetique', 'materiale_sintetico', 'materie_sintetica', '', 'KU', 'MS', '', '', 'true');
  INSERT INTO tww_vl.dryweather_flume_material (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (238,238,'stoneware','Steinzeug','gres', 'gres', 'gresie', '', 'STZ', 'GR', '', '', 'true');
  INSERT INTO tww_vl.dryweather_flume_material (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (3017,3017,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscut', '', 'U', 'I', '', '', 'true');
  INSERT INTO tww_vl.dryweather_flume_material (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (237,237,'cement_mortar','Zementmoertel','mortier_de_ciment', 'zzz_Zementmoertel', 'mortar_ciment', '', 'ZM', 'MC', '', '', 'true');
@@ -4423,6 +4428,21 @@ ALTER TABLE tww_vl.bio_ecol_assessment_io_calculation ADD CONSTRAINT pkey_tww_vl
  ALTER TABLE tww_od.bio_ecol_assessment ADD CONSTRAINT fkey_vl_bio_ecol_assessment_io_calculation FOREIGN KEY (io_calculation)
  REFERENCES tww_vl.bio_ecol_assessment_io_calculation (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
+CREATE TABLE tww_vl.bio_ecol_assessment_kind_water_body () INHERITS (tww_vl.value_list_base);
+ALTER TABLE tww_vl.bio_ecol_assessment_kind_water_body ADD CONSTRAINT pkey_tww_vl_bio_ecol_assessment_kind_water_body_code PRIMARY KEY (code);
+ INSERT INTO tww_vl.bio_ecol_assessment_kind_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8492,8492,'river_backwater','Fluss_Stau','retention', 'corso_d_acqua_di_accummulo', 'rrr_Fluss_Stau', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.bio_ecol_assessment_kind_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5884,5884,'large_river','Groesseres_Fliessgewaesser','gros_cours_d_eau', 'grosso_fiume', 'rrr_Groesseres_Fliessgewaesser', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.bio_ecol_assessment_kind_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5883,5883,'large_midland_creek','Grosser_Mittellandbach','gros_ruisseau_du_Plateau', 'grande_corso_d_acqua_dell_altopiano', 'rrr_Grosser_Mittellandbach', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.bio_ecol_assessment_kind_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5885,5885,'large_prealps_creek','Grosser_Voralpenbach','gros_ruisseau_des_Prealpes', 'grande_corso_d_acqua_prealpino', 'rrr_Grosser_Voralpenbach', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.bio_ecol_assessment_kind_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8491,8491,'very_large_river','Grosses_Fliessgewaesser','tres_gros_cours_d_eau', 'fiume_molto_grande', 'rrr_Grosses_Fliessgewaesser', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.bio_ecol_assessment_kind_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5886,5886,'small_midland_creek','Kleiner_Mittellandbach','petit_ruisseau_du_Plateau', 'piccolo_corso_d_acqua_dell_altopiano', 'rrr_Kleiner_Mittellandbach', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.bio_ecol_assessment_kind_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5887,5887,'small_prealps_creek','Kleiner_Voralpenbach','petit_ruisseau_des_Prealpes', 'piccolo_corso_d_acqua_prealpino', 'rrr_Kleiner_Voralpenbach', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.bio_ecol_assessment_kind_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5888,5888,'spring_waters','Quellgewaesser','region_de_source', 'acque_sorgive', 'rrr_Quellgewaesser', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.bio_ecol_assessment_kind_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9149,9149,'lake','See','lac', 'lago', 'rrr_See', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.bio_ecol_assessment_kind_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5890,5890,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
+ ALTER TABLE tww_od.bio_ecol_assessment ADD CONSTRAINT fkey_vl_bio_ecol_assessment_kind_water_body FOREIGN KEY (kind_water_body)
+ REFERENCES tww_vl.bio_ecol_assessment_kind_water_body (code) MATCH SIMPLE
+ ON UPDATE RESTRICT ON DELETE RESTRICT;
 CREATE TABLE tww_vl.bio_ecol_assessment_relevance_matrix () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.bio_ecol_assessment_relevance_matrix ADD CONSTRAINT pkey_tww_vl_bio_ecol_assessment_relevance_matrix_code PRIMARY KEY (code);
  INSERT INTO tww_vl.bio_ecol_assessment_relevance_matrix (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5949,5949,'yes','ja','oui', 'si', 'da', '', '', '', '', '', 'true');
@@ -4431,21 +4451,21 @@ ALTER TABLE tww_vl.bio_ecol_assessment_relevance_matrix ADD CONSTRAINT pkey_tww_
  ALTER TABLE tww_od.bio_ecol_assessment ADD CONSTRAINT fkey_vl_bio_ecol_assessment_relevance_matrix FOREIGN KEY (relevance_matrix)
  REFERENCES tww_vl.bio_ecol_assessment_relevance_matrix (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
-CREATE TABLE tww_vl.bio_ecol_assessment_type_water_body () INHERITS (tww_vl.value_list_base);
-ALTER TABLE tww_vl.bio_ecol_assessment_type_water_body ADD CONSTRAINT pkey_tww_vl_bio_ecol_assessment_type_water_body_code PRIMARY KEY (code);
- INSERT INTO tww_vl.bio_ecol_assessment_type_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8492,8492,'river_backwater','Fluss_Stau','retention', 'corso_d_acqua_di_accummulo', 'rrr_Fluss_Stau', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.bio_ecol_assessment_type_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5884,5884,'large_river','Groesseres_Fliessgewaesser','gros_cours_d_eau', 'grosso_fiume', 'rrr_Groesseres_Fliessgewaesser', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.bio_ecol_assessment_type_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5883,5883,'large_midland_creek','Grosser_Mittellandbach','gros_ruisseau_du_Plateau', 'grande_corso_d_acqua_dell_altopiano', 'rrr_Grosser_Mittellandbach', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.bio_ecol_assessment_type_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5885,5885,'large_prealps_creek','Grosser_Voralpenbach','gros_ruisseau_des_Prealpes', 'grande_corso_d_acqua_prealpino', 'rrr_Grosser_Voralpenbach', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.bio_ecol_assessment_type_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8491,8491,'very_large_river','Grosses_Fliessgewaesser','tres_gros_cours_d_eau', 'fiume_molto_grande', 'rrr_Grosses_Fliessgewaesser', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.bio_ecol_assessment_type_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5886,5886,'small_midland_creek','Kleiner_Mittellandbach','petit_ruisseau_du_Plateau', 'piccolo_corso_d_acqua_dell_altopiano', 'rrr_Kleiner_Mittellandbach', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.bio_ecol_assessment_type_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5887,5887,'small_prealps_creek','Kleiner_Voralpenbach','petit_ruisseau_des_Prealpes', 'piccolo_corso_d_acqua_prealpino', 'rrr_Kleiner_Voralpenbach', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.bio_ecol_assessment_type_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5888,5888,'spring_waters','Quellgewaesser','region_de_source', 'acque_sorgive', 'rrr_Quellgewaesser', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.bio_ecol_assessment_type_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9149,9149,'lake','See','lac', 'lago', 'rrr_See', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.bio_ecol_assessment_type_water_body (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5890,5890,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
- ALTER TABLE tww_od.bio_ecol_assessment ADD CONSTRAINT fkey_vl_bio_ecol_assessment_type_water_body FOREIGN KEY (type_water_body)
- REFERENCES tww_vl.bio_ecol_assessment_type_water_body (code) MATCH SIMPLE
- ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ALTER TABLE tww_od.hydraulic_char_data ADD COLUMN fk_wastewater_node varchar(16);
 ALTER TABLE tww_od.hydraulic_char_data ADD CONSTRAINT rel_hydraulic_char_data_wastewater_node FOREIGN KEY (fk_wastewater_node) REFERENCES tww_od.wastewater_node(obj_id) ON UPDATE CASCADE ON DELETE set null DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE tww_od.hydraulic_char_data ADD COLUMN fk_overflow_char varchar(16);
@@ -4502,47 +4522,47 @@ ALTER TABLE tww_vl.backflow_prevention_kind ADD CONSTRAINT pkey_tww_vl_backflow_
  REFERENCES tww_vl.backflow_prevention_kind (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.solids_retention ADD CONSTRAINT oorel_od_solids_retention_structure_part FOREIGN KEY (obj_id) REFERENCES tww_od.structure_part(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
-CREATE TABLE tww_vl.solids_retention_type () INHERITS (tww_vl.value_list_base);
-ALTER TABLE tww_vl.solids_retention_type ADD CONSTRAINT pkey_tww_vl_solids_retention_type_code PRIMARY KEY (code);
- INSERT INTO tww_vl.solids_retention_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5664,5664,'other','andere','autres', 'altro', 'rrr_altul', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.solids_retention_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8624,8624,'brush_rakes','Buerstenrechen','degrilleur_a_brosses', 'Ranghinatori_a_spazzola', 'rrr_Buerstenrechen', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.solids_retention_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5665,5665,'fine_screen','Feinrechen','grille_fine', 'griglia_fine', '', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.solids_retention_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5666,5666,'coarse_screen','Grobrechen','grille_grossiere', 'griglia_grossa', 'rrr_Grobrechen', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.solids_retention_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5667,5667,'sieve','Sieb','tamis', 'filtro', 'rrr_Sieb', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.solids_retention_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8625,8625,'gate_shield','Stauschild','plaque_de_retenue', 'paratoia_cilindrica', 'rrr_Stauschild', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.solids_retention_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5668,5668,'scumboard','Tauchwand','paroi_plongeante', 'parete_sommersa', 'rrr_Tauchwand', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.solids_retention_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5669,5669,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
- ALTER TABLE tww_od.solids_retention ADD CONSTRAINT fkey_vl_solids_retention_type FOREIGN KEY (type)
- REFERENCES tww_vl.solids_retention_type (code) MATCH SIMPLE
+CREATE TABLE tww_vl.solids_retention_kind () INHERITS (tww_vl.value_list_base);
+ALTER TABLE tww_vl.solids_retention_kind ADD CONSTRAINT pkey_tww_vl_solids_retention_kind_code PRIMARY KEY (code);
+ INSERT INTO tww_vl.solids_retention_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5664,5664,'other','andere','autres', 'altro', 'rrr_altul', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.solids_retention_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8624,8624,'brush_rakes','Buerstenrechen','degrilleur_a_brosses', 'Ranghinatori_a_spazzola', 'rrr_Buerstenrechen', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.solids_retention_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5665,5665,'fine_screen','Feinrechen','grille_fine', 'griglia_fine', '', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.solids_retention_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5666,5666,'coarse_screen','Grobrechen','grille_grossiere', 'griglia_grossa', 'rrr_Grobrechen', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.solids_retention_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5667,5667,'sieve','Sieb','tamis', 'filtro', 'rrr_Sieb', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.solids_retention_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8625,8625,'gate_shield','Stauschild','plaque_de_retenue', 'paratoia_cilindrica', 'rrr_Stauschild', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.solids_retention_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5668,5668,'scumboard','Tauchwand','paroi_plongeante', 'parete_sommersa', 'rrr_Tauchwand', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.solids_retention_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5669,5669,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
+ ALTER TABLE tww_od.solids_retention ADD CONSTRAINT fkey_vl_solids_retention_kind FOREIGN KEY (kind)
+ REFERENCES tww_vl.solids_retention_kind (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.tank_cleaning ADD CONSTRAINT oorel_od_tank_cleaning_structure_part FOREIGN KEY (obj_id) REFERENCES tww_od.structure_part(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
-CREATE TABLE tww_vl.tank_cleaning_type () INHERITS (tww_vl.value_list_base);
-ALTER TABLE tww_vl.tank_cleaning_type ADD CONSTRAINT pkey_tww_vl_tank_cleaning_type_code PRIMARY KEY (code);
- INSERT INTO tww_vl.tank_cleaning_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5621,5621,'airjet','Air_Jet','aeration_et_brassage', 'airjet', 'rrr_Air_Jet', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.tank_cleaning_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5620,5620,'other','andere','autre', 'altro', 'rrr_altul', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.tank_cleaning_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8621,8621,'scraper_installation','Raeumereinrichtung','dispositif_de_curage', 'zzz_Raeumereinrichtung', 'rrr_Raeumereinrichtung', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.tank_cleaning_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8622,8622,'agitator','Ruehrwerk','agitateur', 'agitatore', 'rrr_Ruehrwerk', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.tank_cleaning_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8623,8623,'meandered_gutter','Schlaengelrinne','cunette_courbe', 'cunetta_curva', 'rrr_Schlaengelrinne', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.tank_cleaning_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5623,5623,'surge_flushing','Schwallspuelung','rincage_en_cascade', 'lavaggio_getto', 'rrr_Schwallspülung', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.tank_cleaning_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5624,5624,'tipping_bucket','Spuelkippe','bac_de_rincage', 'benna_ribaltabile', 'rrr_Spuelkippe', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.tank_cleaning_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8626,8626,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
- ALTER TABLE tww_od.tank_cleaning ADD CONSTRAINT fkey_vl_tank_cleaning_type FOREIGN KEY (type)
- REFERENCES tww_vl.tank_cleaning_type (code) MATCH SIMPLE
+CREATE TABLE tww_vl.tank_cleaning_kind () INHERITS (tww_vl.value_list_base);
+ALTER TABLE tww_vl.tank_cleaning_kind ADD CONSTRAINT pkey_tww_vl_tank_cleaning_kind_code PRIMARY KEY (code);
+ INSERT INTO tww_vl.tank_cleaning_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5621,5621,'airjet','Air_Jet','aeration_et_brassage', 'airjet', 'rrr_Air_Jet', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.tank_cleaning_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5620,5620,'other','andere','autre', 'altro', 'rrr_altul', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.tank_cleaning_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8621,8621,'scraper_installation','Raeumereinrichtung','dispositif_de_curage', 'zzz_Raeumereinrichtung', 'rrr_Raeumereinrichtung', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.tank_cleaning_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8622,8622,'agitator','Ruehrwerk','agitateur', 'agitatore', 'rrr_Ruehrwerk', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.tank_cleaning_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8623,8623,'meandered_gutter','Schlaengelrinne','cunette_courbe', 'cunetta_curva', 'rrr_Schlaengelrinne', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.tank_cleaning_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5623,5623,'surge_flushing','Schwallspuelung','rincage_en_cascade', 'lavaggio_getto', 'rrr_Schwallspülung', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.tank_cleaning_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5624,5624,'tipping_bucket','Spuelkippe','bac_de_rincage', 'benna_ribaltabile', 'rrr_Spuelkippe', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.tank_cleaning_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8626,8626,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
+ ALTER TABLE tww_od.tank_cleaning ADD CONSTRAINT fkey_vl_tank_cleaning_kind FOREIGN KEY (kind)
+ REFERENCES tww_vl.tank_cleaning_kind (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.tank_emptying ADD COLUMN fk_throttle_shut_off_unit varchar(16);
 ALTER TABLE tww_od.tank_emptying ADD CONSTRAINT rel_tank_emptying_throttle_shut_off_unit FOREIGN KEY (fk_throttle_shut_off_unit) REFERENCES tww_od.throttle_shut_off_unit(obj_id) ON UPDATE CASCADE ON DELETE set null DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE tww_od.tank_emptying ADD COLUMN fk_overflow varchar(16);
 ALTER TABLE tww_od.tank_emptying ADD CONSTRAINT rel_tank_emptying_overflow FOREIGN KEY (fk_overflow) REFERENCES tww_od.pump(obj_id) ON UPDATE CASCADE ON DELETE set null DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE tww_od.tank_emptying ADD CONSTRAINT oorel_od_tank_emptying_structure_part FOREIGN KEY (obj_id) REFERENCES tww_od.structure_part(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
-CREATE TABLE tww_vl.tank_emptying_type () INHERITS (tww_vl.value_list_base);
-ALTER TABLE tww_vl.tank_emptying_type ADD CONSTRAINT pkey_tww_vl_tank_emptying_type_code PRIMARY KEY (code);
- INSERT INTO tww_vl.tank_emptying_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5626,5626,'other','andere','autre', 'altro', 'rrr_altul', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.tank_emptying_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8638,8638,'gravitation','Gravitation','gravitation', 'gravitazione', 'rrr_Gravitation', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.tank_emptying_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5628,5628,'pump','Pumpe','pompe', 'pompa', '', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.tank_emptying_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5629,5629,'valve','Schieber','vanne', 'saracinesca', 'rrr_Schieber', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.tank_emptying_type (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8637,8637,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
- ALTER TABLE tww_od.tank_emptying ADD CONSTRAINT fkey_vl_tank_emptying_type FOREIGN KEY (type)
- REFERENCES tww_vl.tank_emptying_type (code) MATCH SIMPLE
+CREATE TABLE tww_vl.tank_emptying_kind () INHERITS (tww_vl.value_list_base);
+ALTER TABLE tww_vl.tank_emptying_kind ADD CONSTRAINT pkey_tww_vl_tank_emptying_kind_code PRIMARY KEY (code);
+ INSERT INTO tww_vl.tank_emptying_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5626,5626,'other','andere','autre', 'altro', 'rrr_altul', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.tank_emptying_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8638,8638,'gravitation','Gravitation','gravitation', 'gravitazione', 'rrr_Gravitation', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.tank_emptying_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5628,5628,'pump','Pumpe','pompe', 'pompa', '', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.tank_emptying_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5629,5629,'valve','Schieber','vanne', 'saracinesca', 'rrr_Schieber', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.tank_emptying_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8637,8637,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
+ ALTER TABLE tww_od.tank_emptying ADD CONSTRAINT fkey_vl_tank_emptying_kind FOREIGN KEY (kind)
+ REFERENCES tww_vl.tank_emptying_kind (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE tww_od.catchment_area_totals ADD COLUMN fk_discharge_point varchar(16);
 ALTER TABLE tww_od.catchment_area_totals ADD CONSTRAINT rel_catchment_area_totals_discharge_point FOREIGN KEY (fk_discharge_point) REFERENCES tww_od.discharge_point(obj_id) ON UPDATE CASCADE ON DELETE set null DEFERRABLE INITIALLY DEFERRED;
@@ -4876,8 +4896,8 @@ COMMENT ON COLUMN tww_od.wastewater_structure_symbol.obj_id IS 'INTERLIS STANDAR
 COMMENT ON COLUMN tww_od.wastewater_structure_symbol.classname IS 'Name of class that symbol class is related to / Name der Klasse zu der die Symbolklasse gehört / nom de la classe à laquelle appartient la classe de symbole';
  ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN plantype  integer ;
 COMMENT ON COLUMN tww_od.wastewater_structure_symbol.plantype IS '';
- ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN symbol_scaling_heigth  decimal(2,1) ;
-COMMENT ON COLUMN tww_od.wastewater_structure_symbol.symbol_scaling_heigth IS '';
+ ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN symbol_scaling_height  decimal(2,1) ;
+COMMENT ON COLUMN tww_od.wastewater_structure_symbol.symbol_scaling_height IS '';
  ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN symbol_scaling_width  decimal(2,1) ;
 COMMENT ON COLUMN tww_od.wastewater_structure_symbol.symbol_scaling_width IS '';
  ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN symbolori  decimal(4,1) ;
@@ -5160,3 +5180,8 @@ ALTER TABLE tww_od.farm ADD CONSTRAINT rel_od_farm_fk_dataprovider FOREIGN KEY (
  CREATE UNIQUE INDEX in_od_hydraulic_char_data_identifier ON tww_od.hydraulic_char_data USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
  CREATE UNIQUE INDEX in_od_catchment_area_totals_identifier ON tww_od.catchment_area_totals USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
  CREATE UNIQUE INDEX in_od_building_group_identifier ON tww_od.building_group USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
+
+-- For m:n relation tables to avoid duplicate entries
+CREATE UNIQUE INDEX in_re_maintenance_event_wastewater_structure_fks ON tww_od.re_maintenance_event_wastewater_structure USING btree (fk_maintenance_event ASC NULLS LAST, fk_wastewater_structure ASC NULLS LAST);
+
+CREATE UNIQUE INDEX in_re_building_group_disposal_fks ON tww_od.re_building_group_disposal USING btree (fk_building_group ASC NULLS LAST, fk_disposal ASC NULLS LAST);

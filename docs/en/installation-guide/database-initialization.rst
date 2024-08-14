@@ -26,7 +26,7 @@ Restore demo datamodel
 Restore the latest data model that also includes demo data:
 
 * Download demo data
-  * https://github.com/TWW/datamodel/releases/latest
+  * https://github.com/teksi/wastewater/releases/latest
   * download `tww_vx.y.z_structure_and_demo_data.backup`
 
 Back in pgAdmin :
@@ -61,7 +61,15 @@ Back in pgAdmin :
 
 * Propably you want to rename the database: Right click the database, click `Properties...` and rename the database.
 
-There are now 7 schemas in the database (public, tww_import, tww_network, tww_swmm, tww_od, tww_sys, tww_vl)
+There are now 6 `schemas <https://teksi.github.io/wastewater/en/user-guide/layerexplanations/namingconventions.html#schemas-in-the-tww-database>`_ in the database
+
++ public
++ tww_app
++ tww_cfg
++ tww_od
++ tww_sys
++ tww_vl
+
 
 Create minimal roles and access
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -85,12 +93,13 @@ You can call the script from the command line with the following arguments:
 
 The database specific group roles are defined as  **tww_viewer_[db_identifier]** etc. , where ``db_identifier`` is defined as ``regexp_replace(databasename, "tww_|teksi_", "")`` .
 
+
 Empty data model
 ^^^^^^^^^^^^^^^^
 
 You also have the option to restore the latest empty data model (no demo data).
 
-* Download the data model by going to https://github.com/TWW/datamodel/releases/latest
+* Download the data model by going to https://github.com/teksi/wastewater/releases/latest
   and by downloading the latest `tww_vx.y.z_structure_with_value_lists.sql`.
 
 .. note::

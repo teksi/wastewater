@@ -11,9 +11,16 @@ Digitizing tool
 
 * Select the **vw_tww_wastewater_structure** layer
 * Use the **Identify features** tool on the object to which you want to add a drainage channel geometry
-* Right click the object and select the **vw_tww_wastewater_structure** layer
-* Choose **Digitize Drainage Channel**
-* You can now start digitizing: draw a simple line with two clicks.
-* The polygon is created in the **od_wastewater_structure** layer
+* In the Feature Attributes window:go to the **Action** menu and choose **Digitize Drainage Channel**
 
-An other way is to open the vw_tww_wastewater_structure form with the info tool and then choose **Digitize Drainage Channel** in the **Actions** menu of the form.
+.. figure:: images/digitize_actionmenu.jpg
+
+or
+
+* Right click the object and select the **vw_tww_wastewater_structure** layer and the record
+* Choose **Digitize Drainage Channel**
+
+.. figure:: images/digitize_detail_geom_select1.jpg
+
+* You can now start digitizing: draw a simple line with two clicks.
+* The polygon is created in the **wastewater_structure** layer (layergroup Wastewater Structures)

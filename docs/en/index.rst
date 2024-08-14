@@ -1,7 +1,7 @@
-TWW / TEKSI wastewater module documentation
+TEKSI wastewater
 ============================================
 
-TEKSI wastewater module (Project name : TWW) is an open source wastewater management module for QGIS based on SIA 405 Waste water (Leitungskataster) and VSA-DSS 2015 (GEP) and developed closely to the QGIS application.
+TEKSI wastewater and general wastewater management plan (GWMP) is an open source wastewater management module for QGIS based on SIA 405 Wastewater (pipe cadastre) and VSA-DSS 2020 (GWMP) and developed closely to the QGIS application.
 
 ..
     Commented out pdf for the moment - needs new code
@@ -24,6 +24,7 @@ Contents
    installation-guide/index
    user-guide/index
    admin-guide/index
+   extensions-guide/index
    vm/index
    wincan2tww/index
    tww_swmm/index

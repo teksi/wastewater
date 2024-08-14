@@ -1,13 +1,13 @@
 INTERLIS Data exchange
 ======================
 
-This represents a guide on how to import/export data between TWW and INTERLIS 2 Transfer Format (XTF).
+This represents a guide on how to import/export data between TWW and `INTERLIS 2 Transfer Format (XTF) <https://www.interlis.ch>`_.
 
 
 General
 ^^^^^^^^^^^^^
 
-The TWW plugin includes an experimental interlis import/export feature.
+The TWW plugin includes an INTERLIS import/export feature.
 It is currently capable of importing and exporting the following models::
 * SIA405_ABWASSER_2020_1_LV95
 * DSS_2020_1_LV95
@@ -55,7 +55,7 @@ The same `--target` flag can be added to install `sqlalchemy` and `geoalchemy2` 
 
 TWW Version
 -------------
-The export only supports up-to-date TWW datamodel (1.5.6 at the time of writing). Ensure your datamodel is fully updated before trying to import/export.
+The export only supports up-to-date TWW data model (2020.1 at the time of writing). Ensure your data model is fully updated before trying to import/export.
 
 
 Usage (GUI)
@@ -72,16 +72,23 @@ You should now see new `import` and `export` buttons in the TWW toolbar.
 
 .. figure:: images/toolbar.png
 
-Export
+INTERLIS Export
 -------------------------------------------------
 
-To export your TWW data, click on the `export` button. The following dialog will appear.
+.. figure:: images/tww_interlis_export_button.png
 
-.. figure:: images/export_dialog.png
+To export your TWW data, click on the `INTERLIS export` button.
+
+
+The following dialog will appear.
+
+.. figure:: images/tww_interlis_export.png
 
 At first, select the export model.
 
 If you have an active selection in the nodes and/or reaches layer, you can choose to restrict the export to that selection. This is especially useful in combination with the upstream/downstream selection tools.
+
+.. figure:: images/tww_interlis_export_selection.png
 
 The export tools is capable of exporting label positions for different scales. You can choose which scales you are interested in exporting by selected/deselecting them.
 
@@ -98,26 +105,65 @@ Then, confirm the dialog and choose where to save the `.xtf` file.
 
 .. note:: Note that remark fields are truncated to 80 characters on INTERLIS Export, as the INTERLIS definition is like this. If you have remark fields with more text then consider to move this data to documentation with the classes "file" and "data_media" so it can be exported to INTERLIS completely where you can add any document, photo or video to a class.
 
+The following validations are run as pre-process:
+* Validate subclasses before export: check_subclass_counts
 
-Exports include a validation step using `ilivalidator`, which will inform you whether the export contains validation error.
+.. note:: Currently you will only find an ERROR message in the tww procotol tab if this check fails:
+`2024-07-26T10:29:03        teksi_wastewater.utils:ERROR: number of subclass elements of structure_part NOT CORRECT in schema tww_od: checksum = 1 (positive number means missing entries, negative means too many subclass entries)`
 
 
-Import
+Exports include a validation step at the end using `ilivalidator`, which will inform you whether the export contains INTERLIS validation errors.
+
+If the export was successful a green success message appears.
+If the export is not successfull you will get either error messages during the export process or an error warning at the end of the process.
+
+You can check the protocol window and the text logs for further details.
+
+There are four different log files:
+
+Export step | Description | Log File
+-------- | -------- | --------
+Export schema   | Creation of export schema with ili2db and the selected INTERLIS model file | *.ili2pg-schemaimport.log
+Data export intermediatary schema   | Export of data from tww_od to the new intermediary schema, translation from English to German | *.tww2ili-export.log
+Data export to xtf | Data export from intermediary schema to INTERLIS Transfer file (xtf)   | *.ili2pg-export-MODELNAME.log
+INTERLIS validation   | Validation of the created xtf file(s) with ilivalidator   | *.ilivalidator-MODELNAME.log
+
+
+
+INTERLIS Import
 -------------------------------------------------
 
-To import `xtf`files, click on the `import` button and navigate to the `.xtf` file.
+.. figure:: images/tww_interlis_import_button.png
+
+To import `xtf`files, click on the `INTERLIS import` button and navigate to the `.xtf` file.
 
 .. note:: Note that windows file pathes with empty strings in the directory path or filename are not supported at the moment.
 
-The following dialog will appear.
+__Organisations before data !__
+
+.. note:: Starting with release 2020 all organisations are in a separated dataset and need to be imported first, else a bunch of errors will be thrown on all references like fk_dataowner, fk_owner, fk_provider, etc. Download the VSA Organisation data set from https://www.vsa.ch/models/organisation/vsa_organisationen_2020_1.xtf and start with importing that data set. This data set is updated regularly - so please come back and check (and maybe re-import) at a later stage to have access to all available organisation.
+
+If you have organisations that are not yet in that data set `please inform the VSA and hand in an application to be added <https://vsa.ch/fachbereiche-cc/siedlungsentwaesserung/generelle-entwaesserungsplanung/datenmanagement/#Organisationstabelle>`_.
+
+
+If you have additional own local organisations that are not (yet) in the VSA organisation data set continue with importing those before you start importing your network data. TV inspection data usually comes last, as it references your network data.
+
+After launching the import process your data set will be validated and imported in a intermediatary schema. Then the following dialog will appear.
 
 .. figure:: images/import_dialog.png
 
 The left part of this dialog lists all elements that are going to be imported from the `.xtf` file, allowing to review what is going to be imported and to deselect elements you may want to skip. It also shows the validation status of each object, showing whether further action is needed (INVALID) or recommended (WARNING) prior to importing.
 
-The right part of this dialog shows a form specific to the type of element selected in the list, allowing to adapt the import. For instance, it allows to attach "examinations" to their pipes.
+The right part of this dialog shows a form specific to the type of element selected in the list, allowing to adapt the import.
+
+.. note:: Currently de-selecting and selecting objects might take a long time depending how many data sets are in that respective class.
+
+.. note:: Special feature for TV Inspection import: For instance, it allows to attach "examinations" to their pipes.
 
 Once you're happy with the import options, confirm the dialog to persist the changes to your database.
+
+If the import was successful a green success message appears.
+
 
 
 Usage (command line)
