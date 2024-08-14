@@ -221,12 +221,16 @@ Note:
 * As long as the hydr_geometry record is not saved, you see in the Features Attribute window just the Obj_Id in brackets. After saving, you will see the identifier you have entered.
 
 
+
 Hydraulic modeling of an overflow (prank weir / leapingweir / pump)
 --------------------------------------------------------------------
 
+There is a special view for overflows, altough it would be possible to edit the overflow-data in layer vw_tww_wastewater_structure.
+The advantage of layer vw_tww_overflow: overflows can be visualized, can be found again and are available in lists.
+
 Action:
 
-In the case of weirs, a second sewage junction has to be created in the wastewater structure.
+If it not already exists: In the case of weirs, a second wastewater node has to be created in the wastewater structure.
 A second outlet has already been created (green = discharged combined wastewater) and has not yet been linked to any wastewater node in the overflow structure.
 
 1. Select the wastewater structure with the i-button
@@ -239,30 +243,38 @@ A second outlet has already been created (green = discharged combined wastewater
 
 4. Click next to outlet 2 to place the second wastewater node.
 
-5. The Feature Attributes window for this wastewater node appears. Enter a meaningful identifier (e.g. BSP001-WN2 for wastewater node 2 of the BSP001 special structure). This designation also appears in MikeUrban. The new wastewater node is saved with OK.
+5. The Feature Attributes window for this wastewater node appears. Enter a meaningful identifier (e.g. 1.070-WN2 for wastewater node 2 of the 1.070 special structure). This designation also appears in MikeUrban/+. The new wastewater node is saved with OK.
 
 .. figure:: images/overflow2.jpg
 
-In the next picture, the 2nd node is marked in yellow on the map and in the Feature Attributes window.
+Close the Feature Attributes window of the wastewater structure.
 
-.. figure:: images/overflow3.jpg
 
-We define now a prank weir:
+To define a new prank weir:
 
-6. Choose prank weir in the overflow tabs
+6. Choose the layer vw_tww_overflow in the layergroup Hydraulic.
 
-7. Create a weir with the **Add child object** button
+7. Choose the QGIS standard **Add Point Feature** button and click anyware near to the wastewater_structure
 
-The prank weir Feature Attributes window opens. The attributes in the upper hydraulic section must be filled in, they will be transferred to MikeUrban.
-The field fk_overflow_to must be filled manually. The Obj_ID of the previously created second wastewater node can be seen in the rear window.
+The overflow Feature Attributes window opens. 
+
+8. Enter an identifier and choose the overflow_type.
+
+9. Define the two wastewater nodes of the overflow (fk_wastewater_node = from node, fk_overflow_to = to node) by selecting them on the map with the tool.
+The attributes in the upper hydraulic section must be filled in, they will be transferred to MikeUrban/+.
+
 
 .. figure:: images/overflow4.jpg
 
-This information is sufficient for the calculation in MikeUrban with the weir formula.
+Close all open Feature Attributes windows. 
 
-Now only the 2nd outlet has to be linked to the 2nd wastewater node:
+.. hint:: The new overflow is drawn as dotted line with arrow. If the line does not appear: the line is defined with the QGIS geometry generator symbol. Control the formula of the geometry generator (layer properties/symbology, select the symbol), control first the name of the **vw_wastewater_node** layer. If this layer is renamed, the formula has to be changed with the new name (e.g. **vw_Abwasserknoten**).
 
-Close all open Feature Attributes window.
+.. figure::images/gemetry_generator.jpg
+
+
+
+To finish, the 2nd outlet has to be linked to the 2nd wastewater node:
 
 1. Select the TWW tool **Connect wastewater networkelements**.
 
@@ -273,6 +285,7 @@ Close all open Feature Attributes window.
 4. Confirm that the connection is created for the **from reach point**.
 
 .. figure:: images/connect_2_node.jpg
+
 
 Overflow characteristic
 -----------------------
