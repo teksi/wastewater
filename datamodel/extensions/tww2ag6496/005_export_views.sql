@@ -268,7 +268,7 @@ SELECT
 	, concat_ws('','ch113jqg0000',right(COALESCE(ne.ag96_fk_provider,'00000107'),8)) AS datenbewirtschafter_gep
 	, ne.ag96_remark AS bemerkung_gep
 	, COALESCE(ne.ag96_last_modification,TO_TIMESTAMP('1800-01-01','YYYY-MM-DD')) AS letzte_aenderung_gep
-
+	, NULL:bool AS ignore_ws
 FROM tww_od.wastewater_node wn
 LEFT JOIN tww_od.wastewater_networkelement ne ON wn.obj_id = ne.obj_id
 LEFT JOIN {ext_schema}.knoten_bauwerksattribute ws ON wn.obj_id=ws.obj_id
