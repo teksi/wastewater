@@ -112,7 +112,7 @@ IF NOT (action_name ILIKE ANY(ARRAY['ENABLE','DISABLE'])) THEN
 	RETURN;
 ELSE
 	FOR schdf,tbldf, trig IN
-		SELECT 
+		SELECT
 		c.relnamespace ::regnamespace::text,
 		c.relname,
 		t.tgname
