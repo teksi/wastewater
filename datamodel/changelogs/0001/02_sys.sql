@@ -146,7 +146,6 @@ BEGIN
   ELSE
     return false;
   END IF;
-END IF;
 END;
 $DO$
 LANGUAGE plpgsql SECURITY DEFINER;
