@@ -2,20 +2,10 @@ import logging
 import os
 import tempfile
 
-try:
-    import psycopg
-
-    PSYCOPG_VERSION = 3
-    DEFAULTS_CONN_ARG = {"autocommit": True}
-except ImportError:
-    import psycopg2 as psycopg
-
-    PSYCOPG_VERSION = 2
-    DEFAULTS_CONN_ARG = {}
-
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication
 
+from ..utils.database_utils import DatabaseUtils
 from . import config
 from .gui.interlis_import_selection_dialog import InterlisImportSelectionDialog
 from .interlis_model_mapping.interlis_exporter_to_intermediate_schema import (
@@ -36,13 +26,7 @@ from .interlis_model_mapping.model_tww import ModelTwwSys, ModelTwwVl
 from .interlis_model_mapping.model_tww_od import ModelTwwOd
 from .interlis_model_mapping.model_tww_ag6496 import ModelTwwAG6496
 from .utils.ili2db import InterlisTools
-from .utils.various import (
-    CmdException,
-    LoggingHandlerContext,
-    get_pgconf_as_psycopg_dsn,
-    logger,
-    make_log_path,
-)
+from .utils.various import CmdException, LoggingHandlerContext, logger, make_log_path
 
 
 class InterlisImporterExporterStopped(Exception):
@@ -126,33 +110,52 @@ class InterlisImporterExporter:
         self._progress_done(35, "Disable symbolgy triggers...")
         self._import_disable_symbology_triggers()
 
-        # Import from the temporary ili2pg model
-        self._progress_done(40, "Converting to TEKSI Wastewater...")
-        tww_session = self._import_from_intermediate_schema(import_model)
+        try:
+            # Import from the temporary ili2pg model
+            self._progress_done(40, "Converting to TEKSI Wastewater...")
+            tww_session = self._import_from_intermediate_schema(import_model)
 
-        if show_selection_dialog:
-            self._progress_done(90, "Import objects selection...")
-            import_dialog = InterlisImportSelectionDialog()
-            import_dialog.init_with_session(tww_session)
-            QApplication.restoreOverrideCursor()
-            if import_dialog.exec_() == import_dialog.Rejected:
-                tww_session.rollback()
-                tww_session.close()
+            if show_selection_dialog:
+                self._progress_done(90, "Import objects selection...")
+                import_dialog = InterlisImportSelectionDialog()
+                import_dialog.init_with_session(tww_session)
+                QApplication.restoreOverrideCursor()
+                if import_dialog.exec_() == import_dialog.Rejected:
+                    tww_session.rollback()
+                    tww_session.close()
+                    raise InterlisImporterExporterStopped()
+                QApplication.setOverrideCursor(Qt.WaitCursor)
+            else:
+                self._progress_done(90, "Commit session...")
+                tww_session.commit()
+            tww_session.close()
+
+            # Update main_cover and main_wastewater_node
+            self._progress_done(95, "Update main cover and refresh materialized views...")
+            self._import_update_main_cover_and_refresh_mat_views()
+
+            # Validate subclasses after import
+            self._check_subclass_counts()
+
+            # Update organisations
+            self._progress_done(96, "Set organisations filter...")
+            self._import_manage_organisations()
+
+            # Reenable symbology triggers
+            self._progress_done(97, "Reenable symbology triggers...")
+            self._import_enable_symbology_triggers()
+
+        except Exception as exception:
+            # Make sure to re-enable triggers in case an exception occourred
+            try:
                 self._import_enable_symbology_triggers()
-                raise InterlisImporterExporterStopped()
-            QApplication.setOverrideCursor(Qt.WaitCursor)
-        else:
-            self._progress_done(90, "Commit session...")
-            tww_session.commit()
-        tww_session.close()
+            except Exception as enable_trigger_exception:
+                logger.error(
+                    f"Symbology triggers couldn't be re-enabled because an exception occourred: '{enable_trigger_exception}'"
+                )
 
-        # Update main_cover and main_wastewater_node
-        self._progress_done(95, "Update main cover and refresh materialized views...")
-        self._import_update_main_cover_and_refresh_mat_views()
-
-        # Reenable symbology triggers
-        self._progress_done(95, "Reenable symbology triggers...")
-        self._import_enable_symbology_triggers()
+            # Raise the original exception for further error handling
+            raise exception
 
         self._progress_done(100)
         logger.info("INTERLIS import finished.")
@@ -167,6 +170,9 @@ class InterlisImporterExporter:
         selected_labels_scales_indices=[],
         selected_ids=[],
     ):
+        # Validate subclasses before export
+        self._check_subclass_counts()
+
         # File name without extension (used later for export)
         file_name_base, _ = os.path.splitext(xtf_file_output)
 
@@ -193,8 +199,6 @@ class InterlisImporterExporter:
             labels_file_path = os.path.join(tempdir.name, "labels.geojson")
             self._export_labels_file(
                 limit_to_selection=limit_to_selection,
-                # neu export orientation
-                export_orientation=export_orientation,
                 selected_labels_scales_indices=selected_labels_scales_indices,
                 labels_file_path=labels_file_path,
                 export_model=export_models[0]
@@ -273,56 +277,36 @@ class InterlisImporterExporter:
 
         return interlisImporterToIntermediateSchema.session_tww
 
+    def _import_manage_organisations(self):
+        logger.info("Update organisation tww_active")
+        DatabaseUtils.execute("SELECT tww_app.set_organisations_active();")
+
     def _import_update_main_cover_and_refresh_mat_views(self):
-        connection = psycopg.connect(get_pgconf_as_psycopg_dsn(), **DEFAULTS_CONN_ARG)
-        if PSYCOPG_VERSION == 2:
-            connection.set_session(autocommit=True)
-        cursor = connection.cursor()
 
-        logger.info("Update wastewater structure fk_main_cover")
-        cursor.execute(
-            "SELECT tww_app.wastewater_structure_update_fk_main_cover('', True);"
-        )
+        with DatabaseUtils.PsycopgConnection() as connection:
+            cursor = connection.cursor()
 
-        logger.info("Update wastewater structure fk_main_wastewater_node")
-        cursor.execute(
-            "SELECT tww_app.wastewater_structure_update_fk_main_wastewater_node('', True);"
-        )
+            logger.info("Update wastewater structure fk_main_cover")
+            cursor.execute("SELECT tww_app.wastewater_structure_update_fk_main_cover('', True);")
 
-        logger.info("Refresh materialized views")
-        cursor.execute("SELECT tww_app.network_refresh_network_simple();")
+            logger.info("Update wastewater structure fk_main_wastewater_node")
+            cursor.execute(
+                "SELECT tww_app.wastewater_structure_update_fk_main_wastewater_node('', True);"
+            )
 
-        connection.commit()
-        connection.close()
+            logger.info("Refresh materialized views")
+            cursor.execute("SELECT tww_app.network_refresh_network_simple();")
 
     def _import_disable_symbology_triggers(self):
-        connection = psycopg.connect(get_pgconf_as_psycopg_dsn(), **DEFAULTS_CONN_ARG)
-        if PSYCOPG_VERSION == 2:
-            connection.set_session(autocommit=True)
-        cursor = connection.cursor()
-
-        logger.info("Disable symbology triggers")
-        cursor.execute("SELECT tww_sys.disable_symbology_triggers();")
-
-        connection.commit()
-        connection.close()
+        DatabaseUtils.disable_symbology_triggers()
 
     def _import_enable_symbology_triggers(self):
-        connection = psycopg.connect(get_pgconf_as_psycopg_dsn(), **DEFAULTS_CONN_ARG)
-        if PSYCOPG_VERSION == 2:
-            connection.set_session(autocommit=True)
-        cursor = connection.cursor()
-
-        logger.info("Enable symbology triggers")
-        cursor.execute("SELECT tww_sys.enable_symbology_triggers();")
-
-        connection.commit()
-        connection.close()
+        DatabaseUtils.enable_symbology_triggers()
+        DatabaseUtils.update_symbology()
 
     def _export_labels_file(
         self,
         limit_to_selection,
-        export_orientation,
         selected_labels_scales_indices,
         labels_file_path,
         export_model
@@ -349,6 +333,7 @@ class InterlisImporterExporter:
             )
         
         self._progress_done(self.current_progress + 5)
+
         if export_model == config.MODEL_NAME_AG96:
             catch_lyr = TwwLayerManager.layer("catchment_area")
             meas_pt_lyr = TwwLayerManager.layer("measure_point")
@@ -411,6 +396,7 @@ class InterlisImporterExporter:
                 },
             )
 
+
     def _export_to_intermediate_schema(
         self,
         export_model,
@@ -434,6 +420,7 @@ class InterlisImporterExporter:
             model_classes_tww_od=self.model_classes_tww_od,
             model_classes_tww_vl=self.model_classes_tww_vl,
             model_classes_tww_sys=self.model_classes_tww_sys,
+            labels_orientation_offset=export_orientation,
             model_classes_tww_ag6496=self.model_classes_tww_ag6496,
             selection=selected_ids,
             labels_file=labels_file_path,
@@ -517,35 +504,30 @@ class InterlisImporterExporter:
     def _clear_ili_schema(self, recreate_schema=False):
         logger.info("CONNECTING TO DATABASE...")
 
-        connection = psycopg.connect(get_pgconf_as_psycopg_dsn(), **DEFAULTS_CONN_ARG)
-        if PSYCOPG_VERSION == 2:
-            connection.set_session(autocommit=True)
-        cursor = connection.cursor()
-
-        if not recreate_schema:
-            # If the schema already exists, we just truncate all tables
-            cursor.execute(
-                f"SELECT schema_name FROM information_schema.schemata WHERE schema_name = '{config.ABWASSER_SCHEMA}';"
-            )
-            if cursor.rowcount > 0:
-                logger.info(
-                    f"Schema {config.ABWASSER_SCHEMA} already exists, we truncate instead"
-                )
+        with DatabaseUtils.PsycopgConnection() as connection:
+            cursor = connection.cursor()
+            if not recreate_schema:
+                # If the schema already exists, we just truncate all tables
                 cursor.execute(
-                    f"SELECT table_name FROM information_schema.tables WHERE table_schema = '{config.ABWASSER_SCHEMA}';"
+                    f"SELECT schema_name FROM information_schema.schemata WHERE schema_name = '{config.ABWASSER_SCHEMA}';"
                 )
-                for row in cursor.fetchall():
-                    cursor.execute(
-                        f"TRUNCATE TABLE {config.ABWASSER_SCHEMA}.{row[0]} CASCADE;"
+                if cursor.rowcount > 0:
+                    logger.info(
+                        f"Schema {config.ABWASSER_SCHEMA} already exists, we truncate instead"
                     )
-                return
+                    cursor.execute(
+                        f"SELECT table_name FROM information_schema.tables WHERE table_schema = '{config.ABWASSER_SCHEMA}';"
+                    )
+                    for row in cursor.fetchall():
+                        cursor.execute(
+                            f"TRUNCATE TABLE {config.ABWASSER_SCHEMA}.{row[0]} CASCADE;"
+                        )
+                    return
 
-        logger.info(f"DROPPING THE SCHEMA {config.ABWASSER_SCHEMA}...")
-        cursor.execute(f'DROP SCHEMA IF EXISTS "{config.ABWASSER_SCHEMA}" CASCADE ;')
-        logger.info(f"CREATING THE SCHEMA {config.ABWASSER_SCHEMA}...")
-        cursor.execute(f'CREATE SCHEMA "{config.ABWASSER_SCHEMA}";')
-        connection.commit()
-        connection.close()
+            logger.info(f"DROPPING THE SCHEMA {config.ABWASSER_SCHEMA}...")
+            cursor.execute(f'DROP SCHEMA IF EXISTS "{config.ABWASSER_SCHEMA}" CASCADE ;')
+            logger.info(f"CREATING THE SCHEMA {config.ABWASSER_SCHEMA}...")
+            cursor.execute(f'CREATE SCHEMA "{config.ABWASSER_SCHEMA}";')
 
     def _create_ili_schema(
         self, models, ext_columns_no_constraints=False, create_basket_col=False
@@ -565,6 +547,90 @@ class InterlisImporterExporter:
                 "Open the logs for more details on the error.",
                 log_path,
             )
+
+    def _check_subclass_counts(self):
+        self._check_subclass_count(
+            config.TWW_OD_SCHEMA, "wastewater_networkelement", ["reach", "wastewater_node"]
+        )
+        self._check_subclass_count(
+            config.TWW_OD_SCHEMA,
+            "wastewater_structure",
+            [
+                "channel",
+                "manhole",
+                "special_structure",
+                "infiltration_installation",
+                "discharge_point",
+                "wwtp_structure",
+                "small_treatment_plant",
+                "drainless_toilet",
+            ],
+        )
+        self._check_subclass_count(
+            config.TWW_OD_SCHEMA,
+            "structure_part",
+            [
+                "benching",
+                "tank_emptying",
+                "tank_cleaning",
+                "cover",
+                "access_aid",
+                "electric_equipment",
+                "electromechanical_equipment",
+                "solids_retention",
+                "backflow_prevention",
+                "flushing_nozzle",
+                "dryweather_flume",
+                "dryweather_downspout",
+            ],
+        )
+        self._check_subclass_count(
+            config.TWW_OD_SCHEMA, "overflow", ["pump", "leapingweir", "prank_weir"]
+        )
+        self._check_subclass_count(
+            config.TWW_OD_SCHEMA,
+            "maintenance_event",
+            ["maintenance", "examination", "bio_ecol_assessment"],
+        )
+        self._check_subclass_count(
+            config.TWW_OD_SCHEMA, "damage", ["damage_channel", "damage_manhole"]
+        )
+        self._check_subclass_count(
+            config.TWW_OD_SCHEMA,
+            "connection_object",
+            ["fountain", "individual_surface", "building", "reservoir"],
+        )
+        self._check_subclass_count(
+            config.TWW_OD_SCHEMA, "zone", ["infiltration_zone", "drainage_system"]
+        )
+
+    def _check_subclass_count(self, schema_name, parent_name, child_list):
+
+        logger.info(f"INTEGRITY CHECK {parent_name} subclass data...")
+        logger.info("CONNECTING TO DATABASE...")
+
+        with DatabaseUtils.PsycopgConnection() as connection:
+            cursor = connection.cursor()
+
+            cursor.execute(f"SELECT obj_id FROM {schema_name}.{parent_name};")
+            parent_rows = cursor.fetchall()
+            if len(parent_rows) > 0:
+                parent_count = len(parent_rows)
+                logger.info(f"Number of {parent_name} datasets: {parent_count}")
+                for child_name in child_list:
+                    cursor.execute(f"SELECT obj_id FROM {schema_name}.{child_name};")
+                    child_rows = cursor.fetchall()
+                    logger.info(f"Number of {child_name} datasets: {len(child_rows)}")
+                    parent_count = parent_count - len(child_rows)
+
+                if parent_count == 0:
+                    logger.info(
+                        f"OK: number of subclass elements of class {parent_name} OK in schema {schema_name}!"
+                    )
+                else:
+                    logger.error(
+                        f"ERROR: number of subclass elements of {parent_name} NOT CORRECT in schema {schema_name}: checksum = {parent_count} (positive number means missing entries, negative means too many subclass entries)"
+                    )
 
     def _init_model_classes(self, model):
         ModelInterlis = None
