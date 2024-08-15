@@ -403,7 +403,7 @@ class InterlisImporterToIntermediateSchema:
         self._check_for_stop()
 
         logger.info("Importing ABWASSER.einzugsgebiet -> TWW.einzugsgebiet")
-        self._import_einzugsgebiet()
+        self._import_einzugsgebiet_ag96()
         self._check_for_stop()
 
         logger.info(
@@ -2458,7 +2458,7 @@ class InterlisImporterToIntermediateSchema:
             self.session_tww.add(gephaltung)
             print(".", end="")
 
-    def _import_einzugsgebiet(self):
+    def _import_einzugsgebiet_ag96(self):
         query = self.session_tww.query(self.model_classes_interlis.einzugsgebiet)
         for row in query:
             einzugsgebiet = self.model_classes_tww_ag6496.einzugsgebiet(
