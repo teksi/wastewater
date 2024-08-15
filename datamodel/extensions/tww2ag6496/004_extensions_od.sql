@@ -9,6 +9,12 @@ ALTER TABLE tww_od.wastewater_node ADD CONSTRAINT fkey_vl_wastewater_node_ag96_i
 ALTER TABLE tww_od.wastewater_node DROP CONSTRAINT IF EXISTS fkey_vl_wastewater_node_ag64_function CASCADE;
 ALTER TABLE tww_od.wastewater_node ADD CONSTRAINT fkey_vl_wastewater_node_ag64_function FOREIGN KEY (ag64_function) REFERENCES tww_vl.wastewater_node_ag64_function MATCH SIMPLE ON UPDATE RESTRICT ON DELETE RESTRICT; 
 
+-- Deckel
+ALTER TABLE tww_od.cover ADD COLUMN IF NOT EXISTS ag64_fk_wastewater_node varchar(16);
+COMMENT ON COLUMN tww_od.cover.ag64_fk_wastewater_node IS 'Extension for AG-64/ Erweiterung für AG-64, Export von Zweitdeckeln /xxx_fr';
+ALTER TABLE tww_od.cover DROP CONSTRAINT IF EXISTS rel_cover_wastewater_node CASCADE;
+ALTER TABLE tww_od.cover ADD CONSTRAINT rel_cover_wastewater_node FOREIGN KEY (ag64_fk_wastewater_node) REFERENCES tww_od.wastewater_node MATCH SIMPLE ON UPDATE CASCADE ON DELETE SET NULL; 
+
 ALTER TABLE tww_od.wastewater_structure ADD COLUMN IF NOT EXISTS ag96_fk_measure varchar(16); 
 -- Topologische Verknüpfung Massnahme/Abwasserbauwerk
 ALTER TABLE tww_od.wastewater_structure DROP CONSTRAINT IF EXISTS ag96_rel_wastewater_structure_measure;
@@ -207,7 +213,7 @@ COMMENT ON TABLE tww_od.building_group_text IS 'Extension for AG-96/ Erweiterung
 -- 05.03.2024: Neuer OID-Prefix für Mapping durch Waldburger bestellt: ch24eax1
 
 INSERT INTO tww_od.organisation(
-	obj_id, identifier, remark, uid, last_modification, fk_dataowner, fk_provider,organisation_type,status,_local_extension)
+	obj_id, identifier, remark, uid, last_modification, fk_dataowner, fk_provider,organisation_type,status,tww_local_extension)
 	VALUES 
 	('ch24eax100000000',  'AfU Aargau',  'bei Import AG-64/AG-96 generiert','CHE114809310', now(), 'ch24eax100000000','ch24eax100000000',8605,9047,TRUE),
 	('ch24eax100000154', 'Gemeinde Wettingen', NULL, 'CHE115075438', '2016-02-05', 'ch24eax100000000', 'ch24eax100000000',8604,9047,TRUE),
