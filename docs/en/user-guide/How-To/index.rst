@@ -50,7 +50,7 @@ An example SQL script how to insert the default value for all occurences of a fi
 How vw_tww_wastewater_structure labels work
 -------------------------------
 
-Labeling a manhole with his levels is quite a complex thing. Levels are not stored in the wastewater_structure class it self, but in the cover table and as reachpoint levels with the connected reaches. TWW has therefore 4 calculated fields to be able to label this levels:
+Labeling a manhole with his levels is quite a complex thing. Levels are not stored in the wastewater_structure class itself, but in the cover table and as reachpoint levels with the connected reaches. TWW has therefore 4 calculated fields to be able to label these levels:
 
 - _cover_label: shows the level / the levels of the cover/s.level of the wastewater structure
 - _bottom_label: shows the level / the levels of the wastewater_node(s).bottom_level of the wastewater structure
@@ -85,7 +85,7 @@ To see your changes, you have to rerun the symbology functions manually (see nex
 How to run symbology functions manually
 ---------------------------------------
 
-Sometimes the labels such as bottom, cover or entry/exit levels are not correctly displayed, even if the corresponding attribut is filled in. This happens for example when you import data by INTERLIS Import or another way. May be you also decativated the triggers to speed up the import process.
+Sometimes the labels such as bottom, cover or entry/exit levels are not correctly displayed, even if the corresponding attribut is filled in. This happens for example when you import data by INTERLIS Import or another way. May be you also deactivated the triggers to speed up the import process.
 
 * Activate / Deactivate symbology triggers::
 
@@ -93,11 +93,13 @@ Sometimes the labels such as bottom, cover or entry/exit levels are not correctl
    SELECT tww_sys.drop_symbology_triggers()
 
 * Run **label function** for all entities (_label, _cover_label, _bottom_label, _input_label and _output_label)::
+
    SELECT tww_od.update_wastewater_structure_label(NULL, true)
 
 .. figure:: images/tww_label_attributes.jpg
 
 * Run depth calculation for all entities (wastewater_structure._depth)::
+
    SELECT tww_od.update_depth(NULL, true);
 
 .. figure:: images/tww_system_attributes_depth.jpg
@@ -179,7 +181,7 @@ If you can not find a .qgd-file, then you have probably not moved or rotated a l
 
 
 
-Collecting a hydr_geometry (corresponds to a basin geometry in MikeUrban/Mike+)
+Collecting a hydr_geometry (corresponds to a basin geometry in Mike+)
 -------------------------------------------------------------------------
 
 Note:
@@ -194,7 +196,7 @@ Action:
 
 2. Select the **Wastewater Nodes** tab in the Feature Attributes window
 
-or direct way: Select in layer vw_wastewater_node the node with the i-button
+or in a more direct way: Select the node with the i-button in layer vw_wastewater_node
 
 3. Expand the part ** additional attributes in special structures**
 
@@ -202,11 +204,11 @@ or direct way: Select in layer vw_wastewater_node the node with the i-button
 
 .. figure:: images/hydr_geometry1.jpg
 
-5. For a new record: Enter a description in the hydr_geometry - Feature Attributes window. This name is also the name of the table in MikeUrban/+.
+5. For a new record: Enter a description in the hydr_geometry - Feature Attributes window. This name is also the name of the table in Mike+.
 
 .. figure:: images/hydr_geometry2.jpg
 
-6. With the **Add child object** button, you can now generate the records with which the hydr_geometry is defined analogously to the basin geometry of MikeUrban/+ (H, As surface, Ac cross-sectional area).
+6. With the **Add child object** button, you can now generate the records with which the hydr_geometry is defined analogously to the basin geometry of Mike+ (H, As surface, Ac cross-sectional area).
 
 In the table view, the overview of the values is easier.
 
@@ -216,7 +218,7 @@ Note:
 
 * The water depth is the value above the bottom level or the outlet. A hydr_geometry can thus be used for several wastewater structure if they are built similar.
 
-* Be aware to respect the rules in Mike (e.g. continuous encreasing cross_section_area)
+* Be aware to respect the rules in Mike (e.g. continuous increasing cross_section_area)
 
 * As long as the hydr_geometry record is not saved, you see in the Features Attribute window just the Obj_Id in brackets. After saving, you will see the identifier you have entered.
 
@@ -243,7 +245,7 @@ A second outlet has already been created (green = discharged combined wastewater
 
 4. Click next to outlet 2 to place the second wastewater node.
 
-5. The Feature Attributes window for this wastewater node appears. Enter a meaningful identifier (e.g. 1.070-WN2 for wastewater node 2 of the 1.070 special structure). This designation also appears in MikeUrban/+. The new wastewater node is saved with OK.
+5. The Feature Attributes window for this wastewater node appears. Enter a meaningful identifier (e.g. 1.070-WN2 for wastewater node 2 of the 1.070 special structure). This designation also appears in Mike+. The new wastewater node is saved with OK.
 
 .. figure:: images/overflow2.jpg
 
@@ -264,7 +266,7 @@ The overflow Feature Attributes window opens.
 
 9. Define the two wastewater nodes of the overflow (fk_wastewater_node = from node, fk_overflow_to = to node) by selecting them on the map with the **map identification**-tool.
 
-The attributes in the upper hydraulic section must be filled in, they will be transferred to MikeUrban/+.
+The attributes in the upper hydraulic section must be filled in, they will be transferred to Mike+.
 
 
 .. figure:: images/overflow4.jpg
@@ -301,7 +303,7 @@ The Feature Attributes window for the overflow characteristic appears:
 
 .. figure:: images/overflow_char1.jpg
 
-1. Here too, the identifer is later adopted in MikeUrban/+ as a table name for a QH relationship, which is used, for example, in a local controller.
+1. Here too, the identifer is later adopted in Mike+ as a table name for a QH relationship, which is used, for example, in a local controller.
 
 2. Define the necessary HQ or QQ values with the **add child object** button. Be sure to choose the correct tab corresponding to the choice in **kind_overflow_char**
 
