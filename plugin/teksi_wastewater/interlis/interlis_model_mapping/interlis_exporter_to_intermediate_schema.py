@@ -467,10 +467,6 @@ class InterlisExporterToIntermediateSchema:
         self._export_file()
         self._check_for_stop()
 
-        logger.info(
-            "Exporting TWW.re_maintenance_event_wastewater_structure -> ABWASSER.erhaltungsereignis_abwasserbauwerkassoc"
-        )
-        self._export_re_maintenance_event_wastewater_structure()
         self._check_for_stop()
 
     def _export_organisation(self):
@@ -3126,7 +3122,7 @@ class InterlisExporterToIntermediateSchema:
         """
         Returns common attributes for maintenance_event
         """
-        return {
+        maintenance_event = {
             **self.vsa_base_common(row, type_name),
             "ausfuehrender": row.operator,
             "bemerkung": row.remark,
@@ -3142,6 +3138,27 @@ class InterlisExporterToIntermediateSchema:
             "ausfuehrende_firmaref": self.get_tid(row.fk_operating_company__REL),
             "massnahmeref": self.get_tid(row.fk_measure__REL),
         }
+
+        if self.model == config.MODEL_NAME_VSA_KEK:
+            query = self.tww_session.query(
+                self.model_classes_tww_od.re_maintenance_event_wastewater_structure
+            ).where(
+                self.model_classes_tww_od.re_maintenance_event_wastewater_structure.fk_maintenance_event
+                == row.obj_id
+            )
+            for assoc_row in query:
+                abwasserbauwerkref = maintenance_event.get("abwasserbauwerkref", None)
+                if abwasserbauwerkref is not None:
+                    logger.warning(
+                        f"Maintenance event '{row.obj_id}' is associated with multiple wastewater structures, but only the first will be exported: '{abwasserbauwerkref}'. This is a limitation of the KEK model."
+                    )
+                    break
+
+                maintenance_event["abwasserbauwerkref"] = self.get_tid(
+                    assoc_row.fk_wastewater_structure__REL
+                )
+
+        return maintenance_event
 
     def connection_object_common(self, row, type_name):
         """
