@@ -171,6 +171,22 @@ class DatabaseUtils:
             cursor.execute("SELECT tww_app.update_wastewater_structure_label(NULL, True);")
 
     @staticmethod
+    def disable_last_modification_triggers():
+        logger.info("Disable symbology triggers")
+        DatabaseUtils.execute("SELECT tww_sys.alter_last_modification_triggers('disable');")
+
+    @staticmethod
+    def enable_last_modification_triggers():
+        logger.info("Enable symbology triggers")
+        DatabaseUtils.execute("SELECT tww_sys.alter_last_modification_triggers('enable');")
+
+    @staticmethod
+    def check_last_modification_triggers_enabled():
+        logger.info("Check symbology triggers enabled")
+        row = DatabaseUtils.fetchone("SELECT tww_sys.check_last_modification_enabled();")
+        return row[0]
+
+    @staticmethod
     def check_oid_prefix() -> List[str]:
         """Check whether the oid_prefix is set up for production"""
         logger.info("Checking setup of oid prefix")
