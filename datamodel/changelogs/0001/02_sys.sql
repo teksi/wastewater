@@ -122,7 +122,7 @@ ELSE
 		WHERE p.proname  LIKE 'update_last_modified%'
 		and p.pronamespace::regnamespace::text = 'tww_sys'
 		LOOP
-			EXECUTE FORMAT('ALTER TABLE %I.%I %I TRIGGER %I',schdf,tbldf,upper(action_name),trig);
+			EXECUTE FORMAT('ALTER TABLE %I.%I %S TRIGGER %I',schdf,tbldf,upper(action_name),trig);
 		END LOOP;
 		RETURN;
 END IF;
