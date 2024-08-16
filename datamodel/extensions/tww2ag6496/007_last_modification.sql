@@ -2,7 +2,7 @@
 -------- Metainformation --------
 ---------------------------------
 
-CREATE OR REPLACE FUNCTION {ext_schema}.update_last_ag_modification()
+CREATE OR REPLACE FUNCTION tww_sys.update_last_modified_agxx()
 RETURNS trigger AS
 $BODY$
   DECLARE
@@ -33,11 +33,11 @@ CREATE TRIGGER before_networkelement_change
     BEFORE INSERT OR UPDATE 
     ON tww_od.wastewater_networkelement
     FOR EACH ROW
-    EXECUTE FUNCTION {ext_schema}.update_last_ag_modification();
+    EXECUTE FUNCTION tww_sys.update_last_modified_agxx();
 
 DROP TRIGGER IF EXISTS before_overflow_change ON tww_od.overflow;		
 CREATE TRIGGER before_overflow_change
     BEFORE INSERT OR UPDATE 
     ON tww_od.overflow
     FOR EACH ROW
-    EXECUTE FUNCTION {ext_schema}.update_last_ag_modification();
+    EXECUTE FUNCTION tww_sys.update_last_modified_agxx();

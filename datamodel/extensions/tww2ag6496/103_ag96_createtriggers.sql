@@ -111,16 +111,16 @@ CREATE TRIGGER on_versickerungsbereichag_delete
     FOR EACH ROW
     EXECUTE FUNCTION {ext_schema}.ft_versickerungsbereichag_delete();
 
-DROP TRIGGER IF EXISTS before_networkelement_change ON tww_od.wastewater_networkelement;		
-CREATE TRIGGER before_networkelement_change
+DROP TRIGGER IF EXISTS update_last_modified_agxx_wastewater_networkelement ON tww_od.wastewater_networkelement;		
+CREATE TRIGGER update_last_modified_agxx_wastewater_networkelement
     BEFORE INSERT OR UPDATE 
     ON tww_od.wastewater_networkelement
     FOR EACH ROW
-    EXECUTE FUNCTION {ext_schema}.update_last_ag_modification();
+    EXECUTE FUNCTION tww_sys.update_last_modified_agxx();
 
-DROP TRIGGER IF EXISTS before_overflow_change ON tww_od.overflow;		
-CREATE TRIGGER before_overflow_change
+DROP TRIGGER IF EXISTS update_last_modified_agxx_overflow ON tww_od.overflow;		
+CREATE TRIGGER update_last_modified_agxx_overflow
     BEFORE INSERT OR UPDATE 
     ON tww_od.overflow
     FOR EACH ROW
-    EXECUTE FUNCTION {ext_schema}.update_last_ag_modification();
+    EXECUTE FUNCTION tww_sys.update_last_modified_agxx();
