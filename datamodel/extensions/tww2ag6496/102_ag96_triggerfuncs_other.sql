@@ -1,156 +1,182 @@
 ---------- GEPHaltung ----------
 --------------------------------
 
-CREATE OR REPLACE FUNCTION {ext_schema}.ft_gephaltung_upsert()
+CREATE OR REPLACE FUNCTION {ext_schema}.ft_gephaltung_insert()
 RETURNS trigger AS
 $BODY$
 DECLARE
-	pipe_profile_record record;
-	new_pipe_profile varchar(16);
-	ws_oid_for_measure varchar(16);
+	pp_oid varchar(16);
+	ws_oid varchar(16);
+	rp_from_oid varchar(16);
+	rp_to_oid varchar(16);
 BEGIN
 
-	-- insert pipe profile if not exists
-	SELECT
-	  ppt.code
-	, pp.obj_id
-	INTO pipe_profile_record
-	FROM (SELECT NEW.*) vw_val
-	LEFT JOIN tww_vl.pipe_profile_profile_type ppt ON ppt.value_de =  vw_val.profiltyp 
-	LEFT JOIN tww_od.pipe_profile pp 
-		ON pp.profile_type=ppt.code 
-		AND pp.identifier = 
-			CASE WHEN vw_val.lichte_breite_ist= 0 OR vw_val.lichte_hoehe_ist=vw_val.lichte_breite_ist
-			THEN ppt.value_de
-			ELSE
-				array_to_string(
-				  array[ppt.abbr_de,vw_val.lichte_hoehe_ist::varchar,vw_val.lichte_breite_ist::varchar]
-				  ,'_' -- delimiter
-				)
-			END 
-	;
+	WITH ppt AS (
+		SELECT code, abbr_de from tww_vl.pipe_profile_profile_type ppt WHERE ppt.value_de =  NEW.profiltyp 
+	) 
+	SELECT obj_id into pp_oid from tww_od.pipe_profile pp 
+	WHERE pp.profile_type=ppt.code AND pp.identifier = 
+		CASE WHEN NEW.lichte_breite_ist= 0 OR NEW.lichte_hoehe_ist=NEW.lichte_breite_ist
+		THEN NEW.profiltyp
+		ELSE
+			array_to_string(
+			  array[ppt.abbr_de,NEW.lichte_hoehe_ist::varchar,NEW.lichte_breite_ist::varchar]
+			  ,'_' -- delimiter
+			)
+		END;
 	
 	CASE 
-		WHEN pipe_profile_record.obj_id is null
+		WHEN pp_oid is null
 		THEN
+			WITH ppt AS (
+				SELECT code, abbr_de from tww_vl.pipe_profile_profile_type ppt WHERE ppt.value_de =  NEW.profiltyp 
+			) 
 			INSERT INTO tww_od.pipe_profile
 			(
-			  obj_id
-			, profile_type
+			  profile_type
 			, identifier
 			, height_width_ratio
-			, fk_dataowner
 			, fk_provider
-			)
-			(SELECT
-			  tww_sys.generate_oid('tww_od'::text, 'pipe_profile'::text)
-			, ppt.code
-			, CASE WHEN vw_val.lichte_breite_ist= 0 OR vw_val.lichte_hoehe_ist=vw_val.lichte_breite_ist
-				THEN ppt.value_de
+			) VALUES
+			(
+			  ppt.code
+			, CASE WHEN NEW.lichte_breite_ist= 0 OR NEW.lichte_hoehe_ist=NEW.lichte_breite_ist
+				THEN NEW.profiltyp
 				ELSE
 			    array_to_string(
-			      array[ppt.abbr_de,vw_val.lichte_hoehe_ist::varchar,vw_val.lichte_breite_ist::varchar]
+			      array[ppt.abbr_de,NEW.lichte_hoehe_ist::varchar,NEW.lichte_breite_ist::varchar]
 				  ,'_' -- delimiter
 				)
 			  END
-			, (CASE WHEN vw_val.lichte_breite_ist= 0 OR vw_val.lichte_breite_ist IS NULL THEN 1
-			  ELSE vw_val.lichte_hoehe_ist::numeric/vw_val.lichte_breite_ist END)::numeric(5,2)
-			, downr.value_obj_id
+			, (CASE WHEN NEW.lichte_breite_ist= 0 OR vw_val.lichte_breite_ist IS NULL THEN 1
+			  ELSE NEW.lichte_hoehe_ist::numeric/NEW.lichte_breite_ist END)::numeric(5,2)
 			, {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
-			FROM (SELECT NEW.*) vw_val
-			LEFT JOIN tww_vl.pipe_profile_profile_type ppt ON ppt.value_de =  vw_val.profiltyp 
-			LEFT JOIN tww_od.default_values downr on fieldname = 'fk_dataowner'
 			)
-			RETURNING obj_id INTO new_pipe_profile;
+			RETURNING obj_id INTO pp_oid;
 		ELSE
-			new_pipe_profile:=pipe_profile_record.obj_id;
+			NULL;
 	END CASE;
 	
+	
 	-- Reach 
-	UPDATE tww_app.vw_tww_reach re SET
-      clear_height = vw_val.lichte_hoehe_ist
-	, ag96_clear_height_planned = vw_val.lichte_hoehe_geplant
-	, ag96_clear_width_planned = vw_val.lichte_breite_geplant
-    , material = re_mat.code
-    , ch_usage_current = ch_uc.code
-    , ch_function_hierarchic = ch_fhi.code
-    , ws_status = ws_st.code
-    , ws_fk_owner = {ext_schema}.convert_organisationid_to_vsa(vw_val.eigentuemer)
-	, ws_status_survey_year = vw_val.jahr_zustandserhebung
-    , ch_function_hydraulic = ch_fhy.code
-    , fk_pipe_profile = new_pipe_profile
-	, hydraulic_load_current = vw_val.hydraulischebelastung
-    , length_effective = vw_val.laengeeffektiv
-    , progression3d_geometry = ST_Force3D(vw_val.verlauf)
-    , reliner_material = re_rm.code
-    , reliner_nominal_size = vw_val.reliner_nennweite
-    , relining_construction = re_rc.code
-    , relining_kind = re_rk.code
---    , fk_dataowner = downr.value_obj_id
-    , fk_provider = {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
-    , identifier = vw_val.bezeichnung
-    , last_modification = vw_val.letzte_aenderung_wi
-    , remark = vw_val.bemerkung_wi
-    , ch_usage_planned = ch_up.code
-    , ws_financing = ws_fin.code
-    , ws_fk_operator = {ext_schema}.convert_organisationid_to_vsa(vw_val.betreiber)
-    , ws_identifier = vw_val.bezeichnung
-    , ws_last_modification = vw_val.letzte_aenderung_wi
-    , ws_remark = vw_val.bemerkung_wi
-    , ws_renovation_necessity = ws_rn.code
-    , ws_replacement_value = vw_val.wiederbeschaffungswert
-    , ws_rv_base_year = vw_val.wbw_basisjahr
-    , ws_structure_condition = ws_sc.code
-    , ws_year_of_construction = vw_val.baujahr
-    , rp_from_elevation_accuracy = rp_ea_fr.code
---    , rp_from_fk_dataowner = downr.value_obj_id
-    , rp_from_fk_provider = {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
-    , rp_from_fk_wastewater_networkelement = vw_val.startknoten
-    , rp_from_last_modification = vw_val.letzte_aenderung_wi
-    , rp_from_level = vw_val.kote_beginn
-    , rp_to_elevation_accuracy = rp_ea_to.code
-    --, rp_to_fk_dataowner = downr.value_obj_id
-    , rp_to_fk_provider = {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
-    , rp_to_fk_wastewater_networkelement = vw_val.endknoten
-    , rp_to_last_modification = vw_val.letzte_aenderung_wi
-    , rp_to_level = vw_val.kote_ende
-	, ag64_last_modification = vw_val.letzte_aenderung_wi
-    , ag64_remark = vw_val.bemerkung_wi
-	, ag64_fk_provider = {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
-	, ag96_last_modification = vw_val.letzte_aenderung_gep
-    , ag96_remark = vw_val.bemerkung_gep
-	, ag96_fk_provider = {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_gep)
-	FROM (SELECT NEW.*) vw_val
-	LEFT JOIN tww_vl.reach_material re_mat ON re_mat.value_de=vw_val.material
-	LEFT JOIN tww_vl.channel_usage_current_import_rel_agxx ch_uc ON ch_uc.value_de=vw_val.nutzungsartag_ist
-	LEFT JOIN tww_vl.channel_function_hierarchic ch_fhi ON ch_fhi.value_de=vw_val.funktionhierarchisch
-	LEFT JOIN tww_vl.channel_function_hydraulic ch_fhy ON ch_fhy.value_de=vw_val.funktionhydraulisch
-	LEFT JOIN tww_vl.channel_usage_planned_import_rel_agxx ch_up ON ch_up.value_de=vw_val.nutzungsartag_geplant
-	LEFT JOIN tww_vl.wastewater_structure_status ws_st ON ws_st.value_de=vw_val.bauwerkstatus
-	LEFT JOIN tww_vl.wastewater_structure_structure_condition ws_sc ON ws_sc.value_de=vw_val.baulicherzustand
-	LEFT JOIN tww_vl.wastewater_structure_renovation_necessity ws_rn ON ws_rn.value_de=vw_val.sanierungsbedarf
-	LEFT JOIN tww_vl.wastewater_structure_financing ws_fin ON ws_fin.value_de=vw_val.finanzierung
-	LEFT JOIN tww_vl.reach_reliner_material re_rm ON re_rm.value_de=vw_val.reliner_material
-	LEFT JOIN tww_vl.reach_relining_construction re_rc ON re_rc.value_de=vw_val.reliner_bautechnik
-	LEFT JOIN tww_vl.reach_relining_kind re_rk ON re_rk.value_de=vw_val.reliner_art
-	LEFT JOIN tww_vl.reach_point_elevation_accuracy rp_ea_fr ON rp_ea_fr.value_de=vw_val.hoehengenauigkeit_von
-	LEFT JOIN tww_vl.reach_point_elevation_accuracy rp_ea_to ON rp_ea_to.value_de=vw_val.hoehengenauigkeit_nach
-	WHERE vw_val.obj_id=re.obj_id
-	RETURNING ws_obj_id INTO ws_oid_for_measure;
-	IF NOT FOUND THEN
-	INSERT INTO tww_app.vw_tww_reach
+    INSERT INTO tww_od.wastewater_networkelement( 
+	  obj_id
+	, identifier
+	, fk_provider
+	, ag64_last_modification
+    , ag64_remark
+	, ag64_fk_provider
+	, ag96_last_modification
+    , ag96_remark
+	, ag96_fk_provider	
+	) VALUES
+	(SELECT
+	  NEW.obj_id
+	, NEW.bezeichnung
+    , {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+    , NEW.letzte_aenderung_wi
+    , NEW.bemerkung_wi
+	, {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+    , NEW.letzte_aenderung_gep
+    , NEW.bemerkung_gep
+	, {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
+	);
+	
+
+	
+	INSERT INTO tww_od.wastewater_structure
+	(
+	  fk_wastewater_networkelement
+    , status
+	, fk_owner
+	, status_survey_year
+    , financing
+    , fk_operator
+	, identifier
+    , last_modification
+    , renovation_necessity
+    , replacement_value
+    , structure_condition
+    , year_of_construction
+	, ag96_fk_measure
+	)VALUES
+	(
+	  NEW.obj_id
+    , (SELECT code FROM tww_vl.wastewater_structure_status WHERE value_de=NEW.bauwerkstatus)
+	, {ext_schema}.convert_organisationid_to_vsa(NEW.eigentuemer)
+	, NEW.jahr_zustandserhebung
+    , (SELECT code FROM tww_vl.wastewater_structure_financing WHERE value_de=NEW.finanzierung)
+    , {ext_schema}.convert_organisationid_to_vsa(NEW.betreiber)
+	, NEW.bezeichnung
+    , NEW.letzte_aenderung_wi
+    , (SELECT code FROM tww_vl.wastewater_structure_renovation_necessity WHERE value_de=NEW.sanierungsbedarf)
+    , NEW.wiederbeschaffungswert
+    , (SELECT code FROM tww_vl.wastewater_structure_structure_condition WHERE value_de=NEW.baulicherzustand)
+    , NEW.baujahr
+	, NEW.gepmassnahmeref
+	)
+	RETURNING obj_id into ws_oid;
+	
+	INSERT INTO tww_od.channel
+	(
+	  obj_id
+    , ch_usage_current
+    , ch_function_hierarchic
+	, ch_function_hydraulic
+	, ch_usage_planned
+	)VALUES
+	(
+	  ws_oid
+    , (SELECT code FROM tww_vl.channel_usage_current_import_rel_agxx WHERE value_de=NEW.nutzungsartag_ist)
+    , (SELECT code FROM tww_vl.channel_function_hierarchic WHERE value_de=NEW.funktionhierarchisch)
+    , (SELECT code FROM tww_vl.channel_function_hydraulic WHERE value_de=NEW.funktionhydraulisch)
+    , (SELECT code FROM tww_vl.channel_usage_planned_import_rel_agxx WHERE value_de=NEW.nutzungsartag_geplant)
+	);
+	
+	INSERT INTO tww_od.reach_point
+	(
+      elevation_accuracy
+	, situation3d_geometry
+    , fk_provider
+    , fk_wastewater_networkelement
+    , last_modification
+    , level
+	)VALUES
+	(
+      (SELECT code FROM tww_vl.reach_point_elevation_accuracy WHERE value_de=NEW.hoehengenauigkeit_von)
+	, ST_SetSRID(ST_MakePoint(ST_X(ST_StartPoint(NEW.verlauf)), ST_X(ST_StartPoint(NEW.verlauf))), COALESCE(NEW.kote_beginn,'nan')), 2056 )
+	, {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+    , NEW.startknoten
+	, NEW.letzte_aenderung_wi
+    , NEW.kote_beginn
+	)RETURNING obj_id into rp_from_oid;
+
+	INSERT INTO tww_od.reach_point
+	(
+      elevation_accuracy
+	, situation3d_geometry
+    , fk_provider
+    , fk_wastewater_networkelement
+    , last_modification
+    , level
+	)VALUES
+	(
+      (SELECT code FROM tww_vl.reach_point_elevation_accuracy WHERE value_de=NEW.hoehengenauigkeit_nach)
+	, ST_SetSRID(ST_MakePoint(ST_X(ST_EndPoint(NEW.verlauf)), ST_X(ST_EndPoint(NEW.verlauf))), COALESCE(NEW.kote_ende,'nan')), 2056 )
+	, {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+    , NEW.endknoten
+	, NEW.letzte_aenderung_wi
+    , NEW.kote_ende
+	)RETURNING obj_id into rp_to_oid;
+	
+	
+	INSERT INTO tww_od.reach re
 	(
 	  obj_id
     , clear_height
 	, ag96_clear_height_planned
 	, ag96_clear_width_planned
     , material
-    , ch_usage_current
-    , ch_function_hierarchic
-    , ws_status
-    , ws_fk_owner
-	, ws_status_survey_year
-    , ch_function_hydraulic
     , fk_pipe_profile
 	, hydraulic_load_current
     , length_effective
@@ -159,122 +185,162 @@ BEGIN
     , reliner_nominal_size
     , relining_construction
     , relining_kind
-    , fk_dataowner
-    , fk_provider
-    , identifier
-    , last_modification
-    , remark
-    , ch_usage_planned
-    , ws_financing
-    , ws_fk_operator
-    , ws_identifier
-    , ws_last_modification
-    , ws_remark
-    , ws_renovation_necessity
-    , ws_replacement_value
-    , ws_rv_base_year
-    , ws_structure_condition
-    , ws_year_of_construction
-    , rp_from_elevation_accuracy
-    , rp_from_fk_dataowner
-    , rp_from_fk_provider
-    , rp_from_fk_wastewater_networkelement
-    , rp_from_last_modification
-    , rp_from_level
-    , rp_to_elevation_accuracy
-    , rp_to_fk_dataowner
-    , rp_to_fk_provider
-    , rp_to_fk_wastewater_networkelement
-    , rp_to_last_modification
-    , rp_to_level
-	, ag64_last_modification
-    , ag64_remark
-	, ag64_fk_provider
-	, ag96_last_modification
-    , ag96_remark
-	, ag96_fk_provider
+	, fk_reach_point_from
+	, fk_reach_point_to
+	)VALUES
+	(
+	  NEW.obj_id
+    , NEW.lichte_hoehe_ist
+	, NEW.lichte_hoehe_geplant
+	, NEW.lichte_breite_geplant
+    , (SELECT code FROM tww_vl.reach_material WHERE value_de=NEW.material)
+    , pp_oid
+	, NEW.hydraulischebelastung
+    , NEW.laengeeffektiv
+    , ST_Force3D(NEW.verlauf)
+    , (SELECT code FROM tww_vl.reach_reliner_material WHERE value_de=NEW.reliner_material)
+    , NEW.reliner_nennweite
+    , (SELECT code FROM tww_vl.reach_relining_construction WHERE value_de=NEW.reliner_bautechnik)
+    , (SELECT code FROM tww_vl.reach_relining_kind WHERE value_de=NEW.reliner_art)
+	, rp_from_oid
+	, rp_to_oid
 	)
-	( SELECT 
-	  vw_val.obj_id
-    , vw_val.lichte_hoehe_ist
-	, vw_val.lichte_hoehe_geplant
-	, vw_val.lichte_breite_geplant
-    , re_mat.code
-    , ch_uc.code
-    , ch_fhi.code
-    , ws_st.code
-    , {ext_schema}.convert_organisationid_to_vsa(vw_val.eigentuemer)
-	, vw_val.jahr_zustandserhebung
-    , ch_fhy.code
-    , new_pipe_profile
-	, vw_val.hydraulischebelastung
-    , vw_val.laengeeffektiv
-    , ST_Force3D(vw_val.verlauf)
-    , re_rm.code
-    , vw_val.reliner_nennweite
-    , re_rc.code
-    , re_rk.code
-    , downr.value_obj_id
-    , {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
-    , vw_val.bezeichnung
-    , vw_val.letzte_aenderung_wi
-    , vw_val.bemerkung_wi
-    , ch_up.code
-    , ws_fin.code
-    , {ext_schema}.convert_organisationid_to_vsa(vw_val.betreiber)
-    , vw_val.bezeichnung
-    , vw_val.letzte_aenderung_wi
-    , vw_val.bemerkung_wi
-    , ws_rn.code
-    , vw_val.wiederbeschaffungswert
-    , vw_val.wbw_basisjahr
-    , ws_sc.code
-    , vw_val.baujahr
-    , rp_ea_fr.code
-    , downr.value_obj_id
-    , {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
-    , vw_val.startknoten
-    , vw_val.letzte_aenderung_wi
-    , vw_val.kote_beginn
-    , rp_ea_to.code
-    , downr.value_obj_id
-    , {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
-    , vw_val.endknoten
-    , vw_val.letzte_aenderung_wi
-    , vw_val.kote_ende
-	, vw_val.letzte_aenderung_wi
-    , vw_val.bemerkung_wi
-	, {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
-	, vw_val.letzte_aenderung_gep
-    , vw_val.bemerkung_gep
-	, {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_gep)
-	FROM (SELECT NEW.*) vw_val
-	LEFT JOIN tww_vl.reach_material re_mat ON re_mat.value_de=vw_val.material
-	LEFT JOIN tww_vl.channel_usage_current_import_rel_agxx ch_uc ON ch_uc.value_de=vw_val.nutzungsartag_ist
-	LEFT JOIN tww_vl.channel_function_hierarchic ch_fhi ON ch_fhi.value_de=vw_val.funktionhierarchisch
-	LEFT JOIN tww_vl.channel_function_hydraulic ch_fhy ON ch_fhy.value_de=vw_val.funktionhydraulisch
-	LEFT JOIN tww_vl.channel_usage_planned_import_rel_agxx ch_up ON ch_up.value_de=vw_val.nutzungsartag_geplant
-	LEFT JOIN tww_vl.wastewater_structure_status ws_st ON ws_st.value_de=vw_val.bauwerkstatus
-	LEFT JOIN tww_vl.wastewater_structure_structure_condition ws_sc ON ws_sc.value_de=vw_val.baulicherzustand
-	LEFT JOIN tww_vl.wastewater_structure_renovation_necessity ws_rn ON ws_rn.value_de=vw_val.sanierungsbedarf
-	LEFT JOIN tww_vl.wastewater_structure_financing ws_fin ON ws_fin.value_de=vw_val.finanzierung
-	LEFT JOIN tww_vl.reach_reliner_material re_rm ON re_rm.value_de=vw_val.reliner_material
-	LEFT JOIN tww_vl.reach_relining_construction re_rc ON re_rc.value_de=vw_val.reliner_bautechnik
-	LEFT JOIN tww_vl.reach_relining_kind re_rk ON re_rk.value_de=vw_val.reliner_art
-	LEFT JOIN tww_vl.reach_point_elevation_accuracy rp_ea_fr ON rp_ea_fr.value_de=vw_val.hoehengenauigkeit_von
-	LEFT JOIN tww_vl.reach_point_elevation_accuracy rp_ea_to ON rp_ea_to.value_de=vw_val.hoehengenauigkeit_nach
-	LEFT JOIN tww_od.default_values downr on fieldname = 'fk_dataowner'
-	)	RETURNING ws_obj_id INTO ws_oid_for_measure;
-	END IF;
-	------------ GEPMassnahme ------------ 
-	UPDATE tww_od.wastewater_structure
-        SET ag96_fk_measure = coalesce(NEW.gepmassnahmeref,ag96_fk_measure)
-        WHERE obj_id = ws_oid_for_measure;
-
 	RETURN NEW;
 END;
 $BODY$
 LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION {ext_schema}.ft_gephaltung_update()
+RETURNS trigger AS
+$BODY$
+DECLARE
+	pipe_profile_record record;
+	new_pipe_profile varchar(16);
+	ws_oid_for_measure varchar(16);
+BEGIN
+
+	WITH ppt AS (
+		SELECT code, abbr_de from tww_vl.pipe_profile_profile_type ppt WHERE ppt.value_de =  NEW.profiltyp 
+	) 
+	SELECT obj_id into pp_oid from tww_od.pipe_profile pp 
+	WHERE pp.profile_type=ppt.code AND pp.identifier = 
+		CASE WHEN NEW.lichte_breite_ist= 0 OR NEW.lichte_hoehe_ist=NEW.lichte_breite_ist
+		THEN NEW.profiltyp
+		ELSE
+			array_to_string(
+			  array[ppt.abbr_de,NEW.lichte_hoehe_ist::varchar,NEW.lichte_breite_ist::varchar]
+			  ,'_' -- delimiter
+			)
+		END;
+	
+	CASE 
+		WHEN pp_oid is null
+		THEN
+			WITH ppt AS (
+				SELECT code, abbr_de from tww_vl.pipe_profile_profile_type ppt WHERE ppt.value_de =  NEW.profiltyp 
+			) 
+			INSERT INTO tww_od.pipe_profile
+			(
+			  profile_type
+			, identifier
+			, height_width_ratio
+			, fk_provider
+			) VALUES
+			(
+			  ppt.code
+			, CASE WHEN NEW.lichte_breite_ist= 0 OR NEW.lichte_hoehe_ist=NEW.lichte_breite_ist
+				THEN NEW.profiltyp
+				ELSE
+			    array_to_string(
+			      array[ppt.abbr_de,NEW.lichte_hoehe_ist::varchar,NEW.lichte_breite_ist::varchar]
+				  ,'_' -- delimiter
+				)
+			  END
+			, (CASE WHEN NEW.lichte_breite_ist= 0 OR vw_val.lichte_breite_ist IS NULL THEN 1
+			  ELSE NEW.lichte_hoehe_ist::numeric/NEW.lichte_breite_ist END)::numeric(5,2)
+			, {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
+			)
+			RETURNING obj_id INTO pp_oid;
+		ELSE
+			NULL;
+	END CASE;
+	
+	UPDATE tww_od.wastewater_networkelement SET
+	  identifier = NEW.bezeichnung
+	, fk_provider = {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+	, ag64_last_modification = NEW.letzte_aenderung_wi
+    , ag64_remark = NEW.bemerkung_wi
+	, ag64_fk_provider = {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+	, ag96_last_modification = NEW.letzte_aenderung_gep
+    , ag96_remark = NEW.bemerkung_gep
+	, ag96_fk_provider = {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
+	WHERE obj_id = NEW.obj_id;
+	
+	UPDATE tww_od.wastewater_structure SET 
+      status = (SELECT code FROM tww_vl.wastewater_structure_status WHERE value_de=NEW.bauwerkstatus)
+	, fk_owner = {ext_schema}.convert_organisationid_to_vsa(NEW.eigentuemer)
+	, status_survey_year = NEW.jahr_zustandserhebung
+    , financing = (SELECT code FROM tww_vl.wastewater_structure_financing WHERE value_de=NEW.finanzierung)
+    , fk_operator = {ext_schema}.convert_organisationid_to_vsa(NEW.betreiber)
+	, identifier = NEW.bezeichnung
+    , last_modification = NEW.letzte_aenderung_wi
+    , renovation_necessity = (SELECT code FROM tww_vl.wastewater_structure_renovation_necessity WHERE value_de=NEW.sanierungsbedarf)
+    , replacement_value = NEW.wiederbeschaffungswert
+    , structure_condition = (SELECT code FROM tww_vl.wastewater_structure_structure_condition WHERE value_de=NEW.baulicherzustand)
+    , year_of_construction = NEW.baujahr
+	, ag96_fk_measure = NEW.gepmassnahmeref
+	WHERE fk_wastewater_networkelement = NEW.obj_id
+	RETURNING obj_id into ws_oid;
+	
+	UPDATE tww_od.channel SET 
+    , ch_usage_current = (SELECT code FROM tww_vl.channel_usage_current_import_rel_agxx WHERE value_de=NEW.nutzungsartag_ist)
+    , ch_function_hierarchic = (SELECT code FROM tww_vl.channel_function_hierarchic WHERE value_de=NEW.funktionhierarchisch)
+	, ch_function_hydraulic = (SELECT code FROM tww_vl.channel_function_hydraulic WHERE value_de=NEW.funktionhydraulisch)
+	, ch_usage_planned = (SELECT code FROM tww_vl.channel_usage_planned_import_rel_agxx WHERE value_de=NEW.nutzungsartag_geplant)
+	WHERE obj_id = ws_oid;
+	
+	SELECT fk_reach_point_from,fk_reach_point_to INTO rp_from_oid,rp_to_oid 
+	FROM tww_od.reach
+	WHERE obj_id = OLD.obj_id
+	
+	
+	UPDATE tww_od.reach_point SET 
+      elevation_accuracy = (SELECT code FROM tww_vl.reach_point_elevation_accuracy WHERE value_de=NEW.hoehengenauigkeit_von)
+	, situation3d_geometry = ST_SetSRID(ST_MakePoint(ST_X(ST_StartPoint(NEW.verlauf)), ST_X(ST_StartPoint(NEW.verlauf))), COALESCE(NEW.kote_beginn,'nan')), 2056 )
+    , fk_provider = {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+    , fk_wastewater_networkelement = NEW.startknoten
+    , last_modification = NEW.letzte_aenderung_wi
+    , level = NEW.kote_beginn
+	WHERE obj_id = rp_from_oid;
+
+	UPDATE tww_od.reach_point SET 
+      elevation_accuracy = (SELECT code FROM tww_vl.reach_point_elevation_accuracy WHERE value_de=NEW.hoehengenauigkeit_von)
+	, situation3d_geometry = ST_SetSRID(ST_MakePoint(ST_X(ST_EndPoint(NEW.verlauf)), ST_X(ST_EndPoint(NEW.verlauf))), COALESCE(NEW.kote_ende,'nan')), 2056 )
+    , fk_provider = {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+    , fk_wastewater_networkelement = NEW.endknoten
+    , last_modification = NEW.letzte_aenderung_wi
+    , level = NEW.kote_ende
+	WHERE obj_id = rp_to_oid;
+	
+	UPDATE tww_od.reach re SET
+	  clear_height = NEW.lichte_hoehe_ist
+	, ag96_clear_height_planned = NEW.lichte_hoehe_geplant
+	, ag96_clear_width_planned = NEW.lichte_breite_geplant
+    , material = (SELECT code FROM tww_vl.reach_material WHERE value_de=NEW.material)
+    , fk_pipe_profile = pp_oid
+	, hydraulic_load_current = NEW.hydraulischebelastung
+    , length_effective = NEW.laengeeffektiv
+    , progression3d_geometry = ST_Force3D(NEW.verlauf)
+    , reliner_material = (SELECT code FROM tww_vl.reach_reliner_material WHERE value_de=NEW.reliner_material)
+    , reliner_nominal_size = NEW.reliner_nennweite
+    , relining_construction = (SELECT code FROM tww_vl.reach_relining_construction WHERE value_de=NEW.reliner_bautechnik)
+    , relining_kind = (SELECT code FROM tww_vl.reach_relining_kind WHERE value_de=NEW.reliner_art)
+	
+	RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
 
 CREATE OR REPLACE FUNCTION {ext_schema}.ft_gephaltung_delete()
 RETURNS trigger AS
@@ -559,34 +625,13 @@ LANGUAGE plpgsql;
 --- Ueberlauf_Foerderaggregat ---
 ---------------------------------
 
-CREATE OR REPLACE FUNCTION {ext_schema}.ft_ueberlauf_foerderaggregat_upsert()
+CREATE OR REPLACE FUNCTION {ext_schema}.ft_ueberlauf_foerderaggregat_insert()
 RETURNS trigger AS
 $BODY$
 BEGIN
-	UPDATE tww_app.vw_tww_overflow ov
-	SET
-	  overflow_type  = CASE WHEN NEW.art  = 'Foerderaggregat' THEN 'pump'::tww_app.overflow_type
-	    WHEN NEW.art  = 'Leapingwehr' THEN 'leapingweir'::tww_app.overflow_type
-	    WHEN NEW.art  = 'Streichwehr' THEN 'prank_weir'::tww_app.overflow_type
-	    ELSE 'unknown'::tww_app.overflow_type
-	    END
-	, fk_wastewater_node = NEW.knotenref
-	, fk_overflow_to = NEW.knoten_nachref
-	, fk_provider = {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
-	, remark = NEW.bemerkung_wi
-	, identifier = NEW.bezeichnung
-	, last_modification = NEW.letzte_aenderung_wi
-	, ag64_last_modification = NEW.letzte_aenderung_wi
-    , ag64_remark = NEW.bemerkung_wi
-	, ag64_fk_provider = {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
-	, ag96_last_modification = NEW.letzte_aenderung_gep
-    , ag96_remark = NEW.bemerkung_gep
-	, ag96_fk_provider = {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
-	WHERE ov.obj_id=NEW.obj_id;
-	IF NOT FOUND THEN 
-	INSERT INTO tww_app.vw_tww_overflow (
+
+	INSERT INTO tww_od.overflow (
 	  obj_id
-	, overflow_type  
 	, fk_wastewater_node
 	, fk_overflow_to
 	, fk_provider
@@ -603,11 +648,6 @@ BEGIN
 	VALUES
 	(	
 	  NEW.obj_id
-	, CASE WHEN NEW.art  = 'Foerderaggregat' THEN 'pump'::tww_app.overflow_type
-	    WHEN NEW.art  = 'Leapingwehr' THEN 'leapingweir'::tww_app.overflow_type
-	    WHEN NEW.art  = 'Streichwehr' THEN 'prank_weir'::tww_app.overflow_type
-	    ELSE 'unknown'::tww_app.overflow_type
-	    END
 	, NEW.knotenref
 	, NEW.knoten_nachref
 	, {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
@@ -621,7 +661,56 @@ BEGIN
 	, NEW.bemerkung_gep
 	, {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
 	);
-	END IF;
+	
+	CASE WHEN NEW.art  = 'Foerderaggregat' THEN 
+		INSERT INTO tww_od.pump (obj_id) VALUES (NEW.obj_id);
+	WHEN NEW.art  = 'Leapingwehr' THEN 
+		INSERT INTO tww_od.leapingweir (obj_id) VALUES (NEW.obj_id);
+	WHEN NEW.art  = 'Streichwehr' THEN
+		INSERT INTO tww_od.prank_weir (obj_id) VALUES (NEW.obj_id);
+	ELSE NULL;
+	CASE;
+	
+  RETURN NEW;	
+
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION {ext_schema}.ft_ueberlauf_foerderaggregat_update()
+RETURNS trigger AS
+$BODY$
+BEGIN
+	UPDATE tww_od.overflow
+	SET
+	 fk_wastewater_node = NEW.knotenref
+	, fk_overflow_to = NEW.knoten_nachref
+	, fk_provider = {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+	, remark = NEW.bemerkung_wi
+	, identifier = NEW.bezeichnung
+	, last_modification = NEW.letzte_aenderung_wi
+	, ag64_last_modification = NEW.letzte_aenderung_wi
+    , ag64_remark = NEW.bemerkung_wi
+	, ag64_fk_provider = {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+	, ag96_last_modification = NEW.letzte_aenderung_gep
+    , ag96_remark = NEW.bemerkung_gep
+	, ag96_fk_provider = {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
+	WHERE obj_id=NEW.obj_id;
+	
+	CASE WHEN NEW.art  = 'Foerderaggregat' AND OLD.ov_type != 'pump' THEN
+		INSERT INTO tww_od.pump (obj_id) VALUES (NEW.obj_id);
+		DELETE FROM tww_od.leapingweir WHERE obj_id = OLD.obj_id;
+		DELETE FROM tww_od.prank_weir WHERE obj_id = OLD.obj_id;
+	WHEN NEW.art  = 'Leapingwehr'  AND OLD.ov_type != 'leapingweir' THEN
+		INSERT INTO tww_od.leapingweir (obj_id) VALUES (NEW.obj_id);
+		DELETE FROM tww_od.pump WHERE obj_id = OLD.obj_id;
+		DELETE FROM tww_od.prank_weir WHERE obj_id = OLD.obj_id;
+	WHEN NEW.art  = 'Streichwehr' AND OLD.ov_type != 'prank_weir' THEN
+		INSERT INTO tww_od.prank_weir (obj_id) VALUES (NEW.obj_id);
+		DELETE FROM tww_od.leapingweir WHERE obj_id = OLD.obj_id;
+		DELETE FROM tww_od.pump WHERE obj_id = OLD.obj_id;
+	ELSE NULL;
+	END CASE;
   RETURN NEW;	
 
 END;
@@ -876,57 +965,72 @@ LANGUAGE plpgsql;
 ---- Versickerungsbereichag -----
 ---------------------------------
 
-CREATE OR REPLACE FUNCTION {ext_schema}.ft_versickerungsbereichag_upsert()
+CREATE OR REPLACE FUNCTION {ext_schema}.ft_versickerungsbereichag_insert()
 RETURNS trigger AS
 $BODY$
 BEGIN
-	UPDATE tww_app.vw_infiltration_zone iz
-	SET
-	  identifier = vw_val.bezeichnung
-	, ag96_permeability = vw_val.bezeichnung
-	, ag96_limitation = vw_val.einschraenkung
-	, ag96_thickness = vw_val.maechtigkeit
-	, perimeter_geometry = vw_val.perimeter
-	, ag96_q_check = vw_val.q_check
-	, infiltration_capacity = iz_ic.code 
-	, fk_provider = {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_gep)
-	, remark = vw_val.bemerkung_gep
-	, last_modification = vw_val.letzte_aenderung_gep
-	FROM (SELECT NEW.*) as vw_val
-	LEFT JOIN tww_vl.infiltration_zone_infiltration_capacity iz_ic on iz_ic.value_de = vw_val.versickerungsmoeglichkeitag
-	WHERE iz.obj_id=vw_val.obj_id;
-	IF NOT FOUND THEN
-	INSERT INTO tww_app.vw_infiltration_zone
+	INSERT INTO tww_od.zone
 	(
 	  obj_id
 	, identifier
-	, ag96_permeability
-	, ag96_limitation
-	, ag96_thickness
-	, perimeter_geometry
-	, ag96_q_check
-	, infiltration_capacity
 	, fk_provider
 	, remark
 	, last_modification
 	)
 	(
 	SELECT
-	  vw_val.obj_id
-	, vw_val.bezeichnung
-	, vw_val.durchlaessigkeit
-	, vw_val.einschraenkung
-	, vw_val.maechtigkeit
-	, vw_val.perimeter
-	, vw_val.q_check
-	, iz_ic.code 
-	, {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_gep)
-	, vw_val.bemerkung_gep
-	, vw_val.letzte_aenderung_gep
-	FROM (SELECT NEW.*) as vw_val
-	LEFT JOIN tww_vl.infiltration_zone_infiltration_capacity iz_ic on iz_ic.value_de = vw_val.versickerungsmoeglichkeitag
+	  NEW.obj_id
+	, NEW.bezeichnung
+	, {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
+	, NEW.bemerkung_gep
+	, NEW.letzte_aenderung_gep
 	);
-	END IF;
+	INSERT INTO tww_od.infiltration_zone
+	(
+	  obj_id
+	, ag96_permeability
+	, ag96_limitation
+	, ag96_thickness
+	, perimeter_geometry
+	, ag96_q_check
+	, infiltration_capacity
+	)
+	(
+	SELECT
+	  NEW.obj_id
+	, NEW.durchlaessigkeit
+	, NEW.einschraenkung
+	, NEW.maechtigkeit
+	, NEW.perimeter
+	, NEW.q_check
+	, (SELECT code FROM tww_vl.infiltration_zone_infiltration_capacity WHERE value_de = NEW.versickerungsmoeglichkeitag) 
+	);
+  RETURN NEW;	
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION {ext_schema}.ft_versickerungsbereichag_update()
+RETURNS trigger AS
+$BODY$
+BEGIN
+	UPDATE tww_od.zone
+	SET
+	  identifier = NEW.bezeichnung
+	, fk_provider = {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
+	, remark = NEW.bemerkung_gep
+	, last_modification = NEW.letzte_aenderung_gep
+	WHERE obj_id=NEW.obj_id;
+	
+	UPDATE tww_od.infiltration_zone
+	SET
+	   ag96_permeability = NEW.bezeichnung
+	, ag96_limitation = NEW.einschraenkung
+	, ag96_thickness = NEW.maechtigkeit
+	, perimeter_geometry = NEW.perimeter
+	, ag96_q_check = NEW.q_check
+	, infiltration_capacity = (SELECT code FROM tww_vl.infiltration_zone_infiltration_capacity WHERE value_de = NEW.versickerungsmoeglichkeitag) 
+	WHERE obj_id=vw_val.obj_id;
   RETURN NEW;	
 END;
 $BODY$
@@ -936,7 +1040,8 @@ CREATE OR REPLACE FUNCTION {ext_schema}.ft_versickerungsbereichag_delete()
 RETURNS trigger AS
 $BODY$
 BEGIN
-	DELETE FROM {ext_schema}.infiltration_area where obj_id=old.obj_id;
+	DELETE FROM tww_od.infiltration_zone where obj_id=old.obj_id;
+	DELETE FROM tww_od.zone where obj_id=old.obj_id;
     RETURN NULL;
 END;
 $BODY$

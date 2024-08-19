@@ -2,49 +2,17 @@
 -- Knoten
 ----------------
 
-CREATE OR REPLACE FUNCTION {ext_schema}.ft_gepknoten_upsert()
+CREATE OR REPLACE FUNCTION {ext_schema}.ft_gepknoten_insert()
 RETURNS trigger AS
 $BODY$
 DECLARE
     co_oid varchar(16);
 	ws_oid varchar(16);
-	wn_oid varchar(16);
-	sp_oids varchar(16)[];
 BEGIN
 
-  CASE WHEN NEW.funktionag = ANY(ARRAY['Abwasserreinigungsanlage','Anschluss','Leitungsknoten']) THEN
-  -- Knoten
-  UPDATE tww_app.vw_wastewater_node wn
-  SET
-  	 identifier= vw_val.bezeichnung
-    , backflow_level_current = vw_val.maxrueckstauhoehe
-	, bottom_level = vw_val.sohlenkote
-	, situation3d_geometry = ST_Force3D(vw_val.lage)
-	, wwtp_number = vw_val.ara_nr
-	, ag96_is_gateway = gate.code
-	, ag64_function = wn_fct.code
-	, fk_provider = {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
-	, ag64_last_modification = vw_val.letzte_aenderung_wi
-    , ag64_remark = vw_val.bemerkung_wi
-	, ag64_fk_provider = {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
-	, ag96_last_modification = vw_val.letzte_aenderung_gep
-    , ag96_remark = vw_val.bemerkung_gep
-	, ag96_fk_provider	= {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_gep)
-  FROM (SELECT NEW.*) vw_val
-	LEFT JOIN tww_vl.wastewater_node_ag96_is_gateway gate ON gate.value_de=vw_val.istschnittstelle
-	LEFT JOIN tww_vl.wastewater_node_ag64_function wn_fct ON wn_fct.value_de=vw_val.funktionag
-  WHERE wn.obj_id=vw_val.obj_id;
-  IF NOT FOUND THEN
-    INSERT INTO tww_app.vw_wastewater_node( 
+    INSERT INTO tww_od.wastewater_networkelement( 
 	  obj_id
 	, identifier
-    , backflow_level_current
-	, bottom_level
-	, situation3d_geometry
-	, wwtp_number
-	, ag96_is_gateway
-	, ag64_function
-	, fk_dataowner
 	, fk_provider
 	, ag64_last_modification
     , ag64_remark
@@ -52,463 +20,394 @@ BEGIN
 	, ag96_last_modification
     , ag96_remark
 	, ag96_fk_provider	
-	) 
+	) VALUES
 	(SELECT
-	  vw_val.obj_id
-	, vw_val.bezeichnung
-	, vw_val.maxrueckstauhoehe
-    , vw_val.sohlenkote
-    , ST_Force3D(vw_val.lage)
-	, vw_val.ara_nr
-	, gate.code
-	, wn_fct.code
-    , downr.value_obj_id
-    , {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
-    , vw_val.letzte_aenderung_wi
-    , vw_val.bemerkung_wi
-	, {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
-    , vw_val.letzte_aenderung_gep
-    , vw_val.bemerkung_gep
-	, {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_gep)
-
-	FROM (SELECT NEW.*) vw_val
-	LEFT JOIN tww_vl.wastewater_node_ag96_is_gateway gate ON gate.value_de=vw_val.istschnittstelle
-	LEFT JOIN tww_vl.wastewater_node_ag64_function wn_fct ON wn_fct.value_de=vw_val.funktionag
-	LEFT JOIN tww_od.default_values downr on fieldname = 'fk_dataowner'
+	  NEW.obj_id
+	, NEW.bezeichnung
+    , {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+    , NEW.letzte_aenderung_wi
+    , NEW.bemerkung_wi
+	, {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+    , NEW.letzte_aenderung_gep
+    , NEW.bemerkung_gep
+	, {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
 	);
-  END IF;
-
-   CASE WHEN NEW.funktionag = 'Abwasserreinigungsanlage' THEN
-    -- Deckel
-  UPDATE tww_app.vw_cover co SET
- 	  level = vw_val.deckelkote
-	, positional_accuracy = co_posacc.code
-	, situation3d_geometry = ST_Force3D(vw_val.lage)
-	, fk_dataowner = downr.value_obj_id
-	, fk_provider = {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
-	, last_modification = vw_val.letzte_aenderung_wi
-  FROM (SELECT NEW.*) vw_val
-    LEFT JOIN tww_vl.cover_positional_accuracy co_posacc ON co_posacc.value_de=vw_val.lagegenauigkeit
-	LEFT JOIN tww_od.default_values downr on fieldname = 'fk_dataowner'
-  WHERE co.identifier=vw_val.bezeichnung
-  RETURNING co.obj_id into co_oid;
-  IF NOT FOUND THEN
-    INSERT INTO tww_app.vw_cover(
-	  level
-	, positional_accuracy
-	, situation3d_geometry
-	, fk_dataowner
-	, fk_provider
-	, identifier
-	, last_modification
-    )
-	(SELECT 
-  	  vw_val.deckelkote
-	, co_posacc.code
-	, ST_Force3D(vw_val.lage)
-	, downr.value_obj_id
-    , {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
-	, vw_val.bezeichnung
-	, vw_val.letzte_aenderung_wi
-	FROM (SELECT NEW.*) vw_val
-    LEFT JOIN tww_vl.cover_positional_accuracy co_posacc ON co_posacc.value_de=vw_val.lagegenauigkeit
-	LEFT JOIN tww_od.default_values downr on fieldname = 'fk_dataowner'
-	)
-	RETURNING obj_id into co_oid;
-  END IF;
   
-	------------ Abwasserreinigungsanlage ------------
-  UPDATE tww_app.vw_wwtp_stucture wwtp SET
-  	  kind = 3032
-	, accessibility = ws_acc.code
-	, detail_geometry3d_geometry = ST_Force3D(vw_val.detailgeometrie)
-	, financing = ws_fin.code
-	, fk_dataowner = downr.value_obj_id
-	, fk_main_cover = co_oid
-	, fk_operator = {ext_schema}.convert_organisationid_to_vsa(vw_val.betreiber)
-	, fk_owner = {ext_schema}.convert_organisationid_to_vsa(vw_val.eigentuemer)
-	, fk_provider = {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
-	, last_modification = vw_val.letzte_aenderung_wi
-	, remark = vw_val.bemerkung_wi
-	, renovation_necessity = ws_rn.code
-	, status = ws_st.code
-	, status_survey_year = vw_val.jahr_zustandserhebung
-	, structure_condition = vw_val.baulicherzustand
-	, year_of_construction = vw_val.baujahr
-	FROM (SELECT NEW.*) vw_val
-	LEFT JOIN tww_vl.wastewater_structure_accessibility ws_acc ON ws_acc.value_de=vw_val.zugaenglichkeit
-	LEFT JOIN tww_vl.wastewater_structure_structure_condition ws_sc ON ws_sc.value_de=vw_val.baulicherzustand
-	LEFT JOIN tww_vl.wastewater_structure_renovation_necessity ws_rn ON ws_rn.value_de=vw_val.sanierungsbedarf
-	LEFT JOIN tww_vl.wastewater_structure_financing ws_fin ON ws_fin.value_de=vw_val.finanzierung
-	LEFT JOIN tww_vl.wastewater_structure_status ws_st ON ws_st.value_de=vw_val.bauwerkstatus
-	LEFT JOIN tww_od.default_values downr on fieldname = 'fk_dataowner'
-  WHERE wwtp.identifier = vw_val.bezeichnung;
-  IF NOT FOUND THEN
-	INSERT INTO tww_app.vw_wwtp_stucture(
-	  kind
-	, accessibility
-	, detail_geometry3d_geometry
-	, financing
-	, fk_dataowner
-	, fk_main_cover
-	, fk_operator
-	, fk_owner
-	, fk_provider
-	, identifier
-	, last_modification
-	, remark
-	, renovation_necessity
-	, status
-	, status_survey_year
-	, structure_condition
-	, year_of_construction
-    )
-	(SELECT 
-  	  3032 --unbekannt
-	, ws_acc.code
-	, ST_Force3D(vw_val.detailgeometrie)
-	, ws_fin.code
-	, downr.value_obj_id
-	, co_oid
-	, {ext_schema}.convert_organisationid_to_vsa(vw_val.betreiber)
-	, {ext_schema}.convert_organisationid_to_vsa(vw_val.eigentuemer)
-    , {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
-	, vw_val.bezeichnung
-	, vw_val.letzte_aenderung_wi
-	, vw_val.bemerkung_wi
-	, ws_rn.code
-	, ws_st.code
-	, vw_val.jahr_zustandserhebung
-	, vw_val.baulicherzustand
-	, vw_val.baujahr
-	FROM (SELECT NEW.*) vw_val
-	LEFT JOIN tww_vl.wastewater_structure_accessibility ws_acc ON ws_acc.value_de=vw_val.zugaenglichkeit
-	LEFT JOIN tww_vl.wastewater_structure_structure_condition ws_sc ON ws_sc.value_de=vw_val.baulicherzustand
-	LEFT JOIN tww_vl.wastewater_structure_renovation_necessity ws_rn ON ws_rn.value_de=vw_val.sanierungsbedarf
-	LEFT JOIN tww_vl.wastewater_structure_financing ws_fin ON ws_fin.value_de=vw_val.finanzierung
-	LEFT JOIN tww_vl.wastewater_structure_status ws_st ON ws_st.value_de=vw_val.bauwerkstatus
-	LEFT JOIN tww_od.default_values downr on fieldname = 'fk_dataowner'
+    INSERT INTO tww_od.wastewater_node( 
+	  obj_id
+    , backflow_level_current
+	, bottom_level
+	, situation3d_geometry
+	, wwtp_number
+	, ag96_is_gateway
+	, ag64_function
+	) VALUES
+	(SELECT
+	  NEW.obj_id
+	, NEW.maxrueckstauhoehe
+    , NEW.sohlenkote
+    , ST_SetSRID(ST_MakePoint(ST_X(NEW.lage), ST_Y(NEW.lage), COALESCE(NEW.sohlenkotekote,'nan')), 2056 )
+	, NEW.ara_nr
+	, (SELECT code FROM tww_vl.wastewater_node_ag96_is_gateway WHERE value_de=NEW.istschnittstelle)
+	, (SELECT code FROM tww_vl.wastewater_node_ag64_function WHERE value_de=NEW.funktionag)
 	);
-	END IF;
-    ELSE
-	-- Rückfallebene für Knoten ohne Topologische Verknüpfung
-  UPDATE tww_od.agxx_unconnected_node_bwrel un
-  SET
-  	year_of_construction = vw_val.baujahr,
-	structure_condition = sc.code,
-	status = st.code,
-	co_level = vw_val.deckelkote,
-	detail_geometry3d_geometry = ST_Force3D(vw_val.detailgeometrie),
-	financing = fin.code,
-	ch_function_hierarchic = fhi.code,
-	status_survey_year = vw_val.jahr_zustandserhebung,
-	co_positional_accuracy = co_pa.code,
-	renovation_necessity = rn.code,
-	accessibility = acc.code,
-	fk_operator = tww_ag6496.convert_organisationid_to_vsa(betreiber),
-	fk_owner = tww_ag6496.convert_organisationid_to_vsa(eigentuemer),
-	ag96_fk_measure = vw_val.gepmassnahmeref
-	FROM (SELECT NEW.*) vw_val
-	LEFT JOIN tww_vl.wastewater_structure_structure_condition sc ON sc.value_de=vw_val.baulicherzustand
-	LEFT JOIN tww_vl.wastewater_structure_renovation_necessity rn ON rn.value_de=vw_val.sanierungsbedarf
-	LEFT JOIN tww_vl.wastewater_structure_financing fin ON fin.value_de=vw_val.finanzierung
-	LEFT JOIN tww_vl.wastewater_structure_status st ON st.value_de=vw_val.bauwerkstatus
-	LEFT JOIN tww_vl.wastewater_structure_accessibility acc ON acc.value_de=vw_val.zugaenglichkeit
-	LEFT JOIN tww_vl.channel_function_hierarchic fhi ON fhi.value_de=(vw_val.funktionhierarchisch||'.unbekannt')
-	LEFT JOIN tww_vl.cover_positional_accuracy co_pa ON co_pa.value_de=vw_val.lagegenauigkeit
-  WHERE un.obj_id = vw_val.obj_id;
-  IF NOT FOUND THEN
-  INSERT INTO tww_od.agxx_unconnected_node_bwrel (
-	obj_id,
-	year_of_construction,
-	structure_condition,
-	status,
-	co_level,
-    detail_geometry3d_geometry,
-	financing,
-    ch_function_hierarchic,
-    status_survey_year,
-    co_positional_accuracy,
-    renovation_necessity,
-    accessibility,
-    fk_operator,
-    fk_owner,
-    ag96_fk_measure)
-	(
-	SELECT vw_val.obj_id,
-	vw_val.baujahr,
-	sc.code,
-	st.code,
-	vw_val.deckelkote,
-	ST_Force3D(vw_val.detailgeometrie),
-	fin.code,
-	fhi.code,
-	vw_val.jahr_zustandserhebung,
-	co_pa.code,
-	rn.code,
-	acc.code,
-	tww_ag6496.convert_organisationid_to_vsa(betreiber),
-	tww_ag6496.convert_organisationid_to_vsa(eigentuemer),
-	vw_val.gepmassnahmeref
-	
-	FROM (SELECT NEW.*) vw_val
-	LEFT JOIN tww_vl.wastewater_structure_structure_condition sc ON sc.value_de=vw_val.baulicherzustand
-	LEFT JOIN tww_vl.wastewater_structure_renovation_necessity rn ON rn.value_de=vw_val.sanierungsbedarf
-	LEFT JOIN tww_vl.wastewater_structure_financing fin ON fin.value_de=vw_val.finanzierung
-	LEFT JOIN tww_vl.wastewater_structure_status st ON st.value_de=vw_val.bauwerkstatus
-	LEFT JOIN tww_vl.wastewater_structure_accessibility acc ON acc.value_de=vw_val.zugaenglichkeit
-	LEFT JOIN tww_vl.channel_function_hierarchic fhi ON fhi.value_de=(vw_val.funktionhierarchisch||'.unbekannt')
-	LEFT JOIN tww_vl.cover_positional_accuracy co_pa ON co_pa.value_de=vw_val.lagegenauigkeit
-    );
-	END IF;
-    END CASE;
-	
-  ELSE
------------- Basic wastewater_structure ------------
-  UPDATE tww_app.vw_tww_wastewater_structure ws SET
-      identifier = vw_val.bezeichnung
-    , ws_type = CASE
-		WHEN vw_val.funktionag LIKE 'Einleitstelle%' THEN 'discharge_point'
-		WHEN vw_val.funktionag LIKE 'Versickerungsanlage%' THEN 'infiltration_installation'
-		WHEN vw_val.funktionag = ANY(
-		  ARRAY[
-		      'Bodenablauf'
-		    , 'Dachwasserschacht'
-			, 'Einlaufschacht'
-			, 'Entwaesserungsrinne'
-			, 'Faulgrube'
-			, 'Geleiseschacht'
-			, 'Schlammfang'
-			, 'Schlammsammler'
-			]
-		  ) THEN 'manhole' 
-		WHEN vw_val.funktionag = ANY(
-		  ARRAY[
-		      'Absturzbauwerk'
-			, 'andere'
-			, 'Be_Entlueftung'
-			, 'Kontrollschacht'
-			, 'Oelabscheider'
-			, 'Pumpwerk'
-			, 'Regeneuberlauf'
-			, 'Schwimmstoffabscheider'
-			, 'Spuelschacht'
-			, 'Trennbauwerk'
-			, 'Vorbehandlung'
-			]
-		  ) AND vw_val.detailgeometrie IS NULL THEN 'manhole' 
-		ELSE 'special_structure' 
-	  END
-    , ma_function = ma_fu.code -- wird nur angewandt, wenn ws_type = manhole 
-    , ss_function = ss_fu.code -- wird nur angewandt, wenn ws_type = special_structure
-    , fk_owner = {ext_schema}.convert_organisationid_to_vsa(vw_val.eigentuemer)
-    , status = ws_st.code
-    , accessibility = ws_acc.code
-    , financing = ws_fin.code
-	, status_survey_year = vw_val.jahr_zustandserhebung
-    , fk_dataowner = downr.value_obj_id
-    , fk_operator = {ext_schema}.convert_organisationid_to_vsa(vw_val.betreiber)
-    , fk_provider = {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
-    , renovation_necessity = ws_rn.code
-    , structure_condition = ws_sc.code
-    , year_of_construction = vw_val.baujahr
-    , co_level = vw_val.deckelkote
-	, co_positional_accuracy = co_posacc.code
-    , situation3d_geometry = vw_val.lage
-    , ii_kind = ii_ki.code
-    , dp_relevance = dp_rel.code
-	, wn_wwtp_number = vw_val.ara_nr
-    , wn_backflow_level_current = vw_val.maxrueckstauhoehe
-    , wn_bottom_level = vw_val.sohlenkote
-    , wn_fk_dataowner = downr.value_obj_id
-    , wn_fk_provider = {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
-    , wn_identifier = vw_val.bezeichnung
-    , wn_ag64_last_modification = vw_val.letzte_aenderung_wi
-    , wn_ag64_remark = vw_val.letzte_aenderung_wi
-	, wn_ag64_fk_provider = {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
-	, wn_ag96_last_modification = vw_val.letzte_aenderung_gep
-    , wn_ag96_remark = vw_val.bemerkung_gep
-	, wn_ag96_fk_provider = {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_gep)
-	, wn_ag96_is_gateway = gate.code
-  FROM (SELECT NEW.*) vw_val
-	LEFT JOIN tww_vl.wastewater_node_ag96_is_gateway gate on gate.value_de=vw_val.istschnittstelle
-	LEFT JOIN tww_vl.discharge_point_relevance_import_rel_agxx dp_rel ON dp_rel.value_de=vw_val.funktionag
-	LEFT JOIN tww_vl.cover_positional_accuracy co_posacc ON co_posacc.value_de=vw_val.lagegenauigkeit
-	LEFT JOIN tww_vl.infiltration_installation_kind_import_rel_agxx ii_ki ON ii_ki.value_de=vw_val.funktionag
-	LEFT JOIN tww_vl.special_structure_function_import_rel_agxx ss_fu ON ss_fu.value_de=vw_val.funktionag
-	LEFT JOIN tww_vl.manhole_function_import_rel_agxx ma_fu ON ma_fu.value_de=vw_val.funktionag
-	LEFT JOIN tww_vl.wastewater_structure_structure_condition ws_sc ON ws_sc.value_de=vw_val.baulicherzustand
-	LEFT JOIN tww_vl.wastewater_structure_renovation_necessity ws_rn ON ws_rn.value_de=vw_val.sanierungsbedarf
-	LEFT JOIN tww_vl.wastewater_structure_financing ws_fin ON ws_fin.value_de=vw_val.finanzierung
-	LEFT JOIN tww_vl.wastewater_structure_status ws_st ON ws_st.value_de=vw_val.bauwerkstatus
-	LEFT JOIN tww_vl.wastewater_structure_accessibility ws_acc ON ws_acc.value_de=vw_val.zugaenglichkeit
-	LEFT JOIN tww_od.default_values downr on fieldname = 'fk_dataowner'
-  WHERE ws.wn_obj_id=vw_val.obj_id;
-  IF NOT FOUND THEN
-    INSERT INTO tww_app.vw_tww_wastewater_structure(
-		  identifier
-		, ws_type
-		, ma_function
-		, ss_function
-		, fk_owner
-		, status
-		, accessibility
-		, financing
-		, status_survey_year
-		, fk_operator
-		, fk_provider
-		, renovation_necessity
-		, structure_condition
-		, year_of_construction
-		, co_level
-		, co_positional_accuracy
+
+	CASE WHEN NEW.funktionag NOT IN ('Leitungsknoten','Anschluss') THEN
+		-- Deckel
+		INSERT INTO tww_od.structure_part(
+		  fk_provider
+		, identifier
+		, last_modification
+		) VALUES
+		(  
+		, {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+		, NEW.bezeichnung
+		, NEW.letzte_aenderung_wi
+		)
+		RETURNING obj_id into co_oid;
+
+		INSERT INTO tww_od.cover(
+		  obj_id
+		, level
+		, positional_accuracy
 		, situation3d_geometry
-		, ii_kind
-		, dp_relevance
-		, wn_obj_id
-		, wn_wwtp_number
-		, wn_backflow_level_current
-		, wn_bottom_level
-		, wn_fk_provider
-		, wn_identifier
-		, wn_ag64_last_modification
-		, wn_ag64_remark
-		, wn_ag64_fk_provider
-		, wn_ag96_last_modification
-		, wn_ag96_remark
-		, wn_ag96_fk_provider
-		, wn_ag96_is_gateway
-		) 
-	  (
-	  SELECT
-		  vw_val.bezeichnung
-		, CASE
-			WHEN vw_val.funktionag LIKE 'Einleitstelle%' THEN 'discharge_point'
-		WHEN vw_val.funktionag LIKE 'Versickerungsanlage%' THEN 'infiltration_installation'
-		WHEN vw_val.funktionag = ANY(
-		  ARRAY[
-		      'Bodenablauf'
-		    , 'Dachwasserschacht'
-			, 'Einlaufschacht'
-			, 'Entwaesserungsrinne'
-			, 'Faulgrube'
-			, 'Geleiseschacht'
-			, 'Schlammfang'
-			, 'Schlammsammler'
-			]
-		  ) THEN 'manhole' 
-		WHEN vw_val.funktionag = ANY(
-		  ARRAY[
-		      'Absturzbauwerk'
-			, 'andere'
-			, 'Be_Entlueftung'
-			, 'Kontrollschacht'
-			, 'Oelabscheider'
-			, 'Pumpwerk'
-			, 'Regeneuberlauf'
-			, 'Schwimmstoffabscheider'
-			, 'Spuelschacht'
-			, 'Trennbauwerk'
-			, 'Vorbehandlung'
-			]
-		  ) AND vw_val.detailgeometrie IS NULL THEN 'manhole' 
-		ELSE 'special_structure' 
-	  END
-		, ma_fu.code -- wird nur angewandt, wenn ws_type = manhole
-		, ss_fu.code -- wird nur angewandt, wenn ws_type = special_structure
-		, {ext_schema}.convert_organisationid_to_vsa(vw_val.eigentuemer)
-		, ws_st.code
-		, ws_acc.code
-		, ws_fin.code
-		, vw_val.jahr_zustandserhebung
-		, {ext_schema}.convert_organisationid_to_vsa(vw_val.betreiber)
-		, {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
-		, ws_rn.code
-		, ws_sc.code
-		, vw_val.baujahr
-		, vw_val.deckelkote
-		, co_posacc.code
-		, vw_val.lage
-		, ii_ki.code
-		, dp_rel.code
-		, vw_val.obj_id
-		, vw_val.ara_nr
-		, vw_val.maxrueckstauhoehe
-		, vw_val.sohlenkote
-		, {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
-		, vw_val.bezeichnung
-		, vw_val.letzte_aenderung_wi
-		, vw_val.bemerkung_wi
-		, {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
-		, vw_val.letzte_aenderung_gep
-		, vw_val.bemerkung_gep
-		, {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_gep)
-		, gate.code
-	  FROM (SELECT NEW.*) vw_val
-	  LEFT JOIN tww_vl.wastewater_node_ag96_is_gateway gate on gate.value_de=vw_val.istschnittstelle
-	  LEFT JOIN tww_vl.discharge_point_relevance_import_rel_agxx dp_rel ON dp_rel.value_de=vw_val.funktionag
-	  LEFT JOIN tww_vl.cover_positional_accuracy co_posacc ON co_posacc.value_de=vw_val.lagegenauigkeit
-	  LEFT JOIN tww_vl.infiltration_installation_kind_import_rel_agxx ii_ki ON ii_ki.value_de=vw_val.funktionag
-	  LEFT JOIN tww_vl.special_structure_function_import_rel_agxx ss_fu ON ss_fu.value_de=vw_val.funktionag
-	  LEFT JOIN tww_vl.manhole_function_import_rel_agxx ma_fu ON ma_fu.value_de=vw_val.funktionag
-	  LEFT JOIN tww_vl.wastewater_structure_structure_condition ws_sc ON ws_sc.value_de=vw_val.baulicherzustand
-	  LEFT JOIN tww_vl.wastewater_structure_renovation_necessity ws_rn ON ws_rn.value_de=vw_val.sanierungsbedarf
-	  LEFT JOIN tww_vl.wastewater_structure_financing ws_fin ON ws_fin.value_de=vw_val.finanzierung
-	  LEFT JOIN tww_vl.wastewater_structure_status ws_st ON ws_st.value_de=vw_val.bauwerkstatus
-	  LEFT JOIN tww_vl.wastewater_structure_accessibility ws_acc ON ws_acc.value_de=vw_val.zugaenglichkeit
-	  );
-    END IF;  
- END CASE;
-
------------- fk_wastewater_structure ------------
-/*
-	Einerseits werden die Abwasserknoten neu attributiert, andererseits die Deckel
-*/
-	  UPDATE tww_od.wastewater_structure 
-		SET detail_geometry3d_geometry =ST_Force3D(NEW.detailgeometrie)
-		WHERE fk_main_wastewater_node = NEW.obj_id;
-
-
-    SELECT ws.obj_id, wn.obj_id, array_agg(sp.obj_id) INTO  ws_oid, wn_oid, sp_oids
-	  FROM tww_od.wastewater_node wn 
-	  LEFT JOIN  
-	    (SELECT ws.obj_id, st_buffer(detail_geometry3d_geometry,0.0001)as detail_geometry3d_geometry 
-		 FROM tww_od.wastewater_structure ws
-		 LEFT JOIN tww_od.channel ch on ws.obj_id=ch.obj_id
-		 WHERE ws.detail_geometry3d_geometry IS NOT NULL
-		 AND ch.obj_id is NULL LIMIT 1
-		) ws ON 
-		ST_CoveredBy(ST_Force2D(wn.situation3d_geometry)
-		  , ST_Force2D(ws.detail_geometry3d_geometry))
-	  LEFT JOIN tww_od.wastewater_networkelement ne on ne.obj_id=wn.obj_id
-	  LEFT JOIN tww_od.wastewater_structure ws_old on ne.fk_wastewater_structure=ws_old.obj_id
-	  LEFT JOIN tww_od.structure_part sp on sp.fk_wastewater_structure=ws_old.obj_id
-	  WHERE wn.obj_id = NEW.obj_id AND ws_old.obj_id != ws.obj_id
-	  GROUP BY ws.obj_id, wn.obj_id;
-			
-	CASE WHEN ws_oid is not NULL THEN
-	  UPDATE tww_od.wastewater_networkelement
-        SET fk_wastewater_structure = ws_oid
-        WHERE obj_id = wn_oid;
-
-      UPDATE tww_od.structure_part
-        SET fk_wastewater_structure = ws_oid
-        WHERE obj_id = ANY(sp_oids);
-		
+		, ag64_fk_wastewater_node
+		) VALUES
+		(
+		  co_oid
+		, NEW.deckelkote
+		, (SELECT code FROM tww_vl.cover_positional_accuracy WHERE value_de=NEW.lagegenauigkeit)
+		, ST_SetSRID(ST_MakePoint(ST_X(NEW.lage), ST_Y(NEW.lage), COALESCE(NEW.deckelkote,'nan')), 2056 )
+		, NEW.obj_id
+		);
 	ELSE NULL;
 	END CASE;
 
------------- GEPMassnahme ------------ 
-	UPDATE tww_od.wastewater_structure
-        SET ag96_fk_measure = coalesce(NEW.gepmassnahmeref,ag96_fk_measure)
-        WHERE fk_main_wastewater_node = NEW.obj_id;
+    CASE WHEN COALESCE(NEW.ignore_ws,FALSE) AND NEW.funktionag NOT IN ('Leitungsknoten','Anschluss') THEN
 
+		INSERT INTO tww_od.wastewater_structure(
+		  accessibility
+		, detail_geometry3d_geometry
+		, financing
+		, fk_main_cover
+		, fk_main_wastwater_node
+		, fk_operator
+		, fk_owner
+		, fk_provider
+		, identifier
+		, last_modification
+		, remark
+		, renovation_necessity
+		, status
+		, status_survey_year
+		, structure_condition
+		, year_of_construction
+		, ag96_fk_measure
+		) VALUES
+		(
+		 (SELECT code FROM tww_vl.wastewater_structure_accessibility WHERE value_de=NEW.zugaenglichkeit)
+		, ST_Force3D(NEW.detailgeometrie)
+		, (SELECT code FROM tww_vl.wastewater_structure_financing WHERE value_de=NEW.finanzierung)
+		, co_oid
+		, NEW.obj_id
+		, {ext_schema}.convert_organisationid_to_vsa(NEW.betreiber)
+		, {ext_schema}.convert_organisationid_to_vsa(NEW.eigentuemer)
+		, {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+		, NEW.bezeichnung
+		, NEW.letzte_aenderung_wi
+		, NEW.bemerkung_wi
+		, (SELECT code FROM tww_vl.wastewater_structure_renovation_necessity WHERE value_de=NEW.sanierungsbedarf)
+		, (SELECT code FROM tww_vl.wastewater_structure_status WHERE value_de=NEW.bauwerkstatus)
+		, NEW.jahr_zustandserhebung
+		, (SELECT code FROM tww_vl.wastewater_structure_structure_condition WHERE value_de=NEW.baulicherzustand)
+		, NEW.baujahr
+		, NEW.gepmassnahmeref
+		)
+		RETURNING obj_id into ws_oid;
+		
+		UPDATE tww_od.wastewater_networkelement
+		SET fk_wastewater_structure = ws_oid
+		WHERE obj_id=NEW.obj_id;
+		
+		CASE WHEN NEW.funktionag   ='Abwasserreinigungsanlage' THEN
+			------------ Abwasserreinigungsanlage ------------
+			INSERT INTO tww_od.wwtp_stucture(
+			  obj_id
+			, kind
+			)VALUES
+			(
+			  ws_oid
+			, 3032 --unbekannt
+			);
+		WHEN NEW.funktionag =ANY(
+		  ARRAY[
+		      'Bodenablauf'
+		    , 'Dachwasserschacht'
+			, 'Einlaufschacht'
+			, 'Entwaesserungsrinne'
+			, 'Faulgrube'
+			, 'Geleiseschacht'
+			, 'Schlammfang'
+			, 'Schlammsammler'
+			]
+		  ) OR (
+			NEW.funktionag = ANY(ARRAY['Absturzbauwerk', 'andere', 'Be_Entlueftung', 'Kontrollschacht', 'Oelabscheider', 'Pumpwerk'
+			, 'Regeneuberlauf', 'Schwimmstoffabscheider', 'Spuelschacht', 'Trennbauwerk', 'Vorbehandlung']) AND NEW.detailgeometrie IS NULL
+			)  THEN
+			INSERT INTO tww_od.manhole (
+			  obj_id
+			, function
+			)VALUES
+			(
+			  ws_oid
+			, (SELECT code FROM tww_vl.manhole_function_import_rel_agxx WHERE value_de=NEW.funktionag)
+			);
+		WHEN NEW.funktionag LIKE 'Versickerungsanlage%'  THEN
+			INSERT INTO tww_od.infiltration_installation (
+			  obj_id
+			, kind
+			)VALUES
+			(
+			  ws_oid
+			, (SELECT code FROM tww_vl.infiltration_installation_kind_import_rel_agxx WHERE value_de=NEW.funktionag)
+			);
+		WHEN NEW.funktionag LIKE 'Einleitstelle%'  THEN
+		INSERT INTO tww_od.discharge_point (
+		  obj_id
+		, relevance
+		)VALUES
+		(
+		  ws_oid
+		, (SELECT code FROM tww_vl.discharge_point_relevance_import_rel_agxx WHERE value_de=NEW.funktionag)
+		);
+		WHEN NEW.funktionag = 'Messstelle'  THEN
+		INSERT INTO tww_od.manhole (
+			  obj_id
+			, function
+			)VALUES
+			(
+			  ws_oid
+			, 5345
+			);
+		INSERT INTO tww_od.measuring_point (
+		  fk_wastewater_structure
+		)VALUES
+		(
+		  ws_oid
+		);
+		ELSE
+			INSERT INTO tww_od.special_structure (
+			  obj_id
+			, function
+			)VALUES
+			(
+			  ws_oid
+			, (SELECT code FROM tww_vl.special_structure_function_import_rel_agxx WHERE value_de=NEW.funktionag)
+			);
+		END CASE;
+	ELSE NULL;
+    END CASE;
   RETURN NEW;
 END;
 $BODY$
 LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION {ext_schema}.ft_gepknoten_update()
+RETURNS trigger AS
+$BODY$
+DECLARE
+    co_oid varchar(16);
+	ws_oid varchar(16);
+	
+BEGIN
 
+    UPDATE tww_od.wastewater_networkelement SET
+	  identifier = NEW.bezeichnung
+	, fk_provider = {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+	, ag64_last_modification = NEW.letzte_aenderung_wi
+    , ag64_remark = NEW.bemerkung_wi
+	, ag64_fk_provider = {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+	, ag96_last_modification = NEW.letzte_aenderung_gep
+    , ag96_remark = NEW.bemerkung_gep
+	, ag96_fk_provider = {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
+	WHERE obj_id = NEW.obj_id;
+  
+    UPDATE tww_od.wastewater_node SET
+	  backflow_level_current = NEW.maxrueckstauhoehe
+	, bottom_level = NEW.sohlenkote
+	, situation3d_geometry = ST_SetSRID(ST_MakePoint(ST_X(NEW.lage), ST_Y(NEW.lage), COALESCE(NEW.sohlenkotekote,'nan')), 2056)
+	, wwtp_number = NEW.ara_nr
+	, ag96_is_gateway = (SELECT code FROM tww_vl.wastewater_node_ag96_is_gateway WHERE value_de=NEW.istschnittstelle)
+	, ag64_function = (SELECT code FROM tww_vl.wastewater_node_ag64_function WHERE value_de=NEW.funktionag)
+	WHERE obj_id = NEW.obj_id;
+
+	CASE WHEN NEW.funktionag NOT IN ('Leitungsknoten','Anschluss') THEN
+		
+		SELECT ws.obj_id,ws.fk_main_cover INTO ws_oid, co_oid FROM tww_od.wastewater_node wn
+		LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id=wn.obj_id
+		LEFT JOIN tww_od.wastewater_structure ws ON ne.fk_wastewater_structure = ws.obj_id
+		
+		-- Deckel
+		UPDATE tww_od.structure_part SET
+		  fk_provider = {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+		, identifier = NEW.bezeichnung
+		, last_modification = NEW.letzte_aenderung_wi
+		WHERE obj_id = co_oid;
+		
+		UPDATE tww_od.cover SET 
+		, level = NEW.deckelkote
+		, positional_accuracy = (SELECT code FROM tww_vl.cover_positional_accuracy WHERE value_de=NEW.lagegenauigkeit)
+		, situation3d_geometry = ST_SetSRID(ST_MakePoint(ST_X(NEW.lage), ST_Y(NEW.lage), COALESCE(NEW.deckelkote,'nan')), 2056 )
+		, ag64_fk_wastewater_node = NEW.obj_id
+		WHERE obj_id = co_oid;
+		
+	ELSE NULL;
+	END CASE;
+
+    CASE WHEN COALESCE(NEW.ignore_ws,FALSE) AND NEW.funktionag NOT IN ('Leitungsknoten','Anschluss') THEN
+
+		UPDATE tww_od.wastewater_structure SET 
+		  accessibility = (SELECT code FROM tww_vl.wastewater_structure_accessibility WHERE value_de=NEW.zugaenglichkeit)
+		, detail_geometry3d_geometry = ST_Force3D(NEW.detailgeometrie)
+		, financing = (SELECT code FROM tww_vl.wastewater_structure_financing WHERE value_de=NEW.finanzierung)
+		, fk_main_cover = co_oid
+		, fk_main_wastwater_node = NEW.obj_id
+		, fk_operator = {ext_schema}.convert_organisationid_to_vsa(NEW.betreiber)
+		, fk_owner = {ext_schema}.convert_organisationid_to_vsa(NEW.eigentuemer)
+		, fk_provider = {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+		, identifier = NEW.bezeichnung
+		, last_modification = NEW.letzte_aenderung_wi
+		, remark = NEW.bemerkung_wi
+		, renovation_necessity = (SELECT code FROM tww_vl.wastewater_structure_renovation_necessity WHERE value_de=NEW.sanierungsbedarf)
+		, status = (SELECT code FROM tww_vl.wastewater_structure_status WHERE value_de=NEW.bauwerkstatus)
+		, status_survey_year = NEW.jahr_zustandserhebung
+		, structure_condition = (SELECT code FROM tww_vl.wastewater_structure_structure_condition WHERE value_de=NEW.baulicherzustand)
+		, year_of_construction = NEW.baujahr
+		, ag96_fk_measure = NEW.gepmassnahmeref
+		WHERE obj_id = ws_oid;
+		
+		
+		
+		CASE WHEN NEW.funktionag   ='Abwasserreinigungsanlage' 
+		THEN
+			CASE WHEN OLD.ws_type = 'wwtp_stucture' 
+			THEN NULL;
+			ELSE
+				------------ Abwasserreinigungsanlage ------------
+				INSERT INTO tww_od.wwtp_stucture
+				  obj_id, kind
+				)VALUES
+				(
+				  ws_oid, 3032 --unbekannt
+				);
+				DELETE FROM tww_od.manhole WHERE obj_id = OLD.obj_id;
+				DELETE FROM tww_od.special_structure WHERE obj_id = OLD.obj_id;
+				DELETE FROM tww_od.infiltration_installation WHERE obj_id = OLD.obj_id;
+				DELETE FROM tww_od.discharge_point WHERE obj_id = OLD.obj_id;
+			END CASE;	
+		WHEN NEW.funktionag =ANY(
+		  ARRAY[
+		      'Bodenablauf'
+		    , 'Dachwasserschacht'
+			, 'Einlaufschacht'
+			, 'Entwaesserungsrinne'
+			, 'Faulgrube'
+			, 'Geleiseschacht'
+			, 'Schlammfang'
+			, 'Schlammsammler'
+			]
+		  ) OR (
+			NEW.funktionag = ANY(ARRAY['Absturzbauwerk', 'andere', 'Be_Entlueftung', 'Kontrollschacht', 'Oelabscheider', 'Pumpwerk'
+			, 'Regeneuberlauf', 'Schwimmstoffabscheider', 'Spuelschacht', 'Trennbauwerk', 'Vorbehandlung']) AND NEW.detailgeometrie IS NULL
+			)  THEN
+			CASE WHEN OLD.ws_type = 'manhole' THEN 
+				UPDATE tww_od.manhole SET			
+				function = (SELECT code FROM tww_vl.manhole_function_import_rel_agxx WHERE value_de=NEW.funktionag)
+				WHERE obj_id = ws_oid
+				;
+			ELSE
+				------------ Normschacht ------------
+				INSERT INTO tww_od.manhole (
+				  obj_id
+				, function
+				)VALUES
+				(
+				  ws_oid
+				, (SELECT code FROM tww_vl.manhole_function_import_rel_agxx WHERE value_de=NEW.funktionag)
+				);
+				DELETE FROM tww_od.wwtp_stucture WHERE obj_id = OLD.obj_id;
+				DELETE FROM tww_od.special_structure WHERE obj_id = OLD.obj_id;
+				DELETE FROM tww_od.infiltration_installation WHERE obj_id = OLD.obj_id;
+				DELETE FROM tww_od.discharge_point WHERE obj_id = OLD.obj_id;
+			END CASE;					
+		WHEN NEW.funktionag LIKE 'Versickerungsanlage%'  THEN
+			CASE WHEN OLD.ws_type = 'infiltration_installation' THEN 
+				UPDATE tww_od.infiltration_installation SET			
+				kind = (SELECT code FROM tww_vl.infiltration_installation_kind_import_rel_agxx WHERE value_de=NEW.funktionag)
+				WHERE obj_id = ws_oid
+				;
+			ELSE
+				------------ Versickerungsanlage ------------
+				INSERT INTO tww_od.infiltration_installation (
+				  obj_id
+				, kind
+				)VALUES
+				(
+				  ws_oid
+				, (SELECT code FROM tww_vl.infiltration_installation_kind_import_rel_agxx WHERE value_de=NEW.funktionag)
+				);
+				DELETE FROM tww_od.wwtp_stucture WHERE obj_id = OLD.obj_id;
+				DELETE FROM tww_od.special_structure WHERE obj_id = OLD.obj_id;
+				DELETE FROM tww_od.manhole WHERE obj_id = OLD.obj_id;
+				DELETE FROM tww_od.discharge_point WHERE obj_id = OLD.obj_id;
+			END CASE;				
+		WHEN NEW.funktionag LIKE 'Einleitstelle%'  THEN
+			CASE WHEN OLD.ws_type = 'discharge_point' THEN 
+				UPDATE tww_od.discharge_point SET			
+				relevance = (SELECT code FROM tww_vl.discharge_point_relevance_import_rel_agxx WHERE value_de=NEW.funktionag)
+				WHERE obj_id = ws_oid;
+			ELSE
+				------------ Einleitstelle ------------
+				INSERT INTO tww_od.discharge_point (
+				  obj_id
+				, kind
+				)VALUES
+				(
+				  ws_oid
+				, (SELECT code FROM tww_vl.discharge_point_relevance_import_rel_agxx WHERE value_de=NEW.funktionag)
+				);
+				DELETE FROM tww_od.wwtp_stucture WHERE obj_id = OLD.obj_id;
+				DELETE FROM tww_od.special_structure WHERE obj_id = OLD.obj_id;
+				DELETE FROM tww_od.manhole WHERE obj_id = OLD.obj_id;
+				DELETE FROM tww_od.infiltration_installation WHERE obj_id = OLD.obj_id;
+			END CASE;		
+		ELSE
+			CASE WHEN OLD.ws_type = 'special_structure' THEN 
+				UPDATE tww_od.special_structure SET			
+				function = (SELECT code FROM tww_vl.special_structure_function_import_rel_agxx WHERE value_de=NEW.funktionag)
+				WHERE obj_id = ws_oid;
+			ELSE
+				------------ Spezialbauwerk ------------
+				INSERT INTO tww_od.special_structure (
+				  obj_id
+				, kind
+				)VALUES
+				(
+				  ws_oid
+				, (SELECT code FROM tww_vl.special_structure_function_import_rel_agxx WHERE value_de=NEW.funktionag)
+				);
+				DELETE FROM tww_od.wwtp_stucture WHERE obj_id = OLD.obj_id;
+				DELETE FROM tww_od.discharge_point WHERE obj_id = OLD.obj_id;
+				DELETE FROM tww_od.manhole WHERE obj_id = OLD.obj_id;
+				DELETE FROM tww_od.infiltration_installation WHERE obj_id = OLD.obj_id;
+			END CASE;
+		END CASE;
+	ELSE NULL;
+    END CASE;
+  RETURN NEW;
+ END;
+$BODY$
+LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION {ext_schema}.ft_gepknoten_delete()
 RETURNS trigger AS
