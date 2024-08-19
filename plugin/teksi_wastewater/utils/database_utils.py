@@ -172,17 +172,17 @@ class DatabaseUtils:
 
     @staticmethod
     def disable_last_modification_triggers():
-        logger.info("Disable symbology triggers")
+        logger.info("Disable last modification triggers")
         DatabaseUtils.execute("SELECT tww_sys.alter_last_modification_triggers('disable');")
 
     @staticmethod
     def enable_last_modification_triggers():
-        logger.info("Enable symbology triggers")
+        logger.info("Enable last modification triggers")
         DatabaseUtils.execute("SELECT tww_sys.alter_last_modification_triggers('enable');")
 
     @staticmethod
     def check_last_modification_triggers_enabled():
-        logger.info("Check symbology triggers enabled")
+        logger.info("Check last modification triggers enabled")
         row = DatabaseUtils.fetchone("SELECT tww_sys.check_last_modification_enabled();")
         return row[0]
 
