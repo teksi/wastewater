@@ -104,6 +104,12 @@ digraph "oneDegreeRelationshipsDiagram" {
   "reach_point":"fk_wastewater_networkelement":w -> "wastewater_networkelement":"obj_id":e [arrowhead=none dir=back arrowtail=crowodot];
   "retention_body":"fk_dataowner":w -> "organisation":"obj_id.type":e [arrowhead=none dir=back arrowtail=crowodot];
   "retention_body":"fk_provider":w -> "organisation":"obj_id.type":e [arrowhead=none dir=back arrowtail=crowodot];
+  "sia405cc_cable":"fk_dataowner":w -> "organisation":"obj_id.type":e [arrowhead=none dir=back arrowtail=crowodot];
+  "sia405cc_cable":"fk_owner":w -> "organisation":"obj_id.type":e [arrowhead=none dir=back arrowtail=crowodot];
+  "sia405cc_cable":"fk_provider":w -> "organisation":"obj_id.type":e [arrowhead=none dir=back arrowtail=crowodot];
+  "sia405cc_cable_point":"fk_dataowner":w -> "organisation":"obj_id.type":e [arrowhead=none dir=back arrowtail=crowodot];
+  "sia405cc_cable_point":"fk_owner":w -> "organisation":"obj_id.type":e [arrowhead=none dir=back arrowtail=crowodot];
+  "sia405cc_cable_point":"fk_provider":w -> "organisation":"obj_id.type":e [arrowhead=none dir=back arrowtail=crowodot];
   "sludge_treatment":"fk_dataowner":w -> "organisation":"obj_id.type":e [arrowhead=none dir=back arrowtail=crowodot];
   "sludge_treatment":"fk_provider":w -> "organisation":"obj_id.type":e [arrowhead=none dir=back arrowtail=crowodot];
   "sludge_treatment":"fk_waste_water_treatment_plant":w -> "waste_water_treatment_plant":"obj_id":e [arrowhead=none dir=back arrowtail=crowodot];
@@ -615,7 +621,7 @@ digraph "oneDegreeRelationshipsDiagram" {
       <TR><TD PORT="fk_provider" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="127" HEIGHT="16">fk_provider</TD></TR></TABLE></TD><TD PORT="fk_provider.type" ALIGN="LEFT">varchar[16]</TD></TR>
       <TR><TD PORT="tww_active" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="127" HEIGHT="16">tww_active</TD></TR></TABLE></TD><TD PORT="tww_active.type" ALIGN="LEFT">bool[1]</TD></TR>
       <TR><TD PORT="tww_local_extension" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="127" HEIGHT="16">tww_local_extension</TD></TR></TABLE></TD><TD PORT="tww_local_extension.type" ALIGN="LEFT">bool[1]</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 4</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">92 &gt;</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 4</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">98 &gt;</TD></TR>
     </TABLE>>
     URL="../../tables/organisation.html"
     target="_top"
@@ -728,6 +734,50 @@ digraph "oneDegreeRelationshipsDiagram" {
     URL="../../tables/retention_body.html"
     target="_top"
     tooltip="retention_body"
+  ];
+  "sia405cc_cable" [
+   label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
+      <TR><TD COLSPAN="3"  BGCOLOR="#f5f5f5"><TABLE BORDER="0" CELLSPACING="0"><TR><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="86" HEIGHT="16"><B>sia405cc_cable</B></TD><TD ALIGN="RIGHT">[table]</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="obj_id" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/primaryKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">obj_id</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="name_number" COLSPAN="3" BGCOLOR="#ffffff" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">name_number</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="function" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">function</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="cable_type" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">cable_type</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="horizontal_positioning" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">horizontal_positioning</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="status" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">status</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="geometry3d_geometry" COLSPAN="3" BGCOLOR="#ffffff" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">geometry3d_geometry</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="elevation_determination" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">elevation_determination</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="fk_dataowner" COLSPAN="3" BGCOLOR="#ffffff" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">fk_dataowner</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="fk_provider" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">fk_provider</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="fk_owner" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">fk_owner</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 8</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD></TR>
+    </TABLE>>
+    URL="../../tables/sia405cc_cable.html"
+    target="_top"
+    tooltip="sia405cc_cable"
+  ];
+  "sia405cc_cable_point" [
+   label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
+      <TR><TD COLSPAN="3"  BGCOLOR="#f5f5f5"><TABLE BORDER="0" CELLSPACING="0"><TR><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="123" HEIGHT="16"><B>sia405cc_cable_point</B></TD><TD ALIGN="RIGHT">[table]</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="obj_id" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/primaryKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">obj_id</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="name_number" COLSPAN="3" BGCOLOR="#ffffff" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">name_number</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="geometry3d_geometry" COLSPAN="3" BGCOLOR="#ffffff" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">geometry3d_geometry</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="kind" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">kind</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="horizontal_positioning" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">horizontal_positioning</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="elevation_determination" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">elevation_determination</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="status" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">status</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="symbolori_geometry" COLSPAN="3" BGCOLOR="#ffffff" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">symbolori_geometry</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="fk_dataowner" COLSPAN="3" BGCOLOR="#ffffff" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">fk_dataowner</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="fk_provider" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">fk_provider</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="fk_owner" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">fk_owner</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 7</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD></TR>
+    </TABLE>>
+    URL="../../tables/sia405cc_cable_point.html"
+    target="_top"
+    tooltip="sia405cc_cable_point"
   ];
   "sludge_treatment" [
    label=<

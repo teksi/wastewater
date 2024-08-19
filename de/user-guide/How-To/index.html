@@ -60,15 +60,16 @@
 <li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">3.6. Plandruck</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../history/index.html">3.7. History in TWW</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">3.8. How To</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#manual-label-positioning-for-different-scales">3.8.1. Manuelle Beschriftungspositionen für unterschiedliche Massstäbe</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#how-to-import-existing-label-positions">3.8.2. Importieren von bestehenden Beschriftungspositionen</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#how-to-translate-a-label-prefix">3.8.3. Übersetzen von Beschriftungs-Prefix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-default-values">3.8.1. Setting default values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-vw-tww-wastewater-structure-labels-work">3.8.2. How vw_tww_wastewater_structure labels work</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-translate-a-label-prefix-c-b-i-o">3.8.3. How to translate a label prefix (C, B, I, O)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#how-to-run-symbology-functions-manually">3.8.4. Symbologie-Funktion manuell anstossen</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#collecting-a-hydr-geometry-corresponds-to-a-basin-geometry-in-mikeurban">3.8.5. Erfassen einer Hydr_Geometrie (entspricht einer Beckengeometrie in MikeUrban)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#hydraulic-modeling-of-an-overflow-prank-weir-leapingweir-pump">3.8.6. Hydraulische Modellierung eines Überlaufes (Streichwehr/Leapingwehr/Förderanlage)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#overflow-characteristic">3.8.7. Überlaufcharakteristik</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#setting-default-values">3.8.8. Setting default values</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#further-informations">3.8.9. Weitere Infos</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manual-label-positioning-for-different-scales">3.8.5. Manuelle Beschriftungspositionen für unterschiedliche Massstäbe</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-import-existing-label-positions">3.8.6. Importieren von bestehenden Beschriftungspositionen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#collecting-a-hydr-geometry-corresponds-to-a-basin-geometry-in-mike">3.8.7. Collecting a hydr_geometry (corresponds to a basin geometry in Mike+)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hydraulic-modeling-of-an-overflow-prank-weir-leapingweir-pump">3.8.8. Hydraulische Modellierung eines Überlaufes (Streichwehr/Leapingwehr/Förderanlage)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#overflow-characteristic">3.8.9. Überlaufcharakteristik</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#further-informations">3.8.10. Weitere Infos</a></li>
 </ul>
 </li>
 </ul>
@@ -108,8 +109,110 @@
   <section id="how-to">
 <h1><span class="section-number">3.8. </span>How To<a class="headerlink" href="#how-to" title="Link to this heading"></a></h1>
 <p>Eine Anleitung zu verschiedenen Themen um die Konfiguration von TWW.</p>
+<section id="setting-default-values">
+<span id="settingdefaultvalues"></span><h2><span class="section-number">3.8.1. </span>Setting default values<a class="headerlink" href="#setting-default-values" title="Link to this heading"></a></h2>
+<p>If you get the following error message on startup of the TEKSI project during the ‚Database production ready check‘:</p>
+<p>CRITICAL: Error fk_provider or fk_dataowner not set in tww_od.default_values</p>
+<p>then your database is not yet production ready.</p>
+<p>It is possible to define default values for repeated fields such as fk_provider or fk_dataowner, so that you not have to add those manually for each object that you are creating.</p>
+<p>There is a new layer group ‚configuration‘ in the project:</p>
+<figure class="align-default">
+<img alt="../../_images/configuration_default_values.png" src="../../_images/configuration_default_values.png" />
+</figure>
+<ol class="arabic simple">
+<li><p>Open the attribute table ‚Default values‘</p></li>
+<li><p>Change to edit mode and choose select new object</p></li>
+<li><p>Select field name (currently fk_dataowner and fk_provider are supported in the form)</p></li>
+</ol>
+<figure class="align-default">
+<img alt="../../_images/default_values_fieldname_selection.png" src="../../_images/default_values_fieldname_selection.png" />
+</figure>
+<ol class="arabic simple" start="4">
+<li><p>Select organisation that should be used (the corresponding obj_id will be added in the table itself).</p></li>
+</ol>
+<figure class="align-default">
+<img alt="../../_images/default_values_organisation_obj_id_selection.png" src="../../_images/default_values_organisation_obj_id_selection.png" />
+</figure>
+<p>For the second warning, please contact your TEKSI system administrator</p>
+<p>CRITICAL: Error OID prefix set to ‚ch000000‘. Database not safe for production.</p>
+<p>and ask him/her to set the prefix to fit your project.</p>
+<p>For more information see <a class="reference internal" href="../../admin-guide/db-production-readiness/index.html#productionreadiness"><span class="std std-ref">Prepare database for production</span></a></p>
+<p>Connect all occurences of your field name to <code class="docutils literal notranslate"><span class="pre">tww_sys.get_default_values(field_name)</span></code>.
+Per default, the fields <code class="docutils literal notranslate"><span class="pre">fk_provider</span></code> and <code class="docutils literal notranslate"><span class="pre">fk_dataowner</span></code> are already connected to the function <code class="docutils literal notranslate"><span class="pre">tww_sys.get_default_values(field_name)</span></code>.</p>
+<p>An example SQL script how to insert the default value for all occurences of a field name can be found <a class="reference external" href="https://github.com/teksi/wastewater/blob/main/datamodel/changelogs/0001/14_default_values.sql">here</a>)</p>
+</section>
+<section id="how-vw-tww-wastewater-structure-labels-work">
+<h2><span class="section-number">3.8.2. </span>How vw_tww_wastewater_structure labels work<a class="headerlink" href="#how-vw-tww-wastewater-structure-labels-work" title="Link to this heading"></a></h2>
+<p>Labeling a manhole with his levels is quite a complex thing. Levels are not stored in the wastewater_structure class itself, but in the cover table and as reachpoint levels with the connected reaches. TWW has therefore 4 calculated fields to be able to label these levels:</p>
+<ul class="simple">
+<li><p>_cover_label: shows the level / the levels of the cover/s.level of the wastewater structure</p></li>
+<li><p>_bottom_label: shows the level / the levels of the wastewater_node(s).bottom_level of the wastewater structure</p></li>
+<li><p>_input_label: shows the levels of the reachpoints connected as to_reachpoints to one of the wastewater_nodes of the wastewater_structure</p></li>
+<li><p>_output_lebel: shows the levels of the reachpoints connected as from_reachpoints to one of the wastewater_nodes of the wastewater_structure</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/tww_labels.jpg" src="../../_images/tww_labels.jpg" />
+</figure>
+<p>In this example, there are 4 input-reaches to the manhole, but there are only two input-labels (I1, I2). Why?</p>
+<p>Answer: in the function, where the _input_label is calculated, can be set a filter so that only reaches with specified function_hierachic (e.g. only pwwf-reaches) are labeled (uses a specific field in the vl-channel_function_hierarchic, documentation follows).
+In the example, the 200mm-reaches are swwf-reaches and therefore not labeled.</p>
+<p>Which reach is I1, which is I2?</p>
+<p>Answer: TWW uses the azimut of the last segment of the reach (for inputs) or the first segement of the reach (for outputs) to define the order of the labels. If you stand in the North to the manhole and go clockwise around the manhole, you will first come to I1 and then later to I2.
+In the example, 300 combined-wastewater-reach is I1, 400 wastewater-reach is I2.</p>
+</section>
+<section id="how-to-translate-a-label-prefix-c-b-i-o">
+<h2><span class="section-number">3.8.3. </span>How to translate a label prefix (C, B, I, O)<a class="headerlink" href="#how-to-translate-a-label-prefix-c-b-i-o" title="Link to this heading"></a></h2>
+<p>Um die Kurzeichen in den Beschriftungen zu übersetzen sind im QGIS-Projekt entsprechende Variablen definiert. Um die Buchstaben für Deckel-Koten, Sohlenkoten und Ein- und Auslaufkoten zu ändern, müssen diese Projekt-Einstellungen geändert werden:</p>
+<figure class="align-default">
+<img alt="../../_images/tww_label_prefix_settings.jpg" src="../../_images/tww_label_prefix_settings.jpg" />
+</figure>
+<p>To see your changes, you have to rerun the symbology functions manually (see next chapter)</p>
+</section>
+<section id="how-to-run-symbology-functions-manually">
+<h2><span class="section-number">3.8.4. </span>Symbologie-Funktion manuell anstossen<a class="headerlink" href="#how-to-run-symbology-functions-manually" title="Link to this heading"></a></h2>
+<p>Sometimes the labels such as bottom, cover or entry/exit levels are not correctly displayed, even if the corresponding attribut is filled in. This happens for example when you import data by INTERLIS Import or another way. May be you also deactivated the triggers to speed up the import process.</p>
+<ul>
+<li><p>Aktivieren/Deaktivieren der Symbologie-Trigger:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_sys</span><span class="o">.</span><span class="n">create_symbology_triggers</span><span class="p">()</span>
+<span class="n">SELECT</span> <span class="n">tww_sys</span><span class="o">.</span><span class="n">drop_symbology_triggers</span><span class="p">()</span>
+</pre></div>
+</div>
+</li>
+<li><p>Starte <strong>label function</strong> für alle Daten (_label, _cover_label, _bottom_label, _input_label und_output_label):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_od</span><span class="o">.</span><span class="n">update_wastewater_structure_label</span><span class="p">(</span><span class="n">NULL</span><span class="p">,</span> <span class="n">true</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/tww_label_attributes.jpg" src="../../_images/tww_label_attributes.jpg" />
+</figure>
+<ul>
+<li><p>Starte die Berechnung der Schacht-Tiefe für alle Daten (wastewater_structure._depth):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_od</span><span class="o">.</span><span class="n">update_depth</span><span class="p">(</span><span class="n">NULL</span><span class="p">,</span> <span class="n">true</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/tww_system_attributes_depth.jpg" src="../../_images/tww_system_attributes_depth.jpg" />
+</figure>
+<p>Für die Symbolisierung von Schächten und Abwasserknoten mit _function_hierarchic und _usage_current berechnen die folgenden beiden Funktionen die TWW-Attribute mit den verknüpften Haltungen</p>
+<ul>
+<li><p>Starte <a href="#id1"><span class="problematic" id="id2">**</span></a>Symbologie  Funktion“ für alle Datensätze (berechnet Funktion_Hierarchisch und Nutzungsart_Ist aus den verknüpften Haltungen und berechnet damit die Felder wastewater_structure._function_hierarchic und_usage_current):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_od</span><span class="o">.</span><span class="n">update_wastewater_structure_symbology</span><span class="p">(</span><span class="n">NULL</span><span class="p">,</span><span class="n">true</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Starte <a href="#id1"><span class="problematic" id="id2">**</span></a>Abwasserknoten Symbologie“ für alle Datensätze (berechnet Funktion_Hierarchisch und Nutzungsart_Ist aus den verknüpften Haltungen und berechnet damit die Felder wastewater_node._function_hierarchic und_usage_current):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_od</span><span class="o">.</span><span class="n">update_wastewater_node_symbology</span><span class="p">(</span><span class="n">NULL</span><span class="p">,</span> <span class="n">true</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
 <section id="manual-label-positioning-for-different-scales">
-<h2><span class="section-number">3.8.1. </span>Manuelle Beschriftungspositionen für unterschiedliche Massstäbe<a class="headerlink" href="#manual-label-positioning-for-different-scales" title="Link to this heading"></a></h2>
+<h2><span class="section-number">3.8.5. </span>Manuelle Beschriftungspositionen für unterschiedliche Massstäbe<a class="headerlink" href="#manual-label-positioning-for-different-scales" title="Link to this heading"></a></h2>
 <p>In QGIS können verschiedene Beschriftungsdefinitionen für verschiedene Massstäbe definiert werden. Bei der Arbeit am Bildschirm funktioniert das gut. Aber soll ein Plan mit Beschriftung gedruckt oder ein Datenexport der Beschriftungen (z.B. für ins Regio-GIS) gemacht werden, ist es oft nötig, die Beschriftungspositionen manuell zu definieren. Wenn eine Beschriftung manuell platziert wird in QGIS, dann gilt diese fixe Position aber für jeden Massstab. Und das führt nicht immer zu guten Resultaten.</p>
 <p>Lösung</p>
 <ul class="simple">
@@ -146,7 +249,7 @@
 </div>
 </section>
 <section id="how-to-import-existing-label-positions">
-<h2><span class="section-number">3.8.2. </span>Importieren von bestehenden Beschriftungspositionen<a class="headerlink" href="#how-to-import-existing-label-positions" title="Link to this heading"></a></h2>
+<h2><span class="section-number">3.8.6. </span>Importieren von bestehenden Beschriftungspositionen<a class="headerlink" href="#how-to-import-existing-label-positions" title="Link to this heading"></a></h2>
 <p>In guten Beschriftungspositionen kann viel Arbeit stecken. Diese Arbeit soll nicht verloren gehen.</p>
 <ul class="simple">
 <li><p>Exportieren der Beschriftungsposition im alten GIS in der Form Obj_ID, KoordinateX(Ost), KoordinateY(Nord).</p></li>
@@ -163,62 +266,8 @@
 <li><p>Falls notwendig definiere die Ausrichtung horizontal und vertikal der Beschriftungen im Platzierungs-Reiter der Beschriftungsdefinition.</p></li>
 </ul>
 </section>
-<section id="how-to-translate-a-label-prefix">
-<h2><span class="section-number">3.8.3. </span>Übersetzen von Beschriftungs-Prefix<a class="headerlink" href="#how-to-translate-a-label-prefix" title="Link to this heading"></a></h2>
-<p>TWW erstellt automatisch Beschriftungen für Abwasserbauwerke und Haltungen:</p>
-<figure class="align-default">
-<img alt="user-guide/How-To/images/tww_labels.png" src="user-guide/How-To/images/tww_labels.png" />
-</figure>
-<p>Um die Kurzeichen in den Beschriftungen zu übersetzen sind im QGIS-Projekt entsprechende Variablen definiert. Um die Buchstaben für Deckel-Koten, Sohlenkoten und Ein- und Auslaufkoten zu ändern, müssen diese Projekt-Einstellungen geändert werden:</p>
-<figure class="align-default">
-<img alt="user-guide/How-To/images/tww_label_prefix_settings.png" src="user-guide/How-To/images/tww_label_prefix_settings.png" />
-</figure>
-</section>
-<section id="how-to-run-symbology-functions-manually">
-<h2><span class="section-number">3.8.4. </span>Symbologie-Funktion manuell anstossen<a class="headerlink" href="#how-to-run-symbology-functions-manually" title="Link to this heading"></a></h2>
-<p>Manchmal werden die berechneten Beschriftungen Deckel-, Einlauf-, Auslauf-, Sohlenkote nicht richtig dargestellt, obwohl sie in der Datenbank entsprechend eingetragen sind.  Das kann vorkommen, wenn zum Beispiel Daten importiert wurden. Oder wenn für das Beschleunigen eines Import’s die Trigger deaktiviert wurden.</p>
-<ul>
-<li><p>Aktivieren/Deaktivieren der Symbologie-Trigger:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_sys</span><span class="o">.</span><span class="n">create_symbology_triggers</span><span class="p">()</span>
-<span class="n">SELECT</span> <span class="n">tww_sys</span><span class="o">.</span><span class="n">drop_symbology_triggers</span><span class="p">()</span>
-</pre></div>
-</div>
-</li>
-<li><dl class="simple">
-<dt>Starte <strong>label function</strong> für alle Daten (_label, _cover_label, _bottom_label, _input_label und_output_label):</dt><dd><p>SELECT tww_od.update_wastewater_structure_label(NULL, true)</p>
-</dd>
-</dl>
-</li>
-</ul>
-<figure class="align-default">
-<img alt="user-guide/How-To/images/tww_label_attributes.png" src="user-guide/How-To/images/tww_label_attributes.png" />
-</figure>
-<ul class="simple">
-<li><dl class="simple">
-<dt>Starte die Berechnung der Schacht-Tiefe für alle Daten (wastewater_structure._depth):</dt><dd><p>SELECT tww_od.update_depth(NULL, true);</p>
-</dd>
-</dl>
-</li>
-</ul>
-<figure class="align-default">
-<img alt="user-guide/How-To/images/tww_system_attributes_depth.png" src="user-guide/How-To/images/tww_system_attributes_depth.png" />
-</figure>
-<p>Für die Symbolisierung von Schächten und Abwasserknoten mit _function_hierarchic und _usage_current berechnen die folgenden beiden Funktionen die TWW-Attribute mit den verknüpften Haltungen</p>
-<ul>
-<li><p>Starte <a href="#id1"><span class="problematic" id="id2">**</span></a>Symbologie  Funktion“ für alle Datensätze (berechnet Funktion_Hierarchisch und Nutzungsart_Ist aus den verknüpften Haltungen und berechnet damit die Felder wastewater_structure._function_hierarchic und_usage_current):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_od</span><span class="o">.</span><span class="n">update_wastewater_structure_symbology</span><span class="p">(</span><span class="n">NULL</span><span class="p">,</span><span class="n">true</span><span class="p">)</span>
-</pre></div>
-</div>
-</li>
-<li><p>Starte <a href="#id1"><span class="problematic" id="id2">**</span></a>Abwasserknoten Symbologie“ für alle Datensätze (berechnet Funktion_Hierarchisch und Nutzungsart_Ist aus den verknüpften Haltungen und berechnet damit die Felder wastewater_node._function_hierarchic und_usage_current):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_od</span><span class="o">.</span><span class="n">update_wastewater_node_symbology</span><span class="p">(</span><span class="n">NULL</span><span class="p">,</span> <span class="n">true</span><span class="p">);</span>
-</pre></div>
-</div>
-</li>
-</ul>
-</section>
-<section id="collecting-a-hydr-geometry-corresponds-to-a-basin-geometry-in-mikeurban">
-<h2><span class="section-number">3.8.5. </span>Erfassen einer Hydr_Geometrie (entspricht einer Beckengeometrie in MikeUrban)<a class="headerlink" href="#collecting-a-hydr-geometry-corresponds-to-a-basin-geometry-in-mikeurban" title="Link to this heading"></a></h2>
+<section id="collecting-a-hydr-geometry-corresponds-to-a-basin-geometry-in-mike">
+<h2><span class="section-number">3.8.7. </span>Collecting a hydr_geometry (corresponds to a basin geometry in Mike+)<a class="headerlink" href="#collecting-a-hydr-geometry-corresponds-to-a-basin-geometry-in-mike" title="Link to this heading"></a></h2>
 <p>Hinweis:</p>
 <ul class="simple">
 <li><p>Schächte mit einer Hydr_Geometrie sind als Spezialbauwerke (und nicht als Normschächte) zu erfassen.</p></li>
@@ -226,37 +275,44 @@
 </ul>
 <p>Vorgehen:</p>
 <ol class="arabic simple">
-<li><p>Abwasserbauwerk mit i-Knopf auswählen</p></li>
-<li><p>Im Fenster Objektattribute den Reiter Abwasserknoten wählen</p></li>
-<li><p>Im Feld fs_Hydr_Geometrie eine Beckengeometrie wählen oder mit dem + Knopf eine neue Hydr_Geometrie erstellen.</p></li>
+<li><p>Select in layer vw_tww_wastewater_structure the wastewater structure with the i-button</p></li>
+<li><p>Select the <strong>Wastewater Nodes</strong> tab in the Feature Attributes window</p></li>
+</ol>
+<p>or in a more direct way: Select the node with the i-button in layer vw_wastewater_node</p>
+<ol class="arabic simple" start="3">
+<li><p>Expand the part ** additional attributes in special structures**</p></li>
+<li><p>Select a hydr_geometry in the fk_hydr_geometry field or use the <strong>+</strong> button to create a new hydr_geometry.</p></li>
 </ol>
 <figure class="align-default">
 <img alt="../../_images/hydr_geometry1.jpg" src="../../_images/hydr_geometry1.jpg" />
 </figure>
-<ol class="arabic simple" start="4">
-<li><p>Im Fenster Hydr-Geometrie – Objektattribute eine Bezeichnung erfassen. Diese Bezeichnung ist auch die Bezeichnung der Tabelle in MikeUrban.</p></li>
-<li><p>Bevor ein hydr:geom_relation erfasst werden kann, muss der neue Datensatz Hydro_Geometrie gespeichert werden: -&gt; OK klicken</p></li>
-<li><p>Mit dem Knopf <strong>auf Formularansicht umschalten</strong> beim Feld fs_Hydr_Geometrie wieder zurück zur eben erstellten Hydr_Geometrie</p></li>
+<ol class="arabic simple" start="5">
+<li><p>For a new record: Enter a description in the hydr_geometry - Feature Attributes window. This name is also the name of the table in Mike+.</p></li>
 </ol>
 <figure class="align-default">
 <img alt="../../_images/hydr_geometry2.jpg" src="../../_images/hydr_geometry2.jpg" />
 </figure>
-<ol class="arabic simple" start="7">
-<li><p>Mit dem <strong>Kindobjekt hinzufügen</strong> Knopf können nun die Datensätze erzeugt werden, mit denen die Beckengeometrie analog der Beckengeometrie von MikeUrban (H, As Oberfläche, Ac Querschnittsfläche) definiert wird.</p></li>
+<ol class="arabic simple" start="6">
+<li><p>With the <strong>Add child object</strong> button, you can now generate the records with which the hydr_geometry is defined analogously to the basin geometry of Mike+ (H, As surface, Ac cross-sectional area).</p></li>
 </ol>
+<p>In der Tabellendarstellung ist der Überblick über die Werte einfacher.</p>
 <figure class="align-default">
 <img alt="../../_images/hydr_geometry3.jpg" src="../../_images/hydr_geometry3.jpg" />
 </figure>
 <p>Hinweis:</p>
 <ul class="simple">
 <li><p>Als Wassertiefe ist der Werte über der Sohlenkote resp. dem Auslauf anzugeben. Eine Beckengeometrie kann so bei gleichen Schächten für mehrere Schächte verwendet werden.</p></li>
-<li><p>In der Tabellendarstellung ist der Überblick über die Werte einfacher.</p></li>
+<li><p>Be aware to respect the rules in Mike (e.g. continuous increasing cross_section_area)</p></li>
+<li><p>As long as the hydr_geometry record is not saved, you see in the Features Attribute window just the Obj_Id in brackets. After saving, you will see the identifier you have entered.</p></li>
 </ul>
 </section>
 <section id="hydraulic-modeling-of-an-overflow-prank-weir-leapingweir-pump">
-<h2><span class="section-number">3.8.6. </span>Hydraulische Modellierung eines Überlaufes (Streichwehr/Leapingwehr/Förderanlage)<a class="headerlink" href="#hydraulic-modeling-of-an-overflow-prank-weir-leapingweir-pump" title="Link to this heading"></a></h2>
+<h2><span class="section-number">3.8.8. </span>Hydraulische Modellierung eines Überlaufes (Streichwehr/Leapingwehr/Förderanlage)<a class="headerlink" href="#hydraulic-modeling-of-an-overflow-prank-weir-leapingweir-pump" title="Link to this heading"></a></h2>
+<p>There is a special view for overflows, altough it would be possible to edit the overflow-data in layer vw_tww_wastewater_structure.
+The advantage of layer vw_tww_overflow: overflows can be visualized, can be found again and are available in lists.</p>
 <p>Vorgehen:</p>
-<p>Bei Wehren ist ein zweiter Abwasserknoten im Bauwerk zu erstellen. Ein zweiter Auslauf ist bereits erstellt (grün = entlastetes Mischabwasser) und beim Überlaufbauwerk noch mit keinem Abwasserknoten verknüpft.</p>
+<p>If it not already exists: In the case of weirs, a second wastewater node has to be created in the wastewater structure.
+A second outlet has already been created (green = discharged combined wastewater) and has not yet been linked to any wastewater node in the overflow structure.</p>
 <ol class="arabic simple">
 <li><p>Abwasserbauwerk mit i-Knopf auswählen</p></li>
 <li><p>Im Fenster Objektattribute den Reiter Abwasserknoten wählen</p></li>
@@ -267,28 +323,36 @@
 </figure>
 <ol class="arabic simple" start="4">
 <li><p>Mit Klick beim Auslauf 2 wird der zweite Abwasserknoten platziert.</p></li>
-<li><p>Es erscheint das Eingabefenster für diesen Abwasserknoten. Es ist eine sinnvolle Bezeichnung zu wählen (zB. BSP001-AK2 für Abwasserknoten 2 des Schachtes BSP001). Diese Bezeichnung erscheint auch in MikeUrban. Mit OK wird der neue Abwasserknoten gespeichert.</p></li>
+<li><p>The Feature Attributes window for this wastewater node appears. Enter a meaningful identifier (e.g. 1.070-WN2 for wastewater node 2 of the 1.070 special structure). This designation also appears in Mike+. The new wastewater node is saved with OK.</p></li>
 </ol>
 <figure class="align-default">
 <img alt="../../_images/overflow2.jpg" src="../../_images/overflow2.jpg" />
 </figure>
-<p>Im nächsten Bild ist der 2. Knoten in der Karte und im Objektattribute-Fenster gelb markiert.</p>
-<figure class="align-default">
-<img alt="../../_images/overflow3.jpg" src="../../_images/overflow3.jpg" />
-</figure>
-<p>Wir definieren jetzt ein Streichwehr:</p>
+<p>Close the Feature Attributes window of the wastewater structure.</p>
+<p>To define a new prank weir:</p>
 <ol class="arabic simple" start="6">
-<li><p>Bei den Überlauf-Reitern wählen wir Streichwehr</p></li>
-<li><p>Mit dem <strong>Kindobjekt hinzufügen</strong> Knopf erzeugen wir ein Streichwehr</p></li>
+<li><p>Choose the layer vw_tww_overflow in the layergroup Hydraulic.</p></li>
+<li><p>Choose the QGIS standard <strong>Add Point Feature</strong> button and click anyware near to the wastewater_structure</p></li>
 </ol>
-<p>Es öffnet das Streichwehr Objektattribute Fenster. Die Attribute im oberen Teil Hydraulik sind auszufüllen, sie werden in MikeUrban übernommen.
-Das Feld fs_UeberlaufNach muss manuell ausgefüllt werden. Die Obj_ID des zuvor erstellten zweiten Abwasserknoten ist im hinteren Fenster ersichtlich</p>
+<div class="admonition hint">
+<p class="admonition-title">Hinweis</p>
+<p>Because an overflow itself has no geometry, the place you click has no meaning. The geometry will be defined be the linked from- and to-wastewater nodes, see point 9</p>
+</div>
+<p>The overflow Feature Attributes window opens.</p>
+<ol class="arabic simple" start="8">
+<li><p>Enter an identifier and choose the overflow_type.</p></li>
+<li><p>Define the two wastewater nodes of the overflow (fk_wastewater_node = from node, fk_overflow_to = to node) by selecting them on the map with the <strong>map identification</strong>-tool.</p></li>
+</ol>
+<p>The attributes in the upper hydraulic section must be filled in, they will be transferred to Mike+.</p>
 <figure class="align-default">
 <img alt="../../_images/overflow4.jpg" src="../../_images/overflow4.jpg" />
 </figure>
-<p>Für die Berechnung in MikeUrban mit der Wehrformel sind diese Angaben ausreichend.</p>
-<p>Jetzt muss nur noch der 2. Auslauf mit dem 2. Abwasserknoten verknüpft werden:</p>
-<p>Alle offenen Objektattribute Fenster schliessen.</p>
+<p>Close all open Feature Attributes windows.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hinweis</p>
+<p>The new overflow is drawn as dotted line with arrow. If the line does not appear: the line is defined with the QGIS geometry generator symbol. Control the formula of the geometry generator (layer properties/symbology, select the symbol), control first the name of the <strong>vw_wastewater_node</strong> layer. If this layer is renamed, the formula has to be changed with the new name (e.g. <strong>vw_Abwasserknoten</strong>).</p>
+</div>
+<p>To finish, the 2nd outlet has to be linked to the 2nd wastewater node:</p>
 <ol class="arabic simple">
 <li><p>Das TWW-Werkzeug <strong>Connect wastewater networkelements</strong> wählen.</p></li>
 <li><p>Klick auf der Haltung beim Auslauf</p></li>
@@ -300,53 +364,20 @@ Das Feld fs_UeberlaufNach muss manuell ausgefüllt werden. Die Obj_ID des zuvor 
 </figure>
 </section>
 <section id="overflow-characteristic">
-<h2><span class="section-number">3.8.7. </span>Überlaufcharakteristik<a class="headerlink" href="#overflow-characteristic" title="Link to this heading"></a></h2>
+<h2><span class="section-number">3.8.9. </span>Überlaufcharakteristik<a class="headerlink" href="#overflow-characteristic" title="Link to this heading"></a></h2>
 <p>Bei einem Leaping-Wehr, einem Förderaggregat oder bei speziellen Verhältnissen kann bei einem Überlauf eine Überlaufcharakteristik definiert werden:</p>
-<p>Beim Feld fs_Ueberlaufcharakteristik kann eine bereits vorhandene Charakteristik gewählt werden oder eine Neue erstellt werden mit dem grünen + Knopf.</p>
+<p>You can select an existing characteristic in the field fk_overflow_char or you create a new characteristic with the green + button.</p>
 <p>Es erscheint das Objektattribute Fenster für die Ueberlaufcharakteristik:</p>
 <figure class="align-default">
 <img alt="../../_images/overflow_char1.jpg" src="../../_images/overflow_char1.jpg" />
 </figure>
 <ol class="arabic simple">
-<li><p>Auch hier wird die Bezeichnung später in MikeUrban übernommen als Tabellenbezeichnung für eine QH-Beziehung, welche z.B. in einer lokalen Steuerung benutzt wird.</p></li>
-<li><p>Weil der Datensatz Überlaufcharakteristik noch nicht gesichert ist, muss er zuerst mit OK gespeichert werden, bevor die Datensätze der HQ-Relation erstellt werden können.</p></li>
-<li><p>Mit dem Knopf <strong>auf Formularansicht umschalten</strong> beim Feld <a href="#id1"><span class="problematic" id="id2">fs_</span></a> Ueberlaufcharakteristik wieder zurück zur eben erstellten Überlaufcharakteristik und mit dem <strong>Kindobjekt hinzufügen</strong> Knopf die notwendigen HQ oder QQ-Werte definieren.</p></li>
+<li><p>Here too, the identifer is later adopted in Mike+ as a table name for a QH relationship, which is used, for example, in a local controller.</p></li>
+<li><p>Define the necessary HQ or QQ values with the <strong>add child object</strong> button. Be sure to choose the correct tab corresponding to the choice in <strong>kind_overflow_char</strong></p></li>
 </ol>
-</section>
-<section id="setting-default-values">
-<span id="settingdefaultvalues"></span><h2><span class="section-number">3.8.8. </span>Setting default values<a class="headerlink" href="#setting-default-values" title="Link to this heading"></a></h2>
-<p>If you get the following error message on startup of the TEKSI project during the ‚Database production ready check‘:</p>
-<p>CRITICAL: Error fk_provider or fk_dataowner not set in tww_od.default_values</p>
-<p>then your database is not yet production ready.</p>
-<p>It is possible to define default values for repeated fields such as fk_provider or fk_dataowner, so that you not have to add those manually for each object that you are creating.</p>
-<p>There is a new layer group ‚configuration‘ in the project:</p>
-<figure class="align-default">
-<img alt="user-guide/How-To/images/configuration_default_values" src="user-guide/How-To/images/configuration_default_values" />
-</figure>
-<ol class="arabic simple">
-<li><p>Open the attribute table ‚Default values‘</p></li>
-<li><p>Change to edit mode and choose select new object</p></li>
-<li><p>Select field name (currently fk_dataowner and fk_provider are supported in the form)</p></li>
-</ol>
-<figure class="align-default">
-<img alt="../../_images/default_values_fieldname_selection.png" src="../../_images/default_values_fieldname_selection.png" />
-</figure>
-<ol class="arabic simple" start="4">
-<li><p>Select organisation that should be used (the corresponding obj_id will be added in the table itself).</p></li>
-</ol>
-<figure class="align-default">
-<img alt="../../_images/default_values_organisation_obj_id_selection.png" src="../../_images/default_values_organisation_obj_id_selection.png" />
-</figure>
-<p>For the second warning, please contact your TEKSI system administrator</p>
-<p>CRITICAL: Error OID prefix set to ‚ch000000‘. Database not safe for production.</p>
-<p>and ask him/her to set the prefix to fit your project.</p>
-<p>For more information see <a class="reference internal" href="../../admin-guide/db-production-readiness/index.html#productionreadiness"><span class="std std-ref">Prepare database for production</span></a></p>
-<p>Connect all occurences of your field name to <code class="docutils literal notranslate"><span class="pre">tww_sys.get_default_values(field_name)</span></code>.
-Per default, the fields <code class="docutils literal notranslate"><span class="pre">fk_provider</span></code> and <code class="docutils literal notranslate"><span class="pre">fk_dataowner</span></code> are already connected to the function <code class="docutils literal notranslate"><span class="pre">tww_sys.get_default_values(field_name)</span></code>.</p>
-<p>An example SQL script how to insert the default value for all occurences of a field name can be found <a class="reference external" href="https://github.com/teksi/wastewater/blob/main/datamodel/changelogs/0001/14_default_values.sql">here</a>)</p>
 </section>
 <section id="further-informations">
-<h2><span class="section-number">3.8.9. </span>Weitere Infos<a class="headerlink" href="#further-informations" title="Link to this heading"></a></h2>
+<h2><span class="section-number">3.8.10. </span>Weitere Infos<a class="headerlink" href="#further-informations" title="Link to this heading"></a></h2>
 <p>Further Q &amp; A’s you can find in the
 <a class="reference external" href="https://github.com/orgs/teksi/discussions/categories/q-a">TWW Discussion section</a></p>
 </section>

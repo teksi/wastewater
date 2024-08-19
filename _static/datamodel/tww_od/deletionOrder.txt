@@ -2,8 +2,10 @@ import_manhole_quarantine
 default_values
 bio_ecol_assessment
 channel
+sia405cc_cable
 farm
 special_structure
+sia405cc_cable_point
 manhole
 measurement_result
 file

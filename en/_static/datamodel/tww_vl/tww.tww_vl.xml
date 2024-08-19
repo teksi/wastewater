@@ -948,7 +948,7 @@
             <column ascending="true" name="code"/>
          </index>
       </table>
-      <table name="damage_channel_channel_damage_code" remarks="" schema="tww_vl" type="TABLE">
+      <table name="damage_channel_channel_damage_code" numRows="311" remarks="" schema="tww_vl" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
             <child column="channel_damage_code" foreignKey="fkey_vl_damage_channel_channel_damage_code" implied="false" onDeleteCascade="false" schema="tww_od" table="damage_channel"/>
          </column>
@@ -990,7 +990,7 @@
             <column ascending="true" name="code"/>
          </index>
       </table>
-      <table name="damage_manhole_manhole_damage_code" remarks="" schema="tww_vl" type="TABLE">
+      <table name="damage_manhole_manhole_damage_code" numRows="322" remarks="" schema="tww_vl" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
             <child column="manhole_damage_code" foreignKey="fkey_vl_damage_manhole_manhole_damage_code" implied="false" onDeleteCascade="false" schema="tww_od" table="damage_manhole"/>
          </column>
@@ -1410,7 +1410,7 @@
             <column ascending="true" name="code"/>
          </index>
       </table>
-      <table name="file_classname" remarks="" schema="tww_vl" type="TABLE">
+      <table name="file_classname" numRows="110" remarks="" schema="tww_vl" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
             <child column="classname" foreignKey="fkey_vl_file_classname" implied="false" onDeleteCascade="false" schema="tww_od" table="file"/>
          </column>
@@ -2814,6 +2814,195 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="active" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
          <primaryKey column="code" sequenceNumberInPK="1"/>
          <index name="pkey_tww_vl_retention_body_kind_code" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
+      <table name="sia405cc_cable_cable_type" remarks="" schema="tww_vl" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <child column="cable_type" foreignKey="fkey_vl_sia405cc_cable_cable_type" implied="false" onDeleteCascade="false" schema="tww_od" table="sia405cc_cable"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="vsacode" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="value_en" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="value_fr" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="value_it" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="value_ro" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="abbr_en" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="abbr_de" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="abbr_fr" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="abbr_it" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="abbr_ro" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="active" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
+         <primaryKey column="code" sequenceNumberInPK="1"/>
+         <index name="pkey_tww_vl_sia405cc_cable_cable_type_code" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
+      <table name="sia405cc_cable_elevation_determination" remarks="" schema="tww_vl" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <child column="elevation_determination" foreignKey="fkey_vl_sia405cc_cable_elevation_determination" implied="false" onDeleteCascade="false" schema="tww_od" table="sia405cc_cable"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="vsacode" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="value_en" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="value_fr" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="value_it" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="value_ro" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="abbr_en" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="abbr_de" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="abbr_fr" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="abbr_it" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="abbr_ro" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="active" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
+         <primaryKey column="code" sequenceNumberInPK="1"/>
+         <index name="pkey_tww_vl_sia405cc_cable_elevation_determination_code" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
+      <table name="sia405cc_cable_function" remarks="" schema="tww_vl" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <child column="function" foreignKey="fkey_vl_sia405cc_cable_function" implied="false" onDeleteCascade="false" schema="tww_od" table="sia405cc_cable"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="vsacode" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="value_en" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="value_fr" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="value_it" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="value_ro" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="abbr_en" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="abbr_de" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="abbr_fr" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="abbr_it" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="abbr_ro" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="active" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
+         <primaryKey column="code" sequenceNumberInPK="1"/>
+         <index name="pkey_tww_vl_sia405cc_cable_function_code" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
+      <table name="sia405cc_cable_horizontal_positioning" remarks="" schema="tww_vl" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <child column="horizontal_positioning" foreignKey="fkey_vl_sia405cc_cable_horizontal_positioning" implied="false" onDeleteCascade="false" schema="tww_od" table="sia405cc_cable"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="vsacode" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="value_en" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="value_fr" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="value_it" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="value_ro" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="abbr_en" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="abbr_de" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="abbr_fr" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="abbr_it" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="abbr_ro" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="active" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
+         <primaryKey column="code" sequenceNumberInPK="1"/>
+         <index name="pkey_tww_vl_sia405cc_cable_horizontal_positioning_code" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
+      <table name="sia405cc_cable_point_elevation_determination" remarks="" schema="tww_vl" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <child column="elevation_determination" foreignKey="fkey_vl_sia405cc_cable_point_elevation_determination" implied="false" onDeleteCascade="false" schema="tww_od" table="sia405cc_cable_point"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="vsacode" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="value_en" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="value_fr" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="value_it" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="value_ro" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="abbr_en" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="abbr_de" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="abbr_fr" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="abbr_it" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="abbr_ro" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="active" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
+         <primaryKey column="code" sequenceNumberInPK="1"/>
+         <index name="pkey_tww_vl_sia405cc_cable_point_elevation_determination_code" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
+      <table name="sia405cc_cable_point_horizontal_positioning" remarks="" schema="tww_vl" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <child column="horizontal_positioning" foreignKey="fkey_vl_sia405cc_cable_point_horizontal_positioning" implied="false" onDeleteCascade="false" schema="tww_od" table="sia405cc_cable_point"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="vsacode" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="value_en" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="value_fr" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="value_it" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="value_ro" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="abbr_en" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="abbr_de" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="abbr_fr" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="abbr_it" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="abbr_ro" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="active" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
+         <primaryKey column="code" sequenceNumberInPK="1"/>
+         <index name="pkey_tww_vl_sia405cc_cable_point_horizontal_positioning_code" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
+      <table name="sia405cc_cable_point_kind" remarks="" schema="tww_vl" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <child column="kind" foreignKey="fkey_vl_sia405cc_cable_point_kind" implied="false" onDeleteCascade="false" schema="tww_od" table="sia405cc_cable_point"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="vsacode" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="value_en" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="value_fr" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="value_it" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="value_ro" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="abbr_en" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="abbr_de" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="abbr_fr" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="abbr_it" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="abbr_ro" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="active" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
+         <primaryKey column="code" sequenceNumberInPK="1"/>
+         <index name="pkey_tww_vl_sia405cc_cable_point_kind_code" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
+      <table name="sia405cc_cable_point_status" remarks="" schema="tww_vl" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <child column="status" foreignKey="fkey_vl_sia405cc_cable_point_status" implied="false" onDeleteCascade="false" schema="tww_od" table="sia405cc_cable_point"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="vsacode" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="value_en" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="value_fr" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="value_it" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="value_ro" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="abbr_en" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="abbr_de" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="abbr_fr" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="abbr_it" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="abbr_ro" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="active" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
+         <primaryKey column="code" sequenceNumberInPK="1"/>
+         <index name="pkey_tww_vl_sia405cc_cable_point_status_code" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
+      <table name="sia405cc_cable_status" remarks="" schema="tww_vl" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <child column="status" foreignKey="fkey_vl_sia405cc_cable_status" implied="false" onDeleteCascade="false" schema="tww_od" table="sia405cc_cable"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="vsacode" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="value_en" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="value_fr" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="value_it" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="value_ro" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="abbr_en" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="abbr_de" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="abbr_fr" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="abbr_it" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="abbr_ro" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="active" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
+         <primaryKey column="code" sequenceNumberInPK="1"/>
+         <index name="pkey_tww_vl_sia405cc_cable_status_code" unique="true">
             <column ascending="true" name="code"/>
          </index>
       </table>

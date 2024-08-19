@@ -84,8 +84,10 @@ wastewater_structure_text
 file
 measurement_result
 manhole
+sia405cc_cable_point
 special_structure
 farm
+sia405cc_cable
 channel
 bio_ecol_assessment
 default_values

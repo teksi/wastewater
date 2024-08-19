@@ -468,6 +468,36 @@
                                                 <td class="constraint detail"><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>R</span></td>
                                             </tr>
                                             <tr>
+                                                <td title="sia405cc_cable.fk_dataowner references organisation.obj_id via rel_od_sia405cc_cable_fk_dataowner"><a href='sia405cc_cable.html'>sia405cc_cable</a><span class='relatedKey'>.fk_dataowner</span></td>
+                                                <td class="constraint detail">rel_od_sia405cc_cable_fk_dataowner</td>
+                                                <td class="constraint detail"><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>R</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td title="sia405cc_cable.fk_owner references organisation.obj_id via rel_cable_owner"><a href='sia405cc_cable.html'>sia405cc_cable</a><span class='relatedKey'>.fk_owner</span></td>
+                                                <td class="constraint detail">rel_cable_owner</td>
+                                                <td class="constraint detail"><span title='Null on delete:&#10;Foreign key to parent set to NULL when parent deleted'>N</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td title="sia405cc_cable.fk_provider references organisation.obj_id via rel_od_sia405cc_cable_fk_dataprovider"><a href='sia405cc_cable.html'>sia405cc_cable</a><span class='relatedKey'>.fk_provider</span></td>
+                                                <td class="constraint detail">rel_od_sia405cc_cable_fk_dataprovider</td>
+                                                <td class="constraint detail"><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>R</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td title="sia405cc_cable_point.fk_dataowner references organisation.obj_id via rel_od_sia405cc_cable_point_fk_dataowner"><a href='sia405cc_cable_point.html'>sia405cc_cable_point</a><span class='relatedKey'>.fk_dataowner</span></td>
+                                                <td class="constraint detail">rel_od_sia405cc_cable_point_fk_dataowner</td>
+                                                <td class="constraint detail"><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>R</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td title="sia405cc_cable_point.fk_owner references organisation.obj_id via rel_sia405cc_cable_point_owner"><a href='sia405cc_cable_point.html'>sia405cc_cable_point</a><span class='relatedKey'>.fk_owner</span></td>
+                                                <td class="constraint detail">rel_sia405cc_cable_point_owner</td>
+                                                <td class="constraint detail"><span title='Null on delete:&#10;Foreign key to parent set to NULL when parent deleted'>N</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td title="sia405cc_cable_point.fk_provider references organisation.obj_id via rel_od_sia405cc_cable_point_fk_dataprovider"><a href='sia405cc_cable_point.html'>sia405cc_cable_point</a><span class='relatedKey'>.fk_provider</span></td>
+                                                <td class="constraint detail">rel_od_sia405cc_cable_point_fk_dataprovider</td>
+                                                <td class="constraint detail"><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>R</span></td>
+                                            </tr>
+                                            <tr>
                                                 <td title="sludge_treatment.fk_dataowner references organisation.obj_id via rel_od_sludge_treatment_fk_dataowner"><a href='sludge_treatment.html'>sludge_treatment</a><span class='relatedKey'>.fk_dataowner</span></td>
                                                 <td class="constraint detail">rel_od_sludge_treatment_fk_dataowner</td>
                                                 <td class="constraint detail"><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>R</span></td>
@@ -880,20 +910,20 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td>og_uid_length_max_12</td>
-                                    <td>((char_length(uid) &lt;&#61; 12))</td>
+                                    <td>og_identifier_short_length_max_12</td>
+                                    <td>((char_length(identifier_short) &lt;&#61; 12))</td>
                                 </tr>
                                 <tr>
-                                    <td>og_identifier_length_max_255</td>
-                                    <td>((char_length(identifier) &lt;&#61; 255))</td>
+                                    <td>og_uid_length_max_12</td>
+                                    <td>((char_length(uid) &lt;&#61; 12))</td>
                                 </tr>
                                 <tr>
                                     <td>og_remark_length_max_255</td>
                                     <td>((char_length(remark) &lt;&#61; 255))</td>
                                 </tr>
                                 <tr>
-                                    <td>og_identifier_short_length_max_12</td>
-                                    <td>((char_length(identifier_short) &lt;&#61; 12))</td>
+                                    <td>og_identifier_length_max_255</td>
+                                    <td>((char_length(identifier) &lt;&#61; 255))</td>
                                 </tr>
                                 </tbody>
                             </table>

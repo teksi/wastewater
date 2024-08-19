@@ -71,6 +71,8 @@
       <sequence increment="1" name="seq_reach_text_oid" startValue="0"/>
       <sequence increment="1" name="seq_reservoir_oid" startValue="0"/>
       <sequence increment="1" name="seq_retention_body_oid" startValue="0"/>
+      <sequence increment="1" name="seq_sia405cc_cable_oid" startValue="0"/>
+      <sequence increment="1" name="seq_sia405cc_cable_point_oid" startValue="0"/>
       <sequence increment="1" name="seq_sludge_treatment_oid" startValue="0"/>
       <sequence increment="1" name="seq_small_treatment_plant_oid" startValue="0"/>
       <sequence increment="1" name="seq_solids_retention_oid" startValue="0"/>
@@ -1831,6 +1833,12 @@
             <child column="fk_provider" foreignKey="rel_od_reach_point_fk_dataprovider" implied="false" onDeleteCascade="false" schema="tww_od" table="reach_point"/>
             <child column="fk_dataowner" foreignKey="rel_od_retention_body_fk_dataowner" implied="false" onDeleteCascade="false" schema="tww_od" table="retention_body"/>
             <child column="fk_provider" foreignKey="rel_od_retention_body_fk_dataprovider" implied="false" onDeleteCascade="false" schema="tww_od" table="retention_body"/>
+            <child column="fk_dataowner" foreignKey="rel_od_sia405cc_cable_fk_dataowner" implied="false" onDeleteCascade="false" schema="tww_od" table="sia405cc_cable"/>
+            <child column="fk_owner" foreignKey="rel_cable_owner" implied="false" onDeleteCascade="false" schema="tww_od" table="sia405cc_cable"/>
+            <child column="fk_provider" foreignKey="rel_od_sia405cc_cable_fk_dataprovider" implied="false" onDeleteCascade="false" schema="tww_od" table="sia405cc_cable"/>
+            <child column="fk_dataowner" foreignKey="rel_od_sia405cc_cable_point_fk_dataowner" implied="false" onDeleteCascade="false" schema="tww_od" table="sia405cc_cable_point"/>
+            <child column="fk_owner" foreignKey="rel_sia405cc_cable_point_owner" implied="false" onDeleteCascade="false" schema="tww_od" table="sia405cc_cable_point"/>
+            <child column="fk_provider" foreignKey="rel_od_sia405cc_cable_point_fk_dataprovider" implied="false" onDeleteCascade="false" schema="tww_od" table="sia405cc_cable_point"/>
             <child column="fk_dataowner" foreignKey="rel_od_sludge_treatment_fk_dataowner" implied="false" onDeleteCascade="false" schema="tww_od" table="sludge_treatment"/>
             <child column="fk_provider" foreignKey="rel_od_sludge_treatment_fk_dataprovider" implied="false" onDeleteCascade="false" schema="tww_od" table="sludge_treatment"/>
             <child column="fk_dataowner" foreignKey="rel_od_structure_part_fk_dataowner" implied="false" onDeleteCascade="false" schema="tww_od" table="structure_part"/>
@@ -2327,6 +2335,110 @@
          </index>
          <checkConstraint constraint="((char_length(identifier) &lt;= 20))" name="rb_identifier_length_max_20"/>
          <checkConstraint constraint="((char_length(remark) &lt;= 80))" name="rb_remark_length_max_80"/>
+      </table>
+      <table name="sia405cc_cable" remarks="" schema="tww_od" type="TABLE">
+         <column autoUpdated="false" defaultValue="tww_sys.generate_oid('tww_od'::text, 'sia405cc_cable'::text)" digits="0" id="0" name="obj_id" nullable="false" remarks="INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="name_number" nullable="true" remarks="/ z.B. Kabelpunktanfang_Kabelpunkteende / xxx_z.B. Point_cableanfang_Point_cableeende" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="function" nullable="true" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="code" foreignKey="fkey_vl_sia405cc_cable_function" implied="false" onDeleteCascade="false" schema="tww_vl" table="sia405cc_cable_function"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="cable_type" nullable="true" remarks="Cable type / Kabelart / Genre de cable" size="10" type="int4" typeCode="4">
+            <parent column="code" foreignKey="fkey_vl_sia405cc_cable_cable_type" implied="false" onDeleteCascade="false" schema="tww_vl" table="sia405cc_cable_cable_type"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="horizontal_positioning" nullable="true" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="code" foreignKey="fkey_vl_sia405cc_cable_horizontal_positioning" implied="false" onDeleteCascade="false" schema="tww_vl" table="sia405cc_cable_horizontal_positioning"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="status" nullable="true" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="code" foreignKey="fkey_vl_sia405cc_cable_status" implied="false" onDeleteCascade="false" schema="tww_vl" table="sia405cc_cable_status"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="installation_year" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="1" id="7" name="sur_plus_cover" nullable="true" remarks="" size="4" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="condition" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="remark" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="width" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="geometry3d_geometry" nullable="true" remarks="" size="2147483647" type="geometry" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="elevation_determination" nullable="true" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="code" foreignKey="fkey_vl_sia405cc_cable_elevation_determination" implied="false" onDeleteCascade="false" schema="tww_vl" table="sia405cc_cable_elevation_determination"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="depth" nullable="true" remarks="Extension 3D, depth (height) of an object [mm]. / Erweiterung 3D, Mächtigkeit (Höhe) eines Objektes [mm]. / Extension 3D, épaisseur (hauteur) d'un objet [mm]." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="now()" digits="6" id="14" name="last_modification" nullable="true" remarks="Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="15" name="fk_dataowner" nullable="true" remarks="Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l'organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe" size="16" type="varchar" typeCode="12">
+            <parent column="obj_id" foreignKey="rel_od_sia405cc_cable_fk_dataowner" implied="false" onDeleteCascade="false" schema="tww_od" table="organisation"/>
+         </column>
+         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="16" name="fk_provider" nullable="true" remarks="Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données" size="16" type="varchar" typeCode="12">
+            <parent column="obj_id" foreignKey="rel_od_sia405cc_cable_fk_dataprovider" implied="false" onDeleteCascade="false" schema="tww_od" table="organisation"/>
+         </column>
+         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_owner'::text)" digits="0" id="17" name="fk_owner" nullable="true" remarks="" size="16" type="varchar" typeCode="12">
+            <parent column="obj_id" foreignKey="rel_cable_owner" implied="false" onDeleteCascade="false" schema="tww_od" table="organisation"/>
+         </column>
+         <primaryKey column="obj_id" sequenceNumberInPK="1"/>
+         <index name="pkey_tww_od_sia405cc_cable_obj_id" unique="true">
+            <column ascending="true" name="obj_id"/>
+         </index>
+         <index name="in_od_sia405cc_cable_name_number" unique="true">
+            <column ascending="true" name="name_number"/>
+            <column ascending="true" name="fk_dataowner"/>
+         </index>
+         <index name="in_tww_sia405cc_cable_geometry3d_geometry" unique="false">
+            <column ascending="true" name="geometry3d_geometry"/>
+         </index>
+         <checkConstraint constraint="((char_length(condition) &lt;= 40))" name="_condition_length_max_40"/>
+         <checkConstraint constraint="((char_length(name_number) &lt;= 40))" name="_name_number_length_max_40"/>
+         <checkConstraint constraint="((char_length(remark) &lt;= 80))" name="_remark_length_max_80"/>
+      </table>
+      <table name="sia405cc_cable_point" remarks="" schema="tww_od" type="TABLE">
+         <column autoUpdated="false" defaultValue="tww_sys.generate_oid('tww_od'::text, 'sia405cc_cable_point'::text)" digits="0" id="0" name="obj_id" nullable="false" remarks="INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="name_number" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="geometry3d_geometry" nullable="true" remarks="" size="2147483647" type="geometry" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="kind" nullable="true" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="code" foreignKey="fkey_vl_sia405cc_cable_point_kind" implied="false" onDeleteCascade="false" schema="tww_vl" table="sia405cc_cable_point_kind"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="horizontal_positioning" nullable="true" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="code" foreignKey="fkey_vl_sia405cc_cable_point_horizontal_positioning" implied="false" onDeleteCascade="false" schema="tww_vl" table="sia405cc_cable_point_horizontal_positioning"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="5" name="altitude" nullable="true" remarks="" size="7" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="elevation_determination" nullable="true" remarks="" size="10" type="int4" typeCode="4">
+            <parent column="code" foreignKey="fkey_vl_sia405cc_cable_point_elevation_determination" implied="false" onDeleteCascade="false" schema="tww_vl" table="sia405cc_cable_point_elevation_determination"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="status" nullable="true" remarks="Operating and planning status of the structure / Betriebs- bzw. Planungszustand des Bauwerks / Etat de fonctionnement et de planification de l’ouvrage" size="10" type="int4" typeCode="4">
+            <parent column="code" foreignKey="fkey_vl_sia405cc_cable_point_status" implied="false" onDeleteCascade="false" schema="tww_vl" table="sia405cc_cable_point_status"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="installation_year" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="1" id="9" name="sur_plus_cover" nullable="true" remarks="" size="4" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="condition" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="remark" nullable="true" remarks="General remarks / Allgemeine Bemerkungen / Remarques générales" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="dimension1" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="dimension2" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="14" name="altitude_lower_edge" nullable="true" remarks="/ Höhe Unterkante" size="7" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="15" name="symbolori_geometry" nullable="true" remarks="Default: 90 degree / Default: 90 Grad / Default: 90 degre" size="2147483647" type="geometry" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="16" name="depth" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="now()" digits="6" id="17" name="last_modification" nullable="true" remarks="Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="18" name="fk_dataowner" nullable="true" remarks="Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l'organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe" size="16" type="varchar" typeCode="12">
+            <parent column="obj_id" foreignKey="rel_od_sia405cc_cable_point_fk_dataowner" implied="false" onDeleteCascade="false" schema="tww_od" table="organisation"/>
+         </column>
+         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_provider'::text)" digits="0" id="19" name="fk_provider" nullable="true" remarks="Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données" size="16" type="varchar" typeCode="12">
+            <parent column="obj_id" foreignKey="rel_od_sia405cc_cable_point_fk_dataprovider" implied="false" onDeleteCascade="false" schema="tww_od" table="organisation"/>
+         </column>
+         <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_owner'::text)" digits="0" id="20" name="fk_owner" nullable="true" remarks="" size="16" type="varchar" typeCode="12">
+            <parent column="obj_id" foreignKey="rel_sia405cc_cable_point_owner" implied="false" onDeleteCascade="false" schema="tww_od" table="organisation"/>
+         </column>
+         <primaryKey column="obj_id" sequenceNumberInPK="1"/>
+         <index name="pkey_tww_od_sia405cc_cable_point_obj_id" unique="true">
+            <column ascending="true" name="obj_id"/>
+         </index>
+         <index name="in_od_sia405cc_cable_point_name_number" unique="true">
+            <column ascending="true" name="name_number"/>
+            <column ascending="true" name="fk_dataowner"/>
+         </index>
+         <index name="in_tww_sia405cc_cable_point_geometry3d_geometry" unique="false">
+            <column ascending="true" name="geometry3d_geometry"/>
+         </index>
+         <index name="in_tww_sia405cc_cable_point_symbolori_geometry" unique="false">
+            <column ascending="true" name="symbolori_geometry"/>
+         </index>
+         <checkConstraint constraint="((char_length(condition) &lt;= 40))" name="_condition_length_max_40"/>
+         <checkConstraint constraint="((char_length(name_number) &lt;= 40))" name="_name_number_length_max_40"/>
+         <checkConstraint constraint="((char_length(remark) &lt;= 80))" name="_remark_length_max_80"/>
       </table>
       <table name="sludge_treatment" remarks="" schema="tww_od" type="TABLE">
          <column autoUpdated="false" defaultValue="tww_sys.generate_oid('tww_od'::text, 'sludge_treatment'::text)" digits="0" id="0" name="obj_id" nullable="false" remarks="INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch" size="16" type="varchar" typeCode="12"/>

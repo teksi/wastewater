@@ -192,21 +192,6 @@ digraph "compactRelationshipsDiagram" {
     target="_top"
     tooltip="farm"
   ];
-  "mutation" [
-   label=<
-    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
-      <TR><TD COLSPAN="3"  BGCOLOR="#f5f5f5"><TABLE BORDER="0" CELLSPACING="0"><TR><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="56" HEIGHT="16"><B>mutation</B></TD><TD ALIGN="RIGHT">[table]</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="obj_id" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/primaryKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="103" HEIGHT="16">obj_id</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="kind" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="103" HEIGHT="16">kind</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="fk_dataowner" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="103" HEIGHT="16">fk_dataowner</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="fk_provider" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="103" HEIGHT="16">fk_provider</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 3</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD></TR>
-    </TABLE>>
-    URL="../../tables/mutation.html"
-    target="_top"
-    tooltip="mutation"
-  ];
   "measuring_point" [
    label=<
     <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
@@ -228,6 +213,21 @@ digraph "compactRelationshipsDiagram" {
     URL="../../tables/measuring_point.html"
     target="_top"
     tooltip="measuring_point"
+  ];
+  "mutation" [
+   label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
+      <TR><TD COLSPAN="3"  BGCOLOR="#f5f5f5"><TABLE BORDER="0" CELLSPACING="0"><TR><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="56" HEIGHT="16"><B>mutation</B></TD><TD ALIGN="RIGHT">[table]</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="obj_id" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/primaryKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="103" HEIGHT="16">obj_id</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="kind" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="103" HEIGHT="16">kind</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="fk_dataowner" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="103" HEIGHT="16">fk_dataowner</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="fk_provider" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="103" HEIGHT="16">fk_provider</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 3</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD></TR>
+    </TABLE>>
+    URL="../../tables/mutation.html"
+    target="_top"
+    tooltip="mutation"
   ];
   "retention_body" [
    label=<
@@ -491,7 +491,7 @@ digraph "compactRelationshipsDiagram" {
       <TR><TD PORT="fk_dataowner" COLSPAN="3" BGCOLOR="#ffffff" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="127" HEIGHT="16">fk_dataowner</TD></TR></TABLE></TD></TR>
       <TR><TD PORT="fk_provider" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="127" HEIGHT="16">fk_provider</TD></TR></TABLE></TD></TR>
       <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 4</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">92 &gt;</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 4</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">98 &gt;</TD></TR>
     </TABLE>>
     URL="../../tables/organisation.html"
     target="_top"
@@ -844,6 +844,28 @@ digraph "compactRelationshipsDiagram" {
     target="_top"
     tooltip="wastewater_structure"
   ];
+  "sia405cc_cable_point" [
+   label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
+      <TR><TD COLSPAN="3"  BGCOLOR="#f5f5f5"><TABLE BORDER="0" CELLSPACING="0"><TR><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="123" HEIGHT="16"><B>sia405cc_cable_point</B></TD><TD ALIGN="RIGHT">[table]</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="obj_id" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/primaryKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">obj_id</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="name_number" COLSPAN="3" BGCOLOR="#ffffff" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">name_number</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="geometry3d_geometry" COLSPAN="3" BGCOLOR="#ffffff" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">geometry3d_geometry</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="kind" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">kind</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="horizontal_positioning" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">horizontal_positioning</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="elevation_determination" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">elevation_determination</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="status" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">status</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="symbolori_geometry" COLSPAN="3" BGCOLOR="#ffffff" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">symbolori_geometry</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="fk_dataowner" COLSPAN="3" BGCOLOR="#ffffff" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">fk_dataowner</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="fk_provider" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">fk_provider</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="fk_owner" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">fk_owner</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 7</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD></TR>
+    </TABLE>>
+    URL="../../tables/sia405cc_cable_point.html"
+    target="_top"
+    tooltip="sia405cc_cable_point"
+  ];
   "network_segment" [
    label=<
     <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
@@ -872,6 +894,28 @@ digraph "compactRelationshipsDiagram" {
     URL="../../tables/prank_weir.html"
     target="_top"
     tooltip="prank_weir"
+  ];
+  "sia405cc_cable" [
+   label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
+      <TR><TD COLSPAN="3"  BGCOLOR="#f5f5f5"><TABLE BORDER="0" CELLSPACING="0"><TR><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="86" HEIGHT="16"><B>sia405cc_cable</B></TD><TD ALIGN="RIGHT">[table]</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="obj_id" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/primaryKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">obj_id</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="name_number" COLSPAN="3" BGCOLOR="#ffffff" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">name_number</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="function" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">function</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="cable_type" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">cable_type</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="horizontal_positioning" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">horizontal_positioning</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="status" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">status</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="geometry3d_geometry" COLSPAN="3" BGCOLOR="#ffffff" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">geometry3d_geometry</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="elevation_determination" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">elevation_determination</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="fk_dataowner" COLSPAN="3" BGCOLOR="#ffffff" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">fk_dataowner</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="fk_provider" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">fk_provider</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="fk_owner" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="148" HEIGHT="16">fk_owner</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 8</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD></TR>
+    </TABLE>>
+    URL="../../tables/sia405cc_cable.html"
+    target="_top"
+    tooltip="sia405cc_cable"
   ];
   "pump" [
    label=<
@@ -1647,6 +1691,17 @@ digraph "compactRelationshipsDiagram" {
     target="_top"
     tooltip="tww_vl.tank_cleaning_kind"
   ];
+  "tww_vl.sia405cc_cable_point_elevation_determination" [
+   label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
+      <TR><TD COLSPAN="3"  BGCOLOR="#f5f5f5"><TABLE BORDER="0" CELLSPACING="0"><TR><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="320" HEIGHT="16"><B>tww_vl.sia405cc_cable_point_elevation_determination</B></TD><TD ALIGN="RIGHT">[table]</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">1 &gt;</TD></TR>
+    </TABLE>>
+    URL="../../../tww_vl/tables/sia405cc_cable_point_elevation__6472a8ff.html"
+    target="_top"
+    tooltip="tww_vl.sia405cc_cable_point_elevation_determination"
+  ];
   "tww_vl.reach_point_elevation_accuracy" [
    label=<
     <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
@@ -1734,6 +1789,17 @@ digraph "compactRelationshipsDiagram" {
     URL="../../../tww_vl/tables/catchment_area_text_texthali.html"
     target="_top"
     tooltip="tww_vl.catchment_area_text_texthali"
+  ];
+  "tww_vl.sia405cc_cable_point_horizontal_positioning" [
+   label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
+      <TR><TD COLSPAN="3"  BGCOLOR="#f5f5f5"><TABLE BORDER="0" CELLSPACING="0"><TR><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="306" HEIGHT="16"><B>tww_vl.sia405cc_cable_point_horizontal_positioning</B></TD><TD ALIGN="RIGHT">[table]</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">1 &gt;</TD></TR>
+    </TABLE>>
+    URL="../../../tww_vl/tables/sia405cc_cable_point_horizontal_dbbdef40.html"
+    target="_top"
+    tooltip="tww_vl.sia405cc_cable_point_horizontal_positioning"
   ];
   "tww_vl.special_structure_amphibian_exit" [
    label=<
@@ -2175,6 +2241,17 @@ digraph "compactRelationshipsDiagram" {
     target="_top"
     tooltip="tww_vl.damage_manhole_manhole_damage_code"
   ];
+  "tww_vl.sia405cc_cable_cable_type" [
+   label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
+      <TR><TD COLSPAN="3"  BGCOLOR="#f5f5f5"><TABLE BORDER="0" CELLSPACING="0"><TR><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="199" HEIGHT="16"><B>tww_vl.sia405cc_cable_cable_type</B></TD><TD ALIGN="RIGHT">[table]</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">1 &gt;</TD></TR>
+    </TABLE>>
+    URL="../../../tww_vl/tables/sia405cc_cable_cable_type.html"
+    target="_top"
+    tooltip="tww_vl.sia405cc_cable_cable_type"
+  ];
   "tww_vl.disposal_disposal_place_current" [
    label=<
     <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
@@ -2196,6 +2273,17 @@ digraph "compactRelationshipsDiagram" {
     URL="../../../tww_vl/tables/catchment_area_infiltration_planned.html"
     target="_top"
     tooltip="tww_vl.catchment_area_infiltration_planned"
+  ];
+  "tww_vl.sia405cc_cable_point_status" [
+   label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
+      <TR><TD COLSPAN="3"  BGCOLOR="#f5f5f5"><TABLE BORDER="0" CELLSPACING="0"><TR><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="210" HEIGHT="16"><B>tww_vl.sia405cc_cable_point_status</B></TD><TD ALIGN="RIGHT">[table]</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">1 &gt;</TD></TR>
+    </TABLE>>
+    URL="../../../tww_vl/tables/sia405cc_cable_point_status.html"
+    target="_top"
+    tooltip="tww_vl.sia405cc_cable_point_status"
   ];
   "tww_vl.pump_placement_of_pump" [
    label=<
@@ -2284,6 +2372,17 @@ digraph "compactRelationshipsDiagram" {
     URL="../../../tww_vl/tables/manhole_amphibian_exit.html"
     target="_top"
     tooltip="tww_vl.manhole_amphibian_exit"
+  ];
+  "tww_vl.sia405cc_cable_horizontal_positioning" [
+   label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
+      <TR><TD COLSPAN="3"  BGCOLOR="#f5f5f5"><TABLE BORDER="0" CELLSPACING="0"><TR><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="269" HEIGHT="16"><B>tww_vl.sia405cc_cable_horizontal_positioning</B></TD><TD ALIGN="RIGHT">[table]</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">1 &gt;</TD></TR>
+    </TABLE>>
+    URL="../../../tww_vl/tables/sia405cc_cable_horizontal_positioning.html"
+    target="_top"
+    tooltip="tww_vl.sia405cc_cable_horizontal_positioning"
   ];
   "tww_vl.reach_material" [
    label=<
@@ -2626,6 +2725,17 @@ digraph "compactRelationshipsDiagram" {
     target="_top"
     tooltip="tww_vl.overflow_actuation"
   ];
+  "tww_vl.sia405cc_cable_status" [
+   label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
+      <TR><TD COLSPAN="3"  BGCOLOR="#f5f5f5"><TABLE BORDER="0" CELLSPACING="0"><TR><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="173" HEIGHT="16"><B>tww_vl.sia405cc_cable_status</B></TD><TD ALIGN="RIGHT">[table]</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">1 &gt;</TD></TR>
+    </TABLE>>
+    URL="../../../tww_vl/tables/sia405cc_cable_status.html"
+    target="_top"
+    tooltip="tww_vl.sia405cc_cable_status"
+  ];
   "tww_vl.pump_construction_type" [
    label=<
     <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
@@ -2779,6 +2889,17 @@ digraph "compactRelationshipsDiagram" {
     URL="../../../tww_vl/tables/hydraulic_char_data_status.html"
     target="_top"
     tooltip="tww_vl.hydraulic_char_data_status"
+  ];
+  "tww_vl.sia405cc_cable_point_kind" [
+   label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
+      <TR><TD COLSPAN="3"  BGCOLOR="#f5f5f5"><TABLE BORDER="0" CELLSPACING="0"><TR><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="199" HEIGHT="16"><B>tww_vl.sia405cc_cable_point_kind</B></TD><TD ALIGN="RIGHT">[table]</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">1 &gt;</TD></TR>
+    </TABLE>>
+    URL="../../../tww_vl/tables/sia405cc_cable_point_kind.html"
+    target="_top"
+    tooltip="tww_vl.sia405cc_cable_point_kind"
   ];
   "tww_vl.reach_progression_alternative_plantype" [
    label=<
@@ -3055,6 +3176,17 @@ digraph "compactRelationshipsDiagram" {
     target="_top"
     tooltip="tww_vl.reach_point_pipe_closure"
   ];
+  "tww_vl.sia405cc_cable_elevation_determination" [
+   label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
+      <TR><TD COLSPAN="3"  BGCOLOR="#f5f5f5"><TABLE BORDER="0" CELLSPACING="0"><TR><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="284" HEIGHT="16"><B>tww_vl.sia405cc_cable_elevation_determination</B></TD><TD ALIGN="RIGHT">[table]</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">1 &gt;</TD></TR>
+    </TABLE>>
+    URL="../../../tww_vl/tables/sia405cc_cable_elevation_determination.html"
+    target="_top"
+    tooltip="tww_vl.sia405cc_cable_elevation_determination"
+  ];
   "tww_vl.infiltration_installation_filling_material" [
    label=<
     <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
@@ -3153,6 +3285,17 @@ digraph "compactRelationshipsDiagram" {
     URL="../../../tww_vl/tables/building_group_connecting_obligation.html"
     target="_top"
     tooltip="tww_vl.building_group_connecting_obligation"
+  ];
+  "tww_vl.sia405cc_cable_function" [
+   label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
+      <TR><TD COLSPAN="3"  BGCOLOR="#f5f5f5"><TABLE BORDER="0" CELLSPACING="0"><TR><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="186" HEIGHT="16"><B>tww_vl.sia405cc_cable_function</B></TD><TD ALIGN="RIGHT">[table]</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">1 &gt;</TD></TR>
+    </TABLE>>
+    URL="../../../tww_vl/tables/sia405cc_cable_function.html"
+    target="_top"
+    tooltip="tww_vl.sia405cc_cable_function"
   ];
   "tww_vl.measurement_result_measurement_type" [
    label=<
@@ -3619,6 +3762,21 @@ digraph "compactRelationshipsDiagram" {
   "retention_body":"fk_infiltration_installation":w -> "infiltration_installation":"obj_id":e [arrowhead=none dir=back arrowtail=crowodot];
   "retention_body":"fk_provider":w -> "organisation":"obj_id":e [arrowhead=none dir=back arrowtail=crowodot];
   "retention_body":"kind":w -> "tww_vl.retention_body_kind":"code":e [arrowhead=none dir=back arrowtail=crowodot];
+  "sia405cc_cable":"cable_type":w -> "tww_vl.sia405cc_cable_cable_type":"code":e [arrowhead=none dir=back arrowtail=crowodot];
+  "sia405cc_cable":"elevation_determination":w -> "tww_vl.sia405cc_cable_elevation_determination":"code":e [arrowhead=none dir=back arrowtail=crowodot];
+  "sia405cc_cable":"fk_dataowner":w -> "organisation":"obj_id":e [arrowhead=none dir=back arrowtail=crowodot];
+  "sia405cc_cable":"fk_owner":w -> "organisation":"obj_id":e [arrowhead=none dir=back arrowtail=crowodot];
+  "sia405cc_cable":"fk_provider":w -> "organisation":"obj_id":e [arrowhead=none dir=back arrowtail=crowodot];
+  "sia405cc_cable":"function":w -> "tww_vl.sia405cc_cable_function":"code":e [arrowhead=none dir=back arrowtail=crowodot];
+  "sia405cc_cable":"horizontal_positioning":w -> "tww_vl.sia405cc_cable_horizontal_positioning":"code":e [arrowhead=none dir=back arrowtail=crowodot];
+  "sia405cc_cable":"status":w -> "tww_vl.sia405cc_cable_status":"code":e [arrowhead=none dir=back arrowtail=crowodot];
+  "sia405cc_cable_point":"elevation_determination":w -> "tww_vl.sia405cc_cable_point_elevation_determination":"code":e [arrowhead=none dir=back arrowtail=crowodot];
+  "sia405cc_cable_point":"fk_dataowner":w -> "organisation":"obj_id":e [arrowhead=none dir=back arrowtail=crowodot];
+  "sia405cc_cable_point":"fk_owner":w -> "organisation":"obj_id":e [arrowhead=none dir=back arrowtail=crowodot];
+  "sia405cc_cable_point":"fk_provider":w -> "organisation":"obj_id":e [arrowhead=none dir=back arrowtail=crowodot];
+  "sia405cc_cable_point":"horizontal_positioning":w -> "tww_vl.sia405cc_cable_point_horizontal_positioning":"code":e [arrowhead=none dir=back arrowtail=crowodot];
+  "sia405cc_cable_point":"kind":w -> "tww_vl.sia405cc_cable_point_kind":"code":e [arrowhead=none dir=back arrowtail=crowodot];
+  "sia405cc_cable_point":"status":w -> "tww_vl.sia405cc_cable_point_status":"code":e [arrowhead=none dir=back arrowtail=crowodot];
   "sludge_treatment":"fk_dataowner":w -> "organisation":"obj_id":e [arrowhead=none dir=back arrowtail=crowodot];
   "sludge_treatment":"fk_provider":w -> "organisation":"obj_id":e [arrowhead=none dir=back arrowtail=crowodot];
   "sludge_treatment":"fk_waste_water_treatment_plant":w -> "waste_water_treatment_plant":"obj_id":e [arrowhead=none dir=back arrowtail=crowodot];
