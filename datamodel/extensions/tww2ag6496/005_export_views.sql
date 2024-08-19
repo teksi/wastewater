@@ -269,6 +269,14 @@ SELECT
 	, ne.ag96_remark AS bemerkung_gep
 	, COALESCE(ne.ag96_last_modification,TO_TIMESTAMP('1800-01-01','YYYY-MM-DD')) AS letzte_aenderung_gep
 	, NULL:bool AS ignore_ws
+	, CASE
+            WHEN ma.obj_id IS NOT NULL THEN 'manhole'::text
+			WHEN ss.obj_id IS NOT NULL THEN 'special_structure'::text
+            WHEN dp.obj_id IS NOT NULL THEN 'discharge_point'::text
+            WHEN ii.obj_id IS NOT NULL THEN 'infiltration_installation'::text
+            WHEN wwtp.obj_id IS NOT NULL THEN 'wwtp_structure'::text
+            ELSE 'unknown'::text
+        END AS ws_type
 
 FROM tww_od.wastewater_node wn
 LEFT JOIN tww_od.wastewater_networkelement ne ON wn.obj_id = ne.obj_id
