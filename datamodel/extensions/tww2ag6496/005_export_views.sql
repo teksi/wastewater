@@ -522,6 +522,12 @@ SELECT
 	, concat_ws('','ch113jqg0000',right(COALESCE(ne.ag96_fk_provider,'00000107'),8)) AS datenbewirtschafter_gep
 	, ov.ag96_remark AS bemerkung_gep
 	, COALESCE(ov.ag96_last_modification,TO_TIMESTAMP('1800-01-01','YYYY-MM-DD')) AS letzte_aenderung_gep
+	, CASE
+		WHEN pu.obj_id IS NOT NULL THEN 'pump'::text
+		WHEN lw.obj_id IS NOT NULL THEN 'leapingweir'::text
+		WHEN pw.obj_id IS NOT NULL THEN 'prank_weir'::text
+		ELSE 'unknown'::text
+	END AS ov_type
 
 FROM tww_od.overflow ov
     LEFT JOIN tww_od.pump pu ON ov.obj_id = pu.obj_id
