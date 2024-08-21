@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import re
-from argparse import ArgumentParser, BooleanOptionalAction
+from argparse import ArgumentParser, BooleanOptionalAction, ArgumentDefaultsHelpFormatter
 from typing import Optional
 
 from pgserviceparser import service_config
@@ -65,19 +65,19 @@ def get_roles(pg_service: str, modulename: str, db_spec_roles: Optional[bool] = 
     if db_spec_roles:
         db_identifier = "_" + get_db_identifier(pg_service, modulename)
     else:
-        db_identifier = None
+        db_identifier = ''
 
-    roles = {
-        "viewer": f"{modulename}_viewer{ db_identifier if db_identifier else ''}",
-        "user": f"{modulename}_user{ db_identifier if db_identifier else ''}",
-        "manager": f"{modulename}_manager{ db_identifier if db_identifier else ''}",
-        "sysadmin": f"{modulename}_sysadmin{ db_identifier if db_identifier else ''}",
+    roles ={
+       'viewer': f"{modulename}_viewer{db_identifier}",
+       'user': f"{modulename}_user{db_identifier}",
+       'manager': f"{modulename}_manager{db_identifier}",
+       'sysadmin': f"{modulename}_sysadmin{db_identifier}"
     }
-    child_roles = {
-        "viewer": None,
-        "user": f"{modulename}_viewer{ db_identifier if db_identifier else ''}",
-        "manager": f"{modulename}_user{ db_identifier if db_identifier else ''}",
-        "sysadmin": f"{modulename}_manager{ db_identifier if db_identifier else ''}",
+    child_roles ={
+       'viewer': None,
+       'user': f"{modulename}_viewer{db_identifier}",
+       'manager': f"{modulename}_user{db_identifier}",
+       'sysadmin': f"{modulename}_manager{db_identifier}"
     }
     return roles, child_roles
 
@@ -154,7 +154,7 @@ def revoke_privileges(
         f"{modulename}_cfg",
     ]
     if ext_schema:
-        postfixes.append(ext_schema)
+        schemanames.append(ext_schema)
     roles, _ = get_roles(pg_service, modulename, db_spec_roles)
     cur.execute(f"SELECT 1 FROM pg_roles WHERE rolname='{roles['viewer']}'")
     role_exists = cur.fetchone()
@@ -220,14 +220,14 @@ if __name__ == "__main__":
         "create_roles",
         help="Create roles for usage in TEKSI",
         description="Create roles for usage in TEKSI",
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        formatter_class=ArgumentDefaultsHelpFormatter,
     )
 
     grant_parser = subparsers.add_parser(
         "grant",
         help="Grant rights to roles",
         description="Grant rights to roles",
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        formatter_class=ArgumentDefaultsHelpFormatter,
     )
 
     grant_parser.add_argument(
@@ -238,7 +238,7 @@ if __name__ == "__main__":
         "revoke",
         help="Revoke rights from roles",
         description="Revoke rights from roles",
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        formatter_class=ArgumentDefaultsHelpFormatter,
     )
     revoke_parser.add_argument(
         "-x", "--extension_schema", help="Name of the extension schema", required=False
