@@ -206,17 +206,6 @@ def manage_roles(
 
 if __name__ == "__main__":
     parser = ArgumentParser()
-    parser.add_argument("-m", "--modulename", help="Abbreviation of the TEKSI module")
-
-    parser.add_argument("-p", "--pg_service", help="postgres service")
-
-    parser.add_argument(
-        "-d",
-        "--database_specific_roles",
-        help="Create database specific roles",
-        default=False,
-        action=BooleanOptionalAction,
-    )
 
     subparsers = parser.add_subparsers(title="subcommands", dest="parser")
 
@@ -227,26 +216,62 @@ if __name__ == "__main__":
         formatter_class=ArgumentDefaultsHelpFormatter,
     )
 
+    createrole_parser.add_argument("-m", "--modulename", help="Abbreviation of the TEKSI module")
+
+    createrole_parser.add_argument("-p", "--pg_service", help="postgres service")
+
+    createrole_parser.add_argument(
+        "-d",
+        "--database_specific_roles",
+        help="Create database specific roles",
+        default=False,
+        action=BooleanOptionalAction,
+    )
+
     grant_parser = subparsers.add_parser(
         "grant",
         help="Grant rights to roles",
         description="Grant rights to roles",
         formatter_class=ArgumentDefaultsHelpFormatter,
     )
+ 
+    grant_parser.add_argument("-m", "--modulename", help="Abbreviation of the TEKSI module")
+
+    grant_parser.add_argument("-p", "--pg_service", help="postgres service")
 
     grant_parser.add_argument(
-        "-x", "--extension_schema", help="Name of the extension schema", required=False
+        "-d",
+        "--database_specific_roles",
+        help="Create database specific roles",
+        default=False,
+        action=BooleanOptionalAction,
     )
-
+  
+    grant_parser.add_argument(
+        "-x", "--extension_schema", help="Name of the extension schema", required=False
+    )  
     revoke_parser = subparsers.add_parser(
         "revoke",
         help="Revoke rights from roles",
         description="Revoke rights from roles",
         formatter_class=ArgumentDefaultsHelpFormatter,
     )
+    revoke_parser.add_argument("-m", "--modulename", help="Abbreviation of the TEKSI module")
+
+    revoke_parser.add_argument("-p", "--pg_service", help="postgres service")
+
+    revoke_parser.add_argument(
+        "-d",
+        "--database_specific_roles",
+        help="Create database specific roles",
+        default=False,
+        action=BooleanOptionalAction,
+    )
+
     revoke_parser.add_argument(
         "-x", "--extension_schema", help="Name of the extension schema", required=False
     )
+    
     args = parser.parse_args()
 
     if args.parser == "create_roles":
