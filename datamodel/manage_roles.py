@@ -143,6 +143,7 @@ def revoke_privileges(pg_service: str, modulename: str, db_spec_roles: Optional[
     roles, _ = get_roles(pg_service, modulename, db_spec_roles)
     cur.execute(f"SELECT 1 FROM pg_roles WHERE rolname='{roles['viewer']}'")
     role_exists = cur.fetchone()
+    
     if role_exists:
         for schemaname in schemanames:
             revoke_sql = f"""
@@ -153,6 +154,7 @@ def revoke_privileges(pg_service: str, modulename: str, db_spec_roles: Optional[
             cur.execute(revoke_sql)
     else:
         raise Exception(f"{roles['viewer']} not found on database")
+    
     conn.commit()
     conn.close()
 
