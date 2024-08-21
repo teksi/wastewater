@@ -23,7 +23,7 @@ def get_db_identifier(pg_service: str, modulename: str):
     return db_identifier
 
 
-def create_roles(pg_service: str,  modulename: str, db_spec_roles: Optional[bool] = False):
+def create_roles(pg_service: str, modulename: str, db_spec_roles: Optional[bool] = False):
     """
     Creates the roles for usage in TEKSI Modules
     :param pg_service: the PostgreSQL service
@@ -54,6 +54,7 @@ def create_roles(pg_service: str,  modulename: str, db_spec_roles: Optional[bool
     conn.commit()
     conn.close()
 
+
 def get_roles(pg_service: str, modulename: str, db_spec_roles: Optional[bool] = False):
     """
     returns a dict of role names and their children for usage in TEKSI Modules
@@ -66,21 +67,24 @@ def get_roles(pg_service: str, modulename: str, db_spec_roles: Optional[bool] = 
     else:
         db_identifier = None
 
-    roles ={
-       'viewer': f"{modulename}_viewer{ db_identifier if db_identifier else ''}",
-       'user': f"{modulename}_user{ db_identifier if db_identifier else ''}",
-       'manager': f"{modulename}_manager{ db_identifier if db_identifier else ''}",
-       'sysadmin': f"{modulename}_sysadmin{ db_identifier if db_identifier else ''}",
+    roles = {
+        "viewer": f"{modulename}_viewer{ db_identifier if db_identifier else ''}",
+        "user": f"{modulename}_user{ db_identifier if db_identifier else ''}",
+        "manager": f"{modulename}_manager{ db_identifier if db_identifier else ''}",
+        "sysadmin": f"{modulename}_sysadmin{ db_identifier if db_identifier else ''}",
     }
-    child_roles ={
-       'viewer': None,
-       'user': f"{modulename}_viewer{ db_identifier if db_identifier else ''}",
-       'manager': f"{modulename}_user{ db_identifier if db_identifier else ''}",
-       'sysadmin': f"{modulename}_manager{ db_identifier if db_identifier else ''}",
+    child_roles = {
+        "viewer": None,
+        "user": f"{modulename}_viewer{ db_identifier if db_identifier else ''}",
+        "manager": f"{modulename}_user{ db_identifier if db_identifier else ''}",
+        "sysadmin": f"{modulename}_manager{ db_identifier if db_identifier else ''}",
     }
     return roles, child_roles
 
-def grant_privileges(pg_service: str, modulename: str, db_spec_roles: Optional[bool] = False, ext_schema: str = None):
+
+def grant_privileges(
+    pg_service: str, modulename: str, db_spec_roles: Optional[bool] = False, ext_schema: str = None
+):
     """
     Grants the rights from the roles for usage in TEKSI Modules
     :param pg_service: the PostgreSQL service
@@ -90,28 +94,29 @@ def grant_privileges(pg_service: str, modulename: str, db_spec_roles: Optional[b
     """
     conn = psycopg.connect(f"service={pg_service}")
     cur = conn.cursor()
-    roles, _ = get_roles(pg_service,modulename, db_spec_roles)
+    roles, _ = get_roles(pg_service, modulename, db_spec_roles)
     schema_defs = {
-        f'{modulename}_od':roles['user'],
-        f'{modulename}_app': roles['user'],
-        f'{modulename}_sys':roles['sysadmin'],
-        f'{modulename}_vl':roles['manager'],
-        f'{modulename}_cfg':roles['manager']
-        }
+        f"{modulename}_od": roles["user"],
+        f"{modulename}_app": roles["user"],
+        f"{modulename}_sys": roles["sysadmin"],
+        f"{modulename}_vl": roles["manager"],
+        f"{modulename}_cfg": roles["manager"],
+    }
     if ext_schema:
-        schema_defs[ext_schema] = roles['user']
+        schema_defs[ext_schema] = roles["user"]
     for key in roles:
         cur.execute(f"SELECT 1 FROM pg_roles WHERE rolname='{roles[key]}'")
         role_exists = cur.fetchone()
         if not role_exists:
             raise Exception(f"{roles[key]} not found on database")
-    grant_sql=f"""
+    grant_sql = f"""
         GRANT CREATE ON DATABASE {conn.info.dbname} TO "{roles['user']}";  -- required for ili2pg imports/exports
     """
     for key in schema_defs:
         grant_sql = """
 
-        """.join(grant_sql,
+        """.join(
+            grant_sql,
             f"""
             GRANT USAGE ON SCHEMA {key}  TO {roles['viewer']};
             GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA {key}  TO {roles['viewer']};
@@ -122,13 +127,16 @@ def grant_privileges(pg_service: str, modulename: str, db_spec_roles: Optional[b
             GRANT ALL ON ALL TABLES IN SCHEMA {key} TO {schema_defs[key]};
             GRANT ALL ON ALL SEQUENCES IN SCHEMA {key} TO {schema_defs[key]};
             ALTER DEFAULT PRIVILEGES IN SCHEMA {key} GRANT ALL ON TABLES TO {schema_defs[key]};
-            """)
+            """,
+        )
     cur.execute(grant_sql)
     conn.commit()
     conn.close()
 
 
-def revoke_privileges(pg_service: str, modulename: str, db_spec_roles: Optional[bool] = False, ext_schema: str = None):
+def revoke_privileges(
+    pg_service: str, modulename: str, db_spec_roles: Optional[bool] = False, ext_schema: str = None
+):
     """
     Revokes the rights from the roles for usage in TEKSI Modules
     :param pg_service: the PostgreSQL service
@@ -138,7 +146,13 @@ def revoke_privileges(pg_service: str, modulename: str, db_spec_roles: Optional[
     """
     conn = psycopg.connect(f"service={pg_service}")
     cur = conn.cursor()
-    schemanames = [f'{modulename}_od',f'{modulename}_app',f'{modulename}_sys',f'{modulename}_vl',f'{modulename}_cfg']
+    schemanames = [
+        f"{modulename}_od",
+        f"{modulename}_app",
+        f"{modulename}_sys",
+        f"{modulename}_vl",
+        f"{modulename}_cfg",
+    ]
     if ext_schema:
         postfixes.append(ext_schema)
     roles, _ = get_roles(pg_service, modulename, db_spec_roles)
@@ -166,7 +180,7 @@ def manage_roles(
     grant: bool = True,
     ext_schema: str = None,
     db_spec_roles: Optional[bool] = False,
-    ):
+):
     """
     Manages the roles for usage in TEKSI Modules
     :param pg_service: the PostgreSQL service
@@ -178,7 +192,7 @@ def manage_roles(
     if modulename and not pg_service:
         pg_service = f"pg_{modulename}"
 
-    create_roles(pg_service,modulename,db_spec_roles)
+    create_roles(pg_service, modulename, db_spec_roles)
 
     if grant:
         grant_privileges(pg_service, modulename, db_spec_roles, ext_schema)
