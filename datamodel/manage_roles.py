@@ -105,7 +105,9 @@ def grant_privileges(pg_service: str, modulename: str, db_spec_roles: Optional[b
         role_exists = cur.fetchone()
         if not role_exists:
             raise Exception(f"{roles[key]} not found on database")
-    grant_sql=""
+    grant_sql=f"""
+        GRANT CREATE ON DATABASE {conn.info.dbname} TO "{roles['user']}";  -- required for ili2pg imports/exports
+    """
     for key in schema_defs:
         grant_sql = """
 
@@ -121,7 +123,6 @@ def grant_privileges(pg_service: str, modulename: str, db_spec_roles: Optional[b
             GRANT ALL ON ALL SEQUENCES IN SCHEMA {key} TO {schema_defs[key]};
             ALTER DEFAULT PRIVILEGES IN SCHEMA {key} GRANT ALL ON TABLES TO {schema_defs[key]};
             """
-    grant_sql="".join(grant_sql,f"""GRANT CREATE ON DATABASE {conn.info.dbname} TO "{roles['user']}";  -- required for ili2pg imports/exports""")
     cur.execute(grant_sql)
     conn.commit()
     conn.close()
