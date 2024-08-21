@@ -108,7 +108,7 @@ def grant_privileges(pg_service: str, modulename: str, db_spec_roles: Optional[b
     grant_sql=""
     for key in schema_defs:
         grant_sql = """
-        
+
         """.join(grant_sql,
             f"""
             GRANT USAGE ON SCHEMA {key}  TO {roles['viewer']};
