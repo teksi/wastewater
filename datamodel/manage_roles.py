@@ -31,7 +31,7 @@ def create_roles(pg_service: str,  modulename: str, db_spec_roles: Optional[bool
     :param db_spec_roles: will create database specific roles instead of cluster specific roles
     """
     roles, child_roles = get_roles(pg_service, modulename, db_spec_roles)
-    
+
     conn = psycopg.connect(f"service={pg_service}")
     cur = conn.cursor()
     for key in roles:
@@ -65,7 +65,7 @@ def get_roles(pg_service: str modulename: str, db_spec_roles: Optional[bool] = F
         db_identifier = "_" + get_db_identifier(pg_service, modulename)
     else:
         db_identifier = None
-    
+
     roles ={
        'viewer': f"{modulename}_viewer{ db_identifier if db_identifier else ''}",
        'user': f"{modulename}_user{ db_identifier if db_identifier else ''}",
@@ -104,8 +104,8 @@ def grant_privileges(pg_service: str, modulename: str, db_spec_roles: Optional[b
         cur.execute(f"SELECT 1 FROM pg_roles WHERE rolname='{roles[key]}'")
         role_exists = cur.fetchone()
         if not role_exists:
-            raise Exception(f"{roles[key]} not found on database") 
-    grant_sql=""    
+            raise Exception(f"{roles[key]} not found on database")
+    grant_sql=""
     for key in schema_defs:
         grant_sql = """
         """.join(grant_sql,
@@ -114,14 +114,14 @@ def grant_privileges(pg_service: str, modulename: str, db_spec_roles: Optional[b
             GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA {key}  TO {roles['viewer']};
             GRANT SELECT, REFERENCES, TRIGGER ON ALL TABLES IN SCHEMA {key}  TO {roles['viewer']};
             ALTER DEFAULT PRIVILEGES IN SCHEMA {key} GRANT SELECT, REFERENCES, TRIGGER ON TABLES TO {roles['viewer']};
-   
+
             GRANT ALL ON SCHEMA {key} TO {schema_defs[key]};
             GRANT ALL ON ALL TABLES IN SCHEMA {key} TO {schema_defs[key]};
             GRANT ALL ON ALL SEQUENCES IN SCHEMA {key} TO {schema_defs[key]};
             ALTER DEFAULT PRIVILEGES IN SCHEMA {key} GRANT ALL ON TABLES TO {schema_defs[key]};
             """
     grant_sql="""
-        """.join(grant_sql,"GRANT CREATE ON DATABASE {conn.info.dbname} TO "{roles['user']}";  -- required for ili2pg imports/exports")  
+        """.join(grant_sql,"GRANT CREATE ON DATABASE {conn.info.dbname} TO "{roles['user']}";  -- required for ili2pg imports/exports")
     cur.execute(grant_sql)
     conn.commit()
     conn.close()
@@ -152,7 +152,7 @@ def revoke_privileges(pg_service: str, modulename: str, db_spec_roles: Optional[
             """
             cur.execute(revoke_sql)
     else:
-        raise Exception(f"{roles['viewer']} not found on database") 
+        raise Exception(f"{roles['viewer']} not found on database")
     conn.commit()
     conn.close()
 
@@ -195,28 +195,28 @@ if __name__ == "__main__":
         help="Create database specific roles",
         default=False,
         action=BooleanOptionalAction,
-    )  
-        
+    )
+
     subparsers = parser.add_subparsers(title="subcommands", dest="parser")
-    
+
     createrole_parser = subparsers.add_parser(
         "create_roles",
         help="Create roles for usage in TEKSI",
         description="Create roles for usage in TEKSI",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
-    
+
     grant_parser = subparsers.add_parser(
         "grant",
         help="Grant rights to roles",
         description="Grant rights to roles",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
-    
+
     grant_parser.add_argument(
         "-x", "--extension_schema", help="Name of the extension schema", required=False
     )
-    
+
     revoke_parser = subparsers.add_parser(
         "revoke",
         help="Revoke rights from roles",
@@ -227,7 +227,7 @@ if __name__ == "__main__":
         "-x", "--extension_schema", help="Name of the extension schema", required=False
     )
     args = parser.parse_args()
-    
+
     if args.parser == "create_roles":
         create_roles(
             pg_service=args.pg_service,
@@ -250,4 +250,4 @@ if __name__ == "__main__":
         )
     else:
         print("Unknown operation")
-        exit(1)     
+        exit(1)
