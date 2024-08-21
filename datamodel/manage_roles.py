@@ -99,7 +99,7 @@ def grant_privileges(pg_service: str, modulename: str, db_spec_roles: Optional[b
         f'{modulename}_cfg':roles['manager']
         }
     if ext_schema:
-        schema_defs{ext_schema}= roles['user']
+        schema_defs[ext_schema] = roles['user']
     for key in roles:
         cur.execute(f"SELECT 1 FROM pg_roles WHERE rolname='{roles[key]}'")
         role_exists = cur.fetchone()
