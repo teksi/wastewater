@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 
 import re
-from argparse import ArgumentParser, BooleanOptionalAction, ArgumentDefaultsHelpFormatter
+from argparse import (
+    ArgumentDefaultsHelpFormatter,
+    ArgumentParser,
+    BooleanOptionalAction,
+)
 from typing import Optional
 
 from pgserviceparser import service_config
@@ -65,19 +69,19 @@ def get_roles(pg_service: str, modulename: str, db_spec_roles: Optional[bool] = 
     if db_spec_roles:
         db_identifier = "_" + get_db_identifier(pg_service, modulename)
     else:
-        db_identifier = ''
+        db_identifier = ""
 
-    roles ={
-       'viewer': f"{modulename}_viewer{db_identifier}",
-       'user': f"{modulename}_user{db_identifier}",
-       'manager': f"{modulename}_manager{db_identifier}",
-       'sysadmin': f"{modulename}_sysadmin{db_identifier}"
+    roles = {
+        "viewer": f"{modulename}_viewer{db_identifier}",
+        "user": f"{modulename}_user{db_identifier}",
+        "manager": f"{modulename}_manager{db_identifier}",
+        "sysadmin": f"{modulename}_sysadmin{db_identifier}",
     }
-    child_roles ={
-       'viewer': None,
-       'user': f"{modulename}_viewer{db_identifier}",
-       'manager': f"{modulename}_user{db_identifier}",
-       'sysadmin': f"{modulename}_manager{db_identifier}"
+    child_roles = {
+        "viewer": None,
+        "user": f"{modulename}_viewer{db_identifier}",
+        "manager": f"{modulename}_user{db_identifier}",
+        "sysadmin": f"{modulename}_manager{db_identifier}",
     }
     return roles, child_roles
 
