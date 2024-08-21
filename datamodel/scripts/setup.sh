@@ -36,4 +36,5 @@ psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f ${DIR}/changelogs/0001/51_dss1
 psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f ${DIR}/changelogs/0001/52_dss15_planning_zone_dictionaries.sql -v SRID=$SRID
 
 ${DIR}/app/create_app.py --pg_service ${PGSERVICE} --srid ${SRID}
-${DIR}/create_roles.py --pg_service ${PGSERVICE} --modelname tww --grant_privileges
+${DIR}/manage_roles.py create_roles --pg_service ${PGSERVICE} --modulename tww
+${DIR}/manage_roles.py grant --pg_service ${PGSERVICE} --modulename tww
