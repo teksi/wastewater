@@ -122,7 +122,7 @@ def grant_privileges(pg_service: str, modulename: str, db_spec_roles: Optional[b
             GRANT ALL ON ALL TABLES IN SCHEMA {key} TO {schema_defs[key]};
             GRANT ALL ON ALL SEQUENCES IN SCHEMA {key} TO {schema_defs[key]};
             ALTER DEFAULT PRIVILEGES IN SCHEMA {key} GRANT ALL ON TABLES TO {schema_defs[key]};
-            """
+            """)
     cur.execute(grant_sql)
     conn.commit()
     conn.close()
