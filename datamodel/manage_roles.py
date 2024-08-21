@@ -117,10 +117,7 @@ def grant_privileges(
         GRANT CREATE ON DATABASE {conn.info.dbname} TO "{roles['user']}";  -- required for ili2pg imports/exports
     """
     for key in schema_defs:
-        grant_sql = """
-
-        """.join(
-            grant_sql,
+        grant_sql = grant_sql.join(
             f"""
             GRANT USAGE ON SCHEMA {key}  TO {roles['viewer']};
             GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA {key}  TO {roles['viewer']};
