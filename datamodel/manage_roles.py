@@ -234,7 +234,7 @@ if __name__ == "__main__":
         description="Grant rights to roles",
         formatter_class=ArgumentDefaultsHelpFormatter,
     )
- 
+
     grant_parser.add_argument("-m", "--modulename", help="Abbreviation of the TEKSI module")
 
     grant_parser.add_argument("-p", "--pg_service", help="postgres service")
@@ -246,10 +246,10 @@ if __name__ == "__main__":
         default=False,
         action=BooleanOptionalAction,
     )
-  
+
     grant_parser.add_argument(
         "-x", "--extension_schema", help="Name of the extension schema", required=False
-    )  
+    )
     revoke_parser = subparsers.add_parser(
         "revoke",
         help="Revoke rights from roles",
@@ -271,7 +271,7 @@ if __name__ == "__main__":
     revoke_parser.add_argument(
         "-x", "--extension_schema", help="Name of the extension schema", required=False
     )
-    
+
     args = parser.parse_args()
 
     if args.parser == "create_roles":
