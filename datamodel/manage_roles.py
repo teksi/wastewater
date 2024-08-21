@@ -54,7 +54,7 @@ def create_roles(pg_service: str,  modulename: str, db_spec_roles: Optional[bool
     conn.commit()
     conn.close()
 
-def get_roles(pg_service: str modulename: str, db_spec_roles: Optional[bool] = False)
+def get_roles(pg_service: str modulename: str, db_spec_roles: Optional[bool] = False):
     """
     returns a dict of role names and their children for usage in TEKSI Modules
     :param pg_service: the PostgreSQL service
