@@ -1,5 +1,5 @@
 # TEKSI Wastewater module (TWW)
-NEW TEKSI wastewater module, adapted datamodel to fit Swiss Norm VSA 2020.1 new standard.
+NEW TEKSI wastewater module, adapted datamodel to fit Swiss Norm VSA-DSS Release 2020.1 new standard.
 
 This repository holds all code related to the TEKSI Wastewater module (formerly QGEP). <!---  // skip-keyword-check -->
 
