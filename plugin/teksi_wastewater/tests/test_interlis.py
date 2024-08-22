@@ -132,7 +132,7 @@ class TestInterlis(unittest.TestCase):
         interlisImporterExporter.interlis_import(xtf_file_input=xtf_file_input)
 
         # Export minimal dss
-        export_xtf_file = self._get_output_filename("minimal_dss_dataset.xtf")
+        export_xtf_file = self._get_output_filename("export_minimal_dss_dataset.xtf")
         interlisImporterExporter.interlis_export(
             xtf_file_output=export_xtf_file,
             export_models=[config.MODEL_NAME_DSS],

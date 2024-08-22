@@ -38,7 +38,10 @@ class InterlisExporterToIntermediateSchema:
         self.callback_progress_done = callback_progress_done
 
         # Filtering
-        self.filtered = selection is not None
+        self.filtered = False
+        if selection:
+            self.filtered = True
+
         self.subset_ids = selection if selection is not None else []
 
         self.labels_file = labels_file
