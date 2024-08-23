@@ -2346,7 +2346,7 @@ class InterlisExporterToIntermediateSchema:
                 objekt=row.object,
                 aufnehmer=row.recorded_by,
                 bemerkung=row.remark,
-                systembenutzer=row.system_user,
+                systembenutzer=row.user_system,
             )
             self.abwasser_session.add(mutation)
             print(".", end="")

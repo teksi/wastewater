@@ -1702,7 +1702,7 @@ class InterlisImporterToIntermediateSchema:
                 object=row.objekt,
                 recorded_by=row.aufnehmer,
                 remark=row.bemerkung,
-                system_user=row.systembenutzer,
+                user_system=row.systembenutzer,
             )
             self.session_tww.add(mutation)
             print(".", end="")

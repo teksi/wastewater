@@ -186,9 +186,9 @@ COMMENT ON COLUMN tww_od.mutation.recorded_by IS 'Name of person who recorded th
  ALTER TABLE tww_od.mutation ADD COLUMN remark text;
  ALTER TABLE tww_od.mutation ADD CONSTRAINT md_remark_length_max_80 CHECK(char_length(remark)<=80);
 COMMENT ON COLUMN tww_od.mutation.remark IS 'General remarks / Allgemeine Bemerkungen / Remarques générales';
- ALTER TABLE tww_od.mutation ADD COLUMN system_user text;
- ALTER TABLE tww_od.mutation ADD CONSTRAINT md_system_user_length_max_60 CHECK(char_length(system_user)<=60);
-COMMENT ON COLUMN tww_od.mutation.system_user IS 'Name of system user / Name des Systembenutzers / Usager du système informatique';
+ ALTER TABLE tww_od.mutation ADD COLUMN user_system text;
+ ALTER TABLE tww_od.mutation ADD CONSTRAINT md_user_system_length_max_60 CHECK(char_length(user_system)<=60);
+COMMENT ON COLUMN tww_od.mutation.user_system IS 'Name of system user / Name des Systembenutzers / Usager du système informatique';
  ALTER TABLE tww_od.mutation ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
 COMMENT ON COLUMN tww_od.mutation.last_modification IS 'Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE';
  ALTER TABLE tww_od.mutation ADD COLUMN fk_dataowner varchar(16);
