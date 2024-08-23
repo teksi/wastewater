@@ -2669,12 +2669,37 @@ class InterlisExporterToIntermediateSchema:
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
+
+            # Before exporting the relation object, check that it use one sublclass of maintenance_event
+            # supported by DSS
+            maintenance_event_obj_id = row.fk_maintenance_event
+            dss_supported = False
+
+            subclass_object = (
+                self.tww_session.query(self.model_classes_tww_od.maintenance)
+                .filter(self.model_classes_tww_od.maintenance.obj_id == maintenance_event_obj_id)
+                .first()
+            )
+            if subclass_object is not None:
+                dss_supported = True
+
+            subclass_object = (
+                self.tww_session.query(self.model_classes_tww_od.bio_ecol_assessment)
+                .filter(
+                    self.model_classes_tww_od.bio_ecol_assessment.obj_id
+                    == maintenance_event_obj_id
+                )
+                .first()
+            )
+            if not dss_supported and subclass_object is not None:
+                dss_supported = True
+
+            if not dss_supported:
+                continue
+
             erhaltungsereignis_abwasserbauwerkassoc = self.model_classes_interlis.erhaltungsereignis_abwasserbauwerkassoc(
                 # FIELDS TO MAP TO ABWASSER.erhaltungsereignis_abwasserbauwerkassoc
-                # --- baseclass ---
-                # --- sia405_baseclass ---
                 # this class does not inherit vsa_base_common
-                # **self.vsa_base_common(row, "erhaltungsereignis_abwasserbauwerkassoc"),
                 # --- erhaltungsereignis_abwasserbauwerkassoc ---
                 abwasserbauwerkref=self.get_tid(row.fk_wastewater_structure__REL),
                 erhaltungsereignis_abwasserbauwerkassocref=self.get_tid(
