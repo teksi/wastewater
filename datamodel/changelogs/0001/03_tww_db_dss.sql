@@ -5150,7 +5150,7 @@ ALTER TABLE tww_od.farm ADD CONSTRAINT rel_od_farm_fk_dataprovider FOREIGN KEY (
 
 ------ Indexes on identifiers
 
- CREATE UNIQUE INDEX in_od_organisation_identifier ON tww_od.organisation USING btree (identifier ASC NULLS LAST, uid ASC NULLS LAST, organisation_type ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
+ CREATE UNIQUE INDEX in_od_organisation_identifier ON tww_od.organisation USING btree (identifier ASC NULLS LAST, uid ASC NULLS LAST, organisation_type ASC NULLS LAST);
  CREATE UNIQUE INDEX in_od_measure_identifier ON tww_od.measure USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
  CREATE UNIQUE INDEX in_od_waste_water_treatment_plant_identifier ON tww_od.waste_water_treatment_plant USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
  CREATE UNIQUE INDEX in_od_wastewater_structure_identifier ON tww_od.wastewater_structure USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
