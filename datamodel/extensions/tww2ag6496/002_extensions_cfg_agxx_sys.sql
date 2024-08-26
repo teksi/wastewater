@@ -21,6 +21,7 @@ DECLARE
 DECLARE
 	ws_oid varchar(16);
 	wn_oids varchar(16)[];
+	sp_oids varchar(16)[];
 BEGIN
      SELECT ws.obj_id, array_agg(wn.obj_id) INTO  ws_oid, wn_oids
 	  FROM (SELECT ws.obj_id, 
@@ -55,7 +56,7 @@ BEGIN
 		
 	ELSE NULL;
 	END CASE;
-	RETURN NULL;
+	RETURN;
 END;
 $BODY$
 LANGUAGE plpgsql;

@@ -222,7 +222,7 @@ class InterlisImportSelectionDialog(QDialog):
             self.session.close()
 
         if iface:
-            iface.messageBar().pushMessage("Error", "Import was cancelled", level=Qgis.Warning)
+            iface.messageBar().pushMessage("Error", "Import was canceled", level=Qgis.Warning)
 
     def get_obj_from_listitem(self, listitem):
         for obj, editor in self.editors.items():

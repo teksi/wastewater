@@ -21,7 +21,7 @@ BEGIN
     , ag96_remark
 	, ag96_fk_provider	
 	) VALUES
-	(SELECT
+	(
 	  NEW.obj_id
 	, NEW.bezeichnung
     , {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
@@ -42,11 +42,11 @@ BEGIN
 	, ag96_is_gateway
 	, ag64_function
 	) VALUES
-	(SELECT
+	(
 	  NEW.obj_id
 	, NEW.maxrueckstauhoehe
     , NEW.sohlenkote
-    , ST_SetSRID(ST_MakePoint(ST_X(NEW.lage), ST_Y(NEW.lage), COALESCE(NEW.sohlenkotekote,'nan')), 2056 )
+    , ST_SetSRID(ST_MakePoint(ST_X(NEW.lage), ST_Y(NEW.lage), COALESCE(NEW.sohlenkote,'nan')), 2056 )
 	, NEW.ara_nr
 	, (SELECT code FROM tww_vl.wastewater_node_ag96_is_gateway WHERE value_de=NEW.istschnittstelle)
 	, (SELECT code FROM tww_vl.wastewater_node_ag64_function WHERE value_de=NEW.funktionag)
@@ -60,7 +60,7 @@ BEGIN
 		, last_modification
 		) VALUES
 		(  
-		, {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+		  {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
 		, NEW.bezeichnung
 		, NEW.letzte_aenderung_wi
 		)
@@ -90,7 +90,7 @@ BEGIN
 		, detail_geometry3d_geometry
 		, financing
 		, fk_main_cover
-		, fk_main_wastwater_node
+		, fk_main_wastewater_node
 		, fk_operator
 		, fk_owner
 		, fk_provider
@@ -117,7 +117,7 @@ BEGIN
 		, NEW.letzte_aenderung_wi
 		, NEW.bemerkung_wi
 		, (SELECT code FROM tww_vl.wastewater_structure_renovation_necessity WHERE value_de=NEW.sanierungsbedarf)
-		, (SELECT code FROM tww_vl.wastewater_structure_status WHERE value_de=NEW.bauwerkstatus)
+		, (SELECT code FROM tww_vl.wastewater_structure_status WHERE value_de=replace(NEW.bauwerkstatus,'.in_Betrieb',''))
 		, NEW.jahr_zustandserhebung
 		, (SELECT code FROM tww_vl.wastewater_structure_structure_condition WHERE value_de=NEW.baulicherzustand)
 		, NEW.baujahr
@@ -235,7 +235,7 @@ BEGIN
     UPDATE tww_od.wastewater_node SET
 	  backflow_level_current = NEW.maxrueckstauhoehe
 	, bottom_level = NEW.sohlenkote
-	, situation3d_geometry = ST_SetSRID(ST_MakePoint(ST_X(NEW.lage), ST_Y(NEW.lage), COALESCE(NEW.sohlenkotekote,'nan')), 2056)
+	, situation3d_geometry = ST_SetSRID(ST_MakePoint(ST_X(NEW.lage), ST_Y(NEW.lage), COALESCE(NEW.sohlenkote,'nan')), 2056)
 	, wwtp_number = NEW.ara_nr
 	, ag96_is_gateway = (SELECT code FROM tww_vl.wastewater_node_ag96_is_gateway WHERE value_de=NEW.istschnittstelle)
 	, ag64_function = (SELECT code FROM tww_vl.wastewater_node_ag64_function WHERE value_de=NEW.funktionag)
@@ -245,7 +245,7 @@ BEGIN
 		
 		SELECT ws.obj_id,ws.fk_main_cover INTO ws_oid, co_oid FROM tww_od.wastewater_node wn
 		LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id=wn.obj_id
-		LEFT JOIN tww_od.wastewater_structure ws ON ne.fk_wastewater_structure = ws.obj_id
+		LEFT JOIN tww_od.wastewater_structure ws ON ne.fk_wastewater_structure = ws.obj_id;
 		
 		-- Deckel
 		UPDATE tww_od.structure_part SET
@@ -255,7 +255,7 @@ BEGIN
 		WHERE obj_id = co_oid;
 		
 		UPDATE tww_od.cover SET 
-		, level = NEW.deckelkote
+		  level = NEW.deckelkote
 		, positional_accuracy = (SELECT code FROM tww_vl.cover_positional_accuracy WHERE value_de=NEW.lagegenauigkeit)
 		, situation3d_geometry = ST_SetSRID(ST_MakePoint(ST_X(NEW.lage), ST_Y(NEW.lage), COALESCE(NEW.deckelkote,'nan')), 2056 )
 		, ag64_fk_wastewater_node = NEW.obj_id
@@ -271,7 +271,7 @@ BEGIN
 		, detail_geometry3d_geometry = ST_Force3D(NEW.detailgeometrie)
 		, financing = (SELECT code FROM tww_vl.wastewater_structure_financing WHERE value_de=NEW.finanzierung)
 		, fk_main_cover = co_oid
-		, fk_main_wastwater_node = NEW.obj_id
+		, fk_main_wastewater_node = NEW.obj_id
 		, fk_operator = {ext_schema}.convert_organisationid_to_vsa(NEW.betreiber)
 		, fk_owner = {ext_schema}.convert_organisationid_to_vsa(NEW.eigentuemer)
 		, fk_provider = {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
@@ -279,7 +279,7 @@ BEGIN
 		, last_modification = NEW.letzte_aenderung_wi
 		, remark = NEW.bemerkung_wi
 		, renovation_necessity = (SELECT code FROM tww_vl.wastewater_structure_renovation_necessity WHERE value_de=NEW.sanierungsbedarf)
-		, status = (SELECT code FROM tww_vl.wastewater_structure_status WHERE value_de=NEW.bauwerkstatus)
+		, status = (SELECT code FROM tww_vl.wastewater_structure_status WHERE value_de=replace(NEW.bauwerkstatus,'.in_Betrieb',''))
 		, status_survey_year = NEW.jahr_zustandserhebung
 		, structure_condition = (SELECT code FROM tww_vl.wastewater_structure_structure_condition WHERE value_de=NEW.baulicherzustand)
 		, year_of_construction = NEW.baujahr
@@ -294,7 +294,7 @@ BEGIN
 			THEN NULL;
 			ELSE
 				------------ Abwasserreinigungsanlage ------------
-				INSERT INTO tww_od.wwtp_stucture
+				INSERT INTO tww_od.wwtp_stucture(
 				  obj_id, kind
 				)VALUES
 				(

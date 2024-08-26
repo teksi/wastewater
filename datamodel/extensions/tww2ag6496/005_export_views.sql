@@ -268,6 +268,15 @@ SELECT
 	, concat_ws('','ch113jqg0000',right(COALESCE(ne.ag96_fk_provider,'00000107'),8)) AS datenbewirtschafter_gep
 	, ne.ag96_remark AS bemerkung_gep
 	, COALESCE(ne.ag96_last_modification,TO_TIMESTAMP('1800-01-01','YYYY-MM-DD')) AS letzte_aenderung_gep
+    , NULL::boolean AS ignore_ws
+    , CASE
+        WHEN ma.obj_id IS NOT NULL THEN 'manhole'
+        WHEN ss.obj_id IS NOT NULL THEN 'special_structure'
+        WHEN dp.obj_id IS NOT NULL THEN 'discharge_point'
+        WHEN ii.obj_id IS NOT NULL THEN 'infiltration_installation'
+        WHEN wwtp.obj_id IS NOT NULL THEN 'wwtp_structure'
+        ELSE 'unknown'
+      END AS ws_type
 
 FROM tww_od.wastewater_node wn
 LEFT JOIN tww_od.wastewater_networkelement ne ON wn.obj_id = ne.obj_id
@@ -307,7 +316,7 @@ LEFT JOIN tww_vl.wastewater_structure_renovation_necessity rn ON rn.code=ws.reno
 LEFT JOIN tww_vl.wastewater_structure_financing fi ON fi.code=ws.financing
 LEFT JOIN tww_vl.channel_function_hierarchic fhi ON fhi.code=wn._function_hierarchic	
 
-LEFT JOIN tww_od.cover co ON co.agxx_fk_wastewater_node = wn.obj_id -- only overwrite position of main wn
+LEFT JOIN tww_od.cover co ON co.ag64_fk_wastewater_node = wn.obj_id -- only overwrite position of main wn
 LEFT JOIN tww_od.cover main_co ON main_co.obj_id=ws.fk_main_cover
 LEFT JOIN tww_vl.cover_positional_accuracy co_pa ON co_pa.code=coalesce(co.positional_accuracy,main_co.positional_accuracy,unc.co_positional_accuracy)
 LEFT JOIN tww_vl.wastewater_structure_accessibility  ac ON ac.code=ws.accessibility;
