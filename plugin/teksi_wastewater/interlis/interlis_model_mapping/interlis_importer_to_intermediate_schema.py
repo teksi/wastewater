@@ -3,8 +3,8 @@ from sqlalchemy.orm import Session
 from sqlalchemy.orm.attributes import flag_dirty
 from sqlalchemy.sql import text
 
+from ...utils.plugin_utils import logger
 from .. import config, utils
-from ..utils.various import logger
 
 
 class InterlisImporterToIntermediateSchema:
@@ -140,6 +140,12 @@ class InterlisImporterToIntermediateSchema:
 
         logger.info("\nImporting ABWASSER.Spuelstutzen -> TWW.flushing_nozzle")
         self._import_spuelstutzen()
+        self._check_for_stop()
+
+        logger.info(
+            "\nImporting ABWASSER.abwasserbauwerk_symbol -> TWW.wastewater_structure_symbol"
+        )
+        self._import_abwasserbauwerk_symbol()
         self._check_for_stop()
 
     def _import_dss(self):
@@ -445,6 +451,10 @@ class InterlisImporterToIntermediateSchema:
             ),
             "contract_section": row.baulos,
             "detail_geometry3d_geometry": ST_Force3D(row.detailgeometrie),
+            # TODO : NOT MAPPED VSA-DSS 3D
+            # "elevation_determination": self.get_vl_code(
+            #    self.model_classes_tww_od.wastewater_structure_elevation_determination, row.hoehenbestimmung
+            # ),
             "financing": self.get_vl_code(
                 self.model_classes_tww_od.wastewater_structure_financing, row.finanzierung
             ),
@@ -592,17 +602,20 @@ class InterlisImporterToIntermediateSchema:
             organisation = self.create_or_update(
                 self.model_classes_tww_od.organisation,
                 obj_id=row.t_ili_tid,
+                # manually add for organisation (instead of adding **self.base_common(row) as this would also add fk_dataowner and fk_provider, that are not in INTERLIS for class organisation (change to VSA-DSS 2015, as organisation is now a separate external class maintained by the VSA (or its successor organisation for this)
+                last_modification=row.letzte_aenderung,
                 # --- organisation ---
                 identifier=row.bezeichnung,
-                remark=row.bemerkung,
-                uid=row.auid,
+                identifier_short=row.kurzbezeichnung,
                 municipality_number=row.gemeindenummer,
                 organisation_type=self.get_vl_code(
                     self.model_classes_tww_vl.organisation_organisation_type, row.organisationstyp
                 ),
+                remark=row.bemerkung,
                 status=self.get_vl_code(
                     self.model_classes_tww_vl.organisation_status, row.astatus
                 ),
+                uid=row.auid,
             )
 
             self.session_tww.add(organisation)
@@ -678,7 +691,8 @@ class InterlisImporterToIntermediateSchema:
                     self.model_classes_tww_od.discharge_point_relevance, row.relevanz
                 ),
                 terrain_level=row.terrainkote,
-                # upper_elevation=row.REPLACE_ME, # TODO : NOT MAPPED
+                # TODO : NOT MAPPED VSA-DSS 3D
+                # upper_elevation=row.deckenkote,
                 waterlevel_hydraulic=row.wasserspiegel_hydraulik,
             )
             self.session_tww.add(discharge_point)
@@ -706,7 +720,8 @@ class InterlisImporterToIntermediateSchema:
                     self.model_classes_tww_od.special_structure_stormwater_tank_arrangement,
                     row.regenbecken_anordnung,
                 ),
-                # upper_elevation=row.REPLACE_ME,   # TODO : NOT MAPPED
+                # TODO : NOT MAPPED VSA-DSS 3D
+                # upper_elevation=row.deckenkote,
             )
             self.session_tww.add(special_structure)
             print(".", end="")
@@ -742,7 +757,8 @@ class InterlisImporterToIntermediateSchema:
                     self.model_classes_tww_od.infiltration_installation_seepage_utilization,
                     row.versickerungswasser,
                 ),
-                # upper_elevation=row.REPLACE_ME,  # TODO : NOT MAPPED
+                # TODO : NOT MAPPED VSA-DSS 3D
+                # upper_elevation=row.deckenkote,
                 vehicle_access=self.get_vl_code(
                     self.model_classes_tww_od.infiltration_installation_vehicle_access,
                     row.saugwagen,
@@ -1649,10 +1665,19 @@ class InterlisImporterToIntermediateSchema:
                 self.model_classes_tww_od.measuring_point,
                 **self.base_common(row),
                 # --- measuring_point ---
-                purpose=row.zweck,
+                # change to value list reference
+                # purpose=row.zweck,
+                purpose=self.get_vl_code(
+                    self.model_classes_tww_vl.measuring_point_purpose, row.zweck
+                ),
                 remark=row.bemerkung,
-                damming_device=row.staukoerper,
+                # change to value list reference
+                # damming_device=row.staukoerper,
+                damming_device=self.get_vl_code(
+                    self.model_classes_tww_vl.measuring_point_damming_device, row.staukoerper
+                ),
                 identifier=row.bezeichnung,
+                # kind is not a value list here
                 kind=row.art,
                 situation_geometry=row.lage,
                 fk_operator=row.betreiberref,
@@ -1907,7 +1932,10 @@ class InterlisImporterToIntermediateSchema:
                 # --- reach ---
                 clear_height=row.lichte_hoehe,
                 coefficient_of_friction=row.reibungsbeiwert,
-                # elevation_determination=self.get_vl_code(TWW.reach_elevation_determination, row.REPLACE_ME),  # TODO : NOT MAPPED
+                # TODO : NOT MAPPED VSA-DSS 3D
+                # self.get_vl_code(
+                #    self.model_classes_tww_od.wastewater_structure_elevation_determination, row.hoehenbestimmung
+                # ),
                 fk_pipe_profile=self.get_pk(row.rohrprofilref__REL),
                 fk_reach_point_from=self.get_pk(row.vonhaltungspunktref__REL),
                 fk_reach_point_to=self.get_pk(row.nachhaltungspunktref__REL),
@@ -2033,23 +2061,38 @@ class InterlisImporterToIntermediateSchema:
             self.session_tww.add(flushing_nozzle)
             print(".", end="")
 
+    def _import_abwasserbauwerk_symbol(self):
+        for row in self.session_interlis.query(self.model_classes_interlis.abwasserbauwerk_symbol):
+            wastewater_structure_symbol = self.create_or_update(
+                self.model_classes_tww_od.wastewater_structure_symbol,
+                # --- wastewater_structure_symbol ---
+                obj_id=row.t_ili_tid,
+                plantype=self.get_vl_code(
+                    self.model_classes_tww_vl.wastewater_structure_symbol_plantype, row.plantyp
+                ),
+                symbol_scaling_height=row.symbolskalierunghoch,
+                symbol_scaling_width=row.symbolskalierunglaengs,
+                symbolori=row.symbolori,
+                symbolpos_geometry=row.symbolpos,
+                fk_wastewater_structure=self.get_pk(row.abwasserbauwerkref__REL),
+            )
+            self.session_tww.add(wastewater_structure_symbol)
+            print(".", end="")
+
     def _import_untersuchung(self):
         for row in self.session_interlis.query(self.model_classes_interlis.untersuchung):
-            logger.warning(
-                "TWW examination.active_zone has no equivalent in the interlis model. This field will be null."
-            )
             examination = self.create_or_update(
                 self.model_classes_tww_od.examination,
                 **self.base_common(row),
                 # --- maintenance_event ---
-                # active_zone=row.REPLACE_ME,  # TODO : found no matching field for this in interlis, confirm this is ok
                 base_data=row.datengrundlage,
                 cost=row.kosten,
                 data_details=row.detaildaten,
                 duration=row.dauer,
-                fk_operating_company=(
-                    row.ausfuehrende_firmaref if row.ausfuehrende_firmaref else None
-                ),
+                # in VSA-KEK 2020 in class maintenance_event instead of examination
+                # fk_operating_company=(
+                #    row.ausfuehrende_firmaref if row.ausfuehrende_firmaref else None
+                # ),
                 identifier=row.bezeichnung,
                 operator=row.ausfuehrender,
                 reason=row.grund,
@@ -2100,7 +2143,9 @@ class InterlisImporterToIntermediateSchema:
                 self.model_classes_tww_od.damage_manhole,
                 **self.base_common(row),
                 # --- damage ---
+                # to check Adaption VSA-KEK 2020 moved to superclass schaden
                 comments=row.anmerkung,
+                # to check Adaption VSA-KEK 2020 moved to superclass schaden
                 connection=self.get_vl_code(
                     self.model_classes_tww_vl.damage_connection, row.verbindung
                 ),
@@ -2111,10 +2156,13 @@ class InterlisImporterToIntermediateSchema:
                 fk_examination=self.get_pk(row.untersuchungref__REL),
                 manhole_quantification1=row.quantifizierung1,
                 manhole_quantification2=row.quantifizierung2,
+                # to check Adaption VSA-KEK 2020 moved to superclass schaden
                 single_damage_class=self.get_vl_code(
                     self.model_classes_tww_od.damage_single_damage_class, row.einzelschadenklasse
                 ),
+                # to check Adaption VSA-KEK 2020 moved to superclass schaden
                 video_counter=row.videozaehlerstand,
+                # to check Adaption VSA-KEK 2020 moved to superclass schaden
                 view_parameters=row.ansichtsparameter,
                 # --- damage_manhole ---
                 manhole_damage_code=self.get_vl_code(

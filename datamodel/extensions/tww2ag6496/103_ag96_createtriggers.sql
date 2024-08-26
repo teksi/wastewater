@@ -13,12 +13,14 @@ CREATE TRIGGER on_gepknoten_upsate
     FOR EACH ROW
     EXECUTE FUNCTION {ext_schema}.ft_gepknoten_update();
 
+
 DROP TRIGGER IF EXISTS on_gepknoten_delete ON {ext_schema}.gepknoten;	
 CREATE TRIGGER on_gepknoten_delete
     INSTEAD OF DELETE 
     ON {ext_schema}.gepknoten
     FOR EACH ROW
     EXECUTE FUNCTION {ext_schema}.ft_gepknoten_delete();
+
 
 DROP TRIGGER IF EXISTS on_gephaltung_insert ON {ext_schema}.gephaltung;	
 CREATE TRIGGER on_gephaltung_insert

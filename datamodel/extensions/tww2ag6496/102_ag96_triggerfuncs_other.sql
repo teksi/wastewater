@@ -349,6 +349,7 @@ BEGIN
     , fk_responsible_entity = {ext_schema}.convert_organisationid_to_vsa(NEW.traegerschaft)
     , fk_responsible_start = {ext_schema}.convert_organisationid_to_vsa(NEW.verantwortlich_ausloesung)
 	WHERE msr.obj_id=NEW.obj_id;
+
 	IF NOT FOUND THEN
 	INSERT INTO tww_od.measure(
 	obj_id
@@ -533,12 +534,8 @@ BEGIN
     , NEW.gepknoten_rw_geplantref
     , NEW.gepknoten_sw_geplantref
     , NEW.gepknoten_sw_istref
-	);
-	END IF;
-	  RETURN NEW;
-END;
-$BODY$
-LANGUAGE plpgsql;
+	)
+	
 
 CREATE OR REPLACE FUNCTION {ext_schema}.ft_einzugsgebiet_delete()
 RETURNS trigger AS
@@ -554,6 +551,7 @@ LANGUAGE plpgsql;
 ---------------------------------
 --- Ueberlauf_Foerderaggregat ---
 ---------------------------------
+
 
 CREATE OR REPLACE FUNCTION {ext_schema}.ft_ueberlauf_foerderaggregat_insert()
 RETURNS trigger AS

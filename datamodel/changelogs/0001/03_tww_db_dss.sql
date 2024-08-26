@@ -32,6 +32,7 @@ CREATE TABLE tww_od.re_building_group_disposal
    CONSTRAINT pkey_tww_od_re_building_group_disposal_id PRIMARY KEY (id)
 );
 COMMENT ON COLUMN tww_od.re_building_group_disposal.id IS 'UUID generated with uuid_generate_v4 see https://www.postgresql.org/docs/16/uuid-ossp.html#UUID-OSSP-FUNCTIONS-SECT';
+
 -------
 CREATE TABLE tww_od.re_maintenance_event_wastewater_structure
 (
@@ -4895,8 +4896,8 @@ COMMENT ON COLUMN tww_od.wastewater_structure_symbol.obj_id IS 'INTERLIS STANDAR
 COMMENT ON COLUMN tww_od.wastewater_structure_symbol.classname IS 'Name of class that symbol class is related to / Name der Klasse zu der die Symbolklasse gehört / nom de la classe à laquelle appartient la classe de symbole';
  ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN plantype  integer ;
 COMMENT ON COLUMN tww_od.wastewater_structure_symbol.plantype IS '';
- ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN symbol_scaling_heigth  decimal(2,1) ;
-COMMENT ON COLUMN tww_od.wastewater_structure_symbol.symbol_scaling_heigth IS '';
+ ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN symbol_scaling_height  decimal(2,1) ;
+COMMENT ON COLUMN tww_od.wastewater_structure_symbol.symbol_scaling_height IS '';
  ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN symbol_scaling_width  decimal(2,1) ;
 COMMENT ON COLUMN tww_od.wastewater_structure_symbol.symbol_scaling_width IS '';
  ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN symbolori  decimal(4,1) ;
@@ -5179,3 +5180,8 @@ ALTER TABLE tww_od.farm ADD CONSTRAINT rel_od_farm_fk_dataprovider FOREIGN KEY (
  CREATE UNIQUE INDEX in_od_hydraulic_char_data_identifier ON tww_od.hydraulic_char_data USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
  CREATE UNIQUE INDEX in_od_catchment_area_totals_identifier ON tww_od.catchment_area_totals USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
  CREATE UNIQUE INDEX in_od_building_group_identifier ON tww_od.building_group USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
+
+-- For m:n relation tables to avoid duplicate entries
+CREATE UNIQUE INDEX in_re_maintenance_event_wastewater_structure_fks ON tww_od.re_maintenance_event_wastewater_structure USING btree (fk_maintenance_event ASC NULLS LAST, fk_wastewater_structure ASC NULLS LAST);
+
+CREATE UNIQUE INDEX in_re_building_group_disposal_fks ON tww_od.re_building_group_disposal USING btree (fk_building_group ASC NULLS LAST, fk_disposal ASC NULLS LAST);

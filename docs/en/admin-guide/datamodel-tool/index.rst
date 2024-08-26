@@ -1,7 +1,10 @@
-Data-model tool
+Data model tool
 ===============
 
-The plugin contains a data-model tool capable of initializing and upgrading a TWW database.
+.. attention::
+Data model tool not yet integrated in TEKSI wastewater
+
+The plugin contains a data model tool capable of initializing and upgrading a TWW database.
 
 It is aimed at system administrators and power users, and should not be used by end users, as it
 could lead to data loss if not used properly.
@@ -11,7 +14,7 @@ For advanced cases, it is also possible to `upgrade your database manually <../d
 Setup
 -----
 
-The data-model tool is hidden by default. To make it visible, you must first enable ``Admin mode``
+The data model tool is hidden by default. To make it visible, you must first enable ``Admin mode``
 in the plugin settings :
 
 * Go to ``Plugin > TWW > Settings``
@@ -22,7 +25,7 @@ in the plugin settings :
 
 * Restart QGIS
 
-The data-model tool should now appear under ``Plugin > TWW > Datamodel tool``
+The data model tool should now appear under ``Plugin > TWW > Data model tool``
 
 Usage
 -----
@@ -52,7 +55,7 @@ The main dialog looks like this.
 
     Refer to the `installation guide <../../installation-guide/workstation.html>`_ to know more about the ``pg_service.conf`` file.
 
-* **Datamodel**
+* **Data model**
 
     * **Current version**: shows the current version of the datamodel found in the selected database
 
@@ -68,7 +71,7 @@ The main dialog looks like this.
 Troubleshooting
 ^^^^^^^^^^^^^^^
 
-In case you encounter issues or errors when using the datamodel tool, make sure to look at the
+In case you encounter issues or errors when using the data model tool, make sure to look at the
 TWW tab in the logs, as it may contain useful information (including errors returned by underlying tools).
 
 Make sure to include this information if submitting a bug report or asking for support.

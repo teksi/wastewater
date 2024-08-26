@@ -8,6 +8,7 @@ $BODY$
 DECLARE
     co_oid varchar(16);
 	ws_oid varchar(16);
+
 BEGIN
 
     INSERT INTO tww_od.wastewater_networkelement( 

@@ -1,8 +1,7 @@
 ---------------------------------
 -------- Metainformation --------
 ---------------------------------
-
-CREATE OR REPLACE FUNCTION tww_sys.update_last_modified_agxx()
+CREATE OR REPLACE FUNCTION {ext_schema}.update_last_ag_modification()
 RETURNS trigger AS
 $BODY$
   DECLARE
