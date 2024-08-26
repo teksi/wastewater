@@ -1,6 +1,8 @@
 import logging
 import os
+import re
 import sys
+import xml.etree.ElementTree as ET
 
 from qgis.testing import start_app, unittest
 from teksi_wastewater.interlis import config
@@ -45,6 +47,30 @@ class TestInterlis(unittest.TestCase):
             os.makedirs(directory)
 
         return os.path.join(directory, name)
+
+    @staticmethod
+    def _get_xtf_object(xtf_file, topicname, classname, tid):
+        # from xml file
+        tree = ET.parse(xtf_file)
+        root = tree.getroot()
+
+        def get_namespace(element):
+            m = re.match(r"\{.*\}", element.tag)
+            return m.group(0) if m else ""
+
+        namespace = get_namespace(root)
+
+        interlis_objects = root.findall(
+            "./{0}DATASECTION/{0}{1}/{0}{1}.{2}".format(namespace, topicname, classname)
+        )
+
+        for interlis_object in interlis_objects:
+            xml_tid = interlis_object.attrib.get("TID", None)
+
+            if xml_tid == tid:
+                return interlis_object
+
+        return None
 
     def setUp(self):
         DatabaseUtils.databaseConfig.PGHOST = "db"
@@ -97,28 +123,55 @@ class TestInterlis(unittest.TestCase):
         self.assertEqual(result[0], "fk11abk6EX000002")
 
         # Export minimal sia405
-        export_xtf_file = self._get_output_filename("export_minimal_dataset_sia405.xtf")
+        export_xtf_file = self._get_output_filename("export_minimal_dataset_sia405")
         interlisImporterExporter.interlis_export(
-            xtf_file_output=export_xtf_file,
+            xtf_file_output=self._get_output_filename(export_xtf_file),
             export_models=[config.MODEL_NAME_SIA405_ABWASSER],
             logs_next_to_file=True,
         )
 
+        # Check exported TID
+        exported_xtf_filename = self._get_output_filename(
+            f"{export_xtf_file}_{config.MODEL_NAME_SIA405_ABWASSER}.xtf"
+        )
+        interlis_object = self._get_xtf_object(
+            exported_xtf_filename, config.TOPIC_NAME_SIA405_ABWASSER, "Haltung", "ch000000RE000001"
+        )
+        self.assertIsNotNone(interlis_object)
+
         # Export minimal dss
-        export_xtf_file = self._get_output_filename("export_minimal_dataset_dss.xtf")
+        export_xtf_file = self._get_output_filename("export_minimal_dataset_dss")
         interlisImporterExporter.interlis_export(
-            xtf_file_output=export_xtf_file,
+            xtf_file_output=self._get_output_filename(export_xtf_file),
             export_models=[config.MODEL_NAME_DSS],
             logs_next_to_file=True,
         )
 
+        # Check exported TID
+        exported_xtf_filename = self._get_output_filename(
+            f"{export_xtf_file}_{config.MODEL_NAME_DSS}.xtf"
+        )
+        interlis_object = self._get_xtf_object(
+            exported_xtf_filename, config.TOPIC_NAME_DSS, "Rohrprofil", "ch000000PP000001"
+        )
+        self.assertIsNotNone(interlis_object)
+
         # Export minimal kek
-        export_xtf_file = self._get_output_filename("export_minimal_dataset_kek.xtf")
+        export_xtf_file = self._get_output_filename("export_minimal_dataset_kek")
         interlisImporterExporter.interlis_export(
-            xtf_file_output=export_xtf_file,
+            xtf_file_output=self._get_output_filename(export_xtf_file),
             export_models=[config.MODEL_NAME_VSA_KEK],
             logs_next_to_file=True,
         )
+
+        # Check exported TID
+        exported_xtf_filename = self._get_output_filename(
+            f"{export_xtf_file}_{config.MODEL_NAME_VSA_KEK}.xtf"
+        )
+        interlis_object = self._get_xtf_object(
+            exported_xtf_filename, config.TOPIC_NAME_KEK, "Untersuchung", "fk11abk6EX000002"
+        )
+        self.assertIsNotNone(interlis_object)
 
     def test_dss_dataset_import_export(self):
         # Import organisation
@@ -134,7 +187,7 @@ class TestInterlis(unittest.TestCase):
         # Export minimal dss
         export_xtf_file = self._get_output_filename("export_minimal_dss_dataset.xtf")
         interlisImporterExporter.interlis_export(
-            xtf_file_output=export_xtf_file,
+            xtf_file_output=self._get_output_filename(export_xtf_file),
             export_models=[config.MODEL_NAME_DSS],
             logs_next_to_file=True,
         )
