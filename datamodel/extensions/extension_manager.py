@@ -108,7 +108,7 @@ def load_extension(
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument("-p", "--pg_service", help="postgres service")
-    parser.add_argument("-m", "--module_name", help="name of TEKSI module",default="tww")
+    parser.add_argument("-m", "--module_name", help="name of TEKSI module", default="tww")
     parser.add_argument(
         "-s", "--srid", help="SRID EPSG code, defaults to 2056", type=int, default=2056
     )
