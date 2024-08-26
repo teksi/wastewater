@@ -1,7 +1,7 @@
 ---------- GEPHaltung ----------
 --------------------------------
 
-CREATE OR REPLACE FUNCTION {ext_schema}.ft_gephaltung_insert()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_gephaltung_insert()
 RETURNS trigger AS
 $BODY$
 DECLARE
@@ -33,7 +33,7 @@ BEGIN
 	  END
 	, (CASE WHEN NEW.lichte_breite_ist= 0 OR NEW.lichte_breite_ist IS NULL THEN 1
 	  ELSE NEW.lichte_hoehe_ist::numeric/NEW.lichte_breite_ist END)::numeric(5,2)
-	, {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+	, tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
 	)
 	ON CONFLICT (identifier,fk_dataowner) DO UPDATE
 	SET fk_provider=EXCLUDED.fk_provider -- needed to return the obj_id
@@ -57,10 +57,10 @@ BEGIN
 	)VALUES
 	(
 	  (SELECT code FROM tww_vl.wastewater_structure_status WHERE value_de=replace(NEW.bauwerkstatus,'.in_Betrieb',''))
-	, {ext_schema}.convert_organisationid_to_vsa(NEW.eigentuemer)
+	, tww_app.fct_agxx_organisationid_to_vsa(NEW.eigentuemer)
 	, NEW.jahr_zustandserhebung
     , (SELECT code FROM tww_vl.wastewater_structure_financing WHERE value_de=NEW.finanzierung)
-    , {ext_schema}.convert_organisationid_to_vsa(NEW.betreiber)
+    , tww_app.fct_agxx_organisationid_to_vsa(NEW.betreiber)
 	, NEW.bezeichnung
     , NEW.letzte_aenderung_wi
     , (SELECT code FROM tww_vl.wastewater_structure_renovation_necessity WHERE value_de=NEW.sanierungsbedarf)
@@ -102,13 +102,13 @@ BEGIN
 	(
 	  NEW.obj_id
 	, NEW.bezeichnung
-    , {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+    , tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
     , NEW.letzte_aenderung_wi
     , NEW.bemerkung_wi
-	, {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+	, tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
     , NEW.letzte_aenderung_gep
     , NEW.bemerkung_gep
-	, {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
+	, tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
 	, ws_oid
 	);
 	
@@ -124,7 +124,7 @@ BEGIN
 	(
       (SELECT code FROM tww_vl.reach_point_elevation_accuracy WHERE value_de=NEW.hoehengenauigkeit_von)
 	, ST_SetSRID(ST_MakePoint(ST_X(ST_StartPoint(NEW.verlauf)), ST_X(ST_StartPoint(NEW.verlauf)), COALESCE(NEW.kote_beginn,'nan')), 2056 )
-	, {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+	, tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
     , NEW.startknoten
 	, NEW.letzte_aenderung_wi
     , NEW.kote_beginn
@@ -142,7 +142,7 @@ BEGIN
 	(
       (SELECT code FROM tww_vl.reach_point_elevation_accuracy WHERE value_de=NEW.hoehengenauigkeit_nach)
 	, ST_SetSRID(ST_MakePoint(ST_X(ST_EndPoint(NEW.verlauf)), ST_X(ST_EndPoint(NEW.verlauf)), COALESCE(NEW.kote_ende,'nan')), 2056 )
-	, {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+	, tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
     , NEW.endknoten
 	, NEW.letzte_aenderung_wi
     , NEW.kote_ende
@@ -189,7 +189,7 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION {ext_schema}.ft_gephaltung_update()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_gephaltung_update()
 RETURNS trigger AS
 $BODY$
 DECLARE
@@ -222,7 +222,7 @@ BEGIN
 	  END
 	, (CASE WHEN NEW.lichte_breite_ist= 0 OR NEW.lichte_breite_ist IS NULL THEN 1
 	  ELSE NEW.lichte_hoehe_ist::numeric/NEW.lichte_breite_ist END)::numeric(5,2)
-	, {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+	, tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
 	)
 	ON CONFLICT (identifier,fk_dataowner) DO UPDATE
 	SET fk_provider=EXCLUDED.fk_provider -- needed to return the obj_id
@@ -230,21 +230,21 @@ BEGIN
 	
 	UPDATE tww_od.wastewater_networkelement SET
 	  identifier = NEW.bezeichnung
-	, fk_provider = {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+	, fk_provider = tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
 	, ag64_last_modification = NEW.letzte_aenderung_wi
     , ag64_remark = NEW.bemerkung_wi
-	, ag64_fk_provider = {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+	, ag64_fk_provider = tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
 	, ag96_last_modification = NEW.letzte_aenderung_gep
     , ag96_remark = NEW.bemerkung_gep
-	, ag96_fk_provider = {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
+	, ag96_fk_provider = tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
 	WHERE obj_id = NEW.obj_id;
 	
 	UPDATE tww_od.wastewater_structure SET 
       status = (SELECT code FROM tww_vl.wastewater_structure_status WHERE value_de=replace(NEW.bauwerkstatus,'.in_Betrieb',''))
-	, fk_owner = {ext_schema}.convert_organisationid_to_vsa(NEW.eigentuemer)
+	, fk_owner = tww_app.fct_agxx_organisationid_to_vsa(NEW.eigentuemer)
 	, status_survey_year = NEW.jahr_zustandserhebung
     , financing = (SELECT code FROM tww_vl.wastewater_structure_financing WHERE value_de=NEW.finanzierung)
-    , fk_operator = {ext_schema}.convert_organisationid_to_vsa(NEW.betreiber)
+    , fk_operator = tww_app.fct_agxx_organisationid_to_vsa(NEW.betreiber)
 	, identifier = NEW.bezeichnung
     , last_modification = NEW.letzte_aenderung_wi
     , renovation_necessity = (SELECT code FROM tww_vl.wastewater_structure_renovation_necessity WHERE value_de=NEW.sanierungsbedarf)
@@ -270,7 +270,7 @@ BEGIN
 	UPDATE tww_od.reach_point SET 
       elevation_accuracy = (SELECT code FROM tww_vl.reach_point_elevation_accuracy WHERE value_de=NEW.hoehengenauigkeit_von)
 	, situation3d_geometry = ST_SetSRID(ST_MakePoint(ST_X(ST_StartPoint(NEW.verlauf)), ST_X(ST_StartPoint(NEW.verlauf)), COALESCE(NEW.kote_beginn,'nan')), 2056 )
-    , fk_provider = {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+    , fk_provider = tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
     , fk_wastewater_networkelement = NEW.startknoten
     , last_modification = NEW.letzte_aenderung_wi
     , level = NEW.kote_beginn
@@ -279,7 +279,7 @@ BEGIN
 	UPDATE tww_od.reach_point SET 
       elevation_accuracy = (SELECT code FROM tww_vl.reach_point_elevation_accuracy WHERE value_de=NEW.hoehengenauigkeit_von)
 	, situation3d_geometry = ST_SetSRID(ST_MakePoint(ST_X(ST_EndPoint(NEW.verlauf)), ST_X(ST_EndPoint(NEW.verlauf)), COALESCE(NEW.kote_ende,'nan')), 2056 )
-    , fk_provider = {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+    , fk_provider = tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
     , fk_wastewater_networkelement = NEW.endknoten
     , last_modification = NEW.letzte_aenderung_wi
     , level = NEW.kote_ende
@@ -305,7 +305,7 @@ $BODY$
 LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE FUNCTION {ext_schema}.ft_gephaltung_delete()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_gephaltung_delete()
 RETURNS trigger AS
 $BODY$
 BEGIN
@@ -322,7 +322,7 @@ LANGUAGE plpgsql;
 --------------------------------
 --------- GEPMassnahme ---------
 --------------------------------
-CREATE OR REPLACE FUNCTION {ext_schema}.ft_gepmassnahme_upsert()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_gepmassnahme_upsert()
 RETURNS trigger AS
 $BODY$
 BEGIN
@@ -345,9 +345,9 @@ BEGIN
     , year_implementation_planned = NEW.jahr_umsetzung_planned
     , last_modification = NEW.letzte_aenderung_gep
 --    , fk_dataowner = downr.value_obj_id
-    , fk_provider = {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
-    , fk_responsible_entity = {ext_schema}.convert_organisationid_to_vsa(NEW.traegerschaft)
-    , fk_responsible_start = {ext_schema}.convert_organisationid_to_vsa(NEW.verantwortlich_ausloesung)
+    , fk_provider = tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
+    , fk_responsible_entity = tww_app.fct_agxx_organisationid_to_vsa(NEW.traegerschaft)
+    , fk_responsible_start = tww_app.fct_agxx_organisationid_to_vsa(NEW.verantwortlich_ausloesung)
 	WHERE msr.obj_id=NEW.obj_id;
 
 	IF NOT FOUND THEN
@@ -391,9 +391,9 @@ BEGIN
     , NEW.jahr_umsetzung_effektiv
     , NEW.jahr_umsetzung_planned
     , NEW.letzte_aenderung_gep
-    , {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
-    , {ext_schema}.convert_organisationid_to_vsa(NEW.traegerschaft)
-    , {ext_schema}.convert_organisationid_to_vsa(NEW.verantwortlich_ausloesung)
+    , tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
+    , tww_app.fct_agxx_organisationid_to_vsa(NEW.traegerschaft)
+    , tww_app.fct_agxx_organisationid_to_vsa(NEW.verantwortlich_ausloesung)
 	);
 	END IF
 	;
@@ -402,7 +402,7 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION {ext_schema}.ft_gepmassnahme_delete()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_gepmassnahme_delete()
 RETURNS trigger AS
 $BODY$
 BEGIN
@@ -420,7 +420,7 @@ LANGUAGE plpgsql;
 -------- Einzugsgebiet ---------
 --------------------------------
 
-CREATE OR REPLACE FUNCTION {ext_schema}.ft_einzugsgebiet_upsert()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_einzugsgebiet_upsert()
 RETURNS trigger AS
 $BODY$
 BEGIN
@@ -454,7 +454,7 @@ BEGIN
     , waste_water_production_current = NEW.schmutzabwasseranfall_ist
     , waste_water_production_planned = NEW.schmutzabwasseranfall_geplant
     , last_modification = NEW.letzte_aenderung_gep
-    , fk_provider = {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
+    , fk_provider = tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
     , fk_wastewater_networkelement_rw_current = NEW.gepknoten_rw_istref
     , fk_wastewater_networkelement_rw_planned = NEW.gepknoten_rw_geplantref
     , fk_wastewater_networkelement_ww_planned = NEW.gepknoten_sw_geplantref
@@ -529,7 +529,7 @@ BEGIN
     , NEW.schmutzabwasseranfall_ist
     , NEW.schmutzabwasseranfall_geplant
     , NEW.letzte_aenderung_gep
-    , {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
+    , tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
     , NEW.gepknoten_rw_istref
     , NEW.gepknoten_rw_geplantref
     , NEW.gepknoten_sw_geplantref
@@ -537,7 +537,7 @@ BEGIN
 	)
 	
 
-CREATE OR REPLACE FUNCTION {ext_schema}.ft_einzugsgebiet_delete()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_einzugsgebiet_delete()
 RETURNS trigger AS
 $BODY$
 BEGIN
@@ -553,7 +553,7 @@ LANGUAGE plpgsql;
 ---------------------------------
 
 
-CREATE OR REPLACE FUNCTION {ext_schema}.ft_ueberlauf_foerderaggregat_insert()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_ueberlauf_foerderaggregat_insert()
 RETURNS trigger AS
 $BODY$
 BEGIN
@@ -578,16 +578,16 @@ BEGIN
 	  NEW.obj_id
 	, NEW.knotenref
 	, NEW.knoten_nachref
-	, {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+	, tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
 	, NEW.bemerkung_wi
 	, NEW.bezeichnung
 	, NEW.letzte_aenderung_wi
 	, NEW.letzte_aenderung_wi
 	, NEW.bemerkung_wi
-	, {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+	, tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
 	, NEW.letzte_aenderung_gep
 	, NEW.bemerkung_gep
-	, {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
+	, tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
 	);
 	
 	CASE WHEN NEW.art  = 'Foerderaggregat' THEN 
@@ -605,7 +605,7 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION {ext_schema}.ft_ueberlauf_foerderaggregat_update()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_ueberlauf_foerderaggregat_update()
 RETURNS trigger AS
 $BODY$
 BEGIN
@@ -613,16 +613,16 @@ BEGIN
 	SET
 	 fk_wastewater_node = NEW.knotenref
 	, fk_overflow_to = NEW.knoten_nachref
-	, fk_provider = {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+	, fk_provider = tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
 	, remark = NEW.bemerkung_wi
 	, identifier = NEW.bezeichnung
 	, last_modification = NEW.letzte_aenderung_wi
 	, ag64_last_modification = NEW.letzte_aenderung_wi
     , ag64_remark = NEW.bemerkung_wi
-	, ag64_fk_provider = {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+	, ag64_fk_provider = tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
 	, ag96_last_modification = NEW.letzte_aenderung_gep
     , ag96_remark = NEW.bemerkung_gep
-	, ag96_fk_provider = {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
+	, ag96_fk_provider = tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
 	WHERE obj_id=NEW.obj_id;
 	
 	CASE WHEN NEW.art  = 'Foerderaggregat' AND OLD.ov_type != 'pump' THEN
@@ -645,7 +645,7 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION {ext_schema}.ft_ueberlauf_foerderaggregat_delete()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_ueberlauf_foerderaggregat_delete()
 RETURNS trigger AS
 $BODY$
 BEGIN
@@ -660,7 +660,7 @@ LANGUAGE plpgsql;
 --- Bautenausserhalbbaugebiet ---
 ---------------------------------
 
-CREATE OR REPLACE FUNCTION {ext_schema}.ft_bautenausserhalbbaugebiet_upsert()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_bautenausserhalbbaugebiet_upsert()
 RETURNS trigger AS
 $BODY$
 BEGIN
@@ -676,7 +676,7 @@ BEGIN
     , restructuring_concept = NEW.sanierungskonzept
     , situation_geometry = NEW.lage
     , last_modification = NEW.letzte_aenderung_gep
-    , fk_provider = {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
+    , fk_provider = tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
     , ag96_owner_address = NEW.eigentuemeradresse 
     , ag96_owner_name = NEW.eigentuemername
     , ag96_label_number = NEW.nummer
@@ -721,7 +721,7 @@ BEGIN
     , NEW.sanierungskonzept
     , NEW.lage
     , NEW.letzte_aenderung_gep
-    , {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
+    , tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
     , NEW.eigentuemeradresse
     , NEW.eigentuemername
     , NEW.nummer
@@ -736,7 +736,7 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION {ext_schema}.ft_bautenausserhalbbaugebiet_delete()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_bautenausserhalbbaugebiet_delete()
 RETURNS trigger AS
 $BODY$
 BEGIN
@@ -754,7 +754,7 @@ LANGUAGE plpgsql;
 ---------------------------------	
 
 
-CREATE OR REPLACE FUNCTION {ext_schema}.ft_sbw_einzugsgebiet_upsert()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_sbw_einzugsgebiet_upsert()
 RETURNS trigger AS
 $BODY$
 DECLARE
@@ -797,7 +797,7 @@ BEGIN
     , surface_red_dim = NEW.flaeche_reduziert_geplant
     , waste_water_production = NEW.schmutzabwasseranfall_ist
     , last_modification = NEW.letzte_aenderung_gep
-    , fk_provider = {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
+    , fk_provider = tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
     , fk_discharge_point = NEW.einleitstelleref
     , fk_hydraulic_char_data = hcd_oid
     , ag96_sewer_infiltration_water_dim = NEW.fremdwasseranfall_geplant
@@ -841,7 +841,7 @@ BEGIN
     , NEW.flaeche_reduziert_geplant
     , NEW.schmutzabwasseranfall_ist
     , NEW.letzte_aenderung_gep
-    , {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
+    , tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
     , NEW.einleitstelleref
     , hcd_oid
     , NEW.fremdwasseranfall_geplant
@@ -854,7 +854,7 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION {ext_schema}.ft_sbw_einzugsgebiet_delete()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_sbw_einzugsgebiet_delete()
 RETURNS trigger AS
 $BODY$
 BEGIN
@@ -870,7 +870,7 @@ LANGUAGE plpgsql;
 ---- Versickerungsbereichag -----
 ---------------------------------
 
-CREATE OR REPLACE FUNCTION {ext_schema}.ft_versickerungsbereichag_insert()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_versickerungsbereichag_insert()
 RETURNS trigger AS
 $BODY$
 BEGIN
@@ -886,7 +886,7 @@ BEGIN
 	SELECT
 	  NEW.obj_id
 	, NEW.bezeichnung
-	, {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
+	, tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
 	, NEW.bemerkung_gep
 	, NEW.letzte_aenderung_gep
 	);
@@ -915,14 +915,14 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION {ext_schema}.ft_versickerungsbereichag_update()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_versickerungsbereichag_update()
 RETURNS trigger AS
 $BODY$
 BEGIN
 	UPDATE tww_od.zone
 	SET
 	  identifier = NEW.bezeichnung
-	, fk_provider = {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
+	, fk_provider = tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
 	, remark = NEW.bemerkung_gep
 	, last_modification = NEW.letzte_aenderung_gep
 	WHERE obj_id=NEW.obj_id;
@@ -941,7 +941,7 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION {ext_schema}.ft_versickerungsbereichag_delete()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_versickerungsbereichag_delete()
 RETURNS trigger AS
 $BODY$
 BEGIN

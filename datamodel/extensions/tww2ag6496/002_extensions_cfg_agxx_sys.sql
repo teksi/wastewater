@@ -1,6 +1,6 @@
 -- Funktion zum Mapping der Organisations-ID
 
-CREATE OR REPLACE FUNCTION {ext_schema}.convert_organisationid_to_vsa(oid varchar)
+CREATE OR REPLACE FUNCTION tww_app.fct_agxx_organisationid_to_vsa(oid varchar)
 RETURNS varchar(16)
 AS 
 $BODY$
@@ -13,7 +13,7 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION {ext_schema}.linkup_secondary_nodes(oid varchar)
+CREATE OR REPLACE FUNCTION tww_app.fct_agxx_linkup_secondary_nodes(oid varchar)
 RETURNS VOID
 AS 
 $BODY$

@@ -2,13 +2,12 @@
 -- Knoten
 ----------------
 
-CREATE OR REPLACE FUNCTION {ext_schema}.ft_gepknoten_insert()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_gepknoten_insert()
 RETURNS trigger AS
 $BODY$
 DECLARE
     co_oid varchar(16);
 	ws_oid varchar(16);
-
 BEGIN
 
     INSERT INTO tww_od.wastewater_networkelement( 
@@ -25,13 +24,13 @@ BEGIN
 	(
 	  NEW.obj_id
 	, NEW.bezeichnung
-    , {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+    , tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
     , NEW.letzte_aenderung_wi
     , NEW.bemerkung_wi
-	, {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+	, tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
     , NEW.letzte_aenderung_gep
     , NEW.bemerkung_gep
-	, {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
+	, tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
 	);
   
     INSERT INTO tww_od.wastewater_node( 
@@ -61,7 +60,7 @@ BEGIN
 		, last_modification
 		) VALUES
 		(  
-		  {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+		  tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
 		, NEW.bezeichnung
 		, NEW.letzte_aenderung_wi
 		)
@@ -84,8 +83,9 @@ BEGIN
 	ELSE NULL;
 	END CASE;
 
-    CASE WHEN COALESCE(NEW.ignore_ws,FALSE) AND NEW.funktionag NOT IN ('Leitungsknoten','Anschluss') THEN
-
+    CASE WHEN COALESCE(NEW.ignore_ws,FALSE) OR NEW.funktionag IN ('Leitungsknoten','Anschluss') 
+	THEN NULL;
+	ELSE 
 		INSERT INTO tww_od.wastewater_structure(
 		  accessibility
 		, detail_geometry3d_geometry
@@ -111,9 +111,9 @@ BEGIN
 		, (SELECT code FROM tww_vl.wastewater_structure_financing WHERE value_de=NEW.finanzierung)
 		, co_oid
 		, NEW.obj_id
-		, {ext_schema}.convert_organisationid_to_vsa(NEW.betreiber)
-		, {ext_schema}.convert_organisationid_to_vsa(NEW.eigentuemer)
-		, {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+		, tww_app.fct_agxx_organisationid_to_vsa(NEW.betreiber)
+		, tww_app.fct_agxx_organisationid_to_vsa(NEW.eigentuemer)
+		, tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
 		, NEW.bezeichnung
 		, NEW.letzte_aenderung_wi
 		, NEW.bemerkung_wi
@@ -206,14 +206,14 @@ BEGIN
 			, (SELECT code FROM tww_vl.special_structure_function_import_rel_agxx WHERE value_de=NEW.funktionag)
 			);
 		END CASE;
-	ELSE NULL;
+
     END CASE;
   RETURN NEW;
 END;
 $BODY$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION {ext_schema}.ft_gepknoten_update()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_gepknoten_update()
 RETURNS trigger AS
 $BODY$
 DECLARE
@@ -224,13 +224,13 @@ BEGIN
 
     UPDATE tww_od.wastewater_networkelement SET
 	  identifier = NEW.bezeichnung
-	, fk_provider = {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+	, fk_provider = tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
 	, ag64_last_modification = NEW.letzte_aenderung_wi
     , ag64_remark = NEW.bemerkung_wi
-	, ag64_fk_provider = {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+	, ag64_fk_provider = tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
 	, ag96_last_modification = NEW.letzte_aenderung_gep
     , ag96_remark = NEW.bemerkung_gep
-	, ag96_fk_provider = {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
+	, ag96_fk_provider = tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
 	WHERE obj_id = NEW.obj_id;
   
     UPDATE tww_od.wastewater_node SET
@@ -250,7 +250,7 @@ BEGIN
 		
 		-- Deckel
 		UPDATE tww_od.structure_part SET
-		  fk_provider = {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+		  fk_provider = tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
 		, identifier = NEW.bezeichnung
 		, last_modification = NEW.letzte_aenderung_wi
 		WHERE obj_id = co_oid;
@@ -265,17 +265,18 @@ BEGIN
 	ELSE NULL;
 	END CASE;
 
-    CASE WHEN COALESCE(NEW.ignore_ws,FALSE) AND NEW.funktionag NOT IN ('Leitungsknoten','Anschluss') THEN
-
+    CASE WHEN COALESCE(NEW.ignore_ws,FALSE) OR NEW.funktionag IN ('Leitungsknoten','Anschluss') 
+	THEN NULL;
+	ELSE 
 		UPDATE tww_od.wastewater_structure SET 
 		  accessibility = (SELECT code FROM tww_vl.wastewater_structure_accessibility WHERE value_de=NEW.zugaenglichkeit)
 		, detail_geometry3d_geometry = ST_Force3D(NEW.detailgeometrie)
 		, financing = (SELECT code FROM tww_vl.wastewater_structure_financing WHERE value_de=NEW.finanzierung)
 		, fk_main_cover = co_oid
 		, fk_main_wastewater_node = NEW.obj_id
-		, fk_operator = {ext_schema}.convert_organisationid_to_vsa(NEW.betreiber)
-		, fk_owner = {ext_schema}.convert_organisationid_to_vsa(NEW.eigentuemer)
-		, fk_provider = {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+		, fk_operator = tww_app.fct_agxx_organisationid_to_vsa(NEW.betreiber)
+		, fk_owner = tww_app.fct_agxx_organisationid_to_vsa(NEW.eigentuemer)
+		, fk_provider = tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
 		, identifier = NEW.bezeichnung
 		, last_modification = NEW.letzte_aenderung_wi
 		, remark = NEW.bemerkung_wi
@@ -403,14 +404,13 @@ BEGIN
 				DELETE FROM tww_od.infiltration_installation WHERE obj_id = OLD.obj_id;
 			END CASE;
 		END CASE;
-	ELSE NULL;
     END CASE;
   RETURN NEW;
  END;
 $BODY$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION {ext_schema}.ft_gepknoten_delete()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_gepknoten_delete()
 RETURNS trigger AS
 $BODY$
 BEGIN
