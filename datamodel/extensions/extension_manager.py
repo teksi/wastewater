@@ -51,6 +51,7 @@ def run_sql(sql: str, pg_service: str, variables: dict = None):
 def load_extension(
     srid: int = 2056,
     pg_service: str = "pg_tww",
+    module_name: str = "tww",
     extension_name: str = None,
     drop_schema: Optional[bool] = False,
 ):
@@ -67,7 +68,7 @@ def load_extension(
     config = read_config("config.yaml", extension_name)
     variables = config.get("variables", {})
     # pass SRID and extension schema name per default
-    schemaname = config.get("schema", "tww_" + extension_name)
+    schemaname = config.get("schema", module_name + "_" + extension_name)
     variables.update(
         {"ext_schema": psycopg.sql.SQL(f"{schemaname}"), "srid": psycopg.sql.SQL(f"{srid}")}
     )
@@ -79,7 +80,7 @@ def load_extension(
     # would deadlock other sessions.
     conn = psycopg.connect(f"service={pg_service}")
     cursor = conn.cursor()
-    cursor.execute("SELECT tww_sys.disable_symbology_triggers();")
+    cursor.execute(f"SELECT {module_name}_sys.disable_symbology_triggers();")
     conn.commit()
     conn.close()
 
@@ -99,7 +100,7 @@ def load_extension(
     # re-create symbology triggers
     conn = psycopg.connect(f"service={pg_service}")
     cursor = conn.cursor()
-    cursor.execute("SELECT tww_sys.enable_symbology_triggers();")
+    cursor.execute(f"SELECT {module_name}_sys.enable_symbology_triggers();")
     conn.commit()
     conn.close()
 
@@ -107,6 +108,7 @@ def load_extension(
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument("-p", "--pg_service", help="postgres service")
+    parser.add_argument("-m", "--module_name", help="name of TEKSI module",default="tww")
     parser.add_argument(
         "-s", "--srid", help="SRID EPSG code, defaults to 2056", type=int, default=2056
     )
@@ -125,6 +127,7 @@ if __name__ == "__main__":
     load_extension(
         args.srid,
         args.pg_service,
+        args.module_name,
         args.extension_name,
         drop_schema=args.drop_schema,
     )
