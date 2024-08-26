@@ -9,7 +9,7 @@ class ModelTwwAG6496(ModelBase):
         super().__init__(config.TWW_AG_SCHEMA)
 
         class organisation(self.Base):
-            __tablename__ = "organisation"
+            __tablename__ = "vw_agxx_organisation"
             obj_id=Column(String, primary_key=True)
             uid = Column(String)
             bezeichnung = Column(String)
@@ -23,7 +23,7 @@ class ModelTwwAG6496(ModelBase):
         ModelTwwAG6496.organisation = organisation
 
         class gepmassnahme(self.Base):
-            __tablename__ = "gepmassnahme"
+            __tablename__ = "vw_agxx_gepmassnahme"
             obj_id=Column(String, primary_key=True)
             ausdehnung = Column(Geometry)
             beschreibung = Column(String)
@@ -49,7 +49,7 @@ class ModelTwwAG6496(ModelBase):
         ModelTwwAG6496.gepmassnahme = gepmassnahme
 
         class gepknoten(self.Base):
-            __tablename__ = "gepknoten"
+            __tablename__ = "vw_agxx_gepknoten"
             obj_id=Column(String, primary_key=True)
             ara_nr = Column(Integer)
             baujahr = Column(Integer)
@@ -83,7 +83,7 @@ class ModelTwwAG6496(ModelBase):
         ModelTwwAG6496.gepknoten = gepknoten
 
         class gephaltung(self.Base):
-            __tablename__ = "gephaltung"
+            __tablename__ = "vw_agxx_gephaltung"
             obj_id=Column(String, primary_key=True)
             baujahr = Column(Integer)
             baulicherzustand = Column(String)
@@ -131,7 +131,7 @@ class ModelTwwAG6496(ModelBase):
         ModelTwwAG6496.gephaltung = gephaltung
 
         class einzugsgebiet(self.Base):
-            __tablename__ = "einzugsgebiet"
+            __tablename__ = "vw_agxx_einzugsgebiet"
             obj_id=Column(String, primary_key=True)
             abflussbegrenzung_geplant = Column(Float)
             abflussbegrenzung_ist = Column(Float)
@@ -173,7 +173,7 @@ class ModelTwwAG6496(ModelBase):
         ModelTwwAG6496.einzugsgebiet = einzugsgebiet
 
         class bautenausserhalbbaugebiet(self.Base):
-            __tablename__ = "bautenausserhalbbaugebiet"
+            __tablename__ = "vw_agxx_bautenausserhalbbaugebiet"
             obj_id=Column(String, primary_key=True)
             anzstaendigeeinwohner = Column(Integer)
             arealnutzung = Column(String)
@@ -198,7 +198,7 @@ class ModelTwwAG6496(ModelBase):
         ModelTwwAG6496.bautenausserhalbbaugebiet = bautenausserhalbbaugebiet
 
         class ueberlauf_foerderaggregat(self.Base):
-            __tablename__ = "ueberlauf_foerderaggregat"
+            __tablename__ = "vw_agxx_ueberlauf_foerderaggregat"
             obj_id=Column(String, primary_key=True)
             datenbewirtschafter_gep = Column(String)
             bemerkung_gep = Column(String)
@@ -215,7 +215,7 @@ class ModelTwwAG6496(ModelBase):
         ModelTwwAG6496.ueberlauf_foerderaggregat = ueberlauf_foerderaggregat
 
         class sbw_einzugsgebiet(self.Base):
-            __tablename__ = "sbw_einzugsgebiet"
+            __tablename__ = "vw_agxx_sbw_einzugsgebiet"
             obj_id=Column(String, primary_key=True)
             bezeichnung = Column(String)
             einwohner_geplant = Column(Integer)
@@ -241,7 +241,7 @@ class ModelTwwAG6496(ModelBase):
         ModelTwwAG6496.sbw_einzugsgebiet = sbw_einzugsgebiet
 
         class versickerungsbereichag(self.Base):
-            __tablename__ = "versickerungsbereichag"
+            __tablename__ = "vw_agxx_versickerungsbereichag"
             obj_id=Column(String, primary_key=True)
             datenbewirtschafter_gep = Column(String)
             bemerkung_gep = Column(String)
