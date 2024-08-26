@@ -53,7 +53,6 @@ def load_extension(
     pg_service: str = "pg_tww",
     module_name: str = "tww",
     extension_name: str = None,
-    drop_schema: Optional[bool] = False,
 ):
     """
     initializes the TWW database for usage of an extension
@@ -67,14 +66,7 @@ def load_extension(
     # load definitions from config
     config = read_config("config.yaml", extension_name)
     variables = config.get("variables", {})
-    # pass SRID and extension schema name per default
-    schemaname = config.get("schema", module_name + "_" + extension_name)
-    variables.update(
-        {"ext_schema": psycopg.sql.SQL(f"{schemaname}"), "srid": psycopg.sql.SQL(f"{srid}")}
-    )
 
-    if drop_schema:
-        run_sql(f"DROP SCHEMA IF EXISTS {schemaname} CASCADE;", pg_service)
 
     # We also disable symbology triggers as they can badly affect performance. This must be done in a separate session as it
     # would deadlock other sessions.
@@ -115,13 +107,6 @@ if __name__ == "__main__":
     parser.add_argument(
         "-x", "--extension_name", help="name of the database extension", type=str, default="demo"
     )
-    parser.add_argument(
-        "-d",
-        "--drop-schema",
-        help="Drops cascaded any existing extension schema",
-        default=False,
-        action=BooleanOptionalAction,
-    )
     args = parser.parse_args()
 
     load_extension(
@@ -129,5 +114,4 @@ if __name__ == "__main__":
         args.pg_service,
         args.module_name,
         args.extension_name,
-        drop_schema=args.drop_schema,
     )
