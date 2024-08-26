@@ -2894,7 +2894,7 @@ class InterlisExporterToIntermediateSchema:
                 objekt=row.object,
                 aufnehmer=row.recorded_by,
                 bemerkung=row.remark,
-                systembenutzer=row.system_user,
+                systembenutzer=row.user_system,
             )
             self.abwasser_session.add(mutation)
             print(".", end="")
@@ -3359,7 +3359,7 @@ class InterlisExporterToIntermediateSchema:
                 bezeichnung=self.null_to_emptystr(row.identifier),
                 datentraegerref=self.get_tid(row.fk_data_media__REL),
                 klasse=self.get_vl_by_code(
-                    self.model_classes_tww_vl.file_classname, row.class_column
+                    self.model_classes_tww_vl.file_classname, row.classname
                 ),
                 objekt=self.null_to_emptystr(row.object),
                 relativpfad=row.path_relative,

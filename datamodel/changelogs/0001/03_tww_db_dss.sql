@@ -1,6 +1,6 @@
 ------ This file generates the VSA-DSS database (Modul VSA-DSS (2020)) in en for QQIS
 ------ For questions etc. please contact Stefan Burckhardt stefan.burckhardt@sjib.ch
------- version 22.04.2024 17:53:40
+------ version 22.04.2024 17:53:40 / 22.08.2024 adapted translation of Schieber - new gate_valve instead of valve
 ------ with 3D coordinates
 
 ---------------------------
@@ -186,9 +186,9 @@ COMMENT ON COLUMN tww_od.mutation.recorded_by IS 'Name of person who recorded th
  ALTER TABLE tww_od.mutation ADD COLUMN remark text;
  ALTER TABLE tww_od.mutation ADD CONSTRAINT md_remark_length_max_80 CHECK(char_length(remark)<=80);
 COMMENT ON COLUMN tww_od.mutation.remark IS 'General remarks / Allgemeine Bemerkungen / Remarques générales';
- ALTER TABLE tww_od.mutation ADD COLUMN system_user text;
- ALTER TABLE tww_od.mutation ADD CONSTRAINT md_system_user_length_max_60 CHECK(char_length(system_user)<=60);
-COMMENT ON COLUMN tww_od.mutation.system_user IS 'Name of system user / Name des Systembenutzers / Usager du système informatique';
+ ALTER TABLE tww_od.mutation ADD COLUMN user_system text;
+ ALTER TABLE tww_od.mutation ADD CONSTRAINT md_user_system_length_max_60 CHECK(char_length(user_system)<=60);
+COMMENT ON COLUMN tww_od.mutation.user_system IS 'Name of system user / Name des Systembenutzers / Usager du système informatique';
  ALTER TABLE tww_od.mutation ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
 COMMENT ON COLUMN tww_od.mutation.last_modification IS 'Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE';
  ALTER TABLE tww_od.mutation ADD COLUMN fk_dataowner varchar(16);
@@ -4264,7 +4264,7 @@ ALTER TABLE tww_vl.throttle_shut_off_unit_kind ADD CONSTRAINT pkey_tww_vl_thrott
  INSERT INTO tww_vl.throttle_shut_off_unit_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (6491,6491,'leapingweir','Leapingwehr','leaping_weir', 'leaping_weir', 'rrr_Leapingwehr', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.throttle_shut_off_unit_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (6492,6492,'pomp','Pumpe','pompe', 'pompa', 'rrr_Pumpe', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.throttle_shut_off_unit_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (2690,2690,'backflow_flap','Rueckstauklappe','clapet_de_non_retour_a_battant', 'clappa_anti_rigurgito', 'clapeta _antirefulare', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.throttle_shut_off_unit_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (2688,2688,'valve','Schieber','vanne', 'saracinesca', 'rrr_Schieber', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.throttle_shut_off_unit_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (2688,2688,'gate_valve','Schieber','vanne', 'saracinesca', 'rrr_Schieber', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.throttle_shut_off_unit_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (134,134,'tube_throttle','Schlauchdrossel','limiteur_a_membrane', 'zzz_Schlauchdrossel', 'rrr_Schlauchdrossel', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.throttle_shut_off_unit_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (2689,2689,'sliding_valve','Schuetze','vanne_ecluse', 'zzz_Schuetze', 'vana_cu?it', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.throttle_shut_off_unit_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5755,5755,'gate_shield','Stauschild','plaque_de_retenue', 'paratoia_cilindrica', 'rrr_Stauschild', '', '', '', '', '', 'true');
@@ -4559,7 +4559,7 @@ ALTER TABLE tww_vl.tank_emptying_kind ADD CONSTRAINT pkey_tww_vl_tank_emptying_k
  INSERT INTO tww_vl.tank_emptying_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5626,5626,'other','andere','autre', 'altro', 'rrr_altul', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.tank_emptying_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8638,8638,'gravitation','Gravitation','gravitation', 'gravitazione', 'rrr_Gravitation', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.tank_emptying_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5628,5628,'pump','Pumpe','pompe', 'pompa', '', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.tank_emptying_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5629,5629,'valve','Schieber','vanne', 'saracinesca', 'rrr_Schieber', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.tank_emptying_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5629,5629,'gate_valve','Schieber','vanne', 'saracinesca', 'rrr_Schieber', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.tank_emptying_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8637,8637,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.tank_emptying ADD CONSTRAINT fkey_vl_tank_emptying_kind FOREIGN KEY (kind)
  REFERENCES tww_vl.tank_emptying_kind (code) MATCH SIMPLE
