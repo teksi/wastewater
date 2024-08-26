@@ -1,9 +1,8 @@
 import os
 import subprocess
 import sys
-from argparse import ArgumentParser, BooleanOptionalAction
+from argparse import ArgumentParser
 from pathlib import Path
-from typing import Optional
 
 from yaml import safe_load
 
@@ -66,7 +65,6 @@ def load_extension(
     # load definitions from config
     config = read_config("config.yaml", extension_name)
     variables = config.get("variables", {})
-
 
     # We also disable symbology triggers as they can badly affect performance. This must be done in a separate session as it
     # would deadlock other sessions.
