@@ -95,7 +95,8 @@ class InterlisExporterToIntermediateSchema:
 
         if self.basket_enabled:
             self._create_basket()
-
+        if self.is_ag_xx_model:
+            self.abwasser_session.execute("REFRESH MATERIALIZED VIEW tww_app.vw_agxx_knoten_bauwerksattribute WITH DATA")
         if self.model == config.MODEL_NAME_AG64:
             self.current_basket = self.basket_topic_ag64
             self._export_ag64()
