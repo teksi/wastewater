@@ -225,6 +225,14 @@ class InterlisExporterToIntermediateSchema:
         self._export_benching()
         self._check_for_stop()
 
+        logger.info("Exporting TWW.wastewater_structure_symbol -> ABWASSER.abwasserbauwerk_symbol")
+        self._export_wastewater_structure_symbol()
+        self._check_for_stop()
+
+        logger.info("Exporting TWW.flushing_nozzle -> ABWASSER.spuelstutzen")
+        self._export_flushing_nozzle()
+        self._check_for_stop()
+
     def _export_dss(self):
         logger.info(
             "Exporting TWW.waste_water_treatment_plant -> ABWASSER.abwasserreinigungsanlage"
@@ -458,6 +466,7 @@ class InterlisExporterToIntermediateSchema:
                 auid=row.uid,
                 bemerkung=self.truncate(self.emptystr_to_null(row.remark), 255),
                 bezeichnung=self.null_to_emptystr(row.identifier),
+                kurzbezeichnung=row.identifier_short,
                 organisationstyp=self.get_vl(row.organisation_type__REL),
                 astatus=self.get_vl(row.status__REL),
             )
@@ -838,7 +847,7 @@ class InterlisExporterToIntermediateSchema:
             # diameter, obj_id
 
             # --- _bwrel_ ---
-            # access_aid_kind__BWREL_obj_id, backflow_prevention__BWREL_obj_id, benching_kind__BWREL_obj_id, dryweather_flume_material__BWREL_obj_id, electric_equipment__BWREL_obj_id, electromechanical_equipment__BWREL_obj_id, solids_retention__BWREL_obj_id, tank_cleaning__BWREL_obj_id, tank_emptying__BWREL_obj_id
+            # access_aid_kind__BWREL_obj_id, backflow_prevention__BWREL_obj_id, benching_kind__BWREL_obj_id, dryweather_flume_material__BWREL_obj_id, electric_equipment__BWREL_obj_id, electromechanical_equipment__BWREL_obj_id, solids_retention__BWREL_obj_id, flushing_nozzle__BWREL_obj_id, tank_cleaning__BWREL_obj_id, tank_emptying__BWREL_obj_id
 
             # --- _rel_ ---
             # fk_dataowner__REL, fk_provider__REL, fk_wastewater_structure__REL, renovation_demand__REL
@@ -877,7 +886,7 @@ class InterlisExporterToIntermediateSchema:
             # kind, obj_id
 
             # --- _bwrel_ ---
-            # access_aid_kind__BWREL_obj_id, backflow_prevention__BWREL_obj_id, benching_kind__BWREL_obj_id, dryweather_flume_material__BWREL_obj_id, electric_equipment__BWREL_obj_id, electromechanical_equipment__BWREL_obj_id, solids_retention__BWREL_obj_id, tank_cleaning__BWREL_obj_id, tank_emptying__BWREL_obj_id
+            # access_aid_kind__BWREL_obj_id, backflow_prevention__BWREL_obj_id, benching_kind__BWREL_obj_id, dryweather_flume_material__BWREL_obj_id, electric_equipment__BWREL_obj_id, electromechanical_equipment__BWREL_obj_id, solids_retention__BWREL_obj_id, flushing_nozzle__BWREL_obj_id, tank_cleaning__BWREL_obj_id, tank_emptying__BWREL_obj_id
 
             # --- _rel_ ---
             # fk_dataowner__REL, fk_provider__REL, fk_wastewater_structure__REL, kind__REL, renovation_demand__REL
@@ -916,7 +925,7 @@ class InterlisExporterToIntermediateSchema:
             # material, obj_id
 
             # --- _bwrel_ ---
-            # access_aid_kind__BWREL_obj_id, backflow_prevention__BWREL_obj_id, benching_kind__BWREL_obj_id, dryweather_flume_material__BWREL_obj_id, electric_equipment__BWREL_obj_id, electromechanical_equipment__BWREL_obj_id, solids_retention__BWREL_obj_id, tank_cleaning__BWREL_obj_id, tank_emptying__BWREL_obj_id
+            # access_aid_kind__BWREL_obj_id, backflow_prevention__BWREL_obj_id, benching_kind__BWREL_obj_id, dryweather_flume_material__BWREL_obj_id, electric_equipment__BWREL_obj_id, electromechanical_equipment__BWREL_obj_id, solids_retention__BWREL_obj_id, flushing_nozzle__BWREL_obj_id, tank_cleaning__BWREL_obj_id, tank_emptying__BWREL_obj_id
 
             # --- _rel_ ---
             # fk_dataowner__REL, fk_provider__REL, fk_wastewater_structure__REL, material__REL, renovation_demand__REL
@@ -955,7 +964,7 @@ class InterlisExporterToIntermediateSchema:
             # brand, cover_shape, diameter, fastening, level, material, obj_id, positional_accuracy, situation3d_geometry, sludge_bucket, venting
 
             # --- _bwrel_ ---
-            # access_aid_kind__BWREL_obj_id, backflow_prevention__BWREL_obj_id, benching_kind__BWREL_obj_id, dryweather_flume_material__BWREL_obj_id, electric_equipment__BWREL_obj_id, electromechanical_equipment__BWREL_obj_id, solids_retention__BWREL_obj_id, tank_cleaning__BWREL_obj_id, tank_emptying__BWREL_obj_id, wastewater_structure__BWREL_fk_main_cover
+            # access_aid_kind__BWREL_obj_id, backflow_prevention__BWREL_obj_id, benching_kind__BWREL_obj_id, dryweather_flume_material__BWREL_obj_id, electric_equipment__BWREL_obj_id, electromechanical_equipment__BWREL_obj_id, solids_retention__BWREL_obj_id, flushing_nozzle__BWREL_obj_id, tank_cleaning__BWREL_obj_id, tank_emptying__BWREL_obj_id, wastewater_structure__BWREL_fk_main_cover
 
             # --- _rel_ ---
             # cover_shape__REL, fastening__REL, fk_dataowner__REL, fk_provider__REL, fk_wastewater_structure__REL, material__REL, positional_accuracy__REL, renovation_demand__REL, sludge_bucket__REL, venting__REL
@@ -1003,7 +1012,7 @@ class InterlisExporterToIntermediateSchema:
             # kind, obj_id
 
             # --- _bwrel_ ---
-            # access_aid_kind__BWREL_obj_id, backflow_prevention__BWREL_obj_id, benching_kind__BWREL_obj_id, dryweather_flume_material__BWREL_obj_id, electric_equipment__BWREL_obj_id, electromechanical_equipment__BWREL_obj_id, solids_retention__BWREL_obj_id, tank_cleaning__BWREL_obj_id, tank_emptying__BWREL_obj_id
+            # access_aid_kind__BWREL_obj_id, backflow_prevention__BWREL_obj_id, benching_kind__BWREL_obj_id, dryweather_flume_material__BWREL_obj_id, electric_equipment__BWREL_obj_id, electromechanical_equipment__BWREL_obj_id, solids_retention__BWREL_obj_id, flushing_nozzle__BWREL_obj_id, tank_cleaning__BWREL_obj_id, tank_emptying__BWREL_obj_id
 
             # --- _rel_ ---
             # fk_dataowner__REL, fk_provider__REL, fk_wastewater_structure__REL, kind__REL, renovation_demand__REL
@@ -1016,6 +1025,74 @@ class InterlisExporterToIntermediateSchema:
                 art=self.get_vl(row.kind__REL),
             )
             self.abwasser_session.add(bankett)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_wastewater_structure_symbol(self):
+        query = self.tww_session.query(self.model_classes_tww_od.wastewater_structure_symbol)
+        if self.filtered:
+            query = query.join(
+                self.model_classes_tww_od.wastewater_structure,
+                self.model_classes_tww_od.wastewater_networkelement,
+            ).filter(
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
+        for row in query:
+            abwasserbauwerk_symbol = self.model_classes_interlis.abwasserbauwerk_symbol(
+                # FIELDS TO MAP TO ABWASSER.abwasserbauwerk_symbol
+                # --- abwasserbauwerk_symbol ---
+                t_ili_tid=row.obj_id,
+                plantyp=self.get_vl(row.plantype__REL),
+                symbolskalierunghoch=row.symbol_scaling_height,
+                symbolskalierunglaengs=row.symbol_scaling_width,
+                symbolori=row.symbolori,
+                symbolpos=row.symbolpos_geometry,
+                abwasserbauwerkref=self.get_tid(row.fk_wastewater_structure__REL),
+            )
+            self.abwasser_session.add(abwasserbauwerk_symbol)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    def _export_flushing_nozzle(self):
+        query = self.tww_session.query(self.model_classes_tww_od.flushing_nozzle)
+        if self.filtered:
+            query = query.join(
+                self.model_classes_tww_od.wastewater_structure,
+                self.model_classes_tww_od.wastewater_networkelement,
+            ).filter(
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            )
+            # add sql statement to logger
+            statement = query.statement
+            logger.info(f" selection query = {statement}")
+        for row in query:
+            # AVAILABLE FIELDS IN TWW.flushing_nozzle
+
+            # --- structure_part ---
+            # fk_dataowner, fk_provider, fk_wastewater_structure, identifier, last_modification, remark, renovation_demand
+
+            # --- flushing_nozzle ---
+            # situation3d_geometry, obj_id
+
+            # --- _bwrel_ ---
+            # access_aid_kind__BWREL_obj_id, backflow_prevention__BWREL_obj_id, benching_kind__BWREL_obj_id, dryweather_flume_material__BWREL_obj_id, electric_equipment__BWREL_obj_id, electromechanical_equipment__BWREL_obj_id, solids_retention__BWREL_obj_id, flushing_nozzle__BWREL_obj_id, tank_cleaning__BWREL_obj_id, tank_emptying__BWREL_obj_id
+
+            # --- _rel_ ---
+            # fk_dataowner__REL, fk_provider__REL, fk_wastewater_structure__REL, kind__REL, renovation_demand__REL
+
+            spuelstutzen = self.model_classes_interlis.spuelstutzen(
+                # FIELDS TO MAP TO ABWASSER.spuelstutzen
+                # --- bauwerksteil ---
+                **self.structure_part_common(row, "spuelstutzen"),
+                # --- spuelstutzen ---
+                lage=ST_Force2D(row.situation3d_geometry),
+            )
+            self.abwasser_session.add(spuelstutzen)
             print(".", end="")
         logger.info("done")
         self.abwasser_session.flush()
@@ -2269,7 +2346,7 @@ class InterlisExporterToIntermediateSchema:
                 objekt=row.object,
                 aufnehmer=row.recorded_by,
                 bemerkung=row.remark,
-                systembenutzer=row.system_user,
+                systembenutzer=row.user_system,
             )
             self.abwasser_session.add(mutation)
             print(".", end="")
@@ -2360,7 +2437,23 @@ class InterlisExporterToIntermediateSchema:
             statement = query.statement
             logger.info(f" selection query = {statement}")
         for row in query:
+            # AVAILABLE FIELDS IN TWW.backflow_prevention
+
+            # --- structure_part ---
+            # fk_dataowner, fk_provider, fk_wastewater_structure, identifier, last_modification, remark, renovation_demand
+
+            # --- backflow_prevention ---
+            # gross_costs, kind, obj_id, year_of_replacement
+
+            # --- _bwrel_ ---
+            # access_aid_kind__BWREL_obj_id, backflow_prevention__BWREL_obj_id, benching_kind__BWREL_obj_id, dryweather_flume_material__BWREL_obj_id, electric_equipment__BWREL_obj_id, electromechanical_equipment__BWREL_obj_id, solids_retention__BWREL_obj_id, flushing_nozzle__BWREL_obj_id, tank_cleaning__BWREL_obj_id, tank_emptying__BWREL_obj_id
+
+            # --- _rel_ ---
+            # fk_dataowner__REL, fk_provider__REL, fk_wastewater_structure__REL, renovation_demand__REL, fk_throttle_shut_off_unit__REL, fk_pump__REL
+
             rueckstausicherung = self.model_classes_interlis.rueckstausicherung(
+                # FIELDS TO MAP TO ABWASSER.rueckstausicherung
+                # --- bauwerksteil ---
                 **self.structure_part_common(row, "rueckstausicherung"),
                 # --- backflow_prevention ---
                 bruttokosten=row.gross_costs,
@@ -2695,7 +2788,7 @@ class InterlisExporterToIntermediateSchema:
                 bezeichnung=self.null_to_emptystr(row.identifier),
                 datentraegerref=self.get_tid(row.fk_data_media__REL),
                 klasse=self.get_vl_by_code(
-                    self.model_classes_tww_vl.file_classname, row.class_column
+                    self.model_classes_tww_vl.file_classname, row.classname
                 ),
                 objekt=self.null_to_emptystr(row.object),
                 relativpfad=row.path_relative,
