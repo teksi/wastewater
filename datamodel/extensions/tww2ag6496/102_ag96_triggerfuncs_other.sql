@@ -535,7 +535,12 @@ BEGIN
     , NEW.gepknoten_sw_geplantref
     , NEW.gepknoten_sw_istref
 	)
-	
+	;
+	END IF;
+	RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_einzugsgebiet_delete()
 RETURNS trigger AS
