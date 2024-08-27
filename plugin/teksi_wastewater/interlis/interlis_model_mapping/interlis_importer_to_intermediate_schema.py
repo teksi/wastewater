@@ -382,8 +382,6 @@ class InterlisImporterToIntermediateSchema:
         self._import_datei()
         self._check_for_stop()
 
-        self._check_for_stop()
-
     def close_sessions(self, skip_closing_tww_session=False):
         # Calling the precommit callback if provided, allowing to filter before final import
         if not skip_closing_tww_session:

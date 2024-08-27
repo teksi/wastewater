@@ -470,8 +470,6 @@ class InterlisExporterToIntermediateSchema:
         self._export_file()
         self._check_for_stop()
 
-        self._check_for_stop()
-
     def _export_organisation(self):
         query = self.tww_session.query(self.model_classes_tww_od.organisation)
         for row in query:
