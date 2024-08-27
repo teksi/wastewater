@@ -62,7 +62,7 @@ LANGUAGE plpgsql SECURITY DEFINER;
 -- Check if Symbology Triggers are enabled
 -----------------------------------------------------------------------
 
-CREATE OR REPLACE FUNCTION tww_sys.check_symbology_triggers_enabled() RETURNS BOOL AS 
+CREATE OR REPLACE FUNCTION tww_sys.check_symbology_triggers_enabled() RETURNS BOOL AS
 $DO$
 DECLARE _disabled_count numeric;
 BEGIN
@@ -107,8 +107,8 @@ ELSE
 		AND p.pronamespace::regnamespace::text = 'tww_app')
 		LOOP
 			EXECUTE FORMAT('ALTER TABLE %I.%I %s TRIGGER %I',schdf,tbldf,upper(action_name),trig);
-		END LOOP;	
-		
+		END LOOP;
+
 	RETURN;
 END IF;
 END;
