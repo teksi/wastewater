@@ -15,7 +15,7 @@ class InterlisImporterToIntermediateSchema:
         model_classes_tww_od,
         model_classes_tww_vl,
         callback_progress_done=None,
-        model_classes_tww_ag6496=None,
+        model_classes_tww_app=None,
     ):
         self.model = model
         self.callback_progress_done = callback_progress_done
@@ -23,7 +23,7 @@ class InterlisImporterToIntermediateSchema:
         self.model_classes_interlis = model_classes_interlis
         self.model_classes_tww_od = model_classes_tww_od
         self.model_classes_tww_vl = model_classes_tww_vl
-        self.model_classes_tww_ag6496 = model_classes_tww_ag6496
+        self.model_classes_tww_app = model_classes_tww_app
 
         self.session_interlis = None
         self.session_tww = None
@@ -2396,7 +2396,7 @@ class InterlisImporterToIntermediateSchema:
 
     def _import_gepmassnahme(self):
         for row in self.session_interlis.query(self.model_classes_interlis.gepmassnahme):
-            gepmassnahme = self.model_classes_tww_ag6496.gepmassnahme(
+            gepmassnahme = self.model_classes_tww_app.gepmassnahme(
                 **self.base_common_ag_xx(row),
                 **self.gep_metainformation_common_ag_xx(row),
                 ausdehnung=row.ausdehnung,
@@ -2422,7 +2422,7 @@ class InterlisImporterToIntermediateSchema:
 
     def _import_gepknoten(self):
         for row in self.session_interlis.query(self.model_classes_interlis.abwasserbauwerk):# abwasserbauwerk wegen Kompatibiltät bei Label-Export
-            gepknoten = self.model_classes_tww_ag6496.gepknoten(  
+            gepknoten = self.model_classes_tww_app.gepknoten(  
                 **self.gep_metainformation_common_ag_xx(row),
                 **self.knoten_common_ag_xx(row),
                 istschnittstelle=row.istschnittstelle,
@@ -2436,7 +2436,7 @@ class InterlisImporterToIntermediateSchema:
     def _import_infrastrukturknoten(self):
         # abwasserbauwerk wegen Kompatibiltät bei Label-Export
         for row in self.session_interlis.query(self.model_classes_interlis.abwasserbauwerk):
-            gepknoten = self.model_classes_tww_ag6496.gepknoten(  
+            gepknoten = self.model_classes_tww_app.gepknoten(  
                 **self.knoten_common_ag_xx(row),
             )
             self.session_tww.add(gepknoten)
@@ -2444,7 +2444,7 @@ class InterlisImporterToIntermediateSchema:
 
     def _import_gephaltung(self):
         for row in self.session_interlis.query(self.model_classes_interlis.haltung):
-            gephaltung = self.model_classes_tww_ag6496.gephaltung(
+            gephaltung = self.model_classes_tww_app.gephaltung(
 
                 **self.gep_metainformation_common_ag_xx(row),
                 **self.haltung_common_ag_xx(row),
@@ -2460,7 +2460,7 @@ class InterlisImporterToIntermediateSchema:
 
     def _import_infrastrukturhaltung(self):
         for row in self.session_interlis.query(self.model_classes_interlis.haltung):
-            gephaltung = self.model_classes_tww_ag6496.gephaltung(
+            gephaltung = self.model_classes_tww_app.gephaltung(
                 **self.haltung_common_ag_xx(row),
                 lichte_breite_ist=row.lichte_breite,
             )
@@ -2469,7 +2469,7 @@ class InterlisImporterToIntermediateSchema:
 
     def _import_einzugsgebiet_ag96(self):
         for row in self.session_interlis.query(self.model_classes_interlis.einzugsgebiet):
-            einzugsgebiet = self.model_classes_tww_ag6496.einzugsgebiet(
+            einzugsgebiet = self.model_classes_tww_app.einzugsgebiet(
                 **self.base_common_ag_xx(row),
                 **self.gep_metainformation_common_ag_xx(row),
                 abflussbegrenzung_geplant=row.abflussbegrenzung_geplant,
@@ -2515,7 +2515,7 @@ class InterlisImporterToIntermediateSchema:
         for row in self.session_interlis.query(
             self.model_classes_interlis.bautenausserhalbbaugebiet
         ):
-            bautenausserhalbbaugebiet = self.model_classes_tww_ag6496.bautenausserhalbbaugebiet(
+            bautenausserhalbbaugebiet = self.model_classes_tww_app.bautenausserhalbbaugebiet(
                 **self.base_common_ag_xx(row),
                 **self.gep_metainformation_common_ag_xx(row),
                 anzstaendigeeinwohner=row.anzstaendigeeinwohner,
@@ -2539,7 +2539,7 @@ class InterlisImporterToIntermediateSchema:
     def _import_ueberlauf_foerderaggregat_ag96(self):
         for row in self.session_interlis.query(self.model_classes_interlis.ueberlauf_foerderaggregat):
             ueberlauf_foerderaggregat = (
-                self.model_classes_tww_ag6496.ueberlauf_foerderaggregat(
+                self.model_classes_tww_app.ueberlauf_foerderaggregat(
                     **self.gep_metainformation_common_ag_xx(row),
                     **self.ueberlauf_foerderaggregat_common_ag_xx(row),
                 )
@@ -2551,7 +2551,7 @@ class InterlisImporterToIntermediateSchema:
  
         for row in self.session_interlis.query(self.model_classes_interlis.ueberlauf_foerderaggregat):
             ueberlauf_foerderaggregat = (
-                self.model_classes_tww_ag6496.ueberlauf_foerderaggregat(
+                self.model_classes_tww_app.ueberlauf_foerderaggregat(
                     **self.ueberlauf_foerderaggregat_common_ag_xx(row),
                 )
             )
@@ -2561,7 +2561,7 @@ class InterlisImporterToIntermediateSchema:
 
     def _import_sbw_einzugsgebiet(self):
         for row in self.session_interlis.query(self.model_classes_interlis.sbw_einzugsgebiet):
-            sbw_einzugsgebiet = self.model_classes_tww_ag6496.sbw_einzugsgebiet(
+            sbw_einzugsgebiet = self.model_classes_tww_app.sbw_einzugsgebiet(
                 **self.base_common_ag_xx(row),
                 **self.gep_metainformation_common_ag_xx(row),
                 einwohner_geplant=row.einwohner_geplant,
@@ -2587,7 +2587,7 @@ class InterlisImporterToIntermediateSchema:
         for row in self.session_interlis.query(
             self.model_classes_interlis.versickerungsbereichag
         ):
-            versickerungsbereichag = self.model_classes_tww_ag6496.versickerungsbereichag(
+            versickerungsbereichag = self.model_classes_tww_app.versickerungsbereichag(
                 # --- abwasserbauwerk ---
                 **self.base_common_ag_xx(row),
                 **self.gep_metainformation_common_ag_xx(row),

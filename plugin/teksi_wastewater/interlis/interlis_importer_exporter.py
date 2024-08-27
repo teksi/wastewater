@@ -50,7 +50,7 @@ class InterlisImporterExporter:
         self.model_classes_tww_od = None
         self.model_classes_tww_vl = None
         self.model_classes_tww_sys = None
-        self.model_classes_tww_ag6496 = None
+        self.model_classes_tww_app = None
 
         self.current_progress = 0
 
@@ -268,7 +268,7 @@ class InterlisImporterExporter:
             model_classes_tww_od=self.model_classes_tww_od,
             model_classes_tww_vl=self.model_classes_tww_vl,
             callback_progress_done=self._progress_done_intermediate_schema,
-            model_classes_tww_ag6496=self.model_classes_tww_ag6496,
+            model_classes_tww_app=self.model_classes_tww_app,
         )
 
         with LoggingHandlerContext(log_handler):
@@ -422,7 +422,7 @@ class InterlisImporterExporter:
             model_classes_tww_vl=self.model_classes_tww_vl,
             model_classes_tww_sys=self.model_classes_tww_sys,
             labels_orientation_offset=export_orientation,
-            model_classes_tww_ag6496=self.model_classes_tww_ag6496,
+            model_classes_tww_app=self.model_classes_tww_app,
             selection=selected_ids,
             labels_file=labels_file_path,
             basket_enabled=basket_enabled,
@@ -663,8 +663,8 @@ class InterlisImporterExporter:
 
         if (
             model == config.MODEL_NAME_AG96 or model == config.MODEL_NAME_AG64
-        ) and self.model_classes_tww_ag6496 is None:
-            self.model_classes_tww_ag6496 = ModelTwwAG6496().classes()
+        ) and self.model_classes_tww_app is None:
+            self.model_classes_tww_app = ModelTwwAG6496().classes()
             self._progress_done(self.current_progress + 1)
 
     def _progress_done_intermediate_schema(self):

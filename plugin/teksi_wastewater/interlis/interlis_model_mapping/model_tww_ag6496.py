@@ -6,7 +6,7 @@ from geoalchemy2 import Geometry
 
 class ModelTwwAG6496(ModelBase):
     def __init__(self):
-        super().__init__(config.TWW_AG_SCHEMA)
+        super().__init__(config.TWW_APP_SCHEMA)
 
         class organisation(self.Base):
             __tablename__ = "vw_agxx_organisation"
@@ -18,7 +18,7 @@ class ModelTwwAG6496(ModelBase):
             organisationtyp = Column(String)
             letzte_aenderung = Column(DateTime)
             bemerkung = Column(String)
-            __table_args__ = {"schema": config.TWW_AG_SCHEMA}
+            __table_args__ = {"schema": config.TWW_APP_SCHEMA}
 
         ModelTwwAG6496.organisation = organisation
 
@@ -44,7 +44,7 @@ class ModelTwwAG6496(ModelBase):
             datenbewirtschafter_gep = Column(String)
             bemerkung_gep = Column(String)
             letzte_aenderung_gep = Column(DateTime)
-            __table_args__ = {"schema": config.TWW_AG_SCHEMA}
+            __table_args__ = {"schema": config.TWW_APP_SCHEMA}
 
         ModelTwwAG6496.gepmassnahme = gepmassnahme
 
@@ -78,7 +78,7 @@ class ModelTwwAG6496(ModelBase):
             datenbewirtschafter_gep = Column(String)
             bemerkung_gep = Column(String)
             letzte_aenderung_gep = Column(DateTime)
-            __table_args__ = {"schema": config.TWW_AG_SCHEMA}
+            __table_args__ = {"schema": config.TWW_APP_SCHEMA}
 
         ModelTwwAG6496.gepknoten = gepknoten
 
@@ -126,7 +126,7 @@ class ModelTwwAG6496(ModelBase):
             letzte_aenderung_gep = Column(DateTime)
             startknoten = Column(String)
             endknoten = Column(String)
-            __table_args__ = {"schema": config.TWW_AG_SCHEMA}
+            __table_args__ = {"schema": config.TWW_APP_SCHEMA}
 
         ModelTwwAG6496.gephaltung = gephaltung
 
@@ -168,7 +168,7 @@ class ModelTwwAG6496(ModelBase):
             datenbewirtschafter_gep = Column(String)
             bemerkung_gep = Column(String)
             letzte_aenderung_gep = Column(DateTime)
-            __table_args__ = {"schema": config.TWW_AG_SCHEMA}
+            __table_args__ = {"schema": config.TWW_APP_SCHEMA}
 
         ModelTwwAG6496.einzugsgebiet = einzugsgebiet
 
@@ -193,7 +193,7 @@ class ModelTwwAG6496(ModelBase):
             datenbewirtschafter_gep = Column(String)
             bemerkung_gep = Column(String)
             letzte_aenderung_gep = Column(DateTime)
-            __table_args__ = {"schema": config.TWW_AG_SCHEMA}
+            __table_args__ = {"schema": config.TWW_APP_SCHEMA}
 
         ModelTwwAG6496.bautenausserhalbbaugebiet = bautenausserhalbbaugebiet
 
@@ -210,7 +210,7 @@ class ModelTwwAG6496(ModelBase):
             knotenref = Column(String)
             knoten_nachref = Column(String)
 
-            __table_args__ = {"schema": config.TWW_AG_SCHEMA}
+            __table_args__ = {"schema": config.TWW_APP_SCHEMA}
 
         ModelTwwAG6496.ueberlauf_foerderaggregat = ueberlauf_foerderaggregat
 
@@ -236,7 +236,7 @@ class ModelTwwAG6496(ModelBase):
             datenbewirtschafter_gep = Column(String)
             bemerkung_gep = Column(String)
             letzte_aenderung_gep = Column(DateTime)
-            __table_args__ = {"schema": config.TWW_AG_SCHEMA}
+            __table_args__ = {"schema": config.TWW_APP_SCHEMA}
         
         ModelTwwAG6496.sbw_einzugsgebiet = sbw_einzugsgebiet
 
@@ -253,6 +253,6 @@ class ModelTwwAG6496(ModelBase):
             perimeter = Column(Geometry)
             q_check = Column(String)
             versickerungsmoeglichkeitag = Column(String)
-            __table_args__ = {"schema": config.TWW_AG_SCHEMA}
+            __table_args__ = {"schema": config.TWW_APP_SCHEMA}
         
         ModelTwwAG6496.versickerungsbereichag = versickerungsbereichag
