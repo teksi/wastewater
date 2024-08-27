@@ -171,19 +171,19 @@ class DatabaseUtils:
             cursor.execute("SELECT tww_app.update_wastewater_structure_label(NULL, True);")
 
     @staticmethod
-    def disable_last_modification_triggers():
-        logger.info("Disable last modification triggers")
-        DatabaseUtils.execute("SELECT tww_sys.alter_last_modification_triggers('disable');")
+    def disable_autoupdate_triggers():
+        logger.info("Disable auto updating triggers triggers")
+        DatabaseUtils.execute("SELECT tww_sys.alter_auto_updating_triggers('disable');")
 
     @staticmethod
-    def enable_last_modification_triggers():
-        logger.info("Enable last modification triggers")
-        DatabaseUtils.execute("SELECT tww_sys.alter_last_modification_triggers('enable');")
+    def enable_autoupdate_triggers():
+        logger.info("Enable auto updating triggers triggers")
+        DatabaseUtils.execute("SELECT tww_sys.alter_auto_updating_triggers('enable');")
 
     @staticmethod
-    def check_last_modification_triggers_enabled():
-        logger.info("Check last modification triggers enabled")
-        row = DatabaseUtils.fetchone("SELECT tww_sys.check_last_modification_enabled();")
+    def check_autoupdate_triggers_enabled():
+        logger.info("Check if auto updating triggers are enabled")
+        row = DatabaseUtils.fetchone("SELECT tww_sys.check_auto_updating_enabled();")
         return row[0]
 
     @staticmethod
