@@ -147,12 +147,12 @@ class DatabaseUtils:
     @staticmethod
     def disable_symbology_triggers():
         logger.info("Disable symbology triggers")
-        DatabaseUtils.execute("SELECT tww_sys.disable_symbology_triggers();")
+        DatabaseUtils.execute("SELECT tww_sys.alter_symbology_triggers('disable');")
 
     @staticmethod
     def enable_symbology_triggers():
         logger.info("Enable symbology triggers")
-        DatabaseUtils.execute("SELECT tww_sys.enable_symbology_triggers();")
+        DatabaseUtils.execute("SELECT tww_sys.alter_symbology_triggers('enable');")
 
     @staticmethod
     def check_symbology_triggers_enabled():
