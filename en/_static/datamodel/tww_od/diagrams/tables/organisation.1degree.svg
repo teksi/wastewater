@@ -106,6 +106,7 @@
 <text text-anchor="start" x="355" y="-3061.2" font-family="Helvetica,sans-Serif" font-size="11.00">municipality_number</text>
 <polygon fill="none" stroke="black" points="483,-3053 483,-3075 577,-3075 577,-3053 483,-3053"/>
 <text text-anchor="start" x="486" y="-3061.2" font-family="Helvetica,sans-Serif" font-size="11.00">int2[5]</text>
+<polygon fill="#ffffff" stroke="transparent" points="335,-3031 335,-3053 483,-3053 483,-3031 335,-3031"/>
 <polygon fill="none" stroke="black" points="335,-3031 335,-3053 483,-3053 483,-3031 335,-3031"/>
 <image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="340" y="-3048"/>
 <text text-anchor="start" x="355" y="-3039.2" font-family="Helvetica,sans-Serif" font-size="11.00">organisation_type</text>
@@ -120,6 +121,7 @@
 <text text-anchor="start" x="355" y="-2995.2" font-family="Helvetica,sans-Serif" font-size="11.00">status</text>
 <polygon fill="none" stroke="black" points="483,-2987 483,-3009 577,-3009 577,-2987 483,-2987"/>
 <text text-anchor="start" x="486" y="-2995.2" font-family="Helvetica,sans-Serif" font-size="11.00">int4[10]</text>
+<polygon fill="#ffffff" stroke="transparent" points="335,-2965 335,-2987 483,-2987 483,-2965 335,-2965"/>
 <polygon fill="none" stroke="black" points="335,-2965 335,-2987 483,-2987 483,-2965 335,-2965"/>
 <text text-anchor="start" x="355" y="-2973.2" font-family="Helvetica,sans-Serif" font-size="11.00">uid</text>
 <polygon fill="none" stroke="black" points="483,-2965 483,-2987 577,-2987 577,-2965 483,-2965"/>
@@ -128,7 +130,6 @@
 <text text-anchor="start" x="355" y="-2951.2" font-family="Helvetica,sans-Serif" font-size="11.00">last_modification</text>
 <polygon fill="none" stroke="black" points="483,-2943 483,-2965 577,-2965 577,-2943 483,-2943"/>
 <text text-anchor="start" x="486" y="-2951.2" font-family="Helvetica,sans-Serif" font-size="11.00">timestamp[29,6]</text>
-<polygon fill="#ffffff" stroke="transparent" points="335,-2921 335,-2943 483,-2943 483,-2921 335,-2921"/>
 <polygon fill="none" stroke="black" points="335,-2921 335,-2943 483,-2943 483,-2921 335,-2921"/>
 <image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="340" y="-2938"/>
 <text text-anchor="start" x="355" y="-2929.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_dataowner</text>

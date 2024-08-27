@@ -59,9 +59,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../interlis-io/index.html">4.4. INTERLIS Datenaustausch</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">4.5. Anpassung des Datenmodells</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#introduction">4.5.1. Einleitung</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#adding-fields">4.5.2. Zusätzliche Felder</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#joining-additional-tables">4.5.3. Verknüpfung zusätzlicher Tabellen</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#creating-custom-views">4.5.4. Eigene views erstellen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#altering-symbology-and-labelling-behaviour">4.5.2. Altering symbology and labelling behaviour</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#adding-fields">4.5.3. Zusätzliche Felder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#joining-additional-tables">4.5.4. Verknüpfung zusätzlicher Tabellen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#creating-custom-views">4.5.5. Eigene views erstellen</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../datamodel-tool/index.html">4.6. Data model tool</a></li>
@@ -110,8 +111,13 @@
 <p>If TWW data model is not able yet to hold some data, please let us know what kind and how it should be handled. TWW data model is a standard proof adaptative model and could follow your needs.</p>
 <p>If a customization is still required, the following explanations and rules explain how to adapt TWW data model to your specific needs.</p>
 </section>
+<section id="altering-symbology-and-labelling-behaviour">
+<h2><span class="section-number">4.5.2. </span>Altering symbology and labelling behaviour<a class="headerlink" href="#altering-symbology-and-labelling-behaviour" title="Link to this heading"></a></h2>
+<p>Symbology and labelling behaviour depends on the value lists `` tww_vl.channel_usage_current`` and `` tww_vl.channel_function_hierarchic``  These two value list tables have an additional column <code class="docutils literal notranslate"><span class="pre">tww_symbology_order</span></code>, which is used to define the hierarchy of the symbology.</p>
+<p>For labelling, one can use the column `` tww_vl.channel_function_hierarchic.tww_use_in_labels`` to define which functions_hierarchic are taken into account when creating a wastewater structure’s label.</p>
+</section>
 <section id="adding-fields">
-<h2><span class="section-number">4.5.2. </span>Zusätzliche Felder<a class="headerlink" href="#adding-fields" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.5.3. </span>Zusätzliche Felder<a class="headerlink" href="#adding-fields" title="Link to this heading"></a></h2>
 <p>Es ist erlaubt, zusätzliche Felder zu Tabellen hinzuzufügen, indem man sie als <code class="docutils literal notranslate"><span class="pre">usr_...</span></code> benennt.</p>
 <p>Wenn sie in Basistabellen hinzugefügt werden, werden diese zusätzlichen Felder automatisch zu den Ansichten hinzugefügt, da es sich um ein bearbeitbares Feld handelt. Die Ansichten können jederzeit mit dem folgenden Befehl neu generiert werden:</p>
 <p><code class="docutils literal notranslate"><span class="pre">./view/create_views.py</span> <span class="pre">--pg_service</span> <span class="pre">pg_tww</span> <span class="pre">--srid</span> <span class="pre">2056</span></code></p>
@@ -121,7 +127,7 @@
 </div>
 </section>
 <section id="joining-additional-tables">
-<h2><span class="section-number">4.5.3. </span>Verknüpfung zusätzlicher Tabellen<a class="headerlink" href="#joining-additional-tables" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.5.4. </span>Verknüpfung zusätzlicher Tabellen<a class="headerlink" href="#joining-additional-tables" title="Link to this heading"></a></h2>
 <p>It is possible to join additional tables to the two main views (<code class="docutils literal notranslate"><span class="pre">vw_tww_wastewater_structure</span></code> and <code class="docutils literal notranslate"><span class="pre">vw_tww_reach</span></code>).
 This is done by using a YAML definition file for each view and defining a list of joined tables.
 Fields of these tables will be joined as read-only fields as they are discarded in edit triggers.
@@ -145,7 +151,7 @@ For joining a table to <code class="docutils literal notranslate"><span class="p
 <p>And similarly for <code class="docutils literal notranslate"><span class="pre">vw_tww_reach</span></code> view, by specifying <code class="docutils literal notranslate"><span class="pre">tww_reach_extra</span></code> variable to the corresponding YAML file path.</p>
 </section>
 <section id="creating-custom-views">
-<h2><span class="section-number">4.5.4. </span>Eigene views erstellen<a class="headerlink" href="#creating-custom-views" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.5.5. </span>Eigene views erstellen<a class="headerlink" href="#creating-custom-views" title="Link to this heading"></a></h2>
 <p>Es sit möglich, eigene views zu erstellen und sie zum Datenmodell zu hinzuzufügen.</p>
 <p>Um Upgrades des Datenmodells zu ermöglichen, sollte man ein Skript bereitstellen, um sie zu erstellen, und eines, um sie zu löschen. Diese Skripte (SQL oder Python) sollten in einem bestimmten Pfad abgelegt und als pre-all.{py,sql} und post-all.{py,sql} bezeichnet werden. Dieser Pfad muss als Variable an PUM übergeben werden, wenn das Datenmodell als Delta-Verzeichnis aktualisiert wird (siehe PUM-<a class="reference external" href="https://github.com/opengisch/pum">Dokumentation</a>).</p>
 <p>If one wants to have these views automatically updated when fields are added the data model, Pirogue can be used to dynamically generate the views. You can take example of the creation of the views in the data model.</p>

@@ -60,8 +60,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../plan-plotting/index.html">3.6. Impression de plans</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../history/index.html">3.7. History in TWW</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">3.8. How To</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#setting-default-values">3.8.1. Setting default values</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#how-vw-tww-wastewater-structure-labels-work">3.8.2. How vw_tww_wastewater_structure labels work</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-default-values">3.8.1. Définir les valeurs par défaut</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-vw-tww-wastewater-structure-labels-work">3.8.2. Comment fonctionnent les labels de la couche <cite>vw_tww_wastewater_structure</cite></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#how-to-translate-a-label-prefix-c-b-i-o">3.8.3. How to translate a label prefix (C, B, I, O)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#how-to-run-symbology-functions-manually">3.8.4. How to run symbology functions manually</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#manual-label-positioning-for-different-scales">3.8.5. Manual Label-positioning for different scales</a></li>
@@ -108,41 +108,41 @@
              
   <section id="how-to">
 <h1><span class="section-number">3.8. </span>How To<a class="headerlink" href="#how-to" title="Lien vers cette rubrique"></a></h1>
-<p>This represents a guide on different themes about configuring in TWW.</p>
+<p>Ce guide présente la configuration du module assainissement.</p>
 <section id="setting-default-values">
-<span id="settingdefaultvalues"></span><h2><span class="section-number">3.8.1. </span>Setting default values<a class="headerlink" href="#setting-default-values" title="Lien vers cette rubrique"></a></h2>
-<p>If you get the following error message on startup of the TEKSI project during the “Database production ready check”:</p>
+<span id="settingdefaultvalues"></span><h2><span class="section-number">3.8.1. </span>Définir les valeurs par défaut<a class="headerlink" href="#setting-default-values" title="Lien vers cette rubrique"></a></h2>
+<p>Si le message suivant apparaît au démarrage du projet “Database production ready check”:</p>
 <p>CRITICAL: Error fk_provider or fk_dataowner not set in tww_od.default_values</p>
-<p>then your database is not yet production ready.</p>
-<p>It is possible to define default values for repeated fields such as fk_provider or fk_dataowner, so that you not have to add those manually for each object that you are creating.</p>
-<p>There is a new layer group “configuration” in the project:</p>
+<p>Alors votre base de données n’est pas encore prête pour la production.</p>
+<p>Il est possible de définir des valeurs par défaut pour des champs récurrents comme <cite>fk_provider</cite> ou <cite>fk_dataowner</cite>, ainsi il ne sera plus nécessaire de définir ces champs manuellement pour chaque objet créé.</p>
+<p>Un groupe “configuration” est disponible dans le projet:</p>
 <figure class="align-default">
 <img alt="../../_images/configuration_default_values.png" src="../../_images/configuration_default_values.png" />
 </figure>
 <ol class="arabic simple">
-<li><p>Open the attribute table “Default values”</p></li>
-<li><p>Change to edit mode and choose select new object</p></li>
-<li><p>Select field name (currently fk_dataowner and fk_provider are supported in the form)</p></li>
+<li><p>Ouvrir la table d’attributs “Valeurs par défaut”</p></li>
+<li><p>Passer en mode édition et sélectionner un nouvel objet</p></li>
+<li><p>Sélectionner le nom du champs (actuellement fk_dataowner et fk_provider sont supportés dans le formulaire)</p></li>
 </ol>
 <figure class="align-default">
 <img alt="../../_images/default_values_fieldname_selection.png" src="../../_images/default_values_fieldname_selection.png" />
 </figure>
 <ol class="arabic simple" start="4">
-<li><p>Select organisation that should be used (the corresponding obj_id will be added in the table itself).</p></li>
+<li><p>Sélectionner l’organisation qui devrait être utilisée (l’obj_id correspondant sera ajouté à la table).</p></li>
 </ol>
 <figure class="align-default">
 <img alt="../../_images/default_values_organisation_obj_id_selection.png" src="../../_images/default_values_organisation_obj_id_selection.png" />
 </figure>
-<p>For the second warning, please contact your TEKSI system administrator</p>
+<p>Pour le second avertissement, merci de contacter votre administrateur système.</p>
 <p>CRITICAL: Error OID prefix set to “ch000000”. Database not safe for production.</p>
-<p>and ask him/her to set the prefix to fit your project.</p>
-<p>For more information see <a class="reference internal" href="../../admin-guide/db-production-readiness/index.html#productionreadiness"><span class="std std-ref">Prepare database for production</span></a></p>
+<p>et demander de définir le préfix qui convient pour votre projet.</p>
+<p>Pour de plus amples informations, voir <a class="reference internal" href="../../admin-guide/db-production-readiness/index.html#productionreadiness"><span class="std std-ref">Prepare database for production</span></a></p>
 <p>Connect all occurences of your field name to <code class="docutils literal notranslate"><span class="pre">tww_sys.get_default_values(field_name)</span></code>.
 Per default, the fields <code class="docutils literal notranslate"><span class="pre">fk_provider</span></code> and <code class="docutils literal notranslate"><span class="pre">fk_dataowner</span></code> are already connected to the function <code class="docutils literal notranslate"><span class="pre">tww_sys.get_default_values(field_name)</span></code>.</p>
-<p>An example SQL script how to insert the default value for all occurences of a field name can be found <a class="reference external" href="https://github.com/teksi/wastewater/blob/main/datamodel/changelogs/0001/14_default_values.sql">here</a>)</p>
+<p>Un exemple de script SQL montre comment installer les valeurs par défaut toutes les occurrences d’un même nom de champ <a class="reference external" href="https://github.com/teksi/wastewater/blob/main/datamodel/changelogs/0001/14_default_values.sql">ici</a>)</p>
 </section>
 <section id="how-vw-tww-wastewater-structure-labels-work">
-<h2><span class="section-number">3.8.2. </span>How vw_tww_wastewater_structure labels work<a class="headerlink" href="#how-vw-tww-wastewater-structure-labels-work" title="Lien vers cette rubrique"></a></h2>
+<h2><span class="section-number">3.8.2. </span>Comment fonctionnent les labels de la couche <cite>vw_tww_wastewater_structure</cite><a class="headerlink" href="#how-vw-tww-wastewater-structure-labels-work" title="Lien vers cette rubrique"></a></h2>
 <p>Labeling a manhole with his levels is quite a complex thing. Levels are not stored in the wastewater_structure class itself, but in the cover table and as reachpoint levels with the connected reaches. TWW has therefore 4 calculated fields to be able to label these levels:</p>
 <ul class="simple">
 <li><p>_cover_label: shows the level / the levels of the cover/s.level of the wastewater structure</p></li>

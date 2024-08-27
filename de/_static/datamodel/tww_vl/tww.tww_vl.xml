@@ -714,7 +714,7 @@
             <column ascending="true" name="code"/>
          </index>
       </table>
-      <table name="channel_function_hierarchic" remarks="" schema="tww_vl" type="TABLE">
+      <table name="channel_function_hierarchic" numRows="14" remarks="" schema="tww_vl" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
             <child column="function_hierarchic" foreignKey="fkey_vl_channel_function_hierarchic" implied="false" onDeleteCascade="false" schema="tww_od" table="channel"/>
          </column>
@@ -730,8 +730,9 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="abbr_it" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="abbr_ro" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="active" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="order_fct_hierarchic" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
-         <column autoUpdated="false" defaultValue="false" digits="0" id="14" name="tww_is_primary" nullable="true" remarks="True when part of the primary network. Facilitates exporting primary elements only.&#10;Not part of the VSA-DSS data model, added solely for TEKSI Wastewater &amp; GEP" size="1" type="bool" typeCode="-7"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="tww_symbology_order" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="false" digits="0" id="14" name="tww_use_in_labels" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
+         <column autoUpdated="false" defaultValue="false" digits="0" id="15" name="tww_is_primary" nullable="true" remarks="True when part of the primary network. Facilitates exporting primary elements only.&#10;Not part of the VSA-DSS data model, added solely for TEKSI Wastewater &amp; GEP" size="1" type="bool" typeCode="-7"/>
          <primaryKey column="code" sequenceNumberInPK="1"/>
          <index name="pkey_tww_vl_channel_function_hierarchic_code" unique="true">
             <column ascending="true" name="code"/>
@@ -795,7 +796,7 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="abbr_it" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="abbr_ro" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="active" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="order_usage_current" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="tww_symbology_order" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
          <primaryKey column="code" sequenceNumberInPK="1"/>
          <index name="pkey_tww_vl_channel_usage_current_code" unique="true">
             <column ascending="true" name="code"/>

@@ -19,6 +19,13 @@ If TWW data model is not able yet to hold some data, please let us know what kin
 
 If a customization is still required, the following explanations and rules explain how to adapt TWW data model to your specific needs.
 
+Altering symbology and labelling behaviour
+^^^^^^^^^^^^^
+
+Symbology and labelling behaviour depends on the value lists `` tww_vl.channel_usage_current`` and `` tww_vl.channel_function_hierarchic``  These two value list tables have an additional column ``tww_symbology_order``, which is used to define the hierarchy of the symbology.
+
+For labelling, one can use the column `` tww_vl.channel_function_hierarchic.tww_use_in_labels`` to define which functions_hierarchic are taken into account when creating a wastewater structure's label.
+
 
 Adding fields
 ^^^^^^^^^^^^^

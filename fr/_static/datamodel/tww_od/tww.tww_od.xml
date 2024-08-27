@@ -1705,7 +1705,7 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="object" nullable="true" remarks="OID of Object / OID des Objektes / OID de l'objet" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="recorded_by" nullable="true" remarks="Name of person who recorded the dataset / Name des Aufnehmers im Feld / Nom de la personne, qui a relevé les données" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="remark" nullable="true" remarks="General remarks / Allgemeine Bemerkungen / Remarques générales" size="2147483647" type="text" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="system_user" nullable="true" remarks="Name of system user / Name des Systembenutzers / Usager du système informatique" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="user_system" nullable="true" remarks="Name of system user / Name des Systembenutzers / Usager du système informatique" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="now()" digits="6" id="11" name="last_modification" nullable="true" remarks="Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE" size="29" type="timestamp" typeCode="93"/>
          <column autoUpdated="false" defaultValue="tww_sys.get_default_values('fk_dataowner'::text)" digits="0" id="12" name="fk_dataowner" nullable="true" remarks="Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l'organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe" size="16" type="varchar" typeCode="12">
             <parent column="obj_id" foreignKey="rel_od_mutation_fk_dataowner" implied="false" onDeleteCascade="false" schema="tww_od" table="organisation"/>
@@ -1723,7 +1723,7 @@
          <checkConstraint constraint="((char_length(object) &lt;= 16))" name="md_object_length_max_16"/>
          <checkConstraint constraint="((char_length(recorded_by) &lt;= 255))" name="md_recorded_by_length_max_255"/>
          <checkConstraint constraint="((char_length(remark) &lt;= 80))" name="md_remark_length_max_80"/>
-         <checkConstraint constraint="((char_length(system_user) &lt;= 60))" name="md_system_user_length_max_60"/>
+         <checkConstraint constraint="((char_length(user_system) &lt;= 60))" name="md_user_system_length_max_60"/>
       </table>
       <table name="network_node" remarks="" schema="tww_od" type="TABLE">
          <column autoUpdated="true" defaultValue="nextval('tww_od.network_node_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4">
@@ -1888,7 +1888,8 @@
          </index>
          <index name="in_od_organisation_identifier" unique="true">
             <column ascending="true" name="identifier"/>
-            <column ascending="true" name="fk_dataowner"/>
+            <column ascending="true" name="uid"/>
+            <column ascending="true" name="organisation_type"/>
          </index>
          <checkConstraint constraint="((char_length(identifier) &lt;= 255))" name="og_identifier_length_max_255"/>
          <checkConstraint constraint="((char_length(identifier_short) &lt;= 12))" name="og_identifier_short_length_max_12"/>

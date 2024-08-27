@@ -120,7 +120,7 @@
 <polygon fill="none" stroke="black" points="168,-79 168,-101 238,-101 238,-79 168,-79"/>
 <text text-anchor="start" x="171" y="-87.2" font-family="Helvetica,sans-Serif" font-size="11.00">bool[1]</text>
 <polygon fill="none" stroke="black" points="10,-57 10,-79 168,-79 168,-57 10,-57"/>
-<text text-anchor="start" x="30" y="-65.2" font-family="Helvetica,sans-Serif" font-size="11.00">order_usage_current</text>
+<text text-anchor="start" x="30" y="-65.2" font-family="Helvetica,sans-Serif" font-size="11.00">tww_symbology_order</text>
 <polygon fill="none" stroke="black" points="168,-57 168,-79 238,-79 238,-57 168,-57"/>
 <text text-anchor="start" x="171" y="-65.2" font-family="Helvetica,sans-Serif" font-size="11.00">int2[5]</text>
 <polygon fill="#ffffff" stroke="transparent" points="10,-39 10,-57 93,-57 93,-39 10,-39"/>
