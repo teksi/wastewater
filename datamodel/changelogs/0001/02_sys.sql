@@ -47,7 +47,7 @@ ELSE
 		INNER JOIN pg_class c on t.tgrelid=c.oid
 		INNER JOIN pg_proc p on t.tgfoid=p.oid
 		WHERE p.proname  LIKE 'symbology_%'
-		and p.pronamespace::regnamespace::text = 'tww_app'
+		and p.pronamespace::regnamespace::text LIKE 'tww_ap_'
 		LOOP
 			EXECUTE FORMAT('ALTER TABLE %I.%I %s TRIGGER %I',schdf,tbldf,upper(action_name),trig);
 		END LOOP;
@@ -71,7 +71,7 @@ BEGIN
 		INNER JOIN pg_class c on t.tgrelid=c.oid
 		INNER JOIN pg_proc p on t.tgfoid=p.oid
 		WHERE p.proname  LIKE 'symbology_%'
-		and p.pronamespace::regnamespace::text = 'tww_app'
+		and p.pronamespace::regnamespace::text LIKE 'tww_ap_'
 		AND t.tgenabled = 'D';
   IF _disabled_count=0 THEN
     return true;
@@ -104,7 +104,7 @@ ELSE
 		WHERE (p.proname  LIKE 'update_last_modified%'
 		AND p.pronamespace::regnamespace::text = 'tww_sys')
 		OR( p.proname  LIKE 'autoupdate%'
-		AND p.pronamespace::regnamespace::text = 'tww_app')
+		AND p.pronamespace::regnamespace::text LIKE 'tww_ap_')
 		LOOP
 			EXECUTE FORMAT('ALTER TABLE %I.%I %s TRIGGER %I',schdf,tbldf,upper(action_name),trig);
 		END LOOP;
@@ -127,7 +127,7 @@ BEGIN
 		(p.proname  LIKE 'update_last_modified%'
 		AND p.pronamespace::regnamespace::text = 'tww_sys')
 		OR( p.proname  LIKE 'autoupdate%'
-		AND p.pronamespace::regnamespace::text = 'tww_app')
+		AND p.pronamespace::regnamespace::text LIKE 'tww_ap_')
 		)
 		AND t.tgenabled = 'D';
   IF _disabled_count=0 THEN
