@@ -84,7 +84,7 @@ To see your changes, you have to rerun the symbology functions manually (see nex
 How to check if triggers are active
 ---------------------------------------
 
-For some processes such as INTERLIS Imports, a set of triggers are temporarily deactivated to speed up the process. 
+For some processes such as INTERLIS Imports, a set of triggers are temporarily deactivated to speed up the process.
 
 * Check status of triggers::
 
@@ -106,7 +106,7 @@ Sometimes the labels such as bottom, cover or entry/exit levels are not correctl
 * Check status of symbology triggers::
 
    SELECT tww_sys.check_symbology_triggers_enabled();
-   
+
 * Activate / Deactivate symbology triggers::
 
    SELECT tww_sys.alter_symbology_triggers('enable');
