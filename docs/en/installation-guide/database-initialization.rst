@@ -92,7 +92,7 @@ The flags are defined as follows:
 
 * ´-m´ or ´--modelname´: Abbreviation of the datamodel (here: tww)
 * ´-p´ or ´--pg_service´: Name of the pg_service
-* ´-d´ or ´--database_specific_roles´: Optional flag to add database specific roles instead of cluster specific roles. 
+* ´-d´ or ´--database_specific_roles´: Optional flag to add database specific roles instead of cluster specific roles.
 * ´-x´ or ´--extension_schema´: Optional flag to define the name of the extension schema. Not needed when using create_roles
 
 The database specific group roles are defined as  **tww_viewer_[db_identifier]** etc. , where ``db_identifier`` is defined as ``regexp_replace(databasename, "tww_|teksi_", "")`` .
