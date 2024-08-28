@@ -24,10 +24,11 @@ The AG-64/96 values are automatically mapped to VSA DSS where sensible, allowing
 
 Handling of organisations
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-In the models AG-64/AG-96, the organisations table differs from VSA. It has 20 characters and uses a different prefix. In order to maintain the VSA compatibility, TWW 2 AG-64/96 uses the VSA tables and alters the OID only on export.
+In the models AG-64/AG-96, the organisations table differs from VSA. It has 20 characters and uses a different prefix. In order to maintain the VSA compatibility, TWW 2 AG-64/96 uses the VSA tables.
 
 There is a set of private entities in the AG-64/AG-96 organisations dataset that were not ported to VSA DSS. For these organisations, we use a OID prefix that was generated solely for this purpose and the AG-64/AG-96 postfix. The corresponding data is imported on initialisation.
 
+When exporting a dataset, the organisations are not exported from the TEKSI database. Instead, the AG-64/96 Organisation dataset is stored within the plugin and added to the export dataset. 
 
 Last Modification
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -73,6 +74,9 @@ The following table explains the mapping of FunktionAG in detail. If there are m
 	 -
    * - Anschluss
      - wastewater_node.ag64_function
+	 -
+   * - andere
+     - special_structure.function / manhole.function  / wastewater_node.ag64_function
 	 -
    * - Be_Entlueftung
      - special_structure.function / manhole.function
@@ -224,6 +228,7 @@ The following table explains the mapping of FunktionAG in detail. If there are m
    * - Wirbelfallschacht
      - special_structure.function
      -
+
 Handling of building connections
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Building connections are defined in the datamodel as Infrastrukturknoten/GEPKnoten with funktionag "Anschluss". As these are no wastewater structures, the function is attributed to the wastewater node (``wastewater_node.ag64_function``).
@@ -278,7 +283,9 @@ Bautenausserhalbbaugebiet is mapped to ´tww_od.building_group´. There is no ba
 SBW_Einzugsgebiet
 ---------------------
 
-SBW_Einzugsgebiet is mapped to ´tww_od.catchment_area_totals´. The perimeter geometry is not mapped in the qgs project and needs to be loaded manually. There exists a function to calculate the perimeter geometry by aggregating the catchment areas via catchment_area->log_card->main_log_card->hydraulic_char_data->catchment_area_totals.
+SBW_Einzugsgebiet is mapped to ´tww_od.catchment_area_totals´. The perimeter geometry is stored as an extension geometry attribute. In order to alter it, one needs to manually import the layer into the qgs project. 
+
+There exists a function to calculate the perimeter geometry by aggregating the catchment areas via catchment_area->log_card->main_log_card->hydraulic_char_data->catchment_area_totals.
 The perimeter geometry is a MultiSurface, while the INTERLIS model requires a CompoundCurve. According to the official data collection policy of the Canton, one should violate the datamodel and export a MultiPart. As the underlying export mechanism ili2pg does not allow to export a wrong geometry type, only the biggest Singlepart is exported.
 
 VersickerungsbereichAG
