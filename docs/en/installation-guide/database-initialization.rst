@@ -80,16 +80,20 @@ There are four default roles in TEKSI databases
 - Manager: Can edit data and value lists.
 - Admin: Database administrator.
 
-.. note:: The TWW roles are defined in the python script https://github.com/TWW/datamodel/blob/master/create_roles.py. The script requires the pgserviceparser package from OpenGIS https://github.com/opengisch/pgserviceparser/.
+.. note:: The TWW roles are defined in the python script https://github.com/TWW/datamodel/blob/master/manage_roles.py. The script requires the pgserviceparser package from OpenGIS https://github.com/opengisch/pgserviceparser/.
 
-You can call the script from the command line with the following arguments:
+You can call the script from the command line in three modes:
+
+* manage_roles.py create_roles --pg_service ${PGSERVICE} --modulename tww --database_specific_roles
+* manage_roles.py grant --pg_service ${PGSERVICE} --modulename tww --database_specific_roles --extension_schema foobar
+* manage_roles.py revoke --pg_service ${PGSERVICE} --modulename tww --database_specific_roles --extension_schema foobar
+
+The flags are defined as follows:
 
 * ´-m´ or ´--modelname´: Abbreviation of the datamodel (here: tww)
 * ´-p´ or ´--pg_service´: Name of the pg_service
-* ´-d´ or ´--database_specific_roles´: Add this flag to add database specific roles instead of cluster specific roles.
-* ´-x´ or ´--extension_schema´: Optional flag to define the name of the extension schema.
-* ´-g´ or ´--grant_privileges´: Add this flag to grant privileges to roles.
-* ´-r´ or ´--revoke_privileges´: Add this flag to revoke privileges to roles. Either grant or revoke are necessary
+* ´-d´ or ´--database_specific_roles´: Optional flag to add database specific roles instead of cluster specific roles. 
+* ´-x´ or ´--extension_schema´: Optional flag to define the name of the extension schema. Not needed when using create_roles
 
 The database specific group roles are defined as  **tww_viewer_[db_identifier]** etc. , where ``db_identifier`` is defined as ``regexp_replace(databasename, "tww_|teksi_", "")`` .
 
