@@ -204,12 +204,12 @@ class InterlisImporterExporter:
                 export_model=export_models[0]
             )
 
-        if export_models[0] = config.MODEL_NAME_AG96:
+        if export_models[0] == config.MODEL_NAME_AG96:
             file_path = 'data/Organisationstabelle_AG96.xtf'
             abs_file_path = Path(__file__).parent.resolve() / file_path
             logger.info("Importing AG-96 organisation to intermediate schema")
             self._import_xtf_file(self, abs_file_path)
-        elif export_models[0] = config.MODEL_NAME_AG64:
+        elif export_models[0] == config.MODEL_NAME_AG64:
             file_path = 'data/Organisationstabelle_AG64.xtf'
             abs_file_path = Path(__file__).parent.resolve() / file_path
             logger.info("Importing AG-64 organisation to intermediate schema")
