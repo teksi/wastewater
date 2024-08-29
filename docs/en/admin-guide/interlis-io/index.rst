@@ -121,34 +121,25 @@ You can check the protocol window and the text logs for further details.
 
 There are four different log files:
 
-.. list-table:: Title
-   :widths: 25 25 50
+.. list-table:: Overview of different log files
+   :widths: 25 50 25
    :header-rows: 1
 
    * - Heading Export step
      - Heading Description
      - Heading Log File
-   * - Row 1, Export schema
-     - Row 1, Creation of export schema with ili2db and the selected INTERLIS model file
-     - Row 1, *.ili2pg-schemaimport.log
-   * - Row 2, Data export intermediatary schema
-     - Row 2, Export of data from tww_od to the new intermediary schema, translation from English to German
-     - Row 2, *.tww2ili-export.log
-   * - Row 3, Data export to xtf
-     - Row 3, Data export from intermediary schema to INTERLIS Transfer file (xtf)
-     - Row 3, *.ili2pg-export-MODELNAME.log
-   * - Row 4, INTERLIS validation
-     - Row 4, Validation of the created xtf file(s) with ilivalidator
-     - Row 4, *.ilivalidator-MODELNAME.log
-
-
-|Export step                         |Description                                                                                   | Log File                     |
-|------------------------------------|:---------------------------------------------------------------------------------------------|:-----------------------------|
-|Export schema                       |Creation of export schema with ili2db and the selected INTERLIS model file                    | ili2pg-schemaimport.log     |
-|Data export intermediatary schema   |Export of data from tww_od to the new intermediary schema, translation from English to German | tww2ili-export.log          |
-|Data export to xtf                  |Data export from intermediary schema to INTERLIS Transfer file (xtf)                          | ili2pg-export-MODELNAME.log |
-|INTERLIS validation                 |Validation of the created xtf file(s) with ilivalidator                                       | ilivalidator-MODELNAME.log  |
-
+   * - Export schema
+     - Creation of export schema with ili2db and the selected INTERLIS model file
+     - ``*.ili2pg-schemaimport.log``
+   * - Data export intermediatary schema
+     - Export of data from tww_od to the new intermediary schema, translation from English to German
+     - *.tww2ili-export.log
+   * - Data export to xtf
+     - Data export from intermediary schema to INTERLIS Transfer file (xtf)
+     - ``*.ili2pg-export-MODELNAME.log``
+   * - INTERLIS validation
+     - Validation of the created xtf file(s) with ilivalidator
+     - ``*.ilivalidator-MODELNAME.log``
 
 
 INTERLIS Import
