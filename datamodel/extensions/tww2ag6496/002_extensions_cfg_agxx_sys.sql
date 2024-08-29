@@ -2,7 +2,7 @@
 
 CREATE OR REPLACE FUNCTION {ext_schema}.convert_organisationid_to_vsa(oid varchar)
 RETURNS varchar(16)
-AS 
+AS
 $BODY$
 DECLARE
 	out_oid varchar(16);
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS tww_cfg.agxx_last_modification_updater(
 	username varchar(200) PRIMARY KEY
 	, ag_update_type varchar(4) NOT NULL
 	, CONSTRAINT ag_update_type_valid CHECK (ag_update_type = ANY(ARRAY['None','WI','GEP','Both'])));
-	
+
 ------------------
 -- System tables
 ------------------

@@ -35,7 +35,7 @@ BEGIN
 	LEFT JOIN tww_vl.wastewater_node_ag64_function wn_fct ON wn_fct.value_de=vw_val.funktionag
   WHERE wn.obj_id=vw_val.obj_id;
   IF NOT FOUND THEN
-    INSERT INTO tww_app.vw_wastewater_node( 
+    INSERT INTO tww_app.vw_wastewater_node(
 	  obj_id
 	, identifier
     , backflow_level_current
@@ -51,8 +51,8 @@ BEGIN
 	, ag64_fk_provider
 	, ag96_last_modification
     , ag96_remark
-	, ag96_fk_provider	
-	) 
+	, ag96_fk_provider
+	)
 	(SELECT
 	  vw_val.obj_id
 	, vw_val.bezeichnung
@@ -102,7 +102,7 @@ BEGIN
 	, identifier
 	, last_modification
     )
-	(SELECT 
+	(SELECT
   	  vw_val.deckelkote
 	, co_posacc.code
 	, ST_Force3D(vw_val.lage)
@@ -116,7 +116,7 @@ BEGIN
 	)
 	RETURNING obj_id into co_oid;
   END IF;
-  
+
 	------------ Abwasserreinigungsanlage ------------
   UPDATE tww_app.vw_wwtp_stucture wwtp SET
   	  kind = 3032
@@ -163,7 +163,7 @@ BEGIN
 	, structure_condition
 	, year_of_construction
     )
-	(SELECT 
+	(SELECT
   	  3032 --unbekannt
 	, ws_acc.code
 	, ST_Force3D(vw_val.detailgeometrie)
@@ -250,7 +250,7 @@ BEGIN
 	tww_ag6496.convert_organisationid_to_vsa(betreiber),
 	tww_ag6496.convert_organisationid_to_vsa(eigentuemer),
 	vw_val.gepmassnahmeref
-	
+
 	FROM (SELECT NEW.*) vw_val
 	LEFT JOIN tww_vl.wastewater_structure_structure_condition sc ON sc.value_de=vw_val.baulicherzustand
 	LEFT JOIN tww_vl.wastewater_structure_renovation_necessity rn ON rn.value_de=vw_val.sanierungsbedarf
@@ -262,7 +262,7 @@ BEGIN
     );
 	END IF;
     END CASE;
-	
+
   ELSE
 ------------ Basic wastewater_structure ------------
   UPDATE tww_app.vw_tww_wastewater_structure ws SET
@@ -281,7 +281,7 @@ BEGIN
 			, 'Schlammfang'
 			, 'Schlammsammler'
 			]
-		  ) THEN 'manhole' 
+		  ) THEN 'manhole'
 		WHEN vw_val.funktionag = ANY(
 		  ARRAY[
 		      'Absturzbauwerk'
@@ -296,10 +296,10 @@ BEGIN
 			, 'Trennbauwerk'
 			, 'Vorbehandlung'
 			]
-		  ) AND vw_val.detailgeometrie IS NULL THEN 'manhole' 
-		ELSE 'special_structure' 
+		  ) AND vw_val.detailgeometrie IS NULL THEN 'manhole'
+		ELSE 'special_structure'
 	  END
-    , ma_function = ma_fu.code -- wird nur angewandt, wenn ws_type = manhole 
+    , ma_function = ma_fu.code -- wird nur angewandt, wenn ws_type = manhole
     , ss_function = ss_fu.code -- wird nur angewandt, wenn ws_type = special_structure
     , fk_owner = {ext_schema}.convert_organisationid_to_vsa(vw_val.eigentuemer)
     , status = ws_st.code
@@ -378,7 +378,7 @@ BEGIN
 		, wn_ag96_remark
 		, wn_ag96_fk_provider
 		, wn_ag96_is_gateway
-		) 
+		)
 	  (
 	  SELECT
 		  vw_val.bezeichnung
@@ -396,7 +396,7 @@ BEGIN
 			, 'Schlammfang'
 			, 'Schlammsammler'
 			]
-		  ) THEN 'manhole' 
+		  ) THEN 'manhole'
 		WHEN vw_val.funktionag = ANY(
 		  ARRAY[
 		      'Absturzbauwerk'
@@ -411,8 +411,8 @@ BEGIN
 			, 'Trennbauwerk'
 			, 'Vorbehandlung'
 			]
-		  ) AND vw_val.detailgeometrie IS NULL THEN 'manhole' 
-		ELSE 'special_structure' 
+		  ) AND vw_val.detailgeometrie IS NULL THEN 'manhole'
+		ELSE 'special_structure'
 	  END
 		, ma_fu.code -- wird nur angewandt, wenn ws_type = manhole
 		, ss_fu.code -- wird nur angewandt, wenn ws_type = special_structure
@@ -457,27 +457,27 @@ BEGIN
 	  LEFT JOIN tww_vl.wastewater_structure_status ws_st ON ws_st.value_de=vw_val.bauwerkstatus
 	  LEFT JOIN tww_vl.wastewater_structure_accessibility ws_acc ON ws_acc.value_de=vw_val.zugaenglichkeit
 	  );
-    END IF;  
+    END IF;
  END CASE;
 
 ------------ fk_wastewater_structure ------------
 /*
 	Einerseits werden die Abwasserknoten neu attributiert, andererseits die Deckel
 */
-	  UPDATE tww_od.wastewater_structure 
+	  UPDATE tww_od.wastewater_structure
 		SET detail_geometry3d_geometry =ST_Force3D(NEW.detailgeometrie)
 		WHERE fk_main_wastewater_node = NEW.obj_id;
 
 
     SELECT ws.obj_id, wn.obj_id, array_agg(sp.obj_id) INTO  ws_oid, wn_oid, sp_oids
-	  FROM tww_od.wastewater_node wn 
-	  LEFT JOIN  
-	    (SELECT ws.obj_id, st_buffer(detail_geometry3d_geometry,0.0001)as detail_geometry3d_geometry 
+	  FROM tww_od.wastewater_node wn
+	  LEFT JOIN
+	    (SELECT ws.obj_id, st_buffer(detail_geometry3d_geometry,0.0001)as detail_geometry3d_geometry
 		 FROM tww_od.wastewater_structure ws
 		 LEFT JOIN tww_od.channel ch on ws.obj_id=ch.obj_id
 		 WHERE ws.detail_geometry3d_geometry IS NOT NULL
 		 AND ch.obj_id is NULL LIMIT 1
-		) ws ON 
+		) ws ON
 		ST_CoveredBy(ST_Force2D(wn.situation3d_geometry)
 		  , ST_Force2D(ws.detail_geometry3d_geometry))
 	  LEFT JOIN tww_od.wastewater_networkelement ne on ne.obj_id=wn.obj_id
@@ -485,7 +485,7 @@ BEGIN
 	  LEFT JOIN tww_od.structure_part sp on sp.fk_wastewater_structure=ws_old.obj_id
 	  WHERE wn.obj_id = NEW.obj_id AND ws_old.obj_id != ws.obj_id
 	  GROUP BY ws.obj_id, wn.obj_id;
-			
+
 	CASE WHEN ws_oid is not NULL THEN
 	  UPDATE tww_od.wastewater_networkelement
         SET fk_wastewater_structure = ws_oid
@@ -494,11 +494,11 @@ BEGIN
       UPDATE tww_od.structure_part
         SET fk_wastewater_structure = ws_oid
         WHERE obj_id = ANY(sp_oids);
-		
+
 	ELSE NULL;
 	END CASE;
 
------------- GEPMassnahme ------------ 
+------------ GEPMassnahme ------------
 	UPDATE tww_od.wastewater_structure
         SET ag96_fk_measure = coalesce(NEW.gepmassnahmeref,ag96_fk_measure)
         WHERE fk_main_wastewater_node = NEW.obj_id;

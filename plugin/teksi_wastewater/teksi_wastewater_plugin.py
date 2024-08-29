@@ -87,13 +87,14 @@ class TeksiWastewaterPlugin:
         if os.environ.get("QGIS_DEBUGPY_HAS_LOADED") is None:
             try:
                 import debugpy
+
                 debugpy.configure(python=shutil.which("python"))
-                debugpy.listen(('localhost', 5678))
+                debugpy.listen(("localhost", 5678))
             except Exception as e:
-                print("Unable to create debugpy debugger: {}".format(e))
+                print(f"Unable to create debugpy debugger: {e}")
             else:
-                os.environ["QGIS_DEBUGPY_HAS_LOADED"] = '1'
-                
+                os.environ["QGIS_DEBUGPY_HAS_LOADED"] = "1"
+
         self.iface = iface
         self.canvas = iface.mapCanvas()
         self.nodes = None
