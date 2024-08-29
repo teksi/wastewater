@@ -2290,7 +2290,7 @@ class InterlisImporterToIntermediateSchema:
         else: 
             detailgeoms = self.session_interlis.query(self.model_classes_interlis.abwasserbauwerk).filter(
                 self.model_classes_interlis.abwasserbauwerk.detailgeometrie.ST_Buffer(0.001).ST_Covers(row.lage),
-                self.model_classes_interlis.abwasserbauwerk.obj_id != row.obj_id
+                self.model_classes_interlis.abwasserbauwerk.obj_id != row.t_ili_tid
                 ).fetchone()
         if detailgeoms:
             return True
