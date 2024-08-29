@@ -200,7 +200,7 @@ To explain, that it really matters, there was the following test:
 
 Change for 500 reaches out of 10'122 the field rv_construction_type. It's a field with a value list. In vw_tww_reach, the fields name is ws_rv_construction_type, means the table of the field is wastewater_structure (ws).
 
-How long did we wait: 
+How long did we wait:
 
 - Use field calculator with vw_tww_reach: more than 25 minutes!
 
