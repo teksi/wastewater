@@ -119,9 +119,8 @@ If the export is not successfull you will get either error messages during the e
 
 You can check the protocol window and the text logs for further details.
 
-There are four different log files:
 
-.. list-table:: Overview of different log files
+.. list-table:: There are four different log files:
    :widths: 25 50 25
    :header-rows: 1
 
