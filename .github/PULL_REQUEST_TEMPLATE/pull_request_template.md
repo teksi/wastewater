@@ -1,3 +1,12 @@
+---
+name: Pull Request
+about: Create a pull request to propose some new content (bugfix, feature, maintenance or sustainability)
+title: ''
+labels: ''
+assignees: ''
+
+---
+
 ## General
  - [ ] Fix a bug
  - [ ] Add a feature

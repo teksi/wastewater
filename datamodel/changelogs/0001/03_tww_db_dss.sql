@@ -1,6 +1,6 @@
 ------ This file generates the VSA-DSS database (Modul VSA-DSS (2020)) in en for QQIS
 ------ For questions etc. please contact Stefan Burckhardt stefan.burckhardt@sjib.ch
------- version 22.04.2024 17:53:40
+------ version 22.04.2024 17:53:40 / 22.08.2024 adapted translation of Schieber - new gate_valve instead of valve
 ------ with 3D coordinates
 
 ---------------------------
@@ -32,6 +32,7 @@ CREATE TABLE tww_od.re_building_group_disposal
    CONSTRAINT pkey_tww_od_re_building_group_disposal_id PRIMARY KEY (id)
 );
 COMMENT ON COLUMN tww_od.re_building_group_disposal.id IS 'UUID generated with uuid_generate_v4 see https://www.postgresql.org/docs/16/uuid-ossp.html#UUID-OSSP-FUNCTIONS-SECT';
+
 -------
 CREATE TABLE tww_od.re_maintenance_event_wastewater_structure
 (
@@ -185,9 +186,9 @@ COMMENT ON COLUMN tww_od.mutation.recorded_by IS 'Name of person who recorded th
  ALTER TABLE tww_od.mutation ADD COLUMN remark text;
  ALTER TABLE tww_od.mutation ADD CONSTRAINT md_remark_length_max_80 CHECK(char_length(remark)<=80);
 COMMENT ON COLUMN tww_od.mutation.remark IS 'General remarks / Allgemeine Bemerkungen / Remarques générales';
- ALTER TABLE tww_od.mutation ADD COLUMN system_user text;
- ALTER TABLE tww_od.mutation ADD CONSTRAINT md_system_user_length_max_60 CHECK(char_length(system_user)<=60);
-COMMENT ON COLUMN tww_od.mutation.system_user IS 'Name of system user / Name des Systembenutzers / Usager du système informatique';
+ ALTER TABLE tww_od.mutation ADD COLUMN user_system text;
+ ALTER TABLE tww_od.mutation ADD CONSTRAINT md_user_system_length_max_60 CHECK(char_length(user_system)<=60);
+COMMENT ON COLUMN tww_od.mutation.user_system IS 'Name of system user / Name des Systembenutzers / Usager du système informatique';
  ALTER TABLE tww_od.mutation ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
 COMMENT ON COLUMN tww_od.mutation.last_modification IS 'Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE';
  ALTER TABLE tww_od.mutation ADD COLUMN fk_dataowner varchar(16);
@@ -4263,7 +4264,7 @@ ALTER TABLE tww_vl.throttle_shut_off_unit_kind ADD CONSTRAINT pkey_tww_vl_thrott
  INSERT INTO tww_vl.throttle_shut_off_unit_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (6491,6491,'leapingweir','Leapingwehr','leaping_weir', 'leaping_weir', 'rrr_Leapingwehr', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.throttle_shut_off_unit_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (6492,6492,'pomp','Pumpe','pompe', 'pompa', 'rrr_Pumpe', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.throttle_shut_off_unit_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (2690,2690,'backflow_flap','Rueckstauklappe','clapet_de_non_retour_a_battant', 'clappa_anti_rigurgito', 'clapeta _antirefulare', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.throttle_shut_off_unit_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (2688,2688,'valve','Schieber','vanne', 'saracinesca', 'rrr_Schieber', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.throttle_shut_off_unit_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (2688,2688,'gate_valve','Schieber','vanne', 'saracinesca', 'rrr_Schieber', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.throttle_shut_off_unit_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (134,134,'tube_throttle','Schlauchdrossel','limiteur_a_membrane', 'zzz_Schlauchdrossel', 'rrr_Schlauchdrossel', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.throttle_shut_off_unit_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (2689,2689,'sliding_valve','Schuetze','vanne_ecluse', 'zzz_Schuetze', 'vana_cu?it', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.throttle_shut_off_unit_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5755,5755,'gate_shield','Stauschild','plaque_de_retenue', 'paratoia_cilindrica', 'rrr_Stauschild', '', '', '', '', '', 'true');
@@ -4558,7 +4559,7 @@ ALTER TABLE tww_vl.tank_emptying_kind ADD CONSTRAINT pkey_tww_vl_tank_emptying_k
  INSERT INTO tww_vl.tank_emptying_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5626,5626,'other','andere','autre', 'altro', 'rrr_altul', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.tank_emptying_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8638,8638,'gravitation','Gravitation','gravitation', 'gravitazione', 'rrr_Gravitation', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.tank_emptying_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5628,5628,'pump','Pumpe','pompe', 'pompa', '', '', '', '', '', '', 'true');
- INSERT INTO tww_vl.tank_emptying_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5629,5629,'valve','Schieber','vanne', 'saracinesca', 'rrr_Schieber', '', '', '', '', '', 'true');
+ INSERT INTO tww_vl.tank_emptying_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (5629,5629,'gate_valve','Schieber','vanne', 'saracinesca', 'rrr_Schieber', '', '', '', '', '', 'true');
  INSERT INTO tww_vl.tank_emptying_kind (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (8637,8637,'unknown','unbekannt','inconnu', 'sconosciuto', 'necunoscuta', '', '', '', '', '', 'true');
  ALTER TABLE tww_od.tank_emptying ADD CONSTRAINT fkey_vl_tank_emptying_kind FOREIGN KEY (kind)
  REFERENCES tww_vl.tank_emptying_kind (code) MATCH SIMPLE
@@ -4895,8 +4896,8 @@ COMMENT ON COLUMN tww_od.wastewater_structure_symbol.obj_id IS 'INTERLIS STANDAR
 COMMENT ON COLUMN tww_od.wastewater_structure_symbol.classname IS 'Name of class that symbol class is related to / Name der Klasse zu der die Symbolklasse gehört / nom de la classe à laquelle appartient la classe de symbole';
  ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN plantype  integer ;
 COMMENT ON COLUMN tww_od.wastewater_structure_symbol.plantype IS '';
- ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN symbol_scaling_heigth  decimal(2,1) ;
-COMMENT ON COLUMN tww_od.wastewater_structure_symbol.symbol_scaling_heigth IS '';
+ ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN symbol_scaling_height  decimal(2,1) ;
+COMMENT ON COLUMN tww_od.wastewater_structure_symbol.symbol_scaling_height IS '';
  ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN symbol_scaling_width  decimal(2,1) ;
 COMMENT ON COLUMN tww_od.wastewater_structure_symbol.symbol_scaling_width IS '';
  ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN symbolori  decimal(4,1) ;
@@ -4924,7 +4925,7 @@ ALTER TABLE tww_od.reach_text ADD CONSTRAINT rel_reach_text_reach FOREIGN KEY (f
 ALTER TABLE tww_od.catchment_area_text ADD COLUMN fk_catchment_area varchar(16);
 ALTER TABLE tww_od.catchment_area_text ADD CONSTRAINT rel_catchment_area_text_catchment_area FOREIGN KEY (fk_catchment_area) REFERENCES tww_od.catchment_area(obj_id) ON UPDATE CASCADE ON DELETE CASCADE;
 ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN fk_wastewater_structure varchar(16);
-ALTER TABLE tww_od.wastewater_structure_symbol ADD CONSTRAINT rel_wastewater_structure_symbol_wastewater_structure FOREIGN KEY (fk_wastewater_structure) REFERENCES tww_od.wastewater_structure(obj_id) ON UPDATE CASCADE ON DELETE CASCADE;
+ALTER TABLE tww_od.wastewater_structure_symbol ADD CONSTRAINT rel_wastewater_structure_symbol_wastewater_structure FOREIGN KEY (fk_wastewater_structure) REFERENCES tww_od.wastewater_structure(obj_id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 
 ------------ Text and Symbol Tables Values ----------- ;
 CREATE TABLE tww_vl.wastewater_structure_text_plantype () INHERITS (tww_vl.value_list_base);
@@ -5149,7 +5150,7 @@ ALTER TABLE tww_od.farm ADD CONSTRAINT rel_od_farm_fk_dataprovider FOREIGN KEY (
 
 ------ Indexes on identifiers
 
- CREATE UNIQUE INDEX in_od_organisation_identifier ON tww_od.organisation USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
+ CREATE UNIQUE INDEX in_od_organisation_identifier ON tww_od.organisation USING btree (identifier ASC NULLS LAST, uid ASC NULLS LAST, organisation_type ASC NULLS LAST);
  CREATE UNIQUE INDEX in_od_measure_identifier ON tww_od.measure USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
  CREATE UNIQUE INDEX in_od_waste_water_treatment_plant_identifier ON tww_od.waste_water_treatment_plant USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
  CREATE UNIQUE INDEX in_od_wastewater_structure_identifier ON tww_od.wastewater_structure USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
@@ -5179,3 +5180,8 @@ ALTER TABLE tww_od.farm ADD CONSTRAINT rel_od_farm_fk_dataprovider FOREIGN KEY (
  CREATE UNIQUE INDEX in_od_hydraulic_char_data_identifier ON tww_od.hydraulic_char_data USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
  CREATE UNIQUE INDEX in_od_catchment_area_totals_identifier ON tww_od.catchment_area_totals USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
  CREATE UNIQUE INDEX in_od_building_group_identifier ON tww_od.building_group USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
+
+-- For m:n relation tables to avoid duplicate entries
+CREATE UNIQUE INDEX in_re_maintenance_event_wastewater_structure_fks ON tww_od.re_maintenance_event_wastewater_structure USING btree (fk_maintenance_event ASC NULLS LAST, fk_wastewater_structure ASC NULLS LAST);
+
+CREATE UNIQUE INDEX in_re_building_group_disposal_fks ON tww_od.re_building_group_disposal USING btree (fk_building_group ASC NULLS LAST, fk_disposal ASC NULLS LAST);
