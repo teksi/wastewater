@@ -501,9 +501,9 @@ class InterlisExporterToIntermediateSchema:
         self._check_for_stop()
 
     def _export_ag64(self):
-        logger.info("Exporting TWW.organisation -> ABWASSER.organisation")
-        self._export_organisation()
-        self._check_for_stop()
+        #logger.info("Exporting TWW.organisation -> ABWASSER.organisation")
+        #self._export_organisation()
+        #self._check_for_stop()
 
         logger.info("Exporting TWW.gepknoten -> ABWASSER.infrastrukturknoten")
         self._export_infrastrukturknoten()
@@ -520,9 +520,9 @@ class InterlisExporterToIntermediateSchema:
         self._check_for_stop()
 
     def _export_ag96(self):
-        logger.info("Exporting TWW.organisation -> ABWASSER.organisation")
-        self._export_organisation()
-        self._check_for_stop()
+        #logger.info("Exporting TWW.organisation -> ABWASSER.organisation")
+        #self._export_organisation()
+        #self._check_for_stop()
 
         logger.info("Exporting TWW.gepmassnahme -> ABWASSER.gepmassnahme")
         self._export_gepmassnahme()
@@ -563,44 +563,19 @@ class InterlisExporterToIntermediateSchema:
         self._check_for_stop()
 
     def _export_organisation(self):
-        if self.is_ag_xx_model:
-            queryModel = self.model_classes_tww_app
-        else:
-            queryModel = self.model_classes_tww_od
-        query = self.tww_session.query(queryModel.organisation)
+        query = self.tww_session.query(self.model_classes_tww_od.organisation)
         for row in query:
-            organisation = None
-            if self.is_ag_xx_model:
-                organisation = self.model_classes_interlis.organisation(
-                    # FIELDS TO MAP TO ABWASSER.organisation
-                    t_id=self.get_tid(row),
-                    t_ili_tid=row.obj_id,
-                    obj_id=row.obj_id,
-                    auid=row.uid,
-                    bezeichnung=self.truncate(
-                        self.emptystr_to_null(row.bezeichnung), 80
-                    ),
-                    kurzbezeichnung=self.truncate(
-                        self.emptystr_to_null(row.kurzbezeichnung), 12
-                    ),
-                    datenbewirtschafter_kt=row.datenbewirtschafter_kt,
-                    organisationtyp=row.organisationtyp,
-                    letzte_aenderung=row.letzte_aenderung,
-                    bemerkung=self.truncate(self.emptystr_to_null(row.bemerkung), 80),
-                )
-                self.map_tid_ag_xx(row.obj_id, organisation.t_id)
-            else:
-                organisation = self.model_classes_interlis.organisation(
-                    # FIELDS TO MAP TO ABWASSER.organisation
-                    # --- sia405_baseclass ---
-                    **self.sia_405_base_common(row, "organisation"),
-                    # --- organisation ---
-                    auid=row.uid,
-                    bemerkung=self.truncate(self.emptystr_to_null(row.remark), 255),
-                    bezeichnung=self.null_to_emptystr(row.identifier),
-                    organisationstyp=self.get_vl(row.organisation_type__REL),
-                    astatus=self.get_vl(row.status__REL),
-                )
+            organisation = self.model_classes_interlis.organisation(
+                # FIELDS TO MAP TO ABWASSER.organisation
+                # --- sia405_baseclass ---
+                **self.sia_405_base_common(row, "organisation"),
+                # --- organisation ---
+                auid=row.uid,
+                bemerkung=self.truncate(self.emptystr_to_null(row.remark), 255),
+                bezeichnung=self.null_to_emptystr(row.identifier),
+                organisationstyp=self.get_vl(row.organisation_type__REL),
+                astatus=self.get_vl(row.status__REL),
+            )
             self.abwasser_session.add(organisation)
             print(".", end="")
         logger.info("done")
