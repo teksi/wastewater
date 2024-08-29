@@ -121,6 +121,26 @@ You can check the protocol window and the text logs for further details.
 
 There are four different log files:
 
+.. list-table:: Title
+   :widths: 25 25 50
+   :header-rows: 1
+
+   * - Heading Export step
+     - Heading Description
+     - Heading Log File
+   * - Row 1, Export schema
+     - Row 1, Creation of export schema with ili2db and the selected INTERLIS model file
+     - Row 1, ili2pg-schemaimport.log
+   * - Row 2, Data export intermediatary schema
+     - Row 2, column 2
+     - Row 2, column 3
+   * - Row 3, Data export to xtf
+     - Row 3, column 2
+     - Row 3, column 3
+   * - Row 4, INTERLIS validation
+     - Row 4, column 2
+     - Row 4, column 3
+
 
 |Export step                         |Description                                                                                   | Log File                     |
 |------------------------------------|:---------------------------------------------------------------------------------------------|:-----------------------------|
