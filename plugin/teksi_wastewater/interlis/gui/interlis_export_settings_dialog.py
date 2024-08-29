@@ -4,6 +4,7 @@ from collections import OrderedDict
 from qgis.core import Qgis, QgsSettings
 from qgis.PyQt.QtWidgets import QCheckBox, QDialog
 from qgis.PyQt.uic import loadUi
+from qgis.PyQt.QtCore import QSettings
 
 from ...utils.twwlayermanager import TwwLayerManager
 from .. import config
@@ -28,6 +29,16 @@ class InterlisExportSettingsDialog(QDialog):
             config.MODEL_NAME_VSA_KEK,
             [config.MODEL_NAME_VSA_KEK, config.MODEL_NAME_SIA405_ABWASSER],
         )
+        
+        ag6496extension = QSettings().value("/TWW/AGxxExtensions", False)
+        # QGIS loads value as string on application restart
+        if ag6496extension and ag6496extension != "false":
+            self.export_model_selection_comboBox.addItem(
+                config.MODEL_NAME_AG96, [config.MODEL_NAME_AG96]
+            )
+            self.export_model_selection_comboBox.addItem(
+                config.MODEL_NAME_AG64, [config.MODEL_NAME_AG64]
+            )
 
         # Fill orientation selection combobox
         self.export_orientation_selection_comboBox.clear()
