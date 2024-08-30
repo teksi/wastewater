@@ -120,7 +120,7 @@ BEGIN
 		WHERE
 		p.proname  LIKE 'modification_%'
 		AND p.pronamespace::regnamespace::text = 'tww_app'
-		
+
 		AND t.tgenabled = 'D';
   RETURN _disabled_count=0;
 END;

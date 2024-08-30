@@ -7,5 +7,3 @@ CREATE TABLE tww_od.default_values
 );
 
  CREATE UNIQUE INDEX in_od_default_values_fieldname ON tww_od.default_values USING btree (fieldname ASC NULLS LAST);
-
-
