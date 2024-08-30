@@ -150,29 +150,28 @@ class TwwSettingsDialog(QDialog, DIALOG_UI):
                 
     def execAG64LastModificationCombobox(self):
         idx = self.mCbAg6496LastModification.currentIndex()
-        if self.mCbAg6496Extension.isChecked(): # use if clause to not trigger any db calls on startup unless necessary
-            conn_exists = self._configure_database_connection_config_from_tww_layer()
-            if conn_exists:
-                pgconf = DatabaseUtils.get_pgconf()
-                table_exists = DatabaseUtils.fetchone("""SELECT EXISTS( SELECT 1 FROM information_schema.tables 
-                        WHERE  table_schema = 'tww_cfg'
-                        AND table_name   = 'agxx_last_modification_updater');""")
-                if table_exists[0]:
-                    agxx_last_mod_setting = DatabaseUtils.fetchone(f"""
-                    SELECT ag_update_type 
-                    FROM tww_cfg.agxx_last_modification_updater
-                    WHERE username='{pgconf["user"]}';
-                    """)
-                    if agxx_last_mod_setting:
-                        DatabaseUtils.execute(f"""
-                        UPDATE tww_cfg.agxx_last_modification_updater 
-                        SET ag_update_type = '{self.mCbAg6496LastModification.currentText()}'
-                        WHERE username ='{pgconf["user"]}';""")
-                    else:
-                        DatabaseUtils.execute(f"""
-                        INSERT INTO tww_cfg.agxx_last_modification_updater (username, ag_update_type)
-                        VALUES ('{pgconf["user"]}','{self.mCbAg6496LastModification.currentText()}')
-                        ;""")
+        conn_exists = self._configure_database_connection_config_from_tww_layer()
+        if conn_exists:
+            pgconf = DatabaseUtils.get_pgconf()
+            table_exists = DatabaseUtils.fetchone("""SELECT EXISTS( SELECT 1 FROM information_schema.tables 
+                    WHERE  table_schema = 'tww_cfg'
+                    AND table_name   = 'agxx_last_modification_updater');""")
+            if table_exists[0]:
+                agxx_last_mod_setting = DatabaseUtils.fetchone(f"""
+                SELECT ag_update_type 
+                FROM tww_cfg.agxx_last_modification_updater
+                WHERE username='{pgconf["user"]}';
+                """)
+                if agxx_last_mod_setting:
+                    DatabaseUtils.execute(f"""
+                    UPDATE tww_cfg.agxx_last_modification_updater 
+                    SET ag_update_type = '{self.mCbAg6496LastModification.currentText()}'
+                    WHERE username ='{pgconf["user"]}';""")
+                else:
+                    DatabaseUtils.execute(f"""
+                    INSERT INTO tww_cfg.agxx_last_modification_updater (username, ag_update_type)
+                    VALUES ('{pgconf["user"]}','{self.mCbAg6496LastModification.currentText()}')
+                    ;""")
 
 
     @pyqtSlot()
