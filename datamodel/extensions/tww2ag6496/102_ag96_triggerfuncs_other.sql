@@ -774,15 +774,13 @@ BEGIN
 	IF NOT FOUND THEN
 		INSERT INTO tww_od.hydraulic_char_data
 		(
-		  obj_id
-		, remark
+		  remark
 		, fk_wastewater_node
 		, status
 		)
 		VALUES
 		(
-		  tww_sys.generate_oid('tww_od','hydraulic_char_data')
-		, NEW.bemerkung_gep
+		  NEW.bemerkung_gep
 		, NEW.sonderbauwerk_ref
 		, 6372
 		)

@@ -1,7 +1,7 @@
 ---------------------------------
 -------- Metainformation --------
 ---------------------------------
-CREATE OR REPLACE FUNCTION tww_sys.update_last_modified_agxx()
+CREATE OR REPLACE FUNCTION tww_app.modification_last_modified_agxx()
 RETURNS trigger AS
 $BODY$
   DECLARE
@@ -27,8 +27,6 @@ $BODY$
 $BODY$
 LANGUAGE plpgsql;
 
-DROP TRIGGER IF EXISTS update_last_modified_agxx_networkelement ON tww_od.wastewater_networkelement;		
-	
 	
 CREATE OR REPLACE FUNCTION tww_app.ft_agxx_update_catchment_area_totals_geoms
   (_obj_id varchar(16),_all boolean DEFAULT FALSE)

@@ -146,11 +146,11 @@ CREATE TRIGGER update_last_modified_agxx_wastewater_networkelement
     BEFORE INSERT OR UPDATE 
     ON tww_od.wastewater_networkelement
     FOR EACH ROW
-    EXECUTE FUNCTION tww_sys.update_last_modified_agxx();
+    EXECUTE FUNCTION tww_app.modification_last_modified_agxx();
 
 DROP TRIGGER IF EXISTS update_last_modified_agxx_overflow ON tww_od.overflow;		
 CREATE TRIGGER update_last_modified_agxx_overflow
     BEFORE INSERT OR UPDATE 
     ON tww_od.overflow
     FOR EACH ROW
-    EXECUTE FUNCTION tww_sys.update_last_modified_agxx();
+    EXECUTE FUNCTION tww_app.modification_last_modified_agxx();
