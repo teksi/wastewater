@@ -8,7 +8,8 @@ General
 ^^^^^^^^^^^^^
 
 The TWW plugin includes an INTERLIS import/export feature.
-It is currently capable of importing and exporting the following models::
+It is currently capable of importing and exporting the following models:
+
 * SIA405_ABWASSER_2020_1_LV95
 * DSS_2020_1_LV95
 * VSA_KEK_2020_1_LV95

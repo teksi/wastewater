@@ -545,18 +545,18 @@
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
-        "tableName": "tank_emptying",
-        "tableFileName": "tank_emptying",
+        "tableName": "waste_water_treatment_plant",
+        "tableFileName": "waste_water_treatment_plant",
         "tableType": "Table",
-        "keyClass": "foreignKey",
-        "keyTitle": "Foreign Key",
-        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>kind",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "wwtp_number",
         "type": "int4",
         "length": 10,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": ""
+        "comments": "<p>WWTP Number from Federal Office for the Environment (FOEN) / ARA-Nummer gemäss Bundesamt für Umwelt (BAFU) / Numéro de la STEP selon l&rsquo;Office fédéral de l&rsquo;environnement (OFEV)<\/p>"
     },
     {
         "tableName": "waste_water_treatment",
@@ -741,18 +741,18 @@
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
-        "tableName": "tank_emptying",
-        "tableFileName": "tank_emptying",
+        "tableName": "waste_water_treatment_plant",
+        "tableFileName": "waste_water_treatment_plant",
         "tableType": "Table",
         "keyClass": "foreignKey",
         "keyTitle": "Foreign Key",
-        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>fk_overflow",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>fk_provider",
         "type": "varchar",
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "null",
-        "comments": ""
+        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
         "tableName": "catchment_area",
@@ -1133,18 +1133,18 @@
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
-        "tableName": "waste_water_treatment_plant",
-        "tableFileName": "waste_water_treatment_plant",
+        "tableName": "tank_emptying",
+        "tableFileName": "tank_emptying",
         "tableType": "Table",
         "keyClass": "",
         "keyTitle": "",
-        "name": "elimination_cod",
-        "type": "numeric",
+        "name": "year_of_replacement",
+        "type": "int2",
         "length": 5,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>Dimensioning value elimination rate in percent / Dimensionierungswert Eliminationsrate in % / Valeur de dimensionnement, taux d&rsquo;élimination en %<\/p>"
+        "comments": "<p>yyy_Jahr in dem die Lebensdauer der elektromechanischen Ausrüstung voraussichtlich abläuft / Jahr in dem die Lebensdauer der elektromechanischen Ausrüstung voraussichtlich abläuft / Année pour laquelle on prévoit que la durée de vie de l&rsquo;équipement soit écoulée<\/p>"
     },
     {
         "tableName": "manhole",
@@ -1264,13 +1264,13 @@
         "tableType": "Table",
         "keyClass": "",
         "keyTitle": "",
-        "name": "nh4",
+        "name": "cod",
         "type": "int2",
         "length": 5,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>yyy_Dimensioning value Ablauf Vorklärung. NH4 <a href=\"./null\">gNH4/m3<\/a> / Dimensionierungswert Ablauf Vorklärung. NH4 <a href=\"./null\">gNH4/m3<\/a> / Valeur de dimensionnement, NH4 à la sortie du décanteur primaire. NH4 <a href=\"./null\">gNH4/m3<\/a><\/p>"
+        "comments": "<p>Abbreviation for chemical oxygen demand (COD). / Abkürzung für den chemischen Sauerstoffbedarf. Die englische Abkürzung lautet COD. Mit einem starken Oxydationsmittel wird mehr oder weniger erfolgreich versucht, die organischen Verbindungen der Abwasserprobe zu CO2 und H2O zu oxydieren. Als Oxydationsmittel eignen sich Chromverbindungen verschiedener Wertigkeit (z.B. Kalium-Dichromat K2Cr2O7) und Manganverbindungen (z.B. KmnO4), wobei man unter dem CSB im Allgemeinen den chemischen Sauerstoffbedarf nach der Kalium-Dichromat-Methode) versteht. Das Resultat kann als Chromatverbrauch oder Kaliumpermanaganatverbrauch ausgedrückt werden (z.B. mg CrO4 2-/l oder mg KMnO4/l). Im allgemeinen ergibt die Kalium-Dichromat-Methode höhere Werte als mit Kaliumpermanganat. Das Verhältnis des CSB zum BSB5 gilt als Hinweis auf die Abbaubarkeit der organischen Abwasserinhaltsstoffe. Leicht abbaubare häusliche Abwässer haben einen DSB/BSB5-Verhältnis von 1 bis 1,5. Schweres abbaubares, industrielles Abwasser ein Verhältnis von über 2. (arb) / Elle représente la teneur totale de l\u2019eau en matières organiques, qu\u2019elles soient ou non biodégradables. Le principe repose sur la recherche d\u2019un besoin d\u2019oxygène de l\u2019échantillon pour dégrader la matière organique. Mais dans ce cas, l\u2019oxygène est fourni par un oxydant puissant (le bichromate de potassium). La réaction (Afnor T90-101) est pratiquée à chaud (150°C) en présence d\u2019acide sulfurique, et après 2 h on mesure la quantité d\u2019oxydant restant. Là encore, le résultat s\u2019exprime en milligrammes d\u2019O2 par litre d\u2019effluent.  Le rapport entre DCO/DBO5 est d\u2019environ 2 à 2.7 pour une eau usée domestique ; au-delà, il y a vraisemblablement présence d\u2019eaux industrielles résiduaires.<\/p>"
     },
     {
         "tableName": "catchment_area",
@@ -1651,18 +1651,18 @@
         "comments": "<p>Dimensioning value / Dimensionierungswert / Valeur de dimensionnement<\/p>"
     },
     {
-        "tableName": "waste_water_treatment_plant",
-        "tableFileName": "waste_water_treatment_plant",
+        "tableName": "tank_emptying",
+        "tableFileName": "tank_emptying",
         "tableType": "Table",
-        "keyClass": "indexedColumn",
-        "keyTitle": "Indexed",
-        "name": "<i class='fa fa-sitemap fa-rotate-120' style='padding-right: 5px;'><\/i>area_geometry",
-        "type": "geometry",
-        "length": 2147483647,
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "flow",
+        "type": "numeric",
+        "length": 9,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>yyy_Geometrie des Einzugsgebiets der ARA (Zuständigkeitsgebiet) als zusammenhängende Fläche, die sich in der Regel an den Gemeindegrenzen orientiert. Ein Einzugsgebiet setzt sich aus einer oder mehreren Gemeindeflächen oder Teilflächen von Gemeinden zusammen. Matching MGDM 134.5 Einzugsgebiet.Gebiet / Geometrie des Einzugsgebiets der ARA (Zuständigkeitsgebiet) als zusammenhängende Fläche, die sich in der Regel an den Gemeindegrenzen orientiert. Ein Einzugsgebiet setzt sich aus einer oder mehreren Gemeindeflächen oder Teilflächen von Gemeinden zusammen. Matching MGDM 134.5 Einzugsgebiet.Gebiet / Géométrie du bassin versant de la STEP (domaine de compétence) comme surface d\u2019un seul tenant, qui se base généralement sur les frontières communales. Un bassin versant se compose d\u2019une ou de plusieurs surfaces communales ou surfaces partielles communales. Matching MGDM 134.5 Einzugsgebiet.Gebiet<\/p>"
+        "comments": "<p>yyy_Bei mehreren Pumpen / Schiebern muss die maximale Gesamtmenge erfasst werden. / Bei mehreren Pumpen / Schiebern muss die maximale Gesamtmenge erfasst werden. / Lors de présence de plusieurs pompes/vannes, indiquer le débit total.<\/p>"
     },
     {
         "tableName": "cover",
@@ -2533,18 +2533,18 @@
         "comments": ""
     },
     {
-        "tableName": "waste_water_treatment_plant",
-        "tableFileName": "waste_water_treatment_plant",
+        "tableName": "tank_emptying",
+        "tableFileName": "tank_emptying",
         "tableType": "Table",
-        "keyClass": "",
-        "keyTitle": "",
-        "name": "cod",
-        "type": "int2",
-        "length": 5,
+        "keyClass": "foreignKey",
+        "keyTitle": "Foreign Key",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>kind",
+        "type": "int4",
+        "length": 10,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>Abbreviation for chemical oxygen demand (COD). / Abkürzung für den chemischen Sauerstoffbedarf. Die englische Abkürzung lautet COD. Mit einem starken Oxydationsmittel wird mehr oder weniger erfolgreich versucht, die organischen Verbindungen der Abwasserprobe zu CO2 und H2O zu oxydieren. Als Oxydationsmittel eignen sich Chromverbindungen verschiedener Wertigkeit (z.B. Kalium-Dichromat K2Cr2O7) und Manganverbindungen (z.B. KmnO4), wobei man unter dem CSB im Allgemeinen den chemischen Sauerstoffbedarf nach der Kalium-Dichromat-Methode) versteht. Das Resultat kann als Chromatverbrauch oder Kaliumpermanaganatverbrauch ausgedrückt werden (z.B. mg CrO4 2-/l oder mg KMnO4/l). Im allgemeinen ergibt die Kalium-Dichromat-Methode höhere Werte als mit Kaliumpermanganat. Das Verhältnis des CSB zum BSB5 gilt als Hinweis auf die Abbaubarkeit der organischen Abwasserinhaltsstoffe. Leicht abbaubare häusliche Abwässer haben einen DSB/BSB5-Verhältnis von 1 bis 1,5. Schweres abbaubares, industrielles Abwasser ein Verhältnis von über 2. (arb) / Elle représente la teneur totale de l\u2019eau en matières organiques, qu\u2019elles soient ou non biodégradables. Le principe repose sur la recherche d\u2019un besoin d\u2019oxygène de l\u2019échantillon pour dégrader la matière organique. Mais dans ce cas, l\u2019oxygène est fourni par un oxydant puissant (le bichromate de potassium). La réaction (Afnor T90-101) est pratiquée à chaud (150°C) en présence d\u2019acide sulfurique, et après 2 h on mesure la quantité d\u2019oxydant restant. Là encore, le résultat s\u2019exprime en milligrammes d\u2019O2 par litre d\u2019effluent.  Le rapport entre DCO/DBO5 est d\u2019environ 2 à 2.7 pour une eau usée domestique ; au-delà, il y a vraisemblablement présence d\u2019eaux industrielles résiduaires.<\/p>"
+        "comments": ""
     },
     {
         "tableName": "wwtp_energy_use",
@@ -2659,18 +2659,18 @@
         "comments": "<p>General remarks / Allgemeine Bemerkungen / Remarques générales<\/p>"
     },
     {
-        "tableName": "tank_emptying",
-        "tableFileName": "tank_emptying",
+        "tableName": "waste_water_treatment_plant",
+        "tableFileName": "waste_water_treatment_plant",
         "tableType": "Table",
         "keyClass": "",
         "keyTitle": "",
-        "name": "year_of_replacement",
-        "type": "int2",
-        "length": 5,
+        "name": "last_modification",
+        "type": "timestamp",
+        "length": 29,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "null",
-        "comments": "<p>yyy_Jahr in dem die Lebensdauer der elektromechanischen Ausrüstung voraussichtlich abläuft / Jahr in dem die Lebensdauer der elektromechanischen Ausrüstung voraussichtlich abläuft / Année pour laquelle on prévoit que la durée de vie de l&rsquo;équipement soit écoulée<\/p>"
+        "defaultValue": "now()",
+        "comments": "<p>Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE<\/p>"
     },
     {
         "tableName": "default_values",
@@ -2956,15 +2956,15 @@
         "tableName": "waste_water_treatment_plant",
         "tableFileName": "waste_water_treatment_plant",
         "tableType": "Table",
-        "keyClass": "foreignKey",
-        "keyTitle": "Foreign Key",
-        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>fk_dataowner",
-        "type": "varchar",
-        "length": 16,
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "population_connected",
+        "type": "int4",
+        "length": 10,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
-        "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
+        "defaultValue": "null",
+        "comments": "<p>/ VSA-Kennzahl &ldquo;Anzahl angeschlossene Einwohner&rdquo; <a href=\"./null\">E<\/a>, Matching MGDM 134.5 EinwAngeschlossen / Indicateur du VSA « Nombre d\u2019habitants raccordés » <a href=\"./null\">H<\/a>, Matching MGDM 134.5 EinwAngeschlossen<\/p>"
     },
     {
         "tableName": "catchment_area",
@@ -4283,18 +4283,18 @@
         "comments": "<p>Location of the building group (can be taken from data in the Eidg. Gebäude und Wohnungsregister BAU/GWR) / Lage der Gebäudegruppe (kann aus Daten Eidg. Gebäude und Wohnungsregister BAU/GWR übernommen werden) / Localisation du groupe de bâtiments (peut être repris des données du Registre fédéral des bâtiments et des logements (RegBL))<\/p>"
     },
     {
-        "tableName": "tank_emptying",
-        "tableFileName": "tank_emptying",
+        "tableName": "waste_water_treatment_plant",
+        "tableFileName": "waste_water_treatment_plant",
         "tableType": "Table",
         "keyClass": "foreignKey",
         "keyTitle": "Foreign Key",
-        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>fk_throttle_shut_off_unit",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>fk_dataowner",
         "type": "varchar",
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "null",
-        "comments": ""
+        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
         "tableName": "building_group",
@@ -4311,18 +4311,18 @@
         "comments": "<p>General remarks / Allgemeine Bemerkungen / Remarques générales<\/p>"
     },
     {
-        "tableName": "tank_emptying",
-        "tableFileName": "tank_emptying",
+        "tableName": "waste_water_treatment_plant",
+        "tableFileName": "waste_water_treatment_plant",
         "tableType": "Table",
         "keyClass": "",
         "keyTitle": "",
-        "name": "gross_costs",
-        "type": "numeric",
-        "length": 10,
+        "name": "start_year",
+        "type": "int2",
+        "length": 5,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>Gross costs of electromechanical equipment of tank emptying / Brutto Erstellungskosten der elektromechanischen Ausrüstung für die Beckenentleerung / Coûts bruts des équipements électromécaniques vidange de bassins<\/p>"
+        "comments": "<p>Start of operation (year) / Jahr der Inbetriebnahme / Année de la mise en exploitation<\/p>"
     },
     {
         "tableName": "disposal",
@@ -5140,15 +5140,15 @@
         "tableName": "waste_water_treatment_plant",
         "tableFileName": "waste_water_treatment_plant",
         "tableType": "Table",
-        "keyClass": "",
-        "keyTitle": "",
-        "name": "elimination_p",
-        "type": "numeric",
-        "length": 5,
-        "nullable": "√",
+        "keyClass": "primaryKey",
+        "keyTitle": "Primary Key",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>obj_id",
+        "type": "varchar",
+        "length": 16,
+        "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "null",
-        "comments": "<p>Dimensioning value elimination rate in percent / Dimensionierungswert Eliminationsrate in % / Valeur de dimensionnement, taux d&rsquo;élimination en %<\/p>"
+        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'waste_water_treatment_plant'::text)",
+        "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
         "tableName": "import_manhole_quarantine",
@@ -5730,13 +5730,13 @@
         "tableType": "Table",
         "keyClass": "",
         "keyTitle": "",
-        "name": "kind",
-        "type": "text",
-        "length": 2147483647,
+        "name": "bod5",
+        "type": "int2",
+        "length": 5,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": ""
+        "comments": "<p>5 day biochemical oxygen demand measured at a temperatur of 20 degree celsius. YYY / Biochemischer Sauerstoffbedarf nach 5 Tagen Messzeit und bei einer Temperatur vom 20 Grad Celsius. Er stellt den Verbrauch an gelöstem Sauerstoff durch die Lebensvorgänge der im Wasser oder Abwasser enthaltenen Mikroorganismen (Bakterienprotozoen) beim  Abbau organischer Substanzen dar. Der Wert stellt eine wichtige Grösse zur Beurteilung der  aerob abbaufähigen Substanzen dar. Der BSB5 wird in den Einheiten mg/l oder g/m3 angegeben. Ausser dem BSB5 wird der biochemische Sauerstoffbedarf auch an 20 Tagen und mehr bestimmt. Dann spricht man z.B. vom BSB20 usw. Siehe Sapromat, Winklerprobe, Verdünnungsmethode. (arb) / Elle représente la quantité d\u2019oxygène dépensée par les phénomènes d\u2019oxydation chimique, d\u2019une part, et, d\u2019autre part, la dégradation des matières organiques par voie aérobie, nécessaire à la destruction des composés organiques. Elle s\u2019exprime en milligrammes d\u2019O2 consommé par litre d\u2019effluent. Par convention, on retient le résultat de la consommation d\u2019oxygène à 20° C au bout de 5 jours, ce qui donne l\u2019appellation DBO5. (d\u2019après M. Satin, B. Selmi, Guide technique de l\u2019assainissement).<\/p>"
     },
     {
         "tableName": "solids_retention",
@@ -6570,13 +6570,13 @@
         "tableType": "Table",
         "keyClass": "",
         "keyTitle": "",
-        "name": "population_total",
-        "type": "int4",
-        "length": 10,
+        "name": "elimination_nh4",
+        "type": "numeric",
+        "length": 5,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>/ VSA-Kennzahl &ldquo;Anzahl Einwohner Total&rdquo; <a href=\"./null\">E<\/a>, Matching MGDM 134.5 EinwAnz / Indicateur du VSA « Nombre total d\u2019habitants » <a href=\"./null\">H<\/a>, Matching MGDM 134.5 EinwAnz<\/p>"
+        "comments": "<p>Dimensioning value elimination rate in percent / Dimensionierungswert: Eliminationsrate in % / Valeur de dimensionnement, taux d&rsquo;élimination en %<\/p>"
     },
     {
         "tableName": "import_manhole_quarantine",
@@ -7307,18 +7307,18 @@
         "comments": "<p>yyy_Jahr in dem die Lebensdauer der elektromechanischen Ausrüstung voraussichtlich abläuft / Jahr in dem die Lebensdauer der elektromechanischen Ausrüstung voraussichtlich abläuft / Année pour laquelle on prévoit que la durée de vie de l&rsquo;équipement soit écoulée<\/p>"
     },
     {
-        "tableName": "waste_water_treatment_plant",
-        "tableFileName": "waste_water_treatment_plant",
+        "tableName": "tank_emptying",
+        "tableFileName": "tank_emptying",
         "tableType": "Table",
         "keyClass": "",
         "keyTitle": "",
-        "name": "bod5",
-        "type": "int2",
-        "length": 5,
+        "name": "gross_costs",
+        "type": "numeric",
+        "length": 10,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>5 day biochemical oxygen demand measured at a temperatur of 20 degree celsius. YYY / Biochemischer Sauerstoffbedarf nach 5 Tagen Messzeit und bei einer Temperatur vom 20 Grad Celsius. Er stellt den Verbrauch an gelöstem Sauerstoff durch die Lebensvorgänge der im Wasser oder Abwasser enthaltenen Mikroorganismen (Bakterienprotozoen) beim  Abbau organischer Substanzen dar. Der Wert stellt eine wichtige Grösse zur Beurteilung der  aerob abbaufähigen Substanzen dar. Der BSB5 wird in den Einheiten mg/l oder g/m3 angegeben. Ausser dem BSB5 wird der biochemische Sauerstoffbedarf auch an 20 Tagen und mehr bestimmt. Dann spricht man z.B. vom BSB20 usw. Siehe Sapromat, Winklerprobe, Verdünnungsmethode. (arb) / Elle représente la quantité d\u2019oxygène dépensée par les phénomènes d\u2019oxydation chimique, d\u2019une part, et, d\u2019autre part, la dégradation des matières organiques par voie aérobie, nécessaire à la destruction des composés organiques. Elle s\u2019exprime en milligrammes d\u2019O2 consommé par litre d\u2019effluent. Par convention, on retient le résultat de la consommation d\u2019oxygène à 20° C au bout de 5 jours, ce qui donne l\u2019appellation DBO5. (d\u2019après M. Satin, B. Selmi, Guide technique de l\u2019assainissement).<\/p>"
+        "comments": "<p>Gross costs of electromechanical equipment of tank emptying / Brutto Erstellungskosten der elektromechanischen Ausrüstung für die Beckenentleerung / Coûts bruts des équipements électromécaniques vidange de bassins<\/p>"
     },
     {
         "tableName": "examination",
@@ -7956,13 +7956,13 @@
         "tableType": "Table",
         "keyClass": "indexedColumn",
         "keyTitle": "Indexed",
-        "name": "<i class='fa fa-sitemap fa-rotate-120' style='padding-right: 5px;'><\/i>situation_geometry",
-        "type": "geometry",
+        "name": "<i class='fa fa-sitemap fa-rotate-120' style='padding-right: 5px;'><\/i>identifier",
+        "type": "text",
         "length": 2147483647,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>yyy_Standort der ARA, Mitte des Geländes / Standort der ARA, Mitte des Geländes / Site de la STEP, milieu du site<\/p>"
+        "comments": "<p>yyy_Bezeichnung der Abwasserreinigungsanlage gemäss Liste BAFU / Bezeichnung der Abwasserreinigungsanlage gemäss Liste BAFU / Désignation de la STEP selon la liste de l&rsquo;Office fédéral de l&rsquo;environnement (OFEV)<\/p>"
     },
     {
         "tableName": "zone",
@@ -8152,13 +8152,13 @@
         "tableType": "Table",
         "keyClass": "",
         "keyTitle": "",
-        "name": "remark",
-        "type": "text",
-        "length": 2147483647,
+        "name": "elimination_p",
+        "type": "numeric",
+        "length": 5,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>General remarks / Allgemeine Bemerkungen / Remarques générales<\/p>"
+        "comments": "<p>Dimensioning value elimination rate in percent / Dimensionierungswert Eliminationsrate in % / Valeur de dimensionnement, taux d&rsquo;élimination en %<\/p>"
     },
     {
         "tableName": "data_media",
@@ -8262,15 +8262,15 @@
         "tableName": "waste_water_treatment_plant",
         "tableFileName": "waste_water_treatment_plant",
         "tableType": "Table",
-        "keyClass": "",
-        "keyTitle": "",
-        "name": "last_modification",
-        "type": "timestamp",
-        "length": 29,
+        "keyClass": "foreignKey",
+        "keyTitle": "Foreign Key",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>operator_type",
+        "type": "int4",
+        "length": 10,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "now()",
-        "comments": "<p>Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE<\/p>"
+        "defaultValue": "null",
+        "comments": "<p>yyy_Organisationsform der betreibenden Organisation / Organisationsform der betreibenden Organisation / Forme organisationnelle de l\u2019exploitant<\/p>"
     },
     {
         "tableName": "wastewater_structure",
@@ -8595,18 +8595,18 @@
         "comments": ""
     },
     {
-        "tableName": "waste_water_treatment_plant",
-        "tableFileName": "waste_water_treatment_plant",
+        "tableName": "tank_emptying",
+        "tableFileName": "tank_emptying",
         "tableType": "Table",
-        "keyClass": "",
-        "keyTitle": "",
-        "name": "elimination_n",
-        "type": "numeric",
-        "length": 5,
+        "keyClass": "foreignKey",
+        "keyTitle": "Foreign Key",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>fk_throttle_shut_off_unit",
+        "type": "varchar",
+        "length": 16,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>Denitrification at at waster water temperature of below 10 degree celsius / Denitrifikation bei einer Abwassertemperatur von &gt; 10 Grad / Dénitrification à une température des eaux supérieure à 10°C<\/p>"
+        "comments": ""
     },
     {
         "tableName": "measurement_series",
@@ -9118,13 +9118,13 @@
         "tableType": "Table",
         "keyClass": "indexedColumn",
         "keyTitle": "Indexed",
-        "name": "<i class='fa fa-sitemap fa-rotate-120' style='padding-right: 5px;'><\/i>identifier",
-        "type": "text",
+        "name": "<i class='fa fa-sitemap fa-rotate-120' style='padding-right: 5px;'><\/i>area_geometry",
+        "type": "geometry",
         "length": 2147483647,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>yyy_Bezeichnung der Abwasserreinigungsanlage gemäss Liste BAFU / Bezeichnung der Abwasserreinigungsanlage gemäss Liste BAFU / Désignation de la STEP selon la liste de l&rsquo;Office fédéral de l&rsquo;environnement (OFEV)<\/p>"
+        "comments": "<p>yyy_Geometrie des Einzugsgebiets der ARA (Zuständigkeitsgebiet) als zusammenhängende Fläche, die sich in der Regel an den Gemeindegrenzen orientiert. Ein Einzugsgebiet setzt sich aus einer oder mehreren Gemeindeflächen oder Teilflächen von Gemeinden zusammen. Matching MGDM 134.5 Einzugsgebiet.Gebiet / Geometrie des Einzugsgebiets der ARA (Zuständigkeitsgebiet) als zusammenhängende Fläche, die sich in der Regel an den Gemeindegrenzen orientiert. Ein Einzugsgebiet setzt sich aus einer oder mehreren Gemeindeflächen oder Teilflächen von Gemeinden zusammen. Matching MGDM 134.5 Einzugsgebiet.Gebiet / Géométrie du bassin versant de la STEP (domaine de compétence) comme surface d\u2019un seul tenant, qui se base généralement sur les frontières communales. Un bassin versant se compose d\u2019une ou de plusieurs surfaces communales ou surfaces partielles communales. Matching MGDM 134.5 Einzugsgebiet.Gebiet<\/p>"
     },
     {
         "tableName": "measurement_result",
@@ -9701,8 +9701,8 @@
         "comments": "<p>yyy_Status der Organisation, damit untergegangende Organisationen nicht einfach gelöscht werden müssen und kontrolliert werden kann, ob noch Beziehungen auf untergegangene Organisationen, z.B. bei Gemeindefusion oder Konkurs einer Firma vorhanden sind / Status der Organisation, damit untergegangende Organisationen nicht einfach gelöscht werden müssen und kontrolliert werden kann, ob noch Beziehungen auf untergegangene Organisationen, z.B. bei Gemeindefusion oder Konkurs einer Firma vorhanden sind / Statut de l&rsquo;organisation, pour que les organisations disparues ne soient pas simplement supprimées et qu&rsquo;il soit possible de contrôler s&rsquo;il existe encore des relations avec les organisations disparues, par exemple en cas de fusion de communes ou de faillite d&rsquo;une société<\/p>"
     },
     {
-        "tableName": "waste_water_treatment_plant",
-        "tableFileName": "waste_water_treatment_plant",
+        "tableName": "tank_emptying",
+        "tableFileName": "tank_emptying",
         "tableType": "Table",
         "keyClass": "primaryKey",
         "keyTitle": "Primary Key",
@@ -9711,7 +9711,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'waste_water_treatment_plant'::text)",
+        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'tank_emptying'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -9732,15 +9732,15 @@
         "tableName": "waste_water_treatment_plant",
         "tableFileName": "waste_water_treatment_plant",
         "tableType": "Table",
-        "keyClass": "foreignKey",
-        "keyTitle": "Foreign Key",
-        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>operator_type",
-        "type": "int4",
-        "length": 10,
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "elimination_cod",
+        "type": "numeric",
+        "length": 5,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>yyy_Organisationsform der betreibenden Organisation / Organisationsform der betreibenden Organisation / Forme organisationnelle de l\u2019exploitant<\/p>"
+        "comments": "<p>Dimensioning value elimination rate in percent / Dimensionierungswert Eliminationsrate in % / Valeur de dimensionnement, taux d&rsquo;élimination en %<\/p>"
     },
     {
         "tableName": "examination",
@@ -9790,13 +9790,13 @@
         "tableType": "Table",
         "keyClass": "",
         "keyTitle": "",
-        "name": "start_year",
-        "type": "int2",
-        "length": 5,
+        "name": "kind",
+        "type": "text",
+        "length": 2147483647,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>Start of operation (year) / Jahr der Inbetriebnahme / Année de la mise en exploitation<\/p>"
+        "comments": ""
     },
     {
         "tableName": "measure",
@@ -11302,13 +11302,13 @@
         "tableType": "Table",
         "keyClass": "",
         "keyTitle": "",
-        "name": "population_connected",
-        "type": "int4",
-        "length": 10,
+        "name": "elimination_n",
+        "type": "numeric",
+        "length": 5,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>/ VSA-Kennzahl &ldquo;Anzahl angeschlossene Einwohner&rdquo; <a href=\"./null\">E<\/a>, Matching MGDM 134.5 EinwAngeschlossen / Indicateur du VSA « Nombre d\u2019habitants raccordés » <a href=\"./null\">H<\/a>, Matching MGDM 134.5 EinwAngeschlossen<\/p>"
+        "comments": "<p>Denitrification at at waster water temperature of below 10 degree celsius / Denitrifikation bei einer Abwassertemperatur von &gt; 10 Grad / Dénitrification à une température des eaux supérieure à 10°C<\/p>"
     },
     {
         "tableName": "pipe_profile",
@@ -11454,15 +11454,15 @@
         "tableName": "waste_water_treatment_plant",
         "tableFileName": "waste_water_treatment_plant",
         "tableType": "Table",
-        "keyClass": "foreignKey",
-        "keyTitle": "Foreign Key",
-        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>fk_provider",
-        "type": "varchar",
-        "length": 16,
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "population_total",
+        "type": "int4",
+        "length": 10,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
-        "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
+        "defaultValue": "null",
+        "comments": "<p>/ VSA-Kennzahl &ldquo;Anzahl Einwohner Total&rdquo; <a href=\"./null\">E<\/a>, Matching MGDM 134.5 EinwAnz / Indicateur du VSA « Nombre total d\u2019habitants » <a href=\"./null\">H<\/a>, Matching MGDM 134.5 EinwAnz<\/p>"
     },
     {
         "tableName": "sia405cc_cable_point",
@@ -12403,18 +12403,18 @@
         "comments": "<p>yyy_Güllegrube: erforderliches Volumen in m3, falls häusliches Abwasser separat behandelt würde / Güllegrube: erforderliches Volumen in m3, falls häusliches Abwasser separat behandelt würde / Fosse à purin: volume en m3 requis en cas de traitement séparé des eaux ménagères<\/p>"
     },
     {
-        "tableName": "tank_emptying",
-        "tableFileName": "tank_emptying",
+        "tableName": "waste_water_treatment_plant",
+        "tableFileName": "waste_water_treatment_plant",
         "tableType": "Table",
-        "keyClass": "",
-        "keyTitle": "",
-        "name": "flow",
-        "type": "numeric",
-        "length": 9,
+        "keyClass": "indexedColumn",
+        "keyTitle": "Indexed",
+        "name": "<i class='fa fa-sitemap fa-rotate-120' style='padding-right: 5px;'><\/i>situation_geometry",
+        "type": "geometry",
+        "length": 2147483647,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>yyy_Bei mehreren Pumpen / Schiebern muss die maximale Gesamtmenge erfasst werden. / Bei mehreren Pumpen / Schiebern muss die maximale Gesamtmenge erfasst werden. / Lors de présence de plusieurs pompes/vannes, indiquer le débit total.<\/p>"
+        "comments": "<p>yyy_Standort der ARA, Mitte des Geländes / Standort der ARA, Mitte des Geländes / Site de la STEP, milieu du site<\/p>"
     },
     {
         "tableName": "pump",
@@ -12618,13 +12618,13 @@
         "tableType": "Table",
         "keyClass": "",
         "keyTitle": "",
-        "name": "wwtp_number",
-        "type": "int4",
-        "length": 10,
+        "name": "nh4",
+        "type": "int2",
+        "length": 5,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>WWTP Number from Federal Office for the Environment (FOEN) / ARA-Nummer gemäss Bundesamt für Umwelt (BAFU) / Numéro de la STEP selon l&rsquo;Office fédéral de l&rsquo;environnement (OFEV)<\/p>"
+        "comments": "<p>yyy_Dimensioning value Ablauf Vorklärung. NH4 <a href=\"./null\">gNH4/m3<\/a> / Dimensionierungswert Ablauf Vorklärung. NH4 <a href=\"./null\">gNH4/m3<\/a> / Valeur de dimensionnement, NH4 à la sortie du décanteur primaire. NH4 <a href=\"./null\">gNH4/m3<\/a><\/p>"
     },
     {
         "tableName": "wastewater_structure",
@@ -12739,18 +12739,18 @@
         "comments": ""
     },
     {
-        "tableName": "waste_water_treatment_plant",
-        "tableFileName": "waste_water_treatment_plant",
+        "tableName": "tank_emptying",
+        "tableFileName": "tank_emptying",
         "tableType": "Table",
-        "keyClass": "",
-        "keyTitle": "",
-        "name": "elimination_nh4",
-        "type": "numeric",
-        "length": 5,
+        "keyClass": "foreignKey",
+        "keyTitle": "Foreign Key",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>fk_overflow",
+        "type": "varchar",
+        "length": 16,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>Dimensioning value elimination rate in percent / Dimensionierungswert: Eliminationsrate in % / Valeur de dimensionnement, taux d&rsquo;élimination en %<\/p>"
+        "comments": ""
     },
     {
         "tableName": "reach_text",
@@ -13005,18 +13005,18 @@
         "comments": ""
     },
     {
-        "tableName": "tank_emptying",
-        "tableFileName": "tank_emptying",
+        "tableName": "waste_water_treatment_plant",
+        "tableFileName": "waste_water_treatment_plant",
         "tableType": "Table",
-        "keyClass": "primaryKey",
-        "keyTitle": "Primary Key",
-        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>obj_id",
-        "type": "varchar",
-        "length": 16,
-        "nullable": "",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "remark",
+        "type": "text",
+        "length": 2147483647,
+        "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'tank_emptying'::text)",
-        "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
+        "defaultValue": "null",
+        "comments": "<p>General remarks / Allgemeine Bemerkungen / Remarques générales<\/p>"
     },
     {
         "tableName": "electric_equipment",
