@@ -527,10 +527,6 @@ class InterlisExporterToIntermediateSchema:
 
     def _export_ag64(self):
 
-        #logger.info("Exporting TWW.organisation -> ABWASSER.organisation")
-        #self._export_organisation()
-        #self._check_for_stop()
-
         logger.info("Exporting TWW.gepknoten -> ABWASSER.infrastrukturknoten")
         self._export_infrastrukturknoten()
         self._check_for_stop()
@@ -546,10 +542,6 @@ class InterlisExporterToIntermediateSchema:
         self._check_for_stop()
 
     def _export_ag96(self):
-
-        #logger.info("Exporting TWW.organisation -> ABWASSER.organisation")
-        #self._export_organisation()
-        #self._check_for_stop()
 
         logger.info("Exporting TWW.gepmassnahme -> ABWASSER.gepmassnahme")
         self._export_gepmassnahme()
