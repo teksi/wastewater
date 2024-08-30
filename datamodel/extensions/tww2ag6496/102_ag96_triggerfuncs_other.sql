@@ -1,7 +1,7 @@
 ---------- GEPHaltung ----------
 --------------------------------
 
-CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_gephaltung_insert()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_gephaltung_insert()
 RETURNS trigger AS
 $BODY$
 DECLARE
@@ -189,7 +189,7 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_gephaltung_update()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_gephaltung_update()
 RETURNS trigger AS
 $BODY$
 DECLARE
@@ -305,7 +305,7 @@ $BODY$
 LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_gephaltung_delete()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_gephaltung_delete()
 RETURNS trigger AS
 $BODY$
 BEGIN
@@ -322,7 +322,7 @@ LANGUAGE plpgsql;
 --------------------------------
 --------- GEPMassnahme ---------
 --------------------------------
-CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_gepmassnahme_upsert()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_gepmassnahme_upsert()
 RETURNS trigger AS
 $BODY$
 BEGIN
@@ -402,7 +402,7 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_gepmassnahme_delete()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_gepmassnahme_delete()
 RETURNS trigger AS
 $BODY$
 BEGIN
@@ -420,7 +420,7 @@ LANGUAGE plpgsql;
 -------- Einzugsgebiet ---------
 --------------------------------
 
-CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_einzugsgebiet_upsert()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_einzugsgebiet_upsert()
 RETURNS trigger AS
 $BODY$
 BEGIN
@@ -542,7 +542,7 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_einzugsgebiet_delete()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_einzugsgebiet_delete()
 RETURNS trigger AS
 $BODY$
 BEGIN
@@ -558,7 +558,7 @@ LANGUAGE plpgsql;
 ---------------------------------
 
 
-CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_ueberlauf_foerderaggregat_insert()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ueberlauf_foerderaggregat_insert()
 RETURNS trigger AS
 $BODY$
 BEGIN
@@ -610,7 +610,7 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_ueberlauf_foerderaggregat_update()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ueberlauf_foerderaggregat_update()
 RETURNS trigger AS
 $BODY$
 BEGIN
@@ -650,7 +650,7 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_ueberlauf_foerderaggregat_delete()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ueberlauf_foerderaggregat_delete()
 RETURNS trigger AS
 $BODY$
 BEGIN
@@ -665,7 +665,7 @@ LANGUAGE plpgsql;
 --- Bautenausserhalbbaugebiet ---
 ---------------------------------
 
-CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_bautenausserhalbbaugebiet_upsert()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_bautenausserhalbbaugebiet_upsert()
 RETURNS trigger AS
 $BODY$
 BEGIN
@@ -741,7 +741,7 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_bautenausserhalbbaugebiet_delete()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_bautenausserhalbbaugebiet_delete()
 RETURNS trigger AS
 $BODY$
 BEGIN
@@ -759,7 +759,7 @@ LANGUAGE plpgsql;
 ---------------------------------	
 
 
-CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_sbw_einzugsgebiet_upsert()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_sbw_einzugsgebiet_upsert()
 RETURNS trigger AS
 $BODY$
 DECLARE
@@ -859,7 +859,7 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_sbw_einzugsgebiet_delete()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_sbw_einzugsgebiet_delete()
 RETURNS trigger AS
 $BODY$
 BEGIN
@@ -875,7 +875,7 @@ LANGUAGE plpgsql;
 ---- Versickerungsbereichag -----
 ---------------------------------
 
-CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_versickerungsbereichag_insert()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_versickerungsbereichag_insert()
 RETURNS trigger AS
 $BODY$
 BEGIN
@@ -920,7 +920,7 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_versickerungsbereichag_update()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_versickerungsbereichag_update()
 RETURNS trigger AS
 $BODY$
 BEGIN
@@ -946,7 +946,7 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_versickerungsbereichag_delete()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_versickerungsbereichag_delete()
 RETURNS trigger AS
 $BODY$
 BEGIN

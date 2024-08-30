@@ -2,7 +2,7 @@
 -- Knoten
 ----------------
 
-CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_gepknoten_insert()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_gepknoten_insert()
 RETURNS trigger AS
 $BODY$
 DECLARE
@@ -213,7 +213,7 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_gepknoten_update()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_gepknoten_update()
 RETURNS trigger AS
 $BODY$
 DECLARE
@@ -410,7 +410,7 @@ BEGIN
 $BODY$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION tww_app.ft_agxx_ft_gepknoten_delete()
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_gepknoten_delete()
 RETURNS trigger AS
 $BODY$
 BEGIN
