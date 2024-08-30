@@ -537,7 +537,7 @@
          <column autoUpdated="false" defaultValue="null" digits="17" id="2" name="length_ww_planned" nullable="true" remarks="" size="17" type="float8" typeCode="8"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="node_ww_planned_obj_id" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
       </table>
-      <table name="vw_change_points" numRows="0" remarks="" schema="tww_app" type="VIEW" viewSql=" SELECT rp_to.obj_id,&#10;    rp_to.situation3d_geometry AS geom,&#10;    (re.material &lt;&gt; re_next.material) AS change_in_material,&#10;    (re.clear_height &lt;&gt; re_next.clear_height) AS change_in_clear_height,&#10;    (((rp_from.level - rp_to.level) / re.length_effective) - ((rp_next_from.level - rp_next_to.level) / re_next.length_effective)) AS change_in_slope&#10;   FROM (((((((tww_od.reach re&#10;     LEFT JOIN tww_od.reach_point rp_to ON (((rp_to.obj_id)::text = (re.fk_reach_point_to)::text)))&#10;     LEFT JOIN tww_od.reach_point rp_from ON (((rp_from.obj_id)::text = (re.fk_reach_point_from)::text)))&#10;     LEFT JOIN tww_od.reach re_next ON (((rp_to.fk_wastewater_networkelement)::text = (re_next.obj_id)::text)))&#10;     LEFT JOIN tww_od.reach_point rp_next_to ON (((rp_next_to.obj_id)::text = (re_next.fk_reach_point_to)::text)))&#10;     LEFT JOIN tww_od.reach_point rp_next_from ON (((rp_next_from.obj_id)::text = (re_next.fk_reach_point_from)::text)))&#10;     LEFT JOIN tww_od.wastewater_networkelement ne ON (((re.obj_id)::text = (ne.obj_id)::text)))&#10;     LEFT JOIN tww_od.wastewater_networkelement ne_next ON (((re_next.obj_id)::text = (ne_next.obj_id)::text)))&#10;  WHERE ((ne_next.fk_wastewater_structure)::text = (ne.fk_wastewater_structure)::text);">
+      <table name="vw_change_points" numRows="0" remarks="" schema="tww_app" type="VIEW" viewSql=" SELECT ne_node.obj_id,&#10;    wn.situation3d_geometry AS geom,&#10;    (re.material &lt;&gt; re_next.material) AS change_in_material,&#10;    (re.clear_height &lt;&gt; re_next.clear_height) AS change_in_clear_height,&#10;    (((rp_from.level - rp_to.level) / re.length_effective) - ((rp_next_from.level - rp_next_to.level) / re_next.length_effective)) AS change_in_slope&#10;   FROM (((((((((tww_od.reach re&#10;     LEFT JOIN tww_od.reach_point rp_to ON (((rp_to.obj_id)::text = (re.fk_reach_point_to)::text)))&#10;     LEFT JOIN tww_od.reach_point rp_from ON (((rp_from.obj_id)::text = (re.fk_reach_point_from)::text)))&#10;     LEFT JOIN tww_od.wastewater_networkelement ne_node ON (((ne_node.obj_id)::text = (rp_to.fk_wastewater_networkelement)::text)))&#10;     LEFT JOIN tww_od.wastewater_node wn ON (((wn.obj_id)::text = (ne_node.obj_id)::text)))&#10;     LEFT JOIN tww_od.reach_point rp_next_from ON (((rp_next_from.fk_wastewater_networkelement)::text = (ne_node.obj_id)::text)))&#10;     LEFT JOIN tww_od.reach re_next ON (((rp_next_from.obj_id)::text = (re_next.fk_reach_point_from)::text)))&#10;     LEFT JOIN tww_od.reach_point rp_next_to ON (((rp_next_to.obj_id)::text = (re_next.fk_reach_point_to)::text)))&#10;     LEFT JOIN tww_od.wastewater_networkelement ne ON (((re.obj_id)::text = (ne.obj_id)::text)))&#10;     LEFT JOIN tww_od.wastewater_networkelement ne_next ON (((re_next.obj_id)::text = (ne_next.obj_id)::text)))&#10;  WHERE ((ne_next.fk_wastewater_structure)::text = (ne.fk_wastewater_structure)::text);">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="obj_id" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="geom" nullable="true" remarks="" size="2147483647" type="geometry" typeCode="1111"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="change_in_material" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
@@ -7943,6 +7943,19 @@ END;]]></definition>
         (
           SELECT obj_id FROM tww_od.wastewater_networkelement
           WHERE fk_wastewater_structure = NEW.obj_id
+        );
+
+        -- Move reach point node as well
+        UPDATE tww_od.reach_point RP
+        SET situation3d_geometry = ST_SetSRID( ST_MakePoint(
+        ST_X(ST_TRANSLATE(ST_MakePoint(ST_X(RP.situation3d_geometry), ST_Y(RP.situation3d_geometry)), dx, dy )),
+        ST_Y(ST_TRANSLATE(ST_MakePoint(ST_X(RP.situation3d_geometry), ST_Y(RP.situation3d_geometry)), dx, dy )),
+        ST_Z(RP.situation3d_geometry)), 2056 )
+        WHERE obj_id IN
+        (
+          SELECT RP.obj_id FROM tww_od.reach_point RP
+          LEFT JOIN tww_od.wastewater_networkelement NE ON RP.fk_wastewater_networkelement = NE.obj_id
+          WHERE NE.fk_wastewater_structure = NEW.obj_id
         );
 
         -- Move covers
