@@ -1,4 +1,4 @@
-from geoalchemy2.functions import ST_Force3D, ST_Covers, ST_Buffer
+from geoalchemy2.functions import ST_Force3D, ST_Covers, ST_Buffer, ST_Multi
 from sqlalchemy.orm import Session
 from sqlalchemy.orm.attributes import flag_dirty
 from sqlalchemy.sql import text
@@ -2650,7 +2650,7 @@ class InterlisImporterToIntermediateSchema:
                 flaeche_reduziert_ist=row.flaeche_reduziert_ist,
                 fremdwasseranfall_geplant=row.fremdwasseranfall_geplant,
                 fremdwasseranfall_ist=row.fremdwasseranfall_ist,
-                perimeter_ist=row.perimeter_ist,
+                perimeter_ist=ST_Multi(row.perimeter_ist),
                 schmutzabwasseranfall_geplant=row.schmutzabwasseranfall_geplant,
                 schmutzabwasseranfall_ist=row.schmutzabwasseranfall_ist,
                 einleitstelleref=self.get_pk(row.einleitstelleref__REL),
