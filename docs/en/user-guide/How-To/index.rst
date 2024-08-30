@@ -124,7 +124,7 @@ Sometimes the labels such as bottom, cover or entry/exit levels are not correctl
 
 .. figure:: images/tww_system_attributes_depth.jpg
 
-For symbolizing point elements (manholes, special structures etc. and  wastewater_nodes)  with _function_hierarchic and _usage_current the following function calculate the two tww attributes from the connected reach(es).
+For symbolizing point elements (manholes, special structures etc. and  wastewater_nodes)  with _function_hierarchic and _usage_current the function `update_wastewater_node_symbology` calculates the two tww attributes from the connected reach(es).
 
 * Run **wastewater node symbology** for all entities (calculates function_hierarchic and usage_current from connected reaches and adds result to  wastewater_node._function_hierarchic and   _usage_current)::
 
