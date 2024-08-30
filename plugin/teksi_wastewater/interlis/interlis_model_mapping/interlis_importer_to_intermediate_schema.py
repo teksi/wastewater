@@ -2446,6 +2446,7 @@ class InterlisImporterToIntermediateSchema:
             "laengeeffektiv": row.laengeeffektiv,
             "material": row.material,
             "nutzungsartag_ist": row.nutzungsartag_ist,
+            "profiltyp": row.profiltyp,
             "reliner_art": row.reliner_art,
             "reliner_bautechnik": row.reliner_bautechnik,
             "sanierungsbedarf": row.sanierungsbedarf,
