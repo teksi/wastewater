@@ -73,11 +73,7 @@ BEGIN
 		WHERE p.proname  LIKE 'symbology_%'
 		and p.pronamespace::regnamespace::text LIKE 'tww_ap_'
 		AND t.tgenabled = 'D';
-  IF _disabled_count=0 THEN
-    return true;
-  ELSE
-    return false;
-  END IF;
+  RETURN _disabled_count=0
 END;
 $DO$ LANGUAGE plpgsql SECURITY DEFINER;
 
