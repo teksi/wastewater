@@ -16,10 +16,10 @@ BEGIN
 	, pp.obj_id
 	INTO pipe_profile_record
 	FROM (SELECT NEW.*) vw_val
-	LEFT JOIN tww_vl.pipe_profile_profile_type ppt ON ppt.value_de =  vw_val.profiltyp
-	LEFT JOIN tww_od.pipe_profile pp
-		ON pp.profile_type=ppt.code
-		AND pp.identifier =
+	LEFT JOIN tww_vl.pipe_profile_profile_type ppt ON ppt.value_de =  vw_val.profiltyp 
+	LEFT JOIN tww_od.pipe_profile pp 
+		ON pp.profile_type=ppt.code 
+		AND pp.identifier = 
 			CASE WHEN vw_val.lichte_breite_ist= 0 OR vw_val.lichte_hoehe_ist=vw_val.lichte_breite_ist
 			THEN ppt.value_de
 			ELSE
@@ -27,10 +27,10 @@ BEGIN
 				  array[ppt.abbr_de,vw_val.lichte_hoehe_ist::varchar,vw_val.lichte_breite_ist::varchar]
 				  ,'_' -- delimiter
 				)
-			END
+			END 
 	;
-
-	CASE
+	
+	CASE 
 		WHEN pipe_profile_record.obj_id is null
 		THEN
 			INSERT INTO tww_od.pipe_profile
@@ -58,15 +58,15 @@ BEGIN
 			, downr.value_obj_id
 			, {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_wi)
 			FROM (SELECT NEW.*) vw_val
-			LEFT JOIN tww_vl.pipe_profile_profile_type ppt ON ppt.value_de =  vw_val.profiltyp
+			LEFT JOIN tww_vl.pipe_profile_profile_type ppt ON ppt.value_de =  vw_val.profiltyp 
 			LEFT JOIN tww_od.default_values downr on fieldname = 'fk_dataowner'
 			)
 			RETURNING obj_id INTO new_pipe_profile;
 		ELSE
 			new_pipe_profile:=pipe_profile_record.obj_id;
 	END CASE;
-
-	-- Reach
+	
+	-- Reach 
 	UPDATE tww_app.vw_tww_reach re SET
       clear_height = vw_val.lichte_hoehe_ist
 	, ag96_clear_height_planned = vw_val.lichte_hoehe_geplant
@@ -194,7 +194,7 @@ BEGIN
     , ag96_remark
 	, ag96_fk_provider
 	)
-	( SELECT
+	( SELECT 
 	  vw_val.obj_id
     , vw_val.lichte_hoehe_ist
 	, vw_val.lichte_hoehe_geplant
@@ -266,7 +266,7 @@ BEGIN
 	LEFT JOIN tww_od.default_values downr on fieldname = 'fk_dataowner'
 	)	RETURNING ws_obj_id INTO ws_oid_for_measure;
 	END IF;
-	------------ GEPMassnahme ------------
+	------------ GEPMassnahme ------------ 
 	UPDATE tww_od.wastewater_structure
         SET ag96_fk_measure = coalesce(NEW.gepmassnahmeref,ag96_fk_measure)
         WHERE obj_id = ws_oid_for_measure;
@@ -583,10 +583,10 @@ BEGIN
     , ag96_remark = NEW.bemerkung_gep
 	, ag96_fk_provider = {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
 	WHERE ov.obj_id=NEW.obj_id;
-	IF NOT FOUND THEN
+	IF NOT FOUND THEN 
 	INSERT INTO tww_app.vw_tww_overflow (
 	  obj_id
-	, overflow_type
+	, overflow_type  
 	, fk_wastewater_node
 	, fk_overflow_to
 	, fk_provider
@@ -601,7 +601,7 @@ BEGIN
 	, ag96_fk_provider
 	)
 	VALUES
-	(
+	(	
 	  NEW.obj_id
 	, CASE WHEN NEW.art  = 'Foerderaggregat' THEN 'pump'::tww_app.overflow_type
 	    WHEN NEW.art  = 'Leapingwehr' THEN 'leapingweir'::tww_app.overflow_type
@@ -622,7 +622,7 @@ BEGIN
 	, {ext_schema}.convert_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
 	);
 	END IF;
-  RETURN NEW;
+  RETURN NEW;	
 
 END;
 $BODY$
@@ -648,7 +648,7 @@ RETURNS trigger AS
 $BODY$
 BEGIN
 	UPDATE tww_od.building_group bg
-	SET
+	SET 
 	  function = bg_fct.code
     , identifier = vw_val.bezeichnung
     , population_equivalent = vw_val.einwohnergleichwert
@@ -660,7 +660,7 @@ BEGIN
     , situation_geometry = vw_val.lage
     , last_modification = vw_val.letzte_aenderung_gep
     , fk_provider = {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_gep)
-    , ag96_owner_address = vw_val.eigentuemeradresse
+    , ag96_owner_address = vw_val.eigentuemeradresse 
     , ag96_owner_name = vw_val.eigentuemername
     , ag96_label_number = vw_val.nummer
     , ag96_disposal_wastewater = bg_dt_ww.code
@@ -670,10 +670,10 @@ BEGIN
 	FROM (SELECT NEW.*) as vw_val
 	LEFT JOIN tww_vl.building_group_function_import_rel_agxx bg_fct on bg_fct.value_de = vw_val.arealnutzung
 	LEFT JOIN tww_vl.building_group_renovation_necessity bg_rn on bg_rn.value_de = lower(vw_val.sanierungsbedarf)
-	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_ww ON bg_dt_ww.value_de = vw_val.beseitigung_haeusliches_abwasser
-	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_iw ON bg_dt_iw.value_de = vw_val.beseitigung_gewerbliches_abwasser
-	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_sw ON bg_dt_sw.value_de = vw_val.beseitigung_platzentwaesserung
-	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_rw ON bg_dt_rw.value_de = vw_val.beseitigung_dachentwaesserung
+	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_ww ON bg_dt_ww.value_de = vw_val.beseitigung_haeusliches_abwasser 
+	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_iw ON bg_dt_iw.value_de = vw_val.beseitigung_gewerbliches_abwasser 
+	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_sw ON bg_dt_sw.value_de = vw_val.beseitigung_platzentwaesserung 
+	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_rw ON bg_dt_rw.value_de = vw_val.beseitigung_dachentwaesserung 
 	LEFT JOIN tww_od.default_values downr on fieldname = 'fk_dataowner'
 	WHERE bg.obj_id=vw_val.obj_id;
 	IF NOT FOUND THEN
@@ -725,14 +725,14 @@ BEGIN
 	FROM (SELECT NEW.*) as vw_val
 	LEFT JOIN tww_vl.building_group_function_import_rel_agxx bg_fct on bg_fct.value_de = vw_val.arealnutzung
 	LEFT JOIN tww_vl.building_group_renovation_necessity bg_rn on bg_rn.value_de = lower(vw_val.sanierungsbedarf)
-	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_ww ON bg_dt_ww.value_de = vw_val.beseitigung_haeusliches_abwasser
-	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_iw ON bg_dt_iw.value_de = vw_val.beseitigung_gewerbliches_abwasser
-	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_sw ON bg_dt_sw.value_de = vw_val.beseitigung_platzentwaesserung
-	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_rw ON bg_dt_rw.value_de = vw_val.beseitigung_dachentwaesserung
+	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_ww ON bg_dt_ww.value_de = vw_val.beseitigung_haeusliches_abwasser 
+	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_iw ON bg_dt_iw.value_de = vw_val.beseitigung_gewerbliches_abwasser 
+	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_sw ON bg_dt_sw.value_de = vw_val.beseitigung_platzentwaesserung 
+	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_rw ON bg_dt_rw.value_de = vw_val.beseitigung_dachentwaesserung 
 	LEFT JOIN tww_od.default_values downr on fieldname = 'fk_dataowner'
 	);
 	END IF;
-  RETURN NEW;
+  RETURN NEW;	
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -752,7 +752,7 @@ LANGUAGE plpgsql;
 
 ---------------------------------
 ------- SBW_Einzugsgebiet -------
----------------------------------
+---------------------------------	
 
 
 CREATE OR REPLACE FUNCTION {ext_schema}.ft_sbw_einzugsgebiet_upsert()
@@ -766,7 +766,7 @@ BEGIN
 	WHERE fk_wastewater_node=NEW.sonderbauwerk_ref
 	AND status = 6372 --Ist
 	RETURNING obj_id into hcd_oid;
-
+	
 	IF NOT FOUND THEN
 		INSERT INTO tww_od.hydraulic_char_data
 		(
@@ -785,7 +785,7 @@ BEGIN
 		RETURNING obj_id into hcd_oid;
 	END IF;
 	UPDATE tww_od.catchment_area_totals cat
-	SET
+	SET 
 	  identifier = vw_val.bezeichnung
     , population = vw_val.einwohner_ist
     , population_dim = vw_val.einwohner_geplant
@@ -888,7 +888,7 @@ BEGIN
 	, ag96_thickness = vw_val.maechtigkeit
 	, perimeter_geometry = vw_val.perimeter
 	, ag96_q_check = vw_val.q_check
-	, infiltration_capacity = iz_ic.code
+	, infiltration_capacity = iz_ic.code 
 	, fk_provider = {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_gep)
 	, remark = vw_val.bemerkung_gep
 	, last_modification = vw_val.letzte_aenderung_gep
@@ -919,7 +919,7 @@ BEGIN
 	, vw_val.maechtigkeit
 	, vw_val.perimeter
 	, vw_val.q_check
-	, iz_ic.code
+	, iz_ic.code 
 	, {ext_schema}.convert_organisationid_to_vsa(vw_val.datenbewirtschafter_gep)
 	, vw_val.bemerkung_gep
 	, vw_val.letzte_aenderung_gep
@@ -927,7 +927,7 @@ BEGIN
 	LEFT JOIN tww_vl.infiltration_zone_infiltration_capacity iz_ic on iz_ic.value_de = vw_val.versickerungsmoeglichkeitag
 	);
 	END IF;
-  RETURN NEW;
+  RETURN NEW;	
 END;
 $BODY$
 LANGUAGE plpgsql;

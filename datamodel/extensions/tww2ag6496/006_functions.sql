@@ -9,16 +9,16 @@ $BODY$
 	update_type varchar(3);
   BEGIN
     BEGIN
-	  SELECT
+	  SELECT 
 	   ag_update_type
-	  INTO update_type
+	  INTO update_type 
 	  FROM tww_cfg.agxx_last_modification_updater
 	  WHERE username=current_user;
-	  CASE
+	  CASE 
 	   WHEN update_type IN('wi','both') THEN NEW.ag64_last_modification=now();
 	   ELSE NULL;
 	   END CASE;
-	    CASE
+	    CASE 
 	   WHEN update_type IN('gep','both') THEN NEW.ag96_last_modification=now();
 	   ELSE NULL;
 	  END CASE;
@@ -28,21 +28,21 @@ $BODY$
 $BODY$
 LANGUAGE plpgsql;
 
-DROP TRIGGER IF EXISTS before_networkelement_change ON tww_od.wastewater_networkelement;
+DROP TRIGGER IF EXISTS before_networkelement_change ON tww_od.wastewater_networkelement;		
 CREATE TRIGGER before_networkelement_change
-    BEFORE INSERT OR UPDATE
+    BEFORE INSERT OR UPDATE 
     ON tww_od.wastewater_networkelement
     FOR EACH ROW
     EXECUTE FUNCTION {ext_schema}.update_last_ag_modification();
 
-DROP TRIGGER IF EXISTS before_overflow_change ON tww_od.overflow;
+DROP TRIGGER IF EXISTS before_overflow_change ON tww_od.overflow;		
 CREATE TRIGGER before_overflow_change
-    BEFORE INSERT OR UPDATE
+    BEFORE INSERT OR UPDATE 
     ON tww_od.overflow
     FOR EACH ROW
     EXECUTE FUNCTION {ext_schema}.update_last_ag_modification();
-
-
+	
+	
 CREATE OR REPLACE FUNCTION {ext_schema}.update_catchment_area_totals_geoms
   (_obj_id varchar(16),_all boolean DEFAULT FALSE)
   RETURNS VOID AS
@@ -73,7 +73,7 @@ CREATE OR REPLACE FUNCTION {ext_schema}.update_catchment_area_totals_geoms
 		LEFT JOIN tww_od.catchment_area_totals ca_tot ON hcd.obj_id = ca_tot.fk_hydraulic_char_data
 	 WHERE _all OR _obj_id=ca_tot.obj_id
 	 GROUP BY ca_tot.obj_id
-  ) ca_agg
+  ) ca_agg 
   WHERE ca_agg.obj_id::text = cat.obj_id::text;
   END;
   $BODY$

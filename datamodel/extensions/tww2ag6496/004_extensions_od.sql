@@ -5,36 +5,36 @@ ALTER TABLE tww_od.wastewater_node ADD COLUMN IF NOT EXISTS ag64_function bigint
 COMMENT ON COLUMN tww_od.wastewater_node.ag64_function IS 'Extension for AG-96/ Erweiterung aus AG-96 zur Erfassung der Funktionag Anschluss /xxx_fr';
 
 ALTER TABLE tww_od.wastewater_node DROP CONSTRAINT IF EXISTS fkey_vl_wastewater_node_ag96_is_gateway CASCADE;
-ALTER TABLE tww_od.wastewater_node ADD CONSTRAINT fkey_vl_wastewater_node_ag96_is_gateway FOREIGN KEY (ag96_is_gateway) REFERENCES tww_vl.wastewater_node_ag96_is_gateway MATCH SIMPLE ON UPDATE RESTRICT ON DELETE RESTRICT;
+ALTER TABLE tww_od.wastewater_node ADD CONSTRAINT fkey_vl_wastewater_node_ag96_is_gateway FOREIGN KEY (ag96_is_gateway) REFERENCES tww_vl.wastewater_node_ag96_is_gateway MATCH SIMPLE ON UPDATE RESTRICT ON DELETE RESTRICT; 
 ALTER TABLE tww_od.wastewater_node DROP CONSTRAINT IF EXISTS fkey_vl_wastewater_node_ag64_function CASCADE;
-ALTER TABLE tww_od.wastewater_node ADD CONSTRAINT fkey_vl_wastewater_node_ag64_function FOREIGN KEY (ag64_function) REFERENCES tww_vl.wastewater_node_ag64_function MATCH SIMPLE ON UPDATE RESTRICT ON DELETE RESTRICT;
+ALTER TABLE tww_od.wastewater_node ADD CONSTRAINT fkey_vl_wastewater_node_ag64_function FOREIGN KEY (ag64_function) REFERENCES tww_vl.wastewater_node_ag64_function MATCH SIMPLE ON UPDATE RESTRICT ON DELETE RESTRICT; 
 
 -- Deckel
 ALTER TABLE tww_od.cover ADD COLUMN IF NOT EXISTS ag64_fk_wastewater_node varchar(16);
 COMMENT ON COLUMN tww_od.cover.ag64_fk_wastewater_node IS 'Extension for AG-64/ Erweiterung für AG-64, Export von Zweitdeckeln /xxx_fr';
 ALTER TABLE tww_od.cover DROP CONSTRAINT IF EXISTS rel_cover_wastewater_node CASCADE;
-ALTER TABLE tww_od.cover ADD CONSTRAINT rel_cover_wastewater_node FOREIGN KEY (ag64_fk_wastewater_node) REFERENCES tww_od.wastewater_node MATCH SIMPLE ON UPDATE CASCADE ON DELETE SET NULL;
+ALTER TABLE tww_od.cover ADD CONSTRAINT rel_cover_wastewater_node FOREIGN KEY (ag64_fk_wastewater_node) REFERENCES tww_od.wastewater_node MATCH SIMPLE ON UPDATE CASCADE ON DELETE SET NULL; 
 
-ALTER TABLE tww_od.wastewater_structure ADD COLUMN IF NOT EXISTS ag96_fk_measure varchar(16);
+ALTER TABLE tww_od.wastewater_structure ADD COLUMN IF NOT EXISTS ag96_fk_measure varchar(16); 
 -- Topologische Verknüpfung Massnahme/Abwasserbauwerk
 ALTER TABLE tww_od.wastewater_structure DROP CONSTRAINT IF EXISTS ag96_rel_wastewater_structure_measure;
-ALTER TABLE tww_od.wastewater_structure ADD CONSTRAINT ag96_rel_wastewater_structure_measure FOREIGN KEY (ag96_fk_measure) REFERENCES tww_od.measure(obj_id) ON DELETE SET NULL;
+ALTER TABLE tww_od.wastewater_structure ADD CONSTRAINT ag96_rel_wastewater_structure_measure FOREIGN KEY (ag96_fk_measure) REFERENCES tww_od.measure(obj_id) ON DELETE SET NULL; 
 COMMENT ON COLUMN tww_od.wastewater_structure.ag96_fk_measure IS 'Extension for AG-96/ Erweiterung aus AG-96, 1:n-Beziehung /xxx_fr';
 
 -- Topologische Verknüpfung Haltung Ist und Soll
-ALTER TABLE tww_od.reach ADD COLUMN IF NOT EXISTS ag96_clear_height_planned integer;
-ALTER TABLE tww_od.reach ADD COLUMN IF NOT EXISTS ag96_clear_width_planned integer;
+ALTER TABLE tww_od.reach ADD COLUMN IF NOT EXISTS ag96_clear_height_planned integer; 
+ALTER TABLE tww_od.reach ADD COLUMN IF NOT EXISTS ag96_clear_width_planned integer; 
 COMMENT ON COLUMN tww_od.reach.ag96_clear_height_planned IS 'Extension for AG-96/ Erweiterung aus AG-96 /xxx_fr';
 COMMENT ON COLUMN tww_od.reach.ag96_clear_width_planned IS 'Extension for AG-96/ Erweiterung aus AG-96 /xxx_fr';
 
 -- SBW_Einzugsgebiet.Fremdwasseranfall_geplant
-ALTER TABLE tww_od.catchment_area_totals ADD COLUMN IF NOT EXISTS ag96_sewer_infiltration_water_dim  decimal(9,3);
+ALTER TABLE tww_od.catchment_area_totals ADD COLUMN IF NOT EXISTS ag96_sewer_infiltration_water_dim  decimal(9,3); 
 COMMENT ON COLUMN tww_od.catchment_area_totals.ag96_sewer_infiltration_water_dim IS 'Extension for AG-96/ Erweiterung aus AG-96 /xxx_fr';
 
-ALTER TABLE tww_od.catchment_area_totals ADD COLUMN IF NOT EXISTS ag96_waste_water_production_dim  decimal(9,3);
+ALTER TABLE tww_od.catchment_area_totals ADD COLUMN IF NOT EXISTS ag96_waste_water_production_dim  decimal(9,3); 
 COMMENT ON COLUMN tww_od.catchment_area_totals.ag96_waste_water_production_dim IS 'Extension for AG-96/ Erweiterung aus AG-96 /xxx_fr';
 
-ALTER TABLE tww_od.catchment_area_totals ADD COLUMN IF NOT EXISTS ag96_perimeter_geometry  geometry(MultiSurface,2056);
+ALTER TABLE tww_od.catchment_area_totals ADD COLUMN IF NOT EXISTS ag96_perimeter_geometry  geometry(MultiSurface,2056); 
 COMMENT ON COLUMN tww_od.catchment_area_totals.ag96_waste_water_production_dim IS 'Extension for AG-96/ Erweiterung aus AG-96 /xxx_fr';
 
 -- Bauten Ausserhalb Baugebiet
@@ -64,15 +64,15 @@ COMMENT ON COLUMN tww_od.building_group.ag96_disposal_roof_water IS 'Extension f
 COMMENT ON COLUMN tww_od.building_group.ag96_population IS 'Extension for AG-96/ Erweiterung aus AG-96 /xxx_fr';
 
 ALTER TABLE tww_od.building_group DROP CONSTRAINT IF EXISTS fkey_vl_building_group_ag96_disposal_wastewater CASCADE;
-ALTER TABLE tww_od.building_group ADD CONSTRAINT fkey_vl_building_group_ag96_disposal_wastewater FOREIGN KEY (ag96_disposal_wastewater) REFERENCES tww_vl.building_group_ag96_disposal_type MATCH SIMPLE ON UPDATE RESTRICT ON DELETE RESTRICT;
+ALTER TABLE tww_od.building_group ADD CONSTRAINT fkey_vl_building_group_ag96_disposal_wastewater FOREIGN KEY (ag96_disposal_wastewater) REFERENCES tww_vl.building_group_ag96_disposal_type MATCH SIMPLE ON UPDATE RESTRICT ON DELETE RESTRICT; 
 ALTER TABLE tww_od.building_group DROP CONSTRAINT IF EXISTS fkey_vl_building_group_ag96_disposal_industrial_wastewater CASCADE;
-ALTER TABLE tww_od.building_group ADD CONSTRAINT fkey_vl_building_group_ag96_disposal_industrial_wastewater FOREIGN KEY (ag96_disposal_industrial_wastewater) REFERENCES tww_vl.building_group_ag96_disposal_type MATCH SIMPLE ON UPDATE RESTRICT ON DELETE RESTRICT;
+ALTER TABLE tww_od.building_group ADD CONSTRAINT fkey_vl_building_group_ag96_disposal_industrial_wastewater FOREIGN KEY (ag96_disposal_industrial_wastewater) REFERENCES tww_vl.building_group_ag96_disposal_type MATCH SIMPLE ON UPDATE RESTRICT ON DELETE RESTRICT; 
 ALTER TABLE tww_od.building_group DROP CONSTRAINT IF EXISTS fkey_vl_building_group_ag96_disposal_square_water CASCADE;
-ALTER TABLE tww_od.building_group ADD CONSTRAINT fkey_vl_building_group_ag96_disposal_square_water FOREIGN KEY (ag96_disposal_square_water) REFERENCES tww_vl.building_group_ag96_disposal_type MATCH SIMPLE ON UPDATE RESTRICT ON DELETE RESTRICT;
+ALTER TABLE tww_od.building_group ADD CONSTRAINT fkey_vl_building_group_ag96_disposal_square_water FOREIGN KEY (ag96_disposal_square_water) REFERENCES tww_vl.building_group_ag96_disposal_type MATCH SIMPLE ON UPDATE RESTRICT ON DELETE RESTRICT; 
 ALTER TABLE tww_od.building_group DROP CONSTRAINT IF EXISTS fkey_vl_building_group_ag96_disposal_roof_water CASCADE;
-ALTER TABLE tww_od.building_group ADD CONSTRAINT fkey_vl_building_group_ag96_disposal_roof_water FOREIGN KEY (ag96_disposal_roof_water) REFERENCES tww_vl.building_group_ag96_disposal_type MATCH SIMPLE ON UPDATE RESTRICT ON DELETE RESTRICT;
+ALTER TABLE tww_od.building_group ADD CONSTRAINT fkey_vl_building_group_ag96_disposal_roof_water FOREIGN KEY (ag96_disposal_roof_water) REFERENCES tww_vl.building_group_ag96_disposal_type MATCH SIMPLE ON UPDATE RESTRICT ON DELETE RESTRICT; 
 
-
+ 
 ALTER TABLE tww_od.wastewater_networkelement
   ADD COLUMN IF NOT EXISTS ag96_fk_provider varchar(16) -- Verweis auf Datenbewirtschafter_GEP in Organisationstabelle
 , ADD COLUMN IF NOT EXISTS ag96_last_modification TIMESTAMP without time zone DEFAULT now()
@@ -82,9 +82,9 @@ ALTER TABLE tww_od.wastewater_networkelement
 , ADD COLUMN IF NOT EXISTS ag64_remark varchar(80);
 
 ALTER TABLE tww_od.wastewater_networkelement DROP CONSTRAINT IF EXISTS ag96_rel_wastewater_networkelement_provider CASCADE;
-ALTER TABLE tww_od.wastewater_networkelement ADD CONSTRAINT ag96_rel_wastewater_networkelement_provider FOREIGN KEY (ag96_fk_provider) REFERENCES tww_od.organisation(obj_id);
+ALTER TABLE tww_od.wastewater_networkelement ADD CONSTRAINT ag96_rel_wastewater_networkelement_provider FOREIGN KEY (ag96_fk_provider) REFERENCES tww_od.organisation(obj_id); 
 ALTER TABLE tww_od.wastewater_networkelement DROP CONSTRAINT IF EXISTS ag64_rel_wastewater_networkelement_provider CASCADE;
-ALTER TABLE tww_od.wastewater_networkelement ADD CONSTRAINT ag64_rel_wastewater_networkelement_provider FOREIGN KEY (ag64_fk_provider) REFERENCES tww_od.organisation(obj_id);
+ALTER TABLE tww_od.wastewater_networkelement ADD CONSTRAINT ag64_rel_wastewater_networkelement_provider FOREIGN KEY (ag64_fk_provider) REFERENCES tww_od.organisation(obj_id); 
 
 
 ALTER TABLE tww_od.overflow
@@ -96,9 +96,9 @@ ALTER TABLE tww_od.overflow
 , ADD COLUMN IF NOT EXISTS ag64_remark varchar(80);
 
 ALTER TABLE tww_od.overflow DROP CONSTRAINT IF EXISTS ag64_rel_overflow_provider CASCADE;
-ALTER TABLE tww_od.overflow ADD CONSTRAINT ag64_rel_overflow_provider FOREIGN KEY (ag64_fk_provider) REFERENCES tww_od.organisation(obj_id);
+ALTER TABLE tww_od.overflow ADD CONSTRAINT ag64_rel_overflow_provider FOREIGN KEY (ag64_fk_provider) REFERENCES tww_od.organisation(obj_id); 
 ALTER TABLE tww_od.overflow DROP CONSTRAINT IF EXISTS ag96_rel_overflow_provider CASCADE;
-ALTER TABLE tww_od.overflow ADD CONSTRAINT ag96_rel_overflow_provider FOREIGN KEY (ag96_fk_provider) REFERENCES tww_od.organisation(obj_id);
+ALTER TABLE tww_od.overflow ADD CONSTRAINT ag96_rel_overflow_provider FOREIGN KEY (ag96_fk_provider) REFERENCES tww_od.organisation(obj_id); 
 
 
 ALTER TABLE tww_od.infiltration_zone
@@ -106,7 +106,7 @@ ALTER TABLE tww_od.infiltration_zone
 , ADD COLUMN IF NOT EXISTS ag96_limitation varchar(100) 	-- Einschränkung
 , ADD COLUMN IF NOT EXISTS ag96_thickness varchar(50)		-- Mächtigkeit
 , ADD COLUMN IF NOT EXISTS ag96_q_check character varying(50);
-
+	
 -- Rückfallebene für Knoten ohne Topologische Verknüpfung beim Import
 CREATE TABLE IF NOT EXISTS tww_od.agxx_unconnected_node_bwrel (
 	obj_id character varying(16),
@@ -124,13 +124,13 @@ CREATE TABLE IF NOT EXISTS tww_od.agxx_unconnected_node_bwrel (
     fk_operator varchar(16),
     fk_owner varchar(16),
     ag96_fk_measure varchar(16),
-	CONSTRAINT pkey_od_agxx_unconnected_node_bwrel_obj_id PRIMARY KEY (obj_id));
-
+	CONSTRAINT pkey_od_agxx_unconnected_node_bwrel_obj_id PRIMARY KEY (obj_id));  
+	
 CREATE INDEX IF NOT EXISTS in_od_agxx_unconnected_node_bwrel_detail_geometry3d_geometry
     ON tww_od.agxx_unconnected_node_bwrel USING gist
     (detail_geometry3d_geometry)
     TABLESPACE pg_default;
-
+	
 CREATE TABLE IF NOT EXISTS tww_od.measure_text
 (
     obj_id character varying(16) COLLATE pg_catalog."default" NOT NULL DEFAULT tww_sys.generate_oid('tww_od'::text, 'measure_text'::text),
@@ -214,7 +214,7 @@ COMMENT ON TABLE tww_od.building_group_text IS 'Extension for AG-96/ Erweiterung
 
 INSERT INTO tww_od.organisation(
 	obj_id, identifier, remark, uid, last_modification, fk_dataowner, fk_provider,organisation_type,status,tww_local_extension)
-	VALUES
+	VALUES 
 	('ch24eax100000000',  'AfU Aargau',  'bei Import AG-64/AG-96 generiert','CHE114809310', now(), 'ch24eax100000000','ch24eax100000000',8605,9047,TRUE),
 	('ch24eax100000154', 'Gemeinde Wettingen', NULL, 'CHE115075438', '2016-02-05', 'ch24eax100000000', 'ch24eax100000000',8604,9047,TRUE),
 	('ch24eax100000315', 'Avia Tanklager Beteiligungs AG, Mellingen', NULL, 'CHE102501414', '2017-09-29', 'ch24eax100000000', 'ch24eax100000000',8606,9047,TRUE),

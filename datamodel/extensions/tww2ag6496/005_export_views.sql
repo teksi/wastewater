@@ -24,65 +24,65 @@ WHERE tww_active
 
 -- Mapping:
 /*
-FunktionBauwerkAG =   (
+FunktionBauwerkAG =   (                     
 	  abflussloseGrube, 							--> special_structure
 	  Absturzbauwerk,  								--> detailgeometrie
-      Abwasserfaulraum,              				--> special_structure
+      Abwasserfaulraum,              				--> special_structure                                                                            
 	  andere, 										--> detailgeometrie
 	  Be_Entlueftung,  								--> detailgeometrie
 	  Dachwasserschacht,							--> manhole
-	  Duekerkammer, 								--> special_structure
+	  Duekerkammer, 								--> special_structure 
 	  Duekeroberhaupt, 								--> special_structure
 	  Einlaufschacht,  								--> manhole
 	  Einleitstelle_gewaesserrelevant,           	--> discharge_point
 	  Einleitstelle_nicht_gewaesserrelevant,     	--> discharge_point
-	  Entwaesserungsrinne, 							--> manhole
-      Faulgrube,                         			--> special_structure
-	  Gelaendemulde,                   				--> special_structure
+	  Entwaesserungsrinne, 							--> manhole 
+      Faulgrube,                         			--> special_structure                                                                                   
+	  Gelaendemulde,                   				--> special_structure                   
 	  Geleiseschacht,								--> manhole
-	  Geschiebefang,                   				--> special_structure
-	  Guellegrube,                    				--> special_structure
-      Klaergrube,                      				--> special_structure
+	  Geschiebefang,                   				--> special_structure                                  
+	  Guellegrube,                    				--> special_structure                                
+      Klaergrube,                      				--> special_structure                             
       Kontrollschacht,  							--> detailgeometrie
 	  Leitungsknoten,                               --> wastewater_node
 	  Messstelle,                                   --> detailgeometrie, measurement
-	  Oelabscheider,       							--> detailgeometrie
-	  Pumpwerk,                   					--> detailgeometrie
-	  Regenbecken_Durchlaufbecken,               	--> special_structure
-	  Regenbecken_Fangbecken,                      	--> special_structure
-	  Regenbecken_Fangkanal,                      	--> special_structure
-	  Regenbecken_Regenklaerbecken,               	--> special_structure
-	  Regenbecken_Regenrueckhaltebecken,           	--> special_structure
-	  Regenbecken_Regenrueckhaltekanal,            	--> special_structure
-	  Regenbecken_Stauraumkanal,                   	--> special_structure
-	  Regenbecken_Verbundbecken,                   	--> special_structure
-	  Regenueberlauf,        						--> detailgeometrie
-	  Schlammsammler,       						--> manhole
-	  Schwimmstoffabscheider,    					--> detailgeometrie
-	  seitlicherZugang,        		             	--> special_structure
-	  Spuelschacht,    								--> detailgeometrie
-	  Trennbauwerk,         						--> detailgeometrie
-	  unbekannt, 									--> detailgeometrie
-	  Versickerungsanlage (              		 	--> infiltration_installation
-	    Versickerungsbecken,
-		Kieskoerper,
-		Versickerungsschacht,
-		Versickerungsstrang,
-		Versickerungsschacht_Strang,
-		Retentionsfilterbecken,
+	  Oelabscheider,       							--> detailgeometrie                          
+	  Pumpwerk,                   					--> detailgeometrie              
+	  Regenbecken_Durchlaufbecken,               	--> special_structure                 
+	  Regenbecken_Fangbecken,                      	--> special_structure            
+	  Regenbecken_Fangkanal,                      	--> special_structure           
+	  Regenbecken_Regenklaerbecken,               	--> special_structure             
+	  Regenbecken_Regenrueckhaltebecken,           	--> special_structure           
+	  Regenbecken_Regenrueckhaltekanal,            	--> special_structure           
+	  Regenbecken_Stauraumkanal,                   	--> special_structure            
+	  Regenbecken_Verbundbecken,                   	--> special_structure                
+	  Regenueberlauf,        						--> detailgeometrie                         
+	  Schlammsammler,       						--> manhole                     
+	  Schwimmstoffabscheider,    					--> detailgeometrie  
+	  seitlicherZugang,        		             	--> special_structure  
+	  Spuelschacht,    								--> detailgeometrie 
+	  Trennbauwerk,         						--> detailgeometrie                        
+	  unbekannt, 									--> detailgeometrie  
+	  Versickerungsanlage (              		 	--> infiltration_installation             
+	    Versickerungsbecken,                     
+		Kieskoerper,                              
+		Versickerungsschacht,                     
+		Versickerungsstrang,                      
+		Versickerungsschacht_Strang,              
+		Retentionsfilterbecken,                   
 		andere,
 		unbekannt),
-	  Wirbelfallschacht,    		             	--> special_structure
-	  Abwasserreinigungsanlage,   		           	--> wastewater_node, wwtp
-	  Anschluss,                   		           	--> wastewater_node, ag64_function
-	  Bodenablauf,                                	--> manhole
-	  Oelrueckhaltebecken,                         	--> special_structure
-	  Regenwasserrechen,                          	--> special_structure.other
-	  Regenwassersieb,                             	--> special_structure.other
-	  Rohrbruecke,                                 	--> special_structure.other
-	  Schlammfang,                         			--> manhole
-	  Strassenwasserbehandlungsanlage,             	--> special_structure
-	  Vorbehandlung              					--> detailgeometrie
+	  Wirbelfallschacht,    		             	--> special_structure  
+	  Abwasserreinigungsanlage,   		           	--> wastewater_node, wwtp                                    
+	  Anschluss,                   		           	--> wastewater_node, ag64_function                   
+	  Bodenablauf,                                	--> manhole   
+	  Oelrueckhaltebecken,                         	--> special_structure                   
+	  Regenwasserrechen,                          	--> special_structure.other                     
+	  Regenwassersieb,                             	--> special_structure.other                        
+	  Rohrbruecke,                                 	--> special_structure.other                        
+	  Schlammfang,                         			--> manhole     
+	  Strassenwasserbehandlungsanlage,             	--> special_structure   
+	  Vorbehandlung              					--> detailgeometrie 
 	);
 
 
@@ -106,15 +106,15 @@ WITH re_meta AS(
 	CH.function_hierarchic as ch_function_hierarchic,
 	tww_symbology_order,
 	ag96_fk_measure
-	FROM
+	FROM 
 	(SELECT obj_id,
 	 fk_reach_point_from,
 	 fk_reach_point_to from tww_od.reach) re
-	LEFT JOIN (SELECT obj_id, fk_wastewater_structure
+	LEFT JOIN (SELECT obj_id, fk_wastewater_structure 
 				 FROM tww_od.wastewater_networkelement)   ne ON ne.obj_id = re.obj_id
-      LEFT JOIN (SELECT obj_id, function_hierarchic
+      LEFT JOIN (SELECT obj_id, function_hierarchic 
 				 FROM tww_od.channel)                    CH ON CH.obj_id = ne.fk_wastewater_structure
-      LEFT JOIN (SELECT obj_id,
+      LEFT JOIN (SELECT obj_id, 
 				 year_of_construction,
 				 structure_condition,
 				 financing,
@@ -172,9 +172,9 @@ WITH re_meta AS(
 
     FROM
       tww_od.wastewater_node wn
-	  LEFT JOIN (SELECT obj_id, fk_wastewater_structure
+	  LEFT JOIN (SELECT obj_id, fk_wastewater_structure 
 				 FROM tww_od.wastewater_networkelement)   ne  ON ne.obj_id = wn.obj_id
-	  LEFT JOIN (SELECT obj_id,
+	  LEFT JOIN (SELECT obj_id, 
 				 year_of_construction,
 				 structure_condition,
 				 financing,
@@ -188,11 +188,11 @@ WITH re_meta AS(
 				 ag96_fk_measure
 				 FROM tww_od.wastewater_structure )  ws  ON ws.obj_id = ne.fk_wastewater_structure
 
-	  LEFT JOIN (SELECT obj_id, fk_wastewater_networkelement
+	  LEFT JOIN (SELECT obj_id, fk_wastewater_networkelement 
 				 FROM tww_od.reach_point)               rp      ON wn.obj_id = rp.fk_wastewater_networkelement
 	  LEFT JOIN re_meta AS re_from ON re_from.fk_reach_point_from = rp.obj_id
 	  LEFT JOIN re_meta AS re_to ON re_to.fk_reach_point_to = rp.obj_id
-	  LEFT JOIN (SELECT obj_id,
+	  LEFT JOIN (SELECT obj_id, 
 				 year_of_construction,
 				 structure_condition,
 				 financing,
@@ -220,7 +220,7 @@ CREATE INDEX in_{ext_schema}_knoten_bauwerksattribute_obj_id
 
 DROP VIEW IF EXISTS {ext_schema}.gepknoten;
 CREATE VIEW {ext_schema}.gepknoten
-AS
+AS			
 SELECT
 	  wn.obj_id AS obj_id
 	, wn.wwtp_number AS ara_nr
@@ -231,20 +231,20 @@ SELECT
 	, ne.identifier AS bezeichnung
 	, COALESCE(co.level,main_co.level,unc.co_level) AS deckelkote
 	, ST_Force2D(COALESCE(main_ws.detail_geometry3d_geometry,unc.detail_geometry3d_geometry)) AS detailgeometrie
-	, COALESCE(fi.value_de,'unbekannt') AS finanzierung
+	, COALESCE(fi.value_de,'unbekannt') AS finanzierung 
 	, COALESCE(
-		CASE
-		when
-			meas_pt.obj_id IS NOT NULL
-			AND ss_fu.value_de NOT LIKE ANY (ARRAY['Regenbecken%','Regenueberlauf','Pumpwerk','Dueker%','Versickerungsanlage%'])
-		THEN
-			'Messstelle'
-		when wn.ag64_function IS NOT NULL THEN 'Anschluss'
-		when wwtp.obj_id IS NOT NULL THEN 'Abwasserreinigungsanlage'
-		ELSE NULL
+		CASE 
+		when 
+			meas_pt.obj_id IS NOT NULL 
+			AND ss_fu.value_de NOT LIKE ANY (ARRAY['Regenbecken%','Regenueberlauf','Pumpwerk','Dueker%','Versickerungsanlage%']) 
+		THEN 
+			'Messstelle' 
+		when wn.ag64_function IS NOT NULL THEN 'Anschluss' 
+		when wwtp.obj_id IS NOT NULL THEN 'Abwasserreinigungsanlage' 
+		ELSE NULL 
 		END
-		, ma_fu_rev.value_de
-		, ma_fu.value_de
+		, ma_fu_rev.value_de 
+		, ma_fu.value_de 
 		, ss_fu_rev.value_de
 		, ss_fu.value_de
 		,'Einleitstelle_'||dp_rel.value_de
@@ -280,7 +280,7 @@ LEFT JOIN tww_od.building build ON build.obj_id=conn_obj.obj_id
 LEFT JOIN tww_od.wwtp_structure wwtp ON main_ws.obj_id=wwtp.obj_id --tbd: Filtern, dass nur ARA-Zulauf gemappt wird
 
 LEFT JOIN tww_vl.wastewater_node_ag96_is_gateway isgate ON wn.ag96_is_gateway=isgate.code
-LEFT JOIN (SELECT
+LEFT JOIN (SELECT 
 		   obj_id,
 		   co_level,
 		   detail_geometry3d_geometry,
@@ -305,7 +305,7 @@ LEFT JOIN tww_vl.discharge_point_relevance dp_rel ON dp_rel.code=dp.relevance
 LEFT JOIN tww_vl.wastewater_structure_structure_condition sc ON sc.code=ws.structure_condition
 LEFT JOIN tww_vl.wastewater_structure_renovation_necessity rn ON rn.code=ws.renovation_necessity
 LEFT JOIN tww_vl.wastewater_structure_financing fi ON fi.code=ws.financing
-LEFT JOIN tww_vl.channel_function_hierarchic fhi ON fhi.code=wn._function_hierarchic
+LEFT JOIN tww_vl.channel_function_hierarchic fhi ON fhi.code=wn._function_hierarchic	
 
 LEFT JOIN tww_od.cover co ON co.agxx_fk_wastewater_node = wn.obj_id -- only overwrite position of main wn
 LEFT JOIN tww_od.cover main_co ON main_co.obj_id=ws.fk_main_cover
@@ -322,8 +322,8 @@ AS
 
 SELECT
 	  re.obj_id AS obj_id
-	, ws.year_of_construction AS baujahr
-	, sc.value_de AS baulicherzustand
+	, ws.year_of_construction AS baujahr	  
+	, sc.value_de AS baulicherzustand  
 	, CASE WHEN st.value_de = 'in_Betrieb' THEN 'in_Betrieb.in_Betrieb' ELSE st.value_de END AS bauwerkstatus
 	, ne.ag64_remark AS bemerkung_wi
 	, ne.identifier AS bezeichnung
@@ -500,9 +500,9 @@ AS
 SELECT
 	  ov.obj_id
 	, CASE
-	  WHEN pu.obj_id IS NOT NULL THEN 'Foerderaggregat'
-	  WHEN lw.obj_id IS NOT NULL THEN 'Leapingwehr'
-	  WHEN pw.obj_id IS NOT NULL THEN 'Streichwehr'
+	  WHEN pu.obj_id IS NOT NULL THEN 'Foerderaggregat' 
+	  WHEN lw.obj_id IS NOT NULL THEN 'Leapingwehr' 
+	  WHEN pw.obj_id IS NOT NULL THEN 'Streichwehr' 
 	  END AS art
 	, ov.identifier AS bezeichnung
 	, ov.fk_wastewater_node AS knotenref
@@ -552,10 +552,10 @@ FROM tww_od.building_group bg
 	LEFT JOIN tww_vl.building_group_function bg_fct ON bg_fct.code = bg.function
 	LEFT JOIN tww_vl.building_group_function_export_rel_agxx bg_fct_rev ON bg_fct_rev.code = bg.function
 	LEFT JOIN tww_vl.building_group_renovation_necessity bg_rn ON bg_rn.code = bg.renovation_necessity
-	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_ww ON bg_dt_ww.code = bg.ag96_disposal_wastewater
-	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_iw ON bg_dt_iw.code = bg.ag96_disposal_industrial_wastewater
-	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_sw ON bg_dt_sw.code = bg.ag96_disposal_square_water
-	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_rw ON bg_dt_rw.code = bg.ag96_disposal_roof_water
+	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_ww ON bg_dt_ww.code = bg.ag96_disposal_wastewater 
+	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_iw ON bg_dt_iw.code = bg.ag96_disposal_industrial_wastewater 
+	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_sw ON bg_dt_sw.code = bg.ag96_disposal_square_water 
+	LEFT JOIN tww_vl.building_group_ag96_disposal_type bg_dt_rw ON bg_dt_rw.code = bg.ag96_disposal_roof_water 
 ;
 
 
@@ -588,7 +588,7 @@ CREATE OR REPLACE VIEW {ext_schema}.sbw_einzugsgebiet
    FROM tww_od.catchment_area_totals cat
      LEFT JOIN tww_od.hydraulic_char_data hcd ON hcd.obj_id = cat.fk_hydraulic_char_data
      LEFT JOIN tww_od.wastewater_node wn ON hcd.fk_wastewater_node = wn.obj_id
-;
+;	
 
 
 ----------------------------
@@ -596,7 +596,7 @@ CREATE OR REPLACE VIEW {ext_schema}.sbw_einzugsgebiet
 ----------------------------
 DROP VIEW IF EXISTS {ext_schema}.versickerungsbereichag;
 CREATE VIEW {ext_schema}.versickerungsbereichag
-AS
+AS 
 SELECT
 	  iz.obj_id
 	, zo.identifier AS bezeichnung
