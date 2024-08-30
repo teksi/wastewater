@@ -2527,6 +2527,7 @@ class InterlisImporterToIntermediateSchema:
                 gepmassnahmeref=self.get_pk(row.gepmassnahmeref__REL),
                 hydraulischebelastung=row.hydraulischebelastung,
                 lichte_breite_ist=row.lichte_breite_ist,
+                lichte_hoehe_ist=row.lichte_hoehe_ist,
                 lichte_breite_geplant=row.lichte_breite_geplant,
                 lichte_hoehe_geplant=row.lichte_hoehe_geplant,
                 nutzungsartag_geplant=row.nutzungsartag_geplant,
@@ -2539,6 +2540,7 @@ class InterlisImporterToIntermediateSchema:
             gephaltung = self.model_classes_tww_app.gephaltung(
                 **self.haltung_common_ag_xx(row),
                 lichte_breite_ist=row.lichte_breite,
+                lichte_hoehe_ist=row.lichte_hoehe,
             )
             self.session_tww.add(gephaltung)
             print(".", end="")
