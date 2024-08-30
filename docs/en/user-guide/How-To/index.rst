@@ -41,8 +41,8 @@ and ask him/her to set the prefix to fit your project.
 
 For more information see :ref:`productionreadiness`
 
-Connect all occurences of your field name to ``tww_sys.get_default_values(field_name)``.
-Per default, the fields ``fk_provider`` and ``fk_dataowner`` are already connected to the function ``tww_sys.get_default_values(field_name)``.
+Connect all occurences of your field name to ``tww_app.get_default_values(field_name)``.
+Per default, the fields ``fk_provider`` and ``fk_dataowner`` are already connected to the function ``tww_app.get_default_values(field_name)``.
 
 An example SQL script how to insert the default value for all occurences of a field name can be found `here <https://github.com/teksi/wastewater/blob/main/datamodel/changelogs/0001/14_default_values.sql>`_)
 
@@ -55,7 +55,7 @@ Labeling a manhole with his levels is quite a complex thing. Levels are not stor
 - _cover_label: shows the level / the levels of the cover/s.level of the wastewater structure
 - _bottom_label: shows the level / the levels of the wastewater_node(s).bottom_level of the wastewater structure
 - _input_label: shows the levels of the reachpoints connected as to_reachpoints to one of the wastewater_nodes of the wastewater_structure
-- _output_lebel: shows the levels of the reachpoints connected as from_reachpoints to one of the wastewater_nodes of the wastewater_structure
+- _output_label: shows the levels of the reachpoints connected as from_reachpoints to one of the wastewater_nodes of the wastewater_structure
 
 
 .. figure:: images/tww_labels.jpg
@@ -88,15 +88,15 @@ For some processes such as INTERLIS Imports, a set of triggers are temporarily d
 
 * Check status of triggers::
 
-   SELECT tww_sys.check_symbology_triggers_enabled();
-   SELECT tww_sys.check_autoupdate_triggers_enabled();
+   SELECT tww_app.check_symbology_triggers_enabled();
+   SELECT tww_app.check_modification_triggers_enabled();
 
 * Activate / Deactivate triggers::
 
-   SELECT tww_sys.alter_symbology_triggers('enable');
-   SELECT tww_sys.alter_symbology_triggers('disable');
-   SELECT tww_sys.alter_autoupdate_triggers('enable');
-   SELECT tww_sys.alter_autoupdate_triggers('disable');
+   SELECT tww_app.alter_symbology_triggers('enable');
+   SELECT tww_app.alter_symbology_triggers('disable');
+   SELECT tww_app.alter_modification_triggers('enable');
+   SELECT tww_app.alter_modification_triggers('disable');
 
 How to run symbology functions manually
 ---------------------------------------
@@ -105,12 +105,12 @@ Sometimes the labels such as bottom, cover or entry/exit levels are not correctl
 
 * Check status of symbology triggers::
 
-   SELECT tww_sys.check_symbology_triggers_enabled();
+   SELECT tww_app.check_symbology_triggers_enabled();
 
 * Activate / Deactivate symbology triggers::
 
-   SELECT tww_sys.alter_symbology_triggers('enable');
-   SELECT tww_sys.alter_symbology_triggers('disable');
+   SELECT tww_app.alter_symbology_triggers('enable');
+   SELECT tww_app.alter_symbology_triggers('disable');
 
 * Run **label function** for all entities (_label, _cover_label, _bottom_label, _input_label and _output_label)::
 

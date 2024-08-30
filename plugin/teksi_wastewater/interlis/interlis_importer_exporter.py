@@ -97,8 +97,8 @@ class InterlisImporterExporter:
         self._import_xtf_file(xtf_file_input=xtf_file_input)
 
         # Disable symbology triggers
-        self._progress_done(35, "Disable symbology and auto-updating triggers...")
-        self._import_disable_symbology_and_autoupdate_triggers()
+        self._progress_done(35, "Disable symbology and modification triggers...")
+        self._import_disable_symbology_and_modification_triggers()
 
         try:
             # Import from the temporary ili2pg model
@@ -132,13 +132,13 @@ class InterlisImporterExporter:
             self._import_manage_organisations()
 
             # Reenable symbology triggers
-            self._progress_done(97, "Reenable symbology and last modifiation triggers...")
-            self._import_enable_symbology_and_autoupdate_triggers()
+            self._progress_done(97, "Reenable symbology and  modifiation triggers...")
+            self._import_enable_symbology_and_modification_triggers()
 
         except Exception as exception:
             # Make sure to re-enable triggers in case an exception occourred
             try:
-                self._import_enable_symbology_and_autoupdate_triggers()
+                self._import_enable_symbology_and_modification_triggers()
             except Exception as enable_trigger_exception:
                 logger.error(
                     f"Symbology triggers couldn't be re-enabled because an exception occourred: '{enable_trigger_exception}'"
@@ -281,14 +281,14 @@ class InterlisImporterExporter:
             logger.info("Refresh materialized views")
             cursor.execute("SELECT tww_app.network_refresh_network_simple();")
 
-    def _import_disable_symbology_and_autoupdate_triggers(self):
+    def _import_disable_symbology_and_modification_triggers(self):
         DatabaseUtils.disable_symbology_triggers()
-        DatabaseUtils.disable_autoupdate_triggers()
+        DatabaseUtils.disable_modification_triggers()
 
-    def _import_enable_symbology_and_autoupdate_triggers(self):
+    def _import_enable_symbology_and_modification_triggers(self):
         DatabaseUtils.enable_symbology_triggers()
         DatabaseUtils.update_symbology()
-        DatabaseUtils.enable_autoupdate_triggers()
+        DatabaseUtils.enable_modification_triggers()
 
     def _export_labels_file(
         self,

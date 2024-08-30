@@ -20,8 +20,8 @@ class TestViews(unittest.TestCase, DbTestBase):
         cls.conn = psycopg.connect(f"service={pgservice}")
 
     def test_create_drop_triggers(self):
-        self.execute("tww_sys.alter_symbology_triggers('disable')")
-        self.execute("tww_sys.alter_symbology_triggers('enable')")
+        self.execute("tww_app.alter_symbology_triggers('disable')")
+        self.execute("tww_app.alter_symbology_triggers('enable')")
 
 
 if __name__ == "__main__":
