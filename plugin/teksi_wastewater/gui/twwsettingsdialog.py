@@ -57,7 +57,7 @@ class TwwSettingsDialog(QDialog, DIALOG_UI):
 
         adminmode = self.settings.value("/TWW/AdminMode", False, type=bool)
         self.mCbAdminMode.setChecked(adminmode)
-
+        
         ag6496extension = self.settings.value("/TWW/AGxxExtensions", False, type=bool)
         self.mCbAg6496Extension.setChecked(ag6496extension)
 
