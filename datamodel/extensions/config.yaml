@@ -1,9 +1,9 @@
 extensions:
-  - id: demo
-    directory: demo_extension
+  - id: template
+    directory: template_extension
     variables:
-      var1: value3
-      var2: value4
+      myVariable: "Hello World"
+      myNumber: 0
   - id: agxx
     directory: tww2ag6496
     variables: {}
