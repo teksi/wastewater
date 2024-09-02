@@ -36,7 +36,7 @@ BEGIN
            , fk_provider
            , last_modification
            )
-     VALUES ( COALESCE(NEW.obj_id,tww_sys.generate_oid('tww_od','river')) -- obj_id
+     VALUES ( COALESCE(NEW.obj_id,tww_app.generate_oid('tww_od','river')) -- obj_id
            , NEW.identifier
            , NEW.remark
            , NEW.fk_dataowner

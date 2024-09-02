@@ -37,7 +37,7 @@ BEGIN
            , fk_provider
            , last_modification
            )
-     VALUES ( COALESCE(NEW.obj_id,tww_sys.generate_oid('tww_od','groundwater_protection_zone')) -- obj_id
+     VALUES ( COALESCE(NEW.obj_id,tww_app.generate_oid('tww_od','groundwater_protection_zone')) -- obj_id
            , NEW.identifier
            , NEW.remark
            , NEW.fk_dataowner
