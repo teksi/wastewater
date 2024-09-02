@@ -14,7 +14,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_examination_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.examination ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','examination');
 COMMENT ON COLUMN tww_od.examination.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.examination ADD COLUMN equipment text;
  ALTER TABLE tww_od.examination ADD CONSTRAINT ex_equipment_length_max_50 CHECK(char_length(equipment)<=50);
@@ -49,7 +48,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_damage_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.damage ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','damage');
 COMMENT ON COLUMN tww_od.damage.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.damage ADD COLUMN comments text;
  ALTER TABLE tww_od.damage ADD CONSTRAINT dg_comments_length_max_100 CHECK(char_length(comments)<=100);
@@ -85,7 +83,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_damage_channel_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.damage_channel ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','damage_channel');
 COMMENT ON COLUMN tww_od.damage_channel.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.damage_channel ADD COLUMN channel_damage_begin  smallint ;
 COMMENT ON COLUMN tww_od.damage_channel.channel_damage_begin IS 'Location on the circumference: end of the damage. Values and procedure are described in detail in paragraph 2.1.6. / Lage am Umfang: Beginn des Schadens. Werte und Vorgehen sind in Absatz 2.1.6 genau beschrieben. / Emplacement circonférentiel: Début du dommage. Valeurs et procédure sont décrites en détail dans le paragraphe 2.1.6.';
@@ -111,7 +108,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_damage_manhole_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.damage_manhole ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','damage_manhole');
 COMMENT ON COLUMN tww_od.damage_manhole.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.damage_manhole ADD COLUMN manhole_distance  decimal(7,2) ;
 COMMENT ON COLUMN tww_od.damage_manhole.manhole_distance IS 'Length from the top edge of the cover to the detection (see paragraph 3.1.1) in m with two decimal places. / Länge ab Oberkante Deckel bis zur Feststellung (siehe Absatz 3.1.1) in m mit zwei Nachkommastellen. / Longueur entre le bord supérieur du couvercle et l’observation (cf. paragraphe 3.1.1) en m avec deux chiffres après la virgule.';
@@ -141,7 +137,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_data_media_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.data_media ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','data_media');
 COMMENT ON COLUMN tww_od.data_media.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.data_media ADD COLUMN identifier text;
  ALTER TABLE tww_od.data_media ADD CONSTRAINT vo_identifier_length_max_60 CHECK(char_length(identifier)<=60);
@@ -175,7 +170,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_file_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.file ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','file');
 COMMENT ON COLUMN tww_od.file.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.file ADD COLUMN classname  integer ;
 COMMENT ON COLUMN tww_od.file.classname IS 'Specifies the classname of the VSA-DSS data model to which the file belongs. In principle, all classes are possible. In the context of sewer television recordings, mainly channel, manhole damage, channel damage and examination. / Gibt an, zu welcher Klasse des VSA-DSS-Datenmodells die Datei gehört. Grundsätzlich alle Klassen möglich. Im Rahmen der Kanalfernsehaufnahmen hauptsächlich Kanal, Normschachtschaden, Kanalschaden und Untersuchung. / Indique à quelle classe du modèle de données de VSA-SDEE appartient le fichier. Toutes les classes sont possible. Surtout CANALISATION, DOMMAGE_CHAMBRE_STANDARD, DOMMAGE_CANALISATION, EXAMEN.';

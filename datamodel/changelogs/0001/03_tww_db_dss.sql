@@ -50,7 +50,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_organisation_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.organisation ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','organisation');
 COMMENT ON COLUMN tww_od.organisation.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.organisation ADD COLUMN identifier text;
  ALTER TABLE tww_od.organisation ADD CONSTRAINT og_identifier_length_max_255 CHECK(char_length(identifier)<=255);
@@ -88,7 +87,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_measure_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.measure ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','measure');
 COMMENT ON COLUMN tww_od.measure.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.measure ADD COLUMN category  integer ;
 COMMENT ON COLUMN tww_od.measure.category IS 'Category of measure (mandatory) / Massnahmenkategorie (obligatorisch) / Catégorie de la mesure (obligatoire)';
@@ -146,7 +144,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_mutation_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.mutation ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','mutation');
 COMMENT ON COLUMN tww_od.mutation.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.mutation ADD COLUMN attribute text;
  ALTER TABLE tww_od.mutation ADD CONSTRAINT md_attribute_length_max_60 CHECK(char_length(attribute)<=60);
@@ -193,7 +190,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_waste_water_treatment_plant_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.waste_water_treatment_plant ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','waste_water_treatment_plant');
 COMMENT ON COLUMN tww_od.waste_water_treatment_plant.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
 ALTER TABLE tww_od.waste_water_treatment_plant ADD COLUMN area_geometry geometry('CURVEPOLYGON', :SRID);
 CREATE INDEX in_tww_waste_water_treatment_plant_area_geometry ON tww_od.waste_water_treatment_plant USING gist (area_geometry );
@@ -253,7 +249,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_wastewater_structure_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.wastewater_structure ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_structure');
 COMMENT ON COLUMN tww_od.wastewater_structure.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.wastewater_structure ADD COLUMN accessibility  integer ;
 COMMENT ON COLUMN tww_od.wastewater_structure.accessibility IS 'Possibility of accessibility of a sewage structure for a person (not for a vehicle). / Möglichkeit der Zugänglichkeit eines Abwasserbauwerks für eine Person (nicht für ein Fahrzeug) / Possibilités d’accès à l’ouvrage d’assainissement pour une personne (non pour un véhicule)';
@@ -329,7 +324,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_channel_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.channel ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','channel');
 COMMENT ON COLUMN tww_od.channel.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.channel ADD COLUMN bedding_encasement  integer ;
 COMMENT ON COLUMN tww_od.channel.bedding_encasement IS 'yyy_Art und Weise der unmittelbaren Rohrumgebung im Boden: Bettungsschicht (Unterlage der Leitung),  Verdämmung (seitliche Auffüllung), Schutzschicht / Art und Weise der unmittelbaren Rohrumgebung im Boden: Bettungsschicht (Unterlage der Leitung),  Verdämmung (seitliche Auffüllung), Schutzschicht / Lit de pose (assise de la conduite), bourrage latéral (remblai latéral), couche de protection';
@@ -365,7 +359,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_manhole_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.manhole ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','manhole');
 COMMENT ON COLUMN tww_od.manhole.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.manhole ADD COLUMN amphibian_exit  integer ;
 COMMENT ON COLUMN tww_od.manhole.amphibian_exit IS 'Structural measures for the exit of amphibians available. / Bauliche Massnahme für den Ausstieg von Amphibien vorhanden. / Des mesures structurelles pour la sortie des amphibiens sont en place.';
@@ -396,7 +389,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_discharge_point_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.discharge_point ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','discharge_point');
 COMMENT ON COLUMN tww_od.discharge_point.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.discharge_point ADD COLUMN depth  smallint ;
 COMMENT ON COLUMN tww_od.discharge_point.depth IS 'Function (calculated value) = representative wastewater_node.bottom_level minus associated upper_elevation of the structure if detailed geometry is available, otherwise Function (calculated value) = wastewater_node.bottom_level minus associated cover.level of the structure / Funktion (berechneter Wert) = repräsentative Abwasserknoten.Sohlenkote minus zugehörige Deckenkote des Bauwerks falls Detailgeometrie vorhanden, sonst Funktion (berechneter Wert) = Abwasserknoten.Sohlenkote minus zugehörige Deckel.Kote des Bauwerks / Fonction (valeur calculée) = NOEUD_RESEAU.COTE_RADIER représentatif moins COTE_PLAFOND de l’ouvrage correspondant si la géométrie détaillée est disponible, sinon fonction (valeur calculée) = NŒUD_RESEAU.COT_RADIER moins COUVERCLE.COTE de l’ouvrage correspondant';
@@ -429,7 +421,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_special_structure_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.special_structure ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','special_structure');
 COMMENT ON COLUMN tww_od.special_structure.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.special_structure ADD COLUMN amphibian_exit  integer ;
 COMMENT ON COLUMN tww_od.special_structure.amphibian_exit IS 'Structural measures for the exit of amphibians available. / Bauliche Massnahme für den Ausstieg von Amphibien vorhanden. / Des mesures structurelles pour la sortie des amphibiens sont en place.';
@@ -460,7 +451,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_infiltration_installation_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.infiltration_installation ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','infiltration_installation');
 COMMENT ON COLUMN tww_od.infiltration_installation.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.infiltration_installation ADD COLUMN absorption_capacity  decimal(9,3) ;
 COMMENT ON COLUMN tww_od.infiltration_installation.absorption_capacity IS 'yyy_Schluckvermögen des Bodens. / Schluckvermögen des Bodens. / Capacité d''absorption du sol';
@@ -504,7 +494,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_wwtp_structure_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.wwtp_structure ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wwtp_structure');
 COMMENT ON COLUMN tww_od.wwtp_structure.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.wwtp_structure ADD COLUMN kind  integer ;
 COMMENT ON COLUMN tww_od.wwtp_structure.kind IS 'yyy_Art des Beckens oder Verfahrens im ARA Bauwerk / Art des Beckens oder Verfahrens im ARA Bauwerk / Genre de l''l’ouvrage ou genre de traitement dans l''ouvrage STEP';
@@ -521,7 +510,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_maintenance_event_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.maintenance_event ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','maintenance_event');
 COMMENT ON COLUMN tww_od.maintenance_event.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.maintenance_event ADD COLUMN base_data text;
  ALTER TABLE tww_od.maintenance_event ADD CONSTRAINT me_base_data_length_max_50 CHECK(char_length(base_data)<=50);
@@ -571,7 +559,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_zone_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.zone ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','zone');
 COMMENT ON COLUMN tww_od.zone.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.zone ADD COLUMN identifier text;
  ALTER TABLE tww_od.zone ADD CONSTRAINT zo_identifier_length_max_20 CHECK(char_length(identifier)<=20);
@@ -598,7 +585,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_infiltration_zone_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.infiltration_zone ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','infiltration_zone');
 COMMENT ON COLUMN tww_od.infiltration_zone.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.infiltration_zone ADD COLUMN infiltration_capacity  integer ;
 COMMENT ON COLUMN tww_od.infiltration_zone.infiltration_capacity IS 'yyy_Versickerungsmöglichkeit im Bereich / Versickerungsmöglichkeit im Bereich / Potentiel d''infiltration de la zone';
@@ -618,7 +604,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_drainage_system_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.drainage_system ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','drainage_system');
 COMMENT ON COLUMN tww_od.drainage_system.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.drainage_system ADD COLUMN kind  integer ;
 COMMENT ON COLUMN tww_od.drainage_system.kind IS 'yyy_Art des Entwässerungssystems in dem ein bestimmtes Gebiet entwässert werden soll (SOLL Zustand)  im groben Überblick für Planung. Wird später auf einzelnem Kanal attributiert. / Art des Entwässerungssystems in dem ein bestimmtes Gebiet entwässert werden soll (SOLL Zustand) im groben Überblick für Planung. Wird später auf einzelnem Kanal attributiert. / Genre de système d''évacuation choisi pour une région déterminée (Etat prévu). Vue d''ensemble grossière pour planification. Sera défini pour chaque canal par la suite.';
@@ -638,7 +623,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_pipe_profile_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.pipe_profile ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','pipe_profile');
 COMMENT ON COLUMN tww_od.pipe_profile.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.pipe_profile ADD COLUMN height_width_ratio  decimal(5,2) ;
 COMMENT ON COLUMN tww_od.pipe_profile.height_width_ratio IS 'height-width ratio / Verhältnis der Höhe zur Breite / Rapport entre la hauteur et la largeur';
@@ -669,7 +653,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_wwtp_energy_use_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.wwtp_energy_use ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wwtp_energy_use');
 COMMENT ON COLUMN tww_od.wwtp_energy_use.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.wwtp_energy_use ADD COLUMN gas_motor  integer ;
 COMMENT ON COLUMN tww_od.wwtp_energy_use.gas_motor IS 'electric power / elektrische Leistung / Puissance électrique';
@@ -701,7 +684,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_waste_water_treatment_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.waste_water_treatment ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','waste_water_treatment');
 COMMENT ON COLUMN tww_od.waste_water_treatment.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.waste_water_treatment ADD COLUMN identifier text;
  ALTER TABLE tww_od.waste_water_treatment ADD CONSTRAINT tr_identifier_length_max_20 CHECK(char_length(identifier)<=20);
@@ -729,7 +711,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_sludge_treatment_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.sludge_treatment ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','sludge_treatment');
 COMMENT ON COLUMN tww_od.sludge_treatment.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.sludge_treatment ADD COLUMN composting  decimal(7,2) ;
 COMMENT ON COLUMN tww_od.sludge_treatment.composting IS 'Dimensioning value / Dimensionierungswert / Valeur de dimensionnement';
@@ -780,7 +761,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_control_center_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.control_center ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','control_center');
 COMMENT ON COLUMN tww_od.control_center.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.control_center ADD COLUMN identifier text;
  ALTER TABLE tww_od.control_center ADD CONSTRAINT cc_identifier_length_max_20 CHECK(char_length(identifier)<=20);
@@ -807,7 +787,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_hydr_geometry_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.hydr_geometry ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','hydr_geometry');
 COMMENT ON COLUMN tww_od.hydr_geometry.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.hydr_geometry ADD COLUMN identifier text;
  ALTER TABLE tww_od.hydr_geometry ADD CONSTRAINT hg_identifier_length_max_20 CHECK(char_length(identifier)<=20);
@@ -844,7 +823,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_wastewater_networkelement_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.wastewater_networkelement ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_networkelement');
 COMMENT ON COLUMN tww_od.wastewater_networkelement.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.wastewater_networkelement ADD COLUMN identifier text;
  ALTER TABLE tww_od.wastewater_networkelement ADD CONSTRAINT we_identifier_length_max_41 CHECK(char_length(identifier)<=41);
@@ -871,7 +849,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_reach_point_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.reach_point ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','reach_point');
 COMMENT ON COLUMN tww_od.reach_point.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.reach_point ADD COLUMN elevation_accuracy  integer ;
 COMMENT ON COLUMN tww_od.reach_point.elevation_accuracy IS 'yyy_Quantifizierung der Genauigkeit der Höhenlage der Kote in Relation zum Höhenfixpunktnetz (z.B. Grundbuchvermessung oder Landesnivellement). / Quantifizierung der Genauigkeit der Höhenlage der Kote in Relation zum Höhenfixpunktnetz (z.B. Grundbuchvermessung oder Landesnivellement). / Plage de précision des coordonnées altimétriques du point de tronçon';
@@ -915,7 +892,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_wastewater_node_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.wastewater_node ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_node');
 COMMENT ON COLUMN tww_od.wastewater_node.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.wastewater_node ADD COLUMN backflow_level_current  decimal(7,3) ;
 COMMENT ON COLUMN tww_od.wastewater_node.backflow_level_current IS '1. Relevant backflow level based on the calculation rain (dss)   2. Height below which special measures against backflow are to be taken within the property drainage system. (DIN 4045) / 1. Massgebende Rückstaukote bezogen auf den Berechnungsregen (dss)  2. Höhe, unter der innerhalb der Grundstücksentwässerung besondere Massnahmen gegen Rückstau zu treffen sind. (DIN 4045) / Cote de refoulement déterminante calculée à partir des pluies de projet';
@@ -947,7 +923,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_reach_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.reach ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','reach');
 COMMENT ON COLUMN tww_od.reach.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.reach ADD COLUMN clear_height  integer ;
 COMMENT ON COLUMN tww_od.reach.clear_height IS 'Clear height (inside) of profile. Installed liners are not to be considered (-> Reliner_nominal width) / Maximale Innenhöhe des Rohrprofiles. Eingebaute Liner sind nicht zu berücksichtigen -> Reliner_Nennweite). / Hauteur interne maximale du profil du tube. Les revêtements installés ne doivent pas être pris en compte (-> Reliner_largeur nominale.).';
@@ -1002,7 +977,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_profile_geometry_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.profile_geometry ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','profile_geometry');
 COMMENT ON COLUMN tww_od.profile_geometry.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.profile_geometry ADD COLUMN sequence  smallint ;
 COMMENT ON COLUMN tww_od.profile_geometry.sequence IS 'Sequence of the detail points of geometry definition / Reihenfolge der Detailpunkte der Geometriedefinition / Ordre des points de détail de la définition de la géométrie';
@@ -1029,7 +1003,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_hydr_geom_relation_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.hydr_geom_relation ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','hydr_geom_relation');
 COMMENT ON COLUMN tww_od.hydr_geom_relation.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.hydr_geom_relation ADD COLUMN water_depth  decimal(7,2) ;
 COMMENT ON COLUMN tww_od.hydr_geom_relation.water_depth IS 'yyy_Massgebende Wassertiefe / Massgebende Wassertiefe / Profondeur d''eau déterminante';
@@ -1056,7 +1029,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_mechanical_pretreatment_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.mechanical_pretreatment ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','mechanical_pretreatment');
 COMMENT ON COLUMN tww_od.mechanical_pretreatment.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.mechanical_pretreatment ADD COLUMN identifier text;
  ALTER TABLE tww_od.mechanical_pretreatment ADD CONSTRAINT mt_identifier_length_max_20 CHECK(char_length(identifier)<=20);
@@ -1085,7 +1057,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_retention_body_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.retention_body ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','retention_body');
 COMMENT ON COLUMN tww_od.retention_body.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.retention_body ADD COLUMN identifier text;
  ALTER TABLE tww_od.retention_body ADD CONSTRAINT rb_identifier_length_max_20 CHECK(char_length(identifier)<=20);
@@ -1116,7 +1087,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_overflow_char_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.overflow_char ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','overflow_char');
 COMMENT ON COLUMN tww_od.overflow_char.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.overflow_char ADD COLUMN identifier text;
  ALTER TABLE tww_od.overflow_char ADD CONSTRAINT oc_identifier_length_max_20 CHECK(char_length(identifier)<=20);
@@ -1145,7 +1115,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_hq_relation_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.hq_relation ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','hq_relation');
 COMMENT ON COLUMN tww_od.hq_relation.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.hq_relation ADD COLUMN altitude  decimal(7,3) ;
 COMMENT ON COLUMN tww_od.hq_relation.altitude IS 'yyy_Zum Abfluss (Q2) korrelierender Wasserspiegel (h) / Zum Abfluss (Q2) korrelierender Wasserspiegel (h) / Niveau d''eau correspondant (h) au débit (Q2)';
@@ -1172,7 +1141,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_structure_part_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.structure_part ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','structure_part');
 COMMENT ON COLUMN tww_od.structure_part.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.structure_part ADD COLUMN identifier text;
  ALTER TABLE tww_od.structure_part ADD CONSTRAINT sp_identifier_length_max_20 CHECK(char_length(identifier)<=20);
@@ -1201,7 +1169,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_dryweather_downspout_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.dryweather_downspout ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','dryweather_downspout');
 COMMENT ON COLUMN tww_od.dryweather_downspout.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.dryweather_downspout ADD COLUMN diameter  smallint ;
 COMMENT ON COLUMN tww_od.dryweather_downspout.diameter IS '';
@@ -1218,7 +1185,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_access_aid_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.access_aid ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','access_aid');
 COMMENT ON COLUMN tww_od.access_aid.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.access_aid ADD COLUMN kind  integer ;
 COMMENT ON COLUMN tww_od.access_aid.kind IS 'yyy_Art des Einstiegs in das Bauwerk / Art des Einstiegs in das Bauwerk / Genre d''accès à l''ouvrage';
@@ -1235,7 +1201,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_dryweather_flume_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.dryweather_flume ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','dryweather_flume');
 COMMENT ON COLUMN tww_od.dryweather_flume.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.dryweather_flume ADD COLUMN material  integer ;
 COMMENT ON COLUMN tww_od.dryweather_flume.material IS 'yyy_Material der Ausbildung oder Auskleidung der Trockenwetterrinne / Material der Ausbildung oder Auskleidung der Trockenwetterrinne / Matériau de fabrication ou de revêtement de la cunette de débit temps sec';
@@ -1252,7 +1217,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_cover_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.cover ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','cover');
 COMMENT ON COLUMN tww_od.cover.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.cover ADD COLUMN brand text;
  ALTER TABLE tww_od.cover ADD CONSTRAINT co_brand_length_max_50 CHECK(char_length(brand)<=50);
@@ -1295,7 +1259,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_electric_equipment_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.electric_equipment ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','electric_equipment');
 COMMENT ON COLUMN tww_od.electric_equipment.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.electric_equipment ADD COLUMN gross_costs  decimal(10,2) ;
 COMMENT ON COLUMN tww_od.electric_equipment.gross_costs IS 'Gross costs of electrical equipment / Brutto Erstellungskosten der elektrischen Ausrüstung / Coûts bruts des équipements électriques';
@@ -1316,7 +1279,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_electromechanical_equipment_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.electromechanical_equipment ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','electromechanical_equipment');
 COMMENT ON COLUMN tww_od.electromechanical_equipment.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.electromechanical_equipment ADD COLUMN gross_costs  decimal(10,2) ;
 COMMENT ON COLUMN tww_od.electromechanical_equipment.gross_costs IS 'Gross costs of electromechanical equipment / Brutto Erstellungskosten der elektromechanischen Ausrüstung / Coûts bruts des équipements électromécaniques';
@@ -1337,7 +1299,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_benching_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.benching ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','benching');
 COMMENT ON COLUMN tww_od.benching.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.benching ADD COLUMN kind  integer ;
 COMMENT ON COLUMN tww_od.benching.kind IS '';
@@ -1354,7 +1315,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_flushing_nozzle_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.flushing_nozzle ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','flushing_nozzle');
 COMMENT ON COLUMN tww_od.flushing_nozzle.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
 ALTER TABLE tww_od.flushing_nozzle ADD COLUMN situation_geometry geometry('POINT', :SRID);
 CREATE INDEX in_tww_flushing_nozzle_situation_geometry ON tww_od.flushing_nozzle USING gist (situation_geometry );
@@ -1372,7 +1332,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_connection_object_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.connection_object ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','connection_object');
 COMMENT ON COLUMN tww_od.connection_object.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.connection_object ADD COLUMN identifier text;
  ALTER TABLE tww_od.connection_object ADD CONSTRAINT cn_identifier_length_max_20 CHECK(char_length(identifier)<=20);
@@ -1401,7 +1360,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_building_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.building ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','building');
 COMMENT ON COLUMN tww_od.building.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.building ADD COLUMN house_number text;
  ALTER TABLE tww_od.building ADD CONSTRAINT bu_house_number_length_max_50 CHECK(char_length(house_number)<=50);
@@ -1428,7 +1386,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_reservoir_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.reservoir ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','reservoir');
 COMMENT ON COLUMN tww_od.reservoir.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.reservoir ADD COLUMN location_name text;
  ALTER TABLE tww_od.reservoir ADD CONSTRAINT rv_location_name_length_max_50 CHECK(char_length(location_name)<=50);
@@ -1449,7 +1406,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_individual_surface_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.individual_surface ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','individual_surface');
 COMMENT ON COLUMN tww_od.individual_surface.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.individual_surface ADD COLUMN function  integer ;
 COMMENT ON COLUMN tww_od.individual_surface.function IS 'Type of usage of surface / Art der Nutzung der Fläche / Genre d''utilisation de la surface';
@@ -1473,7 +1429,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_fountain_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.fountain ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','fountain');
 COMMENT ON COLUMN tww_od.fountain.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.fountain ADD COLUMN location_name text;
  ALTER TABLE tww_od.fountain ADD CONSTRAINT fo_location_name_length_max_50 CHECK(char_length(location_name)<=50);
@@ -1494,7 +1449,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_log_card_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.log_card ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','log_card');
 COMMENT ON COLUMN tww_od.log_card.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.log_card ADD COLUMN control_remote_control  integer ;
 COMMENT ON COLUMN tww_od.log_card.control_remote_control IS 'Control/alarm of the special structure. In contrast to the Control attribute in the VSA-DSS classes overflow and throttle_shut_off_unit, the present attribute refers to the entire control/alarm of the special structure. The value range is meant to be cumulative in the following order: no_control, local_control, transmission_alarm, transmission_measuring_signals, interconnection. / Steuerung/Alarmierung des Sonderbauwerks. Der Wertebereich ist kumulativ in der folgenden Reihenfolge gedacht: Keine_Steuerung, Lokale_Steuerung, Uebermittlung_Alarm, Uebermittlung_Messsignale, Verbundsteuerung. Im Gegensatz zum Attribut Steuerung in den VSA-DSS-Klassen Ueberlauf und Absperr_Drosselorgan bezieht sich das vorliegende Attribut auf die gesamte Steuerung/Alarmierung des Sonderbauwerks. / Commande/alarme de l''ouvrage spécial. La plage de valeurs est censée être cumulative dans l''ordre suivant : aucune_commande, commande_locale, transmission_alarme, transmission_signaux_mesure, commande_combinee. Contrairement à l''attribut COMMANDE dans les classes VSA-SDEE DEVERSOIR et LIMITEUR_DEBIT, cet attribut fait référence à l''ensemble commande/alarme de l''ouvrage spécial.';
@@ -1525,7 +1479,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_catchment_area_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.catchment_area ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','catchment_area');
 COMMENT ON COLUMN tww_od.catchment_area.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.catchment_area ADD COLUMN direct_discharge_current  integer ;
 COMMENT ON COLUMN tww_od.catchment_area.direct_discharge_current IS 'The rain water is currently fully or partially discharged into a water body / Das Niederschlagsabwasser wird ganz oder teilweise über eine SAA-Leitung in ein Gewässer eingeleitet / Les eaux pluviales sont rejetées complètement ou partiellement via une conduite OAS dans un cours d’eau';
@@ -1605,7 +1558,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_surface_runoff_parameters_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.surface_runoff_parameters ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','surface_runoff_parameters');
 COMMENT ON COLUMN tww_od.surface_runoff_parameters.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.surface_runoff_parameters ADD COLUMN evaporation_loss  decimal(4,1) ;
 COMMENT ON COLUMN tww_od.surface_runoff_parameters.evaporation_loss IS 'Loss by evaporation / Verlust durch Verdunstung / Pertes par évaporation au sol';
@@ -1640,7 +1592,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_measuring_point_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.measuring_point ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','measuring_point');
 COMMENT ON COLUMN tww_od.measuring_point.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.measuring_point ADD COLUMN damming_device  integer ;
 COMMENT ON COLUMN tww_od.measuring_point.damming_device IS '';
@@ -1677,7 +1628,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_measuring_device_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.measuring_device ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','measuring_device');
 COMMENT ON COLUMN tww_od.measuring_device.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.measuring_device ADD COLUMN brand text;
  ALTER TABLE tww_od.measuring_device ADD CONSTRAINT mv_brand_length_max_50 CHECK(char_length(brand)<=50);
@@ -1712,7 +1662,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_measurement_series_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.measurement_series ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','measurement_series');
 COMMENT ON COLUMN tww_od.measurement_series.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.measurement_series ADD COLUMN dimension text;
  ALTER TABLE tww_od.measurement_series ADD CONSTRAINT ms_dimension_length_max_50 CHECK(char_length(dimension)<=50);
@@ -1744,7 +1693,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_measurement_result_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.measurement_result ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','measurement_result');
 COMMENT ON COLUMN tww_od.measurement_result.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.measurement_result ADD COLUMN identifier text;
  ALTER TABLE tww_od.measurement_result ADD CONSTRAINT mr_identifier_length_max_20 CHECK(char_length(identifier)<=20);
@@ -1779,7 +1727,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_overflow_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.overflow ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','overflow');
 COMMENT ON COLUMN tww_od.overflow.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.overflow ADD COLUMN actuation  integer ;
 COMMENT ON COLUMN tww_od.overflow.actuation IS 'Actuation of installation / Antrieb der Einbaute / Entraînement des installations';
@@ -1828,7 +1775,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_throttle_shut_off_unit_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.throttle_shut_off_unit ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','throttle_shut_off_unit');
 COMMENT ON COLUMN tww_od.throttle_shut_off_unit.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.throttle_shut_off_unit ADD COLUMN actuation  integer ;
 COMMENT ON COLUMN tww_od.throttle_shut_off_unit.actuation IS 'Actuation of the throttle or shut-off unit / Antrieb der Einbaute / Entraînement des installations';
@@ -1880,7 +1826,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_prank_weir_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.prank_weir ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','prank_weir');
 COMMENT ON COLUMN tww_od.prank_weir.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.prank_weir ADD COLUMN hydraulic_overflow_length  decimal(7,2) ;
 COMMENT ON COLUMN tww_od.prank_weir.hydraulic_overflow_length IS 'yyy_Hydraulisch wirksame Wehrlänge / Hydraulisch wirksame Wehrlänge / Longueur du déversoir hydrauliquement active';
@@ -1905,7 +1850,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_pump_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.pump ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','pump');
 COMMENT ON COLUMN tww_od.pump.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.pump ADD COLUMN construction_type  integer ;
 COMMENT ON COLUMN tww_od.pump.construction_type IS 'Types of pumps / Pumpenarten / Types de pompe';
@@ -1936,7 +1880,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_leapingweir_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.leapingweir ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','leapingweir');
 COMMENT ON COLUMN tww_od.leapingweir.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.leapingweir ADD COLUMN length  decimal(7,2) ;
 COMMENT ON COLUMN tww_od.leapingweir.length IS 'yyy_Maximale Abmessung der Bodenöffnung in Fliessrichtung / Maximale Abmessung der Bodenöffnung in Fliessrichtung / Dimension maximale de l''ouverture de fond parallèlement au courant';
@@ -1957,7 +1900,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_maintenance_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.maintenance ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','maintenance');
 COMMENT ON COLUMN tww_od.maintenance.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.maintenance ADD COLUMN kind  integer ;
 COMMENT ON COLUMN tww_od.maintenance.kind IS 'Type of event / Art des Ereignisses / Genre d''événement';
@@ -1974,7 +1916,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_bio_ecol_assessment_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.bio_ecol_assessment ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','bio_ecol_assessment');
 COMMENT ON COLUMN tww_od.bio_ecol_assessment.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.bio_ecol_assessment ADD COLUMN comparison_last  integer ;
 COMMENT ON COLUMN tww_od.bio_ecol_assessment.comparison_last IS 'yyy_Die Veränderung der Gesamtbeurteilung und eventuelle massgebende veränderte Untersuchungs-resultate gegenüber der letzten Untersuchung müssen dokumentiert werden. / Die Veränderung der Gesamtbeurteilung und eventuelle massgebende veränderte Untersuchungsresultate gegenüber der letzten Untersuchung müssen dokumentiert werden. / Les variations de l’examen générale éco-biologique et des résultats déterminants ayant changés doivent être indiquées par rapport à la dernière inspection.';
@@ -2026,7 +1967,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_hydraulic_char_data_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.hydraulic_char_data ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','hydraulic_char_data');
 COMMENT ON COLUMN tww_od.hydraulic_char_data.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.hydraulic_char_data ADD COLUMN aggregate_number  smallint ;
 COMMENT ON COLUMN tww_od.hydraulic_char_data.aggregate_number IS 'Number of aggregates / Anzahl Förderaggregate / Nombre d''installations de refoulement';
@@ -2083,7 +2023,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_backflow_prevention_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.backflow_prevention ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','backflow_prevention');
 COMMENT ON COLUMN tww_od.backflow_prevention.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.backflow_prevention ADD COLUMN gross_costs  decimal(10,2) ;
 COMMENT ON COLUMN tww_od.backflow_prevention.gross_costs IS 'Gross costs / Brutto Erstellungskosten / Coûts bruts de réalisation';
@@ -2104,7 +2043,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_solids_retention_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.solids_retention ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','solids_retention');
 COMMENT ON COLUMN tww_od.solids_retention.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.solids_retention ADD COLUMN dimensioning_value  decimal(9,3) ;
 COMMENT ON COLUMN tww_od.solids_retention.dimensioning_value IS 'yyy_Wassermenge, Dimensionierungswert des Feststoffrückhaltes / Wassermenge, Dimensionierungswert des Feststoffrückhaltes / Volume, débit de dimensionnement';
@@ -2131,7 +2069,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_tank_cleaning_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.tank_cleaning ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','tank_cleaning');
 COMMENT ON COLUMN tww_od.tank_cleaning.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.tank_cleaning ADD COLUMN gross_costs  decimal(10,2) ;
 COMMENT ON COLUMN tww_od.tank_cleaning.gross_costs IS 'Gross costs of electromechanical equipment of tank cleaning / Brutto Erstellungskosten der elektromechanischen Ausrüstung für die Beckenreinigung / Coûts bruts des équipements électromécaniques nettoyage de bassins';
@@ -2152,7 +2089,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_tank_emptying_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.tank_emptying ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','tank_emptying');
 COMMENT ON COLUMN tww_od.tank_emptying.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.tank_emptying ADD COLUMN flow  decimal(9,3) ;
 COMMENT ON COLUMN tww_od.tank_emptying.flow IS 'yyy_Bei mehreren Pumpen / Schiebern muss die maximale Gesamtmenge erfasst werden. / Bei mehreren Pumpen / Schiebern muss die maximale Gesamtmenge erfasst werden. / Lors de présence de plusieurs pompes/vannes, indiquer le débit total.';
@@ -2175,7 +2111,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_catchment_area_totals_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.catchment_area_totals ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','catchment_area_totals');
 COMMENT ON COLUMN tww_od.catchment_area_totals.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.catchment_area_totals ADD COLUMN discharge_freight_nh4_n  integer ;
 COMMENT ON COLUMN tww_od.catchment_area_totals.discharge_freight_nh4_n IS 'based on base module chapter 8.5. of directive "Abwasserbewirtschaftung bei Regenwetter" of VSA (2019)" / Gemäss Basismodul Kapitel 8.5 der Richtlinie "Abwasserentsorgung bei Regenwetter" des VSA (2019) / Selon module de base chapitre 8.5 directive "Gestion des eaux urbaines par temps de pluie" du VSA (2019)';
@@ -2223,7 +2158,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_param_ca_general_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.param_ca_general ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','param_ca_general');
 COMMENT ON COLUMN tww_od.param_ca_general.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.param_ca_general ADD COLUMN dry_wheather_flow  decimal(9,3) ;
 COMMENT ON COLUMN tww_od.param_ca_general.dry_wheather_flow IS 'Dry wheather flow / Débit temps sec';
@@ -2275,7 +2209,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_disposal_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.disposal ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','disposal');
 COMMENT ON COLUMN tww_od.disposal.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.disposal ADD COLUMN disposal_interval_current  decimal(4,2) ;
 COMMENT ON COLUMN tww_od.disposal.disposal_interval_current IS 'yyy_Abstände, in welchen das Bauwerk aktuell geleert wird (Jahre) / Abstände, in welchen das Bauwerk aktuell geleert wird (Jahre) / Fréquence à laquelle l''ouvrage subit actuellement une vidange (années)';
@@ -2306,7 +2239,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_building_group_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.building_group ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','building_group');
 COMMENT ON COLUMN tww_od.building_group.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.building_group ADD COLUMN camping_area  decimal(10,4) ;
 COMMENT ON COLUMN tww_od.building_group.camping_area IS 'Camping: Area of camping in hectars / Camping: Fläche Campingplatz in ha / Camping: surface du camping en ha';
@@ -2398,7 +2330,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_building_group_baugwr_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.building_group_baugwr ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','building_group_baugwr');
 COMMENT ON COLUMN tww_od.building_group_baugwr.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.building_group_baugwr ADD COLUMN egid  integer ;
 COMMENT ON COLUMN tww_od.building_group_baugwr.egid IS 'yyy_EGID aus BAU/GWR der zur Gebäudegruppe gehörigen Gebäude / EGID aus BAU/GWR der zur Gebäudegruppe gehörigen Gebäude / EGID de BAU/RegBL des bâtiments appartenant au groupe de bâtiments';
@@ -2421,7 +2352,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_farm_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.farm ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','farm');
 COMMENT ON COLUMN tww_od.farm.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.farm ADD COLUMN agriculture_arable_surface  decimal(10,4) ;
 COMMENT ON COLUMN tww_od.farm.agriculture_arable_surface IS 'Arable agricultural area in ha / Landwirtschaftliche Nutzfläche in ha / Surface agricole utile en ha';
@@ -2484,7 +2414,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_small_treatment_plant_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.small_treatment_plant ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','small_treatment_plant');
 COMMENT ON COLUMN tww_od.small_treatment_plant.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.small_treatment_plant ADD COLUMN approval_number text;
  ALTER TABLE tww_od.small_treatment_plant ADD CONSTRAINT sm_approval_number_length_max_50 CHECK(char_length(approval_number)<=50);
@@ -2508,7 +2437,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_drainless_toilet_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.drainless_toilet ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','drainless_toilet');
 COMMENT ON COLUMN tww_od.drainless_toilet.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.drainless_toilet ADD COLUMN kind  integer ;
 COMMENT ON COLUMN tww_od.drainless_toilet.kind IS '';
@@ -4315,7 +4243,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_wastewater_structure_text_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.wastewater_structure_text ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_structure_text');
 COMMENT ON COLUMN tww_od.wastewater_structure_text.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.wastewater_structure_text ADD COLUMN classname text;
  ALTER TABLE tww_od.wastewater_structure_text ADD CONSTRAINT wx_classname_length_max_50 CHECK(char_length(classname)<=50);
@@ -4351,7 +4278,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_reach_text_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.reach_text ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','reach_text');
 COMMENT ON COLUMN tww_od.reach_text.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.reach_text ADD COLUMN classname text;
  ALTER TABLE tww_od.reach_text ADD CONSTRAINT rx_classname_length_max_50 CHECK(char_length(classname)<=50);
@@ -4387,7 +4313,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_catchment_area_text_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.catchment_area_text ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','catchment_area_text');
 COMMENT ON COLUMN tww_od.catchment_area_text.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.catchment_area_text ADD COLUMN classname text;
  ALTER TABLE tww_od.catchment_area_text ADD CONSTRAINT cx_classname_length_max_50 CHECK(char_length(classname)<=50);
@@ -4423,7 +4348,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_wastewater_structure_symbol_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.wastewater_structure_symbol ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_structure_symbol');
 COMMENT ON COLUMN tww_od.wastewater_structure_symbol.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN classname text;
  ALTER TABLE tww_od.wastewater_structure_symbol ADD CONSTRAINT bx_classname_length_max_50 CHECK(char_length(classname)<=50);
@@ -4562,7 +4486,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_reach_progression_alternative_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.reach_progression_alternative ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','reach_progression_alternative');
 COMMENT ON COLUMN tww_od.reach_progression_alternative.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.reach_progression_alternative ADD COLUMN plantype  integer ;
 COMMENT ON COLUMN tww_od.reach_progression_alternative.plantype IS '';
