@@ -55,7 +55,7 @@ def set_defaults_and_triggers(
         )
         attrs = cursor.fetchone()
         if attrs:
-            query = create_oid_default(entry)
+            query = create_oid_default(entry[0])
             cursor.execute(query)
         is_subclass = False
         for key in SingleInheritances:
@@ -65,7 +65,7 @@ def set_defaults_and_triggers(
                 is_subclass = True
                 break
         if not is_subclass:
-            query = create_last_modification_trigger(entry, None)
+            query = create_last_modification_trigger(entry[0], None)
             cursor.execute(query)
     conn.commit()
     conn.close()
