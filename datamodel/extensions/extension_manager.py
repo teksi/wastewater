@@ -80,7 +80,7 @@ def load_extension(
         files.sort()
         for file in files:
             filename = os.fsdecode(file)
-            if filename.endswith(".sql") or filename.endswith(".SQL") :
+            if filename.lower().endswith(".sql"):
                 print(f"Running {filename}")
                 run_sql_file(os.path.join(directory, filename), pg_service, variables)
             if filename.endswith(".py"):
