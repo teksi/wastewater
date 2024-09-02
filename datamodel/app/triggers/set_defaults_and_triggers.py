@@ -15,7 +15,7 @@ def create_last_modification_trigger(tbl: str, parent_tbl: str = None):
     BEFORE UPDATE OR INSERT ON
      tww_od.{tbl}
     FOR EACH ROW EXECUTE PROCEDURE
-     tww_app.update_last_modified{parent}();
+     tww_app.modification_last_modified{parent}();
      """
     return query
 
