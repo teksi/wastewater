@@ -8,7 +8,9 @@ except ImportError:
 
 
 def create_last_modification_trigger(tbl: str, parent_tbl: str = None):
-    parent = f"_parent('tww_od.{parent_tbl}')" if parent_tbl else "" # as parent:_tbl is a tuple, we don't need additional brackets
+    parent = (
+        f"_parent('tww_od.{parent_tbl}')" if parent_tbl else ""
+    )  # as parent:_tbl is a tuple, we don't need additional brackets
     query = f"""
     CREATE TRIGGER
     update_last_modified_{tbl}
