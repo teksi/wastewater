@@ -2182,7 +2182,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_param_ca_mouse1_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.param_ca_mouse1 ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','param_ca_mouse1');
 COMMENT ON COLUMN tww_od.param_ca_mouse1.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.param_ca_mouse1 ADD COLUMN dry_wheather_flow  decimal(9,3) ;
 COMMENT ON COLUMN tww_od.param_ca_mouse1.dry_wheather_flow IS 'Parameter for calculation of surface runoff for surface runoff modell A1 / Parameter zur Bestimmung des Oberflächenabflusses für das Oberflächenabflussmodell A1 von MOUSE / Paramètre pour calculer l''écoulement superficiel selon le modèle A1 de MOUSE';
