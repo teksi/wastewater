@@ -54,7 +54,7 @@ def set_defaults_and_triggers(
             cursor.execute(query)
         is_subclass = False
         for key in SingleInheritances:
-            if entry = key: #Find Subclasses
+            if entry == key: #Find Subclasses
                 query = create_last_modification_trigger(key,SingleInheritances[key])
                 cursor.execute(query)
                 is_subclass = True
