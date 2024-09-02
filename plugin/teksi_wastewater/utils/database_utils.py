@@ -147,17 +147,17 @@ class DatabaseUtils:
     @staticmethod
     def disable_symbology_triggers():
         logger.info("Disable symbology triggers")
-        DatabaseUtils.execute("SELECT tww_sys.alter_symbology_triggers('disable');")
+        DatabaseUtils.execute("SELECT tww_app.alter_symbology_triggers('disable');")
 
     @staticmethod
     def enable_symbology_triggers():
         logger.info("Enable symbology triggers")
-        DatabaseUtils.execute("SELECT tww_sys.alter_symbology_triggers('enable');")
+        DatabaseUtils.execute("SELECT tww_app.alter_symbology_triggers('enable');")
 
     @staticmethod
     def check_symbology_triggers_enabled():
         logger.info("Check symbology triggers enabled")
-        row = DatabaseUtils.fetchone("SELECT tww_sys.check_symbology_triggers_enabled();")
+        row = DatabaseUtils.fetchone("SELECT tww_app.check_symbology_triggers_enabled();")
         return row[0]
 
     @staticmethod
@@ -173,24 +173,24 @@ class DatabaseUtils:
     @staticmethod
     def disable_modification_triggers():
         logger.info("Disable modification triggers")
-        DatabaseUtils.execute("SELECT tww_sys.alter_modification_triggers('disable');")
+        DatabaseUtils.execute("SELECT tww_app.alter_modification_triggers('disable');")
 
     @staticmethod
     def enable_modification_triggers():
         logger.info("Enable modification triggers")
-        DatabaseUtils.execute("SELECT tww_sys.alter_modification_triggers('enable');")
+        DatabaseUtils.execute("SELECT tww_app.alter_modification_triggers('enable');")
 
     @staticmethod
     def check_modification_triggers_enabled():
         logger.info("Check if modification triggers are enabled")
-        row = DatabaseUtils.fetchone("SELECT tww_sys.check_modification_enabled();")
+        row = DatabaseUtils.fetchone("SELECT tww_app.check_modification_enabled();")
         return row[0]
 
     @staticmethod
     def check_oid_prefix() -> List[str]:
         """Check whether the oid_prefix is set up for production"""
         logger.info("Checking setup of oid prefix")
-        prefixes = DatabaseUtils.fetchall("SELECT prefix FROM tww_sys.oid_prefixes WHERE active;")
+        prefixes = DatabaseUtils.fetchall("SELECT prefix FROM tww_app.oid_prefixes WHERE active;")
 
         msg_list = []
         if len(prefixes) > 1:
