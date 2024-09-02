@@ -24,7 +24,8 @@ def create_oid_default(tbl: str):
     query = f"""
     ALTER TABLE
      tww_od.{tbl}
-    ALTER COLUMN obj_id DEFAULT tww_app.generate_oid('tww_od','{tbl}');
+    ALTER COLUMN obj_id 
+    SET DEFAULT tww_app.generate_oid('tww_od','{tbl}');
      """
     return query
 
