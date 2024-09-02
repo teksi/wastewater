@@ -129,7 +129,7 @@ def create_app(
     }
 
     set_defaults_and_triggers(pg_service, SingleInheritances)
-    
+
     for key in SingleInheritances:
         SingleInheritance(
             "tww_od." + SingleInheritances[key],
@@ -240,7 +240,6 @@ def create_app(
     run_sql_file("triggers/network.sql", pg_service)
 
     run_sql_file("tww_app_roles.sql", pg_service, variables)
-
 
 
 if __name__ == "__main__":
