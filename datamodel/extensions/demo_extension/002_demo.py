@@ -1,1 +1,1 @@
-print("Hello World")
+print(f'{myVariable}! My favorite number is {myNumber}')

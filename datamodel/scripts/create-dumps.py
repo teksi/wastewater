@@ -44,7 +44,7 @@ tww_{version}_structure.sql | Contains the structure of tables and system schema
 tww_{version}_structure_with_value_lists.sql | Contains the structure of tables, system schema data and value lists data
 tww_{version}_demo_data.backup | Data-only backup of the `tww_od` schema (i.e. ordinary data) from demonstration set of data
 tww_{version}_structure_and_demo_data.backup | Complete backup with structure and data of the demonstration set of data
-Additionally, there are extension files which have the corresponding extension name appended
+Additionally, there are extension files which have the corresponding extension name appended. The extensions can be configured in datamodel/extensions/config.yaml
 
 * If you plan to **use tww for production**, it is more likely you will be using the plain SQL `tww_{version}_structure_with_value_lists.sql`.
 * If you want to **give a try at tww**, you will likely restore the `tww_{version}_structure_and_demo_data.backup` backup file.
