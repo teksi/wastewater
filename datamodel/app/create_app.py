@@ -10,12 +10,12 @@ except ImportError:
     import psycopg2 as psycopg
 
 from pirogue import MultipleInheritance, SimpleJoins, SingleInheritance
+from triggers.set_defaults_and_triggers import set_defaults_and_triggers
 from view.vw_tww_additional_ws import vw_tww_additional_ws
 from view.vw_tww_reach import vw_tww_reach
 from view.vw_tww_wastewater_structure import vw_tww_wastewater_structure
 from view.vw_wastewater_structure import vw_wastewater_structure
 from yaml import safe_load
-from triggers.set_defaults_and_triggers import set_defaults_and_triggers
 
 
 def run_sql_file(file_path: str, pg_service: str, variables: dict = None):
@@ -126,7 +126,7 @@ def create_app(
         "infiltration_zone": "zone",
         "drainage_system": "zone",
     }
-    
+
     for key in SingleInheritances:
         SingleInheritance(
             "tww_od." + SingleInheritances[key],
@@ -237,8 +237,8 @@ def create_app(
     run_sql_file("triggers/network.sql", pg_service)
 
     run_sql_file("tww_app_roles.sql", pg_service, variables)
-    
-    set_defaults_and_triggers(pg_service,SingleInheritances)
+
+    set_defaults_and_triggers(pg_service, SingleInheritances)
 
 
 if __name__ == "__main__":

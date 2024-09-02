@@ -10,7 +10,7 @@ except ImportError:
 
 
 def create_last_modification_trigger(tbl: str, parent_tbl: str = None):
-    parent = f"_parent('tww_od.{parent_tbl}')" if parent_tbl else "" 
+    parent = f"_parent('tww_od.{parent_tbl}')" if parent_tbl else ""
     query = f"""
     CREATE TRIGGER
     update_last_modified_{tbl}
@@ -24,7 +24,7 @@ def create_last_modification_trigger(tbl: str, parent_tbl: str = None):
 
 def create_oid_default(tbl: str):
     query = f"""
-    ALTER TABLE 
+    ALTER TABLE
      tww_od.{tbl}
     ALTER COLUMN obj_id DEFAULT tww_app.generate_oid('tww_od','{tbl}');
      """
@@ -44,7 +44,7 @@ def set_defaults_and_triggers(
     conn = psycopg.connect(f"service={pg_service}")
     cursor = conn.cursor()
     cursor.execute("select table_name from information_schema.tables WHERE table_schema = 'tww_od'")
-    entries = cursor.fetchall()   
+    entries = cursor.fetchall()
 
     for entry in entries:
         cursor.execute(f"select 1 from information_schema.columns WHERE table_schema = 'tww_od' AND table_name = '{entry}' and column_name = 'obj_id'")
@@ -63,4 +63,4 @@ def set_defaults_and_triggers(
             query = create_last_modification_trigger(entry,None)
                 cursor.execute(query)
     conn.commit()
-    conn.close() 
+    conn.close()
