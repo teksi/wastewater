@@ -65,7 +65,7 @@ def create_dumps(**args):
     return files
 
 
-def create_plain_structure_only(database: str, version: str, extension_name: str = None):
+def create_plain_structure_only(database: str, version: str, extension_suffix: str = None):
     """
     Create a plain SQL dump of data structure
     of all schemas and the content of pum_sys.inf
@@ -74,7 +74,7 @@ def create_plain_structure_only(database: str, version: str, extension_name: str
     print("::group::plain SQL structure only")
 
     # structure
-    dump_s = f"tww_{version}_structure{extension_name}.sql"
+    dump_s = f"tww_{version}_structure{extension_suffix}.sql"
 
     print(f"Creating dump {dump_s}")
     dump_file_s = f"datamodel/artifacts/{dump_s}"
@@ -94,7 +94,7 @@ def create_plain_structure_only(database: str, version: str, extension_name: str
     )
 
     # dump all from tww_sys except logged_actions
-    dump_i = f"tww_{version}_pum_info{extension_name}.sql"
+    dump_i = f"tww_{version}_pum_info{extension_suffix}.sql"
     print(f"Creating dump {dump_i}")
     dump_file_i = f"datamodel/artifacts/{dump_i}"
     _cmd(
@@ -121,16 +121,15 @@ def create_plain_structure_only(database: str, version: str, extension_name: str
     return [dump_file_i, dump_file_s]
 
 
-def create_plain_value_list(database: str, version: str, extension_name: str = None):
+def create_plain_value_list(database: str, version: str, extension_suffix: str = None):
     """
     Create a plain SQL dump of data structure (result of create_structure_only)
     with value list content
     :return: the file name of the dump
     """
     print("::group::value lists dump")
-
-    dump = f"tww_{version}_structure_with_value_lists{extension_name}.sql"
-    structure_dump_file = f"datamodel/artifacts/tww_{version}_structure{extension_name}.sql"
+    dump = f"tww_{version}_structure_with_value_lists{extension_suffix}.sql"
+    structure_dump_file = f"datamodel/artifacts/tww_{version}_structure{extension_suffix}.sql"
     print(f"Creating dump {dump}")
     dump_file = f"datamodel/artifacts/{dump}"
 
@@ -166,13 +165,13 @@ def create_plain_value_list(database: str, version: str, extension_name: str = N
     return dump_file
 
 
-def create_backup_complete(database: str, version: str, extension_name: str = None):
+def create_backup_complete(database: str, version: str, extension_suffix: str = None):
     """
     Create data + structure dump
     :return: the file name
     """
     # Create data + structure dumps (with sample data)
-    dump = f"tww_{version}_structure_and_demo_data{extension_name}.backup"
+    dump = f"tww_{version}_structure_and_demo_data{extension_suffix}.backup"
     print(f"::group::{dump}")
     print(f"Creating dump {dump}")
     dump_file = f"datamodel/artifacts/{dump}"
@@ -212,11 +211,10 @@ def get_parser():
 if __name__ == "__main__":
     parser = get_parser()
     args = parser.parse_args()
-    if args.extension_name != "":
-        args.extension_name = "_" + args.extension_name
-
+    
+    extension_suffix = ("_"+extension_name) if extension_name else ""
     os.makedirs("datamodel/artifacts", exist_ok=True)
     files = create_dumps(
-        version=args.version, database=args.database, extension_name=args.extension_name
+        version=args.version, database=args.database, extension_suffix=args.extension_suffix
     )
     print("Dumps created: {}".format(", ".join(files)))
