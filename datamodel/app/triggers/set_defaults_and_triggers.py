@@ -61,6 +61,6 @@ def set_defaults_and_triggers(
                 break
         if not is_subclass:
             query = create_last_modification_trigger(entry,None)
-                cursor.execute(query)
+            cursor.execute(query)
     conn.commit()
     conn.close()
