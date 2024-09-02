@@ -15,7 +15,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_sia405cc_cable_point_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.sia405cc_cable_point ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','sia405cc_cable_point');
 COMMENT ON COLUMN tww_od.sia405cc_cable_point.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.sia405cc_cable_point ADD COLUMN name_number text;
  ALTER TABLE tww_od.sia405cc_cable_point ADD CONSTRAINT _name_number_length_max_40 CHECK(char_length(name_number)<=40);
@@ -75,7 +74,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_sia405cc_cable_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.sia405cc_cable ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','sia405cc_cable');
 COMMENT ON COLUMN tww_od.sia405cc_cable.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.sia405cc_cable ADD COLUMN name_number text;
  ALTER TABLE tww_od.sia405cc_cable ADD CONSTRAINT _name_number_length_max_40 CHECK(char_length(name_number)<=40);
