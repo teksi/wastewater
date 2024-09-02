@@ -20,13 +20,6 @@ COMMENT ON COLUMN tww_od.dss15_planning_zone.kind IS 'Type of planning zone / Ar
 ALTER TABLE tww_od.dss15_planning_zone ADD COLUMN perimeter_geometry geometry('CURVEPOLYGON', :SRID);
 CREATE INDEX in_tww_od_dss15_planning_zone_perimeter_geometry ON tww_od.dss15_planning_zone USING gist (perimeter_geometry );
 COMMENT ON COLUMN tww_od.dss15_planning_zone.perimeter_geometry IS 'Boundary points of the perimeter / Begrenzungspunkte der Fläche / Points de délimitation de la surface';
--------
-CREATE TRIGGER
-update_last_modified_dss15_planning_zone
-BEFORE UPDATE OR INSERT ON
- tww_od.dss15_planning_zone
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified_parent("tww_od.zone");
 
 -------
 
