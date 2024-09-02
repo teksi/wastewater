@@ -48,7 +48,10 @@ def set_defaults_and_triggers(
 
     for entry in entries:
         cursor.execute(
-            f"select 1 from information_schema.columns WHERE table_schema = 'tww_od' AND table_name = '{entry}' and column_name = 'obj_id'"
+            f"""select 1 from information_schema.columns 
+            WHERE table_schema = 'tww_od' 
+            AND table_name = '{entry[0]}' 
+            and column_name = 'obj_id'"""
         )
         attrs = cursor.fetchone()
         if attrs:
@@ -56,7 +59,7 @@ def set_defaults_and_triggers(
             cursor.execute(query)
         is_subclass = False
         for key in SingleInheritances:
-            if entry == key:  # Find Subclasses
+            if entry[0] == key:  # Find Subclasses
                 query = create_last_modification_trigger(key, SingleInheritances[key])
                 cursor.execute(query)
                 is_subclass = True
