@@ -128,6 +128,8 @@ def create_app(
         "drainage_system": "zone",
     }
 
+    set_defaults_and_triggers(pg_service, SingleInheritances)
+    
     for key in SingleInheritances:
         SingleInheritance(
             "tww_od." + SingleInheritances[key],
@@ -239,7 +241,6 @@ def create_app(
 
     run_sql_file("tww_app_roles.sql", pg_service, variables)
 
-    set_defaults_and_triggers(pg_service, SingleInheritances)
 
 
 if __name__ == "__main__":
