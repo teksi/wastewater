@@ -14,7 +14,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_dss15_aquifer_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.dss15_aquifer ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','dss15_aquifer');
 COMMENT ON COLUMN tww_od.dss15_aquifer.obj_id IS '[primary_key] INTERLIS STANDARD OID (with Postfix/Präfix) or UUOID, see www.interlis.ch';
 ALTER TABLE tww_od.dss15_aquifer ADD COLUMN average_groundwater_level  decimal(7,3) ;
 COMMENT ON COLUMN tww_od.dss15_aquifer.average_groundwater_level IS 'Average level of groundwater table / Höhe des mittleren Grundwasserspiegels / Niveau moyen de la nappe';
