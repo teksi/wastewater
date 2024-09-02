@@ -48,9 +48,9 @@ def set_defaults_and_triggers(
 
     for entry in entries:
         cursor.execute(
-            f"""select 1 from information_schema.columns 
-            WHERE table_schema = 'tww_od' 
-            AND table_name = '{entry[0]}' 
+            f"""select 1 from information_schema.columns
+            WHERE table_schema = 'tww_od'
+            AND table_name = '{entry[0]}'
             and column_name = 'obj_id'"""
         )
         attrs = cursor.fetchone()
