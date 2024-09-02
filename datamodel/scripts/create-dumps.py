@@ -203,7 +203,7 @@ def get_parser():
     _parser.add_argument("--version", "-v", help="Sets the version", default="dev")
     _parser.add_argument("--database", "-d", help="Sets the database name", default="tww")
     _parser.add_argument(
-        "--extension_name", "-x", help="Name of the database extension (optional)", default=""
+        "--extension_name", "-x", help="Name of the database extension (optional)"
     )
     return _parser
 
@@ -212,9 +212,9 @@ if __name__ == "__main__":
     parser = get_parser()
     args = parser.parse_args()
     
-    extension_suffix = ("_"+extension_name) if extension_name else ""
+    extension_suffix = ("_"+args.extension_name) if args.extension_name else ""
     os.makedirs("datamodel/artifacts", exist_ok=True)
     files = create_dumps(
-        version=args.version, database=args.database, extension_suffix=args.extension_suffix
+        version=args.version, database=args.database, extension_suffix=extension_suffix
     )
     print("Dumps created: {}".format(", ".join(files)))
