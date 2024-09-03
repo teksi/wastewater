@@ -1,7 +1,4 @@
-import argparse
-
-
-def demo(myVariable,myNumber):
+def demo(myVariable, myNumber):
     print(f"{myVariable}! My favorite number is {myNumber}")
 
 
