@@ -56,19 +56,33 @@ def set_defaults_and_triggers(
             AND table_name = '{entry[0]}'
             and column_name = 'obj_id'"""
         )
-        attrs = cursor.fetchone()
-        if attrs:
+        found = cursor.fetchone()
+        if found:
             query = create_oid_default(entry[0])
             cursor.execute(query)
-        is_subclass = False
-        for key in SingleInheritances:
-            if entry[0] == key:  # Find Subclasses
-                query = create_last_modification_trigger(key, SingleInheritances[key])
+        if entry[0] in SingleInheritances.keys():  # Find Subclasses
+            cursor.execute(
+                f"""select 1 from information_schema.columns
+                WHERE table_schema = 'tww_od'
+                AND table_name = '{SingleInheritances[entry[0]]}'
+                and column_name = 'last_modification'"""
+            )
+            found = cursor.fetchone()
+            if found:
+                query = create_last_modification_trigger(entry[0], SingleInheritances[entry[0]])
                 cursor.execute(query)
-                is_subclass = True
-                break
-        if not is_subclass:
-            query = create_last_modification_trigger(entry[0], None)
-            cursor.execute(query)
+
+   
+        else:
+            cursor.execute(
+                f"""select 1 from information_schema.columns
+                WHERE table_schema = 'tww_od'
+                AND table_name = '{entry[0]}'
+                and column_name = 'last_modification'"""
+            )
+            found = cursor.fetchone()
+            if found:
+                query = create_last_modification_trigger(entry[0])
+                cursor.execute(query)
     conn.commit()
     conn.close()
