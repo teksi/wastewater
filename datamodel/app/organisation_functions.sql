@@ -55,7 +55,7 @@ $BODY$
 
 -- Set defaults on all fk_provider,fk_dataowner,fk_owner
 CREATE OR REPLACE FUNCTION tww_app.ft_set_default_values()
-RETURNS TRIGGER AS 
+RETURNS TRIGGER AS
 $BODY$
 DECLARE
     sch text;
@@ -69,7 +69,7 @@ BEGIN
 	   c.table_name,
 	   c.column_name,
 	   CASE WHEN t.table_type = 'BASE TABLE' then 'TABLE' ELSE t.table_type END
-	   
+
     FROM information_schema.columns c
 	LEFT JOIN information_schema.tables t
 	ON c.table_name = t.table_name
