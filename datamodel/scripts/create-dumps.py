@@ -211,8 +211,8 @@ def get_parser():
 if __name__ == "__main__":
     parser = get_parser()
     args = parser.parse_args()
-    
-    extension_suffix = ("_"+args.extension_name) if args.extension_name else ""
+
+    extension_suffix = ("_" + args.extension_name) if args.extension_name else ""
     os.makedirs("datamodel/artifacts", exist_ok=True)
     files = create_dumps(
         version=args.version, database=args.database, extension_suffix=extension_suffix

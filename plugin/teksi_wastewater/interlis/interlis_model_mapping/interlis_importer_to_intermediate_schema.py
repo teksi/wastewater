@@ -1,4 +1,4 @@
-from geoalchemy2.functions import ST_Force3D, ST_Covers, ST_Buffer, ST_Multi
+from geoalchemy2.functions import ST_Force3D, ST_Multi
 from sqlalchemy.orm import Session
 from sqlalchemy.orm.attributes import flag_dirty
 from sqlalchemy.sql import text
@@ -71,13 +71,12 @@ class InterlisImporterToIntermediateSchema:
 
         if self.model == config.MODEL_NAME_VSA_KEK:
             self._import_vsa_kek()
-    
+
         if self.model == config.MODEL_NAME_AG96:
             self._import_ag96()
 
         if self.model == config.MODEL_NAME_AG64:
             self._import_ag64()
-
 
         self.close_sessions(skip_closing_tww_session=skip_closing_tww_session)
 
@@ -440,9 +439,7 @@ class InterlisImporterToIntermediateSchema:
         self._import_sbw_einzugsgebiet()
         self._check_for_stop()
 
-        logger.info(
-            "Importing ABWASSER.versickerungsbereichag -> TWW.versickerungsbereichag"
-        )
+        logger.info("Importing ABWASSER.versickerungsbereichag -> TWW.versickerungsbereichag")
         self._import_versickerungsbereichag()
         self._check_for_stop()
 
@@ -482,7 +479,9 @@ class InterlisImporterToIntermediateSchema:
         """
         if relation is None:
             return None
-        return relation.t_ili_tid if relation.t_ili_tid  else relation.obj_id # if else needed for AG-64/AG-96
+        return (
+            relation.t_ili_tid if relation.t_ili_tid else relation.obj_id
+        )  # if else needed for AG-64/AG-96
 
     def create_or_update(self, cls, **kwargs):
         """
@@ -2354,19 +2353,24 @@ class InterlisImporterToIntermediateSchema:
 
             self.session_tww.add(re_building_group_disposal)
             print(".", end="")
-            
 
     ###################
     ### AG-64/AG-96 ###
     ###################
     def check_ignore_ws(self, row):
-        if row.funktionag != 'andere':
+        if row.funktionag != "andere":
             return False
-        else: 
-            detailgeoms = self.session_interlis.query(self.model_classes_interlis.abwasserbauwerk).filter(
-                self.model_classes_interlis.abwasserbauwerk.detailgeometrie.ST_Buffer(0.001).ST_Covers(row.lage),
-                self.model_classes_interlis.abwasserbauwerk.obj_id != row.t_ili_tid
-                ).fetchone()
+        else:
+            detailgeoms = (
+                self.session_interlis.query(self.model_classes_interlis.abwasserbauwerk)
+                .filter(
+                    self.model_classes_interlis.abwasserbauwerk.detailgeometrie.ST_Buffer(
+                        0.001
+                    ).ST_Covers(row.lage),
+                    self.model_classes_interlis.abwasserbauwerk.obj_id != row.t_ili_tid,
+                )
+                .fetchone()
+            )
         if detailgeoms:
             return True
         else:
@@ -2374,7 +2378,9 @@ class InterlisImporterToIntermediateSchema:
 
     def base_common_ag_xx(self, row):
         return {
-            "obj_id": row.t_ili_tid if row.t_ili_tid else row.obj_id, # AG-64 loads no t_ili_tid, AG-96 loads no obj_id
+            "obj_id": (
+                row.t_ili_tid if row.t_ili_tid else row.obj_id
+            ),  # AG-64 loads no t_ili_tid, AG-96 loads no obj_id
             "bezeichnung": row.bezeichnung,
         }
 
@@ -2387,7 +2393,7 @@ class InterlisImporterToIntermediateSchema:
             "datenbewirtschafter_wi": self.get_pk(row.datenbewirtschafter_wi__REL),
             "bemerkung_wi": row.bemerkung_wi,
         }
-        
+
     def gep_metainformation_common_ag_xx(self, row):
         """
         Returns common attributes for base
@@ -2397,7 +2403,7 @@ class InterlisImporterToIntermediateSchema:
             "datenbewirtschafter_gep": self.get_pk(row.datenbewirtschafter_gep__REL),
             "bemerkung_gep": row.bemerkung_gep,
         }
- 
+
     def knoten_common_ag_xx(self, row):
         """
         Returns common attributes for wastewater_structure
@@ -2405,7 +2411,7 @@ class InterlisImporterToIntermediateSchema:
         return {
             **self.base_common_ag_xx(row),
             **self.base_common_ag64(row),
-            "ara_nr":  row.ara_nr,
+            "ara_nr": row.ara_nr,
             "baujahr": row.baujahr,
             "baulicherzustand": row.baulicherzustand,
             "bauwerkstatus": row.bauwerkstatus,
@@ -2420,9 +2426,9 @@ class InterlisImporterToIntermediateSchema:
             "sanierungsbedarf": row.sanierungsbedarf,
             "sohlenkote": row.sohlenkote,
             "zugaenglichkeit": row.zugaenglichkeit,
-            "betreiber":self.get_pk(row.betreiber__REL),
+            "betreiber": self.get_pk(row.betreiber__REL),
             "eigentuemer": self.get_pk(row.eigentuemer__REL),
-            "ignore_ws": self.check_ignore_ws(row)
+            "ignore_ws": self.check_ignore_ws(row),
         }
 
     def haltung_common_ag_xx(self, row):
@@ -2453,9 +2459,9 @@ class InterlisImporterToIntermediateSchema:
             "verlauf": row.verlauf,
             "wbw_basisjahr": row.wbw_basisjahr,
             "wiederbeschaffungswert": row.wiederbeschaffungswert,
-            "betreiber":self.get_pk(row.betreiber__REL),
+            "betreiber": self.get_pk(row.betreiber__REL),
             "eigentuemer": self.get_pk(row.eigentuemer__REL),
-            "startknoten":self.get_pk(row.startknoten__REL),
+            "startknoten": self.get_pk(row.startknoten__REL),
             "endknoten": self.get_pk(row.endknoten__REL),
         }
 
@@ -2489,16 +2495,16 @@ class InterlisImporterToIntermediateSchema:
                 symbolpos=row.symbolpos,
                 verweis=row.verweis,
                 traegerschaft=self.get_pk(row.traegerschaft__REL),
-                verantwortlich_ausloesung=self.get_pk(
-                    row.verantwortlich_ausloesung__REL
-                ),
+                verantwortlich_ausloesung=self.get_pk(row.verantwortlich_ausloesung__REL),
             )
             self.session_tww.add(gepmassnahme)
             print(".", end="")
 
     def _import_gepknoten(self):
-        for row in self.session_interlis.query(self.model_classes_interlis.abwasserbauwerk):# abwasserbauwerk wegen Kompatibiltät bei Label-Export
-            gepknoten = self.model_classes_tww_app.gepknoten(  
+        for row in self.session_interlis.query(
+            self.model_classes_interlis.abwasserbauwerk
+        ):  # abwasserbauwerk wegen Kompatibiltät bei Label-Export
+            gepknoten = self.model_classes_tww_app.gepknoten(
                 **self.gep_metainformation_common_ag_xx(row),
                 **self.knoten_common_ag_xx(row),
                 istschnittstelle=row.istschnittstelle,
@@ -2508,11 +2514,10 @@ class InterlisImporterToIntermediateSchema:
             self.session_tww.add(gepknoten)
             print(".", end="")
 
-
     def _import_infrastrukturknoten(self):
         # abwasserbauwerk wegen Kompatibiltät bei Label-Export
         for row in self.session_interlis.query(self.model_classes_interlis.abwasserbauwerk):
-            gepknoten = self.model_classes_tww_app.gepknoten(  
+            gepknoten = self.model_classes_tww_app.gepknoten(
                 **self.knoten_common_ag_xx(row),
             )
             self.session_tww.add(gepknoten)
@@ -2521,7 +2526,6 @@ class InterlisImporterToIntermediateSchema:
     def _import_gephaltung(self):
         for row in self.session_interlis.query(self.model_classes_interlis.haltung):
             gephaltung = self.model_classes_tww_app.gephaltung(
-
                 **self.gep_metainformation_common_ag_xx(row),
                 **self.haltung_common_ag_xx(row),
                 gepmassnahmeref=self.get_pk(row.gepmassnahmeref__REL),
@@ -2577,13 +2581,9 @@ class InterlisImporterToIntermediateSchema:
                 schmutzabwasseranfall_ist=row.schmutzabwasseranfall_ist,
                 versickerung_geplant=row.versickerung_geplant,
                 versickerung_ist=row.versickerung_ist,
-                gepknoten_rw_geplantref=self.get_pk(
-                    row.gepknoten_rw_geplantref__REL
-                ),
+                gepknoten_rw_geplantref=self.get_pk(row.gepknoten_rw_geplantref__REL),
                 gepknoten_rw_istref=self.get_pk(row.gepknoten_rw_istref__REL),
-                gepknoten_sw_geplantref=self.get_pk(
-                    row.gepknoten_sw_geplantref__REL
-                ),
+                gepknoten_sw_geplantref=self.get_pk(row.gepknoten_sw_geplantref__REL),
                 gepknoten_sw_istref=self.get_pk(row.gepknoten_sw_istref__REL),
             )
             self.session_tww.add(einzugsgebiet)
@@ -2615,23 +2615,23 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_ueberlauf_foerderaggregat_ag96(self):
-        for row in self.session_interlis.query(self.model_classes_interlis.ueberlauf_foerderaggregat):
-            ueberlauf_foerderaggregat = (
-                self.model_classes_tww_app.ueberlauf_foerderaggregat(
-                    **self.gep_metainformation_common_ag_xx(row),
-                    **self.ueberlauf_foerderaggregat_common_ag_xx(row),
-                )
+        for row in self.session_interlis.query(
+            self.model_classes_interlis.ueberlauf_foerderaggregat
+        ):
+            ueberlauf_foerderaggregat = self.model_classes_tww_app.ueberlauf_foerderaggregat(
+                **self.gep_metainformation_common_ag_xx(row),
+                **self.ueberlauf_foerderaggregat_common_ag_xx(row),
             )
             self.session_tww.add(ueberlauf_foerderaggregat)
             print(".", end="")
 
     def _import_ueberlauf_foerderaggregat_ag64(self):
- 
-        for row in self.session_interlis.query(self.model_classes_interlis.ueberlauf_foerderaggregat):
-            ueberlauf_foerderaggregat = (
-                self.model_classes_tww_app.ueberlauf_foerderaggregat(
-                    **self.ueberlauf_foerderaggregat_common_ag_xx(row),
-                )
+
+        for row in self.session_interlis.query(
+            self.model_classes_interlis.ueberlauf_foerderaggregat
+        ):
+            ueberlauf_foerderaggregat = self.model_classes_tww_app.ueberlauf_foerderaggregat(
+                **self.ueberlauf_foerderaggregat_common_ag_xx(row),
             )
             self.session_tww.add(ueberlauf_foerderaggregat)
             print(".", end="")
@@ -2662,9 +2662,7 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_versickerungsbereichag(self):
-        for row in self.session_interlis.query(
-            self.model_classes_interlis.versickerungsbereichag
-        ):
+        for row in self.session_interlis.query(self.model_classes_interlis.versickerungsbereichag):
             versickerungsbereichag = self.model_classes_tww_app.versickerungsbereichag(
                 # --- abwasserbauwerk ---
                 **self.base_common_ag_xx(row),

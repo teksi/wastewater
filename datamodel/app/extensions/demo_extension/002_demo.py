@@ -1,1 +1,1 @@
-print(f'{myVariable}! My favorite number is {myNumber}')
+print(f"{myVariable}! My favorite number is {myNumber}")

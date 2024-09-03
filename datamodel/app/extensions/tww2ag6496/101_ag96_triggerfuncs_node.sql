@@ -10,7 +10,7 @@ DECLARE
 	ws_oid varchar(16);
 BEGIN
 
-    INSERT INTO tww_od.wastewater_networkelement( 
+    INSERT INTO tww_od.wastewater_networkelement(
 	  obj_id
 	, identifier
 	, fk_provider
@@ -19,7 +19,7 @@ BEGIN
 	, ag64_fk_provider
 	, ag96_last_modification
     , ag96_remark
-	, ag96_fk_provider	
+	, ag96_fk_provider
 	) VALUES
 	(
 	  NEW.obj_id
@@ -32,8 +32,8 @@ BEGIN
     , NEW.bemerkung_gep
 	, tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
 	);
-  
-    INSERT INTO tww_od.wastewater_node( 
+
+    INSERT INTO tww_od.wastewater_node(
 	  obj_id
     , backflow_level_current
 	, bottom_level
@@ -59,7 +59,7 @@ BEGIN
 		, identifier
 		, last_modification
 		) VALUES
-		(  
+		(
 		  tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
 		, NEW.bezeichnung
 		, NEW.letzte_aenderung_wi
@@ -83,9 +83,9 @@ BEGIN
 	ELSE NULL;
 	END CASE;
 
-    CASE WHEN COALESCE(NEW.ignore_ws,FALSE) OR NEW.funktionag IN ('Leitungsknoten','Anschluss') 
+    CASE WHEN COALESCE(NEW.ignore_ws,FALSE) OR NEW.funktionag IN ('Leitungsknoten','Anschluss')
 	THEN NULL;
-	ELSE 
+	ELSE
 		INSERT INTO tww_od.wastewater_structure(
 		  accessibility
 		, detail_geometry3d_geometry
@@ -125,11 +125,11 @@ BEGIN
 		, NEW.gepmassnahmeref
 		)
 		RETURNING obj_id into ws_oid;
-		
+
 		UPDATE tww_od.wastewater_networkelement
 		SET fk_wastewater_structure = ws_oid
 		WHERE obj_id=NEW.obj_id;
-		
+
 		CASE WHEN NEW.funktionag   ='Abwasserreinigungsanlage' THEN
 			------------ Abwasserreinigungsanlage ------------
 			INSERT INTO tww_od.wwtp_stucture(
@@ -219,7 +219,7 @@ $BODY$
 DECLARE
     co_oid varchar(16);
 	ws_oid varchar(16);
-	
+
 BEGIN
 
     UPDATE tww_od.wastewater_networkelement SET
@@ -232,7 +232,7 @@ BEGIN
     , ag96_remark = NEW.bemerkung_gep
 	, ag96_fk_provider = tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
 	WHERE obj_id = NEW.obj_id;
-  
+
     UPDATE tww_od.wastewater_node SET
 	  backflow_level_current = NEW.maxrueckstauhoehe
 	, bottom_level = NEW.sohlenkote
@@ -243,32 +243,32 @@ BEGIN
 	WHERE obj_id = NEW.obj_id;
 
 	CASE WHEN NEW.funktionag NOT IN ('Leitungsknoten','Anschluss') THEN
-		
+
 		SELECT ws.obj_id,ws.fk_main_cover INTO ws_oid, co_oid FROM tww_od.wastewater_node wn
 		LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id=wn.obj_id
 		LEFT JOIN tww_od.wastewater_structure ws ON ne.fk_wastewater_structure = ws.obj_id;
-		
+
 		-- Deckel
 		UPDATE tww_od.structure_part SET
 		  fk_provider = tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
 		, identifier = NEW.bezeichnung
 		, last_modification = NEW.letzte_aenderung_wi
 		WHERE obj_id = co_oid;
-		
-		UPDATE tww_od.cover SET 
+
+		UPDATE tww_od.cover SET
 		  level = NEW.deckelkote
 		, positional_accuracy = (SELECT code FROM tww_vl.cover_positional_accuracy WHERE value_de=NEW.lagegenauigkeit)
 		, situation3d_geometry = ST_SetSRID(ST_MakePoint(ST_X(NEW.lage), ST_Y(NEW.lage), COALESCE(NEW.deckelkote,'nan')), 2056 )
 		, ag64_fk_wastewater_node = NEW.obj_id
 		WHERE obj_id = co_oid;
-		
+
 	ELSE NULL;
 	END CASE;
 
-    CASE WHEN COALESCE(NEW.ignore_ws,FALSE) OR NEW.funktionag IN ('Leitungsknoten','Anschluss') 
+    CASE WHEN COALESCE(NEW.ignore_ws,FALSE) OR NEW.funktionag IN ('Leitungsknoten','Anschluss')
 	THEN NULL;
-	ELSE 
-		UPDATE tww_od.wastewater_structure SET 
+	ELSE
+		UPDATE tww_od.wastewater_structure SET
 		  accessibility = (SELECT code FROM tww_vl.wastewater_structure_accessibility WHERE value_de=NEW.zugaenglichkeit)
 		, detail_geometry3d_geometry = ST_Force3D(NEW.detailgeometrie)
 		, financing = (SELECT code FROM tww_vl.wastewater_structure_financing WHERE value_de=NEW.finanzierung)
@@ -287,12 +287,12 @@ BEGIN
 		, year_of_construction = NEW.baujahr
 		, ag96_fk_measure = NEW.gepmassnahmeref
 		WHERE obj_id = ws_oid;
-		
-		
-		
-		CASE WHEN NEW.funktionag   ='Abwasserreinigungsanlage' 
+
+
+
+		CASE WHEN NEW.funktionag   ='Abwasserreinigungsanlage'
 		THEN
-			CASE WHEN OLD.ws_type = 'wwtp_stucture' 
+			CASE WHEN OLD.ws_type = 'wwtp_stucture'
 			THEN NULL;
 			ELSE
 				------------ Abwasserreinigungsanlage ------------
@@ -306,7 +306,7 @@ BEGIN
 				DELETE FROM tww_od.special_structure WHERE obj_id = OLD.obj_id;
 				DELETE FROM tww_od.infiltration_installation WHERE obj_id = OLD.obj_id;
 				DELETE FROM tww_od.discharge_point WHERE obj_id = OLD.obj_id;
-			END CASE;	
+			END CASE;
 		WHEN NEW.funktionag =ANY(
 		  ARRAY[
 		      'Bodenablauf'
@@ -322,8 +322,8 @@ BEGIN
 			NEW.funktionag = ANY(ARRAY['Absturzbauwerk', 'andere', 'Be_Entlueftung', 'Kontrollschacht', 'Oelabscheider', 'Pumpwerk'
 			, 'Regeneuberlauf', 'Schwimmstoffabscheider', 'Spuelschacht', 'Trennbauwerk', 'Vorbehandlung']) AND NEW.detailgeometrie IS NULL
 			)  THEN
-			CASE WHEN OLD.ws_type = 'manhole' THEN 
-				UPDATE tww_od.manhole SET			
+			CASE WHEN OLD.ws_type = 'manhole' THEN
+				UPDATE tww_od.manhole SET
 				function = (SELECT code FROM tww_vl.manhole_function_import_rel_agxx WHERE value_de=NEW.funktionag)
 				WHERE obj_id = ws_oid
 				;
@@ -341,10 +341,10 @@ BEGIN
 				DELETE FROM tww_od.special_structure WHERE obj_id = OLD.obj_id;
 				DELETE FROM tww_od.infiltration_installation WHERE obj_id = OLD.obj_id;
 				DELETE FROM tww_od.discharge_point WHERE obj_id = OLD.obj_id;
-			END CASE;					
+			END CASE;
 		WHEN NEW.funktionag LIKE 'Versickerungsanlage%'  THEN
-			CASE WHEN OLD.ws_type = 'infiltration_installation' THEN 
-				UPDATE tww_od.infiltration_installation SET			
+			CASE WHEN OLD.ws_type = 'infiltration_installation' THEN
+				UPDATE tww_od.infiltration_installation SET
 				kind = (SELECT code FROM tww_vl.infiltration_installation_kind_import_rel_agxx WHERE value_de=NEW.funktionag)
 				WHERE obj_id = ws_oid
 				;
@@ -362,10 +362,10 @@ BEGIN
 				DELETE FROM tww_od.special_structure WHERE obj_id = OLD.obj_id;
 				DELETE FROM tww_od.manhole WHERE obj_id = OLD.obj_id;
 				DELETE FROM tww_od.discharge_point WHERE obj_id = OLD.obj_id;
-			END CASE;				
+			END CASE;
 		WHEN NEW.funktionag LIKE 'Einleitstelle%'  THEN
-			CASE WHEN OLD.ws_type = 'discharge_point' THEN 
-				UPDATE tww_od.discharge_point SET			
+			CASE WHEN OLD.ws_type = 'discharge_point' THEN
+				UPDATE tww_od.discharge_point SET
 				relevance = (SELECT code FROM tww_vl.discharge_point_relevance_import_rel_agxx WHERE value_de=NEW.funktionag)
 				WHERE obj_id = ws_oid;
 			ELSE
@@ -382,10 +382,10 @@ BEGIN
 				DELETE FROM tww_od.special_structure WHERE obj_id = OLD.obj_id;
 				DELETE FROM tww_od.manhole WHERE obj_id = OLD.obj_id;
 				DELETE FROM tww_od.infiltration_installation WHERE obj_id = OLD.obj_id;
-			END CASE;		
+			END CASE;
 		ELSE
-			CASE WHEN OLD.ws_type = 'special_structure' THEN 
-				UPDATE tww_od.special_structure SET			
+			CASE WHEN OLD.ws_type = 'special_structure' THEN
+				UPDATE tww_od.special_structure SET
 				function = (SELECT code FROM tww_vl.special_structure_function_import_rel_agxx WHERE value_de=NEW.funktionag)
 				WHERE obj_id = ws_oid;
 			ELSE

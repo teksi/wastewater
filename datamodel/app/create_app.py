@@ -9,12 +9,12 @@ try:
 except ImportError:
     import psycopg2 as psycopg
 
+from extensions.extension_manager import load_extension
 from pirogue import MultipleInheritance, SimpleJoins, SingleInheritance
 from view.vw_tww_additional_ws import vw_tww_additional_ws
 from view.vw_tww_reach import vw_tww_reach
 from view.vw_tww_wastewater_structure import vw_tww_wastewater_structure
 from view.vw_wastewater_structure import vw_wastewater_structure
-from extensions.extension_manager import load_extension
 from yaml import safe_load
 
 
@@ -64,8 +64,7 @@ def create_app(
     run_sql("CREATE SCHEMA tww_app;", pg_service)
     if extension_names:
         for extension in extension_names:
-            load_extension(srid, pg_service,"tww",extension)
-
+            load_extension(srid, pg_service, "tww", extension)
 
     run_sql_file("symbology_functions.sql", pg_service)
     run_sql_file("reach_direction_change.sql", pg_service, variables)
@@ -265,8 +264,8 @@ if __name__ == "__main__":
     parser.add_argument(
         "-x",
         "--extension_names",
-        nargs='*',
-        required = False,
+        nargs="*",
+        required=False,
         help="extensions that should be loaded into application schema",
     )
     args = parser.parse_args()

@@ -1,7 +1,8 @@
+from geoalchemy2 import Geometry
+from sqlalchemy import Column, DateTime, Float, Integer, String
+
 from .. import config
 from .model_base import ModelBase
-from sqlalchemy import Column, String, DateTime, Integer, Float
-from geoalchemy2 import Geometry
 
 
 class ModelTwwAG6496(ModelBase):
@@ -10,7 +11,7 @@ class ModelTwwAG6496(ModelBase):
 
         class organisation(self.Base):
             __tablename__ = "vw_agxx_organisation"
-            obj_id=Column(String, primary_key=True)
+            obj_id = Column(String, primary_key=True)
             uid = Column(String)
             bezeichnung = Column(String)
             kurzbezeichnung = Column(String)
@@ -24,7 +25,7 @@ class ModelTwwAG6496(ModelBase):
 
         class gepmassnahme(self.Base):
             __tablename__ = "vw_agxx_gepmassnahme"
-            obj_id=Column(String, primary_key=True)
+            obj_id = Column(String, primary_key=True)
             ausdehnung = Column(Geometry)
             beschreibung = Column(String)
             bezeichnung = Column(String)
@@ -50,7 +51,7 @@ class ModelTwwAG6496(ModelBase):
 
         class gepknoten(self.Base):
             __tablename__ = "vw_agxx_gepknoten"
-            obj_id=Column(String, primary_key=True)
+            obj_id = Column(String, primary_key=True)
             ara_nr = Column(Integer)
             baujahr = Column(Integer)
             baulicherzustand = Column(String)
@@ -81,12 +82,11 @@ class ModelTwwAG6496(ModelBase):
             ignore_ws = Column(Boolean)
             __table_args__ = {"schema": config.TWW_AG_SCHEMA}
 
-
         ModelTwwAG6496.gepknoten = gepknoten
 
         class gephaltung(self.Base):
             __tablename__ = "vw_agxx_gephaltung"
-            obj_id=Column(String, primary_key=True)
+            obj_id = Column(String, primary_key=True)
             baujahr = Column(Integer)
             baulicherzustand = Column(String)
             bauwerkstatus = Column(String)
@@ -134,7 +134,7 @@ class ModelTwwAG6496(ModelBase):
 
         class einzugsgebiet(self.Base):
             __tablename__ = "vw_agxx_einzugsgebiet"
-            obj_id=Column(String, primary_key=True)
+            obj_id = Column(String, primary_key=True)
             abflussbegrenzung_geplant = Column(Float)
             abflussbegrenzung_ist = Column(Float)
             abflussbeiwert_rw_geplant = Column(Float)
@@ -176,7 +176,7 @@ class ModelTwwAG6496(ModelBase):
 
         class bautenausserhalbbaugebiet(self.Base):
             __tablename__ = "vw_agxx_bautenausserhalbbaugebiet"
-            obj_id=Column(String, primary_key=True)
+            obj_id = Column(String, primary_key=True)
             anzstaendigeeinwohner = Column(Integer)
             arealnutzung = Column(String)
             beseitigung_haeusliches_abwasser = Column(String)
@@ -201,7 +201,7 @@ class ModelTwwAG6496(ModelBase):
 
         class ueberlauf_foerderaggregat(self.Base):
             __tablename__ = "vw_agxx_ueberlauf_foerderaggregat"
-            obj_id=Column(String, primary_key=True)
+            obj_id = Column(String, primary_key=True)
             datenbewirtschafter_gep = Column(String)
             bemerkung_gep = Column(String)
             bemerkung_wi = Column(String)
@@ -218,7 +218,7 @@ class ModelTwwAG6496(ModelBase):
 
         class sbw_einzugsgebiet(self.Base):
             __tablename__ = "vw_agxx_sbw_einzugsgebiet"
-            obj_id=Column(String, primary_key=True)
+            obj_id = Column(String, primary_key=True)
             bezeichnung = Column(String)
             einwohner_geplant = Column(Integer)
             einwohner_ist = Column(Integer)
@@ -239,12 +239,12 @@ class ModelTwwAG6496(ModelBase):
             bemerkung_gep = Column(String)
             letzte_aenderung_gep = Column(DateTime)
             __table_args__ = {"schema": config.TWW_APP_SCHEMA}
-        
+
         ModelTwwAG6496.sbw_einzugsgebiet = sbw_einzugsgebiet
 
         class versickerungsbereichag(self.Base):
             __tablename__ = "vw_agxx_versickerungsbereichag"
-            obj_id=Column(String, primary_key=True)
+            obj_id = Column(String, primary_key=True)
             datenbewirtschafter_gep = Column(String)
             bemerkung_gep = Column(String)
             letzte_aenderung_gep = Column(DateTime)
@@ -256,5 +256,5 @@ class ModelTwwAG6496(ModelBase):
             q_check = Column(String)
             versickerungsmoeglichkeitag = Column(String)
             __table_args__ = {"schema": config.TWW_APP_SCHEMA}
-        
+
         ModelTwwAG6496.versickerungsbereichag = versickerungsbereichag

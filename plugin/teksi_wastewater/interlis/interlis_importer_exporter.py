@@ -15,16 +15,16 @@ from .interlis_model_mapping.interlis_exporter_to_intermediate_schema import (
 from .interlis_model_mapping.interlis_importer_to_intermediate_schema import (
     InterlisImporterToIntermediateSchema,
 )
+from .interlis_model_mapping.model_interlis_ag64 import ModelInterlisAG64
+from .interlis_model_mapping.model_interlis_ag96 import ModelInterlisAG96
 from .interlis_model_mapping.model_interlis_dss import ModelInterlisDss
 from .interlis_model_mapping.model_interlis_sia405_abwasser import (
     ModelInterlisSia405Abwasser,
 )
-from .interlis_model_mapping.model_interlis_ag64 import ModelInterlisAG64
-from .interlis_model_mapping.model_interlis_ag96 import ModelInterlisAG96
 from .interlis_model_mapping.model_interlis_vsa_kek import ModelInterlisVsaKek
 from .interlis_model_mapping.model_tww import ModelTwwSys, ModelTwwVl
-from .interlis_model_mapping.model_tww_od import ModelTwwOd
 from .interlis_model_mapping.model_tww_ag6496 import ModelTwwAG6496
+from .interlis_model_mapping.model_tww_od import ModelTwwOd
 from .utils.ili2db import InterlisTools
 from .utils.various import CmdException, LoggingHandlerContext, logger, make_log_path
 
@@ -54,9 +54,7 @@ class InterlisImporterExporter:
 
         self.current_progress = 0
 
-    def interlis_import(
-        self, xtf_file_input, show_selection_dialog=False, logs_next_to_file=True
-    ):
+    def interlis_import(self, xtf_file_input, show_selection_dialog=False, logs_next_to_file=True):
         # Configure logging
         if logs_next_to_file:
             self.base_log_path = xtf_file_input
@@ -201,19 +199,19 @@ class InterlisImporterExporter:
                 limit_to_selection=limit_to_selection,
                 selected_labels_scales_indices=selected_labels_scales_indices,
                 labels_file_path=labels_file_path,
-                export_model=export_models[0]
+                export_model=export_models[0],
             )
 
         if export_models[0] == config.MODEL_NAME_AG96:
-            file_path = 'data/Organisationstabelle_AG96.xtf'
+            file_path = "data/Organisationstabelle_AG96.xtf"
             abs_file_path = Path(__file__).parent.resolve() / file_path
             logger.info("Importing AG-96 organisation to intermediate schema")
             self._import_xtf_file(self, abs_file_path)
         elif export_models[0] == config.MODEL_NAME_AG64:
-            file_path = 'data/Organisationstabelle_AG64.xtf'
+            file_path = "data/Organisationstabelle_AG64.xtf"
             abs_file_path = Path(__file__).parent.resolve() / file_path
             logger.info("Importing AG-64 organisation to intermediate schema")
-            self._import_xtf_file(self, abs_file_path)           
+            self._import_xtf_file(self, abs_file_path)
 
         # Export to the temporary ili2pg model
         self._progress_done(35, "Converting from TEKSI Wastewater...")
@@ -283,9 +281,7 @@ class InterlisImporterExporter:
         )
 
         with LoggingHandlerContext(log_handler):
-            interlisImporterToIntermediateSchema.tww_import(
-                skip_closing_tww_session=True
-            )
+            interlisImporterToIntermediateSchema.tww_import(skip_closing_tww_session=True)
 
         return interlisImporterToIntermediateSchema.session_tww
 
@@ -317,12 +313,8 @@ class InterlisImporterExporter:
         DatabaseUtils.update_symbology()
 
     def _export_labels_file(
-        self,
-        limit_to_selection,
-        selected_labels_scales_indices,
-        labels_file_path,
-        export_model
-        ):
+        self, limit_to_selection, selected_labels_scales_indices, labels_file_path, export_model
+    ):
         try:
             # We only import now to avoid useless exception if dependencies aren't met
             from qgis import processing
@@ -343,7 +335,7 @@ class InterlisImporterExporter:
                 "Make sure your TEKSI Wastewater project is open.",
                 None,
             )
-        
+
         self._progress_done(self.current_progress + 5)
 
         if export_model == config.MODEL_NAME_AG96:
@@ -352,7 +344,7 @@ class InterlisImporterExporter:
             meas_lin_lyr = TwwLayerManager.layer("measure_line")
             meas_ply_lyr = TwwLayerManager.layer("measure_polygon")
             building_group_lyr = TwwLayerManager.layer("building_group")
-            
+
             processing.run(
                 "tww:extractlabels_interlis",
                 {
@@ -366,12 +358,12 @@ class InterlisImporterExporter:
                     "MEASURE_POLYGON_LAYER": meas_ply_lyr,
                     "BUILDING_GROUP_LAYER": building_group_lyr,
                     "SCALES": selected_labels_scales_indices,
-                    "REPLACE_WS_WITH_WN":True,
+                    "REPLACE_WS_WITH_WN": True,
                 },
             )
         elif export_model == config.MODEL_NAME_DSS:
             catch_lyr = TwwLayerManager.layer("catchment_area")
-            
+
             processing.run(
                 "tww:extractlabels_interlis",
                 {
@@ -382,9 +374,9 @@ class InterlisImporterExporter:
                     "CATCHMENT_LAYER": catch_lyr,
                     "SCALES": selected_labels_scales_indices,
                 },
-            )       
+            )
         elif export_model == config.MODEL_NAME_AG64:
-             processing.run(
+            processing.run(
                 "tww:extractlabels_interlis",
                 {
                     "OUTPUT": labels_file_path,
@@ -407,7 +399,6 @@ class InterlisImporterExporter:
                     "SCALES": selected_labels_scales_indices,
                 },
             )
-
 
     def _export_to_intermediate_schema(
         self,
@@ -461,12 +452,8 @@ class InterlisImporterExporter:
             export_file_name = f"{file_name_base}_{export_model_name}.xtf"
 
             # Export from ili2pg model to file
-            self._progress_done(
-                self.current_progress, f"Saving XTF for '{export_model_name}'..."
-            )
-            log_path = make_log_path(
-                self.base_log_path, f"ili2pg-export-{export_model_name}"
-            )
+            self._progress_done(self.current_progress, f"Saving XTF for '{export_model_name}'...")
+            log_path = make_log_path(self.base_log_path, f"ili2pg-export-{export_model_name}")
             try:
                 self.interlisTools.export_xtf_data(
                     schema=config.ABWASSER_SCHEMA,
@@ -489,9 +476,7 @@ class InterlisImporterExporter:
                 self.current_progress + progress_step,
                 f"Validating XTF for '{export_model_name}'...",
             )
-            log_path = make_log_path(
-                self.base_log_path, f"ilivalidator-{export_model_name}"
-            )
+            log_path = make_log_path(self.base_log_path, f"ilivalidator-{export_model_name}")
             try:
                 self.interlisTools.validate_xtf_data(
                     export_file_name,

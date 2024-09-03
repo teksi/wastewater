@@ -12,8 +12,8 @@ DECLARE
 BEGIN
 
 	WITH ppt AS (
-		SELECT code, abbr_de from tww_vl.pipe_profile_profile_type ppt WHERE ppt.value_de =  NEW.profiltyp 
-	) 
+		SELECT code, abbr_de from tww_vl.pipe_profile_profile_type ppt WHERE ppt.value_de =  NEW.profiltyp
+	)
 	INSERT INTO tww_od.pipe_profile
 	(
 	  profile_type
@@ -37,9 +37,9 @@ BEGIN
 	)
 	ON CONFLICT (identifier,fk_dataowner) DO UPDATE
 	SET fk_provider=EXCLUDED.fk_provider -- needed to return the obj_id
-	RETURNING obj_id INTO pp_oid;	
+	RETURNING obj_id INTO pp_oid;
 
-	
+
 	INSERT INTO tww_od.wastewater_structure
 	(
       status
@@ -70,7 +70,7 @@ BEGIN
 	, NEW.gepmassnahmeref
 	)
 	RETURNING obj_id into ws_oid;
-	
+
 	INSERT INTO tww_od.channel
 	(
 	  obj_id
@@ -87,7 +87,7 @@ BEGIN
     , (SELECT code FROM tww_vl.channel_usage_planned_import_rel_agxx WHERE value_de=NEW.nutzungsartag_geplant)
 	);
 
-    INSERT INTO tww_od.wastewater_networkelement( 
+    INSERT INTO tww_od.wastewater_networkelement(
 	  obj_id
 	, identifier
 	, fk_provider
@@ -96,7 +96,7 @@ BEGIN
 	, ag64_fk_provider
 	, ag96_last_modification
     , ag96_remark
-	, ag96_fk_provider	
+	, ag96_fk_provider
 	, fk_wastewater_structure
 	) VALUES
 	(
@@ -111,7 +111,7 @@ BEGIN
 	, tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
 	, ws_oid
 	);
-	
+
 	INSERT INTO tww_od.reach_point
 	(
       elevation_accuracy
@@ -147,8 +147,8 @@ BEGIN
 	, NEW.letzte_aenderung_wi
     , NEW.kote_ende
 	)RETURNING obj_id into rp_to_oid;
-	
-	
+
+
 	INSERT INTO tww_od.reach
 	(
 	  obj_id
@@ -201,8 +201,8 @@ BEGIN
 
 
 	WITH ppt AS (
-		SELECT code, abbr_de from tww_vl.pipe_profile_profile_type ppt WHERE ppt.value_de =  NEW.profiltyp 
-	) 
+		SELECT code, abbr_de from tww_vl.pipe_profile_profile_type ppt WHERE ppt.value_de =  NEW.profiltyp
+	)
 	INSERT INTO tww_od.pipe_profile
 	(
 	  profile_type
@@ -227,7 +227,7 @@ BEGIN
 	ON CONFLICT (identifier,fk_dataowner) DO UPDATE
 	SET fk_provider=EXCLUDED.fk_provider -- needed to return the obj_id
 	RETURNING obj_id INTO pp_oid;
-	
+
 	UPDATE tww_od.wastewater_networkelement SET
 	  identifier = NEW.bezeichnung
 	, fk_provider = tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
@@ -238,8 +238,8 @@ BEGIN
     , ag96_remark = NEW.bemerkung_gep
 	, ag96_fk_provider = tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
 	WHERE obj_id = NEW.obj_id;
-	
-	UPDATE tww_od.wastewater_structure SET 
+
+	UPDATE tww_od.wastewater_structure SET
       status = (SELECT code FROM tww_vl.wastewater_structure_status WHERE value_de=replace(NEW.bauwerkstatus,'.in_Betrieb',''))
 	, fk_owner = tww_app.fct_agxx_organisationid_to_vsa(NEW.eigentuemer)
 	, status_survey_year = NEW.jahr_zustandserhebung
@@ -254,20 +254,20 @@ BEGIN
 	, ag96_fk_measure = NEW.gepmassnahmeref
 	WHERE obj_id = (SELECT fk_wastewater_structure FROM tww_od.wastewater_networkelement WHERE obj_id = NEW.obj_id)
 	RETURNING obj_id into ws_oid;
-	
-	UPDATE tww_od.channel SET 
+
+	UPDATE tww_od.channel SET
       usage_current = (SELECT code FROM tww_vl.channel_usage_current_import_rel_agxx WHERE value_de=NEW.nutzungsartag_ist)
     , function_hierarchic = (SELECT code FROM tww_vl.channel_function_hierarchic WHERE value_de=NEW.funktionhierarchisch)
 	, function_hydraulic = (SELECT code FROM tww_vl.channel_function_hydraulic WHERE value_de=NEW.funktionhydraulisch)
 	, usage_planned = (SELECT code FROM tww_vl.channel_usage_planned_import_rel_agxx WHERE value_de=NEW.nutzungsartag_geplant)
 	WHERE obj_id = ws_oid;
-	
-	SELECT fk_reach_point_from,fk_reach_point_to INTO rp_from_oid,rp_to_oid 
+
+	SELECT fk_reach_point_from,fk_reach_point_to INTO rp_from_oid,rp_to_oid
 	FROM tww_od.reach
 	WHERE obj_id = OLD.obj_id;
-	
-	
-	UPDATE tww_od.reach_point SET 
+
+
+	UPDATE tww_od.reach_point SET
       elevation_accuracy = (SELECT code FROM tww_vl.reach_point_elevation_accuracy WHERE value_de=NEW.hoehengenauigkeit_von)
 	, situation3d_geometry = ST_SetSRID(ST_MakePoint(ST_X(ST_StartPoint(NEW.verlauf)), ST_X(ST_StartPoint(NEW.verlauf)), COALESCE(NEW.kote_beginn,'nan')), 2056 )
     , fk_provider = tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
@@ -276,7 +276,7 @@ BEGIN
     , level = NEW.kote_beginn
 	WHERE obj_id = rp_from_oid;
 
-	UPDATE tww_od.reach_point SET 
+	UPDATE tww_od.reach_point SET
       elevation_accuracy = (SELECT code FROM tww_vl.reach_point_elevation_accuracy WHERE value_de=NEW.hoehengenauigkeit_von)
 	, situation3d_geometry = ST_SetSRID(ST_MakePoint(ST_X(ST_EndPoint(NEW.verlauf)), ST_X(ST_EndPoint(NEW.verlauf)), COALESCE(NEW.kote_ende,'nan')), 2056 )
     , fk_provider = tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
@@ -284,7 +284,7 @@ BEGIN
     , last_modification = NEW.letzte_aenderung_wi
     , level = NEW.kote_ende
 	WHERE obj_id = rp_to_oid;
-	
+
 	UPDATE tww_od.reach re SET
 	  clear_height = NEW.lichte_hoehe_ist
 	, ag96_clear_height_planned = NEW.lichte_hoehe_geplant
@@ -298,7 +298,7 @@ BEGIN
     , reliner_nominal_size = NEW.reliner_nennweite
     , relining_construction = (SELECT code FROM tww_vl.reach_relining_construction WHERE value_de=NEW.reliner_bautechnik)
     , relining_kind = (SELECT code FROM tww_vl.reach_relining_kind WHERE value_de=NEW.reliner_art);
-	
+
 	RETURN NEW;
 END;
 $BODY$
@@ -579,7 +579,7 @@ BEGIN
 	, ag96_fk_provider
 	)
 	VALUES
-	(	
+	(
 	  NEW.obj_id
 	, NEW.knotenref
 	, NEW.knoten_nachref
@@ -594,17 +594,17 @@ BEGIN
 	, NEW.bemerkung_gep
 	, tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
 	);
-	
-	CASE WHEN NEW.art  = 'Foerderaggregat' THEN 
+
+	CASE WHEN NEW.art  = 'Foerderaggregat' THEN
 		INSERT INTO tww_od.pump (obj_id) VALUES (NEW.obj_id);
-	WHEN NEW.art  = 'Leapingwehr' THEN 
+	WHEN NEW.art  = 'Leapingwehr' THEN
 		INSERT INTO tww_od.leapingweir (obj_id) VALUES (NEW.obj_id);
 	WHEN NEW.art  = 'Streichwehr' THEN
 		INSERT INTO tww_od.prank_weir (obj_id) VALUES (NEW.obj_id);
 	ELSE NULL;
 	END CASE;
-	
-  RETURN NEW;	
+
+  RETURN NEW;
 
 END;
 $BODY$
@@ -629,7 +629,7 @@ BEGIN
     , ag96_remark = NEW.bemerkung_gep
 	, ag96_fk_provider = tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
 	WHERE obj_id=NEW.obj_id;
-	
+
 	CASE WHEN NEW.art  = 'Foerderaggregat' AND OLD.ov_type != 'pump' THEN
 		INSERT INTO tww_od.pump (obj_id) VALUES (NEW.obj_id);
 		DELETE FROM tww_od.leapingweir WHERE obj_id = OLD.obj_id;
@@ -644,7 +644,7 @@ BEGIN
 		DELETE FROM tww_od.pump WHERE obj_id = OLD.obj_id;
 	ELSE NULL;
 	END CASE;
-  RETURN NEW;	
+  RETURN NEW;
 
 END;
 $BODY$
@@ -670,7 +670,7 @@ RETURNS trigger AS
 $BODY$
 BEGIN
 	UPDATE tww_od.building_group bg
-	SET 
+	SET
 	  function = (SELECT code FROM tww_vl.building_group_function_import_rel_agxx WHERE value_de = NEW.arealnutzung)
     , identifier = NEW.bezeichnung
     , population_equivalent = NEW.einwohnergleichwert
@@ -682,7 +682,7 @@ BEGIN
     , situation_geometry = NEW.lage
     , last_modification = NEW.letzte_aenderung_gep
     , fk_provider = tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
-    , ag96_owner_address = NEW.eigentuemeradresse 
+    , ag96_owner_address = NEW.eigentuemeradresse
     , ag96_owner_name = NEW.eigentuemername
     , ag96_label_number = NEW.nummer
     , ag96_disposal_wastewater = (SELECT code FROM tww_vl.building_group_ag96_disposal_type WHERE value_de = NEW.beseitigung_haeusliches_abwasser)
@@ -736,7 +736,7 @@ BEGIN
     , (SELECT code FROM tww_vl.building_group_ag96_disposal_type WHERE value_de = NEW.beseitigung_dachentwaesserung)
 	);
 	END IF;
-  RETURN NEW;	
+  RETURN NEW;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -756,7 +756,7 @@ LANGUAGE plpgsql;
 
 ---------------------------------
 ------- SBW_Einzugsgebiet -------
----------------------------------	
+---------------------------------
 
 
 CREATE OR REPLACE FUNCTION tww_app.ft_agxx_sbw_einzugsgebiet_upsert()
@@ -770,7 +770,7 @@ BEGIN
 	WHERE fk_wastewater_node=NEW.sonderbauwerk_ref
 	AND status = 6372 --Ist
 	RETURNING obj_id into hcd_oid;
-	
+
 	IF NOT FOUND THEN
 		INSERT INTO tww_od.hydraulic_char_data
 		(
@@ -787,7 +787,7 @@ BEGIN
 		RETURNING obj_id into hcd_oid;
 	END IF;
 	UPDATE tww_od.catchment_area_totals cat
-	SET 
+	SET
 	  identifier = NEW.bezeichnung
     , population = NEW.einwohner_ist
     , population_dim = NEW.einwohner_geplant
@@ -911,9 +911,9 @@ BEGIN
 	, NEW.maechtigkeit
 	, NEW.perimeter
 	, NEW.q_check
-	, (SELECT code FROM tww_vl.infiltration_zone_infiltration_capacity WHERE value_de = NEW.versickerungsmoeglichkeitag) 
+	, (SELECT code FROM tww_vl.infiltration_zone_infiltration_capacity WHERE value_de = NEW.versickerungsmoeglichkeitag)
 	);
-  RETURN NEW;	
+  RETURN NEW;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -929,7 +929,7 @@ BEGIN
 	, remark = NEW.bemerkung_gep
 	, last_modification = NEW.letzte_aenderung_gep
 	WHERE obj_id=NEW.obj_id;
-	
+
 	UPDATE tww_od.infiltration_zone
 	SET
 	   ag96_permeability = NEW.bezeichnung
@@ -937,9 +937,9 @@ BEGIN
 	, ag96_thickness = NEW.maechtigkeit
 	, perimeter_geometry = NEW.perimeter
 	, ag96_q_check = NEW.q_check
-	, infiltration_capacity = (SELECT code FROM tww_vl.infiltration_zone_infiltration_capacity WHERE value_de = NEW.versickerungsmoeglichkeitag) 
+	, infiltration_capacity = (SELECT code FROM tww_vl.infiltration_zone_infiltration_capacity WHERE value_de = NEW.versickerungsmoeglichkeitag)
 	WHERE obj_id=NEW.obj_id;
-  RETURN NEW;	
+  RETURN NEW;
 END;
 $BODY$
 LANGUAGE plpgsql;

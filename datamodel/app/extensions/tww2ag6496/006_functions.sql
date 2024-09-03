@@ -8,16 +8,16 @@ $BODY$
 	update_type varchar(3);
   BEGIN
     BEGIN
-	  SELECT 
+	  SELECT
 	   ag_update_type
-	  INTO update_type 
+	  INTO update_type
 	  FROM tww_cfg.agxx_last_modification_updater
 	  WHERE username=current_user;
-	  CASE 
+	  CASE
 	   WHEN update_type IN('wi','both') THEN NEW.ag64_last_modification=now();
 	   ELSE NULL;
 	   END CASE;
-	    CASE 
+	    CASE
 	   WHEN update_type IN('gep','both') THEN NEW.ag96_last_modification=now();
 	   ELSE NULL;
 	  END CASE;
@@ -27,7 +27,7 @@ $BODY$
 $BODY$
 LANGUAGE plpgsql;
 
-	
+
 CREATE OR REPLACE FUNCTION tww_app.ft_agxx_update_catchment_area_totals_geoms
   (_obj_id varchar(16),_all boolean DEFAULT FALSE)
   RETURNS VOID AS
@@ -58,7 +58,7 @@ CREATE OR REPLACE FUNCTION tww_app.ft_agxx_update_catchment_area_totals_geoms
 		LEFT JOIN tww_od.catchment_area_totals ca_tot ON hcd.obj_id = ca_tot.fk_hydraulic_char_data
 	 WHERE _all OR _obj_id=ca_tot.obj_id
 	 GROUP BY ca_tot.obj_id
-  ) ca_agg 
+  ) ca_agg
   WHERE ca_agg.obj_id::text = cat.obj_id::text;
   END;
   $BODY$
