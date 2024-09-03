@@ -54,25 +54,42 @@ $BODY$
   COST 100;
 
 -- Set defaults on all fk_provider,fk_dataowner,fk_owner
-DO
+CREATE OR REPLACE FUNCTION tww_app.ft_set_default_values()
+RETURNS TRIGGER AS 
 $BODY$
 DECLARE
+    sch text;
     tbl text;
 	col text;
+	ttp text;
 BEGIN
-	FOR tbl,col IN
+	FOR sch,tbl,col,ttp IN
 	SELECT
-       c.table_name,
-	   c.column_name
+       t.table_schema,
+	   c.table_name,
+	   c.column_name,
+	   CASE WHEN t.table_type = 'BASE TABLE' then 'TABLE' ELSE t.table_type END
+	   
     FROM information_schema.columns c
 	LEFT JOIN information_schema.tables t
 	ON c.table_name = t.table_name
     and c.table_schema = t.table_schema
-    WHERE c.column_name IN ('fk_provider','fk_dataowner','fk_owner')
-      and c.table_schema ='tww_od'
-	  and t.table_type = 'BASE TABLE'
+    WHERE c.column_name = NEW.fieldname
+      and ((c.table_schema ='tww_od'
+	  and t.table_type = 'BASE TABLE')
+	  OR  (c.table_schema ='tww_app'
+	  and t.table_type = 'VIEW'))
     LOOP
-        EXECUTE format($$ ALTER TABLE tww_od.%1$I ALTER COLUMN %2$I SET DEFAULT tww_app.get_default_values('%2$s') $$, tbl,col);
+        EXECUTE format($$ ALTER %4$s %1$I.%2$I ALTER COLUMN %3$I SET DEFAULT tww_app.get_default_values('%2$s') $$, sch,tbl,col,ttp);
     END LOOP;
+	RETURN NEW;
 END;
 $BODY$;
+
+DROP TRIGGER IF EXISTS set_default_values ON tww_od.default_values;
+
+CREATE TRIGGER set_default_values
+  BEFORE INSERT OR UPDATE
+  ON tww_od.default_values
+  FOR EACH ROW
+  EXECUTE PROCEDURE tww_app.set_default_values();
