@@ -1,8 +1,7 @@
 ---------------------------------
 -------- Metainformation --------
 ---------------------------------
-
-CREATE OR REPLACE FUNCTION {ext_schema}.update_last_ag_modification()
+CREATE OR REPLACE FUNCTION tww_app.modification_last_modified_agxx()
 RETURNS trigger AS
 $BODY$
   DECLARE
@@ -28,22 +27,8 @@ $BODY$
 $BODY$
 LANGUAGE plpgsql;
 
-DROP TRIGGER IF EXISTS before_networkelement_change ON tww_od.wastewater_networkelement;		
-CREATE TRIGGER before_networkelement_change
-    BEFORE INSERT OR UPDATE 
-    ON tww_od.wastewater_networkelement
-    FOR EACH ROW
-    EXECUTE FUNCTION {ext_schema}.update_last_ag_modification();
-
-DROP TRIGGER IF EXISTS before_overflow_change ON tww_od.overflow;		
-CREATE TRIGGER before_overflow_change
-    BEFORE INSERT OR UPDATE 
-    ON tww_od.overflow
-    FOR EACH ROW
-    EXECUTE FUNCTION {ext_schema}.update_last_ag_modification();
 	
-	
-CREATE OR REPLACE FUNCTION {ext_schema}.update_catchment_area_totals_geoms
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_update_catchment_area_totals_geoms
   (_obj_id varchar(16),_all boolean DEFAULT FALSE)
   RETURNS VOID AS
   $BODY$
