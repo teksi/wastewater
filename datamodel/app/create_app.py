@@ -62,13 +62,13 @@ def create_app(
 
     run_sql("CREATE SCHEMA tww_app;", pg_service)
 
-    run_sql_file("oid_functions.sql", pg_service, variables)
-    run_sql_file("modification_functions.sql", pg_service)
-    run_sql_file("symbology_functions.sql", pg_service)
-    run_sql_file("reach_direction_change.sql", pg_service, variables)
-    run_sql_file("14_geometry_functions.sql", pg_service, variables)
-    run_sql_file("update_catchment_area_totals.sql", pg_service, variables)
-    run_sql_file("organisation_functions.sql", pg_service, variables)
+    run_sql_file("functions/oid_functions.sql", pg_service, variables)
+    run_sql_file("functions/modification_functions.sql", pg_service)
+    run_sql_file("functions/symbology_functions.sql", pg_service)
+    run_sql_file("functions/reach_direction_change.sql", pg_service, variables)
+    run_sql_file("functions/14_geometry_functions.sql", pg_service, variables)
+    run_sql_file("functions/update_catchment_area_totals.sql", pg_service, variables)
+    run_sql_file("functions/organisation_functions.sql", pg_service, variables)
 
     # open YAML files
     if tww_reach_extra:
