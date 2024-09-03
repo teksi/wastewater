@@ -14,6 +14,7 @@ from view.vw_tww_additional_ws import vw_tww_additional_ws
 from view.vw_tww_reach import vw_tww_reach
 from view.vw_tww_wastewater_structure import vw_tww_wastewater_structure
 from view.vw_wastewater_structure import vw_wastewater_structure
+from ..extensions.extension_manager import load_extension
 from yaml import safe_load
 
 
@@ -41,6 +42,7 @@ def create_app(
     tww_reach_extra: Optional[Path] = None,
     tww_wastewater_structure_extra: Optional[Path] = None,
     wastewater_structure_extra: Optional[Path] = None,
+    extension_names: Optional[List] = [],
 ):
     """
     Creates the schema tww_app for TEKSI Wastewater & GEP
@@ -60,6 +62,9 @@ def create_app(
         run_sql("DROP SCHEMA IF EXISTS tww_app CASCADE;", pg_service)
 
     run_sql("CREATE SCHEMA tww_app;", pg_service)
+    for extension in extension_names:
+        load_extension(srid, pg_service,"tww",extension)
+
 
     run_sql_file("symbology_functions.sql", pg_service)
     run_sql_file("reach_direction_change.sql", pg_service, variables)
@@ -256,6 +261,13 @@ if __name__ == "__main__":
         default=False,
         action=BooleanOptionalAction,
     )
+    parser.add_argument(
+        "-x",
+        "--extension_names",
+        nargs='*',
+        required = False,
+        help="extensions that should be loaded into application schema",
+    )
     args = parser.parse_args()
 
     create_app(
@@ -264,4 +276,5 @@ if __name__ == "__main__":
         drop_schema=args.drop_schema,
         tww_reach_extra=args.tww_reach_extra,
         tww_wastewater_structure_extra=args.tww_wastewater_structure_extra,
+        extension_names=args.extension_names,
     )
