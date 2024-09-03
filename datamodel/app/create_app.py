@@ -62,8 +62,9 @@ def create_app(
         run_sql("DROP SCHEMA IF EXISTS tww_app CASCADE;", pg_service)
 
     run_sql("CREATE SCHEMA tww_app;", pg_service)
-    for extension in extension_names:
-        load_extension(srid, pg_service,"tww",extension)
+    if extension_names:
+        for extension in extension_names:
+            load_extension(srid, pg_service,"tww",extension)
 
 
     run_sql_file("symbology_functions.sql", pg_service)
