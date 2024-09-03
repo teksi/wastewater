@@ -47,8 +47,7 @@ In the future, an adapted value list sql will be provided. For now, we will have
 
     set /p myservice="Please enter the service name? (e.g. tww_community) "
 
-	python %tww_dir%\extensions\extension_manager.py --pg_service %myservice% --srid 2056 --drop-schema --extension_name "agxx"
-	python %tww_dir%\app\create_app.py --pg_service %myservice% --srid 2056 --drop-schema
+	python %tww_dir%\app\create_app.py --pg_service %myservice% --srid 2056 --drop-schema --extension_names agxx foobar demo
 
 
     PAUSE
