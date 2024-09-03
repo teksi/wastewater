@@ -109,11 +109,11 @@ FROM(
 
     WHERE _all OR wn.obj_id = _obj_id
       WINDOW w AS ( PARTITION BY wn.obj_id
-                    ORDER BY vl_fct_hier_from.tww_symbology_order ASC NULLS LAST
-                           , vl_fct_hier_to.tww_symbology_order ASC NULLS LAST
+                    ORDER BY vl_fct_hier_from.order_fct_hierarchic ASC NULLS LAST
+                           , vl_fct_hier_to.order_fct_hierarchic ASC NULLS LAST
 
-                           , vl_usg_curr_from.tww_symbology_order ASC NULLS LAST
-                           , vl_usg_curr_to.tww_symbology_order ASC NULLS LAST
+                           , vl_usg_curr_from.order_usage_current ASC NULLS LAST
+                           , vl_usg_curr_to.order_usage_current ASC NULLS LAST
                     ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)
 ) symbology_ne
 WHERE symbology_ne.wn_obj_id = n.obj_id;
@@ -344,7 +344,7 @@ LANGUAGE plpgsql VOLATILE;
 --------------------------------------------------------
 -- UPDATE wastewater structure fk_main_cover
 -- Argument:
---  * obj_id of wastewater structure. No change if fk_main_cover is not null
+--  * obj_id of wastewater structure
 --  * all True to update all
 --  * omit both arguments to update all where fk_main_cover is null
 --------------------------------------------------------
@@ -363,7 +363,7 @@ BEGIN
       LEFT JOIN tww_od.structure_part sp ON sp.fk_wastewater_structure = ws.obj_id
       LEFT JOIN tww_od.cover co ON sp.obj_id = co.obj_id
       LEFT JOIN tww_od.channel ch ON ch.obj_id = ws.obj_id
-      WHERE ch.obj_id IS NULL AND (_all OR ((ws.obj_id = _obj_id OR (NOT _all AND _obj_id is NULL)) AND ws.fk_main_wastewater_node IS NULL))
+      WHERE ch.obj_id IS NULL AND (_all OR ws.obj_id = _obj_id OR ( NOT _all AND _obj_id is NULL AND ws.fk_main_cover IS NULL))
   ) ws_covers
   WHERE ws.obj_id = ws_covers.obj_id;
 END
@@ -375,7 +375,7 @@ VOLATILE;
 --------------------------------------------------------
 -- UPDATE wastewater structure fk_main_wastewater_node
 -- Argument:
---  * obj_id of wastewater structure. No change if fk_main_wastewater_node is not null
+--  * obj_id of wastewater structure
 --  * all True to update all
 --  * omit both arguments to update all where fk_main_wastewater_node is null
 --------------------------------------------------------
@@ -395,7 +395,7 @@ BEGIN
       LEFT JOIN tww_od.wastewater_networkelement ne ON ne.fk_wastewater_structure = ws.obj_id
       LEFT JOIN tww_od.wastewater_node wn ON ne.obj_id = wn.obj_id
       LEFT JOIN tww_od.channel ch ON ch.obj_id = ws.obj_id
-      WHERE ch.obj_id IS NULL AND (_all OR ((ws.obj_id = _obj_id OR (NOT _all AND _obj_id is NULL)) AND ws.fk_main_wastewater_node IS NULL))
+      WHERE ch.obj_id IS NULL AND (_all OR ws.obj_id = _obj_id OR ( NOT _all AND _obj_id is NULL AND ws.fk_main_wastewater_node IS NULL))
   ) ws_nodes
   WHERE ws.obj_id = ws_nodes.obj_id;
 END
@@ -442,6 +442,7 @@ VOLATILE;
 -- Argument:
 --  * obj_id of wastewater structure or NULL to update all
 --------------------------------------------------------
+
 ------ 14.9.2022 index labels by wastewater structure for VSA-DSS compliance /cymed
 ------ 14.9.2022 use idx only when more than one entry /cymed
 ------ 15.8.2018 uk adapted label display only for primary wastwater system
@@ -463,7 +464,6 @@ SET _label = label,
     _input_label = input_label,
     _output_label = output_label
     FROM(
-
 SELECT   ws_obj_id,
           COALESCE(ws_identifier, '') as label,
           CASE WHEN count(co_level)<2 THEN array_to_string(array_agg(E'\nC' || '=' || co_level ORDER BY idx DESC), '', '') ELSE
@@ -478,54 +478,35 @@ SELECT   ws_obj_id,
     FROM tww_od.wastewater_structure WS
 
     LEFT JOIN (
-		With outputs AS (
-		SELECT NULL AS co_level,
-		  NULL::text AS rpi_level,
-			coalesce(round(RP.level, 2)::text, '?') AS rpo_level,
-			NE.fk_wastewater_structure ws, RP.obj_id,
-			row_number() OVER(PARTITION BY NE.fk_wastewater_structure
-							  ORDER BY
-							  fh.tww_symbology_order,
-							  uc.tww_symbology_order,
-							  ST_Azimuth(RP.situation3d_geometry,ST_PointN(RE_from.progression3d_geometry,2)) ASC) AS idx,
-		  NULL::text AS bottom_level,
-		  ST_Azimuth(RP.situation3d_geometry,ST_PointN(RE_from.progression3d_geometry,2)) AS azimuth
-		  FROM tww_od.reach_point RP
-		  LEFT JOIN tww_od.wastewater_networkelement NE ON RP.fk_wastewater_networkelement = NE.obj_id
-		  INNER JOIN tww_od.reach RE_from ON RP.obj_id = RE_from.fk_reach_point_from
-		  LEFT JOIN tww_od.wastewater_networkelement NE_RE ON NE_RE.obj_id::text = RE_from.obj_id::text
-		  LEFT JOIN tww_od.wastewater_structure ws ON NE_RE.fk_wastewater_structure::text = ws.obj_id::text
-		  LEFT JOIN tww_od.channel ch ON ch.obj_id::text = ws.obj_id::text
-		  LEFT JOIN tww_vl.channel_function_hierarchic fh ON ch.function_hierarchic  = fh.code
-		  LEFT JOIN tww_vl.channel_usage_current uc ON ch.usage_current = uc.code
-		  WHERE (_all OR NE.fk_wastewater_structure = _obj_id)
-		)
       SELECT coalesce(round(CO.level, 2)::text, '?') AS co_level, NULL::text AS rpi_level, NULL::text AS rpo_level, SP.fk_wastewater_structure ws, SP.obj_id, row_number() OVER(PARTITION BY SP.fk_wastewater_structure) AS idx, NULL::text AS bottom_level
       FROM tww_od.structure_part SP
       RIGHT JOIN tww_od.cover CO ON CO.obj_id = SP.obj_id
       WHERE _all OR SP.fk_wastewater_structure = _obj_id
       -- Inputs
       UNION
-
-      SELECT NULL AS co_level,
-	  coalesce(round(RP.level, 2)::text, '?') AS rpi_level,
-	  NULL::text AS rpo_level,
-	  NE.fk_wastewater_structure ws, RP.obj_id,
-	  row_number() OVER(PARTITION BY NE.fk_wastewater_structure
-						ORDER BY (mod((2*pi()+(ST_Azimuth(RP.situation3d_geometry,ST_PointN(RE_to.progression3d_geometry,-2))-outs.azimuth))::numeric , 2*pi()::numeric)) ASC) AS idx,
-	  NULL::text AS bottom_level
+      SELECT NULL AS co_level, coalesce(round(RP.level, 2)::text, '?') AS rpi_level, NULL::text AS rpo_level, NE.fk_wastewater_structure ws, RP.obj_id, row_number() OVER(PARTITION BY NE.fk_wastewater_structure ORDER BY ST_Azimuth(RP.situation3d_geometry,ST_PointN(RE_to.progression3d_geometry,-2))/pi()*180 ASC), NULL::text AS bottom_level
       FROM tww_od.reach_point RP
       LEFT JOIN tww_od.wastewater_networkelement NE ON RP.fk_wastewater_networkelement = NE.obj_id
-	  INNER JOIN tww_od.reach RE_to ON RP.obj_id = RE_to.fk_reach_point_to
-	  LEFT JOIN tww_od.reach RE_from ON RP.obj_id = RE_from.fk_reach_point_from
+      INNER JOIN tww_od.reach RE_to ON RP.obj_id = RE_to.fk_reach_point_to
       LEFT JOIN tww_od.wastewater_networkelement NE_to ON NE_to.obj_id = RE_to.obj_id
       LEFT JOIN tww_od.channel CH_to ON NE_to.fk_wastewater_structure = CH_to.obj_id
-      LEFT JOIN tww_vl.channel_function_hierarchic fh ON CH_to.function_hierarchic  = fh.code
-	  LEFT JOIN outputs outs on outs.ws = NE.fk_wastewater_structure AND outs.idx=1
-      WHERE (_all OR NE.fk_wastewater_structure = _obj_id) and fh.tww_use_in_labels
+      WHERE (_all OR NE.fk_wastewater_structure = _obj_id) and CH_to.function_hierarchic in (5062,5064,5066,5068,5069,5070,5071,5072,5074)  ----label only reaches with function_hierarchic=pwwf.*
       -- Outputs
       UNION
-      SELECT co_level, rpi_level,rpo_level,ws,obj_id,idx,bottom_level FROM outputs
+      SELECT NULL AS co_level, NULL::text AS rpi_level,
+		coalesce(round(RP.level, 2)::text, '?') AS rpo_level,
+		NE.fk_wastewater_structure ws, RP.obj_id,
+		row_number() OVER(PARTITION BY NE.fk_wastewater_structure
+						  ORDER BY array_position(ARRAY[4522,4526,4524,4516,4514,4518,520,4571,5322], ch.usage_current),
+						  ST_Azimuth(RP.situation3d_geometry,ST_PointN(RE_from.progression3d_geometry,2))/pi()*180 ASC),
+		NULL::text AS bottom_level
+      FROM tww_od.reach_point RP
+      LEFT JOIN tww_od.wastewater_networkelement NE ON RP.fk_wastewater_networkelement = NE.obj_id
+      INNER JOIN tww_od.reach RE_from ON RP.obj_id = RE_from.fk_reach_point_from
+	  LEFT JOIN tww_od.wastewater_networkelement NE_RE ON NE_RE.obj_id::text = RE_from.obj_id::text
+	  LEFT JOIN tww_od.wastewater_structure ws ON NE_RE.fk_wastewater_structure::text = ws.obj_id::text
+      LEFT JOIN tww_od.channel ch ON ch.obj_id::text = ws.obj_id::text
+      WHERE CASE WHEN _obj_id IS NULL THEN TRUE ELSE NE.fk_wastewater_structure = _obj_id END
       -- Bottom
       UNION
       SELECT NULL AS co_level, NULL::text AS rpi_level, NULL::text AS rpo_level, ws1.obj_id ws, NULL, NULL, round(wn.bottom_level, 2)::text AS wn_bottom_level
