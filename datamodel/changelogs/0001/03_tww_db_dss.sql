@@ -4376,7 +4376,7 @@ ALTER TABLE tww_od.reach_text ADD CONSTRAINT rel_reach_text_reach FOREIGN KEY (f
 ALTER TABLE tww_od.catchment_area_text ADD COLUMN fk_catchment_area varchar(16);
 ALTER TABLE tww_od.catchment_area_text ADD CONSTRAINT rel_catchment_area_text_catchment_area FOREIGN KEY (fk_catchment_area) REFERENCES tww_od.catchment_area(obj_id) ON UPDATE CASCADE ON DELETE CASCADE;
 ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN fk_wastewater_structure varchar(16);
-ALTER TABLE tww_od.wastewater_structure_symbol ADD CONSTRAINT rel_wastewater_structure_symbol_wastewater_structure FOREIGN KEY (fk_wastewater_structure) REFERENCES tww_od.wastewater_structure(obj_id) ON UPDATE CASCADE ON DELETE CASCADE;
+ALTER TABLE tww_od.wastewater_structure_symbol ADD CONSTRAINT rel_wastewater_structure_symbol_wastewater_structure FOREIGN KEY (fk_wastewater_structure) REFERENCES tww_od.wastewater_structure(obj_id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 
 ------------ Text and Symbol Tables Values ----------- ;
 CREATE TABLE tww_vl.wastewater_structure_text_plantype () INHERITS (tww_vl.value_list_base);
