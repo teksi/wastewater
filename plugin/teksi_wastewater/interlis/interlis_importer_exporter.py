@@ -573,6 +573,7 @@ class InterlisImporterExporter:
                         errormsg = f"Too many superclass entries for {schema_name}.{parent_name}"
                     else:
                         errormsg = f"Too many subclass entries for {schema_name}.{parent_name}"
+
                     if limit_to_selection:
                         logger.warning(
                             f"Overall Subclass Count: {errormsg}. The problem might lie outside the selection"
