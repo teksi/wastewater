@@ -268,15 +268,16 @@ SELECT
 	, concat_ws('','ch113jqg0000',right(COALESCE(ne.ag96_fk_provider,'00000107'),8)) AS datenbewirtschafter_gep
 	, ne.ag96_remark AS bemerkung_gep
 	, COALESCE(ne.ag96_last_modification,TO_TIMESTAMP('1800-01-01','YYYY-MM-DD')) AS letzte_aenderung_gep
-    , NULL::boolean AS ignore_ws
-    , CASE
-        WHEN ma.obj_id IS NOT NULL THEN 'manhole'
-        WHEN ss.obj_id IS NOT NULL THEN 'special_structure'
-        WHEN dp.obj_id IS NOT NULL THEN 'discharge_point'
-        WHEN ii.obj_id IS NOT NULL THEN 'infiltration_installation'
-        WHEN wwtp.obj_id IS NOT NULL THEN 'wwtp_structure'
-        ELSE 'unknown'
-      END AS ws_type
+  , NULL::boolean AS ignore_ws
+  , CASE
+      WHEN ma.obj_id IS NOT NULL THEN 'manhole'
+      WHEN ss.obj_id IS NOT NULL THEN 'special_structure'
+      WHEN dp.obj_id IS NOT NULL THEN 'discharge_point'
+      WHEN ii.obj_id IS NOT NULL THEN 'infiltration_installation'
+      WHEN wwtp.obj_id IS NOT NULL THEN 'wwtp_structure'
+      ELSE 'unknown'
+    END AS ws_type
+
 
 FROM tww_od.wastewater_node wn
 LEFT JOIN tww_od.wastewater_networkelement ne ON wn.obj_id = ne.obj_id
@@ -522,6 +523,12 @@ SELECT
 	, concat_ws('','ch113jqg0000',right(COALESCE(ne.ag96_fk_provider,'00000107'),8)) AS datenbewirtschafter_gep
 	, ov.ag96_remark AS bemerkung_gep
 	, COALESCE(ov.ag96_last_modification,TO_TIMESTAMP('1800-01-01','YYYY-MM-DD')) AS letzte_aenderung_gep
+	, CASE
+		WHEN pu.obj_id IS NOT NULL THEN 'pump'::text
+		WHEN lw.obj_id IS NOT NULL THEN 'leapingweir'::text
+		WHEN pw.obj_id IS NOT NULL THEN 'prank_weir'::text
+		ELSE 'unknown'::text
+	END AS ov_type
 
 FROM tww_od.overflow ov
     LEFT JOIN tww_od.pump pu ON ov.obj_id = pu.obj_id

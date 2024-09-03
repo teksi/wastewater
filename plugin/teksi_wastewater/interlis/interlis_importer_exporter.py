@@ -168,7 +168,7 @@ class InterlisImporterExporter:
         limit_to_selection=False,
         export_orientation=90.0,
         selected_labels_scales_indices=[],
-        selected_ids=[],
+        selected_ids=None,
     ):
         # Validate subclasses before export
         self._check_subclass_counts()

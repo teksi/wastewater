@@ -1,4 +1,9 @@
 extensions:
+  - id: template
+    directory: template_extension
+    variables:
+      myVariable: "Hello World"
+      myNumber: 0
   - id: agxx
     directory: tww2ag6496
     variables: {}
