@@ -87,6 +87,40 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION tww_app.ft_unset_default_values()
+RETURNS TRIGGER AS
+$BODY$
+DECLARE
+    sch text;
+    tbl text;
+	col text;
+	ttp text;
+BEGIN
+	FOR sch,tbl,col,ttp IN
+	SELECT
+       t.table_schema,
+	   c.table_name,
+	   c.column_name,
+	   CASE WHEN t.table_type = 'BASE TABLE' then 'TABLE' ELSE t.table_type END
+
+    FROM information_schema.columns c
+	LEFT JOIN information_schema.tables t
+	ON c.table_name = t.table_name
+    and c.table_schema = t.table_schema
+    WHERE c.column_name = OLD.fieldname
+      and ((c.table_schema ='tww_od'
+	  and t.table_type = 'BASE TABLE')
+	  OR  (c.table_schema ='tww_app'
+	  and t.table_type = 'VIEW'))
+    LOOP
+        EXECUTE format($$ ALTER %4$s %1$I.%2$I ALTER COLUMN %3$I DROP DEFAULT $$, sch,tbl,col,ttp);
+    END LOOP;
+	RETURN NULL;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+
 DROP TRIGGER IF EXISTS set_default_values ON tww_od.default_values;
 
 CREATE TRIGGER set_default_values
@@ -94,3 +128,11 @@ CREATE TRIGGER set_default_values
   ON tww_od.default_values
   FOR EACH ROW
   EXECUTE PROCEDURE tww_app.ft_set_default_values();
+
+DROP TRIGGER IF EXISTS unset_default_values ON tww_od.default_values;
+
+CREATE TRIGGER unset_default_values
+  BEFORE DELETE
+  ON tww_od.default_values
+  FOR EACH ROW
+  EXECUTE PROCEDURE tww_app.ft_unset_default_values();
