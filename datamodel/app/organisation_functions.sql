@@ -93,4 +93,4 @@ CREATE TRIGGER set_default_values
   BEFORE INSERT OR UPDATE
   ON tww_od.default_values
   FOR EACH ROW
-  EXECUTE PROCEDURE tww_app.set_default_values();
+  EXECUTE PROCEDURE tww_app.ft_set_default_values();
