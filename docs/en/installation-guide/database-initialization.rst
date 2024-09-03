@@ -90,7 +90,7 @@ You can call the script from the command line in three modes:
 
 The flags are defined as follows:
 
-* ´-m´ or ´--modelname´: Abbreviation of the datamodel (here: tww)
+* ´-m´ or ´--modulename´: Abbreviation of the datamodel (here: tww)
 * ´-p´ or ´--pg_service´: Name of the pg_service
 * ´-d´ or ´--database_specific_roles´: Optional flag to add database specific roles instead of cluster specific roles.
 * ´-x´ or ´--extension_schema´: Optional flag to define the name of the extension schema. Not needed when using create_roles
