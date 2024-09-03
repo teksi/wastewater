@@ -42,7 +42,7 @@ def create_app(
     tww_reach_extra: Optional[Path] = None,
     tww_wastewater_structure_extra: Optional[Path] = None,
     wastewater_structure_extra: Optional[Path] = None,
-    extension_names: Optional[List] = [],
+    extension_names: Optional[list] = [],
 ):
     """
     Creates the schema tww_app for TEKSI Wastewater & GEP
