@@ -84,7 +84,8 @@ BEGIN
     END LOOP;
 	RETURN NEW;
 END;
-$BODY$;
+$BODY$
+LANGUAGE plpgsql;
 
 DROP TRIGGER IF EXISTS set_default_values ON tww_od.default_values;
 
