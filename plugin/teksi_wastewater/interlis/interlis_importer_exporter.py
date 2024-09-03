@@ -132,7 +132,7 @@ class InterlisImporterExporter:
             self._import_manage_organisations()
 
             # Reenable symbology triggers
-            self._progress_done(97, "Reenable symbology and  modifiation triggers...")
+            self._progress_done(97, "Reenable symbology and modification triggers...")
             self._import_enable_symbology_and_modification_triggers()
 
         except Exception as exception:
