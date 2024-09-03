@@ -1,6 +1,6 @@
 -- Funktion zum Mapping der Organisations-ID
 
-CREATE OR REPLACE FUNCTION {ext_schema}.convert_organisationid_to_vsa(oid varchar)
+CREATE OR REPLACE FUNCTION tww_app.fct_agxx_organisationid_to_vsa(oid varchar)
 RETURNS varchar(16)
 AS 
 $BODY$
@@ -13,6 +13,53 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION tww_app.fct_agxx_linkup_secondary_nodes(oid varchar)
+RETURNS VOID
+AS 
+$BODY$
+DECLARE
+DECLARE
+	ws_oid varchar(16);
+	wn_oids varchar(16)[];
+	sp_oids varchar(16)[];
+BEGIN
+     SELECT ws.obj_id, array_agg(wn.obj_id) INTO  ws_oid, wn_oids
+	  FROM (SELECT ws.obj_id, 
+			st_buffer(detail_geometry3d_geometry,0.0001)
+			as detail_geometry2d_geometry 
+		 FROM tww_od.wastewater_structure ws
+		 LEFT JOIN tww_od.channel ch on ws.obj_id=ch.obj_id
+		 WHERE ws.detail_geometry3d_geometry IS NOT NULL
+		 AND ch.obj_id is NULL) ws
+	  LEFT JOIN  (SELECT obj_id,situation3d_geometry 
+				  from tww_od.wastewater_node) wn ON 
+		ST_CoveredBy(wn.situation3d_geometry
+		  , detail_geometry2d_geometry)
+	  LEFT JOIN (SELECT obj_id,fk_wastewater_structure FROM tww_od.wastewater_networkelement) ne on ne.obj_id=wn.obj_id
+	  WHERE ne.fk_wastewater_structure IS NULL
+	  GROUP BY ws.obj_id;
+	
+	SELECT array_agg(co.obj_id) INTO sp_oids
+	  FROM tww_od.wastewater_node wn 
+	  LEFT JOIN tww_od.cover co on co.ag64_fk_wastewater_node=wn.obj_id
+	  WHERE wn.obj_id = any(wn_oids)
+	  GROUP BY wn.obj_id;
+			
+	CASE WHEN ws_oid is not NULL THEN
+	  UPDATE tww_od.wastewater_networkelement
+        SET fk_wastewater_structure = ws_oid
+        WHERE obj_id = wn_oid;
+
+      UPDATE tww_od.structure_part
+        SET fk_wastewater_structure = ws_oid
+        WHERE obj_id = ANY(sp_oids);
+		
+	ELSE NULL;
+	END CASE;
+	RETURN;
+END;
+$BODY$
+LANGUAGE plpgsql;
 
 -- wird für Updates von letzte_aenderung_wi/gep genutzt
 CREATE TABLE IF NOT EXISTS tww_cfg.agxx_last_modification_updater(
@@ -27,124 +74,3 @@ INSERT INTO tww_sys.dictionary_od_table (id, tablename, shortcut_en) VALUES
 (2999998,'measure_text','MX'),
 (2999999,'building_group_text','GX')
 ON CONFLICT DO NOTHING;
-
------------------------------------------------------------------------
--- Drop Symbology Triggers
--- To temporarily disable these cache refreshes for batch jobs like migrations
------------------------------------------------------------------------
-
-CREATE OR REPLACE FUNCTION tww_sys.disable_symbology_triggers() RETURNS VOID AS $$
-DECLARE
-	nm text;
-BEGIN
-  ALTER TABLE tww_od.reach_point DISABLE TRIGGER on_reach_point_update;
-  ALTER TABLE tww_od.reach DISABLE TRIGGER on_reach_2_change;
-  ALTER TABLE tww_od.reach DISABLE TRIGGER on_reach_1_delete;
-  ALTER TABLE tww_od.wastewater_structure DISABLE TRIGGER on_wastewater_structure_update;
-  ALTER TABLE tww_od.wastewater_networkelement DISABLE TRIGGER ws_label_update_by_wastewater_networkelement;
-  ALTER TABLE tww_od.structure_part DISABLE TRIGGER on_structure_part_change;
-  ALTER TABLE tww_od.cover DISABLE TRIGGER on_cover_change;
-  ALTER TABLE tww_od.wastewater_node DISABLE TRIGGER on_wasterwaternode_change;
-  ALTER TABLE tww_od.reach DISABLE TRIGGER ws_symbology_update_by_reach;
-  ALTER TABLE tww_od.channel DISABLE TRIGGER ws_symbology_update_by_channel;
-  ALTER TABLE tww_od.reach_point DISABLE TRIGGER ws_symbology_update_by_reach_point;
-  ALTER TABLE tww_od.reach DISABLE TRIGGER calculate_reach_length;
-  -- AG-64/96 extension
-  IF EXISTS
-  ( SELECT 1 FROM information_schema.triggers WHERE event_object_schema = 'tww_od'
-    AND event_object_table = 'wastewater_networkelement'
-    AND trigger_name = 'before_networkelement_change'
-  ) THEN
-    ALTER TABLE tww_od.wastewater_networkelement DISABLE TRIGGER before_networkelement_change;
-  ELSE NULL;
-  END IF;
-    IF EXISTS
-  ( SELECT 1 FROM information_schema.triggers WHERE event_object_schema = 'tww_od'
-    AND event_object_table = 'overflow'
-    AND trigger_name = 'before_overflow_change'
-  ) THEN
-     ALTER TABLE tww_od.overflow DISABLE TRIGGER before_overflow_change;
-  ELSE NULL;
-  END IF;
-  RETURN;
-END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
-
------------------------------------------------------------------------
--- Create Symbology Triggers
------------------------------------------------------------------------
-
-CREATE OR REPLACE FUNCTION tww_sys.enable_symbology_triggers() RETURNS VOID AS $$
-DECLARE
-    tbl text;
-	trig text;
-BEGIN
-  ALTER TABLE tww_od.reach_point ENABLE TRIGGER on_reach_point_update;
-  ALTER TABLE tww_od.reach ENABLE TRIGGER on_reach_2_change;
-  ALTER TABLE tww_od.reach ENABLE TRIGGER on_reach_1_delete;
-  ALTER TABLE tww_od.wastewater_structure ENABLE TRIGGER on_wastewater_structure_update;
-  ALTER TABLE tww_od.wastewater_networkelement ENABLE TRIGGER ws_label_update_by_wastewater_networkelement;
-  ALTER TABLE tww_od.structure_part ENABLE TRIGGER on_structure_part_change;
-  ALTER TABLE tww_od.cover ENABLE TRIGGER on_cover_change;
-  ALTER TABLE tww_od.wastewater_node ENABLE TRIGGER on_wasterwaternode_change;
-  ALTER TABLE tww_od.reach ENABLE TRIGGER ws_symbology_update_by_reach;
-  ALTER TABLE tww_od.channel ENABLE TRIGGER ws_symbology_update_by_channel;
-  ALTER TABLE tww_od.reach_point ENABLE TRIGGER ws_symbology_update_by_reach_point;
-  ALTER TABLE tww_od.reach ENABLE TRIGGER calculate_reach_length;
-  -- AG-64/96 extension
-  IF EXISTS
-  ( SELECT 1 FROM information_schema.triggers WHERE event_object_schema = 'tww_od'
-    AND event_object_table = 'wastewater_networkelement'
-    AND trigger_name = 'before_networkelement_change'
-  ) THEN
-    ALTER TABLE tww_od.wastewater_networkelement ENABLE TRIGGER before_networkelement_change;
-  ELSE NULL;
-  END IF;
-    IF EXISTS
-  ( SELECT 1 FROM information_schema.triggers WHERE event_object_schema = 'tww_od'
-    AND event_object_table = 'overflow'
-    AND trigger_name = 'before_overflow_change'
-  ) THEN
-     ALTER TABLE tww_od.overflow ENABLE TRIGGER before_overflow_change;
-  ELSE NULL;
-  END IF;
-  RETURN;
-END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
-
-CREATE OR REPLACE FUNCTION tww_sys.check_symbology_triggers_enabled(
-	)
-    RETURNS boolean
-    LANGUAGE 'plpgsql'
-    COST 100
-    VOLATILE SECURITY DEFINER PARALLEL UNSAFE
-AS $BODY$
-DECLARE _disabled_count numeric;
-BEGIN
-
-  SELECT count(*) into _disabled_count FROM pg_trigger WHERE (
-    tgname='on_reach_point_update' or
-    tgname='on_reach_2_change' or
-    tgname='on_reach_1_delete' or
-    tgname='on_wastewater_structure_update' or
-    tgname='ws_label_update_by_wastewater_networkelement' or
-    tgname='on_structure_part_change' or
-    tgname='on_cover_change' or
-    tgname='on_wasterwaternode_change' or
-    tgname='ws_symbology_update_by_reach' or
-    tgname='ws_symbology_update_by_channel' or
-    tgname='ws_symbology_update_by_reach_point' or
-    tgname='calculate_reach_length'
-	-- AG-64/96 extension
-	or tgname='before_networkelement_change'
-	or tgname='before_overflow_change'
-  ) AND tgenabled = 'D';
-
-  IF _disabled_count=0 THEN
-    return true;
-  ELSE
-    return false;
-  END IF;
-
-END;
-$BODY$;

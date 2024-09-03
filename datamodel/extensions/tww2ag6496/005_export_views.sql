@@ -1,8 +1,8 @@
 ----------------
 -- organisation
 ----------------
-DROP VIEW IF EXISTS {ext_schema}.organisation;
-CREATE VIEW {ext_schema}.organisation
+DROP VIEW IF EXISTS tww_app.vw_agxx_organisation;
+CREATE VIEW tww_app.vw_agxx_organisation
 AS
 SELECT
 concat_ws('','ch113jqg0000',right(obj_id,8)) AS obj_id,
@@ -87,9 +87,9 @@ FunktionBauwerkAG =   (
 
 
 */
-DROP MATERIALIZED VIEW  IF EXISTS {ext_schema}.knoten_bauwerksattribute CASCADE;
+DROP MATERIALIZED VIEW  IF EXISTS tww_app.vw_agxx_knoten_bauwerksattribute CASCADE;
 
-CREATE MATERIALIZED VIEW {ext_schema}.knoten_bauwerksattribute
+CREATE MATERIALIZED VIEW tww_app.vw_agxx_knoten_bauwerksattribute
 AS
 WITH re_meta AS(
 	SELECT re.obj_id,
@@ -213,13 +213,13 @@ WITH re_meta AS(
 
 WITH DATA;
 
-CREATE INDEX in_{ext_schema}_knoten_bauwerksattribute_obj_id
-    ON {ext_schema}.knoten_bauwerksattribute USING btree
+CREATE INDEX in_app_vw_agxx_knoten_bauwerksattribute_obj_id
+    ON tww_app.vw_agxx_knoten_bauwerksattribute USING btree
     (obj_id)
     TABLESPACE pg_default;
 
-DROP VIEW IF EXISTS {ext_schema}.gepknoten;
-CREATE VIEW {ext_schema}.gepknoten
+DROP VIEW IF EXISTS tww_app.vw_agxx_gepknoten;
+CREATE VIEW tww_app.vw_agxx_gepknoten
 AS			
 SELECT
 	  wn.obj_id AS obj_id
@@ -268,19 +268,20 @@ SELECT
 	, concat_ws('','ch113jqg0000',right(COALESCE(ne.ag96_fk_provider,'00000107'),8)) AS datenbewirtschafter_gep
 	, ne.ag96_remark AS bemerkung_gep
 	, COALESCE(ne.ag96_last_modification,TO_TIMESTAMP('1800-01-01','YYYY-MM-DD')) AS letzte_aenderung_gep
-	, NULL:bool AS ignore_ws
-	, CASE
-            WHEN ma.obj_id IS NOT NULL THEN 'manhole'::text
-			WHEN ss.obj_id IS NOT NULL THEN 'special_structure'::text
-            WHEN dp.obj_id IS NOT NULL THEN 'discharge_point'::text
-            WHEN ii.obj_id IS NOT NULL THEN 'infiltration_installation'::text
-            WHEN wwtp.obj_id IS NOT NULL THEN 'wwtp_structure'::text
-            ELSE 'unknown'::text
-        END AS ws_type
+  , NULL::boolean AS ignore_ws
+  , CASE
+      WHEN ma.obj_id IS NOT NULL THEN 'manhole'
+      WHEN ss.obj_id IS NOT NULL THEN 'special_structure'
+      WHEN dp.obj_id IS NOT NULL THEN 'discharge_point'
+      WHEN ii.obj_id IS NOT NULL THEN 'infiltration_installation'
+      WHEN wwtp.obj_id IS NOT NULL THEN 'wwtp_structure'
+      ELSE 'unknown'
+    END AS ws_type
+
 
 FROM tww_od.wastewater_node wn
 LEFT JOIN tww_od.wastewater_networkelement ne ON wn.obj_id = ne.obj_id
-LEFT JOIN {ext_schema}.knoten_bauwerksattribute ws ON wn.obj_id=ws.obj_id
+LEFT JOIN tww_app.vw_agxx_knoten_bauwerksattribute ws ON wn.obj_id=ws.obj_id
 LEFT JOIN tww_od.wastewater_structure main_ws ON wn.obj_id=main_ws.fk_main_wastewater_node
 
 LEFT JOIN tww_od.measuring_point meas_pt ON main_ws.obj_id=meas_pt.fk_wastewater_structure
@@ -316,7 +317,7 @@ LEFT JOIN tww_vl.wastewater_structure_renovation_necessity rn ON rn.code=ws.reno
 LEFT JOIN tww_vl.wastewater_structure_financing fi ON fi.code=ws.financing
 LEFT JOIN tww_vl.channel_function_hierarchic fhi ON fhi.code=wn._function_hierarchic	
 
-LEFT JOIN tww_od.cover co ON co.agxx_fk_wastewater_node = wn.obj_id -- only overwrite position of main wn
+LEFT JOIN tww_od.cover co ON co.ag64_fk_wastewater_node = wn.obj_id -- only overwrite position of main wn
 LEFT JOIN tww_od.cover main_co ON main_co.obj_id=ws.fk_main_cover
 LEFT JOIN tww_vl.cover_positional_accuracy co_pa ON co_pa.code=coalesce(co.positional_accuracy,main_co.positional_accuracy,unc.co_positional_accuracy)
 LEFT JOIN tww_vl.wastewater_structure_accessibility  ac ON ac.code=ws.accessibility;
@@ -325,8 +326,8 @@ LEFT JOIN tww_vl.wastewater_structure_accessibility  ac ON ac.code=ws.accessibil
 -- GEPHaltung
 ------------------
 
-DROP VIEW IF EXISTS {ext_schema}.gephaltung;
-CREATE OR REPLACE VIEW {ext_schema}.gephaltung
+DROP VIEW IF EXISTS tww_app.vw_agxx_gephaltung;
+CREATE OR REPLACE VIEW tww_app.vw_agxx_gephaltung
 AS
 
 SELECT
@@ -409,8 +410,8 @@ FROM tww_od.reach re
 ------------------
 -- GEPMassnahme
 ------------------
-DROP VIEW IF EXISTS {ext_schema}.gepmassnahme;
-CREATE VIEW {ext_schema}.gepmassnahme
+DROP VIEW IF EXISTS tww_app.vw_agxx_gepmassnahme;
+CREATE VIEW tww_app.vw_agxx_gepmassnahme
 AS
 SELECT
 	  msr.obj_id
@@ -445,8 +446,8 @@ FROM tww_od.measure msr
 ------------------
 -- Einzugsgebiet
 ------------------
-DROP VIEW IF EXISTS {ext_schema}.einzugsgebiet;
-CREATE VIEW {ext_schema}.einzugsgebiet
+DROP VIEW IF EXISTS tww_app.vw_agxx_einzugsgebiet;
+CREATE VIEW tww_app.vw_agxx_einzugsgebiet
 AS
 SELECT
 	  ca.obj_id
@@ -503,8 +504,8 @@ FROM tww_od.catchment_area ca
 ----------------------------
 -- Ueberlauf_Foerderaggregat
 ----------------------------
-DROP VIEW IF EXISTS {ext_schema}.ueberlauf_foerderaggregat;
-CREATE VIEW {ext_schema}.ueberlauf_foerderaggregat
+DROP VIEW IF EXISTS tww_app.vw_agxx_ueberlauf_foerderaggregat;
+CREATE VIEW tww_app.vw_agxx_ueberlauf_foerderaggregat
 AS
 SELECT
 	  ov.obj_id
@@ -540,8 +541,8 @@ FROM tww_od.overflow ov
 ----------------------------
 -- Bautenausserhalbbaugebiet
 ----------------------------
-DROP VIEW IF EXISTS {ext_schema}.bautenausserhalbbaugebiet;
-CREATE OR REPLACE VIEW {ext_schema}.bautenausserhalbbaugebiet
+DROP VIEW IF EXISTS tww_app.vw_agxx_bautenausserhalbbaugebiet;
+CREATE OR REPLACE VIEW tww_app.vw_agxx_bautenausserhalbbaugebiet
 AS
 SELECT
 	  bg.obj_id
@@ -577,8 +578,8 @@ FROM tww_od.building_group bg
 ----------------------------
 -- SBW_Einzugsgebiet
 ----------------------------
-DROP VIEW IF EXISTS {ext_schema}.sbw_einzugsgebiet;
-CREATE OR REPLACE VIEW {ext_schema}.sbw_einzugsgebiet
+DROP VIEW IF EXISTS tww_app.vw_agxx_sbw_einzugsgebiet;
+CREATE OR REPLACE VIEW tww_app.vw_agxx_sbw_einzugsgebiet
  AS
  SELECT cat.obj_id,
     cat.identifier AS bezeichnung,
@@ -609,8 +610,8 @@ CREATE OR REPLACE VIEW {ext_schema}.sbw_einzugsgebiet
 ----------------------------
 -- VersickerungsbereichAG
 ----------------------------
-DROP VIEW IF EXISTS {ext_schema}.versickerungsbereichag;
-CREATE VIEW {ext_schema}.versickerungsbereichag
+DROP VIEW IF EXISTS tww_app.vw_agxx_versickerungsbereichag;
+CREATE VIEW tww_app.vw_agxx_versickerungsbereichag
 AS 
 SELECT
 	  iz.obj_id
