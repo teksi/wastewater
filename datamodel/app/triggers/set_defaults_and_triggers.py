@@ -72,7 +72,6 @@ def set_defaults_and_triggers(
                 query = create_last_modification_trigger(entry[0], SingleInheritances[entry[0]])
                 cursor.execute(query)
 
-   
         else:
             cursor.execute(
                 f"""select 1 from information_schema.columns
