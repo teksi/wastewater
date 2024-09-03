@@ -22,10 +22,13 @@ def read_config(config_file: str, extension_name: str):
     raise ValueError(f"No entry found with id: {extension_name}")
 
 
-def run_py_file(file_path: str):
+def run_py_file(file_path: str, variables: dict = None):
     abs_file_path = Path(__file__).parent.resolve() / file_path
-    result = subprocess.run([sys.executable, str(abs_file_path)], capture_output=True, text=True)
-
+    varlist = [sys.executable, str(abs_file_path)]
+    for key, value in variables.iteritems():
+        varlist.append("--"+key)
+        varlist.append(value)
+    result = subprocess.run(varlist, capture_output=True, text=True)
     if result.returncode != 0:
         raise RuntimeError(f"Error running file: {result.stderr}")
 
@@ -85,7 +88,7 @@ def load_extension(
                 run_sql_file(os.path.join(directory, filename), pg_service, variables)
             if filename.endswith(".py"):
                 print(f"Running {filename}")
-                run_py_file(os.path.join(directory, filename))
+                run_py_file(os.path.join(directory, filename),variables)
 
     # re-create symbology triggers
     conn = psycopg.connect(f"service={pg_service}")

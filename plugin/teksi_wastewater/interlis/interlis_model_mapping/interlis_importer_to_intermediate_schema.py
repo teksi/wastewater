@@ -2355,7 +2355,7 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     ###################
-    ### AG-64/AG-96 ###
+    #   AG-64/AG-96   #
     ###################
     def check_ignore_ws(self, row):
         if row.funktionag != "andere":

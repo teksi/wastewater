@@ -834,12 +834,12 @@ class InterlisExporterToIntermediateSchema:
             WITH geoms AS (
              SELECT *, ST_ForceCurve((ST_Dump(perimeter_ist)).geom) AS geom
 			 FROM tww_ag6496.sbw_einzugsgebiet
-				WHERE ST_NumGeometries(perimeter_ist)>1
-			UNION
+             WHERE ST_NumGeometries(perimeter_ist)>1
+            UNION
              SELECT *, ST_ForceCurve(ST_GeometryN(perimeter_ist,1)) AS geom
-			 FROM tww_ag6496.sbw_einzugsgebiet
-				WHERE ST_NumGeometries(perimeter_ist)=1
-                     )
+             FROM tww_ag6496.sbw_einzugsgebiet
+             WHERE ST_NumGeometries(perimeter_ist)=1
+            )
             SELECT DISTINCT ON (obj_id) obj_id, ST_Area(geom) AS area, geom, ST_GeometryType(geom) as type
             FROM geoms
             ORDER BY obj_id, area DESC;

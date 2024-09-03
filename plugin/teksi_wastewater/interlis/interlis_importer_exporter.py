@@ -27,6 +27,7 @@ from .interlis_model_mapping.model_tww_ag6496 import ModelTwwAG6496
 from .interlis_model_mapping.model_tww_od import ModelTwwOd
 from .utils.ili2db import InterlisTools
 from .utils.various import CmdException, LoggingHandlerContext, logger, make_log_path
+from pathlib import Path
 
 
 class InterlisImporterExporterStopped(Exception):
@@ -200,6 +201,7 @@ class InterlisImporterExporter:
                 selected_labels_scales_indices=selected_labels_scales_indices,
                 labels_file_path=labels_file_path,
                 export_model=export_models[0],
+                export_orientation=export_orientation,
             )
 
         if export_models[0] == config.MODEL_NAME_AG96:
@@ -313,7 +315,8 @@ class InterlisImporterExporter:
         DatabaseUtils.update_symbology()
 
     def _export_labels_file(
-        self, limit_to_selection, selected_labels_scales_indices, labels_file_path, export_model
+        self, limit_to_selection, selected_labels_scales_indices, labels_file_path, export_model,
+        export_orientation=90.0
     ):
         try:
             # We only import now to avoid useless exception if dependencies aren't met
