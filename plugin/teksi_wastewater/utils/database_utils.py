@@ -190,7 +190,7 @@ class DatabaseUtils:
     def check_oid_prefix() -> List[str]:
         """Check whether the oid_prefix is set up for production"""
         logger.info("Checking setup of oid prefix")
-        prefixes = DatabaseUtils.fetchall("SELECT prefix FROM tww_app.oid_prefixes WHERE active;")
+        prefixes = DatabaseUtils.fetchall("SELECT prefix FROM tww_sys.oid_prefixes WHERE active;")
 
         msg_list = []
         if len(prefixes) > 1:
