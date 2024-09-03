@@ -22,7 +22,7 @@ class InterlisExporterToIntermediateSchema:
         model_classes_tww_vl,
         model_classes_tww_sys,
         labels_orientation_offset=90,
-        model_classes_tww_ag6496=None,
+        model_classes_tww_app=None,
         selection=None,
         labels_file=None,
         basket_enabled=False,
@@ -57,7 +57,7 @@ class InterlisExporterToIntermediateSchema:
         self.model_classes_tww_vl = model_classes_tww_vl
         self.model_classes_tww_sys = model_classes_tww_sys
         self.labels_orientation_offset = labels_orientation_offset
-        self.model_classes_tww_ag6496 = model_classes_tww_ag6496
+        self.model_classes_tww_app = model_classes_tww_app
 
         self.tww_session = None
         self.abwasser_session = None
@@ -98,7 +98,8 @@ class InterlisExporterToIntermediateSchema:
 
         if self.basket_enabled:
             self._create_basket()
-
+        if self.is_ag_xx_model:
+            self.abwasser_session.execute("REFRESH MATERIALIZED VIEW tww_app.vw_agxx_knoten_bauwerksattribute WITH DATA")
         if self.model == config.MODEL_NAME_AG64:
             self.abwasser_session.execute(text("REFRESH MATERIALIZED VIEW tww_ag6496.knoten_bauwerksattribute WITH DATA;"))
             self.current_basket = self.basket_topic_ag64
@@ -525,9 +526,6 @@ class InterlisExporterToIntermediateSchema:
         self._check_for_stop()
 
     def _export_ag64(self):
-        logger.info("Exporting TWW.organisation -> ABWASSER.organisation")
-        self._export_organisation_agxx()
-        self._check_for_stop()
 
         logger.info("Exporting TWW.gepknoten -> ABWASSER.infrastrukturknoten")
         self._export_infrastrukturknoten()
@@ -544,9 +542,6 @@ class InterlisExporterToIntermediateSchema:
         self._check_for_stop()
 
     def _export_ag96(self):
-        logger.info("Exporting TWW.organisation -> ABWASSER.organisation")
-        self._export_organisation_agxx()
-        self._check_for_stop()
 
         logger.info("Exporting TWW.gepmassnahme -> ABWASSER.gepmassnahme")
         self._export_gepmassnahme()
@@ -606,32 +601,6 @@ class InterlisExporterToIntermediateSchema:
         logger.info("done")
         self.abwasser_session.flush()
 
-    def _export_organisation_agxx(self):
-        query = self.tww_session.query(model_classes_tww_ag6496.organisation)
-        for row in query:
-            organisation = self.model_classes_interlis.organisation(
-                # FIELDS TO MAP TO ABWASSER.organisation
-                t_id=self.get_tid(row),
-                t_ili_tid=row.obj_id,
-                obj_id=row.obj_id,
-                auid=row.uid,
-                bezeichnung=self.truncate(
-                    self.emptystr_to_null(row.bezeichnung), 80
-                ),
-                kurzbezeichnung=self.truncate(
-                    self.emptystr_to_null(row.kurzbezeichnung), 12
-                ),
-                datenbewirtschafter_kt=row.datenbewirtschafter_kt,
-                organisationtyp=row.organisationtyp,
-                letzte_aenderung=row.letzte_aenderung,
-                bemerkung=self.truncate(self.emptystr_to_null(row.bemerkung), 80),
-            )
-            self.map_tid_ag_xx(row.obj_id, organisation.t_id)
-            self.abwasser_session.add(organisation)
-            print(".", end="")
-        logger.info("done")
-        self.abwasser_session.flush()
-
     def _export_channel(self):
         query = self.tww_session.query(self.model_classes_tww_od.channel)
         if self.filtered:
@@ -664,7 +633,7 @@ class InterlisExporterToIntermediateSchema:
         self.abwasser_session.flush()
 
     def _export_gepmassnahme(self):
-        query = self.tww_session.query(self.model_classes_tww_ag6496.gepmassnahme)
+        query = self.tww_session.query(self.model_classes_tww_app.gepmassnahme)
         for row in query:
             gepmassnahme = self.model_classes_interlis.gepmassnahme(
                 **self.gep_metainformation_common_ag_xx(row, "gepmassnahme"),
@@ -677,7 +646,7 @@ class InterlisExporterToIntermediateSchema:
                 gesamtkosten=row.gesamtkosten,
                 handlungsbedarf=row.handlungsbedarf,
                 jahr_umsetzung_effektiv=row.jahr_umsetzung_effektiv,
-                jahr_umsetzung_geplant=row.jahr_umsetzung_planned,
+                jahr_umsetzung_geplant=row.jahr_umsetzung_geplant,
                 kategorie=row.kategorie,
                 perimeter=row.perimeter,
                 prioritaetag=row.prioritaetag,
@@ -760,22 +729,22 @@ class InterlisExporterToIntermediateSchema:
         self.abwasser_session.flush()
 
     def _export_einzugsgebiet(self):
-        query = self.tww_session.query(self.model_classes_tww_ag6496.einzugsgebiet)
+        query = self.tww_session.query(self.model_classes_tww_app.einzugsgebiet)
         if self.filtered:
             query = query.join(
-                self.model_classes_tww_ag6496.gepknoten,
+                self.model_classes_tww_app.gepknoten,
                 or_(
-                    self.model_classes_tww_ag6496.gepknoten.obj_id
-                    == self.model_classes_tww_ag6496.einzugsgebiet.gepknoten_rw_geplantref,
-                    self.model_classes_tww_ag6496.gepknoten.obj_id
-                    == self.model_classes_tww_ag6496.einzugsgebiet.gepknoten_rw_istref,
-                    self.model_classes_tww_ag6496.gepknoten.obj_id
-                    == self.model_classes_tww_ag6496.einzugsgebiet.gepknoten_sw_geplantref,
-                    self.model_classes_tww_ag6496.gepknoten.obj_id
-                    == self.model_classes_tww_ag6496.einzugsgebiet.gepknoten_sw_istref,
+                    self.model_classes_tww_app.gepknoten.obj_id
+                    == self.model_classes_tww_app.einzugsgebiet.gepknoten_rw_geplantref,
+                    self.model_classes_tww_app.gepknoten.obj_id
+                    == self.model_classes_tww_app.einzugsgebiet.gepknoten_rw_istref,
+                    self.model_classes_tww_app.gepknoten.obj_id
+                    == self.model_classes_tww_app.einzugsgebiet.gepknoten_sw_geplantref,
+                    self.model_classes_tww_app.gepknoten.obj_id
+                    == self.model_classes_tww_app.einzugsgebiet.gepknoten_sw_istref,
                 ),
             ).filter(
-                self.model_classes_tww_ag6496.gepknoten.obj_id.in_(self.subset_ids)
+                self.model_classes_tww_app.gepknoten.obj_id.in_(self.subset_ids)
             )
 
         for row in query:
@@ -825,7 +794,7 @@ class InterlisExporterToIntermediateSchema:
 
     def _export_bautenausserhalbbaugebiet(self):
         query = self.tww_session.query(
-            self.model_classes_tww_ag6496.bautenausserhalbbaugebiet
+            self.model_classes_tww_app.bautenausserhalbbaugebiet
         )
         for row in query:
             bautenausserhalbbaugebiet = self.model_classes_interlis.bautenausserhalbbaugebiet(
@@ -890,18 +859,18 @@ class InterlisExporterToIntermediateSchema:
         self.abwasser_session.flush()
 
     def _export_sbw_einzugsgebiet(self):
-        query = self.tww_session.query(self.model_classes_tww_ag6496.sbw_einzugsgebiet)
+        query = self.tww_session.query(self.model_classes_tww_app.sbw_einzugsgebiet)
         if self.filtered:
             query = query.join(
-                self.model_classes_tww_ag6496.gepknoten,
+                self.model_classes_tww_app.gepknoten,
                 or_(
-                    self.model_classes_tww_ag6496.gepknoten.obj_id
-                    == self.model_classes_tww_ag6496.sbw_einzugsgebiet.einleitstelleref,
-                    self.model_classes_tww_ag6496.gepknoten.obj_id
-                    == self.model_classes_tww_ag6496.sbw_einzugsgebiet.sonderbauwerk_ref,
+                    self.model_classes_tww_app.gepknoten.obj_id
+                    == self.model_classes_tww_app.sbw_einzugsgebiet.einleitstelleref,
+                    self.model_classes_tww_app.gepknoten.obj_id
+                    == self.model_classes_tww_app.sbw_einzugsgebiet.sonderbauwerk_ref,
                 ),
             ).filter(
-                self.model_classes_tww_ag6496.gepknoten.obj_id.in_(self.subset_ids)
+                self.model_classes_tww_app.gepknoten.obj_id.in_(self.subset_ids)
             )
 
         perimeter_query = text(
@@ -955,7 +924,7 @@ class InterlisExporterToIntermediateSchema:
 
     def _export_versickerungsbereichag(self):
         query = self.tww_session.query(
-            self.model_classes_tww_ag6496.versickerungsbereichag
+            self.model_classes_tww_app.versickerungsbereichag
         )
         for row in query:
             versickerungsbereichag = self.model_classes_interlis.versickerungsbereichag(
@@ -966,7 +935,7 @@ class InterlisExporterToIntermediateSchema:
                 einschraenkung=row.einschraenkung,
                 maechtigkeit=row.maechtigkeit,
                 perimeter=row.perimeter,
-                q_check=row.ag96_q_check,
+                q_check=row.q_check,
                 versickerungsmoeglichkeitag=row.versickerungsmoeglichkeitag,
             )
             self.abwasser_session.add(versickerungsbereichag)
@@ -3927,22 +3896,22 @@ class InterlisExporterToIntermediateSchema:
         """
         Returns a query for knoten
         """
-        query = self.tww_session.query(self.model_classes_tww_ag6496.gepknoten)
+        query = self.tww_session.query(self.model_classes_tww_app.gepknoten)
         if self.filtered:
             query = query.join(
-                self.model_classes_tww_ag6496.gephaltung,
+                self.model_classes_tww_app.gephaltung,
                 or_(
-                    self.model_classes_tww_ag6496.gepknoten.obj_id
-                    == self.model_classes_tww_ag6496.gephaltung.startknoten,
-                    self.model_classes_tww_ag6496.gepknoten.obj_id
-                    == self.model_classes_tww_ag6496.gephaltung.endknoten,
+                    self.model_classes_tww_app.gepknoten.obj_id
+                    == self.model_classes_tww_app.gephaltung.startknoten,
+                    self.model_classes_tww_app.gepknoten.obj_id
+                    == self.model_classes_tww_app.gephaltung.endknoten,
                 ),
             ).filter(
                 or_(
-                    self.model_classes_tww_ag6496.gephaltung.obj_id.in_(
+                    self.model_classes_tww_app.gephaltung.obj_id.in_(
                         self.subset_ids
                     ),
-                    self.model_classes_tww_ag6496.gepknoten.obj_id.in_(self.subset_ids),
+                    self.model_classes_tww_app.gepknoten.obj_id.in_(self.subset_ids),
                 )
             )
 
@@ -3955,7 +3924,7 @@ class InterlisExporterToIntermediateSchema:
         """
         query.order_by(
             nullslast(
-                self.model_classes_tww_ag6496.gepknoten.detailgeometrie.ST_Area().asc()
+                self.model_classes_tww_app.gepknoten.detailgeometrie.ST_Area().asc()
             )
         )
         return query
@@ -3994,10 +3963,10 @@ class InterlisExporterToIntermediateSchema:
         """
         Returns a query for ueberlauf_foerderaggregat
         """
-        query = self.tww_session.query(self.model_classes_tww_ag6496.gephaltung)
+        query = self.tww_session.query(self.model_classes_tww_app.gephaltung)
         if self.filtered:
             query = query.filter(
-                self.model_classes_tww_ag6496.gephaltung.obj_id.in_(self.subset_ids)
+                self.model_classes_tww_app.gephaltung.obj_id.in_(self.subset_ids)
             )
 
         return query
@@ -4048,19 +4017,19 @@ class InterlisExporterToIntermediateSchema:
         Returns a query for ueberlauf_foerderaggregat
         """
         query = self.tww_session.query(
-            self.model_classes_tww_ag6496.ueberlauf_foerderaggregat
+            self.model_classes_tww_app.ueberlauf_foerderaggregat
         )
         if self.filtered:
             query = query.join(
-                self.model_classes_tww_ag6496.gepknoten,
+                self.model_classes_tww_app.gepknoten,
                 or_(
-                    self.model_classes_tww_ag6496.gepknoten.obj_id
-                    == self.model_classes_tww_ag6496.ueberlauf_foerderaggregat.knotenref,
-                    self.model_classes_tww_ag6496.gepknoten.obj_id
-                    == self.model_classes_tww_ag6496.ueberlauf_foerderaggregat.knoten_nachref,
+                    self.model_classes_tww_app.gepknoten.obj_id
+                    == self.model_classes_tww_app.ueberlauf_foerderaggregat.knotenref,
+                    self.model_classes_tww_app.gepknoten.obj_id
+                    == self.model_classes_tww_app.ueberlauf_foerderaggregat.knoten_nachref,
                 ),
             ).filter(
-                self.model_classes_tww_ag6496.gepknoten.obj_id.in_(self.subset_ids)
+                self.model_classes_tww_app.gepknoten.obj_id.in_(self.subset_ids)
             )
 
         return query
