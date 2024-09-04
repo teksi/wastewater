@@ -24,10 +24,11 @@ The AG-64/96 values are automatically mapped to VSA DSS where sensible, allowing
 
 Handling of organisations
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-In the models AG-64/AG-96, the organisations table differs from VSA. It has 20 characters and uses a different prefix. In order to maintain the VSA compatibility, TWW 2 AG-64/96 uses the VSA tables and alters the OID only on export.
+In the models AG-64/AG-96, the organisations table differs from VSA. It has 20 characters and uses a different prefix. In order to maintain the VSA compatibility, TWW 2 AG-64/96 uses the VSA tables.
 
 There is a set of private entities in the AG-64/AG-96 organisations dataset that were not ported to VSA DSS. For these organisations, we use a OID prefix that was generated solely for this purpose and the AG-64/AG-96 postfix. The corresponding data is imported on initialisation.
 
+When exporting a dataset, the organisations are not exported from the TEKSI database. Instead, the AG-64/96 Organisation dataset is stored within the plugin and added to the export dataset.
 
 Last Modification
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -35,7 +36,7 @@ in AG-64/96, the last modification value of cadastre and general planning are se
 
 
 Infrastrukturknoten/GEPKnoten
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+------------------------------
 
 The base OID for the Infrastrukturknoten/GEPKnoten is taken from ``tww_od.wastewater_node``.
 
@@ -69,10 +70,13 @@ The following table explains the mapping of FunktionAG in detail. If there are m
      - wwtp_structure.kind
 	 - any value
    * - andere
-     - special_structure.function / manhole.function
+     - special_structure.function / manhole.function / wastewater_node.ag64_function
 	 -
    * - Anschluss
      - wastewater_node.ag64_function
+	 -
+   * - andere
+     - special_structure.function / manhole.function  / wastewater_node.ag64_function
 	 -
    * - Be_Entlueftung
      - special_structure.function / manhole.function
@@ -225,19 +229,36 @@ The following table explains the mapping of FunktionAG in detail. If there are m
      - special_structure.function
      -
 
+Handling of building connections
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Building connections are defined in the datamodel as Infrastrukturknoten/GEPKnoten with funktionag "Anschluss". As these are no wastewater structures, the function is attributed to the wastewater node (``wastewater_node.ag64_function``).
+
+
+Handling of covers
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The AG-64/AG-96 data collection guidelines state the following:
+
+  * The main wastewater node of a manhole or special structure must be mapped to the location of the main cover.
+  * Secondary covers are mapped as Infrastrukturknoten/GEPKnoten with funktionag "andere".
+
+As topological relations to a node of funktionag "andere" are technically possible, we need to link all covers to a wastewater node linked to every cover.
+In order to follow these limitations, there is an additional foreign key on ``tww_od.cover`` pointing to ``tww_od.wastewater_node``. A wastewater node's situation geometry is only overruled if it is referenced from a cover.
+Additionally, the attribute ``wastewater_node.ag64_function`` can be set to "andere".
+
+
 Infrastrukturhaltung/GEPHaltung
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+----------------------------------
 
 Apart from street water and square water, the NutzungsartAG are not modelled as a value list extensions. Use the backwards relation instead.
 
 
 Ueberlauf_Foerderaggregat
-^^^^^^^^^^^^^^^^^^^^^^^^^
+---------------------------------
 
 The layer Ueberlauf_Foerderaggregat is mapped to ´tww_od.overflow´ and its specialisations
 
 GEPMassnahme
-^^^^^^^^^^^^^^^^^^^^^^^^^
+----------------
 
 GEPMassnahme is mapped to ´tww_od.measure´. The following categories can be mapped 1:1 onto a VSA DSS value and are therefore
 
@@ -255,17 +276,19 @@ GEPMassnahme is mapped to ´tww_od.measure´. The following categories can be ma
 
 
 Bautenausserhalbbaugebiet
-^^^^^^^^^^^^^^^^^^^^^^^^^
+-----------------------------
 
 Bautenausserhalbbaugebiet is mapped to ´tww_od.building_group´. There is no backwards mapping from VSA-DSS ´Gebaeudegruppe.Sanierungsbedarf´ to AG-96 ´Bautenausserhalbbaugebiet.Sanierungsbedarf´ because the value ´unbekannt´ cannot be mapped.
 
 SBW_Einzugsgebiet
-^^^^^^^^^^^^^^^^^
+---------------------
 
-SBW_Einzugsgebiet is mapped to ´tww_od.catchment_area_totals´. The perimeter geometry is not mapped in the qgs project and needs to be loaded manually. There exists a function to calculate the perimeter geometry by aggregating the catchment areas via catchment_area->log_card->main_log_card->hydraulic_char_data->catchment_area_totals.
+SBW_Einzugsgebiet is mapped to ´tww_od.catchment_area_totals´. The perimeter geometry is stored as an extension geometry attribute. In order to alter it, one needs to manually import the layer into the qgs project.
+
+There exists a function to calculate the perimeter geometry by aggregating the catchment areas via catchment_area->log_card->main_log_card->hydraulic_char_data->catchment_area_totals.
 The perimeter geometry is a MultiSurface, while the INTERLIS model requires a CompoundCurve. According to the official data collection policy of the Canton, one should violate the datamodel and export a MultiPart. As the underlying export mechanism ili2pg does not allow to export a wrong geometry type, only the biggest Singlepart is exported.
 
 VersickerungsbereichAG
-^^^^^^^^^^^^^^^^^^^^^^
+------------------------
 
 VersickerungsbereichAG is mapped to ´tww_od.infiltration_zone´.

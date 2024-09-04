@@ -97,8 +97,8 @@ class InterlisImporterExporter:
         self._import_xtf_file(xtf_file_input=xtf_file_input)
 
         # Disable symbology triggers
-        self._progress_done(35, "Disable symbolgy triggers...")
-        self._import_disable_symbology_triggers()
+        self._progress_done(35, "Disable symbology and modification triggers...")
+        self._import_disable_symbology_and_modification_triggers()
 
         try:
             # Import from the temporary ili2pg model
@@ -132,13 +132,13 @@ class InterlisImporterExporter:
             self._import_manage_organisations()
 
             # Reenable symbology triggers
-            self._progress_done(97, "Reenable symbology triggers...")
-            self._import_enable_symbology_triggers()
+            self._progress_done(97, "Reenable symbology and modification triggers...")
+            self._import_enable_symbology_and_modification_triggers()
 
         except Exception as exception:
             # Make sure to re-enable triggers in case an exception occourred
             try:
-                self._import_enable_symbology_triggers()
+                self._import_enable_symbology_and_modification_triggers()
             except Exception as enable_trigger_exception:
                 logger.error(
                     f"Symbology triggers couldn't be re-enabled because an exception occourred: '{enable_trigger_exception}'"
@@ -158,10 +158,10 @@ class InterlisImporterExporter:
         limit_to_selection=False,
         export_orientation=90.0,
         selected_labels_scales_indices=[],
-        selected_ids=[],
+        selected_ids=None,
     ):
         # Validate subclasses before export
-        self._check_subclass_counts()
+        self._check_subclass_counts(limit_to_selection)
 
         # File name without extension (used later for export)
         file_name_base, _ = os.path.splitext(xtf_file_output)
@@ -281,12 +281,14 @@ class InterlisImporterExporter:
             logger.info("Refresh materialized views")
             cursor.execute("SELECT tww_app.network_refresh_network_simple();")
 
-    def _import_disable_symbology_triggers(self):
+    def _import_disable_symbology_and_modification_triggers(self):
         DatabaseUtils.disable_symbology_triggers()
+        DatabaseUtils.disable_modification_triggers()
 
-    def _import_enable_symbology_triggers(self):
+    def _import_enable_symbology_and_modification_triggers(self):
         DatabaseUtils.enable_symbology_triggers()
         DatabaseUtils.update_symbology()
+        DatabaseUtils.enable_modification_triggers()
 
     def _export_labels_file(
         self,
@@ -474,9 +476,12 @@ class InterlisImporterExporter:
                 log_path,
             )
 
-    def _check_subclass_counts(self):
+    def _check_subclass_counts(self, limit_to_selection=False):
         self._check_subclass_count(
-            config.TWW_OD_SCHEMA, "wastewater_networkelement", ["reach", "wastewater_node"]
+            config.TWW_OD_SCHEMA,
+            "wastewater_networkelement",
+            ["reach", "wastewater_node"],
+            limit_to_selection,
         )
         self._check_subclass_count(
             config.TWW_OD_SCHEMA,
@@ -491,6 +496,7 @@ class InterlisImporterExporter:
                 "small_treatment_plant",
                 "drainless_toilet",
             ],
+            limit_to_selection,
         )
         self._check_subclass_count(
             config.TWW_OD_SCHEMA,
@@ -509,29 +515,40 @@ class InterlisImporterExporter:
                 "dryweather_flume",
                 "dryweather_downspout",
             ],
+            limit_to_selection,
         )
         self._check_subclass_count(
-            config.TWW_OD_SCHEMA, "overflow", ["pump", "leapingweir", "prank_weir"]
+            config.TWW_OD_SCHEMA,
+            "overflow",
+            ["pump", "leapingweir", "prank_weir"],
+            limit_to_selection,
         )
         self._check_subclass_count(
             config.TWW_OD_SCHEMA,
             "maintenance_event",
             ["maintenance", "examination", "bio_ecol_assessment"],
+            limit_to_selection,
         )
         self._check_subclass_count(
-            config.TWW_OD_SCHEMA, "damage", ["damage_channel", "damage_manhole"]
+            config.TWW_OD_SCHEMA,
+            "damage",
+            ["damage_channel", "damage_manhole"],
+            limit_to_selection,
         )
         self._check_subclass_count(
             config.TWW_OD_SCHEMA,
             "connection_object",
             ["fountain", "individual_surface", "building", "reservoir"],
+            limit_to_selection,
         )
         self._check_subclass_count(
-            config.TWW_OD_SCHEMA, "zone", ["infiltration_zone", "drainage_system"]
+            config.TWW_OD_SCHEMA,
+            "zone",
+            ["infiltration_zone", "drainage_system"],
+            limit_to_selection,
         )
 
-    def _check_subclass_count(self, schema_name, parent_name, child_list):
-
+    def _check_subclass_count(self, schema_name, parent_name, child_list, limit_to_selection):
         logger.info(f"INTEGRITY CHECK {parent_name} subclass data...")
         logger.info("CONNECTING TO DATABASE...")
 
@@ -554,9 +571,22 @@ class InterlisImporterExporter:
                         f"OK: number of subclass elements of class {parent_name} OK in schema {schema_name}!"
                     )
                 else:
-                    logger.error(
-                        f"ERROR: number of subclass elements of {parent_name} NOT CORRECT in schema {schema_name}: checksum = {parent_count} (positive number means missing entries, negative means too many subclass entries)"
-                    )
+                    if parent_count > 0:
+                        errormsg = f"Too many superclass entries for {schema_name}.{parent_name}"
+                    else:
+                        errormsg = f"Too many subclass entries for {schema_name}.{parent_name}"
+
+                    if limit_to_selection:
+                        logger.warning(
+                            f"Overall Subclass Count: {errormsg}. The problem might lie outside the selection"
+                        )
+                    else:
+                        logger.error(f"Subclass Count error: {errormsg}")
+                        raise InterlisImporterExporterError(
+                            "Subclass Count error",
+                            errormsg,
+                            None,
+                        )
 
     def _init_model_classes(self, model):
         ModelInterlis = ModelInterlisSia405Abwasser
