@@ -12,7 +12,7 @@ CREATE OR REPLACE VIEW tww_app.vw_organisation AS
   SELECT *
    FROM tww_od.organisation;
 
-ALTER VIEW tww_app.vw_organisation ALTER obj_id SET DEFAULT tww_sys.generate_oid('tww_od','organisation');
+ALTER VIEW tww_app.vw_organisation ALTER obj_id SET DEFAULT tww_app.generate_oid('tww_od','organisation');
 
 /* to do define later if still needed - organisation should not be created anymore on its own - use VSA_organisation import intstead.
 

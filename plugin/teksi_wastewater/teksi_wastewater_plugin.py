@@ -433,6 +433,8 @@ class TeksiWastewaterPlugin:
         self.iface.removePluginMenu(self.main_menu_name, self.validityCheckAction)
         self.iface.removePluginMenu(self.main_menu_name, self.settingsAction)
         self.iface.removePluginMenu(self.main_menu_name, self.aboutAction)
+        self.iface.removePluginMenu(self.main_menu_name, self.enableSymbologyTriggersAction)
+        self.iface.removePluginMenu(self.main_menu_name, self.disableSymbologyTriggersAction)
 
         QgsApplication.processingRegistry().removeProvider(self.processing_provider)
 

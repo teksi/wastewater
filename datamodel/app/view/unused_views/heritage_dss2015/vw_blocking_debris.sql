@@ -40,7 +40,7 @@ BEGIN
            , last_modification
            , fk_water_course_segment
            )
-     VALUES ( COALESCE(NEW.obj_id,tww_sys.generate_oid('tww_od','blocking_debris')) -- obj_id
+     VALUES ( COALESCE(NEW.obj_id,tww_app.generate_oid('tww_od','blocking_debris')) -- obj_id
            , NEW.identifier
            , NEW.remark
             , NEW.situation_geometry

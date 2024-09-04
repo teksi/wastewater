@@ -147,17 +147,17 @@ class DatabaseUtils:
     @staticmethod
     def disable_symbology_triggers():
         logger.info("Disable symbology triggers")
-        DatabaseUtils.execute("SELECT tww_sys.disable_symbology_triggers();")
+        DatabaseUtils.execute("SELECT tww_app.alter_symbology_triggers('disable');")
 
     @staticmethod
     def enable_symbology_triggers():
         logger.info("Enable symbology triggers")
-        DatabaseUtils.execute("SELECT tww_sys.enable_symbology_triggers();")
+        DatabaseUtils.execute("SELECT tww_app.alter_symbology_triggers('enable');")
 
     @staticmethod
     def check_symbology_triggers_enabled():
         logger.info("Check symbology triggers enabled")
-        row = DatabaseUtils.fetchone("SELECT tww_sys.check_symbology_triggers_enabled();")
+        row = DatabaseUtils.fetchone("SELECT tww_app.check_symbology_triggers_enabled();")
         return row[0]
 
     @staticmethod
@@ -169,6 +169,22 @@ class DatabaseUtils:
             cursor.execute("SELECT tww_app.update_wastewater_node_symbology(NULL, True);")
             logger.info("update_wastewater_structure_label for all datasets - please be patient")
             cursor.execute("SELECT tww_app.update_wastewater_structure_label(NULL, True);")
+
+    @staticmethod
+    def disable_modification_triggers():
+        logger.info("Disable modification triggers")
+        DatabaseUtils.execute("SELECT tww_app.alter_modification_triggers('disable');")
+
+    @staticmethod
+    def enable_modification_triggers():
+        logger.info("Enable modification triggers")
+        DatabaseUtils.execute("SELECT tww_app.alter_modification_triggers('enable');")
+
+    @staticmethod
+    def check_modification_triggers_enabled():
+        logger.info("Check if modification triggers are enabled")
+        row = DatabaseUtils.fetchone("SELECT tww_app.check_modification_enabled();")
+        return row[0]
 
     @staticmethod
     def check_oid_prefix() -> List[str]:
@@ -199,8 +215,8 @@ class DatabaseUtils:
         for item in DatabaseUtils.fetchall(
             "SELECT fieldname,value_obj_id from tww_od.default_values;"
         ):
-            defaults.append(item["fieldname"])
-            vals.append(item["value_obj_id"])
+            defaults.append(item[0])
+            vals.append(item[1])
 
         msg_list = []
         if None in vals:
