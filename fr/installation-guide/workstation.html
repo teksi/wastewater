@@ -74,9 +74,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">3. TWW User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">4. Guide d’administration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../extensions-guide/index.html">5. Official TWW extensions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../vm/index.html">6. Machine virtuelle de démonstration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tww_swmm/index.html">7. SWMM Data Exchange</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">8. Traduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tww_swmm/index.html">6. SWMM Data Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">7. Traduction</a></li>
 </ul>
 
         </div>
@@ -186,7 +185,7 @@ and <code class="docutils literal notranslate"><span class="pre">.pgpass</span><
 <section id="install-qgis">
 <h2><span class="section-number">2.4.2. </span>Installer QGIS<a class="headerlink" href="#install-qgis" title="Lien vers cette rubrique"></a></h2>
 <ul class="simple">
-<li><p>Configuration minimale 3.4</p></li>
+<li><p>Minimum requirement 3.34.8</p></li>
 <li><p>We recommend using the latest master build (called qgis-dev on Windows)
 which often offers a better experience in combination with TWW.
 For Windows installation, download the <a class="reference external" href="http://download.osgeo.org/osgeo4w/osgeo4w-setup-x86_64.exe">OSGeo4W Installer</a>
@@ -197,7 +196,7 @@ choose <em>advanced installation</em> and install qgis-dev.</p></li>
 <h2><span class="section-number">2.4.3. </span>Install TWW plugin<a class="headerlink" href="#install-tww-plugin" title="Lien vers cette rubrique"></a></h2>
 <p>Exigences du plugin;</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://pypi.org/project/networkx/">networkx</a> &gt;= 2.1</p></li>
+<li><p><a class="reference external" href="https://pypi.org/project/networkx/">networkx</a> &gt;= 3.3</p></li>
 </ul>
 <p>You can install them on Debian based systems with:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">networkx</span>
@@ -238,14 +237,17 @@ choose <em>advanced installation</em> and install qgis-dev.</p></li>
 </section>
 <section id="install-the-demo-data">
 <h2><span class="section-number">2.4.4. </span>Install the demo data<a class="headerlink" href="#install-the-demo-data" title="Lien vers cette rubrique"></a></h2>
-<p>as described <a class="reference external" href="https://tww.github.io/docs/installation-guide/database-initialization.html#restore-demo-datamodel">here</a></p>
+<p>as described <a class="reference external" href="https://tww.github.io/docs/installation-guide/database-initialization.html#restore-datamodel-demodata">here</a></p>
 </section>
 <section id="install-the-demo-project">
 <h2><span class="section-number">2.4.5. </span>Installation du projet de démo<a class="headerlink" href="#install-the-demo-project" title="Lien vers cette rubrique"></a></h2>
 <ul class="simple">
-<li><p>Download from <a class="reference external" href="https://github.com/TWW/tww/releases/latest">https://github.com/TWW/tww/releases/latest</a> the tww.zip</p></li>
+<li><p>Download from <a class="reference external" href="https://github.com/TWW/tww/releases">https://github.com/TWW/tww/releases</a> the qgs project file and its translations</p></li>
+</ul>
+<p>project-translations.zip</p>
+<ul class="simple">
 <li><p>Extraire le ficher</p></li>
-<li><p>If you leave the tww_[language].qm files in the same directory as the tww.qgs file and start QGIS with one of these languages, your tww-project will be translated to that langue when you start the project. E.g. you start tww.qgs with a QGIS Installation that is set to German, then the tww.qgs project will appear in German.</p></li>
+<li><p>If you leave the teksi_wastewater_[language].qm files in the same directory as the teksi_wastewater.qgs file and start QGIS with one of these languages, your project will be translated to that langue when you start the project. E.g. you start teksi_wastewater.qgs with a QGIS Installation that is set to German, then the teksi_wastewater.qgs project will appear in German.</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -255,7 +257,7 @@ choose <em>advanced installation</em> and install qgis-dev.</p></li>
 <img alt="../_images/tww_project_qm_language_files.jpg" src="../_images/tww_project_qm_language_files.jpg" />
 </figure>
 <ul class="simple">
-<li><p>Open <cite>project/tww.qgs</cite> with QGIS</p></li>
+<li><p>Open <cite>project-translations/teksi_wastewater.qgs</cite> with QGIS</p></li>
 <li><p>When you save that project it will keep it’s language and it cannot be changed in the same way.</p></li>
 </ul>
 </section>

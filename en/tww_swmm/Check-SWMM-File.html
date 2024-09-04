@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>7.4. Check SWMM File &mdash; TWW dev documentation</title>
+  <title>6.4. Check SWMM File &mdash; TWW dev documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
@@ -21,8 +21,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="7.5. Run SWMM Simulation" href="Run-SWMM-Simulation.html" />
-    <link rel="prev" title="7.3. Generate SWMM File" href="Generate-SWMM-File.html" /> 
+    <link rel="next" title="6.5. Run SWMM Simulation" href="Run-SWMM-Simulation.html" />
+    <link rel="prev" title="6.3. Generate SWMM File" href="Generate-SWMM-File.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -53,29 +53,28 @@
 <li class="toctree-l1"><a class="reference internal" href="../user-guide/index.html">3. TWW User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.html">4. Admin Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../extensions-guide/index.html">5. Official TWW extensions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../vm/index.html">6. Demo Virtual Machine</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">7. SWMM Data Exchange</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="SWMM.html">7.1. Storm Water Management Model (SWMM)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Prepare-Data.html">7.2. Prepare Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Generate-SWMM-File.html">7.3. Generate SWMM File</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">7.4. Check SWMM File</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#common-import-errors">7.4.1. Common import errors</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#missing-status-or-function-hierarchic-wn-function-hierarchic">7.4.1.1. Missing status or _function_hierarchic (wn_function_hierarchic)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#catchment-area-connected-to-secondary-wastewater-structure">7.4.1.2. Catchment area connected to secondary wastewater structure</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#missing-discharge-coefficients">7.4.1.3. Missing discharge coefficients</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#missing-population-densities">7.4.1.4. Missing population densities</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">6. SWMM Data Exchange</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="SWMM.html">6.1. Storm Water Management Model (SWMM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Prepare-Data.html">6.2. Prepare Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Generate-SWMM-File.html">6.3. Generate SWMM File</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">6.4. Check SWMM File</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#common-import-errors">6.4.1. Common import errors</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#missing-status-or-function-hierarchic-wn-function-hierarchic">6.4.1.1. Missing status or _function_hierarchic (wn_function_hierarchic)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#catchment-area-connected-to-secondary-wastewater-structure">6.4.1.2. Catchment area connected to secondary wastewater structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#missing-discharge-coefficients">6.4.1.3. Missing discharge coefficients</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#missing-population-densities">6.4.1.4. Missing population densities</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#subcatchments-and-rain-gauges">7.4.2. Subcatchments and rain Gauges</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#subcatchments-and-rain-gauges">6.4.2. Subcatchments and rain Gauges</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="Run-SWMM-Simulation.html">7.5. Run SWMM Simulation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Process-Results.html">7.6. Import results</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Mapping.html">7.7. Mapping</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Developpers-Advanced-Users.html">7.8. For developpers and advanced users</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Run-SWMM-Simulation.html">6.5. Run SWMM Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Process-Results.html">6.6. Import results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Mapping.html">6.7. Mapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Developpers-Advanced-Users.html">6.8. For developpers and advanced users</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">8. Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translation/index.html">7. Translation</a></li>
 </ul>
 
         </div>
@@ -92,8 +91,8 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">7. </span>SWMM Data Exchange</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">7.4. </span>Check SWMM File</li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">6. </span>SWMM Data Exchange</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">6.4. </span>Check SWMM File</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/tww_swmm/Check-SWMM-File.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -104,7 +103,7 @@
            <div itemprop="articleBody">
              
   <section id="check-swmm-file">
-<span id="id1"></span><h1><span class="section-number">7.4. </span>Check SWMM File<a class="headerlink" href="#check-swmm-file" title="Link to this heading"></a></h1>
+<span id="id1"></span><h1><span class="section-number">6.4. </span>Check SWMM File<a class="headerlink" href="#check-swmm-file" title="Link to this heading"></a></h1>
 <p>The generated <code class="docutils literal notranslate"><span class="pre">.inp</span></code> file can be imported in SWMM GUI. It is likely that some errors will be raised. You will have to solve them (see hereunder a list of common errors)</p>
 <p>You have to solve the errors in the order in which they appear in the report. Some errors are interrelated (i.e. a node in a conduit is not defined =&gt; the conduit is not imported =&gt; Undefined link error)</p>
 <p>To fix an error you can search in the corresponding TWW layers in the QGIS project:</p>
@@ -116,9 +115,9 @@
 <li><p>etc.</p></li>
 </ul>
 <section id="common-import-errors">
-<span id="id2"></span><h2><span class="section-number">7.4.1. </span>Common import errors<a class="headerlink" href="#common-import-errors" title="Link to this heading"></a></h2>
+<span id="id2"></span><h2><span class="section-number">6.4.1. </span>Common import errors<a class="headerlink" href="#common-import-errors" title="Link to this heading"></a></h2>
 <section id="missing-status-or-function-hierarchic-wn-function-hierarchic">
-<h3><span class="section-number">7.4.1.1. </span>Missing status or _function_hierarchic (wn_function_hierarchic)<a class="headerlink" href="#missing-status-or-function-hierarchic-wn-function-hierarchic" title="Link to this heading"></a></h3>
+<h3><span class="section-number">6.4.1.1. </span>Missing status or _function_hierarchic (wn_function_hierarchic)<a class="headerlink" href="#missing-status-or-function-hierarchic-wn-function-hierarchic" title="Link to this heading"></a></h3>
 <p>The catchment area is linked to node which is not exported or a reach cannot be drawn because of a missing node:</p>
 <ul class="simple">
 <li><p>because of its status (abandonned etc.) or status is not defined (is Null)</p></li>
@@ -130,7 +129,7 @@
 <p><a class="reference external" href="https://github.com/TWW/TWW/issues/613">For more details see related Github issue</a></p>
 </section>
 <section id="catchment-area-connected-to-secondary-wastewater-structure">
-<h3><span class="section-number">7.4.1.2. </span>Catchment area connected to secondary wastewater structure<a class="headerlink" href="#catchment-area-connected-to-secondary-wastewater-structure" title="Link to this heading"></a></h3>
+<h3><span class="section-number">6.4.1.2. </span>Catchment area connected to secondary wastewater structure<a class="headerlink" href="#catchment-area-connected-to-secondary-wastewater-structure" title="Link to this heading"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Undefined</span> <span class="n">Node</span> <span class="p">(</span><span class="n">CHamtKnv00002706</span><span class="p">)</span> <span class="n">referenced</span> <span class="n">at</span> <span class="n">line</span> <span class="mi">20997</span><span class="p">:</span>
 <span class="p">[</span><span class="n">DWF</span><span class="p">]</span>
 <span class="n">CHamtKnv00002706</span>      <span class="n">FLOW</span>    <span class="mf">0.0204074074074074</span>      <span class="n">dailyPatternDWF</span>
@@ -139,7 +138,7 @@
 <p>The catchment area is linked to a secondary wastewater structure</p>
 </section>
 <section id="missing-discharge-coefficients">
-<h3><span class="section-number">7.4.1.3. </span>Missing discharge coefficients<a class="headerlink" href="#missing-discharge-coefficients" title="Link to this heading"></a></h3>
+<h3><span class="section-number">6.4.1.3. </span>Missing discharge coefficients<a class="headerlink" href="#missing-discharge-coefficients" title="Link to this heading"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Too</span> <span class="n">few</span> <span class="n">items</span> <span class="n">at</span> <span class="n">line</span> <span class="mi">104</span><span class="p">:</span>
 <span class="p">[</span><span class="n">SUBCATCHMENT</span><span class="p">]</span>
 <span class="n">ch19ar68CA008855_ww_current</span>   <span class="n">raingage</span><span class="nd">@ch19ar68CA008855</span>       <span class="n">CHamtKnv00001992</span>        <span class="mf">0.0276</span>          <span class="mf">19.4322613668305</span>
@@ -166,7 +165,7 @@ You can find them using sql:</p>
 </div>
 </section>
 <section id="missing-population-densities">
-<h3><span class="section-number">7.4.1.4. </span>Missing population densities<a class="headerlink" href="#missing-population-densities" title="Link to this heading"></a></h3>
+<h3><span class="section-number">6.4.1.4. </span>Missing population densities<a class="headerlink" href="#missing-population-densities" title="Link to this heading"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ERROR</span> <span class="mi">211</span><span class="p">:</span> <span class="n">invalid</span> <span class="n">number</span> <span class="n">dailyPatternDWF</span> <span class="n">at</span> <span class="n">line</span> <span class="mi">4288</span> <span class="n">of</span> <span class="p">[</span><span class="n">DWF</span><span class="p">]</span> <span class="n">section</span><span class="p">:</span>
 <span class="mi">00000000</span><span class="n">WN006032</span> <span class="n">FLOW</span>             <span class="n">dailyPatternDWF</span>
 </pre></div>
@@ -175,7 +174,7 @@ You can find them using sql:</p>
 </section>
 </section>
 <section id="subcatchments-and-rain-gauges">
-<h2><span class="section-number">7.4.2. </span>Subcatchments and rain Gauges<a class="headerlink" href="#subcatchments-and-rain-gauges" title="Link to this heading"></a></h2>
+<h2><span class="section-number">6.4.2. </span>Subcatchments and rain Gauges<a class="headerlink" href="#subcatchments-and-rain-gauges" title="Link to this heading"></a></h2>
 <p>If you want to attach every subcatchments to a single rain gauge, edit the file with SWMM interface:</p>
 <ul class="simple">
 <li><p>Edit &gt; Select All</p></li>
@@ -208,8 +207,8 @@ You can find them using sql:</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="Generate-SWMM-File.html" class="btn btn-neutral float-left" title="7.3. Generate SWMM File" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="Run-SWMM-Simulation.html" class="btn btn-neutral float-right" title="7.5. Run SWMM Simulation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Generate-SWMM-File.html" class="btn btn-neutral float-left" title="6.3. Generate SWMM File" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Run-SWMM-Simulation.html" class="btn btn-neutral float-right" title="6.5. Run SWMM Simulation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
