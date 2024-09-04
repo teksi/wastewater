@@ -22,15 +22,28 @@ In pgAdmin4
 Create  minimal roles and access
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. note:: The TWW roles are defined in the https://github.com/TWW/datamodel/blob/master/12_0_roles.sql (per cluster) and https://github.com/TWW/datamodel/blob/master/12_1_roles.sql (per database) files. It is recommended to use these when using TWW in a production environment.
+.. note:: The TWW roles are defined in the
++ `12_0_roles.sql <https://github.com/TWW/datamodel/blob/master/12_0_roles.sql>`_ (per cluster)
++ `12_1_roles.sql <https://github.com/TWW/datamodel/blob/master/12_1_roles.sql>`_ (per database)
 
-Copy paste and run the two .sql one after the other in the query editor of pgAdmin4 (Tools > Query Tool).
+`12_0_roles.sql` has to be run before restoring the demodata database.
+`12_1_roles.sql` has to be run if you initialize your module with with the commandline.
 
+An evolution of the roles management is in progress and will be available soon.
+
+It is highly recommended to use these when using TWW in a production environment.
+
+Copy paste and run the .sql files content in the query editor of pgAdmin (Tools > Query Tool).
 
 .. _restore-datamodel-demodata:
 
 Restore data model with demodata
-^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. warning:: Demodata only available as an INTERLIS file
+   The undeling procedure is now providing an empty datamodel with value lists.
+   The demodata is now only available in INTERLIS format but can be easily imported with the plugin IMPORT tool.
+
 
 Restore the latest data model that also includes demo data:
 
@@ -82,19 +95,6 @@ There are now 6 `schemas <https://teksi.github.io/wastewater/en/user-guide/layer
 + tww_od
 + tww_sys
 + tww_vl
-
-
-Create  minimal roles and access
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. note:: The TWW roles are defined in the
-+ `12_0_roles.sql <https://github.com/TWW/datamodel/blob/master/12_0_roles.sql>`_ (per cluster) and
-+ `12_1_roles.sql <https://github.com/TWW/datamodel/blob/master/12_1_roles.sql>`_ (per database) files.
-
-
-It is recommended to use these when using TWW in a production environment.
-
-Copy paste and run the two .sql one after the other in the query editor of pgAdmin (Tools > Query Tool).
 
 Empty data model
 ^^^^^^^^^^^^^^^^
