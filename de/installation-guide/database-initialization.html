@@ -110,18 +110,15 @@
 <p>In pgAdmin4</p>
 <ul class="simple">
 <li><p>Verbinden Sie sich mit dem Datenbankserver</p></li>
-<li><p>Create a new database with UTF8 encoding (e.g. <cite>tww_demo</cite>).</p></li>
+<li><p>Create a new database with UTF8 encoding</p></li>
 </ul>
+<p>E.g. <cite>tww_demo</cite>, avoid spaces, dots, uppercases and special characters
+As proposed in <a class="reference external" href="https://stackoverflow.com/questions/2878248/postgresql-naming-conventions">https://stackoverflow.com/questions/2878248/postgresql-naming-conventions</a></p>
 <section id="create-minimal-roles-and-access">
 <h3><span class="section-number">2.3.1.1. </span>Rollen und Zugriffsrechte erstellen<a class="headerlink" href="#create-minimal-roles-and-access" title="Link to this heading"></a></h3>
-<div class="admonition note">
-<p class="admonition-title">Bemerkung</p>
-<p>The TWW roles are defined in the</p>
-</div>
-<ul class="simple">
-<li><p><a class="reference external" href="https://github.com/TWW/datamodel/blob/master/12_0_roles.sql">12_0_roles.sql</a> (per cluster)</p></li>
-<li><p><a class="reference external" href="https://github.com/TWW/datamodel/blob/master/12_1_roles.sql">12_1_roles.sql</a> (per database)</p></li>
-</ul>
+<p>TWW roles are defined in the
++ <a class="reference external" href="https://github.com/TWW/datamodel/blob/master/12_0_roles.sql">12_0_roles.sql</a> (per cluster)
++ <a class="reference external" href="https://github.com/TWW/datamodel/blob/master/12_1_roles.sql">12_1_roles.sql</a> (per database)</p>
 <p><cite>12_0_roles.sql</cite> has to be run before restoring the demodata database.
 <cite>12_1_roles.sql</cite> has to be run if you initialize your module with with the commandline.</p>
 <p>An evolution of the roles management is in progress and will be available soon.</p>
@@ -133,8 +130,8 @@
 <div class="admonition warning">
 <p class="admonition-title">Warnung</p>
 <p>Demodata only available as an INTERLIS file
-The undeling procedure is now providing an empty datamodel with value lists.
-The demodata is now only available in INTERLIS format but can be easily imported with the plugin IMPORT tool.</p>
+The undeling procedure is now providing an empty datamodel with value lists.</p>
+<p>The demodata is now only available in INTERLIS format but can be easily imported with the plugin IMPORT tool.</p>
 </div>
 <p>Das aktuelle Datenbank-Schema mit dem Demodatensatz einrichten</p>
 <ul class="simple">
