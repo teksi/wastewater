@@ -62,13 +62,14 @@
 <li class="toctree-l3"><a class="reference internal" href="#setting-default-values">3.8.1. Setting default values</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#how-vw-tww-wastewater-structure-labels-work">3.8.2. How vw_tww_wastewater_structure labels work</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#how-to-translate-a-label-prefix-c-b-i-o">3.8.3. How to translate a label prefix (C, B, I, O)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#how-to-run-symbology-functions-manually">3.8.4. How to run symbology functions manually</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#manual-label-positioning-for-different-scales">3.8.5. Manual Label-positioning for different scales</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#how-to-import-existing-label-positions">3.8.6. How to import existing label-positions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#collecting-a-hydr-geometry-corresponds-to-a-basin-geometry-in-mike">3.8.7. Collecting a hydr_geometry (corresponds to a basin geometry in Mike+)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#hydraulic-modeling-of-an-overflow-prank-weir-leapingweir-pump">3.8.8. Hydraulic modeling of an overflow (prank weir / leapingweir / pump)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#overflow-characteristic">3.8.9. Overflow characteristic</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#further-informations">3.8.10. Further informations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-check-if-triggers-are-active">3.8.4. How to check if triggers are active</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-run-symbology-functions-manually">3.8.5. How to run symbology functions manually</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manual-label-positioning-for-different-scales">3.8.6. Manual Label-positioning for different scales</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-import-existing-label-positions">3.8.7. How to import existing label-positions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#collecting-a-hydr-geometry-corresponds-to-a-basin-geometry-in-mike">3.8.8. Collecting a hydr_geometry (corresponds to a basin geometry in Mike+)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hydraulic-modeling-of-an-overflow-prank-weir-leapingweir-pump">3.8.9. Hydraulic modeling of an overflow (prank weir / leapingweir / pump)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#overflow-characteristic">3.8.10. Overflow characteristic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#further-informations">3.8.11. Further informations</a></li>
 </ul>
 </li>
 </ul>
@@ -136,8 +137,8 @@
 <p>CRITICAL: Error OID prefix set to ‘ch000000’. Database not safe for production.</p>
 <p>and ask him/her to set the prefix to fit your project.</p>
 <p>For more information see <a class="reference internal" href="../../admin-guide/db-production-readiness/index.html#productionreadiness"><span class="std std-ref">Prepare database for production</span></a></p>
-<p>Connect all occurences of your field name to <code class="docutils literal notranslate"><span class="pre">tww_sys.get_default_values(field_name)</span></code>.
-Per default, the fields <code class="docutils literal notranslate"><span class="pre">fk_provider</span></code> and <code class="docutils literal notranslate"><span class="pre">fk_dataowner</span></code> are already connected to the function <code class="docutils literal notranslate"><span class="pre">tww_sys.get_default_values(field_name)</span></code>.</p>
+<p>Connect all occurences of your field name to <code class="docutils literal notranslate"><span class="pre">tww_app.get_default_values(field_name)</span></code>.
+Per default, the fields <code class="docutils literal notranslate"><span class="pre">fk_provider</span></code> and <code class="docutils literal notranslate"><span class="pre">fk_dataowner</span></code> are already connected to the function <code class="docutils literal notranslate"><span class="pre">tww_app.get_default_values(field_name)</span></code>.</p>
 <p>An example SQL script how to insert the default value for all occurences of a field name can be found <a class="reference external" href="https://github.com/teksi/wastewater/blob/main/datamodel/changelogs/0001/14_default_values.sql">here</a>)</p>
 </section>
 <section id="how-vw-tww-wastewater-structure-labels-work">
@@ -147,7 +148,7 @@ Per default, the fields <code class="docutils literal notranslate"><span class="
 <li><p>_cover_label: shows the level / the levels of the cover/s.level of the wastewater structure</p></li>
 <li><p>_bottom_label: shows the level / the levels of the wastewater_node(s).bottom_level of the wastewater structure</p></li>
 <li><p>_input_label: shows the levels of the reachpoints connected as to_reachpoints to one of the wastewater_nodes of the wastewater_structure</p></li>
-<li><p>_output_lebel: shows the levels of the reachpoints connected as from_reachpoints to one of the wastewater_nodes of the wastewater_structure</p></li>
+<li><p>_output_label: shows the levels of the reachpoints connected as from_reachpoints to one of the wastewater_nodes of the wastewater_structure</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/tww_labels.jpg" src="../../_images/tww_labels.jpg" />
@@ -167,18 +168,43 @@ In the example, 300 combined-wastewater-reach is I1, 400 wastewater-reach is I2.
 </figure>
 <p>To see your changes, you have to rerun the symbology functions manually (see next chapter)</p>
 </section>
-<section id="how-to-run-symbology-functions-manually">
-<h2><span class="section-number">3.8.4. </span>How to run symbology functions manually<a class="headerlink" href="#how-to-run-symbology-functions-manually" title="Link to this heading"></a></h2>
-<p>Sometimes the labels such as bottom, cover or entry/exit levels are not correctly displayed, even if the corresponding attribut is filled in. This happens for example when you import data by INTERLIS Import or another way. May be you also deactivated the triggers to speed up the import process.</p>
+<section id="how-to-check-if-triggers-are-active">
+<h2><span class="section-number">3.8.4. </span>How to check if triggers are active<a class="headerlink" href="#how-to-check-if-triggers-are-active" title="Link to this heading"></a></h2>
+<p>For some processes such as INTERLIS Imports, a set of triggers are temporarily deactivated to speed up the process.</p>
 <ul>
+<li><p>Check status of triggers:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">check_symbology_triggers_enabled</span><span class="p">();</span>
+<span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">check_modification_triggers_enabled</span><span class="p">();</span>
+</pre></div>
+</div>
+</li>
+<li><p>Activate / Deactivate triggers:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">alter_symbology_triggers</span><span class="p">(</span><span class="s1">&#39;enable&#39;</span><span class="p">);</span>
+<span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">alter_symbology_triggers</span><span class="p">(</span><span class="s1">&#39;disable&#39;</span><span class="p">);</span>
+<span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">alter_modification_triggers</span><span class="p">(</span><span class="s1">&#39;enable&#39;</span><span class="p">);</span>
+<span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">alter_modification_triggers</span><span class="p">(</span><span class="s1">&#39;disable&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="how-to-run-symbology-functions-manually">
+<h2><span class="section-number">3.8.5. </span>How to run symbology functions manually<a class="headerlink" href="#how-to-run-symbology-functions-manually" title="Link to this heading"></a></h2>
+<p>Sometimes the labels such as bottom, cover or entry/exit levels are not correctly displayed, even if the corresponding attribut is filled in. This happens for example when you import data by INTERLIS Import or another way. Maybe the triggers were temporarily deactivated to speed up the import process.</p>
+<ul>
+<li><p>Check status of symbology triggers:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">check_symbology_triggers_enabled</span><span class="p">();</span>
+</pre></div>
+</div>
+</li>
 <li><p>Activate / Deactivate symbology triggers:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_sys</span><span class="o">.</span><span class="n">create_symbology_triggers</span><span class="p">()</span>
-<span class="n">SELECT</span> <span class="n">tww_sys</span><span class="o">.</span><span class="n">drop_symbology_triggers</span><span class="p">()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">alter_symbology_triggers</span><span class="p">(</span><span class="s1">&#39;enable&#39;</span><span class="p">);</span>
+<span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">alter_symbology_triggers</span><span class="p">(</span><span class="s1">&#39;disable&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
 <li><p>Run <strong>label function</strong> for all entities (_label, _cover_label, _bottom_label, _input_label and _output_label):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_od</span><span class="o">.</span><span class="n">update_wastewater_structure_label</span><span class="p">(</span><span class="n">NULL</span><span class="p">,</span> <span class="n">true</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">update_wastewater_structure_label</span><span class="p">(</span><span class="n">NULL</span><span class="p">,</span> <span class="n">true</span><span class="p">)</span>
 </pre></div>
 </div>
 </li>
@@ -188,7 +214,7 @@ In the example, 300 combined-wastewater-reach is I1, 400 wastewater-reach is I2.
 </figure>
 <ul>
 <li><p>Run depth calculation for all entities (wastewater_structure._depth):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_od</span><span class="o">.</span><span class="n">update_depth</span><span class="p">(</span><span class="n">NULL</span><span class="p">,</span> <span class="n">true</span><span class="p">);</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">update_depth</span><span class="p">(</span><span class="n">NULL</span><span class="p">,</span> <span class="n">true</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
@@ -196,22 +222,17 @@ In the example, 300 combined-wastewater-reach is I1, 400 wastewater-reach is I2.
 <figure class="align-default">
 <img alt="../../_images/tww_system_attributes_depth.jpg" src="../../_images/tww_system_attributes_depth.jpg" />
 </figure>
-<p>For symbolizing point elements (manholes, special structures etc. and  wastewater_nodes)  with _function_hierarchic and _usage_current the following two functions calculate the two tww attributes from the connected reach(es).</p>
+<p>For symbolizing point elements (manholes, special structures etc. and  wastewater_nodes)  with _function_hierarchic and _usage_current the function <cite>update_wastewater_node_symbology</cite> calculates the two tww attributes from the connected reach(es).</p>
 <ul>
-<li><p>Run <strong>symbology function</strong> for all entites (calculates function_hierarchic and usage_current from connected reach(es) and adds result to  wastewater_structure._function_hierarchic and _usage_current):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_od</span><span class="o">.</span><span class="n">update_wastewater_structure_symbology</span><span class="p">(</span><span class="n">NULL</span><span class="p">,</span><span class="n">true</span><span class="p">)</span>
-</pre></div>
-</div>
-</li>
 <li><p>Run <strong>wastewater node symbology</strong> for all entities (calculates function_hierarchic and usage_current from connected reaches and adds result to  wastewater_node._function_hierarchic and   _usage_current):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_od</span><span class="o">.</span><span class="n">update_wastewater_node_symbology</span><span class="p">(</span><span class="n">NULL</span><span class="p">,</span> <span class="n">true</span><span class="p">);</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">update_wastewater_node_symbology</span><span class="p">(</span><span class="n">NULL</span><span class="p">,</span> <span class="n">true</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
 </ul>
 </section>
 <section id="manual-label-positioning-for-different-scales">
-<h2><span class="section-number">3.8.5. </span>Manual Label-positioning for different scales<a class="headerlink" href="#manual-label-positioning-for-different-scales" title="Link to this heading"></a></h2>
+<h2><span class="section-number">3.8.6. </span>Manual Label-positioning for different scales<a class="headerlink" href="#manual-label-positioning-for-different-scales" title="Link to this heading"></a></h2>
 <p>QGIS label definition can handle different labels for different scales. This works very well if you work on the screen.
 If you have to print plans with labels or if you have to export labels for data exchange (e.g. exchange with RegioGIS-platform), it will often be necessary to determine the label positions manually.
 If a label is positioned manually in QGIS, this fixed position applies to every scale. And that’s not always a good result.</p>
@@ -253,7 +274,7 @@ You have not the change something in the placement, because this rule uses the s
 </div>
 </section>
 <section id="how-to-import-existing-label-positions">
-<h2><span class="section-number">3.8.6. </span>How to import existing label-positions<a class="headerlink" href="#how-to-import-existing-label-positions" title="Link to this heading"></a></h2>
+<h2><span class="section-number">3.8.7. </span>How to import existing label-positions<a class="headerlink" href="#how-to-import-existing-label-positions" title="Link to this heading"></a></h2>
 <p>Good label-positions can be hard work. So you don’t want to loose it.</p>
 <ul class="simple">
 <li><p>Export your label-positions from your old system in the form obj_id, coordinateX (east), coordinateY (north).</p></li>
@@ -271,7 +292,7 @@ You have not the change something in the placement, because this rule uses the s
 </ul>
 </section>
 <section id="collecting-a-hydr-geometry-corresponds-to-a-basin-geometry-in-mike">
-<h2><span class="section-number">3.8.7. </span>Collecting a hydr_geometry (corresponds to a basin geometry in Mike+)<a class="headerlink" href="#collecting-a-hydr-geometry-corresponds-to-a-basin-geometry-in-mike" title="Link to this heading"></a></h2>
+<h2><span class="section-number">3.8.8. </span>Collecting a hydr_geometry (corresponds to a basin geometry in Mike+)<a class="headerlink" href="#collecting-a-hydr-geometry-corresponds-to-a-basin-geometry-in-mike" title="Link to this heading"></a></h2>
 <p>Note:</p>
 <ul class="simple">
 <li><p>Wastewater structures with a hydr_geometry have to be defined as special structures (and not as standard manholes).</p></li>
@@ -311,7 +332,7 @@ You have not the change something in the placement, because this rule uses the s
 </ul>
 </section>
 <section id="hydraulic-modeling-of-an-overflow-prank-weir-leapingweir-pump">
-<h2><span class="section-number">3.8.8. </span>Hydraulic modeling of an overflow (prank weir / leapingweir / pump)<a class="headerlink" href="#hydraulic-modeling-of-an-overflow-prank-weir-leapingweir-pump" title="Link to this heading"></a></h2>
+<h2><span class="section-number">3.8.9. </span>Hydraulic modeling of an overflow (prank weir / leapingweir / pump)<a class="headerlink" href="#hydraulic-modeling-of-an-overflow-prank-weir-leapingweir-pump" title="Link to this heading"></a></h2>
 <p>There is a special view for overflows, altough it would be possible to edit the overflow-data in layer vw_tww_wastewater_structure.
 The advantage of layer vw_tww_overflow: overflows can be visualized, can be found again and are available in lists.</p>
 <p>Action:</p>
@@ -368,7 +389,7 @@ A second outlet has already been created (green = discharged combined wastewater
 </figure>
 </section>
 <section id="overflow-characteristic">
-<h2><span class="section-number">3.8.9. </span>Overflow characteristic<a class="headerlink" href="#overflow-characteristic" title="Link to this heading"></a></h2>
+<h2><span class="section-number">3.8.10. </span>Overflow characteristic<a class="headerlink" href="#overflow-characteristic" title="Link to this heading"></a></h2>
 <p>In the case of a leaping weir, a pump or under special conditions, an overflow characteristic can be defined for the overflow:</p>
 <p>You can select an existing characteristic in the field fk_overflow_char or you create a new characteristic with the green + button.</p>
 <p>The Feature Attributes window for the overflow characteristic appears:</p>
@@ -381,7 +402,7 @@ A second outlet has already been created (green = discharged combined wastewater
 </ol>
 </section>
 <section id="further-informations">
-<h2><span class="section-number">3.8.10. </span>Further informations<a class="headerlink" href="#further-informations" title="Link to this heading"></a></h2>
+<h2><span class="section-number">3.8.11. </span>Further informations<a class="headerlink" href="#further-informations" title="Link to this heading"></a></h2>
 <p>Further Q &amp; A’s you can find in the
 <a class="reference external" href="https://github.com/orgs/teksi/discussions/categories/q-a">TWW Discussion section</a></p>
 </section>

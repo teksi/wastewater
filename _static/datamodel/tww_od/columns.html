@@ -163,7 +163,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'prank_weir'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'prank_weir'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -191,7 +191,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -219,7 +219,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -303,7 +303,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "null",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'import_manhole_quarantine'::text)",
         "comments": ""
     },
     {
@@ -345,7 +345,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'wastewater_networkelement'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'wastewater_networkelement'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -443,7 +443,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -541,7 +541,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -709,7 +709,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -737,7 +737,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'maintenance'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'maintenance'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -751,7 +751,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -807,7 +807,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'planning_zone'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'dss15_planning_zone'::text)",
         "comments": "<p><a href=\"./null\">primary_key<\/a> INTERLIS STANDARD OID (with Postfix/Präfix) or UUOID, see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -947,7 +947,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'param_ca_general'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'param_ca_general'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -1129,7 +1129,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -1199,7 +1199,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -1227,7 +1227,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'catchment_area_totals'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'catchment_area_totals'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -1409,7 +1409,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -1451,7 +1451,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -1605,7 +1605,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'profile_geometry'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'profile_geometry'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -1633,7 +1633,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -1787,7 +1787,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'fountain'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'fountain'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -1913,7 +1913,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'hydr_geometry'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'hydr_geometry'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -1955,7 +1955,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -2137,7 +2137,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -2151,7 +2151,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'data_media'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'data_media'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -2193,7 +2193,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -2249,7 +2249,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'retention_body'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'retention_body'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -2333,7 +2333,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -2571,7 +2571,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'pump'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'pump'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -2627,7 +2627,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'benching'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'benching'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -2739,7 +2739,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -2935,7 +2935,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'backflow_prevention'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'backflow_prevention'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -3019,7 +3019,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -3089,7 +3089,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'measuring_point'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'measuring_point'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -3103,7 +3103,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -3271,7 +3271,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -3509,7 +3509,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'channel'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'channel'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -3593,7 +3593,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'catchment_area_text'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'catchment_area_text'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -3621,7 +3621,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -3705,7 +3705,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'access_aid'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'access_aid'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -3761,7 +3761,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -3775,7 +3775,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'overflow'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'overflow'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -3887,7 +3887,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -3957,7 +3957,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'infiltration_zone'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'infiltration_zone'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -4111,7 +4111,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'reach_text'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'reach_text'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -4223,7 +4223,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -4237,7 +4237,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'discharge_point'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'discharge_point'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -4265,7 +4265,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -4293,7 +4293,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -4349,7 +4349,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -4405,7 +4405,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -4419,7 +4419,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'damage'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'damage'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -4489,7 +4489,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -4503,7 +4503,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -4573,7 +4573,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -4783,7 +4783,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'disposal'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'disposal'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -4825,7 +4825,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'catchment_area'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'catchment_area'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -5007,7 +5007,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'small_treatment_plant'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'small_treatment_plant'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -5021,7 +5021,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -5091,7 +5091,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -5147,7 +5147,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'waste_water_treatment_plant'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'waste_water_treatment_plant'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -5175,7 +5175,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -5315,7 +5315,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'maintenance_event'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'maintenance_event'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -5343,7 +5343,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -5441,7 +5441,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'wastewater_structure_symbol'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'wastewater_structure_symbol'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -5539,7 +5539,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'mechanical_pretreatment'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'mechanical_pretreatment'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -5609,7 +5609,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'special_structure'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'special_structure'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -5749,7 +5749,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'solids_retention'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'solids_retention'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -5875,7 +5875,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -6057,7 +6057,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -6155,7 +6155,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'reach'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'reach'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -6211,7 +6211,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -6225,7 +6225,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'waste_water_treatment'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'waste_water_treatment'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -6239,7 +6239,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -6253,7 +6253,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -6267,7 +6267,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'manhole'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'manhole'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -6365,7 +6365,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -6477,7 +6477,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'drainless_toilet'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'drainless_toilet'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -6491,7 +6491,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -6687,7 +6687,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'structure_part'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'structure_part'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -6785,7 +6785,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'reservoir'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'reservoir'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -6841,7 +6841,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -6883,7 +6883,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'drainage_system'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'drainage_system'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -7051,7 +7051,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'organisation'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'organisation'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -7065,7 +7065,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'surface_runoff_parameters'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'surface_runoff_parameters'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -7093,7 +7093,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'building_group'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'building_group'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -7107,7 +7107,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'file'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'file'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -7121,7 +7121,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'zone'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'zone'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -7135,7 +7135,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'measuring_device'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'measuring_device'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -7261,7 +7261,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'wwtp_energy_use'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'wwtp_energy_use'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -7373,7 +7373,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -7569,7 +7569,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'dryweather_downspout'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'dryweather_downspout'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -7611,7 +7611,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_owner'::text)",
+        "defaultValue": "null",
         "comments": ""
     },
     {
@@ -7639,7 +7639,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -7695,7 +7695,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -7807,7 +7807,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -7835,7 +7835,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -7849,7 +7849,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'overflow_char'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'overflow_char'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -8003,7 +8003,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -8017,7 +8017,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'measurement_series'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'measurement_series'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -8059,7 +8059,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'connection_object'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'connection_object'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -8185,7 +8185,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_owner'::text)",
+        "defaultValue": "null",
         "comments": ""
     },
     {
@@ -8255,7 +8255,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -8311,7 +8311,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'pipe_profile'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'pipe_profile'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -8535,7 +8535,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -8549,7 +8549,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'farm'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'farm'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -8633,7 +8633,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'log_card'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'log_card'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -8647,7 +8647,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -8675,7 +8675,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -8745,7 +8745,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -8787,7 +8787,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'reach_progression_alternative'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'reach_progression_alternative'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -8857,7 +8857,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -8941,7 +8941,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -8955,7 +8955,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -9151,7 +9151,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -9417,7 +9417,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'dss15_aquifer'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'dss15_aquifer'::text)",
         "comments": "<p><a href=\"./null\">primary_key<\/a> INTERLIS STANDARD OID (with Postfix/Präfix) or UUOID, see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -9431,7 +9431,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'building_group_baugwr'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'building_group_baugwr'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -9627,7 +9627,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'individual_surface'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'individual_surface'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -9711,7 +9711,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'tank_emptying'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'tank_emptying'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -9809,7 +9809,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -9823,7 +9823,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -9837,7 +9837,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'control_center'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'control_center'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -9893,7 +9893,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -10047,7 +10047,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -10061,7 +10061,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -10145,7 +10145,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -10173,7 +10173,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -10187,7 +10187,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'mutation'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'mutation'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -10243,7 +10243,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'wastewater_structure'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'wastewater_structure'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -10271,7 +10271,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'throttle_shut_off_unit'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'throttle_shut_off_unit'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -10313,7 +10313,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -10383,7 +10383,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -10397,7 +10397,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -10453,7 +10453,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -10579,7 +10579,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -10649,7 +10649,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'flushing_nozzle'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'flushing_nozzle'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -10677,7 +10677,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -10719,7 +10719,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'measurement_result'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'measurement_result'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -10803,7 +10803,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'building'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'building'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -10845,7 +10845,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'hydraulic_char_data'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'hydraulic_char_data'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -10887,7 +10887,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'damage_manhole'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'damage_manhole'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -10971,7 +10971,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'sludge_treatment'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'sludge_treatment'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -11027,7 +11027,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -11055,7 +11055,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -11097,7 +11097,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -11209,7 +11209,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -11223,7 +11223,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'sia405cc_cable'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'sia405cc_cable'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -11377,7 +11377,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'dryweather_flume'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'dryweather_flume'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -11405,7 +11405,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -11559,7 +11559,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_owner'::text)",
+        "defaultValue": "null",
         "comments": ""
     },
     {
@@ -11713,7 +11713,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'wwtp_structure'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'wwtp_structure'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -11797,7 +11797,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'wastewater_structure_text'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'wastewater_structure_text'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -11839,7 +11839,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -11895,7 +11895,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -11937,7 +11937,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'hydr_geom_relation'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'hydr_geom_relation'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -11965,7 +11965,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -11993,7 +11993,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'reach_point'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'reach_point'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -12035,7 +12035,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'cover'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'cover'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -12329,7 +12329,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -12441,7 +12441,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'damage_channel'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'damage_channel'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -12511,7 +12511,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'param_ca_mouse1'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'param_ca_mouse1'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -12539,7 +12539,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -12567,7 +12567,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'electromechanical_equipment'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'electromechanical_equipment'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -12707,7 +12707,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'leapingweir'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'leapingweir'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -12833,7 +12833,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'hq_relation'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'hq_relation'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -12861,7 +12861,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -12959,7 +12959,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'wastewater_node'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'wastewater_node'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -13029,7 +13029,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'electric_equipment'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'electric_equipment'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -13141,7 +13141,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -13169,7 +13169,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -13211,7 +13211,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'tank_cleaning'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'tank_cleaning'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -13225,7 +13225,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'measure'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'measure'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -13365,7 +13365,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
@@ -13477,7 +13477,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'examination'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'examination'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -13533,7 +13533,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_provider'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
@@ -13687,7 +13687,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'sia405cc_cable_point'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'sia405cc_cable_point'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -13715,7 +13715,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'bio_ecol_assessment'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'bio_ecol_assessment'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -13799,7 +13799,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.generate_oid('tww_od'::text, 'infiltration_installation'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'infiltration_installation'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -13827,7 +13827,7 @@
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_sys.get_default_values('fk_dataowner'::text)",
+        "defaultValue": "null",
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {

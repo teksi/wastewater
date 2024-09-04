@@ -49,7 +49,7 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">1. TEKSI wastewater (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">1. TEKSI Abwasser (TWW)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">2. TWW Installation Guide</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. TWW Benutzerhandbuch</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">3.1. Übersicht über TWW</a></li>
@@ -117,7 +117,7 @@
 <h1><span class="section-number">3.2.7. </span>Digitalisierung der Einzugsgebiete<a class="headerlink" href="#digitizing-catchment-areas" title="Link to this heading"></a></h1>
 <section id="general">
 <h2><span class="section-number">3.2.7.1. </span>Allgemeines<a class="headerlink" href="#general" title="Link to this heading"></a></h2>
-<p>Catchments can be digitized with QGIS standard tool <strong>Add Polygon Feature</strong>.</p>
+<p>Die Einzugsgebiete können mit den QGIS Standard Werkzeug <strong>Polygonobjekt hinzufügen</strong> digitalisiert werden.</p>
 <figure class="align-default">
 <img alt="../../_images/qgis_standard_tools.jpg" src="../../_images/qgis_standard_tools.jpg" />
 </figure>
@@ -132,7 +132,7 @@
 <img alt="../../_images/enable_snapping_button.jpg" src="../../_images/enable_snapping_button.jpg" />
 </figure>
 <ul class="simple">
-<li><p>Open the <strong>Advanced Configuration</strong>, check the <strong>catchment_area</strong> layer and check the <strong>Avoid Overlap</strong> checkbox for the catchment_area layer</p></li>
+<li><p>Öffne die <strong>Projekt Objektfang Einstellungen</strong>, schalte den Layer <strong>Einzugsgebiet</strong> ein und schalte die <strong>Schnittpunkte vermeiden</strong> Checkbox für den Layer Einzugsgebiet ein</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/avoid_overlap.jpg" src="../../_images/avoid_overlap.jpg" />
@@ -142,8 +142,8 @@
 <p>Neu erfasst Einzugsgebiete überlappen nicht mit bestehenden Einzugsgebieten dank diesen Einstellungen.</p>
 </div>
 <ul class="simple">
-<li><p>Set the layer <code class="docutils literal notranslate"><span class="pre">catchment_area</span></code> into the edit mode.</p></li>
-<li><p>Use the <strong>Add Polygon Feature</strong> tool to digitize a new area.</p></li>
+<li><p>Setzen Sie den Layer <code class="docutils literal notranslate"><span class="pre">Einzugsgebiet</span></code> in den Bearbeitungsmodus</p></li>
+<li><p>Benütze das <strong>Polygonobjekt hinzufügen</strong> Werkzeug, um eine neue Fläche zu digitalisieren.</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/add_feature_tool.jpg" src="../../_images/add_feature_tool.jpg" />
@@ -162,7 +162,7 @@
 <p>Beachte, dass der Endpunkt des Polygon der letzte Punkt ist, wo ein Links-Klick verwendet wurde.</p>
 </div>
 <ul class="simple">
-<li><p>The <strong>catchment_area</strong> feature attributes window appears</p></li>
+<li><p>Das <strong>Einzugsgebiet</strong> Objektattribute Fenster erscheint</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/catchment_area_digitizing2.jpg" src="../../_images/catchment_area_digitizing2.jpg" />
@@ -202,7 +202,7 @@
 <section id="split-areas">
 <h2><span class="section-number">3.2.7.4. </span>Einzugsgebiete teilen<a class="headerlink" href="#split-areas" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>You can split existing areas with the <strong>Split Features</strong> tool.</p></li>
+<li><p>Bestehende Einzugsgebiete können mit dem <strong>Objekte zerteilen</strong> Werkzeug geteilt werden.</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/split_tool.jpg" src="../../_images/split_tool.jpg" />
@@ -213,20 +213,20 @@
 </section>
 <section id="merge-areas">
 <h2><span class="section-number">3.2.7.5. </span>Einzugsgebiet zusammenführen<a class="headerlink" href="#merge-areas" title="Link to this heading"></a></h2>
-<p>You can merge existing areas with the <strong>Merge Selected Feature</strong> tool.</p>
+<p>Einzugsgebiet können mit dem <strong>Gewählte Objekte verschmelzen</strong> Tool zusammengeführt werden.</p>
 <figure class="align-default">
 <img alt="../../_images/merge_selected_feature_tool.jpg" src="../../_images/merge_selected_feature_tool.jpg" />
 </figure>
 <ul class="simple">
-<li><p>Selected the <strong>catchment_area</strong> layer and set it into the edit mode</p></li>
+<li><p>Wähle den Layer <strong>Einzugsgebiet</strong> und starte den Bearbeitungsmodus</p></li>
 <li><p>Mindestens zwei Einzugsgebiet auswählen, die zusammengeführt werden sollen</p></li>
-<li><p>Click the <code class="docutils literal notranslate"><span class="pre">Merge</span> <span class="pre">Selected</span> <span class="pre">Feature</span></code> tool. -&gt; The <strong>Merge Features</strong> windows appears.</p></li>
+<li><p>Klicke das <strong>Gewählte Objekte verschmelzen</strong> Tool. -&gt;  Das <strong>Objektattribute verschmelzen</strong> Fenster erscheint.</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/merge_feature_attributes.jpg" src="../../_images/merge_feature_attributes.jpg" />
 </figure>
 <ul class="simple">
-<li><p>Choose which values will be taken from which old record. Control the values for fields <strong>obj_id</strong>, <strong>identifier</strong>. Then click <strong>OK</strong>. You can ignore the setting of field surface_area, because the surface_area of the combined area will be recalculated anyway.</p></li>
+<li><p>Wähle, welcher Wert von welchem alten Datensatz übernommen wird. Kontrolliere die Werte in den Feldern <strong>Obj_ID</strong>, <strong>Bezeichnung</strong>. Dann klicke <strong>OK</strong>. Die Einstellung im Feld <strong>Fläche</strong> kann ignoriert werden, da die Fläche der zusammengefügten Objekte sowieso neu berechnet wird.</p></li>
 </ul>
 <div class="admonition attention">
 <p class="admonition-title">Achtung</p>
@@ -263,7 +263,7 @@
 </div>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>The tool does not check, if your choosen wastewater node is a part of the pwwf-network (primary network). It’s only the user who decides, if a node is ok or not. If you are not sure, please check the <strong>VSA Wegleitung Daten der Siedlungsentwässerung</strong>, part <strong>Erfassungsrichtlinien</strong></p>
+<p>Das Tool prüft nicht, ob der gewählte Abwasserknoten im PAA-Netz (primäre Abwasseranlage) ist. Es ist Aufgabe des Benutzers, den richtigen Abwasserknoten zu wählen. Hinweise dazu finden sie in <strong>VSA Wegleitung Daten der Siedlungsentwässerung</strong>, Teil <strong>Erfassungsrichtlinien</strong></p>
 </div>
 <p>Mit dem Tool können nicht mehrere Einzugsgebiete auf einmal mit einem Abwasserknoten verknüpft werden. Wenn das gewünscht ist, müssen die Einzugsgebiet ausgewählt werden, dann die Attributtabelle öffnen und den Mehrfach-Editier-Modus starten. Der gewünschte Abwasserknoten kann dann aus der Liste der vorhandenen Abwasserknoten gewählt werden</p>
 <p>Um eine Verknüpfung mit einem Abwasserknoten zu löschen, kann das Einzugsgebiet mit dem <strong>Objekte abfragen</strong> Werkzeug bearbeiten werden.</p>

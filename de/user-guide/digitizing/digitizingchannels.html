@@ -49,7 +49,7 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">1. TEKSI wastewater (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">1. TEKSI Abwasser (TWW)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">2. TWW Installation Guide</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. TWW Benutzerhandbuch</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../layerexplanations/index.html">3.1. Übersicht über TWW</a></li>
@@ -144,7 +144,7 @@
 <img alt="../../_images/wizard_data_entry_reach_with_new_cursor2-3.jpg" src="../../_images/wizard_data_entry_reach_with_new_cursor2-3.jpg" />
 </figure>
 <ul class="simple">
-<li><p>You finish digitizing the line by right clicking. This will make the <strong>vw_tww_reach</strong> feature attributes window appear and you can start adding data in the <strong>General</strong> tab:</p></li>
+<li><p>Mit einem Rechtsklick wird die Linienzeichnung beendet. Im Anschluss erscheint das <strong>vw_tww_reach</strong> Formular in dem Sie Daten im Reiter <strong>Allgemein</strong> eingeben können:</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/wizard_reach_form.jpg" src="../../_images/wizard_reach_form.jpg" />
@@ -158,15 +158,14 @@
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>If you do not enter an <cite>identifier</cite> (reach-identifier) in the General tab, TWW will enter the <cite>obj_id</cite> also as identifier (you can change later). As default, the <cite>identifier</cite> of the reach is also the <cite>ws_identifier</cite> of the channel. As default, the reachpoint-identifier is set to the reachpoint-obj_id.</p>
+<p>Wenn im Feld Bezeichnung (reach-identifier) im Reiter Allgemein keine Eingabe gemacht wird, übernimmt TWW die <cite>obj_id</cite> als Bezeichnung (kann später geändert werden). Als Vorgabewert ist die Bezeichnung der Haltung gleich dem <cite>ws_identifier</cite> des Kanals. Als Vorgabewert ist die Bezeichnung der Haltungspunkte gleich der <cite>obj_id</cite> der Haltungspunkte.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
 <p>Siehe <a class="reference internal" href="#reach-geometrysync"><span class="std std-ref">Geometrieabgleichung</span></a> für automatische Haltungspunkthöhen bei Schnappen auf Abwasserknoten mit Koten.</p>
 </div>
 <ul class="simple">
-<li><p>For the profile type you will get a list of defined profiles.
-You can edit the pipe profiles in <strong>pipe_profile</strong> table (layergroup Wastewater Structures).</p></li>
+<li><p>Für den Profiltyp erhalten Sie eine Liste von vordefinierten Profilen. Die Rohrprofile können in der <strong>pipe_profile</strong> Tabelle bearbeiten werden (Layergruppe Abwasserbauwerk).</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/wizard_reach_form_profiletypes.jpg" src="../../_images/wizard_reach_form_profiletypes.jpg" />
@@ -197,10 +196,9 @@ You can edit the pipe profiles in <strong>pipe_profile</strong> table (layergrou
 <h2><span class="section-number">3.2.5.3. </span>Weitere Attribute und Klassen<a class="headerlink" href="#further-attributes-and-classes" title="Link to this heading"></a></h2>
 <p>Wenn eine Haltung digitalisiert wird, finden im Hintergrund eine Reihe von Schritten in der TWW Datenbank statt:</p>
 <ul class="simple">
-<li><p>a new object is added in the <strong>wastewater structure</strong> class (<code class="docutils literal notranslate"><span class="pre">wastewater_structure</span></code>)</p></li>
-<li><p>a new object is added and linked in the <strong>channel</strong> subclass (<code class="docutils literal notranslate"><span class="pre">channel</span></code>)</p></li>
-<li><p>a new reach object is generated in the <strong>wastewater network elements</strong> class (<code class="docutils literal notranslate"><span class="pre">wastewater_networkelement</span></code>)
-and its subclass <strong>reach</strong> (<code class="docutils literal notranslate"><span class="pre">reach</span></code>)</p></li>
+<li><p>Ein neues Objekt wird in der Klasse <strong>Abwasserbauwerk</strong>  („wastewater_structure“) hinzugefügt</p></li>
+<li><p>Ein neues Objekt wird hinzugefügt und verknüpft in der Unterklasse <strong>Kanal</strong> (<code class="docutils literal notranslate"><span class="pre">channel</span></code>)</p></li>
+<li><p>Ein neues Haltungsobjekt wird in der Tabelle  <strong>Abwassernetzelement</strong> (<code class="docutils literal notranslate"><span class="pre">wastewater_networkelement</span></code>) und dessen Unterklasse <strong>Haltung</strong> (<code class="docutils literal notranslate"><span class="pre">reach</span></code>) generiert.</p></li>
 <li><p>Zwei neue Haltungspunktobjekte werden hinzugefügt und verknüpft mit der Haltung (<strong>rp_from_node</strong>, <strong>rp_to_node</strong>)</p></li>
 </ul>
 </section>
