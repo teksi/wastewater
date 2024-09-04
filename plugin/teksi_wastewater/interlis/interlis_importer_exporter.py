@@ -161,7 +161,7 @@ class InterlisImporterExporter:
         selected_ids=None,
     ):
         # Validate subclasses before export
-        self._check_subclass_counts()
+        self._check_subclass_counts(limit_to_selection)
 
         # File name without extension (used later for export)
         file_name_base, _ = os.path.splitext(xtf_file_output)
@@ -476,9 +476,12 @@ class InterlisImporterExporter:
                 log_path,
             )
 
-    def _check_subclass_counts(self):
+    def _check_subclass_counts(self, limit_to_selection=False):
         self._check_subclass_count(
-            config.TWW_OD_SCHEMA, "wastewater_networkelement", ["reach", "wastewater_node"]
+            config.TWW_OD_SCHEMA,
+            "wastewater_networkelement",
+            ["reach", "wastewater_node"],
+            limit_to_selection,
         )
         self._check_subclass_count(
             config.TWW_OD_SCHEMA,
@@ -493,6 +496,7 @@ class InterlisImporterExporter:
                 "small_treatment_plant",
                 "drainless_toilet",
             ],
+            limit_to_selection,
         )
         self._check_subclass_count(
             config.TWW_OD_SCHEMA,
@@ -511,29 +515,40 @@ class InterlisImporterExporter:
                 "dryweather_flume",
                 "dryweather_downspout",
             ],
+            limit_to_selection,
         )
         self._check_subclass_count(
-            config.TWW_OD_SCHEMA, "overflow", ["pump", "leapingweir", "prank_weir"]
+            config.TWW_OD_SCHEMA,
+            "overflow",
+            ["pump", "leapingweir", "prank_weir"],
+            limit_to_selection,
         )
         self._check_subclass_count(
             config.TWW_OD_SCHEMA,
             "maintenance_event",
             ["maintenance", "examination", "bio_ecol_assessment"],
+            limit_to_selection,
         )
         self._check_subclass_count(
-            config.TWW_OD_SCHEMA, "damage", ["damage_channel", "damage_manhole"]
+            config.TWW_OD_SCHEMA,
+            "damage",
+            ["damage_channel", "damage_manhole"],
+            limit_to_selection,
         )
         self._check_subclass_count(
             config.TWW_OD_SCHEMA,
             "connection_object",
             ["fountain", "individual_surface", "building", "reservoir"],
+            limit_to_selection,
         )
         self._check_subclass_count(
-            config.TWW_OD_SCHEMA, "zone", ["infiltration_zone", "drainage_system"]
+            config.TWW_OD_SCHEMA,
+            "zone",
+            ["infiltration_zone", "drainage_system"],
+            limit_to_selection,
         )
 
-    def _check_subclass_count(self, schema_name, parent_name, child_list):
-
+    def _check_subclass_count(self, schema_name, parent_name, child_list, limit_to_selection):
         logger.info(f"INTEGRITY CHECK {parent_name} subclass data...")
         logger.info("CONNECTING TO DATABASE...")
 
@@ -556,9 +571,22 @@ class InterlisImporterExporter:
                         f"OK: number of subclass elements of class {parent_name} OK in schema {schema_name}!"
                     )
                 else:
-                    logger.error(
-                        f"ERROR: number of subclass elements of {parent_name} NOT CORRECT in schema {schema_name}: checksum = {parent_count} (positive number means missing entries, negative means too many subclass entries)"
-                    )
+                    if parent_count > 0:
+                        errormsg = f"Too many superclass entries for {schema_name}.{parent_name}"
+                    else:
+                        errormsg = f"Too many subclass entries for {schema_name}.{parent_name}"
+
+                    if limit_to_selection:
+                        logger.warning(
+                            f"Overall Subclass Count: {errormsg}. The problem might lie outside the selection"
+                        )
+                    else:
+                        logger.error(f"Subclass Count error: {errormsg}")
+                        raise InterlisImporterExporterError(
+                            "Subclass Count error",
+                            errormsg,
+                            None,
+                        )
 
     def _init_model_classes(self, model):
         ModelInterlis = ModelInterlisSia405Abwasser
