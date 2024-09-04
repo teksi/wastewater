@@ -59,6 +59,13 @@
 <li class="toctree-l3"><a class="reference internal" href="plugin_setup_agxx.html">5.2.1. Plugin and Project Setup</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">5.2.2. Data collection policy</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#mapping">5.2.2.1. Mapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#infrastrukturknoten-gepknoten">5.2.2.2. Infrastrukturknoten/GEPKnoten</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#infrastrukturhaltung-gephaltung">5.2.2.3. Infrastrukturhaltung/GEPHaltung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ueberlauf-foerderaggregat">5.2.2.4. Ueberlauf_Foerderaggregat</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gepmassnahme">5.2.2.5. GEPMassnahme</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bautenausserhalbbaugebiet">5.2.2.6. Bautenausserhalbbaugebiet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sbw-einzugsgebiet">5.2.2.7. SBW_Einzugsgebiet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#versickerungsbereichag">5.2.2.8. VersickerungsbereichAG</a></li>
 </ul>
 </li>
 </ul>
@@ -117,15 +124,17 @@
 <p>The AG-64/96 values are automatically mapped to VSA DSS where sensible, allowing to export both models.</p>
 <section id="handling-of-organisations">
 <h3><span class="section-number">5.2.2.1.1. </span>Handling of organisations<a class="headerlink" href="#handling-of-organisations" title="Link to this heading"></a></h3>
-<p>In the models AG-64/AG-96, the organisations table differs from VSA. It has 20 characters and uses a different prefix. In order to maintain the VSA compatibility, TWW 2 AG-64/96 uses the VSA tables and alters the OID only on export.</p>
+<p>In the models AG-64/AG-96, the organisations table differs from VSA. It has 20 characters and uses a different prefix. In order to maintain the VSA compatibility, TWW 2 AG-64/96 uses the VSA tables.</p>
 <p>There is a set of private entities in the AG-64/AG-96 organisations dataset that were not ported to VSA DSS. For these organisations, we use a OID prefix that was generated solely for this purpose and the AG-64/AG-96 postfix. The corresponding data is imported on initialisation.</p>
+<p>When exporting a dataset, the organisations are not exported from the TEKSI database. Instead, the AG-64/96 Organisation dataset is stored within the plugin and added to the export dataset.</p>
 </section>
 <section id="last-modification">
 <h3><span class="section-number">5.2.2.1.2. </span>Last Modification<a class="headerlink" href="#last-modification" title="Link to this heading"></a></h3>
 <p>in AG-64/96, the last modification value of cadastre and general planning are separated. To keep track of them, they are managed on the database. There is a widget in the settings to alter the current value, <a class="reference external" href="./plugin_setup_agxx.html">see here</a> .</p>
 </section>
+</section>
 <section id="infrastrukturknoten-gepknoten">
-<h3><span class="section-number">5.2.2.1.3. </span>Infrastrukturknoten/GEPKnoten<a class="headerlink" href="#infrastrukturknoten-gepknoten" title="Link to this heading"></a></h3>
+<h2><span class="section-number">5.2.2.2. </span>Infrastrukturknoten/GEPKnoten<a class="headerlink" href="#infrastrukturknoten-gepknoten" title="Link to this heading"></a></h2>
 <p>The base OID for the Infrastrukturknoten/GEPKnoten is taken from <code class="docutils literal notranslate"><span class="pre">tww_od.wastewater_node</span></code>.</p>
 <p>The FunktionAG is mapped from</p>
 <blockquote>
@@ -138,32 +147,49 @@
 </div></blockquote>
 <p>The FunktionAG ´´Kontrollschacht´´ is not included in the value list. Use ´´manhole´´ or ´´combined_manhole´´ instead, which are mapped using a backwards relation.</p>
 <p>The following table explains the mapping of FunktionAG in detail. If there are multiple options for TWW class, the type is defined dependent on whether a detail geometry exists. The value_de is only listed if the AG-64/96 value is not eligible</p>
+<section id="handling-of-building-connections">
+<h3><span class="section-number">5.2.2.2.1. </span>Handling of building connections<a class="headerlink" href="#handling-of-building-connections" title="Link to this heading"></a></h3>
+<p>Building connections are defined in the datamodel as Infrastrukturknoten/GEPKnoten with funktionag „Anschluss“. As these are no wastewater structures, the function is attributed to the wastewater node (<code class="docutils literal notranslate"><span class="pre">wastewater_node.ag64_function</span></code>).</p>
+</section>
+<section id="handling-of-covers">
+<h3><span class="section-number">5.2.2.2.2. </span>Handling of covers<a class="headerlink" href="#handling-of-covers" title="Link to this heading"></a></h3>
+<p>The AG-64/AG-96 data collection guidelines state the following:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The main wastewater node of a manhole or special structure must be mapped to the location of the main cover.</p></li>
+<li><p>Secondary covers are mapped as Infrastrukturknoten/GEPKnoten with funktionag „andere“.</p></li>
+</ul>
+</div></blockquote>
+<p>As topological relations to a node of funktionag „andere“ are technically possible, we need to link all covers to a wastewater node linked to every cover.
+In order to follow these limitations, there is an additional foreign key on <code class="docutils literal notranslate"><span class="pre">tww_od.cover</span></code> pointing to <code class="docutils literal notranslate"><span class="pre">tww_od.wastewater_node</span></code>. A wastewater node’s situation geometry is only overruled if it is referenced from a cover.
+Additionally, the attribute <code class="docutils literal notranslate"><span class="pre">wastewater_node.ag64_function</span></code> can be set to „andere“.</p>
+</section>
 </section>
 <section id="infrastrukturhaltung-gephaltung">
-<h3><span class="section-number">5.2.2.1.4. </span>Infrastrukturhaltung/GEPHaltung<a class="headerlink" href="#infrastrukturhaltung-gephaltung" title="Link to this heading"></a></h3>
+<h2><span class="section-number">5.2.2.3. </span>Infrastrukturhaltung/GEPHaltung<a class="headerlink" href="#infrastrukturhaltung-gephaltung" title="Link to this heading"></a></h2>
 <p>Apart from street water and square water, the NutzungsartAG are not modelled as a value list extensions. Use the backwards relation instead.</p>
 </section>
 <section id="ueberlauf-foerderaggregat">
-<h3><span class="section-number">5.2.2.1.5. </span>Ueberlauf_Foerderaggregat<a class="headerlink" href="#ueberlauf-foerderaggregat" title="Link to this heading"></a></h3>
+<h2><span class="section-number">5.2.2.4. </span>Ueberlauf_Foerderaggregat<a class="headerlink" href="#ueberlauf-foerderaggregat" title="Link to this heading"></a></h2>
 <p>The layer Ueberlauf_Foerderaggregat is mapped to ´tww_od.overflow´ and its specialisations</p>
 </section>
 <section id="gepmassnahme">
-<h3><span class="section-number">5.2.2.1.6. </span>GEPMassnahme<a class="headerlink" href="#gepmassnahme" title="Link to this heading"></a></h3>
+<h2><span class="section-number">5.2.2.5. </span>GEPMassnahme<a class="headerlink" href="#gepmassnahme" title="Link to this heading"></a></h2>
 <p>GEPMassnahme is mapped to ´tww_od.measure´. The following categories can be mapped 1:1 onto a VSA DSS value and are therefore</p>
 </section>
 <section id="bautenausserhalbbaugebiet">
-<h3><span class="section-number">5.2.2.1.7. </span>Bautenausserhalbbaugebiet<a class="headerlink" href="#bautenausserhalbbaugebiet" title="Link to this heading"></a></h3>
+<h2><span class="section-number">5.2.2.6. </span>Bautenausserhalbbaugebiet<a class="headerlink" href="#bautenausserhalbbaugebiet" title="Link to this heading"></a></h2>
 <p>Bautenausserhalbbaugebiet is mapped to ´tww_od.building_group´. There is no backwards mapping from VSA-DSS ´Gebaeudegruppe.Sanierungsbedarf´ to AG-96 ´Bautenausserhalbbaugebiet.Sanierungsbedarf´ because the value ´unbekannt´ cannot be mapped.</p>
 </section>
 <section id="sbw-einzugsgebiet">
-<h3><span class="section-number">5.2.2.1.8. </span>SBW_Einzugsgebiet<a class="headerlink" href="#sbw-einzugsgebiet" title="Link to this heading"></a></h3>
-<p>SBW_Einzugsgebiet is mapped to ´tww_od.catchment_area_totals´. The perimeter geometry is not mapped in the qgs project and needs to be loaded manually. There exists a function to calculate the perimeter geometry by aggregating the catchment areas via catchment_area-&gt;log_card-&gt;main_log_card-&gt;hydraulic_char_data-&gt;catchment_area_totals.
+<h2><span class="section-number">5.2.2.7. </span>SBW_Einzugsgebiet<a class="headerlink" href="#sbw-einzugsgebiet" title="Link to this heading"></a></h2>
+<p>SBW_Einzugsgebiet is mapped to ´tww_od.catchment_area_totals´. The perimeter geometry is stored as an extension geometry attribute. In order to alter it, one needs to manually import the layer into the qgs project.</p>
+<p>There exists a function to calculate the perimeter geometry by aggregating the catchment areas via catchment_area-&gt;log_card-&gt;main_log_card-&gt;hydraulic_char_data-&gt;catchment_area_totals.
 The perimeter geometry is a MultiSurface, while the INTERLIS model requires a CompoundCurve. According to the official data collection policy of the Canton, one should violate the datamodel and export a MultiPart. As the underlying export mechanism ili2pg does not allow to export a wrong geometry type, only the biggest Singlepart is exported.</p>
 </section>
 <section id="versickerungsbereichag">
-<h3><span class="section-number">5.2.2.1.9. </span>VersickerungsbereichAG<a class="headerlink" href="#versickerungsbereichag" title="Link to this heading"></a></h3>
+<h2><span class="section-number">5.2.2.8. </span>VersickerungsbereichAG<a class="headerlink" href="#versickerungsbereichag" title="Link to this heading"></a></h2>
 <p>VersickerungsbereichAG is mapped to ´tww_od.infiltration_zone´.</p>
-</section>
 </section>
 </section>
 

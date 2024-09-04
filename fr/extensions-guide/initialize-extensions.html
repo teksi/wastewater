@@ -129,14 +129,18 @@
 
 <span class="nb">set</span> <span class="o">/</span><span class="n">p</span> <span class="n">myservice</span><span class="o">=</span><span class="s2">&quot;Please enter the service name? (e.g. tww_community) &quot;</span>
 
-    <span class="n">python</span> <span class="o">%</span><span class="n">tww_dir</span><span class="o">%</span>\<span class="n">extensions</span>\<span class="n">extension_manager</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">pg_service</span> <span class="o">%</span><span class="n">myservice</span><span class="o">%</span> <span class="o">--</span><span class="n">srid</span> <span class="mi">2056</span> <span class="o">--</span><span class="n">drop</span><span class="o">-</span><span class="n">schema</span> <span class="o">--</span><span class="n">extension_name</span> <span class="s2">&quot;agxx&quot;</span>
-    <span class="n">python</span> <span class="o">%</span><span class="n">tww_dir</span><span class="o">%</span>\<span class="n">app</span>\<span class="n">create_app</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">pg_service</span> <span class="o">%</span><span class="n">myservice</span><span class="o">%</span> <span class="o">--</span><span class="n">srid</span> <span class="mi">2056</span> <span class="o">--</span><span class="n">drop</span><span class="o">-</span><span class="n">schema</span>
+    <span class="n">python</span> <span class="o">%</span><span class="n">tww_dir</span><span class="o">%</span>\<span class="n">extensions</span>\<span class="n">extension_manager</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">pg_service</span> <span class="o">%</span><span class="n">myservice</span><span class="o">%</span> <span class="o">--</span><span class="n">extension_name</span> <span class="s2">&quot;agxx&quot;</span>
+    <span class="n">python</span> <span class="o">%</span><span class="n">tww_dir</span><span class="o">%</span>\<span class="n">app</span>\<span class="n">create_app</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">pg_service</span> <span class="o">%</span><span class="n">myservice</span><span class="o">%</span> <span class="o">--</span><span class="n">srid</span> <span class="mi">2056</span>
 
 
 <span class="n">PAUSE</span>
 </pre></div>
 </div>
 </li>
+</ul>
+<p>Important notes:</p>
+<ul class="simple">
+<li><p>Do not use the –drop_schema flag on create_app.py, as all the extension views are to be stored in the app schema</p></li>
 </ul>
 </section>
 <section id="generate-the-data-model-under-linux">

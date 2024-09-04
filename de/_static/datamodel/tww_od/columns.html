@@ -573,18 +573,18 @@
         "comments": "<p>General remarks / Allgemeine Bemerkungen / Remarques générales<\/p>"
     },
     {
-        "tableName": "measuring_point",
-        "tableFileName": "measuring_point",
+        "tableName": "mutation",
+        "tableFileName": "mutation",
         "tableType": "Table",
-        "keyClass": "foreignKey",
-        "keyTitle": "Foreign Key",
-        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>fk_reference_station",
-        "type": "varchar",
-        "length": 16,
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "user_system",
+        "type": "text",
+        "length": 2147483647,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": ""
+        "comments": "<p>Name of system user / Name des Systembenutzers / Usager du système informatique<\/p>"
     },
     {
         "tableName": "connection_object",
@@ -657,18 +657,18 @@
         "comments": "<p>yyy_Befestigungsart des Deckels / Befestigungsart des Deckels / Genre de fixation du couvercle<\/p>"
     },
     {
-        "tableName": "mutation",
-        "tableFileName": "mutation",
+        "tableName": "measuring_point",
+        "tableFileName": "measuring_point",
         "tableType": "Table",
-        "keyClass": "",
-        "keyTitle": "",
-        "name": "remark",
-        "type": "text",
-        "length": 2147483647,
+        "keyClass": "foreignKey",
+        "keyTitle": "Foreign Key",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>fk_provider",
+        "type": "varchar",
+        "length": 16,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>General remarks / Allgemeine Bemerkungen / Remarques générales<\/p>"
+        "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
         "tableName": "pump",
@@ -2057,18 +2057,18 @@
         "comments": "<p>yyy_Zum Abfluss (Q2) korrelierender Wasserspiegel (h) / Zum Abfluss (Q2) korrelierender Wasserspiegel (h) / Niveau d&rsquo;eau correspondant (h) au débit (Q2)<\/p>"
     },
     {
-        "tableName": "mutation",
-        "tableFileName": "mutation",
+        "tableName": "measuring_point",
+        "tableFileName": "measuring_point",
         "tableType": "Table",
-        "keyClass": "foreignKey",
-        "keyTitle": "Foreign Key",
-        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>kind",
-        "type": "int4",
-        "length": 10,
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "remark",
+        "type": "text",
+        "length": 2147483647,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": ""
+        "comments": "<p>General remarks / Allgemeine Bemerkungen / Remarques générales<\/p>"
     },
     {
         "tableName": "reach_point",
@@ -2127,18 +2127,18 @@
         "comments": "<p>Gross costs / Brutto Erstellungskosten / Coûts bruts de réalisation<\/p>"
     },
     {
-        "tableName": "mutation",
-        "tableFileName": "mutation",
+        "tableName": "measuring_point",
+        "tableFileName": "measuring_point",
         "tableType": "Table",
         "keyClass": "foreignKey",
         "keyTitle": "Foreign Key",
-        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>fk_provider",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>fk_wastewater_structure",
         "type": "varchar",
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
+        "comments": ""
     },
     {
         "tableName": "data_media",
@@ -3079,8 +3079,8 @@
         "comments": "<p>yyy_Art des Kanals hinsichtlich der hierarchischen Bedeutung im Entwässerungssystem / Art des Kanals hinsichtlich der hierarchischen  Bedeutung im Entwässerungssystem / Genre de canalisation par rapport à sa fonction hiérarchique dans le système d&rsquo;évacuation<\/p>"
     },
     {
-        "tableName": "measuring_point",
-        "tableFileName": "measuring_point",
+        "tableName": "mutation",
+        "tableFileName": "mutation",
         "tableType": "Table",
         "keyClass": "primaryKey",
         "keyTitle": "Primary Key",
@@ -3089,7 +3089,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'measuring_point'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'mutation'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -3975,18 +3975,18 @@
         "comments": "<p>yyy_Stall: Anzahl Tiere in Düngergrossvieheinheiten DGVE (Fremdvieh) fertiliser produced per livestock unit (FLU) / Stall: Anzahl Tiere in Düngergrossvieheinheiten DGVE (Fremdvieh) / Etable / écurie: nombre d&rsquo;animaux exprimés en unité de gros bétail UGB (bétail &ldquo;étranger&rdquo;)<\/p>"
     },
     {
-        "tableName": "mutation",
-        "tableFileName": "mutation",
+        "tableName": "measuring_point",
+        "tableFileName": "measuring_point",
         "tableType": "Table",
-        "keyClass": "",
-        "keyTitle": "",
-        "name": "last_value",
-        "type": "text",
+        "keyClass": "indexedColumn",
+        "keyTitle": "Indexed",
+        "name": "<i class='fa fa-sitemap fa-rotate-120' style='padding-right: 5px;'><\/i>situation_geometry",
+        "type": "geometry",
         "length": 2147483647,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>last_value changed to text. Only with type=changed and deleted / Letzter Wert umgewandelt in Text. Nur bei ART=geaendert oder geloescht / Dernière valeur modifiée du texte. Seulement avec GENRE = changee ou effacee<\/p>"
+        "comments": "<p>National position coordinates (East, North) / Landeskoordinate Ost/Nord / Coordonnées nationales Est/Nord<\/p>"
     },
     {
         "tableName": "catchment_area_text",
@@ -4115,18 +4115,18 @@
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
-        "tableName": "measuring_point",
-        "tableFileName": "measuring_point",
+        "tableName": "mutation",
+        "tableFileName": "mutation",
         "tableType": "Table",
-        "keyClass": "",
-        "keyTitle": "",
-        "name": "remark",
-        "type": "text",
-        "length": 2147483647,
+        "keyClass": "foreignKey",
+        "keyTitle": "Foreign Key",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>kind",
+        "type": "int4",
+        "length": 10,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>General remarks / Allgemeine Bemerkungen / Remarques générales<\/p>"
+        "comments": ""
     },
     {
         "tableName": "sia405cc_cable_point",
@@ -4885,18 +4885,18 @@
         "comments": ""
     },
     {
-        "tableName": "mutation",
-        "tableFileName": "mutation",
+        "tableName": "measuring_point",
+        "tableFileName": "measuring_point",
         "tableType": "Table",
-        "keyClass": "",
-        "keyTitle": "",
-        "name": "classname",
+        "keyClass": "indexedColumn",
+        "keyTitle": "Indexed",
+        "name": "<i class='fa fa-sitemap fa-rotate-120' style='padding-right: 5px;'><\/i>identifier",
         "type": "text",
         "length": 2147483647,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>Class name of chosen object / Klassenname des gewählten Objektes / Nom de classe de l&rsquo;objet à sélectionner<\/p>"
+        "comments": ""
     },
     {
         "tableName": "damage",
@@ -5165,18 +5165,18 @@
         "comments": ""
     },
     {
-        "tableName": "measuring_point",
-        "tableFileName": "measuring_point",
+        "tableName": "mutation",
+        "tableFileName": "mutation",
         "tableType": "Table",
-        "keyClass": "foreignKey",
-        "keyTitle": "Foreign Key",
-        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>fk_provider",
-        "type": "varchar",
-        "length": 16,
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "remark",
+        "type": "text",
+        "length": 2147483647,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
+        "comments": "<p>General remarks / Allgemeine Bemerkungen / Remarques générales<\/p>"
     },
     {
         "tableName": "surface_runoff_parameters",
@@ -5291,18 +5291,18 @@
         "comments": ""
     },
     {
-        "tableName": "measuring_point",
-        "tableFileName": "measuring_point",
+        "tableName": "mutation",
+        "tableFileName": "mutation",
         "tableType": "Table",
         "keyClass": "",
         "keyTitle": "",
-        "name": "last_modification",
-        "type": "timestamp",
-        "length": 29,
+        "name": "object",
+        "type": "text",
+        "length": 2147483647,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "now()",
-        "comments": "<p>Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE<\/p>"
+        "defaultValue": "null",
+        "comments": "<p>OID of Object / OID des Objektes / OID de l&rsquo;objet<\/p>"
     },
     {
         "tableName": "maintenance_event",
@@ -5977,18 +5977,18 @@
         "comments": ""
     },
     {
-        "tableName": "mutation",
-        "tableFileName": "mutation",
+        "tableName": "measuring_point",
+        "tableFileName": "measuring_point",
         "tableType": "Table",
         "keyClass": "",
         "keyTitle": "",
-        "name": "date_mutation",
-        "type": "timestamp",
-        "length": 29,
+        "name": "kind",
+        "type": "text",
+        "length": 2147483647,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>if changed: Date/Time of changement. If deleted date/time of deleting / Bei geaendert Datum/Zeit der Änderung. Bei gelöscht Datum/Zeit der Löschung / changée: Date/Temps du changement. effacée: Date/Temps de la suppression<\/p>"
+        "comments": "<p>yyy_Art der Untersuchungsstelle ( Regenmessungen, Abflussmessungen, etc.) / Art der Untersuchungsstelle ( Regenmessungen, Abflussmessungen, etc.) / Genre de mesure (mesures de pluviométrie, mesures de débit, etc.)<\/p>"
     },
     {
         "tableName": "overflow",
@@ -6061,18 +6061,18 @@
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
-        "tableName": "mutation",
-        "tableFileName": "mutation",
+        "tableName": "measuring_point",
+        "tableFileName": "measuring_point",
         "tableType": "Table",
-        "keyClass": "",
-        "keyTitle": "",
-        "name": "last_modification",
-        "type": "timestamp",
-        "length": 29,
+        "keyClass": "foreignKey",
+        "keyTitle": "Foreign Key",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>fk_operator",
+        "type": "varchar",
+        "length": 16,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "now()",
-        "comments": "<p>Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE<\/p>"
+        "defaultValue": "null",
+        "comments": ""
     },
     {
         "tableName": "param_ca_mouse1",
@@ -6229,18 +6229,18 @@
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
-        "tableName": "mutation",
-        "tableFileName": "mutation",
+        "tableName": "measuring_point",
+        "tableFileName": "measuring_point",
         "tableType": "Table",
         "keyClass": "foreignKey",
         "keyTitle": "Foreign Key",
-        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>fk_dataowner",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>fk_waste_water_treatment_plant",
         "type": "varchar",
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
+        "comments": ""
     },
     {
         "tableName": "damage",
@@ -6733,18 +6733,18 @@
         "comments": "<p>Quantification 2 according to SN EN 13508. Permissible inputs are described in chapter 3.1.5. Implemented as text attribute. / Quantifizierung 2 gemäss SN EN 13508. Zulässige Eingaben sind in Kapitel 3.1.5 beschrieben. Als Textattribut umgesetzt. / Quantification 2 selon la SN EN 13508. Les entrées autorisées sont décrites dans le chapitre 3.1.5. Type texte<\/p>"
     },
     {
-        "tableName": "measuring_point",
-        "tableFileName": "measuring_point",
+        "tableName": "mutation",
+        "tableFileName": "mutation",
         "tableType": "Table",
-        "keyClass": "foreignKey",
-        "keyTitle": "Foreign Key",
-        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>damming_device",
-        "type": "int4",
-        "length": 10,
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "attribute",
+        "type": "text",
+        "length": 2147483647,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": ""
+        "comments": "<p>Attribute name of chosen object / Attributname des gewählten Objektes / Nom de l&rsquo;attribut de l&rsquo;objet à sélectionner<\/p>"
     },
     {
         "tableName": "re_maintenance_event_wastewater_structure",
@@ -7881,18 +7881,18 @@
         "comments": "<p>yyy_Anzahl Einwohner im direkten Einzugsgebiet (Dimensionierung) als informativer Wert. Der massgebende Schmutzabwasseranfall ist im gleichnamigen entsprechenden Attribut anzugeben. / Anzahl Einwohner im direkten Einzugsgebiet (Dimensionierung) als informativer Wert. Der massgebende Schmutzabwasseranfall ist im gleichnamigen entsprechenden Attribut anzugeben. / Nombre d\u2019habitants dans le bassin versant direct (dimensionnement), valeur indicative. Le débit des eaux usées doit être indiqué dans l\u2019attribut du même nom.<\/p>"
     },
     {
-        "tableName": "measuring_point",
-        "tableFileName": "measuring_point",
+        "tableName": "mutation",
+        "tableFileName": "mutation",
         "tableType": "Table",
-        "keyClass": "foreignKey",
-        "keyTitle": "Foreign Key",
-        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>purpose",
-        "type": "int4",
-        "length": 10,
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "date_time",
+        "type": "timestamp",
+        "length": 29,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>Purpose of measurement / Zweck der Messung / Objet de la mesure<\/p>"
+        "comments": "<p>Date/Time of collecting data in the field. Else Date/Time of creating data set on the system / Datum/Zeit der Aufnahme im Feld falls vorhanden bei erstellt. Sonst Datum/Uhrzeit der Erstellung auf dem System / Date/temps de la relève, sinon date/temps de création dans le système. Sinon, date/heure de création sur le système<\/p>"
     },
     {
         "tableName": "dss15_aquifer",
@@ -8329,18 +8329,18 @@
         "comments": ""
     },
     {
-        "tableName": "measuring_point",
-        "tableFileName": "measuring_point",
+        "tableName": "mutation",
+        "tableFileName": "mutation",
         "tableType": "Table",
         "keyClass": "foreignKey",
         "keyTitle": "Foreign Key",
-        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>fk_waste_water_treatment_plant",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>fk_dataowner",
         "type": "varchar",
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": ""
+        "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
         "tableName": "import_manhole_quarantine",
@@ -8721,18 +8721,18 @@
         "comments": ""
     },
     {
-        "tableName": "mutation",
-        "tableFileName": "mutation",
+        "tableName": "measuring_point",
+        "tableFileName": "measuring_point",
         "tableType": "Table",
-        "keyClass": "",
-        "keyTitle": "",
-        "name": "recorded_by",
-        "type": "text",
-        "length": 2147483647,
+        "keyClass": "foreignKey",
+        "keyTitle": "Foreign Key",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>fk_dataowner",
+        "type": "varchar",
+        "length": 16,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>Name of person who recorded the dataset / Name des Aufnehmers im Feld / Nom de la personne, qui a relevé les données<\/p>"
+        "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
         "tableName": "wastewater_networkelement",
@@ -9911,18 +9911,18 @@
         "comments": "<p>yyy_Ort der Schlammentsorgung im heutigen Zustand / Ort der Schlammentsorgung im heutigen Zustand / Lieu d&rsquo;élimination des boues en état actuel<\/p>"
     },
     {
-        "tableName": "measuring_point",
-        "tableFileName": "measuring_point",
+        "tableName": "mutation",
+        "tableFileName": "mutation",
         "tableType": "Table",
         "keyClass": "foreignKey",
         "keyTitle": "Foreign Key",
-        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>fk_wastewater_structure",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>fk_provider",
         "type": "varchar",
         "length": 16,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": ""
+        "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
         "tableName": "hydraulic_char_data",
@@ -10023,18 +10023,18 @@
         "comments": "<p>stores the bottom altitude to be used for labelling, not part of the VSA-DSS data model added solely for TEKSI Wastewater &amp; GEP<\/p>"
     },
     {
-        "tableName": "measuring_point",
-        "tableFileName": "measuring_point",
+        "tableName": "mutation",
+        "tableFileName": "mutation",
         "tableType": "Table",
-        "keyClass": "foreignKey",
-        "keyTitle": "Foreign Key",
-        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>fk_operator",
-        "type": "varchar",
-        "length": 16,
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "last_modification",
+        "type": "timestamp",
+        "length": 29,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "null",
-        "comments": ""
+        "defaultValue": "now()",
+        "comments": "<p>Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE<\/p>"
     },
     {
         "tableName": "reach_point",
@@ -10177,8 +10177,8 @@
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
-        "tableName": "mutation",
-        "tableFileName": "mutation",
+        "tableName": "measuring_point",
+        "tableFileName": "measuring_point",
         "tableType": "Table",
         "keyClass": "primaryKey",
         "keyTitle": "Primary Key",
@@ -10187,7 +10187,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'mutation'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'measuring_point'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -10415,18 +10415,18 @@
         "comments": ""
     },
     {
-        "tableName": "mutation",
-        "tableFileName": "mutation",
+        "tableName": "measuring_point",
+        "tableFileName": "measuring_point",
         "tableType": "Table",
         "keyClass": "",
         "keyTitle": "",
-        "name": "object",
-        "type": "text",
-        "length": 2147483647,
+        "name": "last_modification",
+        "type": "timestamp",
+        "length": 29,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "null",
-        "comments": "<p>OID of Object / OID des Objektes / OID de l&rsquo;objet<\/p>"
+        "defaultValue": "now()",
+        "comments": "<p>Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE<\/p>"
     },
     {
         "tableName": "prank_weir",
@@ -11129,18 +11129,18 @@
         "comments": "<p>Double-walled pipe or other system to prevent leakage into groundwater protection zones. / Doppelwandrohr oder anderes System zum Schutz vor Austritt in Grundwasserschutzzonen. / Tube à double paroi ou autre système destiné à protéger la conduite contre les fuites dans dans des zones de protection des eaux souterraines.<\/p>"
     },
     {
-        "tableName": "mutation",
-        "tableFileName": "mutation",
+        "tableName": "measuring_point",
+        "tableFileName": "measuring_point",
         "tableType": "Table",
-        "keyClass": "",
-        "keyTitle": "",
-        "name": "date_time",
-        "type": "timestamp",
-        "length": 29,
+        "keyClass": "foreignKey",
+        "keyTitle": "Foreign Key",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>purpose",
+        "type": "int4",
+        "length": 10,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>Date/Time of collecting data in the field. Else Date/Time of creating data set on the system / Datum/Zeit der Aufnahme im Feld falls vorhanden bei erstellt. Sonst Datum/Uhrzeit der Erstellung auf dem System / Date/temps de la relève, sinon date/temps de création dans le système. Sinon, date/heure de création sur le système<\/p>"
+        "comments": "<p>Purpose of measurement / Zweck der Messung / Objet de la mesure<\/p>"
     },
     {
         "tableName": "hydr_geometry",
@@ -11409,18 +11409,18 @@
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
-        "tableName": "mutation",
-        "tableFileName": "mutation",
+        "tableName": "measuring_point",
+        "tableFileName": "measuring_point",
         "tableType": "Table",
-        "keyClass": "",
-        "keyTitle": "",
-        "name": "attribute",
-        "type": "text",
-        "length": 2147483647,
+        "keyClass": "foreignKey",
+        "keyTitle": "Foreign Key",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>damming_device",
+        "type": "int4",
+        "length": 10,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>Attribute name of chosen object / Attributname des gewählten Objektes / Nom de l&rsquo;attribut de l&rsquo;objet à sélectionner<\/p>"
+        "comments": ""
     },
     {
         "tableName": "dss15_planning_zone",
@@ -12459,18 +12459,18 @@
         "comments": "<p>yyy_Mittlerer Fremdwasseranfall, der im Ist-Zustand in die Schmutz- oder Mischabwasserkanalisation eingeleitet wird / Mittlerer Fremdwasseranfall, der im Ist-Zustand in die Schmutz- oder Mischabwasserkanalisation eingeleitet wird / Débit  d&rsquo;eaux claires parasites (ECP) moyen actuel, rejeté dans les canalisation d\u2019eaux usées ou mixtes<\/p>"
     },
     {
-        "tableName": "measuring_point",
-        "tableFileName": "measuring_point",
+        "tableName": "mutation",
+        "tableFileName": "mutation",
         "tableType": "Table",
-        "keyClass": "indexedColumn",
-        "keyTitle": "Indexed",
-        "name": "<i class='fa fa-sitemap fa-rotate-120' style='padding-right: 5px;'><\/i>identifier",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "classname",
         "type": "text",
         "length": 2147483647,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": ""
+        "comments": "<p>Class name of chosen object / Klassenname des gewählten Objektes / Nom de classe de l&rsquo;objet à sélectionner<\/p>"
     },
     {
         "tableName": "wastewater_networkelement",
@@ -12529,18 +12529,18 @@
         "comments": "<p>yyy_Bemerkungen zum Fortbestand des Betriebs / Bemerkungen zum Fortbestand des Betriebs / Remarques concernant la pérennité de l&rsquo;exploitation<\/p>"
     },
     {
-        "tableName": "measuring_point",
-        "tableFileName": "measuring_point",
+        "tableName": "mutation",
+        "tableFileName": "mutation",
         "tableType": "Table",
-        "keyClass": "foreignKey",
-        "keyTitle": "Foreign Key",
-        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>fk_dataowner",
-        "type": "varchar",
-        "length": 16,
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "recorded_by",
+        "type": "text",
+        "length": 2147483647,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
+        "comments": "<p>Name of person who recorded the dataset / Name des Aufnehmers im Feld / Nom de la personne, qui a relevé les données<\/p>"
     },
     {
         "tableName": "farm",
@@ -13047,18 +13047,18 @@
         "comments": "<p>yyy_Staats- und Bundesbeiträge / Staats- und Bundesbeiträge / Contributions des cantons et de la confédération<\/p>"
     },
     {
-        "tableName": "mutation",
-        "tableFileName": "mutation",
+        "tableName": "measuring_point",
+        "tableFileName": "measuring_point",
         "tableType": "Table",
-        "keyClass": "",
-        "keyTitle": "",
-        "name": "user_system",
-        "type": "text",
-        "length": 2147483647,
+        "keyClass": "foreignKey",
+        "keyTitle": "Foreign Key",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>fk_reference_station",
+        "type": "varchar",
+        "length": 16,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>Name of system user / Name des Systembenutzers / Usager du système informatique<\/p>"
+        "comments": ""
     },
     {
         "tableName": "import_manhole_quarantine",
@@ -13285,18 +13285,18 @@
         "comments": "<p>Type of measurment, e.g. proportional to time or volume / Art der Messung, z.B zeit- oder mengenproportional / Type de mesure, par ex. proportionnel au temps ou au débit<\/p>"
     },
     {
-        "tableName": "measuring_point",
-        "tableFileName": "measuring_point",
+        "tableName": "mutation",
+        "tableFileName": "mutation",
         "tableType": "Table",
         "keyClass": "",
         "keyTitle": "",
-        "name": "kind",
-        "type": "text",
-        "length": 2147483647,
+        "name": "date_mutation",
+        "type": "timestamp",
+        "length": 29,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>yyy_Art der Untersuchungsstelle ( Regenmessungen, Abflussmessungen, etc.) / Art der Untersuchungsstelle ( Regenmessungen, Abflussmessungen, etc.) / Genre de mesure (mesures de pluviométrie, mesures de débit, etc.)<\/p>"
+        "comments": "<p>if changed: Date/Time of changement. If deleted date/time of deleting / Bei geaendert Datum/Zeit der Änderung. Bei gelöscht Datum/Zeit der Löschung / changée: Date/Temps du changement. effacée: Date/Temps de la suppression<\/p>"
     },
     {
         "tableName": "log_card",
@@ -13509,18 +13509,18 @@
         "comments": "<p>yyy_Art des Kanals hinsichtlich hydraulischer Ausführung / Art des Kanals hinsichtlich hydraulischer Ausführung / Genre de canalisation par rapport à sa fonction hydraulique<\/p>"
     },
     {
-        "tableName": "measuring_point",
-        "tableFileName": "measuring_point",
+        "tableName": "mutation",
+        "tableFileName": "mutation",
         "tableType": "Table",
-        "keyClass": "indexedColumn",
-        "keyTitle": "Indexed",
-        "name": "<i class='fa fa-sitemap fa-rotate-120' style='padding-right: 5px;'><\/i>situation_geometry",
-        "type": "geometry",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "last_value",
+        "type": "text",
         "length": 2147483647,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>National position coordinates (East, North) / Landeskoordinate Ost/Nord / Coordonnées nationales Est/Nord<\/p>"
+        "comments": "<p>last_value changed to text. Only with type=changed and deleted / Letzter Wert umgewandelt in Text. Nur bei ART=geaendert oder geloescht / Dernière valeur modifiée du texte. Seulement avec GENRE = changee ou effacee<\/p>"
     },
     {
         "tableName": "hydr_geom_relation",
