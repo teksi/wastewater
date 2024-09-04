@@ -43,6 +43,7 @@ from .gui.twwwizard import TwwWizard
 from .processing_provider.provider import TwwProcessingProvider
 from .tools.twwmaptools import TwwMapToolConnectNetworkElements, TwwTreeMapTool
 from .tools.twwnetwork import TwwGraphManager
+from .tools.manage_roles import manage_roles
 from .utils.database_utils import DatabaseUtils
 from .utils.plugin_utils import plugin_root_path
 from .utils.qt_utils import OverrideCursor
@@ -234,6 +235,11 @@ class TeksiWastewaterPlugin:
         )
         self.disableSymbologyTriggersAction.triggered.connect(self.disable_symbology_triggers)
 
+        self.createRolesAction = QAction(
+            self.tr("Create database roles"), self.iface.mainWindow()
+        )
+        self.createRolesAction.triggered.connect(self.tww_role_generation_action)
+
         self.settingsAction = QAction(
             QIcon(QgsApplication.getThemeIcon("/mActionOptions.svg")),
             self.tr("Settings"),
@@ -284,6 +290,7 @@ class TeksiWastewaterPlugin:
         self.iface.addPluginToMenu(self.main_menu_name, self.validityCheckAction)
         self.iface.addPluginToMenu(self.main_menu_name, self.enableSymbologyTriggersAction)
         self.iface.addPluginToMenu(self.main_menu_name, self.disableSymbologyTriggersAction)
+        self.iface.addPluginToMenu(self.main_menu_name, self.createRolesAction)
         self.iface.addPluginToMenu(self.main_menu_name, self.settingsAction)
         self.iface.addPluginToMenu(self.main_menu_name, self.aboutAction)
 
@@ -378,6 +385,34 @@ class TeksiWastewaterPlugin:
             self.tr(f"Database has following validity issues:\n\n{messagesText}"),
         )
 
+    def tww_role_generation_action(self):
+        messages = []
+        try:
+            supuser = DatabaseUtils.check_is_superuser()
+            if supuser:
+                manage_roles( modulename="tww", pg_service = DatabaseUtils.databaseConfig.PGSERVICE,grant= True)
+            else:
+                raise Exception(self.tr(f"User has insufficient privileges"))
+
+
+
+        except Exception as exception:
+            messages.append(self.tr(f"Could not generate roles: {exception}"))
+
+        if len(messages) == 0:
+            QMessageBox.information(
+                self.iface.mainWindow(),
+                self.validityCheckAction.text(),
+                self.tr("Roles were successfully created."),
+            )
+            return
+
+        messagesText = "\n".join(messages)
+        QMessageBox.critical(
+            self.iface.mainWindow(),
+            self.validityCheckAction.text(),
+            self.tr(f"Roles could not be created:\n\n{messagesText}"),
+        )
     def enable_symbology_triggers(self):
         try:
             DatabaseUtils.enable_symbology_triggers()
@@ -435,6 +470,7 @@ class TeksiWastewaterPlugin:
         self.iface.removePluginMenu(self.main_menu_name, self.aboutAction)
         self.iface.removePluginMenu(self.main_menu_name, self.enableSymbologyTriggersAction)
         self.iface.removePluginMenu(self.main_menu_name, self.disableSymbologyTriggersAction)
+        self.iface.removePluginMenu(self.main_menu_name, self.createRolesAction)
 
         QgsApplication.processingRegistry().removeProvider(self.processing_provider)
 

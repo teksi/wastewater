@@ -236,3 +236,8 @@ class DatabaseUtils:
             messages.append("Symbology triggers are disabled")
 
         return messages
+
+    def check_is_superuser():
+        logger.info("Check symbology triggers enabled")
+        row = DatabaseUtils.fetchone("select usesuper from pg_user where usename = CURRENT_USER;")
+        return row[0]
