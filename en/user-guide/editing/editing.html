@@ -65,7 +65,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#an-other-way-to-choose-an-object">3.3.1.8. An other way to choose an object</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#adding-additional-covers-and-nodes-to-an-existing-wastewater-structure">3.3.1.9. Adding additional covers and nodes to an existing wastewater structure</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#adding-a-wastewater-node-to-an-existing-reach">3.3.1.10. Adding a wastewater node to an existing reach</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#multiedit">3.3.1.11. Multiedit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-multiple-records-at-once">3.3.1.11. Change multiple records at once</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#saving-changes">3.3.1.12. Saving changes</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#changing-wastewater-structure-type-ws-type">3.3.1.13. Changing Wastewater Structure Type (ws_type)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#split-a-reach-channel-into-different-reaches">3.3.1.14. Split a reach (channel) into different reaches</a></li>
@@ -356,9 +356,27 @@ Do not use the <strong>Reverse line</strong> button of QGIS, because this button
 <p>If you really want to connect the node to a channel, then type the obj_id of the channel manually in the fk_wasterwater_structure field of the node.</p>
 </div>
 </section>
-<section id="multiedit">
-<h2><span class="section-number">3.3.1.11. </span>Multiedit<a class="headerlink" href="#multiedit" title="Link to this heading"></a></h2>
-<p>If you want to edit attributes for multiple objects of the same layer you can use the <a class="reference external" href="https://docs.qgis.org/latest/en/docs/user_manual/working_with_vector/attribute_table.html#multi-edit-fields">multiedit Tool of QGIS</a>.</p>
+<section id="change-multiple-records-at-once">
+<h2><span class="section-number">3.3.1.11. </span>Change multiple records at once<a class="headerlink" href="#change-multiple-records-at-once" title="Link to this heading"></a></h2>
+<p>There are several QGIS-possibilitys to change multiple records at the same time. QGIS <strong>Multiedit</strong> changes multiple fields of multiple records at the same, but there is no progress indicator. With QGIS <strong>field calculator</strong> one field can be change at once and there is a progress indicator.</p>
+<p>If there are lot of records (several hundred to several thousand) a multiple record change can take a long time (several minutes), if there are a lot records and if there are views changed, that have lots of fields from different tables.
+Special the TWW-main-views (vw_tww_wastewater_structure and vw_tww_reach) have this problem. Therefore, it is always better not to multi-edit these large views, but rather to edit the table in question directly if a large number of data records are to be changed at the same time. That’s why it is good to know, in which table is our field (perhaps the fieldname-prefix helps) and you may need to add this table to your TWW-project.
+To explain, that it really matters, there was the following test:</p>
+<p>Change for 500 reaches out of 10’122 the field rv_construction_type. It’s a field with a value list. In vw_tww_reach, the fields name is ws_rv_construction_type, means the table of the field is wastewater_structure (ws).</p>
+<p>How long did we wait:</p>
+<ul class="simple">
+<li><p>Use field calculator with vw_tww_reach: more than 25 minutes!</p></li>
+<li><p>Use multiedit with vw_tww_reach: more than 5 minutes.</p></li>
+<li><p>Use field calculator with vw_channel: 1 minute 3seconds</p></li>
+<li><p>Use field calculator with table wastewater_structure: 5 seconds</p></li>
+</ul>
+<p>Why is vw_tww_reach so slow: there are triggers in the database, that updates for every record the calculated fields of the connected manholes and nodes, that this themes symbology is always up-to-date. With: <code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">tww_sys.disable_symbology_triggers();</span></code> these triggers can be stopped. If the triggers are stopped then also the main-views are fast:</p>
+<ul class="simple">
+<li><p>Use field calculator or multiedit with vw_tww_reach: about 8 seconds.</p></li>
+</ul>
+<p>Do not forget the enable the symbology triggers again after the calculations: <code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">tww_sys.enable_symbology_triggers();</span></code>
+(and to run the symbology_triggers manually for all records if necessary with the new xy-button?!).</p>
+<p>To do: verify these tests with TWW</p>
 </section>
 <section id="saving-changes">
 <h2><span class="section-number">3.3.1.12. </span>Saving changes<a class="headerlink" href="#saving-changes" title="Link to this heading"></a></h2>
