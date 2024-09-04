@@ -41,9 +41,9 @@ from .gui.twwprofiledockwidget import TwwProfileDockWidget
 from .gui.twwsettingsdialog import TwwSettingsDialog
 from .gui.twwwizard import TwwWizard
 from .processing_provider.provider import TwwProcessingProvider
+from .tools.manage_roles import manage_roles
 from .tools.twwmaptools import TwwMapToolConnectNetworkElements, TwwTreeMapTool
 from .tools.twwnetwork import TwwGraphManager
-from .tools.manage_roles import manage_roles
 from .utils.database_utils import DatabaseUtils
 from .utils.plugin_utils import plugin_root_path
 from .utils.qt_utils import OverrideCursor
@@ -235,9 +235,7 @@ class TeksiWastewaterPlugin:
         )
         self.disableSymbologyTriggersAction.triggered.connect(self.disable_symbology_triggers)
 
-        self.createRolesAction = QAction(
-            self.tr("Create database roles"), self.iface.mainWindow()
-        )
+        self.createRolesAction = QAction(self.tr("Create database roles"), self.iface.mainWindow())
         self.createRolesAction.triggered.connect(self.tww_role_generation_action)
 
         self.settingsAction = QAction(
@@ -390,11 +388,11 @@ class TeksiWastewaterPlugin:
         try:
             supuser = DatabaseUtils.check_is_superuser()
             if supuser:
-                manage_roles( modulename="tww", pg_service = DatabaseUtils.databaseConfig.PGSERVICE,grant= True)
+                manage_roles(
+                    modulename="tww", pg_service=DatabaseUtils.databaseConfig.PGSERVICE, grant=True
+                )
             else:
                 raise Exception(self.tr(f"User has insufficient privileges"))
-
-
 
         except Exception as exception:
             messages.append(self.tr(f"Could not generate roles: {exception}"))
@@ -413,6 +411,7 @@ class TeksiWastewaterPlugin:
             self.validityCheckAction.text(),
             self.tr(f"Roles could not be created:\n\n{messagesText}"),
         )
+
     def enable_symbology_triggers(self):
         try:
             DatabaseUtils.enable_symbology_triggers()
