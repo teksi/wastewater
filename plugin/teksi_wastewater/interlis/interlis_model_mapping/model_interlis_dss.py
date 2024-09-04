@@ -335,3 +335,17 @@ class ModelInterlisDss(ModelInterlisSia405Abwasser):
             __table_args__ = {"schema": config.ABWASSER_SCHEMA}
 
         ModelInterlisDss.versickerungsbereich = versickerungsbereich
+
+        class erhaltungsereignis_abwasserbauwerkassoc(self.Base):
+            __tablename__ = "erhaltungsereignis_abwasserbauwerkassoc"
+            __table_args__ = {"schema": config.ABWASSER_SCHEMA}
+
+        ModelInterlisDss.erhaltungsereignis_abwasserbauwerkassoc = (
+            erhaltungsereignis_abwasserbauwerkassoc
+        )
+
+        class gebaeudegruppe_entsorgungassoc(self.Base):
+            __tablename__ = "gebaeudegruppe_entsorgungassoc"
+            __table_args__ = {"schema": config.ABWASSER_SCHEMA}
+
+        ModelInterlisDss.gebaeudegruppe_entsorgungassoc = gebaeudegruppe_entsorgungassoc

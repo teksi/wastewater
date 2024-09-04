@@ -349,6 +349,18 @@ class InterlisImporterToIntermediateSchema:
         self._import_versickerungsbereich()
         self._check_for_stop()
 
+        logger.info(
+            "\nImporting ABWASSER.erhaltungsereignis_abwasserbauwerkassoc  -> TWW.re_maintenance_event_wastewater_structure"
+        )
+        self._import_erhaltungsereignis_abwasserbauwerkassoc()
+        self._check_for_stop()
+
+        logger.info(
+            "\nImporting ABWASSER.gebaeudegruppe_entsorgungassoc  -> TWW.re_building_group_disposal"
+        )
+        self._import_gebaeudegruppe_entsorgungassoc()
+        self._check_for_stop()
+
     def _import_vsa_kek(self):
         logger.info("\nImporting ABWASSER.untersuchung -> TWW.examination")
         self._import_untersuchung()
@@ -1702,7 +1714,7 @@ class InterlisImporterToIntermediateSchema:
                 object=row.objekt,
                 recorded_by=row.aufnehmer,
                 remark=row.bemerkung,
-                system_user=row.systembenutzer,
+                user_system=row.systembenutzer,
             )
             self.session_tww.add(mutation)
             print(".", end="")
@@ -2242,6 +2254,41 @@ class InterlisImporterToIntermediateSchema:
             )
 
             self.session_tww.add(file_table_row)
+            print(".", end="")
+
+    def _import_erhaltungsereignis_abwasserbauwerkassoc(self):
+        for row in self.session_interlis.query(
+            self.model_classes_interlis.erhaltungsereignis_abwasserbauwerkassoc
+        ):
+
+            re_maintenance_event_wastewater_structure = self.create_or_update(
+                self.model_classes_tww_od.re_maintenance_event_wastewater_structure,
+                # this class does not inherit base_commmon
+                # **self.base_common(row),
+                # --- re_maintenance_event_wastewater_structure ---
+                fk_maintenance_event=self.get_pk(
+                    row.erhaltungsereignis_abwasserbauwerkassocref__REL
+                ),
+                fk_wastewater_structure=self.get_pk(row.abwasserbauwerkref__REL),
+            )
+
+            self.session_tww.add(re_maintenance_event_wastewater_structure)
+            print(".", end="")
+
+    def _import_gebaeudegruppe_entsorgungassoc(self):
+        for row in self.session_interlis.query(
+            self.model_classes_interlis.gebaeudegruppe_entsorgungassoc
+        ):
+            re_building_group_disposal = self.create_or_update(
+                self.model_classes_tww_od.re_building_group_disposal,
+                # this class does not inherit base_commmon
+                # **self.base_common(row),
+                # --- re_building_group_disposal ---
+                fk_building_group=self.get_pk(row.gebaeudegruppe_entsorgungassocref__REL),
+                fk_disposal=self.get_pk(row.entsorgungref__REL),
+            )
+
+            self.session_tww.add(re_building_group_disposal)
             print(".", end="")
 
     def _check_for_stop(self):

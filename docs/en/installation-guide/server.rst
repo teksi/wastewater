@@ -11,7 +11,7 @@ Required Software
 Server installation
 ~~~~~~~~~~~~~~~~~~~
 
-* Install PostgreSQL (>=15.1)
+* Install PostgreSQL (>=15)
 
   * `Download page <http://www.postgresql.org/download>`_
 
