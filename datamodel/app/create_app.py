@@ -11,6 +11,7 @@ except ImportError:
 
 from extensions.extension_manager import load_extension
 from pirogue import MultipleInheritance, SimpleJoins, SingleInheritance
+from triggers.set_defaults_and_triggers import set_defaults_and_triggers
 from view.vw_tww_additional_ws import vw_tww_additional_ws
 from view.vw_tww_reach import vw_tww_reach
 from view.vw_tww_wastewater_structure import vw_tww_wastewater_structure
@@ -66,11 +67,13 @@ def create_app(
         for extension in extension_names:
             load_extension(srid, pg_service, "tww", extension)
 
-    run_sql_file("symbology_functions.sql", pg_service)
-    run_sql_file("reach_direction_change.sql", pg_service, variables)
-    run_sql_file("14_geometry_functions.sql", pg_service, variables)
-    run_sql_file("update_catchment_area_totals.sql", pg_service, variables)
-    run_sql_file("organisation_functions.sql", pg_service, variables)
+    run_sql_file("functions/oid_functions.sql", pg_service, variables)
+    run_sql_file("functions/modification_functions.sql", pg_service)
+    run_sql_file("functions/symbology_functions.sql", pg_service)
+    run_sql_file("functions/reach_direction_change.sql", pg_service, variables)
+    run_sql_file("functions/14_geometry_functions.sql", pg_service, variables)
+    run_sql_file("functions/update_catchment_area_totals.sql", pg_service, variables)
+    run_sql_file("functions/organisation_functions.sql", pg_service, variables)
 
     # open YAML files
     if tww_reach_extra:
@@ -115,6 +118,9 @@ def create_app(
         "reservoir": "connection_object",
         "individual_surface": "connection_object",
         "fountain": "connection_object",
+        # surface_runoff_parameters
+        "param_ca_general": "surface_runoff_parameters",
+        "param_ca_mouse1": "surface_runoff_parameters",
         # overflow
         "leapingweir": "overflow",
         "prank_weir": "overflow",
@@ -127,6 +133,8 @@ def create_app(
         "infiltration_zone": "zone",
         "drainage_system": "zone",
     }
+
+    set_defaults_and_triggers(pg_service, SingleInheritances)
 
     for key in SingleInheritances:
         SingleInheritance(

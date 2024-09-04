@@ -86,9 +86,9 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
         WHERE '-1'= ALL(ARRAY[ch.obj_id,ma.obj_id,ss.obj_id,dp.obj_id,ii.obj_id]) IS NULL
         AND '-2'= ALL(ARRAY[ch.obj_id,ma.obj_id,ss.obj_id,dp.obj_id,ii.obj_id]) IS NULL;
 
-        ALTER VIEW tww_app.vw_tww_additional_ws ALTER obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_structure');
-        ALTER VIEW tww_app.vw_tww_additional_ws ALTER co_obj_id SET DEFAULT tww_sys.generate_oid('tww_od','cover');
-        ALTER VIEW tww_app.vw_tww_additional_ws ALTER wn_obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_node');
+        ALTER VIEW tww_app.vw_tww_additional_ws ALTER obj_id SET DEFAULT tww_app.generate_oid('tww_od','wastewater_structure');
+        ALTER VIEW tww_app.vw_tww_additional_ws ALTER co_obj_id SET DEFAULT tww_app.generate_oid('tww_od','cover');
+        ALTER VIEW tww_app.vw_tww_additional_ws ALTER wn_obj_id SET DEFAULT tww_app.generate_oid('tww_od','wastewater_node');
     """.format(
         srid=srid,
         ws_cols=select_columns(
@@ -557,9 +557,9 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
     cursor.execute(trigger_delete_sql)
 
     extras = """
-    ALTER VIEW tww_app.vw_tww_additional_ws ALTER obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_structure');
-    ALTER VIEW tww_app.vw_tww_additional_ws ALTER co_obj_id SET DEFAULT tww_sys.generate_oid('tww_od','cover');
-    ALTER VIEW tww_app.vw_tww_additional_ws ALTER wn_obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_node');
+    ALTER VIEW tww_app.vw_tww_additional_ws ALTER obj_id SET DEFAULT tww_app.generate_oid('tww_od','wastewater_structure');
+    ALTER VIEW tww_app.vw_tww_additional_ws ALTER co_obj_id SET DEFAULT tww_app.generate_oid('tww_od','cover');
+    ALTER VIEW tww_app.vw_tww_additional_ws ALTER wn_obj_id SET DEFAULT tww_app.generate_oid('tww_od','wastewater_node');
     """
     cursor.execute(extras)
 

@@ -404,11 +404,11 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
     cursor.execute(trigger_delete_sql)
 
     extras = """
-    ALTER VIEW tww_app.vw_tww_reach ALTER obj_id SET DEFAULT tww_sys.generate_oid('tww_od','reach');
+    ALTER VIEW tww_app.vw_tww_reach ALTER obj_id SET DEFAULT tww_app.generate_oid('tww_od','reach');
 
-    ALTER VIEW tww_app.vw_tww_reach ALTER rp_from_obj_id SET DEFAULT tww_sys.generate_oid('tww_od','reach_point');
-    ALTER VIEW tww_app.vw_tww_reach ALTER rp_to_obj_id SET DEFAULT tww_sys.generate_oid('tww_od','reach_point');
-    ALTER VIEW tww_app.vw_tww_reach ALTER ws_obj_id SET DEFAULT tww_sys.generate_oid('tww_od','channel');
+    ALTER VIEW tww_app.vw_tww_reach ALTER rp_from_obj_id SET DEFAULT tww_app.generate_oid('tww_od','reach_point');
+    ALTER VIEW tww_app.vw_tww_reach ALTER rp_to_obj_id SET DEFAULT tww_app.generate_oid('tww_od','reach_point');
+    ALTER VIEW tww_app.vw_tww_reach ALTER ws_obj_id SET DEFAULT tww_app.generate_oid('tww_od','channel');
     """
     cursor.execute(extras)
 
