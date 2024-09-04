@@ -43,7 +43,7 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
         {extra_joins}
         WHERE ch.obj_id IS NULL;
 
-        ALTER VIEW tww_app.vw_wastewater_structure ALTER obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_structure');
+        ALTER VIEW tww_app.vw_wastewater_structure ALTER obj_id SET DEFAULT tww_app.generate_oid('tww_od','wastewater_structure');
     """.format(
         extra_cols="\n    ".join(
             [
@@ -184,7 +184,7 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
     cursor.execute(trigger_delete_sql)
 
     extras = """
-    ALTER VIEW tww_app.vw_wastewater_structure ALTER obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_structure');
+    ALTER VIEW tww_app.vw_wastewater_structure ALTER obj_id SET DEFAULT tww_app.generate_oid('tww_od','wastewater_structure');
     """
     cursor.execute(extras)
 
