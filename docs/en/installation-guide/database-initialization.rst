@@ -45,7 +45,7 @@ Restore data model with demodata
 
 .. warning:: Demodata only available as an INTERLIS file
    The undeling procedure is now providing an empty datamodel with value lists.
-   
+
    The demodata is now only available in INTERLIS format but can be easily imported with the plugin IMPORT tool.
 
 
