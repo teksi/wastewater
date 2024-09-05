@@ -18,7 +18,7 @@ The AG-64/AG-96 object-ids are mapped to the database as follows:
 
 Wherever possible, the value lists of VSA DSS are used. In cases where a 1:1 mapping is possible, there is no additional value list entry for AG-64/96. Instead, one can use the corresponding VSA-DSS value which is translated on export. These cases are listed below.
 
-Almost all VSA-DSS values of the mentioned layers that do not exist in AG-64/96 are mapped to AG-64/96 using a backwards relation. Per default, the VSA-specific value list codes which are ambiguous in AG-64/96 are set to ´´inactive´´.
+Almost all VSA-DSS values of the mentioned layers that do not exist in AG-64/96 are mapped to AG-64/96 using a backwards relation. Per default, the VSA-specific value list codes which are ambiguous in AG-64/96 are set to ``inactive``.
 
 The AG-64/96 values are automatically mapped to VSA DSS where sensible, allowing to export both models.
 
@@ -47,7 +47,7 @@ The FunktionAG is mapped from
   * infiltration_installation.kind
   * discharge_point.relevance
 
-The FunktionAG ´´Kontrollschacht´´ is not included in the value list. Use ´´manhole´´ or ´´combined_manhole´´ instead, which are mapped using a backwards relation.
+The FunktionAG ``Kontrollschacht`` is not included in the value list. Use ``manhole`` or ``combined_manhole`` instead, which are mapped using a backwards relation.
 
 The following table explains the mapping of FunktionAG in detail. If there are multiple options for TWW class, the type is defined dependent on whether a detail geometry exists. The value_de is only listed if the AG-64/96 value is not eligible
 
@@ -253,12 +253,12 @@ Apart from street water and square water, the NutzungsartAG are not modelled as 
 Ueberlauf_Foerderaggregat
 ---------------------------------
 
-The layer Ueberlauf_Foerderaggregat is mapped to ´tww_od.overflow´ and its specialisations
+The layer Ueberlauf_Foerderaggregat is mapped to `tww_od.overflow` and its specialisations
 
 GEPMassnahme
 ----------------
 
-GEPMassnahme is mapped to ´tww_od.measure´. The following categories can be mapped 1:1 onto a VSA DSS value and therefore have no separate value list entrance.
+GEPMassnahme is mapped to `tww_od.measure`. The following categories can be mapped 1:1 onto a VSA DSS value and therefore have no separate value list entrance.
 
 .. list-table::
    :widths: 50 50
@@ -277,12 +277,12 @@ GEPMassnahme is mapped to ´tww_od.measure´. The following categories can be ma
 Bautenausserhalbbaugebiet
 -----------------------------
 
-Bautenausserhalbbaugebiet is mapped to ´tww_od.building_group´. There is no backwards mapping from VSA-DSS ´Gebaeudegruppe.Sanierungsbedarf´ to AG-96 ´Bautenausserhalbbaugebiet.Sanierungsbedarf´ because the value ´unbekannt´ cannot be mapped.
+Bautenausserhalbbaugebiet is mapped to `tww_od.building_group`. There is no backwards mapping from VSA-DSS `Gebaeudegruppe.Sanierungsbedarf` to AG-96 `Bautenausserhalbbaugebiet.Sanierungsbedarf` because the value `unbekannt` cannot be mapped.
 
 SBW_Einzugsgebiet
 ---------------------
 
-SBW_Einzugsgebiet is mapped to ´tww_od.catchment_area_totals´. The perimeter geometry is stored as an extension geometry attribute. In order to alter it, one needs to manually import the layer into the qgs project.
+SBW_Einzugsgebiet is mapped to `tww_od.catchment_area_totals`. The perimeter geometry is stored as an extension geometry attribute. In order to alter it, one needs to manually import the layer into the qgs project.
 
 There exists a function to calculate the perimeter geometry by aggregating the catchment areas via catchment_area->log_card->main_log_card->hydraulic_char_data->catchment_area_totals.
 The perimeter geometry is a MultiSurface, while the INTERLIS model requires a CompoundCurve. According to the official data collection policy of the Canton, one should violate the datamodel and export a MultiPart. As the underlying export mechanism ili2pg does not allow to export a wrong geometry type, only the biggest Singlepart is exported.
@@ -290,4 +290,4 @@ The perimeter geometry is a MultiSurface, while the INTERLIS model requires a Co
 VersickerungsbereichAG
 ------------------------
 
-VersickerungsbereichAG is mapped to ´tww_od.infiltration_zone´.
+VersickerungsbereichAG is mapped to `tww_od.infiltration_zone`.
