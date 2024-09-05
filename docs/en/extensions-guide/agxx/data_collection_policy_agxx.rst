@@ -57,172 +57,172 @@ The following table explains the mapping of FunktionAG in detail. If there are m
    
    * - Value in AG-64/AG-96
      - Row in TWW
-	 - value_de
+     - value_de
    * - abflussloseGrube
      - special_structure.function
-	 -
+     -
    * - Absturzbauwerk
      - special_structure.function / manhole.function
-	 -
+     -
    * - Abwasserfaulraum
      - special_structure.function
-	 -
+     -
    * - Abwasserreinigungsanlage
      - wwtp_structure.kind
-	 - any value
+     - any value
    * - andere
      - special_structure.function / manhole.function / wastewater_node.ag64_function
-	 -
+     -
    * - Anschluss
      - wastewater_node.ag64_function
-	 -
+     -
    * - Be_Entlueftung
      - special_structure.function / manhole.function
-	 -
+     -
    * - Bodenablauf
      - manhole.function
-	 -
+     -
    * - Dachwasserschacht
      - manhole.function
-	 -
+     -
    * - Duekerkammer
      - special_structure.function
-	 -
+     -
    * - Duekeroberhaupt
      - special_structure.function
-	 -
+     -
    * - Einlaufschacht
      - manhole.function
-	 -
+     -
    * - Einleitstelle_gewaesserrelevant
      - discharge_point.relevance
-	 - gewaesserrelevant
+     - gewaesserrelevant
    * - Einleitstelle_nicht_gewaesserrelevant
      - discharge_point.relevance
-	 - nicht_gewaesserrelevant
+     - nicht_gewaesserrelevant
    * - Entwaesserungsrinne
      - manhole.function
-	 -
+     -
    * - Faulgrube
      - special_structure.function
-	 -
+     -
    * - Gelaendemulde
      - special_structure.function
-	 -
+     -
    * - Geleiseschacht
      - manhole.function
-	 -
+     -
    * - Geschiebefang
      - special_structure.function
-	 -
+     -
    * - Guellegrube
      - special_structure.function
-	 -
+     -
    * - Klaergrube
      - special_structure.function
-	 -
+     -
    * - Kontrollschacht
      - manhole.function
-	 - Kontroll-Einstiegschacht or Kombischacht
+     - Kontroll-Einstiegschacht or Kombischacht
    * - Leitungsknoten
      - no wastewater structure
-	 -
+     -
    * - Messstelle
      - measurement not in special construction
-	 -
+     -
    * - Oelabscheider
      - special_structure.function / manhole.function
-	 -
+     -
    * - Oelrueckhaltebecken
      - special_structure.function
-	 -
+     -
    * - Pumpwerk
      - special_structure.function / manhole.function
-	 -
+     -
    * - Regenbecken_Durchlaufbecken
      - special_structure.function
-	 -
+     -
    * - Regenbecken_Fangbecken
      - special_structure.function
-	 -
+     -
    * - Regenbecken_Fangkanal
      - special_structure.function
-	 -
+     -
    * - Regenbecken_Regenklaerbecken
      - special_structure.function
-	 -
+     -
    * - Regenbecken_Regenrueckhaltebecken
      - special_structure.function
-	 -
+     -
    * - Regenbecken_Regenrueckhaltekanal
      - special_structure.function
-	 -
+     -
    * - Regenbecken_Verbundbecken
      - special_structure.function
-	 -
+     -
    * - Regenueberlauf
      - special_structure.function / manhole.function
-	 -
+     -
    * - Regenwasserrechen
      - special_structure.function
-	 -
+     -
    * - Regenwassersieb
      - special_structure.function
-	 -
+     -
    * - Rohrbruecke
      - special_structure.function
-	 -
+     -
    * - Schlammfang
      - manhole.function
-	 -
+     -
    * - Schlammsammler
      - manhole.function
-	 -
+     -
    * - Schwimmstoffabscheider
      - special_structure.function / manhole.function
-	 -
+     -
    * - seitlicherZugang
      - special_structure.function
-	 -
+     -
    * - Spuelschacht
      - special_structure.function / manhole.function
-	 -
+     -
    * - Strassenwasserbehandlungsanlage
      - special_structure.function
-	 -
+     -
    * - Trennbauwerk
      - special_structure.function / manhole.function
-	 -
+     -
    * - unbekannt
      - special_structure.function / manhole.function
-	 -
+     -
    * - Versickerungsanlage.Versickerungsbecken
      - infiltration_installation.kind
-	 - Versickerungsbecken
+     - Versickerungsbecken
    * - Versickerungsanlage.Kieskoerper
      - infiltration_installation.kind
-	 - Kieskoerper
+     - Kieskoerper
    * - Versickerungsanlage.Versickerungsschacht
      - infiltration_installation.kind
-	 - Versickerungsschacht
+     - Versickerungsschacht
    * - Versickerungsanlage.Versickerungsstrang
      - infiltration_installation.kind
-	 - Versickerungsstrang_Galerie
+     - Versickerungsstrang_Galerie
    * - Versickerungsanlage.Versickerungsschacht_Strang
      - infiltration_installation.kind
-	 - Kombination_Schacht_Strang
+     - Kombination_Schacht_Strang
    * - Versickerungsanlage.Retentionsfilterbecken
      - infiltration_installation.kind
-	 - Retentionsfilterbecken
+     - Retentionsfilterbecken
    * - Versickerungsanlage.andere
      - infiltration_installation.kind
-	 - andere
+     - andere
    * - Versickerungsanlage.unbekannt
      - infiltration_installation.kind
-	 - unbekannt
+     - unbekannt
    * - Vorbehandlung
      - special_structure.function
-	 - Vorbehandlungsanlage
+     - Vorbehandlungsanlage
    * - Wirbelfallschacht
      - special_structure.function
      -
