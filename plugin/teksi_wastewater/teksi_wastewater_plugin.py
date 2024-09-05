@@ -392,7 +392,7 @@ class TeksiWastewaterPlugin:
                     modulename="tww", pg_service=DatabaseUtils.databaseConfig.PGSERVICE, grant=True
                 )
             else:
-                raise Exception(self.tr(f"User has insufficient privileges"))
+                raise Exception(self.tr("User has insufficient privileges"))
 
         except Exception as exception:
             messages.append(self.tr(f"Could not generate roles: {exception}"))
