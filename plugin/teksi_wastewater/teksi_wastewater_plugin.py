@@ -40,8 +40,8 @@ except ImportError:
 from .gui.twwprofiledockwidget import TwwProfileDockWidget
 from .gui.twwsettingsdialog import TwwSettingsDialog
 from .gui.twwwizard import TwwWizard
+from .gui.rolegenerator import RoleGeneratorGui
 from .processing_provider.provider import TwwProcessingProvider
-from .tools.manage_roles import manage_roles
 from .tools.twwmaptools import TwwMapToolConnectNetworkElements, TwwTreeMapTool
 from .tools.twwnetwork import TwwGraphManager
 from .utils.database_utils import DatabaseUtils
@@ -73,6 +73,7 @@ class TeksiWastewaterPlugin:
 
     # Wizard
     wizarddock = None
+    RoleGenerator = None
 
     # The layer ids the plugin will need
     edgeLayer = None
@@ -383,33 +384,13 @@ class TeksiWastewaterPlugin:
         )
 
     def tww_role_generation_action(self):
-        messages = []
-        try:
-            supuser = DatabaseUtils.check_is_superuser()
-            if supuser:
-                manage_roles(
-                    modulename="tww", pg_service=DatabaseUtils.databaseConfig.PGSERVICE, grant=True
-                )
-            else:
-                raise Exception(self.tr("User has insufficient privileges"))
+        if not self.RoleGenerator:
+            self.RoleGenerator = RoleGeneratorGui()
+            
+        self.logger.debug("Opening Role Generator")
+        self.iface.addDockWidget(Qt.LeftDockWidgetArea, self.RoleGenerator)
+        self.RoleGenerator.show()
 
-        except Exception as exception:
-            messages.append(self.tr(f"Could not generate roles: {exception}"))
-
-        if len(messages) == 0:
-            QMessageBox.information(
-                self.iface.mainWindow(),
-                self.validityCheckAction.text(),
-                self.tr("Roles were successfully created."),
-            )
-            return
-
-        messagesText = "\n".join(messages)
-        QMessageBox.critical(
-            self.iface.mainWindow(),
-            self.validityCheckAction.text(),
-            self.tr(f"Roles could not be created:\n\n{messagesText}"),
-        )
 
     def enable_symbology_triggers(self):
         try:
