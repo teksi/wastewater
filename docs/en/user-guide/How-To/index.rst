@@ -3,6 +3,135 @@ How To
 
 This represents a guide on different themes about configuring in TWW.
 
+.. _settingdefaultvalues:
+
+Setting default values
+-----------------------
+
+If you get the following error message on startup of the TEKSI project during the 'Database production ready check':
+
+.. attention::
+CRITICAL: Error fk_provider or fk_dataowner not set in tww_od.default_values
+
+then your database is not yet production ready.
+
+It is possible to define default values for repeated fields such as fk_provider or fk_dataowner, so that you not have to add those manually for each object that you are creating.
+
+There is a new layer group 'configuration' in the project:
+
+.. figure:: images/configuration_default_values.png
+
+1. Open the attribute table 'Default values'
+2. Change to edit mode and choose select new object
+3. Select field name (currently fk_dataowner and fk_provider are supported in the form)
+
+.. figure:: images/default_values_fieldname_selection.png
+
+4. Select organisation that should be used (the corresponding obj_id will be added in the table itself).
+
+.. figure:: images/default_values_organisation_obj_id_selection.png
+
+
+For the second warning, please contact your TEKSI system administrator
+
+.. attention::
+CRITICAL: Error OID prefix set to 'ch000000'. Database not safe for production.
+
+and ask him/her to set the prefix to fit your project.
+
+For more information see :ref:`productionreadiness`
+
+Connect all occurences of your field name to ``tww_app.get_default_values(field_name)``.
+Per default, the fields ``fk_provider`` and ``fk_dataowner`` are already connected to the function ``tww_app.get_default_values(field_name)``.
+
+An example SQL script how to insert the default value for all occurences of a field name can be found `here <https://github.com/teksi/wastewater/blob/main/datamodel/changelogs/0001/14_default_values.sql>`_)
+
+
+How vw_tww_wastewater_structure labels work
+-------------------------------
+
+Labeling a manhole with his levels is quite a complex thing. Levels are not stored in the wastewater_structure class itself, but in the cover table and as reachpoint levels with the connected reaches. TWW has therefore 4 calculated fields to be able to label these levels:
+
+- _cover_label: shows the level / the levels of the cover/s.level of the wastewater structure
+- _bottom_label: shows the level / the levels of the wastewater_node(s).bottom_level of the wastewater structure
+- _input_label: shows the levels of the reachpoints connected as to_reachpoints to one of the wastewater_nodes of the wastewater_structure
+- _output_label: shows the levels of the reachpoints connected as from_reachpoints to one of the wastewater_nodes of the wastewater_structure
+
+
+.. figure:: images/tww_labels.jpg
+
+
+In this example, there are 4 input-reaches to the manhole, but there are only two input-labels (I1, I2). Why?
+
+Answer: in the function, where the _input_label is calculated, can be set a filter so that only reaches with specified function_hierachic (e.g. only pwwf-reaches) are labeled (uses a specific field in the vl-channel_function_hierarchic, documentation follows).
+In the example, the 200mm-reaches are swwf-reaches and therefore not labeled.
+
+Which reach is I1, which is I2?
+
+Answer: TWW uses the azimut of the last segment of the reach (for inputs) or the first segement of the reach (for outputs) to define the order of the labels. If you stand in the North to the manhole and go clockwise around the manhole, you will first come to I1 and then later to I2.
+In the example, 300 combined-wastewater-reach is I1, 400 wastewater-reach is I2.
+
+
+How to translate a label prefix (C, B, I, O)
+--------------------------------------------
+
+To easily translate label prefixes a series of QGIS project variables have been added. If you want to change the prefixes for cover level, bottom level and entry and exit levels, change the following project settings:
+
+.. figure:: images/tww_label_prefix_settings.jpg
+
+To see your changes, you have to rerun the symbology functions manually (see next chapter)
+
+How to check if triggers are active
+---------------------------------------
+
+For some processes such as INTERLIS Imports, a set of triggers are temporarily deactivated to speed up the process.
+
+* Check status of triggers::
+
+   SELECT tww_app.check_symbology_triggers_enabled();
+   SELECT tww_app.check_modification_triggers_enabled();
+
+* Activate / Deactivate triggers::
+
+   SELECT tww_app.alter_symbology_triggers('enable');
+   SELECT tww_app.alter_symbology_triggers('disable');
+   SELECT tww_app.alter_modification_triggers('enable');
+   SELECT tww_app.alter_modification_triggers('disable');
+
+How to run symbology functions manually
+---------------------------------------
+
+Sometimes the labels such as bottom, cover or entry/exit levels are not correctly displayed, even if the corresponding attribut is filled in. This happens for example when you import data by INTERLIS Import or another way. Maybe the triggers were temporarily deactivated to speed up the import process.
+
+* Check status of symbology triggers::
+
+   SELECT tww_app.check_symbology_triggers_enabled();
+
+* Activate / Deactivate symbology triggers::
+
+   SELECT tww_app.alter_symbology_triggers('enable');
+   SELECT tww_app.alter_symbology_triggers('disable');
+
+* Run **label function** for all entities (_label, _cover_label, _bottom_label, _input_label and _output_label)::
+
+   SELECT tww_app.update_wastewater_structure_label(NULL, true)
+
+.. figure:: images/tww_label_attributes.jpg
+
+* Run depth calculation for all entities (wastewater_structure._depth)::
+
+   SELECT tww_app.update_depth(NULL, true);
+
+.. figure:: images/tww_system_attributes_depth.jpg
+
+For symbolizing point elements (manholes, special structures etc. and  wastewater_nodes)  with _function_hierarchic and _usage_current the function `update_wastewater_node_symbology` calculates the two tww attributes from the connected reach(es).
+
+* Run **wastewater node symbology** for all entities (calculates function_hierarchic and usage_current from connected reaches and adds result to  wastewater_node._function_hierarchic and   _usage_current)::
+
+   SELECT tww_app.update_wastewater_node_symbology(NULL, true);
+
+
+
 Manual Label-positioning for different scales
 ---------------------------------------------
 
@@ -65,50 +194,10 @@ If you can not find a .qgd-file, then you have probably not moved or rotated a l
 
 * If necessary define the horizontal/vertical alignment of your label-coordinates in the placement of the label definition.
 
-How to translate a label prefix
--------------------------------
-
-TWW automatically creates labels for wastewater-structures and reaches:
-
-.. figure:: images/tww_labels.png
-
-To easily translate label prefixes a series of QGIS project variables have been added. If you want to change the prefixes for cover level, bottom level and entry and exit levels, change the following project settings:
-
-.. figure:: images/tww_label_prefix_settings.png
 
 
-How to run symbology functions manually
----------------------------------------
 
-Sometimes the labels such as bottom, cover or entry/exit levels are not correctly displayed, even if the corresponding attribut is filled in. This happens for example when you import data by INTERLIS Import or another way. May be you also decativated the triggers to speed up the import process.
-
-* Activate / Deactivate symbology triggers::
-
-   SELECT tww_sys.create_symbology_triggers()
-   SELECT tww_sys.drop_symbology_triggers()
-
-* Run **label function** for all entities (_label, _cover_label, _bottom_label, _input_label and _output_label)::
-   SELECT tww_od.update_wastewater_structure_label(NULL, true)
-
-.. figure:: images/tww_label_attributes.png
-
-* Run depth calculation for all entities (wastewater_structure._depth)::
-   SELECT tww_od.update_depth(NULL, true);
-
-.. figure:: images/tww_system_attributes_depth.png
-
-For symbolizing point elements (manholes, special structures etc. and  wastewater_nodes)  with _function_hierarchic and _usage_current the following two functions calculate the two tww attributes from the connected reach(es).
-
-* Run **symbology function** for all entites (calculates function_hierarchic and usage_current from connected reach(es) and adds result to  wastewater_structure._function_hierarchic and _usage_current)::
-
-   SELECT tww_od.update_wastewater_structure_symbology(NULL,true)
-
-* Run **wastewater node symbology** for all entities (calculates function_hierarchic and usage_current from connected reaches and adds result to  wastewater_node._function_hierarchic and   _usage_current)::
-
-   SELECT tww_od.update_wastewater_node_symbology(NULL, true);
-
-
-Collecting a hydr_geometry (corresponds to a basin geometry in MikeUrban)
+Collecting a hydr_geometry (corresponds to a basin geometry in Mike+)
 -------------------------------------------------------------------------
 
 Note:
@@ -119,23 +208,25 @@ Note:
 
 Action:
 
-1. Select the wastewater structure with the i-button
+1. Select in layer vw_tww_wastewater_structure the wastewater structure with the i-button
 
-2. Select the wastewater nodes tab in the Feature Attributes window
+2. Select the **Wastewater Nodes** tab in the Feature Attributes window
 
-3. Select a hydr_geometry in the fk_hydr_geometry field or use the + button to create a new hydr_geometry.
+or in a more direct way: Select the node with the i-button in layer vw_wastewater_node
+
+3. Expand the part ** additional attributes in special structures**
+
+4. Select a hydr_geometry in the fk_hydr_geometry field or use the **+** button to create a new hydr_geometry.
 
 .. figure:: images/hydr_geometry1.jpg
 
-4. Enter a description in the hydr_geometry - Feature Attributes window. This name is also the name of the table in MikeUrban.
-
-5. Before you can create a hydr: geom_relation, the new record hydr_geometry must be saved: -> click OK
-
-6. Go back to the hydr_geometry you just created with the button **switch to form view** in the field fk_hydr_geometry .
+5. For a new record: Enter a description in the hydr_geometry - Feature Attributes window. This name is also the name of the table in Mike+.
 
 .. figure:: images/hydr_geometry2.jpg
 
-7. With the **Add child object** button, you can now generate the records with which the hydr_geometry is defined analogously to the basin geometry of MikeUrban (H, As surface, Ac cross-sectional area).
+6. With the **Add child object** button, you can now generate the records with which the hydr_geometry is defined analogously to the basin geometry of Mike+ (H, As surface, Ac cross-sectional area).
+
+In the table view, the overview of the values is easier.
 
 .. figure:: images/hydr_geometry3.jpg
 
@@ -143,15 +234,21 @@ Note:
 
 * The water depth is the value above the bottom level or the outlet. A hydr_geometry can thus be used for several wastewater structure if they are built similar.
 
-* In the table view, the overview of the values is easier.
+* Be aware to respect the rules in Mike (e.g. continuous increasing cross_section_area)
+
+* As long as the hydr_geometry record is not saved, you see in the Features Attribute window just the Obj_Id in brackets. After saving, you will see the identifier you have entered.
+
 
 
 Hydraulic modeling of an overflow (prank weir / leapingweir / pump)
 --------------------------------------------------------------------
 
+There is a special view for overflows, altough it would be possible to edit the overflow-data in layer vw_tww_wastewater_structure.
+The advantage of layer vw_tww_overflow: overflows can be visualized, can be found again and are available in lists.
+
 Action:
 
-In the case of weirs, a second sewage junction has to be created in the wastewater structure.
+If it not already exists: In the case of weirs, a second wastewater node has to be created in the wastewater structure.
 A second outlet has already been created (green = discharged combined wastewater) and has not yet been linked to any wastewater node in the overflow structure.
 
 1. Select the wastewater structure with the i-button
@@ -164,30 +261,41 @@ A second outlet has already been created (green = discharged combined wastewater
 
 4. Click next to outlet 2 to place the second wastewater node.
 
-5. The Feature Attributes window for this wastewater node appears. Enter a meaningful identifier (e.g. BSP001-WN2 for wastewater node 2 of the BSP001 special structure). This designation also appears in MikeUrban. The new wastewater node is saved with OK.
+5. The Feature Attributes window for this wastewater node appears. Enter a meaningful identifier (e.g. 1.070-WN2 for wastewater node 2 of the 1.070 special structure). This designation also appears in Mike+. The new wastewater node is saved with OK.
 
 .. figure:: images/overflow2.jpg
 
-In the next picture, the 2nd node is marked in yellow on the map and in the Feature Attributes window.
+Close the Feature Attributes window of the wastewater structure.
 
-.. figure:: images/overflow3.jpg
 
-We define now a prank weir:
+To define a new prank weir:
 
-6. Choose prank weir in the overflow tabs
+6. Choose the layer vw_tww_overflow in the layergroup Hydraulic.
 
-7. Create a weir with the **Add child object** button
+7. Choose the QGIS standard **Add Point Feature** button and click anyware near to the wastewater_structure
 
-The prank weir Feature Attributes window opens. The attributes in the upper hydraulic section must be filled in, they will be transferred to MikeUrban.
-The field fk_overflow_to must be filled manually. The Obj_ID of the previously created second wastewater node can be seen in the rear window.
+.. hint:: Because an overflow itself has no geometry, the place you click has no meaning. The geometry will be defined be the linked from- and to-wastewater nodes, see point 9
+
+The overflow Feature Attributes window opens.
+
+8. Enter an identifier and choose the overflow_type.
+
+9. Define the two wastewater nodes of the overflow (fk_wastewater_node = from node, fk_overflow_to = to node) by selecting them on the map with the **map identification**-tool.
+
+The attributes in the upper hydraulic section must be filled in, they will be transferred to Mike+.
+
 
 .. figure:: images/overflow4.jpg
 
-This information is sufficient for the calculation in MikeUrban with the weir formula.
+Close all open Feature Attributes windows.
 
-Now only the 2nd outlet has to be linked to the 2nd wastewater node:
+.. hint:: The new overflow is drawn as dotted line with arrow. If the line does not appear: the line is defined with the QGIS geometry generator symbol. Control the formula of the geometry generator (layer properties/symbology, select the symbol), control first the name of the **vw_wastewater_node** layer. If this layer is renamed, the formula has to be changed with the new name (e.g. **vw_Abwasserknoten**).
 
-Close all open Feature Attributes window.
+.. figure::images/gemetry_generator.jpg
+
+
+
+To finish, the 2nd outlet has to be linked to the 2nd wastewater node:
 
 1. Select the TWW tool **Connect wastewater networkelements**.
 
@@ -199,36 +307,27 @@ Close all open Feature Attributes window.
 
 .. figure:: images/connect_2_node.jpg
 
+
 Overflow characteristic
 -----------------------
 
 In the case of a leaping weir, a pump or under special conditions, an overflow characteristic can be defined for the overflow:
 
-You can select an existing characteristic in the field fk_overflow_char or you creat a new one characteristic with the green + button.
+You can select an existing characteristic in the field fk_overflow_char or you create a new characteristic with the green + button.
 
 The Feature Attributes window for the overflow characteristic appears:
 
 .. figure:: images/overflow_char1.jpg
 
-1. Here too, the identifer is later adopted in MikeUrban as a table name for a QH relationship, which is used, for example, in a local controller.
+1. Here too, the identifer is later adopted in Mike+ as a table name for a QH relationship, which is used, for example, in a local controller.
 
-2. Because the new record overflow characteristic has not yet been saved, it must first be saved with OK before the records of the HQ relation can be created.
+2. Define the necessary HQ or QQ values with the **add child object** button. Be sure to choose the correct tab corresponding to the choice in **kind_overflow_char**
 
-3. Go back in the field fk_overflow characteristic of the just created overflow characteristic with the button **switch to form view** and define the necessary HQ or QQ values with the **add child object** button.
 
-Setting default values
------------------------
 
-It is possible to define default values for repeated fields such as fk_provider or fk_dataowner.
-
-1. Enter field name and value in the corresponding attributes in ``tww_od.default values``
-
-2. Connect all occurences of your field name to ``tww_sys.get_default_values(field_name)``.
-Per default, the fields ``fk_provider`` and ``fk_dataowner`` are already connected to the function ``tww_sys.get_default_values(field_name)``.
-An example SQL script how to insert the default value for all occurences of a field name can be found `here <https://github.com/teksi/wastewater/blob/main/datamodel/changelogs/0001/14_default_values.sql>`_)
 
 Further informations
 --------------------
 
 Further Q & A's you can find in the
-`TWW Discussion section <https://github.com/TWW/TWW/discussions/categories/q-a>`_
+`TWW Discussion section <https://github.com/orgs/teksi/discussions/categories/q-a>`_

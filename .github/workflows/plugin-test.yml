@@ -53,17 +53,25 @@ jobs:
         run: docker compose --profile qgis up -d --build
 
       - name: Test on QGIS
-        run: docker-compose run qgis /usr/src/plugin/.docker/run-docker-tests.sh
+        run: docker compose run qgis /usr/src/plugin/.docker/run-docker-tests.sh --deselect teksi_wastewater/tests/test_interlis.py::TestInterlis::test_dss_dataset_import_export
+
+      - name: Clear Database
+        run: docker compose exec db init_db.sh build
+
+      - name: Test on QGIS DSS dataset
+        run: docker compose run qgis /usr/src/plugin/.docker/run-docker-tests.sh teksi_wastewater/tests/test_interlis.py::TestInterlis::test_dss_dataset_import_export
+
+      - name: Clear Database
+        run: docker compose exec db init_db.sh build
 
       - name: Test command line import orgs
-        run: docker-compose run qgis sh -c 'xvfb-run /usr/src/plugin/tww_cmd.py interlis_import --xtf_file /usr/src/plugin/teksi_wastewater/tests/data/minimal-dataset-organisation-arbon-only.xtf --pghost db --pgdatabase tww --pguser postgres --pgpass postgres --pgport 5432'
+        run: docker compose run qgis sh -c 'xvfb-run /usr/src/plugin/tww_cmd.py interlis_import --xtf_file /usr/src/plugin/teksi_wastewater/tests/data/minimal-dataset-organisation-arbon-only.xtf --pghost db --pgdatabase tww --pguser postgres --pgpass postgres --pgport 5432'
 
       - name: Test command line import minimal sia405
-        run: docker-compose run qgis sh -c 'xvfb-run /usr/src/plugin/tww_cmd.py interlis_import --xtf_file /usr/src/plugin/teksi_wastewater/tests/data/minimal-dataset-SIA405-ABWASSER.xtf --pghost db --pgdatabase tww --pguser postgres --pgpass postgres --pgport 5432'
+        run: docker compose run qgis sh -c 'xvfb-run /usr/src/plugin/tww_cmd.py interlis_import --xtf_file /usr/src/plugin/teksi_wastewater/tests/data/minimal-dataset-SIA405-ABWASSER.xtf --pghost db --pgdatabase tww --pguser postgres --pgpass postgres --pgport 5432'
 
       - name: Test command line minimal export
-        run: docker-compose run qgis sh -c 'xvfb-run /usr/src/plugin/tww_cmd.py interlis_export --xtf_file "output.xtf" --pghost db --pgdatabase tww --pguser postgres --pgpass postgres --pgport 5432'
+        run: docker compose run qgis sh -c 'xvfb-run /usr/src/plugin/tww_cmd.py interlis_export --xtf_file "output.xtf" --pghost db --pgdatabase tww --pguser postgres --pgpass postgres --pgport 5432'
 
       - name: docker logs
-        #if: failure()
         run: docker compose logs db

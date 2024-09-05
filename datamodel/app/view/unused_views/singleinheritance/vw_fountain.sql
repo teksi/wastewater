@@ -45,7 +45,7 @@ BEGIN
            , fk_owner
            , fk_operator
            )
-     VALUES ( COALESCE(NEW.obj_id,tww_sys.generate_oid('tww_od','fountain')) -- obj_id
+     VALUES ( COALESCE(NEW.obj_id,tww_app.generate_oid('tww_od','fountain')) -- obj_id
            , NEW.identifier
            , NEW.remark
            , NEW.sewer_infiltration_water_production

@@ -44,7 +44,7 @@ BEGIN
            , last_modification
            , fk_wastewater_structure
            )
-     VALUES ( COALESCE(NEW.obj_id,tww_sys.generate_oid('tww_od','solids_retention')) -- obj_id
+     VALUES ( COALESCE(NEW.obj_id,tww_app.generate_oid('tww_od','solids_retention')) -- obj_id
            , NEW.identifier
            , NEW.remark
            , NEW.renovation_demand
