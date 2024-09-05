@@ -87,14 +87,13 @@ def get_roles(pg_service: str, modulename: str, db_spec_roles: Optional[bool] = 
 
 
 def grant_privileges(
-    pg_service: str, modulename: str, db_spec_roles: Optional[bool] = False, ext_schema: str = None
+    pg_service: str, modulename: str, db_spec_roles: Optional[bool] = False
 ):
     """
     Grants the rights from the roles for usage in TEKSI Modules
     :param pg_service: the PostgreSQL service
     :param modulename: Abbreviation of the TEKSI module
     :param db_spec_roles: will create database specific roles instead of cluster specific roles
-    :param ext_schema: Schema name of the extension model schema (optional)
     """
     conn = psycopg.connect(f"service={pg_service}")
     cur = conn.cursor()
@@ -106,8 +105,6 @@ def grant_privileges(
         f"{modulename}_vl": roles["manager"],
         f"{modulename}_cfg": roles["manager"],
     }
-    if ext_schema:
-        schema_defs[ext_schema] = roles["user"]
     for key in roles:
         cur.execute(f"SELECT 1 FROM pg_roles WHERE rolname='{roles[key]}'")
         role_exists = cur.fetchone()
@@ -135,14 +132,13 @@ def grant_privileges(
 
 
 def revoke_privileges(
-    pg_service: str, modulename: str, db_spec_roles: Optional[bool] = False, ext_schema: str = None
+    pg_service: str, modulename: str, db_spec_roles: Optional[bool] = False
 ):
     """
     Revokes the rights from the roles for usage in TEKSI Modules
     :param pg_service: the PostgreSQL service
     :param modulename: Abbreviation of the TEKSI module
     :param roles: Dict defining the names of the roles
-    :param ext_schema: Schema name of the extension model schema (optional)
     """
     conn = psycopg.connect(f"service={pg_service}")
     cur = conn.cursor()
@@ -153,8 +149,7 @@ def revoke_privileges(
         f"{modulename}_vl",
         f"{modulename}_cfg",
     ]
-    if ext_schema:
-        schemanames.append(ext_schema)
+
     roles, _ = get_roles(pg_service, modulename, db_spec_roles)
     cur.execute(f"SELECT 1 FROM pg_roles WHERE rolname='{roles['viewer']}'")
     role_exists = cur.fetchone()
@@ -178,7 +173,6 @@ def manage_roles(
     modulename: str,
     pg_service: str = None,
     grant: bool = True,
-    ext_schema: str = None,
     db_spec_roles: Optional[bool] = False,
 ):
     """
@@ -186,7 +180,6 @@ def manage_roles(
     :param pg_service: the PostgreSQL service
     :param modulename: Abbreviation of the TEKSI module
     :param grant: Boolean defining whether to grant privileges or revoke them
-    :param ext_schema: Schema name of the extension model
     :param db_spec_roles: will create database specific roles instead of cluster specific roles
     """
     if modulename and not pg_service:
@@ -195,9 +188,9 @@ def manage_roles(
     create_roles(pg_service, modulename, db_spec_roles)
 
     if grant:
-        grant_privileges(pg_service, modulename, db_spec_roles, ext_schema)
+        grant_privileges(pg_service, modulename, db_spec_roles)
     else:
-        revoke_privileges(pg_service, modulename, db_spec_roles, ext_schema)
+        revoke_privileges(pg_service, modulename, db_spec_roles)
 
 
 if __name__ == "__main__":
@@ -243,9 +236,6 @@ if __name__ == "__main__":
         action=BooleanOptionalAction,
     )
 
-    grant_parser.add_argument(
-        "-x", "--extension_schema", help="Name of the extension schema", required=False
-    )
     revoke_parser = subparsers.add_parser(
         "revoke",
         help="Revoke rights from roles",
@@ -264,10 +254,6 @@ if __name__ == "__main__":
         action=BooleanOptionalAction,
     )
 
-    revoke_parser.add_argument(
-        "-x", "--extension_schema", help="Name of the extension schema", required=False
-    )
-
     args = parser.parse_args()
 
     if args.parser == "create_roles":
@@ -280,14 +266,12 @@ if __name__ == "__main__":
         grant_privileges(
             pg_service=args.pg_service,
             modulename=args.modulename,
-            ext_schema=args.extension_schema,
             db_spec_roles=args.database_specific_roles,
         )
     elif args.parser == "revoke":
         revoke_privileges(
             pg_service=args.pg_service,
             modulename=args.modulename,
-            ext_schema=args.extension_schema,
             db_spec_roles=args.database_specific_roles,
         )
     else:
