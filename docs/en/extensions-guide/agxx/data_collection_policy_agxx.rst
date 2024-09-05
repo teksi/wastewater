@@ -51,7 +51,7 @@ The FunktionAG ´´Kontrollschacht´´ is not included in the value list. Use ´
 
 The following table explains the mapping of FunktionAG in detail. If there are multiple options for TWW class, the type is defined dependent on whether a detail geometry exists. The value_de is only listed if the AG-64/96 value is not eligible
 
-.. list-table:: Mapping of FunktionAG
+.. list-table::
    :widths: 30 45 25
    :header-rows: 1
    
@@ -260,7 +260,7 @@ GEPMassnahme
 
 GEPMassnahme is mapped to ´tww_od.measure´. The following categories can be mapped 1:1 onto a VSA DSS value and therefore have no separate value list entrance.
 
-.. list-table:: Mapping of Kategorie
+.. list-table::
    :widths: 50 50
    :header-rows: 1
    
