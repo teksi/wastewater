@@ -468,7 +468,7 @@ class TeksiWastewaterPlugin:
         self.iface.removePluginMenu(self.main_menu_name, self.aboutAction)
         self.iface.removePluginMenu(self.main_menu_name, self.enableSymbologyTriggersAction)
         self.iface.removePluginMenu(self.main_menu_name, self.disableSymbologyTriggersAction)
-        if self.createRolesAction in self.main_menu_name.actions():
+        if self.createRolesAction in self.iface.pluginMenu().actions():
             self.iface.removePluginMenu(self.main_menu_name, self.createRolesAction)
 
         QgsApplication.processingRegistry().removeProvider(self.processing_provider)
@@ -699,6 +699,7 @@ class TeksiWastewaterPlugin:
         else:
             self.toolbar.removeAction(self.importAction)
             self.toolbar.removeAction(self.exportAction)
+            self.iface.removePluginMenu(self.main_menu_name, self.createRolesAction)
             admin_mode = False
 
         self.enableSymbologyTriggersAction.setEnabled(admin_mode)
