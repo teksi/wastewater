@@ -1,4 +1,4 @@
-Editing in TWW
+Extension AG-64/AG-96
 ==================
 
 This represents a guide on effectively use the AG-64/AG-96 extension in TWW.
