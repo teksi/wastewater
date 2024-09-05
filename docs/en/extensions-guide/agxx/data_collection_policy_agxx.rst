@@ -52,8 +52,9 @@ The FunktionAG ´´Kontrollschacht´´ is not included in the value list. Use ´
 The following table explains the mapping of FunktionAG in detail. If there are multiple options for TWW class, the type is defined dependent on whether a detail geometry exists. The value_de is only listed if the AG-64/96 value is not eligible
 
 .. list-table:: Mapping of FunktionAG
-   :widths: 40 40 20
+   :widths: 30 45 25
    :header-rows: 1
+   
    * - Value in AG-64/AG-96
      - Row in TWW
 	 - value_de
@@ -260,11 +261,12 @@ The layer Ueberlauf_Foerderaggregat is mapped to ´tww_od.overflow´ and its spe
 GEPMassnahme
 ----------------
 
-GEPMassnahme is mapped to ´tww_od.measure´. The following categories can be mapped 1:1 onto a VSA DSS value and are therefore
+GEPMassnahme is mapped to ´tww_od.measure´. The following categories can be mapped 1:1 onto a VSA DSS value and therefore have no separate value list entrance.
 
 .. list-table:: Mapping of Kategorie
    :widths: 50 50
    :header-rows: 1
+   
    * - Value in AG-64/AG-96
      - value_de in TWW
    * - Reinigung
