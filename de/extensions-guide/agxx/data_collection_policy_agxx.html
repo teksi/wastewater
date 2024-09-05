@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>5.2.2. Data collection policy &mdash; TWW dev Dokumentation</title>
+  <title>5.2.2. Erfassungsrichtlinie &mdash; TWW dev Dokumentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
 
@@ -57,7 +57,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../initialize-extensions.html">5.1. Initialising Database extensions</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">5.2. Editing in TWW</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="plugin_setup_agxx.html">5.2.1. Plugin and Project Setup</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">5.2.2. Data collection policy</a><ul>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">5.2.2. Erfassungsrichtlinie</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#mapping">5.2.2.1. Mapping</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#infrastrukturknoten-gepknoten">5.2.2.2. Infrastrukturknoten/GEPKnoten</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#infrastrukturhaltung-gephaltung">5.2.2.3. Infrastrukturhaltung/GEPHaltung</a></li>
@@ -92,7 +92,7 @@
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">5. </span>Official TWW extensions</a></li>
           <li class="breadcrumb-item"><a href="index.html"><span class="section-number">5.2. </span>Editing in TWW</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">5.2.2. </span>Data collection policy</li>
+      <li class="breadcrumb-item active"><span class="section-number">5.2.2. </span>Erfassungsrichtlinie</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/extensions-guide/agxx/data_collection_policy_agxx.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
       </li>
@@ -103,51 +103,51 @@
            <div itemprop="articleBody">
              
   <section id="data-collection-policy">
-<span id="data-collection-policy-agxx"></span><h1><span class="section-number">5.2.2. </span>Data collection policy<a class="headerlink" href="#data-collection-policy" title="Link to this heading"></a></h1>
+<span id="data-collection-policy-agxx"></span><h1><span class="section-number">5.2.2. </span>Erfassungsrichtlinie<a class="headerlink" href="#data-collection-policy" title="Link to this heading"></a></h1>
 <section id="mapping">
 <h2><span class="section-number">5.2.2.1. </span>Mapping<a class="headerlink" href="#mapping" title="Link to this heading"></a></h2>
-<p>The AG-64/AG-96 object-ids are mapped to the database as follows:</p>
+<p>Die AG-64/AG-96 Object-ids werden wie folgt in die Datenbank gemappt:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>Infrastrukturknoten/GEPKnoten is mapped to <code class="docutils literal notranslate"><span class="pre">tww_od.wastewater_node</span></code></p></li>
-<li><p>Infrastrukturhaltung/GEPHaltung is mapped to <code class="docutils literal notranslate"><span class="pre">tww_od.reach</span></code></p></li>
-<li><p>Ueberlauf_Foerderaggregat is mapped to <code class="docutils literal notranslate"><span class="pre">tww_od.overflow</span></code></p></li>
-<li><p>Einzugsgebiet is mapped to <code class="docutils literal notranslate"><span class="pre">tww_od.catchment_area</span></code></p></li>
-<li><p>SBW_Einzugsgebiet is mapped to <code class="docutils literal notranslate"><span class="pre">tww_od.catchment_area_totals</span></code></p></li>
-<li><p>GEPMassnahme is mapped to <code class="docutils literal notranslate"><span class="pre">tww_od.measure</span></code></p></li>
-<li><p>VersickerungsbereichAG is mapped to <code class="docutils literal notranslate"><span class="pre">tww_od.infiltration_zone</span></code></p></li>
+<li><p>Infrastrukturknoten/GEPKnoten wird auf <code class="docutils literal notranslate"><span class="pre">tww_od.wastewater_node</span></code> gemappt</p></li>
+<li><p>Infrastrukturhaltung/GEPHaltung  wird auf <code class="docutils literal notranslate"><span class="pre">tww_od.reach</span></code> gemappt</p></li>
+<li><p>Ueberlauf_Foerderaggregat  wird auf <code class="docutils literal notranslate"><span class="pre">tww_od.overflow</span></code> gemappt</p></li>
+<li><p>Einzugsgebiet  wird auf <code class="docutils literal notranslate"><span class="pre">tww_od.catchment_area</span></code> gemappt</p></li>
+<li><p>SBW_Einzugsgebiet  wird auf <code class="docutils literal notranslate"><span class="pre">tww_od.catchment_area_totals</span></code> gemappt</p></li>
+<li><p>GEPMassnahme wird auf <code class="docutils literal notranslate"><span class="pre">tww_od.measure</span></code> gemappt</p></li>
+<li><p>VersickerungsbereichAG  wird auf <code class="docutils literal notranslate"><span class="pre">tww_od.infiltration_zone</span></code> gemappt</p></li>
 </ul>
 </div></blockquote>
-<p>Wherever possible, the value lists of VSA DSS are used. In cases where a 1:1 mapping is possible, there is no additional value list entry for AG-64/96. Instead, one can use the corresponding VSA-DSS value which is translated on export. These cases are listed below.</p>
-<p>Almost all VSA-DSS values of the mentioned layers that do not exist in AG-64/96 are mapped to AG-64/96 using a backwards relation. Per default, the VSA-specific value list codes which are ambiguous in AG-64/96 are set to ´´inactive´´.</p>
-<p>The AG-64/96 values are automatically mapped to VSA DSS where sensible, allowing to export both models.</p>
+<p>Wo möglich werden die Wertelisten von VSA DSS übernommen In den Fällen, in denen ein 1:1 mapping möglich ist, existiert kein zusätzlicher Wertelisteneintrag für AG-64/96. Stattdessen kann der entsprechende VSA-DSS-Wert verwendet werden, welcher beim Export übersetzt wird. Die entsprechenden Fällis sind unten aufgelistet</p>
+<p>Fast alle VSA-DSS-Werte der genannten Layer, welche in AG-64/96 nicht existieren, werden über eine Rückwärtsbeziehung in AG-64/96 gemappt. Standardmässig werden diejenige  VSA-spezifischen Einträge in Wertelisten, welche nicht eindeutig aus AG-64/96 abgeleitet werden können, auf ´´inaktiv´´ gesetzt.</p>
+<p>AG-64/96-Werte werden wo modelltechnisch sinnvoll bei einem Export automatisch auf VSA DSS gemappt, was es erlaubt, beide Modelle zu exportieren.</p>
 <section id="handling-of-organisations">
-<h3><span class="section-number">5.2.2.1.1. </span>Handling of organisations<a class="headerlink" href="#handling-of-organisations" title="Link to this heading"></a></h3>
-<p>In the models AG-64/AG-96, the organisations table differs from VSA. It has 20 characters and uses a different prefix. In order to maintain the VSA compatibility, TWW 2 AG-64/96 uses the VSA tables.</p>
-<p>There is a set of private entities in the AG-64/AG-96 organisations dataset that were not ported to VSA DSS. For these organisations, we use a OID prefix that was generated solely for this purpose and the AG-64/AG-96 postfix. The corresponding data is imported on initialisation.</p>
-<p>When exporting a dataset, the organisations are not exported from the TEKSI database. Instead, the AG-64/96 Organisation dataset is stored within the plugin and added to the export dataset.</p>
+<h3><span class="section-number">5.2.2.1.1. </span>Umgang mit Organisationen<a class="headerlink" href="#handling-of-organisations" title="Link to this heading"></a></h3>
+<p>Die Organisationstabelle von AG-64/96 unterscheidet sich von derjenigen des VSA. Sie hat 20 Zeichen und nutzt einen anderen Präfix. Um die VSA-Komptibilität zu wahren nutzt TWW 2 AG-64/96 die Tabelle des VSA.</p>
+<p>Einige private Organisationen in der AG-64/AG-96 Tabelle wurden nicht in die Tabelle des VSA übernommen. Für diese Organisationen wird ein separater OID Präfix, welcher spezifisch für diesen Zweck generiert wurde, und der AG-64/AG-96 Postfix. genutzt Die entsprechenden Daten werden bei der Initialisierung eingelesen.</p>
+<p>Beim Export eines Datensatzes werden die Organisationen nich aus der Datenbank exportiert. Stattdessen ist die AG-64/96-Organisationstabelle im Plugin hinterlegt und wird zum Export-Datensatz hinzugeladen.</p>
 </section>
 <section id="last-modification">
-<h3><span class="section-number">5.2.2.1.2. </span>Last Modification<a class="headerlink" href="#last-modification" title="Link to this heading"></a></h3>
-<p>in AG-64/96, the last modification value of cadastre and general planning are separated. To keep track of them, they are managed on the database. There is a widget in the settings to alter the current value, <a class="reference external" href="./plugin_setup_agxx.html">see here</a> .</p>
+<h3><span class="section-number">5.2.2.1.2. </span>Letzte_Aenderung<a class="headerlink" href="#last-modification" title="Link to this heading"></a></h3>
+<p>In AG-64/96 werden die Daten der Letzten_Aenderung der Werkinformation (WI) und des GEP separat geführt. Diese Werte werden datenbankseitig verwaltet. In den Einstellungen gibt es <a href="#id1"><span class="problematic" id="id2">`hier&lt;./plugin_setup_agxx.html&gt;`_</span></a> ein Steuerelement, welches genutzt werden kann, um pro Nutzer zu steuern, welche Werte aktualisiert werden sollen.</p>
 </section>
 </section>
 <section id="infrastrukturknoten-gepknoten">
 <h2><span class="section-number">5.2.2.2. </span>Infrastrukturknoten/GEPKnoten<a class="headerlink" href="#infrastrukturknoten-gepknoten" title="Link to this heading"></a></h2>
-<p>The base OID for the Infrastrukturknoten/GEPKnoten is taken from <code class="docutils literal notranslate"><span class="pre">tww_od.wastewater_node</span></code>.</p>
-<p>The FunktionAG is mapped from</p>
+<p>Die OID für Infrastrukturknoten/GEPKnoten wird aus <code class="docutils literal notranslate"><span class="pre">tww_od.wastewater_node</span></code> (Abwasserknoten) übernommen.</p>
+<p>Die FunktionAG wird gemappt von:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>manhole.function</p></li>
-<li><p>special_structure.function</p></li>
-<li><p>infiltration_installation.kind</p></li>
-<li><p>discharge_point.relevance</p></li>
+<li><p>Normschacht.Funktion</p></li>
+<li><p>Spezialbauwerk.Funktion</p></li>
+<li><p>Versickerungsanlage.Art</p></li>
+<li><p>Einleitstelle.Relevanz</p></li>
 </ul>
 </div></blockquote>
-<p>The FunktionAG ´´Kontrollschacht´´ is not included in the value list. Use ´´manhole´´ or ´´combined_manhole´´ instead, which are mapped using a backwards relation.</p>
-<p>The following table explains the mapping of FunktionAG in detail. If there are multiple options for TWW class, the type is defined dependent on whether a detail geometry exists. The value_de is only listed if the AG-64/96 value is not eligible</p>
+<p>Die FunktionAG ´´Kontrollschacht´´ is in der Werteliste nicht enthalten. Benutzen Sie stattdessen´´Kontroll_Einstiegschacht´´ oder ´´Kombischacht´´, welche über eine Rückwärtsbeziehung übersetzt werden.</p>
+<p>Die folgende Tabelle erläutert das Mapping der FunktionAG im Detail. Gibt es mehrere Optionen für die TWW-Klasse, wird der Typ in Abhängigkeit vom Vorhandensein einer Detailgeometrie definiert. Der value_de wird nur aufgeführt, wenn der AG-64/96-Wert nicht ausgewählt werden kann</p>
 <section id="handling-of-building-connections">
-<h3><span class="section-number">5.2.2.2.1. </span>Handling of building connections<a class="headerlink" href="#handling-of-building-connections" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.2.2.2.1. </span>Umgang mit Hausanschlüssen<a class="headerlink" href="#handling-of-building-connections" title="Link to this heading"></a></h3>
 <p>Building connections are defined in the datamodel as Infrastrukturknoten/GEPKnoten with funktionag „Anschluss“. As these are no wastewater structures, the function is attributed to the wastewater node (<code class="docutils literal notranslate"><span class="pre">wastewater_node.ag64_function</span></code>).</p>
 </section>
 <section id="handling-of-covers">

@@ -140,8 +140,7 @@
 <p class="admonition-title">Bemerkung</p>
 <p>Wenn keine Bezeichnung eingegeben wird, übernimmt TWW die Obj_ID als Bezeichnung (kann später geändert werden). Die Bezeichnung des Abwasserbauwerks ist auch der Vorgabewert für die Bezeichnung des Deckels und die Bezeichnung des Abwasserknotens.</p>
 </div>
-<p>Add other attributes in the <strong>General</strong> tab.
-You can also add attributes in the other tabs (Main Cover/Node, Wastewater Structure, Manhole, Structure Parts etc.).</p>
+<p>Fügen Sie weitere Attributwerte im Reiter <strong>Allgemein</strong> hinzu. Sie können auch Attributwerte in anderen Reitern hinzufügen (Haupt-Deckel/Knoten, Abwasserbauwerk, Normschacht, Bauwerkteile etc.).</p>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
 <p>Die Idee hinter dem Reiter <strong>Allgemein</strong> ist, dass beim normalen Digitalisieren (95% der Normschächte) der Benutzer nicht zu einem anderen Reiter wechseln muss, um die notwendigen Felder abzufüllen.</p>
@@ -150,7 +149,7 @@ You can also add attributes in the other tabs (Main Cover/Node, Wastewater Struc
 <p class="admonition-title">Achtung</p>
 <p>You can not use <strong>Actions</strong> for digitize a detail geometry during creating a new manhole, because you have to save first the Wastewater Structure-record to the database before you can add a detail geometry. First safe the record.</p>
 </div>
-<p>You can add additional records Structure Parts or a second wastewater node in Tab Wastewater Nodes or Maintenance Events. But in the Tab Wastewater Nodes you will not see the main node, that is created with the new wastewater structure. You can see the main node in the tab Main Cover/Node. After saving the new wastewater structure, you will find two node in the tab Wastewater Nodes.</p>
+<p>Es können zusätzliche Bauwerkteile oder ein weiterer Abwasserknote im Tab Abwasserknoten oder Erhaltungsereignisse erfasst werden. Aber im Tab Abwasserknoten wird der Hauptknoten, der zusammen mit dem neuen Schacht erstellt wurde, noch nicht sichtbar sein Der Hauptknoten ist zuerst nur im Tab Haupt-Deckel/Knoten sichtbar. Nach dem Sichern des Schachtes werden im Tab Abwasserknoten beide Knoten sichtbar sein.</p>
 <p><strong>OK</strong> klicken um das Formular zu schliessen.</p>
 <figure class="align-default">
 <img alt="../../_images/wizard_wastewater_structure_manhole_form_data_ok4.jpg" src="../../_images/wizard_wastewater_structure_manhole_form_data_ok4.jpg" />
@@ -164,17 +163,17 @@ You can also add attributes in the other tabs (Main Cover/Node, Wastewater Struc
 </section>
 <section id="further-attributes-and-classes">
 <h2><span class="section-number">3.2.2.3. </span>Weitere Attribute und Klassen<a class="headerlink" href="#further-attributes-and-classes" title="Link to this heading"></a></h2>
-<p>When a wastewater_structure object is digitized, a series of steps take place in the background in the TWW database:</p>
+<p>Wenn ein Abwasserbauwerk-Punktobjekt digitalisiert wird, findet eine Reihe von Schritten im Hintergrund in der TWW Datenbank statt:</p>
 <ol class="loweralpha simple">
 <li><p>ein neues Objekt Abwasserbauwerk wird hinzugefügt</p></li>
 <li><p>ein neues Objekt der entsprechenden Unterklasse [Normschacht, Spezialbauwerk, Versickerungsanlage, Einleitstelle] wird hinzugefügt und verknüpft</p></li>
 <li><p>ein neuer Deckel-Bauwerksteil wird hinzugefügt und mit dem Abwasserbauwerk verknüpft</p></li>
-<li><p>a new wastewater node object is generated (in wastewater network elements and its subclass wastewater nodes) and linked to the wastewater structure</p></li>
-<li><p>the new cover and node are referred as main cover and main node of the wastewater structure</p></li>
+<li><p>ein neuer Abwasserknoten wird in den Abwassernetzelementen und dessen Unterklasse Abwasserknoten erstellt und mit dem Abwasserbauwerk verknüpft</p></li>
+<li><p>der neue Deckel und Knoten werden als Hauptdeckel und Hauptknoten des Schachtes eingesetzt</p></li>
 </ol>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>The main node is the place, where the symbol of the wastewater structure is shown in TWW.</p>
+<p>Der Hauptknoten definiert den Punkt, wo das Symbol des Abwasserbauwerks in TWW erscheint.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>

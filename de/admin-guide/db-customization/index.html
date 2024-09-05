@@ -53,13 +53,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">2. TWW Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user-guide/index.html">3. TWW Benutzerhandbuch</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">4. Administratorhandbuch</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../datamodel.html">4.1. Datamodel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../datamodel.html">4.1. Datenmodell</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../pgadmin/index.html">4.2. pgAdmin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../security/index.html">4.3. User Roles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../interlis-io/index.html">4.4. INTERLIS Datenaustausch</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">4.5. Anpassung des Datenmodells</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#introduction">4.5.1. Einleitung</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#altering-symbology-and-labelling-behaviour">4.5.2. Altering symbology and labelling behaviour</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#altering-symbology-and-labelling-behaviour">4.5.2. Symbologie- und Beschriftungsverhalten ändern</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#adding-fields">4.5.3. Zusätzliche Felder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#joining-additional-tables">4.5.4. Verknüpfung zusätzlicher Tabellen</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#creating-custom-views">4.5.5. Eigene views erstellen</a></li>
@@ -106,12 +106,12 @@
 <h2><span class="section-number">4.5.1. </span>Einleitung<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
 <p>Das Datenmodell ist versioniert und Aktualisierungen werden mit dem Postgres Updates Manager (auch bekannt als <a class="reference external" href="https://github.com/opengisch/pum">PUM</a>) durchgeführt. Die zur Bearbeitung der Daten erforderlichen Ansichten werden automatisch mit der Bibliothek „Pirogue &lt;<a class="reference external" href="https://github.com/opengisch/pirogue">https://github.com/opengisch/pirogue</a>&gt;“ erzeugt.</p>
 <p>Die Kombination von beidem ermöglicht kleine Anpassungen des Datenmodells, wie das Hinzufügen von Feldern zu bestehenden Basistabellen oder die Erweiterung von Ansichten durch das Verbinden zusätzlicher Tabellen.</p>
-<p>Before going further, we strongly recommend to ask the community if you have any doubts about how to store any information in the database. TWW complies with <a class="reference external" href="http://www.sia.ch/405">SIA 405</a> Waste Water and <a class="reference external" href="http://dss.vsa.ch">VSA-DSS</a> datamodel.</p>
-<p>If TWW data model is not able yet to hold some data, please let us know what kind and how it should be handled. TWW data model is a standard proof adaptative model and could follow your needs.</p>
-<p>If a customization is still required, the following explanations and rules explain how to adapt TWW data model to your specific needs.</p>
+<p>Bevor Sie fortfahren, empfehlen wir Ihnen dringend, die Community zu fragen, wenn Sie irgendwelche Fragen haben, wie Sie Informationen in der Datenbank speichern können. QGEP erfüllt die Anforderungen der SIA 405 &lt;<a class="reference external" href="http://www.sia.ch/405">http://www.sia.ch/405</a>&gt;`_ Abwasser und des VSA-DSS &lt;<a class="reference external" href="http://dss.vsa.ch">http://dss.vsa.ch</a>&gt;`_ Datenmodells.</p>
+<p>Wenn das TWW-Datenmodell noch nicht in der Lage ist, bestimmte Daten zu speichern, teilen Sie uns bitte mit, um welche Art von Daten es sich handelt und wie sie behandelt werden sollen. Das TWW-Datenmodell ist ein standardisiertes, anpassungsfähiges Modell welches viele ihrer Anforderung bereits abdeckt.</p>
+<p>Sollte dennoch eine Anpassung erforderlich sein, erklären die folgenden Erläuterungen und Regeln, wie Sie das TWW-Datenmodell an Ihre spezifischen Bedürfnisse anpassen können.</p>
 </section>
 <section id="altering-symbology-and-labelling-behaviour">
-<h2><span class="section-number">4.5.2. </span>Altering symbology and labelling behaviour<a class="headerlink" href="#altering-symbology-and-labelling-behaviour" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.5.2. </span>Symbologie- und Beschriftungsverhalten ändern<a class="headerlink" href="#altering-symbology-and-labelling-behaviour" title="Link to this heading"></a></h2>
 <p>Symbology and labelling behaviour depends on the value lists `` tww_vl.channel_usage_current`` and `` tww_vl.channel_function_hierarchic``  These two value list tables have an additional column <code class="docutils literal notranslate"><span class="pre">tww_symbology_order</span></code>, which is used to define the hierarchy of the symbology.</p>
 <p>For labelling, one can use the column `` tww_vl.channel_function_hierarchic.tww_use_in_labels`` to define which functions_hierarchic are taken into account when creating a wastewater structure’s label.</p>
 </section>
