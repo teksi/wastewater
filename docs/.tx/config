@@ -43,10 +43,10 @@ source_lang = en
 file_filter = i18n/<lang>/admin-guide.po
 type = PO
 
-[o:teksi:p:tww-docs:r:extension-guide]
-source_file = i18n/pot/extension-guide.pot
+[o:teksi:p:tww-docs:r:extensions-guide]
+source_file = i18n/pot/extensions-guide.pot
 source_lang = en
-file_filter = i18n/<lang>/extension-guide.po
+file_filter = i18n/<lang>/extensions-guide.po
 type = PO
 
 [o:teksi:p:tww-docs:r:translation]
