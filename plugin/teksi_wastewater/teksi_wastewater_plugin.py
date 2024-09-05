@@ -288,7 +288,6 @@ class TeksiWastewaterPlugin:
         self.iface.addPluginToMenu(self.main_menu_name, self.validityCheckAction)
         self.iface.addPluginToMenu(self.main_menu_name, self.enableSymbologyTriggersAction)
         self.iface.addPluginToMenu(self.main_menu_name, self.disableSymbologyTriggersAction)
-        self.iface.addPluginToMenu(self.main_menu_name, self.createRolesAction)
         self.iface.addPluginToMenu(self.main_menu_name, self.settingsAction)
         self.iface.addPluginToMenu(self.main_menu_name, self.aboutAction)
 
@@ -469,7 +468,8 @@ class TeksiWastewaterPlugin:
         self.iface.removePluginMenu(self.main_menu_name, self.aboutAction)
         self.iface.removePluginMenu(self.main_menu_name, self.enableSymbologyTriggersAction)
         self.iface.removePluginMenu(self.main_menu_name, self.disableSymbologyTriggersAction)
-        self.iface.removePluginMenu(self.main_menu_name, self.createRolesAction)
+        if self.createRolesAction in self.main_menu_name.actions():
+            self.iface.removePluginMenu(self.main_menu_name, self.createRolesAction)
 
         QgsApplication.processingRegistry().removeProvider(self.processing_provider)
 
@@ -695,6 +695,7 @@ class TeksiWastewaterPlugin:
             admin_mode = True
             self.toolbar.addAction(self.importAction)
             self.toolbar.addAction(self.exportAction)
+            self.iface.addPluginToMenu(self.main_menu_name, self.createRolesAction)
         else:
             self.toolbar.removeAction(self.importAction)
             self.toolbar.removeAction(self.exportAction)
