@@ -54,7 +54,7 @@ The following table explains the mapping of FunktionAG in detail. If there are m
 .. list-table::
    :widths: 30 45 25
    :header-rows: 1
-   
+
    * - Value in AG-64/AG-96
      - Row in TWW
      - value_de
@@ -263,7 +263,7 @@ GEPMassnahme is mapped to `tww_od.measure`. The following categories can be mapp
 .. list-table::
    :widths: 50 50
    :header-rows: 1
-   
+
    * - Value in AG-64/AG-96
      - value_de in TWW
    * - Reinigung
