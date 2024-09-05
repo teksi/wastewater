@@ -188,8 +188,6 @@ man_pages = [("index", "tww", "TWW Documentation", ["The TWW Project/OPENGIS.ch"
 # man_show_urls = False
 
 rst_prolog = r"""
-    .. only:: html and i18n
-
       .. important::
         Translation is a community effort `you can join <https://app.transifex.com/teksi/>`_.
         This page is currently translated at |translation progress|.
