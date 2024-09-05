@@ -76,9 +76,6 @@ The following table explains the mapping of FunktionAG in detail. If there are m
    * - Anschluss
      - wastewater_node.ag64_function
 	 -
-   * - andere
-     - special_structure.function / manhole.function  / wastewater_node.ag64_function
-	 -
    * - Be_Entlueftung
      - special_structure.function / manhole.function
 	 -
