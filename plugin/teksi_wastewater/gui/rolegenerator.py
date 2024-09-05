@@ -26,12 +26,10 @@ import logging
 
 from qgis.PyQt.QtCore import pyqtSlot
 from qgis.PyQt.QtWidgets import QDockWidget
-from ..utils.database_utils import DatabaseUtils
-import os
-import configparser
 
-from ..tools.manage_roles import create_roles,revoke_privileges,grant_privileges
+from ..tools.manage_roles import create_roles, grant_privileges, revoke_privileges
 from ..utils import get_ui_class
+from ..utils.database_utils import DatabaseUtils
 
 DOCK_WIDGET = get_ui_class("rolegenerator.ui")
 
@@ -44,7 +42,6 @@ class RoleGeneratorGui(QDockWidget, DOCK_WIDGET):
         self.setupUi(self)
         self.initPgServiceComboBox()
         self.accepted.connect(self.onAccept)
-    
 
     def initPgServiceComboBox(self):
         config, _ = DatabaseUtils.list_pgservice()
@@ -53,15 +50,15 @@ class RoleGeneratorGui(QDockWidget, DOCK_WIDGET):
 
     @pyqtSlot()
     def onAccept(self):
-        twwlogger = logging.getLogger("tww")
+        logging.getLogger("tww")
         # General settings
-        role_args = {'pg_service': self.pgserviceComboBox.currentText(),'modulename':'tww'}
+        role_args = {"pg_service": self.pgserviceComboBox.currentText(), "modulename": "tww"}
         if self.addDbSpecRolesCheckBox.isChecked():
-            role_args['db_spec_roles']=True
-        
+            role_args["db_spec_roles"] = True
+
         if self.CreateRolesCheckBox.isChecked():
             create_roles(**role_args)
         if self.GrantRolesOnDBCheckBox.isChecked():
             grant_privileges(**role_args)
         if self.GrantRolesOnDBCheckBox.isChecked():
-            revoke_privileges(**role_args) 
+            revoke_privileges(**role_args)

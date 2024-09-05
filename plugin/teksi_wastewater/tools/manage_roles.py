@@ -86,9 +86,7 @@ def get_roles(pg_service: str, modulename: str, db_spec_roles: Optional[bool] = 
     return roles, child_roles
 
 
-def grant_privileges(
-    pg_service: str, modulename: str, db_spec_roles: Optional[bool] = False
-):
+def grant_privileges(pg_service: str, modulename: str, db_spec_roles: Optional[bool] = False):
     """
     Grants the rights from the roles for usage in TEKSI Modules
     :param pg_service: the PostgreSQL service
@@ -131,9 +129,7 @@ def grant_privileges(
     conn.close()
 
 
-def revoke_privileges(
-    pg_service: str, modulename: str, db_spec_roles: Optional[bool] = False
-):
+def revoke_privileges(pg_service: str, modulename: str, db_spec_roles: Optional[bool] = False):
     """
     Revokes the rights from the roles for usage in TEKSI Modules
     :param pg_service: the PostgreSQL service

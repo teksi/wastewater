@@ -37,10 +37,10 @@ try:
     from .gui.twwplotsvgwidget import TwwPlotSVGWidget
 except ImportError:
     TwwPlotSVGWidget = None
+from .gui.rolegenerator import RoleGeneratorGui
 from .gui.twwprofiledockwidget import TwwProfileDockWidget
 from .gui.twwsettingsdialog import TwwSettingsDialog
 from .gui.twwwizard import TwwWizard
-from .gui.rolegenerator import RoleGeneratorGui
 from .processing_provider.provider import TwwProcessingProvider
 from .tools.twwmaptools import TwwMapToolConnectNetworkElements, TwwTreeMapTool
 from .tools.twwnetwork import TwwGraphManager
@@ -386,11 +386,10 @@ class TeksiWastewaterPlugin:
     def tww_role_generation_action(self):
         if not self.RoleGenerator:
             self.RoleGenerator = RoleGeneratorGui()
-            
+
         self.logger.debug("Opening Role Generator")
         self.iface.addDockWidget(Qt.LeftDockWidgetArea, self.RoleGenerator)
         self.RoleGenerator.show()
-
 
     def enable_symbology_triggers(self):
         try:
