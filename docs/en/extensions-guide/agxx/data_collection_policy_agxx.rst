@@ -49,7 +49,7 @@ The FunktionAG is mapped from
   * ``wastewater_node.ag64_function``
   * ``wwtp_structure.obj_id``
   * ``measurement.obj_id``
-  
+
 
 The FunktionAG ``Kontrollschacht`` is not included in the value list. Use ``manhole`` or ``combined_manhole`` instead, which are mapped using a backwards relation.
 
