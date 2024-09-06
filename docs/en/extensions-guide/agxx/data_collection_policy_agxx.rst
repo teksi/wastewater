@@ -69,7 +69,7 @@ The following table explains the mapping of FunktionAG in detail. If there are m
      -
    * - Abwasserreinigungsanlage
      - wwtp_structure
-     - any kind
+     - regardless of kind
    * - andere
      - special_structure / manhole / wastewater_node.ag64_function
      -
@@ -96,10 +96,10 @@ The following table explains the mapping of FunktionAG in detail. If there are m
      -
    * - Einleitstelle_gewaesserrelevant
      - discharge_point
-     - gewaesserrelevant
+     - 
    * - Einleitstelle_nicht_gewaesserrelevant
      - discharge_point
-     - nicht_gewaesserrelevant
+     - 
    * - Entwaesserungsrinne
      - manhole
      -
@@ -123,7 +123,7 @@ The following table explains the mapping of FunktionAG in detail. If there are m
      -
    * - Kontrollschacht
      - special_structure / manhole
-     - use Kontroll-Einstiegschacht or Kombischacht
+     - use ``Kontroll-Einstiegschacht`` or ``Kombischacht``
    * - Leitungsknoten
      - no wastewater structure
      -
@@ -135,7 +135,7 @@ The following table explains the mapping of FunktionAG in detail. If there are m
      -
    * - Oelrueckhaltebecken
      - special_structure
-     - maps to Behandlungsanlage on DSS export
+     - maps to ``Behandlungsanlage`` on DSS export
    * - Pumpwerk
      - special_structure / manhole
      -
@@ -174,7 +174,7 @@ The following table explains the mapping of FunktionAG in detail. If there are m
      -
    * - Schlammfang
      - manhole
-     - maps to Schlammsammler on DSS export
+     - maps to ``Schlammsammler`` on DSS export
    * - Schlammsammler
      - manhole
      -
@@ -189,7 +189,7 @@ The following table explains the mapping of FunktionAG in detail. If there are m
      -
    * - Strassenwasserbehandlungsanlage
      - special_structure
-     - maps to Behandlungsanlage on DSS export
+     - maps to ``Behandlungsanlage`` on DSS export
    * - Trennbauwerk
      - special_structure / manhole
      -
@@ -213,10 +213,10 @@ The following table explains the mapping of FunktionAG in detail. If there are m
      -  use Kombination_Schacht_Strang
    * - Versickerungsanlage.Retentionsfilterbecken
      - infiltration_installation
-     - maps to andere_mot_Bodenpassage on DSS export
+     - maps to ``andere_mit_Bodenpassage`` on DSS export
    * - Versickerungsanlage.andere
      - infiltration_installation
-     - maps to unbekannt on DSS expor
+     - maps to ``unbekannt`` on DSS expor
    * - Versickerungsanlage.unbekannt
      - infiltration_installation
      -
