@@ -62,8 +62,12 @@ def create_app(
 
     run_sql("CREATE SCHEMA tww_app;", pg_service)
 
+
+    run_sql_file("view/vw_labels_outflow.sql", pg_service, variables)
+    
     run_sql_file("functions/oid_functions.sql", pg_service, variables)
     run_sql_file("functions/modification_functions.sql", pg_service)
+    run_sql_file("functions/label_functions.sql", pg_service)
     run_sql_file("functions/symbology_functions.sql", pg_service)
     run_sql_file("functions/reach_direction_change.sql", pg_service, variables)
     run_sql_file("functions/14_geometry_functions.sql", pg_service, variables)
@@ -239,7 +243,7 @@ def create_app(
     ).create()
 
     run_sql_file("triggers/network.sql", pg_service)
-
+    run_sql_file("triggers/symbology_triggers.sql", pg_service)
     run_sql_file("tww_app_roles.sql", pg_service, variables)
 
 
