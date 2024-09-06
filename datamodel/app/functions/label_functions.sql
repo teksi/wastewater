@@ -111,13 +111,7 @@ CREATE OR REPLACE FUNCTION tww_app.update_wastewater_structure_label(_obj_id tex
   myrec record;
 
 BEGIN
-UPDATE tww_od.wastewater_structure ws
-SET _label = label,
-    _cover_label = cover_label,
-    _bottom_label = bottom_label,
-    _input_label = input_label,
-    _output_label = output_label
-    FROM(
+WITH labeled_ws AS(
 
 SELECT   ws_obj_id,
           COALESCE(ws_identifier, '') as label,
