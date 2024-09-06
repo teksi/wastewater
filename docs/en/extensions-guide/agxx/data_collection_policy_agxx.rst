@@ -42,10 +42,14 @@ The base OID for the Infrastrukturknoten/GEPKnoten is taken from ``tww_od.wastew
 
 The FunktionAG is mapped from
 
-  * manhole
-  * special_structure
-  * infiltration_installation.kind
-  * discharge_point.relevance
+  * ``manhole.function``
+  * ``special_structure``
+  * ``infiltration_installation.kind``
+  * ``discharge_point.relevance``
+  * ``wastewater_node.ag64_function``
+  * ``wwtp_structure.obj_id``
+  * ``measurement.obj_id``
+  
 
 The FunktionAG ``Kontrollschacht`` is not included in the value list. Use ``manhole`` or ``combined_manhole`` instead, which are mapped using a backwards relation.
 
@@ -71,10 +75,10 @@ The following table explains the mapping of FunktionAG in detail. If there are m
      - wwtp_structure
      - regardless of ``kind`` value
    * - andere
-     - special_structure / manhole / wastewater_node.ag64_function
+     - special_structure / manhole / wastewater_node
      -
    * - Anschluss
-     - wastewater_node.ag64_function
+     - wastewater_node
      -
    * - Be_Entlueftung
      - special_structure / manhole
