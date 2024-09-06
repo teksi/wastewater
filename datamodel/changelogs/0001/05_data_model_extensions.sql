@@ -9,21 +9,6 @@
 ALTER TABLE tww_od.manhole ADD COLUMN _orientation numeric;
 COMMENT ON COLUMN tww_od.manhole._orientation IS 'not part of the VSA-DSS data model
 added solely for TEKSI Wastewater & GEP';
-ALTER TABLE tww_od.wastewater_structure ADD COLUMN _label text;
-COMMENT ON COLUMN tww_od.wastewater_structure._label IS 'not part of the VSA-DSS data model
-added solely for TEKSI Wastewater & GEP';
-ALTER TABLE tww_od.wastewater_structure ADD COLUMN _cover_label text;
-COMMENT ON COLUMN tww_od.wastewater_structure._cover_label IS 'stores the cover altitude to be used for labelling, not part of the VSA-DSS data model
-added solely for TEKSI Wastewater & GEP';
-ALTER TABLE tww_od.wastewater_structure ADD COLUMN _input_label text;
-COMMENT ON COLUMN tww_od.wastewater_structure._input_label IS 'stores the list of input altitudes to be used for labelling, not part of the VSA-DSS data model
-added solely for TEKSI Wastewater & GEP';
-ALTER TABLE tww_od.wastewater_structure ADD COLUMN _output_label text;
-COMMENT ON COLUMN tww_od.wastewater_structure._output_label IS 'stores the list of output altitudes to be used for labelling, not part of the VSA-DSS data model
-added solely for TEKSI Wastewater & GEP';
-ALTER TABLE tww_od.wastewater_structure ADD COLUMN _bottom_label text;
-COMMENT ON COLUMN tww_od.wastewater_structure._bottom_label IS 'stores the bottom altitude to be used for labelling, not part of the VSA-DSS data model
-added solely for TEKSI Wastewater & GEP';
 
 
 -- this column is an extension to the VSA data model and puts the _function_hierarchic in order
