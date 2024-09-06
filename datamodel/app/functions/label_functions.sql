@@ -111,6 +111,9 @@ CREATE OR REPLACE FUNCTION tww_app.update_wastewater_structure_label(_obj_id tex
   myrec record;
 
 BEGIN
+
+EXECUTE tww_app.update_reach_point_label(_obj_id,_all);
+
 WITH labeled_ws AS(
 
 SELECT   ws_obj_id,
