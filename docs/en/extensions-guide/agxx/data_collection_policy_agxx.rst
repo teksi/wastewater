@@ -239,7 +239,7 @@ The AG-64/AG-96 data collection guidelines state the following:
   * The main wastewater node of a manhole or special structure must be mapped to the location of the main cover.
   * Secondary covers are mapped as Infrastrukturknoten/GEPKnoten with funktionag "andere".
 
-As topological relations to a node of funktionag "andere" are technically possible, we need to link all covers to a wastewater node linked to every cover.
+As topological relations to a node of funktionag "andere" are technically possible, we need to link all covers to a wastewater node using ``tww_od.cover.ag64_fk_wastewater_node``.
 In order to follow these limitations, there is an additional foreign key on ``tww_od.cover`` pointing to ``tww_od.wastewater_node``. A wastewater node's situation geometry is only overruled if it is referenced from a cover.
 Additionally, the attribute ``wastewater_node.ag64_function`` can be set to "andere".
 
@@ -282,10 +282,10 @@ Bautenausserhalbbaugebiet is mapped to `tww_od.building_group`. There is no back
 SBW_Einzugsgebiet
 ---------------------
 
-SBW_Einzugsgebiet is mapped to `tww_od.catchment_area_totals`. The perimeter geometry is stored as an extension geometry attribute. In order to alter it, one needs to manually import the layer into the qgs project.
+SBW_Einzugsgebiet is mapped to `tww_od.catchment_area_totals`. The perimeter geometry is stored as an extension geometry attribute (``ag_96_perimeter_geometry``). In order to alter it, one needs to manually import the layer into the qgs project.
 
 There exists a function to calculate the perimeter geometry by aggregating the catchment areas via catchment_area->log_card->main_log_card->hydraulic_char_data->catchment_area_totals.
-The perimeter geometry is a MultiSurface, while the INTERLIS model requires a CompoundCurve. According to the official data collection policy of the Canton, one should violate the datamodel and export a MultiPart. As the underlying export mechanism ili2pg does not allow to export a wrong geometry type, only the biggest Singlepart is exported.
+The perimeter geometry is a MultiSurface, while the INTERLIS model requires a CurvePolygon. According to the official data collection policy of the Canton, one should violate the datamodel and export a MultiPart. As the underlying export mechanism ili2pg does not allow to export a wrong geometry type, only the biggest Singlepart is exported.
 
 VersickerungsbereichAG
 ------------------------
