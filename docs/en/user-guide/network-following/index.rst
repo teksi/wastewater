@@ -25,7 +25,6 @@ Upstream
 
 * If there is more than one node in this area, you choose the one you want form the mouse-list
 
-.. attention:: With twwplugin 1.1.8 / QGIS 3.4.2, it's a good idea to zoom in so far, that you can choose your start node without having any other node nearby. If you choose the node from the mouse-list, you may get unexpected results.
 
 .. figure:: images/network_select_start_node.jpg
 
@@ -41,15 +40,13 @@ Upstream
 
 * Use this tool to check if the topology of your network is correct.
 
-.. note:: In the button select current path, you have a menu **Configure Select**. This is prepared to select later not only the path, put also the catchment areas that are connected to the path. This feature is not working with twwplugin 1.1.8.
+.. note:: In the button select current path, you have a menu **Configure Select**. This feature is not working with the actual twwplugin.
 
 
 Downstream
 ----------
 
 * Downstream network following works similar as the Upstream network following described above.
-
-.. figure:: images/network_downstream_button.jpg
 
 
 * You can see where the water is going to.
