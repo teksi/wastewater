@@ -121,7 +121,6 @@ The following table explains the mapping of FunktionAG in detail. If there are m
    * - Klaergrube
      - special_structure
      -
-     -
    * - Kontrollschacht
      - special_structure / manhole
      - use Kontroll-Einstiegschacht or Kombischacht
