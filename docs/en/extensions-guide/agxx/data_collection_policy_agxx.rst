@@ -72,7 +72,7 @@ The following table explains the mapping of FunktionAG in detail. If there are m
      - any kind
    * - andere
      - special_structure / manhole / wastewater_node.ag64_function
-     - 
+     -
    * - Anschluss
      - wastewater_node.ag64_function
      -
@@ -108,10 +108,10 @@ The following table explains the mapping of FunktionAG in detail. If there are m
      -
    * - Gelaendemulde
      - special_structure
-     - 
+     -
    * - Geleiseschacht
      - manhole
-     - 
+     -
    * - Geschiebefang
      - special_structure
      -
@@ -130,7 +130,7 @@ The following table explains the mapping of FunktionAG in detail. If there are m
      -
    * - Messstelle
      - measurement not in special construction
-     - 
+     -
    * - Oelabscheider
      - special_structure / manhole
      -
@@ -199,13 +199,13 @@ The following table explains the mapping of FunktionAG in detail. If there are m
      -
    * - Versickerungsanlage.Versickerungsbecken
      - infiltration_installation
-     - 
+     -
    * - Versickerungsanlage.Kieskoerper
      - infiltration_installation
-     - 
+     -
    * - Versickerungsanlage.Versickerungsschacht
      - infiltration_installation
-     - 
+     -
    * - Versickerungsanlage.Versickerungsstrang
      - infiltration_installation
      - use Versickerungsstrang_Galerie
@@ -220,7 +220,7 @@ The following table explains the mapping of FunktionAG in detail. If there are m
      - maps to unbekannt on DSS expor
    * - Versickerungsanlage.unbekannt
      - infiltration_installation
-     - 
+     -
    * - Vorbehandlung
      - special_structure
      - use Vorbehandlungsanlage
