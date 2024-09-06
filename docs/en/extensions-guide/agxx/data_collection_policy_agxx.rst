@@ -52,7 +52,7 @@ The FunktionAG ``Kontrollschacht`` is not included in the value list. Use ``manh
 The following table explains the mapping of FunktionAG in detail. If there are multiple options for TWW class, the type is defined dependent on whether a detail geometry exists. The value_de is only listed if the AG-64/96 value is not eligible
 
 .. list-table::
-   :widths: 24 36 20 20
+   :widths: 30 45 25
    :header-rows: 1
 
    * - Value in AG-64/AG-96
