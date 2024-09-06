@@ -96,10 +96,10 @@ The following table explains the mapping of FunktionAG in detail. If there are m
      -
    * - Einleitstelle_gewaesserrelevant
      - discharge_point
-     - 
+     -
    * - Einleitstelle_nicht_gewaesserrelevant
      - discharge_point
-     - 
+     -
    * - Entwaesserungsrinne
      - manhole
      -
