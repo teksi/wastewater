@@ -1,0 +1,60 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Install dependencies",
+            "type": "shell",
+            "command": "pip install debugpy \"sqlalchemy~=1.3.22\" \"geoalchemy2>=0.9.0\"",
+            "options": {
+                "shell": {
+                    "executable": "${config:qgis.installationRoot}\\OSGeo4W.bat",
+                }
+            },
+        },
+        {
+            "label": "docker-db",
+            "type": "docker-compose",
+            "dockerCompose": {
+                "up": {
+                    "detached": true,
+                    "build": false,
+                    "services": [
+                        "db"
+                    ]
+                },
+                "files": [
+                    "${workspaceFolder}/docker-compose.yml"
+                ],
+            },
+        },
+        {
+            "label": "Launch QGIS",
+            "type": "process",
+            "command": "${config:qgis.executable}",
+            "args": [
+                "--project",
+                "${workspaceFolder}\\project\\teksi_wastewater.qgs",
+            ],
+            "runOptions": {
+                "instanceLimit": 1,
+                "reevaluateOnRerun": false,
+            },
+            "dependsOn": [
+                "docker-db",
+            ],
+            "isBackground": true,
+            "problemMatcher": [],
+            "options": {
+                "env": {
+                    "QGIS_DEBUG": "1",
+                    "QGIS_DEBUG_FILE": "${workspaceFolder}\\project\\qgis.log",
+                    "QGIS_PLUGINPATH": "${workspaceFolder}\\plugin",
+                    "QGIS_PLUGIN_USE_DEBUGGER": "debugpy",
+                    "PGSERVICEFILE": "${workspaceFolder}\\project\\pg_service.conf",
+                }
+            },
+        }
+    ]
+}
