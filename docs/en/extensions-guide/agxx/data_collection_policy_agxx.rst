@@ -69,7 +69,7 @@ The following table explains the mapping of FunktionAG in detail. If there are m
      -
    * - Abwasserreinigungsanlage
      - wwtp_structure
-     - regardless of kind
+     - regardless of ``kind`` value
    * - andere
      - special_structure / manhole / wastewater_node.ag64_function
      -
@@ -207,22 +207,22 @@ The following table explains the mapping of FunktionAG in detail. If there are m
      -
    * - Versickerungsanlage.Versickerungsstrang
      - infiltration_installation
-     - use Versickerungsstrang_Galerie
+     - use ``Versickerungsstrang_Galerie``
    * - Versickerungsanlage.Versickerungsschacht_Strang
      - infiltration_installation
-     -  use Kombination_Schacht_Strang
+     -  use ``Kombination_Schacht_Strang``
    * - Versickerungsanlage.Retentionsfilterbecken
      - infiltration_installation
      - maps to ``andere_mit_Bodenpassage`` on DSS export
    * - Versickerungsanlage.andere
      - infiltration_installation
-     - maps to ``unbekannt`` on DSS expor
+     - maps to ``unbekannt`` on DSS export
    * - Versickerungsanlage.unbekannt
      - infiltration_installation
      -
    * - Vorbehandlung
      - special_structure
-     - use Vorbehandlungsanlage
+     - use ``Vorbehandlungsanlage``
    * - Wirbelfallschacht
      - special_structure
      -
