@@ -62,8 +62,9 @@ def create_app(
 
     run_sql("CREATE SCHEMA tww_app;", pg_service)
 
-    run_sql_file("view/vw_labels_outflow.sql", pg_service, variables)
 
+    run_sql_file("view/vw_labels_outflow.sql", pg_service, variables)
+    
     run_sql_file("functions/oid_functions.sql", pg_service, variables)
     run_sql_file("functions/modification_functions.sql", pg_service)
     run_sql_file("functions/label_functions.sql", pg_service)
@@ -195,9 +196,6 @@ def create_app(
     run_sql_file(
         "view/catchment_area/vw_catchment_area_totals_aggregated.sql", pg_service, variables
     )
-
-    # default values
-    run_sql_file("view/set_default_value_for_views.sql", pg_service, variables)
 
     # Recreate GEP views
     run_sql_file("gep_views/vw_tww_catchment_area_totals.sql", pg_service, variables)
