@@ -67,7 +67,7 @@ CREATE OR REPLACE FUNCTION tww_app.update_reach_point_label(_obj_id text,
 	  (
 	  SELECT 'I'||CASE WHEN max_idx=1 THEN '' ELSE idx::text END as new_label
 	  , obj_id
-	  FROM inp
+	  FROM inputs
 	  UNION
 	  SELECT 'O'||CASE WHEN max_idx=1 THEN '' ELSE idx::text END as new_label
 	  , obj_id
