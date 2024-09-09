@@ -15,7 +15,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_sia405cc_cable_point_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.sia405cc_cable_point ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','sia405cc_cable_point');
 COMMENT ON COLUMN tww_od.sia405cc_cable_point.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.sia405cc_cable_point ADD COLUMN name_number text;
  ALTER TABLE tww_od.sia405cc_cable_point ADD CONSTRAINT _name_number_length_max_40 CHECK(char_length(name_number)<=40);
@@ -63,13 +62,6 @@ COMMENT ON COLUMN tww_od.sia405cc_cable_point.last_modification IS 'Last modific
 COMMENT ON COLUMN tww_od.sia405cc_cable_point.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.sia405cc_cable_point ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.sia405cc_cable_point.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_sia405cc_cable_point
-BEFORE UPDATE OR INSERT ON
- tww_od.sia405cc_cable_point
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
 
 -------
 -------
@@ -82,7 +74,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_sia405cc_cable_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.sia405cc_cable ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','sia405cc_cable');
 COMMENT ON COLUMN tww_od.sia405cc_cable.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.sia405cc_cable ADD COLUMN name_number text;
  ALTER TABLE tww_od.sia405cc_cable ADD CONSTRAINT _name_number_length_max_40 CHECK(char_length(name_number)<=40);
@@ -123,13 +114,6 @@ COMMENT ON COLUMN tww_od.sia405cc_cable.last_modification IS 'Last modification 
 COMMENT ON COLUMN tww_od.sia405cc_cable.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.sia405cc_cable ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.sia405cc_cable.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_sia405cc_cable
-BEFORE UPDATE OR INSERT ON
- tww_od.sia405cc_cable
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
 
 -------
 ------------ Relationships and Value Tables ----------- ;

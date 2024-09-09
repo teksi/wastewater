@@ -100,7 +100,7 @@ INSERT INTO tww_od.catchment_area(
   , fk_wastewater_networkelement_ww_planned
   , fk_wastewater_networkelement_ww_current)
 VALUES (
-    COALESCE(NEW.obj_id,tww_sys.generate_oid('tww_od','catchment_area'))
+    COALESCE(NEW.obj_id,tww_app.generate_oid('tww_od','catchment_area'))
   , NEW.direct_discharge_current
   , NEW.direct_discharge_planned=NEW.NEW.direct_discharge_planned
   , NEW.discharge_coefficient_rw_current

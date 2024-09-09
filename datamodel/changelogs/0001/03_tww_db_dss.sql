@@ -50,7 +50,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_organisation_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.organisation ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','organisation');
 COMMENT ON COLUMN tww_od.organisation.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.organisation ADD COLUMN identifier text;
  ALTER TABLE tww_od.organisation ADD CONSTRAINT og_identifier_length_max_255 CHECK(char_length(identifier)<=255);
@@ -76,13 +75,6 @@ COMMENT ON COLUMN tww_od.organisation.last_modification IS 'Last modification / 
 COMMENT ON COLUMN tww_od.organisation.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.organisation ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.organisation.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_organisation
-BEFORE UPDATE OR INSERT ON
- tww_od.organisation
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
 
 -------
 -------
@@ -95,7 +87,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_measure_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.measure ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','measure');
 COMMENT ON COLUMN tww_od.measure.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.measure ADD COLUMN category  integer ;
 COMMENT ON COLUMN tww_od.measure.category IS 'Category of measure (mandatory) / Massnahmenkategorie (obligatorisch) / Catégorie de la mesure (obligatoire)';
@@ -141,13 +132,6 @@ COMMENT ON COLUMN tww_od.measure.last_modification IS 'Last modification / Letzt
 COMMENT ON COLUMN tww_od.measure.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.measure ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.measure.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_measure
-BEFORE UPDATE OR INSERT ON
- tww_od.measure
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
 
 -------
 -------
@@ -160,7 +144,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_mutation_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.mutation ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','mutation');
 COMMENT ON COLUMN tww_od.mutation.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.mutation ADD COLUMN attribute text;
  ALTER TABLE tww_od.mutation ADD CONSTRAINT md_attribute_length_max_60 CHECK(char_length(attribute)<=60);
@@ -195,13 +178,6 @@ COMMENT ON COLUMN tww_od.mutation.last_modification IS 'Last modification / Letz
 COMMENT ON COLUMN tww_od.mutation.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.mutation ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.mutation.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_mutation
-BEFORE UPDATE OR INSERT ON
- tww_od.mutation
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
 
 -------
 -------
@@ -214,7 +190,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_waste_water_treatment_plant_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.waste_water_treatment_plant ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','waste_water_treatment_plant');
 COMMENT ON COLUMN tww_od.waste_water_treatment_plant.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
 ALTER TABLE tww_od.waste_water_treatment_plant ADD COLUMN area_geometry geometry('CURVEPOLYGON', :SRID);
 CREATE INDEX in_tww_waste_water_treatment_plant_area_geometry ON tww_od.waste_water_treatment_plant USING gist (area_geometry );
@@ -261,13 +236,7 @@ COMMENT ON COLUMN tww_od.waste_water_treatment_plant.last_modification IS 'Last 
 COMMENT ON COLUMN tww_od.waste_water_treatment_plant.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.waste_water_treatment_plant ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.waste_water_treatment_plant.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_waste_water_treatment_plant
-BEFORE UPDATE OR INSERT ON
- tww_od.waste_water_treatment_plant
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+
 
 -------
 -------
@@ -280,7 +249,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_wastewater_structure_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.wastewater_structure ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_structure');
 COMMENT ON COLUMN tww_od.wastewater_structure.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.wastewater_structure ADD COLUMN accessibility  integer ;
 COMMENT ON COLUMN tww_od.wastewater_structure.accessibility IS 'Possibility of accessibility of a sewage structure for a person (not for a vehicle). / Möglichkeit der Zugänglichkeit eines Abwasserbauwerks für eine Person (nicht für ein Fahrzeug) / Possibilités d’accès à l’ouvrage d’assainissement pour une personne (non pour un véhicule)';
@@ -343,13 +311,7 @@ COMMENT ON COLUMN tww_od.wastewater_structure.last_modification IS 'Last modific
 COMMENT ON COLUMN tww_od.wastewater_structure.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.wastewater_structure ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.wastewater_structure.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_wastewater_structure
-BEFORE UPDATE OR INSERT ON
- tww_od.wastewater_structure
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+
 
 -------
 -------
@@ -362,7 +324,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_channel_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.channel ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','channel');
 COMMENT ON COLUMN tww_od.channel.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.channel ADD COLUMN bedding_encasement  integer ;
 COMMENT ON COLUMN tww_od.channel.bedding_encasement IS 'yyy_Art und Weise der unmittelbaren Rohrumgebung im Boden: Bettungsschicht (Unterlage der Leitung),  Verdämmung (seitliche Auffüllung), Schutzschicht / Art und Weise der unmittelbaren Rohrumgebung im Boden: Bettungsschicht (Unterlage der Leitung),  Verdämmung (seitliche Auffüllung), Schutzschicht / Lit de pose (assise de la conduite), bourrage latéral (remblai latéral), couche de protection';
@@ -386,13 +347,6 @@ COMMENT ON COLUMN tww_od.channel.usage_current IS 'yyy_Für Primäre Abwasseranl
  ALTER TABLE tww_od.channel ADD COLUMN usage_planned  integer ;
 COMMENT ON COLUMN tww_od.channel.usage_planned IS 'yyy_Durch das Konzept vorgesehene Nutzung (vergleiche auch Nutzungsart_Ist) / Durch das Konzept vorgesehene Nutzung (vergleiche auch Nutzungsart_Ist) / Utilisation prévue par le concept d''assainissement (voir aussi GENRE_UTILISATION_ACTUELLE)';
  CREATE INDEX in_channel_function_hierarchic_usage_current ON tww_od.channel USING btree (function_hierarchic, usage_current);
--------
-CREATE TRIGGER
-update_last_modified_channel
-BEFORE UPDATE OR INSERT ON
- tww_od.channel
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified_parent("tww_od.wastewater_structure");
 
 -------
 -------
@@ -405,7 +359,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_manhole_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.manhole ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','manhole');
 COMMENT ON COLUMN tww_od.manhole.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.manhole ADD COLUMN amphibian_exit  integer ;
 COMMENT ON COLUMN tww_od.manhole.amphibian_exit IS 'Structural measures for the exit of amphibians available. / Bauliche Massnahme für den Ausstieg von Amphibien vorhanden. / Des mesures structurelles pour la sortie des amphibiens sont en place.';
@@ -424,13 +377,6 @@ COMMENT ON COLUMN tww_od.manhole.material IS 'yyy_Hauptmaterial aus dem das Bauw
 COMMENT ON COLUMN tww_od.manhole.possibility_intervention IS 'Intervention possibility on the wastewater structure for the fire department available. / Interventionsmöglichkeit auf dem Bauwerk für die Wehrdienste vorhanden. / Possibilité d''intervention sur l''ouvrage pour les services du feu (pompiers).';
  ALTER TABLE tww_od.manhole ADD COLUMN surface_inflow  integer ;
 COMMENT ON COLUMN tww_od.manhole.surface_inflow IS 'yyy_Zuflussmöglichkeit  von Oberflächenwasser direkt in den Schacht / Zuflussmöglichkeit  von Oberflächenwasser direkt in den Schacht / Arrivée directe d''eaux superficielles dans la chambre';
--------
-CREATE TRIGGER
-update_last_modified_manhole
-BEFORE UPDATE OR INSERT ON
- tww_od.manhole
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified_parent("tww_od.wastewater_structure");
 
 -------
 -------
@@ -443,7 +389,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_discharge_point_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.discharge_point ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','discharge_point');
 COMMENT ON COLUMN tww_od.discharge_point.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.discharge_point ADD COLUMN depth  smallint ;
 COMMENT ON COLUMN tww_od.discharge_point.depth IS 'Function (calculated value) = representative wastewater_node.bottom_level minus associated upper_elevation of the structure if detailed geometry is available, otherwise Function (calculated value) = wastewater_node.bottom_level minus associated cover.level of the structure / Funktion (berechneter Wert) = repräsentative Abwasserknoten.Sohlenkote minus zugehörige Deckenkote des Bauwerks falls Detailgeometrie vorhanden, sonst Funktion (berechneter Wert) = Abwasserknoten.Sohlenkote minus zugehörige Deckel.Kote des Bauwerks / Fonction (valeur calculée) = NOEUD_RESEAU.COTE_RADIER représentatif moins COTE_PLAFOND de l’ouvrage correspondant si la géométrie détaillée est disponible, sinon fonction (valeur calculée) = NŒUD_RESEAU.COT_RADIER moins COUVERCLE.COTE de l’ouvrage correspondant';
@@ -463,13 +408,7 @@ COMMENT ON COLUMN tww_od.discharge_point.water_course_number IS 'Watercourse num
 COMMENT ON COLUMN tww_od.discharge_point.water_course_segment_canton IS 'yyy_Designation of the section in the cantonal watercourse network / Bezeichnung des Gewässerabschnittes im Kantonalen Gewässernetz / Désignation du tronçon dans le réseau cantonal des cours d''eau';
  ALTER TABLE tww_od.discharge_point ADD COLUMN waterlevel_hydraulic  decimal(7,3) ;
 COMMENT ON COLUMN tww_od.discharge_point.waterlevel_hydraulic IS 'yyy_Wasserspiegelkote für die hydraulische Berechnung (IST-Zustand). Berechneter Wasserspiegel bei der Einleitstelle. Wo nichts anders gefordert, ist der Wasserspiegel bei einem HQ30 einzusetzen. / Wasserspiegelkote für die hydraulische Berechnung (IST-Zustand). Berechneter Wasserspiegel bei der Einleitstelle. Wo nichts anders gefordert, ist der Wasserspiegel bei einem HQ30 einzusetzen. / Niveau d’eau calculé à l’exutoire. Si aucun exigence est demandée, indiquer le niveau d’eau pour un HQ30.';
--------
-CREATE TRIGGER
-update_last_modified_discharge_point
-BEFORE UPDATE OR INSERT ON
- tww_od.discharge_point
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified_parent("tww_od.wastewater_structure");
+
 
 -------
 -------
@@ -482,7 +421,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_special_structure_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.special_structure ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','special_structure');
 COMMENT ON COLUMN tww_od.special_structure.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.special_structure ADD COLUMN amphibian_exit  integer ;
 COMMENT ON COLUMN tww_od.special_structure.amphibian_exit IS 'Structural measures for the exit of amphibians available. / Bauliche Massnahme für den Ausstieg von Amphibien vorhanden. / Des mesures structurelles pour la sortie des amphibiens sont en place.';
@@ -501,13 +439,6 @@ COMMENT ON COLUMN tww_od.special_structure.possibility_intervention IS 'Interven
 COMMENT ON COLUMN tww_od.special_structure.stormwater_tank_arrangement IS 'yyy_Anordnung des Regenbeckens im System, vgl. Kap. 6.2. Modul DB der VSA-Richtlinie Abwasserbewirtschaftung bei Regenwetter. / Anordnung des Regenbeckens im System, vgl. Kap. 6.2. Modul DB der VSA-Richtlinie "Abwasserbewirtschaftung bei Regenwetter". / Disposition du bassin d''eaux pluviales dans le système, voir chap. 6.2 du module DB de la directive «Gestion des eaux urbaines par temps de pluie» du VSA.';
  ALTER TABLE tww_od.special_structure ADD COLUMN upper_elevation  decimal(7,3) ;
 COMMENT ON COLUMN tww_od.special_structure.upper_elevation IS 'Highest point of structure (ceiling), outside / Höchster Punkt des Bauwerks (Decke), aussen / Point le plus élevé de la construction';
--------
-CREATE TRIGGER
-update_last_modified_special_structure
-BEFORE UPDATE OR INSERT ON
- tww_od.special_structure
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified_parent("tww_od.wastewater_structure");
 
 -------
 -------
@@ -520,7 +451,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_infiltration_installation_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.infiltration_installation ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','infiltration_installation');
 COMMENT ON COLUMN tww_od.infiltration_installation.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.infiltration_installation ADD COLUMN absorption_capacity  decimal(9,3) ;
 COMMENT ON COLUMN tww_od.infiltration_installation.absorption_capacity IS 'yyy_Schluckvermögen des Bodens. / Schluckvermögen des Bodens. / Capacité d''absorption du sol';
@@ -552,13 +482,6 @@ COMMENT ON COLUMN tww_od.infiltration_installation.upper_elevation IS 'Highest p
 COMMENT ON COLUMN tww_od.infiltration_installation.vehicle_access IS 'Accessibility for vehicle access (e.g. suction trucks). It refers to the entire infiltration system / pretreatment facilities and can be further specified in the remarks / Zugänglichkeit für Saugwagen. Sie bezieht sich auf die gesamte Versickerungsanlage / Vorbehandlungsanlagen und kann in den Bemerkungen weiter spezifiziert werden / Accessibilité pour des camions de vidange. Se réfère à toute l''installation d''infiltration / de prétraitement et peut être spécifiée sous REMARQUE';
  ALTER TABLE tww_od.infiltration_installation ADD COLUMN watertightness  integer ;
 COMMENT ON COLUMN tww_od.infiltration_installation.watertightness IS 'yyy_Wasserdichtheit gegen Oberflächenwasser.  Nur bei Anlagen mit Schächten. / Wasserdichtheit gegen Oberflächenwasser.  Nur bei Anlagen mit Schächten. / Etanchéité contre des eaux superficielles. Uniquement pour des installations avec chambres';
--------
-CREATE TRIGGER
-update_last_modified_infiltration_installation
-BEFORE UPDATE OR INSERT ON
- tww_od.infiltration_installation
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified_parent("tww_od.wastewater_structure");
 
 -------
 -------
@@ -571,17 +494,10 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_wwtp_structure_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.wwtp_structure ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wwtp_structure');
 COMMENT ON COLUMN tww_od.wwtp_structure.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.wwtp_structure ADD COLUMN kind  integer ;
 COMMENT ON COLUMN tww_od.wwtp_structure.kind IS 'yyy_Art des Beckens oder Verfahrens im ARA Bauwerk / Art des Beckens oder Verfahrens im ARA Bauwerk / Genre de l''l’ouvrage ou genre de traitement dans l''ouvrage STEP';
--------
-CREATE TRIGGER
-update_last_modified_wwtp_structure
-BEFORE UPDATE OR INSERT ON
- tww_od.wwtp_structure
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified_parent("tww_od.wastewater_structure");
+
 
 -------
 -------
@@ -594,7 +510,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_maintenance_event_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.maintenance_event ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','maintenance_event');
 COMMENT ON COLUMN tww_od.maintenance_event.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.maintenance_event ADD COLUMN base_data text;
  ALTER TABLE tww_od.maintenance_event ADD CONSTRAINT me_base_data_length_max_50 CHECK(char_length(base_data)<=50);
@@ -631,13 +546,7 @@ COMMENT ON COLUMN tww_od.maintenance_event.last_modification IS 'Last modificati
 COMMENT ON COLUMN tww_od.maintenance_event.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.maintenance_event ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.maintenance_event.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_maintenance_event
-BEFORE UPDATE OR INSERT ON
- tww_od.maintenance_event
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+
 
 -------
 -------
@@ -650,7 +559,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_zone_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.zone ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','zone');
 COMMENT ON COLUMN tww_od.zone.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.zone ADD COLUMN identifier text;
  ALTER TABLE tww_od.zone ADD CONSTRAINT zo_identifier_length_max_20 CHECK(char_length(identifier)<=20);
@@ -664,13 +572,7 @@ COMMENT ON COLUMN tww_od.zone.last_modification IS 'Last modification / Letzte_A
 COMMENT ON COLUMN tww_od.zone.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.zone ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.zone.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_zone
-BEFORE UPDATE OR INSERT ON
- tww_od.zone
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+
 
 -------
 -------
@@ -683,20 +585,13 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_infiltration_zone_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.infiltration_zone ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','infiltration_zone');
 COMMENT ON COLUMN tww_od.infiltration_zone.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.infiltration_zone ADD COLUMN infiltration_capacity  integer ;
 COMMENT ON COLUMN tww_od.infiltration_zone.infiltration_capacity IS 'yyy_Versickerungsmöglichkeit im Bereich / Versickerungsmöglichkeit im Bereich / Potentiel d''infiltration de la zone';
 ALTER TABLE tww_od.infiltration_zone ADD COLUMN perimeter_geometry geometry('CURVEPOLYGON', :SRID);
 CREATE INDEX in_tww_infiltration_zone_perimeter_geometry ON tww_od.infiltration_zone USING gist (perimeter_geometry );
 COMMENT ON COLUMN tww_od.infiltration_zone.perimeter_geometry IS 'Boundary points of the perimeter / Begrenzungspunkte der Fläche / Points de délimitation de la surface';
--------
-CREATE TRIGGER
-update_last_modified_infiltration_zone
-BEFORE UPDATE OR INSERT ON
- tww_od.infiltration_zone
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified_parent("tww_od.zone");
+
 
 -------
 -------
@@ -709,20 +604,13 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_drainage_system_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.drainage_system ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','drainage_system');
 COMMENT ON COLUMN tww_od.drainage_system.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.drainage_system ADD COLUMN kind  integer ;
 COMMENT ON COLUMN tww_od.drainage_system.kind IS 'yyy_Art des Entwässerungssystems in dem ein bestimmtes Gebiet entwässert werden soll (SOLL Zustand)  im groben Überblick für Planung. Wird später auf einzelnem Kanal attributiert. / Art des Entwässerungssystems in dem ein bestimmtes Gebiet entwässert werden soll (SOLL Zustand) im groben Überblick für Planung. Wird später auf einzelnem Kanal attributiert. / Genre de système d''évacuation choisi pour une région déterminée (Etat prévu). Vue d''ensemble grossière pour planification. Sera défini pour chaque canal par la suite.';
 ALTER TABLE tww_od.drainage_system ADD COLUMN perimeter_geometry geometry('CURVEPOLYGON', :SRID);
 CREATE INDEX in_tww_drainage_system_perimeter_geometry ON tww_od.drainage_system USING gist (perimeter_geometry );
 COMMENT ON COLUMN tww_od.drainage_system.perimeter_geometry IS 'Boundary points of the perimeter / Begrenzungspunkte der Fläche / Points de délimitation de la surface';
--------
-CREATE TRIGGER
-update_last_modified_drainage_system
-BEFORE UPDATE OR INSERT ON
- tww_od.drainage_system
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified_parent("tww_od.zone");
+
 
 -------
 -------
@@ -735,7 +623,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_pipe_profile_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.pipe_profile ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','pipe_profile');
 COMMENT ON COLUMN tww_od.pipe_profile.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.pipe_profile ADD COLUMN height_width_ratio  decimal(5,2) ;
 COMMENT ON COLUMN tww_od.pipe_profile.height_width_ratio IS 'height-width ratio / Verhältnis der Höhe zur Breite / Rapport entre la hauteur et la largeur';
@@ -753,13 +640,7 @@ COMMENT ON COLUMN tww_od.pipe_profile.last_modification IS 'Last modification / 
 COMMENT ON COLUMN tww_od.pipe_profile.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.pipe_profile ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.pipe_profile.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_pipe_profile
-BEFORE UPDATE OR INSERT ON
- tww_od.pipe_profile
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+
 
 -------
 -------
@@ -772,7 +653,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_wwtp_energy_use_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.wwtp_energy_use ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wwtp_energy_use');
 COMMENT ON COLUMN tww_od.wwtp_energy_use.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.wwtp_energy_use ADD COLUMN gas_motor  integer ;
 COMMENT ON COLUMN tww_od.wwtp_energy_use.gas_motor IS 'electric power / elektrische Leistung / Puissance électrique';
@@ -792,13 +672,6 @@ COMMENT ON COLUMN tww_od.wwtp_energy_use.last_modification IS 'Last modification
 COMMENT ON COLUMN tww_od.wwtp_energy_use.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.wwtp_energy_use ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.wwtp_energy_use.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_wwtp_energy_use
-BEFORE UPDATE OR INSERT ON
- tww_od.wwtp_energy_use
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
 
 -------
 -------
@@ -811,7 +684,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_waste_water_treatment_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.waste_water_treatment ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','waste_water_treatment');
 COMMENT ON COLUMN tww_od.waste_water_treatment.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.waste_water_treatment ADD COLUMN identifier text;
  ALTER TABLE tww_od.waste_water_treatment ADD CONSTRAINT tr_identifier_length_max_20 CHECK(char_length(identifier)<=20);
@@ -827,13 +699,6 @@ COMMENT ON COLUMN tww_od.waste_water_treatment.last_modification IS 'Last modifi
 COMMENT ON COLUMN tww_od.waste_water_treatment.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.waste_water_treatment ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.waste_water_treatment.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_waste_water_treatment
-BEFORE UPDATE OR INSERT ON
- tww_od.waste_water_treatment
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
 
 -------
 -------
@@ -846,7 +711,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_sludge_treatment_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.sludge_treatment ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','sludge_treatment');
 COMMENT ON COLUMN tww_od.sludge_treatment.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.sludge_treatment ADD COLUMN composting  decimal(7,2) ;
 COMMENT ON COLUMN tww_od.sludge_treatment.composting IS 'Dimensioning value / Dimensionierungswert / Valeur de dimensionnement';
@@ -884,13 +748,7 @@ COMMENT ON COLUMN tww_od.sludge_treatment.last_modification IS 'Last modificatio
 COMMENT ON COLUMN tww_od.sludge_treatment.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.sludge_treatment ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.sludge_treatment.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_sludge_treatment
-BEFORE UPDATE OR INSERT ON
- tww_od.sludge_treatment
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+
 
 -------
 -------
@@ -903,7 +761,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_control_center_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.control_center ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','control_center');
 COMMENT ON COLUMN tww_od.control_center.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.control_center ADD COLUMN identifier text;
  ALTER TABLE tww_od.control_center ADD CONSTRAINT cc_identifier_length_max_20 CHECK(char_length(identifier)<=20);
@@ -917,13 +774,7 @@ COMMENT ON COLUMN tww_od.control_center.last_modification IS 'Last modification 
 COMMENT ON COLUMN tww_od.control_center.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.control_center ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.control_center.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_control_center
-BEFORE UPDATE OR INSERT ON
- tww_od.control_center
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+
 
 -------
 -------
@@ -936,7 +787,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_hydr_geometry_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.hydr_geometry ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','hydr_geometry');
 COMMENT ON COLUMN tww_od.hydr_geometry.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.hydr_geometry ADD COLUMN identifier text;
  ALTER TABLE tww_od.hydr_geometry ADD CONSTRAINT hg_identifier_length_max_20 CHECK(char_length(identifier)<=20);
@@ -960,13 +810,7 @@ COMMENT ON COLUMN tww_od.hydr_geometry.last_modification IS 'Last modification /
 COMMENT ON COLUMN tww_od.hydr_geometry.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.hydr_geometry ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.hydr_geometry.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_hydr_geometry
-BEFORE UPDATE OR INSERT ON
- tww_od.hydr_geometry
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+
 
 -------
 -------
@@ -979,7 +823,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_wastewater_networkelement_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.wastewater_networkelement ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_networkelement');
 COMMENT ON COLUMN tww_od.wastewater_networkelement.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.wastewater_networkelement ADD COLUMN identifier text;
  ALTER TABLE tww_od.wastewater_networkelement ADD CONSTRAINT we_identifier_length_max_41 CHECK(char_length(identifier)<=41);
@@ -993,13 +836,7 @@ COMMENT ON COLUMN tww_od.wastewater_networkelement.last_modification IS 'Last mo
 COMMENT ON COLUMN tww_od.wastewater_networkelement.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.wastewater_networkelement ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.wastewater_networkelement.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_wastewater_networkelement
-BEFORE UPDATE OR INSERT ON
- tww_od.wastewater_networkelement
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+
 
 -------
 -------
@@ -1012,7 +849,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_reach_point_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.reach_point ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','reach_point');
 COMMENT ON COLUMN tww_od.reach_point.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.reach_point ADD COLUMN elevation_accuracy  integer ;
 COMMENT ON COLUMN tww_od.reach_point.elevation_accuracy IS 'yyy_Quantifizierung der Genauigkeit der Höhenlage der Kote in Relation zum Höhenfixpunktnetz (z.B. Grundbuchvermessung oder Landesnivellement). / Quantifizierung der Genauigkeit der Höhenlage der Kote in Relation zum Höhenfixpunktnetz (z.B. Grundbuchvermessung oder Landesnivellement). / Plage de précision des coordonnées altimétriques du point de tronçon';
@@ -1043,13 +879,7 @@ COMMENT ON COLUMN tww_od.reach_point.last_modification IS 'Last modification / L
 COMMENT ON COLUMN tww_od.reach_point.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.reach_point ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.reach_point.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_reach_point
-BEFORE UPDATE OR INSERT ON
- tww_od.reach_point
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+
 
 -------
 -------
@@ -1062,7 +892,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_wastewater_node_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.wastewater_node ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_node');
 COMMENT ON COLUMN tww_od.wastewater_node.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.wastewater_node ADD COLUMN backflow_level_current  decimal(7,3) ;
 COMMENT ON COLUMN tww_od.wastewater_node.backflow_level_current IS '1. Relevant backflow level based on the calculation rain (dss)   2. Height below which special measures against backflow are to be taken within the property drainage system. (DIN 4045) / 1. Massgebende Rückstaukote bezogen auf den Berechnungsregen (dss)  2. Höhe, unter der innerhalb der Grundstücksentwässerung besondere Massnahmen gegen Rückstau zu treffen sind. (DIN 4045) / Cote de refoulement déterminante calculée à partir des pluies de projet';
@@ -1081,13 +910,7 @@ COMMENT ON COLUMN tww_od.wastewater_node.situation3d_geometry IS 'yyy Situation 
 
  ALTER TABLE tww_od.wastewater_node ADD COLUMN wwtp_number  integer ;
 COMMENT ON COLUMN tww_od.wastewater_node.wwtp_number IS 'yyy_Eindeutige Identifikationsnummer der ARA ((WWTP Number from Federal Office for the Environment (FOEN))., in deren Einzugsgebiet der Knoten liegt. Ist auch abzufüllen, wenn der Knoten nicht an die ARA angeschlossen ist. Die Abgrenzung der ARA-Einzugsgebiete ist im Zweifelsfall mit der kantonalen Fachstelle zu klären. / Eindeutige Identifikationsnummer der ARA (ARA Nummer des BAFU), in deren Einzugsgebiet der Knoten liegt. Ist auch abzufüllen, wenn der Knoten nicht an die ARA angeschlossen ist. Die Abgrenzung der ARA-Einzugsgebiete ist im Zweifelsfall mit der kantonalen Fachstelle zu klären. / Numéro d''identification unique de la STEP (n° STEP de l’OFEV) dans le bassin versant de laquelle se trouve le nœud. A remplir également si le nœud n''est pas raccordé à la STEP. En cas de doute, la délimitation des bassins versants de STEP est à demander auprès de l''autorité cantonale.';
--------
-CREATE TRIGGER
-update_last_modified_wastewater_node
-BEFORE UPDATE OR INSERT ON
- tww_od.wastewater_node
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified_parent("tww_od.wastewater_networkelement");
+
 
 -------
 -------
@@ -1100,7 +923,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_reach_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.reach ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','reach');
 COMMENT ON COLUMN tww_od.reach.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.reach ADD COLUMN clear_height  integer ;
 COMMENT ON COLUMN tww_od.reach.clear_height IS 'Clear height (inside) of profile. Installed liners are not to be considered (-> Reliner_nominal width) / Maximale Innenhöhe des Rohrprofiles. Eingebaute Liner sind nicht zu berücksichtigen -> Reliner_Nennweite). / Hauteur interne maximale du profil du tube. Les revêtements installés ne doivent pas être pris en compte (-> Reliner_largeur nominale.).';
@@ -1142,13 +964,7 @@ COMMENT ON COLUMN tww_od.reach.ring_stiffness IS 'yyy Ringsteifigkeitsklasse - D
 COMMENT ON COLUMN tww_od.reach.slope_building_plan IS 'yyy_Auf dem alten Plan eingezeichnetes Plangefälle [%o]. Nicht kontrolliert im Feld. Kann nicht für die hydraulische Berechnungen übernommen werden. Für Liegenschaftsentwässerung und Meliorationsleitungen. Darstellung als z.B. 3.5%oP auf Plänen. / Auf dem alten Plan eingezeichnetes Plangefälle [%o]. Nicht kontrolliert im Feld. Kann nicht für die hydraulische Berechnungen übernommen werden. Für Liegenschaftsentwässerung und Meliorationsleitungen. Darstellung als z.B. 3.5%oP auf Plänen. / Pente indiquée sur d''anciens plans non contrôlée [%o]. Ne peut pas être reprise pour des calculs hydrauliques. Indication pour des canalisations de biens-fonds ou d''amélioration foncière. Représentation sur de plan: 3.5‰ p';
  ALTER TABLE tww_od.reach ADD COLUMN wall_roughness  decimal(5,2) ;
 COMMENT ON COLUMN tww_od.reach.wall_roughness IS 'yyy Hydraulische Kenngrösse zur Beschreibung der Beschaffenheit der Kanalwandung. Beiwert für die Formeln nach Prandtl-Colebrook (ks oder kb) / Hydraulische Kenngrösse zur Beschreibung der Beschaffenheit der Kanalwandung. Beiwert für die Formeln nach Prandtl-Colebrook (ks oder kb) / Coefficient de rugosité d''après Prandtl Colebrook (ks ou kb)';
--------
-CREATE TRIGGER
-update_last_modified_reach
-BEFORE UPDATE OR INSERT ON
- tww_od.reach
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified_parent("tww_od.wastewater_networkelement");
+
 
 -------
 -------
@@ -1161,7 +977,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_profile_geometry_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.profile_geometry ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','profile_geometry');
 COMMENT ON COLUMN tww_od.profile_geometry.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.profile_geometry ADD COLUMN sequence  smallint ;
 COMMENT ON COLUMN tww_od.profile_geometry.sequence IS 'Sequence of the detail points of geometry definition / Reihenfolge der Detailpunkte der Geometriedefinition / Ordre des points de détail de la définition de la géométrie';
@@ -1175,13 +990,7 @@ COMMENT ON COLUMN tww_od.profile_geometry.last_modification IS 'Last modificatio
 COMMENT ON COLUMN tww_od.profile_geometry.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.profile_geometry ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.profile_geometry.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_profile_geometry
-BEFORE UPDATE OR INSERT ON
- tww_od.profile_geometry
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+
 
 -------
 -------
@@ -1194,7 +1003,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_hydr_geom_relation_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.hydr_geom_relation ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','hydr_geom_relation');
 COMMENT ON COLUMN tww_od.hydr_geom_relation.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.hydr_geom_relation ADD COLUMN water_depth  decimal(7,2) ;
 COMMENT ON COLUMN tww_od.hydr_geom_relation.water_depth IS 'yyy_Massgebende Wassertiefe / Massgebende Wassertiefe / Profondeur d''eau déterminante';
@@ -1208,13 +1016,7 @@ COMMENT ON COLUMN tww_od.hydr_geom_relation.last_modification IS 'Last modificat
 COMMENT ON COLUMN tww_od.hydr_geom_relation.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.hydr_geom_relation ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.hydr_geom_relation.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_hydr_geom_relation
-BEFORE UPDATE OR INSERT ON
- tww_od.hydr_geom_relation
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+
 
 -------
 -------
@@ -1227,7 +1029,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_mechanical_pretreatment_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.mechanical_pretreatment ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','mechanical_pretreatment');
 COMMENT ON COLUMN tww_od.mechanical_pretreatment.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.mechanical_pretreatment ADD COLUMN identifier text;
  ALTER TABLE tww_od.mechanical_pretreatment ADD CONSTRAINT mt_identifier_length_max_20 CHECK(char_length(identifier)<=20);
@@ -1243,13 +1044,7 @@ COMMENT ON COLUMN tww_od.mechanical_pretreatment.last_modification IS 'Last modi
 COMMENT ON COLUMN tww_od.mechanical_pretreatment.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.mechanical_pretreatment ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.mechanical_pretreatment.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_mechanical_pretreatment
-BEFORE UPDATE OR INSERT ON
- tww_od.mechanical_pretreatment
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+
 
 -------
 -------
@@ -1262,7 +1057,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_retention_body_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.retention_body ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','retention_body');
 COMMENT ON COLUMN tww_od.retention_body.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.retention_body ADD COLUMN identifier text;
  ALTER TABLE tww_od.retention_body ADD CONSTRAINT rb_identifier_length_max_20 CHECK(char_length(identifier)<=20);
@@ -1280,13 +1074,7 @@ COMMENT ON COLUMN tww_od.retention_body.last_modification IS 'Last modification 
 COMMENT ON COLUMN tww_od.retention_body.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.retention_body ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.retention_body.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_retention_body
-BEFORE UPDATE OR INSERT ON
- tww_od.retention_body
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+
 
 -------
 -------
@@ -1299,7 +1087,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_overflow_char_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.overflow_char ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','overflow_char');
 COMMENT ON COLUMN tww_od.overflow_char.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.overflow_char ADD COLUMN identifier text;
  ALTER TABLE tww_od.overflow_char ADD CONSTRAINT oc_identifier_length_max_20 CHECK(char_length(identifier)<=20);
@@ -1315,13 +1102,7 @@ COMMENT ON COLUMN tww_od.overflow_char.last_modification IS 'Last modification /
 COMMENT ON COLUMN tww_od.overflow_char.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.overflow_char ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.overflow_char.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_overflow_char
-BEFORE UPDATE OR INSERT ON
- tww_od.overflow_char
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+
 
 -------
 -------
@@ -1334,7 +1115,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_hq_relation_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.hq_relation ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','hq_relation');
 COMMENT ON COLUMN tww_od.hq_relation.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.hq_relation ADD COLUMN altitude  decimal(7,3) ;
 COMMENT ON COLUMN tww_od.hq_relation.altitude IS 'yyy_Zum Abfluss (Q2) korrelierender Wasserspiegel (h) / Zum Abfluss (Q2) korrelierender Wasserspiegel (h) / Niveau d''eau correspondant (h) au débit (Q2)';
@@ -1348,13 +1128,7 @@ COMMENT ON COLUMN tww_od.hq_relation.last_modification IS 'Last modification / L
 COMMENT ON COLUMN tww_od.hq_relation.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.hq_relation ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.hq_relation.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_hq_relation
-BEFORE UPDATE OR INSERT ON
- tww_od.hq_relation
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+
 
 -------
 -------
@@ -1367,7 +1141,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_structure_part_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.structure_part ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','structure_part');
 COMMENT ON COLUMN tww_od.structure_part.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.structure_part ADD COLUMN identifier text;
  ALTER TABLE tww_od.structure_part ADD CONSTRAINT sp_identifier_length_max_20 CHECK(char_length(identifier)<=20);
@@ -1383,13 +1156,7 @@ COMMENT ON COLUMN tww_od.structure_part.last_modification IS 'Last modification 
 COMMENT ON COLUMN tww_od.structure_part.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.structure_part ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.structure_part.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_structure_part
-BEFORE UPDATE OR INSERT ON
- tww_od.structure_part
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+
 
 -------
 -------
@@ -1402,17 +1169,10 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_dryweather_downspout_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.dryweather_downspout ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','dryweather_downspout');
 COMMENT ON COLUMN tww_od.dryweather_downspout.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.dryweather_downspout ADD COLUMN diameter  smallint ;
 COMMENT ON COLUMN tww_od.dryweather_downspout.diameter IS '';
--------
-CREATE TRIGGER
-update_last_modified_dryweather_downspout
-BEFORE UPDATE OR INSERT ON
- tww_od.dryweather_downspout
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified_parent("tww_od.structure_part");
+
 
 -------
 -------
@@ -1425,17 +1185,10 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_access_aid_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.access_aid ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','access_aid');
 COMMENT ON COLUMN tww_od.access_aid.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.access_aid ADD COLUMN kind  integer ;
 COMMENT ON COLUMN tww_od.access_aid.kind IS 'yyy_Art des Einstiegs in das Bauwerk / Art des Einstiegs in das Bauwerk / Genre d''accès à l''ouvrage';
--------
-CREATE TRIGGER
-update_last_modified_access_aid
-BEFORE UPDATE OR INSERT ON
- tww_od.access_aid
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified_parent("tww_od.structure_part");
+
 
 -------
 -------
@@ -1448,17 +1201,10 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_dryweather_flume_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.dryweather_flume ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','dryweather_flume');
 COMMENT ON COLUMN tww_od.dryweather_flume.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.dryweather_flume ADD COLUMN material  integer ;
 COMMENT ON COLUMN tww_od.dryweather_flume.material IS 'yyy_Material der Ausbildung oder Auskleidung der Trockenwetterrinne / Material der Ausbildung oder Auskleidung der Trockenwetterrinne / Matériau de fabrication ou de revêtement de la cunette de débit temps sec';
--------
-CREATE TRIGGER
-update_last_modified_dryweather_flume
-BEFORE UPDATE OR INSERT ON
- tww_od.dryweather_flume
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified_parent("tww_od.structure_part");
+
 
 -------
 -------
@@ -1471,7 +1217,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_cover_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.cover ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','cover');
 COMMENT ON COLUMN tww_od.cover.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.cover ADD COLUMN brand text;
  ALTER TABLE tww_od.cover ADD CONSTRAINT co_brand_length_max_50 CHECK(char_length(brand)<=50);
@@ -1501,13 +1246,7 @@ COMMENT ON COLUMN tww_od.cover.situation3d_geometry IS 'Situation of cover (cove
 COMMENT ON COLUMN tww_od.cover.sludge_bucket IS 'yyy_Angabe, ob der Deckel mit einem Schlammeimer versehen ist oder nicht / Angabe, ob der Deckel mit einem Schlammeimer versehen ist oder nicht / Indication si le couvercle est pourvu ou non d''un ramasse-boues';
  ALTER TABLE tww_od.cover ADD COLUMN venting  integer ;
 COMMENT ON COLUMN tww_od.cover.venting IS 'venting with wholes for aeration / Deckel mit Lüftungslöchern versehen / Couvercle pourvu de trous d''aération';
--------
-CREATE TRIGGER
-update_last_modified_cover
-BEFORE UPDATE OR INSERT ON
- tww_od.cover
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified_parent("tww_od.structure_part");
+
 
 -------
 -------
@@ -1520,7 +1259,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_electric_equipment_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.electric_equipment ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','electric_equipment');
 COMMENT ON COLUMN tww_od.electric_equipment.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.electric_equipment ADD COLUMN gross_costs  decimal(10,2) ;
 COMMENT ON COLUMN tww_od.electric_equipment.gross_costs IS 'Gross costs of electrical equipment / Brutto Erstellungskosten der elektrischen Ausrüstung / Coûts bruts des équipements électriques';
@@ -1528,13 +1266,7 @@ COMMENT ON COLUMN tww_od.electric_equipment.gross_costs IS 'Gross costs of elect
 COMMENT ON COLUMN tww_od.electric_equipment.kind IS 'yyy_Elektrische Installationen und Geräte / Elektrische Installationen und Geräte / Installations et appareils électriques';
  ALTER TABLE tww_od.electric_equipment ADD COLUMN year_of_replacement  smallint ;
 COMMENT ON COLUMN tww_od.electric_equipment.year_of_replacement IS 'yyy_Jahr, in dem die Lebensdauer der elektrischen Einrichtung voraussichtlich ausläuft / Jahr, in dem die Lebensdauer der elektrischen Einrichtung voraussichtlich ausläuft / Année pour laquelle on prévoit que la durée de vie de l''équipement soit écoulée';
--------
-CREATE TRIGGER
-update_last_modified_electric_equipment
-BEFORE UPDATE OR INSERT ON
- tww_od.electric_equipment
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified_parent("tww_od.structure_part");
+
 
 -------
 -------
@@ -1547,7 +1279,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_electromechanical_equipment_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.electromechanical_equipment ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','electromechanical_equipment');
 COMMENT ON COLUMN tww_od.electromechanical_equipment.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.electromechanical_equipment ADD COLUMN gross_costs  decimal(10,2) ;
 COMMENT ON COLUMN tww_od.electromechanical_equipment.gross_costs IS 'Gross costs of electromechanical equipment / Brutto Erstellungskosten der elektromechanischen Ausrüstung / Coûts bruts des équipements électromécaniques';
@@ -1555,13 +1286,7 @@ COMMENT ON COLUMN tww_od.electromechanical_equipment.gross_costs IS 'Gross costs
 COMMENT ON COLUMN tww_od.electromechanical_equipment.kind IS 'yyy_Elektromechanische Teile eines Bauwerks / Elektromechanische Teile eines Bauwerks / Eléments électromécaniques d''un ouvrage';
  ALTER TABLE tww_od.electromechanical_equipment ADD COLUMN year_of_replacement  smallint ;
 COMMENT ON COLUMN tww_od.electromechanical_equipment.year_of_replacement IS 'yyy_Jahr in dem die Lebensdauer der elektromechanischen Ausrüstung voraussichtlich abläuft / Jahr in dem die Lebensdauer der elektromechanischen Ausrüstung voraussichtlich abläuft / Année pour laquelle on prévoit que la durée de vie de l''équipement soit écoulée';
--------
-CREATE TRIGGER
-update_last_modified_electromechanical_equipment
-BEFORE UPDATE OR INSERT ON
- tww_od.electromechanical_equipment
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified_parent("tww_od.structure_part");
+
 
 -------
 -------
@@ -1574,17 +1299,10 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_benching_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.benching ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','benching');
 COMMENT ON COLUMN tww_od.benching.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.benching ADD COLUMN kind  integer ;
 COMMENT ON COLUMN tww_od.benching.kind IS '';
--------
-CREATE TRIGGER
-update_last_modified_benching
-BEFORE UPDATE OR INSERT ON
- tww_od.benching
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified_parent("tww_od.structure_part");
+
 
 -------
 -------
@@ -1597,18 +1315,11 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_flushing_nozzle_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.flushing_nozzle ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','flushing_nozzle');
 COMMENT ON COLUMN tww_od.flushing_nozzle.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
 ALTER TABLE tww_od.flushing_nozzle ADD COLUMN situation_geometry geometry('POINT', :SRID);
 CREATE INDEX in_tww_flushing_nozzle_situation_geometry ON tww_od.flushing_nozzle USING gist (situation_geometry );
 COMMENT ON COLUMN tww_od.flushing_nozzle.situation_geometry IS '';
--------
-CREATE TRIGGER
-update_last_modified_flushing_nozzle
-BEFORE UPDATE OR INSERT ON
- tww_od.flushing_nozzle
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified_parent("tww_od.structure_part");
+
 
 -------
 -------
@@ -1621,7 +1332,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_connection_object_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.connection_object ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','connection_object');
 COMMENT ON COLUMN tww_od.connection_object.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.connection_object ADD COLUMN identifier text;
  ALTER TABLE tww_od.connection_object ADD CONSTRAINT cn_identifier_length_max_20 CHECK(char_length(identifier)<=20);
@@ -1637,13 +1347,7 @@ COMMENT ON COLUMN tww_od.connection_object.last_modification IS 'Last modificati
 COMMENT ON COLUMN tww_od.connection_object.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.connection_object ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.connection_object.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_connection_object
-BEFORE UPDATE OR INSERT ON
- tww_od.connection_object
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+
 
 -------
 -------
@@ -1656,7 +1360,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_building_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.building ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','building');
 COMMENT ON COLUMN tww_od.building.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.building ADD COLUMN house_number text;
  ALTER TABLE tww_od.building ADD CONSTRAINT bu_house_number_length_max_50 CHECK(char_length(house_number)<=50);
@@ -1670,13 +1373,7 @@ COMMENT ON COLUMN tww_od.building.perimeter_geometry IS 'Boundary points of the 
 ALTER TABLE tww_od.building ADD COLUMN reference_point_geometry geometry('POINT', :SRID);
 CREATE INDEX in_tww_building_reference_point_geometry ON tww_od.building USING gist (reference_point_geometry );
 COMMENT ON COLUMN tww_od.building.reference_point_geometry IS 'National position coordinates (East, North) (relevant point for e.g. address) / Landeskoordinate Ost/Nord (massgebender Bezugspunkt für z.B. Adressdaten ) / Coordonnées nationales Est/Nord (Point de référence pour la détermination de l''adresse par exemple)';
--------
-CREATE TRIGGER
-update_last_modified_building
-BEFORE UPDATE OR INSERT ON
- tww_od.building
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified_parent("tww_od.connection_object");
+
 
 -------
 -------
@@ -1689,7 +1386,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_reservoir_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.reservoir ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','reservoir');
 COMMENT ON COLUMN tww_od.reservoir.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.reservoir ADD COLUMN location_name text;
  ALTER TABLE tww_od.reservoir ADD CONSTRAINT rv_location_name_length_max_50 CHECK(char_length(location_name)<=50);
@@ -1697,13 +1393,7 @@ COMMENT ON COLUMN tww_od.reservoir.location_name IS 'Street name or name of the 
 ALTER TABLE tww_od.reservoir ADD COLUMN situation_geometry geometry('POINT', :SRID);
 CREATE INDEX in_tww_reservoir_situation_geometry ON tww_od.reservoir USING gist (situation_geometry );
 COMMENT ON COLUMN tww_od.reservoir.situation_geometry IS 'National position coordinates (East, North) / Landeskoordinate Ost/Nord / Coordonnées nationales Est/Nord';
--------
-CREATE TRIGGER
-update_last_modified_reservoir
-BEFORE UPDATE OR INSERT ON
- tww_od.reservoir
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified_parent("tww_od.connection_object");
+
 
 -------
 -------
@@ -1716,7 +1406,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_individual_surface_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.individual_surface ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','individual_surface');
 COMMENT ON COLUMN tww_od.individual_surface.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.individual_surface ADD COLUMN function  integer ;
 COMMENT ON COLUMN tww_od.individual_surface.function IS 'Type of usage of surface / Art der Nutzung der Fläche / Genre d''utilisation de la surface';
@@ -1727,13 +1416,7 @@ COMMENT ON COLUMN tww_od.individual_surface.pavement IS 'Type of pavement / Art 
 ALTER TABLE tww_od.individual_surface ADD COLUMN perimeter_geometry geometry('CURVEPOLYGON', :SRID);
 CREATE INDEX in_tww_individual_surface_perimeter_geometry ON tww_od.individual_surface USING gist (perimeter_geometry );
 COMMENT ON COLUMN tww_od.individual_surface.perimeter_geometry IS 'Boundary points of the perimeter / Begrenzungspunkte der Fläche / Points de délimitation de la surface';
--------
-CREATE TRIGGER
-update_last_modified_individual_surface
-BEFORE UPDATE OR INSERT ON
- tww_od.individual_surface
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified_parent("tww_od.connection_object");
+
 
 -------
 -------
@@ -1746,7 +1429,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_fountain_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.fountain ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','fountain');
 COMMENT ON COLUMN tww_od.fountain.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.fountain ADD COLUMN location_name text;
  ALTER TABLE tww_od.fountain ADD CONSTRAINT fo_location_name_length_max_50 CHECK(char_length(location_name)<=50);
@@ -1754,13 +1436,7 @@ COMMENT ON COLUMN tww_od.fountain.location_name IS 'Street name or name of the l
 ALTER TABLE tww_od.fountain ADD COLUMN situation_geometry geometry('POINT', :SRID);
 CREATE INDEX in_tww_fountain_situation_geometry ON tww_od.fountain USING gist (situation_geometry );
 COMMENT ON COLUMN tww_od.fountain.situation_geometry IS 'National position coordinates (East, North) / Landeskoordinate Ost/Nord / Coordonnées nationales Est/Nord';
--------
-CREATE TRIGGER
-update_last_modified_fountain
-BEFORE UPDATE OR INSERT ON
- tww_od.fountain
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified_parent("tww_od.connection_object");
+
 
 -------
 -------
@@ -1773,7 +1449,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_log_card_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.log_card ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','log_card');
 COMMENT ON COLUMN tww_od.log_card.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.log_card ADD COLUMN control_remote_control  integer ;
 COMMENT ON COLUMN tww_od.log_card.control_remote_control IS 'Control/alarm of the special structure. In contrast to the Control attribute in the VSA-DSS classes overflow and throttle_shut_off_unit, the present attribute refers to the entire control/alarm of the special structure. The value range is meant to be cumulative in the following order: no_control, local_control, transmission_alarm, transmission_measuring_signals, interconnection. / Steuerung/Alarmierung des Sonderbauwerks. Der Wertebereich ist kumulativ in der folgenden Reihenfolge gedacht: Keine_Steuerung, Lokale_Steuerung, Uebermittlung_Alarm, Uebermittlung_Messsignale, Verbundsteuerung. Im Gegensatz zum Attribut Steuerung in den VSA-DSS-Klassen Ueberlauf und Absperr_Drosselorgan bezieht sich das vorliegende Attribut auf die gesamte Steuerung/Alarmierung des Sonderbauwerks. / Commande/alarme de l''ouvrage spécial. La plage de valeurs est censée être cumulative dans l''ordre suivant : aucune_commande, commande_locale, transmission_alarme, transmission_signaux_mesure, commande_combinee. Contrairement à l''attribut COMMANDE dans les classes VSA-SDEE DEVERSOIR et LIMITEUR_DEBIT, cet attribut fait référence à l''ensemble commande/alarme de l''ouvrage spécial.';
@@ -1791,13 +1466,7 @@ COMMENT ON COLUMN tww_od.log_card.last_modification IS 'Last modification / Letz
 COMMENT ON COLUMN tww_od.log_card.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.log_card ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.log_card.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_log_card
-BEFORE UPDATE OR INSERT ON
- tww_od.log_card
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+
 
 -------
 -------
@@ -1810,7 +1479,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_catchment_area_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.catchment_area ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','catchment_area');
 COMMENT ON COLUMN tww_od.catchment_area.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.catchment_area ADD COLUMN direct_discharge_current  integer ;
 COMMENT ON COLUMN tww_od.catchment_area.direct_discharge_current IS 'The rain water is currently fully or partially discharged into a water body / Das Niederschlagsabwasser wird ganz oder teilweise über eine SAA-Leitung in ein Gewässer eingeleitet / Les eaux pluviales sont rejetées complètement ou partiellement via une conduite OAS dans un cours d’eau';
@@ -1877,13 +1545,7 @@ COMMENT ON COLUMN tww_od.catchment_area.last_modification IS 'Last modification 
 COMMENT ON COLUMN tww_od.catchment_area.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.catchment_area ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.catchment_area.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_catchment_area
-BEFORE UPDATE OR INSERT ON
- tww_od.catchment_area
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+
 
 -------
 -------
@@ -1896,7 +1558,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_surface_runoff_parameters_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.surface_runoff_parameters ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','surface_runoff_parameters');
 COMMENT ON COLUMN tww_od.surface_runoff_parameters.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.surface_runoff_parameters ADD COLUMN evaporation_loss  decimal(4,1) ;
 COMMENT ON COLUMN tww_od.surface_runoff_parameters.evaporation_loss IS 'Loss by evaporation / Verlust durch Verdunstung / Pertes par évaporation au sol';
@@ -1918,13 +1579,7 @@ COMMENT ON COLUMN tww_od.surface_runoff_parameters.last_modification IS 'Last mo
 COMMENT ON COLUMN tww_od.surface_runoff_parameters.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.surface_runoff_parameters ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.surface_runoff_parameters.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_surface_runoff_parameters
-BEFORE UPDATE OR INSERT ON
- tww_od.surface_runoff_parameters
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+
 
 -------
 -------
@@ -1937,7 +1592,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_measuring_point_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.measuring_point ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','measuring_point');
 COMMENT ON COLUMN tww_od.measuring_point.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.measuring_point ADD COLUMN damming_device  integer ;
 COMMENT ON COLUMN tww_od.measuring_point.damming_device IS '';
@@ -1961,13 +1615,7 @@ COMMENT ON COLUMN tww_od.measuring_point.last_modification IS 'Last modification
 COMMENT ON COLUMN tww_od.measuring_point.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.measuring_point ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.measuring_point.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_measuring_point
-BEFORE UPDATE OR INSERT ON
- tww_od.measuring_point
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+
 
 -------
 -------
@@ -1980,7 +1628,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_measuring_device_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.measuring_device ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','measuring_device');
 COMMENT ON COLUMN tww_od.measuring_device.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.measuring_device ADD COLUMN brand text;
  ALTER TABLE tww_od.measuring_device ADD CONSTRAINT mv_brand_length_max_50 CHECK(char_length(brand)<=50);
@@ -2002,13 +1649,7 @@ COMMENT ON COLUMN tww_od.measuring_device.last_modification IS 'Last modificatio
 COMMENT ON COLUMN tww_od.measuring_device.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.measuring_device ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.measuring_device.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_measuring_device
-BEFORE UPDATE OR INSERT ON
- tww_od.measuring_device
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+
 
 -------
 -------
@@ -2021,7 +1662,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_measurement_series_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.measurement_series ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','measurement_series');
 COMMENT ON COLUMN tww_od.measurement_series.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.measurement_series ADD COLUMN dimension text;
  ALTER TABLE tww_od.measurement_series ADD CONSTRAINT ms_dimension_length_max_50 CHECK(char_length(dimension)<=50);
@@ -2040,13 +1680,7 @@ COMMENT ON COLUMN tww_od.measurement_series.last_modification IS 'Last modificat
 COMMENT ON COLUMN tww_od.measurement_series.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.measurement_series ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.measurement_series.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_measurement_series
-BEFORE UPDATE OR INSERT ON
- tww_od.measurement_series
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+
 
 -------
 -------
@@ -2059,7 +1693,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_measurement_result_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.measurement_result ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','measurement_result');
 COMMENT ON COLUMN tww_od.measurement_result.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.measurement_result ADD COLUMN identifier text;
  ALTER TABLE tww_od.measurement_result ADD CONSTRAINT mr_identifier_length_max_20 CHECK(char_length(identifier)<=20);
@@ -2081,13 +1714,7 @@ COMMENT ON COLUMN tww_od.measurement_result.last_modification IS 'Last modificat
 COMMENT ON COLUMN tww_od.measurement_result.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.measurement_result ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.measurement_result.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_measurement_result
-BEFORE UPDATE OR INSERT ON
- tww_od.measurement_result
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+
 
 -------
 -------
@@ -2100,7 +1727,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_overflow_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.overflow ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','overflow');
 COMMENT ON COLUMN tww_od.overflow.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.overflow ADD COLUMN actuation  integer ;
 COMMENT ON COLUMN tww_od.overflow.actuation IS 'Actuation of installation / Antrieb der Einbaute / Entraînement des installations';
@@ -2136,13 +1762,7 @@ COMMENT ON COLUMN tww_od.overflow.last_modification IS 'Last modification / Letz
 COMMENT ON COLUMN tww_od.overflow.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.overflow ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.overflow.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_overflow
-BEFORE UPDATE OR INSERT ON
- tww_od.overflow
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+
 
 -------
 -------
@@ -2155,7 +1775,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_throttle_shut_off_unit_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.throttle_shut_off_unit ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','throttle_shut_off_unit');
 COMMENT ON COLUMN tww_od.throttle_shut_off_unit.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.throttle_shut_off_unit ADD COLUMN actuation  integer ;
 COMMENT ON COLUMN tww_od.throttle_shut_off_unit.actuation IS 'Actuation of the throttle or shut-off unit / Antrieb der Einbaute / Entraînement des installations';
@@ -2194,13 +1813,7 @@ COMMENT ON COLUMN tww_od.throttle_shut_off_unit.last_modification IS 'Last modif
 COMMENT ON COLUMN tww_od.throttle_shut_off_unit.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.throttle_shut_off_unit ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.throttle_shut_off_unit.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_throttle_shut_off_unit
-BEFORE UPDATE OR INSERT ON
- tww_od.throttle_shut_off_unit
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+
 
 -------
 -------
@@ -2213,7 +1826,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_prank_weir_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.prank_weir ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','prank_weir');
 COMMENT ON COLUMN tww_od.prank_weir.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.prank_weir ADD COLUMN hydraulic_overflow_length  decimal(7,2) ;
 COMMENT ON COLUMN tww_od.prank_weir.hydraulic_overflow_length IS 'yyy_Hydraulisch wirksame Wehrlänge / Hydraulisch wirksame Wehrlänge / Longueur du déversoir hydrauliquement active';
@@ -2225,13 +1837,7 @@ COMMENT ON COLUMN tww_od.prank_weir.level_min IS 'yyy_Höhe des tiefsten Punktes
 COMMENT ON COLUMN tww_od.prank_weir.weir_edge IS 'yyy_Ausbildung der Überfallkante / Ausbildung der Überfallkante / Forme de la crête';
  ALTER TABLE tww_od.prank_weir ADD COLUMN weir_kind  integer ;
 COMMENT ON COLUMN tww_od.prank_weir.weir_kind IS 'yyy_Art der Wehrschweille des Streichwehrs / Art der Wehrschwelle des Streichwehrs / Genre de surverse du déversoir latéral';
--------
-CREATE TRIGGER
-update_last_modified_prank_weir
-BEFORE UPDATE OR INSERT ON
- tww_od.prank_weir
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified_parent("tww_od.overflow");
+
 
 -------
 -------
@@ -2244,7 +1850,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_pump_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.pump ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','pump');
 COMMENT ON COLUMN tww_od.pump.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.pump ADD COLUMN construction_type  integer ;
 COMMENT ON COLUMN tww_od.pump.construction_type IS 'Types of pumps / Pumpenarten / Types de pompe';
@@ -2262,13 +1867,7 @@ COMMENT ON COLUMN tww_od.pump.pump_flow_min_single IS 'yyy_Minimaler Förderstro
 COMMENT ON COLUMN tww_od.pump.start_level IS 'yyy_Kote des Wasserspiegels im Pumpensumpf, bei der die Pumpe eingeschaltet wird (Einschaltkote) / Kote des Wasserspiegels im Pumpensumpf, bei der die Pumpe eingeschaltet wird (Einschaltkote) / Cote du niveau d''eau dans le puisard à laquelle s''enclenche la pompe';
  ALTER TABLE tww_od.pump ADD COLUMN stop_level  decimal(7,3) ;
 COMMENT ON COLUMN tww_od.pump.stop_level IS 'yyy_Kote des Wasserspiegels im Pumpensumpf, bei der die Pumpe ausgeschaltet wird (Ausschaltkote) / Kote des Wasserspiegels im Pumpensumpf, bei der die Pumpe ausgeschaltet wird (Ausschaltkote) / Cote du niveau d''eau dans le puisard à laquelle s''arrête la pompe';
--------
-CREATE TRIGGER
-update_last_modified_pump
-BEFORE UPDATE OR INSERT ON
- tww_od.pump
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified_parent("tww_od.overflow");
+
 
 -------
 -------
@@ -2281,7 +1880,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_leapingweir_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.leapingweir ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','leapingweir');
 COMMENT ON COLUMN tww_od.leapingweir.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.leapingweir ADD COLUMN length  decimal(7,2) ;
 COMMENT ON COLUMN tww_od.leapingweir.length IS 'yyy_Maximale Abmessung der Bodenöffnung in Fliessrichtung / Maximale Abmessung der Bodenöffnung in Fliessrichtung / Dimension maximale de l''ouverture de fond parallèlement au courant';
@@ -2289,13 +1887,7 @@ COMMENT ON COLUMN tww_od.leapingweir.length IS 'yyy_Maximale Abmessung der Boden
 COMMENT ON COLUMN tww_od.leapingweir.opening_shape IS 'Shape of opening in the floor / Form der  Bodenöffnung / Forme de l''ouverture de fond';
  ALTER TABLE tww_od.leapingweir ADD COLUMN width  decimal(7,2) ;
 COMMENT ON COLUMN tww_od.leapingweir.width IS 'yyy_Maximale Abmessung der Bodenöffnung quer zur Fliessrichtung / Maximale Abmessung der Bodenöffnung quer zur Fliessrichtung / Dimension maximale de l''ouverture de fond perpendiculairement à la direction d''écoulement';
--------
-CREATE TRIGGER
-update_last_modified_leapingweir
-BEFORE UPDATE OR INSERT ON
- tww_od.leapingweir
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified_parent("tww_od.overflow");
+
 
 -------
 -------
@@ -2308,17 +1900,10 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_maintenance_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.maintenance ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','maintenance');
 COMMENT ON COLUMN tww_od.maintenance.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.maintenance ADD COLUMN kind  integer ;
 COMMENT ON COLUMN tww_od.maintenance.kind IS 'Type of event / Art des Ereignisses / Genre d''événement';
--------
-CREATE TRIGGER
-update_last_modified_maintenance
-BEFORE UPDATE OR INSERT ON
- tww_od.maintenance
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified_parent("tww_od.maintenance_event");
+
 
 -------
 -------
@@ -2331,7 +1916,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_bio_ecol_assessment_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.bio_ecol_assessment ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','bio_ecol_assessment');
 COMMENT ON COLUMN tww_od.bio_ecol_assessment.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.bio_ecol_assessment ADD COLUMN comparison_last  integer ;
 COMMENT ON COLUMN tww_od.bio_ecol_assessment.comparison_last IS 'yyy_Die Veränderung der Gesamtbeurteilung und eventuelle massgebende veränderte Untersuchungs-resultate gegenüber der letzten Untersuchung müssen dokumentiert werden. / Die Veränderung der Gesamtbeurteilung und eventuelle massgebende veränderte Untersuchungsresultate gegenüber der letzten Untersuchung müssen dokumentiert werden. / Les variations de l’examen générale éco-biologique et des résultats déterminants ayant changés doivent être indiquées par rapport à la dernière inspection.';
@@ -2370,13 +1954,7 @@ COMMENT ON COLUMN tww_od.bio_ecol_assessment.water_specific_discharge_freight_nh
 COMMENT ON COLUMN tww_od.bio_ecol_assessment.water_specific_discharge_freight_nh4_n_current_opt IS 'based on base module chapter 8.4. of directive "Abwasserbewirtschaftung bei Regenwetter" of VSA (2019)" / gemäss Basismodul Kapitel 8.4 der Richtlinie "Abwasserbewirtschaftung bei Regenwetter" des VSA (2019) / Selon module de base chapitre 8.4 de la directive "Gestion des eaux urbaines par temps de pluie" du VSA (2019)';
  ALTER TABLE tww_od.bio_ecol_assessment ADD COLUMN water_specific_discharge_freight_nh4_n_planned  smallint ;
 COMMENT ON COLUMN tww_od.bio_ecol_assessment.water_specific_discharge_freight_nh4_n_planned IS 'based on base module chapter 8.4. of directive "Abwasserbewirtschaftung bei Regenwetter" of VSA (2019)" / gemäss Basismodul Kapitel 8.4 der Richtlinie "Abwasserbewirtschaftung bei Regenwetter" des VSA (2019) / Selon module de base chapitre 8.4 de la directive "Gestion des eaux urbaines par temps de pluie" du VSA (2019)';
--------
-CREATE TRIGGER
-update_last_modified_bio_ecol_assessment
-BEFORE UPDATE OR INSERT ON
- tww_od.bio_ecol_assessment
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified_parent("tww_od.maintenance_event");
+
 
 -------
 -------
@@ -2389,7 +1967,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_hydraulic_char_data_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.hydraulic_char_data ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','hydraulic_char_data');
 COMMENT ON COLUMN tww_od.hydraulic_char_data.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.hydraulic_char_data ADD COLUMN aggregate_number  smallint ;
 COMMENT ON COLUMN tww_od.hydraulic_char_data.aggregate_number IS 'Number of aggregates / Anzahl Förderaggregate / Nombre d''installations de refoulement';
@@ -2433,13 +2010,7 @@ COMMENT ON COLUMN tww_od.hydraulic_char_data.last_modification IS 'Last modifica
 COMMENT ON COLUMN tww_od.hydraulic_char_data.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.hydraulic_char_data ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.hydraulic_char_data.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_hydraulic_char_data
-BEFORE UPDATE OR INSERT ON
- tww_od.hydraulic_char_data
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+
 
 -------
 -------
@@ -2452,7 +2023,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_backflow_prevention_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.backflow_prevention ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','backflow_prevention');
 COMMENT ON COLUMN tww_od.backflow_prevention.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.backflow_prevention ADD COLUMN gross_costs  decimal(10,2) ;
 COMMENT ON COLUMN tww_od.backflow_prevention.gross_costs IS 'Gross costs / Brutto Erstellungskosten / Coûts bruts de réalisation';
@@ -2460,13 +2030,7 @@ COMMENT ON COLUMN tww_od.backflow_prevention.gross_costs IS 'Gross costs / Brutt
 COMMENT ON COLUMN tww_od.backflow_prevention.kind IS 'Ist keine Rückstausicherung vorhanden, wird keine Rueckstausicherung erfasst. /  Ist keine Rückstausicherung vorhanden, wird keine Rueckstausicherung erfasst / En absence de protection, laisser la composante vide';
  ALTER TABLE tww_od.backflow_prevention ADD COLUMN year_of_replacement  smallint ;
 COMMENT ON COLUMN tww_od.backflow_prevention.year_of_replacement IS 'yyy_Jahr in dem die Lebensdauer der Rückstausicherung voraussichtlich abläuft / Jahr in dem die Lebensdauer der Rückstausicherung voraussichtlich abläuft / Année pour laquelle on prévoit que la durée de vie de l''équipement soit écoulée';
--------
-CREATE TRIGGER
-update_last_modified_backflow_prevention
-BEFORE UPDATE OR INSERT ON
- tww_od.backflow_prevention
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified_parent("tww_od.structure_part");
+
 
 -------
 -------
@@ -2479,7 +2043,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_solids_retention_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.solids_retention ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','solids_retention');
 COMMENT ON COLUMN tww_od.solids_retention.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.solids_retention ADD COLUMN dimensioning_value  decimal(9,3) ;
 COMMENT ON COLUMN tww_od.solids_retention.dimensioning_value IS 'yyy_Wassermenge, Dimensionierungswert des Feststoffrückhaltes / Wassermenge, Dimensionierungswert des Feststoffrückhaltes / Volume, débit de dimensionnement';
@@ -2493,13 +2056,7 @@ COMMENT ON COLUMN tww_od.solids_retention.overflow_level IS 'Overflow level of s
 
  ALTER TABLE tww_od.solids_retention ADD COLUMN year_of_replacement  smallint ;
 COMMENT ON COLUMN tww_od.solids_retention.year_of_replacement IS 'yyy_Jahr in dem die Lebensdauer der elektromechanischen Ausrüstung voraussichtlich abläuft / Jahr in dem die Lebensdauer der elektromechanischen Ausrüstung voraussichtlich abläuft / Année pour laquelle on prévoit que la durée de vie de l''équipement soit écoulée';
--------
-CREATE TRIGGER
-update_last_modified_solids_retention
-BEFORE UPDATE OR INSERT ON
- tww_od.solids_retention
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified_parent("tww_od.structure_part");
+
 
 -------
 -------
@@ -2512,7 +2069,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_tank_cleaning_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.tank_cleaning ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','tank_cleaning');
 COMMENT ON COLUMN tww_od.tank_cleaning.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.tank_cleaning ADD COLUMN gross_costs  decimal(10,2) ;
 COMMENT ON COLUMN tww_od.tank_cleaning.gross_costs IS 'Gross costs of electromechanical equipment of tank cleaning / Brutto Erstellungskosten der elektromechanischen Ausrüstung für die Beckenreinigung / Coûts bruts des équipements électromécaniques nettoyage de bassins';
@@ -2520,13 +2076,7 @@ COMMENT ON COLUMN tww_od.tank_cleaning.gross_costs IS 'Gross costs of electromec
 COMMENT ON COLUMN tww_od.tank_cleaning.kind IS '';
  ALTER TABLE tww_od.tank_cleaning ADD COLUMN year_of_replacement  smallint ;
 COMMENT ON COLUMN tww_od.tank_cleaning.year_of_replacement IS 'yyy_Jahr in dem die Lebensdauer der elektromechanischen Ausrüstung voraussichtlich abläuft / Jahr in dem die Lebensdauer der elektromechanischen Ausrüstung voraussichtlich abläuft / Année pour laquelle on prévoit que la durée de vie de l''équipement soit écoulée';
--------
-CREATE TRIGGER
-update_last_modified_tank_cleaning
-BEFORE UPDATE OR INSERT ON
- tww_od.tank_cleaning
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified_parent("tww_od.structure_part");
+
 
 -------
 -------
@@ -2539,7 +2089,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_tank_emptying_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.tank_emptying ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','tank_emptying');
 COMMENT ON COLUMN tww_od.tank_emptying.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.tank_emptying ADD COLUMN flow  decimal(9,3) ;
 COMMENT ON COLUMN tww_od.tank_emptying.flow IS 'yyy_Bei mehreren Pumpen / Schiebern muss die maximale Gesamtmenge erfasst werden. / Bei mehreren Pumpen / Schiebern muss die maximale Gesamtmenge erfasst werden. / Lors de présence de plusieurs pompes/vannes, indiquer le débit total.';
@@ -2549,13 +2098,7 @@ COMMENT ON COLUMN tww_od.tank_emptying.gross_costs IS 'Gross costs of electromec
 COMMENT ON COLUMN tww_od.tank_emptying.kind IS '';
  ALTER TABLE tww_od.tank_emptying ADD COLUMN year_of_replacement  smallint ;
 COMMENT ON COLUMN tww_od.tank_emptying.year_of_replacement IS 'yyy_Jahr in dem die Lebensdauer der elektromechanischen Ausrüstung voraussichtlich abläuft / Jahr in dem die Lebensdauer der elektromechanischen Ausrüstung voraussichtlich abläuft / Année pour laquelle on prévoit que la durée de vie de l''équipement soit écoulée';
--------
-CREATE TRIGGER
-update_last_modified_tank_emptying
-BEFORE UPDATE OR INSERT ON
- tww_od.tank_emptying
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified_parent("tww_od.structure_part");
+
 
 -------
 -------
@@ -2568,7 +2111,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_catchment_area_totals_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.catchment_area_totals ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','catchment_area_totals');
 COMMENT ON COLUMN tww_od.catchment_area_totals.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.catchment_area_totals ADD COLUMN discharge_freight_nh4_n  integer ;
 COMMENT ON COLUMN tww_od.catchment_area_totals.discharge_freight_nh4_n IS 'based on base module chapter 8.5. of directive "Abwasserbewirtschaftung bei Regenwetter" of VSA (2019)" / Gemäss Basismodul Kapitel 8.5 der Richtlinie "Abwasserentsorgung bei Regenwetter" des VSA (2019) / Selon module de base chapitre 8.5 directive "Gestion des eaux urbaines par temps de pluie" du VSA (2019)';
@@ -2603,13 +2145,7 @@ COMMENT ON COLUMN tww_od.catchment_area_totals.last_modification IS 'Last modifi
 COMMENT ON COLUMN tww_od.catchment_area_totals.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.catchment_area_totals ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.catchment_area_totals.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_catchment_area_totals
-BEFORE UPDATE OR INSERT ON
- tww_od.catchment_area_totals
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+
 
 -------
 -------
@@ -2622,7 +2158,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_param_ca_general_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.param_ca_general ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','param_ca_general');
 COMMENT ON COLUMN tww_od.param_ca_general.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.param_ca_general ADD COLUMN dry_wheather_flow  decimal(9,3) ;
 COMMENT ON COLUMN tww_od.param_ca_general.dry_wheather_flow IS 'Dry wheather flow / Débit temps sec';
@@ -2634,13 +2169,7 @@ COMMENT ON COLUMN tww_od.param_ca_general.flow_path_slope IS 'Slope of flow path
 COMMENT ON COLUMN tww_od.param_ca_general.population_equivalent IS '';
  ALTER TABLE tww_od.param_ca_general ADD COLUMN surface_ca  decimal(8,2) ;
 COMMENT ON COLUMN tww_od.param_ca_general.surface_ca IS 'yyy_Surface bassin versant MOUSE1 / Fläche des Einzugsgebietes für MOUSE1 / Surface bassin versant MOUSE1';
--------
-CREATE TRIGGER
-update_last_modified_param_ca_general
-BEFORE UPDATE OR INSERT ON
- tww_od.param_ca_general
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified_parent("tww_od.surface_runoff_parameters");
+
 
 -------
 -------
@@ -2653,7 +2182,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_param_ca_mouse1_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.param_ca_mouse1 ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','param_ca_mouse1');
 COMMENT ON COLUMN tww_od.param_ca_mouse1.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.param_ca_mouse1 ADD COLUMN dry_wheather_flow  decimal(9,3) ;
 COMMENT ON COLUMN tww_od.param_ca_mouse1.dry_wheather_flow IS 'Parameter for calculation of surface runoff for surface runoff modell A1 / Parameter zur Bestimmung des Oberflächenabflusses für das Oberflächenabflussmodell A1 von MOUSE / Paramètre pour calculer l''écoulement superficiel selon le modèle A1 de MOUSE';
@@ -2668,13 +2196,6 @@ COMMENT ON COLUMN tww_od.param_ca_mouse1.surface_ca_mouse IS 'yyy_Parameter zur 
  ALTER TABLE tww_od.param_ca_mouse1 ADD COLUMN usage text;
  ALTER TABLE tww_od.param_ca_mouse1 ADD CONSTRAINT pm_usage_length_max_50 CHECK(char_length(usage)<=50);
 COMMENT ON COLUMN tww_od.param_ca_mouse1.usage IS 'Classification based on surface runoff modell MOUSE 2000/2001 / Klassifikation gemäss Oberflächenabflussmodell von MOUSE 2000/2001 / Classification selon le modèle surface de MOUSE 2000/2001';
--------
-CREATE TRIGGER
-update_last_modified_param_ca_mouse1
-BEFORE UPDATE OR INSERT ON
- tww_od.param_ca_mouse1
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified_parent("tww_od.surface_runoff_parameters");
 
 -------
 -------
@@ -2687,7 +2208,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_disposal_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.disposal ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','disposal');
 COMMENT ON COLUMN tww_od.disposal.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.disposal ADD COLUMN disposal_interval_current  decimal(4,2) ;
 COMMENT ON COLUMN tww_od.disposal.disposal_interval_current IS 'yyy_Abstände, in welchen das Bauwerk aktuell geleert wird (Jahre) / Abstände, in welchen das Bauwerk aktuell geleert wird (Jahre) / Fréquence à laquelle l''ouvrage subit actuellement une vidange (années)';
@@ -2705,13 +2225,7 @@ COMMENT ON COLUMN tww_od.disposal.last_modification IS 'Last modification / Letz
 COMMENT ON COLUMN tww_od.disposal.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.disposal ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.disposal.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_disposal
-BEFORE UPDATE OR INSERT ON
- tww_od.disposal
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+
 
 -------
 -------
@@ -2724,7 +2238,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_building_group_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.building_group ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','building_group');
 COMMENT ON COLUMN tww_od.building_group.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.building_group ADD COLUMN camping_area  decimal(10,4) ;
 COMMENT ON COLUMN tww_od.building_group.camping_area IS 'Camping: Area of camping in hectars / Camping: Fläche Campingplatz in ha / Camping: surface du camping en ha';
@@ -2803,13 +2316,7 @@ COMMENT ON COLUMN tww_od.building_group.last_modification IS 'Last modification 
 COMMENT ON COLUMN tww_od.building_group.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.building_group ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.building_group.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_building_group
-BEFORE UPDATE OR INSERT ON
- tww_od.building_group
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+
 
 -------
 -------
@@ -2822,7 +2329,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_building_group_baugwr_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.building_group_baugwr ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','building_group_baugwr');
 COMMENT ON COLUMN tww_od.building_group_baugwr.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.building_group_baugwr ADD COLUMN egid  integer ;
 COMMENT ON COLUMN tww_od.building_group_baugwr.egid IS 'yyy_EGID aus BAU/GWR der zur Gebäudegruppe gehörigen Gebäude / EGID aus BAU/GWR der zur Gebäudegruppe gehörigen Gebäude / EGID de BAU/RegBL des bâtiments appartenant au groupe de bâtiments';
@@ -2832,13 +2338,7 @@ COMMENT ON COLUMN tww_od.building_group_baugwr.last_modification IS 'Last modifi
 COMMENT ON COLUMN tww_od.building_group_baugwr.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.building_group_baugwr ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.building_group_baugwr.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_building_group_baugwr
-BEFORE UPDATE OR INSERT ON
- tww_od.building_group_baugwr
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+
 
 -------
 -------
@@ -2851,7 +2351,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_farm_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.farm ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','farm');
 COMMENT ON COLUMN tww_od.farm.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.farm ADD COLUMN agriculture_arable_surface  decimal(10,4) ;
 COMMENT ON COLUMN tww_od.farm.agriculture_arable_surface IS 'Arable agricultural area in ha / Landwirtschaftliche Nutzfläche in ha / Surface agricole utile en ha';
@@ -2901,13 +2400,7 @@ COMMENT ON COLUMN tww_od.farm.last_modification IS 'Last modification / Letzte_A
 COMMENT ON COLUMN tww_od.farm.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.farm ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.farm.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_farm
-BEFORE UPDATE OR INSERT ON
- tww_od.farm
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+
 
 -------
 -------
@@ -2920,7 +2413,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_small_treatment_plant_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.small_treatment_plant ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','small_treatment_plant');
 COMMENT ON COLUMN tww_od.small_treatment_plant.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.small_treatment_plant ADD COLUMN approval_number text;
  ALTER TABLE tww_od.small_treatment_plant ADD CONSTRAINT sm_approval_number_length_max_50 CHECK(char_length(approval_number)<=50);
@@ -2931,13 +2423,7 @@ COMMENT ON COLUMN tww_od.small_treatment_plant.function IS 'yyy_Art des Verfahre
 COMMENT ON COLUMN tww_od.small_treatment_plant.installation_number IS 'yyy_ARA-Nummer gemäss BAFU / ARA-Nummer gemäss BAFU / Numéro de la STEP selon l''OFEV';
  ALTER TABLE tww_od.small_treatment_plant ADD COLUMN remote_monitoring  integer ;
 COMMENT ON COLUMN tww_od.small_treatment_plant.remote_monitoring IS '';
--------
-CREATE TRIGGER
-update_last_modified_small_treatment_plant
-BEFORE UPDATE OR INSERT ON
- tww_od.small_treatment_plant
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified_parent("tww_od.wastewater_structure");
+
 
 -------
 -------
@@ -2950,17 +2436,10 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_drainless_toilet_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.drainless_toilet ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','drainless_toilet');
 COMMENT ON COLUMN tww_od.drainless_toilet.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.drainless_toilet ADD COLUMN kind  integer ;
 COMMENT ON COLUMN tww_od.drainless_toilet.kind IS '';
--------
-CREATE TRIGGER
-update_last_modified_drainless_toilet
-BEFORE UPDATE OR INSERT ON
- tww_od.drainless_toilet
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified_parent("tww_od.wastewater_structure");
+
 
 -------
 ------------ Relationships and Value Tables ----------- ;
@@ -4763,7 +4242,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_wastewater_structure_text_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.wastewater_structure_text ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_structure_text');
 COMMENT ON COLUMN tww_od.wastewater_structure_text.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.wastewater_structure_text ADD COLUMN classname text;
  ALTER TABLE tww_od.wastewater_structure_text ADD CONSTRAINT wx_classname_length_max_50 CHECK(char_length(classname)<=50);
@@ -4786,13 +4264,7 @@ COMMENT ON COLUMN tww_od.wastewater_structure_text.textpos_geometry IS '';
 COMMENT ON COLUMN tww_od.wastewater_structure_text.textvali IS '';
  ALTER TABLE tww_od.wastewater_structure_text ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
 COMMENT ON COLUMN tww_od.wastewater_structure_text.last_modification IS 'Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE';
--------
-CREATE TRIGGER
-update_last_modified_wastewater_structure_text
-BEFORE UPDATE OR INSERT ON
- tww_od.wastewater_structure_text
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+
 
 -------
 -------
@@ -4805,7 +4277,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_reach_text_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.reach_text ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','reach_text');
 COMMENT ON COLUMN tww_od.reach_text.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.reach_text ADD COLUMN classname text;
  ALTER TABLE tww_od.reach_text ADD CONSTRAINT rx_classname_length_max_50 CHECK(char_length(classname)<=50);
@@ -4828,13 +4299,7 @@ COMMENT ON COLUMN tww_od.reach_text.textpos_geometry IS '';
 COMMENT ON COLUMN tww_od.reach_text.textvali IS '';
  ALTER TABLE tww_od.reach_text ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
 COMMENT ON COLUMN tww_od.reach_text.last_modification IS 'Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE';
--------
-CREATE TRIGGER
-update_last_modified_reach_text
-BEFORE UPDATE OR INSERT ON
- tww_od.reach_text
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+
 
 -------
 -------
@@ -4847,7 +4312,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_catchment_area_text_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.catchment_area_text ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','catchment_area_text');
 COMMENT ON COLUMN tww_od.catchment_area_text.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.catchment_area_text ADD COLUMN classname text;
  ALTER TABLE tww_od.catchment_area_text ADD CONSTRAINT cx_classname_length_max_50 CHECK(char_length(classname)<=50);
@@ -4870,13 +4334,7 @@ COMMENT ON COLUMN tww_od.catchment_area_text.textpos_geometry IS '';
 COMMENT ON COLUMN tww_od.catchment_area_text.textvali IS '';
  ALTER TABLE tww_od.catchment_area_text ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
 COMMENT ON COLUMN tww_od.catchment_area_text.last_modification IS 'Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE';
--------
-CREATE TRIGGER
-update_last_modified_catchment_area_text
-BEFORE UPDATE OR INSERT ON
- tww_od.catchment_area_text
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+
 
 -------
 -------
@@ -4889,7 +4347,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_wastewater_structure_symbol_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.wastewater_structure_symbol ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_structure_symbol');
 COMMENT ON COLUMN tww_od.wastewater_structure_symbol.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN classname text;
  ALTER TABLE tww_od.wastewater_structure_symbol ADD CONSTRAINT bx_classname_length_max_50 CHECK(char_length(classname)<=50);
@@ -4907,13 +4364,7 @@ CREATE INDEX in_tww_wastewater_structure_symbol_symbolpos_geometry ON tww_od.was
 COMMENT ON COLUMN tww_od.wastewater_structure_symbol.symbolpos_geometry IS '';
  ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
 COMMENT ON COLUMN tww_od.wastewater_structure_symbol.last_modification IS 'Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE';
--------
-CREATE TRIGGER
-update_last_modified_wastewater_structure_symbol
-BEFORE UPDATE OR INSERT ON
- tww_od.wastewater_structure_symbol
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+
 
 -------
 
@@ -5034,7 +4485,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_reach_progression_alternative_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.reach_progression_alternative ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','reach_progression_alternative');
 COMMENT ON COLUMN tww_od.reach_progression_alternative.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.reach_progression_alternative ADD COLUMN plantype  integer ;
 COMMENT ON COLUMN tww_od.reach_progression_alternative.plantype IS '';
@@ -5043,13 +4493,7 @@ CREATE INDEX in_tww_reach_progression_alternative_progression_geometry ON tww_od
 COMMENT ON COLUMN tww_od.reach_progression_alternative.progression_geometry IS 'Start, inflextion and endpoints of a progression alterative for selected scale (e.g. overview map) / Anfangs-, Knick- und Endpunkte des Alternativverlaufs der Leitung im gewählten Plantyp (z.B. Uebersichtsplan) / Points de départ, intermédiaires et d’arrivée de la trace alternative de la conduite dans la type de plan selectionée';
  ALTER TABLE tww_od.reach_progression_alternative ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
 COMMENT ON COLUMN tww_od.reach_progression_alternative.last_modification IS 'Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE';
--------
-CREATE TRIGGER
-update_last_modified_reach_progression_alternative
-BEFORE UPDATE OR INSERT ON
- tww_od.reach_progression_alternative
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+
 
 -------
 

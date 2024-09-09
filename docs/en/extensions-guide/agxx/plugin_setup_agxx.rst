@@ -16,7 +16,7 @@ In the plugin, there is a hidden functionality that allows importing and exporti
 
 In the tab *Developer options*, there is a Checkbox to enable the AG-64/96 extension
 
- .. figure:: images/opensettingsdialog.png
+ .. figure:: images/enableextension.png
 
  When this checkbox is ticked, the data models AG-64/AG-96 are available in the interlis export.
 
@@ -26,7 +26,7 @@ Handling of last modification
 
 AG-64 and AG-96 have separated values for last_modification. In the plugin settings, there is a hidden combobox that allows altering which last_modification(s) should be updated.
 
- .. figure:: images/opensettingsdialog.png
+ .. figure:: images/chooselastmodification.png
 
 In the database, there is a table from which that value is taken on startup, so the setting does not need to be changed every time a project is opened.
 
@@ -35,7 +35,8 @@ In the database, there is a table from which that value is taken on startup, so 
 Project setup
 ^^^^^^^^^^^^^^^^^^^^^^
 
-The attribute forms of AG-64/AG-96 are not loaded automatically when starting the template .qgs project. The necessary forms are available in source code of the  `latest release <https://github.com/teksi/wastewater/releases/latest>_`
+The attribute forms of AG-64/AG-96 are stored in a specific layer style automatically when starting the template .qgs project. In order to access them, right-click on the layer, select "styles" and cascade to ""AG-64/96"
 
-* download source code
-* in the folder project/agxx there are qml files with the necessary attribute forms
+ .. figure:: images/selectstyle.png
+
+From there, you can copy/paste the forms if necessary
