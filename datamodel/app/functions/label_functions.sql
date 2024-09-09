@@ -201,7 +201,7 @@ updated as(
 	UPDATE tww_od.tww_labels SET label_def = jbo
 	FROM(
 	SELECT
-      obj_id
+      ws_obj_id
     , jsonb_build_object(
 	      'main', main_lbl
 		, 'cover', cover_lbl
@@ -210,11 +210,11 @@ updated as(
 		, 'output', output_lbl
 		) as jbo
   FROM labeled_ws) lws
-  WHERE fk_parent_obj_id = lws.obj_id
+  WHERE fk_parent_obj_id = lws.ws_obj_id
 )
   INSERT INTO tww_od.tww_labels (fk_parent_obj_id,label_def)
   SELECT
-      lws.obj_id
+      lws.ws_obj_id
     , jsonb_build_object(
 	      'main', main_lbl
 		, 'cover', cover_lbl
@@ -223,7 +223,7 @@ updated as(
 		, 'output', output_lbl
 		)
   FROM labeled_ws lws
-  LEFT JOIN tww_od.tww_labels lbls ON lbls.fk_parent_obj_id=lws.obj_id
+  LEFT JOIN tww_od.tww_labels lbls ON lbls.fk_parent_obj_id=lws.ws_obj_id
   WHERE lbls.fk_parent_obj_id IS NULL;
 
 END
