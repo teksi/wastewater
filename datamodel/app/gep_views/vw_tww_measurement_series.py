@@ -10,8 +10,7 @@ try:
 except ImportError:
     import psycopg2 as psycopg
 
-from pirogue.utils import insert_command, select_columns, table_parts, update_command
-from yaml import safe_load
+from pirogue.utils import insert_command, select_columns, update_command
 
 
 def vw_tww_measurement_series(pg_service: str = None):
@@ -46,8 +45,7 @@ def vw_tww_measurement_series(pg_service: str = None):
             table_alias="ms",
             remove_pkey=False,
             indent=4,
-            skip_columns=[
-            ],
+            skip_columns=[],
         ),
     )
 
@@ -78,10 +76,8 @@ def vw_tww_measurement_series(pg_service: str = None):
             table_alias="ms",
             remove_pkey=False,
             indent=2,
-            skip_columns=[
-            ],
+            skip_columns=[],
         ),
-        
     )
 
     cursor.execute(trigger_insert_sql)
@@ -111,8 +107,7 @@ def vw_tww_measurement_series(pg_service: str = None):
             table_alias="ms",
             indent=6,
             skip_columns=[],
-            update_values={
-            },
+            update_values={},
         ),
     )
 
@@ -152,6 +147,4 @@ if __name__ == "__main__":
     parser.add_argument("-p", "--pg_service", help="the PostgreSQL service name")
     args = parser.parse_args()
     pg_service = args.pg_service or os.getenv("PGSERVICE")
-    vw_tww_measurement_series(
-        pg_service=pg_service
-    )
+    vw_tww_measurement_series(pg_service=pg_service)
