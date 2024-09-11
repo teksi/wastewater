@@ -80,7 +80,7 @@ def vw_tww_measurement_series(pg_service: str = None):
             indent=2,
             skip_columns=[
             ],
-        
+
     )
 
     cursor.execute(trigger_insert_sql)

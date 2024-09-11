@@ -9,13 +9,13 @@ try:
 except ImportError:
     import psycopg2 as psycopg
 
+from gep_views.vw_tww_measurement_series import vw_tww_measurement_series
 from pirogue import MultipleInheritance, SimpleJoins, SingleInheritance
 from triggers.set_defaults_and_triggers import set_defaults_and_triggers
 from view.vw_tww_additional_ws import vw_tww_additional_ws
 from view.vw_tww_reach import vw_tww_reach
 from view.vw_tww_wastewater_structure import vw_tww_wastewater_structure
 from view.vw_wastewater_structure import vw_wastewater_structure
-from gep_views.vw_tww_measurement_series import vw_tww_measurement_series
 from yaml import safe_load
 
 
@@ -162,7 +162,7 @@ def create_app(
     )
     vw_tww_reach(pg_service=pg_service, extra_definition=tww_reach_extra)
     vw_tww_additional_ws(srid, pg_service=pg_service)
-    vw_tww_measurement_series( pg_service=pg_service)
+    vw_tww_measurement_series(pg_service=pg_service)
 
     run_sql_file("view/vw_file.sql", pg_service, variables)
 
