@@ -124,11 +124,19 @@ SELECT   ws_obj_id,
 		  array_to_string(array_agg(E'\n'||rpi_label|| '=' || rpi_level ORDER BY rpi_label ASC), '', '')  as input_lbl,
 		  array_to_string(array_agg(E'\n'||rpo_label|| '=' || rpo_level ORDER BY rpo_label ASC), '', '') as output_lbl
   FROM (
-		  SELECT ws.obj_id AS ws_obj_id, ws.identifier AS ws_identifier, parts.co_level AS co_level, parts.rpi_level AS rpi_level, parts.rpo_level AS rpo_level, parts.obj_id, idx, bottom_level AS bottom_level
+		  SELECT ws.obj_id AS ws_obj_id
+		  , ws.identifier AS ws_identifier
+		  , parts.co_level AS co_level
+		  , parts.rpi_level AS rpi_level
+		  , parts.rpo_level AS rpo_level
+		  , parts.rpi_label AS rpi_label
+		  , parts.rpo_label AS rpo_label
+		  , parts.obj_id, idx
+		  , parts.bottom_level AS bottom_level
     FROM tww_od.wastewater_structure WS
 
     LEFT JOIN (
-		--cover
+	  --cover
       SELECT
 		coalesce(round(CO.level, 2)::text, '?') AS co_level
 		, SP.fk_wastewater_structure ws
