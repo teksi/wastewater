@@ -22,6 +22,6 @@ or
 
 .. figure:: images/digitize_detail_geom_select1.jpg
 
-* You can now start digitizing: draw a simple line with two clicks. 
+* You can now start digitizing: draw a simple line with two clicks.
 * The polygon with a width of 20 cm is created is created in the **wastewater_structure** layer (layergroup Wastewater Structures)
 * In order to alter the width, press Ctrl during digitizing. After the second click, alter the width in the popup window.
