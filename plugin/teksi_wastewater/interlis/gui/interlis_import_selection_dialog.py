@@ -73,8 +73,8 @@ class InterlisImportSelectionDialog(QDialog):
                 )
                 self.treeWidget.addTopLevelItem(self.category_items[cls])
 
-            editor.update_listitem()
-            self.category_items[cls].addChild(editor.listitem)
+            editor.update_tree_widget_item()
+            self.category_items[cls].addChild(editor.tree_widget_item)
 
             if editor.validity != Editor.VALID:
                 self.treeWidget.expandItem(self.category_items[cls])
@@ -136,7 +136,7 @@ class InterlisImportSelectionDialog(QDialog):
         Calls refresh_widget_for_obj for the currently selected object
         """
         for editor in self.editors.values():
-            if editor.listitem == current_item:
+            if editor.tree_widget_item == current_item:
                 self.refresh_editor(editor)
                 break
         else:
@@ -154,7 +154,7 @@ class InterlisImportSelectionDialog(QDialog):
         editor.update_state()
 
         # Update the list item
-        editor.update_listitem()
+        editor.update_tree_widget_item()
 
         # Update generic widget contents
         self.debugTextEdit.clear()
@@ -226,6 +226,6 @@ class InterlisImportSelectionDialog(QDialog):
 
     def get_obj_from_listitem(self, listitem):
         for obj, editor in self.editors.items():
-            if editor.listitem == listitem:
+            if editor.tree_widget_item == listitem:
                 return obj
         return None

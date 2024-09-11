@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from geoalchemy2.functions import ST_Force3D
 from sqlalchemy.orm import Session
 from sqlalchemy.orm.attributes import flag_dirty
@@ -430,12 +432,32 @@ class InterlisImporterToIntermediateSchema:
         # We try to get the instance from the session/database
         obj_id = kwargs.get("obj_id", None)
         if obj_id:
-            instance = self.session_tww.query(cls).get(kwargs.get("obj_id", None))
+            instance = self.session_tww.get(cls, obj_id)
 
         if instance:
-            # We found it -> update
-            instance.__dict__.update(kwargs)
-            flag_dirty(instance)  # we flag it as dirty so it stays in the session
+            flag_dirty(
+                instance
+            )  # we flag it as dirty so it stays in the session. This is a workaround trick
+            # needed bcause the session is not meant to be used as a cache: https://docs.sqlalchemy.org/en/20/orm/session_basics.html#is-the-session-a-cache
+
+            # Update modified values
+            for key, value in kwargs.items():
+                if key == "last_modification":
+                    value = datetime.combine(value, datetime.min.time())
+
+                instanceAttribute = getattr(instance, key, None)
+                if "geometry" in key:
+                    print(f"new: {value}")
+                    print(f"old: {instanceAttribute}")
+                    continue
+
+                if instanceAttribute != value:
+                    print(
+                        f"cls {cls} - key {key} - value {value} - getattr {getattr(instance, key, None)}"
+                    )
+
+                    # Setattr in the background updates the session state and make it possible to use "is_modified" afterwards
+                    setattr(instance, key, value)
         else:
             # We didn't find it -> create
             instance = cls(**kwargs)
@@ -462,7 +484,11 @@ class InterlisImporterToIntermediateSchema:
                 self.model_classes_tww_od.wastewater_structure_accessibility, row.zugaenglichkeit
             ),
             "contract_section": row.baulos,
-            "detail_geometry3d_geometry": ST_Force3D(row.detailgeometrie),
+            "detail_geometry3d_geometry": (
+                row.detailgeometrie
+                if row.detailgeometrie is None
+                else ST_Force3D(row.detailgeometrie)
+            ),
             # TODO : NOT MAPPED VSA-DSS 3D
             # "elevation_determination": self.get_vl_code(
             #    self.model_classes_tww_od.wastewater_structure_elevation_determination, row.hoehenbestimmung
