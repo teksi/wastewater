@@ -16,7 +16,7 @@ from yaml import safe_load
 
 def vw_tww_measurement_series(pg_service: str = None):
     """
-    Creates tww_wastewater_structure view
+    Creates tww_measurement_series view
     :param pg_service: the PostgreSQL service name
     """
     if not pg_service:
