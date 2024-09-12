@@ -36,7 +36,7 @@ def vw_tww_infiltration_installation(
 
     CREATE OR REPLACE VIEW tww_app.vw_tww_infiltration_installation AS
      SELECT
-        ws.identifier as identifier,
+        ws.identifier as identifier
 
         , ws.fk_owner
         , ws.status
