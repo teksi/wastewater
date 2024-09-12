@@ -14,7 +14,9 @@ from pirogue.utils import insert_command, select_columns, table_parts, update_co
 from yaml import safe_load
 
 
-def vw_tww_infiltration_installation(srid: int, pg_service: str = None, extra_definition: dict = None):
+def vw_tww_infiltration_installation(
+    srid: int, pg_service: str = None, extra_definition: dict = None
+):
     """
     Creates tww_infiltration_installation view
     :param srid: EPSG code for geometries
@@ -60,7 +62,7 @@ def vw_tww_infiltration_installation(srid: int, pg_service: str = None, extra_de
         , wn._usage_current AS _channel_usage_current
         , wn._function_hierarchic AS _channel_function_hierarchic
 
-        
+
       FROM tww_od.infiltration_installation ii
         LEFT JOIN tww_od.wastewater_structure ws ON ii.obj_id = ws.obj_id
         LEFT JOIN tww_od.cover main_co ON main_co.obj_id = ws.fk_main_cover
@@ -203,12 +205,12 @@ def vw_tww_infiltration_installation(srid: int, pg_service: str = None, extra_de
     {insert_ii}
 
 
-    CASE WHEN NOT tww_app.check_all_nulls(NEW,'mp') THEN 
+    CASE WHEN NOT tww_app.check_all_nulls(NEW,'mp') THEN
     {insert_mp}
     ELSE NULL;
     END CASE;
 
-    CASE WHEN NOT tww_app.check_all_nulls(NEW,'rb') THEN 
+    CASE WHEN NOT tww_app.check_all_nulls(NEW,'rb') THEN
     {insert_rb}
     ELSE NULL;
     END CASE;
@@ -219,7 +221,7 @@ def vw_tww_infiltration_installation(srid: int, pg_service: str = None, extra_de
         SET fk_main_wastewater_node = NEW.wn_obj_id
         WHERE obj_id = NEW.obj_id;
 
-    CASE WHEN NOT tww_app.check_all_nulls(NEW,'co') THEN 
+    CASE WHEN NOT tww_app.check_all_nulls(NEW,'co') THEN
     {insert_vw_cover}
 
       UPDATE tww_od.wastewater_structure
@@ -227,7 +229,7 @@ def vw_tww_infiltration_installation(srid: int, pg_service: str = None, extra_de
         WHERE obj_id = NEW.obj_id;
     ELSE NULL;
     END CASE;
-        
+
       RETURN NEW;
     END; $BODY$ LANGUAGE plpgsql VOLATILE;
 
