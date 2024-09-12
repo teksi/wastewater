@@ -14,7 +14,7 @@ AS
         );
 
       -- Check if all remaining values are NULL
-      RETURN jsonb_strip_nulls(rec_jsonb)::text = '{{}}';
+      RETURN jsonb_strip_nulls(rec_jsonb)::text = '{{}}' OR jsonb_strip_nulls(rec_jsonb)::text IS NULL;
 	  END;
   $BODY$
 LANGUAGE plpgsql;
