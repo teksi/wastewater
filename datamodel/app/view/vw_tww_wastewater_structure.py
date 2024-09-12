@@ -200,6 +200,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             skip_columns=[
                 "situation3d_geometry",
                 "_usage_current",
+                "_status",
                 "_function_hierarchic",
             ],
             prefix="wn_",
@@ -353,6 +354,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             indent=6,
             skip_columns=[
                 "_usage_current",
+                "_status",
                 "_function_hierarchic",
             ],
             insert_values={
@@ -629,6 +631,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             skip_columns=[
                 "situation3d_geometry",
                 "_usage_current",
+                "_status",
                 "_function_hierarchic",
             ],
         ),
