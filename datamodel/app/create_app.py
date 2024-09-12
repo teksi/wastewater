@@ -162,7 +162,7 @@ def create_app(
     vw_tww_wastewater_structure(
         srid, pg_service=pg_service, extra_definition=tww_wastewater_structure_extra
     )
-    vw_tww_infiltration_installation(pg_service=pg_service, extra_definition=tww_ii_extra)
+    vw_tww_infiltration_installation(srid, pg_service=pg_service, extra_definition=tww_ii_extra)
     vw_tww_reach(pg_service=pg_service, extra_definition=tww_reach_extra)
     vw_tww_additional_ws(srid, pg_service=pg_service)
 
