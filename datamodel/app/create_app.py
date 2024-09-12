@@ -14,6 +14,7 @@ from triggers.set_defaults_and_triggers import set_defaults_and_triggers
 from view.vw_tww_additional_ws import vw_tww_additional_ws
 from view.vw_tww_reach import vw_tww_reach
 from view.vw_tww_wastewater_structure import vw_tww_wastewater_structure
+from gep_views.vw_tww_infiltration_installation import vw_tww_infiltration_installation
 from view.vw_wastewater_structure import vw_wastewater_structure
 from yaml import safe_load
 
@@ -41,6 +42,7 @@ def create_app(
     drop_schema: Optional[bool] = False,
     tww_reach_extra: Optional[Path] = None,
     tww_wastewater_structure_extra: Optional[Path] = None,
+    tww_ii_extra: Optional[Path] = None,
     wastewater_structure_extra: Optional[Path] = None,
 ):
     """
@@ -50,6 +52,7 @@ def create_app(
     :param pg_service: the PostgreSQL service, if not given it will be determined from environment variable in Pirogue
     :param tww_reach_extra: YAML file path of the definition of additional columns for vw_tww_reach view
     :param tww_wastewater_structure_extra: YAML file path of the definition of additional columns for vw_tww_wastewater_structure_extra view
+    :param tww_ii_extra: YAML file path of the definition of additional columns for vw_tww_infiltration_installation_extra view
     :param wastewater_structure_extra: YAML file path of the definition of additional columns for vw_wastewater_structure_extra view
     """
     cwd = Path(__file__).parent.resolve()
@@ -159,6 +162,7 @@ def create_app(
     vw_tww_wastewater_structure(
         srid, pg_service=pg_service, extra_definition=tww_wastewater_structure_extra
     )
+    vw_tww_infiltration_installation(pg_service=pg_service, extra_definition=tww_ii_extra)
     vw_tww_reach(pg_service=pg_service, extra_definition=tww_reach_extra)
     vw_tww_additional_ws(srid, pg_service=pg_service)
 
