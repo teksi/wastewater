@@ -234,7 +234,6 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
     CREATE OR REPLACE FUNCTION tww_app.ft_vw_tww_wastewater_structure_INSERT()
       RETURNS trigger AS
     $BODY$
-    DECLARE new_co jsonb;
     BEGIN
 
 
@@ -266,15 +265,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
     {insert_wn}
 
 
-      -- Aggregate all co_* values in a jsonb
-      new_co := (
-          SELECT jsonb_object_agg(key, to_jsonb(NEW)->key)
-          FROM jsonb_object_keys(to_jsonb(NEW)) key
-          WHERE LEFT(key, 3) = 'co_' AND key NOT IN ('co_identifier', 'co_obj_id')
-        );
-
-      -- Check if all remaining values are NULL
-      CASE WHEN jsonb_strip_nulls(new_co)::text <> '{{}}' THEN -- no cover entries
+      CASE WHEN NOT tww_app.check_all_nulls(NEW,'co') THEN -- no cover entries
         {insert_vw_cover}
 
      ELSE
@@ -411,20 +402,11 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
     DECLARE
       dx float;
       dy float;
-      new_co jsonb;
     BEGIN
 
       {update_co}
       IF NOT FOUND THEN
-        -- Aggregate all co_* values in a jsonb
-        new_co := (
-          SELECT jsonb_object_agg(key, to_jsonb(NEW)->key)
-          FROM jsonb_object_keys(to_jsonb(NEW)) key
-          WHERE LEFT(key, 3) = 'co_' AND key NOT IN ('co_identifier', 'co_obj_id')
-        );
-
-        -- Check if all remaining values are NULL
-        CASE WHEN jsonb_strip_nulls(new_co)::text <> '{{}}' THEN
+        CASE WHEN NOT tww_app.check_all_nulls(NEW,'co') THEN -- no cover entries
           {insert_vw_cover}
         ELSE
           PERFORM pg_notify('vw_tww_ws_no_cover', format('Wastewater Structure %s: no cover created. If you want to add a cover please fill in at least one cover attribute value.',NEW.identifier));
