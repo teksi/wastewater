@@ -193,9 +193,34 @@ In TWW, there is in the moment no tool, that helps you to connect a wastewater n
 .. note:: If you really want to connect the node to a channel, then type the obj_id of the channel manually in the fk_wasterwater_structure field of the node.
 
 
-Multiedit
----------
-If you want to edit attributes for multiple objects of the same layer you can use the `multiedit Tool of QGIS <https://docs.qgis.org/latest/en/docs/user_manual/working_with_vector/attribute_table.html#multi-edit-fields>`_.
+Change multiple records at once
+--------------------------------
+There are several QGIS-possibilitys to change multiple records at the same time. QGIS **Multiedit** changes multiple fields of multiple records at the same, but there is no progress indicator. With QGIS **field calculator** one field can be change at once and there is a progress indicator.
+
+If there are lot of records (several hundred to several thousand) a multiple record change can take a long time (several minutes), if there are a lot records and if there are views changed, that have lots of fields from different tables.
+Special the TWW-main-views (vw_tww_wastewater_structure and vw_tww_reach) have this problem. Therefore, it is always better not to multi-edit these large views, but rather to edit the table in question directly if a large number of data records are to be changed at the same time. That's why it is good to know, in which table is our field (perhaps the fieldname-prefix helps) and you may need to add this table to your TWW-project.
+To explain, that it really matters, there was the following test:
+
+Change for 500 reaches out of 10'122 the field rv_construction_type. It's a field with a value list. In vw_tww_reach, the fields name is ws_rv_construction_type, means the table of the field is wastewater_structure (ws).
+
+How long did we wait:
+
+- Use field calculator with vw_tww_reach: more than 25 minutes!
+
+- Use multiedit with vw_tww_reach: more than 5 minutes.
+
+- Use field calculator with vw_channel: 1 minute 3seconds
+
+- Use field calculator with table wastewater_structure: 5 seconds
+
+Why is vw_tww_reach so slow: there are triggers in the database, that updates for every record the calculated fields of the connected manholes and nodes, that this themes symbology is always up-to-date. With: ``SELECT tww_sys.disable_symbology_triggers();`` these triggers can be stopped. If the triggers are stopped then also the main-views are fast:
+
+- Use field calculator or multiedit with vw_tww_reach: about 8 seconds.
+
+Do not forget the enable the symbology triggers again after the calculations: ``SELECT tww_sys.enable_symbology_triggers();``
+(and to run the symbology_triggers manually for all records if necessary with the new xy-button?!).
+
+To do: verify these tests with TWW
 
 
 Saving changes
