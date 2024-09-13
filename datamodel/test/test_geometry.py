@@ -990,6 +990,5 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         )
 
 
-
 if __name__ == "__main__":
     unittest.main()
