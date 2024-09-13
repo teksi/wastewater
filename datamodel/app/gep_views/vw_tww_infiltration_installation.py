@@ -162,10 +162,10 @@ def vw_tww_infiltration_installation(
             remove_pkey=False,
             indent=4,
             skip_columns=[
-            "situation3d_geometry",
-            "_function_hierarchic",
-            "_usage_current",
-            "_status",
+                "situation3d_geometry",
+                "_function_hierarchic",
+                "_usage_current",
+                "_status",
             ],
             prefix="wn_",
             remap_columns={},
@@ -314,9 +314,9 @@ def vw_tww_infiltration_installation(
             pkey="obj_id",
             indent=6,
             skip_columns=[
-            "_function_hierarchic",
-            "_usage_current",
-            "_status",
+                "_function_hierarchic",
+                "_usage_current",
+                "_status",
             ],
             insert_values={
                 "identifier": "COALESCE(NULLIF(NEW.wn_identifier,''), NEW.identifier)",
@@ -534,10 +534,10 @@ def vw_tww_infiltration_installation(
             prefix="wn_",
             indent=6,
             skip_columns=[
-            "situation3d_geometry",
-            "_function_hierarchic",
-            "_usage_current",
-            "_status",
+                "situation3d_geometry",
+                "_function_hierarchic",
+                "_usage_current",
+                "_status",
             ],
         ),
         update_ne=update_command(
