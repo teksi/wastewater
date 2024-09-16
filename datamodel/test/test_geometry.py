@@ -905,7 +905,6 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         # INSERT INTO tww_app.vw_tww_infiltration_installation (situation3d_geometry, wn_obj_id, co_obj_id) VALUES (ST_SetSRID(ST_MakePoint(2600000, 1200000), 2056), 'ii_1337_1010', 'ii_1337_1010');
         row = {
             "situation3d_geometry": "0101000020080800000000000020D6434100000000804F3241",
-            "ws_type": "manhole",
             "wn_obj_id": "ii_1337_1010",
             "co_obj_id": "ii_1337_1010",
         }
