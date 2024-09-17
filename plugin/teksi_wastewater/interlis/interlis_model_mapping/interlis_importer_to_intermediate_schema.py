@@ -446,16 +446,10 @@ class InterlisImporterToIntermediateSchema:
                     value = datetime.combine(value, datetime.min.time())
 
                 instanceAttribute = getattr(instance, key, None)
-                if "geometry" in key:
-                    print(f"new: {value}")
-                    print(f"old: {instanceAttribute}")
-                    continue
+                if value is not None and "_geometry" in key:
+                    value = self.session_tww.scalar(value)
 
                 if instanceAttribute != value:
-                    print(
-                        f"cls {cls} - key {key} - value {value} - getattr {getattr(instance, key, None)}"
-                    )
-
                     # Setattr in the background updates the session state and make it possible to use "is_modified" afterwards
                     setattr(instance, key, value)
         else:
