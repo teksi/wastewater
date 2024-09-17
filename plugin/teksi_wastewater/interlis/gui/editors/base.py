@@ -75,18 +75,21 @@ class Editor:
         if self._tree_widget_item is None:
             self._tree_widget_item = QTreeWidgetItem()
             self._tree_widget_item.setCheckState(
-                0, Qt.Checked if self.initially_checked() else Qt.Unchecked
+                self.main_dialog.Columns.NAME,
+                Qt.Checked if self.initially_checked() else Qt.Unchecked,
             )
 
         disp_id = str(
             getattr(self.obj, "obj_id", getattr(self.obj, "value_en", "?"))
         )  # some elements may not have obj_id, such as value_lists
-        self._tree_widget_item.setText(0, getattr(self.obj, "identifier", disp_id))
-        self._tree_widget_item.setToolTip(0, disp_id)
+        self._tree_widget_item.setText(
+            self.main_dialog.Columns.NAME, getattr(self.obj, "identifier", disp_id)
+        )
+        self._tree_widget_item.setToolTip(self.main_dialog.Columns.NAME, disp_id)
 
-        self._tree_widget_item.setText(1, self.status)
+        self._tree_widget_item.setText(self.main_dialog.Columns.STATE, self.status)
 
-        self._tree_widget_item.setText(2, self.validity)
+        self._tree_widget_item.setText(self.main_dialog.Columns.VALIDITY, self.validity)
         if self.status == Editor.EXISTING:
             color = "lightgray"
         elif self.validity == Editor.INVALID:
@@ -97,7 +100,9 @@ class Editor:
             color = "lightgreen"
         else:
             color = "lightgray"
-        self._tree_widget_item.setBackground(2, QBrush(QColor(color)))
+        self._tree_widget_item.setBackground(
+            self.main_dialog.Columns.VALIDITY, QBrush(QColor(color))
+        )
 
     @property
     def widget(self):
