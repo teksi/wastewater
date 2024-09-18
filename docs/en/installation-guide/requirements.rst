@@ -16,6 +16,6 @@ TEKSI Wastewater requires PostGIS functions that did not function properly in a 
 * When using PostGIS 3.2, the bug is fixed in Version 3.2.7
 * When using PostGIS 3.3, the bug is fixed in Version 3.3.6
 * When using PostGIS 3.4, the bug is fixed in Version 3.4.2
-* Versions of PostGIS 3.6 or later are not affected
+* Versions of PostGIS 3.5 or later are not affected
 
 If you need support installing TEKSI Wastewater, contact one of our `certified service providers <https://www.teksi.ch/modules/#prestataires>`_
