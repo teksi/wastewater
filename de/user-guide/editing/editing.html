@@ -56,7 +56,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../digitizing/index.html">3.2. Digitalisieren in TWW</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">3.3. Bearbeiten in TWW</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">3.3.1. Bearbeiten von bestehenden Daten</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#demo-project-chapter-pictures-not-adjusted-to-tww">3.3.1.1. Demo project (chapter / pictures not adjusted to TWW)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#demo-project-chapter-pictures-not-adjusted-to-tww">3.3.1.1. Demo Projekt (Kapitel / Bilder nicht an TWW angepasst)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#layers">3.3.1.2. Layer</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#changing-attributes-of-point-elements-manholes-special-structures">3.3.1.3. Attribute der Punktelemente ändern (Normschächte / Spezialbauwerke)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#changing-attributes-of-linear-elements-channels">3.3.1.4. Attribute der Linienelemente ändern (Kanäle)</a></li>
@@ -66,9 +66,9 @@
 <li class="toctree-l4"><a class="reference internal" href="#an-other-way-to-choose-an-object">3.3.1.8. Ein andere Möglichkeit ein Objekt auszuwählen</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#adding-additional-covers-and-nodes-to-an-existing-wastewater-structure">3.3.1.9. Hinzufügen weiterer Deckel und Abwasserknoten zu bestehenden Abwasserbauwerken</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#adding-a-wastewater-node-to-an-existing-reach">3.3.1.10. Einen Abwasserknoten mit einer bestehenden Haltung verknüpfen</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#change-multiple-records-at-once">3.3.1.11. Change multiple records at once</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-multiple-records-at-once">3.3.1.11. Mehrere Datensätze gleichzeitig ändern</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#saving-changes">3.3.1.12. Änderungen Speichern</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#changing-wastewater-structure-type-ws-type">3.3.1.13. Changing Wastewater Structure Type (ws_type)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#changing-wastewater-structure-type-ws-type">3.3.1.13. Abwasserbauwerk Typ ändern (ws_type)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#split-a-reach-channel-into-different-reaches">3.3.1.14. Kanäle in verschiedene Haltungen unterteilen</a></li>
 </ul>
 </li>
@@ -122,9 +122,9 @@
 <span id="editing-data"></span><h1><span class="section-number">3.3.1. </span>Bearbeiten von bestehenden Daten<a class="headerlink" href="#editing-of-existing-data" title="Link to this heading"></a></h1>
 <p>Eine Anleitung zum Bearbeiten von vorhandenen Daten in TWW.</p>
 <section id="demo-project-chapter-pictures-not-adjusted-to-tww">
-<h2><span class="section-number">3.3.1.1. </span>Demo project (chapter / pictures not adjusted to TWW)<a class="headerlink" href="#demo-project-chapter-pictures-not-adjusted-to-tww" title="Link to this heading"></a></h2>
+<h2><span class="section-number">3.3.1.1. </span>Demo Projekt (Kapitel / Bilder nicht an TWW angepasst)<a class="headerlink" href="#demo-project-chapter-pictures-not-adjusted-to-tww" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>Make sure you have imported the demo project with pgAdmin (see the <a class="reference internal" href="../../installation-guide/database-initialization.html#database-initialization"><span class="std std-ref">Initialisierung der Datenbank</span></a> chapter)</p></li>
+<li><p>Gehen Sie sicher, dass sie das Demoprojekt mit pgAdminIII (siehe <a class="reference internal" href="../../installation-guide/database-initialization.html#database-initialization"><span class="std std-ref">Initialisierung der Datenbank</span></a> Kapitel) importiert haben</p></li>
 <li><p>Öffnen sie das Demoprojekt indem Sie ins Hauptmenu gehen und dann <strong>Project</strong> –&gt; <strong>Open</strong> drücken oder indem sie „STRG“ + „O“ gemeinsam drücken.</p></li>
 </ul>
 <figure class="align-default">
@@ -171,9 +171,9 @@
 </figure>
 <ul class="simple">
 <li><p>Auf dem ersten Reiter (Allgemein) können Sie die am häufigsten benutzten Attribute erfassen</p></li>
-<li><p>Main Cover and Main Node are the first cover / node defined for the wastewater structure.</p></li>
-<li><p>Additional attributes of table wastewater structure and fo the selected subclass can be changed on tab Wastewater structure</p></li>
-<li><p>To change attributes of related tables (e.g. cover) you need to select the correspondent tab.</p></li>
+<li><p>Hauptdeckel und Hauptknoten ist der erste Deckel resp. Knoten, welcher für den Schacht erstellt wurde.</p></li>
+<li><p>Zusätzliche Attribute der Tabelle Abwasserbauwerk und  der zugehörigen Subklasse können im Tab Abwasserbauwerk editiert werden</p></li>
+<li><p>Um die Attribute verknüpfter Klassen (z.B. Deckel) zu ändern muss der entsprechende Reiter gewählt werden.</p></li>
 <li><p>Unter dem Reiter <strong>Bauwerkteile/structure parts</strong> können Sie weitere Bauwerksteile wie zum Beispiel <strong>Einstiegshilfen/access aids</strong>, <strong>Rückstausicherung/backflow prevention</strong>, <strong>Trockenwetterrinne/dryweather flume</strong> etc. hinzufügen</p></li>
 </ul>
 <figure class="align-default">
@@ -185,17 +185,17 @@
 </div></blockquote>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p><strong>additional fields</strong> means, that some fields of the class are in the general tab, others are in separat tabs. The fields of the general tab are not repeated, because Multiedit does not work correct when using a field on more than one tab.</p>
+<p><strong>zusätzliche Felder</strong> bedeutet, dass einige Felder der Klasse im Allgemeines-Reiter sind, andere in einem separaten Reiter. Die Felder im Reiter Allgemeines sind nicht wiederholt, weil das Tool Multiedit nicht korrekt arbeitet, wenn ein Feld mehrfach in verschiedenen Reitern vorkommt.</p>
 </div>
 </section>
 <section id="changing-attributes-of-linear-elements-channels">
 <h2><span class="section-number">3.3.1.4. </span>Attribute der Linienelemente ändern (Kanäle)<a class="headerlink" href="#changing-attributes-of-linear-elements-channels" title="Link to this heading"></a></h2>
 <blockquote>
 <div><ul class="simple">
-<li><p>To change an attribute you first need to select <strong>vw_tww_reach</strong></p></li>
+<li><p>Um einen Attribut zu ändern muss zuerst der Layer <strong>vw_tww_reach</strong> gewählt werden.</p></li>
 <li><p>Aktivieren Sie den Bearbeitungsmodus.</p></li>
 <li><p>Dann klicken Sie auf den <strong>Objekte abfragen</strong> Knopf und wählen die Haltung, welches Sie bearbeiten wollen, mit einem Klick</p></li>
-<li><p>The <strong>vw_tww_reach</strong> feature attributs window will open.</p></li>
+<li><p>Das <strong>vw_tww_Haltung</strong> Objektattribute-Fenster öffnet sich.</p></li>
 </ul>
 <blockquote>
 <div><figure class="align-default">
@@ -204,7 +204,7 @@
 </div></blockquote>
 <ul class="simple">
 <li><p>Auf dem ersten Reiter (<strong>Allgemein</strong>) können die am häufigsten benutzten Attribute geändert werden.</p></li>
-<li><p>To change additional attributes of related tables (e.g. <strong>reach points</strong>) select the correspondent tab.</p></li>
+<li><p>Um die Attribute von in Verbindung stehenden Tabellen (z.B <strong>Haltungspunkte/reach points</strong>) zu ändern, wähle den entsprechenden Reiter.</p></li>
 </ul>
 <blockquote>
 <div><figure class="align-default">
@@ -264,7 +264,7 @@
 <p>Bei Verknüpfungen von Haltung zu Haltung wird der Haltungspunkt rechtwinklig auf die andere Haltung verschoben. Wenn es keine Möglichkeit für ein Verschieben mit rechtem Winkel gibt, wird zum nächsten Endpunkt der Haltung verschoben.</p>
 <div class="admonition attention">
 <p class="admonition-title">Achtung</p>
-<p>If there is snapping from reach to reach, you will get not the expected result, if the first reach snaps to a second reach, and afterwards this second reach snaps to a node or a third reach. There will be no more graphical connection between reach 1 and reach 2. You have to re-run the command.</p>
+<p>Wenn zwei Haltungen miteinander verknüpft sind (Blindanschluss ohne Abwasserknoten) wird das Resultat unter Umständen nicht den Erwartungen entsprechen. Wenn  Haltung 1 auf Haltung 2 schnappt, und danach Haltung 2 auch noch auf einen Knoten oder eine weitere Haltung schnappt, ist die graphische Verknüpfung zwischen Haltung 1 und 2 nicht mehr garantiert. Der Befehl muss noch einmal gestartet werden.</p>
 </div>
 </section>
 <section id="working-with-codes-of-value-list">
@@ -275,7 +275,7 @@
 <blockquote>
 <div><div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>The codes are unique, also if there is the same text in different value lists. E.g. the code for „surface_wastewater“ in the vl_channel_usage_current and in the vl_channel_usage_planned is different.</p>
+<p>Die Zahlencodes sind einmalig, auch wenn in verschiedenen Wertelisten die gleichen Texte vorkommen. Beispiel: Der Zahlencode für „Schmutzabwasser“ ist in den Wertelisten für Nutzungsart_Ist und Nutzungsart_geplant nicht gleich.</p>
 </div>
 </div></blockquote>
 <ul class="simple">
@@ -328,12 +328,12 @@
 <p class="admonition-title">Bemerkung</p>
 <p>Die folgende Beschreibung ist für das Hinzufügen eines weiteren Deckels. Es funktioniert analog auch für das Hinzufügen eines weiteren Abwasserknotens.</p>
 </div>
-<p>The TWW project is configured that you can add an additional cover with the <strong>Add Point Child Feature</strong> button.</p>
+<p>Das TWW Projekt ist so konfiguriert, dass ein zusätzlicher Deckel mit dem <strong>Punktkindobjekt hinzufügen</strong> Knopf erstellt werden kann.</p>
 <ul class="simple">
-<li><p>select layer vw_tww_wastewater_structure</p></li>
-<li><p>Switch to the edit mode</p></li>
-<li><p>click the manhole you want to add a cover with the <strong>Identify feature</strong> tool</p></li>
-<li><p>Go to tab <strong>covers</strong> and click the Add Point Child Feature-button. Now you can digitize a new cover for the wastewater structure.</p></li>
+<li><p>Wähle den <strong>vw_tww_wastewater_structure</strong> Layer</p></li>
+<li><p>Aktiviere den Bearbeitungsmodus.</p></li>
+<li><p>Den Schacht, dem ein Deckel hinzugefügt werden soll, mit dem <strong>Objekte abfragen</strong> Werkzeug wählen</p></li>
+<li><p>Gehe zum Tab <strong>Deckel</strong> und klicke den Punktkindobjekt hinzufügen Knopf. Jetzt kann der neue Deckel für den Schacht digitalisiert werden.</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/new_cover_childpoint.jpg" src="../../_images/new_cover_childpoint.jpg" />
@@ -350,46 +350,43 @@
 <p>Diese Fälle sind vorwiegend in PAA-Kanälen (primäre Abwasseranlagen) z.B. bei Gefällswechsel oder Materialwechsel oder bei einem Blindanschluss.</p>
 </div>
 <p>Im VSA-Datenmodell kann ein Abwasserknoten auch mit einem Kanal verknüpft werden (weil ein Kanal auch ein Abwasserbauwerk ist). Im Moment wird diskutiert, ob ein Abwasserknoten zwischen Haltungen zwingend oder optional oder nie mit einem Abwasserbauwerk verbunden werden soll.</p>
-<p>In TWW, there is in the moment no tool, that helps you to connect a wastewater node to a channel. So you just connect the reaches (reach points) to the node.</p>
+<p>In TWW existiert im Moment kein Werkzeug, um einen Abwasserknoten mit einem Kanal zu verknüpfen.  Es werden also vorläufig nur die Haltungspunkte mit dem Abwasserknoten verknüpft.</p>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
 <p>Wenn ein Abwasserknoten zwingend mit einem Kanal verknüpft werden soll, dann kann die Obj_ID des Kanals manuell in das Feld fk_wasterwater_structure des Abwasserknotens eingetippt werden.</p>
 </div>
 </section>
 <section id="change-multiple-records-at-once">
-<h2><span class="section-number">3.3.1.11. </span>Change multiple records at once<a class="headerlink" href="#change-multiple-records-at-once" title="Link to this heading"></a></h2>
-<p>There are several QGIS-possibilitys to change multiple records at the same time. QGIS <strong>Multiedit</strong> changes multiple fields of multiple records at the same, but there is no progress indicator. With QGIS <strong>field calculator</strong> one field can be change at once and there is a progress indicator.</p>
-<p>If there are lot of records (several hundred to several thousand) a multiple record change can take a long time (several minutes), if there are a lot records and if there are views changed, that have lots of fields from different tables.
-Special the TWW-main-views (vw_tww_wastewater_structure and vw_tww_reach) have this problem. Therefore, it is always better not to multi-edit these large views, but rather to edit the table in question directly if a large number of data records are to be changed at the same time. That’s why it is good to know, in which table is our field (perhaps the fieldname-prefix helps) and you may need to add this table to your TWW-project.
-To explain, that it really matters, there was the following test:</p>
-<p>Change for 500 reaches out of 10’122 the field rv_construction_type. It’s a field with a value list. In vw_tww_reach, the fields name is ws_rv_construction_type, means the table of the field is wastewater_structure (ws).</p>
-<p>How long did we wait:</p>
+<h2><span class="section-number">3.3.1.11. </span>Mehrere Datensätze gleichzeitig ändern<a class="headerlink" href="#change-multiple-records-at-once" title="Link to this heading"></a></h2>
+<p>In QGIS gibt es mehrere Möglichkeiten, um mehrere Datensätze auf einmal zu ändern. QGIS <strong>Multiedit</strong> ändert sogar mehrere Attribute von mehreren Datensätzen gleichzeitig, aber es gibt keine Fortschrittsanzeige. Mit dem QGIS <strong>Feldrechner</strong> kann ein Feld für mehrere Datensätze geändert werden und hier gibt es eine Fortschrittsanzeige.</p>
+<p>Bei sehr vielen Datensätzen (mehrere Hundert bis mehrere Tausend) kann eine mehrfache Datensatzänderung sehr lange dauern (mehrere Minuten), wenn es sehr viele Datensätze sind und wenn Layer geändert werden, die viele Felder aus unterschiedlichen Tabellen haben. Besonders die TWW-Hauptlayer (vw_tww_Abwasserbauwerk und vw_tww_Haltung) haben dieses Problem. Daher ist es immer besser, nicht diese großen Layer mehrfach zu bearbeiten, sondern die betreffende Tabelle direkt zu bearbeiten, wenn eine große Anzahl von Datensätzen gleichzeitig geändert werden soll. Deshalb ist es gut zu wissen, in welcher Tabelle sich unser Feld befindet (vielleicht hilft das Feldnamen-Präfix). Möglicherweise muss diese Tabelle noch zum TWW-Projekt hinzugefügt werden. Um zu verdeutlichen, dass es wirklich wichtig ist, gab es den folgenden Test:</p>
+<p>Ändere für 500 von 10.122 Haltungen das Feld WBW_Bauart. Es ist ein Feld mit einer Werteliste. In vw_tww_Haltung ist der Feldname BW_WBW_Bauart, d. h. die Tabelle des Felds ist Abwasserbauwerk (BW).</p>
+<p>Wie lang dauert es:</p>
 <ul class="simple">
-<li><p>Use field calculator with vw_tww_reach: more than 25 minutes!</p></li>
-<li><p>Use multiedit with vw_tww_reach: more than 5 minutes.</p></li>
-<li><p>Use field calculator with vw_channel: 1 minute 3seconds</p></li>
-<li><p>Use field calculator with table wastewater_structure: 5 seconds</p></li>
+<li><p>QGIS-Feldrechner und vw_tww_Haltung: mehr als 25 Minuten!</p></li>
+<li><p>Multiedit mit vw_tww_Haltung: Mehr als 5 Minuten.</p></li>
+<li><p>QGIS-Feldrechner und vw_Kanal: 1 Minute und 3 Sekunden.</p></li>
+<li><p>QGIS-Feldrechner und Tabelle Abwasserbauwerk: 5 Sekunden.</p></li>
 </ul>
-<p>Why is vw_tww_reach so slow: there are triggers in the database, that updates for every record the calculated fields of the connected manholes and nodes, that this themes symbology is always up-to-date. With: <code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">tww_sys.disable_symbology_triggers();</span></code> these triggers can be stopped. If the triggers are stopped then also the main-views are fast:</p>
+<p>Warum ist vw_tww_Haltung so langsam: es gibt Trigger in der Datenbank, die bei jedem Datensatz die berechneten Felder der angeschlossenen Schächte und Knoten aktualisieren, damit die Symbologie dieser Themen immer auf dem neuesten Stand ist. Mit: <code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">tww_sys.disable_symbology_triggers();</span></code> können diese Trigger gestoppt werden. Wenn die Trigger gestoppt werden, sind auch die HauptLayer schnell:</p>
 <ul class="simple">
-<li><p>Use field calculator or multiedit with vw_tww_reach: about 8 seconds.</p></li>
+<li><p>QGIS-Feldrechner und vw_tww_Haltung: 8 Sekunden.</p></li>
 </ul>
-<p>Do not forget the enable the symbology triggers again after the calculations: <code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">tww_sys.enable_symbology_triggers();</span></code>
-(and to run the symbology_triggers manually for all records if necessary with the new xy-button?!).</p>
+<p>Nicht vergessen: die Symbologie-Trigger nach den Berechnungen wieder aktivieren: <code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">tww_sys.enable_symbology_triggers();</span></code> (und die Symbologie-Trigger bei Bedarf mit dem neuen Befehl <strong>Update symbology</strong> manuell für alle Datensätze ausführen!).</p>
 <p>To do: verify these tests with TWW</p>
 </section>
 <section id="saving-changes">
 <h2><span class="section-number">3.3.1.12. </span>Änderungen Speichern<a class="headerlink" href="#saving-changes" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>Click <strong>Save</strong> and then deactivate the edit mode or click on <strong>Stop data entry</strong> if you have worked with the TWW <strong>Wizard</strong>.</p></li>
+<li><p>Drücken Sie <strong>Sichern</strong> und dann deaktivieren Sie den Bearbeitungsmodus oder klicken Sie auf <strong>Stop Dateneingabe</strong> wenn Sie mit dem <strong>TWW Dateneingabe</strong> Arbeitsassistenten gearbeitet haben.</p></li>
 </ul>
 </section>
 <section id="changing-wastewater-structure-type-ws-type">
-<h2><span class="section-number">3.3.1.13. </span>Changing Wastewater Structure Type (ws_type)<a class="headerlink" href="#changing-wastewater-structure-type-ws-type" title="Link to this heading"></a></h2>
-<p>In the vw_tww_wastewater_structure form, you can change the subclass of the wastewater structure (e.g. from manhole to special structure or to infiltration installation) with the field <strong>ws_type</strong>. The old subclass-record will be deleted and you must enter those attributes, that are subclass specific. But all connections (they are defined to the class wastewater_structure and not to the subclass) or the obj_id or the identifier will not change.</p>
+<h2><span class="section-number">3.3.1.13. </span>Abwasserbauwerk Typ ändern (ws_type)<a class="headerlink" href="#changing-wastewater-structure-type-ws-type" title="Link to this heading"></a></h2>
+<p>Im vw_tww_Abwasserbauwerk Formular kann die Subklasse das Abwasserbauwerks geändert werden (z.B. von Normschacht zu Spezialbauwerk oder Versickerungsanlage). Der alte Subklassen-Datensatz wird dabei gelöscht und die Subklassen-spezifischen Felder müssen neu eingegeben werden. Aber alle Verknüpfungen (die beziehen sich auf die Klasse Abwasserbauwerk und nicht auf die Subklasse) und auch die Obj_ID oder die Bezeichnung bleiben unverändert.</p>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>There are just four subclasses supported in the moment: manhole, special_structure, infiltration_installation, discharge_point. Other subclasses (wwtp_structure, small_treatment_plant, drainless_toilett) will be supported in a next release of TWW.</p>
+<p>Derzeit werden nur vier Unterklassen unterstützt: manhole, special_structure, infiltration_installation, discharge_point. Andere Unterklassen (wwtp_structure, small_treatment_plant, drainless_toilett) werden in einer nächsten Version von TWW unterstützt.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
@@ -398,7 +395,7 @@ To explain, that it really matters, there was the following test:</p>
 </section>
 <section id="split-a-reach-channel-into-different-reaches">
 <h2><span class="section-number">3.3.1.14. </span>Kanäle in verschiedene Haltungen unterteilen<a class="headerlink" href="#split-a-reach-channel-into-different-reaches" title="Link to this heading"></a></h2>
-<p>This is a quite complex function and in the actual version not implemented in TWW. There exists a QGIS-Tool to split objects, but if you use this tool with vw_tww_reach - layer, you will get a database error, because the obj_id of the split (= duplicated) records are no more unique.</p>
+<p>Das ist eine ziemlich komplexe Funktion und zur Zeit nicht implementiert in TWW. Es gibt ein QGIS-Werkzeug, um Objekte aufzuteilen, aber wenn dieses Werkzeug auf den Layer vw_tww_Haltung angewendet wird, resultiert ein Datenbank-Fehler, weil die Obj_IDs des aufgeteilten (= duplizierten) Datensatzes nicht mehr eindeutig sind.</p>
 <p>Temporäre Lösung: Die bestehende Haltung ändern und eine zweite Haltung manuell erstellen. Dann auch die Verknüpfungen kontrollieren.</p>
 <p>In TWW ist ein Werkzeug geplant, mit dem Haltung aufgeteilt werden können. Der Benutzer kann wählen ob nur die Haltung aufgeteilt werden soll oder auch die Kanäle, ob ein neuer Abwasserknoten zwischen den Haltung eingefügt und verbunden werden soll. Mit dem Werkzeug sollen die neuen Haltungspunktkoten berechnet werden können die bestehenden Abwassernetzelement-Verknüpfungen sind anzupassen falls notwendig.</p>
 </section>

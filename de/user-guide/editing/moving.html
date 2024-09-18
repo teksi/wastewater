@@ -58,10 +58,10 @@
 <li class="toctree-l3"><a class="reference internal" href="editing.html">3.3.1. Bearbeiten von bestehenden Daten</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">3.3.2. Verschieben von Abwasserbauwerken zusammen mit Haltungen, Deckeln und Knoten</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#general">3.3.2.1. Allgemeines</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#moving-a-manhole">3.3.2.2. Moving a manhole</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#moving-a-cover-a-node">3.3.2.3. Moving a cover / a node</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#moving-a-reachpoint">3.3.2.4. Moving a reachpoint</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#video-tutorial-outdated">3.3.2.5. Video Tutorial (outdated)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#moving-a-manhole">3.3.2.2. Einen Schacht verschieben</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#moving-a-cover-a-node">3.3.2.3. Einen Deckel oder Abwasserknoten verschieben</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#moving-a-reachpoint">3.3.2.4. Einen Haltungspunkt verschieben</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#video-tutorial-outdated">3.3.2.5. Video Tutorial (veraltet)</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="maintenance_events.html">3.3.3. Hinzufügen oder bearbeiten von Erhaltungsereignissen</a></li>
@@ -114,13 +114,13 @@
 <p>Eine Anleitung zur Verschiebung von Abwasserbauwerken mit Haltungen und Abwasserknoten verglichen mit der Verschiebung nur von Deckeln in TWW</p>
 <section id="general">
 <h2><span class="section-number">3.3.2.1. </span>Allgemeines<a class="headerlink" href="#general" title="Link to this heading"></a></h2>
-<p>It’s not unusual, that manholes are digitized the first time with low precision. Later the manholes are measured, and there is the need, to move the whole wastewater structure (means cover(s), node(s) and reachpoints of all reaches) to the measured point.</p>
-<p>There are two tools to move a manhole: <strong>Vertex Tool</strong> and <strong>Move Feature</strong> Tool. And there is a very important option in the <strong>Snapping Toolbar</strong>: <strong>Enable Topological Editing</strong>.</p>
+<p>Es kommt oft vor, das Schächte zuerst mit beschränkter Genauigkeit digitalisiert werden. Später wird der Schacht vermessen und es wird notwendig, das ganze Bauwerk (also Deckel, Knoten und Haltungspunkte aller verknüpften Haltungen) im GIS auf den gemessenen Punkt zu verschieben.</p>
+<p>Es gibt zwei Tools um einen Schacht zu verschieben: <strong>Stützpunkt Werkzeug</strong> und das <strong>Objekt verschieben</strong> Tool. Und es gibt in der  <strong>Einrastwerkzeugleiste**(Snapping) den Knopf **Topologisches Editieren aktivieren</strong>.</p>
 <figure class="align-default">
 <img alt="../../_images/tools_moving.jpg" src="../../_images/tools_moving.jpg" />
 </figure>
-<p><strong>Vertex Tool</strong> and <strong>Move Feature</strong> work similar for (single)-point layers.</p>
-<p>Because with DSS-datamodel, cover, wastewater node and reachpoints are connected not by location, but by foreign keys in the database, TWW is prepared to move cover(s), node(s) and reachpoints (and therefore also reaches) together by the same distance. This means, it’s better not to enable topological editing in several cases.</p>
+<p><strong>Stützpunkt Werkzeug</strong> und <strong>Objekt verschieben</strong> funktionieren bei  (Einzel)-Punkt Layer gleich.</p>
+<p>Da beim DSS-Datenmodell Deckel, Abwasserknoten und Haltungspunkte nicht über den Standort, sondern über Fremdschlüssel in der Datenbank verbunden sind, ist TWW darauf vorbereitet, Deckel, Knoten und Haltungspunkte (und damit auch Haltungen) gemeinsam um dieselbe Distanz zu verschieben. Das bedeutet, dass es in einigen Fällen besser ist, das topologische Editieren nicht zu aktivieren.</p>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
 <p>Die Erweiterte Digitalisierungswerkzeugliste muss im Projekt eingeschaltet sein, damit das <strong>Objekt verschieben</strong> Werkzeug gewählt werden kann.</p>
@@ -130,33 +130,32 @@
 </figure>
 </section>
 <section id="moving-a-manhole">
-<h2><span class="section-number">3.3.2.2. </span>Moving a manhole<a class="headerlink" href="#moving-a-manhole" title="Link to this heading"></a></h2>
+<h2><span class="section-number">3.3.2.2. </span>Einen Schacht verschieben<a class="headerlink" href="#moving-a-manhole" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Wählen Sie den <strong>vw_tww_wastewater_structure</strong> Layer</p></li>
 <li><p>Setzen Sie die Layer in den Bearbeitungsmodus</p></li>
-<li><p>Select the <strong>Move Feature</strong> tool (standard QGIS tool in the advanced digitizing toolbar) or the <strong>Vertex Tool</strong></p></li>
-<li><p>Deselect the button <strong>Enable Topological Editing</strong></p></li>
+<li><p>Wähle das <strong>Objekt verschieben</strong> Werkzeug (Standard QGIS Werkzeug in der Digitalisierungswerkzeugleiste) oder das <strong>Stützpunkt Werkzeug</strong></p></li>
+<li><p>Schalte den Knopf ** Topologisches Editieren aktivieren** aus</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/moving_wws_before.jpg" src="../../_images/moving_wws_before.jpg" />
 </figure>
-<p>In this example, the manhole has one cover, two wastewater nodes, four reaches that end/start at the nodes places and one reach with a gap to the connected node. There is also a detail geometry.</p>
+<p>In diesem Beispiel hat der Schacht einen Deckel, zwei Abwasserknoten, vier Haltungen, die an den Abwasserknoten enden/beginnen und eine Haltung mit einer Lücke zum angeschlossenen Knoten. Außerdem gibt es eine Detailgeometrie.</p>
 <ul class="simple">
-<li><p>Left Click one the wastewater_structure point you want to move and left click again at the new place.</p></li>
+<li><p>Links-Klick auf das Abwasserbauwerk, das verschoben werden soll und erneuter Links-Klick an der neuen Stelle</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/moving_wws_manhole1.jpg" src="../../_images/moving_wws_manhole1.jpg" />
 </figure>
-<p>‚1.070‘ manhole moved. Cover, 2 nodes and all 5 reachpoints (reaches) are moved to a new place. The distance between the points is still the same.
-The detail geometry does not move (layer wastewater_structure in layergroup Wastewater Structures). The detail geometry must be moved extra with the <strong>Move Feature</strong> tool. There is in the moment no good help, to do this automatically.</p>
+<p>‚1.070‘ Schacht verschoben. Deckel, 2 Knoten und alle 5 Haltungspunkte (Haltungen) werden an eine neue Stelle verschoben. Der Abstand zwischen den Punkten bleibt gleich. Die Detailgeometrie verschiebt sich nicht (Layer Abwasserbauwerk in Layergruppe Abwasserbauwerk). Die Detailgeometrie muss extra mit dem Tool <strong>Objekt verschieben</strong> verschoben werden. Es gibt im Moment keine gute Hilfe, dies automatisch zu machen.</p>
 <ul class="simple">
-<li><p>To show the move, it’s a good way to set the <strong>Topology</strong> layers visible:</p></li>
+<li><p>Um die Verschiebung zu kontrollieren ist es zweckmässig, die Topologie Layer sichtbar zu haben:</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/moving_wws_manhole1topology.jpg" src="../../_images/moving_wws_manhole1topology.jpg" />
 </figure>
 <ul class="simple">
-<li><p>To update the topology, click on the TWW - <strong>SQL</strong> Button</p></li>
+<li><p>Um die Topologie zu aktualisieren, klicken den TWW - <strong>SQL</strong> Knopf</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/moving_wws_manhole1topologynew.jpg" src="../../_images/moving_wws_manhole1topologynew.jpg" />
@@ -167,37 +166,35 @@ The detail geometry does not move (layer wastewater_structure in layergroup Wast
 </div>
 </section>
 <section id="moving-a-cover-a-node">
-<h2><span class="section-number">3.3.2.3. </span>Moving a cover / a node<a class="headerlink" href="#moving-a-cover-a-node" title="Link to this heading"></a></h2>
-<p>To move just a cover or just a node, you work with the specific layer:
-Cover: Layergroup Wastewater Structures / Structure Parts, layer vw_cover
-Nodes: Layergroup Hydraulic, layer vw_wastewater_node</p>
+<h2><span class="section-number">3.3.2.3. </span>Einen Deckel oder Abwasserknoten verschieben<a class="headerlink" href="#moving-a-cover-a-node" title="Link to this heading"></a></h2>
+<p>Soll nur ein Deckel oder nur ein Abwasserknoten verschoben werden, muss mit dem entsprechenden Layer gearbeitet werden: Deckel: Layergruppe Abwasserbauwerk/Bauwerkteile, Layer vw_Deckel Abwasserknoten: Layergruppe Hydraulik, Layer vw_Abwasserknoten</p>
 <ul class="simple">
-<li><p>Select the specific layer</p></li>
+<li><p>Wähle den entsprechenden Layer</p></li>
 <li><p>Setzen Sie die Layer in den Bearbeitungsmodus</p></li>
-<li><p>Select the <strong>Move Feature</strong> tool (standard QGIS tool in the advanced digitizing toolbar) or the <strong>Vertex Tool</strong></p></li>
-<li><p>Deselect the button <strong>Enable Topological Editing</strong></p></li>
-<li><p>Left Click one the cover/node point you want to move and left click again at the new place.</p></li>
-<li><p>To update the topology, click on the TWW - <strong>SQL</strong> Button (not necessary when moved just covers).</p></li>
+<li><p>Wähle das <strong>Objekt verschieben</strong> Werkzeug (Standard QGIS Werkzeug in der Digitalisierungswerkzeugleiste) oder das <strong>Stützpunkt Werkzeug</strong></p></li>
+<li><p>Schalte den Knopf ** Topologisches Editieren aktivieren** aus</p></li>
+<li><p>Links-Klick auf den Deckel/Knoten, der verschoben werden soll, und erneuter Links-Klick an der neuen Stelle.</p></li>
+<li><p>Um die Topologie zu aktualisieren, klicken den TWW - <strong>SQL</strong> Knopf (nicht notwendig wenn nur ein Deckel verschoben wurde).</p></li>
 </ul>
 </section>
 <section id="moving-a-reachpoint">
-<h2><span class="section-number">3.3.2.4. </span>Moving a reachpoint<a class="headerlink" href="#moving-a-reachpoint" title="Link to this heading"></a></h2>
-<p>There is no reachpoint layer in the TWW-project. You edit reachpoints as part of the reach in layer <strong>vw_tww_reach</strong>.</p>
+<h2><span class="section-number">3.3.2.4. </span>Einen Haltungspunkt verschieben<a class="headerlink" href="#moving-a-reachpoint" title="Link to this heading"></a></h2>
+<p>Es gibt keinen Haltungspunkt Layer im TWW-Projekt. Die Haltungspunkt werden als Teil der Haltung im Layer <strong>vw_tww_Haltung</strong> bearbeitet.</p>
 <ul class="simple">
-<li><p>Select the <strong>vw_tww_rach</strong> layer</p></li>
+<li><p>Wähle den <strong>vw_tww_Haltung</strong> Layer</p></li>
 <li><p>Setzen Sie die Layer in den Bearbeitungsmodus</p></li>
-<li><p>Select the <strong>Vertex Tool</strong> (the Move Feature Tool moves the whole reach)</p></li>
-<li><p>Deselect the button <strong>Enable Topological Editing</strong></p></li>
-<li><p>Left Click one the start- or endpoint of the reach you want to move and left click again at the new place.</p></li>
-<li><p>To update the topology, click on the TWW - <strong>SQL</strong> Button</p></li>
+<li><p>Wähle das Tool <strong>Stützpunktwerkzeug</strong> (das Objekt verschieben Tool würde die ganze Haltung verschieben)</p></li>
+<li><p>Schalte den Knopf ** Topologisches Editieren aktivieren** aus</p></li>
+<li><p>Links-Klick auf den Start- oder Endpunkt der Haltung, die verschoben werden soll, und erneuter Links-Klick an der neuen Stelle.</p></li>
+<li><p>Um die Topologie zu aktualisieren, klicken den TWW - <strong>SQL</strong> Knopf</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>Set the layer <strong>Topology</strong>/<strong>vw_network_node</strong> visible to see the reachpoints location (not there attributes).</p>
+<p>Schalte den Layer <strong>Topologie</strong>/<strong>vw_network_node</strong> sichtbar um die Lage von Haltungspunkten anzuzeigen (aber nicht deren Attribute).</p>
 </div>
 </section>
 <section id="video-tutorial-outdated">
-<h2><span class="section-number">3.3.2.5. </span>Video Tutorial (outdated)<a class="headerlink" href="#video-tutorial-outdated" title="Link to this heading"></a></h2>
+<h2><span class="section-number">3.3.2.5. </span>Video Tutorial (veraltet)<a class="headerlink" href="#video-tutorial-outdated" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Vgl. <a class="reference external" href="https://vimeo.com/162978741">video tutorial (version QGIS 2)</a></p></li>
 </ul>

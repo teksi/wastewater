@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>3.1.4. TWW-project properties and settings &mdash; TWW dev Dokumentation</title>
+  <title>3.1.4. TWW-Projekt Eigenschaften und Einstellungen &mdash; TWW dev Dokumentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
 
@@ -56,10 +56,10 @@
 <li class="toctree-l3"><a class="reference internal" href="overview.html">3.1.1. Einleitung und Übersicht</a></li>
 <li class="toctree-l3"><a class="reference internal" href="layerexplanation.html">3.1.2. Layer Erläuterungen</a></li>
 <li class="toctree-l3"><a class="reference internal" href="namingconventions.html">3.1.3. Namenskonventionen</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">3.1.4. TWW-project properties and settings</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#project-properties">3.1.4.1. Project Properties</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#map-themes">3.1.4.2. Map Themes</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#layer-order">3.1.4.3. Layer Order</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">3.1.4. TWW-Projekt Eigenschaften und Einstellungen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#project-properties">3.1.4.1. Projekteigenschaften</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#map-themes">3.1.4.2. Kartenthemen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#layer-order">3.1.4.3. Layerreihenfolge</a></li>
 </ul>
 </li>
 </ul>
@@ -95,7 +95,7 @@
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>TWW Benutzerhandbuch</a></li>
           <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.1. </span>Übersicht über TWW</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">3.1.4. </span>TWW-project properties and settings</li>
+      <li class="breadcrumb-item active"><span class="section-number">3.1.4. </span>TWW-Projekt Eigenschaften und Einstellungen</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/user-guide/layerexplanations/twwproject.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
       </li>
@@ -108,108 +108,104 @@
   <blockquote>
 <div></div></blockquote>
 <section id="tww-project-properties-and-settings">
-<h1><span class="section-number">3.1.4. </span>TWW-project properties and settings<a class="headerlink" href="#tww-project-properties-and-settings" title="Link to this heading"></a></h1>
+<h1><span class="section-number">3.1.4. </span>TWW-Projekt Eigenschaften und Einstellungen<a class="headerlink" href="#tww-project-properties-and-settings" title="Link to this heading"></a></h1>
 <section id="project-properties">
-<h2><span class="section-number">3.1.4.1. </span>Project Properties<a class="headerlink" href="#project-properties" title="Link to this heading"></a></h2>
-<p>There are several relevant properties in a TWW-project:</p>
+<h2><span class="section-number">3.1.4.1. </span>Projekteigenschaften<a class="headerlink" href="#project-properties" title="Link to this heading"></a></h2>
+<p>Es gibt verschiedene wichtige Eigenschaften im TWW-Projekt:</p>
 <figure class="align-default">
 <img alt="../../_images/project_properties.jpg" src="../../_images/project_properties.jpg" />
 </figure>
 <section id="data-sources">
-<h3><span class="section-number">3.1.4.1.1. </span>Data Sources<a class="headerlink" href="#data-sources" title="Link to this heading"></a></h3>
-<p>Main Settings:</p>
+<h3><span class="section-number">3.1.4.1.1. </span>Datenquellen<a class="headerlink" href="#data-sources" title="Link to this heading"></a></h3>
+<p>Haupteinstellungen:</p>
 <ul class="simple">
-<li><p>Transaction mode is recommended to be set on <strong>Automatic Transaction Groups</strong></p></li>
-<li><p><strong>Evaluate default values on provider side</strong> has to be checked</p></li>
+<li><p>Transaktionsmodus soll auf  <strong>Automatische Transaktionsgruppen</strong> eingestellt sein</p></li>
+<li><p><strong>Vorgabewerte auf Anbieterseite auswerten</strong> soll gewählt sein</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/properties_datasources.jpg" src="../../_images/properties_datasources.jpg" />
 </figure>
 </section>
 <section id="relations">
-<h3><span class="section-number">3.1.4.1.2. </span>Relations<a class="headerlink" href="#relations" title="Link to this heading"></a></h3>
-<p>Relations are necessary for the Feature Attributes Windows to reference to connected tables (e.g. you can edit connected maintenance_events in Feature_Attribut window in vw_tww_reach).
-Where possible, value relations widgets are used instead of project relations. Value Relations are used for Value Lists, but also for organisations and for pipe_profiles.</p>
-<p><strong>Value Relations</strong> works perfect also with Multiedit, but can be slow if there are a lot records in the related table or list. Does not provide the ability to link a record on the map (e.g to define a manhole-catchment area-connection).</p>
-<p><strong>Project relations</strong> allows you to fully use the relation between two objects (parent and child(s)) and to link a record on the map. Is faster with large datasets.</p>
+<h3><span class="section-number">3.1.4.1.2. </span>Beziehungen<a class="headerlink" href="#relations" title="Link to this heading"></a></h3>
+<p>Beziehungen sind notwendig, damit im Objektattribut Fenster verknüpfte Tabellen bearbeitet werden können (z.B. kann im Objektattribute Fenster des Layers vw_tww_Haltung ein verknüpftes Erhaltungsereignis bearbeitet werden). Wo möglich, werden Wertbeziehungen anstelle von Beziehungsreferenzen verwendet als Bedienelementtyp. Wertbeziehungen werden bei Wertelisten verwendet, aber auch für die Klassen Organisation oder Rohrprofil (wo die Anzahl Datensätze überblickbar bleibt).</p>
+<p><strong>Wertbeziehungen</strong> funktionieren perfekt mit Multiedit, aber können QGIS ausbremsen, wenn viele Datensätze in der verknüpften Tabelle oder Liste sind. Und es ist damit nicht möglich einen Datensatz mittels Klick auch der Karte zu verlinken (z.B. um eine Verknüpfung zwischen Einzugsgebiet und Abwasserknoten zu definieren).</p>
+<p><strong>Projekt-Beziehungen</strong> erlauben es, die Verknüpfung zwischen zwei Objekten vollständig zu nutzen (Eltern und Kind(er)) und einen Datensatz auf der Karte zu verlinken. Bei grossen Datensätzen ist die Projekt-Beziehung schneller als die Wertbeziehung.</p>
 <div class="admonition attention">
 <p class="admonition-title">Achtung</p>
-<p>Using Multiedit with projet relations widgets encounters yet some bugs on QGIS side, handle with care when altering theses attributes. (as of today with QGIS 3.34.4)</p>
+<p>Wenn Multiedit in Layern mit Projekt-Beziehungen genutzt werden, gilt es zur Zeit einen Bug in QGIS zu beachten, der dazu führt dass ungewollte Änderungen gesichert werden (heute in QGIS 3.34.4)</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>If there is a good advantage to work with Multiedit, it’s a good idea to define a style, that has no relation-field in the Feature Attributs window.</p>
+<p>Falls es triftige Gründe gibt, mit Multiedit zu arbeiten, dann ist es eine gute Idee eine separaten Stile zu definieren, in dem keine Beziehungsreferenzen verwendet werden.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>Project relations are not editable (yet) and are not copied when dealing with other .qgs projects.</p>
+<p>Projekt-Beziehungen können (zur Zeit, QGIS 3.34) nicht geändert oder kopiert werden falls sie in anderen .qgs Projekten verwendet werden sollen.</p>
 </div>
 </section>
 <section id="variables">
-<h3><span class="section-number">3.1.4.1.3. </span>Variables<a class="headerlink" href="#variables" title="Link to this heading"></a></h3>
-<p>The TWW-project uses project variables to simplify some of QGIS-functionalities. These approaches are not TWW specific and can be used also in other QGIS-projects.</p>
-<p>In the project used variables have names that start with „tww“.</p>
+<h3><span class="section-number">3.1.4.1.3. </span>Variablen<a class="headerlink" href="#variables" title="Link to this heading"></a></h3>
+<p>Das TWW-Projekt nutzt Projekt Variablen um QGIS-Funktionalitäten zu vereinfachen. Dieser Ansatz ist nicht TWW-spezifisch und kann auch in anderen QGIS-Projekten verwendet werden.</p>
+<p>Im Projekt verwendete Variablen haben einen Namen der mit „tww“ beginnt.</p>
 <figure class="align-default">
 <img alt="../../_images/properties_variables.jpg" src="../../_images/properties_variables.jpg" />
 </figure>
-<p><strong>Variables for label translations</strong></p>
-<p>TWW uses 4 variables to translate the labeling of manholes into the desired language. Without changing the variables, the levels are labeled with „english“ letters: „C“ for cover level, „I“ for Input level, „O“ for Output level, „B“ for Bottom level. In a german project, you will change these variables to „D“ (Deckel), „E“ (Einlauf), „A“ (Auslauf) and „S“ (Sohle) to get the expected labels.</p>
-<p>Background: the database uses always the „english“ letters to write the _*_label fields in vw_tww_wastewater_structure. In the label-definition of vw_tww_wastewater_structure is a „replace“ formula, that change the „english“ letter to the letter defined in the project variables</p>
+<p><strong>Variablen für die Sprachübersetzung von Beschriftungen</strong></p>
+<p>TWW benutzt 4 Variablen um die Übersetzung von Schachtbeschriftungen in die gewünschte Sprache zu ermöglichen. Ohne Änderungen der Variablen, werden die Schachtkoten mit „englischen“ Buchstaben beschriftet: „C“ (cover) für Deckelkote, „I“ (input) für Einlaufkoten, „O“ (output) für Auslaufkoten, „B“ (bottom) für Sohlenkoten. In einem deutschen Projekt werden dies Variablen zu „D“ (Deckel), „E“ (Einlauf), „A“ (Auslauf) und „S“ (Sohle) geändert, um die gewünschte Beschriftung zu erreichen.</p>
+<p>Hintergrundinfo: In der Datenbank werden immer „englische“ Buchstaben verwendet für die _*_label Felder im Layer vw_tww_Abwasserbauwerk. In der Beschriftungsdefinition von vw_tww_Abwasserbauwerk wird eine „replace“ Funktion verwendet, welche die „englischen“ Buchstaben in die gemäss den Projekt-Variablen definierten Buchstaben ändert</p>
 <p>‚concat(_label, replace(_cover_label,‘C‘,&#64;tww_cover_prefix), replace(_bottom_label,‘B‘,&#64;tww_bottom_prefix), replace(_input_label,‘I‘,&#64;tww_input_prefix), replace(_output_label,‘O‘,&#64;tww_output_prefix))‘</p>
-<p><strong>Variables to define symbols size</strong></p>
-<p>Often are symbols big or small or with different labels depending on attributs (primary or secondary network, owner of the wastewater_structures). Because there are also differences in the languages (pwwf / paa / oap …), it’s one way, to define in a variable, which value has big symbols. You can use this variable in rule based symboldefinitions or in the size definition of symbols or in value definition of labels etc. in differnet layers.</p>
-<p><strong>Variables to define the scale, where the plansymbols change</strong></p>
-<p>In VSA-DSS are 5 plan-types defined (pipeline_registry, network_plan, 3 overview maps). Every plan has other rules for labeling and symbols. Therefore you have to define scales, where to show which plan-type. And these scales are used in reach labeldefinition, in reach symboldefinition, in manhole labeldefinition and manholesymboldefinition (and with several styles in every layer). If you work with variables, you can easy change the scales.</p>
-<p>Example in vw_tww_reach:</p>
+<p><strong>Variablen um die Symbol Grösse zu definieren</strong></p>
+<p>Oft werden grosse oder kleine Symbole oder unterschiedliche Beschriftungen abhängig von Attributen (primäres oder sekundäres Abwasserbauwerk, oder Eigentümer) dargestellt. Weil es auch Unterschiede in der Übersetzung der Attribute gibt (pwwf / paa / oap …..), ist eine Möglichkeit, über eine Variable zu definieren, welcher Wert ein grosses oder kleines Symbol hat. Die Variable kann in regelbasierten Symboldefinitionen verwendet werden oder in einer Funktion um die Grösse zu berechnen in unterschiedlichen Layern.</p>
+<p><strong>Variablen um Massstabsgrenzen zu definieren, an denen ein Symbolisierung ändern soll</strong></p>
+<p>In der VSA-DSS sind 5 Plantypen definiert (Leitungskataster, Werkplan, 3 Übersichtspläne). Jeder Plantyp hat andere Regeln für die Beschriftung und Symbolisierung. Deshalb müssen die Grenzen definiert werden, welcher Plantyp bei welchem Massstab benutzt wird. Diese „Grenzmassstäbe“ werden in Haltungs- und Schacht-Beschriftungen und in Haltungs- und Schacht-Symbolisierungen benutzt (mit verschiedenen unterschiedlichen Stilen in jedem Layer). Wenn mit Variablen gearbeitet wird, können diese „Grenzmassstäbe“ einfach geändert werden.</p>
+<p>Beispiel in vw_tww_Haltung:</p>
 <figure class="align-default">
 <img alt="../../_images/properties_variables_example1.jpg" src="../../_images/properties_variables_example1.jpg" />
 </figure>
 </section>
 <section id="styles-project-colors">
-<h3><span class="section-number">3.1.4.1.4. </span>Styles/Project Colors<a class="headerlink" href="#styles-project-colors" title="Link to this heading"></a></h3>
-<p>The color for mixed_wastewater (as example) is used in vw_tww_reach symbols and labels, in vw_tww_wastewater_structures symbols and labels. To change the color (just a different shade of purple) is a lot of work and may result in errors, if you do not use project colors.
-In the TWW-project are project colors defined for all value of valuelist</p>
+<h3><span class="section-number">3.1.4.1.4. </span>Projekteigenschaften / Stile / Projektfarben<a class="headerlink" href="#styles-project-colors" title="Link to this heading"></a></h3>
+<p>Die Farbe für Mischabwasser (als Beispiel) wird benutzt in vw_tww_reach Symbolen und Beschriftungen, in vw_tww_wastewater_structure Symbolen und Beschriftungen. Um die Farbe zu ändern (nur ein anderer Violett-Ton) braucht es viel Arbeit und das Ganze ist Fehleranfällig, wenn nicht Projektfarben benutzt werden. Im TWW-Projekt sind Projektfarben für alle Werte der Werteliste definiert</p>
 <ul class="simple">
-<li><p>channel.usage(_current/planned)</p></li>
-<li><p>wastewater_structure.status.inoperative</p></li>
-<li><p>catchment_area.drainage_system(_current/planned)</p></li>
-<li><p>wastewater structure.structure_condition/renovation_necessity (also useable for condition_score and urgency_figure).</p></li>
+<li><p>Kanal.Nutzungsart(_Ist/geplant)</p></li>
+<li><p>Abwasserbauwerk.Status.Ausser_Betrieb</p></li>
+<li><p>Einzugsgebiet.Entwaesserungssystem(_Ist/geplant)</p></li>
+<li><p>Abwasserbauwerk.Baulicher_Zustand / Sanierungsbedarf (auch einsetzbar für Zustandsnote und Dringlichkeitszahl).</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/properties_projectcolors.jpg" src="../../_images/properties_projectcolors.jpg" />
 </figure>
-<p>To change a projectcolor, go to project/properties/styles/project color, double click the color to be changed and define your color. Then click OK and do not forget to click <strong>Apply</strong>.
-You can export and import Projectcolors in a GPL-File.</p>
-<p>Example in vw_tww_reach:</p>
+<p>Um eine Projektfarbe zu ändern, gehe zu Projekt/Eigenschaften/Stile/Projektfarben, Doppelklicke die zu ändernde Farbe und wähle den neuen Farbton. Klicke dann OK und dann <strong>Anwenden</strong>. Projektfarben können importiert und exportiert werden (GPL-Datei).</p>
+<p>Beispiel in vw_tww_Haltung:</p>
 <figure class="align-default">
 <img alt="../../_images/properties_projectcolors_example1.jpg" src="../../_images/properties_projectcolors_example1.jpg" />
 </figure>
 </section>
 </section>
 <section id="map-themes">
-<h2><span class="section-number">3.1.4.2. </span>Map Themes<a class="headerlink" href="#map-themes" title="Link to this heading"></a></h2>
-<p>There are two map themes defined in the TWW-project as an invitation to use this great feature of QGIS to toggle between different layer-styles.</p>
+<h2><span class="section-number">3.1.4.2. </span>Kartenthemen<a class="headerlink" href="#map-themes" title="Link to this heading"></a></h2>
+<p>Im TWW-Projekt sind zwei Kartenthemen definiert als Einladung, dieses hilfreiche Tool in QGIS zu benutzen, um zwischen verschiedenen Layer-Stilen einfach zu wechseln.</p>
 <figure class="align-default">
 <img alt="../../_images/mapthemes.jpg" src="../../_images/mapthemes.jpg" />
 </figure>
-<p>It is important to understand, what map themes do:</p>
-<p>A map theme is a snapshot of the current map legend that records:</p>
+<p>Es ist wichtig zu verstehen, was Kartenthemen machen:</p>
+<p>Ein Kartenthema ist eine Momentaufnahme der aktuellen Layerlegenden, die folgendes aufzeichnet:</p>
 <ul class="simple">
-<li><p>the layers set as visible in the Layers panel</p></li>
-<li><p>and for each visible layer:</p>
+<li><p>die Layer, die als sichtbar festgelegt sind</p></li>
+<li><p>und für jeden sichtbaren Layer:</p>
 <ul>
-<li><p>the reference to the style applied to the layer</p></li>
-<li><p>the visible classes of the style, ie the layer checked node items in the Layers panel. This applies to symbologies other than the single symbol rendering</p></li>
+<li><p>der Verweis auf den angewendeten Stil</p></li>
+<li><p>die sichtbaren Symbole des Stils, d. h. die im Layer als sichtbar markierten Symbole. Dies gilt für andere Symbologien als die Einzelsymboldarstellung</p></li>
 <li><p>the collapsed/expanded state of the layer node(s) and the group(s) placed inside</p></li>
 </ul>
 </li>
 </ul>
 </section>
 <section id="layer-order">
-<h2><span class="section-number">3.1.4.3. </span>Layer Order<a class="headerlink" href="#layer-order" title="Link to this heading"></a></h2>
-<p>TWW uses a lot of layers. Therefore it’s a good idea to have the layer organised in a logical way.</p>
-<p>The layer order panel enables to manually define the order of the layers displayed on the map canvas without altering it in the layer panel.
-It is strongly relevant when digitizing with QGIS standard tools and can be very handy in many situations.</p>
+<h2><span class="section-number">3.1.4.3. </span>Layerreihenfolge<a class="headerlink" href="#layer-order" title="Link to this heading"></a></h2>
+<p>TWW benutzt sehr viele Layer. Es macht deshalb Sinn, die Layer in einer logischen Art und Weise zu organisieren.</p>
+<p>Mit dem Layerreihenfolge Bedienfeld kann die Darstellungsreihenfolge in der Kartendarstellung geändert werden, ohne die logische Struktur im Layer Bedienfeld anzupassen. Dies ist bei der Digitalisierung mit QGIS-Standardwerkzeugen von großer Bedeutung und kann in vielen Situationen sehr praktisch sein.</p>
 <figure class="align-default">
 <img alt="../../_images/layerorder.jpg" src="../../_images/layerorder.jpg" />
 </figure>

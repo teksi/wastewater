@@ -22,7 +22,7 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Stichwortverzeichnis" href="../../genindex.html" />
     <link rel="search" title="Suche" href="../../search.html" />
-    <link rel="next" title="3.1.4. TWW-project properties and settings" href="twwproject.html" />
+    <link rel="next" title="3.1.4. TWW-Projekt Eigenschaften und Einstellungen" href="twwproject.html" />
     <link rel="prev" title="3.1.2. Layer Erläuterungen" href="layerexplanation.html" /> 
 </head>
 
@@ -56,12 +56,12 @@
 <li class="toctree-l3"><a class="reference internal" href="overview.html">3.1.1. Einleitung und Übersicht</a></li>
 <li class="toctree-l3"><a class="reference internal" href="layerexplanation.html">3.1.2. Layer Erläuterungen</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">3.1.3. Namenskonventionen</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#schemas-in-the-tww-database">3.1.3.1. Schemas in the TWW-Database</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#schemas-in-the-tww-database">3.1.3.1. Schemas in der TWW-Datenbank</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#layer-names">3.1.3.2. Layer Bezeichnungen</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#attribute-names">3.1.3.3. Feldnamen</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="twwproject.html">3.1.4. TWW-project properties and settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="twwproject.html">3.1.4. TWW-Projekt Eigenschaften und Einstellungen</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../digitizing/index.html">3.2. Digitalisieren in TWW</a></li>
@@ -110,40 +110,34 @@
 <section id="naming-conventions">
 <h1><span class="section-number">3.1.3. </span>Namenskonventionen<a class="headerlink" href="#naming-conventions" title="Link to this heading"></a></h1>
 <section id="schemas-in-the-tww-database">
-<h2><span class="section-number">3.1.3.1. </span>Schemas in the TWW-Database<a class="headerlink" href="#schemas-in-the-tww-database" title="Link to this heading"></a></h2>
-<p>Schema in TEKSI-Databases will follow all the same rules. To destinguish, every infrastructre has his own shortcut (3 letters). TWW (TEKSI wastewater) is the shortcut for module wastewater network management.
-The TWW-Database has five tww-schemas:</p>
+<h2><span class="section-number">3.1.3.1. </span>Schemas in der TWW-Datenbank<a class="headerlink" href="#schemas-in-the-tww-database" title="Link to this heading"></a></h2>
+<p>Schema in TEKSI-Datenbank haben alle die selben Regeln. Um sie zu unterscheiden gibt es für jedes Werk ein eigenes Kurzzeichen (3 Buchstaben). TWW (TEKSI wastewater resp. TEKSI Abwasser) ist das Kurzzeichen für das Modul Abwasser. Die TWW-Datenbank hat fünf TWW-Schema:</p>
 <ul class="simple">
-<li><p>tww_od: in this schema you find the tables, that correspond to the VSA-DSS-datamodel (cover, wastewater_node, channel, etc.) Also for sequences of these tables. Because of the new update-management, the views are no more in the <a href="#id1"><span class="problematic" id="id2">*</span></a>_od-schema, but in the <a href="#id3"><span class="problematic" id="id4">*</span></a>_app-schema.</p></li>
-<li><p>tww_vl: is the schema for value lists. There is a table for every value list of the VSA-DSS. As a TWW-user you can not edit these tables.</p></li>
-<li><p>tww_app: schema for all module-specific views, materialized views, functions, triggers, etc. Also for views and function of additional plugins (SWMM, QField). In case of an update of the database, this schema will overwriten.</p></li>
-<li><p>tww_sys: special tables for administration of the database. As a TWW-User you can not edit these tables.</p></li>
+<li><p>tww_od: in diesem Schema sind alle Tabelle, welche den Klassen des VSA-DSS-Datenmodels entsprechen (Deckel, Abwasserknoten, Kanal etc.). Wegen dem neuen Update-Management in TWW, die Views sind nicht mehr im <a href="#id1"><span class="problematic" id="id2">*</span></a>_od-Schema, sondern im <a href="#id3"><span class="problematic" id="id4">*</span></a>_app-Schema.</p></li>
+<li><p>tww_vl: ist das Schema für die Wertelisten (value lists). Es gibt ein Tabelle für jede Werteliste der VSA-DSS. Als TWW-User kann man diese Tabellen nicht bearbeiten.</p></li>
+<li><p>tww_app: Schema für alle Modul-spezifischen Views, Materialized Views, Funktionen, Trigger etc. Auch für Views und Funktionen von Zusatz-Plugins (SWMM, Qfield). Während einem Update der Datenbank wird dieses Schema überschrieben.</p></li>
+<li><p>qgep_sys: Spezielle Tabellen für die Administration der Datenbank. Als TWW-User kann man diese Tabellen nicht bearbeiten.</p></li>
 <li><p>tww_cfg: to do: good explanantion</p></li>
 </ul>
-<p>If INTERLIS-import or -export is used, then there will be additional schema like „pg2ili_abwasser“. The are recreated with every import or export. Do not add these schema to the tww-project.</p>
+<p>Wird der INTERLIS-Import oder -Export verwendet, wird ein zusätzliches Schema erstellt (z.B. „pg2ili_abwasser“). Diese Schema wird mit jedem Schema neu erstellt. Dieses Schema deshalb nicht im TWW-Projekt einfügen.</p>
 </section>
 <section id="layer-names">
 <h2><span class="section-number">3.1.3.2. </span>Layer Bezeichnungen<a class="headerlink" href="#layer-names" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>Layer names without prefix</p></li>
+<li><p>Layer Namen ohne Prefix</p></li>
 </ul>
-<p>This shows you, that you find the table in the tww_od-schema or (if the are in the layer-group „Value Lists“, you find them in schema tww_vl).
-If you are not sure in which schema to look for the table: place the mouse over the layer and look in the yellow popup-box for ‚table=“tww_*‘.</p>
+<p>Das zeigt, dass die Tabelle im tww_od-Schema gefunden werden kann (wenn sie in der Layergruppe „Wertelisten“ sind, dann findet man sie im Schema tww_vl). Bei einer Unsicherheit über das entsprechende Schema: die Maus über dem Layer platzieren und im gelben Popup-Hinweisfenster nach ‚table=“tww_*‘ suchen.</p>
 <ul class="simple">
 <li><p>Layer Namen welche mit <a href="#id5"><span class="problematic" id="id6">vw_</span></a> beginnen</p></li>
 </ul>
-<p>Two or more VSA-DSS tables are joined in a view (vw). The layer has the name of the main-table. Example: vw_tww_reach: the main layer is the table reach (not the table channel).
-It is important to know the main-table to be sure , that you use the correct attributes.</p>
+<p>Zwei oder mehrere VSA-DSS-Tabellen sind in einer View (vw) verknüpft. Der Layer hat die Bezeichnung der Haupttabelle. Beispiel: vw_tww_Haltung: die Haupttabellen ist die Tabelle Haltung (nicht die Tabelle Kanal). Es ist wichtig die Haupttabelle zu kennen, damit die richtigen Attribute verwendet werden.</p>
 </section>
 <section id="attribute-names">
 <h2><span class="section-number">3.1.3.3. </span>Feldnamen<a class="headerlink" href="#attribute-names" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Präfixe in Feldnamen</p></li>
 </ul>
-<p>In a view, you find fields from different tables. In easier cases, there are only a subclass and a superclass included. In the tww-mainlayers there are several sub- und superclasses.
-With the prefix of the attribute name, you know to which table an attribute belongs. The prefix are two letters that belong to a table of the VSA-DSS datamodel. Example: co = cover, ws = wastewater structure.
-The convention is: attributes of the main table have no prefix, all other attributes have a prefix that points to the table they are from. In case of sub- and superclass, the two tables are taken together.
-Example in layer vw_tww_reach: identifier is the attribute of the table wastewater_networkelement (the superclass of maintable reach) and therefore has no prefix. Material is in table reach, has no prefix because its the maintable. ch_usage_current is an attribute of the table channel. ws_remark is the attribute remark of the table wastewater_structure.</p>
+<p>In einer View gibt es Felder von verschiedenen Tabellen. In einfachen Fällen ist da nur die Superklasse und die Sub-Klasse vorhanden.  In den qgep-Hauptleyern sind es aber mehrere Sub- und Superklassen. Mit dem Präfix des Feldname wird angezeigt, zu welcher Klasse ein Feld gehört.  Das Präfix sind zwei Buchstaben welche für eine Klasse des VSA-DSS Datenmodell stehen. Beispiel: DE = Deckel, BW = Abwasserbauwerk. Es gilt folgende Konvention:  Felder der Haupttabelle haben kein Präfix, alle anderen Felder haben ein Präfix, dass auf die jeweilige Tabelle verweist. Bei Sub- und Superklasse werden die beiden Tabellen zusammengenommen. Beispiel im Layer vw_tww_Haltung: Bezeichnung ist ein Feld der Tabelle Abwassernetzelement (der Superklasse der Haupttabelle Haltung) und hat deswegen kein Präfix.  Material ist in der Tabelle Haltung und hat auch kein Präfix weil das die Haupttabelle ist.  KA_Nutzungsart_IST ist ein Feld der Tabelle Kanal. BW-Bemerkung ist das Feld Bemerkung der Tabelle Abwasserbauwerk.</p>
 <ul class="simple">
 <li><p><a href="#id7"><span class="problematic" id="id8">fk_</span></a> Felder</p></li>
 </ul>
@@ -151,8 +145,7 @@ Example in layer vw_tww_reach: identifier is the attribute of the table wastewat
 <ul class="simple">
 <li><p>_ Felder</p></li>
 </ul>
-<p>Attributes that start with _ (underscore) are calculated fields. You can not find them in the schemas. Examples: _slope_per_mill in vw_tww_reach.
-_channel_usage_current in vw_qgwp_wastewater_structure is calculated from the field usage_current of the channel, that is connected with the foreign key of the wastewater_networkelement as outlet to a manhole or special structure.</p>
+<p>Felder die mit _ (Unterstrich) beginnen sind berechnete Felder. Man findet sie in den Schemas nicht. Beispiele: _slope_per_mill (_GefaellePromille) in vw_tww_Haltung. _Kanal_Nutzungsart_ist in vw_tww_Abwasserbauwerk ist berechnet aus dem Feld Nutzungsart_Ist des Kanales, der über die Fremdschlüsselfelder der Abwassernetzelemente als Auslauf mit dem Schacht verknüpft ist.</p>
 </section>
 </section>
 
@@ -161,7 +154,7 @@ _channel_usage_current in vw_qgwp_wastewater_structure is calculated from the fi
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="layerexplanation.html" class="btn btn-neutral float-left" title="3.1.2. Layer Erläuterungen" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
-        <a href="twwproject.html" class="btn btn-neutral float-right" title="3.1.4. TWW-project properties and settings" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="twwproject.html" class="btn btn-neutral float-right" title="3.1.4. TWW-Projekt Eigenschaften und Einstellungen" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -63,7 +63,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#setting-default-values">3.8.1. Standard Werte setzen</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#how-vw-tww-wastewater-structure-labels-work">3.8.2. Wie Beschriftungen in vw_tww_Abwasserbauwerk funktionieren</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#how-to-translate-a-label-prefix-c-b-i-o">3.8.3. Wie können die Labelbuchstaben (C, B, I, O) übersetzt werden</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#how-to-check-if-triggers-are-active">3.8.4. How to check if triggers are active</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-check-if-triggers-are-active">3.8.4. Wie kann geprüft werden, ob Trigger aktiv sind</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#how-to-run-symbology-functions-manually">3.8.5. Symbologie-Funktion manuell anstossen</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#manual-label-positioning-for-different-scales">3.8.6. Manuelle Beschriftungspositionen für unterschiedliche Massstäbe</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#how-to-import-existing-label-positions">3.8.7. Importieren von bestehenden Beschriftungspositionen</a></li>
@@ -150,7 +150,7 @@ Per default, the fields <code class="docutils literal notranslate"><span class="
 <li><p>_cover_label: Zeigt die Kote/n des Feldes Deckel.Kote des Abwasserbauwerks</p></li>
 <li><p>_bottom_label: Zeigt die Kote/n des Feldes Abwasserknoten.Sohlenkote des Abwasserbauwerks</p></li>
 <li><p>_input_label: zeigt die Koten von Haltungspunkten welche als nach_Haltungspunkte mit einem der Abwasserknoten des Abwasserbauwerks verknüpft sind  (Einläufe)</p></li>
-<li><p>_output_label: shows the levels of the reachpoints connected as from_reachpoints to one of the wastewater_nodes of the wastewater_structure</p></li>
+<li><p>_output_label: zeigt die Koten von Haltungspunkten welche als von_Haltungspunkte mit einem der Abwasserknoten des Abwasserbauwerks verknüpft sind (Ausläufe)</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/tww_labels.jpg" src="../../_images/tww_labels.jpg" />
@@ -162,23 +162,23 @@ Per default, the fields <code class="docutils literal notranslate"><span class="
 </section>
 <section id="how-to-translate-a-label-prefix-c-b-i-o">
 <h2><span class="section-number">3.8.3. </span>Wie können die Labelbuchstaben (C, B, I, O) übersetzt werden<a class="headerlink" href="#how-to-translate-a-label-prefix-c-b-i-o" title="Link to this heading"></a></h2>
-<p>Um die Kurzeichen in den Beschriftungen zu übersetzen sind im QGIS-Projekt entsprechende Variablen definiert. Um die Buchstaben für Deckel-Koten, Sohlenkoten und Ein- und Auslaufkoten zu ändern, müssen diese Projekt-Einstellungen geändert werden:</p>
+<p>Um die Kurzzeichen in den Beschriftungen zu übersetzen sind im QGIS-Projekt entsprechende Variablen definiert. Um die Buchstaben für Deckel-Koten, Sohlenkoten und Ein- und Auslaufkoten zu ändern, müssen diese Projekt-Einstellungen geändert werden:</p>
 <figure class="align-default">
 <img alt="../../_images/tww_label_prefix_settings.jpg" src="../../_images/tww_label_prefix_settings.jpg" />
 </figure>
 <p>Um die Änderungen zu sehen, müssen die Symbology Funktionen manuell gestartet werden (vgl. nächstes Kapitel)</p>
 </section>
 <section id="how-to-check-if-triggers-are-active">
-<h2><span class="section-number">3.8.4. </span>How to check if triggers are active<a class="headerlink" href="#how-to-check-if-triggers-are-active" title="Link to this heading"></a></h2>
-<p>For some processes such as INTERLIS Imports, a set of triggers are temporarily deactivated to speed up the process.</p>
+<h2><span class="section-number">3.8.4. </span>Wie kann geprüft werden, ob Trigger aktiv sind<a class="headerlink" href="#how-to-check-if-triggers-are-active" title="Link to this heading"></a></h2>
+<p>Während gewissen Prozessen wie der INTERLIS Import werden gewisse Trigger temporär deaktiviert um die Bearbeitungszeit zu verkürzen.</p>
 <ul>
-<li><p>Check status of triggers:</p>
+<li><p>Prüfe den Status der Triggers:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">check_symbology_triggers_enabled</span><span class="p">();</span>
 <span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">check_modification_triggers_enabled</span><span class="p">();</span>
 </pre></div>
 </div>
 </li>
-<li><p>Activate / Deactivate triggers:</p>
+<li><p>Aktivieren/Deaktivieren der Trigger:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">alter_symbology_triggers</span><span class="p">(</span><span class="s1">&#39;enable&#39;</span><span class="p">);</span>
 <span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">alter_symbology_triggers</span><span class="p">(</span><span class="s1">&#39;disable&#39;</span><span class="p">);</span>
 <span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">alter_modification_triggers</span><span class="p">(</span><span class="s1">&#39;enable&#39;</span><span class="p">);</span>
@@ -190,9 +190,9 @@ Per default, the fields <code class="docutils literal notranslate"><span class="
 </section>
 <section id="how-to-run-symbology-functions-manually">
 <h2><span class="section-number">3.8.5. </span>Symbologie-Funktion manuell anstossen<a class="headerlink" href="#how-to-run-symbology-functions-manually" title="Link to this heading"></a></h2>
-<p>Sometimes the labels such as bottom, cover or entry/exit levels are not correctly displayed, even if the corresponding attribut is filled in. This happens for example when you import data by INTERLIS Import or another way. Maybe the triggers were temporarily deactivated to speed up the import process.</p>
+<p>Manchmal werden die berechneten Beschriftungen Deckel-, Einlauf-, Auslauf-, Sohlenkote nicht richtig dargestellt, obwohl sie in der Datenbank entsprechend eingetragen sind.  Das kann vorkommen, wenn zum Beispiel Daten importiert wurden. Oder wenn für das Beschleunigen eines Import’s die Trigger deaktiviert wurden.</p>
 <ul>
-<li><p>Check status of symbology triggers:</p>
+<li><p>Prüfe den Status der Symbology Trigger:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">check_symbology_triggers_enabled</span><span class="p">();</span>
 </pre></div>
 </div>
@@ -222,7 +222,7 @@ Per default, the fields <code class="docutils literal notranslate"><span class="
 <figure class="align-default">
 <img alt="../../_images/tww_system_attributes_depth.jpg" src="../../_images/tww_system_attributes_depth.jpg" />
 </figure>
-<p>For symbolizing point elements (manholes, special structures etc. and  wastewater_nodes)  with _function_hierarchic and _usage_current the function <cite>update_wastewater_node_symbology</cite> calculates the two tww attributes from the connected reach(es).</p>
+<p>Für die Symbolisierung von Schächten und Abwasserknoten mit _function_hierarchic und _usage_current berechnet <cite>update_wastewater_node_symbology</cite>  die TWW-Attribute mit den verknüpften Haltungen.</p>
 <ul>
 <li><p>Starte <a href="#id1"><span class="problematic" id="id2">**</span></a>Abwasserknoten Symbologie“ für alle Datensätze (berechnet Funktion_Hierarchisch und Nutzungsart_Ist aus den verknüpften Haltungen und berechnet damit die Felder wastewater_node._function_hierarchic und_usage_current):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="n">tww_app</span><span class="o">.</span><span class="n">update_wastewater_node_symbology</span><span class="p">(</span><span class="n">NULL</span><span class="p">,</span> <span class="n">true</span><span class="p">);</span>

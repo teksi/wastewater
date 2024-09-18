@@ -116,13 +116,13 @@
 <h2><span class="section-number">3.5.2. </span>Gegen die Fließrichtung<a class="headerlink" href="#upstream" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Es spielt keine Rolle, welcher Layer ausgewählt ist</p></li>
-<li><p>To start upstream network following select the <strong>Upstream</strong> TWW button</p></li>
+<li><p>Um einen Netzwerk Verfolgung gegen die Fließrichtung zu starten wählen Sie den <strong>Upstream</strong> Knopf</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/network_upstream_button.jpg" src="../../_images/network_upstream_button.jpg" />
 </figure>
 <ul class="simple">
-<li><p>TWW opens then profile window at the bottom of the map. Click on your start node.</p></li>
+<li><p>TWW öffnet das Profil Fenster im unteren Teil des Kartenfensters. Klick auf deinen Start-Abwasserknoten.</p></li>
 <li><p>Wenn mehr als einen Abwasserknoten in der Nähe vorhanden ist, kann der gewünschte Knoten aus einer Liste ausgewählt werden</p></li>
 </ul>
 <figure class="align-default">
@@ -136,12 +136,12 @@
 <img alt="../../_images/network_select_currentpath.jpg" src="../../_images/network_select_currentpath.jpg" />
 </figure>
 <ul class="simple">
-<li><p>You can now work with your reach selection in the attribute table or zoom to the selected reaches (if the vw_tww_reach layer is selected)</p></li>
+<li><p>Du kannst dann mit der Auswahl in der Haltungs-Attributtabelle weiterarbeiten oder auf die selektierten Haltungen zoomen (wenn der Layer  vw_tww_Haltung selektiert ist)</p></li>
 <li><p>Benutzen Sie dieses Werkzeug um zu überprüfen, ob Ihr Topologie-Netzwerk korrekt ist</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>In the button select current path, you have a menu <strong>Configure Select</strong>. This feature is not working with the actual twwplugin.</p>
+<p>Beim Knopf select current path gibt es das Menu <strong>Configure Select</strong>. Diese Funktion ist nicht mehr verfügbar im aktuellen TWW Plugin.</p>
 </div>
 </section>
 <section id="downstream">
@@ -149,16 +149,16 @@
 <ul class="simple">
 <li><p>Netzverfolgung in Fliessrichtung funktioniert gleich wie die oben beschriebene Netzverfolgung gegen die Fliessrichtung.</p></li>
 <li><p>Du siehst, wohin das Wasser fliessen wird.</p></li>
-<li><p>Control, if TWW finds also the overflows</p></li>
+<li><p>Kontrolliere ob TWW auch die Überlauf findet</p></li>
 <li><p>Benutzen Sie diese Funktion, um zu überprüfen ob Ihr Topologie- Netzwerk korrekt ist oder herauszufinden wo Sie Fehler beheben können.</p></li>
 </ul>
 </section>
 <section id="sum-up-upstream">
 <span id="sumupupstream"></span><h2><span class="section-number">3.5.4. </span>Summieren gegen die Fließrichtung<a class="headerlink" href="#sum-up-upstream" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>This is a tool in the TWW-toolbox.</p></li>
+<li><p>Das ist ein Tool in der QGEP-Werkzeugkiste.</p></li>
 <li><p>Mit diesem Tool kann ein Wert über ein ganzes Kanalnetz summiert werden, z. Bsp. die Fliesszeit von jedem Punkt bis zum Auslass aus dem Kanalnetz.</p></li>
-<li><p>For this tool you need a field in the layer vw_tww_reach with the values to sum up. Because interesting values are normally not part of this layer, you have first to join the value-field (e.g flowtime or flow rate) to the layer vw_tww_reach.</p></li>
+<li><p>Für dieses Tool ist ein Feld im Layer vw_tww_Haltung notwendig, welches die zu summierenden Werte enthält. Weil interessierende Werte normalerweise nicht im Layer vorhanden sind, muss das Feld (z. Bsp. die Fliesszeit oder die Fliessgeschwindigkeit) an den Layer vw_tww_Haltung verknüpft (join) werden.</p></li>
 <li><p>Als Beispiel hier ein kleines Netzwerk, beschriftet mit Haltungs-Bezeichnung, Länge und Fliessrichtungspfeil.</p></li>
 </ul>
 <figure class="align-default">
@@ -166,7 +166,7 @@
 </figure>
 <ul class="simple">
 <li><p>Es braucht eine Tabelle (im Beispiel heisst sie sum up tool) mit mindestens zwei Feldern: Feld identifier als Verknüpfungsfeld und das Feld flow rate (im Beispiel die Fliessgeschwindigkeit in [m/s]) als verknüpftes Feld, dass summiert wird.</p></li>
-<li><p>Open the properties of layer vw_tww_reach, choose <strong>Joins</strong> and <strong>Add new join</strong> (green + Button) and define the join with the join field (identifier) and the joined fields (field to sum up).</p></li>
+<li><p>Im Layer vw_tww_Haltung die Einstellungen öffnen, dort <strong>Verknüpfungen</strong> und <strong>Neue Verknüpfung hinzufügen</strong> (grüner + Knopf) wählen. Die Verknüpfung mit dem Verknüpfungsfeld (identifier) und dem verknüpften Feld (Feld das summiert werden soll) definieren.</p></li>
 </ul>
 <figure class="align-default">
 <img alt="../../_images/sumupupstream-join1.jpg" src="../../_images/sumupupstream-join1.jpg" />
@@ -185,7 +185,7 @@
 <ul>
 <li><p>einen Ausdruck gemäss dem Titel des Feldes (COALESCE(„field_name“,0). Wenn der <strong>coalesce</strong> Befehl nicht verwendet wird, gibt es bei der Ausführung des Tools einen Fehler, wenn sich im zu summierenden Feld ein NULL-Wert befindet. In der Abbildung ist als Beispiel die Berechnung der Fliesszeit in [Minuten], berechnet aus der Länge effektiv und der Fliessgeschindigkeit in [m/s].</p></li>
 <li><p>das Verhalten bei Verzweigungen (Minimum, Maximum, Durchschnitt): welcher Wert wird für die weiter Summierung verwendet, wenn zwei Äste des Kanalnetzes zusammenkommen.</p></li>
-<li><p>the advanced parameters are preconfigured for TWW and should not need to be changed.</p></li>
+<li><p>die erweiterten Parameter sind für TWW bereits vorkonfiguriert und sollten nicht geändert werden.</p></li>
 <li><p>Summed up: Bleibt das Feld leer wird im Projekt ein temporärer Punkt-Layer mit den Resultaten erstellt. Oder sie können in diesem Feld das Resultat in einen Punkt-Vektorlayer speichern.</p></li>
 </ul>
 </li>
@@ -201,10 +201,10 @@
 <section id="flow-times-downstream">
 <h2><span class="section-number">3.5.5. </span>Fliesszeiten abwärts<a class="headerlink" href="#flow-times-downstream" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>This is a tool in the TWW-toolbox.</p></li>
+<li><p>Das ist ein Tool in der QGEP-Werkzeugkiste.</p></li>
 <li><p>Die Idee für dieses Tool: Berechne die Fliesszeit zwischen einem Startpunkt (hier ist z.B. ein Unfall) und einem Abwasserbauwerk unterhalb. Es ist nicht die Idee einen Fliesszeitenplan für ein ganzes Abwassernetz mit diesem Tool zu erstellen (für diese Aufgabe kann das Summieren gegen die Fliessrichtung-Tool verwendet werden).</p></li>
-<li><p>For this tool you need a layer (table) in the TWW-project with the flowtime per reach and the obj_id of the reach.</p></li>
-<li><p>You have to select the start-reach (where the accident is) in the vw_tww_reach-layer</p></li>
+<li><p>Für diese Tool braucht es einen Layer (eine Tabelle) im TWW-Projekt mit der Fliesszeit und der Obj-ID der Haltungen.</p></li>
+<li><p>Die Starthaltung (wo der Unfall passiert ist) muss im vw_tww_Haltung - Layer selektiert werden</p></li>
 <li><p>Starten sie mit Doppelklick auf das <strong>Flow times downstream</strong> Tool</p></li>
 </ul>
 <figure class="align-default">
@@ -216,7 +216,7 @@
 <ul class="simple">
 <li><p>Im Toolfenster muss gewählt werden</p>
 <ul>
-<li><p>as reach layer: vw_tww_reach</p></li>
+<li><p>als reach layer: vw_tww_Haltung</p></li>
 <li><p>als flow time layer: die Tabelle mit der Haltungs Obj_ID und den Fliesszeiten (oder dem Wert, der aufsummiert werden soll)</p></li>
 <li><p>als reach id field: das Feld in der Tabelle mit der Obj_ID der Haltung</p></li>
 <li><p>als Flow times field: das Feld aus der Tabelle, dass aufsummiert werden soll</p></li>
@@ -241,7 +241,7 @@
 <li><p>Es gibt Fälle, bei denen ein leerer flow time - Layer und roter (Fehler-)Text im Log-Fenster resultieren:</p>
 <ul>
 <li><p>Nicht mehr als eine Haltung als Start selektieren</p></li>
-<li><p>Do not select vw_tww_reach as flow time layer (to sum-up the length, use the vw_network_segment layer)</p></li>
+<li><p>vw_tww_reach nicht als Flow time Layer auswählen (um die Länge der Haltungen zu summieren, kann der vw_network_segment - Layer verwendet werden)</p></li>
 <li><p>Wenn im reach id Feld kein Wert vorhanden ist, der zu der Haltungs Obj_ID passt, gibt es einen Fehler</p></li>
 </ul>
 </li>

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>4.6. Data model tool &mdash; TWW dev Dokumentation</title>
+  <title>4.6. Datenmodell-Werkzeug &mdash; TWW dev Dokumentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
 
@@ -58,7 +58,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../security/index.html">4.3. User Roles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../interlis-io/index.html">4.4. INTERLIS Datenaustausch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../db-customization/index.html">4.5. Anpassung des Datenmodells</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">4.6. Data model tool</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.6. Datenmodell-Werkzeug</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#setup">4.6.1. Einstellungen</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#usage">4.6.2. Anwendung</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#main-dialog">4.6.2.1. Hauptdialog</a></li>
@@ -90,7 +90,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">4. </span>Administratorhandbuch</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">4.6. </span>Data model tool</li>
+      <li class="breadcrumb-item active"><span class="section-number">4.6. </span>Datenmodell-Werkzeug</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/admin-guide/datamodel-tool/index.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
       </li>
@@ -103,15 +103,14 @@
   <blockquote>
 <div></div></blockquote>
 <section id="data-model-tool">
-<h1><span class="section-number">4.6. </span>Data model tool<a class="headerlink" href="#data-model-tool" title="Link to this heading"></a></h1>
+<h1><span class="section-number">4.6. </span>Datenmodell-Werkzeug<a class="headerlink" href="#data-model-tool" title="Link to this heading"></a></h1>
 <p>Data model tool not yet integrated in TEKSI wastewater</p>
-<p>The plugin contains a data model tool capable of initializing and upgrading a TWW database.</p>
+<p>Das Plugin enthält ein Datenmodell-Werkzeug, mit dem eine TWW-Datenbank initialisiert und aktualisiert werden kann.</p>
 <p>Es unterstützt Systemadministratoren und Power-User und sollte nicht von Anwendern verwendet werden, da es bei unsachgemässer Anwendung zu Datenverlusten führen kann.</p>
 <p>Für anspruchsvolle Fälle ist es auch möglich, die Datenbank manuell zu aktualisieren &lt;../db-update-pum/index.html&gt;“.</p>
 <section id="setup">
 <h2><span class="section-number">4.6.1. </span>Einstellungen<a class="headerlink" href="#setup" title="Link to this heading"></a></h2>
-<p>The data model tool is hidden by default. To make it visible, you must first enable <code class="docutils literal notranslate"><span class="pre">Admin</span> <span class="pre">mode</span></code>
-in the plugin settings :</p>
+<p>Das Datenmodell-Tool ist standardmässig ausgeblendet. Um es zu aktivieren, müssen Sie zunächst den <code class="docutils literal notranslate"><span class="pre">Admin-Modus</span></code> in den Plugin-Einstellungen aktivieren:</p>
 <ul class="simple">
 <li><p>Gehen Sie zu <code class="docutils literal notranslate"><span class="pre">Plugin</span> <span class="pre">&gt;</span> <span class="pre">QGEP</span> <span class="pre">&gt;</span> <span class="pre">Einstellungen</span></code></p></li>
 <li><p>Wechseln Sie auf die Registerkarte <code class="docutils literal notranslate"><span class="pre">Entwickleroptionen</span></code>.</p></li>
@@ -132,7 +131,7 @@ in the plugin settings :</p>
 <li><p><strong>Release</strong>:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><strong>Version</strong>: the version to retrieve the files from. Unless <code class="docutils literal notranslate"><span class="pre">developer</span> <span class="pre">mode</span></code> is enabled in the TWW settings, only the latest stable version is available. Selecting anything different from the latest stable version should only ever be used on a testing database, as it could upgrade the database to an inconsistent state.</p></li>
+<li><p><strong>Version</strong>: die Version, die angewendet werden soll. Sofern der <code class="docutils literal notranslate"><span class="pre">Entwicklermodus</span></code> in den TWW-Einstellungen nicht aktiviert ist, ist nur die letzte stabile Version verfügbar. Die Auswahl einer anderen als der letzten stabilen Version sollte nur in einer Testdatenbank verwendet werden, da dies die Datenbank in einen inkonsistenten Zustand versetzen könnte.</p></li>
 </ul>
 </div></blockquote>
 </li>

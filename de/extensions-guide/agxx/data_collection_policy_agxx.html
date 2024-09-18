@@ -150,15 +150,15 @@
 <p>Die folgende Tabelle erläutert das Mapping der FunktionAG im Detail. Gibt es mehrere Optionen für die TWW-Klasse, wird der Typ in Abhängigkeit vom Vorhandensein einer Detailgeometrie definiert. Der value_de wird nur aufgeführt, wenn der AG-64/96-Wert nicht ausgewählt werden kann</p>
 <section id="handling-of-building-connections">
 <h3><span class="section-number">5.2.2.2.1. </span>Umgang mit Hausanschlüssen<a class="headerlink" href="#handling-of-building-connections" title="Link to this heading"></a></h3>
-<p>Building connections are defined in the datamodel as Infrastrukturknoten/GEPKnoten with funktionag „Anschluss“. As these are no wastewater structures, the function is attributed to the wastewater node (<code class="docutils literal notranslate"><span class="pre">wastewater_node.ag64_function</span></code>).</p>
+<p>Hausanschlüsse sind im Datenmodell als Infrastrukturknoten/GEPKnoten mit FunktionAG „Anschluss“ definiert. Da sie aber keine Abwasserbauwerke sind, ist die Funktion auf dem Abwasserknoten zu attributieren (<code class="docutils literal notranslate"><span class="pre">wastewater_node.ag64_function</span></code>).</p>
 </section>
 <section id="handling-of-covers">
-<h3><span class="section-number">5.2.2.2.2. </span>Handling of covers<a class="headerlink" href="#handling-of-covers" title="Link to this heading"></a></h3>
-<p>The AG-64/AG-96 data collection guidelines state the following:</p>
+<h3><span class="section-number">5.2.2.2.2. </span>Umgang mit Deckeln<a class="headerlink" href="#handling-of-covers" title="Link to this heading"></a></h3>
+<p>Die AG-64/AG-96 Erfassungsrichtlinien schreiben folgendes vor:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>The main wastewater node of a manhole or special structure must be mapped to the location of the main cover.</p></li>
-<li><p>Secondary covers are mapped as Infrastrukturknoten/GEPKnoten with funktionag „andere“.</p></li>
+<li><p>Zweitdecket sind als Infrastrukturknoten/GEPKnoten mit Funktionag „andere“ gemappt.</p></li>
 </ul>
 </div></blockquote>
 <p>As topological relations to a node of funktionag „andere“ are technically possible, we need to link all covers to a wastewater node linked to every cover.
@@ -172,7 +172,7 @@ Additionally, the attribute <code class="docutils literal notranslate"><span cla
 </section>
 <section id="ueberlauf-foerderaggregat">
 <h2><span class="section-number">5.2.2.4. </span>Ueberlauf_Foerderaggregat<a class="headerlink" href="#ueberlauf-foerderaggregat" title="Link to this heading"></a></h2>
-<p>The layer Ueberlauf_Foerderaggregat is mapped to ´tww_od.overflow´ and its specialisations</p>
+<p>Der Layer Ueberlauf_Foerderaggregat wird auf ´tww_od.overflow´ und seine Spezialisierungen gemappt.</p>
 </section>
 <section id="gepmassnahme">
 <h2><span class="section-number">5.2.2.5. </span>GEPMassnahme<a class="headerlink" href="#gepmassnahme" title="Link to this heading"></a></h2>
@@ -180,11 +180,11 @@ Additionally, the attribute <code class="docutils literal notranslate"><span cla
 </section>
 <section id="bautenausserhalbbaugebiet">
 <h2><span class="section-number">5.2.2.6. </span>Bautenausserhalbbaugebiet<a class="headerlink" href="#bautenausserhalbbaugebiet" title="Link to this heading"></a></h2>
-<p>Bautenausserhalbbaugebiet is mapped to ´tww_od.building_group´. There is no backwards mapping from VSA-DSS ´Gebaeudegruppe.Sanierungsbedarf´ to AG-96 ´Bautenausserhalbbaugebiet.Sanierungsbedarf´ because the value ´unbekannt´ cannot be mapped.</p>
+<p>Bautenausserhalbbaugebiet wird auf ´tww_od.building_group´ gemappt. Es gibt kein Rückwärtsmapping von VSA-DSS ´Gebaeudegruppe.Sanierungsbedarf´ to AG-96 ´Bautenausserhalbbaugebiet.Sanierungsbedarf´, da der Wert ´unbekannt´ nicht gemappt werden kann.</p>
 </section>
 <section id="sbw-einzugsgebiet">
 <h2><span class="section-number">5.2.2.7. </span>SBW_Einzugsgebiet<a class="headerlink" href="#sbw-einzugsgebiet" title="Link to this heading"></a></h2>
-<p>SBW_Einzugsgebiet is mapped to ´tww_od.catchment_area_totals´. The perimeter geometry is stored as an extension geometry attribute. In order to alter it, one needs to manually import the layer into the qgs project.</p>
+<p>SBW_Einzugsgebiet wird auf ´tww_od.catchment_area_totals´ gemappt. die Perimetergeometrie wird als Erweiterung gespeicherung. Um sie anzupassen, muss der Layer manuell ins qgs Projekt geladen werden.</p>
 <p>There exists a function to calculate the perimeter geometry by aggregating the catchment areas via catchment_area-&gt;log_card-&gt;main_log_card-&gt;hydraulic_char_data-&gt;catchment_area_totals.
 The perimeter geometry is a MultiSurface, while the INTERLIS model requires a CompoundCurve. According to the official data collection policy of the Canton, one should violate the datamodel and export a MultiPart. As the underlying export mechanism ili2pg does not allow to export a wrong geometry type, only the biggest Singlepart is exported.</p>
 </section>

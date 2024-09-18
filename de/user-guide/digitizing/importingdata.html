@@ -123,12 +123,12 @@
 <li><p>Wenn ein Attribut eine Werteliste hat, muss der Code-Wert verwendet werden und nicht der Volltext.</p></li>
 <li><p>Wenn die Felder entsprechend vorbereitet sind, dann können die Daten einfach kopiert und im TWW-Layer eingefügt werden.</p></li>
 </ul>
-<p>Why all these regulations: You copy the data not in the layer in our QGIS-project, but direct in the view or table in the postgresql-database. The database does not know anything about the configuration of the QGIS-project (alias names or value relations). In the database work just the triggers that are defined. So an obj_id will be created automatic.</p>
-<p>If you want to import new values to existing records (e.g. update the field renovation_necessity of layer vw_tww_reach), you can not copy, because there are not new records. For these job you can work with QGIS fieldcalculator.</p>
+<p>Warum alle diese Regeln: Die Daten werden nicht in den Layer des QGIS-Projektes kopiert, sondern direkt in die View oder die Tabelle in der Postgresql-Datenbank. Die Datenbank weiss aber nichts von den Konfigurationen im QGIS-Projekt (kennt keine Aliasnamen oder Wertbereich-Definitionen). In der Datenbank arbeiten nur die definierten Triggers. Deshalb wird automatisch eine Obj_ID erstellt für jeden neuen Datensatz.</p>
+<p>Wenn neue Wert zu bereits existierenden Datensätzen importiert werden soll (z.B. aktualisieren des Feldes Abwasserbauwerk.Sanierungsbedarf), kann nicht kopiert werden, weil es ja keine neuen Datensätze geben soll. Für diese Aufgabe kann der QGIS Feldrechner benutzt werden.</p>
 </section>
 <section id="example-importing-manholes-from-a-txt-file">
 <h2><span class="section-number">3.2.8.2. </span>Beispiel Import Schächte mit einer TXT-Datei:<a class="headerlink" href="#example-importing-manholes-from-a-txt-file" title="Link to this heading"></a></h2>
-<p>The pictures were created in QGEP, but the steps are still the same in TWW</p>
+<p>Die Bilder wurden in QGEP erstellt, die Schritte sind in TWW aber gleich geblieben</p>
 <ul class="simple">
 <li><p>Ändern der Feldnamen auf identifier, x, y, co_level  (englische Feldnamen für Bezeichnung, X, Y, Deckelkote)</p></li>
 </ul>
