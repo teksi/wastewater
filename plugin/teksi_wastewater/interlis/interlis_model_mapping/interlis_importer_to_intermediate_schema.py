@@ -446,9 +446,6 @@ class InterlisImporterToIntermediateSchema:
                     value = datetime.combine(value, datetime.min.time())
 
                 instanceAttribute = getattr(instance, key, None)
-                if value is not None and "_geometry" in key:
-                    value = self.session_tww.scalar(value)
-
                 if instanceAttribute != value:
                     # Setattr in the background updates the session state and make it possible to use "is_modified" afterwards
                     setattr(instance, key, value)
@@ -481,7 +478,7 @@ class InterlisImporterToIntermediateSchema:
             "detail_geometry3d_geometry": (
                 row.detailgeometrie
                 if row.detailgeometrie is None
-                else ST_Force3D(row.detailgeometrie)
+                else self.session_tww.scalar(ST_Force3D(row.detailgeometrie))
             ),
             # TODO : NOT MAPPED VSA-DSS 3D
             # "elevation_determination": self.get_vl_code(
@@ -1917,7 +1914,7 @@ class InterlisImporterToIntermediateSchema:
                 ),
                 position_of_connection=row.lage_anschluss,
                 remark=row.bemerkung,
-                situation3d_geometry=ST_Force3D(row.lage),
+                situation3d_geometry=self.session_tww.scalar(ST_Force3D(row.lage)),
             )
             self.session_tww.add(reach_point)
             print(".", end="")
@@ -1949,7 +1946,7 @@ class InterlisImporterToIntermediateSchema:
                 # fk_hydr_geometry=row.REPLACE_ME,  # TODO : NOT MAPPED
                 backflow_level_current=row.rueckstaukote_ist,
                 bottom_level=row.sohlenkote,
-                situation3d_geometry=ST_Force3D(row.lage),
+                situation3d_geometry=self.session_tww.scalar(ST_Force3D(row.lage)),
             )
             self.session_tww.add(wastewater_node)
             print(".", end="")
@@ -1979,7 +1976,7 @@ class InterlisImporterToIntermediateSchema:
                 ),
                 length_effective=row.laengeeffektiv,
                 material=self.get_vl_code(self.model_classes_tww_vl.reach_material, row.material),
-                progression3d_geometry=ST_Force3D(row.verlauf),
+                progression3d_geometry=self.session_tww.scalar(ST_Force3D(row.verlauf)),
                 reliner_material=self.get_vl_code(
                     self.model_classes_tww_od.reach_reliner_material, row.reliner_material
                 ),
@@ -2059,7 +2056,7 @@ class InterlisImporterToIntermediateSchema:
                 positional_accuracy=self.get_vl_code(
                     self.model_classes_tww_od.cover_positional_accuracy, row.lagegenauigkeit
                 ),
-                situation3d_geometry=ST_Force3D(row.lage),
+                situation3d_geometry=self.session_tww.scalar(ST_Force3D(row.lage)),
                 sludge_bucket=self.get_vl_code(
                     self.model_classes_tww_od.cover_sludge_bucket, row.schlammeimer
                 ),
