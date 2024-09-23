@@ -9,10 +9,10 @@ try:
 except ImportError:
     import psycopg2 as psycopg
 
-from gep_views.vw_tww_measurement_series import vw_tww_measurement_series
 from pirogue import MultipleInheritance, SimpleJoins, SingleInheritance
 from triggers.set_defaults_and_triggers import set_defaults_and_triggers
 from view.vw_tww_additional_ws import vw_tww_additional_ws
+from view.vw_tww_measurement_series import vw_tww_measurement_series
 from view.vw_tww_reach import vw_tww_reach
 from view.vw_tww_wastewater_structure import vw_tww_wastewater_structure
 from view.vw_wastewater_structure import vw_wastewater_structure
