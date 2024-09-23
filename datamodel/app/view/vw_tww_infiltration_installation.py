@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# -- View: vw_tww_wastewater_structure
+# -- View: vw_tww_infiltration_installation
 
 import argparse
 import os
@@ -14,9 +14,11 @@ from pirogue.utils import insert_command, select_columns, table_parts, update_co
 from yaml import safe_load
 
 
-def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definition: dict = None):
+def vw_tww_infiltration_installation(
+    srid: int, pg_service: str = None, extra_definition: dict = None
+):
     """
-    Creates tww_wastewater_structure view
+    Creates tww_infiltration_installation view
     :param srid: EPSG code for geometries
     :param pg_service: the PostgreSQL service name
     :param extra_definition: a dictionary for additional read-only columns
@@ -30,22 +32,12 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
     cursor = conn.cursor()
 
     view_sql = """
-    DROP VIEW IF EXISTS tww_app.vw_tww_wastewater_structure;
+    DROP VIEW IF EXISTS tww_app.vw_tww_infiltration_installation;
 
-    CREATE OR REPLACE VIEW tww_app.vw_tww_wastewater_structure AS
+    CREATE OR REPLACE VIEW tww_app.vw_tww_infiltration_installation AS
      SELECT
-        ws.identifier as identifier,
+        ws.identifier as identifier
 
-        CASE
-          WHEN ma.obj_id IS NOT NULL THEN 'manhole'
-          WHEN ss.obj_id IS NOT NULL THEN 'special_structure'
-          WHEN dp.obj_id IS NOT NULL THEN 'discharge_point'
-          WHEN ii.obj_id IS NOT NULL THEN 'infiltration_installation'
-          ELSE 'unknown'
-        END AS ws_type
-
-        , ma.function AS ma_function
-        , ss.function as ss_function
         , ws.fk_owner
         , ws.status
 
@@ -59,43 +51,27 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
 
         , {main_co_cols}
         , ST_Force2D(COALESCE(wn.situation3d_geometry, main_co.situation3d_geometry))::geometry(Point, {srid}) AS situation3d_geometry
-
-        , {ma_columns}
-
-        , {ss_columns}
-
         , {ii_columns}
 
-        , {dp_columns}
+        , {mp_columns}
+        , {rb_columns}
 
         , {wn_cols}
         , {ne_cols}
 
-        , ws._label
-        , ws._cover_label
-        , ws._bottom_label
-        , ws._input_label
-        , ws._output_label
         , wn._usage_current AS _channel_usage_current
         , wn._function_hierarchic AS _channel_function_hierarchic
 
-        FROM tww_od.wastewater_structure ws
+
+      FROM tww_od.infiltration_installation ii
+        LEFT JOIN tww_od.wastewater_structure ws ON ii.obj_id = ws.obj_id
         LEFT JOIN tww_od.cover main_co ON main_co.obj_id = ws.fk_main_cover
         LEFT JOIN tww_od.structure_part main_co_sp ON main_co_sp.obj_id = ws.fk_main_cover
-        LEFT JOIN tww_od.manhole ma ON ma.obj_id = ws.obj_id
-        LEFT JOIN tww_od.special_structure ss ON ss.obj_id = ws.obj_id
-        LEFT JOIN tww_od.discharge_point dp ON dp.obj_id = ws.obj_id
-        LEFT JOIN tww_od.infiltration_installation ii ON ii.obj_id = ws.obj_id
+        LEFT JOIN tww_od.mechanical_pretreatment mp ON mp.obj_id = ws.obj_id
+        LEFT JOIN tww_od.retention_body rb ON rb.fk_infiltration_installation = ws.obj_id
         LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = ws.fk_main_wastewater_node
         LEFT JOIN tww_od.wastewater_node wn ON wn.obj_id = ws.fk_main_wastewater_node
-        {extra_joins}
-        LEFT JOIN tww_od.channel ch ON ch.obj_id = ws.obj_id
-        LEFT JOIN tww_od.wwtp_structure wt ON wt.obj_id = ws.obj_id
-        LEFT JOIN tww_od.small_treatment_plant sm ON sm.obj_id = ws.obj_id
-        LEFT JOIN tww_od.drainless_toilet dt ON dt.obj_id = ws.obj_id
-        WHERE '-1'=ALL(ARRAY[ch.obj_id,dt.obj_id,sm.obj_id,wt.obj_id]) IS NULL
-        AND '-2'=ALL(ARRAY[ch.obj_id,dt.obj_id,sm.obj_id,wt.obj_id]) IS NULL;
-
+        {extra_joins};
     """.format(
         srid=srid,
         extra_cols="\n    ".join(
@@ -146,28 +122,6 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             remap_columns={"cover_shape": "co_shape"},
             columns_at_end=["obj_id"],
         ),
-        ma_columns=select_columns(
-            pg_cur=cursor,
-            table_schema="tww_od",
-            table_name="manhole",
-            table_alias="ma",
-            remove_pkey=True,
-            indent=4,
-            skip_columns=["function"],
-            prefix="ma_",
-            remap_columns={"_orientation": "ma_orientation"},
-        ),
-        ss_columns=select_columns(
-            pg_cur=cursor,
-            table_schema="tww_od",
-            table_name="special_structure",
-            table_alias="ss",
-            remove_pkey=True,
-            indent=4,
-            skip_columns=["function"],
-            prefix="ss_",
-            remap_columns={},
-        ),
         ii_columns=select_columns(
             pg_cur=cursor,
             table_schema="tww_od",
@@ -179,16 +133,26 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             prefix="ii_",
             remap_columns={},
         ),
-        dp_columns=select_columns(
+        mp_columns=select_columns(
             pg_cur=cursor,
             table_schema="tww_od",
-            table_name="discharge_point",
-            table_alias="dp",
-            remove_pkey=True,
+            table_name="mechanical_pretreatment",
+            table_alias="mp",
+            remove_pkey=False,
             indent=4,
             skip_columns=[],
-            prefix="dp_",
+            prefix="mp_",
             remap_columns={},
+        ),
+        rb_columns=select_columns(
+            pg_cur=cursor,
+            table_schema="tww_od",
+            table_name="retention_body",
+            table_alias="rb",
+            remove_pkey=False,
+            indent=4,
+            skip_columns=["fk_infiltration_installation"],
+            prefix="rb_",
         ),
         wn_cols=select_columns(
             pg_cur=cursor,
@@ -199,9 +163,9 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             indent=4,
             skip_columns=[
                 "situation3d_geometry",
+                "_function_hierarchic",
                 "_usage_current",
                 "_status",
-                "_function_hierarchic",
             ],
             prefix="wn_",
             remap_columns={},
@@ -233,35 +197,28 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
     cursor.execute(view_sql)
 
     trigger_insert_sql = """
-    CREATE OR REPLACE FUNCTION tww_app.ft_vw_tww_wastewater_structure_INSERT()
+    CREATE OR REPLACE FUNCTION tww_app.ft_vw_tww_infiltration_installation_INSERT()
       RETURNS trigger AS
     $BODY$
+
     BEGIN
 
       NEW.identifier = COALESCE(NEW.identifier, NEW.obj_id);
 
     {insert_ws}
 
-      CASE
-        WHEN NEW.ws_type = 'manhole' THEN
-        -- Manhole
-    {insert_ma}
-
-        -- Special Structure
-        WHEN NEW.ws_type = 'special_structure' THEN
-    {insert_ss}
-
-        -- Discharge Point
-        WHEN NEW.ws_type = 'discharge_point' THEN
-    {insert_dp}
-
-        -- Infiltration Installation
-        WHEN NEW.ws_type = 'infiltration_installation' THEN
     {insert_ii}
 
-        ELSE
-         RAISE NOTICE 'Wastewater structure type not handled by this view (%)', NEW.ws_type; -- ERROR
-      END CASE;
+
+    CASE WHEN NOT tww_app.check_all_nulls(NEW,'mp') THEN
+    {insert_mp}
+    ELSE NULL;
+    END CASE;
+
+    CASE WHEN NOT tww_app.check_all_nulls(NEW,'rb') THEN
+    {insert_rb}
+    ELSE NULL;
+    END CASE;
 
     {insert_wn}
 
@@ -269,19 +226,22 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
         SET fk_main_wastewater_node = NEW.wn_obj_id
         WHERE obj_id = NEW.obj_id;
 
+    CASE WHEN NOT tww_app.check_all_nulls(NEW,'co') THEN
     {insert_vw_cover}
 
       UPDATE tww_od.wastewater_structure
         SET fk_main_cover = NEW.co_obj_id
         WHERE obj_id = NEW.obj_id;
+    ELSE NULL;
+    END CASE;
 
       RETURN NEW;
     END; $BODY$ LANGUAGE plpgsql VOLATILE;
 
-    DROP TRIGGER IF EXISTS vw_tww_wastewater_structure_INSERT ON tww_app.vw_tww_wastewater_structure;
+    DROP TRIGGER IF EXISTS vw_tww_infiltration_installation_INSERT ON tww_app.vw_tww_infiltration_installation;
 
-    CREATE TRIGGER vw_tww_wastewater_structure_INSERT INSTEAD OF INSERT ON tww_app.vw_tww_wastewater_structure
-      FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_tww_wastewater_structure_INSERT();
+    CREATE TRIGGER vw_tww_infiltration_installation_INSERT INSTEAD OF INSERT ON tww_app.vw_tww_infiltration_installation
+      FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_tww_infiltration_installation_INSERT();
     """.format(
         insert_ws=insert_command(
             pg_cur=cursor,
@@ -301,37 +261,6 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
                 "detail_geometry3d_geometry",
             ],
         ),
-        insert_ma=insert_command(
-            pg_cur=cursor,
-            table_schema="tww_od",
-            table_name="manhole",
-            table_alias="ma",
-            prefix="ma_",
-            remove_pkey=False,
-            indent=6,
-            skip_columns=["_orientation"],
-            remap_columns={"obj_id": "obj_id"},
-        ),
-        insert_ss=insert_command(
-            pg_cur=cursor,
-            table_schema="tww_od",
-            table_name="special_structure",
-            table_alias="ss",
-            prefix="ss_",
-            remove_pkey=False,
-            indent=6,
-            remap_columns={"obj_id": "obj_id"},
-        ),
-        insert_dp=insert_command(
-            pg_cur=cursor,
-            table_schema="tww_od",
-            table_name="discharge_point",
-            table_alias="dp",
-            prefix="dp_",
-            remove_pkey=False,
-            indent=6,
-            remap_columns={"obj_id": "obj_id"},
-        ),
         insert_ii=insert_command(
             pg_cur=cursor,
             table_schema="tww_od",
@@ -341,6 +270,38 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             remove_pkey=False,
             indent=6,
             remap_columns={"obj_id": "obj_id"},
+        ),
+        insert_mp=insert_command(
+            pg_cur=cursor,
+            table_schema="tww_od",
+            table_name="mechanical_pretreatment",
+            table_alias="mp",
+            prefix="mp_",
+            remove_pkey=False,
+            indent=6,
+            insert_values={
+                "identifier": "COALESCE(NULLIF(NEW.mp_identifier,''), NEW.identifier)",
+                "last_modification": "NOW()",
+                "fk_provider": "COALESCE(NULLIF(NEW.mp_fk_provider,''), NEW.fk_provider)",
+                "fk_dataowner": "COALESCE(NULLIF(NEW.mp_fk_dataowner,''), NEW.fk_dataowner)",
+                "fk_wastewater_structure": "NEW.obj_id",
+            },
+        ),
+        insert_rb=insert_command(
+            pg_cur=cursor,
+            table_schema="tww_od",
+            table_name="retention_body",
+            table_alias="rb",
+            prefix="rb_",
+            remove_pkey=False,
+            indent=6,
+            insert_values={
+                "identifier": "COALESCE(NULLIF(NEW.rb_identifier,''), NEW.identifier)",
+                "last_modification": "NOW()",
+                "fk_provider": "COALESCE(NULLIF(NEW.rb_fk_provider,''), NEW.fk_provider)",
+                "fk_dataowner": "COALESCE(NULLIF(NEW.rb_fk_dataowner,''), NEW.fk_dataowner)",
+                "fk_infiltration_installation": "NEW.obj_id",
+            },
         ),
         insert_wn=insert_command(
             pg_cur=cursor,
@@ -353,9 +314,9 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             pkey="obj_id",
             indent=6,
             skip_columns=[
+                "_function_hierarchic",
                 "_usage_current",
                 "_status",
-                "_function_hierarchic",
             ],
             insert_values={
                 "identifier": "COALESCE(NULLIF(NEW.wn_identifier,''), NEW.identifier)",
@@ -395,48 +356,27 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
     cursor.execute(trigger_insert_sql)
 
     update_trigger_sql = """
-    CREATE OR REPLACE FUNCTION tww_app.ft_vw_tww_wastewater_structure_UPDATE()
+    CREATE OR REPLACE FUNCTION tww_app.ft_vw_tww_infiltration_installation_UPDATE()
       RETURNS trigger AS
     $BODY$
     DECLARE
       dx float;
       dy float;
     BEGIN
+      {update_ii}
       {update_co}
+      IF NOT FOUND THEN
+        CASE WHEN NOT tww_app.check_all_nulls(NEW,'co') THEN -- no cover entries
+          {insert_vw_cover}
+        ELSE
+          PERFORM pg_notify('vw_tww_ws_no_cover', format('Wastewater Structure %s: no cover created. If you want to add a cover please fill in at least one cover attribute value.',NEW.identifier));
+        END CASE;
+      END IF;
       {update_sp}
       {update_ws}
       {update_wn}
       {update_ne}
 
-      IF OLD.ws_type <> NEW.ws_type THEN
-        CASE WHEN OLD.ws_type <> 'unknown' THEN
-          BEGIN
-            EXECUTE FORMAT({literal_delete_on_ws_change});
-          END;
-        END CASE;
-
-        CASE WHEN NEW.ws_type = ANY(ARRAY['manhole','special_structure','discharge_point','infiltration_installation','drainless_toilet','wwtp_structure','small_treatment_plant']) THEN
-          BEGIN
-            EXECUTE FORMAT({literal_insert_on_ws_change});
-          END;
-        END CASE;
-      END IF;
-
-      CASE
-        WHEN NEW.ws_type = 'manhole' THEN
-          {update_ma}
-
-        WHEN NEW.ws_type = 'special_structure' THEN
-          {update_ss}
-
-        WHEN NEW.ws_type = 'discharge_point' THEN
-          {update_dp}
-
-        WHEN NEW.ws_type = 'infiltration_installation' THEN
-          {update_ii}
-
-        ELSE -- do nothing
-      END CASE;
 
       -- Cover geometry has been moved
       IF NOT ST_Equals( OLD.situation3d_geometry, NEW.situation3d_geometry) THEN
@@ -524,14 +464,12 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
 
 
 
-    DROP TRIGGER IF EXISTS vw_tww_wastewater_structure_UPDATE ON tww_app.vw_tww_wastewater_structure;
+    DROP TRIGGER IF EXISTS vw_tww_infiltration_installation_UPDATE ON tww_app.vw_tww_infiltration_installation;
 
-    CREATE TRIGGER vw_tww_wastewater_structure_UPDATE INSTEAD OF UPDATE ON tww_app.vw_tww_wastewater_structure
-      FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_tww_wastewater_structure_UPDATE();
+    CREATE TRIGGER vw_tww_infiltration_installation_UPDATE INSTEAD OF UPDATE ON tww_app.vw_tww_infiltration_installation
+      FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_tww_infiltration_installation_UPDATE();
     """.format(
         srid=srid,
-        literal_delete_on_ws_change="'DELETE FROM tww_od.%I WHERE obj_id = %L',OLD.ws_type,OLD.obj_id",
-        literal_insert_on_ws_change="'INSERT INTO tww_od.%I(obj_id) VALUES (%L)',NEW.ws_type,OLD.obj_id",
         update_co=update_command(
             pg_cur=cursor,
             table_schema="tww_od",
@@ -577,39 +515,6 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             ],
             update_values={},
         ),
-        update_ma=update_command(
-            pg_cur=cursor,
-            table_schema="tww_od",
-            table_name="manhole",
-            table_alias="ws",
-            prefix="ma_",
-            remove_pkey=True,
-            indent=6,
-            skip_columns=["_orientation"],
-            remap_columns={"obj_id": "obj_id"},
-        ),
-        update_ss=update_command(
-            pg_cur=cursor,
-            table_schema="tww_od",
-            table_name="special_structure",
-            table_alias="ss",
-            prefix="ss_",
-            remove_pkey=True,
-            indent=6,
-            skip_columns=[],
-            remap_columns={"obj_id": "obj_id"},
-        ),
-        update_dp=update_command(
-            pg_cur=cursor,
-            table_schema="tww_od",
-            table_name="discharge_point",
-            table_alias="dp",
-            prefix="dp_",
-            remove_pkey=True,
-            indent=6,
-            skip_columns=[],
-            remap_columns={"obj_id": "obj_id"},
-        ),
         update_ii=update_command(
             pg_cur=cursor,
             table_schema="tww_od",
@@ -630,9 +535,9 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             indent=6,
             skip_columns=[
                 "situation3d_geometry",
+                "_function_hierarchic",
                 "_usage_current",
                 "_status",
-                "_function_hierarchic",
             ],
         ),
         update_ne=update_command(
@@ -644,32 +549,59 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             indent=6,
             skip_columns=[],
         ),
+        insert_vw_cover=insert_command(
+            pg_cur=cursor,
+            table_schema="tww_app",
+            table_name="vw_cover",
+            table_type="view",
+            table_alias="co",
+            prefix="co_",
+            remove_pkey=False,
+            pkey="obj_id",
+            indent=10,
+            remap_columns={"cover_shape": "co_shape"},
+            insert_values={
+                "identifier": "COALESCE(NULLIF(NEW.co_identifier,''), NEW.identifier)",
+                "situation3d_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), 'nan'), {srid} )".format(
+                    srid=srid
+                ),
+                "last_modification": "NOW()",
+                "fk_provider": "NEW.fk_provider",
+                "fk_dataowner": "NEW.fk_dataowner",
+                "fk_wastewater_structure": "NEW.obj_id",
+            },
+            returning="obj_id INTO OLD.co_obj_id",
+        ),
     )
 
     cursor.execute(update_trigger_sql)
 
     trigger_delete_sql = """
-    CREATE OR REPLACE FUNCTION tww_app.ft_vw_tww_wastewater_structure_DELETE()
+    CREATE OR REPLACE FUNCTION tww_app.ft_vw_tww_infiltration_installation_DELETE()
       RETURNS trigger AS
     $BODY$
     DECLARE
     BEGIN
       DELETE FROM tww_od.wastewater_structure WHERE obj_id = OLD.obj_id;
+      DELETE FROM tww_od.mechanical_pretreatment WHERE fk_wastewater_structure = OLD.obj_id;
+      DELETE FROM tww_od.retention_body WHERE fk_infiltration_installation = OLD.obj_id;
     RETURN OLD;
     END; $BODY$ LANGUAGE plpgsql VOLATILE;
 
-    DROP TRIGGER IF EXISTS vw_tww_wastewater_structure_DELETE ON tww_app.vw_tww_wastewater_structure;
+    DROP TRIGGER IF EXISTS vw_tww_infiltration_installation_DELETE ON tww_app.vw_tww_infiltration_installation;
 
-    CREATE TRIGGER vw_tww_wastewater_structure_DELETE INSTEAD OF DELETE ON tww_app.vw_tww_wastewater_structure
-      FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_tww_wastewater_structure_DELETE();
+    CREATE TRIGGER vw_tww_infiltration_installation_DELETE INSTEAD OF DELETE ON tww_app.vw_tww_infiltration_installation
+      FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_tww_infiltration_installation_DELETE();
     """
 
     cursor.execute(trigger_delete_sql)
 
     extras = """
-    ALTER VIEW tww_app.vw_tww_wastewater_structure ALTER obj_id SET DEFAULT tww_app.generate_oid('tww_od','wastewater_structure');
-    ALTER VIEW tww_app.vw_tww_wastewater_structure ALTER co_obj_id SET DEFAULT tww_app.generate_oid('tww_od','cover');
-    ALTER VIEW tww_app.vw_tww_wastewater_structure ALTER wn_obj_id SET DEFAULT tww_app.generate_oid('tww_od','wastewater_node');
+    ALTER VIEW tww_app.vw_tww_infiltration_installation ALTER obj_id SET DEFAULT tww_app.generate_oid('tww_od','wastewater_structure');
+    ALTER VIEW tww_app.vw_tww_infiltration_installation ALTER co_obj_id SET DEFAULT tww_app.generate_oid('tww_od','cover');
+    ALTER VIEW tww_app.vw_tww_infiltration_installation ALTER wn_obj_id SET DEFAULT tww_app.generate_oid('tww_od','wastewater_node');
+    ALTER VIEW tww_app.vw_tww_infiltration_installation ALTER mp_obj_id SET DEFAULT tww_app.generate_oid('tww_od','mechanical_pretreatment');
+    ALTER VIEW tww_app.vw_tww_infiltration_installation ALTER rb_obj_id SET DEFAULT tww_app.generate_oid('tww_od','retention_body');
     """
     cursor.execute(extras)
 
@@ -691,6 +623,6 @@ if __name__ == "__main__":
     srid = args.srid or os.getenv("SRID")
     pg_service = args.pg_service or os.getenv("PGSERVICE")
     extra_definition = safe_load(open(args.extra_definition)) if args.extra_definition else {}
-    vw_tww_wastewater_structure(
+    vw_tww_infiltration_installation(
         srid=srid, pg_service=pg_service, extra_definition=extra_definition
     )
