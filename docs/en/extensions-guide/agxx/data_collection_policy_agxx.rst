@@ -18,7 +18,7 @@ The AG-64/AG-96 object-ids are mapped to the database as follows:
 
 Wherever possible, the value lists of VSA DSS are used. In cases where a 1:1 mapping is possible, there is no additional value list entry for AG-64/96. Instead, one can use the corresponding VSA-DSS value which is translated on export. These cases are listed below.
 
-Almost all VSA-DSS values of the mentioned layers that do not exist in AG-64/96 are mapped to AG-64/96 using a backwards relation. Per default, the VSA-specific value list codes which are ambiguous in AG-64/96 are set to ´´inactive´´.
+Almost all VSA-DSS values of the mentioned layers that do not exist in AG-64/96 are mapped to AG-64/96 using a backwards relation. Per default, the VSA-specific value list codes which are ambiguous in AG-64/96 are set to ``inactive``.
 
 The AG-64/96 values are automatically mapped to VSA DSS where sensible, allowing to export both models.
 
@@ -42,197 +42,198 @@ The base OID for the Infrastrukturknoten/GEPKnoten is taken from ``tww_od.wastew
 
 The FunktionAG is mapped from
 
-  * manhole.function
-  * special_structure.function
-  * infiltration_installation.kind
-  * discharge_point.relevance
+  * ``manhole.function``
+  * ``special_structure``
+  * ``infiltration_installation.kind``
+  * ``discharge_point.relevance``
+  * ``wastewater_node.ag64_function``
+  * ``wwtp_structure.obj_id``
+  * ``measurement.obj_id``
 
-The FunktionAG ´´Kontrollschacht´´ is not included in the value list. Use ´´manhole´´ or ´´combined_manhole´´ instead, which are mapped using a backwards relation.
+
+The FunktionAG ``Kontrollschacht`` is not included in the value list. Use ``manhole`` or ``combined_manhole`` instead, which are mapped using a backwards relation.
 
 The following table explains the mapping of FunktionAG in detail. If there are multiple options for TWW class, the type is defined dependent on whether a detail geometry exists. The value_de is only listed if the AG-64/96 value is not eligible
 
-.. list-table:: Mapping of FunktionAG
-   :widths: 40 40 20
+.. list-table::
+   :widths: 30 45 25
    :header-rows: 1
+
    * - Value in AG-64/AG-96
-     - Row in TWW
-	 - value_de
+     - structure type
+     - Comment
    * - abflussloseGrube
-     - special_structure.function
-	 -
+     - special_structure
+     -
    * - Absturzbauwerk
-     - special_structure.function / manhole.function
-	 -
+     - special_structure / manhole
+     -
    * - Abwasserfaulraum
-     - special_structure.function
-	 -
+     - special_structure
+     -
    * - Abwasserreinigungsanlage
-     - wwtp_structure.kind
-	 - any value
+     - wwtp_structure
+     - regardless of ``kind`` value
    * - andere
-     - special_structure.function / manhole.function / wastewater_node.ag64_function
-	 -
+     - special_structure / manhole / wastewater_node
+     -
    * - Anschluss
-     - wastewater_node.ag64_function
-	 -
-   * - andere
-     - special_structure.function / manhole.function  / wastewater_node.ag64_function
-	 -
+     - wastewater_node
+     -
    * - Be_Entlueftung
-     - special_structure.function / manhole.function
-	 -
+     - special_structure / manhole
+     -
    * - Bodenablauf
-     - manhole.function
-	 -
+     - manhole
+     -
    * - Dachwasserschacht
-     - manhole.function
-	 -
+     - manhole
+     -
    * - Duekerkammer
-     - special_structure.function
-	 -
+     - special_structure
+     -
    * - Duekeroberhaupt
-     - special_structure.function
-	 -
+     - special_structure
+     -
    * - Einlaufschacht
-     - manhole.function
-	 -
+     - manhole
+     -
    * - Einleitstelle_gewaesserrelevant
-     - discharge_point.relevance
-	 - gewaesserrelevant
+     - discharge_point
+     -
    * - Einleitstelle_nicht_gewaesserrelevant
-     - discharge_point.relevance
-	 - nicht_gewaesserrelevant
+     - discharge_point
+     -
    * - Entwaesserungsrinne
-     - manhole.function
-	 -
+     - manhole
+     -
    * - Faulgrube
-     - special_structure.function
-	 -
+     - special_structure
+     -
    * - Gelaendemulde
-     - special_structure.function
-	 -
+     - special_structure
+     -
    * - Geleiseschacht
-     - manhole.function
-	 -
+     - manhole
+     -
    * - Geschiebefang
-     - special_structure.function
-	 -
+     - special_structure
+     -
    * - Guellegrube
-     - special_structure.function
-	 -
+     - special_structure
+     -
    * - Klaergrube
-     - special_structure.function
-	 -
+     - special_structure
+     -
    * - Kontrollschacht
-     - manhole.function
-	 - Kontroll-Einstiegschacht or Kombischacht
+     - special_structure / manhole
+     - use ``Kontroll-Einstiegschacht`` or ``Kombischacht``
    * - Leitungsknoten
      - no wastewater structure
-	 -
+     -
    * - Messstelle
      - measurement not in special construction
-	 -
+     -
    * - Oelabscheider
-     - special_structure.function / manhole.function
-	 -
+     - special_structure / manhole
+     -
    * - Oelrueckhaltebecken
-     - special_structure.function
-	 -
+     - special_structure
+     - maps to ``Behandlungsanlage`` on DSS export
    * - Pumpwerk
-     - special_structure.function / manhole.function
-	 -
+     - special_structure / manhole
+     -
    * - Regenbecken_Durchlaufbecken
-     - special_structure.function
-	 -
+     - special_structure
+     -
    * - Regenbecken_Fangbecken
-     - special_structure.function
-	 -
+     - special_structure
+     -
    * - Regenbecken_Fangkanal
-     - special_structure.function
-	 -
+     - special_structure
+     -
    * - Regenbecken_Regenklaerbecken
-     - special_structure.function
-	 -
+     - special_structure
+     -
    * - Regenbecken_Regenrueckhaltebecken
-     - special_structure.function
-	 -
+     - special_structure
+     -
    * - Regenbecken_Regenrueckhaltekanal
-     - special_structure.function
-	 -
+     - special_structure
+     -
    * - Regenbecken_Verbundbecken
-     - special_structure.function
-	 -
+     - special_structure
+     -
    * - Regenueberlauf
-     - special_structure.function / manhole.function
-	 -
+     - special_structure / manhole
+     -
    * - Regenwasserrechen
-     - special_structure.function
-	 -
+     - special_structure
+     -
    * - Regenwassersieb
-     - special_structure.function
-	 -
+     - special_structure
+     -
    * - Rohrbruecke
-     - special_structure.function
-	 -
+     - special_structure
+     -
    * - Schlammfang
-     - manhole.function
-	 -
+     - manhole
+     - maps to ``Schlammsammler`` on DSS export
    * - Schlammsammler
-     - manhole.function
-	 -
+     - manhole
+     -
    * - Schwimmstoffabscheider
-     - special_structure.function / manhole.function
-	 -
+     - special_structure / manhole
+     -
    * - seitlicherZugang
-     - special_structure.function
-	 -
+     - special_structure
+     -
    * - Spuelschacht
-     - special_structure.function / manhole.function
-	 -
+     - special_structure / manhole
+     -
    * - Strassenwasserbehandlungsanlage
-     - special_structure.function
-	 -
+     - special_structure
+     - maps to ``Behandlungsanlage`` on DSS export
    * - Trennbauwerk
-     - special_structure.function / manhole.function
-	 -
+     - special_structure / manhole
+     -
    * - unbekannt
-     - special_structure.function / manhole.function
-	 -
+     - special_structure / manhole
+     -
    * - Versickerungsanlage.Versickerungsbecken
-     - infiltration_installation.kind
-	 - Versickerungsbecken
+     - infiltration_installation
+     -
    * - Versickerungsanlage.Kieskoerper
-     - infiltration_installation.kind
-	 - Kieskoerper
+     - infiltration_installation
+     -
    * - Versickerungsanlage.Versickerungsschacht
-     - infiltration_installation.kind
-	 - Versickerungsschacht
+     - infiltration_installation
+     -
    * - Versickerungsanlage.Versickerungsstrang
-     - infiltration_installation.kind
-	 - Versickerungsstrang_Galerie
+     - infiltration_installation
+     - use ``Versickerungsstrang_Galerie``
    * - Versickerungsanlage.Versickerungsschacht_Strang
-     - infiltration_installation.kind
-	 - Kombination_Schacht_Strang
+     - infiltration_installation
+     -  use ``Kombination_Schacht_Strang``
    * - Versickerungsanlage.Retentionsfilterbecken
-     - infiltration_installation.kind
-	 - Retentionsfilterbecken
+     - infiltration_installation
+     - maps to ``andere_mit_Bodenpassage`` on DSS export
    * - Versickerungsanlage.andere
-     - infiltration_installation.kind
-	 - andere
+     - infiltration_installation
+     - maps to ``unbekannt`` on DSS export
    * - Versickerungsanlage.unbekannt
-     - infiltration_installation.kind
-	 - unbekannt
+     - infiltration_installation
+     -
    * - Vorbehandlung
-     - special_structure.function
-	 - Vorbehandlungsanlage
+     - special_structure
+     - use ``Vorbehandlungsanlage``
    * - Wirbelfallschacht
-     - special_structure.function
+     - special_structure
      -
 
 Handling of building connections
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Building connections are defined in the datamodel as Infrastrukturknoten/GEPKnoten with funktionag "Anschluss". As these are no wastewater structures, the function is attributed to the wastewater node (``wastewater_node.ag64_function``).
-
 
 Handling of covers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -241,10 +242,13 @@ The AG-64/AG-96 data collection guidelines state the following:
   * The main wastewater node of a manhole or special structure must be mapped to the location of the main cover.
   * Secondary covers are mapped as Infrastrukturknoten/GEPKnoten with funktionag "andere".
 
-As topological relations to a node of funktionag "andere" are technically possible, we need to link all covers to a wastewater node linked to every cover.
+As topological relations to a node of funktionag "andere" are technically possible, we need to link all covers to a wastewater node using ``tww_od.cover.ag64_fk_wastewater_node``.
 In order to follow these limitations, there is an additional foreign key on ``tww_od.cover`` pointing to ``tww_od.wastewater_node``. A wastewater node's situation geometry is only overruled if it is referenced from a cover.
 Additionally, the attribute ``wastewater_node.ag64_function`` can be set to "andere".
 
+Handling of the attribute "IstSchnittstelle"
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AG-96 has an attribute ``IstSchnittstelle`` which is not present in VSA DSS 2020.1. The value is stored in ``tww_od.wastewater_node.ag96_isgateway``.
 
 Infrastrukturhaltung/GEPHaltung
 ----------------------------------
@@ -255,16 +259,17 @@ Apart from street water and square water, the NutzungsartAG are not modelled as 
 Ueberlauf_Foerderaggregat
 ---------------------------------
 
-The layer Ueberlauf_Foerderaggregat is mapped to ´tww_od.overflow´ and its specialisations
+The layer Ueberlauf_Foerderaggregat is mapped to `tww_od.overflow` and its specialisations
 
 GEPMassnahme
 ----------------
 
-GEPMassnahme is mapped to ´tww_od.measure´. The following categories can be mapped 1:1 onto a VSA DSS value and are therefore
+GEPMassnahme is mapped to `tww_od.measure`. The following categories can be mapped 1:1 onto a VSA DSS value and therefore have no separate value list entrance.
 
-.. list-table:: Mapping of Kategorie
+.. list-table::
    :widths: 50 50
    :header-rows: 1
+
    * - Value in AG-64/AG-96
      - value_de in TWW
    * - Reinigung
@@ -278,17 +283,17 @@ GEPMassnahme is mapped to ´tww_od.measure´. The following categories can be ma
 Bautenausserhalbbaugebiet
 -----------------------------
 
-Bautenausserhalbbaugebiet is mapped to ´tww_od.building_group´. There is no backwards mapping from VSA-DSS ´Gebaeudegruppe.Sanierungsbedarf´ to AG-96 ´Bautenausserhalbbaugebiet.Sanierungsbedarf´ because the value ´unbekannt´ cannot be mapped.
+Bautenausserhalbbaugebiet is mapped to `tww_od.building_group`. There is no backwards mapping from VSA-DSS `Gebaeudegruppe.Sanierungsbedarf` to AG-96 `Bautenausserhalbbaugebiet.Sanierungsbedarf` because the value `unbekannt` cannot be mapped.
 
 SBW_Einzugsgebiet
 ---------------------
 
-SBW_Einzugsgebiet is mapped to ´tww_od.catchment_area_totals´. The perimeter geometry is stored as an extension geometry attribute. In order to alter it, one needs to manually import the layer into the qgs project.
+SBW_Einzugsgebiet is mapped to `tww_od.catchment_area_totals`. The perimeter geometry is stored as an extension geometry attribute (``ag_96_perimeter_geometry``). In order to alter it, one needs to manually import the layer into the qgs project.
 
 There exists a function to calculate the perimeter geometry by aggregating the catchment areas via catchment_area->log_card->main_log_card->hydraulic_char_data->catchment_area_totals.
-The perimeter geometry is a MultiSurface, while the INTERLIS model requires a CompoundCurve. According to the official data collection policy of the Canton, one should violate the datamodel and export a MultiPart. As the underlying export mechanism ili2pg does not allow to export a wrong geometry type, only the biggest Singlepart is exported.
+The perimeter geometry is a MultiSurface, while the INTERLIS model requires a CurvePolygon. According to the official data collection policy of the Canton, one should violate the datamodel and export a MultiPart. As the underlying export mechanism ili2pg does not allow to export a wrong geometry type, only the biggest Singlepart is exported.
 
 VersickerungsbereichAG
 ------------------------
 
-VersickerungsbereichAG is mapped to ´tww_od.infiltration_zone´.
+VersickerungsbereichAG is mapped to `tww_od.infiltration_zone`.
