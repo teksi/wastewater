@@ -22,7 +22,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="5.2.2. Data collection policy" href="data_collection_policy_agxx.html" />
-    <link rel="prev" title="5.2. Editing in TWW" href="index.html" /> 
+    <link rel="prev" title="5.2. Extension AG-64/AG-96" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -54,7 +54,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">4. Admin Guide</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">5. Official TWW extensions</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../initialize-extensions.html">5.1. Initialising Database extensions</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="index.html">5.2. Editing in TWW</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">5.2. Extension AG-64/AG-96</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">5.2.1. Plugin and Project Setup</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#enable-ag-64-ag-96-interlis-imports-and-exports">5.2.1.1. Enable AG-64/AG-96 Interlis Imports and Exports</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#handling-of-last-modification">5.2.1.2. Handling of last modification</a></li>
@@ -85,7 +85,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">5. </span>Official TWW extensions</a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">5.2. </span>Editing in TWW</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">5.2. </span>Extension AG-64/AG-96</a></li>
       <li class="breadcrumb-item active"><span class="section-number">5.2.1. </span>Plugin and Project Setup</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/extensions-guide/agxx/plugin_setup_agxx.rst.txt" rel="nofollow"> View page source</a>
@@ -100,7 +100,7 @@
 <div></div></blockquote>
 <section id="plugin-and-project-setup">
 <h1><span class="section-number">5.2.1. </span>Plugin and Project Setup<a class="headerlink" href="#plugin-and-project-setup" title="Link to this heading"></a></h1>
-<p>In order to use the AG-64/AG-96 extension, the database must be initialized accordingly. See <cite>initialize database extensions &lt;../initialize_extensions.html&gt;_</cite> for further explanations.</p>
+<p>In order to use the AG-64/AG-96 extension, the database must be initialized accordingly. See <span class="xref std std-ref">initialize-extensions</span> for further explanations.</p>
 <section id="enable-ag-64-ag-96-interlis-imports-and-exports">
 <h2><span class="section-number">5.2.1.1. </span>Enable AG-64/AG-96 Interlis Imports and Exports<a class="headerlink" href="#enable-ag-64-ag-96-interlis-imports-and-exports" title="Link to this heading"></a></h2>
 <p>In the plugin, there is a hidden functionality that allows importing and exporting AG-64/AG-96 interlis files. In order to activate it, one needs to open the TWW settings</p>
@@ -119,25 +119,25 @@
 </section>
 <section id="handling-of-last-modification">
 <h2><span class="section-number">5.2.1.2. </span>Handling of last modification<a class="headerlink" href="#handling-of-last-modification" title="Link to this heading"></a></h2>
-<p>AG-64 and AG-96 have separated values for last_modification. In the plugin settings, there is a hidden combobox that allows altering which last_modification(s) should be updated.</p>
+<p>AG-64 and AG-96 have separated values for last_modification. In the tab <em>Developer options</em> of the plugin settings, there is a combobox that allows altering which last_modification(s) should be updated.</p>
 <blockquote>
 <div><figure class="align-default">
 <img alt="../../_images/chooselastmodification.png" src="../../_images/chooselastmodification.png" />
 </figure>
 </div></blockquote>
-<p>In the database, there is a table from which that value is taken on startup, so the setting does not need to be changed every time a project is opened.</p>
+<p>In the database, there is a table storing the setting per user. That value is read on startup, so the setting does not need to be changed every time a project is opened.</p>
 <blockquote>
 <div></div></blockquote>
 </section>
 <section id="project-setup">
 <h2><span class="section-number">5.2.1.3. </span>Project setup<a class="headerlink" href="#project-setup" title="Link to this heading"></a></h2>
-<p>The attribute forms of AG-64/AG-96 are stored in a specific layer style automatically when starting the template .qgs project. In order to access them, right-click on the layer, select “styles” and cascade to “”AG-64/96”</p>
+<p>The attribute forms of AG-64/AG-96 are stored in a specific layer style automatically when starting the template .qgs project. In order to access them, right-click on the layer, select “styles” and cascade to “AG-64/96”</p>
 <blockquote>
 <div><figure class="align-default">
 <img alt="../../_images/selectstyle.png" src="../../_images/selectstyle.png" />
 </figure>
 </div></blockquote>
-<p>From there, you can copy/paste the forms if necessary</p>
+<p>From there, you can copy/paste the forms if necessary.</p>
 </section>
 </section>
 
@@ -145,7 +145,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="index.html" class="btn btn-neutral float-left" title="5.2. Editing in TWW" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="5.2. Extension AG-64/AG-96" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="data_collection_policy_agxx.html" class="btn btn-neutral float-right" title="5.2.2. Data collection policy" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

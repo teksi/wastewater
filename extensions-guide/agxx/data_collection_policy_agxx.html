@@ -54,7 +54,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">4. Admin Guide</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">5. Official TWW extensions</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../initialize-extensions.html">5.1. Initialising Database extensions</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="index.html">5.2. Editing in TWW</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">5.2. Extension AG-64/AG-96</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="plugin_setup_agxx.html">5.2.1. Plugin and Project Setup</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">5.2.2. Data collection policy</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#mapping">5.2.2.1. Mapping</a></li>
@@ -90,7 +90,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">5. </span>Official TWW extensions</a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">5.2. </span>Editing in TWW</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">5.2. </span>Extension AG-64/AG-96</a></li>
       <li class="breadcrumb-item active"><span class="section-number">5.2.2. </span>Data collection policy</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/extensions-guide/agxx/data_collection_policy_agxx.rst.txt" rel="nofollow"> View page source</a>
@@ -120,7 +120,7 @@
 </ul>
 </div></blockquote>
 <p>Wherever possible, the value lists of VSA DSS are used. In cases where a 1:1 mapping is possible, there is no additional value list entry for AG-64/96. Instead, one can use the corresponding VSA-DSS value which is translated on export. These cases are listed below.</p>
-<p>Almost all VSA-DSS values of the mentioned layers that do not exist in AG-64/96 are mapped to AG-64/96 using a backwards relation. Per default, the VSA-specific value list codes which are ambiguous in AG-64/96 are set to ´´inactive´´.</p>
+<p>Almost all VSA-DSS values of the mentioned layers that do not exist in AG-64/96 are mapped to AG-64/96 using a backwards relation. Per default, the VSA-specific value list codes which are ambiguous in AG-64/96 are set to <code class="docutils literal notranslate"><span class="pre">inactive</span></code>.</p>
 <p>The AG-64/96 values are automatically mapped to VSA DSS where sensible, allowing to export both models.</p>
 <section id="handling-of-organisations">
 <h3><span class="section-number">5.2.2.1.1. </span>Handling of organisations<a class="headerlink" href="#handling-of-organisations" title="Link to this heading"></a></h3>
@@ -139,14 +139,256 @@
 <p>The FunktionAG is mapped from</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>manhole.function</p></li>
-<li><p>special_structure.function</p></li>
-<li><p>infiltration_installation.kind</p></li>
-<li><p>discharge_point.relevance</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">manhole.function</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">special_structure</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">infiltration_installation.kind</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">discharge_point.relevance</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wastewater_node.ag64_function</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wwtp_structure.obj_id</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">measurement.obj_id</span></code></p></li>
 </ul>
 </div></blockquote>
-<p>The FunktionAG ´´Kontrollschacht´´ is not included in the value list. Use ´´manhole´´ or ´´combined_manhole´´ instead, which are mapped using a backwards relation.</p>
+<p>The FunktionAG <code class="docutils literal notranslate"><span class="pre">Kontrollschacht</span></code> is not included in the value list. Use <code class="docutils literal notranslate"><span class="pre">manhole</span></code> or <code class="docutils literal notranslate"><span class="pre">combined_manhole</span></code> instead, which are mapped using a backwards relation.</p>
 <p>The following table explains the mapping of FunktionAG in detail. If there are multiple options for TWW class, the type is defined dependent on whether a detail geometry exists. The value_de is only listed if the AG-64/96 value is not eligible</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 45.0%" />
+<col style="width: 25.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Value in AG-64/AG-96</p></th>
+<th class="head"><p>structure type</p></th>
+<th class="head"><p>Comment</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>abflussloseGrube</p></td>
+<td><p>special_structure</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Absturzbauwerk</p></td>
+<td><p>special_structure / manhole</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Abwasserfaulraum</p></td>
+<td><p>special_structure</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Abwasserreinigungsanlage</p></td>
+<td><p>wwtp_structure</p></td>
+<td><p>regardless of <code class="docutils literal notranslate"><span class="pre">kind</span></code> value</p></td>
+</tr>
+<tr class="row-even"><td><p>andere</p></td>
+<td><p>special_structure / manhole / wastewater_node</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Anschluss</p></td>
+<td><p>wastewater_node</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Be_Entlueftung</p></td>
+<td><p>special_structure / manhole</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Bodenablauf</p></td>
+<td><p>manhole</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Dachwasserschacht</p></td>
+<td><p>manhole</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Duekerkammer</p></td>
+<td><p>special_structure</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Duekeroberhaupt</p></td>
+<td><p>special_structure</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Einlaufschacht</p></td>
+<td><p>manhole</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Einleitstelle_gewaesserrelevant</p></td>
+<td><p>discharge_point</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Einleitstelle_nicht_gewaesserrelevant</p></td>
+<td><p>discharge_point</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Entwaesserungsrinne</p></td>
+<td><p>manhole</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Faulgrube</p></td>
+<td><p>special_structure</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Gelaendemulde</p></td>
+<td><p>special_structure</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Geleiseschacht</p></td>
+<td><p>manhole</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Geschiebefang</p></td>
+<td><p>special_structure</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Guellegrube</p></td>
+<td><p>special_structure</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Klaergrube</p></td>
+<td><p>special_structure</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Kontrollschacht</p></td>
+<td><p>special_structure / manhole</p></td>
+<td><p>use <code class="docutils literal notranslate"><span class="pre">Kontroll-Einstiegschacht</span></code> or <code class="docutils literal notranslate"><span class="pre">Kombischacht</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Leitungsknoten</p></td>
+<td><p>no wastewater structure</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Messstelle</p></td>
+<td><p>measurement not in special construction</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Oelabscheider</p></td>
+<td><p>special_structure / manhole</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Oelrueckhaltebecken</p></td>
+<td><p>special_structure</p></td>
+<td><p>maps to <code class="docutils literal notranslate"><span class="pre">Behandlungsanlage</span></code> on DSS export</p></td>
+</tr>
+<tr class="row-even"><td><p>Pumpwerk</p></td>
+<td><p>special_structure / manhole</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Regenbecken_Durchlaufbecken</p></td>
+<td><p>special_structure</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Regenbecken_Fangbecken</p></td>
+<td><p>special_structure</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Regenbecken_Fangkanal</p></td>
+<td><p>special_structure</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Regenbecken_Regenklaerbecken</p></td>
+<td><p>special_structure</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Regenbecken_Regenrueckhaltebecken</p></td>
+<td><p>special_structure</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Regenbecken_Regenrueckhaltekanal</p></td>
+<td><p>special_structure</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Regenbecken_Verbundbecken</p></td>
+<td><p>special_structure</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Regenueberlauf</p></td>
+<td><p>special_structure / manhole</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Regenwasserrechen</p></td>
+<td><p>special_structure</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Regenwassersieb</p></td>
+<td><p>special_structure</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Rohrbruecke</p></td>
+<td><p>special_structure</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Schlammfang</p></td>
+<td><p>manhole</p></td>
+<td><p>maps to <code class="docutils literal notranslate"><span class="pre">Schlammsammler</span></code> on DSS export</p></td>
+</tr>
+<tr class="row-odd"><td><p>Schlammsammler</p></td>
+<td><p>manhole</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Schwimmstoffabscheider</p></td>
+<td><p>special_structure / manhole</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>seitlicherZugang</p></td>
+<td><p>special_structure</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Spuelschacht</p></td>
+<td><p>special_structure / manhole</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Strassenwasserbehandlungsanlage</p></td>
+<td><p>special_structure</p></td>
+<td><p>maps to <code class="docutils literal notranslate"><span class="pre">Behandlungsanlage</span></code> on DSS export</p></td>
+</tr>
+<tr class="row-even"><td><p>Trennbauwerk</p></td>
+<td><p>special_structure / manhole</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>unbekannt</p></td>
+<td><p>special_structure / manhole</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Versickerungsanlage.Versickerungsbecken</p></td>
+<td><p>infiltration_installation</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Versickerungsanlage.Kieskoerper</p></td>
+<td><p>infiltration_installation</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Versickerungsanlage.Versickerungsschacht</p></td>
+<td><p>infiltration_installation</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Versickerungsanlage.Versickerungsstrang</p></td>
+<td><p>infiltration_installation</p></td>
+<td><p>use <code class="docutils literal notranslate"><span class="pre">Versickerungsstrang_Galerie</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Versickerungsanlage.Versickerungsschacht_Strang</p></td>
+<td><p>infiltration_installation</p></td>
+<td><p>use <code class="docutils literal notranslate"><span class="pre">Kombination_Schacht_Strang</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Versickerungsanlage.Retentionsfilterbecken</p></td>
+<td><p>infiltration_installation</p></td>
+<td><p>maps to <code class="docutils literal notranslate"><span class="pre">andere_mit_Bodenpassage</span></code> on DSS export</p></td>
+</tr>
+<tr class="row-even"><td><p>Versickerungsanlage.andere</p></td>
+<td><p>infiltration_installation</p></td>
+<td><p>maps to <code class="docutils literal notranslate"><span class="pre">unbekannt</span></code> on DSS export</p></td>
+</tr>
+<tr class="row-odd"><td><p>Versickerungsanlage.unbekannt</p></td>
+<td><p>infiltration_installation</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Vorbehandlung</p></td>
+<td><p>special_structure</p></td>
+<td><p>use <code class="docutils literal notranslate"><span class="pre">Vorbehandlungsanlage</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Wirbelfallschacht</p></td>
+<td><p>special_structure</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <section id="handling-of-building-connections">
 <h3><span class="section-number">5.2.2.2.1. </span>Handling of building connections<a class="headerlink" href="#handling-of-building-connections" title="Link to this heading"></a></h3>
 <p>Building connections are defined in the datamodel as Infrastrukturknoten/GEPKnoten with funktionag “Anschluss”. As these are no wastewater structures, the function is attributed to the wastewater node (<code class="docutils literal notranslate"><span class="pre">wastewater_node.ag64_function</span></code>).</p>
@@ -160,9 +402,13 @@
 <li><p>Secondary covers are mapped as Infrastrukturknoten/GEPKnoten with funktionag “andere”.</p></li>
 </ul>
 </div></blockquote>
-<p>As topological relations to a node of funktionag “andere” are technically possible, we need to link all covers to a wastewater node linked to every cover.
+<p>As topological relations to a node of funktionag “andere” are technically possible, we need to link all covers to a wastewater node using <code class="docutils literal notranslate"><span class="pre">tww_od.cover.ag64_fk_wastewater_node</span></code>.
 In order to follow these limitations, there is an additional foreign key on <code class="docutils literal notranslate"><span class="pre">tww_od.cover</span></code> pointing to <code class="docutils literal notranslate"><span class="pre">tww_od.wastewater_node</span></code>. A wastewater node’s situation geometry is only overruled if it is referenced from a cover.
 Additionally, the attribute <code class="docutils literal notranslate"><span class="pre">wastewater_node.ag64_function</span></code> can be set to “andere”.</p>
+</section>
+<section id="handling-of-the-attribute-istschnittstelle">
+<h3><span class="section-number">5.2.2.2.3. </span>Handling of the attribute “IstSchnittstelle”<a class="headerlink" href="#handling-of-the-attribute-istschnittstelle" title="Link to this heading"></a></h3>
+<p>AG-96 has an attribute <code class="docutils literal notranslate"><span class="pre">IstSchnittstelle</span></code> which is not present in VSA DSS 2020.1. The value is stored in <code class="docutils literal notranslate"><span class="pre">tww_od.wastewater_node.ag96_isgateway</span></code>.</p>
 </section>
 </section>
 <section id="infrastrukturhaltung-gephaltung">
@@ -171,25 +417,47 @@ Additionally, the attribute <code class="docutils literal notranslate"><span cla
 </section>
 <section id="ueberlauf-foerderaggregat">
 <h2><span class="section-number">5.2.2.4. </span>Ueberlauf_Foerderaggregat<a class="headerlink" href="#ueberlauf-foerderaggregat" title="Link to this heading"></a></h2>
-<p>The layer Ueberlauf_Foerderaggregat is mapped to ´tww_od.overflow´ and its specialisations</p>
+<p>The layer Ueberlauf_Foerderaggregat is mapped to <cite>tww_od.overflow</cite> and its specialisations</p>
 </section>
 <section id="gepmassnahme">
 <h2><span class="section-number">5.2.2.5. </span>GEPMassnahme<a class="headerlink" href="#gepmassnahme" title="Link to this heading"></a></h2>
-<p>GEPMassnahme is mapped to ´tww_od.measure´. The following categories can be mapped 1:1 onto a VSA DSS value and are therefore</p>
+<p>GEPMassnahme is mapped to <cite>tww_od.measure</cite>. The following categories can be mapped 1:1 onto a VSA DSS value and therefore have no separate value list entrance.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Value in AG-64/AG-96</p></th>
+<th class="head"><p>value_de in TWW</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Reinigung</p></td>
+<td><p>Erhaltung_Reinigung</p></td>
+</tr>
+<tr class="row-odd"><td><p>Retention</p></td>
+<td><p>Abflussvermeidung_Retention_Versickerung</p></td>
+</tr>
+<tr class="row-even"><td><p>Sonderbauwerk.Neubau</p></td>
+<td><p>Sonderbauwerk_Neubau</p></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="bautenausserhalbbaugebiet">
 <h2><span class="section-number">5.2.2.6. </span>Bautenausserhalbbaugebiet<a class="headerlink" href="#bautenausserhalbbaugebiet" title="Link to this heading"></a></h2>
-<p>Bautenausserhalbbaugebiet is mapped to ´tww_od.building_group´. There is no backwards mapping from VSA-DSS ´Gebaeudegruppe.Sanierungsbedarf´ to AG-96 ´Bautenausserhalbbaugebiet.Sanierungsbedarf´ because the value ´unbekannt´ cannot be mapped.</p>
+<p>Bautenausserhalbbaugebiet is mapped to <cite>tww_od.building_group</cite>. There is no backwards mapping from VSA-DSS <cite>Gebaeudegruppe.Sanierungsbedarf</cite> to AG-96 <cite>Bautenausserhalbbaugebiet.Sanierungsbedarf</cite> because the value <cite>unbekannt</cite> cannot be mapped.</p>
 </section>
 <section id="sbw-einzugsgebiet">
 <h2><span class="section-number">5.2.2.7. </span>SBW_Einzugsgebiet<a class="headerlink" href="#sbw-einzugsgebiet" title="Link to this heading"></a></h2>
-<p>SBW_Einzugsgebiet is mapped to ´tww_od.catchment_area_totals´. The perimeter geometry is stored as an extension geometry attribute. In order to alter it, one needs to manually import the layer into the qgs project.</p>
+<p>SBW_Einzugsgebiet is mapped to <cite>tww_od.catchment_area_totals</cite>. The perimeter geometry is stored as an extension geometry attribute (<code class="docutils literal notranslate"><span class="pre">ag_96_perimeter_geometry</span></code>). In order to alter it, one needs to manually import the layer into the qgs project.</p>
 <p>There exists a function to calculate the perimeter geometry by aggregating the catchment areas via catchment_area-&gt;log_card-&gt;main_log_card-&gt;hydraulic_char_data-&gt;catchment_area_totals.
-The perimeter geometry is a MultiSurface, while the INTERLIS model requires a CompoundCurve. According to the official data collection policy of the Canton, one should violate the datamodel and export a MultiPart. As the underlying export mechanism ili2pg does not allow to export a wrong geometry type, only the biggest Singlepart is exported.</p>
+The perimeter geometry is a MultiSurface, while the INTERLIS model requires a CurvePolygon. According to the official data collection policy of the Canton, one should violate the datamodel and export a MultiPart. As the underlying export mechanism ili2pg does not allow to export a wrong geometry type, only the biggest Singlepart is exported.</p>
 </section>
 <section id="versickerungsbereichag">
 <h2><span class="section-number">5.2.2.8. </span>VersickerungsbereichAG<a class="headerlink" href="#versickerungsbereichag" title="Link to this heading"></a></h2>
-<p>VersickerungsbereichAG is mapped to ´tww_od.infiltration_zone´.</p>
+<p>VersickerungsbereichAG is mapped to <cite>tww_od.infiltration_zone</cite>.</p>
 </section>
 </section>
 
