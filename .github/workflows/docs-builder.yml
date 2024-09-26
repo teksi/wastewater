@@ -18,7 +18,7 @@ on:
       - docs/**
       - '.github/workflows/docs-builder.yml'
   schedule:
-    - cron: "22 11 * * *"
+    - cron: "30 04 * * *"
   workflow_dispatch:
 
 
