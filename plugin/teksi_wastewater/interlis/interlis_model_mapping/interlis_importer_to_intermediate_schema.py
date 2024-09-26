@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date, datetime
 
 from geoalchemy2.functions import ST_Force3D
 from sqlalchemy.orm import Session
@@ -440,12 +440,35 @@ class InterlisImporterToIntermediateSchema:
             )  # we flag it as dirty so it stays in the session. This is a workaround trick
             # needed bcause the session is not meant to be used as a cache: https://docs.sqlalchemy.org/en/20/orm/session_basics.html#is-the-session-a-cache
 
-            # Update modified values
+            # Update dates times (different resolution Interlis / TWW)
+            date_time_keys = [
+                "last_modification",
+                "time_point",
+                "date_last_examen",
+                "renovation_date",
+                "date_entry",
+                "time",
+                "date_mutation",
+            ]
+
+            # Double fields that needs special comparison (imported as text from interlis)
+            double_value_keys = ["value", "x", "y"]
+
             for key, value in kwargs.items():
-                if key == "last_modification":
+                if key in date_time_keys and isinstance(value, date):
                     value = datetime.combine(value, datetime.min.time())
 
                 instanceAttribute = getattr(instance, key, None)
+
+                if key in double_value_keys:
+                    try:
+                        value = float(value)
+                        instanceAttribute = float(instanceAttribute)
+                    except Exception:
+                        logger.warning(
+                            f"Values of column '{key}' are not convertible to float: interlis='{value}', old='{instanceAttribute}'"
+                        )
+
                 if instanceAttribute != value:
                     # Setattr in the background updates the session state and make it possible to use "is_modified" afterwards
                     setattr(instance, key, value)
@@ -2157,10 +2180,26 @@ class InterlisImporterToIntermediateSchema:
                 # The day ili2pg works, we probably need to double-check whether the referenced wastewater structure exists prior
                 # to creating this association.
                 # Soft matching based on from/to_point_identifier will be done in the GUI data checking process.
-                exam_to_wastewater_structure = self.create_or_update(
-                    self.model_classes_tww_od.re_maintenance_event_wastewater_structure,
-                    fk_wastewater_structure=row.abwasserbauwerkref,
-                    fk_maintenance_event=row.t_ili_tid,
+
+                exam_to_wastewater_structure = (
+                    self.session_tww.query(
+                        self.model_classes_tww_od.re_maintenance_event_wastewater_structure
+                    )
+                    .filter_by(
+                        fk_wastewater_structure=row.abwasserbauwerkref,
+                        fk_maintenance_event=row.t_ili_tid,
+                    )
+                    .first()
+                )
+                if exam_to_wastewater_structure is not None:
+                    # Already existing -> do nothing
+                    continue
+
+                exam_to_wastewater_structure = (
+                    self.model_classes_tww_od.re_maintenance_event_wastewater_structure(
+                        fk_wastewater_structure=row.abwasserbauwerkref,
+                        fk_maintenance_event=row.t_ili_tid,
+                    )
                 )
                 self.session_tww.add(exam_to_wastewater_structure)
 
@@ -2277,16 +2316,29 @@ class InterlisImporterToIntermediateSchema:
         for row in self.session_interlis.query(
             self.model_classes_interlis.erhaltungsereignis_abwasserbauwerkassoc
         ):
+            re_maintenance_event_wastewater_structure = (
+                self.session_tww.query(
+                    self.model_classes_tww_od.re_maintenance_event_wastewater_structure
+                )
+                .filter_by(
+                    fk_wastewater_structure=self.get_pk(row.abwasserbauwerkref__REL),
+                    fk_maintenance_event=self.get_pk(
+                        row.erhaltungsereignis_abwasserbauwerkassocref__REL
+                    ),
+                )
+                .first()
+            )
+            if re_maintenance_event_wastewater_structure is not None:
+                # Already existing -> do nothing
+                continue
 
-            re_maintenance_event_wastewater_structure = self.create_or_update(
-                self.model_classes_tww_od.re_maintenance_event_wastewater_structure,
-                # this class does not inherit base_commmon
-                # **self.base_common(row),
-                # --- re_maintenance_event_wastewater_structure ---
-                fk_maintenance_event=self.get_pk(
-                    row.erhaltungsereignis_abwasserbauwerkassocref__REL
-                ),
-                fk_wastewater_structure=self.get_pk(row.abwasserbauwerkref__REL),
+            re_maintenance_event_wastewater_structure = (
+                self.model_classes_tww_od.re_maintenance_event_wastewater_structure(
+                    fk_maintenance_event=self.get_pk(
+                        row.erhaltungsereignis_abwasserbauwerkassocref__REL
+                    ),
+                    fk_wastewater_structure=self.get_pk(row.abwasserbauwerkref__REL),
+                )
             )
 
             self.session_tww.add(re_maintenance_event_wastewater_structure)
@@ -2296,11 +2348,19 @@ class InterlisImporterToIntermediateSchema:
         for row in self.session_interlis.query(
             self.model_classes_interlis.gebaeudegruppe_entsorgungassoc
         ):
-            re_building_group_disposal = self.create_or_update(
-                self.model_classes_tww_od.re_building_group_disposal,
-                # this class does not inherit base_commmon
-                # **self.base_common(row),
-                # --- re_building_group_disposal ---
+            re_building_group_disposal = (
+                self.session_tww.query(self.model_classes_tww_od.re_building_group_disposal)
+                .filter_by(
+                    fk_building_group=self.get_pk(row.gebaeudegruppe_entsorgungassocref__REL),
+                    fk_disposal=self.get_pk(row.entsorgungref__REL),
+                )
+                .first()
+            )
+            if re_building_group_disposal is not None:
+                # Already existing -> do nothing
+                continue
+
+            re_building_group_disposal = self.model_classes_tww_od.re_building_group_disposal(
                 fk_building_group=self.get_pk(row.gebaeudegruppe_entsorgungassocref__REL),
                 fk_disposal=self.get_pk(row.entsorgungref__REL),
             )
