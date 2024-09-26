@@ -2297,6 +2297,19 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="43" name="ex_weather" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="44" name="mn_kind" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
       </table>
+      <table name="vw_tww_measurement_series" numRows="0" remarks="" schema="tww_app" type="VIEW" viewSql=" SELECT ms.obj_id,&#10;    ms.dimension,&#10;    ms.fk_dataowner,&#10;    ms.fk_measuring_point,&#10;    ms.fk_provider,&#10;    ms.fk_wastewater_networkelement,&#10;    ms.identifier,&#10;    ms.kind,&#10;    ms.last_modification,&#10;    ms.remark,&#10;    array_agg(mr.value) AS mr_values&#10;   FROM (tww_od.measurement_series ms&#10;     LEFT JOIN tww_od.measurement_result mr ON (((ms.obj_id)::text = (mr.fk_measurement_series)::text)))&#10;  GROUP BY ms.obj_id, ms.dimension, ms.fk_dataowner, ms.fk_measuring_point, ms.fk_provider, ms.fk_wastewater_networkelement, ms.identifier, ms.kind, ms.last_modification, ms.remark;">
+         <column autoUpdated="false" defaultValue="tww_app.generate_oid('tww_od'::text, 'measurement_series'::text)" digits="0" id="0" name="obj_id" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="dimension" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="fk_dataowner" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="fk_measuring_point" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="fk_provider" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="fk_wastewater_networkelement" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="kind" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="8" name="last_modification" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="remark" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="8" id="10" name="mr_values" nullable="true" remarks="" size="8" type="_float4" typeCode="2003"/>
+      </table>
       <table name="vw_tww_overflow" numRows="0" remarks="" schema="tww_app" type="VIEW" viewSql=" SELECT&#10;        CASE&#10;            WHEN (leapingweir.obj_id IS NOT NULL) THEN 'leapingweir'::tww_app.overflow_type&#10;            WHEN (prank_weir.obj_id IS NOT NULL) THEN 'prank_weir'::tww_app.overflow_type&#10;            WHEN (pump.obj_id IS NOT NULL) THEN 'pump'::tww_app.overflow_type&#10;            ELSE 'unknown'::tww_app.overflow_type&#10;        END AS overflow_type,&#10;    overflow.obj_id,&#10;    overflow.actuation,&#10;    overflow.adjustability,&#10;    overflow.brand,&#10;    overflow.control,&#10;    overflow.discharge_point,&#10;    overflow.fk_control_center,&#10;    overflow.fk_dataowner,&#10;    overflow.fk_overflow_char,&#10;    overflow.fk_overflow_to,&#10;    overflow.fk_provider,&#10;    overflow.fk_wastewater_node,&#10;    overflow.function,&#10;    overflow.gross_costs,&#10;    overflow.identifier,&#10;    overflow.last_modification,&#10;    overflow.qon_dim,&#10;    overflow.remark,&#10;    overflow.signal_transmission,&#10;    overflow.subsidies,&#10;    leapingweir.length,&#10;    leapingweir.opening_shape,&#10;    leapingweir.width,&#10;    prank_weir.hydraulic_overflow_length,&#10;    prank_weir.level_max,&#10;    prank_weir.level_min,&#10;    prank_weir.weir_edge,&#10;    prank_weir.weir_kind,&#10;    pump.construction_type,&#10;    pump.operating_point,&#10;    pump.placement_of_actuation,&#10;    pump.placement_of_pump,&#10;    pump.pump_flow_max_single,&#10;    pump.pump_flow_min_single,&#10;    pump.start_level,&#10;    pump.stop_level,&#10;    n1.situation3d_geometry AS geometry&#10;   FROM ((((tww_od.overflow overflow&#10;     LEFT JOIN tww_od.leapingweir leapingweir ON (((leapingweir.obj_id)::text = (overflow.obj_id)::text)))&#10;     LEFT JOIN tww_od.prank_weir prank_weir ON (((prank_weir.obj_id)::text = (overflow.obj_id)::text)))&#10;     LEFT JOIN tww_od.pump pump ON (((pump.obj_id)::text = (overflow.obj_id)::text)))&#10;     LEFT JOIN tww_od.wastewater_node n1 ON (((overflow.fk_wastewater_node)::text = (n1.obj_id)::text)));">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="overflow_type" nullable="true" remarks="" size="2147483647" type="&quot;tww_app&quot;.&quot;overflow_type&quot;" typeCode="12"/>
          <column autoUpdated="false" defaultValue="tww_app.generate_oid('tww_od'::text, 'overflow'::text)" digits="0" id="1" name="obj_id" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
@@ -7867,6 +7880,74 @@ BEGIN
   
 RETURN NEW;
 END;]]></definition>
+         <parameters>
+            <parameter mode="IN"/>
+         </parameters>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="ft_vw_tww_measurement_series_delete()" returnType="trigger" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[DECLARE
+    BEGIN
+      DELETE FROM tww_od.measurement_series WHERE obj_id = OLD.obj_id;
+    RETURN OLD;
+    END;]]></definition>
+         <parameters>
+            <parameter mode="IN"/>
+         </parameters>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="ft_vw_tww_measurement_series_insert()" returnType="trigger" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[BEGIN
+
+      NEW.identifier = COALESCE(NEW.identifier, NEW.obj_id);
+
+    INSERT INTO tww_od.measurement_series (
+        obj_id
+      , dimension
+      , fk_dataowner
+      , fk_measuring_point
+      , fk_provider
+      , fk_wastewater_networkelement
+      , identifier
+      , kind
+      , last_modification
+      , remark
+    ) VALUES (
+        NEW.obj_id
+      , NEW.dimension
+      , NEW.fk_dataowner
+      , NEW.fk_measuring_point
+      , NEW.fk_provider
+      , NEW.fk_wastewater_networkelement
+      , NEW.identifier
+      , NEW.kind
+      , NEW.last_modification
+      , NEW.remark
+    );
+
+
+      RETURN NEW;
+    END;]]></definition>
+         <parameters>
+            <parameter mode="IN"/>
+         </parameters>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="ft_vw_tww_measurement_series_update()" returnType="trigger" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[BEGIN
+      UPDATE tww_od.measurement_series ms SET
+          dimension = NEW.dimension
+          , fk_dataowner = NEW.fk_dataowner
+          , fk_measuring_point = NEW.fk_measuring_point
+          , fk_provider = NEW.fk_provider
+          , fk_wastewater_networkelement = NEW.fk_wastewater_networkelement
+          , identifier = NEW.identifier
+          , kind = NEW.kind
+          , last_modification = NEW.last_modification
+          , remark = NEW.remark
+        WHERE obj_id = OLD.obj_id;
+       RETURN NEW;
+    END;]]></definition>
          <parameters>
             <parameter mode="IN"/>
          </parameters>
