@@ -63,6 +63,7 @@ class TestViews(unittest.TestCase, DbTestBase):
                     "clear_height": 100,
                     "coefficient_of_friction": 10,
                     "ws_identifier": reach["mh_id"],
+                    "ws_status": 8493,
                     "ch_function_hierarchic": 5062,
                     "rp_from_level": reach.get("rp_from_level", 1020.0),
                     "rp_to_level": reach.get("rp_to_level", 1000.0),
