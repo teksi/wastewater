@@ -85,10 +85,6 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
         LEFT JOIN tww_od.infiltration_installation ii ON ii.obj_id = ws.obj_id
         WHERE '-1'= ALL(ARRAY[ch.obj_id,ma.obj_id,ss.obj_id,dp.obj_id,ii.obj_id]) IS NULL
         AND '-2'= ALL(ARRAY[ch.obj_id,ma.obj_id,ss.obj_id,dp.obj_id,ii.obj_id]) IS NULL;
-
-        ALTER VIEW tww_app.vw_tww_additional_ws ALTER obj_id SET DEFAULT tww_app.generate_oid('tww_od','wastewater_structure');
-        ALTER VIEW tww_app.vw_tww_additional_ws ALTER co_obj_id SET DEFAULT tww_app.generate_oid('tww_od','cover');
-        ALTER VIEW tww_app.vw_tww_additional_ws ALTER wn_obj_id SET DEFAULT tww_app.generate_oid('tww_od','wastewater_node');
     """.format(
         srid=srid,
         ws_cols=select_columns(
@@ -164,7 +160,12 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
             table_alias="wn",
             remove_pkey=False,
             indent=4,
-            skip_columns=["situation3d_geometry"],
+            skip_columns=[
+                "situation3d_geometry",
+                "_status",
+                "_usage_current",
+                "_function_hierarchic",
+            ],
             prefix="wn_",
             remap_columns={},
             columns_at_end=["obj_id"],
@@ -290,6 +291,11 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
             remove_pkey=False,
             pkey="obj_id",
             indent=6,
+            skip_columns=[
+                "_usage_current",
+                "_status",
+                "_function_hierarchic",
+            ],
             insert_values={
                 "identifier": "COALESCE(NULLIF(NEW.wn_identifier,''), NEW.identifier)",
                 "situation3d_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), 'nan'), {srid} )".format(
@@ -533,7 +539,12 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
             table_alias="wn",
             prefix="wn_",
             indent=6,
-            skip_columns=["situation3d_geometry"],
+            skip_columns=[
+                "situation3d_geometry",
+                "_usage_current",
+                "_status",
+                "_function_hierarchic",
+            ],
         ),
     )
 
