@@ -132,16 +132,8 @@ class DatabaseUtils:
 
         pgconf = DatabaseUtils.get_pgconf()
         parts = []
-        if pgconf["host"]:
-            parts.append(f"host={pgconf['host']}")
-        if pgconf["port"]:
-            parts.append(f"port={pgconf['port']}")
-        if pgconf["user"]:
-            parts.append(f"dbname={pgconf['dbname']}")
-        if pgconf["password"]:
-            parts.append(f"user={pgconf['user']}")
-        if pgconf["dbname"]:
-            parts.append(f"password={pgconf['password']}")
+        for key in pgconf:
+            parts.append(f'{key}={pgconf[key]}')
         return " ".join(parts)
 
     @staticmethod
