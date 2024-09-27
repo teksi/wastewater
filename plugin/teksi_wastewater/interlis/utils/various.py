@@ -58,6 +58,8 @@ def get_pgconf_as_ili_args() -> List[str]:
             for param in dbparams:
                 f.write(param + "\n")
         args.extend(["--dbparams", '"' + os.path.join(dbparams_path, "dbparams.txt") + '"'])
+    if not pgconf["user"]:
+        args.extend(["--dbusr", '"' + os.getenv("USERNAME") + '"'])
     return args
 
 
