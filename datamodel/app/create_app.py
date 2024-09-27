@@ -63,9 +63,7 @@ def create_app(
         run_sql("DROP SCHEMA IF EXISTS tww_app CASCADE;", pg_service)
 
     run_sql("CREATE SCHEMA tww_app;", pg_service)
-    if extension_names:
-        for extension in extension_names:
-            load_extension(srid, pg_service, "tww", extension)
+
 
     run_sql_file("functions/oid_functions.sql", pg_service, variables)
     run_sql_file("functions/modification_functions.sql", pg_service)
@@ -74,6 +72,10 @@ def create_app(
     run_sql_file("functions/14_geometry_functions.sql", pg_service, variables)
     run_sql_file("functions/update_catchment_area_totals.sql", pg_service, variables)
     run_sql_file("functions/organisation_functions.sql", pg_service, variables)
+
+    if extension_names:
+        for extension in extension_names:
+            load_extension(srid, pg_service, "tww", extension)
 
     # open YAML files
     if tww_reach_extra:

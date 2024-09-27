@@ -127,7 +127,7 @@ CREATE INDEX IF NOT EXISTS in_od_agxx_unconnected_node_bwrel_detail_geometry3d_g
 
 CREATE TABLE IF NOT EXISTS tww_od.measure_text
 (
-    obj_id character varying(16) COLLATE pg_catalog."default" NOT NULL DEFAULT tww_sys.generate_oid('tww_od'::text, 'measure_text'::text),
+    obj_id character varying(16) COLLATE pg_catalog."default" NOT NULL DEFAULT tww_app.generate_oid('tww_od'::text, 'measure_text'::text),
     classname text COLLATE pg_catalog."default",
     plantype integer,
     remark text COLLATE pg_catalog."default",
@@ -165,7 +165,7 @@ COMMENT ON TABLE tww_od.measure_text IS 'Extension for AG-96/ Erweiterung für A
 
 CREATE TABLE IF NOT EXISTS tww_od.building_group_text
 (
-    obj_id character varying(16) COLLATE pg_catalog."default" NOT NULL DEFAULT tww_sys.generate_oid('tww_od'::text, 'building_group_text'::text),
+    obj_id character varying(16) COLLATE pg_catalog."default" NOT NULL DEFAULT tww_app.generate_oid('tww_od'::text, 'building_group_text'::text),
     classname text COLLATE pg_catalog."default",
     plantype integer,
     remark text COLLATE pg_catalog."default",

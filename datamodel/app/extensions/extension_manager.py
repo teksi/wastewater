@@ -73,7 +73,7 @@ def load_extension(
     # would deadlock other sessions.
     conn = psycopg.connect(f"service={pg_service}")
     cursor = conn.cursor()
-    cursor.execute(f"SELECT {module_name}_sys.disable_symbology_triggers();")
+    cursor.execute(f"SELECT {module_name}_app.alter_symbology_triggers('disable');")
     conn.commit()
     conn.close()
 
@@ -93,7 +93,7 @@ def load_extension(
     # re-create symbology triggers
     conn = psycopg.connect(f"service={pg_service}")
     cursor = conn.cursor()
-    cursor.execute(f"SELECT {module_name}_sys.enable_symbology_triggers();")
+    cursor.execute(f"SELECT {module_name}_app.alter_symbology_triggers('enable');")
     conn.commit()
     conn.close()
 

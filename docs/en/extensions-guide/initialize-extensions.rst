@@ -48,14 +48,11 @@ In the future, an adapted value list sql will be provided. For now, we will have
     set /p myservice="Please enter the service name? (e.g. tww_community) "
 
 
-	python %tww_dir%\app\create_app.py --pg_service %myservice% --srid 2056 --drop-schema --extension_names agxx foobar demo
+	python %tww_dir%\datamodel\app\create_app.py --pg_service %myservice% --srid 2056 --drop-schema --extension_names agxx foobar demo
 
 
     PAUSE
 
-Important notes:
-
-* Do not use the --drop_schema flag on create_app.py, as all the extension views are to be stored in the app schema
 
 
 Generate the data model under Linux
