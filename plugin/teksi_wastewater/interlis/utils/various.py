@@ -38,26 +38,26 @@ def get_pgconf_as_ili_args() -> List[str]:
     args = []
     dbparams = []
     for key in pgconf:
-        if key=="host":
+        if key == "host":
             args.extend(["--dbhost", '"' + pgconf["host"] + '"'])
-        elif key=="port":
+        elif key == "port":
             args.extend(["--dbport", '"' + pgconf["port"] + '"'])
-        elif key=="user":
+        elif key == "user":
             args.extend(["--dbusr", '"' + pgconf["user"] + '"'])
-        elif key=="password":
+        elif key == "password":
             args.extend(["--dbpwd", '"' + pgconf["password"] + '"'])
-        elif key=="dbname":
+        elif key == "dbname":
             args.extend(["--dbdatabase", '"' + pgconf["dbname"] + '"'])
         else:
-            dbparams.extend([f'{key}={pgconf[key]}'])
+            dbparams.extend([f"{key}={pgconf[key]}"])
     if dbparams:
         # write into tempfile and add path to args
-        dbparams_path=os.path.join(tempfile.gettempdir(), "dbparams")
+        dbparams_path = os.path.join(tempfile.gettempdir(), "dbparams")
         os.makedirs(dbparams_path, exist_ok=True)
-        with open(os.path.join(dbparams_path,"dbparams.txt"),"w") as f:
+        with open(os.path.join(dbparams_path, "dbparams.txt"), "w") as f:
             for param in dbparams:
-                f.write(param+"\n")
-        args.extend(["--dbparams", '"' + os.path.join(dbparams_path,"dbparams.txt") + '"'])
+                f.write(param + "\n")
+        args.extend(["--dbparams", '"' + os.path.join(dbparams_path, "dbparams.txt") + '"'])
     return args
 
 

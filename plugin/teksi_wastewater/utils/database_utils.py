@@ -133,7 +133,7 @@ class DatabaseUtils:
         pgconf = DatabaseUtils.get_pgconf()
         parts = []
         for key in pgconf:
-            parts.append(f'{key}={pgconf[key]}')
+            parts.append(f"{key}={pgconf[key]}")
         return " ".join(parts)
 
     @staticmethod
