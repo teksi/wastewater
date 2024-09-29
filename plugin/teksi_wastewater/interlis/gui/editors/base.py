@@ -149,7 +149,11 @@ class Editor:
             self.status = Editor.UNKNOWN
 
         # For modified use the session is_modified method (slower but more correct)
-        if self.session.is_modified(self.obj):
+        if (
+            self.status != Editor.NEW
+            and self.status != Editor.DELETED
+            and self.session.is_modified(self.obj)
+        ):
             self.status = Editor.MODIFIED
 
         self.validate()
