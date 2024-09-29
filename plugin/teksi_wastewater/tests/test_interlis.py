@@ -108,6 +108,12 @@ class TestInterlis(unittest.TestCase):
         self.assertIsNotNone(result)
         self.assertEqual(result[0], "rp_from_level added")
 
+        result = DatabaseUtils.fetchone(
+            "SELECT bottom_level FROM tww_od.wastewater_node WHERE obj_id='ch000000WN000001';"
+        )
+        self.assertIsNotNone(result)
+        self.assertEqual(result[0], 448.0)
+
         # Import minimal dss
         xtf_file_input = self._get_data_filename(MINIMAL_DATASET_DSS)
         interlisImporterExporter = InterlisImporterExporter()
@@ -117,6 +123,13 @@ class TestInterlis(unittest.TestCase):
             "SELECT obj_id FROM tww_od.pipe_profile WHERE obj_id='ch000000PP000001';"
         )
         self.assertIsNotNone(result)
+
+        # Check that we don't loose Z information on second import
+        result = DatabaseUtils.fetchone(
+            "SELECT bottom_level FROM tww_od.wastewater_node WHERE obj_id='ch000000WN000001';"
+        )
+        self.assertIsNotNone(result)
+        self.assertEqual(result[0], 448.0)
 
         # Import minimal kek
         xtf_file_input = self._get_data_filename(MINIMAL_DATASET_KEK_MANHOLE_DAMAGE)
@@ -128,6 +141,13 @@ class TestInterlis(unittest.TestCase):
         )
         self.assertIsNotNone(result)
         self.assertEqual(result[0], "fk11abk6EX000002")
+
+        # Check that we don't loose Z information on second import
+        result = DatabaseUtils.fetchone(
+            "SELECT bottom_level FROM tww_od.wastewater_node WHERE obj_id='ch000000WN000001';"
+        )
+        self.assertIsNotNone(result)
+        self.assertEqual(result[0], 448.0)
 
         # Export minimal sia405
         export_xtf_file = self._get_output_filename("export_minimal_dataset_sia405")
@@ -195,6 +215,13 @@ class TestInterlis(unittest.TestCase):
         )
         self.assertIsNotNone(result)
         self.assertEqual(result[0], "rp_from_level modified")
+
+        # Check that we don't loose Z information on second import
+        result = DatabaseUtils.fetchone(
+            "SELECT bottom_level FROM tww_od.wastewater_node WHERE obj_id='ch000000WN000001';"
+        )
+        self.assertIsNotNone(result)
+        self.assertEqual(result[0], 448.0)
 
     def test_dss_dataset_import_export(self):
         # Import organisation

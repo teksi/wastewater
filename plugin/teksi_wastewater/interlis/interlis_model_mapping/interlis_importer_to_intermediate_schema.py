@@ -1937,7 +1937,7 @@ class InterlisImporterToIntermediateSchema:
                 ),
                 position_of_connection=row.lage_anschluss,
                 remark=row.bemerkung,
-                situation3d_geometry=self.session_tww.scalar(ST_Force3D(row.lage)),
+                situation3d_geometry=self.session_tww.scalar(ST_Force3D(row.lage, row.kote)),
             )
             self.session_tww.add(reach_point)
             print(".", end="")
@@ -1969,7 +1969,7 @@ class InterlisImporterToIntermediateSchema:
                 # fk_hydr_geometry=row.REPLACE_ME,  # TODO : NOT MAPPED
                 backflow_level_current=row.rueckstaukote_ist,
                 bottom_level=row.sohlenkote,
-                situation3d_geometry=self.session_tww.scalar(ST_Force3D(row.lage)),
+                situation3d_geometry=self.session_tww.scalar(ST_Force3D(row.lage, row.sohlenkote)),
             )
             self.session_tww.add(wastewater_node)
             print(".", end="")
@@ -2079,7 +2079,7 @@ class InterlisImporterToIntermediateSchema:
                 positional_accuracy=self.get_vl_code(
                     self.model_classes_tww_od.cover_positional_accuracy, row.lagegenauigkeit
                 ),
-                situation3d_geometry=self.session_tww.scalar(ST_Force3D(row.lage)),
+                situation3d_geometry=self.session_tww.scalar(ST_Force3D(row.lage, row.kote)),
                 sludge_bucket=self.get_vl_code(
                     self.model_classes_tww_od.cover_sludge_bucket, row.schlammeimer
                 ),
