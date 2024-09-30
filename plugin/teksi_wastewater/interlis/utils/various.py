@@ -5,7 +5,7 @@ import subprocess
 import tempfile
 import uuid
 from typing import List
-
+from qgis.core import QgsExpression
 from ...utils.database_utils import DatabaseUtils
 from ...utils.plugin_utils import logger
 
@@ -60,7 +60,10 @@ def get_pgconf_as_ili_args() -> List[str]:
                 f.write(param + "\n")
         args.extend(["--dbparams", '"' + os.path.join(dbparams_path, "dbparams.txt") + '"'])
     if not pgconf["user"]:
-        args.extend(["--dbusr", '"' + os.getenv("USERNAME") + '"'])
+        # allow loading PGUSER from overriden env variables
+        expression = QgsExpression('@PGUSER')
+        pguser = expression.evaluate()
+        args.extend(["--dbusr", f'"{pguser}"'])
     return args
 
 
