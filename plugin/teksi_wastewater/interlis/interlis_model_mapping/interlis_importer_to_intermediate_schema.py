@@ -1,6 +1,6 @@
-from geoalchemy2.functions import ST_Force3D, ST_Multi
 from datetime import date, datetime
 
+from geoalchemy2.functions import ST_Force3D, ST_Multi
 from sqlalchemy.orm import Session
 from sqlalchemy.orm.attributes import flag_dirty
 from sqlalchemy.sql import text
