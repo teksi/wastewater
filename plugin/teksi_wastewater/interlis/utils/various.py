@@ -4,6 +4,7 @@ import re
 import subprocess
 import tempfile
 from typing import List
+import uuid
 
 from ...utils.database_utils import DatabaseUtils
 from ...utils.plugin_utils import logger
@@ -52,7 +53,7 @@ def get_pgconf_as_ili_args() -> List[str]:
             dbparams.extend([f"{key}={pgconf[key]}"])
     if dbparams:
         # write into tempfile and add path to args
-        dbparams_path = os.path.join(tempfile.gettempdir(), "dbparams")
+        dbparams_path = os.path.join(tempfile.gettempdir(), str(uuid.uuid4()))
         os.makedirs(dbparams_path, exist_ok=True)
         with open(os.path.join(dbparams_path, "dbparams.txt"), "w") as f:
             for param in dbparams:
