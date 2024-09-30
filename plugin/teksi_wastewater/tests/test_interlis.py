@@ -27,6 +27,7 @@ PG_PORT = os.getenv("TWW_PG_PORT", 5432)
 MINIMAL_DATASET_DSS = "minimal-dataset-DSS.xtf"
 MINIMAL_DATASET_ORGANISATION_ARBON_ONLY = "minimal-dataset-organisation-arbon-only.xtf"
 MINIMAL_DATASET_SIA405_ABWASSER = "minimal-dataset-SIA405-ABWASSER.xtf"
+MINIMAL_DATASET_SIA405_ABWASSER_MODIFIED = "minimal-dataset-SIA405-ABWASSER-modified.xtf"
 MINIMAL_DATASET_KEK_MANHOLE_DAMAGE = "minimal-dataset-VSA-KEK-manhole-damage.xtf"
 TEST_DATASET_DSS = "test-dataset-DSS.xtf"
 TEST_DATASET_ORGANISATIONS = "test-dataset-organisations.xtf"
@@ -101,6 +102,18 @@ class TestInterlis(unittest.TestCase):
         )
         self.assertIsNotNone(result)
 
+        result = DatabaseUtils.fetchone(
+            "SELECT remark FROM tww_od.wastewater_networkelement WHERE obj_id='ch000000RE000001';"
+        )
+        self.assertIsNotNone(result)
+        self.assertEqual(result[0], "rp_from_level added")
+
+        result = DatabaseUtils.fetchone(
+            "SELECT bottom_level FROM tww_od.wastewater_node WHERE obj_id='ch000000WN000001';"
+        )
+        self.assertIsNotNone(result)
+        self.assertEqual(result[0], 448.0)
+
         # Import minimal dss
         xtf_file_input = self._get_data_filename(MINIMAL_DATASET_DSS)
         interlisImporterExporter = InterlisImporterExporter()
@@ -110,6 +123,13 @@ class TestInterlis(unittest.TestCase):
             "SELECT obj_id FROM tww_od.pipe_profile WHERE obj_id='ch000000PP000001';"
         )
         self.assertIsNotNone(result)
+
+        # Check that we don't loose Z information on second import
+        result = DatabaseUtils.fetchone(
+            "SELECT bottom_level FROM tww_od.wastewater_node WHERE obj_id='ch000000WN000001';"
+        )
+        self.assertIsNotNone(result)
+        self.assertEqual(result[0], 448.0)
 
         # Import minimal kek
         xtf_file_input = self._get_data_filename(MINIMAL_DATASET_KEK_MANHOLE_DAMAGE)
@@ -121,6 +141,13 @@ class TestInterlis(unittest.TestCase):
         )
         self.assertIsNotNone(result)
         self.assertEqual(result[0], "fk11abk6EX000002")
+
+        # Check that we don't loose Z information on second import
+        result = DatabaseUtils.fetchone(
+            "SELECT bottom_level FROM tww_od.wastewater_node WHERE obj_id='ch000000WN000001';"
+        )
+        self.assertIsNotNone(result)
+        self.assertEqual(result[0], 448.0)
 
         # Export minimal sia405
         export_xtf_file = self._get_output_filename("export_minimal_dataset_sia405")
@@ -172,6 +199,29 @@ class TestInterlis(unittest.TestCase):
             exported_xtf_filename, config.TOPIC_NAME_KEK, "Untersuchung", "fk11abk6EX000002"
         )
         self.assertIsNotNone(interlis_object)
+
+        # Import modified minimal sia405 (test update)
+        xtf_file_input = self._get_data_filename(MINIMAL_DATASET_SIA405_ABWASSER_MODIFIED)
+        interlisImporterExporter = InterlisImporterExporter()
+        interlisImporterExporter.interlis_import(xtf_file_input=xtf_file_input)
+
+        result = DatabaseUtils.fetchone(
+            "SELECT obj_id FROM tww_od.reach WHERE obj_id='ch000000RE000001';"
+        )
+        self.assertIsNotNone(result)
+
+        result = DatabaseUtils.fetchone(
+            "SELECT remark FROM tww_od.wastewater_networkelement WHERE obj_id='ch000000RE000001';"
+        )
+        self.assertIsNotNone(result)
+        self.assertEqual(result[0], "rp_from_level modified")
+
+        # Check that we don't loose Z information on second import
+        result = DatabaseUtils.fetchone(
+            "SELECT bottom_level FROM tww_od.wastewater_node WHERE obj_id='ch000000WN000001';"
+        )
+        self.assertIsNotNone(result)
+        self.assertEqual(result[0], 448.0)
 
     def test_dss_dataset_import_export(self):
         # Import organisation
