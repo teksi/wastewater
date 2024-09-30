@@ -25,9 +25,9 @@
   <property name="windowTitle">
    <string>TWW interlis import</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
-    <widget class="QSplitter" name="splitter">
+    <widget class="QSplitter" name="splitter_2">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -38,25 +38,22 @@
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
-      <property name="headerHidden">
-       <bool>false</bool>
-      </property>
       <attribute name="headerStretchLastSection">
        <bool>false</bool>
       </attribute>
       <column>
        <property name="text">
-        <string>name</string>
+        <string>Name</string>
        </property>
       </column>
       <column>
        <property name="text">
-        <string>state</string>
+        <string>State</string>
        </property>
       </column>
       <column>
        <property name="text">
-        <string>validity</string>
+        <string>Validity</string>
        </property>
       </column>
       <item>
@@ -149,7 +146,7 @@
       </item>
      </widget>
      <widget class="QWidget" name="layoutWidget">
-      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <layout class="QVBoxLayout" name="verticalLayout">
        <item>
         <widget class="QLabel" name="validityLabel">
          <property name="styleSheet">
@@ -167,24 +164,49 @@
         </widget>
        </item>
        <item>
-        <widget class="QStackedWidget" name="stackedWidget">
-         <widget class="QWidget" name="page"/>
-         <widget class="QWidget" name="page_2"/>
-        </widget>
-       </item>
-       <item>
-        <widget class="QgsCollapsibleGroupBox" name="debugGroupBox">
-         <property name="title">
-          <string>Raw data (debug)</string>
+        <widget class="QSplitter" name="splitter">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
          </property>
-         <property name="collapsed" stdset="0">
-          <bool>true</bool>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_3">
-          <item>
-           <widget class="QTextEdit" name="debugTextEdit"/>
-          </item>
-         </layout>
+         <widget class="QStackedWidget" name="stackedWidget">
+          <widget class="QWidget" name="page"/>
+          <widget class="QWidget" name="page_2"/>
+         </widget>
+         <widget class="QgsCollapsibleGroupBox" name="debugGroupBox">
+          <property name="title">
+           <string>Raw data</string>
+          </property>
+          <property name="collapsed" stdset="0">
+           <bool>true</bool>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_3">
+           <item>
+            <widget class="QTreeWidget" name="debugTreeWidget">
+             <attribute name="headerStretchLastSection">
+              <bool>false</bool>
+             </attribute>
+             <column>
+              <property name="text">
+               <string>Key</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Value</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Old value</string>
+              </property>
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The value that is currently written in the database. If accepted, it will be overwritten by the &amp;quot;Value&amp;quot; column.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+             </column>
+            </widget>
+           </item>
+          </layout>
+         </widget>
         </widget>
        </item>
       </layout>
