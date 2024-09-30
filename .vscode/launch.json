@@ -3,7 +3,7 @@
   "configurations": [
     {
       "name": "Python: Remote Attach",
-      "type": "debugpy",
+      "type": "python",
       "request": "attach",
       "connect": {
         "host": "localhost",
@@ -11,11 +11,11 @@
       },
       "pathMappings": [
         {
-          "localRoot": "${workspaceFolder}",
-          "remoteRoot": "${workspaceFolder}"
+          "localRoot": "${workspaceFolder}/tww3ag6496",
+          "remoteRoot": "${workspaceFolder}/tww3ag6496"
         }
       ],
       "justMyCode": false
-    },
+    }
   ]
 }
