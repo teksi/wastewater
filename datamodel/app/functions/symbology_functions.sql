@@ -1,4 +1,4 @@
- 
+
 -----------------------------------------------------------------------
 -- Enable or disable Symbology Triggers
 -- To temporarily disable these cache refreshes for batch jobs like migrations
