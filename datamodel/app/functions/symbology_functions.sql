@@ -1,4 +1,4 @@
-
+ 
 -----------------------------------------------------------------------
 -- Enable or disable Symbology Triggers
 -- To temporarily disable these cache refreshes for batch jobs like migrations
@@ -791,7 +791,7 @@ LANGUAGE plpgsql VOLATILE;
 -- CALCULATE REACH LENGTH
 --------------------------------------------------
 
-CREATE OR REPLACE FUNCTION tww_app.autoupdate_calculate_reach_length()
+CREATE OR REPLACE FUNCTION tww_app.symbology_calculate_reach_length()
   RETURNS trigger AS
 $BODY$
 
@@ -844,7 +844,7 @@ $BODY$
   BEFORE INSERT OR UPDATE
     ON tww_od.reach
   FOR EACH ROW
-    EXECUTE PROCEDURE tww_app.autoupdate_calculate_reach_length();
+    EXECUTE PROCEDURE tww_app.symbology_calculate_reach_length();
 
   CREATE TRIGGER ws_symbology_update_by_reach
   AFTER INSERT OR UPDATE OR DELETE
