@@ -85,7 +85,7 @@ BEGIN
 	RETURN NEW;
 END;
 $BODY$
-LANGUAGE plpgsql;
+LANGUAGE plpgsql SECURITY DEFINER;
 
 CREATE OR REPLACE FUNCTION tww_app.ft_unset_default_values()
 RETURNS TRIGGER AS
@@ -118,7 +118,7 @@ BEGIN
 	RETURN NULL;
 END;
 $BODY$
-LANGUAGE plpgsql;
+LANGUAGE plpgsql SECURITY DEFINER;
 
 
 DROP TRIGGER IF EXISTS set_default_values ON tww_od.default_values;
