@@ -45,6 +45,8 @@ jobs:
 
       - name: Schemaspy
         run: docker compose run schemaspy
+        env:
+          EXTENSION_NAMES: ${{ matrix.extension }}
 
       - name: Docker logs
         if: failure()
