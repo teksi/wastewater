@@ -80,7 +80,7 @@ class ModelTwwAG6496(ModelBase):
             bemerkung_gep = Column(String)
             letzte_aenderung_gep = Column(DateTime)
             ignore_ws = Column(Boolean)
-            __table_args__ = {"schema": config.TWW_AG_SCHEMA}
+            __table_args__ = {"schema": config.TWW_APP_SCHEMA}
 
         ModelTwwAG6496.gepknoten = gepknoten
 
