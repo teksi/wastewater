@@ -28,6 +28,8 @@ jobs:
     strategy:
       matrix:
         psycopg-version: [ 2, 3 ]
+        extension: ["", "agxx"]
+        
       fail-fast: true
 
     steps:
@@ -43,7 +45,7 @@ jobs:
 
       - name: Initialize container
         run: |
-          docker run -d -p 5432:5432 --name teksi-wastewater teksi/wastewater:unstable
+          docker run -d -p 5432:5432 --name teksi-wastewater -e EXTENSION_NAMES=${{ matrix.extension }} teksi/wastewater:unstable
           docker exec teksi-wastewater init_db.sh wait
 
       - name: Run tests
