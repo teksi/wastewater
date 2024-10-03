@@ -66,6 +66,10 @@ def create_app(
 
     run_sql("CREATE SCHEMA tww_app;", pg_service)
 
+    # Create tables for network tracking
+    run_sql_file("tables/network_tracking.sql", pg_service)
+
+    # Create functions
     run_sql_file("functions/oid_functions.sql", pg_service, variables)
     run_sql_file("functions/modification_functions.sql", pg_service)
     run_sql_file("functions/symbology_functions.sql", pg_service)
