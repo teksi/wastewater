@@ -150,8 +150,8 @@ You also have the option to restore the latest empty data model (no demo data).
 
     psql -U postgres -h localhost -p %port% -d %db% -c "GRANT USAGE ON ALL SEQUENCES IN SCHEMA tww_od TO ""tww"""
 
-    psql -U postgres -h localhost -p %port% -d %db% -c "REFRESH MATERIALIZED VIEW tww_od.vw_network_node"
-    psql -U postgres -h localhost -p %port% -d %db% -c "REFRESH MATERIALIZED VIEW tww_od.vw_network_segment"
+    psql -U postgres -h localhost -p %port% -d %db% -c "REFRESH MATERIALIZED VIEW tww_app.vw_network_node"
+    psql -U postgres -h localhost -p %port% -d %db% -c "REFRESH MATERIALIZED VIEW tww_app.vw_network_segment"
 
     PAUSE
 
