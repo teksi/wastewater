@@ -2438,15 +2438,15 @@ class InterlisImporterToIntermediateSchema:
         if row.funktionag != "andere":
             return False
         else:
+            abwasserbw = self.model_classes_interlis.abwasserbauwerk.t_ili_tid if self.model_classes_interlis.abwasserbauwerk.t_ili_tid else self.model_classes_interlis.abwasserbauwerk.obj_id
             detailgeoms = (
                 self.session_interlis.query(self.model_classes_interlis.abwasserbauwerk)
                 .filter(
                     self.model_classes_interlis.abwasserbauwerk.detailgeometrie.ST_Buffer(
                         0.001
                     ).ST_Covers(row.lage),
-                    self.model_classes_interlis.abwasserbauwerk.obj_id != row.t_ili_tid,
-                )
-                .fetchone()
+                    abwasserbw != row.t_ili_tid,
+                ).first()
             )
         if detailgeoms:
             return True
@@ -2524,6 +2524,7 @@ class InterlisImporterToIntermediateSchema:
             "hoehengenauigkeit_von": row.hoehengenauigkeit_von,
             "hoehengenauigkeit_nach": row.hoehengenauigkeit_nach,
             "jahr_zustandserhebung": row.jahr_zustandserhebung,
+            "lichte_hoehe_ist": row.lichte_hoehe_ist,
             "kote_beginn": row.kote_beginn,
             "kote_ende": row.kote_ende,
             "laengeeffektiv": row.laengeeffektiv,
@@ -2608,7 +2609,6 @@ class InterlisImporterToIntermediateSchema:
                 gepmassnahmeref=self.get_pk(row.gepmassnahmeref__REL),
                 hydraulischebelastung=row.hydraulischebelastung,
                 lichte_breite_ist=row.lichte_breite_ist,
-                lichte_hoehe_ist=row.lichte_hoehe_ist,
                 lichte_breite_geplant=row.lichte_breite_geplant,
                 lichte_hoehe_geplant=row.lichte_hoehe_geplant,
                 nutzungsartag_geplant=row.nutzungsartag_geplant,
@@ -2621,7 +2621,6 @@ class InterlisImporterToIntermediateSchema:
             gephaltung = self.model_classes_tww_app.gephaltung(
                 **self.haltung_common_ag_xx(row),
                 lichte_breite_ist=row.lichte_breite,
-                lichte_hoehe_ist=row.lichte_hoehe,
             )
             self.session_tww.add(gephaltung)
             print(".", end="")
