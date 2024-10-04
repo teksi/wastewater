@@ -120,6 +120,10 @@ class InterlisImporterExporter:
                 tww_session.commit()
             tww_session.close()
 
+            # Update the sequence values
+            self._progress_done(92, "Update sequence values...")
+            self._import_set_od_sequences()
+
             # Update main_cover and main_wastewater_node
             self._progress_done(95, "Update main cover and refresh materialized views...")
             self._import_update_main_cover_and_refresh_mat_views()
@@ -261,6 +265,10 @@ class InterlisImporterExporter:
             interlisImporterToIntermediateSchema.tww_import(skip_closing_tww_session=True)
 
         return interlisImporterToIntermediateSchema.session_tww
+
+    def _import_set_od_sequences(self):
+        logger.info("Set Sequence values")
+        DatabaseUtils.execute("SELECT tww_app.reset_od_seqval();")
 
     def _import_manage_organisations(self):
         logger.info("Update organisation tww_active")
