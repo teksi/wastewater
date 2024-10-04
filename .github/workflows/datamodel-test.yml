@@ -29,7 +29,6 @@ jobs:
       matrix:
         psycopg-version: [ 2, 3 ]
         extension: ["", "agxx"]
-        
       fail-fast: true
 
     steps:
