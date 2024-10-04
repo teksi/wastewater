@@ -2438,7 +2438,11 @@ class InterlisImporterToIntermediateSchema:
         if row.funktionag != "andere":
             return False
         else:
-            abwasserbw = self.model_classes_interlis.abwasserbauwerk.t_ili_tid if self.model_classes_interlis.abwasserbauwerk.t_ili_tid else self.model_classes_interlis.abwasserbauwerk.obj_id
+            abwasserbw = (
+                self.model_classes_interlis.abwasserbauwerk.t_ili_tid
+                if self.model_classes_interlis.abwasserbauwerk.t_ili_tid
+                else self.model_classes_interlis.abwasserbauwerk.obj_id
+            )
             detailgeoms = (
                 self.session_interlis.query(self.model_classes_interlis.abwasserbauwerk)
                 .filter(
@@ -2446,7 +2450,8 @@ class InterlisImporterToIntermediateSchema:
                         0.001
                     ).ST_Covers(row.lage),
                     abwasserbw != row.t_ili_tid,
-                ).first()
+                )
+                .first()
             )
         if detailgeoms:
             return True
