@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>5.2. Extension AG-64/AG-96 &mdash; TWW dev Dokumentation</title>
+  <title>5.2. Erweiterung AG-64/AG-96 &mdash; TWW dev Dokumentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
 
@@ -22,8 +22,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Stichwortverzeichnis" href="../../genindex.html" />
     <link rel="search" title="Suche" href="../../search.html" />
-    <link rel="next" title="5.2.1. Plugin and Project Setup" href="plugin_setup_agxx.html" />
-    <link rel="prev" title="5.1. Initialising Database extensions" href="../initialize-extensions.html" /> 
+    <link rel="next" title="5.2.1. Plugin- und Projektsetup" href="plugin_setup_agxx.html" />
+    <link rel="prev" title="5.1. Datenbankerweiterungen initialisieren" href="../initialize-extensions.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -53,10 +53,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">2. TWW Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user-guide/index.html">3. TWW Benutzerhandbuch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">4. Administratorhandbuch</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">5. Official TWW extensions</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../initialize-extensions.html">5.1. Initialising Database extensions</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">5.2. Extension AG-64/AG-96</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="plugin_setup_agxx.html">5.2.1. Plugin and Project Setup</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">5. Offizielle TWW-Erweiterungen</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../initialize-extensions.html">5.1. Datenbankerweiterungen initialisieren</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5.2. Erweiterung AG-64/AG-96</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="plugin_setup_agxx.html">5.2.1. Plugin- und Projektsetup</a></li>
 <li class="toctree-l3"><a class="reference internal" href="data_collection_policy_agxx.html">5.2.2. Erfassungsrichtlinie</a></li>
 </ul>
 </li>
@@ -80,8 +80,8 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">5. </span>Official TWW extensions</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">5.2. </span>Extension AG-64/AG-96</li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">5. </span>Offizielle TWW-Erweiterungen</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">5.2. </span>Erweiterung AG-64/AG-96</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/extensions-guide/agxx/index.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
       </li>
@@ -94,18 +94,18 @@
   <blockquote>
 <div></div></blockquote>
 <section id="extension-ag-64-ag-96">
-<h1><span class="section-number">5.2. </span>Extension AG-64/AG-96<a class="headerlink" href="#extension-ag-64-ag-96" title="Link to this heading"></a></h1>
-<p>This represents a guide on effectively use the AG-64/AG-96 extension in TWW.</p>
+<h1><span class="section-number">5.2. </span>Erweiterung AG-64/AG-96<a class="headerlink" href="#extension-ag-64-ag-96" title="Link to this heading"></a></h1>
+<p>Eine Anleitung zur effizienten Nutzung der AG-64/AG-96 Erweiterung in TWW.</p>
 <div class="admonition note">
 <p class="admonition-title">Bemerkung</p>
-<p>The extensions for AG-64/AG-96 support are not yet included in the official TWW release 2024.0. The extension can be loaded based on the plugin and datamodel versions of <a class="reference external" href="https://github.com/teksi/wastewater/pull/399">https://github.com/teksi/wastewater/pull/399</a></p>
+<p>Die Erweiterung für AG-64/AG-96 Support ist noch nicht im offiziellen TWW release 2024.0 enthalten. Die Erweiterung kann basierend auf der Plugin- und Datenmodellversion von <a class="reference external" href="https://github.com/teksi/wastewater/pull/399">https://github.com/teksi/wastewater/pull/399</a> geladen werden</p>
 </div>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="plugin_setup_agxx.html">5.2.1. Plugin and Project Setup</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="plugin_setup_agxx.html#enable-ag-64-ag-96-interlis-imports-and-exports">5.2.1.1. Enable AG-64/AG-96 Interlis Imports and Exports</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plugin_setup_agxx.html#handling-of-last-modification">5.2.1.2. Handling of last modification</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plugin_setup_agxx.html#project-setup">5.2.1.3. Project setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugin_setup_agxx.html">5.2.1. Plugin- und Projektsetup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="plugin_setup_agxx.html#enable-ag-64-ag-96-interlis-imports-and-exports">5.2.1.1. AG-64/AG-96 Interlis Import and Export einschalten</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugin_setup_agxx.html#handling-of-last-modification">5.2.1.2. Umgang mit Letzte_Aenderung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugin_setup_agxx.html#project-setup">5.2.1.3. Projektsetup</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="data_collection_policy_agxx.html">5.2.2. Erfassungsrichtlinie</a><ul>
@@ -127,8 +127,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../initialize-extensions.html" class="btn btn-neutral float-left" title="5.1. Initialising Database extensions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
-        <a href="plugin_setup_agxx.html" class="btn btn-neutral float-right" title="5.2.1. Plugin and Project Setup" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../initialize-extensions.html" class="btn btn-neutral float-left" title="5.1. Datenbankerweiterungen initialisieren" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
+        <a href="plugin_setup_agxx.html" class="btn btn-neutral float-right" title="5.2.1. Plugin- und Projektsetup" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

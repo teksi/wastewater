@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>5.2.1. Plugin and Project Setup &mdash; TWW dev Dokumentation</title>
+  <title>5.2.1. Plugin- und Projektsetup &mdash; TWW dev Dokumentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
 
@@ -23,7 +23,7 @@
     <link rel="index" title="Stichwortverzeichnis" href="../../genindex.html" />
     <link rel="search" title="Suche" href="../../search.html" />
     <link rel="next" title="5.2.2. Erfassungsrichtlinie" href="data_collection_policy_agxx.html" />
-    <link rel="prev" title="5.2. Extension AG-64/AG-96" href="index.html" /> 
+    <link rel="prev" title="5.2. Erweiterung AG-64/AG-96" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -53,13 +53,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">2. TWW Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user-guide/index.html">3. TWW Benutzerhandbuch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">4. Administratorhandbuch</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">5. Official TWW extensions</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../initialize-extensions.html">5.1. Initialising Database extensions</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="index.html">5.2. Extension AG-64/AG-96</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">5.2.1. Plugin and Project Setup</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#enable-ag-64-ag-96-interlis-imports-and-exports">5.2.1.1. Enable AG-64/AG-96 Interlis Imports and Exports</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#handling-of-last-modification">5.2.1.2. Handling of last modification</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#project-setup">5.2.1.3. Project setup</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">5. Offizielle TWW-Erweiterungen</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../initialize-extensions.html">5.1. Datenbankerweiterungen initialisieren</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">5.2. Erweiterung AG-64/AG-96</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">5.2.1. Plugin- und Projektsetup</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#enable-ag-64-ag-96-interlis-imports-and-exports">5.2.1.1. AG-64/AG-96 Interlis Import and Export einschalten</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#handling-of-last-modification">5.2.1.2. Umgang mit Letzte_Aenderung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#project-setup">5.2.1.3. Projektsetup</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="data_collection_policy_agxx.html">5.2.2. Erfassungsrichtlinie</a></li>
@@ -85,9 +85,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">5. </span>Official TWW extensions</a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">5.2. </span>Extension AG-64/AG-96</a></li>
-      <li class="breadcrumb-item active"><span class="section-number">5.2.1. </span>Plugin and Project Setup</li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">5. </span>Offizielle TWW-Erweiterungen</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">5.2. </span>Erweiterung AG-64/AG-96</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">5.2.1. </span>Plugin- und Projektsetup</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/extensions-guide/agxx/plugin_setup_agxx.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
       </li>
@@ -100,45 +100,45 @@
   <blockquote>
 <div></div></blockquote>
 <section id="plugin-and-project-setup">
-<h1><span class="section-number">5.2.1. </span>Plugin and Project Setup<a class="headerlink" href="#plugin-and-project-setup" title="Link to this heading"></a></h1>
-<p>In order to use the AG-64/AG-96 extension, the database must be initialized accordingly. See <span class="xref std std-ref">initialize-extensions</span> for further explanations.</p>
+<h1><span class="section-number">5.2.1. </span>Plugin- und Projektsetup<a class="headerlink" href="#plugin-and-project-setup" title="Link to this heading"></a></h1>
+<p>Um die Erweiterung AG-64/AG-96 nutzen zu können, muss die Datenbank entsprechend initialisiert werden. Für weitere Erläuterungen siehe <span class="xref std std-ref">initialize-extensions</span>.</p>
 <section id="enable-ag-64-ag-96-interlis-imports-and-exports">
-<h2><span class="section-number">5.2.1.1. </span>Enable AG-64/AG-96 Interlis Imports and Exports<a class="headerlink" href="#enable-ag-64-ag-96-interlis-imports-and-exports" title="Link to this heading"></a></h2>
-<p>In the plugin, there is a hidden functionality that allows importing and exporting AG-64/AG-96 interlis files. In order to activate it, one needs to open the TWW settings</p>
+<h2><span class="section-number">5.2.1.1. </span>AG-64/AG-96 Interlis Import and Export einschalten<a class="headerlink" href="#enable-ag-64-ag-96-interlis-imports-and-exports" title="Link to this heading"></a></h2>
+<p>Im Plugin ist eine Funktionalität versteckt, die es erlaubt, AG-64/AG-96 INTERLIS-Daten zu importieren und exportieren. Um sie zu aktivieren, müssen zunächst die TWW-Einstellungen geöffnet werden.</p>
 <blockquote>
 <div><figure class="align-default">
 <img alt="../../_images/opensettingsdialog.png" src="../../_images/opensettingsdialog.png" />
 </figure>
 </div></blockquote>
-<p>In the tab <em>Developer options</em>, there is a Checkbox to enable the AG-64/96 extension</p>
+<p>Im Tab <em>Entwickleroptionen</em> gibt es eine Checkbox, um die AG-64/96-Erweiterung einzuschalten</p>
 <blockquote>
 <div><figure class="align-default">
 <img alt="../../_images/enableextension.png" src="../../_images/enableextension.png" />
 </figure>
-<p>When this checkbox is ticked, the data models AG-64/AG-96 are available in the interlis export.</p>
+<p>Wenn diese Checkbox eingeschaltet ist, sind die DatenmodelleAG-64/AG-96 im INTERLIS-Export verfügbar.</p>
 </div></blockquote>
 </section>
 <section id="handling-of-last-modification">
-<h2><span class="section-number">5.2.1.2. </span>Handling of last modification<a class="headerlink" href="#handling-of-last-modification" title="Link to this heading"></a></h2>
-<p>AG-64 and AG-96 have separated values for last_modification. In the tab <em>Developer options</em> of the plugin settings, there is a combobox that allows altering which last_modification(s) should be updated.</p>
+<h2><span class="section-number">5.2.1.2. </span>Umgang mit Letzte_Aenderung<a class="headerlink" href="#handling-of-last-modification" title="Link to this heading"></a></h2>
+<p>AG-64 und AG-96 haben das Attribut Letzte_Aenderung weiter unterteilt. Im Tab <em>Entwickleroptionen</em> der Plugineinstellungen ist eine Combobox, die es erlaubt zu steuern, welche Letzte_Aenderung(en) aktualisiert werden sollen.</p>
 <blockquote>
 <div><figure class="align-default">
 <img alt="../../_images/chooselastmodification.png" src="../../_images/chooselastmodification.png" />
 </figure>
 </div></blockquote>
-<p>In the database, there is a table storing the setting per user. That value is read on startup, so the setting does not need to be changed every time a project is opened.</p>
+<p>In der Datenbank wird der Wert pro Benutzer gespeichert. Beim Start wird dieser Wert geladen, damit die Einstellung nicht bei jedem Öffnen des Projekts gesetzt werden muss.</p>
 <blockquote>
 <div></div></blockquote>
 </section>
 <section id="project-setup">
-<h2><span class="section-number">5.2.1.3. </span>Project setup<a class="headerlink" href="#project-setup" title="Link to this heading"></a></h2>
-<p>The attribute forms of AG-64/AG-96 are stored in a specific layer style automatically when starting the template .qgs project. In order to access them, right-click on the layer, select „styles“ and cascade to „AG-64/96“</p>
+<h2><span class="section-number">5.2.1.3. </span>Projektsetup<a class="headerlink" href="#project-setup" title="Link to this heading"></a></h2>
+<p>Die Attributformulare von AG-64/AG-96 sind in einem spezifischen Layerstil des Template .qgs-Projekts gespeichert. . Um auf sie zuzugreifen,  klicken Sie mit rechts auf den Layer, Wählen Sie „Stile“ und wählen Sie „AG-64/96“</p>
 <blockquote>
 <div><figure class="align-default">
 <img alt="../../_images/selectstyle.png" src="../../_images/selectstyle.png" />
 </figure>
 </div></blockquote>
-<p>From there, you can copy/paste the forms if necessary.</p>
+<p>Von dort können Sie die Formulare bei Bedarf kopieren und einfügen.</p>
 </section>
 </section>
 
@@ -146,7 +146,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="index.html" class="btn btn-neutral float-left" title="5.2. Extension AG-64/AG-96" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="5.2. Erweiterung AG-64/AG-96" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
         <a href="data_collection_policy_agxx.html" class="btn btn-neutral float-right" title="5.2.2. Erfassungsrichtlinie" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

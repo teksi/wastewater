@@ -23,7 +23,7 @@
     <link rel="index" title="Stichwortverzeichnis" href="../../genindex.html" />
     <link rel="search" title="Suche" href="../../search.html" />
     <link rel="next" title="6. SWMM Data Exchange" href="../../tww_swmm/index.html" />
-    <link rel="prev" title="5.2.1. Plugin and Project Setup" href="plugin_setup_agxx.html" /> 
+    <link rel="prev" title="5.2.1. Plugin- und Projektsetup" href="plugin_setup_agxx.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -53,10 +53,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">2. TWW Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user-guide/index.html">3. TWW Benutzerhandbuch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.html">4. Administratorhandbuch</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">5. Official TWW extensions</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../initialize-extensions.html">5.1. Initialising Database extensions</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="index.html">5.2. Extension AG-64/AG-96</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="plugin_setup_agxx.html">5.2.1. Plugin and Project Setup</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">5. Offizielle TWW-Erweiterungen</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../initialize-extensions.html">5.1. Datenbankerweiterungen initialisieren</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">5.2. Erweiterung AG-64/AG-96</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="plugin_setup_agxx.html">5.2.1. Plugin- und Projektsetup</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">5.2.2. Erfassungsrichtlinie</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#mapping">5.2.2.1. Mapping</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#infrastrukturknoten-gepknoten">5.2.2.2. Infrastrukturknoten/GEPKnoten</a></li>
@@ -90,8 +90,8 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">5. </span>Official TWW extensions</a></li>
-          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">5.2. </span>Extension AG-64/AG-96</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">5. </span>Offizielle TWW-Erweiterungen</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">5.2. </span>Erweiterung AG-64/AG-96</a></li>
       <li class="breadcrumb-item active"><span class="section-number">5.2.2. </span>Erfassungsrichtlinie</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/extensions-guide/agxx/data_collection_policy_agxx.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
@@ -451,12 +451,11 @@
 <section id="sbw-einzugsgebiet">
 <h2><span class="section-number">5.2.2.7. </span>SBW_Einzugsgebiet<a class="headerlink" href="#sbw-einzugsgebiet" title="Link to this heading"></a></h2>
 <p>SBW_Einzugsgebiet wird auf <cite>tww_od.catchment_area_totals</cite> gemappt. die Perimetergeometrie wird in einem Erweiterungs-Attribut namens <code class="docutils literal notranslate"><span class="pre">ag_96_perimeter_geometry</span></code> gespeichert. Um es zu ändern, muss der Layer manuell ins QGIS-Projekt importiert werden.</p>
-<p>There exists a function to calculate the perimeter geometry by aggregating the catchment areas via catchment_area-&gt;log_card-&gt;main_log_card-&gt;hydraulic_char_data-&gt;catchment_area_totals.
-The perimeter geometry is a MultiSurface, while the INTERLIS model requires a CurvePolygon. According to the official data collection policy of the Canton, one should violate the datamodel and export a MultiPart. As the underlying export mechanism ili2pg does not allow to export a wrong geometry type, only the biggest Singlepart is exported.</p>
+<p>Es gibt eine Funktion, um die Perimetergeometrie über eine Aggregation der Einzugsgebiete via Einzugsgebiet&gt;Stammkarte-&gt;Hauptbauwerk-&gt;Hydr_Kennwerte-&gt;Gesamteinzugsgebiet zu berechnen. Die Perimeteregeometrei ist vom Typ MultiSurface, während das INTERLIS-Modell ein CurvePolygon verlangt. Gemäss der kantonalen Erfassungsrichtlinie müsste das Datenmodell missachtet werden und ein MultiPart exportiert werden. Da der zugrundeliegende Exportmechanismus ili2pg es nicht erlaubt, falsche Geometrietypen zu exportieren, wird nur der grösste Singlepart exportiert.</p>
 </section>
 <section id="versickerungsbereichag">
 <h2><span class="section-number">5.2.2.8. </span>VersickerungsbereichAG<a class="headerlink" href="#versickerungsbereichag" title="Link to this heading"></a></h2>
-<p>VersickerungsbereichAG is mapped to <cite>tww_od.infiltration_zone</cite>.</p>
+<p>VersickerungsbereichAG  wird auf <cite>tww_od.infiltration_zone</cite> gemappt</p>
 </section>
 </section>
 
@@ -464,7 +463,7 @@ The perimeter geometry is a MultiSurface, while the INTERLIS model requires a Cu
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="plugin_setup_agxx.html" class="btn btn-neutral float-left" title="5.2.1. Plugin and Project Setup" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
+        <a href="plugin_setup_agxx.html" class="btn btn-neutral float-left" title="5.2.1. Plugin- und Projektsetup" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Zurück</a>
         <a href="../../tww_swmm/index.html" class="btn btn-neutral float-right" title="6. SWMM Data Exchange" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

@@ -2709,34 +2709,6 @@ END;]]></definition>
             <parameter mode="IN" name="action_name" type="text"/>
          </parameters>
       </routine>
-      <routine dataAccess="MODIFIES" deterministic="false" name="autoupdate_calculate_reach_length()" returnType="trigger" securityType="INVOKER" type="FUNCTION">
-         <comment/>
-         <definition language="plpgsql"><![CDATA[DECLARE
-	_rp_from_level numeric(7,3);
-	_rp_to_level numeric(7,3);
-
-BEGIN
-
-  SELECT rp_from.level INTO _rp_from_level
-  FROM tww_od.reach_point rp_from
-  WHERE NEW.fk_reach_point_from = rp_from.obj_id;
-
-  SELECT rp_to.level INTO _rp_to_level
-  FROM tww_od.reach_point rp_to
-  WHERE NEW.fk_reach_point_to = rp_to.obj_id;
-
-  IF _rp_from_level=0 OR _rp_to_level=0 THEN
-    NEW.length_effective = ST_Length(NEW.progression3d_geometry);
-  ELSE
-    NEW.length_effective = COALESCE(sqrt((_rp_from_level - _rp_to_level)^2 + ST_Length(NEW.progression3d_geometry)^2), ST_Length(NEW.progression3d_geometry) );
-  END IF;
-  RETURN NEW;
-
-END;]]></definition>
-         <parameters>
-            <parameter mode="IN"/>
-         </parameters>
-      </routine>
       <routine dataAccess="MODIFIES" deterministic="false" name="check_all_nulls(rec record, prefix character varying, ignored_postfix text[] DEFAULT ARRAY['obj_id'::text, 'identifier'::text])" returnType="boolean" securityType="INVOKER" type="FUNCTION">
          <comment/>
          <definition language="plpgsql"><![CDATA[DECLARE
@@ -2795,7 +2767,7 @@ END;]]></definition>
             <parameter mode="IN"/>
          </parameters>
       </routine>
-      <routine dataAccess="MODIFIES" deterministic="false" name="ft_set_default_values()" returnType="trigger" securityType="INVOKER" type="FUNCTION">
+      <routine dataAccess="MODIFIES" deterministic="false" name="ft_set_default_values()" returnType="trigger" securityType="DEFINER" type="FUNCTION">
          <comment/>
          <definition language="plpgsql"><![CDATA[DECLARE
     sch text;
@@ -2828,7 +2800,7 @@ END;]]></definition>
             <parameter mode="IN"/>
          </parameters>
       </routine>
-      <routine dataAccess="MODIFIES" deterministic="false" name="ft_unset_default_values()" returnType="trigger" securityType="INVOKER" type="FUNCTION">
+      <routine dataAccess="MODIFIES" deterministic="false" name="ft_unset_default_values()" returnType="trigger" securityType="DEFINER" type="FUNCTION">
          <comment/>
          <definition language="plpgsql"><![CDATA[DECLARE
     sch text;
@@ -10136,6 +10108,34 @@ END LOOP;
 END;]]></definition>
          <parameters>
             <parameter mode="IN" name="_undo_existing" type="boolean"/>
+         </parameters>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="symbology_calculate_reach_length()" returnType="trigger" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[DECLARE
+	_rp_from_level numeric(7,3);
+	_rp_to_level numeric(7,3);
+
+BEGIN
+
+  SELECT rp_from.level INTO _rp_from_level
+  FROM tww_od.reach_point rp_from
+  WHERE NEW.fk_reach_point_from = rp_from.obj_id;
+
+  SELECT rp_to.level INTO _rp_to_level
+  FROM tww_od.reach_point rp_to
+  WHERE NEW.fk_reach_point_to = rp_to.obj_id;
+
+  IF _rp_from_level=0 OR _rp_to_level=0 THEN
+    NEW.length_effective = ST_Length(NEW.progression3d_geometry);
+  ELSE
+    NEW.length_effective = COALESCE(sqrt((_rp_from_level - _rp_to_level)^2 + ST_Length(NEW.progression3d_geometry)^2), ST_Length(NEW.progression3d_geometry) );
+  END IF;
+  RETURN NEW;
+
+END;]]></definition>
+         <parameters>
+            <parameter mode="IN"/>
          </parameters>
       </routine>
       <routine dataAccess="MODIFIES" deterministic="false" name="symbology_on_cover_change()" returnType="trigger" securityType="INVOKER" type="FUNCTION">
