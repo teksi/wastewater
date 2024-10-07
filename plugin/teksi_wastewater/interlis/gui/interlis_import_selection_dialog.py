@@ -124,7 +124,8 @@ class InterlisImportSelectionDialog(QDialog):
             if checked:
                 self.session.add(obj)
             else:
-                self.session.expunge(obj)
+                if obj in self.session:
+                    self.session.expunge(obj)
 
         checked_state = item.checkState(self.Columns.NAME)
         if checked_state == Qt.PartiallyChecked:
