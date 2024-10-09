@@ -149,10 +149,8 @@ class TeksiWastewaterPlugin:
         Called to setup the plugin GUI
         """
         self.network_layer_notifier = TwwLayerNotifier(
-            self.iface.mainWindow(), ["vw_network_node", "vw_network_segment"]
-        )
-        self.wastewater_networkelement_layer_notifier = TwwLayerNotifier(
-            self.iface.mainWindow(), ["vw_wastewater_node", "vw_tww_reach"]
+            self.iface.mainWindow(),
+            ["vw_network_node", "vw_network_segment", "vw_tww_wastewater_structure"],
         )
         self.toolbarButtons = []
 
@@ -331,10 +329,6 @@ class TeksiWastewaterPlugin:
             self.iface, self.connectNetworkElementsAction
         )
 
-        self.wastewater_networkelement_layer_notifier.layersAvailableChanged.connect(
-            self._wastewater_networkelement_layer_available_changed
-        )
-
         self.processing_provider = TwwProcessingProvider()
         QgsApplication.processingRegistry().addProvider(self.processing_provider)
 
@@ -442,12 +436,20 @@ class TeksiWastewaterPlugin:
         for b in self.toolbarButtons:
             b.setEnabled(True)
 
+        self.connectNetworkElementsAction.setEnabled(True)
+
         self.network_analyzer.setReachLayer(layers["vw_network_segment"])
         self.network_analyzer.setNodeLayer(layers["vw_network_node"])
+
+        self._configure_database_connection_config_from_tww_layer()
+
+        self.tww_validity_check_startup()
 
     def onLayersUnavailable(self):
         for b in self.toolbarButtons:
             b.setEnabled(False)
+
+        self.connectNetworkElementsAction.setEnabled(False)
 
     def profileToolClicked(self):
         """
@@ -642,15 +644,6 @@ class TeksiWastewaterPlugin:
             ]
 
         return result_actions[0]
-
-    def _wastewater_networkelement_layer_available_changed(self, available):
-
-        self.connectNetworkElementsAction.setEnabled(available)
-
-        if available:
-            self._configure_database_connection_config_from_tww_layer()
-
-            self.tww_validity_check_startup()
 
     def update_admin_mode(self):
 

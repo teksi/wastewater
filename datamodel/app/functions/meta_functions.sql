@@ -9,6 +9,7 @@ AS
 	  rec_jsonb := (
           SELECT jsonb_object_agg(key, to_jsonb(rec)->key)
           FROM jsonb_object_keys(to_jsonb(rec)) key
+
           WHERE LEFT(key, 2) = prefix_
 		  AND NOT(ltrim(key, prefix_||'_') =ANY(ignored_postfix))
         );
