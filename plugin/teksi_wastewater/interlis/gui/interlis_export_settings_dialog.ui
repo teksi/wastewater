@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>TEKSI Wastewater INTERLIS export</string>
+   <string>TEKSI Wastewater INTERLIS Export</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
