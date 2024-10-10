@@ -17,7 +17,7 @@ on:
 jobs:
   build:
     name: Update project translations
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     env:
       TX_TOKEN: ${{ secrets.TX_TOKEN }}
