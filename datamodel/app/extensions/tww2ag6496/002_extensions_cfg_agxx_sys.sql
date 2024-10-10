@@ -75,16 +75,3 @@ INSERT INTO tww_sys.dictionary_od_table (id, tablename, shortcut_en) VALUES
 (2999999,'building_group_text','GX')
 ON CONFLICT DO NOTHING;
 
-CREATE OR REPLACE FUNCTION tww_app.ft_agxx_refresh_bauwerksattribute(
-	)
-    RETURNS void
-    LANGUAGE 'plpgsql'
-    COST 100
-    VOLATILE SECURITY DEFINER PARALLEL UNSAFE
-AS $BODY$
-BEGIN
-
-  REFRESH MATERIALIZED VIEW tww_app.vw_agxx_knoten_bauwerksattribute WITH DATA;
-
-END;
-$BODY$;
