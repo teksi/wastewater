@@ -3,7 +3,10 @@ import os
 import re
 import subprocess
 import tempfile
+import uuid
 from typing import List
+
+from qgis.core import QgsExpression
 
 from ...utils.database_utils import DatabaseUtils
 from ...utils.plugin_utils import logger
@@ -36,16 +39,33 @@ def get_pgconf_as_ili_args() -> List[str]:
     """Returns the pgconf as a list of ili2db arguments"""
     pgconf = DatabaseUtils.get_pgconf()
     args = []
-    if pgconf["host"]:
-        args.extend(["--dbhost", '"' + pgconf["host"] + '"'])
-    if pgconf["port"]:
-        args.extend(["--dbport", '"' + pgconf["port"] + '"'])
-    if pgconf["user"]:
-        args.extend(["--dbusr", '"' + pgconf["user"] + '"'])
-    if pgconf["password"]:
-        args.extend(["--dbpwd", '"' + pgconf["password"] + '"'])
-    if pgconf["dbname"]:
-        args.extend(["--dbdatabase", '"' + pgconf["dbname"] + '"'])
+    dbparams = []
+    for key in pgconf:
+        if key == "host":
+            args.extend(["--dbhost", '"' + pgconf["host"] + '"'])
+        elif key == "port":
+            args.extend(["--dbport", '"' + pgconf["port"] + '"'])
+        elif key == "user":
+            args.extend(["--dbusr", '"' + pgconf["user"] + '"'])
+        elif key == "password":
+            args.extend(["--dbpwd", '"' + pgconf["password"] + '"'])
+        elif key == "dbname":
+            args.extend(["--dbdatabase", '"' + pgconf["dbname"] + '"'])
+        else:
+            dbparams.extend([f"{key}={pgconf[key]}"])
+    if dbparams:
+        # write into tempfile and add path to args
+        dbparams_path = os.path.join(tempfile.gettempdir(), str(uuid.uuid4()))
+        os.makedirs(dbparams_path, exist_ok=True)
+        with open(os.path.join(dbparams_path, "dbparams.txt"), "w") as f:
+            for param in dbparams:
+                f.write(param + "\n")
+        args.extend(["--dbparams", '"' + os.path.join(dbparams_path, "dbparams.txt") + '"'])
+    if not pgconf["user"]:
+        # allow loading PGUSER from overriden env variables
+        expression = QgsExpression("@PGUSER")
+        pguser = expression.evaluate()
+        args.extend(["--dbusr", f'"{pguser}"'])
     return args
 
 
