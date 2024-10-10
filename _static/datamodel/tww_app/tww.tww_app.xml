@@ -10653,8 +10653,9 @@ END]]></definition>
 -- Otherwise this will result in very slow query due to on_structure_part_change_networkelement
 -- being triggered for all rows. See https://github.com/QGEP/datamodel/pull/166#issuecomment-760245405 //skip-keyword-check
 IF _all THEN
-  RAISE INFO 'Temporarily disabling symbology triggers';
+  RAISE INFO 'Temporarily disabling symbology and modification triggers';
   PERFORM tww_app.alter_symbology_triggers('disable');
+  PERFORM tww_app.alter_modification_triggers('disable');
 END IF;
 
 
@@ -10708,8 +10709,9 @@ EXECUTE tww_app.update_wn_symbology_by_overflow(_obj_id, _all);
 
 -- See above
 IF _all THEN
-  RAISE INFO 'Reenabling symbology triggers';
+  RAISE INFO 'Reenabling symbology and modification triggers';
   PERFORM tww_app.alter_symbology_triggers('enable');
+  PERFORM tww_app.alter_modification_triggers('enable');
 END IF;
 
 END]]></definition>
@@ -10820,8 +10822,9 @@ END]]></definition>
 -- Otherwise this will result in very slow query due to on_structure_part_change_networkelement
 -- being triggered for all rows. See https://github.com/QGEP/datamodel/pull/166#issuecomment-760245405 //skip-keyword-check
 IF _all THEN
-  RAISE INFO 'Temporarily disabling symbology triggers';
+  RAISE INFO 'Temporarily disabling symbology and modification triggers';
   PERFORM tww_app.alter_symbology_triggers('disable');
+  PERFORM tww_app.alter_modification_triggers('disable');
 END IF;
 
 
@@ -10866,6 +10869,7 @@ WHERE symbology_ne.wn_obj_id = n.obj_id
 IF _all THEN
   RAISE INFO 'Reenabling symbology triggers';
   PERFORM tww_app.alter_symbology_triggers('enable');
+  PERFORM tww_app.alter_modification_triggers('enable');
 END IF;
 
 END]]></definition>
