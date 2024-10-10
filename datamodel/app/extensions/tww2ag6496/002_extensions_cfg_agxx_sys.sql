@@ -74,4 +74,3 @@ INSERT INTO tww_sys.dictionary_od_table (id, tablename, shortcut_en) VALUES
 (2999998,'measure_text','MX'),
 (2999999,'building_group_text','GX')
 ON CONFLICT DO NOTHING;
-
