@@ -30,7 +30,7 @@ SELECT s.id as gid,
        mat.abbr_de AS material,
        s.geom AS progression_geometry,
        s.geom AS detail_geometry
-FROM tww_od.network_segment s
+FROM tww_app.network_segment s
 JOIN tww_app.vw_network_node n1 ON n1.gid = s.from_node
 JOIN tww_app.vw_network_node n2 ON n2.gid = s.to_node
 LEFT JOIN tww_od.reach r ON r.obj_id = s.ne_id
