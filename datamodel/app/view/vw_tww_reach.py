@@ -284,24 +284,22 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
     $BODY$
     BEGIN
 
-      -- Synchronize geometry with level
-      IF NEW.rp_from_level <> OLD.rp_from_level OR (NEW.rp_from_level IS NULL AND OLD.rp_from_level IS NOT NULL) OR (NEW.rp_from_level IS NOT NULL AND OLD.rp_from_level IS NULL) THEN
+      -------------------------------------
+      -- Synchronize geometry with level --
+      -------------------------------------
+
+      -- Start point
+      IF NEW.rp_from_level IS DISTINCT FROM ST_Z(ST_StartPoint(NEW.progression3d_geometry)) THEN
         NEW.progression3d_geometry = ST_ForceCurve(ST_SetPoint(ST_CurveToLine(NEW.progression3d_geometry),0,
         ST_MakePoint(ST_X(ST_StartPoint(NEW.progression3d_geometry)),ST_Y(ST_StartPoint(NEW.progression3d_geometry)),COALESCE(NEW.rp_from_level,'NaN'))));
-      ELSE
-        IF ST_Z(ST_StartPoint(NEW.progression3d_geometry)) <> ST_Z(ST_StartPoint(OLD.progression3d_geometry)) THEN
-          NEW.rp_from_level = NULLIF(ST_Z(ST_StartPoint(NEW.progression3d_geometry)),'NaN');
-        END IF;
+      ELSE NULL;
       END IF;
 
-      -- Synchronize geometry with level
-      IF NEW.rp_to_level <> OLD.rp_to_level OR (NEW.rp_to_level IS NULL AND OLD.rp_to_level IS NOT NULL) OR (NEW.rp_to_level IS NOT NULL AND OLD.rp_to_level IS NULL) THEN
-        NEW.progression3d_geometry = ST_ForceCurve(ST_SetPoint(ST_CurveToLine(NEW.progression3d_geometry),ST_NumPoints(NEW.progression3d_geometry)-1,
-        ST_MakePoint(ST_X(ST_EndPoint(NEW.progression3d_geometry)),ST_Y(ST_EndPoint(NEW.progression3d_geometry)),COALESCE(NEW.rp_to_level,'NaN'))));
-      ELSE
-        IF ST_Z(ST_EndPoint(NEW.progression3d_geometry)) <> ST_Z(ST_EndPoint(OLD.progression3d_geometry)) THEN
-          NEW.rp_to_level = NULLIF(ST_Z(ST_EndPoint(NEW.progression3d_geometry)),'NaN');
-        END IF;
+      -- End point
+     IF NEW.rp_to_level IS DISTINCT FROM ST_Z(ST_EndPoint(NEW.progression3d_geometry)) THEN
+        NEW.progression3d_geometry = ST_ForceCurve(ST_SetPoint(ST_CurveToLine(NEW.progression3d_geometry),0,
+        ST_MakePoint(ST_X(ST_EndPoint(NEW.progression3d_geometry)),ST_Y(ST_EndPoint(NEW.progression3d_geometry)),COALESCE(NEW.rp_from_level,'NaN'))));
+      ELSE NULL;
       END IF;
 
       {rp_from}
