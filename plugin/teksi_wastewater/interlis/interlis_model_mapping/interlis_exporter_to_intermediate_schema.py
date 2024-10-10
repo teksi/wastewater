@@ -100,18 +100,12 @@ class InterlisExporterToIntermediateSchema:
             self._create_basket()
         if self.is_ag_xx_model:
             self.abwasser_session.execute(
-                "REFRESH MATERIALIZED VIEW tww_app.vw_agxx_knoten_bauwerksattribute WITH DATA"
+                text("SELECT tww_app.ft_agxx_refresh_bauwerksattribute();")
             )
         if self.model == config.MODEL_NAME_AG64:
-            self.abwasser_session.execute(
-                text("REFRESH MATERIALIZED VIEW tww_ag6496.knoten_bauwerksattribute WITH DATA;")
-            )
             self.current_basket = self.basket_topic_ag64
             self._export_ag64()
         elif self.model == config.MODEL_NAME_AG96:
-            self.abwasser_session.execute(
-                text("REFRESH MATERIALIZED VIEW tww_ag6496.knoten_bauwerksattribute WITH DATA;")
-            )
             self.current_basket = self.basket_topic_ag96
             self._export_ag96()
         else:
@@ -833,11 +827,11 @@ class InterlisExporterToIntermediateSchema:
             """
             WITH geoms AS (
              SELECT *, ST_ForceCurve((ST_Dump(perimeter_ist)).geom) AS geom
-             FROM tww_ag6496.sbw_einzugsgebiet
+             FROM tww_app.vw_agxx_sbw_einzugsgebiet
              WHERE ST_NumGeometries(perimeter_ist)>1
             UNION
              SELECT *, ST_ForceCurve(ST_GeometryN(perimeter_ist,1)) AS geom
-             FROM tww_ag6496.sbw_einzugsgebiet
+             FROM tww_app.vw_agxx_sbw_einzugsgebiet
              WHERE ST_NumGeometries(perimeter_ist)=1
             )
             SELECT DISTINCT ON (obj_id) obj_id, ST_Area(geom) AS area, geom, ST_GeometryType(geom) as type

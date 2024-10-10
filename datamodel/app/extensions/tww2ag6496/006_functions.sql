@@ -64,3 +64,17 @@ CREATE OR REPLACE FUNCTION tww_app.ft_agxx_update_catchment_area_totals_geoms
   $BODY$
   LANGUAGE plpgsql
   VOLATILE;
+
+CREATE OR REPLACE FUNCTION tww_app.ft_agxx_refresh_bauwerksattribute(
+	)
+    RETURNS void
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE SECURITY DEFINER PARALLEL UNSAFE
+AS $BODY$
+BEGIN
+
+  REFRESH MATERIALIZED VIEW tww_app.vw_agxx_knoten_bauwerksattribute WITH DATA;
+
+END;
+$BODY$;
