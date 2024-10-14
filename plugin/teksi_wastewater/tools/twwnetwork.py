@@ -29,6 +29,7 @@ Manages a graph of a wastewater network
 import copyreg
 import re
 import time
+import logging
 
 # pylint: disable=no-name-in-module
 from collections import defaultdict
@@ -57,6 +58,7 @@ class TwwGraphManager(QObject):
     timings = []
 
     message_emitted = pyqtSignal(str, str, Qgis.MessageLevel)
+    logger = logging.getLogger(__name__)
 
     def __init__(self):
         QObject.__init__(self)
@@ -111,8 +113,7 @@ class TwwGraphManager(QObject):
             try:
                 vertex = feat.geometry().asPoint()
             except ValueError:
-                # TODO Add to problem log
-                pass
+                self.logger.error(f"No Geometry found for Node {obj_id} (Type: {obj_type})")
             self.graph.add_node(fid, point=vertex, objType=obj_type, objId=obj_id)
 
             self.vertexIds[str(obj_id)] = fid
