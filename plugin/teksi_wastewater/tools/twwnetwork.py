@@ -27,9 +27,9 @@ Manages a graph of a wastewater network
 """
 
 import copyreg
+import logging
 import re
 import time
-import logging
 
 # pylint: disable=no-name-in-module
 from collections import defaultdict
