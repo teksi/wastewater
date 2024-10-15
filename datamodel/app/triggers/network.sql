@@ -1,11 +1,11 @@
 CREATE OR REPLACE FUNCTION tww_app.network_refresh_network_simple() RETURNS void SECURITY DEFINER AS $body$
 BEGIN
 
-  TRUNCATE tww_od.network_segment CASCADE;
-  TRUNCATE tww_od.network_node CASCADE;
+  TRUNCATE tww_app.network_segment CASCADE;
+  TRUNCATE tww_app.network_node CASCADE;
 
   -- Insert wastewater nodes
-  INSERT INTO tww_od.network_node(node_type, ne_id, geom)
+  INSERT INTO tww_app.network_node(node_type, ne_id, geom)
   SELECT
     'wastewater_node',
     n.obj_id,
@@ -13,7 +13,7 @@ BEGIN
   FROM tww_od.wastewater_node n;
 
   -- Insert reachpoints
-  INSERT INTO tww_od.network_node(node_type, ne_id, rp_id, geom)
+  INSERT INTO tww_app.network_node(node_type, ne_id, rp_id, geom)
   SELECT
     'reach_point',
     r.obj_id, -- the reachpoint also keeps a reference to it's reach, as it can be used by blind connections that happen exactly on start/end points
@@ -23,7 +23,7 @@ BEGIN
   JOIN tww_od.reach r ON rp.obj_id = r.fk_reach_point_from OR rp.obj_id = r.fk_reach_point_to;
 
   -- Insert virtual nodes for blind connections
-  INSERT INTO tww_od.network_node(node_type, ne_id, geom)
+  INSERT INTO tww_app.network_node(node_type, ne_id, geom)
   SELECT DISTINCT
     'blind_connection',
     r.obj_id,
@@ -33,7 +33,7 @@ BEGIN
   WHERE ST_LineLocatePoint(ST_CurveToLine(r.progression3d_geometry), rp.situation3d_geometry) NOT IN (0.0, 1.0); -- if exactly at start or at end, we don't need a virtualnode as we have the reachpoint
 
   -- Insert reaches, subdivided according to blind reaches
-  INSERT INTO tww_od.network_segment (segment_type, from_node, to_node, ne_id, geom)
+  INSERT INTO tww_app.network_segment (segment_type, from_node, to_node, ne_id, geom)
   SELECT 'reach',
          sub2.node_id_1,
          sub2.node_id_2,
@@ -56,13 +56,13 @@ BEGIN
                n.id as node_id,
                ST_LineLocatePoint(ST_CurveToLine(r.progression3d_geometry), n.geom) AS ratio
         FROM tww_od.reach r
-        JOIN tww_od.network_node n ON n.ne_id = r.obj_id
+        JOIN tww_app.network_node n ON n.ne_id = r.obj_id
     ) AS sub1
   ) AS sub2
   WHERE ratio_1 IS NOT NULL AND ratio_1 <> ratio_2;
 
   -- Insert edge between reachpoint (from) to the closest node belonging to the wasterwater network element
-  INSERT INTO tww_od.network_segment (segment_type, from_node, to_node, geom)
+  INSERT INTO tww_app.network_segment (segment_type, from_node, to_node, geom)
   SELECT DISTINCT ON(n1.id)
          'special_structure',
          n2.id,
@@ -78,12 +78,12 @@ BEGIN
     WHERE rp.fk_wastewater_networkelement IS NOT NULL
 
   ) AS sub1
-  JOIN tww_od.network_node as n1 ON n1.rp_id = rp_obj_id
-  JOIN tww_od.network_node as n2 ON n2.ne_id = wwne_id
+  JOIN tww_app.network_node as n1 ON n1.rp_id = rp_obj_id
+  JOIN tww_app.network_node as n2 ON n2.ne_id = wwne_id
   ORDER BY n1.id, ST_Distance(n1.geom, n2.geom);
 
   -- Insert edge between reachpoint (to) to the closest node belonging to the wasterwater network element
-  INSERT INTO tww_od.network_segment (segment_type, from_node, to_node, geom)
+  INSERT INTO tww_app.network_segment (segment_type, from_node, to_node, geom)
   SELECT DISTINCT ON(n1.id)
          'special_structure',
          n1.id,
@@ -99,8 +99,8 @@ BEGIN
     WHERE rp.fk_wastewater_networkelement IS NOT NULL
 
   ) AS sub1
-  JOIN tww_od.network_node as n1 ON n1.rp_id = rp_obj_id
-  JOIN tww_od.network_node as n2 ON n2.ne_id = wwne_id
+  JOIN tww_app.network_node as n1 ON n1.rp_id = rp_obj_id
+  JOIN tww_app.network_node as n2 ON n2.ne_id = wwne_id
   ORDER BY n1.id, ST_Distance(n1.geom, n2.geom);
 
   REFRESH MATERIALIZED VIEW tww_app.vw_network_node;
