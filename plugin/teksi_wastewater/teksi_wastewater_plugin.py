@@ -83,7 +83,8 @@ class TeksiWastewaterPlugin:
     profile = None
 
     def __init__(self, iface):
-        if os.environ.get("QGIS_DEBUGPY_HAS_LOADED") is None:
+        if (os.environ.get("QGIS_DEBUGPY_HAS_LOADED") is None
+            and QSettings().value("/TWW/DeveloperMode", False, type=bool)):
             try:
                 import debugpy
 

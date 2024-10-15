@@ -41,4 +41,5 @@ Migration path from QGEP to TEKSI Wastewater is due to end of summer 2024. <!---
 5. Install debugpy by running task `Install dependencies` or run `pip install debugpy` in the OSGeo4W Shell on Windows or your python env for qgis.
 6. Launch QGIS with task `Launch QGIS`.
 7. Wait for QGIS to start and open the plugin in QGIS.
+7. Ensure __Developer mode__ is enabled in the plugin settings. This will start the debug server.
 8. Attach the debugger with Debug: Start Debugging (F5) with configuration `Python: Remote Attach`
