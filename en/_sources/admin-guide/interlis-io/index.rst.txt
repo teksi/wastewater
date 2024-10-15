@@ -37,7 +37,7 @@ To install : before launching QGIS, open OSGeo4W Shell
 
 and type::
 
-   >>> pip3 install "sqlalchemy~=1.3.22" "geoalchemy2>=0.9.0"
+   >>> pip3 install "sqlalchemy~=2.0.38" "geoalchemy2>=0.14.7"
 
 If the command fails, try::
 
