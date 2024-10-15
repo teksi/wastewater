@@ -591,6 +591,17 @@ class TeksiWastewaterPlugin:
                 self.logger.error(str(e))
                 return
 
+        try:
+            self.interlisImporterExporter.check_dependencies()
+        except Exception as exception:
+            self.iface.messageBar().pushMessage(
+                "Error",
+                f"Could not load start the Interlis exporter due to unmet dependencies: {exception}.",
+                level=Qgis.Critical,
+            )
+            self.logger.error(str(exception))
+            return
+
         self.interlisImporterExporter.action_export()
 
     def actionImportClicked(self):
@@ -610,6 +621,17 @@ class TeksiWastewaterPlugin:
                 )
                 self.logger.error(str(e))
                 return
+
+        try:
+            self.interlisImporterExporter.check_dependencies()
+        except Exception as exception:
+            self.iface.messageBar().pushMessage(
+                "Error",
+                f"Could not load start the Interlis importer due to unmet dependencies: {exception}.",
+                level=Qgis.Critical,
+            )
+            self.logger.error(str(exception))
+            return
 
         self.interlisImporterExporter.action_import()
 
