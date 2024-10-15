@@ -1,4 +1,0 @@
-{
-    "qgis.installationRoot": "C:\\Program Files\\QGIS 3.34.10",
-    "qgis.executable": "${config:qgis.installationRoot}\\bin\\qgis-ltr-bin.exe",
-}

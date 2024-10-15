@@ -36,9 +36,9 @@ Migration path from QGEP to TEKSI Wastewater is due to end of summer 2024. <!---
 
 1. Ensure prerequisites are met according to the [admin guide](docs/en/admin-guide/interlis-io/index.rst).
 2. Install [Visual Studio Code](https://code.visualstudio.com/) and the [Python extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python).
-3. Install QGIS in Version 3.34.10 or adapt `qgis.installationRoot` in ['.vscode/settings.json'.](.vscode/settings.json)
+3. Install QGIS LTR
 4. Install Docker
-5. Install debugpy by running Task `Install dependencies` or run `pip install debugpy` in the OSGeo4W Shell.
-6. Launch QGIS with Task `Launch QGIS`.
+5. Install debugpy by running task `Install dependencies` or run `pip install debugpy` in the OSGeo4W Shell on Windows or your python env for qgis.
+6. Launch QGIS with task `Launch QGIS`.
 7. Wait for QGIS to start and open the plugin in QGIS.
 8. Attach the debugger with Debug: Start Debugging (F5) with configuration `Python: Remote Attach`

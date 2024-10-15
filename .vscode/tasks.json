@@ -7,9 +7,11 @@
             "label": "Install dependencies",
             "type": "shell",
             "command": "pip install debugpy \"sqlalchemy~=1.3.22\" \"geoalchemy2>=0.9.0\"",
-            "options": {
-                "shell": {
-                    "executable": "${config:qgis.installationRoot}\\OSGeo4W.bat"
+            "windows": {
+                "options": {
+                    "shell": {
+                        "executable": "C:\\OSGeo4W\\OSGeo4W.bat"
+                    }
                 }
             },
             "problemMatcher": []
@@ -33,7 +35,6 @@
         {
             "label": "Launch QGIS",
             "type": "process",
-            "command": "${config:qgis.executable}",
             "args": [
                 "--project",
                 "${workspaceFolder}\\project\\teksi_wastewater.qgs"
@@ -52,6 +53,12 @@
                     "QGIS_PLUGIN_USE_DEBUGGER": "debugpy",
                     "PGSERVICEFILE": "${workspaceFolder}\\project\\pg_service.conf"
                 }
+            },
+            "windows": {
+                "command": "C:\\OSGeo4W\\bin\\qgis-ltr-bin.exe"
+            },
+            "linux": {
+                "command": "qgis-ltr"
             }
         }
     ]
