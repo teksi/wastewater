@@ -1,6 +1,7 @@
 import os
 import webbrowser
 
+import sqlalchemy
 from qgis.core import Qgis, QgsProject, QgsSettings
 from qgis.PyQt.QtCore import QFileInfo, QObject, Qt
 from qgis.PyQt.QtWidgets import QApplication, QFileDialog, QProgressDialog, QPushButton
@@ -26,6 +27,13 @@ class InterlisImporterExporterGui(QObject):
         self.interlis_importer_exporter = InterlisImporterExporter(
             progress_done_callback=self._progress_done_callback
         )
+
+    def check_dependencies(self):
+        SQLALCHEMY_MINIMAL_VERSION = "1.4"
+        if sqlalchemy.__version__ < SQLALCHEMY_MINIMAL_VERSION:
+            raise Exception(
+                f"sqlalchemy version must be at least {SQLALCHEMY_MINIMAL_VERSION}. Current installed version is {sqlalchemy.__version__}"
+            )
 
     def action_import(self):
         """
