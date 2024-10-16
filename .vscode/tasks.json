@@ -58,7 +58,7 @@
                 "command": "C:\\OSGeo4W\\bin\\qgis-ltr-bin.exe"
             },
             "linux": {
-                "command": "qgis-ltr"
+                "command": "qgis"
             }
         }
     ]
