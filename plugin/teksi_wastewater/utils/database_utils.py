@@ -248,6 +248,6 @@ class DatabaseUtils:
         return messages
 
     def check_is_superuser():
-        logger.info("Check symbology triggers enabled")
+        logger.info("Check for superuser privileges")
         row = DatabaseUtils.fetchone("select usesuper from pg_user where usename = CURRENT_USER;")
         return row[0]
