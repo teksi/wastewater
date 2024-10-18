@@ -37,6 +37,7 @@ try:
     from .gui.twwplotsvgwidget import TwwPlotSVGWidget
 except ImportError:
     TwwPlotSVGWidget = None
+from .gui.rolegenerator import RoleGeneratorGui
 from .gui.twwprofiledockwidget import TwwProfileDockWidget
 from .gui.twwsettingsdialog import TwwSettingsDialog
 from .gui.twwwizard import TwwWizard
@@ -72,6 +73,7 @@ class TeksiWastewaterPlugin:
 
     # Wizard
     wizarddock = None
+    RoleGenerator = None
 
     # The layer ids the plugin will need
     edgeLayer = None
@@ -232,6 +234,9 @@ class TeksiWastewaterPlugin:
         )
         self.disableSymbologyTriggersAction.triggered.connect(self.disable_symbology_triggers)
 
+        self.createRolesAction = QAction(self.tr("Create database roles"), self.iface.mainWindow())
+        self.createRolesAction.triggered.connect(self.tww_role_generation_action)
+
         self.settingsAction = QAction(
             QIcon(QgsApplication.getThemeIcon("/mActionOptions.svg")),
             self.tr("Settings"),
@@ -372,6 +377,14 @@ class TeksiWastewaterPlugin:
             self.tr(f"Database has following validity issues:\n\n{messagesText}"),
         )
 
+    def tww_role_generation_action(self):
+        if not self.RoleGenerator:
+            self.RoleGenerator = RoleGeneratorGui()
+
+        self.logger.debug("Opening Role Generator")
+        self.iface.addDockWidget(Qt.LeftDockWidgetArea, self.RoleGenerator)
+        self.RoleGenerator.show()
+
     def enable_symbology_triggers(self):
         try:
             DatabaseUtils.enable_symbology_triggers()
@@ -429,6 +442,8 @@ class TeksiWastewaterPlugin:
         self.iface.removePluginMenu(self.main_menu_name, self.aboutAction)
         self.iface.removePluginMenu(self.main_menu_name, self.enableSymbologyTriggersAction)
         self.iface.removePluginMenu(self.main_menu_name, self.disableSymbologyTriggersAction)
+        if self.createRolesAction in self.iface.pluginMenu().actions():
+            self.iface.removePluginMenu(self.main_menu_name, self.createRolesAction)
 
         QgsApplication.processingRegistry().removeProvider(self.processing_provider)
 
@@ -675,9 +690,11 @@ class TeksiWastewaterPlugin:
             admin_mode = True
             self.toolbar.addAction(self.importAction)
             self.toolbar.addAction(self.exportAction)
+            self.iface.addPluginToMenu(self.main_menu_name, self.createRolesAction)
         else:
             self.toolbar.removeAction(self.importAction)
             self.toolbar.removeAction(self.exportAction)
+            self.iface.removePluginMenu(self.main_menu_name, self.createRolesAction)
             admin_mode = False
 
         self.enableSymbologyTriggersAction.setEnabled(admin_mode)
