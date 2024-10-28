@@ -58,6 +58,10 @@ COMMENT ON COLUMN tww_od.sia405pt_protection_tube.fk_provider IS 'Foreignkey to 
 ------------ Relationships and Value Tables ----------- ;
 ALTER TABLE tww_od.sia405pt_protection_tube ADD COLUMN fk_owner varchar(16);
 ALTER TABLE tww_od.sia405pt_protection_tube ADD CONSTRAINT rel_sia405pt_protection_tube_owner FOREIGN KEY (fk_owner) REFERENCES tww_od.organisation(obj_id) ON UPDATE CASCADE ON DELETE set null DEFERRABLE INITIALLY DEFERRED;
+
+ALTER TABLE tww_od.sia405pt_protection_tube ADD COLUMN fk_channel varchar(16);
+ALTER TABLE tww_od.sia405pt_protection_tube ADD CONSTRAINT rel_sia405pt_protection_tube_channel FOREIGN KEY (fk_channel) REFERENCES tww_od.channel(obj_id) ON UPDATE CASCADE ON DELETE set null DEFERRABLE INITIALLY DEFERRED;
+
 CREATE TABLE tww_vl.sia405pt_protection_tube_material () INHERITS (tww_vl.value_list_base);
 ALTER TABLE tww_vl.sia405pt_protection_tube_material ADD CONSTRAINT pkey_tww_vl_sia405pt_protection_tube_material_code PRIMARY KEY (code);
  INSERT INTO tww_vl.sia405pt_protection_tube_material (code, vsacode, value_en, value_de, value_fr, value_it, value_ro, abbr_en, abbr_de, abbr_fr, abbr_it, abbr_ro, active) VALUES (9438,9438,'concrete','Beton','beton', 'calcestruzzo', 'beton', '', '', '', '', '', 'true');
