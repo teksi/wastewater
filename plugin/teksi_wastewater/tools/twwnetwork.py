@@ -112,7 +112,7 @@ class TwwGraphManager(QObject):
                 vertex = feat.geometry().asPoint()
             except ValueError:
                 raise ValueError(f"No Point Geometry found for Node {obj_id} (Type: {obj_type})")
-            
+
             self.graph.add_node(fid, point=vertex, objType=obj_type, objId=obj_id)
 
             self.vertexIds[str(obj_id)] = fid
