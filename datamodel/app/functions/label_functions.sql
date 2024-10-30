@@ -29,9 +29,9 @@ CREATE OR REPLACE FUNCTION tww_app.update_reach_point_label(_obj_id text,
 		SELECT
 			ne.fk_wastewater_structure ws,
 			rp.obj_id,
-			row_number() OVER(PARTITION BY NE.fk_wastewater_structure
+			row_number() OVER(PARTITION BY ne.fk_wastewater_structure
 						ORDER BY (mod((2*pi()+(ST_Azimuth(RP.situation3d_geometry,ST_PointN(RE_to.progression3d_geometry,-2))-coalesce(outs.azimuth,0)))::numeric , 2*pi()::numeric)) ASC) AS idx,
-		  count (*) OVER(PARTITION BY NE.fk_wastewater_structure ) as max_idx
+		  count (*) OVER(PARTITION BY ne.fk_wastewater_structure ) as max_idx
 		  FROM tww_od.reach_point rp
 		  INNER JOIN tww_od.wastewater_networkelement ne ON rp.fk_wastewater_networkelement = ne.obj_id
 		  -- network element from
