@@ -422,14 +422,14 @@ class InterlisImporterToIntermediateSchema:
             return None
         return relation.t_ili_tid
 
-# new 30.10.2024
+    # new 30.10.2024
     def geometry3D_convert(self, geometryattribute, coteattribute, obj_id):
         """
         Checks if coteattribute or geometryattribut is Null or empty and calls ST_Force3D accordingly as else 3D geometry will be set to NULL if coteattribute is missing - see https://github.com/teksi/wastewater/issues/475#issuecomment-2441032526 and https://trac.osgeo.org/postgis/ticket/5804#comment:1
         """
         if coteattribute is None or coteattribute == "":
             # situation3d_geometry=self.session_tww.scalar(ST_Force3D(row.lage, row.kote)),
-            geom = self.session_tww.scalar(ST_Force3D(coteattribute, 'Nan'))
+            geom = self.session_tww.scalar(ST_Force3D(coteattribute, "Nan"))
             logger.info(
                 f'No reach_point.cote (Haltungpunkt.Kote) provided for object {obj_id}- situation3d_geometry z-value set to "Nan" instead: {geom}.'
             )
@@ -437,15 +437,13 @@ class InterlisImporterToIntermediateSchema:
         else:
             if geometryattribute is None or geometryattribute == "":
                 logger.warning(
-                            f'No reach_point.cote (Haltungpunkt.Lage) and reach_point.geometry (Haltungspunkt.Lage) provided for object {obj_id} -  situation3d_geometry cannot be defined and cannot be displayed in TEKSI TWW!'
+                    f"No reach_point.cote (Haltungpunkt.Lage) and reach_point.geometry (Haltungspunkt.Lage) provided for object {obj_id} -  situation3d_geometry cannot be defined and cannot be displayed in TEKSI TWW!"
                 )
                 return None
             else:
-                #situation3d_geometry=self.session_tww.scalar(ST_Force3D(row.lage, row.kote)),
+                # situation3d_geometry=self.session_tww.scalar(ST_Force3D(row.lage, row.kote)),
                 geom = self.session_tww.scalar(ST_Force3D(geometryattribute, coteattribute))
-                logger.debug(
-                    f' debug: controling situation3d_geometry : {geom}.'
-                )
+                logger.debug(f" debug: controling situation3d_geometry : {geom}.")
                 return geom
 
     def create_or_update(self, cls, **kwargs):
@@ -1964,7 +1962,7 @@ class InterlisImporterToIntermediateSchema:
                 position_of_connection=row.lage_anschluss,
                 remark=row.bemerkung,
                 # 30.10.2024 patching
-                #situation3d_geometry=self.session_tww.scalar(ST_Force3D(row.lage, row.kote)),
+                # situation3d_geometry=self.session_tww.scalar(ST_Force3D(row.lage, row.kote)),
                 situation3d_geometry=self.geometry3D_convert(row.lage, row.kote, row.t_ili_tid),
             )
             self.session_tww.add(reach_point)
