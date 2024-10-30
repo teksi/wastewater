@@ -431,7 +431,7 @@ class InterlisImporterToIntermediateSchema:
             # situation3d_geometry=self.session_tww.scalar(ST_Force3D(row.lage, row.kote)),
             #geom = self.session_tww.scalar(ST_Force3D(coteattribute, "Nan"))
             # (COALESCE (NULL,'NaN'))::numeric)
-            geom = self.session_tww.scalar(ST_Force3D(coteattribute, COALESCE (NULL,'NaN'))::numeric)))
+            geom = self.session_tww.scalar(ST_Force3D(coteattribute, COALESCE (NULL,'NaN'))::numeric)
             logger.info(
                 f'No reach_point.cote (Haltungpunkt.Kote) provided for object {obj_id}- situation3d_geometry z-value set to "Nan" instead: {geom}.'
             )
