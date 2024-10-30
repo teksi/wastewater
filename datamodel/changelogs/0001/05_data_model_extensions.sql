@@ -39,10 +39,17 @@ ALTER TABLE tww_vl.channel_function_hierarchic ADD COLUMN tww_use_in_labels bool
 UPDATE tww_vl.channel_function_hierarchic
 SET tww_use_in_labels= true WHERE value_en like 'pwwf%';
 
+
 -- this column is an extension to the VSA data model defines which status to use in labels
 ALTER TABLE tww_vl.wastewater_structure_status ADD COLUMN tww_use_in_labels bool DEFAULT false;
 UPDATE tww_vl.wastewater_structure_status
 SET tww_use_in_labels= true WHERE code=ANY('{8493,6530,6533}');
+
+-- this column is an extension to the VSA data model defines which function_hierarchic to use in labels
+ALTER TABLE tww_vl.channel_function_hierarchic ADD COLUMN tww_symbology_inflow_prio bool DEFAULT false;
+UPDATE tww_vl.channel_function_hierarchic
+SET tww_symbology_inflow_prio= true WHERE code =4516;
+
 
 
 -- integrate and adapt Alter order_fct_hierarchic in tww_vl.channel_function_hierarchic #224
