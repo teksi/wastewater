@@ -432,6 +432,7 @@ class InterlisImporterToIntermediateSchema:
             geom = self.session_tww.scalar(ST_Force3D(coteattribute, 'Nan'))
             logger.info(
                 f'No reach_point.cote (Haltungpunkt.Kote) provided for object {obj_id}- situation3d_geometry z-value set to "Nan" instead: {geom}.'
+            )
             return geom
         else:
             if geometryattribute is None or geometryattribute == "":
