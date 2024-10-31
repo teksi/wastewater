@@ -428,10 +428,7 @@ class InterlisImporterToIntermediateSchema:
         Checks if coteattribute or geometryattribut is Null or empty and calls ST_Force3D accordingly as else 3D geometry will be set to NULL if coteattribute is missing - see https://github.com/teksi/wastewater/issues/475#issuecomment-2441032526 and https://trac.osgeo.org/postgis/ticket/5804#comment:1
         """
         if coteattribute is None or coteattribute == "":
-            # situation3d_geometry=self.session_tww.scalar(ST_Force3D(row.lage, row.kote)),
-            #geom = self.session_tww.scalar(ST_Force3D(coteattribute, "Nan"))
-            # (COALESCE (NULL,'NaN'))::numeric)
-            geom = self.session_tww.scalar(ST_Force3D(coteattribute, COALESCE (NULL,'NaN'))::numeric)
+            geom = self.session_tww.scalar(ST_Force3D(geometryattribute))
             logger.info(
                 f'No reach_point.cote (Haltungpunkt.Kote) provided for object {obj_id}- situation3d_geometry z-value set to "Nan" instead: {geom}.'
             )
