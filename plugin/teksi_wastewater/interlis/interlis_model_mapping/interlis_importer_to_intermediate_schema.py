@@ -422,7 +422,6 @@ class InterlisImporterToIntermediateSchema:
             return None
         return relation.t_ili_tid
 
-
     def geometry3D_convert(
         self, geometryattribute, levelattribute, obj_id, classname_attributename
     ):
