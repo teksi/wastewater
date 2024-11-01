@@ -167,7 +167,7 @@ class InterlisImporterExporter:
         # Validate subclasses before export
         self._check_subclass_counts(limit_to_selection)
 
-# 1.11.2024 add checks from qgep
+# 1.11.2024 add checks from q gep
 
         # Validate subclasses before export
         self._check_subclass_counts(limit_to_selection)
@@ -662,7 +662,7 @@ class InterlisImporterExporter:
         ("zone"),
     ]:
         cursor.execute(
-            f"SELECT COUNT(obj_id) FROM qgep_od.{notsubclass} WHERE identifier is null;"
+            f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE identifier is null;"
         )
         # use cursor.fetchone()[0] instead of cursor.rowcount
         # add variable and store result of cursor.fetchone()[0] as the next call will give None value instead of count https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
@@ -691,10 +691,10 @@ class InterlisImporterExporter:
 
     if missing_identifier_count == 0:
         identifier_null_check = True
-        logger.info("OK: all identifiers set in qgep_od!")
+        logger.info("OK: all identifiers set in tww_od!")
     else:
         identifier_null_check = False
-        logger.info(f"ERROR: Missing identifiers in qgep_od: {missing_identifier_count}")
+        logger.info(f"ERROR: Missing identifiers in tww_od: {missing_identifier_count}")
     return identifier_null_check
 
 
@@ -714,7 +714,7 @@ class InterlisImporterExporter:
         # SIA405 Abwasser
         ("wastewater_structure"),
     ]:
-        cursor.execute(f"SELECT COUNT(obj_id) FROM qgep_od.{notsubclass} WHERE fk_owner is null;")
+        cursor.execute(f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_owner is null;")
         # use cursor.fetchone()[0] instead of cursor.rowcount
         # add variable and store result of cursor.fetchone()[0] as the next call will give None value instead of count https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
         class_fk_owner_count = int(cursor.fetchone()[0])
@@ -737,10 +737,10 @@ class InterlisImporterExporter:
 
     if missing_fk_owner_count == 0:
         check_fk_owner_null = True
-        logger.info("OK: all mandatory fk_owner set in qgep_od!")
+        logger.info("OK: all mandatory fk_owner set in tww_od!")
     else:
         check_fk_owner_null = False
-        logger.info(f"ERROR: Missing mandatory fk_owner in qgep_od: {missing_fk_owner_count}")
+        logger.info(f"ERROR: Missing mandatory fk_owner in tww_od: {missing_fk_owner_count}")
     return check_fk_owner_null
 
 
@@ -762,7 +762,7 @@ class InterlisImporterExporter:
         ("wastewater_structure"),
     ]:
         cursor.execute(
-            f"SELECT COUNT(obj_id) FROM qgep_od.{notsubclass} WHERE fk_operator is null;"
+            f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_operator is null;"
         )
         # use cursor.fetchone()[0] instead of cursor.rowcount
         logger.info(
@@ -778,11 +778,11 @@ class InterlisImporterExporter:
 
     if missing_fk_operator_count == 0:
         check_fk_operator_null = True
-        logger.info("OK: all mandatory fk_operator set in qgep_od!")
+        logger.info("OK: all mandatory fk_operator set in tww_od!")
     else:
         check_fk_operator_null = False
         logger.info(
-            f"ERROR: Missing mandatory fk_operator in qgep_od: {missing_fk_operator_count}"
+            f"ERROR: Missing mandatory fk_operator in tww_od: {missing_fk_operator_count}"
         )
 
     return check_fk_operator_null
@@ -842,7 +842,7 @@ class InterlisImporterExporter:
         ("zone"),
     ]:
         cursor.execute(
-            f"SELECT COUNT(obj_id) FROM qgep_od.{notsubclass} WHERE fk_dataowner is null;"
+            f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_dataowner is null;"
         )
         # use cursor.fetchone()[0] instead of cursor.rowcount
         # add variable and store result of cursor.fetchone()[0] as the next call will give None value instead of count https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
@@ -867,11 +867,11 @@ class InterlisImporterExporter:
 
     if missing_fk_dataowner_count == 0:
         check_fk_dataowner_null = True
-        logger.info("OK: all mandatory fk_dataowner set in qgep_od!")
+        logger.info("OK: all mandatory fk_dataowner set in tww_od!")
     else:
         check_fk_dataowner_null = False
         logger.info(
-            f"ERROR: Missing mandatory fk_dataowner in qgep_od: {missing_fk_dataowner_count}"
+            f"ERROR: Missing mandatory fk_dataowner in tww_od: {missing_fk_dataowner_count}"
         )
 
     return check_fk_dataowner_null
@@ -931,7 +931,7 @@ class InterlisImporterExporter:
         ("zone"),
     ]:
         cursor.execute(
-            f"SELECT COUNT(obj_id) FROM qgep_od.{notsubclass} WHERE fk_provider is null;"
+            f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_provider is null;"
         )
         # use cursor.fetchone()[0] instead of cursor.rowcount
         # add variable and store result of cursor.fetchone()[0] as the next call will give None value instead of count https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
@@ -955,11 +955,11 @@ class InterlisImporterExporter:
 
     if missing_fk_provider_count == 0:
         check_fk_provider_null = True
-        logger.info("OK: all mandatory fk_provider set in qgep_od!")
+        logger.info("OK: all mandatory fk_provider set in tww_od!")
     else:
         check_fk_provider_null = False
         logger.info(
-            f"ERROR: Missing mandatory fk_provider in qgep_od: {missing_fk_provider_count}"
+            f"ERROR: Missing mandatory fk_provider in tww_od: {missing_fk_provider_count}"
         )
 
     return check_fk_provider_null
@@ -979,11 +979,11 @@ class InterlisImporterExporter:
 
     # select all obj_id from wastewater_structure that are not in wwtp_structure
     cursor.execute(
-        "SELECT * FROM qgep_od.wastewater_structure WHERE obj_id NOT IN (SELECT obj_id FROM qgep_od.wwtp_structure);"
+        "SELECT * FROM tww_od.wastewater_structure WHERE obj_id NOT IN (SELECT obj_id FROM tww_od.wwtp_structure);"
     )
     # remove - only for testing
     # cursor.execute(
-    #   f"SELECT * FROM qgep_od.organisation WHERE obj_id NOT IN (SELECT obj_id FROM qgep_od.private);"
+    #   f"SELECT * FROM tww_od.organisation WHERE obj_id NOT IN (SELECT obj_id FROM tww_od.private);"
     # )
 
     # cursor.fetchall() - see https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
