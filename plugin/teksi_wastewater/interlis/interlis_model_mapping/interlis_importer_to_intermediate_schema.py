@@ -422,7 +422,7 @@ class InterlisImporterToIntermediateSchema:
             return None
         return relation.t_ili_tid
 
-    # new 30.10.2024
+
     def geometry3D_convert(
         self, geometryattribute, levelattribute, obj_id, classname_attributename
     ):
@@ -452,7 +452,6 @@ class InterlisImporterToIntermediateSchema:
                 )
                 return None
             else:
-                # situation3d_geometry=self.session_tww.scalar(ST_Force3D(row.lage, row.kote)),
                 # Levelattribute and geometry attribute provided - 3D coordinate can be created as expected
                 geom = self.session_tww.scalar(ST_Force3D(geometryattribute, levelattribute))
                 logger.debug(
@@ -1975,8 +1974,6 @@ class InterlisImporterToIntermediateSchema:
                 ),
                 position_of_connection=row.lage_anschluss,
                 remark=row.bemerkung,
-                # 30.10.2024 patching
-                # situation3d_geometry=self.session_tww.scalar(ST_Force3D(row.lage, row.kote)),
                 situation3d_geometry=self.geometry3D_convert(
                     row.lage, row.kote, row.t_ili_tid, "reach_point.cote (Haltungpunkt.Kote)"
                 ),
@@ -2011,9 +2008,6 @@ class InterlisImporterToIntermediateSchema:
                 # fk_hydr_geometry=row.REPLACE_ME,  # TODO : NOT MAPPED
                 backflow_level_current=row.rueckstaukote_ist,
                 bottom_level=row.sohlenkote,
-                # situation3d_geometry=self.session_tww.scalar(ST_Force3D(row.lage, row.sohlenkote)),
-                # 30.10.2024 patching
-                # situation3d_geometry=self.session_tww.scalar(ST_Force3D(row.lage, row.sohlenkote)),
                 situation3d_geometry=self.geometry3D_convert(
                     row.lage,
                     row.sohlenkote,
@@ -2129,10 +2123,6 @@ class InterlisImporterToIntermediateSchema:
                 positional_accuracy=self.get_vl_code(
                     self.model_classes_tww_od.cover_positional_accuracy, row.lagegenauigkeit
                 ),
-                # patching 31.10.2024
-                # situation3d_geometry=self.session_tww.scalar(ST_Force3D(row.lage, row.kote)),
-                # 30.10.2024 patching
-                # situation3d_geometry=self.session_tww.scalar(ST_Force3D(row.lage, row.kote)),
                 situation3d_geometry=self.geometry3D_convert(
                     row.lage, row.kote, row.t_ili_tid, "cover.level (Deckel.Deckelkote)"
                 ),
