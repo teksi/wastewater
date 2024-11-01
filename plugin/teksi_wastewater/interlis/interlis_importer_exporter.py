@@ -167,7 +167,7 @@ class InterlisImporterExporter:
         # Validate subclasses before export
         self._check_subclass_counts(limit_to_selection)
 
-# 1.11.2024 add checks from q gep
+        # 1.11.2024 add checks from q gep
 
         # Validate subclasses before export
         self._check_subclass_counts(limit_to_selection)
@@ -695,7 +695,6 @@ class InterlisImporterExporter:
                 logger.info(f"ERROR: Missing identifiers in tww_od: {missing_identifier_count}")
             return identifier_null_check
 
-
     def _check_fk_owner_null():
         """
         Check if MAMDATORY fk_owner is Null
@@ -705,22 +704,24 @@ class InterlisImporterExporter:
         with DatabaseUtils.PsycopgConnection() as connection:
             cursor = connection.cursor()
 
-            missing_fk_owner_count = 0
-            # add MANDATORY classes to be checked
-            for notsubclass in [
-                # SIA405 Abwasser
-                ("wastewater_structure"),
-            ]:
-                cursor.execute(f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_owner is null;")
-                # use cursor.fetchone()[0] instead of cursor.rowcount
-                # add variable and store result of cursor.fetchone()[0] as the next call will give None value instead of count https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
-                class_fk_owner_count = int(cursor.fetchone()[0])
-                # logger.info(
-                #    f"Number of datasets in class '{notsubclass}' without fk_owner : {cursor.fetchone()[0]}"
-                # )
-                logger.info(
-                    f"Number of datasets in class '{notsubclass}' without fk_owner : {class_fk_owner_count}"
-                )
+        missing_fk_owner_count = 0
+        # add MANDATORY classes to be checked
+        for notsubclass in [
+            # SIA405 Abwasser
+            ("wastewater_structure"),
+        ]:
+            cursor.execute(
+                f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_owner is null;"
+            )
+            # use cursor.fetchone()[0] instead of cursor.rowcount
+            # add variable and store result of cursor.fetchone()[0] as the next call will give None value instead of count https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
+            class_fk_owner_count = int(cursor.fetchone()[0])
+            # logger.info(
+            #    f"Number of datasets in class '{notsubclass}' without fk_owner : {cursor.fetchone()[0]}"
+            # )
+            logger.info(
+                f"Number of datasets in class '{notsubclass}' without fk_owner : {class_fk_owner_count}"
+            )
 
                 # if cursor.fetchone() is None:
                 if class_fk_owner_count == 0:
@@ -739,7 +740,6 @@ class InterlisImporterExporter:
                 check_fk_owner_null = False
                 logger.info(f"ERROR: Missing mandatory fk_owner in tww_od: {missing_fk_owner_count}")
             return check_fk_owner_null
-
 
     def _check_fk_operator_null():
         """
@@ -782,7 +782,6 @@ class InterlisImporterExporter:
                 )
 
             return check_fk_operator_null
-
 
     def _check_fk_dataowner_null():
         """
@@ -871,7 +870,6 @@ class InterlisImporterExporter:
 
             return check_fk_dataowner_null
 
-
     def _check_fk_provider_null():
         """
         Check if MAMDATORY fk_provider is Null
@@ -958,7 +956,6 @@ class InterlisImporterExporter:
 
             return check_fk_provider_null
 
-
     def skip_wwtp_structure_ids():
         """
         Get list of id's of class wastewater_structure without wwtp_structure (ARABauwerk)
@@ -997,7 +994,6 @@ class InterlisImporterExporter:
                     logger.debug(f" building up '{not_wwtp_structure_ids}' ...")
 
             return not_wwtp_structure_ids
-
 
     def _init_model_classes(self, model):
         ModelInterlis = ModelInterlisSia405Abwasser
