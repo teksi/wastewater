@@ -723,15 +723,15 @@ class InterlisImporterExporter:
                 f"Number of datasets in class '{notsubclass}' without fk_owner : {class_fk_owner_count}"
             )
 
-                # if cursor.fetchone() is None:
-                if class_fk_owner_count == 0:
-                    missing_fk_owner_count = missing_fk_owner_count
-                else:
-                    # missing_fk_owner_count = missing_fk_owner_count + int(cursor.fetchone()[0])
-                    missing_fk_owner_count = missing_fk_owner_count + class_fk_owner_count
+            # if cursor.fetchone() is None:
+            if class_fk_owner_count == 0:
+                missing_fk_owner_count = missing_fk_owner_count
+            else:
+                # missing_fk_owner_count = missing_fk_owner_count + int(cursor.fetchone()[0])
+                missing_fk_owner_count = missing_fk_owner_count + class_fk_owner_count
 
-                # add for testing
-                logger.info(f"missing_fk_owner_count : {missing_fk_owner_count}")
+            # add for testing
+            logger.info(f"missing_fk_owner_count : {missing_fk_owner_count}")
 
             if missing_fk_owner_count == 0:
                 check_fk_owner_null = True
