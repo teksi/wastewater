@@ -248,7 +248,7 @@ def create_app(
     set_defaults_and_triggers(pg_service, SingleInheritances)
     run_sql_file("triggers/create_triggers.sql", pg_service)
 
-    # Roles 
+    # Roles
     run_sql_file("tww_app_roles.sql", pg_service, variables)
 
 
