@@ -70,7 +70,7 @@ def create_app(
     run_sql_file("functions/modification_functions.sql", pg_service)
     run_sql_file("functions/symbology_functions.sql", pg_service)
     run_sql_file("functions/reach_direction_change.sql", pg_service, variables)
-    run_sql_file("functions/14_geometry_functions.sql", pg_service, variables)
+    run_sql_file("functions/geometry_functions.sql", pg_service, variables)
     run_sql_file("functions/update_catchment_area_totals.sql", pg_service, variables)
     run_sql_file("functions/organisation_functions.sql", pg_service, variables)
     run_sql_file("functions/meta_functions.sql", pg_service, variables)
