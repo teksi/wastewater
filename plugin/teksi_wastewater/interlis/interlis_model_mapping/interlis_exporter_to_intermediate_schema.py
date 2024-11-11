@@ -568,10 +568,12 @@ class InterlisExporterToIntermediateSchema:
 
     def _set_tid_iterator(self):
         # set tidMaker
-        max_tid=self.abwasser_session.execute(text("SELECT last_value from pg2ili_abwasser.t_ili2db_seq;")).fetchone()
-        for _ in range(max_tid.last_value+1):
+        max_tid = self.abwasser_session.execute(
+            text("SELECT last_value from pg2ili_abwasser.t_ili2db_seq;")
+        ).fetchone()
+        for _ in range(max_tid.last_value + 1):
             self.tid_maker.next_tid()
-    
+
     def _export_organisation(self):
         query = self.tww_session.query(self.model_classes_tww_od.organisation)
         for row in query:
