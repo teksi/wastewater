@@ -98,10 +98,9 @@ class InterlisExporterToIntermediateSchema:
 
         if self.basket_enabled:
             self._create_basket()
-        if self.is_ag_xx_model:
-            self.abwasser_session.execute(
-                text("SELECT tww_app.ft_agxx_refresh_bauwerksattribute();")
-            )
+
+        self._set_tid_iterator()
+
         if self.model == config.MODEL_NAME_AG64:
             self.current_basket = self.basket_topic_ag64
             self._export_ag64()
@@ -507,6 +506,10 @@ class InterlisExporterToIntermediateSchema:
 
     def _export_ag64(self):
 
+        logger.info("Adding organisations to ABWASSER.organisation export")
+        self._export_organisation_agxx()
+        self._check_for_stop()
+
         logger.info("Exporting TWW.gepknoten -> ABWASSER.infrastrukturknoten")
         self._export_infrastrukturknoten()
         self._check_for_stop()
@@ -522,6 +525,10 @@ class InterlisExporterToIntermediateSchema:
         self._check_for_stop()
 
     def _export_ag96(self):
+
+        logger.info("Adding organisations to ABWASSER.organisation export")
+        self._export_organisation_agxx()
+        self._check_for_stop()
 
         logger.info("Exporting TWW.gepmassnahme -> ABWASSER.gepmassnahme")
         self._export_gepmassnahme()
@@ -559,6 +566,12 @@ class InterlisExporterToIntermediateSchema:
         self._export_versickerungsbereichag()
         self._check_for_stop()
 
+    def _set_tid_iterator(self):
+        # set tidMaker
+        max_tid=self.abwasser_session.execute(text("SELECT last_value from pg2ili_abwasser.t_ili2db_seq;")).fetchone()
+        for _ in range(max_tid.last_value+1):
+            self.tid_maker.next_tid()
+    
     def _export_organisation(self):
         query = self.tww_session.query(self.model_classes_tww_od.organisation)
         for row in query:
@@ -605,6 +618,12 @@ class InterlisExporterToIntermediateSchema:
             print(".", end="")
         logger.info("done")
         self.abwasser_session.flush()
+
+    def _export_organisation_agxx(self):
+        # no export from database, but populate Obj2Tid
+        query = self.tww_session.query(self.model_classes_interlis.organisation)
+        for row in query:
+            self.map_tid_ag_xx(row.obj_id, row.t_id)
 
     def _export_gepmassnahme(self):
         query = self.tww_session.query(self.model_classes_tww_app.gepmassnahme)
