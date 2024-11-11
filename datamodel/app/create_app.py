@@ -74,6 +74,7 @@ def create_app(
     run_sql_file("functions/update_catchment_area_totals.sql", pg_service, variables)
     run_sql_file("functions/organisation_functions.sql", pg_service, variables)
     run_sql_file("functions/meta_functions.sql", pg_service, variables)
+    run_sql_file("functions/network_functions.sql", pg_service)
 
     # open YAML files
     if tww_reach_extra:
@@ -133,8 +134,6 @@ def create_app(
         "infiltration_zone": "zone",
         "drainage_system": "zone",
     }
-
-    set_defaults_and_triggers(pg_service, SingleInheritances)
 
     for key in SingleInheritances:
         SingleInheritance(
@@ -245,8 +244,11 @@ def create_app(
         pg_service,
     ).create()
 
-    run_sql_file("triggers/network.sql", pg_service)
+    # Triggers
+    set_defaults_and_triggers(pg_service, SingleInheritances)
+    run_sql_file("triggers/create_triggers.sql", pg_service)
 
+    # Roles 
     run_sql_file("tww_app_roles.sql", pg_service, variables)
 
 
