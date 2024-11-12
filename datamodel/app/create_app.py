@@ -135,6 +135,12 @@ def create_app(
         "drainage_system": "zone",
     }
 
+    # Triggers
+    # Has to be fired before view creation otherwise it won't work and will only fail in CI
+    run_sql_file("triggers/create_triggers.sql", pg_service)
+
+    set_defaults_and_triggers(pg_service, SingleInheritances)
+
     for key in SingleInheritances:
         SingleInheritance(
             "tww_od." + SingleInheritances[key],
@@ -243,10 +249,6 @@ def create_app(
         safe_load(open(cwd / "view/export/vw_export_wastewater_structure.yaml")),
         pg_service,
     ).create()
-
-    # Triggers
-    set_defaults_and_triggers(pg_service, SingleInheritances)
-    run_sql_file("triggers/create_triggers.sql", pg_service)
 
     # Roles
     run_sql_file("tww_app_roles.sql", pg_service, variables)
