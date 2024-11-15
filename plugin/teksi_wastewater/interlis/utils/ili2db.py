@@ -58,7 +58,6 @@ class InterlisTools:
                     "--createFk",
                     "--createFkIdx",
                     "--createTidCol",
-                    "--importTid",
                     f"{create_basket_col_args}",
                     "--noSmartMapping",
                     "--defaultSrsCode",
