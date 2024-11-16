@@ -2251,7 +2251,7 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="87" name="_channel_usage_current" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="88" name="_channel_function_hierarchic" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
       </table>
-      <table name="vw_tww_maintenance_event" numRows="0" remarks="" schema="tww_app" type="VIEW" viewSql=" SELECT&#10;        CASE&#10;            WHEN (bio_ecol_assessment.obj_id IS NOT NULL) THEN 'bio_ecol_assessment'::tww_app.maintenance_event_type&#10;            WHEN (examination.obj_id IS NOT NULL) THEN 'examination'::tww_app.maintenance_event_type&#10;            WHEN (maintenance.obj_id IS NOT NULL) THEN 'maintenance'::tww_app.maintenance_event_type&#10;            ELSE 'unknown'::tww_app.maintenance_event_type&#10;        END AS maintenance_event_type,&#10;    maintenance_event.obj_id,&#10;    maintenance_event.base_data,&#10;    maintenance_event.cost,&#10;    maintenance_event.data_details,&#10;    maintenance_event.duration,&#10;    maintenance_event.fk_dataowner,&#10;    maintenance_event.fk_measure,&#10;    maintenance_event.fk_operating_company,&#10;    maintenance_event.fk_provider,&#10;    maintenance_event.identifier,&#10;    maintenance_event.last_modification,&#10;    maintenance_event.operator,&#10;    maintenance_event.reason,&#10;    maintenance_event.remark,&#10;    maintenance_event.result,&#10;    maintenance_event.status,&#10;    maintenance_event.time_point,&#10;    bio_ecol_assessment.comparison_last AS ba_comparison_last,&#10;    bio_ecol_assessment.date_last_examen AS ba_date_last_examen,&#10;    bio_ecol_assessment.impact_auxiliary_indic AS ba_impact_auxiliary_indic,&#10;    bio_ecol_assessment.impact_external_aspect AS ba_impact_external_aspect,&#10;    bio_ecol_assessment.impact_macroinvertebrates AS ba_impact_macroinvertebrates,&#10;    bio_ecol_assessment.impact_water_plants AS ba_impact_water_plants,&#10;    bio_ecol_assessment.intervention_demand AS ba_intervention_demand,&#10;    bio_ecol_assessment.io_calculation AS ba_io_calculation,&#10;    bio_ecol_assessment.kind_water_body AS ba_kind_water_body,&#10;    bio_ecol_assessment.outlet_pipe_clear_height AS ba_outlet_pipe_clear_height,&#10;    bio_ecol_assessment.q347 AS ba_q347,&#10;    bio_ecol_assessment.relevance_matrix AS ba_relevance_matrix,&#10;    bio_ecol_assessment.relevant_slope AS ba_relevant_slope,&#10;    bio_ecol_assessment.surface_water_bodies AS ba_surface_water_bodies,&#10;    bio_ecol_assessment.water_specific_discharge_freight_nh4_n_current AS ba_water_specific_discharge_freight_nh4_n_current,&#10;    bio_ecol_assessment.water_specific_discharge_freight_nh4_n_current_opt AS ba_water_specific_discharge_freight_nh4_n_current_opt,&#10;    bio_ecol_assessment.water_specific_discharge_freight_nh4_n_planned AS ba_water_specific_discharge_freight_nh4_n_planned,&#10;    examination.equipment AS ex_equipment,&#10;    examination.fk_reach_point AS ex_fk_reach_point,&#10;    examination.from_point_identifier AS ex_from_point_identifier,&#10;    examination.inspected_length AS ex_inspected_length,&#10;    examination.recording_type AS ex_recording_type,&#10;    examination.to_point_identifier AS ex_to_point_identifier,&#10;    examination.vehicle AS ex_vehicle,&#10;    examination.videonumber AS ex_videonumber,&#10;    examination.weather AS ex_weather,&#10;    maintenance.kind AS mn_kind&#10;   FROM (((tww_od.maintenance_event maintenance_event&#10;     LEFT JOIN tww_od.bio_ecol_assessment bio_ecol_assessment ON (((bio_ecol_assessment.obj_id)::text = (maintenance_event.obj_id)::text)))&#10;     LEFT JOIN tww_od.examination examination ON (((examination.obj_id)::text = (maintenance_event.obj_id)::text)))&#10;     LEFT JOIN tww_od.maintenance maintenance ON (((maintenance.obj_id)::text = (maintenance_event.obj_id)::text)));">
+      <table name="vw_tww_maintenance_event" numRows="0" remarks="" schema="tww_app" type="VIEW" viewSql=" SELECT&#10;        CASE&#10;            WHEN (bio_ecol_assessment.obj_id IS NOT NULL) THEN 'bio_ecol_assessment'::tww_app.maintenance_event_type&#10;            WHEN (examination.obj_id IS NOT NULL) THEN 'examination'::tww_app.maintenance_event_type&#10;            WHEN (maintenance.obj_id IS NOT NULL) THEN 'maintenance'::tww_app.maintenance_event_type&#10;            ELSE 'unknown'::tww_app.maintenance_event_type&#10;        END AS maintenance_event_type,&#10;    maintenance_event.obj_id,&#10;    maintenance_event.base_data,&#10;    maintenance_event.cost,&#10;    maintenance_event.data_details,&#10;    maintenance_event.duration,&#10;    maintenance_event.fk_dataowner,&#10;    maintenance_event.fk_measure,&#10;    maintenance_event.fk_operating_company,&#10;    maintenance_event.fk_provider,&#10;    maintenance_event.identifier,&#10;    maintenance_event.last_modification,&#10;    maintenance_event.operator,&#10;    maintenance_event.reason,&#10;    maintenance_event.remark,&#10;    maintenance_event.result,&#10;    maintenance_event.status,&#10;    maintenance_event.time_point,&#10;    bio_ecol_assessment.comparison_last AS bo_comparison_last,&#10;    bio_ecol_assessment.date_last_examen AS bo_date_last_examen,&#10;    bio_ecol_assessment.impact_auxiliary_indic AS bo_impact_auxiliary_indic,&#10;    bio_ecol_assessment.impact_external_aspect AS bo_impact_external_aspect,&#10;    bio_ecol_assessment.impact_macroinvertebrates AS bo_impact_macroinvertebrates,&#10;    bio_ecol_assessment.impact_water_plants AS bo_impact_water_plants,&#10;    bio_ecol_assessment.intervention_demand AS bo_intervention_demand,&#10;    bio_ecol_assessment.io_calculation AS bo_io_calculation,&#10;    bio_ecol_assessment.kind_water_body AS bo_kind_water_body,&#10;    bio_ecol_assessment.outlet_pipe_clear_height AS bo_outlet_pipe_clear_height,&#10;    bio_ecol_assessment.q347 AS bo_q347,&#10;    bio_ecol_assessment.relevance_matrix AS bo_relevance_matrix,&#10;    bio_ecol_assessment.relevant_slope AS bo_relevant_slope,&#10;    bio_ecol_assessment.surface_water_bodies AS bo_surface_water_bodies,&#10;    bio_ecol_assessment.water_specific_discharge_freight_nh4_n_current AS bo_water_specific_discharge_freight_nh4_n_current,&#10;    bio_ecol_assessment.water_specific_discharge_freight_nh4_n_current_opt AS bo_water_specific_discharge_freight_nh4_n_current_opt,&#10;    bio_ecol_assessment.water_specific_discharge_freight_nh4_n_planned AS bo_water_specific_discharge_freight_nh4_n_planned,&#10;    examination.equipment AS ex_equipment,&#10;    examination.fk_reach_point AS ex_fk_reach_point,&#10;    examination.from_point_identifier AS ex_from_point_identifier,&#10;    examination.inspected_length AS ex_inspected_length,&#10;    examination.recording_type AS ex_recording_type,&#10;    examination.to_point_identifier AS ex_to_point_identifier,&#10;    examination.vehicle AS ex_vehicle,&#10;    examination.videonumber AS ex_videonumber,&#10;    examination.weather AS ex_weather,&#10;    maintenance.kind AS mn_kind&#10;   FROM (((tww_od.maintenance_event maintenance_event&#10;     LEFT JOIN tww_od.bio_ecol_assessment bio_ecol_assessment ON (((bio_ecol_assessment.obj_id)::text = (maintenance_event.obj_id)::text)))&#10;     LEFT JOIN tww_od.examination examination ON (((examination.obj_id)::text = (maintenance_event.obj_id)::text)))&#10;     LEFT JOIN tww_od.maintenance maintenance ON (((maintenance.obj_id)::text = (maintenance_event.obj_id)::text)));">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="maintenance_event_type" nullable="true" remarks="" size="2147483647" type="&quot;tww_app&quot;.&quot;maintenance_event_type&quot;" typeCode="12"/>
          <column autoUpdated="false" defaultValue="tww_app.generate_oid('tww_od'::text, 'maintenance_event'::text)" digits="0" id="1" name="obj_id" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="base_data" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
@@ -2270,23 +2270,23 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="15" name="result" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="16" name="status" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="6" id="17" name="time_point" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="18" name="ba_comparison_last" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
-         <column autoUpdated="false" defaultValue="null" digits="6" id="19" name="ba_date_last_examen" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="20" name="ba_impact_auxiliary_indic" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="21" name="ba_impact_external_aspect" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="22" name="ba_impact_macroinvertebrates" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="23" name="ba_impact_water_plants" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="24" name="ba_intervention_demand" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="25" name="ba_io_calculation" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="26" name="ba_kind_water_body" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="27" name="ba_outlet_pipe_clear_height" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
-         <column autoUpdated="false" defaultValue="null" digits="3" id="28" name="ba_q347" nullable="true" remarks="" size="8" type="numeric" typeCode="2"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="29" name="ba_relevance_matrix" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="30" name="ba_relevant_slope" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="31" name="ba_surface_water_bodies" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="32" name="ba_water_specific_discharge_freight_nh4_n_current" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="33" name="ba_water_specific_discharge_freight_nh4_n_current_opt" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="34" name="ba_water_specific_discharge_freight_nh4_n_planned" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="18" name="bo_comparison_last" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="19" name="bo_date_last_examen" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="20" name="bo_impact_auxiliary_indic" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="21" name="bo_impact_external_aspect" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="22" name="bo_impact_macroinvertebrates" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="23" name="bo_impact_water_plants" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="24" name="bo_intervention_demand" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="25" name="bo_io_calculation" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="26" name="bo_kind_water_body" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="27" name="bo_outlet_pipe_clear_height" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="3" id="28" name="bo_q347" nullable="true" remarks="" size="8" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="29" name="bo_relevance_matrix" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="30" name="bo_relevant_slope" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="31" name="bo_surface_water_bodies" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="32" name="bo_water_specific_discharge_freight_nh4_n_current" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="33" name="bo_water_specific_discharge_freight_nh4_n_current_opt" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="34" name="bo_water_specific_discharge_freight_nh4_n_planned" nullable="true" remarks="" size="5" type="int2" typeCode="5"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="35" name="ex_equipment" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="36" name="ex_fk_reach_point" nullable="true" remarks="" size="16" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="37" name="ex_from_point_identifier" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
@@ -7714,23 +7714,23 @@ BEGIN
         , water_specific_discharge_freight_nh4_n_planned
       ) VALUES (
           NEW.obj_id -- obj_id
-        , NEW.ba_comparison_last
-        , NEW.ba_date_last_examen
-        , NEW.ba_impact_auxiliary_indic
-        , NEW.ba_impact_external_aspect
-        , NEW.ba_impact_macroinvertebrates
-        , NEW.ba_impact_water_plants
-        , NEW.ba_intervention_demand
-        , NEW.ba_io_calculation
-        , NEW.ba_kind_water_body
-        , NEW.ba_outlet_pipe_clear_height
-        , NEW.ba_q347
-        , NEW.ba_relevance_matrix
-        , NEW.ba_relevant_slope
-        , NEW.ba_surface_water_bodies
-        , NEW.ba_water_specific_discharge_freight_nh4_n_current
-        , NEW.ba_water_specific_discharge_freight_nh4_n_current_opt
-        , NEW.ba_water_specific_discharge_freight_nh4_n_planned
+        , NEW.bo_comparison_last
+        , NEW.bo_date_last_examen
+        , NEW.bo_impact_auxiliary_indic
+        , NEW.bo_impact_external_aspect
+        , NEW.bo_impact_macroinvertebrates
+        , NEW.bo_impact_water_plants
+        , NEW.bo_intervention_demand
+        , NEW.bo_io_calculation
+        , NEW.bo_kind_water_body
+        , NEW.bo_outlet_pipe_clear_height
+        , NEW.bo_q347
+        , NEW.bo_relevance_matrix
+        , NEW.bo_relevant_slope
+        , NEW.bo_surface_water_bodies
+        , NEW.bo_water_specific_discharge_freight_nh4_n_current
+        , NEW.bo_water_specific_discharge_freight_nh4_n_current_opt
+        , NEW.bo_water_specific_discharge_freight_nh4_n_planned
       );
 
     WHEN NEW.maintenance_event_type = 'examination'::tww_app.maintenance_event_type THEN
@@ -7811,23 +7811,23 @@ BEGIN
   CASE WHEN NEW.maintenance_event_type = 'bio_ecol_assessment'::tww_app.maintenance_event_type THEN
       UPDATE tww_od.bio_ecol_assessment bio_ecol_assessment SET
         obj_id = OLD.obj_id
-        , comparison_last = NEW.ba_comparison_last
-        , date_last_examen = NEW.ba_date_last_examen
-        , impact_auxiliary_indic = NEW.ba_impact_auxiliary_indic
-        , impact_external_aspect = NEW.ba_impact_external_aspect
-        , impact_macroinvertebrates = NEW.ba_impact_macroinvertebrates
-        , impact_water_plants = NEW.ba_impact_water_plants
-        , intervention_demand = NEW.ba_intervention_demand
-        , io_calculation = NEW.ba_io_calculation
-        , kind_water_body = NEW.ba_kind_water_body
-        , outlet_pipe_clear_height = NEW.ba_outlet_pipe_clear_height
-        , q347 = NEW.ba_q347
-        , relevance_matrix = NEW.ba_relevance_matrix
-        , relevant_slope = NEW.ba_relevant_slope
-        , surface_water_bodies = NEW.ba_surface_water_bodies
-        , water_specific_discharge_freight_nh4_n_current = NEW.ba_water_specific_discharge_freight_nh4_n_current
-        , water_specific_discharge_freight_nh4_n_current_opt = NEW.ba_water_specific_discharge_freight_nh4_n_current_opt
-        , water_specific_discharge_freight_nh4_n_planned = NEW.ba_water_specific_discharge_freight_nh4_n_planned
+        , comparison_last = NEW.bo_comparison_last
+        , date_last_examen = NEW.bo_date_last_examen
+        , impact_auxiliary_indic = NEW.bo_impact_auxiliary_indic
+        , impact_external_aspect = NEW.bo_impact_external_aspect
+        , impact_macroinvertebrates = NEW.bo_impact_macroinvertebrates
+        , impact_water_plants = NEW.bo_impact_water_plants
+        , intervention_demand = NEW.bo_intervention_demand
+        , io_calculation = NEW.bo_io_calculation
+        , kind_water_body = NEW.bo_kind_water_body
+        , outlet_pipe_clear_height = NEW.bo_outlet_pipe_clear_height
+        , q347 = NEW.bo_q347
+        , relevance_matrix = NEW.bo_relevance_matrix
+        , relevant_slope = NEW.bo_relevant_slope
+        , surface_water_bodies = NEW.bo_surface_water_bodies
+        , water_specific_discharge_freight_nh4_n_current = NEW.bo_water_specific_discharge_freight_nh4_n_current
+        , water_specific_discharge_freight_nh4_n_current_opt = NEW.bo_water_specific_discharge_freight_nh4_n_current_opt
+        , water_specific_discharge_freight_nh4_n_planned = NEW.bo_water_specific_discharge_freight_nh4_n_planned
       WHERE obj_id = OLD.obj_id;
     WHEN NEW.maintenance_event_type = 'examination'::tww_app.maintenance_event_type THEN
       UPDATE tww_od.examination examination SET
