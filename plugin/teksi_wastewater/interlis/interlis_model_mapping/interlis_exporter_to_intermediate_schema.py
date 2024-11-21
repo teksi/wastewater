@@ -1668,7 +1668,8 @@ class InterlisExporterToIntermediateSchema:
         if self.filtered:
             query = query.join(
                 self.model_classes_tww_od.wastewater_node,
-                self.model_classes_tww_od.wastewater_node.obj_id == self.model_classes_tww_od.prank_weir.fk_wastewater_node
+                self.model_classes_tww_od.wastewater_node.obj_id
+                == self.model_classes_tww_od.prank_weir.fk_wastewater_node,
             ).filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
@@ -2023,7 +2024,8 @@ class InterlisExporterToIntermediateSchema:
         if self.filtered:
             query = query.join(
                 self.model_classes_tww_od.wastewater_node,
-                self.model_classes_tww_od.wastewater_node.obj_id == self.model_classes_tww_od.leapingweir.fk_wastewater_node
+                self.model_classes_tww_od.wastewater_node.obj_id
+                == self.model_classes_tww_od.leapingweir.fk_wastewater_node,
             ).filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
@@ -2384,7 +2386,8 @@ class InterlisExporterToIntermediateSchema:
         if self.filtered:
             query = query.join(
                 self.model_classes_tww_od.wastewater_node,
-                self.model_classes_tww_od.wastewater_node.obj_id== self.model_classes_tww_od.prank_weir.fk_wastewater_node
+                self.model_classes_tww_od.wastewater_node.obj_id
+                == self.model_classes_tww_od.prank_weir.fk_wastewater_node,
             ).filter(
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
