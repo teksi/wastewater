@@ -229,7 +229,7 @@ class TestInterlis(unittest.TestCase):
             xtf_file_output=self._get_output_filename(export_xtf_file),
             export_models=[config.MODEL_NAME_DSS],
             logs_next_to_file=True,
-            selected_ids=['ch000000WN000002','ch000000WN000003','ch000000RE000002'],
+            selected_ids=["ch000000WN000002", "ch000000WN000003", "ch000000RE000002"],
         )
 
         # Check exported TID
@@ -245,7 +245,6 @@ class TestInterlis(unittest.TestCase):
             exported_xtf_filename, config.TOPIC_NAME_DSS, "Rohrprofil", "ch000000PP000002"
         )
         self.assertIsNotNone(interlis_object)
-
 
     def test_dss_dataset_import_export(self):
         # Import organisation
