@@ -223,6 +223,30 @@ class TestInterlis(unittest.TestCase):
         self.assertIsNotNone(result)
         self.assertEqual(result[0], 448.0)
 
+        # Export selection of minimal dss
+        export_xtf_file = self._get_output_filename("export_minimal_dataset_dss")
+        interlisImporterExporter.interlis_export(
+            xtf_file_output=self._get_output_filename(export_xtf_file),
+            export_models=[config.MODEL_NAME_DSS],
+            logs_next_to_file=True,
+            selected_ids=['ch000000WN000002','ch000000WN000003','ch000000RE000002'],
+        )
+
+        # Check exported TID
+        export_xtf_file = self._get_output_filename("export_minimal_dataset_dss_selection")
+        exported_xtf_filename = self._get_output_filename(
+            f"{export_xtf_file}_{config.MODEL_NAME_DSS}.xtf"
+        )
+        interlis_object = self._get_xtf_object(
+            exported_xtf_filename, config.TOPIC_NAME_DSS, "Rohrprofil", "ch000000PP000001"
+        )
+        self.assertIsNone(interlis_object)
+        interlis_object = self._get_xtf_object(
+            exported_xtf_filename, config.TOPIC_NAME_DSS, "Rohrprofil", "ch000000PP000002"
+        )
+        self.assertIsNotNone(interlis_object)
+
+
     def test_dss_dataset_import_export(self):
         # Import organisation
         xtf_file_input = self._get_data_filename(TEST_DATASET_ORGANISATIONS)
