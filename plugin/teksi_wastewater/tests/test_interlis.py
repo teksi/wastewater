@@ -224,7 +224,7 @@ class TestInterlis(unittest.TestCase):
         self.assertEqual(result[0], 448.0)
 
         # Export selection of minimal dss
-        export_xtf_file = self._get_output_filename("export_minimal_dataset_dss")
+        export_xtf_file = self._get_output_filename("export_minimal_dataset_dss_selection")
         interlisImporterExporter.interlis_export(
             xtf_file_output=self._get_output_filename(export_xtf_file),
             export_models=[config.MODEL_NAME_DSS],
