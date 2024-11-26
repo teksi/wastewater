@@ -17,4 +17,4 @@ joins:
 
   bio_ecol_assessment:
     table: tww_od.bio_ecol_assessment
-    prefix: ba_
+    prefix: bo_

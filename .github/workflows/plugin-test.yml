@@ -1,4 +1,4 @@
-name: 🪲 Plugin | Tests
+name: 🔌 Plugin | Tests
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -25,7 +25,7 @@ on:
 jobs:
   plugin-tests:
     name: Run unit tests on plugin
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
       matrix:
