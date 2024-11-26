@@ -106,7 +106,7 @@ COMMENT ON COLUMN tww_od.sia405cc_cable.geometry3d_geometry IS '';
  ALTER TABLE tww_od.sia405cc_cable ADD COLUMN elevation_determination  integer ;
 COMMENT ON COLUMN tww_od.sia405cc_cable.elevation_determination IS '';
  ALTER TABLE tww_od.sia405cc_cable ADD COLUMN depth  smallint ;
-COMMENT ON COLUMN tww_od.sia405cc_cable.depth IS 'Extension 3D, depth (height) of an object [mm]. / Erweiterung 3D, Mächtigkeit (Höhe) eines Objektes [mm]. / Extension 3D, épaisseur (hauteur) d''un objet [mm].';
+COMMENT ON COLUMN tww_od.sia405cc_cable.depth IS 'Extension 3D, depth (height) of an object [mm]. / Erweiterung 3D Mächtigkeit (Höhe) eines Objektes [mm]. / Extension 3D, épaisseur (hauteur) d''un objet [mm].';
  ALTER TABLE tww_od.sia405cc_cable ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
 COMMENT ON COLUMN tww_od.sia405cc_cable.last_modification IS 'Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE';
  ALTER TABLE tww_od.sia405cc_cable ADD COLUMN fk_dataowner varchar(16);
@@ -210,10 +210,10 @@ ALTER TABLE tww_vl.sia405cc_cable_elevation_determination ADD CONSTRAINT pkey_tw
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 --------- Relations to class organisation for dataowner and provider (new 3.11.2014);
 
-ALTER TABLE tww_od.sia405cc_cable_point ADD CONSTRAINT rel_od_sia405cc_cable_point_fk_dataowner FOREIGN KEY (fk_dataowner) REFERENCES tww_od.organisation(obj_id)  DEFERRABLE INITIALLY DEFERRED;
-ALTER TABLE tww_od.sia405cc_cable_point ADD CONSTRAINT rel_od_sia405cc_cable_point_fk_dataprovider FOREIGN KEY (fk_provider) REFERENCES tww_od.organisation(obj_id)  DEFERRABLE INITIALLY DEFERRED;
-ALTER TABLE tww_od.sia405cc_cable ADD CONSTRAINT rel_od_sia405cc_cable_fk_dataowner FOREIGN KEY (fk_dataowner) REFERENCES tww_od.organisation(obj_id)  DEFERRABLE INITIALLY DEFERRED;
-ALTER TABLE tww_od.sia405cc_cable ADD CONSTRAINT rel_od_sia405cc_cable_fk_dataprovider FOREIGN KEY (fk_provider) REFERENCES tww_od.organisation(obj_id)  DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE tww_od.sia405cc_cable_point ADD CONSTRAINT rel_od_sia405cc_cable_point_fk_dataowner FOREIGN KEY (fk_dataowner) REFERENCES tww_od.organisation(obj_id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE tww_od.sia405cc_cable_point ADD CONSTRAINT rel_od_sia405cc_cable_point_fk_dataprovider FOREIGN KEY (fk_provider) REFERENCES tww_od.organisation(obj_id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE tww_od.sia405cc_cable ADD CONSTRAINT rel_od_sia405cc_cable_fk_dataowner FOREIGN KEY (fk_dataowner) REFERENCES tww_od.organisation(obj_id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE tww_od.sia405cc_cable ADD CONSTRAINT rel_od_sia405cc_cable_fk_dataprovider FOREIGN KEY (fk_provider) REFERENCES tww_od.organisation(obj_id) DEFERRABLE INITIALLY DEFERRED;
 
 ------ Indexes on identifiers
 
