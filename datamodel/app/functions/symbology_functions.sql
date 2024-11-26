@@ -134,6 +134,8 @@ $BODY$
 LANGUAGE plpgsql
 VOLATILE;
 
+
+
 --------------------------------------------------------
 -- UPDATE wastewater node symbology by overflow
 -- Argument:
@@ -204,7 +206,9 @@ $BODY$
 LANGUAGE plpgsql
 VOLATILE;
 
-  -------------------- SYMBOLOGY UPDATE ON CHANNEL TABLE CHANGES ----------------------
+--------------------------------------------------------
+-- SYMBOLOGY UPDATE ON CHANNEL TABLE CHANGES
+--------------------------------------------------------
 
 CREATE OR REPLACE FUNCTION tww_app.symbology_update_by_channel()
   RETURNS trigger AS
@@ -257,8 +261,16 @@ BEGIN
 END; $BODY$
   LANGUAGE plpgsql VOLATILE;
 
+CREATE TRIGGER ws_symbology_update_by_channel
+AFTER INSERT OR UPDATE OR DELETE
+ON tww_od.channel
+FOR EACH ROW
+EXECUTE PROCEDURE tww_app.symbology_update_by_channel();
 
-  -------------------- SYMBOLOGY UPDATE ON REACH POINT TABLE CHANGES ----------------------
+
+--------------------------------------------------------
+-- SYMBOLOGY UPDATE ON REACH POINT TABLE CHANGES
+--------------------------------------------------------
 
 CREATE OR REPLACE FUNCTION tww_app.symbology_update_by_reach_point()
   RETURNS trigger AS
@@ -294,7 +306,18 @@ BEGIN
 END; $BODY$
   LANGUAGE plpgsql VOLATILE;
 
-  -------------------- SYMBOLOGY UPDATE ON REACH TABLE CHANGES ----------------------
+-- only update -> insert and delete are handled by reach trigger
+CREATE TRIGGER ws_symbology_update_by_reach_point
+AFTER UPDATE
+  ON tww_od.reach_point
+FOR EACH ROW
+  EXECUTE PROCEDURE tww_app.symbology_update_by_reach_point();
+
+
+
+--------------------------------------------------------
+-- SYMBOLOGY UPDATE ON REACH TABLE CHANGES
+--------------------------------------------------------
 
 CREATE OR REPLACE FUNCTION tww_app.ws_symbology_update_by_reach()
   RETURNS trigger AS
@@ -342,10 +365,15 @@ BEGIN
         RAISE EXCEPTION 'TRIGGER ERROR ws_symbology_update_by_reach. Subquery shoud return exactly one row. This is not supposed to happen and indicates an isue with the trigger. The issue must be fixed in TWW.';
   END;
 
-
   RETURN NEW;
 END; $BODY$
 LANGUAGE plpgsql VOLATILE;
+
+CREATE TRIGGER ws_symbology_update_by_reach
+AFTER INSERT OR UPDATE OR DELETE
+  ON tww_od.reach
+FOR EACH ROW
+  EXECUTE PROCEDURE tww_app.ws_symbology_update_by_reach();
 
 --------------------------------------------------------
 -- UPDATE wastewater structure fk_main_cover
@@ -552,6 +580,8 @@ $BODY$
 LANGUAGE plpgsql
 VOLATILE;
 
+
+
 --------------------------------------------------
 -- ON COVER CHANGE
 --------------------------------------------------
@@ -584,7 +614,11 @@ BEGIN
 END; $BODY$
 LANGUAGE plpgsql VOLATILE;
 
-
+CREATE TRIGGER on_cover_change
+AFTER INSERT OR UPDATE OR DELETE
+  ON tww_od.cover
+FOR EACH ROW
+  EXECUTE PROCEDURE tww_app.symbology_on_cover_change();
 
 
 --------------------------------------------------
@@ -616,6 +650,17 @@ BEGIN
 END; $BODY$
 LANGUAGE plpgsql VOLATILE;
 
+CREATE TRIGGER ws_label_update_by_wastewater_networkelement
+AFTER INSERT OR UPDATE OR DELETE
+  ON tww_od.wastewater_networkelement
+FOR EACH ROW
+  EXECUTE PROCEDURE tww_app.symbology_on_structure_part_change_networkelement();
+
+CREATE TRIGGER on_structure_part_change
+AFTER INSERT OR UPDATE OR DELETE
+  ON tww_od.structure_part
+FOR EACH ROW
+  EXECUTE PROCEDURE tww_app.symbology_on_structure_part_change_networkelement();
 
 
 --------------------------------------------------
@@ -643,6 +688,12 @@ BEGIN
   RETURN NEW;
 END; $BODY$
 LANGUAGE plpgsql VOLATILE;
+
+CREATE TRIGGER on_wastewater_structure_update
+AFTER UPDATE
+  ON tww_od.wastewater_structure
+FOR EACH ROW
+  EXECUTE PROCEDURE tww_app.symbology_on_wastewater_structure_update();
 
 --------------------------------------------------
 -- ON REACH CHANGE
@@ -680,39 +731,12 @@ BEGIN
 END; $BODY$
 LANGUAGE plpgsql VOLATILE;
 
+CREATE TRIGGER on_reach_2_change
+AFTER INSERT OR UPDATE OR DELETE
+  ON tww_od.reach
+FOR EACH ROW
+  EXECUTE PROCEDURE tww_app.symbology_on_reach_change();
 
---------------------------------------------------
--- ON REACH DELETE
---------------------------------------------------
-
-CREATE OR REPLACE FUNCTION tww_app.symbology_on_reach_delete()
-  RETURNS trigger AS
-$BODY$
-DECLARE
-  channel_id text;
-  reach_count integer;
-BEGIN
-  -- get channel obj_id
-  SELECT fk_wastewater_structure INTO channel_id
-    FROM tww_od.wastewater_networkelement
-    WHERE wastewater_networkelement.obj_id = OLD.obj_id;
-
-  DELETE FROM tww_od.wastewater_networkelement WHERE obj_id = OLD.obj_id;
-  DELETE FROM tww_od.reach_point WHERE obj_id = OLD.fk_reach_point_from;
-  DELETE FROM tww_od.reach_point WHERE obj_id = OLD.fk_reach_point_to;
-
-  -- delete channel if no reach left
-  SELECT COUNT(fk_wastewater_structure) INTO reach_count
-    FROM tww_od.wastewater_networkelement
-    WHERE fk_wastewater_structure = channel_id;
-  IF reach_count = 0 THEN
-    RAISE NOTICE 'Removing channel (%) since no reach is left', channel_id;
-    DELETE FROM tww_od.channel WHERE obj_id = channel_id;
-    DELETE FROM tww_od.wastewater_structure WHERE obj_id = channel_id;
-  END IF;
-  RETURN NEW;
-END; $BODY$
-LANGUAGE plpgsql VOLATILE;
 
 --------------------------------------------------
 -- ON WASTEWATER NODE CHANGE
@@ -744,6 +768,12 @@ BEGIN
   RETURN NEW;
 END; $BODY$
 LANGUAGE plpgsql VOLATILE;
+
+CREATE TRIGGER on_wasterwaternode_change
+AFTER INSERT OR UPDATE
+  ON tww_od.wastewater_node
+FOR EACH ROW
+  EXECUTE PROCEDURE tww_app.symbology_on_wastewater_node_change();
 
 --------------------------------------------------
 -- ON REACH POINT CHANGE
@@ -793,6 +823,13 @@ BEGIN
 END; $BODY$
 LANGUAGE plpgsql VOLATILE;
 
+-- only update -> insert and delete are handled by reach trigger
+CREATE TRIGGER on_reach_point_update
+AFTER UPDATE
+  ON tww_od.reach_point
+FOR EACH ROW
+  EXECUTE PROCEDURE tww_app.symbology_on_reach_point_update();
+
 --------------------------------------------------
 -- CALCULATE REACH LENGTH
 --------------------------------------------------
@@ -822,81 +859,11 @@ BEGIN
   END IF;
   RETURN NEW;
 
-END;
-$BODY$
-  LANGUAGE plpgsql VOLATILE;
+END; $BODY$
+LANGUAGE plpgsql VOLATILE;
 
-
--- only update -> insert and delete are handled by reach trigger
-  CREATE TRIGGER on_reach_point_update
-  AFTER UPDATE
-    ON tww_od.reach_point
-  FOR EACH ROW
-    EXECUTE PROCEDURE tww_app.symbology_on_reach_point_update();
-
-  CREATE TRIGGER on_reach_2_change
-  AFTER INSERT OR UPDATE OR DELETE
-    ON tww_od.reach
-  FOR EACH ROW
-    EXECUTE PROCEDURE tww_app.symbology_on_reach_change();
-
-  CREATE TRIGGER on_reach_1_delete
-  AFTER DELETE
-    ON tww_od.reach
-  FOR EACH ROW
-    EXECUTE PROCEDURE tww_app.symbology_on_reach_delete();
-
-  CREATE TRIGGER calculate_reach_length
-  BEFORE INSERT OR UPDATE
-    ON tww_od.reach
-  FOR EACH ROW
-    EXECUTE PROCEDURE tww_app.symbology_calculate_reach_length();
-
-  CREATE TRIGGER ws_symbology_update_by_reach
-  AFTER INSERT OR UPDATE OR DELETE
-    ON tww_od.reach
-  FOR EACH ROW
-    EXECUTE PROCEDURE tww_app.ws_symbology_update_by_reach();
-
-  CREATE TRIGGER on_wastewater_structure_update
-  AFTER UPDATE
-    ON tww_od.wastewater_structure
-  FOR EACH ROW
-    EXECUTE PROCEDURE tww_app.symbology_on_wastewater_structure_update();
-
-  CREATE TRIGGER ws_label_update_by_wastewater_networkelement
-  AFTER INSERT OR UPDATE OR DELETE
-    ON tww_od.wastewater_networkelement
-  FOR EACH ROW
-    EXECUTE PROCEDURE tww_app.symbology_on_structure_part_change_networkelement();
-
-  CREATE TRIGGER on_structure_part_change
-  AFTER INSERT OR UPDATE OR DELETE
-    ON tww_od.structure_part
-  FOR EACH ROW
-    EXECUTE PROCEDURE tww_app.symbology_on_structure_part_change_networkelement();
-
-  CREATE TRIGGER on_cover_change
-  AFTER INSERT OR UPDATE OR DELETE
-    ON tww_od.cover
-  FOR EACH ROW
-    EXECUTE PROCEDURE tww_app.symbology_on_cover_change();
-
-  CREATE TRIGGER on_wasterwaternode_change
-  AFTER INSERT OR UPDATE
-    ON tww_od.wastewater_node
-  FOR EACH ROW
-    EXECUTE PROCEDURE tww_app.symbology_on_wastewater_node_change();
-
-  CREATE TRIGGER ws_symbology_update_by_channel
-  AFTER INSERT OR UPDATE OR DELETE
-  ON tww_od.channel
-  FOR EACH ROW
-  EXECUTE PROCEDURE tww_app.symbology_update_by_channel();
-
-  -- only update -> insert and delete are handled by reach trigger
-  CREATE TRIGGER ws_symbology_update_by_reach_point
-  AFTER UPDATE
-    ON tww_od.reach_point
-  FOR EACH ROW
-    EXECUTE PROCEDURE tww_app.symbology_update_by_reach_point();
+CREATE TRIGGER calculate_reach_length
+BEFORE INSERT OR UPDATE
+  ON tww_od.reach
+FOR EACH ROW
+  EXECUTE PROCEDURE tww_app.symbology_calculate_reach_length();
