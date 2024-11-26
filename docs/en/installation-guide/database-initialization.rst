@@ -16,13 +16,16 @@ In pgAdmin4
 
 * Connect to the database server
 
-* Create a new database with UTF8 encoding (e.g. `tww_demo`).
+* Create a new database with UTF8 encoding
+
+E.g. `tww_demo`, avoid spaces, dots, uppercases and special characters
+As proposed in https://stackoverflow.com/questions/2878248/postgresql-naming-conventions
 
 
 Create  minimal roles and access
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. note:: The TWW roles are defined in the
+TWW roles are defined in the
 + `12_0_roles.sql <https://github.com/TWW/datamodel/blob/master/12_0_roles.sql>`_ (per cluster)
 + `12_1_roles.sql <https://github.com/TWW/datamodel/blob/master/12_1_roles.sql>`_ (per database)
 
@@ -42,6 +45,7 @@ Restore data model with demodata
 
 .. warning:: Demodata only available as an INTERLIS file
    The undeling procedure is now providing an empty datamodel with value lists.
+
    The demodata is now only available in INTERLIS format but can be easily imported with the plugin IMPORT tool.
 
 

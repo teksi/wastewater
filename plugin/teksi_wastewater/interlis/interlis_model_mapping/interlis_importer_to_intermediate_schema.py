@@ -1,3 +1,5 @@
+from datetime import date, datetime
+
 from geoalchemy2.functions import ST_Force3D
 from sqlalchemy.orm import Session
 from sqlalchemy.orm.attributes import flag_dirty
@@ -420,6 +422,42 @@ class InterlisImporterToIntermediateSchema:
             return None
         return relation.t_ili_tid
 
+    def geometry3D_convert(
+        self, geometryattribute, levelattribute, obj_id, classname_attributename
+    ):
+        """
+        Checks if levelattribute or geometryattribut is Null or empty and calls ST_Force3D accordingly as else 3D geometry will be set to NULL if levelattribute is missing - see https://github.com/teksi/wastewater/issues/475#issuecomment-2441032526 and https://trac.osgeo.org/postgis/ticket/5804#comment:1
+        """
+        if levelattribute is None or levelattribute == "":
+            if geometryattribute is None or geometryattribute == "":
+                # No geometry AND no levelattribute provided
+                logger.warning(
+                    f"No {classname_attributename} and geometry (Lage) provided for object {obj_id} -  situation3d_geometry cannot be defined! Object cannot be displayed in TEKSI TWW!"
+                )
+                return None
+
+            else:
+                # geometry attribute but no levelattribute provided
+                geom = self.session_tww.scalar(ST_Force3D(geometryattribute))
+                logger.info(
+                    f"No {classname_attributename} provided for object {obj_id}- situation3d_geometry with no z-value created: {geom}."
+                )
+                return geom
+        else:
+            if geometryattribute is None or geometryattribute == "":
+                # Levelattribute provided but no geometry attribute
+                logger.warning(
+                    f"{classname_attributename} provided but no geometry (Lage) provided for object {obj_id} -  situation3d_geometry cannot be defined! Object cannot be displayed in TEKSI TWW!"
+                )
+                return None
+            else:
+                # Levelattribute and geometry attribute provided - 3D coordinate can be created as expected
+                geom = self.session_tww.scalar(ST_Force3D(geometryattribute, levelattribute))
+                logger.debug(
+                    f" debug: situation3d_geometry created with geometry (x,y) and level (z): {geom}."
+                )
+                return geom
+
     def create_or_update(self, cls, **kwargs):
         """
         Updates an existing instance (if obj_id is found) or creates an instance of the provided class
@@ -430,12 +468,46 @@ class InterlisImporterToIntermediateSchema:
         # We try to get the instance from the session/database
         obj_id = kwargs.get("obj_id", None)
         if obj_id:
-            instance = self.session_tww.query(cls).get(kwargs.get("obj_id", None))
+            instance = self.session_tww.get(cls, obj_id)
 
         if instance:
-            # We found it -> update
-            instance.__dict__.update(kwargs)
-            flag_dirty(instance)  # we flag it as dirty so it stays in the session
+            flag_dirty(
+                instance
+            )  # we flag it as dirty so it stays in the session. This is a workaround trick
+            # needed bcause the session is not meant to be used as a cache: https://docs.sqlalchemy.org/en/20/orm/session_basics.html#is-the-session-a-cache
+
+            # Update dates times (different resolution Interlis / TWW)
+            date_time_keys = [
+                "last_modification",
+                "time_point",
+                "date_last_examen",
+                "renovation_date",
+                "date_entry",
+                "time",
+                "date_mutation",
+            ]
+
+            # Double fields that needs special comparison (imported as text from interlis)
+            double_value_keys = ["value", "x", "y"]
+
+            for key, value in kwargs.items():
+                if key in date_time_keys and isinstance(value, date):
+                    value = datetime.combine(value, datetime.min.time())
+
+                instanceAttribute = getattr(instance, key, None)
+
+                if key in double_value_keys:
+                    try:
+                        value = float(value)
+                        instanceAttribute = float(instanceAttribute)
+                    except Exception:
+                        logger.warning(
+                            f"Values of column '{key}' are not convertible to float: interlis='{value}', old='{instanceAttribute}'"
+                        )
+
+                if instanceAttribute != value:
+                    # Setattr in the background updates the session state and make it possible to use "is_modified" afterwards
+                    setattr(instance, key, value)
         else:
             # We didn't find it -> create
             instance = cls(**kwargs)
@@ -462,7 +534,11 @@ class InterlisImporterToIntermediateSchema:
                 self.model_classes_tww_od.wastewater_structure_accessibility, row.zugaenglichkeit
             ),
             "contract_section": row.baulos,
-            "detail_geometry3d_geometry": ST_Force3D(row.detailgeometrie),
+            "detail_geometry3d_geometry": (
+                row.detailgeometrie
+                if row.detailgeometrie is None
+                else self.session_tww.scalar(ST_Force3D(row.detailgeometrie))
+            ),
             # TODO : NOT MAPPED VSA-DSS 3D
             # "elevation_determination": self.get_vl_code(
             #    self.model_classes_tww_od.wastewater_structure_elevation_determination, row.hoehenbestimmung
@@ -1897,7 +1973,9 @@ class InterlisImporterToIntermediateSchema:
                 ),
                 position_of_connection=row.lage_anschluss,
                 remark=row.bemerkung,
-                situation3d_geometry=ST_Force3D(row.lage),
+                situation3d_geometry=self.geometry3D_convert(
+                    row.lage, row.kote, row.t_ili_tid, "reach_point.cote (Haltungpunkt.Kote)"
+                ),
             )
             self.session_tww.add(reach_point)
             print(".", end="")
@@ -1929,7 +2007,12 @@ class InterlisImporterToIntermediateSchema:
                 # fk_hydr_geometry=row.REPLACE_ME,  # TODO : NOT MAPPED
                 backflow_level_current=row.rueckstaukote_ist,
                 bottom_level=row.sohlenkote,
-                situation3d_geometry=ST_Force3D(row.lage),
+                situation3d_geometry=self.geometry3D_convert(
+                    row.lage,
+                    row.sohlenkote,
+                    row.t_ili_tid,
+                    "wastewater_node.bottom_level (Abwasserknoten.Sohlenkote)",
+                ),
             )
             self.session_tww.add(wastewater_node)
             print(".", end="")
@@ -1959,7 +2042,7 @@ class InterlisImporterToIntermediateSchema:
                 ),
                 length_effective=row.laengeeffektiv,
                 material=self.get_vl_code(self.model_classes_tww_vl.reach_material, row.material),
-                progression3d_geometry=ST_Force3D(row.verlauf),
+                progression3d_geometry=self.session_tww.scalar(ST_Force3D(row.verlauf)),
                 reliner_material=self.get_vl_code(
                     self.model_classes_tww_od.reach_reliner_material, row.reliner_material
                 ),
@@ -2039,7 +2122,9 @@ class InterlisImporterToIntermediateSchema:
                 positional_accuracy=self.get_vl_code(
                     self.model_classes_tww_od.cover_positional_accuracy, row.lagegenauigkeit
                 ),
-                situation3d_geometry=ST_Force3D(row.lage),
+                situation3d_geometry=self.geometry3D_convert(
+                    row.lage, row.kote, row.t_ili_tid, "cover.level (Deckel.Deckelkote)"
+                ),
                 sludge_bucket=self.get_vl_code(
                     self.model_classes_tww_od.cover_sludge_bucket, row.schlammeimer
                 ),
@@ -2140,10 +2225,26 @@ class InterlisImporterToIntermediateSchema:
                 # The day ili2pg works, we probably need to double-check whether the referenced wastewater structure exists prior
                 # to creating this association.
                 # Soft matching based on from/to_point_identifier will be done in the GUI data checking process.
-                exam_to_wastewater_structure = self.create_or_update(
-                    self.model_classes_tww_od.re_maintenance_event_wastewater_structure,
-                    fk_wastewater_structure=row.abwasserbauwerkref,
-                    fk_maintenance_event=row.t_ili_tid,
+
+                exam_to_wastewater_structure = (
+                    self.session_tww.query(
+                        self.model_classes_tww_od.re_maintenance_event_wastewater_structure
+                    )
+                    .filter_by(
+                        fk_wastewater_structure=row.abwasserbauwerkref,
+                        fk_maintenance_event=row.t_ili_tid,
+                    )
+                    .first()
+                )
+                if exam_to_wastewater_structure is not None:
+                    # Already existing -> do nothing
+                    continue
+
+                exam_to_wastewater_structure = (
+                    self.model_classes_tww_od.re_maintenance_event_wastewater_structure(
+                        fk_wastewater_structure=row.abwasserbauwerkref,
+                        fk_maintenance_event=row.t_ili_tid,
+                    )
                 )
                 self.session_tww.add(exam_to_wastewater_structure)
 
@@ -2260,16 +2361,29 @@ class InterlisImporterToIntermediateSchema:
         for row in self.session_interlis.query(
             self.model_classes_interlis.erhaltungsereignis_abwasserbauwerkassoc
         ):
+            re_maintenance_event_wastewater_structure = (
+                self.session_tww.query(
+                    self.model_classes_tww_od.re_maintenance_event_wastewater_structure
+                )
+                .filter_by(
+                    fk_wastewater_structure=self.get_pk(row.abwasserbauwerkref__REL),
+                    fk_maintenance_event=self.get_pk(
+                        row.erhaltungsereignis_abwasserbauwerkassocref__REL
+                    ),
+                )
+                .first()
+            )
+            if re_maintenance_event_wastewater_structure is not None:
+                # Already existing -> do nothing
+                continue
 
-            re_maintenance_event_wastewater_structure = self.create_or_update(
-                self.model_classes_tww_od.re_maintenance_event_wastewater_structure,
-                # this class does not inherit base_commmon
-                # **self.base_common(row),
-                # --- re_maintenance_event_wastewater_structure ---
-                fk_maintenance_event=self.get_pk(
-                    row.erhaltungsereignis_abwasserbauwerkassocref__REL
-                ),
-                fk_wastewater_structure=self.get_pk(row.abwasserbauwerkref__REL),
+            re_maintenance_event_wastewater_structure = (
+                self.model_classes_tww_od.re_maintenance_event_wastewater_structure(
+                    fk_maintenance_event=self.get_pk(
+                        row.erhaltungsereignis_abwasserbauwerkassocref__REL
+                    ),
+                    fk_wastewater_structure=self.get_pk(row.abwasserbauwerkref__REL),
+                )
             )
 
             self.session_tww.add(re_maintenance_event_wastewater_structure)
@@ -2279,11 +2393,19 @@ class InterlisImporterToIntermediateSchema:
         for row in self.session_interlis.query(
             self.model_classes_interlis.gebaeudegruppe_entsorgungassoc
         ):
-            re_building_group_disposal = self.create_or_update(
-                self.model_classes_tww_od.re_building_group_disposal,
-                # this class does not inherit base_commmon
-                # **self.base_common(row),
-                # --- re_building_group_disposal ---
+            re_building_group_disposal = (
+                self.session_tww.query(self.model_classes_tww_od.re_building_group_disposal)
+                .filter_by(
+                    fk_building_group=self.get_pk(row.gebaeudegruppe_entsorgungassocref__REL),
+                    fk_disposal=self.get_pk(row.entsorgungref__REL),
+                )
+                .first()
+            )
+            if re_building_group_disposal is not None:
+                # Already existing -> do nothing
+                continue
+
+            re_building_group_disposal = self.model_classes_tww_od.re_building_group_disposal(
                 fk_building_group=self.get_pk(row.gebaeudegruppe_entsorgungassocref__REL),
                 fk_disposal=self.get_pk(row.entsorgungref__REL),
             )

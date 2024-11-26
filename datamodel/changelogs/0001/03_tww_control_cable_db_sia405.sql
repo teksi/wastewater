@@ -51,9 +51,8 @@ COMMENT ON COLUMN tww_od.sia405cc_cable_point.dimension1 IS '';
 COMMENT ON COLUMN tww_od.sia405cc_cable_point.dimension2 IS '';
  ALTER TABLE tww_od.sia405cc_cable_point ADD COLUMN altitude_lower_edge  decimal(7,3) ;
 COMMENT ON COLUMN tww_od.sia405cc_cable_point.altitude_lower_edge IS ' / Höhe Unterkante';
-ALTER TABLE tww_od.sia405cc_cable_point ADD COLUMN symbolori_geometry geometry('POINT', :SRID);
-CREATE INDEX in_tww_sia405cc_cable_point_symbolori_geometry ON tww_od.sia405cc_cable_point USING gist (symbolori_geometry );
-COMMENT ON COLUMN tww_od.sia405cc_cable_point.symbolori_geometry IS 'Default: 90 degree / Default: 90 Grad / Default: 90 degre';
+ALTER TABLE tww_od.sia405cc_cable_point ADD COLUMN symbolori  decimal(4,1) ;
+COMMENT ON COLUMN tww_od.sia405cc_cable_point.symbolori IS 'Default: 90 degree / Default: 90 Grad / Default: 90 degre';
  ALTER TABLE tww_od.sia405cc_cable_point ADD COLUMN depth  smallint ;
 COMMENT ON COLUMN tww_od.sia405cc_cable_point.depth IS '';
  ALTER TABLE tww_od.sia405cc_cable_point ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
@@ -107,7 +106,7 @@ COMMENT ON COLUMN tww_od.sia405cc_cable.geometry3d_geometry IS '';
  ALTER TABLE tww_od.sia405cc_cable ADD COLUMN elevation_determination  integer ;
 COMMENT ON COLUMN tww_od.sia405cc_cable.elevation_determination IS '';
  ALTER TABLE tww_od.sia405cc_cable ADD COLUMN depth  smallint ;
-COMMENT ON COLUMN tww_od.sia405cc_cable.depth IS 'Extension 3D, depth (height) of an object [mm]. / Erweiterung 3D, Mächtigkeit (Höhe) eines Objektes [mm]. / Extension 3D, épaisseur (hauteur) d''un objet [mm].';
+COMMENT ON COLUMN tww_od.sia405cc_cable.depth IS 'Extension 3D, depth (height) of an object [mm]. / Erweiterung 3D Mächtigkeit (Höhe) eines Objektes [mm]. / Extension 3D, épaisseur (hauteur) d''un objet [mm].';
  ALTER TABLE tww_od.sia405cc_cable ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
 COMMENT ON COLUMN tww_od.sia405cc_cable.last_modification IS 'Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE';
  ALTER TABLE tww_od.sia405cc_cable ADD COLUMN fk_dataowner varchar(16);
@@ -211,10 +210,10 @@ ALTER TABLE tww_vl.sia405cc_cable_elevation_determination ADD CONSTRAINT pkey_tw
  ON UPDATE RESTRICT ON DELETE RESTRICT;
 --------- Relations to class organisation for dataowner and provider (new 3.11.2014);
 
-ALTER TABLE tww_od.sia405cc_cable_point ADD CONSTRAINT rel_od_sia405cc_cable_point_fk_dataowner FOREIGN KEY (fk_dataowner) REFERENCES tww_od.organisation(obj_id)  DEFERRABLE INITIALLY DEFERRED;
-ALTER TABLE tww_od.sia405cc_cable_point ADD CONSTRAINT rel_od_sia405cc_cable_point_fk_dataprovider FOREIGN KEY (fk_provider) REFERENCES tww_od.organisation(obj_id)  DEFERRABLE INITIALLY DEFERRED;
-ALTER TABLE tww_od.sia405cc_cable ADD CONSTRAINT rel_od_sia405cc_cable_fk_dataowner FOREIGN KEY (fk_dataowner) REFERENCES tww_od.organisation(obj_id)  DEFERRABLE INITIALLY DEFERRED;
-ALTER TABLE tww_od.sia405cc_cable ADD CONSTRAINT rel_od_sia405cc_cable_fk_dataprovider FOREIGN KEY (fk_provider) REFERENCES tww_od.organisation(obj_id)  DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE tww_od.sia405cc_cable_point ADD CONSTRAINT rel_od_sia405cc_cable_point_fk_dataowner FOREIGN KEY (fk_dataowner) REFERENCES tww_od.organisation(obj_id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE tww_od.sia405cc_cable_point ADD CONSTRAINT rel_od_sia405cc_cable_point_fk_dataprovider FOREIGN KEY (fk_provider) REFERENCES tww_od.organisation(obj_id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE tww_od.sia405cc_cable ADD CONSTRAINT rel_od_sia405cc_cable_fk_dataowner FOREIGN KEY (fk_dataowner) REFERENCES tww_od.organisation(obj_id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE tww_od.sia405cc_cable ADD CONSTRAINT rel_od_sia405cc_cable_fk_dataprovider FOREIGN KEY (fk_provider) REFERENCES tww_od.organisation(obj_id) DEFERRABLE INITIALLY DEFERRED;
 
 ------ Indexes on identifiers
 

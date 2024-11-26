@@ -12,6 +12,8 @@ except ImportError:
 from pirogue import MultipleInheritance, SimpleJoins, SingleInheritance
 from triggers.set_defaults_and_triggers import set_defaults_and_triggers
 from view.vw_tww_additional_ws import vw_tww_additional_ws
+from view.vw_tww_infiltration_installation import vw_tww_infiltration_installation
+from view.vw_tww_measurement_series import vw_tww_measurement_series
 from view.vw_tww_reach import vw_tww_reach
 from view.vw_tww_wastewater_structure import vw_tww_wastewater_structure
 from view.vw_wastewater_structure import vw_wastewater_structure
@@ -41,6 +43,7 @@ def create_app(
     drop_schema: Optional[bool] = False,
     tww_reach_extra: Optional[Path] = None,
     tww_wastewater_structure_extra: Optional[Path] = None,
+    tww_ii_extra: Optional[Path] = None,
     wastewater_structure_extra: Optional[Path] = None,
 ):
     """
@@ -50,6 +53,7 @@ def create_app(
     :param pg_service: the PostgreSQL service, if not given it will be determined from environment variable in Pirogue
     :param tww_reach_extra: YAML file path of the definition of additional columns for vw_tww_reach view
     :param tww_wastewater_structure_extra: YAML file path of the definition of additional columns for vw_tww_wastewater_structure_extra view
+    :param tww_ii_extra: YAML file path of the definition of additional columns for vw_tww_infiltration_installation_extra view
     :param wastewater_structure_extra: YAML file path of the definition of additional columns for vw_wastewater_structure_extra view
     """
     cwd = Path(__file__).parent.resolve()
@@ -63,13 +67,15 @@ def create_app(
     else:
         run_sql("CREATE SCHEMA IF NOT EXISTS tww_app;", pg_service)
 
-    run_sql_file("functions/oid_functions.sql", pg_service, variables)
+    run_sql_file("functions/oid_functions.sql", pg_service)
     run_sql_file("functions/modification_functions.sql", pg_service)
     run_sql_file("functions/symbology_functions.sql", pg_service)
     run_sql_file("functions/reach_direction_change.sql", pg_service, variables)
-    run_sql_file("functions/14_geometry_functions.sql", pg_service, variables)
+    run_sql_file("functions/geometry_functions.sql", pg_service, variables)
     run_sql_file("functions/update_catchment_area_totals.sql", pg_service, variables)
     run_sql_file("functions/organisation_functions.sql", pg_service, variables)
+    run_sql_file("functions/meta_functions.sql", pg_service, variables)
+    run_sql_file("functions/network_functions.sql", pg_service)
 
     # open YAML files
     if tww_reach_extra:
@@ -130,6 +136,8 @@ def create_app(
         "drainage_system": "zone",
     }
 
+    # Defaults and Triggers
+    # Has to be fired before view creation otherwise it won't work and will only fail in CI
     set_defaults_and_triggers(pg_service, SingleInheritances)
 
     for key in SingleInheritances:
@@ -160,8 +168,10 @@ def create_app(
     vw_tww_wastewater_structure(
         srid, pg_service=pg_service, extra_definition=tww_wastewater_structure_extra
     )
+    vw_tww_infiltration_installation(srid, pg_service=pg_service, extra_definition=tww_ii_extra)
     vw_tww_reach(pg_service=pg_service, extra_definition=tww_reach_extra)
     vw_tww_additional_ws(srid, pg_service=pg_service)
+    vw_tww_measurement_series(pg_service=pg_service)
 
     run_sql_file("view/vw_file.sql", pg_service, variables)
 
@@ -238,8 +248,6 @@ def create_app(
         safe_load(open(cwd / "view/export/vw_export_wastewater_structure.yaml")),
         pg_service,
     ).create()
-
-    run_sql_file("triggers/network.sql", pg_service)
 
 
 if __name__ == "__main__":
