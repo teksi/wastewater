@@ -135,10 +135,8 @@ def create_app(
         "drainage_system": "zone",
     }
 
-    # Triggers
+    # Defaults and Triggers
     # Has to be fired before view creation otherwise it won't work and will only fail in CI
-    run_sql_file("triggers/create_triggers.sql", pg_service)
-
     set_defaults_and_triggers(pg_service, SingleInheritances)
 
     for key in SingleInheritances:
