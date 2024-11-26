@@ -292,11 +292,11 @@ BEGIN
 
 		CASE WHEN NEW.funktionag   ='Abwasserreinigungsanlage'
 		THEN
-			CASE WHEN OLD.ws_type = 'wwtp_stucture'
+			CASE WHEN OLD.ws_type = 'wwtp_structure'
 			THEN NULL;
 			ELSE
 				------------ Abwasserreinigungsanlage ------------
-				INSERT INTO tww_od.wwtp_stucture(
+				INSERT INTO tww_od.wwtp_structure(
 				  obj_id, kind
 				)VALUES
 				(
@@ -337,7 +337,7 @@ BEGIN
 				  ws_oid
 				, (SELECT code FROM tww_vl.manhole_function_import_rel_agxx WHERE value_de=NEW.funktionag)
 				);
-				DELETE FROM tww_od.wwtp_stucture WHERE obj_id = OLD.obj_id;
+				DELETE FROM tww_od.wwtp_structure WHERE obj_id = OLD.obj_id;
 				DELETE FROM tww_od.special_structure WHERE obj_id = OLD.obj_id;
 				DELETE FROM tww_od.infiltration_installation WHERE obj_id = OLD.obj_id;
 				DELETE FROM tww_od.discharge_point WHERE obj_id = OLD.obj_id;
@@ -358,7 +358,7 @@ BEGIN
 				  ws_oid
 				, (SELECT code FROM tww_vl.infiltration_installation_kind_import_rel_agxx WHERE value_de=NEW.funktionag)
 				);
-				DELETE FROM tww_od.wwtp_stucture WHERE obj_id = OLD.obj_id;
+				DELETE FROM tww_od.wwtp_structure WHERE obj_id = OLD.obj_id;
 				DELETE FROM tww_od.special_structure WHERE obj_id = OLD.obj_id;
 				DELETE FROM tww_od.manhole WHERE obj_id = OLD.obj_id;
 				DELETE FROM tww_od.discharge_point WHERE obj_id = OLD.obj_id;
@@ -378,7 +378,7 @@ BEGIN
 				  ws_oid
 				, (SELECT code FROM tww_vl.discharge_point_relevance_import_rel_agxx WHERE value_de=NEW.funktionag)
 				);
-				DELETE FROM tww_od.wwtp_stucture WHERE obj_id = OLD.obj_id;
+				DELETE FROM tww_od.wwtp_structure WHERE obj_id = OLD.obj_id;
 				DELETE FROM tww_od.special_structure WHERE obj_id = OLD.obj_id;
 				DELETE FROM tww_od.manhole WHERE obj_id = OLD.obj_id;
 				DELETE FROM tww_od.infiltration_installation WHERE obj_id = OLD.obj_id;
@@ -398,7 +398,7 @@ BEGIN
 				  ws_oid
 				, (SELECT code FROM tww_vl.special_structure_function_import_rel_agxx WHERE value_de=NEW.funktionag)
 				);
-				DELETE FROM tww_od.wwtp_stucture WHERE obj_id = OLD.obj_id;
+				DELETE FROM tww_od.wwtp_structure WHERE obj_id = OLD.obj_id;
 				DELETE FROM tww_od.discharge_point WHERE obj_id = OLD.obj_id;
 				DELETE FROM tww_od.manhole WHERE obj_id = OLD.obj_id;
 				DELETE FROM tww_od.infiltration_installation WHERE obj_id = OLD.obj_id;
