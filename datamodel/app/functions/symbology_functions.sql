@@ -207,7 +207,7 @@ LANGUAGE plpgsql
 VOLATILE;
 
 --------------------------------------------------------
--- SYMBOLOGY UPDATE ON CHANNEL TABLE CHANGES 
+-- SYMBOLOGY UPDATE ON CHANNEL TABLE CHANGES
 --------------------------------------------------------
 
 CREATE OR REPLACE FUNCTION tww_app.symbology_update_by_channel()
@@ -268,8 +268,8 @@ FOR EACH ROW
 EXECUTE PROCEDURE tww_app.symbology_update_by_channel();
 
 
--------------------------------------------------------- 
--- SYMBOLOGY UPDATE ON REACH POINT TABLE CHANGES 
+--------------------------------------------------------
+-- SYMBOLOGY UPDATE ON REACH POINT TABLE CHANGES
 --------------------------------------------------------
 
 CREATE OR REPLACE FUNCTION tww_app.symbology_update_by_reach_point()
@@ -316,7 +316,7 @@ FOR EACH ROW
 
 
 --------------------------------------------------------
--- SYMBOLOGY UPDATE ON REACH TABLE CHANGES 
+-- SYMBOLOGY UPDATE ON REACH TABLE CHANGES
 --------------------------------------------------------
 
 CREATE OR REPLACE FUNCTION tww_app.ws_symbology_update_by_reach()
@@ -774,7 +774,7 @@ AFTER INSERT OR UPDATE
   ON tww_od.wastewater_node
 FOR EACH ROW
   EXECUTE PROCEDURE tww_app.symbology_on_wastewater_node_change();
-    
+
 --------------------------------------------------
 -- ON REACH POINT CHANGE
 --------------------------------------------------
