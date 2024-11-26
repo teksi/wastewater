@@ -26,6 +26,18 @@
         <FunktionHierarchisch>PAA.Sammelkanal</FunktionHierarchisch>
         <FunktionHydraulisch>Freispiegelleitung</FunktionHydraulisch>
       </SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Kanal>
+	  <SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Kanal TID="ch000000CL000002">
+        <Letzte_Aenderung>20240104</Letzte_Aenderung>
+        <DatenherrRef REF="ch20p3q400001497"></DatenherrRef>
+        <DatenlieferantRef REF="ch20p3q400001497"></DatenlieferantRef>
+        <Baujahr>2024</Baujahr>
+        <Bezeichnung>ch000000RE000002</Bezeichnung>
+        <Status>in_Betrieb</Status>
+        <BetreiberRef REF="ch20p3q400001497"></BetreiberRef>
+        <EigentuemerRef REF="ch20p3q400001497"></EigentuemerRef>
+        <FunktionHierarchisch>PAA.Sammelkanal</FunktionHierarchisch>
+        <FunktionHydraulisch>Freispiegelleitung</FunktionHydraulisch>
+      </SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Kanal>
       <SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Normschacht TID="ch000000WS000001">
         <Letzte_Aenderung>20240104</Letzte_Aenderung>
         <DatenherrRef REF="ch20p3q400001497"></DatenherrRef>
@@ -50,6 +62,16 @@
         <EigentuemerRef REF="ch20p3q400001497"></EigentuemerRef>
         <Funktion>Kontroll_Einsteigschacht</Funktion>
       </SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Spezialbauwerk>
+	  <SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Einleitstelle TID="ch000000WS000003">
+        <Letzte_Aenderung>20240104</Letzte_Aenderung>
+        <DatenherrRef REF="ch20p3q400001497"></DatenherrRef>
+        <DatenlieferantRef REF="ch20p3q400001497"></DatenlieferantRef>
+        <Baujahr>2024</Baujahr>
+        <Bezeichnung>Test3</Bezeichnung>
+        <Status>in_Betrieb</Status>
+        <BetreiberRef REF="ch20p3q400001497"></BetreiberRef>
+        <EigentuemerRef REF="ch20p3q400001497"></EigentuemerRef>
+      </SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Einleitstelle>
       <SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Rohrprofil TID="ch000000PP000001">
         <Letzte_Aenderung>20240104</Letzte_Aenderung>
         <DatenherrRef REF="ch20p3q400001497"></DatenherrRef>
@@ -57,6 +79,14 @@
         <Bezeichnung>Kreisprofil</Bezeichnung>
         <HoehenBreitenverhaeltnis>1.00</HoehenBreitenverhaeltnis>
         <Profiltyp>Kreisprofil</Profiltyp>
+      </SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Rohrprofil>
+	  <SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Rohrprofil TID="ch000000PP000002">
+        <Letzte_Aenderung>20240104</Letzte_Aenderung>
+        <DatenherrRef REF="ch20p3q400001497"></DatenherrRef>
+        <DatenlieferantRef REF="ch20p3q400001497"></DatenlieferantRef>
+        <Bezeichnung>Rechteckprofil_2_1</Bezeichnung>
+        <HoehenBreitenverhaeltnis>2.00</HoehenBreitenverhaeltnis>
+        <Profiltyp>Rechteckprofil</Profiltyp>
       </SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Rohrprofil>
       <SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Haltungspunkt TID="ch000000RP000002">
         <Letzte_Aenderung>20240104</Letzte_Aenderung>
@@ -80,6 +110,28 @@
         </Lage>
         <AbwassernetzelementRef REF="ch000000WN000002"></AbwassernetzelementRef>
       </SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Haltungspunkt>
+	  <SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Haltungspunkt TID="ch000000RP000004">
+        <Letzte_Aenderung>20240104</Letzte_Aenderung>
+        <DatenherrRef REF="ch20p3q400001497"></DatenherrRef>
+        <DatenlieferantRef REF="ch20p3q400001497"></DatenlieferantRef>
+        <Bezeichnung>Test2-Test3F</Bezeichnung>
+        <Kote>447.510</Kote>
+        <Lage>
+          <COORD><C1>2745935.932</C1><C2>1267519.317</C2></COORD>
+        </Lage>
+        <AbwassernetzelementRef REF="ch000000WN000002"></AbwassernetzelementRef>
+      </SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Haltungspunkt>
+	  <SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Haltungspunkt TID="ch000000RP000005">
+        <Letzte_Aenderung>20240104</Letzte_Aenderung>
+        <DatenherrRef REF="ch20p3q400001497"></DatenherrRef>
+        <DatenlieferantRef REF="ch20p3q400001497"></DatenlieferantRef>
+        <Bezeichnung>Test2-Test3T</Bezeichnung>
+        <Kote>447.500</Kote>
+        <Lage>
+          <COORD><C1>2745935.932</C1><C2>1267529.317</C2></COORD>
+        </Lage>
+        <AbwassernetzelementRef REF="ch000000WN000003"></AbwassernetzelementRef>
+      </SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Haltungspunkt>
       <SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Abwasserknoten TID="ch000000WN000001">
         <Letzte_Aenderung>20240104</Letzte_Aenderung>
         <DatenherrRef REF="ch20p3q400001497"></DatenherrRef>
@@ -102,6 +154,17 @@
         </Lage>
         <Sohlenkote>447.510</Sohlenkote>
       </SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Abwasserknoten>
+	  <SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Abwasserknoten TID="ch000000WN000003">
+        <Letzte_Aenderung>20240104</Letzte_Aenderung>
+        <DatenherrRef REF="ch20p3q400001497"></DatenherrRef>
+        <DatenlieferantRef REF="ch20p3q400001497"></DatenlieferantRef>
+        <Bezeichnung>Test3</Bezeichnung>
+        <AbwasserbauwerkRef REF="ch000000WS000003"></AbwasserbauwerkRef>
+        <Lage>
+          <COORD><C1>2745935.932</C1><C2>1267529.317</C2></COORD>
+        </Lage>
+        <Sohlenkote>447.500</Sohlenkote>
+      </SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Abwasserknoten>
       <SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Haltung TID="ch000000RE000001">
         <Letzte_Aenderung>20240911</Letzte_Aenderung>
         <DatenherrRef REF="ch20p3q400001497"></DatenherrRef>
@@ -122,6 +185,26 @@
         <nachHaltungspunktRef REF="ch000000RP000003"></nachHaltungspunktRef>
         <vonHaltungspunktRef REF="ch000000RP000002"></vonHaltungspunktRef>
       </SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Haltung>
+	  <SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Haltung TID="ch000000RE000002">
+        <Letzte_Aenderung>20240911</Letzte_Aenderung>
+        <DatenherrRef REF="ch20p3q400001497"></DatenherrRef>
+        <DatenlieferantRef REF="ch20p3q400001497"></DatenlieferantRef>
+        <Bemerkung>selected_on_test_export</Bemerkung>
+        <Bezeichnung>Test2-Test3</Bezeichnung>
+        <AbwasserbauwerkRef REF="ch000000CL000002"></AbwasserbauwerkRef>
+        <LaengeEffektiv>10.00</LaengeEffektiv>
+        <Lichte_Hoehe>300</Lichte_Hoehe>
+        <Material>Kunststoff_Polyvinilchlorid</Material>
+        <Verlauf>
+          <POLYLINE>
+            <COORD><C1>2745935.932</C1><C2>1267519.317</C2></COORD>
+			<COORD><C1>2745935.932</C1><C2>1267529.317</C2></COORD>
+          </POLYLINE>
+        </Verlauf>
+        <RohrprofilRef REF="ch000000PP000002"></RohrprofilRef>
+        <nachHaltungspunktRef REF="ch000000RP000004"></nachHaltungspunktRef>
+        <vonHaltungspunktRef REF="ch000000RP000005"></vonHaltungspunktRef>
+      </SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Haltung>
       <SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Deckel TID="ch000000CO000001">
         <Letzte_Aenderung>20240104</Letzte_Aenderung>
         <DatenherrRef REF="ch20p3q400001497"></DatenherrRef>
@@ -139,6 +222,17 @@
         <DatenlieferantRef REF="ch20p3q400001497"></DatenlieferantRef>
         <Bezeichnung>Test2</Bezeichnung>
         <AbwasserbauwerkRef REF="ch000000WS000002"></AbwasserbauwerkRef>
+        <Kote>450.500</Kote>
+        <Lage>
+          <COORD><C1>2745935.932</C1><C2>1267519.317</C2></COORD>
+        </Lage>
+      </SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Deckel>
+      <SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Deckel TID="ch000000CO000003">
+        <Letzte_Aenderung>20240104</Letzte_Aenderung>
+        <DatenherrRef REF="ch20p3q400001497"></DatenherrRef>
+        <DatenlieferantRef REF="ch20p3q400001497"></DatenlieferantRef>
+        <Bezeichnung>Test3</Bezeichnung>
+        <AbwasserbauwerkRef REF="ch000000WS000003"></AbwasserbauwerkRef>
         <Kote>450.500</Kote>
         <Lage>
           <COORD><C1>2745935.932</C1><C2>1267519.317</C2></COORD>
