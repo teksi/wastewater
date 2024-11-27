@@ -9947,6 +9947,36 @@ END;]]></definition>
             <parameter mode="IN"/>
          </parameters>
       </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="modification_on_reach_delete()" returnType="trigger" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[DECLARE
+  channel_id text;
+  reach_count integer;
+BEGIN
+  -- get channel obj_id
+  SELECT fk_wastewater_structure INTO channel_id
+    FROM tww_od.wastewater_networkelement
+    WHERE wastewater_networkelement.obj_id = OLD.obj_id;
+
+  DELETE FROM tww_od.wastewater_networkelement WHERE obj_id = OLD.obj_id;
+  DELETE FROM tww_od.reach_point WHERE obj_id = OLD.fk_reach_point_from;
+  DELETE FROM tww_od.reach_point WHERE obj_id = OLD.fk_reach_point_to;
+
+  -- delete channel if no reach left
+  SELECT COUNT(fk_wastewater_structure) INTO reach_count
+    FROM tww_od.wastewater_networkelement
+    WHERE fk_wastewater_structure = channel_id;
+  IF reach_count = 0 THEN
+    RAISE NOTICE 'Removing channel (%) since no reach is left', channel_id;
+    DELETE FROM tww_od.channel WHERE obj_id = channel_id;
+    DELETE FROM tww_od.wastewater_structure WHERE obj_id = channel_id;
+  END IF;
+  RETURN NEW;
+END;]]></definition>
+         <parameters>
+            <parameter mode="IN"/>
+         </parameters>
+      </routine>
       <routine dataAccess="MODIFIES" deterministic="false" name="network_refresh_network_simple()" returnType="void" securityType="DEFINER" type="FUNCTION">
          <comment/>
          <definition language="plpgsql"><![CDATA[BEGIN
@@ -10220,36 +10250,6 @@ BEGIN
     EXECUTE tww_app.update_depth(_ws_obj_id);
   END LOOP;
 
-  RETURN NEW;
-END;]]></definition>
-         <parameters>
-            <parameter mode="IN"/>
-         </parameters>
-      </routine>
-      <routine dataAccess="MODIFIES" deterministic="false" name="symbology_on_reach_delete()" returnType="trigger" securityType="INVOKER" type="FUNCTION">
-         <comment/>
-         <definition language="plpgsql"><![CDATA[DECLARE
-  channel_id text;
-  reach_count integer;
-BEGIN
-  -- get channel obj_id
-  SELECT fk_wastewater_structure INTO channel_id
-    FROM tww_od.wastewater_networkelement
-    WHERE wastewater_networkelement.obj_id = OLD.obj_id;
-
-  DELETE FROM tww_od.wastewater_networkelement WHERE obj_id = OLD.obj_id;
-  DELETE FROM tww_od.reach_point WHERE obj_id = OLD.fk_reach_point_from;
-  DELETE FROM tww_od.reach_point WHERE obj_id = OLD.fk_reach_point_to;
-
-  -- delete channel if no reach left
-  SELECT COUNT(fk_wastewater_structure) INTO reach_count
-    FROM tww_od.wastewater_networkelement
-    WHERE fk_wastewater_structure = channel_id;
-  IF reach_count = 0 THEN
-    RAISE NOTICE 'Removing channel (%) since no reach is left', channel_id;
-    DELETE FROM tww_od.channel WHERE obj_id = channel_id;
-    DELETE FROM tww_od.wastewater_structure WHERE obj_id = channel_id;
-  END IF;
   RETURN NEW;
 END;]]></definition>
          <parameters>
@@ -11095,7 +11095,6 @@ BEGIN
     WHEN TOO_MANY_ROWS THEN
         RAISE EXCEPTION 'TRIGGER ERROR ws_symbology_update_by_reach. Subquery shoud return exactly one row. This is not supposed to happen and indicates an isue with the trigger. The issue must be fixed in TWW.';
   END;
-
 
   RETURN NEW;
 END;]]></definition>

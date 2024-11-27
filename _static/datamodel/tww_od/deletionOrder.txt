@@ -1,10 +1,10 @@
 import_manhole_quarantine
 default_values
 bio_ecol_assessment
-channel
 sia405cc_cable
 farm
 special_structure
+sia405pt_protection_tube
 sia405cc_cable_point
 manhole
 measurement_result
@@ -57,6 +57,7 @@ flushing_nozzle
 dryweather_downspout
 building
 hydraulic_char_data
+channel
 measurement_series
 measuring_device
 data_media

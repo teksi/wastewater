@@ -714,7 +714,7 @@
             <column ascending="true" name="code"/>
          </index>
       </table>
-      <table name="channel_function_hierarchic" remarks="" schema="tww_vl" type="TABLE">
+      <table name="channel_function_hierarchic" numRows="14" remarks="" schema="tww_vl" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
             <child column="function_hierarchic" foreignKey="fkey_vl_channel_function_hierarchic" implied="false" onDeleteCascade="false" schema="tww_od" table="channel"/>
          </column>
@@ -3005,6 +3005,69 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="active" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
          <primaryKey column="code" sequenceNumberInPK="1"/>
          <index name="pkey_tww_vl_sia405cc_cable_status_code" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
+      <table name="sia405pt_protection_tube_horizontal_positioning" remarks="" schema="tww_vl" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <child column="horizontal_positioning" foreignKey="fkey_vl_sia405pt_protection_tube_horizontal_positioning" implied="false" onDeleteCascade="false" schema="tww_od" table="sia405pt_protection_tube"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="vsacode" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="value_en" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="value_fr" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="value_it" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="value_ro" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="abbr_en" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="abbr_de" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="abbr_fr" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="abbr_it" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="abbr_ro" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="active" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
+         <primaryKey column="code" sequenceNumberInPK="1"/>
+         <index name="pkey_tww_vl_sia405pt_protection_tube_horizontal_positioning_cod" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
+      <table name="sia405pt_protection_tube_material" remarks="" schema="tww_vl" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <child column="material" foreignKey="fkey_vl_sia405pt_protection_tube_material" implied="false" onDeleteCascade="false" schema="tww_od" table="sia405pt_protection_tube"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="vsacode" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="value_en" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="value_fr" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="value_it" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="value_ro" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="abbr_en" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="abbr_de" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="abbr_fr" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="abbr_it" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="abbr_ro" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="active" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
+         <primaryKey column="code" sequenceNumberInPK="1"/>
+         <index name="pkey_tww_vl_sia405pt_protection_tube_material_code" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
+      <table name="sia405pt_protection_tube_status" remarks="" schema="tww_vl" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
+            <child column="status" foreignKey="fkey_vl_sia405pt_protection_tube_status" implied="false" onDeleteCascade="false" schema="tww_od" table="sia405pt_protection_tube"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="vsacode" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="value_en" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="value_fr" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="value_it" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="value_ro" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="abbr_en" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="abbr_de" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="abbr_fr" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="abbr_it" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="abbr_ro" nullable="true" remarks="" size="3" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="active" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
+         <primaryKey column="code" sequenceNumberInPK="1"/>
+         <index name="pkey_tww_vl_sia405pt_protection_tube_status_code" unique="true">
             <column ascending="true" name="code"/>
          </index>
       </table>

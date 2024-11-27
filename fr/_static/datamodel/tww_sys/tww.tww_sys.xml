@@ -5,7 +5,7 @@
       <sequence increment="1" name="oid_prefixes_id_seq" startValue="1"/>
    </sequences>
    <tables>
-      <table name="dictionary_od_field" numRows="842" remarks="" schema="tww_sys" type="TABLE">
+      <table name="dictionary_od_field" numRows="859" remarks="" schema="tww_sys" type="TABLE">
          <column autoUpdated="true" defaultValue="nextval('tww_sys.dictionary_od_field_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="class_id" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="attribute_id" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
@@ -45,7 +45,7 @@
             <column ascending="true" name="attribute_id"/>
          </index>
       </table>
-      <table name="dictionary_od_table" numRows="90" remarks="" schema="tww_sys" type="TABLE">
+      <table name="dictionary_od_table" numRows="91" remarks="" schema="tww_sys" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="tablename" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="name_en" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
@@ -81,7 +81,7 @@
             <column ascending="true" name="tablename"/>
          </index>
       </table>
-      <table name="dictionary_od_values" numRows="1744" remarks="" schema="tww_sys" type="TABLE">
+      <table name="dictionary_od_values" numRows="1762" remarks="" schema="tww_sys" type="TABLE">
          <column autoUpdated="true" defaultValue="nextval('tww_sys.dictionary_od_values_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="class_id" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="attribute_id" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>

@@ -33,6 +33,7 @@ reach
 data_media
 measuring_device
 measurement_series
+channel
 hydraulic_char_data
 building
 dryweather_downspout
@@ -85,10 +86,10 @@ file
 measurement_result
 manhole
 sia405cc_cable_point
+sia405pt_protection_tube
 special_structure
 farm
 sia405cc_cable
-channel
 bio_ecol_assessment
 default_values
 import_manhole_quarantine
