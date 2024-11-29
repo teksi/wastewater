@@ -231,6 +231,18 @@
 				<Bemerkung/>
 				<Bezeichnung>KINS-Export</Bezeichnung>
 				<Standort/>
+			<!-- example of werbserver -->
+			</VSA_KEK_2020_1_LV95.KEK.Datentraeger>
+				<VSA_KEK_2020_1_LV95.KEK.Datentraeger TID="ch20zzshw70lrfn1">
+				<DatenherrRef REF="ch080qwzAV000007"/>
+				<DatenlieferantRef REF="ch20p3q400001729"/>
+				<Letzte_Aenderung>20241129</Letzte_Aenderung>
+				<!-- darf nicht leer sein -->
+				<Pfad>https://vimeo.com/1033484838/</Pfad>
+				<Art>Webserver</Art>
+				<Bemerkung/>
+				<Bezeichnung>TEKSI Vimeo Channel Videos</Bezeichnung>
+				<Standort/>
 			</VSA_KEK_2020_1_LV95.KEK.Datentraeger>
 			<VSA_KEK_2020_1_LV95.KEK.Datei TID="ch20zzshw70lrfnc">
 				<DatenherrRef REF="ch080qwzAV000007"/>
@@ -245,6 +257,20 @@
 				<Objekt>ch20zzshw70lohup</Objekt>
 				<Relativpfad>inspectiondata\20210120\videos\</Relativpfad>
 				<DatentraegerRef REF="ch20zzshw70lrfmz"/>
+			</VSA_KEK_2020_1_LV95.KEK.Datei>
+			<!-- example video with reference on webserver URI -->
+			<VSA_KEK_2020_1_LV95.KEK.Datei TID="ch20zzshw70lrfn1">
+				<DatenherrRef REF="ch080qwzAV000007"/>
+				<DatenlieferantRef REF="ch20p3q400001729"/>
+				<Letzte_Aenderung>20241129</Letzte_Aenderung>
+				<!-- darf nicht leer sein -->
+				<Art>digitales_Video</Art>
+				<Bemerkung/>
+				<Bezeichnung>9c11ac73e0</Bezeichnung>
+				<Klasse>Untersuchung</Klasse>
+				<Objekt>ch20zzshw70lohup</Objekt>
+				<Relativpfad></Relativpfad>
+				<DatentraegerRef REF="ch20zzshw70lrfn1"/>
 			</VSA_KEK_2020_1_LV95.KEK.Datei>
 			<VSA_KEK_2020_1_LV95.KEK.Datei TID="ch9a220f0c000007">
 				<DatenherrRef REF="ch080qwzAV000007"/>
