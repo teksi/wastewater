@@ -9,6 +9,7 @@ try:
 except ImportError:
     import psycopg2 as psycopg
 
+from extensions.extension_manager import load_extension
 from pirogue import MultipleInheritance, SimpleJoins, SingleInheritance
 from triggers.set_defaults_and_triggers import set_defaults_and_triggers
 from view.vw_tww_additional_ws import vw_tww_additional_ws
@@ -45,6 +46,7 @@ def create_app(
     tww_wastewater_structure_extra: Optional[Path] = None,
     tww_ii_extra: Optional[Path] = None,
     wastewater_structure_extra: Optional[Path] = None,
+    extension_names: Optional[list] = [],
 ):
     """
     Creates the schema tww_app for TEKSI Wastewater & GEP
@@ -75,6 +77,10 @@ def create_app(
     run_sql_file("functions/organisation_functions.sql", pg_service, variables)
     run_sql_file("functions/meta_functions.sql", pg_service, variables)
     run_sql_file("functions/network_functions.sql", pg_service)
+
+    if extension_names:
+        for extension in extension_names:
+            load_extension(srid, pg_service, "tww", extension)
 
     # open YAML files
     if tww_reach_extra:
@@ -273,6 +279,13 @@ if __name__ == "__main__":
         default=False,
         action=BooleanOptionalAction,
     )
+    parser.add_argument(
+        "-x",
+        "--extension_names",
+        nargs="*",
+        required=False,
+        help="extensions that should be loaded into application schema",
+    )
     args = parser.parse_args()
 
     create_app(
@@ -281,4 +294,5 @@ if __name__ == "__main__":
         drop_schema=args.drop_schema,
         tww_reach_extra=args.tww_reach_extra,
         tww_wastewater_structure_extra=args.tww_wastewater_structure_extra,
+        extension_names=args.extension_names,
     )
