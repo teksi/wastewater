@@ -202,7 +202,7 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         }
         self.update("vw_tww_reach", row, obj_id)
         new_row = self.select("vw_tww_reach", obj_id)
-        # vw_tww_reach has the geometry ST_SetSRID( ST_ForceCurve(ST_MakeLine(ARRAY[ST_MakePoint(1,3,333), ST_MakePoint(4,5,6), ST_MakePoint(7,7,999)])), 2056) 
+        # vw_tww_reach has the geometry ST_SetSRID( ST_ForceCurve(ST_MakeLine(ARRAY[ST_MakePoint(1,3,333), ST_MakePoint(4,5,6), ST_MakePoint(7,7,999)])), 2056)
 
         assert (
             new_row["progression3d_geometry"]
