@@ -302,9 +302,9 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
           AND new_lvl IS DISTINCT FROM NULLIF(ST_Z(ST_StartPoint(OLD.progression3d_geometry)),'NaN') -- 3d geometry Z was changed
         THEN
           NEW.rp_from_level = new_lvl;
-
-        ELSE -- 3D geometry was set to NULL or zero
-          NULL;
+        ELSE -- 3D geometry was set to NULL or zero, we use the old Z
+          NEW.progression3d_geometry = ST_ForceCurve(ST_SetPoint(ST_CurveToLine(NEW.progression3d_geometry),0,
+          ST_MakePoint(ST_X(ST_StartPoint(NEW.progression3d_geometry)),ST_Y(ST_StartPoint(NEW.progression3d_geometry)),COALESCE(NEW.rp_from_level,'NaN'))));
         END CASE;
       ELSE NULL;
       END IF;
@@ -321,8 +321,9 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
           AND new_lvl IS DISTINCT FROM NULLIF(ST_Z(ST_EndPoint(OLD.progression3d_geometry)),'NaN') -- 3d geometry Z was changed
         THEN
           NEW.rp_to_level = new_lvl;
-        ELSE -- 3D geometry was set to NULL or zero
-          NULL;
+        ELSE -- 3D geometry was set to NULL or zero, we use the old Z
+          NEW.progression3d_geometry = ST_ForceCurve(ST_SetPoint(ST_CurveToLine(NEW.progression3d_geometry),-1,
+          ST_MakePoint(ST_X(ST_EndPoint(NEW.progression3d_geometry)),ST_Y(ST_EndPoint(NEW.progression3d_geometry)),COALESCE(NEW.rp_to_level,'NaN'))));
         END CASE;
       ELSE NULL;
       END IF;

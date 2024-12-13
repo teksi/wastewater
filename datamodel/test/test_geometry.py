@@ -207,16 +207,39 @@ class TestGeometry(unittest.TestCase, DbTestBase):
             new_row["progression3d_geometry"]
             == "01090000A00808000001000000010200008003000000000000000000F03F0000000000000040000000000000F87F0000000000001040000000000000144000000000000018400000000000001C400000000000002040000000000000F87F"
         )
-        # rp_from_level is NULL (startpoint of geometry)
-        assert new_row["rp_from_level"] is None
-        # rp_to_level is NULL (endpoint of geometry)
-        assert new_row["rp_to_level"] is None
-        # reach_point has on rp_from as Z NULL
+        # rp_from_level is still 333
+        assert new_row["rp_from_level"] == 333
+        # rp_to_level is still 999
+        assert new_row["rp_to_level"] == 999
+        # reach_point has on rp_from as Z 333
         new_row = self.select("reach_point", "BBB 1337_1010", schema="tww_od")
-        assert new_row["level"] is None
-        # reach_point has on rp_to as Z NULL
+        assert new_row["level"] == 333
+        # reach_point has on rp_to as Z 999
         new_row = self.select("reach_point", "CCC 1337_1010", schema="tww_od")
-        assert new_row["level"] is None
+        assert new_row["level"] == 999
+
+        # 5. change geometry including Z with startpoint Z 0 and endpoint Z 0, no change on rp_from_level, no change on rp_to_level
+        # UPDATE INTO tww_app.vw_tww_reach SET progression3d_geometry=ST_SetSRID( ST_ForceCurve(ST_MakeLine(ARRAY[ST_MakePoint(1,2,0), ST_MakePoint(4,5,6), ST_MakePoint(7,8,0)])), 2056) WHERE obj_id=obj_id'
+        row = {
+            "progression3d_geometry": "01090000A00808000001000000010200008003000000000000000000F03F000000000000004000000000000000000000000000001040000000000000144000000000000018400000000000001C4000000000000020400000000000000000"
+        }
+        self.update("vw_tww_reach", row, obj_id)
+        new_row = self.select("vw_tww_reach", obj_id)
+        # vw_tww_reach has the geometry
+        assert (
+            new_row["progression3d_geometry"]
+            == "01090000A00808000001000000010200008003000000000000000000F03F0000000000000040000000000000F87F0000000000001040000000000000144000000000000018400000000000001C400000000000002040000000000000F87F"
+        )
+        # rp_from_level is still 333
+        assert new_row["rp_from_level"] == 333
+        # rp_to_level is still 999
+        assert new_row["rp_to_level"] == 999
+        # reach_point has on rp_from as Z 333
+        new_row = self.select("reach_point", "BBB 1337_1010", schema="tww_od")
+        assert new_row["level"] == 333
+        # reach_point has on rp_to as Z 999
+        new_row = self.select("reach_point", "CCC 1337_1010", schema="tww_od")
+        assert new_row["level"] == 999
 
     def test_vw_tww_wastewater_structure_geometry_insert(self):
         # 1. insert geometry and no co_level and no wn_bottom_level
