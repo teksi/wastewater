@@ -296,7 +296,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
       IF NEW.rp_from_level IS DISTINCT FROM new_lvl THEN -- we need additional checks
         CASE WHEN
           COALESCE(new_lvl,0) != 0  -- filter out NULL and 0
-          AND new_lvl != NULLIF(ST_Z(ST_StartPoint(OLD.progression3d_geometry)),'NaN') -- 3d geometry Z was changed
+          AND new_lvl DISTINCT FROM NULLIF(ST_Z(ST_StartPoint(OLD.progression3d_geometry)),'NaN') -- 3d geometry Z was changed
         THEN
           NEW.rp_from_level = new_lvl;
         ELSE --rp_from_level was changed, but not 3d geometry
@@ -311,7 +311,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
       IF NEW.rp_to_level IS DISTINCT FROM new_lvl THEN -- we need additional checks
         CASE WHEN
           COALESCE(new_lvl,0) != 0  -- filter out NULL and 0
-          AND new_lvl != NULLIF(ST_Z(ST_EndPoint(OLD.progression3d_geometry)),'NaN') -- 3d geometry Z was changed
+          AND new_lvl DISTINCT FROM NULLIF(ST_Z(ST_EndPoint(OLD.progression3d_geometry)),'NaN') -- 3d geometry Z was changed
         THEN
           NEW.rp_to_level = new_lvl;
         ELSE --rp_to_level was changed, but not 3d geometry
