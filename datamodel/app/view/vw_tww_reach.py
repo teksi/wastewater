@@ -312,7 +312,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
       -- End point
       SELECT NULLIF(ST_Z(ST_EndPoint(NEW.progression3d_geometry)),'NaN') INTO new_lvl;
       IF NEW.rp_to_level IS DISTINCT FROM new_lvl THEN -- we need additional checks
-        CASE 
+        CASE
         WHEN NEW.rp_to_level IS DISTINCT FROM OLD.rp_to_level THEN --rp_to_level was changed
           NEW.progression3d_geometry = ST_ForceCurve(ST_SetPoint(ST_CurveToLine(NEW.progression3d_geometry),0,
           ST_MakePoint(ST_X(ST_EndPoint(NEW.progression3d_geometry)),ST_Y(ST_EndPoint(NEW.progression3d_geometry)),COALESCE(NEW.rp_to_level,'NaN'))));
