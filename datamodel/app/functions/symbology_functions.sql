@@ -134,6 +134,8 @@ $BODY$
 LANGUAGE plpgsql
 VOLATILE;
 
+
+
 --------------------------------------------------------
 -- UPDATE wastewater node symbology by overflow
 -- Argument:
@@ -204,7 +206,9 @@ $BODY$
 LANGUAGE plpgsql
 VOLATILE;
 
-  -------------------- SYMBOLOGY UPDATE ON CHANNEL TABLE CHANGES ----------------------
+--------------------------------------------------------
+-- SYMBOLOGY UPDATE ON CHANNEL TABLE CHANGES
+--------------------------------------------------------
 
 CREATE OR REPLACE FUNCTION tww_app.symbology_update_by_channel()
   RETURNS trigger AS
@@ -257,8 +261,16 @@ BEGIN
 END; $BODY$
   LANGUAGE plpgsql VOLATILE;
 
+CREATE TRIGGER ws_symbology_update_by_channel
+AFTER INSERT OR UPDATE OR DELETE
+ON tww_od.channel
+FOR EACH ROW
+EXECUTE PROCEDURE tww_app.symbology_update_by_channel();
 
-  -------------------- SYMBOLOGY UPDATE ON REACH POINT TABLE CHANGES ----------------------
+
+--------------------------------------------------------
+-- SYMBOLOGY UPDATE ON REACH POINT TABLE CHANGES
+--------------------------------------------------------
 
 CREATE OR REPLACE FUNCTION tww_app.symbology_update_by_reach_point()
   RETURNS trigger AS
@@ -294,7 +306,18 @@ BEGIN
 END; $BODY$
   LANGUAGE plpgsql VOLATILE;
 
-  -------------------- SYMBOLOGY UPDATE ON REACH TABLE CHANGES ----------------------
+-- only update -> insert and delete are handled by reach trigger
+CREATE TRIGGER ws_symbology_update_by_reach_point
+AFTER UPDATE
+  ON tww_od.reach_point
+FOR EACH ROW
+  EXECUTE PROCEDURE tww_app.symbology_update_by_reach_point();
+
+
+
+--------------------------------------------------------
+-- SYMBOLOGY UPDATE ON REACH TABLE CHANGES
+--------------------------------------------------------
 
 CREATE OR REPLACE FUNCTION tww_app.ws_symbology_update_by_reach()
   RETURNS trigger AS
@@ -342,10 +365,15 @@ BEGIN
         RAISE EXCEPTION 'TRIGGER ERROR ws_symbology_update_by_reach. Subquery shoud return exactly one row. This is not supposed to happen and indicates an isue with the trigger. The issue must be fixed in TWW.';
   END;
 
-
   RETURN NEW;
 END; $BODY$
 LANGUAGE plpgsql VOLATILE;
+
+CREATE TRIGGER ws_symbology_update_by_reach
+AFTER INSERT OR UPDATE OR DELETE
+  ON tww_od.reach
+FOR EACH ROW
+  EXECUTE PROCEDURE tww_app.ws_symbology_update_by_reach();
 
 --------------------------------------------------------
 -- UPDATE wastewater structure fk_main_cover

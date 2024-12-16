@@ -284,26 +284,50 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
     CREATE OR REPLACE FUNCTION tww_app.ft_vw_tww_reach_update()
       RETURNS trigger AS
     $BODY$
+    DECLARE
+        new_lvl numeric(7,3);
     BEGIN
 
-      -- Synchronize geometry with level
-      IF NEW.rp_from_level <> OLD.rp_from_level OR (NEW.rp_from_level IS NULL AND OLD.rp_from_level IS NOT NULL) OR (NEW.rp_from_level IS NOT NULL AND OLD.rp_from_level IS NULL) THEN
-        NEW.progression3d_geometry = ST_ForceCurve(ST_SetPoint(ST_CurveToLine(NEW.progression3d_geometry),0,
-        ST_MakePoint(ST_X(ST_StartPoint(NEW.progression3d_geometry)),ST_Y(ST_StartPoint(NEW.progression3d_geometry)),COALESCE(NEW.rp_from_level,'NaN'))));
-      ELSE
-        IF ST_Z(ST_StartPoint(NEW.progression3d_geometry)) <> ST_Z(ST_StartPoint(OLD.progression3d_geometry)) THEN
-          NEW.rp_from_level = NULLIF(ST_Z(ST_StartPoint(NEW.progression3d_geometry)),'NaN');
-        END IF;
+      -------------------------------------
+      -- Synchronize geometry with level --
+      -------------------------------------
+
+      -- Start point
+      SELECT NULLIF(ST_Z(ST_StartPoint(NEW.progression3d_geometry)),'NaN') INTO new_lvl;
+
+      IF NEW.rp_from_level IS DISTINCT FROM new_lvl THEN -- we need additional checks
+        CASE WHEN NEW.rp_from_level IS DISTINCT FROM OLD.rp_from_level THEN --rp_from_level was changed
+          NEW.progression3d_geometry = ST_ForceCurve(ST_SetPoint(ST_CurveToLine(NEW.progression3d_geometry),0,
+          ST_MakePoint(ST_X(ST_StartPoint(NEW.progression3d_geometry)),ST_Y(ST_StartPoint(NEW.progression3d_geometry)),COALESCE(NEW.rp_from_level,'NaN'))));
+        WHEN
+          COALESCE(new_lvl,0) != 0  -- filter out NULL and 0
+          AND new_lvl IS DISTINCT FROM NULLIF(ST_Z(ST_StartPoint(OLD.progression3d_geometry)),'NaN') -- 3d geometry Z was changed
+        THEN
+          NEW.rp_from_level = new_lvl;
+        ELSE -- 3D geometry was set to NULL or zero, we use the old Z
+          NEW.progression3d_geometry = ST_ForceCurve(ST_SetPoint(ST_CurveToLine(NEW.progression3d_geometry),0,
+          ST_MakePoint(ST_X(ST_StartPoint(NEW.progression3d_geometry)),ST_Y(ST_StartPoint(NEW.progression3d_geometry)),COALESCE(NEW.rp_from_level,'NaN'))));
+        END CASE;
+      ELSE NULL;
       END IF;
 
-      -- Synchronize geometry with level
-      IF NEW.rp_to_level <> OLD.rp_to_level OR (NEW.rp_to_level IS NULL AND OLD.rp_to_level IS NOT NULL) OR (NEW.rp_to_level IS NOT NULL AND OLD.rp_to_level IS NULL) THEN
-        NEW.progression3d_geometry = ST_ForceCurve(ST_SetPoint(ST_CurveToLine(NEW.progression3d_geometry),ST_NumPoints(NEW.progression3d_geometry)-1,
-        ST_MakePoint(ST_X(ST_EndPoint(NEW.progression3d_geometry)),ST_Y(ST_EndPoint(NEW.progression3d_geometry)),COALESCE(NEW.rp_to_level,'NaN'))));
-      ELSE
-        IF ST_Z(ST_EndPoint(NEW.progression3d_geometry)) <> ST_Z(ST_EndPoint(OLD.progression3d_geometry)) THEN
-          NEW.rp_to_level = NULLIF(ST_Z(ST_EndPoint(NEW.progression3d_geometry)),'NaN');
-        END IF;
+      -- End point
+      SELECT NULLIF(ST_Z(ST_EndPoint(NEW.progression3d_geometry)),'NaN') INTO new_lvl;
+      IF NEW.rp_to_level IS DISTINCT FROM new_lvl THEN -- we need additional checks
+        CASE
+        WHEN NEW.rp_to_level IS DISTINCT FROM OLD.rp_to_level THEN --rp_to_level was changed
+          NEW.progression3d_geometry = ST_ForceCurve(ST_SetPoint(ST_CurveToLine(NEW.progression3d_geometry),-1,
+          ST_MakePoint(ST_X(ST_EndPoint(NEW.progression3d_geometry)),ST_Y(ST_EndPoint(NEW.progression3d_geometry)),COALESCE(NEW.rp_to_level,'NaN'))));
+        WHEN
+          COALESCE(new_lvl,0) != 0  -- filter out NULL and 0
+          AND new_lvl IS DISTINCT FROM NULLIF(ST_Z(ST_EndPoint(OLD.progression3d_geometry)),'NaN') -- 3d geometry Z was changed
+        THEN
+          NEW.rp_to_level = new_lvl;
+        ELSE -- 3D geometry was set to NULL or zero, we use the old Z
+          NEW.progression3d_geometry = ST_ForceCurve(ST_SetPoint(ST_CurveToLine(NEW.progression3d_geometry),-1,
+          ST_MakePoint(ST_X(ST_EndPoint(NEW.progression3d_geometry)),ST_Y(ST_EndPoint(NEW.progression3d_geometry)),COALESCE(NEW.rp_to_level,'NaN'))));
+        END CASE;
+      ELSE NULL;
       END IF;
 
       {rp_from}

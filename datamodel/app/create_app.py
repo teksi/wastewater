@@ -72,10 +72,11 @@ def create_app(
     run_sql_file("functions/label_functions.sql", pg_service)
     run_sql_file("functions/symbology_functions.sql", pg_service)
     run_sql_file("functions/reach_direction_change.sql", pg_service, variables)
-    run_sql_file("functions/14_geometry_functions.sql", pg_service, variables)
+    run_sql_file("functions/geometry_functions.sql", pg_service, variables)
     run_sql_file("functions/update_catchment_area_totals.sql", pg_service, variables)
     run_sql_file("functions/organisation_functions.sql", pg_service, variables)
     run_sql_file("functions/meta_functions.sql", pg_service, variables)
+    run_sql_file("functions/network_functions.sql", pg_service)
 
     # open YAML files
     if tww_reach_extra:
@@ -136,6 +137,8 @@ def create_app(
         "drainage_system": "zone",
     }
 
+    # Defaults and Triggers
+    # Has to be fired before view creation otherwise it won't work and will only fail in CI
     set_defaults_and_triggers(pg_service, SingleInheritances)
 
     for key in SingleInheritances:
@@ -244,8 +247,11 @@ def create_app(
         pg_service,
     ).create()
 
+
     run_sql_file("triggers/network.sql", pg_service)
     run_sql_file("triggers/symbology_triggers.sql", pg_service)
+
+    # Roles
     run_sql_file("tww_app_roles.sql", pg_service, variables)
 
 
