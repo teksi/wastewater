@@ -267,7 +267,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
     {insert_wn}
 
 
-      CASE WHEN NOT tww_app.check_all_nulls(NEW,'co') THEN -- no cover entries
+      CASE WHEN NOT tww_app.check_all_nulls(to_jsonb(NEW),'co') THEN -- no cover entries
         {insert_vw_cover}
 
      ELSE
@@ -413,7 +413,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
 
       {update_co}
       IF NOT FOUND THEN
-        CASE WHEN NOT tww_app.check_all_nulls(NEW,'co') THEN -- no cover entries
+        CASE WHEN NOT tww_app.check_all_nulls(to_jsonb(NEW),'co') THEN -- no cover entries
           {insert_vw_cover}
         ELSE
           PERFORM pg_notify('vw_tww_ws_no_cover', format('Wastewater Structure %s: no cover created. If you want to add a cover please fill in at least one cover attribute value.',NEW.identifier));
