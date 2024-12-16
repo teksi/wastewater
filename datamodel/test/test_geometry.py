@@ -873,12 +873,9 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         # wn_bottom_level NULL
         expected_row["wn_bottom_level"] = None
         self.insert_check("vw_tww_infiltration_installation", row, expected_row)
-        # cover geometry has the geometry but NaN as Z: ST_SetSRID(ST_MakePoint(2600000, 1200000, 'NaN'), 2056)
+        # no cover created
         row = self.select("cover", "ii_1337_1001", schema="tww_od")
-        assert (
-            row["situation3d_geometry"]
-            == "01010000A0080800000000000020D6434100000000804F3241000000000000F87F"
-        )
+        self.assertIsNone(row["obj_id"])
         # wastewater_node has the geometry but not 3d: ST_SetSRID(ST_MakePoint(2600000, 1200000), 2056)
         row = self.select("wastewater_node", "ii_1337_1001", schema="tww_od")
         assert row["situation3d_geometry"] == self.execute(
@@ -901,12 +898,9 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         # wn_bottom_level is new wn_bottom_level
         expected_row["wn_bottom_level"] = "200.000"
         self.insert_check("vw_tww_infiltration_installation", row, expected_row)
-        # cover geometry has the geometry but NaN as Z: ST_SetSRID(ST_MakePoint(2600000, 1200000, 'NaN'), 2056)
+        # no cover created
         row = self.select("cover", "ii_1337_1002", schema="tww_od")
-        assert (
-            row["situation3d_geometry"]
-            == "01010000A0080800000000000020D6434100000000804F3241000000000000F87F"
-        )
+        self.assertIsNone(row["obj_id"])
         # wastewater_node has the geometry and  wn_buttom_level as Z: ST_SetSRID(ST_MakePoint(2600000, 1200000, 200), 2056)
         row = self.select("wastewater_node", "ii_1337_1002", schema="tww_od")
         assert (
@@ -947,16 +941,17 @@ class TestGeometry(unittest.TestCase, DbTestBase):
     def test_vw_tww_infiltration_installation_geometry_update(self):
         # first insert
         # insert geometry with no co_level and no wn_bottom_level
-        # INSERT INTO tww_app.vw_tww_infiltration_installation (situation3d_geometry, wn_obj_id, co_obj_id) VALUES (ST_SetSRID(ST_MakePoint(2600000, 1200000), 2056), 'ii_1337_1010', 'ii_1337_1010');
+        # INSERT INTO tww_app.vw_tww_infiltration_installation (situation3d_geometry, obj_id, wn_obj_id, co_obj_id) VALUES (ST_SetSRID(ST_MakePoint(2600000, 1200000), 2056), 'ii_1337_1010', 'ii_1337_1010', 'ii_1337_1010');
         row = {
             "situation3d_geometry": "0101000020080800000000000020D6434100000000804F3241",
+            "obj_id": "ii_1337_1010",
             "wn_obj_id": "ii_1337_1010",
             "co_obj_id": "ii_1337_1010",
         }
         obj_id = self.insert("vw_tww_infiltration_installation", row)
 
         # 1. update no change on geometry with Z but WITH wn_bottom_level
-        # UPDATE INTO tww_app.vw_wastewater_node SET wn_bottom_level=200.000 WHERE obj_id = obj_id
+        # UPDATE INTO tww_app.vw_tww_infiltration_installation SET wn_bottom_level=200.000 WHERE obj_id = obj_id
         row = {"wn_bottom_level": "200.000"}
         self.update("vw_tww_infiltration_installation", row, obj_id)
         new_row = self.select("vw_tww_infiltration_installation", obj_id)
@@ -970,10 +965,7 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         self.assertEqual(new_row["wn_bottom_level"], 200.000)
         # no change on cover geometry: ST_SetSRID(ST_MakePoint(2600000, 1200000, 'NaN'), 2056)
         new_row = self.select("cover", "ii_1337_1010", schema="tww_od")
-        assert (
-            new_row["situation3d_geometry"]
-            == "01010000A0080800000000000020D6434100000000804F3241000000000000F87F"
-        )
+        self.assertIsNone(new_row["obj_id"])
         # wastewater_node geometry has Z from new wn_bottom_level: ST_SetSRID(ST_MakePoint(2600000, 1200000, 200), 2056)
         new_row = self.select("wastewater_node", "ii_1337_1010", schema="tww_od")
         assert (
@@ -982,11 +974,11 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         )
 
         # 2. update change co_level
-        # UPDATE INTO tww_app.vw_wastewater_node SET level=500.000 WHERE obj_id = obj_id
+        # UPDATE INTO tww_app.vw_tww_infiltration_installation SET co_level=500.000 WHERE obj_id = obj_id
         row = {"co_level": "500.000"}
         self.update("vw_tww_infiltration_installation", row, obj_id)
         new_row = self.select("vw_tww_infiltration_installation", obj_id)
-        # geometry of wastewaterstructure has 2D geometry: ST_SetSRID(ST_MakePoint(2600000, 1200000, 500), 2056)
+        # geometry of wastewaterstructure has geometry: ST_SetSRID(ST_MakePoint(2600000, 1200000, 500), 2056)
         assert (
             new_row["situation3d_geometry"] == "0101000020080800000000000020D6434100000000804F3241"
         )
@@ -995,7 +987,7 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         # no change on wn_bottom_level
         assert new_row["wn_bottom_level"] == 200.000
         # cover geometry has Z from new co_level: ST_SetSRID(ST_MakePoint(2600000, 1200000, 500), 2056)
-        new_row = self.select("cover", "ii_1337_1010", schema="tww_od")
+        new_row = self.select("cover",  new_row["co_obj_id"], schema="tww_od")
         assert (
             new_row["situation3d_geometry"]
             == "01010000A0080800000000000020D6434100000000804F32410000000000407F40"
@@ -1021,7 +1013,7 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         # wn_bottom_level is new wn_bottom_level
         assert new_row["wn_bottom_level"] == 300.000
         # cover geometry has Z from new co_level: ST_SetSRID(ST_MakePoint(2600000, 1200000, 600), 2056)
-        new_row = self.select("cover", "ii_1337_1010", schema="tww_od")
+        new_row = self.select("cover", new_row["co_obj_id"], schema="tww_od")
         assert (
             new_row["situation3d_geometry"]
             == "01010000A0080800000000000020D6434100000000804F32410000000000C08240"
