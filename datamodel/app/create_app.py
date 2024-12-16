@@ -247,7 +247,6 @@ def create_app(
         pg_service,
     ).create()
 
-    run_sql_file("triggers/network.sql", pg_service)
     run_sql_file("triggers/symbology_triggers.sql", pg_service)
 
     # Roles
