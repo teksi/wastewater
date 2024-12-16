@@ -987,7 +987,7 @@ class TestGeometry(unittest.TestCase, DbTestBase):
         # no change on wn_bottom_level
         assert new_row["wn_bottom_level"] == 200.000
         # cover geometry has Z from new co_level: ST_SetSRID(ST_MakePoint(2600000, 1200000, 500), 2056)
-        new_row = self.select("cover",  new_row["co_obj_id"], schema="tww_od")
+        new_row = self.select("cover", new_row["co_obj_id"], schema="tww_od")
         assert (
             new_row["situation3d_geometry"]
             == "01010000A0080800000000000020D6434100000000804F32410000000000407F40"
