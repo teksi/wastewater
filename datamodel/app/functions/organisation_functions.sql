@@ -80,7 +80,7 @@ BEGIN
 	  OR  (c.table_schema ='tww_app'
 	  and t.table_type = 'VIEW'))
     LOOP
-        EXECUTE format($$ ALTER %4$s %1$I.%2$I ALTER COLUMN %3$I SET DEFAULT tww_app.get_default_values('%2$s') $$, sch,tbl,col,ttp);
+        EXECUTE format($$ ALTER %4$s %1$I.%2$I ALTER COLUMN %3$I SET DEFAULT tww_app.get_default_values('%3$s') $$, sch,tbl,col,ttp);
     END LOOP;
 	RETURN NEW;
 END;

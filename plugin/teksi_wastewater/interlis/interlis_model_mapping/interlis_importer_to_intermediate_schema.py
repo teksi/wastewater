@@ -422,6 +422,42 @@ class InterlisImporterToIntermediateSchema:
             return None
         return relation.t_ili_tid
 
+    def geometry3D_convert(
+        self, geometryattribute, levelattribute, obj_id, classname_attributename
+    ):
+        """
+        Checks if levelattribute or geometryattribut is Null or empty and calls ST_Force3D accordingly as else 3D geometry will be set to NULL if levelattribute is missing - see https://github.com/teksi/wastewater/issues/475#issuecomment-2441032526 and https://trac.osgeo.org/postgis/ticket/5804#comment:1
+        """
+        if levelattribute is None or levelattribute == "":
+            if geometryattribute is None or geometryattribute == "":
+                # No geometry AND no levelattribute provided
+                logger.warning(
+                    f"No {classname_attributename} and geometry (Lage) provided for object {obj_id} -  situation3d_geometry cannot be defined! Object cannot be displayed in TEKSI TWW!"
+                )
+                return None
+
+            else:
+                # geometry attribute but no levelattribute provided
+                geom = self.session_tww.scalar(ST_Force3D(geometryattribute))
+                logger.info(
+                    f"No {classname_attributename} provided for object {obj_id}- situation3d_geometry with no z-value created: {geom}."
+                )
+                return geom
+        else:
+            if geometryattribute is None or geometryattribute == "":
+                # Levelattribute provided but no geometry attribute
+                logger.warning(
+                    f"{classname_attributename} provided but no geometry (Lage) provided for object {obj_id} -  situation3d_geometry cannot be defined! Object cannot be displayed in TEKSI TWW!"
+                )
+                return None
+            else:
+                # Levelattribute and geometry attribute provided - 3D coordinate can be created as expected
+                geom = self.session_tww.scalar(ST_Force3D(geometryattribute, levelattribute))
+                logger.debug(
+                    f" debug: situation3d_geometry created with geometry (x,y) and level (z): {geom}."
+                )
+                return geom
+
     def create_or_update(self, cls, **kwargs):
         """
         Updates an existing instance (if obj_id is found) or creates an instance of the provided class
@@ -1937,7 +1973,9 @@ class InterlisImporterToIntermediateSchema:
                 ),
                 position_of_connection=row.lage_anschluss,
                 remark=row.bemerkung,
-                situation3d_geometry=self.session_tww.scalar(ST_Force3D(row.lage, row.kote)),
+                situation3d_geometry=self.geometry3D_convert(
+                    row.lage, row.kote, row.t_ili_tid, "reach_point.cote (Haltungpunkt.Kote)"
+                ),
             )
             self.session_tww.add(reach_point)
             print(".", end="")
@@ -1969,7 +2007,12 @@ class InterlisImporterToIntermediateSchema:
                 # fk_hydr_geometry=row.REPLACE_ME,  # TODO : NOT MAPPED
                 backflow_level_current=row.rueckstaukote_ist,
                 bottom_level=row.sohlenkote,
-                situation3d_geometry=self.session_tww.scalar(ST_Force3D(row.lage, row.sohlenkote)),
+                situation3d_geometry=self.geometry3D_convert(
+                    row.lage,
+                    row.sohlenkote,
+                    row.t_ili_tid,
+                    "wastewater_node.bottom_level (Abwasserknoten.Sohlenkote)",
+                ),
             )
             self.session_tww.add(wastewater_node)
             print(".", end="")
@@ -2079,7 +2122,9 @@ class InterlisImporterToIntermediateSchema:
                 positional_accuracy=self.get_vl_code(
                     self.model_classes_tww_od.cover_positional_accuracy, row.lagegenauigkeit
                 ),
-                situation3d_geometry=self.session_tww.scalar(ST_Force3D(row.lage, row.kote)),
+                situation3d_geometry=self.geometry3D_convert(
+                    row.lage, row.kote, row.t_ili_tid, "cover.level (Deckel.Deckelkote)"
+                ),
                 sludge_bucket=self.get_vl_code(
                     self.model_classes_tww_od.cover_sludge_bucket, row.schlammeimer
                 ),
