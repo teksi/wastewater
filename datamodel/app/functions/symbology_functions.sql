@@ -174,7 +174,7 @@ BEGIN
   END CASE;
 
     INSERT INTO tww_od.tww_symbology_quarantine(obj_id)
-    SELECT ne.obj_id 
+    SELECT ne.obj_id
       FROM tww_od.wastewater_networkelement ch_ne
       LEFT JOIN tww_od.reach re ON ch_ne.obj_id = re.obj_id
       LEFT JOIN tww_od.reach_point rp ON re.fk_reach_point_from = rp.obj_id
@@ -264,7 +264,7 @@ BEGIN
   END CASE;
 
     INSERT INTO tww_od.tww_symbology_quarantine(obj_id)
-	SELECT ne.obj_id 
+	SELECT ne.obj_id
       FROM tww_od.reach re
       LEFT JOIN tww_od.reach_point rp ON rp.obj_id = re.fk_reach_point_from
       LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = rp.fk_wastewater_networkelement
@@ -556,12 +556,12 @@ BEGIN
   SELECT ne.fk_wastewater_structure INTO affected_ws
   FROM tww_od.wastewater_networkelement ne
   WHERE obj_id = co_obj_id;
-  
+
   INSERT INTO tww_od.tww_symbology_quarantine(obj_id) VALUES
   (affected_ws.fk_wastewater_structure),
   (co_obj_id)
   ON CONFLICT DO NOTHING;
- 
+
   EXECUTE tww_app.update_depth(affected_ws.fk_wastewater_structure);
   RETURN NEW;
 END; $BODY$
@@ -686,7 +686,7 @@ BEGIN
 
   EXECUTE tww_app.update_wastewater_node_symbologies(_wn_to_update);
   DELETE FROM tww_od.tww_symbology_quarantine WHERE obj_id=ANY(_wn_to_update);
-  
+
   SELECT quarantine.obj_id INTO _ws_to_update
   FROM tww_od.tww_symbology_quarantine quarantine
   INNER JOIN tww_od.wastewater_structure ws on ws.obj_id=quarantine.obj_id;
@@ -698,7 +698,7 @@ END; $BODY$
 LANGUAGE plpgsql VOLATILE;
 
 CREATE TRIGGER recalculate_symbology
-AFTER INSERT 
+AFTER INSERT
   ON tww_od.tww_symbology_quarantine
 FOR EACH STATEMENT
   EXECUTE PROCEDURE tww_app.symbology_recalculate();

@@ -23,7 +23,7 @@ DELETE FROM tww_od.tww_reach_point_label where _all or fk_wastewater_structure=A
 	  SELECT
 		rp.obj_id,
 		ne.fk_wastewater_structure,
-		row_number() 
+		row_number()
 		  OVER(
 		    PARTITION BY ne.fk_wastewater_structure
 			ORDER BY(
@@ -31,7 +31,7 @@ DELETE FROM tww_od.tww_reach_point_label where _all or fk_wastewater_structure=A
 			  fh.tww_symbology_order,
 			  uc.tww_symbology_order,
 			  ST_Azimuth(rp.situation3d_geometry,ST_PointN(ST_CurveToLine(re_from.progression3d_geometry),2))
-			  ASC) 
+			  ASC)
 			AS idx,
 		  ST_Azimuth(rp.situation3d_geometry,ST_PointN(re_from.progression3d_geometry,2)) AS azimuth,
 		  count (*) OVER(PARTITION BY ne.fk_wastewater_structure ) as max_idx
@@ -53,7 +53,7 @@ DELETE FROM tww_od.tww_reach_point_label where _all or fk_wastewater_structure=A
 			AND _all OR ws_nd.obj_id=ANY(_obj_ids))
 	INSERT INTO tww_od.tww_reach_point_label(fk_reach_point,fk_wastewater_structure,label_text,azimuth)
     SELECT obj_id,fk_wastewater_structure, 'O'||CASE WHEN max_idx=1 THEN '' ELSE idx::text END,azimuth FROM outs;
-		
+
 	With
 		inputs AS (
 		SELECT
@@ -99,7 +99,7 @@ DELETE FROM tww_od.tww_reach_point_label where _all or fk_wastewater_structure=A
 	  , fk_wastewater_structure
 	  FROM inputs
 	  UNION
-	  SELECT 
+	  SELECT
 	    obj_id
 	  , NULL
 	  , fk_wastewater_structure
