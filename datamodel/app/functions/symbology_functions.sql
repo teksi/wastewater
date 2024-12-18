@@ -685,14 +685,14 @@ DECLARE
 
 BEGIN
 
-  SELECT quarantine.obj_id INTO _wn_to_update
+  SELECT array_agg(quarantine.obj_id) INTO _wn_to_update
   FROM tww_od.tww_symbology_quarantine quarantine
   INNER JOIN tww_od.wastewater_node wn on wn.obj_id=quarantine.obj_id;
 
   EXECUTE tww_app.update_wastewater_node_symbologies(_wn_to_update);
   DELETE FROM tww_od.tww_symbology_quarantine WHERE obj_id=ANY(_wn_to_update);
 
-  SELECT quarantine.obj_id INTO _ws_to_update
+  SELECT array_agg(quarantine.obj_id) INTO _ws_to_update
   FROM tww_od.tww_symbology_quarantine quarantine
   INNER JOIN tww_od.wastewater_structure ws on ws.obj_id=quarantine.obj_id;
 
