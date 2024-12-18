@@ -121,7 +121,6 @@ def vw_tww_wastewater_node(srid: int, pg_service: str = None, extra_definition: 
             table_alias="wn",
             pkey="obj_id",
         ),
-        ),
     )
 
     cursor.execute(trigger_insert_sql)
