@@ -196,7 +196,6 @@ def vw_tww_wastewater_node(srid: int, pg_service: str = None, extra_definition: 
       FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_tww_wastewater_node_UPDATE();
     """.format(
         srid=srid,
-
         update_wn=update_command(
             pg_cur=cursor,
             table_schema="tww_od",
@@ -254,6 +253,4 @@ if __name__ == "__main__":
     srid = args.srid or os.getenv("SRID")
     pg_service = args.pg_service or os.getenv("PGSERVICE")
     extra_definition = safe_load(open(args.extra_definition)) if args.extra_definition else {}
-    vw_tww_wastewater_node(
-        srid=srid, pg_service=pg_service, extra_definition=extra_definition
-    )
+    vw_tww_wastewater_node(srid=srid, pg_service=pg_service, extra_definition=extra_definition)
