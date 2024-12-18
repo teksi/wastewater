@@ -130,7 +130,7 @@ FROM(
 	  LEFT JOIN tww_od.tww_wastewater_node_symbology wn_from	  ON ne_ov.obj_id = wn_from.obj_id
 	  LEFT JOIN tww_vl.channel_function_hierarchic vl_fct_hier_from	ON wn_from._function_hierarchic = vl_fct_hier_from.code
       LEFT JOIN tww_vl.channel_usage_current       vl_usg_curr_from	ON wn_from._usage_current = vl_usg_curr_from.code
-	  WHERE (_all OR wn.obj_id = _obj_id)
+	  WHERE (_all OR wn.obj_id = ANY(_obj_ids))
       WINDOW w AS ( PARTITION BY wn.obj_id
                     ORDER BY coalesce(vl_fct_hier.tww_symbology_inflow_prio,false) DESC
 						   , vl_fct_hier.tww_symbology_order ASC NULLS LAST

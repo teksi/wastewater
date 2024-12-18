@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS tww_od.tww_reach_point_label
 COMMENT ON TABLE tww_od.tww_reach_point_label IS 'stores reach point labels. not part of the VSA-DSS data model,
 added solely for TEKSI wastewater. has to be updated by triggers';
 
-COMMENT ON TABLE tww_od.tww_reach_point_label.azimuth IS 'azimuth of respective reach';
+COMMENT ON COLUMN tww_od.tww_reach_point_label.azimuth IS 'azimuth of respective reach';
 
 CREATE TABLE IF NOT EXISTS tww_od.tww_wastewater_structure_label
 (
