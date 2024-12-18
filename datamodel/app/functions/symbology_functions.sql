@@ -67,7 +67,7 @@ BEGIN
 DELETE FROM tww_od.tww_wastewater_node_symbology
 WHERE fk_wastewater_node IN(_obj_ids);
 
-INSERT INTO tww_od.tww_wastewater_node_symbology n (fk_wastewater_node,_function_hierarchic,_usage_current,_status)
+INSERT INTO tww_od.tww_wastewater_node_symbology (fk_wastewater_node,_function_hierarchic,_usage_current,_status)
   SELECT DISTINCT ON (wn.obj_id) wn.obj_id AS wn_obj_id,
       COALESCE(first_value(CH_from.function_hierarchic) OVER w
               , first_value(CH_to.function_hierarchic) OVER w) AS function_hierarchic,
