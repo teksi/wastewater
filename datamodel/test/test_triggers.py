@@ -314,14 +314,14 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         )
 
         check_values(
-            "vw_wastewater_node",
+            "vw_tww_wastewater_node",
             strct_from_row["wn_obj_id"],
             {
                 "_function_hierarchic": 5062,
             },
         )
         check_values(
-            "vw_wastewater_node",
+            "vw_tww_wastewater_node",
             strct_to_row["wn_obj_id"],
             {
                 "_function_hierarchic": 5062,
@@ -347,7 +347,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         )
 
         check_values(
-            "vw_wastewater_node",
+            "vw_tww_wastewater_node",
             strct_from_row["wn_obj_id"],
             {
                 "_function_hierarchic": 5063,
