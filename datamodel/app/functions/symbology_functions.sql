@@ -514,7 +514,7 @@ BEGIN
       rp_obj_ids = ARRAY[OLD.fk_reach_point_from, OLD.fk_reach_point_to];
   END CASE;
 
-  INSERT INTO tww_od.tww_symbology_quarantine(obj_id) VALUES (_ws_obj_id);
+  INSERT INTO tww_od.tww_symbology_quarantine(obj_id)
     SELECT ws.obj_id
       FROM tww_od.wastewater_structure ws
       LEFT JOIN tww_od.wastewater_networkelement ne ON ws.obj_id = ne.fk_wastewater_structure
