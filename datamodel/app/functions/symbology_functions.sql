@@ -265,7 +265,7 @@ BEGIN
       FROM tww_od.reach re
       LEFT JOIN tww_od.reach_point rp ON rp.obj_id = ANY(ARRAY[re.fk_reach_point_from , re.fk_reach_point_to])
       LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = rp.fk_wastewater_networkelement
-      WHERE re.obj_id = re_obj_id
+      WHERE re.obj_id = re_obj_id AND ne.obj_id IS NOT NULL
    ON CONFLICT DO NOTHING;
 
   RETURN NEW;
