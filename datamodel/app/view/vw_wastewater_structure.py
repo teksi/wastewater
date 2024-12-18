@@ -34,8 +34,8 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
      SELECT
         {ws_cols}
         {extra_cols}
-        , wns._usage_current AS _channel_usage_current
-        , wns._function_hierarchic AS _channel_function_hierarchic
+        , wn._usage_current AS _channel_usage_current
+        , wn._function_hierarchic AS _channel_function_hierarchic
 
         FROM tww_od.wastewater_structure ws
         LEFT JOIN tww_od.tww_wastewater_node_symbology wn ON wn.fk_wastewater_node = ws.fk_main_wastewater_node
