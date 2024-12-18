@@ -225,7 +225,7 @@ BEGIN
       FROM tww_od.wastewater_structure ws
       LEFT JOIN tww_od.wastewater_networkelement ne ON ws.obj_id = ne.fk_wastewater_structure
       LEFT JOIN tww_od.reach_point rp ON ne.obj_id = rp.fk_wastewater_networkelement
-      WHERE rp.obj_id = rp_obj_id;
+      WHERE rp.obj_id = rp_obj_id
     ON CONFLICT DO NOTHING;
 
   RETURN NEW;
