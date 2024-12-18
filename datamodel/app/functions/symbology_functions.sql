@@ -263,7 +263,7 @@ BEGIN
     INSERT INTO tww_od.tww_symbology_quarantine(obj_id)
 	SELECT ne.obj_id
       FROM tww_od.reach re
-      LEFT JOIN tww_od.reach_point rp ON rp.obj_id = ANY(re.fk_reach_point_from , re.fk_reach_point_to)
+      LEFT JOIN tww_od.reach_point rp ON rp.obj_id = ANY(ARRAY[re.fk_reach_point_from , re.fk_reach_point_to])
       LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = rp.fk_wastewater_networkelement
       WHERE re.obj_id = re_obj_id
    ON CONFLICT DO NOTHING;
