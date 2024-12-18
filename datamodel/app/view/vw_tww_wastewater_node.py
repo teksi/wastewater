@@ -37,12 +37,12 @@ def vw_tww_wastewater_node(srid: int, pg_service: str = None, extra_definition: 
 
         , {wn_cols}
         , {ne_cols}
-        , wns._status 
-        , wns._usage_current 
-        , wns._function_hierarchic 
+        , wns._status
+        , wns._usage_current
+        , wns._function_hierarchic
         {extra_cols}
         FROM tww_od.wastewater_node wn
-        
+
         LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = wn.obj_id
         LEFT JOIN tww_od.tww_wastewater_node_symbology wns ON wns.fk_wastewater_node = wn.obj_id
         {extra_joins};

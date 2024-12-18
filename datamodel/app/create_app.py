@@ -15,8 +15,8 @@ from view.vw_tww_additional_ws import vw_tww_additional_ws
 from view.vw_tww_infiltration_installation import vw_tww_infiltration_installation
 from view.vw_tww_measurement_series import vw_tww_measurement_series
 from view.vw_tww_reach import vw_tww_reach
-from view.vw_tww_wastewater_structure import vw_tww_wastewater_structure
 from view.vw_tww_wastewater_node import vw_tww_wastewater_node
+from view.vw_tww_wastewater_structure import vw_tww_wastewater_structure
 from view.vw_wastewater_structure import vw_wastewater_structure
 from yaml import safe_load
 
