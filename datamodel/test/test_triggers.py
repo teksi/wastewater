@@ -110,11 +110,9 @@ class TestTriggers(unittest.TestCase, DbTestBase):
         strct_row = self.select("vw_tww_wastewater_structure", strct_id)
 
         expected = {
-            "_label": "A",
             "_cover_label": "\nC=100.00",
             "_bottom_label": "",
-            "_input_label": "",
-            "_output_label": "",
+            "_reach_point_label": "",
         }
 
         check_values(expected)
@@ -130,7 +128,6 @@ class TestTriggers(unittest.TestCase, DbTestBase):
 
         expected.update(
             {
-                "_label": "B",
                 "_cover_label": "\nC=98.00",
                 "_bottom_label": "\nB=90.12",
             }
@@ -152,7 +149,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
 
         expected.update(
             {
-                "_input_label": "\nI=95.00",
+                "_reach_point_label": "\nI=95.00",
             }
         )
         check_values(expected)
@@ -170,7 +167,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
 
         expected.update(
             {
-                "_output_label": "\nO=92.00",
+                "_reach_point_label": "\nI=95.00\nO=92.00",
             }
         )
         check_values(expected)
@@ -188,7 +185,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
 
         expected.update(
             {
-                "_output_label": "\nO1=92.00\nO2=93.00",
+                "_reach_point_label": "\nI=95.00\nO1=92.00\nO2=93.00",
             }
         )
         check_values(expected)
@@ -200,7 +197,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
 
         expected.update(
             {
-                "_input_label": "\nI=94.00",
+                "_reach_point_label": "\nI=94.00\nO1=92.00\nO2=93.00",
             }
         )
         check_values(expected)
@@ -216,7 +213,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
 
         expected.update(
             {
-                "_output_label": "\nO1=93.00\nO2=92.00",
+                "_reach_point_label": "\nI=94.00\nO1=93.00\nO2=92.00",
             }
         )
         check_values(expected)
@@ -228,7 +225,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
 
         expected.update(
             {
-                "_output_label": "\nO1=?\nO2=92.00",
+                "_reach_point_label": "\nI=94.00\nO1=?\nO2=92.00",
             }
         )
         check_values(expected)

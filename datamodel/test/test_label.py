@@ -114,14 +114,8 @@ class TestViews(unittest.TestCase, DbTestBase):
         }
         self.insert_reaches(reaches, manholes)
         self.assertEqual(
-            self.select("vw_tww_wastewater_structure", manholes["main"]["obj_id"])["_input_label"],
-            "\nI1=1011.00\nI2=1012.00\nI3=1013.00\nI4=1014.00",
-        )
-        self.assertEqual(
-            self.select("vw_tww_wastewater_structure", manholes["main"]["obj_id"])[
-                "_output_label"
-            ],
-            "\nO1=1001.00\nO2=1002.00\nO3=1003.00\nO4=1004.00",
+            self.select("vw_tww_wastewater_structure", manholes["main"]["obj_id"])["_reach_point_label"],
+            "\nI1=1011.00\nI2=1012.00\nI3=1013.00\nI4=1014.00\nO1=1001.00\nO2=1002.00\nO3=1003.00\nO4=1004.00",
         )
 
     def test_crossing_circular_reaches(self):
@@ -139,7 +133,7 @@ class TestViews(unittest.TestCase, DbTestBase):
         }
         self.insert_reaches(reaches, manholes)
         self.assertEqual(
-            self.select("vw_tww_wastewater_structure", manholes["main"]["obj_id"])["_input_label"],
+            self.select("vw_tww_wastewater_structure", manholes["main"]["obj_id"])["_reach_point_label"],
             "\nI1=1012.00\nI2=1011.00",
         )
 
