@@ -278,11 +278,6 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
             remove_pkey=False,
             pkey="obj_id",
             indent=6,
-            skip_columns=[
-                "_usage_current",
-                "_status",
-                "_function_hierarchic",
-            ],
             insert_values={
                 "identifier": "COALESCE(NULLIF(NEW.wn_identifier,''), NEW.identifier)",
                 "situation3d_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), 'nan'), {srid} )".format(
@@ -523,9 +518,6 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
             indent=6,
             skip_columns=[
                 "situation3d_geometry",
-                "_usage_current",
-                "_status",
-                "_function_hierarchic",
             ],
         ),
     )
