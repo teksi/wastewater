@@ -79,9 +79,9 @@ class DatabaseUtils:
             connection.set_session(autocommit=True)
 
     @staticmethod
-    def read_pgservice(service_name):
+    def list_pgservice():
         """
-        Returns a config object from a pg_service name (parsed from PGSERVICEFILE).
+        Returns a list of all config objects and the pg config path from a pg_service file (parsed from PGSERVICEFILE).
         """
 
         # Path for pg_service.conf
@@ -95,6 +95,16 @@ class DatabaseUtils:
         config = configparser.ConfigParser()
         if os.path.exists(PG_CONFIG_PATH):
             config.read(PG_CONFIG_PATH)
+
+        return config, PG_CONFIG_PATH
+
+    @staticmethod
+    def read_pgservice(service_name):
+        """
+        Returns a config object from a pg_service name (parsed from PGSERVICEFILE).
+        """
+
+        config, PG_CONFIG_PATH = DatabaseUtils.list_pgservice()
 
         if service_name not in config:
             logger.warning(f"Service `{service_name}` not found in {PG_CONFIG_PATH}.")
@@ -228,3 +238,8 @@ class DatabaseUtils:
             messages.append("Symbology triggers are disabled")
 
         return messages
+
+    def check_is_superuser():
+        logger.info("Check for superuser privileges")
+        row = DatabaseUtils.fetchone("select usesuper from pg_user where usename = CURRENT_USER;")
+        return row[0]
