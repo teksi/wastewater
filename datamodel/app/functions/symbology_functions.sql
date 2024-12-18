@@ -274,7 +274,7 @@ BEGIN
       FROM tww_od.reach re
       LEFT JOIN tww_od.reach_point rp ON rp.obj_id = re.fk_reach_point_to
       LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = rp.fk_wastewater_networkelement
-      WHERE re.obj_id = re_obj_id;
+      WHERE re.obj_id = re_obj_id
    ON CONFLICT DO NOTHING;
 
   RETURN NEW;
@@ -541,25 +541,25 @@ CREATE OR REPLACE FUNCTION tww_app.symbology_on_wastewater_node_change()
   RETURNS trigger AS
 $BODY$
 DECLARE
-  co_obj_id TEXT;
+  wn_obj_id TEXT;
   affected_ws RECORD;
 BEGIN
   CASE
     WHEN TG_OP = 'UPDATE' THEN
-      co_obj_id = OLD.obj_id;
+      wn_obj_id = OLD.obj_id;
     WHEN TG_OP = 'INSERT' THEN
-      co_obj_id = NEW.obj_id;
+      wn_obj_id = NEW.obj_id;
     WHEN TG_OP = 'DELETE' THEN
-      co_obj_id = OLD.obj_id;
+      wn_obj_id = OLD.obj_id;
   END CASE;
 
   SELECT ne.fk_wastewater_structure INTO affected_ws
   FROM tww_od.wastewater_networkelement ne
-  WHERE obj_id = co_obj_id;
+  WHERE obj_id = wn_obj_id;
 
   INSERT INTO tww_od.tww_symbology_quarantine(obj_id) VALUES
   (affected_ws.fk_wastewater_structure),
-  (co_obj_id)
+  (wn_obj_id)
   ON CONFLICT DO NOTHING;
 
   EXECUTE tww_app.update_depth(affected_ws.fk_wastewater_structure);
