@@ -545,9 +545,14 @@ BEGIN
   WHERE obj_id = wn_obj_id;
 
   INSERT INTO tww_od.tww_symbology_quarantine(obj_id) VALUES
-  (affected_ws.fk_wastewater_structure),
   (wn_obj_id)
   ON CONFLICT DO NOTHING;
+
+  IF affected_ws.fk_wastewater_structure IS NOT NULL THEN
+  INSERT INTO tww_od.tww_symbology_quarantine(obj_id) VALUES
+  (affected_ws.fk_wastewater_structure)
+  ON CONFLICT DO NOTHING;
+  END IF;
 
   EXECUTE tww_app.update_depth(affected_ws.fk_wastewater_structure);
   RETURN NEW;
