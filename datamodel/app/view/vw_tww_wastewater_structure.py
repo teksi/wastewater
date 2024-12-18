@@ -71,15 +71,14 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
         , {wn_cols}
         , {ne_cols}
 
-        , ws._label
-        , ws._cover_label
-        , ws._bottom_label
-        , ws._input_label
-        , ws._output_label
-        , wn._usage_current AS _channel_usage_current
-        , wn._function_hierarchic AS _channel_function_hierarchic
+        , wsl.label_text_c AS _cover_label
+        , wsl.label_text_b AS _bottom_label
+        , wsl.label_text_tp AS _reach_point_label
+        , wns._usage_current AS _channel_usage_current
+        , wns._function_hierarchic AS _channel_function_hierarchic
 
         FROM tww_od.wastewater_structure ws
+        LEFT JOIN tww_od.tww_wastewater_structure_label wsl ON wsl.fk_wastewater_structure = ws.obj_id
         LEFT JOIN tww_od.cover main_co ON main_co.obj_id = ws.fk_main_cover
         LEFT JOIN tww_od.structure_part main_co_sp ON main_co_sp.obj_id = ws.fk_main_cover
         LEFT JOIN tww_od.manhole ma ON ma.obj_id = ws.obj_id
@@ -88,6 +87,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
         LEFT JOIN tww_od.infiltration_installation ii ON ii.obj_id = ws.obj_id
         LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = ws.fk_main_wastewater_node
         LEFT JOIN tww_od.wastewater_node wn ON wn.obj_id = ws.fk_main_wastewater_node
+        LEFT JOIN tww_od.tww_wastewater_node_symbology wns ON wns.fk_wastewater_node = ws.fk_main_wastewater_node
         {extra_joins}
         LEFT JOIN tww_od.channel ch ON ch.obj_id = ws.obj_id
         LEFT JOIN tww_od.wwtp_structure wt ON wt.obj_id = ws.obj_id
@@ -124,11 +124,6 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
                 "identifier",
                 "fk_owner",
                 "status",
-                "_label",
-                "_cover_label",
-                "_bottom_label",
-                "_input_label",
-                "_output_label",
                 "fk_main_cover",
                 "fk_main_wastewater_node",
                 "detail_geometry3d_geometry",
@@ -199,9 +194,6 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             indent=4,
             skip_columns=[
                 "situation3d_geometry",
-                "_usage_current",
-                "_status",
-                "_function_hierarchic",
             ],
             prefix="wn_",
             remap_columns={},
@@ -291,11 +283,6 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             remove_pkey=False,
             indent=2,
             skip_columns=[
-                "_label",
-                "_cover_label",
-                "_bottom_label",
-                "_input_label",
-                "_output_label",
                 "fk_main_cover",
                 "fk_main_wastewater_node",
                 "detail_geometry3d_geometry",
@@ -352,11 +339,6 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             remove_pkey=False,
             pkey="obj_id",
             indent=6,
-            skip_columns=[
-                "_usage_current",
-                "_status",
-                "_function_hierarchic",
-            ],
             insert_values={
                 "identifier": "COALESCE(NULLIF(NEW.wn_identifier,''), NEW.identifier)",
                 "situation3d_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), 'nan'), {srid} )".format(
@@ -566,11 +548,6 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             skip_columns=[
                 "detail_geometry3d_geometry",
                 "last_modification",
-                "_label",
-                "_cover_label",
-                "_bottom_label",
-                "_input_label",
-                "_output_label",
                 "fk_main_cover",
                 "fk_main_wastewater_node",
                 "_depth",
@@ -630,9 +607,6 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             indent=6,
             skip_columns=[
                 "situation3d_geometry",
-                "_usage_current",
-                "_status",
-                "_function_hierarchic",
             ],
         ),
         update_ne=update_command(

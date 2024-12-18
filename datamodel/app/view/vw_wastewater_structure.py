@@ -34,11 +34,11 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
      SELECT
         {ws_cols}
         {extra_cols}
-        , wn._usage_current AS _channel_usage_current
-        , wn._function_hierarchic AS _channel_function_hierarchic
+        , wns._usage_current AS _channel_usage_current
+        , wns._function_hierarchic AS _channel_function_hierarchic
 
         FROM tww_od.wastewater_structure ws
-        LEFT JOIN tww_od.wastewater_node wn ON wn.obj_id = ws.fk_main_wastewater_node
+        LEFT JOIN tww_od.tww_wastewater_node_symbology wn ON wn.fk_wastewater_node = ws.fk_main_wastewater_node
         LEFT JOIN tww_od.channel ch ON ch.obj_id = ws.obj_id
         {extra_joins}
         WHERE ch.obj_id IS NULL;
@@ -68,11 +68,6 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
             remove_pkey=False,
             indent=4,
             skip_columns=[
-                "_label",
-                "_cover_label",
-                "_bottom_label",
-                "_input_label",
-                "_output_label",
             ],
         ),
         extra_joins="\n    ".join(
@@ -114,13 +109,6 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
             table_alias="",
             remove_pkey=False,
             indent=2,
-            skip_columns=[
-                "_label",
-                "_cover_label",
-                "_bottom_label",
-                "_input_label",
-                "_output_label",
-            ],
         ),
     )
 
@@ -153,11 +141,6 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
             indent=6,
             skip_columns=[
                 "last_modification",
-                "_label",
-                "_cover_label",
-                "_bottom_label",
-                "_input_label",
-                "_output_label",
                 "_depth",
             ],
             update_values={},

@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS tww_od.tww_wastewater_node_symbology
 	fk_wastewater_node character varying(16),
     _usage_current integer,
 	_function_hierarchic integer,
-	_status integer
+	_status integer,
 	CONSTRAINT pkey_tww_od_tww_wastewater_node_symbology_fk_wastewater_node PRIMARY KEY (fk_wastewater_node),
 	CONSTRAINT oorel_od_tww_wastewater_structure_label_wastewater_node FOREIGN KEY (fk_wastewater_node) REFERENCES tww_od.wastewater_node(obj_id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
 );
