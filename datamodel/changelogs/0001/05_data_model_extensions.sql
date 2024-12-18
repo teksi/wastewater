@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS tww_od.tww_wastewater_structure_label
 	fk_wastewater_structure character varying(16),
     label_text_c varchar(15),
 	label_text_b varchar(15),
-	label_text_rp varchar(15)
+	label_text_rp varchar(15),
 	CONSTRAINT pkey_tww_od_tww_wastewater_structure_label_fk_wastewater_structure PRIMARY KEY (fk_wastewater_structure),
 	CONSTRAINT oorel_od_tww_wastewater_structure_label_wastewater_structure FOREIGN KEY (fk_wastewater_structure) REFERENCES tww_od.wastewater_structure(obj_id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
 );
