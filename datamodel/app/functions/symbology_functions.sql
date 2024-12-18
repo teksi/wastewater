@@ -407,10 +407,11 @@ BEGIN
   SELECT SP.fk_wastewater_structure INTO affected_sp
   FROM tww_od.structure_part SP
   WHERE obj_id = co_obj_id;
-
-  INSERT INTO tww_od.tww_symbology_quarantine(obj_id) VALUES (affected_sp.fk_wastewater_structure) ON CONFLICT DO NOTHING;
-  EXECUTE tww_app.wastewater_structure_update_fk_main_cover(affected_sp.fk_wastewater_structure);
-  EXECUTE tww_app.update_depth(affected_sp.fk_wastewater_structure);
+  IF affected_sp.fk_wastewater_structure IS NOT NULL THEN
+	  INSERT INTO tww_od.tww_symbology_quarantine(obj_id) VALUES (affected_sp.fk_wastewater_structure) ON CONFLICT DO NOTHING;
+	  EXECUTE tww_app.wastewater_structure_update_fk_main_cover(affected_sp.fk_wastewater_structure);
+	  EXECUTE tww_app.update_depth(affected_sp.fk_wastewater_structure);
+  END IF;
   RETURN NEW;
 END; $BODY$
 LANGUAGE plpgsql VOLATILE;
