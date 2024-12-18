@@ -75,6 +75,7 @@ def create_app(
     run_sql_file("functions/organisation_functions.sql", pg_service, variables)
     run_sql_file("functions/meta_functions.sql", pg_service, variables)
     run_sql_file("functions/network_functions.sql", pg_service)
+    run_sql_file("functions/label_functions.sql", pg_service)
 
     # open YAML files
     if tww_reach_extra:
