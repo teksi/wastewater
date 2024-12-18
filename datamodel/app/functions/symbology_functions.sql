@@ -65,7 +65,7 @@ CREATE OR REPLACE FUNCTION tww_app.update_wastewater_node_symbologies(_obj_ids t
 BEGIN
 
 DELETE FROM tww_od.tww_wastewater_node_symbology
-WHERE fk_wastewater_node IN(_obj_ids);
+WHERE fk_wastewater_node =ANY(_obj_ids);
 
 INSERT INTO tww_od.tww_wastewater_node_symbology (fk_wastewater_node,_function_hierarchic,_usage_current,_status)
   SELECT DISTINCT ON (wn.obj_id) wn.obj_id AS wn_obj_id,
