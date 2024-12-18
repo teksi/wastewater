@@ -113,7 +113,7 @@ SET
   _usage_current = usage_current,
   _status = status
 FROM(
-        SELECT DISTINCT ON (wn.obj_id) wn.obj_id AS wn_obj_id,
+        SELECT DISTINCT ON (wn.fk_wastewater_node) wn.fk_wastewater_node AS wn_obj_id,
       COALESCE(first_value(wn._function_hierarchic) OVER w
               , first_value(wn_from._function_hierarchic) OVER w) AS function_hierarchic,
       COALESCE(first_value(wn._usage_current) OVER w
@@ -122,16 +122,16 @@ FROM(
              , first_value(wn_from._status) OVER w) AS status
     FROM
 	  tww_od.overflow                    ov
-	  LEFT JOIN tww_od.tww_wastewater_node_symbology wn	  	  ON ov.fk_overflow_to=wn.obj_id
+	  LEFT JOIN tww_od.tww_wastewater_node_symbology wn	  	  ON ov.fk_overflow_to=wn.fk_wastewater_node
       LEFT JOIN tww_od.wastewater_networkelement   ne_ov      ON ne_ov.obj_id = ov.fk_wastewater_node
       LEFT JOIN tww_vl.channel_function_hierarchic vl_fct_hier	ON wn._function_hierarchic = vl_fct_hier.code
       LEFT JOIN tww_vl.channel_usage_current       vl_usg_curr	ON wn._usage_current = vl_usg_curr.code
 
-	  LEFT JOIN tww_od.tww_wastewater_node_symbology wn_from	  ON ne_ov.obj_id = wn_from.obj_id
+	  LEFT JOIN tww_od.tww_wastewater_node_symbology wn_from	  ON ne_ov.obj_id = wn_from.fk_wastewater_node
 	  LEFT JOIN tww_vl.channel_function_hierarchic vl_fct_hier_from	ON wn_from._function_hierarchic = vl_fct_hier_from.code
       LEFT JOIN tww_vl.channel_usage_current       vl_usg_curr_from	ON wn_from._usage_current = vl_usg_curr_from.code
-	  WHERE (_all OR wn.obj_id = ANY(_obj_ids))
-      WINDOW w AS ( PARTITION BY wn.obj_id
+	  WHERE (_all OR wn.fk_wastewater_node = ANY(_obj_ids))
+      WINDOW w AS ( PARTITION BY wn.fk_wastewater_node
                     ORDER BY coalesce(vl_fct_hier.tww_symbology_inflow_prio,false) DESC
 						   , vl_fct_hier.tww_symbology_order ASC NULLS LAST
                            , vl_fct_hier_from.tww_symbology_order ASC NULLS LAST
