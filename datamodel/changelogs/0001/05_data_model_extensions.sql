@@ -52,8 +52,7 @@ has to be updated by triggers';
 CREATE TABLE IF NOT EXISTS tww_od.tww_symbology_quarantine
 (
 	obj_id character varying(16),
-	CONSTRAINT pkey_tww_od_tww_symbology_quarantine_obj_id PRIMARY KEY (obj_id),
-	CONSTRAINT oorel_od_tww_symbology_quarantine_wastewater_networkelement FOREIGN KEY (obj_id) REFERENCES tww_od.wastewater_networkelement (obj_id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
+	CONSTRAINT pkey_tww_od_tww_symbology_quarantine_obj_id PRIMARY KEY (obj_id)
 );
 
 CREATE TABLE IF NOT EXISTS tww_od.tww_reach_point_label
