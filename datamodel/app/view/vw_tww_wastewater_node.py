@@ -48,7 +48,6 @@ def vw_tww_wastewater_node(srid: int, pg_service: str = None, extra_definition: 
         {extra_joins};
 
     """.format(
-        srid=srid,
         extra_cols="\n    ".join(
             [
                 select_columns(
