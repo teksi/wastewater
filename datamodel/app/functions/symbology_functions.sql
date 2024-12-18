@@ -442,7 +442,7 @@ BEGIN
       _ws_obj_ids = ARRAY[OLD.fk_wastewater_structure];
   END CASE;
 
-  FOREACH _ws_obj_id IN ARRAY _ws_obj_ids
+  FOREACH _ws_obj_id IN ARRAY array_remove(_ws_obj_ids, NULL)
   LOOP
     INSERT INTO tww_od.tww_symbology_quarantine(obj_id) VALUES (_ws_obj_id) ON CONFLICT DO NOTHING;
   END LOOP;
@@ -606,7 +606,7 @@ BEGIN
     SET progression3d_geometry = progression3d_geometry
     WHERE fk_reach_point_from = rp_obj_id OR fk_reach_point_to = rp_obj_id; --To retrigger the calculate_length trigger on reach update
 
-  FOREACH ne_obj_id IN ARRAY ne_obj_ids
+  FOREACH ne_obj_id IN ARRAY array_remove(ne_obj_ids, NULL)
   LOOP
       INSERT INTO tww_od.tww_symbology_quarantine(obj_id)
 	  SELECT ws.obj_id
