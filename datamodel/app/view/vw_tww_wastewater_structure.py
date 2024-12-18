@@ -73,7 +73,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
 
         , wsl.label_text_c AS _cover_label
         , wsl.label_text_b AS _bottom_label
-        , wsl.label_text_tp AS _reach_point_label
+        , wsl.label_text_rp AS _reach_point_label
         , wns._usage_current AS _channel_usage_current
         , wns._function_hierarchic AS _channel_function_hierarchic
 
