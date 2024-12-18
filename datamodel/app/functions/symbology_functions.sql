@@ -698,7 +698,7 @@ BEGIN
 
   EXECUTE tww_app.update_wastewater_structure_labels(_ws_to_update);
   DELETE FROM tww_od.tww_symbology_quarantine WHERE obj_id=ANY(_ws_to_update);
-  RETURN;
+  RETURN NULL;
 END; $BODY$
 LANGUAGE plpgsql VOLATILE;
 
