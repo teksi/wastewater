@@ -135,6 +135,9 @@ def vw_tww_wastewater_node(srid: int, pg_service: str = None, extra_definition: 
       {update_wn}
       {update_ne}
 
+      IF NOT ST_Equals( OLD.situation3d_geometry, NEW.situation3d_geometry) THEN
+        dx = ST_X(NEW.situation3d_geometry) - ST_X(OLD.situation3d_geometry);
+        dy = ST_Y(NEW.situation3d_geometry) - ST_Y(OLD.situation3d_geometry);
         -- Move reach point node as well
         UPDATE tww_od.reach_point RP
         SET situation3d_geometry = ST_SetSRID( ST_MakePoint(
@@ -146,7 +149,6 @@ def vw_tww_wastewater_node(srid: int, pg_service: str = None, extra_definition: 
           SELECT RP.obj_id FROM tww_od.reach_point RP
           WHERE RP.fk_wastewater_networkelement = NEW.obj_id
         );
-
 
         -- Move reach(es) as well
         UPDATE tww_od.reach RE
