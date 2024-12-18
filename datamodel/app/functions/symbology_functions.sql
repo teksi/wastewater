@@ -177,14 +177,7 @@ BEGIN
     SELECT ne.obj_id
       FROM tww_od.wastewater_networkelement ch_ne
       LEFT JOIN tww_od.reach re ON ch_ne.obj_id = re.obj_id
-      LEFT JOIN tww_od.reach_point rp ON re.fk_reach_point_from = rp.obj_id
-      LEFT JOIN tww_od.wastewater_networkelement ne ON rp.fk_wastewater_networkelement = ne.obj_id
-      WHERE ch_ne.fk_wastewater_structure = ch_obj_id
-    UNION
-    SELECT ne.obj_id
-      FROM tww_od.wastewater_networkelement ch_ne
-      LEFT JOIN tww_od.reach re ON ch_ne.obj_id = re.obj_id
-      LEFT JOIN tww_od.reach_point rp ON re.fk_reach_point_to = rp.obj_id
+      LEFT JOIN tww_od.reach_point rp ON rp.obj_id = ANY(ARRAY[re.fk_reach_point_from , re.fk_reach_point_to])
       LEFT JOIN tww_od.wastewater_networkelement ne ON rp.fk_wastewater_networkelement = ne.obj_id
       WHERE ch_ne.fk_wastewater_structure = ch_obj_id
     ON CONFLICT DO NOTHING;
