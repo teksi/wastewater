@@ -35,7 +35,7 @@ def vw_tww_wastewater_node(srid: int, pg_service: str = None, extra_definition: 
     CREATE OR REPLACE VIEW tww_app.vw_tww_wastewater_node AS
      SELECT
 
-        , {wn_cols}
+          {wn_cols}
         , {ne_cols}
         , wns._status
         , wns._usage_current
