@@ -357,7 +357,7 @@ VOLATILE;
 --  * all True to update all
 --------------------------------------------------------
 
-CREATE OR REPLACE FUNCTION tww_app.update_depth(_obj_id, _all boolean default false)
+CREATE OR REPLACE FUNCTION tww_app.update_depth(_obj_id text default NULL, _all boolean default false)
   RETURNS VOID AS
   $BODY$
   DECLARE
