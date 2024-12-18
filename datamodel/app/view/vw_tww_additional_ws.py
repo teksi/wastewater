@@ -62,15 +62,14 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
         , {wn_cols}
         , {ne_cols}
 
-        , ws._label
-        , ws._cover_label
-        , ws._bottom_label
-        , ws._input_label
-        , ws._output_label
-        , wn._usage_current AS _channel_usage_current
-        , wn._function_hierarchic AS _channel_function_hierarchic
+        , wsl.label_text_c AS _cover_label
+        , wsl.label_text_b AS _bottom_label
+        , wsl.label_text_rp AS _reach_point_label
+        , wns._usage_current AS _channel_usage_current
+        , wns._function_hierarchic AS _channel_function_hierarchic
 
         FROM tww_od.wastewater_structure ws
+        LEFT JOIN tww_od.tww_wastewater_structure_label wsl ON wsl.fk_wastewater_structure = ws.obj_id
         LEFT JOIN tww_od.cover main_co ON main_co.obj_id = ws.fk_main_cover
         LEFT JOIN tww_od.structure_part main_co_sp ON main_co_sp.obj_id = ws.fk_main_cover
         LEFT JOIN tww_od.wwtp_structure wt ON wt.obj_id = ws.obj_id
@@ -78,6 +77,7 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
         LEFT JOIN tww_od.drainless_toilet dt ON dt.obj_id = ws.obj_id
         LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = ws.fk_main_wastewater_node
         LEFT JOIN tww_od.wastewater_node wn ON wn.obj_id = ws.fk_main_wastewater_node
+        LEFT JOIN tww_od.tww_wastewater_node_symbology wns ON wns.fk_wastewater_node = ws.fk_main_wastewater_node
         LEFT JOIN tww_od.channel ch ON ch.obj_id = ws.obj_id
         LEFT JOIN tww_od.manhole ma ON ma.obj_id = ws.obj_id
         LEFT JOIN tww_od.special_structure ss ON ss.obj_id = ws.obj_id
@@ -98,11 +98,6 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
                 "identifier",
                 "fk_owner",
                 "status",
-                "_label",
-                "_cover_label",
-                "_bottom_label",
-                "_input_label",
-                "_output_label",
                 "fk_main_cover",
                 "fk_main_wastewater_node",
                 "detail_geometry3d_geometry",
@@ -162,9 +157,6 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
             indent=4,
             skip_columns=[
                 "situation3d_geometry",
-                "_status",
-                "_usage_current",
-                "_function_hierarchic",
             ],
             prefix="wn_",
             remap_columns={},
@@ -241,11 +233,6 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
             remove_pkey=False,
             indent=2,
             skip_columns=[
-                "_label",
-                "_cover_label",
-                "_bottom_label",
-                "_input_label",
-                "_output_label",
                 "fk_main_cover",
                 "fk_main_wastewater_node",
                 "detail_geometry3d_geometry",
@@ -488,11 +475,6 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
             skip_columns=[
                 "detail_geometry3d_geometry",
                 "last_modification",
-                "_label",
-                "_cover_label",
-                "_bottom_label",
-                "_input_label",
-                "_output_label",
                 "fk_main_cover",
                 "fk_main_wastewater_node",
                 "_depth",
