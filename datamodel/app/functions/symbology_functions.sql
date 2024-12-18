@@ -179,7 +179,7 @@ BEGIN
       LEFT JOIN tww_od.reach re ON ch_ne.obj_id = re.obj_id
       LEFT JOIN tww_od.reach_point rp ON re.fk_reach_point_from = rp.obj_id
       LEFT JOIN tww_od.wastewater_networkelement ne ON rp.fk_wastewater_networkelement = ne.obj_id
-      WHERE ch_ne.fk_wastewater_structure = ch_obj_id;
+      WHERE ch_ne.fk_wastewater_structure = ch_obj_id
     UNION
     SELECT ne.obj_id
       FROM tww_od.wastewater_networkelement ch_ne
