@@ -221,7 +221,7 @@ BEGIN
   END CASE;
 
     INSERT INTO tww_od.tww_symbology_quarantine(obj_id)
-	SELECT ne.obj_id INTO STRICT _ne_id
+	SELECT ne.obj_id
       FROM tww_od.wastewater_structure ws
       LEFT JOIN tww_od.wastewater_networkelement ne ON ws.obj_id = ne.fk_wastewater_structure
       LEFT JOIN tww_od.reach_point rp ON ne.obj_id = rp.fk_wastewater_networkelement
@@ -249,9 +249,6 @@ CREATE OR REPLACE FUNCTION tww_app.ws_symbology_update_by_reach()
   RETURNS trigger AS
 $BODY$
 DECLARE
-  _ne_from_id TEXT;
-  _ne_to_id TEXT;
-  symb_attribs RECORD;
   re_obj_id TEXT;
 BEGIN
   CASE
@@ -266,13 +263,7 @@ BEGIN
     INSERT INTO tww_od.tww_symbology_quarantine(obj_id)
 	SELECT ne.obj_id
       FROM tww_od.reach re
-      LEFT JOIN tww_od.reach_point rp ON rp.obj_id = re.fk_reach_point_from
-      LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = rp.fk_wastewater_networkelement
-      WHERE re.obj_id = re_obj_id
-	UNION
-    SELECT ne.obj_id INTO STRICT _ne_to_id
-      FROM tww_od.reach re
-      LEFT JOIN tww_od.reach_point rp ON rp.obj_id = re.fk_reach_point_to
+      LEFT JOIN tww_od.reach_point rp ON rp.obj_id = ANY(re.fk_reach_point_from , re.fk_reach_point_to)
       LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = rp.fk_wastewater_networkelement
       WHERE re.obj_id = re_obj_id
    ON CONFLICT DO NOTHING;
