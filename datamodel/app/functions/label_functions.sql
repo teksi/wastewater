@@ -75,7 +75,7 @@ DELETE FROM tww_od.tww_reach_point_label where _all or fk_wastewater_structure=A
 	      LEFT JOIN tww_od.tww_reach_point_label outs on outs.fk_wastewater_structure = ne.fk_wastewater_structure AND label_text=ANY(ARRAY['O','O1'])
 			WHERE fh.tww_use_in_labels
 			AND st.tww_use_in_labels
-			AND (_all OR ne.fk_wastewater_structure = _obj_id)
+			AND (_all OR ne.fk_wastewater_structure = ANY(_obj_ids))
 		),
 	null_label as(
      SELECT
@@ -92,17 +92,17 @@ DELETE FROM tww_od.tww_reach_point_label where _all or fk_wastewater_structure=A
 	  WHERE NOT(fh.tww_use_in_labels
 			AND st.tww_use_in_labels)
 		    AND ((_all AND ne.fk_wastewater_structure IS NOT NULL)
-			  OR ne.fk_wastewater_structure= _obj_id))
+			  OR ne.fk_wastewater_structure= ANY(_obj_ids)))
   INSERT INTO tww_od.tww_reach_point_label (fk_reach_point,fk_wastewater_structure,label_text)
   SELECT obj_id
-  	  , 'I'||CASE WHEN max_idx=1 THEN '' ELSE idx::text END
 	  , fk_wastewater_structure
+  	  , 'I'||CASE WHEN max_idx=1 THEN '' ELSE idx::text END
 	  FROM inputs
 	  UNION
 	  SELECT
 	    obj_id
-	  , NULL
 	  , fk_wastewater_structure
+	  , NULL
 	  FROM null_label;
 
 END;
@@ -198,7 +198,7 @@ SELECT   ws_obj_id,
   INSERT INTO tww_od.tww_wastewater_structure_label (fk_wastewater_structure,label_text_c,label_text_b,label_text_rp)
   SELECT
       ws_obj_id
-    ,  cover_lbl
+    , cover_lbl
 	, bottom_lbl
 	, rp_lbl
   FROM labeled_ws;
