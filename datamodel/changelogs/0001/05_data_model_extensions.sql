@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS tww_od.tww_reach_point_label
 (
 	fk_reach_point character varying(16),
 	fk_wastewater_structure character varying(16),
-    label_text varchar(5),
+    label_text text,
 	azimuth numeric(4,3), -- radians
 	CONSTRAINT pkey_tww_od_tww_reach_point_label_fk_reach_point PRIMARY KEY (fk_reach_point),
 	CONSTRAINT oorel_od_tww_reach_point_label_reach_point FOREIGN KEY (fk_reach_point) REFERENCES tww_od.reach_point(obj_id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
@@ -74,9 +74,9 @@ COMMENT ON COLUMN tww_od.tww_reach_point_label.azimuth IS 'azimuth of respective
 CREATE TABLE IF NOT EXISTS tww_od.tww_wastewater_structure_label
 (
 	fk_wastewater_structure character varying(16),
-    label_text_c varchar(15),
-	label_text_b varchar(15),
-	label_text_rp varchar(15),
+    label_text_c text,
+	label_text_b text,
+	label_text_rp text,
 	CONSTRAINT pkey_tww_od_tww_wastewater_structure_label_fk_wastewater_structure PRIMARY KEY (fk_wastewater_structure),
 	CONSTRAINT oorel_od_tww_wastewater_structure_label_wastewater_structure FOREIGN KEY (fk_wastewater_structure) REFERENCES tww_od.wastewater_structure(obj_id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
 );
