@@ -1,4 +1,3 @@
-
 -----------------------------------------------------------------------
 -- Enable or disable Symbology Triggers
 -- To temporarily disable these cache refreshes for batch jobs like migrations
@@ -108,6 +107,7 @@ INSERT INTO tww_od.tww_wastewater_node_symbology (fk_wastewater_node,_function_h
 
 -- by overflow
 UPDATE tww_od.tww_wastewater_node_symbology n
+
 SET
   _function_hierarchic = function_hierarchic,
   _usage_current = usage_current,
@@ -186,6 +186,7 @@ BEGIN
 END; $BODY$
   LANGUAGE plpgsql VOLATILE;
 
+
 CREATE TRIGGER ws_symbology_update_by_channel
 AFTER INSERT OR UPDATE OR DELETE
 ON tww_od.channel
@@ -224,6 +225,7 @@ BEGIN
   RETURN NEW;
 END; $BODY$
   LANGUAGE plpgsql VOLATILE;
+
 
 -- only update -> insert and delete are handled by reach trigger
 CREATE TRIGGER ws_symbology_update_by_reach_point
@@ -264,6 +266,7 @@ BEGIN
   RETURN NEW;
 END; $BODY$
 LANGUAGE plpgsql VOLATILE;
+
 
 CREATE TRIGGER ws_symbology_update_by_reach
 AFTER INSERT OR UPDATE OR DELETE
@@ -372,6 +375,7 @@ VOLATILE;
 -- ON COVER CHANGE
 --------------------------------------------------
 
+
 CREATE OR REPLACE FUNCTION tww_app.symbology_on_cover_change()
   RETURNS trigger AS
 $BODY$
@@ -399,6 +403,7 @@ BEGIN
   RETURN NEW;
 END; $BODY$
 LANGUAGE plpgsql VOLATILE;
+
 
 CREATE TRIGGER on_cover_change
 AFTER INSERT OR UPDATE OR DELETE
@@ -438,6 +443,7 @@ BEGIN
 END; $BODY$
 LANGUAGE plpgsql VOLATILE;
 
+
 CREATE TRIGGER ws_label_update_by_wastewater_networkelement
 AFTER INSERT OR UPDATE OR DELETE
   ON tww_od.wastewater_networkelement
@@ -454,6 +460,7 @@ FOR EACH ROW
 --------------------------------------------------
 -- ON WASTEWATER STRUCTURE CHANGE
 --------------------------------------------------
+
 
 CREATE OR REPLACE FUNCTION tww_app.symbology_on_wastewater_structure_update()
   RETURNS trigger AS
@@ -513,16 +520,17 @@ BEGIN
 END; $BODY$
 LANGUAGE plpgsql VOLATILE;
 
+
 CREATE TRIGGER on_reach_2_change
 AFTER INSERT OR UPDATE OR DELETE
   ON tww_od.reach
 FOR EACH ROW
   EXECUTE PROCEDURE tww_app.symbology_on_reach_change();
 
-
 --------------------------------------------------
 -- ON WASTEWATER NODE CHANGE
 --------------------------------------------------
+
 
 CREATE OR REPLACE FUNCTION tww_app.symbology_on_wastewater_node_change()
   RETURNS trigger AS
@@ -564,7 +572,6 @@ AFTER INSERT OR UPDATE
   ON tww_od.wastewater_node
 FOR EACH ROW
   EXECUTE PROCEDURE tww_app.symbology_on_wastewater_node_change();
-
 --------------------------------------------------
 -- ON REACH POINT CHANGE
 --------------------------------------------------
@@ -624,6 +631,7 @@ FOR EACH ROW
 --------------------------------------------------
 -- CALCULATE REACH LENGTH
 --------------------------------------------------
+
 
 CREATE OR REPLACE FUNCTION tww_app.symbology_calculate_reach_length()
   RETURNS trigger AS

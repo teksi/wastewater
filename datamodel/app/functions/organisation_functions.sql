@@ -33,6 +33,7 @@ END;
 $BODY$
 LANGUAGE plpgsql VOLATILE;
 
+
 -- function for retrieving default obj_id
 CREATE OR REPLACE FUNCTION tww_app.get_default_values(field_name text)
   RETURNS varchar(16) AS
