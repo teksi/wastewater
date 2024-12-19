@@ -15,6 +15,7 @@ from view.vw_tww_additional_ws import vw_tww_additional_ws
 from view.vw_tww_infiltration_installation import vw_tww_infiltration_installation
 from view.vw_tww_measurement_series import vw_tww_measurement_series
 from view.vw_tww_reach import vw_tww_reach
+from view.vw_tww_wastewater_node import vw_tww_wastewater_node
 from view.vw_tww_wastewater_structure import vw_tww_wastewater_structure
 from view.vw_wastewater_structure import vw_wastewater_structure
 from yaml import safe_load
@@ -75,6 +76,7 @@ def create_app(
     run_sql_file("functions/organisation_functions.sql", pg_service, variables)
     run_sql_file("functions/meta_functions.sql", pg_service, variables)
     run_sql_file("functions/network_functions.sql", pg_service)
+    run_sql_file("functions/label_functions.sql", pg_service)
 
     # open YAML files
     if tww_reach_extra:
@@ -165,6 +167,9 @@ def create_app(
 
     vw_wastewater_structure(pg_service=pg_service, extra_definition=wastewater_structure_extra)
     vw_tww_wastewater_structure(
+        srid, pg_service=pg_service, extra_definition=tww_wastewater_structure_extra
+    )
+    vw_tww_wastewater_node(
         srid, pg_service=pg_service, extra_definition=tww_wastewater_structure_extra
     )
     vw_tww_infiltration_installation(srid, pg_service=pg_service, extra_definition=tww_ii_extra)
