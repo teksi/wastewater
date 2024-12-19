@@ -137,4 +137,3 @@ CREATE TRIGGER unset_default_values
   ON tww_od.default_values
   FOR EACH ROW
   EXECUTE PROCEDURE tww_app.ft_unset_default_values();
-
