@@ -143,6 +143,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
             ),
             "ch_function_hierarchic": 5062,
             "ws_status": 8493,
+            "ch_usage_current": 9023,
             "rp_to_fk_wastewater_networkelement": strct_row["wn_obj_id"],
             "rp_to_level": 95,
         }
@@ -162,6 +163,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
             ),
             "ch_function_hierarchic": 5062,
             "ws_status": 8493,
+            "ch_usage_current": 9023,
             "rp_from_fk_wastewater_networkelement": strct_row["wn_obj_id"],
             "rp_from_level": 92,
         }
@@ -181,6 +183,7 @@ class TestTriggers(unittest.TestCase, DbTestBase):
             ),
             "ch_function_hierarchic": 5062,
             "ws_status": 8493,
+            "ch_usage_current": 9023,
             "rp_from_fk_wastewater_networkelement": strct_row["wn_obj_id"],
             "rp_from_level": 93,
         }
