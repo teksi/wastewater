@@ -26,6 +26,7 @@
 
 import logging
 import os
+import shutil
 
 from qgis.core import Qgis, QgsApplication
 from qgis.PyQt.QtCore import QLocale, QSettings, Qt
@@ -40,6 +41,7 @@ except ImportError:
 from .gui.twwprofiledockwidget import TwwProfileDockWidget
 from .gui.twwsettingsdialog import TwwSettingsDialog
 from .gui.twwwizard import TwwWizard
+from .libs.modelbaker.iliwrapper.ili2dbutils import JavaNotFoundError
 from .processing_provider.provider import TwwProcessingProvider
 from .tools.twwmaptools import TwwMapToolConnectNetworkElements, TwwTreeMapTool
 from .tools.twwnetwork import TwwGraphManager
@@ -82,6 +84,19 @@ class TeksiWastewaterPlugin:
     profile = None
 
     def __init__(self, iface):
+        if os.environ.get("QGIS_DEBUGPY_HAS_LOADED") is None and QSettings().value(
+            "/TWW/DeveloperMode", False, type=bool
+        ):
+            try:
+                import debugpy
+
+                debugpy.configure(python=shutil.which("python"))
+                debugpy.listen(("localhost", 5678))
+            except Exception as e:
+                print(f"Unable to create debugpy debugger: {e}")
+            else:
+                os.environ["QGIS_DEBUGPY_HAS_LOADED"] = "1"
+
         self.iface = iface
         self.canvas = iface.mapCanvas()
         self.nodes = None
@@ -149,10 +164,8 @@ class TeksiWastewaterPlugin:
         Called to setup the plugin GUI
         """
         self.network_layer_notifier = TwwLayerNotifier(
-            self.iface.mainWindow(), ["vw_network_node", "vw_network_segment"]
-        )
-        self.wastewater_networkelement_layer_notifier = TwwLayerNotifier(
-            self.iface.mainWindow(), ["vw_wastewater_node", "vw_tww_reach"]
+            self.iface.mainWindow(),
+            ["vw_network_node", "vw_network_segment", "vw_tww_wastewater_structure"],
         )
         self.toolbarButtons = []
 
@@ -331,10 +344,6 @@ class TeksiWastewaterPlugin:
             self.iface, self.connectNetworkElementsAction
         )
 
-        self.wastewater_networkelement_layer_notifier.layersAvailableChanged.connect(
-            self._wastewater_networkelement_layer_available_changed
-        )
-
         self.processing_provider = TwwProcessingProvider()
         QgsApplication.processingRegistry().addProvider(self.processing_provider)
 
@@ -433,6 +442,8 @@ class TeksiWastewaterPlugin:
         self.iface.removePluginMenu(self.main_menu_name, self.validityCheckAction)
         self.iface.removePluginMenu(self.main_menu_name, self.settingsAction)
         self.iface.removePluginMenu(self.main_menu_name, self.aboutAction)
+        self.iface.removePluginMenu(self.main_menu_name, self.enableSymbologyTriggersAction)
+        self.iface.removePluginMenu(self.main_menu_name, self.disableSymbologyTriggersAction)
 
         QgsApplication.processingRegistry().removeProvider(self.processing_provider)
 
@@ -440,12 +451,20 @@ class TeksiWastewaterPlugin:
         for b in self.toolbarButtons:
             b.setEnabled(True)
 
+        self.connectNetworkElementsAction.setEnabled(True)
+
         self.network_analyzer.setReachLayer(layers["vw_network_segment"])
         self.network_analyzer.setNodeLayer(layers["vw_network_node"])
+
+        self._configure_database_connection_config_from_tww_layer()
+
+        self.tww_validity_check_startup()
 
     def onLayersUnavailable(self):
         for b in self.toolbarButtons:
             b.setEnabled(False)
+
+        self.connectNetworkElementsAction.setEnabled(False)
 
     def profileToolClicked(self):
         """
@@ -578,6 +597,7 @@ class TeksiWastewaterPlugin:
                 )
 
                 self.interlisImporterExporter = InterlisImporterExporterGui()
+
             except ImportError as e:
                 self.iface.messageBar().pushMessage(
                     "Error",
@@ -586,6 +606,26 @@ class TeksiWastewaterPlugin:
                 )
                 self.logger.error(str(e))
                 return
+
+            except JavaNotFoundError as e:
+                self.iface.messageBar().pushMessage(
+                    "Error",
+                    "Could not load Interlis exporter due to missing Java. See logs for more details.",
+                    level=Qgis.Critical,
+                )
+                self.logger.error(str(e))
+                return
+
+        try:
+            self.interlisImporterExporter.check_dependencies()
+        except Exception as exception:
+            self.iface.messageBar().pushMessage(
+                "Error",
+                f"Could not load start the Interlis exporter due to unmet dependencies: {exception}.",
+                level=Qgis.Critical,
+            )
+            self.logger.error(str(exception))
+            return
 
         self.interlisImporterExporter.action_export()
 
@@ -606,6 +646,26 @@ class TeksiWastewaterPlugin:
                 )
                 self.logger.error(str(e))
                 return
+
+            except JavaNotFoundError as e:
+                self.iface.messageBar().pushMessage(
+                    "Error",
+                    "Could not load Interlis importer due to missing Java. See logs for more details.",
+                    level=Qgis.Critical,
+                )
+                self.logger.error(str(e))
+                return
+
+        try:
+            self.interlisImporterExporter.check_dependencies()
+        except Exception as exception:
+            self.iface.messageBar().pushMessage(
+                "Error",
+                f"Could not load start the Interlis importer due to unmet dependencies: {exception}.",
+                level=Qgis.Critical,
+            )
+            self.logger.error(str(exception))
+            return
 
         self.interlisImporterExporter.action_import()
 
@@ -640,15 +700,6 @@ class TeksiWastewaterPlugin:
             ]
 
         return result_actions[0]
-
-    def _wastewater_networkelement_layer_available_changed(self, available):
-
-        self.connectNetworkElementsAction.setEnabled(available)
-
-        if available:
-            self._configure_database_connection_config_from_tww_layer()
-
-            self.tww_validity_check_startup()
 
     def update_admin_mode(self):
 

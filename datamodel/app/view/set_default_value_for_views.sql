@@ -12,7 +12,7 @@ BEGIN
 	LEFT JOIN information_schema.tables t
 	ON c.table_name = t.table_name
       AND c.table_schema = t.table_schema
-    WHERE c.column_name IN ('fk_provider','fk_dataowner')
+    WHERE c.column_name IN (SELECT fieldname FROM tww_od.default_values)
       AND c.table_schema ='tww_app'
 	  AND t.table_type = 'VIEW'
     LOOP

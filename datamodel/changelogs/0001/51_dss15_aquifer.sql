@@ -14,7 +14,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_dss15_aquifer_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.dss15_aquifer ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','dss15_aquifer');
 COMMENT ON COLUMN tww_od.dss15_aquifer.obj_id IS '[primary_key] INTERLIS STANDARD OID (with Postfix/Präfix) or UUOID, see www.interlis.ch';
 ALTER TABLE tww_od.dss15_aquifer ADD COLUMN average_groundwater_level  decimal(7,3) ;
 COMMENT ON COLUMN tww_od.dss15_aquifer.average_groundwater_level IS 'Average level of groundwater table / Höhe des mittleren Grundwasserspiegels / Niveau moyen de la nappe';
@@ -35,13 +34,7 @@ ALTER TABLE tww_od.dss15_aquifer ADD COLUMN fk_dataowner varchar(16);
 COMMENT ON COLUMN tww_od.dss15_aquifer.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
 ALTER TABLE tww_od.dss15_aquifer ADD COLUMN fk_provider varchar (16);
 COMMENT ON COLUMN tww_od.dss15_aquifer.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_dss15_aquifer
-BEFORE UPDATE OR INSERT ON
- tww_od.dss15_aquifer
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
+
 
 -------
 

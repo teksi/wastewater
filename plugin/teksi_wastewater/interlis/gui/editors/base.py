@@ -55,33 +55,41 @@ class Editor:
         self.session = session
         self.obj = obj
 
+        self._tree_widget_item = None
+
         self.preprocess()
 
         self.update_state()
 
     @property
-    def listitem(self):
+    def tree_widget_item(self):
         """
-        The editor's listitem (created on the fly if needed)
+        The editor's QTreeWidgetItem (created on the fly if needed)
         """
-        if not hasattr(self, "_listitem"):
-            self._listitem = QTreeWidgetItem()
-            self._listitem.setCheckState(
-                0, Qt.Checked if self.initially_checked() else Qt.Unchecked
-            )
-            self.update_listitem()
-        return self._listitem
+        if self._tree_widget_item is None:
+            self.update_tree_widget_item()
 
-    def update_listitem(self):
+        return self._tree_widget_item
+
+    def update_tree_widget_item(self):
+        if self._tree_widget_item is None:
+            self._tree_widget_item = QTreeWidgetItem()
+            self._tree_widget_item.setCheckState(
+                self.main_dialog.Columns.NAME,
+                Qt.Checked if self.initially_checked() else Qt.Unchecked,
+            )
+
         disp_id = str(
             getattr(self.obj, "obj_id", getattr(self.obj, "value_en", "?"))
         )  # some elements may not have obj_id, such as value_lists
-        self.listitem.setText(0, getattr(self.obj, "identifier", disp_id))
-        self.listitem.setToolTip(0, disp_id)
+        self._tree_widget_item.setText(
+            self.main_dialog.Columns.NAME, getattr(self.obj, "identifier", disp_id)
+        )
+        self._tree_widget_item.setToolTip(self.main_dialog.Columns.NAME, disp_id)
 
-        self.listitem.setText(1, self.status)
+        self._tree_widget_item.setText(self.main_dialog.Columns.STATE, self.status)
 
-        self.listitem.setText(2, self.validity)
+        self._tree_widget_item.setText(self.main_dialog.Columns.VALIDITY, self.validity)
         if self.status == Editor.EXISTING:
             color = "lightgray"
         elif self.validity == Editor.INVALID:
@@ -92,7 +100,9 @@ class Editor:
             color = "lightgreen"
         else:
             color = "lightgray"
-        self.listitem.setBackground(2, QBrush(QColor(color)))
+        self._tree_widget_item.setBackground(
+            self.main_dialog.Columns.VALIDITY, QBrush(QColor(color))
+        )
 
     @property
     def widget(self):
@@ -133,12 +143,19 @@ class Editor:
             self.status = Editor.NEW
         elif obj_inspect.deleted:
             self.status = Editor.DELETED
-        elif obj_inspect.modified:
-            self.status = Editor.MODIFIED
         elif obj_inspect.persistent:
             self.status = Editor.EXISTING
         else:
             self.status = Editor.UNKNOWN
+
+        # For modified use the session is_modified method (slower but more correct)
+        if (
+            self.status != Editor.NEW
+            and self.status != Editor.DELETED
+            and self.session.is_modified(self.obj)
+        ):
+            self.status = Editor.MODIFIED
+
         self.validate()
 
     def validate(self):

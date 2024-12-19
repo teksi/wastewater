@@ -14,7 +14,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_examination_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.examination ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','examination');
 COMMENT ON COLUMN tww_od.examination.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.examination ADD COLUMN equipment text;
  ALTER TABLE tww_od.examination ADD CONSTRAINT ex_equipment_length_max_50 CHECK(char_length(equipment)<=50);
@@ -37,13 +36,6 @@ COMMENT ON COLUMN tww_od.examination.vehicle IS 'yyy_Eingesetztes Inspektionsfah
 COMMENT ON COLUMN tww_od.examination.videonumber IS 'yyy_Bei Videobändern steht hier die Bandnummer (z.B. 1/99). Bei elektronischen Datenträgern ist dies die Datenträgerbezeichnung (z.B. SG001). Falls pro Untersuchung eine einzelne Datei zur Verfügung steht, dann wird diese aus der Klasse Datei referenziert und dieses Attribut kann leer gelassen werden. / Bei Videobändern steht hier die Bandnummer (z.B. 1/99). Bei elektronischen Datenträgern ist dies die Datenträgerbezeichnung (z.B. SG001). Falls pro Untersuchung eine einzelne Datei zur Verfügung steht, dann wird diese aus der Klasse Datei referenziert und dieses Attribut kann leer gelassen werden. / Pour les bandes vidéo figure ici le numéro de la bande (p. ex. 1/99) et, pour les supports de don-nées électroniques, sa désignation (p. ex. SG001). S’il n’existe qu’un fichier par examen, ce fichier est référencé par la classe Fichier et cet attribut peut être laissé vide.';
  ALTER TABLE tww_od.examination ADD COLUMN weather  integer ;
 COMMENT ON COLUMN tww_od.examination.weather IS 'Wheather conditions during inspection / Wetterverhältnisse während der Inspektion / Conditions météorologiques pendant l’examen';
--------
-CREATE TRIGGER
-update_last_modified_examination
-BEFORE UPDATE OR INSERT ON
- tww_od.examination
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified_parent("tww_od.maintenance_event");
 
 -------
 -------
@@ -56,7 +48,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_damage_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.damage ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','damage');
 COMMENT ON COLUMN tww_od.damage.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.damage ADD COLUMN comments text;
  ALTER TABLE tww_od.damage ADD CONSTRAINT dg_comments_length_max_100 CHECK(char_length(comments)<=100);
@@ -80,13 +71,6 @@ COMMENT ON COLUMN tww_od.damage.last_modification IS 'Last modification / Letzte
 COMMENT ON COLUMN tww_od.damage.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.damage ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.damage.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_damage
-BEFORE UPDATE OR INSERT ON
- tww_od.damage
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
 
 -------
 -------
@@ -99,7 +83,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_damage_channel_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.damage_channel ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','damage_channel');
 COMMENT ON COLUMN tww_od.damage_channel.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.damage_channel ADD COLUMN channel_damage_begin  smallint ;
 COMMENT ON COLUMN tww_od.damage_channel.channel_damage_begin IS 'Location on the circumference: end of the damage. Values and procedure are described in detail in paragraph 2.1.6. / Lage am Umfang: Beginn des Schadens. Werte und Vorgehen sind in Absatz 2.1.6 genau beschrieben. / Emplacement circonférentiel: Début du dommage. Valeurs et procédure sont décrites en détail dans le paragraphe 2.1.6.';
@@ -113,13 +96,6 @@ COMMENT ON COLUMN tww_od.damage_channel.channel_distance IS 'Length from start o
 COMMENT ON COLUMN tww_od.damage_channel.channel_quantification1 IS 'Quantification 1 according to SN EN 13508-2. Permissible inputs are described in chapter 2.3 - 2.6 / Quantifizierung 1 gemäss SN EN 13508-2. Zulässige Eingaben sind in Kapitel 2.3 - 2.6 beschrieben / Quantification 1 selon la SN EN 13508-2. Les entrées autorisées sont décrites dans les chapitres 2.3 - 2.6';
  ALTER TABLE tww_od.damage_channel ADD COLUMN channel_quantification2  integer ;
 COMMENT ON COLUMN tww_od.damage_channel.channel_quantification2 IS 'Quantification 2 according to SN EN 13508. Permissible inputs are described in chapter 2.3 - 2.6 / Quantifizierung 2 gemäss SN EN 13508. Zulässige Eingaben sind in Kapitel 2.3 - 2.6  beschrieben / Quantification 2 selon la SN EN 13508. Les entrées autorisées sont décrites dans le chapitre 2.3 - 2.6';
--------
-CREATE TRIGGER
-update_last_modified_damage_channel
-BEFORE UPDATE OR INSERT ON
- tww_od.damage_channel
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified_parent("tww_od.damage");
 
 -------
 -------
@@ -132,7 +108,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_damage_manhole_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.damage_manhole ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','damage_manhole');
 COMMENT ON COLUMN tww_od.damage_manhole.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.damage_manhole ADD COLUMN manhole_distance  decimal(7,2) ;
 COMMENT ON COLUMN tww_od.damage_manhole.manhole_distance IS 'Length from the top edge of the cover to the detection (see paragraph 3.1.1) in m with two decimal places. / Länge ab Oberkante Deckel bis zur Feststellung (siehe Absatz 3.1.1) in m mit zwei Nachkommastellen. / Longueur entre le bord supérieur du couvercle et l’observation (cf. paragraphe 3.1.1) en m avec deux chiffres après la virgule.';
@@ -150,13 +125,6 @@ COMMENT ON COLUMN tww_od.damage_manhole.manhole_quantification1 IS 'Quantificati
 COMMENT ON COLUMN tww_od.damage_manhole.manhole_quantification2 IS 'Quantification 2 according to SN EN 13508. Permissible inputs are described in chapter 3.1.5. Implemented as text attribute. / Quantifizierung 2 gemäss SN EN 13508. Zulässige Eingaben sind in Kapitel 3.1.5 beschrieben. Als Textattribut umgesetzt. / Quantification 2 selon la SN EN 13508. Les entrées autorisées sont décrites dans le chapitre 3.1.5. Type texte';
  ALTER TABLE tww_od.damage_manhole ADD COLUMN manhole_shaft_area  integer ;
 COMMENT ON COLUMN tww_od.damage_manhole.manhole_shaft_area IS 'yyy_Bereich in dem eine Feststellung auftritt. Die Werte sind unter 3.1.9 abschliessend beschrieben. / Bereich in dem eine Feststellung auftritt. Die Werte sind unter 3.1.9 abschliessend beschrieben. / Domaine où une observation est faite. Les valeurs sont décrites dans 3.1.9.';
--------
-CREATE TRIGGER
-update_last_modified_damage_manhole
-BEFORE UPDATE OR INSERT ON
- tww_od.damage_manhole
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified_parent("tww_od.damage");
 
 -------
 -------
@@ -169,7 +137,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_data_media_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.data_media ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','data_media');
 COMMENT ON COLUMN tww_od.data_media.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.data_media ADD COLUMN identifier text;
  ALTER TABLE tww_od.data_media ADD CONSTRAINT vo_identifier_length_max_60 CHECK(char_length(identifier)<=60);
@@ -191,13 +158,6 @@ COMMENT ON COLUMN tww_od.data_media.last_modification IS 'Last modification / Le
 COMMENT ON COLUMN tww_od.data_media.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.data_media ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.data_media.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_data_media
-BEFORE UPDATE OR INSERT ON
- tww_od.data_media
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
 
 -------
 -------
@@ -210,7 +170,6 @@ WITH (
    OIDS = False
 );
 CREATE SEQUENCE tww_od.seq_file_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
- ALTER TABLE tww_od.file ALTER COLUMN obj_id SET DEFAULT tww_sys.generate_oid('tww_od','file');
 COMMENT ON COLUMN tww_od.file.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.file ADD COLUMN classname  integer ;
 COMMENT ON COLUMN tww_od.file.classname IS 'Specifies the classname of the VSA-DSS data model to which the file belongs. In principle, all classes are possible. In the context of sewer television recordings, mainly channel, manhole damage, channel damage and examination. / Gibt an, zu welcher Klasse des VSA-DSS-Datenmodells die Datei gehört. Grundsätzlich alle Klassen möglich. Im Rahmen der Kanalfernsehaufnahmen hauptsächlich Kanal, Normschachtschaden, Kanalschaden und Untersuchung. / Indique à quelle classe du modèle de données de VSA-SDEE appartient le fichier. Toutes les classes sont possible. Surtout CANALISATION, DOMMAGE_CHAMBRE_STANDARD, DOMMAGE_CANALISATION, EXAMEN.';
@@ -234,13 +193,6 @@ COMMENT ON COLUMN tww_od.file.last_modification IS 'Last modification / Letzte_A
 COMMENT ON COLUMN tww_od.file.fk_dataowner IS 'Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l''organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe';
  ALTER TABLE tww_od.file ADD COLUMN fk_provider varchar(16);
 COMMENT ON COLUMN tww_od.file.fk_provider IS 'Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l’enregistrement de ces données ';
--------
-CREATE TRIGGER
-update_last_modified_file
-BEFORE UPDATE OR INSERT ON
- tww_od.file
-FOR EACH ROW EXECUTE PROCEDURE
- tww_sys.update_last_modified();
 
 -------
 ------------ Relationships and Value Tables ----------- ;

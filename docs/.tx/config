@@ -19,12 +19,6 @@ source_lang = en
 file_filter = i18n/<lang>/installation-guide.po
 type = PO
 
-[o:teksi:p:tww-docs:r:vm]
-source_file = i18n/pot/vm.pot
-source_lang = en
-file_filter = i18n/<lang>/vm.po
-type = PO
-
 [o:teksi:p:tww-docs:r:user-guide]
 source_file = i18n/pot/user-guide.pot
 source_lang = en
@@ -47,6 +41,12 @@ type = PO
 source_file = i18n/pot/admin-guide.pot
 source_lang = en
 file_filter = i18n/<lang>/admin-guide.po
+type = PO
+
+[o:teksi:p:tww-docs:r:extensions-guide]
+source_file = i18n/pot/extensions-guide.pot
+source_lang = en
+file_filter = i18n/<lang>/extensions-guide.po
 type = PO
 
 [o:teksi:p:tww-docs:r:translation]

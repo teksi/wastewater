@@ -96,9 +96,6 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
         WHERE '-1'=ALL(ARRAY[ch.obj_id,dt.obj_id,sm.obj_id,wt.obj_id]) IS NULL
         AND '-2'=ALL(ARRAY[ch.obj_id,dt.obj_id,sm.obj_id,wt.obj_id]) IS NULL;
 
-        ALTER VIEW tww_app.vw_tww_wastewater_structure ALTER obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_structure');
-        ALTER VIEW tww_app.vw_tww_wastewater_structure ALTER co_obj_id SET DEFAULT tww_sys.generate_oid('tww_od','cover');
-        ALTER VIEW tww_app.vw_tww_wastewater_structure ALTER wn_obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_node');
     """.format(
         srid=srid,
         extra_cols="\n    ".join(
@@ -200,7 +197,12 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             table_alias="wn",
             remove_pkey=False,
             indent=4,
-            skip_columns=["situation3d_geometry"],
+            skip_columns=[
+                "situation3d_geometry",
+                "_usage_current",
+                "_status",
+                "_function_hierarchic",
+            ],
             prefix="wn_",
             remap_columns={},
             columns_at_end=["obj_id"],
@@ -350,6 +352,11 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             remove_pkey=False,
             pkey="obj_id",
             indent=6,
+            skip_columns=[
+                "_usage_current",
+                "_status",
+                "_function_hierarchic",
+            ],
             insert_values={
                 "identifier": "COALESCE(NULLIF(NEW.wn_identifier,''), NEW.identifier)",
                 "situation3d_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), 'nan'), {srid} )".format(
@@ -447,6 +454,19 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
         (
           SELECT obj_id FROM tww_od.wastewater_networkelement
           WHERE fk_wastewater_structure = NEW.obj_id
+        );
+
+        -- Move reach point node as well
+        UPDATE tww_od.reach_point RP
+        SET situation3d_geometry = ST_SetSRID( ST_MakePoint(
+        ST_X(ST_TRANSLATE(ST_MakePoint(ST_X(RP.situation3d_geometry), ST_Y(RP.situation3d_geometry)), dx, dy )),
+        ST_Y(ST_TRANSLATE(ST_MakePoint(ST_X(RP.situation3d_geometry), ST_Y(RP.situation3d_geometry)), dx, dy )),
+        ST_Z(RP.situation3d_geometry)), {srid} )
+        WHERE obj_id IN
+        (
+          SELECT RP.obj_id FROM tww_od.reach_point RP
+          LEFT JOIN tww_od.wastewater_networkelement NE ON RP.fk_wastewater_networkelement = NE.obj_id
+          WHERE NE.fk_wastewater_structure = NEW.obj_id
         );
 
         -- Move covers
@@ -608,7 +628,12 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             table_alias="wn",
             prefix="wn_",
             indent=6,
-            skip_columns=["situation3d_geometry"],
+            skip_columns=[
+                "situation3d_geometry",
+                "_usage_current",
+                "_status",
+                "_function_hierarchic",
+            ],
         ),
         update_ne=update_command(
             pg_cur=cursor,
@@ -642,9 +667,9 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
     cursor.execute(trigger_delete_sql)
 
     extras = """
-    ALTER VIEW tww_app.vw_tww_wastewater_structure ALTER obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_structure');
-    ALTER VIEW tww_app.vw_tww_wastewater_structure ALTER co_obj_id SET DEFAULT tww_sys.generate_oid('tww_od','cover');
-    ALTER VIEW tww_app.vw_tww_wastewater_structure ALTER wn_obj_id SET DEFAULT tww_sys.generate_oid('tww_od','wastewater_node');
+    ALTER VIEW tww_app.vw_tww_wastewater_structure ALTER obj_id SET DEFAULT tww_app.generate_oid('tww_od','wastewater_structure');
+    ALTER VIEW tww_app.vw_tww_wastewater_structure ALTER co_obj_id SET DEFAULT tww_app.generate_oid('tww_od','cover');
+    ALTER VIEW tww_app.vw_tww_wastewater_structure ALTER wn_obj_id SET DEFAULT tww_app.generate_oid('tww_od','wastewater_node');
     """
     cursor.execute(extras)
 

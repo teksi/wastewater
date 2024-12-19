@@ -41,7 +41,7 @@ master_doc = "index"
 
 # General information about the project.
 project = "TWW"
-copyright = "2023, The TWW Project www.teksi.ch"
+copyright = "2024, The TWW Project www.teksi.ch"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -187,6 +187,13 @@ man_pages = [("index", "tww", "TWW Documentation", ["The TWW Project/OPENGIS.ch"
 # If true, show URL addresses after external links.
 # man_show_urls = False
 
+rst_prolog = r"""
+    .. only:: html and i18n
+
+      .. important::
+        Translation is a community effort `you can join <https://app.transifex.com/teksi/>`_.
+        This page is currently translated at |translation progress|.
+    """
 
 # -- Options for Texinfo output -------------------------------------------
 

@@ -5,23 +5,23 @@ Editing of existing data
 
 This represents a guide on how to edit existing data in TWW.
 
-Demo project
+Demo project (chapter / pictures not adjusted to TWW)
 ------------
 
-* Make sure you have imported the demo project with pgAdminIII (see the :ref:`database-initialization` chapter)
+* Make sure you have imported the demo project with pgAdmin (see the :ref:`database-initialization` chapter)
 * Open the demo project by going to the main menu and press **Project** --> **Open**  or by pressing ``CTRL``
   + ``O`` at the same time.
 
-.. figure:: images/tww_demoproject_selection_tww_en_qgs.jpg
+.. figure:: images/tww_demoproject_old_selection_.jpg
    :scale: 50 %
 
 * Login to the database
 
-.. figure:: images/tww_demoproject_login.jpg
+.. figure:: images/tww_demoproject_old_login.jpg
 
 * You should now have the demo project loaded
 
-.. figure:: images/tww_demoproject_overview.jpg
+.. figure:: images/tww_demoproject_old_overview.jpg
 
 * The project consists of different layers. Depending on your task what to edit or add you choose the layer.
 
@@ -45,28 +45,29 @@ Changing attributes of point elements (manholes / special structures)
  .. figure:: ../digitizing/images/wizard_wastewater_structure_manhole_form_data_ok3.jpg
 
  * On the first tab (General) you can change the most common attributes
- * To change attributes of related tables (e.g. cover) you need to select the correspondent tab. Depending on the
-   kind of wastewater structure you can edit additional attributes in the respective tab (**special structure**, **manhole**).
-
+ * Main Cover and Main Node are the first cover / node defined for the wastewater structure.
+ * Additional attributes of table wastewater structure and fo the selected subclass can be changed on tab Wastewater structure
+ * To change attributes of related tables (e.g. cover) you need to select the correspondent tab.
  * In **Structure parts** tab you can add further parts such as **access aids**, **backflow prevention**, **dryweather flume** etc.
 
  .. figure:: images/form_vw_tww_wastewater_structure_structure_parts.jpg
 
  * The **covers** and **wastewater nodes** tab allows you to look to all nodes or covers of a wastewater structure and to add further elements. See the :ref:`Adding-additional-covers-and-nodes-to-an-existing-wastewater-structure` chapter below.
 
+.. note:: **additional fields** means, that some fields of the class are in the general tab, others are in separat tabs. The fields of the general tab are not repeated, because Multiedit does not work correct when using a field on more than one tab.
 
 Changing attributes of linear elements (channels)
 -------------------------------------------------
 
- * To change an attribute you first need to select the **vw_tww_reach**
+ * To change an attribute you first need to select **vw_tww_reach**
  * Switch to the edit mode.
  * Then click on the **Identify features** button and click the reach you want to edit.
- * The **vw_tww_reach** form will open.
+ * The **vw_tww_reach** feature attributs window will open.
 
   .. figure:: images/form_vw_tww_reach.jpg
 
  * On the first tab (**General**) you can change the most common attributes.
- * To change attributes of related tables (e.g. **reach points**) select the correspondent tab.
+ * To change additional attributes of related tables (e.g. **reach points**) select the correspondent tab.
 
   .. figure:: images/form_vw_tww_reach_reachpoints.jpg
 
@@ -109,7 +110,7 @@ This tool snaps reaches graphically to the wastewater network element they are c
 
 * Double click the **Snap reach geometry** tool
 
-.. figure:: images/tww_toolbox.jpg
+.. figure:: images/tww_toolbox2.jpg
 
 * In the tool window you have to choose the **vw_tww_reach** - layer and the **vw_wastewater_node** - layer, then click on **Run**
 
@@ -119,14 +120,14 @@ This tool snaps reaches graphically to the wastewater network element they are c
 
 If there are connections from reach to reach, the reach point moves at right angles to the other reach. If there is no way to do a right angle, it moves to the next end point of the reach.
 
-.. attention:: If there is snapping from reach to reach, you will get not the expected result, if the first reach snaps to a second reach, and afterwards this second reach snaps to a node or a third reach, there will be no more graphical connection between reach 1 and reach 2. You have to rerun the command.
+.. attention:: If there is snapping from reach to reach, you will get not the expected result, if the first reach snaps to a second reach, and afterwards this second reach snaps to a node or a third reach. There will be no more graphical connection between reach 1 and reach 2. You have to re-run the command.
 
 Working with codes of value list
 --------------------------------
 
 * The values of fields with value list are stored in the database with codes.
 
- .. note:: The codes are unique, also if there is the same text in different value lists. E.g. the code for "rain_wastewater" in the vl_channel_usage_current and in the vl_channel_usage_planned is different.
+ .. note:: The codes are unique, also if there is the same text in different value lists. E.g. the code for "surface_wastewater" in the vl_channel_usage_current and in the vl_channel_usage_planned is different.
 
 * In a tww project with correct configuration you see in the table view or the form view the values in your language and not the codes.
 * But if you want to define a selection by expression or if you want to define a rule-based symbology for your layer, you have to know the codes or you use the following expression: **represent_value("field")**
@@ -163,21 +164,17 @@ Adding additional covers and nodes to an existing wastewater structure
 
 .. note:: The following description is for an additional cover. It works similar for additional wastewater nodes.
 
-* Be sure to have the relation between vw_cover (field fk_wastewater_structure) and vw_tww_wastewater_structure (field obj_id) in your project properties / relations.
-* Define in layer vw_cover / Properties / **Attribute Forms** the field **fk_wastewater_structure** as value relation
+The TWW project is configured that you can add an additional cover with the **Add Point Child Feature** button.
 
-.. figure:: images/vw_cover_properties_fields.jpg
-
-* With QGIS 3.16 there is a new way: select layer vw_tww_wastewater_structure, set it editable, click the manhole you want to add a cover with the **Identify feature** tool. Go to tab **covers** and click the new child point-button. Now you can digitize a new cover for the wastewater structure.
+* select layer vw_tww_wastewater_structure
+* Switch to the edit mode
+* click the manhole you want to add a cover with the **Identify feature** tool
+* Go to tab **covers** and click the Add Point Child Feature-button. Now you can digitize a new cover for the wastewater structure.
 
 .. figure:: images/new_cover_childpoint.jpg
 
-* The other way (before QGIS 3.16)
-* Start editing vw_cover and add the new cover
-* In the form you find behind the field fk_wastewater_structure a button to connect the new cover to an existing wastewater structure
-* After clicking this button, you get blue hint in the qgis-window. You can move the vw_cover - form-window and click on the wastewater_structure, that will be associated to the cover.
+.. figure:: images/new_cover_childpoint_message.jpg
 
-.. figure:: images/new_cover_connect_to_wws.jpg
 
 Adding a wastewater node to an existing reach
 ---------------------------------------------
@@ -188,26 +185,53 @@ In some cases, you need to add a wastewater node between two or more reaches, al
 
 In the data model, you can connect a node between reaches to a channel (because also a channel is a wastewater structure). There is in the moment a discussion, if it is necessary or optional or even forbidden to define a connection to a wastewater structure.
 
-In TWW, there is in the moment no tool, that helps you to connect a wastewater node to a channel. So you just connect the reach points to the node.
+In TWW, there is in the moment no tool, that helps you to connect a wastewater node to a channel. So you just connect the reaches (reach points) to the node.
 
 .. note:: If you really want to connect the node to a channel, then type the obj_id of the channel manually in the fk_wasterwater_structure field of the node.
 
 
-Multiedit
----------
-If you want to edit attributes for multiple objects of the same class you can use the `multiedit Tool of QGIS <https://docs.qgis.org/latest/en/docs/user_manual/working_with_vector/attribute_table.html#multi-edit-fields>`_.
+Change multiple records at once
+--------------------------------
+There are several QGIS-possibilitys to change multiple records at the same time. QGIS **Multiedit** changes multiple fields of multiple records at the same, but there is no progress indicator. With QGIS **field calculator** one field can be change at once and there is a progress indicator.
+
+If there are lot of records (several hundred to several thousand) a multiple record change can take a long time (several minutes), if there are a lot records and if there are views changed, that have lots of fields from different tables.
+Special the TWW-main-views (vw_tww_wastewater_structure and vw_tww_reach) have this problem. Therefore, it is always better not to multi-edit these large views, but rather to edit the table in question directly if a large number of data records are to be changed at the same time. That's why it is good to know, in which table is our field (perhaps the fieldname-prefix helps) and you may need to add this table to your TWW-project.
+To explain, that it really matters, there was the following test:
+
+Change for 500 reaches out of 10'122 the field rv_construction_type. It's a field with a value list. In vw_tww_reach, the fields name is ws_rv_construction_type, means the table of the field is wastewater_structure (ws).
+
+How long did we wait:
+
+- Use field calculator with vw_tww_reach: more than 25 minutes!
+
+- Use multiedit with vw_tww_reach: more than 5 minutes.
+
+- Use field calculator with vw_channel: 1 minute 3seconds
+
+- Use field calculator with table wastewater_structure: 5 seconds
+
+Why is vw_tww_reach so slow: there are triggers in the database, that updates for every record the calculated fields of the connected manholes and nodes, that this themes symbology is always up-to-date. With: ``SELECT tww_sys.disable_symbology_triggers();`` these triggers can be stopped. If the triggers are stopped then also the main-views are fast:
+
+- Use field calculator or multiedit with vw_tww_reach: about 8 seconds.
+
+Do not forget the enable the symbology triggers again after the calculations: ``SELECT tww_sys.enable_symbology_triggers();``
+(and to run the symbology_triggers manually for all records if necessary with the new xy-button?!).
+
+To do: verify these tests with TWW
 
 
 Saving changes
 --------------
 
-* Click **Save** and then deactivate the edit mode or click on **Stop data entry** if you have worked with the **TWW Data Entry** wizard.
+* Click **Save** and then deactivate the edit mode or click on **Stop data entry** if you have worked with the TWW **Wizard**.
 
 
-Changing Wastewater Structure Type
+Changing Wastewater Structure Type (ws_type)
 ----------------------------------
 
-In the vw_tww_wastewater_structure form, you can change the subclass of the wastewater structure (e.g. from manhole to special structure or to infiltration installation). The old subclass-record will be deleted and you must enter those attributes, that are subclass specific. But all connections (they are defined to the class wastewater_structure and not to the subclass) or the obj_id or the identifier will not change.
+In the vw_tww_wastewater_structure form, you can change the subclass of the wastewater structure (e.g. from manhole to special structure or to infiltration installation) with the field **ws_type**. The old subclass-record will be deleted and you must enter those attributes, that are subclass specific. But all connections (they are defined to the class wastewater_structure and not to the subclass) or the obj_id or the identifier will not change.
+
+.. note:: There are just four subclasses supported in the moment: manhole, special_structure, infiltration_installation, discharge_point. Other subclasses (wwtp_structure, small_treatment_plant, drainless_toilett) will be supported in a next release of TWW.
 
 .. note:: You can not change a point - wastewater structure (e.g. manhole) to a line wastewater structure (channel) or vice versa.
 
@@ -215,7 +239,7 @@ In the vw_tww_wastewater_structure form, you can change the subclass of the wast
 Split a reach (channel) into different reaches
 -----------------------------------------------
 
-This is a quite complex function and not jet implemented in TWW. There exists a QGIS-Tool to split objects, but if you use this tool with vw_tww_reach - layer, you will get a database error, because the obj_id of the split (= duplicated) records are no more unique.
+This is a quite complex function and in the actual version not implemented in TWW. There exists a QGIS-Tool to split objects, but if you use this tool with vw_tww_reach - layer, you will get a database error, because the obj_id of the split (= duplicated) records are no more unique.
 
 Temporary solution: Change the existing reach and draw the second reach manually. Control the connections.
 
