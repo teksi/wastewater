@@ -87,10 +87,13 @@ class DatabaseUtils:
         # Path for pg_service.conf
         if os.environ.get("PGSERVICEFILE"):
             PG_CONFIG_PATH = os.environ.get("PGSERVICEFILE")
+            logger.debug(f"PGSERVICEFILE:  {PG_CONFIG_PATH}")
         elif os.environ.get("PGSYSCONFDIR"):
             PG_CONFIG_PATH = os.path.join(os.environ.get("PGSYSCONFDIR"), "pg_service.conf")
+            logger.debug(f"PGSYSCONFDIR:  {PG_CONFIG_PATH}")
         else:
             PG_CONFIG_PATH = os.path.expanduser("~/.pg_service.conf")
+            logger.debug(f"PG_CONFIG_PATH:  {PG_CONFIG_PATH}")
 
         config = configparser.ConfigParser()
         if os.path.exists(PG_CONFIG_PATH):
@@ -134,6 +137,8 @@ class DatabaseUtils:
         parts = []
         for key in pgconf:
             parts.append(f"{key}={pgconf[key]}")
+        dsn_masked_pwd = re.sub(r"(password=).+", r"\1[PASSWORD]", " ".join(parts))
+        logger.debug(f"psycopg dsn: {dsn_masked_pwd}")
         return " ".join(parts)
 
     @staticmethod
