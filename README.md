@@ -13,34 +13,34 @@ TEKSI wastewater module (project name: QGEP) is a selection of tools and a datab
 TEKSI wastewater module is a complete open source module based on a PostgreSQL - PostGIS data model compatible with the swiss norm SIA405 AND VSA-DSS. The data are accessed and edited with a dedicated QGIS project.
 The project is maintained by the [TEKSI community](https://www.teksi.ch)
 
-[TEKSI](https://www.teksi.ch) is a non profit Swiss association set up to support open source professional GIS projects aiming to ease the management of public infrastructures. [TEKSI GitHub Home page](https://github.com/TEKSI)
+[TEKSI](https://www.teksi.ch) is a non profit Swiss association set up to support open source professional GIS projects aiming to ease the management of public infrastructures.
 
 ## How to start
-* [TEKSI wastewater features](https://qgep.github.io/docs/en/features-guide/index.html)
+* [TEKSI wastewater features](https://teksi.github.io/wastewater/features-guide/)
 * Quick demo : TO DO
-* [Installation Guide](https://qgep.github.io/docs/en/installation-guide/index.html)
-* [How to contribute](https://qgep.github.io/docs/en/contributor-guide/index.html)
+* [Installation Guide](https://teksi.github.io/wastewater/installation-guide/)
+* [How to contribute](https://github.com/teksi/Home/wiki/TEKSI-Contributor-Guide)
 
 ## Issues, features, ideas
-* [Issues and features](https://github.com/qgep/qgep/issues)
-* [Disscussions and ideas](https://github.com/qgep/qgep/discussions)
+* [Issues and features](https://github.com/teksi/wastewater/issues)
+* [Disscussions and ideas](https://github.com/teksi/wastewater/discussions)
 
 ## Source code for contributions / GitHub Repository organisation
-* [Datamodel](https://github.com/qgep/datamodel)
-* [QGIS Project](https://github.com/qgep/qgep)
-* [Documentation](https://github.com/qgep/docs)
-* [QGIS Plugin](https://github.com/qgep/qgepplugin)
+* [Datamodel](https://github.com/teksi/wastewater/tree/main/datamodel)
+* [QGIS Project](https://github.com/teksi/wastewater/tree/main/project)
+* [Documentation](https://github.com/teksi/wastewater/tree/main/docs)
+* [QGIS Plugin](https://github.com/teksi/wastewater/tree/main/plugin)
 
 ## TEKSI ressources on GitHub and other projects
 * [TEKSI GitHub Home page](https://github.com/TEKSI)
 * [TEKSI Module for drinking water network management (QWAT Project)](https://github.com/QWAT)
-
+* [TEKSI Module for District Heating (Pilot project - in development)](https://github.com/teksi/district_heating)
 
 ## Website
 You can discover more about [TEKSI](https://www.teksi.ch)
 
 
-TEKSI Wastewater Release 2024.0 is now available!
+TEKSI Wastewater [Release 2024.0](https://github.com/teksi/wastewater/releases) is now available!
 
 Migration path from QGEP to TEKSI Wastewater is also established. <!---  // skip-keyword-check -->
 
