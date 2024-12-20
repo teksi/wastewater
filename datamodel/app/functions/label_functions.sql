@@ -191,7 +191,7 @@ SELECT   ws_obj_id,
 	  LEFT JOIN tww_od.tww_reach_point_label lb on RP.obj_id=lb.fk_reach_point
       WHERE (_all OR lb.fk_wastewater_structure =_obj_id)
 	) parts ON parts.ws = ws.obj_id
-    WHERE _all  OR ws.obj_id =_obj_id)
+    WHERE _all  OR ws.obj_id =_obj_id
     ) all_parts
 	GROUP BY ws_obj_id, COALESCE(ws_identifier, '')
 )
