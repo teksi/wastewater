@@ -236,7 +236,7 @@
 				<VSA_KEK_2020_1_LV95.KEK.Datentraeger TID="ch20zzshw70lrfn1">
 				<DatenherrRef REF="ch080qwzAV000007"/>
 				<DatenlieferantRef REF="ch20p3q400001729"/>
-				<Letzte_Aenderung>20241129</Letzte_Aenderung>
+				<Letzte_Aenderung>20241220</Letzte_Aenderung>
 				<!-- darf nicht leer sein -->
 				<Pfad>https://youtu.be/</Pfad>
 				<Art>Webserver</Art>
@@ -262,11 +262,11 @@
 			<VSA_KEK_2020_1_LV95.KEK.Datei TID="ch20zzshw70lrfn1">
 				<DatenherrRef REF="ch080qwzAV000007"/>
 				<DatenlieferantRef REF="ch20p3q400001729"/>
-				<Letzte_Aenderung>20241129</Letzte_Aenderung>
+				<Letzte_Aenderung>20241220</Letzte_Aenderung>
 				<!-- darf nicht leer sein -->
 				<Art>digitales_Video</Art>
 				<Bemerkung/>
-				<Bezeichnung>9c11ac73e0</Bezeichnung>
+				<Bezeichnung>D1TcLrBPYxQ</Bezeichnung>
 				<Klasse>Untersuchung</Klasse>
 				<Objekt>ch20zzshw70lohup</Objekt>
 				<Relativpfad></Relativpfad>
