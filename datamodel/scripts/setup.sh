@@ -40,6 +40,7 @@ psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f ${DIR}/changelogs/0001/51_dss1
 psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f ${DIR}/changelogs/0001/52_dss15_planning_zone.sql -v SRID=$SRID
 psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f ${DIR}/changelogs/0001/51_dss15_aquifer_dictionaries.sql -v SRID=$SRID
 psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f ${DIR}/changelogs/0001/52_dss15_planning_zone_dictionaries.sql -v SRID=$SRID
+psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f ${DIR}/changelogs/0001/90_audit.sql
 
 ${DIR}/app/create_app.py --pg_service ${PGSERVICE} --srid ${SRID}
 ${DIR}/manage_roles.py create_roles --pg_service ${PGSERVICE} --modulename tww
