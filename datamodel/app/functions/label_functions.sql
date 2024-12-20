@@ -5,7 +5,7 @@
 --------------------------------------------------------
 
 
-CREATE OR REPLACE FUNCTION tww_app.update_reach_point_labels(_obj_ids text[],
+CREATE OR REPLACE FUNCTION tww_app.update_reach_point_label(_obj_id text,
 	_all boolean default false
 	)
   RETURNS VOID AS
@@ -17,7 +17,7 @@ CREATE OR REPLACE FUNCTION tww_app.update_reach_point_labels(_obj_ids text[],
   -- _obj_id: obj_id of the associated wastewater structure
   -- _all: optional boolean to update all reach points
   --
-DELETE FROM tww_od.tww_reach_point_label where _all or fk_wastewater_structure=ANY(_obj_ids);
+DELETE FROM tww_od.tww_reach_point_label where _all or fk_wastewater_structure=_obj_id;
 -- Outflow
     WITH outs as(
 	  SELECT
@@ -50,7 +50,7 @@ DELETE FROM tww_od.tww_reach_point_label where _all or fk_wastewater_structure=A
 		  INNER JOIN tww_vl.wastewater_structure_status st ON ws.status = st.code
 			WHERE fh.tww_use_in_labels
 			AND st.tww_use_in_labels
-			AND _all OR ws_nd.obj_id=ANY(_obj_ids))
+			AND _all OR ws_nd.obj_id=_obj_id)
 	INSERT INTO tww_od.tww_reach_point_label(fk_reach_point,fk_wastewater_structure,label_text,azimuth)
     SELECT obj_id,fk_wastewater_structure, 'O'||CASE WHEN max_idx=1 THEN '' ELSE idx::text END,azimuth FROM outs;
 
@@ -75,7 +75,7 @@ DELETE FROM tww_od.tww_reach_point_label where _all or fk_wastewater_structure=A
 	      LEFT JOIN tww_od.tww_reach_point_label outs on outs.fk_wastewater_structure = ne.fk_wastewater_structure AND label_text=ANY(ARRAY['O','O1'])
 			WHERE fh.tww_use_in_labels
 			AND st.tww_use_in_labels
-			AND (_all OR ne.fk_wastewater_structure = ANY(_obj_ids))
+			AND (_all OR ne.fk_wastewater_structure = _obj_id)
 		),
 	null_label as(
      SELECT
@@ -92,7 +92,7 @@ DELETE FROM tww_od.tww_reach_point_label where _all or fk_wastewater_structure=A
 	  WHERE NOT(fh.tww_use_in_labels
 			AND st.tww_use_in_labels)
 		    AND ((_all AND ne.fk_wastewater_structure IS NOT NULL)
-			  OR ne.fk_wastewater_structure= ANY(_obj_ids)))
+			  OR ne.fk_wastewater_structure= _obj_id))
   INSERT INTO tww_od.tww_reach_point_label (fk_reach_point,fk_wastewater_structure,label_text)
   SELECT obj_id
 	  , fk_wastewater_structure
@@ -122,7 +122,7 @@ VOLATILE;
 ------ WHERE (_all OR NE.fk_wastewater_structure = _obj_id) and CH_to.function_hierarchic in (5062,5064,5066,5068,5069,5070,5071,5072,5074)  ----label only reaches with function_hierarchic=pwwf.*
 
 
-CREATE OR REPLACE FUNCTION tww_app.update_wastewater_structure_labels(_obj_ids text[], _all boolean default false)
+CREATE OR REPLACE FUNCTION tww_app.update_wastewater_structure_label(_obj_id text, _all boolean default false)
   RETURNS VOID AS
   $BODY$
   DECLARE
@@ -130,8 +130,8 @@ CREATE OR REPLACE FUNCTION tww_app.update_wastewater_structure_labels(_obj_ids t
 
 BEGIN
 
-DELETE FROM tww_od.tww_wastewater_structure_label where _all or fk_wastewater_structure=ANY(_obj_ids);
-EXECUTE tww_app.update_reach_point_labels(_obj_ids,_all);
+DELETE FROM tww_od.tww_wastewater_structure_label where _all or fk_wastewater_structure=_obj_id);
+EXECUTE tww_app.update_reach_point_label(_obj_id,_all);
 
 WITH labeled_ws AS(
 SELECT   ws_obj_id,
@@ -162,7 +162,7 @@ SELECT   ws_obj_id,
 		, NULL::text as rp_label
       FROM tww_od.structure_part SP
       RIGHT JOIN tww_od.cover CO ON CO.obj_id = SP.obj_id
-      WHERE _all OR SP.fk_wastewater_structure =ANY(_obj_ids)
+      WHERE _all OR SP.fk_wastewater_structure =_obj_id
       -- Bottom
       UNION
       SELECT
@@ -176,7 +176,7 @@ SELECT   ws_obj_id,
       FROM tww_od.wastewater_structure ws1
 	  LEFT JOIN tww_od.channel ch1 ON ch1.obj_id=ws1.obj_id
       LEFT JOIN tww_od.wastewater_node wn ON wn.obj_id = ws1.fk_main_wastewater_node
-      WHERE (_all AND ch1.obj_id IS NULL) OR ws1.obj_id =ANY(_obj_ids)
+      WHERE (_all AND ch1.obj_id IS NULL) OR ws1.obj_id =_obj_id
 	  UNION
 	  --reach points
       SELECT
@@ -189,9 +189,9 @@ SELECT   ws_obj_id,
 		, lb.label_text as rp_label
       FROM tww_od.reach_point RP
 	  LEFT JOIN tww_od.tww_reach_point_label lb on RP.obj_id=lb.fk_reach_point
-      WHERE (_all OR lb.fk_wastewater_structure =ANY(_obj_ids))
+      WHERE (_all OR lb.fk_wastewater_structure =_obj_id)
 	) parts ON parts.ws = ws.obj_id
-    WHERE _all  OR ws.obj_id =ANY(_obj_ids)
+    WHERE _all  OR ws.obj_id =_obj_id)
     ) all_parts
 	GROUP BY ws_obj_id, COALESCE(ws_identifier, '')
 )

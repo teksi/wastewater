@@ -173,7 +173,7 @@ BEGIN
       ch_obj_id = OLD.obj_id;
   END CASE;
 
-    INSERT INTO tww_od.tww_symbology_quarantine(obj_id)
+    INSERT INTO tww_od.tww_symbology_quarantine(wn_obj_id)
     SELECT ne.obj_id
       FROM tww_od.wastewater_networkelement ch_ne
       LEFT JOIN tww_od.reach re ON ch_ne.obj_id = re.obj_id
@@ -214,7 +214,7 @@ BEGIN
       rp_obj_id = OLD.obj_id;
   END CASE;
 
-    INSERT INTO tww_od.tww_symbology_quarantine(obj_id)
+    INSERT INTO tww_od.tww_symbology_quarantine(wn_obj_id)
 	SELECT ne.obj_id
       FROM tww_od.wastewater_structure ws
       LEFT JOIN tww_od.wastewater_networkelement ne ON ws.obj_id = ne.fk_wastewater_structure
@@ -255,7 +255,7 @@ BEGIN
       re_obj_id = OLD.obj_id;
   END CASE;
 
-    INSERT INTO tww_od.tww_symbology_quarantine(obj_id)
+    INSERT INTO tww_od.tww_symbology_quarantine(wn_obj_id)
 	SELECT ne.obj_id
       FROM tww_od.reach re
       LEFT JOIN tww_od.reach_point rp ON rp.obj_id = ANY(ARRAY[re.fk_reach_point_from , re.fk_reach_point_to])
@@ -396,7 +396,7 @@ BEGIN
   FROM tww_od.structure_part SP
   WHERE obj_id = co_obj_id;
   IF affected_sp.fk_wastewater_structure IS NOT NULL THEN
-	  INSERT INTO tww_od.tww_symbology_quarantine(obj_id) VALUES (affected_sp.fk_wastewater_structure) ON CONFLICT DO NOTHING;
+	  INSERT INTO tww_od.tww_symbology_quarantine(ws_obj_id) VALUES (affected_sp.fk_wastewater_structure) ON CONFLICT DO NOTHING;
 	  EXECUTE tww_app.wastewater_structure_update_fk_main_cover(affected_sp.fk_wastewater_structure);
 	  EXECUTE tww_app.update_depth(affected_sp.fk_wastewater_structure);
   END IF;
@@ -435,7 +435,7 @@ BEGIN
   FOREACH _ws_obj_id IN ARRAY _ws_obj_ids
   LOOP
 	IF _ws_obj_id IS NOT NULL THEN
-		INSERT INTO tww_od.tww_symbology_quarantine(obj_id) VALUES (_ws_obj_id) ON CONFLICT DO NOTHING;
+		INSERT INTO tww_od.tww_symbology_quarantine(ws_obj_id) VALUES (_ws_obj_id) ON CONFLICT DO NOTHING;
 	END IF;
   END LOOP;
 
@@ -474,7 +474,7 @@ BEGIN
   END IF;
   IF NOT EXISTS(SELECT 1 FROM tww_od.channel WHERE obj_id=OLD.obj_id) THEN
     _ws_obj_id= OLD.obj_id;
-    INSERT INTO tww_od.tww_symbology_quarantine(obj_id) VALUES (_ws_obj_id) ON CONFLICT DO NOTHING;
+    INSERT INTO tww_od.tww_symbology_quarantine(ws_obj_id) VALUES (_ws_obj_id) ON CONFLICT DO NOTHING;
   END IF;
 
   RETURN NEW;
@@ -508,7 +508,7 @@ BEGIN
       rp_obj_ids = ARRAY[OLD.fk_reach_point_from, OLD.fk_reach_point_to];
   END CASE;
 
-  INSERT INTO tww_od.tww_symbology_quarantine(obj_id)
+  INSERT INTO tww_od.tww_symbology_quarantine(ws_obj_id)
     SELECT ws.obj_id
       FROM tww_od.wastewater_structure ws
       LEFT JOIN tww_od.wastewater_networkelement ne ON ws.obj_id = ne.fk_wastewater_structure
@@ -552,12 +552,12 @@ BEGIN
   FROM tww_od.wastewater_networkelement ne
   WHERE obj_id = wn_obj_id;
 
-  INSERT INTO tww_od.tww_symbology_quarantine(obj_id) VALUES
+  INSERT INTO tww_od.tww_symbology_quarantine(wn_obj_id) VALUES
   (wn_obj_id)
   ON CONFLICT DO NOTHING;
 
   IF affected_ws.fk_wastewater_structure IS NOT NULL THEN
-  INSERT INTO tww_od.tww_symbology_quarantine(obj_id) VALUES
+  INSERT INTO tww_od.tww_symbology_quarantine(ws_obj_id) VALUES
   (affected_ws.fk_wastewater_structure)
   ON CONFLICT DO NOTHING;
   END IF;
@@ -608,7 +608,7 @@ BEGIN
   FOREACH ne_obj_id IN ARRAY ne_obj_ids
   LOOP
       IF ne_obj_id IS NOT NULL THEN
-		INSERT INTO tww_od.tww_symbology_quarantine(obj_id)
+		INSERT INTO tww_od.tww_symbology_quarantine(ws_obj_id)
 		  SELECT ws.obj_id
 		  FROM tww_od.wastewater_structure ws
 		  LEFT JOIN tww_od.wastewater_networkelement ne ON ws.obj_id = ne.fk_wastewater_structure
@@ -675,27 +675,27 @@ FOR EACH ROW
 CREATE OR REPLACE FUNCTION tww_app.symbology_recalculate()
   RETURNS trigger AS
 $BODY$
-
 DECLARE
-	_wn_to_update text[];
-	_ws_to_update text[];
-
+	counter_wn int;
+	counter_wn int;
 BEGIN
 
-  SELECT array_agg(quarantine.obj_id) INTO _wn_to_update
-  FROM tww_od.tww_symbology_quarantine quarantine
-  INNER JOIN tww_od.wastewater_node wn on wn.obj_id=quarantine.obj_id;
-
-  EXECUTE tww_app.update_wastewater_node_symbologies(_wn_to_update);
-  DELETE FROM tww_od.tww_symbology_quarantine WHERE obj_id=ANY(_wn_to_update);
-
-  SELECT array_agg(quarantine.obj_id) INTO _ws_to_update
-  FROM tww_od.tww_symbology_quarantine quarantine
-  INNER JOIN tww_od.wastewater_structure ws on ws.obj_id=quarantine.obj_id;
-
-  EXECUTE tww_app.update_wastewater_structure_labels(_ws_to_update);
-  DELETE FROM tww_od.tww_symbology_quarantine WHERE obj_id=ANY(_ws_to_update);
-  RETURN NULL;
+  -- Add counters to only fire the symbology update once per obj_id
+  SELECT count(wn_obj_id) as cnt INTO counter_wn
+  FROM tww_od.tww_symbology_quarantine
+  WHERE wn_obj_id=NEW.wn_obj_id;
+  
+  SELECT count(ws_obj_id) as cnt INTO counter_ws
+  FROM tww_od.tww_symbology_quarantine
+  WHERE ws_obj_id=NEW.ws_obj_id;
+  
+  IF NEW.wn_obj_id IS NOT NULL AND counter_wn=1 THEN 
+    EXECUTE tww_app.update_wastewater_node_symbology(NEW.wn_obj_id);
+  END IF;
+  IF NEW.ws_obj_id IS NOT NULL AND counter_ws=1 THEN 
+    EXECUTE tww_app.update_wastewater_structure_label(NEW.ws_obj_id);
+  END IF;
+  RETURN NULL; --Delete entry after check
 END; $BODY$
 LANGUAGE plpgsql VOLATILE;
 
