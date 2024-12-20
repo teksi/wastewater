@@ -238,10 +238,10 @@
 				<DatenlieferantRef REF="ch20p3q400001729"/>
 				<Letzte_Aenderung>20241129</Letzte_Aenderung>
 				<!-- darf nicht leer sein -->
-				<Pfad>https://vimeo.com/1033484838/</Pfad>
+				<Pfad>https://youtu.be/</Pfad>
 				<Art>Webserver</Art>
 				<Bemerkung/>
-				<Bezeichnung>TEKSI Vimeo Channel Videos</Bezeichnung>
+				<Bezeichnung>TEKSI Youtube Channel Videos</Bezeichnung>
 				<Standort/>
 			</VSA_KEK_2020_1_LV95.KEK.Datentraeger>
 			<VSA_KEK_2020_1_LV95.KEK.Datei TID="ch20zzshw70lrfnc">
