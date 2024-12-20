@@ -699,8 +699,9 @@ BEGIN
 END; $BODY$
 LANGUAGE plpgsql VOLATILE;
 
-CREATE TRIGGER recalculate_symbology
+CREATE CONSTRAINT TRIGGER recalculate_symbology
 AFTER INSERT
   ON tww_od.tww_symbology_quarantine
-FOR EACH STATEMENT
+  DEFERRABLE INITIALLY DEFERRED
+  FOR EACH STATEMENT
   EXECUTE PROCEDURE tww_app.symbology_recalculate();
