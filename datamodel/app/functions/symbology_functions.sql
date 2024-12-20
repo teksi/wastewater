@@ -703,5 +703,5 @@ CREATE CONSTRAINT TRIGGER recalculate_symbology
 AFTER INSERT
   ON tww_od.tww_symbology_quarantine
   DEFERRABLE INITIALLY DEFERRED
-  FOR EACH STATEMENT
+  FOR EACH ROW
   EXECUTE PROCEDURE tww_app.symbology_recalculate();
