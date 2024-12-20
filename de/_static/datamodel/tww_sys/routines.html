@@ -102,6 +102,102 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <tr>
+                                        <td><a href="routines/audit_table_target_table_regcla_43504cc6.html">audit_table(target_table regclass, audit_rows boolean, audit_query_text boolean)</a></td>
+                                        <td>FUNCTION</td>
+                                        <td>sql</td>
+                                        <td>false</td>
+                                        <td>void</td>
+                                        <td>INVOKER</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="routines/unaudit_table_target_table_regc_470cd39c.html">unaudit_table(target_table regclass)</a></td>
+                                        <td>FUNCTION</td>
+                                        <td>plpgsql</td>
+                                        <td>false</td>
+                                        <td>void</td>
+                                        <td>INVOKER</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="routines/audit_table_target_table_regcla_f505ab43.html">audit_table(target_table regclass)</a></td>
+                                        <td>FUNCTION</td>
+                                        <td>sql</td>
+                                        <td>false</td>
+                                        <td>void</td>
+                                        <td>INVOKER</td>
+                                        <td><p>Add auditing support to the given table. Row-level changes will be logged with full client query text. No cols are ignored.</p></td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="routines/unaudit_view_target_view_regcla_febe3b32.html">unaudit_view(target_view regclass)</a></td>
+                                        <td>FUNCTION</td>
+                                        <td>plpgsql</td>
+                                        <td>false</td>
+                                        <td>void</td>
+                                        <td>INVOKER</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="routines/if_modified_func___eb9e05d9.html">if_modified_func()</a></td>
+                                        <td>FUNCTION</td>
+                                        <td>plpgsql</td>
+                                        <td>false</td>
+                                        <td>trigger</td>
+                                        <td>DEFINER</td>
+                                        <td><p>Track changes TO a TABLE at the statement AND/OR row level.</p>
+<p>Optional parameters TO TRIGGER IN CREATE TRIGGER call:</p>
+<p>param 0: BOOLEAN, whether TO log the query text. default &lsquo;t&rsquo;.</p>
+<p>param 1: text[], COLUMNS TO IGNORE IN updates. default [].</p>
+<pre><code>     Updates TO ignored cols are omitted FROM changed_fields.
+
+     Updates WITH only ignored cols changed are NOT inserted
+     INTO the audit log.
+
+     Almost ALL the processing work IS still done for updates
+     that ignored. If you need to save the load, you need to use
+     WHEN clause on the trigger instead.
+
+     No warning or error is issued if ignored_cols contains columns
+     that do not exist in the target table. This lets you specify
+     a standard set of ignored columns.
+</code></pre>
+<p>There is no parameter to disable logging of values. Add this trigger as a &lsquo;FOR EACH STATEMENT&rsquo; rather than &lsquo;FOR EACH ROW&rsquo; trigger if you do not want to log row values.</p>
+<p>Note that the user name logged is the login role for the session. The audit trigger cannot obtain the active role because it is reset by the SECURITY DEFINER invocation of the audit trigger its self.</p>
+<p>[]: ./null []: ./null</p></td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="routines/replay_event_pevent_id_integer__7c756621.html">replay_event(pevent_id integer)</a></td>
+                                        <td>FUNCTION</td>
+                                        <td>plpgsql</td>
+                                        <td>false</td>
+                                        <td>void</td>
+                                        <td>INVOKER</td>
+                                        <td><p>Replay a logged event.</p>
+<p>Arguments: pevent_id:  The event_id of the event in tww_sys.logged_actions to replay</p></td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="routines/audit_view_target_view_regclass_275bff57.html">audit_view(target_view regclass, audit_query_text boolean, ignored_cols text[], uid_cols text[])</a></td>
+                                        <td>FUNCTION</td>
+                                        <td>plpgsql</td>
+                                        <td>false</td>
+                                        <td>void</td>
+                                        <td>INVOKER</td>
+                                        <td><p>ADD auditing support TO a VIEW.</p>
+<p>Arguments: target_view:      TABLE name, schema qualified IF NOT ON search_path audit_query_text: Record the text of the client query that triggered the audit event? ignored_cols:     COLUMNS TO exclude FROM UPDATE diffs, IGNORE updates that CHANGE only ignored cols. uid_cols:         MANDATORY COLUMNS to use to uniquely identify a row from the view (in order to replay UPDATE and DELETE)</p>
+<p>Example: SELECT tww_sys.audit_view(&lsquo;view_schema.view_name&rsquo;, &lsquo;true&rsquo;::BOOLEAN, &lsquo;field_to_ignore&rsquo;::text[], &lsquo;obj_id&rsquo;::text[])</p>
+<p>[]: ./null []: ./null</p></td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="routines/audit_table_target_table_regcla_837b15d1.html">audit_table(target_table regclass, audit_rows boolean, audit_query_text boolean, ignored_cols text[])</a></td>
+                                        <td>FUNCTION</td>
+                                        <td>plpgsql</td>
+                                        <td>false</td>
+                                        <td>void</td>
+                                        <td>INVOKER</td>
+                                        <td><p>ADD auditing support TO a TABLE.</p>
+<p>Arguments: target_table:     TABLE name, schema qualified IF NOT ON search_path audit_rows:       Record each row CHANGE, OR only audit at a statement level audit_query_text: Record the text of the client query that triggered the audit event? ignored_cols:     COLUMNS TO exclude FROM UPDATE diffs, IGNORE updates that CHANGE only ignored cols.</p></td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
