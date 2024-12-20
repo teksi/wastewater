@@ -6,7 +6,8 @@ TEKSI wastewater module (project name: QGEP) is a selection of tools and a datab
 * manage and map your sewer network data with all its components in compliance with Swiss standards
 * indicate the characteristics of networks objects in the form of attributes such as diameter, material, depth, damages, construction year, etc.
 * produce plans and extract statistics from the database such as network values, total length of pipes, identification of future interventions, etc.
-* export geodata in compliance with Swiss standards [VSA-DSS Release 2020.1](https://www.vsa.ch/models/?dir=2020_1)
+* Use TEKSI to do you all of your "Genereller Entwässerungsplanung (GEP)" - either in your community or also in the wastewater association.
+* Import & export geodata in compliance with Swiss standards [VSA-DSS Release 2020.1](https://www.vsa.ch/models/?dir=2020_1)
 
 
 TEKSI wastewater module is a complete open source module based on a PostgreSQL - PostGIS data model compatible with the swiss norm SIA405 AND VSA-DSS. The data are accessed and edited with a dedicated QGIS project.
