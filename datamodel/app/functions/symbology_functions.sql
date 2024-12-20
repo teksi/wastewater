@@ -677,7 +677,7 @@ CREATE OR REPLACE FUNCTION tww_app.symbology_recalculate()
 $BODY$
 DECLARE
 	counter_wn int;
-	counter_wn int;
+	counter_ws int;
 BEGIN
 
   -- Add counters to only fire the symbology update once per obj_id
