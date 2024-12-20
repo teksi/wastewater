@@ -684,15 +684,15 @@ BEGIN
   SELECT count(wn_obj_id) as cnt INTO counter_wn
   FROM tww_od.tww_symbology_quarantine
   WHERE wn_obj_id=NEW.wn_obj_id;
-  
+
   SELECT count(ws_obj_id) as cnt INTO counter_ws
   FROM tww_od.tww_symbology_quarantine
   WHERE ws_obj_id=NEW.ws_obj_id;
-  
-  IF NEW.wn_obj_id IS NOT NULL AND counter_wn=1 THEN 
+
+  IF NEW.wn_obj_id IS NOT NULL AND counter_wn=1 THEN
     EXECUTE tww_app.update_wastewater_node_symbology(NEW.wn_obj_id);
   END IF;
-  IF NEW.ws_obj_id IS NOT NULL AND counter_ws=1 THEN 
+  IF NEW.ws_obj_id IS NOT NULL AND counter_ws=1 THEN
     EXECUTE tww_app.update_wastewater_structure_label(NEW.ws_obj_id);
   END IF;
   RETURN NULL; --Delete entry after check
