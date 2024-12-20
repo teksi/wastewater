@@ -130,7 +130,7 @@ CREATE OR REPLACE FUNCTION tww_app.update_wastewater_structure_label(_obj_id tex
 
 BEGIN
 
-DELETE FROM tww_od.tww_wastewater_structure_label where _all or fk_wastewater_structure=_obj_id);
+DELETE FROM tww_od.tww_wastewater_structure_label where _all or fk_wastewater_structure=_obj_id;
 EXECUTE tww_app.update_reach_point_label(_obj_id,_all);
 
 WITH labeled_ws AS(
