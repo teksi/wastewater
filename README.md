@@ -17,7 +17,7 @@ The project is maintained by the [TEKSI community](https://www.teksi.ch)
 
 ## How to start
 * [TEKSI wastewater features](https://teksi.github.io/wastewater/features-guide/)
-* Quick demo : TO DO
+* [Getting started with TWW](https://github.com/teksi/wastewater/discussions/72)
 * [Installation Guide](https://teksi.github.io/wastewater/installation-guide/)
 * [How to contribute](https://github.com/teksi/Home/wiki/TEKSI-Contributor-Guide)
 
