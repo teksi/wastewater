@@ -158,7 +158,7 @@
             <column ascending="true" name="uid_column"/>
          </index>
       </table>
-      <table name="oid_prefixes" numRows="10" remarks="This table contains OID prefixes for different communities or organizations. The application or administrator changing this table has to make sure that only one record is set to active." schema="tww_sys" type="TABLE">
+      <table name="oid_prefixes" numRows="1" remarks="This table contains OID prefixes for different communities or organizations. The application or administrator changing this table has to make sure that only one record is set to active." schema="tww_sys" type="TABLE">
          <column autoUpdated="true" defaultValue="nextval('tww_sys.oid_prefixes_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="prefix" nullable="true" remarks="" size="8" type="bpchar" typeCode="1"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="organization" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
