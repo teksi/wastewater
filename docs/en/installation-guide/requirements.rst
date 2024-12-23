@@ -27,7 +27,7 @@ Server side :
 -------------------
 
 TEKSI Wastewater uses a PostgreSQL with postgis Extension database, you need to install these on your server :
-Recommended is to use the https://www.enterprisedb.com/downloads/postgres-postgresql-downloads to make sure your 
+Recommended is to use the https://www.enterprisedb.com/downloads/postgres-postgresql-downloads to make sure your
 postgreSQL version matches your postgis version and is installed at the right place.
 
 Allow the connexion of your clients through the `postgresql.conf` file and make sure your client
