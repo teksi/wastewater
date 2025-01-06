@@ -240,9 +240,12 @@ Split a reach (channel) into different reaches
 -----------------------------------------------
 
 This is a quite complex function. In the actual version of TWW there is just a simple solution with the standard QGIS-tool **Split Features** implemented. To use this tool is in the moment the best solution, but there are manual additions necessary. 
+
 The result when spliting a reach are two reaches and two channels with duplication of all fields exept the reach_point.level(s) and the reach_point.fk_wastewater_networkelement(s) and of course the identifier and obj_id (that have to be unique).
 After spliting a reach, you will have to control the two parts of the "old" reach. 
+
 The upper part of the reach will have all old values, so you have to adjust the to_reach_point.level and the to_reach_point.connection(fk_wastewater_networkelement). The upper part also keeps all maintenance events and all connections of other reaches to the splitted reach.
+
 In the lower (new) part of the reach, you will have to adjust both reach_point levels and both reach_point-connections. Control (and add if necessary) the maintenace-events and the connections of other reaches. Change identifiers (reach, channel) if necessary. And add and connect a new wastewater_node between the reaches, if it is a primary channel.
 
 Second solution: Change the existing reach and draw the second reach manually. Control the connections.
