@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>6.4. Check SWMM File &mdash; Documentation TWW dev</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
@@ -145,19 +145,19 @@
 <p>The subcatchement discharge coefficients are not filled in.
 You can find them using sql:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">select</span> <span class="n">obj_id</span><span class="p">,</span> <span class="n">fk_wastewater_networkelement_rw_current</span><span class="p">,</span> <span class="n">discharge_coefficient_rw_current</span>
-<span class="kn">from</span> <span class="nn">tww_od.catchment_area</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tww_od.catchment_area</span>
 <span class="n">where</span> <span class="n">fk_wastewater_networkelement_rw_current</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">null</span> <span class="ow">and</span> <span class="n">discharge_coefficient_rw_current</span> <span class="ow">is</span> <span class="n">null</span><span class="p">;</span>
 
 <span class="n">select</span> <span class="n">obj_id</span><span class="p">,</span> <span class="n">fk_wastewater_networkelement_rw_planned</span><span class="p">,</span> <span class="n">discharge_coefficient_rw_planned</span>
-<span class="kn">from</span> <span class="nn">tww_od.catchment_area</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tww_od.catchment_area</span>
 <span class="n">where</span> <span class="n">fk_wastewater_networkelement_rw_planned</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">null</span> <span class="ow">and</span> <span class="n">discharge_coefficient_rw_planned</span> <span class="ow">is</span> <span class="n">null</span><span class="p">;</span>
 
 <span class="n">select</span> <span class="n">obj_id</span><span class="p">,</span> <span class="n">fk_wastewater_networkelement_ww_current</span><span class="p">,</span> <span class="n">discharge_coefficient_ww_current</span>
-<span class="kn">from</span> <span class="nn">tww_od.catchment_area</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tww_od.catchment_area</span>
 <span class="n">where</span> <span class="n">fk_wastewater_networkelement_ww_current</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">null</span> <span class="ow">and</span> <span class="n">discharge_coefficient_ww_current</span> <span class="ow">is</span> <span class="n">null</span>
 
 <span class="n">select</span> <span class="n">obj_id</span><span class="p">,</span> <span class="n">fk_wastewater_networkelement_ww_planned</span><span class="p">,</span> <span class="n">discharge_coefficient_ww_planned</span>
-<span class="kn">from</span> <span class="nn">tww_od.catchment_area</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tww_od.catchment_area</span>
 <span class="n">where</span> <span class="n">fk_wastewater_networkelement_ww_planned</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">null</span> <span class="ow">and</span> <span class="n">discharge_coefficient_ww_planned</span> <span class="ow">is</span> <span class="n">null</span><span class="p">;</span>
 </pre></div>
 </div>
