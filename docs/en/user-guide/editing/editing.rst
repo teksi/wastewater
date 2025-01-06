@@ -239,8 +239,12 @@ In the vw_tww_wastewater_structure form, you can change the subclass of the wast
 Split a reach (channel) into different reaches
 -----------------------------------------------
 
-This is a quite complex function and in the actual version not implemented in TWW. There exists a QGIS-Tool to split objects, but if you use this tool with vw_tww_reach - layer, you will get a database error, because the obj_id of the split (= duplicated) records are no more unique.
+This is a quite complex function. In the actual version of TWW there is just a simple solution with the standard QGIS-tool **Split Features** implemented. In the moment this is the best solution to use this tool. 
+The result when spliting a reach are two reaches and two channels with duplication of all fields exept the reach_point.level(s) and the reach_point.fk_wastewater_networkelement(s) and of course the identifier and obj_id (that have to be unique).
+After spliting a reach, you will have to control the two parts of the "old" reach. 
+The upper part of the reach will have all old values, so you have to adjust the to_reach_point.level and the to_reach_point.connection(fk_wastewater_networkelement). The upper part also keeps all maintenance events and all connections of other reaches to the splitted reach.
+In the lower (new) part of the reach, you will have to adjust both reach_point levels and both reach_point-connections. Control (and add if necessary) the maintenace-events and the connections of other reaches. Change identifiers (reach, channel) if necessary. And add and connect a new wastewater_node between the reaches, if it is a primary channel.
 
-Temporary solution: Change the existing reach and draw the second reach manually. Control the connections.
+Second solution: Change the existing reach and draw the second reach manually. Control the connections.
 
 There will be later a tool in TWW to split reaches. The user has to decide, if splitting concerns only class reach or also the class channel, if there a new wastewater node shall be added and connected. The tool shall be able to calculate the new reachpoint - levels and should change the existing network-element-connections if necessary.
