@@ -51,9 +51,11 @@ has to be updated by triggers';
 
 CREATE TABLE IF NOT EXISTS tww_od.tww_symbology_quarantine
 (
+	id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
 	ws_obj_id character varying(16),
 	wn_obj_id character varying(16),
-	CONSTRAINT pkey_tww_od_tww_symbology_quarantine_obj_id PRIMARY KEY (ws_obj_id,wn_obj_id)
+	CONSTRAINT unq_tww_symbology_quarantine_ws_obj_id UNIQUE (ws_obj_id),
+	CONSTRAINT unq_tww_symbology_quarantine_wn_obj_id UNIQUE (wn_obj_id)
 );
 
 CREATE TABLE IF NOT EXISTS tww_od.tww_reach_point_label
