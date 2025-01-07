@@ -158,9 +158,9 @@ class DatabaseUtils:
             cursor = connection.cursor()
 
             logger.info("update_wastewater_node symbology for all datasets - please be patient")
-            cursor.execute("SELECT tww_app.update_wastewater_node_symbologies(NULL, True);")
+            cursor.execute("SELECT tww_app.update_wastewater_node_symbology(NULL, True);")
             logger.info("update_wastewater_structure label for all datasets - please be patient")
-            cursor.execute("SELECT tww_app.update_wastewater_structure_labels(NULL, True);")
+            cursor.execute("SELECT tww_app.update_wastewater_structure_label(NULL, True);")
 
     @staticmethod
     def disable_modification_triggers():
