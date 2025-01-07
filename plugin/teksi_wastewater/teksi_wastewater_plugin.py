@@ -41,6 +41,7 @@ except ImportError:
 from .gui.twwprofiledockwidget import TwwProfileDockWidget
 from .gui.twwsettingsdialog import TwwSettingsDialog
 from .gui.twwwizard import TwwWizard
+from .libs.modelbaker.iliwrapper.ili2dbutils import JavaNotFoundError
 from .processing_provider.provider import TwwProcessingProvider
 from .tools.twwmaptools import TwwMapToolConnectNetworkElements, TwwTreeMapTool
 from .tools.twwnetwork import TwwGraphManager
@@ -596,10 +597,20 @@ class TeksiWastewaterPlugin:
                 )
 
                 self.interlisImporterExporter = InterlisImporterExporterGui()
+
             except ImportError as e:
                 self.iface.messageBar().pushMessage(
                     "Error",
                     "Could not load Interlis exporter due to unmet dependencies. See logs for more details.",
+                    level=Qgis.Critical,
+                )
+                self.logger.error(str(e))
+                return
+
+            except JavaNotFoundError as e:
+                self.iface.messageBar().pushMessage(
+                    "Error",
+                    "Could not load Interlis exporter due to missing Java. See logs for more details.",
                     level=Qgis.Critical,
                 )
                 self.logger.error(str(e))
@@ -631,6 +642,15 @@ class TeksiWastewaterPlugin:
                 self.iface.messageBar().pushMessage(
                     "Error",
                     "Could not load Interlis importer due to unmet dependencies. See logs for more details.",
+                    level=Qgis.Critical,
+                )
+                self.logger.error(str(e))
+                return
+
+            except JavaNotFoundError as e:
+                self.iface.messageBar().pushMessage(
+                    "Error",
+                    "Could not load Interlis importer due to missing Java. See logs for more details.",
                     level=Qgis.Critical,
                 )
                 self.logger.error(str(e))
