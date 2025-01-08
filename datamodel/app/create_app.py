@@ -150,9 +150,7 @@ def create_app(
 
     MultipleInheritance(
         safe_load(open(cwd / "view/vw_maintenance_event.yaml")),
-        create_joins=True,
         drop=True,
-        variables=variables,
         pg_service=pg_service,
     ).create()
 
