@@ -173,7 +173,6 @@ def create_app(
 
     MultipleInheritance(
         safe_load(open(cwd / "view/vw_oo_overflow.yaml")),
-        create_joins=True,
         variables=variables,
         pg_service=pg_service,
         drop=True,
