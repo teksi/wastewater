@@ -685,18 +685,18 @@ $BODY$
 BEGIN
   IF NEW.wn_obj_id IS NOT NULL THEN
     EXECUTE tww_app.update_wastewater_node_symbology(NEW.wn_obj_id);
-	DELETE 
+	DELETE
   	FROM tww_od.tww_symbology_quarantine
   	WHERE wn_obj_id=NEW.wn_obj_id;
   END IF;
   IF NEW.ws_obj_id IS NOT NULL THEN
     EXECUTE tww_app.update_wastewater_structure_label(NEW.ws_obj_id);
-	DELETE 
+	DELETE
   	FROM tww_od.tww_symbology_quarantine
   	WHERE ws_obj_id=NEW.ws_obj_id;
     END IF;
   RETURN NULL;
-END; 
+END;
 $BODY$;
 LANGUAGE plpgsql VOLATILE;
 
