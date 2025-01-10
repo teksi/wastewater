@@ -516,6 +516,13 @@ BEGIN
       WHERE rp.obj_id = ANY ( rp_obj_ids )
   ON CONFLICT DO NOTHING;
 
+  INSERT INTO tww_od.tww_symbology_quarantine(wn_obj_id)
+    SELECT wn.obj_id
+      FROM tww_od.wastewater_node wn
+      LEFT JOIN tww_od.reach_point rp ON wn.obj_id = rp.fk_wastewater_networkelement
+      WHERE rp.obj_id = ANY ( rp_obj_ids )
+  ON CONFLICT DO NOTHING;
+
   RETURN NEW;
 END; $BODY$
 LANGUAGE plpgsql VOLATILE;
@@ -675,28 +682,22 @@ FOR EACH ROW
 CREATE OR REPLACE FUNCTION tww_app.symbology_recalculate()
   RETURNS trigger AS
 $BODY$
-DECLARE
-	counter_wn int;
-	counter_ws int;
 BEGIN
-
-  -- Add counters to only fire the symbology update once per obj_id
-  SELECT count(wn_obj_id) as cnt INTO counter_wn
-  FROM tww_od.tww_symbology_quarantine
-  WHERE wn_obj_id=NEW.wn_obj_id;
-
-  SELECT count(ws_obj_id) as cnt INTO counter_ws
-  FROM tww_od.tww_symbology_quarantine
-  WHERE ws_obj_id=NEW.ws_obj_id;
-
-  IF NEW.wn_obj_id IS NOT NULL AND counter_wn=1 THEN
+  IF NEW.wn_obj_id IS NOT NULL THEN
     EXECUTE tww_app.update_wastewater_node_symbology(NEW.wn_obj_id);
+	DELETE 
+  	FROM tww_od.tww_symbology_quarantine
+  	WHERE wn_obj_id=NEW.wn_obj_id;
   END IF;
-  IF NEW.ws_obj_id IS NOT NULL AND counter_ws=1 THEN
+  IF NEW.ws_obj_id IS NOT NULL THEN
     EXECUTE tww_app.update_wastewater_structure_label(NEW.ws_obj_id);
-  END IF;
-  RETURN NULL; --Delete entry after check
-END; $BODY$
+	DELETE 
+  	FROM tww_od.tww_symbology_quarantine
+  	WHERE ws_obj_id=NEW.ws_obj_id;
+    END IF;
+  RETURN NULL;
+END; 
+$BODY$;
 LANGUAGE plpgsql VOLATILE;
 
 CREATE CONSTRAINT TRIGGER recalculate_symbology
