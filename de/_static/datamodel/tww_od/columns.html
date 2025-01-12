@@ -2169,8 +2169,8 @@
         "comments": "<p>Gross costs of electromechanical equipment of tank emptying / Brutto Erstellungskosten der elektromechanischen Ausrüstung für die Beckenentleerung / Coûts bruts des équipements électromécaniques vidange de bassins<\/p>"
     },
     {
-        "tableName": "damage",
-        "tableFileName": "damage",
+        "tableName": "connection_object",
+        "tableFileName": "connection_object",
         "tableType": "Table",
         "keyClass": "foreignKey",
         "keyTitle": "Foreign Key",
@@ -2477,18 +2477,18 @@
         "comments": "<p>yyy_Resultiert aus dem Vergleich des äusseren Aspekts unterhalb und oberhalb der Einleitstelle / Resultiert aus dem Vergleich des äusseren Aspekts unterhalb und oberhalb der Einleitstelle / Résultat de la comparaison de l&rsquo;aspect visuel en aval et en amont de l&rsquo;exutoire<\/p>"
     },
     {
-        "tableName": "connection_object",
-        "tableFileName": "connection_object",
+        "tableName": "damage",
+        "tableFileName": "damage",
         "tableType": "Table",
-        "keyClass": "",
-        "keyTitle": "",
-        "name": "remark",
-        "type": "text",
-        "length": 2147483647,
+        "keyClass": "foreignKey",
+        "keyTitle": "Foreign Key",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>connection",
+        "type": "int4",
+        "length": 10,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>General remarks / Allgemeine Bemerkungen / Remarques générales<\/p>"
+        "comments": "<p>Indicator for a detection at a pipe connection (2.1.7). or in case of two adjacent manhole elements according to (3.1.7). Corresponds in SN EN 13508 yes = &ldquo;A&rdquo;, no = empty / Kennzeichen für eine Feststellung an einer Rohrverbindung (2.1.7). bzw. bei zwei aneinandergrenzenden Schachtelementen gemäss (3.1.7). Entspricht in SN EN 13508 ja = &ldquo;A&rdquo;, nein = leer / Indication d\u2019une observation au niveau d\u2019un assemblage (2.1.7) ou Observation entre deux éléments de regard de visite adjacents (3.1.7). Correspond dans la SN EN 13508 à oui = « A », non = vide<\/p>"
     },
     {
         "tableName": "sia405cc_cable",
@@ -2603,18 +2603,18 @@
         "comments": ""
     },
     {
-        "tableName": "connection_object",
-        "tableFileName": "connection_object",
+        "tableName": "damage",
+        "tableFileName": "damage",
         "tableType": "Table",
         "keyClass": "",
         "keyTitle": "",
-        "name": "sewer_infiltration_water_production",
-        "type": "numeric",
-        "length": 9,
+        "name": "line_damage",
+        "type": "text",
+        "length": 2147483647,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>yyy_Durchschnittlicher Fremdwasseranfall für Fremdwasserquellen wie Laufbrunnen oder Reservoirüberlauf / Durchschnittlicher Fremdwasseranfall für Fremdwasserquellen wie Laufbrunnen oder Reservoirüberlauf / Apport moyen d&rsquo;eaux claires parasites (ECP) par des sources d&rsquo;ECP, telles que fontaines ou trops-plein de réservoirs<\/p>"
+        "comments": "<p>Codes for the beginning and end of a line damage. Detailed information under 2.1.2 resp. 3.1.2 / Codes für den Anfang und das Ende eines Streckenschadens. Genaue Angaben unter 2.1.2 resp. 3.1.2 / Codes pour le début et la fin d\u2019un dommage à un tronçon. Indications exactes sous 2.1.2 resp. 3.1.2.<\/p>"
     },
     {
         "tableName": "cover",
@@ -2729,18 +2729,18 @@
         "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
-        "tableName": "damage",
-        "tableFileName": "damage",
+        "tableName": "connection_object",
+        "tableFileName": "connection_object",
         "tableType": "Table",
-        "keyClass": "foreignKey",
-        "keyTitle": "Foreign Key",
-        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>single_damage_class",
-        "type": "int4",
-        "length": 10,
+        "keyClass": "indexedColumn",
+        "keyTitle": "Indexed",
+        "name": "<i class='fa fa-sitemap fa-rotate-120' style='padding-right: 5px;'><\/i>identifier",
+        "type": "text",
+        "length": 2147483647,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>Defines the damage class of an individual damage. The classification into condition classes (Z0-Z4) is based on the damage pattern and the extent of the damage. A wastewater structure can be directly assigned to a class or each damage can be classified individually first. (At the end, for example, the most severe individual damage determines the classification of the entire canalisation (wastewater_structure.structure_condition)). / Definiert die Schadensklasse eines Einzelschadens. Die Einteilung in die Zustandsklassen (Z0-Z4) erfolgt aufgrund des Schadenbilds und des Schadensausmasses. Dabei kann ein Abwasserbauwerk direkt einer Klasse zugeteilt werden oder zuerst jeder Schaden einzeln klassifiziert werden. (Am Schluss bestimmt dann z.B. der schwerste Einzelschaden die Klassifizierung des gesamten Kanals (Abwasserbauwerk.BaulicherZustand)). / Définit la classe de dommages d\u2019un dommage unique. La répartition en classes d\u2019état (Z0-Z4) s\u2019effectue sur la base de la nature et de l\u2019étendue des dommages. Un ouvrage d&rsquo;assainissement peut être classé directement ou chaque dommage peut d\u2019abord être classé séparément. (A la fin, le dommage le plus important détermine le classement de l\u2019ensemble de la canalisation (OUVRAGE_RESEAU_AS.ETAT_CONSTRUCTIF).<\/p>"
+        "comments": ""
     },
     {
         "tableName": "import_manhole_quarantine",
@@ -3219,18 +3219,18 @@
         "comments": ""
     },
     {
-        "tableName": "damage",
-        "tableFileName": "damage",
+        "tableName": "connection_object",
+        "tableFileName": "connection_object",
         "tableType": "Table",
         "keyClass": "",
         "keyTitle": "",
-        "name": "video_counter",
+        "name": "remark",
         "type": "text",
         "length": 2147483647,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>Meter reading on an analog videotape or in a digital video file, in real time / Zählerstand auf einem analogen Videoband oder in einer digitalen Videodatei, in Echtzeit / Zählerstand auf einem analogen Videoband oder in einer digitalen Videodatei, in Echtzeit<\/p>"
+        "comments": "<p>General remarks / Allgemeine Bemerkungen / Remarques générales<\/p>"
     },
     {
         "tableName": "building_group_baugwr",
@@ -3541,8 +3541,8 @@
         "comments": ""
     },
     {
-        "tableName": "connection_object",
-        "tableFileName": "connection_object",
+        "tableName": "damage",
+        "tableFileName": "damage",
         "tableType": "Table",
         "keyClass": "primaryKey",
         "keyTitle": "Primary Key",
@@ -3551,7 +3551,7 @@
         "length": 16,
         "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'connection_object'::text)",
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'damage'::text)",
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
@@ -3765,18 +3765,18 @@
         "comments": "<p>based on base module chapter 8.5. of directive &ldquo;Abwasserbewirtschaftung bei Regenwetter&rdquo; of VSA (2019)&quot; / Gemäss Basismodul Kapitel 8.5 der Richtlinie &ldquo;Abwasserentsorgung bei Regenwetter&rdquo; des VSA (2019) / Selon module de base chapitre 8.5 directive &ldquo;Gestion des eaux urbaines par temps de pluie&rdquo; du VSA (2019)<\/p>"
     },
     {
-        "tableName": "connection_object",
-        "tableFileName": "connection_object",
+        "tableName": "damage",
+        "tableFileName": "damage",
         "tableType": "Table",
-        "keyClass": "foreignKey",
-        "keyTitle": "Foreign Key",
-        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>fk_dataowner",
-        "type": "varchar",
-        "length": 16,
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "video_counter",
+        "type": "text",
+        "length": 2147483647,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
+        "comments": "<p>Meter reading on an analog videotape or in a digital video file, in real time / Zählerstand auf einem analogen Videoband oder in einer digitalen Videodatei, in Echtzeit / Zählerstand auf einem analogen Videoband oder in einer digitalen Videodatei, in Echtzeit<\/p>"
     },
     {
         "tableName": "sia405pt_protection_tube",
@@ -3849,18 +3849,18 @@
         "comments": ""
     },
     {
-        "tableName": "damage",
-        "tableFileName": "damage",
+        "tableName": "connection_object",
+        "tableFileName": "connection_object",
         "tableType": "Table",
-        "keyClass": "",
-        "keyTitle": "",
-        "name": "line_damage",
-        "type": "text",
-        "length": 2147483647,
-        "nullable": "√",
+        "keyClass": "primaryKey",
+        "keyTitle": "Primary Key",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>obj_id",
+        "type": "varchar",
+        "length": 16,
+        "nullable": "",
         "autoUpdated": "",
-        "defaultValue": "null",
-        "comments": "<p>Codes for the beginning and end of a line damage. Detailed information under 2.1.2 resp. 3.1.2 / Codes für den Anfang und das Ende eines Streckenschadens. Genaue Angaben unter 2.1.2 resp. 3.1.2 / Codes pour le début et la fin d\u2019un dommage à un tronçon. Indications exactes sous 2.1.2 resp. 3.1.2.<\/p>"
+        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'connection_object'::text)",
+        "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
         "tableName": "import_manhole_quarantine",
@@ -4722,13 +4722,13 @@
         "tableType": "Table",
         "keyClass": "foreignKey",
         "keyTitle": "Foreign Key",
-        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>connection",
-        "type": "int4",
-        "length": 10,
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>fk_examination",
+        "type": "varchar",
+        "length": 16,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>Indicator for a detection at a pipe connection (2.1.7). or in case of two adjacent manhole elements according to (3.1.7). Corresponds in SN EN 13508 yes = &ldquo;A&rdquo;, no = empty / Kennzeichen für eine Feststellung an einer Rohrverbindung (2.1.7). bzw. bei zwei aneinandergrenzenden Schachtelementen gemäss (3.1.7). Entspricht in SN EN 13508 ja = &ldquo;A&rdquo;, nein = leer / Indication d\u2019une observation au niveau d\u2019un assemblage (2.1.7) ou Observation entre deux éléments de regard de visite adjacents (3.1.7). Correspond dans la SN EN 13508 à oui = « A », non = vide<\/p>"
+        "comments": ""
     },
     {
         "tableName": "measurement_result",
@@ -5406,15 +5406,15 @@
         "tableName": "damage",
         "tableFileName": "damage",
         "tableType": "Table",
-        "keyClass": "primaryKey",
-        "keyTitle": "Primary Key",
-        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>obj_id",
+        "keyClass": "foreignKey",
+        "keyTitle": "Foreign Key",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>fk_dataowner",
         "type": "varchar",
         "length": 16,
-        "nullable": "",
+        "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "tww_app.generate_oid('tww_od'::text, 'damage'::text)",
-        "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
+        "defaultValue": "null",
+        "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
         "tableName": "farm",
@@ -5725,12 +5725,12 @@
         "comments": "<p>INTERLIS STANDARD OID (with Postfix/Präfix), see <a href=\"http://www.interlis.ch\">www.interlis.ch<\/a><\/p>"
     },
     {
-        "tableName": "damage",
-        "tableFileName": "damage",
+        "tableName": "connection_object",
+        "tableFileName": "connection_object",
         "tableType": "Table",
         "keyClass": "foreignKey",
         "keyTitle": "Foreign Key",
-        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>fk_examination",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>fk_wastewater_networkelement",
         "type": "varchar",
         "length": 16,
         "nullable": "√",
@@ -6061,18 +6061,18 @@
         "comments": "<p>yyy_Güllegrube: Bewilligungsjahr / Güllegrube: Bewilligungsjahr / Fosse à purin: année d&rsquo;autorisation<\/p>"
     },
     {
-        "tableName": "connection_object",
-        "tableFileName": "connection_object",
+        "tableName": "damage",
+        "tableFileName": "damage",
         "tableType": "Table",
-        "keyClass": "foreignKey",
-        "keyTitle": "Foreign Key",
-        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>fk_wastewater_networkelement",
-        "type": "varchar",
-        "length": 16,
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "last_modification",
+        "type": "timestamp",
+        "length": 29,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "null",
-        "comments": ""
+        "defaultValue": "now()",
+        "comments": "<p>Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE<\/p>"
     },
     {
         "tableName": "pipe_profile",
@@ -6733,18 +6733,18 @@
         "comments": "<p>yyy_Name des Datenträgers. Bei elektronischen Datenträgern normalerweise das Volume-Label. Bei einem Server der Servername. Bei analogen Videobändern die Bandnummer. / Name des Datenträgers. Bei elektronischen Datenträgern normalerweise das Volume-Label. Bei einem Server der Servername. Bei analogen Videobändern die Bandnummer. / Nom du support de données. Pour les supports de données électroniques, normalement le label volume. Pour un serveur, le nom du serveur. Pour des bandes vidéo analogiques, les numéros de bandes.<\/p>"
     },
     {
-        "tableName": "damage",
-        "tableFileName": "damage",
+        "tableName": "connection_object",
+        "tableFileName": "connection_object",
         "tableType": "Table",
         "keyClass": "",
         "keyTitle": "",
-        "name": "view_parameters",
-        "type": "text",
-        "length": 2147483647,
+        "name": "sewer_infiltration_water_production",
+        "type": "numeric",
+        "length": 9,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>Special view parameters for positioning within a film file for scanner or digital video technology / Spezielle Ansichtsparameter für die Positionierung innerhalb einer Filmdatei für Scanner- oder digitale Videotechnik / Paramètres de projection spéciaux pour le positionnement à l\u2019intérieur d\u2019un fichier de film pour la technique vidéo scanner ou numérique.<\/p>"
+        "comments": "<p>yyy_Durchschnittlicher Fremdwasseranfall für Fremdwasserquellen wie Laufbrunnen oder Reservoirüberlauf / Durchschnittlicher Fremdwasseranfall für Fremdwasserquellen wie Laufbrunnen oder Reservoirüberlauf / Apport moyen d&rsquo;eaux claires parasites (ECP) par des sources d&rsquo;ECP, telles que fontaines ou trops-plein de réservoirs<\/p>"
     },
     {
         "tableName": "waste_water_treatment_plant",
@@ -7349,8 +7349,8 @@
         "comments": "<p>yyy_Massgebliche Hochwasserkote der Einleitstelle. Diese ist in der Regel grösser als der Wasserspiegel_Hydraulik. / Massgebliche Hochwasserkote der Einleitstelle. Diese ist in der Regel grösser als der Wasserspiegel_Hydraulik. / Cote de crue déterminante au point de rejet. Diese ist in der Regel grösser als der Wasserspiegel_Hydraulik.<\/p>"
     },
     {
-        "tableName": "damage",
-        "tableFileName": "damage",
+        "tableName": "connection_object",
+        "tableFileName": "connection_object",
         "tableType": "Table",
         "keyClass": "",
         "keyTitle": "",
@@ -8399,18 +8399,18 @@
         "comments": ""
     },
     {
-        "tableName": "connection_object",
-        "tableFileName": "connection_object",
+        "tableName": "damage",
+        "tableFileName": "damage",
         "tableType": "Table",
-        "keyClass": "indexedColumn",
-        "keyTitle": "Indexed",
-        "name": "<i class='fa fa-sitemap fa-rotate-120' style='padding-right: 5px;'><\/i>identifier",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "comments",
         "type": "text",
         "length": 2147483647,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": ""
+        "comments": "<p>Free comments on a finding / Freie Bemerkungen zu einer Feststellung / Remarques libres concernant une observation<\/p>"
     },
     {
         "tableName": "dss15_aquifer",
@@ -11087,18 +11087,18 @@
         "comments": "<p>Foreignkey to Metaattribute dataowner (as an organisation) - this is the person or body who is allowed to delete, change or maintain this object / Metaattribut Datenherr ist diejenige Person oder Stelle, die berechtigt ist, diesen Datensatz zu löschen, zu ändern bzw. zu verwalten / Maître des données gestionnaire de données, qui est la personne ou l&rsquo;organisation autorisée pour gérer, modifier ou supprimer les données de cette table/classe<\/p>"
     },
     {
-        "tableName": "connection_object",
-        "tableFileName": "connection_object",
+        "tableName": "damage",
+        "tableFileName": "damage",
         "tableType": "Table",
-        "keyClass": "foreignKey",
-        "keyTitle": "Foreign Key",
-        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>fk_provider",
-        "type": "varchar",
-        "length": 16,
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "view_parameters",
+        "type": "text",
+        "length": 2147483647,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
+        "comments": "<p>Special view parameters for positioning within a film file for scanner or digital video technology / Spezielle Ansichtsparameter für die Positionierung innerhalb einer Filmdatei für Scanner- oder digitale Videotechnik / Paramètres de projection spéciaux pour le positionnement à l\u2019intérieur d\u2019un fichier de film pour la technique vidéo scanner ou numérique.<\/p>"
     },
     {
         "tableName": "zone",
@@ -12515,18 +12515,18 @@
         "comments": "<p>stores the list of input altitudes to be used for labelling, not part of the VSA-DSS data model added solely for TEKSI Wastewater &amp; GEP<\/p>"
     },
     {
-        "tableName": "connection_object",
-        "tableFileName": "connection_object",
+        "tableName": "damage",
+        "tableFileName": "damage",
         "tableType": "Table",
-        "keyClass": "",
-        "keyTitle": "",
-        "name": "last_modification",
-        "type": "timestamp",
-        "length": 29,
+        "keyClass": "foreignKey",
+        "keyTitle": "Foreign Key",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>single_damage_class",
+        "type": "int4",
+        "length": 10,
         "nullable": "√",
         "autoUpdated": "",
-        "defaultValue": "now()",
-        "comments": "<p>Last modification / Letzte_Aenderung / Derniere_modification: INTERLIS_1_DATE<\/p>"
+        "defaultValue": "null",
+        "comments": "<p>Defines the damage class of an individual damage. The classification into condition classes (Z0-Z4) is based on the damage pattern and the extent of the damage. A wastewater structure can be directly assigned to a class or each damage can be classified individually first. (At the end, for example, the most severe individual damage determines the classification of the entire canalisation (wastewater_structure.structure_condition)). / Definiert die Schadensklasse eines Einzelschadens. Die Einteilung in die Zustandsklassen (Z0-Z4) erfolgt aufgrund des Schadenbilds und des Schadensausmasses. Dabei kann ein Abwasserbauwerk direkt einer Klasse zugeteilt werden oder zuerst jeder Schaden einzeln klassifiziert werden. (Am Schluss bestimmt dann z.B. der schwerste Einzelschaden die Klassifizierung des gesamten Kanals (Abwasserbauwerk.BaulicherZustand)). / Définit la classe de dommages d\u2019un dommage unique. La répartition en classes d\u2019état (Z0-Z4) s\u2019effectue sur la base de la nature et de l\u2019étendue des dommages. Un ouvrage d&rsquo;assainissement peut être classé directement ou chaque dommage peut d\u2019abord être classé séparément. (A la fin, le dommage le plus important détermine le classement de l\u2019ensemble de la canalisation (OUVRAGE_RESEAU_AS.ETAT_CONSTRUCTIF).<\/p>"
     },
     {
         "tableName": "re_building_group_disposal",
@@ -13257,8 +13257,8 @@
         "comments": "<p>Dimension2 of infiltration installations (largest inside dimension). / Dimension1 des Schachtes (grösstes Innenmass). / Dimension1 de la chambre (plus grande mesure intérieure).<\/p>"
     },
     {
-        "tableName": "damage",
-        "tableFileName": "damage",
+        "tableName": "connection_object",
+        "tableFileName": "connection_object",
         "tableType": "Table",
         "keyClass": "foreignKey",
         "keyTitle": "Foreign Key",
@@ -14058,15 +14058,15 @@
         "tableName": "damage",
         "tableFileName": "damage",
         "tableType": "Table",
-        "keyClass": "",
-        "keyTitle": "",
-        "name": "comments",
-        "type": "text",
-        "length": 2147483647,
+        "keyClass": "foreignKey",
+        "keyTitle": "Foreign Key",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>fk_provider",
+        "type": "varchar",
+        "length": 16,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>Free comments on a finding / Freie Bemerkungen zu einer Feststellung / Remarques libres concernant une observation<\/p>"
+        "comments": "<p>Foreignkey to Metaattribute provider (as an organisation) - this is the person or body who delivered the data / Metaattribut Datenlieferant ist diejenige Person oder Stelle, die die Daten geliefert hat / FOURNISSEUR DES DONNEES Organisation qui crée l\u2019enregistrement de ces données<\/p>"
     },
     {
         "tableName": "pump",
