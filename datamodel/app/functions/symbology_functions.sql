@@ -697,7 +697,7 @@ BEGIN
     END IF;
   RETURN NULL;
 END;
-$BODY$;
+$BODY$
 LANGUAGE plpgsql VOLATILE;
 
 CREATE CONSTRAINT TRIGGER recalculate_symbology
