@@ -197,7 +197,7 @@ class TwwSwmm:
             where_clauses.append(f"""hierarchy = '{hierarchy}'""")
 
         sql = """
-        select * from tww_swmm.vw_{table_name}
+        select * from tww_app.swmm_vw_{table_name}
         """.format(
             table_name=table_name
         )
