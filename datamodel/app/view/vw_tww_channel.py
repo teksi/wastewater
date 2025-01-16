@@ -96,8 +96,6 @@ def vw_tww_channel(pg_service: str = None, extra_definition: dict = None):
                 "fk_owner",
                 "fk_dataowner",
                 "fk_provider",
-                "_usage_current",
-                "_function_hierarchic",
                 "_label",
                 "_depth",
                 "fk_main_cover",
