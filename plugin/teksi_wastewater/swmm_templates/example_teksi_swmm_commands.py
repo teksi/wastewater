@@ -1,12 +1,12 @@
-# This template file can be used to run the qgep-swmm functionalities
+# This template file can be used to run the teksi-swmm functionalities
 # outside from QGIS
 
-from QgepSwmm import QgepSwmm
+from TeksiSwmm import TeksiSwmm
 
 # Title of the simulation
 TITLE = "titre"
 # Name of the service used to connect to the database
-PGSERVICE = "pg_qgep"
+PGSERVICE = "pg_tww"
 # State of the simulation [current, planned]
 STATE = "current"
 # Path of the input INP file
@@ -18,7 +18,7 @@ REPORT = "C:/temp/summary.rpt"
 # Path of SWMM executable
 SWMM = "C:/Program Files (x86)/EPA SWMM 5.1.013/swmm5.exe"
 
-with QgepSwmm(
+with TeksiSwmm(
     TITLE,
     PGSERVICE,
     STATE,
