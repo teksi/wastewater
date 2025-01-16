@@ -33,7 +33,7 @@ def vw_tww_channel(pg_service: str = None, extra_definition: dict = None):
     CREATE OR REPLACE VIEW tww_app.vw_tww_channel AS
 
     SELECT
-        , {ch_cols}
+          {ch_cols}
         , {ne_cols}
         , {ws_cols}
         , ST_LineMerge(ST_Collect(re.progression3d_geometry)) as progression3d_geometry
