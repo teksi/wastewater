@@ -5,7 +5,10 @@
 import argparse
 import os
 
-import psycopg2
+try:
+    import psycopg
+except ImportError:
+    import psycopg2 as psycopg
 from pirogue.utils import select_columns, table_parts
 from yaml import safe_load
 
@@ -21,7 +24,7 @@ def vw_tww_channel(pg_service: str = None, extra_definition: dict = None):
     assert pg_service
     extra_definition = extra_definition or {}
 
-    conn = psycopg2.connect(f"service={pg_service}")
+    conn = psycopg.connect(f"service={pg_service}")
     cursor = conn.cursor()
 
     view_sql = """
