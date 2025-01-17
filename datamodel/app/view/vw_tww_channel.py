@@ -37,33 +37,16 @@ def vw_tww_channel(pg_service: str = None, extra_definition: dict = None):
         , {ne_cols}
         , {ws_cols}
         , ST_LineMerge(ST_Collect(re.progression3d_geometry)) as progression3d_geometry
-         {extra_cols}
       FROM tww_od.channel ch
          LEFT JOIN tww_od.wastewater_structure ws ON ch.obj_id = ws.obj_id
          LEFT JOIN tww_od.wastewater_networkelement ne ON ne.fk_wastewater_structure = ws.obj_id
          LEFT JOIN tww_od.reach re ON ne.obj_id = re.obj_id
-         {extra_joins}
        GROUP BY
-         {ch_cols}
+         {ch_cols_grp}
         , {ne_cols}
-        , {ws_cols}
-         {extra_cols}
+        , {ws_cols_grp}
          ;
     """.format(
-        extra_cols="\n    , ".join(
-            [
-                select_columns(
-                    pg_cur=cursor,
-                    table_schema=table_parts(table_def["table"])[0],
-                    table_name=table_parts(table_def["table"])[1],
-                    skip_columns=table_def.get("skip_columns", []),
-                    remap_columns=table_def.get("remap_columns", {}),
-                    prefix=table_def.get("prefix", None),
-                    table_alias=table_def.get("alias", None),
-                )
-                for table_def in extra_definition.get("joins", {}).values()
-            ]
-        ),
         ne_cols=select_columns(
             pg_cur=cursor,
             table_schema="tww_od",
@@ -101,15 +84,31 @@ def vw_tww_channel(pg_service: str = None, extra_definition: dict = None):
                 "fk_main_cover",
             ],
         ),
-        extra_joins="\n    ".join(
-            [
-                "LEFT JOIN {tbl} {alias} ON {jon}".format(
-                    tbl=table_def["table"],
-                    alias=table_def.get("alias", ""),
-                    jon=table_def["join_on"],
-                )
-                for table_def in extra_definition.get("joins", {}).values()
-            ]
+        ch_cols_grp=select_columns(
+            pg_cur=cursor,
+            table_schema="tww_od",
+            table_name="channel",
+            table_alias="ch",
+            remove_pkey=True,
+            indent=4,
+            skip_columns=[],
+        ),
+        ws_cols=select_columns(
+            pg_cur=cursor,
+            table_schema="tww_od",
+            table_name="wastewater_structure",
+            table_alias="ws",
+            remove_pkey=False,
+            indent=4,
+            skip_columns=[
+                "detail_geometry3d_geometry",
+                "fk_owner",
+                "fk_dataowner",
+                "fk_provider",
+                "_label",
+                "_depth",
+                "fk_main_cover",
+            ],
         ),
     )
 
