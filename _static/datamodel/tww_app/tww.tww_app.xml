@@ -3104,7 +3104,7 @@ INSERT INTO tww_od.maintenance_event (
       , NEW.fk_measure
       , NEW.fk_operating_company
       , NEW.fk_provider
-      , NEW.identifier
+      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_app.generate_oid('tww_od'::text, 'bio_ecol_assessment'::text) ) END
       , NEW.last_modification
       , NEW.operator
       , NEW.reason
@@ -4322,7 +4322,7 @@ INSERT INTO tww_od.maintenance_event (
       , NEW.fk_measure
       , NEW.fk_operating_company
       , NEW.fk_provider
-      , NEW.identifier
+      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_app.generate_oid('tww_od'::text, 'examination'::text) ) END
       , NEW.last_modification
       , NEW.operator
       , NEW.reason
@@ -4951,7 +4951,7 @@ INSERT INTO tww_od.overflow (
       , NEW.fk_wastewater_node
       , NEW.function
       , NEW.gross_costs
-      , NEW.identifier
+      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_app.generate_oid('tww_od'::text, 'leapingweir'::text) ) END
       , NEW.last_modification
       , NEW.qon_dim
       , NEW.remark
@@ -5057,7 +5057,7 @@ INSERT INTO tww_od.maintenance_event (
       , NEW.fk_measure
       , NEW.fk_operating_company
       , NEW.fk_provider
-      , NEW.identifier
+      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_app.generate_oid('tww_od'::text, 'maintenance'::text) ) END
       , NEW.last_modification
       , NEW.operator
       , NEW.reason
@@ -5533,7 +5533,7 @@ INSERT INTO tww_od.overflow (
       , NEW.fk_wastewater_node
       , NEW.function
       , NEW.gross_costs
-      , NEW.identifier
+      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_app.generate_oid('tww_od'::text, 'prank_weir'::text) ) END
       , NEW.last_modification
       , NEW.qon_dim
       , NEW.remark
@@ -5653,7 +5653,7 @@ INSERT INTO tww_od.overflow (
       , NEW.fk_wastewater_node
       , NEW.function
       , NEW.gross_costs
-      , NEW.identifier
+      , CASE WHEN NEW.identifier IS NOT NULL AND NEW.identifier::text <> '' THEN NEW.identifier ELSE COALESCE( NEW.obj_id, tww_app.generate_oid('tww_od'::text, 'pump'::text) ) END
       , NEW.last_modification
       , NEW.qon_dim
       , NEW.remark
@@ -7804,8 +7804,17 @@ BEGIN
           WHERE obj_id = OLD.obj_id;
 
   IF OLD.maintenance_event_type <> NEW.maintenance_event_type THEN
-    RAISE EXCEPTION 'Type change not allowed for maintenance_event'
-      USING HINT = 'You cannot switch from ' || OLD.maintenance_event_type || ' to ' || NEW.maintenance_event_type;
+    CASE
+      WHEN OLD.maintenance_event_type = 'bio_ecol_assessment'::tww_app.maintenance_event_type THEN DELETE FROM tww_od.bio_ecol_assessment WHERE obj_id = OLD.obj_id;
+      WHEN OLD.maintenance_event_type = 'examination'::tww_app.maintenance_event_type THEN DELETE FROM tww_od.examination WHERE obj_id = OLD.obj_id;
+      WHEN OLD.maintenance_event_type = 'maintenance'::tww_app.maintenance_event_type THEN DELETE FROM tww_od.maintenance WHERE obj_id = OLD.obj_id;
+    END CASE;
+    CASE
+      WHEN NEW.maintenance_event_type = 'bio_ecol_assessment'::tww_app.maintenance_event_type THEN INSERT INTO tww_od.bio_ecol_assessment (obj_id) VALUES (OLD.obj_id);
+      WHEN NEW.maintenance_event_type = 'examination'::tww_app.maintenance_event_type THEN INSERT INTO tww_od.examination (obj_id) VALUES (OLD.obj_id);
+      WHEN NEW.maintenance_event_type = 'maintenance'::tww_app.maintenance_event_type THEN INSERT INTO tww_od.maintenance (obj_id) VALUES (OLD.obj_id);
+      ELSE -- do nothing
+    END CASE;
   END IF;
 
   CASE WHEN NEW.maintenance_event_type = 'bio_ecol_assessment'::tww_app.maintenance_event_type THEN
