@@ -13,7 +13,9 @@ except ImportError:
 from pirogue.utils import select_columns
 
 
-def vw_tww_damage_channel(pg_service: str = None, ):
+def vw_tww_damage_channel(
+    pg_service: str = None,
+):
     """
     Creates tww_damage_channel view
     :param pg_service: the PostgreSQL service name
@@ -68,7 +70,6 @@ def vw_tww_damage_channel(pg_service: str = None, ):
     )
 
     cursor.execute(view_sql)
-
 
     conn.commit()
     conn.close()
