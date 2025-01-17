@@ -9,7 +9,7 @@ try:
     import psycopg
 except ImportError:
     import psycopg2 as psycopg
-from pirogue.utils import select_columns, table_parts
+from pirogue.utils import select_columns
 from yaml import safe_load
 
 
