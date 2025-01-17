@@ -93,7 +93,7 @@ def vw_tww_channel(pg_service: str = None, extra_definition: dict = None):
             indent=4,
             skip_columns=[],
         ),
-        ws_cols=select_columns(
+        ws_cols_grp=select_columns(
             pg_cur=cursor,
             table_schema="tww_od",
             table_name="wastewater_structure",
