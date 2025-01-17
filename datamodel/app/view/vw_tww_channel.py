@@ -37,7 +37,7 @@ def vw_tww_channel(pg_service: str = None, extra_definition: dict = None):
         , {ne_cols}
         , {ws_cols}
         , ST_LineMerge(ST_Collect(re.progression3d_geometry)) as progression3d_geometry
-        , {extra_cols}
+         {extra_cols}
       FROM tww_od.channel ch
          LEFT JOIN tww_od.wastewater_structure ws ON ch.obj_id = ws.obj_id
          LEFT JOIN tww_od.wastewater_networkelement ne ON ne.fk_wastewater_structure = ws.obj_id
@@ -47,7 +47,7 @@ def vw_tww_channel(pg_service: str = None, extra_definition: dict = None):
          {ch_cols}
         , {ne_cols}
         , {ws_cols}
-        , {extra_cols}
+         {extra_cols}
          ;
     """.format(
         extra_cols="\n    , ".join(
