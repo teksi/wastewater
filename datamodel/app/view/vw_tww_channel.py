@@ -110,7 +110,7 @@ def vw_tww_channel(pg_service: str = None, extra_definition: dict = None):
                 "fk_main_cover",
             ],
         ),
-        ne_cols=select_columns(
+        ne_cols_grp=select_columns(
             pg_cur=cursor,
             table_schema="tww_od",
             table_name="wastewater_networkelement",
