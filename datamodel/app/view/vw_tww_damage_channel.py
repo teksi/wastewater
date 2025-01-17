@@ -36,7 +36,11 @@ def vw_tww_damage_channel(
       SELECT
         {dc_cols},
         ws.identifier AS ws_identifier,
-        ST_LineMerge(ST_Collect(ST_Force2D(re.progression3d_geometry))) AS ch_progression2d_geometry
+        ST_LineMerge(ST_Collect(ST_Force2D(re.progression3d_geometry))) AS ch_progression2d_geometry,
+        CASE
+          WHEN re_2.obj_id IS NULL THEN 't'::text
+          ELSE 'f'::text
+        END AS direction
         FROM tww_od.damage_channel dc
              LEFT JOIN tww_od.damage da ON da.obj_id::text = dc.obj_id::text
              LEFT JOIN tww_od.examination ex ON ex.obj_id::text = da.fk_examination::text
@@ -50,7 +54,8 @@ def vw_tww_damage_channel(
           GROUP BY {dc_cols},ws.identifier, re_2.obj_id
         )
         SELECT
-        {base_cols},
+        {dc_cols_base},
+        base.ws_identifier,
         ST_LineInterpolatePoint(base.ch_progression2d_geometry,
         CASE
             WHEN base.direction = 'f'
@@ -64,6 +69,14 @@ def vw_tww_damage_channel(
             table_schema="tww_od",
             table_name="damage_channel",
             table_alias="dc",
+            remove_pkey=False,
+            indent=4,
+        ),
+        dc_cols_base=select_columns(
+            pg_cur=cursor,
+            table_schema="tww_od",
+            table_name="damage_channel",
+            table_alias="base",
             remove_pkey=False,
             indent=4,
         ),
