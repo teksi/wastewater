@@ -35,7 +35,6 @@ def vw_tww_channel(pg_service: str = None, extra_definition: dict = None):
     SELECT
           {ws_cols}
         , {ch_cols}
-        , {ne_cols}
         , ST_LineMerge(ST_Collect(re.progression3d_geometry)) as progression3d_geometry
       FROM tww_od.channel ch
          LEFT JOIN tww_od.wastewater_structure ws ON ch.obj_id = ws.obj_id
@@ -43,20 +42,9 @@ def vw_tww_channel(pg_service: str = None, extra_definition: dict = None):
          LEFT JOIN tww_od.reach re ON ne.obj_id = re.obj_id
        GROUP BY
          {ch_cols_grp}
-        , {ne_cols_grp}
         , {ws_cols_grp}
          ;
     """.format(
-        ne_cols=select_columns(
-            pg_cur=cursor,
-            table_schema="tww_od",
-            table_name="wastewater_networkelement",
-            table_alias="ne",
-            prefix="ne_",
-            remove_pkey=True,
-            indent=4,
-            skip_columns=["fk_wastewater_structure"],
-        ),
         ch_cols=select_columns(
             pg_cur=cursor,
             table_schema="tww_od",
@@ -109,15 +97,6 @@ def vw_tww_channel(pg_service: str = None, extra_definition: dict = None):
                 "_depth",
                 "fk_main_cover",
             ],
-        ),
-        ne_cols_grp=select_columns(
-            pg_cur=cursor,
-            table_schema="tww_od",
-            table_name="wastewater_networkelement",
-            table_alias="ne",
-            remove_pkey=True,
-            indent=4,
-            skip_columns=["fk_wastewater_structure"],
         ),
     )
 
