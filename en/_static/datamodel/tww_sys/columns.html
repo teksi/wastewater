@@ -128,15 +128,15 @@
         "tableName": "logged_actions",
         "tableFileName": "logged_actions",
         "tableType": "Table",
-        "keyClass": "",
-        "keyTitle": "",
-        "name": "table_name",
-        "type": "text",
-        "length": 2147483647,
+        "keyClass": "indexedColumn",
+        "keyTitle": "Indexed",
+        "name": "<i class='fa fa-sitemap fa-rotate-120' style='padding-right: 5px;'><\/i>action_tstamp_stm",
+        "type": "timestamptz",
+        "length": 35,
         "nullable": "",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>Non-schema-qualified table name of table event occured in<\/p>"
+        "comments": "<p>Statement start timestamp for tx in which audited event occurred<\/p>"
     },
     {
         "tableName": "dictionary_od_values",
@@ -200,13 +200,13 @@
         "tableType": "Table",
         "keyClass": "",
         "keyTitle": "",
-        "name": "schema_name",
-        "type": "text",
-        "length": 2147483647,
+        "name": "action_tstamp_tx",
+        "type": "timestamptz",
+        "length": 35,
         "nullable": "",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>Database schema audited table for this event is in<\/p>"
+        "comments": "<p>Transaction start timestamp for tx in which audited event occurred<\/p>"
     },
     {
         "tableName": "dictionary_od_field",
@@ -228,13 +228,13 @@
         "tableType": "Table",
         "keyClass": "",
         "keyTitle": "",
-        "name": "client_port",
-        "type": "int4",
-        "length": 10,
+        "name": "changed_fields",
+        "type": "hstore",
+        "length": 2147483647,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>Remote peer IP port address of client that issued query. Undefined for unix socket.<\/p>"
+        "comments": "<p>New values of fields changed by UPDATE. Null except for row-level UPDATE events.<\/p>"
     },
     {
         "tableName": "dictionary_od_values",
@@ -256,13 +256,13 @@
         "tableType": "Table",
         "keyClass": "",
         "keyTitle": "",
-        "name": "action_tstamp_clk",
-        "type": "timestamptz",
-        "length": 35,
-        "nullable": "",
+        "name": "client_port",
+        "type": "int4",
+        "length": 10,
+        "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>Wall clock time at which audited event&rsquo;s trigger call occurred<\/p>"
+        "comments": "<p>Remote peer IP port address of client that issued query. Undefined for unix socket.<\/p>"
     },
     {
         "tableName": "dictionary_od_field",
@@ -282,15 +282,15 @@
         "tableName": "logged_actions",
         "tableFileName": "logged_actions",
         "tableType": "Table",
-        "keyClass": "primaryKey",
-        "keyTitle": "Primary Key",
-        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>event_id",
-        "type": "bigserial",
-        "length": 19,
-        "nullable": "",
-        "autoUpdated": "√",
-        "defaultValue": "nextval('tww_sys.logged_actions_event_id_seq'::regclass)",
-        "comments": "<p>Unique identifier for each auditable event<\/p>"
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "session_user_name",
+        "type": "text",
+        "length": 2147483647,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Login / session user whose statement caused the audited event<\/p>"
     },
     {
         "tableName": "logged_relations",
@@ -310,15 +310,15 @@
         "tableName": "logged_actions",
         "tableFileName": "logged_actions",
         "tableType": "Table",
-        "keyClass": "indexedColumn",
-        "keyTitle": "Indexed",
-        "name": "<i class='fa fa-sitemap fa-rotate-120' style='padding-right: 5px;'><\/i>relid",
-        "type": "oid",
-        "length": 10,
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "action_tstamp_clk",
+        "type": "timestamptz",
+        "length": 35,
         "nullable": "",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>Table OID. Changes with drop/create. Get with &lsquo;tablename&rsquo;::regclass<\/p>"
+        "comments": "<p>Wall clock time at which audited event&rsquo;s trigger call occurred<\/p>"
     },
     {
         "tableName": "dictionary_od_values",
@@ -466,13 +466,13 @@
         "tableType": "Table",
         "keyClass": "",
         "keyTitle": "",
-        "name": "client_addr",
-        "type": "inet",
+        "name": "row_data",
+        "type": "hstore",
         "length": 2147483647,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>IP address of client that issued query. Null for unix domain socket.<\/p>"
+        "comments": "<p>Record value. Null for statement-level trigger. For INSERT this is the new tuple. For DELETE and UPDATE it is the old tuple.<\/p>"
     },
     {
         "tableName": "dictionary_od_field",
@@ -494,27 +494,27 @@
         "tableType": "Table",
         "keyClass": "",
         "keyTitle": "",
-        "name": "transaction_id",
-        "type": "int8",
-        "length": 19,
-        "nullable": "√",
+        "name": "client_query",
+        "type": "text",
+        "length": 2147483647,
+        "nullable": "",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>Identifier of transaction that made the change. May wrap, but unique paired with action_tstamp_tx.<\/p>"
+        "comments": "<p>Top-level query that caused this auditable event. May be more than one statement.<\/p>"
     },
     {
-        "tableName": "logged_actions",
-        "tableFileName": "logged_actions",
+        "tableName": "oid_prefixes",
+        "tableFileName": "oid_prefixes",
         "tableType": "Table",
         "keyClass": "",
         "keyTitle": "",
-        "name": "row_data",
-        "type": "hstore",
-        "length": 2147483647,
+        "name": "prefix",
+        "type": "bpchar",
+        "length": 8,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>Record value. Null for statement-level trigger. For INSERT this is the new tuple. For DELETE and UPDATE it is the old tuple.<\/p>"
+        "comments": ""
     },
     {
         "tableName": "dictionary_od_values",
@@ -562,15 +562,15 @@
         "tableName": "logged_actions",
         "tableFileName": "logged_actions",
         "tableType": "Table",
-        "keyClass": "",
-        "keyTitle": "",
-        "name": "application_name",
+        "keyClass": "indexedColumn",
+        "keyTitle": "Indexed",
+        "name": "<i class='fa fa-sitemap fa-rotate-120' style='padding-right: 5px;'><\/i>action",
         "type": "text",
         "length": 2147483647,
-        "nullable": "√",
+        "nullable": "",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>Application name set when this audit event occurred. Can be changed in-session by client.<\/p>"
+        "comments": "<p>Action type; I = insert, D = delete, U = update, T = truncate<\/p>"
     },
     {
         "tableName": "dictionary_od_values",
@@ -643,18 +643,18 @@
         "comments": ""
     },
     {
-        "tableName": "oid_prefixes",
-        "tableFileName": "oid_prefixes",
+        "tableName": "logged_actions",
+        "tableFileName": "logged_actions",
         "tableType": "Table",
         "keyClass": "",
         "keyTitle": "",
-        "name": "prefix",
-        "type": "bpchar",
-        "length": 8,
-        "nullable": "√",
+        "name": "schema_name",
+        "type": "text",
+        "length": 2147483647,
+        "nullable": "",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": ""
+        "comments": "<p>Database schema audited table for this event is in<\/p>"
     },
     {
         "tableName": "dictionary_od_values",
@@ -676,13 +676,13 @@
         "tableType": "Table",
         "keyClass": "",
         "keyTitle": "",
-        "name": "session_user_name",
-        "type": "text",
-        "length": 2147483647,
+        "name": "transaction_id",
+        "type": "int8",
+        "length": 19,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>Login / session user whose statement caused the audited event<\/p>"
+        "comments": "<p>Identifier of transaction that made the change. May wrap, but unique paired with action_tstamp_tx.<\/p>"
     },
     {
         "tableName": "dictionary_od_field",
@@ -713,18 +713,18 @@
         "comments": ""
     },
     {
-        "tableName": "logged_actions",
-        "tableFileName": "logged_actions",
+        "tableName": "oid_prefixes",
+        "tableFileName": "oid_prefixes",
         "tableType": "Table",
-        "keyClass": "indexedColumn",
-        "keyTitle": "Indexed",
-        "name": "<i class='fa fa-sitemap fa-rotate-120' style='padding-right: 5px;'><\/i>action",
-        "type": "text",
-        "length": 2147483647,
+        "keyClass": "primaryKey",
+        "keyTitle": "Primary Key",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>id",
+        "type": "serial",
+        "length": 10,
         "nullable": "",
-        "autoUpdated": "",
-        "defaultValue": "null",
-        "comments": "<p>Action type; I = insert, D = delete, U = update, T = truncate<\/p>"
+        "autoUpdated": "√",
+        "defaultValue": "nextval('tww_sys.oid_prefixes_id_seq'::regclass)",
+        "comments": ""
     },
     {
         "tableName": "dictionary_od_field",
@@ -858,13 +858,13 @@
         "tableType": "Table",
         "keyClass": "",
         "keyTitle": "",
-        "name": "action_tstamp_tx",
-        "type": "timestamptz",
-        "length": 35,
-        "nullable": "",
+        "name": "application_name",
+        "type": "text",
+        "length": 2147483647,
+        "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>Transaction start timestamp for tx in which audited event occurred<\/p>"
+        "comments": "<p>Application name set when this audit event occurred. Can be changed in-session by client.<\/p>"
     },
     {
         "tableName": "dictionary_od_field",
@@ -909,18 +909,18 @@
         "comments": ""
     },
     {
-        "tableName": "logged_actions",
-        "tableFileName": "logged_actions",
+        "tableName": "oid_prefixes",
+        "tableFileName": "oid_prefixes",
         "tableType": "Table",
         "keyClass": "",
         "keyTitle": "",
-        "name": "changed_fields",
-        "type": "hstore",
+        "name": "organization",
+        "type": "text",
         "length": 2147483647,
         "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>New values of fields changed by UPDATE. Null except for row-level UPDATE events.<\/p>"
+        "comments": ""
     },
     {
         "tableName": "dictionary_od_values",
@@ -951,18 +951,18 @@
         "comments": ""
     },
     {
-        "tableName": "logged_actions",
-        "tableFileName": "logged_actions",
+        "tableName": "oid_prefixes",
+        "tableFileName": "oid_prefixes",
         "tableType": "Table",
-        "keyClass": "",
-        "keyTitle": "",
-        "name": "statement_only",
+        "keyClass": "indexedColumn",
+        "keyTitle": "Indexed",
+        "name": "<i class='fa fa-sitemap fa-rotate-120' style='padding-right: 5px;'><\/i>active",
         "type": "bool",
         "length": 1,
-        "nullable": "",
+        "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>&lsquo;t&rsquo; if audit event is from an FOR EACH STATEMENT trigger, &lsquo;f&rsquo; for FOR EACH ROW<\/p>"
+        "comments": ""
     },
     {
         "tableName": "dictionary_od_field",
@@ -1049,18 +1049,18 @@
         "comments": ""
     },
     {
-        "tableName": "oid_prefixes",
-        "tableFileName": "oid_prefixes",
+        "tableName": "logged_actions",
+        "tableFileName": "logged_actions",
         "tableType": "Table",
         "keyClass": "",
         "keyTitle": "",
-        "name": "organization",
+        "name": "table_name",
         "type": "text",
         "length": 2147483647,
-        "nullable": "√",
+        "nullable": "",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": ""
+        "comments": "<p>Non-schema-qualified table name of table event occured in<\/p>"
     },
     {
         "tableName": "dictionary_od_table",
@@ -1152,13 +1152,13 @@
         "tableType": "Table",
         "keyClass": "",
         "keyTitle": "",
-        "name": "client_query",
-        "type": "text",
-        "length": 2147483647,
+        "name": "statement_only",
+        "type": "bool",
+        "length": 1,
         "nullable": "",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>Top-level query that caused this auditable event. May be more than one statement.<\/p>"
+        "comments": "<p>&lsquo;t&rsquo; if audit event is from an FOR EACH STATEMENT trigger, &lsquo;f&rsquo; for FOR EACH ROW<\/p>"
     },
     {
         "tableName": "dictionary_od_values",
@@ -1234,15 +1234,15 @@
         "tableName": "logged_actions",
         "tableFileName": "logged_actions",
         "tableType": "Table",
-        "keyClass": "indexedColumn",
-        "keyTitle": "Indexed",
-        "name": "<i class='fa fa-sitemap fa-rotate-120' style='padding-right: 5px;'><\/i>action_tstamp_stm",
-        "type": "timestamptz",
-        "length": 35,
-        "nullable": "",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "client_addr",
+        "type": "inet",
+        "length": 2147483647,
+        "nullable": "√",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": "<p>Statement start timestamp for tx in which audited event occurred<\/p>"
+        "comments": "<p>IP address of client that issued query. Null for unix domain socket.<\/p>"
     },
     {
         "tableName": "dictionary_od_values",
@@ -1273,32 +1273,32 @@
         "comments": ""
     },
     {
-        "tableName": "oid_prefixes",
-        "tableFileName": "oid_prefixes",
+        "tableName": "logged_actions",
+        "tableFileName": "logged_actions",
         "tableType": "Table",
         "keyClass": "indexedColumn",
         "keyTitle": "Indexed",
-        "name": "<i class='fa fa-sitemap fa-rotate-120' style='padding-right: 5px;'><\/i>active",
-        "type": "bool",
-        "length": 1,
-        "nullable": "√",
+        "name": "<i class='fa fa-sitemap fa-rotate-120' style='padding-right: 5px;'><\/i>relid",
+        "type": "oid",
+        "length": 10,
+        "nullable": "",
         "autoUpdated": "",
         "defaultValue": "null",
-        "comments": ""
+        "comments": "<p>Table OID. Changes with drop/create. Get with &lsquo;tablename&rsquo;::regclass<\/p>"
     },
     {
-        "tableName": "oid_prefixes",
-        "tableFileName": "oid_prefixes",
+        "tableName": "logged_actions",
+        "tableFileName": "logged_actions",
         "tableType": "Table",
         "keyClass": "primaryKey",
         "keyTitle": "Primary Key",
-        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>id",
-        "type": "serial",
-        "length": 10,
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>event_id",
+        "type": "bigserial",
+        "length": 19,
         "nullable": "",
         "autoUpdated": "√",
-        "defaultValue": "nextval('tww_sys.oid_prefixes_id_seq'::regclass)",
-        "comments": ""
+        "defaultValue": "nextval('tww_sys.logged_actions_event_id_seq'::regclass)",
+        "comments": "<p>Unique identifier for each auditable event<\/p>"
     },
     {
         "tableName": "dictionary_od_field",
