@@ -35,7 +35,7 @@ def vw_tww_channel(pg_service: str = None, extra_definition: dict = None):
     SELECT
           {ws_cols}
         , {ch_cols}
-        , ST_LineMerge(ST_Collect(re.progression3d_geometry)) as progression3d_geometry
+        , ST_CurveToLine(ST_LineMerge(ST_Collect(ST_CurveToLine(re.progression3d_geometry)))) as progression3d_geometry
       FROM tww_od.channel ch
          LEFT JOIN tww_od.wastewater_structure ws ON ch.obj_id = ws.obj_id
          LEFT JOIN tww_od.wastewater_networkelement ne ON ne.fk_wastewater_structure = ws.obj_id
@@ -114,13 +114,7 @@ def vw_tww_channel(pg_service: str = None, extra_definition: dict = None):
 if __name__ == "__main__":
     # create the top-level parser
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "-e",
-        "--extra-definition",
-        help="YAML file path for extra additions to the view",
-    )
     parser.add_argument("-p", "--pg_service", help="the PostgreSQL service name")
     args = parser.parse_args()
     pg_service = args.pg_service or os.getenv("PGSERVICE")
-    extra_definition = safe_load(open(args.extra_definition)) if args.extra_definition else {}
-    vw_tww_channel(pg_service=pg_service, extra_definition=extra_definition)
+    vw_tww_channel(pg_service=pg_service)
