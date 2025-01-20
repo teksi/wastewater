@@ -10,7 +10,6 @@ try:
 except ImportError:
     import psycopg2 as psycopg
 from pirogue.utils import select_columns
-from yaml import safe_load
 
 
 def vw_tww_channel(pg_service: str = None, extra_definition: dict = None):
