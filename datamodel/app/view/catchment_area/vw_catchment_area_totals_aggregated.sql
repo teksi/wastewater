@@ -164,3 +164,4 @@ CREATE MATERIALIZED VIEW tww_app.vw_catchment_area_totals_aggregated AS
       )ca_agg
         ON ca_agg.fk_pwwf_wastewater_node::text = wn.obj_id::text
    WITH DATA;
+ALTER MATERIALIZED VIEW tww_app.vw_catchment_area_totals_aggregated OWNER TO tww_user;

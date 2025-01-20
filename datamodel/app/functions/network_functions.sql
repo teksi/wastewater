@@ -108,4 +108,5 @@ BEGIN
 
 END;
 $body$
-LANGUAGE plpgsql;
+LANGUAGE plpgsql
+SET search_path = pg_catalog,pg_temp;
