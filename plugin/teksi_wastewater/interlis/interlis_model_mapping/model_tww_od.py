@@ -183,7 +183,7 @@ class ModelTwwOd(ModelBase):
 
         ModelTwwOd.maintenance = maintenance
 
-        class connection_object(wastewater_networkelement):
+        class connection_object(self.Base):
             __tablename__ = "connection_object"
             __table_args__ = {"schema": config.TWW_OD_SCHEMA}
 
@@ -314,3 +314,17 @@ class ModelTwwOd(ModelBase):
             __table_args__ = {"schema": config.TWW_OD_SCHEMA}
 
         ModelTwwOd.file = file
+
+        class re_maintenance_event_wastewater_structure(self.Base):
+            __tablename__ = "re_maintenance_event_wastewater_structure"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.re_maintenance_event_wastewater_structure = (
+            re_maintenance_event_wastewater_structure
+        )
+
+        class re_building_group_disposal(self.Base):
+            __tablename__ = "re_building_group_disposal"
+            __table_args__ = {"schema": config.TWW_OD_SCHEMA}
+
+        ModelTwwOd.re_building_group_disposal = re_building_group_disposal

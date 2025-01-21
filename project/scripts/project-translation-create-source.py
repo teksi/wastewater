@@ -23,5 +23,15 @@ app.messageLog().messageReceived.connect(print_message)
 project = QgsProject.instance()
 
 assert project.read(args.project)
-print(project.mapLayers())
+
+ok = True
+for layer in project.mapLayers().values():
+    layer_invalid = ""
+    if not layer.isValid():
+        ok = False
+        layer_invalid = " *** INVALID ***"
+    print(f" - layer {layer.name()}{layer_invalid}")
+
+if not ok:
+    raise ValueError("Some layers are invalid!")
 project.generateTsFile(args.language)

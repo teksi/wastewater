@@ -2,9 +2,12 @@
 table: tww_od.overflow
 view_name: vw_tww_overflow
 view_schema: tww_app
+allow_type_change: True
+allow_parent_only: false
+pkey_default_value: True
 
 additional_columns:
-  geometry: n1.situation3d_geometry::geometry('PointZ',{SRID})
+  geometry: n1.situation3d_geometry
 additional_joins: >
   LEFT JOIN tww_od.wastewater_node n1 ON overflow.fk_wastewater_node::text = n1.obj_id::text
 

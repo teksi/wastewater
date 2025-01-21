@@ -10,8 +10,13 @@ except ImportError:
     import psycopg2 as psycopg
 
 from pirogue import MultipleInheritance, SimpleJoins, SingleInheritance
+from triggers.set_defaults_and_triggers import set_defaults_and_triggers
+from view.vw_tww_additional_ws import vw_tww_additional_ws
+from view.vw_tww_infiltration_installation import vw_tww_infiltration_installation
+from view.vw_tww_measurement_series import vw_tww_measurement_series
 from view.vw_tww_reach import vw_tww_reach
 from view.vw_tww_wastewater_structure import vw_tww_wastewater_structure
+from view.vw_wastewater_structure import vw_wastewater_structure
 from yaml import safe_load
 
 
@@ -38,6 +43,8 @@ def create_app(
     drop_schema: Optional[bool] = False,
     tww_reach_extra: Optional[Path] = None,
     tww_wastewater_structure_extra: Optional[Path] = None,
+    tww_ii_extra: Optional[Path] = None,
+    wastewater_structure_extra: Optional[Path] = None,
 ):
     """
     Creates the schema tww_app for TEKSI Wastewater & GEP
@@ -46,6 +53,8 @@ def create_app(
     :param pg_service: the PostgreSQL service, if not given it will be determined from environment variable in Pirogue
     :param tww_reach_extra: YAML file path of the definition of additional columns for vw_tww_reach view
     :param tww_wastewater_structure_extra: YAML file path of the definition of additional columns for vw_tww_wastewater_structure_extra view
+    :param tww_ii_extra: YAML file path of the definition of additional columns for vw_tww_infiltration_installation_extra view
+    :param wastewater_structure_extra: YAML file path of the definition of additional columns for vw_wastewater_structure_extra view
     """
     cwd = Path(__file__).parent.resolve()
     variables = {
@@ -56,16 +65,23 @@ def create_app(
         run_sql("DROP SCHEMA IF EXISTS tww_app CASCADE;", pg_service)
 
     run_sql("CREATE SCHEMA tww_app;", pg_service)
-
-    run_sql_file("symbology_functions.sql", pg_service)
-    run_sql_file("reach_direction_change.sql", pg_service, variables)
-    run_sql_file("14_geometry_functions.sql", pg_service, variables)
+    run_sql_file("functions/oid_functions.sql", pg_service)
+    run_sql_file("functions/modification_functions.sql", pg_service)
+    run_sql_file("functions/symbology_functions.sql", pg_service)
+    run_sql_file("functions/reach_direction_change.sql", pg_service, variables)
+    run_sql_file("functions/geometry_functions.sql", pg_service, variables)
+    run_sql_file("functions/update_catchment_area_totals.sql", pg_service, variables)
+    run_sql_file("functions/organisation_functions.sql", pg_service, variables)
+    run_sql_file("functions/meta_functions.sql", pg_service, variables)
+    run_sql_file("functions/network_functions.sql", pg_service)
 
     # open YAML files
     if tww_reach_extra:
         tww_reach_extra = safe_load(open(tww_reach_extra))
     if tww_wastewater_structure_extra:
         tww_wastewater_structure_extra = safe_load(open(tww_wastewater_structure_extra))
+    if wastewater_structure_extra:
+        wastewater_structure_extra = safe_load(open(wastewater_structure_extra))
 
     run_sql_file("view/vw_dictionary_value_list.sql", pg_service, variables)
 
@@ -102,6 +118,9 @@ def create_app(
         "reservoir": "connection_object",
         "individual_surface": "connection_object",
         "fountain": "connection_object",
+        # surface_runoff_parameters
+        "param_ca_general": "surface_runoff_parameters",
+        "param_ca_mouse1": "surface_runoff_parameters",
         # overflow
         "leapingweir": "overflow",
         "prank_weir": "overflow",
@@ -115,6 +134,10 @@ def create_app(
         "drainage_system": "zone",
     }
 
+    # Defaults and Triggers
+    # Has to be fired before view creation otherwise it won't work and will only fail in CI
+    set_defaults_and_triggers(pg_service, SingleInheritances)
+
     for key in SingleInheritances:
         SingleInheritance(
             "tww_od." + SingleInheritances[key],
@@ -127,9 +150,7 @@ def create_app(
 
     MultipleInheritance(
         safe_load(open(cwd / "view/vw_maintenance_event.yaml")),
-        create_joins=True,
         drop=True,
-        variables=variables,
         pg_service=pg_service,
     ).create()
 
@@ -139,16 +160,19 @@ def create_app(
         pg_service=pg_service,
     ).create()
 
+    vw_wastewater_structure(pg_service=pg_service, extra_definition=wastewater_structure_extra)
     vw_tww_wastewater_structure(
         srid, pg_service=pg_service, extra_definition=tww_wastewater_structure_extra
     )
+    vw_tww_infiltration_installation(srid, pg_service=pg_service, extra_definition=tww_ii_extra)
     vw_tww_reach(pg_service=pg_service, extra_definition=tww_reach_extra)
+    vw_tww_additional_ws(srid, pg_service=pg_service)
+    vw_tww_measurement_series(pg_service=pg_service)
 
     run_sql_file("view/vw_file.sql", pg_service, variables)
 
     MultipleInheritance(
         safe_load(open(cwd / "view/vw_oo_overflow.yaml")),
-        create_joins=True,
         variables=variables,
         pg_service=pg_service,
         drop=True,
@@ -171,6 +195,15 @@ def create_app(
     run_sql_file(
         "view/catchment_area/vw_catchment_area_wwp_connections.sql", pg_service, variables
     )
+    run_sql_file(
+        "view/catchment_area/vw_catchment_area_totals_aggregated.sql", pg_service, variables
+    )
+
+    # default values
+    run_sql_file("view/set_default_value_for_views.sql", pg_service, variables)
+
+    # Recreate GEP views
+    run_sql_file("gep_views/vw_tww_catchment_area_totals.sql", pg_service, variables)
 
     # Recreate network views
     run_sql_file("view/network/vw_network_node.sql", pg_service, variables)
@@ -211,8 +244,7 @@ def create_app(
         pg_service,
     ).create()
 
-    run_sql_file("triggers/network.sql", pg_service)
-
+    # Roles
     run_sql_file("tww_app_roles.sql", pg_service, variables)
 
 

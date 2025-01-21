@@ -29,7 +29,7 @@ CREATE OR REPLACE VIEW tww_app.vw_file AS
    FROM tww_od.file f
      LEFT JOIN tww_od.data_media dm ON dm.obj_id::text = f.fk_data_media::text;
 
-ALTER VIEW tww_app.vw_file ALTER obj_id SET DEFAULT tww_sys.generate_oid('tww_od','file');
+ALTER VIEW tww_app.vw_file ALTER obj_id SET DEFAULT tww_app.generate_oid('tww_od','file');
 
 -- ******************************************************************************
 -- 3. FUNCTIONS :

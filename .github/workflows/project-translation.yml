@@ -11,13 +11,21 @@ on:
     paths:
       - project/**
       - '.github/workflows/project-translation.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - project/**
+      - '.github/workflows/project-translation.yml'
+  schedule:
+    - cron: "30 04 * * *"
   workflow_dispatch:
 
 
 jobs:
   build:
     name: Update project translations
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     env:
       TX_TOKEN: ${{ secrets.TX_TOKEN }}
@@ -42,6 +50,7 @@ jobs:
         run: docker compose run qgis sh -c 'xvfb-run /usr/src/project/scripts/project-translation-create-source.py /usr/src/project/teksi_wastewater.qgs'
 
       - name: Push to TX
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
         working-directory: project
         run: ./tx push --source
 

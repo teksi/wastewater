@@ -16,22 +16,48 @@ In pgAdmin4
 
 * Connect to the database server
 
-* Create a new database with UTF8 encoding (e.g. `tww_prod`).
+* Create a new database with UTF8 encoding
 
-.. _restore-demomodel:
+E.g. `tww_demo`, avoid spaces, dots, uppercases and special characters
+As proposed in https://stackoverflow.com/questions/2878248/postgresql-naming-conventions
 
-Restore demo datamodel
-^^^^^^^^^^^^^^^^^^^^^^
+
+Create  minimal roles and access
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+TWW roles are defined in the
++ `12_0_roles.sql <https://github.com/TWW/datamodel/blob/master/12_0_roles.sql>`_ (per cluster)
++ `12_1_roles.sql <https://github.com/TWW/datamodel/blob/master/12_1_roles.sql>`_ (per database)
+
+`12_0_roles.sql` has to be run before restoring the demodata database.
+`12_1_roles.sql` has to be run if you initialize your module with with the commandline.
+
+An evolution of the roles management is in progress and will be available soon.
+
+It is highly recommended to use these when using TWW in a production environment.
+
+Copy paste and run the .sql files content in the query editor of pgAdmin (Tools > Query Tool).
+
+.. _restore-datamodel-demodata:
+
+Restore data model with demodata
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. warning:: Demodata only available as an INTERLIS file
+   The undeling procedure is now providing an empty datamodel with value lists.
+
+   The demodata is now only available in INTERLIS format but can be easily imported with the plugin IMPORT tool.
+
 
 Restore the latest data model that also includes demo data:
 
 * Download demo data
-  * https://github.com/TWW/datamodel/releases/latest
+  * https://github.com/teksi/wastewater/releases/latest
   * download `tww_vx.y.z_structure_and_demo_data.backup`
 
 Back in pgAdmin :
 
-* Right click the `tww_prod` database
+* Right click the `tww_demo` database
 
   * Click `Restore`
 
@@ -53,6 +79,10 @@ Back in pgAdmin :
 
    If the Restore is failed and the detail reads something like "pg_restore: [archiver] unsupported version (1.13) in file header" or in German "pg_restore: [Archivierer] nicht unterstützte Version (1.13) im Dateikopf" try updating your PostgreSQL, see https://stackoverflow.com/questions/49064209/getting-archiver-unsupported-version-1-13-in-file-header-when-running-pg-r
 
+.. note::
+
+   If the Restore failed and the detail reads something like "pg_restore: error: could not execute query: FEHLER: role »tww_viewer« does not exist then you have not created the minimal roles (see above)
+
   * Close the Restoring-Window
 
 * Right click the database and click `Refresh`
@@ -61,21 +91,21 @@ Back in pgAdmin :
 
 * Propably you want to rename the database: Right click the database, click `Properties...` and rename the database.
 
-There are now 7 schemas in the database (public, tww_import, tww_network, tww_swmm, tww_od, tww_sys, tww_vl)
+There are now 6 `schemas <https://teksi.github.io/wastewater/en/user-guide/layerexplanations/namingconventions.html#schemas-in-the-tww-database>`_ in the database
 
-Create  minimal roles and access
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. note:: The TWW roles are defined in the https://github.com/TWW/datamodel/blob/master/12_0_roles.sql (per cluster) and https://github.com/TWW/datamodel/blob/master/12_1_roles.sql (per database) files. It is recommended to use these when using TWW in a production environment.
-
-Copy paste and run the two .sql one after the other in the query editor of pgAdmin4 (Tools > Query Tool).
++ public
++ tww_app
++ tww_cfg
++ tww_od
++ tww_sys
++ tww_vl
 
 Empty data model
 ^^^^^^^^^^^^^^^^
 
 You also have the option to restore the latest empty data model (no demo data).
 
-* Download the data model by going to https://github.com/TWW/datamodel/releases/latest
+* Download the data model by going to https://github.com/teksi/wastewater/releases
   and by downloading the latest `tww_vx.y.z_structure_with_value_lists.sql`.
 
 .. note::
@@ -98,7 +128,7 @@ You also have the option to restore the latest empty data model (no demo data).
     set /p password="Please enter the password for user postgres? "
 
     set port=5432
-    set PATH=%PATH%;C:\Program Files\PostgreSQL\12\bin
+    set PATH=%PATH%;C:\Program Files\PostgreSQL\15\bin
     set PGPASSWORD=%password%
 
     createdb -U postgres -p %port% %db%
@@ -130,7 +160,7 @@ You also have the option to restore the latest empty data model (no demo data).
 
  You are free to choose any database name.
 
-* Update privileges for the tww_od, tww_sys, tww_vl, tww_network, tww_import, tww_swmm schema as described in the chapter `Create  minimal roles and access`.
+* Update privileges for the tww_od, tww_sys, tww_vl, tww_network, tww_import, tww_swmm schema as described in the chapter `Create minimal roles and access`.
 
 
 Generate the data model under Linux
