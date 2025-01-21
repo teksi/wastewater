@@ -38,4 +38,7 @@ LEFT JOIN tww_vl.reach_material mat ON r.material = mat.code
 LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = s.ne_id
 LEFT JOIN tww_od.channel ch ON ch.obj_id = ne.fk_wastewater_structure;
 
+-- Transfer owner to tww_user so tww_user can refresh without security definer
+ALTER MATERIALIZED VIEW tww_app.vw_network_segment OWNER TO tww_user;
+
 CREATE INDEX in_tww_app_vw_network_segment_progression_geometry ON tww_app.vw_network_segment USING gist (progression_geometry);

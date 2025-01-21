@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION tww_app.network_refresh_network_simple() RETURNS void SECURITY DEFINER AS $body$
+CREATE OR REPLACE FUNCTION tww_app.network_refresh_network_simple() RETURNS void AS $body$
 BEGIN
 
   TRUNCATE tww_od.network_segment CASCADE;
@@ -108,5 +108,4 @@ BEGIN
 
 END;
 $body$
-LANGUAGE plpgsql
-SET search_path = pg_catalog,pg_temp;
+LANGUAGE plpgsql;

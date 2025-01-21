@@ -164,4 +164,6 @@ CREATE MATERIALIZED VIEW tww_app.vw_catchment_area_totals_aggregated AS
       )ca_agg
         ON ca_agg.fk_pwwf_wastewater_node::text = wn.obj_id::text
    WITH DATA;
+
+-- Transfer owner to tww_user so tww_user can refresh without security definer
 ALTER MATERIALIZED VIEW tww_app.vw_catchment_area_totals_aggregated OWNER TO tww_user;
