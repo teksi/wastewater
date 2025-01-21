@@ -63,21 +63,10 @@ CREATE OR REPLACE FUNCTION tww_app.update_wastewater_node_symbology(_obj_id text
   $BODY$
 BEGIN
 
--- Otherwise this will result in very slow query due to on_structure_part_change_networkelement
--- being triggered for all rows. See https://github.com/QGEP/datamodel/pull/166#issuecomment-760245405 //skip-keyword-check
-IF _all THEN
-  RAISE INFO 'Temporarily disabling symbology and modification triggers';
-  PERFORM tww_app.alter_symbology_triggers('disable');
-  PERFORM tww_app.alter_modification_triggers('disable');
-END IF;
+DELETE FROM tww_od.tww_wastewater_node_symbology
+WHERE fk_wastewater_node =_obj_id or _all;
 
-
-UPDATE tww_od.wastewater_node n
-SET
-  _function_hierarchic = function_hierarchic,
-  _usage_current = usage_current,
-  _status = status
-FROM(
+INSERT INTO tww_od.tww_wastewater_node_symbology (fk_wastewater_node,_function_hierarchic,_usage_current,_status)
   SELECT DISTINCT ON (wn.obj_id) wn.obj_id AS wn_obj_id,
       COALESCE(first_value(CH_from.function_hierarchic) OVER w
               , first_value(CH_to.function_hierarchic) OVER w) AS function_hierarchic,
@@ -85,8 +74,7 @@ FROM(
               , first_value(CH_to.usage_current) OVER w) AS usage_current,
       COALESCE(first_value(ws_node.status) OVER w
              , first_value(ws_from.status) OVER w
-             , first_value(ws_to.status) OVER w) AS status,
-      rank() OVER w AS hierarchy_rank
+             , first_value(ws_to.status) OVER w) AS status
     FROM
       tww_od.wastewater_node wn
       LEFT JOIN tww_od.wastewater_networkelement   ne                   ON ne.obj_id = wn.obj_id
@@ -107,7 +95,7 @@ FROM(
       LEFT JOIN tww_vl.channel_function_hierarchic vl_fct_hier_to 	ON CH_to.function_hierarchic = vl_fct_hier_to.code
       LEFT JOIN tww_vl.channel_usage_current       vl_usg_curr_to 	ON CH_to.usage_current = vl_usg_curr_to.code
 
-    WHERE _all OR wn.obj_id = _obj_id
+    WHERE _all OR wn.obj_id =_obj_id
       WINDOW w AS ( PARTITION BY wn.obj_id
                     ORDER BY coalesce(vl_fct_hier_to.tww_symbology_inflow_prio,false) DESC
 						   , vl_fct_hier_from.tww_symbology_order ASC NULLS LAST
@@ -115,51 +103,17 @@ FROM(
 
                            , vl_usg_curr_from.tww_symbology_order ASC NULLS LAST
                            , vl_usg_curr_to.tww_symbology_order ASC NULLS LAST
-                    ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)
-) symbology_ne
-WHERE symbology_ne.wn_obj_id = n.obj_id;
+                    ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING);
 
-EXECUTE tww_app.update_wn_symbology_by_overflow(_obj_id, _all);
+-- by overflow
+UPDATE tww_od.tww_wastewater_node_symbology n
 
--- See above
-IF _all THEN
-  RAISE INFO 'Reenabling symbology and modification triggers';
-  PERFORM tww_app.alter_symbology_triggers('enable');
-  PERFORM tww_app.alter_modification_triggers('enable');
-END IF;
-
-END
-$BODY$
-LANGUAGE plpgsql
-VOLATILE;
-
---------------------------------------------------------
--- UPDATE wastewater node symbology by overflow
--- Argument:
---  * obj_id of wastewater networkelement or NULL to update all
---------------------------------------------------------
-
-CREATE OR REPLACE FUNCTION tww_app.update_wn_symbology_by_overflow(_obj_id text, _all boolean default false)
-  RETURNS VOID AS
-  $BODY$
-BEGIN
-
--- Otherwise this will result in very slow query due to on_structure_part_change_networkelement
--- being triggered for all rows. See https://github.com/QGEP/datamodel/pull/166#issuecomment-760245405 //skip-keyword-check
-IF _all THEN
-  RAISE INFO 'Temporarily disabling symbology and modification triggers';
-  PERFORM tww_app.alter_symbology_triggers('disable');
-  PERFORM tww_app.alter_modification_triggers('disable');
-END IF;
-
-
-UPDATE tww_od.wastewater_node n
 SET
   _function_hierarchic = function_hierarchic,
   _usage_current = usage_current,
   _status = status
 FROM(
-        SELECT DISTINCT ON (wn.obj_id) wn.obj_id AS wn_obj_id,
+        SELECT DISTINCT ON (wn.fk_wastewater_node) wn.fk_wastewater_node AS wn_obj_id,
       COALESCE(first_value(wn._function_hierarchic) OVER w
               , first_value(wn_from._function_hierarchic) OVER w) AS function_hierarchic,
       COALESCE(first_value(wn._usage_current) OVER w
@@ -168,16 +122,16 @@ FROM(
              , first_value(wn_from._status) OVER w) AS status
     FROM
 	  tww_od.overflow                    ov
-	  LEFT JOIN tww_od.wastewater_node 			   wn	  	  ON ov.fk_overflow_to=wn.obj_id
+	  LEFT JOIN tww_od.tww_wastewater_node_symbology wn	  	  ON ov.fk_overflow_to=wn.fk_wastewater_node
       LEFT JOIN tww_od.wastewater_networkelement   ne_ov      ON ne_ov.obj_id = ov.fk_wastewater_node
       LEFT JOIN tww_vl.channel_function_hierarchic vl_fct_hier	ON wn._function_hierarchic = vl_fct_hier.code
       LEFT JOIN tww_vl.channel_usage_current       vl_usg_curr	ON wn._usage_current = vl_usg_curr.code
 
-	  LEFT JOIN tww_od.wastewater_node			   wn_from	  ON ne_ov.obj_id = wn_from.obj_id
+	  LEFT JOIN tww_od.tww_wastewater_node_symbology wn_from	  ON ne_ov.obj_id = wn_from.fk_wastewater_node
 	  LEFT JOIN tww_vl.channel_function_hierarchic vl_fct_hier_from	ON wn_from._function_hierarchic = vl_fct_hier_from.code
       LEFT JOIN tww_vl.channel_usage_current       vl_usg_curr_from	ON wn_from._usage_current = vl_usg_curr_from.code
-	  WHERE (_all OR wn.obj_id = _obj_id)
-      WINDOW w AS ( PARTITION BY wn.obj_id
+	  WHERE (_all OR wn.fk_wastewater_node = _obj_id)
+      WINDOW w AS ( PARTITION BY wn.fk_wastewater_node
                     ORDER BY coalesce(vl_fct_hier.tww_symbology_inflow_prio,false) DESC
 						   , vl_fct_hier.tww_symbology_order ASC NULLS LAST
                            , vl_fct_hier_from.tww_symbology_order ASC NULLS LAST
@@ -186,22 +140,18 @@ FROM(
                            , vl_usg_curr_from.tww_symbology_order ASC NULLS LAST
                     ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)
 ) symbology_ne
-WHERE symbology_ne.wn_obj_id = n.obj_id
+WHERE symbology_ne.wn_obj_id = n.fk_wastewater_node
  	  AND TRUE = ANY(array[n._function_hierarchic IS NULL
 					  ,n._usage_current IS NULL
 					  ,n._status IS NULL]);
-
--- See above
-IF _all THEN
-  RAISE INFO 'Reenabling symbology triggers';
-  PERFORM tww_app.alter_symbology_triggers('enable');
-  PERFORM tww_app.alter_modification_triggers('enable');
-END IF;
 
 END
 $BODY$
 LANGUAGE plpgsql
 VOLATILE;
+
+
+
 
 --------------------------------------------------------
 -- SYMBOLOGY UPDATE ON CHANNEL TABLE CHANGES
@@ -211,8 +161,7 @@ CREATE OR REPLACE FUNCTION tww_app.symbology_update_by_channel()
   RETURNS trigger AS
 $BODY$
 DECLARE
-  _ne_from_id TEXT;
-  _ne_to_id TEXT;
+
   ch_obj_id TEXT;
 BEGIN
   CASE
@@ -224,35 +173,14 @@ BEGIN
       ch_obj_id = OLD.obj_id;
   END CASE;
 
-  BEGIN
-    SELECT ne.obj_id INTO  _ne_from_id
+    INSERT INTO tww_od.tww_symbology_quarantine(wn_obj_id)
+    SELECT ne.obj_id
       FROM tww_od.wastewater_networkelement ch_ne
       LEFT JOIN tww_od.reach re ON ch_ne.obj_id = re.obj_id
-      LEFT JOIN tww_od.reach_point rp ON re.fk_reach_point_from = rp.obj_id
+      LEFT JOIN tww_od.reach_point rp ON rp.obj_id = ANY(ARRAY[re.fk_reach_point_from , re.fk_reach_point_to])
       LEFT JOIN tww_od.wastewater_networkelement ne ON rp.fk_wastewater_networkelement = ne.obj_id
-      WHERE ch_ne.fk_wastewater_structure = ch_obj_id;
-    EXECUTE tww_app.update_wastewater_node_symbology(_ne_from_id);
-  EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-      -- DO NOTHING, THIS CAN HAPPEN
-    WHEN TOO_MANY_ROWS THEN
-        RAISE EXCEPTION 'TRIGGER ERROR ws_symbology_update_by_channel. Subquery shoud return exactly one row. This is not supposed to happen and indicates an isue with the trigger. The issue must be fixed in TWW.';
-  END;
-
-  BEGIN
-    SELECT ne.obj_id INTO _ne_to_id
-      FROM tww_od.wastewater_networkelement ch_ne
-      LEFT JOIN tww_od.reach re ON ch_ne.obj_id = re.obj_id
-      LEFT JOIN tww_od.reach_point rp ON re.fk_reach_point_to = rp.obj_id
-      LEFT JOIN tww_od.wastewater_networkelement ne ON rp.fk_wastewater_networkelement = ne.obj_id
-      WHERE ch_ne.fk_wastewater_structure = ch_obj_id;
-    EXECUTE tww_app.update_wastewater_node_symbology(_ne_to_id);
-  EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-      -- DO NOTHING, THIS CAN HAPPEN
-    WHEN TOO_MANY_ROWS THEN
-        RAISE EXCEPTION 'TRIGGER ERROR ws_symbology_update_by_channel. Subquery shoud return exactly one row. This is not supposed to happen and indicates an isue with the trigger. The issue must be fixed in TWW.';
-  END;
+      WHERE ch_ne.fk_wastewater_structure = ch_obj_id AND ne.obj_id IS NOT NULL
+    ON CONFLICT DO NOTHING;
 
   RETURN NEW;
 END; $BODY$
@@ -286,19 +214,13 @@ BEGIN
       rp_obj_id = OLD.obj_id;
   END CASE;
 
-  BEGIN
-    SELECT ne.obj_id INTO STRICT _ne_id
+    INSERT INTO tww_od.tww_symbology_quarantine(wn_obj_id)
+	SELECT ne.obj_id
       FROM tww_od.wastewater_structure ws
       LEFT JOIN tww_od.wastewater_networkelement ne ON ws.obj_id = ne.fk_wastewater_structure
       LEFT JOIN tww_od.reach_point rp ON ne.obj_id = rp.fk_wastewater_networkelement
-      WHERE rp.obj_id = rp_obj_id;
-    EXECUTE tww_app.update_wastewater_node_symbology(_ne_id);
-  EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-      -- DO NOTHING, THIS CAN HAPPEN
-    WHEN TOO_MANY_ROWS THEN
-        RAISE EXCEPTION 'TRIGGER ERROR ws_symbology_update_by_reach_point. Subquery shoud return exactly one row. This is not supposed to happen and indicates an isue with the trigger. The issue must be fixed in TWW.';
-  END;
+      WHERE rp.obj_id = rp_obj_id
+    ON CONFLICT DO NOTHING;
 
   RETURN NEW;
 END; $BODY$
@@ -322,9 +244,6 @@ CREATE OR REPLACE FUNCTION tww_app.ws_symbology_update_by_reach()
   RETURNS trigger AS
 $BODY$
 DECLARE
-  _ne_from_id TEXT;
-  _ne_to_id TEXT;
-  symb_attribs RECORD;
   re_obj_id TEXT;
 BEGIN
   CASE
@@ -336,33 +255,13 @@ BEGIN
       re_obj_id = OLD.obj_id;
   END CASE;
 
-  BEGIN
-    SELECT ne.obj_id INTO STRICT _ne_from_id
+    INSERT INTO tww_od.tww_symbology_quarantine(wn_obj_id)
+	SELECT ne.obj_id
       FROM tww_od.reach re
-      LEFT JOIN tww_od.reach_point rp ON rp.obj_id = re.fk_reach_point_from
+      LEFT JOIN tww_od.reach_point rp ON rp.obj_id = ANY(ARRAY[re.fk_reach_point_from , re.fk_reach_point_to])
       LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = rp.fk_wastewater_networkelement
-      WHERE re.obj_id = re_obj_id;
-    EXECUTE tww_app.update_wastewater_node_symbology(_ne_from_id);
-  EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-      -- DO NOTHING, THIS CAN HAPPEN
-    WHEN TOO_MANY_ROWS THEN
-        RAISE EXCEPTION 'TRIGGER ERROR ws_symbology_update_by_reach. Subquery shoud return exactly one row. This is not supposed to happen and indicates an isue with the trigger. The issue must be fixed in TWW.';
-  END;
-
-  BEGIN
-    SELECT ne.obj_id INTO STRICT _ne_to_id
-      FROM tww_od.reach re
-      LEFT JOIN tww_od.reach_point rp ON rp.obj_id = re.fk_reach_point_to
-      LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id = rp.fk_wastewater_networkelement
-      WHERE re.obj_id = re_obj_id;
-    EXECUTE tww_app.update_wastewater_node_symbology(_ne_to_id);
-  EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-      -- DO NOTHING, THIS CAN HAPPEN
-    WHEN TOO_MANY_ROWS THEN
-        RAISE EXCEPTION 'TRIGGER ERROR ws_symbology_update_by_reach. Subquery shoud return exactly one row. This is not supposed to happen and indicates an isue with the trigger. The issue must be fixed in TWW.';
-  END;
+      WHERE re.obj_id = re_obj_id AND ne.obj_id IS NOT NULL
+   ON CONFLICT DO NOTHING;
 
   RETURN NEW;
 END; $BODY$
@@ -445,7 +344,7 @@ VOLATILE;
 --  * all True to update all
 --------------------------------------------------------
 
-CREATE OR REPLACE FUNCTION tww_app.update_depth(_obj_id text, _all boolean default false)
+CREATE OR REPLACE FUNCTION tww_app.update_depth(_obj_id text default NULL, _all boolean default false)
   RETURNS VOID AS
   $BODY$
   DECLARE
@@ -453,9 +352,9 @@ CREATE OR REPLACE FUNCTION tww_app.update_depth(_obj_id text, _all boolean defau
 
 BEGIN
   UPDATE tww_od.wastewater_structure ws
-  SET _depth = depth
+  SET _depth = calc_depth
   FROM (
-    SELECT WS.obj_id, CO.level - COALESCE(MIN(NO.bottom_level), MIN(RP.level)) as depth
+    SELECT WS.obj_id, CO.level - COALESCE(MIN(NO.bottom_level), MIN(RP.level)) as calc_depth
       FROM tww_od.wastewater_structure WS
       LEFT JOIN tww_od.cover CO on WS.fk_main_cover = CO.obj_id
       LEFT JOIN tww_od.wastewater_networkelement NE ON NE.fk_wastewater_structure = WS.obj_id
@@ -465,114 +364,6 @@ BEGIN
       GROUP BY WS.obj_id, CO.level
   ) ws_depths
   where ws.obj_id = ws_depths.obj_id;
-END
-
-$BODY$
-LANGUAGE plpgsql
-VOLATILE;
-
---------------------------------------------------------
--- UPDATE wastewater structure label
--- Argument:
---  * obj_id of wastewater structure or NULL to update all
---------------------------------------------------------
-
------- 14.9.2022 index labels by wastewater structure for VSA-DSS compliance /cymed
------- 14.9.2022 use idx only when more than one entry /cymed
------- 15.8.2018 uk adapted label display only for primary wastwater system
------- WHERE (_all OR NE.fk_wastewater_structure = _obj_id) and CH_to.function_hierarchic in (5062,5064,5066,5068,5069,5070,5071,5072,5074)  ----label only reaches with function_hierarchic=pwwf.*
-
-
-
-CREATE OR REPLACE FUNCTION tww_app.update_wastewater_structure_label(_obj_id text, _all boolean default false)
-  RETURNS VOID AS
-  $BODY$
-  DECLARE
-  myrec record;
-
-BEGIN
-UPDATE tww_od.wastewater_structure ws
-SET _label = label,
-    _cover_label = cover_label,
-    _bottom_label = bottom_label,
-    _input_label = input_label,
-    _output_label = output_label
-    FROM(
-SELECT   ws_obj_id,
-          COALESCE(ws_identifier, '') as label,
-          CASE WHEN count(co_level)<2 THEN array_to_string(array_agg(E'\nC' || '=' || co_level ORDER BY idx DESC), '', '') ELSE
-		  array_to_string(array_agg(E'\nC' || idx || '=' || co_level ORDER BY idx ASC), '', '') END as cover_label,
-          array_to_string(array_agg(E'\nB' || '=' || bottom_level), '', '') as bottom_label,
-          CASE WHEN count(rpi_level)<2 THEN array_to_string(array_agg(E'\nI' || '=' || rpi_level ORDER BY idx DESC), '', '') ELSE
-		  array_to_string(array_agg(E'\nI' || idx || '=' || rpi_level ORDER BY idx ASC), '', '') END as input_label,
-          CASE WHEN count(rpo_level)<2 THEN array_to_string(array_agg(E'\nO' || '=' || rpo_level ORDER BY idx DESC), '', '') ELSE
-		  array_to_string(array_agg(E'\nO' || idx || '=' || rpo_level ORDER BY idx ASC), '', '') END as output_label
-  FROM (
-		  SELECT ws.obj_id AS ws_obj_id, ws.identifier AS ws_identifier, parts.co_level AS co_level, parts.rpi_level AS rpi_level, parts.rpo_level AS rpo_level, parts.obj_id, idx, bottom_level AS bottom_level
-    FROM tww_od.wastewater_structure WS
-
-    LEFT JOIN (
-		With outputs AS (
-		SELECT NULL AS co_level,
-		  NULL::text AS rpi_level,
-			coalesce(round(RP.level, 2)::text, '?') AS rpo_level,
-			NE.fk_wastewater_structure ws, RP.obj_id,
-			row_number() OVER(PARTITION BY NE.fk_wastewater_structure
-							  ORDER BY
-							  fh.tww_symbology_order,
-							  uc.tww_symbology_order,
-							  ST_Azimuth(RP.situation3d_geometry,ST_PointN(RE_from.progression3d_geometry,2)) ASC) AS idx,
-		  NULL::text AS bottom_level,
-		  ST_Azimuth(RP.situation3d_geometry,ST_PointN(RE_from.progression3d_geometry,2)) AS azimuth
-		  FROM tww_od.reach_point RP
-		  LEFT JOIN tww_od.wastewater_networkelement NE ON RP.fk_wastewater_networkelement = NE.obj_id
-		  INNER JOIN tww_od.reach RE_from ON RP.obj_id = RE_from.fk_reach_point_from
-		  LEFT JOIN tww_od.wastewater_networkelement NE_RE ON NE_RE.obj_id::text = RE_from.obj_id::text
-		  LEFT JOIN tww_od.wastewater_structure ws ON NE_RE.fk_wastewater_structure::text = ws.obj_id::text
-		  LEFT JOIN tww_od.channel ch ON ch.obj_id::text = ws.obj_id::text
-		  LEFT JOIN tww_vl.channel_function_hierarchic fh ON ch.function_hierarchic  = fh.code
-		  LEFT JOIN tww_vl.channel_usage_current uc ON ch.usage_current = uc.code
-		  WHERE (_all OR NE.fk_wastewater_structure = _obj_id)
-		)
-      SELECT coalesce(round(CO.level, 2)::text, '?') AS co_level, NULL::text AS rpi_level, NULL::text AS rpo_level, SP.fk_wastewater_structure ws, SP.obj_id, row_number() OVER(PARTITION BY SP.fk_wastewater_structure) AS idx, NULL::text AS bottom_level
-      FROM tww_od.structure_part SP
-      RIGHT JOIN tww_od.cover CO ON CO.obj_id = SP.obj_id
-      WHERE _all OR SP.fk_wastewater_structure = _obj_id
-      -- Inputs
-      UNION
-
-      SELECT NULL AS co_level,
-	  coalesce(round(RP.level, 2)::text, '?') AS rpi_level,
-	  NULL::text AS rpo_level,
-	  NE.fk_wastewater_structure ws, RP.obj_id,
-	  row_number() OVER(PARTITION BY NE.fk_wastewater_structure
-						ORDER BY (mod((2*pi()+(ST_Azimuth(RP.situation3d_geometry,ST_PointN(RE_to.progression3d_geometry,-2))-outs.azimuth))::numeric , 2*pi()::numeric)) ASC) AS idx,
-	  NULL::text AS bottom_level
-      FROM tww_od.reach_point RP
-      LEFT JOIN tww_od.wastewater_networkelement NE ON RP.fk_wastewater_networkelement = NE.obj_id
-	  INNER JOIN tww_od.reach RE_to ON RP.obj_id = RE_to.fk_reach_point_to
-	  LEFT JOIN tww_od.reach RE_from ON RP.obj_id = RE_from.fk_reach_point_from
-      LEFT JOIN tww_od.wastewater_networkelement NE_to ON NE_to.obj_id = RE_to.obj_id
-      LEFT JOIN tww_od.channel CH_to ON NE_to.fk_wastewater_structure = CH_to.obj_id
-      LEFT JOIN tww_vl.channel_function_hierarchic fh ON CH_to.function_hierarchic  = fh.code
-	  LEFT JOIN outputs outs on outs.ws = NE.fk_wastewater_structure AND outs.idx=1
-      WHERE (_all OR NE.fk_wastewater_structure = _obj_id) and fh.tww_use_in_labels
-      -- Outputs
-      UNION
-      SELECT co_level, rpi_level,rpo_level,ws,obj_id,idx,bottom_level FROM outputs
-      -- Bottom
-      UNION
-      SELECT NULL AS co_level, NULL::text AS rpi_level, NULL::text AS rpo_level, ws1.obj_id ws, NULL, NULL, round(wn.bottom_level, 2)::text AS wn_bottom_level
-      FROM tww_od.wastewater_structure ws1
-      LEFT JOIN tww_od.wastewater_node wn ON wn.obj_id = ws1.fk_main_wastewater_node
-      WHERE _all OR ws1.obj_id = _obj_id
-	)AS parts ON ws = ws.obj_id
-    WHERE _all OR ws.obj_id = _obj_id
-	  ) parts
-  GROUP BY ws_obj_id, COALESCE(ws_identifier, '')
-) labeled_ws
-WHERE ws.obj_id = labeled_ws.ws_obj_id;
-
 END
 
 $BODY$
@@ -604,11 +395,11 @@ BEGIN
   SELECT SP.fk_wastewater_structure INTO affected_sp
   FROM tww_od.structure_part SP
   WHERE obj_id = co_obj_id;
-
-  EXECUTE tww_app.update_wastewater_structure_label(affected_sp.fk_wastewater_structure);
-  EXECUTE tww_app.update_depth(affected_sp.fk_wastewater_structure);
-  EXECUTE tww_app.wastewater_structure_update_fk_main_cover(affected_sp.fk_wastewater_structure);
-
+  IF affected_sp.fk_wastewater_structure IS NOT NULL THEN
+	  INSERT INTO tww_od.tww_symbology_quarantine(ws_obj_id) VALUES (affected_sp.fk_wastewater_structure) ON CONFLICT DO NOTHING;
+	  EXECUTE tww_app.wastewater_structure_update_fk_main_cover(affected_sp.fk_wastewater_structure);
+	  EXECUTE tww_app.update_depth(affected_sp.fk_wastewater_structure);
+  END IF;
   RETURN NEW;
 END; $BODY$
 LANGUAGE plpgsql VOLATILE;
@@ -643,7 +434,9 @@ BEGIN
 
   FOREACH _ws_obj_id IN ARRAY _ws_obj_ids
   LOOP
-    EXECUTE tww_app.update_wastewater_structure_label(_ws_obj_id);
+	IF _ws_obj_id IS NOT NULL THEN
+		INSERT INTO tww_od.tww_symbology_quarantine(ws_obj_id) VALUES (_ws_obj_id) ON CONFLICT DO NOTHING;
+	END IF;
   END LOOP;
 
   RETURN NEW;
@@ -679,13 +472,10 @@ BEGIN
   IF COALESCE(OLD.identifier, '') = COALESCE(NEW.identifier, '') THEN
     RETURN NEW;
   END IF;
-  _ws_obj_id = OLD.obj_id;
-  SELECT tww_app.update_wastewater_structure_label(_ws_obj_id) INTO NEW._label;
-
-  IF OLD.fk_main_cover != NEW.fk_main_cover THEN
-    EXECUTE tww_app.update_depth(_ws_obj_id);
+  IF NOT EXISTS(SELECT 1 FROM tww_od.channel WHERE obj_id=OLD.obj_id) THEN
+    _ws_obj_id= OLD.obj_id;
+    INSERT INTO tww_od.tww_symbology_quarantine(ws_obj_id) VALUES (_ws_obj_id) ON CONFLICT DO NOTHING;
   END IF;
-
 
   RETURN NEW;
 END; $BODY$
@@ -718,16 +508,20 @@ BEGIN
       rp_obj_ids = ARRAY[OLD.fk_reach_point_from, OLD.fk_reach_point_to];
   END CASE;
 
-  FOR _ws_obj_id IN
+  INSERT INTO tww_od.tww_symbology_quarantine(ws_obj_id)
     SELECT ws.obj_id
       FROM tww_od.wastewater_structure ws
       LEFT JOIN tww_od.wastewater_networkelement ne ON ws.obj_id = ne.fk_wastewater_structure
       LEFT JOIN tww_od.reach_point rp ON ne.obj_id = rp.fk_wastewater_networkelement
       WHERE rp.obj_id = ANY ( rp_obj_ids )
-  LOOP
-    EXECUTE tww_app.update_wastewater_structure_label(_ws_obj_id);
-    EXECUTE tww_app.update_depth(_ws_obj_id);
-  END LOOP;
+  ON CONFLICT DO NOTHING;
+
+  INSERT INTO tww_od.tww_symbology_quarantine(wn_obj_id)
+    SELECT wn.obj_id
+      FROM tww_od.wastewater_node wn
+      LEFT JOIN tww_od.reach_point rp ON wn.obj_id = rp.fk_wastewater_networkelement
+      WHERE rp.obj_id = ANY ( rp_obj_ids )
+  ON CONFLICT DO NOTHING;
 
   RETURN NEW;
 END; $BODY$
@@ -749,30 +543,38 @@ CREATE OR REPLACE FUNCTION tww_app.symbology_on_wastewater_node_change()
   RETURNS trigger AS
 $BODY$
 DECLARE
-  co_obj_id TEXT;
-  affected_sp RECORD;
+  wn_obj_id TEXT;
+  affected_ws RECORD;
 BEGIN
   CASE
     WHEN TG_OP = 'UPDATE' THEN
-      co_obj_id = OLD.obj_id;
+      wn_obj_id = OLD.obj_id;
     WHEN TG_OP = 'INSERT' THEN
-      co_obj_id = NEW.obj_id;
+      wn_obj_id = NEW.obj_id;
     WHEN TG_OP = 'DELETE' THEN
-      co_obj_id = OLD.obj_id;
+      wn_obj_id = OLD.obj_id;
   END CASE;
 
-  SELECT ne.fk_wastewater_structure INTO affected_sp
+  SELECT ne.fk_wastewater_structure INTO affected_ws
   FROM tww_od.wastewater_networkelement ne
-  WHERE obj_id = co_obj_id;
+  WHERE obj_id = wn_obj_id;
 
-  EXECUTE tww_app.update_depth(affected_sp.fk_wastewater_structure);
-  EXECUTE tww_app.update_wastewater_structure_label(affected_sp.fk_wastewater_structure);
+  INSERT INTO tww_od.tww_symbology_quarantine(wn_obj_id) VALUES
+  (wn_obj_id)
+  ON CONFLICT DO NOTHING;
 
+  IF affected_ws.fk_wastewater_structure IS NOT NULL THEN
+  INSERT INTO tww_od.tww_symbology_quarantine(ws_obj_id) VALUES
+  (affected_ws.fk_wastewater_structure)
+  ON CONFLICT DO NOTHING;
+  END IF;
+
+  EXECUTE tww_app.update_depth(affected_ws.fk_wastewater_structure);
   RETURN NEW;
 END; $BODY$
 LANGUAGE plpgsql VOLATILE;
 
-CREATE TRIGGER on_wasterwaternode_change
+CREATE TRIGGER on_wastewaternode_change
 AFTER INSERT OR UPDATE
   ON tww_od.wastewater_node
 FOR EACH ROW
@@ -812,13 +614,14 @@ BEGIN
 
   FOREACH ne_obj_id IN ARRAY ne_obj_ids
   LOOP
-      SELECT ws.obj_id INTO _ws_obj_id
-      FROM tww_od.wastewater_structure ws
-      LEFT JOIN tww_od.wastewater_networkelement ne ON ws.obj_id = ne.fk_wastewater_structure
-      LEFT JOIN tww_od.reach_point rp ON ne.obj_id = ne_obj_id;
-
-      EXECUTE tww_app.update_wastewater_structure_label(_ws_obj_id);
-      EXECUTE tww_app.update_depth(_ws_obj_id);
+      IF ne_obj_id IS NOT NULL THEN
+		INSERT INTO tww_od.tww_symbology_quarantine(ws_obj_id)
+		  SELECT ws.obj_id
+		  FROM tww_od.wastewater_structure ws
+		  LEFT JOIN tww_od.wastewater_networkelement ne ON ws.obj_id = ne.fk_wastewater_structure
+		  LEFT JOIN tww_od.reach_point rp ON ne.obj_id = ne_obj_id
+		  ON CONFLICT DO NOTHING;
+	  END IF;
   END LOOP;
 
   RETURN NEW;
@@ -870,3 +673,36 @@ BEFORE INSERT OR UPDATE
   ON tww_od.reach
 FOR EACH ROW
   EXECUTE PROCEDURE tww_app.symbology_calculate_reach_length();
+
+
+--------------------------------------------------
+-- Recalculate symbologies and labels
+--------------------------------------------------
+
+CREATE OR REPLACE FUNCTION tww_app.symbology_recalculate()
+  RETURNS trigger AS
+$BODY$
+BEGIN
+  IF NEW.wn_obj_id IS NOT NULL THEN
+    EXECUTE tww_app.update_wastewater_node_symbology(NEW.wn_obj_id);
+	DELETE
+  	FROM tww_od.tww_symbology_quarantine
+  	WHERE wn_obj_id=NEW.wn_obj_id;
+  END IF;
+  IF NEW.ws_obj_id IS NOT NULL THEN
+    EXECUTE tww_app.update_wastewater_structure_label(NEW.ws_obj_id);
+	DELETE
+  	FROM tww_od.tww_symbology_quarantine
+  	WHERE ws_obj_id=NEW.ws_obj_id;
+    END IF;
+  RETURN NULL;
+END;
+$BODY$
+LANGUAGE plpgsql VOLATILE;
+
+CREATE CONSTRAINT TRIGGER recalculate_symbology
+AFTER INSERT
+  ON tww_od.tww_symbology_quarantine
+  DEFERRABLE INITIALLY DEFERRED
+  FOR EACH ROW
+  EXECUTE PROCEDURE tww_app.symbology_recalculate();
