@@ -3,9 +3,12 @@
 ------------------------------------------
 /* PUBLIC */
 DO $$ BEGIN EXECUTE 'REVOKE CONNECT ON DATABASE ' || (SELECT current_database()) || ' FROM PUBLIC'; END $$;
+REVOKE CREATE ON SCHEMA public FROM PUBLIC;
 
 /* Viewer */
 DO $$ BEGIN EXECUTE 'GRANT CONNECT ON DATABASE ' || (SELECT current_database()) || ' TO "tww_viewer"'; END $$;
+REVOKE CREATE ON SCHEMA public FROM tww_viewer;
+
 GRANT USAGE ON SCHEMA tww_od  TO tww_viewer;
 GRANT USAGE ON SCHEMA tww_sys TO tww_viewer;
 GRANT USAGE ON SCHEMA tww_vl  TO tww_viewer;
