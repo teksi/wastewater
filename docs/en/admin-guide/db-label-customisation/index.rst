@@ -11,12 +11,12 @@ The symbology and labeling behaviour of ``tww_app.vw_tww_wastewater_structure`` 
 * ``_channel_function_hierarchic``
 * ``_channel_usage_current``
 
-These two values are stored in ``tww_od.wastewater_node`` and updated by triggers. These triggers are defined so that the database sysadmin can influence how the labelling is executed. 
+These two values are stored in ``tww_od.wastewater_node`` and updated by triggers. These triggers are defined so that the database sysadmin can influence how the labelling is executed.
 
 Labelling
 -----
-Per default, we only label inflows from primary reaches, but all outflows regardless of hierarchy. 
-If you want to include secondary inflows in the labels, this can be achieved by setting the field ``tww_vl.channel_function_hierarchic.tww_include_in_labels`` to ``true`` for all entries. 
+Per default, we only label inflows from primary reaches, but all outflows regardless of hierarchy.
+If you want to include secondary inflows in the labels, this can be achieved by setting the field ``tww_vl.channel_function_hierarchic.tww_include_in_labels`` to ``true`` for all entries.
 
 
 Symbology
