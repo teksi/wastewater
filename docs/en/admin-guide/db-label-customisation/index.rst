@@ -1,4 +1,4 @@
-.. _productionreadiness:
+.. _labelcustomisation:
 
 Customisation of labeling and symbology behaviour
 ==========
