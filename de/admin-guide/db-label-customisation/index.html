@@ -1,0 +1,138 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="de" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Customisation of labeling and symbology behaviour &mdash; TWW dev Dokumentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=419ed147"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/translations.js?v=9bf55d28"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Stichwortverzeichnis" href="../../genindex.html" />
+    <link rel="search" title="Suche" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            TWW
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Dokumentation durchsuchen" aria-label="Dokumentation durchsuchen" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../features-guide/index.html">1. TEKSI Abwasser (TWW)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation-guide/index.html">2. TWW Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user-guide/index.html">3. TWW Benutzerhandbuch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">4. Administratorhandbuch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../extensions-guide/index.html">5. Offizielle TWW-Erweiterungen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tww_swmm/index.html">6. SWMM Data Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translation/index.html">7. Übersetzungen</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">TWW</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Customisation of labeling and symbology behaviour</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/admin-guide/db-label-customisation/index.rst.txt" rel="nofollow"> Quelltext anzeigen</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <blockquote>
+<div></div></blockquote>
+<section id="customisation-of-labeling-and-symbology-behaviour">
+<span id="labelcustomisation"></span><h1>Customisation of labeling and symbology behaviour<a class="headerlink" href="#customisation-of-labeling-and-symbology-behaviour" title="Link to this heading"></a></h1>
+<section id="relevant-fields">
+<h2>Relevant fields<a class="headerlink" href="#relevant-fields" title="Link to this heading"></a></h2>
+<p>The symbology and labeling behaviour of <code class="docutils literal notranslate"><span class="pre">tww_app.vw_tww_wastewater_structure</span></code> depends on the following fields:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_channel_function_hierarchic</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_channel_usage_current</span></code></p></li>
+</ul>
+<p>These two values are stored in <code class="docutils literal notranslate"><span class="pre">tww_od.wastewater_node</span></code> and updated by triggers. These triggers are defined so that the database sysadmin can influence how the labelling is executed.</p>
+</section>
+<section id="labelling">
+<h2>Labelling<a class="headerlink" href="#labelling" title="Link to this heading"></a></h2>
+<p>Per default, we only label inflows from primary reaches, but all outflows regardless of hierarchy.
+If you want to include secondary inflows in the labels, this can be achieved by setting the field <code class="docutils literal notranslate"><span class="pre">tww_vl.channel_function_hierarchic.tww_include_in_labels</span></code> to <code class="docutils literal notranslate"><span class="pre">true</span></code> for all entries.</p>
+</section>
+<section id="symbology">
+<h2>Symbology<a class="headerlink" href="#symbology" title="Link to this heading"></a></h2>
+<p>The relevant fields are taken from the primary wastewater node of a wastewater structure. The corresponding channel values are defined by triggers that use the following priorisation scheme</p>
+<ol class="arabic simple">
+<li><p>incoming channels where <code class="docutils literal notranslate"><span class="pre">tww_vl.channel_usage_current.tww_symbology_inflow_prio</span></code> are <code class="docutils literal notranslate"><span class="pre">true</span></code></p></li>
+<li><p>outgoing channels by <code class="docutils literal notranslate"><span class="pre">tww_vl.channel_function_hierarchic.tww_symbology_order</span></code></p></li>
+<li><p>incoming channels by <code class="docutils literal notranslate"><span class="pre">tww_vl.channel_function_hierarchic.tww_symbology_order</span></code></p></li>
+<li><p>outgoing channels by <code class="docutils literal notranslate"><span class="pre">tww_vl.channel_usage_current.tww_symbology_order</span></code></p></li>
+<li><p>incoming channels by <code class="docutils literal notranslate"><span class="pre">tww_vl.channel_usage_current.tww_symbology_order</span></code></p></li>
+</ol>
+<p>By altering the corresponding field in <code class="docutils literal notranslate"><span class="pre">tww_vl</span></code>, the trigger logic’s behaviour can be influenced.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, The TWW Project www.teksi.ch.</p>
+  </div>
+
+  Erstellt mit <a href="https://www.sphinx-doc.org/">Sphinx</a> mit einem
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    bereitgestellt von <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
