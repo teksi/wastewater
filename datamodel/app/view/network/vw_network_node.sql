@@ -47,4 +47,8 @@ LEFT JOIN cover_levels_per_network_element co ON n.ne_id = co.obj_id AND n.node_
 LEFT JOIN tww_od.wastewater_structure ws ON ws.obj_id = ne.fk_wastewater_structure
 LEFT JOIN tww_od.manhole mh ON mh.obj_id = ws.obj_id;
 
+-- Transfer owner to tww_user so tww_user can refresh without security definer
+ALTER MATERIALIZED VIEW tww_app.vw_network_node OWNER TO tww_user;
+
+
 CREATE INDEX in_tww_app_vw_network_node_situation_geometry ON tww_app.vw_network_node USING gist (situation_geometry);
