@@ -13,7 +13,6 @@ PG_SCHEMAS = ("pg_toast", "information_schema", "pg_catalog", "public")
 ILI_SCHEMAS = ("pg2ili_abwasser",)
 
 
-
 class TestSchemas(unittest.TestCase, DbTestBase):
     @classmethod
     def tearDownClass(cls):
