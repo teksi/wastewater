@@ -10,7 +10,7 @@ from .utils import DEFAULT_PG_SERVICE, DbTestBase
 
 TWW_SCHEMAS = ("tww_sys", "tww_vl", "tww_od", "tww_cfg", "tww_app")
 PG_SCHEMAS = ("pg_toast", "information_schema", "pg_catalog", "public")
-ILI_SCHEMAS = ("pg2ili_abwasser")
+ILI_SCHEMAS = "pg2ili_abwasser"
 
 
 class TestSchemas(unittest.TestCase, DbTestBase):
