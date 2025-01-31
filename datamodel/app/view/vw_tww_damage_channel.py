@@ -38,8 +38,8 @@ def vw_tww_damage_channel(
         ws.identifier AS ws_identifier,
         ST_LineMerge(ST_Collect(ST_Force2D(re.progression3d_geometry))) AS ch_progression2d_geometry,
         CASE
-          WHEN re_2.obj_id IS NULL THEN 't'::text
-          ELSE 'f'::text
+          WHEN re_2.obj_id IS NULL THEN 'upstream'::text
+          ELSE 'downstream'::text
         END AS direction
         FROM tww_od.damage_channel dc
              LEFT JOIN tww_od.damage da ON da.obj_id::text = dc.obj_id::text
@@ -58,7 +58,7 @@ def vw_tww_damage_channel(
         base.ws_identifier,
         ST_LineInterpolatePoint(base.ch_progression2d_geometry,
         CASE
-            WHEN base.direction = 'f'
+            WHEN base.direction = 'downstream'
             THEN LEAST(base.channel_distance / ST_Length(base.ch_progression2d_geometry), 1)
             ELSE 1::double precision - LEAST(base.channel_distance / ST_Length(base.ch_progression2d_geometry), 1)
         END) AS situation2d_geometry,
