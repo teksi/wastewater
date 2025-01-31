@@ -61,7 +61,8 @@ def vw_tww_damage_channel(
             WHEN base.direction = 'f'
             THEN LEAST(base.channel_distance / ST_Length(base.ch_progression2d_geometry), 1)
             ELSE 1::double precision - LEAST(base.channel_distance / ST_Length(base.ch_progression2d_geometry), 1)
-        END) AS situation2d_geometry
+        END) AS situation2d_geometry,
+        base.direction
         FROM base;
     """.format(
         dc_cols=select_columns(
