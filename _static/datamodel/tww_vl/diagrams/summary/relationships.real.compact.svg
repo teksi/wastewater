@@ -908,14 +908,14 @@
 <text text-anchor="start" x="103.5" y="-1192.2" font-family="Helvetica,sans-Serif" font-size="11.00">code</text>
 <polygon fill="none" stroke="black" points="71.5,-1166 71.5,-1184 284.5,-1184 284.5,-1166 71.5,-1166"/>
 <text text-anchor="start" x="74.5" y="-1172.2" font-family="Helvetica,sans-Serif" font-size="11.00">...</text>
-<polygon fill="#ffffff" stroke="transparent" points="71.5,-1148 71.5,-1166 166.5,-1166 166.5,-1148 71.5,-1148"/>
-<polygon fill="none" stroke="black" points="71.5,-1148 71.5,-1166 166.5,-1166 166.5,-1148 71.5,-1148"/>
+<polygon fill="#ffffff" stroke="transparent" points="71.5,-1148 71.5,-1166 150.5,-1166 150.5,-1148 71.5,-1148"/>
+<polygon fill="none" stroke="black" points="71.5,-1148 71.5,-1166 150.5,-1166 150.5,-1148 71.5,-1148"/>
 <text text-anchor="start" x="74.5" y="-1154.2" font-family="Helvetica,sans-Serif" font-size="11.00"> &#160;</text>
-<polygon fill="#ffffff" stroke="transparent" points="166.5,-1148 166.5,-1166 220.5,-1166 220.5,-1148 166.5,-1148"/>
-<polygon fill="none" stroke="black" points="166.5,-1148 166.5,-1166 220.5,-1166 220.5,-1148 166.5,-1148"/>
-<text text-anchor="start" x="210.5" y="-1154.2" font-family="Helvetica,sans-Serif" font-size="11.00"> &#160;</text>
-<polygon fill="#ffffff" stroke="transparent" points="220.5,-1148 220.5,-1166 284.5,-1166 284.5,-1148 220.5,-1148"/>
-<polygon fill="none" stroke="black" points="220.5,-1148 220.5,-1166 284.5,-1166 284.5,-1148 220.5,-1148"/>
+<polygon fill="#ffffff" stroke="transparent" points="150.5,-1148 150.5,-1166 229.5,-1166 229.5,-1148 150.5,-1148"/>
+<polygon fill="none" stroke="black" points="150.5,-1148 150.5,-1166 229.5,-1166 229.5,-1148 150.5,-1148"/>
+<text text-anchor="start" x="186.5" y="-1154.2" font-family="Helvetica,sans-Serif" font-size="11.00">14 rows</text>
+<polygon fill="#ffffff" stroke="transparent" points="229.5,-1148 229.5,-1166 284.5,-1166 284.5,-1148 229.5,-1148"/>
+<polygon fill="none" stroke="black" points="229.5,-1148 229.5,-1166 284.5,-1166 284.5,-1148 229.5,-1148"/>
 <text text-anchor="start" x="265.5" y="-1154.2" font-family="Helvetica,sans-Serif" font-size="11.00">1 &gt;</text>
 </a>
 </g>
@@ -2042,25 +2042,25 @@
 <g id="node79" class="node">
 <title>channel_usage_current</title>
 <g id="a_node79"><a xlink:href="../../tables/channel_usage_current.html" xlink:title="channel_usage_current" target="_top">
-<polygon fill="#ffffff" stroke="transparent" points="87,-845 87,-925 268,-925 268,-845 87,-845"/>
-<polygon fill="#f5f5f5" stroke="transparent" points="87.5,-903 87.5,-925 268.5,-925 268.5,-903 87.5,-903"/>
-<polygon fill="none" stroke="black" points="87.5,-903 87.5,-925 268.5,-925 268.5,-903 87.5,-903"/>
-<text text-anchor="start" x="92.5" y="-912.2" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00">channel_usage_current</text>
-<text text-anchor="start" x="229.5" y="-911.2" font-family="Helvetica,sans-Serif" font-size="11.00">[table]</text>
-<polygon fill="none" stroke="black" points="87.5,-881 87.5,-903 268.5,-903 268.5,-881 87.5,-881"/>
-<image xlink:href="../../images/primaryKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="92.5" y="-898"/>
-<text text-anchor="start" x="119.5" y="-889.2" font-family="Helvetica,sans-Serif" font-size="11.00">code</text>
-<polygon fill="none" stroke="black" points="87.5,-863 87.5,-881 268.5,-881 268.5,-863 87.5,-863"/>
-<text text-anchor="start" x="90.5" y="-869.2" font-family="Helvetica,sans-Serif" font-size="11.00">...</text>
-<polygon fill="#ffffff" stroke="transparent" points="87.5,-845 87.5,-863 166.5,-863 166.5,-845 87.5,-845"/>
-<polygon fill="none" stroke="black" points="87.5,-845 87.5,-863 166.5,-863 166.5,-845 87.5,-845"/>
-<text text-anchor="start" x="90.5" y="-851.2" font-family="Helvetica,sans-Serif" font-size="11.00"> &#160;</text>
-<polygon fill="#ffffff" stroke="transparent" points="166.5,-845 166.5,-863 212.5,-863 212.5,-845 166.5,-845"/>
-<polygon fill="none" stroke="black" points="166.5,-845 166.5,-863 212.5,-863 212.5,-845 166.5,-845"/>
-<text text-anchor="start" x="202.5" y="-851.2" font-family="Helvetica,sans-Serif" font-size="11.00"> &#160;</text>
-<polygon fill="#ffffff" stroke="transparent" points="212.5,-845 212.5,-863 268.5,-863 268.5,-845 212.5,-845"/>
-<polygon fill="none" stroke="black" points="212.5,-845 212.5,-863 268.5,-863 268.5,-845 212.5,-845"/>
-<text text-anchor="start" x="249.5" y="-851.2" font-family="Helvetica,sans-Serif" font-size="11.00">1 &gt;</text>
+<polygon fill="#ffffff" stroke="transparent" points="84,-845 84,-925 271,-925 271,-845 84,-845"/>
+<polygon fill="#f5f5f5" stroke="transparent" points="84.5,-903 84.5,-925 271.5,-925 271.5,-903 84.5,-903"/>
+<polygon fill="none" stroke="black" points="84.5,-903 84.5,-925 271.5,-925 271.5,-903 84.5,-903"/>
+<text text-anchor="start" x="89.5" y="-912.2" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00">channel_usage_current</text>
+<text text-anchor="start" x="232.5" y="-911.2" font-family="Helvetica,sans-Serif" font-size="11.00">[table]</text>
+<polygon fill="none" stroke="black" points="84.5,-881 84.5,-903 271.5,-903 271.5,-881 84.5,-881"/>
+<image xlink:href="../../images/primaryKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="89.5" y="-898"/>
+<text text-anchor="start" x="104.5" y="-889.2" font-family="Helvetica,sans-Serif" font-size="11.00">code</text>
+<polygon fill="none" stroke="black" points="84.5,-863 84.5,-881 271.5,-881 271.5,-863 84.5,-863"/>
+<text text-anchor="start" x="87.5" y="-869.2" font-family="Helvetica,sans-Serif" font-size="11.00">...</text>
+<polygon fill="#ffffff" stroke="transparent" points="84.5,-845 84.5,-863 166.5,-863 166.5,-845 84.5,-845"/>
+<polygon fill="none" stroke="black" points="84.5,-845 84.5,-863 166.5,-863 166.5,-845 84.5,-845"/>
+<text text-anchor="start" x="87.5" y="-851.2" font-family="Helvetica,sans-Serif" font-size="11.00"> &#160;</text>
+<polygon fill="#ffffff" stroke="transparent" points="166.5,-845 166.5,-863 214.5,-863 214.5,-845 166.5,-845"/>
+<polygon fill="none" stroke="black" points="166.5,-845 166.5,-863 214.5,-863 214.5,-845 166.5,-845"/>
+<text text-anchor="start" x="204.5" y="-851.2" font-family="Helvetica,sans-Serif" font-size="11.00"> &#160;</text>
+<polygon fill="#ffffff" stroke="transparent" points="214.5,-845 214.5,-863 271.5,-863 271.5,-845 214.5,-845"/>
+<polygon fill="none" stroke="black" points="214.5,-845 214.5,-863 271.5,-863 271.5,-845 214.5,-845"/>
+<text text-anchor="start" x="252.5" y="-851.2" font-family="Helvetica,sans-Serif" font-size="11.00">1 &gt;</text>
 </a>
 </g>
 </g>
@@ -5342,9 +5342,9 @@
 <!-- tww_od.channel&#45;&gt;channel_usage_current -->
 <g id="edge38" class="edge">
 <title>tww_od.channel:w&#45;&gt;channel_usage_current:e</title>
-<path fill="none" stroke="black" d="M468.49,-1089.01C396.97,-1078.51 420.76,-987.44 355,-935 321.75,-908.48 312.04,-892 269.5,-892"/>
-<polygon fill="black" stroke="black" points="475.02,-1089.45 482.75,-1093.59 479.01,-1089.73 483,-1090 483,-1090 483,-1090 479.01,-1089.73 483.25,-1086.41 475.02,-1089.45 475.02,-1089.45"/>
-<ellipse fill="none" stroke="black" cx="471.83" cy="-1089.23" rx="3.2" ry="3.2"/>
+<path fill="none" stroke="black" d="M468.49,-1089.01C396.92,-1078.57 420.37,-987.92 355,-935 322.86,-908.98 313.85,-892 272.5,-892"/>
+<polygon fill="black" stroke="black" points="475.02,-1089.46 482.76,-1093.59 479.01,-1089.73 483,-1090 483,-1090 483,-1090 479.01,-1089.73 483.24,-1086.41 475.02,-1089.46 475.02,-1089.46"/>
+<ellipse fill="none" stroke="black" cx="471.83" cy="-1089.24" rx="3.2" ry="3.2"/>
 </g>
 <!-- tww_od.channel&#45;&gt;channel_bedding_encasement -->
 <g id="edge32" class="edge">
