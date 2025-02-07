@@ -714,7 +714,7 @@
             <column ascending="true" name="code"/>
          </index>
       </table>
-      <table name="channel_function_hierarchic" numRows="14" remarks="" schema="tww_vl" type="TABLE">
+      <table name="channel_function_hierarchic" remarks="" schema="tww_vl" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
             <child column="function_hierarchic" foreignKey="fkey_vl_channel_function_hierarchic" implied="false" onDeleteCascade="false" schema="tww_od" table="channel"/>
          </column>
@@ -950,7 +950,7 @@
             <column ascending="true" name="code"/>
          </index>
       </table>
-      <table name="damage_channel_channel_damage_code" numRows="311" remarks="" schema="tww_vl" type="TABLE">
+      <table name="damage_channel_channel_damage_code" remarks="" schema="tww_vl" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
             <child column="channel_damage_code" foreignKey="fkey_vl_damage_channel_channel_damage_code" implied="false" onDeleteCascade="false" schema="tww_od" table="damage_channel"/>
          </column>
@@ -992,7 +992,7 @@
             <column ascending="true" name="code"/>
          </index>
       </table>
-      <table name="damage_manhole_manhole_damage_code" numRows="322" remarks="" schema="tww_vl" type="TABLE">
+      <table name="damage_manhole_manhole_damage_code" remarks="" schema="tww_vl" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
             <child column="manhole_damage_code" foreignKey="fkey_vl_damage_manhole_manhole_damage_code" implied="false" onDeleteCascade="false" schema="tww_od" table="damage_manhole"/>
          </column>
@@ -1412,7 +1412,7 @@
             <column ascending="true" name="code"/>
          </index>
       </table>
-      <table name="file_classname" numRows="110" remarks="" schema="tww_vl" type="TABLE">
+      <table name="file_classname" remarks="" schema="tww_vl" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
             <child column="classname" foreignKey="fkey_vl_file_classname" implied="false" onDeleteCascade="false" schema="tww_od" table="file"/>
          </column>
