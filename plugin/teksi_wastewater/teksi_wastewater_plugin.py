@@ -680,6 +680,7 @@ class TeksiWastewaterPlugin:
                 level=Qgis.Critical,
             )
 
+        self.logger.debug(f"dataprovider of vw_tww_wastewater_structure: {pg_layer.dataProvider().uri()}")
         DatabaseUtils.databaseConfig.PGSERVICE = pg_layer.dataProvider().uri().service()
         DatabaseUtils.databaseConfig.PGHOST = pg_layer.dataProvider().uri().host()
         DatabaseUtils.databaseConfig.PGPORT = pg_layer.dataProvider().uri().port()
