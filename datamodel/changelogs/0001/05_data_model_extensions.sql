@@ -116,19 +116,31 @@ SET tww_symbology_order=
 		 ]
 	 ,code);
 
+-- this column is an extension to the VSA data model and facilitates filtering out primary features
+ALTER TABLE tww_vl.channel_function_hierarchic ADD COLUMN tww_is_primary bool DEFAULT FALSE;
+UPDATE tww_vl.channel_function_hierarchic
+SET tww_is_primary=true
+WHERE left(value_en, 4)='pwwf';
+UPDATE tww_vl.channel_function_hierarchic
+SET tww_is_primary=false
+WHERE left(value_en, 4)<>'pwwf';
+COMMENT ON COLUMN tww_vl.channel_function_hierarchic.tww_is_primary IS 'True when part of the primary network. Facilitates exporting primary elements only.
+Not part of the VSA-DSS data model, added solely for TEKSI Wastewater & GEP';
+
 -- this column is an extension to the VSA data model defines which function_hierarchic to use in labels
 ALTER TABLE tww_vl.channel_function_hierarchic ADD COLUMN tww_use_in_labels bool DEFAULT false;
 UPDATE tww_vl.channel_function_hierarchic
 SET tww_use_in_labels= true WHERE value_en like 'pwwf%';
+
 
 -- this column is an extension to the VSA data model defines which status to use in labels
 ALTER TABLE tww_vl.wastewater_structure_status ADD COLUMN tww_use_in_labels bool DEFAULT false;
 UPDATE tww_vl.wastewater_structure_status
 SET tww_use_in_labels= true WHERE code=ANY('{8493,6530,6533}');
 
--- this column is an extension to the VSA data model defines for which function_hierarchic the inflow is prioritized over the outflow
-ALTER TABLE tww_vl.channel_function_hierarchic ADD COLUMN tww_symbology_inflow_prio bool DEFAULT false;
-UPDATE tww_vl.channel_function_hierarchic
+-- this column is an extension to the VSA data model defines which inflow usage_current is prioritised over the outflow
+ALTER TABLE tww_vl.channel_usage_current ADD COLUMN tww_symbology_inflow_prio bool DEFAULT false;
+UPDATE tww_vl.channel_usage_current
 SET tww_symbology_inflow_prio= true WHERE code =4516;
 
 
@@ -153,13 +165,33 @@ SET tww_symbology_order=
 		 ]
 	 ,code);
 
--- this column is an extension to the VSA data model and facilitates filtering out primary features
-ALTER TABLE tww_vl.channel_function_hierarchic ADD COLUMN tww_is_primary bool DEFAULT FALSE;
-UPDATE tww_vl.channel_function_hierarchic
-SET tww_is_primary=true
-WHERE left(value_en, 4)='pwwf';
-UPDATE tww_vl.channel_function_hierarchic
-SET tww_is_primary=false
-WHERE left(value_en, 4)<>'pwwf';
-COMMENT ON COLUMN tww_vl.channel_function_hierarchic.tww_is_primary IS 'True when part of the primary network. Facilitates exporting primary elements only.
-Not part of the VSA-DSS data model, added solely for TEKSI Wastewater & GEP';
+
+-- table wastewater_node is extended to hold additional attributes necessary for symbology reasons
+-- extended attributes are started with an underscore
+-- _usage_current is necessary for coloring the wastewater_node symbols
+-- _function_hierarchic is necessary for scale-based filtering (display minor wastewater_nodes only at larger scales)
+
+-- TABLE wastewater_node
+ALTER TABLE tww_od.wastewater_node ADD COLUMN _usage_current integer;
+COMMENT ON COLUMN tww_od.wastewater_node._usage_current IS 'not part of the VSA-DSS data model
+added solely for TEKSI Wastewater & GEP
+has to be updated by triggers';
+ALTER TABLE tww_od.wastewater_node ADD COLUMN _function_hierarchic integer;
+COMMENT ON COLUMN tww_od.wastewater_node._function_hierarchic IS 'not part of the VSA-DSS data model
+added solely for TEKSI Wastewater & GEP
+has to be updated by triggers';
+ALTER TABLE tww_od.wastewater_node ADD COLUMN _status integer;
+COMMENT ON COLUMN tww_od.wastewater_node._status IS 'not part of the VSA-DSS data model
+added solely for TEKSI Wastewater & GEP
+has to be updated by triggers';
+
+ALTER TABLE tww_od.organisation ADD COLUMN tww_active bool DEFAULT FALSE;
+COMMENT ON COLUMN tww_od.organisation.tww_active IS 'not part of the VSA-DSS data model
+added solely for TEKSI Wastewater & GEP
+used to filter organisations';
+
+ALTER TABLE tww_od.organisation ADD COLUMN tww_local_extension bool DEFAULT FALSE;
+COMMENT ON COLUMN tww_od.organisation.tww_local_extension IS 'not part of the VSA-DSS data model
+added solely for TEKSI Wastewater & GEP
+used to map non-harmonized organisations to private on export';
+

@@ -2,7 +2,7 @@
 table: tww_od.maintenance_event
 view_name: vw_tww_maintenance_event
 view_schema: tww_app
-allow_type_change: false
+allow_type_change: true
 allow_parent_only: false
 pkey_default_value: True
 
