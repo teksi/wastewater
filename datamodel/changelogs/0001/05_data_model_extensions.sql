@@ -194,4 +194,3 @@ ALTER TABLE tww_od.organisation ADD COLUMN tww_local_extension bool DEFAULT FALS
 COMMENT ON COLUMN tww_od.organisation.tww_local_extension IS 'not part of the VSA-DSS data model
 added solely for TEKSI Wastewater & GEP
 used to map non-harmonized organisations to private on export';
-
