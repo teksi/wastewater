@@ -165,22 +165,3 @@ SET tww_symbology_order=
 		 ]
 	 ,code);
 
-
--- table wastewater_node is extended to hold additional attributes necessary for symbology reasons
--- extended attributes are started with an underscore
--- _usage_current is necessary for coloring the wastewater_node symbols
--- _function_hierarchic is necessary for scale-based filtering (display minor wastewater_nodes only at larger scales)
-
--- TABLE wastewater_node
-ALTER TABLE tww_od.wastewater_node ADD COLUMN _usage_current integer;
-COMMENT ON COLUMN tww_od.wastewater_node._usage_current IS 'not part of the VSA-DSS data model
-added solely for TEKSI Wastewater & GEP
-has to be updated by triggers';
-ALTER TABLE tww_od.wastewater_node ADD COLUMN _function_hierarchic integer;
-COMMENT ON COLUMN tww_od.wastewater_node._function_hierarchic IS 'not part of the VSA-DSS data model
-added solely for TEKSI Wastewater & GEP
-has to be updated by triggers';
-ALTER TABLE tww_od.wastewater_node ADD COLUMN _status integer;
-COMMENT ON COLUMN tww_od.wastewater_node._status IS 'not part of the VSA-DSS data model
-added solely for TEKSI Wastewater & GEP
-has to be updated by triggers';
