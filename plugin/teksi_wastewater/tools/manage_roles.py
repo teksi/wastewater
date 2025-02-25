@@ -101,7 +101,6 @@ def grant_privileges(pg_service: str, modulename: str, db_spec_roles: Optional[b
         f"{modulename}_app": roles["user"],
         f"{modulename}_sys": roles["sysadmin"],
         f"{modulename}_vl": roles["manager"],
-        f"{modulename}_cfg": roles["manager"],
     }
     for key in roles:
         cur.execute(f"SELECT 1 FROM pg_roles WHERE rolname='{roles[key]}'")
@@ -143,7 +142,6 @@ def revoke_privileges(pg_service: str, modulename: str, db_spec_roles: Optional[
         f"{modulename}_app",
         f"{modulename}_sys",
         f"{modulename}_vl",
-        f"{modulename}_cfg",
     ]
 
     roles, _ = get_roles(pg_service, modulename, db_spec_roles)
