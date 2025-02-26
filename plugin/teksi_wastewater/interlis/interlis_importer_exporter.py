@@ -448,17 +448,13 @@ class InterlisImporterExporter:
                     f"SELECT schema_name FROM information_schema.schemata WHERE schema_name = '{config.ABWASSER_SCHEMA}';"
                 )
                 if cursor.rowcount == 0:
-                    cursor.execute(
-                        f"CREATE SCHEMA {config.ABWASSER_SCHEMA} CASCADE;"
-                    )
+                    cursor.execute(f"CREATE SCHEMA {config.ABWASSER_SCHEMA} CASCADE;")
                 else:
                     cursor.execute(
                         f"SELECT table_name FROM information_schema.tables WHERE table_schema = '{config.ABWASSER_SCHEMA}';"
                     )
                     if recreate_tables:
-                        logger.info(
-                            f"Deleting all tables in schema {config.ABWASSER_SCHEMA} "
-                        )
+                        logger.info(f"Deleting all tables in schema {config.ABWASSER_SCHEMA} ")
                         for row in cursor.fetchall():
                             cursor.execute(
                                 f"DELETE TABLE {config.ABWASSER_SCHEMA}.{row[0]} CASCADE;"
@@ -473,7 +469,6 @@ class InterlisImporterExporter:
                                 f"TRUNCATE TABLE {config.ABWASSER_SCHEMA}.{row[0]} CASCADE;"
                             )
                         return
-
 
     def _create_ili_schema(
         self, models, ext_columns_no_constraints=False, create_basket_col=False
