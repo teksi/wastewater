@@ -85,7 +85,7 @@ class InterlisImporterExporter:
 
         # Prepare the temporary ili2pg model
         self._progress_done(10, "Creating ili schema...")
-        self._clear_ili_schema(recreate_schema=True)
+        self._clear_ili_schema(recreate_schema=False)
 
         self._progress_done(20)
         self._create_ili_schema(
@@ -177,7 +177,7 @@ class InterlisImporterExporter:
             self.base_log_path = None
 
         self._progress_done(5, "Clearing ili schema...")
-        self._clear_ili_schema(recreate_schema=True)
+        self._clear_ili_schema(recreate_schema=False)
 
         self._progress_done(15, "Creating ili schema...")
         create_basket_col = False
