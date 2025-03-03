@@ -2730,7 +2730,9 @@ class InterlisExporterToIntermediateSchema:
                 query.join(self.model_classes_tww_od.disposal)
                 .join(self.model_classes_tww_od.wastewater_structure)
                 .join(self.model_classes_tww_od.wastewater_networkelement)
-                .filter(self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids))
+                .filter(
+                    self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+                )
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
