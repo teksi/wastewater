@@ -442,33 +442,29 @@ class InterlisImporterExporter:
         with DatabaseUtils.PsycopgConnection() as connection:
             cursor = connection.cursor()
 
-            if not recreate_tables:
-                # If the tables should not be dropped, we truncate
+            cursor.execute(
+                f"SELECT schema_name FROM information_schema.schemata WHERE schema_name = '{config.ABWASSER_SCHEMA}';"
+            )
+            if cursor.rowcount == 0:
+                cursor.execute(f"CREATE SCHEMA {config.ABWASSER_SCHEMA} CASCADE;")
+            else:
                 cursor.execute(
-                    f"SELECT schema_name FROM information_schema.schemata WHERE schema_name = '{config.ABWASSER_SCHEMA}';"
+                    f"SELECT table_name FROM information_schema.tables WHERE table_schema = '{config.ABWASSER_SCHEMA}';"
                 )
-                if cursor.rowcount == 0:
-                    cursor.execute(f"CREATE SCHEMA {config.ABWASSER_SCHEMA} CASCADE;")
-                else:
+                logger.info(
+                    f"Truncating all tables in schema {config.ABWASSER_SCHEMA}"
+                )
+                for row in cursor.fetchall():
                     cursor.execute(
-                        f"SELECT table_name FROM information_schema.tables WHERE table_schema = '{config.ABWASSER_SCHEMA}';"
+                        f"TRUNCATE TABLE {config.ABWASSER_SCHEMA}.{row[0]} CASCADE;"
                     )
-                    if recreate_tables:
-                        logger.info(f"Deleting all tables in schema {config.ABWASSER_SCHEMA} ")
-                        for row in cursor.fetchall():
-                            cursor.execute(
-                                f"DELETE TABLE {config.ABWASSER_SCHEMA}.{row[0]} CASCADE;"
-                            )
-                        return
-                    else:
-                        logger.info(
-                            f"Schema {config.ABWASSER_SCHEMA} already exists, we truncate instead"
+                if recreate_tables:
+                    logger.info(f"Deleting all tables in schema {config.ABWASSER_SCHEMA} ")
+                    for row in cursor.fetchall():
+                        cursor.execute(
+                            f"DELETE TABLE {config.ABWASSER_SCHEMA}.{row[0]} CASCADE;"
                         )
-                        for row in cursor.fetchall():
-                            cursor.execute(
-                                f"TRUNCATE TABLE {config.ABWASSER_SCHEMA}.{row[0]} CASCADE;"
-                            )
-                        return
+
 
     def _create_ili_schema(
         self, models, ext_columns_no_constraints=False, create_basket_col=False
