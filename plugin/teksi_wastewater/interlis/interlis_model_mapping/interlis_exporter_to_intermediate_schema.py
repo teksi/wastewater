@@ -2726,12 +2726,11 @@ class InterlisExporterToIntermediateSchema:
     def _export_re_building_group_disposal(self):
         query = self.tww_session.query(self.model_classes_tww_od.re_building_group_disposal)
         if self.filtered:
-            query = query.join(
-                self.model_classes_tww_od.disposal,
-                self.model_classes_tww_od.wastewater_structure,
-                self.model_classes_tww_od.wastewater_networkelement,
-            ).filter(
-                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            query = (
+                query.join(self.model_classes_tww_od.disposal)
+                .join(self.model_classes_tww_od.wastewater_structure)
+                .join(self.model_classes_tww_od.wastewater_networkelement)
+                .filter(self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids))
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
