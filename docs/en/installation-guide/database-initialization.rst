@@ -26,8 +26,8 @@ Create  minimal roles and access
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 TWW roles are defined in the
-+ `12_0_roles.sql <https://github.com/TWW/datamodel/blob/master/12_0_roles.sql>`_ (per cluster)
-+ `12_1_roles.sql <https://github.com/TWW/datamodel/blob/master/12_1_roles.sql>`_ (per database)
++ `12_0_roles.sql <https://github.com/teksi/wastewater/tree/main/datamodel/12_0_roles.sql>`_ (per cluster)
++ `12_1_roles.sql <https://github.com/teksi/wastewater/tree/main/datamodel/12_1_roles.sql>`_ (per database)
 
 `12_0_roles.sql` has to be run before restoring the demodata database.
 `12_1_roles.sql` has to be run if you initialize your module with with the commandline.
@@ -134,24 +134,9 @@ You also have the option to restore the latest empty data model (no demo data).
     createdb -U postgres -p %port% %db%
 
     psql -U postgres -h localhost -p %port% -d %db% -f %filename%
-    psql -U postgres -h localhost -p %port% -d %db% -c "GRANT USAGE ON SCHEMA public TO ""tww"""
-    psql -U postgres -h localhost -p %port% -d %db% -c "GRANT USAGE ON SCHEMA tww_vl TO ""tww"""
-    psql -U postgres -h localhost -p %port% -d %db% -c "GRANT USAGE ON SCHEMA tww_od TO ""tww"""
-    psql -U postgres -h localhost -p %port% -d %db% -c "GRANT USAGE ON SCHEMA tww_import TO ""tww"""
-    psql -U postgres -h localhost -p %port% -d %db% -c "GRANT USAGE ON SCHEMA tww_swmm TO ""tww"""
-    psql -U postgres -h localhost -p %port% -d %db% -c "GRANT USAGE ON SCHEMA tww_sys TO ""tww"""
 
-    psql -U postgres -h localhost -p %port% -d %db% -c "GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA tww_od TO ""tww""";
-    psql -U postgres -h localhost -p %port% -d %db% -c "GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA tww_swmm TO ""tww""";
-    psql -U postgres -h localhost -p %port% -d %db% -c "GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA tww_import TO ""tww""";
-    psql -U postgres -h localhost -p %port% -d %db% -c "GRANT SELECT ON ALL TABLES IN SCHEMA tww_vl TO ""tww""";
-    psql -U postgres -h localhost -p %port% -d %db% -c "GRANT SELECT ON ALL TABLES IN SCHEMA tww_sys TO ""tww""";
-    psql -U postgres -h localhost -p %port% -d %db% -c "GRANT SELECT ON ALL TABLES IN SCHEMA public TO ""tww"""
-
-    psql -U postgres -h localhost -p %port% -d %db% -c "GRANT USAGE ON ALL SEQUENCES IN SCHEMA tww_od TO ""tww"""
-
-    psql -U postgres -h localhost -p %port% -d %db% -c "REFRESH MATERIALIZED VIEW tww_od.vw_network_node"
-    psql -U postgres -h localhost -p %port% -d %db% -c "REFRESH MATERIALIZED VIEW tww_od.vw_network_segment"
+    psql -U postgres -h localhost -p %port% -d %db% -c "REFRESH MATERIALIZED VIEW tww_app.vw_network_node"
+    psql -U postgres -h localhost -p %port% -d %db% -c "REFRESH MATERIALIZED VIEW tww_app.vw_network_segment"
 
     PAUSE
 
@@ -160,7 +145,7 @@ You also have the option to restore the latest empty data model (no demo data).
 
  You are free to choose any database name.
 
-* Update privileges for the tww_od, tww_sys, tww_vl, tww_network, tww_import, tww_swmm schema as described in the chapter `Create minimal roles and access`.
+* Update privileges for the tww_od, tww_sys, tww_vl, tww_cfg, tww_app schema as described in the chapter `Create minimal roles and access`.
 
 
 Generate the data model under Linux
