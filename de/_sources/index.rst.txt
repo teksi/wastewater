@@ -25,7 +25,6 @@ Contents
    user-guide/index
    admin-guide/index
    extensions-guide/index
-   wincan2tww/index
    tww_swmm/index
    translation/index
 
