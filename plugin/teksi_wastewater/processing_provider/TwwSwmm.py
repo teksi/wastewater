@@ -1269,7 +1269,7 @@ class TwwSwmm:
         sql = """
         UPDATE tww_od.reach r
         SET swmm_default_coefficient_of_friction = f.coefficient_of_friction
-        FROM tww_cfg.reach_coefficient_of_friction f
+        FROM tww_od.reach_coefficient_of_friction f
         WHERE r.swmm_default_coefficient_of_friction isnull AND f.fk_material = r.material;
         """
         try:
@@ -1293,7 +1293,7 @@ class TwwSwmm:
         sql = """
         UPDATE tww_od.reach r
         SET swmm_default_coefficient_of_friction = f.coefficient_of_friction
-        FROM tww_cfg.reach_coefficient_of_friction f
+        FROM tww_od.reach_coefficient_of_friction f
         WHERE f.fk_material = r.material;
         """
         try:
