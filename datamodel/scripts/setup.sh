@@ -45,7 +45,7 @@ psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f ${DIR}/12_0_roles.sql
 psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f ${DIR}/12_1_roles.sql
 
 
-VERSION=$(cat ${DIR}/pum_version.txt)
+VERSION=$(cat ${DIR}/scripts/pum_version.txt)
 pum baseline -p ${PGSERVICE} -t tww_sys.pum_info -d ${DIR}/update/ -b ${VERSION}
 
 ${DIR}/app/create_app.py --pg_service ${PGSERVICE} --srid ${SRID}
