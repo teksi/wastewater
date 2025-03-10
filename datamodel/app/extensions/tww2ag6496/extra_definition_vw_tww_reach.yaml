@@ -1,0 +1,33 @@
+joins:
+  agxx_wastewater_networkelement:
+    table: tww_od.agxx_wastewater_networkelement
+    alias: agxx_ne
+    join_on: "agxx_ne.obj_id = re.obj_id"
+    skip_columns: ["uuid","obj_id"]
+    remap_columns:
+      obj_id: obj_id
+    prefix: ne_
+  agxx_last_modification:
+    table: tww_od.agxx_last_modification
+    alias: agxx_lm
+    join_on: "agxx_lm.obj_id = re.obj_id"
+    skip_columns: ["uuid","obj_id"]
+    remap_columns:
+      obj_id: obj_id
+    prefix: ne_
+  agxx_wastewater_structure:
+    table: tww_od.agxx_wastewater_structure
+    alias: agxx_ws
+    join_on: "agxx_ws.obj_id = ws.obj_id"
+    skip_columns: ["uuid","obj_id"]
+    remap_columns:
+      obj_id: ws_obj_id
+    prefix: ws_ 
+  agxx_reach:
+    table: tww_od.agxx_reach
+    alias: agxx_re
+    join_on: "agxx_re.obj_id = re.obj_id"
+    skip_columns: ["uuid","obj_id"]
+    remap_columns:
+      obj_id: obj_id
+    prefix: re_

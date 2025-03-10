@@ -77,7 +77,8 @@ def load_extension(
     conn.commit()
     conn.close()
 
-    directory = config.get("directory", None)
+    directory = config.get("directory", None)::str
+    yaml_files=[]
     if directory:
         files = os.listdir(Path(__file__).parent.resolve() / directory)
         files.sort()
@@ -89,6 +90,8 @@ def load_extension(
             if filename.endswith(".py"):
                 print(f"Running {filename}")
                 run_py_file(os.path.join(directory, filename), variables)
+            if filename.endswith(".yaml"):
+                yaml_files.append(filename)
 
     # re-create symbology triggers
     conn = psycopg.connect(f"service={pg_service}")
@@ -96,6 +99,7 @@ def load_extension(
     cursor.execute(f"SELECT {module_name}_app.alter_symbology_triggers('enable');")
     conn.commit()
     conn.close()
+    return directory, yaml_files
 
 
 if __name__ == "__main__":
@@ -110,7 +114,7 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    load_extension(
+    _,_=load_extension(
         args.srid,
         args.pg_service,
         args.module_name,
