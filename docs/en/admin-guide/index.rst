@@ -7,6 +7,7 @@ This represents a guide on how to administrate the database, install a Virtual m
    :maxdepth: 2
 
    datamodel
+   db-label-customization/index
    pgadmin/index
    security/index
    interlis-io/index

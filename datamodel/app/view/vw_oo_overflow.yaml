@@ -7,7 +7,7 @@ allow_parent_only: false
 pkey_default_value: True
 
 additional_columns:
-  geometry: n1.situation3d_geometry::geometry('PointZ',{SRID})
+  geometry: n1.situation3d_geometry
 additional_joins: >
   LEFT JOIN tww_od.wastewater_node n1 ON overflow.fk_wastewater_node::text = n1.obj_id::text
 
