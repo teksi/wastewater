@@ -42,10 +42,10 @@ def create_app(
     srid: int = 2056,
     pg_service: str = "pg_tww",
     drop_schema: Optional[bool] = False,
-    tww_reach_extra: Optional[Path] = None,
-    tww_wastewater_structure_extra: Optional[Path] = None,
-    tww_ii_extra: Optional[Path] = None,
-    wastewater_structure_extra: Optional[Path] = None,
+    tww_reach_extra_path: Optional[Path] = None,
+    tww_wastewater_structure_extra_path: Optional[Path] = None,
+    tww_ii_extra_path: Optional[Path] = None,
+    wastewater_structure_extra_path: Optional[Path] = None,
     extension_names: Optional[list] = [],
 ):
     """
@@ -77,21 +77,26 @@ def create_app(
     run_sql_file("functions/meta_functions.sql", pg_service, variables)
     run_sql_file("functions/network_functions.sql", pg_service)
 
-    if extension_names:
-        for extension in extension_names:
-            load_extension(srid, pg_service, "tww", extension)
+    yaml_paths_for_funcs={
+        "vw_tww_reach":tww_reach_extra_path,
+        "vw_tww_wastewater_structure":tww_wastewater_structure_extra_path,
+        "vw_wastewater_structure":wastewater_structure_extra_path,
+        "vw_tww_infiltration_installation":tww_ii_extra_path,
+    }
 
-    # open YAML files
-    if tww_reach_extra:
-        tww_reach_extra = safe_load(open(tww_reach_extra))
-    if tww_wastewater_structure_extra:
-        tww_wastewater_structure_extra = safe_load(open(tww_wastewater_structure_extra))
-    if wastewater_structure_extra:
-        wastewater_structure_extra = safe_load(open(wastewater_structure_extra))
+    yaml_data_dicts=yaml_paths_for_funcs
+    for key in yaml_data_dicts:
+        yaml_data_dicts[key]={}
+    
+    for key in yaml_paths_for_funcs:
+        if yaml_paths_for_funcs[key]:
+            yaml_data_dicts[key].update(load_yaml(yaml_paths_for_funcs[key]))       
 
-    run_sql_file("view/vw_dictionary_value_list.sql", pg_service, variables)
-
-    defaults = {"view_schema": "tww_app", "pg_service": pg_service}
+    MultipleInheritances = {
+        "maintenance": cwd / "view/vw_maintenance_event.yaml",
+        "damage": cwd / "view/vw_damage.yaml",
+        "overflow": cwd / "view/vw_oo_overflow.yaml",
+    }
 
     SingleInheritances = {
         # structure parts
@@ -140,6 +145,24 @@ def create_app(
         "drainage_system": "zone",
     }
 
+    if extension_names:
+        for extension in extension_names:
+            yaml_files=load_extension(srid, pg_service, "tww", extension)
+            for yaml_file, file_path in yaml_files:
+                if yaml_file in yaml_paths_for_funcs:
+                    # load data
+                    yaml_data_dicts[yaml_file].update(load_yaml(file_path))
+                elif yaml_file in MultipleInheritances:
+                    # overwrite the path
+                    print(f"{MultipleInheritances[yaml_file]} overriden by extension {extension}: New path used is {file_path}")
+                    MultipleInheritances[yaml_file].update(file_path)
+
+
+    run_sql_file("view/vw_dictionary_value_list.sql", pg_service, variables)
+
+    defaults = {"view_schema": "tww_app", "pg_service": pg_service}
+
+    
     # Defaults and Triggers
     # Has to be fired before view creation otherwise it won't work and will only fail in CI
     set_defaults_and_triggers(pg_service, SingleInheritances)
@@ -154,36 +177,26 @@ def create_app(
             **defaults,
         ).create()
 
-    MultipleInheritance(
-        safe_load(open(cwd / "view/vw_maintenance_event.yaml")),
-        drop=True,
-        pg_service=pg_service,
-    ).create()
+    for key in MultipleInheritances:
+        MultipleInheritance(
+            load_yaml(MultipleInheritances[key])safe_load(open()),
+            create_joins=True,
+            drop=True,
+            variables=variables,
+            pg_service=pg_service,
+        ).create()
 
-    MultipleInheritance(
-        safe_load(open(cwd / "view/vw_damage.yaml")),
-        drop=True,
-        pg_service=pg_service,
-    ).create()
-
-    vw_wastewater_structure(pg_service=pg_service, extra_definition=wastewater_structure_extra)
+    vw_wastewater_structure(pg_service=pg_service, extra_definition=yaml_data_dicts["vw_wastewater_structure"])
     vw_tww_wastewater_structure(
-        srid, pg_service=pg_service, extra_definition=tww_wastewater_structure_extra
+        srid, pg_service=pg_service, extra_definition=yaml_data_dicts["vw_tww_wastewater_structure"]
     )
-    vw_tww_infiltration_installation(srid, pg_service=pg_service, extra_definition=tww_ii_extra)
-    vw_tww_reach(pg_service=pg_service, extra_definition=tww_reach_extra)
+    vw_tww_infiltration_installation(srid, pg_service=pg_service, extra_definition=yaml_data_dicts["vw_tww_infiltration_installation"])
+    vw_tww_reach(pg_service=pg_service, extra_definition=yaml_data_dicts["vw_tww_reach"])
     vw_tww_additional_ws(srid, pg_service=pg_service)
     vw_tww_measurement_series(pg_service=pg_service)
 
+
     run_sql_file("view/vw_file.sql", pg_service, variables)
-
-    MultipleInheritance(
-        safe_load(open(cwd / "view/vw_oo_overflow.yaml")),
-        variables=variables,
-        pg_service=pg_service,
-        drop=True,
-    ).create()
-
     run_sql_file("view/vw_change_points.sql", pg_service, variables)
     run_sql_file("view/vw_tww_import.sql", pg_service, variables)
 
@@ -252,6 +265,17 @@ def create_app(
 
     # Roles
     run_sql_file("tww_app_roles.sql", pg_service, variables)
+
+
+def load_yaml(file: Path) -> Dict[str]:
+    """Safely loads a YAML file and ensures it returns a dictionary."""
+    file = Path(file)  
+    if not file.exists():
+        return {}  # Return empty dict if file does not exist
+
+    with open(file, "r") as f:
+        data = safe_load(f)
+        return data if isinstance(data, dict) else {}  # Ensure it returns a dict
 
 
 if __name__ == "__main__":
