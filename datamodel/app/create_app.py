@@ -133,11 +133,11 @@ def create_app(
             for target_view, file_path in yaml_files:
                 if target_view in MultipleInheritances:
                     # overwrite the path
-                    print(f"{MultipleInheritances[target_view]} overriden by extension {extension}: New path used is {file_path}")
+                    print(f"MultipleInheritance view {MultipleInheritances[target_view]} overriden by extension {extension}: New path used is {file_path}")
                     MultipleInheritances[target_view].update(file_path)
                 elif target_view in SimpleJoins_yaml:
                     # overwrite the path
-                    print(f"{SimpleJoins_yaml[target_view]} overriden by extension {extension}: New path used is {file_path}")
+                    print(f"SimpleJoin view {SimpleJoins_yaml[target_view]} overriden by extension {extension}: New path used is {file_path}")
                     SimpleJoins_yaml[target_view].update(file_path)
                 else:
                     # load data
@@ -166,7 +166,7 @@ def create_app(
 
     for key in MultipleInheritances:
         MultipleInheritance(
-            load_yaml(MultipleInheritances[key])safe_load(open()),
+            load_yaml(MultipleInheritances[key]),
             create_joins=True,
             drop=True,
             variables=variables,

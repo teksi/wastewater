@@ -22,26 +22,6 @@ def read_config(config_file: str, extension_name: str):
     raise ValueError(f"No entry found with id: {extension_name}")
 
 
-
-
-
-def run_sql_file(file_path: str, pg_service: str, variables: dict = None):
-    abs_file_path = Path(__file__).parent.resolve() / file_path
-    with open(abs_file_path) as f:
-        sql = f.read()
-    run_sql(sql, pg_service, variables)
-
-
-def run_sql(sql: str, pg_service: str, variables: dict = None):
-    if variables:
-        sql = psycopg.sql.SQL(sql).format(**variables)
-    conn = psycopg.connect(f"service={pg_service}")
-    cursor = conn.cursor()
-    cursor.execute(sql)
-    conn.commit()
-    conn.close()
-
-
 def load_extension(
     srid: int = 2056,
     pg_service: str = "pg_tww",
@@ -61,7 +41,7 @@ def load_extension(
     config = read_config("config.yaml", extension_name)
     variables = config.get("variables", {})
     if srid:
-        variables.update("SRID": psycopg.sql.SQL(f"{srid}"))
+        variables.update({"SRID": psycopg.sql.SQL(f"{srid}")})
         
 
     # We also disable symbology triggers as they can badly affect performance. This must be done in a separate session as it
@@ -100,7 +80,9 @@ if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument("-p", "--pg_service", help="postgres service")
     parser.add_argument("-m", "--module_name", help="name of TEKSI module", default="tww")
-
+    parser.add_argument(
+        "-s", "--srid", help="SRID EPSG code, defaults to 2056", type=int, default=2056
+    )
     parser.add_argument(
         "-x", "--extension_name", help="name of the database extension", type=str, default="demo"
     )
