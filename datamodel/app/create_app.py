@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import os
 from argparse import ArgumentParser, BooleanOptionalAction
 from pathlib import Path
 from typing import Optional
@@ -18,34 +19,25 @@ from view.vw_tww_measurement_series import vw_tww_measurement_series
 from view.vw_tww_reach import vw_tww_reach
 from view.vw_tww_wastewater_structure import vw_tww_wastewater_structure
 from view.vw_wastewater_structure import vw_wastewater_structure
+from utils.sql_utils import run_sql, run_sql_files_in_folder
 from yaml import safe_load
 
 
-def run_sql_file(file_path: str, pg_service: str, variables: dict = None):
-    abs_file_path = Path(__file__).parent.resolve() / file_path
-    with open(abs_file_path) as f:
-        sql = f.read()
-    run_sql(sql, pg_service, variables)
+def load_yaml(file: Path) -> dict[str]:
+    """Safely loads a YAML file and ensures it returns a dictionary."""
+    file = Path(file)  
+    if not file.exists():
+        return {}  # Return empty dict if file does not exist
 
-
-def run_sql(sql: str, pg_service: str, variables: dict = None):
-    if variables:
-        sql = psycopg.sql.SQL(sql).format(**variables)
-    conn = psycopg.connect(f"service={pg_service}")
-    cursor = conn.cursor()
-    cursor.execute(sql)
-    conn.commit()
-    conn.close()
+    with open(file, "r") as f:
+        data = safe_load(f)
+        return data if isinstance(data, dict) else {}  # Ensure it returns a dict
 
 
 def create_app(
     srid: int = 2056,
     pg_service: str = "pg_tww",
     drop_schema: Optional[bool] = False,
-    tww_reach_extra_path: Optional[Path] = None,
-    tww_wastewater_structure_extra_path: Optional[Path] = None,
-    tww_ii_extra_path: Optional[Path] = None,
-    wastewater_structure_extra_path: Optional[Path] = None,
     extension_names: Optional[list] = [],
 ):
     """
@@ -53,11 +45,12 @@ def create_app(
     :param srid: the EPSG code for geometry columns
     :param drop_schema: will drop schema tww_app if it exists
     :param pg_service: the PostgreSQL service, if not given it will be determined from environment variable in Pirogue
-    :param tww_reach_extra: YAML file path of the definition of additional columns for vw_tww_reach view
+    :param extension_names: list of extensionsYAML file path of the definition of additional columns for vw_tww_reach view
     :param tww_wastewater_structure_extra: YAML file path of the definition of additional columns for vw_tww_wastewater_structure_extra view
     :param tww_ii_extra: YAML file path of the definition of additional columns for vw_tww_infiltration_installation_extra view
     :param wastewater_structure_extra: YAML file path of the definition of additional columns for vw_wastewater_structure_extra view
     """
+
     cwd = Path(__file__).parent.resolve()
     variables = {
         "SRID": psycopg.sql.SQL(f"{srid}")
@@ -67,30 +60,17 @@ def create_app(
         run_sql("DROP SCHEMA IF EXISTS tww_app CASCADE;", pg_service)
 
     run_sql("CREATE SCHEMA tww_app;", pg_service)
-    run_sql_file("functions/oid_functions.sql", pg_service)
-    run_sql_file("functions/modification_functions.sql", pg_service)
-    run_sql_file("functions/symbology_functions.sql", pg_service)
-    run_sql_file("functions/reach_direction_change.sql", pg_service, variables)
-    run_sql_file("functions/geometry_functions.sql", pg_service, variables)
-    run_sql_file("functions/update_catchment_area_totals.sql", pg_service, variables)
-    run_sql_file("functions/organisation_functions.sql", pg_service, variables)
-    run_sql_file("functions/meta_functions.sql", pg_service, variables)
-    run_sql_file("functions/network_functions.sql", pg_service)
 
-    yaml_paths_for_funcs={
-        "vw_tww_reach":tww_reach_extra_path,
-        "vw_tww_wastewater_structure":tww_wastewater_structure_extra_path,
-        "vw_wastewater_structure":wastewater_structure_extra_path,
-        "vw_tww_infiltration_installation":tww_ii_extra_path,
+    run_sql_files_in_folder(Path(__file__).parent.resolve() / "functions",pg_service,variables)
+
+    yaml_data_dicts={
+        "vw_tww_reach":{},
+        "vw_tww_wastewater_structure":{},
+        "vw_wastewater_structure":{},
+        "vw_tww_infiltration_installation":{},
+        "vw_tww_additional_ws ":{},
+        "vw_tww_measurement_series ":{},
     }
-
-    yaml_data_dicts=yaml_paths_for_funcs
-    for key in yaml_data_dicts:
-        yaml_data_dicts[key]={}
-    
-    for key in yaml_paths_for_funcs:
-        if yaml_paths_for_funcs[key]:
-            yaml_data_dicts[key].update(load_yaml(yaml_paths_for_funcs[key]))       
 
     MultipleInheritances = {
         "maintenance": cwd / "view/vw_maintenance_event.yaml",
@@ -145,19 +125,30 @@ def create_app(
         "drainage_system": "zone",
     }
 
+    SimpleJoins_yaml = {
+        "vw_export_reach":cwd / "view/export/vw_export_reach.yaml",
+        "vw_export_wastewater_structure":cwd / "view/export/vw_export_wastewater_structure.yaml",
+    }
+
     if extension_names:
         for extension in extension_names:
             yaml_files=load_extension(srid, pg_service, "tww", extension)
-            for yaml_file, file_path in yaml_files:
-                if yaml_file in yaml_paths_for_funcs:
-                    # load data
-                    yaml_data_dicts[yaml_file].update(load_yaml(file_path))
-                elif yaml_file in MultipleInheritances:
+            for target_view, file_path in yaml_files:
+                if target_view in MultipleInheritances:
                     # overwrite the path
-                    print(f"{MultipleInheritances[yaml_file]} overriden by extension {extension}: New path used is {file_path}")
-                    MultipleInheritances[yaml_file].update(file_path)
+                    print(f"{MultipleInheritances[target_view]} overriden by extension {extension}: New path used is {file_path}")
+                    MultipleInheritances[target_view].update(file_path)
+                elif target_view in SimpleJoins_yaml:
+                    # overwrite the path
+                    print(f"{SimpleJoins_yaml[target_view]} overriden by extension {extension}: New path used is {file_path}")
+                    SimpleJoins_yaml[target_view].update(file_path)
+                else:
+                    # load data
+                    if target_view in yaml_data_dicts:
+                        yaml_data_dicts[target_view].update(load_yaml(file_path))
+                    else:
+                        yaml_data_dicts[target_view] = load_yaml(file_path)
 
-    run_sql_file("view/vw_dictionary_value_list.sql", pg_service, variables)
 
     defaults = {"view_schema": "tww_app", "pg_service": pg_service}
 
@@ -185,6 +176,9 @@ def create_app(
             pg_service=pg_service,
         ).create()
 
+    
+    for _,yaml_path in SimpleJoins_yaml:
+        SimpleJoins(load_yaml(yaml_path), pg_service).create()
 
     vw_wastewater_structure(pg_service=pg_service, extra_definition=yaml_data_dicts["vw_wastewater_structure"])
     vw_tww_wastewater_structure(
@@ -192,90 +186,14 @@ def create_app(
     )
     vw_tww_infiltration_installation(srid, pg_service=pg_service, extra_definition=yaml_data_dicts["vw_tww_infiltration_installation"])
     vw_tww_reach(pg_service=pg_service, extra_definition=yaml_data_dicts["vw_tww_reach"])
-    vw_tww_additional_ws(srid, pg_service=pg_service)
-    vw_tww_measurement_series(pg_service=pg_service)
+    vw_tww_additional_ws(srid, pg_service=pg_service, extra_definition=yaml_data_dicts["vw_tww_additional_ws"])
+    vw_tww_measurement_series(pg_service=pg_service, extra_definition=yaml_data_dicts["vw_tww_measurement_series"])
 
-    run_sql_file("view/vw_file.sql", pg_service, variables)
-    run_sql_file("view/vw_change_points.sql", pg_service, variables)
-    run_sql_file("view/vw_tww_import.sql", pg_service, variables)
+    sql_directories=["view","view/catchment_area","gep_views","swmm_views","network","post_all"]
 
-    run_sql_file("view/catchment_area/vw_catchment_area_connections.sql", pg_service, variables)
-    run_sql_file("view/catchment_area/vw_catchment_area_additional.sql", pg_service, variables)
-    run_sql_file(
-        "view/catchment_area/vw_catchment_area_rwc_connections.sql", pg_service, variables
-    )
-    run_sql_file(
-        "view/catchment_area/vw_catchment_area_wwc_connections.sql", pg_service, variables
-    )
-    run_sql_file(
-        "view/catchment_area/vw_catchment_area_rwp_connections.sql", pg_service, variables
-    )
-    run_sql_file(
-        "view/catchment_area/vw_catchment_area_wwp_connections.sql", pg_service, variables
-    )
-    run_sql_file(
-        "view/catchment_area/vw_catchment_area_totals_aggregated.sql", pg_service, variables
-    )
-
-    # default values
-    run_sql_file("view/set_default_value_for_views.sql", pg_service, variables)
-
-    # Recreate GEP views
-    run_sql_file("gep_views/vw_tww_catchment_area_totals.sql", pg_service, variables)
-
-    # Recreate network views
-    run_sql_file("view/network/vw_network_node.sql", pg_service, variables)
-    run_sql_file("view/network/vw_network_segment.sql", pg_service, variables)
-
-    # Recreate swmm views
-    # to do finish testing swmm views
-    run_sql_file("swmm_views/02_vw_swmm_junctions.sql", pg_service, variables)
-    run_sql_file("swmm_views/03_vw_swmm_aquifers.sql", pg_service, variables)
-    run_sql_file("swmm_views/04_vw_swmm_conduits.sql", pg_service, variables)
-    run_sql_file("swmm_views/05_vw_swmm_dividers.sql", pg_service, variables)
-    run_sql_file("swmm_views/06_vw_swmm_landuses.sql", pg_service, variables)
-    run_sql_file("swmm_views/07_vw_swmm_losses.sql", pg_service, variables)
-    run_sql_file("swmm_views/08_vw_swmm_outfalls.sql", pg_service, variables)
-    run_sql_file("swmm_views/09_vw_swmm_subcatchments.sql", pg_service, variables)
-    run_sql_file("swmm_views/10_vw_swmm_subareas.sql", pg_service, variables)
-    run_sql_file("swmm_views/11_vw_swmm_dwf.sql", pg_service, variables)
-    run_sql_file("swmm_views/12_vw_swmm_raingages.sql", pg_service, variables)
-    run_sql_file("swmm_views/13_vw_swmm_infiltrations.sql", pg_service, variables)
-    run_sql_file("swmm_views/14_vw_swmm_coverages.sql", pg_service, variables)
-    run_sql_file("swmm_views/15_vw_swmm_vertices.sql", pg_service, variables)
-    run_sql_file("swmm_views/16_vw_swmm_pumps.sql", pg_service, variables)
-    run_sql_file("swmm_views/17_vw_swmm_polygons.sql", pg_service, variables)
-    run_sql_file("swmm_views/18_vw_swmm_storages.sql", pg_service, variables)
-    run_sql_file("swmm_views/19_vw_swmm_outlets.sql", pg_service, variables)
-    run_sql_file("swmm_views/20_vw_swmm_orifices.sql", pg_service, variables)
-    run_sql_file("swmm_views/21_vw_swmm_weirs.sql", pg_service, variables)
-    run_sql_file("swmm_views/22_vw_swmm_curves.sql", pg_service, variables)
-    run_sql_file("swmm_views/23_vw_swmm_xsections.sql", pg_service, variables)
-    run_sql_file("swmm_views/24_vw_swmm_coordinates.sql", pg_service, variables)
-    run_sql_file("swmm_views/25_vw_swmm_tags.sql", pg_service, variables)
-    run_sql_file("swmm_views/26_vw_swmm_symbols.sql", pg_service, variables)
-    run_sql_file("swmm_views/27_vw_swmm_results.sql", pg_service, variables)
-
-    SimpleJoins(safe_load(open(cwd / "view/export/vw_export_reach.yaml")), pg_service).create()
-    SimpleJoins(
-        safe_load(open(cwd / "view/export/vw_export_wastewater_structure.yaml")),
-        pg_service,
-    ).create()
-
-    # Roles
-    run_sql_file("tww_app_roles.sql", pg_service, variables)
-
-
-def load_yaml(file: Path) -> Dict[str]:
-    """Safely loads a YAML file and ensures it returns a dictionary."""
-    file = Path(file)  
-    if not file.exists():
-        return {}  # Return empty dict if file does not exist
-
-    with open(file, "r") as f:
-        data = safe_load(f)
-        return data if isinstance(data, dict) else {}  # Ensure it returns a dict
-
+    for directory in sql_directories:
+        abs_dir = Path(__file__).parent.resolve() / directory
+        run_sql_files_in_folder(abs_dir, pg_service, variables)
 
 if __name__ == "__main__":
     parser = ArgumentParser()
@@ -284,20 +202,9 @@ if __name__ == "__main__":
         "-s", "--srid", help="SRID EPSG code, defaults to 2056", type=int, default=2056
     )
     parser.add_argument(
-        "--tww_wastewater_structure_extra",
-        help="YAML definition file path for additions to vw_tww_wastewater_structure view",
-    )
-    parser.add_argument(
-        "--tww_reach_extra",
-        help="YAML definition file path for additions to vw_tww_reach view",
-    )
-    parser.add_argument(
-        "--wastewater_structure_extra",
-        help="YAML definition file path for additions to vw_wastewater_structure view",
-    )
-    parser.add_argument(
-        "--tww_ii_extra",
-        help="YAML definition file path for additions to vw_tww_infiltration_installation view",
+        "--extra_definition_folder",
+        help="""path to folder containing YAML definition files for additions to vw_tww_* views. 
+        Definition is extended by extension framework """,
     )
     parser.add_argument(
         "-d",
@@ -319,9 +226,6 @@ if __name__ == "__main__":
         args.srid,
         args.pg_service,
         drop_schema=args.drop_schema,
-        tww_reach_extra_path=args.tww_reach_extra,
-        tww_wastewater_structure_extra_path=args.tww_wastewater_structure_extra,
-        tww_ii_extra_path=args.tww_ii_extra,
-        wastewater_structure_extra_path=args.wastewater_structure_extra,
+        extra_definition_folder=args.extra_definition_folder,
         extension_names=args.extension_names,
     )
