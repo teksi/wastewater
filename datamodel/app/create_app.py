@@ -177,6 +177,7 @@ def create_app(
             **defaults,
         ).create()
 
+
     for key in MultipleInheritances:
         MultipleInheritance(
             load_yaml(MultipleInheritances[key])safe_load(open()),
@@ -186,6 +187,7 @@ def create_app(
             pg_service=pg_service,
         ).create()
 
+
     vw_wastewater_structure(pg_service=pg_service, extra_definition=yaml_data_dicts["vw_wastewater_structure"])
     vw_tww_wastewater_structure(
         srid, pg_service=pg_service, extra_definition=yaml_data_dicts["vw_tww_wastewater_structure"]
@@ -194,7 +196,6 @@ def create_app(
     vw_tww_reach(pg_service=pg_service, extra_definition=yaml_data_dicts["vw_tww_reach"])
     vw_tww_additional_ws(srid, pg_service=pg_service)
     vw_tww_measurement_series(pg_service=pg_service)
-
 
     run_sql_file("view/vw_file.sql", pg_service, variables)
     run_sql_file("view/vw_change_points.sql", pg_service, variables)
