@@ -481,12 +481,12 @@ class TwwMapToolDigitizeDrainageChannel(QgsMapTool):
             if self.firstPoint:  # If the first point was set before, we are doing the second one
                 lp1 = self.rubberband.asGeometry().asPolyline()[0]
                 lp2 = self.rubberband.asGeometry().asPolyline()[1]
-                width = 0.2
+                width = 0.1
                 if QApplication.keyboardModifiers() & Qt.ControlModifier:
                     dlg = QDialog()
                     dlg.setLayout(QGridLayout())
                     dlg.layout().addWidget(QLabel(self.tr("Enter width")))
-                    txt = QLineEdit("0.2")
+                    txt = QLineEdit("0.1")
                     dlg.layout().addWidget(txt)
                     bb = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
                     dlg.layout().addWidget(bb)
@@ -494,9 +494,9 @@ class TwwMapToolDigitizeDrainageChannel(QgsMapTool):
                     bb.rejected.connect(dlg.reject)
                     if dlg.exec_():
                         try:
-                            width = float(txt.text())
+                            width = float(txt.text())/2
                         except ValueError:
-                            width = 0.2
+                            width = 0.1
 
                 length = math.sqrt(math.pow(lp1.x() - lp2.x(), 2) + math.pow(lp1.y() - lp2.y(), 2))
                 xd = lp2.x() - lp1.x()
