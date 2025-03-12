@@ -45,10 +45,7 @@ def create_app(
     :param srid: the EPSG code for geometry columns
     :param drop_schema: will drop schema tww_app if it exists
     :param pg_service: the PostgreSQL service, if not given it will be determined from environment variable in Pirogue
-    :param extension_names: list of extensionsYAML file path of the definition of additional columns for vw_tww_reach view
-    :param tww_wastewater_structure_extra: YAML file path of the definition of additional columns for vw_tww_wastewater_structure_extra view
-    :param tww_ii_extra: YAML file path of the definition of additional columns for vw_tww_infiltration_installation_extra view
-    :param wastewater_structure_extra: YAML file path of the definition of additional columns for vw_wastewater_structure_extra view
+    :param extension_names: list of extensions YAML file path of the definition of additional columns for vw_tww_xxx views
     """
 
     cwd = Path(__file__).parent.resolve()
