@@ -494,7 +494,7 @@ class TwwMapToolDigitizeDrainageChannel(QgsMapTool):
                     bb.rejected.connect(dlg.reject)
                     if dlg.exec_():
                         try:
-                            width = float(txt.text())/2
+                            width = float(txt.text()) / 2
                         except ValueError:
                             width = 0.1
 
