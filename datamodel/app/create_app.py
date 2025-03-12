@@ -157,7 +157,6 @@ def create_app(
                     print(f"{MultipleInheritances[yaml_file]} overriden by extension {extension}: New path used is {file_path}")
                     MultipleInheritances[yaml_file].update(file_path)
 
-
     run_sql_file("view/vw_dictionary_value_list.sql", pg_service, variables)
 
     defaults = {"view_schema": "tww_app", "pg_service": pg_service}
@@ -176,7 +175,6 @@ def create_app(
             inner_defaults={"identifier": "obj_id"},
             **defaults,
         ).create()
-
 
     for key in MultipleInheritances:
         MultipleInheritance(
@@ -294,6 +292,14 @@ if __name__ == "__main__":
         help="YAML definition file path for additions to vw_tww_reach view",
     )
     parser.add_argument(
+        "--wastewater_structure_extra",
+        help="YAML definition file path for additions to vw_wastewater_structure view",
+    )
+    parser.add_argument(
+        "--tww_ii_extra",
+        help="YAML definition file path for additions to vw_tww_infiltration_installation view",
+    )
+    parser.add_argument(
         "-d",
         "--drop-schema",
         help="Drops cascaded any existing tww_app schema",
@@ -313,7 +319,9 @@ if __name__ == "__main__":
         args.srid,
         args.pg_service,
         drop_schema=args.drop_schema,
-        tww_reach_extra=args.tww_reach_extra,
-        tww_wastewater_structure_extra=args.tww_wastewater_structure_extra,
+        tww_reach_extra_path=args.tww_reach_extra,
+        tww_wastewater_structure_extra_path=args.tww_wastewater_structure_extra,
+        tww_ii_extra_path=args.tww_ii_extra,
+        wastewater_structure_extra_path=args.wastewater_structure_extra,
         extension_names=args.extension_names,
     )
