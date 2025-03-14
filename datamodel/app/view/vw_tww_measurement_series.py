@@ -63,7 +63,7 @@ def vw_tww_measurement_series(pg_service: str = None, extra_definition: dict = N
             if not extra_definition
             else extra_cols(pg_service=pg_service, extra_definition=extra_definition)
         ),
-        extra_joins=extra_joins(pg_service=pg_service,extra_definition=extra_definition),
+        extra_joins=extra_joins(pg_service=pg_service, extra_definition=extra_definition),
     )
 
     cursor.execute(view_sql)
