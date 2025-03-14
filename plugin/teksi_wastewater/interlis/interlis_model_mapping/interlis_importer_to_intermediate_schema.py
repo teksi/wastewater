@@ -2606,7 +2606,8 @@ class InterlisImporterToIntermediateSchema:
 
     def _import_gepmassnahme(self):
         for row in self.session_interlis.query(self.model_classes_interlis.gepmassnahme):
-            gepmassnahme = self.model_classes_tww_app.gepmassnahme(
+            gepmassnahme = self.create_or_update(
+                self.model_classes_tww_app.gepmassnahme,
                 **self.base_common_ag_xx(row),
                 **self.gep_metainformation_common_ag_xx(row),
                 ausdehnung=row.ausdehnung,
@@ -2632,7 +2633,8 @@ class InterlisImporterToIntermediateSchema:
         for row in self.session_interlis.query(
             self.model_classes_interlis.abwasserbauwerk
         ):  # abwasserbauwerk wegen Kompatibiltät bei Label-Export
-            gepknoten = self.model_classes_tww_app.gepknoten(
+            gepknoten = self.create_or_update(
+                self.model_classes_tww_app.gepknoten,
                 **self.gep_metainformation_common_ag_xx(row),
                 **self.knoten_common_ag_xx(row),
                 istschnittstelle=row.istschnittstelle,
@@ -2645,7 +2647,8 @@ class InterlisImporterToIntermediateSchema:
     def _import_infrastrukturknoten(self):
         # abwasserbauwerk wegen Kompatibiltät bei Label-Export
         for row in self.session_interlis.query(self.model_classes_interlis.abwasserbauwerk):
-            gepknoten = self.model_classes_tww_app.gepknoten(
+            gepknoten = self.create_or_update(
+                self.model_classes_tww_app.gepknoten,
                 **self.knoten_common_ag_xx(row),
             )
             self.session_tww.add(gepknoten)
@@ -2653,7 +2656,8 @@ class InterlisImporterToIntermediateSchema:
 
     def _import_gephaltung(self):
         for row in self.session_interlis.query(self.model_classes_interlis.haltung):
-            gephaltung = self.model_classes_tww_app.gephaltung(
+            gephaltung = self.create_or_update(
+                self.model_classes_tww_app.gephaltung,
                 **self.gep_metainformation_common_ag_xx(row),
                 **self.haltung_common_ag_xx(row),
                 gepmassnahmeref=self.get_pk(row.gepmassnahmeref__REL),
@@ -2668,7 +2672,8 @@ class InterlisImporterToIntermediateSchema:
 
     def _import_infrastrukturhaltung(self):
         for row in self.session_interlis.query(self.model_classes_interlis.haltung):
-            gephaltung = self.model_classes_tww_app.gephaltung(
+            gephaltung = self.create_or_update(
+                self.model_classes_tww_app.gephaltung,
                 **self.haltung_common_ag_xx(row),
                 lichte_breite_ist=row.lichte_breite,
             )
@@ -2677,7 +2682,8 @@ class InterlisImporterToIntermediateSchema:
 
     def _import_einzugsgebiet_ag96(self):
         for row in self.session_interlis.query(self.model_classes_interlis.einzugsgebiet):
-            einzugsgebiet = self.model_classes_tww_app.einzugsgebiet(
+            einzugsgebiet = self.create_or_update(
+                self.model_classes_tww_app.einzugsgebiet,
                 **self.base_common_ag_xx(row),
                 **self.gep_metainformation_common_ag_xx(row),
                 abflussbegrenzung_geplant=row.abflussbegrenzung_geplant,
@@ -2719,7 +2725,8 @@ class InterlisImporterToIntermediateSchema:
         for row in self.session_interlis.query(
             self.model_classes_interlis.bautenausserhalbbaugebiet
         ):
-            bautenausserhalbbaugebiet = self.model_classes_tww_app.bautenausserhalbbaugebiet(
+            bautenausserhalbbaugebiet = self.create_or_update(
+                self.model_classes_tww_app.bautenausserhalbbaugebiet,
                 **self.base_common_ag_xx(row),
                 **self.gep_metainformation_common_ag_xx(row),
                 anzstaendigeeinwohner=row.anzstaendigeeinwohner,
@@ -2744,7 +2751,8 @@ class InterlisImporterToIntermediateSchema:
         for row in self.session_interlis.query(
             self.model_classes_interlis.ueberlauf_foerderaggregat
         ):
-            ueberlauf_foerderaggregat = self.model_classes_tww_app.ueberlauf_foerderaggregat(
+            ueberlauf_foerderaggregat = self.create_or_update(
+                self.model_classes_tww_app.ueberlauf_foerderaggregat,
                 **self.gep_metainformation_common_ag_xx(row),
                 **self.ueberlauf_foerderaggregat_common_ag_xx(row),
             )
@@ -2756,7 +2764,8 @@ class InterlisImporterToIntermediateSchema:
         for row in self.session_interlis.query(
             self.model_classes_interlis.ueberlauf_foerderaggregat
         ):
-            ueberlauf_foerderaggregat = self.model_classes_tww_app.ueberlauf_foerderaggregat(
+            ueberlauf_foerderaggregat = self.create_or_update(
+                self.model_classes_tww_app.ueberlauf_foerderaggregat,
                 **self.ueberlauf_foerderaggregat_common_ag_xx(row),
             )
             self.session_tww.add(ueberlauf_foerderaggregat)
@@ -2765,7 +2774,8 @@ class InterlisImporterToIntermediateSchema:
 
     def _import_sbw_einzugsgebiet(self):
         for row in self.session_interlis.query(self.model_classes_interlis.sbw_einzugsgebiet):
-            sbw_einzugsgebiet = self.model_classes_tww_app.sbw_einzugsgebiet(
+            sbw_einzugsgebiet = self.create_or_update(
+                self.model_classes_tww_app.sbw_einzugsgebiet,
                 **self.base_common_ag_xx(row),
                 **self.gep_metainformation_common_ag_xx(row),
                 einwohner_geplant=row.einwohner_geplant,
@@ -2789,8 +2799,8 @@ class InterlisImporterToIntermediateSchema:
 
     def _import_versickerungsbereichag(self):
         for row in self.session_interlis.query(self.model_classes_interlis.versickerungsbereichag):
-            versickerungsbereichag = self.model_classes_tww_app.versickerungsbereichag(
-                # --- abwasserbauwerk ---
+            versickerungsbereichag = self.create_or_update(
+                self.model_classes_tww_app.versickerungsbereichag,
                 **self.base_common_ag_xx(row),
                 **self.gep_metainformation_common_ag_xx(row),
                 durchlaessigkeit=row.durchlaessigkeit,
