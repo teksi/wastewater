@@ -8,6 +8,7 @@ joins:
       fk_wastewater_networkelement: obj_id
     prefix: ne_
     read_only: false
+    where_clause: "agxx_ne.fk_wastewater_networkelement = OLD.obj_id"
   agxx_last_modification:
     table: tww_od.agxx_last_modification
     alias: agxx_lm
@@ -17,6 +18,7 @@ joins:
       fk_element: obj_id
     prefix: ne_
     read_only: false
+    where_clause: "agxx_lm.fk_element = OLD.obj_id"
   agxx_wastewater_structure:
     table: tww_od.agxx_wastewater_structure
     alias: agxx_ws
@@ -26,6 +28,7 @@ joins:
       fk_wastewater_structure: ws_obj_id
     prefix: ws_
     read_only: false
+    where_clause: "agxx_ws.fk_wastewater_structure = OLD.ws_obj_id"
   agxx_reach:
     table: tww_od.agxx_reach
     alias: agxx_re
@@ -35,3 +38,4 @@ joins:
       fk_reach: obj_id
     prefix: re_
     read_only: false
+    where_clause: "agxx_re.fk_reach = OLD.obj_id"

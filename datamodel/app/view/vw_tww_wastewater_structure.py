@@ -105,7 +105,11 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
 
     """.format(
         srid=srid,
-        extra_cols=("" if not extra_definition else extra_cols(extra_definition)),
+        extra_cols=(
+            ""
+            if not extra_definition
+            else extra_cols(pg_service=pg_service,extra_definition=extra_definition)
+        ),
         ws_cols=select_columns(
             pg_cur=cursor,
             table_schema="tww_od",
@@ -211,7 +215,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             prefix="wn_",
             remap_columns={},
         ),
-        extra_joins=extra_joins(extra_definition),
+        extra_joins=extra_joins(pg_service=pg_service,extra_definition=extra_definition),
     )
     cursor.execute(view_sql)
 
@@ -375,7 +379,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
                 "fk_wastewater_structure": "NEW.obj_id",
             },
         ),
-        insert_extra=insert_extra(extra_definition),
+        insert_extra=insert_extra(pg_service=pg_service,extra_definition=extra_definition),
     )
 
     cursor.execute(trigger_insert_sql)
@@ -631,7 +635,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             indent=6,
             skip_columns=[],
         ),
-        update_extra=update_extra(extra_definition),
+        update_extra=update_extra(pg_service=pg_service,extra_definition=extra_definition),
     )
 
     cursor.execute(update_trigger_sql)
