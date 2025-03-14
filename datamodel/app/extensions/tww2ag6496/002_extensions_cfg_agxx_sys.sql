@@ -40,8 +40,8 @@ BEGIN
 	  GROUP BY ws.obj_id;
 
 	SELECT array_agg(co.obj_id) INTO sp_oids
-	  FROM tww_od.wastewater_node wn
-	  LEFT JOIN tww_od.cover co on co.ag64_fk_wastewater_node=wn.obj_id
+	  FROM tww_od.agxx_wastewater_node wn
+	  LEFT JOIN tww_od.agxx_cover co on co.ag64_fk_wastewater_node=wn.obj_id
 	  WHERE wn.obj_id = any(wn_oids)
 	  GROUP BY wn.obj_id;
 
@@ -61,16 +61,4 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
--- wird für Updates von letzte_aenderung_wi/gep genutzt
-CREATE TABLE IF NOT EXISTS tww_cfg.agxx_last_modification_updater(
-	username varchar(200) PRIMARY KEY
-	, ag_update_type varchar(4) NOT NULL
-	, CONSTRAINT ag_update_type_valid CHECK (ag_update_type = ANY(ARRAY['None','WI','GEP','Both'])));
 
-------------------
--- System tables
-------------------
-INSERT INTO tww_sys.dictionary_od_table (id, tablename, shortcut_en) VALUES
-(2999998,'measure_text','MX'),
-(2999999,'building_group_text','GX')
-ON CONFLICT DO NOTHING;

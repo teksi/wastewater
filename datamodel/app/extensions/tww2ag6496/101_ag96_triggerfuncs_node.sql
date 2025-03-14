@@ -32,6 +32,33 @@ BEGIN
     , NEW.bemerkung_gep
 	, tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
 	);
+	
+	INSERT INTO tww_od.agxx_wastewater_networkelement(
+	  fk_wastewater_networkelement
+    , ag64_remark
+	, ag64_fk_provider
+    , ag96_remark
+	, ag96_fk_provider
+	) VALUES
+	(
+	  NEW.obj_id
+    , tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+    , NEW.bemerkung_wi
+	, tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
+    , NEW.bemerkung_gep
+	, tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
+	);
+	
+	INSERT INTO tww_od.agxx_last_modification(
+	  fk_element
+	, ag64_last_modification
+	, ag96_last_modification
+	) VALUES
+	(
+	  NEW.obj_id
+	, NEW.letzte_aenderung_wi
+	, NEW.letzte_aenderung_gep
+	);
 
     INSERT INTO tww_od.wastewater_node(
 	  obj_id

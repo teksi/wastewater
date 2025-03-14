@@ -49,7 +49,7 @@ CREATE OR REPLACE FUNCTION tww_app.ft_agxx_update_catchment_area_totals_geoms
   RETURNS VOID AS
   $BODY$
   BEGIN
-  UPDATE tww_od.catchment_area_totals cat
+  UPDATE tww_od.agxx_catchment_area_totals cat
   SET ag96_perimeter_geometry =ca_agg.perimeter_geometry
   FROM
     ( WITH ca AS

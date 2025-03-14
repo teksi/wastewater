@@ -1,14 +1,131 @@
----------------------------------
--- CREATE NEW EXTENSION TABLES --
----------------------------------
+------------------
+-- System tables
+------------------
+INSERT INTO tww_sys.dictionary_od_table (id, tablename, shortcut_en) VALUES
+(2999998,'measure_text','MX'),
+(2999999,'building_group_text','GX')
+ON CONFLICT DO NOTHING;
+
+
+-----------------------------
+-- CREATE NEW EXTENSION VL --
+-----------------------------
+-- Ist_Schnittstelle
+CREATE TABLE IF NOT EXISTS tww_vl.wastewater_node_ag96_is_gateway
+(CONSTRAINT pkey_tww_vl_wastewater_node_ag96_is_gateway PRIMARY KEY (code))
+ INHERITS (tww_vl.value_list_base)
+ TABLESPACE pg_default; --Werteliste
+
+ALTER TABLE tww_vl.wastewater_node_ag96_is_gateway DROP CONSTRAINT IF EXISTS pkey_tww_vl_wastewater_node_ag96_is_gateway CASCADE;
+ALTER TABLE tww_vl.wastewater_node_ag96_is_gateway ADD CONSTRAINT pkey_tww_vl_wastewater_node_ag96_is_gateway PRIMARY KEY (code);
+INSERT INTO tww_vl.wastewater_node_ag96_is_gateway (code,vsacode,value_de,value_en,active) VALUES
+(1999951,1999951,'Schnittstelle','gateway',true),
+(1999950,1999950,'keine_Schnittstelle','no_gateway',true),
+(1999949,1999949,'unbekannt','unknown',true)
+ON CONFLICT (code) DO UPDATE SET
+  vsacode = EXCLUDED.vsacode
+, value_de = EXCLUDED.value_de
+, value_en = EXCLUDED.value_en
+, active = EXCLUDED.active
+;
+
+-- FunktionAG Anschluss
+CREATE TABLE IF NOT EXISTS tww_vl.wastewater_node_ag64_function
+(CONSTRAINT pkey_tww_vl_wastewater_node_ag64_function PRIMARY KEY (code))
+INHERITS (tww_vl.value_list_base);
+
+ALTER TABLE tww_vl.wastewater_node_ag64_function DROP CONSTRAINT IF EXISTS pkey_tww_vl_wastewater_node_ag64_function CASCADE;
+ALTER TABLE tww_vl.wastewater_node_ag64_function ADD CONSTRAINT pkey_tww_vl_wastewater_node_ag64_function PRIMARY KEY (code);
+INSERT INTO tww_vl.wastewater_node_ag64_function (code,vsacode,value_de,active) VALUES
+(1999948,1999948,'Anschluss',true),
+(1999933,1999933,'andere',true) -- für Zweitdeckel
+ON CONFLICT (code) DO UPDATE SET
+  vsacode = EXCLUDED.vsacode
+, value_de = EXCLUDED.value_de
+, value_en = EXCLUDED.value_en
+, active = EXCLUDED.active
+;
+
+CREATE TABLE IF NOT EXISTS tww_vl.building_group_ag96_disposal_type (CONSTRAINT pkey_tww_vl_building_group_ag96_disposal_type PRIMARY KEY (code)) INHERITS (tww_vl.value_list_base);
+ALTER TABLE tww_vl.building_group_ag96_disposal_type DROP CONSTRAINT IF EXISTS pkey_tww_vl_building_group_ag96_disposal_type CASCADE;
+ALTER TABLE tww_vl.building_group_ag96_disposal_type ADD CONSTRAINT pkey_tww_vl_building_group_ag96_disposal_type PRIMARY KEY (code);
+INSERT INTO tww_vl.building_group_ag96_disposal_type (code,vsacode,value_de,value_en,active) VALUES
+(1999964,1999964,'Ableitung_Verwertung','drainage',true),  -- kein VSA mapping
+(1999963,1999963,'Klaereinrichtung_Speicherung','clearing_storing',true),  -- kein VSA mapping
+(1999962,1999962,'keinBedarf','noDemand',true),  -- kein VSA mapping
+(1999961,1999961,'pendent','pending',true)  -- kein VSA mapping
+ON CONFLICT (code) DO UPDATE SET
+  vsacode = EXCLUDED.vsacode
+, value_de = EXCLUDED.value_de
+, value_en = EXCLUDED.value_en
+, active = EXCLUDED.active
+;
+
+CREATE TABLE IF NOT EXISTS tww_vl.building_group_text_plantype (
+    CONSTRAINT pkey_tww_vl_building_group_text_plantype_code PRIMARY KEY (code)
+)
+    INHERITS (tww_vl.value_list_base)
+TABLESPACE pg_default;
+INSERT INTO tww_vl.building_group_text_plantype
+SELECT * FROM tww_vl.wastewater_structure_text_plantype
+ON CONFLICT DO NOTHING;
+
+CREATE TABLE IF NOT EXISTS tww_vl.building_group_text_texthali (
+    CONSTRAINT pkey_tww_vl_building_group_text_texthali_code PRIMARY KEY (code)
+)
+    INHERITS (tww_vl.value_list_base)
+TABLESPACE pg_default;
+INSERT INTO tww_vl.building_group_text_texthali
+SELECT * FROM tww_vl.wastewater_structure_text_texthali
+ON CONFLICT DO NOTHING;
+
+CREATE TABLE IF NOT EXISTS tww_vl.building_group_text_textvali (
+    CONSTRAINT pkey_tww_vl_building_group_text_textvali_code PRIMARY KEY (code)
+)
+    INHERITS (tww_vl.value_list_base)
+TABLESPACE pg_default;
+INSERT INTO tww_vl.building_group_text_textvali
+SELECT * FROM tww_vl.wastewater_structure_text_textvali
+ON CONFLICT DO NOTHING;
+
+CREATE TABLE IF NOT EXISTS tww_vl.measure_text_plantype (
+    CONSTRAINT pkey_tww_vl_measure_text_plantype_code PRIMARY KEY (code)
+)
+    INHERITS (tww_vl.value_list_base)
+TABLESPACE pg_default;
+INSERT INTO tww_vl.measure_text_plantype
+SELECT * FROM tww_vl.wastewater_structure_text_plantype
+ON CONFLICT DO NOTHING;
+
+CREATE TABLE IF NOT EXISTS tww_vl.measure_text_texthali (
+    CONSTRAINT pkey_tww_vl_measure_text_texthali_code PRIMARY KEY (code)
+)
+    INHERITS (tww_vl.value_list_base)
+TABLESPACE pg_default;
+INSERT INTO tww_vl.measure_text_texthali
+SELECT * FROM tww_vl.wastewater_structure_text_texthali
+ON CONFLICT DO NOTHING;
+
+CREATE TABLE IF NOT EXISTS tww_vl.measure_text_textvali (
+    CONSTRAINT pkey_tww_vl_measure_text_textvali_code PRIMARY KEY (code)
+)
+    INHERITS (tww_vl.value_list_base)
+TABLESPACE pg_default;
+INSERT INTO tww_vl.measure_text_textvali
+SELECT * FROM tww_vl.wastewater_structure_text_textvali
+ON CONFLICT DO NOTHING;
+
+-----------------------------
+-- CREATE NEW EXTENSION OD --
+-----------------------------
 
 -- GEPKnoten
 CREATE TABLE tww_od.agxx_wastewater_node
 (
    uuid uuid NOT NULL DEFAULT uuid_generate_v4(),
-   obj_id varchar(16) NOT NULL,
+   fk_wastewater_node varchar(16) NOT NULL,
    CONSTRAINT pkey_tww_od_agxx_wastewater_node_uuid PRIMARY KEY (uuid),
-   CONSTRAINT oorel_od_agxx_wastewater_node FOREIGN KEY (obj_id) REFERENCES tww_od.wastewater_node(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
+   CONSTRAINT oorel_od_agxx_wastewater_node FOREIGN KEY (fk_wastewater_node) REFERENCES tww_od.wastewater_node(obj_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 ALTER TABLE tww_od.agxx_wastewater_node ADD COLUMN IF NOT EXISTS ag96_is_gateway bigint;
 COMMENT ON COLUMN tww_od.agxx_wastewater_node.ag96_is_gateway IS 'Extension for AG-96/ Erweiterung aus AG-96, IstSchnittstelle /xxx_fr';
@@ -22,9 +139,9 @@ ALTER TABLE tww_od.agxx_wastewater_node ADD CONSTRAINT fkey_vl_wastewater_node_a
 CREATE TABLE tww_od.agxx_cover
 (
    uuid uuid NOT NULL DEFAULT uuid_generate_v4(),
-   obj_id varchar(16) NOT NULL,
+   fk_cover varchar(16) NOT NULL,
    CONSTRAINT pkey_tww_od_agxx_cover_uuid PRIMARY KEY (uuid),
-   CONSTRAINT oorel_od_agxx_cover FOREIGN KEY (obj_id) REFERENCES tww_od.cover(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
+   CONSTRAINT oorel_od_agxx_cover FOREIGN KEY (fk_cover) REFERENCES tww_od.cover(obj_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 ALTER TABLE tww_od.agxx_cover ADD COLUMN IF NOT EXISTS ag64_fk_wastewater_node varchar(16);
 ALTER TABLE tww_od.agxx_cover ADD CONSTRAINT rel_cover_wastewater_node FOREIGN KEY (ag64_fk_wastewater_node) REFERENCES tww_od.wastewater_node MATCH SIMPLE ON UPDATE CASCADE ON DELETE SET NULL;
@@ -33,9 +150,9 @@ ALTER TABLE tww_od.agxx_cover ADD CONSTRAINT rel_cover_wastewater_node FOREIGN K
 CREATE TABLE tww_od.agxx_wastewater_structure
 (
    uuid uuid NOT NULL DEFAULT uuid_generate_v4(),
-   obj_id varchar(16) NOT NULL,
+   fk_wastewater_structure varchar(16) NOT NULL,
    CONSTRAINT pkey_tww_od_agxx_wastewater_structure_uuid PRIMARY KEY (uuid),
-   CONSTRAINT oorel_od_agxx_wastewater_structure FOREIGN KEY (obj_id) REFERENCES tww_od.wastewater_structure(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
+   CONSTRAINT oorel_od_agxx_wastewater_structure FOREIGN KEY (fk_wastewater_structure) REFERENCES tww_od.wastewater_structure(obj_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 ALTER TABLE tww_od.agxx_wastewater_structure ADD COLUMN IF NOT EXISTS ag96_fk_measure varchar(16);
 ALTER TABLE tww_od.agxx_wastewater_structure ADD CONSTRAINT ag96_rel_wastewater_structure_measure FOREIGN KEY (ag96_fk_measure) REFERENCES tww_od.measure(obj_id) ON DELETE SET NULL;
@@ -45,9 +162,9 @@ COMMENT ON COLUMN tww_od.agxx_wastewater_structure.ag96_fk_measure IS 'Extension
 CREATE TABLE tww_od.agxx_reach
 (
    uuid uuid NOT NULL DEFAULT uuid_generate_v4(),
-   obj_id varchar(16) NOT NULL,
+   fk_reach varchar(16) NOT NULL,
    CONSTRAINT pkey_tww_od_agxx_reach_uuid PRIMARY KEY (uuid),
-   CONSTRAINT oorel_od_agxx_reach FOREIGN KEY (obj_id) REFERENCES tww_od.reach(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
+   CONSTRAINT oorel_od_agxx_reach FOREIGN KEY (fk_reach) REFERENCES tww_od.reach(obj_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 ALTER TABLE tww_od.agxx_reach ADD COLUMN IF NOT EXISTS ag96_clear_height_planned integer;
 ALTER TABLE tww_od.agxx_reach ADD COLUMN IF NOT EXISTS ag96_clear_width_planned integer;
@@ -56,9 +173,9 @@ ALTER TABLE tww_od.agxx_reach ADD COLUMN IF NOT EXISTS ag96_clear_width_planned 
 CREATE TABLE tww_od.agxx_catchment_area_totals
 (
    uuid uuid NOT NULL DEFAULT uuid_generate_v4(),
-   obj_id varchar(16) NOT NULL,
+   fk_catchment_area_totals varchar(16) NOT NULL,
    CONSTRAINT pkey_tww_od_agxx_catchment_area_totals_uuid PRIMARY KEY (uuid),
-   CONSTRAINT oorel_od_agxx_catchment_area_totals FOREIGN KEY (obj_id) REFERENCES tww_od.catchment_area_totals(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
+   CONSTRAINT oorel_od_agxx_catchment_area_totals FOREIGN KEY (fk_catchment_area_totals) REFERENCES tww_od.catchment_area_totals(obj_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 ALTER TABLE tww_od.agxx_catchment_area_totals ADD COLUMN IF NOT EXISTS ag96_sewer_infiltration_water_dim  decimal(9,3);
 COMMENT ON COLUMN tww_od.agxx_catchment_area_totals.ag96_sewer_infiltration_water_dim IS 'Extension for AG-96/ Erweiterung aus AG-96 /xxx_fr';
@@ -73,9 +190,9 @@ COMMENT ON COLUMN tww_od.agxx_catchment_area_totals.ag96_waste_water_production_
 CREATE TABLE tww_od.agxx_building_group
 (
    uuid uuid NOT NULL DEFAULT uuid_generate_v4(),
-   obj_id varchar(16) NOT NULL,
+   fk_building_group varchar(16) NOT NULL,
    CONSTRAINT pkey_tww_od_agxx_building_group_uuid PRIMARY KEY (uuid),
-   CONSTRAINT oorel_od_agxx_building_group FOREIGN KEY (obj_id) REFERENCES tww_od.building_group(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
+   CONSTRAINT oorel_od_agxx_building_group FOREIGN KEY (fk_building_group) REFERENCES tww_od.building_group(obj_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 ALTER TABLE tww_od.agxx_building_group
@@ -97,9 +214,9 @@ ALTER TABLE tww_od.agxx_building_group ADD CONSTRAINT fkey_vl_building_group_ag9
 CREATE TABLE tww_od.agxx_wastewater_networkelement
 (
    uuid uuid NOT NULL DEFAULT uuid_generate_v4(),
-   obj_id varchar(16) NOT NULL,
+   fk_wastewater_networkelement varchar(16) NOT NULL,
    CONSTRAINT pkey_tww_od_agxx_wastewater_networkelement PRIMARY KEY (uuid),
-   CONSTRAINT oorel_od_agxx_wastewater_networkelement FOREIGN KEY (obj_id) REFERENCES tww_od.wastewater_networkelement(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
+   CONSTRAINT oorel_od_agxx_wastewater_networkelement FOREIGN KEY (fk_wastewater_networkelement) REFERENCES tww_od.wastewater_networkelement(obj_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 ALTER TABLE tww_od.agxx_wastewater_networkelement
   ADD COLUMN IF NOT EXISTS ag96_fk_provider varchar(16) -- Verweis auf Datenbewirtschafter_GEP in Organisationstabelle
@@ -113,9 +230,9 @@ ALTER TABLE tww_od.agxx_wastewater_networkelement ADD CONSTRAINT ag64_rel_wastew
 CREATE TABLE tww_od.agxx_overflow
 (
    uuid uuid NOT NULL DEFAULT uuid_generate_v4(),
-   obj_id varchar(16) NOT NULL,
+   fk_overflow varchar(16) NOT NULL,
    CONSTRAINT pkey_tww_od_agxx_overflow PRIMARY KEY (uuid),
-   CONSTRAINT oorel_od_agxx_overflow FOREIGN KEY (obj_id) REFERENCES tww_od.overflow(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
+   CONSTRAINT oorel_od_agxx_overflow FOREIGN KEY (fk_overflow) REFERENCES tww_od.overflow(obj_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 ALTER TABLE tww_od.agxx_overflow
   ADD COLUMN IF NOT EXISTS ag96_fk_provider varchar(16) -- Verweis auf Datenbewirtschafter_GEP in Organisationstabelle
@@ -129,9 +246,9 @@ ALTER TABLE tww_od.agxx_overflow ADD CONSTRAINT ag96_rel_overflow_provider FOREI
 CREATE TABLE tww_od.agxx_infiltration_zone
 (
    uuid uuid NOT NULL DEFAULT uuid_generate_v4(),
-   obj_id varchar(16) NOT NULL,
+   fk_infiltration_zone varchar(16) NOT NULL,
    CONSTRAINT pkey_tww_od_agxx_infiltration_zone PRIMARY KEY (uuid),
-   CONSTRAINT oorel_od_agxx_infiltration_zone FOREIGN KEY (obj_id) REFERENCES tww_od.infiltration_zone(obj_id) ON DELETE CASCADE ON UPDATE CASCADE;
+   CONSTRAINT oorel_od_agxx_infiltration_zone FOREIGN KEY (CONSTRAINT) REFERENCES tww_od.infiltration_zone(obj_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 ALTER TABLE tww_od.agxx_infiltration_zone
   ADD COLUMN IF NOT EXISTS ag96_permeability varchar(50) 	-- Durchlässigkeit
@@ -166,7 +283,7 @@ CREATE INDEX IF NOT EXISTS in_od_agxx_unconnected_node_bwrel_detail_geometry3d_g
 
 -- for existing AG-xx databases
 ALTER TABLE IF EXISTS tww_od.measure_text
-  RENAME TO tww_od.agxx_measure_text;
+  RENAME TO agxx_measure_text;
 
 CREATE TABLE IF NOT EXISTS tww_od.agxx_measure_text
 (
@@ -207,7 +324,7 @@ COMMENT ON TABLE tww_od.agxx_measure_text IS 'Extension for AG-96/ Erweiterung f
 
 -- for existing AG-xx databases
 ALTER TABLE IF EXISTS tww_od.building_group_text
-  RENAME TO tww_od.agxx_building_group_text;
+  RENAME TO agxx_building_group_text;
 
 CREATE TABLE IF NOT EXISTS tww_od.agxx_building_group_text
 (
@@ -259,11 +376,12 @@ CREATE TABLE IF NOT EXISTS tww_od.agxx_last_modification_updater(
 CREATE TABLE IF NOT EXISTS tww_od.agxx_last_modification
 (
    uuid uuid NOT NULL DEFAULT uuid_generate_v4(),
-   obj_id varchar(16) NOT NULL,
+   fk_element varchar(16) NOT NULL,
    CONSTRAINT pkey_tww_od_agxx_last_modification PRIMARY KEY (uuid)
   );
+  -- No Constraint as it references both overflow and wastewater_networkelement
 ALTER TABLE tww_od.agxx_last_modification
-, ADD COLUMN IF NOT EXISTS ag96_last_modification TIMESTAMP without time zone DEFAULT now()
+  ADD COLUMN IF NOT EXISTS ag96_last_modification TIMESTAMP without time zone DEFAULT now()
 , ADD COLUMN IF NOT EXISTS ag64_last_modification TIMESTAMP without time zone DEFAULT now()
 
 ------------------

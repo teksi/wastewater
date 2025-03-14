@@ -2,24 +2,24 @@ joins:
   agxx_wastewater_networkelement:
     table: tww_od.agxx_wastewater_networkelement
     alias: agxx_ne
-    join_on: "agxx_ne.obj_id = ne.obj_id"
-    skip_columns: ["uuid","obj_id"]
+    join_on: "agxx_ne.fk_wastewater_networkelement = ne.obj_id"
+    skip_columns: ["uuid","fk_wastewater_networkelement"]
     remap_columns:
-      obj_id: wn_obj_id
-    prefix: ne_
+      fk_wastewater_networkelement: wn_obj_id
+    prefix: wn_
   agxx_last_modification:
     table: tww_od.agxx_last_modification
     alias: agxx_lm
-    join_on: "agxx_lm.obj_id = ne.obj_id"
-    skip_columns: ["uuid","obj_id"]
+    join_on: "agxx_lm.fk_element = ne.obj_id"
+    skip_columns: ["uuid","fk_element"]
     remap_columns:
-      obj_id: wn_obj_id
+      fk_element: wn_obj_id
     prefix: ne_
   agxx_wastewater_structure:
     table: tww_od.agxx_wastewater_structure
     alias: agxx_ws
-    join_on: "agxx_ws.obj_id = ws.obj_id"
-    skip_columns: ["uuid","obj_id"]
+    join_on: "agxx_ws.fk_wastewater_structure = ws.obj_id"
+    skip_columns: ["uuid","fk_wastewater_structure"]
     remap_columns:
-      obj_id: obj_id
+      fk_wastewater_structure: obj_id
     prefix: ws_ 

@@ -1,9 +1,10 @@
 joins:
   agxx_wastewater_structure:
     table: tww_od.agxx_wastewater_structure
-    alias: agxx_ws
-    join_on: "agxx_ws.obj_id = ws.obj_id"
-    skip_columns: ["uuid","obj_id"]
+    join_on: "agxx_ws.fk_wastewater_structure = ws.obj_id"
+    skip_columns: ["uuid"]
     remap_columns:
-      obj_id: obj_id
-    prefix: ws_ 
+      fk_wastewater_structure: obj_id
+    prefix: agxx_ 
+    alias: agxx_ws
+    where_clause: fk_wastewater_structure = OLD.obj_id

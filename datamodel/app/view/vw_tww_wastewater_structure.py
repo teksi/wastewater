@@ -98,7 +98,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
 
     """.format(
         srid=srid,
-        extra_cols="\n    ".join(
+        extra_cols=''if not extra_definition else ', '+"\n    ,".join(
             [
                 select_columns(
                     pg_cur=cursor,
@@ -109,7 +109,6 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
                     prefix=table_def.get("prefix", None),
                     table_alias=table_def.get("alias", None),
                 )
-                + ","
                 for table_def in extra_definition.get("joins", {}).values()
             ]
         ),
@@ -229,7 +228,6 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             ]
         ),
     )
-
     cursor.execute(view_sql)
 
     trigger_insert_sql = """
@@ -276,7 +274,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
         WHERE obj_id = NEW.obj_id;
 
         
-      {extra_cols}
+      {insert_extra}
       RETURN NEW;
     END; $BODY$ LANGUAGE plpgsql VOLATILE;
 
@@ -392,7 +390,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
                 "fk_wastewater_structure": "NEW.obj_id",
             },
         ),
-        extra_cols="\n     ".join(
+        insert_extra="\n     ".join(
             [
                 insert_command(
                     pg_cur=cursor,
@@ -404,7 +402,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
                     remap_columns=table_def.get("remap_columns", {}),
                     prefix=table_def.get("prefix", None),
                     table_alias=table_def.get("alias", None),
-                    insert_values=table_def.get("insert_values", None),
+                    insert_values=table_def.get("insert_values", {}),
                 )
                 for table_def in extra_definition.get("joins", {}).values()
             ]
@@ -426,7 +424,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
       {update_ws}
       {update_wn}
       {update_ne}
-      {extra_cols}
+      {update_extra}
 
       IF OLD.ws_type <> NEW.ws_type THEN
         CASE WHEN OLD.ws_type <> 'unknown' THEN
@@ -664,19 +662,20 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             indent=6,
             skip_columns=[],
         ),
-        extra_cols="\n     ".join(
+        update_extra="\n     ".join(
             [
                 update_command(
                     pg_cur=cursor,
                     table_schema=table_parts(table_def["table"])[0],
                     table_name=table_parts(table_def["table"])[1],
                     remove_pkey=table_def.get("remove_pkey", False),
-                    indent=6,
+                    indent=2,
                     skip_columns=table_def.get("skip_columns", []),
                     remap_columns=table_def.get("remap_columns", {}),
                     prefix=table_def.get("prefix", None),
                     table_alias=table_def.get("alias", None),
-                    insert_values=table_def.get("insert_values", None),
+                    update_values=table_def.get("update_values", {}),
+                    where_clause=table_def.get("where_clause", None),
                 )
                 for table_def in extra_definition.get("joins", {}).values()
             ]

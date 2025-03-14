@@ -50,8 +50,8 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
           WHEN rp_from.level > 0 AND rp_to.level > 0 THEN round((rp_from.level - rp_to.level)/ST_LENGTH(re.progression3d_geometry)::numeric*1000,1)
           ELSE NULL
         END AS _slope_per_mill
-        , {extra_cols}
-        {re_cols}
+        {extra_cols}
+        , {re_cols}
         , {ne_cols}
         , {ch_cols}
         , {ws_cols}
@@ -66,7 +66,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
          LEFT JOIN tww_od.pipe_profile pp ON re.fk_pipe_profile = pp.obj_id
          {extra_joins};
     """.format(
-        extra_cols="\n    , ".join(
+        extra_cols=''if not extra_definition else ', '+"\n   , ".join(
             [
                 select_columns(
                     pg_cur=cursor,
@@ -187,7 +187,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
       {ch}
       {ne}
       {re}
-      {extra_cols}
+      {insert_extra}
 
       RETURN NEW;
     END; $BODY$
@@ -276,7 +276,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
                 "fk_reach_point_to": "NEW.rp_to_obj_id",
             },
         ),
-        extra_cols="\n     ".join(
+        insert_extra="\n     ".join(
             [
                 insert_command(
                     pg_cur=cursor,
@@ -288,7 +288,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
                     remap_columns=table_def.get("remap_columns", {}),
                     prefix=table_def.get("prefix", None),
                     table_alias=table_def.get("alias", None),
-                    insert_values=table_def.get("insert_values", None),
+                    insert_values=table_def.get("insert_values", {}),
                 )
                 for table_def in extra_definition.get("joins", {}).values()
             ]
@@ -358,7 +358,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
 
       {re}
 
-      {extra_cols}
+      {update_extra}
 
 
       RETURN NEW;
@@ -427,19 +427,20 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             indent=6,
             skip_columns=["fk_reach_point_to", "fk_reach_point_from"],
         ),
-        extra_cols="\n     ".join(
+        update_extra="\n     ".join(
             [
                 update_command(
                     pg_cur=cursor,
                     table_schema=table_parts(table_def["table"])[0],
                     table_name=table_parts(table_def["table"])[1],
                     remove_pkey=table_def.get("remove_pkey", False),
-                    indent=6,
+                    indent=2,
                     skip_columns=table_def.get("skip_columns", []),
                     remap_columns=table_def.get("remap_columns", {}),
                     prefix=table_def.get("prefix", None),
                     table_alias=table_def.get("alias", None),
-                    insert_values=table_def.get("insert_values", None),
+                    update_values=table_def.get("update_values", {}),
+                    where_clause=table_def.get("where_clause", None),
                 )
                 for table_def in extra_definition.get("joins", {}).values()
             ]

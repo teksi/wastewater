@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os
+import re
 from pathlib import Path
 
 try:
@@ -18,7 +19,12 @@ def run_sql_file(file_path: str, pg_service: str, variables: dict = None):
 
 def run_sql(sql: str, pg_service: str, variables: dict = None):
     if variables:
-        sql = psycopg.sql.SQL(sql).format(**variables)
+        if re.search(r'\{[^}]*\}', sql): # avoid formatting if no variables are present
+            try:
+                sql = psycopg.sql.SQL(sql).format(**variables)
+            except IndexError:
+                print(sql)
+                raise
     conn = psycopg.connect(f"service={pg_service}")
     cursor = conn.cursor()
     cursor.execute(sql)
