@@ -170,8 +170,8 @@ For joining a table to ``tww_app.vw_tww_wastewater_structure``, here is an examp
         join_on: mt.fk_ws = ws.obj_id
 		read_only: false
 
-``table`` and ``join_on`` are mandatory keys, all the others are optional. 
-``read_only`` defaults to true. ``remap_columns`` is used on insert and update. 
+``table`` and ``join_on`` are mandatory keys, all the others are optional.
+``read_only`` defaults to true. ``remap_columns`` is used on insert and update.
 `It is expected that mt.fk_ws has a ON DELETE CASCADE`` foreign key constraint.
 The yaml file needs to be called ``vw_tww_wastewater_structure.yaml``.
 

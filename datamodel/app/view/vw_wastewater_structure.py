@@ -9,9 +9,16 @@ try:
     import psycopg
 except ImportError:
     import psycopg2 as psycopg
-from pirogue.utils import insert_command, select_columns, table_parts, update_command
-from ..utils.extra_definition_utils import extra_cols,extra_joins, insert_extra, update_extra
+
+from pirogue.utils import insert_command, select_columns, update_command
 from yaml import safe_load
+
+from ..utils.extra_definition_utils import (
+    extra_cols,
+    extra_joins,
+    insert_extra,
+    update_extra,
+)
 
 
 def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = None):
@@ -46,11 +53,7 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
 
         ALTER VIEW tww_app.vw_wastewater_structure ALTER obj_id SET DEFAULT tww_app.generate_oid('tww_od','wastewater_structure');
     """.format(
-        extra_cols=(
-            ""
-            if not extra_definition
-            else extra_cols(extra_definition)
-        ),
+        extra_cols=("" if not extra_definition else extra_cols(extra_definition)),
         ws_cols=select_columns(
             pg_cur=cursor,
             table_schema="tww_od",

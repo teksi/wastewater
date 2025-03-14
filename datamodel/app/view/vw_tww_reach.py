@@ -10,9 +10,15 @@ try:
 except ImportError:
     import psycopg2 as psycopg
 
-from pirogue.utils import insert_command, select_columns, table_parts, update_command
-from ..utils.extra_definition_utils import extra_cols,extra_joins, insert_extra, update_extra
+from pirogue.utils import insert_command, select_columns, update_command
 from yaml import safe_load
+
+from ..utils.extra_definition_utils import (
+    extra_cols,
+    extra_joins,
+    insert_extra,
+    update_extra,
+)
 
 
 def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
@@ -67,11 +73,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
          LEFT JOIN tww_od.pipe_profile pp ON re.fk_pipe_profile = pp.obj_id
          {extra_joins};
     """.format(
-        extra_cols=(
-            ""
-            if not extra_definition
-            else extra_cols(extra_definition)
-        ),
+        extra_cols=("" if not extra_definition else extra_cols(extra_definition)),
         re_cols=select_columns(
             pg_cur=cursor,
             table_schema="tww_od",
