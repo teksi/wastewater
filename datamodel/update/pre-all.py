@@ -5,7 +5,7 @@
 
 from pkg_resources import DistributionNotFound, get_distribution, parse_version
 from pum.core.deltapy import DeltaPy
-from view.create_views import drop_views
+from ..app.utils.sql_utils import run_sql
 
 # Older verisons of pum and pirogue can create issues such as reapplying deltas whose checksum have changed,
 # or create columuns in views in a non-deterministic order. To avoid causing trouble in user's database,
@@ -37,4 +37,4 @@ class CheckLibraryVersions(DeltaPy):
 
 class DropViews(DeltaPy):
     def run(self):
-        drop_views(pg_service=self.pg_service)
+        run_sql("DROP SCHEMA IF EXISTS tww_app CASCADE;", pg_service=self.pg_service)
