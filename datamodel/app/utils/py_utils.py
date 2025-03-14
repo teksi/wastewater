@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
+import os
 import subprocess
 import sys
-import os
 from pathlib import Path
-
 
 
 def run_py_file(file_path: str, variables: dict = None):

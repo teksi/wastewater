@@ -38,7 +38,7 @@ def vw_tww_measurement_series(pg_service: str = None, extra_definition: dict = N
         FROM tww_od.measurement_series ms
         LEFT JOIN tww_od.measurement_result mr ON ms.obj_id = mr.fk_measurement_series
         {extra_joins}
-        GROUP BY {ms_cols} 
+        GROUP BY {ms_cols}
         {extra_cols};
 
     """.format(
@@ -51,20 +51,25 @@ def vw_tww_measurement_series(pg_service: str = None, extra_definition: dict = N
             indent=4,
             skip_columns=[],
         ),
-        extra_cols=''if not extra_definition else ', '+"\n    ".join(
-            [
-                select_columns(
-                    pg_cur=cursor,
-                    table_schema=table_parts(table_def["table"])[0],
-                    table_name=table_parts(table_def["table"])[1],
-                    skip_columns=table_def.get("skip_columns", []),
-                    remap_columns=table_def.get("remap_columns_select", {}),
-                    prefix=table_def.get("prefix", None),
-                    table_alias=table_def.get("alias", None),
-                )
-                + ","
-                for table_def in extra_definition.get("joins", {}).values()
-            ]
+        extra_cols=(
+            ""
+            if not extra_definition
+            else ", "
+            + "\n    ".join(
+                [
+                    select_columns(
+                        pg_cur=cursor,
+                        table_schema=table_parts(table_def["table"])[0],
+                        table_name=table_parts(table_def["table"])[1],
+                        skip_columns=table_def.get("skip_columns", []),
+                        remap_columns=table_def.get("remap_columns_select", {}),
+                        prefix=table_def.get("prefix", None),
+                        table_alias=table_def.get("alias", None),
+                    )
+                    + ","
+                    for table_def in extra_definition.get("joins", {}).values()
+                ]
+            )
         ),
         extra_joins="\n    ".join(
             [
@@ -217,9 +222,9 @@ if __name__ == "__main__":
         help="YAML file path for extra additions to the view",
     )
     args = parser.parse_args()
-    extra_definition={}
+    extra_definition = {}
     if args.extra_definition:
-      with open(args.extra_definition) as f:
-        extra_definition = safe_load(f)
+        with open(args.extra_definition) as f:
+            extra_definition = safe_load(f)
     pg_service = args.pg_service or os.getenv("PGSERVICE")
     vw_tww_measurement_series(pg_service=pg_service, extra_definition=extra_definition)

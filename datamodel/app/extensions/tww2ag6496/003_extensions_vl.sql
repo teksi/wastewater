@@ -683,4 +683,3 @@ INSERT INTO tww_vl.building_group_function_import_rel_agxx (code,value_de) VALUE
 (4819,'Wohnhaus')
 ON CONFLICT (code) DO UPDATE SET
   value_de = EXCLUDED.value_de;
-

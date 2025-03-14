@@ -66,19 +66,24 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
          LEFT JOIN tww_od.pipe_profile pp ON re.fk_pipe_profile = pp.obj_id
          {extra_joins};
     """.format(
-        extra_cols=''if not extra_definition else ', '+"\n   , ".join(
-            [
-                select_columns(
-                    pg_cur=cursor,
-                    table_schema=table_parts(table_def["table"])[0],
-                    table_name=table_parts(table_def["table"])[1],
-                    skip_columns=table_def.get("skip_columns", []),
-                    remap_columns=table_def.get("remap_columns_select", {}),
-                    prefix=table_def.get("prefix", None),
-                    table_alias=table_def.get("alias", None),
-                )
-                for table_def in extra_definition.get("joins", {}).values()
-            ]
+        extra_cols=(
+            ""
+            if not extra_definition
+            else ", "
+            + "\n   , ".join(
+                [
+                    select_columns(
+                        pg_cur=cursor,
+                        table_schema=table_parts(table_def["table"])[0],
+                        table_name=table_parts(table_def["table"])[1],
+                        skip_columns=table_def.get("skip_columns", []),
+                        remap_columns=table_def.get("remap_columns_select", {}),
+                        prefix=table_def.get("prefix", None),
+                        table_alias=table_def.get("alias", None),
+                    )
+                    for table_def in extra_definition.get("joins", {}).values()
+                ]
+            )
         ),
         re_cols=select_columns(
             pg_cur=cursor,
@@ -489,8 +494,8 @@ if __name__ == "__main__":
     parser.add_argument("-p", "--pg_service", help="the PostgreSQL service name")
     args = parser.parse_args()
     pg_service = args.pg_service or os.getenv("PGSERVICE")
-    extra_definition={}
+    extra_definition = {}
     if args.extra_definition:
-      with open(args.extra_definition) as f:
-        extra_definition = safe_load(f)
+        with open(args.extra_definition) as f:
+            extra_definition = safe_load(f)
     vw_tww_reach(pg_service=pg_service, extra_definition=extra_definition)

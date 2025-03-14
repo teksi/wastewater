@@ -45,19 +45,24 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
 
         ALTER VIEW tww_app.vw_wastewater_structure ALTER obj_id SET DEFAULT tww_app.generate_oid('tww_od','wastewater_structure');
     """.format(
-        extra_cols=''if not extra_definition else ', '+"\n    ,".join(
-            [
-                select_columns(
-                    pg_cur=cursor,
-                    table_schema=table_parts(table_def["table"])[0],
-                    table_name=table_parts(table_def["table"])[1],
-                    skip_columns=table_def.get("skip_columns", []),
-                    remap_columns=table_def.get("remap_columns_select", {}),
-                    prefix=table_def.get("prefix", None),
-                    table_alias=table_def.get("alias", None),
-                )
-                for table_def in extra_definition.get("joins", {}).values()
-            ]
+        extra_cols=(
+            ""
+            if not extra_definition
+            else ", "
+            + "\n    ,".join(
+                [
+                    select_columns(
+                        pg_cur=cursor,
+                        table_schema=table_parts(table_def["table"])[0],
+                        table_name=table_parts(table_def["table"])[1],
+                        skip_columns=table_def.get("skip_columns", []),
+                        remap_columns=table_def.get("remap_columns_select", {}),
+                        prefix=table_def.get("prefix", None),
+                        table_alias=table_def.get("alias", None),
+                    )
+                    for table_def in extra_definition.get("joins", {}).values()
+                ]
+            )
         ),
         ws_cols=select_columns(
             pg_cur=cursor,

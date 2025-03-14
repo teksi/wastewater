@@ -122,7 +122,7 @@ WITH re_meta AS(
 				 status_survey_year,
 				 renovation_necessity,
 				 fk_owner,
-				 fk_operator				 
+				 fk_operator
 				 FROM tww_od.wastewater_structure  )      ws ON ws.obj_id = ne.fk_wastewater_structure
       LEFT JOIN (SELECT fk_wastewater_structure,
 				ag96_fk_measure

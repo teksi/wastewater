@@ -14,7 +14,7 @@ The combination of both allows to introduce small customizations of the data mod
 
 Before going further, we strongly recommend to ask the community if you have any doubts about how to store any information in the database. TWW complies with `SIA 405 <http://www.sia.ch/405>`_ Waste Water and `VSA-DSS <https://www.vsa.ch/models/>`_ datamodel.
 
-If the TWW data model is not yet able to hold some data, please let us know what kind and how it should be handled. 
+If the TWW data model is not yet able to hold some data, please let us know what kind and how it should be handled.
 The TWW data model is a standard proof adaptative model and could follow your needs.
 
 If a customization is still required, the following explanations and rules explain how to adapt TWW data model to your specific needs.
@@ -35,9 +35,9 @@ In order to add extensions to TEKSI in a standardised way, TEKSI wastewater set 
 # Adding additional views using sql or py
 # Adding additional triggers using sql or py
 # Adding additional items to value lists
-# Joining additional tables to views 
+# Joining additional tables to views
 
-It is discouraged to add additional fields to base tables that are defined by TEKSI Wastewater. 
+It is discouraged to add additional fields to base tables that are defined by TEKSI Wastewater.
 If it is necessary to add custom fields, create a separate table with a foreign key pointing to the TEKSI base table and join it to the base views.
 
 Creation of custom extensions
@@ -62,7 +62,7 @@ Python scripts are run before sql scripts, while the yaml files are used to over
 Deployment of custom extensions
 """""""""""""""""""""""""""""""
 
-A predefined extension can be loaded using 
+A predefined extension can be loaded using
 
 ``python -m .app.create_app.py --pg_service pg_tww --drop-schema --srid 2056 --extensions extension_id_1 foo bar``
 
@@ -158,13 +158,13 @@ For joining a table to ``tww_app.vw_tww_wastewater_structure``, here is an examp
 Creating custom views
 """""""""""""""""""""
 
-It is possible to create custom views and add them to the data model. 
+It is possible to create custom views and add them to the data model.
 Simply create an extension folder, place the sql or py script inside and add the ``--extensions`` flag
 Please note that these scripts are re-run on every datamodel update.
 
 Adding custom triggers
 """"""""""""""""""""
 
-It is possible to create custom views and add them to the data model. 
+It is possible to create custom views and add them to the data model.
 Simply create an extension folder, place the sql or py script inside and add the ``--extensions`` flag
 Please note that these scripts are re-run on every datamodel update.

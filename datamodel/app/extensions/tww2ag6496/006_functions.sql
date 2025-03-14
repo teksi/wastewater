@@ -14,25 +14,25 @@ $BODY$
 	  FROM tww_od.agxx_last_modification_updater
 	  WHERE username=current_user;
 	  CASE
-	    WHEN update_type ='wi' THEN 
+	    WHEN update_type ='wi' THEN
 		  UPDATE tww_od.agxx_last_modification SET ag64_last_modification=now() WHERE obj_id = NEW.obj_id;
-		  IF NOT FOUND THEN 
-			INSERT INTO tww_od.agxx_last_modification(obj_id) 
+		  IF NOT FOUND THEN
+			INSERT INTO tww_od.agxx_last_modification(obj_id)
 			VALUES (NEW.obj_id);
 		  END IF;
 	    WHEN update_type ='gep' THEN
 		  UPDATE tww_od.agxx_last_modification SET ag96_last_modification=now() WHERE obj_id = NEW.obj_id;
-		  IF NOT FOUND THEN 
-			INSERT INTO tww_od.agxx_last_modification(obj_id) 
+		  IF NOT FOUND THEN
+			INSERT INTO tww_od.agxx_last_modification(obj_id)
 			VALUES (NEW.obj_id);
 		  END IF;
 	    WHEN update_type ='both' THEN
-		  UPDATE tww_od.agxx_last_modification 
+		  UPDATE tww_od.agxx_last_modification
 		  SET ag64_last_modification=now(),
-		  ag96_last_modification=now() 
+		  ag96_last_modification=now()
 		  WHERE obj_id = NEW.obj_id;
-		  IF NOT FOUND THEN 
-			INSERT INTO tww_od.agxx_last_modification(obj_id) 
+		  IF NOT FOUND THEN
+			INSERT INTO tww_od.agxx_last_modification(obj_id)
 			VALUES (NEW.obj_id);
 		  END IF;
 	    ELSE NULL;

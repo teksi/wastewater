@@ -22,4 +22,4 @@ joins:
     skip_columns: ["uuid","fk_wastewater_structure"]
     remap_columns:
       fk_wastewater_structure: obj_id
-    prefix: ws_ 
+    prefix: ws_

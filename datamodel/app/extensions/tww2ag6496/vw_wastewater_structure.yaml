@@ -5,6 +5,6 @@ joins:
     skip_columns: ["uuid"]
     remap_columns:
       fk_wastewater_structure: obj_id
-    prefix: agxx_ 
+    prefix: agxx_
     alias: agxx_ws
     where_clause: fk_wastewater_structure = OLD.obj_id

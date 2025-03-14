@@ -13,6 +13,7 @@ except ImportError:
 from pirogue.utils import insert_command, select_columns, table_parts, update_command
 from yaml import safe_load
 
+
 def vw_tww_additional_ws(srid: int, pg_service: str = None, extra_definition: dict = None):
     """
     Creates additional_wastewater_structure view
@@ -92,20 +93,25 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None, extra_definition: di
         AND '-2'= ALL(ARRAY[ch.obj_id,ma.obj_id,ss.obj_id,dp.obj_id,ii.obj_id]) IS NULL;
     """.format(
         srid=srid,
-        extra_cols=''if not extra_definition else ', '+"\n    ".join(
-            [
-                select_columns(
-                    pg_cur=cursor,
-                    table_schema=table_parts(table_def["table"])[0],
-                    table_name=table_parts(table_def["table"])[1],
-                    skip_columns=table_def.get("skip_columns", []),
-                    remap_columns=table_def.get("remap_columns_select", {}),
-                    prefix=table_def.get("prefix", None),
-                    table_alias=table_def.get("alias", None),
-                )
-                + ","
-                for table_def in extra_definition.get("joins", {}).values()
-            ]
+        extra_cols=(
+            ""
+            if not extra_definition
+            else ", "
+            + "\n    ".join(
+                [
+                    select_columns(
+                        pg_cur=cursor,
+                        table_schema=table_parts(table_def["table"])[0],
+                        table_name=table_parts(table_def["table"])[1],
+                        skip_columns=table_def.get("skip_columns", []),
+                        remap_columns=table_def.get("remap_columns_select", {}),
+                        prefix=table_def.get("prefix", None),
+                        table_alias=table_def.get("alias", None),
+                    )
+                    + ","
+                    for table_def in extra_definition.get("joins", {}).values()
+                ]
+            )
         ),
         ws_cols=select_columns(
             pg_cur=cursor,
@@ -255,7 +261,7 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None, extra_definition: di
         SET fk_main_cover = NEW.co_obj_id
         WHERE obj_id = NEW.obj_id;
 
-      {insert_extra}        
+      {insert_extra}
 
       RETURN NEW;
     END; $BODY$ LANGUAGE plpgsql VOLATILE;
@@ -669,8 +675,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
     srid = args.srid or os.getenv("SRID")
     pg_service = args.pg_service or os.getenv("PGSERVICE")
-    extra_definition={}
+    extra_definition = {}
     if args.extra_definition:
-      with open(args.extra_definition) as f:
-        extra_definition = safe_load(f)
+        with open(args.extra_definition) as f:
+            extra_definition = safe_load(f)
     vw_tww_additional_ws(srid=srid, pg_service=pg_service, extra_definition=extra_definition)

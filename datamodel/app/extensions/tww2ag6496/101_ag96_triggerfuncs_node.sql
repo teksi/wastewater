@@ -32,7 +32,7 @@ BEGIN
     , NEW.bemerkung_gep
 	, tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
 	);
-	
+
 	INSERT INTO tww_od.agxx_wastewater_networkelement(
 	  fk_wastewater_networkelement
     , ag64_remark
@@ -48,7 +48,7 @@ BEGIN
     , NEW.bemerkung_gep
 	, tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
 	);
-	
+
 	INSERT INTO tww_od.agxx_last_modification(
 	  fk_element
 	, ag64_last_modification

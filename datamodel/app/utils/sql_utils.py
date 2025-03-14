@@ -9,7 +9,6 @@ except ImportError:
     import psycopg2 as psycopg
 
 
-
 def run_sql_file(file_path: str, pg_service: str, variables: dict = None):
     abs_file_path = Path(__file__).parent.resolve() / file_path
     with open(abs_file_path) as f:
@@ -19,7 +18,7 @@ def run_sql_file(file_path: str, pg_service: str, variables: dict = None):
 
 def run_sql(sql: str, pg_service: str, variables: dict = None):
     if variables:
-        if re.search(r'\{[^}]*\}', sql): # avoid formatting if no variables are present
+        if re.search(r"\{[^}]*\}", sql):  # avoid formatting if no variables are present
             try:
                 sql = psycopg.sql.SQL(sql).format(**variables)
             except IndexError:
@@ -30,6 +29,7 @@ def run_sql(sql: str, pg_service: str, variables: dict = None):
     cursor.execute(sql)
     conn.commit()
     conn.close()
+
 
 def run_sql_files_in_folder(directory: str, pg_service: str, variables: dict = None):
     files = os.listdir(directory)

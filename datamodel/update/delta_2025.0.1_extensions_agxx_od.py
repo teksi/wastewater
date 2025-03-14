@@ -2,7 +2,9 @@ try:
     import psycopg
 except ImportError:
     import psycopg2 as psycopg
+
 from pum.core.deltapy import DeltaPy
+
 
 class CreateViews(DeltaPy):
     def run(self):
@@ -12,7 +14,7 @@ class CreateViews(DeltaPy):
         conn = psycopg.connect(f"service={self.pg_service}")
         with conn.cursor() as cursor:
             ext_check= """
-            SELECT * 
+            SELECT *
             FROM information_schema.columns
             WHERE table_schema='tww_od'
             AND table_name='wastewater_node'
@@ -49,4 +51,3 @@ class CreateViews(DeltaPy):
                         query.append(f"ALTER TABLE tww_od.{key} DROP COLUMN {val} CASCADE;")
                 cursor.execute('\n'.join(query))
         conn.close()
-

@@ -14,7 +14,7 @@ additional_columns:
   ag64_last_modification: agxx_lm.ag64_last_modification
   ag64_remark: agxx_ov.ag64_remark
   ag64_fk_provider: agxx_ov.ag64_fk_provider
-  
+
 additional_joins: >
   LEFT JOIN tww_od.wastewater_node n1 ON overflow.fk_wastewater_node::text = n1.obj_id::text
   LEFT JOIN tww_od.agxx_overflow agxx_ov ON agxx_ov.fk_overflow=overflow.obj_id

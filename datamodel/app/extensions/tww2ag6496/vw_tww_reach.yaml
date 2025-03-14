@@ -22,7 +22,7 @@ joins:
     skip_columns: ["uuid","fk_wastewater_structure"]
     remap_columns:
       fk_wastewater_structure: ws_obj_id
-    prefix: ws_ 
+    prefix: ws_
   agxx_reach:
     table: tww_od.agxx_reach
     alias: agxx_re
