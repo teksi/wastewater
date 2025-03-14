@@ -7,6 +7,7 @@ except ImportError:
     import psycopg2 as psycopg
 
 from pum.core.deltapy import DeltaPy
+
 from ..app.create_app import create_app
 
 # sys.path.append(os.path.join(os.path.dirname(__file__), ".."))

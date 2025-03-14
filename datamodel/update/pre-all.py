@@ -5,6 +5,7 @@
 
 from pkg_resources import DistributionNotFound, get_distribution, parse_version
 from pum.core.deltapy import DeltaPy
+
 from ..app.utils.sql_utils import run_sql
 
 # Older verisons of pum and pirogue can create issues such as reapplying deltas whose checksum have changed,
