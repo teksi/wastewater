@@ -18,7 +18,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
     """
     Creates tww_reach view
     :param pg_service: the PostgreSQL service name
-    :param extra_definition: a dictionary for additional read-only columns
+    :param extra_definition: a dictionary for additional columns
     """
     if not pg_service:
         pg_service = os.getenv("PGSERVICE")
@@ -50,8 +50,8 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
           WHEN rp_from.level > 0 AND rp_to.level > 0 THEN round((rp_from.level - rp_to.level)/ST_LENGTH(re.progression3d_geometry)::numeric*1000,1)
           ELSE NULL
         END AS _slope_per_mill
-        , {extra_cols}
-        {re_cols}
+        {extra_cols}
+        , {re_cols}
         , {ne_cols}
         , {ch_cols}
         , {ws_cols}
@@ -66,14 +66,14 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
          LEFT JOIN tww_od.pipe_profile pp ON re.fk_pipe_profile = pp.obj_id
          {extra_joins};
     """.format(
-        extra_cols="\n    , ".join(
+        extra_cols=''if not extra_definition else ', '+"\n   , ".join(
             [
                 select_columns(
                     pg_cur=cursor,
                     table_schema=table_parts(table_def["table"])[0],
                     table_name=table_parts(table_def["table"])[1],
                     skip_columns=table_def.get("skip_columns", []),
-                    remap_columns=table_def.get("remap_columns", {}),
+                    remap_columns=table_def.get("remap_columns_select", {}),
                     prefix=table_def.get("prefix", None),
                     table_alias=table_def.get("alias", None),
                 )
@@ -187,6 +187,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
       {ch}
       {ne}
       {re}
+      {insert_extra}
 
       RETURN NEW;
     END; $BODY$
@@ -275,6 +276,23 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
                 "fk_reach_point_to": "NEW.rp_to_obj_id",
             },
         ),
+        insert_extra="\n     ".join(
+            [
+                insert_command(
+                    pg_cur=cursor,
+                    table_schema=table_parts(table_def["table"])[0],
+                    table_name=table_parts(table_def["table"])[1],
+                    remove_pkey=table_def.get("remove_pkey", False),
+                    indent=2,
+                    skip_columns=table_def.get("skip_columns", []),
+                    remap_columns=table_def.get("remap_columns", {}),
+                    prefix=table_def.get("prefix", None),
+                    table_alias=table_def.get("alias", None),
+                    insert_values=table_def.get("insert_values", {}),
+                )
+                for table_def in extra_definition.get("joins", {}).values()
+            ]
+        ),
     )
     cursor.execute(trigger_insert_sql)
 
@@ -339,6 +357,8 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
       {ne}
 
       {re}
+
+      {update_extra}
 
 
       RETURN NEW;
@@ -407,6 +427,24 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             indent=6,
             skip_columns=["fk_reach_point_to", "fk_reach_point_from"],
         ),
+        update_extra="\n     ".join(
+            [
+                update_command(
+                    pg_cur=cursor,
+                    table_schema=table_parts(table_def["table"])[0],
+                    table_name=table_parts(table_def["table"])[1],
+                    remove_pkey=table_def.get("remove_pkey", False),
+                    indent=2,
+                    skip_columns=table_def.get("skip_columns", []),
+                    remap_columns=table_def.get("remap_columns", {}),
+                    prefix=table_def.get("prefix", None),
+                    table_alias=table_def.get("alias", None),
+                    update_values=table_def.get("update_values", {}),
+                    where_clause=table_def.get("where_clause", None),
+                )
+                for table_def in extra_definition.get("joins", {}).values()
+            ]
+        ),
     )
     cursor.execute(trigger_update_sql)
 
@@ -451,5 +489,8 @@ if __name__ == "__main__":
     parser.add_argument("-p", "--pg_service", help="the PostgreSQL service name")
     args = parser.parse_args()
     pg_service = args.pg_service or os.getenv("PGSERVICE")
-    extra_definition = safe_load(open(args.extra_definition)) if args.extra_definition else {}
+    extra_definition={}
+    if args.extra_definition:
+      with open(args.extra_definition) as f:
+        extra_definition = safe_load(f)
     vw_tww_reach(pg_service=pg_service, extra_definition=extra_definition)

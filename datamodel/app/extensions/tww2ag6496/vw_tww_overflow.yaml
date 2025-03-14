@@ -1,0 +1,31 @@
+
+table: tww_od.overflow
+view_name: vw_tww_overflow
+view_schema: tww_app
+allow_type_change: True
+allow_parent_only: false
+pkey_default_value: True
+
+additional_columns:
+  geometry: n1.situation3d_geometry
+  ag96_last_modification: agxx_lm.ag96_last_modification
+  ag96_remark: agxx_ov.ag96_remark
+  ag96_fk_provider: agxx_ov.ag96_fk_provider
+  ag64_last_modification: agxx_lm.ag64_last_modification
+  ag64_remark: agxx_ov.ag64_remark
+  ag64_fk_provider: agxx_ov.ag64_fk_provider
+  
+additional_joins: >
+  LEFT JOIN tww_od.wastewater_node n1 ON overflow.fk_wastewater_node::text = n1.obj_id::text
+  LEFT JOIN tww_od.agxx_overflow agxx_ov ON agxx_ov.fk_overflow=overflow.obj_id
+  LEFT JOIN tww_od.agxx_last_modification agxx_lm ON agxx_lm.fk_element=overflow.obj_id
+
+joins:
+  leapingweir:
+    table: tww_od.leapingweir
+
+  prank_weir:
+    table: tww_od.prank_weir
+
+  pump:
+    table: tww_od.pump

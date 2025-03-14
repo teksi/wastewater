@@ -68,5 +68,5 @@ More to come
 ------------
 
 * Automatic integration of pipe inspection according to Wincan VX and VSA-DSS KEK format
-* GEP mesures
+* GEP measures
 * Log Cards (log_card, bio_ecol_assessment and catchment_area_totals)

@@ -9,17 +9,33 @@ $BODY$
   BEGIN
     BEGIN
 	  SELECT
-	   ag_update_type
+	    ag_update_type
 	  INTO update_type
-	  FROM tww_cfg.agxx_last_modification_updater
+	  FROM tww_od.agxx_last_modification_updater
 	  WHERE username=current_user;
 	  CASE
-	   WHEN update_type IN('wi','both') THEN NEW.ag64_last_modification=now();
-	   ELSE NULL;
-	   END CASE;
-	    CASE
-	   WHEN update_type IN('gep','both') THEN NEW.ag96_last_modification=now();
-	   ELSE NULL;
+	    WHEN update_type ='wi' THEN 
+		  UPDATE tww_od.agxx_last_modification SET ag64_last_modification=now() WHERE obj_id = NEW.obj_id;
+		  IF NOT FOUND THEN 
+			INSERT INTO tww_od.agxx_last_modification(obj_id) 
+			VALUES (NEW.obj_id);
+		  END IF;
+	    WHEN update_type ='gep' THEN
+		  UPDATE tww_od.agxx_last_modification SET ag96_last_modification=now() WHERE obj_id = NEW.obj_id;
+		  IF NOT FOUND THEN 
+			INSERT INTO tww_od.agxx_last_modification(obj_id) 
+			VALUES (NEW.obj_id);
+		  END IF;
+	    WHEN update_type ='both' THEN
+		  UPDATE tww_od.agxx_last_modification 
+		  SET ag64_last_modification=now(),
+		  ag96_last_modification=now() 
+		  WHERE obj_id = NEW.obj_id;
+		  IF NOT FOUND THEN 
+			INSERT INTO tww_od.agxx_last_modification(obj_id) 
+			VALUES (NEW.obj_id);
+		  END IF;
+	    ELSE NULL;
 	  END CASE;
 	END;
 	RETURN NEW;
@@ -33,7 +49,7 @@ CREATE OR REPLACE FUNCTION tww_app.ft_agxx_update_catchment_area_totals_geoms
   RETURNS VOID AS
   $BODY$
   BEGIN
-  UPDATE tww_od.catchment_area_totals cat
+  UPDATE tww_od.agxx_catchment_area_totals cat
   SET ag96_perimeter_geometry =ca_agg.perimeter_geometry
   FROM
     ( WITH ca AS

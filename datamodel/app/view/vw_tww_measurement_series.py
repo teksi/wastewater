@@ -10,10 +10,11 @@ try:
 except ImportError:
     import psycopg2 as psycopg
 
-from pirogue.utils import insert_command, select_columns, update_command
+from pirogue.utils import insert_command, select_columns, table_parts, update_command
+from yaml import safe_load
 
 
-def vw_tww_measurement_series(pg_service: str = None):
+def vw_tww_measurement_series(pg_service: str = None, extra_definition: dict = None):
     """
     Creates tww_measurement_series view
     :param pg_service: the PostgreSQL service name
@@ -33,9 +34,12 @@ def vw_tww_measurement_series(pg_service: str = None):
         {ms_cols}
         , array_agg(mr.value) AS mr_values
 
+        {extra_cols}
         FROM tww_od.measurement_series ms
         LEFT JOIN tww_od.measurement_result mr ON ms.obj_id = mr.fk_measurement_series
-        GROUP BY {ms_cols};
+        {extra_joins}
+        GROUP BY {ms_cols} 
+        {extra_cols};
 
     """.format(
         ms_cols=select_columns(
@@ -46,6 +50,31 @@ def vw_tww_measurement_series(pg_service: str = None):
             remove_pkey=False,
             indent=4,
             skip_columns=[],
+        ),
+        extra_cols=''if not extra_definition else ', '+"\n    ".join(
+            [
+                select_columns(
+                    pg_cur=cursor,
+                    table_schema=table_parts(table_def["table"])[0],
+                    table_name=table_parts(table_def["table"])[1],
+                    skip_columns=table_def.get("skip_columns", []),
+                    remap_columns=table_def.get("remap_columns_select", {}),
+                    prefix=table_def.get("prefix", None),
+                    table_alias=table_def.get("alias", None),
+                )
+                + ","
+                for table_def in extra_definition.get("joins", {}).values()
+            ]
+        ),
+        extra_joins="\n    ".join(
+            [
+                "LEFT JOIN {tbl} {alias} ON {jon}".format(
+                    tbl=table_def["table"],
+                    alias=table_def.get("alias", ""),
+                    jon=table_def["join_on"],
+                )
+                for table_def in extra_definition.get("joins", {}).values()
+            ]
         ),
     )
 
@@ -60,6 +89,7 @@ def vw_tww_measurement_series(pg_service: str = None):
       NEW.identifier = COALESCE(NEW.identifier, NEW.obj_id);
 
     {insert_ms}
+    {insert_extra}
 
       RETURN NEW;
     END; $BODY$ LANGUAGE plpgsql VOLATILE;
@@ -78,6 +108,23 @@ def vw_tww_measurement_series(pg_service: str = None):
             indent=2,
             skip_columns=[],
         ),
+        insert_extra="\n     ".join(
+            [
+                insert_command(
+                    pg_cur=cursor,
+                    table_schema=table_parts(table_def["table"])[0],
+                    table_name=table_parts(table_def["table"])[1],
+                    remove_pkey=table_def.get("remove_pkey", False),
+                    indent=2,
+                    skip_columns=table_def.get("skip_columns", []),
+                    remap_columns=table_def.get("remap_columns", {}),
+                    prefix=table_def.get("prefix", None),
+                    table_alias=table_def.get("alias", None),
+                    insert_values=table_def.get("insert_values", {}),
+                )
+                for table_def in extra_definition.get("joins", {}).values()
+            ]
+        ),
     )
 
     cursor.execute(trigger_insert_sql)
@@ -88,6 +135,7 @@ def vw_tww_measurement_series(pg_service: str = None):
     $BODY$
     BEGIN
       {update_ms}
+      {update_extra}
        RETURN NEW;
     END;
     $BODY$
@@ -108,6 +156,24 @@ def vw_tww_measurement_series(pg_service: str = None):
             indent=6,
             skip_columns=[],
             update_values={},
+        ),
+        update_extra="\n     ".join(
+            [
+                update_command(
+                    pg_cur=cursor,
+                    table_schema=table_parts(table_def["table"])[0],
+                    table_name=table_parts(table_def["table"])[1],
+                    remove_pkey=table_def.get("remove_pkey", False),
+                    indent=2,
+                    skip_columns=table_def.get("skip_columns", []),
+                    remap_columns=table_def.get("remap_columns", {}),
+                    prefix=table_def.get("prefix", None),
+                    table_alias=table_def.get("alias", None),
+                    update_values=table_def.get("update_values", {}),
+                    where_clause=table_def.get("where_clause", None),
+                )
+                for table_def in extra_definition.get("joins", {}).values()
+            ]
         ),
     )
 
@@ -145,6 +211,15 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument("-p", "--pg_service", help="the PostgreSQL service name")
+    parser.add_argument(
+        "-e",
+        "--extra-definition",
+        help="YAML file path for extra additions to the view",
+    )
     args = parser.parse_args()
+    extra_definition={}
+    if args.extra_definition:
+      with open(args.extra_definition) as f:
+        extra_definition = safe_load(f)
     pg_service = args.pg_service or os.getenv("PGSERVICE")
-    vw_tww_measurement_series(pg_service=pg_service)
+    vw_tww_measurement_series(pg_service=pg_service, extra_definition=extra_definition)

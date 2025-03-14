@@ -45,18 +45,17 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
 
         ALTER VIEW tww_app.vw_wastewater_structure ALTER obj_id SET DEFAULT tww_app.generate_oid('tww_od','wastewater_structure');
     """.format(
-        extra_cols="\n    ".join(
+        extra_cols=''if not extra_definition else ', '+"\n    ,".join(
             [
                 select_columns(
                     pg_cur=cursor,
                     table_schema=table_parts(table_def["table"])[0],
                     table_name=table_parts(table_def["table"])[1],
                     skip_columns=table_def.get("skip_columns", []),
-                    remap_columns=table_def.get("remap_columns", {}),
+                    remap_columns=table_def.get("remap_columns_select", {}),
                     prefix=table_def.get("prefix", None),
                     table_alias=table_def.get("alias", None),
                 )
-                + ","
                 for table_def in extra_definition.get("joins", {}).values()
             ]
         ),
@@ -86,7 +85,6 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
             ]
         ),
     )
-
     cursor.execute(view_sql)
 
     trigger_insert_sql = """
@@ -98,7 +96,7 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
       NEW.identifier = COALESCE(NEW.identifier, NEW.obj_id);
 
     {insert_ws}
-
+    {insert_extra}
       RETURN NEW;
     END; $BODY$ LANGUAGE plpgsql VOLATILE;
 
@@ -122,8 +120,24 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
                 "_output_label",
             ],
         ),
+        insert_extra="\n     ".join(
+            [
+                insert_command(
+                    pg_cur=cursor,
+                    table_schema=table_parts(table_def["table"])[0],
+                    table_name=table_parts(table_def["table"])[1],
+                    remove_pkey=table_def.get("remove_pkey", False),
+                    indent=2,
+                    skip_columns=table_def.get("skip_columns", []),
+                    remap_columns=table_def.get("remap_columns", {}),
+                    prefix=table_def.get("prefix", None),
+                    table_alias=table_def.get("alias", None),
+                    insert_values=table_def.get("insert_values", {}),
+                )
+                for table_def in extra_definition.get("joins", {}).values()
+            ]
+        ),
     )
-
     cursor.execute(trigger_insert_sql)
 
     update_trigger_sql = """
@@ -132,6 +146,7 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
     $BODY$
     BEGIN
       {update_ws}
+      {update_extra}
       RETURN NEW;
     END;
     $BODY$
@@ -162,8 +177,25 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
             ],
             update_values={},
         ),
+        update_extra="\n     ".join(
+            [
+                update_command(
+                    pg_cur=cursor,
+                    table_schema=table_parts(table_def["table"])[0],
+                    table_name=table_parts(table_def["table"])[1],
+                    remove_pkey=table_def.get("remove_pkey", False),
+                    indent=2,
+                    skip_columns=table_def.get("skip_columns", []),
+                    remap_columns=table_def.get("remap_columns", {}),
+                    prefix=table_def.get("prefix", None),
+                    table_alias=table_def.get("alias", None),
+                    update_values=table_def.get("update_values", {}),
+                    where_clause=table_def.get("where_clause", None),
+                )
+                for table_def in extra_definition.get("joins", {}).values()
+            ]
+        ),
     )
-
     cursor.execute(update_trigger_sql)
 
     trigger_delete_sql = """

@@ -1,1 +1,1 @@
-SELECT 1;
+SELECT {my_number};

@@ -74,14 +74,14 @@ def vw_tww_infiltration_installation(
         {extra_joins};
     """.format(
         srid=srid,
-        extra_cols="\n    ".join(
+        extra_cols=''if not extra_definition else ', '+"\n    ".join(
             [
                 select_columns(
                     pg_cur=cursor,
                     table_schema=table_parts(table_def["table"])[0],
                     table_name=table_parts(table_def["table"])[1],
                     skip_columns=table_def.get("skip_columns", []),
-                    remap_columns=table_def.get("remap_columns", {}),
+                    remap_columns=table_def.get("remap_columns_select", {}),
                     prefix=table_def.get("prefix", None),
                     table_alias=table_def.get("alias", None),
                 )
@@ -234,7 +234,7 @@ def vw_tww_infiltration_installation(
         WHERE obj_id = NEW.obj_id;
     ELSE NULL;
     END CASE;
-
+    {insert_extra}
       RETURN NEW;
     END; $BODY$ LANGUAGE plpgsql VOLATILE;
 
@@ -351,6 +351,23 @@ def vw_tww_infiltration_installation(
                 "fk_wastewater_structure": "NEW.obj_id",
             },
         ),
+        insert_extra="\n     ".join(
+            [
+                insert_command(
+                    pg_cur=cursor,
+                    table_schema=table_parts(table_def["table"])[0],
+                    table_name=table_parts(table_def["table"])[1],
+                    remove_pkey=table_def.get("remove_pkey", False),
+                    indent=2,
+                    skip_columns=table_def.get("skip_columns", []),
+                    remap_columns=table_def.get("remap_columns", {}),
+                    prefix=table_def.get("prefix", None),
+                    table_alias=table_def.get("alias", None),
+                    insert_values=table_def.get("insert_values", {}),
+                )
+                for table_def in extra_definition.get("joins", {}).values()
+            ]
+        ),
     )
 
     cursor.execute(trigger_insert_sql)
@@ -376,7 +393,7 @@ def vw_tww_infiltration_installation(
       {update_ws}
       {update_wn}
       {update_ne}
-
+      {update_extra}
 
       -- Cover geometry has been moved
       IF NOT ST_Equals( OLD.situation3d_geometry, NEW.situation3d_geometry) THEN
@@ -571,6 +588,24 @@ def vw_tww_infiltration_installation(
                 "fk_wastewater_structure": "NEW.obj_id",
             },
             returning="obj_id INTO OLD.co_obj_id",
+        ),
+        update_extra="\n     ".join(
+            [
+                update_command(
+                    pg_cur=cursor,
+                    table_schema=table_parts(table_def["table"])[0],
+                    table_name=table_parts(table_def["table"])[1],
+                    remove_pkey=table_def.get("remove_pkey", False),
+                    indent=2,
+                    skip_columns=table_def.get("skip_columns", []),
+                    remap_columns=table_def.get("remap_columns", {}),
+                    prefix=table_def.get("prefix", None),
+                    table_alias=table_def.get("alias", None),
+                    update_values=table_def.get("update_values", {}),
+                    where_clause=table_def.get("where_clause", None),
+                )
+                for table_def in extra_definition.get("joins", {}).values()
+            ]
         ),
     )
 
