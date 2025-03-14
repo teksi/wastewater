@@ -30,7 +30,7 @@ class CreateViews(DeltaPy):
                 "catchment_area_totals":['ag96_sewer_infiltration_water_dim','ag96_waste_water_production_dim','ag96_perimeter_geometry'],
                 "building_group":['ag96_owner_address','ag96_owner_name','ag96_label_number','ag96_disposal_wastewater','ag96_disposal_industrial_wastewater','ag96_disposal_square_water','ag96_disposal_roof_water','ag96_population'],
                 "wastewater_networkelement":['ag96_fk_provider','ag96_remark','ag64_fk_provider','ag64_remark'],
-                "overflow":['ag96_fk_provider','ag96_remark','ag64_fk_provider',,'ag64_remark'],
+                "overflow":['ag96_fk_provider','ag96_remark','ag64_fk_provider','ag64_remark'],
                 "infiltration_zone":['ag96_permeability','ag96_limitation','ag96_thickness','ag96_q_check'],
                 }
                 query=[]
