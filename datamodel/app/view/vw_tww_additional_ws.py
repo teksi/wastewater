@@ -10,9 +10,15 @@ try:
 except ImportError:
     import psycopg2 as psycopg
 
-from pirogue.utils import insert_command, select_columns, table_parts, update_command
-from ..utils.extra_definition_utils import extra_cols,extra_joins, insert_extra, update_extra
+from pirogue.utils import insert_command, select_columns, update_command
 from yaml import safe_load
+
+from ..utils.extra_definition_utils import (
+    extra_cols,
+    extra_joins,
+    insert_extra,
+    update_extra,
+)
 
 
 def vw_tww_additional_ws(srid: int, pg_service: str = None, extra_definition: dict = None):
@@ -191,9 +197,9 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None, extra_definition: di
         extra_cols=(
             ""
             if not extra_definition
-            else extra_cols(pg_service=pg_service,extra_definition=extra_definition)
+            else extra_cols(pg_service=pg_service, extra_definition=extra_definition)
         ),
-        extra_joins=extra_joins(pg_service=pg_service,extra_definition=extra_definition),
+        extra_joins=extra_joins(pg_service=pg_service, extra_definition=extra_definition),
     )
 
     cursor.execute(view_sql)
@@ -344,7 +350,7 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None, extra_definition: di
                 "fk_wastewater_structure": "NEW.obj_id",
             },
         ),
-        insert_extra=insert_extra(pg_service=pg_service,extra_definition=extra_definition),
+        insert_extra=insert_extra(pg_service=pg_service, extra_definition=extra_definition),
     )
 
     cursor.execute(trigger_insert_sql)
@@ -573,7 +579,7 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None, extra_definition: di
             indent=6,
             skip_columns=[],
         ),
-        update_extra=update_extra(pg_service=pg_service,extra_definition=extra_definition),
+        update_extra=update_extra(pg_service=pg_service, extra_definition=extra_definition),
     )
 
     cursor.execute(update_trigger_sql)

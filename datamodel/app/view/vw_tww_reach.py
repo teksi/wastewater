@@ -76,7 +76,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
         extra_cols=(
             ""
             if not extra_definition
-            else extra_cols(pg_service=pg_service,extra_definition=extra_definition)
+            else extra_cols(pg_service=pg_service, extra_definition=extra_definition)
         ),
         re_cols=select_columns(
             pg_cur=cursor,
@@ -150,7 +150,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             indent=4,
             skip_columns=["situation3d_geometry"],
         ),
-        extra_joins=extra_joins(pg_service=pg_service,extra_definition=extra_definition),
+        extra_joins=extra_joins(pg_service=pg_service, extra_definition=extra_definition),
     )
 
     cursor.execute(view_sql)
@@ -265,7 +265,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
                 "fk_reach_point_to": "NEW.rp_to_obj_id",
             },
         ),
-        insert_extra=insert_extra(pg_service=pg_service,extra_definition=extra_definition),
+        insert_extra=insert_extra(pg_service=pg_service, extra_definition=extra_definition),
     )
     cursor.execute(trigger_insert_sql)
 
@@ -400,7 +400,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             indent=6,
             skip_columns=["fk_reach_point_to", "fk_reach_point_from"],
         ),
-        update_extra=update_extra(pg_service=pg_service,extra_definition=extra_definition),
+        update_extra=update_extra(pg_service=pg_service, extra_definition=extra_definition),
     )
     cursor.execute(trigger_update_sql)
 
