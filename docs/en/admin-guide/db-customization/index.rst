@@ -39,7 +39,7 @@ This path shall be given as argument to PUM when upgrading the data model as a d
 
 If one wants to have these views automatically updated when fields are added the data model, Pirogue can be used to dynamically generate the views. You can take example of the creation of the views in the data model.
 
-.. attention:: It is discouraged to add additional fields to base tables that are defined by TEKSI Wastewater, as they can interfere with datamodel updates. 
+.. attention:: It is discouraged to add additional fields to base tables that are defined by TEKSI Wastewater, as they can interfere with datamodel updates.
 If it is necessary to add custom fields, create a separate table with a foreign key pointing to the TEKSI base table and join it to the base views.
 
 
@@ -257,8 +257,7 @@ And similarly for ``vw_tww_reach`` view, by specifying ``tww_reach_extra`` varia
 Creating custom views or triggers
 """""""""""""""""""""""""""""""""
 
-It is possible to create custom views or triggers and add them to the data model. 
+It is possible to create custom views or triggers and add them to the data model.
 Simply create an extension folder, place the sql or py script inside and add the ``--extensions`` flag to the ``create_app`` call
 
-.. attention:: These scripts are re-run on every datamodel update. 
-
+.. attention:: These scripts are re-run on every datamodel update.
