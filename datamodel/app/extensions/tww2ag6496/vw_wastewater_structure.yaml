@@ -8,3 +8,4 @@ joins:
     prefix: agxx_
     alias: agxx_ws
     where_clause: fk_wastewater_structure = OLD.obj_id
+    read_only: false

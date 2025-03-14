@@ -7,6 +7,7 @@ joins:
     remap_columns:
       fk_wastewater_networkelement: wn_obj_id
     prefix: wn_
+    read_only: false
   agxx_last_modification:
     table: tww_od.agxx_last_modification
     alias: agxx_lm
@@ -15,6 +16,7 @@ joins:
     remap_columns:
       fk_element: wn_obj_id
     prefix: ne_
+    read_only: false
   agxx_wastewater_structure:
     table: tww_od.agxx_wastewater_structure
     alias: agxx_ws
@@ -23,3 +25,4 @@ joins:
     remap_columns:
       fk_wastewater_structure: obj_id
     prefix: ws_
+    read_only: false

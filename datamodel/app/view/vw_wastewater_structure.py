@@ -10,6 +10,7 @@ try:
 except ImportError:
     import psycopg2 as psycopg
 from pirogue.utils import insert_command, select_columns, table_parts, update_command
+from ..utils.extra_definition_utils import extra_cols,extra_joins, insert_extra, update_extra
 from yaml import safe_load
 
 
@@ -48,21 +49,7 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
         extra_cols=(
             ""
             if not extra_definition
-            else ", "
-            + "\n    ,".join(
-                [
-                    select_columns(
-                        pg_cur=cursor,
-                        table_schema=table_parts(table_def["table"])[0],
-                        table_name=table_parts(table_def["table"])[1],
-                        skip_columns=table_def.get("skip_columns", []),
-                        remap_columns=table_def.get("remap_columns_select", {}),
-                        prefix=table_def.get("prefix", None),
-                        table_alias=table_def.get("alias", None),
-                    )
-                    for table_def in extra_definition.get("joins", {}).values()
-                ]
-            )
+            else extra_cols(extra_definition)
         ),
         ws_cols=select_columns(
             pg_cur=cursor,
@@ -79,16 +66,7 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
                 "_output_label",
             ],
         ),
-        extra_joins="\n    ".join(
-            [
-                "LEFT JOIN {tbl} {alias} ON {jon}".format(
-                    tbl=table_def["table"],
-                    alias=table_def.get("alias", ""),
-                    jon=table_def["join_on"],
-                )
-                for table_def in extra_definition.get("joins", {}).values()
-            ]
-        ),
+        extra_joins=extra_joins(extra_definition),
     )
     cursor.execute(view_sql)
 
@@ -125,23 +103,7 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
                 "_output_label",
             ],
         ),
-        insert_extra="\n     ".join(
-            [
-                insert_command(
-                    pg_cur=cursor,
-                    table_schema=table_parts(table_def["table"])[0],
-                    table_name=table_parts(table_def["table"])[1],
-                    remove_pkey=table_def.get("remove_pkey", False),
-                    indent=2,
-                    skip_columns=table_def.get("skip_columns", []),
-                    remap_columns=table_def.get("remap_columns", {}),
-                    prefix=table_def.get("prefix", None),
-                    table_alias=table_def.get("alias", None),
-                    insert_values=table_def.get("insert_values", {}),
-                )
-                for table_def in extra_definition.get("joins", {}).values()
-            ]
-        ),
+        insert_extra=insert_extra(extra_definition),
     )
     cursor.execute(trigger_insert_sql)
 
@@ -182,24 +144,7 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
             ],
             update_values={},
         ),
-        update_extra="\n     ".join(
-            [
-                update_command(
-                    pg_cur=cursor,
-                    table_schema=table_parts(table_def["table"])[0],
-                    table_name=table_parts(table_def["table"])[1],
-                    remove_pkey=table_def.get("remove_pkey", False),
-                    indent=2,
-                    skip_columns=table_def.get("skip_columns", []),
-                    remap_columns=table_def.get("remap_columns", {}),
-                    prefix=table_def.get("prefix", None),
-                    table_alias=table_def.get("alias", None),
-                    update_values=table_def.get("update_values", {}),
-                    where_clause=table_def.get("where_clause", None),
-                )
-                for table_def in extra_definition.get("joins", {}).values()
-            ]
-        ),
+        update_extra=update_extra(extra_definition),
     )
     cursor.execute(update_trigger_sql)
 
