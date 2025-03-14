@@ -109,7 +109,7 @@ FROM(
 
     WHERE _all OR wn.obj_id = _obj_id
       WINDOW w AS ( PARTITION BY wn.obj_id
-                    ORDER BY coalesce(vl_usg_curr_from.tww_symbology_inflow_prio,false) DESC
+                    ORDER BY coalesce(vl_fct_hier_to.tww_symbology_inflow_prio,false) DESC
 						   , vl_fct_hier_from.tww_symbology_order ASC NULLS LAST
                            , vl_fct_hier_to.tww_symbology_order ASC NULLS LAST
 
@@ -178,7 +178,7 @@ FROM(
       LEFT JOIN tww_vl.channel_usage_current       vl_usg_curr_from	ON wn_from._usage_current = vl_usg_curr_from.code
 	  WHERE (_all OR wn.obj_id = _obj_id)
       WINDOW w AS ( PARTITION BY wn.obj_id
-                    ORDER BY coalesce(vl_usg_curr_from.tww_symbology_inflow_prio,false) DESC
+                    ORDER BY coalesce(vl_fct_hier.tww_symbology_inflow_prio,false) DESC
 						   , vl_fct_hier.tww_symbology_order ASC NULLS LAST
                            , vl_fct_hier_from.tww_symbology_order ASC NULLS LAST
 
