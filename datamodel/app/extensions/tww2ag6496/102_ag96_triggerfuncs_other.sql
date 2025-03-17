@@ -226,6 +226,7 @@ CREATE OR REPLACE FUNCTION tww_app.ft_agxx_gephaltung_update()
 RETURNS trigger AS
 $BODY$
 DECLARE
+	hw_ratio numeric(5,2);
 	pp_oid varchar(16);
 	ws_oid varchar(16);
 	rp_from_oid varchar(16);
