@@ -19,12 +19,6 @@ BEGIN
 	  NEW.obj_id
 	, NEW.bezeichnung
     , tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
-    , NEW.letzte_aenderung_wi
-    , NEW.bemerkung_wi
-	, tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
-    , NEW.letzte_aenderung_gep
-    , NEW.bemerkung_gep
-	, tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
 	);
 
 	INSERT INTO tww_od.agxx_wastewater_networkelement(
@@ -36,7 +30,6 @@ BEGIN
 	) VALUES
 	(
 	  NEW.obj_id
-    , tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
     , NEW.bemerkung_wi
 	, tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
     , NEW.bemerkung_gep
@@ -131,7 +124,6 @@ BEGIN
 		, status_survey_year
 		, structure_condition
 		, year_of_construction
-		, ag96_fk_measure
 		) VALUES
 		(
 		 (SELECT code FROM tww_vl.wastewater_structure_accessibility WHERE value_de=NEW.zugaenglichkeit)
@@ -150,7 +142,6 @@ BEGIN
 		, NEW.jahr_zustandserhebung
 		, (SELECT code FROM tww_vl.wastewater_structure_structure_condition WHERE value_de=NEW.baulicherzustand)
 		, NEW.baujahr
-		, NEW.gepmassnahmeref
 		)
 		RETURNING obj_id into ws_oid;
 

@@ -27,12 +27,13 @@ BEGIN
 	, fk_provider
 	) VALUES
 	(
-	  (SELECT code FROM ppt)
+	  (SELECT code FROM tww_vl.pipe_profile_profile_type ppt WHERE value_de=NEW.profiltyp)
 	, CASE WHEN NEW.lichte_breite_ist= 0 OR NEW.lichte_hoehe_ist=NEW.lichte_breite_ist
 		THEN NEW.profiltyp
 		ELSE
 		array_to_string(
-		  array[(SELECT abbr_de FROM ppt),NEW.lichte_hoehe_ist::varchar,NEW.lichte_breite_ist::varchar]
+		  array[(SELECT abbr_de FROM tww_vl.pipe_profile_profile_type ppt WHERE value_de=NEW.profiltyp)
+		  ,NEW.lichte_hoehe_ist::varchar,NEW.lichte_breite_ist::varchar]
 		  ,'_' -- delimiter
 		)
 	  END
@@ -206,7 +207,7 @@ BEGIN
 	, rp_to_oid
 	);
 
-	INSERT INTO tww_od.reach
+	INSERT INTO tww_od.agxx_reach
 	(
 	  fk_reach
 	, ag96_clear_height_planned
