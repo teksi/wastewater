@@ -123,6 +123,10 @@ class TwwMapToolAddFeature(QgsMapToolAdvancedDigitizing):
         """
         QgsMapToolAdvancedDigitizing.activate(self)
         self.canvas.setCursor(QCursor(Qt.CrossCursor))
+        msgtitle = self.tr("Advanced Digitizing")
+        msg = self.tr("Digitize start and end point. Rightclick to abort.")
+        self.messageBarItem = QgsMessageBar.createMessage(msgtitle, msg)
+        self.iface.messageBar().pushItem(self.messageBarItem)
 
     def deactivate(self):
         """
