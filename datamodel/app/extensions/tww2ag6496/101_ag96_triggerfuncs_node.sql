@@ -152,6 +152,16 @@ BEGIN
 		, NEW.gepmassnahmeref
 		)
 		RETURNING obj_id into ws_oid;
+		
+		INSERT INTO tww_od.agxx_wastewater_structure
+		(
+		  fk_wastewater_structure
+		, ag96_fk_measure
+		)VALUES
+		(
+		  ws_oid
+		, NEW.gepmassnahmeref
+		);
 
 		UPDATE tww_od.wastewater_networkelement
 		SET fk_wastewater_structure = ws_oid
@@ -249,16 +259,23 @@ DECLARE
 
 BEGIN
 
-    UPDATE tww_od.wastewater_networkelement SET
+	UPDATE tww_od.wastewater_networkelement SET
 	  identifier = NEW.bezeichnung
 	, fk_provider = tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
-	, ag64_last_modification = NEW.letzte_aenderung_wi
-    , ag64_remark = NEW.bemerkung_wi
+	WHERE obj_id = NEW.obj_id
+	RETURNING fk_wastewater_structure into ws_oid;
+
+	UPDATE tww_od.agxx_wastewater_networkelement SET
+	  ag64_remark = NEW.bemerkung_wi
 	, ag64_fk_provider = tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
-	, ag96_last_modification = NEW.letzte_aenderung_gep
     , ag96_remark = NEW.bemerkung_gep
 	, ag96_fk_provider = tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
-	WHERE obj_id = NEW.obj_id;
+	WHERE fk_wastewater_networkelement = NEW.obj_id;
+	
+	UPDATE tww_od.agxx_last_modification SET
+	  ag64_last_modification = NEW.letzte_aenderung_wi
+	, ag96_last_modification = NEW.letzte_aenderung_gep
+	WHERE fk_element = NEW.obj_id;
 
     UPDATE tww_od.wastewater_node SET
 	  backflow_level_current = NEW.maxrueckstauhoehe
@@ -312,10 +329,11 @@ BEGIN
 		, status_survey_year = NEW.jahr_zustandserhebung
 		, structure_condition = (SELECT code FROM tww_vl.wastewater_structure_structure_condition WHERE value_de=NEW.baulicherzustand)
 		, year_of_construction = NEW.baujahr
-		, ag96_fk_measure = NEW.gepmassnahmeref
 		WHERE obj_id = ws_oid;
-
-
+		
+		UPDATE tww_od.agxx_wastewater_structure SET
+		  ag96_fk_measure = NEW.gepmassnahmeref
+		WHERE fk_wastewater_structure = ws_oid;
 
 		CASE WHEN NEW.funktionag   ='Abwasserreinigungsanlage'
 		THEN

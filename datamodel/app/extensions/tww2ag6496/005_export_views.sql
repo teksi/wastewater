@@ -18,6 +18,27 @@ LEFT JOIN tww_vl.organisation_organisation_type ot ON ot.code = org.organisation
 WHERE tww_active
 ;
 
+----------------
+-- Hilfs-View für Rohrprofile
+----------------
+DROP VIEW IF EXISTS tww_app.vw_agxx_rohrprofile_aux;
+CREATE VIEW tww_app.vw_agxx_rohrprofile_aux
+AS
+SELECT ppt.value_de
+	, ppt.abbr_de
+	, height_width_ratio
+	, fk_provider
+	, fk_dataowner
+    , (array_agg(obj_id))[1] as fk_pipe_profile
+FROM tww_od.pipe_profile
+LEFT JOIN tww_vl.pipe_profile_profile_type ppt on ppt.code =  profile_type
+GROUP BY ppt.value_de
+	, ppt.abbr_de
+	, height_width_ratio
+	, fk_provider
+	, fk_dataowner
+;
+
 ------------------
 -- GEPKnoten
 ------------------
