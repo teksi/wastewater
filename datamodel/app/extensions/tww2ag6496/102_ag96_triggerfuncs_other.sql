@@ -294,7 +294,6 @@ BEGIN
     , replacement_value = NEW.wiederbeschaffungswert
     , structure_condition = (SELECT code FROM tww_vl.wastewater_structure_structure_condition WHERE value_de=NEW.baulicherzustand)
     , year_of_construction = NEW.baujahr
-	, ag96_fk_measure = NEW.gepmassnahmeref
 	WHERE obj_id = ws_oid;
 
 	UPDATE tww_od.agxx_wastewater_structure SET
@@ -392,7 +391,7 @@ BEGIN
     , symbolpos_geometry = NEW.symbolpos
     , total_cost = NEW.gesamtkosten
     , year_implementation_effective = NEW.jahr_umsetzung_effektiv
-    , year_implementation_planned = NEW.jahr_umsetzung_planned
+    , year_implementation_planned = NEW.jahr_umsetzung_geplant
     , last_modification = NEW.letzte_aenderung_gep
 --    , fk_dataowner = downr.value_obj_id
     , fk_provider = tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
@@ -439,7 +438,7 @@ BEGIN
     , NEW.symbolpos
     , NEW.gesamtkosten
     , NEW.jahr_umsetzung_effektiv
-    , NEW.jahr_umsetzung_planned
+    , NEW.jahr_umsetzung_geplant
     , NEW.letzte_aenderung_gep
     , tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
     , tww_app.fct_agxx_organisationid_to_vsa(NEW.traegerschaft)
@@ -760,7 +759,6 @@ BEGIN
 	  function = (SELECT code FROM tww_vl.building_group_function_import_rel_agxx WHERE value_de = NEW.arealnutzung)
     , identifier = NEW.bezeichnung
     , population_equivalent = NEW.einwohnergleichwert
-	, ag96_population = NEW.anzstaendigeeinwohner
     , remark = NEW.bemerkung_gep
     , renovation_date = NEW.sanierungsdatum
     , renovation_necessity = (SELECT code FROM tww_vl.building_group_renovation_necessity WHERE lower(value_de) = lower(NEW.sanierungsbedarf))
@@ -776,7 +774,6 @@ BEGIN
     , function
     , identifier
     , population_equivalent
-	, ag96_population
     , remark
     , renovation_date
     , renovation_necessity
@@ -791,7 +788,6 @@ BEGIN
     , (SELECT code FROM tww_vl.building_group_function_import_rel_agxx WHERE value_de = NEW.arealnutzung)
     , NEW.bezeichnung
     , NEW.einwohnergleichwert
-    , NEW.anzstaendigeeinwohner
     , NEW.bemerkung_gep
     , NEW.sanierungsdatum
     , (SELECT code FROM tww_vl.building_group_renovation_necessity WHERE lower(value_de) = lower(NEW.sanierungsbedarf))
@@ -804,7 +800,8 @@ BEGIN
 
 	UPDATE tww_od.agxx_building_group bg
 	SET
-	  ag96_owner_address = NEW.eigentuemeradresse
+	  ag96_population = NEW.anzstaendigeeinwohner
+	, ag96_owner_address = NEW.eigentuemeradresse
     , ag96_owner_name = NEW.eigentuemername
     , ag96_label_number = NEW.nummer
     , ag96_disposal_wastewater = (SELECT code FROM tww_vl.building_group_ag96_disposal_type WHERE value_de = NEW.beseitigung_haeusliches_abwasser)
@@ -816,6 +813,7 @@ BEGIN
 	INSERT INTO tww_od.agxx_building_group
 	(
 	  fk_building_group
+	, ag96_population
     , ag96_owner_address
     , ag96_owner_name
     , ag96_label_number
@@ -827,6 +825,7 @@ BEGIN
 	(
 	SELECT
 	  NEW.obj_id
+    , NEW.anzstaendigeeinwohner
     , NEW.eigentuemeradresse
     , NEW.eigentuemername
     , NEW.nummer

@@ -9,6 +9,16 @@ joins:
     prefix: wn_
     read_only: false
     where_clause: "agxx_ne.fk_wastewater_networkelement = OLD.wn_obj_id"
+  agxx_wastewater_node:
+    table: tww_od.agxx_wastewater_node
+    alias: agxx_wn
+    join_on: "agxx_wn.fk_wastewater_node = wn.obj_id"
+    skip_columns: ["uuid","fk_wastewater_node"]
+    remap_columns:
+      fk_wastewater_node: wn_obj_id
+    prefix: wn_
+    read_only: false
+    where_clause: "agxx_ne.fk_wastewater_networkelement = OLD.wn_obj_id"
   agxx_last_modification:
     table: tww_od.agxx_last_modification
     alias: agxx_lm

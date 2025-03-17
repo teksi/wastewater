@@ -14,12 +14,6 @@ BEGIN
 	  obj_id
 	, identifier
 	, fk_provider
-	, ag64_last_modification
-    , ag64_remark
-	, ag64_fk_provider
-	, ag96_last_modification
-    , ag96_remark
-	, ag96_fk_provider
 	) VALUES
 	(
 	  NEW.obj_id
@@ -66,8 +60,6 @@ BEGIN
 	, bottom_level
 	, situation3d_geometry
 	, wwtp_number
-	, ag96_is_gateway
-	, ag64_function
 	) VALUES
 	(
 	  NEW.obj_id
@@ -75,6 +67,15 @@ BEGIN
     , NEW.sohlenkote
     , ST_SetSRID(ST_MakePoint(ST_X(NEW.lage), ST_Y(NEW.lage), COALESCE(NEW.sohlenkote,'nan')), 2056 )
 	, NEW.ara_nr
+	);
+
+    INSERT INTO tww_od.agxx_wastewater_node(
+	  fk_wastewater_node
+	, ag96_is_gateway
+	, ag64_function
+	) VALUES
+	(
+	  NEW.obj_id
 	, (SELECT code FROM tww_vl.wastewater_node_ag96_is_gateway WHERE value_de=NEW.istschnittstelle)
 	, (SELECT code FROM tww_vl.wastewater_node_ag64_function WHERE value_de=NEW.funktionag)
 	);
@@ -282,9 +283,12 @@ BEGIN
 	, bottom_level = NEW.sohlenkote
 	, situation3d_geometry = ST_SetSRID(ST_MakePoint(ST_X(NEW.lage), ST_Y(NEW.lage), COALESCE(NEW.sohlenkote,'nan')), 2056)
 	, wwtp_number = NEW.ara_nr
-	, ag96_is_gateway = (SELECT code FROM tww_vl.wastewater_node_ag96_is_gateway WHERE value_de=NEW.istschnittstelle)
-	, ag64_function = (SELECT code FROM tww_vl.wastewater_node_ag64_function WHERE value_de=NEW.funktionag)
 	WHERE obj_id = NEW.obj_id;
+	
+	UPDATE tww_od.agxx_wastewater_node SET
+	  ag96_is_gateway = (SELECT code FROM tww_vl.wastewater_node_ag96_is_gateway WHERE value_de=NEW.istschnittstelle)
+	, ag64_function = (SELECT code FROM tww_vl.wastewater_node_ag64_function WHERE value_de=NEW.funktionag)
+	WHERE fk_wastewater_node = NEW.obj_id;
 
 	CASE WHEN NEW.funktionag NOT IN ('Leitungsknoten','Anschluss') THEN
 
