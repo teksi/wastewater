@@ -152,7 +152,7 @@ BEGIN
 		, NEW.gepmassnahmeref
 		)
 		RETURNING obj_id into ws_oid;
-		
+
 		INSERT INTO tww_od.agxx_wastewater_structure
 		(
 		  fk_wastewater_structure
@@ -271,7 +271,7 @@ BEGIN
     , ag96_remark = NEW.bemerkung_gep
 	, ag96_fk_provider = tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
 	WHERE fk_wastewater_networkelement = NEW.obj_id;
-	
+
 	UPDATE tww_od.agxx_last_modification SET
 	  ag64_last_modification = NEW.letzte_aenderung_wi
 	, ag96_last_modification = NEW.letzte_aenderung_gep
@@ -330,7 +330,7 @@ BEGIN
 		, structure_condition = (SELECT code FROM tww_vl.wastewater_structure_structure_condition WHERE value_de=NEW.baulicherzustand)
 		, year_of_construction = NEW.baujahr
 		WHERE obj_id = ws_oid;
-		
+
 		UPDATE tww_od.agxx_wastewater_structure SET
 		  ag96_fk_measure = NEW.gepmassnahmeref
 		WHERE fk_wastewater_structure = ws_oid;

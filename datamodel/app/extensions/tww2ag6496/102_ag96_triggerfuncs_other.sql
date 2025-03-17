@@ -13,7 +13,7 @@ DECLARE
 BEGIN
 	SELECT (CASE WHEN NEW.lichte_breite_ist= 0 OR NEW.lichte_breite_ist IS NULL THEN 1
 	  ELSE NEW.lichte_hoehe_ist::numeric/NEW.lichte_breite_ist END) INTO hw_ratio;
-	  
+
 	SELECT fk_pipe_profile INTO pp_oid
 	FROM tww_app.vw_agxx_rohrprofile_aux
 	WHERE value_de =  NEW.profiltyp
@@ -110,7 +110,7 @@ BEGIN
     , tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
 	, ws_oid
 	);
-	
+
 	INSERT INTO tww_od.agxx_wastewater_networkelement(
 	  fk_wastewater_networkelement
     , ag64_remark
@@ -135,7 +135,7 @@ BEGIN
 	  NEW.obj_id
     , NEW.letzte_aenderung_wi
     , NEW.letzte_aenderung_gep
-	);	
+	);
 
 	INSERT INTO tww_od.reach_point
 	(
@@ -205,7 +205,7 @@ BEGIN
 	, rp_from_oid
 	, rp_to_oid
 	);
-	
+
 	INSERT INTO tww_od.reach
 	(
 	  fk_reach
@@ -234,7 +234,7 @@ BEGIN
 
 	SELECT (CASE WHEN NEW.lichte_breite_ist= 0 OR NEW.lichte_breite_ist IS NULL THEN 1
 	  ELSE NEW.lichte_hoehe_ist::numeric/NEW.lichte_breite_ist END) INTO hw_ratio;
-	  
+
 	SELECT fk_pipe_profile INTO pp_oid
 	FROM tww_app.vw_agxx_rohrprofile_aux
 	WHERE value_de =  NEW.profiltyp
@@ -275,7 +275,7 @@ BEGIN
     , ag96_remark = NEW.bemerkung_gep
 	, ag96_fk_provider = tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
 	WHERE fk_wastewater_networkelement = NEW.obj_id;
-	
+
 	UPDATE tww_od.agxx_last_modification SET
 	  ag64_last_modification = NEW.letzte_aenderung_wi
 	, ag96_last_modification = NEW.letzte_aenderung_gep
@@ -295,7 +295,7 @@ BEGIN
     , year_of_construction = NEW.baujahr
 	, ag96_fk_measure = NEW.gepmassnahmeref
 	WHERE obj_id = ws_oid;
-	
+
 	UPDATE tww_od.agxx_wastewater_structure SET
 	  ag96_fk_measure = NEW.gepmassnahmeref
 	WHERE fk_wastewater_structure = ws_oid;
@@ -342,7 +342,7 @@ BEGIN
     , relining_construction = (SELECT code FROM tww_vl.reach_relining_construction WHERE value_de=NEW.reliner_bautechnik)
     , relining_kind = (SELECT code FROM tww_vl.reach_relining_kind WHERE value_de=NEW.reliner_art)
 	WHERE re.obj_id=NEW.obj_id;
-	
+
 	UPDATE tww_od.agxx_reach re SET
 	  ag96_clear_height_planned = NEW.lichte_hoehe_geplant
 	, ag96_clear_width_planned = NEW.lichte_breite_geplant
@@ -643,7 +643,7 @@ BEGIN
 	, NEW.bemerkung_gep
 	, tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
 	);
-	
+
 	INSERT INTO tww_od.agxx_overflow (
 	  fk_overflow
     , ag64_remark
@@ -659,7 +659,7 @@ BEGIN
 	, NEW.bemerkung_gep
 	, tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
 	);
-	
+
 	INSERT INTO tww_od.agxx_last_modification (
 	  fk_element
 	, ag64_last_modification
@@ -708,7 +708,7 @@ BEGIN
     , ag96_remark = NEW.bemerkung_gep
 	, ag96_fk_provider = tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
 	WHERE fk_overflow=NEW.obj_id;
-	
+
 	UPDATE tww_od.agxx_last_modification
 	SET
 	  ag64_last_modification = NEW.letzte_aenderung_wi
@@ -800,7 +800,7 @@ BEGIN
     , tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
 	);
 	END IF;
-	
+
 	UPDATE tww_od.agxx_building_group bg
 	SET
 	  ag96_owner_address = NEW.eigentuemeradresse
@@ -835,7 +835,7 @@ BEGIN
     , (SELECT code FROM tww_vl.building_group_ag96_disposal_type WHERE value_de = NEW.beseitigung_dachentwaesserung)
 	);
 	END IF;
-	
+
   RETURN NEW;
 END;
 $BODY$
@@ -886,8 +886,8 @@ BEGIN
 		)
 		RETURNING obj_id into hcd_oid;
 	END IF;
-	
-	
+
+
 	UPDATE tww_od.catchment_area_totals cat
 	SET
 	  identifier = NEW.bezeichnung
@@ -945,7 +945,7 @@ BEGIN
     , hcd_oid
 	);
 	END IF;
-	
+
 	UPDATE tww_od.agxx_catchment_area_totals cat
 	SET
       ag96_sewer_infiltration_water_dim = NEW.fremdwasseranfall_geplant
@@ -1008,7 +1008,7 @@ BEGIN
 	, NEW.bemerkung_gep
 	, NEW.letzte_aenderung_gep
 	);
-	
+
 	INSERT INTO tww_od.infiltration_zone
 	(
 	  obj_id
@@ -1021,7 +1021,7 @@ BEGIN
 	, NEW.perimeter
 	, (SELECT code FROM tww_vl.infiltration_zone_infiltration_capacity WHERE value_de = NEW.versickerungsmoeglichkeitag)
 	);
-	
+
 	INSERT INTO tww_od.agxx_infiltration_zone
 	(
 	  fk_infiltration_zone
@@ -1060,7 +1060,7 @@ BEGIN
 	  perimeter_geometry = NEW.perimeter
 	, infiltration_capacity = (SELECT code FROM tww_vl.infiltration_zone_infiltration_capacity WHERE value_de = NEW.versickerungsmoeglichkeitag)
 	WHERE obj_id=NEW.obj_id;
-	
+
 	UPDATE tww_od.agxx_infiltration_zone
 	SET
 	  ag96_permeability = NEW.bezeichnung
