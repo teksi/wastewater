@@ -284,7 +284,7 @@ BEGIN
 	, situation3d_geometry = ST_SetSRID(ST_MakePoint(ST_X(NEW.lage), ST_Y(NEW.lage), COALESCE(NEW.sohlenkote,'nan')), 2056)
 	, wwtp_number = NEW.ara_nr
 	WHERE obj_id = NEW.obj_id;
-	
+
 	UPDATE tww_od.agxx_wastewater_node SET
 	  ag96_is_gateway = (SELECT code FROM tww_vl.wastewater_node_ag96_is_gateway WHERE value_de=NEW.istschnittstelle)
 	, ag64_function = (SELECT code FROM tww_vl.wastewater_node_ag64_function WHERE value_de=NEW.funktionag)
