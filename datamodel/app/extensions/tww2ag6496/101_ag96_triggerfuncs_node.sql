@@ -99,7 +99,7 @@ BEGIN
 		, (SELECT code FROM tww_vl.cover_positional_accuracy WHERE value_de=NEW.lagegenauigkeit)
 		, ST_SetSRID(ST_MakePoint(ST_X(NEW.lage), ST_Y(NEW.lage), COALESCE(NEW.deckelkote,'nan')), 2056 )
 		);
-		
+
 		INSERT INTO tww_od.agxx_cover(
 		  fk_cover
 		, ag64_fk_wastewater_node
@@ -288,9 +288,9 @@ BEGIN
 	, ag64_function = (SELECT code FROM tww_vl.wastewater_node_ag64_function WHERE value_de=NEW.funktionag)
 	WHERE fk_wastewater_node = NEW.obj_id;
 
-	CASE 
-	  WHEN 
-	    NEW.funktionag NOT IN ('Leitungsknoten','Anschluss') 
+	CASE
+	  WHEN
+	    NEW.funktionag NOT IN ('Leitungsknoten','Anschluss')
 	  THEN
 		SELECT ws.obj_id,ws.fk_main_cover INTO ws_oid, co_oid FROM tww_od.wastewater_node wn
 		LEFT JOIN tww_od.wastewater_networkelement ne ON ne.obj_id=wn.obj_id
@@ -308,12 +308,12 @@ BEGIN
 		, positional_accuracy = (SELECT code FROM tww_vl.cover_positional_accuracy WHERE value_de=NEW.lagegenauigkeit)
 		, situation3d_geometry = ST_SetSRID(ST_MakePoint(ST_X(NEW.lage), ST_Y(NEW.lage), COALESCE(NEW.deckelkote,'nan')), 2056)
 		WHERE obj_id = co_oid;
-		
+
 		UPDATE tww_od.agxx_cover SET
 		  ag64_fk_wastewater_node = NEW.obj_id
 		WHERE fk_cover = co_oid;
 
-	  ELSE 
+	  ELSE
 	    NULL;
 	END CASE;
 
@@ -344,10 +344,10 @@ BEGIN
 	  ag96_fk_measure = NEW.gepmassnahmeref
 	WHERE fk_wastewater_structure = ws_oid;
 
-	CASE 
+	CASE
 	  WHEN NEW.funktionag   ='Abwasserreinigungsanlage'THEN
-		IF OLD.ws_type != 'wwtp_structure' THEN 
-		
+		IF OLD.ws_type != 'wwtp_structure' THEN
+
 			------------ Abwasserreinigungsanlage ------------
 			INSERT INTO tww_od.wwtp_structure(
 			  obj_id, kind
@@ -375,7 +375,7 @@ BEGIN
 		) OR (
 		NEW.funktionag = ANY(ARRAY['Absturzbauwerk', 'andere', 'Be_Entlueftung', 'Kontrollschacht', 'Oelabscheider', 'Pumpwerk'
 		, 'Regeneuberlauf', 'Schwimmstoffabscheider', 'Spuelschacht', 'Trennbauwerk', 'Vorbehandlung']) AND NEW.detailgeometrie IS NULL
-		)  
+		)
 	  THEN
 		IF OLD.ws_type = 'manhole' THEN
 			UPDATE tww_od.manhole SET
