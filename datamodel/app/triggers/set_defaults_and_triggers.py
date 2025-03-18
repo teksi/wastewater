@@ -10,16 +10,21 @@ except ImportError:
 def check_owner(pg_service: str, table_schema: str, table_name: str):
     with psycopg.connect(f"service={pg_service}") as conn:
         try:
-            cur=conn.cursor()
-            cur.execute(f" SELECT rolname FROM pg_roles WHERE pg_has_role( CURRENT_USER, oid, 'member');")
-            roles=cur.fetchall()
+            cur = conn.cursor()
+            cur.execute(
+                f" SELECT rolname FROM pg_roles WHERE pg_has_role( CURRENT_USER, oid, 'member');"
+            )
+            roles = cur.fetchall()
 
-            cur.execute(f"SELECT tableowner from pg_tables WHERE tablename='{table_name}' and schemaname='{table_schema}';")
+            cur.execute(
+                f"SELECT tableowner from pg_tables WHERE tablename='{table_name}' and schemaname='{table_schema}';"
+            )
             owner = cur.fetchone()
             is_owner = True if owner in roles else False
         finally:
             conn.close()
     return is_owner
+
 
 def create_last_modification_trigger(tbl: str, parent_tbl: str = None):
     parent = (
@@ -83,11 +88,13 @@ def set_defaults_and_triggers(
             )
             found = cursor.fetchone()
             if found:
-                if check_owner(pg_service,'tww_od',entry[0]):
-                    query = create_last_modification_trigger(entry[0], SingleInheritances[entry[0]])
+                if check_owner(pg_service, "tww_od", entry[0]):
+                    query = create_last_modification_trigger(
+                        entry[0], SingleInheritances[entry[0]]
+                    )
                     cursor.execute(query)
                 else:
-                    raise Exception(f'Must be owner of tww_od.{entry[0]} to create triggers')
+                    raise Exception(f"Must be owner of tww_od.{entry[0]} to create triggers")
 
         else:
             cursor.execute(
@@ -98,10 +105,10 @@ def set_defaults_and_triggers(
             )
             found = cursor.fetchone()
             if found:
-                if check_owner(pg_service,'tww_od',entry[0]):
+                if check_owner(pg_service, "tww_od", entry[0]):
                     query = create_last_modification_trigger(entry[0])
                     cursor.execute(query)
                 else:
-                    raise Exception(f'Must be owner of tww_od.{entry[0]} to create triggers')
+                    raise Exception(f"Must be owner of tww_od.{entry[0]} to create triggers")
     conn.commit()
     conn.close()
