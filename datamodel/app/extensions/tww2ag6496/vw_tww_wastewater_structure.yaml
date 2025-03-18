@@ -18,7 +18,7 @@ joins:
       fk_wastewater_node: wn_obj_id
     prefix: wn_
     read_only: false
-    where_clause: "agxx_ne.fk_wastewater_networkelement = OLD.wn_obj_id"
+    where_clause: "agxx_wn.fk_wastewater_node = OLD.wn_obj_id"
   agxx_last_modification:
     table: tww_od.agxx_last_modification
     alias: agxx_lm
@@ -39,3 +39,13 @@ joins:
     prefix: ws_
     where_clause: "agxx_ws.fk_wastewater_structure = OLD.obj_id"
     read_only: false
+  agxx_cover:
+    table: tww_od.agxx_cover
+    alias: agxx_co
+    join_on: "agxx_co.fk_cover = main_co.obj_id"
+    skip_columns: ["uuid","fk_cover"]
+    remap_columns:
+      fk_cover: co_obj_id
+    prefix: co_
+    read_only: false
+    where_clause: "agxx_co.fk_cover = OLD.co_obj_id"
