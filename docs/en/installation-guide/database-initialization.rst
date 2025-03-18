@@ -26,8 +26,8 @@ Create  minimal roles and access
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 TWW roles are defined in the
-+ `12_0_roles.sql <https://github.com/TWW/datamodel/blob/master/12_0_roles.sql>`_ (per cluster)
-+ `12_1_roles.sql <https://github.com/TWW/datamodel/blob/master/12_1_roles.sql>`_ (per database)
++ `12_0_roles.sql <https://github.com/teksi/wastewater/tree/main/datamodel/12_0_roles.sql>`_ (per cluster)
++ `12_1_roles.sql <https://github.com/teksi/wastewater/tree/main/datamodel/12_1_roles.sql>`_ (per database)
 
 `12_0_roles.sql` has to be run before restoring the demodata database.
 `12_1_roles.sql` has to be run if you initialize your module with with the commandline.
@@ -162,9 +162,9 @@ You also have the option to restore the latest empty data model (no demo data).
     createdb -U postgres -p %port% %db%
 
     psql -U postgres -h localhost -p %port% -d %db% -f %filename%
-
     psql -U postgres -h localhost -p %port% -d %db% -c "REFRESH MATERIALIZED VIEW tww_od.vw_network_node WITH DATA"
     psql -U postgres -h localhost -p %port% -d %db% -c "REFRESH MATERIALIZED VIEW tww_od.vw_network_segment WITH DATA"
+
 
     PAUSE
 
@@ -173,7 +173,7 @@ You also have the option to restore the latest empty data model (no demo data).
 
  You are free to choose any database name.
 
-* Update privileges for the tww_od, tww_sys, tww_vl, tww_network, tww_import, tww_swmm schema as described in the chapter `Create minimal roles and access`.
+* Update privileges for the tww_od, tww_sys, tww_vl, tww_cfg, tww_app schema as described in the chapter `Create minimal roles and access`.
 
 
 Generate the data model under Linux

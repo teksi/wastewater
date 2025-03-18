@@ -167,7 +167,11 @@ class TeksiWastewaterPlugin:
         """
         self.network_layer_notifier = TwwLayerNotifier(
             self.iface.mainWindow(),
-            ["vw_network_node", "vw_network_segment", "vw_tww_wastewater_structure"],
+            ["vw_network_node", "vw_network_segment"],
+        )
+        self.vw_tww_layer_notifier = TwwLayerNotifier(
+            self.iface.mainWindow(),
+            ["vw_tww_wastewater_structure"],
         )
         self.toolbarButtons = []
 
@@ -322,8 +326,11 @@ class TeksiWastewaterPlugin:
         self.toolbarButtons.append(self.importAction)
         self.toolbarButtons.append(self.exportAction)
 
-        self.network_layer_notifier.layersAvailable.connect(self.onLayersAvailable)
-        self.network_layer_notifier.layersUnavailable.connect(self.onLayersUnavailable)
+        self.network_layer_notifier.layersAvailable.connect(self.onNetworkLayersAvailable)
+        self.network_layer_notifier.layersUnavailable.connect(self.onNetworkLayersUnavailable)
+
+        self.vw_tww_layer_notifier.layersAvailable.connect(self.onTwwLayersAvailable)
+        self.vw_tww_layer_notifier.layersUnavailable.connect(self.onTwwLayersUnavailable)
 
         # Init the object maintaining the network
         self.network_analyzer = TwwGraphManager()
@@ -462,24 +469,24 @@ class TeksiWastewaterPlugin:
 
         QgsApplication.processingRegistry().removeProvider(self.processing_provider)
 
-    def onLayersAvailable(self, layers):
-        for b in self.toolbarButtons:
-            b.setEnabled(True)
-
+    def onNetworkLayersAvailable(self, layers):
         self.connectNetworkElementsAction.setEnabled(True)
-
         self.network_analyzer.setReachLayer(layers["vw_network_segment"])
         self.network_analyzer.setNodeLayer(layers["vw_network_node"])
 
-        self._configure_database_connection_config_from_tww_layer()
+    def onNetworkLayersUnavailable(self):
+        self.connectNetworkElementsAction.setEnabled(False)
 
+    def onTwwLayersAvailable(self):
+        for b in self.toolbarButtons:
+            b.setEnabled(True)
+
+        self._configure_database_connection_config_from_tww_layer()
         self.tww_validity_check_startup()
 
-    def onLayersUnavailable(self):
+    def onTwwLayersUnavailable(self):
         for b in self.toolbarButtons:
             b.setEnabled(False)
-
-        self.connectNetworkElementsAction.setEnabled(False)
 
     def profileToolClicked(self):
         """
@@ -695,6 +702,9 @@ class TeksiWastewaterPlugin:
                 level=Qgis.Critical,
             )
 
+        self.logger.debug(
+            f"dataprovider of vw_tww_wastewater_structure: {pg_layer.dataProvider().uri()}"
+        )
         DatabaseUtils.databaseConfig.PGSERVICE = pg_layer.dataProvider().uri().service()
         DatabaseUtils.databaseConfig.PGHOST = pg_layer.dataProvider().uri().host()
         DatabaseUtils.databaseConfig.PGPORT = pg_layer.dataProvider().uri().port()
