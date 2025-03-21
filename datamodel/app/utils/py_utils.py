@@ -8,7 +8,7 @@ from pathlib import Path
 def run_py_file(file_path: str, variables: dict = None):
     abs_file_path = Path(__file__).parent.resolve() / file_path
     varlist = [sys.executable, str(abs_file_path)]
-    for key, value in variables.iteritems():
+    for key, value in variables.items():
         varlist.append("--" + key)
         varlist.append(value)
     result = subprocess.run(varlist, capture_output=True, text=True)

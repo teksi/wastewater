@@ -4,7 +4,6 @@ from pathlib import Path
 
 from yaml import safe_load
 
-from ..utils.py_utils import run_py_files_in_folder
 from ..utils.sql_utils import run_sql_files_in_folder
 
 try:
@@ -42,7 +41,10 @@ def load_extension(
     config = read_config("config.yaml", extension_name)
     variables = config.get("variables", {})
     if srid:
-        variables.update({"SRID": psycopg.sql.SQL(f"{srid}")})
+        variables.update({"SRID": {
+            "value":  '{}'.format(srid),
+            "type": "raw"
+        }})
 
     # We also disable symbology triggers as they can badly affect performance. This must be done in a separate session as it
     # would deadlock other sessions.
@@ -56,7 +58,6 @@ def load_extension(
     yaml_files = {}
     if directory:
         abs_dir = Path(__file__).parent.resolve() / directory
-        run_py_files_in_folder(abs_dir, variables)
         run_sql_files_in_folder(abs_dir, pg_service, variables)
         files = os.listdir(abs_dir)
         files.sort()

@@ -29,9 +29,6 @@ def extra_cols(pg_service: str = "pg_tww", extra_definition: dict = None):
             cursor.close()
         except Exception as e:
             print("An error occurred:", e)
-
-        finally:
-            conn.close()
     return str
 
 
@@ -78,8 +75,6 @@ def insert_extra(pg_service: str = "pg_tww", extra_definition: dict = None):
         except Exception as e:
             print("An error occurred:", e)
 
-        finally:
-            conn.close()
     return str
 
 
@@ -113,6 +108,4 @@ def update_extra(pg_service: str = "pg_tww", extra_definition: dict = None):
         except Exception as e:
             print("An error occurred:", e)
 
-        finally:
-            conn.close()
     return str

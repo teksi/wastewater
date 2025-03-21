@@ -2,8 +2,12 @@ extensions:
   - id: template
     directory: demo_extension
     variables:
-      myVariable: "Hello World"
-      myNumber: 0
+      myVariable: 
+        value: "Hello World"
+        type: literal
+      myNumber: 
+        value: 0
+        type: literal
   - id: agxx
     directory: tww2ag6496
     variables: {}

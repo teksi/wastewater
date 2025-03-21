@@ -21,8 +21,8 @@ def check_owner(pg_service: str, table_schema: str, table_name: str):
             )
             owner = cur.fetchone()
             is_owner = True if owner in roles else False
-        finally:
-            conn.close()
+        except Exception as e:
+            print("An error occurred:", e)
     return is_owner
 
 
