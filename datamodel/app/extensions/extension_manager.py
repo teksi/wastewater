@@ -41,10 +41,7 @@ def load_extension(
     config = read_config("config.yaml", extension_name)
     variables = config.get("variables", {})
     if srid:
-        variables.update({"SRID": {
-            "value":  '{}'.format(srid),
-            "type": "raw"
-        }})
+        variables.update({"SRID": {"value": f"{srid}", "type": "raw"}})
 
     # We also disable symbology triggers as they can badly affect performance. This must be done in a separate session as it
     # would deadlock other sessions.

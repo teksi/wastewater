@@ -19,7 +19,7 @@ def run_sql_file(file_path: str, pg_service: str, variables: dict = None):
 def run_sql(sql: str, pg_service: str, variables: dict = None):
     if variables is None:
         variables = {}
-    sql_vars=parse_variables(variables)
+    sql_vars = parse_variables(variables)
     if re.search(r"\{[^}]*\}", sql):  # avoid formatting if no variables are present
         try:
             sql_query = psycopg.sql.SQL(sql).format(**sql_vars)
@@ -27,7 +27,7 @@ def run_sql(sql: str, pg_service: str, variables: dict = None):
             print(sql)
             raise
     else:
-       sql_query = psycopg.sql.SQL(sql) 
+        sql_query = psycopg.sql.SQL(sql)
     conn = psycopg.connect(f"service={pg_service}")
     cursor = conn.cursor()
     # print(sql_query.as_string(conn))
@@ -49,11 +49,11 @@ def run_sql_files_in_folder(directory: str, pg_service: str, variables: dict = N
 def parse_variables(variables: dict) -> dict:
     """Parse variables based on their defined types in the YAML."""
     formatted_vars = {}
-    
+
     for key, meta in variables.items():
         if isinstance(meta, dict) and "value" in meta and "type" in meta:
             value, var_type = meta["value"], meta["type"].lower()
-            
+
             if var_type == "raw":  # Directly insert SQL without escaping
                 formatted_vars[key] = psycopg.sql.SQL(value)
             elif var_type == "identifier":  # Table/Column names
@@ -63,5 +63,5 @@ def parse_variables(variables: dict) -> dict:
             else:
                 raise ValueError(f"Unknown type '{var_type}' for variable '{key}'")
         else:
-            formatted_vars[key] = psycopg.sql.Literal(str(meta))  
+            formatted_vars[key] = psycopg.sql.Literal(str(meta))
     return formatted_vars

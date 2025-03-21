@@ -55,10 +55,12 @@ def create_app(
         "SRID": psycopg.sql.SQL(f"{srid}")
     }  # when dropping psycopg2 support, we can use the srid var directly
 
-    variables_sql={"SRID": {
-            "value": '{}'.format(srid),
+    variables_sql = {
+        "SRID": {
+            "value": f"{srid}",
             "type": "raw",
-        }} 
+        }
+    }
 
     if drop_schema:
         run_sql("DROP SCHEMA IF EXISTS tww_app CASCADE;", pg_service)
@@ -223,7 +225,9 @@ def create_app(
     set_defaults_and_triggers(pg_service, SingleInheritances)
 
     # run post_all
-    run_sql_files_in_folder(Path(__file__).parent.resolve() / "post_all", pg_service, variables_sql)
+    run_sql_files_in_folder(
+        Path(__file__).parent.resolve() / "post_all", pg_service, variables_sql
+    )
 
 
 if __name__ == "__main__":

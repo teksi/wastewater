@@ -2,10 +2,10 @@ extensions:
   - id: template
     directory: demo_extension
     variables:
-      myVariable: 
+      myVariable:
         value: "Hello World"
         type: literal
-      myNumber: 
+      myNumber:
         value: 0
         type: literal
   - id: agxx
