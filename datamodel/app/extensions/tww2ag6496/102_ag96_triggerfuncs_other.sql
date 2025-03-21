@@ -621,12 +621,6 @@ BEGIN
 	, remark
 	, identifier
 	, last_modification
-	, ag64_last_modification
-    , ag64_remark
-	, ag64_fk_provider
-	, ag96_last_modification
-    , ag96_remark
-	, ag96_fk_provider
 	)
 	VALUES
 	(
@@ -637,12 +631,6 @@ BEGIN
 	, NEW.bemerkung_wi
 	, NEW.bezeichnung
 	, NEW.letzte_aenderung_wi
-	, NEW.letzte_aenderung_wi
-	, NEW.bemerkung_wi
-	, tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_wi)
-	, NEW.letzte_aenderung_gep
-	, NEW.bemerkung_gep
-	, tww_app.fct_agxx_organisationid_to_vsa(NEW.datenbewirtschafter_gep)
 	);
 
 	INSERT INTO tww_od.agxx_overflow (

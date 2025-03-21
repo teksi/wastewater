@@ -2620,7 +2620,7 @@ class InterlisImporterToIntermediateSchema:
                 kategorie=row.kategorie,
                 perimeter=row.perimeter,
                 prioritaetag=row.prioritaetag,
-                astatus=row.status,
+                status=row.astatus,
                 symbolpos=row.symbolpos,
                 verweis=row.verweis,
                 traegerschaft=self.get_pk(row.traegerschaft__REL),
