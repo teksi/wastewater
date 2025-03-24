@@ -142,10 +142,12 @@ def create_app(
 
     if extension_names:
         for extension in extension_names:
-            print(f"""*****
+            print(
+                f"""*****
 Running extension {extension}
 ****
-            """)
+            """
+            )
             yaml_files = load_extension(srid, pg_service, "tww", extension)
             for target_view, file_path in yaml_files.items():
                 if target_view in MultipleInheritances:
