@@ -18,6 +18,7 @@ from .utils.sql_utils import run_sql, run_sql_files_in_folder
 from .view.vw_tww_additional_ws import vw_tww_additional_ws
 from .view.vw_tww_infiltration_installation import vw_tww_infiltration_installation
 from .view.vw_tww_measurement_series import vw_tww_measurement_series
+from .view.vw_tww_overflow import vw_tww_overflow
 from .view.vw_tww_reach import vw_tww_reach
 from .view.vw_tww_wastewater_structure import vw_tww_wastewater_structure
 from .view.vw_wastewater_structure import vw_wastewater_structure
@@ -74,6 +75,7 @@ def create_app(
     yaml_data_dicts = {
         "vw_tww_reach": {},
         "vw_tww_wastewater_structure": {},
+        "vw_tww_overflow": {},
         "vw_wastewater_structure": {},
         "vw_tww_infiltration_installation": {},
         "vw_tww_additional_ws": {},
@@ -83,7 +85,6 @@ def create_app(
     MultipleInheritances = {
         "vw_maintenance": cwd / "view/multipleinheritance/vw_maintenance_event.yaml",
         "vw_damage": cwd / "view/multipleinheritance/vw_damage.yaml",
-        "vw_tww_overflow": cwd / "view/multipleinheritance/vw_tww_overflow.yaml",
     }
 
     SingleInheritances = {
@@ -202,6 +203,9 @@ def create_app(
         srid, pg_service=pg_service, extra_definition=yaml_data_dicts["vw_tww_additional_ws"]
     )
     vw_tww_measurement_series(
+        pg_service=pg_service, extra_definition=yaml_data_dicts["vw_tww_measurement_series"]
+    )
+    vw_tww_overflow(
         pg_service=pg_service, extra_definition=yaml_data_dicts["vw_tww_measurement_series"]
     )
 
