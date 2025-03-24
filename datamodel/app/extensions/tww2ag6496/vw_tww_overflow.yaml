@@ -1,11 +1,11 @@
 joins:
-   agxx_overflow:
+  agxx_overflow:
     table: tww_od.agxx_overflow
     alias: agxx_ov
     join_on: "agxx_ov.fk_overflow = ov.obj_id"
     skip_columns: ["uuid","fk_overflow"]
     remap_columns:
-      fk_wastewater_node: obj_id
+      fk_overflow: obj_id
     prefix: ov_
     read_only: false
     where_clause: "agxx_ov.fk_overflow = OLD.obj_id"

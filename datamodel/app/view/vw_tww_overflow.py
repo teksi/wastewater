@@ -21,10 +21,9 @@ from ..utils.extra_definition_utils import (
 )
 
 
-def vw_tww_overflow(srid: int, pg_service: str = None, extra_definition: dict = None):
+def vw_tww_overflow(pg_service: str = None, extra_definition: dict = None):
     """
     Creates tww_overflow view
-    :param srid: EPSG code for geometries
     :param pg_service: the PostgreSQL service name
     :param extra_definition: a dictionary for additional columns
     """
@@ -62,11 +61,10 @@ def vw_tww_overflow(srid: int, pg_service: str = None, extra_definition: dict = 
         LEFT JOIN tww_od.leapingweir lw on lw.obj_id= ov.obj_id
         LEFT JOIN tww_od.prank_weir pw on pw.obj_id= ov.obj_id
         LEFT JOIN tww_od.pump pu on pu.obj_id= ov.obj_id
-        LEFT JOIN tww_od.wastewater_node wn on ov.fk_wastewater_node:= wn.obj_id
+        LEFT JOIN tww_od.wastewater_node wn on ov.fk_wastewater_node= wn.obj_id
         {extra_joins};
 
     """.format(
-        srid=srid,
         extra_cols=(
             ""
             if not extra_definition
@@ -237,7 +235,6 @@ def vw_tww_overflow(srid: int, pg_service: str = None, extra_definition: dict = 
     CREATE TRIGGER vw_tww_overflow_UPDATE INSTEAD OF UPDATE ON tww_app.vw_tww_overflow
       FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_tww_overflow_UPDATE();
     """.format(
-        srid=srid,
         literal_delete_on_ov_change="'DELETE FROM tww_od.%I WHERE obj_id = %L',OLD.overflow_type,OLD.obj_id",
         literal_insert_on_ov_change="'INSERT INTO tww_od.%I(obj_id) VALUES (%L)',NEW.overflow_type,OLD.obj_id",
         update_ov=update_command(
@@ -319,7 +316,6 @@ def vw_tww_overflow(srid: int, pg_service: str = None, extra_definition: dict = 
 if __name__ == "__main__":
     # create the top-level parser
     parser = argparse.ArgumentParser()
-    parser.add_argument("-s", "--srid", help="EPSG code for SRID")
     parser.add_argument(
         "-e",
         "--extra-definition",
@@ -327,10 +323,9 @@ if __name__ == "__main__":
     )
     parser.add_argument("-p", "--pg_service", help="the PostgreSQL service name")
     args = parser.parse_args()
-    srid = args.srid or os.getenv("SRID")
     pg_service = args.pg_service or os.getenv("PGSERVICE")
     extra_definition = {}
     if args.extra_definition:
         with open(args.extra_definition) as f:
             extra_definition = safe_load(f)
-    vw_tww_overflow(srid=srid, pg_service=pg_service, extra_definition=extra_definition)
+    vw_tww_overflow(pg_service=pg_service, extra_definition=extra_definition)
