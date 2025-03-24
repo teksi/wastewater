@@ -333,6 +333,4 @@ if __name__ == "__main__":
     if args.extra_definition:
         with open(args.extra_definition) as f:
             extra_definition = safe_load(f)
-    vw_tww_overflow(
-        srid=srid, pg_service=pg_service, extra_definition=extra_definition
-    )
+    vw_tww_overflow(srid=srid, pg_service=pg_service, extra_definition=extra_definition)
