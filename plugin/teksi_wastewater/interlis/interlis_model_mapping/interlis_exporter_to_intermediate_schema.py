@@ -534,6 +534,8 @@ class InterlisExporterToIntermediateSchema:
                 dimension1=row.dimension1,
                 dimension2=row.dimension2,
                 funktion=self.get_vl(row.function__REL),
+                # new attribute interventionsmoeglichkeit Release 2020
+                interventionsmoeglichkeit=self.get_vl(row.possibility_intervention__REL),
                 material=self.get_vl(row.material__REL),
                 oberflaechenzulauf=self.get_vl(row.surface_inflow__REL),
             )
