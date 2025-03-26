@@ -535,7 +535,8 @@ class InterlisImporterToIntermediateSchema:
             ),
             # new attribute condition_score Release 2020
             "condition_score": self.get_vl_code(
-                self.model_classes_tww_od.wastewater_structure_structure_condition,row.zustandsnote,
+                self.model_classes_tww_od.wastewater_structure_structure_condition,
+                row.zustandsnote,
             ),
             "contract_section": row.baulos,
             "detail_geometry3d_geometry": (
@@ -572,7 +573,8 @@ class InterlisImporterToIntermediateSchema:
             ),
             # new attribute status_survey_year Release 2020
             "status_survey_year": self.get_vl_code(
-                self.model_classes_tww_od.wastewater_structure_structure_condition,row.zustandserhebung_jahr,
+                self.model_classes_tww_od.wastewater_structure_structure_condition,
+                row.zustandserhebung_jahr,
             ),
             "structure_condition": self.get_vl_code(
                 self.model_classes_tww_od.wastewater_structure_structure_condition,
@@ -581,7 +583,8 @@ class InterlisImporterToIntermediateSchema:
             "subsidies": row.subventionen,
             # new attribute urgency_figure Release 2020.1
             "urgency_figure": self.get_vl_code(
-                self.model_classes_tww_od.wastewater_structure_structure_condition,row.dringlichkeitszahl,
+                self.model_classes_tww_od.wastewater_structure_structure_condition,
+                row.dringlichkeitszahl,
             ),
             "year_of_construction": row.baujahr,
             "year_of_replacement": row.ersatzjahr,
