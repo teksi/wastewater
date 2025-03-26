@@ -552,6 +552,10 @@ class InterlisExporterToIntermediateSchema:
                 # --- abwasserbauwerk ---
                 **self.wastewater_structure_common(row, "einleitstelle"),
                 # --- einleitstelle ---
+                # new attribute gewaesserabschnitt_kanton Release 2020
+                gewaesserabschnitt_kanton=row.water_course_segment_canton,
+                # new attribute gewaesserlaufnummer Release 2020
+                gewaesserlaufnummer=row.water_course_number,
                 hochwasserkote=row.highwater_level,
                 relevanz=self.get_vl(row.relevance__REL),
                 terrainkote=row.terrain_level,
