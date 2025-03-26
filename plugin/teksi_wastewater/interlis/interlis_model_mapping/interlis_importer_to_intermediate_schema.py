@@ -821,6 +821,10 @@ class InterlisImporterToIntermediateSchema:
                 # --- wastewater_structure ---
                 **self.wastewater_structure_common(row),
                 # --- special_structure ---
+                # new attribute amphibian_exit Release 2020
+                amphibian_exit=self.get_vl_code(
+                    self.model_classes_tww_vl.amphibian_exit, row.amphibienausstieg
+                ),
                 bypass=self.get_vl_code(
                     self.model_classes_tww_vl.special_structure_bypass, row.bypass
                 ),
@@ -830,6 +834,10 @@ class InterlisImporterToIntermediateSchema:
                 ),
                 function=self.get_vl_code(
                     self.model_classes_tww_od.special_structure_function, row.funktion
+                ),
+                # new attribute possibility_intervention Release 2020
+                possibility_intervention=self.get_vl_code(
+                    self.model_classes_tww_vl.possibility_intervention, row.interventionsmoeglichkeit
                 ),
                 stormwater_tank_arrangement=self.get_vl_code(
                     self.model_classes_tww_od.special_structure_stormwater_tank_arrangement,
