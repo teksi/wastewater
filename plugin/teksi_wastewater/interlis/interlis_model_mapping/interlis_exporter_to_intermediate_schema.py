@@ -753,6 +753,8 @@ class InterlisExporterToIntermediateSchema:
                 # TODO : WARNING : fk_hydr_geometry is not mapped
                 # new attribute funktion_knoten_melioration release 2020
                 funktion_knoten_melioration=self.get_vl(row.function_node_amelioration__REL),
+                # new attribute hoehengenauigkeit release 2020
+                hoehengenauigkeit=self.get_vl(row.elevation_accuracy__REL),
                 lage=ST_Force2D(row.situation3d_geometry),
                 rueckstaukote_ist=row.backflow_level_current,
                 sohlenkote=row.bottom_level,
