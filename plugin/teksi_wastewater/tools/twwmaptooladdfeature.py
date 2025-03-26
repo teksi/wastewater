@@ -490,7 +490,7 @@ class TwwMapToolDigitizeDrainageChannel(QgsMapTool):
                     dlg = QDialog()
                     dlg.setLayout(QGridLayout())
                     dlg.layout().addWidget(QLabel(self.tr("Enter width")))
-                    txt = QLineEdit("0.2")
+                    txt = QLineEdit("0.1")
                     dlg.layout().addWidget(txt)
                     bb = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
                     dlg.layout().addWidget(bb)
