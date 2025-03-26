@@ -2086,7 +2086,9 @@ class InterlisImporterToIntermediateSchema:
                     self.model_classes_tww_od.reach_inside_coating, row.innenschutz
                 ),
                 # new attribute leak_protection release 2020
-                leak_protection=self.get_vl_code(self.model_classes_tww_vl.leak_protection, row.leckschutz),
+                leak_protection=self.get_vl_code(
+                    self.model_classes_tww_vl.leak_protection, row.leckschutz
+                ),
                 length_effective=row.laengeeffektiv,
                 material=self.get_vl_code(self.model_classes_tww_vl.reach_material, row.material),
                 progression3d_geometry=self.session_tww.scalar(ST_Force3D(row.verlauf)),
