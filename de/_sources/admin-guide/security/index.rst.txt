@@ -14,4 +14,4 @@ The base installation of TWW defines the following group roles :
 
 Data in TWW are stored in 3 schemas with default permissions for all of these users.
 
-.. Note:: The SQL related to these roles is stored `here <https://github.com/TWW/datamodel/blob/master/12_0_roles.sql>`_ and `here <https://github.com/TWW/datamodel/blob/master/12_1_roles.sql>`_
+.. Note:: The SQL related to these roles is stored `here <https://github.com/teksi/wastewater/tree/main/datamodel/12_0_roles.sql>`_ and `here <https://github.com/teksi/wastewater/tree/main/datamodel/12_1_roles.sql>`_
