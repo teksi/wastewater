@@ -2574,7 +2574,7 @@ class InterlisExporterToIntermediateSchema:
                 anmerkung=row.comments,
                 ansichtsparameter=row.view_parameters,
                 einzelschadenklasse=self.get_vl(row.single_damage_class__REL),
-                streckenschaden=row.damage_reach,
+                streckenschaden=row.line_damage,
                 untersuchungref=self.get_tid(row.fk_examination__REL),
                 verbindung=self.get_vl(row.connection__REL),
                 videozaehlerstand=row.video_counter,
