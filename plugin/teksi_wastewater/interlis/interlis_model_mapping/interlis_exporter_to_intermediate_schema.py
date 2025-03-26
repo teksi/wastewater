@@ -789,6 +789,8 @@ class InterlisExporterToIntermediateSchema:
                 **self.wastewater_networkelement_common(row, "haltung"),
                 # --- haltung ---
                 # NOT MAPPED : elevation_determination
+                # new attribute fliesszeit_trockenwetter release 2020
+                fliesszeit_trockenwetter=row.flow_time_dry_weather,
                 innenschutz=self.get_vl(row.inside_coating__REL),
                 laengeeffektiv=row.length_effective,
                 lagebestimmung=self.get_vl(row.horizontal_positioning__REL),
