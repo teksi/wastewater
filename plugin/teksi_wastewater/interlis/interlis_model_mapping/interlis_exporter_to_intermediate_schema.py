@@ -796,6 +796,8 @@ class InterlisExporterToIntermediateSchema:
                 innenschutz=self.get_vl(row.inside_coating__REL),
                 laengeeffektiv=row.length_effective,
                 lagebestimmung=self.get_vl(row.horizontal_positioning__REL),
+                # new attribute leckschutz release 2020
+                leckschutz=self.get_vl(row.leak_protection__REL),
                 lichte_hoehe=row.clear_height,
                 material=self.get_vl(row.material__REL),
                 nachhaltungspunktref=self.get_tid(row.fk_reach_point_to__REL),
