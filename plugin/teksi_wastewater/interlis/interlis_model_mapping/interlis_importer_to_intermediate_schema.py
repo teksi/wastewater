@@ -2070,6 +2070,8 @@ class InterlisImporterToIntermediateSchema:
                 fk_pipe_profile=self.get_pk(row.rohrprofilref__REL),
                 fk_reach_point_from=self.get_pk(row.vonhaltungspunktref__REL),
                 fk_reach_point_to=self.get_pk(row.nachhaltungspunktref__REL),
+                # new attribute flow_time_dry_weather release 2020
+                flow_time_dry_weather=row.fliesszeit_trockenwetter,
                 horizontal_positioning=self.get_vl_code(
                     self.model_classes_tww_od.reach_horizontal_positioning, row.lagebestimmung
                 ),
