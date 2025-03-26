@@ -2048,6 +2048,10 @@ class InterlisImporterToIntermediateSchema:
                 # fk_hydr_geometry=row.REPLACE_ME,  # TODO : NOT MAPPED
                 backflow_level_current=row.rueckstaukote_ist,
                 bottom_level=row.sohlenkote,
+                # new attribute elevation_accuracy release 2020
+                attribute=self.get_vl_code(
+                    self.model_classes_tww_od.attribute, row.hoehengenauigkeit
+                ),
                 # new attribute function_node_amelioration release 2020
                 function_node_amelioration=self.get_vl_code(
                     self.model_classes_tww_od.function_node_amelioration, row.funktion_knoten_melioration
