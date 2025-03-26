@@ -2054,7 +2054,8 @@ class InterlisImporterToIntermediateSchema:
                 ),
                 # new attribute function_node_amelioration release 2020
                 function_node_amelioration=self.get_vl_code(
-                    self.model_classes_tww_od.function_node_amelioration, row.funktion_knoten_melioration
+                    self.model_classes_tww_od.function_node_amelioration,
+                    row.funktion_knoten_melioration,
                 ),
                 situation3d_geometry=self.geometry3D_convert(
                     row.lage,
