@@ -769,6 +769,10 @@ class InterlisImporterToIntermediateSchema:
                 **self.wastewater_structure_common(row),
                 # --- manhole ---
                 # _orientation=row.REPLACE_ME,
+                # new attribute amphibian_exit Release 2020
+                amphibian_exit=self.get_vl_code(
+                    self.model_classes_tww_vl.amphibian_exit, row.Amphibienausstieg
+                ),
                 dimension1=row.dimension1,
                 dimension2=row.dimension2,
                 function=self.get_vl_code(
