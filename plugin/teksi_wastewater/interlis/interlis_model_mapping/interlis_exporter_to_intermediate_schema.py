@@ -529,6 +529,8 @@ class InterlisExporterToIntermediateSchema:
                 # --- abwasserbauwerk ---
                 **self.wastewater_structure_common(row, "normschacht"),
                 # --- normschacht ---
+                # new attribute amphibienausstieg Release 2020
+                amphibienausstieg=self.get_vl(row.amphibian_exit__REL),
                 dimension1=row.dimension1,
                 dimension2=row.dimension2,
                 funktion=self.get_vl(row.function__REL),
