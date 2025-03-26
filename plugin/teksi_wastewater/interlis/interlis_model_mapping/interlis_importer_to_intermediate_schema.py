@@ -2009,6 +2009,10 @@ class InterlisImporterToIntermediateSchema:
                     self.model_classes_tww_od.reach_point_outlet_shape, row.auslaufform
                 ),
                 position_of_connection=row.lage_anschluss,
+                # new attribute pipe_closure release 2020
+                pipe_closure=self.get_vl_code(
+                    self.model_classes_tww_od.pipe_closure, row.rohrverschluss_kappe
+                ),
                 remark=row.bemerkung,
                 situation3d_geometry=self.geometry3D_convert(
                     row.lage, row.kote, row.t_ili_tid, "reach_point.cote (Haltungpunkt.Kote)"
