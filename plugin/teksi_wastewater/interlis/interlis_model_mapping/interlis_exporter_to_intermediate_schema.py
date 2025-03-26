@@ -561,6 +561,8 @@ class InterlisExporterToIntermediateSchema:
                 # new attribute gewaesserlaufnummer Release 2020
                 gewaesserlaufnummer=row.water_course_number,
                 hochwasserkote=row.highwater_level,
+                # new attribute interventionsmoeglichkeit Release 2020
+                interventionsmoeglichkeit=self.get_vl(row.possibility_intervention__REL),
                 relevanz=self.get_vl(row.relevance__REL),
                 terrainkote=row.terrain_level,
                 wasserspiegel_hydraulik=row.waterlevel_hydraulic,
@@ -587,6 +589,8 @@ class InterlisExporterToIntermediateSchema:
                 **self.wastewater_structure_common(row, "spezialbauwerk"),
                 # --- spezialbauwerk ---
                 # TODO : WARNING : upper_elevation is not mapped
+                # new attribute amphibienausstieg Release 2020
+                amphibienausstieg=self.get_vl(row.amphibian_exit__REL),
                 bypass=self.get_vl(row.bypass__REL),
                 funktion=self.get_vl(row.function__REL),
                 notueberlauf=self.get_vl(row.emergency_overflow__REL),
