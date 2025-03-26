@@ -791,6 +791,8 @@ class InterlisExporterToIntermediateSchema:
                 # NOT MAPPED : elevation_determination
                 # new attribute fliesszeit_trockenwetter release 2020
                 fliesszeit_trockenwetter=row.flow_time_dry_weather,
+                # new attribute hydr_belastung_ist release 2020
+                hydr_belastung_ist=row.hydraulic_load_current,
                 innenschutz=self.get_vl(row.inside_coating__REL),
                 laengeeffektiv=row.length_effective,
                 lagebestimmung=self.get_vl(row.horizontal_positioning__REL),
