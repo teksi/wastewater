@@ -2959,6 +2959,8 @@ class InterlisExporterToIntermediateSchema:
             "bezeichnung": self.null_to_emptystr(row.identifier),
             "bruttokosten": row.gross_costs,
             "detailgeometrie": ST_Force2D(row.detail_geometry3d_geometry),
+            # new attribute dringlichkeitszahl Release 2020
+            "dringlichkeitszahl": self.get_vl(row.urgency_figure__REL),
             "eigentuemerref": eigentuemerref,
             "ersatzjahr": row.year_of_replacement,
             "finanzierung": self.get_vl(row.financing__REL),
@@ -2970,6 +2972,10 @@ class InterlisExporterToIntermediateSchema:
             "wbw_bauart": self.get_vl(row.rv_construction_type__REL),
             "wiederbeschaffungswert": row.replacement_value,
             "zugaenglichkeit": self.get_vl(row.accessibility__REL),
+            # new attribute zustandserhebung_jahr Release 2020
+            "zustandserhebung_jahr": self.get_vl(row.status_survey_year__REL),
+            # new attribute condition_score Release 2020
+            "zustandsnote": self.get_vl(row.condition_score__REL),
         }
 
     def wastewater_networkelement_common(self, row, type_name):
