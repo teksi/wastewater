@@ -783,7 +783,8 @@ class InterlisImporterToIntermediateSchema:
                 ),
                 # new attribute possibility_intervention Release 2020
                 possibility_intervention=self.get_vl_code(
-                    self.model_classes_tww_vl.possibility_intervention, row.interventionsmoeglichkeit
+                    self.model_classes_tww_vl.possibility_intervention,
+                    row.interventionsmoeglichkeit,
                 ),
                 surface_inflow=self.get_vl_code(
                     self.model_classes_tww_od.manhole_surface_inflow, row.oberflaechenzulauf
