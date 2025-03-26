@@ -838,7 +838,8 @@ class InterlisImporterToIntermediateSchema:
                 ),
                 # new attribute possibility_intervention Release 2020
                 possibility_intervention=self.get_vl_code(
-                    self.model_classes_tww_vl.possibility_intervention, row.interventionsmoeglichkeit
+                    self.model_classes_tww_vl.possibility_intervention,
+                    row.interventionsmoeglichkeit,
                 ),
                 stormwater_tank_arrangement=self.get_vl_code(
                     self.model_classes_tww_od.special_structure_stormwater_tank_arrangement,
