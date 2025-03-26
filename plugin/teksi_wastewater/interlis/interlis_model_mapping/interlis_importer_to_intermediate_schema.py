@@ -2076,6 +2076,8 @@ class InterlisImporterToIntermediateSchema:
                 horizontal_positioning=self.get_vl_code(
                     self.model_classes_tww_od.reach_horizontal_positioning, row.lagebestimmung
                 ),
+                # new attribute hydraulic_load_current release 2020
+                hydraulic_load_current=row.hydr_belastung_ist,
                 inside_coating=self.get_vl_code(
                     self.model_classes_tww_od.reach_inside_coating, row.innenschutz
                 ),
