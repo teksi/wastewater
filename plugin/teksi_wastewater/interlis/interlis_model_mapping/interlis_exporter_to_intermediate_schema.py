@@ -591,6 +591,8 @@ class InterlisExporterToIntermediateSchema:
                 amphibienausstieg=self.get_vl(row.amphibian_exit__REL),
                 bypass=self.get_vl(row.bypass__REL),
                 funktion=self.get_vl(row.function__REL),
+                # new attribute interventionsmoeglichkeit Release 2020
+                interventionsmoeglichkeit=self.get_vl(row.possibility_intervention__REL),
                 notueberlauf=self.get_vl(row.emergency_overflow__REL),
                 regenbecken_anordnung=self.get_vl(row.stormwater_tank_arrangement__REL),
             )
