@@ -2041,7 +2041,7 @@ class InterlisImporterToIntermediateSchema:
                 bottom_level=row.sohlenkote,
                 # new attribute elevation_accuracy release 2020
                 attribute=self.get_vl_code(
-                    self.model_classes_tww_od.wastewater_node_attribute, row.hoehengenauigkeit
+                    self.model_classes_tww_od.wastewater_node_elevation_accuracy, row.hoehengenauigkeit
                 ),
                 # new attribute function_node_amelioration release 2020
                 function_node_amelioration=self.get_vl_code(
