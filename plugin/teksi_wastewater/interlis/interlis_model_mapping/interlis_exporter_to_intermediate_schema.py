@@ -714,7 +714,7 @@ class InterlisExporterToIntermediateSchema:
                 lage=ST_Force2D(row.situation3d_geometry),
                 lage_anschluss=row.position_of_connection,
                 # new attribute rohrverschluss_kappe release 2020
-                rohrverschluss_kappe=self.get_vl(row.elevation_accuracy__REL),
+                rohrverschluss_kappe=self.get_vl(row.pipe_closure__REL),
             )
             self.abwasser_session.add(haltungspunkt)
             print(".", end="")
