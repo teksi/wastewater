@@ -2002,7 +2002,7 @@ class InterlisImporterToIntermediateSchema:
                 position_of_connection=row.lage_anschluss,
                 # new attribute pipe_closure release 2020
                 pipe_closure=self.get_vl_code(
-                    self.model_classes_tww_od.pipe_closure, row.rohrverschluss_kappe
+                    self.model_classes_tww_od.reach_point_pipe_closure, row.rohrverschluss_kappe
                 ),
                 remark=row.bemerkung,
                 situation3d_geometry=self.geometry3D_convert(
@@ -2041,11 +2041,11 @@ class InterlisImporterToIntermediateSchema:
                 bottom_level=row.sohlenkote,
                 # new attribute elevation_accuracy release 2020
                 attribute=self.get_vl_code(
-                    self.model_classes_tww_od.attribute, row.hoehengenauigkeit
+                    self.model_classes_tww_od.wastewater_node_attribute, row.hoehengenauigkeit
                 ),
                 # new attribute function_node_amelioration release 2020
                 function_node_amelioration=self.get_vl_code(
-                    self.model_classes_tww_od.function_node_amelioration,
+                    self.model_classes_tww_od.wastewater_node_function_node_amelioration,
                     row.funktion_knoten_melioration,
                 ),
                 situation3d_geometry=self.geometry3D_convert(
