@@ -582,10 +582,7 @@ class InterlisImporterToIntermediateSchema:
             ),
             "subsidies": row.subventionen,
             # new attribute urgency_figure Release 2020.1
-            "urgency_figure": self.get_vl_code(
-                self.model_classes_tww_od.wastewater_structure_structure_condition,
-                row.dringlichkeitszahl,
-            ),
+            "urgency_figure": row.dringlichkeitszahl,
             "year_of_construction": row.baujahr,
             "year_of_replacement": row.ersatzjahr,
         }
