@@ -2997,9 +2997,9 @@ class InterlisExporterToIntermediateSchema:
             "wiederbeschaffungswert": row.replacement_value,
             "zugaenglichkeit": self.get_vl(row.accessibility__REL),
             # new attribute zustandserhebung_jahr Release 2020
-            "zustandserhebung_jahr": self.get_vl(row.status_survey_year__REL),
+            "zustandserhebung_jahr": row.status_survey_year,
             # new attribute condition_score Release 2020
-            "zustandsnote": self.get_vl(row.condition_score__REL),
+            "zustandsnote": row.condition_score,
         }
 
     def wastewater_networkelement_common(self, row, type_name):
