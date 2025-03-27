@@ -815,7 +815,7 @@ class InterlisImporterToIntermediateSchema:
                 # --- special_structure ---
                 # new attribute amphibian_exit Release 2020
                 amphibian_exit=self.get_vl_code(
-                    self.model_classes_tww_vl.amphibian_exit, row.amphibienausstieg
+                    self.model_classes_tww_vl.special_structure_amphibian_exit, row.amphibienausstieg
                 ),
                 bypass=self.get_vl_code(
                     self.model_classes_tww_vl.special_structure_bypass, row.bypass
@@ -829,7 +829,7 @@ class InterlisImporterToIntermediateSchema:
                 ),
                 # new attribute possibility_intervention Release 2020
                 possibility_intervention=self.get_vl_code(
-                    self.model_classes_tww_vl.possibility_intervention,
+                    self.model_classes_tww_vl.special_structure_possibility_intervention,
                     row.interventionsmoeglichkeit,
                 ),
                 stormwater_tank_arrangement=self.get_vl_code(
