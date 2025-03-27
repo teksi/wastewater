@@ -113,6 +113,13 @@ class TestInterlis(unittest.TestCase):
         )
         self.assertIsNotNone(result)
         self.assertEqual(result[0], 448.0)
+        
+        #check if urgency_figure is imported
+        result = DatabaseUtils.fetchone(
+            "SELECT urgency_figure FROM tww_od.wastewater_structure WHERE obj_id='ch080qwzVE000019';"
+        )
+        self.assertIsNotNone(result)
+        self.assertEqual(result[0], 50)
 
         # Import minimal dss
         xtf_file_input = self._get_data_filename(MINIMAL_DATASET_DSS)
