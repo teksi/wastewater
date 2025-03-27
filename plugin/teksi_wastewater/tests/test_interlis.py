@@ -113,8 +113,8 @@ class TestInterlis(unittest.TestCase):
         )
         self.assertIsNotNone(result)
         self.assertEqual(result[0], 448.0)
-        
-        #check if urgency_figure is imported
+
+        # check if urgency_figure is imported
         result = DatabaseUtils.fetchone(
             "SELECT urgency_figure FROM tww_od.wastewater_structure WHERE obj_id='ch080qwzVE000019';"
         )
