@@ -762,7 +762,7 @@ class InterlisImporterToIntermediateSchema:
                 # _orientation=row.REPLACE_ME,
                 # new attribute amphibian_exit Release 2020
                 amphibian_exit=self.get_vl_code(
-                    self.model_classes_tww_vl.amphibian_exit, row.amphibienausstieg
+                    self.model_classes_tww_vl.manhole_amphibian_exit, row.amphibienausstieg
                 ),
                 dimension1=row.dimension1,
                 dimension2=row.dimension2,
