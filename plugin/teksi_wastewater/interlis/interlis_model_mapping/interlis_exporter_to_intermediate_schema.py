@@ -2984,7 +2984,7 @@ class InterlisExporterToIntermediateSchema:
             "bruttokosten": row.gross_costs,
             "detailgeometrie": ST_Force2D(row.detail_geometry3d_geometry),
             # new attribute dringlichkeitszahl Release 2020
-            "dringlichkeitszahl": self.get_vl(row.urgency_figure__REL),
+            "dringlichkeitszahl": row.urgency_figure,
             "eigentuemerref": eigentuemerref,
             "ersatzjahr": row.year_of_replacement,
             "finanzierung": self.get_vl(row.financing__REL),
