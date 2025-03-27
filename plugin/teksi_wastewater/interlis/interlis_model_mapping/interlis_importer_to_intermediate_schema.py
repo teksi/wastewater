@@ -534,10 +534,7 @@ class InterlisImporterToIntermediateSchema:
                 self.model_classes_tww_od.wastewater_structure_accessibility, row.zugaenglichkeit
             ),
             # new attribute condition_score Release 2020
-            "condition_score": self.get_vl_code(
-                self.model_classes_tww_od.wastewater_structure_structure_condition,
-                row.zustandsnote,
-            ),
+            "condition_score": row.zustandsnote,
             "contract_section": row.baulos,
             "detail_geometry3d_geometry": (
                 row.detailgeometrie
@@ -572,10 +569,7 @@ class InterlisImporterToIntermediateSchema:
                 self.model_classes_tww_vl.wastewater_structure_status, row.astatus
             ),
             # new attribute status_survey_year Release 2020
-            "status_survey_year": self.get_vl_code(
-                self.model_classes_tww_od.wastewater_structure_structure_condition,
-                row.zustandserhebung_jahr,
-            ),
+            "status_survey_year": row.zustandserhebung_jahr,
             "structure_condition": self.get_vl_code(
                 self.model_classes_tww_od.wastewater_structure_structure_condition,
                 row.baulicherzustand,
