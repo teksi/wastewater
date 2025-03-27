@@ -685,10 +685,6 @@ class InterlisImporterToIntermediateSchema:
                 self.model_classes_tww_vl.overflow_signal_transmission, row.signaluebermittlung
             ),
             "subsidies": row.subventionen,
-            # new attribute water_course_segment_canton Release 2020
-            "water_course_segment_canton": row.gewaesserabschnitt_kanton,
-            # new attribute water_course_number Release 2020
-            "water_course_number": row.gewaesserlaufnummer,
             "fk_wastewater_node": self.get_pk(row.abwasserknotenref__REL),
             "fk_overflow_to": self.get_pk(row.ueberlaufnachref__REL),
             "fk_overflow_char": self.get_pk(row.ueberlaufcharakteristikref__REL),
@@ -800,6 +796,10 @@ class InterlisImporterToIntermediateSchema:
                 terrain_level=row.terrainkote,
                 # TODO : NOT MAPPED VSA-DSS 3D
                 # upper_elevation=row.deckenkote,
+                # new attribute water_course_segment_canton Release 2020
+                "water_course_segment_canton": row.gewaesserabschnitt_kanton,
+                # new attribute water_course_number Release 2020
+                "water_course_number": row.gewaesserlaufnummer,
                 waterlevel_hydraulic=row.wasserspiegel_hydraulik,
             )
             self.session_tww.add(discharge_point)
