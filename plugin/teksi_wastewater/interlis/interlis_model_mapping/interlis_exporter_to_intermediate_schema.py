@@ -561,8 +561,6 @@ class InterlisExporterToIntermediateSchema:
                 # new attribute gewaesserlaufnummer Release 2020
                 gewaesserlaufnummer=row.water_course_number,
                 hochwasserkote=row.highwater_level,
-                # new attribute interventionsmoeglichkeit Release 2020
-                interventionsmoeglichkeit=self.get_vl(row.possibility_intervention__REL),
                 relevanz=self.get_vl(row.relevance__REL),
                 terrainkote=row.terrain_level,
                 wasserspiegel_hydraulik=row.waterlevel_hydraulic,
