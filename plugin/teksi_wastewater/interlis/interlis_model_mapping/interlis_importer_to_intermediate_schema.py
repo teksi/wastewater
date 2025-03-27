@@ -2087,7 +2087,7 @@ class InterlisImporterToIntermediateSchema:
                 ),
                 # new attribute leak_protection release 2020
                 leak_protection=self.get_vl_code(
-                    self.model_classes_tww_vl.leak_protection, row.leckschutz
+                    self.model_classes_tww_vl.reach_leak_protection, row.leckschutz
                 ),
                 length_effective=row.laengeeffektiv,
                 material=self.get_vl_code(self.model_classes_tww_vl.reach_material, row.material),
