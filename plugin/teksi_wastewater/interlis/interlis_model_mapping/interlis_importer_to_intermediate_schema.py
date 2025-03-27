@@ -815,7 +815,8 @@ class InterlisImporterToIntermediateSchema:
                 # --- special_structure ---
                 # new attribute amphibian_exit Release 2020
                 amphibian_exit=self.get_vl_code(
-                    self.model_classes_tww_vl.special_structure_amphibian_exit, row.amphibienausstieg
+                    self.model_classes_tww_vl.special_structure_amphibian_exit,
+                    row.amphibienausstieg,
                 ),
                 bypass=self.get_vl_code(
                     self.model_classes_tww_vl.special_structure_bypass, row.bypass
