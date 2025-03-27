@@ -797,9 +797,9 @@ class InterlisImporterToIntermediateSchema:
                 # TODO : NOT MAPPED VSA-DSS 3D
                 # upper_elevation=row.deckenkote,
                 # new attribute water_course_segment_canton Release 2020
-                "water_course_segment_canton": row.gewaesserabschnitt_kanton,
+                water_course_segment_canton=row.gewaesserabschnitt_kanton,
                 # new attribute water_course_number Release 2020
-                "water_course_number": row.gewaesserlaufnummer,
+                water_course_number=row.gewaesserlaufnummer,
                 waterlevel_hydraulic=row.wasserspiegel_hydraulik,
             )
             self.session_tww.add(discharge_point)
