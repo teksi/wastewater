@@ -743,9 +743,7 @@ class InterlisImporterToIntermediateSchema:
                 jetting_interval=row.spuelintervall,
                 pipe_length=row.rohrlaenge,
                 # new attribute seepage Release 2020
-                seepage=self.get_vl_code(
-                    self.model_classes_tww_od.channel_seepage, row.sickerung
-                ),
+                seepage=self.get_vl_code(self.model_classes_tww_od.channel_seepage, row.sickerung),
                 usage_current=self.get_vl_code(
                     self.model_classes_tww_od.channel_usage_current, row.nutzungsart_ist
                 ),
