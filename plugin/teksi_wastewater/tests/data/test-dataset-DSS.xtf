@@ -10347,6 +10347,7 @@
 				<EigentuemerRef REF="ch080qwzPR000006"/>
 				<Art>Versickerungsschacht</Art>
 				<Beschriftung>beschriftet</Beschriftung>
+				<Fuellmaterial>Sickerkies</Fuellmaterial>
 				<GWDistanz>5.00</GWDistanz>
 				<Maengel>unwesentliche</Maengel>
 				<Notueberlauf>in_Gewaesser</Notueberlauf>
