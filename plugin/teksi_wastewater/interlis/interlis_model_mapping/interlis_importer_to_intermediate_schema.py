@@ -729,6 +729,10 @@ class InterlisImporterToIntermediateSchema:
                 connection_type=self.get_vl_code(
                     self.model_classes_tww_od.channel_connection_type, row.verbindungsart
                 ),
+                # new attribute function_amelioration Release 2020
+                function_amelioration=self.get_vl_code(
+                    self.model_classes_tww_od.channel_function_amelioration, row.funktionmelioration
+                ),
                 function_hierarchic=self.get_vl_code(
                     self.model_classes_tww_od.channel_function_hierarchic, row.funktionhierarchisch
                 ),
