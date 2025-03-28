@@ -511,6 +511,8 @@ class InterlisExporterToIntermediateSchema:
                 nutzungsart_geplant=self.get_vl(row.usage_planned__REL),
                 nutzungsart_ist=self.get_vl(row.usage_current__REL),
                 rohrlaenge=row.pipe_length,
+                # new attribute sickerung release 2020
+                sickerung=self.get_vl(row.seepage__REL),
                 spuelintervall=row.jetting_interval,
                 verbindungsart=self.get_vl(row.connection_type__REL),
             )
