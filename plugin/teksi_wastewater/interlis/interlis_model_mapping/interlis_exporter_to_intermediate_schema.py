@@ -506,6 +506,8 @@ class InterlisExporterToIntermediateSchema:
                 bettung_umhuellung=self.get_vl(row.bedding_encasement__REL),
                 funktionhierarchisch=self.get_vl(row.function_hierarchic__REL),
                 funktionhydraulisch=self.get_vl(row.function_hydraulic__REL),
+                # new attribute funktion_melioration release 2020
+                funktionmelioration=self.get_vl(row.function_amelioration__REL),
                 nutzungsart_geplant=self.get_vl(row.usage_planned__REL),
                 nutzungsart_ist=self.get_vl(row.usage_current__REL),
                 rohrlaenge=row.pipe_length,
