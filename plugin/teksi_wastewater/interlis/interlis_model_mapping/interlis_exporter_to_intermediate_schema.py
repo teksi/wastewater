@@ -627,6 +627,8 @@ class InterlisExporterToIntermediateSchema:
                 dimension1=row.dimension1,
                 dimension2=row.dimension2,
                 gwdistanz=row.distance_to_aquifer,
+                # neues attribut fuellmaterial release 2020
+                fuellmaterial=self.get_vl(row.filling_material__REL),
                 maengel=self.get_vl(row.defects__REL),
                 notueberlauf=self.get_vl(row.emergency_overflow__REL),
                 saugwagen=self.get_vl(row.vehicle_access__REL),
