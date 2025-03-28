@@ -872,6 +872,11 @@ class InterlisImporterToIntermediateSchema:
                     self.model_classes_tww_od.infiltration_installation_emergency_overflow,
                     row.notueberlauf,
                 ),
+                # new attribute filling_material Release 2020,
+                filling_material=self.get_vl_code(
+                    self.model_classes_tww_od.infiltration_installation_filling_material,
+                    row.fuellmaterial,
+                ),
                 # fk_dss15_aquifer=row.REPLACE_ME,  # TODO : NOT MAPPED
                 kind=self.get_vl_code(
                     self.model_classes_tww_vl.infiltration_installation_kind, row.art
