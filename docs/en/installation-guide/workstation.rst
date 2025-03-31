@@ -186,8 +186,8 @@ If you are a data owner: Add your own OID to the project
   -- sample code to set Invalid organisation to FALSE
   UPDATE tww_sys.oid_prefixes SET active=FALSE WHERE prefix='ch000000';
 
+.. note:: Only one OID Prefix should be set to TRUE!
 
-* Only one OID Prefix should be set to TRUE!
 
 * OID prefixes have to be ordered at https://www.interlis.ch/en/dienste/oid-bestellen
 
