@@ -171,7 +171,7 @@ project-translations.zip
 If you are a data owner: Add your own OID to the project
 --------------------------------------------------------
 
-* If you are a data owner (Datenherr), you should 
+* If you are a data owner (Datenherr), you should
 
   + add your OID data in the table tww_sys.oid_prefixes and set it to true with an INSERT statement
   + and set the Invalid organisation (and any others) to FALSE:
