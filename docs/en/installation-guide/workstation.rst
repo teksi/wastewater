@@ -171,7 +171,10 @@ project-translations.zip
 If you are a data owner: Add your own OID to the project
 --------------------------------------------------------
 
-* If you are a data owner (Datenherr), you should add your OID data in the table tww_sys.oid_prefixes and set it to true (and set the Invalid organisation to false):
+* If you are a data owner (Datenherr), you should 
+
+  + add your OID data in the table tww_sys.oid_prefixes and set it to true with an INSERT statement
+  + and set the Invalid organisation (and any others) to FALSE:
 
 .. figure:: images/add_own_oid_prefix.jpg
 
@@ -183,9 +186,8 @@ If you are a data owner: Add your own OID to the project
   -- sample code to set Invalid organisation to FALSE
   UPDATE tww_sys.oid_prefixes SET active=FALSE WHERE prefix='ch000000';
 
-and set the OID you want to use in your project to TRUE.
 
-* or add it locally to your project with an INSERT statement.
+* Only one OID Prefix should be set to TRUE!
 
 * OID prefixes have to be ordered at https://www.interlis.ch/en/dienste/oid-bestellen
 
