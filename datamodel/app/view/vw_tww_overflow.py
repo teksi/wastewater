@@ -74,7 +74,7 @@ def vw_tww_overflow(pg_service: str = None, extra_definition: dict = None):
             pg_cur=cursor,
             table_schema="tww_od",
             table_name="overflow",
-            table_alias="ws",
+            table_alias="ov",
             remove_pkey=True,
             indent=4,
         ),
