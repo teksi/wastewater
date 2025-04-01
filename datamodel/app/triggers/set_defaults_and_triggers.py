@@ -12,7 +12,7 @@ def check_owner(pg_service: str, table_schema: str, table_name: str):
         try:
             cur = conn.cursor()
             cur.execute(
-                f" SELECT rolname FROM pg_roles WHERE pg_has_role( CURRENT_USER, oid, 'member');"
+                " SELECT rolname FROM pg_roles WHERE pg_has_role( CURRENT_USER, oid, 'member');"
             )
             roles = cur.fetchall()
 
