@@ -148,12 +148,12 @@ TWW uses a data historization process. The ``pg history viewer`` `plugin <http:/
 Install the demo data
 ---------------------
 
-as described `here <https://tww.github.io/docs/installation-guide/database-initialization.html#restore-datamodel-demodata>`_
+as described `here <https://teksi.github.io/wastewater/docs/installation-guide/database-initialization.html#restore-datamodel-demodata>`_
 
 Install the demo project
 ------------------------
 
-* Download from https://github.com/TWW/tww/releases the qgs project file and its translations
+* Download from https://github.com/teksi/wastewater/releases/latest the qgs project file and its translations
 project-translations.zip
 
 * Extract the file

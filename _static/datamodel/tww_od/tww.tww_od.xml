@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<database name="tww" schema="tww_od" type="PostgreSQL - 14.13 (Debian 14.13-1.pgdg110+1)">
+<database name="tww" schema="tww_od" type="PostgreSQL - 16.8 (Debian 16.8-1.pgdg110+1)">
    <sequences>
       <sequence increment="1" name="default_values_id_seq" startValue="1"/>
       <sequence increment="1" name="import_manhole_quarantine_quarantine_serial_seq" startValue="1"/>

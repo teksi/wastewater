@@ -248,7 +248,7 @@
                             </div>
                         </div>
                         <div class="box-body">
-                            <textarea id="sql-script-codemirror" name="sql-script-codemirror" rows="" style="display: none;">SELECT swmm_vw_raingages.name AS gage,&#10;    st_x(swmm_vw_raingages.geom) AS xcoord,&#10;    st_y(swmm_vw_raingages.geom) AS ycoord,&#10;    swmm_vw_raingages.state,&#10;    swmm_vw_raingages.hierarchy,&#10;    swmm_vw_raingages.obj_id&#10;   FROM tww_app.swmm_vw_raingages;</textarea>
+                            <textarea id="sql-script-codemirror" name="sql-script-codemirror" rows="" style="display: none;">SELECT name AS gage,&#10;    st_x(geom) AS xcoord,&#10;    st_y(geom) AS ycoord,&#10;    state,&#10;    hierarchy,&#10;    obj_id&#10;   FROM tww_app.swmm_vw_raingages;</textarea>
                             <div style="padding-top: 5px;"><hr></div>
                             <div class="box box-solid">
                                 <div class="box-header with-border">
@@ -258,7 +258,6 @@
                                 <!-- /.box-header -->
                                 <div class="box-body">
                                     <ul class="list-unstyled">
-                                        <li><a href="swmm_vw_raingages.html">swmm_vw_raingages</a></li>
                                     </ul>
                                 </div><!-- /.box-body -->
                             </div>
