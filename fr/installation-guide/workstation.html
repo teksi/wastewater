@@ -261,24 +261,28 @@ choose <em>advanced installation</em> and install qgis-dev.</p></li>
 <section id="if-you-are-a-data-owner-add-your-own-oid-to-the-project">
 <h2><span class="section-number">2.4.6. </span>If you are a data owner: Add your own OID to the project<a class="headerlink" href="#if-you-are-a-data-owner-add-your-own-oid-to-the-project" title="Lien vers cette rubrique"></a></h2>
 <ul class="simple">
-<li><p>If you are a data owner (Datenherr), you should add your OID data in the table tww_sys.oid_prefixes:</p></li>
+<li><p>If you are a data owner (Datenherr), you should</p>
+<ul>
+<li><p>add your OID data in the table tww_sys.oid_prefixes and set it to true with an INSERT statement</p></li>
+<li><p>and set the Invalid organisation (and any others) to FALSE:</p></li>
+</ul>
+</li>
 </ul>
 <figure class="align-default">
-<img alt="../_images/oid_prefix.jpg" src="../_images/oid_prefix.jpg" />
+<img alt="../_images/add_own_oid_prefix.jpg" src="../_images/add_own_oid_prefix.jpg" />
 </figure>
-<ul class="simple">
-<li><p>Edit <code class="docutils literal notranslate"><span class="pre">02_oid_generation.sql</span></code> with your OID if you want it permanently in the TWW project and hand in a pull request</p></li>
-</ul>
-<p><a class="reference external" href="https://github.com/TWW/datamodel/blob/master/02_oid_generation.sql">https://github.com/TWW/datamodel/blob/master/02_oid_generation.sql</a></p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="c1">-- sample entry for the City of Uster - you need to add an entry for your own organization</span>
-<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">tww_sys</span><span class="p">.</span><span class="n">oid_prefixes</span><span class="w"> </span><span class="p">(</span><span class="k">prefix</span><span class="p">,</span><span class="n">organization</span><span class="p">,</span><span class="n">active</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;ch11h8mw&#39;</span><span class="p">,</span><span class="s1">&#39;Stadt Uster&#39;</span><span class="p">,</span><span class="k">TRUE</span><span class="p">);</span>
-<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">tww_sys</span><span class="p">.</span><span class="n">oid_prefixes</span><span class="w"> </span><span class="p">(</span><span class="k">prefix</span><span class="p">,</span><span class="n">organization</span><span class="p">,</span><span class="n">active</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;ch15z36d&#39;</span><span class="p">,</span><span class="s1">&#39;SIGE&#39;</span><span class="p">,</span><span class="k">FALSE</span><span class="p">);</span>
-<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">tww_sys</span><span class="p">.</span><span class="n">oid_prefixes</span><span class="w"> </span><span class="p">(</span><span class="k">prefix</span><span class="p">,</span><span class="n">organization</span><span class="p">,</span><span class="n">active</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;ch13p7mz&#39;</span><span class="p">,</span><span class="s1">&#39;Arbon&#39;</span><span class="p">,</span><span class="k">FALSE</span><span class="p">);</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="c1">-- sample entry for myorganisation - you need to add an entry for your own organization</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">tww_sys</span><span class="p">.</span><span class="n">oid_prefixes</span><span class="w"> </span><span class="p">(</span><span class="k">prefix</span><span class="p">,</span><span class="n">organization</span><span class="p">,</span><span class="n">active</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;ch11h8mw&#39;</span><span class="p">,</span><span class="s1">&#39;myorganisation&#39;</span><span class="p">,</span><span class="k">TRUE</span><span class="p">);</span>
+
+<span class="c1">-- sample code to set Invalid organisation to FALSE</span>
+<span class="k">UPDATE</span><span class="w"> </span><span class="n">tww_sys</span><span class="p">.</span><span class="n">oid_prefixes</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">active</span><span class="o">=</span><span class="k">FALSE</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">prefix</span><span class="o">=</span><span class="s1">&#39;ch000000&#39;</span><span class="p">;</span>
 </pre></div>
 </div>
-<p>et définir la valeur de l’IDO que vous voulez utiliser dans votre projet à VRAI.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Only one OID Prefix should be set to TRUE!</p>
+</div>
 <ul class="simple">
-<li><p>ou ajoutez-le localement à votre projet avec une commande INSERER</p></li>
 <li><p>OID prefixes have to be ordered at <a class="reference external" href="https://www.interlis.ch/en/dienste/oid-bestellen">https://www.interlis.ch/en/dienste/oid-bestellen</a></p></li>
 </ul>
 <div class="admonition note">
