@@ -176,7 +176,7 @@ class TeksiWastewaterCmd:
             print(f"\nData successfully imported from {self.args.xtf_file}")
 
         except InterlisImporterExporterError as exception:
-            print(f"Export error: {exception.error}", file=sys.stderr)
+            print(f"Import error: {exception.error}", file=sys.stderr)
             if exception.additional_text:
                 print(f"Additional details: {exception.additional_text}", file=sys.stderr)
             if exception.log_path:
