@@ -48,10 +48,10 @@ Extension Framework
 
 In order to add extensions to TEKSI in a standardised way, TEKSI wastewater set into place an extension framework. It allows the following actions:
 
-# Adding additional views using sql or py
-# Adding additional triggers using sql or py
-# Adding additional items to value lists
-# Joining additional tables to views
+* Adding additional views using sql
+* Adding additional triggers using sql
+* Adding additional items to value lists
+* Joining additional tables to views
 
 .. attention:: The extension framework is not intended for alterations on the schema ``tww_od``. Use PUM functionalities instead
 
@@ -59,16 +59,16 @@ Creation of custom extensions
 """""""""""""""""""""""""""""""
 Extensions are handled in the ``extensions`` folder of the datamodel. In order to import a custom extension, the source code needs to be extended.
 
-# download the datamodel source code
-# in ``datamodel\app\extensions`` there is a yaml file ``config.yaml`` that allows setting three variables:
-  # an extension id that is used to access the extension
-  # a directory name in which all extension data lies
-  # a variables dictionary
+* download the datamodel source code
+* in ``datamodel\app\extensions`` there is a yaml file ``config.yaml`` that allows setting three variables:
+  * an extension id that is used to access the extension
+  * a directory name in which all extension data lies
+  * a variables dictionary
 
 After adding an entry for your extension, it can be accessed in deployment. Inside the folder defined in the ``directory`` variable, there can be two types of files:
 
-# sql scripts
-# yaml files
+* sql scripts
+* yaml files
 
 Sql scripts are run after using the variables, while the yaml files are used to override or extend view definitions.
 
@@ -82,17 +82,15 @@ A predefined extension can be loaded using
 
 On creation of the application schema, the order of creation of objects is as follows:
 
-# TWW functions
-# Extensions in the order inside the ``--extensions`` flag
-  # python scripts
-  # sql scripts
-# Single Inheritances
-# Multiple inheritances (can be overridden by extension yaml)
-# Main views (can be extended by extension yaml)
-# Simple join views (can be overridden by extension yaml)
-# TWW sql scripts
-# default values and triggers relating to app functions
-# post-all sql scripts
+* TWW functions
+* Extensions in the order inside the ``--extensions`` flag
+* Single Inheritances
+* Multiple inheritances (can be overridden by extension yaml)
+* Main views (can be extended by extension yaml)
+* Simple join views (can be overridden by extension yaml)
+* TWW sql scripts
+* default values and triggers relating to app functions
+* post-all sql scripts
 
 Overriding yaml view definitions
 """"""""""""""""""""""""""""""""
@@ -224,15 +222,15 @@ For labelling, one can use the column `` tww_vl.channel_function_hierarchic.tww_
 Adding fields
 ^^^^^^^^^^^^^
 
+Instead of adding additional fields to base tables, it is advised to create a new table with a foreign key linking it to the base table. 
 
-
-
+Define a custom extension table by naming them as ``usr_…``.
 
 
 Joining additional tables
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-It is possible to join additional tables to the two main views (``vw_tww_wastewater_structure`` and ``vw_tww_reach``).
+It is possible to join additional tables to the main views (i.e. ``vw_tww_wastewater_structure`` and ``vw_tww_reach``).
 This is done by using a YAML definition file for each view and defining a list of joined tables.
 Fields of these tables will be joined as read-only fields as they are discarded in edit triggers.
 For joining a table to ``tww_od.wastewater_structure``, here is an example:
@@ -255,7 +253,7 @@ For joining a table to ``tww_od.wastewater_structure``, here is an example:
 
 This YAML file should be given as a file path when running the script:
 
-``./view/create_views.py --pg_service pg_tww --srid 2056 --tww_wastewater_structure_extra /path_to/extra_ws.yaml``
+``app.create_app --pg_service pg_tww --srid 2056 --extension_names name_of_extension``
 
 And similarly for ``vw_tww_reach`` view, by specifying ``tww_reach_extra`` variable to the corresponding YAML file path.
 
