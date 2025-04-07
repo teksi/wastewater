@@ -222,7 +222,7 @@ For labelling, one can use the column `` tww_vl.channel_function_hierarchic.tww_
 Adding fields
 ^^^^^^^^^^^^^
 
-Instead of adding additional fields to base tables, it is advised to create a new table with a foreign key linking it to the base table. 
+Instead of adding additional fields to base tables, it is advised to create a new table with a foreign key linking it to the base table.
 
 Define a custom extension table by naming them as ``usr_…``.
 
