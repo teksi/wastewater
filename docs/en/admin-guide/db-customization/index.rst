@@ -65,13 +65,12 @@ Extensions are handled in the ``extensions`` folder of the datamodel. In order t
   # a directory name in which all extension data lies
   # a variables dictionary
 
-After adding an entry for your extension, it can be accessed in deployment. Inside the folder defined in the ``directory`` variable, there can be three types of files:
+After adding an entry for your extension, it can be accessed in deployment. Inside the folder defined in the ``directory`` variable, there can be two types of files:
 
-# python scripts
 # sql scripts
 # yaml files
 
-Python scripts are run before sql scripts, while the yaml files are used to override or extend view definitions.
+Sql scripts are run after using the variables, while the yaml files are used to override or extend view definitions.
 
 
 Deployment of custom extensions
@@ -172,7 +171,8 @@ For joining a table to ``tww_app.vw_tww_wastewater_structure``, here is an examp
 
 ``table`` and ``join_on`` are mandatory keys, all the others are optional.
 ``read_only`` defaults to true. ``remap_columns`` is used on insert and update.
-`It is expected that mt.fk_ws has a ON DELETE CASCADE`` foreign key constraint.
+Entries that are in ``skip_columns`` but listed in ``remap_columns`` are not skipped on insert and update.
+It is expected that mt.fk_ws has a ON DELETE CASCADE`` foreign key constraint.
 The yaml file needs to be called ``vw_tww_wastewater_structure.yaml``.
 
 
