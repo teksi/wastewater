@@ -59,7 +59,11 @@ def insert_extra(pg_service: str = "pg_tww", extra_definition: dict = None):
                         table_name=table_parts(table_def["table"])[1],
                         remove_pkey=table_def.get("remove_pkey", False),
                         indent=2,
-                        skip_columns=[col for col in table_def.get("skip_columns", []) if col not in table_def.get("remap_columns", {})],
+                        skip_columns=[
+                            col
+                            for col in table_def.get("skip_columns", [])
+                            if col not in table_def.get("remap_columns", {})
+                        ],
                         remap_columns=table_def.get("remap_columns", {}),
                         prefix=table_def.get("prefix", None),
                         table_alias=table_def.get("alias", None),
@@ -91,7 +95,11 @@ def update_extra(pg_service: str = "pg_tww", extra_definition: dict = None):
                         table_name=table_parts(table_def["table"])[1],
                         remove_pkey=table_def.get("remove_pkey", False),
                         indent=2,
-                        skip_columns=[col for col in table_def.get("skip_columns", []) if col not in table_def.get("remap_columns", {})],
+                        skip_columns=[
+                            col
+                            for col in table_def.get("skip_columns", [])
+                            if col not in table_def.get("remap_columns", {})
+                        ],
                         remap_columns=table_def.get("remap_columns", {}),
                         prefix=table_def.get("prefix", None),
                         table_alias=table_def.get("alias", None),
