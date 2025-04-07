@@ -44,7 +44,7 @@ In order to use a database extension, we need to load them from the source code:
     pip install pirogue
 
     set /p myservice="Please enter the service name? (e.g. tww_community) "
-	
+
 	REM Set the PYTHONPATH to include the directory containing the app module
 	set "PYTHONPATH=%tww_dir%\datamodel;%PYTHONPATH%"
 
