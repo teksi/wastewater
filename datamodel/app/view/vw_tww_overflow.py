@@ -303,9 +303,7 @@ def vw_tww_overflow(pg_service: str = None, extra_definition: dict = None):
     cursor.execute(trigger_delete_sql)
 
     extras = """
-    ALTER VIEW tww_app.vw_tww_overflow ALTER obj_id SET DEFAULT tww_app.generate_oid('tww_od','wastewater_structure');
-    ALTER VIEW tww_app.vw_tww_overflow ALTER co_obj_id SET DEFAULT tww_app.generate_oid('tww_od','cover');
-    ALTER VIEW tww_app.vw_tww_overflow ALTER wn_obj_id SET DEFAULT tww_app.generate_oid('tww_od','wastewater_node');
+    ALTER VIEW tww_app.vw_tww_overflow ALTER obj_id SET DEFAULT tww_app.generate_oid('tww_od','overflow');
     """
     cursor.execute(extras)
 
