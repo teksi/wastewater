@@ -28,7 +28,7 @@ class TeksiWastewaterCmd:
         self.parser.add_argument(
             "--qgs_app_prefix_path",
             help="QGIS Application prefix path",
-        )        
+        )
 
         subparsers = self.parser.add_subparsers(dest="subparser_name", help="sub-command --help")
 
