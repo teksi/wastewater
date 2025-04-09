@@ -248,7 +248,7 @@ CREATE TABLE tww_od.agxx_infiltration_zone
    uuid uuid NOT NULL DEFAULT uuid_generate_v4(),
    fk_infiltration_zone varchar(16) NOT NULL,
    CONSTRAINT pkey_tww_od_agxx_infiltration_zone PRIMARY KEY (uuid),
-   CONSTRAINT oorel_od_agxx_infiltration_zone FOREIGN KEY (CONSTRAINT) REFERENCES tww_od.infiltration_zone(obj_id) ON DELETE CASCADE ON UPDATE CASCADE
+   CONSTRAINT oorel_od_agxx_infiltration_zone FOREIGN KEY (fk_infiltration_zone) REFERENCES tww_od.infiltration_zone(obj_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 ALTER TABLE tww_od.agxx_infiltration_zone
   ADD COLUMN IF NOT EXISTS ag96_permeability varchar(50) 	-- Durchlässigkeit
