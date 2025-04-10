@@ -533,6 +533,8 @@ class InterlisImporterToIntermediateSchema:
             "accessibility": self.get_vl_code(
                 self.model_classes_tww_od.wastewater_structure_accessibility, row.zugaenglichkeit
             ),
+            # new attribute condition_score Release 2020
+            "condition_score": row.zustandsnote,
             "contract_section": row.baulos,
             "detail_geometry3d_geometry": (
                 row.detailgeometrie
@@ -566,11 +568,15 @@ class InterlisImporterToIntermediateSchema:
             "status": self.get_vl_code(
                 self.model_classes_tww_vl.wastewater_structure_status, row.astatus
             ),
+            # new attribute status_survey_year Release 2020
+            "status_survey_year": row.zustandserhebung_jahr,
             "structure_condition": self.get_vl_code(
                 self.model_classes_tww_od.wastewater_structure_structure_condition,
                 row.baulicherzustand,
             ),
             "subsidies": row.subventionen,
+            # new attribute urgency_figure Release 2020.1
+            "urgency_figure": row.dringlichkeitszahl,
             "year_of_construction": row.baujahr,
             "year_of_replacement": row.ersatzjahr,
         }
@@ -723,6 +729,11 @@ class InterlisImporterToIntermediateSchema:
                 connection_type=self.get_vl_code(
                     self.model_classes_tww_od.channel_connection_type, row.verbindungsart
                 ),
+                # new attribute function_amelioration Release 2020
+                function_amelioration=self.get_vl_code(
+                    self.model_classes_tww_od.channel_function_amelioration,
+                    row.funktionmelioration,
+                ),
                 function_hierarchic=self.get_vl_code(
                     self.model_classes_tww_od.channel_function_hierarchic, row.funktionhierarchisch
                 ),
@@ -731,6 +742,8 @@ class InterlisImporterToIntermediateSchema:
                 ),
                 jetting_interval=row.spuelintervall,
                 pipe_length=row.rohrlaenge,
+                # new attribute seepage Release 2020
+                seepage=self.get_vl_code(self.model_classes_tww_od.channel_seepage, row.sickerung),
                 usage_current=self.get_vl_code(
                     self.model_classes_tww_od.channel_usage_current, row.nutzungsart_ist
                 ),
@@ -750,6 +763,10 @@ class InterlisImporterToIntermediateSchema:
                 **self.wastewater_structure_common(row),
                 # --- manhole ---
                 # _orientation=row.REPLACE_ME,
+                # new attribute amphibian_exit Release 2020
+                amphibian_exit=self.get_vl_code(
+                    self.model_classes_tww_vl.manhole_amphibian_exit, row.amphibienausstieg
+                ),
                 dimension1=row.dimension1,
                 dimension2=row.dimension2,
                 function=self.get_vl_code(
@@ -757,6 +774,11 @@ class InterlisImporterToIntermediateSchema:
                 ),
                 material=self.get_vl_code(
                     self.model_classes_tww_vl.manhole_material, row.material
+                ),
+                # new attribute possibility_intervention Release 2020
+                possibility_intervention=self.get_vl_code(
+                    self.model_classes_tww_vl.manhole_possibility_intervention,
+                    row.interventionsmoeglichkeit,
                 ),
                 surface_inflow=self.get_vl_code(
                     self.model_classes_tww_od.manhole_surface_inflow, row.oberflaechenzulauf
@@ -781,6 +803,10 @@ class InterlisImporterToIntermediateSchema:
                 terrain_level=row.terrainkote,
                 # TODO : NOT MAPPED VSA-DSS 3D
                 # upper_elevation=row.deckenkote,
+                # new attribute water_course_segment_canton Release 2020
+                water_course_segment_canton=row.gewaesserabschnitt_kanton,
+                # new attribute water_course_number Release 2020
+                water_course_number=row.gewaesserlaufnummer,
                 waterlevel_hydraulic=row.wasserspiegel_hydraulik,
             )
             self.session_tww.add(discharge_point)
@@ -794,6 +820,11 @@ class InterlisImporterToIntermediateSchema:
                 # --- wastewater_structure ---
                 **self.wastewater_structure_common(row),
                 # --- special_structure ---
+                # new attribute amphibian_exit Release 2020
+                amphibian_exit=self.get_vl_code(
+                    self.model_classes_tww_vl.special_structure_amphibian_exit,
+                    row.amphibienausstieg,
+                ),
                 bypass=self.get_vl_code(
                     self.model_classes_tww_vl.special_structure_bypass, row.bypass
                 ),
@@ -803,6 +834,11 @@ class InterlisImporterToIntermediateSchema:
                 ),
                 function=self.get_vl_code(
                     self.model_classes_tww_od.special_structure_function, row.funktion
+                ),
+                # new attribute possibility_intervention Release 2020
+                possibility_intervention=self.get_vl_code(
+                    self.model_classes_tww_vl.special_structure_possibility_intervention,
+                    row.interventionsmoeglichkeit,
                 ),
                 stormwater_tank_arrangement=self.get_vl_code(
                     self.model_classes_tww_od.special_structure_stormwater_tank_arrangement,
@@ -833,6 +869,11 @@ class InterlisImporterToIntermediateSchema:
                 emergency_overflow=self.get_vl_code(
                     self.model_classes_tww_od.infiltration_installation_emergency_overflow,
                     row.notueberlauf,
+                ),
+                # new attribute filling_material Release 2020,
+                filling_material=self.get_vl_code(
+                    self.model_classes_tww_od.infiltration_installation_filling_material,
+                    row.fuellmaterial,
                 ),
                 # fk_dss15_aquifer=row.REPLACE_ME,  # TODO : NOT MAPPED
                 kind=self.get_vl_code(
@@ -1972,6 +2013,10 @@ class InterlisImporterToIntermediateSchema:
                     self.model_classes_tww_od.reach_point_outlet_shape, row.auslaufform
                 ),
                 position_of_connection=row.lage_anschluss,
+                # new attribute pipe_closure release 2020
+                pipe_closure=self.get_vl_code(
+                    self.model_classes_tww_od.reach_point_pipe_closure, row.rohrverschluss_kappe
+                ),
                 remark=row.bemerkung,
                 situation3d_geometry=self.geometry3D_convert(
                     row.lage, row.kote, row.t_ili_tid, "reach_point.cote (Haltungpunkt.Kote)"
@@ -2007,6 +2052,16 @@ class InterlisImporterToIntermediateSchema:
                 # fk_hydr_geometry=row.REPLACE_ME,  # TODO : NOT MAPPED
                 backflow_level_current=row.rueckstaukote_ist,
                 bottom_level=row.sohlenkote,
+                # new attribute elevation_accuracy release 2020
+                attribute=self.get_vl_code(
+                    self.model_classes_tww_od.wastewater_node_elevation_accuracy,
+                    row.hoehengenauigkeit,
+                ),
+                # new attribute function_node_amelioration release 2020
+                function_node_amelioration=self.get_vl_code(
+                    self.model_classes_tww_od.wastewater_node_function_node_amelioration,
+                    row.funktion_knoten_melioration,
+                ),
                 situation3d_geometry=self.geometry3D_convert(
                     row.lage,
                     row.sohlenkote,
@@ -2034,11 +2089,19 @@ class InterlisImporterToIntermediateSchema:
                 fk_pipe_profile=self.get_pk(row.rohrprofilref__REL),
                 fk_reach_point_from=self.get_pk(row.vonhaltungspunktref__REL),
                 fk_reach_point_to=self.get_pk(row.nachhaltungspunktref__REL),
+                # new attribute flow_time_dry_weather release 2020
+                flow_time_dry_weather=row.fliesszeit_trockenwetter,
                 horizontal_positioning=self.get_vl_code(
                     self.model_classes_tww_od.reach_horizontal_positioning, row.lagebestimmung
                 ),
+                # new attribute hydraulic_load_current release 2020
+                hydraulic_load_current=row.hydr_belastung_ist,
                 inside_coating=self.get_vl_code(
                     self.model_classes_tww_od.reach_inside_coating, row.innenschutz
+                ),
+                # new attribute leak_protection release 2020
+                leak_protection=self.get_vl_code(
+                    self.model_classes_tww_vl.reach_leak_protection, row.leckschutz
                 ),
                 length_effective=row.laengeeffektiv,
                 material=self.get_vl_code(self.model_classes_tww_vl.reach_material, row.material),
