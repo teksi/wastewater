@@ -31,6 +31,10 @@ There is a new layer group 'configuration' in the project:
 .. figure:: images/default_values_organisation_obj_id_selection.png
 
 
+.. note:: If you do not have any organisations you first have to import them with the :ref:`wizard` chapter
+
+
+
 For the second warning, please contact your TEKSI system administrator
 
 .. warning:: CRITICAL: Error OID prefix set to 'ch000000'. Database not safe for production.
