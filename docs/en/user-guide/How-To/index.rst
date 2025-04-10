@@ -31,7 +31,7 @@ There is a new layer group 'configuration' in the project:
 .. figure:: images/default_values_organisation_obj_id_selection.png
 
 
-.. note:: If you do not have any organisations you first have to import them with the :ref:`wizard` chapter
+.. note:: If you do not have any organisations you first have to import them with the :ref:`interlis_import` chapter
 
 
 
