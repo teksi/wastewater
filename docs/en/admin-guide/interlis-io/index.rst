@@ -74,6 +74,8 @@ You should now see new `import` and `export` buttons in the TWW toolbar.
 
 .. figure:: images/toolbar.png
 
+.. _interlis_export:
+
 INTERLIS Export
 -------------------------------------------------
 
@@ -147,6 +149,7 @@ You can check the protocol window and the text logs for further details.
      - Validation of the created xtf file(s) with ilivalidator
      - ``*.ilivalidator-MODELNAME.log``
 
+.. _interlis_import:
 
 INTERLIS Import
 -------------------------------------------------
