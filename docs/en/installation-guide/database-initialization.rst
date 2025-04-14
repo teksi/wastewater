@@ -77,7 +77,7 @@ Back in pgAdmin :
 
 .. note::
 
-   If the Restore is failed and the detail reads something like "pg_restore: [archiver] unsupported version (1.13) in file header" or in German "pg_restore: [Archivierer] nicht unterstützte Version (1.13) im Dateikopf" try updating your PostgreSQL, see https://stackoverflow.com/questions/49064209/getting-archiver-unsupported-version-1-13-in-file-header-when-running-pg-r
+   If the Restore is failed and the detail reads something like "pg_restore: [archiver] unsupported version (1.13) in file header" try updating your PostgreSQL, see https://stackoverflow.com/questions/49064209/getting-archiver-unsupported-version-1-13-in-file-header-when-running-pg-r
 
 .. note::
 
@@ -99,6 +99,34 @@ There are now 6 `schemas <https://teksi.github.io/wastewater/en/user-guide/layer
 + tww_od
 + tww_sys
 + tww_vl
+
+Create minimal roles and access
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+There are four default roles in TEKSI databases
+
+- Viewer: Can consult tables and views.
+- User: Can edit data.
+- Manager: Can edit data and value lists.
+- Admin: Database administrator.
+
+.. note:: The TWW roles are defined in the python script https://github.com/TWW/datamodel/blob/master/manage_roles.py. The script requires the pgserviceparser package from OpenGIS https://github.com/opengisch/pgserviceparser/.
+
+You can call the script from the command line in three modes:
+
+* manage_roles.py create_roles --pg_service ${PGSERVICE} --modulename tww --database_specific_roles
+* manage_roles.py grant --pg_service ${PGSERVICE} --modulename tww --database_specific_roles --extension_schema foobar
+* manage_roles.py revoke --pg_service ${PGSERVICE} --modulename tww --database_specific_roles --extension_schema foobar
+
+The flags are defined as follows:
+
+* ´-m´ or ´--modulename´: Abbreviation of the datamodel (here: tww)
+* ´-p´ or ´--pg_service´: Name of the pg_service
+* ´-d´ or ´--database_specific_roles´: Optional flag to add database specific roles instead of cluster specific roles.
+* ´-x´ or ´--extension_schema´: Optional flag to define the name of the extension schema. Not needed when using create_roles
+
+The database specific group roles are defined as  **tww_viewer_[db_identifier]** etc. , where ``db_identifier`` is defined as ``regexp_replace(databasename, "tww_|teksi_", "")`` .
+
+
 
 Empty data model
 ^^^^^^^^^^^^^^^^
@@ -134,9 +162,9 @@ You also have the option to restore the latest empty data model (no demo data).
     createdb -U postgres -p %port% %db%
 
     psql -U postgres -h localhost -p %port% -d %db% -f %filename%
+    psql -U postgres -h localhost -p %port% -d %db% -c "REFRESH MATERIALIZED VIEW tww_od.vw_network_node WITH DATA"
+    psql -U postgres -h localhost -p %port% -d %db% -c "REFRESH MATERIALIZED VIEW tww_od.vw_network_segment WITH DATA"
 
-    psql -U postgres -h localhost -p %port% -d %db% -c "REFRESH MATERIALIZED VIEW tww_app.vw_network_node"
-    psql -U postgres -h localhost -p %port% -d %db% -c "REFRESH MATERIALIZED VIEW tww_app.vw_network_segment"
 
     PAUSE
 
@@ -169,15 +197,5 @@ You can also generate the data model under Linux.
 
    ./scripts/db_setup.sh
 
-If you want to use a different SRID you need to use the ``-s`` option.
-For instance, run ``./scripts/db_setup.sh -s 2056`` for the **2056** SRID.
-
-If you already have a data model and you want to force the regeneration
-of the model you can also use the ``-f`` option: ``./scripts/db_setup.sh -f``.
-
-You can use the ``-r`` option to add roles (``tww_viewer``, ``tww_user``, ``tww_manager``, ``tww_sysadmin``).
-
-- Viewer: Can consult tables and views.
-- User: Can edit data.
-- Manager: Can edit data and value lists.
-- Admin: Database administrator.
+If you want to use a different SRID, alter the SRID definition.
+If you want to alter the role grants, see  `here <https://tww.github.io/docs/installation-guide/database-initialization.html#create-minimal-roles-and-access>`_
