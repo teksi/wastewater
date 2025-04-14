@@ -30,7 +30,8 @@ ELSE
 END IF;
 END;
 $DO$
-LANGUAGE plpgsql SECURITY DEFINER;
+LANGUAGE plpgsql;
+
 
 
 -----------------------------------------------------------------------
@@ -46,11 +47,11 @@ BEGIN
 		INNER JOIN pg_class c on t.tgrelid=c.oid
 		INNER JOIN pg_proc p on t.tgfoid=p.oid
 		WHERE p.proname  LIKE 'symbology_%'
-		and p.pronamespace::regnamespace::text LIKE 'tww_ap_'
+		and p.pronamespace::regnamespace::text LIKE 'tww_app'
 		AND t.tgenabled = 'D';
   RETURN _disabled_count=0;
 END;
-$DO$ LANGUAGE plpgsql SECURITY DEFINER;
+$DO$ LANGUAGE plpgsql;
 
 --------------------------------------------------------
 -- UPDATE wastewater node symbology by channel
