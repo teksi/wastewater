@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<TRANSFER xmlns="http://www.interlis.ch/INTERLIS2.3">
+    <HEADERSECTION VERSION="2.3" SENDER="UNKNOWN">
+        <MODELS>
+            <MODEL NAME="SIA405_SCHUTZROHR_2015_LV95" URI="http://www.infogrips.ch" VERSION=""/>
+        </MODELS>
+        <ALIAS>
+            <ENTRIES FOR="SIA405_SCHUTZROHR_2015_LV95">
+      </ENTRIES>
+        </ALIAS>
+        <COMMENT>dataset generated manually by sjib 12.4.2025</COMMENT>
+    </HEADERSECTION>
+    <DATASECTION>
+        <SIA405_SCHUTZROHR_2015_LV95.SIA405_Schutzrohr BID="Schutzrohr">
+            <SIA405_SCHUTZROHR_2015_LV95.SIA405_Schutzrohr.Schutzrohr_Text TID="ch080qwzPX000001">
+                <TextPos>
+                    <COORD>
+                        <C1>2648075.56</C1>
+                        <C2>1143400.88</C2>
+                    </COORD>
+                </TextPos>
+                <TextOri>233.0</TextOri>
+                <TextHAli>Left</TextHAli>
+                <TextVAli>Top</TextVAli>
+                <Plantyp>Uebersichtsplan.UeP10</Plantyp>
+                <Textinhalt>2.001-1.003</Textinhalt>
+                <SchutzrohrRef REF="ch080qwzPT000001"/>
+            </SIA405_SCHUTZROHR_2015_LV95.SIA405_Schutzrohr.Schutzrohr_Text>
+            <SIA405_SCHUTZROHR_2015_LV95.SIA405_Schutzrohr.Schutzrohr TID="ch080qwzPT000001">
+                <OBJ_ID>ch080qwzPT000001</OBJ_ID>
+                <Metaattribute>
+                    <SIA405_Base_LV95.Metaattribute>
+                        <Datenherr>ch080qwzAV000007</Datenherr>
+                        <Datenlieferant>ch20p3q400001634</Datenlieferant>
+                        <Letzte_Aenderung>20250412</Letzte_Aenderung>
+                    </SIA405_Base_LV95.Metaattribute>
+                </Metaattribute>
+                <Name_Nummer>2.001-1.003</Name_Nummer>
+                <Geometrie>
+                    <POLYLINE>
+                        <COORD>
+                            <C1>2648000.000</C1>
+                            <C2>1143400.000</C2>
+                        </COORD>
+                        <COORD>
+                            <C1>2648150.120</C1>
+                            <C2>1143401.760</C2>
+                        </COORD>
+                    </POLYLINE>
+                </Geometrie>
+                <Material>Beton</Material>
+                <Nennweite>300</Nennweite>
+                <Aussendurchmesser>310</Aussendurchmesser>
+                <Laenge>150.13</Laenge>
+                <Einbaujahr>1989</Einbaujahr>
+                <Lagebestimmung>unbekannt</Lagebestimmung>
+                <Status>in_Betrieb</Status>
+                <Ueberdeckung>3.1</Ueberdeckung>
+                <Zustand>Der Zustand wurde nicht bestimmt</Zustand>
+                <Eigentuemer>ch20p3q400000107</Eigentuemer> <!-- unbekannt -->
+                <Bemerkung>hier kann man eine Bemerkung einfügen</Bemerkung>
+            </SIA405_SCHUTZROHR_2015_LV95.SIA405_Schutzrohr.Schutzrohr>
+        </SIA405_SCHUTZROHR_2015_LV95.SIA405_Schutzrohr>
+    </DATASECTION>
+</TRANSFER>
