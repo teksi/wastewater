@@ -3628,37 +3628,10 @@
 </a>
 </g>
 </g>
-<!-- bio_ecol_assessment_impact_auxiliary_indic -->
-<g id="node135" class="node">
-<title>bio_ecol_assessment_impact_auxiliary_indic</title>
-<g id="a_node135"><a xlink:href="../../tables/bio_ecol_assessment_impact_auxi_af4c0477.html" xlink:title="bio_ecol_assessment_impact_auxiliary_indic" target="_top">
-<polygon fill="#ffffff" stroke="transparent" points="1603,-2364 1603,-2444 1970,-2444 1970,-2364 1603,-2364"/>
-<polygon fill="#f5f5f5" stroke="transparent" points="1603.5,-2422 1603.5,-2444 1970.5,-2444 1970.5,-2422 1603.5,-2422"/>
-<polygon fill="none" stroke="black" points="1603.5,-2422 1603.5,-2444 1970.5,-2444 1970.5,-2422 1603.5,-2422"/>
-<text text-anchor="start" x="1608.5" y="-2431.2" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00">bio_ecol_assessment_impact_auxiliary_indic</text>
-<text text-anchor="start" x="1928.5" y="-2430.2" font-family="Helvetica,sans-Serif" font-size="11.00">[table]</text>
-<polygon fill="none" stroke="black" points="1603.5,-2400 1603.5,-2422 1970.5,-2422 1970.5,-2400 1603.5,-2400"/>
-<image xlink:href="../../images/primaryKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="1608.5" y="-2417"/>
-<text text-anchor="start" x="1636.5" y="-2408.2" font-family="Helvetica,sans-Serif" font-size="11.00">code</text>
-<polygon fill="none" stroke="black" points="1603.5,-2382 1603.5,-2400 1970.5,-2400 1970.5,-2382 1603.5,-2382"/>
-<text text-anchor="start" x="1606.5" y="-2388.2" font-family="Helvetica,sans-Serif" font-size="11.00">...</text>
-<polygon fill="#ffffff" stroke="transparent" points="1603.5,-2364 1603.5,-2382 1970.5,-2382 1970.5,-2364 1603.5,-2364"/>
-<polygon fill="none" stroke="black" points="1603.5,-2364 1603.5,-2382 1970.5,-2382 1970.5,-2364 1603.5,-2364"/>
-<polygon fill="#ffffff" stroke="transparent" points="1604.5,-2365 1604.5,-2381 1722.5,-2381 1722.5,-2365 1604.5,-2365"/>
-<text text-anchor="start" x="1606.5" y="-2370.2" font-family="Helvetica,sans-Serif" font-size="11.00"> &#160;</text>
-<polygon fill="#ffffff" stroke="transparent" points="1722.5,-2365 1722.5,-2381 1840.5,-2381 1840.5,-2365 1722.5,-2365"/>
-<text text-anchor="start" x="1777.5" y="-2370.2" font-family="Helvetica,sans-Serif" font-size="11.00"> &#160;</text>
-<polygon fill="#ffffff" stroke="transparent" points="1840.5,-2365 1840.5,-2381 1969.5,-2381 1969.5,-2365 1840.5,-2365"/>
-<text text-anchor="start" x="1947.5" y="-2370.2" font-family="Helvetica,sans-Serif" font-size="11.00">1 &gt;</text>
-<polygon fill="black" stroke="black" points="1722.5,-2365 1722.5,-2381 1722.5,-2381 1722.5,-2365 1722.5,-2365"/>
-<polygon fill="black" stroke="black" points="1840.5,-2365 1840.5,-2381 1840.5,-2381 1840.5,-2365 1840.5,-2365"/>
-</a>
-</g>
-</g>
 <!-- backflow_prevention_kind -->
-<g id="node136" class="node">
+<g id="node135" class="node">
 <title>backflow_prevention_kind</title>
-<g id="a_node136"><a xlink:href="../../tables/backflow_prevention_kind.html" xlink:title="backflow_prevention_kind" target="_top">
+<g id="a_node135"><a xlink:href="../../tables/backflow_prevention_kind.html" xlink:title="backflow_prevention_kind" target="_top">
 <polygon fill="#ffffff" stroke="transparent" points="3968,-1207 3968,-1287 4205,-1287 4205,-1207 3968,-1207"/>
 <polygon fill="#f5f5f5" stroke="transparent" points="3968.5,-1265 3968.5,-1287 4205.5,-1287 4205.5,-1265 3968.5,-1265"/>
 <polygon fill="none" stroke="black" points="3968.5,-1265 3968.5,-1287 4205.5,-1287 4205.5,-1265 3968.5,-1265"/>
@@ -3679,6 +3652,33 @@
 <text text-anchor="start" x="4182.5" y="-1213.2" font-family="Helvetica,sans-Serif" font-size="11.00">1 &gt;</text>
 <polygon fill="black" stroke="black" points="4044.5,-1208 4044.5,-1224 4044.5,-1224 4044.5,-1208 4044.5,-1208"/>
 <polygon fill="black" stroke="black" points="4118.5,-1208 4118.5,-1224 4118.5,-1224 4118.5,-1208 4118.5,-1208"/>
+</a>
+</g>
+</g>
+<!-- bio_ecol_assessment_impact_auxiliary_indic -->
+<g id="node136" class="node">
+<title>bio_ecol_assessment_impact_auxiliary_indic</title>
+<g id="a_node136"><a xlink:href="../../tables/bio_ecol_assessment_impact_auxi_af4c0477.html" xlink:title="bio_ecol_assessment_impact_auxiliary_indic" target="_top">
+<polygon fill="#ffffff" stroke="transparent" points="1603,-2364 1603,-2444 1970,-2444 1970,-2364 1603,-2364"/>
+<polygon fill="#f5f5f5" stroke="transparent" points="1603.5,-2422 1603.5,-2444 1970.5,-2444 1970.5,-2422 1603.5,-2422"/>
+<polygon fill="none" stroke="black" points="1603.5,-2422 1603.5,-2444 1970.5,-2444 1970.5,-2422 1603.5,-2422"/>
+<text text-anchor="start" x="1608.5" y="-2431.2" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00">bio_ecol_assessment_impact_auxiliary_indic</text>
+<text text-anchor="start" x="1928.5" y="-2430.2" font-family="Helvetica,sans-Serif" font-size="11.00">[table]</text>
+<polygon fill="none" stroke="black" points="1603.5,-2400 1603.5,-2422 1970.5,-2422 1970.5,-2400 1603.5,-2400"/>
+<image xlink:href="../../images/primaryKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="1608.5" y="-2417"/>
+<text text-anchor="start" x="1636.5" y="-2408.2" font-family="Helvetica,sans-Serif" font-size="11.00">code</text>
+<polygon fill="none" stroke="black" points="1603.5,-2382 1603.5,-2400 1970.5,-2400 1970.5,-2382 1603.5,-2382"/>
+<text text-anchor="start" x="1606.5" y="-2388.2" font-family="Helvetica,sans-Serif" font-size="11.00">...</text>
+<polygon fill="#ffffff" stroke="transparent" points="1603.5,-2364 1603.5,-2382 1970.5,-2382 1970.5,-2364 1603.5,-2364"/>
+<polygon fill="none" stroke="black" points="1603.5,-2364 1603.5,-2382 1970.5,-2382 1970.5,-2364 1603.5,-2364"/>
+<polygon fill="#ffffff" stroke="transparent" points="1604.5,-2365 1604.5,-2381 1722.5,-2381 1722.5,-2365 1604.5,-2365"/>
+<text text-anchor="start" x="1606.5" y="-2370.2" font-family="Helvetica,sans-Serif" font-size="11.00"> &#160;</text>
+<polygon fill="#ffffff" stroke="transparent" points="1722.5,-2365 1722.5,-2381 1840.5,-2381 1840.5,-2365 1722.5,-2365"/>
+<text text-anchor="start" x="1777.5" y="-2370.2" font-family="Helvetica,sans-Serif" font-size="11.00"> &#160;</text>
+<polygon fill="#ffffff" stroke="transparent" points="1840.5,-2365 1840.5,-2381 1969.5,-2381 1969.5,-2365 1840.5,-2365"/>
+<text text-anchor="start" x="1947.5" y="-2370.2" font-family="Helvetica,sans-Serif" font-size="11.00">1 &gt;</text>
+<polygon fill="black" stroke="black" points="1722.5,-2365 1722.5,-2381 1722.5,-2381 1722.5,-2365 1722.5,-2365"/>
+<polygon fill="black" stroke="black" points="1840.5,-2365 1840.5,-2381 1840.5,-2381 1840.5,-2365 1840.5,-2365"/>
 </a>
 </g>
 </g>
