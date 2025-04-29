@@ -141,8 +141,6 @@ def create_plain_value_list(database: str, version: str, structure_dump_file: st
             dump_file,
             "--schema",
             "tww_vl",
-            "--schema",
-            "tww_cfg",
             database,
         ]
     )
