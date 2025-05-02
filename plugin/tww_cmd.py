@@ -25,6 +25,11 @@ class TeksiWastewaterCmd:
         self.parser = argparse.ArgumentParser()
         self.args = None
 
+        self.parser.add_argument(
+            "--qgs_app_prefix_path",
+            help="QGIS Application prefix path",
+        )
+
         subparsers = self.parser.add_subparsers(dest="subparser_name", help="sub-command --help")
 
         self._add_subparser_interlis_import(subparsers=subparsers)
@@ -157,7 +162,10 @@ class TeksiWastewaterCmd:
             exit(1)
 
     def execute_interlis_import(self):
+        if self.args.qgs_app_prefix_path:
+            QgsApplication.setPrefixPath(self.args.qgs_app_prefix_path, True)
         qgs = QgsApplication([], False)
+        qgs.initQgis()
 
         DatabaseUtils.databaseConfig.PGSERVICE = self.args.pgservice
         DatabaseUtils.databaseConfig.PGHOST = self.args.pghost
@@ -191,7 +199,10 @@ class TeksiWastewaterCmd:
         qgs.exitQgis()
 
     def execute_interlis_export(self):
+        if self.args.qgs_app_prefix_path:
+            QgsApplication.setPrefixPath(self.args.qgs_app_prefix_path, True)
         qgs = QgsApplication([], False)
+        qgs.initQgis()
 
         DatabaseUtils.databaseConfig.PGSERVICE = self.args.pgservice
         DatabaseUtils.databaseConfig.PGHOST = self.args.pghost

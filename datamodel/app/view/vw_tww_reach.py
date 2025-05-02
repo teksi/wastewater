@@ -54,7 +54,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
           ELSE clear_height
         END AS width,
         CASE
-          WHEN rp_from.level > 0 AND rp_to.level > 0 THEN round((rp_from.level - rp_to.level)/ST_LENGTH(re.progression3d_geometry)::numeric*1000,1)
+          WHEN rp_from.level > 0 AND rp_to.level > 0 THEN ROUND((rp_from.level - rp_to.level) / NULLIF(ST_LENGTH(re.progression3d_geometry)::numeric, 0) * 1000, 1)
           ELSE NULL
         END AS _slope_per_mill
         {extra_cols}

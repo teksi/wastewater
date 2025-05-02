@@ -16,6 +16,8 @@ from .extensions.extension_manager import load_extension
 from .triggers.set_defaults_and_triggers import set_defaults_and_triggers
 from .utils.sql_utils import run_sql, run_sql_files_in_folder
 from .view.vw_tww_additional_ws import vw_tww_additional_ws
+from .view.vw_tww_channel import vw_tww_channel
+from .view.vw_tww_damage_channel import vw_tww_damage_channel
 from .view.vw_tww_infiltration_installation import vw_tww_infiltration_installation
 from .view.vw_tww_measurement_series import vw_tww_measurement_series
 from .view.vw_tww_overflow import vw_tww_overflow
@@ -198,6 +200,8 @@ Running extension {extension}
         pg_service=pg_service,
         extra_definition=yaml_data_dicts["vw_tww_wastewater_structure"],
     )
+    vw_tww_channel(pg_service=pg_service) # no possibility for extra_definition in this view
+    vw_tww_damage_channel(pg_service=pg_service) # no possibility for extra_definition in this view
     vw_tww_infiltration_installation(
         srid,
         pg_service=pg_service,
