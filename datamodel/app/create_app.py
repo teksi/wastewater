@@ -82,7 +82,6 @@ def create_app(
         "vw_tww_infiltration_installation": {},
         "vw_tww_additional_ws": {},
         "vw_tww_measurement_series": {},
-        "vw_tww_channel": {},
     }
 
     MultipleInheritances = {
@@ -201,7 +200,7 @@ Running extension {extension}
         pg_service=pg_service,
         extra_definition=yaml_data_dicts["vw_tww_wastewater_structure"],
     )
-    vw_tww_channel(pg_service=pg_service, extra_definition=yaml_data_dicts["vw_tww_channel"])
+    vw_tww_channel(pg_service=pg_service) # no possibility for extra_definition in this view
     vw_tww_damage_channel(pg_service=pg_service) # no possibility for extra_definition in this view
     vw_tww_infiltration_installation(
         srid,
