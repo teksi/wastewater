@@ -9,8 +9,16 @@ try:
     import psycopg
 except ImportError:
     import psycopg2 as psycopg
-from pirogue.utils import insert_command, select_columns, table_parts, update_command
+
+from pirogue.utils import insert_command, select_columns, update_command
 from yaml import safe_load
+
+from ..utils.extra_definition_utils import (
+    extra_cols,
+    extra_joins,
+    insert_extra,
+    update_extra,
+)
 
 
 def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = None):
@@ -45,20 +53,10 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
 
         ALTER VIEW tww_app.vw_wastewater_structure ALTER obj_id SET DEFAULT tww_app.generate_oid('tww_od','wastewater_structure');
     """.format(
-        extra_cols="\n    ".join(
-            [
-                select_columns(
-                    pg_cur=cursor,
-                    table_schema=table_parts(table_def["table"])[0],
-                    table_name=table_parts(table_def["table"])[1],
-                    skip_columns=table_def.get("skip_columns", []),
-                    remap_columns=table_def.get("remap_columns", {}),
-                    prefix=table_def.get("prefix", None),
-                    table_alias=table_def.get("alias", None),
-                )
-                + ","
-                for table_def in extra_definition.get("joins", {}).values()
-            ]
+        extra_cols=(
+            ""
+            if not extra_definition
+            else extra_cols(pg_service=pg_service, extra_definition=extra_definition)
         ),
         ws_cols=select_columns(
             pg_cur=cursor,
@@ -75,18 +73,8 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
                 "_output_label",
             ],
         ),
-        extra_joins="\n    ".join(
-            [
-                "LEFT JOIN {tbl} {alias} ON {jon}".format(
-                    tbl=table_def["table"],
-                    alias=table_def.get("alias", ""),
-                    jon=table_def["join_on"],
-                )
-                for table_def in extra_definition.get("joins", {}).values()
-            ]
-        ),
+        extra_joins=extra_joins(pg_service=pg_service, extra_definition=extra_definition),
     )
-
     cursor.execute(view_sql)
 
     trigger_insert_sql = """
@@ -98,7 +86,7 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
       NEW.identifier = COALESCE(NEW.identifier, NEW.obj_id);
 
     {insert_ws}
-
+    {insert_extra}
       RETURN NEW;
     END; $BODY$ LANGUAGE plpgsql VOLATILE;
 
@@ -122,8 +110,8 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
                 "_output_label",
             ],
         ),
+        insert_extra=insert_extra(pg_service=pg_service, extra_definition=extra_definition),
     )
-
     cursor.execute(trigger_insert_sql)
 
     update_trigger_sql = """
@@ -132,6 +120,7 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
     $BODY$
     BEGIN
       {update_ws}
+      {update_extra}
       RETURN NEW;
     END;
     $BODY$
@@ -162,8 +151,8 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
             ],
             update_values={},
         ),
+        update_extra=update_extra(pg_service=pg_service, extra_definition=extra_definition),
     )
-
     cursor.execute(update_trigger_sql)
 
     trigger_delete_sql = """

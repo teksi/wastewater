@@ -10,8 +10,15 @@ try:
 except ImportError:
     import psycopg2 as psycopg
 
-from pirogue.utils import insert_command, select_columns, table_parts, update_command
+from pirogue.utils import insert_command, select_columns, update_command
 from yaml import safe_load
+
+from ..utils.extra_definition_utils import (
+    extra_cols,
+    extra_joins,
+    insert_extra,
+    update_extra,
+)
 
 
 def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definition: dict = None):
@@ -19,7 +26,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
     Creates tww_wastewater_structure view
     :param srid: EPSG code for geometries
     :param pg_service: the PostgreSQL service name
-    :param extra_definition: a dictionary for additional read-only columns
+    :param extra_definition: a dictionary for additional columns
     """
     if not pg_service:
         pg_service = os.getenv("PGSERVICE")
@@ -98,20 +105,10 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
 
     """.format(
         srid=srid,
-        extra_cols="\n    ".join(
-            [
-                select_columns(
-                    pg_cur=cursor,
-                    table_schema=table_parts(table_def["table"])[0],
-                    table_name=table_parts(table_def["table"])[1],
-                    skip_columns=table_def.get("skip_columns", []),
-                    remap_columns=table_def.get("remap_columns", {}),
-                    prefix=table_def.get("prefix", None),
-                    table_alias=table_def.get("alias", None),
-                )
-                + ","
-                for table_def in extra_definition.get("joins", {}).values()
-            ]
+        extra_cols=(
+            ""
+            if not extra_definition
+            else extra_cols(pg_service=pg_service, extra_definition=extra_definition)
         ),
         ws_cols=select_columns(
             pg_cur=cursor,
@@ -218,18 +215,8 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             prefix="wn_",
             remap_columns={},
         ),
-        extra_joins="\n    ".join(
-            [
-                "LEFT JOIN {tbl} {alias} ON {jon}".format(
-                    tbl=table_def["table"],
-                    alias=table_def.get("alias", ""),
-                    jon=table_def["join_on"],
-                )
-                for table_def in extra_definition.get("joins", {}).values()
-            ]
-        ),
+        extra_joins=extra_joins(pg_service=pg_service, extra_definition=extra_definition),
     )
-
     cursor.execute(view_sql)
 
     trigger_insert_sql = """
@@ -275,6 +262,8 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
         SET fk_main_cover = NEW.co_obj_id
         WHERE obj_id = NEW.obj_id;
 
+
+      {insert_extra}
       RETURN NEW;
     END; $BODY$ LANGUAGE plpgsql VOLATILE;
 
@@ -390,6 +379,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
                 "fk_wastewater_structure": "NEW.obj_id",
             },
         ),
+        insert_extra=insert_extra(pg_service=pg_service, extra_definition=extra_definition),
     )
 
     cursor.execute(trigger_insert_sql)
@@ -407,6 +397,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
       {update_ws}
       {update_wn}
       {update_ne}
+      {update_extra}
 
       IF OLD.ws_type <> NEW.ws_type THEN
         CASE WHEN OLD.ws_type <> 'unknown' THEN
@@ -649,6 +640,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             indent=6,
             skip_columns=[],
         ),
+        update_extra=update_extra(pg_service=pg_service, extra_definition=extra_definition),
     )
 
     cursor.execute(update_trigger_sql)
@@ -695,7 +687,10 @@ if __name__ == "__main__":
     args = parser.parse_args()
     srid = args.srid or os.getenv("SRID")
     pg_service = args.pg_service or os.getenv("PGSERVICE")
-    extra_definition = safe_load(open(args.extra_definition)) if args.extra_definition else {}
+    extra_definition = {}
+    if args.extra_definition:
+        with open(args.extra_definition) as f:
+            extra_definition = safe_load(f)
     vw_tww_wastewater_structure(
         srid=srid, pg_service=pg_service, extra_definition=extra_definition
     )

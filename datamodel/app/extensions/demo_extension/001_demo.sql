@@ -1,0 +1,1 @@
+SELECT {my_number};
