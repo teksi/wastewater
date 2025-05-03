@@ -6,11 +6,11 @@ Schemas in the TWW-Database
 Schema in TEKSI-Databases will follow all the same rules. To destinguish, every infrastructre has his own shortcut (3 letters). TWW (TEKSI wastewater) is the shortcut for module wastewater network management.
 The TWW-Database has five tww-schemas:
 
-* tww_od: in this schema you find the tables, that correspond to the VSA-DSS-datamodel (cover, wastewater_node, channel, etc.) Also for sequences of these tables. Because of the new update-management, the views are no more in the *_od-schema, but in the *_app-schema.
+* tww_od: in this schema you find the tables that are stored persistently. They mainly correspond to the VSA-DSS-datamodel (cover, wastewater_node, channel, etc.), but also include some layers needed for symbology and labeling.  Also for sequences of these tables. Because of the new update-management, the views are no more in the *_od-schema, but in the *_app-schema.
 
 * tww_vl: is the schema for value lists. There is a table for every value list of the VSA-DSS. As a TWW-user you can not edit these tables.
 
-* tww_app: schema for all module-specific views, materialized views, functions, triggers, etc. Also for views and function of additional plugins (SWMM, QField). In case of an update of the database, this schema will overwriten.
+* tww_app: schema for all module-specific views, materialized views, functions, triggers, etc. Also for views and function of additional plugins (SWMM, QField). In case of an update of the database, this schema will overwritten.
 
 * tww_sys: special tables for administration of the database. As a TWW-User you can not edit these tables.
 
@@ -50,4 +50,4 @@ fk_ is not a shortcut for a special table. It stands for foreign key.
 * _ fields
 
 Attributes that start with _ (underscore) are calculated fields. You can not find them in the schemas. Examples: _slope_per_mill in vw_tww_reach.
-_channel_usage_current in vw_qgwp_wastewater_structure is calculated from the field usage_current of the channel, that is connected with the foreign key of the wastewater_networkelement as outlet to a manhole or special structure.
+_channel_usage_current in vw_tww_wastewater_structure is calculated from the field usage_current of the channel, that is connected with the foreign key of the wastewater_networkelement as outlet to a manhole or special structure.
