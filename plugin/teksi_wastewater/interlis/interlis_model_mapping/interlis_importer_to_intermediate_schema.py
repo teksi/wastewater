@@ -239,7 +239,7 @@ class InterlisImporterToIntermediateSchema:
         self._import_feststoffrueckhalt()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.foerderaggregat -> TWW.")
+        logger.info("\nImporting ABWASSER.foerderaggregat -> TWW.pump")
         self._import_foerderaggregat()
         self._check_for_stop()
 
