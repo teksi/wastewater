@@ -470,7 +470,7 @@ class InterlisImporterToIntermediateSchema:
             flag_dirty(
                 instance
             )  # we flag it as dirty so it stays in the session. This is a workaround trick
-            # needed bcause the session is not meant to be used as a cache: https://docs.sqlalchemy.org/en/20/orm/session_basics.html#is-the-session-a-cache
+            # needed because the session is not meant to be used as a cache: https://docs.sqlalchemy.org/en/20/orm/session_basics.html#is-the-session-a-cache
 
             # Update dates times (different resolution Interlis / TWW)
             date_time_keys = [
