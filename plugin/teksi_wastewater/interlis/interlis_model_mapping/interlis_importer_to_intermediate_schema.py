@@ -352,13 +352,13 @@ class InterlisImporterToIntermediateSchema:
         self._check_for_stop()
 
         logger.info(
-            "\nImporting ABWASSER.erhaltungsereignis_abwasserbauwerkassoc  -> TWW.re_maintenance_event_wastewater_structure"
+            "\nImporting ABWASSER.erhaltungsereignis_abwasserbauwerkassoc -> TWW.re_maintenance_event_wastewater_structure"
         )
         self._import_erhaltungsereignis_abwasserbauwerkassoc()
         self._check_for_stop()
 
         logger.info(
-            "\nImporting ABWASSER.gebaeudegruppe_entsorgungassoc  -> TWW.re_building_group_disposal"
+            "\nImporting ABWASSER.gebaeudegruppe_entsorgungassoc -> TWW.re_building_group_disposal"
         )
         self._import_gebaeudegruppe_entsorgungassoc()
         self._check_for_stop()
