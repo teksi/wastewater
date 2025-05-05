@@ -584,7 +584,7 @@ class InterlisImporterToIntermediateSchema:
 
     def wastewater_networkelement_common(self, row):
         """
-        Returns common attributes for network_element
+        Returns common attributes for wastewater_networkelement
         """
         return {
             "fk_wastewater_structure": self.get_pk(row.abwasserbauwerkref__REL),
