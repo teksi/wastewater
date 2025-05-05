@@ -557,7 +557,8 @@ class InterlisImporterToIntermediateSchema:
             "records": row.akten,
             "remark": row.bemerkung,
             "renovation_necessity": self.get_vl_code(
-                self.model_classes_tww_od.wastewater_structure_renovation_necessity, row.sanierungsbedarf
+                self.model_classes_tww_od.wastewater_structure_renovation_necessity,
+                row.sanierungsbedarf,
             ),
             "replacement_value": row.wiederbeschaffungswert,
             "rv_base_year": row.wbw_basisjahr,
