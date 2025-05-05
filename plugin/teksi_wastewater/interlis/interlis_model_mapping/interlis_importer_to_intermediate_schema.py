@@ -151,7 +151,9 @@ class InterlisImporterToIntermediateSchema:
         self._check_for_stop()
 
     def _import_dss(self):
-        logger.info("\nImporting ABWASSER.abwasserreinigungsanlage -> TWW.waste_water_treatment_plant")
+        logger.info(
+            "\nImporting ABWASSER.abwasserreinigungsanlage -> TWW.waste_water_treatment_plant"
+        )
         self._import_abwasserreinigungsanlage()
         self._check_for_stop()
 
@@ -219,7 +221,9 @@ class InterlisImporterToIntermediateSchema:
         self._import_elektrischeeinrichtung()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.elektromechanischeausruestung -> TWW.electromechanical_equipment")
+        logger.info(
+            "\nImporting ABWASSER.elektromechanischeausruestung -> TWW.electromechanical_equipment"
+        )
         self._import_elektromechanischeausruestung()
         self._check_for_stop()
 
