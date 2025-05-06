@@ -12,6 +12,7 @@ set -e
 
 PGSERVICE=${PGSERVICE:-pg_tww}
 SRID=2056
+EXTENSION_NAMES=${EXTENSION_NAMES:-""}
 
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/..
 
@@ -44,4 +45,5 @@ psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f ${DIR}/changelogs/0001/90_audi
 psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f ${DIR}/12_0_roles.sql
 psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f ${DIR}/12_1_roles.sql
 
-${DIR}/app/create_app.py --pg_service ${PGSERVICE} --srid ${SRID}
+export PYTHONPATH=${DIR}/app:$PYTHONPATH
+python -m app.create_app --pg_service ${PGSERVICE} --srid ${SRID} --extension_names ${EXTENSION_NAMES}

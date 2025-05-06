@@ -11,9 +11,17 @@ except ImportError:
     import psycopg2 as psycopg
 
 from pirogue.utils import insert_command, select_columns, update_command
+from yaml import safe_load
+
+from ..utils.extra_definition_utils import (
+    extra_cols,
+    extra_joins,
+    insert_extra,
+    update_extra,
+)
 
 
-def vw_tww_measurement_series(pg_service: str = None):
+def vw_tww_measurement_series(pg_service: str = None, extra_definition: dict = None):
     """
     Creates tww_measurement_series view
     :param pg_service: the PostgreSQL service name
@@ -33,9 +41,12 @@ def vw_tww_measurement_series(pg_service: str = None):
         {ms_cols}
         , array_agg(mr.value) AS mr_values
 
+        {extra_cols}
         FROM tww_od.measurement_series ms
         LEFT JOIN tww_od.measurement_result mr ON ms.obj_id = mr.fk_measurement_series
-        GROUP BY {ms_cols};
+        {extra_joins}
+        GROUP BY {ms_cols}
+        {extra_cols};
 
     """.format(
         ms_cols=select_columns(
@@ -47,6 +58,12 @@ def vw_tww_measurement_series(pg_service: str = None):
             indent=4,
             skip_columns=[],
         ),
+        extra_cols=(
+            ""
+            if not extra_definition
+            else extra_cols(pg_service=pg_service, extra_definition=extra_definition)
+        ),
+        extra_joins=extra_joins(pg_service=pg_service, extra_definition=extra_definition),
     )
 
     cursor.execute(view_sql)
@@ -60,6 +77,7 @@ def vw_tww_measurement_series(pg_service: str = None):
       NEW.identifier = COALESCE(NEW.identifier, NEW.obj_id);
 
     {insert_ms}
+    {insert_extra}
 
       RETURN NEW;
     END; $BODY$ LANGUAGE plpgsql VOLATILE;
@@ -78,6 +96,7 @@ def vw_tww_measurement_series(pg_service: str = None):
             indent=2,
             skip_columns=[],
         ),
+        insert_extra=insert_extra(pg_service=pg_service, extra_definition=extra_definition),
     )
 
     cursor.execute(trigger_insert_sql)
@@ -88,6 +107,7 @@ def vw_tww_measurement_series(pg_service: str = None):
     $BODY$
     BEGIN
       {update_ms}
+      {update_extra}
        RETURN NEW;
     END;
     $BODY$
@@ -109,6 +129,7 @@ def vw_tww_measurement_series(pg_service: str = None):
             skip_columns=[],
             update_values={},
         ),
+        update_extra=update_extra(pg_service=pg_service, extra_definition=extra_definition),
     )
 
     cursor.execute(update_trigger_sql)
@@ -145,6 +166,15 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument("-p", "--pg_service", help="the PostgreSQL service name")
+    parser.add_argument(
+        "-e",
+        "--extra-definition",
+        help="YAML file path for extra additions to the view",
+    )
     args = parser.parse_args()
+    extra_definition = {}
+    if args.extra_definition:
+        with open(args.extra_definition) as f:
+            extra_definition = safe_load(f)
     pg_service = args.pg_service or os.getenv("PGSERVICE")
-    vw_tww_measurement_series(pg_service=pg_service)
+    vw_tww_measurement_series(pg_service=pg_service, extra_definition=extra_definition)

@@ -12,7 +12,7 @@ except ImportError:
 from pirogue.utils import select_columns
 
 
-def vw_tww_channel(pg_service: str = None, extra_definition: dict = None):
+def vw_tww_channel(pg_service: str = None):
     """
     Creates tww_channel view
     :param pg_service: the PostgreSQL service name
@@ -21,7 +21,6 @@ def vw_tww_channel(pg_service: str = None, extra_definition: dict = None):
     if not pg_service:
         pg_service = os.getenv("PGSERVICE")
     assert pg_service
-    extra_definition = extra_definition or {}
 
     conn = psycopg.connect(f"service={pg_service}")
     cursor = conn.cursor()
