@@ -173,6 +173,10 @@ Running extension {extension}
 
     defaults = {"view_schema": "tww_app", "pg_service": pg_service}
 
+    # Defaults and Triggers
+    # Has to be fired before view creation otherwise it won't work and will only fail in CI
+    set_defaults_and_triggers(pg_service, SingleInheritances)
+
     for key in SingleInheritances:
         print(f"creating view vw_{key}")
         SingleInheritance(
@@ -235,9 +239,6 @@ Running extension {extension}
     for directory in sql_directories:
         abs_dir = Path(__file__).parent.resolve() / directory
         run_sql_files_in_folder(abs_dir, pg_service, variables_sql)
-
-    # Defaults and Triggers
-    set_defaults_and_triggers(pg_service, SingleInheritances)
 
     # run post_all
     run_sql_files_in_folder(
