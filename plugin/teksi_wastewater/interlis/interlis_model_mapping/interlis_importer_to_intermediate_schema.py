@@ -1955,13 +1955,17 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_unterhalt(self):
-        for row in self.session_interlis.query(self.model_classes_interlis.unterhalt):
+        for row in self.session_interlis.query(
+            self.model_classes_interlis.unterhalt
+        ):
             maintenance = self.create_or_update(
                 self.model_classes_tww_od.maintenance,
                 **self.base_common(row),
                 **self.maintenance_event_common(row),
                 # --- maintenance ---
-                kind=self.get_vl_code(self.model_classes_tww_vl.maintenance_kind, row.art),
+                kind=self.get_vl_code(
+                    self.model_classes_tww_vl.maintenance_kind, row.art
+                ),
             )
             self.session_tww.add(maintenance)
             print(".", end="")
