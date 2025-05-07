@@ -3584,7 +3584,7 @@ class InterlisExporterToIntermediateSchema:
             for row in self.abwasser_session.query(self.model_classes_interlis.einzugsgebiet):
                 tid_for_obj_id["catchment_area"][row.t_ili_tid] = row.t_id
 
-        if self.is_ag_xx_model:
+        if self.model == config.MODEL_NAME_AG96:
             tid_for_obj_id.update(
                 {
                     "building_group": {},
@@ -3597,6 +3597,7 @@ class InterlisExporterToIntermediateSchema:
                 self.model_classes_interlis.bautenausserhalbbaugebiet
             ):
                 tid_for_obj_id["building_group"][row.t_ili_tid] = row.t_id
+            
             for row in self.abwasser_session.query(self.model_classes_interlis.gepmassnahme):
                 tid_for_obj_id["measure_line"][row.t_ili_tid] = row.t_id
                 tid_for_obj_id["measure_point"][row.t_ili_tid] = row.t_id
