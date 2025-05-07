@@ -23,7 +23,7 @@ ALTER TABLE tww_od.dss15_aquifer ADD COLUMN maximal_groundwater_level  decimal(7
 COMMENT ON COLUMN tww_od.dss15_aquifer.maximal_groundwater_level IS 'Maximal level of ground water table / Maximale Lage des Grundwasserspiegels / Niveau maximal de la nappe';
 ALTER TABLE tww_od.dss15_aquifer ADD COLUMN minimal_groundwater_level  decimal(7,3) ;
 COMMENT ON COLUMN tww_od.dss15_aquifer.minimal_groundwater_level IS 'Minimal level of groundwater table / Minimale Lage des Grundwasserspiegels / Niveau minimal de la nappe';
-ALTER TABLE tww_od.dss15_aquifer ADD COLUMN perimeter_geometry geometry('CURVEPOLYGON', :SRID);
+ALTER TABLE tww_od.dss15_aquifer ADD COLUMN perimeter_geometry geometry('CURVEPOLYGON', {{ SRID }});
 CREATE INDEX in_tww_od_dss15_aquifer_perimeter_geometry ON tww_od.dss15_aquifer USING gist (perimeter_geometry );
 COMMENT ON COLUMN tww_od.dss15_aquifer.perimeter_geometry IS 'Boundary points of the perimeter / Begrenzungspunkte der Fläche / Points de délimitation de la surface';
 ALTER TABLE tww_od.dss15_aquifer ADD COLUMN remark  varchar(80) ;
