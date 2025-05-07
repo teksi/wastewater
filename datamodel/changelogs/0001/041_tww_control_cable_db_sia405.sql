@@ -3,7 +3,6 @@
 ------ For questions etc. please contact Stefan Burckhardt stefan.burckhardt@sjib.ch
 ------ version 30.05.2024 19:47:23 / 14.8.2024 adaption for twww
 ------ with 3D coordinates
-BEGIN;
 
 -------
 CREATE TABLE tww_od.sia405cc_cable_point
@@ -219,5 +218,3 @@ ALTER TABLE tww_od.sia405cc_cable ADD CONSTRAINT rel_od_sia405cc_cable_fk_datapr
 
  CREATE UNIQUE INDEX in_od_sia405cc_cable_point_name_number ON tww_od.sia405cc_cable_point USING btree (name_number ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
  CREATE UNIQUE INDEX in_od_sia405cc_cable_name_number ON tww_od.sia405cc_cable USING btree (name_number ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
-
-COMMIT;

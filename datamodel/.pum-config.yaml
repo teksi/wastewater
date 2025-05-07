@@ -1,4 +1,7 @@
 
+schema_migrations_table:
+  tww_sys.schema_migrations
+
 parameters:
   - name: SRID
     type: int

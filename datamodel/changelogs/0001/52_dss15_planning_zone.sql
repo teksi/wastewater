@@ -1,7 +1,6 @@
 ------ This file generates the VSA-DSS database (Modul VSA-DSS 2015) table tww_od.dss15_planning_zone_kind  in en on QQIS
 ------ For questions etc. please contact Stefan Burckhardt stefan.burckhardt@sjib.ch
 ------ version 22.02.2024 17:28:28
-BEGIN;
 
 -------
 CREATE TABLE tww_od.dss15_planning_zone
@@ -35,5 +34,3 @@ ALTER TABLE tww_vl.dss15_planning_zone_kind ADD CONSTRAINT pkey_tww_vl_dss15_pla
  ALTER TABLE tww_od.dss15_planning_zone ADD CONSTRAINT fkey_vl_dss15_planning_zone_kind FOREIGN KEY (kind)
  REFERENCES tww_vl.dss15_planning_zone_kind (code) MATCH SIMPLE
  ON UPDATE RESTRICT ON DELETE RESTRICT;
-
- COMMIT;
