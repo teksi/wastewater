@@ -1,7 +1,6 @@
 ------ This file generates the VSA-DSS database (Modul VSA-DSS 2015) table dss15_aquifer (as it does not exist anymore in VSA-DSS 2020)  in en on QQIS
 ------ For questions etc. please contact Stefan Burckhardt stefan.burckhardt@sjib.ch
 ------ version 22.02.2024 17:22:28
-BEGIN;
 ------ CREATE SCHEMA tww;
 
 -------
@@ -53,6 +52,3 @@ ALTER TABLE tww_od.dss15_aquifer ADD CONSTRAINT rel_od_dss15_aquifer_fk_dataprov
 ------ Indexes on identifiers
 
 CREATE UNIQUE INDEX in_od_dss15_aquifer_identifier ON tww_od.dss15_aquifer USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
-
-
-COMMIT;
