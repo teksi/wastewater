@@ -1,6 +1,5 @@
 
-schema_migrations_table:
-  tww_sys.schema_migrations
+pum_migrations_schema: tww_sys
 
 parameters:
   - name: SRID
