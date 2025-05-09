@@ -3597,7 +3597,7 @@ class InterlisExporterToIntermediateSchema:
                 self.model_classes_interlis.bautenausserhalbbaugebiet
             ):
                 tid_for_obj_id["building_group"][row.t_ili_tid] = row.t_id
-            
+
             for row in self.abwasser_session.query(self.model_classes_interlis.gepmassnahme):
                 tid_for_obj_id["measure_line"][row.t_ili_tid] = row.t_id
                 tid_for_obj_id["measure_point"][row.t_ili_tid] = row.t_id
