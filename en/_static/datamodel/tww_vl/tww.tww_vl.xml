@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<database name="tww" schema="tww_vl" type="PostgreSQL - 16.8 (Debian 16.8-1.pgdg110+1)">
+<database name="tww" schema="tww_vl" type="PostgreSQL - 16.9 (Debian 16.9-1.pgdg110+1)">
    <tables>
       <table name="access_aid_kind" remarks="" schema="tww_vl" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
