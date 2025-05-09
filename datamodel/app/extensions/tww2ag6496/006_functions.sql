@@ -5,7 +5,7 @@ CREATE OR REPLACE FUNCTION tww_app.modification_last_modified_agxx()
 RETURNS trigger AS
 $BODY$
   DECLARE
-	update_type varchar(3);
+	update_type varchar(4);
   BEGIN
     BEGIN
 	  SELECT
