@@ -21,8 +21,6 @@ In order to use a database extension, we need to load them from the source code:
   * https://github.com/TWW/datamodel/releases/latest
   * download `tww_{version}_structure_with_value_lists.sql`
 
-In the future, an adapted value list sql will be provided. For now, we will have to rely on the source code
-
 * Download the source code
   * https://github.com/TWW/datamodel/releases/latest
   * download`Source Code(zip)`
@@ -34,7 +32,7 @@ In the future, an adapted value list sql will be provided. For now, we will have
 * create and run a batch file such as::
 
     @echo off
-
+    setlocal
     set /p tww_dir="Set the directory your downloaded teksi wastewater to"
 
     if not exist %tww_dir% (
@@ -47,16 +45,15 @@ In the future, an adapted value list sql will be provided. For now, we will have
 
     set /p myservice="Please enter the service name? (e.g. tww_community) "
 
-	python %tww_dir%\extensions\extension_manager.py --pg_service %myservice% --extension_name "agxx"
-	python %tww_dir%\app\create_app.py --pg_service %myservice% --srid 2056
+	REM Set the PYTHONPATH to include the directory containing the app module
+	set "PYTHONPATH=%tww_dir%\datamodel;%PYTHONPATH%"
 
+    python -m app.create_app.py --pg_service %myservice% --srid 2056 --drop-schema --extension_names agxx foobar demo
 
+    endlocal
     PAUSE
 
-Important notes:
-
-* Do not use the --drop_schema flag on create_app.py, as all the extension views are to be stored in the app schema
-
+For official models, an adapted value list sql is provided.
 
 Generate the data model under Linux
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

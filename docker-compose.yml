@@ -9,6 +9,8 @@ services:
         POSTGIS_IMAGE: ${POSTGIS_IMAGE:-postgis/postgis:16-3.5}
     image: teksi/tww:${DOCKER_TAG:-unstable}
     working_dir: /src
+    environment:
+      - EXTENSION_NAMES
     volumes:
       - .:/src
     ports:
