@@ -9,7 +9,7 @@ $BODY$
   BEGIN
     BEGIN
 	  SELECT
-	    ag_update_type
+	    lower(ag_update_type)
 	  INTO update_type
 	  FROM tww_od.agxx_last_modification_updater
 	  WHERE username=current_user;
