@@ -3673,7 +3673,7 @@ class InterlisExporterToIntermediateSchema:
                                 "RX",
                                 self.oid_prefix,
                             ),
-                            infrastrukturhaltung=t_id,
+                            infrastrukturhaltungref=t_id,
                         )
 
                     elif layer_name == "vw_tww_wastewater_structure":
