@@ -1,2 +1,2 @@
-pirogue>=2.2.0
+pirogue>=2.2.0,<3
 pyyaml
