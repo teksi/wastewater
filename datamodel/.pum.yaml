@@ -1,8 +1,37 @@
 
 pum_migrations_schema: tww_sys
 
+
 parameters:
   - name: SRID
     type: integer
     default: 2056
     description: Coordinate Reference System (CRS) to use for the data. This is used for the geometry column in the database. Default is 2056 (CH1903+ / LV95).
+
+  - name: tww_reach_extra
+    type: text
+    description: YAML file with extra information for the tww_reach view.
+
+  - name: tww_wastewater_structure_extra
+    type: text
+    description: YAML file with extra information for the tww_wastewater_structure view.
+
+  - name: tww_ii_extra
+    type: text
+    description: YAML file with extra information for the vw_tww_infiltration_installation_extra view.
+
+  - name: wastewater_structure_extra
+    type: text
+    description: YAML file with extra information for the wastewater_structure view.
+
+  - name: tww_channel_extra
+    type: text
+    description: YAML file with extra information for the vw_tww_channel_extra view.
+
+
+migration_hooks:
+  pre:
+
+
+  post:
+    - file: app/create_app.py
