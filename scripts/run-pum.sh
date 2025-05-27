@@ -9,6 +9,8 @@ pyenv rehash
 
 export PGSERVICE=tww
 
+psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f datamodel/roles/roles_drop.sql
+
 
 psql -c "DROP SCHEMA IF EXISTS tww_od CASCADE;\
 DROP SCHEMA IF EXISTS tww_sys CASCADE;\
@@ -18,7 +20,9 @@ DROP SCHEMA IF EXISTS tww_app CASCADE;\
 DROP SCHEMA IF EXISTS pum_test_data CASCADE;\
 DROP TABLE IF EXISTS public.pum_migrations;"
 
-psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f datamodel/12_0_roles.sql
-psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f datamodel/12_1_roles.sql
+
+
+#psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f datamodel/roles/roles_create.sql
+#psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f datamodel/roles/roles_grant.sql
 
 pum -vvv -s tww -d datamodel install -p SRID 2056
