@@ -15,7 +15,7 @@ CREATE SEQUENCE tww_od.seq_dss15_planning_zone_oid INCREMENT 1 MINVALUE 0 MAXVAL
 COMMENT ON COLUMN tww_od.dss15_planning_zone.obj_id IS '[primary_key] INTERLIS STANDARD OID (with Postfix/Präfix) or UUOID, see www.interlis.ch';
 ALTER TABLE tww_od.dss15_planning_zone ADD COLUMN kind  integer ;
 COMMENT ON COLUMN tww_od.dss15_planning_zone.kind IS 'Type of planning zone / Art der Bauzone / Genre de zones à bâtir';
-ALTER TABLE tww_od.dss15_planning_zone ADD COLUMN perimeter_geometry geometry('CURVEPOLYGON', {{ SRID }});
+ALTER TABLE tww_od.dss15_planning_zone ADD COLUMN perimeter_geometry geometry('CURVEPOLYGON', {SRID});
 CREATE INDEX in_tww_od_dss15_planning_zone_perimeter_geometry ON tww_od.dss15_planning_zone USING gist (perimeter_geometry );
 COMMENT ON COLUMN tww_od.dss15_planning_zone.perimeter_geometry IS 'Boundary points of the perimeter / Begrenzungspunkte der Fläche / Points de délimitation de la surface';
 

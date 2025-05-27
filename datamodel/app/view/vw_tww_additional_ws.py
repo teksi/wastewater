@@ -5,25 +5,17 @@
 import argparse
 import os
 
-try:
-    import psycopg
-except ImportError:
-    import psycopg2 as psycopg
+import psycopg
 from pirogue.utils import insert_command, select_columns, update_command
 
 
-def vw_tww_additional_ws(srid: int, pg_service: str = None):
+def vw_tww_additional_ws(connection: psycopg.Connection, srid: int):
     """
     Creates additional_wastewater_structure view
     :param srid: EPSG code for geometries
     :param pg_service: the PostgreSQL service name
     """
-    if not pg_service:
-        pg_service = os.getenv("PGSERVICE")
-    assert pg_service
-
-    conn = psycopg.connect(f"service={pg_service}")
-    cursor = conn.cursor()
+    cursor = connection.cursor()
 
     view_sql = """
     DROP VIEW IF EXISTS tww_app.vw_tww_additional_ws;
@@ -51,7 +43,7 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
         , main_co_sp.renovation_demand AS co_renovation_demand
 
         , {main_co_cols}
-        , ST_Force2D(COALESCE(wn.situation3d_geometry, main_co.situation3d_geometry))::geometry(Point, {srid}) AS situation3d_geometry
+        , ST_Force2D(COALESCE(wn.situation3d_geometry, main_co.situation3d_geometry))::geometry(Point, {{srid}}) AS situation3d_geometry
 
         , {wt_columns}
 
@@ -86,9 +78,8 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
         WHERE '-1'= ALL(ARRAY[ch.obj_id,ma.obj_id,ss.obj_id,dp.obj_id,ii.obj_id]) IS NULL
         AND '-2'= ALL(ARRAY[ch.obj_id,ma.obj_id,ss.obj_id,dp.obj_id,ii.obj_id]) IS NULL;
     """.format(
-        srid=srid,
         ws_cols=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_structure",
             table_alias="ws",
@@ -109,7 +100,7 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
             ],
         ),
         main_co_cols=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="cover",
             table_alias="main_co",
@@ -121,7 +112,7 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
             columns_at_end=["obj_id"],
         ),
         wt_columns=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wwtp_structure",
             table_alias="wt",
@@ -132,7 +123,7 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
             remap_columns={},
         ),
         sm_columns=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="small_treatment_plant",
             table_alias="sm",
@@ -143,7 +134,7 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
             remap_columns={},
         ),
         dt_columns=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="drainless_toilet",
             table_alias="dt",
@@ -154,7 +145,7 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
             remap_columns={},
         ),
         wn_cols=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_node",
             table_alias="wn",
@@ -171,7 +162,7 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
             columns_at_end=["obj_id"],
         ),
         ne_cols=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_networkelement",
             table_alias="ne",
@@ -182,6 +173,8 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
             remap_columns={},
         ),
     )
+
+    view_sql = psycopg.sql.SQL(view_sql).format(srid=srid)
 
     cursor.execute(view_sql)
 
@@ -234,7 +227,7 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
       FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_tww_additional_ws_INSERT();
     """.format(
         insert_ws=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_structure",
             table_alias="ws",
@@ -252,7 +245,7 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
             ],
         ),
         insert_wt=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wwtp_structure",
             table_alias="wt",
@@ -262,7 +255,7 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
             remap_columns={"obj_id": "obj_id"},
         ),
         insert_sm=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="small_treatment_plant",
             table_alias="sm",
@@ -272,7 +265,7 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
             remap_columns={"obj_id": "obj_id"},
         ),
         insert_dt=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="drainless_toilet",
             table_alias="dt",
@@ -282,7 +275,7 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
             remap_columns={"obj_id": "obj_id"},
         ),
         insert_wn=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_app",
             table_name="vw_wastewater_node",
             table_type="view",
@@ -308,7 +301,7 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
             },
         ),
         insert_vw_cover=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_app",
             table_name="vw_cover",
             table_type="view",
@@ -460,7 +453,7 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
         literal_delete_on_ws_change="'DELETE FROM tww_od.%I WHERE obj_id = %L',OLD.ws_type,OLD.obj_id",
         literal_insert_on_ws_change="'INSERT INTO tww_od.%I(obj_id) VALUES (%L)',NEW.ws_type,OLD.obj_id",
         update_co=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="cover",
             table_alias="co",
@@ -470,7 +463,7 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
             remap_columns={"cover_shape": "co_shape"},
         ),
         update_sp=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="structure_part",
             table_alias="sp",
@@ -484,7 +477,7 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
             },
         ),
         update_ws=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_structure",
             table_alias="ws",
@@ -505,7 +498,7 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
             update_values={},
         ),
         update_wt=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wwtp_structure",
             table_alias="wt",
@@ -516,7 +509,7 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
             remap_columns={"obj_id": "obj_id"},
         ),
         update_sm=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="small_treatment_plant",
             table_alias="sm",
@@ -527,7 +520,7 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
             remap_columns={"obj_id": "obj_id"},
         ),
         update_dt=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="drainless_toilet",
             table_alias="dt",
@@ -538,7 +531,7 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
             remap_columns={"obj_id": "obj_id"},
         ),
         update_wn=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_node",
             table_alias="wn",
@@ -579,16 +572,14 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
     """
     cursor.execute(extras)
 
-    conn.commit()
-    conn.close()
-
 
 if __name__ == "__main__":
     # create the top-level parser
     parser = argparse.ArgumentParser()
-    parser.add_argument("-s", "--srid", help="EPSG code for SRID")
+    parser.add_argument("-s", "--srid", help="EPSG code for SRID", default=2056, type=int)
     parser.add_argument("-p", "--pg_service", help="the PostgreSQL service name")
     args = parser.parse_args()
-    srid = args.srid or os.getenv("SRID")
+    srid = args.srid
     pg_service = args.pg_service or os.getenv("PGSERVICE")
-    vw_tww_additional_ws(srid=srid, pg_service=pg_service)
+    with psycopg.connect(f"service={pg_service}") as connection:
+        vw_tww_additional_ws(srid=srid, pg_service=pg_service)

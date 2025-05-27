@@ -2,7 +2,6 @@ import collections
 import configparser
 import os
 import re
-from typing import List
 
 from .plugin_utils import logger
 
@@ -131,7 +130,7 @@ class DatabaseUtils:
         return collections.defaultdict(str, pgconf)
 
     @staticmethod
-    def get_pgconf_as_psycopg_dsn() -> List[str]:
+    def get_pgconf_as_psycopg_dsn() -> list[str]:
         """Returns the pgconf as a psycopg connection string"""
 
         pgconf = DatabaseUtils.get_pgconf()
@@ -185,7 +184,7 @@ class DatabaseUtils:
         return row[0]
 
     @staticmethod
-    def check_oid_prefix() -> List[str]:
+    def check_oid_prefix() -> list[str]:
         """Check whether the oid_prefix is set up for production"""
         logger.info("Checking setup of oid prefix")
         prefixes = DatabaseUtils.fetchall("SELECT prefix FROM tww_sys.oid_prefixes WHERE active;")
@@ -204,7 +203,7 @@ class DatabaseUtils:
         return msg_list
 
     @staticmethod
-    def check_fk_defaults() -> List[str]:
+    def check_fk_defaults() -> list[str]:
         """Check whether the database is set up for production"""
         logger.info("Checking setup of default_values")
 
@@ -225,7 +224,7 @@ class DatabaseUtils:
         return msg_list
 
     @staticmethod
-    def get_validity_check_issues() -> List[str]:
+    def get_validity_check_issues() -> list[str]:
         messages = []
         messages = DatabaseUtils.check_oid_prefix()
         messages.extend(DatabaseUtils.check_fk_defaults())
