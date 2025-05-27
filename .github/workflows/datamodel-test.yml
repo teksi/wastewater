@@ -44,7 +44,11 @@ jobs:
       - name: Initialize container
         run: |
           docker run -d -p 5432:5432 --name teksi-wastewater teksi/wastewater:unstable
-          docker exec teksi-wastewater init_db.sh wait
+          until docker exec teksi-wastewater pg_isready -U postgres; do
+            echo "Waiting for PostgreSQL to be ready..."
+            sleep 2
+          done
+          docker exec teksi-wastewater pum -vvv -s tww -d datamodel install -p SRID 2056
 
       - name: Run tests
         run:  docker exec teksi-wastewater pytest datamodel

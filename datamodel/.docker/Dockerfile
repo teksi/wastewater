@@ -26,7 +26,6 @@ ENV VIRTUAL_ENV=/opt/venv
 RUN python3 -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 RUN pip install -r datamodel/requirements.txt
-RUN pip install -r datamodel/requirements-psycopg${PSYCOPG_VERSION}.txt
 RUN if [ "${RUN_TEST}" = "True" ]; then pip install -r datamodel/requirements-test.txt; fi
 
 # Configure the postgres connections
@@ -34,11 +33,6 @@ RUN printf '[postgres]\ndbname=postgres\nuser=postgres\n' >> /etc/postgresql-com
 RUN printf '[pg_tww]\ndbname=tww\nuser=postgres\n' >> /etc/postgresql-common/pg_service.conf
 RUN printf '[pg_tww_demo]\ndbname=tww_demo\nuser=postgres\n' >> /etc/postgresql-common/pg_service.conf
 
-RUN chmod +x /src/datamodel/.docker/init_db.sh
-ENV PATH="/src/datamodel/.docker:${PATH}"
-
-# Execute the main script on database initialization (zzz to be after postgis init)
-RUN if [ "${AUTO_INIT}" = "True" ]; then ln -s /src/datamodel/.docker/init_db.sh /docker-entrypoint-initdb.d/zzz_init_db.sh; fi
 
 # Some defaults
 ENV POSTGRES_PASSWORD=postgres
