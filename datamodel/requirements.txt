@@ -1,3 +1,4 @@
 git+https://github.com/opengisch/pirogue.git@v3
 git+https://github.com/opengisch/pum.git@main
 pyyaml
+psycopg>=3.1.18
