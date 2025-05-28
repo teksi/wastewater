@@ -140,7 +140,7 @@ class InterlisImporterToIntermediateSchema:
         self._import_bankett()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.Spuelstutzen -> TWW.flushing_nozzle")
+        logger.info("\nImporting ABWASSER.spuelstutzen -> TWW.flushing_nozzle")
         self._import_spuelstutzen()
         self._check_for_stop()
 
@@ -177,188 +177,188 @@ class InterlisImporterToIntermediateSchema:
         self._import_steuerungszentrale()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.Abflusslose_Toilette -> TWW.drainless_toilet")
+        logger.info("\nImporting ABWASSER.abflusslose_toilette -> TWW.drainless_toilet")
         self._import_abflusslose_toilette()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.Absperr_Drosselorgan -> TWW.throttle_shut_off_unit")
+        logger.info("\nImporting ABWASSER.absperr_drosselorgan -> TWW.throttle_shut_off_unit")
         self._import_absperr_drosselorgan()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.Beckenentleerung -> TWW.tank_emptying")
+        logger.info("\nImporting ABWASSER.beckenentleerung -> TWW.tank_emptying")
         self._import_beckenentleerung()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.Beckenreinigung -> TWW.tank_cleaning")
+        logger.info("\nImporting ABWASSER.beckenreinigung -> TWW.tank_cleaning")
         self._import_beckenreinigung()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.Biol_oekol_Gesamtbeurteilung -> TWW.bio_ecol_assessment")
+        logger.info("\nImporting ABWASSER.biol_oekol_gesamtbeurteilung -> TWW.bio_ecol_assessment")
         self._import_biol_oekol_gesamtbeurteilung()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.Brunnen -> TWW.fountain")
+        logger.info("\nImporting ABWASSER.brunnen -> TWW.fountain")
         self._import_brunnen()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.EZG_PARAMETER_ALLG -> TWW.param_ca_general")
+        logger.info("\nImporting ABWASSER.ezg_parameter_allg -> TWW.param_ca_general")
         self._import_ezg_parameter_allg()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.EZG_PARAMETER_MOUSE1 -> TWW.param_ca_mouse1")
+        logger.info("\nImporting ABWASSER.ezg_parameter_mouse1 -> TWW.param_ca_mouse1")
         self._import_ezg_parameter_mouse1()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.Einzelflaeche -> TWW.individual_surface")
+        logger.info("\nImporting ABWASSER.einzelflaeche -> TWW.individual_surface")
         self._import_einzelflaeche()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.Einzugsgebiet -> TWW.catchment_area")
+        logger.info("\nImporting ABWASSER.einzugsgebiet -> TWW.catchment_area")
         self._import_einzugsgebiet()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.ElektrischeEinrichtung -> TWW.electric_equipment")
+        logger.info("\nImporting ABWASSER.elektrischeeinrichtung -> TWW.electric_equipment")
         self._import_elektrischeeinrichtung()
         self._check_for_stop()
 
         logger.info(
-            "\nImporting ABWASSER.ElektromechanischeAusruestung -> TWW.electromechanical_equipment"
+            "\nImporting ABWASSER.elektromechanischeausruestung -> TWW.electromechanical_equipment"
         )
         self._import_elektromechanischeausruestung()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.Entsorgung -> TWW.disposal")
+        logger.info("\nImporting ABWASSER.entsorgung -> TWW.disposal")
         self._import_entsorgung()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.Entwaesserungssystem -> TWW.drainage_system")
+        logger.info("\nImporting ABWASSER.entwaesserungssystem -> TWW.drainage_system")
         self._import_entwaesserungssystem()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.Feststoffrueckhalt -> TWW.solids_retention")
+        logger.info("\nImporting ABWASSER.feststoffrueckhalt -> TWW.solids_retention")
         self._import_feststoffrueckhalt()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.FoerderAggregat -> TWW.")
+        logger.info("\nImporting ABWASSER.foerderaggregat -> TWW.pump")
         self._import_foerderaggregat()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.Gebaeude -> TWW.building")
+        logger.info("\nImporting ABWASSER.gebaeude -> TWW.building")
         self._import_gebaeude()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.Gebaeudegruppe -> TWW.building_group")
+        logger.info("\nImporting ABWASSER.gebaeudegruppe -> TWW.building_group")
         self._import_gebaeudegruppe()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.Gebaeudegruppe_BAUGWR -> TWW.building_group_baugwr")
+        logger.info("\nImporting ABWASSER.gebaeudegruppe_baugwr -> TWW.building_group_baugwr")
         self._import_gebaeudegruppe_baugwr()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.Gesamteinzugsgebiet -> TWW.catchment_area_totals")
+        logger.info("\nImporting ABWASSER.gesamteinzugsgebiet -> TWW.catchment_area_totals")
         self._import_gesamteinzugsgebiet()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.HQ_Relation -> TWW.hq_relation")
+        logger.info("\nImporting ABWASSER.hq_relation -> TWW.hq_relation")
         self._import_hq_relation()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.Hydr_GeomRelation -> TWW.hydr_geom_relation")
+        logger.info("\nImporting ABWASSER.hydr_geomrelation -> TWW.hydr_geom_relation")
         self._import_hydr_geomrelation()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.Hydr_Geometrie -> TWW.hydr_geometry")
+        logger.info("\nImporting ABWASSER.hydr_geometrie -> TWW.hydr_geometry")
         self._import_hydr_geometrie()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.Hydr_Kennwerte -> TWW.hydraulic_char_data")
+        logger.info("\nImporting ABWASSER.hydr_kennwerte -> TWW.hydraulic_char_data")
         self._import_hydr_kennwerte()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.KLARA -> TWW.small_treatment_plant")
+        logger.info("\nImporting ABWASSER.klara -> TWW.small_treatment_plant")
         self._import_klara()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.Landwirtschaftsbetrieb -> TWW.farm")
+        logger.info("\nImporting ABWASSER.landwirtschaftsbetrieb -> TWW.farm")
         self._import_landwirtschaftsbetrieb()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.Leapingwehr -> TWW.leapingweir")
+        logger.info("\nImporting ABWASSER.leapingwehr -> TWW.leapingweir")
         self._import_leapingwehr()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.Massnahme -> TWW.measure")
+        logger.info("\nImporting ABWASSER.massnahme -> TWW.measure")
         self._import_massnahme()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.MechanischeVorreinigung -> TWW.mechanical_pretreatment")
+        logger.info("\nImporting ABWASSER.mechanischevorreinigung -> TWW.mechanical_pretreatment")
         self._import_mechanischevorreinigung()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.Messgeraet -> TWW.measuring_device")
+        logger.info("\nImporting ABWASSER.messgeraet -> TWW.measuring_device")
         self._import_messgeraet()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.Messreihe -> TWW.measurement_series")
+        logger.info("\nImporting ABWASSER.messreihe -> TWW.measurement_series")
         self._import_messreihe()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.Messresultat -> TWW.measurement_result")
+        logger.info("\nImporting ABWASSER.messresultat -> TWW.measurement_result")
         self._import_messresultat()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.Messstelle -> TWW.measuring_point")
+        logger.info("\nImporting ABWASSER.messstelle -> TWW.measuring_point")
         self._import_messstelle()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.Mutation -> TWW.mutation")
+        logger.info("\nImporting ABWASSER.mutation -> TWW.mutation")
         self._import_mutation()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.Reservoir -> TWW.reservoir")
+        logger.info("\nImporting ABWASSER.reservoir -> TWW.reservoir")
         self._import_reservoir()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.Retentionskoerper -> TWW.retention_body")
+        logger.info("\nImporting ABWASSER.retentionskoerper -> TWW.retention_body")
         self._import_retentionskoerper()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.Rohrprofil_Geometrie -> TWW.profile_geometry")
+        logger.info("\nImporting ABWASSER.rohrprofil_geometrie -> TWW.profile_geometry")
         self._import_rohrprofil_geometrie()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.Rueckstausicherung -> TWW.backflow_prevention")
+        logger.info("\nImporting ABWASSER.rueckstausicherung -> TWW.backflow_prevention")
         self._import_rueckstausicherung()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.Stammkarte -> TWW.log_card")
+        logger.info("\nImporting ABWASSER.stammkarte -> TWW.log_card")
         self._import_stammkarte()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.Streichwehr -> TWW.prank_weir")
+        logger.info("\nImporting ABWASSER.streichwehr -> TWW.prank_weir")
         self._import_streichwehr()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.Ueberlaufcharakteristik -> TWW.overflow_char")
+        logger.info("\nImporting ABWASSER.ueberlaufcharakteristik -> TWW.overflow_char")
         self._import_ueberlaufcharakteristik()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.Unterhalt -> TWW.maintenance")
+        logger.info("\nImporting ABWASSER.unterhalt -> TWW.maintenance")
         self._import_unterhalt()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.Versickerungsbereich -> TWW.infiltration_zone")
+        logger.info("\nImporting ABWASSER.versickerungsbereich -> TWW.infiltration_zone")
         self._import_versickerungsbereich()
         self._check_for_stop()
 
         logger.info(
-            "\nImporting ABWASSER.erhaltungsereignis_abwasserbauwerkassoc  -> TWW.re_maintenance_event_wastewater_structure"
+            "\nImporting ABWASSER.erhaltungsereignis_abwasserbauwerkassoc -> TWW.re_maintenance_event_wastewater_structure"
         )
         self._import_erhaltungsereignis_abwasserbauwerkassoc()
         self._check_for_stop()
 
         logger.info(
-            "\nImporting ABWASSER.gebaeudegruppe_entsorgungassoc  -> TWW.re_building_group_disposal"
+            "\nImporting ABWASSER.gebaeudegruppe_entsorgungassoc -> TWW.re_building_group_disposal"
         )
         self._import_gebaeudegruppe_entsorgungassoc()
         self._check_for_stop()
@@ -474,7 +474,7 @@ class InterlisImporterToIntermediateSchema:
             flag_dirty(
                 instance
             )  # we flag it as dirty so it stays in the session. This is a workaround trick
-            # needed bcause the session is not meant to be used as a cache: https://docs.sqlalchemy.org/en/20/orm/session_basics.html#is-the-session-a-cache
+            # needed because the session is not meant to be used as a cache: https://docs.sqlalchemy.org/en/20/orm/session_basics.html#is-the-session-a-cache
 
             # Update dates times (different resolution Interlis / TWW)
             date_time_keys = [
@@ -533,6 +533,8 @@ class InterlisImporterToIntermediateSchema:
             "accessibility": self.get_vl_code(
                 self.model_classes_tww_od.wastewater_structure_accessibility, row.zugaenglichkeit
             ),
+            # new attribute condition_score Release 2020
+            "condition_score": row.zustandsnote,
             "contract_section": row.baulos,
             "detail_geometry3d_geometry": (
                 row.detailgeometrie
@@ -546,6 +548,7 @@ class InterlisImporterToIntermediateSchema:
             "financing": self.get_vl_code(
                 self.model_classes_tww_od.wastewater_structure_financing, row.finanzierung
             ),
+            "fk_main_cover": row.hauptdeckelref,
             "fk_operator": row.betreiberref,
             "fk_owner": row.eigentuemerref,
             "gross_costs": row.bruttokosten,
@@ -566,18 +569,22 @@ class InterlisImporterToIntermediateSchema:
             "status": self.get_vl_code(
                 self.model_classes_tww_vl.wastewater_structure_status, row.astatus
             ),
+            # new attribute status_survey_year Release 2020
+            "status_survey_year": row.zustandserhebung_jahr,
             "structure_condition": self.get_vl_code(
                 self.model_classes_tww_od.wastewater_structure_structure_condition,
                 row.baulicherzustand,
             ),
             "subsidies": row.subventionen,
+            # new attribute urgency_figure Release 2020.1
+            "urgency_figure": row.dringlichkeitszahl,
             "year_of_construction": row.baujahr,
             "year_of_replacement": row.ersatzjahr,
         }
 
     def wastewater_networkelement_common(self, row):
         """
-        Returns common attributes for network_element
+        Returns common attributes for wastewater_networkelement
         """
         return {
             "fk_wastewater_structure": self.get_pk(row.abwasserbauwerkref__REL),
@@ -723,6 +730,11 @@ class InterlisImporterToIntermediateSchema:
                 connection_type=self.get_vl_code(
                     self.model_classes_tww_od.channel_connection_type, row.verbindungsart
                 ),
+                # new attribute function_amelioration Release 2020
+                function_amelioration=self.get_vl_code(
+                    self.model_classes_tww_od.channel_function_amelioration,
+                    row.funktionmelioration,
+                ),
                 function_hierarchic=self.get_vl_code(
                     self.model_classes_tww_od.channel_function_hierarchic, row.funktionhierarchisch
                 ),
@@ -731,6 +743,8 @@ class InterlisImporterToIntermediateSchema:
                 ),
                 jetting_interval=row.spuelintervall,
                 pipe_length=row.rohrlaenge,
+                # new attribute seepage Release 2020
+                seepage=self.get_vl_code(self.model_classes_tww_od.channel_seepage, row.sickerung),
                 usage_current=self.get_vl_code(
                     self.model_classes_tww_od.channel_usage_current, row.nutzungsart_ist
                 ),
@@ -750,6 +764,10 @@ class InterlisImporterToIntermediateSchema:
                 **self.wastewater_structure_common(row),
                 # --- manhole ---
                 # _orientation=row.REPLACE_ME,
+                # new attribute amphibian_exit Release 2020
+                amphibian_exit=self.get_vl_code(
+                    self.model_classes_tww_vl.manhole_amphibian_exit, row.amphibienausstieg
+                ),
                 dimension1=row.dimension1,
                 dimension2=row.dimension2,
                 function=self.get_vl_code(
@@ -757,6 +775,11 @@ class InterlisImporterToIntermediateSchema:
                 ),
                 material=self.get_vl_code(
                     self.model_classes_tww_vl.manhole_material, row.material
+                ),
+                # new attribute possibility_intervention Release 2020
+                possibility_intervention=self.get_vl_code(
+                    self.model_classes_tww_vl.manhole_possibility_intervention,
+                    row.interventionsmoeglichkeit,
                 ),
                 surface_inflow=self.get_vl_code(
                     self.model_classes_tww_od.manhole_surface_inflow, row.oberflaechenzulauf
@@ -781,6 +804,10 @@ class InterlisImporterToIntermediateSchema:
                 terrain_level=row.terrainkote,
                 # TODO : NOT MAPPED VSA-DSS 3D
                 # upper_elevation=row.deckenkote,
+                # new attribute water_course_segment_canton Release 2020
+                water_course_segment_canton=row.gewaesserabschnitt_kanton,
+                # new attribute water_course_number Release 2020
+                water_course_number=row.gewaesserlaufnummer,
                 waterlevel_hydraulic=row.wasserspiegel_hydraulik,
             )
             self.session_tww.add(discharge_point)
@@ -794,6 +821,11 @@ class InterlisImporterToIntermediateSchema:
                 # --- wastewater_structure ---
                 **self.wastewater_structure_common(row),
                 # --- special_structure ---
+                # new attribute amphibian_exit Release 2020
+                amphibian_exit=self.get_vl_code(
+                    self.model_classes_tww_vl.special_structure_amphibian_exit,
+                    row.amphibienausstieg,
+                ),
                 bypass=self.get_vl_code(
                     self.model_classes_tww_vl.special_structure_bypass, row.bypass
                 ),
@@ -803,6 +835,11 @@ class InterlisImporterToIntermediateSchema:
                 ),
                 function=self.get_vl_code(
                     self.model_classes_tww_od.special_structure_function, row.funktion
+                ),
+                # new attribute possibility_intervention Release 2020
+                possibility_intervention=self.get_vl_code(
+                    self.model_classes_tww_vl.special_structure_possibility_intervention,
+                    row.interventionsmoeglichkeit,
                 ),
                 stormwater_tank_arrangement=self.get_vl_code(
                     self.model_classes_tww_od.special_structure_stormwater_tank_arrangement,
@@ -833,6 +870,11 @@ class InterlisImporterToIntermediateSchema:
                 emergency_overflow=self.get_vl_code(
                     self.model_classes_tww_od.infiltration_installation_emergency_overflow,
                     row.notueberlauf,
+                ),
+                # new attribute filling_material Release 2020,
+                filling_material=self.get_vl_code(
+                    self.model_classes_tww_od.infiltration_installation_filling_material,
+                    row.fuellmaterial,
                 ),
                 # fk_dss15_aquifer=row.REPLACE_ME,  # TODO : NOT MAPPED
                 kind=self.get_vl_code(
@@ -1972,6 +2014,10 @@ class InterlisImporterToIntermediateSchema:
                     self.model_classes_tww_od.reach_point_outlet_shape, row.auslaufform
                 ),
                 position_of_connection=row.lage_anschluss,
+                # new attribute pipe_closure release 2020
+                pipe_closure=self.get_vl_code(
+                    self.model_classes_tww_od.reach_point_pipe_closure, row.rohrverschluss_kappe
+                ),
                 remark=row.bemerkung,
                 situation3d_geometry=self.geometry3D_convert(
                     row.lage, row.kote, row.t_ili_tid, "reach_point.cote (Haltungpunkt.Kote)"
@@ -2007,6 +2053,16 @@ class InterlisImporterToIntermediateSchema:
                 # fk_hydr_geometry=row.REPLACE_ME,  # TODO : NOT MAPPED
                 backflow_level_current=row.rueckstaukote_ist,
                 bottom_level=row.sohlenkote,
+                # new attribute elevation_accuracy release 2020
+                attribute=self.get_vl_code(
+                    self.model_classes_tww_od.wastewater_node_elevation_accuracy,
+                    row.hoehengenauigkeit,
+                ),
+                # new attribute function_node_amelioration release 2020
+                function_node_amelioration=self.get_vl_code(
+                    self.model_classes_tww_od.wastewater_node_function_node_amelioration,
+                    row.funktion_knoten_melioration,
+                ),
                 situation3d_geometry=self.geometry3D_convert(
                     row.lage,
                     row.sohlenkote,
@@ -2034,11 +2090,19 @@ class InterlisImporterToIntermediateSchema:
                 fk_pipe_profile=self.get_pk(row.rohrprofilref__REL),
                 fk_reach_point_from=self.get_pk(row.vonhaltungspunktref__REL),
                 fk_reach_point_to=self.get_pk(row.nachhaltungspunktref__REL),
+                # new attribute flow_time_dry_weather release 2020
+                flow_time_dry_weather=row.fliesszeit_trockenwetter,
                 horizontal_positioning=self.get_vl_code(
                     self.model_classes_tww_od.reach_horizontal_positioning, row.lagebestimmung
                 ),
+                # new attribute hydraulic_load_current release 2020
+                hydraulic_load_current=row.hydr_belastung_ist,
                 inside_coating=self.get_vl_code(
                     self.model_classes_tww_od.reach_inside_coating, row.innenschutz
+                ),
+                # new attribute leak_protection release 2020
+                leak_protection=self.get_vl_code(
+                    self.model_classes_tww_vl.reach_leak_protection, row.leckschutz
                 ),
                 length_effective=row.laengeeffektiv,
                 material=self.get_vl_code(self.model_classes_tww_vl.reach_material, row.material),
