@@ -68,7 +68,7 @@ In order to add extensions to TEKSI in a standardised way, TEKSI wastewater set 
 
 Creation of custom extensions
 ^^^^^^^^^^^^^
-Extensions are handled in the ``extensions`` folder of the datamodel. Assuming we want to add an extension ``myfoo``, we first have to create its folder structure: 
+Extensions are handled in the ``extensions`` folder of the datamodel. Assuming we want to add an extension ``myfoo``, we first have to create its folder structure:
 
 
 - datamodel/
@@ -121,7 +121,7 @@ The sql scripts are used for the following purposes:
 
 Note that the sql must not be used to create new tables in ``tww_od``. Use `PUM <https://github.com/opengisch/pum>`_ for these cases.
 
-Please note that these scripts are re-run on every datamodel update. 
+Please note that these scripts are re-run on every datamodel update.
 They must therefore be written in such a way that existing data does not interfere with them (i.e. using ``CREATE OR REPLACE VIEW`` or ``ON CONFLICT DO NOTHING``).
 
 
