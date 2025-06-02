@@ -62,6 +62,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#split-areas">3.2.7.4. Einzugsgebiete teilen</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#merge-areas">3.2.7.5. Einzugsgebiet zusammenführen</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#connect-catchment-area-to-wastewater-network-nodes">3.2.7.6. Einzugsgebiete mit Abwasserknoten verbinden</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-duplicate-coord-error">3.2.7.7. The ‚duplicate coord‘-error</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="importingdata.html">3.2.8. Datenimport</a></li>
@@ -263,6 +264,24 @@
 </div>
 <p>Mit dem Tool können nicht mehrere Einzugsgebiete auf einmal mit einem Abwasserknoten verknüpft werden. Wenn das gewünscht ist, müssen die Einzugsgebiet ausgewählt werden, dann die Attributtabelle öffnen und den Mehrfach-Editier-Modus starten. Der gewünschte Abwasserknoten kann dann aus der Liste der vorhandenen Abwasserknoten gewählt werden</p>
 <p>Um eine Verknüpfung mit einem Abwasserknoten zu löschen, kann das Einzugsgebiet mit dem <strong>Objekte abfragen</strong> Werkzeug bearbeiten werden.</p>
+</section>
+<section id="the-duplicate-coord-error">
+<h2><span class="section-number">3.2.7.7. </span>The ‚duplicate coord‘-error<a class="headerlink" href="#the-duplicate-coord-error" title="Link to this heading"></a></h2>
+<p>After digitizing catchment areas and export to DSS, you will probably get the message, that your exportfile is not valid. In the ilivalidator.log-file can be messages like:</p>
+<p>Error: line nnnn: DSS_2020_1_LV95.Siedlungsentwaesserung.Einzugsgebiet: tid chmmmm: duplicate coord at (x.xxx, y.yyy, NaN)</p>
+<p>The reason is: in the XTF-file, coordinates are writen with 0.001m (1mm). Vertex-points in QGIS can differed by only 0.0001m (0.01mm) or less.</p>
+<div class="admonition note">
+<p class="admonition-title">Bemerkung</p>
+<p>Do not work with a export-file, that is not valid. Be aware that you will not be able to import a not valid file in TWW.</p>
+</div>
+<p>Solutions:</p>
+<ul class="simple">
+<li><p>In layer-properties of the catchment area, tab <strong>digitizing</strong>, check <strong>remove duplicate nodes</strong> and add 0.001 as <strong>Geometry precision [m]</strong></p></li>
+<li><p>If there are already duplicate nodes in the data, you can eliminate them with <strong>processing toolbox</strong>, <strong>Edit Features in-Place</strong>, <strong>Remove duplicate vertices</strong>, <strong>Tolerance = 0.001m</strong></p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/remove_duplicate_nodes.jpg" src="../../_images/remove_duplicate_nodes.jpg" />
+</figure>
 </section>
 </section>
 

@@ -61,6 +61,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#split-areas">3.2.7.4. Split Areas</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#merge-areas">3.2.7.5. Merge Areas</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#connect-catchment-area-to-wastewater-network-nodes">3.2.7.6. Connect Catchment area to Wastewater Network Nodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-duplicate-coord-error">3.2.7.7. The ‘duplicate coord’-error</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="importingdata.html">3.2.8. Importing data</a></li>
@@ -262,6 +263,24 @@
 </div>
 <p>You can not connect multiple areas with the tool to a wastewater node at once. If you want to do so, you have to select the catchment areas, open the attribute table and then start the multi edit mode. There you can choose the wastewater node from the list of all nodes.</p>
 <p>Do delete a connection to a wastewater node, you can edit the area with the <strong>Identify features</strong> tool.</p>
+</section>
+<section id="the-duplicate-coord-error">
+<h2><span class="section-number">3.2.7.7. </span>The ‘duplicate coord’-error<a class="headerlink" href="#the-duplicate-coord-error" title="Link to this heading"></a></h2>
+<p>After digitizing catchment areas and export to DSS, you will probably get the message, that your exportfile is not valid. In the ilivalidator.log-file can be messages like:</p>
+<p>Error: line nnnn: DSS_2020_1_LV95.Siedlungsentwaesserung.Einzugsgebiet: tid chmmmm: duplicate coord at (x.xxx, y.yyy, NaN)</p>
+<p>The reason is: in the XTF-file, coordinates are writen with 0.001m (1mm). Vertex-points in QGIS can differed by only 0.0001m (0.01mm) or less.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Do not work with a export-file, that is not valid. Be aware that you will not be able to import a not valid file in TWW.</p>
+</div>
+<p>Solutions:</p>
+<ul class="simple">
+<li><p>In layer-properties of the catchment area, tab <strong>digitizing</strong>, check <strong>remove duplicate nodes</strong> and add 0.001 as <strong>Geometry precision [m]</strong></p></li>
+<li><p>If there are already duplicate nodes in the data, you can eliminate them with <strong>processing toolbox</strong>, <strong>Edit Features in-Place</strong>, <strong>Remove duplicate vertices</strong>, <strong>Tolerance = 0.001m</strong></p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/remove_duplicate_nodes.jpg" src="../../_images/remove_duplicate_nodes.jpg" />
+</figure>
 </section>
 </section>
 
