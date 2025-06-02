@@ -26,9 +26,20 @@ Symbology and labelling behaviour depends on the value lists `` tww_vl.channel_u
 
 For labelling, one can use the column `` tww_vl.channel_function_hierarchic.tww_use_in_labels`` to define which functions_hierarchic are taken into account when creating a wastewater structure's label.
 
+create custom tables
+^^^^^^^^^^^^^
+
+It is possible to add custom tables with ordinary data. They must be stored in ``tww_od``. In order to version them, use the Postgres Updates Manager (aka `PUM <https://github.com/opengisch/pum>`_).
+
+Adding fields to base tables
+^^^^^^^^^^^^^
+
+Instead of adding additional fields to base tables, it is advised to create a new table with a foreign key linking it to the base table using the extension framework.
+
 Datamodel updates
 ^^^^^^^^^^^^
 .. attention:: The process of updating the database is currenty being overhauled. The following information can therefore change before the next release
+
 
 Adding fields and tables
 """"""""""""""""""""""""
@@ -43,8 +54,8 @@ If one wants to have these views automatically updated when fields are added the
 If it is necessary to add custom fields, create a separate table with a foreign key pointing to the TEKSI base table and join it to the base views.
 
 
-Extension Framework
-^^^^^^^^^^^^^
+Extension Framework for application schema
+---------------
 
 In order to add extensions to TEKSI in a standardised way, TEKSI wastewater set into place an extension framework. It allows the following actions:
 
@@ -56,41 +67,68 @@ In order to add extensions to TEKSI in a standardised way, TEKSI wastewater set 
 .. attention:: The extension framework is not intended for alterations on the schema ``tww_od``. Use PUM functionalities instead
 
 Creation of custom extensions
-"""""""""""""""""""""""""""""""
-Extensions are handled in the ``extensions`` folder of the datamodel. In order to import a custom extension, the source code needs to be extended.
+^^^^^^^^^^^^^
+Extensions are handled in the ``extensions`` folder of the datamodel. Assuming we want to add an extension ``myfoo``, we first have to create its folder structure: 
 
-* download the datamodel source code
-* in ``datamodel\app\extensions`` there is a yaml file ``config.yaml`` that allows setting three variables:
+
+- datamodel/
+  - app/
+    - extensions/
+      - config.yaml
+      - foo/
+        - ...
+      - bar/
+        - ...
+      - ...
+
+Next, we need to define the extension's variables. This is done in a yaml file ``config.yaml`` that contains:
+
   * an extension id that is used to access the extension
   * a directory name in which all extension data lies
-  * a variables dictionary
+  * a ``variables`` dictionary that passes variables to our sql scripts
+
+.. code:: YAML
+
+	extensions:
+	- [...] existing extensions
+    - id: myfoo
+      directory: foo
+      variables:
+        myVariable:
+          value: "Hello World"
+          type: literal
+        myNumber:
+          value: 0
+          type: literal
+
 
 After adding an entry for your extension, it can be accessed in deployment. Inside the folder defined in the ``directory`` variable, there can be two types of files:
 
 * sql scripts
 * yaml files
 
-Sql scripts are run after using the variables, while the yaml files are used to override or extend view definitions.
+Sql scripts are run after parsing the variables defined in ``variables``, while the yaml files are used to override or extend view definitions.
+
+Limitations for sql scripts
+^^^^^^^^^^^^^
+
+The sql scripts are used for the following purposes:
+
+* Adding additional views to the application schema
+* Adding additional ``INSTEAD OF`` triggers to the application schema
+* Adding additional triggers to populate od tables that are not part of the VSA-DSS datamodel
+* Adding additional items to value lists
+
+Note that the sql must not be used to create new tables in ``tww_od``. Use `PUM <https://github.com/opengisch/pum>`_ for these cases.
+
+Please note that these scripts are re-run on every datamodel update. 
+They must therefore be written in such a way that existing data does not interfere with them (i.e. using ``CREATE OR REPLACE VIEW`` or ``ON CONFLICT DO NOTHING``).
 
 
-Deployment of custom extensions
-"""""""""""""""""""""""""""""""
+Joining additional tables to views
+^^^^^^^^^^^^^
 
-A predefined extension can be loaded using
-
-``python -m .app.create_app.py --pg_service pg_tww --drop-schema --srid 2056 --extensions extension_id_1 foo bar``
-
-On creation of the application schema, the order of creation of objects is as follows:
-
-* TWW functions
-* Extensions in the order inside the ``--extensions`` flag
-* Single Inheritances
-* Multiple inheritances (can be overridden by extension yaml)
-* Main views (can be extended by extension yaml)
-* Simple join views (can be overridden by extension yaml)
-* TWW sql scripts
-* default values and triggers relating to app functions
-* post-all sql scripts
+There are three types of views with which one can interact using the extension framework
 
 Overriding yaml view definitions
 """"""""""""""""""""""""""""""""
@@ -173,95 +211,21 @@ Entries that are in ``skip_columns`` but listed in ``remap_columns`` are not ski
 It is expected that mt.fk_ws has a ON DELETE CASCADE`` foreign key constraint.
 The yaml file needs to be called ``vw_tww_wastewater_structure.yaml``.
 
-
-Creating custom views
-"""""""""""""""""""""
-
-It is possible to create custom views and add them to the data model.
-Simply create an extension folder, place the sql or py script inside and add the ``--extensions`` flag
-Please note that these scripts are re-run on every datamodel update.
-
-Adding custom triggers
-""""""""""""""""""""
-
-It is possible to create custom views and add them to the data model.
-Simply create an extension folder, place the sql or py script inside and add the ``--extensions`` flag
-Please note that these scripts are re-run on every datamodel update.
-
-
-Customization of the data model
-===============================
-
-This chapter describes the possible customization to the data model.
-
-
-Introduction
+Deployment of custom extensions
 ^^^^^^^^^^^^^
 
-The data model is versioned and updates are achieved using Postgres Updates Manager (aka `PUM <https://github.com/opengisch/pum>`_).
-The views required to edit the data are automatically generated using `Pirogue <https://github.com/opengisch/pirogue>`_ library.
+A predefined extension can be loaded using
 
-The combination of both allows to introduce small customizations of the data model such as adding fields to existing base tables or extending views by joining additional tables.
+``python -m .app.create_app.py --pg_service pg_tww --drop-schema --srid 2056 --extensions myfoo bar``
 
-Before going further, we strongly recommend to ask the community if you have any doubts about how to store any information in the database. TWW complies with `SIA 405 <http://www.sia.ch/405>`_ Waste Water and `VSA-DSS <http://dss.vsa.ch>`_ datamodel.
+On creation of the application schema, the order of creation of objects is as follows:
 
-
-If TWW data model is not able yet to hold some data, please let us know what kind and how it should be handled. TWW data model is a standard proof adaptative model and could follow your needs.
-
-If a customization is still required, the following explanations and rules explain how to adapt TWW data model to your specific needs.
-
-Altering symbology and labelling behaviour
-^^^^^^^^^^^^^
-
-Symbology and labelling behaviour depends on the value lists `` tww_vl.channel_usage_current`` and `` tww_vl.channel_function_hierarchic``  These two value list tables have an additional column ``tww_symbology_order``, which is used to define the hierarchy of the symbology.
-
-For labelling, one can use the column `` tww_vl.channel_function_hierarchic.tww_use_in_labels`` to define which functions_hierarchic are taken into account when creating a wastewater structure's label.
-
-
-
-Adding fields
-^^^^^^^^^^^^^
-
-Instead of adding additional fields to base tables, it is advised to create a new table with a foreign key linking it to the base table.
-
-Define a custom extension table by naming them as ``usr_…``.
-
-
-Joining additional tables
-^^^^^^^^^^^^^^^^^^^^^^^^^
-
-It is possible to join additional tables to the main views (i.e. ``vw_tww_wastewater_structure`` and ``vw_tww_reach``).
-This is done by using a YAML definition file for each view and defining a list of joined tables.
-Fields of these tables will be joined as read-only fields as they are discarded in edit triggers.
-For joining a table to ``tww_od.wastewater_structure``, here is an example:
-
-.. code:: YAML
-
-    joins:
-      my_extra_join:
-        table: tww_od.my_table
-        alias: mt
-        prefix: mt_
-        skip_columns:
-          - field_1
-          - field_2
-        remap_columns:
-          field_3: my_renamed_field
-        join_on: mt.fk_ws = ws.obj_id
-
-``table`` and ``join_on`` are mandatory keys, all the others are optional.
-
-This YAML file should be given as a file path when running the script:
-
-``app.create_app --pg_service pg_tww --srid 2056 --extension_names name_of_extension``
-
-And similarly for ``vw_tww_reach`` view, by specifying ``tww_reach_extra`` variable to the corresponding YAML file path.
-
-
-Creating custom views or triggers
-"""""""""""""""""""""""""""""""""
-
-It is possible to create custom views or triggers and add them to the data model.
-Simply create an extension folder, place the sql or py script inside and add the ``--extensions`` flag to the ``create_app`` call
-
-.. attention:: These scripts are re-run on every datamodel update.
+* TWW functions
+* Extensions in the order inside the ``--extensions`` flag
+* Single Inheritances
+* Multiple inheritances (can be overridden by extension yaml)
+* Main views (can be extended by extension yaml)
+* Simple join views (can be overridden by extension yaml)
+* TWW sql scripts
+* default values and triggers relating to app functions
+* post-all sql scripts
