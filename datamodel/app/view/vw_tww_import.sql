@@ -65,6 +65,7 @@ CREATE OR REPLACE VIEW tww_app.import_vw_manhole AS
 				FROM tww_od.import_manhole_quarantine
 			    GROUP BY obj_id
 			  	) q ON q.obj_id = ws.obj_id
+	WHERE NOT EXISTS (SELECT 1 FROM tww_od.channel ch WHERE ch.obj_id=ws.obj_id)
    ;
 
 
@@ -197,6 +198,9 @@ BEGIN
     RAISE EXCEPTION 'No referencing value for calculation with depth';
   END IF;
 
+  NEW.co_level=coalesce(NEW.co_level,NEW.wn_bottom_level + NEW._depth)
+  NEW.wn_bottom_level=coalesce(NEW.wn_bottom_level,NEW.co_level - NEW._depth)
+
   -- tww_od.wastewater_structure
   IF( SELECT TRUE FROM tww_app.vw_tww_wastewater_structure WHERE obj_id = NEW.obj_id ) THEN
     UPDATE tww_app.vw_tww_wastewater_structure SET
@@ -206,11 +210,7 @@ BEGIN
     co_diameter = NEW.co_diameter,
     co_material = NEW.co_material,
     co_positional_accuracy = NEW.co_positional_accuracy,
-    co_level =
-      (CASE WHEN NEW.co_level IS NULL AND NEW.wn_bottom_level IS NOT NULL AND NEW._depth IS NOT NULL
-      THEN NEW.wn_bottom_level + NEW._depth
-      ELSE NEW.co_level
-      END),
+    co_level =NEW.co_level,
     _depth = NEW._depth,
     _channel_usage_current = NEW._channel_usage_current,
     ma_material = NEW.ma_material,
@@ -220,11 +220,7 @@ BEGIN
     ma_function = NEW.ma_function,
     ss_function = NEW.ss_function,
     remark = NEW.remark,
-    wn_bottom_level =
-      (CASE WHEN NEW.wn_bottom_level IS NULL AND NEW.co_level IS NOT NULL AND NEW._depth IS NOT NULL
-      THEN NEW.co_level - NEW._depth
-      ELSE NEW.wn_bottom_level
-      END)
+    wn_bottom_level = NEW.wn_bottom_level
     WHERE obj_id = NEW.obj_id;
     RAISE NOTICE 'Updated row in tww_app.vw_tww_wastewater_structure';
   ELSE
@@ -232,7 +228,7 @@ BEGIN
     (
     obj_id,
     identifier,
-    situation_geometry,
+    situation3d_geometry,
     co_shape,
     co_diameter,
     co_material,
@@ -253,15 +249,12 @@ BEGIN
     (
     NEW.obj_id,
     NEW.identifier,
-    ST_Force2D(NEW.situation_geometry),
+    ST_Force3D(NEW.situation_geometry,NEW.wn_bottom_level),
     NEW.co_shape,
     NEW.co_diameter,
     NEW.co_material,
     NEW.co_positional_accuracy,
-      (CASE WHEN NEW.co_level IS NULL AND NEW.wn_bottom_level IS NOT NULL AND NEW._depth IS NOT NULL
-      THEN NEW.wn_bottom_level + NEW._depth
-      ELSE NEW.co_level
-      END),
+    NEW.co_level,
     NEW._depth,
     NEW._channel_usage_current,
     NEW.ma_material,
@@ -271,10 +264,7 @@ BEGIN
     NEW.ma_function,
     NEW.ss_function,
     NEW.remark,
-      (CASE WHEN NEW.wn_bottom_level IS NULL AND NEW.co_level IS NOT NULL AND NEW._depth IS NOT NULL
-      THEN NEW.co_level - NEW._depth
-      ELSE NEW.wn_bottom_level
-      END)
+    NEW.wn_bottom_level
       );
     RAISE NOTICE 'Inserted row in tww_app.vw_tww_wastewater_structure';
   END IF;
