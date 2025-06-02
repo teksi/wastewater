@@ -198,8 +198,8 @@ BEGIN
     RAISE EXCEPTION 'No referencing value for calculation with depth';
   END IF;
 
-  NEW.co_level=coalesce(NEW.co_level,NEW.wn_bottom_level + NEW._depth)
-  NEW.wn_bottom_level=coalesce(NEW.wn_bottom_level,NEW.co_level - NEW._depth)
+  NEW.co_level=coalesce(NEW.co_level,NEW.wn_bottom_level + NEW._depth);
+  NEW.wn_bottom_level=coalesce(NEW.wn_bottom_level,NEW.co_level - NEW._depth);
 
   -- tww_od.wastewater_structure
   IF( SELECT TRUE FROM tww_app.vw_tww_wastewater_structure WHERE obj_id = NEW.obj_id ) THEN
