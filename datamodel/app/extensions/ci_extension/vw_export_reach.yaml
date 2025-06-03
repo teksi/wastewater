@@ -95,5 +95,5 @@ joins:
   # added as an extension
   dataowner:
     table: tww_od.organisation
-    fkey: ws_fk_dataowner
+    fkey: fk_dataowner
     prefix: dataowner_
