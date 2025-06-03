@@ -25,7 +25,7 @@ class TestExtensions(unittest.TestCase):
                 "SELECT table_name FROM information_schema.views WHERE table_schema = 'tww_od';"
             )
             views = cursor.fetchall()
-            self.assertGreater(len(views), 0, "No views found in tww_od schema")
+            self.assertEqual(len(views), 0, f"{len(views)} views found in tww_od schema")
 
 
 if __name__ == "__main__":
