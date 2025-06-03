@@ -85,6 +85,8 @@ BEGIN
       INSERT INTO tww_od.import_manhole_quarantine
       (
       obj_id,
+      co_obj_id,
+      wn_obj_id,
       identifier,
       situation_geometry,
       co_shape,
@@ -129,6 +131,8 @@ BEGIN
       VALUES
       (
       NEW.obj_id,
+      NEW.co_obj_id,
+      NEW.wn_obj_id,
       NEW.identifier,
       NEW.situation_geometry,
       NEW.co_shape,
@@ -226,11 +230,11 @@ BEGIN
     WHERE obj_id = NEW.obj_id;
     RAISE NOTICE 'Updated row in tww_app.vw_tww_wastewater_structure';
   ELSE
-
+    
 	NEW.obj_id = COALESCE(NEW.obj_id, tww_app.generate_oid('tww_od'::text, 'wastewater_structure'::text));
 	NEW.co_obj_id = COALESCE(NEW.co_obj_id, tww_app.generate_oid('tww_od'::text, 'cover'::text));
 	NEW.wn_obj_id = COALESCE(NEW.wn_obj_id, tww_app.generate_oid('tww_od'::text, 'wastewater_node'::text));
-
+	
 	INSERT INTO tww_app.vw_tww_wastewater_structure
     (
     obj_id,
@@ -262,7 +266,7 @@ BEGIN
 	NEW.co_obj_id,
 	NEW.wn_obj_id,
     NEW.identifier,
-    ST_Force3D(NEW.situation_geometry,NEW.wn_bottom_level),
+    ST_Force2D(NEW.situation_geometry), --even though the name is 3d, in the view it is 2d
     NEW.co_shape,
     NEW.co_diameter,
     NEW.co_material,
