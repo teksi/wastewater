@@ -20,7 +20,7 @@ BEGIN
     rp.obj_id,
     ST_Force2D(coalesce(rp.situation3d_geometry,ST_EndPoint(r_t.progression3d_geometry),ST_StartPoint(r_f.progression3d_geometry)))
   FROM tww_od.reach_point rp
-  LEFT JOIN tww_od.reach r_f ON rp.obj_id = r_f.fk_reach_point_from 
+  LEFT JOIN tww_od.reach r_f ON rp.obj_id = r_f.fk_reach_point_from
   LEFT JOIN tww_od.reach r_t ON rp.obj_id = r_t.fk_reach_point_to;
 
   -- Insert virtual nodes for blind connections
@@ -31,9 +31,9 @@ BEGIN
     ST_ClosestPoint(r.progression3d_geometry, coalesce(rp.situation3d_geometry,ST_EndPoint(r_t.progression3d_geometry),ST_StartPoint(r_f.progression3d_geometry)))
   FROM tww_od.reach r
   INNER JOIN tww_od.reach_point rp ON rp.fk_wastewater_networkelement = r.obj_id
-  LEFT JOIN tww_od.reach r_f ON rp.obj_id = r_f.fk_reach_point_from 
+  LEFT JOIN tww_od.reach r_f ON rp.obj_id = r_f.fk_reach_point_from
   LEFT JOIN tww_od.reach r_t ON rp.obj_id = r_t.fk_reach_point_to
-  WHERE ST_LineLocatePoint(ST_CurveToLine(r.progression3d_geometry), 
+  WHERE ST_LineLocatePoint(ST_CurveToLine(r.progression3d_geometry),
     coalesce(rp.situation3d_geometry,
 	  ST_EndPoint(r_t.progression3d_geometry),
 	  ST_StartPoint(r_f.progression3d_geometry)))
