@@ -23,7 +23,7 @@ class TestImport(unittest.TestCase, DbTestBase):
     # - level calculation failing because only no reference level
     #   -> not updated structure with calculated values
     #   -> still in quarantine
-    @unittest.skip("This test needs the demo data to work")
+    # @unittest.skip("This test needs the demo data to work")
     def test_calculation_level_fail(self):
         # obj_id from the test data
         obj_id = "ch13p7mzMA000011"
@@ -37,14 +37,14 @@ class TestImport(unittest.TestCase, DbTestBase):
         }
 
         # update
-        self.update("vw_manhole", row, obj_id)
+        self.update("import_vw_manhole", row, obj_id)
 
         # it should be calculated correctly in the live table tww_od.wastewater_structure
         row = self.select("wastewater_structure", obj_id, "tww_od")
         self.assertNotEqual(row["_depth"], decimal.Decimal("12.220"))
 
-        # it should be visible in the vw_manhole view
-        row = self.select("vw_manhole", obj_id)
+        # it should be visible in the import_vw_manhole view
+        row = self.select("import_vw_manhole", obj_id)
         self.assertNotEqual(row["_depth"], decimal.Decimal("12.220"))
 
         # it shouldn't be in the quarantine import_manhole_quarantine
@@ -56,7 +56,7 @@ class TestImport(unittest.TestCase, DbTestBase):
 
     # - ws bottom level calculation
     #   -> updated structure with calculated values
-    @unittest.skip("This test needs the demo data to work")
+    # @unittest.skip("This test needs the demo data to work")
     def test_calculation_wn_bottom_level(self):
         # obj_id from the test data
         obj_id = "ch13p7mzMA000071"
@@ -71,7 +71,7 @@ class TestImport(unittest.TestCase, DbTestBase):
         }
 
         # update
-        self.update("vw_manhole", row, obj_id, "tww_app")
+        self.update("import_vw_manhole", row, obj_id, "tww_app")
 
         # it should be calculated correctly in the live view tww_od.vw_tww_wastewater_structure
         row = self.select("vw_tww_wastewater_structure", obj_id, "tww_od")
@@ -80,7 +80,7 @@ class TestImport(unittest.TestCase, DbTestBase):
         self.assertEqual(row["wn_bottom_level"], decimal.Decimal("20"))
 
         # it should be visible in the vw_manhole view
-        row = self.select("vw_manhole", obj_id)
+        row = self.select("import_vw_manhole", obj_id)
         self.assertEqual(row["_depth"], decimal.Decimal("2.220"))
         self.assertEqual(row["co_level"], decimal.Decimal("22.220"))
         self.assertEqual(row["wn_bottom_level"], decimal.Decimal("20"))
@@ -92,7 +92,7 @@ class TestImport(unittest.TestCase, DbTestBase):
     # - cover level calculation
     #   -> updated structure with calculated values
     #   -> deleted in quarantine
-    @unittest.skip("This test needs the demo data to work")
+    # @unittest.skip("This test needs the demo data to work")
     def test_calculation_co_level(self):
         # obj_id from the test data
         obj_id = "ch13p7mzMA000071"
@@ -107,7 +107,7 @@ class TestImport(unittest.TestCase, DbTestBase):
         }
 
         # update
-        self.update("vw_manhole", row, obj_id, "tww_od.import_")
+        self.update("import_vw_manhole", row, obj_id, "tww_od.import_")
 
         # it should be calculated correctly in the live view vw_tww_wastewater_structure
         row = self.select("vw_tww_wastewater_structure", obj_id, "tww_app")
@@ -116,8 +116,8 @@ class TestImport(unittest.TestCase, DbTestBase):
         self.assertEqual(row["co_level"], decimal.Decimal("30"))
         self.assertEqual(row["wn_bottom_level"], decimal.Decimal("22.220"))
 
-        # it should be visible in the vw_manhole view
-        row = self.select("vw_manhole", obj_id, "tww_app")
+        # it should be visible in the import_vw_manhole view
+        row = self.select("import_vw_manhole", obj_id, "tww_app")
         self.assertEqual(row["_depth"], decimal.Decimal("7.780"))
         self.assertEqual(row["co_level"], decimal.Decimal("30"))
         self.assertEqual(row["wn_bottom_level"], decimal.Decimal("22.220"))
@@ -128,7 +128,7 @@ class TestImport(unittest.TestCase, DbTestBase):
 
     # - delete of structure
     #   -> delete in live
-    @unittest.skip("This test needs the demo data to work")
+    # @unittest.skip("This test needs the demo data to work")
     def test_delete_structure(self):
         # obj_id from the test data
         obj_id = "ch13p7mzMA000037"
@@ -137,19 +137,19 @@ class TestImport(unittest.TestCase, DbTestBase):
         row = {"deleted": True, "verified": True}
 
         # update
-        self.update("vw_manhole", row, obj_id)
+        self.update("import_vw_manhole", row, obj_id)
 
         # it should be deleted in the live table tww_od.wastewater_structure
         row = self.select("wastewater_structure", obj_id, "tww_od")
         self.assertIsNone(row)
 
-        # it should not be visible anymore in the vw_manhole view
-        row = self.select("vw_manhole", obj_id)
+        # it should not be visible anymore in the import_vw_manhole view
+        row = self.select("import_vw_manhole", obj_id)
         self.assertIsNone(row)
 
     # - delete of structure but have verified at false
     #   -> do not delete in live
-    @unittest.skip("This test needs the demo data to work")
+    # @unittest.skip("This test needs the demo data to work")
     def test_delete_structure_failing(self):
         # obj_id from the test data
         obj_id = "ch13p7mzMA000044"
@@ -159,14 +159,14 @@ class TestImport(unittest.TestCase, DbTestBase):
         row = {"deleted": True, "verified": False}
 
         # update
-        self.update("vw_manhole", row, obj_id)
+        self.update("import_vw_manhole", row, obj_id)
 
         # it should not be deleted in the live table tww_od.wastewater_structure
         row = self.select("wastewater_structure", obj_id, "tww_od")
         self.assertIsNotNone(row)
 
-        # it should still be visible anymore in the vw_manhole view
-        row = self.select("vw_manhole", obj_id)
+        # it should still be visible anymore in the import_vw_manhole view
+        row = self.select("import_vw_manhole", obj_id)
         self.assertIsNotNone(row)
 
     # - correct update with 1 old outlet and 1 new outlet and 0 old inlet and 0 new inlet
@@ -174,7 +174,7 @@ class TestImport(unittest.TestCase, DbTestBase):
     #   -> updated reach
     #   -> updated reach_point
     #   -> deleted in quarantene
-    @unittest.skip("This test needs the demo data to work")
+    # @unittest.skip("This test needs the demo data to work")
     def test_update_with_outlet(self):
         # obj_id from the test data
         obj_id = "ch13p7mzMA000012"
@@ -192,15 +192,15 @@ class TestImport(unittest.TestCase, DbTestBase):
         }
 
         # update
-        self.update("vw_manhole", row, obj_id)
+        self.update("import_vw_manhole", row, obj_id)
 
         # it should be in the live table tww_od.wastewater_structure
         row = self.select("wastewater_structure", obj_id, "tww_od")
         self.assertIsNotNone(row)
         self.assertEqual(row["remark"], "Strassenauslauf")
 
-        # it should be in the view vw_manhole
-        row = self.select("vw_manhole", obj_id)
+        # it should be in the view import_vw_manhole
+        row = self.select("import_vw_manhole", obj_id)
         self.assertIsNotNone(row)
         self.assertEqual(row["co_material"], 3015)
         self.assertEqual(row["remark"], "Strassenauslauf")
@@ -249,7 +249,7 @@ class TestImport(unittest.TestCase, DbTestBase):
     #   - update material
     #     -> updated structure
     #     -> deleted in quarantene
-    @unittest.skip("This test needs the demo data to work")
+    # @unittest.skip("This test needs the demo data to work")
     def test_update_with_wrong_material(self):
         # obj_id from the test data
         obj_id = "ch13p7mzMA000012"
@@ -258,7 +258,7 @@ class TestImport(unittest.TestCase, DbTestBase):
         row = {"co_material": 666, "outlet_1_material": 5081, "verified": True}
 
         # update
-        self.update("vw_manhole", row, obj_id, schema="tww_od.import_")
+        self.update("import_vw_manhole", row, obj_id)
 
         # it should be in the live table tww_od.reach and tww_od.reach_point
         cur = self.cursor()
@@ -278,8 +278,8 @@ class TestImport(unittest.TestCase, DbTestBase):
         self.assertIsNotNone(row)
         self.assertEqual(row["material"], 5081)
 
-        # it shouldn't be updated in the view vw_manhole
-        row = self.select("vw_manhole", obj_id, schema="tww_od.import_")
+        # it shouldn't be updated in the view import_vw_manhole
+        row = self.select("import_vw_manhole", obj_id, schema="tww_od.import_")
         self.assertNotEqual(row["co_material"], 666)
 
         # it should be in the quarantine import_manhole_quarantine
@@ -295,12 +295,12 @@ class TestImport(unittest.TestCase, DbTestBase):
         # update
         self.update("import_manhole_quarantine", row, obj_id, schema="tww_od.import_")
 
-        # it should be updated in the view vw_manhole
-        row = self.select("vw_manhole", obj_id)
+        # it should be updated in the view import_vw_manhole
+        row = self.select("import_vw_manhole", obj_id)
         self.assertEqual(row["co_material"], 5547)
 
         # it shouldn't be anymore in the quarantine tww_od.import_manhole_quarantine
-        row = self.select("import_manhole_quarantine", obj_id, schema="tww_od.import_")
+        row = self.select("import_manhole_quarantine", obj_id, schema="tww_od")
         self.assertIsNone(row)
 
     # - problematic update with 1 old outlet and 1 new outlet and 0 old inlet and 1 new inlet
@@ -309,7 +309,7 @@ class TestImport(unittest.TestCase, DbTestBase):
     #   -> still in quarantene
     #   - update inlet_okay true
     #     -> deleted in quarantene
-    @unittest.skip("This test needs the demo data to work")
+    # @unittest.skip("This test needs the demo data to work")
     def test_update_with_unexpected_inlet(self):
         # obj_id from the test data
         obj_id = "ch13p7mzMA000012"
@@ -329,10 +329,10 @@ class TestImport(unittest.TestCase, DbTestBase):
         }
 
         # update
-        self.update("vw_manhole", row, obj_id, schema="tww_od.import_")
+        self.update("import_vw_manhole", row, obj_id)
 
         # it should be in the view vw_manhole
-        row = self.select("vw_manhole", obj_id, schema="tww_od.import_")
+        row = self.select("import_vw_manhole", obj_id)
         self.assertIsNotNone(row)
         self.assertEqual(row["co_material"], 3015)
         self.assertEqual(row["remark"], "Strassenauslauf")
@@ -357,16 +357,16 @@ class TestImport(unittest.TestCase, DbTestBase):
         self.assertEqual(row["level"], decimal.Decimal("301.700"))
 
         # it should be still in the quarantine import_manhole_quarantine
-        row = self.select("import_manhole_quarantine", obj_id, schema="tww_od.import_")
+        row = self.select("import_manhole_quarantine", obj_id, schema="tww_od")
         self.assertIsNotNone(row)
 
         row = {"inlet_okay": "true"}
 
         # update
-        self.update("import_manhole_quarantine", row, obj_id, schema="tww_od.import_")
+        self.update("import_manhole_quarantine", row, obj_id, schema="tww_od")
 
         # it shouldn't be anymore in the quarantine import_manhole_quarantine
-        row = self.select("import_manhole_quarantine", obj_id, schema="tww_od.import_")
+        row = self.select("import_manhole_quarantine", obj_id, schema="tww_od")
         self.assertIsNone(row)
 
     # - problematic update with 1 old outlet and 0 new outlet and 0 old inlet and 0 new inlet
@@ -374,7 +374,7 @@ class TestImport(unittest.TestCase, DbTestBase):
     #   -> still in quarantene
     #   - update outlet_okay true
     #     -> deleted in quarantene
-    @unittest.skip("This test needs the demo data to work")
+    # @unittest.skip("This test needs the demo data to work")
     def test_update_with_unexpected_outlet(self):
         # obj_id from the test data
         obj_id = "ch13p7mzMA000012"
@@ -384,25 +384,25 @@ class TestImport(unittest.TestCase, DbTestBase):
         row = {"remark": "Strassenauslauf", "co_material": 3015, "verified": True}
 
         # update
-        self.update("vw_manhole", row, obj_id, schema="tww_od.import_")
+        self.update("import_vw_manhole", row, obj_id)
 
         # it should be in the view vw_manhole
-        row = self.select("vw_manhole", obj_id, schema="tww_od.import_")
+        row = self.select("import_vw_manhole", obj_id)
         self.assertIsNotNone(row)
         self.assertEqual(row["co_material"], 3015)
         self.assertEqual(row["remark"], "Strassenauslauf")
 
         # it should be still in the quarantine import_manhole_quarantine
-        row = self.select("import_manhole_quarantine", obj_id, schema="tww_od.import_")
+        row = self.select("import_manhole_quarantine", obj_id, schema="tww_od")
         self.assertIsNotNone(row)
 
         row = {"outlet_okay": "true"}
 
         # update
-        self.update("import_manhole_quarantine", row, obj_id, schema="tww_od.import_")
+        self.update("import_manhole_quarantine", row, obj_id, schema="tww_od")
 
         # it shouldn't be anymore in the quarantine import_manhole_quarantine
-        row = self.select("import_manhole_quarantine", obj_id, schema="tww_od.import_")
+        row = self.select("import_manhole_quarantine", obj_id, schema="tww_od")
         self.assertIsNone(row)
 
     # - problematic update with 1 old outlet and 1 new outlet and 4 old inlet and 4 new inlet
@@ -411,7 +411,7 @@ class TestImport(unittest.TestCase, DbTestBase):
     #   -> still in quarantene
     #   - update inlet_okay true
     #     -> deleted in quarantene
-    @unittest.skip("This test needs the demo data to work")
+    # @unittest.skip("This test needs the demo data to work")
     def test_update_with_multiple_inlets(self):
         # obj_id from the test data
         obj_id = "ch13p7mzMA005266"
@@ -432,10 +432,10 @@ class TestImport(unittest.TestCase, DbTestBase):
         }
 
         # update
-        self.update("vw_manhole", row, obj_id)
+        self.update("import_vw_manhole", row, obj_id)
 
-        # it should be in the view vw_manhole
-        row = self.select("vw_manhole", obj_id)
+        # it should be in the view import_vw_manhole
+        row = self.select("import_vw_manhole", obj_id)
         self.assertIsNotNone(row)
         self.assertEqual(row["co_material"], 3015)
         self.assertEqual(row["remark"], "E10")
@@ -460,20 +460,20 @@ class TestImport(unittest.TestCase, DbTestBase):
         self.assertEqual(row["level"], decimal.Decimal("400"))
 
         # it should be still in the quarantine import_manhole_quarantine
-        row = self.select("import_manhole_quarantine", obj_id, schema="tww_od.import_")
+        row = self.select("import_manhole_quarantine", obj_id, schema="tww_od")
         self.assertIsNotNone(row)
 
         row = {"inlet_okay": "true"}
 
         # update
-        self.update("import_manhole_quarantine", row, obj_id, schema="tww_od.import_")
+        self.update("import_manhole_quarantine", row, obj_id, schema="tww_od")
 
         # it shouldn't be anymore in the quarantine import_manhole_quarantine
-        row = self.select("import_manhole_quarantine", obj_id, schema="tww_od.import_")
+        row = self.select("import_manhole_quarantine", obj_id, schema="tww_od")
         self.assertIsNone(row)
 
     # - general test
-    @unittest.skip("This test needs the demo data to work")
+    # @unittest.skip("This test needs the demo data to work")
     def test_general(self):
         # it should be in the live table tww_od.reach and tww_od.reach_point
         cur = self.cursor()
