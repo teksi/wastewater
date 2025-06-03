@@ -1,4 +1,3 @@
-import copy
 import decimal
 import os
 import unittest
@@ -21,7 +20,6 @@ class TestImport(unittest.TestCase, DbTestBase):
         pgservice = os.environ.get("PGSERVICE") or DEFAULT_PG_SERVICE
         cls.conn = psycopg.connect(f"service={pgservice}")
 
-
     def test_import_insert(self):
         row = {
             "identifier": "foobarbaz",
@@ -31,7 +29,7 @@ class TestImport(unittest.TestCase, DbTestBase):
         }
 
         # update
-        obj_id=self.insert_check("import_vw_manhole", row)
+        obj_id = self.insert_check("import_vw_manhole", row)
 
         # it should be calculated correctly in the live table tww_od.wastewater_structure
         row = self.select("wastewater_structure", obj_id, "tww_od")
@@ -52,7 +50,7 @@ class TestImport(unittest.TestCase, DbTestBase):
     #   -> not updated structure with calculated values
     #   -> still in quarantine
     def test_calculation_level_fail(self):
-        
+
         row = {
             "identifier": "import_20",
             "ws_type": "manhole",
@@ -185,7 +183,10 @@ class TestImport(unittest.TestCase, DbTestBase):
                 "ST_SetSRID(ST_GeomFromText('POINT(2600003 1200003)'), 2056)"
             ),
         }
-        obj_id = self.insert_check("vw_tww_wastewater_structure", row, )
+        obj_id = self.insert_check(
+            "vw_tww_wastewater_structure",
+            row,
+        )
 
         # change deleted from false to true
         row = {"deleted": True, "verified": True}
@@ -348,7 +349,6 @@ class TestImport(unittest.TestCase, DbTestBase):
         }
         obj_id = self.insert_check("vw_tww_wastewater_structure", ws_row)
 
-
         # change co_material from 233 to 666, what not exists in the table tww_vl.cover_material
         row = {"co_material": 666, "outlet_1_material": 5081, "verified": True}
 
@@ -404,7 +404,7 @@ class TestImport(unittest.TestCase, DbTestBase):
     #   -> still in quarantene
     #   - update inlet_okay true
     #     -> deleted in quarantene
-    
+
     def test_update_with_unexpected_inlet(self):
         # obj_id from the test data
         ws_row = {
@@ -432,7 +432,6 @@ class TestImport(unittest.TestCase, DbTestBase):
         }
 
         _ = self.insert_check("vw_tww_reach", re_row)
-
 
         # change remark from 'Strasseneinlauf' to 'Strassenauslauf'
         # change co_material from 233 to 3015
@@ -496,7 +495,7 @@ class TestImport(unittest.TestCase, DbTestBase):
     #     -> deleted in quarantene
     # @unittest.skip("This test needs the demo data to work")
     def test_update_with_unexpected_outlet(self):
-# obj_id from the test data
+        # obj_id from the test data
         ws_row = {
             "identifier": "import_90",
             "ws_type": "manhole",
@@ -555,7 +554,7 @@ class TestImport(unittest.TestCase, DbTestBase):
     #   -> still in quarantene
     #   - update inlet_okay true
     #     -> deleted in quarantene
-    
+
     def test_update_with_multiple_inlets(self):
         ws_row = {
             "identifier": "import_100",
