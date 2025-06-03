@@ -2,7 +2,7 @@ try:
     import psycopg
 except ImportError:
     import psycopg2 as psycopg
-
+import os
 import unittest
 
 from .utils import DEFAULT_PG_SERVICE
