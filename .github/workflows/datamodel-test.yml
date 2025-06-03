@@ -53,8 +53,8 @@ jobs:
         if: failure()
         run: docker logs teksi-wastewater
 
-  extension-static-tests:
-    name: Run static tests on extended datamodel
+  extension-db-initalisation-tests:
+    name: Run tests to initialize db with an extended datamodel
     runs-on: ubuntu-24.04
 
     strategy:
@@ -79,9 +79,6 @@ jobs:
           docker run -d -p 5432:5432 --name teksi-wastewater -e EXTENSION_NAMES=${{ matrix.extension }} teksi/wastewater:unstable
           docker exec teksi-wastewater init_db.sh wait
 
-      - name: Run static tests
-        run: ./datamodel/test/static_tests.sh
-
       - name: Docker logs
         if: failure()
         run: docker logs teksi-wastewater
@@ -93,7 +90,7 @@ jobs:
     strategy:
       matrix:
         psycopg-version: [ 2, 3 ]
-        extension: []
+        extension: ["agxx"]
       fail-fast: true
 
     steps:

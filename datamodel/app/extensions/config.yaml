@@ -8,3 +8,6 @@ extensions:
       myNumber:
         value: 0
         type: literal
+  - id: agxx
+    directory: tww2ag6496
+    variables: {}
