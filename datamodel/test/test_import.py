@@ -54,7 +54,7 @@ class TestImport(unittest.TestCase, DbTestBase):
         row = {
             "identifier": "import_20",
             "ws_type": "manhole",
-            "ma_type": 8736,
+            "ma_function": 8736,
             "situation3d_geometry": self.execute(
                 "ST_SetSRID(ST_GeomFromText('POINT(2600000 1200000)'), 2056)"
             ),
@@ -93,7 +93,7 @@ class TestImport(unittest.TestCase, DbTestBase):
         row = {
             "identifier": "import_30",
             "ws_type": "manhole",
-            "ma_type": 8736,
+            "ma_function": 8736,
             "situation3d_geometry": self.execute(
                 "ST_SetSRID(ST_GeomFromText('POINT(2600001 1200001)'), 2056)"
             ),
@@ -136,7 +136,7 @@ class TestImport(unittest.TestCase, DbTestBase):
         row = {
             "identifier": "import_40",
             "ws_type": "manhole",
-            "ma_type": 8736,
+            "ma_function": 8736,
             "situation3d_geometry": self.execute(
                 "ST_SetSRID(ST_GeomFromText('POINT(2600002 1200002)'), 2056)"
             ),
@@ -178,7 +178,7 @@ class TestImport(unittest.TestCase, DbTestBase):
         row = {
             "identifier": "import_40",
             "ws_type": "manhole",
-            "ma_type": 8736,
+            "ma_function": 8736,
             "situation3d_geometry": self.execute(
                 "ST_SetSRID(ST_GeomFromText('POINT(2600003 1200003)'), 2056)"
             ),
@@ -209,7 +209,7 @@ class TestImport(unittest.TestCase, DbTestBase):
         row = {
             "identifier": "import_50",
             "ws_type": "manhole",
-            "ma_type": 8736,
+            "ma_function": 8736,
             "situation3d_geometry": self.execute(
                 "ST_SetSRID(ST_GeomFromText('POINT(2600004 1200004)'), 2056)"
             ),
@@ -242,7 +242,7 @@ class TestImport(unittest.TestCase, DbTestBase):
         ws_row = {
             "identifier": "import_60",
             "ws_type": "manhole",
-            "ma_type": 8736,
+            "ma_function": 8736,
             "co_level": 456.123,
             "situation3d_geometry": self.execute(
                 "ST_SetSRID(ST_GeomFromText('POINT(2600005 1200005)'), 2056)"
@@ -340,7 +340,7 @@ class TestImport(unittest.TestCase, DbTestBase):
         ws_row = {
             "identifier": "import_70",
             "ws_type": "manhole",
-            "ma_type": 8736,
+            "ma_function": 8736,
             "co_level": 456.123,
             "co_material": 5547,
             "situation3d_geometry": self.execute(
@@ -410,7 +410,7 @@ class TestImport(unittest.TestCase, DbTestBase):
         ws_row = {
             "identifier": "import_80",
             "ws_type": "manhole",
-            "ma_type": 8736,
+            "ma_function": 8736,
             "co_level": 456.123,
             "co_material": 233,
             "situation3d_geometry": self.execute(
@@ -499,7 +499,7 @@ class TestImport(unittest.TestCase, DbTestBase):
         ws_row = {
             "identifier": "import_90",
             "ws_type": "manhole",
-            "ma_type": 8736,
+            "ma_function": 8736,
             "co_level": 456.123,
             "co_material": 233,
             "situation3d_geometry": self.execute(
@@ -559,7 +559,7 @@ class TestImport(unittest.TestCase, DbTestBase):
         ws_row = {
             "identifier": "import_100",
             "ws_type": "manhole",
-            "ma_type": 8736,
+            "ma_function": 8736,
             "co_level": 456.123,
             "co_material": 233,
             "situation3d_geometry": self.execute(
