@@ -6,5 +6,5 @@ SELECT re.obj_id,
    FROM tww_od.reach re
      LEFT JOIN ( SELECT reach_material.code,
             reach_material.{value_lang},
-            reach_material.abbr_de
+            reach_material.{abbr_lang}
            FROM tww_vl.reach_material) re_mat ON re_mat.code = re.material;
