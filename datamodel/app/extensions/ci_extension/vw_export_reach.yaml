@@ -1,0 +1,99 @@
+#!/usr/bin/env python
+
+
+table: tww_app.vw_tww_reach
+view_name: vw_export_reach
+view_schema: tww_app
+pkey: obj_id
+
+
+joins:
+  elevation_determination:
+    table: tww_vl.reach_elevation_determination
+    fkey: elevation_determination
+    prefix: elevation_determination_
+  horizontal_positioning:
+    table: tww_vl.reach_horizontal_positioning
+    fkey: horizontal_positioning
+    prefix: horizontal_positioning_
+  inside_coating:
+    table: tww_vl.reach_inside_coating
+    fkey: inside_coating
+    prefix: inside_coating_
+  material:
+    table: tww_vl.reach_material
+    fkey: material
+    prefix: material_
+  reliner_material:
+    table: tww_vl.reach_reliner_material
+    fkey: reliner_material
+    prefix: reliner_material_
+  relining_construction:
+    table: tww_vl.reach_relining_construction
+    fkey: relining_construction
+    prefix: relining_construction_
+  relining_kind:
+    table: tww_vl.reach_relining_kind
+    fkey: relining_kind
+    prefix: relining_kind_
+  fk_pipe_profile:
+    table: tww_od.pipe_profile
+    fkey: fk_pipe_profile
+    prefix: profile_
+  function_hierarchic:
+    table: tww_vl.channel_function_hierarchic
+    fkey: ch_function_hierarchic
+    prefix: function_hierarchic_
+  connection_type:
+    table: tww_vl.channel_connection_type
+    fkey: ch_connection_type
+    prefix: connection_type_
+  function_hydraulic:
+    table: tww_vl.channel_function_hydraulic
+    fkey: ch_function_hydraulic
+    prefix: function_hydraulic_
+  usage_current:
+    table: tww_vl.channel_usage_current
+    fkey: ch_usage_current
+    prefix: usage_current_
+  usage_planned:
+    table: tww_vl.channel_usage_planned
+    fkey: ch_usage_planned
+    prefix: usage_planned_
+  accessibility:
+    table: tww_vl.wastewater_structure_accessibility
+    fkey: ws_accessibility
+    prefix: accessibility_
+  financing:
+    table: tww_vl.wastewater_structure_financing
+    fkey: ws_financing
+    prefix: financing_
+  renovation_necessity:
+    table: tww_vl.wastewater_structure_renovation_necessity
+    fkey: ws_renovation_necessity
+    prefix: renovation_necessity_
+  rv_construction_type:
+    table: tww_vl.wastewater_structure_rv_construction_type
+    fkey: ws_rv_construction_type
+    prefix: rv_construction_type_
+  status:
+    table: tww_vl.wastewater_structure_status
+    fkey: ws_status
+    prefix: status_
+  structure_condition:
+    table: tww_vl.wastewater_structure_structure_condition
+    fkey: ws_structure_condition
+    prefix: structure_condition_
+  owner:
+    table: tww_od.organisation
+    fkey: ws_fk_owner
+    prefix: owner_
+  operator:
+    table: tww_od.organisation
+    fkey: ws_fk_operator
+    prefix: operator_
+  # added as an extension
+  dataowner:
+    table: tww_od.organisation
+    fkey: ws_fk_dataowner
+    prefix: dataowner_
