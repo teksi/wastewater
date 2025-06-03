@@ -73,8 +73,8 @@ class TestImport(unittest.TestCase, DbTestBase):
         # update
         self.update("import_vw_manhole", row, obj_id, "tww_app")
 
-        # it should be calculated correctly in the live view tww_od.vw_tww_wastewater_structure
-        row = self.select("vw_tww_wastewater_structure", obj_id, "tww_od")
+        # it should be calculated correctly in the live view tww_app.vw_tww_wastewater_structure
+        row = self.select("vw_tww_wastewater_structure", obj_id)
         self.assertEqual(row["_depth"], decimal.Decimal("2.220"))
         self.assertEqual(row["co_level"], decimal.Decimal("22.220"))
         self.assertEqual(row["wn_bottom_level"], decimal.Decimal("20"))
@@ -110,7 +110,7 @@ class TestImport(unittest.TestCase, DbTestBase):
         self.update("import_vw_manhole", row, obj_id)
 
         # it should be calculated correctly in the live view vw_tww_wastewater_structure
-        row = self.select("vw_tww_wastewater_structure", obj_id, "tww_app")
+        row = self.select("vw_tww_wastewater_structure", obj_id)
         self.assertIsNotNone(row)
         self.assertEqual(row["_depth"], decimal.Decimal("7.780"))
         self.assertEqual(row["co_level"], decimal.Decimal("30"))
@@ -213,7 +213,7 @@ class TestImport(unittest.TestCase, DbTestBase):
             FROM {schema}.reach re\
             LEFT JOIN {schema}.reach_point rp ON rp.obj_id = re.fk_reach_point_from\
             LEFT JOIN {schema}.wastewater_networkelement wn ON wn.obj_id = rp.fk_wastewater_networkelement\
-            LEFT JOIN {schema}.vw_tww_wastewater_structure ws ON ws.obj_id = wn.fk_wastewater_structure\
+            LEFT JOIN tww_app.vw_tww_wastewater_structure ws ON ws.obj_id = wn.fk_wastewater_structure\
             WHERE ws.obj_id = %(obj_id)s"
             ).format(schema=psycopg.sql.Identifier("tww_od")),
             {"obj_id": obj_id},
@@ -345,7 +345,7 @@ class TestImport(unittest.TestCase, DbTestBase):
             FROM {schema}.reach re\
             LEFT JOIN {schema}.reach_point rp ON rp.obj_id = re.fk_reach_point_from\
             LEFT JOIN {schema}.wastewater_networkelement wn ON wn.obj_id = rp.fk_wastewater_networkelement\
-            LEFT JOIN {schema}.vw_tww_wastewater_structure ws ON ws.obj_id = wn.fk_wastewater_structure\
+            LEFT JOIN tww_app.vw_tww_wastewater_structure ws ON ws.obj_id = wn.fk_wastewater_structure\
             WHERE ws.obj_id = %(obj_id)s"
             ).format(schema=psycopg.sql.Identifier("tww_od")),
             {"obj_id": obj_id},
@@ -448,7 +448,7 @@ class TestImport(unittest.TestCase, DbTestBase):
             FROM {schema}.reach re\
             LEFT JOIN {schema}.reach_point rp ON rp.obj_id = re.fk_reach_point_from\
             LEFT JOIN {schema}.wastewater_networkelement wn ON wn.obj_id = rp.fk_wastewater_networkelement\
-            LEFT JOIN {schema}.vw_tww_wastewater_structure ws ON ws.obj_id = wn.fk_wastewater_structure\
+            LEFT JOIN tww_app.vw_tww_wastewater_structure ws ON ws.obj_id = wn.fk_wastewater_structure\
             WHERE ws.obj_id = %(obj_id)s"
             ).format(schema=psycopg.sql.Identifier("tww_od")),
             {"obj_id": obj_id},
