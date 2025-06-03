@@ -12,25 +12,32 @@ BEGIN
     ST_Force2D(n.situation3d_geometry)
   FROM tww_od.wastewater_node n;
 
-  -- Insert reachpoints
+-- Insert reachpoints
   INSERT INTO tww_od.network_node(node_type, ne_id, rp_id, geom)
   SELECT
     'reach_point',
-    r.obj_id, -- the reachpoint also keeps a reference to it's reach, as it can be used by blind connections that happen exactly on start/end points
+    coalesce(r_t.obj_id, r_f.obj_id), -- the reachpoint also keeps a reference to it's reach, as it can be used by blind connections that happen exactly on start/end points
     rp.obj_id,
-    ST_Force2D(rp.situation3d_geometry)
+    ST_Force2D(coalesce(rp.situation3d_geometry,ST_EndPoint(r_t.progression3d_geometry),ST_StartPoint(r_f.progression3d_geometry)))
   FROM tww_od.reach_point rp
-  JOIN tww_od.reach r ON rp.obj_id = r.fk_reach_point_from OR rp.obj_id = r.fk_reach_point_to;
+  LEFT JOIN tww_od.reach r_f ON rp.obj_id = r_f.fk_reach_point_from 
+  LEFT JOIN tww_od.reach r_t ON rp.obj_id = r_t.fk_reach_point_to;
 
   -- Insert virtual nodes for blind connections
   INSERT INTO tww_od.network_node(node_type, ne_id, geom)
   SELECT DISTINCT
     'blind_connection',
     r.obj_id,
-    ST_ClosestPoint(r.progression3d_geometry, rp.situation3d_geometry)
+    ST_ClosestPoint(r.progression3d_geometry, coalesce(rp.situation3d_geometry,ST_EndPoint(r_t.progression3d_geometry),ST_StartPoint(r_f.progression3d_geometry)))
   FROM tww_od.reach r
   INNER JOIN tww_od.reach_point rp ON rp.fk_wastewater_networkelement = r.obj_id
-  WHERE ST_LineLocatePoint(ST_CurveToLine(r.progression3d_geometry), rp.situation3d_geometry) NOT IN (0.0, 1.0); -- if exactly at start or at end, we don't need a virtualnode as we have the reachpoint
+  LEFT JOIN tww_od.reach r_f ON rp.obj_id = r_f.fk_reach_point_from 
+  LEFT JOIN tww_od.reach r_t ON rp.obj_id = r_t.fk_reach_point_to
+  WHERE ST_LineLocatePoint(ST_CurveToLine(r.progression3d_geometry), 
+    coalesce(rp.situation3d_geometry,
+	  ST_EndPoint(r_t.progression3d_geometry),
+	  ST_StartPoint(r_f.progression3d_geometry)))
+	NOT IN (0.0, 1.0); -- if exactly at start or at end, we don't need a virtualnode as we have the reachpoint
 
   -- Insert reaches, subdivided according to blind reaches
   INSERT INTO tww_od.network_segment (segment_type, from_node, to_node, ne_id, geom)
