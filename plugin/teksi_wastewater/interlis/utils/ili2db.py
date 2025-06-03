@@ -58,7 +58,6 @@ class InterlisTools:
                     "--createFk",
                     "--createFkIdx",
                     "--createTidCol",
-                    "--importTid",
                     f"{create_basket_col_args}",
                     "--noSmartMapping",
                     "--defaultSrsCode",
@@ -121,6 +120,11 @@ class InterlisTools:
                     "-jar",
                     f'"{self.ili2pg_executable_path}"',
                     "--export",
+                    *(
+                        ["--exportTid"]
+                        if model_name in [config.MODEL_NAME_AG64, config.MODEL_NAME_AG96]
+                        else []
+                    ),
                     "--models",
                     f"{model_name}",
                     *export_model_name_args,
