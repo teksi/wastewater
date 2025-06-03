@@ -1,4 +1,4 @@
-SELECT format('%1, my number is %2',{myVariable}, {myNumber});
+SELECT {myVariable}, {myNumber};
 
 SELECT re.obj_id,
     re_mat.{value_lang} AS material,
