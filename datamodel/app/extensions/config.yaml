@@ -1,6 +1,6 @@
 extensions:
-  - id: template
-    directory: demo_extension
+  - id: ci
+    directory: ci_extension
     variables:
       myVariable:
         value: "Hello World"
