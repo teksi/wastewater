@@ -230,11 +230,11 @@ BEGIN
     WHERE obj_id = NEW.obj_id;
     RAISE NOTICE 'Updated row in tww_app.vw_tww_wastewater_structure';
   ELSE
-    
+
 	NEW.obj_id = COALESCE(NEW.obj_id, tww_app.generate_oid('tww_od'::text, 'wastewater_structure'::text));
 	NEW.co_obj_id = COALESCE(NEW.co_obj_id, tww_app.generate_oid('tww_od'::text, 'cover'::text));
 	NEW.wn_obj_id = COALESCE(NEW.wn_obj_id, tww_app.generate_oid('tww_od'::text, 'wastewater_node'::text));
-	
+
 	INSERT INTO tww_app.vw_tww_wastewater_structure
     (
     obj_id,
