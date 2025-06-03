@@ -54,7 +54,7 @@ jobs:
         run: docker logs teksi-wastewater
 
   extension-tests:
-    name: Run unit tests on datamodel
+    name: Run unit tests on extended datamodel
     runs-on: ubuntu-24.04
 
     strategy:
