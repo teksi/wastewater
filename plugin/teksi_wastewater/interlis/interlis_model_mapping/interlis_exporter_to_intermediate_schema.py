@@ -506,9 +506,13 @@ class InterlisExporterToIntermediateSchema:
                 bettung_umhuellung=self.get_vl(row.bedding_encasement__REL),
                 funktionhierarchisch=self.get_vl(row.function_hierarchic__REL),
                 funktionhydraulisch=self.get_vl(row.function_hydraulic__REL),
+                # new attribute funktion_melioration release 2020
+                funktionmelioration=self.get_vl(row.function_amelioration__REL),
                 nutzungsart_geplant=self.get_vl(row.usage_planned__REL),
                 nutzungsart_ist=self.get_vl(row.usage_current__REL),
                 rohrlaenge=row.pipe_length,
+                # new attribute sickerung release 2020
+                sickerung=self.get_vl(row.seepage__REL),
                 spuelintervall=row.jetting_interval,
                 verbindungsart=self.get_vl(row.connection_type__REL),
             )
@@ -529,9 +533,13 @@ class InterlisExporterToIntermediateSchema:
                 # --- abwasserbauwerk ---
                 **self.wastewater_structure_common(row, "normschacht"),
                 # --- normschacht ---
+                # new attribute amphibienausstieg Release 2020
+                amphibienausstieg=self.get_vl(row.amphibian_exit__REL),
                 dimension1=row.dimension1,
                 dimension2=row.dimension2,
                 funktion=self.get_vl(row.function__REL),
+                # new attribute interventionsmoeglichkeit Release 2020
+                interventionsmoeglichkeit=self.get_vl(row.possibility_intervention__REL),
                 material=self.get_vl(row.material__REL),
                 oberflaechenzulauf=self.get_vl(row.surface_inflow__REL),
             )
@@ -552,6 +560,10 @@ class InterlisExporterToIntermediateSchema:
                 # --- abwasserbauwerk ---
                 **self.wastewater_structure_common(row, "einleitstelle"),
                 # --- einleitstelle ---
+                # new attribute gewaesserabschnitt_kanton Release 2020
+                gewaesserabschnitt_kanton=row.water_course_segment_canton,
+                # new attribute gewaesserlaufnummer Release 2020
+                gewaesserlaufnummer=row.water_course_number,
                 hochwasserkote=row.highwater_level,
                 relevanz=self.get_vl(row.relevance__REL),
                 terrainkote=row.terrain_level,
@@ -579,8 +591,12 @@ class InterlisExporterToIntermediateSchema:
                 **self.wastewater_structure_common(row, "spezialbauwerk"),
                 # --- spezialbauwerk ---
                 # TODO : WARNING : upper_elevation is not mapped
+                # new attribute amphibienausstieg Release 2020
+                amphibienausstieg=self.get_vl(row.amphibian_exit__REL),
                 bypass=self.get_vl(row.bypass__REL),
                 funktion=self.get_vl(row.function__REL),
+                # new attribute interventionsmoeglichkeit Release 2020
+                interventionsmoeglichkeit=self.get_vl(row.possibility_intervention__REL),
                 notueberlauf=self.get_vl(row.emergency_overflow__REL),
                 regenbecken_anordnung=self.get_vl(row.stormwater_tank_arrangement__REL),
             )
@@ -611,6 +627,8 @@ class InterlisExporterToIntermediateSchema:
                 dimension1=row.dimension1,
                 dimension2=row.dimension2,
                 gwdistanz=row.distance_to_aquifer,
+                # neues attribut fuellmaterial release 2020
+                fuellmaterial=self.get_vl(row.filling_material__REL),
                 maengel=self.get_vl(row.defects__REL),
                 notueberlauf=self.get_vl(row.emergency_overflow__REL),
                 saugwagen=self.get_vl(row.vehicle_access__REL),
@@ -701,6 +719,8 @@ class InterlisExporterToIntermediateSchema:
                 kote=row.level,
                 lage=ST_Force2D(row.situation3d_geometry),
                 lage_anschluss=row.position_of_connection,
+                # new attribute rohrverschluss_kappe release 2020
+                rohrverschluss_kappe=self.get_vl(row.pipe_closure__REL),
             )
             self.abwasser_session.add(haltungspunkt)
             print(".", end="")
@@ -737,6 +757,10 @@ class InterlisExporterToIntermediateSchema:
                 **self.wastewater_networkelement_common(row, "abwasserknoten"),
                 # --- abwasserknoten ---
                 # TODO : WARNING : fk_hydr_geometry is not mapped
+                # new attribute funktion_knoten_melioration release 2020
+                funktion_knoten_melioration=self.get_vl(row.function_node_amelioration__REL),
+                # new attribute hoehengenauigkeit release 2020
+                hoehengenauigkeit=self.get_vl(row.elevation_accuracy__REL),
                 lage=ST_Force2D(row.situation3d_geometry),
                 rueckstaukote_ist=row.backflow_level_current,
                 sohlenkote=row.bottom_level,
@@ -777,9 +801,15 @@ class InterlisExporterToIntermediateSchema:
                 **self.wastewater_networkelement_common(row, "haltung"),
                 # --- haltung ---
                 # NOT MAPPED : elevation_determination
+                # new attribute fliesszeit_trockenwetter release 2020
+                fliesszeit_trockenwetter=row.flow_time_dry_weather,
+                # new attribute hydr_belastung_ist release 2020
+                hydr_belastung_ist=row.hydraulic_load_current,
                 innenschutz=self.get_vl(row.inside_coating__REL),
                 laengeeffektiv=row.length_effective,
                 lagebestimmung=self.get_vl(row.horizontal_positioning__REL),
+                # new attribute leckschutz release 2020
+                leckschutz=self.get_vl(row.leak_protection__REL),
                 lichte_hoehe=row.clear_height,
                 material=self.get_vl(row.material__REL),
                 nachhaltungspunktref=self.get_tid(row.fk_reach_point_to__REL),
@@ -2574,7 +2604,7 @@ class InterlisExporterToIntermediateSchema:
                 anmerkung=row.comments,
                 ansichtsparameter=row.view_parameters,
                 einzelschadenklasse=self.get_vl(row.single_damage_class__REL),
-                streckenschaden=row.damage_reach,
+                streckenschaden=row.line_damage,
                 untersuchungref=self.get_tid(row.fk_examination__REL),
                 verbindung=self.get_vl(row.connection__REL),
                 videozaehlerstand=row.video_counter,
@@ -2959,6 +2989,8 @@ class InterlisExporterToIntermediateSchema:
             "bezeichnung": self.null_to_emptystr(row.identifier),
             "bruttokosten": row.gross_costs,
             "detailgeometrie": ST_Force2D(row.detail_geometry3d_geometry),
+            # new attribute dringlichkeitszahl Release 2020
+            "dringlichkeitszahl": row.urgency_figure,
             "eigentuemerref": eigentuemerref,
             "ersatzjahr": row.year_of_replacement,
             "finanzierung": self.get_vl(row.financing__REL),
@@ -2970,6 +3002,10 @@ class InterlisExporterToIntermediateSchema:
             "wbw_bauart": self.get_vl(row.rv_construction_type__REL),
             "wiederbeschaffungswert": row.replacement_value,
             "zugaenglichkeit": self.get_vl(row.accessibility__REL),
+            # new attribute zustandserhebung_jahr Release 2020
+            "zustandserhebung_jahr": row.status_survey_year,
+            # new attribute condition_score Release 2020
+            "zustandsnote": row.condition_score,
         }
 
     def wastewater_networkelement_common(self, row, type_name):
