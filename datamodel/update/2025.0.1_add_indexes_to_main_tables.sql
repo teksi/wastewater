@@ -56,4 +56,3 @@ CREATE INDEX IF NOT EXISTS in_tww_network_segment_to_node
     ON tww_od.network_segment USING btree
     (to_node)
     TABLESPACE pg_default;
-	
