@@ -1,0 +1,25 @@
+name: 📦 Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  release:
+    name: Create release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Datamodel Create Dumps Workflow
+        uses: ./.github/workflows/datamodel-create-dumps.yml
+        with:
+          release_upload_url: ${{ github.event.release.upload_url }}
+
+      - name: Call Plugin Package Workflow
+        uses: ./.github/workflows/plugin-package.yml
+        with:
+          release_upload_url: ${{ github.event.release.upload_url }}
+
+      - name: Call Project Translations Workflow
+        uses: ./.github/workflows/project-translations.yml
+        with:
+          release_upload_url: ${{ github.event.release.upload_url }}
