@@ -19,6 +19,6 @@ jobs:
 
   project-translations:
     name: Call Project Translations Workflow
-    uses: opengisch/wastewater/.github/workflows/project-translations.yml@pum-integration
+    uses: opengisch/wastewater/.github/workflows/project-translation.yml@pum-integration
     with:
       release_upload_url: ${{ github.event.release.upload_url }}
