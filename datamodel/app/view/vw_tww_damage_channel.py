@@ -34,6 +34,7 @@ def vw_tww_damage_channel(
     CREATE OR REPLACE VIEW tww_app.vw_tww_damage_channel AS
     WITH base AS(
       SELECT
+        {dg_cols},
         {dc_cols},
         ws.identifier AS ws_identifier,
         ST_LineMerge(ST_Collect(ST_Force2D(re.progression3d_geometry))) AS ch_progression2d_geometry,
@@ -42,8 +43,8 @@ def vw_tww_damage_channel(
           ELSE 'downstream'::text
         END AS direction
         FROM tww_od.damage_channel dc
-             LEFT JOIN tww_od.damage da ON da.obj_id::text = dc.obj_id::text
-             LEFT JOIN tww_od.examination ex ON ex.obj_id::text = da.fk_examination::text
+             LEFT JOIN tww_od.damage dg ON dg.obj_id::text = dc.obj_id::text
+             LEFT JOIN tww_od.examination ex ON ex.obj_id::text = dg.fk_examination::text
              LEFT JOIN tww_od.re_maintenance_event_wastewater_structure mews ON mews.fk_maintenance_event::text = ex.obj_id::text
              LEFT JOIN tww_od.wastewater_structure ws ON mews.fk_wastewater_structure::text = ws.obj_id::text
              LEFT JOIN tww_od.wastewater_networkelement ne ON ws.obj_id::text = ne.fk_wastewater_structure::text
@@ -51,9 +52,10 @@ def vw_tww_damage_channel(
              LEFT JOIN tww_od.reach_point rp ON rp.obj_id::text = ex.fk_reach_point::text
              LEFT JOIN tww_od.reach re_2 ON re_2.fk_reach_point_from::text = rp.obj_id::text
           WHERE ex.recording_type = 3686
-          GROUP BY {dc_cols},ws.identifier, re_2.obj_id
+          GROUP BY {dg_cols},{dc_cols},ws.identifier, re_2.obj_id
         )
         SELECT
+        {dg_cols_base},
         {dc_cols_base},
         base.ws_identifier,
         ST_LineInterpolatePoint(base.ch_progression2d_geometry,
@@ -65,6 +67,22 @@ def vw_tww_damage_channel(
         base.direction
         FROM base;
     """.format(
+        dg_cols=select_columns(
+            pg_cur=cursor,
+            table_schema="tww_od",
+            table_name="damage",
+            table_alias="dg",
+            remove_pkey=True,
+            indent=4,
+        ),
+        dg_cols_base=select_columns(
+            pg_cur=cursor,
+            table_schema="tww_od",
+            table_name="damage",
+            table_alias="base",
+            remove_pkey=True,
+            indent=4,
+        ),
         dc_cols=select_columns(
             pg_cur=cursor,
             table_schema="tww_od",
