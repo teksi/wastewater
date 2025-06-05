@@ -48,7 +48,7 @@ jobs:
       - name: Start Docker compose
         run: |
           docker compose up --build -d
-          docker compose exec db init_db.sh wait
+          docker compose exec db run-pum.sh wait
 
       - name: Translate (create sources)
         run: docker compose run qgis sh -c 'xvfb-run /usr/src/project/scripts/project-translation-create-source.py /usr/src/project/teksi_wastewater.qgs'
