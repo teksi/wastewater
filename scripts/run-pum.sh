@@ -25,4 +25,4 @@ DROP TABLE IF EXISTS public.pum_migrations;"
 #psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f datamodel/roles/roles_create.sql
 #psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f datamodel/roles/roles_grant.sql
 
-pum -vvv -s tww -d datamodel install -p SRID 2056
+pum -vvv -s pg_tww -d datamodel install -p SRID 2056
