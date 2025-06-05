@@ -20,7 +20,11 @@ on:
   schedule:
     - cron: "30 04 * * *"
   workflow_dispatch:
-
+  workflow_call: # Allows this workflow to be called by other workflows
+    inputs:
+      release_upload_url:
+        required: true
+        type: string
 
 jobs:
   build:
