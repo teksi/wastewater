@@ -9,20 +9,17 @@ jobs:
     name: Create release
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
       - name: Call Datamodel Create Dumps Workflow
-        uses: ./.github/workflows/datamodel-create-dumps.yml
+        uses: opengisch/wastewater/.github/workflows/datamodel-create-dumps.yml@main
         with:
           release_upload_url: ${{ github.event.release.upload_url }}
 
       - name: Call Plugin Package Workflow
-        uses: ./.github/workflows/plugin-package.yml
+        uses: opengisch/wastewater/.github/workflows/plugin-package.yml@main
         with:
           release_upload_url: ${{ github.event.release.upload_url }}
 
       - name: Call Project Translations Workflow
-        uses: ./.github/workflows/project-translations.yml
+        uses: opengisch/wastewater/.github/workflows/project-translations.yml@main
         with:
           release_upload_url: ${{ github.event.release.upload_url }}
