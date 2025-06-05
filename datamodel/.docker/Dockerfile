@@ -14,8 +14,15 @@ ARG AUTO_INIT=True
 ARG RUN_TEST=False
 ARG PSYCOPG_VERSION=3
 
-# System deps (bc + exiftool for testing)
-RUN apt-get update && apt-get install -y python3 python3-pip python3-venv libpq-dev wget exiftool bc git && apt-get clean
+# System deps (bc + exiftool for testing) and Python 3.11 from backports
+RUN apt-get update && \
+    apt-get install -y wget gnupg && \
+    echo "deb http://deb.debian.org/debian bullseye-backports main" > /etc/apt/sources.list.d/backports.list && \
+    apt-get update && \
+    apt-get install -y python3.11 python3.11-venv python3.11-distutils python3-pip libpq-dev exiftool bc git && \
+    update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 1 && \
+    update-alternatives --install /usr/bin/pip3 pip3 /usr/bin/pip3 1 && \
+    apt-get clean
 
 # Add source
 ADD . /src
