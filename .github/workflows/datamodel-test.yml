@@ -48,7 +48,7 @@ jobs:
             echo "Waiting for PostgreSQL to be ready..."
             sleep 2
           done
-          docker exec teksi-wastewater pum -vvv -s tww -d datamodel install -p SRID 2056
+          docker exec teksi-wastewater pum -vvv -s pg_tww -d datamodel install -p SRID 2056
 
       - name: Run tests
         run:  docker exec teksi-wastewater pytest datamodel
