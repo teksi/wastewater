@@ -15,7 +15,7 @@ ARG RUN_TEST=False
 ARG PSYCOPG_VERSION=3
 
 # System deps (bc + exiftool for testing)
-RUN apt-get update && apt-get install -y python3 python3-pip python3-venv libpq-dev wget exiftool bc && apt-get clean
+RUN apt-get update && apt-get install -y python3 python3-pip python3-venv libpq-dev wget exiftool bc git && apt-get clean
 
 # Add source
 ADD . /src
