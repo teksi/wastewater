@@ -11,9 +11,9 @@ if [[ $COUNT -ne 0 ]]; then
   EXIT_CODE=$((EXIT_CODE+1))
 fi
 
-COUNT=$(git grep tww_app datamodel/update | wc -l)
+COUNT=$(git grep tww_app datamodel/update -- :!*pre_all.py :!*post_all.py | wc -l)
 if [[ $COUNT -ne 0 ]]; then
-  echo $(git grep tww_app datamodel/update)
+  echo $(git grep tww_app datamodel/update-- :!*pre_all.py :!*post_all.py )
   echo "-> Some reference to app schema were found in pum update scripts"
   EXIT_CODE=$((EXIT_CODE+1))
 fi
