@@ -26,8 +26,9 @@ FROM tww_od.discharge_point as dp
 LEFT JOIN tww_od.wastewater_structure ws ON ws.obj_id::text = dp.obj_id::text
 LEFT JOIN tww_od.wastewater_networkelement we ON we.fk_wastewater_structure::text = ws.obj_id::text
 LEFT JOIN tww_od.wastewater_node wn on wn.obj_id = we.obj_id
+LEFT JOIN tww_od.tww_wastewater_node_symbology wns ON wns.fk_wastewater_node = wn.obj_id
 LEFT JOIN tww_vl.wastewater_structure_status ws_st ON ws.status = ws_st.code
-LEFT JOIN tww_vl.channel_function_hierarchic cfhi ON cfhi.code=wn._function_hierarchic
+LEFT JOIN tww_vl.channel_function_hierarchic cfhi ON cfhi.code=wns._function_hierarchic
 WHERE wn.obj_id IS NOT NULL
 AND ws_st.vsacode IN (6530, 6533, 8493, 6529, 6526, 7959)
 
@@ -56,8 +57,9 @@ FROM tww_od.infiltration_installation as ii
 LEFT JOIN tww_od.wastewater_structure ws ON ws.obj_id::text = ii.obj_id::text
 LEFT JOIN tww_od.wastewater_networkelement we ON we.fk_wastewater_structure::text = ws.obj_id::text
 LEFT JOIN tww_od.wastewater_node wn on wn.obj_id = we.obj_id
+LEFT JOIN tww_od.tww_wastewater_node_symbology wns ON wns.fk_wastewater_node = wn.obj_id
 LEFT JOIN tww_vl.wastewater_structure_status ws_st ON ws.status = ws_st.code
-LEFT JOIN tww_vl.channel_function_hierarchic cfhi ON cfhi.code=wn._function_hierarchic
+LEFT JOIN tww_vl.channel_function_hierarchic cfhi ON cfhi.code=wns._function_hierarchic
 WHERE wn.obj_id IS NOT NULL
 AND ws_st.vsacode IN (6530, 6533, 8493, 6529, 6526, 7959)
 ;
