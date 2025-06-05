@@ -5,20 +5,21 @@ on:
     types: [published]
 
 jobs:
-  datamodel-create-dumps:
-    name: Call Datamodel Create Dumps Workflow
-    uses: opengisch/wastewater/.github/workflows/datamodel-create-dumps.yml@main
-    with:
-      release_upload_url: ${{ github.event.release.upload_url }}
+  release:
+    name: Create release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Datamodel Create Dumps Workflow
+        uses: opengisch/wastewater/.github/workflows/datamodel-create-dumps.yml@pum-integration
+        with:
+          release_upload_url: ${{ github.event.release.upload_url }}
 
-  plugin-package:
-    name: Call Plugin Package Workflow
-    uses: opengisch/wastewater/.github/workflows/plugin-package.yml@main
-    with:
-      release_upload_url: ${{ github.event.release.upload_url }}
+      - name: Call Plugin Package Workflow
+        uses: opengisch/wastewater/.github/workflows/plugin-package.yml@pum-integration
+        with:
+          release_upload_url: ${{ github.event.release.upload_url }}
 
-  project-translations:
-    name: Call Project Translations Workflow
-    uses: opengisch/wastewater/.github/workflows/project-translations.yml@main
-    with:
-      release_upload_url: ${{ github.event.release.upload_url }}
+      - name: Call Project Translations Workflow
+        uses: opengisch/wastewater/.github/workflows/project-translations.yml@pum-integration
+        with:
+          release_upload_url: ${{ github.event.release.upload_url }}
