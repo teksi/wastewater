@@ -1,0 +1,23 @@
+name: Check for changes in datamodel/changelogs/0001
+
+on: [push, pull_request]
+
+jobs:
+  check-changes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+
+      - name: Check for changes in the specified folder
+        run: |
+          CHANGED_FILES=$(git diff --name-only HEAD^ HEAD)
+          for FILE in $CHANGED_FILES; do
+            if [[ $FILE == datamodel/changelogs/0001* ]]; then
+              echo "Changes detected in the datamodel/changelogs/0001 folder."
+              exit 1
+            fi
+          done
+          echo "No changes detected in the datamodel/changelogs/0001 folder."
