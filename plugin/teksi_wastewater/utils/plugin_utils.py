@@ -60,5 +60,5 @@ class DeduplicatedLogger(logging.Logger):
         self._last_message = this_message
 
 
-logging.setLoggerClass(DeduplicatedLogger)
+# logging.setLoggerClass(DeduplicatedLogger)
 logger = logging.getLogger(__package__)

@@ -25,7 +25,7 @@ WORKDIR /src
 ENV VIRTUAL_ENV=/opt/venv
 RUN python3 -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
-RUN pip git+https://github.com/opengisch/pirogue.git@v3
+RUN pip install git+https://github.com/opengisch/pirogue.git@v3
 RUN pip install -r datamodel/requirements.txt
 RUN if [ "${RUN_TEST}" = "True" ]; then pip install -r datamodel/requirements-test.txt; fi
 
