@@ -36,7 +36,7 @@ jobs:
         run: docker compose up -d --build
 
       - name: Initialize container
-        run: docker compose exec db ./scripts/run-pum.sh wait
+        run: docker compose exec db pum -vvv -s tww -d datamodel install -p SRID 2056
 
       - name: Create dumps
         run: docker compose exec db /src/datamodel/scripts/create-dumps.py
