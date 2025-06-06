@@ -17,7 +17,7 @@ on:
   workflow_dispatch:
   workflow_call: # Allows this workflow to be called by other workflows
     inputs:
-      release_upload_url:
+      release_tag:
         required: true
         type: string
 
@@ -66,3 +66,10 @@ jobs:
           name: teksi_wastewater_plugin_dev
           path: plugin/teksi_wastewater.0.0.0.zip
           if-no-files-found: error
+
+      - name: Upload plugin as GitHub Release asset
+        if: ${{ inputs.release_tag != '' }}
+        run: gh release upload "${{ inputs.release_tag }}" plugin/teksi_wastewater.0.0.0.zip --repo "$GITHUB_REPOSITORY"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.ref_name }}
