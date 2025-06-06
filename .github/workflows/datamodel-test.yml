@@ -48,6 +48,8 @@ jobs:
             echo "Waiting for PostgreSQL to be ready..."
             sleep 2
           done
+          # create the database
+          docker exec teksi-wastewater psql -U postgres -c "CREATE DATABASE tww;"
           docker exec teksi-wastewater pum -vvv -s pg_tww -d datamodel install -p SRID 2056
 
       - name: Run tests
