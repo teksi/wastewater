@@ -1,41 +1,35 @@
 
-pum_migrations_schema: tww_sys
-
 pum:
+  migration_table_schema: tww_sys
   minimum_version: 0.1.0
 
+roles:
+  - name: tww_viewer
+    description: Role for users who can view the TWW data.
+    permissions:
+      - type: read
+        schemas: [tww_od, tww_vl, tww_sys, tww_app, tww_cfg]
 
-# roles:
-#   - name: tww_viewer
-#     description: Role for users who can view the TWW data.
-#     permissions:
-#       - type: view
-#         schemas:
-#           - [tww_od, tww_vl, tww_sys, tww_app, tww_cfg]
+  - name: tww_user
+    description: Role for users who can view and edit the TWW data.
+    inherit: tww_viewer
+    permissions:
+      - type: write
+        schemas: [tww_od]
 
-#   - name: tww_user
-#     description: Role for users who can view and edit the TWW data.
-#     inherit: tww_viewer
-#     permissions:
-#       - type: edit
-#         schemas:
-#           - [tww_od]
+  - name: tww_manager
+    description: Role for users who can view and edit the TWW data, and manage the TWW application.
+    inherit: tww_user
+    permissions:
+      - type: write
+        schemas: [tww_vl, tww_cfg]
 
-#   - name: tww_manager
-#     description: Role for users who can view and edit the TWW data, and manage the TWW application.
-#     inherit: tww_user
-#     permissions:
-#       - type: edit
-#         schemas:
-#           - [tww_vl, tww_cfg]
-
-#   - name: tww_sysadmin
-#     description: Role for system administrators who can manage the TWW application and its configuration.
-#     inherit: tww_manager
-#     permissions:
-#       - type: edit
-#         schemas:
-#           - [tww_sys]
+  - name: tww_sysadmin
+    description: Role for system administrators who can manage the TWW application and its configuration.
+    inherit: tww_manager
+    permissions:
+      - type: write
+        schemas: [tww_sys]
 
 
 parameters:
