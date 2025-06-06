@@ -24,9 +24,9 @@ if [[ $INSTALL_DEPS -eq 1 ]]; then
   pyenv rehash
 fi
 
-export PGSERVICE=tww
+export PGSERVICE=pg_tww
 
-psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f datamodel/roles/roles_drop.sql
+#psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f datamodel/roles/roles_drop.sql
 
 
 psql -c "DROP SCHEMA IF EXISTS tww_od CASCADE;\
@@ -44,4 +44,4 @@ DROP ROLE IF EXISTS tww_sysadmin;"
 #psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f datamodel/roles/roles_create.sql
 #psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f datamodel/roles/roles_grant.sql
 
-pum -vvv -s pg_tww -d datamodel install -p SRID 2056 --roles --grant
+pum -vvv -s pg_tww -d datamodel install -p SRID 2056 --roles --grant --demo-data Aletsch
