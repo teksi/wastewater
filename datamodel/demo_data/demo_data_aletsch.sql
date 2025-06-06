@@ -17,7 +17,7 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Data for Name: organisation; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: organisation; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.organisation VALUES ('ch080qwzGE000001', 'Gemeinde A', NULL, 344, 8606, NULL, 9047, NULL, '2019-10-14 00:00:00', NULL, NULL, false, false);
@@ -33,7 +33,7 @@ INSERT INTO tww_od.organisation VALUES ('ch080qwzPR000017', 'VSA', NULL, NULL, 8
 
 
 --
--- Data for Name: wastewater_structure; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: wastewater_structure; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.wastewater_structure VALUES ('ch080qwzKA001332', 3447, NULL, NULL, NULL, NULL, 5510, NULL, 'KA1332', NULL, NULL, NULL, NULL, 5369, 0.00, 1970, 4603, 8493, NULL, 3362, NULL, NULL, 1989, NULL, '2025-06-06 20:24:59.720553', 'ch080qwzPR000018', 'ch080qwzPR000017', 'ch080qwzPR000006', 'ch080qwzAV000007', NULL, 'KA1332', '', '', '', '', NULL, NULL);
@@ -502,7 +502,7 @@ INSERT INTO tww_od.wastewater_structure VALUES ('ch080qwzVE002001', 3445, NULL, 
 
 
 --
--- Data for Name: structure_part; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: structure_part; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.structure_part VALUES ('ch080qwzTF001272', 'TF1272', NULL, 137, '2019-10-14 00:00:00', 'ch080qwzPR000018', 'ch080qwzPR000017', 'ch080qwzSW000125');
@@ -592,7 +592,7 @@ INSERT INTO tww_od.structure_part VALUES ('ch080qwzRS001001', 'Rueckstauklappe',
 
 
 --
--- Data for Name: access_aid; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: access_aid; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.access_aid VALUES ('ch080qwzEF000009', 240);
@@ -604,14 +604,14 @@ INSERT INTO tww_od.access_aid VALUES ('ch080qwzEF001004', 240);
 
 
 --
--- Data for Name: control_center; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: control_center; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.control_center VALUES ('ch080qwzSZ001127', 'Zentrale ARA', '01010000200808000000000000AC3044410000000072633141', '2019-10-14 00:00:00', 'ch080qwzPR000018', 'ch080qwzPR000017');
 
 
 --
--- Data for Name: hydr_geometry; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: hydr_geometry; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.hydr_geometry VALUES ('ch080qwzHG001183', 'VB', NULL, NULL, NULL, NULL, NULL, NULL, '2019-10-14 00:00:00', 'ch080qwzPR000018', 'ch080qwzPR000017');
@@ -624,7 +624,7 @@ INSERT INTO tww_od.hydr_geometry VALUES ('ch080qwzHG001211', 'FB', NULL, NULL, N
 
 
 --
--- Data for Name: overflow_char; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: overflow_char; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.overflow_char VALUES ('ch080qwzUC001119', 'WE1', 6220, 'grobe Annäherung', '2019-10-14 00:00:00', 'ch080qwzPR000018', 'ch080qwzPR000017');
@@ -632,7 +632,7 @@ INSERT INTO tww_od.overflow_char VALUES ('ch080qwzUC001206', 'WE2', 6228, 'Messu
 
 
 --
--- Data for Name: wastewater_networkelement; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: wastewater_networkelement; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.wastewater_networkelement VALUES ('ch080qwzAK000001', '1.001', NULL, '2019-10-14 00:00:00', 'ch080qwzPR000018', 'ch080qwzPR000017', 'ch080qwzSW000001');
@@ -828,7 +828,7 @@ INSERT INTO tww_od.wastewater_networkelement VALUES ('ch080qwzHA001406', 'EK2-SH
 
 
 --
--- Data for Name: wastewater_node; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: wastewater_node; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.wastewater_node VALUES ('ch080qwzAK000011', NULL, 1913.500, NULL, NULL, '01010000A00808000000000000C530444100000000616431410000000000E69D40', NULL, NULL, 4522, 5069, 8493);
@@ -922,7 +922,7 @@ INSERT INTO tww_od.wastewater_node VALUES ('ch080qwzAK001406', NULL, NULL, NULL,
 
 
 --
--- Data for Name: overflow; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: overflow; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.overflow VALUES ('ch080qwzFA001071', 303, 355, 'Förderix', 306, NULL, 3384, NULL, 'Pumpe1', 20.000, NULL, 3056, NULL, '2019-10-14 00:00:00', 'ch080qwzPR000018', 'ch080qwzPR000017', 'ch080qwzAK001067', 'ch080qwzAK001066', NULL, NULL);
@@ -935,7 +935,7 @@ INSERT INTO tww_od.overflow VALUES ('ch080qwzWE001208', 300, 3021, NULL, 306, NU
 
 
 --
--- Data for Name: pump; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: pump; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.pump VALUES ('ch080qwzFA001071', 309, NULL, 311, 363, NULL, NULL, 3044.000, 3040.000);
@@ -944,7 +944,7 @@ INSERT INTO tww_od.pump VALUES ('ch080qwzFA001207', 309, NULL, 318, NULL, NULL, 
 
 
 --
--- Data for Name: throttle_shut_off_unit; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: throttle_shut_off_unit; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.throttle_shut_off_unit VALUES ('ch080qwzDR001127', 3156, 3160, 3163, 0.30, 0.20, 10000.00, 'DR1', 2688, 'Schieber AG', 'zum Einstellen des ARA Zuflusses', 3169, 5000.00, NULL, NULL, '2019-10-14 00:00:00', 'ch080qwzPR000018', 'ch080qwzPR000017', 'ch080qwzAK000001', 'ch080qwzSZ001127', NULL);
@@ -952,14 +952,14 @@ INSERT INTO tww_od.throttle_shut_off_unit VALUES ('ch080qwzDR001346', 3158, 3160
 
 
 --
--- Data for Name: backflow_prevention; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: backflow_prevention; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.backflow_prevention VALUES ('ch080qwzRS001001', 1256.56, 5757, 2020, NULL, NULL);
 
 
 --
--- Data for Name: benching; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: benching; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.benching VALUES ('ch080qwzBN000010', 93);
@@ -969,7 +969,7 @@ INSERT INTO tww_od.benching VALUES ('ch080qwzBN000029', 3231);
 
 
 --
--- Data for Name: measure; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: measure; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.measure VALUES ('ch080qwzMP000001', 4660, '2020-10-26 00:00:00', 'Stammdaten prüfen', 'M1', 'Prüfung der vorhandenen Stammdaten, als Basis für Ausschreibungen', NULL, 'Verweis auf andere Massnahmen (Bezeichnung) oder Arbeiten, Hinweis auf Grundlagen in denen die Massnahmen näher erläutert werden, wie z.B. auf die entsprechenden GEP-Teilprojekte', NULL, 4759, 'nachschlagen, ob Bezeichnung richtig gemäss Wegleitung', 4765, NULL, 10000.00, NULL, 2020, '2020-10-26 00:00:00', 'ch080qwzPR000018', 'ch080qwzPR000017', 'ch080qwzAV000007', 'ch080qwzAV000007');
@@ -978,7 +978,7 @@ INSERT INTO tww_od.measure VALUES ('ch080qwzMP000003', 8646, '1985-06-23 00:00:0
 
 
 --
--- Data for Name: maintenance_event; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: maintenance_event; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.maintenance_event VALUES ('ch080qwzBG000001', NULL, 3100.00, NULL, 1, 'Beurteilung 2020', 'Eva Muster, Zusätzlich AusfuehrendeFirmaRef', 'Biol_oekol_Gesamtbeurteilung', 'Darf nur an Abwasserbauwerk (Einleitstelle) angehängt werden', 'SK_Einleitstelle.Gesamtbeurteilung_Bemerkung hier eintragen', 2549, '2020-03-15 00:00:00', '2020-10-02 00:00:00', 'ch080qwzPR000018', 'ch080qwzPR000017', 'ch080qwzPR000016', NULL);
@@ -989,14 +989,14 @@ INSERT INTO tww_od.maintenance_event VALUES ('ch080qwzEH001005', 'Ausführungspl
 
 
 --
--- Data for Name: bio_ecol_assessment; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: bio_ecol_assessment; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.bio_ecol_assessment VALUES ('ch080qwzBG000001', 6270, '2014-05-16 00:00:00', NULL, 8665, 8671, NULL, 5945, 5953, 5887, 400, 32.333, 5949, 2, 'Aletschfluss', 10, 8, 23);
 
 
 --
--- Data for Name: connection_object; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: connection_object; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.connection_object VALUES ('ch080qwzBR001219', 'Zähringerbrunne', 'Ältester Brunnen der Stadt, unter Denkmalschutz', 3.000, '2019-10-14 00:00:00', 'ch080qwzPR000018', 'ch080qwzPR000017', 'ch080qwzAK000086');
@@ -1013,7 +1013,7 @@ INSERT INTO tww_od.connection_object VALUES ('ch080qwzRV001266', 'Reservoir', NU
 
 
 --
--- Data for Name: building; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: building; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.building VALUES ('ch080qwzBD001057', '101A', NULL, '010A000020080800000100000001090000000100000001020000000500000014AE4751D72D444193180476D58B3141AAF1D21DBA2D444125068155BB8B3141508D976EB22D44418716D9AEDE8B3141BA490CA2CF2D4441F6285CCFF88B314114AE4751D72D444193180476D58B3141', NULL);
@@ -1025,7 +1025,7 @@ INSERT INTO tww_od.building VALUES ('ch080qwzBD001264', '223', NULL, NULL, NULL)
 
 
 --
--- Data for Name: discharge_point; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: discharge_point; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.discharge_point VALUES ('ch080qwzVE001062', NULL, 5580, NULL, NULL, NULL, NULL, NULL);
@@ -1038,13 +1038,13 @@ INSERT INTO tww_od.discharge_point VALUES ('ch080qwzVE002001', NULL, 5581, NULL,
 
 
 --
--- Data for Name: dss15_aquifer; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: dss15_aquifer; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 
 
 --
--- Data for Name: infiltration_installation; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: infiltration_installation; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.infiltration_installation VALUES ('ch080qwzVA001062', 123.300, 3276, NULL, NULL, 5.00, 124.00, 9074, NULL, 278, 5362, 9024, NULL, 3287, 3294, NULL);
@@ -1052,7 +1052,7 @@ INSERT INTO tww_od.infiltration_installation VALUES ('ch080qwzVA002000', NULL, 3
 
 
 --
--- Data for Name: disposal; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: disposal; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.disposal VALUES ('ch080qwzNG000001', 2.00, 1.00, 4946, NULL, 120.00, '2020-10-18 00:00:00', 'ch080qwzPR000018', 'ch080qwzPR000017', NULL, NULL, 'ch080qwzSW000100');
@@ -1062,7 +1062,7 @@ INSERT INTO tww_od.disposal VALUES ('ch080qwzNG000005', NULL, NULL, 6474, 6400, 
 
 
 --
--- Data for Name: building_group; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: building_group; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.building_group VALUES ('ch080qwzGG000001', NULL, NULL, NULL, 5484, 5096, NULL, NULL, NULL, 4839, NULL, NULL, NULL, NULL, 4822, NULL, NULL, NULL, NULL, NULL, 'Testgebäudegruppe', NULL, NULL, NULL, 18, 'Testdaten für INTERLIS, ohne Gewähr für fachliche Richtigkeit', '2023-05-31 00:00:00', 8797, NULL, NULL, NULL, 'noch nicht vorhanden', NULL, '010100002008080000000000C08233444100000000EC673141', '2020-10-18 00:00:00', 'ch080qwzPR000018', 'ch080qwzPR000017', NULL, NULL);
@@ -1073,14 +1073,14 @@ INSERT INTO tww_od.building_group VALUES ('ch080qwzGG000005', NULL, NULL, NULL, 
 
 
 --
--- Data for Name: building_group_baugwr; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: building_group_baugwr; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.building_group_baugwr VALUES ('ch080qwzBA000001', 5154, '2020-10-18 00:00:00', 'ch080qwzPR000018', 'ch080qwzPR000017', 'ch080qwzGG000001');
 
 
 --
--- Data for Name: log_card; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: log_card; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.log_card VALUES ('ch080qwzSK000001', 8527, 5602, 'Elisabeth Muster', 'Stammkarte Regenueberlauf ARA in See, Beispiel für Testdaten', '2020-10-03 00:00:00', 'ch080qwzPR000018', 'ch080qwzPR000017', 'ch080qwzAK000001', NULL, 'ch080qwzAV000007', NULL, 'ch080qwzGE000002');
@@ -1092,7 +1092,7 @@ INSERT INTO tww_od.log_card VALUES ('ch080qwzSK000006', NULL, 5602, 'Stefan Bios
 
 
 --
--- Data for Name: catchment_area; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: catchment_area; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.catchment_area VALUES ('ch080qwzEZ001008', 5458, 5459, NULL, NULL, NULL, NULL, 5188, 5193, 'Mittelaletsch1', 5453, 5462, '010A000020080800000100000001090000000100000001020000000800000000000000153144419A999919C0743141FCA9F1F2E6304441713D0AF74F743141C74B37E99A304441713D0A373C743141C520B0223A304441713D0AB763743141F853E3D5513044414260E510E6743141C74B370991304441AC1C5A641B753141FCA9F1D2F03044410E2DB29D0975314100000000153144419A999919C0743141', NULL, NULL, NULL, 5468, 5470, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 99999.9000, 1.330, 1.450, '2019-10-14 00:00:00', 'ch080qwzPR000018', 'ch080qwzPR000017', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
@@ -1102,13 +1102,13 @@ INSERT INTO tww_od.catchment_area VALUES ('ch080qwzEZ001011', NULL, NULL, NULL, 
 
 
 --
--- Data for Name: catchment_area_text; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: catchment_area_text; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 
 
 --
--- Data for Name: hydraulic_char_data; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: hydraulic_char_data; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.hydraulic_char_data VALUES ('ch080qwzHK001118', 1, 3.70, 'WE1', 5774, 6420, NULL, 76.0, NULL, NULL, NULL, 6376, NULL, NULL, 22.500, 15.500, 'Transferdatensatz, keine realen Werte', 6372, '2019-10-14 00:00:00', 'ch080qwzPR000018', 'ch080qwzPR000017', 'ch080qwzAK001117', 'ch080qwzUC001119', NULL);
@@ -1116,14 +1116,14 @@ INSERT INTO tww_od.hydraulic_char_data VALUES ('ch080qwzHK001206', 1, 3.70, 'WE2
 
 
 --
--- Data for Name: catchment_area_totals; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: catchment_area_totals; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.catchment_area_totals VALUES ('ch080qwzGT000001', NULL, NULL, 'RB_Fangbecken', 120, 150, 10.000, 22.3000, NULL, 10.1000, 12.1000, NULL, NULL, 120.000, '2020-10-26 00:00:00', 'ch080qwzPR000018', 'ch080qwzPR000017', 'ch080qwzVE000046', 'ch080qwzHK001206');
 
 
 --
--- Data for Name: channel; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: channel; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.channel VALUES ('ch080qwzKA000017', 5334, 185, NULL, 5069, 367, NULL, NULL, NULL, 4522, 4523);
@@ -1231,7 +1231,7 @@ INSERT INTO tww_od.channel VALUES ('ch080qwzKA001406', 5329, 3036, NULL, 5071, 3
 
 
 --
--- Data for Name: cover; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: cover; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.cover VALUES ('ch080qwzDE001062', 'Von Roll AG', 5354, NULL, 5351, NULL, 3015, 3236, '01010000A0080800004E6210F8B32D44416F1283E04E8C3141000000000000F87F', 3066, 230);
@@ -1297,7 +1297,7 @@ INSERT INTO tww_od.cover VALUES ('ch080qwzDE001407', NULL, 5354, NULL, 5351, NUL
 
 
 --
--- Data for Name: reach_point; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: reach_point; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.reach_point VALUES ('ch080qwzHA01406A', 5376, 'HA1406A', 2738.500, 5375, NULL, 2, NULL, '01010000A00808000000000000682E444100000000FE8B3141000000000065A540', '2019-10-14 00:00:00', 'ch080qwzPR000018', 'ch080qwzPR000017', 'ch080qwzAK001406');
@@ -1507,43 +1507,43 @@ INSERT INTO tww_od.reach_point VALUES ('ch080qwzHP01403E', 3247, 'ZZZHA1403E', 1
 
 
 --
--- Data for Name: examination; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: examination; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 
 
 --
--- Data for Name: damage; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: damage; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 
 
 --
--- Data for Name: damage_channel; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: damage_channel; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 
 
 --
--- Data for Name: damage_manhole; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: damage_manhole; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 
 
 --
--- Data for Name: data_media; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: data_media; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 
 
 --
--- Data for Name: default_values; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: default_values; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 
 
 --
--- Data for Name: zone; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: zone; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.zone VALUES ('ch080qwzES001063', 'ES1063', NULL, '2019-10-14 00:00:00', 'ch080qwzPR000018', 'ch080qwzPR000017');
@@ -1552,7 +1552,7 @@ INSERT INTO tww_od.zone VALUES ('ch080qwzVB000001', 'Versickerungsbereich', NULL
 
 
 --
--- Data for Name: drainage_system; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: drainage_system; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.drainage_system VALUES ('ch080qwzES001063', 2722, '010A0000200808000001000000010900000001000000010200000007000000C976BEFFAB314441C976BE5FAB7431411283C0BA7331444177BE9F9AB273314104560E9DE2304441C74B37E9B37231412B871609DB2F4441931804D687743141B29DEFD736304441E5D0229BCD753141A69BC430033144416DE7FBE9B5753141C976BEFFAB314441C976BE5FAB743141');
@@ -1560,21 +1560,21 @@ INSERT INTO tww_od.drainage_system VALUES ('ch080qwzES001064', 2723, '010A000020
 
 
 --
--- Data for Name: drainless_toilet; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: drainless_toilet; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.drainless_toilet VALUES ('ch080qwzTO000001', 6410);
 
 
 --
--- Data for Name: dryweather_downspout; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: dryweather_downspout; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.dryweather_downspout VALUES ('ch080qwzTF001272', 200);
 
 
 --
--- Data for Name: dryweather_flume; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: dryweather_flume; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.dryweather_flume VALUES ('ch080qwzTR001270', 237);
@@ -1582,13 +1582,13 @@ INSERT INTO tww_od.dryweather_flume VALUES ('ch080qwzTR001271', 237);
 
 
 --
--- Data for Name: dss15_planning_zone; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: dss15_planning_zone; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 
 
 --
--- Data for Name: electric_equipment; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: electric_equipment; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.electric_equipment VALUES ('ch080qwzEE001229', 505.00, 376, 2002);
@@ -1598,41 +1598,41 @@ INSERT INTO tww_od.electric_equipment VALUES ('ch080qwzEE001232', NULL, 377, NUL
 
 
 --
--- Data for Name: electromechanical_equipment; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: electromechanical_equipment; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.electromechanical_equipment VALUES ('ch080qwzEA001007', 2000.00, 337, 2010);
 
 
 --
--- Data for Name: farm; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: farm; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.farm VALUES ('ch080qwzLB000001', 11.0000, '2', 5488, 234.00, 2.00, 2.00, 1982, 4897, 4891, 'Sohn in Ausbildung', 121.00, 121.00, 'Test Landwirtschaftsbetrieb', '2', 2, NULL, 4875, 5.00, 8.00, '2020-10-18 00:00:00', 'ch080qwzPR000018', 'ch080qwzPR000017', 'ch080qwzGG000001');
 
 
 --
--- Data for Name: file; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: file; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 
 
 --
--- Data for Name: flushing_nozzle; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: flushing_nozzle; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.flushing_nozzle VALUES ('ch080qwzSP000001', '01010000200808000000000000E03344410000008068723141');
 
 
 --
--- Data for Name: fountain; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: fountain; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.fountain VALUES ('ch080qwzBR001219', 'Albert Heim Platz', '010100002008080000000000003330444100000000188B3141');
 
 
 --
--- Data for Name: hq_relation; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: hq_relation; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.hq_relation VALUES ('ch080qwzHR001120', 1913.500, 203.000, NULL, '2019-10-14 00:00:00', 'ch080qwzPR000018', 'ch080qwzPR000017', 'ch080qwzUC001119');
@@ -1644,7 +1644,7 @@ INSERT INTO tww_od.hq_relation VALUES ('ch080qwzHR001125', 1914.790, 299.000, NU
 
 
 --
--- Data for Name: hydr_geom_relation; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: hydr_geom_relation; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.hydr_geom_relation VALUES ('ch080qwzHY001184', 0.00, 588.00, 0.00, '2019-10-14 00:00:00', 'ch080qwzPR000018', 'ch080qwzPR000017', 'ch080qwzHG001183');
@@ -1668,13 +1668,13 @@ INSERT INTO tww_od.hydr_geom_relation VALUES ('ch080qwzHY001214', 3.00, 96.00, 2
 
 
 --
--- Data for Name: import_manhole_quarantine; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: import_manhole_quarantine; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 
 
 --
--- Data for Name: individual_surface; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: individual_surface; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.individual_surface VALUES ('ch080qwzFL001059', 3461, 10, 2031, '010A0000200808000001000000010900000001000000010200000005000000BA490CA2CF2D4441F6285CCFF88B314114AE4751D72D444193180476D58B3141AAF1D21DBA2D444125068155BB8B3141508D976EB22D44418716D9AEDE8B3141BA490CA2CF2D4441F6285CCFF88B3141');
@@ -1683,21 +1683,21 @@ INSERT INTO tww_od.individual_surface VALUES ('ch080qwzFL001061', 3464, 10, 2031
 
 
 --
--- Data for Name: infiltration_zone; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: infiltration_zone; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.infiltration_zone VALUES ('ch080qwzVB000001', 372, '010A0000200808000001000000010900000001000000010200000015000000EC51B88ED32644411F85EBF10E7E31417F6ABC44101D4441DF4F8D37A37D3141E3A59B74941B44413108AC1C098131411058394437254441560E2D12818C314160E5D0325D2744415839B4E8A8913141C520B0C2AB27444179E926B18898314123DBF9DE0B23444108AC1C1A8CA5314139B4C8F644254441CBA145D628AA31418D976E42BC324441BE9F1A8FE0A63141DBF97E3A723B44418B6CE75B5B9C3141333333D3DA3E44417B14AEC7E78731417368918D463F44418D976E329A71314117D9CEE78A384441CFF753E3CD5B31417368917D62294441D122DB19955B3141022B87C6B82B44416ABC74934B613141C520B0E2C32C4441B6F3FD54076931411F85EB21FE2D444154E3A5BBF87231411D5A64FB3C2E44414A0C028BFC783141C520B0E2C32C4441508D97AEA67D3141DF4F8D37D7264441355EBA29FE7C3141EC51B88ED32644411F85EBF10E7E3141');
 
 
 --
--- Data for Name: leapingweir; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: leapingweir; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.leapingweir VALUES ('ch080qwzLW001275', 0.30, 3583, 0.20);
 
 
 --
--- Data for Name: maintenance; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: maintenance; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.maintenance VALUES ('ch080qwzBG001400', 9315);
@@ -1707,7 +1707,7 @@ INSERT INTO tww_od.maintenance VALUES ('ch080qwzEH001005', 9312);
 
 
 --
--- Data for Name: manhole; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: manhole; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.manhole VALUES ('ch080qwzNS000011', NULL, NULL, NULL, 8736, NULL, NULL, 2741, NULL);
@@ -1762,14 +1762,14 @@ INSERT INTO tww_od.manhole VALUES ('ch080qwzNS001407', NULL, NULL, NULL, 8736, N
 
 
 --
--- Data for Name: waste_water_treatment_plant; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: waste_water_treatment_plant; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.waste_water_treatment_plant VALUES ('ch080qwzAR001075', NULL, 11, 30, 90.00, 57.00, 91.00, 92.00, 'ARA Aletsch', NULL, 30, NULL, NULL, NULL, 'Werte sind als Beispiel drin und entsprechen nicht Dimensionierungsrichtlinien', NULL, 1960, 345677, '2019-10-14 00:00:00', 'ch080qwzPR000018', 'ch080qwzPR000017');
 
 
 --
--- Data for Name: measuring_point; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: measuring_point; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.measuring_point VALUES ('ch080qwzMS001260', NULL, 'Aletschfluss', 'Abflussmessung', NULL, NULL, '01010000200808000000000000F231444100000000BA883141', '2019-10-14 00:00:00', 'ch080qwzPR000018', 'ch080qwzPR000017', NULL, NULL, NULL, NULL);
@@ -1778,7 +1778,7 @@ INSERT INTO tww_od.measuring_point VALUES ('ch080qwzMS001259', NULL, 'Ablauf VKB
 
 
 --
--- Data for Name: measurement_series; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: measurement_series; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.measurement_series VALUES ('ch080qwzMH001997', 'm3/s', 'Ablauf Mai95', 2646, NULL, '2019-10-14 00:00:00', 'ch080qwzPR000018', 'ch080qwzPR000017', 'ch080qwzMS001259', NULL);
@@ -1787,7 +1787,7 @@ INSERT INTO tww_od.measurement_series VALUES ('ch080qwzMH001999', 'mm/min', 'Reg
 
 
 --
--- Data for Name: measuring_device; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: measuring_device; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.measuring_device VALUES ('ch080qwzMG002000', 'U.I.M', 'PLUVIO DWD-TYP', NULL, 'Infrarotausgang', 'SN123456', '2019-10-14 00:00:00', 'ch080qwzPR000018', 'ch080qwzPR000017', NULL);
@@ -1795,7 +1795,7 @@ INSERT INTO tww_od.measuring_device VALUES ('ch080qwzMG002001', 'FREY', 'TASADA'
 
 
 --
--- Data for Name: measurement_result; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: measurement_result; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.measurement_result VALUES ('ch080qwzMR002001', 'MR2001', 5732, 60, 'jährliche Messungen', '1995-05-01 00:00:00', 0, '2019-10-14 00:00:00', 'ch080qwzPR000018', 'ch080qwzPR000017', 'ch080qwzMG002000', 'ch080qwzMH001999');
@@ -6164,7 +6164,7 @@ INSERT INTO tww_od.measurement_result VALUES ('ch080qwzMR006363', 'MR6363', NULL
 
 
 --
--- Data for Name: mechanical_pretreatment; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: mechanical_pretreatment; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.mechanical_pretreatment VALUES ('ch080qwzMV001243', 'MV1243', 3319, 'Eingebaut in Versickerungsschacht', '2019-10-14 00:00:00', 'ch080qwzPR000018', 'ch080qwzPR000017', 'ch080qwzVA001062');
@@ -6172,7 +6172,7 @@ INSERT INTO tww_od.mechanical_pretreatment VALUES ('ch080qwzMV001244', 'MV1244',
 
 
 --
--- Data for Name: mutation; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: mutation; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.mutation VALUES ('ch080qwzMD000201', 'OBJ ID', 'Abwasserverband', '2008-04-17 00:00:00', NULL, 5582, 'ZZZ AV7', 'ch080qwzAV000007', NULL, 'Update DABASE', 'Stefan Burckhardt', '2019-10-14 00:00:00', 'ch080qwzPR000017', 'ch080qwzPR000016');
@@ -6217,7 +6217,7 @@ INSERT INTO tww_od.mutation VALUES ('ch080qwzMD008657', 'OBJ ID', 'Elektromechan
 
 
 --
--- Data for Name: network_node; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: network_node; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.network_node VALUES (1, 'wastewater_node', 'ch080qwzAK001407', NULL, '010100002008080000F0A7C69B1B2F44419A9999D9788B3141');
@@ -6521,7 +6521,7 @@ INSERT INTO tww_od.network_node VALUES (298, 'blind_connection', 'ch080qwzHA0013
 
 
 --
--- Data for Name: network_segment; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: network_segment; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.network_segment VALUES (1, 'reach', 89, 90, 'ch080qwzHA000017', '01020000200808000002000000000000C0F030444133333333BE64314100000000C53044410000000061643141');
@@ -6828,27 +6828,27 @@ INSERT INTO tww_od.network_segment VALUES (301, 'special_structure', 292, 88, NU
 
 
 --
--- Data for Name: surface_runoff_parameters; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: surface_runoff_parameters; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.surface_runoff_parameters VALUES ('ch080qwzOP001011', 0.0, 'Mittelaletsch5', 2.0, 'Mittelaletsch5', 2.0, 1.0, '2019-10-14 00:00:00', 'ch080qwzPR000018', 'ch080qwzPR000017', 'ch080qwzEZ001010');
 
 
 --
--- Data for Name: param_ca_general; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: param_ca_general; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.param_ca_general VALUES ('ch080qwzOP001011', NULL, 123.00, 2, NULL, NULL);
 
 
 --
--- Data for Name: param_ca_mouse1; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: param_ca_mouse1; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 
 
 --
--- Data for Name: pipe_profile; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: pipe_profile; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.pipe_profile VALUES ('ch080qwzRP000002', 1.00, 'Kreisprofil', 3350, NULL, '2019-10-14 00:00:00', 'ch080qwzPR000018', 'ch080qwzPR000017');
@@ -6859,7 +6859,7 @@ INSERT INTO tww_od.pipe_profile VALUES ('ch080qwzRP999999', 1.00, 'unbekannt', 3
 
 
 --
--- Data for Name: prank_weir; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: prank_weir; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.prank_weir VALUES ('ch080qwzWE001118', NULL, 1914.000, 1913.950, 349, NULL);
@@ -6868,7 +6868,7 @@ INSERT INTO tww_od.prank_weir VALUES ('ch080qwzWE001208', NULL, 2202.800, 2202.7
 
 
 --
--- Data for Name: profile_geometry; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: profile_geometry; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.profile_geometry VALUES ('ch080qwzRG001246', 1, 0, 0, '2019-10-14 00:00:00', 'ch080qwzPR000018', 'ch080qwzPR000017', 'ch080qwzRP000007');
@@ -6884,7 +6884,7 @@ INSERT INTO tww_od.profile_geometry VALUES ('ch080qwzRG001255', 10, 0, 0, '2019-
 
 
 --
--- Data for Name: re_building_group_disposal; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: re_building_group_disposal; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.re_building_group_disposal VALUES ('3265435e-17f8-4764-87de-bd6262a37020', 'ch080qwzGG000001', 'ch080qwzNG000001');
@@ -6895,7 +6895,7 @@ INSERT INTO tww_od.re_building_group_disposal VALUES ('a4b41412-404f-4bf8-b28a-a
 
 
 --
--- Data for Name: re_maintenance_event_wastewater_structure; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: re_maintenance_event_wastewater_structure; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.re_maintenance_event_wastewater_structure VALUES ('d2843a23-8e4a-4df5-a513-d5a8fa2470a8', 'ch080qwzKA001110', 'ch080qwzEH001128');
@@ -6908,7 +6908,7 @@ INSERT INTO tww_od.re_maintenance_event_wastewater_structure VALUES ('a4b51f08-a
 
 
 --
--- Data for Name: reach; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: reach; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.reach VALUES ('ch080qwzHA000017', 2000, NULL, NULL, NULL, 5380, NULL, 251, NULL, 127.84, 3641, '01090000A00808000001000000010200008002000000000000C0F030444133333333BE643141000000000000000000000000C530444100000000616431410000000000000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'ch080qwzHP00017A', 'ch080qwzHP00017E', 'ch080qwzRP000007', NULL);
@@ -7016,66 +7016,66 @@ INSERT INTO tww_od.reach VALUES ('ch080qwzHA001406', 250, NULL, NULL, NULL, 5378
 
 
 --
--- Data for Name: reach_progression_alternative; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: reach_progression_alternative; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.reach_progression_alternative VALUES ('ch080qwzHV000134', 9287, '010900002008080000010000000102000000020000007D3F35FE40294441E17A142EDF9D3141000000002229444100000000D09B3141', '2025-06-06 20:24:20.569052', 'ch080qwzHA000134');
 
 
 --
--- Data for Name: reach_text; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: reach_text; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 
 
 --
--- Data for Name: reservoir; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: reservoir; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.reservoir VALUES ('ch080qwzRV001266', 'Berg', '010100002008080000000000009A2E444100000000B0983141');
 
 
 --
--- Data for Name: retention_body; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: retention_body; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.retention_body VALUES ('ch080qwzRK001267', 'V1.100', 345, NULL, NULL, '2019-10-14 00:00:00', 'ch080qwzPR000018', 'ch080qwzPR000017', 'ch080qwzVA001062');
 
 
 --
--- Data for Name: sia405cc_cable; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: sia405cc_cable; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 
 
 --
--- Data for Name: sia405cc_cable_point; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: sia405cc_cable_point; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 
 
 --
--- Data for Name: sia405pt_protection_tube; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: sia405pt_protection_tube; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 
 
 --
--- Data for Name: sludge_treatment; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: sludge_treatment; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.sludge_treatment VALUES ('ch080qwzSH001182', 0.00, 2.50, 1.20, 2.40, 0.00, 3.60, 'Schlammbehandlung', NULL, 4.30, 3.60, NULL, NULL, NULL, 200.00, '2019-10-14 00:00:00', 'ch080qwzPR000018', 'ch080qwzPR000017', 'ch080qwzAR001075');
 
 
 --
--- Data for Name: small_treatment_plant; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: small_treatment_plant; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.small_treatment_plant VALUES ('ch080qwzKL000001', 'TDU1222.4', 5015, 12355, 6414);
 
 
 --
--- Data for Name: solids_retention; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: solids_retention; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.solids_retention VALUES ('ch080qwzFE001006', NULL, 5600.50, 5667, NULL, 2010);
@@ -7083,7 +7083,7 @@ INSERT INTO tww_od.solids_retention VALUES ('ch080qwzFE001233', NULL, 100.50, 56
 
 
 --
--- Data for Name: special_structure; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: special_structure; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.special_structure VALUES ('ch080qwzSW000001', NULL, 2682, NULL, 5372, NULL, NULL, NULL);
@@ -7108,21 +7108,21 @@ INSERT INTO tww_od.special_structure VALUES ('ch080qwzSW000100', NULL, NULL, NUL
 
 
 --
--- Data for Name: tank_cleaning; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: tank_cleaning; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.tank_cleaning VALUES ('ch080qwzBI001001', 21000.00, 5623, 2023);
 
 
 --
--- Data for Name: tank_emptying; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: tank_emptying; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.tank_emptying VALUES ('ch080qwzBE000001', 12.000, 2100.00, 5628, 2023, NULL, 'ch080qwzFA001207');
 
 
 --
--- Data for Name: waste_water_treatment; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: waste_water_treatment; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.waste_water_treatment VALUES ('ch080qwzAH001076', 'Belebungsbecken', 387, 'Test', '2019-10-14 00:00:00', 'ch080qwzPR000018', 'ch080qwzPR000017', 'ch080qwzAR001075');
@@ -7132,27 +7132,27 @@ INSERT INTO tww_od.waste_water_treatment VALUES ('ch080qwzAH001079', 'Aktivekohl
 
 
 --
--- Data for Name: wastewater_structure_symbol; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: wastewater_structure_symbol; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.wastewater_structure_symbol VALUES ('ch080qwzAS000001', NULL, 7878, 5.0, 5.0, 233.0, '01010000200808000000000000B13044410000000033643141', '2025-06-06 20:24:20.569052', 'ch080qwzAW001080');
 
 
 --
--- Data for Name: wastewater_structure_text; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: wastewater_structure_text; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 
 
 --
--- Data for Name: wwtp_energy_use; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: wwtp_energy_use; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.wwtp_energy_use VALUES ('ch080qwzAE011181', 10000, 5000, 'ARA Energienutzung', 'Beispieldaten, kein Anspruch auf sinnvolle Dimensionierung', 5000, '2019-10-14 00:00:00', 'ch080qwzPR000018', 'ch080qwzPR000017', 'ch080qwzAR001075');
 
 
 --
--- Data for Name: wwtp_structure; Type: TABLE DATA; Schema: tww_od; Owner: postgres
+-- Data for Name: wwtp_structure; Type: TABLE DATA; Schema: tww_od; Owner: -
 --
 
 INSERT INTO tww_od.wwtp_structure VALUES ('ch080qwzAW001080', 326, 'ch080qwzAR001075');
@@ -7168,651 +7168,651 @@ INSERT INTO tww_od.wwtp_structure VALUES ('ch080qwzAW001089', 328, 'ch080qwzAR00
 
 
 --
--- Name: default_values_id_seq; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: default_values_id_seq; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.default_values_id_seq', 1, false);
 
 
 --
--- Name: import_manhole_quarantine_quarantine_serial_seq; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: import_manhole_quarantine_quarantine_serial_seq; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.import_manhole_quarantine_quarantine_serial_seq', 1, false);
 
 
 --
--- Name: network_node_id_seq; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: network_node_id_seq; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.network_node_id_seq', 298, true);
 
 
 --
--- Name: network_segment_id_seq; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: network_segment_id_seq; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.network_segment_id_seq', 301, true);
 
 
 --
--- Name: seq_access_aid_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_access_aid_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_access_aid_oid', 0, true);
 
 
 --
--- Name: seq_backflow_prevention_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_backflow_prevention_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_backflow_prevention_oid', 0, true);
 
 
 --
--- Name: seq_benching_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_benching_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_benching_oid', 0, true);
 
 
 --
--- Name: seq_bio_ecol_assessment_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_bio_ecol_assessment_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_bio_ecol_assessment_oid', 0, true);
 
 
 --
--- Name: seq_building_group_baugwr_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_building_group_baugwr_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_building_group_baugwr_oid', 0, true);
 
 
 --
--- Name: seq_building_group_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_building_group_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_building_group_oid', 0, true);
 
 
 --
--- Name: seq_building_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_building_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_building_oid', 0, true);
 
 
 --
--- Name: seq_catchment_area_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_catchment_area_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_catchment_area_oid', 0, true);
 
 
 --
--- Name: seq_catchment_area_text_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_catchment_area_text_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_catchment_area_text_oid', 0, true);
 
 
 --
--- Name: seq_catchment_area_totals_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_catchment_area_totals_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_catchment_area_totals_oid', 0, true);
 
 
 --
--- Name: seq_channel_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_channel_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_channel_oid', 0, true);
 
 
 --
--- Name: seq_connection_object_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_connection_object_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_connection_object_oid', 0, true);
 
 
 --
--- Name: seq_control_center_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_control_center_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_control_center_oid', 0, true);
 
 
 --
--- Name: seq_cover_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_cover_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_cover_oid', 0, true);
 
 
 --
--- Name: seq_damage_channel_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_damage_channel_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_damage_channel_oid', 0, true);
 
 
 --
--- Name: seq_damage_manhole_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_damage_manhole_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_damage_manhole_oid', 0, true);
 
 
 --
--- Name: seq_damage_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_damage_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_damage_oid', 0, true);
 
 
 --
--- Name: seq_data_media_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_data_media_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_data_media_oid', 0, true);
 
 
 --
--- Name: seq_discharge_point_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_discharge_point_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_discharge_point_oid', 0, true);
 
 
 --
--- Name: seq_disposal_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_disposal_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_disposal_oid', 0, true);
 
 
 --
--- Name: seq_drainage_system_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_drainage_system_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_drainage_system_oid', 0, true);
 
 
 --
--- Name: seq_drainless_toilet_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_drainless_toilet_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_drainless_toilet_oid', 0, true);
 
 
 --
--- Name: seq_dryweather_downspout_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_dryweather_downspout_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_dryweather_downspout_oid', 0, true);
 
 
 --
--- Name: seq_dryweather_flume_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_dryweather_flume_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_dryweather_flume_oid', 0, true);
 
 
 --
--- Name: seq_dss15_aquifer_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_dss15_aquifer_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_dss15_aquifer_oid', 0, true);
 
 
 --
--- Name: seq_dss15_planning_zone_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_dss15_planning_zone_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_dss15_planning_zone_oid', 0, true);
 
 
 --
--- Name: seq_electric_equipment_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_electric_equipment_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_electric_equipment_oid', 0, true);
 
 
 --
--- Name: seq_electromechanical_equipment_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_electromechanical_equipment_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_electromechanical_equipment_oid', 0, true);
 
 
 --
--- Name: seq_examination_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_examination_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_examination_oid', 0, true);
 
 
 --
--- Name: seq_farm_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_farm_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_farm_oid', 0, true);
 
 
 --
--- Name: seq_file_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_file_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_file_oid', 0, true);
 
 
 --
--- Name: seq_flushing_nozzle_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_flushing_nozzle_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_flushing_nozzle_oid', 0, true);
 
 
 --
--- Name: seq_fountain_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_fountain_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_fountain_oid', 0, true);
 
 
 --
--- Name: seq_hq_relation_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_hq_relation_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_hq_relation_oid', 0, true);
 
 
 --
--- Name: seq_hydr_geom_relation_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_hydr_geom_relation_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_hydr_geom_relation_oid', 0, true);
 
 
 --
--- Name: seq_hydr_geometry_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_hydr_geometry_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_hydr_geometry_oid', 0, true);
 
 
 --
--- Name: seq_hydraulic_char_data_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_hydraulic_char_data_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_hydraulic_char_data_oid', 0, true);
 
 
 --
--- Name: seq_individual_surface_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_individual_surface_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_individual_surface_oid', 0, true);
 
 
 --
--- Name: seq_infiltration_installation_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_infiltration_installation_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_infiltration_installation_oid', 0, true);
 
 
 --
--- Name: seq_infiltration_zone_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_infiltration_zone_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_infiltration_zone_oid', 0, true);
 
 
 --
--- Name: seq_leapingweir_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_leapingweir_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_leapingweir_oid', 0, true);
 
 
 --
--- Name: seq_log_card_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_log_card_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_log_card_oid', 0, true);
 
 
 --
--- Name: seq_maintenance_event_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_maintenance_event_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_maintenance_event_oid', 0, true);
 
 
 --
--- Name: seq_maintenance_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_maintenance_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_maintenance_oid', 0, true);
 
 
 --
--- Name: seq_manhole_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_manhole_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_manhole_oid', 0, true);
 
 
 --
--- Name: seq_measure_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_measure_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_measure_oid', 0, true);
 
 
 --
--- Name: seq_measurement_result_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_measurement_result_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_measurement_result_oid', 0, true);
 
 
 --
--- Name: seq_measurement_series_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_measurement_series_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_measurement_series_oid', 0, true);
 
 
 --
--- Name: seq_measuring_device_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_measuring_device_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_measuring_device_oid', 0, true);
 
 
 --
--- Name: seq_measuring_point_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_measuring_point_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_measuring_point_oid', 0, true);
 
 
 --
--- Name: seq_mechanical_pretreatment_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_mechanical_pretreatment_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_mechanical_pretreatment_oid', 0, true);
 
 
 --
--- Name: seq_mutation_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_mutation_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_mutation_oid', 0, true);
 
 
 --
--- Name: seq_organisation_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_organisation_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_organisation_oid', 0, true);
 
 
 --
--- Name: seq_overflow_char_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_overflow_char_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_overflow_char_oid', 0, true);
 
 
 --
--- Name: seq_overflow_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_overflow_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_overflow_oid', 0, true);
 
 
 --
--- Name: seq_param_ca_general_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_param_ca_general_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_param_ca_general_oid', 0, true);
 
 
 --
--- Name: seq_param_ca_mouse1_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_param_ca_mouse1_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_param_ca_mouse1_oid', 0, true);
 
 
 --
--- Name: seq_pipe_profile_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_pipe_profile_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_pipe_profile_oid', 0, true);
 
 
 --
--- Name: seq_prank_weir_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_prank_weir_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_prank_weir_oid', 0, true);
 
 
 --
--- Name: seq_profile_geometry_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_profile_geometry_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_profile_geometry_oid', 0, true);
 
 
 --
--- Name: seq_pump_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_pump_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_pump_oid', 0, true);
 
 
 --
--- Name: seq_reach_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_reach_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_reach_oid', 0, true);
 
 
 --
--- Name: seq_reach_point_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_reach_point_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_reach_point_oid', 0, true);
 
 
 --
--- Name: seq_reach_progression_alternative_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_reach_progression_alternative_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_reach_progression_alternative_oid', 0, true);
 
 
 --
--- Name: seq_reach_text_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_reach_text_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_reach_text_oid', 0, true);
 
 
 --
--- Name: seq_reservoir_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_reservoir_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_reservoir_oid', 0, true);
 
 
 --
--- Name: seq_retention_body_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_retention_body_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_retention_body_oid', 0, true);
 
 
 --
--- Name: seq_sia405cc_cable_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_sia405cc_cable_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_sia405cc_cable_oid', 0, true);
 
 
 --
--- Name: seq_sia405cc_cable_point_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_sia405cc_cable_point_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_sia405cc_cable_point_oid', 0, true);
 
 
 --
--- Name: seq_sia405pt_protection_tube_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_sia405pt_protection_tube_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_sia405pt_protection_tube_oid', 0, true);
 
 
 --
--- Name: seq_sludge_treatment_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_sludge_treatment_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_sludge_treatment_oid', 0, true);
 
 
 --
--- Name: seq_small_treatment_plant_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_small_treatment_plant_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_small_treatment_plant_oid', 0, true);
 
 
 --
--- Name: seq_solids_retention_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_solids_retention_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_solids_retention_oid', 0, true);
 
 
 --
--- Name: seq_special_structure_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_special_structure_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_special_structure_oid', 0, true);
 
 
 --
--- Name: seq_structure_part_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_structure_part_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_structure_part_oid', 0, true);
 
 
 --
--- Name: seq_surface_runoff_parameters_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_surface_runoff_parameters_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_surface_runoff_parameters_oid', 0, true);
 
 
 --
--- Name: seq_tank_cleaning_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_tank_cleaning_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_tank_cleaning_oid', 0, true);
 
 
 --
--- Name: seq_tank_emptying_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_tank_emptying_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_tank_emptying_oid', 0, true);
 
 
 --
--- Name: seq_throttle_shut_off_unit_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_throttle_shut_off_unit_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_throttle_shut_off_unit_oid', 0, true);
 
 
 --
--- Name: seq_waste_water_treatment_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_waste_water_treatment_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_waste_water_treatment_oid', 0, true);
 
 
 --
--- Name: seq_waste_water_treatment_plant_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_waste_water_treatment_plant_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_waste_water_treatment_plant_oid', 0, true);
 
 
 --
--- Name: seq_wastewater_networkelement_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_wastewater_networkelement_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_wastewater_networkelement_oid', 0, true);
 
 
 --
--- Name: seq_wastewater_node_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_wastewater_node_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_wastewater_node_oid', 0, true);
 
 
 --
--- Name: seq_wastewater_structure_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_wastewater_structure_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_wastewater_structure_oid', 0, true);
 
 
 --
--- Name: seq_wastewater_structure_symbol_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_wastewater_structure_symbol_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_wastewater_structure_symbol_oid', 0, true);
 
 
 --
--- Name: seq_wastewater_structure_text_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_wastewater_structure_text_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_wastewater_structure_text_oid', 0, true);
 
 
 --
--- Name: seq_wwtp_energy_use_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_wwtp_energy_use_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_wwtp_energy_use_oid', 0, true);
 
 
 --
--- Name: seq_wwtp_structure_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_wwtp_structure_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_wwtp_structure_oid', 0, true);
 
 
 --
--- Name: seq_zone_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: postgres
+-- Name: seq_zone_oid; Type: SEQUENCE SET; Schema: tww_od; Owner: -
 --
 
 SELECT pg_catalog.setval('tww_od.seq_zone_oid', 0, true);
