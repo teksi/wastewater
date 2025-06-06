@@ -66,11 +66,17 @@ jobs:
           path: datamodel/schemaspy/
           if-no-files-found: error
 
+      - name: Zip datamodel dumps
+        run: zip -r datamodel-dumps.zip datamodel/artifacts
+
+      - name: Zip schemaspy output
+        run: zip -r datamodel-schemaspy.zip datamodel/schemaspy
+
       - name: Upload datamodel dumps as GitHub Release asset
         if: ${{ inputs.release_tag != '' }}
         run: |
-          gh release upload "${{ inputs.release_tag }}" datamodel/artifacts#oqtopus.datamodel --repo "$GITHUB_REPOSITORY"
-          gh release upload "${{ inputs.release_tag }}" datamodel/schemaspy --repo "$GITHUB_REPOSITORY"
+          gh release upload "${{ inputs.release_tag }}" datamodel-dumps.zip#oqtopus.datamodel --repo "$GITHUB_REPOSITORY"
+          gh release upload "${{ inputs.release_tag }}" datamodel-schemaspy.zip --repo "$GITHUB_REPOSITORY"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ github.ref_name }}
