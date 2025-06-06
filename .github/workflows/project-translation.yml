@@ -22,7 +22,7 @@ on:
   workflow_dispatch:
   workflow_call: # Allows this workflow to be called by other workflows
     inputs:
-      release_upload_url:
+      release_tag:
         required: true
         type: string
 
