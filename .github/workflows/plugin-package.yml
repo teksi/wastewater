@@ -69,7 +69,7 @@ jobs:
 
       - name: Upload plugin as GitHub Release asset
         if: ${{ inputs.release_tag != '' }}
-        run: gh release upload "${{ inputs.release_tag }}" plugin/teksi_wastewater.0.0.0.zip --repo "$GITHUB_REPOSITORY"
+        run: gh release upload "${{ inputs.release_tag }}" plugin/teksi_wastewater.0.0.0.zip#oqtopus_plugin --repo "$GITHUB_REPOSITORY"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ github.ref_name }}
