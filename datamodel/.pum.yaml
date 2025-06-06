@@ -60,6 +60,8 @@ parameters:
 
 
 migration_hooks:
+  pre:
+    - code: DROP SCHEMA IF EXISTS tww_app CASCADE;
   post:
     - file: app/create_app.py
 
