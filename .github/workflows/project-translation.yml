@@ -69,3 +69,11 @@ jobs:
           name: project-translations
           path: project/teksi_wastewater*
           if-no-files-found: error
+
+      - name: Upload project translations as GitHub Release asset
+        if: ${{ inputs.release_tag != '' }}
+        run: |
+          gh release upload "${{ inputs.release_tag }}" project/teksi_wastewater*#oqtopus_project --repo "$GITHUB_REPOSITORY"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.ref_name }}
