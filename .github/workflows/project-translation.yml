@@ -48,6 +48,11 @@ jobs:
       - name: Start Docker compose
         run: |
           docker compose up --build -d
+          until docker compose exec db pg_isready -U postgres; do
+            echo "Waiting for PostgreSQL to be ready..."
+            sleep 2
+          done
+          docker compose exec db createdb -U postgres tww
           docker compose exec db pum -vvv -s pg_tww -d datamodel install -p SRID 2056 --roles --grant
 
       - name: Translate (create sources)
@@ -73,7 +78,7 @@ jobs:
       - name: Upload project translations as GitHub Release asset
         if: ${{ inputs.release_tag != '' }}
         run: |
-          gh release upload "${{ inputs.release_tag }}" project/teksi_wastewater*#oqtopus.project --repo "$GITHUB_REPOSITORY"
+          gh release upload "${{ inputs.release_tag }}" project/teksi_wastewater#oqtopus.project --repo "$GITHUB_REPOSITORY"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ github.ref_name }}
