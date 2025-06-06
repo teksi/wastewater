@@ -37,6 +37,10 @@ jobs:
 
       - name: Initialize container
         run: |
+          until docker compose exec db pg_isready -U postgres; do
+            echo "Waiting for PostgreSQL to be ready..."
+            sleep 2
+          done
           docker compose exec db psql -U postgres -c "CREATE DATABASE tww;"
           docker compose exec db pum -vvv -s pg_tww -d datamodel install -p SRID 2056
 
