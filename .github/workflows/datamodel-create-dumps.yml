@@ -37,7 +37,7 @@ jobs:
 
       - name: Initialize container
         run: |
-          docker exec teksi-wastewater psql -U postgres -c "CREATE DATABASE tww;"
+          docker exec db psql -U postgres -c "CREATE DATABASE tww;"
           docker compose exec db pum -vvv -s pg_tww -d datamodel install -p SRID 2056
 
       - name: Create dumps
