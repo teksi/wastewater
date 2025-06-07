@@ -62,7 +62,7 @@ def create_app(
     """
     cwd = Path(__file__).parent.resolve()
     variables = {
-        "SRID": psycopg.sql.SQL(f"{srid}")
+        "SRID": psycopg.sql.SQL(f"{srid}"),
     }  # when dropping psycopg2 support, we can use the srid var directly
 
     if drop_schema:
@@ -249,9 +249,6 @@ def create_app(
         safe_load(open(cwd / "view/export/vw_export_wastewater_structure.yaml")),
         pg_service,
     ).create()
-
-    # Roles
-    run_sql_file("tww_app_roles.sql", pg_service, variables)
 
 
 if __name__ == "__main__":
