@@ -50,7 +50,7 @@ jobs:
           done
           # create the database
           docker exec teksi-wastewater psql -U postgres -c "CREATE DATABASE tww;"
-          docker exec teksi-wastewater pum -vvv -s pg_tww -d datamodel install -p SRID 2056
+          docker exec teksi-wastewater pum -vvv -s pg_tww -d datamodel install -p SRID 2056 --roles --grant --demo-data Aletsch
 
       - name: Run tests
         run:  docker exec teksi-wastewater pytest datamodel
