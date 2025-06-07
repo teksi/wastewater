@@ -1,6 +1,7 @@
 .env
 
 datamodel/artifacts
+datamodel/libs/
 
 project/*attachments.zip
 project/*.qgs~
