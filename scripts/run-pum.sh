@@ -20,7 +20,7 @@ source .venv/bin/activate
 
 if [[ $INSTALL_DEPS -eq 1 ]]; then
   .venv/bin/python -m pip install --ignore-installed ~/dev/pum
-  .venv/bin/python -m pip install --ignore-installed ~/dev/pirogue
+  #.venv/bin/python -m pip install --ignore-installed ~/dev/pirogue
   pyenv rehash
 fi
 

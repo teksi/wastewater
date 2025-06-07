@@ -58,6 +58,9 @@ parameters:
     type: text
     description: YAML file with extra information for the vw_tww_channel_extra view.
 
+dependencies:
+  - name: pirogue
+    minimum_version: 3.0.0
 
 migration_hooks:
   pre:
