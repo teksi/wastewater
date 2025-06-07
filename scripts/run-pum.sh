@@ -44,4 +44,4 @@ DROP ROLE IF EXISTS tww_sysadmin;"
 #psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f datamodel/roles/roles_create.sql
 #psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f datamodel/roles/roles_grant.sql
 
-pum -vvv -s pg_tww -d datamodel install -p SRID 2056 --roles --grant --demo-data Aletsch
+pum -v -s pg_tww -d datamodel install -p SRID 2056 --roles --grant --demo-data Aletsch
