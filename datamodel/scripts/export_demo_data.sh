@@ -9,5 +9,5 @@ docker compose run qgis sh -c 'xvfb-run /usr/src/plugin/tww_cmd.py interlis_impo
 
 docker compose exec db pg_dump --inserts --data-only --no-owner --no-privileges --schema=tww_od -U postgres tww > demo_data.sql
 
-# Remove select set_config
-sed -i '/^SELECT pg_catalog\.set_config/d' demo_data.sql
+# Comment out lines with SELECT pg_catalog.set_config, keeping the original content
+sed -i '/^SELECT pg_catalog\.set_config/ s/^/-- Removed as it breaks PostGIS: /' demo_data.sql
