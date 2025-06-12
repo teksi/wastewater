@@ -148,12 +148,12 @@ TWW uses a data historization process. The ``pg history viewer`` `plugin <http:/
 Install the demo data
 ---------------------
 
-as described `here <https://tww.github.io/docs/installation-guide/database-initialization.html#restore-datamodel-demodata>`_
+as described `here <https://teksi.github.io/wastewater/docs/installation-guide/database-initialization.html#restore-datamodel-demodata>`_
 
 Install the demo project
 ------------------------
 
-* Download from https://github.com/TWW/tww/releases the qgs project file and its translations
+* Download from https://github.com/teksi/wastewater/releases/latest the qgs project file and its translations
 project-translations.zip
 
 * Extract the file
@@ -171,24 +171,23 @@ project-translations.zip
 If you are a data owner: Add your own OID to the project
 --------------------------------------------------------
 
-* If you are a data owner (Datenherr), you should add your OID data in the table tww_sys.oid_prefixes:
+* If you are a data owner (Datenherr), you should
 
-.. figure:: images/oid_prefix.jpg
+  + add your OID data in the table tww_sys.oid_prefixes and set it to true with an INSERT statement
+  + and set the Invalid organisation (and any others) to FALSE:
 
-* Edit ``02_oid_generation.sql`` with your OID if you want it permanently in the TWW project and hand in a pull request
-
-https://github.com/TWW/datamodel/blob/master/02_oid_generation.sql
+.. figure:: images/add_own_oid_prefix.jpg
 
 .. code:: sql
 
-  -- sample entry for the City of Uster - you need to add an entry for your own organization
-  INSERT INTO tww_sys.oid_prefixes (prefix,organization,active) VALUES ('ch11h8mw','Stadt Uster',TRUE);
-  INSERT INTO tww_sys.oid_prefixes (prefix,organization,active) VALUES ('ch15z36d','SIGE',FALSE);
-  INSERT INTO tww_sys.oid_prefixes (prefix,organization,active) VALUES ('ch13p7mz','Arbon',FALSE);
+  -- sample entry for myorganisation - you need to add an entry for your own organization
+  INSERT INTO tww_sys.oid_prefixes (prefix,organization,active) VALUES ('ch11h8mw','myorganisation',TRUE);
 
-and set the OID you want to use in your project to TRUE.
+  -- sample code to set Invalid organisation to FALSE
+  UPDATE tww_sys.oid_prefixes SET active=FALSE WHERE prefix='ch000000';
 
-* or add it locally to your project with an INSERT statement.
+.. note:: Only one OID Prefix should be set to TRUE!
+
 
 * OID prefixes have to be ordered at https://www.interlis.ch/en/dienste/oid-bestellen
 

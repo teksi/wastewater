@@ -333,12 +333,16 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
           BEGIN
             EXECUTE FORMAT({literal_delete_on_ws_change});
           END;
+      ELSE -- do nothing
+          NULL;
         END CASE;
 
         CASE WHEN NEW.ws_type = ANY(ARRAY['manhole','special_structure','discharge_point','infiltration_installation','drainless_toilet','wwtp_structure','small_treatment_plant']) THEN
           BEGIN
             EXECUTE FORMAT({literal_insert_on_ws_change});
           END;
+        ELSE -- do nothing
+          NULL;
         END CASE;
       END IF;
 
@@ -353,6 +357,7 @@ def vw_tww_additional_ws(srid: int, pg_service: str = None):
           {update_dt}
 
         ELSE -- do nothing
+          NULL;
       END CASE;
 
       -- Cover geometry has been moved

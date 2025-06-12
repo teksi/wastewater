@@ -9,7 +9,7 @@ CREATE TABLE tww_od.import_manhole_quarantine
 (
   obj_id character varying(16),
   identifier character varying(20),
-  situation_geometry geometry(POINTZ, 2056),
+  situation_geometry geometry(POINTZ, :SRID),
   co_shape integer,
   co_diameter smallint,
   co_material integer,
