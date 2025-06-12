@@ -72,7 +72,7 @@ def vw_tww_damage_channel(
             table_schema="tww_od",
             table_name="damage",
             table_alias="dg",
-            remove_pkey=True,
+            remove_pkey=False,
             indent=4,
         ),
         dg_cols_base=select_columns(
@@ -88,7 +88,7 @@ def vw_tww_damage_channel(
             table_schema="tww_od",
             table_name="damage_channel",
             table_alias="dc",
-            remove_pkey=False,
+            remove_pkey=True,
             indent=4,
         ),
         dc_cols_base=select_columns(
