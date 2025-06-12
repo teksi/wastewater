@@ -8,7 +8,7 @@ import unittest
 from .utils import DEFAULT_PG_SERVICE
 
 
-class TestExtensions(unittest.TestCase):
+class TestOdViews(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
