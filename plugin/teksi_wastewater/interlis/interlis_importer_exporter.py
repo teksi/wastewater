@@ -166,7 +166,7 @@ class InterlisImporterExporter:
     ):
         # Validate subclasses before export
         self._check_subclass_counts(limit_to_selection)
-        
+
         # Check Check if attribute identifier is Null before export
         self._check_identifier_null(limit_to_selection)
 
@@ -181,11 +181,11 @@ class InterlisImporterExporter:
 
         # Check if MAMDATORY fk_provider is Null  before export
         self._check_fk_provider_null(limit_to_selection)
-        
+
         # new in TEKSI
         # Check if MANDATORY fk_wastewater_structure is Null before export
         self._check_fk_wastewater_structure_null(limit_to_selection)
-        
+
         # File name without extension (used later for export)
         file_name_base, _ = os.path.splitext(xtf_file_output)
 
@@ -615,6 +615,7 @@ class InterlisImporterExporter:
                             None,
                         )
 
+
 def _check_identifier_null(self, limit_to_selection=False):
     """
     Check if attribute identifier is Null
@@ -668,9 +669,7 @@ def _check_identifier_null(self, limit_to_selection=False):
         ("wwtp_energy_use"),
         ("zone"),
     ]:
-        cursor.execute(
-            f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE identifier is null;"
-        )
+        cursor.execute(f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE identifier is null;")
         # use cursor.fetchone()[0] instead of cursor.rowcount
         # add variable and store result of cursor.fetchone()[0] as the next call will give None value instead of count https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
 
@@ -965,11 +964,14 @@ def _check_fk_provider_null(self, limit_to_selection=False):
         )
         return False
 
+
 def _check_fk_wastewater_structure_null(self, limit_to_selection=False):
     """
     Check if MAMDATORY fk_wastewater_structure is Null
     """
-    logger.info("INTEGRITY CHECK missing wastewater_structure references fk_wastewater_structure...")
+    logger.info(
+        "INTEGRITY CHECK missing wastewater_structure references fk_wastewater_structure..."
+    )
 
     connection = psycopg2.connect(get_pgconf_as_psycopg2_dsn())
     connection.set_session(autocommit=True)
@@ -983,7 +985,6 @@ def _check_fk_wastewater_structure_null(self, limit_to_selection=False):
         ("structure_part"),
         ("reach_point"),
         # VSA-DSS
- 
     ]:
         cursor.execute(
             f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_wastewater_structure is null;"
@@ -1003,10 +1004,14 @@ def _check_fk_wastewater_structure_null(self, limit_to_selection=False):
             missing_fk_wastewater_structure_count = missing_fk_wastewater_structure_count
         else:
             # missing_fk_wastewater_structure_count = missing_fk_wastewater_structure_count + int(cursor.fetchone()[0])
-            missing_fk_wastewater_structure_count = missing_fk_wastewater_structure_count + class_fk_wastewater_structure_count
+            missing_fk_wastewater_structure_count = (
+                missing_fk_wastewater_structure_count + class_fk_wastewater_structure_count
+            )
 
         # add for testing
-        logger.info(f"missing_fk_wastewater_structure_count : {missing_fk_wastewater_structure_count}")
+        logger.info(
+            f"missing_fk_wastewater_structure_count : {missing_fk_wastewater_structure_count}"
+        )
 
     if missing_fk_wastewater_structure_count == 0:
         logger.info("OK: all mandatory fk_wastewater_structure set in tww_od!")
