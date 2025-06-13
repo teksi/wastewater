@@ -1,6 +1,5 @@
 CREATE OR REPLACE FUNCTION tww_app.update_catchment_area_totals(_obj_id text, _all boolean default false)
   RETURNS VOID
-  SECURITY DEFINER
   AS
   $BODY$
 BEGIN
