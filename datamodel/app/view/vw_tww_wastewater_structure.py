@@ -358,7 +358,7 @@ def vw_tww_wastewater_structure(
             ],
             insert_values={
                 "identifier": "COALESCE(NULLIF(NEW.wn_identifier,''), NEW.identifier)",
-                "situation3d_geometry": f"ST_SetSRID(ST_MakePoint(ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), 'nan'), {srid} )",
+                "situation3d_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), 'nan'), {srid} )",
                 "last_modification": "NOW()",
                 "fk_provider": "COALESCE(NULLIF(NEW.wn_fk_provider,''), NEW.fk_provider)",
                 "fk_dataowner": "COALESCE(NULLIF(NEW.wn_fk_dataowner,''), NEW.fk_dataowner)",
