@@ -9,7 +9,7 @@ import psycopg
 from pirogue.utils import insert_command, select_columns, update_command
 
 
-def vw_tww_additional_ws(connection: psycopg.Connection, srid: int):
+def vw_tww_additional_ws(connection: psycopg.Connection, srid: psycopg.sql.Literal):
     """
     Creates additional_wastewater_structure view
     :param srid: EPSG code for geometries
@@ -291,9 +291,7 @@ def vw_tww_additional_ws(connection: psycopg.Connection, srid: int):
             ],
             insert_values={
                 "identifier": "COALESCE(NULLIF(NEW.wn_identifier,''), NEW.identifier)",
-                "situation3d_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), 'nan'), {srid} )".format(
-                    srid=srid
-                ),
+                "situation3d_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), 'nan'), {srid} )",
                 "last_modification": "NOW()",
                 "fk_provider": "COALESCE(NULLIF(NEW.wn_fk_provider,''), NEW.fk_provider)",
                 "fk_dataowner": "COALESCE(NULLIF(NEW.wn_fk_dataowner,''), NEW.fk_dataowner)",
@@ -313,9 +311,7 @@ def vw_tww_additional_ws(connection: psycopg.Connection, srid: int):
             remap_columns={"cover_shape": "co_shape"},
             insert_values={
                 "identifier": "COALESCE(NULLIF(NEW.co_identifier,''), NEW.identifier)",
-                "situation3d_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), 'nan'), {srid} )".format(
-                    srid=srid
-                ),
+                "situation3d_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), 'nan'), {srid} )",
                 "last_modification": "NOW()",
                 "fk_provider": "NEW.fk_provider",
                 "fk_dataowner": "NEW.fk_dataowner",
@@ -324,6 +320,7 @@ def vw_tww_additional_ws(connection: psycopg.Connection, srid: int):
         ),
     )
 
+    trigger_insert_sql = psycopg.sql.SQL(trigger_insert_sql).format(srid=srid)
     cursor.execute(trigger_insert_sql)
 
     update_trigger_sql = """
@@ -382,7 +379,7 @@ def vw_tww_additional_ws(connection: psycopg.Connection, srid: int):
         SET situation3d_geometry = ST_SetSRID( ST_MakePoint(
         ST_X(ST_TRANSLATE(ST_MakePoint(ST_X(WN.situation3d_geometry), ST_Y(WN.situation3d_geometry)), dx, dy )),
         ST_Y(ST_TRANSLATE(ST_MakePoint(ST_X(WN.situation3d_geometry), ST_Y(WN.situation3d_geometry)), dx, dy )),
-        ST_Z(WN.situation3d_geometry)), {srid} )
+        ST_Z(WN.situation3d_geometry)), {{srid}} )
         WHERE obj_id IN
         (
           SELECT obj_id FROM tww_od.wastewater_networkelement
@@ -394,7 +391,7 @@ def vw_tww_additional_ws(connection: psycopg.Connection, srid: int):
         SET situation3d_geometry = ST_SetSRID( ST_MakePoint(
         ST_X(ST_TRANSLATE(ST_MakePoint(ST_X(CO.situation3d_geometry), ST_Y(CO.situation3d_geometry)), dx, dy )),
         ST_Y(ST_TRANSLATE(ST_MakePoint(ST_X(CO.situation3d_geometry), ST_Y(CO.situation3d_geometry)), dx, dy )),
-        ST_Z(CO.situation3d_geometry)), {srid} )
+        ST_Z(CO.situation3d_geometry)), {{srid}} )
         WHERE obj_id IN
         (
           SELECT obj_id FROM tww_od.structure_part
@@ -410,7 +407,7 @@ def vw_tww_additional_ws(connection: psycopg.Connection, srid: int):
             ST_SetSRID( ST_MakePoint(
                 ST_X(ST_TRANSLATE(ST_MakePoint(ST_X(ST_PointN(RE.progression3d_geometry, 1)), ST_Y(ST_PointN(RE.progression3d_geometry, 1))), dx, dy )),
                 ST_Y(ST_TRANSLATE(ST_MakePoint(ST_X(ST_PointN(RE.progression3d_geometry, 1)), ST_Y(ST_PointN(RE.progression3d_geometry, 1))), dx, dy )),
-                ST_Z(ST_PointN(RE.progression3d_geometry, 1))), {srid} )
+                ST_Z(ST_PointN(RE.progression3d_geometry, 1))), {{srid}} )
           ) )
         WHERE fk_reach_point_from IN
         (
@@ -427,7 +424,7 @@ def vw_tww_additional_ws(connection: psycopg.Connection, srid: int):
             ST_SetSRID( ST_MakePoint(
                 ST_X(ST_TRANSLATE(ST_MakePoint(ST_X(ST_EndPoint(RE.progression3d_geometry)), ST_Y(ST_EndPoint(RE.progression3d_geometry))), dx, dy )),
                 ST_Y(ST_TRANSLATE(ST_MakePoint(ST_X(ST_EndPoint(RE.progression3d_geometry)), ST_Y(ST_EndPoint(RE.progression3d_geometry))), dx, dy )),
-                ST_Z(ST_PointN(RE.progression3d_geometry, 1))), {srid} )
+                ST_Z(ST_PointN(RE.progression3d_geometry, 1))), {{srid}} )
           ) )
         WHERE fk_reach_point_to IN
         (
@@ -449,7 +446,6 @@ def vw_tww_additional_ws(connection: psycopg.Connection, srid: int):
     CREATE TRIGGER vw_tww_additional_ws_UPDATE INSTEAD OF UPDATE ON tww_app.vw_tww_additional_ws
       FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_tww_additional_ws_UPDATE();
     """.format(
-        srid=srid,
         literal_delete_on_ws_change="'DELETE FROM tww_od.%I WHERE obj_id = %L',OLD.ws_type,OLD.obj_id",
         literal_insert_on_ws_change="'INSERT INTO tww_od.%I(obj_id) VALUES (%L)',NEW.ws_type,OLD.obj_id",
         update_co=update_command(
@@ -546,6 +542,8 @@ def vw_tww_additional_ws(connection: psycopg.Connection, srid: int):
         ),
     )
 
+    update_trigger_sql = psycopg.sql.SQL(update_trigger_sql).format(srid=srid)
+
     cursor.execute(update_trigger_sql)
 
     trigger_delete_sql = """
@@ -579,7 +577,7 @@ if __name__ == "__main__":
     parser.add_argument("-s", "--srid", help="EPSG code for SRID", default=2056, type=int)
     parser.add_argument("-p", "--pg_service", help="the PostgreSQL service name")
     args = parser.parse_args()
-    srid = args.srid
+    srid = psycopg.sql.Literal(args.srid)
     pg_service = args.pg_service or os.getenv("PGSERVICE")
     with psycopg.connect(f"service={pg_service}") as connection:
         vw_tww_additional_ws(srid=srid, pg_service=pg_service)
