@@ -47,7 +47,7 @@ jobs:
           done
           # create the database
           docker exec teksi-wastewater sh -c 'createdb tww'
-          docker exec teksi-wastewater pum -vvv -s pg_tww -d datamodel install -p SRID 2056 --roles --grant --demo-data Aletsch
+          docker exec teksi-wastewater pum -vvv -s pg_tww -d datamodel install -p SRID 2056 --roles --grant
 
       - name: Run tests
         run:  docker exec teksi-wastewater pytest datamodel
