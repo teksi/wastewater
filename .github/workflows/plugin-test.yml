@@ -54,7 +54,12 @@ jobs:
 
       - name: Clear Database
         run: |
-          docker exec teksi-wastewater sh -c 'createdb tww'
+          until docker compose exec db pg_isready -U postgres; do
+            echo "Waiting for PostgreSQL to be ready..."
+            sleep 2
+          done
+          # create the database
+          docker exec db sh -c 'createdb tww'
           docker compose exec db pum -vvv -s pg_tww -d datamodel install -p SRID 2056 --roles --grant
 
       - name: Test on QGIS
@@ -62,7 +67,7 @@ jobs:
 
       - name: Clear Database
         run: |
-          docker exec teksi-wastewater sh -c 'createdb tww'
+          docker exec db sh -c 'createdb tww'
           docker compose exec db pum -vvv -s pg_tww -d datamodel install -p SRID 2056 --roles --grant
 
       - name: Test on QGIS DSS dataset
@@ -70,7 +75,7 @@ jobs:
 
       - name: Clear Database
         run: |
-          docker exec teksi-wastewater sh -c 'createdb tww'
+          docker exec db sh -c 'createdb tww'
           docker compose exec db pum -vvv -s pg_tww -d datamodel install -p SRID 2056 --roles --grant
 
       - name: Test command line import orgs
