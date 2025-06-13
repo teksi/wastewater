@@ -12,7 +12,6 @@ FROM base-$BUILDARCH as common
 
 ARG AUTO_INIT=True
 ARG RUN_TEST=False
-ARG PSYCOPG_VERSION=3
 
 # System deps (bc + exiftool for testing)
 RUN apk add --no-cache python3 py3-pip py3-virtualenv postgresql-dev wget exiftool bc git
