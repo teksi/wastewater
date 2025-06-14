@@ -186,7 +186,7 @@ def vw_tww_infiltration_installation(
         ),
     )
 
-    view_sql = psycopg.sql.SQL(view_sql).format(srid=srid)
+    view_sql = psycopg.sql.SQL(view_sql).format(srid=psycopg.sql.Literal(srid))
 
     cursor.execute(view_sql)
 
@@ -343,7 +343,7 @@ def vw_tww_infiltration_installation(
         ),
     )
 
-    trigger_insert_sql = psycopg.sql.SQL(trigger_insert_sql).format(srid=srid)
+    trigger_insert_sql = psycopg.sql.SQL(trigger_insert_sql).format(psycopg.sql.Literal(srid=srid))
     cursor.execute(trigger_insert_sql)
 
     update_trigger_sql = """
@@ -562,7 +562,7 @@ def vw_tww_infiltration_installation(
         ),
     )
 
-    update_trigger_sql = psycopg.sql.SQL(update_trigger_sql).format(srid=srid)
+    update_trigger_sql = psycopg.sql.SQL(update_trigger_sql).format(srid=psycopg.sql.Literal(srid))
     cursor.execute(update_trigger_sql)
 
     trigger_delete_sql = """

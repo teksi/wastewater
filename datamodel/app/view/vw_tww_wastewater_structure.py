@@ -224,7 +224,7 @@ def vw_tww_wastewater_structure(
         ),
     )
 
-    view_sql = psycopg.sql.SQL(view_sql).format(srid=srid)
+    view_sql = psycopg.sql.SQL(view_sql).format(srid=psycopg.sql.Literal(srid))
 
     try:
         cursor.execute(view_sql)
@@ -387,7 +387,7 @@ def vw_tww_wastewater_structure(
         ),
     )
 
-    trigger_insert_sql = psycopg.sql.SQL(trigger_insert_sql).format(srid=srid)
+    trigger_insert_sql = psycopg.sql.SQL(trigger_insert_sql).format(srid=psycopg.sql.Literal(srid))
 
     cursor.execute(trigger_insert_sql)
 
@@ -647,7 +647,7 @@ def vw_tww_wastewater_structure(
         ),
     )
 
-    update_trigger_sql = psycopg.sql.SQL(update_trigger_sql).format(srid=srid)
+    update_trigger_sql = psycopg.sql.SQL(update_trigger_sql).format(srid=psycopg.sql.Literal(srid))
 
     cursor.execute(update_trigger_sql)
 
