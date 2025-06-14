@@ -67,6 +67,7 @@ jobs:
 
       - name: Clear Database
         run: |
+          docker compose exec db sh -c 'dropdb tww'
           docker compose exec db sh -c 'createdb tww'
           docker compose exec db pum -s pg_tww -d datamodel install -p SRID 2056 --roles --grant
 
@@ -75,6 +76,7 @@ jobs:
 
       - name: Clear Database
         run: |
+          docker compose exec db sh -c 'dropdb tww'
           docker compose exec db sh -c 'createdb tww'
           docker compose exec db pum -s pg_tww -d datamodel install -p SRID 2056 --roles --grant
 
