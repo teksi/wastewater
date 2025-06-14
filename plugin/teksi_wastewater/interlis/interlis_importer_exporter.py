@@ -623,8 +623,6 @@ def _check_identifier_null(self, limit_to_selection=False):
     with DatabaseUtils.PsycopgConnection() as connection:
         logger.info("INTEGRITY CHECK missing identifiers...")
 
-        # connection = psycopg2.connect(get_pgconf_as_psycopg2_dsn())
-        # connection.set_session(autocommit=True)
         cursor = connection.cursor()
 
         missing_identifier_count = 0
@@ -711,319 +709,315 @@ def _check_fk_owner_null(self, limit_to_selection=False):
     """
     Check if MAMDATORY fk_owner is Null
     """
-    logger.info("INTEGRITY CHECK missing MAMDATORY owner references fk_owner...")
+    with DatabaseUtils.PsycopgConnection() as connection:
+        logger.info("INTEGRITY CHECK missing MAMDATORY owner references fk_owner...")
 
-    connection = psycopg2.connect(get_pgconf_as_psycopg2_dsn())
-    connection.set_session(autocommit=True)
-    cursor = connection.cursor()
+        cursor = connection.cursor()
 
-    missing_fk_owner_count = 0
-    # add MANDATORY classes to be checked
-    for notsubclass in [
-        # SIA405 Abwasser
-        ("wastewater_structure"),
-    ]:
-        cursor.execute(f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_owner is null;")
-        # use cursor.fetchone()[0] instead of cursor.rowcount
-        # add variable and store result of cursor.fetchone()[0] as the next call will give None value instead of count https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
-        class_fk_owner_count = int(cursor.fetchone()[0])
-        # logger.info(
-        #    f"Number of datasets in class '{notsubclass}' without fk_owner : {cursor.fetchone()[0]}"
-        # )
-        logger.info(
-            f"Number of datasets in class '{notsubclass}' without fk_owner : {class_fk_owner_count}"
-        )
+        missing_fk_owner_count = 0
+        # add MANDATORY classes to be checked
+        for notsubclass in [
+            # SIA405 Abwasser
+            ("wastewater_structure"),
+        ]:
+            cursor.execute(f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_owner is null;")
+            # use cursor.fetchone()[0] instead of cursor.rowcount
+            # add variable and store result of cursor.fetchone()[0] as the next call will give None value instead of count https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
+            class_fk_owner_count = int(cursor.fetchone()[0])
+            # logger.info(
+            #    f"Number of datasets in class '{notsubclass}' without fk_owner : {cursor.fetchone()[0]}"
+            # )
+            logger.info(
+                f"Number of datasets in class '{notsubclass}' without fk_owner : {class_fk_owner_count}"
+            )
 
-        # if cursor.fetchone() is None:
-        if class_fk_owner_count == 0:
-            missing_fk_owner_count = missing_fk_owner_count
+            # if cursor.fetchone() is None:
+            if class_fk_owner_count == 0:
+                missing_fk_owner_count = missing_fk_owner_count
+            else:
+                # missing_fk_owner_count = missing_fk_owner_count + int(cursor.fetchone()[0])
+                missing_fk_owner_count = missing_fk_owner_count + class_fk_owner_count
+
+            # add for testing
+            logger.info(f"missing_fk_owner_count : {missing_fk_owner_count}")
+
+        if missing_fk_owner_count == 0:
+            check_fk_owner_null = True
+            logger.info("OK: all mandatory fk_owner set in tww_od!")
         else:
-            # missing_fk_owner_count = missing_fk_owner_count + int(cursor.fetchone()[0])
-            missing_fk_owner_count = missing_fk_owner_count + class_fk_owner_count
-
-        # add for testing
-        logger.info(f"missing_fk_owner_count : {missing_fk_owner_count}")
-
-    if missing_fk_owner_count == 0:
-        check_fk_owner_null = True
-        logger.info("OK: all mandatory fk_owner set in tww_od!")
-    else:
-        check_fk_owner_null = False
-        logger.info(f"ERROR: Missing mandatory fk_owner in tww_od: {missing_fk_owner_count}")
-    return check_fk_owner_null
+            check_fk_owner_null = False
+            logger.info(f"ERROR: Missing mandatory fk_owner in tww_od: {missing_fk_owner_count}")
+        return check_fk_owner_null
 
 
 def _check_fk_operator_null(self, limit_to_selection=False):
     """
     Check if MAMDATORY fk_operator is Null
     """
-    logger.info("INTEGRITY CHECK missing MAMDATORY operator references fk_operator...")
+    with DatabaseUtils.PsycopgConnection() as connection:
+        logger.info("INTEGRITY CHECK missing MAMDATORY operator references fk_operator...")
 
-    connection = psycopg2.connect(get_pgconf_as_psycopg2_dsn())
-    connection.set_session(autocommit=True)
-    cursor = connection.cursor()
+        cursor = connection.cursor()
 
-    missing_fk_operator_count = 0
+        missing_fk_operator_count = 0
 
-    # add MANDATORY classes to be checked
-    for notsubclass in [
-        # SIA405 Abwasser
-        ("wastewater_structure"),
-    ]:
-        cursor.execute(
-            f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_operator is null;"
-        )
-        # use cursor.fetchone()[0] instead of cursor.rowcount
-        logger.info(
-            f"Number of datasets in class '{notsubclass}' without fk_operator : {cursor.fetchone()[0]}"
-        )
+        # add MANDATORY classes to be checked
+        for notsubclass in [
+            # SIA405 Abwasser
+            ("wastewater_structure"),
+        ]:
+            cursor.execute(
+                f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_operator is null;"
+            )
+            # use cursor.fetchone()[0] instead of cursor.rowcount
+            logger.info(
+                f"Number of datasets in class '{notsubclass}' without fk_operator : {cursor.fetchone()[0]}"
+            )
 
-        if cursor.fetchone() is None:
-            missing_fk_operator_count = missing_fk_operator_count
+            if cursor.fetchone() is None:
+                missing_fk_operator_count = missing_fk_operator_count
+            else:
+                missing_fk_operator_count = missing_fk_operator_count + int(cursor.fetchone()[0])
+            # add for testing
+            logger.info(f"missing_fk_operator_count : {missing_fk_operator_count}")
+
+        if missing_fk_operator_count == 0:
+            logger.info("OK: all mandatory fk_operator set in tww_od!")
+            return True
         else:
-            missing_fk_operator_count = missing_fk_operator_count + int(cursor.fetchone()[0])
-        # add for testing
-        logger.info(f"missing_fk_operator_count : {missing_fk_operator_count}")
-
-    if missing_fk_operator_count == 0:
-        logger.info("OK: all mandatory fk_operator set in tww_od!")
-        return True
-    else:
-        logger.error(
-            f"ERROR: Missing mandatory fk_operator in tww_od: {missing_fk_operator_count}"
-        )
-        return False
+            logger.error(
+                f"ERROR: Missing mandatory fk_operator in tww_od: {missing_fk_operator_count}"
+            )
+            return False
 
 
 def _check_fk_dataowner_null(self, limit_to_selection=False):
     """
     Check if MAMDATORY fk_dataowner is Null
     """
-    logger.info("INTEGRITY CHECK missing dataowner references fk_dataowner...")
+    with DatabaseUtils.PsycopgConnection() as connection:
+        logger.info("INTEGRITY CHECK missing dataowner references fk_dataowner...")
 
-    connection = psycopg2.connect(get_pgconf_as_psycopg2_dsn())
-    connection.set_session(autocommit=True)
-    cursor = connection.cursor()
+        cursor = connection.cursor()
 
-    missing_fk_dataowner_count = 0
-    # add MANDATORY classes to be checked
-    for notsubclass in [
-        # VSA-KEK
-        ("file"),
-        ("data_media"),
-        ("maintenance_event"),
-        # SIA405 Abwasser
-        ("organisation"),
-        ("wastewater_structure"),
-        ("wastewater_networkelement"),
-        ("structure_part"),
-        ("reach_point"),
-        ("pipe_profile"),
-        # VSA-DSS
-        ("catchment_area"),
-        ("connection_object"),
-        ("control_center"),
-        ("hazard_source"),
-        ("hydr_geometry"),
-        ("hydraulic_char_data"),
-        ("measurement_result"),
-        ("measurement_series"),
-        ("measuring_device"),
-        ("measuring_point"),
-        ("mechanical_pretreatment"),
-        ("overflow"),
-        ("overflow_char"),
-        ("retention_body"),
-        ("river_bank"),
-        ("river_bed"),
-        ("sector_water_body"),
-        ("substance"),
-        ("surface_runoff_parameters"),
-        ("surface_water_bodies"),
-        ("throttle_shut_off_unit"),
-        ("waste_water_treatment"),
-        ("water_catchment"),
-        ("water_control_structure"),
-        ("water_course_segment"),
-        ("wwtp_energy_use"),
-        ("zone"),
-    ]:
-        cursor.execute(
-            f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_dataowner is null;"
-        )
-        # use cursor.fetchone()[0] instead of cursor.rowcount
-        # add variable and store result of cursor.fetchone()[0] as the next call will give None value instead of count https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
-        class_fk_dataowner_count = int(cursor.fetchone()[0])
+        missing_fk_dataowner_count = 0
+        # add MANDATORY classes to be checked
+        for notsubclass in [
+            # VSA-KEK
+            ("file"),
+            ("data_media"),
+            ("maintenance_event"),
+            # SIA405 Abwasser
+            ("organisation"),
+            ("wastewater_structure"),
+            ("wastewater_networkelement"),
+            ("structure_part"),
+            ("reach_point"),
+            ("pipe_profile"),
+            # VSA-DSS
+            ("catchment_area"),
+            ("connection_object"),
+            ("control_center"),
+            ("hazard_source"),
+            ("hydr_geometry"),
+            ("hydraulic_char_data"),
+            ("measurement_result"),
+            ("measurement_series"),
+            ("measuring_device"),
+            ("measuring_point"),
+            ("mechanical_pretreatment"),
+            ("overflow"),
+            ("overflow_char"),
+            ("retention_body"),
+            ("river_bank"),
+            ("river_bed"),
+            ("sector_water_body"),
+            ("substance"),
+            ("surface_runoff_parameters"),
+            ("surface_water_bodies"),
+            ("throttle_shut_off_unit"),
+            ("waste_water_treatment"),
+            ("water_catchment"),
+            ("water_control_structure"),
+            ("water_course_segment"),
+            ("wwtp_energy_use"),
+            ("zone"),
+        ]:
+            cursor.execute(
+                f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_dataowner is null;"
+            )
+            # use cursor.fetchone()[0] instead of cursor.rowcount
+            # add variable and store result of cursor.fetchone()[0] as the next call will give None value instead of count https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
+            class_fk_dataowner_count = int(cursor.fetchone()[0])
 
-        # logger.info(
-        #    f"Number of datasets in class '{notsubclass}' without fk_dataowner : {cursor.fetchone()[0]}"
-        # )
-        logger.info(
-            f"Number of datasets in class '{notsubclass}' without fk_dataowner : {class_fk_dataowner_count}"
-        )
+            # logger.info(
+            #    f"Number of datasets in class '{notsubclass}' without fk_dataowner : {cursor.fetchone()[0]}"
+            # )
+            logger.info(
+                f"Number of datasets in class '{notsubclass}' without fk_dataowner : {class_fk_dataowner_count}"
+            )
 
-        # if cursor.fetchone() is None:
-        if class_fk_dataowner_count == 0:
-            missing_fk_dataowner_count = missing_fk_dataowner_count
+            # if cursor.fetchone() is None:
+            if class_fk_dataowner_count == 0:
+                missing_fk_dataowner_count = missing_fk_dataowner_count
+            else:
+                # missing_fk_dataowner_count = missing_fk_dataowner_count + int(cursor.fetchone()[0])
+                missing_fk_dataowner_count = missing_fk_dataowner_count + class_fk_dataowner_count
+
+            # add for testing
+            logger.info(f"missing_fk_dataowner_count : {missing_fk_dataowner_count}")
+
+        if missing_fk_dataowner_count == 0:
+            logger.info("OK: all mandatory fk_dataowner set in tww_od!")
+            return True
         else:
-            # missing_fk_dataowner_count = missing_fk_dataowner_count + int(cursor.fetchone()[0])
-            missing_fk_dataowner_count = missing_fk_dataowner_count + class_fk_dataowner_count
-
-        # add for testing
-        logger.info(f"missing_fk_dataowner_count : {missing_fk_dataowner_count}")
-
-    if missing_fk_dataowner_count == 0:
-        logger.info("OK: all mandatory fk_dataowner set in tww_od!")
-        return True
-    else:
-        logger.error(
-            f"ERROR: Missing mandatory fk_dataowner in tww_od: {missing_fk_dataowner_count}"
-        )
-        return False
+            logger.error(
+                f"ERROR: Missing mandatory fk_dataowner in tww_od: {missing_fk_dataowner_count}"
+            )
+            return False
 
 
 def _check_fk_provider_null(self, limit_to_selection=False):
     """
     Check if MAMDATORY fk_provider is Null
     """
-    logger.info("INTEGRITY CHECK missing provider references fk_provider...")
+    with DatabaseUtils.PsycopgConnection() as connection:
+        logger.info("INTEGRITY CHECK missing provider references fk_provider...")
 
-    connection = psycopg2.connect(get_pgconf_as_psycopg2_dsn())
-    connection.set_session(autocommit=True)
-    cursor = connection.cursor()
+        cursor = connection.cursor()
 
-    missing_fk_provider_count = 0
-    # add MANDATORY classes to be checked
-    for notsubclass in [
-        # VSA-KEK
-        ("file"),
-        ("data_media"),
-        ("maintenance_event"),
-        # SIA405 Abwasser
-        ("organisation"),
-        ("wastewater_structure"),
-        ("wastewater_networkelement"),
-        ("structure_part"),
-        ("reach_point"),
-        ("pipe_profile"),
-        # VSA-DSS
-        ("catchment_area"),
-        ("connection_object"),
-        ("control_center"),
-        ("hazard_source"),
-        ("hydr_geometry"),
-        ("hydraulic_char_data"),
-        ("measurement_result"),
-        ("measurement_series"),
-        ("measuring_device"),
-        ("measuring_point"),
-        ("mechanical_pretreatment"),
-        ("overflow"),
-        ("overflow_char"),
-        ("retention_body"),
-        ("river_bank"),
-        ("river_bed"),
-        ("sector_water_body"),
-        ("substance"),
-        ("surface_runoff_parameters"),
-        ("surface_water_bodies"),
-        ("throttle_shut_off_unit"),
-        ("waste_water_treatment"),
-        ("water_catchment"),
-        ("water_control_structure"),
-        ("water_course_segment"),
-        ("wwtp_energy_use"),
-        ("zone"),
-    ]:
-        cursor.execute(
-            f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_provider is null;"
-        )
-        # use cursor.fetchone()[0] instead of cursor.rowcount
-        # add variable and store result of cursor.fetchone()[0] as the next call will give None value instead of count https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
-        class_fk_provider_count = int(cursor.fetchone()[0])
-        # logger.info(
-        #    f"Number of datasets in class '{notsubclass}' without fk_provider : {cursor.fetchone()[0]}"
-        # )
-        logger.info(
-            f"Number of datasets in class '{notsubclass}' without fk_dataowner : {class_fk_provider_count}"
-        )
+        missing_fk_provider_count = 0
+        # add MANDATORY classes to be checked
+        for notsubclass in [
+            # VSA-KEK
+            ("file"),
+            ("data_media"),
+            ("maintenance_event"),
+            # SIA405 Abwasser
+            ("organisation"),
+            ("wastewater_structure"),
+            ("wastewater_networkelement"),
+            ("structure_part"),
+            ("reach_point"),
+            ("pipe_profile"),
+            # VSA-DSS
+            ("catchment_area"),
+            ("connection_object"),
+            ("control_center"),
+            ("hazard_source"),
+            ("hydr_geometry"),
+            ("hydraulic_char_data"),
+            ("measurement_result"),
+            ("measurement_series"),
+            ("measuring_device"),
+            ("measuring_point"),
+            ("mechanical_pretreatment"),
+            ("overflow"),
+            ("overflow_char"),
+            ("retention_body"),
+            ("river_bank"),
+            ("river_bed"),
+            ("sector_water_body"),
+            ("substance"),
+            ("surface_runoff_parameters"),
+            ("surface_water_bodies"),
+            ("throttle_shut_off_unit"),
+            ("waste_water_treatment"),
+            ("water_catchment"),
+            ("water_control_structure"),
+            ("water_course_segment"),
+            ("wwtp_energy_use"),
+            ("zone"),
+        ]:
+            cursor.execute(
+                f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_provider is null;"
+            )
+            # use cursor.fetchone()[0] instead of cursor.rowcount
+            # add variable and store result of cursor.fetchone()[0] as the next call will give None value instead of count https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
+            class_fk_provider_count = int(cursor.fetchone()[0])
+            # logger.info(
+            #    f"Number of datasets in class '{notsubclass}' without fk_provider : {cursor.fetchone()[0]}"
+            # )
+            logger.info(
+                f"Number of datasets in class '{notsubclass}' without fk_dataowner : {class_fk_provider_count}"
+            )
 
-        # if cursor.fetchone() is None:
-        if class_fk_provider_count == 0:
-            missing_fk_provider_count = missing_fk_provider_count
+            # if cursor.fetchone() is None:
+            if class_fk_provider_count == 0:
+                missing_fk_provider_count = missing_fk_provider_count
+            else:
+                # missing_fk_provider_count = missing_fk_provider_count + int(cursor.fetchone()[0])
+                missing_fk_provider_count = missing_fk_provider_count + class_fk_provider_count
+
+            # add for testing
+            logger.info(f"missing_fk_provider_count : {missing_fk_provider_count}")
+
+        if missing_fk_provider_count == 0:
+            logger.info("OK: all mandatory fk_provider set in tww_od!")
+            return True
         else:
-            # missing_fk_provider_count = missing_fk_provider_count + int(cursor.fetchone()[0])
-            missing_fk_provider_count = missing_fk_provider_count + class_fk_provider_count
-
-        # add for testing
-        logger.info(f"missing_fk_provider_count : {missing_fk_provider_count}")
-
-    if missing_fk_provider_count == 0:
-        logger.info("OK: all mandatory fk_provider set in tww_od!")
-        return True
-    else:
-        logger.error(
-            f"ERROR: Missing mandatory fk_provider in tww_od: {missing_fk_provider_count}"
-        )
-        return False
+            logger.error(
+                f"ERROR: Missing mandatory fk_provider in tww_od: {missing_fk_provider_count}"
+            )
+            return False
 
 
 def _check_fk_wastewater_structure_null(self, limit_to_selection=False):
     """
     Check if MAMDATORY fk_wastewater_structure is Null
     """
-    logger.info(
-        "INTEGRITY CHECK missing wastewater_structure references fk_wastewater_structure..."
-    )
-
-    connection = psycopg2.connect(get_pgconf_as_psycopg2_dsn())
-    connection.set_session(autocommit=True)
-    cursor = connection.cursor()
-
-    missing_fk_wastewater_structure_count = 0
-    # add MANDATORY classes to be checked
-    for notsubclass in [
-        # VSA-KEK
-        # SIA405 Abwasser
-        ("structure_part"),
-        ("reach_point"),
-        # VSA-DSS
-    ]:
-        cursor.execute(
-            f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_wastewater_structure is null;"
-        )
-        # use cursor.fetchone()[0] instead of cursor.rowcount
-        # add variable and store result of cursor.fetchone()[0] as the next call will give None value instead of count https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
-        class_fk_wastewater_structure_count = int(cursor.fetchone()[0])
-        # logger.info(
-        #    f"Number of datasets in class '{notsubclass}' without fk_wastewater_structure : {cursor.fetchone()[0]}"
-        # )
+    with DatabaseUtils.PsycopgConnection() as connection:
         logger.info(
-            f"Number of datasets in class '{notsubclass}' without fk_dataowner : {class_fk_wastewater_structure_count}"
+        "INTEGRITY CHECK missing wastewater_structure references fk_wastewater_structure..."
         )
 
-        # if cursor.fetchone() is None:
-        if class_fk_wastewater_structure_count == 0:
-            missing_fk_wastewater_structure_count = missing_fk_wastewater_structure_count
-        else:
-            # missing_fk_wastewater_structure_count = missing_fk_wastewater_structure_count + int(cursor.fetchone()[0])
-            missing_fk_wastewater_structure_count = (
-                missing_fk_wastewater_structure_count + class_fk_wastewater_structure_count
+        cursor = connection.cursor()
+
+        missing_fk_wastewater_structure_count = 0
+        # add MANDATORY classes to be checked
+        for notsubclass in [
+            # VSA-KEK
+            # SIA405 Abwasser
+            ("structure_part"),
+            ("reach_point"),
+            # VSA-DSS
+        ]:
+            cursor.execute(
+                f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_wastewater_structure is null;"
+            )
+            # use cursor.fetchone()[0] instead of cursor.rowcount
+            # add variable and store result of cursor.fetchone()[0] as the next call will give None value instead of count https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
+            class_fk_wastewater_structure_count = int(cursor.fetchone()[0])
+            # logger.info(
+            #    f"Number of datasets in class '{notsubclass}' without fk_wastewater_structure : {cursor.fetchone()[0]}"
+            # )
+            logger.info(
+                f"Number of datasets in class '{notsubclass}' without fk_dataowner : {class_fk_wastewater_structure_count}"
             )
 
-        # add for testing
-        logger.info(
-            f"missing_fk_wastewater_structure_count : {missing_fk_wastewater_structure_count}"
-        )
+            # if cursor.fetchone() is None:
+            if class_fk_wastewater_structure_count == 0:
+                missing_fk_wastewater_structure_count = missing_fk_wastewater_structure_count
+            else:
+                # missing_fk_wastewater_structure_count = missing_fk_wastewater_structure_count + int(cursor.fetchone()[0])
+                missing_fk_wastewater_structure_count = (
+                    missing_fk_wastewater_structure_count + class_fk_wastewater_structure_count
+                )
 
-    if missing_fk_wastewater_structure_count == 0:
-        logger.info("OK: all mandatory fk_wastewater_structure set in tww_od!")
-        return True
-    else:
-        logger.error(
-            f"ERROR: Missing mandatory fk_wastewater_structure in tww_od: {missing_fk_wastewater_structure_count}"
-        )
-        return False
+            # add for testing
+            logger.info(
+                f"missing_fk_wastewater_structure_count : {missing_fk_wastewater_structure_count}"
+            )
+
+        if missing_fk_wastewater_structure_count == 0:
+            logger.info("OK: all mandatory fk_wastewater_structure set in tww_od!")
+            return True
+        else:
+            logger.error(
+                f"ERROR: Missing mandatory fk_wastewater_structure in tww_od: {missing_fk_wastewater_structure_count}"
+            )
+            return False
+
 
     def _init_model_classes(self, model):
         ModelInterlis = ModelInterlisSia405Abwasser
