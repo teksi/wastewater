@@ -720,7 +720,9 @@ def _check_fk_owner_null(self, limit_to_selection=False):
             # SIA405 Abwasser
             ("wastewater_structure"),
         ]:
-            cursor.execute(f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_owner is null;")
+            cursor.execute(
+                f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_owner is null;"
+            )
             # use cursor.fetchone()[0] instead of cursor.rowcount
             # add variable and store result of cursor.fetchone()[0] as the next call will give None value instead of count https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
             class_fk_owner_count = int(cursor.fetchone()[0])
@@ -968,7 +970,7 @@ def _check_fk_wastewater_structure_null(self, limit_to_selection=False):
     """
     with DatabaseUtils.PsycopgConnection() as connection:
         logger.info(
-        "INTEGRITY CHECK missing wastewater_structure references fk_wastewater_structure..."
+            "INTEGRITY CHECK missing wastewater_structure references fk_wastewater_structure..."
         )
 
         cursor = connection.cursor()
@@ -1017,7 +1019,6 @@ def _check_fk_wastewater_structure_null(self, limit_to_selection=False):
                 f"ERROR: Missing mandatory fk_wastewater_structure in tww_od: {missing_fk_wastewater_structure_count}"
             )
             return False
-
 
     def _init_model_classes(self, model):
         ModelInterlis = ModelInterlisSia405Abwasser
