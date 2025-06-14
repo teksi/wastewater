@@ -167,7 +167,7 @@ class InterlisImporterExporter:
         # Validate subclasses before export
         self._check_subclass_counts(limit_to_selection)
 
-        # Check Check if attribute identifier is Null before export
+        # Check if attribute identifier is Null before export
         self._check_identifier_null(limit_to_selection)
 
         # Check if MAMDATORY fk_owner is Null  before export
