@@ -343,7 +343,7 @@ def vw_tww_infiltration_installation(
         ),
     )
 
-    trigger_insert_sql = psycopg.sql.SQL(trigger_insert_sql).format(psycopg.sql.Literal(srid=srid))
+    trigger_insert_sql = psycopg.sql.SQL(trigger_insert_sql).format(srid=psycopg.sql.Literal(srid))
     cursor.execute(trigger_insert_sql)
 
     update_trigger_sql = """
