@@ -620,88 +620,89 @@ def _check_identifier_null(self, limit_to_selection=False):
     """
     Check if attribute identifier is Null
     """
-    logger.info("INTEGRITY CHECK missing identifiers...")
+    with DatabaseUtils.PsycopgConnection() as connection:
+        logger.info("INTEGRITY CHECK missing identifiers...")
 
-    connection = psycopg2.connect(get_pgconf_as_psycopg2_dsn())
-    connection.set_session(autocommit=True)
-    cursor = connection.cursor()
+        #connection = psycopg2.connect(get_pgconf_as_psycopg2_dsn())
+        #connection.set_session(autocommit=True)
+        cursor = connection.cursor()
 
-    missing_identifier_count = 0
-    # add classes to be checked
-    for notsubclass in [
-        # VSA-KEK
-        ("file"),
-        ("data_media"),
-        ("maintenance_event"),
-        # SIA405 Abwasser
-        ("organisation"),
-        ("wastewater_structure"),
-        ("wastewater_networkelement"),
-        ("structure_part"),
-        ("reach_point"),
-        ("pipe_profile"),
-        # VSA-DSS
-        ("catchment_area"),
-        ("connection_object"),
-        ("control_center"),
-        ("hazard_source"),
-        ("hydr_geometry"),
-        ("hydraulic_char_data"),
-        ("measurement_result"),
-        ("measurement_series"),
-        ("measuring_device"),
-        ("measuring_point"),
-        ("mechanical_pretreatment"),
-        ("overflow"),
-        ("overflow_char"),
-        ("retention_body"),
-        ("river_bank"),
-        ("river_bed"),
-        ("sector_water_body"),
-        ("substance"),
-        ("surface_runoff_parameters"),
-        ("surface_water_bodies"),
-        ("throttle_shut_off_unit"),
-        ("waste_water_treatment"),
-        ("water_catchment"),
-        ("water_control_structure"),
-        ("water_course_segment"),
-        ("wwtp_energy_use"),
-        ("zone"),
-    ]:
-        cursor.execute(f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE identifier is null;")
-        # use cursor.fetchone()[0] instead of cursor.rowcount
-        # add variable and store result of cursor.fetchone()[0] as the next call will give None value instead of count https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
+        missing_identifier_count = 0
+        # add classes to be checked
+        for notsubclass in [
+            # VSA-KEK
+            ("file"),
+            ("data_media"),
+            ("maintenance_event"),
+            # SIA405 Abwasser
+            ("organisation"),
+            ("wastewater_structure"),
+            ("wastewater_networkelement"),
+            ("structure_part"),
+            ("reach_point"),
+            ("pipe_profile"),
+            # VSA-DSS
+            ("catchment_area"),
+            ("connection_object"),
+            ("control_center"),
+            ("hazard_source"),
+            ("hydr_geometry"),
+            ("hydraulic_char_data"),
+            ("measurement_result"),
+            ("measurement_series"),
+            ("measuring_device"),
+            ("measuring_point"),
+            ("mechanical_pretreatment"),
+            ("overflow"),
+            ("overflow_char"),
+            ("retention_body"),
+            ("river_bank"),
+            ("river_bed"),
+            ("sector_water_body"),
+            ("substance"),
+            ("surface_runoff_parameters"),
+            ("surface_water_bodies"),
+            ("throttle_shut_off_unit"),
+            ("waste_water_treatment"),
+            ("water_catchment"),
+            ("water_control_structure"),
+            ("water_course_segment"),
+            ("wwtp_energy_use"),
+            ("zone"),
+        ]:
+            cursor.execute(f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE identifier is null;")
+            # use cursor.fetchone()[0] instead of cursor.rowcount
+            # add variable and store result of cursor.fetchone()[0] as the next call will give None value instead of count https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
 
-        try:
-            class_identifier_count = int(cursor.fetchone()[0])
-        except Exception:
-            class_identifier_count = 0
-            logger.debug(
-                f"Number of datasets in class '{notsubclass}' without identifier could not be identified (TypeError: 'NoneType' object is not subscriptable). Automatically set class_identifier_count = 0"
-            )
+            try:
+                class_identifier_count = int(cursor.fetchone()[0])
+            except Exception:
+                class_identifier_count = 0
+                logger.debug(
+                    f"Number of datasets in class '{notsubclass}' without identifier could not be identified (TypeError: 'NoneType' object is not subscriptable). Automatically set class_identifier_count = 0"
+                )
+            else:
+                logger.info(
+                    f"Number of datasets in class '{notsubclass}' without identifier : {class_identifier_count}"
+                )
+
+            # if cursor.fetchone() is None:
+            if class_identifier_count == 0:
+                missing_identifier_count = missing_identifier_count
+            else:
+                # missing_identifier_count = missing_identifier_count + int(cursor.fetchone()[0])
+                missing_identifier_count = missing_identifier_count + class_identifier_count
+
+            # add for testing
+            logger.info(f"missing_identifier_count : {missing_identifier_count}")
+
+        if missing_identifier_count == 0:
+            identifier_null_check = True
+            logger.info("OK: all identifiers set in tww_od!")
         else:
-            logger.info(
-                f"Number of datasets in class '{notsubclass}' without identifier : {class_identifier_count}"
-            )
-
-        # if cursor.fetchone() is None:
-        if class_identifier_count == 0:
-            missing_identifier_count = missing_identifier_count
-        else:
-            # missing_identifier_count = missing_identifier_count + int(cursor.fetchone()[0])
-            missing_identifier_count = missing_identifier_count + class_identifier_count
-
-        # add for testing
-        logger.info(f"missing_identifier_count : {missing_identifier_count}")
-
-    if missing_identifier_count == 0:
-        identifier_null_check = True
-        logger.info("OK: all identifiers set in tww_od!")
-    else:
-        identifier_null_check = False
-        logger.info(f"ERROR: Missing identifiers in tww_od: {missing_identifier_count}")
-    return identifier_null_check
+            identifier_null_check = False
+            logger.info(f"ERROR: Missing identifiers in tww_od: {missing_identifier_count}")
+        return identifier_null_check
 
 
 def _check_fk_owner_null(self, limit_to_selection=False):
