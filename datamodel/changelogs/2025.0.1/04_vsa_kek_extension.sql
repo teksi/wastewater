@@ -2,7 +2,6 @@
 ------ For questions etc. please contact Stefan Burckhardt stefan.burckhardt@sjib.ch
 ------ version 26.02.2024 21:02:11
 ------ with 3D coordinates
-BEGIN;
 
 -------
 CREATE TABLE tww_od.examination
@@ -1055,5 +1054,3 @@ ALTER TABLE tww_od.file ADD CONSTRAINT rel_od_file_fk_dataprovider FOREIGN KEY (
 
  CREATE UNIQUE INDEX in_od_data_media_identifier ON tww_od.data_media USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
  CREATE UNIQUE INDEX in_od_file_identifier ON tww_od.file USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
-
-COMMIT;
