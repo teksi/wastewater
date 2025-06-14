@@ -979,7 +979,7 @@ def _check_fk_wastewater_structure_null(self, limit_to_selection=False):
             # VSA-KEK
             # SIA405 Abwasser
             ("structure_part"),
-            ("reach_point"),
+            #("reach_point"),
             # VSA-DSS
         ]:
             cursor.execute(
