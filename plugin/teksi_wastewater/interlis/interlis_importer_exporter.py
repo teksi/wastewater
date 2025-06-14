@@ -623,8 +623,8 @@ def _check_identifier_null(self, limit_to_selection=False):
     with DatabaseUtils.PsycopgConnection() as connection:
         logger.info("INTEGRITY CHECK missing identifiers...")
 
-        #connection = psycopg2.connect(get_pgconf_as_psycopg2_dsn())
-        #connection.set_session(autocommit=True)
+        # connection = psycopg2.connect(get_pgconf_as_psycopg2_dsn())
+        # connection.set_session(autocommit=True)
         cursor = connection.cursor()
 
         missing_identifier_count = 0
@@ -670,7 +670,9 @@ def _check_identifier_null(self, limit_to_selection=False):
             ("wwtp_energy_use"),
             ("zone"),
         ]:
-            cursor.execute(f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE identifier is null;")
+            cursor.execute(
+                f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE identifier is null;"
+            )
             # use cursor.fetchone()[0] instead of cursor.rowcount
             # add variable and store result of cursor.fetchone()[0] as the next call will give None value instead of count https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
 
