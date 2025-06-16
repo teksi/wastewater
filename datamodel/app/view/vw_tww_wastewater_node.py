@@ -231,7 +231,6 @@ def vw_tww_wastewater_node(
     cursor.execute(extras)
 
 
-
 if __name__ == "__main__":
     # create the top-level parser
     parser = argparse.ArgumentParser()
