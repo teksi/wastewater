@@ -148,7 +148,7 @@ class Hook(HookBase):
             connection=connection, srid=SRID, extra_definition=tww_wastewater_structure_extra
         )
         vw_tww_wastewater_node(
-        srid, pg_service=pg_service, extra_definition=tww_wastewater_structure_extra
+            srid, pg_service=pg_service, extra_definition=tww_wastewater_structure_extra
         )
         vw_tww_infiltration_installation(
             connection=connection, srid=SRID, extra_definition=tww_ii_extra
