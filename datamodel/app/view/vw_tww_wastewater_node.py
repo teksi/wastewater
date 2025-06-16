@@ -45,7 +45,7 @@ def vw_tww_wastewater_node(
         extra_cols="\n    ".join(
             [
                 select_columns(
-                    pg_cur=cursor,
+                    connection=connection,
                     table_schema=table_parts(table_def["table"])[0],
                     table_name=table_parts(table_def["table"])[1],
                     skip_columns=table_def.get("skip_columns", []),
@@ -58,7 +58,7 @@ def vw_tww_wastewater_node(
             ]
         ),
         wn_cols=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_node",
             table_alias="wn",
@@ -66,7 +66,7 @@ def vw_tww_wastewater_node(
             indent=4,
         ),
         ne_cols=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_networkelement",
             table_alias="ne",
@@ -107,7 +107,7 @@ def vw_tww_wastewater_node(
       FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_tww_wastewater_node_INSERT();
     """.format(
         insert_wn=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_app",
             table_name="vw_wastewater_node",
             table_type="view",
@@ -192,13 +192,13 @@ def vw_tww_wastewater_node(
     """.format(
         srid=srid,
         update_wn=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_node",
             table_alias="wn",
         ),
         update_ne=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_networkelement",
             table_alias="ne",
