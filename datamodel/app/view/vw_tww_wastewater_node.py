@@ -7,11 +7,12 @@ import os
 
 import psycopg
 from pirogue.utils import insert_command, select_columns, table_parts, update_command
-from pum.exceptions import PumHookError
 from yaml import safe_load
 
 
-def vw_tww_wastewater_node( connection: psycopg.Connection, srid: psycopg.sql.Literal, extra_definition: dict = None):
+def vw_tww_wastewater_node(
+    connection: psycopg.Connection, srid: psycopg.sql.Literal, extra_definition: dict = None
+):
     """
     Creates tww_wastewater_node view
     :param connection: a psycopg connection object
@@ -21,7 +22,6 @@ def vw_tww_wastewater_node( connection: psycopg.Connection, srid: psycopg.sql.Li
     extra_definition = extra_definition or {}
 
     cursor = connection.cursor()
-
 
     view_sql = """
     DROP VIEW IF EXISTS tww_app.vw_tww_wastewater_node;
