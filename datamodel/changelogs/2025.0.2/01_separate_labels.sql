@@ -66,3 +66,9 @@ ALTER TABLE tww_od.wastewater_structure DROP COLUMN IF EXISTS _cover_label;
 ALTER TABLE tww_od.wastewater_structure DROP COLUMN IF EXISTS _input_label;
 ALTER TABLE tww_od.wastewater_structure DROP COLUMN IF EXISTS _output_label;
 ALTER TABLE tww_od.wastewater_structure DROP COLUMN IF EXISTS _bottom_label;
+
+
+-- this column is an extension to the VSA data model defines which function_hierarchic to use in labels
+ALTER TABLE tww_vl.wastewater_structure_status ADD COLUMN tww_use_in_labels bool DEFAULT false;
+UPDATE tww_vl.wastewater_structure_status
+SET tww_use_in_labels= true WHERE value_en like 'operational%';
