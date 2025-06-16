@@ -230,8 +230,6 @@ def vw_tww_wastewater_node(
     """
     cursor.execute(extras)
 
-    conn.commit()
-    conn.close()
 
 
 if __name__ == "__main__":
