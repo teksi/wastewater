@@ -5,29 +5,23 @@
 import argparse
 import os
 
-try:
-    import psycopg
-except ImportError:
-    import psycopg2 as psycopg
-
+import psycopg
 from pirogue.utils import insert_command, select_columns, table_parts, update_command
+from pum.exceptions import PumHookError
 from yaml import safe_load
 
 
-def vw_tww_wastewater_node(srid: int, pg_service: str = None, extra_definition: dict = None):
+def vw_tww_wastewater_node( connection: psycopg.Connection, srid: psycopg.sql.Literal, extra_definition: dict = None):
     """
     Creates tww_wastewater_node view
+    :param connection: a psycopg connection object
     :param srid: EPSG code for geometries
-    :param pg_service: the PostgreSQL service name
     :param extra_definition: a dictionary for additional read-only columns
     """
-    if not pg_service:
-        pg_service = os.getenv("PGSERVICE")
-    assert pg_service
     extra_definition = extra_definition or {}
 
-    conn = psycopg.connect(f"service={pg_service}")
-    cursor = conn.cursor()
+    cursor = connection.cursor()
+
 
     view_sql = """
     DROP VIEW IF EXISTS tww_app.vw_tww_wastewater_node;
@@ -254,4 +248,9 @@ if __name__ == "__main__":
     srid = args.srid or os.getenv("SRID")
     pg_service = args.pg_service or os.getenv("PGSERVICE")
     extra_definition = safe_load(open(args.extra_definition)) if args.extra_definition else {}
-    vw_tww_wastewater_node(srid=srid, pg_service=pg_service, extra_definition=extra_definition)
+    with psycopg.connect(f"service={pg_service}") as conn:
+        vw_tww_wastewater_node(
+            connection=conn,
+            srid=srid,
+            extra_definition=extra_definition,
+        )
