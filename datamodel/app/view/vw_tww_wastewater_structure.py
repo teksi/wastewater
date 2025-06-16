@@ -5,29 +5,24 @@
 import argparse
 import os
 
-try:
-    import psycopg
-except ImportError:
-    import psycopg2 as psycopg
-
+import psycopg
 from pirogue.utils import insert_command, select_columns, table_parts, update_command
+from pum.exceptions import PumHookError
 from yaml import safe_load
 
 
-def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definition: dict = None):
+def vw_tww_wastewater_structure(
+    connection: psycopg.Connection, srid: psycopg.sql.Literal, extra_definition: dict = None
+):
     """
     Creates tww_wastewater_structure view
+    :param connection: a psycopg connection object
     :param srid: EPSG code for geometries
-    :param pg_service: the PostgreSQL service name
     :param extra_definition: a dictionary for additional read-only columns
     """
-    if not pg_service:
-        pg_service = os.getenv("PGSERVICE")
-    assert pg_service
     extra_definition = extra_definition or {}
 
-    conn = psycopg.connect(f"service={pg_service}")
-    cursor = conn.cursor()
+    cursor = connection.cursor()
 
     view_sql = """
     DROP VIEW IF EXISTS tww_app.vw_tww_wastewater_structure;
@@ -58,7 +53,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
         , main_co_sp.renovation_demand AS co_renovation_demand
 
         , {main_co_cols}
-        , ST_Force2D(COALESCE(wn.situation3d_geometry, main_co.situation3d_geometry))::geometry(Point, {srid}) AS situation3d_geometry
+        , ST_Force2D(COALESCE(wn.situation3d_geometry, main_co.situation3d_geometry))::geometry(Point, {{srid}}) AS situation3d_geometry
 
         , {ma_columns}
 
@@ -97,11 +92,10 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
         AND '-2'=ALL(ARRAY[ch.obj_id,dt.obj_id,sm.obj_id,wt.obj_id]) IS NULL;
 
     """.format(
-        srid=srid,
         extra_cols="\n    ".join(
             [
                 select_columns(
-                    pg_cur=cursor,
+                    connection=connection,
                     table_schema=table_parts(table_def["table"])[0],
                     table_name=table_parts(table_def["table"])[1],
                     skip_columns=table_def.get("skip_columns", []),
@@ -114,7 +108,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             ]
         ),
         ws_cols=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_structure",
             table_alias="ws",
@@ -130,7 +124,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             ],
         ),
         main_co_cols=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="cover",
             table_alias="main_co",
@@ -142,7 +136,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             columns_at_end=["obj_id"],
         ),
         ma_columns=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="manhole",
             table_alias="ma",
@@ -153,7 +147,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             remap_columns={"_orientation": "ma_orientation"},
         ),
         ss_columns=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="special_structure",
             table_alias="ss",
@@ -164,7 +158,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             remap_columns={},
         ),
         ii_columns=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="infiltration_installation",
             table_alias="ii",
@@ -175,7 +169,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             remap_columns={},
         ),
         dp_columns=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="discharge_point",
             table_alias="dp",
@@ -186,7 +180,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             remap_columns={},
         ),
         wn_cols=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_node",
             table_alias="wn",
@@ -200,7 +194,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             columns_at_end=["obj_id"],
         ),
         ne_cols=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_networkelement",
             table_alias="ne",
@@ -222,7 +216,12 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
         ),
     )
 
-    cursor.execute(view_sql)
+    view_sql = psycopg.sql.SQL(view_sql).format(srid=psycopg.sql.Literal(srid))
+
+    try:
+        cursor.execute(view_sql)
+    except psycopg.errors.SyntaxError as e:
+        raise PumHookError(f"Error creating view with code: {view_sql}: {e}")
 
     trigger_insert_sql = """
     CREATE OR REPLACE FUNCTION tww_app.ft_vw_tww_wastewater_structure_INSERT()
@@ -276,7 +275,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
       FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_tww_wastewater_structure_INSERT();
     """.format(
         insert_ws=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_structure",
             table_alias="ws",
@@ -289,7 +288,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             ],
         ),
         insert_ma=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="manhole",
             table_alias="ma",
@@ -300,7 +299,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             remap_columns={"obj_id": "obj_id"},
         ),
         insert_ss=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="special_structure",
             table_alias="ss",
@@ -310,7 +309,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             remap_columns={"obj_id": "obj_id"},
         ),
         insert_dp=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="discharge_point",
             table_alias="dp",
@@ -320,7 +319,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             remap_columns={"obj_id": "obj_id"},
         ),
         insert_ii=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="infiltration_installation",
             table_alias="ii",
@@ -330,7 +329,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             remap_columns={"obj_id": "obj_id"},
         ),
         insert_wn=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_app",
             table_name="vw_wastewater_node",
             table_type="view",
@@ -341,9 +340,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             indent=6,
             insert_values={
                 "identifier": "COALESCE(NULLIF(NEW.wn_identifier,''), NEW.identifier)",
-                "situation3d_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), 'nan'), {srid} )".format(
-                    srid=srid
-                ),
+                "situation3d_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), 'nan'), {srid} )",
                 "last_modification": "NOW()",
                 "fk_provider": "COALESCE(NULLIF(NEW.wn_fk_provider,''), NEW.fk_provider)",
                 "fk_dataowner": "COALESCE(NULLIF(NEW.wn_fk_dataowner,''), NEW.fk_dataowner)",
@@ -351,7 +348,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             },
         ),
         insert_vw_cover=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_app",
             table_name="vw_cover",
             table_type="view",
@@ -363,9 +360,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             remap_columns={"cover_shape": "co_shape"},
             insert_values={
                 "identifier": "COALESCE(NULLIF(NEW.co_identifier,''), NEW.identifier)",
-                "situation3d_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), 'nan'), {srid} )".format(
-                    srid=srid
-                ),
+                "situation3d_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), 'nan'), {srid} )",
                 "last_modification": "NOW()",
                 "fk_provider": "NEW.fk_provider",
                 "fk_dataowner": "NEW.fk_dataowner",
@@ -373,6 +368,8 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             },
         ),
     )
+
+    trigger_insert_sql = psycopg.sql.SQL(trigger_insert_sql).format(srid=psycopg.sql.Literal(srid))
 
     cursor.execute(trigger_insert_sql)
 
@@ -436,7 +433,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
         SET situation3d_geometry = ST_SetSRID( ST_MakePoint(
         ST_X(ST_TRANSLATE(ST_MakePoint(ST_X(WN.situation3d_geometry), ST_Y(WN.situation3d_geometry)), dx, dy )),
         ST_Y(ST_TRANSLATE(ST_MakePoint(ST_X(WN.situation3d_geometry), ST_Y(WN.situation3d_geometry)), dx, dy )),
-        ST_Z(WN.situation3d_geometry)), {srid} )
+        ST_Z(WN.situation3d_geometry)), {{srid}} )
         WHERE obj_id IN
         (
           SELECT obj_id FROM tww_od.wastewater_networkelement
@@ -448,7 +445,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
         SET situation3d_geometry = ST_SetSRID( ST_MakePoint(
         ST_X(ST_TRANSLATE(ST_MakePoint(ST_X(RP.situation3d_geometry), ST_Y(RP.situation3d_geometry)), dx, dy )),
         ST_Y(ST_TRANSLATE(ST_MakePoint(ST_X(RP.situation3d_geometry), ST_Y(RP.situation3d_geometry)), dx, dy )),
-        ST_Z(RP.situation3d_geometry)), {srid} )
+        ST_Z(RP.situation3d_geometry)), {{srid}} )
         WHERE obj_id IN
         (
           SELECT RP.obj_id FROM tww_od.reach_point RP
@@ -461,7 +458,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
         SET situation3d_geometry = ST_SetSRID( ST_MakePoint(
         ST_X(ST_TRANSLATE(ST_MakePoint(ST_X(CO.situation3d_geometry), ST_Y(CO.situation3d_geometry)), dx, dy )),
         ST_Y(ST_TRANSLATE(ST_MakePoint(ST_X(CO.situation3d_geometry), ST_Y(CO.situation3d_geometry)), dx, dy )),
-        ST_Z(CO.situation3d_geometry)), {srid} )
+        ST_Z(CO.situation3d_geometry)), {{srid}} )
         WHERE obj_id IN
         (
           SELECT obj_id FROM tww_od.structure_part
@@ -477,7 +474,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             ST_SetSRID( ST_MakePoint(
                 ST_X(ST_TRANSLATE(ST_MakePoint(ST_X(ST_PointN(RE.progression3d_geometry, 1)), ST_Y(ST_PointN(RE.progression3d_geometry, 1))), dx, dy )),
                 ST_Y(ST_TRANSLATE(ST_MakePoint(ST_X(ST_PointN(RE.progression3d_geometry, 1)), ST_Y(ST_PointN(RE.progression3d_geometry, 1))), dx, dy )),
-                ST_Z(ST_PointN(RE.progression3d_geometry, 1))), {srid} )
+                ST_Z(ST_PointN(RE.progression3d_geometry, 1))), {{srid}} )
           ) )
         WHERE fk_reach_point_from IN
         (
@@ -494,7 +491,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             ST_SetSRID( ST_MakePoint(
                 ST_X(ST_TRANSLATE(ST_MakePoint(ST_X(ST_EndPoint(RE.progression3d_geometry)), ST_Y(ST_EndPoint(RE.progression3d_geometry))), dx, dy )),
                 ST_Y(ST_TRANSLATE(ST_MakePoint(ST_X(ST_EndPoint(RE.progression3d_geometry)), ST_Y(ST_EndPoint(RE.progression3d_geometry))), dx, dy )),
-                ST_Z(ST_PointN(RE.progression3d_geometry, 1))), {srid} )
+                ST_Z(ST_PointN(RE.progression3d_geometry, 1))), {{srid}} )
           ) )
         WHERE fk_reach_point_to IN
         (
@@ -516,11 +513,10 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
     CREATE TRIGGER vw_tww_wastewater_structure_UPDATE INSTEAD OF UPDATE ON tww_app.vw_tww_wastewater_structure
       FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_tww_wastewater_structure_UPDATE();
     """.format(
-        srid=srid,
         literal_delete_on_ws_change="'DELETE FROM tww_od.%I WHERE obj_id = %L',OLD.ws_type,OLD.obj_id",
         literal_insert_on_ws_change="'INSERT INTO tww_od.%I(obj_id) VALUES (%L)',NEW.ws_type,OLD.obj_id",
         update_co=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="cover",
             table_alias="co",
@@ -530,7 +526,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             remap_columns={"cover_shape": "co_shape"},
         ),
         update_sp=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="structure_part",
             table_alias="sp",
@@ -544,7 +540,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             },
         ),
         update_ws=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_structure",
             table_alias="ws",
@@ -560,7 +556,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             update_values={},
         ),
         update_ma=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="manhole",
             table_alias="ws",
@@ -571,7 +567,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             remap_columns={"obj_id": "obj_id"},
         ),
         update_ss=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="special_structure",
             table_alias="ss",
@@ -582,7 +578,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             remap_columns={"obj_id": "obj_id"},
         ),
         update_dp=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="discharge_point",
             table_alias="dp",
@@ -593,7 +589,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             remap_columns={"obj_id": "obj_id"},
         ),
         update_ii=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="infiltration_installation",
             table_alias="ii",
@@ -604,7 +600,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             remap_columns={"obj_id": "obj_id"},
         ),
         update_wn=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_node",
             table_alias="wn",
@@ -615,7 +611,7 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             ],
         ),
         update_ne=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_networkelement",
             table_alias="ne",
@@ -624,6 +620,8 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
             skip_columns=[],
         ),
     )
+
+    update_trigger_sql = psycopg.sql.SQL(update_trigger_sql).format(srid=psycopg.sql.Literal(srid))
 
     cursor.execute(update_trigger_sql)
 
@@ -652,9 +650,6 @@ def vw_tww_wastewater_structure(srid: int, pg_service: str = None, extra_definit
     """
     cursor.execute(extras)
 
-    conn.commit()
-    conn.close()
-
 
 if __name__ == "__main__":
     # create the top-level parser
@@ -667,9 +662,12 @@ if __name__ == "__main__":
     )
     parser.add_argument("-p", "--pg_service", help="the PostgreSQL service name")
     args = parser.parse_args()
-    srid = args.srid or os.getenv("SRID")
+    srid = psycopg.sql.Literal(args.srid or os.getenv("SRID"))
     pg_service = args.pg_service or os.getenv("PGSERVICE")
     extra_definition = safe_load(open(args.extra_definition)) if args.extra_definition else {}
-    vw_tww_wastewater_structure(
-        srid=srid, pg_service=pg_service, extra_definition=extra_definition
-    )
+    with psycopg.connect(f"service={pg_service}") as conn:
+        vw_tww_wastewater_structure(
+            connection=conn,
+            srid=srid,
+            extra_definition=extra_definition,
+        )

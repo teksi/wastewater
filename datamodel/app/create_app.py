@@ -55,7 +55,10 @@ class Hook(HookBase):
         self.execute(cwd / "functions/organisation_functions.sql")
         self.execute(cwd / "functions/meta_functions.sql")
         self.execute(cwd / "functions/network_functions.sql")
+<<<<<<< separate_labels
         self.execute(cwd / "functions/label_functions.sql")
+=======
+>>>>>>> main
 
         # open YAML files
         if tww_reach_extra:
@@ -147,9 +150,12 @@ class Hook(HookBase):
         vw_tww_wastewater_structure(
             connection=connection, srid=SRID, extra_definition=tww_wastewater_structure_extra
         )
+<<<<<<< separate_labels
         vw_tww_wastewater_node(
         srid, pg_service=pg_service, extra_definition=tww_wastewater_structure_extra
         )
+=======
+>>>>>>> main
         vw_tww_infiltration_installation(
             connection=connection, srid=SRID, extra_definition=tww_ii_extra
         )
