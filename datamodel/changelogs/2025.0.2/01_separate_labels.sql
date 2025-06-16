@@ -60,3 +60,9 @@ added solely for TEKSI wastewater. has to be updated by triggers';
 ALTER TABLE tww_od.wastewater_node DROP COLUMN IF EXISTS _usage_current;
 ALTER TABLE tww_od.wastewater_node DROP COLUMN IF EXISTS _function_hierarchic;
 ALTER TABLE tww_od.wastewater_node DROP COLUMN IF EXISTS _status;
+
+ALTER TABLE tww_od.wastewater_structure DROP COLUMN IF EXISTS _label;
+ALTER TABLE tww_od.wastewater_structure DROP COLUMN IF EXISTS _cover_label;
+ALTER TABLE tww_od.wastewater_structure DROP COLUMN IF EXISTS _input_label;
+ALTER TABLE tww_od.wastewater_structure DROP COLUMN IF EXISTS _output_label;
+ALTER TABLE tww_od.wastewater_structure DROP COLUMN IF EXISTS _bottom_label;
