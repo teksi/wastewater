@@ -55,10 +55,7 @@ class Hook(HookBase):
         self.execute(cwd / "functions/organisation_functions.sql")
         self.execute(cwd / "functions/meta_functions.sql")
         self.execute(cwd / "functions/network_functions.sql")
-<<<<<<< separate_labels
         self.execute(cwd / "functions/label_functions.sql")
-=======
->>>>>>> main
 
         # open YAML files
         if tww_reach_extra:
