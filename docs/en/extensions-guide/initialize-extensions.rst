@@ -27,8 +27,6 @@ In the future, an adapted value list sql will be provided. For now, we will have
   * https://github.com/TWW/datamodel/releases/latest
   * download`Source Code(zip)`
 
-* install pirogue if necessary: pip install pirogue
-
 * if needed, temporarily alter your PGSYSCONFDIR environment variable
 
 * create and run a batch file such as::

@@ -192,7 +192,7 @@ CREATE TRIGGER on_mutation_make_insert_or_delete
 -- logic for tww_od.import_manhole_quarantine
 
 -- create trigger functions and triggers for quarantine table
--- SELECT set_config('tww.srid', :SRID::text, false);
+-- SELECT set_config('tww.srid', {SRID}::text, false);
 DO $DO$
 BEGIN
 EXECUTE format($TRIGGER$
