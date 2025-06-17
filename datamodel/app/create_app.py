@@ -222,6 +222,9 @@ class Hook(HookBase):
             definition=safe_load(open(cwd / "view/export/vw_export_wastewater_structure.yaml")),
         ).create()
 
+        # Audit
+        self.execute(cwd / "audit/audit.sql")
+
         # Roles
         self.execute(cwd / "tww_app_roles.sql")
 
