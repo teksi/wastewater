@@ -47,31 +47,35 @@ SELECT ca.*,'current' as state, 'rw_current' as type_ca, wn.obj_id as wn_obj_id,
 FROM tww_od.catchment_area as ca
 LEFT JOIN tww_od.wastewater_networkelement ne on ne.obj_id = fk_wastewater_networkelement_rw_current
 LEFT JOIN tww_od.wastewater_node wn on wn.obj_id = ne.obj_id
+LEFT JOIN tww_od.tww_wastewater_node_symbology wns ON wns.fk_wastewater_node = wn.obj_id
 LEFT JOIN tww_od.wastewater_structure ws ON ws.obj_id = ne.fk_wastewater_structure
-LEFT JOIN tww_vl.channel_function_hierarchic cfhi ON cfhi.code=wn._function_hierarchic
+LEFT JOIN tww_vl.channel_function_hierarchic cfhi ON cfhi.code=wns._function_hierarchic
 WHERE fk_wastewater_networkelement_rw_current IS NOT NULL -- to avoid unconnected catchments
 UNION ALL
 SELECT ca.*,'planned' as state, 'rw_planned' as type_ca, wn.obj_id as wn_obj_id, cfhi.vsacode AS _function_hierarchic
 FROM tww_od.catchment_area as ca
 LEFT JOIN tww_od.wastewater_networkelement ne on ne.obj_id = fk_wastewater_networkelement_rw_planned
 LEFT JOIN tww_od.wastewater_node wn on wn.obj_id = ne.obj_id
+LEFT JOIN tww_od.tww_wastewater_node_symbology wns ON wns.fk_wastewater_node = wn.obj_id
 LEFT JOIN tww_od.wastewater_structure ws ON ws.obj_id = ne.fk_wastewater_structure
-LEFT JOIN tww_vl.channel_function_hierarchic cfhi ON cfhi.code=wn._function_hierarchic
+LEFT JOIN tww_vl.channel_function_hierarchic cfhi ON cfhi.code=wns._function_hierarchic
 WHERE fk_wastewater_networkelement_rw_planned IS NOT NULL -- to avoid unconnected catchments
 UNION ALL
 SELECT ca.*,'current' as state, 'ww_current' as type_ca, wn.obj_id as wn_obj_id, cfhi.vsacode AS _function_hierarchic
 FROM tww_od.catchment_area as ca
 LEFT JOIN tww_od.wastewater_networkelement ne on ne.obj_id = fk_wastewater_networkelement_ww_current
 LEFT JOIN tww_od.wastewater_node wn on wn.obj_id = ne.obj_id
+LEFT JOIN tww_od.tww_wastewater_node_symbology wns ON wns.fk_wastewater_node = wn.obj_id
 LEFT JOIN tww_od.wastewater_structure ws ON ws.obj_id = ne.fk_wastewater_structure
-LEFT JOIN tww_vl.channel_function_hierarchic cfhi ON cfhi.code=wn._function_hierarchic
+LEFT JOIN tww_vl.channel_function_hierarchic cfhi ON cfhi.code=wns._function_hierarchic
 WHERE fk_wastewater_networkelement_ww_current IS NOT NULL -- to avoid unconnected catchments
 UNION ALL
 SELECT ca.*,'planned' as state, 'ww_planned' as type_ca, wn.obj_id as wn_obj_id, cfhi.vsacode AS _function_hierarchic
 FROM tww_od.catchment_area as ca
 LEFT JOIN tww_od.wastewater_networkelement ne on ne.obj_id = fk_wastewater_networkelement_ww_planned
 LEFT JOIN tww_od.wastewater_node wn on wn.obj_id = ne.obj_id
+LEFT JOIN tww_od.tww_wastewater_node_symbology wns ON wns.fk_wastewater_node = wn.obj_id
 LEFT JOIN tww_od.wastewater_structure ws ON ws.obj_id = ne.fk_wastewater_structure
-LEFT JOIN tww_vl.channel_function_hierarchic cfhi ON cfhi.code=wn._function_hierarchic
+LEFT JOIN tww_vl.channel_function_hierarchic cfhi ON cfhi.code=wns._function_hierarchic
 WHERE fk_wastewater_networkelement_ww_planned IS NOT NULL -- to avoid unconnected catchments
 ) as ca;
