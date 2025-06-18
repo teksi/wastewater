@@ -643,7 +643,8 @@ class InterlisImporterExporter:
                 ("catchment_area"),
                 ("connection_object"),
                 ("control_center"),
-                ("hazard_source"),
+                # only VSA-DSS 2015
+                # ("hazard_source"),
                 ("hydr_geometry"),
                 ("hydraulic_char_data"),
                 ("measurement_result"),
@@ -820,7 +821,8 @@ class InterlisImporterExporter:
                 ("catchment_area"),
                 ("connection_object"),
                 ("control_center"),
-                ("hazard_source"),
+                # only VSA-DSS 2015
+                # ("hazard_source"),
                 ("hydr_geometry"),
                 ("hydraulic_char_data"),
                 ("measurement_result"),
