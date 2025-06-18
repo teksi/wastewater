@@ -620,6 +620,7 @@ class InterlisImporterExporter:
         Check if attribute identifier is Null
         """
         with DatabaseUtils.PsycopgConnection() as connection:
+            logger.info("-----")
             logger.info("INTEGRITY CHECK missing identifiers...")
 
             cursor = connection.cursor()
@@ -703,7 +704,19 @@ class InterlisImporterExporter:
                 logger.info("OK: all identifiers set in tww_od!")
             else:
                 identifier_null_check = False
-                logger.info(f"ERROR: Missing identifiers in tww_od: {missing_identifier_count}")
+                # logger.info(f"ERROR: Missing identifiers in tww_od: {missing_identifier_count}")
+                errormsg = f"Missing identifiers in schema tww_od: {missing_identifier_count}"
+                if limit_to_selection:
+                        logger.warning(
+                            f"Overall Subclass Count: {errormsg}. The problem might lie outside the selection"
+                        )
+                    else:
+                        logger.error(f"INTEGRITY CHECK missing identifiers: {errormsg}")
+                        raise InterlisImporterExporterError(
+                            "INTEGRITY CHECK missing identifiers - see tww tab for details",
+                            errormsg,
+                            None,
+                        )
             return identifier_null_check
 
     def _check_fk_owner_null(self, limit_to_selection=False):
@@ -711,6 +724,7 @@ class InterlisImporterExporter:
         Check if MAMDATORY fk_owner is Null
         """
         with DatabaseUtils.PsycopgConnection() as connection:
+            logger.info("-----")
             logger.info("INTEGRITY CHECK missing MAMDATORY owner references fk_owner...")
 
             cursor = connection.cursor()
@@ -759,6 +773,7 @@ class InterlisImporterExporter:
         Check if MAMDATORY fk_operator is Null
         """
         with DatabaseUtils.PsycopgConnection() as connection:
+            logger.info("-----")
             logger.info("INTEGRITY CHECK missing MAMDATORY operator references fk_operator...")
 
             cursor = connection.cursor()
@@ -801,6 +816,7 @@ class InterlisImporterExporter:
         Check if MAMDATORY fk_dataowner is Null
         """
         with DatabaseUtils.PsycopgConnection() as connection:
+            logger.info("-----")
             logger.info("INTEGRITY CHECK missing dataowner references fk_dataowner...")
 
             cursor = connection.cursor()
@@ -813,7 +829,8 @@ class InterlisImporterExporter:
                 ("data_media"),
                 ("maintenance_event"),
                 # SIA405 Abwasser
-                ("organisation"),
+                # take out for DSS 2020
+                # ("organisation"),
                 ("wastewater_structure"),
                 ("wastewater_networkelement"),
                 ("structure_part"),
@@ -891,6 +908,7 @@ class InterlisImporterExporter:
         Check if MAMDATORY fk_provider is Null
         """
         with DatabaseUtils.PsycopgConnection() as connection:
+            logger.info("-----")
             logger.info("INTEGRITY CHECK missing provider references fk_provider...")
 
             cursor = connection.cursor()
@@ -903,7 +921,8 @@ class InterlisImporterExporter:
                 ("data_media"),
                 ("maintenance_event"),
                 # SIA405 Abwasser
-                ("organisation"),
+                # take out for DSS 2020
+                # ("organisation"),
                 ("wastewater_structure"),
                 ("wastewater_networkelement"),
                 ("structure_part"),
@@ -978,6 +997,7 @@ class InterlisImporterExporter:
         Check if MAMDATORY fk_wastewater_structure is Null
         """
         with DatabaseUtils.PsycopgConnection() as connection:
+            logger.info("-----")
             logger.info(
                 "INTEGRITY CHECK missing wastewater_structure references fk_wastewater_structure..."
             )
@@ -990,7 +1010,6 @@ class InterlisImporterExporter:
                 # VSA-KEK
                 # SIA405 Abwasser
                 ("structure_part"),
-                # ("reach_point"),
                 # VSA-DSS
             ]:
                 cursor.execute(
