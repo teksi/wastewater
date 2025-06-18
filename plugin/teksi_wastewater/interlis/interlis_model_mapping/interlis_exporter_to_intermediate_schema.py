@@ -2901,7 +2901,7 @@ class InterlisExporterToIntermediateSchema:
             "t_id": self.get_tid(row),
         }
         if self.current_basket:
-            base["t_basket"] = self.current_basket.t_id
+            base["t_basket_baseclass"] = self.current_basket.t_id
 
         return base
 
