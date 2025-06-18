@@ -707,16 +707,16 @@ class InterlisImporterExporter:
                 # logger.info(f"ERROR: Missing identifiers in tww_od: {missing_identifier_count}")
                 errormsg = f"Missing identifiers in schema tww_od: {missing_identifier_count}"
                 if limit_to_selection:
-                        logger.warning(
-                            f"Overall Subclass Count: {errormsg}. The problem might lie outside the selection"
-                        )
-                    else:
-                        logger.error(f"INTEGRITY CHECK missing identifiers: {errormsg}")
-                        raise InterlisImporterExporterError(
-                            "INTEGRITY CHECK missing identifiers - see tww tab for details",
-                            errormsg,
-                            None,
-                        )
+                    logger.warning(
+                        f"Overall Subclass Count: {errormsg}. The problem might lie outside the selection"
+                    )
+                else:
+                    logger.error(f"INTEGRITY CHECK missing identifiers: {errormsg}")
+                    raise InterlisImporterExporterError(
+                        "INTEGRITY CHECK missing identifiers - see tww tab for details",
+                        errormsg,
+                        None,
+                    )
             return identifier_null_check
 
     def _check_fk_owner_null(self, limit_to_selection=False):
