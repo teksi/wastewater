@@ -912,7 +912,7 @@ class InterlisImporterExporter:
                 ("connection_object"),
                 ("control_center"),
                 # only VSA-DSS 2015
-                # ("hazard_source"), 
+                # ("hazard_source"),
                 ("hydr_geometry"),
                 ("hydraulic_char_data"),
                 ("measurement_result"),
