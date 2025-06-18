@@ -663,9 +663,10 @@ class InterlisImporterExporter:
                 # ("surface_water_bodies"),
                 ("throttle_shut_off_unit"),
                 ("waste_water_treatment"),
-                ("water_catchment"),
-                ("water_control_structure"),
-                ("water_course_segment"),
+                # only VSA-DSS 2015
+                # ("water_catchment"),
+                # ("water_control_structure"),
+                # ("water_course_segment"),
                 ("wwtp_energy_use"),
                 ("zone"),
             ]:
@@ -843,9 +844,10 @@ class InterlisImporterExporter:
                 # ("surface_water_bodies"),
                 ("throttle_shut_off_unit"),
                 ("waste_water_treatment"),
-                ("water_catchment"),
-                ("water_control_structure"),
-                ("water_course_segment"),
+                # only VSA-DSS 2015
+                # ("water_catchment"),
+                # ("water_control_structure"),
+                # ("water_course_segment"),
                 ("wwtp_energy_use"),
                 ("zone"),
             ]:
@@ -932,9 +934,10 @@ class InterlisImporterExporter:
                 # ("surface_water_bodies"),
                 ("throttle_shut_off_unit"),
                 ("waste_water_treatment"),
-                ("water_catchment"),
-                ("water_control_structure"),
-                ("water_course_segment"),
+                # only VSA-DSS 2015
+                # ("water_catchment"),
+                # ("water_control_structure"),
+                # ("water_course_segment"),
                 ("wwtp_energy_use"),
                 ("zone"),
             ]:
