@@ -615,7 +615,6 @@ class InterlisImporterExporter:
                             None,
                         )
 
-
     def _check_identifier_null(self, limit_to_selection=False):
         """
         Check if attribute identifier is Null
@@ -705,7 +704,6 @@ class InterlisImporterExporter:
                 logger.info(f"ERROR: Missing identifiers in tww_od: {missing_identifier_count}")
             return identifier_null_check
 
-
     def _check_fk_owner_null(self, limit_to_selection=False):
         """
         Check if MAMDATORY fk_owner is Null
@@ -749,9 +747,10 @@ class InterlisImporterExporter:
                 logger.info("OK: all mandatory fk_owner set in tww_od!")
             else:
                 check_fk_owner_null = False
-                logger.info(f"ERROR: Missing mandatory fk_owner in tww_od: {missing_fk_owner_count}")
+                logger.info(
+                    f"ERROR: Missing mandatory fk_owner in tww_od: {missing_fk_owner_count}"
+                )
             return check_fk_owner_null
-
 
     def _check_fk_operator_null(self, limit_to_selection=False):
         """
@@ -780,7 +779,9 @@ class InterlisImporterExporter:
                 if cursor.fetchone() is None:
                     missing_fk_operator_count = missing_fk_operator_count
                 else:
-                    missing_fk_operator_count = missing_fk_operator_count + int(cursor.fetchone()[0])
+                    missing_fk_operator_count = missing_fk_operator_count + int(
+                        cursor.fetchone()[0]
+                    )
                 # add for testing
                 logger.info(f"missing_fk_operator_count : {missing_fk_operator_count}")
 
@@ -792,7 +793,6 @@ class InterlisImporterExporter:
                     f"ERROR: Missing mandatory fk_operator in tww_od: {missing_fk_operator_count}"
                 )
                 return False
-
 
     def _check_fk_dataowner_null(self, limit_to_selection=False):
         """
@@ -866,7 +866,9 @@ class InterlisImporterExporter:
                     missing_fk_dataowner_count = missing_fk_dataowner_count
                 else:
                     # missing_fk_dataowner_count = missing_fk_dataowner_count + int(cursor.fetchone()[0])
-                    missing_fk_dataowner_count = missing_fk_dataowner_count + class_fk_dataowner_count
+                    missing_fk_dataowner_count = (
+                        missing_fk_dataowner_count + class_fk_dataowner_count
+                    )
 
                 # add for testing
                 logger.info(f"missing_fk_dataowner_count : {missing_fk_dataowner_count}")
@@ -879,7 +881,6 @@ class InterlisImporterExporter:
                     f"ERROR: Missing mandatory fk_dataowner in tww_od: {missing_fk_dataowner_count}"
                 )
                 return False
-
 
     def _check_fk_provider_null(self, limit_to_selection=False):
         """
@@ -965,7 +966,6 @@ class InterlisImporterExporter:
                     f"ERROR: Missing mandatory fk_provider in tww_od: {missing_fk_provider_count}"
                 )
                 return False
-
 
     def _check_fk_wastewater_structure_null(self, limit_to_selection=False):
         """
