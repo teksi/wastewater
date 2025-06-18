@@ -672,7 +672,7 @@ class InterlisImporterExporter:
                 ("zone"),
             ]:
                 cursor.execute(
-                    f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE identifier is null;"
+                    f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE identifier is null or identifier ='';"
                 )
                 # use cursor.fetchone()[0] instead of cursor.rowcount
                 # add variable and store result of cursor.fetchone()[0] as the next call will give None value instead of count https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
@@ -736,7 +736,7 @@ class InterlisImporterExporter:
                 ("wastewater_structure"),
             ]:
                 cursor.execute(
-                    f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_owner is null;"
+                    f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_owner is null or fk_owner ='';"
                 )
                 # use cursor.fetchone()[0] instead of cursor.rowcount
                 # add variable and store result of cursor.fetchone()[0] as the next call will give None value instead of count https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
@@ -786,7 +786,7 @@ class InterlisImporterExporter:
                 ("wastewater_structure"),
             ]:
                 cursor.execute(
-                    f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_operator is null;"
+                    f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_operator is null or fk_operator ='';"
                 )
                 # use cursor.fetchone()[0] instead of cursor.rowcount
                 logger.info(
@@ -869,7 +869,7 @@ class InterlisImporterExporter:
                 ("zone"),
             ]:
                 cursor.execute(
-                    f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_dataowner is null;"
+                    f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_dataowner is null or fk_dataowner ='';"
                 )
                 # use cursor.fetchone()[0] instead of cursor.rowcount
                 # add variable and store result of cursor.fetchone()[0] as the next call will give None value instead of count https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
@@ -961,7 +961,7 @@ class InterlisImporterExporter:
                 ("zone"),
             ]:
                 cursor.execute(
-                    f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_provider is null;"
+                    f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_provider is null or fk_provider ='';"
                 )
                 # use cursor.fetchone()[0] instead of cursor.rowcount
                 # add variable and store result of cursor.fetchone()[0] as the next call will give None value instead of count https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
@@ -1013,7 +1013,7 @@ class InterlisImporterExporter:
                 # VSA-DSS
             ]:
                 cursor.execute(
-                    f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_wastewater_structure is null;"
+                    f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_wastewater_structure is null or fk_wastewater_structure ='';"
                 )
                 # use cursor.fetchone()[0] instead of cursor.rowcount
                 # add variable and store result of cursor.fetchone()[0] as the next call will give None value instead of count https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
