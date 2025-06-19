@@ -10,7 +10,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 2
-          
+
       - name: Check for changes in the specified folders
         run: |
           LATEST_STABLE_RELEASE="2025.0.1"
