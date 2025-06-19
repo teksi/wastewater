@@ -1,4 +1,4 @@
-name: Check for changes in datamodel/changelogs/2025.0.1
+name: Check for changes in stable datamodel versions
 
 on: [push, pull_request]
 
@@ -11,13 +11,23 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: Check for changes in the specified folder
+      - name: Fetch latest stable release
+        id: fetch_version
+        run: |
+          RELEASES=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/releases")
+          echo "LATEST_STABLE_RELEASE=$(echo "$RELEASES" | jq -r 'map(select(.tag_name | test("^[0-9]+\\.[0-9]+\\.[0-9]+$") and .prerelease == false)) | first | .tag_name')" >> $GITHUB_ENV
+
+      - name: Check for changes in the specified folders
         run: |
           CHANGED_FILES=$(git diff --name-only HEAD^ HEAD)
           for FILE in $CHANGED_FILES; do
-            if [[ $FILE == datamodel/changelogs/2025.0.1* ]]; then
-              echo "Changes detected in the datamodel/changelogs/2025.0.1 folder."
-              exit 1
+            if [[ $FILE == datamodel/changelogs/* ]]; then
+              VERSION_FOLDER=$(echo $FILE | cut -d'/' -f3)
+              if printf '%s\n' "$LATEST_STABLE_RELEASE" "$VERSION_FOLDER" | sort -V | head -n1 | grep -q "$VERSION_FOLDER"; then
+                echo "Changes detected in a disallowed datamodel/changelogs/$VERSION_FOLDER folder."
+                exit 1
+              fi
             fi
           done
-          echo "No changes detected in the datamodel/changelogs/2025.0.1 folder."
+          echo "No changes detected in disallowed datamodel/changelogs version folders."
