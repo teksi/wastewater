@@ -16,6 +16,9 @@ jobs:
         run: |
           RELEASES=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             "https://api.github.com/repos/${{ github.repository }}/releases")
+
+          echo "$RELEASES" | jq . #debug
+          
           echo "LATEST_STABLE_RELEASE=$(echo "$RELEASES" | jq -r 'map(select(.tag_name | test("^[0-9]+\\.[0-9]+\\.[0-9]+$") and .prerelease == false)) | first | .tag_name')" >> $GITHUB_ENV
 
       - name: Check for changes in the specified folders
