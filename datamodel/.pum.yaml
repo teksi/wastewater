@@ -40,22 +40,18 @@ parameters:
 
   - name: extension_ci
     type: boolean
-    default: false
     description: load ci extension
 
   - name: extension_agxx
     type: boolean
-    default: false
     description: load AG-64/96 extension
 
   - name: extension_zip
     type: path
-    default: ""
     description: zip file with custom extensions
 
   - name: lang_code
     type: text
-    default: en
     description: language code for the creation of custom views
 
 dependencies:
