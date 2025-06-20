@@ -541,7 +541,7 @@ class InterlisImporterToIntermediateSchema:
                 if row.detailgeometrie is None
                 else self.session_tww.scalar(ST_Force3D(row.detailgeometrie))
             ),
-            # TODO : NOT MAPPED VSA-DSS 3D
+            # -- attribute 3D ---
             # "elevation_determination": self.get_vl_code(
             #    self.model_classes_tww_od.wastewater_structure_elevation_determination, row.hoehenbestimmung
             # ),
@@ -768,6 +768,8 @@ class InterlisImporterToIntermediateSchema:
                 amphibian_exit=self.get_vl_code(
                     self.model_classes_tww_vl.manhole_amphibian_exit, row.amphibienausstieg
                 ),
+                # -- attribute 3D ---
+                # depth=row.maechtigkeit,
                 dimension1=row.dimension1,
                 dimension2=row.dimension2,
                 function=self.get_vl_code(
@@ -798,12 +800,14 @@ class InterlisImporterToIntermediateSchema:
                 # --- discharge_point ---
                 # only VSA-DSS 2015
                 # fk_sector_water_body=row.REPLACE_ME, # TODO : NOT MAPPED
+                # -- attribute 3D ---
+                # depth=row.maechtigkeit,
                 highwater_level=row.hochwasserkote,
                 relevance=self.get_vl_code(
                     self.model_classes_tww_od.discharge_point_relevance, row.relevanz
                 ),
                 terrain_level=row.terrainkote,
-                # TODO : NOT MAPPED VSA-DSS 3D
+                # -- attribute 3D ---
                 # upper_elevation=row.deckenkote,
                 # new attribute water_course_segment_canton Release 2020
                 water_course_segment_canton=row.gewaesserabschnitt_kanton,
@@ -830,6 +834,8 @@ class InterlisImporterToIntermediateSchema:
                 bypass=self.get_vl_code(
                     self.model_classes_tww_vl.special_structure_bypass, row.bypass
                 ),
+                # -- attribute 3D ---
+                # depth=row.maechtigkeit,
                 emergency_overflow=self.get_vl_code(
                     self.model_classes_tww_vl.special_structure_emergency_overflow,
                     row.notueberlauf,
@@ -846,7 +852,7 @@ class InterlisImporterToIntermediateSchema:
                     self.model_classes_tww_od.special_structure_stormwater_tank_arrangement,
                     row.regenbecken_anordnung,
                 ),
-                # TODO : NOT MAPPED VSA-DSS 3D
+                # -- attribute 3D ---
                 # upper_elevation=row.deckenkote,
             )
             self.session_tww.add(special_structure)
@@ -864,6 +870,8 @@ class InterlisImporterToIntermediateSchema:
                 defects=self.get_vl_code(
                     self.model_classes_tww_od.infiltration_installation_defects, row.maengel
                 ),
+                # -- attribute 3D ---
+                # depth=row.maechtigkeit,
                 dimension1=row.dimension1,
                 dimension2=row.dimension2,
                 distance_to_aquifer=row.gwdistanz,
@@ -888,7 +896,7 @@ class InterlisImporterToIntermediateSchema:
                     self.model_classes_tww_od.infiltration_installation_seepage_utilization,
                     row.versickerungswasser,
                 ),
-                # TODO : NOT MAPPED VSA-DSS 3D
+                # -- attribute 3D ---
                 # upper_elevation=row.deckenkote,
                 vehicle_access=self.get_vl_code(
                     self.model_classes_tww_od.infiltration_installation_vehicle_access,
@@ -2087,8 +2095,8 @@ class InterlisImporterToIntermediateSchema:
                 # --- reach ---
                 clear_height=row.lichte_hoehe,
                 coefficient_of_friction=row.reibungsbeiwert,
-                # TODO : NOT MAPPED VSA-DSS 3D
-                # self.get_vl_code(
+                # -- attribute 3D ---
+                # elevation_determination=self.get_vl_code(
                 #    self.model_classes_tww_od.wastewater_structure_elevation_determination, row.hoehenbestimmung
                 # ),
                 fk_pipe_profile=self.get_pk(row.rohrprofilref__REL),
@@ -2181,6 +2189,8 @@ class InterlisImporterToIntermediateSchema:
                 cover_shape=self.get_vl_code(
                     self.model_classes_tww_vl.cover_cover_shape, row.deckelform
                 ),
+                # -- attribute 3D ---
+                # depth=row.maechtigkeit,
                 diameter=row.durchmesser,
                 fastening=self.get_vl_code(
                     self.model_classes_tww_vl.cover_fastening, row.verschluss
