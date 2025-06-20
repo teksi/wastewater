@@ -27,14 +27,16 @@ class Hook(HookBase):
         self,
         connection: psycopg.Connection,
         SRID: int = 2056,
-        extension_names: dict = {},
+        extension_agxx: bool= False,
+        extension_ci: bool= False,
         extension_zip: Path = None,
         lang_code: str = "en",
     ):
         """
         Creates the schema tww_app for TEKSI Wastewater & GEP
         :param SRID: the EPSG code for geometry columns
-        :param extension_names: dict of extension names handled by the extension manager
+        :param extension_agxx: bool of whether to load agxx extension
+        :param extension_agxx: bool of whether to load ci extension
         :param extension_zip: Path of zip containing self-defined extensions
         :paran lang_code: language code for use in extension views
         """
@@ -67,7 +69,12 @@ class Hook(HookBase):
         }
         self.execute("CREATE SCHEMA tww_app;")
         self.run_sql_files_in_folder(self.cwd / "sql_functions", self.variables_sql)
-        self.extensions = extension_names
+        self.extensions = {}
+        if extension_agxx:
+            self.extensions.update("agxx")
+
+        if extension_ci:
+            self.extensions.update("ci")
 
         self.yaml_data_dicts = {
             "vw_tww_reach": {},
@@ -434,12 +441,7 @@ if __name__ == "__main__":
         "-z", "--extension_zip", help="path to zip file containing custom extensions", type=Path
     )
     args = parser.parse_args()
-    extension_names = {}
-    if args.extension_agxx:
-        extension_names.update("agxx")
 
-    if args.extension_agxx:
-        extension_names.update("ci")
 
     with psycopg.connect(service=args.pg_service) as connection:
         if args.drop_schema:
@@ -448,7 +450,8 @@ if __name__ == "__main__":
         hook.run_hook(
             connection=connection,
             SRID=args.srid,
-            extension_names=extension_names,
+            extension_agxx=args.extension_agxx,
+            extension_ci=args.extension_ci,
             extension_zip=args.extension_zip,
             lang_code=args.lang_code,
         )
