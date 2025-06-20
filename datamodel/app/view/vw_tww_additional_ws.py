@@ -17,8 +17,9 @@ from ..utils.extra_definition_utils import (
 )
 
 
-def vw_tww_additional_ws(connection: psycopg.Connection, srid: psycopg.sql.Literal,extra_definition: dict = None):
-
+def vw_tww_additional_ws(
+    connection: psycopg.Connection, srid: psycopg.sql.Literal, extra_definition: dict = None
+):
     """
     Creates additional_wastewater_structure view
     :param srid: EPSG code for geometries
@@ -623,4 +624,4 @@ if __name__ == "__main__":
         with open(args.extra_definition) as f:
             extra_definition = safe_load(f)
     with psycopg.connect(f"service={pg_service}") as conn:
-        vw_tww_additional_ws(connection=conn,srid=srid,extra_definition=extra_definition)
+        vw_tww_additional_ws(connection=conn, srid=srid, extra_definition=extra_definition)
