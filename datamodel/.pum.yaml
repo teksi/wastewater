@@ -40,14 +40,17 @@ parameters:
 
   - name: extension_ci
     type: bool
+    default: false
     description: load ci extension
 
    - name: extension_agxx
     type: bool
+    default: false
     description: load AG-64/96 extension
 
   - name: extension_zip
     type: path
+    default: ""
     description: zip file with custom extensions
 
   - name: lang_code
