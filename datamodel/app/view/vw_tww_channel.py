@@ -7,7 +7,7 @@ import os
 
 import psycopg
 from pirogue.utils import select_columns
-
+from yaml import safe_load
 
 def vw_tww_channel(connection: psycopg.Connection, extra_definition: dict = None):
     """
@@ -112,4 +112,4 @@ if __name__ == "__main__":
         with open(args.extra_definition) as f:
             extra_definition = safe_load(f)
     with psycopg.connect(f"service={pg_service}") as conn:
-        vw_tww_channel(connection=conn),extra_definition=extra_definition)
+        vw_tww_channel(connection=conn,extra_definition=extra_definition)
