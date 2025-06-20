@@ -796,6 +796,7 @@ class InterlisImporterToIntermediateSchema:
                 # --- wastewater_structure ---
                 **self.wastewater_structure_common(row),
                 # --- discharge_point ---
+                # only VSA-DSS 2015
                 # fk_sector_water_body=row.REPLACE_ME, # TODO : NOT MAPPED
                 highwater_level=row.hochwasserkote,
                 relevance=self.get_vl_code(
@@ -2050,7 +2051,7 @@ class InterlisImporterToIntermediateSchema:
                 # --- wastewater_networkelement ---
                 **self.wastewater_networkelement_common(row),
                 # --- wastewater_node ---
-                fk_hydr_geometry=self.get_pk(row.hydr_geometrieref__REL),
+                fk_hydr_geometry=self.get_pk(row.fk_hydr_geometry__REL),
                 backflow_level_current=row.rueckstaukote_ist,
                 bottom_level=row.sohlenkote,
                 # new attribute elevation_accuracy release 2020

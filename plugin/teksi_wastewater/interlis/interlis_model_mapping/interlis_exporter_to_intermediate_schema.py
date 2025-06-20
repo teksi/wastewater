@@ -748,15 +748,16 @@ class InterlisExporterToIntermediateSchema:
             # --- _rel_ ---
             # fk_dataowner__REL, fk_hydr_geometry__REL, fk_provider__REL, fk_wastewater_structure__REL
 
-            logger.warning(
-                "TWW field wastewater_node.fk_hydr_geometry has no equivalent in the interlis model. It will be ignored."
-            )
+            # logger.warning(
+            #    "TWW field wastewater_node.fk_hydr_geometry has no equivalent in the interlis model. It will be ignored."
+            # )
             abwasserknoten = self.model_classes_interlis.abwasserknoten(
                 # FIELDS TO MAP TO ABWASSER.abwasserknoten
                 # --- abwassernetzelement ---
                 **self.wastewater_networkelement_common(row, "abwasserknoten"),
                 # --- abwasserknoten ---
-                # TODO : WARNING : fk_hydr_geometry is not mapped
+                # VSA-DSS 2020 added
+                hydr_geometrieref=self.get_tid(row.fk_hydr_geometry__REL),
                 # new attribute funktion_knoten_melioration release 2020
                 funktion_knoten_melioration=self.get_vl(row.function_node_amelioration__REL),
                 # new attribute hoehengenauigkeit release 2020
