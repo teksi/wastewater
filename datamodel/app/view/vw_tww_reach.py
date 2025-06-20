@@ -7,13 +7,14 @@ import os
 
 import psycopg
 from pirogue.utils import insert_command, select_columns, update_command
+from yaml import safe_load
+
 from .utils.extra_definition_utils import (
     extra_cols,
     extra_joins,
     insert_extra,
     update_extra,
 )
-from yaml import safe_load
 
 
 def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):

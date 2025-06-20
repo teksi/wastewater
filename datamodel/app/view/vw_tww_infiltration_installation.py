@@ -8,13 +8,14 @@ import os
 import psycopg
 import psycopg.sql
 from pirogue.utils import insert_command, select_columns, table_parts, update_command
+from yaml import safe_load
+
 from .utils.extra_definition_utils import (
     extra_cols,
     extra_joins,
     insert_extra,
     update_extra,
 )
-from yaml import safe_load
 
 
 def vw_tww_infiltration_installation(
