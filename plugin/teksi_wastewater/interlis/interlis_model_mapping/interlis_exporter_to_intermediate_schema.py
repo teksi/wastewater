@@ -582,18 +582,16 @@ class InterlisExporterToIntermediateSchema:
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
-            logger.warning(
-                "TWW field special_structure.upper_elevation has no equivalent in the interlis model. It will be ignored."
-            )
             spezialbauwerk = self.model_classes_interlis.spezialbauwerk(
                 # FIELDS TO MAP TO ABWASSER.spezialbauwerk
                 # --- abwasserbauwerk ---
                 **self.wastewater_structure_common(row, "spezialbauwerk"),
                 # --- spezialbauwerk ---
-                # TODO : WARNING : upper_elevation is not mapped
                 # new attribute amphibienausstieg Release 2020
                 amphibienausstieg=self.get_vl(row.amphibian_exit__REL),
                 bypass=self.get_vl(row.bypass__REL),
+                # -- attribute 3D ---
+                # deckenkote=row.upper_elevation,
                 funktion=self.get_vl(row.function__REL),
                 # new attribute interventionsmoeglichkeit Release 2020
                 interventionsmoeglichkeit=self.get_vl(row.possibility_intervention__REL),
@@ -613,9 +611,6 @@ class InterlisExporterToIntermediateSchema:
             )
             logger.info(f"Selection query: {query.statement}")
         for row in query:
-            logger.warning(
-                "TWW field infiltration_installation.upper_elevation has no equivalent in the interlis model. It will be ignored."
-            )
             versickerungsanlage = self.model_classes_interlis.versickerungsanlage(
                 # FIELDS TO MAP TO ABWASSER.versickerungsanlage
                 # --- abwasserbauwerk ---
@@ -624,6 +619,8 @@ class InterlisExporterToIntermediateSchema:
                 # TODO : NOT MAPPED : upper_elevation
                 art=self.get_vl(row.kind__REL),
                 beschriftung=self.get_vl(row.labeling__REL),
+                # -- attribute 3D ---
+                # deckenkote=row.upper_elevation,
                 dimension1=row.dimension1,
                 dimension2=row.dimension2,
                 gwdistanz=row.distance_to_aquifer,
@@ -748,9 +745,6 @@ class InterlisExporterToIntermediateSchema:
             # --- _rel_ ---
             # fk_dataowner__REL, fk_hydr_geometry__REL, fk_provider__REL, fk_wastewater_structure__REL
 
-            # logger.warning(
-            #    "TWW field wastewater_node.fk_hydr_geometry has no equivalent in the interlis model. It will be ignored."
-            # )
             abwasserknoten = self.model_classes_interlis.abwasserknoten(
                 # FIELDS TO MAP TO ABWASSER.abwasserknoten
                 # --- abwassernetzelement ---
@@ -795,17 +789,15 @@ class InterlisExporterToIntermediateSchema:
             # --- _rel_ ---
             # elevation_determination__REL, fk_dataowner__REL, fk_pipe_profile__REL, fk_provider__REL, fk_reach_point_from__REL, fk_reach_point_to__REL, fk_wastewater_structure__REL, horizontal_positioning__REL, inside_coating__REL, material__REL, reliner_material__REL, relining_construction__REL, relining_kind__REL
 
-            logger.warning(
-                "TWW field reach.elevation_determination has no equivalent in the interlis model. It will be ignored."
-            )
             haltung = self.model_classes_interlis.haltung(
                 # FIELDS TO MAP TO ABWASSER.haltung
                 # --- abwassernetzelement ---
                 **self.wastewater_networkelement_common(row, "haltung"),
                 # --- haltung ---
-                # NOT MAPPED : elevation_determination
                 # new attribute fliesszeit_trockenwetter release 2020
                 fliesszeit_trockenwetter=row.flow_time_dry_weather,
+                # -- attribute 3D ---            
+                #  hoehenbestimmung=self.get_vl(row.elevation_determination__REL),
                 # new attribute hydr_belastung_ist release 2020
                 hydr_belastung_ist=row.hydraulic_load_current,
                 innenschutz=self.get_vl(row.inside_coating__REL),
@@ -2970,9 +2962,6 @@ class InterlisExporterToIntermediateSchema:
         """
         Returns common attributes for wastewater_structure
         """
-        logger.warning(
-            "Mapping of wastewater_structure->abwasserbauwerk is not fully implemented."
-        )
 
         eigentuemerref = self.get_tid(row.fk_owner__REL)
         if eigentuemerref is None:
@@ -2997,6 +2986,10 @@ class InterlisExporterToIntermediateSchema:
             "eigentuemerref": eigentuemerref,
             "ersatzjahr": row.year_of_replacement,
             "finanzierung": self.get_vl(row.financing__REL),
+            # new attribute hauptdeckelref Release 2020
+            "hauptdeckelref": self.get_tid(row.fk_main_cover__REL),
+            # -- attribute 3D ---
+            # "hoehenbestimmung": self.get_vl(row.elevation_determination__REL),
             "inspektionsintervall": row.inspection_interval,
             "sanierungsbedarf": self.get_vl(row.renovation_necessity__REL),
             "standortname": row.location_name,
