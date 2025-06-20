@@ -540,6 +540,8 @@ class InterlisExporterToIntermediateSchema:
                 funktion=self.get_vl(row.function__REL),
                 # new attribute interventionsmoeglichkeit Release 2020
                 interventionsmoeglichkeit=self.get_vl(row.possibility_intervention__REL),
+                # -- attribute 3D ---
+                # maechtigkeit=row.depth,
                 material=self.get_vl(row.material__REL),
                 oberflaechenzulauf=self.get_vl(row.surface_inflow__REL),
             )
@@ -560,11 +562,15 @@ class InterlisExporterToIntermediateSchema:
                 # --- abwasserbauwerk ---
                 **self.wastewater_structure_common(row, "einleitstelle"),
                 # --- einleitstelle ---
+                # -- attribute 3D ---
+                # deckenkote=row.upper_elevation,
                 # new attribute gewaesserabschnitt_kanton Release 2020
                 gewaesserabschnitt_kanton=row.water_course_segment_canton,
                 # new attribute gewaesserlaufnummer Release 2020
                 gewaesserlaufnummer=row.water_course_number,
                 hochwasserkote=row.highwater_level,
+                # -- attribute 3D ---
+                # maechtigkeit=row.depth,
                 relevanz=self.get_vl(row.relevance__REL),
                 terrainkote=row.terrain_level,
                 wasserspiegel_hydraulik=row.waterlevel_hydraulic,
@@ -595,6 +601,8 @@ class InterlisExporterToIntermediateSchema:
                 funktion=self.get_vl(row.function__REL),
                 # new attribute interventionsmoeglichkeit Release 2020
                 interventionsmoeglichkeit=self.get_vl(row.possibility_intervention__REL),
+                # -- attribute 3D ---
+                # maechtigkeit=row.depth,
                 notueberlauf=self.get_vl(row.emergency_overflow__REL),
                 regenbecken_anordnung=self.get_vl(row.stormwater_tank_arrangement__REL),
             )
@@ -624,6 +632,8 @@ class InterlisExporterToIntermediateSchema:
                 dimension1=row.dimension1,
                 dimension2=row.dimension2,
                 gwdistanz=row.distance_to_aquifer,
+                # -- attribute 3D ---
+                # maechtigkeit=row.depth,
                 # neues attribut fuellmaterial release 2020
                 fuellmaterial=self.get_vl(row.filling_material__REL),
                 maengel=self.get_vl(row.defects__REL),
@@ -997,6 +1007,8 @@ class InterlisExporterToIntermediateSchema:
                 kote=row.level,
                 lage=ST_Force2D(row.situation3d_geometry),
                 lagegenauigkeit=self.get_vl(row.positional_accuracy__REL),
+                # -- attribute 3D ---
+                # maechtigkeit=row.depth,
                 material=self.get_vl(row.material__REL),
                 schlammeimer=self.get_vl(row.sludge_bucket__REL),
                 verschluss=self.get_vl(row.fastening__REL),
