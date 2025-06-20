@@ -7,6 +7,7 @@ import os
 
 import psycopg
 from pirogue.utils import select_columns
+from yaml import safe_load
 
 
 def vw_tww_channel(connection: psycopg.Connection, extra_definition: dict = None):
@@ -15,6 +16,7 @@ def vw_tww_channel(connection: psycopg.Connection, extra_definition: dict = None
     :param pg_service: the PostgreSQL service name
     :param extra_definition: a dictionary for additional read-only columns
     """
+
     extra_definition = extra_definition or {}
 
     cursor = connection.cursor()
@@ -106,5 +108,9 @@ if __name__ == "__main__":
     parser.add_argument("-p", "--pg_service", help="the PostgreSQL service name")
     args = parser.parse_args()
     pg_service = args.pg_service or os.getenv("PGSERVICE")
+    extra_definition = {}
+    if args.extra_definition:
+        with open(args.extra_definition) as f:
+            extra_definition = safe_load(f)
     with psycopg.connect(f"service={pg_service}") as conn:
-        vw_tww_channel(connection=conn)
+        vw_tww_channel(connection=conn, extra_definition=extra_definition)
