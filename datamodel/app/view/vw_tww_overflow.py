@@ -304,7 +304,6 @@ def vw_tww_overflow(connection: psycopg.Connection, extra_definition: dict = Non
     cursor.execute(extras)
 
 
-
 if __name__ == "__main__":
     # create the top-level parser
     parser = argparse.ArgumentParser()

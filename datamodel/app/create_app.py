@@ -239,7 +239,7 @@ Running extension {extension}
         with open(file) as f:
             data = yaml.safe_load(f)
             return data if isinstance(data, dict) else {}
-    
+
     def add_custom_extension(self, zip_file_path: str):
         """
         Extracts a custom extension from a zip file into the specified extensions folder.
@@ -393,6 +393,7 @@ Running extension {extension}
             else:
                 formatted_vars[key] = psycopg.sql.Literal(str(meta))
         return formatted_vars
+
 
 if __name__ == "__main__":
     parser = ArgumentParser()
