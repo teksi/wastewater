@@ -4,7 +4,6 @@ import re
 import subprocess
 import tempfile
 import uuid
-from typing import List
 
 from qgis.core import QgsExpression
 
@@ -35,7 +34,7 @@ def execute_subprocess(command, check=True, output_content=False):
     return proc.stdout.decode().strip() if output_content else proc.returncode
 
 
-def get_pgconf_as_ili_args() -> List[str]:
+def get_pgconf_as_ili_args() -> list[str]:
     """Returns the pgconf as a list of ili2db arguments"""
     pgconf = DatabaseUtils.get_pgconf()
     args = []

@@ -5,12 +5,9 @@
 import argparse
 import os
 
-try:
-    import psycopg
-except ImportError:
-    import psycopg2 as psycopg
 
-from pirogue.utils import insert_command, select_columns, update_command
+import psycopg
+from pirogue.utils import insert_command, select_columns, table_parts, update_command
 from yaml import safe_load
 
 from ..utils.extra_definition_utils import (
@@ -21,19 +18,15 @@ from ..utils.extra_definition_utils import (
 )
 
 
-def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
+def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
     """
     Creates tww_reach view
-    :param pg_service: the PostgreSQL service name
-    :param extra_definition: a dictionary for additional columns
+    :param connection: a psycopg connection object
+    :param extra_definition: a dictionary for additional read-only columns
     """
-    if not pg_service:
-        pg_service = os.getenv("PGSERVICE")
-    assert pg_service
     extra_definition = extra_definition or {}
 
-    conn = psycopg.connect(f"service={pg_service}")
-    cursor = conn.cursor()
+    cursor = connection.cursor()
 
     view_sql = """
     DROP VIEW IF EXISTS tww_app.vw_tww_reach;
@@ -76,10 +69,10 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
         extra_cols=(
             ""
             if not extra_definition
-            else extra_cols(pg_service=pg_service, extra_definition=extra_definition)
+            else extra_cols(connection=connection, extra_definition=extra_definition)
         ),
         re_cols=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="reach",
             table_alias="re",
@@ -93,7 +86,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             ],
         ),
         ne_cols=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_networkelement",
             table_alias="ne",
@@ -102,7 +95,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             skip_columns=["fk_wastewater_structure"],
         ),
         ch_cols=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="channel",
             table_alias="ch",
@@ -112,7 +105,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             skip_columns=["usage_current", "function_hierarchic", "function_hydraulic"],
         ),
         ws_cols=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_structure",
             table_alias="ws",
@@ -131,7 +124,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             ],
         ),
         rp_from_cols=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="reach_point",
             table_alias="rp_from",
@@ -141,7 +134,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             skip_columns=["situation3d_geometry"],
         ),
         rp_to_cols=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="reach_point",
             table_alias="rp_to",
@@ -150,7 +143,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             indent=4,
             skip_columns=["situation3d_geometry"],
         ),
-        extra_joins=extra_joins(pg_service=pg_service, extra_definition=extra_definition),
+        extra_joins=extra_joins(connection=connection, extra_definition=extra_definition),
     )
 
     cursor.execute(view_sql)
@@ -187,7 +180,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
       FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_tww_reach_insert();
     """.format(
         rp_from=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="reach_point",
             prefix="rp_from_",
@@ -203,7 +196,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             returning="obj_id INTO NEW.rp_from_obj_id",
         ),
         rp_to=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="reach_point",
             prefix="rp_to_",
@@ -219,7 +212,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             returning="obj_id INTO NEW.rp_to_obj_id",
         ),
         ws=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_structure",
             prefix="ws_",
@@ -237,7 +230,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             },
         ),
         ch=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="channel",
             prefix="ch_",
@@ -247,7 +240,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             skip_columns=[],
         ),
         ne=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_networkelement",
             remove_pkey=False,
@@ -255,7 +248,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             remap_columns={"fk_wastewater_structure": "ws_obj_id"},
         ),
         re=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="reach",
             remove_pkey=False,
@@ -265,7 +258,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
                 "fk_reach_point_to": "NEW.rp_to_obj_id",
             },
         ),
-        insert_extra=insert_extra(pg_service=pg_service, extra_definition=extra_definition),
+        insert_extra=insert_extra(connection=connection, extra_definition=extra_definition),
     )
     cursor.execute(trigger_insert_sql)
 
@@ -339,7 +332,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
       LANGUAGE plpgsql VOLATILE;
     """.format(
         rp_from=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="reach_point",
             prefix="rp_from_",
@@ -348,7 +341,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             update_values={"situation3d_geometry": "ST_StartPoint(NEW.progression3d_geometry)"},
         ),
         rp_to=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="reach_point",
             prefix="rp_to_",
@@ -357,7 +350,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             update_values={"situation3d_geometry": "ST_EndPoint(NEW.progression3d_geometry)"},
         ),
         ch=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="channel",
             prefix="ch_",
@@ -366,7 +359,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             remap_columns={"obj_id": "ws_obj_id"},
         ),
         ws=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_structure",
             prefix="ws_",
@@ -385,7 +378,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             ],
         ),
         ne=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_networkelement",
             remove_pkey=True,
@@ -393,14 +386,14 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             remap_columns={"fk_wastewater_structure": "ws_obj_id"},
         ),
         re=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="reach",
             remove_pkey=True,
             indent=6,
             skip_columns=["fk_reach_point_to", "fk_reach_point_from"],
         ),
-        update_extra=update_extra(pg_service=pg_service, extra_definition=extra_definition),
+        update_extra=update_extra(connection=connection, extra_definition=extra_definition),
     )
     cursor.execute(trigger_update_sql)
 
@@ -430,9 +423,6 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
     """
     cursor.execute(extras)
 
-    conn.commit()
-    conn.close()
-
 
 if __name__ == "__main__":
     # create the top-level parser
@@ -449,4 +439,5 @@ if __name__ == "__main__":
     if args.extra_definition:
         with open(args.extra_definition) as f:
             extra_definition = safe_load(f)
-    vw_tww_reach(pg_service=pg_service, extra_definition=extra_definition)
+    with psycopg.connect(f"service={pg_service}") as conn:
+        vw_tww_reach(connection=conn, extra_definition=extra_definition)

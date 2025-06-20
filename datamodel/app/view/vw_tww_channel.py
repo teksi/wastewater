@@ -5,25 +5,20 @@
 import argparse
 import os
 
-try:
-    import psycopg
-except ImportError:
-    import psycopg2 as psycopg
+import psycopg
 from pirogue.utils import select_columns
 
 
-def vw_tww_channel(pg_service: str = None):
+def vw_tww_channel(connection: psycopg.Connection, extra_definition: dict = None):
     """
     Creates tww_channel view
     :param pg_service: the PostgreSQL service name
     :param extra_definition: a dictionary for additional read-only columns
     """
-    if not pg_service:
-        pg_service = os.getenv("PGSERVICE")
-    assert pg_service
 
-    conn = psycopg.connect(f"service={pg_service}")
-    cursor = conn.cursor()
+    extra_definition = extra_definition or {}
+
+    cursor = connection.cursor()
 
     view_sql = """
     DROP VIEW IF EXISTS tww_app.vw_tww_channel;
@@ -44,7 +39,7 @@ def vw_tww_channel(pg_service: str = None):
          ;
     """.format(
         ch_cols=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="channel",
             table_alias="ch",
@@ -54,7 +49,7 @@ def vw_tww_channel(pg_service: str = None):
             skip_columns=[],
         ),
         ws_cols=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_structure",
             table_alias="ws",
@@ -71,7 +66,7 @@ def vw_tww_channel(pg_service: str = None):
             ],
         ),
         ch_cols_grp=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="channel",
             table_alias="ch",
@@ -80,7 +75,7 @@ def vw_tww_channel(pg_service: str = None):
             skip_columns=[],
         ),
         ws_cols_grp=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_structure",
             table_alias="ws",
@@ -105,9 +100,6 @@ def vw_tww_channel(pg_service: str = None):
     """
     cursor.execute(extras)
 
-    conn.commit()
-    conn.close()
-
 
 if __name__ == "__main__":
     # create the top-level parser
@@ -115,4 +107,9 @@ if __name__ == "__main__":
     parser.add_argument("-p", "--pg_service", help="the PostgreSQL service name")
     args = parser.parse_args()
     pg_service = args.pg_service or os.getenv("PGSERVICE")
-    vw_tww_channel(pg_service=pg_service)
+    extra_definition = {}
+    if args.extra_definition:
+        with open(args.extra_definition) as f:
+            extra_definition = safe_load(f)
+    with psycopg.connect(f"service={pg_service}") as conn:
+        vw_tww_channel(connection=conn),extra_definition=extra_definition)

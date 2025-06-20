@@ -68,7 +68,7 @@ def vw_tww_overflow(pg_service: str = None, extra_definition: dict = None):
         extra_cols=(
             ""
             if not extra_definition
-            else extra_cols(pg_service=pg_service, extra_definition=extra_definition)
+            else extra_cols(connection=connection, extra_definition=extra_definition)
         ),
         ov_cols=select_columns(
             pg_cur=cursor,
@@ -105,7 +105,7 @@ def vw_tww_overflow(pg_service: str = None, extra_definition: dict = None):
             indent=4,
             prefix="pu_",
         ),
-        extra_joins=extra_joins(pg_service=pg_service, extra_definition=extra_definition),
+        extra_joins=extra_joins(connection=connection, extra_definition=extra_definition),
     )
     cursor.execute(view_sql)
 
@@ -183,7 +183,7 @@ def vw_tww_overflow(pg_service: str = None, extra_definition: dict = None):
             indent=6,
             remap_columns={"obj_id": "obj_id"},
         ),
-        insert_extra=insert_extra(pg_service=pg_service, extra_definition=extra_definition),
+        insert_extra=insert_extra(connection=connection, extra_definition=extra_definition),
     )
 
     cursor.execute(trigger_insert_sql)
@@ -279,7 +279,7 @@ def vw_tww_overflow(pg_service: str = None, extra_definition: dict = None):
             skip_columns=[],
             remap_columns={"obj_id": "obj_id"},
         ),
-        update_extra=update_extra(pg_service=pg_service, extra_definition=extra_definition),
+        update_extra=update_extra(connection=connection, extra_definition=extra_definition),
     )
 
     cursor.execute(update_trigger_sql)

@@ -25,8 +25,6 @@ In order to use a database extension, we need to load them from the source code:
   * https://github.com/TWW/datamodel/releases/latest
   * download`Source Code(zip)`
 
-* install pirogue if necessary: pip install pirogue
-
 * if needed, temporarily alter your PGSYSCONFDIR environment variable
 
 * create and run a batch file such as::

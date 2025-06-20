@@ -5,12 +5,9 @@
 import argparse
 import os
 
-try:
-    import psycopg
-except ImportError:
-    import psycopg2 as psycopg
-
-from pirogue.utils import insert_command, select_columns, update_command
+import psycopg
+import psycopg.sql
+from pirogue.utils import insert_command, select_columns, table_parts, update_command
 from yaml import safe_load
 
 from ..utils.extra_definition_utils import (
@@ -22,21 +19,17 @@ from ..utils.extra_definition_utils import (
 
 
 def vw_tww_infiltration_installation(
-    srid: int, pg_service: str = None, extra_definition: dict = None
+    connection: psycopg.Connection, srid: psycopg.sql.Literal, extra_definition: dict = None
 ):
     """
     Creates tww_infiltration_installation view
+    :param connection: a psycopg connection object
     :param srid: EPSG code for geometries
-    :param pg_service: the PostgreSQL service name
     :param extra_definition: a dictionary for additional read-only columns
     """
-    if not pg_service:
-        pg_service = os.getenv("PGSERVICE")
-    assert pg_service
     extra_definition = extra_definition or {}
 
-    conn = psycopg.connect(f"service={pg_service}")
-    cursor = conn.cursor()
+    cursor = connection.cursor()
 
     view_sql = """
     DROP VIEW IF EXISTS tww_app.vw_tww_infiltration_installation;
@@ -57,7 +50,7 @@ def vw_tww_infiltration_installation(
         , main_co_sp.renovation_demand AS co_renovation_demand
 
         , {main_co_cols}
-        , ST_Force2D(COALESCE(wn.situation3d_geometry, main_co.situation3d_geometry))::geometry(Point, {srid}) AS situation3d_geometry
+        , ST_Force2D(COALESCE(wn.situation3d_geometry, main_co.situation3d_geometry))::geometry(Point, {{srid}}) AS situation3d_geometry
         , {ii_columns}
 
         , {mp_columns}
@@ -80,9 +73,23 @@ def vw_tww_infiltration_installation(
         LEFT JOIN tww_od.wastewater_node wn ON wn.obj_id = ws.fk_main_wastewater_node
         {extra_joins};
     """.format(
-        srid=srid,
+        extra_cols="\n    ".join(
+            [
+                select_columns(
+                    connection=connection,
+                    table_schema=table_parts(table_def["table"])[0],
+                    table_name=table_parts(table_def["table"])[1],
+                    skip_columns=table_def.get("skip_columns", []),
+                    remap_columns=table_def.get("remap_columns", {}),
+                    prefix=table_def.get("prefix", None),
+                    table_alias=table_def.get("alias", None),
+                )
+                + ","
+                for table_def in extra_definition.get("joins", {}).values()
+            ]
+        ),
         ws_cols=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_structure",
             table_alias="ws",
@@ -103,7 +110,7 @@ def vw_tww_infiltration_installation(
             ],
         ),
         main_co_cols=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="cover",
             table_alias="main_co",
@@ -115,7 +122,7 @@ def vw_tww_infiltration_installation(
             columns_at_end=["obj_id"],
         ),
         ii_columns=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="infiltration_installation",
             table_alias="ii",
@@ -126,7 +133,7 @@ def vw_tww_infiltration_installation(
             remap_columns={},
         ),
         mp_columns=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="mechanical_pretreatment",
             table_alias="mp",
@@ -137,7 +144,7 @@ def vw_tww_infiltration_installation(
             remap_columns={},
         ),
         rb_columns=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="retention_body",
             table_alias="rb",
@@ -147,7 +154,7 @@ def vw_tww_infiltration_installation(
             prefix="rb_",
         ),
         wn_cols=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_node",
             table_alias="wn",
@@ -164,7 +171,7 @@ def vw_tww_infiltration_installation(
             columns_at_end=["obj_id"],
         ),
         ne_cols=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_networkelement",
             table_alias="ne",
@@ -177,10 +184,12 @@ def vw_tww_infiltration_installation(
         extra_cols=(
             ""
             if not extra_definition
-            else extra_cols(pg_service=pg_service, extra_definition=extra_definition)
+            else extra_cols(connection=connection, extra_definition=extra_definition)
         ),
-        extra_joins=extra_joins(pg_service=pg_service, extra_definition=extra_definition),
+        extra_joins=extra_joins(connection=connection, extra_definition=extra_definition),
     )
+
+    view_sql = psycopg.sql.SQL(view_sql).format(srid=psycopg.sql.Literal(srid))
 
     cursor.execute(view_sql)
 
@@ -232,7 +241,7 @@ def vw_tww_infiltration_installation(
       FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_tww_infiltration_installation_INSERT();
     """.format(
         insert_ws=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_structure",
             table_alias="ws",
@@ -250,7 +259,7 @@ def vw_tww_infiltration_installation(
             ],
         ),
         insert_ii=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="infiltration_installation",
             table_alias="ii",
@@ -260,7 +269,7 @@ def vw_tww_infiltration_installation(
             remap_columns={"obj_id": "obj_id"},
         ),
         insert_mp=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="mechanical_pretreatment",
             table_alias="mp",
@@ -276,7 +285,7 @@ def vw_tww_infiltration_installation(
             },
         ),
         insert_rb=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="retention_body",
             table_alias="rb",
@@ -292,7 +301,7 @@ def vw_tww_infiltration_installation(
             },
         ),
         insert_wn=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_app",
             table_name="vw_wastewater_node",
             table_type="view",
@@ -308,9 +317,7 @@ def vw_tww_infiltration_installation(
             ],
             insert_values={
                 "identifier": "COALESCE(NULLIF(NEW.wn_identifier,''), NEW.identifier)",
-                "situation3d_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), 'nan'), {srid} )".format(
-                    srid=srid
-                ),
+                "situation3d_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), 'nan'), {srid} )",
                 "last_modification": "NOW()",
                 "fk_provider": "COALESCE(NULLIF(NEW.wn_fk_provider,''), NEW.fk_provider)",
                 "fk_dataowner": "COALESCE(NULLIF(NEW.wn_fk_dataowner,''), NEW.fk_dataowner)",
@@ -318,7 +325,7 @@ def vw_tww_infiltration_installation(
             },
         ),
         insert_vw_cover=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_app",
             table_name="vw_cover",
             table_type="view",
@@ -330,18 +337,17 @@ def vw_tww_infiltration_installation(
             remap_columns={"cover_shape": "co_shape"},
             insert_values={
                 "identifier": "COALESCE(NULLIF(NEW.co_identifier,''), NEW.identifier)",
-                "situation3d_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), 'nan'), {srid} )".format(
-                    srid=srid
-                ),
+                "situation3d_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), 'nan'), {srid} )",
                 "last_modification": "NOW()",
                 "fk_provider": "NEW.fk_provider",
                 "fk_dataowner": "NEW.fk_dataowner",
                 "fk_wastewater_structure": "NEW.obj_id",
             },
         ),
-        insert_extra=insert_extra(pg_service=pg_service, extra_definition=extra_definition),
+        insert_extra=insert_extra(connection=connection, extra_definition=extra_definition),
     )
 
+    trigger_insert_sql = psycopg.sql.SQL(trigger_insert_sql).format(srid=psycopg.sql.Literal(srid))
     cursor.execute(trigger_insert_sql)
 
     update_trigger_sql = """
@@ -378,7 +384,7 @@ def vw_tww_infiltration_installation(
         SET situation3d_geometry = ST_SetSRID( ST_MakePoint(
         ST_X(ST_TRANSLATE(ST_MakePoint(ST_X(WN.situation3d_geometry), ST_Y(WN.situation3d_geometry)), dx, dy )),
         ST_Y(ST_TRANSLATE(ST_MakePoint(ST_X(WN.situation3d_geometry), ST_Y(WN.situation3d_geometry)), dx, dy )),
-        ST_Z(WN.situation3d_geometry)), {srid} )
+        ST_Z(WN.situation3d_geometry)), {{srid}} )
         WHERE obj_id IN
         (
           SELECT obj_id FROM tww_od.wastewater_networkelement
@@ -390,7 +396,7 @@ def vw_tww_infiltration_installation(
         SET situation3d_geometry = ST_SetSRID( ST_MakePoint(
         ST_X(ST_TRANSLATE(ST_MakePoint(ST_X(RP.situation3d_geometry), ST_Y(RP.situation3d_geometry)), dx, dy )),
         ST_Y(ST_TRANSLATE(ST_MakePoint(ST_X(RP.situation3d_geometry), ST_Y(RP.situation3d_geometry)), dx, dy )),
-        ST_Z(RP.situation3d_geometry)), {srid} )
+        ST_Z(RP.situation3d_geometry)), {{srid}} )
         WHERE obj_id IN
         (
           SELECT RP.obj_id FROM tww_od.reach_point RP
@@ -403,7 +409,7 @@ def vw_tww_infiltration_installation(
         SET situation3d_geometry = ST_SetSRID( ST_MakePoint(
         ST_X(ST_TRANSLATE(ST_MakePoint(ST_X(CO.situation3d_geometry), ST_Y(CO.situation3d_geometry)), dx, dy )),
         ST_Y(ST_TRANSLATE(ST_MakePoint(ST_X(CO.situation3d_geometry), ST_Y(CO.situation3d_geometry)), dx, dy )),
-        ST_Z(CO.situation3d_geometry)), {srid} )
+        ST_Z(CO.situation3d_geometry)), {{srid}} )
         WHERE obj_id IN
         (
           SELECT obj_id FROM tww_od.structure_part
@@ -419,7 +425,7 @@ def vw_tww_infiltration_installation(
             ST_SetSRID( ST_MakePoint(
                 ST_X(ST_TRANSLATE(ST_MakePoint(ST_X(ST_PointN(RE.progression3d_geometry, 1)), ST_Y(ST_PointN(RE.progression3d_geometry, 1))), dx, dy )),
                 ST_Y(ST_TRANSLATE(ST_MakePoint(ST_X(ST_PointN(RE.progression3d_geometry, 1)), ST_Y(ST_PointN(RE.progression3d_geometry, 1))), dx, dy )),
-                ST_Z(ST_PointN(RE.progression3d_geometry, 1))), {srid} )
+                ST_Z(ST_PointN(RE.progression3d_geometry, 1))), {{srid}} )
           ) )
         WHERE fk_reach_point_from IN
         (
@@ -436,7 +442,7 @@ def vw_tww_infiltration_installation(
             ST_SetSRID( ST_MakePoint(
                 ST_X(ST_TRANSLATE(ST_MakePoint(ST_X(ST_EndPoint(RE.progression3d_geometry)), ST_Y(ST_EndPoint(RE.progression3d_geometry))), dx, dy )),
                 ST_Y(ST_TRANSLATE(ST_MakePoint(ST_X(ST_EndPoint(RE.progression3d_geometry)), ST_Y(ST_EndPoint(RE.progression3d_geometry))), dx, dy )),
-                ST_Z(ST_PointN(RE.progression3d_geometry, 1))), {srid} )
+                ST_Z(ST_PointN(RE.progression3d_geometry, 1))), {{srid}} )
           ) )
         WHERE fk_reach_point_to IN
         (
@@ -458,9 +464,8 @@ def vw_tww_infiltration_installation(
     CREATE TRIGGER vw_tww_infiltration_installation_UPDATE INSTEAD OF UPDATE ON tww_app.vw_tww_infiltration_installation
       FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_tww_infiltration_installation_UPDATE();
     """.format(
-        srid=srid,
         update_co=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="cover",
             table_alias="co",
@@ -470,7 +475,7 @@ def vw_tww_infiltration_installation(
             remap_columns={"cover_shape": "co_shape"},
         ),
         update_sp=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="structure_part",
             table_alias="sp",
@@ -484,7 +489,7 @@ def vw_tww_infiltration_installation(
             },
         ),
         update_ws=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_structure",
             table_alias="ws",
@@ -505,7 +510,7 @@ def vw_tww_infiltration_installation(
             update_values={},
         ),
         update_ii=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="infiltration_installation",
             table_alias="ii",
@@ -516,7 +521,7 @@ def vw_tww_infiltration_installation(
             remap_columns={"obj_id": "obj_id"},
         ),
         update_wn=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_node",
             table_alias="wn",
@@ -530,7 +535,7 @@ def vw_tww_infiltration_installation(
             ],
         ),
         update_ne=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_networkelement",
             table_alias="ne",
@@ -539,7 +544,7 @@ def vw_tww_infiltration_installation(
             skip_columns=[],
         ),
         insert_vw_cover=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_app",
             table_name="vw_cover",
             table_type="view",
@@ -551,9 +556,7 @@ def vw_tww_infiltration_installation(
             remap_columns={"cover_shape": "co_shape"},
             insert_values={
                 "identifier": "COALESCE(NULLIF(NEW.co_identifier,''), NEW.identifier)",
-                "situation3d_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), 'nan'), {srid} )".format(
-                    srid=srid
-                ),
+                "situation3d_geometry": "ST_SetSRID(ST_MakePoint(ST_X(NEW.situation3d_geometry), ST_Y(NEW.situation3d_geometry), 'nan'), {srid} )",
                 "last_modification": "NOW()",
                 "fk_provider": "NEW.fk_provider",
                 "fk_dataowner": "NEW.fk_dataowner",
@@ -561,9 +564,10 @@ def vw_tww_infiltration_installation(
             },
             returning="obj_id INTO OLD.co_obj_id",
         ),
-        update_extra=update_extra(pg_service=pg_service, extra_definition=extra_definition),
+        update_extra=update_extra(connection=connection, extra_definition=extra_definition),
     )
 
+    update_trigger_sql = psycopg.sql.SQL(update_trigger_sql).format(srid=psycopg.sql.Literal(srid))
     cursor.execute(update_trigger_sql)
 
     trigger_delete_sql = """
@@ -595,14 +599,11 @@ def vw_tww_infiltration_installation(
     """
     cursor.execute(extras)
 
-    conn.commit()
-    conn.close()
-
 
 if __name__ == "__main__":
     # create the top-level parser
     parser = argparse.ArgumentParser()
-    parser.add_argument("-s", "--srid", help="EPSG code for SRID")
+    parser.add_argument("-s", "--srid", help="EPSG code for SRID", default=2056)
     parser.add_argument(
         "-e",
         "--extra-definition",
@@ -610,9 +611,10 @@ if __name__ == "__main__":
     )
     parser.add_argument("-p", "--pg_service", help="the PostgreSQL service name")
     args = parser.parse_args()
-    srid = args.srid or os.getenv("SRID")
     pg_service = args.pg_service or os.getenv("PGSERVICE")
+    srid = psycopg.sql.Literal(args.srid)
     extra_definition = safe_load(open(args.extra_definition)) if args.extra_definition else {}
-    vw_tww_infiltration_installation(
-        srid=srid, pg_service=pg_service, extra_definition=extra_definition
-    )
+    with psycopg.connect(f"service={pg_service}") as conn:
+        vw_tww_infiltration_installation(
+            connection=conn, srid=srid, extra_definition=extra_definition
+        )

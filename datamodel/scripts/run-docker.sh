@@ -42,7 +42,7 @@ fi
 
 docker rm -f teksi-wastewater
 docker run -d -p ${TWW_PG_PORT}:5432 -v $(pwd):/src  --name teksi-wastewater teksi/wastewater -c log_statement=all
-docker exec teksi-wastewater init_db.sh wait
+docker exec teksi-wastewater run-pum.sh wait
 if [[ $DEMO_DATA -eq 1 ]]; then
-  docker exec teksi-wastewater init_db.sh build -d
+  docker exec teksi-wastewater run-pum.sh build -d
 fi

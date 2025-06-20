@@ -5,12 +5,8 @@
 import argparse
 import os
 
-try:
-    import psycopg
-except ImportError:
-    import psycopg2 as psycopg
-
-from pirogue.utils import insert_command, select_columns, update_command
+import psycopg
+from pirogue.utils import insert_command, select_columns, table_parts, update_command
 from yaml import safe_load
 
 from ..utils.extra_definition_utils import (
@@ -21,19 +17,15 @@ from ..utils.extra_definition_utils import (
 )
 
 
-def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = None):
+def vw_wastewater_structure(connection: psycopg.Connection, extra_definition: dict = None):
     """
     Creates tww_wastewater_structure view
-    :param pg_service: the PostgreSQL service name
+    :param connection: a psycopg connection object
     :param extra_definition: a dictionary for additional read-only columns
     """
-    if not pg_service:
-        pg_service = os.getenv("PGSERVICE")
-    assert pg_service
     extra_definition = extra_definition or {}
 
-    conn = psycopg.connect(f"service={pg_service}")
-    cursor = conn.cursor()
+    cursor = connection.cursor()
 
     view_sql = """
     DROP VIEW IF EXISTS tww_app.vw_wastewater_structure;
@@ -56,10 +48,10 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
         extra_cols=(
             ""
             if not extra_definition
-            else extra_cols(pg_service=pg_service, extra_definition=extra_definition)
+            else extra_cols(connection=connection, extra_definition=extra_definition)
         ),
         ws_cols=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_structure",
             table_alias="ws",
@@ -73,7 +65,7 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
                 "_output_label",
             ],
         ),
-        extra_joins=extra_joins(pg_service=pg_service, extra_definition=extra_definition),
+        extra_joins=extra_joins(connection=connection, extra_definition=extra_definition),
     )
     cursor.execute(view_sql)
 
@@ -96,7 +88,7 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
       FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_wastewater_structure_INSERT();
     """.format(
         insert_ws=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_structure",
             table_alias="",
@@ -110,7 +102,7 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
                 "_output_label",
             ],
         ),
-        insert_extra=insert_extra(pg_service=pg_service, extra_definition=extra_definition),
+        insert_extra=insert_extra(connection=connection, extra_definition=extra_definition),
     )
     cursor.execute(trigger_insert_sql)
 
@@ -134,7 +126,7 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
       FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_wastewater_structure_UPDATE();
     """.format(
         update_ws=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_structure",
             table_alias="",
@@ -151,7 +143,7 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
             ],
             update_values={},
         ),
-        update_extra=update_extra(pg_service=pg_service, extra_definition=extra_definition),
+        update_extra=update_extra(connection=connection, extra_definition=extra_definition),
     )
     cursor.execute(update_trigger_sql)
 
@@ -177,9 +169,6 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
     """
     cursor.execute(extras)
 
-    conn.commit()
-    conn.close()
-
 
 if __name__ == "__main__":
     # create the top-level parser
@@ -192,5 +181,9 @@ if __name__ == "__main__":
     parser.add_argument("-p", "--pg_service", help="the PostgreSQL service name")
     args = parser.parse_args()
     pg_service = args.pg_service or os.getenv("PGSERVICE")
-    extra_definition = safe_load(open(args.extra_definition)) if args.extra_definition else {}
-    vw_wastewater_structure(pg_service=pg_service, extra_definition=extra_definition)
+    extra_definition = {}
+    if args.extra_definition:
+        with open(args.extra_definition) as f:
+            extra_definition = safe_load(f)
+    with psycopg.connect(f"service={pg_service}") as conn:
+        vw_wastewater_structure(pg_service=pg_service, extra_definition=extra_definition)
