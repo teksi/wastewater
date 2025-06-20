@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
-from pirogue.utils import insert_command, select_columns, table_parts, update_command
-
 import psycopg
+from pirogue.utils import insert_command, select_columns, table_parts, update_command
 
 
 def extra_cols(connection: psycopg.Connection, extra_definition: dict = None):

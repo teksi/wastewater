@@ -5,9 +5,8 @@
 import argparse
 import os
 
-
 import psycopg
-from pirogue.utils import insert_command, select_columns, table_parts, update_command
+from pirogue.utils import insert_command, select_columns, update_command
 from pum.exceptions import PumHookError
 from yaml import safe_load
 

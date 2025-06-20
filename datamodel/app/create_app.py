@@ -1,18 +1,15 @@
 #!/usr/bin/env python3
 
+import os
+import re
+import zipfile
 from argparse import ArgumentParser, BooleanOptionalAction
 from pathlib import Path
 
-import os
 import psycopg
-import re
 import yaml
-import zipfile
-
-import psycopg
 from pirogue import MultipleInheritance, SimpleJoins, SingleInheritance
 from pum import HookBase
-
 from triggers.set_defaults_and_triggers import set_defaults_and_triggers
 from view.vw_tww_additional_ws import vw_tww_additional_ws
 from view.vw_tww_channel import vw_tww_channel
@@ -36,14 +33,14 @@ class Hook(HookBase):
         with open(file) as f:
             data = yaml.safe_load(f)
             return data if isinstance(data, dict) else {}
-        
+
     def run_hook(
         self,
         connection: psycopg.Connection,
         SRID: int = 2056,
-        extension_names: dict={},
-        extension_zip: Path=None,
-        lang_code: str='en',
+        extension_names: dict = {},
+        extension_zip: Path = None,
+        lang_code: str = "en",
     ):
         """
         Creates the schema tww_app for TEKSI Wastewater & GEP
@@ -62,26 +59,26 @@ class Hook(HookBase):
                 "value": f"{SRID}",
                 "type": "raw",
             },
-            "value_lang":{
+            "value_lang": {
                 "value": f"value_{lang_code}",
                 "type": "identifier",
             },
-            "abbr_lang":{
+            "abbr_lang": {
                 "value": f"abbr_{lang_code}",
                 "type": "identifier",
             },
-            "description_lang":{
+            "description_lang": {
                 "value": f"description_{lang_code}",
                 "type": "identifier",
             },
-            "display_lang":{
+            "display_lang": {
                 "value": f"display_{lang_code}",
                 "type": "identifier",
             },
         }
         self.execute("CREATE SCHEMA tww_app;")
-        self.run_sql_files_in_folder(self.cwd/ "sql_functions",self.variables_sql)
-        self.extensions=extension_names
+        self.run_sql_files_in_folder(self.cwd / "sql_functions", self.variables_sql)
+        self.extensions = extension_names
 
         self.yaml_data_dicts = {
             "vw_tww_reach": {},
@@ -165,7 +162,6 @@ Running extension {extension}
                 self.load_extension(
                     extension_name=extension,
                 )
-                
 
         defaults = {"view_schema": "tww_app", "connection": connection}
 
@@ -192,20 +188,34 @@ Running extension {extension}
                 connection=connection,
             ).create()
 
-        vw_wastewater_structure(connection=connection, extra_definition=self.yaml_data_dicts["vw_wastewater_structure"])
+        vw_wastewater_structure(
+            connection=connection, extra_definition=self.yaml_data_dicts["vw_wastewater_structure"]
+        )
         vw_tww_wastewater_structure(
-            connection=connection, srid=SRID, extra_definition=self.yaml_data_dicts["vw_tww_wastewater_structure"]
+            connection=connection,
+            srid=SRID,
+            extra_definition=self.yaml_data_dicts["vw_tww_wastewater_structure"],
         )
         vw_tww_infiltration_installation(
-            connection=connection, srid=SRID, extra_definition=self.yaml_data_dicts["vw_tww_infiltration_installation"]
+            connection=connection,
+            srid=SRID,
+            extra_definition=self.yaml_data_dicts["vw_tww_infiltration_installation"],
         )
         vw_tww_reach(connection=connection, extra_definition=self.yaml_data_dicts["vw_tww_reach"])
         vw_tww_channel(connection=connection)
         vw_tww_damage_channel(connection=connection)
-        vw_tww_additional_ws(srid=SRID, connection=connection,extra_definition=self.yaml_data_dicts["vw_tww_additional_ws"])
-        vw_tww_measurement_series(connection=connection, extra_definition=self.yaml_data_dicts["vw_tww_measurement_series"])
+        vw_tww_additional_ws(
+            srid=SRID,
+            connection=connection,
+            extra_definition=self.yaml_data_dicts["vw_tww_additional_ws"],
+        )
+        vw_tww_measurement_series(
+            connection=connection,
+            extra_definition=self.yaml_data_dicts["vw_tww_measurement_series"],
+        )
         vw_tww_overflow(
-            connection=connection, extra_definition=self.yaml_data_dicts["vw_tww_measurement_series"]
+            connection=connection,
+            extra_definition=self.yaml_data_dicts["vw_tww_measurement_series"],
         )
 
         # TODO: Are these export views necessary? cymed 13.03.25
@@ -225,9 +235,7 @@ Running extension {extension}
             self.run_sql_files_in_folder(abs_dir, connection, self.variables_sql)
 
         # run post_all
-        self.run_sql_files_in_folder(
-            self.cwd / "post_all", connection, self.variables_sql
-        )
+        self.run_sql_files_in_folder(self.cwd / "post_all", connection, self.variables_sql)
 
         # Roles
         self.execute(self.cwd / "tww_app_roles.sql")
@@ -243,32 +251,31 @@ Running extension {extension}
         ext_folder = self.cwd / "extensions"
 
         # Extract the contents of the zip file into the extensions directory
-        with zipfile.ZipFile(zip_file_path, 'r') as zip_ref:
+        with zipfile.ZipFile(zip_file_path, "r") as zip_ref:
             zip_ref.extractall(ext_folder)
-        
+
             original_config_path = ext_folder / "config.yaml"
             custom_config_path = ext_folder / "custom_config.yaml"
 
             # Load the original and custom configurations
-            with open(original_config_path, 'r') as file:
+            with open(original_config_path) as file:
                 original_config = yaml.safe_load(file)
 
-            with open(custom_config_path, 'r') as file:
+            with open(custom_config_path) as file:
                 custom_config = yaml.safe_load(file)
 
             self.get_extension_names(custom_config)
 
             # Update the original configuration with the custom configuration
             # Here, you can define how to merge the configurations
-            if custom_config and 'extensions' in custom_config:
-                original_config['extensions'].extend(custom_config['extensions'])
+            if custom_config and "extensions" in custom_config:
+                original_config["extensions"].extend(custom_config["extensions"])
 
-            with open(original_config_path, 'w') as file:
+            with open(original_config_path, "w") as file:
                 yaml.dump(original_config, file)
 
-
     def load_extension(
-        self, 
+        self,
         extension_name: str = None,
     ):
         """
@@ -282,7 +289,6 @@ Running extension {extension}
         ext_folder = self.cwd / "extensions"
         config = self.read_config(ext_folder / "config.yaml", extension_name)
 
-        
         # do not overwrite variables_sql, so different extensions can use the same variable differently
         variables = self.variables_sql
         ext_variables = config.get("variables", {})
@@ -302,27 +308,26 @@ Running extension {extension}
                 if filename.endswith(".yaml"):
                     key = filename.removesuffix(".yaml")
                     yaml_files[key] = abs_dir / filename
-        
-        for target_view, file_path in yaml_files.items():
-                    if target_view in self.MultipleInheritances:
-                        # overwrite the path
-                        print(
-                            f"MultipleInheritance view {self.MultipleInheritances[target_view]} overriden by extension {extension_name}: New path used is {file_path}"
-                        )
-                        self.MultipleInheritances[target_view] = file_path
-                    elif target_view in self.SimpleJoins_yaml:
-                        # overwrite the path
-                        print(
-                            f"SimpleJoin view {self.SimpleJoins_yaml[target_view]} overriden by extension {extension_name}: New path used is {file_path}"
-                        )
-                        self.SimpleJoins_yaml[target_view] = file_path
-                    else:
-                        # load data
-                        if target_view in self.yaml_data_dicts:
-                            self.yaml_data_dicts[target_view].update(self.load_yaml(file_path))
-                        else:
-                            self.yaml_data_dicts[target_view] = self.load_yaml(file_path)
 
+        for target_view, file_path in yaml_files.items():
+            if target_view in self.MultipleInheritances:
+                # overwrite the path
+                print(
+                    f"MultipleInheritance view {self.MultipleInheritances[target_view]} overriden by extension {extension_name}: New path used is {file_path}"
+                )
+                self.MultipleInheritances[target_view] = file_path
+            elif target_view in self.SimpleJoins_yaml:
+                # overwrite the path
+                print(
+                    f"SimpleJoin view {self.SimpleJoins_yaml[target_view]} overriden by extension {extension_name}: New path used is {file_path}"
+                )
+                self.SimpleJoins_yaml[target_view] = file_path
+            else:
+                # load data
+                if target_view in self.yaml_data_dicts:
+                    self.yaml_data_dicts[target_view].update(self.load_yaml(file_path))
+                else:
+                    self.yaml_data_dicts[target_view] = self.load_yaml(file_path)
 
     def get_extension_names(self, config_file: str):
         abs_file_path = self.cwd / "extensions" / config_file
@@ -331,7 +336,7 @@ Running extension {extension}
         for entry in config.get("extensions", []):
             self.extensions.update(entry.get("id"))
 
-    def read_config(self,config_file: str, extension_name: str):
+    def read_config(self, config_file: str, extension_name: str):
         abs_file_path = self.cwd / "extensions" / config_file
         with open(abs_file_path) as file:
             config = yaml.safe_load(file)
@@ -340,7 +345,7 @@ Running extension {extension}
                 return entry
         raise ValueError(f"No entry found with id: {extension_name}")
 
-    def run_sql_file(self, file_path: str,  variables: dict = None):
+    def run_sql_file(self, file_path: str, variables: dict = None):
         with open(file_path) as f:
             sql = f.read()
         sql_vars = self.parse_variables(variables)
@@ -389,7 +394,6 @@ Running extension {extension}
                 formatted_vars[key] = psycopg.sql.Literal(str(meta))
         return formatted_vars
 
-
     if __name__ == "__main__":
         parser = ArgumentParser()
         parser.add_argument("-p", "--pg_service", help="postgres service")
@@ -411,13 +415,17 @@ Running extension {extension}
             help="extensions that should be loaded into application schema",
         )
         parser.add_argument(
-            "-l", "--lang_code", help="language code", type=str, default='en',choices=['en', 'fr', 'de', 'it', 'ro']
+            "-l",
+            "--lang_code",
+            help="language code",
+            type=str,
+            default="en",
+            choices=["en", "fr", "de", "it", "ro"],
         )
         parser.add_argument(
             "-z", "--extension_zip", help="path to zip file containing custom extensions", type=str
         )
         args = parser.parse_args()
-
 
         with psycopg.connect(service=args.pg_service) as connection:
             if args.drop_schema:
@@ -429,4 +437,4 @@ Running extension {extension}
                 extension_names=args.extension_names,
                 extension_zip=args.extension_zip,
                 lang_code=args.lang_code,
-                )
+            )

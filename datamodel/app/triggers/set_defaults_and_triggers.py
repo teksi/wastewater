@@ -15,12 +15,11 @@ def check_owner(connection: psycopg.Connection, table_schema: str, table_name: s
             f"SELECT tableowner from pg_tables WHERE tablename='{table_name}' and schemaname='{table_schema}';"
         ).execute(connection)
         owner = cursor.fetchone()
-        
+
         is_owner = True if owner in roles else False
     except Exception as e:
         print("An error occurred:", e)
     return is_owner
-
 
 
 def create_last_modification_trigger(tbl: str, parent_tbl: str = None):
@@ -84,7 +83,9 @@ def set_defaults_and_triggers(
             found = cursor.fetchone()
             if found:
                 if check_owner(connection, "tww_od", entry[0]):
-                    query = create_last_modification_trigger(entry[0], SingleInheritances[entry[0]])
+                    query = create_last_modification_trigger(
+                        entry[0], SingleInheritances[entry[0]]
+                    )
                     SqlContent(query).execute(connection)
                 else:
                     raise Exception(f"Must be owner of tww_od.{entry[0]} to create triggers")
