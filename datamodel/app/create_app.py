@@ -409,11 +409,18 @@ if __name__ == "__main__":
         action=BooleanOptionalAction,
     )
     parser.add_argument(
-        "-x",
-        "--extension_names",
-        nargs="*",
-        required=False,
-        help="extensions that should be loaded into application schema",
+        "-a",
+        "--extension_agxx",
+        type=bool,
+        default=False,
+        help="load AG-64/96 extension",
+    )
+    parser.add_argument(
+        "-c",
+        "--extension_ci",
+        type=bool,
+        default=False,
+        help="load ci extension",
     )
     parser.add_argument(
         "-l",
@@ -424,9 +431,15 @@ if __name__ == "__main__":
         choices=["en", "fr", "de", "it", "ro"],
     )
     parser.add_argument(
-        "-z", "--extension_zip", help="path to zip file containing custom extensions", type=str
+        "-z", "--extension_zip", help="path to zip file containing custom extensions", type=Path
     )
     args = parser.parse_args()
+    extension_names={}
+    if args.extension_agxx:
+        extension_names.update("tww2ag6496")
+
+    if args.extension_agxx:
+        extension_names.update("ci")
 
     with psycopg.connect(service=args.pg_service) as connection:
         if args.drop_schema:
@@ -435,7 +448,7 @@ if __name__ == "__main__":
         hook.run_hook(
             connection=connection,
             SRID=args.srid,
-            extension_names=args.extension_names,
+            extension_names=extension_names,
             extension_zip=args.extension_zip,
             lang_code=args.lang_code,
         )

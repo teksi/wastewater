@@ -61,8 +61,6 @@ jobs:
     runs-on: ubuntu-24.04
 
     strategy:
-      matrix:
-        extension: ["ci"]
       fail-fast: true
 
     steps:
@@ -84,7 +82,7 @@ jobs:
           done
           # create the database
           docker exec teksi-wastewater sh -c 'createdb tww'
-          docker exec teksi-wastewater pum -vvv -s pg_tww -d datamodel install -p SRID 2056 -p extension_names ${{ matrix.extension }} --roles --grant
+          docker exec teksi-wastewater pum -vvv -s pg_tww -d datamodel install -p SRID 2056 -p extension_ci --roles --grant
 
       - name: Docker logs
         if: failure()
