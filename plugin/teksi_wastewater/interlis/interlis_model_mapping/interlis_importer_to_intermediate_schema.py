@@ -2051,7 +2051,7 @@ class InterlisImporterToIntermediateSchema:
                 # --- wastewater_networkelement ---
                 **self.wastewater_networkelement_common(row),
                 # --- wastewater_node ---
-                fk_hydr_geometry=self.get_pk(row.fk_hydr_geometry__REL),
+                fk_hydr_geometry=self.get_pk(row.hydr_geometrieref__REL),
                 backflow_level_current=row.rueckstaukote_ist,
                 bottom_level=row.sohlenkote,
                 # new attribute elevation_accuracy release 2020
