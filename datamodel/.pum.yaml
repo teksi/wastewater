@@ -41,10 +41,10 @@ parameters:
   - name: extension_ci
     type: bool
     description: load ci extension
-    
+
    - name: extension_agxx
     type: bool
-    description: load AG-64/96 extension 
+    description: load AG-64/96 extension
 
   - name: extension_zip
     type: path

@@ -434,7 +434,7 @@ if __name__ == "__main__":
         "-z", "--extension_zip", help="path to zip file containing custom extensions", type=Path
     )
     args = parser.parse_args()
-    extension_names={}
+    extension_names = {}
     if args.extension_agxx:
         extension_names.update("tww2ag6496")
 
