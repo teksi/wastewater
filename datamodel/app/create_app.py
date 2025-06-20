@@ -27,8 +27,8 @@ class Hook(HookBase):
         self,
         connection: psycopg.Connection,
         SRID: int = 2056,
-        extension_agxx: bool= False,
-        extension_ci: bool= False,
+        extension_agxx: bool = False,
+        extension_ci: bool = False,
         extension_zip: Path = None,
         lang_code: str = "en",
     ):
@@ -441,7 +441,6 @@ if __name__ == "__main__":
         "-z", "--extension_zip", help="path to zip file containing custom extensions", type=Path
     )
     args = parser.parse_args()
-
 
     with psycopg.connect(service=args.pg_service) as connection:
         if args.drop_schema:
