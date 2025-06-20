@@ -21,19 +21,15 @@ from ..utils.extra_definition_utils import (
 )
 
 
-def vw_tww_overflow(pg_service: str = None, extra_definition: dict = None):
+def vw_tww_overflow(connection: psycopg.Connection, extra_definition: dict = None):
     """
     Creates tww_overflow view
-    :param pg_service: the PostgreSQL service name
+    :param connection: a psycopg connection object
     :param extra_definition: a dictionary for additional columns
     """
-    if not pg_service:
-        pg_service = os.getenv("PGSERVICE")
-    assert pg_service
     extra_definition = extra_definition or {}
 
-    conn = psycopg.connect(f"service={pg_service}")
-    cursor = conn.cursor()
+    cursor = connection.cursor()
 
     view_sql = """
     DROP VIEW IF EXISTS tww_app.vw_tww_overflow;
@@ -307,8 +303,6 @@ def vw_tww_overflow(pg_service: str = None, extra_definition: dict = None):
     """
     cursor.execute(extras)
 
-    conn.commit()
-    conn.close()
 
 
 if __name__ == "__main__":

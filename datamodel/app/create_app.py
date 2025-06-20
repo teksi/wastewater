@@ -23,17 +23,6 @@ from view.vw_wastewater_structure import vw_wastewater_structure
 
 
 class Hook(HookBase):
-    def load_yaml(file: Path) -> dict[str]:
-        """Safely loads a YAML file and ensures it returns a dictionary."""
-        file = Path(file)
-        if not file.exists():
-            return {}
-
-        print(f"loading yaml {file}")
-        with open(file) as f:
-            data = yaml.safe_load(f)
-            return data if isinstance(data, dict) else {}
-
     def run_hook(
         self,
         connection: psycopg.Connection,
@@ -240,6 +229,17 @@ Running extension {extension}
         # Roles
         self.execute(self.cwd / "tww_app_roles.sql")
 
+    def load_yaml(file: Path) -> dict[str]:
+        """Safely loads a YAML file and ensures it returns a dictionary."""
+        file = Path(file)
+        if not file.exists():
+            return {}
+
+        print(f"loading yaml {file}")
+        with open(file) as f:
+            data = yaml.safe_load(f)
+            return data if isinstance(data, dict) else {}
+    
     def add_custom_extension(self, zip_file_path: str):
         """
         Extracts a custom extension from a zip file into the specified extensions folder.
@@ -394,47 +394,47 @@ Running extension {extension}
                 formatted_vars[key] = psycopg.sql.Literal(str(meta))
         return formatted_vars
 
-    if __name__ == "__main__":
-        parser = ArgumentParser()
-        parser.add_argument("-p", "--pg_service", help="postgres service")
-        parser.add_argument(
-            "-s", "--srid", help="SRID EPSG code, defaults to 2056", type=int, default=2056
-        )
-        parser.add_argument(
-            "-d",
-            "--drop-schema",
-            help="Drops cascaded any existing tww_app schema",
-            default=False,
-            action=BooleanOptionalAction,
-        )
-        parser.add_argument(
-            "-x",
-            "--extension_names",
-            nargs="*",
-            required=False,
-            help="extensions that should be loaded into application schema",
-        )
-        parser.add_argument(
-            "-l",
-            "--lang_code",
-            help="language code",
-            type=str,
-            default="en",
-            choices=["en", "fr", "de", "it", "ro"],
-        )
-        parser.add_argument(
-            "-z", "--extension_zip", help="path to zip file containing custom extensions", type=str
-        )
-        args = parser.parse_args()
+if __name__ == "__main__":
+    parser = ArgumentParser()
+    parser.add_argument("-p", "--pg_service", help="postgres service")
+    parser.add_argument(
+        "-s", "--srid", help="SRID EPSG code, defaults to 2056", type=int, default=2056
+    )
+    parser.add_argument(
+        "-d",
+        "--drop-schema",
+        help="Drops cascaded any existing tww_app schema",
+        default=False,
+        action=BooleanOptionalAction,
+    )
+    parser.add_argument(
+        "-x",
+        "--extension_names",
+        nargs="*",
+        required=False,
+        help="extensions that should be loaded into application schema",
+    )
+    parser.add_argument(
+        "-l",
+        "--lang_code",
+        help="language code",
+        type=str,
+        default="en",
+        choices=["en", "fr", "de", "it", "ro"],
+    )
+    parser.add_argument(
+        "-z", "--extension_zip", help="path to zip file containing custom extensions", type=str
+    )
+    args = parser.parse_args()
 
-        with psycopg.connect(service=args.pg_service) as connection:
-            if args.drop_schema:
-                connection.execute("DROP SCHEMA IF EXISTS tww_app CASCADE;")
-            hook = Hook()
-            hook.run_hook(
-                connection=connection,
-                SRID=args.srid,
-                extension_names=args.extension_names,
-                extension_zip=args.extension_zip,
-                lang_code=args.lang_code,
-            )
+    with psycopg.connect(service=args.pg_service) as connection:
+        if args.drop_schema:
+            connection.execute("DROP SCHEMA IF EXISTS tww_app CASCADE;")
+        hook = Hook()
+        hook.run_hook(
+            connection=connection,
+            SRID=args.srid,
+            extension_names=args.extension_names,
+            extension_zip=args.extension_zip,
+            lang_code=args.lang_code,
+        )
