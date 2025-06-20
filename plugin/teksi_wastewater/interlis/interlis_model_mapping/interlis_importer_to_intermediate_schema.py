@@ -877,7 +877,7 @@ class InterlisImporterToIntermediateSchema:
                     self.model_classes_tww_od.infiltration_installation_filling_material,
                     row.fuellmaterial,
                 ),
-                # fk_dss15_aquifer=row.REPLACE_ME,  # TODO : NOT MAPPED
+                # fk_dss15_aquifer=row.REPLACE_ME,  # only in TEKSI, not supported in VSA-DSS 2020
                 kind=self.get_vl_code(
                     self.model_classes_tww_vl.infiltration_installation_kind, row.art
                 ),
@@ -2051,14 +2051,15 @@ class InterlisImporterToIntermediateSchema:
                 # --- wastewater_networkelement ---
                 **self.wastewater_networkelement_common(row),
                 # --- wastewater_node ---
-                fk_hydr_geometry=self.get_pk(row.hydr_geometrieref__REL),
                 backflow_level_current=row.rueckstaukote_ist,
                 bottom_level=row.sohlenkote,
                 # new attribute elevation_accuracy release 2020
-                attribute=self.get_vl_code(
+                elevation_accuracy=self.get_vl_code(
                     self.model_classes_tww_od.wastewater_node_elevation_accuracy,
                     row.hoehengenauigkeit,
                 ),
+                # new attribute fk_hydr_geometry release 2020
+                fk_hydr_geometry=self.get_pk(row.hydr_geometrieref__REL),
                 # new attribute function_node_amelioration release 2020
                 function_node_amelioration=self.get_vl_code(
                     self.model_classes_tww_od.wastewater_node_function_node_amelioration,
@@ -2070,6 +2071,8 @@ class InterlisImporterToIntermediateSchema:
                     row.t_ili_tid,
                     "wastewater_node.bottom_level (Abwasserknoten.Sohlenkote)",
                 ),
+                # added VSA-DSS 2020
+                wwtp_number=row.ara_nr,
             )
             self.session_tww.add(wastewater_node)
             print(".", end="")
