@@ -43,7 +43,7 @@ parameters:
     default: false
     description: load ci extension
 
-   - name: extension_agxx
+  - name: extension_agxx
     type: bool
     default: false
     description: load AG-64/96 extension
