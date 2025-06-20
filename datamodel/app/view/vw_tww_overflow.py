@@ -11,7 +11,7 @@ except ImportError:
     import psycopg2 as psycopg
 
 from pirogue.utils import insert_command, select_columns, update_command
-from utils.extra_definition_utils import (
+from .utils.extra_definition_utils import (
     extra_cols,
     extra_joins,
     insert_extra,
