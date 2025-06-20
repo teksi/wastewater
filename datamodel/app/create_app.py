@@ -436,7 +436,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     extension_names = {}
     if args.extension_agxx:
-        extension_names.update("tww2ag6496")
+        extension_names.update("agxx")
 
     if args.extension_agxx:
         extension_names.update("ci")
