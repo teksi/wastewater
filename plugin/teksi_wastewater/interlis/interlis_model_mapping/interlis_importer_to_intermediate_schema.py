@@ -2068,7 +2068,7 @@ class InterlisImporterToIntermediateSchema:
                 ),
                 # new attribute fk_hydr_geometry release 2020
                 # debug 20.6.2025 without self., as in _import_reach (also subclass)
-                #fk_hydr_geometry=self.get_pk(row.hydr_geometrieref__REL),
+                # fk_hydr_geometry=self.get_pk(row.hydr_geometrieref__REL),
                 fk_hydr_geometry=get_pk(row.hydr_geometrieref__REL),
                 # new attribute function_node_amelioration release 2020
                 function_node_amelioration=self.get_vl_code(
