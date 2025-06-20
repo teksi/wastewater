@@ -73,21 +73,6 @@ def vw_tww_infiltration_installation(
         LEFT JOIN tww_od.wastewater_node wn ON wn.obj_id = ws.fk_main_wastewater_node
         {extra_joins};
     """.format(
-        extra_cols="\n    ".join(
-            [
-                select_columns(
-                    connection=connection,
-                    table_schema=table_parts(table_def["table"])[0],
-                    table_name=table_parts(table_def["table"])[1],
-                    skip_columns=table_def.get("skip_columns", []),
-                    remap_columns=table_def.get("remap_columns", {}),
-                    prefix=table_def.get("prefix", None),
-                    table_alias=table_def.get("alias", None),
-                )
-                + ","
-                for table_def in extra_definition.get("joins", {}).values()
-            ]
-        ),
         ws_cols=select_columns(
             connection=connection,
             table_schema="tww_od",
