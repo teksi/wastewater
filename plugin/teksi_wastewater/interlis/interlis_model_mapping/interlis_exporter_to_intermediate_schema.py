@@ -756,13 +756,13 @@ class InterlisExporterToIntermediateSchema:
                 # --- abwassernetzelement ---
                 **self.wastewater_networkelement_common(row, "abwasserknoten"),
                 # --- abwasserknoten ---
-                # VSA-DSS 2020 added
+                # new attribute ara_nr release 2020
                 ara_nr=row.wwtp_number,
                 # new attribute funktion_knoten_melioration release 2020
                 funktion_knoten_melioration=self.get_vl(row.function_node_amelioration__REL),
                 # new attribute hoehengenauigkeit release 2020
                 hoehengenauigkeit=self.get_vl(row.elevation_accuracy__REL),
-                # VSA-DSS 2020 added
+                # new attribute hydr_geometrieref release 2020
                 hydr_geometrieref=self.get_tid(row.fk_hydr_geometry__REL),
                 lage=ST_Force2D(row.situation3d_geometry),
                 rueckstaukote_ist=row.backflow_level_current,

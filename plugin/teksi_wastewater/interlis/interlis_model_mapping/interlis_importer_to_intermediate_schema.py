@@ -2071,7 +2071,7 @@ class InterlisImporterToIntermediateSchema:
                     row.t_ili_tid,
                     "wastewater_node.bottom_level (Abwasserknoten.Sohlenkote)",
                 ),
-                # added VSA-DSS 2020
+                # new attribute wwtp_number release 2020
                 wwtp_number=row.ara_nr,
             )
             self.session_tww.add(wastewater_node)
