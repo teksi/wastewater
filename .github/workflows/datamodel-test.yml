@@ -62,7 +62,6 @@ jobs:
 
     strategy:
       matrix:
-        psycopg-version: [ 2, 3 ]
         extension: ["ci"]
       fail-fast: true
 
@@ -73,14 +72,19 @@ jobs:
         run: |
           docker build \
           --build-arg RUN_TEST=True \
-          --build-arg PSYCOPG_VERSION=${{ matrix.psycopg-version }} \
           -f datamodel/.docker/Dockerfile \
           --tag teksi/wastewater:unstable .
 
       - name: Initialize container
         run: |
-          docker run -d -p 5432:5432 --name teksi-wastewater -e EXTENSION_NAMES=${{ matrix.extension }} teksi/wastewater:unstable
-          docker exec teksi-wastewater init_db.sh wait
+          docker run -d -p 5432:5432 --name teksi-wastewater teksi/wastewater:unstable
+          until docker exec teksi-wastewater pg_isready -U postgres; do
+            echo "Waiting for PostgreSQL to be ready..."
+            sleep 2
+          done
+          # create the database
+          docker exec teksi-wastewater sh -c 'createdb tww'
+          docker exec teksi-wastewater pum -vvv -s pg_tww -d datamodel install -p SRID 2056 -p extension_names ${{ matrix.extension }} --roles --grant
 
       - name: Docker logs
         if: failure()

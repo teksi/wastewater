@@ -9,6 +9,7 @@ import re
 import yaml
 import zipfile
 
+import psycopg
 from pirogue import MultipleInheritance, SimpleJoins, SingleInheritance
 from pum import HookBase
 
@@ -22,7 +23,6 @@ from view.vw_tww_overflow import vw_tww_overflow
 from view.vw_tww_reach import vw_tww_reach
 from view.vw_tww_wastewater_structure import vw_tww_wastewater_structure
 from view.vw_wastewater_structure import vw_wastewater_structure
-
 
 
 class Hook(HookBase):
@@ -50,7 +50,7 @@ class Hook(HookBase):
         :param SRID: the EPSG code for geometry columns
         :param extension_names: dict of extension names handled by the extension manager
         :param extension_zip: Path of zip containing self-defined extensions
-
+        :paran lang_code: language code for use in extension views
         """
         self.cwd = Path(__file__).parent.resolve()
 
@@ -192,8 +192,6 @@ Running extension {extension}
                 connection=connection,
             ).create()
 
-
-
         vw_wastewater_structure(connection=connection, extra_definition=self.yaml_data_dicts["vw_wastewater_structure"])
         vw_tww_wastewater_structure(
             connection=connection, srid=SRID, extra_definition=self.yaml_data_dicts["vw_tww_wastewater_structure"]
@@ -209,7 +207,6 @@ Running extension {extension}
         vw_tww_overflow(
             connection=connection, extra_definition=self.yaml_data_dicts["vw_tww_measurement_series"]
         )
-
 
         # TODO: Are these export views necessary? cymed 13.03.25
         for _, yaml_path in self.SimpleJoins_yaml.items():
@@ -276,7 +273,6 @@ Running extension {extension}
     ):
         """
         initializes the TWW database for usage of an extension
-
         Args:
             connection: psycopg connection object
             extension_name: Name of the extension to load

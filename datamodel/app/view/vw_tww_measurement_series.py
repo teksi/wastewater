@@ -21,6 +21,7 @@ def vw_tww_measurement_series(connection: psycopg.Connection, extra_definition: 
     """
     Creates tww_measurement_series view
     :param connection: psycopg Connection
+    :param extra_definition: a dictionary for additional columns
     """
     cursor = connection.cursor()
 

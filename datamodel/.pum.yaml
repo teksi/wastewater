@@ -1,7 +1,7 @@
 
 pum:
   migration_table_schema: tww_sys
-  minimum_version: 1.1.7
+  minimum_version: 1.1.12
 
 roles:
   - name: tww_viewer
@@ -41,6 +41,15 @@ parameters:
   - name: extension_names
     type: dict
     description: dict of official extension identifiers.
+
+  - name: extension_zip
+    type: text
+    description: zip file with custom extensions
+
+  - name: lang_code
+    type: text
+    default: en
+    description: language code for the creation of custom views
 
 dependencies:
   - name: pirogue

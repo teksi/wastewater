@@ -22,6 +22,7 @@ def check_owner(connection: psycopg.Connection, table_schema: str, table_name: s
     return is_owner
 
 
+
 def create_last_modification_trigger(tbl: str, parent_tbl: str = None):
     parent = (
         f"_parent('tww_od.{parent_tbl}')" if parent_tbl else "()"
@@ -101,4 +102,3 @@ def set_defaults_and_triggers(
                     SqlContent(query).execute(connection)
                 else:
                     raise Exception(f"Must be owner of tww_od.{entry[0]} to create triggers")
-
