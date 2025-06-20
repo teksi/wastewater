@@ -796,7 +796,7 @@ class InterlisExporterToIntermediateSchema:
                 # --- haltung ---
                 # new attribute fliesszeit_trockenwetter release 2020
                 fliesszeit_trockenwetter=row.flow_time_dry_weather,
-                # -- attribute 3D ---            
+                # -- attribute 3D ---
                 #  hoehenbestimmung=self.get_vl(row.elevation_determination__REL),
                 # new attribute hydr_belastung_ist release 2020
                 hydr_belastung_ist=row.hydraulic_load_current,
