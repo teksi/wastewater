@@ -102,8 +102,13 @@ class InterlisImporterToIntermediateSchema:
         self._import_rohrprofil()
         self._check_for_stop()
 
-        logger.info("\nImporting ABWASSER.abwasserknoten -> TWW.wastewater_node")
-        self._import_abwasserknoten()
+        # As fk_hydr_geometry only exists in VSA-DSS, but not in SIA405_Abwasser, distinguish which matching configuration is used
+        if self.model == config.MODEL_NAME_DSS:
+            logger.info("\nImporting ABWASSER.abwasserknoten with VSA-DSS 2020 -> TWW.wastewater_node")
+            self._import_abwasserknoten_dss()
+        else:
+            logger.info("\nImporting ABWASSER.abwasserknoten -> TWW.wastewater_node")
+            self._import_abwasserknoten()
         self._check_for_stop()
 
         logger.info("\nImporting ABWASSER.haltung -> TWW.reach")
@@ -2052,6 +2057,40 @@ class InterlisImporterToIntermediateSchema:
             print(".", end="")
 
     def _import_abwasserknoten(self):
+        for row in self.session_interlis.query(self.model_classes_interlis.abwasserknoten):
+            wastewater_node = self.create_or_update(
+                self.model_classes_tww_od.wastewater_node,
+                **self.base_common(row),
+                # --- wastewater_networkelement ---
+                **self.wastewater_networkelement_common(row),
+                # --- wastewater_node ---
+                backflow_level_current=row.rueckstaukote_ist,
+                bottom_level=row.sohlenkote,
+                # new attribute elevation_accuracy release 2020
+                elevation_accuracy=self.get_vl_code(
+                    self.model_classes_tww_od.wastewater_node_elevation_accuracy,
+                    row.hoehengenauigkeit,
+                ),
+                # new attribute fk_hydr_geometry release 2020 if vsa-dss -> see _import_abwasserknoten_dss
+                # fk_hydr_geometry=self.get_pk(row.hydr_geometrieref__REL),
+                # new attribute function_node_amelioration release 2020
+                function_node_amelioration=self.get_vl_code(
+                    self.model_classes_tww_od.wastewater_node_function_node_amelioration,
+                    row.funktion_knoten_melioration,
+                ),
+                situation3d_geometry=self.geometry3D_convert(
+                    row.lage,
+                    row.sohlenkote,
+                    row.t_ili_tid,
+                    "wastewater_node.bottom_level (Abwasserknoten.Sohlenkote)",
+                ),
+                # new attribute wwtp_number release 2020
+                wwtp_number=row.ara_nr,
+            )
+            self.session_tww.add(wastewater_node)
+            print(".", end="")
+
+    def _import_abwasserknoten_dss(self):
         for row in self.session_interlis.query(self.model_classes_interlis.abwasserknoten):
             wastewater_node = self.create_or_update(
                 self.model_classes_tww_od.wastewater_node,
