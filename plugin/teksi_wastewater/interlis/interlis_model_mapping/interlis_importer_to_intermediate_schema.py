@@ -104,7 +104,9 @@ class InterlisImporterToIntermediateSchema:
 
         # As fk_hydr_geometry only exists in VSA-DSS, but not in SIA405_Abwasser, distinguish which matching configuration is used
         if self.model == config.MODEL_NAME_DSS:
-            logger.info("\nImporting ABWASSER.abwasserknoten with VSA-DSS 2020 -> TWW.wastewater_node")
+            logger.info(
+                "\nImporting ABWASSER.abwasserknoten with VSA-DSS 2020 -> TWW.wastewater_node"
+            )
             self._import_abwasserknoten_dss()
         else:
             logger.info("\nImporting ABWASSER.abwasserknoten -> TWW.wastewater_node")
