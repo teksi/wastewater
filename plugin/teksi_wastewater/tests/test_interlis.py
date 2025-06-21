@@ -114,7 +114,6 @@ class TestInterlis(unittest.TestCase):
         self.assertIsNotNone(result)
         self.assertEqual(result[0], 448.0)
 
-
         # Import minimal dss
         xtf_file_input = self._get_data_filename(MINIMAL_DATASET_DSS)
         interlisImporterExporter = InterlisImporterExporter()
@@ -257,7 +256,7 @@ class TestInterlis(unittest.TestCase):
         xtf_file_input = self._get_data_filename(TEST_DATASET_DSS)
         interlisImporterExporter = InterlisImporterExporter()
         interlisImporterExporter.interlis_import(xtf_file_input=xtf_file_input)
-        
+
         # new location for this check
         # check if urgency_figure is imported
         result = DatabaseUtils.fetchone(
@@ -265,7 +264,6 @@ class TestInterlis(unittest.TestCase):
         )
         self.assertIsNotNone(result)
         self.assertEqual(result[0], 50)
-        
 
         # Export minimal dss
         export_xtf_file = self._get_output_filename("export_minimal_dss_dataset.xtf")
