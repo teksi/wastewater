@@ -39,6 +39,7 @@ def vw_tww_damage_channel(
           WHEN re_2.obj_id IS NULL THEN 'upstream'::text
           ELSE 'downstream'::text
         END AS direction
+        {extra_cols}
         FROM tww_od.damage_channel dc
              LEFT JOIN tww_od.damage da ON da.obj_id::text = dc.obj_id::text
              LEFT JOIN tww_od.examination ex ON ex.obj_id::text = da.fk_examination::text
@@ -48,6 +49,7 @@ def vw_tww_damage_channel(
              LEFT JOIN tww_od.reach re ON re.obj_id::text = ne.obj_id::text
              LEFT JOIN tww_od.reach_point rp ON rp.obj_id::text = ex.fk_reach_point::text
              LEFT JOIN tww_od.reach re_2 ON re_2.fk_reach_point_from::text = rp.obj_id::text
+             {extra_joins}
           WHERE ex.recording_type = 3686
           GROUP BY {dc_cols}{extra_cols_grp},ws.identifier, re_2.obj_id
         )
