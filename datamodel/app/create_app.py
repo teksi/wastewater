@@ -363,14 +363,11 @@ Running extension {extension}
             variables = {}
         if re.search(r"\{[A-Za-z-_]+\}", sql):  # avoid formatting if no variables are present
             try:
-                sql_query = psycopg.sql.SQL(sql).format(**variables)
+                sql = sql.format(**variables)
             except IndexError:
                 print(sql)
                 raise
-        else:
-            sql_query = psycopg.sql.SQL(sql)
-        # print(sql_query.as_string(conn))
-        self.execute(sql_query)
+        self.execute(sql)
 
     def run_sql_files_in_folder(self, directory: str, variables: dict = None):
         files = os.listdir(directory)
