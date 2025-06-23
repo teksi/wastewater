@@ -195,7 +195,9 @@ class InterlisExporterToIntermediateSchema:
         self._check_for_stop()
 
         if self.model == config.MODEL_NAME_DSS:
-            logger.info("Exporting TWW.wastewater_node for VSA-DSS 2020 -> ABWASSER.abwasserknoten")
+            logger.info(
+                "Exporting TWW.wastewater_node for VSA-DSS 2020 -> ABWASSER.abwasserknoten"
+            )
             self._export_wastewater_node_dss()
         else:
             logger.info("Exporting TWW.wastewater_node -> ABWASSER.abwasserknoten")
