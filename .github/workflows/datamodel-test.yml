@@ -89,7 +89,6 @@ jobs:
           else
             docker exec teksi-wastewater pum -vvv -s pg_tww -d datamodel install -p SRID 2056 -p extension_${{ matrix.extension }} --roles --grant
           fi
-          
 
       - name: Run tests
         run:  docker exec teksi-wastewater pytest datamodel
