@@ -201,10 +201,14 @@ Running extension {extension}
             extra_definition=self.yaml_data_dicts["vw_tww_infiltration_installation"],
         )
         vw_tww_reach(connection=connection, extra_definition=self.yaml_data_dicts["vw_tww_reach"])
-        vw_tww_channel(connection=connection,
-            extra_definition=self.yaml_data_dicts["vw_tww_channel"],)
-        vw_tww_damage_channel(connection=connection,
-            extra_definition=self.yaml_data_dicts["vw_tww_damage_channel"],)
+        vw_tww_channel(
+            connection=connection,
+            extra_definition=self.yaml_data_dicts["vw_tww_channel"],
+        )
+        vw_tww_damage_channel(
+            connection=connection,
+            extra_definition=self.yaml_data_dicts["vw_tww_damage_channel"],
+        )
         vw_tww_additional_ws(
             srid=SRID,
             connection=connection,

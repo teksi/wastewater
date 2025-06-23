@@ -8,6 +8,7 @@ import os
 import psycopg
 from pirogue.utils import select_columns
 from yaml import safe_load
+
 from .utils.extra_definition_utils import (
     extra_cols,
     extra_joins,
@@ -107,7 +108,9 @@ def vw_tww_channel(connection: psycopg.Connection, extra_definition: dict = None
         extra_cols_grp=(
             ""
             if not extra_definition
-            else extra_cols(connection=connection, extra_definition=extra_definition, skip_prefix=True)
+            else extra_cols(
+                connection=connection, extra_definition=extra_definition, skip_prefix=True
+            )
         ),
         extra_joins=extra_joins(connection=connection, extra_definition=extra_definition),
     )

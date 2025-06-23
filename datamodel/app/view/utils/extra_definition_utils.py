@@ -3,7 +3,9 @@ import psycopg
 from pirogue.utils import insert_command, select_columns, table_parts, update_command
 
 
-def extra_cols(connection: psycopg.Connection, extra_definition: dict = None, skip_prefix: bool = False):
+def extra_cols(
+    connection: psycopg.Connection, extra_definition: dict = None, skip_prefix: bool = False
+):
     try:
         # Create a cursor
         cursor = connection.cursor()

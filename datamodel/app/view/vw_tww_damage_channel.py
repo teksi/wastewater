@@ -7,6 +7,7 @@ import os
 
 import psycopg
 from pirogue.utils import select_columns
+
 from .utils.extra_definition_utils import (
     extra_cols,
     extra_joins,
