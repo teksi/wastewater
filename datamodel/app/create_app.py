@@ -385,7 +385,7 @@ Running extension {extension}
             filename = os.fsdecode(file)
             if filename.lower().endswith(".sql"):
                 print(f"Running {filename}")
-                self.run_sql_file(os.path.join(directory, filename, sql_vars))
+                self.run_sql_file(os.path.join(directory, filename), sql_vars)
 
     def parse_variables(self, variables: dict) -> dict:
         """Parse variables based on their defined types in the YAML."""
