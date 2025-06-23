@@ -68,6 +68,7 @@ def vw_tww_damage_channel(
             ELSE 1::double precision - LEAST(base.channel_distance / ST_Length(base.ch_progression2d_geometry), 1)
         END) AS situation2d_geometry,
         base.direction
+        {extra_cols_base}
         FROM base;
     """.format(
         dc_cols=select_columns(
@@ -94,7 +95,8 @@ def vw_tww_damage_channel(
         extra_cols_base=(
             ""
             if not extra_definition
-            else extra_cols(connection=connection, extra_definition=extra_definition_base)
+            else ","
+            + extra_cols(connection=connection, extra_definition=extra_definition_base)
         ),
         extra_cols_grp=(
             ""
