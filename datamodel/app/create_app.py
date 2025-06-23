@@ -368,7 +368,9 @@ Running extension {extension}
     def run_sql(self, sql: str, variables: dict = None):
         if variables is None:
             variables = {}
-        if re.search(r"\{[A-Za-z-_]+\}", sql) and variables:  # avoid formatting if no variables are present
+        if (
+            re.search(r"\{[A-Za-z-_]+\}", sql) and variables
+        ):  # avoid formatting if no variables are present
             try:
                 sql = sql.format(**variables)
             except IndexError:
