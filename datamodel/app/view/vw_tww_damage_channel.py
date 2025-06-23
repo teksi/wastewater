@@ -7,16 +7,21 @@ import os
 
 import psycopg
 from pirogue.utils import select_columns
+from .utils.extra_definition_utils import (
+    extra_cols,
+    extra_joins,
+)
 
 
 def vw_tww_damage_channel(
-    connection: psycopg.Connection,
+    connection: psycopg.Connection,extra_definition: dict = None,
 ):
     """
     Creates tww_damage_channel view
     :param pg_service: the PostgreSQL service name
     :param extra_definition: a dictionary for additional read-only columns
     """
+        extra_definition = extra_definition or {}
     cursor = connection.cursor()
 
     view_sql = """
@@ -42,7 +47,7 @@ def vw_tww_damage_channel(
              LEFT JOIN tww_od.reach_point rp ON rp.obj_id::text = ex.fk_reach_point::text
              LEFT JOIN tww_od.reach re_2 ON re_2.fk_reach_point_from::text = rp.obj_id::text
           WHERE ex.recording_type = 3686
-          GROUP BY {dc_cols},ws.identifier, re_2.obj_id
+          GROUP BY {dc_cols}{extra_cols_grp},ws.identifier, re_2.obj_id
         )
         SELECT
         {dc_cols_base},
@@ -72,6 +77,17 @@ def vw_tww_damage_channel(
             remove_pkey=False,
             indent=4,
         ),
+                extra_cols=(
+            ""
+            if not extra_definition
+            else extra_cols(connection=connection, extra_definition=extra_definition)
+        ),
+        extra_cols_grp=(
+            ""
+            if not extra_definition
+            else ","+ extra_cols(connection=connection, extra_definition=extra_definition, skip_prefix=True)
+        ),
+        extra_joins=extra_joins(connection=connection, extra_definition=extra_definition),
     )
 
     cursor.execute(view_sql)

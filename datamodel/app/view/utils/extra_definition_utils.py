@@ -3,7 +3,7 @@ import psycopg
 from pirogue.utils import insert_command, select_columns, table_parts, update_command
 
 
-def extra_cols(connection: psycopg.Connection, extra_definition: dict = None):
+def extra_cols(connection: psycopg.Connection, extra_definition: dict = None, skip_prefix: bool = False):
     try:
         # Create a cursor
         cursor = connection.cursor()
@@ -15,7 +15,7 @@ def extra_cols(connection: psycopg.Connection, extra_definition: dict = None):
                     table_name=table_parts(table_def["table"])[1],
                     skip_columns=table_def.get("skip_columns", []),
                     remap_columns=table_def.get("remap_columns_select", {}),
-                    prefix=table_def.get("prefix", None),
+                    prefix=table_def.get("prefix", None) if not skip_prefix else None,
                     table_alias=table_def.get("alias", None),
                 )
                 for table_def in extra_definition.get("joins", {}).values()
