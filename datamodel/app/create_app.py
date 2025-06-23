@@ -161,8 +161,6 @@ Running extension {extension}
                     extension_name=extension,
                 )
 
-
-
         # Defaults and Triggers
         # Has to be fired before view creation otherwise it won't work and will only fail in CI
         set_defaults_and_triggers(connection, self.SingleInheritances)
@@ -170,11 +168,11 @@ Running extension {extension}
         for key in self.SingleInheritances:
             print(f"creating view vw_{key}")
             SingleInheritance(
-                connection = connection,
+                connection=connection,
                 parent_table="tww_od." + self.SingleInheritances[key],
                 child_table="tww_od." + key,
                 view_name="vw_" + key,
-                view_schema = "tww_app",
+                view_schema="tww_app",
                 pkey_default_value=True,
                 inner_defaults={"identifier": "obj_id"},
             ).create()
