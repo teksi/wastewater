@@ -247,7 +247,7 @@ Running extension {extension}
         """Safely loads a YAML file and ensures it returns a dictionary."""
         file = Path(file)
         if not file.exists():
-            return {}
+            raise FileNotFoundError(f"The file {file} does not exist.")
 
         print(f"loading yaml {file}")
         with open(file) as f:

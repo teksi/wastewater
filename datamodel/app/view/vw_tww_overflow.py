@@ -67,7 +67,7 @@ def vw_tww_overflow(connection: psycopg.Connection, extra_definition: dict = Non
             else extra_cols(connection=connection, extra_definition=extra_definition)
         ),
         ov_cols=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="overflow",
             table_alias="ov",
@@ -75,7 +75,7 @@ def vw_tww_overflow(connection: psycopg.Connection, extra_definition: dict = Non
             indent=4,
         ),
         lw_cols=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="leapingweir",
             table_alias="lw",
@@ -84,7 +84,7 @@ def vw_tww_overflow(connection: psycopg.Connection, extra_definition: dict = Non
             prefix="lw_",
         ),
         pw_cols=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="prank_weir",
             table_alias="pw",
@@ -93,7 +93,7 @@ def vw_tww_overflow(connection: psycopg.Connection, extra_definition: dict = Non
             prefix="pw_",
         ),
         pu_cols=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="pump",
             table_alias="pu",
@@ -142,7 +142,7 @@ def vw_tww_overflow(connection: psycopg.Connection, extra_definition: dict = Non
       FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_tww_overflow_INSERT();
     """.format(
         insert_ov=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="overflow",
             table_alias="ov",
@@ -150,7 +150,7 @@ def vw_tww_overflow(connection: psycopg.Connection, extra_definition: dict = Non
             indent=2,
         ),
         insert_lw=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="leapingweir",
             table_alias="lw",
@@ -160,7 +160,7 @@ def vw_tww_overflow(connection: psycopg.Connection, extra_definition: dict = Non
             remap_columns={"obj_id": "obj_id"},
         ),
         insert_pw=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="prank_weir",
             table_alias="pw",
@@ -170,7 +170,7 @@ def vw_tww_overflow(connection: psycopg.Connection, extra_definition: dict = Non
             remap_columns={"obj_id": "obj_id"},
         ),
         insert_pu=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="pump",
             table_alias="pu",
@@ -234,7 +234,7 @@ def vw_tww_overflow(connection: psycopg.Connection, extra_definition: dict = Non
         literal_delete_on_ov_change="'DELETE FROM tww_od.%I WHERE obj_id = %L',OLD.overflow_type,OLD.obj_id",
         literal_insert_on_ov_change="'INSERT INTO tww_od.%I(obj_id) VALUES (%L)',NEW.overflow_type,OLD.obj_id",
         update_ov=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="overflow",
             table_alias="ov",
@@ -244,7 +244,7 @@ def vw_tww_overflow(connection: psycopg.Connection, extra_definition: dict = Non
             update_values={},
         ),
         update_lw=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="leapingweir",
             table_alias="lw",
@@ -254,7 +254,7 @@ def vw_tww_overflow(connection: psycopg.Connection, extra_definition: dict = Non
             remap_columns={"obj_id": "obj_id"},
         ),
         update_pw=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="prank_weir",
             table_alias="pw",
@@ -265,7 +265,7 @@ def vw_tww_overflow(connection: psycopg.Connection, extra_definition: dict = Non
             remap_columns={"obj_id": "obj_id"},
         ),
         update_pu=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="pump",
             table_alias="pu",
