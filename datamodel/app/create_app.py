@@ -311,7 +311,7 @@ Running extension {extension}
         yaml_files = {}
         if directory:
             abs_dir = ext_folder / directory
-            self.run_sql_files_in_folder(abs_dir, variables)
+            self.run_sql_files_in_folder(abs_dir)
 
             # extract yaml for extra_definition
             files = os.listdir(abs_dir)
