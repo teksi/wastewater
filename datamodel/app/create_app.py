@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+import copy
 import os
 import re
 import zipfile
@@ -68,7 +68,7 @@ class Hook(HookBase):
             },
         }
         self.execute("CREATE SCHEMA tww_app;")
-        self.run_sql_files_in_folder(self.cwd / "sql_functions", self.variables_sql)
+        self.run_sql_files_in_folder(self.cwd / "sql_functions")
         self.extensions = {}
         if extension_agxx:
             self.extensions.update("agxx")
@@ -235,10 +235,10 @@ Running extension {extension}
 
         for directory in sql_directories:
             abs_dir = self.cwd / directory
-            self.run_sql_files_in_folder(abs_dir, connection, self.variables_sql)
+            self.run_sql_files_in_folder(abs_dir)
 
         # run post_all
-        self.run_sql_files_in_folder(self.cwd / "post_all", connection, self.variables_sql)
+        self.run_sql_files_in_folder(self.cwd / "post_all")
 
         # Roles
         self.execute(self.cwd / "tww_app_roles.sql")
@@ -297,16 +297,15 @@ Running extension {extension}
         Args:
             connection: psycopg connection object
             extension_name: Name of the extension to load
-
         """
         # load definitions from config
         ext_folder = self.cwd / "extensions"
         config = self.read_config(ext_folder / "config.yaml", extension_name)
 
-        # do not overwrite variables_sql, so different extensions can use the same variable differently
-        variables = self.variables_sql
+        # deepcopy, so different extensions can use the same variable differently
+        orig_variables = copy.deepcopy(self.variables_sql)
         ext_variables = config.get("variables", {})
-        variables.update(ext_variables)
+        self.variables_sql.update(ext_variables)
 
         directory = config.get("directory", None)
         yaml_files = {}
@@ -341,7 +340,9 @@ Running extension {extension}
                 if target_view in self.yaml_data_dicts:
                     self.yaml_data_dicts[target_view].update(self.load_yaml(file_path))
                 else:
-                    self.yaml_data_dicts[target_view] = self.load_yaml(file_path)
+                    self.yaml_data_dicts[target_view] = self.load_yaml(file_path)  
+        # Reset variables
+        self.variables_sql=orig_variables
 
     def get_extension_names(self, config_file: str):
         abs_file_path = self.cwd / "extensions" / config_file
@@ -376,14 +377,15 @@ Running extension {extension}
                 raise
         self.execute(sql)
 
-    def run_sql_files_in_folder(self, directory: str, variables: dict = None):
+    def run_sql_files_in_folder(self, directory: str):
         files = os.listdir(directory)
         files.sort()
+        sql_vars = self.parse_variables(self.variables_sql)
         for file in files:
             filename = os.fsdecode(file)
             if filename.lower().endswith(".sql"):
                 print(f"Running {filename}")
-                self.run_sql_file(os.path.join(directory, filename), variables)
+                self.run_sql_file(os.path.join(directory, filename, sql_vars))
 
     def parse_variables(self, variables: dict) -> dict:
         """Parse variables based on their defined types in the YAML."""
