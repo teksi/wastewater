@@ -625,3 +625,4 @@ if __name__ == "__main__":
             extra_definition = safe_load(f)
     with psycopg.connect(f"service={pg_service}") as conn:
         vw_tww_additional_ws(connection=conn, srid=srid, extra_definition=extra_definition)
+

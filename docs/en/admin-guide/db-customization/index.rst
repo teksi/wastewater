@@ -160,6 +160,7 @@ For overriding the definition of a MultipleInheritance such as ``tww_app.vw_tww_
 	  prank_weir:
 		table: tww_od.prank_weir
 
+
 	  pump:
 		table: tww_od.pump
 
@@ -211,6 +212,7 @@ Entries that are in ``skip_columns`` but listed in ``remap_columns`` are not ski
 It is expected that mt.fk_ws has a ON DELETE CASCADE`` foreign key constraint.
 The yaml file needs to be called ``vw_tww_wastewater_structure.yaml``.
 
+
 Deployment of custom extensions
 ^^^^^^^^^^^^^
 
@@ -229,3 +231,4 @@ On creation of the application schema, the order of creation of objects is as fo
 * TWW sql scripts
 * default values and triggers relating to app functions
 * post-all sql scripts
+

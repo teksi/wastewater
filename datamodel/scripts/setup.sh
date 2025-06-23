@@ -17,6 +17,7 @@ EXTENSION_AGXX=${EXTENSION_AGXX:-""}
 EXTENSION_ZIP=${EXTENSION_ZIP:-""}
 LANG_CODE=${LANG_CODE:-"en"}
 
+
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/..
 
 cd $DIR
