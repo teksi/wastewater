@@ -340,9 +340,9 @@ Running extension {extension}
                 if target_view in self.yaml_data_dicts:
                     self.yaml_data_dicts[target_view].update(self.load_yaml(file_path))
                 else:
-                    self.yaml_data_dicts[target_view] = self.load_yaml(file_path)  
+                    self.yaml_data_dicts[target_view] = self.load_yaml(file_path)
         # Reset variables
-        self.variables_sql=orig_variables
+        self.variables_sql = orig_variables
 
     def get_extension_names(self, config_file: str):
         abs_file_path = self.cwd / "extensions" / config_file
