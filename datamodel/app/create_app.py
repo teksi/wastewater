@@ -372,7 +372,7 @@ Running extension {extension}
             re.search(r"\{[A-Za-z-_]+\}", sql) and variables
         ):  # avoid formatting if no variables are present
             try:
-                sql = sql.format(**variables)
+                sql = psycopg.sql.SQL(sql).format(**variables)
             except IndexError:
                 print(sql)
                 raise
@@ -399,13 +399,15 @@ Running extension {extension}
                 if var_type == "raw":  # Directly insert SQL without escaping
                     formatted_vars[key] = psycopg.sql.SQL(value)
                 elif var_type == "identifier":  # Table/Column names
+                    if not re.match(r'^[a-zA-Z_][a-zA-Z0-9_]*$', value): #avoid injection
+                        raise ValueError(f"Identifier '{value}' contains invalid characters.")
                     formatted_vars[key] = psycopg.sql.Identifier(value)
                 elif var_type == "literal":  # String/Number literals
                     formatted_vars[key] = psycopg.sql.Literal(value)
                 else:
                     raise ValueError(f"Unknown type '{var_type}' for variable '{key}'")
             else:
-                formatted_vars[key] = psycopg.sql.Literal(str(meta))
+                raise ValueError(f"Unknown type '{var_type}' for variable '{key}'.")
         return formatted_vars
 
 
