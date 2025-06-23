@@ -22,7 +22,7 @@ def vw_tww_damage_channel(
     :param pg_service: the PostgreSQL service name
     :param extra_definition: a dictionary for additional read-only columns
     """
-        extra_definition = extra_definition or {}
+    extra_definition = extra_definition or {}
     cursor = connection.cursor()
 
     view_sql = """
