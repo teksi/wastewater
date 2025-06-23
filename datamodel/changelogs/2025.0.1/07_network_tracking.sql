@@ -10,7 +10,7 @@ CREATE TABLE tww_od.network_node (
   node_type TEXT, -- one of wastewater_node, reachpoint or blind_connection
   ne_id TEXT NULL REFERENCES tww_od.wastewater_networkelement(obj_id) ON DELETE CASCADE, -- reference to the network element (this will reference the reach object for reachpoints)
   rp_id TEXT NULL REFERENCES tww_od.reach_point(obj_id) ON DELETE CASCADE, -- will only be set for reachpoints
-  geom geometry('POINT', 2056)
+  geom geometry('POINT', {SRID})
 );
 
 CREATE TABLE tww_od.network_segment (
@@ -19,5 +19,5 @@ CREATE TABLE tww_od.network_segment (
   from_node INT REFERENCES tww_od.network_node(id) ON DELETE CASCADE,
   to_node INT REFERENCES tww_od.network_node(id) ON DELETE CASCADE,
   ne_id TEXT NULL REFERENCES tww_od.wastewater_networkelement(obj_id) ON DELETE CASCADE, -- reference to the network element (will only be set for segments corresponding to reaches)
-  geom geometry('LINESTRING', 2056)
+  geom geometry('LINESTRING', {SRID})
 );

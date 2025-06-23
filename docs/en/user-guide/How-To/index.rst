@@ -10,8 +10,7 @@ Setting default values
 
 If you get the following error message on startup of the TEKSI project during the 'Database production ready check':
 
-.. attention::
-CRITICAL: Error fk_provider or fk_dataowner not set in tww_od.default_values
+.. warning:: CRITICAL: Error fk_provider or fk_dataowner not set in tww_od.default_values
 
 then your database is not yet production ready.
 
@@ -32,10 +31,14 @@ There is a new layer group 'configuration' in the project:
 .. figure:: images/default_values_organisation_obj_id_selection.png
 
 
+.. note:: If you do not have any organisations you first have to import them with the `Interlis Import chapter
+<https://teksi.github.io/wastewater/admin-guide/interlis-io/index.html#interlis-import>`_
+
+
+
 For the second warning, please contact your TEKSI system administrator
 
-.. attention::
-CRITICAL: Error OID prefix set to 'ch000000'. Database not safe for production.
+.. warning:: CRITICAL: Error OID prefix set to 'ch000000'. Database not safe for production.
 
 and ask him/her to set the prefix to fit your project.
 

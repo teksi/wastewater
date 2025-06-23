@@ -1,7 +1,6 @@
 ------ This file generates the VSA-DSS database (Modul VSA-DSS 2015) table dss15_aquifer (as it does not exist anymore in VSA-DSS 2020)  in en on QQIS
 ------ For questions etc. please contact Stefan Burckhardt stefan.burckhardt@sjib.ch
 ------ version 22.02.2024 17:22:28
-BEGIN;
 ------ CREATE SCHEMA tww;
 
 -------
@@ -23,7 +22,7 @@ ALTER TABLE tww_od.dss15_aquifer ADD COLUMN maximal_groundwater_level  decimal(7
 COMMENT ON COLUMN tww_od.dss15_aquifer.maximal_groundwater_level IS 'Maximal level of ground water table / Maximale Lage des Grundwasserspiegels / Niveau maximal de la nappe';
 ALTER TABLE tww_od.dss15_aquifer ADD COLUMN minimal_groundwater_level  decimal(7,3) ;
 COMMENT ON COLUMN tww_od.dss15_aquifer.minimal_groundwater_level IS 'Minimal level of groundwater table / Minimale Lage des Grundwasserspiegels / Niveau minimal de la nappe';
-ALTER TABLE tww_od.dss15_aquifer ADD COLUMN perimeter_geometry geometry('CURVEPOLYGON', :SRID);
+ALTER TABLE tww_od.dss15_aquifer ADD COLUMN perimeter_geometry geometry('CURVEPOLYGON', {SRID});
 CREATE INDEX in_tww_od_dss15_aquifer_perimeter_geometry ON tww_od.dss15_aquifer USING gist (perimeter_geometry );
 COMMENT ON COLUMN tww_od.dss15_aquifer.perimeter_geometry IS 'Boundary points of the perimeter / Begrenzungspunkte der Fläche / Points de délimitation de la surface';
 ALTER TABLE tww_od.dss15_aquifer ADD COLUMN remark  varchar(80) ;
@@ -53,6 +52,3 @@ ALTER TABLE tww_od.dss15_aquifer ADD CONSTRAINT rel_od_dss15_aquifer_fk_dataprov
 ------ Indexes on identifiers
 
 CREATE UNIQUE INDEX in_od_dss15_aquifer_identifier ON tww_od.dss15_aquifer USING btree (identifier ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
-
-
-COMMIT;

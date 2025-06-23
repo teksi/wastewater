@@ -114,3 +114,21 @@ You connect catchment areas with the tool **Connect wastewater networkelements**
 You can not connect multiple areas with the tool to a wastewater node at once. If you want to do so, you have to select the catchment areas, open the attribute table and then start the multi edit mode. There you can choose the wastewater node from the list of all nodes.
 
 Do delete a connection to a wastewater node, you can edit the area with the **Identify features** tool.
+
+The 'duplicate coord'-error
+---------------------------
+
+After digitizing catchment areas and export to DSS, you will probably get the message, that your exportfile is not valid. In the ilivalidator.log-file can be messages like:
+
+Error: line nnnn: DSS_2020_1_LV95.Siedlungsentwaesserung.Einzugsgebiet: tid chmmmm: duplicate coord at (x.xxx, y.yyy, NaN)
+
+The reason is: in the XTF-file, coordinates are writen with 0.001m (1mm). Vertex-points in QGIS can differed by only 0.0001m (0.01mm) or less.
+
+.. note:: Do not work with a export-file, that is not valid. Be aware that you will not be able to import a not valid file in TWW.
+
+Solutions:
+
+* In layer-properties of the catchment area, tab **digitizing**, check **remove duplicate nodes** and add 0.001 as **Geometry precision [m]**
+* If there are already duplicate nodes in the data, you can eliminate them with **processing toolbox**, **Edit Features in-Place**, **Remove duplicate vertices**, **Tolerance = 0.001m**
+
+.. figure:: images/remove_duplicate_nodes.jpg

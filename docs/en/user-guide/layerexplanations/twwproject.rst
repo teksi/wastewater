@@ -82,7 +82,7 @@ Example in vw_tww_reach:
 
 Map Themes
 ----------
-There are two map themes defined in the TWW-project as an invitation to use this great feature of QGIS to toggle between different layer-styles.
+There are several map themes defined in the TWW-project as an invitation to use this great feature of QGIS to toggle between different layer-styles.
 
 .. figure:: images/mapthemes.jpg
 
@@ -99,6 +99,18 @@ A map theme is a snapshot of the current map legend that records:
   * the visible classes of the style, ie the layer checked node items in the Layers panel. This applies to symbologies other than the single symbol rendering
 
   * the collapsed/expanded state of the layer node(s) and the group(s) placed inside
+
+
+.. figure:: images/vw_tww_wastewater_structure_themes.png
+
+.. figure:: images/vw_tww_reach_themes.png
+
+.. figure:: images/overview_map_theme.png
+
+.. figure:: images/renovation_necessity_map_theme.png
+
+.. figure:: images/usage_current_map_theme.png
+
 
 Layer Order
 -----------
