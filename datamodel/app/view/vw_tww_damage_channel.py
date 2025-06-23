@@ -24,6 +24,11 @@ def vw_tww_damage_channel(
     :param extra_definition: a dictionary for additional read-only columns
     """
     extra_definition = extra_definition or {}
+    # copy for CTE
+    extra_definition_base=extra_definition.copy()
+    if extra_definition_base and 'joins' in extra_definition_base:
+        for join_def in extra_definition_base['joins'].values():
+            extra_definition_base['table_alias']='base'
     cursor = connection.cursor()
 
     view_sql = """
@@ -85,6 +90,11 @@ def vw_tww_damage_channel(
             ""
             if not extra_definition
             else extra_cols(connection=connection, extra_definition=extra_definition)
+        ),
+        extra_cols_base=(
+            ""
+            if not extra_definition
+            else extra_cols(connection=connection, extra_definition=extra_definition_base)
         ),
         extra_cols_grp=(
             ""
