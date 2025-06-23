@@ -194,8 +194,12 @@ class InterlisExporterToIntermediateSchema:
         self._export_reach_point()
         self._check_for_stop()
 
-        logger.info("Exporting TWW.wastewater_node -> ABWASSER.abwasserknoten")
-        self._export_wastewater_node()
+        if self.model == config.MODEL_NAME_DSS:
+            logger.info("Exporting TWW.wastewater_node for VSA-DSS 2020 -> ABWASSER.abwasserknoten")
+            self._export_wastewater_node_dss()
+        else:
+            logger.info("Exporting TWW.wastewater_node -> ABWASSER.abwasserknoten")
+            self._export_wastewater_node()
         self._check_for_stop()
 
         logger.info("Exporting TWW.reach -> ABWASSER.haltung")
@@ -735,6 +739,50 @@ class InterlisExporterToIntermediateSchema:
         self.abwasser_session.flush()
 
     def _export_wastewater_node(self):
+        query = self.tww_session.query(self.model_classes_tww_od.wastewater_node)
+        if self.filtered:
+            query = query.filter(
+                self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
+            )
+            logger.info(f"Selection query: {query.statement}")
+        for row in query:
+            # AVAILABLE FIELDS IN TWW.wastewater_node
+
+            # --- wastewater_networkelement ---
+            # fk_dataowner, fk_provider, fk_wastewater_structure, identifier, last_modification, remark
+
+            # --- wastewater_node ---
+
+            # --- _bwrel_ ---
+            # catchment_area__BWREL_fk_wastewater_networkelement_rw_current, catchment_area__BWREL_fk_wastewater_networkelement_rw_planned, catchment_area__BWREL_fk_wastewater_networkelement_ww_current, catchment_area__BWREL_fk_wastewater_networkelement_ww_planned, connection_object__BWREL_fk_wastewater_networkelement, hydraulic_char_data__BWREL_fk_wastewater_node, overflow__BWREL_fk_overflow_to, overflow__BWREL_fk_wastewater_node, reach_point__BWREL_fk_wastewater_networkelement, throttle_shut_off_unit__BWREL_fk_wastewater_node, wastewater_structure__BWREL_fk_main_wastewater_node
+
+            # --- _rel_ ---
+            # fk_dataowner__REL, fk_hydr_geometry__REL, fk_provider__REL, fk_wastewater_structure__REL
+
+            abwasserknoten = self.model_classes_interlis.abwasserknoten(
+                # FIELDS TO MAP TO ABWASSER.abwasserknoten
+                # --- abwassernetzelement ---
+                **self.wastewater_networkelement_common(row, "abwasserknoten"),
+                # --- abwasserknoten ---
+                # new attribute ara_nr release 2020
+                ara_nr=row.wwtp_number,
+                # new attribute funktion_knoten_melioration release 2020
+                funktion_knoten_melioration=self.get_vl(row.function_node_amelioration__REL),
+                # new attribute hoehengenauigkeit release 2020
+                hoehengenauigkeit=self.get_vl(row.elevation_accuracy__REL),
+                # new attribute hydr_geometrieref release 2020 vsa-dss, but not sia405 abwasser
+                # hydr_geometrieref=self.get_tid(row.fk_hydr_geometry__REL),
+                lage=ST_Force2D(row.situation3d_geometry),
+                rueckstaukote_ist=row.backflow_level_current,
+                sohlenkote=row.bottom_level,
+            )
+            self.abwasser_session.add(abwasserknoten)
+            print(".", end="")
+        logger.info("done")
+        self.abwasser_session.flush()
+
+    # extra version for dss export - with hydr_geometrieref
+    def _export_wastewater_node_dss(self):
         query = self.tww_session.query(self.model_classes_tww_od.wastewater_node)
         if self.filtered:
             query = query.filter(
