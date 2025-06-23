@@ -566,7 +566,7 @@ def vw_tww_additional_ws(
             ],
         ),
         update_ne=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_networkelement",
             table_alias="ne",
