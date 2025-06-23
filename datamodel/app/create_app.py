@@ -356,7 +356,7 @@ Running extension {extension}
         with open(file_path) as f:
             sql = f.read()
         sql_vars = self.parse_variables(variables)
-        self.execute(sql, sql_vars)
+        self.execute(sql.format(sql_vars))
 
     def run_sql(self, sql: str, variables: dict = None):
         if variables is None:

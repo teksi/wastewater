@@ -8,12 +8,6 @@ extensions:
       myNumber:
         value: 0
         type: literal
-      value_lang:
-        value: value_de
-        type: identifier
-      abbr_lang:
-        value: abbr_de
-        type: identifier
   - id: agxx
     directory: tww2ag6496
     variables: {}
