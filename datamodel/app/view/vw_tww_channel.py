@@ -108,7 +108,8 @@ def vw_tww_channel(connection: psycopg.Connection, extra_definition: dict = None
         extra_cols_grp=(
             ""
             if not extra_definition
-            else ", " + extra_cols(
+            else ", "
+            + extra_cols(
                 connection=connection, extra_definition=extra_definition, skip_prefix=True
             )
         ),
