@@ -363,13 +363,12 @@ Running extension {extension}
     def run_sql_file(self, file_path: str, variables: dict = None):
         with open(file_path) as f:
             sql = f.read()
-        sql_vars = self.parse_variables(variables)
-        self.run_sql(sql, sql_vars)
+        self.run_sql(sql, variables)
 
     def run_sql(self, sql: str, variables: dict = None):
         if variables is None:
             variables = {}
-        if re.search(r"\{[A-Za-z-_]+\}", sql):  # avoid formatting if no variables are present
+        if re.search(r"\{[A-Za-z-_]+\}", sql) and variables:  # avoid formatting if no variables are present
             try:
                 sql = sql.format(**variables)
             except IndexError:
