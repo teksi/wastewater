@@ -99261,7 +99261,7 @@
 				<Regenbecken_Anordnung>Nebenschluss</Regenbecken_Anordnung>
 
 				<!-- 26.10.2020 HauptdeckelRef erfasst -->
-				<!-- <HauptdeckelRef REF = "ch080qwzDE000001"/> -->
+				<HauptdeckelRef REF = "ch080qwzDE000001"/>
 
 			</DSS_2020_1_LV95.Siedlungsentwaesserung.Spezialbauwerk>
 			<!-- <DSS_2020_1_LV95.Siedlungsentwaesserung.Furt TID="ch080qwzFU001237"> -->

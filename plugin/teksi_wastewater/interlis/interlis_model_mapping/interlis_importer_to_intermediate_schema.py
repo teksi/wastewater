@@ -555,7 +555,10 @@ class InterlisImporterToIntermediateSchema:
             "financing": self.get_vl_code(
                 self.model_classes_tww_od.wastewater_structure_financing, row.finanzierung
             ),
-            "fk_main_cover": row.hauptdeckelref,
+            # looks like wrong notation
+            # "fk_main_cover": row.hauptdeckelref,
+            "fk_main_cover": self.get_pk(row.hauptdeckelref__REL),
+            # TO DO check also if ok or other notation needed
             "fk_operator": row.betreiberref,
             "fk_owner": row.eigentuemerref,
             "gross_costs": row.bruttokosten,
