@@ -15,7 +15,8 @@ from .utils.extra_definition_utils import (
 
 
 def vw_tww_damage_channel(
-    connection: psycopg.Connection,extra_definition: dict = None,
+    connection: psycopg.Connection,
+    extra_definition: dict = None,
 ):
     """
     Creates tww_damage_channel view
@@ -78,7 +79,7 @@ def vw_tww_damage_channel(
             remove_pkey=False,
             indent=4,
         ),
-                extra_cols=(
+        extra_cols=(
             ""
             if not extra_definition
             else extra_cols(connection=connection, extra_definition=extra_definition)
@@ -86,7 +87,10 @@ def vw_tww_damage_channel(
         extra_cols_grp=(
             ""
             if not extra_definition
-            else ","+ extra_cols(connection=connection, extra_definition=extra_definition, skip_prefix=True)
+            else ","
+            + extra_cols(
+                connection=connection, extra_definition=extra_definition, skip_prefix=True
+            )
         ),
         extra_joins=extra_joins(connection=connection, extra_definition=extra_definition),
     )
