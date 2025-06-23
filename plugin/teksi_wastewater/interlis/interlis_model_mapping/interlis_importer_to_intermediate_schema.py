@@ -1503,7 +1503,7 @@ class InterlisImporterToIntermediateSchema:
                 restructuring_concept=row.sanierungskonzept,
                 school_students=row.schuleschueler,
                 situation_geometry=row.lage,
-                # fk_disposal=self.get_pk(row.entsorgungref__REL), # TODO check why not available
+                # fk_disposal=self.get_pk(row.entsorgungref__REL), # n:m relation - see def _import_gebaeudegruppe_entsorgungassoc
                 fk_measure=self.get_pk(row.massnahmeref__REL),
             )
             self.session_tww.add(building_group)
