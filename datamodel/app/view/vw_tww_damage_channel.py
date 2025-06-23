@@ -28,7 +28,7 @@ def vw_tww_damage_channel(
     extra_definition_base = extra_definition.copy()
     if extra_definition_base and "joins" in extra_definition_base:
         for join_def in extra_definition_base["joins"].values():
-            extra_definition_base["table_alias"] = "base"
+            join_def["table_alias"] = "base"
     cursor = connection.cursor()
 
     view_sql = """

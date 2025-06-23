@@ -34,7 +34,7 @@ def vw_tww_channel(connection: psycopg.Connection, extra_definition: dict = None
     SELECT
           {ws_cols}
         , {ch_cols}
-        , {extra_cols}
+        {extra_cols}
         , ST_CurveToLine(ST_LineMerge(ST_Collect(ST_CurveToLine(re.progression3d_geometry)))) as progression3d_geometry
       FROM tww_od.channel ch
          LEFT JOIN tww_od.wastewater_structure ws ON ch.obj_id = ws.obj_id
@@ -44,7 +44,7 @@ def vw_tww_channel(connection: psycopg.Connection, extra_definition: dict = None
        GROUP BY
          {ch_cols_grp}
         , {ws_cols_grp}
-        , {extra_cols_grp}
+        {extra_cols_grp}
          ;
     """.format(
         ch_cols=select_columns(
@@ -103,12 +103,12 @@ def vw_tww_channel(connection: psycopg.Connection, extra_definition: dict = None
         extra_cols=(
             ""
             if not extra_definition
-            else extra_cols(connection=connection, extra_definition=extra_definition)
+            else ", " + extra_cols(connection=connection, extra_definition=extra_definition)
         ),
         extra_cols_grp=(
             ""
             if not extra_definition
-            else extra_cols(
+            else ", " + extra_cols(
                 connection=connection, extra_definition=extra_definition, skip_prefix=True
             )
         ),
