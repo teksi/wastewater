@@ -168,8 +168,9 @@ Running extension {extension}
         for key in self.SingleInheritances:
             print(f"creating view vw_{key}")
             SingleInheritance(
-                "tww_od." + self.SingleInheritances[key],
-                "tww_od." + key,
+                connection=connection,
+                parent_table="tww_od." + self.SingleInheritances[key],
+                child_table="tww_od." + key,
                 view_name="vw_" + key,
                 pkey_default_value=True,
                 inner_defaults={"identifier": "obj_id"},
@@ -178,10 +179,10 @@ Running extension {extension}
 
         for key in self.MultipleInheritances:
             MultipleInheritance(
-                self.load_yaml(self.MultipleInheritances[key]),
+                connection=connection,
+                definition=self.load_yaml(self.MultipleInheritances[key]),
                 drop=True,
                 variables=variables_pirogue,
-                connection=connection,
             ).create()
 
         vw_wastewater_structure(
