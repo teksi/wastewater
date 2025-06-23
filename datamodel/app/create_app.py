@@ -423,7 +423,7 @@ if __name__ == "__main__":
         "-a",
         "--extension_agxx",
         type=bool,
-        action='store_true',
+        action="store_true",
         default=False,
         help="load AG-64/96 extension",
     )
@@ -431,7 +431,7 @@ if __name__ == "__main__":
         "-c",
         "--extension_ci",
         type=bool,
-        action='store_true',
+        action="store_true",
         default=False,
         help="load ci extension",
     )
