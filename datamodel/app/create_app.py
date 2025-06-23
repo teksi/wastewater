@@ -381,7 +381,7 @@ Running extension {extension}
                 print(f"Running {filename}")
                 self.run_sql_file(os.path.join(directory, filename), variables)
 
-    def parse_variables(variables: dict) -> dict:
+    def parse_variables(self,variables: dict) -> dict:
         """Parse variables based on their defined types in the YAML."""
         formatted_vars = {}
 
