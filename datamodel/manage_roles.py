@@ -27,7 +27,7 @@ def get_db_identifier(pg_service: str, modulename: str):
     return db_identifier
 
 
-def create_roles(pg_service: str, modulename: str, db_spec_roles: Optional[bool] = False):
+def create_roles(pg_service: str, modulename: str, db_spec_roles: bool | None = False):
     """
     Creates the roles for usage in TEKSI Modules
     :param pg_service: the PostgreSQL service
@@ -59,7 +59,7 @@ def create_roles(pg_service: str, modulename: str, db_spec_roles: Optional[bool]
     conn.close()
 
 
-def get_roles(pg_service: str, modulename: str, db_spec_roles: Optional[bool] = False):
+def get_roles(pg_service: str, modulename: str, db_spec_roles: bool | None = False):
     """
     returns a dict of role names and their children for usage in TEKSI Modules
     :param pg_service: the PostgreSQL service
@@ -86,7 +86,7 @@ def get_roles(pg_service: str, modulename: str, db_spec_roles: Optional[bool] = 
     return roles, child_roles
 
 
-def grant_privileges(pg_service: str, modulename: str, db_spec_roles: Optional[bool] = False):
+def grant_privileges(pg_service: str, modulename: str, db_spec_roles: bool | None = False):
     """
     Grants the rights from the roles for usage in TEKSI Modules
     :param pg_service: the PostgreSQL service
@@ -128,7 +128,7 @@ def grant_privileges(pg_service: str, modulename: str, db_spec_roles: Optional[b
     conn.close()
 
 
-def revoke_privileges(pg_service: str, modulename: str, db_spec_roles: Optional[bool] = False):
+def revoke_privileges(pg_service: str, modulename: str, db_spec_roles: bool | None = False):
     """
     Revokes the rights from the roles for usage in TEKSI Modules
     :param pg_service: the PostgreSQL service
@@ -167,7 +167,7 @@ def manage_roles(
     modulename: str,
     pg_service: str = None,
     grant: bool = True,
-    db_spec_roles: Optional[bool] = False,
+    db_spec_roles: bool | None = False,
 ):
     """
     Manages the roles for usage in TEKSI Modules

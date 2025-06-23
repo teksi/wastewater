@@ -225,9 +225,9 @@ class Hook(HookBase):
         # Audit
         self.execute(cwd / "audit/audit.sql")
 
-
         # Roles
         self.execute(cwd / "tww_app_roles.sql")
+
 
 if __name__ == "__main__":
     parser = ArgumentParser()
