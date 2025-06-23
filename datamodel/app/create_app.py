@@ -243,7 +243,7 @@ Running extension {extension}
         # Roles
         self.execute(self.cwd / "tww_app_roles.sql")
 
-    def load_yaml(file: Path) -> dict[str]:
+    def load_yaml(self, file: Path) -> dict[str]:
         """Safely loads a YAML file and ensures it returns a dictionary."""
         file = Path(file)
         if not file.exists():
@@ -423,6 +423,7 @@ if __name__ == "__main__":
         "-a",
         "--extension_agxx",
         type=bool,
+        action='store_true',
         default=False,
         help="load AG-64/96 extension",
     )
@@ -430,6 +431,7 @@ if __name__ == "__main__":
         "-c",
         "--extension_ci",
         type=bool,
+        action='store_true',
         default=False,
         help="load ci extension",
     )

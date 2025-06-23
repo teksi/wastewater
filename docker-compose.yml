@@ -9,7 +9,10 @@ services:
     image: teksi/tww:${DOCKER_TAG:-unstable}
     working_dir: /src
     environment:
-      - EXTENSION_NAMES
+      - EXTENSION_CI
+      - EXTENSION_AGXX
+      - EXTENSION_ZIP
+      - LANG_CODE
     volumes:
       - .:/src
     ports:

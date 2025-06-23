@@ -12,7 +12,10 @@ set -e
 
 PGSERVICE=${PGSERVICE:-pg_tww}
 SRID=2056
-EXTENSION_NAMES=${EXTENSION_NAMES:-""}
+EXTENSION_CI=${EXTENSION_CI:-""}
+EXTENSION_AGXX=${EXTENSION_AGXX:-""}
+EXTENSION_ZIP=${EXTENSION_ZIP:-""}
+LANG_CODE=${LANG_CODE:-"en"}
 
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/..
 
@@ -46,4 +49,25 @@ psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f ${DIR}/12_0_roles.sql
 psql "service=${PGSERVICE}" -v ON_ERROR_STOP=1 -f ${DIR}/12_1_roles.sql
 
 export PYTHONPATH=${DIR}/app:$PYTHONPATH
-python -m app.create_app --pg_service ${PGSERVICE} --srid ${SRID} --extension_names ${EXTENSION_NAMES}
+
+PYCMD="python -m app.create_app --pg_service ${PGSERVICE} --srid ${SRID}"
+
+if [ -n "$EXTENSION_CI" ]; then
+    PYCMD="$PYCMD --extension_ci"
+fi
+
+if [ -n "$EXTENSION_AGXX" ]; then
+    PYCMD="$PYCMD --extension_agxx"
+fi
+
+if [ -n "$EXTENSION_ZIP" ]; then
+    PYCMD="$PYCMD --extension_zip $EXTENSION_ZIP"
+fi
+
+if [ -n "$LANG_CODE" ]; then
+    PYCMD="$PYCMD --lang_code $LANG_CODE"
+fi
+
+
+$PYCMD
+
