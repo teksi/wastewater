@@ -231,4 +231,3 @@ On creation of the application schema, the order of creation of objects is as fo
 * TWW sql scripts
 * default values and triggers relating to app functions
 * post-all sql scripts
-

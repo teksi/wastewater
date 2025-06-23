@@ -410,6 +410,7 @@ Running extension {extension}
                 raise ValueError(f"Unknown type '{var_type}' for variable '{key}'.")
         return formatted_vars
 
+
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument("-p", "--pg_service", help="postgres service")

@@ -123,4 +123,3 @@ def set_defaults_and_triggers(
                     SqlContent(query).execute(connection)
                 else:
                     raise Exception(f"Must be owner of tww_od.{entry[0]} to create triggers")
-

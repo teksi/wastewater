@@ -14,6 +14,7 @@ from .utils.extra_definition_utils import (
     extra_joins,
 )
 
+
 def vw_tww_channel(connection: psycopg.Connection, extra_definition: dict = None):
     """
     Creates tww_channel view
