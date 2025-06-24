@@ -4,7 +4,7 @@
 INSERT INTO tww_sys.dictionary_od_table (id, tablename, shortcut_en) VALUES
 (2999998,'agxx_measure_text','MX'),
 (2999999,'agxx_building_group_text','GX')
-ON CONFLICT (id) DO UPDATE 
+ON CONFLICT (id) DO UPDATE
 SET tablename=EXCLUDED.tablename,
 shortcut_en=EXCLUDED.shortcut_en;
 
