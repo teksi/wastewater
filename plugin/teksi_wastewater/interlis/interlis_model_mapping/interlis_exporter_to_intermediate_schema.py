@@ -505,7 +505,6 @@ class InterlisExporterToIntermediateSchema:
         self._export_file()
         self._check_for_stop()
 
-
     def _set_tid_iterator(self):
         # set tidMaker
         max_tid = self.abwasser_session.execute(
@@ -3385,7 +3384,7 @@ class InterlisExporterToIntermediateSchema:
     def _check_for_stop(self):
         if self.callback_progress_done:
             self.callback_progress_done()
-    
+
     ## AG-64/96 ##
     def _export_ag64(self):
 
@@ -3448,7 +3447,7 @@ class InterlisExporterToIntermediateSchema:
         logger.info("Exporting TWW.versickerungsbereichag -> ABWASSER.versickerungsbereichag")
         self._export_versickerungsbereichag()
         self._check_for_stop()
-    
+
     def _export_organisation_agxx(self):
         # no export from database, but populate Obj2Tid
         query = self.tww_session.query(self.model_classes_interlis.organisation)

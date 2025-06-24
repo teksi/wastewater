@@ -1,6 +1,6 @@
 from datetime import date, datetime
 
-from geoalchemy2.functions import ST_Force3D,ST_Multi
+from geoalchemy2.functions import ST_Force3D, ST_Multi
 from sqlalchemy.orm import Session
 from sqlalchemy.orm.attributes import flag_dirty
 from sqlalchemy.sql import text
@@ -73,7 +73,7 @@ class InterlisImporterToIntermediateSchema:
 
         if self.model == config.MODEL_NAME_VSA_KEK:
             self._import_vsa_kek()
-        
+
         if self.model == config.MODEL_NAME_AG96:
             self._import_ag96()
 

@@ -699,7 +699,7 @@ class InterlisImporterExporter:
         if self.model_classes_tww_sys is None:
             self.model_classes_tww_sys = ModelTwwSys().classes()
             self._progress_done(self.current_progress + 1)
-        
+
         if (
             model == config.MODEL_NAME_AG96 or model == config.MODEL_NAME_AG64
         ) and self.model_classes_tww_app is None:
