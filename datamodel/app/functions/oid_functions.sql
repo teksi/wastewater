@@ -31,11 +31,11 @@ BEGIN
             RAISE EXCEPTION 'dictonary entry for table % not unique', table_name;
   END;
   --get sequence for table
-  SELECT tww_app.generate_oid_postfix(schema_name,table_name) INTO myrec_seq;
+  SELECT tww_app.generate_oid_postfix(schema_name,table_name) as _postfix INTO myrec_seq;
   IF NOT FOUND THEN
     RAISE EXCEPTION 'sequence for table % not found', table_name;
   END IF;
-  RETURN myrec_prefix.prefix || myrec_shortcut.shortcut_en || to_char(myrec_seq.seqval,'FM000000');
+  RETURN myrec_prefix.prefix || myrec_shortcut.shortcut_en || myrec_seq._postfix;
 END;
 $BODY$
   LANGUAGE plpgsql STABLE
