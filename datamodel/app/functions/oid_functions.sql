@@ -60,7 +60,9 @@ BEGIN
 			LEFT JOIN (SELECT prefix  FROM tww_sys.oid_prefixes WHERE active) pfx on True
 			WHERE seq.sequence_schema = 'tww_od' AND dot.tablename IS NOT NULL) LOOP
 				EXECUTE FORMAT('SELECT SETVAL(''tww_od.seq_%1$I_oid'',(SELECT max(seqs) FROM(
-		SELECT RIGHT(obj_id, 6)::int as seqs FROM tww_od.%1$I WHERE  regexp_match(obj_id, ''%2$s\d{{6}}$'') IS NOT NULL
+		SELECT tww_app.base36_to_int(RIGHT(obj_id, 6)) as seqs 
+		FROM tww_od.%1$I 
+		WHERE regexp_match(obj_id, ''%2$s[0-9a-z]{{6}}$'') IS NOT NULL
 		UNION
 		SELECT last_value as seqs FROM tww_od.seq_%1$I_oid)foo));',tbl_name,rgx);
 	   END LOOP;
@@ -116,5 +118,23 @@ BEGIN
 		base36_val := lpad(base36_val, 6, '0');
 	END IF;
     RETURN base36_val;
+END;
+$BODY$;
+
+CREATE OR REPLACE FUNCTION tww_app.base36_to_int(base36_str text)
+RETURNS bigint
+LANGUAGE plpgsql
+AS $BODY$
+DECLARE
+    chars text := '0123456789abcdefghijklmnopqrstuvwxyz';
+    res_int bigint := 0;
+    char_val int;
+    i int;
+BEGIN
+    FOR i IN 1..length(base36_str) LOOP
+        char_val := strpos(chars, substr(base36_str, i, 1)) - 1;
+        res_int := res_int * 36 + char_val;
+    END LOOP;
+    RETURN res_int;
 END;
 $BODY$;
