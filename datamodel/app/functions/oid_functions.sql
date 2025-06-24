@@ -91,28 +91,28 @@ CREATE OR REPLACE FUNCTION tww_app.generate_oid_postfix(_schema text, _table_nam
     LANGUAGE 'plpgsql'
 AS $BODY$
 DECLARE
-    chars char[];	 
+    chars char[];
     base36_val  varchar;	-- retained string
     val bigint;				-- remaining value to be interpreted
 	i integer;
 BEGIN
     chars := ARRAY['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
     EXECUTE format('SELECT nextval(%I.%I_oid)', _schema, _table_name) INTO val;
-    base36_val  := ''; 
-	
+    base36_val  := '';
+
     IF val > 2176782335 THEN -- Maximum value for a 6-digit base36 number (zzzzzz)
         RAISE EXCEPTION 'Sequence value exceeds maximum 6-digit base36 value (zzzzzz)';
     END IF;
-	
-    IF val < 10^6 THEN 
+
+    IF val < 10^6 THEN
         base36_val  := lpad(val::varchar, 6, '0');
 	ELSIF val < 559744029 THEN --  559744029 is 999999 in base36, by skipping to this bigint we avoid purely numeric base36 varchars
-		EXECUTE format('SELECT setval(''%1$I.seq_%2$I_oid'',559744029,true)', _schema, _table_name); 
+		EXECUTE format('SELECT setval(''%1$I.seq_%2$I_oid'',559744029,true)', _schema, _table_name);
 		RETURN tww_app.generate_oid_postfix(_schema, _table_name);
 	ELSE
-		WHILE val != 0 LOOP 
-			base36_val := chars[(val % 36)+1] || base36_val; 
-			val := val / 36; 
+		WHILE val != 0 LOOP
+			base36_val := chars[(val % 36)+1] || base36_val;
+			val := val / 36;
     END LOOP;
 		base36_val := lpad(base36_val, 6, '0');
 	END IF;
