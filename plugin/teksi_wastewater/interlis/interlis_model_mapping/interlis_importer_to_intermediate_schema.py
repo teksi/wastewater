@@ -2428,7 +2428,7 @@ class InterlisImporterToIntermediateSchema:
         if self.callback_progress_done:
             self.callback_progress_done()
 
-    ## AG-64/96
+    # AG-64/96
     def _import_ag64(self):
         logger.info("Importing ABWASSER.infrastrukturknoten -> TWW.gepknoten")
         self._import_infrastrukturknoten()

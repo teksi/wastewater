@@ -3385,7 +3385,7 @@ class InterlisExporterToIntermediateSchema:
         if self.callback_progress_done:
             self.callback_progress_done()
 
-    ## AG-64/96 ##
+    # AG-64/96
     def _export_ag64(self):
 
         logger.info("Adding organisations to ABWASSER.organisation export")
