@@ -244,11 +244,11 @@ BEGIN
 		END CASE;
 
     END CASE;
-	
+
   UPDATE tww_od.structure_part
   SET fk_wastewater_structure=ws_oid
   WHERE obj_id=co_oid;
-	
+
   RETURN NEW;
 END;
 $BODY$
