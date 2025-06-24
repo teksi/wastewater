@@ -96,7 +96,7 @@ DECLARE
     val bigint;				-- remaining value to be interpreted
 BEGIN
     chars := ARRAY['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
-    EXECUTE format('SELECT nextval(%I.%I_oid)', _schema, _table_name) INTO val;
+    EXECUTE format('SELECT nextval(%1$I.seq_%2$I_oid)', _schema, _table_name) INTO val;
     base36_val  := '';
 
     IF val > 2176782335 THEN -- Maximum value for a 6-digit base36 number (zzzzzz)
