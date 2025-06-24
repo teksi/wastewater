@@ -60,8 +60,8 @@ BEGIN
 			LEFT JOIN (SELECT prefix  FROM tww_sys.oid_prefixes WHERE active) pfx on True
 			WHERE seq.sequence_schema = 'tww_od' AND dot.tablename IS NOT NULL) LOOP
 				EXECUTE FORMAT('SELECT SETVAL(''tww_od.seq_%1$I_oid'',(SELECT max(seqs) FROM(
-		SELECT tww_app.base36_to_int(RIGHT(obj_id, 6)) as seqs 
-		FROM tww_od.%1$I 
+		SELECT tww_app.base36_to_int(RIGHT(obj_id, 6)) as seqs
+		FROM tww_od.%1$I
 		WHERE regexp_match(obj_id, ''%2$s[0-9a-z]{{6}}$'') IS NOT NULL
 		UNION
 		SELECT last_value as seqs FROM tww_od.seq_%1$I_oid)foo));',tbl_name,rgx);
