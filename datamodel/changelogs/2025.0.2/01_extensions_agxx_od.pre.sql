@@ -2,9 +2,11 @@
 -- System tables
 ------------------
 INSERT INTO tww_sys.dictionary_od_table (id, tablename, shortcut_en) VALUES
-(2999998,'measure_text','MX'),
-(2999999,'building_group_text','GX')
-ON CONFLICT DO NOTHING;
+(2999998,'agxx_measure_text','MX'),
+(2999999,'agxx_building_group_text','GX')
+ON CONFLICT (id) DO UPDATE 
+SET tablename=EXCLUDED.tablename,
+shortcut_en=EXCLUDED.shortcut_en;
 
 
 -----------------------------
@@ -287,7 +289,7 @@ ALTER TABLE IF EXISTS tww_od.measure_text
 
 CREATE TABLE IF NOT EXISTS tww_od.agxx_measure_text
 (
-    obj_id character varying(16) COLLATE pg_catalog."default" NOT NULL DEFAULT tww_app.generate_oid('tww_od'::text, 'measure_text'::text),
+    obj_id character varying(16) COLLATE pg_catalog."default" NOT NULL,
     classname text COLLATE pg_catalog."default",
     plantype integer,
     remark text COLLATE pg_catalog."default",
@@ -328,7 +330,7 @@ ALTER TABLE IF EXISTS tww_od.building_group_text
 
 CREATE TABLE IF NOT EXISTS tww_od.agxx_building_group_text
 (
-    obj_id character varying(16) COLLATE pg_catalog."default" NOT NULL DEFAULT tww_app.generate_oid('tww_od'::text, 'building_group_text'::text),
+    obj_id character varying(16) COLLATE pg_catalog."default" NOT NULL,
     classname text COLLATE pg_catalog."default",
     plantype integer,
     remark text COLLATE pg_catalog."default",

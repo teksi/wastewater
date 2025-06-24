@@ -18,7 +18,6 @@ RETURNS VOID
 AS
 $BODY$
 DECLARE
-DECLARE
 	ws_oid varchar(16);
 	wn_oids varchar(16)[];
 	sp_oids varchar(16)[];
