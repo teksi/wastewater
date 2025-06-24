@@ -209,29 +209,29 @@ BEGIN
 			, (SELECT code FROM tww_vl.infiltration_installation_kind_import_rel_agxx WHERE value_de=NEW.funktionag)
 			);
 		WHEN NEW.funktionag LIKE 'Einleitstelle%'  THEN
-		INSERT INTO tww_od.discharge_point (
-		  obj_id
-		, relevance
-		)VALUES
-		(
-		  ws_oid
-		, (SELECT code FROM tww_vl.discharge_point_relevance_import_rel_agxx WHERE value_de=NEW.funktionag)
-		);
-		WHEN NEW.funktionag = 'Messstelle'  THEN
-		INSERT INTO tww_od.manhole (
+			INSERT INTO tww_od.discharge_point (
 			  obj_id
-			, function
+			, relevance
 			)VALUES
 			(
 			  ws_oid
-			, 5345
+			, (SELECT code FROM tww_vl.discharge_point_relevance_import_rel_agxx WHERE value_de=NEW.funktionag)
 			);
-		INSERT INTO tww_od.measuring_point (
-		  fk_wastewater_structure
-		)VALUES
-		(
-		  ws_oid
-		);
+		WHEN NEW.funktionag = 'Messstelle'  THEN
+			INSERT INTO tww_od.manhole (
+				  obj_id
+				, function
+				)VALUES
+				(
+				  ws_oid
+				, 5345
+				);
+			INSERT INTO tww_od.measuring_point (
+			  fk_wastewater_structure
+			)VALUES
+			(
+			  ws_oid
+			);
 		ELSE
 			INSERT INTO tww_od.special_structure (
 			  obj_id
@@ -244,6 +244,11 @@ BEGIN
 		END CASE;
 
     END CASE;
+	
+  UPDATE tww_od.structure_part
+  SET fk_wastewater_structure=ws_oid
+  WHERE obj_id=co_oid;
+	
   RETURN NEW;
 END;
 $BODY$
