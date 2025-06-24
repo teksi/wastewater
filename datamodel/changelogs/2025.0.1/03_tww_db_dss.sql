@@ -101,13 +101,13 @@ COMMENT ON COLUMN tww_od.measure.identifier IS 'Identifier of the measure. The i
  ALTER TABLE tww_od.measure ADD COLUMN intervention_demand text;
  ALTER TABLE tww_od.measure ADD CONSTRAINT mm_intervention_demand_length_max_255 CHECK(char_length(intervention_demand)<=255);
 COMMENT ON COLUMN tww_od.measure.intervention_demand IS 'Short description of need of action / Kurzbeschreibung des Handlungsbedarfs / Description courte du besoin d''intervention';
-ALTER TABLE tww_od.measure ADD COLUMN line_geometry geometry('COMPOUNDCURVE', :SRID);
+ALTER TABLE tww_od.measure ADD COLUMN line_geometry geometry('COMPOUNDCURVE', {SRID});
 CREATE INDEX in_tww_measure_line_geometry ON tww_od.measure USING gist (line_geometry );
 COMMENT ON COLUMN tww_od.measure.line_geometry IS 'yyy_Ermöglicht die Visualisierung einer Massnahme mit einer Linie (optional) / Ermöglicht die Visualisierung einer Massnahme mit einer Linie (optional) / Permet la visualisation d''une mesure à l''aide d''une ligne (optionnelle)';
  ALTER TABLE tww_od.measure ADD COLUMN link text;
  ALTER TABLE tww_od.measure ADD CONSTRAINT mm_link_length_max_255 CHECK(char_length(link)<=255);
 COMMENT ON COLUMN tww_od.measure.link IS 'Reference to other measure (identifier)  or works done. Reference to documents, that specify details of the measure, e.g. GEP reports or documents or project papers. / Verweis auf andere Massnahmen (Bezeichnung) oder Arbeiten, Hinweis auf Grundlagen in denen die Massnahmen näher erläutert werden, wie z.B. auf die entsprechenden GEP-Teilprojekte / Référence à d’autres mesures ou travaux, documents explicatifs concernant la mesure, par exemple les projets partiels PGEE ou rapports d’état';
-ALTER TABLE tww_od.measure ADD COLUMN perimeter_geometry geometry('CURVEPOLYGON', :SRID);
+ALTER TABLE tww_od.measure ADD COLUMN perimeter_geometry geometry('CURVEPOLYGON', {SRID});
 CREATE INDEX in_tww_measure_perimeter_geometry ON tww_od.measure USING gist (perimeter_geometry );
 COMMENT ON COLUMN tww_od.measure.perimeter_geometry IS 'Perimeter, for visualisation and geometrical relation (OPTIONAL) / Ermöglicht die Visualisierung einer Massnahme mit einer Fläche (optional) / Pour la visualisation et l’illustration avec une surface (optionelle)';
  ALTER TABLE tww_od.measure ADD COLUMN priority  integer ;
@@ -117,7 +117,7 @@ COMMENT ON COLUMN tww_od.measure.priority IS 'Priority of measure / Priorität d
 COMMENT ON COLUMN tww_od.measure.remark IS 'General remarks of project designer or controlling institution / Bemerkungen des Projektverfassers oder der Aufsichtsbehörde / Remarques du gestionnaire du projet ou de l''autorité de surveillance';
  ALTER TABLE tww_od.measure ADD COLUMN status  integer ;
 COMMENT ON COLUMN tww_od.measure.status IS 'Disposition state of measure / Status der Massnahme / Etat de la mesure';
-ALTER TABLE tww_od.measure ADD COLUMN symbolpos_geometry geometry('POINT', :SRID);
+ALTER TABLE tww_od.measure ADD COLUMN symbolpos_geometry geometry('POINT', {SRID});
 CREATE INDEX in_tww_measure_symbolpos_geometry ON tww_od.measure USING gist (symbolpos_geometry );
 COMMENT ON COLUMN tww_od.measure.symbolpos_geometry IS 'For the visualisation (without geometric relation) / Für die Visualisierung (ohne räumlichen Bezug) / Pour la visualisation (sans relation géométrique)';
  ALTER TABLE tww_od.measure ADD COLUMN total_cost  decimal(10,2) ;
@@ -191,7 +191,7 @@ WITH (
 );
 CREATE SEQUENCE tww_od.seq_waste_water_treatment_plant_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
 COMMENT ON COLUMN tww_od.waste_water_treatment_plant.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
-ALTER TABLE tww_od.waste_water_treatment_plant ADD COLUMN area_geometry geometry('CURVEPOLYGON', :SRID);
+ALTER TABLE tww_od.waste_water_treatment_plant ADD COLUMN area_geometry geometry('CURVEPOLYGON', {SRID});
 CREATE INDEX in_tww_waste_water_treatment_plant_area_geometry ON tww_od.waste_water_treatment_plant USING gist (area_geometry );
 COMMENT ON COLUMN tww_od.waste_water_treatment_plant.area_geometry IS 'yyy_Geometrie des Einzugsgebiets der ARA (Zuständigkeitsgebiet) als zusammenhängende Fläche, die sich in der Regel an den Gemeindegrenzen orientiert. Ein Einzugsgebiet setzt sich aus einer oder mehreren Gemeindeflächen oder Teilflächen von Gemeinden zusammen. Matching MGDM 134.5 Einzugsgebiet.Gebiet / Geometrie des Einzugsgebiets der ARA (Zuständigkeitsgebiet) als zusammenhängende Fläche, die sich in der Regel an den Gemeindegrenzen orientiert. Ein Einzugsgebiet setzt sich aus einer oder mehreren Gemeindeflächen oder Teilflächen von Gemeinden zusammen. Matching MGDM 134.5 Einzugsgebiet.Gebiet / Géométrie du bassin versant de la STEP (domaine de compétence) comme surface d’un seul tenant, qui se base généralement sur les frontières communales. Un bassin versant se compose d’une ou de plusieurs surfaces communales ou surfaces partielles communales. Matching MGDM 134.5 Einzugsgebiet.Gebiet';
  ALTER TABLE tww_od.waste_water_treatment_plant ADD COLUMN bod5  smallint ;
@@ -223,7 +223,7 @@ COMMENT ON COLUMN tww_od.waste_water_treatment_plant.population_total IS ' / VSA
  ALTER TABLE tww_od.waste_water_treatment_plant ADD COLUMN remark text;
  ALTER TABLE tww_od.waste_water_treatment_plant ADD CONSTRAINT tp_remark_length_max_255 CHECK(char_length(remark)<=255);
 COMMENT ON COLUMN tww_od.waste_water_treatment_plant.remark IS 'General remarks / Allgemeine Bemerkungen / Remarques générales';
-ALTER TABLE tww_od.waste_water_treatment_plant ADD COLUMN situation_geometry geometry('POINT', :SRID);
+ALTER TABLE tww_od.waste_water_treatment_plant ADD COLUMN situation_geometry geometry('POINT', {SRID});
 CREATE INDEX in_tww_waste_water_treatment_plant_situation_geometry ON tww_od.waste_water_treatment_plant USING gist (situation_geometry );
 COMMENT ON COLUMN tww_od.waste_water_treatment_plant.situation_geometry IS 'yyy_Standort der ARA, Mitte des Geländes / Standort der ARA, Mitte des Geländes / Site de la STEP, milieu du site';
  ALTER TABLE tww_od.waste_water_treatment_plant ADD COLUMN start_year  smallint ;
@@ -257,10 +257,10 @@ COMMENT ON COLUMN tww_od.wastewater_structure.condition_score IS 'The condition 
  ALTER TABLE tww_od.wastewater_structure ADD COLUMN contract_section text;
  ALTER TABLE tww_od.wastewater_structure ADD CONSTRAINT ws_contract_section_length_max_50 CHECK(char_length(contract_section)<=50);
 COMMENT ON COLUMN tww_od.wastewater_structure.contract_section IS 'Number of contract section / Nummer des Bauloses / Numéro du lot de construction';
--- ALTER TABLE tww_od.wastewater_structure ADD COLUMN detail_geometry_geometry geometry('CURVEPOLYGON', :SRID);
+-- ALTER TABLE tww_od.wastewater_structure ADD COLUMN detail_geometry_geometry geometry('CURVEPOLYGON', {SRID});
 -- CREATE INDEX in_tww_wastewater_structure_detail_geometry_geometry ON tww_od.wastewater_structure USING gist (detail_geometry_geometry );
 -- COMMENT ON COLUMN tww_od.wastewater_structure.detail_geometry_geometry IS 'Detail geometry especially with special structures. For manhole usually use dimension1 and 2. Also with normed infiltratin structures.  Channels usually do not have a detail_geometry. / Detaillierte Geometrie insbesondere bei Spezialbauwerken. Für Normschächte i.d. R.  Dimension1 und 2 verwenden. Dito bei normierten Versickerungsanlagen.  Kanäle haben normalerweise keine Detailgeometrie. / Géométrie détaillée particulièrement pour un OUVRAGE_SPECIAL. Pour l’attribut CHAMBRE_STANDARD utilisez Dimension1 et 2, de même pour une INSTALLATION_INFILTRATION normée.  Les canalisations n’ont en général pas de géométrie détaillée.';
-ALTER TABLE tww_od.wastewater_structure ADD COLUMN detail_geometry3d_geometry geometry('CURVEPOLYGONZ', :SRID);
+ALTER TABLE tww_od.wastewater_structure ADD COLUMN detail_geometry3d_geometry geometry('CURVEPOLYGONZ', {SRID});
 CREATE INDEX in_tww_wastewater_structure_detail_geometry3d_geometry ON tww_od.wastewater_structure USING gist (detail_geometry3d_geometry );
 COMMENT ON COLUMN tww_od.wastewater_structure.detail_geometry3d_geometry IS 'Detail geometry (3D) especially with special structures. For manhole usually use dimension1 and 2. Also with normed infiltratin structures.  Channels usually do not have a detail_geometry. / Detaillierte Geometrie (3D) insbesondere bei Spezialbauwerken. Bei Normschächten mit Dimension1 und 2 arbeiten. Dito bei normierten Versickerungsanlagen. Kanäle haben normalerweise keine Detailgeometrie. / Géométrie détaillée (3D) particulièrement pour un OUVRAGE_SPECIAL. Pour l’attribut CHAMBRE_STANDARD utilisez Dimension1 et 2, de même pour une INSTALLATION_INFILTRATION normée.Les canalisations n’ont en général pas de géométrie détaillée.';
  ALTER TABLE tww_od.wastewater_structure ADD COLUMN elevation_determination  integer ;
@@ -588,7 +588,7 @@ CREATE SEQUENCE tww_od.seq_infiltration_zone_oid INCREMENT 1 MINVALUE 0 MAXVALUE
 COMMENT ON COLUMN tww_od.infiltration_zone.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.infiltration_zone ADD COLUMN infiltration_capacity  integer ;
 COMMENT ON COLUMN tww_od.infiltration_zone.infiltration_capacity IS 'yyy_Versickerungsmöglichkeit im Bereich / Versickerungsmöglichkeit im Bereich / Potentiel d''infiltration de la zone';
-ALTER TABLE tww_od.infiltration_zone ADD COLUMN perimeter_geometry geometry('CURVEPOLYGON', :SRID);
+ALTER TABLE tww_od.infiltration_zone ADD COLUMN perimeter_geometry geometry('CURVEPOLYGON', {SRID});
 CREATE INDEX in_tww_infiltration_zone_perimeter_geometry ON tww_od.infiltration_zone USING gist (perimeter_geometry );
 COMMENT ON COLUMN tww_od.infiltration_zone.perimeter_geometry IS 'Boundary points of the perimeter / Begrenzungspunkte der Fläche / Points de délimitation de la surface';
 
@@ -607,7 +607,7 @@ CREATE SEQUENCE tww_od.seq_drainage_system_oid INCREMENT 1 MINVALUE 0 MAXVALUE 9
 COMMENT ON COLUMN tww_od.drainage_system.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.drainage_system ADD COLUMN kind  integer ;
 COMMENT ON COLUMN tww_od.drainage_system.kind IS 'yyy_Art des Entwässerungssystems in dem ein bestimmtes Gebiet entwässert werden soll (SOLL Zustand)  im groben Überblick für Planung. Wird später auf einzelnem Kanal attributiert. / Art des Entwässerungssystems in dem ein bestimmtes Gebiet entwässert werden soll (SOLL Zustand) im groben Überblick für Planung. Wird später auf einzelnem Kanal attributiert. / Genre de système d''évacuation choisi pour une région déterminée (Etat prévu). Vue d''ensemble grossière pour planification. Sera défini pour chaque canal par la suite.';
-ALTER TABLE tww_od.drainage_system ADD COLUMN perimeter_geometry geometry('CURVEPOLYGON', :SRID);
+ALTER TABLE tww_od.drainage_system ADD COLUMN perimeter_geometry geometry('CURVEPOLYGON', {SRID});
 CREATE INDEX in_tww_drainage_system_perimeter_geometry ON tww_od.drainage_system USING gist (perimeter_geometry );
 COMMENT ON COLUMN tww_od.drainage_system.perimeter_geometry IS 'Boundary points of the perimeter / Begrenzungspunkte der Fläche / Points de délimitation de la surface';
 
@@ -765,7 +765,7 @@ COMMENT ON COLUMN tww_od.control_center.obj_id IS 'INTERLIS STANDARD OID (with P
  ALTER TABLE tww_od.control_center ADD COLUMN identifier text;
  ALTER TABLE tww_od.control_center ADD CONSTRAINT cc_identifier_length_max_20 CHECK(char_length(identifier)<=20);
 COMMENT ON COLUMN tww_od.control_center.identifier IS '';
-ALTER TABLE tww_od.control_center ADD COLUMN situation_geometry geometry('POINT', :SRID);
+ALTER TABLE tww_od.control_center ADD COLUMN situation_geometry geometry('POINT', {SRID});
 CREATE INDEX in_tww_control_center_situation_geometry ON tww_od.control_center USING gist (situation_geometry );
 COMMENT ON COLUMN tww_od.control_center.situation_geometry IS 'National position coordinates (East, North) / Landeskoordinate Ost/Nord / Coordonnées nationales Est/Nord';
  ALTER TABLE tww_od.control_center ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
@@ -866,10 +866,10 @@ COMMENT ON COLUMN tww_od.reach_point.position_of_connection IS 'yyy_Anschlussste
  ALTER TABLE tww_od.reach_point ADD COLUMN remark text;
  ALTER TABLE tww_od.reach_point ADD CONSTRAINT rp_remark_length_max_80 CHECK(char_length(remark)<=80);
 COMMENT ON COLUMN tww_od.reach_point.remark IS 'General remarks / Allgemeine Bemerkungen / Remarques générales';
---ALTER TABLE tww_od.reach_point ADD COLUMN situation_geometry geometry('POINT', :SRID);
+--ALTER TABLE tww_od.reach_point ADD COLUMN situation_geometry geometry('POINT', {SRID});
 -- CREATE INDEX in_tww_reach_point_situation_geometry ON tww_od.reach_point USING gist (situation_geometry );
 -- COMMENT ON COLUMN tww_od.reach_point.situation_geometry IS 'National position coordinates (East, North) / Landeskoordinate Ost/Nord / Coordonnées nationales Est/Nord';
-ALTER TABLE tww_od.reach_point ADD COLUMN situation3d_geometry geometry('POINTZ', :SRID);
+ALTER TABLE tww_od.reach_point ADD COLUMN situation3d_geometry geometry('POINTZ', {SRID});
 CREATE INDEX in_tww_reach_point_situation3d_geometry ON tww_od.reach_point USING gist (situation3d_geometry );
 COMMENT ON COLUMN tww_od.reach_point.situation3d_geometry IS 'National position coordinates (East, North) / Landeskoordinate Ost/Nord / Coordonnées nationales Est/Nord';
 
@@ -901,10 +901,10 @@ COMMENT ON COLUMN tww_od.wastewater_node.bottom_level IS 'yyy_Tiefster Punkt des
 COMMENT ON COLUMN tww_od.wastewater_node.elevation_accuracy IS 'yyy_Höhengenauigkeit der Sohlenkote. Bei Neuerfassungen konsistent halten mit Höhengenauigkeit der Haltungspunkte (Ein-/Auslauf). / Höhengenauigkeit der Sohlenkote. Bei Neuerfassungen konsistent halten mit Höhengenauigkeit der Haltungspunkte (Ein-/Auslauf). / Précision altimétrique de la cote du radier. Lors de nouvelles saisies tenir consistent avec la précision altimétrique des points tronçon (entrée/sortie).';
  ALTER TABLE tww_od.wastewater_node ADD COLUMN function_node_amelioration  integer ;
 COMMENT ON COLUMN tww_od.wastewater_node.function_node_amelioration IS 'yyy_Bei Abwasserknoten von Meliorationsleitungen zwingend (dient der Plandarstellung); sonst optional (weglassen). / Bei Abwasserknoten von Meliorationsleitungen zwingend (dient der Plandarstellung); sonst optional (weglassen). / Obligatoire pour noeuds de réseau de conduites d''amélioration foncière (sert à la représentation dans un plan) sinon optionnel (laisser vide)';
---ALTER TABLE tww_od.wastewater_node ADD COLUMN situation_geometry geometry('POINT', :SRID);
+--ALTER TABLE tww_od.wastewater_node ADD COLUMN situation_geometry geometry('POINT', {SRID});
 -- CREATE INDEX in_tww_wastewater_node_situation_geometry ON tww_od.wastewater_node USING gist (situation_geometry );
 -- COMMENT ON COLUMN tww_od.wastewater_node.situation_geometry IS 'yyy Situation of node. Decisive reference point for sewer network simulation  (In der Regel Lage des Pickellochs oder Lage des Trockenwetterauslauf) / Lage des Knotens, massgebender Bezugspunkt für die Kanalnetzberechnung. (In der Regel Lage des Pickellochs oder Lage des Trockenwetterauslaufs) / Positionnement du nœud. Point de référence déterminant pour le calcul de réseau de canalisations (en règle générale positionnement du milieu du couvercle ou de la sortie temps sec)';
-ALTER TABLE tww_od.wastewater_node ADD COLUMN situation3d_geometry geometry('POINTZ', :SRID);
+ALTER TABLE tww_od.wastewater_node ADD COLUMN situation3d_geometry geometry('POINTZ', {SRID});
 CREATE INDEX in_tww_wastewater_node_situation3d_geometry ON tww_od.wastewater_node USING gist (situation3d_geometry );
 COMMENT ON COLUMN tww_od.wastewater_node.situation3d_geometry IS 'yyy Situation of node. Decisive reference point for sewer network simulation  (In der Regel Lage des Pickellochs oder Lage des Trockenwetterauslauf) / Lage des Knotens, massgebender Bezugspunkt für die Kanalnetzberechnung. (In der Regel Lage des Pickellochs oder Lage des Trockenwetterauslaufs) / Positionnement du nœud. Point de référence déterminant pour le calcul de réseau de canalisations (en règle générale positionnement du milieu du couvercle ou de la sortie temps sec)';
 
@@ -944,10 +944,10 @@ COMMENT ON COLUMN tww_od.reach.leak_protection IS 'Double-walled pipe or other s
 COMMENT ON COLUMN tww_od.reach.length_effective IS 'yyy_Tatsächliche schräge Länge (d.h. nicht in horizontale Ebene projiziert)  inklusive Kanalkrümmungen / Tatsächliche schräge Länge (d.h. nicht in horizontale Ebene projiziert)  inklusive Kanalkrümmungen / Longueur effective (non projetée) incluant les parties incurvées';
  ALTER TABLE tww_od.reach ADD COLUMN material  integer ;
 COMMENT ON COLUMN tww_od.reach.material IS 'Material of reach / pipe / Rohrmaterial / Matériau du tuyau';
--- ALTER TABLE tww_od.reach ADD COLUMN progression_geometry geometry('COMPOUNDCURVE', :SRID);
+-- ALTER TABLE tww_od.reach ADD COLUMN progression_geometry geometry('COMPOUNDCURVE', {SRID});
 -- CREATE INDEX in_tww_reach_progression_geometry ON tww_od.reach USING gist (progression_geometry );
 -- COMMENT ON COLUMN tww_od.reach.progression_geometry IS 'Start, inflextion and endpoints of a pipe / Anfangs-, Knick- und Endpunkte der Leitung / Points de départ, intermédiaires et d’arrivée de la conduite.';
-ALTER TABLE tww_od.reach ADD COLUMN progression3d_geometry geometry('COMPOUNDCURVEZ', :SRID);
+ALTER TABLE tww_od.reach ADD COLUMN progression3d_geometry geometry('COMPOUNDCURVEZ', {SRID});
 CREATE INDEX in_tww_reach_progression3d_geometry ON tww_od.reach USING gist (progression3d_geometry );
 COMMENT ON COLUMN tww_od.reach.progression3d_geometry IS 'Start, inflextion and endpoints of a pipe (3D coordinates) / Anfangs-, Knick- und Endpunkte der Leitung (3D Koordinaten) / Points de départ, intermédiaires et d’arrivée de la conduite (coordonnées 3D)';
  ALTER TABLE tww_od.reach ADD COLUMN reliner_material  integer ;
@@ -1235,10 +1235,10 @@ COMMENT ON COLUMN tww_od.cover.level IS 'Height of cover / Deckelhöhe / Cote du
 COMMENT ON COLUMN tww_od.cover.material IS 'Material of cover / Deckelmaterial / Matériau du couvercle';
  ALTER TABLE tww_od.cover ADD COLUMN positional_accuracy  integer ;
 COMMENT ON COLUMN tww_od.cover.positional_accuracy IS 'Quantfication of accuarcy of position of cover (center hole) / Quantifizierung der Genauigkeit der Lage des Deckels (Pickelloch) / Plage de précision des coordonnées planimétriques du couvercle.';
---ALTER TABLE tww_od.cover ADD COLUMN situation_geometry geometry('POINT', :SRID);
+--ALTER TABLE tww_od.cover ADD COLUMN situation_geometry geometry('POINT', {SRID});
 -- CREATE INDEX in_tww_cover_situation_geometry ON tww_od.cover USING gist (situation_geometry );
 -- COMMENT ON COLUMN tww_od.cover.situation_geometry IS 'Situation of cover (cover hole), National position coordinates (East, North) / Lage des Deckels (Pickelloch) / Positionnement du couvercle (milieu du couvercle)';
-ALTER TABLE tww_od.cover ADD COLUMN situation3d_geometry geometry('POINTZ', :SRID);
+ALTER TABLE tww_od.cover ADD COLUMN situation3d_geometry geometry('POINTZ', {SRID});
 CREATE INDEX in_tww_cover_situation3d_geometry ON tww_od.cover USING gist (situation3d_geometry );
 COMMENT ON COLUMN tww_od.cover.situation3d_geometry IS 'Situation of cover (cover hole), National position coordinates (East, North) / Lage des Deckels (Pickelloch) / Positionnement du couvercle (milieu du couvercle)';
 
@@ -1316,7 +1316,7 @@ WITH (
 );
 CREATE SEQUENCE tww_od.seq_flushing_nozzle_oid INCREMENT 1 MINVALUE 0 MAXVALUE 999999 START 0;
 COMMENT ON COLUMN tww_od.flushing_nozzle.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
-ALTER TABLE tww_od.flushing_nozzle ADD COLUMN situation_geometry geometry('POINT', :SRID);
+ALTER TABLE tww_od.flushing_nozzle ADD COLUMN situation_geometry geometry('POINT', {SRID});
 CREATE INDEX in_tww_flushing_nozzle_situation_geometry ON tww_od.flushing_nozzle USING gist (situation_geometry );
 COMMENT ON COLUMN tww_od.flushing_nozzle.situation_geometry IS '';
 
@@ -1367,10 +1367,10 @@ COMMENT ON COLUMN tww_od.building.house_number IS 'House number based on cadastr
  ALTER TABLE tww_od.building ADD COLUMN location_name text;
  ALTER TABLE tww_od.building ADD CONSTRAINT bu_location_name_length_max_50 CHECK(char_length(location_name)<=50);
 COMMENT ON COLUMN tww_od.building.location_name IS 'Street name or name of the location / Strassenname oder Ortsbezeichnung / Nom de la route ou du lieu';
-ALTER TABLE tww_od.building ADD COLUMN perimeter_geometry geometry('CURVEPOLYGON', :SRID);
+ALTER TABLE tww_od.building ADD COLUMN perimeter_geometry geometry('CURVEPOLYGON', {SRID});
 CREATE INDEX in_tww_building_perimeter_geometry ON tww_od.building USING gist (perimeter_geometry );
 COMMENT ON COLUMN tww_od.building.perimeter_geometry IS 'Boundary points of the perimeter / Begrenzungspunkte der Fläche / Points de délimitation de la surface';
-ALTER TABLE tww_od.building ADD COLUMN reference_point_geometry geometry('POINT', :SRID);
+ALTER TABLE tww_od.building ADD COLUMN reference_point_geometry geometry('POINT', {SRID});
 CREATE INDEX in_tww_building_reference_point_geometry ON tww_od.building USING gist (reference_point_geometry );
 COMMENT ON COLUMN tww_od.building.reference_point_geometry IS 'National position coordinates (East, North) (relevant point for e.g. address) / Landeskoordinate Ost/Nord (massgebender Bezugspunkt für z.B. Adressdaten ) / Coordonnées nationales Est/Nord (Point de référence pour la détermination de l''adresse par exemple)';
 
@@ -1390,7 +1390,7 @@ COMMENT ON COLUMN tww_od.reservoir.obj_id IS 'INTERLIS STANDARD OID (with Postfi
  ALTER TABLE tww_od.reservoir ADD COLUMN location_name text;
  ALTER TABLE tww_od.reservoir ADD CONSTRAINT rv_location_name_length_max_50 CHECK(char_length(location_name)<=50);
 COMMENT ON COLUMN tww_od.reservoir.location_name IS 'Street name or name of the location / Strassenname oder Ortsbezeichnung / Nom de la route ou du lieu';
-ALTER TABLE tww_od.reservoir ADD COLUMN situation_geometry geometry('POINT', :SRID);
+ALTER TABLE tww_od.reservoir ADD COLUMN situation_geometry geometry('POINT', {SRID});
 CREATE INDEX in_tww_reservoir_situation_geometry ON tww_od.reservoir USING gist (situation_geometry );
 COMMENT ON COLUMN tww_od.reservoir.situation_geometry IS 'National position coordinates (East, North) / Landeskoordinate Ost/Nord / Coordonnées nationales Est/Nord';
 
@@ -1413,7 +1413,7 @@ COMMENT ON COLUMN tww_od.individual_surface.function IS 'Type of usage of surfac
 COMMENT ON COLUMN tww_od.individual_surface.inclination IS 'yyy_Mittlere Neigung der Oberfläche in Promill / Mittlere Neigung der Oberfläche in Promill / Pente moyenne de la surface en promille';
  ALTER TABLE tww_od.individual_surface ADD COLUMN pavement  integer ;
 COMMENT ON COLUMN tww_od.individual_surface.pavement IS 'Type of pavement / Art der Befestigung / Genre de couverture du sol';
-ALTER TABLE tww_od.individual_surface ADD COLUMN perimeter_geometry geometry('CURVEPOLYGON', :SRID);
+ALTER TABLE tww_od.individual_surface ADD COLUMN perimeter_geometry geometry('CURVEPOLYGON', {SRID});
 CREATE INDEX in_tww_individual_surface_perimeter_geometry ON tww_od.individual_surface USING gist (perimeter_geometry );
 COMMENT ON COLUMN tww_od.individual_surface.perimeter_geometry IS 'Boundary points of the perimeter / Begrenzungspunkte der Fläche / Points de délimitation de la surface';
 
@@ -1433,7 +1433,7 @@ COMMENT ON COLUMN tww_od.fountain.obj_id IS 'INTERLIS STANDARD OID (with Postfix
  ALTER TABLE tww_od.fountain ADD COLUMN location_name text;
  ALTER TABLE tww_od.fountain ADD CONSTRAINT fo_location_name_length_max_50 CHECK(char_length(location_name)<=50);
 COMMENT ON COLUMN tww_od.fountain.location_name IS 'Street name or name of the location / Strassenname oder Ortsbezeichnung / Nom de la route ou du lieu';
-ALTER TABLE tww_od.fountain ADD COLUMN situation_geometry geometry('POINT', :SRID);
+ALTER TABLE tww_od.fountain ADD COLUMN situation_geometry geometry('POINT', {SRID});
 CREATE INDEX in_tww_fountain_situation_geometry ON tww_od.fountain USING gist (situation_geometry );
 COMMENT ON COLUMN tww_od.fountain.situation_geometry IS 'National position coordinates (East, North) / Landeskoordinate Ost/Nord / Coordonnées nationales Est/Nord';
 
@@ -1503,7 +1503,7 @@ COMMENT ON COLUMN tww_od.catchment_area.identifier IS '';
 COMMENT ON COLUMN tww_od.catchment_area.infiltration_current IS 'yyy_Das Niederschlagsabwasser wird ganz oder teilweise einer Versickerungsanlage zugeführt / Das Niederschlagsabwasser wird ganz oder teilweise einer Versickerungsanlage zugeführt / Les eaux pluviales sont amenées complètement ou partiellement à une installation d’infiltration';
  ALTER TABLE tww_od.catchment_area ADD COLUMN infiltration_planned  integer ;
 COMMENT ON COLUMN tww_od.catchment_area.infiltration_planned IS 'In the future the rain water will  be completly or partially infiltrated in a infiltration unit. / Das Niederschlagsabwasser wird in Zukunft ganz oder teilweise einer Versickerungsanlage zugeführt / Les eaux pluviales seront amenées complètement ou partiellement à une installation d’infiltration';
-ALTER TABLE tww_od.catchment_area ADD COLUMN perimeter_geometry geometry('CURVEPOLYGON', :SRID);
+ALTER TABLE tww_od.catchment_area ADD COLUMN perimeter_geometry geometry('CURVEPOLYGON', {SRID});
 CREATE INDEX in_tww_catchment_area_perimeter_geometry ON tww_od.catchment_area USING gist (perimeter_geometry );
 COMMENT ON COLUMN tww_od.catchment_area.perimeter_geometry IS 'Boundary points of the perimeter sub catchment area / Begrenzungspunkte des Teileinzugsgebiets / Points de délimitation du bassin versant partiel';
  ALTER TABLE tww_od.catchment_area ADD COLUMN population_density_current  smallint ;
@@ -1606,7 +1606,7 @@ COMMENT ON COLUMN tww_od.measuring_point.purpose IS 'Purpose of measurement / Zw
  ALTER TABLE tww_od.measuring_point ADD COLUMN remark text;
  ALTER TABLE tww_od.measuring_point ADD CONSTRAINT mp_remark_length_max_80 CHECK(char_length(remark)<=80);
 COMMENT ON COLUMN tww_od.measuring_point.remark IS 'General remarks / Allgemeine Bemerkungen / Remarques générales';
-ALTER TABLE tww_od.measuring_point ADD COLUMN situation_geometry geometry('POINT', :SRID);
+ALTER TABLE tww_od.measuring_point ADD COLUMN situation_geometry geometry('POINT', {SRID});
 CREATE INDEX in_tww_measuring_point_situation_geometry ON tww_od.measuring_point USING gist (situation_geometry );
 COMMENT ON COLUMN tww_od.measuring_point.situation_geometry IS 'National position coordinates (East, North) / Landeskoordinate Ost/Nord / Coordonnées nationales Est/Nord';
  ALTER TABLE tww_od.measuring_point ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
@@ -2307,7 +2307,7 @@ COMMENT ON COLUMN tww_od.building_group.restaurant_seats_permanent IS 'yyy_Resta
 COMMENT ON COLUMN tww_od.building_group.restructuring_concept IS 'Summary of the concept according to the service offer (GEP sample specification) / Kurzfassung des Konzepts gemäss Leistung Offerte (GEP Musterpflichtenheft) / Version courte du concept en fonction de l''offre de service (Cahier des charges type du PGEE)';
  ALTER TABLE tww_od.building_group ADD COLUMN school_students  smallint ;
 COMMENT ON COLUMN tww_od.building_group.school_students IS 'School: Number of pupils / Schule: Anzahl Schüler / Ecole: nombre d''élèves';
-ALTER TABLE tww_od.building_group ADD COLUMN situation_geometry geometry('POINT', :SRID);
+ALTER TABLE tww_od.building_group ADD COLUMN situation_geometry geometry('POINT', {SRID});
 CREATE INDEX in_tww_building_group_situation_geometry ON tww_od.building_group USING gist (situation_geometry );
 COMMENT ON COLUMN tww_od.building_group.situation_geometry IS 'Location of the building group (can be taken from data in the Eidg. Gebäude und Wohnungsregister BAU/GWR) / Lage der Gebäudegruppe (kann aus Daten Eidg. Gebäude und Wohnungsregister BAU/GWR übernommen werden) / Localisation du groupe de bâtiments (peut être repris des données du Registre fédéral des bâtiments et des logements (RegBL))';
  ALTER TABLE tww_od.building_group ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
@@ -4257,7 +4257,7 @@ COMMENT ON COLUMN tww_od.wastewater_structure_text.text IS 'Value composed of at
 COMMENT ON COLUMN tww_od.wastewater_structure_text.texthali IS '';
  ALTER TABLE tww_od.wastewater_structure_text ADD COLUMN textori  decimal(4,1) ;
 COMMENT ON COLUMN tww_od.wastewater_structure_text.textori IS '';
-ALTER TABLE tww_od.wastewater_structure_text ADD COLUMN textpos_geometry geometry('POINT', :SRID);
+ALTER TABLE tww_od.wastewater_structure_text ADD COLUMN textpos_geometry geometry('POINT', {SRID});
 CREATE INDEX in_tww_wastewater_structure_text_textpos_geometry ON tww_od.wastewater_structure_text USING gist (textpos_geometry );
 COMMENT ON COLUMN tww_od.wastewater_structure_text.textpos_geometry IS '';
  ALTER TABLE tww_od.wastewater_structure_text ADD COLUMN textvali  smallint ;
@@ -4292,7 +4292,7 @@ COMMENT ON COLUMN tww_od.reach_text.text IS 'Value composed of attribute values,
 COMMENT ON COLUMN tww_od.reach_text.texthali IS '';
  ALTER TABLE tww_od.reach_text ADD COLUMN textori  decimal(4,1) ;
 COMMENT ON COLUMN tww_od.reach_text.textori IS '';
-ALTER TABLE tww_od.reach_text ADD COLUMN textpos_geometry geometry('POINT', :SRID);
+ALTER TABLE tww_od.reach_text ADD COLUMN textpos_geometry geometry('POINT', {SRID});
 CREATE INDEX in_tww_reach_text_textpos_geometry ON tww_od.reach_text USING gist (textpos_geometry );
 COMMENT ON COLUMN tww_od.reach_text.textpos_geometry IS '';
  ALTER TABLE tww_od.reach_text ADD COLUMN textvali  smallint ;
@@ -4327,7 +4327,7 @@ COMMENT ON COLUMN tww_od.catchment_area_text.text IS 'Value composed of attribut
 COMMENT ON COLUMN tww_od.catchment_area_text.texthali IS '';
  ALTER TABLE tww_od.catchment_area_text ADD COLUMN textori  decimal(4,1) ;
 COMMENT ON COLUMN tww_od.catchment_area_text.textori IS '';
-ALTER TABLE tww_od.catchment_area_text ADD COLUMN textpos_geometry geometry('POINT', :SRID);
+ALTER TABLE tww_od.catchment_area_text ADD COLUMN textpos_geometry geometry('POINT', {SRID});
 CREATE INDEX in_tww_catchment_area_text_textpos_geometry ON tww_od.catchment_area_text USING gist (textpos_geometry );
 COMMENT ON COLUMN tww_od.catchment_area_text.textpos_geometry IS '';
  ALTER TABLE tww_od.catchment_area_text ADD COLUMN textvali  smallint ;
@@ -4359,7 +4359,7 @@ COMMENT ON COLUMN tww_od.wastewater_structure_symbol.symbol_scaling_height IS ''
 COMMENT ON COLUMN tww_od.wastewater_structure_symbol.symbol_scaling_width IS '';
  ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN symbolori  decimal(4,1) ;
 COMMENT ON COLUMN tww_od.wastewater_structure_symbol.symbolori IS 'Default: 90 Degree / Default: 90 Grad / Default: 90 degree';
-ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN symbolpos_geometry geometry('POINT', :SRID);
+ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN symbolpos_geometry geometry('POINT', {SRID});
 CREATE INDEX in_tww_wastewater_structure_symbol_symbolpos_geometry ON tww_od.wastewater_structure_symbol USING gist (symbolpos_geometry );
 COMMENT ON COLUMN tww_od.wastewater_structure_symbol.symbolpos_geometry IS '';
  ALTER TABLE tww_od.wastewater_structure_symbol ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
@@ -4488,7 +4488,7 @@ CREATE SEQUENCE tww_od.seq_reach_progression_alternative_oid INCREMENT 1 MINVALU
 COMMENT ON COLUMN tww_od.reach_progression_alternative.obj_id IS 'INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch';
  ALTER TABLE tww_od.reach_progression_alternative ADD COLUMN plantype  integer ;
 COMMENT ON COLUMN tww_od.reach_progression_alternative.plantype IS '';
-ALTER TABLE tww_od.reach_progression_alternative ADD COLUMN progression_geometry geometry('COMPOUNDCURVE', :SRID);
+ALTER TABLE tww_od.reach_progression_alternative ADD COLUMN progression_geometry geometry('COMPOUNDCURVE', {SRID});
 CREATE INDEX in_tww_reach_progression_alternative_progression_geometry ON tww_od.reach_progression_alternative USING gist (progression_geometry );
 COMMENT ON COLUMN tww_od.reach_progression_alternative.progression_geometry IS 'Start, inflextion and endpoints of a progression alterative for selected scale (e.g. overview map) / Anfangs-, Knick- und Endpunkte des Alternativverlaufs der Leitung im gewählten Plantyp (z.B. Uebersichtsplan) / Points de départ, intermédiaires et d’arrivée de la trace alternative de la conduite dans la type de plan selectionée';
  ALTER TABLE tww_od.reach_progression_alternative ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
