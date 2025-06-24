@@ -33,7 +33,7 @@ GRANT ALL ON ALL TABLES IN SCHEMA tww_cfg TO tww_user;
 ALTER DEFAULT PRIVILEGES IN SCHEMA tww_od GRANT ALL ON TABLES TO tww_user;
 ALTER DEFAULT PRIVILEGES IN SCHEMA tww_od GRANT ALL ON SEQUENCES TO tww_user;
 
-DO $$ BEGIN EXECUTE 'GRANT CREATE ON DATABASE ' || (SELECT current_database()) || ' TO "tww_user"'; END $$; -- required for ili2pg imports/exports
+DO $$ BEGIN EXECUTE 'GRANT CREATE ON DATABASE ' || (SELECT current_database()) || ' TO "tww_user"'; END $$;  -- required for ili2pg imports/exports
 
 /* Manager */
 GRANT ALL ON SCHEMA tww_vl TO tww_manager;
