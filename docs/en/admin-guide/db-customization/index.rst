@@ -57,7 +57,14 @@ If it is necessary to add custom fields, create a separate table with a foreign 
 Extension Framework for application schema
 ---------------
 
-In order to add extensions to TEKSI in a standardised way, TEKSI wastewater set into place an extension framework. It allows the following actions:
+In order to add extensions to TEKSI in a standardised way, TEKSI wastewater set into place an extension framework. 
+
+There are two types of extensions:
+
+* Official TEKSI Wastewater extensions
+* custom extensions
+
+The extension framework allows the following actions:
 
 * Adding additional views using sql
 * Adding additional triggers using sql
@@ -68,20 +75,18 @@ In order to add extensions to TEKSI in a standardised way, TEKSI wastewater set 
 
 Creation of custom extensions
 ^^^^^^^^^^^^^
-Extensions are handled in the ``extensions`` folder of the datamodel. Assuming we want to add an extension ``myfoo``, we first have to create its folder structure:
+A custom extension consists of a config file and a folder:
+
+Assuming we want to create an extension ``myfoo``, we first have to create its folder structure:
 
 
-- datamodel/
-  - app/
-    - extensions/
-      - config.yaml
-      - foo/
-        - ...
-      - bar/
-        - ...
-      - ...
+- extensions/
+  - custom_config.yaml
+  - foo/
+    - ...
 
-Next, we need to define the extension's variables. This is done in a yaml file ``config.yaml`` that contains:
+
+Next, we need to define the extension's variables. This is done in a yaml file ``custom_config.yaml`` that contains:
 
   * an extension id that is used to access the extension
   * a directory name in which all extension data lies
@@ -90,7 +95,6 @@ Next, we need to define the extension's variables. This is done in a yaml file `
 .. code:: YAML
 
 	extensions:
-	- [...] existing extensions
     - id: myfoo
       directory: foo
       variables:
@@ -101,6 +105,7 @@ Next, we need to define the extension's variables. This is done in a yaml file `
           value: 0
           type: literal
 
+.. attention:: If one wants to add multiple custom extensions at once, one need one ``custom_config.yaml`` with multiple entries and one folder per extension
 
 After adding an entry for your extension, it can be accessed in deployment. Inside the folder defined in the ``directory`` variable, there can be two types of files:
 
@@ -128,7 +133,11 @@ They must therefore be written in such a way that existing data does not interfe
 Joining additional tables to views
 ^^^^^^^^^^^^^
 
-There are three types of views with which one can interact using the extension framework
+There are three types of views with which one can interact using the extension framework:
+
+* pirogue MultipleInheritance views
+* pirogue SimpleJoins
+* TEKSI main views
 
 Overriding yaml view definitions
 """"""""""""""""""""""""""""""""
@@ -211,17 +220,31 @@ Entries that are in ``skip_columns`` but listed in ``remap_columns`` are not ski
 It is expected that mt.fk_ws has a ON DELETE CASCADE`` foreign key constraint.
 The yaml file needs to be called ``vw_tww_wastewater_structure.yaml``.
 
-Deployment of custom extensions
+Deployment of extensions
 ^^^^^^^^^^^^^
 
-A predefined extension can be loaded using
+A custom extension can be loaded by first zipping it:
 
-``python -m .app.create_app.py --pg_service pg_tww --drop-schema --srid 2056 --extensions myfoo bar``
+.. code-block::
+
+   path_to_myfoo.zip
+   ├── foo/
+   │   └── (contents of foo)
+   └── custom_config.yaml
+
+Then, the extension can be loaded using 
+
+``python -m app.create_app.py --pg_service pg_tww --drop-schema --srid 2056 --extension_zip path_to_myfoo.zip``
+
+Or, when adding on top of an official extension:
+
+``python -m app.create_app.py --pg_service pg_tww --drop-schema --srid 2056 --extension_agxx --extension_zip path_to_myfoo.zip``
 
 On creation of the application schema, the order of creation of objects is as follows:
 
 * TWW functions
-* Extensions in the order inside the ``--extensions`` flag
+* official extensions
+* custom extensions
 * Single Inheritances
 * Multiple inheritances (can be overridden by extension yaml)
 * Main views (can be extended by extension yaml)
