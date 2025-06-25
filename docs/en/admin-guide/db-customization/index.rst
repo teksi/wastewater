@@ -57,7 +57,7 @@ If it is necessary to add custom fields, create a separate table with a foreign 
 Extension Framework for application schema
 ---------------
 
-In order to add extensions to TEKSI in a standardised way, TEKSI wastewater set into place an extension framework. 
+In order to add extensions to TEKSI in a standardised way, TEKSI wastewater set into place an extension framework.
 
 There are two types of extensions:
 
@@ -232,7 +232,7 @@ A custom extension can be loaded by first zipping it:
    │   └── (contents of foo)
    └── custom_config.yaml
 
-Then, the extension can be loaded using 
+Then, the extension can be loaded using
 
 ``python -m app.create_app.py --pg_service pg_tww --drop-schema --srid 2056 --extension_zip path_to_myfoo.zip``
 
