@@ -41,6 +41,7 @@ jobs:
 
       - name: Initialize container
         run: |
+          docker run -d -p 5432:5432 --name teksi-wastewater teksi/wastewater:unstable
           until docker compose exec db pg_isready -U postgres; do
             echo "Waiting for PostgreSQL to be ready..."
             sleep 2
