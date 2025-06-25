@@ -2,7 +2,7 @@
 
 LIBS_DIR="plugin/teksi_wastewater/libs"
 
-MODELBAKER_LIBRARY=("modelbaker" "1.9.7")
+MODELBAKER_LIBRARY=("modelbaker" "1.11.0")
 
 PACKAGES=(
   MODELBAKER_LIBRARY[@]
