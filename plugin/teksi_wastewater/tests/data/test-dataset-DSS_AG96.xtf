@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TRANSFER xmlns="http://www.interlis.ch/INTERLIS2.3">
+	<HEADERSECTION SENDER="ili2pg-5.0.1-447c03f22b8f346a44ada86c553d10110872fd40" VERSION="2.3">
+		<MODELS>
+			<MODEL NAME="Genereller_Entwaesserungsplan_AG" VERSION="2.0.0 vom 21.04.2023" URI="https://models.geo.ag.ch"/>
+		</MODELS>
+	</HEADERSECTION>
+	<DATASECTION>
+		<Genereller_Entwaesserungsplan_AG.GEP_AGIS BID="Genereller_Entwaesserungsplan_AG.GEP_AGIS">
+			<Genereller_Entwaesserungsplan_AG.GEP_AGIS.Organisation TID="ch113jqg000000000107">
+				<OBJ_ID>ch113jqg000000000107</OBJ_ID>
+				<UID>CHE-000.000.000</UID>
+				<Bezeichnung>unbekannt</Bezeichnung>
+				<Datenbewirtschafter_Kt>AfU Aargau</Datenbewirtschafter_Kt>
+				<OrganisationTyp>andere</OrganisationTyp>
+				<Letzte_Aenderung>20150904</Letzte_Aenderung>
+			</Genereller_Entwaesserungsplan_AG.GEP_AGIS.Organisation>
+			<Genereller_Entwaesserungsplan_AG.GEP_AGIS.GEPKnoten TID="ch24eax1wn000001">
+				<Letzte_Aenderung_GEP>20240626</Letzte_Aenderung_GEP>
+				<Datenbewirtschafter_GEP REF="ch113jqg000000000107"/>
+				<ARA_Nr>403300</ARA_Nr>
+				<Baujahr>2013</Baujahr>
+				<BaulicherZustand>Z3</BaulicherZustand>
+				<Bauwerkstatus>in_Betrieb.in_Betrieb</Bauwerkstatus>
+				<Bezeichnung>1</Bezeichnung>
+				<Deckelkote>349.950</Deckelkote>
+				<Detailgeometrie>
+					<SURFACE>
+						<BOUNDARY>
+							<POLYLINE>
+								<COORD>
+									<C1>2662000.000</C1>
+									<C2>1252000.000</C2>
+								</COORD>
+								<COORD>
+									<C1>2662001.000</C1>
+									<C2>1252000.000</C2>
+								</COORD>
+								<COORD>
+									<C1>2662001.000</C1>
+									<C2>1252001.000</C2>
+								</COORD>
+								<COORD>
+									<C1>2662000.000</C1>
+									<C2>1252001.000</C2>
+								</COORD>
+								<COORD>
+									<C1>2662000.000</C1>
+									<C2>1252000.000</C2>
+								</COORD>
+							</POLYLINE>
+						</BOUNDARY>
+					</SURFACE>
+				</Detailgeometrie>
+				<Finanzierung>oeffentlich</Finanzierung>
+				<FunktionAG>Kontrollschacht</FunktionAG>
+				<FunktionHierarchisch>PAA</FunktionHierarchisch>
+				<IstSchnittstelle>keine_Schnittstelle</IstSchnittstelle>
+				<Jahr_Zustandserhebung>1800</Jahr_Zustandserhebung>
+				<Lage>
+					<COORD>
+						<C1>2662000.500</C1>
+						<C2>1252000.500</C2>
+					</COORD>
+				</Lage>
+				<Lagegenauigkeit>unbekannt</Lagegenauigkeit>
+				<Letzte_Aenderung_WI>20230502</Letzte_Aenderung_WI>
+				<MaxRueckstauhoehe>347.840</MaxRueckstauhoehe>
+				<Sanierungsbedarf>langfristig</Sanierungsbedarf>
+				<Sohlenkote>347.112</Sohlenkote>
+				<Zugaenglichkeit>zugaenglich</Zugaenglichkeit>
+				<Betreiber REF="ch113jqg000000000107"/>
+				<Datenbewirtschafter_WI REF="ch113jqg000000000107"/>
+				<Eigentuemer REF="ch113jqg000000000107"/>
+			</Genereller_Entwaesserungsplan_AG.GEP_AGIS.GEPKnoten>
+			<Genereller_Entwaesserungsplan_AG.GEP_AGIS.GEPKnoten TID="ch24eax1wn000002">
+				<Letzte_Aenderung_GEP>20240626</Letzte_Aenderung_GEP>
+				<Datenbewirtschafter_GEP REF="ch113jqg000000000107"/>
+				<ARA_Nr>403300</ARA_Nr>
+				<Baujahr>2013</Baujahr>
+				<BaulicherZustand>Z2</BaulicherZustand>
+				<Bauwerkstatus>in_Betrieb.in_Betrieb</Bauwerkstatus>
+				<Bezeichnung>2</Bezeichnung>
+				<Deckelkote>349.950</Deckelkote>
+				<Detailgeometrie>
+					<SURFACE>
+						<BOUNDARY>
+							<POLYLINE>
+								<COORD>
+									<C1>2662936.365</C1>
+									<C2>1252209.378</C2>
+								</COORD>
+								<COORD>
+									<C1>2662936.415</C1>
+									<C2>1252209.387</C2>
+								</COORD>
+								<COORD>
+									<C1>2662936.464</C1>
+									<C2>1252209.401</C2>
+								</COORD>
+								<COORD>
+									<C1>2662936.365</C1>
+									<C2>1252209.378</C2>
+								</COORD>
+							</POLYLINE>
+						</BOUNDARY>
+					</SURFACE>
+				</Detailgeometrie>
+				<Finanzierung>oeffentlich</Finanzierung>
+				<FunktionAG>Kontrollschacht</FunktionAG>
+				<FunktionHierarchisch>PAA</FunktionHierarchisch>
+				<IstSchnittstelle>keine_Schnittstelle</IstSchnittstelle>
+				<Jahr_Zustandserhebung>1800</Jahr_Zustandserhebung>
+				<Lage>
+					<COORD>
+						<C1>2662040.500</C1>
+						<C2>1252040.500</C2>
+					</COORD>
+				</Lage>
+				<Lagegenauigkeit>unbekannt</Lagegenauigkeit>
+				<Letzte_Aenderung_WI>20230502</Letzte_Aenderung_WI>
+				<MaxRueckstauhoehe>347.840</MaxRueckstauhoehe>
+				<Sanierungsbedarf>langfristig</Sanierungsbedarf>
+				<Sohlenkote>347.112</Sohlenkote>
+				<Zugaenglichkeit>zugaenglich</Zugaenglichkeit>
+				<Betreiber REF="ch113jqg000000000107"/>
+				<Datenbewirtschafter_WI REF="ch113jqg000000000107"/>
+				<Eigentuemer REF="ch113jqg000000000107"/>
+			</Genereller_Entwaesserungsplan_AG.GEP_AGIS.GEPKnoten>
+			<Genereller_Entwaesserungsplan_AG.GEP_AGIS.GEPHaltung TID="ch24eax1re000001">
+				<Letzte_Aenderung_GEP>20240703</Letzte_Aenderung_GEP>
+				<Datenbewirtschafter_GEP REF="ch113jqg000000000107"/>
+				<Baujahr>1966</Baujahr>
+				<BaulicherZustand>unbekannt</BaulicherZustand>
+				<Bauwerkstatus>tot.aufgehoben_unbekannt</Bauwerkstatus>
+				<Bezeichnung>18961-10046</Bezeichnung>
+				<Finanzierung>privat</Finanzierung>
+				<FunktionHierarchisch>SAA.Liegenschaftsentwaesserung</FunktionHierarchisch>
+				<FunktionHydraulisch>Freispiegelleitung</FunktionHydraulisch>
+				<Hoehengenauigkeit_nach>unbekannt</Hoehengenauigkeit_nach>
+				<Hoehengenauigkeit_von>unbekannt</Hoehengenauigkeit_von>
+				<Kote_Ende>389.371</Kote_Ende>
+				<Letzte_Aenderung_WI>20230502</Letzte_Aenderung_WI>
+				<Lichte_Breite_Ist>0</Lichte_Breite_Ist>
+				<Lichte_Hoehe_Ist>0</Lichte_Hoehe_Ist>
+				<LaengeEffektiv>4.36</LaengeEffektiv>
+				<Material>unbekannt</Material>
+				<NutzungsartAG_Ist>Mischwasser</NutzungsartAG_Ist>
+				<Profiltyp>Kreisprofil</Profiltyp>
+				<Sanierungsbedarf>unbekannt</Sanierungsbedarf>
+				<Verlauf>
+					<POLYLINE>
+						<COORD>
+							<C1>2662000.500</C1>
+							<C2>1252000.500</C2>
+						</COORD>
+						<COORD>
+							<C1>2662040.500</C1>
+							<C2>1252040.500</C2>
+						</COORD>
+					</POLYLINE>
+				</Verlauf>
+				<Betreiber REF="ch113jqg000000000107"/>
+				<Datenbewirtschafter_WI REF="ch113jqg000000000107"/>
+				<Eigentuemer REF="ch113jqg000000000107"/>
+				<EndKnoten REF="ch24eax1wn000002"/>
+				<StartKnoten REF="ch24eax1wn000001"/>
+			</Genereller_Entwaesserungsplan_AG.GEP_AGIS.GEPHaltung>
+			<Genereller_Entwaesserungsplan_AG.GEP_AGIS.Einzugsgebiet TID="ch24eax1ca000001">
+				<Letzte_Aenderung_GEP>20240627</Letzte_Aenderung_GEP>
+				<Datenbewirtschafter_GEP REF="ch113jqg000000000107"/>
+				<Abflussbeiwert_SW_Ist>32</Abflussbeiwert_SW_Ist>
+				<Bezeichnung>R0696</Bezeichnung>
+				<Direkteinleitung_in_Gewaesser_Ist>nein</Direkteinleitung_in_Gewaesser_Ist>
+				<Einwohnerdichte_Ist>40</Einwohnerdichte_Ist>
+				<EntwaesserungssystemAG_Ist>Mischsystem</EntwaesserungssystemAG_Ist>
+				<Flaeche>0.13</Flaeche>
+				<Fremdwasseranfall_Ist>0.004</Fremdwasseranfall_Ist>
+				<Perimeter>
+					<SURFACE>
+						<BOUNDARY>
+							<POLYLINE>
+								<COORD>
+									<C1>2662000.000</C1>
+									<C2>1252000.000</C2>
+								</COORD>
+								<COORD>
+									<C1>2662100.000</C1>
+									<C2>1252000.000</C2>
+								</COORD>
+								<COORD>
+									<C1>2662100.000</C1>
+									<C2>1252100.000</C2>
+								</COORD>
+								<COORD>
+									<C1>2662000.000</C1>
+									<C2>1252100.000</C2>
+								</COORD>
+								<COORD>
+									<C1>2662000.000</C1>
+									<C2>1252000.000</C2>
+								</COORD>
+							</POLYLINE>
+						</BOUNDARY>
+					</SURFACE>
+				</Perimeter>
+				<Perimetertyp>Berechnungspunkt</Perimetertyp>
+				<Retention_Ist>nein</Retention_Ist>
+				<Schmutzabwasseranfall_Ist>0.013</Schmutzabwasseranfall_Ist>
+				<Versickerung_Ist>nein</Versickerung_Ist>
+				<GEPKnoten_SW_IstRef REF="ch24eax1wn000001"/>
+			</Genereller_Entwaesserungsplan_AG.GEP_AGIS.Einzugsgebiet>
+			<Genereller_Entwaesserungsplan_AG.GEP_AGIS.Ueberlauf_Foerderaggregat TID="ch24eax1ov000001">
+				<Letzte_Aenderung_GEP>20240212</Letzte_Aenderung_GEP>
+				<Datenbewirtschafter_GEP REF="ch113jqg000000000107"/>
+				<Art>Foerderaggregat</Art>
+				<Bezeichnung>PW foobar</Bezeichnung>
+				<KnotenRef REF="ch24eax1wn000002"/>
+				<Knoten_nachRef REF="ch24eax1wn000001"/>
+			</Genereller_Entwaesserungsplan_AG.GEP_AGIS.Ueberlauf_Foerderaggregat>
+			<Genereller_Entwaesserungsplan_AG.GEP_AGIS.BautenAusserhalbBaugebiet TID="ch24eax1bg000001">
+				<Letzte_Aenderung_GEP>20240701</Letzte_Aenderung_GEP>
+				<Datenbewirtschafter_GEP REF="ch113jqg000000000107"/>
+				<AnzStaendigeEinwohner>0</AnzStaendigeEinwohner>
+				<Arealnutzung>andere</Arealnutzung>
+				<Beseitigung_haeusliches_Abwasser>Klaereinrichtung_Speicherung</Beseitigung_haeusliches_Abwasser>
+				<Beseitigung_gewerbliches_Abwasser>keinBedarf</Beseitigung_gewerbliches_Abwasser>
+				<Beseitigung_Platzentwaesserung>keinBedarf</Beseitigung_Platzentwaesserung>
+				<Beseitigung_Dachentwaesserung>keinBedarf</Beseitigung_Dachentwaesserung>
+				<Bezeichnung>Waldhütte</Bezeichnung>
+				<EigentuemerAdresse>Musterstrasse 22 3456 Teksingen</EigentuemerAdresse>
+				<EigentuemerName>DBVU Abt. Wald</EigentuemerName>
+				<Einwohnergleichwert>0</Einwohnergleichwert>
+				<Lage>
+					<COORD>
+						<C1>2661500.000</C1>
+						<C2>1251500.000</C2>
+					</COORD>
+				</Lage>
+				<Nummer>1</Nummer>
+				<Sanierungsbedarf>Nein</Sanierungsbedarf>
+			</Genereller_Entwaesserungsplan_AG.GEP_AGIS.BautenAusserhalbBaugebiet>
+			<Genereller_Entwaesserungsplan_AG.GEP_AGIS.VersickerungsbereichAG TID="ch24eax1iz000001">
+				<Letzte_Aenderung_GEP>20240215</Letzte_Aenderung_GEP>
+				<Datenbewirtschafter_GEP REF="ch113jqg000000000107"/>
+				<Bezeichnung>ch21uevgIZ000059</Bezeichnung>
+				<Durchlaessigkeit>schlecht</Durchlaessigkeit>
+				<Perimeter>
+					<SURFACE>
+						<BOUNDARY>
+						<POLYLINE>
+								<COORD>
+									<C1>2661000.000</C1>
+									<C2>1251000.000</C2>
+								</COORD>
+								<COORD>
+									<C1>2662100.000</C1>
+									<C2>1252000.000</C2>
+								</COORD>
+								<COORD>
+									<C1>2662100.000</C1>
+									<C2>1252100.000</C2>
+								</COORD>
+								<COORD>
+									<C1>2662000.000</C1>
+									<C2>1252100.000</C2>
+								</COORD>
+								<COORD>
+									<C1>2661000.000</C1>
+									<C2>1251000.000</C2>
+								</COORD>
+							</POLYLINE>
+						</BOUNDARY>
+					</SURFACE>
+				</Perimeter>
+				<VersickerungsmoeglichkeitAG>schlecht</VersickerungsmoeglichkeitAG>
+			</Genereller_Entwaesserungsplan_AG.GEP_AGIS.VersickerungsbereichAG>
+			<Genereller_Entwaesserungsplan_AG.GEP_AGIS.SBW_Einzugsgebiet TID="ch24eax1cm000001">
+				<Letzte_Aenderung_GEP>20240822</Letzte_Aenderung_GEP>
+				<Datenbewirtschafter_GEP REF="ch113jqg000000000107"/>
+				<Bezeichnung>RU 518</Bezeichnung>
+				<Einwohner_Ist>2180</Einwohner_Ist>
+				<Flaeche_Ist>31.81</Flaeche_Ist>
+				<Flaeche_reduziert_Ist>10.57</Flaeche_reduziert_Ist>
+				<Fremdwasseranfall_Ist>1.624</Fremdwasseranfall_Ist>
+				<Perimeter_Ist>
+					<SURFACE>
+						<BOUNDARY>
+							<POLYLINE>
+								<COORD>
+									<C1>2661000.000</C1>
+									<C2>1251000.000</C2>
+								</COORD>
+								<COORD>
+									<C1>2662100.000</C1>
+									<C2>1252000.000</C2>
+								</COORD>
+								<COORD>
+									<C1>2662100.000</C1>
+									<C2>1252100.000</C2>
+								</COORD>
+								<COORD>
+									<C1>2662000.000</C1>
+									<C2>1252100.000</C2>
+								</COORD>
+								<COORD>
+									<C2>1251000.000</C2>
+								</COORD>
+							</POLYLINE>
+						</BOUNDARY>
+					</SURFACE>
+				</Perimeter_Ist>
+				<Schmutzabwasseranfall_Ist>7.147</Schmutzabwasseranfall_Ist>
+				<Sonderbauwerk_Ref REF="ch24eax1wn000002"/>
+			</Genereller_Entwaesserungsplan_AG.GEP_AGIS.SBW_Einzugsgebiet>
+			<Genereller_Entwaesserungsplan_AG.GEP_AGIS.GEPMassnahme TID="ch21uevgms000001">
+				<Letzte_Aenderung_GEP>20240822</Letzte_Aenderung_GEP>
+				<Datenbewirtschafter_GEP REF="ch113jqg000000000107"/>
+				<Beschreibung>baz</Beschreibung>
+				<Bezeichnung>foobar</Bezeichnung>
+				<Datum_Eingang>20240703</Datum_Eingang>
+				<Gesamtkosten>327.12</Gesamtkosten>
+				<Handlungsbedarf>barbar</Handlungsbedarf>
+				<Kategorie>administrative_Massnahme</Kategorie>
+				<PrioritaetAG>M1</PrioritaetAG>
+				<Status>pendent</Status>
+				<Traegerschaft REF="ch113jqg000000000107"/>
+				<Verantwortlich_Ausloesung REF="ch113jqg000000000107"/>
+			</Genereller_Entwaesserungsplan_AG.GEP_AGIS.GEPMassnahme>
+		</Genereller_Entwaesserungsplan_AG.GEP_AGIS>
+	</DATASECTION>
+</TRANSFER>
