@@ -59,7 +59,7 @@ def vw_tww_damage_channel(
         FROM base;
     """.format(
         dg_cols=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="damage",
             table_alias="dg",
@@ -67,7 +67,7 @@ def vw_tww_damage_channel(
             indent=4,
         ),
         dg_cols_base=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="damage",
             table_alias="base",
