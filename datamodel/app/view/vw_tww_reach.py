@@ -5,28 +5,20 @@
 import argparse
 import os
 
-try:
-    import psycopg
-except ImportError:
-    import psycopg2 as psycopg
-
+import psycopg
 from pirogue.utils import insert_command, select_columns, table_parts, update_command
 from yaml import safe_load
 
 
-def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
+def vw_tww_reach(connection: psycopg.Connection, extra_definition: dict = None):
     """
     Creates tww_reach view
-    :param pg_service: the PostgreSQL service name
+    :param connection: a psycopg connection object
     :param extra_definition: a dictionary for additional read-only columns
     """
-    if not pg_service:
-        pg_service = os.getenv("PGSERVICE")
-    assert pg_service
     extra_definition = extra_definition or {}
 
-    conn = psycopg.connect(f"service={pg_service}")
-    cursor = conn.cursor()
+    cursor = connection.cursor()
 
     view_sql = """
     DROP VIEW IF EXISTS tww_app.vw_tww_reach;
@@ -47,7 +39,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
           ELSE clear_height
         END AS width,
         CASE
-          WHEN rp_from.level > 0 AND rp_to.level > 0 THEN round((rp_from.level - rp_to.level)/ST_LENGTH(re.progression3d_geometry)::numeric*1000,1)
+          WHEN rp_from.level > 0 AND rp_to.level > 0 THEN ROUND((rp_from.level - rp_to.level) / NULLIF(ST_LENGTH(re.progression3d_geometry)::numeric, 0) * 1000, 1)
           ELSE NULL
         END AS _slope_per_mill
         , {extra_cols}
@@ -69,7 +61,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
         extra_cols="\n    , ".join(
             [
                 select_columns(
-                    pg_cur=cursor,
+                    connection=connection,
                     table_schema=table_parts(table_def["table"])[0],
                     table_name=table_parts(table_def["table"])[1],
                     skip_columns=table_def.get("skip_columns", []),
@@ -81,7 +73,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             ]
         ),
         re_cols=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="reach",
             table_alias="re",
@@ -95,7 +87,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             ],
         ),
         ne_cols=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_networkelement",
             table_alias="ne",
@@ -104,7 +96,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             skip_columns=["fk_wastewater_structure"],
         ),
         ch_cols=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="channel",
             table_alias="ch",
@@ -114,7 +106,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             skip_columns=["usage_current", "function_hierarchic", "function_hydraulic"],
         ),
         ws_cols=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_structure",
             table_alias="ws",
@@ -133,7 +125,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             ],
         ),
         rp_from_cols=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="reach_point",
             table_alias="rp_from",
@@ -143,7 +135,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             skip_columns=["situation3d_geometry"],
         ),
         rp_to_cols=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="reach_point",
             table_alias="rp_to",
@@ -197,7 +189,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
       FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_tww_reach_insert();
     """.format(
         rp_from=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="reach_point",
             prefix="rp_from_",
@@ -213,7 +205,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             returning="obj_id INTO NEW.rp_from_obj_id",
         ),
         rp_to=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="reach_point",
             prefix="rp_to_",
@@ -229,7 +221,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             returning="obj_id INTO NEW.rp_to_obj_id",
         ),
         ws=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_structure",
             prefix="ws_",
@@ -247,7 +239,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             },
         ),
         ch=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="channel",
             prefix="ch_",
@@ -257,7 +249,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             skip_columns=[],
         ),
         ne=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_networkelement",
             remove_pkey=False,
@@ -265,7 +257,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             remap_columns={"fk_wastewater_structure": "ws_obj_id"},
         ),
         re=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="reach",
             remove_pkey=False,
@@ -282,26 +274,50 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
     CREATE OR REPLACE FUNCTION tww_app.ft_vw_tww_reach_update()
       RETURNS trigger AS
     $BODY$
+    DECLARE
+        new_lvl numeric(7,3);
     BEGIN
 
-      -- Synchronize geometry with level
-      IF NEW.rp_from_level <> OLD.rp_from_level OR (NEW.rp_from_level IS NULL AND OLD.rp_from_level IS NOT NULL) OR (NEW.rp_from_level IS NOT NULL AND OLD.rp_from_level IS NULL) THEN
-        NEW.progression3d_geometry = ST_ForceCurve(ST_SetPoint(ST_CurveToLine(NEW.progression3d_geometry),0,
-        ST_MakePoint(ST_X(ST_StartPoint(NEW.progression3d_geometry)),ST_Y(ST_StartPoint(NEW.progression3d_geometry)),COALESCE(NEW.rp_from_level,'NaN'))));
-      ELSE
-        IF ST_Z(ST_StartPoint(NEW.progression3d_geometry)) <> ST_Z(ST_StartPoint(OLD.progression3d_geometry)) THEN
-          NEW.rp_from_level = NULLIF(ST_Z(ST_StartPoint(NEW.progression3d_geometry)),'NaN');
-        END IF;
+      -------------------------------------
+      -- Synchronize geometry with level --
+      -------------------------------------
+
+      -- Start point
+      SELECT NULLIF(ST_Z(ST_StartPoint(NEW.progression3d_geometry)),'NaN') INTO new_lvl;
+
+      IF NEW.rp_from_level IS DISTINCT FROM new_lvl THEN -- we need additional checks
+        CASE WHEN NEW.rp_from_level IS DISTINCT FROM OLD.rp_from_level THEN --rp_from_level was changed
+          NEW.progression3d_geometry = ST_ForceCurve(ST_SetPoint(ST_CurveToLine(NEW.progression3d_geometry),0,
+          ST_MakePoint(ST_X(ST_StartPoint(NEW.progression3d_geometry)),ST_Y(ST_StartPoint(NEW.progression3d_geometry)),COALESCE(NEW.rp_from_level,'NaN'))));
+        WHEN
+          COALESCE(new_lvl,0) != 0  -- filter out NULL and 0
+          AND new_lvl IS DISTINCT FROM NULLIF(ST_Z(ST_StartPoint(OLD.progression3d_geometry)),'NaN') -- 3d geometry Z was changed
+        THEN
+          NEW.rp_from_level = new_lvl;
+        ELSE -- 3D geometry was set to NULL or zero, we use the old Z
+          NEW.progression3d_geometry = ST_ForceCurve(ST_SetPoint(ST_CurveToLine(NEW.progression3d_geometry),0,
+          ST_MakePoint(ST_X(ST_StartPoint(NEW.progression3d_geometry)),ST_Y(ST_StartPoint(NEW.progression3d_geometry)),COALESCE(NEW.rp_from_level,'NaN'))));
+        END CASE;
+      ELSE NULL;
       END IF;
 
-      -- Synchronize geometry with level
-      IF NEW.rp_to_level <> OLD.rp_to_level OR (NEW.rp_to_level IS NULL AND OLD.rp_to_level IS NOT NULL) OR (NEW.rp_to_level IS NOT NULL AND OLD.rp_to_level IS NULL) THEN
-        NEW.progression3d_geometry = ST_ForceCurve(ST_SetPoint(ST_CurveToLine(NEW.progression3d_geometry),ST_NumPoints(NEW.progression3d_geometry)-1,
-        ST_MakePoint(ST_X(ST_EndPoint(NEW.progression3d_geometry)),ST_Y(ST_EndPoint(NEW.progression3d_geometry)),COALESCE(NEW.rp_to_level,'NaN'))));
-      ELSE
-        IF ST_Z(ST_EndPoint(NEW.progression3d_geometry)) <> ST_Z(ST_EndPoint(OLD.progression3d_geometry)) THEN
-          NEW.rp_to_level = NULLIF(ST_Z(ST_EndPoint(NEW.progression3d_geometry)),'NaN');
-        END IF;
+      -- End point
+      SELECT NULLIF(ST_Z(ST_EndPoint(NEW.progression3d_geometry)),'NaN') INTO new_lvl;
+      IF NEW.rp_to_level IS DISTINCT FROM new_lvl THEN -- we need additional checks
+        CASE
+        WHEN NEW.rp_to_level IS DISTINCT FROM OLD.rp_to_level THEN --rp_to_level was changed
+          NEW.progression3d_geometry = ST_ForceCurve(ST_SetPoint(ST_CurveToLine(NEW.progression3d_geometry),-1,
+          ST_MakePoint(ST_X(ST_EndPoint(NEW.progression3d_geometry)),ST_Y(ST_EndPoint(NEW.progression3d_geometry)),COALESCE(NEW.rp_to_level,'NaN'))));
+        WHEN
+          COALESCE(new_lvl,0) != 0  -- filter out NULL and 0
+          AND new_lvl IS DISTINCT FROM NULLIF(ST_Z(ST_EndPoint(OLD.progression3d_geometry)),'NaN') -- 3d geometry Z was changed
+        THEN
+          NEW.rp_to_level = new_lvl;
+        ELSE -- 3D geometry was set to NULL or zero, we use the old Z
+          NEW.progression3d_geometry = ST_ForceCurve(ST_SetPoint(ST_CurveToLine(NEW.progression3d_geometry),-1,
+          ST_MakePoint(ST_X(ST_EndPoint(NEW.progression3d_geometry)),ST_Y(ST_EndPoint(NEW.progression3d_geometry)),COALESCE(NEW.rp_to_level,'NaN'))));
+        END CASE;
+      ELSE NULL;
       END IF;
 
       {rp_from}
@@ -322,7 +338,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
       LANGUAGE plpgsql VOLATILE;
     """.format(
         rp_from=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="reach_point",
             prefix="rp_from_",
@@ -331,7 +347,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             update_values={"situation3d_geometry": "ST_StartPoint(NEW.progression3d_geometry)"},
         ),
         rp_to=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="reach_point",
             prefix="rp_to_",
@@ -340,7 +356,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             update_values={"situation3d_geometry": "ST_EndPoint(NEW.progression3d_geometry)"},
         ),
         ch=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="channel",
             prefix="ch_",
@@ -349,7 +365,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             remap_columns={"obj_id": "ws_obj_id"},
         ),
         ws=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_structure",
             prefix="ws_",
@@ -368,7 +384,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             ],
         ),
         ne=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_networkelement",
             remove_pkey=True,
@@ -376,7 +392,7 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
             remap_columns={"fk_wastewater_structure": "ws_obj_id"},
         ),
         re=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="reach",
             remove_pkey=True,
@@ -412,9 +428,6 @@ def vw_tww_reach(pg_service: str = None, extra_definition: dict = None):
     """
     cursor.execute(extras)
 
-    conn.commit()
-    conn.close()
-
 
 if __name__ == "__main__":
     # create the top-level parser
@@ -428,4 +441,5 @@ if __name__ == "__main__":
     args = parser.parse_args()
     pg_service = args.pg_service or os.getenv("PGSERVICE")
     extra_definition = safe_load(open(args.extra_definition)) if args.extra_definition else {}
-    vw_tww_reach(pg_service=pg_service, extra_definition=extra_definition)
+    with psycopg.connect(f"service={pg_service}") as conn:
+        vw_tww_reach(connection=conn, extra_definition=extra_definition)

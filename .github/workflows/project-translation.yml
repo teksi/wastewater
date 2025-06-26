@@ -20,12 +20,16 @@ on:
   schedule:
     - cron: "30 04 * * *"
   workflow_dispatch:
-
+  workflow_call: # Allows this workflow to be called by other workflows
+    inputs:
+      release_tag:
+        required: true
+        type: string
 
 jobs:
   build:
     name: Update project translations
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     env:
       TX_TOKEN: ${{ secrets.TX_TOKEN }}
@@ -44,7 +48,12 @@ jobs:
       - name: Start Docker compose
         run: |
           docker compose up --build -d
-          docker compose exec db init_db.sh wait
+          until docker compose exec db pg_isready -U postgres; do
+            echo "Waiting for PostgreSQL to be ready..."
+            sleep 2
+          done
+          docker compose exec db createdb -U postgres tww
+          docker compose exec db pum -vvv -s pg_tww -d datamodel install -p SRID 2056 --roles --grant
 
       - name: Translate (create sources)
         run: docker compose run qgis sh -c 'xvfb-run /usr/src/project/scripts/project-translation-create-source.py /usr/src/project/teksi_wastewater.qgs'
@@ -65,3 +74,14 @@ jobs:
           name: project-translations
           path: project/teksi_wastewater*
           if-no-files-found: error
+
+      - name: Zip project translations
+        run: zip -r project-translations.zip project/teksi_wastewater*
+
+      - name: Upload project translations as GitHub Release asset
+        if: ${{ inputs.release_tag != '' }}
+        run: |
+          gh release upload "${{ inputs.release_tag }}" project-translations.zip#oqtopus.project --repo "$GITHUB_REPOSITORY"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.ref_name }}

@@ -15,12 +15,16 @@ on:
       - plugin/**
       - '.github/workflows/datamodel-create-dumps.yml'
   workflow_dispatch:
-
+  workflow_call: # Allows this workflow to be called by other workflows
+    inputs:
+      release_tag:
+        required: true
+        type: string
 
 jobs:
   plugin-package:
     name: Packages and releases plugin
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     steps:
       - uses: actions/checkout@v4
@@ -62,3 +66,10 @@ jobs:
           name: teksi_wastewater_plugin_dev
           path: plugin/teksi_wastewater.0.0.0.zip
           if-no-files-found: error
+
+      - name: Upload plugin as GitHub Release asset
+        if: ${{ inputs.release_tag != '' }}
+        run: gh release upload "${{ inputs.release_tag }}" plugin/teksi_wastewater.0.0.0.zip#oqtopus.plugin --repo "$GITHUB_REPOSITORY"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.ref_name }}

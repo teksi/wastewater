@@ -1,0 +1,73 @@
+
+pum:
+  migration_table_schema: tww_sys
+  minimum_version: 1.1.12
+
+roles:
+  - name: tww_viewer
+    description: Role for users who can view the TWW data.
+    permissions:
+      - type: read
+        schemas: [tww_od, tww_vl, tww_sys, tww_app, tww_cfg]
+
+  - name: tww_user
+    description: Role for users who can view and edit the TWW data.
+    inherit: tww_viewer
+    permissions:
+      - type: write
+        schemas: [tww_od]
+
+  - name: tww_manager
+    description: Role for users who can view and edit the TWW data, and manage the TWW application.
+    inherit: tww_user
+    permissions:
+      - type: write
+        schemas: [tww_vl, tww_cfg]
+
+  - name: tww_sysadmin
+    description: Role for system administrators who can manage the TWW application and its configuration.
+    inherit: tww_manager
+    permissions:
+      - type: write
+        schemas: [tww_sys]
+
+
+parameters:
+  - name: SRID
+    type: integer
+    default: 2056
+    description: Coordinate Reference System (CRS) to use for the data. This is used for the geometry column in the database. Default is 2056 (CH1903+ / LV95).
+
+  - name: tww_reach_extra
+    type: text
+    description: YAML file with extra information for the tww_reach view.
+
+  - name: tww_wastewater_structure_extra
+    type: text
+    description: YAML file with extra information for the tww_wastewater_structure view.
+
+  - name: tww_ii_extra
+    type: text
+    description: YAML file with extra information for the vw_tww_infiltration_installation_extra view.
+
+  - name: wastewater_structure_extra
+    type: text
+    description: YAML file with extra information for the wastewater_structure view.
+
+  - name: tww_channel_extra
+    type: text
+    description: YAML file with extra information for the vw_tww_channel_extra view.
+
+dependencies:
+  - name: pirogue
+    minimum_version: 3.0.0
+
+migration_hooks:
+  pre:
+    - code: DROP SCHEMA IF EXISTS tww_app CASCADE;
+  post:
+    - file: app/create_app.py
+
+demo_data:
+  - name: Aletsch
+    file: demo_data/demo_data_aletsch.sql
