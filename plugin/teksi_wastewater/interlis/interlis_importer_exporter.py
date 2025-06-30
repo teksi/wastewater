@@ -193,8 +193,8 @@ class InterlisImporterExporter:
             # Check if MANDATORY fk_wastewater_structure is Null before export
             self._check_fk_wastewater_structure_null(limit_to_selection)
 
-        if flag_export_check_failed = True
-            # Add Message box to ask if export should be continued or not
+        if flag_export_check_failed:
+            # Add Message box to ask if export should still be continued or not
             mb = QMessageBox()
             mb.setText('Stop exporting: Some export checks failed - check the logs for details. (if you have a selection you can still try (click Cancel) ')
             mb.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
@@ -252,7 +252,56 @@ class InterlisImporterExporter:
 
                 self._progress_done(100)
                 logger.info("INTERLIS export finished.")
+        # 
+        else:
+            # File name without extension (used later for export)
+            file_name_base, _ = os.path.splitext(xtf_file_output)
 
+            # Configure logging
+            if logs_next_to_file:
+                self.base_log_path = xtf_file_output
+            else:
+                self.base_log_path = None
+
+            self._progress_done(5, "Clearing ili schema...")
+            self._clear_ili_schema(recreate_tables=True)
+
+            self._progress_done(15, "Creating ili schema...")
+            create_basket_col = False
+            if config.MODEL_NAME_VSA_KEK in export_models:
+                create_basket_col = True
+            self._create_ili_schema(export_models, create_basket_col=create_basket_col)
+
+            # Export the labels file
+            tempdir = tempfile.TemporaryDirectory()
+            labels_file_path = None
+            if len(selected_labels_scales_indices):
+                self._progress_done(25)
+                labels_file_path = os.path.join(tempdir.name, "labels.geojson")
+                self._export_labels_file(
+                    limit_to_selection=limit_to_selection,
+                    selected_labels_scales_indices=selected_labels_scales_indices,
+                    labels_file_path=labels_file_path,
+                )
+
+            # Export to the temporary ili2pg model
+            self._progress_done(35, "Converting from TEKSI Wastewater...")
+            self._export_to_intermediate_schema(
+                export_model=export_models[0],
+                file_name=xtf_file_output,
+                selected_ids=selected_ids,
+                export_orientation=export_orientation,
+                labels_file_path=labels_file_path,
+                basket_enabled=create_basket_col,
+            )
+            tempdir.cleanup()  # Cleanup
+
+            self._progress_done(60)
+            self._export_xtf_files(file_name_base, export_models)
+
+            self._progress_done(100)
+            logger.info("INTERLIS export finished.")
+            
     def _import_validate_xtf_file(self, xtf_file_input):
         log_path = make_log_path(self.base_log_path, "ilivalidator")
         try:
