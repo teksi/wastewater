@@ -3,7 +3,7 @@ import os
 import tempfile
 
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QApplication, QMessageBox
 
 from ..utils.database_utils import DatabaseUtils
 from . import config
@@ -204,7 +204,7 @@ class InterlisImporterExporter:
                 logger.info(
                     "INTERLIS export has been stopped due to failing export checks - see logs for details."
                 )
-                progress_dialog.close()
+                self._progress_done(100, "Export aborted...")
                 return
             elif return_value == QMessageBox.Cancel:
 
