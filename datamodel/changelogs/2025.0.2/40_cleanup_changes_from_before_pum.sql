@@ -13,4 +13,4 @@ ALTER TABLE tww_vl.channel_usage_current ADD COLUMN IF NOT EXISTS tww_symbology_
 UPDATE tww_vl.channel_usage_current
 SET tww_symbology_inflow_prio= true WHERE code =4516;
 
-ALTER TABLE tww_vl.channel_function_hierarchic DROP COLUMN IF NOT EXISTS tww_symbology_inflow_prio;
+ALTER TABLE tww_vl.channel_function_hierarchic DROP COLUMN IF EXISTS tww_symbology_inflow_prio;
