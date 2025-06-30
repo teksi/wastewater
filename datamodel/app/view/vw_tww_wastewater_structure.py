@@ -661,7 +661,7 @@ def vw_tww_wastewater_structure(
             skip_columns=[],
         ),
         insert_vw_cover=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_app",
             table_name="vw_cover",
             table_type="view",
