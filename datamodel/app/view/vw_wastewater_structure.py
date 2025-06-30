@@ -31,7 +31,7 @@ def vw_wastewater_structure(connection: psycopg.Connection, extra_definition: di
         , wn._function_hierarchic AS _channel_function_hierarchic
 
         FROM tww_od.wastewater_structure ws
-        LEFT JOIN tww_od.wastewater_node wn ON wn.obj_id = ws.fk_main_wastewater_node
+        LEFT JOIN tww_od.tww_wastewater_node_symbology wn ON wn.fk_wastewater_node = ws.fk_main_wastewater_node
         LEFT JOIN tww_od.channel ch ON ch.obj_id = ws.obj_id
         {extra_joins}
         WHERE ch.obj_id IS NULL;
@@ -60,13 +60,7 @@ def vw_wastewater_structure(connection: psycopg.Connection, extra_definition: di
             table_alias="ws",
             remove_pkey=False,
             indent=4,
-            skip_columns=[
-                "_label",
-                "_cover_label",
-                "_bottom_label",
-                "_input_label",
-                "_output_label",
-            ],
+            skip_columns=[],
         ),
         extra_joins="\n    ".join(
             [
@@ -107,13 +101,6 @@ def vw_wastewater_structure(connection: psycopg.Connection, extra_definition: di
             table_alias="",
             remove_pkey=False,
             indent=2,
-            skip_columns=[
-                "_label",
-                "_cover_label",
-                "_bottom_label",
-                "_input_label",
-                "_output_label",
-            ],
         ),
     )
 
@@ -146,11 +133,6 @@ def vw_wastewater_structure(connection: psycopg.Connection, extra_definition: di
             indent=6,
             skip_columns=[
                 "last_modification",
-                "_label",
-                "_cover_label",
-                "_bottom_label",
-                "_input_label",
-                "_output_label",
                 "_depth",
             ],
             update_values={},
