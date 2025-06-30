@@ -38,7 +38,7 @@ class InterlisImporterExporterError(Exception):
 
 
 class InterlisImporterExporter:
-    
+
     def __init__(self, progress_done_callback=None):
         self.progress_done_callback = progress_done_callback
         self.interlisTools = InterlisTools()
@@ -174,7 +174,7 @@ class InterlisImporterExporter:
             flag_export_check_failed = self._check_subclass_counts(limit_to_selection)
 
             logger.debug(f"Vor identifier: flag_export_check_failed {flag_export_check_failed}")
-            
+
             # Check if attribute identifier is Null before export
             # 30.6.25 flag_export_check_failed added
             flag_export_check_failed = self._check_identifier_null(limit_to_selection)
@@ -196,7 +196,7 @@ class InterlisImporterExporter:
             flag_export_check_failed = self._check_fk_wastewater_structure_null(limit_to_selection)
 
         logger.debug(f"After checks: flag_export_check_failed {flag_export_check_failed}")
-        
+
         if flag_export_check_failed:
             logger.info("Adding QMessageBox ...")
             # Add Message box to ask if export should still be continued or not
@@ -584,7 +584,7 @@ class InterlisImporterExporter:
             )
 
     def _check_subclass_counts(self, limit_to_selection=False):
-        
+
         check_subclass_counts_failed = False
         check_subclass_counts_failed = self._check_subclass_count(
             config.TWW_OD_SCHEMA,
@@ -700,7 +700,6 @@ class InterlisImporterExporter:
                         )
                     # Return statement added
                     return False
-
 
     # def _check_identifier_null(self, check_fail, limit_to_selection=False):
     def _check_identifier_null(self, limit_to_selection=False):
