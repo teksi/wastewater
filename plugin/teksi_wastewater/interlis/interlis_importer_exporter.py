@@ -252,7 +252,8 @@ class InterlisImporterExporter:
 
                 self._progress_done(100)
                 logger.info("INTERLIS export finished.")
-        # 
+
+        # no problems with export checks
         else:
             # File name without extension (used later for export)
             file_name_base, _ = os.path.splitext(xtf_file_output)
