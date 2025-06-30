@@ -64,7 +64,7 @@ dependencies:
 
 migration_hooks:
   pre:
-    - code: DROP SCHEMA IF EXISTS tww_app CASCADE;
+    - file: ./pre_migration.sql
   post:
     - file: app/create_app.py
 
