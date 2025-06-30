@@ -1,13 +1,13 @@
 DO
 $DO$
-DECLARE 
+DECLARE
 	rel_record record;
 BEGIN
-	FOR rel_record  in 
-		SELECT 
+	FOR rel_record  in
+		SELECT
 			split_part(relation_name, '.', 1) as schm,
 			split_part(relation_name, '.', 2) as rel,
-			uid_column FROM tww_sys.logged_relations 
+			uid_column FROM tww_sys.logged_relations
 	LOOP
 		SELECT EXISTS (
             SELECT 1
@@ -19,14 +19,14 @@ BEGIN
             EXECUTE FORMAT( 'SELECT tww_app.audit_table(''%I.%I'')', rel_record.schm, rel_record.rel);
             -- Do something for tables
         ELSE
-            EXECUTE 
+            EXECUTE
 				FORMAT( 'SELECT tww_app.audit_view(''%I.%I'', true, ''{}''::text[], ''{%I}''::text[])'
-				, rel_record.schm 
+				, rel_record.schm
 				, rel_record.rel
 				, rel_record.uid_column);
             -- Do something for views
         END IF;
-		
+
 	END LOOP;
 END;
 $DO$;
