@@ -208,10 +208,10 @@ class InterlisImporterExporter:
                 # self._progress_done(100, "Export aborted...")
                 # return
                 raise InterlisImporterExporterError(
-                            "INTERLIS Export aborted!",
-                            errormsg,
-                            None,
-                        )
+                    "INTERLIS Export aborted!",
+                    errormsg,
+                    None,
+                )
                 exit
             elif return_value == QMessageBox.Cancel:
 
@@ -774,10 +774,9 @@ class InterlisImporterExporter:
                 logger.info(f"missing_identifier_count : {missing_identifier_count}")
 
             if missing_identifier_count == 0:
-                identifier_null_check = True
                 logger.info("OK: all identifiers set in tww_od!")
             else:
-                identifier_null_check = False
+                pass
                 # logger.info(f"ERROR: Missing identifiers in tww_od: {missing_identifier_count}")
                 errormsg = f"Missing identifiers in schema tww_od: {missing_identifier_count}"
                 if limit_to_selection:
@@ -787,9 +786,9 @@ class InterlisImporterExporter:
                 else:
                     logger.error(f"INTEGRITY CHECK missing identifiers: {errormsg}")
                     # raise InterlisImporterExporterError(
-                        # "INTEGRITY CHECK missing identifiers - see tww tab for details",
-                        # errormsg,
-                        # None,
+                    # "INTEGRITY CHECK missing identifiers - see tww tab for details",
+                    # errormsg,
+                    # None,
                     # )
                 # added flag_export_check_failed 30.6.2025
                 flag_export_check_failed = False
