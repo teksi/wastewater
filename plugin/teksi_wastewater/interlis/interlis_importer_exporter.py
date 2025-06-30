@@ -38,6 +38,7 @@ class InterlisImporterExporterError(Exception):
 
 
 class InterlisImporterExporter:
+    
     def __init__(self, progress_done_callback=None):
         self.progress_done_callback = progress_done_callback
         self.interlisTools = InterlisTools()
@@ -165,32 +166,37 @@ class InterlisImporterExporter:
         selected_ids=None,
     ):
 
-        flag_export_check_failed = True
+        flag_export_check_failed = False
         flag_test = True
         if flag_test:
 
             # Validate subclasses before export
-            self._check_subclass_counts(limit_to_selection)
+            flag_export_check_failed = self._check_subclass_counts(limit_to_selection)
 
+            logger.debug(f"Vor identifier: flag_export_check_failed {flag_export_check_failed}")
+            
             # Check if attribute identifier is Null before export
-            self._check_identifier_null(limit_to_selection)
+            # 30.6.25 flag_export_check_failed added
+            flag_export_check_failed = self._check_identifier_null(limit_to_selection)
 
             # Check if MAMDATORY fk_owner is Null  before export
-            self._check_fk_owner_null(limit_to_selection)
+            flag_export_check_failed = self._check_fk_owner_null(limit_to_selection)
 
             # Check if MAMDATORY fk_operator is Null  before export
-            self._check_fk_operator_null(limit_to_selection)
+            flag_export_check_failed = self._check_fk_operator_null(limit_to_selection)
 
             # Check if MAMDATORY fk_dataowner is Null  before export
-            self._check_fk_dataowner_null(limit_to_selection)
+            flag_export_check_failed = self._check_fk_dataowner_null(limit_to_selection)
 
             # Check if MAMDATORY fk_provider is Null  before export
-            self._check_fk_provider_null(limit_to_selection)
+            flag_export_check_failed = self._check_fk_provider_null(limit_to_selection)
 
             # new in TEKSI
             # Check if MANDATORY fk_wastewater_structure is Null before export
-            self._check_fk_wastewater_structure_null(limit_to_selection)
+            flag_export_check_failed = self._check_fk_wastewater_structure_null(limit_to_selection)
 
+        logger.debug(f"After checks: flag_export_check_failed {flag_export_check_failed}")
+        
         if flag_export_check_failed:
             logger.info("Adding QMessageBox ...")
             # Add Message box to ask if export should still be continued or not
@@ -578,13 +584,15 @@ class InterlisImporterExporter:
             )
 
     def _check_subclass_counts(self, limit_to_selection=False):
-        self._check_subclass_count(
+        
+        check_subclass_counts_failed = False
+        check_subclass_counts_failed = self._check_subclass_count(
             config.TWW_OD_SCHEMA,
             "wastewater_networkelement",
             ["reach", "wastewater_node"],
             limit_to_selection,
         )
-        self._check_subclass_count(
+        check_subclass_counts_failed = self._check_subclass_count(
             config.TWW_OD_SCHEMA,
             "wastewater_structure",
             [
@@ -599,7 +607,7 @@ class InterlisImporterExporter:
             ],
             limit_to_selection,
         )
-        self._check_subclass_count(
+        check_subclass_counts_failed = self._check_subclass_count(
             config.TWW_OD_SCHEMA,
             "structure_part",
             [
@@ -618,31 +626,31 @@ class InterlisImporterExporter:
             ],
             limit_to_selection,
         )
-        self._check_subclass_count(
+        check_subclass_counts_failed = self._check_subclass_count(
             config.TWW_OD_SCHEMA,
             "overflow",
             ["pump", "leapingweir", "prank_weir"],
             limit_to_selection,
         )
-        self._check_subclass_count(
+        check_subclass_counts_failed = self._check_subclass_count(
             config.TWW_OD_SCHEMA,
             "maintenance_event",
             ["maintenance", "examination", "bio_ecol_assessment"],
             limit_to_selection,
         )
-        self._check_subclass_count(
+        check_subclass_counts_failed = self._check_subclass_count(
             config.TWW_OD_SCHEMA,
             "damage",
             ["damage_channel", "damage_manhole"],
             limit_to_selection,
         )
-        self._check_subclass_count(
+        check_subclass_counts_failed = self._check_subclass_count(
             config.TWW_OD_SCHEMA,
             "connection_object",
             ["fountain", "individual_surface", "building", "reservoir"],
             limit_to_selection,
         )
-        self._check_subclass_count(
+        check_subclass_counts_failed = self._check_subclass_count(
             config.TWW_OD_SCHEMA,
             "zone",
             ["infiltration_zone", "drainage_system"],
@@ -671,6 +679,8 @@ class InterlisImporterExporter:
                     logger.info(
                         f"OK: number of subclass elements of class {parent_name} OK in schema {schema_name}!"
                     )
+                    # Return statement added
+                    return True
                 else:
                     if parent_count > 0:
                         errormsg = f"Too many superclass entries for {schema_name}.{parent_name}"
@@ -688,7 +698,11 @@ class InterlisImporterExporter:
                             errormsg,
                             None,
                         )
+                    # Return statement added
+                    return False
 
+
+    # def _check_identifier_null(self, check_fail, limit_to_selection=False):
     def _check_identifier_null(self, limit_to_selection=False):
         """
         Check if attribute identifier is Null
@@ -776,6 +790,7 @@ class InterlisImporterExporter:
             if missing_identifier_count == 0:
                 identifier_null_check = True
                 logger.info("OK: all identifiers set in tww_od!")
+                return True
             else:
                 identifier_null_check = False
                 # logger.info(f"ERROR: Missing identifiers in tww_od: {missing_identifier_count}")
@@ -791,9 +806,10 @@ class InterlisImporterExporter:
                         # errormsg,
                         # None,
                     # )
-                # added flag_export_check_failed 30.6.2025
-                flag_export_check_failed = False
-                logger.error(f"flag_export_check_failed: {flag_export_check_failed}")
+                # added check_fail 30.6.2025
+                check_fail = True
+                logger.error(f"check_fail: {check_fail}")
+                return True
 
     def _check_fk_owner_null(self, limit_to_selection=False):
         """
@@ -842,6 +858,7 @@ class InterlisImporterExporter:
                 logger.info(
                     f"ERROR: Missing mandatory fk_owner in tww_od: {missing_fk_owner_count}"
                 )
+            # Return statement added
             return check_fk_owner_null
 
     def _check_fk_operator_null(self, limit_to_selection=False):
@@ -880,11 +897,13 @@ class InterlisImporterExporter:
 
             if missing_fk_operator_count == 0:
                 logger.info("OK: all mandatory fk_operator set in tww_od!")
+                # Return statement added
                 return True
             else:
                 logger.error(
                     f"ERROR: Missing mandatory fk_operator in tww_od: {missing_fk_operator_count}"
                 )
+                # Return statement added
                 return False
 
     def _check_fk_dataowner_null(self, limit_to_selection=False):
@@ -972,11 +991,13 @@ class InterlisImporterExporter:
 
             if missing_fk_dataowner_count == 0:
                 logger.info("OK: all mandatory fk_dataowner set in tww_od!")
+                # Return statement added
                 return True
             else:
                 logger.error(
                     f"ERROR: Missing mandatory fk_dataowner in tww_od: {missing_fk_dataowner_count}"
                 )
+                # Return statement added
                 return False
 
     def _check_fk_provider_null(self, limit_to_selection=False):
@@ -1061,11 +1082,13 @@ class InterlisImporterExporter:
 
             if missing_fk_provider_count == 0:
                 logger.info("OK: all mandatory fk_provider set in tww_od!")
+                # Return statement added
                 return True
             else:
                 logger.error(
                     f"ERROR: Missing mandatory fk_provider in tww_od: {missing_fk_provider_count}"
                 )
+                # Return statement added
                 return False
 
     def _check_fk_wastewater_structure_null(self, limit_to_selection=False):
@@ -1117,11 +1140,13 @@ class InterlisImporterExporter:
 
             if missing_fk_wastewater_structure_count == 0:
                 logger.info("OK: all mandatory fk_wastewater_structure set in tww_od!")
+                # Return statement added
                 return True
             else:
                 logger.error(
                     f"ERROR: Missing mandatory fk_wastewater_structure in tww_od: {missing_fk_wastewater_structure_count}"
                 )
+                # Return statement added
                 return False
 
     def _init_model_classes(self, model):
