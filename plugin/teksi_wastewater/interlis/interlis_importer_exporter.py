@@ -677,7 +677,7 @@ class InterlisImporterExporter:
                             errormsg,
                             None,
                         )
-                        # added 30.6.2025 
+                        # added 30.6.2025
                         flag_export_check_failed = True
 
     def _check_identifier_null(self, limit_to_selection=False):
@@ -782,7 +782,7 @@ class InterlisImporterExporter:
                         errormsg,
                         None,
                     )
-                # added 30.6.2025 
+                # added 30.6.2025
                 flag_export_check_failed = True
             return identifier_null_check
 
