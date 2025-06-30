@@ -656,6 +656,7 @@ class InterlisImporterExporter:
             ["infiltration_zone", "drainage_system"],
             limit_to_selection,
         )
+        return check_subclass_counts_failed
 
     def _check_subclass_count(self, schema_name, parent_name, child_list, limit_to_selection):
         logger.info(f"INTEGRITY CHECK {parent_name} subclass data...")
