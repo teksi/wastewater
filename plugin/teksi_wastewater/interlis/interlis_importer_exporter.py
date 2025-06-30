@@ -168,11 +168,10 @@ class InterlisImporterExporter:
         flag_export_check_failed = False
         flag_test = True
         if flag_test:
-            check_subclass_counts = False
+            pass
 
             # Validate subclasses before export
             self._check_subclass_counts(limit_to_selection)
-
 
             # Check if attribute identifier is Null before export
             self._check_identifier_null(limit_to_selection)
@@ -196,11 +195,15 @@ class InterlisImporterExporter:
         if flag_export_check_failed:
             # Add Message box to ask if export should still be continued or not
             mb = QMessageBox()
-            mb.setText('Stop exporting: Some export checks failed - check the logs for details. (if you have a selection you can still try (click Cancel) ')
+            mb.setText(
+                "Stop exporting: Some export checks failed - check the logs for details. (if you have a selection you can still try (click Cancel) "
+            )
             mb.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
             return_value = mb.exec()
             if return_value == QMessageBox.Ok:
-                logger.info("INTERLIS export has been stopped due to failing export checks - see logs for details.")
+                logger.info(
+                    "INTERLIS export has been stopped due to failing export checks - see logs for details."
+                )
                 progress_dialog.close()
                 return
             elif return_value == QMessageBox.Cancel:
@@ -252,7 +255,7 @@ class InterlisImporterExporter:
 
                 self._progress_done(100)
                 logger.info("INTERLIS export finished.")
-        # 
+        #
         else:
             # File name without extension (used later for export)
             file_name_base, _ = os.path.splitext(xtf_file_output)
@@ -301,7 +304,7 @@ class InterlisImporterExporter:
 
             self._progress_done(100)
             logger.info("INTERLIS export finished.")
-            
+
     def _import_validate_xtf_file(self, xtf_file_input):
         log_path = make_log_path(self.base_log_path, "ilivalidator")
         try:
@@ -678,7 +681,6 @@ class InterlisImporterExporter:
                             None,
                         )
                         # added 30.6.2025
-                        flag_export_check_failed = True
 
     def _check_identifier_null(self, limit_to_selection=False):
         """
@@ -783,7 +785,6 @@ class InterlisImporterExporter:
                         None,
                     )
                 # added 30.6.2025
-                flag_export_check_failed = True
             return identifier_null_check
 
     def _check_fk_owner_null(self, limit_to_selection=False):
