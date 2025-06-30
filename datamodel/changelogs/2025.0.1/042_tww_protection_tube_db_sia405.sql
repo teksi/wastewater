@@ -3,7 +3,6 @@
 ------ For questions etc. please contact Stefan Burckhardt stefan.burckhardt@sjib.ch
 ------ version 28.10.2024 20:55:20
 ------ with 3D coordinates
-BEGIN;
 
 -------
 CREATE TABLE tww_od.sia405pt_protection_tube
@@ -19,7 +18,7 @@ COMMENT ON COLUMN tww_od.sia405pt_protection_tube.obj_id IS 'INTERLIS STANDARD O
  ALTER TABLE tww_od.sia405pt_protection_tube ADD COLUMN name_number text;
  ALTER TABLE tww_od.sia405pt_protection_tube ADD CONSTRAINT _name_number_length_max_40 CHECK(char_length(name_number)<=40);
 COMMENT ON COLUMN tww_od.sia405pt_protection_tube.name_number IS '';
--- ALTER TABLE tww_od.sia405pt_protection_tube ADD COLUMN geometry_geometry geometry('COMPOUNDCURVE', :SRID);
+-- ALTER TABLE tww_od.sia405pt_protection_tube ADD COLUMN geometry_geometry geometry('COMPOUNDCURVE', {SRID});
 -- CREATE INDEX in_tww_sia405pt_protection_tube_geometry_geometry ON tww_od.sia405pt_protection_tube USING gist (geometry_geometry );
 -- COMMENT ON COLUMN tww_od.sia405pt_protection_tube.geometry_geometry IS '';
  ALTER TABLE tww_od.sia405pt_protection_tube ADD COLUMN material  integer ;
@@ -45,7 +44,7 @@ COMMENT ON COLUMN tww_od.sia405pt_protection_tube.condition IS '';
  ALTER TABLE tww_od.sia405pt_protection_tube ADD COLUMN remark text;
  ALTER TABLE tww_od.sia405pt_protection_tube ADD CONSTRAINT _remark_length_max_80 CHECK(char_length(remark)<=80);
 COMMENT ON COLUMN tww_od.sia405pt_protection_tube.remark IS 'General remarks / Allgemeine Bemerkungen / Remarques générales';
-ALTER TABLE tww_od.sia405pt_protection_tube ADD COLUMN geometry3d_geometry geometry('COMPOUNDCURVEZ', :SRID);
+ALTER TABLE tww_od.sia405pt_protection_tube ADD COLUMN geometry3d_geometry geometry('COMPOUNDCURVEZ', {SRID});
 CREATE INDEX in_tww_sia405pt_protection_tube_geometry3d_geometry ON tww_od.sia405pt_protection_tube USING gist (geometry3d_geometry );
 COMMENT ON COLUMN tww_od.sia405pt_protection_tube.geometry3d_geometry IS '';
  ALTER TABLE tww_od.sia405pt_protection_tube ADD COLUMN last_modification TIMESTAMP without time zone DEFAULT now();
@@ -103,5 +102,3 @@ ALTER TABLE tww_od.sia405pt_protection_tube ADD CONSTRAINT rel_od_sia405pt_prote
 ------ Indexes on identifiers
 
  CREATE UNIQUE INDEX in_od_sia405pt_protection_tube_name_number ON tww_od.sia405pt_protection_tube USING btree (name_number ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
-
-COMMIT;

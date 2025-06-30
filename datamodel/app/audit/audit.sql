@@ -1,91 +1,10 @@
---
--- TODO : Is this comment still relevant :
--- Audited data. Lots of information is available, it's just a matter of how much
--- you really want to record. See:
---
---   http://www.postgresql.org/docs/9.1/static/functions-info.html
---
--- Remember, every column you add takes up more audit table space and slows audit
--- inserts.
---
--- Every index you add has a big impact too, so avoid adding indexes to the
--- audit table unless you REALLY need them. The hstore GIST indexes are
--- particularly expensive.
---
--- It is sometimes worth copying the audit table, or a coarse subset of it that
--- you're interested in, into a temporary table where you CREATE any useful
--- indexes and do your analysis.
---
-
-BEGIN;
-
-DROP TABLE IF EXISTS tww_sys.logged_actions;
-
-CREATE TABLE tww_sys.logged_actions (
-    event_id bigserial PRIMARY KEY,
-    schema_name text NOT NULL,
-    table_name text NOT NULL,
-    relid oid NOT NULL,
-    session_user_name text,
-    action_tstamp_tx TIMESTAMP WITH TIME ZONE NOT NULL,
-    action_tstamp_stm TIMESTAMP WITH TIME ZONE NOT NULL,
-    action_tstamp_clk TIMESTAMP WITH TIME ZONE NOT NULL,
-    transaction_id bigint,
-    application_name text,
-    client_addr inet,
-    client_port integer,
-    client_query text NOT NULL,
-    action TEXT NOT NULL CHECK (action IN ('I','D','U','T')),
-    row_data hstore,
-    changed_fields hstore,
-    statement_only BOOLEAN NOT NULL
-);
-
-REVOKE ALL ON tww_sys.logged_actions FROM public;
-
-COMMENT ON TABLE tww_sys.logged_actions IS 'History of auditable actions on audited tables, from tww_sys.if_modified_func()';
-COMMENT ON COLUMN tww_sys.logged_actions.event_id IS 'Unique identifier for each auditable event';
-COMMENT ON COLUMN tww_sys.logged_actions.schema_name IS 'Database schema audited table for this event is in';
-COMMENT ON COLUMN tww_sys.logged_actions.table_name IS 'Non-schema-qualified table name of table event occured in';
-COMMENT ON COLUMN tww_sys.logged_actions.relid IS 'Table OID. Changes with drop/create. Get with ''tablename''::regclass';
-COMMENT ON COLUMN tww_sys.logged_actions.session_user_name IS 'Login / session user whose statement caused the audited event';
-COMMENT ON COLUMN tww_sys.logged_actions.action_tstamp_tx IS 'Transaction start timestamp for tx in which audited event occurred';
-COMMENT ON COLUMN tww_sys.logged_actions.action_tstamp_stm IS 'Statement start timestamp for tx in which audited event occurred';
-COMMENT ON COLUMN tww_sys.logged_actions.action_tstamp_clk IS 'Wall clock time at which audited event''s trigger call occurred';
-COMMENT ON COLUMN tww_sys.logged_actions.transaction_id IS 'Identifier of transaction that made the change. May wrap, but unique paired with action_tstamp_tx.';
-COMMENT ON COLUMN tww_sys.logged_actions.client_addr IS 'IP address of client that issued query. Null for unix domain socket.';
-COMMENT ON COLUMN tww_sys.logged_actions.client_port IS 'Remote peer IP port address of client that issued query. Undefined for unix socket.';
-COMMENT ON COLUMN tww_sys.logged_actions.client_query IS 'Top-level query that caused this auditable event. May be more than one statement.';
-COMMENT ON COLUMN tww_sys.logged_actions.application_name IS 'Application name set when this audit event occurred. Can be changed in-session by client.';
-COMMENT ON COLUMN tww_sys.logged_actions.action IS 'Action type; I = insert, D = delete, U = update, T = truncate';
-COMMENT ON COLUMN tww_sys.logged_actions.row_data IS 'Record value. Null for statement-level trigger. For INSERT this is the new tuple. For DELETE and UPDATE it is the old tuple.';
-COMMENT ON COLUMN tww_sys.logged_actions.changed_fields IS 'New values of fields changed by UPDATE. Null except for row-level UPDATE events.';
-COMMENT ON COLUMN tww_sys.logged_actions.statement_only IS '''t'' if audit event is from an FOR EACH STATEMENT trigger, ''f'' for FOR EACH ROW';
-
-CREATE INDEX logged_actions_relid_idx ON tww_sys.logged_actions(relid);
-CREATE INDEX logged_actions_action_tstamp_tx_stm_idx ON tww_sys.logged_actions(action_tstamp_stm);
-CREATE INDEX logged_actions_action_idx ON tww_sys.logged_actions(action);
-
-CREATE TABLE tww_sys.logged_relations (
-    relation_name text not null,
-    uid_column text not null,
-    PRIMARY KEY (relation_name, uid_column)
-);
-
-COMMENT ON TABLE tww_sys.logged_relations IS 'Table used to store unique identifier columns for table or views, so that events can be replayed';
-COMMENT ON COLUMN tww_sys.logged_relations.relation_name IS 'Relation (table or view) name (with schema if needed)';
-COMMENT ON COLUMN tww_sys.logged_relations.uid_column IS 'Name of a column that is used to uniquely identify a row in the relation';
-
-COMMIT;
-
-
 -----------------------------------------------
 -----------------------------------------------
 -- Provide audit functions for pg_history_viewer
 -----------------------------------------------
 -----------------------------------------------
 
-CREATE OR REPLACE FUNCTION tww_sys.if_modified_func() RETURNS TRIGGER AS $body$
+CREATE OR REPLACE FUNCTION tww_app.if_modified_func() RETURNS TRIGGER AS $body$
 DECLARE
     audit_row tww_sys.logged_actions%ROWTYPE;
     include_values BOOLEAN;
@@ -96,7 +15,7 @@ DECLARE
 BEGIN
 
     IF NOT (TG_WHEN IN ('AFTER' , 'INSTEAD OF')) THEN
-        RAISE EXCEPTION 'tww_sys.if_modified_func() may only run as an AFTER trigger';
+        RAISE EXCEPTION 'tww_app.if_modified_func() may only run as an AFTER trigger';
     END IF;
 
     audit_row = ROW(
@@ -135,7 +54,7 @@ BEGIN
 
         IF audit_row.changed_fields = hstore('') THEN
             -- All changed fields are ignored. Skip this update.
-            RAISE WARNING '[tww_sys.if_modified_func] - Trigger detected NULL hstore. ending';
+            RAISE WARNING '[tww_app.if_modified_func] - Trigger detected NULL hstore. ending';
             RETURN NULL;
         END IF;
   INSERT INTO tww_sys.logged_actions VALUES (audit_row.*);
@@ -157,7 +76,7 @@ BEGIN
   RETURN NULL;
 
     ELSE
-        RAISE EXCEPTION USING MESSAGE = '[tww_sys.if_modified_func] - Trigger func added as trigger for unhandled case: '||TG_OP||', '||TG_LEVEL;
+        RAISE EXCEPTION USING MESSAGE = '[tww_app.if_modified_func] - Trigger func added as trigger for unhandled case: '||TG_OP||', '||TG_LEVEL;
         RETURN NEW;
     END IF;
 
@@ -169,7 +88,7 @@ SECURITY DEFINER
 SET search_path = pg_catalog, public;
 
 
-COMMENT ON FUNCTION tww_sys.if_modified_func() IS $body$
+COMMENT ON FUNCTION tww_app.if_modified_func() IS $body$
 Track changes TO a TABLE at the statement AND/OR row level.
 
 Optional parameters TO TRIGGER IN CREATE TRIGGER call:
@@ -202,7 +121,7 @@ $body$;
 
 
 
-CREATE OR REPLACE FUNCTION tww_sys.audit_table(target_table regclass, audit_rows BOOLEAN, audit_query_text BOOLEAN, ignored_cols text[]) RETURNS void AS $body$
+CREATE OR REPLACE FUNCTION tww_app.audit_table(target_table regclass, audit_rows BOOLEAN, audit_query_text BOOLEAN, ignored_cols text[]) RETURNS void AS $body$
 DECLARE
   stm_targets text = 'INSERT OR UPDATE OR DELETE OR TRUNCATE';
   _q_txt text;
@@ -217,7 +136,7 @@ BEGIN
         END IF;
         _q_txt = 'CREATE TRIGGER audit_trigger_row AFTER INSERT OR UPDATE OR DELETE ON ' ||
                  target_table::text ||
-                 ' FOR EACH ROW EXECUTE PROCEDURE tww_sys.if_modified_func(' ||
+                 ' FOR EACH ROW EXECUTE PROCEDURE tww_app.if_modified_func(' ||
                  quote_literal(audit_query_text) || _ignored_cols_snip || ');';
         RAISE NOTICE '%',_q_txt;
         EXECUTE _q_txt;
@@ -227,7 +146,7 @@ BEGIN
 
     _q_txt = 'CREATE TRIGGER audit_trigger_stm AFTER ' || stm_targets || ' ON ' ||
              target_table ||
-             ' FOR EACH STATEMENT EXECUTE PROCEDURE tww_sys.if_modified_func('||
+             ' FOR EACH STATEMENT EXECUTE PROCEDURE tww_app.if_modified_func('||
              quote_literal(audit_query_text) || ');';
     RAISE NOTICE '%',_q_txt;
     EXECUTE _q_txt;
@@ -245,7 +164,7 @@ END;
 $body$
 LANGUAGE plpgsql;
 
-COMMENT ON FUNCTION tww_sys.audit_table(regclass, BOOLEAN, BOOLEAN, text[]) IS $body$
+COMMENT ON FUNCTION tww_app.audit_table(regclass, BOOLEAN, BOOLEAN, text[]) IS $body$
 ADD auditing support TO a TABLE.
 
 Arguments:
@@ -256,22 +175,22 @@ Arguments:
 $body$;
 
 -- Pg doesn't allow variadic calls with 0 params, so provide a wrapper
-CREATE OR REPLACE FUNCTION tww_sys.audit_table(target_table regclass, audit_rows BOOLEAN, audit_query_text BOOLEAN) RETURNS void AS $body$
-SELECT tww_sys.audit_table($1, $2, $3, ARRAY[]::text[]);
+CREATE OR REPLACE FUNCTION tww_app.audit_table(target_table regclass, audit_rows BOOLEAN, audit_query_text BOOLEAN) RETURNS void AS $body$
+SELECT tww_app.audit_table($1, $2, $3, ARRAY[]::text[]);
 $body$ LANGUAGE SQL;
 
 -- And provide a convenience call wrapper for the simplest case
 -- of row-level logging with no excluded cols and query logging enabled.
 --
-CREATE OR REPLACE FUNCTION tww_sys.audit_table(target_table regclass) RETURNS void AS $body$
-SELECT tww_sys.audit_table($1, BOOLEAN 't', BOOLEAN 't');
+CREATE OR REPLACE FUNCTION tww_app.audit_table(target_table regclass) RETURNS void AS $body$
+SELECT tww_app.audit_table($1, BOOLEAN 't', BOOLEAN 't');
 $body$ LANGUAGE 'sql';
 
-COMMENT ON FUNCTION tww_sys.audit_table(regclass) IS $body$
+COMMENT ON FUNCTION tww_app.audit_table(regclass) IS $body$
 Add auditing support to the given table. Row-level changes will be logged with full client query text. No cols are ignored.
 $body$;
 
-CREATE OR REPLACE FUNCTION tww_sys.unaudit_table(target_table regclass) RETURNS void AS $body$
+CREATE OR REPLACE FUNCTION tww_app.unaudit_table(target_table regclass) RETURNS void AS $body$
 BEGIN
     EXECUTE 'DROP TRIGGER IF EXISTS audit_trigger_row ON ' || target_table::text;
     EXECUTE 'DROP TRIGGER IF EXISTS audit_trigger_stm ON ' || target_table::text;
@@ -280,7 +199,7 @@ $body$
 LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE FUNCTION tww_sys.replay_event(pevent_id int) RETURNS void AS $body$
+CREATE OR REPLACE FUNCTION tww_app.replay_event(pevent_id int) RETURNS void AS $body$
 DECLARE
   query text;
 BEGIN
@@ -317,14 +236,14 @@ END;
 $body$
 LANGUAGE plpgsql;
 
-COMMENT ON FUNCTION tww_sys.replay_event(int) IS $body$
+COMMENT ON FUNCTION tww_app.replay_event(int) IS $body$
 Replay a logged event.
 
 Arguments:
    pevent_id:  The event_id of the event in tww_sys.logged_actions to replay
 $body$;
 
-CREATE OR REPLACE FUNCTION tww_sys.audit_view(target_view regclass, audit_query_text BOOLEAN, ignored_cols text[], uid_cols text[]) RETURNS void AS $body$
+CREATE OR REPLACE FUNCTION tww_app.audit_view(target_view regclass, audit_query_text BOOLEAN, ignored_cols text[], uid_cols text[]) RETURNS void AS $body$
 DECLARE
   stm_targets text = 'INSERT OR UPDATE OR DELETE';
   _q_txt text;
@@ -339,7 +258,7 @@ BEGIN
 	END IF;
 	_q_txt = 'CREATE TRIGGER audit_trigger_row INSTEAD OF INSERT OR UPDATE OR DELETE ON ' ||
 		 target_view::TEXT ||
-		 ' FOR EACH ROW EXECUTE PROCEDURE tww_sys.if_modified_func(' ||
+		 ' FOR EACH ROW EXECUTE PROCEDURE tww_app.if_modified_func(' ||
 		 quote_literal(audit_query_text) || _ignored_cols_snip || ');';
 	RAISE NOTICE '%',_q_txt;
 	EXECUTE _q_txt;
@@ -354,7 +273,7 @@ END;
 $body$
 LANGUAGE plpgsql;
 
-COMMENT ON FUNCTION tww_sys.audit_view(regclass, BOOLEAN, text[], text[]) IS $body$
+COMMENT ON FUNCTION tww_app.audit_view(regclass, BOOLEAN, text[], text[]) IS $body$
 ADD auditing support TO a VIEW.
 
 Arguments:
@@ -364,10 +283,10 @@ Arguments:
    uid_cols:         MANDATORY COLUMNS to use to uniquely identify a row from the view (in order to replay UPDATE and DELETE)
 
 Example:
-  SELECT tww_sys.audit_view('view_schema.view_name', 'true'::BOOLEAN, 'field_to_ignore'::text[], 'obj_id'::text[])
+  SELECT tww_app.audit_view('view_schema.view_name', 'true'::BOOLEAN, 'field_to_ignore'::text[], 'obj_id'::text[])
 $body$;
 
-CREATE OR REPLACE FUNCTION tww_sys.unaudit_view(target_view regclass) RETURNS void AS $body$
+CREATE OR REPLACE FUNCTION tww_app.unaudit_view(target_view regclass) RETURNS void AS $body$
 BEGIN
     EXECUTE 'DROP TRIGGER IF EXISTS audit_trigger_row ON ' || target_view::text;
     EXECUTE 'DROP TRIGGER IF EXISTS audit_trigger_stm ON ' || target_view::text;

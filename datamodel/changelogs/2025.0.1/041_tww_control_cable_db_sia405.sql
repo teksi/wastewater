@@ -3,7 +3,6 @@
 ------ For questions etc. please contact Stefan Burckhardt stefan.burckhardt@sjib.ch
 ------ version 30.05.2024 19:47:23 / 14.8.2024 adaption for twww
 ------ with 3D coordinates
-BEGIN;
 
 -------
 CREATE TABLE tww_od.sia405cc_cable_point
@@ -19,10 +18,10 @@ COMMENT ON COLUMN tww_od.sia405cc_cable_point.obj_id IS 'INTERLIS STANDARD OID (
  ALTER TABLE tww_od.sia405cc_cable_point ADD COLUMN name_number text;
  ALTER TABLE tww_od.sia405cc_cable_point ADD CONSTRAINT _name_number_length_max_40 CHECK(char_length(name_number)<=40);
 COMMENT ON COLUMN tww_od.sia405cc_cable_point.name_number IS '';
---ALTER TABLE tww_od.sia405cc_cable_point ADD COLUMN geometry_geometry geometry('POINT', :SRID);
+--ALTER TABLE tww_od.sia405cc_cable_point ADD COLUMN geometry_geometry geometry('POINT', {SRID});
 -- CREATE INDEX in_tww_sia405cc_cable_point_geometry_geometry ON tww_od.sia405cc_cable_point USING gist (geometry_geometry );
 -- COMMENT ON COLUMN tww_od.sia405cc_cable_point.geometry_geometry IS '';
-ALTER TABLE tww_od.sia405cc_cable_point ADD COLUMN geometry3d_geometry geometry('POINTZ', :SRID);
+ALTER TABLE tww_od.sia405cc_cable_point ADD COLUMN geometry3d_geometry geometry('POINTZ', {SRID});
 CREATE INDEX in_tww_sia405cc_cable_point_geometry3d_geometry ON tww_od.sia405cc_cable_point USING gist (geometry3d_geometry );
 COMMENT ON COLUMN tww_od.sia405cc_cable_point.geometry3d_geometry IS '';
  ALTER TABLE tww_od.sia405cc_cable_point ADD COLUMN kind  integer ;
@@ -77,7 +76,7 @@ COMMENT ON COLUMN tww_od.sia405cc_cable.obj_id IS 'INTERLIS STANDARD OID (with P
  ALTER TABLE tww_od.sia405cc_cable ADD COLUMN name_number text;
  ALTER TABLE tww_od.sia405cc_cable ADD CONSTRAINT _name_number_length_max_40 CHECK(char_length(name_number)<=40);
 COMMENT ON COLUMN tww_od.sia405cc_cable.name_number IS ' / z.B. Kabelpunktanfang_Kabelpunkteende / xxx_z.B. Point_cableanfang_Point_cableeende';
--- ALTER TABLE tww_od.sia405cc_cable ADD COLUMN geometry_geometry geometry('COMPOUNDCURVE', :SRID);
+-- ALTER TABLE tww_od.sia405cc_cable ADD COLUMN geometry_geometry geometry('COMPOUNDCURVE', {SRID});
 -- CREATE INDEX in_tww_sia405cc_cable_geometry_geometry ON tww_od.sia405cc_cable USING gist (geometry_geometry );
 -- COMMENT ON COLUMN tww_od.sia405cc_cable.geometry_geometry IS '';
  ALTER TABLE tww_od.sia405cc_cable ADD COLUMN function  integer ;
@@ -100,7 +99,7 @@ COMMENT ON COLUMN tww_od.sia405cc_cable.condition IS '';
 COMMENT ON COLUMN tww_od.sia405cc_cable.remark IS '';
  ALTER TABLE tww_od.sia405cc_cable ADD COLUMN width  smallint ;
 COMMENT ON COLUMN tww_od.sia405cc_cable.width IS '';
-ALTER TABLE tww_od.sia405cc_cable ADD COLUMN geometry3d_geometry geometry('COMPOUNDCURVEZ', :SRID);
+ALTER TABLE tww_od.sia405cc_cable ADD COLUMN geometry3d_geometry geometry('COMPOUNDCURVEZ', {SRID});
 CREATE INDEX in_tww_sia405cc_cable_geometry3d_geometry ON tww_od.sia405cc_cable USING gist (geometry3d_geometry );
 COMMENT ON COLUMN tww_od.sia405cc_cable.geometry3d_geometry IS '';
  ALTER TABLE tww_od.sia405cc_cable ADD COLUMN elevation_determination  integer ;
@@ -219,5 +218,3 @@ ALTER TABLE tww_od.sia405cc_cable ADD CONSTRAINT rel_od_sia405cc_cable_fk_datapr
 
  CREATE UNIQUE INDEX in_od_sia405cc_cable_point_name_number ON tww_od.sia405cc_cable_point USING btree (name_number ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
  CREATE UNIQUE INDEX in_od_sia405cc_cable_name_number ON tww_od.sia405cc_cable USING btree (name_number ASC NULLS LAST, fk_dataowner ASC NULLS LAST);
-
-COMMIT;

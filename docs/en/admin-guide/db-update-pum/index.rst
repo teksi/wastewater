@@ -15,7 +15,7 @@ Requirements
 
 Client
 ^^^^^^
-Update is done using `PUM <https://github.com/opengisch/pum>`_ available on linux and windows environment. It does not require to be run on the server directly but can be run from a remote client or a virtual machine. `Pirogue <https://github.com/opengisch/pirogue>`_ is required for views regeneration.
+Update is done using `PUM <https://github.com/opengisch/pum>`_ available on linux and windows environment. It does not require to be run on the server directly but can be run from a remote client or a virtual machine.
 
 PostgreSQL
 ^^^^^^^^^^
@@ -40,18 +40,9 @@ To update PUM
 
 ``pip3 install --upgrade pum``
 
-``sudo`` can be used to install ``PUM`` and ``pirogue`` system wide or the ``--user`` flag can be used to install they into the current user's home directory.
+``sudo`` can be used to install ``PUM`` system wide or the ``--user`` flag can be used to install they into the current user's home directory.
 
 If you encounter any problem with PUM installation or usage, check the `PUM documentation <https://github.com/opengisch/pum#pum>`_.
-
-Pirogue installation
-^^^^^^^^^^^^^^^^^^^^
-``pip3 install pirogue``
-
-To update pirogue
-
-``pip3 install --upgrade pirogue``
-
 
 Database update
 ---------------

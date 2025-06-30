@@ -10,6 +10,7 @@ from .utils import DEFAULT_PG_SERVICE, DbTestBase
 
 TWW_SCHEMAS = ("tww_sys", "tww_vl", "tww_od", "tww_app")
 PG_SCHEMAS = ("pg_toast", "information_schema", "pg_catalog", "public")
+ILI_SCHEMAS = ("pg2ili_abwasser",)
 
 
 class TestSchemas(unittest.TestCase, DbTestBase):
@@ -23,7 +24,7 @@ class TestSchemas(unittest.TestCase, DbTestBase):
         cls.conn = psycopg.connect(f"service={pgservice}")
 
     def test_list_schemas(self):
-        schemas = ", ".join([f"'{schema}'" for schema in TWW_SCHEMAS + PG_SCHEMAS])
+        schemas = ", ".join([f"'{schema}'" for schema in TWW_SCHEMAS + PG_SCHEMAS + ILI_SCHEMAS])
         list_schemas = f"SELECT schema_name FROM information_schema.schemata WHERE schema_name NOT IN ({schemas});"
         self.check_empty(list_schemas)
 
@@ -32,7 +33,9 @@ class TestSchemas(unittest.TestCase, DbTestBase):
         self.check_empty(list_tables)
 
     def test_data_schemas(self):
-        pg_schemas = ", ".join([f"'{schema}'" for schema in TWW_SCHEMAS + PG_SCHEMAS])
+        pg_schemas = ", ".join(
+            [f"'{schema}'" for schema in TWW_SCHEMAS + PG_SCHEMAS + ILI_SCHEMAS]
+        )
         list_views = (
             "SELECT * FROM information_schema.tables WHERE table_type = 'VIEW' "
             f"AND table_schema NOT IN ('tww_app', {pg_schemas})"

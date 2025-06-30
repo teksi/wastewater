@@ -31,11 +31,11 @@ BEGIN
             RAISE EXCEPTION 'dictonary entry for table % not unique', table_name;
   END;
   --get sequence for table
-  EXECUTE format('SELECT nextval(''%1$I.seq_%2$I_oid'') AS seqval', schema_name, table_name) INTO myrec_seq;
+  SELECT tww_app.generate_oid_postfix(schema_name,table_name) as _postfix INTO myrec_seq;
   IF NOT FOUND THEN
     RAISE EXCEPTION 'sequence for table % not found', table_name;
   END IF;
-  RETURN myrec_prefix.prefix || myrec_shortcut.shortcut_en || to_char(myrec_seq.seqval,'FM000000');
+  RETURN myrec_prefix.prefix || myrec_shortcut.shortcut_en || myrec_seq._postfix;
 END;
 $BODY$
   LANGUAGE plpgsql STABLE
@@ -60,7 +60,9 @@ BEGIN
 			LEFT JOIN (SELECT prefix  FROM tww_sys.oid_prefixes WHERE active) pfx on True
 			WHERE seq.sequence_schema = 'tww_od' AND dot.tablename IS NOT NULL) LOOP
 				EXECUTE FORMAT('SELECT SETVAL(''tww_od.seq_%1$I_oid'',(SELECT max(seqs) FROM(
-		SELECT RIGHT(obj_id, 6)::int as seqs FROM tww_od.%1$I WHERE  regexp_match(obj_id, ''%2$s\d{6}$'') IS NOT NULL
+		SELECT tww_app.base36_to_int(RIGHT(obj_id, 6)) as seqs
+		FROM tww_od.%1$I
+		WHERE regexp_match(obj_id, ''%2$s[0-9a-z]{{6}}$'') IS NOT NULL
 		UNION
 		SELECT last_value as seqs FROM tww_od.seq_%1$I_oid)foo));',tbl_name,rgx);
 	   END LOOP;
@@ -85,3 +87,54 @@ CREATE TRIGGER update_od_seqval_from_prefixes
     ON tww_sys.oid_prefixes
     FOR EACH STATEMENT
     EXECUTE FUNCTION tww_app.tr_reset_od_seqval();
+
+CREATE OR REPLACE FUNCTION tww_app.generate_oid_postfix(_schema text, _table_name text)
+    RETURNS character varying
+    LANGUAGE 'plpgsql'
+AS $BODY$
+DECLARE
+    chars char[];
+    base36_val  varchar;	-- retained string
+    val bigint;				-- remaining value to be interpreted
+BEGIN
+    chars := ARRAY['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+    EXECUTE format('SELECT nextval(''%1$I.seq_%2$I_oid'')', _schema, _table_name) INTO val;
+    base36_val  := '';
+
+    IF val > 2176782335 THEN -- Maximum value for a 6-digit base36 number (zzzzzz)
+        RAISE EXCEPTION 'Sequence value exceeds maximum 6-digit base36 value (zzzzzz)';
+    END IF;
+
+    IF val < 10^6 THEN
+        base36_val  := lpad(val::varchar, 6, '0');
+	ELSIF val < 559744029 THEN --  559744029 is 999999 in base36, by skipping to this bigint we avoid purely numeric base36 varchars
+		EXECUTE format('SELECT setval(''%1$I.seq_%2$I_oid'',559744029,true)', _schema, _table_name);
+		RETURN tww_app.generate_oid_postfix(_schema, _table_name);
+	ELSE
+		WHILE val != 0 LOOP
+			base36_val := chars[(val % 36)+1] || base36_val;
+			val := val / 36;
+    END LOOP;
+		base36_val := lpad(base36_val, 6, '0');
+	END IF;
+    RETURN base36_val;
+END;
+$BODY$;
+
+CREATE OR REPLACE FUNCTION tww_app.base36_to_int(base36_str text)
+RETURNS bigint
+LANGUAGE plpgsql
+AS $BODY$
+DECLARE
+    chars text := '0123456789abcdefghijklmnopqrstuvwxyz';
+    res_int bigint := 0;
+    char_val int;
+    i int;
+BEGIN
+    FOR i IN 1..length(base36_str) LOOP
+        char_val := strpos(chars, substr(base36_str, i, 1)) - 1;
+        res_int := res_int * 36 + char_val;
+    END LOOP;
+    RETURN res_int;
+END;
+$BODY$;

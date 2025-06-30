@@ -5,25 +5,16 @@
 import argparse
 import os
 
-try:
-    import psycopg
-except ImportError:
-    import psycopg2 as psycopg
-
+import psycopg
 from pirogue.utils import insert_command, select_columns, update_command
 
 
-def vw_tww_measurement_series(pg_service: str = None):
+def vw_tww_measurement_series(connection: psycopg.Connection):
     """
     Creates tww_measurement_series view
     :param pg_service: the PostgreSQL service name
     """
-    if not pg_service:
-        pg_service = os.getenv("PGSERVICE")
-    assert pg_service
-
-    conn = psycopg.connect(f"service={pg_service}")
-    cursor = conn.cursor()
+    cursor = connection.cursor()
 
     view_sql = """
     DROP VIEW IF EXISTS tww_app.vw_tww_measurement_series;
@@ -39,7 +30,7 @@ def vw_tww_measurement_series(pg_service: str = None):
 
     """.format(
         ms_cols=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="measurement_series",
             table_alias="ms",
@@ -70,7 +61,7 @@ def vw_tww_measurement_series(pg_service: str = None):
       FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_tww_measurement_series_INSERT();
     """.format(
         insert_ms=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="measurement_series",
             table_alias="ms",
@@ -101,7 +92,7 @@ def vw_tww_measurement_series(pg_service: str = None):
       FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_tww_measurement_series_UPDATE();
     """.format(
         update_ms=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="measurement_series",
             table_alias="ms",
@@ -136,9 +127,6 @@ def vw_tww_measurement_series(pg_service: str = None):
     """
     cursor.execute(extras)
 
-    conn.commit()
-    conn.close()
-
 
 if __name__ == "__main__":
     # create the top-level parser
@@ -147,4 +135,5 @@ if __name__ == "__main__":
     parser.add_argument("-p", "--pg_service", help="the PostgreSQL service name")
     args = parser.parse_args()
     pg_service = args.pg_service or os.getenv("PGSERVICE")
-    vw_tww_measurement_series(pg_service=pg_service)
+    with psycopg.connect(f"service={pg_service}") as connection:
+        vw_tww_measurement_series(connection=connection)
