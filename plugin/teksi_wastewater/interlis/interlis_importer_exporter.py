@@ -165,10 +165,9 @@ class InterlisImporterExporter:
         selected_ids=None,
     ):
 
-        flag_export_check_failed = False
+        flag_export_check_failed = True
         flag_test = True
         if flag_test:
-            pass
 
             # Validate subclasses before export
             self._check_subclass_counts(limit_to_selection)
@@ -193,6 +192,7 @@ class InterlisImporterExporter:
             self._check_fk_wastewater_structure_null(limit_to_selection)
 
         if flag_export_check_failed:
+            logger.info("Adding QMessageBox ...")
             # Add Message box to ask if export should still be continued or not
             mb = QMessageBox()
             mb.setText(
@@ -201,11 +201,18 @@ class InterlisImporterExporter:
             mb.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
             return_value = mb.exec()
             if return_value == QMessageBox.Ok:
+                errormsg = "INTERLIS export has been stopped due to failing export checks - see logs for details."
                 logger.info(
                     "INTERLIS export has been stopped due to failing export checks - see logs for details."
                 )
-                self._progress_done(100, "Export aborted...")
-                return
+                # self._progress_done(100, "Export aborted...")
+                # return
+                raise InterlisImporterExporterError(
+                            "INTERLIS Export aborted!",
+                            errormsg,
+                            None,
+                        )
+                exit
             elif return_value == QMessageBox.Cancel:
 
                 # File name without extension (used later for export)
@@ -681,7 +688,6 @@ class InterlisImporterExporter:
                             errormsg,
                             None,
                         )
-                        # added 30.6.2025
 
     def _check_identifier_null(self, limit_to_selection=False):
         """
@@ -780,13 +786,14 @@ class InterlisImporterExporter:
                     )
                 else:
                     logger.error(f"INTEGRITY CHECK missing identifiers: {errormsg}")
-                    raise InterlisImporterExporterError(
-                        "INTEGRITY CHECK missing identifiers - see tww tab for details",
-                        errormsg,
-                        None,
-                    )
-                # added 30.6.2025
-            return identifier_null_check
+                    # raise InterlisImporterExporterError(
+                        # "INTEGRITY CHECK missing identifiers - see tww tab for details",
+                        # errormsg,
+                        # None,
+                    # )
+                # added flag_export_check_failed 30.6.2025
+                flag_export_check_failed = False
+                logger.error(f"flag_export_check_failed: {flag_export_check_failed}")
 
     def _check_fk_owner_null(self, limit_to_selection=False):
         """
