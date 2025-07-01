@@ -51,8 +51,7 @@ BEGIN
   RETURN myrec.value_obj_id;
 END;
 $BODY$
-  LANGUAGE plpgsql STABLE SECURITY DEFINER
-  COST 100;
+  LANGUAGE plpgsql;
 
 -- Set defaults on all fk_provider,fk_dataowner,fk_owner
 CREATE OR REPLACE FUNCTION tww_app.ft_set_default_values()
@@ -86,7 +85,7 @@ BEGIN
 	RETURN NEW;
 END;
 $BODY$
-LANGUAGE plpgsql SECURITY DEFINER;
+LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION tww_app.ft_unset_default_values()
 RETURNS TRIGGER AS
@@ -119,7 +118,7 @@ BEGIN
 	RETURN NULL;
 END;
 $BODY$
-LANGUAGE plpgsql SECURITY DEFINER;
+LANGUAGE plpgsql;
 
 
 DROP TRIGGER IF EXISTS set_default_values ON tww_od.default_values;
