@@ -33,7 +33,7 @@ The catchment area is linked to node which is not exported or a reach cannot be 
 
 and therefore not export in the vw_junctions.
 
-Check your data manually before the export if wastwater_structure.status is not empty. Check whether wastwater_structure._function_hierachic is filled in on Primary network nodes (PAA nodes).
+Check your data manually before the export if wastwater_structure.status is not empty. Check whether wastwater_structure._function_hierarchic is filled in on Primary network nodes (PAA nodes).
 
 `For more details see related Github issue <https://github.com/TWW/TWW/issues/613>`_
 
