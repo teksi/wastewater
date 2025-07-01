@@ -11,7 +11,7 @@ class ModelInterlisSia405Abwasser(ModelInterlisSia405BaseAbwasser):
             __table_args__ = {"schema": config.ABWASSER_SCHEMA}
 
         ModelInterlisSia405Abwasser.vsa_baseclass = vsa_baseclass
-    
+
         class abwasserbauwerk(vsa_baseclass):
             __tablename__ = "abwasserbauwerk"
             __table_args__ = {"schema": config.ABWASSER_SCHEMA}
@@ -127,7 +127,6 @@ class ModelInterlisSia405Abwasser(ModelInterlisSia405BaseAbwasser):
         ModelInterlisSia405Abwasser.spuelstutzen = spuelstutzen
 
         # TEXTS
-
 
         class haltung_text(ModelInterlisSia405BaseAbwasser.sia405_textpos):
             __tablename__ = "haltung_text"

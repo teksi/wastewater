@@ -18,8 +18,6 @@ class ModelInterlisSia405BaseAbwasser(ModelBase):
 
         ModelInterlisSia405BaseAbwasser.sia405_baseclass = sia405_baseclass
 
-
-
         class organisation(sia405_baseclass):
             __tablename__ = "organisation"
             __table_args__ = {"schema": config.ABWASSER_SCHEMA}
@@ -39,7 +37,6 @@ class ModelInterlisSia405BaseAbwasser(ModelBase):
             __table_args__ = {"schema": config.ABWASSER_SCHEMA}
 
         ModelInterlisSia405BaseAbwasser.sia405_textpos = sia405_textpos
-
 
         # SymbolPos
 

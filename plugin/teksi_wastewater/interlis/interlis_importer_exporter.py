@@ -71,7 +71,7 @@ class InterlisImporterExporter:
         import_model = ""
         if config.MODEL_NAME_SIA405_BASE_ABWASSER in import_models:
             import_model = config.MODEL_NAME_SIA405_BASE_ABWASSER
-        
+
         # override base model if necessary
         if config.MODEL_NAME_VSA_KEK in import_models:
             import_model = config.MODEL_NAME_VSA_KEK
@@ -599,7 +599,7 @@ class InterlisImporterExporter:
     def _init_model_classes(self, model):
         ModelInterlis = ModelInterlisSia405BaseAbwasser
         if model == config.MODEL_NAME_SIA405_ABWASSER:
-            ModelInterlis = ModelInterlisSia405Abwasser      
+            ModelInterlis = ModelInterlisSia405Abwasser
         if model == config.MODEL_NAME_DSS:
             ModelInterlis = ModelInterlisDss
         elif model == config.MODEL_NAME_VSA_KEK:
