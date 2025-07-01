@@ -46,7 +46,7 @@ ALTER FUNCTION tww_app.ft_vw_tww_maintenance_on_reach_wws_update()
 
 CREATE OR REPLACE VIEW tww_app.vw_tww_maintenance_on_reach
  AS
- SELECT re_m_w.id AS re_m_w_id,
+ SELECT mw.id AS re_m_w_id,
     me.obj_id,
     me.identifier,
     ws_from.identifier AS ws_from_identifier,
@@ -79,8 +79,8 @@ CREATE OR REPLACE VIEW tww_app.vw_tww_maintenance_on_reach
     ws.fk_dataowner AS ws_fk_dataowner
    FROM tww_od.maintenance_event me
      LEFT JOIN tww_od.maintenance mn ON mn.obj_id::text = me.obj_id::text
-     LEFT JOIN tww_od.re_maintenance_event_wastewater_structure re_m_w ON me.obj_id::text = re_m_w.fk_maintenance_event::text
-     LEFT JOIN tww_od.wastewater_structure ws ON re_m_w.fk_wastewater_structure::text = ws.obj_id::text
+     LEFT JOIN tww_od.re_maintenance_event_wastewater_structure mw ON me.obj_id::text = mw.fk_maintenance_event::text
+     LEFT JOIN tww_od.wastewater_structure ws ON mw.fk_wastewater_structure::text = ws.obj_id::text
      LEFT JOIN tww_od.channel ch ON ch.obj_id::text = ws.obj_id::text
      LEFT JOIN tww_od.wastewater_networkelement ne ON ne.fk_wastewater_structure::text = ws.obj_id::text
      LEFT JOIN tww_od.reach re ON re.obj_id::text = ne.obj_id::text

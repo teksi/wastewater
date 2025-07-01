@@ -4,7 +4,7 @@
 
 CREATE OR REPLACE VIEW tww_app.vw_tww_maintenance_on_wws
  AS
- SELECT re_m_w.id AS re_m_w_id,
+ SELECT mw.id AS re_m_w_id,
     me.obj_id,
     me.identifier,
     ws.identifier AS ws_idenifier,
@@ -28,8 +28,8 @@ CREATE OR REPLACE VIEW tww_app.vw_tww_maintenance_on_wws
     node.situation3d_geometry
    FROM tww_od.maintenance_event me
      LEFT JOIN tww_od.maintenance mn ON mn.obj_id::text = me.obj_id::text
-     LEFT JOIN tww_od.re_maintenance_event_wastewater_structure re_m_w ON me.obj_id::text = re_m_w.fk_maintenance_event::text
-     LEFT JOIN tww_od.wastewater_structure ws ON re_m_w.fk_wastewater_structure::text = ws.obj_id::text
+     LEFT JOIN tww_od.re_maintenance_event_wastewater_structure mw ON me.obj_id::text = mw.fk_maintenance_event::text
+     LEFT JOIN tww_od.wastewater_structure ws ON mw.fk_wastewater_structure::text = ws.obj_id::text
      LEFT JOIN tww_od.wastewater_node node ON node.obj_id::text = ws.fk_main_wastewater_node::text
   WHERE node.obj_id IS NOT NULL;
 
