@@ -1,35 +1,17 @@
 from .. import config
-from .model_base import ModelBase
+from .model_interlis_sia405_base_abwasser import ModelInterlisSia405BaseAbwasser
 
 
-class ModelInterlisSia405Abwasser(ModelBase):
+class ModelInterlisSia405Abwasser(ModelInterlisSia405BaseAbwasser):
     def __init__(self):
-        super().__init__(config.ABWASSER_SCHEMA)
+        super().__init__()
 
-        class baseclass(self.Base):
-            __tablename__ = "baseclass"
-            __table_args__ = {"schema": config.ABWASSER_SCHEMA}
-
-        ModelInterlisSia405Abwasser.baseclass = baseclass
-
-        class sia405_baseclass(baseclass):
-            __tablename__ = "sia405_baseclass"
-            __table_args__ = {"schema": config.ABWASSER_SCHEMA}
-
-        ModelInterlisSia405Abwasser.sia405_baseclass = sia405_baseclass
-
-        class vsa_baseclass(sia405_baseclass):
+        class vsa_baseclass(ModelInterlisSia405BaseAbwasser.sia405_baseclass):
             __tablename__ = "vsa_baseclass"
             __table_args__ = {"schema": config.ABWASSER_SCHEMA}
 
         ModelInterlisSia405Abwasser.vsa_baseclass = vsa_baseclass
-
-        class organisation(sia405_baseclass):
-            __tablename__ = "organisation"
-            __table_args__ = {"schema": config.ABWASSER_SCHEMA}
-
-        ModelInterlisSia405Abwasser.organisation = organisation
-
+    
         class abwasserbauwerk(vsa_baseclass):
             __tablename__ = "abwasserbauwerk"
             __table_args__ = {"schema": config.ABWASSER_SCHEMA}
@@ -96,7 +78,7 @@ class ModelInterlisSia405Abwasser(ModelBase):
 
         ModelInterlisSia405Abwasser.haltung = haltung
 
-        class haltung_alternativverlauf(baseclass):
+        class haltung_alternativverlauf(ModelInterlisSia405BaseAbwasser.baseclass):
             __tablename__ = "haltung_alternativverlauf"
             __table_args__ = {"schema": config.ABWASSER_SCHEMA}
 
@@ -146,25 +128,14 @@ class ModelInterlisSia405Abwasser(ModelBase):
 
         # TEXTS
 
-        class textpos(baseclass):
-            __tablename__ = "textpos"
-            __table_args__ = {"schema": config.ABWASSER_SCHEMA}
 
-        ModelInterlisSia405Abwasser.textpos = textpos
-
-        class sia405_textpos(textpos):
-            __tablename__ = "sia405_textpos"
-            __table_args__ = {"schema": config.ABWASSER_SCHEMA}
-
-        ModelInterlisSia405Abwasser.sia405_textpos = sia405_textpos
-
-        class haltung_text(sia405_textpos):
+        class haltung_text(ModelInterlisSia405BaseAbwasser.sia405_textpos):
             __tablename__ = "haltung_text"
             __table_args__ = {"schema": config.ABWASSER_SCHEMA}
 
         ModelInterlisSia405Abwasser.haltung_text = haltung_text
 
-        class abwasserbauwerk_text(sia405_textpos):
+        class abwasserbauwerk_text(ModelInterlisSia405BaseAbwasser.sia405_textpos):
             __tablename__ = "abwasserbauwerk_text"
             __table_args__ = {"schema": config.ABWASSER_SCHEMA}
 
@@ -172,19 +143,7 @@ class ModelInterlisSia405Abwasser(ModelBase):
 
         # SymbolPos
 
-        class symbolpos(baseclass):
-            __tablename__ = "symbolpos"
-            __table_args__ = {"schema": config.ABWASSER_SCHEMA}
-
-        ModelInterlisSia405Abwasser.symbolpos = symbolpos
-
-        class sia405_symbolpos(symbolpos):
-            __tablename__ = "sia405_symbolpos"
-            __table_args__ = {"schema": config.ABWASSER_SCHEMA}
-
-        ModelInterlisSia405Abwasser.sia405_symbolpos = sia405_symbolpos
-
-        class abwasserbauwerk_symbol(sia405_symbolpos):
+        class abwasserbauwerk_symbol(ModelInterlisSia405BaseAbwasser.sia405_symbolpos):
             __tablename__ = "abwasserbauwerk_symbol"
             __table_args__ = {"schema": config.ABWASSER_SCHEMA}
 

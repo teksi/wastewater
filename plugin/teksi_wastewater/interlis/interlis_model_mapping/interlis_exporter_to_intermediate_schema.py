@@ -95,7 +95,11 @@ class InterlisExporterToIntermediateSchema:
             self._create_basket()
             self.current_basket = self.basket_topic_sia405_administration
 
-        self._export_sia405_abwasser()
+        if self.model not in (config.MODEL_NAME_AG64, config.MODEL_NAME_AG96):
+            self._export_sia405_abwasser_base()
+            if self.model != config.MODEL_NAME_SIA405_BASE_ABWASSER:
+                
+                self._export_sia405_abwasser()
 
         if self.model == config.MODEL_NAME_DSS:
             self.current_basket = self.basket_topic_dss
@@ -159,11 +163,13 @@ class InterlisExporterToIntermediateSchema:
         self.abwasser_session.add(self.basket_topic_kek)
         self.abwasser_session.flush()
 
-    def _export_sia405_abwasser(self):
+    def _export_sia405_abwasser_base(self):
         logger.info("Exporting TWW.organisation -> ABWASSER.organisation")
         self._export_organisation()
         self._check_for_stop()
 
+
+    def _export_sia405_abwasser(self):
         self.current_basket = self.basket_topic_sia405_abwasser
 
         logger.info("Exporting TWW.channel -> ABWASSER.kanal")
@@ -471,7 +477,7 @@ class InterlisExporterToIntermediateSchema:
         self._check_for_stop()
 
     def _export_organisation(self):
-        query = self.tww_session.query(self.model_classes_tww_od.organisation)
+        query = self.tww_session.query(self.model_classes_tww_od.organisation).filter_by(tww_custom_extension = True)
         for row in query:
             organisation = self.model_classes_interlis.organisation(
                 # FIELDS TO MAP TO ABWASSER.organisation
