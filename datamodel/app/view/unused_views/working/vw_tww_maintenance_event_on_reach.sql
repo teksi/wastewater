@@ -92,6 +92,6 @@ CREATE OR REPLACE VIEW tww_app.vw_tww_maintenance_on_reach
      LEFT JOIN tww_od.wastewater_structure ws_to ON ws_to.obj_id::text = ak_to.fk_wastewater_structure::text
   WHERE ch.obj_id IS NOT NULL;
 
-ALTER TABLE tww_app.vw_tww_maint_evnt_on_reach
+ALTER TABLE tww_app.vw_tww_maintenance_on_reach
   OWNER TO tww_sysadmin;
-GRANT SELECT ON TABLE tww_app.vw_tww_maint_evnt_on_reach TO tww_viewer;
+GRANT SELECT ON TABLE tww_app.vw_tww_maintenance_on_reach TO tww_viewer;
