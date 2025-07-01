@@ -70,7 +70,7 @@ jobs:
         run: |
           docker compose exec db sh -c 'dropdb tww'
           docker compose exec db sh -c 'createdb tww'
-          docker compose exec db pum -s pg_tww -d datamodel install -p SRID 2056
+          docker compose exec db pum -s pg_tww -d datamodel install -p SRID 2056 --roles --grant
           docker compose exec db sh -c 'psql -U postgres -c "GRANT tww_user TO postgres;"'
 
       - name: Test on QGIS DSS dataset
@@ -80,7 +80,7 @@ jobs:
         run: |
           docker compose exec db sh -c 'dropdb tww'
           docker compose exec db sh -c 'createdb tww'
-          docker compose exec db pum -s pg_tww -d datamodel install -p SRID 2056
+          docker compose exec db pum -s pg_tww -d datamodel install -p SRID 2056 --roles --grant
           docker compose exec db sh -c 'psql -U postgres -c "GRANT tww_user TO postgres;"'
 
       - name: Test command line import orgs
