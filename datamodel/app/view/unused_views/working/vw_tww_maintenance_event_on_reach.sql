@@ -61,11 +61,11 @@ CREATE OR REPLACE VIEW tww_app.vw_tww_maintenance_on_reach
     me.status,
     me.operator,
     me.time_point,
-    mai.kind,
+    mn.kind,
     ws.fk_owner AS ws_fk_owner,
-    reach.length_effective AS re_length_effective,
-    reach.material AS re_material,
-    reach.clear_height AS re_clear_height,
+    re.length_effective AS re_length_effective,
+    re.material AS re_material,
+    re.clear_height AS re_clear_height,
     ch.function_hierarchic AS ch_function_hierarchic,
     ch.usage_current AS ch_usage_current,
     ws.status AS ws_status,
@@ -73,19 +73,19 @@ CREATE OR REPLACE VIEW tww_app.vw_tww_maintenance_on_reach
     me.duration,
     me.last_modification,
     me.fk_operating_company,
-    reach.progression3d_geometry,
+    re.progression3d_geometry,
     ws.obj_id AS ws_obj_id,
-    reach.obj_id AS re_obj_id,
+    re.obj_id AS re_obj_id,
     ws.fk_dataowner AS ws_fk_dataowner
    FROM tww_od.maintenance_event me
-     LEFT JOIN tww_od.maintenance mai ON mai.obj_id::text = me.obj_id::text
+     LEFT JOIN tww_od.maintenance mn ON mn.obj_id::text = me.obj_id::text
      LEFT JOIN tww_od.re_maintenance_event_wastewater_structure re_m_w ON me.obj_id::text = re_m_w.fk_maintenance_event::text
      LEFT JOIN tww_od.wastewater_structure ws ON re_m_w.fk_wastewater_structure::text = ws.obj_id::text
      LEFT JOIN tww_od.channel ch ON ch.obj_id::text = ws.obj_id::text
      LEFT JOIN tww_od.wastewater_networkelement ne ON ne.fk_wastewater_structure::text = ws.obj_id::text
-     LEFT JOIN tww_od.reach reach ON reach.obj_id::text = ne.obj_id::text
-     LEFT JOIN tww_od.reach_point rp_from ON rp_from.obj_id::text = reach.fk_reach_point_from::text
-     LEFT JOIN tww_od.reach_point rp_to ON rp_to.obj_id::text = reach.fk_reach_point_to::text
+     LEFT JOIN tww_od.reach re ON re.obj_id::text = ne.obj_id::text
+     LEFT JOIN tww_od.reach_point rp_from ON rp_from.obj_id::text = re.fk_reach_point_from::text
+     LEFT JOIN tww_od.reach_point rp_to ON rp_to.obj_id::text = re.fk_reach_point_to::text
      LEFT JOIN tww_od.wastewater_networkelement ak_from ON ak_from.obj_id::text = rp_from.fk_wastewater_networkelement::text
      LEFT JOIN tww_od.wastewater_networkelement ak_to ON ak_to.obj_id::text = rp_to.fk_wastewater_networkelement::text
      LEFT JOIN tww_od.wastewater_structure ws_from ON ws_from.obj_id::text = ak_from.fk_wastewater_structure::text
