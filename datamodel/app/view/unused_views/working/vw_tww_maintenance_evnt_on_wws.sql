@@ -18,7 +18,7 @@ CREATE OR REPLACE VIEW tww_app.vw_tww_maintenance_on_wws
     me.status,
     me.operator,
     me.time_point,
-    mai.kind,
+    mn.kind,
     ws.fk_owner AS ws_fk_owner,
     ws.status AS ws_status,
     me.data_details,
@@ -27,7 +27,7 @@ CREATE OR REPLACE VIEW tww_app.vw_tww_maintenance_on_wws
     me.fk_operating_company,
     node.situation3d_geometry
    FROM tww_od.maintenance_event me
-     LEFT JOIN tww_od.maintenance mai ON mai.obj_id::text = me.obj_id::text
+     LEFT JOIN tww_od.maintenance mn ON mn.obj_id::text = me.obj_id::text
      LEFT JOIN tww_od.re_maintenance_event_wastewater_structure re_m_w ON me.obj_id::text = re_m_w.fk_maintenance_event::text
      LEFT JOIN tww_od.wastewater_structure ws ON re_m_w.fk_wastewater_structure::text = ws.obj_id::text
      LEFT JOIN tww_od.wastewater_node node ON node.obj_id::text = ws.fk_main_wastewater_node::text
