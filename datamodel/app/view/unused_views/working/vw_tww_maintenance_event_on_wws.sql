@@ -41,7 +41,7 @@ ALTER TABLE tww_app.vw_tww_maintenance_on_wws
 -- GRANT SELECT, REFERENCES, TRIGGER ON TABLE tww_app.vw_tww_maintenance_on_wws TO tww_viewer;
 
 CREATE TRIGGER ft_vw_tww_maintenance_on_wws_on_update
-    INSTEAD OF UPDATE 
+    INSTEAD OF UPDATE
     ON tww_app.vw_tww_maintenance_on_wws
     FOR EACH ROW
     EXECUTE PROCEDURE tww_app.ft_vw_tww_maintenance_on_reach_wws_update();
