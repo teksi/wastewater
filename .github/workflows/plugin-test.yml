@@ -33,7 +33,7 @@ jobs:
         test_name: [QGIS, DSS , cmd]
         include:
           - test_name: QGIS
-            test_command: "/usr/src/plugin/.docker/run-docker-tests.sh --deselect teksi_wastewater/tests/test_interlis.py::TestInterlis::test_dss_dataset_import_export'"
+            test_command: "/usr/src/plugin/.docker/run-docker-tests.sh --deselect teksi_wastewater/tests/test_interlis.py::TestInterlis::test_dss_dataset_import_export"
           - test_name: DSS
             test_command: "/usr/src/plugin/.docker/run-docker-tests.sh teksi_wastewater/tests/test_interlis.py::TestInterlis::test_dss_dataset_import_export"
           - test_name: cmd
