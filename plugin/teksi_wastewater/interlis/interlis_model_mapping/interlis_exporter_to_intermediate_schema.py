@@ -477,7 +477,7 @@ class InterlisExporterToIntermediateSchema:
 
     def _export_organisation(self):
         query = self.tww_session.query(self.model_classes_tww_od.organisation).filter_by(
-            tww_custom_extension=True
+            tww_local_extension=True
         )
         for row in query:
             organisation = self.model_classes_interlis.organisation(
