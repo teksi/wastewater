@@ -38,7 +38,7 @@ class InterlisImporterExporterError(Exception):
 
 
 class InterlisImporterExporter:
-    
+
     def __init__(self, progress_done_callback=None):
         self.progress_done_callback = progress_done_callback
         self.interlisTools = InterlisTools()
@@ -168,7 +168,7 @@ class InterlisImporterExporter:
 
         flag_export_check_failed = False
         flag_test = True
-        
+
         # go thru all available checks and register if check failed or not.
         if flag_test:
             number_tests_failed = 0
@@ -176,15 +176,16 @@ class InterlisImporterExporter:
             
             failed_check_list = 'failed : '
             # Validate subclasses before export           
+
             if self._check_subclass_counts(limit_to_selection):
                 flag_export_check_failed = True
                 failed_check_list = failed_check_list + "check_subclass_counts, "
                 number_tests_failed = number_tests_failed + 1
             else:
                 number_tests_ok = number_tests_ok + 1
-                
+
             logger.debug(f" _check_subclass_counts: flag_export_check_failed {flag_export_check_failed}")
-            
+
             # Check if attribute identifier is Null before export
             # flag_export_check_failed added
             # flag_export_check_failed = flag_export_check_failed and self._check_identifier_null(limit_to_selection)
@@ -194,7 +195,7 @@ class InterlisImporterExporter:
                 number_tests_failed = number_tests_failed + 1
             else:
                 number_tests_ok = number_tests_ok + 1
-            
+
             logger.debug(f" _check_identifier_null: flag_export_check_failed {flag_export_check_failed}")
 
             # Check if MAMDATORY fk_owner is Null  before export
@@ -204,18 +205,18 @@ class InterlisImporterExporter:
                 failed_check_list = failed_check_list + "check_fk_owner_null, "
                 number_tests_failed = number_tests_failed + 1
             else:
-                number_tests_ok = number_tests_ok + 1   
-            
+                number_tests_ok = number_tests_ok + 1
+
             logger.debug(f" _check_fk_owner_null: flag_export_check_failed {flag_export_check_failed}")
 
             # Check if MAMDATORY fk_operator is Null  before export
             # flag_export_check_failed = flag_export_check_failed and self._check_fk_operator_null(limit_to_selection)
             if self._check_fk_operator_null(limit_to_selection):
                 flag_export_check_failed = True
-                failed_check_list = failed_check_list + "check_fk_operator_null, "            
+                failed_check_list = failed_check_list + "check_fk_operator_null, "
                 number_tests_failed = number_tests_failed + 1
             else:
-                number_tests_ok = number_tests_ok + 1 
+                number_tests_ok = number_tests_ok + 1
 
             logger.debug(f" _check_fk_operator_null: flag_export_check_failed {flag_export_check_failed}")
 
@@ -223,10 +224,10 @@ class InterlisImporterExporter:
             # flag_export_check_failed = flag_export_check_failed and self._check_fk_dataowner_null(limit_to_selection)
             if self._check_fk_dataowner_null(limit_to_selection):
                 flag_export_check_failed = True
-                failed_check_list = failed_check_list + "check_fk_dataowner_null, "      
+                failed_check_list = failed_check_list + "check_fk_dataowner_null, "
                 number_tests_failed = number_tests_failed + 1
             else:
-                number_tests_ok = number_tests_ok + 1 
+                number_tests_ok = number_tests_ok + 1
 
             logger.debug(f" _check_fk_dataowner_null: flag_export_check_failed {flag_export_check_failed}")
 
@@ -237,33 +238,33 @@ class InterlisImporterExporter:
             # flag_export_check_failed = flag_export_check_failed and self._check_fk_provider_null(limit_to_selection)
             if self._check_fk_provider_null(limit_to_selection):
                 flag_export_check_failed = True
-                failed_check_list = failed_check_list + "check_fk_provider_null, "    
+                failed_check_list = failed_check_list + "check_fk_provider_null, "
                 number_tests_failed = number_tests_failed + 1
             else:
-                number_tests_ok = number_tests_ok + 1 
+                number_tests_ok = number_tests_ok + 1
 
             logger.debug(f" _check_fk_provider_null: flag_export_check_failed {flag_export_check_failed}")
-            
+
             # new in TEKSI
             # Check if MANDATORY fk_wastewater_structure is Null before export
             # flag_export_check_failed = flag_export_check_failed and self._check_fk_wastewater_structure_null(limit_to_selection)
             if self._check_fk_wastewater_structure_null(limit_to_selection):
                 flag_export_check_failed = True
-                failed_check_list = failed_check_list + "check_fk_wastewater_structure_null, "    
+                failed_check_list = failed_check_list + "check_fk_wastewater_structure_null, "
                 number_tests_failed = number_tests_failed + 1
             else:
-                number_tests_ok = number_tests_ok + 1                 
+                number_tests_ok = number_tests_ok + 1
             logger.debug(f" _check_fk_wastewater_structure_null: flag_export_check_failed {flag_export_check_failed}")
 
         logger.debug(f"After checks: flag_export_check_failed {flag_export_check_failed}")
         total_checks = number_tests_failed + number_tests_ok
-        
+
         if flag_export_check_failed:
             logger.info("Adding QMessageBox ...")
             # Add Message box to ask if export should still be continued or not
-            
+
             mb = QMessageBox ()
-            
+
             # TypeError: warning(parent: Optional[QWidget], title: Optional[str], text: Optional[str], buttons: Union[QMessageBox.StandardButtons, QMessageBox.StandardButton] = QMessageBox.Ok, defaultButton: QMessageBox.StandardButton = QMessageBox.NoButton): not enough arguments
 
             # mb = QMessageBox.warning(
@@ -658,7 +659,7 @@ class InterlisImporterExporter:
             )
 
     def _check_subclass_counts(self, limit_to_selection=False):
-        
+
         check_subclass_counts_failed = False
         check_subclass_counts_failed = check_subclass_counts_failed and self._check_subclass_count(
             config.TWW_OD_SCHEMA,
