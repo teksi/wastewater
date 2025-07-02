@@ -79,7 +79,8 @@ class InterlisImporterExporter:
             import_model = config.MODEL_NAME_SIA405_ABWASSER
         elif config.MODEL_NAME_DSS in import_models:
             import_model = config.MODEL_NAME_DSS
-        else:
+        
+        if not import_model:
             error_text = f"No supported model was found among '{import_models}'."
             if len(import_models) == 1:
                 error_text = f"The model '{import_models[0]}' is not supported."
