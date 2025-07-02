@@ -91,9 +91,7 @@ class TestInterlis(unittest.TestCase):
         )
         self.assertIsNotNone(result)
         self.assertEqual(result[0], "Arbon")
-        DatabaseUtils.execute(
-            "UPDATE tww_od.organisation SET tww_local_extension=true;"
-        )
+        DatabaseUtils.execute("UPDATE tww_od.organisation SET tww_local_extension=true;")
 
         # Import minimal sia405
         xtf_file_input = self._get_data_filename(MINIMAL_DATASET_SIA405_ABWASSER)
@@ -165,7 +163,10 @@ class TestInterlis(unittest.TestCase):
             f"{export_xtf_file}_{config.MODEL_NAME_SIA405_BASE_ABWASSER}.xtf"
         )
         interlis_object = self._get_xtf_object(
-            exported_xtf_filename, config.TOPIC_NAME_SIA405_ABWASSER, "Organisation", "ch20p3q400001497"
+            exported_xtf_filename,
+            config.TOPIC_NAME_SIA405_ABWASSER,
+            "Organisation",
+            "ch20p3q400001497",
         )
         self.assertIsNotNone(interlis_object)
 
