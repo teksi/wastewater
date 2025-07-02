@@ -76,7 +76,7 @@ class InterlisImporterToIntermediateSchema:
 
         self.close_sessions(skip_closing_tww_session=skip_closing_tww_session)
 
-    def _import_sia_405_abwasser_base(self):
+    def _import_sia405_abwasser_base(self):
         logger.info("\nImporting ABWASSER.organisation -> TWW.organisation")
         self._import_organisation()
         self._check_for_stop()
