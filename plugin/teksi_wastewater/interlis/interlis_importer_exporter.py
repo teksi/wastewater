@@ -38,7 +38,7 @@ class InterlisImporterExporterError(Exception):
 
 
 class InterlisImporterExporter:
-
+    
     def __init__(self, progress_done_callback=None):
         self.progress_done_callback = progress_done_callback
         self.interlisTools = InterlisTools()
@@ -168,42 +168,116 @@ class InterlisImporterExporter:
 
         flag_export_check_failed = False
         flag_test = True
+        
+        # go thru all available checks and register if check failed or not.
         if flag_test:
-
-            # Validate subclasses before export
-            flag_export_check_failed = self._check_subclass_counts(limit_to_selection)
-
-            logger.debug(f"Vor identifier: flag_export_check_failed {flag_export_check_failed}")
-
+            number_tests_failed = 0
+            number_tests_ok = 0
+            
+            failed_check_list = 'Failing checks: '
+            # Validate subclasses before export           
+            if self._check_subclass_counts(limit_to_selection):
+                flag_export_check_failed = True
+                failed_check_list = failed_check_list + "check_subclass_counts, "
+                number_tests_failed = number_tests_failed + 1
+            else:
+                number_tests_ok = number_tests_ok + 1
+                
+            logger.debug(f" _check_subclass_counts: flag_export_check_failed {flag_export_check_failed}")
+            
             # Check if attribute identifier is Null before export
-            # 30.6.25 flag_export_check_failed added
-            flag_export_check_failed = self._check_identifier_null(limit_to_selection)
+            # flag_export_check_failed added
+            # flag_export_check_failed = flag_export_check_failed and self._check_identifier_null(limit_to_selection)
+            if self._check_identifier_null(limit_to_selection):
+                flag_export_check_failed = True
+                failed_check_list = failed_check_list + "check_identifier_null, "
+                number_tests_failed = number_tests_failed + 1
+            else:
+                number_tests_ok = number_tests_ok + 1
+            
+            logger.debug(f" _check_identifier_null: flag_export_check_failed {flag_export_check_failed}")
 
             # Check if MAMDATORY fk_owner is Null  before export
-            flag_export_check_failed = self._check_fk_owner_null(limit_to_selection)
+            # flag_export_check_failed = flag_export_check_failed and self._check_fk_owner_null(limit_to_selection)
+            if self._check_fk_owner_null(limit_to_selection):
+                flag_export_check_failed = True
+                failed_check_list = failed_check_list + "check_fk_owner_null, "
+                number_tests_failed = number_tests_failed + 1
+            else:
+                number_tests_ok = number_tests_ok + 1   
+            
+            logger.debug(f" _check_fk_owner_null: flag_export_check_failed {flag_export_check_failed}")
 
             # Check if MAMDATORY fk_operator is Null  before export
-            flag_export_check_failed = self._check_fk_operator_null(limit_to_selection)
+            # flag_export_check_failed = flag_export_check_failed and self._check_fk_operator_null(limit_to_selection)
+            if self._check_fk_operator_null(limit_to_selection):
+                flag_export_check_failed = True
+                failed_check_list = failed_check_list + "check_fk_operator_null, "            
+                number_tests_failed = number_tests_failed + 1
+            else:
+                number_tests_ok = number_tests_ok + 1 
+
+            logger.debug(f" _check_fk_operator_null: flag_export_check_failed {flag_export_check_failed}")
 
             # Check if MAMDATORY fk_dataowner is Null  before export
-            flag_export_check_failed = self._check_fk_dataowner_null(limit_to_selection)
+            # flag_export_check_failed = flag_export_check_failed and self._check_fk_dataowner_null(limit_to_selection)
+            if self._check_fk_dataowner_null(limit_to_selection):
+                flag_export_check_failed = True
+                failed_check_list = failed_check_list + "check_fk_dataowner_null, "      
+                number_tests_failed = number_tests_failed + 1
+            else:
+                number_tests_ok = number_tests_ok + 1 
+
+            logger.debug(f" _check_fk_dataowner_null: flag_export_check_failed {flag_export_check_failed}")
+
+            # take out again
+            # flag_export_check_failed = True
 
             # Check if MAMDATORY fk_provider is Null  before export
-            flag_export_check_failed = self._check_fk_provider_null(limit_to_selection)
+            # flag_export_check_failed = flag_export_check_failed and self._check_fk_provider_null(limit_to_selection)
+            if self._check_fk_provider_null(limit_to_selection):
+                flag_export_check_failed = True
+                failed_check_list = failed_check_list + "check_fk_provider_null, "    
+                number_tests_failed = number_tests_failed + 1
+            else:
+                number_tests_ok = number_tests_ok + 1 
 
+            logger.debug(f" _check_fk_provider_null: flag_export_check_failed {flag_export_check_failed}")
+            
             # new in TEKSI
             # Check if MANDATORY fk_wastewater_structure is Null before export
-            flag_export_check_failed = self._check_fk_wastewater_structure_null(limit_to_selection)
+            # flag_export_check_failed = flag_export_check_failed and self._check_fk_wastewater_structure_null(limit_to_selection)
+            if self._check_fk_wastewater_structure_null(limit_to_selection):
+                flag_export_check_failed = True
+                failed_check_list = failed_check_list + "check_fk_wastewater_structure_null, "    
+                number_tests_failed = number_tests_failed + 1
+            else:
+                number_tests_ok = number_tests_ok + 1                 
+            logger.debug(f" _check_fk_wastewater_structure_null: flag_export_check_failed {flag_export_check_failed}")
 
         logger.debug(f"After checks: flag_export_check_failed {flag_export_check_failed}")
-
+        total_checks = number_tests_failed + number_tests_ok
+        
         if flag_export_check_failed:
             logger.info("Adding QMessageBox ...")
             # Add Message box to ask if export should still be continued or not
-            mb = QMessageBox()
+            
+            mb = QMessageBox ()
+            
+            # TypeError: warning(parent: Optional[QWidget], title: Optional[str], text: Optional[str], buttons: Union[QMessageBox.StandardButtons, QMessageBox.StandardButton] = QMessageBox.Ok, defaultButton: QMessageBox.StandardButton = QMessageBox.NoButton): not enough arguments
+
+            # mb = QMessageBox.warning(
+                # self,
+                # 'Stop exporting',
+                # 'Do you want to quit?',
+                # QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+            # )
+            mb.setWindowTitle('Stop exporting')
+            mb.setIcon(QMessageBox.Warning)
             mb.setText(
                 "Stop exporting: Some export checks failed - check the logs for details. (if you have a selection you can still try (click Cancel) "
             )
+            mb.setInformativeText(f" {number_tests_failed} + ' of ' & {total_checks} + ': ' + failed_check_list)
             mb.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
             return_value = mb.exec()
             if return_value == QMessageBox.Ok:
@@ -214,10 +288,10 @@ class InterlisImporterExporter:
                 # self._progress_done(100, "Export aborted...")
                 # return
                 raise InterlisImporterExporterError(
-                    "INTERLIS Export aborted!",
-                    errormsg,
-                    None,
-                )
+                            "INTERLIS Export aborted!",
+                            errormsg,
+                            None,
+                        )
                 exit
             elif return_value == QMessageBox.Cancel:
 
@@ -584,15 +658,16 @@ class InterlisImporterExporter:
             )
 
     def _check_subclass_counts(self, limit_to_selection=False):
-
+        
         check_subclass_counts_failed = False
-        check_subclass_counts_failed = self._check_subclass_count(
+        check_subclass_counts_failed = check_subclass_counts_failed and self._check_subclass_count(
             config.TWW_OD_SCHEMA,
             "wastewater_networkelement",
             ["reach", "wastewater_node"],
             limit_to_selection,
         )
-        check_subclass_counts_failed = self._check_subclass_count(
+        logger.debug(f"check_subclass_counts_failed: {check_subclass_counts_failed} 1")
+        check_subclass_counts_failed = check_subclass_counts_failed and self._check_subclass_count(
             config.TWW_OD_SCHEMA,
             "wastewater_structure",
             [
@@ -607,7 +682,8 @@ class InterlisImporterExporter:
             ],
             limit_to_selection,
         )
-        check_subclass_counts_failed = self._check_subclass_count(
+        logger.debug(f"check_subclass_counts_failed: {check_subclass_counts_failed} 2")
+        check_subclass_counts_failed = check_subclass_counts_failed and self._check_subclass_count(
             config.TWW_OD_SCHEMA,
             "structure_part",
             [
@@ -626,36 +702,37 @@ class InterlisImporterExporter:
             ],
             limit_to_selection,
         )
-        check_subclass_counts_failed = self._check_subclass_count(
+        check_subclass_counts_failed = check_subclass_counts_failed and self._check_subclass_count(
             config.TWW_OD_SCHEMA,
             "overflow",
             ["pump", "leapingweir", "prank_weir"],
             limit_to_selection,
         )
-        check_subclass_counts_failed = self._check_subclass_count(
+        check_subclass_counts_failed = check_subclass_counts_failed and self._check_subclass_count(
             config.TWW_OD_SCHEMA,
             "maintenance_event",
             ["maintenance", "examination", "bio_ecol_assessment"],
             limit_to_selection,
         )
-        check_subclass_counts_failed = self._check_subclass_count(
+        check_subclass_counts_failed = check_subclass_counts_failed and self._check_subclass_count(
             config.TWW_OD_SCHEMA,
             "damage",
             ["damage_channel", "damage_manhole"],
             limit_to_selection,
         )
-        check_subclass_counts_failed = self._check_subclass_count(
+        check_subclass_counts_failed = check_subclass_counts_failed and self._check_subclass_count(
             config.TWW_OD_SCHEMA,
             "connection_object",
             ["fountain", "individual_surface", "building", "reservoir"],
             limit_to_selection,
         )
-        check_subclass_counts_failed = self._check_subclass_count(
+        check_subclass_counts_failed = check_subclass_counts_failed and self._check_subclass_count(
             config.TWW_OD_SCHEMA,
             "zone",
             ["infiltration_zone", "drainage_system"],
             limit_to_selection,
         )
+        logger.debug(f"check_subclass_counts_failed: {check_subclass_counts_failed} last")
         return check_subclass_counts_failed
 
     def _check_subclass_count(self, schema_name, parent_name, child_list, limit_to_selection):
@@ -701,6 +778,7 @@ class InterlisImporterExporter:
                         )
                     # Return statement added
                     return False
+
 
     # def _check_identifier_null(self, check_fail, limit_to_selection=False):
     def _check_identifier_null(self, limit_to_selection=False):
@@ -788,10 +866,11 @@ class InterlisImporterExporter:
                 logger.info(f"missing_identifier_count : {missing_identifier_count}")
 
             if missing_identifier_count == 0:
+                identifier_null_check = True
                 logger.info("OK: all identifiers set in tww_od!")
                 return True
             else:
-                pass
+                identifier_null_check = False
                 # logger.info(f"ERROR: Missing identifiers in tww_od: {missing_identifier_count}")
                 errormsg = f"Missing identifiers in schema tww_od: {missing_identifier_count}"
                 if limit_to_selection:
@@ -801,9 +880,9 @@ class InterlisImporterExporter:
                 else:
                     logger.error(f"INTEGRITY CHECK missing identifiers: {errormsg}")
                     # raise InterlisImporterExporterError(
-                    # "INTEGRITY CHECK missing identifiers - see tww tab for details",
-                    # errormsg,
-                    # None,
+                        # "INTEGRITY CHECK missing identifiers - see tww tab for details",
+                        # errormsg,
+                        # None,
                     # )
                 # added check_fail 30.6.2025
                 check_fail = True
@@ -850,14 +929,15 @@ class InterlisImporterExporter:
                 logger.info(f"missing_fk_owner_count : {missing_fk_owner_count}")
 
             if missing_fk_owner_count == 0:
-                check_fk_owner_null = True
+                check_fk_owner_null = False
                 logger.info("OK: all mandatory fk_owner set in tww_od!")
             else:
-                check_fk_owner_null = False
+                check_fk_owner_null = True
                 logger.info(
                     f"ERROR: Missing mandatory fk_owner in tww_od: {missing_fk_owner_count}"
                 )
             # Return statement added
+            logger.debug(f"missing_fk_owner_count : {missing_fk_owner_count}")
             return check_fk_owner_null
 
     def _check_fk_operator_null(self, limit_to_selection=False):
@@ -897,13 +977,13 @@ class InterlisImporterExporter:
             if missing_fk_operator_count == 0:
                 logger.info("OK: all mandatory fk_operator set in tww_od!")
                 # Return statement added
-                return True
+                return False
             else:
                 logger.error(
                     f"ERROR: Missing mandatory fk_operator in tww_od: {missing_fk_operator_count}"
                 )
                 # Return statement added
-                return False
+                return True
 
     def _check_fk_dataowner_null(self, limit_to_selection=False):
         """
@@ -991,13 +1071,13 @@ class InterlisImporterExporter:
             if missing_fk_dataowner_count == 0:
                 logger.info("OK: all mandatory fk_dataowner set in tww_od!")
                 # Return statement added
-                return True
+                return False
             else:
                 logger.error(
                     f"ERROR: Missing mandatory fk_dataowner in tww_od: {missing_fk_dataowner_count}"
                 )
                 # Return statement added
-                return False
+                return True
 
     def _check_fk_provider_null(self, limit_to_selection=False):
         """
@@ -1082,13 +1162,13 @@ class InterlisImporterExporter:
             if missing_fk_provider_count == 0:
                 logger.info("OK: all mandatory fk_provider set in tww_od!")
                 # Return statement added
-                return True
+                return False
             else:
                 logger.error(
                     f"ERROR: Missing mandatory fk_provider in tww_od: {missing_fk_provider_count}"
                 )
                 # Return statement added
-                return False
+                return True
 
     def _check_fk_wastewater_structure_null(self, limit_to_selection=False):
         """
@@ -1140,13 +1220,13 @@ class InterlisImporterExporter:
             if missing_fk_wastewater_structure_count == 0:
                 logger.info("OK: all mandatory fk_wastewater_structure set in tww_od!")
                 # Return statement added
-                return True
+                return False
             else:
                 logger.error(
                     f"ERROR: Missing mandatory fk_wastewater_structure in tww_od: {missing_fk_wastewater_structure_count}"
                 )
                 # Return statement added
-                return False
+                return True
 
     def _init_model_classes(self, model):
         ModelInterlis = ModelInterlisSia405Abwasser
