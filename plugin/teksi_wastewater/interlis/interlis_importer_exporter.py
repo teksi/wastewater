@@ -174,7 +174,7 @@ class InterlisImporterExporter:
             number_tests_failed = 0
             number_tests_ok = 0
             
-            failed_check_list = 'Failing checks: '
+            failed_check_list = 'failed : '
             # Validate subclasses before export           
             if self._check_subclass_counts(limit_to_selection):
                 flag_export_check_failed = True
@@ -277,7 +277,7 @@ class InterlisImporterExporter:
             mb.setText(
                 "Stop exporting: Some export checks failed - check the logs for details. (if you have a selection you can still try (click Cancel) "
             )
-            mb.setInformativeText(f" {number_tests_failed} + ' of ' & {total_checks} + ': ' + failed_check_list)
+            mb.setInformativeText(f" {number_tests_failed} of {total_checks} {failed_check_list}")
             mb.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
             return_value = mb.exec()
             if return_value == QMessageBox.Ok:
