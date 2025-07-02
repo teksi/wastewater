@@ -173,9 +173,9 @@ class InterlisImporterExporter:
         if flag_test:
             number_tests_failed = 0
             number_tests_ok = 0
-            
-            failed_check_list = 'failed : '
-            # Validate subclasses before export           
+
+            failed_check_list = "failed : "
+            # Validate subclasses before export
 
             if self._check_subclass_counts(limit_to_selection):
                 flag_export_check_failed = True
@@ -184,7 +184,9 @@ class InterlisImporterExporter:
             else:
                 number_tests_ok = number_tests_ok + 1
 
-            logger.debug(f" _check_subclass_counts: flag_export_check_failed {flag_export_check_failed}")
+            logger.debug(
+                f" _check_subclass_counts: flag_export_check_failed {flag_export_check_failed}"
+            )
 
             # Check if attribute identifier is Null before export
             # flag_export_check_failed added
@@ -196,7 +198,9 @@ class InterlisImporterExporter:
             else:
                 number_tests_ok = number_tests_ok + 1
 
-            logger.debug(f" _check_identifier_null: flag_export_check_failed {flag_export_check_failed}")
+            logger.debug(
+                f" _check_identifier_null: flag_export_check_failed {flag_export_check_failed}"
+            )
 
             # Check if MAMDATORY fk_owner is Null  before export
             # flag_export_check_failed = flag_export_check_failed and self._check_fk_owner_null(limit_to_selection)
@@ -207,7 +211,9 @@ class InterlisImporterExporter:
             else:
                 number_tests_ok = number_tests_ok + 1
 
-            logger.debug(f" _check_fk_owner_null: flag_export_check_failed {flag_export_check_failed}")
+            logger.debug(
+                f" _check_fk_owner_null: flag_export_check_failed {flag_export_check_failed}"
+            )
 
             # Check if MAMDATORY fk_operator is Null  before export
             # flag_export_check_failed = flag_export_check_failed and self._check_fk_operator_null(limit_to_selection)
@@ -218,7 +224,9 @@ class InterlisImporterExporter:
             else:
                 number_tests_ok = number_tests_ok + 1
 
-            logger.debug(f" _check_fk_operator_null: flag_export_check_failed {flag_export_check_failed}")
+            logger.debug(
+                f" _check_fk_operator_null: flag_export_check_failed {flag_export_check_failed}"
+            )
 
             # Check if MAMDATORY fk_dataowner is Null  before export
             # flag_export_check_failed = flag_export_check_failed and self._check_fk_dataowner_null(limit_to_selection)
@@ -229,7 +237,9 @@ class InterlisImporterExporter:
             else:
                 number_tests_ok = number_tests_ok + 1
 
-            logger.debug(f" _check_fk_dataowner_null: flag_export_check_failed {flag_export_check_failed}")
+            logger.debug(
+                f" _check_fk_dataowner_null: flag_export_check_failed {flag_export_check_failed}"
+            )
 
             # take out again
             # flag_export_check_failed = True
@@ -243,7 +253,9 @@ class InterlisImporterExporter:
             else:
                 number_tests_ok = number_tests_ok + 1
 
-            logger.debug(f" _check_fk_provider_null: flag_export_check_failed {flag_export_check_failed}")
+            logger.debug(
+                f" _check_fk_provider_null: flag_export_check_failed {flag_export_check_failed}"
+            )
 
             # new in TEKSI
             # Check if MANDATORY fk_wastewater_structure is Null before export
@@ -254,7 +266,9 @@ class InterlisImporterExporter:
                 number_tests_failed = number_tests_failed + 1
             else:
                 number_tests_ok = number_tests_ok + 1
-            logger.debug(f" _check_fk_wastewater_structure_null: flag_export_check_failed {flag_export_check_failed}")
+            logger.debug(
+                f" _check_fk_wastewater_structure_null: flag_export_check_failed {flag_export_check_failed}"
+            )
 
         logger.debug(f"After checks: flag_export_check_failed {flag_export_check_failed}")
         total_checks = number_tests_failed + number_tests_ok
@@ -263,17 +277,17 @@ class InterlisImporterExporter:
             logger.info("Adding QMessageBox ...")
             # Add Message box to ask if export should still be continued or not
 
-            mb = QMessageBox ()
+            mb = QMessageBox()
 
             # TypeError: warning(parent: Optional[QWidget], title: Optional[str], text: Optional[str], buttons: Union[QMessageBox.StandardButtons, QMessageBox.StandardButton] = QMessageBox.Ok, defaultButton: QMessageBox.StandardButton = QMessageBox.NoButton): not enough arguments
 
             # mb = QMessageBox.warning(
-                # self,
-                # 'Stop exporting',
-                # 'Do you want to quit?',
-                # QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+            # self,
+            # 'Stop exporting',
+            # 'Do you want to quit?',
+            # QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
             # )
-            mb.setWindowTitle('Stop exporting')
+            mb.setWindowTitle("Stop exporting")
             mb.setIcon(QMessageBox.Warning)
             mb.setText(
                 "Stop exporting: Some export checks failed - check the logs for details. (if you have a selection you can still try (click Cancel) "
@@ -289,10 +303,10 @@ class InterlisImporterExporter:
                 # self._progress_done(100, "Export aborted...")
                 # return
                 raise InterlisImporterExporterError(
-                            "INTERLIS Export aborted!",
-                            errormsg,
-                            None,
-                        )
+                    "INTERLIS Export aborted!",
+                    errormsg,
+                    None,
+                )
                 exit
             elif return_value == QMessageBox.Cancel:
 
@@ -780,7 +794,6 @@ class InterlisImporterExporter:
                     # Return statement added
                     return False
 
-
     # def _check_identifier_null(self, check_fail, limit_to_selection=False):
     def _check_identifier_null(self, limit_to_selection=False):
         """
@@ -867,11 +880,10 @@ class InterlisImporterExporter:
                 logger.info(f"missing_identifier_count : {missing_identifier_count}")
 
             if missing_identifier_count == 0:
-                identifier_null_check = True
                 logger.info("OK: all identifiers set in tww_od!")
                 return True
             else:
-                identifier_null_check = False
+                pass
                 # logger.info(f"ERROR: Missing identifiers in tww_od: {missing_identifier_count}")
                 errormsg = f"Missing identifiers in schema tww_od: {missing_identifier_count}"
                 if limit_to_selection:
@@ -881,9 +893,9 @@ class InterlisImporterExporter:
                 else:
                     logger.error(f"INTEGRITY CHECK missing identifiers: {errormsg}")
                     # raise InterlisImporterExporterError(
-                        # "INTEGRITY CHECK missing identifiers - see tww tab for details",
-                        # errormsg,
-                        # None,
+                    # "INTEGRITY CHECK missing identifiers - see tww tab for details",
+                    # errormsg,
+                    # None,
                     # )
                 # added check_fail 30.6.2025
                 check_fail = True
