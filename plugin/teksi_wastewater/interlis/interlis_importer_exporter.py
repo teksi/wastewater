@@ -3,7 +3,7 @@ import os
 import tempfile
 
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QApplication, QMessageBox
 
 from ..utils.database_utils import DatabaseUtils
 from . import config
@@ -38,6 +38,7 @@ class InterlisImporterExporterError(Exception):
 
 
 class InterlisImporterExporter:
+
     def __init__(self, progress_done_callback=None):
         self.progress_done_callback = progress_done_callback
         self.interlisTools = InterlisTools()
@@ -164,56 +165,248 @@ class InterlisImporterExporter:
         selected_labels_scales_indices=[],
         selected_ids=None,
     ):
-        # Validate subclasses before export
-        self._check_subclass_counts(limit_to_selection)
 
-        # File name without extension (used later for export)
-        file_name_base, _ = os.path.splitext(xtf_file_output)
+        flag_export_check_failed = False
+        flag_test = True
 
-        # Configure logging
-        if logs_next_to_file:
-            self.base_log_path = xtf_file_output
-        else:
-            self.base_log_path = None
+        # go thru all available checks and register if check failed or not.
+        if flag_test:
+            number_tests_failed = 0
+            number_tests_ok = 0
 
-        self._progress_done(5, "Clearing ili schema...")
-        self._clear_ili_schema(recreate_tables=True)
+            failed_check_list = "failed : "
+            # Validate subclasses before export
 
-        self._progress_done(15, "Creating ili schema...")
-        create_basket_col = False
-        if config.MODEL_NAME_VSA_KEK in export_models:
-            create_basket_col = True
-        self._create_ili_schema(export_models, create_basket_col=create_basket_col)
+            if self._check_subclass_counts(limit_to_selection):
+                flag_export_check_failed = True
+                failed_check_list = failed_check_list + "check_subclass_counts, "
+                number_tests_failed = number_tests_failed + 1
+            else:
+                number_tests_ok = number_tests_ok + 1
 
-        # Export the labels file
-        tempdir = tempfile.TemporaryDirectory()
-        labels_file_path = None
-        if len(selected_labels_scales_indices):
-            self._progress_done(25)
-            labels_file_path = os.path.join(tempdir.name, "labels.geojson")
-            self._export_labels_file(
-                limit_to_selection=limit_to_selection,
-                selected_labels_scales_indices=selected_labels_scales_indices,
-                labels_file_path=labels_file_path,
+            logger.debug(
+                f" _check_subclass_counts: flag_export_check_failed {flag_export_check_failed}"
             )
 
-        # Export to the temporary ili2pg model
-        self._progress_done(35, "Converting from TEKSI Wastewater...")
-        self._export_to_intermediate_schema(
-            export_model=export_models[0],
-            file_name=xtf_file_output,
-            selected_ids=selected_ids,
-            export_orientation=export_orientation,
-            labels_file_path=labels_file_path,
-            basket_enabled=create_basket_col,
-        )
-        tempdir.cleanup()  # Cleanup
+            # Check if attribute identifier is Null before export
+            # flag_export_check_failed added
+            # flag_export_check_failed = flag_export_check_failed and self._check_identifier_null(limit_to_selection)
+            if self._check_identifier_null(limit_to_selection):
+                flag_export_check_failed = True
+                failed_check_list = failed_check_list + "check_identifier_null, "
+                number_tests_failed = number_tests_failed + 1
+            else:
+                number_tests_ok = number_tests_ok + 1
 
-        self._progress_done(60)
-        self._export_xtf_files(file_name_base, export_models)
+            logger.debug(
+                f" _check_identifier_null: flag_export_check_failed {flag_export_check_failed}"
+            )
 
-        self._progress_done(100)
-        logger.info("INTERLIS export finished.")
+            # Check if MAMDATORY fk_owner is Null  before export
+            # flag_export_check_failed = flag_export_check_failed and self._check_fk_owner_null(limit_to_selection)
+            if self._check_fk_owner_null(limit_to_selection):
+                flag_export_check_failed = True
+                failed_check_list = failed_check_list + "check_fk_owner_null, "
+                number_tests_failed = number_tests_failed + 1
+            else:
+                number_tests_ok = number_tests_ok + 1
+
+            logger.debug(
+                f" _check_fk_owner_null: flag_export_check_failed {flag_export_check_failed}"
+            )
+
+            # Check if MAMDATORY fk_operator is Null  before export
+            # flag_export_check_failed = flag_export_check_failed and self._check_fk_operator_null(limit_to_selection)
+            if self._check_fk_operator_null(limit_to_selection):
+                flag_export_check_failed = True
+                failed_check_list = failed_check_list + "check_fk_operator_null, "
+                number_tests_failed = number_tests_failed + 1
+            else:
+                number_tests_ok = number_tests_ok + 1
+
+            logger.debug(
+                f" _check_fk_operator_null: flag_export_check_failed {flag_export_check_failed}"
+            )
+
+            # Check if MAMDATORY fk_dataowner is Null  before export
+            # flag_export_check_failed = flag_export_check_failed and self._check_fk_dataowner_null(limit_to_selection)
+            if self._check_fk_dataowner_null(limit_to_selection):
+                flag_export_check_failed = True
+                failed_check_list = failed_check_list + "check_fk_dataowner_null, "
+                number_tests_failed = number_tests_failed + 1
+            else:
+                number_tests_ok = number_tests_ok + 1
+
+            logger.debug(
+                f" _check_fk_dataowner_null: flag_export_check_failed {flag_export_check_failed}"
+            )
+
+            # take out again
+            # flag_export_check_failed = True
+
+            # Check if MAMDATORY fk_provider is Null  before export
+            # flag_export_check_failed = flag_export_check_failed and self._check_fk_provider_null(limit_to_selection)
+            if self._check_fk_provider_null(limit_to_selection):
+                flag_export_check_failed = True
+                failed_check_list = failed_check_list + "check_fk_provider_null, "
+                number_tests_failed = number_tests_failed + 1
+            else:
+                number_tests_ok = number_tests_ok + 1
+
+            logger.debug(
+                f" _check_fk_provider_null: flag_export_check_failed {flag_export_check_failed}"
+            )
+
+            # new in TEKSI
+            # Check if MANDATORY fk_wastewater_structure is Null before export
+            # flag_export_check_failed = flag_export_check_failed and self._check_fk_wastewater_structure_null(limit_to_selection)
+            if self._check_fk_wastewater_structure_null(limit_to_selection):
+                flag_export_check_failed = True
+                failed_check_list = failed_check_list + "check_fk_wastewater_structure_null, "
+                number_tests_failed = number_tests_failed + 1
+            else:
+                number_tests_ok = number_tests_ok + 1
+            logger.debug(
+                f" _check_fk_wastewater_structure_null: flag_export_check_failed {flag_export_check_failed}"
+            )
+
+        logger.debug(f"After checks: flag_export_check_failed {flag_export_check_failed}")
+        total_checks = number_tests_failed + number_tests_ok
+
+        if flag_export_check_failed:
+            logger.info("Adding QMessageBox ...")
+            # Add Message box to ask if export should still be continued or not
+
+            mb = QMessageBox()
+
+            # TypeError: warning(parent: Optional[QWidget], title: Optional[str], text: Optional[str], buttons: Union[QMessageBox.StandardButtons, QMessageBox.StandardButton] = QMessageBox.Ok, defaultButton: QMessageBox.StandardButton = QMessageBox.NoButton): not enough arguments
+
+            # mb = QMessageBox.warning(
+            # self,
+            # 'Stop exporting',
+            # 'Do you want to quit?',
+            # QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+            # )
+            mb.setWindowTitle("Stop exporting")
+            mb.setIcon(QMessageBox.Warning)
+            mb.setText(
+                "Stop exporting: Some export checks failed - check the logs for details. (if you have a selection you can still try (click Cancel) "
+            )
+            mb.setInformativeText(f" {number_tests_failed} of {total_checks} {failed_check_list}")
+            mb.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+            return_value = mb.exec()
+            if return_value == QMessageBox.Ok:
+                errormsg = "INTERLIS export has been stopped due to failing export checks - see logs for details."
+                logger.info(
+                    "INTERLIS export has been stopped due to failing export checks - see logs for details."
+                )
+                # self._progress_done(100, "Export aborted...")
+                # return
+                raise InterlisImporterExporterError(
+                    "INTERLIS Export aborted!",
+                    errormsg,
+                    None,
+                )
+                exit
+            elif return_value == QMessageBox.Cancel:
+
+                # File name without extension (used later for export)
+                file_name_base, _ = os.path.splitext(xtf_file_output)
+
+                # Configure logging
+                if logs_next_to_file:
+                    self.base_log_path = xtf_file_output
+                else:
+                    self.base_log_path = None
+
+                self._progress_done(5, "Clearing ili schema...")
+                self._clear_ili_schema(recreate_tables=True)
+
+                self._progress_done(15, "Creating ili schema...")
+                create_basket_col = False
+                if config.MODEL_NAME_VSA_KEK in export_models:
+                    create_basket_col = True
+                self._create_ili_schema(export_models, create_basket_col=create_basket_col)
+
+                # Export the labels file
+                tempdir = tempfile.TemporaryDirectory()
+                labels_file_path = None
+                if len(selected_labels_scales_indices):
+                    self._progress_done(25)
+                    labels_file_path = os.path.join(tempdir.name, "labels.geojson")
+                    self._export_labels_file(
+                        limit_to_selection=limit_to_selection,
+                        selected_labels_scales_indices=selected_labels_scales_indices,
+                        labels_file_path=labels_file_path,
+                    )
+
+                # Export to the temporary ili2pg model
+                self._progress_done(35, "Converting from TEKSI Wastewater...")
+                self._export_to_intermediate_schema(
+                    export_model=export_models[0],
+                    file_name=xtf_file_output,
+                    selected_ids=selected_ids,
+                    export_orientation=export_orientation,
+                    labels_file_path=labels_file_path,
+                    basket_enabled=create_basket_col,
+                )
+                tempdir.cleanup()  # Cleanup
+
+                self._progress_done(60)
+                self._export_xtf_files(file_name_base, export_models)
+
+                self._progress_done(100)
+                logger.info("INTERLIS export finished.")
+
+        # no problems with export checks
+        else:
+            # File name without extension (used later for export)
+            file_name_base, _ = os.path.splitext(xtf_file_output)
+
+            # Configure logging
+            if logs_next_to_file:
+                self.base_log_path = xtf_file_output
+            else:
+                self.base_log_path = None
+
+            self._progress_done(5, "Clearing ili schema...")
+            self._clear_ili_schema(recreate_tables=True)
+
+            self._progress_done(15, "Creating ili schema...")
+            create_basket_col = False
+            if config.MODEL_NAME_VSA_KEK in export_models:
+                create_basket_col = True
+            self._create_ili_schema(export_models, create_basket_col=create_basket_col)
+
+            # Export the labels file
+            tempdir = tempfile.TemporaryDirectory()
+            labels_file_path = None
+            if len(selected_labels_scales_indices):
+                self._progress_done(25)
+                labels_file_path = os.path.join(tempdir.name, "labels.geojson")
+                self._export_labels_file(
+                    limit_to_selection=limit_to_selection,
+                    selected_labels_scales_indices=selected_labels_scales_indices,
+                    labels_file_path=labels_file_path,
+                )
+
+            # Export to the temporary ili2pg model
+            self._progress_done(35, "Converting from TEKSI Wastewater...")
+            self._export_to_intermediate_schema(
+                export_model=export_models[0],
+                file_name=xtf_file_output,
+                selected_ids=selected_ids,
+                export_orientation=export_orientation,
+                labels_file_path=labels_file_path,
+                basket_enabled=create_basket_col,
+            )
+            tempdir.cleanup()  # Cleanup
+
+            self._progress_done(60)
+            self._export_xtf_files(file_name_base, export_models)
+
+            self._progress_done(100)
+            logger.info("INTERLIS export finished.")
 
     def _import_validate_xtf_file(self, xtf_file_input):
         log_path = make_log_path(self.base_log_path, "ilivalidator")
@@ -480,13 +673,16 @@ class InterlisImporterExporter:
             )
 
     def _check_subclass_counts(self, limit_to_selection=False):
-        self._check_subclass_count(
+
+        check_subclass_counts_failed = False
+        check_subclass_counts_failed = check_subclass_counts_failed and self._check_subclass_count(
             config.TWW_OD_SCHEMA,
             "wastewater_networkelement",
             ["reach", "wastewater_node"],
             limit_to_selection,
         )
-        self._check_subclass_count(
+        logger.debug(f"check_subclass_counts_failed: {check_subclass_counts_failed} 1")
+        check_subclass_counts_failed = check_subclass_counts_failed and self._check_subclass_count(
             config.TWW_OD_SCHEMA,
             "wastewater_structure",
             [
@@ -501,7 +697,8 @@ class InterlisImporterExporter:
             ],
             limit_to_selection,
         )
-        self._check_subclass_count(
+        logger.debug(f"check_subclass_counts_failed: {check_subclass_counts_failed} 2")
+        check_subclass_counts_failed = check_subclass_counts_failed and self._check_subclass_count(
             config.TWW_OD_SCHEMA,
             "structure_part",
             [
@@ -520,36 +717,38 @@ class InterlisImporterExporter:
             ],
             limit_to_selection,
         )
-        self._check_subclass_count(
+        check_subclass_counts_failed = check_subclass_counts_failed and self._check_subclass_count(
             config.TWW_OD_SCHEMA,
             "overflow",
             ["pump", "leapingweir", "prank_weir"],
             limit_to_selection,
         )
-        self._check_subclass_count(
+        check_subclass_counts_failed = check_subclass_counts_failed and self._check_subclass_count(
             config.TWW_OD_SCHEMA,
             "maintenance_event",
             ["maintenance", "examination", "bio_ecol_assessment"],
             limit_to_selection,
         )
-        self._check_subclass_count(
+        check_subclass_counts_failed = check_subclass_counts_failed and self._check_subclass_count(
             config.TWW_OD_SCHEMA,
             "damage",
             ["damage_channel", "damage_manhole"],
             limit_to_selection,
         )
-        self._check_subclass_count(
+        check_subclass_counts_failed = check_subclass_counts_failed and self._check_subclass_count(
             config.TWW_OD_SCHEMA,
             "connection_object",
             ["fountain", "individual_surface", "building", "reservoir"],
             limit_to_selection,
         )
-        self._check_subclass_count(
+        check_subclass_counts_failed = check_subclass_counts_failed and self._check_subclass_count(
             config.TWW_OD_SCHEMA,
             "zone",
             ["infiltration_zone", "drainage_system"],
             limit_to_selection,
         )
+        logger.debug(f"check_subclass_counts_failed: {check_subclass_counts_failed} last")
+        return check_subclass_counts_failed
 
     def _check_subclass_count(self, schema_name, parent_name, child_list, limit_to_selection):
         logger.info(f"INTEGRITY CHECK {parent_name} subclass data...")
@@ -573,6 +772,8 @@ class InterlisImporterExporter:
                     logger.info(
                         f"OK: number of subclass elements of class {parent_name} OK in schema {schema_name}!"
                     )
+                    # Return statement added
+                    return True
                 else:
                     if parent_count > 0:
                         errormsg = f"Too many superclass entries for {schema_name}.{parent_name}"
@@ -590,6 +791,455 @@ class InterlisImporterExporter:
                             errormsg,
                             None,
                         )
+                    # Return statement added
+                    return False
+
+    # def _check_identifier_null(self, check_fail, limit_to_selection=False):
+    def _check_identifier_null(self, limit_to_selection=False):
+        """
+        Check if attribute identifier is Null
+        """
+        with DatabaseUtils.PsycopgConnection() as connection:
+            logger.info("-----")
+            logger.info("INTEGRITY CHECK missing identifiers...")
+
+            cursor = connection.cursor()
+
+            missing_identifier_count = 0
+            # add classes to be checked
+            for notsubclass in [
+                # VSA-KEK
+                ("file"),
+                ("data_media"),
+                ("maintenance_event"),
+                # SIA405 Abwasser
+                ("organisation"),
+                ("wastewater_structure"),
+                ("wastewater_networkelement"),
+                ("structure_part"),
+                ("reach_point"),
+                ("pipe_profile"),
+                # VSA-DSS
+                ("catchment_area"),
+                ("connection_object"),
+                ("control_center"),
+                # only VSA-DSS 2015
+                # ("hazard_source"),
+                ("hydr_geometry"),
+                ("hydraulic_char_data"),
+                ("measurement_result"),
+                ("measurement_series"),
+                ("measuring_device"),
+                ("measuring_point"),
+                ("mechanical_pretreatment"),
+                ("overflow"),
+                ("overflow_char"),
+                ("retention_body"),
+                # only VSA-DSS 2015
+                # ("river_bank"),
+                # ("river_bed"),
+                # ("sector_water_body"),
+                # ("substance"),
+                ("surface_runoff_parameters"),
+                # ("surface_water_bodies"),
+                ("throttle_shut_off_unit"),
+                ("waste_water_treatment"),
+                # only VSA-DSS 2015
+                # ("water_catchment"),
+                # ("water_control_structure"),
+                # ("water_course_segment"),
+                ("wwtp_energy_use"),
+                ("zone"),
+            ]:
+                cursor.execute(
+                    f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE identifier is null or identifier ='';"
+                )
+                # use cursor.fetchone()[0] instead of cursor.rowcount
+                # add variable and store result of cursor.fetchone()[0] as the next call will give None value instead of count https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
+
+                try:
+                    class_identifier_count = int(cursor.fetchone()[0])
+                except Exception:
+                    class_identifier_count = 0
+                    logger.debug(
+                        f"Number of datasets in class '{notsubclass}' without identifier could not be identified (TypeError: 'NoneType' object is not subscriptable). Automatically set class_identifier_count = 0"
+                    )
+                else:
+                    logger.info(
+                        f"Number of datasets in class '{notsubclass}' without identifier : {class_identifier_count}"
+                    )
+
+                # if cursor.fetchone() is None:
+                if class_identifier_count == 0:
+                    missing_identifier_count = missing_identifier_count
+                else:
+                    # missing_identifier_count = missing_identifier_count + int(cursor.fetchone()[0])
+                    missing_identifier_count = missing_identifier_count + class_identifier_count
+
+                # add for testing
+                logger.info(f"missing_identifier_count : {missing_identifier_count}")
+
+            if missing_identifier_count == 0:
+                logger.info("OK: all identifiers set in tww_od!")
+                return True
+            else:
+                pass
+                # logger.info(f"ERROR: Missing identifiers in tww_od: {missing_identifier_count}")
+                errormsg = f"Missing identifiers in schema tww_od: {missing_identifier_count}"
+                if limit_to_selection:
+                    logger.warning(
+                        f"Overall Subclass Count: {errormsg}. The problem might lie outside the selection"
+                    )
+                else:
+                    logger.error(f"INTEGRITY CHECK missing identifiers: {errormsg}")
+                    # raise InterlisImporterExporterError(
+                    # "INTEGRITY CHECK missing identifiers - see tww tab for details",
+                    # errormsg,
+                    # None,
+                    # )
+                # added check_fail 30.6.2025
+                check_fail = True
+                logger.error(f"check_fail: {check_fail}")
+                return True
+
+    def _check_fk_owner_null(self, limit_to_selection=False):
+        """
+        Check if MAMDATORY fk_owner is Null
+        """
+        with DatabaseUtils.PsycopgConnection() as connection:
+            logger.info("-----")
+            logger.info("INTEGRITY CHECK missing MAMDATORY owner references fk_owner...")
+
+            cursor = connection.cursor()
+
+            missing_fk_owner_count = 0
+            # add MANDATORY classes to be checked
+            for notsubclass in [
+                # SIA405 Abwasser
+                ("wastewater_structure"),
+            ]:
+                cursor.execute(
+                    f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_owner is null or fk_owner ='';"
+                )
+                # use cursor.fetchone()[0] instead of cursor.rowcount
+                # add variable and store result of cursor.fetchone()[0] as the next call will give None value instead of count https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
+                class_fk_owner_count = int(cursor.fetchone()[0])
+                # logger.info(
+                #    f"Number of datasets in class '{notsubclass}' without fk_owner : {cursor.fetchone()[0]}"
+                # )
+                logger.info(
+                    f"Number of datasets in class '{notsubclass}' without fk_owner : {class_fk_owner_count}"
+                )
+
+                # if cursor.fetchone() is None:
+                if class_fk_owner_count == 0:
+                    missing_fk_owner_count = missing_fk_owner_count
+                else:
+                    # missing_fk_owner_count = missing_fk_owner_count + int(cursor.fetchone()[0])
+                    missing_fk_owner_count = missing_fk_owner_count + class_fk_owner_count
+
+                # add for testing
+                logger.info(f"missing_fk_owner_count : {missing_fk_owner_count}")
+
+            if missing_fk_owner_count == 0:
+                check_fk_owner_null = False
+                logger.info("OK: all mandatory fk_owner set in tww_od!")
+            else:
+                check_fk_owner_null = True
+                logger.info(
+                    f"ERROR: Missing mandatory fk_owner in tww_od: {missing_fk_owner_count}"
+                )
+            # Return statement added
+            logger.debug(f"missing_fk_owner_count : {missing_fk_owner_count}")
+            return check_fk_owner_null
+
+    def _check_fk_operator_null(self, limit_to_selection=False):
+        """
+        Check if MAMDATORY fk_operator is Null
+        """
+        with DatabaseUtils.PsycopgConnection() as connection:
+            logger.info("-----")
+            logger.info("INTEGRITY CHECK missing MAMDATORY operator references fk_operator...")
+
+            cursor = connection.cursor()
+
+            missing_fk_operator_count = 0
+
+            # add MANDATORY classes to be checked
+            for notsubclass in [
+                # SIA405 Abwasser
+                ("wastewater_structure"),
+            ]:
+                cursor.execute(
+                    f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_operator is null or fk_operator ='';"
+                )
+                # use cursor.fetchone()[0] instead of cursor.rowcount
+                logger.info(
+                    f"Number of datasets in class '{notsubclass}' without fk_operator : {cursor.fetchone()[0]}"
+                )
+
+                if cursor.fetchone() is None:
+                    missing_fk_operator_count = missing_fk_operator_count
+                else:
+                    missing_fk_operator_count = missing_fk_operator_count + int(
+                        cursor.fetchone()[0]
+                    )
+                # add for testing
+                logger.info(f"missing_fk_operator_count : {missing_fk_operator_count}")
+
+            if missing_fk_operator_count == 0:
+                logger.info("OK: all mandatory fk_operator set in tww_od!")
+                # Return statement added
+                return False
+            else:
+                logger.error(
+                    f"ERROR: Missing mandatory fk_operator in tww_od: {missing_fk_operator_count}"
+                )
+                # Return statement added
+                return True
+
+    def _check_fk_dataowner_null(self, limit_to_selection=False):
+        """
+        Check if MAMDATORY fk_dataowner is Null
+        """
+        with DatabaseUtils.PsycopgConnection() as connection:
+            logger.info("-----")
+            logger.info("INTEGRITY CHECK missing dataowner references fk_dataowner...")
+
+            cursor = connection.cursor()
+
+            missing_fk_dataowner_count = 0
+            # add MANDATORY classes to be checked
+            for notsubclass in [
+                # VSA-KEK
+                ("file"),
+                ("data_media"),
+                ("maintenance_event"),
+                # SIA405 Abwasser
+                # take out for DSS 2020
+                # ("organisation"),
+                ("wastewater_structure"),
+                ("wastewater_networkelement"),
+                ("structure_part"),
+                ("reach_point"),
+                ("pipe_profile"),
+                # VSA-DSS
+                ("catchment_area"),
+                ("connection_object"),
+                ("control_center"),
+                # only VSA-DSS 2015
+                # ("hazard_source"),
+                ("hydr_geometry"),
+                ("hydraulic_char_data"),
+                ("measurement_result"),
+                ("measurement_series"),
+                ("measuring_device"),
+                ("measuring_point"),
+                ("mechanical_pretreatment"),
+                ("overflow"),
+                ("overflow_char"),
+                ("retention_body"),
+                # only VSA-DSS 2015
+                # ("river_bank"),
+                # ("river_bed"),
+                # ("sector_water_body"),
+                # ("substance"),
+                ("surface_runoff_parameters"),
+                # ("surface_water_bodies"),
+                ("throttle_shut_off_unit"),
+                ("waste_water_treatment"),
+                # only VSA-DSS 2015
+                # ("water_catchment"),
+                # ("water_control_structure"),
+                # ("water_course_segment"),
+                ("wwtp_energy_use"),
+                ("zone"),
+            ]:
+                cursor.execute(
+                    f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_dataowner is null or fk_dataowner ='';"
+                )
+                # use cursor.fetchone()[0] instead of cursor.rowcount
+                # add variable and store result of cursor.fetchone()[0] as the next call will give None value instead of count https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
+                class_fk_dataowner_count = int(cursor.fetchone()[0])
+
+                # logger.info(
+                #    f"Number of datasets in class '{notsubclass}' without fk_dataowner : {cursor.fetchone()[0]}"
+                # )
+                logger.info(
+                    f"Number of datasets in class '{notsubclass}' without fk_dataowner : {class_fk_dataowner_count}"
+                )
+
+                # if cursor.fetchone() is None:
+                if class_fk_dataowner_count == 0:
+                    missing_fk_dataowner_count = missing_fk_dataowner_count
+                else:
+                    # missing_fk_dataowner_count = missing_fk_dataowner_count + int(cursor.fetchone()[0])
+                    missing_fk_dataowner_count = (
+                        missing_fk_dataowner_count + class_fk_dataowner_count
+                    )
+
+                # add for testing
+                logger.info(f"missing_fk_dataowner_count : {missing_fk_dataowner_count}")
+
+            if missing_fk_dataowner_count == 0:
+                logger.info("OK: all mandatory fk_dataowner set in tww_od!")
+                # Return statement added
+                return False
+            else:
+                logger.error(
+                    f"ERROR: Missing mandatory fk_dataowner in tww_od: {missing_fk_dataowner_count}"
+                )
+                # Return statement added
+                return True
+
+    def _check_fk_provider_null(self, limit_to_selection=False):
+        """
+        Check if MAMDATORY fk_provider is Null
+        """
+        with DatabaseUtils.PsycopgConnection() as connection:
+            logger.info("-----")
+            logger.info("INTEGRITY CHECK missing provider references fk_provider...")
+
+            cursor = connection.cursor()
+
+            missing_fk_provider_count = 0
+            # add MANDATORY classes to be checked
+            for notsubclass in [
+                # VSA-KEK
+                ("file"),
+                ("data_media"),
+                ("maintenance_event"),
+                # SIA405 Abwasser
+                # take out for DSS 2020
+                # ("organisation"),
+                ("wastewater_structure"),
+                ("wastewater_networkelement"),
+                ("structure_part"),
+                ("reach_point"),
+                ("pipe_profile"),
+                # VSA-DSS
+                ("catchment_area"),
+                ("connection_object"),
+                ("control_center"),
+                # only VSA-DSS 2015
+                # ("hazard_source"),
+                ("hydr_geometry"),
+                ("hydraulic_char_data"),
+                ("measurement_result"),
+                ("measurement_series"),
+                ("measuring_device"),
+                ("measuring_point"),
+                ("mechanical_pretreatment"),
+                ("overflow"),
+                ("overflow_char"),
+                ("retention_body"),
+                # only VSA-DSS 2015
+                # ("river_bank"),
+                # ("river_bed"),
+                # ("sector_water_body"),
+                # ("substance"),
+                ("surface_runoff_parameters"),
+                # ("surface_water_bodies"),
+                ("throttle_shut_off_unit"),
+                ("waste_water_treatment"),
+                # only VSA-DSS 2015
+                # ("water_catchment"),
+                # ("water_control_structure"),
+                # ("water_course_segment"),
+                ("wwtp_energy_use"),
+                ("zone"),
+            ]:
+                cursor.execute(
+                    f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_provider is null or fk_provider ='';"
+                )
+                # use cursor.fetchone()[0] instead of cursor.rowcount
+                # add variable and store result of cursor.fetchone()[0] as the next call will give None value instead of count https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
+                class_fk_provider_count = int(cursor.fetchone()[0])
+                # logger.info(
+                #    f"Number of datasets in class '{notsubclass}' without fk_provider : {cursor.fetchone()[0]}"
+                # )
+                logger.info(
+                    f"Number of datasets in class '{notsubclass}' without fk_dataowner : {class_fk_provider_count}"
+                )
+
+                # if cursor.fetchone() is None:
+                if class_fk_provider_count == 0:
+                    missing_fk_provider_count = missing_fk_provider_count
+                else:
+                    # missing_fk_provider_count = missing_fk_provider_count + int(cursor.fetchone()[0])
+                    missing_fk_provider_count = missing_fk_provider_count + class_fk_provider_count
+
+                # add for testing
+                logger.info(f"missing_fk_provider_count : {missing_fk_provider_count}")
+
+            if missing_fk_provider_count == 0:
+                logger.info("OK: all mandatory fk_provider set in tww_od!")
+                # Return statement added
+                return False
+            else:
+                logger.error(
+                    f"ERROR: Missing mandatory fk_provider in tww_od: {missing_fk_provider_count}"
+                )
+                # Return statement added
+                return True
+
+    def _check_fk_wastewater_structure_null(self, limit_to_selection=False):
+        """
+        Check if MAMDATORY fk_wastewater_structure is Null
+        """
+        with DatabaseUtils.PsycopgConnection() as connection:
+            logger.info("-----")
+            logger.info(
+                "INTEGRITY CHECK missing wastewater_structure references fk_wastewater_structure..."
+            )
+
+            cursor = connection.cursor()
+
+            missing_fk_wastewater_structure_count = 0
+            # add MANDATORY classes to be checked
+            for notsubclass in [
+                # VSA-KEK
+                # SIA405 Abwasser
+                ("structure_part"),
+                # VSA-DSS
+            ]:
+                cursor.execute(
+                    f"SELECT COUNT(obj_id) FROM tww_od.{notsubclass} WHERE fk_wastewater_structure is null or fk_wastewater_structure ='';"
+                )
+                # use cursor.fetchone()[0] instead of cursor.rowcount
+                # add variable and store result of cursor.fetchone()[0] as the next call will give None value instead of count https://pynative.com/python-cursor-fetchall-fetchmany-fetchone-to-read-rows-from-table/
+                class_fk_wastewater_structure_count = int(cursor.fetchone()[0])
+                # logger.info(
+                #    f"Number of datasets in class '{notsubclass}' without fk_wastewater_structure : {cursor.fetchone()[0]}"
+                # )
+                logger.info(
+                    f"Number of datasets in class '{notsubclass}' without fk_dataowner : {class_fk_wastewater_structure_count}"
+                )
+
+                # if cursor.fetchone() is None:
+                if class_fk_wastewater_structure_count == 0:
+                    missing_fk_wastewater_structure_count = missing_fk_wastewater_structure_count
+                else:
+                    # missing_fk_wastewater_structure_count = missing_fk_wastewater_structure_count + int(cursor.fetchone()[0])
+                    missing_fk_wastewater_structure_count = (
+                        missing_fk_wastewater_structure_count + class_fk_wastewater_structure_count
+                    )
+
+                # add for testing
+                logger.info(
+                    f"missing_fk_wastewater_structure_count : {missing_fk_wastewater_structure_count}"
+                )
+
+            if missing_fk_wastewater_structure_count == 0:
+                logger.info("OK: all mandatory fk_wastewater_structure set in tww_od!")
+                # Return statement added
+                return False
+            else:
+                logger.error(
+                    f"ERROR: Missing mandatory fk_wastewater_structure in tww_od: {missing_fk_wastewater_structure_count}"
+                )
+                # Return statement added
+                return True
 
     def _init_model_classes(self, model):
         ModelInterlis = ModelInterlisSia405Abwasser
