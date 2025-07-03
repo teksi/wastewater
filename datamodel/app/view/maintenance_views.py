@@ -20,7 +20,7 @@ def vw_tww_channel(
 ):
     """
     Creates tww_channel view
-    :param pg_service: the PostgreSQL service name
+    :param connection: Psycopg connection
     :param extra_definition: a dictionary for additional read-only columns
     """
     extra_definition = extra_definition or {}
@@ -104,6 +104,18 @@ def vw_tww_channel(
     matview_sql = psycopg.sql.SQL(matview_sql).format(srid=psycopg.sql.Literal(srid))
     cursor.execute(matview_sql)
 
+def vw_tww_channel_maintenance(
+        connection: psycopg.Connection, extra_definition: dict = None
+):
+    """
+    Creates vw_tww_channel_maintenance view
+    :param connection: Psycopg connection
+    :param extra_definition: a dictionary for additional read-only columns
+    """
+    extra_definition = extra_definition or {}
+
+    cursor = connection.cursor()
+
     view_sql = """
     DROP VIEW IF EXISTS tww_app.vw_tww_channel_maintenance;
 
@@ -116,7 +128,7 @@ def vw_tww_channel(
         , {ch_cols}
         {extra_cols}
       FROM re_maintenance_event_wastewater_structure mw
-         INNER JOIN tww_app.vw_tww_channel ch ON me.obj_id = mw.fk_wastewater_structure
+         INNER JOIN tww_app.vw_tww_channel ch ON ch.obj_id = mw.fk_wastewater_structure
          LEFT JOIN tww_od.maintenance_event me ON me.obj_id = mw.fk_maintenance_event
          LEFT JOIN tww_od.maintenance mn ON me.obj_id = mn.obj_id
          {extra_joins}
@@ -175,11 +187,144 @@ def vw_tww_channel(
     END; $BODY$
       LANGUAGE plpgsql VOLATILE;
 
-      CREATE TRIGGER ft_vw_tww_channel_maintenance_update_update
+      CREATE TRIGGER vw_tww_channel_maintenance_update
       INSTEAD OF UPDATE
-      ON tww_app.ft_vw_tww_channel_maintenance_update
+      ON tww_app.vw_tww_channel_maintenance
       FOR EACH ROW
       EXECUTE PROCEDURE tww_app.ft_vw_tww_channel_maintenance_update();
+    """.format(
+        update_mn=update_command(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="maintenance",
+            prefix="mn_",
+            remove_pkey=True,
+            indent=6,
+            remap_columns={"obj_id": "me_obj_id"},
+        ),
+        update_me=update_command(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="maintenance_event",
+            prefix="me_",
+            remove_pkey=True,
+            indent=6,
+            update_values={"situation3d_geometry": "ST_EndPoint(NEW.progression3d_geometry)"},
+        ),
+        update_extra=update_extra(connection=connection, extra_definition=extra_definition),
+    )
+    cursor.execute(trigger_update_sql)
+
+
+def vw_tww_ws_maintenance(
+        connection: psycopg.Connection, extra_definition: dict = None
+):
+    """
+    Creates vw_tww_ws_maintenance view
+    :param connection: Psycopg connection
+    :param extra_definition: a dictionary for additional read-only columns
+    """
+    extra_definition = extra_definition or {}
+
+    cursor = connection.cursor()
+    view_sql = """
+    DROP VIEW IF EXISTS tww_app.vw_tww_ws_maintenance;
+
+    CREATE OR REPLACE VIEW tww_app.vw_tww_ws_maintenance AS
+
+    SELECT
+          mw.id
+        , wn.situation3d_geometry
+        , {me_cols}
+        , {mn_cols}
+        , {ws_cols}
+        {extra_cols}
+      FROM re_maintenance_event_wastewater_structure mw
+         INNER JOIN tww_od.wastewater_structure ws ON ws.obj_id = mw.fk_wastewater_structure
+         LEFT JOIN tww_od.maintenance_event me ON me.obj_id = mw.fk_maintenance_event
+         LEFT JOIN tww_od.maintenance mn ON me.obj_id = mn.obj_id
+         LEFT JOIN tww_od.wastewater_node wn ON wn.obj_id = ws.fk_main_wastewater_node
+         {extra_joins}
+         WHERE wn.obj_id IS NOT NULL;
+         ;
+    """.format(
+        ws_cols=select_columns(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="wastewater_structure",
+            table_alias="ws",
+            prefix="ws_",
+            remove_pkey=False,
+            indent=4,
+            safe_skip_columns=["accessibility",
+                          "contract_section",
+                          "detail_geometry3d_geometry",
+                          "elevation_determination",
+                          "location_name",
+                          "records",
+                          "remark",
+                          "replacement_value",
+                          "rv_base_year",
+                          "rv_construction_type",
+                          "subsidies",
+                          "year_of_construction",
+                          "year_of_replacement",
+                          "last_modification",
+                          "fk_dataowner",
+                          "fk_provider",
+                          "fk_main_cover",
+                          "fk_main_wastewater_node",
+                          "_depth",
+                          ],
+        ),
+        me_cols=select_columns(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="maintenance_event",
+            table_alias="me",
+            remove_pkey=False,
+            indent=4,
+            skip_columns=[],
+        ),
+        mn_cols=select_columns(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="maintenance",
+            table_alias="mn",
+            remove_pkey=True,
+            indent=4,
+            skip_columns=[],
+        ),
+        extra_cols=(
+            ""
+            if not extra_definition
+            else extra_cols(connection=connection, extra_definition=extra_definition)
+        ),
+        extra_joins=extra_joins(connection=connection, extra_definition=extra_definition),
+    )
+
+    cursor.execute(view_sql)
+
+    trigger_update_sql = """
+    CREATE OR REPLACE FUNCTION tww_app.ft_vw_tww_ws_maintenance_update()
+      RETURNS trigger AS
+    $BODY$
+    BEGIN
+
+      {update_mn}
+      {update_me}
+      {update_extra}
+
+
+      RETURN NEW;
+    END; $BODY$
+      LANGUAGE plpgsql VOLATILE;
+
+      CREATE TRIGGER vw_tww_ws_maintenance_update
+      INSTEAD OF UPDATE
+      ON tww_app.vw_tww_ws_maintenance
+      FOR EACH ROW
+      EXECUTE PROCEDURE tww_app.ft_vw_tww_ws_maintenance_update();
     """.format(
         update_mn=update_command(
             connection=connection,
@@ -212,3 +357,5 @@ if __name__ == "__main__":
     pg_service = args.pg_service or os.getenv("PGSERVICE")
     with psycopg.connect(f"service={pg_service}") as conn:
         vw_tww_channel(connection=conn)
+        vw_tww_channel_maintenance(connection=conn)
+        vw_tww_ws_maintenance(connection=conn)
