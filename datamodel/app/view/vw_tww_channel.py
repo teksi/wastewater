@@ -103,10 +103,6 @@ def vw_tww_channel(
 
     matview_sql = psycopg.sql.SQL(matview_sql).format(srid=psycopg.sql.Literal(srid))
     cursor.execute(matview_sql)
-    try:
-        cursor.execute(matview_sql)
-    except psycopg.errors.SyntaxError as e:
-        raise PumHookError(f"Error creating view with code: {matview_sql}: {e}")
 
     view_sql = """
     DROP VIEW IF EXISTS tww_app.vw_tww_channel_maintenance;
