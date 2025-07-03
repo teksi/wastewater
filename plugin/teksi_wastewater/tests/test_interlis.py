@@ -91,7 +91,6 @@ class TestInterlis(unittest.TestCase):
         )
         self.assertIsNotNone(result)
         self.assertEqual(result[0], "Arbon")
-        DatabaseUtils.execute("UPDATE tww_od.organisation SET tww_local_extension=true;")
 
         # Import minimal sia405
         xtf_file_input = self._get_data_filename(MINIMAL_DATASET_SIA405_ABWASSER)
@@ -151,6 +150,7 @@ class TestInterlis(unittest.TestCase):
         self.assertEqual(result[0], 448.0)
 
         # Export minimal sia405_base
+        DatabaseUtils.execute("UPDATE tww_od.organisation SET tww_local_extension=true;")
         export_xtf_file = self._get_output_filename("export_minimal_dataset_sia405_base")
         interlisImporterExporter.interlis_export(
             xtf_file_output=self._get_output_filename(export_xtf_file),
