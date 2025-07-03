@@ -169,7 +169,7 @@ def vw_tww_channel(
     cursor.execute(view_sql)
 
     trigger_update_sql = """
-    CREATE OR REPLACE FUNCTION tww_app.ft_vw_tww_channel_update()
+    CREATE OR REPLACE FUNCTION tww_app.ft_vw_tww_channel_maintenance_update()
       RETURNS trigger AS
     $BODY$
     BEGIN
@@ -182,6 +182,12 @@ def vw_tww_channel(
       RETURN NEW;
     END; $BODY$
       LANGUAGE plpgsql VOLATILE;
+
+      CREATE TRIGGER ft_vw_tww_channel_maintenance_update_update
+      INSTEAD OF UPDATE
+      ON tww_app.ft_vw_tww_channel_maintenance_update
+      FOR EACH ROW
+      EXECUTE PROCEDURE tww_app.ft_vw_tww_channel_maintenance_update();
     """.format(
         update_mn=update_command(
             connection=connection,
