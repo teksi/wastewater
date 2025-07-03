@@ -6,8 +6,13 @@ import argparse
 import os
 
 import psycopg
-from pirogue.utils import select_columns
-
+from pirogue.utils import insert_command, select_columns, table_parts, update_command
+from .utils.extra_definition_utils import (
+    extra_cols,
+    extra_joins,
+    insert_extra,
+    update_extra,
+)
 
 
 
@@ -142,18 +147,16 @@ def vw_tww_channel(
             table_alias="me",
             remove_pkey=False,
             indent=4,
-            skip_columns=[,
-            ],
+            skip_columns=[],
         ),
         mn_cols=select_columns(
             connection=connection,
             table_schema="tww_od",
             table_name="maintenance",
             table_alias="mn",
-            remove_pkey=False,
+            remove_pkey=True,
             indent=4,
-            skip_columns=[,
-            ],
+            skip_columns=[],
         ),
         extra_cols=(
             ""
@@ -165,10 +168,42 @@ def vw_tww_channel(
 
     cursor.execute(view_sql)
 
-    extras = """
-    COMMENT ON VIEW tww_app.vw_tww_channel IS 'Read only';
-    """
-    cursor.execute(extras)
+    trigger_update_sql = """
+    CREATE OR REPLACE FUNCTION tww_app.ft_vw_tww_channel_update()
+      RETURNS trigger AS
+    $BODY$
+    BEGIN
+
+      {update_mn}
+      {update_me}
+      {update_extra}
+
+
+      RETURN NEW;
+    END; $BODY$
+      LANGUAGE plpgsql VOLATILE;
+    """.format(
+        update_mn=update_command(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="maintenance",
+            prefix="mn_",
+            remove_pkey=True,
+            indent=6,
+            remap_columns={"obj_id": "me_obj_id"},
+        ),
+        update_me=update_command(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="maintenance_event",
+            prefix="me_",
+            remove_pkey=True,
+            indent=6,
+            update_values={"situation3d_geometry": "ST_EndPoint(NEW.progression3d_geometry)"},
+        ),
+        update_extra=update_extra(connection=connection, extra_definition=extra_definition),
+    )
+    cursor.execute(trigger_update_sql)
 
 
 if __name__ == "__main__":

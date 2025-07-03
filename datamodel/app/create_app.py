@@ -149,7 +149,7 @@ class Hook(HookBase):
             connection=connection, srid=SRID, extra_definition=tww_ii_extra
         )
         vw_tww_reach(connection=connection, extra_definition=tww_reach_extra)
-        vw_tww_channel(connection=connection, extra_definition=tww_channel_extra)
+        vw_tww_channel(connection=connection, srid=SRID, extra_definition=tww_channel_extra)
         vw_tww_damage_channel(connection=connection)
         vw_tww_additional_ws(srid=SRID, connection=connection)
         vw_tww_measurement_series(connection=connection)
