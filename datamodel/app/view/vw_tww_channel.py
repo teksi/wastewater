@@ -6,20 +6,18 @@ import argparse
 import os
 
 import psycopg
-from pirogue.utils import insert_command, select_columns, table_parts, update_command
+from pirogue.utils import select_columns, update_command
+
 from .utils.extra_definition_utils import (
     extra_cols,
     extra_joins,
-    insert_extra,
     update_extra,
 )
 
 
-
-
 def vw_tww_channel(
-        connection: psycopg.Connection, srid: psycopg.sql.Literal, extra_definition: dict = None
-    ):
+    connection: psycopg.Connection, srid: psycopg.sql.Literal, extra_definition: dict = None
+):
     """
     Creates tww_channel view
     :param pg_service: the PostgreSQL service name
@@ -35,7 +33,7 @@ def vw_tww_channel(
     CREATE MATERIALIZED VIEW tww_app.vw_tww_channel AS
           {ws_cols}
         , {ch_cols}
-        , ST_LineMerge(ST_Collect(ST_CurveToLine(re.progression3d_geometry))) as progression3d_geometry::geometry(MultiCurve, {{srid}}) 
+        , ST_LineMerge(ST_Collect(ST_CurveToLine(re.progression3d_geometry))) as progression3d_geometry::geometry(MultiCurve, {{srid}})
         , min(re.clear_height) AS _min_height
         , max(re.clear_height) AS _max_height
         , sum(length_effective) as _length_effective
@@ -102,16 +100,14 @@ def vw_tww_channel(
             ],
         ),
     )
-    
 
-    matview_sql = psycopg.sql.SQL(matview_sql).format(srid=psycopg.sql.Literal(srid))  
+    matview_sql = psycopg.sql.SQL(matview_sql).format(srid=psycopg.sql.Literal(srid))
     cursor.execute(matview_sql)
     try:
         cursor.execute(matview_sql)
     except psycopg.errors.SyntaxError as e:
         raise PumHookError(f"Error creating view with code: {matview_sql}: {e}")
 
-        
     view_sql = """
     DROP VIEW IF EXISTS tww_app.vw_tww_channel_maintenance;
 
@@ -120,7 +116,7 @@ def vw_tww_channel(
     SELECT
           mw.id
         , {me_cols}
-        , {mn_cols}  
+        , {mn_cols}
         , {ch_cols}
         {extra_cols}
       FROM re_maintenance_event_wastewater_structure mw
