@@ -63,7 +63,10 @@ class InterlisImporterToIntermediateSchema:
         # Allow to insert rows with cyclic dependencies at once
         self.session_tww.execute(text("SET CONSTRAINTS ALL DEFERRED;"))
 
-        self._import_sia405_abwasser()
+        if self.model not in (config.MODEL_NAME_AG64, config.MODEL_NAME_AG96):
+            self._import_sia405_abwasser_base()
+            if self.model != config.MODEL_NAME_SIA405_BASE_ABWASSER:
+                self._import_sia405_abwasser()
 
         if self.model == config.MODEL_NAME_DSS:
             self._import_dss()
@@ -73,10 +76,12 @@ class InterlisImporterToIntermediateSchema:
 
         self.close_sessions(skip_closing_tww_session=skip_closing_tww_session)
 
-    def _import_sia405_abwasser(self):
+    def _import_sia405_abwasser_base(self):
         logger.info("\nImporting ABWASSER.organisation -> TWW.organisation")
         self._import_organisation()
         self._check_for_stop()
+
+    def _import_sia405_abwasser(self):
 
         logger.info("\nImporting ABWASSER.kanal -> TWW.channel")
         self._import_kanal()

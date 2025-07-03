@@ -28,6 +28,9 @@ class InterlisExportSettingsDialog(QDialog):
             config.MODEL_NAME_VSA_KEK,
             [config.MODEL_NAME_VSA_KEK, config.MODEL_NAME_SIA405_ABWASSER],
         )
+        self.export_model_selection_comboBox.addItem(
+            config.MODEL_NAME_SIA405_BASE_ABWASSER, [config.MODEL_NAME_SIA405_BASE_ABWASSER]
+        )
 
         # Fill orientation selection combobox
         self.export_orientation_selection_comboBox.clear()
