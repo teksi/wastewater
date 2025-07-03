@@ -104,9 +104,8 @@ def vw_tww_channel(
     matview_sql = psycopg.sql.SQL(matview_sql).format(srid=psycopg.sql.Literal(srid))
     cursor.execute(matview_sql)
 
-def vw_tww_channel_maintenance(
-        connection: psycopg.Connection, extra_definition: dict = None
-):
+
+def vw_tww_channel_maintenance(connection: psycopg.Connection, extra_definition: dict = None):
     """
     Creates vw_tww_channel_maintenance view
     :param connection: Psycopg connection
@@ -216,9 +215,7 @@ def vw_tww_channel_maintenance(
     cursor.execute(trigger_update_sql)
 
 
-def vw_tww_ws_maintenance(
-        connection: psycopg.Connection, extra_definition: dict = None
-):
+def vw_tww_ws_maintenance(connection: psycopg.Connection, extra_definition: dict = None):
     """
     Creates vw_tww_ws_maintenance view
     :param connection: Psycopg connection
@@ -256,26 +253,27 @@ def vw_tww_ws_maintenance(
             prefix="ws_",
             remove_pkey=False,
             indent=4,
-            safe_skip_columns=["accessibility",
-                          "contract_section",
-                          "detail_geometry3d_geometry",
-                          "elevation_determination",
-                          "location_name",
-                          "records",
-                          "remark",
-                          "replacement_value",
-                          "rv_base_year",
-                          "rv_construction_type",
-                          "subsidies",
-                          "year_of_construction",
-                          "year_of_replacement",
-                          "last_modification",
-                          "fk_dataowner",
-                          "fk_provider",
-                          "fk_main_cover",
-                          "fk_main_wastewater_node",
-                          "_depth",
-                          ],
+            safe_skip_columns=[
+                "accessibility",
+                "contract_section",
+                "detail_geometry3d_geometry",
+                "elevation_determination",
+                "location_name",
+                "records",
+                "remark",
+                "replacement_value",
+                "rv_base_year",
+                "rv_construction_type",
+                "subsidies",
+                "year_of_construction",
+                "year_of_replacement",
+                "last_modification",
+                "fk_dataowner",
+                "fk_provider",
+                "fk_main_cover",
+                "fk_main_wastewater_node",
+                "_depth",
+            ],
         ),
         me_cols=select_columns(
             connection=connection,
