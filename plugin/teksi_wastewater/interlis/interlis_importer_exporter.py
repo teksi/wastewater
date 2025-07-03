@@ -598,10 +598,11 @@ class InterlisImporterExporter:
                         )
 
     def _init_model_classes(self, model):
-        ModelInterlis = ModelInterlisSia405BaseAbwasser
-        if model == config.MODEL_NAME_SIA405_ABWASSER:
+        if model == config.MODEL_NAME_SIA405_BASE_ABWASSER:
+            ModelInterlis = ModelInterlisSia405BaseAbwasser
+        elif model == config.MODEL_NAME_SIA405_ABWASSER:
             ModelInterlis = ModelInterlisSia405Abwasser
-        if model == config.MODEL_NAME_DSS:
+        elif model == config.MODEL_NAME_DSS:
             ModelInterlis = ModelInterlisDss
         elif model == config.MODEL_NAME_VSA_KEK:
             ModelInterlis = ModelInterlisVsaKek
