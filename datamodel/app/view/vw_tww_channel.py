@@ -9,7 +9,12 @@ import psycopg
 from pirogue.utils import select_columns
 
 
-def vw_tww_channel(connection: psycopg.Connection, extra_definition: dict = None):
+
+
+
+def vw_tww_channel(
+        connection: psycopg.Connection, srid: psycopg.sql.Literal, extra_definition: dict = None
+    ):
     """
     Creates tww_channel view
     :param pg_service: the PostgreSQL service name
@@ -19,15 +24,17 @@ def vw_tww_channel(connection: psycopg.Connection, extra_definition: dict = None
 
     cursor = connection.cursor()
 
-    view_sql = """
-    DROP VIEW IF EXISTS tww_app.vw_tww_channel;
+    matview_sql = """
+    DROP MATERIALIZED VIEW IF EXISTS tww_app.vw_tww_channel;
 
-    CREATE OR REPLACE VIEW tww_app.vw_tww_channel AS
-
-    SELECT
+    CREATE MATERIALIZED VIEW tww_app.vw_tww_channel AS
           {ws_cols}
         , {ch_cols}
-        , ST_CurveToLine(ST_LineMerge(ST_Collect(ST_CurveToLine(re.progression3d_geometry)))) as progression3d_geometry
+        , ST_LineMerge(ST_Collect(ST_CurveToLine(re.progression3d_geometry))) as progression3d_geometry::geometry(MultiCurve, {{srid}}) 
+        , min(re.clear_height) AS _min_height
+        , max(re.clear_height) AS _max_height
+        , sum(length_effective) as _length_effective
+        , array_agg(DISTINCT re.material) as _materials
       FROM tww_od.channel ch
          LEFT JOIN tww_od.wastewater_structure ws ON ch.obj_id = ws.obj_id
          LEFT JOIN tww_od.wastewater_networkelement ne ON ne.fk_wastewater_structure = ws.obj_id
@@ -35,7 +42,6 @@ def vw_tww_channel(connection: psycopg.Connection, extra_definition: dict = None
        GROUP BY
          {ch_cols_grp}
         , {ws_cols_grp}
-         ;
     """.format(
         ch_cols=select_columns(
             connection=connection,
@@ -90,6 +96,71 @@ def vw_tww_channel(connection: psycopg.Connection, extra_definition: dict = None
                 "fk_main_cover",
             ],
         ),
+    )
+    
+
+    matview_sql = psycopg.sql.SQL(matview_sql).format(srid=psycopg.sql.Literal(srid))  
+    cursor.execute(matview_sql)
+    try:
+        cursor.execute(matview_sql)
+    except psycopg.errors.SyntaxError as e:
+        raise PumHookError(f"Error creating view with code: {matview_sql}: {e}")
+
+        
+    view_sql = """
+    DROP VIEW IF EXISTS tww_app.vw_tww_channel_maintenance;
+
+    CREATE OR REPLACE VIEW tww_app.vw_tww_channel_maintenance AS
+
+    SELECT
+          mw.id
+        , {me_cols}
+        , {mn_cols}  
+        , {ch_cols}
+        {extra_cols}
+      FROM re_maintenance_event_wastewater_structure mw
+         INNER JOIN tww_app.vw_tww_channel ch ON me.obj_id = mw.fk_wastewater_structure
+         LEFT JOIN tww_od.maintenance_event me ON me.obj_id = mw.fk_maintenance_event
+         LEFT JOIN tww_od.maintenance mn ON me.obj_id = mn.obj_id
+         {extra_joins}
+         ;
+    """.format(
+        ch_cols=select_columns(
+            connection=connection,
+            table_schema="tww_app",
+            table_name="vw_tww_channel",
+            table_alias="ch",
+            prefix="ch_",
+            remove_pkey=False,
+            indent=4,
+            skip_columns=[],
+        ),
+        me_cols=select_columns(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="maintenance_event",
+            table_alias="me",
+            remove_pkey=False,
+            indent=4,
+            skip_columns=[,
+            ],
+        ),
+        mn_cols=select_columns(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="maintenance",
+            table_alias="mn",
+            remove_pkey=False,
+            indent=4,
+            skip_columns=[,
+            ],
+        ),
+        extra_cols=(
+            ""
+            if not extra_definition
+            else extra_cols(connection=connection, extra_definition=extra_definition)
+        ),
+        extra_joins=extra_joins(connection=connection, extra_definition=extra_definition),
     )
 
     cursor.execute(view_sql)
