@@ -7,18 +7,18 @@ on:
 jobs:
   datamodel-create-dumps:
     name: Call Datamodel Create Dumps Workflow
-    uses: opengisch/wastewater/.github/workflows/datamodel-create-dumps.yml@pum-integration
+    uses: ./.github/workflows/datamodel-create-dumps.yml
     with:
       release_tag: ${{ github.event.release.tag_name }}
 
   plugin-package:
     name: Call Plugin Package Workflow
-    uses: opengisch/wastewater/.github/workflows/plugin-package.yml@pum-integration
+    uses: ./.github/workflows/plugin-package.yml
     with:
       release_tag: ${{ github.event.release.tag_name }}
 
   project-translations:
     name: Call Project Translations Workflow
-    uses: opengisch/wastewater/.github/workflows/project-translation.yml@pum-integration
+    uses: ./.github/workflows/project-translation.yml
     with:
       release_tag: ${{ github.event.release.tag_name }}
