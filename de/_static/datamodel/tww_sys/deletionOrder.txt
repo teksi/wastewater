@@ -1,3 +1,4 @@
+pum_migrations
 oid_prefixes
 logged_relations
 logged_actions

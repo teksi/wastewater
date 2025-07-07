@@ -890,10 +890,10 @@
 <polygon fill="none" stroke="black" points="1989,-6746 1989,-6768 2224,-6768 2224,-6746 1989,-6746"/>
 <text text-anchor="start" x="2009" y="-6754.2" font-family="Helvetica,sans-Serif" font-size="11.00">_bottom_label</text>
 <polygon fill="none" stroke="black" points="1989,-6724 1989,-6746 2224,-6746 2224,-6724 1989,-6724"/>
-<image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="1994" y="-6741"/>
-<text text-anchor="start" x="2009" y="-6732.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_main_wastewater_node</text>
+<text text-anchor="start" x="2009" y="-6732.2" font-family="Helvetica,sans-Serif" font-size="11.00">_depth</text>
 <polygon fill="none" stroke="black" points="1989,-6702 1989,-6724 2224,-6724 2224,-6702 1989,-6702"/>
-<text text-anchor="start" x="2009" y="-6710.2" font-family="Helvetica,sans-Serif" font-size="11.00">_depth</text>
+<image xlink:href="../../images/foreignKeys.png" width="11px" height="12px" preserveAspectRatio="xMinYMin meet" x="1994" y="-6719"/>
+<text text-anchor="start" x="2009" y="-6710.2" font-family="Helvetica,sans-Serif" font-size="11.00">fk_main_wastewater_node</text>
 <polygon fill="#ffffff" stroke="transparent" points="1989,-6684 1989,-6702 2224,-6702 2224,-6684 1989,-6684"/>
 <polygon fill="none" stroke="black" points="1989,-6684 1989,-6702 2224,-6702 2224,-6684 1989,-6684"/>
 <polygon fill="#ffffff" stroke="transparent" points="1990,-6685 1990,-6701 2074,-6701 2074,-6685 1990,-6685"/>
@@ -10092,9 +10092,9 @@
 <!-- wastewater_structure&#45;&gt;wastewater_node -->
 <g id="edge381" class="edge">
 <title>wastewater_structure:w&#45;&gt;wastewater_node:e</title>
-<path fill="none" stroke="black" d="M1973.44,-6736.33C1797.78,-6769.55 1881.24,-7413.78 1868,-7603 1840.22,-8000.06 1889.64,-21537.74 1835,-21932 1806.61,-22136.82 1916.28,-22380 1709.5,-22380"/>
-<polygon fill="black" stroke="black" points="1980.03,-6735.73 1988.33,-6738.58 1984.02,-6735.37 1988,-6735 1988,-6735 1988,-6735 1984.02,-6735.37 1987.67,-6731.42 1980.03,-6735.73 1980.03,-6735.73"/>
-<ellipse fill="none" stroke="black" cx="1976.85" cy="-6736.02" rx="3.2" ry="3.2"/>
+<path fill="none" stroke="black" d="M1973.63,-6714.27C1793.01,-6747.1 1881.25,-7408.85 1868,-7603 1840.89,-8000.1 1889.64,-21537.74 1835,-21932 1806.61,-22136.82 1916.28,-22380 1709.5,-22380"/>
+<polygon fill="black" stroke="black" points="1980.03,-6713.7 1988.32,-6716.59 1984.02,-6713.35 1988,-6713 1988,-6713 1988,-6713 1984.02,-6713.35 1987.68,-6709.41 1980.03,-6713.7 1980.03,-6713.7"/>
+<ellipse fill="none" stroke="black" cx="1976.84" cy="-6713.98" rx="3.2" ry="3.2"/>
 </g>
 <!-- wastewater_structure&#45;&gt;organisation -->
 <g id="edge379" class="edge">

@@ -13696,20 +13696,6 @@
         "tableName": "wastewater_structure",
         "tableFileName": "wastewater_structure",
         "tableType": "Table",
-        "keyClass": "foreignKey",
-        "keyTitle": "Foreign Key",
-        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'></i>fk_main_wastewater_node",
-        "type": "varchar",
-        "length": 16,
-        "nullable": "√",
-        "autoUpdated": "",
-        "defaultValue": "null",
-        "comments": ""
-    },
-    {
-        "tableName": "wastewater_structure",
-        "tableFileName": "wastewater_structure",
-        "tableType": "Table",
         "keyClass": "",
         "keyTitle": "",
         "name": "_depth",
@@ -13719,6 +13705,20 @@
         "autoUpdated": "",
         "defaultValue": "null",
         "comments": "<p>Function (calculated value) = representative wastewater_node.bottom_level minus associated upper_elevation of the structure if detailed geometry is available, otherwise Function (calculated value) = wastewater_node.bottom_level minus associated cover.level of the structure / Funktion (berechneter Wert) = repräsentative Abwasserknoten.Sohlenkote minus zugehörige Deckenkote des Bauwerks falls Detailgeometrie vorhanden, sonst Funktion (berechneter Wert) = Abwasserknoten.Sohlenkote minus zugehörige Deckel.Kote des Bauwerks / Fonction (valeur calculée) = NOEUD_RESEAU.COTE_RADIER représentatif moins COTE_PLAFOND de l’ouvrage correspondant si la géométrie détaillée est disponible, sinon fonction (valeur calculée) = NŒUD_RESEAU.COT_RADIER moins COUVERCLE.COTE de l’ouvrage correspondant</p>"
+    },
+    {
+        "tableName": "wastewater_structure",
+        "tableFileName": "wastewater_structure",
+        "tableType": "Table",
+        "keyClass": "foreignKey",
+        "keyTitle": "Foreign Key",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'></i>fk_main_wastewater_node",
+        "type": "varchar",
+        "length": 16,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": ""
     },
     {
         "tableName": "wastewater_structure_symbol",

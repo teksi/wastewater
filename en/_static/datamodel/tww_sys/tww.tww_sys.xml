@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<database name="tww" schema="tww_sys" type="PostgreSQL - 16.9 (Debian 16.9-1.pgdg110+1)">
+<database name="tww" schema="tww_sys" type="PostgreSQL - 16.9">
    <sequences>
       <sequence increment="1" name="dictionary_od_field_id_seq" startValue="1"/>
       <sequence increment="1" name="dictionary_od_values_id_seq" startValue="1"/>
@@ -7,7 +7,7 @@
       <sequence increment="1" name="oid_prefixes_id_seq" startValue="1"/>
    </sequences>
    <tables>
-      <table name="dictionary_od_field" numRows="859" remarks="" schema="tww_sys" type="TABLE">
+      <table name="dictionary_od_field" numRows="738" remarks="" schema="tww_sys" type="TABLE">
          <column autoUpdated="true" defaultValue="nextval('tww_sys.dictionary_od_field_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="class_id" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="attribute_id" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
@@ -47,7 +47,7 @@
             <column ascending="true" name="attribute_id"/>
          </index>
       </table>
-      <table name="dictionary_od_table" numRows="91" remarks="" schema="tww_sys" type="TABLE">
+      <table name="dictionary_od_table" numRows="80" remarks="" schema="tww_sys" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="tablename" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="name_en" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
@@ -83,7 +83,7 @@
             <column ascending="true" name="tablename"/>
          </index>
       </table>
-      <table name="dictionary_od_values" numRows="1762" remarks="" schema="tww_sys" type="TABLE">
+      <table name="dictionary_od_values" numRows="908" remarks="" schema="tww_sys" type="TABLE">
          <column autoUpdated="true" defaultValue="nextval('tww_sys.dictionary_od_values_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="class_id" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="attribute_id" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
@@ -175,116 +175,19 @@
             <column ascending="true" name="id"/>
          </index>
       </table>
+      <table name="pum_migrations" remarks="version: 1 --  schema_migration table version" schema="tww_sys" type="TABLE">
+         <column autoUpdated="false" defaultValue="gen_random_uuid()" digits="0" id="0" name="id" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="now()" digits="6" id="1" name="date_installed" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="module" nullable="true" remarks="" size="50" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="version" nullable="false" remarks="" size="50" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="false" digits="0" id="4" name="beta_testing" nullable="false" remarks="" size="1" type="bool" typeCode="-7"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="changelog_files" nullable="true" remarks="" size="2147483647" type="_text" typeCode="2003"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="parameters" nullable="true" remarks="" size="2147483647" type="jsonb" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="'2025.0'::character varying" digits="0" id="7" name="migration_table_version" nullable="false" remarks="" size="50" type="varchar" typeCode="12"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="pum_migrations_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
    </tables>
-   <routines>
-      <routine dataAccess="MODIFIES" deterministic="false" name="audit_table(target_table regclass)" returnType="void" securityType="INVOKER" type="FUNCTION">
-         <comment><![CDATA[Add auditing support to the given table. Row-level changes will be logged with full client query text. No cols are ignored.]]></comment>
-         <definition language="sql"><![CDATA[Redacted, use --include-routine-definition]]></definition>
-         <parameters>
-            <parameter mode="IN" name="target_table" type="regclass"/>
-         </parameters>
-      </routine>
-      <routine dataAccess="MODIFIES" deterministic="false" name="audit_table(target_table regclass, audit_rows boolean, audit_query_text boolean)" returnType="void" securityType="INVOKER" type="FUNCTION">
-         <comment/>
-         <definition language="sql"><![CDATA[Redacted, use --include-routine-definition]]></definition>
-         <parameters>
-            <parameter mode="IN" name="target_table" type="regclass"/>
-            <parameter mode="IN" name="audit_rows" type="boolean"/>
-            <parameter mode="IN" name="audit_query_text" type="boolean"/>
-         </parameters>
-      </routine>
-      <routine dataAccess="MODIFIES" deterministic="false" name="audit_table(target_table regclass, audit_rows boolean, audit_query_text boolean, ignored_cols text[])" returnType="void" securityType="INVOKER" type="FUNCTION">
-         <comment><![CDATA[ADD auditing support TO a TABLE.
-
-Arguments:
-   target_table:     TABLE name, schema qualified IF NOT ON search_path
-   audit_rows:       Record each row CHANGE, OR only audit at a statement level
-   audit_query_text: Record the text of the client query that triggered the audit event?
-   ignored_cols:     COLUMNS TO exclude FROM UPDATE diffs, IGNORE updates that CHANGE only ignored cols.]]></comment>
-         <definition language="plpgsql"><![CDATA[Redacted, use --include-routine-definition]]></definition>
-         <parameters>
-            <parameter mode="IN" name="target_table" type="regclass"/>
-            <parameter mode="IN" name="audit_rows" type="boolean"/>
-            <parameter mode="IN" name="audit_query_text" type="boolean"/>
-            <parameter mode="IN" name="ignored_cols" type="text[]"/>
-         </parameters>
-      </routine>
-      <routine dataAccess="MODIFIES" deterministic="false" name="audit_view(target_view regclass, audit_query_text boolean, ignored_cols text[], uid_cols text[])" returnType="void" securityType="INVOKER" type="FUNCTION">
-         <comment><![CDATA[ADD auditing support TO a VIEW.
-
-Arguments:
-   target_view:      TABLE name, schema qualified IF NOT ON search_path
-   audit_query_text: Record the text of the client query that triggered the audit event?
-   ignored_cols:     COLUMNS TO exclude FROM UPDATE diffs, IGNORE updates that CHANGE only ignored cols.
-   uid_cols:         MANDATORY COLUMNS to use to uniquely identify a row from the view (in order to replay UPDATE and DELETE)
-
-Example:
-  SELECT tww_sys.audit_view('view_schema.view_name', 'true'::BOOLEAN, 'field_to_ignore'::text[], 'obj_id'::text[])]]></comment>
-         <definition language="plpgsql"><![CDATA[Redacted, use --include-routine-definition]]></definition>
-         <parameters>
-            <parameter mode="IN" name="target_view" type="regclass"/>
-            <parameter mode="IN" name="audit_query_text" type="boolean"/>
-            <parameter mode="IN" name="ignored_cols" type="text[]"/>
-            <parameter mode="IN" name="uid_cols" type="text[]"/>
-         </parameters>
-      </routine>
-      <routine dataAccess="MODIFIES" deterministic="false" name="if_modified_func()" returnType="trigger" securityType="DEFINER" type="FUNCTION">
-         <comment><![CDATA[Track changes TO a TABLE at the statement AND/OR row level.
-
-Optional parameters TO TRIGGER IN CREATE TRIGGER call:
-
-param 0: BOOLEAN, whether TO log the query text. default 't'.
-
-param 1: text[], COLUMNS TO IGNORE IN updates. default [].
-
-         Updates TO ignored cols are omitted FROM changed_fields.
-
-         Updates WITH only ignored cols changed are NOT inserted
-         INTO the audit log.
-
-         Almost ALL the processing work IS still done for updates
-         that ignored. If you need to save the load, you need to use
-         WHEN clause on the trigger instead.
-
-         No warning or error is issued if ignored_cols contains columns
-         that do not exist in the target table. This lets you specify
-         a standard set of ignored columns.
-
-There is no parameter to disable logging of values. Add this trigger as
-a 'FOR EACH STATEMENT' rather than 'FOR EACH ROW' trigger if you do not
-want to log row values.
-
-Note that the user name logged is the login role for the session. The audit trigger
-cannot obtain the active role because it is reset by the SECURITY DEFINER invocation
-of the audit trigger its self.]]></comment>
-         <definition language="plpgsql"><![CDATA[Redacted, use --include-routine-definition]]></definition>
-         <parameters>
-            <parameter mode="IN"/>
-         </parameters>
-      </routine>
-      <routine dataAccess="MODIFIES" deterministic="false" name="replay_event(pevent_id integer)" returnType="void" securityType="INVOKER" type="FUNCTION">
-         <comment><![CDATA[Replay a logged event.
-
-Arguments:
-   pevent_id:  The event_id of the event in tww_sys.logged_actions to replay]]></comment>
-         <definition language="plpgsql"><![CDATA[Redacted, use --include-routine-definition]]></definition>
-         <parameters>
-            <parameter mode="IN" name="pevent_id" type="integer"/>
-         </parameters>
-      </routine>
-      <routine dataAccess="MODIFIES" deterministic="false" name="unaudit_table(target_table regclass)" returnType="void" securityType="INVOKER" type="FUNCTION">
-         <comment/>
-         <definition language="plpgsql"><![CDATA[Redacted, use --include-routine-definition]]></definition>
-         <parameters>
-            <parameter mode="IN" name="target_table" type="regclass"/>
-         </parameters>
-      </routine>
-      <routine dataAccess="MODIFIES" deterministic="false" name="unaudit_view(target_view regclass)" returnType="void" securityType="INVOKER" type="FUNCTION">
-         <comment/>
-         <definition language="plpgsql"><![CDATA[Redacted, use --include-routine-definition]]></definition>
-         <parameters>
-            <parameter mode="IN" name="target_view" type="regclass"/>
-         </parameters>
-      </routine>
-   </routines>
 </database>

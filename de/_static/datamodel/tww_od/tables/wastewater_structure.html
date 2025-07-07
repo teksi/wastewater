@@ -844,6 +844,23 @@
                                     <td><p>stores the bottom altitude to be used for labelling, not part of the VSA-DSS data model added solely for TEKSI Wastewater &amp; GEP</p></td>
                                 </tr>
                                 <tr>
+                                    <td><span id="_depth">_depth</span></td>
+                                    <td>numeric</td>
+                                    <td>6,3</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td><p>Function (calculated value) = representative wastewater_node.bottom_level minus associated upper_elevation of the structure if detailed geometry is available, otherwise Function (calculated value) = wastewater_node.bottom_level minus associated cover.level of the structure / Funktion (berechneter Wert) = repräsentative Abwasserknoten.Sohlenkote minus zugehörige Deckenkote des Bauwerks falls Detailgeometrie vorhanden, sonst Funktion (berechneter Wert) = Abwasserknoten.Sohlenkote minus zugehörige Deckel.Kote des Bauwerks / Fonction (valeur calculée) = NOEUD_RESEAU.COTE_RADIER représentatif moins COTE_PLAFOND de l’ouvrage correspondant si la géométrie détaillée est disponible, sinon fonction (valeur calculée) = NŒUD_RESEAU.COT_RADIER moins COUVERCLE.COTE de l’ouvrage correspondant</p></td>
+                                </tr>
+                                <tr>
                                     <td class='foreignKey' title='Foreign Key'><i class='icon ion-key iconkey' style='padding-left: 5px;'></i><span id="fk_main_wastewater_node">fk_main_wastewater_node</span></td>
                                     <td>varchar</td>
                                     <td>16</td>
@@ -864,23 +881,6 @@
                                         </table>
                                     </td>
                                     <td></td>
-                                </tr>
-                                <tr>
-                                    <td><span id="_depth">_depth</span></td>
-                                    <td>numeric</td>
-                                    <td>6,3</td>
-                                    <td title='nullable'>√</td>
-                                    <td title=''></td>
-                                    <td>null</td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td><p>Function (calculated value) = representative wastewater_node.bottom_level minus associated upper_elevation of the structure if detailed geometry is available, otherwise Function (calculated value) = wastewater_node.bottom_level minus associated cover.level of the structure / Funktion (berechneter Wert) = repräsentative Abwasserknoten.Sohlenkote minus zugehörige Deckenkote des Bauwerks falls Detailgeometrie vorhanden, sonst Funktion (berechneter Wert) = Abwasserknoten.Sohlenkote minus zugehörige Deckel.Kote des Bauwerks / Fonction (valeur calculée) = NOEUD_RESEAU.COTE_RADIER représentatif moins COTE_PLAFOND de l’ouvrage correspondant si la géométrie détaillée est disponible, sinon fonction (valeur calculée) = NŒUD_RESEAU.COT_RADIER moins COUVERCLE.COTE de l’ouvrage correspondant</p></td>
                                 </tr>
                                 </tbody>
                             </table>

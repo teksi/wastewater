@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<database name="tww" schema="tww_od" type="PostgreSQL - 16.9 (Debian 16.9-1.pgdg110+1)">
+<database name="tww" schema="tww_od" type="PostgreSQL - 16.9">
    <sequences>
       <sequence increment="1" name="default_values_id_seq" startValue="1"/>
       <sequence increment="1" name="import_manhole_quarantine_quarantine_serial_seq" startValue="1"/>
@@ -2147,6 +2147,12 @@
             <column ascending="true" name="fk_maintenance_event"/>
             <column ascending="true" name="fk_wastewater_structure"/>
          </index>
+         <index name="in_re_me_ws__fk_me" unique="false">
+            <column ascending="true" name="fk_maintenance_event"/>
+         </index>
+         <index name="in_re_me_ws__fk_ws" unique="false">
+            <column ascending="true" name="fk_wastewater_structure"/>
+         </index>
       </table>
       <table name="reach" remarks="" schema="tww_od" type="TABLE">
          <column autoUpdated="false" defaultValue="tww_app.generate_oid('tww_od'::text, 'reach'::text)" digits="0" id="0" name="obj_id" nullable="false" remarks="INTERLIS STANDARD OID (with Postfix/Präfix), see www.interlis.ch" size="16" type="varchar" typeCode="12">
@@ -2991,10 +2997,10 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="32" name="_input_label" nullable="true" remarks="stores the list of input altitudes to be used for labelling, not part of the VSA-DSS data model&#10;added solely for TEKSI Wastewater &amp; GEP" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="33" name="_output_label" nullable="true" remarks="stores the list of output altitudes to be used for labelling, not part of the VSA-DSS data model&#10;added solely for TEKSI Wastewater &amp; GEP" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="34" name="_bottom_label" nullable="true" remarks="stores the bottom altitude to be used for labelling, not part of the VSA-DSS data model&#10;added solely for TEKSI Wastewater &amp; GEP" size="2147483647" type="text" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="35" name="fk_main_wastewater_node" nullable="true" remarks="" size="16" type="varchar" typeCode="12">
+         <column autoUpdated="false" defaultValue="null" digits="3" id="35" name="_depth" nullable="true" remarks="Function (calculated value) = representative wastewater_node.bottom_level minus associated upper_elevation of the structure if detailed geometry is available, otherwise Function (calculated value) = wastewater_node.bottom_level minus associated cover.level of the structure / Funktion (berechneter Wert) = repräsentative Abwasserknoten.Sohlenkote minus zugehörige Deckenkote des Bauwerks falls Detailgeometrie vorhanden, sonst Funktion (berechneter Wert) = Abwasserknoten.Sohlenkote minus zugehörige Deckel.Kote des Bauwerks / Fonction (valeur calculée) = NOEUD_RESEAU.COTE_RADIER représentatif moins COTE_PLAFOND de l’ouvrage correspondant si la géométrie détaillée est disponible, sinon fonction (valeur calculée) = NŒUD_RESEAU.COT_RADIER moins COUVERCLE.COTE de l’ouvrage correspondant" size="6" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="36" name="fk_main_wastewater_node" nullable="true" remarks="" size="16" type="varchar" typeCode="12">
             <parent column="obj_id" foreignKey="rel_wastewater_structure_main_wastewater_node" implied="false" onDeleteCascade="false" schema="tww_od" table="wastewater_node"/>
          </column>
-         <column autoUpdated="false" defaultValue="null" digits="3" id="36" name="_depth" nullable="true" remarks="Function (calculated value) = representative wastewater_node.bottom_level minus associated upper_elevation of the structure if detailed geometry is available, otherwise Function (calculated value) = wastewater_node.bottom_level minus associated cover.level of the structure / Funktion (berechneter Wert) = repräsentative Abwasserknoten.Sohlenkote minus zugehörige Deckenkote des Bauwerks falls Detailgeometrie vorhanden, sonst Funktion (berechneter Wert) = Abwasserknoten.Sohlenkote minus zugehörige Deckel.Kote des Bauwerks / Fonction (valeur calculée) = NOEUD_RESEAU.COTE_RADIER représentatif moins COTE_PLAFOND de l’ouvrage correspondant si la géométrie détaillée est disponible, sinon fonction (valeur calculée) = NŒUD_RESEAU.COT_RADIER moins COUVERCLE.COTE de l’ouvrage correspondant" size="6" type="numeric" typeCode="2"/>
          <primaryKey column="obj_id" sequenceNumberInPK="1"/>
          <index name="pkey_tww_od_wastewater_structure_obj_id" unique="true">
             <column ascending="true" name="obj_id"/>
