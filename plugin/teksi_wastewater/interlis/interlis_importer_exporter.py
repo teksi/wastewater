@@ -294,7 +294,9 @@ class InterlisImporterExporter:
                 mb.setText(
                     "Stop exporting: Some export checks failed - check the logs for details. (if you have a selection you can still try (click Cancel) "
                 )
-                mb.setInformativeText(f" {number_tests_failed} of {total_checks} {failed_check_list}")
+                mb.setInformativeText(
+                    f" {number_tests_failed} of {total_checks} {failed_check_list}"
+                )
                 mb.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
                 return_value = mb.exec()
                 if return_value == QMessageBox.Ok:
@@ -362,8 +364,8 @@ class InterlisImporterExporter:
             else:
                 logger.info(f" {number_tests_failed} of {total_checks} {failed_check_list}")
                 logger.info(
-                        "INTERLIS export has been stopped due to failing export checks - see logs for details."
-                    )
+                    "INTERLIS export has been stopped due to failing export checks - see logs for details."
+                )
                 exit
         # no problems with export checks
         else:
