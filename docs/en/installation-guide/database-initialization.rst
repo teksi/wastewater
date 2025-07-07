@@ -32,6 +32,9 @@ TWW roles are defined in the
 `12_0_roles.sql` has to be run before restoring the demodata database.
 `12_1_roles.sql` has to be run if you initialize your module with with the commandline.
 
+
+.. note::
+
 An evolution of the roles management is in progress and will be available soon.
 
 It is highly recommended to use these when using TWW in a production environment.
