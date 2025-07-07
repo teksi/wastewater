@@ -160,6 +160,7 @@ class InterlisImporterExporter:
         xtf_file_output,
         export_models,
         logs_next_to_file=True,
+        user_interaction=False,
         limit_to_selection=False,
         export_orientation=90.0,
         selected_labels_scales_indices=[],
@@ -274,90 +275,96 @@ class InterlisImporterExporter:
         total_checks = number_tests_failed + number_tests_ok
 
         if flag_export_check_failed:
-            logger.info("Adding QMessageBox ...")
-            # Add Message box to ask if export should still be continued or not
+            if user_interaction:
+                logger.info("Adding QMessageBox ...")
+                # Add Message box to ask if export should still be continued or not
 
-            mb = QMessageBox()
+                mb = QMessageBox()
 
-            # TypeError: warning(parent: Optional[QWidget], title: Optional[str], text: Optional[str], buttons: Union[QMessageBox.StandardButtons, QMessageBox.StandardButton] = QMessageBox.Ok, defaultButton: QMessageBox.StandardButton = QMessageBox.NoButton): not enough arguments
+                # TypeError: warning(parent: Optional[QWidget], title: Optional[str], text: Optional[str], buttons: Union[QMessageBox.StandardButtons, QMessageBox.StandardButton] = QMessageBox.Ok, defaultButton: QMessageBox.StandardButton = QMessageBox.NoButton): not enough arguments
 
-            # mb = QMessageBox.warning(
-            # self,
-            # 'Stop exporting',
-            # 'Do you want to quit?',
-            # QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
-            # )
-            mb.setWindowTitle("Stop exporting")
-            mb.setIcon(QMessageBox.Warning)
-            mb.setText(
-                "Stop exporting: Some export checks failed - check the logs for details. (if you have a selection you can still try (click Cancel) "
-            )
-            mb.setInformativeText(f" {number_tests_failed} of {total_checks} {failed_check_list}")
-            mb.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
-            return_value = mb.exec()
-            if return_value == QMessageBox.Ok:
-                errormsg = "INTERLIS export has been stopped due to failing export checks - see logs for details."
-                logger.info(
-                    "INTERLIS export has been stopped due to failing export checks - see logs for details."
+                # mb = QMessageBox.warning(
+                # self,
+                # 'Stop exporting',
+                # 'Do you want to quit?',
+                # QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+                # )
+                mb.setWindowTitle("Stop exporting")
+                mb.setIcon(QMessageBox.Warning)
+                mb.setText(
+                    "Stop exporting: Some export checks failed - check the logs for details. (if you have a selection you can still try (click Cancel) "
                 )
-                # self._progress_done(100, "Export aborted...")
-                # return
-                raise InterlisImporterExporterError(
-                    "INTERLIS Export aborted!",
-                    errormsg,
-                    None,
-                )
-                exit
-            elif return_value == QMessageBox.Cancel:
-
-                # File name without extension (used later for export)
-                file_name_base, _ = os.path.splitext(xtf_file_output)
-
-                # Configure logging
-                if logs_next_to_file:
-                    self.base_log_path = xtf_file_output
-                else:
-                    self.base_log_path = None
-
-                self._progress_done(5, "Clearing ili schema...")
-                self._clear_ili_schema(recreate_tables=True)
-
-                self._progress_done(15, "Creating ili schema...")
-                create_basket_col = False
-                if config.MODEL_NAME_VSA_KEK in export_models:
-                    create_basket_col = True
-                self._create_ili_schema(export_models, create_basket_col=create_basket_col)
-
-                # Export the labels file
-                tempdir = tempfile.TemporaryDirectory()
-                labels_file_path = None
-                if len(selected_labels_scales_indices):
-                    self._progress_done(25)
-                    labels_file_path = os.path.join(tempdir.name, "labels.geojson")
-                    self._export_labels_file(
-                        limit_to_selection=limit_to_selection,
-                        selected_labels_scales_indices=selected_labels_scales_indices,
-                        labels_file_path=labels_file_path,
+                mb.setInformativeText(f" {number_tests_failed} of {total_checks} {failed_check_list}")
+                mb.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+                return_value = mb.exec()
+                if return_value == QMessageBox.Ok:
+                    errormsg = "INTERLIS export has been stopped due to failing export checks - see logs for details."
+                    logger.info(
+                        "INTERLIS export has been stopped due to failing export checks - see logs for details."
                     )
+                    # self._progress_done(100, "Export aborted...")
+                    # return
+                    raise InterlisImporterExporterError(
+                        "INTERLIS Export aborted!",
+                        errormsg,
+                        None,
+                    )
+                    exit
+                elif return_value == QMessageBox.Cancel:
 
-                # Export to the temporary ili2pg model
-                self._progress_done(35, "Converting from TEKSI Wastewater...")
-                self._export_to_intermediate_schema(
-                    export_model=export_models[0],
-                    file_name=xtf_file_output,
-                    selected_ids=selected_ids,
-                    export_orientation=export_orientation,
-                    labels_file_path=labels_file_path,
-                    basket_enabled=create_basket_col,
-                )
-                tempdir.cleanup()  # Cleanup
+                    # File name without extension (used later for export)
+                    file_name_base, _ = os.path.splitext(xtf_file_output)
 
-                self._progress_done(60)
-                self._export_xtf_files(file_name_base, export_models)
+                    # Configure logging
+                    if logs_next_to_file:
+                        self.base_log_path = xtf_file_output
+                    else:
+                        self.base_log_path = None
 
-                self._progress_done(100)
-                logger.info("INTERLIS export finished.")
+                    self._progress_done(5, "Clearing ili schema...")
+                    self._clear_ili_schema(recreate_tables=True)
 
+                    self._progress_done(15, "Creating ili schema...")
+                    create_basket_col = False
+                    if config.MODEL_NAME_VSA_KEK in export_models:
+                        create_basket_col = True
+                    self._create_ili_schema(export_models, create_basket_col=create_basket_col)
+
+                    # Export the labels file
+                    tempdir = tempfile.TemporaryDirectory()
+                    labels_file_path = None
+                    if len(selected_labels_scales_indices):
+                        self._progress_done(25)
+                        labels_file_path = os.path.join(tempdir.name, "labels.geojson")
+                        self._export_labels_file(
+                            limit_to_selection=limit_to_selection,
+                            selected_labels_scales_indices=selected_labels_scales_indices,
+                            labels_file_path=labels_file_path,
+                        )
+
+                    # Export to the temporary ili2pg model
+                    self._progress_done(35, "Converting from TEKSI Wastewater...")
+                    self._export_to_intermediate_schema(
+                        export_model=export_models[0],
+                        file_name=xtf_file_output,
+                        selected_ids=selected_ids,
+                        export_orientation=export_orientation,
+                        labels_file_path=labels_file_path,
+                        basket_enabled=create_basket_col,
+                    )
+                    tempdir.cleanup()  # Cleanup
+
+                    self._progress_done(60)
+                    self._export_xtf_files(file_name_base, export_models)
+
+                    self._progress_done(100)
+                    logger.info("INTERLIS export finished.")
+            else:
+                logger.info(f" {number_tests_failed} of {total_checks} {failed_check_list}")
+                logger.info(
+                        "INTERLIS export has been stopped due to failing export checks - see logs for details."
+                    )
+                exit
         # no problems with export checks
         else:
             # File name without extension (used later for export)
