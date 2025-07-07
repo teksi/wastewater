@@ -890,7 +890,7 @@ class InterlisImporterExporter:
 
             if missing_identifier_count == 0:
                 logger.info("OK: all identifiers set in tww_od!")
-                return True
+                return False
             else:
                 pass
                 # logger.info(f"ERROR: Missing identifiers in tww_od: {missing_identifier_count}")
