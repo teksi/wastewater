@@ -26,11 +26,14 @@ Create  minimal roles and access
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 TWW roles are defined in the
-+ `12_0_roles.sql <https://github.com/teksi/wastewater/tree/main/datamodel/12_0_roles.sql>`_ (per cluster)
-+ `12_1_roles.sql <https://github.com/teksi/wastewater/tree/main/datamodel/12_1_roles.sql>`_ (per database)
++ `12_0_roles.sql <https://github.com/teksi/wastewater/releases/download/2024.0.5/12_0_roles.sql>`_ (per cluster)
++ `12_1_roles.sql <https://github.com/teksi/wastewater/releases/download/2024.0.5/12_1_roles.sql>`_ (per database)
 
 `12_0_roles.sql` has to be run before restoring the demodata database.
 `12_1_roles.sql` has to be run if you initialize your module with with the commandline.
+
+
+.. note::
 
 An evolution of the roles management is in progress and will be available soon.
 
