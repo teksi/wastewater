@@ -33,7 +33,7 @@ def vw_tww_channel(
     CREATE MATERIALIZED VIEW tww_app.vw_tww_channel AS
           {ws_cols}
         , {ch_cols}
-        , ST_LineMerge(ST_Collect(ST_CurveToLine(re.progression3d_geometry))) as progression3d_geometry::geometry(MultiCurve, {{srid}})
+        , ST_LineMerge(ST_Collect(ST_CurveToLine(re.progression3d_geometry))) as progression3d_geometry::geometry(MultiCurveZ, {{srid}})
         , min(re.clear_height) AS _min_height
         , max(re.clear_height) AS _max_height
         , sum(length_effective) as _length_effective
