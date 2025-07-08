@@ -37,6 +37,7 @@ def vw_tww_channel(connection: psycopg.Connection, extra_definition: dict = None
        GROUP BY
          {ch_cols_grp}
         , {ws_cols_grp}
+        , vl_fh.tww_is_primary
          ;
     """.format(
         ch_cols=select_columns(
