@@ -12,7 +12,7 @@ ADD COLUMN IF NOT EXISTS display_en character varying(100),
 ADD COLUMN IF NOT EXISTS display_de character varying(100),
 ADD COLUMN IF NOT EXISTS display_fr character varying(100),
 ADD COLUMN IF NOT EXISTS display_it character varying(100),
-ADD COLUMN IF NOT EXISTS display_ro character varying(100),
+ADD COLUMN IF NOT EXISTS display_ro character varying(100);
 
 
 --- Adapt tww_vl.examination_recording_type
