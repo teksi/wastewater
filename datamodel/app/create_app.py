@@ -41,7 +41,7 @@ class Hook(HookBase):
         :paran lang_code: language code for use in extension views
         """
         self.cwd = Path(__file__).parent.resolve()
-        self.connection=connection
+        self.connection = connection
         variables_pirogue = {
             "SRID": psycopg.sql.SQL(f"{SRID}")
         }  # when dropping psycopg2 support, we can use the SRID var directly
@@ -186,7 +186,8 @@ Running extension {extension}
             ).create()
 
         vw_wastewater_structure(
-            connection=self.connection, extra_definition=self.yaml_data_dicts["vw_wastewater_structure"]
+            connection=self.connection,
+            extra_definition=self.yaml_data_dicts["vw_wastewater_structure"],
         )
         vw_tww_wastewater_structure(
             connection=self.connection,
@@ -198,7 +199,9 @@ Running extension {extension}
             srid=SRID,
             extra_definition=self.yaml_data_dicts["vw_tww_infiltration_installation"],
         )
-        vw_tww_reach(connection=self.connection, extra_definition=self.yaml_data_dicts["vw_tww_reach"])
+        vw_tww_reach(
+            connection=self.connection, extra_definition=self.yaml_data_dicts["vw_tww_reach"]
+        )
         vw_tww_channel(
             connection=self.connection,
             extra_definition=self.yaml_data_dicts["vw_tww_channel"],
