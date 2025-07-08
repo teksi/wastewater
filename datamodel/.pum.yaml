@@ -8,7 +8,7 @@ roles:
     description: Role for users who can view the TWW data.
     permissions:
       - type: read
-        schemas: [tww_od, tww_vl, tww_sys, tww_app, tww_cfg]
+        schemas: [tww_od, tww_vl, tww_sys, tww_app]
 
   - name: tww_user
     description: Role for users who can view and edit the TWW data.
@@ -22,7 +22,7 @@ roles:
     inherit: tww_user
     permissions:
       - type: write
-        schemas: [tww_vl, tww_cfg]
+        schemas: [tww_vl]
 
   - name: tww_sysadmin
     description: Role for system administrators who can manage the TWW application and its configuration.
