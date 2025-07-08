@@ -28,10 +28,12 @@ def vw_tww_channel(connection: psycopg.Connection, extra_definition: dict = None
           {ws_cols}
         , {ch_cols}
         , ST_CurveToLine(ST_LineMerge(ST_Collect(ST_CurveToLine(re.progression3d_geometry)))) as progression3d_geometry
+        , vl_fh.tww_is_primary
       FROM tww_od.channel ch
          LEFT JOIN tww_od.wastewater_structure ws ON ch.obj_id = ws.obj_id
          LEFT JOIN tww_od.wastewater_networkelement ne ON ne.fk_wastewater_structure = ws.obj_id
          LEFT JOIN tww_od.reach re ON ne.obj_id = re.obj_id
+        LEFT JOIN tww_vl.channel_function_hierarchic vl_fh ON vl_fh.code = ch.function_hierarchic
        GROUP BY
          {ch_cols_grp}
         , {ws_cols_grp}
