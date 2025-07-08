@@ -57,7 +57,6 @@ def vw_tww_damage_channel(
              LEFT JOIN tww_od.reach re_2 ON re_2.fk_reach_point_from::text = rp.obj_id::text
              {extra_joins}
           WHERE ex.recording_type = 3686
-          GROUP BY {dc_cols}{extra_cols_grp},ws.identifier, re_2.obj_id
           GROUP BY {dg_cols},{dc_cols}{extra_cols_grp},ws.identifier, re_2.obj_id
         )
         SELECT
