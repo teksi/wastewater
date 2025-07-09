@@ -241,7 +241,6 @@ Running extension {extension}
         # run post_all
         self.run_sql_files_in_folder(self.cwd / "post_all")
 
-
     def load_yaml(self, file: Path) -> dict[str]:
         """Safely loads a YAML file and ensures it returns a dictionary."""
         file = Path(file)
