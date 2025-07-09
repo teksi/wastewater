@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
-import copy
 import os
 import re
-import zipfile
 from argparse import ArgumentParser, BooleanOptionalAction
 from pathlib import Path
 
@@ -36,12 +34,12 @@ class Hook(HookBase):
         Creates the schema tww_app for TEKSI Wastewater & GEP
         :param SRID: the EPSG code for geometry columns
         :param extension_agxx: bool of whether to load agxx extension
-        :param extension_agxx: bool of whether to load ci extension
+        :param extension_ci: bool of whether to load ci extension
         :param extension_zip: Path of zip containing self-defined extensions
         :paran lang_code: language code for use in extension views
         """
         self.cwd = Path(__file__).parent.resolve()
-
+        self.connection = connection
         variables_pirogue = {
             "SRID": psycopg.sql.SQL(f"{SRID}")
         }  # when dropping psycopg2 support, we can use the SRID var directly
@@ -163,12 +161,12 @@ Running extension {extension}
 
         # Defaults and Triggers
         # Has to be fired before view creation otherwise it won't work and will only fail in CI
-        set_defaults_and_triggers(connection, self.SingleInheritances)
+        set_defaults_and_triggers(self.connection, self.SingleInheritances)
 
         for key in self.SingleInheritances:
             print(f"creating view vw_{key}")
             SingleInheritance(
-                connection=connection,
+                connection=self.connection,
                 parent_table="tww_od." + self.SingleInheritances[key],
                 child_table="tww_od." + key,
                 view_name="vw_" + key,
@@ -179,51 +177,54 @@ Running extension {extension}
 
         for key in self.MultipleInheritances:
             MultipleInheritance(
-                connection=connection,
+                connection=self.connection,
                 definition=self.load_yaml(self.MultipleInheritances[key]),
                 drop=True,
                 variables=variables_pirogue,
             ).create()
 
         vw_wastewater_structure(
-            connection=connection, extra_definition=self.yaml_data_dicts["vw_wastewater_structure"]
+            connection=self.connection,
+            extra_definition=self.yaml_data_dicts["vw_wastewater_structure"],
         )
         vw_tww_wastewater_structure(
-            connection=connection,
+            connection=self.connection,
             srid=SRID,
             extra_definition=self.yaml_data_dicts["vw_tww_wastewater_structure"],
         )
         vw_tww_infiltration_installation(
-            connection=connection,
+            connection=self.connection,
             srid=SRID,
             extra_definition=self.yaml_data_dicts["vw_tww_infiltration_installation"],
         )
-        vw_tww_reach(connection=connection, extra_definition=self.yaml_data_dicts["vw_tww_reach"])
+        vw_tww_reach(
+            connection=self.connection, extra_definition=self.yaml_data_dicts["vw_tww_reach"]
+        )
         vw_tww_channel(
-            connection=connection,
+            connection=self.connection,
             extra_definition=self.yaml_data_dicts["vw_tww_channel"],
         )
         vw_tww_damage_channel(
-            connection=connection,
+            connection=self.connection,
             extra_definition=self.yaml_data_dicts["vw_tww_damage_channel"],
         )
         vw_tww_additional_ws(
             srid=SRID,
-            connection=connection,
+            connection=self.connection,
             extra_definition=self.yaml_data_dicts["vw_tww_additional_ws"],
         )
         vw_tww_measurement_series(
-            connection=connection,
+            connection=self.connection,
             extra_definition=self.yaml_data_dicts["vw_tww_measurement_series"],
         )
         vw_tww_overflow(
-            connection=connection,
+            connection=self.connection,
             extra_definition=self.yaml_data_dicts["vw_tww_overflow"],
         )
 
         # TODO: Are these export views necessary? cymed 13.03.25
         for _, yaml_path in self.SimpleJoins_yaml.items():
-            SimpleJoins(definition=self.load_yaml(yaml_path), connection=connection).create()
+            SimpleJoins(definition=self.load_yaml(yaml_path), connection=self.connection).create()
 
         sql_directories = [
             "view/varia",
@@ -263,6 +264,7 @@ Running extension {extension}
         """
         # Define the extensions directory
         ext_folder = self.cwd / "extensions"
+        import zipfile
 
         # Extract the contents of the zip file into the extensions directory
         with zipfile.ZipFile(zip_file_path, "r") as zip_ref:
@@ -295,9 +297,10 @@ Running extension {extension}
         """
         initializes the TWW database for usage of an extension
         Args:
-            connection: psycopg connection object
             extension_name: Name of the extension to load
         """
+        import copy
+
         # load definitions from config
         ext_folder = self.cwd / "extensions"
         config = self.read_config(ext_folder / "config.yaml", extension_name)
@@ -372,7 +375,8 @@ Running extension {extension}
             re.search(r"\{[A-Za-z-_]+\}", sql) and variables
         ):  # avoid formatting if no variables are present
             try:
-                sql = psycopg.sql.SQL(sql).format(**variables)
+                sql = psycopg.sql.SQL(sql).format(**variables).as_string(self.connection)
+
             except IndexError:
                 print(sql)
                 raise
