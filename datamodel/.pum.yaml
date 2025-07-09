@@ -44,7 +44,7 @@ parameters:
 
   - name: extension_agxx
     type: boolean
-    description: load AG-64/96 extension
+    description: enable AG-64/96 extension
 
   - name: extension_zip
     type: path
