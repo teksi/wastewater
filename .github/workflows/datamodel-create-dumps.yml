@@ -91,3 +91,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ github.ref_name }}
+
+      - name: Set output flag for docs-builder
+        id: set-output
+        run: echo "run-docs=${{ matrix.extension == '' }}" >> $GITHUB_OUTPUT
