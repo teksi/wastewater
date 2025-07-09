@@ -86,12 +86,12 @@ class Hook(HookBase):
             "vw_tww_measurement_series": {},
         }
 
-        self.MultipleInheritances = {
+        self.multiple_inherintances = {
             "vw_maintenance": self.cwd / "view/multipleinheritance/vw_maintenance_event.yaml",
             "vw_damage": self.cwd / "view/multipleinheritance/vw_damage.yaml",
         }
 
-        self.SingleInheritances = {
+        self.single_inherintances = {
             # structure parts
             "access_aid": "structure_part",
             "benching": "structure_part",
@@ -138,7 +138,7 @@ class Hook(HookBase):
             "drainage_system": "zone",
         }
 
-        self.SimpleJoins_yaml = {
+        self.simple_joins_yaml = {
             "vw_export_reach": self.cwd / "view/simplejoins/export/vw_export_reach.yaml",
             "vw_export_wastewater_structure": self.cwd
             / "view/simplejoins/export/vw_export_wastewater_structure.yaml",
@@ -161,13 +161,13 @@ Running extension {extension}
 
         # Defaults and Triggers
         # Has to be fired before view creation otherwise it won't work and will only fail in CI
-        set_defaults_and_triggers(self.connection, self.SingleInheritances)
+        set_defaults_and_triggers(self.connection, self.single_inherintances)
 
-        for key in self.SingleInheritances:
+        for key in self.single_inherintances:
             print(f"creating view vw_{key}")
             SingleInheritance(
                 connection=self.connection,
-                parent_table="tww_od." + self.SingleInheritances[key],
+                parent_table="tww_od." + self.single_inherintances[key],
                 child_table="tww_od." + key,
                 view_name="vw_" + key,
                 view_schema="tww_app",
@@ -175,10 +175,10 @@ Running extension {extension}
                 inner_defaults={"identifier": "obj_id"},
             ).create()
 
-        for key in self.MultipleInheritances:
+        for key in self.multiple_inherintances:
             MultipleInheritance(
                 connection=self.connection,
-                definition=self.load_yaml(self.MultipleInheritances[key]),
+                definition=self.load_yaml(self.multiple_inherintances[key]),
                 drop=True,
                 variables=variables_pirogue,
             ).create()
@@ -223,7 +223,7 @@ Running extension {extension}
         )
 
         # TODO: Are these export views necessary? cymed 13.03.25
-        for _, yaml_path in self.SimpleJoins_yaml.items():
+        for _, yaml_path in self.simple_joins_yaml.items():
             SimpleJoins(definition=self.load_yaml(yaml_path), connection=self.connection).create()
 
         sql_directories = [
@@ -241,8 +241,6 @@ Running extension {extension}
         # run post_all
         self.run_sql_files_in_folder(self.cwd / "post_all")
 
-        # Roles
-        self.execute(self.cwd / "tww_app_roles.sql")
 
     def load_yaml(self, file: Path) -> dict[str]:
         """Safely loads a YAML file and ensures it returns a dictionary."""
@@ -326,18 +324,18 @@ Running extension {extension}
                     yaml_files[key] = abs_dir / filename
 
         for target_view, file_path in yaml_files.items():
-            if target_view in self.MultipleInheritances:
+            if target_view in self.multiple_inherintances:
                 # overwrite the path
                 print(
-                    f"MultipleInheritance view {self.MultipleInheritances[target_view]} overriden by extension {extension_name}: New path used is {file_path}"
+                    f"MultipleInheritance view {self.multiple_inherintances[target_view]} overriden by extension {extension_name}: New path used is {file_path}"
                 )
-                self.MultipleInheritances[target_view] = file_path
-            elif target_view in self.SimpleJoins_yaml:
+                self.multiple_inherintances[target_view] = file_path
+            elif target_view in self.simple_joins_yaml:
                 # overwrite the path
                 print(
-                    f"SimpleJoin view {self.SimpleJoins_yaml[target_view]} overriden by extension {extension_name}: New path used is {file_path}"
+                    f"SimpleJoin view {self.simple_joins_yaml[target_view]} overriden by extension {extension_name}: New path used is {file_path}"
                 )
-                self.SimpleJoins_yaml[target_view] = file_path
+                self.simple_joins_yaml[target_view] = file_path
             else:
                 # load data
                 if target_view in self.yaml_data_dicts:
