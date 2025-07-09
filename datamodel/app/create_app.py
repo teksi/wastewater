@@ -46,7 +46,7 @@ class Hook(HookBase):
         self.variables_sql = {
             "SRID": {
                 "value": f"{SRID}",
-                "type": "identifier",
+                "type": "raw",
             },
             "value_lang": {
                 "value": f"value_{lang_code}",
@@ -400,8 +400,10 @@ Running extension {extension}
             if isinstance(meta, dict) and "value" in meta and "type" in meta:
                 value, var_type = meta["value"], meta["type"].lower()
 
-                if var_type == "identifier":  # Table/Column names
-                    if not re.match(r"^[a-zA-Z0-9_]*$", value):  # avoid injection
+                if var_type == "raw":  # Directly insert SQL without escaping
+                    formatted_vars[key] = psycopg.sql.SQL(value)
+                elif var_type == "identifier":  # Table/Column names
+                    if not re.match(r"^[a-zA-Z_][a-zA-Z0-9_]*$", value):  # avoid injection
                         raise ValueError(f"Identifier '{value}' contains invalid characters.")
                     formatted_vars[key] = psycopg.sql.Identifier(value)
                 elif var_type == "literal":  # String/Number literals
