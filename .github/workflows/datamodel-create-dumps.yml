@@ -32,7 +32,6 @@ jobs:
     env:
       COMPOSE_PROFILES: schemaspy
       COMPOSE_PROJECT_NAME: wastewater-${{ matrix.extension }}
-      
 
     strategy:
       matrix:
