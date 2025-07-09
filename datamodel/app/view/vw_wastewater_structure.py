@@ -29,10 +29,12 @@ def vw_wastewater_structure(connection: psycopg.Connection, extra_definition: di
         {extra_cols}
         , wn._usage_current AS _channel_usage_current
         , wn._function_hierarchic AS _channel_function_hierarchic
+        , vl_fh.tww_is_primary
 
         FROM tww_od.wastewater_structure ws
         LEFT JOIN tww_od.wastewater_node wn ON wn.obj_id = ws.fk_main_wastewater_node
         LEFT JOIN tww_od.channel ch ON ch.obj_id = ws.obj_id
+        LEFT JOIN tww_vl.channel_function_hierarchic vl_fh ON vl_fh.code = wn._function_hierarchic
         {extra_joins}
         WHERE ch.obj_id IS NULL;
 
