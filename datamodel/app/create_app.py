@@ -36,7 +36,7 @@ class Hook(HookBase):
         Creates the schema tww_app for TEKSI Wastewater & GEP
         :param SRID: the EPSG code for geometry columns
         :param extension_agxx: bool of whether to load agxx extension
-        :param extension_agxx: bool of whether to load ci extension
+        :param extension_ci: bool of whether to load ci extension
         :param extension_zip: Path of zip containing self-defined extensions
         :paran lang_code: language code for use in extension views
         """
