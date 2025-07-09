@@ -4,25 +4,37 @@ pum:
   minimum_version: 1.1.12
 
 roles:
-  - name: tww_viewer
-    description: Role for users who can view the TWW data.
+  - name: tww_viewer_{db}
+    description: Role for users who can view the TWW data on this database.
     permissions:
       - type: read
         schemas: [tww_od, tww_vl, tww_sys, tww_app, tww_cfg]
 
-  - name: tww_user
-    description: Role for users who can view and edit the TWW data.
-    inherit: tww_viewer
+  - name: tww_viewer
+    description: Role for users who can view the TWW data on all databases.
+    inherit: tww_viewer_{db}
+
+  - name: tww_user_{db}
+    description: Role for users who can view and edit the TWW data on this database.
+    inherit: tww_viewer_{db}
     permissions:
       - type: write
         schemas: [tww_od]
 
-  - name: tww_manager
-    description: Role for users who can view and edit the TWW data, and manage the TWW application.
+  - name: tww_user
+    description: Role for users who can view and edit the TWW data on all databases.
+    inherit: tww_user_{db}
+
+  - name: tww_manager_{db}
+    description: Role for users who can view and edit the TWW data, and manage the TWW application  on this database.
     inherit: tww_user
     permissions:
       - type: write
         schemas: [tww_vl, tww_cfg]
+
+  - name: tww_manager
+    description: Role for users who can view and edit the TWW data, and manage the TWW application on all databases.
+    inherit: tww_manager_{db}
 
   - name: tww_sysadmin
     description: Role for system administrators who can manage the TWW application and its configuration.
