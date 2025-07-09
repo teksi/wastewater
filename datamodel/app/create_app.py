@@ -265,7 +265,7 @@ Running extension {extension}
         # Define the extensions directory
         ext_folder = self.cwd / "extensions"
         import zipfile
-        
+
         # Extract the contents of the zip file into the extensions directory
         with zipfile.ZipFile(zip_file_path, "r") as zip_ref:
             zip_ref.extractall(ext_folder)
@@ -300,6 +300,7 @@ Running extension {extension}
             extension_name: Name of the extension to load
         """
         import copy
+
         # load definitions from config
         ext_folder = self.cwd / "extensions"
         config = self.read_config(ext_folder / "config.yaml", extension_name)
