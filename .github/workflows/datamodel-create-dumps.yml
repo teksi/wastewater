@@ -50,9 +50,9 @@ jobs:
           done
           docker compose exec db createdb -U postgres tww
           if [ -z "${{ matrix.extension }}" ]; then
-            docker exec teksi-wastewater pum -vvv -s pg_tww -d datamodel install -p SRID 2056 --roles --grant
+            docker exec db pum -vvv -s pg_tww -d datamodel install -p SRID 2056 --roles --grant
           else
-            docker exec teksi-wastewater pum -vvv -s pg_tww -d datamodel install -p SRID 2056 -p extension_${{ matrix.extension }} --roles --grant
+            docker exec db pum -vvv -s pg_tww -d datamodel install -p SRID 2056 -p extension_${{ matrix.extension }} --roles --grant
           fi
 
       - name: Create dumps
