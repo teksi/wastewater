@@ -26,6 +26,7 @@ def extra_cols(
         cursor.close()
     except Exception as e:
         print("An error occurred:", e)
+        raise
     return str
 
 
@@ -74,6 +75,7 @@ def insert_extra(connection: psycopg.Connection, extra_definition: dict = None):
         )
     except Exception as e:
         print("An error occurred:", e)
+        raise
 
     return str
 
@@ -110,5 +112,6 @@ def update_extra(connection: psycopg.Connection, extra_definition: dict = None):
         )
     except Exception as e:
         print("An error occurred:", e)
+        raise
 
     return str
