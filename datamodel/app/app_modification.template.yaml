@@ -21,22 +21,21 @@ simple_joins_yaml:
   vw_export_reach: "view/simplejoins/export/vw_export_reach.yaml"
   vw_export_wastewater_structure: "view/simplejoins/export/vw_export_wastewater_structure.yaml"
 
-
 modification_repositories:
   - id: ci
-      active: false
-      template: modification_repos\ci-extension\config.yaml
+    active: false
+    template: modification_repos\ci-extension\config.yaml
   - id: agxx
-      active: false
-      template: modification_repos\tww2ag6496\config.yaml
+    active: false
+    template: modification_repos\tww2ag6496\config.yaml
   - id: demo
-      active: false
-      variables:
-        myVariable:
-          value: "Hello World"
-          type: literal
-        myNumber:
-          value: 0
-          type: literal
-      sql_files:
-        - file: modification_repos\tww2ag6496\000_demo.sql
+    active: false
+    variables:
+      myVariable:
+        value: "Hello World"
+        type: literal
+      myNumber:
+        value: 0
+        type: literal
+    sql_files:
+      - file: modification_repos\tww2ag6496\000_demo.sql
