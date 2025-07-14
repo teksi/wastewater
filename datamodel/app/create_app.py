@@ -347,7 +347,7 @@ if __name__ == "__main__":
     with psycopg.connect(service=args.pg_service) as connection:
         if args.drop_schema:
             connection.execute("DROP SCHEMA IF EXISTS tww_app CASCADE;")
-        hook = Hook()
+        hook = TwwHook()
         hook.run_hook(
             connection=connection,
             SRID=args.srid,
