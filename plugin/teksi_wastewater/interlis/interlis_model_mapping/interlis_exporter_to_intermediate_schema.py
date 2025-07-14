@@ -476,9 +476,9 @@ class InterlisExporterToIntermediateSchema:
         self._check_for_stop()
 
     def _export_organisation(self):
-        query = self.tww_session.query(self.model_classes_tww_od.organisation).filter_by(
-            tww_local_extension=True
-        )
+        query = self.tww_session.query(self.model_classes_tww_od.organisation)
+        # only export my additional organisations
+        query = query.filter(self.model_classes_tww_od.organisation.tww_local_extension == True).all()
         for row in query:
             organisation = self.model_classes_interlis.organisation(
                 # FIELDS TO MAP TO ABWASSER.organisation
