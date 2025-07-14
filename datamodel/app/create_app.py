@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import logging
 import os
 import re
 from argparse import ArgumentParser, BooleanOptionalAction
@@ -19,6 +20,7 @@ from view.vw_tww_reach import vw_tww_reach
 from view.vw_tww_wastewater_structure import vw_tww_wastewater_structure
 from view.vw_wastewater_structure import vw_wastewater_structure
 
+logger = logging.getLogger(__name__)
 
 class Hook(HookBase):
     def run_hook(
@@ -97,7 +99,7 @@ class Hook(HookBase):
 
         if self.app_modifications:
             for modification in self.app_modifications:
-                print(
+                logger.info(
                     f"""*****
 Running modification {modification.get('id')}
 ****
@@ -112,7 +114,7 @@ Running modification {modification.get('id')}
         set_defaults_and_triggers(self.connection, self.single_inherintances)
 
         for key in self.single_inherintances:
-            print(f"creating view vw_{key}")
+            logger.info(f"creating view vw_{key}")
             SingleInheritance(
                 connection=self.connection,
                 parent_table="tww_od." + self.single_inherintances[key],
@@ -239,7 +241,7 @@ Running modification {modification.get('id')}
         if not file.exists():
             raise FileNotFoundError(f"The file {file} does not exist.")
 
-        print(f"loading yaml {file}")
+        logger.info(f"loading yaml {file}")
         with open(file) as f:
             data = yaml.safe_load(f)
             return data if isinstance(data, dict) else {}
@@ -303,7 +305,7 @@ Running modification {modification.get('id')}
                 sql = psycopg.sql.SQL(sql).format(**variables).as_string(self.connection)
 
             except IndexError:
-                print(sql)
+                logger.critical(sql)
                 raise
         self.execute(sql)
 
@@ -314,7 +316,7 @@ Running modification {modification.get('id')}
         for file in files:
             filename = os.fsdecode(file)
             if filename.lower().endswith(".sql"):
-                print(f"Running {filename}")
+                logger.info(f"Running {filename}")
                 self.run_sql_file(os.path.join(directory, filename), sql_vars)
 
     def parse_variables(self, variables: dict) -> dict:
