@@ -54,6 +54,8 @@ class Hook(HookBase):
                     if modification_agxx and entry[id] == "agxx":
                         entry["active"] = True
 
+        abspath = self.cwd if not modification_yaml else '' 
+
         variables_pirogue = {
             "SRID": psycopg.sql.SQL(f"{SRID}")
         }  # when dropping psycopg2 support, we can use the SRID var directly
@@ -124,56 +126,56 @@ Running modification {modification.get('id')}
         for key in self.multiple_inherintances:
             MultipleInheritance(
                 connection=self.connection,
-                definition=self.load_yaml(self.multiple_inherintances[key]),
+                definition=self.load_yaml(abspath / self.multiple_inherintances[key]),
                 drop=True,
                 variables=variables_pirogue,
             ).create()
 
         vw_wastewater_structure(
             connection=self.connection,
-            extra_definition=self.load_yaml(self.extra_definitions["vw_wastewater_structure"]),
+            extra_definition=self.load_yaml(abspath / self.extra_definitions["vw_wastewater_structure"]),
         )
         vw_tww_wastewater_structure(
             connection=self.connection,
             srid=SRID,
-            extra_definition=self.load_yaml(self.extra_definitions["vw_tww_wastewater_structure"]),
+            extra_definition=self.load_yaml(abspath / self.extra_definitions["vw_tww_wastewater_structure"]),
         )
         vw_tww_infiltration_installation(
             connection=self.connection,
             srid=SRID,
-            extra_definition=self.load_yaml(
+            extra_definition=self.load_yaml( abspath / 
                 self.extra_definitions["vw_tww_infiltration_installation"]
             ),
         )
         vw_tww_reach(
             connection=self.connection,
-            extra_definition=self.load_yaml(self.extra_definitions["vw_tww_reach"]),
+            extra_definition=self.load_yaml(abspath / self.extra_definitions["vw_tww_reach"]),
         )
         vw_tww_channel(
             connection=self.connection,
-            extra_definition=self.load_yaml(self.extra_definitions["vw_tww_channel"]),
+            extra_definition=self.load_yaml(abspath / self.extra_definitions["vw_tww_channel"]),
         )
         vw_tww_damage_channel(
             connection=self.connection,
-            extra_definition=self.load_yaml(self.extra_definitions["vw_tww_damage_channel"]),
+            extra_definition=self.load_yaml(abspath / self.extra_definitions["vw_tww_damage_channel"]),
         )
         vw_tww_additional_ws(
             srid=SRID,
             connection=self.connection,
-            extra_definition=self.load_yaml(self.extra_definitions["vw_tww_additional_ws"]),
+            extra_definition=self.load_yaml(abspath / self.extra_definitions["vw_tww_additional_ws"]),
         )
         vw_tww_measurement_series(
             connection=self.connection,
-            extra_definition=self.load_yaml(self.extra_definitions["vw_tww_measurement_series"]),
+            extra_definition=self.load_yaml(abspath / self.extra_definitions["vw_tww_measurement_series"]),
         )
         vw_tww_overflow(
             connection=self.connection,
-            extra_definition=self.load_yaml(self.extra_definitions["vw_tww_overflow"]),
+            extra_definition=self.load_yaml(abspath / self.extra_definitions["vw_tww_overflow"]),
         )
 
         # TODO: Are these export views necessary? cymed 13.03.25
         for _, yaml_path in self.simple_joins_yaml.items():
-            SimpleJoins(definition=self.load_yaml(yaml_path), connection=self.connection).create()
+            SimpleJoins(definition=self.load_yaml(abspath / yaml_path), connection=self.connection).create()
 
         sql_directories = [
             "view/varia",
@@ -202,10 +204,6 @@ Running modification {modification.get('id')}
             data = yaml.safe_load(f)
             return data if isinstance(data, dict) else {}
 
-    def get_repository_by_id(self, repo_id):
-        repos = self.parameters["modification_repositories"]
-        return next((repo for repo in repos if repo["id"] == repo_id), None)
-
     def load_modification(
         self,
         modification_config: set = None,
@@ -222,7 +220,7 @@ Running modification {modification.get('id')}
             curr_dir = os.path.dirname(template_path)
             modification_config = self.load_yaml(template_path)
         else:
-            curr_dir = self.cwd
+            curr_dir = ''
 
         ext_variables = modification_config.get("variables", {})
         sql_vars = self.parse_variables(ext_variables)
