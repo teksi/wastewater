@@ -22,6 +22,7 @@ from view.vw_wastewater_structure import vw_wastewater_structure
 
 logger = logging.getLogger(__name__)
 
+
 class Hook(HookBase):
     def run_hook(
         self,
