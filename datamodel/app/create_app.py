@@ -140,7 +140,7 @@ Running modification {modification.get('id')}
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_wastewater_structure"])
                 if self.extra_definitions["vw_wastewater_structure"]
-                else None
+                else {}
             ),
         )
         vw_tww_wastewater_structure(
@@ -149,7 +149,7 @@ Running modification {modification.get('id')}
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_wastewater_structure"])
                 if self.extra_definitions["vw_tww_wastewater_structure"]
-                else None
+                else {}
             ),
         )
         vw_tww_infiltration_installation(
@@ -158,7 +158,7 @@ Running modification {modification.get('id')}
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_infiltration_installation"])
                 if self.extra_definitions["vw_tww_infiltration_installation"]
-                else None
+                else {}
             ),
         )
         vw_tww_reach(
@@ -166,7 +166,7 @@ Running modification {modification.get('id')}
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_reach"])
                 if self.extra_definitions["vw_tww_reach"]
-                else None
+                else {}
             ),
         )
         vw_tww_channel(
@@ -174,7 +174,7 @@ Running modification {modification.get('id')}
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_channel"])
                 if self.extra_definitions["vw_tww_channel"]
-                else None
+                else {}
             ),
         )
         vw_tww_damage_channel(
@@ -182,7 +182,7 @@ Running modification {modification.get('id')}
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_damage_channel"])
                 if self.extra_definitions["vw_tww_damage_channel"]
-                else None
+                else {}
             ),
         )
         vw_tww_additional_ws(
@@ -191,7 +191,7 @@ Running modification {modification.get('id')}
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_additional_ws"])
                 if self.extra_definitions["vw_tww_additional_ws"]
-                else None
+                else {}
             ),
         )
         vw_tww_measurement_series(
@@ -199,7 +199,7 @@ Running modification {modification.get('id')}
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_measurement_series"])
                 if self.extra_definitions["vw_tww_measurement_series"]
-                else None
+                else {}
             ),
         )
         vw_tww_overflow(
