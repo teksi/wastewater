@@ -42,17 +42,17 @@ class TwwHook(HookBase):
         self.connection = connection
 
         if modification_yaml:
-            self.parameters =self.load_yaml(modification_yaml)
-            SRID = self.parameters["base_configurations"][0].get('SRID', 2056)
-            lang_code = self.parameters["base_configurations"][0].get('lang_code','en')
+            self.parameters = self.load_yaml(modification_yaml)
+            SRID = self.parameters["base_configurations"][0].get("SRID", 2056)
+            lang_code = self.parameters["base_configurations"][0].get("lang_code", "en")
         else:
-            self.parameters =self.load_yaml(self.cwd / 'app_modification.template.yaml')
-            if 'modification_repositories' in self.parameters:
-                for entry in self.parameters['modification_repositories']:
-                    if modification_ci and entry[id]=='ci':
-                        entry['active'] = True
-                    if modification_agxx and entry[id]=='agxx':
-                        entry['active'] = True
+            self.parameters = self.load_yaml(self.cwd / "app_modification.template.yaml")
+            if "modification_repositories" in self.parameters:
+                for entry in self.parameters["modification_repositories"]:
+                    if modification_ci and entry[id] == "ci":
+                        entry["active"] = True
+                    if modification_agxx and entry[id] == "agxx":
+                        entry["active"] = True
 
         variables_pirogue = {
             "SRID": psycopg.sql.SQL(f"{SRID}")
@@ -81,13 +81,17 @@ class TwwHook(HookBase):
         }
         self.execute("CREATE SCHEMA tww_app;")
         self.run_sql_files_in_folder(self.cwd / "sql_functions")
-        self.app_modifications = [entry for entry in self.parameters.get('modification_repositories') if entry.get('active')]
+        self.app_modifications = [
+            entry
+            for entry in self.parameters.get("modification_repositories")
+            if entry.get("active")
+        ]
 
-        self.extra_definitions = self.parameters.get('extra_definitions')
-        self.simple_joins_yaml = self.parameters.get('simple_joins_yaml')
-        self.multiple_inherintances = self.parameters.get('multiple_inherintances')
+        self.extra_definitions = self.parameters.get("extra_definitions")
+        self.simple_joins_yaml = self.parameters.get("simple_joins_yaml")
+        self.multiple_inherintances = self.parameters.get("multiple_inherintances")
 
-        self.single_inherintances = self.load_yaml(self.cwd / 'single_inherintances.yaml')
+        self.single_inherintances = self.load_yaml(self.cwd / "single_inherintances.yaml")
 
         if self.app_modifications:
             for modification in self.app_modifications:
@@ -137,10 +141,13 @@ Running modification {modification.get('id')}
         vw_tww_infiltration_installation(
             connection=self.connection,
             srid=SRID,
-            extra_definition=self.load_yaml(self.extra_definitions["vw_tww_infiltration_installation"]),
+            extra_definition=self.load_yaml(
+                self.extra_definitions["vw_tww_infiltration_installation"]
+            ),
         )
         vw_tww_reach(
-            connection=self.connection, extra_definition=self.load_yaml(self.extra_definitions["vw_tww_reach"]),
+            connection=self.connection,
+            extra_definition=self.load_yaml(self.extra_definitions["vw_tww_reach"]),
         )
         vw_tww_channel(
             connection=self.connection,
@@ -210,7 +217,7 @@ Running modification {modification.get('id')}
         """
 
         # load definitions from config
-        template_path = modification_config.get('template', None)
+        template_path = modification_config.get("template", None)
         if template_path:
             curr_dir = os.path.dirname(template_path)
             modification_config = self.load_yaml(template_path)
@@ -220,32 +227,28 @@ Running modification {modification.get('id')}
         ext_variables = modification_config.get("variables", {})
         sql_vars = self.parse_variables(ext_variables)
 
-        for sql_file in modification_config.get('sql_files', None):
-            file_name = curr_dir / sql_file.get('file')
+        for sql_file in modification_config.get("sql_files", None):
+            file_name = curr_dir / sql_file.get("file")
             self.run_sql_file(file_name, sql_vars)
 
-
         if template_path:
-            for key, value in modification_config.get('extra_definitions', {}).items():
+            for key, value in modification_config.get("extra_definitions", {}).items():
                 if self.extra_definitions[key]:
                     self.extra_definitions[key].update(curr_dir / value)
                 else:
                     self.extra_definitions[key] = curr_dir / value
 
-            for key, value in modification_config.get('simple_joins_yaml', {}).items():
+            for key, value in modification_config.get("simple_joins_yaml", {}).items():
                 if self.simple_joins_yaml[key]:
                     self.simple_joins_yaml[key].update(curr_dir / value)
                 else:
                     self.simple_joins_yaml[key] = curr_dir / value
-        
-            for key, value in modification_config.get('multiple_inherintances', {}).items():
+
+            for key, value in modification_config.get("multiple_inherintances", {}).items():
                 if self.multiple_inherintances[key]:
                     self.multiple_inherintances[key].update(curr_dir / value)
                 else:
-                  self.multiple_inherintances[key] = curr_dir / value
-
-
-
+                    self.multiple_inherintances[key] = curr_dir / value
 
     def run_sql_file(self, file_path: str, variables: dict = None):
         with open(file_path) as f:
@@ -338,9 +341,7 @@ if __name__ == "__main__":
         default="en",
         choices=["en", "fr", "de", "it", "ro"],
     )
-    parser.add_argument(
-        "-m", "--modification_yaml", help="path to modification yaml", type=Path
-    )
+    parser.add_argument("-m", "--modification_yaml", help="path to modification yaml", type=Path)
     args = parser.parse_args()
 
     with psycopg.connect(service=args.pg_service) as connection:

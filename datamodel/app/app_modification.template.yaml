@@ -9,18 +9,18 @@ extra_definitions:
   vw_wastewater_structure: null
   vw_tww_infiltration_installation: null
   vw_tww_channel: null
-  vw_tww_damage_channel: null 
+  vw_tww_damage_channel: null
   vw_tww_additional_ws: null
   vw_tww_measurement_series: null
-        
+
 multiple_inherintances:
   vw_maintenance: "view/multipleinheritance/vw_maintenance_event.yaml"
   vw_damage: "view/multipleinheritance/vw_damage.yaml"
-  
+
 simple_joins_yaml:
   vw_export_reach: "view/simplejoins/export/vw_export_reach.yaml"
   vw_export_wastewater_structure: "view/simplejoins/export/vw_export_wastewater_structure.yaml"
-  
+
 
 modification_repositories:
   - id: ci
@@ -38,5 +38,5 @@ modification_repositories:
         myNumber:
           value: 0
           type: literal
-      sql_files: 
+      sql_files:
         - file: modification_repos\tww2ag6496\000_demo.sql
