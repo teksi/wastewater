@@ -1,0 +1,42 @@
+base_configurations:
+   - lang_code: en
+   - SRID: 2056
+
+extra_definitions:
+  vw_tww_reach: null
+  vw_tww_wastewater_structure: null
+  vw_tww_overflow: null
+  vw_wastewater_structure: null
+  vw_tww_infiltration_installation: null
+  vw_tww_channel: null
+  vw_tww_damage_channel: null 
+  vw_tww_additional_ws: null
+  vw_tww_measurement_series: null
+        
+multiple_inherintances:
+  vw_maintenance: "view/multipleinheritance/vw_maintenance_event.yaml"
+  vw_damage: "view/multipleinheritance/vw_damage.yaml"
+  
+simple_joins_yaml:
+  vw_export_reach: "view/simplejoins/export/vw_export_reach.yaml"
+  vw_export_wastewater_structure: "view/simplejoins/export/vw_export_wastewater_structure.yaml"
+  
+
+modification_repositories:
+  - id: ci
+      active: false
+      template: modification_repos\ci-extension\config.yaml
+  - id: agxx
+      active: false
+      template: modification_repos\tww2ag6496\config.yaml
+  - id: demo
+      active: false
+      variables:
+        myVariable:
+          value: "Hello World"
+          type: literal
+        myNumber:
+          value: 0
+          type: literal
+      sql_files: 
+        - file: modification_repos\tww2ag6496\000_demo.sql

@@ -1,0 +1,16 @@
+base_configurations:
+   - lang_code: en
+   - SRID: 2056
+
+extra_definitions:
+  vw_tww_reach: null
+  vw_tww_wastewater_structure: null
+  vw_tww_overflow: null
+  vw_wastewater_structure: null
+  vw_tww_infiltration_installation: null
+  vw_tww_channel: null
+  vw_tww_damage_channel: null 
+  vw_tww_additional_ws: null
+  vw_tww_measurement_series: null
+
+
