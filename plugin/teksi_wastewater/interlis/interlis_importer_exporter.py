@@ -161,6 +161,7 @@ class InterlisImporterExporter:
         logs_next_to_file=True,
         limit_to_selection=False,
         export_orientation=90.0,
+        labels_file=None,
         selected_labels_scales_indices=[],
         selected_ids=None,
     ):
@@ -187,15 +188,15 @@ class InterlisImporterExporter:
 
         # Export the labels file
         tempdir = tempfile.TemporaryDirectory()
-        labels_file_path = None
         if len(selected_labels_scales_indices):
             self._progress_done(25)
-            labels_file_path = os.path.join(tempdir.name, "labels.geojson")
-            self._export_labels_file(
-                limit_to_selection=limit_to_selection,
-                selected_labels_scales_indices=selected_labels_scales_indices,
-                labels_file_path=labels_file_path,
-            )
+            if not labels_file:
+                labels_file = os.path.join(tempdir.name, "labels.geojson")
+                self._export_labels_file(
+                    limit_to_selection=limit_to_selection,
+                    selected_labels_scales_indices=selected_labels_scales_indices,
+                    labels_file_path=labels_file,
+                )
 
         # Export to the temporary ili2pg model
         self._progress_done(35, "Converting from TEKSI Wastewater...")
@@ -204,7 +205,7 @@ class InterlisImporterExporter:
             file_name=xtf_file_output,
             selected_ids=selected_ids,
             export_orientation=export_orientation,
-            labels_file_path=labels_file_path,
+            labels_file_path=labels_file,
             basket_enabled=create_basket_col,
         )
         tempdir.cleanup()  # Cleanup
