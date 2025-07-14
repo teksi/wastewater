@@ -54,7 +54,7 @@ class Hook(HookBase):
                     if modification_agxx and entry[id] == "agxx":
                         entry["active"] = True
 
-        abspath = self.cwd if not modification_yaml else '' 
+        abspath = self.cwd if not modification_yaml else ""
 
         variables_pirogue = {
             "SRID": psycopg.sql.SQL(f"{SRID}")
@@ -133,18 +133,22 @@ Running modification {modification.get('id')}
 
         vw_wastewater_structure(
             connection=self.connection,
-            extra_definition=self.load_yaml(abspath / self.extra_definitions["vw_wastewater_structure"]),
+            extra_definition=self.load_yaml(
+                abspath / self.extra_definitions["vw_wastewater_structure"]
+            ),
         )
         vw_tww_wastewater_structure(
             connection=self.connection,
             srid=SRID,
-            extra_definition=self.load_yaml(abspath / self.extra_definitions["vw_tww_wastewater_structure"]),
+            extra_definition=self.load_yaml(
+                abspath / self.extra_definitions["vw_tww_wastewater_structure"]
+            ),
         )
         vw_tww_infiltration_installation(
             connection=self.connection,
             srid=SRID,
-            extra_definition=self.load_yaml( abspath / 
-                self.extra_definitions["vw_tww_infiltration_installation"]
+            extra_definition=self.load_yaml(
+                abspath / self.extra_definitions["vw_tww_infiltration_installation"]
             ),
         )
         vw_tww_reach(
@@ -157,16 +161,22 @@ Running modification {modification.get('id')}
         )
         vw_tww_damage_channel(
             connection=self.connection,
-            extra_definition=self.load_yaml(abspath / self.extra_definitions["vw_tww_damage_channel"]),
+            extra_definition=self.load_yaml(
+                abspath / self.extra_definitions["vw_tww_damage_channel"]
+            ),
         )
         vw_tww_additional_ws(
             srid=SRID,
             connection=self.connection,
-            extra_definition=self.load_yaml(abspath / self.extra_definitions["vw_tww_additional_ws"]),
+            extra_definition=self.load_yaml(
+                abspath / self.extra_definitions["vw_tww_additional_ws"]
+            ),
         )
         vw_tww_measurement_series(
             connection=self.connection,
-            extra_definition=self.load_yaml(abspath / self.extra_definitions["vw_tww_measurement_series"]),
+            extra_definition=self.load_yaml(
+                abspath / self.extra_definitions["vw_tww_measurement_series"]
+            ),
         )
         vw_tww_overflow(
             connection=self.connection,
@@ -175,7 +185,9 @@ Running modification {modification.get('id')}
 
         # TODO: Are these export views necessary? cymed 13.03.25
         for _, yaml_path in self.simple_joins_yaml.items():
-            SimpleJoins(definition=self.load_yaml(abspath / yaml_path), connection=self.connection).create()
+            SimpleJoins(
+                definition=self.load_yaml(abspath / yaml_path), connection=self.connection
+            ).create()
 
         sql_directories = [
             "view/varia",
@@ -220,7 +232,7 @@ Running modification {modification.get('id')}
             curr_dir = os.path.dirname(template_path)
             modification_config = self.load_yaml(template_path)
         else:
-            curr_dir = ''
+            curr_dir = ""
 
         ext_variables = modification_config.get("variables", {})
         sql_vars = self.parse_variables(ext_variables)
