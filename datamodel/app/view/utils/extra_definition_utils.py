@@ -25,7 +25,7 @@ def extra_cols(
         )
         cursor.close()
         return str
-    return ''
+    return ""
 
 
 def extra_joins(connection: psycopg.Connection, extra_definition: dict = {}):
@@ -41,7 +41,7 @@ def extra_joins(connection: psycopg.Connection, extra_definition: dict = {}):
             ]
         )
         return str
-    return ''
+    return ""
 
 
 def insert_extra(connection: psycopg.Connection, extra_definition: dict = {}):
@@ -74,7 +74,7 @@ def insert_extra(connection: psycopg.Connection, extra_definition: dict = {}):
             ]
         )
         return str
-    return ''
+    return ""
 
 
 def update_extra(connection: psycopg.Connection, extra_definition: dict = {}):
@@ -108,4 +108,4 @@ def update_extra(connection: psycopg.Connection, extra_definition: dict = {}):
             ]
         )
         return str
-    return ''
+    return ""
