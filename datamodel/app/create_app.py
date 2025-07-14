@@ -137,44 +137,54 @@ Running modification {modification.get('id')}
 
         vw_wastewater_structure(
             connection=self.connection,
-            extra_definition=self.load_yaml(self.extra_definitions["vw_wastewater_structure"]),
+            extra_definition=self.load_yaml(
+                self.extra_definitions["vw_wastewater_structure"]
+            ) if self.extra_definitions["vw_wastewater_structure"]  else None,
         )
         vw_tww_wastewater_structure(
             connection=self.connection,
             srid=SRID,
-            extra_definition=self.load_yaml(self.extra_definitions["vw_tww_wastewater_structure"]),
+            extra_definition=self.load_yaml(
+                self.extra_definitions["vw_tww_wastewater_structure"] 
+            ) if self.extra_definitions["vw_tww_wastewater_structure"]  else None,
         )
         vw_tww_infiltration_installation(
             connection=self.connection,
             srid=SRID,
             extra_definition=self.load_yaml(
                 self.extra_definitions["vw_tww_infiltration_installation"]
-            ),
+            ) if self.extra_definitions["vw_tww_infiltration_installation"]  else None,
         )
         vw_tww_reach(
             connection=self.connection,
-            extra_definition=self.load_yaml(self.extra_definitions["vw_tww_reach"]),
+            extra_definition=self.load_yaml( self.extra_definitions["vw_tww_reach"]) if self.extra_definitions["vw_tww_reach"]  else None,
         )
         vw_tww_channel(
             connection=self.connection,
-            extra_definition=self.load_yaml(self.extra_definitions["vw_tww_channel"]),
+            extra_definition=self.load_yaml( self.extra_definitions["vw_tww_channel"]) if self.extra_definitions["vw_tww_channel"]  else None,
         )
         vw_tww_damage_channel(
             connection=self.connection,
-            extra_definition=self.load_yaml(self.extra_definitions["vw_tww_damage_channel"]),
+            extra_definition=self.load_yaml(
+                self.extra_definitions["vw_tww_damage_channel"]
+            ) if self.extra_definitions["vw_tww_damage_channel"]  else None,
         )
         vw_tww_additional_ws(
             srid=SRID,
             connection=self.connection,
-            extra_definition=self.load_yaml(self.extra_definitions["vw_tww_additional_ws"]),
+            extra_definition=self.load_yaml(
+                self.extra_definitions["vw_tww_additional_ws"]
+            ) if self.extra_definitions["vw_tww_additional_ws"]  else None,
         )
         vw_tww_measurement_series(
             connection=self.connection,
-            extra_definition=self.load_yaml(self.extra_definitions["vw_tww_measurement_series"]),
+            extra_definition=self.load_yaml(
+                self.extra_definitions["vw_tww_measurement_series"]
+            ) if self.extra_definitions["vw_tww_measurement_series"]  else None,
         )
         vw_tww_overflow(
             connection=self.connection,
-            extra_definition=self.load_yaml(self.extra_definitions["vw_tww_overflow"]),
+            extra_definition=self.load_yaml( self.extra_definitions["vw_tww_overflow"]) if self.extra_definitions["vw_tww_overflow"]  else None,
         )
 
         # TODO: Are these export views necessary? cymed 13.03.25
