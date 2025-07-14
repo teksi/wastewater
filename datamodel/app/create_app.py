@@ -20,7 +20,7 @@ from view.vw_tww_wastewater_structure import vw_tww_wastewater_structure
 from view.vw_wastewater_structure import vw_wastewater_structure
 
 
-class TwwHook(HookBase):
+class Hook(HookBase):
     def run_hook(
         self,
         connection: psycopg.Connection,
@@ -347,7 +347,7 @@ if __name__ == "__main__":
     with psycopg.connect(service=args.pg_service) as connection:
         if args.drop_schema:
             connection.execute("DROP SCHEMA IF EXISTS tww_app CASCADE;")
-        hook = TwwHook()
+        hook = Hook()
         hook.run_hook(
             connection=connection,
             SRID=args.srid,
