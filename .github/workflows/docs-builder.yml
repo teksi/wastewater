@@ -21,7 +21,6 @@ on:
     - cron: "30 04 * * *"
   workflow_dispatch:
 
-
 jobs:
   datamodel-documentation:
     uses: ./.github/workflows/datamodel-create-dumps.yml

@@ -192,12 +192,12 @@ def vw_tww_infiltration_installation(
     {insert_ii}
 
 
-    CASE WHEN NOT tww_app.check_all_nulls(NEW,'mp') THEN
+    CASE WHEN NOT tww_app.check_all_nulls(to_jsonb(NEW),'mp') THEN
     {insert_mp}
     ELSE NULL;
     END CASE;
 
-    CASE WHEN NOT tww_app.check_all_nulls(NEW,'rb') THEN
+    CASE WHEN NOT tww_app.check_all_nulls(to_jsonb(NEW),'rb') THEN
     {insert_rb}
     ELSE NULL;
     END CASE;
@@ -208,7 +208,7 @@ def vw_tww_infiltration_installation(
         SET fk_main_wastewater_node = NEW.wn_obj_id
         WHERE obj_id = NEW.obj_id;
 
-    CASE WHEN NOT tww_app.check_all_nulls(NEW,'co') THEN
+    CASE WHEN NOT tww_app.check_all_nulls(to_jsonb(NEW),'co') THEN
     {insert_vw_cover}
 
       UPDATE tww_od.wastewater_structure
@@ -346,7 +346,7 @@ def vw_tww_infiltration_installation(
       {update_ii}
       {update_co}
       IF NOT FOUND THEN
-        CASE WHEN NOT tww_app.check_all_nulls(NEW,'co') THEN -- no cover entries
+        CASE WHEN NOT tww_app.check_all_nulls(to_jsonb(NEW),'co') THEN -- no cover entries
           {insert_vw_cover}
         ELSE
           PERFORM pg_notify('vw_tww_ws_no_cover', format('Wastewater Structure %s: no cover created. If you want to add a cover please fill in at least one cover attribute value.',NEW.identifier));
