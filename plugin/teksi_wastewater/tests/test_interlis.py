@@ -164,7 +164,7 @@ class TestInterlis(unittest.TestCase):
         )
         interlis_object = self._get_xtf_object(
             exported_xtf_filename,
-            config.TOPIC_NAME_SIA405_BASE_ABWASSER,
+            config.TOPIC_NAME_SIA405_ADMINISTRATION,
             "Organisation",
             "ch20p3q400001497",
         )
