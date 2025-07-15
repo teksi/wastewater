@@ -92,7 +92,6 @@ class InterlisImporterExporter:
         elif config.MODEL_NAME_AG64 in import_models:
             import_model = config.MODEL_NAME_AG64
 
-
         if not import_model:
             error_text = f"No supported model was found among '{import_models}'."
             if len(import_models) == 1:

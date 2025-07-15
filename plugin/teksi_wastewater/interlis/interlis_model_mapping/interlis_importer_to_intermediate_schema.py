@@ -65,7 +65,6 @@ class InterlisImporterToIntermediateSchema:
         # Allow to insert rows with cyclic dependencies at once
         self.session_tww.execute(text("SET CONSTRAINTS ALL DEFERRED;"))
 
-
         if self.model not in (config.MODEL_NAME_AG64, config.MODEL_NAME_AG96):
             self._import_sia405_abwasser_base()
             if self.model != config.MODEL_NAME_SIA405_BASE_ABWASSER:
