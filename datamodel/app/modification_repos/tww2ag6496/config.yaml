@@ -10,7 +10,7 @@ sql_files:
   - file: sql/05_functions.sql
   - file: sql/11_ag96_triggerfuncs_node.sql
   - file: sql/12_ag96_triggerfuncs_other.sql
-  - file: sql/13_ag96_createtriggers.sql.sql
+  - file: sql/13_ag96_createtriggers.sql
 
 extra_definitions:
   vw_tww_reach: extra_definitions/vw_tww_reach.yaml
