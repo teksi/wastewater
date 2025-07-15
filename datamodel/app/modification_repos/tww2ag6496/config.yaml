@@ -19,4 +19,4 @@ extra_definitions:
   vw_wastewater_structure: extra_definitions/vw_wastewater_structure.yaml
 
 reset_vl_files:
-  - file: vl_management_agxx.sql  
+  - file: vl_management_agxx.sql

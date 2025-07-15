@@ -294,7 +294,10 @@ Running modification {modification.get('id')}
                 else:
                     self.multiple_inherintances[key] = curr_dir / value
 
-    def manage_vl(self, config: set = None,):
+    def manage_vl(
+        self,
+        config: set = None,
+    ):
         """
         manages activation/deactivation of tww value list of a modification
         Args:
@@ -304,8 +307,8 @@ Running modification {modification.get('id')}
         # load definitions from config
         template_path = config.get("template", None)
         is_active = config.get("active", False)
-        sql_vars ={'activate': {'value': is_active , 'type': 'literal'}}
-        sql_vars= self.parse_variables(sql_vars)
+        sql_vars = {"activate": {"value": is_active, "type": "literal"}}
+        sql_vars = self.parse_variables(sql_vars)
         if template_path:
             curr_dir = os.path.dirname(template_path)
             config = self.load_yaml(template_path)
