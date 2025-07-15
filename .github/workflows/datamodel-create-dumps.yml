@@ -57,7 +57,7 @@ jobs:
           fi
 
       - name: Create dumps
-        run: docker compose exec db /src/datamodel/scripts/create-dumps.py --extension_name=${{ matrix.extension }}
+              run: docker compose exec db /src/datamodel/scripts/create-dumps.py --extension_name=${{ matrix.extension }}
 
       - name: Schemaspy
         run:  docker compose run schemaspy
@@ -85,7 +85,7 @@ jobs:
           else
            zip -r datamodel-dumps_${{ matrix.extension }}.zip datamodel/artifacts
           fi
-          
+
 
       - name: Zip schemaspy output
         run: |
