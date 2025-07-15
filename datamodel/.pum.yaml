@@ -38,17 +38,17 @@ parameters:
     default: 2056
     description: Coordinate Reference System (CRS) to use for the data. This is used for the geometry column in the database. Default is 2056 (CH1903+ / LV95).
 
-  - name: extension_ci
+  - name: modification_ci
     type: boolean
-    description: load ci extension
+    description: load ci modification
 
-  - name: extension_agxx
+  - name: modification_agxx
     type: boolean
-    description: load AG-64/96 extension
+    description: enable AG-64/96 app modification
 
-  - name: extension_zip
+  - name: modification_yaml
     type: path
-    description: zip file with custom extensions
+    description: yaml file with app modification definitions
 
   - name: lang_code
     type: text

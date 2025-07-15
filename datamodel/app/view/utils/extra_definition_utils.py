@@ -4,9 +4,9 @@ from pirogue.utils import insert_command, select_columns, table_parts, update_co
 
 
 def extra_cols(
-    connection: psycopg.Connection, extra_definition: dict = None, skip_prefix: bool = False
+    connection: psycopg.Connection, extra_definition: dict = {}, skip_prefix: bool = False
 ):
-    try:
+    if extra_definition:
         # Create a cursor
         cursor = connection.cursor()
         str = ", " + "\n    ,".join(
@@ -24,27 +24,28 @@ def extra_cols(
             ]
         )
         cursor.close()
-    except Exception as e:
-        print("An error occurred:", e)
-    return str
+        return str
+    return ""
 
 
-def extra_joins(connection: psycopg.Connection, extra_definition: dict = None):
-    str = "\n    ".join(
-        [
-            "LEFT JOIN {tbl} {alias} ON {jon}".format(
-                tbl=table_def["table"],
-                alias=table_def.get("alias", ""),
-                jon=table_def["join_on"],
-            )
-            for table_def in extra_definition.get("joins", {}).values()
-        ]
-    )
-    return str
+def extra_joins(connection: psycopg.Connection, extra_definition: dict = {}):
+    if extra_definition:
+        str = "\n    ".join(
+            [
+                "LEFT JOIN {tbl} {alias} ON {jon}".format(
+                    tbl=table_def["table"],
+                    alias=table_def.get("alias", ""),
+                    jon=table_def["join_on"],
+                )
+                for table_def in extra_definition.get("joins", {}).values()
+            ]
+        )
+        return str
+    return ""
 
 
-def insert_extra(connection: psycopg.Connection, extra_definition: dict = None):
-    try:
+def insert_extra(connection: psycopg.Connection, extra_definition: dict = {}):
+    if extra_definition:
         # Create a cursor
         cursor = connection.cursor()
         str = "\n     ".join(
@@ -72,14 +73,12 @@ def insert_extra(connection: psycopg.Connection, extra_definition: dict = None):
                 )
             ]
         )
-    except Exception as e:
-        print("An error occurred:", e)
-
-    return str
+        return str
+    return ""
 
 
-def update_extra(connection: psycopg.Connection, extra_definition: dict = None):
-    try:
+def update_extra(connection: psycopg.Connection, extra_definition: dict = {}):
+    if extra_definition:
         # Create a cursor
         cursor = connection.cursor()
         str = "\n     ".join(
@@ -108,7 +107,5 @@ def update_extra(connection: psycopg.Connection, extra_definition: dict = None):
                 )
             ]
         )
-    except Exception as e:
-        print("An error occurred:", e)
-
-    return str
+        return str
+    return ""
