@@ -95,6 +95,7 @@ class Hook(HookBase):
         self.extra_definitions = self.parameters.get("extra_definitions")
         self.simple_joins_yaml = self.parameters.get("simple_joins_yaml")
         self.multiple_inherintances = self.parameters.get("multiple_inherintances")
+
         self.single_inherintances = self.load_yaml(self.cwd / "single_inherintances.yaml")
 
         if self.app_modifications:

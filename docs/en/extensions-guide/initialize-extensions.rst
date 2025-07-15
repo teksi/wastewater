@@ -46,7 +46,7 @@ In order to use a database extension, we need to load them from the source code:
 	REM Set the PYTHONPATH to include the directory containing the app module
 	set "PYTHONPATH=%tww_dir%\datamodel;%PYTHONPATH%"
 
-    python -m app.create_app.py --pg_service %myservice% --srid 2056 --drop-schema --extension_agxx
+    python -m app.create_app.py --pg_service %myservice% --srid 2056 --drop-schema --extension_names agxx foobar demo
 
     endlocal
     PAUSE

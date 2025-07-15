@@ -20,9 +20,6 @@ on:
         release_tag:
           required: true
           type: string
-        extension:
-          required: false
-          type: string
 
 
 jobs:
@@ -31,11 +28,6 @@ jobs:
     runs-on: ubuntu-24.04
     env:
       COMPOSE_PROFILES: schemaspy
-      COMPOSE_PROJECT_NAME: wastewater-${{ matrix.extension }}
-
-    strategy:
-      matrix:
-        extension: ["", "agxx"]
 
     steps:
       - uses: actions/checkout@v4
@@ -50,14 +42,10 @@ jobs:
             sleep 2
           done
           docker compose exec db createdb -U postgres tww
-          if [ -z "${{ matrix.extension }}" ]; then
-            docker exec db pum -vvv -s pg_tww -d datamodel install -p SRID 2056 --roles --grant
-          else
-            docker exec db pum -vvv -s pg_tww -d datamodel install -p SRID 2056 -p extension_${{ matrix.extension }} --roles --grant
-          fi
+          docker compose exec db pum -vvv -s pg_tww -d datamodel install -p SRID 2056 --roles --grant
 
       - name: Create dumps
-        run: docker compose exec db /src/datamodel/scripts/create-dumps.py --extension_name=${{ matrix.extension }}
+        run: docker compose exec db /src/datamodel/scripts/create-dumps.py
 
       - name: Schemaspy
         run:  docker compose run schemaspy
@@ -79,37 +67,16 @@ jobs:
           if-no-files-found: error
 
       - name: Zip datamodel dumps
-        run: |
-          if [ -z "${{ matrix.extension }}" ]; then
-            zip -r datamodel-dumps.zip datamodel/artifacts
-          else
-           zip -r datamodel-dumps_${{ matrix.extension }}.zip datamodel/artifacts
-          fi
-          
+        run: zip -r datamodel-dumps.zip datamodel/artifacts
 
       - name: Zip schemaspy output
-        run: |
-          if [ -z "${{ matrix.extension }}" ]; then
-            zip -r datamodel-schemaspy.zip datamodel/schemaspy
-          else
-           zip -r datamodel-schemaspy_${{ matrix.extension }}.zip datamodel/schemaspy
-          fi
+        run: zip -r datamodel-schemaspy.zip datamodel/schemaspy
 
       - name: Upload datamodel dumps as GitHub Release asset
         if: ${{ inputs.release_tag != '' }}
         run: |
-          if [ -z "${{ matrix.extension }}" ]; then
-            gh release upload "${{ inputs.release_tag }}" datamodel-dumps.zip#oqtopus.datamodel --repo "$GITHUB_REPOSITORY"
-            gh release upload "${{ inputs.release_tag }}" datamodel-schemaspy.zip --repo "$GITHUB_REPOSITORY"
-          else
-            gh release upload "${{ inputs.release_tag }}" datamodel-dumps_${{ matrix.extension }}.zip#oqtopus.datamodel --repo "$GITHUB_REPOSITORY"
-            gh release upload "${{ inputs.release_tag }}" datamodel-schemaspy_${{ matrix.extension }}.zip --repo "$GITHUB_REPOSITORY"
-          fi
-
+          gh release upload "${{ inputs.release_tag }}" datamodel-dumps.zip#oqtopus.datamodel --repo "$GITHUB_REPOSITORY"
+          gh release upload "${{ inputs.release_tag }}" datamodel-schemaspy.zip --repo "$GITHUB_REPOSITORY"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ github.ref_name }}
-
-      - name: Set output flag for docs-builder
-        id: set-output
-        run: echo "run-docs=${{ matrix.extension == '' }}" >> $GITHUB_OUTPUT
