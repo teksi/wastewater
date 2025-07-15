@@ -341,7 +341,7 @@ Running modification {modification.get('id')}
     def run_sql_files_in_folder(self, directory: str):
         files = os.listdir(directory)
         files.sort()
-        sql_vars = self.parse_variables(sql_vars)
+        sql_vars = self.parse_variables(self.variables_sql)
         for file in files:
             filename = os.fsdecode(file)
             if filename.lower().endswith(".sql"):
