@@ -2,6 +2,7 @@ DO
 $DO$
 DECLARE
 	rel_record record;
+	is_table boolean;
 BEGIN
 	FOR rel_record  in
 		SELECT
