@@ -20,7 +20,7 @@ BEGIN
             -- Do something for tables
         ELSE
             EXECUTE
-				FORMAT( 'SELECT tww_app.audit_view(''%I.%I'', true, ''{}''::text[], ''{%I}''::text[])'
+				FORMAT( 'SELECT tww_app.audit_view(''%I.%I'', true, ''{{}}''::text[], ''{{%I}}''::text[])'
 				, rel_record.schm
 				, rel_record.rel
 				, rel_record.uid_column);
