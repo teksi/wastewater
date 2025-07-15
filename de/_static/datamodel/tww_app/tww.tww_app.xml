@@ -2785,12 +2785,12 @@ Example:
             <parameter mode="IN" name="base36_str" type="text"/>
          </parameters>
       </routine>
-      <routine dataAccess="MODIFIES" deterministic="false" name="check_all_nulls(rec record, prefix character varying, ignored_postfix text[] DEFAULT ARRAY['obj_id'::text, 'identifier'::text])" returnType="boolean" securityType="INVOKER" type="FUNCTION">
+      <routine dataAccess="MODIFIES" deterministic="false" name="check_all_nulls(jason jsonb, prefix_ character varying, ignored_postfix text[] DEFAULT ARRAY['obj_id'::text, 'identifier'::text])" returnType="boolean" securityType="INVOKER" type="FUNCTION">
          <comment/>
          <definition language="plpgsql"><![CDATA[Redacted, use --include-routine-definition]]></definition>
          <parameters>
-            <parameter mode="IN" name="rec" type="record"/>
-            <parameter mode="IN" name="prefix" type="character varying"/>
+            <parameter mode="IN" name="jason" type="jsonb"/>
+            <parameter mode="IN" name="prefix_" type="character varying"/>
             <parameter mode="IN" name="ignored_postfix" type="text[]"/>
          </parameters>
       </routine>

@@ -73,7 +73,7 @@
             <div class="content-wrapper">
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
-                    <h1>check_all_nulls(rec record, prefix character varying, ignored_postfix text[] DEFAULT ARRAY[&#39;obj_id&#39;::text, &#39;identifier&#39;::text])</h1><br />
+                    <h1>check_all_nulls(jason jsonb, prefix_ character varying, ignored_postfix text[] DEFAULT ARRAY[&#39;obj_id&#39;::text, &#39;identifier&#39;::text])</h1><br />
                 </section>
                 <!-- Main content -->
                 <section class="content">
@@ -97,12 +97,12 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td>rec</td>
-                                    <td>record</td>
+                                    <td>jason</td>
+                                    <td>jsonb</td>
                                     <td>IN</td>
                                 </tr>
                                 <tr>
-                                    <td>prefix</td>
+                                    <td>prefix_</td>
                                     <td>character varying</td>
                                     <td>IN</td>
                                 </tr>
