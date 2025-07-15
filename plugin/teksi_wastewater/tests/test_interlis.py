@@ -273,10 +273,18 @@ class TestInterlis(unittest.TestCase):
         interlisImporterExporter = InterlisImporterExporter()
         interlisImporterExporter.interlis_import(xtf_file_input=xtf_file_input)
 
-        # Import minimal dss
+        # Import testdataset dss
         xtf_file_input = self._get_data_filename(TEST_DATASET_DSS)
         interlisImporterExporter = InterlisImporterExporter()
         interlisImporterExporter.interlis_import(xtf_file_input=xtf_file_input)
+
+        # new location for this check
+        # check if urgency_figure is imported
+        result = DatabaseUtils.fetchone(
+            "SELECT urgency_figure FROM tww_od.wastewater_structure WHERE obj_id='ch080qwzVE000019';"
+        )
+        self.assertIsNotNone(result)
+        self.assertEqual(result[0], 50)
 
         # Export minimal dss
         export_xtf_file = self._get_output_filename("export_minimal_dss_dataset.xtf")
