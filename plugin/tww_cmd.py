@@ -75,6 +75,7 @@ class TeksiWastewaterCmd:
             default=config.MODEL_NAME_DSS,
             choices=[
                 config.MODEL_NAME_SIA405_ABWASSER,
+                config.MODEL_NAME_SIA405_BASE_ABWASSER,
                 config.MODEL_NAME_DSS,
                 config.MODEL_NAME_VSA_KEK,
                 config.MODEL_NAME_AG96,
