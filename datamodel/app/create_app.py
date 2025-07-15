@@ -109,6 +109,9 @@ Running modification {modification.get('id')}
                 self.load_modification(
                     modification=modification,
                 )
+        for entry in self.parameters.get("modification_repositories"):
+            if entry.get("reset_vl", False):
+                self.manage_vl(entry)
 
         # Defaults and Triggers
         # Has to be fired before view creation otherwise it won't work and will only fail in CI
@@ -254,7 +257,7 @@ Running modification {modification.get('id')}
         """
         initializes the TWW app schema for usage of a modification
         Args:
-            modification_config: Name of the modification configuration set
+            modification_config: modification configuration set
         """
 
         # load definitions from config
@@ -291,6 +294,28 @@ Running modification {modification.get('id')}
                 else:
                     self.multiple_inherintances[key] = curr_dir / value
 
+    def manage_vl(self, config: set = None,):
+        """
+        manages activation/deactivation of tww value list of a modification
+        Args:
+            config:  configuration set
+        """
+
+        # load definitions from config
+        template_path = config.get("template", None)
+        is_active = config.get("active", False)
+        sql_vars ={'activate': {'value': is_active , 'type': 'literal'}}
+        sql_vars= self.parse_variables(sql_vars)
+        if template_path:
+            curr_dir = os.path.dirname(template_path)
+            config = self.load_yaml(template_path)
+        else:
+            curr_dir = ""
+
+        for sql_file in config.get("reset_vl_files", None):
+            file_name = curr_dir / sql_file.get("file")
+            self.run_sql_file(file_name, sql_vars)
+
     def run_sql_file(self, file_path: str, variables: dict = None):
         with open(file_path) as f:
             sql = f.read()
@@ -313,7 +338,7 @@ Running modification {modification.get('id')}
     def run_sql_files_in_folder(self, directory: str):
         files = os.listdir(directory)
         files.sort()
-        sql_vars = self.parse_variables(self.variables_sql)
+        sql_vars = self.parse_variables(sql_vars)
         for file in files:
             filename = os.fsdecode(file)
             if filename.lower().endswith(".sql"):
