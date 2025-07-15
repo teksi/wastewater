@@ -17,4 +17,3 @@ extra_definitions:
   vw_tww_wastewater_structure: extra_definitions/vw_tww_wastewater_structure.yaml
   vw_tww_overflow: extra_definitions/vw_tww_overflow.yaml
   vw_wastewater_structure: extra_definitions/vw_wastewater_structure.yaml
-

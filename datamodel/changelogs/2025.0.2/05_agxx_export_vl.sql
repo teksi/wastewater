@@ -35,8 +35,8 @@ INSERT INTO tww_vl.catchment_area_drainage_system_current_export_rel_agxx (code,
 (9068,'unbekannt')
 ON CONFLICT (code) DO UPDATE SET
   value_de = EXCLUDED.value_de;
-  
-  
+
+
 CREATE TABLE IF NOT EXISTS tww_vl.manhole_function_export_rel_agxx
 (CONSTRAINT pkey_manhole_function_export_rel_agxx_code PRIMARY KEY (code))
 INHERITS (tww_vl.value_list_agxx_export_rel_base)
@@ -187,5 +187,3 @@ INSERT INTO tww_vl.building_group_function_export_rel_agxx (code,value_de) VALUE
 (4819,'Wohnhaus')
 ON CONFLICT (code) DO UPDATE SET
   value_de = EXCLUDED.value_de;
-
-
