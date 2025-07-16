@@ -277,21 +277,15 @@ Running modification {modification.get('id')}
 
         if template_path:
             for key, value in modification_config.get("extra_definitions", {}).items():
-                if self.extra_definitions[key]:
-                    self.extra_definitions[key].update(curr_dir / value)
-                else:
+                if not self.extra_definitions[key]:
                     self.extra_definitions[key] = curr_dir / value
 
             for key, value in modification_config.get("simple_joins_yaml", {}).items():
-                if self.simple_joins_yaml[key]:
-                    self.simple_joins_yaml[key].update(curr_dir / value)
-                else:
+                if not self.simple_joins_yaml[key]:
                     self.simple_joins_yaml[key] = curr_dir / value
 
             for key, value in modification_config.get("multiple_inherintances", {}).items():
                 if self.multiple_inherintances[key]:
-                    self.multiple_inherintances[key].update(curr_dir / value)
-                else:
                     self.multiple_inherintances[key] = curr_dir / value
 
     def manage_vl(

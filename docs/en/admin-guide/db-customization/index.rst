@@ -3,6 +3,8 @@ Customization of the data model
 
 This chapter describes the possible customization to the data model.
 
+Alterations to ordinary data
+---------------
 
 Introduction
 ^^^^^^^^^^^^^
@@ -26,7 +28,7 @@ Symbology and labelling behaviour depends on the value lists `` tww_vl.channel_u
 
 For labelling, one can use the column `` tww_vl.channel_function_hierarchic.tww_use_in_labels`` to define which functions_hierarchic are taken into account when creating a wastewater structure's label.
 
-create custom tables
+Creation of custom tables
 ^^^^^^^^^^^^^
 
 It is possible to add custom tables with ordinary data. They must be stored in ``tww_od``. In order to version them, use the Postgres Updates Manager (aka `PUM <https://github.com/opengisch/pum>`_).
@@ -34,7 +36,7 @@ It is possible to add custom tables with ordinary data. They must be stored in `
 Adding fields to base tables
 ^^^^^^^^^^^^^
 
-Instead of adding additional fields to base tables, it is advised to create a new table with a foreign key linking it to the base table using the extension framework.
+Instead of adding additional fields to base tables, it is advised to create a new table with a foreign key linking it to the base table using `PUM <https://github.com/opengisch/pum>`_.
 
 Datamodel updates
 ^^^^^^^^^^^^
@@ -54,97 +56,89 @@ If one wants to have these views automatically updated when fields are added the
 If it is necessary to add custom fields, create a separate table with a foreign key pointing to the TEKSI base table and join it to the base views.
 
 
-Extension Framework for application schema
+Modification Framework for application schema
 ---------------
 
-In order to add extensions to TEKSI in a standardised way, TEKSI wastewater set into place an extension framework.
+In order to add app modifications to TEKSI in a standardised way, TEKSI wastewater set into place an modification framework.
 
-There are two types of extensions:
+There are two types of modification:
 
-* Official TEKSI Wastewater extensions
-* custom extensions
+* Official TEKSI Wastewater modification
+* custom modification
 
-The extension framework allows the following actions:
+The modification framework allows the following actions:
 
 * Adding additional views using sql
 * Adding additional triggers using sql
-* Adding additional items to value lists
+* Activating/deactivating value list items
 * Joining additional tables to views
 
-.. attention:: The extension framework is not intended for alterations on the schema ``tww_od``. Use PUM functionalities instead
+.. attention:: The modification framework is not intended for alterations on the schema ``tww_od``. Use PUM functionalities instead
 
-Creation of custom extensions
+Creation and loading of modifications
 ^^^^^^^^^^^^^
-A custom extension consists of a config file and a folder:
+All modification parameters are handles in a yaml that is passed to PUM `documentation <https://github.com/opengisch/pum>`_ on update.
+The the default yaml is 
 
-Assuming we want to create an extension ``myfoo``, we first have to create its folder structure:
+.. literalinclude:: ../../../../datamodel/app/app_modification.template.yaml
+  :language: YAML
 
-
-- extensions/
-  - custom_config.yaml
-  - foo/
-    - ...
+The yaml handles the following parameters:
 
 
-Next, we need to define the extension's variables. This is done in a yaml file ``custom_config.yaml`` that contains:
+Base Configurations
+"""""""""""""""""""
 
-  * an extension id that is used to access the extension
-  * a directory name in which all extension data lies
-  * a ``variables`` dictionary that passes variables to our sql scripts
+Base Configurations handle variables that are handled over the entire project. Those parameters are exposed in TMMT as well, but when passing a yaml definition, they are overridden
+
+.. list-table:: Base Configurations
+   :widths: 25 75
+   :header-rows: 1
+
+   * - Parameter
+     - Description
+   * - ``lang_code``
+     - Specifies the language code used for web-optimised views. Expected value is a language code string. Defaults to "en".
+   * - ``SRID``
+     - Specifies the Spatial Reference System Identifier. Expected value is an integer representing the SRID,  Defaults to 2056.
+
+Extra Definitions
+"""""""""""""""""
+
+Extra definitions allow adding additional fields to custom views. 
+The parameter defines the path to the corresponding yaml definition.
+The yaml is structured as follows: 
 
 .. code:: YAML
 
-	extensions:
-    - id: myfoo
-      directory: foo
-      variables:
-        myVariable:
-          value: "Hello World"
-          type: literal
-        myNumber:
-          value: 0
-          type: literal
+    joins:
+      my_extra_join:
+        table: tww_od.my_table
+        alias: mt
+        prefix: mt_
+        skip_columns:
+          - field_1
+          - field_2
+        remap_columns_select:
+          field_3: my_renamed_field
+        remap_columns:
+          field_3: my_renamed_field
+        join_on: mt.fk_ws = ws.obj_id
+		read_only: false
 
-.. attention:: If one wants to add multiple custom extensions at once, one need one ``custom_config.yaml`` with multiple entries and one folder per extension
-
-After adding an entry for your extension, it can be accessed in deployment. Inside the folder defined in the ``directory`` variable, there can be two types of files:
-
-* sql scripts
-* yaml files
-
-Sql scripts are run after parsing the variables defined in ``variables``, while the yaml files are used to override or extend view definitions.
-
-Limitations for sql scripts
-^^^^^^^^^^^^^
-
-The sql scripts are used for the following purposes:
-
-* Adding additional views to the application schema
-* Adding additional ``INSTEAD OF`` triggers to the application schema
-* Adding additional triggers to populate od tables that are not part of the VSA-DSS datamodel
-* Adding additional items to value lists
-
-Note that the sql must not be used to create new tables in ``tww_od``. Use `PUM <https://github.com/opengisch/pum>`_ for these cases.
-
-Please note that these scripts are re-run on every datamodel update.
-They must therefore be written in such a way that existing data does not interfere with them (i.e. using ``CREATE OR REPLACE VIEW`` or ``ON CONFLICT DO NOTHING``).
+``table`` and ``join_on`` are mandatory keys, all the others are optional.
+``read_only`` defaults to true. ``remap_columns`` is used on insert and update, ``remap_columns_select`` on Select.
+Entries that are in ``skip_columns`` but listed in ``remap_columns`` are not skipped on insert and update.
+It is expected that mt.fk_ws has a ON DELETE CASCADE`` foreign key constraint.
 
 
-Joining additional tables to views
-^^^^^^^^^^^^^
+Multiple Inheritances
+"""""""""""""""""""""
 
-There are three types of views with which one can interact using the extension framework:
+Multiple Inheritances are used to aggregate all subtypes of a superclass into one view. 
+The parameter defines the path to the corresponding yaml definition.
+The yaml is structured as follows: 
 
-* pirogue MultipleInheritance views
-* pirogue SimpleJoins
-* TEKSI main views
-
-Overriding yaml view definitions
-""""""""""""""""""""""""""""""""
-There two types of views that are defined over a yaml definition: MultipleInheritances and SimpleJoins.
-The views currently defined in this way are found in the `multipleinheritance <https://github.com/teksi/wastewater/tree/main/datamodel/app/view/multipleinheritance>`_ and `simplejoins <https://github.com/teksi/wastewater/tree/main/datamodel/app/view/simplejoins>`_ folder.
-
-For overriding the definition of a MultipleInheritance such as ``tww_app.vw_tww_overflow``, here is an example file ``tww_overflow.yaml``:
 
 .. code:: YAML
 
@@ -172,7 +166,13 @@ For overriding the definition of a MultipleInheritance such as ``tww_app.vw_tww_
 	  pump:
 		table: tww_od.pump
 
-A SimpleJoin definition looks like this
+
+Simple Joins YAML
+"""""""""""""""""
+
+The Simple Join YAML allows altering the path from which the join definition is loaded. 
+The parameter defines the path to the corresponding yaml definition.
+The yaml is structured as follows:
 
 .. code:: YAML
 
@@ -189,66 +189,53 @@ A SimpleJoin definition looks like this
 	[...]
 
 
-Extending main views
-""""""""""""""""""""
+Modification Repositories
+"""""""""""""""""""""""""
 
-It is possible to join additional tables to the main views ( i.e. ``vw_tww_wastewater_structure`` and ``vw_tww_reach``).
-This is done by using a YAML definition file for each view and defining a list of joined tables.
-Note that fields of these tables will be joined as editable fields.
-For joining a table to ``tww_app.vw_tww_wastewater_structure``, here is an example:
+.. list-table:: Modification Repositories
+   :widths: 25 75
+   :header-rows: 1
 
-.. code:: YAML
+   * - Parameter
+     - Description
+   * - ``id``
+     - Unique identifier for the modification repository.
+   * - ``active``
+     - Boolean indicating if the modification repository should be activated.
+   * - ``reset_vl``
+     - Boolean indicating if the value list entries treated by reset_vl_files should be reset.
+   * - ``template``
+     - Path to the template configuration file.
+   * - ``variables``
+     - Dictionary of variables with their values and types. Overridden by ``template``
+   * - ``sql_files``
+     - List of SQL files to be executed. Overridden by ``template``
+   * - ``reset_vl_files``
+     - List of SQL files for activating/deactivating value list entries. Activates/deactivates based on the ``active`` setting. Overridden by ``template``
 
-    joins:
-      my_extra_join:
-        table: tww_od.my_table
-        alias: mt
-        prefix: mt_
-        skip_columns:
-          - field_1
-          - field_2
-        remap_columns_select:
-          field_3: my_renamed_field
-        remap_columns:
-          field_3: my_renamed_field
-        join_on: mt.fk_ws = ws.obj_id
-		read_only: false
+Modification Repository Templates
+"""""""""""""""""""""""""
 
-``table`` and ``join_on`` are mandatory keys, all the others are optional.
-``read_only`` defaults to true. ``remap_columns`` is used on insert and update.
-Entries that are in ``skip_columns`` but listed in ``remap_columns`` are not skipped on insert and update.
-It is expected that mt.fk_ws has a ON DELETE CASCADE`` foreign key constraint.
-The yaml file needs to be called ``vw_tww_wastewater_structure.yaml``.
+A modification repository template allows to predefine the values of the following repository flags:
 
-Deployment of extensions
+* ``variables``
+* ``sql_files``
+* ``reset_vl_files``
+
+Additionally, it allows setting values for Extra Definitions, MultipleInheritances and SimpleJoin YAML if the app_modification yaml does not define a value. 
+
+
+Limitations for sql scripts
 ^^^^^^^^^^^^^
 
-A custom extension can be loaded by first zipping it:
+The sql scripts must only be used for the following purposes:
 
-.. code-block::
+* Adding additional views to the application schema
+* Adding additional ``INSTEAD OF`` triggers to the application schema
+* Adding additional triggers to populate od tables that are not part of the VSA-DSS datamodel
+* Activating/deactivating items to value lists
 
-   path_to_myfoo.zip
-   ├── foo/
-   │   └── (contents of foo)
-   └── custom_config.yaml
+Note that the sql must not be used to create new tables in ``tww_od``. Use `PUM <https://github.com/opengisch/pum>`_ for these cases.
 
-Then, the extension can be loaded using
-
-``python -m app.create_app.py --pg_service pg_tww --drop-schema --srid 2056 --extension_zip path_to_myfoo.zip``
-
-Or, when adding on top of an official extension:
-
-``python -m app.create_app.py --pg_service pg_tww --drop-schema --srid 2056 --extension_agxx --extension_zip path_to_myfoo.zip``
-
-On creation of the application schema, the order of creation of objects is as follows:
-
-* TWW functions
-* official extensions
-* custom extensions
-* Single Inheritances
-* Multiple inheritances (can be overridden by extension yaml)
-* Main views (can be extended by extension yaml)
-* Simple join views (can be overridden by extension yaml)
-* TWW sql scripts
-* default values and triggers relating to app functions
-* post-all sql scripts
+Please note that these scripts are re-run on every datamodel update.
+They must therefore be written in such a way that existing data does not interfere with them (i.e. using ``CREATE OR REPLACE VIEW`` or ``ON CONFLICT DO NOTHING``).
