@@ -162,7 +162,7 @@ Extra organisations could be for example bigger private organisations that are u
 .. figure::  organisation_tww_local_extension.jpg
 
 
- 
+
 
 .. _interlis_import:
 
