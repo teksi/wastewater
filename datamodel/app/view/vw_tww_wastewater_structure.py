@@ -6,9 +6,16 @@ import argparse
 import os
 
 import psycopg
-from pirogue.utils import insert_command, select_columns, table_parts, update_command
+from pirogue.utils import insert_command, select_columns, update_command
 from pum.exceptions import PumHookError
 from yaml import safe_load
+
+from .utils.extra_definition_utils import (
+    extra_cols,
+    extra_joins,
+    insert_extra,
+    update_extra,
+)
 
 
 def vw_tww_wastewater_structure(
@@ -18,7 +25,7 @@ def vw_tww_wastewater_structure(
     Creates tww_wastewater_structure view
     :param connection: a psycopg connection object
     :param srid: EPSG code for geometries
-    :param extra_definition: a dictionary for additional read-only columns
+    :param extra_definition: a dictionary for additional columns
     """
     extra_definition = extra_definition or {}
 
@@ -92,20 +99,10 @@ def vw_tww_wastewater_structure(
         AND '-2'=ALL(ARRAY[ch.obj_id,dt.obj_id,sm.obj_id,wt.obj_id]) IS NULL;
 
     """.format(
-        extra_cols="\n    ".join(
-            [
-                select_columns(
-                    connection=connection,
-                    table_schema=table_parts(table_def["table"])[0],
-                    table_name=table_parts(table_def["table"])[1],
-                    skip_columns=table_def.get("skip_columns", []),
-                    remap_columns=table_def.get("remap_columns", {}),
-                    prefix=table_def.get("prefix", None),
-                    table_alias=table_def.get("alias", None),
-                )
-                + ","
-                for table_def in extra_definition.get("joins", {}).values()
-            ]
+        extra_cols=(
+            ""
+            if not extra_definition
+            else extra_cols(connection=connection, extra_definition=extra_definition)
         ),
         ws_cols=select_columns(
             connection=connection,
@@ -212,18 +209,8 @@ def vw_tww_wastewater_structure(
             prefix="wn_",
             remap_columns={},
         ),
-        extra_joins="\n    ".join(
-            [
-                "LEFT JOIN {tbl} {alias} ON {jon}".format(
-                    tbl=table_def["table"],
-                    alias=table_def.get("alias", ""),
-                    jon=table_def["join_on"],
-                )
-                for table_def in extra_definition.get("joins", {}).values()
-            ]
-        ),
+        extra_joins=extra_joins(connection=connection, extra_definition=extra_definition),
     )
-
     view_sql = psycopg.sql.SQL(view_sql).format(srid=psycopg.sql.Literal(srid))
 
     try:
@@ -280,6 +267,8 @@ def vw_tww_wastewater_structure(
       fk_main_wastewater_node = NEW.wn_obj_id
       WHERE obj_id = NEW.obj_id;
 
+
+      {insert_extra}
       RETURN NEW;
     END; $BODY$ LANGUAGE plpgsql VOLATILE;
 
@@ -393,6 +382,7 @@ def vw_tww_wastewater_structure(
             },
             returning="obj_id INTO NEW.co_obj_id",
         ),
+        insert_extra=insert_extra(connection=connection, extra_definition=extra_definition),
     )
 
     trigger_insert_sql = psycopg.sql.SQL(trigger_insert_sql).format(srid=psycopg.sql.Literal(srid))
@@ -420,6 +410,7 @@ def vw_tww_wastewater_structure(
       {update_ws}
       {update_wn}
       {update_ne}
+      {update_extra}
 
       IF OLD.ws_type <> NEW.ws_type THEN
         CASE WHEN OLD.ws_type <> 'unknown' THEN
@@ -660,6 +651,7 @@ def vw_tww_wastewater_structure(
             indent=6,
             skip_columns=[],
         ),
+        update_extra=update_extra(connection=connection, extra_definition=extra_definition),
         insert_vw_cover=insert_command(
             connection=connection,
             table_schema="tww_app",
@@ -728,7 +720,10 @@ if __name__ == "__main__":
     args = parser.parse_args()
     srid = psycopg.sql.Literal(args.srid or os.getenv("SRID"))
     pg_service = args.pg_service or os.getenv("PGSERVICE")
-    extra_definition = safe_load(open(args.extra_definition)) if args.extra_definition else {}
+    extra_definition = {}
+    if args.extra_definition:
+        with open(args.extra_definition) as f:
+            extra_definition = safe_load(f)
     with psycopg.connect(f"service={pg_service}") as conn:
         vw_tww_wastewater_structure(
             connection=conn,

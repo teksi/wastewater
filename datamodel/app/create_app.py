@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
-
+import logging
+import os
+import re
 from argparse import ArgumentParser, BooleanOptionalAction
 from pathlib import Path
 
 import psycopg
+import yaml
 from pirogue import MultipleInheritance, SimpleJoins, SingleInheritance
 from pum import HookBase
 from triggers.set_defaults_and_triggers import set_defaults_and_triggers
@@ -12,10 +15,12 @@ from view.vw_tww_channel import vw_tww_channel
 from view.vw_tww_damage_channel import vw_tww_damage_channel
 from view.vw_tww_infiltration_installation import vw_tww_infiltration_installation
 from view.vw_tww_measurement_series import vw_tww_measurement_series
+from view.vw_tww_overflow import vw_tww_overflow
 from view.vw_tww_reach import vw_tww_reach
 from view.vw_tww_wastewater_structure import vw_tww_wastewater_structure
 from view.vw_wastewater_structure import vw_wastewater_structure
-from yaml import safe_load
+
+logger = logging.getLogger(__name__)
 
 
 class Hook(HookBase):
@@ -23,210 +28,343 @@ class Hook(HookBase):
         self,
         connection: psycopg.Connection,
         SRID: int = 2056,
-        tww_reach_extra: Path | None = None,
-        tww_wastewater_structure_extra: Path | None = None,
-        tww_ii_extra: Path | None = None,
-        wastewater_structure_extra: Path | None = None,
-        tww_channel_extra: Path | None = None,
+        modification_agxx: bool = False,
+        modification_ci: bool = False,
+        lang_code: str = "en",
+        modification_yaml: Path = None,
     ):
         """
         Creates the schema tww_app for TEKSI Wastewater & GEP
-        :param SRID: the EPSG code for geometry columns
-        :param tww_reach_extra: YAML file path of the definition of additional columns for vw_tww_reach view
-        :param tww_wastewater_structure_extra: YAML file path of the definition of additional columns for vw_tww_wastewater_structure_extra view
-        :param tww_ii_extra: YAML file path of the definition of additional columns for vw_tww_infiltration_installation_extra view
-        :param wastewater_structure_extra: YAML file path of the definition of additional columns for vw_wastewater_structure_extra view
-        :param tww_channel_extra: YAML file path of the definition of additional columns for vw_tww_channel_extra view
+        :param SRID: the EPSG code for geometry columns. Overridden by modification_yaml
+        :param modification_agxx: bool of whether to load agxx modification. Overridden by modification_yaml
+        :param modification_ci: bool of whether to load ci modification. Overridden by modification_yaml
+        :param lang_code: language code for use in modification views. Overridden by modification_yaml
+        :param modification_yaml: Path of yaml containing app parametrisation
         """
-        cwd = Path(__file__).parent.resolve()
+        self.cwd = Path(__file__).parent.resolve()
+        self.connection = connection
 
-        variables = {
+        if modification_yaml:
+            self.parameters = self.load_yaml(modification_yaml)
+            SRID = self.parameters["base_configurations"][0].get("SRID", 2056)
+            lang_code = self.parameters["base_configurations"][0].get("lang_code", "en")
+        else:
+            self.parameters = self.load_yaml(self.cwd / "app_modification.template.yaml")
+            if "modification_repositories" in self.parameters:
+                for entry in self.parameters["modification_repositories"]:
+                    if modification_ci and entry[id] == "ci":
+                        entry["active"] = True
+                    if modification_agxx and entry[id] == "agxx":
+                        entry["active"] = True
+
+        abspath = self.cwd if not modification_yaml else ""
+
+        variables_pirogue = {
             "SRID": psycopg.sql.SQL(f"{SRID}")
         }  # when dropping psycopg2 support, we can use the SRID var directly
-
-        self.execute("CREATE SCHEMA tww_app;")
-        self.execute(cwd / "functions/oid_functions.sql")
-        self.execute(cwd / "functions/modification_functions.sql")
-        self.execute(cwd / "functions/symbology_functions.sql")
-        self.execute(cwd / "functions/reach_direction_change.sql")
-        self.execute(cwd / "functions/geometry_functions.sql")
-        self.execute(cwd / "functions/update_catchment_area_totals.sql")
-        self.execute(cwd / "functions/organisation_functions.sql")
-        self.execute(cwd / "functions/meta_functions.sql")
-        self.execute(cwd / "functions/network_functions.sql")
-
-        # open YAML files
-        if tww_reach_extra:
-            tww_reach_extra = safe_load(open(tww_reach_extra))
-        if tww_wastewater_structure_extra:
-            tww_wastewater_structure_extra = safe_load(open(tww_wastewater_structure_extra))
-        if wastewater_structure_extra:
-            wastewater_structure_extra = safe_load(open(wastewater_structure_extra))
-
-        self.execute(cwd / "view/vw_dictionary_value_list.sql")
-
-        defaults = {"view_schema": "tww_app"}
-
-        SingleInheritances = {
-            # structure parts
-            "access_aid": "structure_part",
-            "benching": "structure_part",
-            "backflow_prevention": "structure_part",
-            "dryweather_downspout": "structure_part",
-            "cover": "structure_part",
-            "dryweather_flume": "structure_part",
-            "tank_emptying": "structure_part",
-            "tank_cleaning": "structure_part",
-            "electric_equipment": "structure_part",
-            "electromechanical_equipment": "structure_part",
-            "solids_retention": "structure_part",
-            "flushing_nozzle": "structure_part",
-            # wastewater structures
-            "channel": "wastewater_structure",
-            "manhole": "wastewater_structure",
-            "special_structure": "wastewater_structure",
-            "infiltration_installation": "wastewater_structure",
-            "discharge_point": "wastewater_structure",
-            "wwtp_structure": "wastewater_structure",
-            "drainless_toilet": "wastewater_structure",
-            "small_treatment_plant": "wastewater_structure",
-            # wastewater_networkelement
-            "wastewater_node": "wastewater_networkelement",
-            "reach": "wastewater_networkelement",
-            # connection_object
-            "building": "connection_object",
-            "reservoir": "connection_object",
-            "individual_surface": "connection_object",
-            "fountain": "connection_object",
-            # surface_runoff_parameters
-            "param_ca_general": "surface_runoff_parameters",
-            "param_ca_mouse1": "surface_runoff_parameters",
-            # overflow
-            "leapingweir": "overflow",
-            "prank_weir": "overflow",
-            "pump": "overflow",
-            # maintenance_event
-            "bio_ecol_assessment": "maintenance_event",
-            "examination": "maintenance_event",
-            "maintenance": "maintenance_event",
-            # zone
-            "infiltration_zone": "zone",
-            "drainage_system": "zone",
+        self.variables_sql = {
+            "SRID": {
+                "value": f"{SRID}",
+                "type": "number",
+            },
+            "value_lang": {
+                "value": f"value_{lang_code}",
+                "type": "identifier",
+            },
+            "abbr_lang": {
+                "value": f"abbr_{lang_code}",
+                "type": "identifier",
+            },
+            "description_lang": {
+                "value": f"description_{lang_code}",
+                "type": "identifier",
+            },
+            "display_lang": {
+                "value": f"display_{lang_code}",
+                "type": "identifier",
+            },
         }
+        self.execute("CREATE SCHEMA tww_app;")
+        self.run_sql_files_in_folder(self.cwd / "sql_functions")
+        self.app_modifications = [
+            entry
+            for entry in self.parameters.get("modification_repositories")
+            if entry.get("active")
+        ]
+
+        self.extra_definitions = self.parameters.get("extra_definitions")
+        self.simple_joins_yaml = self.parameters.get("simple_joins_yaml")
+        self.multiple_inherintances = self.parameters.get("multiple_inherintances")
+
+        self.single_inherintances = self.load_yaml(self.cwd / "single_inherintances.yaml")
+
+        if self.app_modifications:
+            for modification in self.app_modifications:
+                logger.info(
+                    f"""*****
+Running modification {modification.get('id')}
+****
+                """
+                )
+                self.load_modification(
+                    modification=modification,
+                )
+        for entry in self.parameters.get("modification_repositories"):
+            if entry.get("reset_vl", False):
+                self.manage_vl(entry)
 
         # Defaults and Triggers
         # Has to be fired before view creation otherwise it won't work and will only fail in CI
-        set_defaults_and_triggers(connection, SingleInheritances)
+        set_defaults_and_triggers(self.connection, self.single_inherintances)
 
-        for key in SingleInheritances:
+        for key in self.single_inherintances:
+            logger.info(f"creating view vw_{key}")
             SingleInheritance(
-                connection=connection,
-                parent_table="tww_od." + SingleInheritances[key],
+                connection=self.connection,
+                parent_table="tww_od." + self.single_inherintances[key],
                 child_table="tww_od." + key,
                 view_name="vw_" + key,
+                view_schema="tww_app",
                 pkey_default_value=True,
                 inner_defaults={"identifier": "obj_id"},
-                **defaults,
             ).create()
 
-        MultipleInheritance(
-            connection=connection,
-            definition=safe_load(open(cwd / "view/vw_maintenance_event.yaml")),
-            drop=True,
-        ).create()
+        for key in self.multiple_inherintances:
+            MultipleInheritance(
+                connection=self.connection,
+                definition=self.load_yaml(abspath / self.multiple_inherintances[key]),
+                drop=True,
+                variables=variables_pirogue,
+            ).create()
 
-        MultipleInheritance(
-            connection=connection,
-            definition=safe_load(open(cwd / "view/vw_damage.yaml")),
-            drop=True,
-        ).create()
+        for key, value in self.extra_definitions.items():
+            if value:
+                self.extra_definitions[key].update(abspath / value)
 
-        vw_wastewater_structure(connection=connection, extra_definition=wastewater_structure_extra)
+        vw_wastewater_structure(
+            connection=self.connection,
+            extra_definition=(
+                self.load_yaml(self.extra_definitions["vw_wastewater_structure"])
+                if self.extra_definitions["vw_wastewater_structure"]
+                else {}
+            ),
+        )
         vw_tww_wastewater_structure(
-            connection=connection, srid=SRID, extra_definition=tww_wastewater_structure_extra
+            connection=self.connection,
+            srid=SRID,
+            extra_definition=(
+                self.load_yaml(self.extra_definitions["vw_tww_wastewater_structure"])
+                if self.extra_definitions["vw_tww_wastewater_structure"]
+                else {}
+            ),
         )
         vw_tww_infiltration_installation(
-            connection=connection, srid=SRID, extra_definition=tww_ii_extra
+            connection=self.connection,
+            srid=SRID,
+            extra_definition=(
+                self.load_yaml(self.extra_definitions["vw_tww_infiltration_installation"])
+                if self.extra_definitions["vw_tww_infiltration_installation"]
+                else {}
+            ),
         )
-        vw_tww_reach(connection=connection, extra_definition=tww_reach_extra)
-        vw_tww_channel(connection=connection, extra_definition=tww_channel_extra)
-        vw_tww_damage_channel(connection=connection)
-        vw_tww_additional_ws(srid=SRID, connection=connection)
-        vw_tww_measurement_series(connection=connection)
+        vw_tww_reach(
+            connection=self.connection,
+            extra_definition=(
+                self.load_yaml(self.extra_definitions["vw_tww_reach"])
+                if self.extra_definitions["vw_tww_reach"]
+                else {}
+            ),
+        )
+        vw_tww_channel(
+            connection=self.connection,
+            extra_definition=(
+                self.load_yaml(self.extra_definitions["vw_tww_channel"])
+                if self.extra_definitions["vw_tww_channel"]
+                else {}
+            ),
+        )
+        vw_tww_damage_channel(
+            connection=self.connection,
+            extra_definition=(
+                self.load_yaml(self.extra_definitions["vw_tww_damage_channel"])
+                if self.extra_definitions["vw_tww_damage_channel"]
+                else {}
+            ),
+        )
+        vw_tww_additional_ws(
+            srid=SRID,
+            connection=self.connection,
+            extra_definition=(
+                self.load_yaml(self.extra_definitions["vw_tww_additional_ws"])
+                if self.extra_definitions["vw_tww_additional_ws"]
+                else {}
+            ),
+        )
+        vw_tww_measurement_series(
+            connection=self.connection,
+            extra_definition=(
+                self.load_yaml(self.extra_definitions["vw_tww_measurement_series"])
+                if self.extra_definitions["vw_tww_measurement_series"]
+                else {}
+            ),
+        )
+        vw_tww_overflow(
+            connection=self.connection,
+            extra_definition=(
+                self.load_yaml(self.extra_definitions["vw_tww_overflow"])
+                if self.extra_definitions["vw_tww_overflow"]
+                else None
+            ),
+        )
 
-        self.execute(cwd / "view/vw_file.sql")
+        # TODO: Are these export views necessary? cymed 13.03.25
+        for _, yaml_path in self.simple_joins_yaml.items():
+            SimpleJoins(
+                definition=self.load_yaml(abspath / yaml_path), connection=self.connection
+            ).create()
 
-        MultipleInheritance(
-            definition=safe_load(open(cwd / "view/vw_oo_overflow.yaml")),
-            variables=variables,
-            connection=connection,
-            drop=True,
-        ).create()
+        sql_directories = [
+            "view/varia",
+            "view/catchment_area",
+            "view/gep_views",
+            "view/swmm_views",
+            "view/network",
+        ]
 
-        self.execute(cwd / "view/vw_change_points.sql")
-        self.execute(cwd / "view/vw_tww_import.sql")
+        for directory in sql_directories:
+            abs_dir = self.cwd / directory
+            self.run_sql_files_in_folder(abs_dir)
 
-        self.execute(cwd / "view/catchment_area/vw_catchment_area_connections.sql")
-        self.execute(cwd / "view/catchment_area/vw_catchment_area_additional.sql")
-        self.execute(cwd / "view/catchment_area/vw_catchment_area_rwc_connections.sql")
-        self.execute(cwd / "view/catchment_area/vw_catchment_area_wwc_connections.sql")
-        self.execute(cwd / "view/catchment_area/vw_catchment_area_rwp_connections.sql")
-        self.execute(cwd / "view/catchment_area/vw_catchment_area_wwp_connections.sql")
-        self.execute(cwd / "view/catchment_area/vw_catchment_area_totals_aggregated.sql")
+        # run post_all
+        self.run_sql_files_in_folder(self.cwd / "post_all")
 
-        # default values
-        self.execute(cwd / "view/set_default_value_for_views.sql")
+    @staticmethod
+    def load_yaml(file: Path) -> dict[str]:
+        """Safely loads a YAML file and ensures it returns a dictionary."""
+        file = Path(file)
+        if not file.exists():
+            raise FileNotFoundError(f"The file {file} does not exist.")
 
-        # Recreate GEP views
-        self.execute(cwd / "gep_views/vw_tww_catchment_area_totals.sql")
+        logger.info(f"loading yaml {file}")
+        with open(file) as f:
+            data = yaml.safe_load(f)
+            return data if isinstance(data, dict) else {}
 
-        # Recreate network views
-        self.execute(cwd / "view/network/vw_network_node.sql")
-        self.execute(cwd / "view/network/vw_network_segment.sql")
+    def load_modification(
+        self,
+        modification_config: set = None,
+    ):
+        """
+        initializes the TWW app schema for usage of a modification
+        Args:
+            modification_config: modification configuration set
+        """
 
-        # Recreate swmm views
-        # to do finish testing swmm views
-        self.execute(cwd / "swmm_views/02_vw_swmm_junctions.sql")
-        self.execute(cwd / "swmm_views/03_vw_swmm_aquifers.sql")
-        self.execute(cwd / "swmm_views/04_vw_swmm_conduits.sql")
-        self.execute(cwd / "swmm_views/05_vw_swmm_dividers.sql")
-        self.execute(cwd / "swmm_views/06_vw_swmm_landuses.sql")
-        self.execute(cwd / "swmm_views/07_vw_swmm_losses.sql")
-        self.execute(cwd / "swmm_views/08_vw_swmm_outfalls.sql")
-        self.execute(cwd / "swmm_views/09_vw_swmm_subcatchments.sql")
-        self.execute(cwd / "swmm_views/10_vw_swmm_subareas.sql")
-        self.execute(cwd / "swmm_views/11_vw_swmm_dwf.sql")
-        self.execute(cwd / "swmm_views/12_vw_swmm_raingages.sql")
-        self.execute(cwd / "swmm_views/13_vw_swmm_infiltrations.sql")
-        self.execute(cwd / "swmm_views/14_vw_swmm_coverages.sql")
-        self.execute(cwd / "swmm_views/15_vw_swmm_vertices.sql")
-        self.execute(cwd / "swmm_views/16_vw_swmm_pumps.sql")
-        self.execute(cwd / "swmm_views/17_vw_swmm_polygons.sql")
-        self.execute(cwd / "swmm_views/18_vw_swmm_storages.sql")
-        self.execute(cwd / "swmm_views/19_vw_swmm_outlets.sql")
-        self.execute(cwd / "swmm_views/20_vw_swmm_orifices.sql")
-        self.execute(cwd / "swmm_views/21_vw_swmm_weirs.sql")
-        self.execute(cwd / "swmm_views/22_vw_swmm_curves.sql")
-        self.execute(cwd / "swmm_views/23_vw_swmm_xsections.sql")
-        self.execute(cwd / "swmm_views/24_vw_swmm_coordinates.sql")
-        self.execute(cwd / "swmm_views/25_vw_swmm_tags.sql")
-        self.execute(cwd / "swmm_views/26_vw_swmm_symbols.sql")
-        self.execute(cwd / "swmm_views/27_vw_swmm_results.sql")
+        # load definitions from config
+        template_path = modification_config.get("template", None)
+        if template_path:
+            curr_dir = os.path.dirname(template_path)
+            modification_config = self.load_yaml(template_path)
+        else:
+            curr_dir = ""
 
-        SimpleJoins(
-            connection=connection,
-            definition=safe_load(open(cwd / "view/export/vw_export_reach.yaml")),
-        ).create()
-        SimpleJoins(
-            connection=connection,
-            definition=safe_load(open(cwd / "view/export/vw_export_wastewater_structure.yaml")),
-        ).create()
+        ext_variables = modification_config.get("variables", {})
+        sql_vars = self.parse_variables(ext_variables)
 
-        # Audit
-        self.execute(cwd / "audit/audit.sql")
+        for sql_file in modification_config.get("sql_files", None):
+            file_name = curr_dir / sql_file.get("file")
+            self.run_sql_file(file_name, sql_vars)
 
-        # Roles
-        self.execute(cwd / "tww_app_roles.sql")
+        if template_path:
+            for key, value in modification_config.get("extra_definitions", {}).items():
+                if not self.extra_definitions[key]:
+                    self.extra_definitions[key] = curr_dir / value
+
+            for key, value in modification_config.get("simple_joins_yaml", {}).items():
+                if not self.simple_joins_yaml[key]:
+                    self.simple_joins_yaml[key] = curr_dir / value
+
+            for key, value in modification_config.get("multiple_inherintances", {}).items():
+                if self.multiple_inherintances[key]:
+                    self.multiple_inherintances[key] = curr_dir / value
+
+    def manage_vl(
+        self,
+        config: set = None,
+    ):
+        """
+        manages activation/deactivation of tww value list of a modification
+        Args:
+            config:  configuration set
+        """
+
+        # load definitions from config
+        template_path = config.get("template", None)
+        is_active = config.get("active", False)
+        sql_vars = {"activate": {"value": is_active, "type": "literal"}}
+        sql_vars = self.parse_variables(sql_vars)
+        if template_path:
+            curr_dir = os.path.dirname(template_path)
+            config = self.load_yaml(template_path)
+        else:
+            curr_dir = ""
+
+        for sql_file in config.get("reset_vl_files", None):
+            file_name = curr_dir / sql_file.get("file")
+            self.run_sql_file(file_name, sql_vars)
+
+    def run_sql_file(self, file_path: str, variables: dict = None):
+        with open(file_path) as f:
+            sql = f.read()
+        self.run_sql(sql, variables)
+
+    def run_sql(self, sql: str, variables: dict = None):
+        if variables is None:
+            variables = {}
+        if (
+            re.search(r"\{[A-Za-z-_]+\}", sql) and variables
+        ):  # avoid formatting if no variables are present
+            try:
+                sql = psycopg.sql.SQL(sql).format(**variables).as_string(self.connection)
+
+            except IndexError:
+                logger.critical(sql)
+                raise
+        self.execute(sql)
+
+    def run_sql_files_in_folder(self, directory: str):
+        files = os.listdir(directory)
+        files.sort()
+        sql_vars = self.parse_variables(self.variables_sql)
+        for file in files:
+            filename = os.fsdecode(file)
+            if filename.lower().endswith(".sql"):
+                logger.info(f"Running {filename}")
+                self.run_sql_file(os.path.join(directory, filename), sql_vars)
+
+    def parse_variables(self, variables: dict) -> dict:
+        """Parse variables based on their defined types in the YAML."""
+        formatted_vars = {}
+
+        for key, meta in variables.items():
+            if isinstance(meta, dict) and "value" in meta and "type" in meta:
+                value, var_type = meta["value"], meta["type"].lower()
+
+                if var_type == "number":  # Directly insert SQL without escaping
+                    if not re.match(r"^[\d.]*$", value):  # avoid injection
+                        raise ValueError(f"Number '{value}' contains invalid characters.")
+                    formatted_vars[key] = psycopg.sql.SQL(value)
+                elif var_type == "identifier":  # Table/Column names
+                    if not re.match(r"^[a-zA-Z_][a-zA-Z0-9_]*$", value):  # avoid injection
+                        raise ValueError(f"Identifier '{value}' contains invalid characters.")
+                    formatted_vars[key] = psycopg.sql.Identifier(value)
+                elif var_type == "literal":  # String/Number literals
+                    formatted_vars[key] = psycopg.sql.Literal(value)
+                else:
+                    raise ValueError(f"Unknown type '{var_type}' for variable '{key}'")
+            else:
+                raise ValueError(f"Unknown type '{var_type}' for variable '{key}'.")
+        return formatted_vars
 
 
 if __name__ == "__main__":
@@ -236,20 +374,37 @@ if __name__ == "__main__":
         "-s", "--srid", help="SRID EPSG code, defaults to 2056", type=int, default=2056
     )
     parser.add_argument(
-        "--tww_wastewater_structure_extra",
-        help="YAML definition file path for additions to vw_tww_wastewater_structure view",
-    )
-    parser.add_argument(
-        "--tww_reach_extra",
-        help="YAML definition file path for additions to vw_tww_reach view",
-    )
-    parser.add_argument(
         "-d",
         "--drop-schema",
         help="Drops cascaded any existing tww_app schema",
         default=False,
         action=BooleanOptionalAction,
     )
+    parser.add_argument(
+        "-a",
+        "--modification_agxx",
+        type=bool,
+        action="store_true",
+        default=False,
+        help="load AG-64/96 modification on app schema",
+    )
+    parser.add_argument(
+        "-c",
+        "--modification_ci",
+        type=bool,
+        action="store_true",
+        default=False,
+        help="load ci modification",
+    )
+    parser.add_argument(
+        "-l",
+        "--lang_code",
+        help="language code",
+        type=str,
+        default="en",
+        choices=["en", "fr", "de", "it", "ro"],
+    )
+    parser.add_argument("-m", "--modification_yaml", help="path to modification yaml", type=Path)
     args = parser.parse_args()
 
     with psycopg.connect(service=args.pg_service) as connection:
@@ -259,6 +414,8 @@ if __name__ == "__main__":
         hook.run_hook(
             connection=connection,
             SRID=args.srid,
-            tww_reach_extra=args.tww_reach_extra,
-            tww_wastewater_structure_extra=args.tww_wastewater_structure_extra,
+            modification_agxx=args.modification_agxx,
+            modification_ci=args.modification_ci,
+            modification_yaml=args.modification_yaml,
+            lang_code=args.lang_code,
         )
