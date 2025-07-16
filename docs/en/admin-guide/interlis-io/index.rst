@@ -152,6 +152,7 @@ You can check the protocol window and the text logs for further details.
 
 
 Export extra organisations
+-------------------------------------------------
 
 .. figure:: images/tww_interlis_export_organisation.jpg
 
@@ -159,7 +160,7 @@ Since Release 2025.x you can also export additional organisations that are not m
 
 Extra organisations could be for example bigger private organisations that are ususally summarized as 'Privat' when publishing to others, but they are relevant for you to be distinguised. For an export they need to be flagged as ``tww_local_extension = True``
 
-.. figure::  organisation_tww_local_extension.jpg
+.. figure:: images/organisation_tww_local_extension.jpg
 
 
  
