@@ -78,7 +78,7 @@ The modification framework allows the following actions:
 Creation and loading of modifications
 ^^^^^^^^^^^^^
 All modification parameters are handles in a yaml that is passed to PUM `documentation <https://github.com/opengisch/pum>`_ on update.
-The the default yaml is 
+The the default yaml is
 
 .. literalinclude:: ../../../../datamodel/app/app_modification.template.yaml
   :language: YAML
@@ -105,9 +105,9 @@ Base Configurations handle variables that are handled over the entire project. T
 Extra Definitions
 """""""""""""""""
 
-Extra definitions allow adding additional fields to custom views. 
+Extra definitions allow adding additional fields to custom views.
 The parameter defines the path to the corresponding yaml definition.
-The yaml is structured as follows: 
+The yaml is structured as follows:
 
 .. code:: YAML
 
@@ -135,9 +135,9 @@ It is expected that mt.fk_ws has a ON DELETE CASCADE`` foreign key constraint.
 Multiple Inheritances
 """""""""""""""""""""
 
-Multiple Inheritances are used to aggregate all subtypes of a superclass into one view. 
+Multiple Inheritances are used to aggregate all subtypes of a superclass into one view.
 The parameter defines the path to the corresponding yaml definition.
-The yaml is structured as follows: 
+The yaml is structured as follows:
 
 
 .. code:: YAML
@@ -170,7 +170,7 @@ The yaml is structured as follows:
 Simple Joins YAML
 """""""""""""""""
 
-The Simple Join YAML allows altering the path from which the join definition is loaded. 
+The Simple Join YAML allows altering the path from which the join definition is loaded.
 The parameter defines the path to the corresponding yaml definition.
 The yaml is structured as follows:
 
@@ -222,7 +222,7 @@ A modification repository template allows to predefine the values of the followi
 * ``sql_files``
 * ``reset_vl_files``
 
-Additionally, it allows setting values for Extra Definitions, MultipleInheritances and SimpleJoin YAML if the app_modification yaml does not define a value. 
+Additionally, it allows setting values for Extra Definitions, MultipleInheritances and SimpleJoin YAML if the app_modification yaml does not define a value.
 
 
 Limitations for sql scripts

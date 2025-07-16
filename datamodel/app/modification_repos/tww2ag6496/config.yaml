@@ -1,5 +1,5 @@
 variables:
-   lang_code: 
+   lang_code:
      value: de
      type: literal
    SRID:
