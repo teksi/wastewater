@@ -55,6 +55,7 @@ jobs:
         run: docker compose exec db /src/datamodel/scripts/create-dumps.py --extension_name=${{ matrix.extension }}
 
       - name: Schemaspy
+        if: ${{ matrix.extension != '' }}
         run:  docker compose run schemaspy
 
       - name: Docker logs
