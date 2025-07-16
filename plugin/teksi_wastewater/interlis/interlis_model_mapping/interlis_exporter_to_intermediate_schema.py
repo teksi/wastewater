@@ -124,9 +124,6 @@ class InterlisExporterToIntermediateSchema:
             self.current_basket = self.basket_topic_ag96
             self._export_ag96()
 
-
-
-
         # Labels
         # Note: these are extracted from the optional labels file (not exported from the TWW database)
         if self.labels_file:
