@@ -673,7 +673,9 @@ class InterlisExporterToIntermediateSchema:
             )
             logger.info(f"Selection query: {query.statement}")
 
-        logger.info("height_width_ration rounded to 3 decimals! Change if adapted in INTERLIS VSA-DSS / SIA405 Abwasser > 2020.1")
+        logger.info(
+            "height_width_ration rounded to 3 decimals! Change if adapted in INTERLIS VSA-DSS / SIA405 Abwasser > 2020.1"
+        )
 
         for row in query:
             # AVAILABLE FIELDS IN TWW.pipe_profile
