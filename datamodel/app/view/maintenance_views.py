@@ -31,6 +31,7 @@ def vw_tww_channel(
     DROP MATERIALIZED VIEW IF EXISTS tww_app.vw_tww_channel;
 
     CREATE MATERIALIZED VIEW tww_app.vw_tww_channel AS
+        SELECT
           {ws_cols}
         , {ch_cols}
         , ST_Multi(ST_Force2D(ST_ForceCurve(ST_LineMerge(ST_Collect(ST_CurveToLine(re.progression3d_geometry))))))::geometry(MultiCurve, {{srid}})  as progression2d_geometry
