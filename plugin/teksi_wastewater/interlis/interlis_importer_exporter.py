@@ -19,6 +19,9 @@ from .interlis_model_mapping.model_interlis_dss import ModelInterlisDss
 from .interlis_model_mapping.model_interlis_sia405_abwasser import (
     ModelInterlisSia405Abwasser,
 )
+from .interlis_model_mapping.model_interlis_sia405_base_abwasser import (
+    ModelInterlisSia405BaseAbwasser,
+)
 from .interlis_model_mapping.model_interlis_vsa_kek import ModelInterlisVsaKek
 from .interlis_model_mapping.model_tww import ModelTwwSys, ModelTwwVl
 from .interlis_model_mapping.model_tww_od import ModelTwwOd
@@ -66,15 +69,18 @@ class InterlisImporterExporter:
         import_models = self.interlisTools.get_xtf_models(xtf_file_input)
 
         import_model = ""
+        if config.MODEL_NAME_SIA405_BASE_ABWASSER in import_models:
+            import_model = config.MODEL_NAME_SIA405_BASE_ABWASSER
+
+        # override base model if necessary
         if config.MODEL_NAME_VSA_KEK in import_models:
             import_model = config.MODEL_NAME_VSA_KEK
         elif config.MODEL_NAME_SIA405_ABWASSER in import_models:
             import_model = config.MODEL_NAME_SIA405_ABWASSER
         elif config.MODEL_NAME_DSS in import_models:
             import_model = config.MODEL_NAME_DSS
-        elif config.MODEL_NAME_SIA405_BASE_ABWASSER in import_models:
-            import_model = config.MODEL_NAME_SIA405_ABWASSER
-        else:
+
+        if not import_model:
             error_text = f"No supported model was found among '{import_models}'."
             if len(import_models) == 1:
                 error_text = f"The model '{import_models[0]}' is not supported."
@@ -85,7 +91,7 @@ class InterlisImporterExporter:
 
         # Prepare the temporary ili2pg model
         self._progress_done(10, "Creating ili schema...")
-        self._clear_ili_schema(recreate_schema=True)
+        self._clear_ili_schema(recreate_tables=True)
 
         self._progress_done(20)
         self._create_ili_schema(
@@ -177,7 +183,7 @@ class InterlisImporterExporter:
             self.base_log_path = None
 
         self._progress_done(5, "Clearing ili schema...")
-        self._clear_ili_schema(recreate_schema=True)
+        self._clear_ili_schema(recreate_tables=True)
 
         self._progress_done(15, "Creating ili schema...")
         create_basket_col = False
@@ -436,34 +442,29 @@ class InterlisImporterExporter:
         if xtf_export_errors:
             raise xtf_export_errors[0]
 
-    def _clear_ili_schema(self, recreate_schema=False):
+    def _clear_ili_schema(self, recreate_tables=False):
         logger.info("CONNECTING TO DATABASE...")
 
         with DatabaseUtils.PsycopgConnection() as connection:
             cursor = connection.cursor()
 
-            if not recreate_schema:
-                # If the schema already exists, we just truncate all tables
+            cursor.execute(
+                f"SELECT schema_name FROM information_schema.schemata WHERE schema_name = '{config.ABWASSER_SCHEMA}';"
+            )
+            if cursor.rowcount == 0:
+                cursor.execute(f"CREATE SCHEMA {config.ABWASSER_SCHEMA} CASCADE;")
+            else:
                 cursor.execute(
-                    f"SELECT schema_name FROM information_schema.schemata WHERE schema_name = '{config.ABWASSER_SCHEMA}';"
+                    f"SELECT table_name FROM information_schema.tables WHERE table_schema = '{config.ABWASSER_SCHEMA}';"
                 )
-                if cursor.rowcount > 0:
-                    logger.info(
-                        f"Schema {config.ABWASSER_SCHEMA} already exists, we truncate instead"
-                    )
-                    cursor.execute(
-                        f"SELECT table_name FROM information_schema.tables WHERE table_schema = '{config.ABWASSER_SCHEMA}';"
-                    )
-                    for row in cursor.fetchall():
-                        cursor.execute(
-                            f"TRUNCATE TABLE {config.ABWASSER_SCHEMA}.{row[0]} CASCADE;"
-                        )
-                    return
-
-            logger.info(f"DROPPING THE SCHEMA {config.ABWASSER_SCHEMA}...")
-            cursor.execute(f'DROP SCHEMA IF EXISTS "{config.ABWASSER_SCHEMA}" CASCADE ;')
-            logger.info(f"CREATING THE SCHEMA {config.ABWASSER_SCHEMA}...")
-            cursor.execute(f'CREATE SCHEMA "{config.ABWASSER_SCHEMA}";')
+                logger.info(f"Truncating all tables in schema {config.ABWASSER_SCHEMA}")
+                rows = cursor.fetchall()
+                for row in rows:
+                    cursor.execute(f"TRUNCATE TABLE {config.ABWASSER_SCHEMA}.{row[0]} CASCADE;")
+                if recreate_tables:
+                    logger.info(f"Deleting all tables in schema {config.ABWASSER_SCHEMA} ")
+                    for row in rows:
+                        cursor.execute(f"DROP TABLE {config.ABWASSER_SCHEMA}.{row[0]} CASCADE;")
 
     def _create_ili_schema(
         self, models, ext_columns_no_constraints=False, create_basket_col=False
@@ -597,8 +598,11 @@ class InterlisImporterExporter:
                         )
 
     def _init_model_classes(self, model):
-        ModelInterlis = ModelInterlisSia405Abwasser
-        if model == config.MODEL_NAME_DSS:
+        if model == config.MODEL_NAME_SIA405_BASE_ABWASSER:
+            ModelInterlis = ModelInterlisSia405BaseAbwasser
+        elif model == config.MODEL_NAME_SIA405_ABWASSER:
+            ModelInterlis = ModelInterlisSia405Abwasser
+        elif model == config.MODEL_NAME_DSS:
             ModelInterlis = ModelInterlisDss
         elif model == config.MODEL_NAME_VSA_KEK:
             ModelInterlis = ModelInterlisVsaKek
