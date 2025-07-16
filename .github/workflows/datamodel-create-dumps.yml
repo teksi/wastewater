@@ -63,6 +63,7 @@ jobs:
         run: docker compose logs db
 
       - uses: actions/upload-artifact@v4
+        if: ${{ matrix.extension != '' }}
         with:
           name: datamodel-schemaspy
           path: datamodel/schemaspy/
