@@ -101,29 +101,31 @@ class InterlisExporterToIntermediateSchema:
 
         self._set_tid_iterator()
 
-        if self.model not in (config.MODEL_NAME_AG64, config.MODEL_NAME_AG96):
+        if not self.is_ag_xx_model:
+            self.current_basket = self.basket_topic_sia405_administration
             self._export_sia405_abwasser_base()
-            if self.model != config.MODEL_NAME_SIA405_BASE_ABWASSER:
 
+            if self.model != config.MODEL_NAME_SIA405_BASE_ABWASSER:
                 self._export_sia405_abwasser()
 
-        if self.model == config.MODEL_NAME_AG64:
+                if self.model == config.MODEL_NAME_DSS:
+                    self.current_basket = self.basket_topic_dss
+                    self._export_dss()
+
+                if self.model == config.MODEL_NAME_VSA_KEK:
+                    self.current_basket = self.basket_topic_kek
+                    self._export_vsa_kek()
+
+        elif self.model == config.MODEL_NAME_AG64:
             self.current_basket = self.basket_topic_ag64
             self._export_ag64()
+
         elif self.model == config.MODEL_NAME_AG96:
             self.current_basket = self.basket_topic_ag96
             self._export_ag96()
-        else:
-            self.current_basket = self.basket_topic_sia405_administration
-            self._export_sia405_abwasser()
 
-            if self.model == config.MODEL_NAME_DSS:
-                self.current_basket = self.basket_topic_dss
-                self._export_dss()
 
-            if self.model == config.MODEL_NAME_VSA_KEK:
-                self.current_basket = self.basket_topic_kek
-                self._export_vsa_kek()
+
 
         # Labels
         # Note: these are extracted from the optional labels file (not exported from the TWW database)
