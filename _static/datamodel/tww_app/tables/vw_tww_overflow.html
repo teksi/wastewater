@@ -109,12 +109,12 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td><span id="overflow_type">overflow_type</span></td>
-                                    <td>&quot;tww_app&quot;.&quot;overflow_type&quot;</td>
-                                    <td>2147483647</td>
+                                    <td><span id="obj_id">obj_id</span></td>
+                                    <td>varchar</td>
+                                    <td>16</td>
                                     <td title='nullable'>√</td>
                                     <td title=''></td>
-                                    <td>null</td>
+                                    <td>tww_app.generate_oid(&#39;tww_od&#39;::text, &#39;overflow&#39;::text)</td>
                                     <td>
                                         <table border='0' cellspacing='0' cellpadding='0'>
                                         </table>
@@ -126,12 +126,12 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td><span id="obj_id">obj_id</span></td>
-                                    <td>varchar</td>
-                                    <td>16</td>
+                                    <td><span id="overflow_type">overflow_type</span></td>
+                                    <td>text</td>
+                                    <td>2147483647</td>
                                     <td title='nullable'>√</td>
                                     <td title=''></td>
-                                    <td>tww_app.generate_oid(&#39;tww_od&#39;::text, &#39;overflow&#39;::text)</td>
+                                    <td>null</td>
                                     <td>
                                         <table border='0' cellspacing='0' cellpadding='0'>
                                         </table>
@@ -466,7 +466,24 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td><span id="length">length</span></td>
+                                    <td><span id="lw_obj_id">lw_obj_id</span></td>
+                                    <td>varchar</td>
+                                    <td>16</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span id="lw_length">lw_length</span></td>
                                     <td>numeric</td>
                                     <td>7,2</td>
                                     <td title='nullable'>√</td>
@@ -483,7 +500,7 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td><span id="opening_shape">opening_shape</span></td>
+                                    <td><span id="lw_opening_shape">lw_opening_shape</span></td>
                                     <td>int4</td>
                                     <td>10</td>
                                     <td title='nullable'>√</td>
@@ -500,7 +517,7 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td><span id="width">width</span></td>
+                                    <td><span id="lw_width">lw_width</span></td>
                                     <td>numeric</td>
                                     <td>7,2</td>
                                     <td title='nullable'>√</td>
@@ -517,7 +534,7 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td><span id="hydraulic_overflow_length">hydraulic_overflow_length</span></td>
+                                    <td><span id="pw_hydraulic_overflow_length">pw_hydraulic_overflow_length</span></td>
                                     <td>numeric</td>
                                     <td>7,2</td>
                                     <td title='nullable'>√</td>
@@ -534,7 +551,7 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td><span id="level_max">level_max</span></td>
+                                    <td><span id="pw_level_max">pw_level_max</span></td>
                                     <td>numeric</td>
                                     <td>7,3</td>
                                     <td title='nullable'>√</td>
@@ -551,7 +568,7 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td><span id="level_min">level_min</span></td>
+                                    <td><span id="pw_level_min">pw_level_min</span></td>
                                     <td>numeric</td>
                                     <td>7,3</td>
                                     <td title='nullable'>√</td>
@@ -568,7 +585,7 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td><span id="weir_edge">weir_edge</span></td>
+                                    <td><span id="pw_weir_edge">pw_weir_edge</span></td>
                                     <td>int4</td>
                                     <td>10</td>
                                     <td title='nullable'>√</td>
@@ -585,7 +602,7 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td><span id="weir_kind">weir_kind</span></td>
+                                    <td><span id="pw_weir_kind">pw_weir_kind</span></td>
                                     <td>int4</td>
                                     <td>10</td>
                                     <td title='nullable'>√</td>
@@ -602,7 +619,7 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td><span id="construction_type">construction_type</span></td>
+                                    <td><span id="pu_construction_type">pu_construction_type</span></td>
                                     <td>int4</td>
                                     <td>10</td>
                                     <td title='nullable'>√</td>
@@ -619,7 +636,7 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td><span id="operating_point">operating_point</span></td>
+                                    <td><span id="pu_operating_point">pu_operating_point</span></td>
                                     <td>numeric</td>
                                     <td>8,3</td>
                                     <td title='nullable'>√</td>
@@ -636,7 +653,7 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td><span id="placement_of_actuation">placement_of_actuation</span></td>
+                                    <td><span id="pu_placement_of_actuation">pu_placement_of_actuation</span></td>
                                     <td>int4</td>
                                     <td>10</td>
                                     <td title='nullable'>√</td>
@@ -653,7 +670,7 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td><span id="placement_of_pump">placement_of_pump</span></td>
+                                    <td><span id="pu_placement_of_pump">pu_placement_of_pump</span></td>
                                     <td>int4</td>
                                     <td>10</td>
                                     <td title='nullable'>√</td>
@@ -670,7 +687,7 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td><span id="pump_flow_max_single">pump_flow_max_single</span></td>
+                                    <td><span id="pu_pump_flow_max_single">pu_pump_flow_max_single</span></td>
                                     <td>numeric</td>
                                     <td>9,3</td>
                                     <td title='nullable'>√</td>
@@ -687,7 +704,7 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td><span id="pump_flow_min_single">pump_flow_min_single</span></td>
+                                    <td><span id="pu_pump_flow_min_single">pu_pump_flow_min_single</span></td>
                                     <td>numeric</td>
                                     <td>9,3</td>
                                     <td title='nullable'>√</td>
@@ -704,7 +721,7 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td><span id="start_level">start_level</span></td>
+                                    <td><span id="pu_start_level">pu_start_level</span></td>
                                     <td>numeric</td>
                                     <td>7,3</td>
                                     <td title='nullable'>√</td>
@@ -721,7 +738,7 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td><span id="stop_level">stop_level</span></td>
+                                    <td><span id="pu_stop_level">pu_stop_level</span></td>
                                     <td>numeric</td>
                                     <td>7,3</td>
                                     <td title='nullable'>√</td>
@@ -741,6 +758,40 @@
                                     <td><span id="geometry">geometry</span></td>
                                     <td>geometry</td>
                                     <td>2147483647</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span id="_channel_usage_current">_channel_usage_current</span></td>
+                                    <td>int4</td>
+                                    <td>10</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span id="_channel_function_hierarchic">_channel_function_hierarchic</span></td>
+                                    <td>int4</td>
+                                    <td>10</td>
                                     <td title='nullable'>√</td>
                                     <td title=''></td>
                                     <td>null</td>
@@ -792,7 +843,7 @@
                             </div>
                         </div>
                         <div class="box-body">
-                            <textarea id="sql-script-codemirror" name="sql-script-codemirror" rows="" style="display: none;">SELECT&#10;        CASE&#10;            WHEN (leapingweir.obj_id IS NOT NULL) THEN &#39;leapingweir&#39;::tww_app.overflow_type&#10;            WHEN (prank_weir.obj_id IS NOT NULL) THEN &#39;prank_weir&#39;::tww_app.overflow_type&#10;            WHEN (pump.obj_id IS NOT NULL) THEN &#39;pump&#39;::tww_app.overflow_type&#10;            ELSE &#39;unknown&#39;::tww_app.overflow_type&#10;        END AS overflow_type,&#10;    overflow.obj_id,&#10;    overflow.actuation,&#10;    overflow.adjustability,&#10;    overflow.brand,&#10;    overflow.control,&#10;    overflow.discharge_point,&#10;    overflow.fk_control_center,&#10;    overflow.fk_dataowner,&#10;    overflow.fk_overflow_char,&#10;    overflow.fk_overflow_to,&#10;    overflow.fk_provider,&#10;    overflow.fk_wastewater_node,&#10;    overflow.function,&#10;    overflow.gross_costs,&#10;    overflow.identifier,&#10;    overflow.last_modification,&#10;    overflow.qon_dim,&#10;    overflow.remark,&#10;    overflow.signal_transmission,&#10;    overflow.subsidies,&#10;    leapingweir.length,&#10;    leapingweir.opening_shape,&#10;    leapingweir.width,&#10;    prank_weir.hydraulic_overflow_length,&#10;    prank_weir.level_max,&#10;    prank_weir.level_min,&#10;    prank_weir.weir_edge,&#10;    prank_weir.weir_kind,&#10;    pump.construction_type,&#10;    pump.operating_point,&#10;    pump.placement_of_actuation,&#10;    pump.placement_of_pump,&#10;    pump.pump_flow_max_single,&#10;    pump.pump_flow_min_single,&#10;    pump.start_level,&#10;    pump.stop_level,&#10;    n1.situation3d_geometry AS geometry&#10;   FROM ((((tww_od.overflow overflow&#10;     LEFT JOIN tww_od.leapingweir leapingweir ON (((leapingweir.obj_id)::text &#61; (overflow.obj_id)::text)))&#10;     LEFT JOIN tww_od.prank_weir prank_weir ON (((prank_weir.obj_id)::text &#61; (overflow.obj_id)::text)))&#10;     LEFT JOIN tww_od.pump pump ON (((pump.obj_id)::text &#61; (overflow.obj_id)::text)))&#10;     LEFT JOIN tww_od.wastewater_node n1 ON (((overflow.fk_wastewater_node)::text &#61; (n1.obj_id)::text)));</textarea>
+                            <textarea id="sql-script-codemirror" name="sql-script-codemirror" rows="" style="display: none;">SELECT ov.obj_id,&#10;        CASE&#10;            WHEN (lw.obj_id IS NOT NULL) THEN &#39;leapingweir&#39;::text&#10;            WHEN (pw.obj_id IS NOT NULL) THEN &#39;prank_weir&#39;::text&#10;            WHEN (pu.obj_id IS NOT NULL) THEN &#39;pump&#39;::text&#10;            ELSE &#39;unknown&#39;::text&#10;        END AS overflow_type,&#10;    ov.actuation,&#10;    ov.adjustability,&#10;    ov.brand,&#10;    ov.control,&#10;    ov.discharge_point,&#10;    ov.fk_control_center,&#10;    ov.fk_dataowner,&#10;    ov.fk_overflow_char,&#10;    ov.fk_overflow_to,&#10;    ov.fk_provider,&#10;    ov.fk_wastewater_node,&#10;    ov.function,&#10;    ov.gross_costs,&#10;    ov.identifier,&#10;    ov.last_modification,&#10;    ov.qon_dim,&#10;    ov.remark,&#10;    ov.signal_transmission,&#10;    ov.subsidies,&#10;    lw.obj_id AS lw_obj_id,&#10;    lw.length AS lw_length,&#10;    lw.opening_shape AS lw_opening_shape,&#10;    lw.width AS lw_width,&#10;    pw.hydraulic_overflow_length AS pw_hydraulic_overflow_length,&#10;    pw.level_max AS pw_level_max,&#10;    pw.level_min AS pw_level_min,&#10;    pw.weir_edge AS pw_weir_edge,&#10;    pw.weir_kind AS pw_weir_kind,&#10;    pu.construction_type AS pu_construction_type,&#10;    pu.operating_point AS pu_operating_point,&#10;    pu.placement_of_actuation AS pu_placement_of_actuation,&#10;    pu.placement_of_pump AS pu_placement_of_pump,&#10;    pu.pump_flow_max_single AS pu_pump_flow_max_single,&#10;    pu.pump_flow_min_single AS pu_pump_flow_min_single,&#10;    pu.start_level AS pu_start_level,&#10;    pu.stop_level AS pu_stop_level,&#10;    wn.situation3d_geometry AS geometry,&#10;    wn._usage_current AS _channel_usage_current,&#10;    wn._function_hierarchic AS _channel_function_hierarchic&#10;   FROM ((((tww_od.overflow ov&#10;     LEFT JOIN tww_od.leapingweir lw ON (((lw.obj_id)::text &#61; (ov.obj_id)::text)))&#10;     LEFT JOIN tww_od.prank_weir pw ON (((pw.obj_id)::text &#61; (ov.obj_id)::text)))&#10;     LEFT JOIN tww_od.pump pu ON (((pu.obj_id)::text &#61; (ov.obj_id)::text)))&#10;     LEFT JOIN tww_od.wastewater_node wn ON (((ov.fk_wastewater_node)::text &#61; (wn.obj_id)::text)));</textarea>
                             <div style="padding-top: 5px;"><hr></div>
                             <div class="box box-solid">
                                 <div class="box-header with-border">

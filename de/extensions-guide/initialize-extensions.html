@@ -95,19 +95,18 @@
 <li><p>AG-64 Abwasserkataster Version 2.1.0</p></li>
 <li><p>AG-96 Genereller_Entwaesserungsplan_AG Version 2.0.0</p></li>
 </ul>
+<p>The database is automatically loaded with the necessary tables and attributes for the extension.
+In order to be able to use an extension, activate the corresponding app modification <a class="reference internal" href="../admin-guide/db-customization/index.html#modification-framework"><span class="std std-ref">Modification Framework for application schema</span></a></p>
 <section id="create-an-empty-datamodel-with-an-extension">
 <span id="empty-extension-model"></span><h2><span class="section-number">5.1.1. </span>Ein leeres Datenmodell mit Erweiterung erstellen<a class="headerlink" href="#create-an-empty-datamodel-with-an-extension" title="Link to this heading"></a></h2>
 <p>Um eine Datenbankerweiterung nutzen zu können, muss sie aus dem Quellcode geladen werden.</p>
-<ul class="simple">
-<li><p>Laden Sie eine Standard TWW-Datenbank* <a class="reference external" href="https://github.com/TWW/datamodel/releases/latest">https://github.com/TWW/datamodel/releases/latest</a> * download <cite>tww_{version}_structure_with_value_lists.sql</cite></p></li>
-</ul>
-<p>In Zukunft wird ein angepasstes Wertelisten-SQL zu Verfügung gestellt. Bis dann muss der Quellcode genutzt werden.</p>
 <ul>
+<li><p>Laden Sie eine Standard TWW-Datenbank* <a class="reference external" href="https://github.com/TWW/datamodel/releases/latest">https://github.com/TWW/datamodel/releases/latest</a> * download <cite>tww_{version}_structure_with_value_lists.sql</cite></p></li>
 <li><p>Laden Sie den Quellcode herunter * <a class="reference external" href="https://github.com/TWW/datamodel/releases/latest">https://github.com/TWW/datamodel/releases/latest</a> * download`Source Code(zip)`</p></li>
 <li><p>Wenn nötig, passen Sie Ihre PGSYSCONFDIR Umgebungsvariable an</p></li>
 <li><p>Erstellen Sie ein Batch File wie das Untenstehende und lassen Sie es laufen:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@echo</span> <span class="n">off</span>
-
+<span class="n">setlocal</span>
 <span class="nb">set</span> <span class="o">/</span><span class="n">p</span> <span class="n">tww_dir</span><span class="o">=</span><span class="s2">&quot;Set the directory your downloaded teksi wastewater to&quot;</span>
 
 <span class="k">if</span> <span class="ow">not</span> <span class="n">exist</span> <span class="o">%</span><span class="n">tww_dir</span><span class="o">%</span> <span class="p">(</span>
@@ -120,19 +119,18 @@
 
 <span class="nb">set</span> <span class="o">/</span><span class="n">p</span> <span class="n">myservice</span><span class="o">=</span><span class="s2">&quot;Please enter the service name? (e.g. tww_community) &quot;</span>
 
-    <span class="n">python</span> <span class="o">%</span><span class="n">tww_dir</span><span class="o">%</span>\<span class="n">extensions</span>\<span class="n">extension_manager</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">pg_service</span> <span class="o">%</span><span class="n">myservice</span><span class="o">%</span> <span class="o">--</span><span class="n">extension_name</span> <span class="s2">&quot;agxx&quot;</span>
-    <span class="n">python</span> <span class="o">%</span><span class="n">tww_dir</span><span class="o">%</span>\<span class="n">app</span>\<span class="n">create_app</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">pg_service</span> <span class="o">%</span><span class="n">myservice</span><span class="o">%</span> <span class="o">--</span><span class="n">srid</span> <span class="mi">2056</span>
+    <span class="n">REM</span> <span class="n">Set</span> <span class="n">the</span> <span class="n">PYTHONPATH</span> <span class="n">to</span> <span class="n">include</span> <span class="n">the</span> <span class="n">directory</span> <span class="n">containing</span> <span class="n">the</span> <span class="n">app</span> <span class="n">module</span>
+    <span class="nb">set</span> <span class="s2">&quot;PYTHONPATH=%tww_dir%\datamodel;%PYTHONPATH%&quot;</span>
 
+<span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">app</span><span class="o">.</span><span class="n">create_app</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">pg_service</span> <span class="o">%</span><span class="n">myservice</span><span class="o">%</span> <span class="o">--</span><span class="n">srid</span> <span class="mi">2056</span> <span class="o">--</span><span class="n">drop</span><span class="o">-</span><span class="n">schema</span> <span class="o">--</span><span class="n">extension_names</span> <span class="n">agxx</span> <span class="n">foobar</span> <span class="n">demo</span>
 
+<span class="n">endlocal</span>
 <span class="n">PAUSE</span>
 </pre></div>
 </div>
 </li>
 </ul>
-<p>Wichtige Bemerkungen:</p>
-<ul class="simple">
-<li><p>Benutzen Sie nicht die–drop_schema flag in create_app.py, da alle Erweiterungssichten im Applikationsschem gespeichert werden</p></li>
-</ul>
+<p>For official models, an adapted value list sql is provided.</p>
 </section>
 <section id="generate-the-data-model-under-linux">
 <h2><span class="section-number">5.1.2. </span>Erzeugen des Datenmodells unter Linux<a class="headerlink" href="#generate-the-data-model-under-linux" title="Link to this heading"></a></h2>

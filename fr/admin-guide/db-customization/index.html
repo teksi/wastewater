@@ -53,11 +53,19 @@
 <li class="toctree-l2"><a class="reference internal" href="../security/index.html">4.3. User Roles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../interlis-io/index.html">4.4. Échange de données INTERLIS</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">4.5. Personnalisation du modèle de données</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#introduction">4.5.1. Introduction</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#altering-symbology-and-labelling-behaviour">4.5.2. Altering symbology and labelling behaviour</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#adding-fields">4.5.3. Ajouter des champs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#joining-additional-tables">4.5.4. Joindre des tables additionnelles</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#creating-custom-views">4.5.5. Créer des vues personnalisées</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#alterations-to-ordinary-data">4.5.1. Alterations to ordinary data</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#introduction">4.5.1.1. Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#altering-symbology-and-labelling-behaviour">4.5.1.2. Altering symbology and labelling behaviour</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#creation-of-custom-tables">4.5.1.3. Creation of custom tables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-fields-to-base-tables">4.5.1.4. Adding fields to base tables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#datamodel-updates">4.5.1.5. Datamodel updates</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#modification-framework-for-application-schema">4.5.2. Modification Framework for application schema</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#creation-and-loading-of-modifications">4.5.2.1. Creation and loading of modifications</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#limitations-for-sql-scripts">4.5.2.2. Limitations for sql scripts</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../datamodel-tool/index.html">4.6. Data model tool</a></li>
@@ -99,35 +107,148 @@
 <section id="customization-of-the-data-model">
 <h1><span class="section-number">4.5. </span>Personnalisation du modèle de données<a class="headerlink" href="#customization-of-the-data-model" title="Lien vers cette rubrique"></a></h1>
 <p>Ce chapître décrit les personnalisations possibles du modèle de données.</p>
+<section id="alterations-to-ordinary-data">
+<h2><span class="section-number">4.5.1. </span>Alterations to ordinary data<a class="headerlink" href="#alterations-to-ordinary-data" title="Lien vers cette rubrique"></a></h2>
 <section id="introduction">
-<h2><span class="section-number">4.5.1. </span>Introduction<a class="headerlink" href="#introduction" title="Lien vers cette rubrique"></a></h2>
+<h3><span class="section-number">4.5.1.1. </span>Introduction<a class="headerlink" href="#introduction" title="Lien vers cette rubrique"></a></h3>
 <p>Le modèle de données est versionné et mis à jour à l’aide du Postgres Updates Manager (abr. <a class="reference external" href="https://github.com/opengisch/pum">PUM</a>). Les vues requises pour l’édition des données sont générées automatiquement en utilisant la <a class="reference external" href="https://github.com/opengisch/pirogue">librairie Pirogue</a>.</p>
 <p>La combinaison des deux rend possible l’introduction de petites personnalisations du modèle de données comme l’ajout de champs aux tables existantes ou l’extension de vues par jointure de tables additionnelles.</p>
-<p>Before going further, we strongly recommend to ask the community if you have any doubts about how to store any information in the database. TWW complies with <a class="reference external" href="http://www.sia.ch/405">SIA 405</a> Waste Water and <a class="reference external" href="http://dss.vsa.ch">VSA-DSS</a> datamodel.</p>
-<p>If TWW data model is not able yet to hold some data, please let us know what kind and how it should be handled. TWW data model is a standard proof adaptative model and could follow your needs.</p>
+<p>Before going further, we strongly recommend to ask the community if you have any doubts about how to store any information in the database. TWW complies with <a class="reference external" href="http://www.sia.ch/405">SIA 405</a> Waste Water and <a class="reference external" href="https://www.vsa.ch/models/">VSA-DSS</a> datamodel.</p>
+<p>If the TWW data model is not yet able to hold some data, please let us know what kind and how it should be handled.
+The TWW data model is a standard proof adaptative model and could follow your needs.</p>
 <p>If a customization is still required, the following explanations and rules explain how to adapt TWW data model to your specific needs.</p>
 </section>
 <section id="altering-symbology-and-labelling-behaviour">
-<h2><span class="section-number">4.5.2. </span>Altering symbology and labelling behaviour<a class="headerlink" href="#altering-symbology-and-labelling-behaviour" title="Lien vers cette rubrique"></a></h2>
+<h3><span class="section-number">4.5.1.2. </span>Altering symbology and labelling behaviour<a class="headerlink" href="#altering-symbology-and-labelling-behaviour" title="Lien vers cette rubrique"></a></h3>
 <p>Symbology and labelling behaviour depends on the value lists `` tww_vl.channel_usage_current`` and `` tww_vl.channel_function_hierarchic``  These two value list tables have an additional column <code class="docutils literal notranslate"><span class="pre">tww_symbology_order</span></code>, which is used to define the hierarchy of the symbology.</p>
 <p>For labelling, one can use the column `` tww_vl.channel_function_hierarchic.tww_use_in_labels`` to define which functions_hierarchic are taken into account when creating a wastewater structure’s label.</p>
 </section>
-<section id="adding-fields">
-<h2><span class="section-number">4.5.3. </span>Ajouter des champs<a class="headerlink" href="#adding-fields" title="Lien vers cette rubrique"></a></h2>
-<p>Il est autorisé d’ajouter des champs additionnels aux tables en les nommant avec le préfixe <code class="docutils literal notranslate"><span class="pre">usr_…</span></code>.</p>
-<p>If added in base tables, these additional fields will be automatically added to the views, being an editable field. The views can be re-generated any time using the following command:</p>
-<p><code class="docutils literal notranslate"><span class="pre">./view/create_views.py</span> <span class="pre">--pg_service</span> <span class="pre">pg_tww</span> <span class="pre">--srid</span> <span class="pre">2056</span></code></p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>When running data model upgrades using PUM, it will be required to use the additional option <code class="docutils literal notranslate"><span class="pre">--exclude-field-pattern</span> <span class="pre">'usr_%'</span></code></p>
-</div>
+<section id="creation-of-custom-tables">
+<h3><span class="section-number">4.5.1.3. </span>Creation of custom tables<a class="headerlink" href="#creation-of-custom-tables" title="Lien vers cette rubrique"></a></h3>
+<p>It is possible to add custom tables with ordinary data. They must be stored in <code class="docutils literal notranslate"><span class="pre">tww_od</span></code>. In order to version them, use the Postgres Updates Manager (aka <a class="reference external" href="https://github.com/opengisch/pum">PUM</a>).</p>
 </section>
-<section id="joining-additional-tables">
-<h2><span class="section-number">4.5.4. </span>Joindre des tables additionnelles<a class="headerlink" href="#joining-additional-tables" title="Lien vers cette rubrique"></a></h2>
-<p>It is possible to join additional tables to the two main views (<code class="docutils literal notranslate"><span class="pre">vw_tww_wastewater_structure</span></code> and <code class="docutils literal notranslate"><span class="pre">vw_tww_reach</span></code>).
-This is done by using a YAML definition file for each view and defining a list of joined tables.
-Fields of these tables will be joined as read-only fields as they are discarded in edit triggers.
-For joining a table to <code class="docutils literal notranslate"><span class="pre">tww_od.wastewater_structure</span></code>, here is an example:</p>
+<section id="adding-fields-to-base-tables">
+<h3><span class="section-number">4.5.1.4. </span>Adding fields to base tables<a class="headerlink" href="#adding-fields-to-base-tables" title="Lien vers cette rubrique"></a></h3>
+<p>Instead of adding additional fields to base tables, it is advised to create a new table with a foreign key linking it to the base table using <a class="reference external" href="https://github.com/opengisch/pum">PUM</a>.</p>
+</section>
+<section id="datamodel-updates">
+<h3><span class="section-number">4.5.1.5. </span>Datamodel updates<a class="headerlink" href="#datamodel-updates" title="Lien vers cette rubrique"></a></h3>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>The process of updating the database is currenty being overhauled. The following information can therefore change before the next release</p>
+</div>
+<section id="adding-fields-and-tables">
+<h4><span class="section-number">4.5.1.5.1. </span>Adding fields and tables<a class="headerlink" href="#adding-fields-and-tables" title="Lien vers cette rubrique"></a></h4>
+<p>Afin de permettre les mises à niveau du modèle de données, un script de création et un script de suppression de la vue doivent être fournis. Ces scripts (SQL ou Python) doivent être placés dans un endroit spécifique et être nommés pre-all.{py,sql} et post-all.{py,sql}. Le chemin sera donné comme paramètre à PUM lors de la mise à niveau  (voir PUM <a class="reference external" href="https://github.com/opengisch/pum">documentation</a>).</p>
+<p>Si quelqu’un souhaite avoir ces vues mises à jour automatiquement lors d’une mise à jour du modèle, Pirogue peut être utilisé dynamiquement pour générer les vues. L’exemple de création des vues dans le modèle peut être utilisé.</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>It is discouraged to add additional fields to base tables that are defined by TEKSI Wastewater, as they can interfere with datamodel updates.</p>
+</div>
+<p>If it is necessary to add custom fields, create a separate table with a foreign key pointing to the TEKSI base table and join it to the base views.</p>
+</section>
+</section>
+</section>
+<section id="modification-framework-for-application-schema">
+<span id="modification-framework"></span><h2><span class="section-number">4.5.2. </span>Modification Framework for application schema<a class="headerlink" href="#modification-framework-for-application-schema" title="Lien vers cette rubrique"></a></h2>
+<p>In order to add app modifications to TEKSI in a standardised way, TEKSI wastewater set into place an modification framework.</p>
+<p>There are two types of modification:</p>
+<ul class="simple">
+<li><p>Official TEKSI Wastewater modification</p></li>
+<li><p>custom modification</p></li>
+</ul>
+<p>The modification framework allows the following actions:</p>
+<ul class="simple">
+<li><p>Adding additional views using sql</p></li>
+<li><p>Adding additional triggers using sql</p></li>
+<li><p>Activating/deactivating value list items</p></li>
+<li><p>Joining additional tables to views</p></li>
+</ul>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>The modification framework is not intended for alterations on the schema <code class="docutils literal notranslate"><span class="pre">tww_od</span></code>. Use PUM functionalities instead</p>
+</div>
+<section id="creation-and-loading-of-modifications">
+<h3><span class="section-number">4.5.2.1. </span>Creation and loading of modifications<a class="headerlink" href="#creation-and-loading-of-modifications" title="Lien vers cette rubrique"></a></h3>
+<p>All modification parameters are handles in a yaml that is passed to PUM <a class="reference external" href="https://github.com/opengisch/pum">documentation</a> on update.
+The the default yaml is</p>
+<div class="highlight-YAML notranslate"><div class="highlight"><pre><span></span><span class="nt">base_configurations</span><span class="p">:</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">lang_code</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">en</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">SRID</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2056</span>
+
+<span class="nt">extra_definitions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">vw_tww_reach</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<span class="w">  </span><span class="nt">vw_tww_wastewater_structure</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<span class="w">  </span><span class="nt">vw_tww_overflow</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<span class="w">  </span><span class="nt">vw_wastewater_structure</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<span class="w">  </span><span class="nt">vw_tww_infiltration_installation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<span class="w">  </span><span class="nt">vw_tww_channel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<span class="w">  </span><span class="nt">vw_tww_damage_channel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<span class="w">  </span><span class="nt">vw_tww_additional_ws</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<span class="w">  </span><span class="nt">vw_tww_measurement_series</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+
+<span class="nt">multiple_inherintances</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">vw_maintenance</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;view/multipleinheritance/vw_maintenance_event.yaml&quot;</span>
+<span class="w">  </span><span class="nt">vw_damage</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;view/multipleinheritance/vw_damage.yaml&quot;</span>
+
+<span class="nt">simple_joins_yaml</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">vw_export_reach</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;view/simplejoins/export/vw_export_reach.yaml&quot;</span>
+<span class="w">  </span><span class="nt">vw_export_wastewater_structure</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;view/simplejoins/export/vw_export_wastewater_structure.yaml&quot;</span>
+
+<span class="nt">modification_repositories</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ci</span>
+<span class="w">    </span><span class="nt">active</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">    </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">modification_repos\ci-extension\config.yaml</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">agxx</span>
+<span class="w">    </span><span class="nt">active</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">    </span><span class="nt">reset_vl</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">    </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">modification_repos\tww2ag6496\config.yaml</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">demo</span>
+<span class="w">    </span><span class="nt">active</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">    </span><span class="nt">reset_vl</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">    </span><span class="nt">variables</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">myVariable</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hello</span><span class="nv"> </span><span class="s">World&quot;</span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">literal</span>
+<span class="w">      </span><span class="nt">myNumber</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">number</span>
+<span class="w">    </span><span class="nt">sql_files</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">\datamodel\app\modification_repos\dummy\000_demo.sql</span>
+<span class="w">    </span><span class="nt">reset_vl_files</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">\datamodel\app\modification_repos\dummy\vl_management.sql</span>
+</pre></div>
+</div>
+<p>The yaml handles the following parameters:</p>
+<section id="base-configurations">
+<h4><span class="section-number">4.5.2.1.1. </span>Base Configurations<a class="headerlink" href="#base-configurations" title="Lien vers cette rubrique"></a></h4>
+<p>Base Configurations handle variables that are handled over the entire project. Those parameters are exposed in TMMT as well, but when passing a yaml definition, they are overridden</p>
+<table class="docutils align-default" id="id5">
+<caption><span class="caption-text">Base Configurations</span><a class="headerlink" href="#id5" title="Lien vers ce tableau"></a></caption>
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">lang_code</span></code></p></td>
+<td><p>Specifies the language code used for web-optimised views. Expected value is a language code string. Defaults to « en ».</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SRID</span></code></p></td>
+<td><p>Specifies the Spatial Reference System Identifier. Expected value is an integer representing the SRID,  Defaults to 2056.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="extra-definitions">
+<h4><span class="section-number">4.5.2.1.2. </span>Extra Definitions<a class="headerlink" href="#extra-definitions" title="Lien vers cette rubrique"></a></h4>
+<p>Extra definitions allow adding additional fields to custom views.
+The parameter defines the path to the corresponding yaml definition.
+The yaml is structured as follows:</p>
 <div class="highlight-YAML notranslate"><div class="highlight"><pre><span></span><span class="nt">joins</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">my_extra_join</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">table</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tww_od.my_table</span>
@@ -136,21 +257,131 @@ For joining a table to <code class="docutils literal notranslate"><span class="p
 <span class="w">    </span><span class="nt">skip_columns</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">field_1</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">field_2</span>
+<span class="w">    </span><span class="nt">remap_columns_select</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">field_3</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_renamed_field</span>
 <span class="w">    </span><span class="nt">remap_columns</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">field_3</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_renamed_field</span>
 <span class="w">    </span><span class="nt">join_on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mt.fk_ws = ws.obj_id</span>
+<span class="w">            </span><span class="l l-Scalar l-Scalar-Plain">read_only</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">table</span></code> et <code class="docutils literal notranslate"><span class="pre">join_on</span></code> sont les clés obligatoires, les autres sont optionnelles.</p>
-<p>Ce fichier YAML doit recevoir le chemin du fichier au lancement du script :</p>
-<p><code class="docutils literal notranslate"><span class="pre">./view/create_views.py</span> <span class="pre">--pg_service</span> <span class="pre">pg_tww</span> <span class="pre">--srid</span> <span class="pre">2056</span> <span class="pre">--tww_wastewater_structure_extra</span> <span class="pre">/path_to/extra_ws.yaml</span></code></p>
-<p>And similarly for <code class="docutils literal notranslate"><span class="pre">vw_tww_reach</span></code> view, by specifying <code class="docutils literal notranslate"><span class="pre">tww_reach_extra</span></code> variable to the corresponding YAML file path.</p>
+<p><code class="docutils literal notranslate"><span class="pre">table</span></code> and <code class="docutils literal notranslate"><span class="pre">join_on</span></code> are mandatory keys, all the others are optional.
+<code class="docutils literal notranslate"><span class="pre">read_only</span></code> defaults to true. <code class="docutils literal notranslate"><span class="pre">remap_columns</span></code> is used on insert and update, <code class="docutils literal notranslate"><span class="pre">remap_columns_select</span></code> on Select.
+Entries that are in <code class="docutils literal notranslate"><span class="pre">skip_columns</span></code> but listed in <code class="docutils literal notranslate"><span class="pre">remap_columns</span></code> are not skipped on insert and update.
+It is expected that mt.fk_ws has a ON DELETE CASCADE`` foreign key constraint.</p>
 </section>
-<section id="creating-custom-views">
-<h2><span class="section-number">4.5.5. </span>Créer des vues personnalisées<a class="headerlink" href="#creating-custom-views" title="Lien vers cette rubrique"></a></h2>
-<p>Il est possible de créer des vues personnalisées et de les ajouter au modèle de données.</p>
-<p>Afin de permettre les mises à niveau du modèle de données, un script de création et un script de suppression de la vue doivent être fournis. Ces scripts (SQL ou Python) doivent être placés dans un endroit spécifique et être nommés pre-all.{py,sql} et post-all.{py,sql}. Le chemin sera donné comme paramètre à PUM lors de la mise à niveau  (voir PUM <a class="reference external" href="https://github.com/opengisch/pum">documentation</a>).</p>
-<p>Si quelqu’un souhaite avoir ces vues mises à jour automatiquement lors d’une mise à jour du modèle, Pirogue peut être utilisé dynamiquement pour générer les vues. L’exemple de création des vues dans le modèle peut être utilisé.</p>
+<section id="multiple-inheritances">
+<h4><span class="section-number">4.5.2.1.3. </span>Multiple Inheritances<a class="headerlink" href="#multiple-inheritances" title="Lien vers cette rubrique"></a></h4>
+<p>Multiple Inheritances are used to aggregate all subtypes of a superclass into one view.
+The parameter defines the path to the corresponding yaml definition.
+The yaml is structured as follows:</p>
+<div class="highlight-YAML notranslate"><div class="highlight"><pre><span></span><span class="nt">table</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tww_od.overflow</span>
+<span class="nt">view_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vw_tww_overflow</span>
+<span class="nt">view_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tww_app</span>
+<span class="nt">allow_type_change</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+<span class="nt">allow_parent_only</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="nt">pkey_default_value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+
+<span class="nt">additional_columns</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">geometry</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">n1.situation3d_geometry</span>
+<span class="w">  </span><span class="nt">my_column</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nt.foobar</span>
+<span class="nt">additional_joins</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;</span>
+<span class="w">  </span><span class="no">LEFT JOIN tww_od.wastewater_node n1 ON overflow.fk_wastewater_node::text = n1.obj_id::text</span>
+<span class="w">  </span><span class="no">LEFT JOIN tww_od.my_table mt ON overflow.obj_id::text = mt.baz::text</span>
+
+<span class="nt">joins</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">leapingweir</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">table</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tww_od.leapingweir</span>
+
+<span class="w">  </span><span class="nt">prank_weir</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">table</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tww_od.prank_weir</span>
+
+<span class="w">  </span><span class="nt">pump</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">table</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tww_od.pump</span>
+</pre></div>
+</div>
+</section>
+<section id="simple-joins-yaml">
+<h4><span class="section-number">4.5.2.1.4. </span>Simple Joins YAML<a class="headerlink" href="#simple-joins-yaml" title="Lien vers cette rubrique"></a></h4>
+<p>The Simple Join YAML allows altering the path from which the join definition is loaded.
+The parameter defines the path to the corresponding yaml definition.
+The yaml is structured as follows:</p>
+<div class="highlight-YAML notranslate"><div class="highlight"><pre><span></span><span class="nt">view_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vw_export_wastewater_structure</span>
+<span class="nt">view_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tww_app</span>
+<span class="nt">table</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tww_app.vw_tww_wastewater_structure</span>
+<span class="nt">pkey</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">obj_id</span>
+
+<span class="nt">joins</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">cover_shape</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">table</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tww_vl.cover_cover_shape</span>
+<span class="w">        </span><span class="nt">fkey</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">co_shape</span>
+<span class="w">        </span><span class="nt">prefix</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cover_shape_</span>
+<span class="p p-Indicator">[</span><span class="nv">...</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+</section>
+<section id="modification-repositories">
+<h4><span class="section-number">4.5.2.1.5. </span>Modification Repositories<a class="headerlink" href="#modification-repositories" title="Lien vers cette rubrique"></a></h4>
+<table class="docutils align-default" id="id6">
+<caption><span class="caption-text">Modification Repositories</span><a class="headerlink" href="#id6" title="Lien vers ce tableau"></a></caption>
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">id</span></code></p></td>
+<td><p>Unique identifier for the modification repository.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">active</span></code></p></td>
+<td><p>Boolean indicating if the modification repository should be activated.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">reset_vl</span></code></p></td>
+<td><p>Boolean indicating if the value list entries treated by reset_vl_files should be reset.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">template</span></code></p></td>
+<td><p>Path to the template configuration file.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">variables</span></code></p></td>
+<td><p>Dictionary of variables with their values and types. Overridden by <code class="docutils literal notranslate"><span class="pre">template</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sql_files</span></code></p></td>
+<td><p>List of SQL files to be executed. Overridden by <code class="docutils literal notranslate"><span class="pre">template</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">reset_vl_files</span></code></p></td>
+<td><p>List of SQL files for activating/deactivating value list entries. Activates/deactivates based on the <code class="docutils literal notranslate"><span class="pre">active</span></code> setting. Overridden by <code class="docutils literal notranslate"><span class="pre">template</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="modification-repository-templates">
+<h4><span class="section-number">4.5.2.1.6. </span>Modification Repository Templates<a class="headerlink" href="#modification-repository-templates" title="Lien vers cette rubrique"></a></h4>
+<p>A modification repository template allows to predefine the values of the following repository flags:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">variables</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sql_files</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reset_vl_files</span></code></p></li>
+</ul>
+<p>Additionally, it allows setting values for Extra Definitions, MultipleInheritances and SimpleJoin YAML if the app_modification yaml does not define a value.</p>
+</section>
+</section>
+<section id="limitations-for-sql-scripts">
+<h3><span class="section-number">4.5.2.2. </span>Limitations for sql scripts<a class="headerlink" href="#limitations-for-sql-scripts" title="Lien vers cette rubrique"></a></h3>
+<p>The sql scripts must only be used for the following purposes:</p>
+<ul class="simple">
+<li><p>Adding additional views to the application schema</p></li>
+<li><p>Adding additional <code class="docutils literal notranslate"><span class="pre">INSTEAD</span> <span class="pre">OF</span></code> triggers to the application schema</p></li>
+<li><p>Adding additional triggers to populate od tables that are not part of the VSA-DSS datamodel</p></li>
+<li><p>Activating/deactivating items to value lists</p></li>
+</ul>
+<p>Note that the sql must not be used to create new tables in <code class="docutils literal notranslate"><span class="pre">tww_od</span></code>. Use <a class="reference external" href="https://github.com/opengisch/pum">PUM</a> for these cases.</p>
+<p>Please note that these scripts are re-run on every datamodel update.
+They must therefore be written in such a way that existing data does not interfere with them (i.e. using <code class="docutils literal notranslate"><span class="pre">CREATE</span> <span class="pre">OR</span> <span class="pre">REPLACE</span> <span class="pre">VIEW</span></code> or <code class="docutils literal notranslate"><span class="pre">ON</span> <span class="pre">CONFLICT</span> <span class="pre">DO</span> <span class="pre">NOTHING</span></code>).</p>
+</section>
 </section>
 </section>
 
