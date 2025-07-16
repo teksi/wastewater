@@ -1,3 +1,5 @@
+.. customize-datamodel:
+
 Customization of the data model
 ===============================
 
@@ -55,7 +57,7 @@ If one wants to have these views automatically updated when fields are added the
 .. attention:: It is discouraged to add additional fields to base tables that are defined by TEKSI Wastewater, as they can interfere with datamodel updates.
 If it is necessary to add custom fields, create a separate table with a foreign key pointing to the TEKSI base table and join it to the base views.
 
-
+.. _modification-framework:
 Modification Framework for application schema
 ---------------
 
