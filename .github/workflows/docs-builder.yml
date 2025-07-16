@@ -21,16 +21,12 @@ on:
     - cron: "30 04 * * *"
   workflow_dispatch:
 
-
 jobs:
   datamodel-documentation:
     uses: ./.github/workflows/datamodel-create-dumps.yml
-    with:
-        extension: ""
 
   build:
     needs: datamodel-documentation
-    if: needs.datamodel-documentation.outputs.run-docs == 'true'
     runs-on: ubuntu-24.04
 
     steps:

@@ -9,6 +9,8 @@ TEKSI Wastewater maintains database extensions to serve the following models:
 
 * AG-96 Genereller_Entwaesserungsplan_AG Version 2.0.0
 
+The database is automatically loaded with the necessary tables and attributes for the extension.
+In order to be able to use an extension, activate the corresponding app modification :ref:`modification-framework`
 
 .. _empty-extension-model:
 
@@ -46,7 +48,7 @@ In order to use a database extension, we need to load them from the source code:
 	REM Set the PYTHONPATH to include the directory containing the app module
 	set "PYTHONPATH=%tww_dir%\datamodel;%PYTHONPATH%"
 
-    python -m app.create_app.py --pg_service %myservice% --srid 2056 --drop-schema --extension_agxx
+    python -m app.create_app.py --pg_service %myservice% --srid 2056 --drop-schema --extension_names agxx foobar demo
 
     endlocal
     PAUSE

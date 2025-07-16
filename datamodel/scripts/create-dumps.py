@@ -34,17 +34,16 @@ def _cmd(args):
         raise e
 
 
-def files_description(version, extension_name):
+def files_description(version):
     return f"""
 
 ## Descriptions of the files
 File | Description
 ------------ | -------------
-tww_{version}_structure{'_'+extension_name if extension_name else ''}.sql | Contains the structure of tables and system schema content
-tww_{version}_structure_with_value_lists{'_'+extension_name if extension_name else ''}.sql | Contains the structure of tables, system schema data and value lists data
-tww_{version}_demo_data{'_'+extension_name if extension_name else ''}.backup | Data-only backup of the `tww_od` schema (i.e. ordinary data) from demonstration set of data
-tww_{version}_structure_and_demo_data{'_'+extension_name if extension_name else ''}.backup | Complete backup with structure and data of the demonstration set of data
-Additionally, there are extension files which have the corresponding extension name appended. The extensions can be configured in datamodel/extensions/config.yaml
+tww_{version}_structure.sql | Contains the structure of tables and system schema content
+tww_{version}_structure_with_value_lists.sql | Contains the structure of tables, system schema data and value lists data
+tww_{version}_demo_data.backup | Data-only backup of the `tww_od` schema (i.e. ordinary data) from demonstration set of data
+tww_{version}_structure_and_demo_data.backup | Complete backup with structure and data of the demonstration set of data
 
 * If you plan to **use tww for production**, it is more likely you will be using the plain SQL `tww_{version}_structure_with_value_lists.sql`.
 * If you want to **give a try at tww**, you will likely restore the `tww_{version}_structure_and_demo_data.backup` backup file.
@@ -56,16 +55,13 @@ def create_dumps(**args):
     Creates all dumps
     :return: the files names in a list
     """
-
-    files = []
-    files.extend(create_plain_structure_only(**args))
-    files.append(create_plain_value_list(**args))
-    files.append(create_backup_complete(**args))
-
-    return files
+    file_s = create_plain_structure_only(**args)
+    file_v = create_plain_value_list(structure_dump_file=file_s, **args)
+    file_b = create_backup_complete(**args)
+    return file_s, file_v, file_b
 
 
-def create_plain_structure_only(database: str, version: str, extension_suffix: str = None):
+def create_plain_structure_only(database: str, version: str):
     """
     Create a plain SQL dump of data structure
     of all schemas and the content of pum_sys.inf
@@ -74,7 +70,7 @@ def create_plain_structure_only(database: str, version: str, extension_suffix: s
     print("::group::plain SQL structure only")
 
     # structure
-    dump_s = f"tww_{version}_structure{extension_suffix}.sql"
+    dump_s = f"tww_{version}_structure.sql"
 
     print(f"Creating dump {dump_s}")
     dump_file_s = f"datamodel/artifacts/{dump_s}"
@@ -94,7 +90,7 @@ def create_plain_structure_only(database: str, version: str, extension_suffix: s
     )
 
     # dump all from tww_sys except logged_actions
-    dump_i = f"tww_{version}_pum_info{extension_suffix}.sql"
+    dump_i = f"tww_{version}_pum_info.sql"
     print(f"Creating dump {dump_i}")
     dump_file_i = f"datamodel/artifacts/{dump_i}"
     _cmd(
@@ -118,18 +114,19 @@ def create_plain_structure_only(database: str, version: str, extension_suffix: s
 
     print("::endgroup::")
 
-    return [dump_file_i, dump_file_s]
+    return dump_file_s
 
 
-def create_plain_value_list(database: str, version: str, extension_suffix: str = None):
+def create_plain_value_list(database: str, version: str, structure_dump_file: str):
     """
     Create a plain SQL dump of data structure (result of create_structure_only)
     with value list content
     :return: the file name of the dump
     """
     print("::group::value lists dump")
-    dump = f"tww_{version}_structure_with_value_lists{extension_suffix}.sql"
-    structure_dump_file = f"datamodel/artifacts/tww_{version}_structure{extension_suffix}.sql"
+
+    dump = f"tww_{version}_structure_with_value_lists.sql"
+
     print(f"Creating dump {dump}")
     dump_file = f"datamodel/artifacts/{dump}"
 
@@ -165,13 +162,13 @@ def create_plain_value_list(database: str, version: str, extension_suffix: str =
     return dump_file
 
 
-def create_backup_complete(database: str, version: str, extension_suffix: str = None):
+def create_backup_complete(database: str, version: str):
     """
     Create data + structure dump
     :return: the file name
     """
     # Create data + structure dumps (with sample data)
-    dump = f"tww_{version}_structure_and_demo_data{extension_suffix}.backup"
+    dump = f"tww_{version}_structure_and_demo_data.backup"
     print(f"::group::{dump}")
     print(f"Creating dump {dump}")
     dump_file = f"datamodel/artifacts/{dump}"
@@ -202,9 +199,6 @@ def get_parser():
     _parser = argparse.ArgumentParser("create-dumps.py")
     _parser.add_argument("--version", "-v", help="Sets the version", default="dev")
     _parser.add_argument("--database", "-d", help="Sets the database name", default="tww")
-    _parser.add_argument(
-        "--extension_name", "-x", help="Name of the database extension (optional)"
-    )
     return _parser
 
 
@@ -212,9 +206,6 @@ if __name__ == "__main__":
     parser = get_parser()
     args = parser.parse_args()
 
-    extension_suffix = ("_" + args.extension_name) if args.extension_name else ""
     os.makedirs("datamodel/artifacts", exist_ok=True)
-    files = create_dumps(
-        version=args.version, database=args.database, extension_suffix=extension_suffix
-    )
+    files = create_dumps(version=args.version, database=args.database)
     print("Dumps created: {}".format(", ".join(files)))
