@@ -63,12 +63,6 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: datamodel-dumps
-          path: datamodel/artifacts/
-          if-no-files-found: error
-
-      - uses: actions/upload-artifact@v4
-        with:
           name: datamodel-schemaspy
           path: datamodel/schemaspy/
           if-no-files-found: error
@@ -87,8 +81,14 @@ jobs:
       - name: Upload datamodel dumps as GitHub Release asset
         if: ${{ inputs.release_tag != '' }}
         run: |
-          gh release upload "${{ inputs.release_tag }}" datamodel-dumps.zip#oqtopus.datamodel --repo "$GITHUB_REPOSITORY"
-          gh release upload "${{ inputs.release_tag }}" datamodel-schemaspy.zip --repo "$GITHUB_REPOSITORY"
+          if [ -z "${{ matrix.extension }}" ]; then
+            gh release upload "${{ inputs.release_tag }}" datamodel-dumps.zip#oqtopus.datamodel --repo "$GITHUB_REPOSITORY"
+            gh release upload "${{ inputs.release_tag }}" datamodel-schemaspy.zip --repo "$GITHUB_REPOSITORY"
+          else
+            gh release upload "${{ inputs.release_tag }}" datamodel-dumps_${{ matrix.extension }}.zip#oqtopus.datamodel --repo "$GITHUB_REPOSITORY"
+            gh release upload "${{ inputs.release_tag }}" datamodel-schemaspy_${{ matrix.extension }}.zip --repo "$GITHUB_REPOSITORY"
+          fi
+
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ github.ref_name }}
