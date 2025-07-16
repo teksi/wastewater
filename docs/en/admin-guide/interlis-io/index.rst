@@ -13,6 +13,7 @@ It is currently capable of importing and exporting the following models:
 * SIA405_ABWASSER_2020_1_LV95
 * DSS_2020_1_LV95
 * VSA_KEK_2020_1_LV95
+* SIA405_Base_Abwasser_1_LV95 (to export your own additional organisations that are not part of the centralized VSA Organisation dataset)
 
 Note that currently, exports are possible in German only. Translated exports are on the roadmap, let us know if you are interested in this feature.
 
@@ -77,7 +78,7 @@ You should now see new `import` and `export` buttons in the TWW toolbar.
 .. _interlis_export:
 
 INTERLIS Export
--------------------------------------------------
+^^^^^^^^^^^^^
 
 .. figure:: images/tww_interlis_export_button.png
 
@@ -149,10 +150,25 @@ You can check the protocol window and the text logs for further details.
      - Validation of the created xtf file(s) with ilivalidator
      - ``*.ilivalidator-MODELNAME.log``
 
+
+Export extra organisations
+-------------------------------------------------
+
+.. figure:: images/tww_interlis_export_organisation.jpg
+
+Since Release 2025.x you can also export additional organisations that are not maintained as part of the `VSA organisation dataset <https://vsa.ch/models/organisation/vsa_organisationen_2020_1.xtf>`_ and that you are maintaining yourself. For a general introduction on how organisation are maintained by the Verband Schweizer Abwasser & Gewässerschutzfachleute (VSA) `check this documentation <https://vsa.ch/fachbereiche-cc/siedlungsentwaesserung/generelle-entwaesserungsplanung/datenmanagement/#Organisationstabelle>`_.
+
+Extra organisations could be for example bigger private organisations that are ususally summarized as 'Privat' when publishing to others, but they are relevant for you to be distinguised. For an export they need to be flagged as ``tww_local_extension = True``
+
+.. figure:: images/organisation_tww_local_extension.png
+
+
+
+
 .. _interlis_import:
 
 INTERLIS Import
--------------------------------------------------
+^^^^^^^^^^^^^
 
 .. figure:: images/tww_interlis_import_button.png
 

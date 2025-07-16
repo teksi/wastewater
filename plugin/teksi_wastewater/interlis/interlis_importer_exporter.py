@@ -19,6 +19,9 @@ from .interlis_model_mapping.model_interlis_dss import ModelInterlisDss
 from .interlis_model_mapping.model_interlis_sia405_abwasser import (
     ModelInterlisSia405Abwasser,
 )
+from .interlis_model_mapping.model_interlis_sia405_base_abwasser import (
+    ModelInterlisSia405BaseAbwasser,
+)
 from .interlis_model_mapping.model_interlis_vsa_kek import ModelInterlisVsaKek
 from .interlis_model_mapping.model_tww import ModelTwwSys, ModelTwwVl
 from .interlis_model_mapping.model_tww_od import ModelTwwOd
@@ -66,15 +69,18 @@ class InterlisImporterExporter:
         import_models = self.interlisTools.get_xtf_models(xtf_file_input)
 
         import_model = ""
+        if config.MODEL_NAME_SIA405_BASE_ABWASSER in import_models:
+            import_model = config.MODEL_NAME_SIA405_BASE_ABWASSER
+
+        # override base model if necessary
         if config.MODEL_NAME_VSA_KEK in import_models:
             import_model = config.MODEL_NAME_VSA_KEK
         elif config.MODEL_NAME_SIA405_ABWASSER in import_models:
             import_model = config.MODEL_NAME_SIA405_ABWASSER
         elif config.MODEL_NAME_DSS in import_models:
             import_model = config.MODEL_NAME_DSS
-        elif config.MODEL_NAME_SIA405_BASE_ABWASSER in import_models:
-            import_model = config.MODEL_NAME_SIA405_ABWASSER
-        else:
+
+        if not import_model:
             error_text = f"No supported model was found among '{import_models}'."
             if len(import_models) == 1:
                 error_text = f"The model '{import_models[0]}' is not supported."
@@ -592,8 +598,11 @@ class InterlisImporterExporter:
                         )
 
     def _init_model_classes(self, model):
-        ModelInterlis = ModelInterlisSia405Abwasser
-        if model == config.MODEL_NAME_DSS:
+        if model == config.MODEL_NAME_SIA405_BASE_ABWASSER:
+            ModelInterlis = ModelInterlisSia405BaseAbwasser
+        elif model == config.MODEL_NAME_SIA405_ABWASSER:
+            ModelInterlis = ModelInterlisSia405Abwasser
+        elif model == config.MODEL_NAME_DSS:
             ModelInterlis = ModelInterlisDss
         elif model == config.MODEL_NAME_VSA_KEK:
             ModelInterlis = ModelInterlisVsaKek
