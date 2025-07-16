@@ -12,8 +12,6 @@ from pum import HookBase
 from triggers.set_defaults_and_triggers import set_defaults_and_triggers
 from view.maintenance_views import (
     vw_tww_channel,
-    vw_tww_channel_maintenance,
-    vw_tww_ws_maintenance,
 )
 from view.vw_tww_additional_ws import vw_tww_additional_ws
 from view.vw_tww_damage_channel import vw_tww_damage_channel
