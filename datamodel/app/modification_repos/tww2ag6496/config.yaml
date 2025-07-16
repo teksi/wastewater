@@ -8,10 +8,9 @@ variables:
 
 sql_files:
   - file: sql/01_defaults.sql
-  - file: sql/02_extensions_cfg_agxx_sys.sql
+  - file: sql/02_aux_functions.sql
   - file: sql/03_export_views.sql
-  - file: sql/04_vl_activation.sql
-  - file: sql/05_functions.sql
+  - file: sql/04_functions.sql
   - file: sql/11_ag96_triggerfuncs_node.sql
   - file: sql/12_ag96_triggerfuncs_other.sql
   - file: sql/13_ag96_createtriggers.sql
