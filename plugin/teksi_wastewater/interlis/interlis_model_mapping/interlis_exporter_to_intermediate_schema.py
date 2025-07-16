@@ -2923,7 +2923,6 @@ class InterlisExporterToIntermediateSchema:
             logger.warning(f"Value '{val}' exceeds expected length ({max_length})", stacklevel=2)
         return val[0:max_length]
 
-
     def round(self, val, digits):
         """
         Rounds val to the provided digits
@@ -2935,7 +2934,6 @@ class InterlisExporterToIntermediateSchema:
                 return round(val)
             else:
                 return round(val, digits)
-
 
     def _modulo_angle(self, val):
         """
