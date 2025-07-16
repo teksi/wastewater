@@ -61,18 +61,21 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#usage-gui">4.4.3. Benutzung (GUI)</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#enable-admin-mode">4.4.3.1. Aktivieren Sie den Admin-Modus</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#interlis-export">4.4.3.2. INTERLIS Export</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#interlis-import">4.4.3.3. INTERLIS Import</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#usage-command-line">4.4.4. Benutzung (Befehlszeile)</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#dependencies">4.4.4.1. Dependencies</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#import">4.4.4.2. Import</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#export">4.4.4.3. Export</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#interlis-export">4.4.4. INTERLIS Export</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#export-extra-organisations">4.4.4.1. Export extra organisations</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#quality-control">4.4.5. Qualitätskontrolle</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#quality-control-with-vsa-online-checker-fachprufung-mit-vsa-checker-online">4.4.5.1. Qualitätskontrolle mit VSA Checker (Fachprüfung) (online)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#interlis-import">4.4.5. INTERLIS Import</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#usage-command-line">4.4.6. Benutzung (Befehlszeile)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dependencies">4.4.6.1. Dependencies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#import">4.4.6.2. Import</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#export">4.4.6.3. Export</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#quality-control">4.4.7. Qualitätskontrolle</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#quality-control-with-vsa-online-checker-fachprufung-mit-vsa-checker-online">4.4.7.1. Qualitätskontrolle mit VSA Checker (Fachprüfung) (online)</a></li>
 </ul>
 </li>
 </ul>
@@ -125,6 +128,7 @@ It is currently capable of importing and exporting the following models:</p>
 <li><p>SIA405_ABWASSER_2020_1_LV95</p></li>
 <li><p>DSS_2020_1_LV95</p></li>
 <li><p>VSA_KEK_2020_1_LV95</p></li>
+<li><p>SIA405_Base_Abwasser_1_LV95 (to export your own additional organisations that are not part of the centralized VSA Organisation dataset)</p></li>
 </ul>
 <p>Note that currently, exports are possible in German only. Translated exports are on the roadmap, let us know if you are interested in this feature.</p>
 </section>
@@ -181,8 +185,9 @@ Linux : use the package manager</p>
 <img alt="../../_images/toolbar.png" src="../../_images/toolbar.png" />
 </figure>
 </section>
+</section>
 <section id="interlis-export">
-<span id="id1"></span><h3><span class="section-number">4.4.3.2. </span>INTERLIS Export<a class="headerlink" href="#interlis-export" title="Link to this heading"></a></h3>
+<span id="id1"></span><h2><span class="section-number">4.4.4. </span>INTERLIS Export<a class="headerlink" href="#interlis-export" title="Link to this heading"></a></h2>
 <figure class="align-default">
 <img alt="../../_images/tww_interlis_export_button.png" src="../../_images/tww_interlis_export_button.png" />
 </figure>
@@ -260,9 +265,20 @@ If the export is not successfull you will get either error messages during the e
 </tr>
 </tbody>
 </table>
+<section id="export-extra-organisations">
+<h3><span class="section-number">4.4.4.1. </span>Export extra organisations<a class="headerlink" href="#export-extra-organisations" title="Link to this heading"></a></h3>
+<figure class="align-default">
+<img alt="../../_images/tww_interlis_export_organisation.jpg" src="../../_images/tww_interlis_export_organisation.jpg" />
+</figure>
+<p>Since Release 2025.x you can also export additional organisations that are not maintained as part of the <a class="reference external" href="https://vsa.ch/models/organisation/vsa_organisationen_2020_1.xtf">VSA organisation dataset</a> and that you are maintaining yourself. For a general introduction on how organisation are maintained by the Verband Schweizer Abwasser &amp; Gewässerschutzfachleute (VSA) <a class="reference external" href="https://vsa.ch/fachbereiche-cc/siedlungsentwaesserung/generelle-entwaesserungsplanung/datenmanagement/#Organisationstabelle">check this documentation</a>.</p>
+<p>Extra organisations could be for example bigger private organisations that are ususally summarized as ‚Privat‘ when publishing to others, but they are relevant for you to be distinguised. For an export they need to be flagged as <code class="docutils literal notranslate"><span class="pre">tww_local_extension</span> <span class="pre">=</span> <span class="pre">True</span></code></p>
+<figure class="align-default">
+<img alt="../../_images/organisation_tww_local_extension.png" src="../../_images/organisation_tww_local_extension.png" />
+</figure>
+</section>
 </section>
 <section id="interlis-import">
-<span id="id4"></span><h3><span class="section-number">4.4.3.3. </span>INTERLIS Import<a class="headerlink" href="#interlis-import" title="Link to this heading"></a></h3>
+<span id="id4"></span><h2><span class="section-number">4.4.5. </span>INTERLIS Import<a class="headerlink" href="#interlis-import" title="Link to this heading"></a></h2>
 <figure class="align-default">
 <img alt="../../_images/tww_interlis_import_button.png" src="../../_images/tww_interlis_import_button.png" />
 </figure>
@@ -295,12 +311,11 @@ If the export is not successfull you will get either error messages during the e
 <p>Wenn Sie mit den Importoptionen zufrieden sind, bestätigen Sie den Dialog, um die Änderungen in Ihrer Datenbank zu übernehmen.</p>
 <p>If the import was successful a green success message appears.</p>
 </section>
-</section>
 <section id="usage-command-line">
-<h2><span class="section-number">4.4.4. </span>Benutzung (Befehlszeile)<a class="headerlink" href="#usage-command-line" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.4.6. </span>Benutzung (Befehlszeile)<a class="headerlink" href="#usage-command-line" title="Link to this heading"></a></h2>
 <p>For advanced usage, the import/export tool can also be used as a command line tool.</p>
 <section id="dependencies">
-<h3><span class="section-number">4.4.4.1. </span>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.6.1. </span>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading"></a></h3>
 <p>The QGIS python classes must be available in the python interpreter.</p>
 <ul class="simple">
 <li><p>On windows you can use the OSGeo4W environment</p></li>
@@ -308,7 +323,7 @@ If the export is not successfull you will get either error messages during the e
 </ul>
 </section>
 <section id="import">
-<h3><span class="section-number">4.4.4.2. </span>Import<a class="headerlink" href="#import" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.6.2. </span>Import<a class="headerlink" href="#import" title="Link to this heading"></a></h3>
 <p>Import example</p>
 <div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3<span class="w"> </span>plugin/tww_cmd.py<span class="w"> </span>interlis_import<span class="w"> </span>--xtf_file<span class="w"> </span>plugin/teksi_wastewater/tests/data/minimal-dataset-SIA405-ABWASSER.xtf<span class="w"> </span>--pgservice<span class="w"> </span>pg_tww
 </pre></div>
@@ -353,7 +368,7 @@ If the export is not successfull you will get either error messages during the e
 </div>
 </section>
 <section id="export">
-<h3><span class="section-number">4.4.4.3. </span>Export<a class="headerlink" href="#export" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.6.3. </span>Export<a class="headerlink" href="#export" title="Link to this heading"></a></h3>
 <p>Export example</p>
 <div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="go">python3 plugin/tww_cmd.py interlis_export --xtf_file &quot;output.xtf&quot; --pgservice pg_tww</span>
 </pre></div>
@@ -399,9 +414,9 @@ If the export is not successfull you will get either error messages during the e
 </section>
 </section>
 <section id="quality-control">
-<h2><span class="section-number">4.4.5. </span>Qualitätskontrolle<a class="headerlink" href="#quality-control" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.4.7. </span>Qualitätskontrolle<a class="headerlink" href="#quality-control" title="Link to this heading"></a></h2>
 <section id="quality-control-with-vsa-online-checker-fachprufung-mit-vsa-checker-online">
-<h3><span class="section-number">4.4.5.1. </span>Qualitätskontrolle mit VSA Checker (Fachprüfung) (online)<a class="headerlink" href="#quality-control-with-vsa-online-checker-fachprufung-mit-vsa-checker-online" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.7.1. </span>Qualitätskontrolle mit VSA Checker (Fachprüfung) (online)<a class="headerlink" href="#quality-control-with-vsa-online-checker-fachprufung-mit-vsa-checker-online" title="Link to this heading"></a></h3>
 <figure class="align-default">
 <img alt="https://vsa.ch/wp-content/uploads/2020/04/Daten-checker-d-f-it.jpg" src="https://vsa.ch/wp-content/uploads/2020/04/Daten-checker-d-f-it.jpg" />
 </figure>
