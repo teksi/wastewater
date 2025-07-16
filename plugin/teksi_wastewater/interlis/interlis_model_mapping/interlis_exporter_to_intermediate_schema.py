@@ -672,7 +672,9 @@ class InterlisExporterToIntermediateSchema:
                 self.model_classes_tww_od.wastewater_networkelement.obj_id.in_(self.subset_ids)
             )
             logger.info(f"Selection query: {query.statement}")
+
         logger.info("height_width_ration rounded to 3 decimals! Change if adapted in INTERLIS VSA-DSS / SIA405 Abwasser > 2020.1")
+
         for row in query:
             # AVAILABLE FIELDS IN TWW.pipe_profile
 
@@ -693,7 +695,7 @@ class InterlisExporterToIntermediateSchema:
                 bemerkung=self.truncate(self.emptystr_to_null(row.remark), 80),
                 bezeichnung=self.null_to_emptystr(row.identifier),
                 # added round as long as INTERLIS 2020.1 is used
-                hoehenbreitenverhaeltnis=self.round(row.height_width_ratio,3),
+                hoehenbreitenverhaeltnis=self.round(row.height_width_ratio, 3),
                 profiltyp=self.get_vl(row.profile_type__REL),
             )
             self.abwasser_session.add(rohrprofil)
