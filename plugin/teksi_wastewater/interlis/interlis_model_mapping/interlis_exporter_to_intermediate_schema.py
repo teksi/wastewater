@@ -2923,6 +2923,20 @@ class InterlisExporterToIntermediateSchema:
             logger.warning(f"Value '{val}' exceeds expected length ({max_length})", stacklevel=2)
         return val[0:max_length]
 
+
+    def round(self, val, digits):
+        """
+        Rounds val to the provided digits
+        """
+        if val is None:
+            return None
+        else:
+            if digits is None:
+                return round(val)
+            else:
+                return round(val, digits)
+
+
     def _modulo_angle(self, val):
         """
         Returns an angle between 0 and 359.9 (for Orientierung in Base_d-20181005.ili)
