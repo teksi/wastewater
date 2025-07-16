@@ -13,6 +13,7 @@ It is currently capable of importing and exporting the following models:
 * SIA405_ABWASSER_2020_1_LV95
 * DSS_2020_1_LV95
 * VSA_KEK_2020_1_LV95
+* SIA405_Base_Abwasser_1_LV95 (to export your own additional organisations that are not part of the centralized VSA Organisation dataset)
 
 Note that currently, exports are possible in German only. Translated exports are on the roadmap, let us know if you are interested in this feature.
 
