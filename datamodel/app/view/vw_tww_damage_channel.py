@@ -28,11 +28,12 @@ def vw_tww_damage_channel(
         {dg_cols},
         {dc_cols},
         ws.identifier AS ws_identifier,
-        ST_LineMerge(ST_Collect(ST_Force2D(re.progression3d_geometry))) AS ch_progression2d_geometry,
+        ch.progression2d_geometry AS ch_progression2d_geometry,
         CASE
           WHEN re_2.obj_id IS NULL THEN 'upstream'::text
           ELSE 'downstream'::text
         END AS direction
+        , ch.tww_is_primary
         FROM tww_od.damage_channel dc
              LEFT JOIN tww_od.damage dg ON dg.obj_id::text = dc.obj_id::text
              LEFT JOIN tww_od.examination ex ON ex.obj_id::text = dg.fk_examination::text
@@ -42,6 +43,7 @@ def vw_tww_damage_channel(
              LEFT JOIN tww_od.reach re ON re.obj_id::text = ne.obj_id::text
              LEFT JOIN tww_od.reach_point rp ON rp.obj_id::text = ex.fk_reach_point::text
              LEFT JOIN tww_od.reach re_2 ON re_2.fk_reach_point_from::text = rp.obj_id::text
+             LEFT JOIN tww_app.vw_tww_channel ch ON ch.obj_id = ws.obj_id
           WHERE ex.recording_type = 3686
           GROUP BY {dg_cols},{dc_cols},ws.identifier, re_2.obj_id
         )
