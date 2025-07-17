@@ -38,14 +38,4 @@ jobs:
 
       - name: Check for changes in the specified folders
         run: |
-          CHANGED_FILES=${{ steps.changed-files.outputs.all_changed_files }}
-          for FILE in $CHANGED_FILES; do
-            if [[ $FILE == datamodel/changelogs/* ]]; then
-              VERSION_FOLDER=$(echo $FILE | cut -d'/' -f3)
-              if printf '%s\n' "$LATEST_STABLE_RELEASE" "$VERSION_FOLDER" | sort -V | head -n1 | grep -q "$VERSION_FOLDER"; then
-                echo "Changes detected in a disallowed datamodel/changelogs/$VERSION_FOLDER folder."
-                exit 1
-              fi
-            fi
-          done
-          echo "No changes detected in disallowed datamodel/changelogs version folders."
+          python /src/datamodel/scripts/check-changes-in-changelog.py -r $LATEST_STABLE_RELEASE -f ${{ steps.changed-files.outputs.all_changed_files }}
