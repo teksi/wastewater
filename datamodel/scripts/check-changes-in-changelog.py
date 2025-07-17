@@ -18,13 +18,13 @@
 """
 
 import argparse
+import logging
 import sys
 
 from packaging import version
-import logging
-
 
 logger = logging.getLogger(__name__)
+
 
 def compare_versions(changed_files: list = [], latest_stable_release: str = None):
     """
@@ -37,7 +37,6 @@ def compare_versions(changed_files: list = [], latest_stable_release: str = None
             logger.debug(f"checking file {file}")
             if len(parts) >= 3:
                 version_folder = parts[2]
-
 
                 # Parse version strings
                 v1 = version.parse(latest_stable_release)
