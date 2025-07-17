@@ -34,7 +34,7 @@ jobs:
         uses: tj-actions/changed-files@v46.0.5
         with:
           base_sha: ${{ github.event.pull_request.base.sha }}
-          head_sha: ${{ github.event.pull_request.head.sha }}
+          sha: ${{ github.event.pull_request.head.sha }}
 
       - name: Check for changes in the specified folders
         run: |
