@@ -1,0 +1,25 @@
+variables:
+   lang_code:
+     value: de
+     type: literal
+   SRID:
+     value: 2056
+     type: number
+
+sql_files:
+  - file: sql/01_defaults.sql
+  - file: sql/02_aux_functions.sql
+  - file: sql/03_export_views.sql
+  - file: sql/04_functions.sql
+  - file: sql/11_ag96_triggerfuncs_node.sql
+  - file: sql/12_ag96_triggerfuncs_other.sql
+  - file: sql/13_ag96_createtriggers.sql
+
+extra_definitions:
+  vw_tww_reach: extra_definitions/vw_tww_reach.yaml
+  vw_tww_wastewater_structure: extra_definitions/vw_tww_wastewater_structure.yaml
+  vw_tww_overflow: extra_definitions/vw_tww_overflow.yaml
+  vw_wastewater_structure: extra_definitions/vw_wastewater_structure.yaml
+
+reset_vl_files:
+  - file: vl_management_agxx.sql
