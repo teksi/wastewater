@@ -38,6 +38,6 @@ jobs:
           sha: ${{ github.event.pull_request.head.sha }}
 
       - name: Check for changes in the specified folders
-        working-directory: ./src/datamodel/scripts
+        working-directory: ./datamodel/scripts
         run: |
           python check-changes-in-changelog.py -r $LATEST_STABLE_RELEASE -f ${{ steps.changed-files.outputs.all_changed_files }}
