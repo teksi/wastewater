@@ -20,6 +20,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Set up Python
+        uses: actions/setup-python@v4
+
       - name: get lastest stable release
         env:
           GH_TOKEN: ${{ github.token }}
@@ -35,5 +38,6 @@ jobs:
           sha: ${{ github.event.pull_request.head.sha }}
 
       - name: Check for changes in the specified folders
+        working-directory: ./src/datamodel/scripts
         run: |
-          python /src/datamodel/scripts/check-changes-in-changelog.py -r $LATEST_STABLE_RELEASE -f ${{ steps.changed-files.outputs.all_changed_files }}
+          python check-changes-in-changelog.py -r $LATEST_STABLE_RELEASE -f ${{ steps.changed-files.outputs.all_changed_files }}
