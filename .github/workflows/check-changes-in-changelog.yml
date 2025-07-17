@@ -1,6 +1,6 @@
 name: Check for changes in stable datamodel versions
 
-on: [push, pull_request]
+on:
   push:
     branches:
       - main
