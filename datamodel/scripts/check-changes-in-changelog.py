@@ -21,7 +21,10 @@ import argparse
 import sys
 
 from packaging import version
+import logging
 
+
+logger = logging.getLogger(__name__)
 
 def compare_versions(changed_files: list = [], latest_stable_release: str = None):
     """
@@ -31,8 +34,10 @@ def compare_versions(changed_files: list = [], latest_stable_release: str = None
     for file in changed_files:
         if file.startswith("datamodel/changelogs/"):
             parts = file.split("/")
+            logger.debug(f"checking file {file}")
             if len(parts) >= 3:
                 version_folder = parts[2]
+
 
                 # Parse version strings
                 v1 = version.parse(latest_stable_release)
@@ -40,12 +45,12 @@ def compare_versions(changed_files: list = [], latest_stable_release: str = None
 
                 # Compare versions
                 if v2 < v1:
-                    print(
+                    logger.critical(
                         f"Changes detected in a disallowed datamodel/changelogs/{version_folder} folder."
                     )
                     sys.exit(1)
 
-    print("no Changes detected in a disallowed changelogs version folder.")
+    logger.info("no Changes detected in a disallowed changelogs version folder.")
     sys.exit(0)
 
 
