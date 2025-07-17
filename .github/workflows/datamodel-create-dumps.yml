@@ -55,7 +55,7 @@ jobs:
         run: docker compose exec db /src/datamodel/scripts/create-dumps.py --extension_name=${{ matrix.extension }}
 
       - name: Schemaspy
-        if: ${{ matrix.extension = '' }}
+        if: ${{ matrix.extension == '' }}
         run:  docker compose run schemaspy
 
       - name: Docker logs
@@ -69,7 +69,7 @@ jobs:
           if-no-files-found: error
 
       - uses: actions/upload-artifact@v4
-        if: ${{ matrix.extension = '' }}
+        if: ${{ matrix.extension == '' }}
         with:
           name: datamodel-schemaspy
           path: datamodel/schemaspy/
