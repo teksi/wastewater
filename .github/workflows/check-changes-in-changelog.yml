@@ -17,14 +17,8 @@ jobs:
   check-changes:
     runs-on: ubuntu-latest
     steps:
-
-      - name: Docker build
-        run: docker compose up -d --build
-
       - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 2
+        uses: actions/checkout@v4
 
       - name: get lastest stable release
         env:
@@ -41,4 +35,5 @@ jobs:
           sha: ${{ github.event.pull_request.head.sha }}
 
       - name: Check for changes in the specified folders
-        run: docker compose exec db /src/datamodel/scripts/check-changes-in-changelog.py -r $LATEST_STABLE_RELEASE -f ${{ steps.changed-files.outputs.all_changed_files }}
+        run: |
+          python /src/datamodel/scripts/check-changes-in-changelog.py -r $LATEST_STABLE_RELEASE -f ${{ steps.changed-files.outputs.all_changed_files }}
