@@ -45,7 +45,7 @@ def compare_versions(changed_files: list = [], latest_stable_release: str = None
                     )
                     sys.exit(1)
 
-    print(f"no Changes detected in a disallowed changelogs version folder.")
+    print("no Changes detected in a disallowed changelogs version folder.")
     sys.exit(0)
 
 
