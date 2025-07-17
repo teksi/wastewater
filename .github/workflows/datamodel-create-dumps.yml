@@ -64,37 +64,29 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: datamodel-dumps
+          name: datamodel-dumps${{ matrix.extension != '' && format('__{0}', matrix.extension) || matrix.extension }}
           path: datamodel/artifacts/
           if-no-files-found: error
 
       - uses: actions/upload-artifact@v4
-        if: ${{ matrix.extension != '' }}
         with:
-          name: datamodel-schemaspy
+          name: datamodel-schemaspy${{ matrix.extension != '' && format('__{0}', matrix.extension) || matrix.extension }}
           path: datamodel/schemaspy/
           if-no-files-found: error
 
       - name: Zip datamodel dumps
         run: |
-          if [ -z "${{ matrix.extension }}" ]; then
-            zip -r datamodel-dumps.zip datamodel/artifacts
-          else
-           zip -r datamodel-dumps_${{ matrix.extension }}.zip datamodel/artifacts
-          fi
+           zip -r datamodel-dumps${{ matrix.extension != '' && format('__{0}', matrix.extension) || matrix.extension }}.zip datamodel/artifacts
 
       - name: Zip schemaspy output
-        run: zip -r datamodel-schemaspy.zip datamodel/schemaspy
+        run: zip -r datamodel-schemaspy${{ matrix.extension != '' && format('__{0}', matrix.extension) || matrix.extension }}.zip datamodel/schemaspy
 
       - name: Upload datamodel dumps as GitHub Release asset
         if: ${{ inputs.release_tag != '' }}
         run: |
-          if [ -z "${{ matrix.extension }}" ]; then
-            gh release upload "${{ inputs.release_tag }}" datamodel-dumps.zip#oqtopus.datamodel --repo "$GITHUB_REPOSITORY"
-            gh release upload "${{ inputs.release_tag }}" datamodel-schemaspy.zip --repo "$GITHUB_REPOSITORY"
-          else
-            gh release upload "${{ inputs.release_tag }}" datamodel-dumps_${{ matrix.extension }}.zip#oqtopus.datamodel --repo "$GITHUB_REPOSITORY"
-          fi
+            gh release upload "${{ inputs.release_tag }}" datamodel-dumps${{ matrix.extension != '' && format('__{0}', matrix.extension) || matrix.extension }}.zip#oqtopus.datamodel --repo "$GITHUB_REPOSITORY"
+            gh release upload "${{ inputs.release_tag }}" datamodel-schemaspy${{ matrix.extension != '' && format('__{0}', matrix.extension) || matrix.extension }}.zip --repo "$GITHUB_REPOSITORY"
+
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
