@@ -209,7 +209,6 @@ def vw_tww_channel_maintenance(connection: psycopg.Connection, extra_definition:
             prefix="me_",
             remove_pkey=True,
             indent=6,
-            update_values={"situation3d_geometry": "ST_EndPoint(NEW.progression3d_geometry)"},
         ),
         update_extra=update_extra(connection=connection, extra_definition=extra_definition),
     )
@@ -341,7 +340,6 @@ def vw_tww_ws_maintenance(connection: psycopg.Connection, extra_definition: dict
             prefix="me_",
             remove_pkey=True,
             indent=6,
-            update_values={"situation3d_geometry": "ST_EndPoint(NEW.progression3d_geometry)"},
         ),
         update_extra=update_extra(connection=connection, extra_definition=extra_definition),
     )
