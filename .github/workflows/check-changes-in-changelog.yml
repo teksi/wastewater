@@ -1,6 +1,17 @@
 name: Check for changes in stable datamodel versions
 
 on: [push, pull_request]
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+    paths:
+      - datamodel/changelogs/**
+      - '.github/workflows/check-changes-in-changelog.yml'
+  workflow_dispatch:
+  workflow_call:
 
 jobs:
   check-changes:
@@ -11,10 +22,21 @@ jobs:
         with:
           fetch-depth: 2
 
+      - name: get lastest stable release
+        run: |
+          LATEST_STABLE_RELEASE=$(gh api repos/teksi/wastewater/releases/latest --jq '.tag_name')
+          echo "LATEST_STABLE_RELEASE=$LATEST_STABLE_RELEASE" >> $GITHUB_ENV
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v46.0.5
+        with:
+          base_sha: ${{ github.event.pull_request.base.sha }}
+          head_sha: ${{ github.event.pull_request.head.sha }}
+
       - name: Check for changes in the specified folders
         run: |
-          LATEST_STABLE_RELEASE="2025.0.1"
-          CHANGED_FILES=$(git diff --name-only HEAD^ HEAD)
+          CHANGED_FILES=${{ steps.changed-files.outputs.all_changed_files }}
           for FILE in $CHANGED_FILES; do
             if [[ $FILE == datamodel/changelogs/* ]]; then
               VERSION_FOLDER=$(echo $FILE | cut -d'/' -f3)
