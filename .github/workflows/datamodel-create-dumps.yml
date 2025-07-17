@@ -63,6 +63,12 @@ jobs:
         run: docker compose logs db
 
       - uses: actions/upload-artifact@v4
+        with:
+          name: datamodel-dumps
+          path: datamodel/artifacts/
+          if-no-files-found: error
+
+      - uses: actions/upload-artifact@v4
         if: ${{ matrix.extension != '' }}
         with:
           name: datamodel-schemaspy
