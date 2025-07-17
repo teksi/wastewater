@@ -400,6 +400,22 @@
             <column ascending="true" name="code"/>
          </index>
       </table>
+      <table name="building_group_function_export_rel_agxx" remarks="" schema="tww_vl" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <primaryKey column="code" sequenceNumberInPK="1"/>
+         <index name="pkey_building_group_function_export_rel_agxx_code" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
+      <table name="building_group_function_import_rel_agxx" remarks="" schema="tww_vl" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <primaryKey column="code" sequenceNumberInPK="1"/>
+         <index name="pkey_building_group_function_import_rel_agxx_code" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
       <table name="building_group_renovation_necessity" remarks="" schema="tww_vl" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
             <child column="renovation_necessity" foreignKey="fkey_vl_building_group_renovation_necessity" implied="false" onDeleteCascade="false" schema="tww_od" table="building_group"/>
@@ -484,6 +500,22 @@
             <column ascending="true" name="code"/>
          </index>
       </table>
+      <table name="catchment_area_drainage_system_current_export_rel_agxx" remarks="" schema="tww_vl" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <primaryKey column="code" sequenceNumberInPK="1"/>
+         <index name="pkey_catchment_area_drainage_system_current_export_rel_agxx_cod" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
+      <table name="catchment_area_drainage_system_current_import_rel_agxx" remarks="" schema="tww_vl" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <primaryKey column="code" sequenceNumberInPK="1"/>
+         <index name="pkey_catchment_area_drainage_system_current_import_rel_agxx_cod" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
       <table name="catchment_area_drainage_system_planned" remarks="" schema="tww_vl" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
             <child column="drainage_system_planned" foreignKey="fkey_vl_catchment_area_drainage_system_planned" implied="false" onDeleteCascade="false" schema="tww_od" table="catchment_area"/>
@@ -502,6 +534,22 @@
          <column autoUpdated="false" defaultValue="true" digits="0" id="12" name="active" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
          <primaryKey column="code" sequenceNumberInPK="1"/>
          <index name="pkey_tww_vl_catchment_area_drainage_system_planned_code" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
+      <table name="catchment_area_drainage_system_planned_export_rel_agxx" remarks="" schema="tww_vl" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <primaryKey column="code" sequenceNumberInPK="1"/>
+         <index name="pkey_catchment_area_drainage_system_planned_export_rel_agxx_cod" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
+      <table name="catchment_area_drainage_system_planned_import_rel_agxx" remarks="" schema="tww_vl" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <primaryKey column="code" sequenceNumberInPK="1"/>
+         <index name="pkey_catchment_area_drainage_system_planned_import_rel_agxx_cod" unique="true">
             <column ascending="true" name="code"/>
          </index>
       </table>
@@ -804,6 +852,22 @@
             <column ascending="true" name="code"/>
          </index>
       </table>
+      <table name="channel_usage_current_export_rel_agxx" remarks="" schema="tww_vl" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <primaryKey column="code" sequenceNumberInPK="1"/>
+         <index name="pkey_channel_usage_current_export_rel_agxx_code" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
+      <table name="channel_usage_current_import_rel_agxx" remarks="" schema="tww_vl" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <primaryKey column="code" sequenceNumberInPK="1"/>
+         <index name="pkey_channel_usage_current_import_rel_agxx_code" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
       <table name="channel_usage_planned" remarks="" schema="tww_vl" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
             <child column="usage_planned" foreignKey="fkey_vl_channel_usage_planned" implied="false" onDeleteCascade="false" schema="tww_od" table="channel"/>
@@ -822,6 +886,22 @@
          <column autoUpdated="false" defaultValue="true" digits="0" id="12" name="active" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
          <primaryKey column="code" sequenceNumberInPK="1"/>
          <index name="pkey_tww_vl_channel_usage_planned_code" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
+      <table name="channel_usage_planned_export_rel_agxx" remarks="" schema="tww_vl" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <primaryKey column="code" sequenceNumberInPK="1"/>
+         <index name="pkey_channel_usage_planned_export_rel_agxx_code" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
+      <table name="channel_usage_planned_import_rel_agxx" remarks="" schema="tww_vl" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <primaryKey column="code" sequenceNumberInPK="1"/>
+         <index name="pkey_channel_usage_planned_import_rel_agxx_code" unique="true">
             <column ascending="true" name="code"/>
          </index>
       </table>
@@ -1095,6 +1175,14 @@
          <column autoUpdated="false" defaultValue="true" digits="0" id="12" name="active" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
          <primaryKey column="code" sequenceNumberInPK="1"/>
          <index name="pkey_tww_vl_discharge_point_relevance_code" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
+      <table name="discharge_point_relevance_import_rel_agxx" remarks="" schema="tww_vl" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <primaryKey column="code" sequenceNumberInPK="1"/>
+         <index name="pkey_discharge_point_relevance_import_rel_agxx_code" unique="true">
             <column ascending="true" name="code"/>
          </index>
       </table>
@@ -1665,6 +1753,22 @@
             <column ascending="true" name="code"/>
          </index>
       </table>
+      <table name="infiltration_installation_kind_export_rel_agxx" remarks="" schema="tww_vl" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <primaryKey column="code" sequenceNumberInPK="1"/>
+         <index name="pkey_infiltration_installation_kind_export_rel_agxx_code" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
+      <table name="infiltration_installation_kind_import_rel_agxx" remarks="" schema="tww_vl" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <primaryKey column="code" sequenceNumberInPK="1"/>
+         <index name="pkey_infiltration_installation_kind_import_rel_agxx_code" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
       <table name="infiltration_installation_labeling" remarks="" schema="tww_vl" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
             <child column="labeling" foreignKey="fkey_vl_infiltration_installation_labeling" implied="false" onDeleteCascade="false" schema="tww_od" table="infiltration_installation"/>
@@ -1767,6 +1871,14 @@
          <column autoUpdated="false" defaultValue="true" digits="0" id="12" name="active" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
          <primaryKey column="code" sequenceNumberInPK="1"/>
          <index name="pkey_tww_vl_infiltration_zone_infiltration_capacity_code" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
+      <table name="infiltration_zone_infiltration_capacity_export_rel_agxx" remarks="" schema="tww_vl" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <primaryKey column="code" sequenceNumberInPK="1"/>
+         <index name="pkey_infiltration_zone_infiltration_capacity_export_rel_agxx_co" unique="true">
             <column ascending="true" name="code"/>
          </index>
       </table>
@@ -1917,6 +2029,22 @@
             <column ascending="true" name="code"/>
          </index>
       </table>
+      <table name="manhole_function_export_rel_agxx" remarks="" schema="tww_vl" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <primaryKey column="code" sequenceNumberInPK="1"/>
+         <index name="pkey_manhole_function_export_rel_agxx_code" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
+      <table name="manhole_function_import_rel_agxx" remarks="" schema="tww_vl" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <primaryKey column="code" sequenceNumberInPK="1"/>
+         <index name="pkey_manhole_function_import_rel_agxx_code" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
       <table name="manhole_material" remarks="" schema="tww_vl" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
             <child column="material" foreignKey="fkey_vl_manhole_material" implied="false" onDeleteCascade="false" schema="tww_od" table="manhole"/>
@@ -2001,6 +2129,22 @@
             <column ascending="true" name="code"/>
          </index>
       </table>
+      <table name="measure_category_export_rel_agxx" remarks="" schema="tww_vl" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <primaryKey column="code" sequenceNumberInPK="1"/>
+         <index name="pkey_measure_category_export_rel_agxx_code" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
+      <table name="measure_category_import_rel_agxx" remarks="" schema="tww_vl" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <primaryKey column="code" sequenceNumberInPK="1"/>
+         <index name="pkey_measure_category_import_rel_agxx_code" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
       <table name="measure_priority" remarks="" schema="tww_vl" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
             <child column="priority" foreignKey="fkey_vl_measure_priority" implied="false" onDeleteCascade="false" schema="tww_od" table="measure"/>
@@ -2019,6 +2163,14 @@
          <column autoUpdated="false" defaultValue="true" digits="0" id="12" name="active" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
          <primaryKey column="code" sequenceNumberInPK="1"/>
          <index name="pkey_tww_vl_measure_priority_code" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
+      <table name="measure_priority_export_rel_agxx" remarks="" schema="tww_vl" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <primaryKey column="code" sequenceNumberInPK="1"/>
+         <index name="pkey_measure_priority_export_rel_agxx_code" unique="true">
             <column ascending="true" name="code"/>
          </index>
       </table>
@@ -3240,6 +3392,22 @@
             <column ascending="true" name="code"/>
          </index>
       </table>
+      <table name="special_structure_function_export_rel_agxx" remarks="" schema="tww_vl" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <primaryKey column="code" sequenceNumberInPK="1"/>
+         <index name="pkey_special_structure_function_export_rel_agxx_code" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
+      <table name="special_structure_function_import_rel_agxx" remarks="" schema="tww_vl" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <primaryKey column="code" sequenceNumberInPK="1"/>
+         <index name="pkey_special_structure_function_import_rel_agxx_code" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
       <table name="special_structure_possibility_intervention" remarks="" schema="tww_vl" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4">
             <child column="possibility_intervention" foreignKey="fkey_vl_special_structure_possibility_intervention" implied="false" onDeleteCascade="false" schema="tww_od" table="special_structure"/>
@@ -3447,6 +3615,22 @@
          <column autoUpdated="false" defaultValue="true" digits="0" id="12" name="active" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
          <primaryKey column="code" sequenceNumberInPK="1"/>
          <index name="pkey_tww_vl_throttle_shut_off_unit_signal_transmission_code" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
+      <table name="value_list_agxx_export_rel_base" remarks="" schema="tww_vl" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <primaryKey column="code" sequenceNumberInPK="1"/>
+         <index name="pkey_tww_value_list_agxx_export_rel_code" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
+      <table name="value_list_agxx_import_rel_base" remarks="" schema="tww_vl" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <primaryKey column="code" sequenceNumberInPK="1"/>
+         <index name="pkey_tww_value_list_agxx_import_rel_code" unique="true">
             <column ascending="true" name="code"/>
          </index>
       </table>
@@ -3676,6 +3860,14 @@
          <column autoUpdated="false" defaultValue="true" digits="0" id="12" name="active" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
          <primaryKey column="code" sequenceNumberInPK="1"/>
          <index name="pkey_tww_vl_wastewater_structure_status_code" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
+      <table name="wastewater_structure_status_import_rel_agxx" remarks="" schema="tww_vl" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="code" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="value_de" nullable="true" remarks="" size="100" type="varchar" typeCode="12"/>
+         <primaryKey column="code" sequenceNumberInPK="1"/>
+         <index name="pkey_wastewater_structure_status_import_rel_agxx_code" unique="true">
             <column ascending="true" name="code"/>
          </index>
       </table>
