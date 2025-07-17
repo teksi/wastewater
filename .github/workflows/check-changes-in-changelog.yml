@@ -23,6 +23,8 @@ jobs:
           fetch-depth: 2
 
       - name: get lastest stable release
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           LATEST_STABLE_RELEASE=$(gh api repos/teksi/wastewater/releases/latest --jq '.tag_name')
           echo "LATEST_STABLE_RELEASE=$LATEST_STABLE_RELEASE" >> $GITHUB_ENV
