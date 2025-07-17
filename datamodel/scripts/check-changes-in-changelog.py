@@ -62,7 +62,7 @@ def get_parser():
         "--latest_stable_release", "-r", help="Sets the latest latest_stable_release"
     )
     _parser.add_argument(
-        "--changed_files", "-f", nargs="+", required=True, help="Sets the list of changed files"
+        "--changed_files", "-f", nargs="*", required=True, help="Sets the list of changed files"
     )
     return _parser
 
