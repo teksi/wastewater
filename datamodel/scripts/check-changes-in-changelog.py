@@ -18,17 +18,19 @@
 """
 
 import argparse
-from packaging import version
 import sys
 
-def compare_versions(changed_files: list = [], latest_stable_release: str=None):
+from packaging import version
+
+
+def compare_versions(changed_files: list = [], latest_stable_release: str = None):
     """
     Compares versions of all  all dumps
     :return: the files names in a list
     """
     for file in changed_files:
         if file.startswith("datamodel/changelogs/"):
-            parts = file.split('/')
+            parts = file.split("/")
             if len(parts) >= 3:
                 version_folder = parts[2]
 
@@ -38,20 +40,28 @@ def compare_versions(changed_files: list = [], latest_stable_release: str=None):
 
                 # Compare versions
                 if v2 < v1:
-                    print(f"Changes detected in a disallowed datamodel/changelogs/{version_folder} folder.")
+                    print(
+                        f"Changes detected in a disallowed datamodel/changelogs/{version_folder} folder."
+                    )
                     sys.exit(1)
 
     print(f"no Changes detected in a disallowed changelogs version folder.")
     sys.exit(0)
+
 
 def get_parser():
     """
     Creates a new argument parser.
     """
     _parser = argparse.ArgumentParser("check-changes-in-changelog.py")
-    _parser.add_argument("--latest_stable_release", "-r", help="Sets the latest latest_stable_release")
-    _parser.add_argument("--changed_files", "-f", nargs ='+', required=True, help="Sets the list of changed files")
+    _parser.add_argument(
+        "--latest_stable_release", "-r", help="Sets the latest latest_stable_release"
+    )
+    _parser.add_argument(
+        "--changed_files", "-f", nargs="+", required=True, help="Sets the list of changed files"
+    )
     return _parser
+
 
 if __name__ == "__main__":
     parser = get_parser()
