@@ -55,7 +55,7 @@ jobs:
         run: docker compose exec db /src/datamodel/scripts/create-dumps.py --extension_name=${{ matrix.extension }}
 
       - name: Schemaspy
-        if: ${{ matrix.extension != '' }}
+        if: ${{ matrix.extension == '' }}
         run:  docker compose run schemaspy
 
       - name: Docker logs
@@ -63,7 +63,13 @@ jobs:
         run: docker compose logs db
 
       - uses: actions/upload-artifact@v4
-        if: ${{ matrix.extension != '' }}
+        with:
+          name: datamodel-dumps${{ matrix.extension != '' && format('__{0}', matrix.extension) || matrix.extension }}
+          path: datamodel/artifacts/
+          if-no-files-found: error
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ matrix.extension == '' }}
         with:
           name: datamodel-schemaspy
           path: datamodel/schemaspy/
@@ -71,14 +77,10 @@ jobs:
 
       - name: Zip datamodel dumps
         run: |
-          if [ -z "${{ matrix.extension }}" ]; then
-            zip -r datamodel-dumps.zip datamodel/artifacts
-          else
-           zip -r datamodel-dumps_${{ matrix.extension }}.zip datamodel/artifacts
-          fi
+           zip -r datamodel-dumps${{ matrix.extension != '' && format('__{0}', matrix.extension) || matrix.extension }}.zip datamodel/artifacts
 
       - name: Zip schemaspy output
-        run: zip -r datamodel-schemaspy.zip datamodel/schemaspy
+        run: zip -r datamodel-schemaspy${{ matrix.extension != '' && format('__{0}', matrix.extension) || matrix.extension }}.zip datamodel/schemaspy
 
       - name: Upload datamodel dumps as GitHub Release asset
         if: ${{ inputs.release_tag != '' }}
