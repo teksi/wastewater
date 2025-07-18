@@ -4,6 +4,8 @@ import re
 import sys
 import xml.etree.ElementTree as ET
 
+from decimal import Decimal
+
 from qgis.testing import start_app, unittest
 from teksi_wastewater.interlis import config
 from teksi_wastewater.interlis.interlis_importer_exporter import (
@@ -120,7 +122,8 @@ class TestInterlis(unittest.TestCase):
         )
         self.assertIsNotNone(result)
 
-        self.assertEqual(result[0], 1.13000)
+        # self.assertEqual(result[0], 1.13000)
+        self.assertEqual(result[0], Decimal('1.13000'))
 
         # in future if VSA-DSS / SIA405 INTERLIS is also patched change to:
         # self.assertEqual(result[0], 1.12857)
