@@ -74,6 +74,31 @@ class TestInterlis(unittest.TestCase):
 
         return None
 
+    @staticmethod
+    def _get_xtf_object_attribute(xtf_file, topicname, classname, tid, attribute):
+        # from xml file
+        tree = ET.parse(xtf_file)
+        root = tree.getroot()
+
+        def get_namespace(element):
+            m = re.match(r"\{.*\}", element.tag)
+            return m.group(0) if m else ""
+
+        namespace = get_namespace(root)
+
+        interlis_objects = root.findall(
+            "./{0}DATASECTION/{0}{1}/{0}{1}.{2}".format(namespace, topicname, classname)
+        )
+
+        for interlis_object in interlis_objects:
+            xml_tid = interlis_object.attrib.get("TID", None)
+
+            if xml_tid == tid:
+                xml_attribute = interlis_object.attrib.get(attribute, None)
+                return xml_attribute
+
+        return None
+
     def setUp(self):
         DatabaseUtils.databaseConfig.PGHOST = "db"
         DatabaseUtils.databaseConfig.PGDATABASE = "tww"
@@ -212,7 +237,10 @@ class TestInterlis(unittest.TestCase):
         )
         self.assertIsNone(interlis_object)
         # xml_tid = interlis_object.attrib.get("TID", None)
-        xml_height_width_ratio = interlis_object.attrib.get("height_width_ratio", None)
+        # xml_height_width_ratio = interlis_object.attrib.get("height_width_ratio", None)
+        xml_height_width_ratio = self._get_xtf_object_attribute(
+            exported_xtf_filename, config.TOPIC_NAME_DSS, "Rohrprofil", "ch000000PP000003", "height_width_ratio",
+        )
         self.assertIsNotNone(xml_height_width_ratio)
         self.assertEqual(xml_height_width_ratio, 1.130)
         # in future if VSA-DSS / SIA405 INTERLIS is also patched  change to:
