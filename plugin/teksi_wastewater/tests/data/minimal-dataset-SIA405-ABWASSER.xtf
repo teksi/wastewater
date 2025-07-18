@@ -58,6 +58,15 @@
         <HoehenBreitenverhaeltnis>1.00</HoehenBreitenverhaeltnis>
         <Profiltyp>Kreisprofil</Profiltyp>
       </SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Rohrprofil>
+<!-- added for check on HoehenBreitenverhaeltnis / heigth_width_ratio -->
+            <SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Rohrprofil TID="ch000000PP000003">
+        <Letzte_Aenderung>20250718</Letzte_Aenderung>
+        <DatenherrRef REF="ch20p3q400001497"></DatenherrRef>
+        <DatenlieferantRef REF="ch20p3q400001497"></DatenlieferantRef>
+        <Bezeichnung>Rechteckprofil_1_128571</Bezeichnung>
+        <HoehenBreitenverhaeltnis>1.12857</HoehenBreitenverhaeltnis>
+        <Profiltyp>Rechteckprofil</Profiltyp>
+      </SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Rohrprofil>
       <SIA405_ABWASSER_2020_1_LV95.SIA405_Abwasser.Haltungspunkt TID="ch000000RP000002">
         <Letzte_Aenderung>20240104</Letzte_Aenderung>
         <DatenherrRef REF="ch20p3q400001497"></DatenherrRef>
