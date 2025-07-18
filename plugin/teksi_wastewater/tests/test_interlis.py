@@ -239,7 +239,11 @@ class TestInterlis(unittest.TestCase):
         # xml_tid = interlis_object.attrib.get("TID", None)
         # xml_height_width_ratio = interlis_object.attrib.get("height_width_ratio", None)
         xml_height_width_ratio = self._get_xtf_object_attribute(
-            exported_xtf_filename, config.TOPIC_NAME_DSS, "Rohrprofil", "ch000000PP000003", "height_width_ratio",
+            exported_xtf_filename,
+            config.TOPIC_NAME_DSS,
+            "Rohrprofil",
+            "ch000000PP000003",
+            "height_width_ratio",
         )
         self.assertIsNotNone(xml_height_width_ratio)
         self.assertEqual(xml_height_width_ratio, 1.130)
