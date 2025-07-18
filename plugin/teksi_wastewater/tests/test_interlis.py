@@ -94,7 +94,7 @@ class TestInterlis(unittest.TestCase):
             xml_tid = interlis_object.attrib.get("TID", None)
 
             if xml_tid == tid:
-                #xml_attribute = interlis_object.attrib.get(attribute, None)
+                # xml_attribute = interlis_object.attrib.get(attribute, None)
                 # testing with fixed attribute name
                 xml_attribute = interlis_object.attrib.get("height_width_ratio", None)
                 return xml_attribute
