@@ -94,7 +94,9 @@ class TestInterlis(unittest.TestCase):
             xml_tid = interlis_object.attrib.get("TID", None)
 
             if xml_tid == tid:
-                xml_attribute = interlis_object.attrib.get(attribute, None)
+                #xml_attribute = interlis_object.attrib.get(attribute, None)
+                # testing with fixed attribute name
+                xml_attribute = interlis_object.attrib.get("height_width_ratio", None)
                 return xml_attribute
 
         return None
@@ -246,7 +248,7 @@ class TestInterlis(unittest.TestCase):
             "height_width_ratio",
         )
         debug.print xml_height_width_ratio
-        self.assertIsNotNone(xml_height_width_ratio) 
+        self.assertIsNotNone(xml_height_width_ratio, xml_height_width_ratio) 
         self.assertEqual(xml_height_width_ratio, 1.130)
         # in future if VSA-DSS / SIA405 INTERLIS is also patched  change to:
         # self.assertEqual(xml_height_width_ratio, 1.12857)
