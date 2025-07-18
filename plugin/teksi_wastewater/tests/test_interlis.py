@@ -119,10 +119,16 @@ class TestInterlis(unittest.TestCase):
             "SELECT height_width_ratio FROM tww_od.pipe_profile WHERE obj_id='ch000000PP000003';"
         )
         self.assertIsNotNone(result)
-        self.assertEqual(result[0], 1.13000)
+        self.assertEqual(result[0], 1.13)
         # in future if VSA-DSS / SIA405 INTERLIS is also patched change to:
         # self.assertEqual(result[0], 1.12857)
 
+        # update height_width_ratio to long decimal to test export
+        # row = {
+            # "height_width_ratio": 1.12857,
+        # }
+        # self.update("pipe_profile", row, 'ch000000PP000003')
+        
         # Import minimal dss
         xtf_file_input = self._get_data_filename(MINIMAL_DATASET_DSS)
         interlisImporterExporter = InterlisImporterExporter()
@@ -204,7 +210,7 @@ class TestInterlis(unittest.TestCase):
         # xml_tid = interlis_object.attrib.get("TID", None)
         xml_height_width_ratio = interlis_object.attrib.get("height_width_ratio", None)
         self.assertIsNotNone(xml_height_width_ratio)
-        self.assertEqual(xml_height_width_ratio, 1.13000)
+        self.assertEqual(xml_height_width_ratio, 1.13)
         # in future if VSA-DSS / SIA405 INTERLIS is also patched  change to:
         # self.assertEqual(xml_height_width_ratio, 1.12857)
 
