@@ -1,0 +1,6 @@
+DROP SCHEMA IF EXISTS pg2ili_abwasser;
+CREATE SCHEMA pg2ili_abwasser;
+
+GRANT ALL ON SCHEMA pg2ili_abwasser TO tww_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA pg2ili_abwasser GRANT ALL ON TABLES TO tww_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA pg2ili_abwasser GRANT ALL ON SEQUENCES TO tww_user;

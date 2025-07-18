@@ -5,26 +5,26 @@
 import argparse
 import os
 
-try:
-    import psycopg
-except ImportError:
-    import psycopg2 as psycopg
+import psycopg
 from pirogue.utils import select_columns
+from yaml import safe_load
+
+from .utils.extra_definition_utils import (
+    extra_cols,
+    extra_joins,
+)
 
 
-def vw_tww_channel(pg_service: str = None, extra_definition: dict = None):
+def vw_tww_channel(connection: psycopg.Connection, extra_definition: dict = None):
     """
     Creates tww_channel view
     :param pg_service: the PostgreSQL service name
     :param extra_definition: a dictionary for additional read-only columns
     """
-    if not pg_service:
-        pg_service = os.getenv("PGSERVICE")
-    assert pg_service
+
     extra_definition = extra_definition or {}
 
-    conn = psycopg.connect(f"service={pg_service}")
-    cursor = conn.cursor()
+    cursor = connection.cursor()
 
     view_sql = """
     DROP VIEW IF EXISTS tww_app.vw_tww_channel;
@@ -34,18 +34,21 @@ def vw_tww_channel(pg_service: str = None, extra_definition: dict = None):
     SELECT
           {ws_cols}
         , {ch_cols}
+        {extra_cols}
         , ST_CurveToLine(ST_LineMerge(ST_Collect(ST_CurveToLine(re.progression3d_geometry)))) as progression3d_geometry
       FROM tww_od.channel ch
          LEFT JOIN tww_od.wastewater_structure ws ON ch.obj_id = ws.obj_id
          LEFT JOIN tww_od.wastewater_networkelement ne ON ne.fk_wastewater_structure = ws.obj_id
          LEFT JOIN tww_od.reach re ON ne.obj_id = re.obj_id
+         {extra_joins}
        GROUP BY
          {ch_cols_grp}
         , {ws_cols_grp}
+        {extra_cols_grp}
          ;
     """.format(
         ch_cols=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="channel",
             table_alias="ch",
@@ -55,7 +58,7 @@ def vw_tww_channel(pg_service: str = None, extra_definition: dict = None):
             skip_columns=[],
         ),
         ws_cols=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_structure",
             table_alias="ws",
@@ -72,7 +75,7 @@ def vw_tww_channel(pg_service: str = None, extra_definition: dict = None):
             ],
         ),
         ch_cols_grp=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="channel",
             table_alias="ch",
@@ -81,7 +84,7 @@ def vw_tww_channel(pg_service: str = None, extra_definition: dict = None):
             skip_columns=[],
         ),
         ws_cols_grp=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_structure",
             table_alias="ws",
@@ -97,6 +100,20 @@ def vw_tww_channel(pg_service: str = None, extra_definition: dict = None):
                 "fk_main_cover",
             ],
         ),
+        extra_cols=(
+            ""
+            if not extra_definition
+            else ", " + extra_cols(connection=connection, extra_definition=extra_definition)
+        ),
+        extra_cols_grp=(
+            ""
+            if not extra_definition
+            else ", "
+            + extra_cols(
+                connection=connection, extra_definition=extra_definition, skip_prefix=True
+            )
+        ),
+        extra_joins=extra_joins(connection=connection, extra_definition=extra_definition),
     )
 
     cursor.execute(view_sql)
@@ -106,9 +123,6 @@ def vw_tww_channel(pg_service: str = None, extra_definition: dict = None):
     """
     cursor.execute(extras)
 
-    conn.commit()
-    conn.close()
-
 
 if __name__ == "__main__":
     # create the top-level parser
@@ -116,4 +130,9 @@ if __name__ == "__main__":
     parser.add_argument("-p", "--pg_service", help="the PostgreSQL service name")
     args = parser.parse_args()
     pg_service = args.pg_service or os.getenv("PGSERVICE")
-    vw_tww_channel(pg_service=pg_service)
+    extra_definition = {}
+    if args.extra_definition:
+        with open(args.extra_definition) as f:
+            extra_definition = safe_load(f)
+    with psycopg.connect(f"service={pg_service}") as conn:
+        vw_tww_channel(connection=conn, extra_definition=extra_definition)

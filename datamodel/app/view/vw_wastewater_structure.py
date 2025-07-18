@@ -5,27 +5,27 @@
 import argparse
 import os
 
-try:
-    import psycopg
-except ImportError:
-    import psycopg2 as psycopg
-from pirogue.utils import insert_command, select_columns, table_parts, update_command
+import psycopg
+from pirogue.utils import insert_command, select_columns, update_command
 from yaml import safe_load
 
+from .utils.extra_definition_utils import (
+    extra_cols,
+    extra_joins,
+    insert_extra,
+    update_extra,
+)
 
-def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = None):
+
+def vw_wastewater_structure(connection: psycopg.Connection, extra_definition: dict = None):
     """
     Creates tww_wastewater_structure view
-    :param pg_service: the PostgreSQL service name
+    :param connection: a psycopg connection object
     :param extra_definition: a dictionary for additional read-only columns
     """
-    if not pg_service:
-        pg_service = os.getenv("PGSERVICE")
-    assert pg_service
     extra_definition = extra_definition or {}
 
-    conn = psycopg.connect(f"service={pg_service}")
-    cursor = conn.cursor()
+    cursor = connection.cursor()
 
     view_sql = """
     DROP VIEW IF EXISTS tww_app.vw_wastewater_structure;
@@ -45,23 +45,13 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
 
         ALTER VIEW tww_app.vw_wastewater_structure ALTER obj_id SET DEFAULT tww_app.generate_oid('tww_od','wastewater_structure');
     """.format(
-        extra_cols="\n    ".join(
-            [
-                select_columns(
-                    pg_cur=cursor,
-                    table_schema=table_parts(table_def["table"])[0],
-                    table_name=table_parts(table_def["table"])[1],
-                    skip_columns=table_def.get("skip_columns", []),
-                    remap_columns=table_def.get("remap_columns", {}),
-                    prefix=table_def.get("prefix", None),
-                    table_alias=table_def.get("alias", None),
-                )
-                + ","
-                for table_def in extra_definition.get("joins", {}).values()
-            ]
+        extra_cols=(
+            ""
+            if not extra_definition
+            else extra_cols(connection=connection, extra_definition=extra_definition)
         ),
         ws_cols=select_columns(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_structure",
             table_alias="ws",
@@ -75,18 +65,8 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
                 "_output_label",
             ],
         ),
-        extra_joins="\n    ".join(
-            [
-                "LEFT JOIN {tbl} {alias} ON {jon}".format(
-                    tbl=table_def["table"],
-                    alias=table_def.get("alias", ""),
-                    jon=table_def["join_on"],
-                )
-                for table_def in extra_definition.get("joins", {}).values()
-            ]
-        ),
+        extra_joins=extra_joins(connection=connection, extra_definition=extra_definition),
     )
-
     cursor.execute(view_sql)
 
     trigger_insert_sql = """
@@ -98,7 +78,7 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
       NEW.identifier = COALESCE(NEW.identifier, NEW.obj_id);
 
     {insert_ws}
-
+    {insert_extra}
       RETURN NEW;
     END; $BODY$ LANGUAGE plpgsql VOLATILE;
 
@@ -108,7 +88,7 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
       FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_wastewater_structure_INSERT();
     """.format(
         insert_ws=insert_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_structure",
             table_alias="",
@@ -122,8 +102,8 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
                 "_output_label",
             ],
         ),
+        insert_extra=insert_extra(connection=connection, extra_definition=extra_definition),
     )
-
     cursor.execute(trigger_insert_sql)
 
     update_trigger_sql = """
@@ -132,6 +112,7 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
     $BODY$
     BEGIN
       {update_ws}
+      {update_extra}
       RETURN NEW;
     END;
     $BODY$
@@ -145,7 +126,7 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
       FOR EACH ROW EXECUTE PROCEDURE tww_app.ft_vw_wastewater_structure_UPDATE();
     """.format(
         update_ws=update_command(
-            pg_cur=cursor,
+            connection=connection,
             table_schema="tww_od",
             table_name="wastewater_structure",
             table_alias="",
@@ -162,8 +143,8 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
             ],
             update_values={},
         ),
+        update_extra=update_extra(connection=connection, extra_definition=extra_definition),
     )
-
     cursor.execute(update_trigger_sql)
 
     trigger_delete_sql = """
@@ -188,9 +169,6 @@ def vw_wastewater_structure(pg_service: str = None, extra_definition: dict = Non
     """
     cursor.execute(extras)
 
-    conn.commit()
-    conn.close()
-
 
 if __name__ == "__main__":
     # create the top-level parser
@@ -203,5 +181,9 @@ if __name__ == "__main__":
     parser.add_argument("-p", "--pg_service", help="the PostgreSQL service name")
     args = parser.parse_args()
     pg_service = args.pg_service or os.getenv("PGSERVICE")
-    extra_definition = safe_load(open(args.extra_definition)) if args.extra_definition else {}
-    vw_wastewater_structure(pg_service=pg_service, extra_definition=extra_definition)
+    extra_definition = {}
+    if args.extra_definition:
+        with open(args.extra_definition) as f:
+            extra_definition = safe_load(f)
+    with psycopg.connect(f"service={pg_service}") as conn:
+        vw_wastewater_structure(pg_service=pg_service, extra_definition=extra_definition)
