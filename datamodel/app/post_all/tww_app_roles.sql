@@ -18,4 +18,3 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA tww_app GRANT ALL ON SEQUENCES TO {user_role}
 ALTER MATERIALIZED VIEW tww_app.vw_catchment_area_totals_aggregated OWNER TO {user_role};
 ALTER MATERIALIZED VIEW tww_app.vw_network_node OWNER TO {user_role};
 ALTER MATERIALIZED VIEW tww_app.vw_network_segment OWNER TO {user_role};
-
