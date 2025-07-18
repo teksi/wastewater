@@ -176,6 +176,7 @@ class TestInterlis(unittest.TestCase):
             xtf_file_output=self._get_output_filename(export_xtf_file),
             export_models=[config.MODEL_NAME_SIA405_ABWASSER],
             logs_next_to_file=True,
+            user_interaction=False,
         )
 
         # Check exported TID
@@ -193,6 +194,7 @@ class TestInterlis(unittest.TestCase):
             xtf_file_output=self._get_output_filename(export_xtf_file),
             export_models=[config.MODEL_NAME_DSS],
             logs_next_to_file=True,
+            user_interaction=False,
         )
 
         # Check exported TID
@@ -210,6 +212,7 @@ class TestInterlis(unittest.TestCase):
             xtf_file_output=self._get_output_filename(export_xtf_file),
             export_models=[config.MODEL_NAME_VSA_KEK],
             logs_next_to_file=True,
+            user_interaction=False,
         )
 
         # Check exported TID
@@ -250,6 +253,7 @@ class TestInterlis(unittest.TestCase):
             xtf_file_output=self._get_output_filename(export_xtf_file),
             export_models=[config.MODEL_NAME_DSS],
             logs_next_to_file=True,
+            user_interaction=False,
             selected_ids=["ch000000WN000002", "ch000000WN000003", "ch000000RE000002"],
         )
 
@@ -292,6 +296,7 @@ class TestInterlis(unittest.TestCase):
             xtf_file_output=self._get_output_filename(export_xtf_file),
             export_models=[config.MODEL_NAME_DSS],
             logs_next_to_file=True,
+            user_interaction=False,
         )
 
     def test_get_xtf_models(self):
