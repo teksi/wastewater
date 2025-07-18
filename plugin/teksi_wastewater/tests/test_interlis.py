@@ -249,7 +249,7 @@ class TestInterlis(unittest.TestCase):
         )
         print(xml_height_width_ratio)
 
-        if xml_height_width_ratio not None:
+        if xml_height_width_ratio is not None:
             #self.assertIsNotNone(xml_height_width_ratio, xml_height_width_ratio)
             self.assertEqual(xml_height_width_ratio, 1.130)
         # in future if VSA-DSS / SIA405 INTERLIS is also patched  change to:
