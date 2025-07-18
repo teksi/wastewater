@@ -125,10 +125,10 @@ class TestInterlis(unittest.TestCase):
 
         # update height_width_ratio to long decimal to test export
         # row = {
-            # "height_width_ratio": 1.12857,
+        # "height_width_ratio": 1.12857,
         # }
         # self.update("pipe_profile", row, 'ch000000PP000003')
-        
+
         # Import minimal dss
         xtf_file_input = self._get_data_filename(MINIMAL_DATASET_DSS)
         interlisImporterExporter = InterlisImporterExporter()
