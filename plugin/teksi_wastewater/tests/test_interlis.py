@@ -113,7 +113,7 @@ class TestInterlis(unittest.TestCase):
         )
         self.assertIsNotNone(result)
         self.assertEqual(result[0], 448.0)
-        
+
         # check on height_width_ratio decimal(8,5) instead of decimal(5,2)
         result = DatabaseUtils.fetchone(
             "SELECT height_width_ratio FROM tww_od.pipe_profile WHERE obj_id='ch000000PP000003';"
