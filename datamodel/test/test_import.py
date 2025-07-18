@@ -26,9 +26,7 @@ class TestImport(unittest.TestCase, DbTestBase):
             "co_level": 123.456,
             "wn_bottom_level": 120.456,
             "verified": True,
-            "situation_geometry": self.execute(
-            "ST_SetSRID(ST_MakePoint(2600000, 1200000), 2056)"
-            ),
+            "situation_geometry": self.execute("ST_SetSRID(ST_MakePoint(2600000, 1200000), 2056)"),
         }
 
         # update
