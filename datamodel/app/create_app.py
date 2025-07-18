@@ -83,6 +83,14 @@ class Hook(HookBase):
                 "value": f"display_{lang_code}",
                 "type": "identifier",
             },
+            "user_role": {
+                "value": "tww_user",
+                "type": "identifier",
+            },
+            "viewer_role": {
+                "value": "tww_viewer",
+                "type": "identifier",
+            },
         }
         self.execute("CREATE SCHEMA tww_app;")
         self.run_sql_files_in_folder(self.cwd / "sql_functions")
