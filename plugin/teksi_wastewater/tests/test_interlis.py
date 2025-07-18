@@ -113,6 +113,13 @@ class TestInterlis(unittest.TestCase):
         )
         self.assertIsNotNone(result)
         self.assertEqual(result[0], 448.0)
+        
+        # check on height_width_ratio decimal(8,5) instead of decimal(5,2)
+        result = DatabaseUtils.fetchone(
+            "SELECT height_width_ratio FROM tww_od.pipe_profile WHERE obj_id='ch000000PP000003';"
+        )
+        self.assertIsNotNone(result)
+        self.assertEqual(result[0], 1.12857)
 
         # Import minimal dss
         xtf_file_input = self._get_data_filename(MINIMAL_DATASET_DSS)
