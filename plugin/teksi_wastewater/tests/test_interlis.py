@@ -120,7 +120,7 @@ class TestInterlis(unittest.TestCase):
         )
         self.assertIsNotNone(result)
 
-        self.assertEqual(result[0], '1.13')
+        self.assertEqual(result[0], "1.13")
 
         # in future if VSA-DSS / SIA405 INTERLIS is also patched change to:
         # self.assertEqual(result[0], 1.12857)
