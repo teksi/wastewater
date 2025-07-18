@@ -26,6 +26,9 @@ class TestImport(unittest.TestCase, DbTestBase):
             "co_level": 123.456,
             "wn_bottom_level": 120.456,
             "verified": True,
+            "situation_geometry": self.execute(
+            "ST_SetSRID(ST_MakePoint(2600000, 1200000), 2056)"
+            ),
         }
 
         # update
@@ -33,11 +36,11 @@ class TestImport(unittest.TestCase, DbTestBase):
 
         # it should be calculated correctly in the live table tww_od.wastewater_structure
         row = self.select("wastewater_structure", obj_id, "tww_od")
-        self.assertNotEqual(row["_depth"], decimal.Decimal("12.220"))
+        self.assertEqual(row["_depth"], decimal.Decimal("3.000"))
 
         # it should be visible in the import_vw_manhole view
         row = self.select("import_vw_manhole", obj_id)
-        self.assertNotEqual(row["_depth"], decimal.Decimal("12.220"))
+        self.assertEqual(row["_depth"], decimal.Decimal("3.000"))
 
         # it shouldn't be in the quarantine import_manhole_quarantine
         row = self.select("import_manhole_quarantine", obj_id, schema="tww_od")
