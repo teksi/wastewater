@@ -113,7 +113,7 @@ class TestInterlis(unittest.TestCase):
         )
         self.assertIsNotNone(result)
         self.assertEqual(result[0], 448.0)
-
+        
         # check on height_width_ratio decimal(8,5) instead of decimal(5,2)
         result = DatabaseUtils.fetchone(
             "SELECT height_width_ratio FROM tww_od.pipe_profile WHERE obj_id='ch000000PP000003';"
@@ -185,7 +185,7 @@ class TestInterlis(unittest.TestCase):
             logs_next_to_file=True,
         )
 
-        # Check exported TID
+        # Check exported TID reach
         exported_xtf_filename = self._get_output_filename(
             f"{export_xtf_file}_{config.MODEL_NAME_SIA405_ABWASSER}.xtf"
         )
@@ -193,6 +193,18 @@ class TestInterlis(unittest.TestCase):
             exported_xtf_filename, config.TOPIC_NAME_SIA405_ABWASSER, "Haltung", "ch000000RE000001"
         )
         self.assertIsNotNone(interlis_object)
+
+        # Check exported TID and height_width_ratio pipe_profile
+        interlis_object = self._get_xtf_object(
+            exported_xtf_filename, config.TOPIC_NAME_DSS, "Rohrprofil", "ch000000PP000003"
+        )
+        self.assertIsNone(interlis_object)
+        # xml_tid = interlis_object.attrib.get("TID", None)
+        xml_height_width_ratio = interlis_object.attrib.get("height_width_ratio", None)
+        self.assertIsNotNone(xml_height_width_ratio)
+        self.assertEqual(xml_height_width_ratio, 1.30)
+        # in future if VSA-DSS / SIA405 is patched
+        # self.assertEqual(xml_height_width_ratio, 1.12857)
 
         # Export minimal dss
         export_xtf_file = self._get_output_filename("export_minimal_dataset_dss")
@@ -219,7 +231,7 @@ class TestInterlis(unittest.TestCase):
             logs_next_to_file=True,
         )
 
-        # Check exported TID
+        # Check exported TID examination
         exported_xtf_filename = self._get_output_filename(
             f"{export_xtf_file}_{config.MODEL_NAME_VSA_KEK}.xtf"
         )
@@ -260,7 +272,7 @@ class TestInterlis(unittest.TestCase):
             selected_ids=["ch000000WN000002", "ch000000WN000003", "ch000000RE000002"],
         )
 
-        # Check exported TID
+        # Check exported TID pipe_profile
         export_xtf_file = self._get_output_filename("export_minimal_dataset_dss_selection")
         exported_xtf_filename = self._get_output_filename(
             f"{export_xtf_file}_{config.MODEL_NAME_DSS}.xtf"
