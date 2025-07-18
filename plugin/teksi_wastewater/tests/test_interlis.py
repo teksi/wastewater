@@ -119,7 +119,7 @@ class TestInterlis(unittest.TestCase):
             "SELECT height_width_ratio FROM tww_od.pipe_profile WHERE obj_id='ch000000PP000003';"
         )
         self.assertIsNotNone(result)
-        self.assertEqual(result[0], 1.130)
+        self.assertEqual(result[0], Decimal('1.13000'))
         # in future if VSA-DSS / SIA405 INTERLIS is also patched change to:
         # self.assertEqual(result[0], 1.12857)
 
