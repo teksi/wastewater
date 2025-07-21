@@ -248,7 +248,8 @@ class TestInterlis(unittest.TestCase):
             "ch000000PP000003",
             "height_width_ratio",
         )
-        print(xml_height_width_ratio)
+        #add debug output 
+        logger.debug(f"xml_height_width_ratio = " {xml_height_width_ratio}")
 
         if xml_height_width_ratio is not None:
             # self.assertIsNotNone(xml_height_width_ratio, xml_height_width_ratio)
