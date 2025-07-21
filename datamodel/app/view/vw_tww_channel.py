@@ -26,7 +26,7 @@ def vw_tww_channel(connection: psycopg.Connection, extra_definition: dict = None
 
     cursor = connection.cursor()
 
-    view_sql = """
+    matview_sql = """
     DROP VIEW IF EXISTS tww_app.vw_tww_channel;
 
     CREATE OR REPLACE VIEW tww_app.vw_tww_channel AS
@@ -35,7 +35,11 @@ def vw_tww_channel(connection: psycopg.Connection, extra_definition: dict = None
           {ws_cols}
         , {ch_cols}
         {extra_cols}
-        , ST_CurveToLine(ST_LineMerge(ST_Collect(ST_CurveToLine(re.progression3d_geometry)))) as progression3d_geometry
+        , ST_Multi(ST_Force2D(ST_ForceCurve(ST_LineMerge(ST_Collect(ST_CurveToLine(re.progression3d_geometry))))))::geometry(MultiCurve, {{srid}})  as progression2d_geometry
+        , min(re.clear_height) AS _min_height
+        , max(re.clear_height) AS _max_height
+        , sum(length_effective) as _length_effective
+        , array_agg(DISTINCT re.material) as _materials
         , vl_fh.tww_is_primary
       FROM tww_od.channel ch
          LEFT JOIN tww_od.wastewater_structure ws ON ch.obj_id = ws.obj_id
@@ -119,7 +123,8 @@ def vw_tww_channel(connection: psycopg.Connection, extra_definition: dict = None
         extra_joins=extra_joins(connection=connection, extra_definition=extra_definition),
     )
 
-    cursor.execute(view_sql)
+    matview_sql = psycopg.sql.SQL(matview_sql).format(srid=psycopg.sql.Literal(srid))
+    cursor.execute(matview_sql)
 
     extras = """
     COMMENT ON VIEW tww_app.vw_tww_channel IS 'Read only';
