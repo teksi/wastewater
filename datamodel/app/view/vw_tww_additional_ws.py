@@ -7,13 +7,24 @@ import os
 
 import psycopg
 from pirogue.utils import insert_command, select_columns, update_command
+from yaml import safe_load
+
+from .utils.extra_definition_utils import (
+    extra_cols,
+    extra_joins,
+    insert_extra,
+    update_extra,
+)
 
 
-def vw_tww_additional_ws(connection: psycopg.Connection, srid: psycopg.sql.Literal):
+def vw_tww_additional_ws(
+    connection: psycopg.Connection, srid: psycopg.sql.Literal, extra_definition: dict = None
+):
     """
     Creates additional_wastewater_structure view
     :param srid: EPSG code for geometries
     :param pg_service: the PostgreSQL service name
+    :param extra_definition: a dictionary for additional columns
     """
     cursor = connection.cursor()
 
@@ -35,6 +46,8 @@ def vw_tww_additional_ws(connection: psycopg.Connection, srid: psycopg.sql.Liter
         , sm.function as sm_function
         , ws.fk_owner
         , ws.status
+
+        {extra_cols}
 
         , {ws_cols}
 
@@ -76,6 +89,7 @@ def vw_tww_additional_ws(connection: psycopg.Connection, srid: psycopg.sql.Liter
         LEFT JOIN tww_od.discharge_point dp ON dp.obj_id = ws.obj_id
         LEFT JOIN tww_od.infiltration_installation ii ON ii.obj_id = ws.obj_id
         LEFT JOIN tww_vl.channel_function_hierarchic vl_fh ON vl_fh.code = wn._function_hierarchic
+        {extra_joins}
         WHERE '-1'= ALL(ARRAY[ch.obj_id,ma.obj_id,ss.obj_id,dp.obj_id,ii.obj_id]) IS NULL
         AND '-2'= ALL(ARRAY[ch.obj_id,ma.obj_id,ss.obj_id,dp.obj_id,ii.obj_id]) IS NULL;
     """.format(
@@ -173,6 +187,12 @@ def vw_tww_additional_ws(connection: psycopg.Connection, srid: psycopg.sql.Liter
             prefix="wn_",
             remap_columns={},
         ),
+        extra_cols=(
+            ""
+            if not extra_definition
+            else extra_cols(connection=connection, extra_definition=extra_definition)
+        ),
+        extra_joins=extra_joins(connection=connection, extra_definition=extra_definition),
     )
 
     view_sql = psycopg.sql.SQL(view_sql).format(srid=psycopg.sql.Literal(srid))
@@ -218,6 +238,8 @@ def vw_tww_additional_ws(connection: psycopg.Connection, srid: psycopg.sql.Liter
       UPDATE tww_od.wastewater_structure
         SET fk_main_cover = NEW.co_obj_id
         WHERE obj_id = NEW.obj_id;
+
+      {insert_extra}
 
       RETURN NEW;
     END; $BODY$ LANGUAGE plpgsql VOLATILE;
@@ -319,6 +341,7 @@ def vw_tww_additional_ws(connection: psycopg.Connection, srid: psycopg.sql.Liter
                 "fk_wastewater_structure": "NEW.obj_id",
             },
         ),
+        insert_extra=insert_extra(connection=connection, extra_definition=extra_definition),
     )
 
     trigger_insert_sql = psycopg.sql.SQL(trigger_insert_sql).format(srid=psycopg.sql.Literal(srid))
@@ -336,6 +359,8 @@ def vw_tww_additional_ws(connection: psycopg.Connection, srid: psycopg.sql.Liter
       {update_sp}
       {update_ws}
       {update_wn}
+      {update_ne}
+      {update_extra}
 
       IF OLD.ws_type <> NEW.ws_type THEN
         CASE WHEN OLD.ws_type <> 'unknown' THEN
@@ -541,6 +566,16 @@ def vw_tww_additional_ws(connection: psycopg.Connection, srid: psycopg.sql.Liter
                 "_function_hierarchic",
             ],
         ),
+        update_ne=update_command(
+            connection=connection,
+            table_schema="tww_od",
+            table_name="wastewater_networkelement",
+            table_alias="ne",
+            prefix="wn_",
+            indent=6,
+            skip_columns=[],
+        ),
+        update_extra=update_extra(connection=connection, extra_definition=extra_definition),
     )
 
     update_trigger_sql = psycopg.sql.SQL(update_trigger_sql).format(srid=psycopg.sql.Literal(srid))
@@ -577,8 +612,17 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-s", "--srid", help="EPSG code for SRID", default=2056, type=int)
     parser.add_argument("-p", "--pg_service", help="the PostgreSQL service name")
+    parser.add_argument(
+        "-e",
+        "--extra-definition",
+        help="YAML file path for extra additions to the view",
+    )
     args = parser.parse_args()
     srid = psycopg.sql.Literal(args.srid)
     pg_service = args.pg_service or os.getenv("PGSERVICE")
-    with psycopg.connect(f"service={pg_service}") as connection:
-        vw_tww_additional_ws(srid=srid, pg_service=pg_service)
+    extra_definition = {}
+    if args.extra_definition:
+        with open(args.extra_definition) as f:
+            extra_definition = safe_load(f)
+    with psycopg.connect(f"service={pg_service}") as conn:
+        vw_tww_additional_ws(connection=conn, srid=srid, extra_definition=extra_definition)
