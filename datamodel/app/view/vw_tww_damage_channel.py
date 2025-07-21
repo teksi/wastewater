@@ -59,19 +59,19 @@ def vw_tww_damage_channel(
              LEFT JOIN tww_app.vw_tww_channel ch ON ch.obj_id = ws.obj_id
              {extra_joins}
           WHERE ex.recording_type = 3686
-          GROUP BY {dg_cols},{dc_cols}{extra_cols_grp},ws.identifier, re_2.obj_id
         )
         SELECT
-        {dg_cols_base},
-        {dc_cols_base},
-        base.ws_identifier,
-        ST_LineInterpolatePoint(base.ch_progression2d_geometry,
-        CASE
+        {dg_cols_base}
+        , {dc_cols_base}
+        , base.ws_identifier
+        , ST_LineInterpolatePoint(base.ch_progression2d_geometry
+        , CASE
             WHEN base.direction = 'downstream'
             THEN LEAST(base.channel_distance / ST_Length(base.ch_progression2d_geometry), 1)
             ELSE 1::double precision - LEAST(base.channel_distance / ST_Length(base.ch_progression2d_geometry), 1)
-        END) AS situation2d_geometry,
-        base.direction
+        END) AS situation2d_geometry
+        , base.direction
+        , base.tww_is_primary
         {extra_cols_base}
         FROM base;
     """.format(
