@@ -96,8 +96,9 @@ class TestInterlis(unittest.TestCase):
             if xml_tid == tid:
                 # xml_attribute = interlis_object.attrib.get(attribute, None)
                 # testing with fixed attribute name
-                # xml_attribute = interlis_object.attrib.get("height_width_ratio", None)
-                xml_attribute = interlis_object.get("height_width_ratio", None)
+                # xml_attribute = interlis_object.attrib.get("HoehenBreitenverhaeltnis", None)
+                # Attributname has to be German, as xtf is German
+                xml_attribute = interlis_object.get("HoehenBreitenverhaeltnis", None)
                 return xml_attribute
 
         return None
@@ -246,7 +247,7 @@ class TestInterlis(unittest.TestCase):
             config.TOPIC_NAME_DSS,
             "Rohrprofil",
             "ch000000PP000003",
-            "height_width_ratio",
+            "HoehenBreitenverhaeltnis",
         )
 
         # add debug output
