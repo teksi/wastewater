@@ -3,6 +3,7 @@ import os
 import re
 import sys
 import xml.etree.ElementTree as ET
+from decimal import Decimal
 
 from qgis.testing import start_app, unittest
 from teksi_wastewater.interlis import config
@@ -73,6 +74,35 @@ class TestInterlis(unittest.TestCase):
 
         return None
 
+    @staticmethod
+    def _get_xtf_object_attribute(xtf_file, topicname, classname, tid, attribute):
+        # from xml file
+        tree = ET.parse(xtf_file)
+        root = tree.getroot()
+
+        def get_namespace(element):
+            m = re.match(r"\{.*\}", element.tag)
+            return m.group(0) if m else ""
+
+        namespace = get_namespace(root)
+
+        interlis_objects = root.findall(
+            "./{0}DATASECTION/{0}{1}/{0}{1}.{2}".format(namespace, topicname, classname)
+        )
+
+        for interlis_object in interlis_objects:
+            xml_tid = interlis_object.attrib.get("TID", None)
+
+            if xml_tid == tid:
+                # xml_attribute = interlis_object.attrib.get(attribute, None)
+                # testing with fixed attribute name
+                # xml_attribute = interlis_object.attrib.get("HoehenBreitenverhaeltnis", None)
+                # Attributname has to be German, as xtf is German
+                xml_attribute = interlis_object.get("HoehenBreitenverhaeltnis", None)
+                return xml_attribute
+
+        return None
+
     def setUp(self):
         DatabaseUtils.databaseConfig.PGHOST = "db"
         DatabaseUtils.databaseConfig.PGDATABASE = "tww"
@@ -113,6 +143,24 @@ class TestInterlis(unittest.TestCase):
         )
         self.assertIsNotNone(result)
         self.assertEqual(result[0], 448.0)
+
+        # check on height_width_ratio decimal(8,5) instead of decimal(5,2)
+        result = DatabaseUtils.fetchone(
+            "SELECT height_width_ratio FROM tww_od.pipe_profile WHERE obj_id='ch000000PP000003';"
+        )
+        self.assertIsNotNone(result)
+
+        # self.assertEqual(result[0], 1.13000)
+        self.assertEqual(result[0], Decimal("1.13000"))
+
+        # in future if VSA-DSS / SIA405 INTERLIS is also patched change to:
+        # self.assertEqual(result[0], 1.12857)
+
+        # update height_width_ratio to long decimal to test export
+        # row = {
+        # "height_width_ratio": 1.12857,
+        # }
+        # self.update("pipe_profile", row, 'ch000000PP000003')
 
         # Import minimal dss
         xtf_file_input = self._get_data_filename(MINIMAL_DATASET_DSS)
@@ -178,7 +226,7 @@ class TestInterlis(unittest.TestCase):
             logs_next_to_file=True,
         )
 
-        # Check exported TID
+        # Check exported TID reach
         exported_xtf_filename = self._get_output_filename(
             f"{export_xtf_file}_{config.MODEL_NAME_SIA405_ABWASSER}.xtf"
         )
@@ -186,6 +234,32 @@ class TestInterlis(unittest.TestCase):
             exported_xtf_filename, config.TOPIC_NAME_SIA405_ABWASSER, "Haltung", "ch000000RE000001"
         )
         self.assertIsNotNone(interlis_object)
+
+        # Check exported TID and height_width_ratio pipe_profile
+        interlis_object = self._get_xtf_object(
+            exported_xtf_filename, config.TOPIC_NAME_DSS, "Rohrprofil", "ch000000PP000003"
+        )
+        self.assertIsNone(interlis_object)
+        # xml_tid = interlis_object.attrib.get("TID", None)
+        # xml_height_width_ratio = interlis_object.attrib.get("height_width_ratio", None)
+        xml_height_width_ratio = self._get_xtf_object_attribute(
+            exported_xtf_filename,
+            config.TOPIC_NAME_DSS,
+            "Rohrprofil",
+            "ch000000PP000003",
+            "HoehenBreitenverhaeltnis",
+        )
+
+        # add debug output
+        logger.debug(f"xml_height_width_ratio =  {xml_height_width_ratio}")
+
+        if xml_height_width_ratio is not None:
+            # self.assertIsNotNone(xml_height_width_ratio, xml_height_width_ratio)
+            self.assertEqual(xml_height_width_ratio, 1.130)
+        # in future if VSA-DSS / SIA405 INTERLIS is also patched  change to:
+        # self.assertEqual(xml_height_width_ratio, 1.12857)
+        else:
+            self.assertEqual(1, 2)
 
         # Export minimal dss
         export_xtf_file = self._get_output_filename("export_minimal_dataset_dss")
@@ -212,7 +286,7 @@ class TestInterlis(unittest.TestCase):
             logs_next_to_file=True,
         )
 
-        # Check exported TID
+        # Check exported TID examination
         exported_xtf_filename = self._get_output_filename(
             f"{export_xtf_file}_{config.MODEL_NAME_VSA_KEK}.xtf"
         )
@@ -253,7 +327,7 @@ class TestInterlis(unittest.TestCase):
             selected_ids=["ch000000WN000002", "ch000000WN000003", "ch000000RE000002"],
         )
 
-        # Check exported TID
+        # Check exported TID pipe_profile
         export_xtf_file = self._get_output_filename("export_minimal_dataset_dss_selection")
         exported_xtf_filename = self._get_output_filename(
             f"{export_xtf_file}_{config.MODEL_NAME_DSS}.xtf"
