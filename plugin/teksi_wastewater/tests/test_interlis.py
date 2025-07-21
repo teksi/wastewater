@@ -257,7 +257,7 @@ class TestInterlis(unittest.TestCase):
         # in future if VSA-DSS / SIA405 INTERLIS is also patched  change to:
         # self.assertEqual(xml_height_width_ratio, 1.12857)
         else:
-            self.assertEqual(1, 1)
+            self.assertEqual(1, 2)
 
         # Export minimal dss
         export_xtf_file = self._get_output_filename("export_minimal_dataset_dss")
