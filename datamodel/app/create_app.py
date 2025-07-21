@@ -177,6 +177,7 @@ Running modification {modification.get('id')}
         )
         vw_tww_channel(
             connection=self.connection,
+            srid=SRID,
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_channel"])
                 if self.extra_definitions["vw_tww_channel"]
