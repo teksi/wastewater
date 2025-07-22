@@ -15,7 +15,9 @@ from .utils.extra_definition_utils import (
 )
 
 
-def vw_tww_channel(connection: psycopg.Connection, srid: psycopg.sql.Literal, extra_definition: dict = None):
+def vw_tww_channel(
+    connection: psycopg.Connection, srid: psycopg.sql.Literal, extra_definition: dict = None
+):
     """
     Creates tww_channel view
     :param pg_service: the PostgreSQL service name
