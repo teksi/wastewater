@@ -10,8 +10,12 @@ import yaml
 from pirogue import MultipleInheritance, SimpleJoins, SingleInheritance
 from pum import HookBase
 from triggers.set_defaults_and_triggers import set_defaults_and_triggers
+from view.maintenance_views import (
+    vw_tww_channel,
+    vw_tww_channel_maintenance,
+    vw_tww_ws_maintenance,
+)
 from view.vw_tww_additional_ws import vw_tww_additional_ws
-from view.maintenance_views import vw_tww_channel, vw_tww_channel_maintenance, vw_tww_ws_maintenance
 from view.vw_tww_damage_channel import vw_tww_damage_channel
 from view.vw_tww_infiltration_installation import vw_tww_infiltration_installation
 from view.vw_tww_measurement_series import vw_tww_measurement_series
