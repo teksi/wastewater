@@ -39,13 +39,16 @@ def vw_tww_channel(
         , max(re.clear_height) AS _max_height
         , sum(length_effective) as _length_effective
         , array_agg(DISTINCT re.material) as _materials
+        , vl_fh.tww_is_primary
       FROM tww_od.channel ch
          LEFT JOIN tww_od.wastewater_structure ws ON ch.obj_id = ws.obj_id
          LEFT JOIN tww_od.wastewater_networkelement ne ON ne.fk_wastewater_structure = ws.obj_id
          LEFT JOIN tww_od.reach re ON ne.obj_id = re.obj_id
+         LEFT JOIN tww_vl.channel_function_hierarchic vl_fh ON vl_fh.code = ch.function_hierarchic
        GROUP BY
          {ch_cols_grp}
         , {ws_cols_grp}
+        , vl_fh.tww_is_primary
     """.format(
         ch_cols=select_columns(
             connection=connection,
