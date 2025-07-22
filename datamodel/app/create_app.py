@@ -132,34 +132,98 @@ Running modification {modification.get('id')}
             if value:
                 self.extra_definitions[key].update(abspath / value)
 
-        # function name and bool whether or not to pass srid
-        big_functions = [
-            ("vw_wastewater_structure", False),
-            ("vw_tww_wastewater_structure", True),
-            ("vw_tww_infiltration_installation", True),
-            ("vw_tww_reach", False),
-            ("vw_tww_channel", True),
-            ("vw_tww_channel_maintenance", False),
-            ("vw_tww_ws_maintenance", False),
-            ("vw_tww_damage_channel", False),
-            ("vw_tww_additional_ws", True),
-            ("vw_tww_measurement_series", False),
-            ("vw_tww_overflow", False),
-        ]
-
-        # Loop through the list and call each function with the appropriate arguments
-        for func_name, uses_srid in big_functions:
-            yaml_path = self.extra_definitions.get(func_name)
-            if yaml_path and os.path.exists(yaml_path):
-                extra_definition = self.load_yaml(yaml_path)
-            else:
-                extra_definition = {}
-            if uses_srid:
-                locals()[func_name](
-                    connection=self.connection, srid=SRID, extra_definition=extra_definition
-                )
-            else:
-                locals()[func_name](connection=self.connection, extra_definition=extra_definition)
+        vw_wastewater_structure(
+            connection=self.connection,
+            extra_definition=(
+                self.load_yaml(self.extra_definitions["vw_wastewater_structure"])
+                if self.extra_definitions.get("vw_wastewater_structure")
+                else {}
+            ),
+        )
+        vw_tww_wastewater_structure(
+            connection=self.connection,
+            srid=SRID,
+            extra_definition=(
+                self.load_yaml(self.extra_definitions["vw_tww_wastewater_structure"])
+                if self.extra_definitions.get("vw_tww_wastewater_structure")
+                else {}
+            ),
+        )
+        vw_tww_infiltration_installation(
+            connection=self.connection,
+            srid=SRID,
+            extra_definition=(
+                self.load_yaml(self.extra_definitions["vw_tww_infiltration_installation"])
+                if self.extra_definitions.get("vw_tww_infiltration_installation")
+                else {}
+            ),
+        )
+        vw_tww_reach(
+            connection=self.connection,
+            extra_definition=(
+                self.load_yaml(self.extra_definitions["vw_tww_reach"])
+                if self.extra_definitions.get("vw_tww_reach")
+                else {}
+            ),
+        )
+        vw_tww_channel(
+            connection=self.connection,
+            srid=SRID,
+            extra_definition=(
+                self.load_yaml(self.extra_definitions["vw_tww_channel"])
+                if self.extra_definitions.get("vw_tww_channel")
+                else {}
+            ),
+        )
+        vw_tww_channel_maintenance(
+            connection=self.connection,
+            extra_definition=(
+                self.load_yaml(self.extra_definitions["vw_tww_channel_maintenance"])
+                if self.extra_definitions.get("vw_tww_channel_maintenance")
+                else {}
+            ),
+        )
+        vw_tww_ws_maintenance(
+            connection=self.connection,
+            extra_definition=(
+                self.load_yaml(self.extra_definitions["vw_tww_ws_maintenance"])
+                if self.extra_definitions.get("vw_tww_ws_maintenance")
+                else {}
+            ),
+        )
+        vw_tww_damage_channel(
+            connection=self.connection,
+            extra_definition=(
+                self.load_yaml(self.extra_definitions["vw_tww_damage_channel"])
+                if self.extra_definitions.get("vw_tww_damage_channel")
+                else {}
+            ),
+        )
+        vw_tww_additional_ws(
+            srid=SRID,
+            connection=self.connection,
+            extra_definition=(
+                self.load_yaml(self.extra_definitions["vw_tww_additional_ws"])
+                if self.extra_definitions.get("vw_tww_additional_ws")
+                else {}
+            ),
+        )
+        vw_tww_measurement_series(
+            connection=self.connection,
+            extra_definition=(
+                self.load_yaml(self.extra_definitions["vw_tww_measurement_series"])
+                if self.extra_definitions.get("vw_tww_measurement_series")
+                else {}
+            ),
+        )
+        vw_tww_overflow(
+            connection=self.connection,
+            extra_definition=(
+                self.load_yaml(self.extra_definitions["vw_tww_overflow"])
+                if self.extra_definitions.get("vw_tww_overflow")
+                else {}
+            ),
+        )
 
         # TODO: Are these export views necessary? cymed 13.03.25
         for _, yaml_path in self.simple_joins_yaml.items():
