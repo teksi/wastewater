@@ -40,11 +40,12 @@ def vw_tww_damage_channel(
         {dg_cols},
         {dc_cols},
         ws.identifier AS ws_identifier,
-        ST_LineMerge(ST_Collect(ST_Force2D(re.progression3d_geometry))) AS ch_progression2d_geometry,
+        ch.progression2d_geometry AS ch_progression2d_geometry,
         CASE
           WHEN re_2.obj_id IS NULL THEN 'upstream'::text
           ELSE 'downstream'::text
         END AS direction
+        , ch.tww_is_primary
         {extra_cols}
         FROM tww_od.damage_channel dc
              LEFT JOIN tww_od.damage dg ON dg.obj_id::text = dc.obj_id::text
@@ -55,21 +56,22 @@ def vw_tww_damage_channel(
              LEFT JOIN tww_od.reach re ON re.obj_id::text = ne.obj_id::text
              LEFT JOIN tww_od.reach_point rp ON rp.obj_id::text = ex.fk_reach_point::text
              LEFT JOIN tww_od.reach re_2 ON re_2.fk_reach_point_from::text = rp.obj_id::text
+             LEFT JOIN tww_app.vw_tww_channel ch ON ch.obj_id = ws.obj_id
              {extra_joins}
           WHERE ex.recording_type = 3686
-          GROUP BY {dg_cols},{dc_cols}{extra_cols_grp},ws.identifier, re_2.obj_id
         )
         SELECT
-        {dg_cols_base},
-        {dc_cols_base},
-        base.ws_identifier,
-        ST_LineInterpolatePoint(base.ch_progression2d_geometry,
-        CASE
+        {dg_cols_base}
+        , {dc_cols_base}
+        , base.ws_identifier
+        , ST_LineInterpolatePoint(base.ch_progression2d_geometry
+        , CASE
             WHEN base.direction = 'downstream'
             THEN LEAST(base.channel_distance / ST_Length(base.ch_progression2d_geometry), 1)
             ELSE 1::double precision - LEAST(base.channel_distance / ST_Length(base.ch_progression2d_geometry), 1)
-        END) AS situation2d_geometry,
-        base.direction
+        END) AS situation2d_geometry
+        , base.direction
+        , base.tww_is_primary
         {extra_cols_base}
         FROM base;
     """.format(
@@ -114,14 +116,6 @@ def vw_tww_damage_channel(
             ""
             if not extra_definition
             else "," + extra_cols(connection=connection, extra_definition=extra_definition_base)
-        ),
-        extra_cols_grp=(
-            ""
-            if not extra_definition
-            else ","
-            + extra_cols(
-                connection=connection, extra_definition=extra_definition, skip_prefix=True
-            )
         ),
         extra_joins=extra_joins(connection=connection, extra_definition=extra_definition),
     )
