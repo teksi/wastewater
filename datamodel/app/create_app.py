@@ -10,19 +10,6 @@ import yaml
 from pirogue import MultipleInheritance, SimpleJoins, SingleInheritance
 from pum import HookBase
 from triggers.set_defaults_and_triggers import set_defaults_and_triggers
-from view.maintenance_views import (
-    vw_tww_channel,
-    vw_tww_channel_maintenance,
-    vw_tww_ws_maintenance,
-)
-from view.vw_tww_additional_ws import vw_tww_additional_ws
-from view.vw_tww_damage_channel import vw_tww_damage_channel
-from view.vw_tww_infiltration_installation import vw_tww_infiltration_installation
-from view.vw_tww_measurement_series import vw_tww_measurement_series
-from view.vw_tww_overflow import vw_tww_overflow
-from view.vw_tww_reach import vw_tww_reach
-from view.vw_tww_wastewater_structure import vw_tww_wastewater_structure
-from view.vw_wastewater_structure import vw_wastewater_structure
 
 logger = logging.getLogger(__name__)
 
@@ -157,7 +144,7 @@ Running modification {modification.get('id')}
             ("vw_tww_damage_channel", False),
             ("vw_tww_additional_ws", True),
             ("vw_tww_measurement_series", False),
-            ("vw_tww_overflow", False)
+            ("vw_tww_overflow", False),
         ]
 
         # Loop through the list and call each function with the appropriate arguments
@@ -168,7 +155,9 @@ Running modification {modification.get('id')}
             else:
                 extra_definition = {}
             if uses_srid:
-                locals()[func_name](connection=self.connection, srid=SRID, extra_definition=extra_definition)
+                locals()[func_name](
+                    connection=self.connection, srid=SRID, extra_definition=extra_definition
+                )
             else:
                 locals()[func_name](connection=self.connection, extra_definition=extra_definition)
 
