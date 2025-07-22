@@ -10,7 +10,6 @@ import yaml
 from pirogue import MultipleInheritance, SimpleJoins, SingleInheritance
 from pum import HookBase
 from triggers.set_defaults_and_triggers import set_defaults_and_triggers
-
 from view.maintenance_views import (
     vw_tww_channel,
     vw_tww_channel_maintenance,
