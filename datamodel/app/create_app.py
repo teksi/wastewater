@@ -11,7 +11,7 @@ from pirogue import MultipleInheritance, SimpleJoins, SingleInheritance
 from pum import HookBase
 from triggers.set_defaults_and_triggers import set_defaults_and_triggers
 from view.vw_tww_additional_ws import vw_tww_additional_ws
-from view.vw_tww_channel import vw_tww_channel
+from view.maintenance_views import vw_tww_channel, vw_tww_channel_maintenance, vw_tww_ws_maintenance
 from view.vw_tww_damage_channel import vw_tww_damage_channel
 from view.vw_tww_infiltration_installation import vw_tww_infiltration_installation
 from view.vw_tww_measurement_series import vw_tww_measurement_series
@@ -181,6 +181,22 @@ Running modification {modification.get('id')}
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_channel"])
                 if self.extra_definitions["vw_tww_channel"]
+                else {}
+            ),
+        )
+        vw_tww_channel_maintenance(
+            connection=self.connection,
+            extra_definition=(
+                self.load_yaml(self.extra_definitions["vw_tww_channel_maintenance"])
+                if self.extra_definitions["vw_tww_channel_maintenance"]
+                else {}
+            ),
+        )
+        vw_tww_ws_maintenance(
+            connection=self.connection,
+            extra_definition=(
+                self.load_yaml(self.extra_definitions["vw_tww_ws_maintenance"])
+                if self.extra_definitions["vw_tww_ws_maintenance"]
                 else {}
             ),
         )

@@ -117,14 +117,6 @@ def vw_tww_damage_channel(
             if not extra_definition
             else "," + extra_cols(connection=connection, extra_definition=extra_definition_base)
         ),
-        extra_cols_grp=(
-            ""
-            if not extra_definition
-            else ","
-            + extra_cols(
-                connection=connection, extra_definition=extra_definition, skip_prefix=True
-            )
-        ),
         extra_joins=extra_joins(connection=connection, extra_definition=extra_definition),
     )
 
