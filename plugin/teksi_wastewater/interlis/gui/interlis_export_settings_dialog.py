@@ -53,6 +53,11 @@ class InterlisExportSettingsDialog(QDialog):
         self.structures = structures_layer.selectedFeatures() if structures_layer else []
         self.reaches = reaches_layer.selectedFeatures() if reaches_layer else []
 
+        filter_nulls_value = QgsSettings().value("tww_plugin/filter_nulls", True)
+        self.filter_nulls_checkbox.setChecked(
+            filter_nulls_value is True or filter_nulls_value == "true"
+        )
+
         self.limit_checkbox.setText(
             f"Limit to selection ({len(self.structures)} structures and {len(self.reaches)} reaches)"
         )
@@ -78,6 +83,7 @@ class InterlisExportSettingsDialog(QDialog):
     def on_finish(self):
         # Remember save next to file checkbox
         QgsSettings().setValue("tww_plugin/logs_next_to_file", self.logs_next_to_file)
+        QgsSettings().setValue("tww_plugin/filter_nulls", self.filter_nulls)
 
         # Save checked state of scales
         if self.labels_groupbox.isChecked():
@@ -90,6 +96,10 @@ class InterlisExportSettingsDialog(QDialog):
     @property
     def logs_next_to_file(self):
         return self.save_logs_next_to_file_checkbox.isChecked()
+
+    @property
+    def filter_nulls(self):
+        return self.filter_nulls_checkbox.isChecked()
 
     @property
     def selected_ids(self):
