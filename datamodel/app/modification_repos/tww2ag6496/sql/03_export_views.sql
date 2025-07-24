@@ -307,10 +307,10 @@ SELECT
 FROM (
 	SELECT obj_id, wwtp_number, situation3d_geometry, backflow_level_current, bottom_level,_function_hierarchic FROM tww_od.wastewater_node wn
 	UNION (
-		SELECT obj_id, wwtp_number, situation3d_geometry, backflow_level_current, bottom_level, ch_function_hierarchic as _function_hierarchic 
-		FROM tww_od.agxx_unconnected_node_bwrel un 
-		EXCEPT 
-		SELECT obj_id, wwtp_number, situation3d_geometry, backflow_level_current, bottom_level,ch_function_hierarchic as _function_hierarchic 
+		SELECT obj_id, wwtp_number, situation3d_geometry, backflow_level_current, bottom_level, ch_function_hierarchic as _function_hierarchic
+		FROM tww_od.agxx_unconnected_node_bwrel un
+		EXCEPT
+		SELECT obj_id, wwtp_number, situation3d_geometry, backflow_level_current, bottom_level,ch_function_hierarchic as _function_hierarchic
 		FROM tww_od.agxx_unconnected_node_bwrel un
 		WHERE un.obj_id IN (SELECT obj_id FROM tww_od.wastewater_node wn)
 	)
