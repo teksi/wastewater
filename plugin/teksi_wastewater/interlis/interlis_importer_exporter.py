@@ -56,14 +56,17 @@ class InterlisImporterExporter:
         self.model_classes_tww_sys = None
         self.model_classes_tww_app = None
 
+        self.filter_nulls = None
         self.current_progress = 0
 
-    def interlis_import(self, xtf_file_input, show_selection_dialog=False, logs_next_to_file=True):
+    def interlis_import(self, xtf_file_input, show_selection_dialog=False, logs_next_to_file=True, filter_nulls=True):
         # Configure logging
         if logs_next_to_file:
             self.base_log_path = xtf_file_input
         else:
             self.base_log_path = None
+
+        self.filter_nulls=filter_nulls
 
         # Validating the input file
         self._progress_done(5, "Validating the input file...")
@@ -292,6 +295,7 @@ class InterlisImporterExporter:
             model_classes_tww_vl=self.model_classes_tww_vl,
             model_classes_tww_app=self.model_classes_tww_app,
             callback_progress_done=self._progress_done_intermediate_schema,
+            filter_nulls=self.filter_nulls,
         )
 
         with LoggingHandlerContext(log_handler):
