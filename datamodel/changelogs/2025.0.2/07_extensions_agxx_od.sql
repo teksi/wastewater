@@ -187,7 +187,7 @@ CREATE TABLE tww_od.agxx_reach_point
 );
 ALTER TABLE tww_od.agxx_reach_point ADD COLUMN IF NOT EXISTS ag64_fk_wastewater_node varchar(16);
 ALTER TABLE tww_od.agxx_reach_point ADD CONSTRAINT ag64_rel_reach_point_fk_wastewater_node FOREIGN KEY (ag64_fk_wastewater_node) REFERENCES tww_od.agxx_unconnected_node_bwrel(obj_id) ON DELETE SET NULL;
-COMMENT ON COLUMN tww_od.agxx_reach_point.ag64_fk_measure IS 'Extension for AG-64/ Erweiterung aus AG-64, Pseudoknoten Übergang SAA-PAA /xxx_fr';
+COMMENT ON COLUMN tww_od.agxx_reach_point.ag64_fk_wastewater_node IS 'Extension for AG-64/ Erweiterung aus AG-64, Pseudoknoten Übergang SAA-PAA /xxx_fr';
 
 
 
