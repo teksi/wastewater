@@ -172,9 +172,9 @@ CREATE INDEX IF NOT EXISTS in_od_agxx_unconnected_node_bwrel_detail_geometry3d_g
     (detail_geometry3d_geometry)
     TABLESPACE pg_default;
 
-CREATE INDEX IF NOT EXISTS in_od_agxx_unconnected_node_bwrel_situation_geometry3d_geometry
+CREATE INDEX IF NOT EXISTS in_od_agxx_unconnected_node_bwrel_situation3d_geometry
     ON tww_od.agxx_unconnected_node_bwrel USING gist
-    (situation_geometry3d_geometry)
+    (situation3d_geometry)
     TABLESPACE pg_default;
 
 -- 1:1 relation GEPMassnahme/GEPKnoten
