@@ -182,7 +182,7 @@ CREATE TABLE tww_od.agxx_reach_point
 (
    uuid uuid NOT NULL DEFAULT uuid_generate_v4(),
    fk_reach_point varchar(16) NOT NULL,
-   CONSTRAINT pkey_tww_od_agxx_wastewater_structure_uuid PRIMARY KEY (uuid),
+   CONSTRAINT pkey_tww_od_agxx_reach_point_uuid PRIMARY KEY (uuid),
    CONSTRAINT oorel_od_agxx_reach_point FOREIGN KEY (fk_reach_point) REFERENCES tww_od.reach_point(obj_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 ALTER TABLE tww_od.agxx_reach_point ADD COLUMN IF NOT EXISTS ag64_fk_wastewater_node varchar(16);
