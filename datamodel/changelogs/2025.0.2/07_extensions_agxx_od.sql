@@ -143,6 +143,7 @@ ALTER TABLE tww_od.agxx_infiltration_zone
 
 
 -- Rückfallebene für Knoten ohne Topologische Verknüpfung beim Import
+-- Erweiterung 2025.0.2: Nutzung für SAA-Pseudoknoten bei Haltung-Haltung-Verbindungen
 CREATE TABLE IF NOT EXISTS tww_od.agxx_unconnected_node_bwrel (
 	obj_id character varying(16),
 	year_of_construction integer,
@@ -159,6 +160,11 @@ CREATE TABLE IF NOT EXISTS tww_od.agxx_unconnected_node_bwrel (
     fk_operator varchar(16),
     fk_owner varchar(16),
     ag96_fk_measure varchar(16),
+	-- Erweiterung 2025.0.2
+	wwtp_number integer,
+	situation3d_geometry geometry(PointZ,2056),
+	backflow_level_current decimal(7,3),
+	bottom_level decimal(7,3),
 	CONSTRAINT pkey_od_agxx_unconnected_node_bwrel_obj_id PRIMARY KEY (obj_id));
 
 CREATE INDEX IF NOT EXISTS in_od_agxx_unconnected_node_bwrel_detail_geometry3d_geometry
@@ -166,7 +172,26 @@ CREATE INDEX IF NOT EXISTS in_od_agxx_unconnected_node_bwrel_detail_geometry3d_g
     (detail_geometry3d_geometry)
     TABLESPACE pg_default;
 
--- for existing AG-xx databases
+CREATE INDEX IF NOT EXISTS in_od_agxx_unconnected_node_bwrel_situation_geometry3d_geometry
+    ON tww_od.agxx_unconnected_node_bwrel USING gist
+    (situation_geometry3d_geometry)
+    TABLESPACE pg_default;
+
+-- 1:1 relation GEPMassnahme/GEPKnoten
+CREATE TABLE tww_od.agxx_reach_point
+(
+   uuid uuid NOT NULL DEFAULT uuid_generate_v4(),
+   fk_reach_point varchar(16) NOT NULL,
+   CONSTRAINT pkey_tww_od_agxx_wastewater_structure_uuid PRIMARY KEY (uuid),
+   CONSTRAINT oorel_od_agxx_reach_point FOREIGN KEY (fk_reach_point) REFERENCES tww_od.reach_point(obj_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+ALTER TABLE tww_od.agxx_reach_point ADD COLUMN IF NOT EXISTS ag64_fk_wastewater_node varchar(16);
+ALTER TABLE tww_od.agxx_reach_point ADD CONSTRAINT ag64_rel_reach_point_fk_wastewater_node FOREIGN KEY (ag64_fk_wastewater_node) REFERENCES tww_od.agxx_unconnected_node_bwrel(obj_id) ON DELETE SET NULL;
+COMMENT ON COLUMN tww_od.agxx_reach_point.ag64_fk_measure IS 'Extension for AG-64/ Erweiterung aus AG-64, Pseudoknoten Übergang SAA-PAA /xxx_fr';
+
+
+
+-- for existing AG-xx databases before 2025.0.1
 ALTER TABLE IF EXISTS tww_od.measure_text
   RENAME TO agxx_measure_text;
 
