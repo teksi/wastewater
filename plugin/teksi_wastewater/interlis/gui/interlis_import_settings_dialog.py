@@ -1,9 +1,8 @@
 import os
 
-from qgis.core import  QgsSettings
+from qgis.core import QgsSettings
 from qgis.PyQt.QtWidgets import QDialog
 from qgis.PyQt.uic import loadUi
-
 
 
 class InterlisImportSettingsDialog(QDialog):
@@ -23,14 +22,12 @@ class InterlisImportSettingsDialog(QDialog):
             settings_value is True or settings_value == "true"
         )
 
-
     def on_finish(self):
         # Remember save next to file checkbox
         QgsSettings().setValue("tww_plugin/logs_next_to_file", self.logs_next_to_file)
 
         # Remember save next to file checkbox
         QgsSettings().setValue("tww_plugin/filter_nulls_import", self.filter_nulls)
-
 
     @property
     def logs_next_to_file(self):
@@ -39,5 +36,3 @@ class InterlisImportSettingsDialog(QDialog):
     @property
     def filter_nulls(self):
         return self.filter_nulls_checkbox.isChecked()
-
-

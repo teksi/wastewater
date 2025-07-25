@@ -69,10 +69,10 @@ class InterlisImporterExporterGui(QObject):
         try:
             with OverrideCursor(Qt.WaitCursor):
                 self.interlis_importer_exporter.interlis_import(
-                xtf_file_output=xtf_file_input,
-                show_selection_dialog=True,
-                logs_next_to_file=import_dialog.logs_next_to_file,
-                filter_nulls=import_dialog.filter_nulls,
+                    xtf_file_output=xtf_file_input,
+                    show_selection_dialog=True,
+                    logs_next_to_file=import_dialog.logs_next_to_file,
+                    filter_nulls=import_dialog.filter_nulls,
                 )
                 iface.mapCanvas().refreshAllLayers()
 
