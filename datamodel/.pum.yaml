@@ -40,10 +40,12 @@ parameters:
 
   - name: modification_ci
     type: boolean
+    default: false
     description: load ci modification
 
   - name: modification_agxx
     type: boolean
+    default: false
     description: enable AG-64/96 app modification
 
   - name: modification_yaml
@@ -52,6 +54,7 @@ parameters:
 
   - name: lang_code
     type: text
+    default: en
     description: language code for the creation of custom views
 
 dependencies:
