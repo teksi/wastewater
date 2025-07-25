@@ -14,6 +14,7 @@ from ..interlis_importer_exporter import (
     InterlisImporterExporterStopped,
 )
 from .interlis_export_settings_dialog import InterlisExportSettingsDialog
+from .interlis_import_settings_dialog import InterlisImportSettingsDialog
 
 
 class InterlisImporterExporterGui(QObject):
@@ -39,6 +40,11 @@ class InterlisImporterExporterGui(QObject):
         """
         Is executed when the user clicks the importAction tool
         """
+        import_dialog = InterlisImportSettingsDialog(None)
+
+        if import_dialog.exec_() == import_dialog.Rejected:
+            return
+
         default_folder = QgsSettings().value(
             "tww_plugin/last_interlis_path", QgsProject.instance().absolutePath()
         )
@@ -54,9 +60,6 @@ class InterlisImporterExporterGui(QObject):
 
         QgsSettings().setValue("tww_plugin/last_interlis_path", os.path.dirname(xtf_file_input))
 
-        setting_value = QgsSettings().value("tww_plugin/logs_next_to_file", False)
-        logs_next_to_file = setting_value is True or setting_value == "true"
-
         self.progress_dialog = QProgressDialog("", "", 0, 100)
         self.progress_dialog.setMinimumWidth(self._PROGRESS_DIALOG_MINIMUM_WIDTH)
         self.progress_dialog.setCancelButtonText("Cancel")
@@ -66,13 +69,16 @@ class InterlisImporterExporterGui(QObject):
         try:
             with OverrideCursor(Qt.WaitCursor):
                 self.interlis_importer_exporter.interlis_import(
-                    xtf_file_input, show_selection_dialog=True, logs_next_to_file=logs_next_to_file
+                xtf_file_output=xtf_file_input,
+                show_selection_dialog=True,
+                logs_next_to_file=import_dialog.logs_next_to_file,
+                filter_nulls=import_dialog.filter_nulls,
                 )
                 iface.mapCanvas().refreshAllLayers()
 
         except InterlisImporterExporterStopped:
             self._cleanup()
-            iface.messageBar().pushMessage("Warning", "Import was canceled.", level=Qgis.Warning)
+            iface.messageBar().pushMessage("Warning", "Import was cancelled.", level=Qgis.Warning)
 
         except InterlisImporterExporterError as exception:
             self._cleanup()
