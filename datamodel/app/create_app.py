@@ -19,6 +19,7 @@ from view.vw_tww_overflow import vw_tww_overflow
 from view.vw_tww_reach import vw_tww_reach
 from view.vw_tww_wastewater_structure import vw_tww_wastewater_structure
 from view.vw_wastewater_structure import vw_wastewater_structure
+from view.vw_tww_log_card import vw_tww_log_card
 
 logger = logging.getLogger(__name__)
 
@@ -216,7 +217,14 @@ Running modification {modification.get('id')}
                 else None
             ),
         )
-
+        vw_tww_log_card(
+            connection=self.connection,
+            extra_definition=(
+                self.load_yaml(self.extra_definitions["vw_tww_log_card"])
+                if self.extra_definitions["vw_tww_log_card"]
+                else None
+            ),
+        )
         # TODO: Are these export views necessary? cymed 13.03.25
         for _, yaml_path in self.simple_joins_yaml.items():
             SimpleJoins(
