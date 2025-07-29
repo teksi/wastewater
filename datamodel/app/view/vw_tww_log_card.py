@@ -33,9 +33,9 @@ def vw_tww_log_card(
     cursor = connection.cursor()
 
     view_sql = """
-    DROP VIEW IF EXISTS tww_app.vw_tww_channel;
+    DROP VIEW IF EXISTS tww_app.vw_tww_log_card;
 
-    CREATE OR REPLACE VIEW tww_app.vw_tww_channel AS
+    CREATE OR REPLACE VIEW tww_app.vw_tww_log_card AS
 
     SELECT
           {lc_cols}
