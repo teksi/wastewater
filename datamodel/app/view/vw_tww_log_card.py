@@ -18,7 +18,9 @@ from .utils.extra_definition_utils import (
 )
 
 
-def vw_tww_log_card(connection: psycopg.Connection, srid: psycopg.sql.Literal,  extra_definition: dict = None):
+def vw_tww_log_card(
+    connection: psycopg.Connection, srid: psycopg.sql.Literal, extra_definition: dict = None
+):
     """
     Creates tww_log_card view
     :param connection: a psycopg connection object
