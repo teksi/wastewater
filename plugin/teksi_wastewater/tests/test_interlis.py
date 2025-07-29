@@ -242,24 +242,32 @@ class TestInterlis(unittest.TestCase):
         self.assertIsNone(interlis_object)
         # xml_tid = interlis_object.attrib.get("TID", None)
         # xml_height_width_ratio = interlis_object.attrib.get("height_width_ratio", None)
-        xml_height_width_ratio = self._get_xtf_object_attribute(
-            exported_xtf_filename,
-            config.TOPIC_NAME_DSS,
-            "Rohrprofil",
-            "ch000000PP000003",
-            "HoehenBreitenverhaeltnis",
+        #old
+        # xml_height_width_ratio = self._get_xtf_object_attribute(
+            # exported_xtf_filename,
+            # config.TOPIC_NAME_DSS,
+            # "Rohrprofil",
+            # "ch000000PP000003",
+            # "HoehenBreitenverhaeltnis",
+        # )
+
+        # Check exported TID and height_width_ratio pipe_profile
+        interlis_object = self._get_xtf_object(
+            exported_xtf_filename, config.TOPIC_NAME_SIA405_ABWASSER, "Rohrprofil", "ch000000PP000003"
         )
+        xml_height_width_ratio = interlis_object.get("HoehenBreitenverhaeltnis", None)
+        self.assertEqual(xml_height_width_ratio, 1.13)
 
-        # add debug output
-        logger.debug(f"xml_height_width_ratio =  {xml_height_width_ratio}")
+        # # add debug output
+        # logger.debug(f"xml_height_width_ratio =  {xml_height_width_ratio}")
 
-        if xml_height_width_ratio is not None:
-            # self.assertIsNotNone(xml_height_width_ratio, xml_height_width_ratio)
-            self.assertEqual(xml_height_width_ratio, 1.130)
-        # in future if VSA-DSS / SIA405 INTERLIS is also patched  change to:
-        # self.assertEqual(xml_height_width_ratio, 1.12857)
-        else:
-            self.assertEqual(1, 2)
+        # if xml_height_width_ratio is not None:
+            # # self.assertIsNotNone(xml_height_width_ratio, xml_height_width_ratio)
+            # self.assertEqual(xml_height_width_ratio, 1.130)
+        # # in future if VSA-DSS / SIA405 INTERLIS is also patched  change to:
+        # # self.assertEqual(xml_height_width_ratio, 1.12857)
+        # else:
+            # self.assertEqual(1, 2)
 
         # Export minimal dss
         export_xtf_file = self._get_output_filename("export_minimal_dataset_dss")
