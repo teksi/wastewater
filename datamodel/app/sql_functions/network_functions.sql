@@ -112,6 +112,7 @@ BEGIN
 
   REFRESH MATERIALIZED VIEW tww_app.vw_network_node;
   REFRESH MATERIALIZED VIEW tww_app.vw_network_segment;
+  REFRESH MATERIALIZED VIEW tww_app.vw_tww_channel;
 
 END;
 $body$
