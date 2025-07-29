@@ -45,7 +45,7 @@ def vw_tww_log_card(
 
       FROM tww_od.log_card lc
          LEFT JOIN tww_od.wastewater_networkelement ne ON lc.fk_pwwf_wastewater_node = ne.obj_id
-         LEFT JOIN tww_od.wastewater_node ws ON wn.obj_id = nr.obj_id
+         LEFT JOIN tww_od.wastewater_node wn ON wn.obj_id = ne.obj_id
          LEFT JOIN tww_od.wastewater_structure ws ON ne.fk_wastewater_structure = ws.obj_id
          LEFT JOIN tww_od.cover main_co ON ws.fk_main_cover = main_co.obj_id
          {extra_joins}
