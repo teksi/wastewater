@@ -64,7 +64,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: datamodel-dumps${{ matrix.extension != '' && format('__{0}', matrix.extension) || matrix.extension }}
+          name: datamodel-dumps${{ matrix.extension != '' && format('_{0}', matrix.extension) || matrix.extension }}
           path: datamodel/artifacts/
           if-no-files-found: error
 
@@ -77,10 +77,10 @@ jobs:
 
       - name: Zip datamodel dumps
         run: |
-           zip -r datamodel-dumps${{ matrix.extension != '' && format('__{0}', matrix.extension) || matrix.extension }}.zip datamodel/artifacts
+           zip -r datamodel-dumps${{ matrix.extension != '' && format('_{0}', matrix.extension) || matrix.extension }}.zip datamodel/artifacts
 
       - name: Zip schemaspy output
-        run: zip -r datamodel-schemaspy${{ matrix.extension != '' && format('__{0}', matrix.extension) || matrix.extension }}.zip datamodel/schemaspy
+        run: zip -r datamodel-schemaspy${{ matrix.extension != '' && format('_{0}', matrix.extension) || matrix.extension }}.zip datamodel/schemaspy
 
       - name: Upload datamodel dumps as GitHub Release asset
         if: ${{ inputs.release_tag != '' }}
