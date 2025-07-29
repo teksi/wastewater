@@ -218,10 +218,11 @@ Running modification {modification.get('id')}
             ),
         )
         vw_tww_log_card(
+            srid=SRID,
             connection=self.connection,
             extra_definition=(
                 self.load_yaml(self.extra_definitions["vw_tww_log_card"])
-                if self.extra_definitions["vw_tww_log_card"]
+                if self.extra_definitions.get("vw_tww_log_card")
                 else None
             ),
         )
