@@ -18,6 +18,7 @@ from view.maintenance_views import (
 from view.vw_tww_additional_ws import vw_tww_additional_ws
 from view.vw_tww_damage_channel import vw_tww_damage_channel
 from view.vw_tww_infiltration_installation import vw_tww_infiltration_installation
+from view.vw_tww_log_card import vw_tww_log_card
 from view.vw_tww_measurement_series import vw_tww_measurement_series
 from view.vw_tww_overflow import vw_tww_overflow
 from view.vw_tww_reach import vw_tww_reach
@@ -237,7 +238,15 @@ Running modification {modification.get('id')}
                 else {}
             ),
         )
-
+        vw_tww_log_card(
+            srid=SRID,
+            connection=self.connection,
+            extra_definition=(
+                self.load_yaml(self.extra_definitions["vw_tww_log_card"])
+                if self.extra_definitions.get("vw_tww_log_card")
+                else None
+            ),
+        )
         # TODO: Are these export views necessary? cymed 13.03.25
         for _, yaml_path in self.simple_joins_yaml.items():
             SimpleJoins(
