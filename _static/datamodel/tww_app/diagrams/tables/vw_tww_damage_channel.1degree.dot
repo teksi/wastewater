@@ -24,6 +24,7 @@ digraph "oneDegreeRelationshipsDiagram" {
       <TR><TD PORT="ws_identifier" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="186" HEIGHT="16">ws_identifier</TD></TR></TABLE></TD><TD PORT="ws_identifier.type" ALIGN="LEFT">text[2147483647]</TD></TR>
       <TR><TD PORT="situation2d_geometry" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="186" HEIGHT="16">situation2d_geometry</TD></TR></TABLE></TD><TD PORT="situation2d_geometry.type" ALIGN="LEFT">geometry[2147483647]</TD></TR>
       <TR><TD PORT="direction" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="186" HEIGHT="16">direction</TD></TR></TABLE></TD><TD PORT="direction.type" ALIGN="LEFT">text[2147483647]</TD></TR>
+      <TR><TD PORT="tww_is_primary" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="186" HEIGHT="16">tww_is_primary</TD></TR></TABLE></TD><TD PORT="tww_is_primary.type" ALIGN="LEFT">bool[1]</TD></TR>
     </TABLE>>
     URL="../../tables/vw_tww_damage_channel.html"
     target="_top"

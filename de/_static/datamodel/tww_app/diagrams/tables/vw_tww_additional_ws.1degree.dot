@@ -75,6 +75,7 @@ digraph "oneDegreeRelationshipsDiagram" {
       <TR><TD PORT="_output_label" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="263" HEIGHT="16">_output_label</TD></TR></TABLE></TD><TD PORT="_output_label.type" ALIGN="LEFT">text[2147483647]</TD></TR>
       <TR><TD PORT="_channel_usage_current" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="263" HEIGHT="16">_channel_usage_current</TD></TR></TABLE></TD><TD PORT="_channel_usage_current.type" ALIGN="LEFT">int4[10]</TD></TR>
       <TR><TD PORT="_channel_function_hierarchic" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="263" HEIGHT="16">_channel_function_hierarchic</TD></TR></TABLE></TD><TD PORT="_channel_function_hierarchic.type" ALIGN="LEFT">int4[10]</TD></TR>
+      <TR><TD PORT="tww_is_primary" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="263" HEIGHT="16">tww_is_primary</TD></TR></TABLE></TD><TD PORT="tww_is_primary.type" ALIGN="LEFT">bool[1]</TD></TR>
     </TABLE>>
     URL="../../tables/vw_tww_additional_ws.html"
     target="_top"

@@ -97,6 +97,7 @@ digraph "oneDegreeRelationshipsDiagram" {
       <TR><TD PORT="rp_to_pipe_closure" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="296" HEIGHT="16">rp_to_pipe_closure</TD></TR></TABLE></TD><TD PORT="rp_to_pipe_closure.type" ALIGN="LEFT">int4[10]</TD></TR>
       <TR><TD PORT="rp_to_position_of_connection" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="296" HEIGHT="16">rp_to_position_of_connection</TD></TR></TABLE></TD><TD PORT="rp_to_position_of_connection.type" ALIGN="LEFT">int2[5]</TD></TR>
       <TR><TD PORT="rp_to_remark" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="296" HEIGHT="16">rp_to_remark</TD></TR></TABLE></TD><TD PORT="rp_to_remark.type" ALIGN="LEFT">text[2147483647]</TD></TR>
+      <TR><TD PORT="tww_is_primary" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="296" HEIGHT="16">tww_is_primary</TD></TR></TABLE></TD><TD PORT="tww_is_primary.type" ALIGN="LEFT">bool[1]</TD></TR>
     </TABLE>>
     URL="../../tables/vw_tww_reach.html"
     target="_top"
