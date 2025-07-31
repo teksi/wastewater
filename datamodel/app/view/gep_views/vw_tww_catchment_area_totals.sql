@@ -20,7 +20,7 @@ CREATE MATERIALIZED VIEW tww_app.vw_tww_catchment_area_totals
                    FROM tww_od.catchment_area
                   WHERE catchment_area.fk_special_building_rw_current IS NOT NULL
                 ), collector AS (
-                 SELECT main_lc.obj_id,
+                 SELECT coalesce(main_lc.obj_id, lc.obj_id) AS obj_id,
                     ca.geom
                    FROM ca
                      LEFT JOIN tww_od.log_card lc ON ca.fk_log_card::text = lc.obj_id::text
