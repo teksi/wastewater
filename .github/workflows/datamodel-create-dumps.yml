@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-24.04
     env:
       COMPOSE_PROFILES: schemaspy
-      COMPOSE_PROJECT_NAME: wastewater-${{ matrix.extension }}
+      COMPOSE_PROJECT_NAME: ${{ matrix.extension != '' && format('wastewater-{0}', matrix.extension) || 'wastewater' }}
 
     strategy:
       matrix:
