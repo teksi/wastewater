@@ -12,7 +12,7 @@ joins:
   agxx_last_modification:
     table: tww_od.agxx_last_modification
     alias: agxx_lm
-    join_on: "agxx_lm.fk_element = ne.obj_id"
+    join_on: "agxx_lm.fk_element = ov.obj_id"
     skip_columns: ["uuid","fk_element"]
     remap_columns:
       fk_element: obj_id
