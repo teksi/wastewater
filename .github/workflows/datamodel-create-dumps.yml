@@ -35,6 +35,7 @@ jobs:
     strategy:
       matrix:
         extension: ["", "agxx"]
+      fail-fast: false
 
     steps:
       - uses: actions/checkout@v4
