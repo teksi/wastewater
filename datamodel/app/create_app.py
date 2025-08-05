@@ -285,7 +285,7 @@ Running modification {modification.get('id')}
         template_path = modification_config.get("template", None)
         if template_path:
             curr_dir = self.abspath / os.path.dirname(template_path)
-            modification_config = self.load_yaml(self.abspath /template_path)
+            modification_config = self.load_yaml(self.abspath / template_path)
         else:
             curr_dir = ""
 
