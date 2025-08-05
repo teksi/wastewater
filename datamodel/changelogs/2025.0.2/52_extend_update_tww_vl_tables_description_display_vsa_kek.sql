@@ -1,6 +1,6 @@
 ------ This file generates the delta file for updating value list tables for VSA-DSS database (Modul VSA-KEK (2020)) in en for QQIS
 ------ For questions etc. please contact Stefan Burckhardt stefan.burckhardt@sjib.ch
------- version 07.07.2025 18:10:38
+------ version 05.08.2025 17:43:42
 
 --- Adapt tww_vl.examination_recording_type
  INSERT INTO tww_vl.examination_recording_type (code, vsacode) VALUES (3681,3681) ON CONFLICT DO NOTHING;
@@ -26,7 +26,8 @@
    display_fr = 'autre',
    display_it = '',
    display_ro = ''
-WHERE code =3681;
+WHERE code = 3681;
+
 --- Adapt tww_vl.examination_recording_type
  INSERT INTO tww_vl.examination_recording_type (code, vsacode) VALUES (3682,3682) ON CONFLICT DO NOTHING;
 
@@ -51,7 +52,8 @@ WHERE code =3681;
    display_fr = 'parcours',
    display_it = '',
    display_ro = ''
-WHERE code =3682;
+WHERE code = 3682;
+
 --- Adapt tww_vl.examination_recording_type
  INSERT INTO tww_vl.examination_recording_type (code, vsacode) VALUES (3683,3683) ON CONFLICT DO NOTHING;
 
@@ -76,7 +78,8 @@ WHERE code =3682;
    display_fr = 'mesure déformation',
    display_it = '',
    display_ro = ''
-WHERE code =3683;
+WHERE code = 3683;
+
 --- Adapt tww_vl.examination_recording_type
  INSERT INTO tww_vl.examination_recording_type (code, vsacode) VALUES (3684,3684) ON CONFLICT DO NOTHING;
 
@@ -101,7 +104,8 @@ WHERE code =3683;
    display_fr = 'examen etancheite',
    display_it = '',
    display_ro = ''
-WHERE code =3684;
+WHERE code = 3684;
+
 --- Adapt tww_vl.examination_recording_type
  INSERT INTO tww_vl.examination_recording_type (code, vsacode) VALUES (3685,3685) ON CONFLICT DO NOTHING;
 
@@ -126,7 +130,8 @@ WHERE code =3684;
    display_fr = 'georadar',
    display_it = '',
    display_ro = ''
-WHERE code =3685;
+WHERE code = 3685;
+
 --- Adapt tww_vl.examination_recording_type
  INSERT INTO tww_vl.examination_recording_type (code, vsacode) VALUES (3686,3686) ON CONFLICT DO NOTHING;
 
@@ -151,7 +156,8 @@ WHERE code =3685;
    display_fr = 'camera canalisations',
    display_it = '',
    display_ro = ''
-WHERE code =3686;
+WHERE code = 3686;
+
 --- Adapt tww_vl.examination_recording_type
  INSERT INTO tww_vl.examination_recording_type (code, vsacode) VALUES (3687,3687) ON CONFLICT DO NOTHING;
 
@@ -176,7 +182,8 @@ WHERE code =3686;
    display_fr = 'inconnu',
    display_it = '',
    display_ro = ''
-WHERE code =3687;
+WHERE code = 3687;
+
 --- Adapt tww_vl.examination_weather
  INSERT INTO tww_vl.examination_weather (code, vsacode) VALUES (3699,3699) ON CONFLICT DO NOTHING;
 
@@ -201,7 +208,8 @@ WHERE code =3687;
    display_fr = 'couvert pluvieux',
    display_it = '',
    display_ro = ''
-WHERE code =3699;
+WHERE code = 3699;
+
 --- Adapt tww_vl.examination_weather
  INSERT INTO tww_vl.examination_weather (code, vsacode) VALUES (3700,3700) ON CONFLICT DO NOTHING;
 
@@ -226,7 +234,8 @@ WHERE code =3699;
    display_fr = '',
    display_it = '',
    display_ro = ''
-WHERE code =3700;
+WHERE code = 3700;
+
 --- Adapt tww_vl.examination_weather
  INSERT INTO tww_vl.examination_weather (code, vsacode) VALUES (3701,3701) ON CONFLICT DO NOTHING;
 
@@ -251,7 +260,8 @@ WHERE code =3700;
    display_fr = 'pluie',
    display_it = '',
    display_ro = ''
-WHERE code =3701;
+WHERE code = 3701;
+
 --- Adapt tww_vl.examination_weather
  INSERT INTO tww_vl.examination_weather (code, vsacode) VALUES (3702,3702) ON CONFLICT DO NOTHING;
 
@@ -276,7 +286,8 @@ WHERE code =3701;
    display_fr = 'chute neige',
    display_it = '',
    display_ro = ''
-WHERE code =3702;
+WHERE code = 3702;
+
 --- Adapt tww_vl.examination_weather
  INSERT INTO tww_vl.examination_weather (code, vsacode) VALUES (3703,3703) ON CONFLICT DO NOTHING;
 
@@ -301,7 +312,8 @@ WHERE code =3702;
    display_fr = 'beau sec',
    display_it = '',
    display_ro = ''
-WHERE code =3703;
+WHERE code = 3703;
+
 --- Adapt tww_vl.examination_weather
  INSERT INTO tww_vl.examination_weather (code, vsacode) VALUES (3704,3704) ON CONFLICT DO NOTHING;
 
@@ -326,7 +338,8 @@ WHERE code =3703;
    display_fr = 'inconnu',
    display_it = '',
    display_ro = ''
-WHERE code =3704;
+WHERE code = 3704;
+
 --- Adapt tww_vl.damage_connection
  INSERT INTO tww_vl.damage_connection (code, vsacode) VALUES (8498,8498) ON CONFLICT DO NOTHING;
 
@@ -351,7 +364,8 @@ WHERE code =3704;
    display_fr = 'oui',
    display_it = 'si',
    display_ro = 'da'
-WHERE code =8498;
+WHERE code = 8498;
+
 --- Adapt tww_vl.damage_connection
  INSERT INTO tww_vl.damage_connection (code, vsacode) VALUES (8499,8499) ON CONFLICT DO NOTHING;
 
@@ -376,7 +390,8 @@ WHERE code =8498;
    display_fr = 'non',
    display_it = '',
    display_ro = ''
-WHERE code =8499;
+WHERE code = 8499;
+
 --- Adapt tww_vl.damage_single_damage_class
  INSERT INTO tww_vl.damage_single_damage_class (code, vsacode) VALUES (3707,3707) ON CONFLICT DO NOTHING;
 
@@ -401,7 +416,8 @@ WHERE code =8499;
    display_fr = 'EZ0',
    display_it = '',
    display_ro = 'EZ0'
-WHERE code =3707;
+WHERE code = 3707;
+
 --- Adapt tww_vl.damage_single_damage_class
  INSERT INTO tww_vl.damage_single_damage_class (code, vsacode) VALUES (3708,3708) ON CONFLICT DO NOTHING;
 
@@ -426,7 +442,8 @@ WHERE code =3707;
    display_fr = 'EZ1',
    display_it = '',
    display_ro = 'EZ1'
-WHERE code =3708;
+WHERE code = 3708;
+
 --- Adapt tww_vl.damage_single_damage_class
  INSERT INTO tww_vl.damage_single_damage_class (code, vsacode) VALUES (3709,3709) ON CONFLICT DO NOTHING;
 
@@ -451,7 +468,8 @@ WHERE code =3708;
    display_fr = 'EZ2',
    display_it = '',
    display_ro = 'EZ2'
-WHERE code =3709;
+WHERE code = 3709;
+
 --- Adapt tww_vl.damage_single_damage_class
  INSERT INTO tww_vl.damage_single_damage_class (code, vsacode) VALUES (3710,3710) ON CONFLICT DO NOTHING;
 
@@ -476,7 +494,8 @@ WHERE code =3709;
    display_fr = 'EZ3',
    display_it = '',
    display_ro = 'EZ3'
-WHERE code =3710;
+WHERE code = 3710;
+
 --- Adapt tww_vl.damage_single_damage_class
  INSERT INTO tww_vl.damage_single_damage_class (code, vsacode) VALUES (3711,3711) ON CONFLICT DO NOTHING;
 
@@ -501,7 +520,8 @@ WHERE code =3710;
    display_fr = 'EZ4',
    display_it = '',
    display_ro = 'EZ4'
-WHERE code =3711;
+WHERE code = 3711;
+
 --- Adapt tww_vl.damage_single_damage_class
  INSERT INTO tww_vl.damage_single_damage_class (code, vsacode) VALUES (4561,4561) ON CONFLICT DO NOTHING;
 
@@ -526,7 +546,8 @@ WHERE code =3711;
    display_fr = 'inconnu',
    display_it = '',
    display_ro = ''
-WHERE code =4561;
+WHERE code = 4561;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4103,4103) ON CONFLICT DO NOTHING;
 
@@ -551,7 +572,8 @@ WHERE code =4561;
    display_fr = 'AECXA',
    display_it = 'AECXA',
    display_ro = 'AECXA'
-WHERE code =4103;
+WHERE code = 4103;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4104,4104) ON CONFLICT DO NOTHING;
 
@@ -576,7 +598,8 @@ WHERE code =4103;
    display_fr = 'AECXB',
    display_it = 'AECXB',
    display_ro = 'AECXB'
-WHERE code =4104;
+WHERE code = 4104;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4105,4105) ON CONFLICT DO NOTHING;
 
@@ -601,7 +624,8 @@ WHERE code =4104;
    display_fr = 'AECXC',
    display_it = 'AECXC',
    display_ro = 'AECXC'
-WHERE code =4105;
+WHERE code = 4105;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4106,4106) ON CONFLICT DO NOTHING;
 
@@ -626,7 +650,8 @@ WHERE code =4105;
    display_fr = 'AECXD',
    display_it = 'AECXD',
    display_ro = 'AECXD'
-WHERE code =4106;
+WHERE code = 4106;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4107,4107) ON CONFLICT DO NOTHING;
 
@@ -651,7 +676,8 @@ WHERE code =4106;
    display_fr = 'AECXE',
    display_it = 'AECXE',
    display_ro = 'AECXE'
-WHERE code =4107;
+WHERE code = 4107;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4108,4108) ON CONFLICT DO NOTHING;
 
@@ -676,7 +702,8 @@ WHERE code =4107;
    display_fr = 'AECXF',
    display_it = 'AECXF',
    display_ro = 'AECXF'
-WHERE code =4108;
+WHERE code = 4108;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4109,4109) ON CONFLICT DO NOTHING;
 
@@ -701,7 +728,8 @@ WHERE code =4108;
    display_fr = 'AECXG',
    display_it = 'AECXG',
    display_ro = 'AECXG'
-WHERE code =4109;
+WHERE code = 4109;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4110,4110) ON CONFLICT DO NOTHING;
 
@@ -726,7 +754,8 @@ WHERE code =4109;
    display_fr = 'AECXH',
    display_it = 'AECXH',
    display_ro = 'AECXH'
-WHERE code =4110;
+WHERE code = 4110;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4111,4111) ON CONFLICT DO NOTHING;
 
@@ -751,7 +780,8 @@ WHERE code =4110;
    display_fr = 'AEDXA',
    display_it = 'AEDXA',
    display_ro = 'AEDXA'
-WHERE code =4111;
+WHERE code = 4111;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4112,4112) ON CONFLICT DO NOTHING;
 
@@ -776,7 +806,8 @@ WHERE code =4111;
    display_fr = 'AEDXB',
    display_it = 'AEDXB',
    display_ro = 'AEDXB'
-WHERE code =4112;
+WHERE code = 4112;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4113,4113) ON CONFLICT DO NOTHING;
 
@@ -801,7 +832,8 @@ WHERE code =4112;
    display_fr = 'AEDXC',
    display_it = 'AEDXC',
    display_ro = 'AEDXC'
-WHERE code =4113;
+WHERE code = 4113;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4114,4114) ON CONFLICT DO NOTHING;
 
@@ -826,7 +858,8 @@ WHERE code =4113;
    display_fr = 'AEDXD',
    display_it = 'AEDXD',
    display_ro = 'AEDXD'
-WHERE code =4114;
+WHERE code = 4114;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4115,4115) ON CONFLICT DO NOTHING;
 
@@ -851,7 +884,8 @@ WHERE code =4114;
    display_fr = 'AEDXE',
    display_it = 'AEDXE',
    display_ro = 'AEDXE'
-WHERE code =4115;
+WHERE code = 4115;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4116,4116) ON CONFLICT DO NOTHING;
 
@@ -876,7 +910,8 @@ WHERE code =4115;
    display_fr = 'AEDXF',
    display_it = 'AEDXF',
    display_ro = 'AEDXF'
-WHERE code =4116;
+WHERE code = 4116;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4117,4117) ON CONFLICT DO NOTHING;
 
@@ -901,7 +936,8 @@ WHERE code =4116;
    display_fr = 'AEDXG',
    display_it = 'AEDXG',
    display_ro = 'AEDXG'
-WHERE code =4117;
+WHERE code = 4117;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4118,4118) ON CONFLICT DO NOTHING;
 
@@ -926,7 +962,8 @@ WHERE code =4117;
    display_fr = 'AEDXH',
    display_it = 'AEDXH',
    display_ro = 'AEDXH'
-WHERE code =4118;
+WHERE code = 4118;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4119,4119) ON CONFLICT DO NOTHING;
 
@@ -951,7 +988,8 @@ WHERE code =4118;
    display_fr = 'AEDXI',
    display_it = 'AEDXI',
    display_ro = 'AEDXI'
-WHERE code =4119;
+WHERE code = 4119;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4120,4120) ON CONFLICT DO NOTHING;
 
@@ -976,7 +1014,8 @@ WHERE code =4119;
    display_fr = 'AEDXJ',
    display_it = 'AEDXJ',
    display_ro = 'AEDXJ'
-WHERE code =4120;
+WHERE code = 4120;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4121,4121) ON CONFLICT DO NOTHING;
 
@@ -1001,7 +1040,8 @@ WHERE code =4120;
    display_fr = 'AEDXK',
    display_it = 'AEDXK',
    display_ro = 'AEDXK'
-WHERE code =4121;
+WHERE code = 4121;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4122,4122) ON CONFLICT DO NOTHING;
 
@@ -1026,7 +1066,8 @@ WHERE code =4121;
    display_fr = 'AEDXL',
    display_it = 'AEDXL',
    display_ro = 'AEDXL'
-WHERE code =4122;
+WHERE code = 4122;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4123,4123) ON CONFLICT DO NOTHING;
 
@@ -1051,7 +1092,8 @@ WHERE code =4122;
    display_fr = 'AEDXM',
    display_it = 'AEDXM',
    display_ro = 'AEDXM'
-WHERE code =4123;
+WHERE code = 4123;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4124,4124) ON CONFLICT DO NOTHING;
 
@@ -1076,7 +1118,8 @@ WHERE code =4123;
    display_fr = 'AEDXN',
    display_it = 'AEDXN',
    display_ro = 'AEDXN'
-WHERE code =4124;
+WHERE code = 4124;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4125,4125) ON CONFLICT DO NOTHING;
 
@@ -1101,7 +1144,8 @@ WHERE code =4124;
    display_fr = 'AEDXO',
    display_it = 'AEDXO',
    display_ro = 'AEDXO'
-WHERE code =4125;
+WHERE code = 4125;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4126,4126) ON CONFLICT DO NOTHING;
 
@@ -1126,7 +1170,8 @@ WHERE code =4125;
    display_fr = 'AEDXP',
    display_it = 'AEDXP',
    display_ro = 'AEDXP'
-WHERE code =4126;
+WHERE code = 4126;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4127,4127) ON CONFLICT DO NOTHING;
 
@@ -1151,7 +1196,8 @@ WHERE code =4126;
    display_fr = 'AEDXQ',
    display_it = 'AEDXQ',
    display_ro = 'AEDXQ'
-WHERE code =4127;
+WHERE code = 4127;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4128,4128) ON CONFLICT DO NOTHING;
 
@@ -1176,7 +1222,8 @@ WHERE code =4127;
    display_fr = 'AEDXR',
    display_it = 'AEDXR',
    display_ro = 'AEDXR'
-WHERE code =4128;
+WHERE code = 4128;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4129,4129) ON CONFLICT DO NOTHING;
 
@@ -1201,7 +1248,8 @@ WHERE code =4128;
    display_fr = 'AEDXS',
    display_it = 'AEDXS',
    display_ro = 'AEDXS'
-WHERE code =4129;
+WHERE code = 4129;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4130,4130) ON CONFLICT DO NOTHING;
 
@@ -1226,7 +1274,8 @@ WHERE code =4129;
    display_fr = 'AEDXT',
    display_it = 'AEDXT',
    display_ro = 'AEDXT'
-WHERE code =4130;
+WHERE code = 4130;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4131,4131) ON CONFLICT DO NOTHING;
 
@@ -1251,7 +1300,8 @@ WHERE code =4130;
    display_fr = 'AEDXU',
    display_it = 'AEDXU',
    display_ro = 'AEDXU'
-WHERE code =4131;
+WHERE code = 4131;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4132,4132) ON CONFLICT DO NOTHING;
 
@@ -1276,7 +1326,8 @@ WHERE code =4131;
    display_fr = 'AEDXV',
    display_it = 'AEDXV',
    display_ro = 'AEDXV'
-WHERE code =4132;
+WHERE code = 4132;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4133,4133) ON CONFLICT DO NOTHING;
 
@@ -1301,7 +1352,8 @@ WHERE code =4132;
    display_fr = 'AEDXW',
    display_it = 'AEDXW',
    display_ro = 'AEDXW'
-WHERE code =4133;
+WHERE code = 4133;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4134,4134) ON CONFLICT DO NOTHING;
 
@@ -1326,7 +1378,8 @@ WHERE code =4133;
    display_fr = 'AEDXX',
    display_it = 'AEDXX',
    display_ro = 'AEDXX'
-WHERE code =4134;
+WHERE code = 4134;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4135,4135) ON CONFLICT DO NOTHING;
 
@@ -1351,7 +1404,8 @@ WHERE code =4134;
    display_fr = 'AEF',
    display_it = 'AEF',
    display_ro = 'AEF'
-WHERE code =4135;
+WHERE code = 4135;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3900,3900) ON CONFLICT DO NOTHING;
 
@@ -1376,7 +1430,8 @@ WHERE code =4135;
    display_fr = 'BAAA',
    display_it = 'BAAA',
    display_ro = ''
-WHERE code =3900;
+WHERE code = 3900;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3901,3901) ON CONFLICT DO NOTHING;
 
@@ -1401,7 +1456,8 @@ WHERE code =3900;
    display_fr = 'BAAB',
    display_it = 'BAAB',
    display_ro = ''
-WHERE code =3901;
+WHERE code = 3901;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3902,3902) ON CONFLICT DO NOTHING;
 
@@ -1426,7 +1482,8 @@ WHERE code =3901;
    display_fr = 'BABAA',
    display_it = 'BABAA',
    display_ro = ''
-WHERE code =3902;
+WHERE code = 3902;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3903,3903) ON CONFLICT DO NOTHING;
 
@@ -1451,7 +1508,8 @@ WHERE code =3902;
    display_fr = 'BABAB',
    display_it = 'BABAB',
    display_ro = ''
-WHERE code =3903;
+WHERE code = 3903;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3904,3904) ON CONFLICT DO NOTHING;
 
@@ -1476,7 +1534,8 @@ WHERE code =3903;
    display_fr = 'BABAC',
    display_it = 'BABAC',
    display_ro = ''
-WHERE code =3904;
+WHERE code = 3904;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3905,3905) ON CONFLICT DO NOTHING;
 
@@ -1501,7 +1560,8 @@ WHERE code =3904;
    display_fr = 'BABAD',
    display_it = 'BABAD',
    display_ro = ''
-WHERE code =3905;
+WHERE code = 3905;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8834,8834) ON CONFLICT DO NOTHING;
 
@@ -1526,7 +1586,8 @@ WHERE code =3905;
    display_fr = 'BABAE',
    display_it = 'BABAE',
    display_ro = ''
-WHERE code =8834;
+WHERE code = 8834;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3906,3906) ON CONFLICT DO NOTHING;
 
@@ -1551,7 +1612,8 @@ WHERE code =8834;
    display_fr = 'BABBA',
    display_it = 'BABBA',
    display_ro = ''
-WHERE code =3906;
+WHERE code = 3906;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3907,3907) ON CONFLICT DO NOTHING;
 
@@ -1576,7 +1638,8 @@ WHERE code =3906;
    display_fr = 'BABBB',
    display_it = 'BABBB',
    display_ro = ''
-WHERE code =3907;
+WHERE code = 3907;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3908,3908) ON CONFLICT DO NOTHING;
 
@@ -1601,7 +1664,8 @@ WHERE code =3907;
    display_fr = 'BABBC',
    display_it = 'BABBC',
    display_ro = ''
-WHERE code =3908;
+WHERE code = 3908;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3909,3909) ON CONFLICT DO NOTHING;
 
@@ -1626,7 +1690,8 @@ WHERE code =3908;
    display_fr = 'BABBD',
    display_it = 'BABBD',
    display_ro = ''
-WHERE code =3909;
+WHERE code = 3909;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8835,8835) ON CONFLICT DO NOTHING;
 
@@ -1651,7 +1716,8 @@ WHERE code =3909;
    display_fr = 'BABBE',
    display_it = 'BABBE',
    display_ro = ''
-WHERE code =8835;
+WHERE code = 8835;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3910,3910) ON CONFLICT DO NOTHING;
 
@@ -1676,7 +1742,8 @@ WHERE code =8835;
    display_fr = 'BABCA',
    display_it = 'BABCA',
    display_ro = ''
-WHERE code =3910;
+WHERE code = 3910;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3911,3911) ON CONFLICT DO NOTHING;
 
@@ -1701,7 +1768,8 @@ WHERE code =3910;
    display_fr = 'BABCB',
    display_it = 'BABCB',
    display_ro = ''
-WHERE code =3911;
+WHERE code = 3911;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3912,3912) ON CONFLICT DO NOTHING;
 
@@ -1726,7 +1794,8 @@ WHERE code =3911;
    display_fr = 'BABCC',
    display_it = 'BABCC',
    display_ro = ''
-WHERE code =3912;
+WHERE code = 3912;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3913,3913) ON CONFLICT DO NOTHING;
 
@@ -1751,7 +1820,8 @@ WHERE code =3912;
    display_fr = 'BABCD',
    display_it = 'BABCD',
    display_ro = ''
-WHERE code =3913;
+WHERE code = 3913;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8836,8836) ON CONFLICT DO NOTHING;
 
@@ -1776,7 +1846,8 @@ WHERE code =3913;
    display_fr = 'BABCE',
    display_it = 'BABCE',
    display_ro = ''
-WHERE code =8836;
+WHERE code = 8836;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3914,3914) ON CONFLICT DO NOTHING;
 
@@ -1801,7 +1872,8 @@ WHERE code =8836;
    display_fr = 'BACA',
    display_it = 'BACA',
    display_ro = ''
-WHERE code =3914;
+WHERE code = 3914;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3915,3915) ON CONFLICT DO NOTHING;
 
@@ -1826,7 +1898,8 @@ WHERE code =3914;
    display_fr = 'BACB',
    display_it = 'BACB',
    display_ro = ''
-WHERE code =3915;
+WHERE code = 3915;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3916,3916) ON CONFLICT DO NOTHING;
 
@@ -1851,7 +1924,8 @@ WHERE code =3915;
    display_fr = 'BACC',
    display_it = 'BACC',
    display_ro = ''
-WHERE code =3916;
+WHERE code = 3916;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3917,3917) ON CONFLICT DO NOTHING;
 
@@ -1876,7 +1950,8 @@ WHERE code =3916;
    display_fr = 'BADA',
    display_it = 'BADA',
    display_ro = ''
-WHERE code =3917;
+WHERE code = 3917;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3918,3918) ON CONFLICT DO NOTHING;
 
@@ -1901,7 +1976,8 @@ WHERE code =3917;
    display_fr = 'BADB',
    display_it = 'BADB',
    display_ro = ''
-WHERE code =3918;
+WHERE code = 3918;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3919,3919) ON CONFLICT DO NOTHING;
 
@@ -1926,7 +2002,8 @@ WHERE code =3918;
    display_fr = 'BADC',
    display_it = 'BADC',
    display_ro = ''
-WHERE code =3919;
+WHERE code = 3919;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3920,3920) ON CONFLICT DO NOTHING;
 
@@ -1951,7 +2028,8 @@ WHERE code =3919;
    display_fr = 'BADD',
    display_it = 'BADD',
    display_ro = ''
-WHERE code =3920;
+WHERE code = 3920;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3921,3921) ON CONFLICT DO NOTHING;
 
@@ -1976,7 +2054,8 @@ WHERE code =3920;
    display_fr = 'BAE',
    display_it = 'BAE',
    display_ro = ''
-WHERE code =3921;
+WHERE code = 3921;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3922,3922) ON CONFLICT DO NOTHING;
 
@@ -2001,7 +2080,8 @@ WHERE code =3921;
    display_fr = 'BAFAA',
    display_it = 'BAFAA',
    display_ro = ''
-WHERE code =3922;
+WHERE code = 3922;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3923,3923) ON CONFLICT DO NOTHING;
 
@@ -2026,7 +2106,8 @@ WHERE code =3922;
    display_fr = 'BAFAB',
    display_it = 'BAFAB',
    display_ro = ''
-WHERE code =3923;
+WHERE code = 3923;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3924,3924) ON CONFLICT DO NOTHING;
 
@@ -2051,7 +2132,8 @@ WHERE code =3923;
    display_fr = 'BAFAC',
    display_it = 'BAFAC',
    display_ro = ''
-WHERE code =3924;
+WHERE code = 3924;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3925,3925) ON CONFLICT DO NOTHING;
 
@@ -2076,7 +2158,8 @@ WHERE code =3924;
    display_fr = 'BAFAD',
    display_it = 'BAFAD',
    display_ro = ''
-WHERE code =3925;
+WHERE code = 3925;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3926,3926) ON CONFLICT DO NOTHING;
 
@@ -2101,7 +2184,8 @@ WHERE code =3925;
    display_fr = 'BAFAE',
    display_it = 'BAFAE',
    display_ro = ''
-WHERE code =3926;
+WHERE code = 3926;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8837,8837) ON CONFLICT DO NOTHING;
 
@@ -2126,7 +2210,8 @@ WHERE code =3926;
    display_fr = 'BAFAZ',
    display_it = 'BAFAZ',
    display_ro = ''
-WHERE code =8837;
+WHERE code = 8837;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3927,3927) ON CONFLICT DO NOTHING;
 
@@ -2151,7 +2236,8 @@ WHERE code =8837;
    display_fr = 'BAFBA',
    display_it = 'BAFBA',
    display_ro = ''
-WHERE code =3927;
+WHERE code = 3927;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3928,3928) ON CONFLICT DO NOTHING;
 
@@ -2176,7 +2262,8 @@ WHERE code =3927;
    display_fr = 'BAFBE',
    display_it = 'BAFBE',
    display_ro = ''
-WHERE code =3928;
+WHERE code = 3928;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8838,8838) ON CONFLICT DO NOTHING;
 
@@ -2201,7 +2288,8 @@ WHERE code =3928;
    display_fr = 'BAFBZ',
    display_it = 'BAFBZ',
    display_ro = ''
-WHERE code =8838;
+WHERE code = 8838;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3929,3929) ON CONFLICT DO NOTHING;
 
@@ -2226,7 +2314,8 @@ WHERE code =8838;
    display_fr = 'BAFCA',
    display_it = 'BAFCA',
    display_ro = ''
-WHERE code =3929;
+WHERE code = 3929;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3930,3930) ON CONFLICT DO NOTHING;
 
@@ -2251,7 +2340,8 @@ WHERE code =3929;
    display_fr = 'BAFCB',
    display_it = 'BAFCB',
    display_ro = ''
-WHERE code =3930;
+WHERE code = 3930;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3931,3931) ON CONFLICT DO NOTHING;
 
@@ -2276,7 +2366,8 @@ WHERE code =3930;
    display_fr = 'BAFCC',
    display_it = 'BAFCC',
    display_ro = ''
-WHERE code =3931;
+WHERE code = 3931;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3932,3932) ON CONFLICT DO NOTHING;
 
@@ -2301,7 +2392,8 @@ WHERE code =3931;
    display_fr = 'BAFCD',
    display_it = 'BAFCD',
    display_ro = ''
-WHERE code =3932;
+WHERE code = 3932;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3933,3933) ON CONFLICT DO NOTHING;
 
@@ -2326,7 +2418,8 @@ WHERE code =3932;
    display_fr = 'BAFCE',
    display_it = 'BAFCE',
    display_ro = ''
-WHERE code =3933;
+WHERE code = 3933;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8839,8839) ON CONFLICT DO NOTHING;
 
@@ -2351,7 +2444,8 @@ WHERE code =3933;
    display_fr = 'BAFCZ',
    display_it = 'BAFCZ',
    display_ro = ''
-WHERE code =8839;
+WHERE code = 8839;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3934,3934) ON CONFLICT DO NOTHING;
 
@@ -2376,7 +2470,8 @@ WHERE code =8839;
    display_fr = 'BAFDA',
    display_it = 'BAFDA',
    display_ro = ''
-WHERE code =3934;
+WHERE code = 3934;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3935,3935) ON CONFLICT DO NOTHING;
 
@@ -2401,7 +2496,8 @@ WHERE code =3934;
    display_fr = 'BAFDB',
    display_it = 'BAFDB',
    display_ro = ''
-WHERE code =3935;
+WHERE code = 3935;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3936,3936) ON CONFLICT DO NOTHING;
 
@@ -2426,7 +2522,8 @@ WHERE code =3935;
    display_fr = 'BAFDC',
    display_it = 'BAFDC',
    display_ro = ''
-WHERE code =3936;
+WHERE code = 3936;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3937,3937) ON CONFLICT DO NOTHING;
 
@@ -2451,7 +2548,8 @@ WHERE code =3936;
    display_fr = 'BAFDD',
    display_it = 'BAFDD',
    display_ro = ''
-WHERE code =3937;
+WHERE code = 3937;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3938,3938) ON CONFLICT DO NOTHING;
 
@@ -2476,7 +2574,8 @@ WHERE code =3937;
    display_fr = 'BAFDE',
    display_it = 'BAFDE',
    display_ro = ''
-WHERE code =3938;
+WHERE code = 3938;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8840,8840) ON CONFLICT DO NOTHING;
 
@@ -2501,7 +2600,8 @@ WHERE code =3938;
    display_fr = 'BAFDZ',
    display_it = 'BAFDZ',
    display_ro = ''
-WHERE code =8840;
+WHERE code = 8840;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3939,3939) ON CONFLICT DO NOTHING;
 
@@ -2526,7 +2626,8 @@ WHERE code =8840;
    display_fr = 'BAFEA',
    display_it = 'BAFEA',
    display_ro = ''
-WHERE code =3939;
+WHERE code = 3939;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3940,3940) ON CONFLICT DO NOTHING;
 
@@ -2551,7 +2652,8 @@ WHERE code =3939;
    display_fr = 'BAFEB',
    display_it = 'BAFEB',
    display_ro = ''
-WHERE code =3940;
+WHERE code = 3940;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3941,3941) ON CONFLICT DO NOTHING;
 
@@ -2576,7 +2678,8 @@ WHERE code =3940;
    display_fr = 'BAFEC',
    display_it = 'BAFEC',
    display_ro = ''
-WHERE code =3941;
+WHERE code = 3941;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3942,3942) ON CONFLICT DO NOTHING;
 
@@ -2601,7 +2704,8 @@ WHERE code =3941;
    display_fr = 'BAFED',
    display_it = 'BAFED',
    display_ro = ''
-WHERE code =3942;
+WHERE code = 3942;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3943,3943) ON CONFLICT DO NOTHING;
 
@@ -2626,7 +2730,8 @@ WHERE code =3942;
    display_fr = 'BAFEE',
    display_it = 'BAFEE',
    display_ro = ''
-WHERE code =3943;
+WHERE code = 3943;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8841,8841) ON CONFLICT DO NOTHING;
 
@@ -2651,7 +2756,8 @@ WHERE code =3943;
    display_fr = 'BAFEZ',
    display_it = 'BAFEZ',
    display_ro = ''
-WHERE code =8841;
+WHERE code = 8841;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3944,3944) ON CONFLICT DO NOTHING;
 
@@ -2676,7 +2782,8 @@ WHERE code =8841;
    display_fr = 'BAFFA',
    display_it = 'BAFFA',
    display_ro = ''
-WHERE code =3944;
+WHERE code = 3944;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3945,3945) ON CONFLICT DO NOTHING;
 
@@ -2701,7 +2808,8 @@ WHERE code =3944;
    display_fr = 'BAFFB',
    display_it = 'BAFFB',
    display_ro = ''
-WHERE code =3945;
+WHERE code = 3945;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3946,3946) ON CONFLICT DO NOTHING;
 
@@ -2726,7 +2834,8 @@ WHERE code =3945;
    display_fr = 'BAFFC',
    display_it = 'BAFFC',
    display_ro = ''
-WHERE code =3946;
+WHERE code = 3946;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3947,3947) ON CONFLICT DO NOTHING;
 
@@ -2751,7 +2860,8 @@ WHERE code =3946;
    display_fr = 'BAFFD',
    display_it = 'BAFFD',
    display_ro = ''
-WHERE code =3947;
+WHERE code = 3947;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3948,3948) ON CONFLICT DO NOTHING;
 
@@ -2776,7 +2886,8 @@ WHERE code =3947;
    display_fr = 'BAFFE',
    display_it = 'BAFFE',
    display_ro = ''
-WHERE code =3948;
+WHERE code = 3948;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8842,8842) ON CONFLICT DO NOTHING;
 
@@ -2801,7 +2912,8 @@ WHERE code =3948;
    display_fr = 'BAFFZ',
    display_it = 'BAFFZ',
    display_ro = ''
-WHERE code =8842;
+WHERE code = 8842;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3949,3949) ON CONFLICT DO NOTHING;
 
@@ -2826,7 +2938,8 @@ WHERE code =8842;
    display_fr = 'BAFGA',
    display_it = 'BAFGA',
    display_ro = ''
-WHERE code =3949;
+WHERE code = 3949;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3950,3950) ON CONFLICT DO NOTHING;
 
@@ -2851,7 +2964,8 @@ WHERE code =3949;
    display_fr = 'BAFGB',
    display_it = 'BAFGB',
    display_ro = ''
-WHERE code =3950;
+WHERE code = 3950;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3951,3951) ON CONFLICT DO NOTHING;
 
@@ -2876,7 +2990,8 @@ WHERE code =3950;
    display_fr = 'BAFGC',
    display_it = 'BAFGC',
    display_ro = ''
-WHERE code =3951;
+WHERE code = 3951;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3952,3952) ON CONFLICT DO NOTHING;
 
@@ -2901,7 +3016,8 @@ WHERE code =3951;
    display_fr = 'BAFGD',
    display_it = 'BAFGD',
    display_ro = ''
-WHERE code =3952;
+WHERE code = 3952;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3953,3953) ON CONFLICT DO NOTHING;
 
@@ -2926,7 +3042,8 @@ WHERE code =3952;
    display_fr = 'BAFGE',
    display_it = 'BAFGE',
    display_ro = ''
-WHERE code =3953;
+WHERE code = 3953;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8843,8843) ON CONFLICT DO NOTHING;
 
@@ -2951,7 +3068,8 @@ WHERE code =3953;
    display_fr = 'BAFGZ',
    display_it = 'BAFGZ',
    display_ro = ''
-WHERE code =8843;
+WHERE code = 8843;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3954,3954) ON CONFLICT DO NOTHING;
 
@@ -2976,7 +3094,8 @@ WHERE code =8843;
    display_fr = 'BAFHB',
    display_it = 'BAFHB',
    display_ro = ''
-WHERE code =3954;
+WHERE code = 3954;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3955,3955) ON CONFLICT DO NOTHING;
 
@@ -3001,7 +3120,8 @@ WHERE code =3954;
    display_fr = 'BAFHC',
    display_it = 'BAFHC',
    display_ro = ''
-WHERE code =3955;
+WHERE code = 3955;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3956,3956) ON CONFLICT DO NOTHING;
 
@@ -3026,7 +3146,8 @@ WHERE code =3955;
    display_fr = 'BAFHD',
    display_it = 'BAFHD',
    display_ro = ''
-WHERE code =3956;
+WHERE code = 3956;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3957,3957) ON CONFLICT DO NOTHING;
 
@@ -3051,7 +3172,8 @@ WHERE code =3956;
    display_fr = 'BAFHE',
    display_it = 'BAFHE',
    display_ro = ''
-WHERE code =3957;
+WHERE code = 3957;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3958,3958) ON CONFLICT DO NOTHING;
 
@@ -3076,7 +3198,8 @@ WHERE code =3957;
    display_fr = 'BAFIA',
    display_it = 'BAFIA',
    display_ro = ''
-WHERE code =3958;
+WHERE code = 3958;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3959,3959) ON CONFLICT DO NOTHING;
 
@@ -3101,7 +3224,8 @@ WHERE code =3958;
    display_fr = 'BAFIB',
    display_it = 'BAFIB',
    display_ro = ''
-WHERE code =3959;
+WHERE code = 3959;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3960,3960) ON CONFLICT DO NOTHING;
 
@@ -3126,7 +3250,8 @@ WHERE code =3959;
    display_fr = 'BAFIC',
    display_it = 'BAFIC',
    display_ro = ''
-WHERE code =3960;
+WHERE code = 3960;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3961,3961) ON CONFLICT DO NOTHING;
 
@@ -3151,7 +3276,8 @@ WHERE code =3960;
    display_fr = 'BAFID',
    display_it = 'BAFID',
    display_ro = ''
-WHERE code =3961;
+WHERE code = 3961;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3962,3962) ON CONFLICT DO NOTHING;
 
@@ -3176,7 +3302,8 @@ WHERE code =3961;
    display_fr = 'BAFIE',
    display_it = 'BAFIE',
    display_ro = ''
-WHERE code =3962;
+WHERE code = 3962;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8844,8844) ON CONFLICT DO NOTHING;
 
@@ -3201,7 +3328,8 @@ WHERE code =3962;
    display_fr = 'BAFIZ',
    display_it = 'BAFIZ',
    display_ro = ''
-WHERE code =8844;
+WHERE code = 8844;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3963,3963) ON CONFLICT DO NOTHING;
 
@@ -3226,7 +3354,8 @@ WHERE code =8844;
    display_fr = 'BAFJB',
    display_it = 'BAFJB',
    display_ro = ''
-WHERE code =3963;
+WHERE code = 3963;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3964,3964) ON CONFLICT DO NOTHING;
 
@@ -3251,7 +3380,8 @@ WHERE code =3963;
    display_fr = 'BAFJC',
    display_it = 'BAFJC',
    display_ro = ''
-WHERE code =3964;
+WHERE code = 3964;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3965,3965) ON CONFLICT DO NOTHING;
 
@@ -3276,7 +3406,8 @@ WHERE code =3964;
    display_fr = 'BAFJD',
    display_it = 'BAFJD',
    display_ro = ''
-WHERE code =3965;
+WHERE code = 3965;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3966,3966) ON CONFLICT DO NOTHING;
 
@@ -3301,7 +3432,8 @@ WHERE code =3965;
    display_fr = 'BAFJE',
    display_it = 'BAFJE',
    display_ro = ''
-WHERE code =3966;
+WHERE code = 3966;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8845,8845) ON CONFLICT DO NOTHING;
 
@@ -3326,7 +3458,8 @@ WHERE code =3966;
    display_fr = 'BAFJZ',
    display_it = 'BAFJZ',
    display_ro = ''
-WHERE code =8845;
+WHERE code = 8845;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8846,8846) ON CONFLICT DO NOTHING;
 
@@ -3351,7 +3484,8 @@ WHERE code =8845;
    display_fr = 'BAFKA',
    display_it = 'BAFKA',
    display_ro = ''
-WHERE code =8846;
+WHERE code = 8846;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8847,8847) ON CONFLICT DO NOTHING;
 
@@ -3376,7 +3510,8 @@ WHERE code =8846;
    display_fr = 'BAFKE',
    display_it = 'BAFKE',
    display_ro = ''
-WHERE code =8847;
+WHERE code = 8847;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8848,8848) ON CONFLICT DO NOTHING;
 
@@ -3401,7 +3536,8 @@ WHERE code =8847;
    display_fr = 'BAFKZ',
    display_it = 'BAFKZ',
    display_ro = ''
-WHERE code =8848;
+WHERE code = 8848;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3967,3967) ON CONFLICT DO NOTHING;
 
@@ -3426,7 +3562,8 @@ WHERE code =8848;
    display_fr = 'BAFZA',
    display_it = 'BAFZA',
    display_ro = ''
-WHERE code =3967;
+WHERE code = 3967;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3968,3968) ON CONFLICT DO NOTHING;
 
@@ -3451,7 +3588,8 @@ WHERE code =3967;
    display_fr = 'BAFZB',
    display_it = 'BAFZB',
    display_ro = ''
-WHERE code =3968;
+WHERE code = 3968;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3969,3969) ON CONFLICT DO NOTHING;
 
@@ -3476,7 +3614,8 @@ WHERE code =3968;
    display_fr = 'BAFZC',
    display_it = 'BAFZC',
    display_ro = ''
-WHERE code =3969;
+WHERE code = 3969;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3970,3970) ON CONFLICT DO NOTHING;
 
@@ -3501,7 +3640,8 @@ WHERE code =3969;
    display_fr = 'BAFZD',
    display_it = 'BAFZD',
    display_ro = ''
-WHERE code =3970;
+WHERE code = 3970;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3971,3971) ON CONFLICT DO NOTHING;
 
@@ -3526,7 +3666,8 @@ WHERE code =3970;
    display_fr = 'BAFZE',
    display_it = 'BAFZE',
    display_ro = ''
-WHERE code =3971;
+WHERE code = 3971;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8849,8849) ON CONFLICT DO NOTHING;
 
@@ -3551,7 +3692,8 @@ WHERE code =3971;
    display_fr = 'BAFZZ',
    display_it = 'BAFZZ',
    display_ro = ''
-WHERE code =8849;
+WHERE code = 8849;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3972,3972) ON CONFLICT DO NOTHING;
 
@@ -3576,7 +3718,8 @@ WHERE code =8849;
    display_fr = 'BAGA',
    display_it = 'BAGA',
    display_ro = ''
-WHERE code =3972;
+WHERE code = 3972;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3973,3973) ON CONFLICT DO NOTHING;
 
@@ -3601,7 +3744,8 @@ WHERE code =3972;
    display_fr = 'BAHA',
    display_it = 'BAHA',
    display_ro = ''
-WHERE code =3973;
+WHERE code = 3973;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3974,3974) ON CONFLICT DO NOTHING;
 
@@ -3626,7 +3770,8 @@ WHERE code =3973;
    display_fr = 'BAHB',
    display_it = 'BAHB',
    display_ro = ''
-WHERE code =3974;
+WHERE code = 3974;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3975,3975) ON CONFLICT DO NOTHING;
 
@@ -3651,7 +3796,8 @@ WHERE code =3974;
    display_fr = 'BAHC',
    display_it = 'BAHC',
    display_ro = ''
-WHERE code =3975;
+WHERE code = 3975;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3976,3976) ON CONFLICT DO NOTHING;
 
@@ -3676,7 +3822,8 @@ WHERE code =3975;
    display_fr = 'BAHD',
    display_it = 'BAHD',
    display_ro = ''
-WHERE code =3976;
+WHERE code = 3976;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3977,3977) ON CONFLICT DO NOTHING;
 
@@ -3701,7 +3848,8 @@ WHERE code =3976;
    display_fr = 'BAHE',
    display_it = 'BAHE',
    display_ro = ''
-WHERE code =3977;
+WHERE code = 3977;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3978,3978) ON CONFLICT DO NOTHING;
 
@@ -3726,7 +3874,8 @@ WHERE code =3977;
    display_fr = 'BAHZ',
    display_it = 'BAHZ',
    display_ro = ''
-WHERE code =3978;
+WHERE code = 3978;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3979,3979) ON CONFLICT DO NOTHING;
 
@@ -3751,7 +3900,8 @@ WHERE code =3978;
    display_fr = 'BAIAA',
    display_it = 'BAIAA',
    display_ro = ''
-WHERE code =3979;
+WHERE code = 3979;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3980,3980) ON CONFLICT DO NOTHING;
 
@@ -3776,7 +3926,8 @@ WHERE code =3979;
    display_fr = 'BAIAB',
    display_it = 'BAIAB',
    display_ro = ''
-WHERE code =3980;
+WHERE code = 3980;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3981,3981) ON CONFLICT DO NOTHING;
 
@@ -3801,7 +3952,8 @@ WHERE code =3980;
    display_fr = 'BAIAC',
    display_it = 'BAIAC',
    display_ro = ''
-WHERE code =3981;
+WHERE code = 3981;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3982,3982) ON CONFLICT DO NOTHING;
 
@@ -3826,7 +3978,8 @@ WHERE code =3981;
    display_fr = 'BAIAD',
    display_it = 'BAIAD',
    display_ro = ''
-WHERE code =3982;
+WHERE code = 3982;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3983,3983) ON CONFLICT DO NOTHING;
 
@@ -3851,7 +4004,8 @@ WHERE code =3982;
    display_fr = 'BAIZ',
    display_it = 'BAIZ',
    display_ro = ''
-WHERE code =3983;
+WHERE code = 3983;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3984,3984) ON CONFLICT DO NOTHING;
 
@@ -3876,7 +4030,8 @@ WHERE code =3983;
    display_fr = 'BAJA',
    display_it = 'BAJA',
    display_ro = ''
-WHERE code =3984;
+WHERE code = 3984;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3985,3985) ON CONFLICT DO NOTHING;
 
@@ -3901,7 +4056,8 @@ WHERE code =3984;
    display_fr = 'BAJB',
    display_it = 'BAJB',
    display_ro = ''
-WHERE code =3985;
+WHERE code = 3985;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3986,3986) ON CONFLICT DO NOTHING;
 
@@ -3926,7 +4082,8 @@ WHERE code =3985;
    display_fr = 'BAJC',
    display_it = 'BAJC',
    display_ro = ''
-WHERE code =3986;
+WHERE code = 3986;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3987,3987) ON CONFLICT DO NOTHING;
 
@@ -3951,7 +4108,8 @@ WHERE code =3986;
    display_fr = 'BAKA',
    display_it = 'BAKA',
    display_ro = ''
-WHERE code =3987;
+WHERE code = 3987;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3988,3988) ON CONFLICT DO NOTHING;
 
@@ -3976,7 +4134,8 @@ WHERE code =3987;
    display_fr = 'BAKB',
    display_it = 'BAKB',
    display_ro = ''
-WHERE code =3988;
+WHERE code = 3988;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3989,3989) ON CONFLICT DO NOTHING;
 
@@ -4001,7 +4160,8 @@ WHERE code =3988;
    display_fr = 'BAKC',
    display_it = 'BAKC',
    display_ro = ''
-WHERE code =3989;
+WHERE code = 3989;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3990,3990) ON CONFLICT DO NOTHING;
 
@@ -4026,7 +4186,8 @@ WHERE code =3989;
    display_fr = 'BAKDA',
    display_it = 'BAKDA',
    display_ro = ''
-WHERE code =3990;
+WHERE code = 3990;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3991,3991) ON CONFLICT DO NOTHING;
 
@@ -4051,7 +4212,8 @@ WHERE code =3990;
    display_fr = 'BAKDB',
    display_it = 'BAKDB',
    display_ro = ''
-WHERE code =3991;
+WHERE code = 3991;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3992,3992) ON CONFLICT DO NOTHING;
 
@@ -4076,7 +4238,8 @@ WHERE code =3991;
    display_fr = 'BAKDC',
    display_it = 'BAKDC',
    display_ro = ''
-WHERE code =3992;
+WHERE code = 3992;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8850,8850) ON CONFLICT DO NOTHING;
 
@@ -4101,7 +4264,8 @@ WHERE code =3992;
    display_fr = 'BAKDD',
    display_it = 'BAKDD',
    display_ro = ''
-WHERE code =8850;
+WHERE code = 8850;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3993,3993) ON CONFLICT DO NOTHING;
 
@@ -4126,7 +4290,8 @@ WHERE code =8850;
    display_fr = 'BAKE',
    display_it = 'BAKE',
    display_ro = ''
-WHERE code =3993;
+WHERE code = 3993;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8851,8851) ON CONFLICT DO NOTHING;
 
@@ -4151,7 +4316,8 @@ WHERE code =3993;
    display_fr = 'BAKF',
    display_it = 'BAKF',
    display_ro = ''
-WHERE code =8851;
+WHERE code = 8851;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8852,8852) ON CONFLICT DO NOTHING;
 
@@ -4176,7 +4342,8 @@ WHERE code =8851;
    display_fr = 'BAKG',
    display_it = 'BAKG',
    display_ro = ''
-WHERE code =8852;
+WHERE code = 8852;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8853,8853) ON CONFLICT DO NOTHING;
 
@@ -4201,7 +4368,8 @@ WHERE code =8852;
    display_fr = 'BAKH',
    display_it = 'BAKH',
    display_ro = ''
-WHERE code =8853;
+WHERE code = 8853;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8854,8854) ON CONFLICT DO NOTHING;
 
@@ -4226,7 +4394,8 @@ WHERE code =8853;
    display_fr = 'BAKI',
    display_it = 'BAKI',
    display_ro = ''
-WHERE code =8854;
+WHERE code = 8854;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8855,8855) ON CONFLICT DO NOTHING;
 
@@ -4251,7 +4420,8 @@ WHERE code =8854;
    display_fr = 'BAKJ',
    display_it = 'BAKJ',
    display_ro = ''
-WHERE code =8855;
+WHERE code = 8855;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8856,8856) ON CONFLICT DO NOTHING;
 
@@ -4276,7 +4446,8 @@ WHERE code =8855;
    display_fr = 'BAKK',
    display_it = 'BAKK',
    display_ro = ''
-WHERE code =8856;
+WHERE code = 8856;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8857,8857) ON CONFLICT DO NOTHING;
 
@@ -4301,7 +4472,8 @@ WHERE code =8856;
    display_fr = 'BAKL',
    display_it = 'BAKL',
    display_ro = ''
-WHERE code =8857;
+WHERE code = 8857;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8858,8858) ON CONFLICT DO NOTHING;
 
@@ -4326,7 +4498,8 @@ WHERE code =8857;
    display_fr = 'BAKM',
    display_it = 'BAKM',
    display_ro = ''
-WHERE code =8858;
+WHERE code = 8858;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8859,8859) ON CONFLICT DO NOTHING;
 
@@ -4351,7 +4524,8 @@ WHERE code =8858;
    display_fr = 'BAKN',
    display_it = 'BAKN',
    display_ro = ''
-WHERE code =8859;
+WHERE code = 8859;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3994,3994) ON CONFLICT DO NOTHING;
 
@@ -4376,7 +4550,8 @@ WHERE code =8859;
    display_fr = 'BAKZ',
    display_it = 'BAKZ',
    display_ro = ''
-WHERE code =3994;
+WHERE code = 3994;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3995,3995) ON CONFLICT DO NOTHING;
 
@@ -4401,7 +4576,8 @@ WHERE code =3994;
    display_fr = 'BALA',
    display_it = 'BALA',
    display_ro = ''
-WHERE code =3995;
+WHERE code = 3995;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3996,3996) ON CONFLICT DO NOTHING;
 
@@ -4426,7 +4602,8 @@ WHERE code =3995;
    display_fr = 'BALB',
    display_it = 'BALB',
    display_ro = ''
-WHERE code =3996;
+WHERE code = 3996;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8860,8860) ON CONFLICT DO NOTHING;
 
@@ -4451,7 +4628,8 @@ WHERE code =3996;
    display_fr = 'BALC',
    display_it = 'BALC',
    display_ro = ''
-WHERE code =8860;
+WHERE code = 8860;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8861,8861) ON CONFLICT DO NOTHING;
 
@@ -4476,7 +4654,8 @@ WHERE code =8860;
    display_fr = 'BALD',
    display_it = 'BALD',
    display_ro = ''
-WHERE code =8861;
+WHERE code = 8861;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8862,8862) ON CONFLICT DO NOTHING;
 
@@ -4501,7 +4680,8 @@ WHERE code =8861;
    display_fr = 'BALE',
    display_it = 'BALE',
    display_ro = ''
-WHERE code =8862;
+WHERE code = 8862;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8863,8863) ON CONFLICT DO NOTHING;
 
@@ -4526,7 +4706,8 @@ WHERE code =8862;
    display_fr = 'BALF',
    display_it = 'BALF',
    display_ro = ''
-WHERE code =8863;
+WHERE code = 8863;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8864,8864) ON CONFLICT DO NOTHING;
 
@@ -4551,7 +4732,8 @@ WHERE code =8863;
    display_fr = 'BALGA',
    display_it = 'BALGA',
    display_ro = ''
-WHERE code =8864;
+WHERE code = 8864;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8865,8865) ON CONFLICT DO NOTHING;
 
@@ -4576,7 +4758,8 @@ WHERE code =8864;
    display_fr = 'BALGB',
    display_it = 'BALGB',
    display_ro = ''
-WHERE code =8865;
+WHERE code = 8865;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8866,8866) ON CONFLICT DO NOTHING;
 
@@ -4601,7 +4784,8 @@ WHERE code =8865;
    display_fr = 'BALGC',
    display_it = 'BALGC',
    display_ro = ''
-WHERE code =8866;
+WHERE code = 8866;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8867,8867) ON CONFLICT DO NOTHING;
 
@@ -4626,7 +4810,8 @@ WHERE code =8866;
    display_fr = 'BALGD',
    display_it = 'BALGD',
    display_ro = ''
-WHERE code =8867;
+WHERE code = 8867;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3997,3997) ON CONFLICT DO NOTHING;
 
@@ -4651,7 +4836,8 @@ WHERE code =8867;
    display_fr = 'BALZ',
    display_it = 'BALZ',
    display_ro = ''
-WHERE code =3997;
+WHERE code = 3997;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3998,3998) ON CONFLICT DO NOTHING;
 
@@ -4676,7 +4862,8 @@ WHERE code =3997;
    display_fr = 'BAMA',
    display_it = 'BAMA',
    display_ro = ''
-WHERE code =3998;
+WHERE code = 3998;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (3999,3999) ON CONFLICT DO NOTHING;
 
@@ -4701,7 +4888,8 @@ WHERE code =3998;
    display_fr = 'BAMB',
    display_it = 'BAMB',
    display_ro = ''
-WHERE code =3999;
+WHERE code = 3999;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4000,4000) ON CONFLICT DO NOTHING;
 
@@ -4726,7 +4914,8 @@ WHERE code =3999;
    display_fr = 'BAMC',
    display_it = 'BAMC',
    display_ro = ''
-WHERE code =4000;
+WHERE code = 4000;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4001,4001) ON CONFLICT DO NOTHING;
 
@@ -4751,7 +4940,8 @@ WHERE code =4000;
    display_fr = 'BAN',
    display_it = 'BAN',
    display_ro = ''
-WHERE code =4001;
+WHERE code = 4001;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4002,4002) ON CONFLICT DO NOTHING;
 
@@ -4776,7 +4966,8 @@ WHERE code =4001;
    display_fr = 'BAO',
    display_it = 'BAO',
    display_ro = ''
-WHERE code =4002;
+WHERE code = 4002;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4003,4003) ON CONFLICT DO NOTHING;
 
@@ -4801,7 +4992,8 @@ WHERE code =4002;
    display_fr = 'BAP',
    display_it = 'BAP',
    display_ro = ''
-WHERE code =4003;
+WHERE code = 4003;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4004,4004) ON CONFLICT DO NOTHING;
 
@@ -4826,7 +5018,8 @@ WHERE code =4003;
    display_fr = 'BBAA',
    display_it = 'BBAA',
    display_ro = 'BBAA'
-WHERE code =4004;
+WHERE code = 4004;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4005,4005) ON CONFLICT DO NOTHING;
 
@@ -4851,7 +5044,8 @@ WHERE code =4004;
    display_fr = 'BBAB',
    display_it = 'BBAB',
    display_ro = 'BBAB'
-WHERE code =4005;
+WHERE code = 4005;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4006,4006) ON CONFLICT DO NOTHING;
 
@@ -4876,7 +5070,8 @@ WHERE code =4005;
    display_fr = 'BBAC',
    display_it = 'BBAC',
    display_ro = 'BBAC'
-WHERE code =4006;
+WHERE code = 4006;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4007,4007) ON CONFLICT DO NOTHING;
 
@@ -4901,7 +5096,8 @@ WHERE code =4006;
    display_fr = 'BBBA',
    display_it = 'BBBA',
    display_ro = 'BBBA'
-WHERE code =4007;
+WHERE code = 4007;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4008,4008) ON CONFLICT DO NOTHING;
 
@@ -4926,7 +5122,8 @@ WHERE code =4007;
    display_fr = 'BBBB',
    display_it = 'BBBB',
    display_ro = 'BBBB'
-WHERE code =4008;
+WHERE code = 4008;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4009,4009) ON CONFLICT DO NOTHING;
 
@@ -4951,7 +5148,8 @@ WHERE code =4008;
    display_fr = 'BBBC',
    display_it = 'BBBC',
    display_ro = 'BBBC'
-WHERE code =4009;
+WHERE code = 4009;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4010,4010) ON CONFLICT DO NOTHING;
 
@@ -4976,7 +5174,8 @@ WHERE code =4009;
    display_fr = 'BBBZ',
    display_it = 'BBBZ',
    display_ro = 'BBBZ'
-WHERE code =4010;
+WHERE code = 4010;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4011,4011) ON CONFLICT DO NOTHING;
 
@@ -5001,7 +5200,8 @@ WHERE code =4010;
    display_fr = 'BBCA',
    display_it = 'BBCA',
    display_ro = 'BBCA'
-WHERE code =4011;
+WHERE code = 4011;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4012,4012) ON CONFLICT DO NOTHING;
 
@@ -5026,7 +5226,8 @@ WHERE code =4011;
    display_fr = 'BBCB',
    display_it = 'BBCB',
    display_ro = 'BBCB'
-WHERE code =4012;
+WHERE code = 4012;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4013,4013) ON CONFLICT DO NOTHING;
 
@@ -5051,7 +5252,8 @@ WHERE code =4012;
    display_fr = 'BBCC',
    display_it = 'BBCC',
    display_ro = 'BBCC'
-WHERE code =4013;
+WHERE code = 4013;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4014,4014) ON CONFLICT DO NOTHING;
 
@@ -5076,7 +5278,8 @@ WHERE code =4013;
    display_fr = 'BBCZ',
    display_it = 'BBCZ',
    display_ro = 'BBCZ'
-WHERE code =4014;
+WHERE code = 4014;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4015,4015) ON CONFLICT DO NOTHING;
 
@@ -5101,7 +5304,8 @@ WHERE code =4014;
    display_fr = 'BBDA',
    display_it = 'BBDA',
    display_ro = 'BBDA'
-WHERE code =4015;
+WHERE code = 4015;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4016,4016) ON CONFLICT DO NOTHING;
 
@@ -5126,7 +5330,8 @@ WHERE code =4015;
    display_fr = 'BBDB',
    display_it = 'BBDB',
    display_ro = 'BBDB'
-WHERE code =4016;
+WHERE code = 4016;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4017,4017) ON CONFLICT DO NOTHING;
 
@@ -5151,7 +5356,8 @@ WHERE code =4016;
    display_fr = 'BBDC',
    display_it = 'BBDC',
    display_ro = 'BBDC'
-WHERE code =4017;
+WHERE code = 4017;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4018,4018) ON CONFLICT DO NOTHING;
 
@@ -5176,7 +5382,8 @@ WHERE code =4017;
    display_fr = 'BBDD',
    display_it = 'BBDD',
    display_ro = 'BBDD'
-WHERE code =4018;
+WHERE code = 4018;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4019,4019) ON CONFLICT DO NOTHING;
 
@@ -5201,7 +5408,8 @@ WHERE code =4018;
    display_fr = 'BBDZ',
    display_it = 'BBDZ',
    display_ro = 'BBDZ'
-WHERE code =4019;
+WHERE code = 4019;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4020,4020) ON CONFLICT DO NOTHING;
 
@@ -5226,7 +5434,8 @@ WHERE code =4019;
    display_fr = 'BBEA',
    display_it = 'BBEA',
    display_ro = 'BBEA'
-WHERE code =4020;
+WHERE code = 4020;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4021,4021) ON CONFLICT DO NOTHING;
 
@@ -5251,7 +5460,8 @@ WHERE code =4020;
    display_fr = 'BBEB',
    display_it = 'BBEB',
    display_ro = 'BBEB'
-WHERE code =4021;
+WHERE code = 4021;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4022,4022) ON CONFLICT DO NOTHING;
 
@@ -5276,7 +5486,8 @@ WHERE code =4021;
    display_fr = 'BBEC',
    display_it = 'BBEC',
    display_ro = 'BBEC'
-WHERE code =4022;
+WHERE code = 4022;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4023,4023) ON CONFLICT DO NOTHING;
 
@@ -5301,7 +5512,8 @@ WHERE code =4022;
    display_fr = 'BBED',
    display_it = 'BBED',
    display_ro = 'BBED'
-WHERE code =4023;
+WHERE code = 4023;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4024,4024) ON CONFLICT DO NOTHING;
 
@@ -5326,7 +5538,8 @@ WHERE code =4023;
    display_fr = 'BBEE',
    display_it = 'BBEE',
    display_ro = 'BBEE'
-WHERE code =4024;
+WHERE code = 4024;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4025,4025) ON CONFLICT DO NOTHING;
 
@@ -5351,7 +5564,8 @@ WHERE code =4024;
    display_fr = 'BBEF',
    display_it = 'BBEF',
    display_ro = 'BBEF'
-WHERE code =4025;
+WHERE code = 4025;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4026,4026) ON CONFLICT DO NOTHING;
 
@@ -5376,7 +5590,8 @@ WHERE code =4025;
    display_fr = 'BBEG',
    display_it = 'BBEG',
    display_ro = 'BBEG'
-WHERE code =4026;
+WHERE code = 4026;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4027,4027) ON CONFLICT DO NOTHING;
 
@@ -5401,7 +5616,8 @@ WHERE code =4026;
    display_fr = 'BBEH',
    display_it = 'BBEH',
    display_ro = 'BBEH'
-WHERE code =4027;
+WHERE code = 4027;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4028,4028) ON CONFLICT DO NOTHING;
 
@@ -5426,7 +5642,8 @@ WHERE code =4027;
    display_fr = 'BBEZ',
    display_it = 'BBEZ',
    display_ro = 'BBEZ'
-WHERE code =4028;
+WHERE code = 4028;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4029,4029) ON CONFLICT DO NOTHING;
 
@@ -5451,7 +5668,8 @@ WHERE code =4028;
    display_fr = 'BBFA',
    display_it = 'BBFA',
    display_ro = 'BBFA'
-WHERE code =4029;
+WHERE code = 4029;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4030,4030) ON CONFLICT DO NOTHING;
 
@@ -5476,7 +5694,8 @@ WHERE code =4029;
    display_fr = 'BBFB',
    display_it = 'BBFB',
    display_ro = 'BBFB'
-WHERE code =4030;
+WHERE code = 4030;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4031,4031) ON CONFLICT DO NOTHING;
 
@@ -5501,7 +5720,8 @@ WHERE code =4030;
    display_fr = 'BBFC',
    display_it = 'BBFC',
    display_ro = 'BBFC'
-WHERE code =4031;
+WHERE code = 4031;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4032,4032) ON CONFLICT DO NOTHING;
 
@@ -5526,7 +5746,8 @@ WHERE code =4031;
    display_fr = 'BBFD',
    display_it = 'BBFD',
    display_ro = 'BBFD'
-WHERE code =4032;
+WHERE code = 4032;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4033,4033) ON CONFLICT DO NOTHING;
 
@@ -5551,7 +5772,8 @@ WHERE code =4032;
    display_fr = 'BBG',
    display_it = 'BBG',
    display_ro = 'BBG'
-WHERE code =4033;
+WHERE code = 4033;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4034,4034) ON CONFLICT DO NOTHING;
 
@@ -5576,7 +5798,8 @@ WHERE code =4033;
    display_fr = 'BBHAA',
    display_it = 'BBHAA',
    display_ro = 'BBHAA'
-WHERE code =4034;
+WHERE code = 4034;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4035,4035) ON CONFLICT DO NOTHING;
 
@@ -5601,7 +5824,8 @@ WHERE code =4034;
    display_fr = 'BBHAB',
    display_it = 'BBHAB',
    display_ro = 'BBHAB'
-WHERE code =4035;
+WHERE code = 4035;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4036,4036) ON CONFLICT DO NOTHING;
 
@@ -5626,7 +5850,8 @@ WHERE code =4035;
    display_fr = 'BBHAC',
    display_it = 'BBHAC',
    display_ro = 'BBHAC'
-WHERE code =4036;
+WHERE code = 4036;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4037,4037) ON CONFLICT DO NOTHING;
 
@@ -5651,7 +5876,8 @@ WHERE code =4036;
    display_fr = 'BBHAZ',
    display_it = 'BBHAZ',
    display_ro = 'BBHAZ'
-WHERE code =4037;
+WHERE code = 4037;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4038,4038) ON CONFLICT DO NOTHING;
 
@@ -5676,7 +5902,8 @@ WHERE code =4037;
    display_fr = 'BBHBA',
    display_it = 'BBHBA',
    display_ro = 'BBHBA'
-WHERE code =4038;
+WHERE code = 4038;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4039,4039) ON CONFLICT DO NOTHING;
 
@@ -5701,7 +5928,8 @@ WHERE code =4038;
    display_fr = 'BBHBB',
    display_it = 'BBHBB',
    display_ro = 'BBHBB'
-WHERE code =4039;
+WHERE code = 4039;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4040,4040) ON CONFLICT DO NOTHING;
 
@@ -5726,7 +5954,8 @@ WHERE code =4039;
    display_fr = 'BBHBC',
    display_it = 'BBHBC',
    display_ro = 'BBHBC'
-WHERE code =4040;
+WHERE code = 4040;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4041,4041) ON CONFLICT DO NOTHING;
 
@@ -5751,7 +5980,8 @@ WHERE code =4040;
    display_fr = 'BBHBZ',
    display_it = 'BBHBZ',
    display_ro = 'BBHBZ'
-WHERE code =4041;
+WHERE code = 4041;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4042,4042) ON CONFLICT DO NOTHING;
 
@@ -5776,7 +6006,8 @@ WHERE code =4041;
    display_fr = 'BBHZA',
    display_it = 'BBHZA',
    display_ro = 'BBHZA'
-WHERE code =4042;
+WHERE code = 4042;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4043,4043) ON CONFLICT DO NOTHING;
 
@@ -5801,7 +6032,8 @@ WHERE code =4042;
    display_fr = 'BBHZB',
    display_it = 'BBHZB',
    display_ro = 'BBHZB'
-WHERE code =4043;
+WHERE code = 4043;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4044,4044) ON CONFLICT DO NOTHING;
 
@@ -5826,7 +6058,8 @@ WHERE code =4043;
    display_fr = 'BBHZC',
    display_it = 'BBHZC',
    display_ro = 'BBHZC'
-WHERE code =4044;
+WHERE code = 4044;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4045,4045) ON CONFLICT DO NOTHING;
 
@@ -5851,7 +6084,8 @@ WHERE code =4044;
    display_fr = 'BBHZZ',
    display_it = 'BBHZZ',
    display_ro = 'BBHZZ'
-WHERE code =4045;
+WHERE code = 4045;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4046,4046) ON CONFLICT DO NOTHING;
 
@@ -5876,7 +6110,8 @@ WHERE code =4045;
    display_fr = 'BCAAA',
    display_it = 'BCAAA',
    display_ro = ''
-WHERE code =4046;
+WHERE code = 4046;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4047,4047) ON CONFLICT DO NOTHING;
 
@@ -5901,7 +6136,8 @@ WHERE code =4046;
    display_fr = 'BCAAB',
    display_it = 'BCAAB',
    display_ro = ''
-WHERE code =4047;
+WHERE code = 4047;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4048,4048) ON CONFLICT DO NOTHING;
 
@@ -5926,7 +6162,8 @@ WHERE code =4047;
    display_fr = 'BCABA',
    display_it = 'BCABA',
    display_ro = ''
-WHERE code =4048;
+WHERE code = 4048;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4049,4049) ON CONFLICT DO NOTHING;
 
@@ -5951,7 +6188,8 @@ WHERE code =4048;
    display_fr = 'BCABB',
    display_it = 'BCABB',
    display_ro = ''
-WHERE code =4049;
+WHERE code = 4049;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4050,4050) ON CONFLICT DO NOTHING;
 
@@ -5976,7 +6214,8 @@ WHERE code =4049;
    display_fr = 'BCACA',
    display_it = 'BCACA',
    display_ro = ''
-WHERE code =4050;
+WHERE code = 4050;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4051,4051) ON CONFLICT DO NOTHING;
 
@@ -6001,7 +6240,8 @@ WHERE code =4050;
    display_fr = 'BCACB',
    display_it = 'BCACB',
    display_ro = ''
-WHERE code =4051;
+WHERE code = 4051;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4052,4052) ON CONFLICT DO NOTHING;
 
@@ -6026,7 +6266,8 @@ WHERE code =4051;
    display_fr = 'BCADA',
    display_it = 'BCADA',
    display_ro = ''
-WHERE code =4052;
+WHERE code = 4052;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4053,4053) ON CONFLICT DO NOTHING;
 
@@ -6051,7 +6292,8 @@ WHERE code =4052;
    display_fr = 'BCADB',
    display_it = 'BCADB',
    display_ro = ''
-WHERE code =4053;
+WHERE code = 4053;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4054,4054) ON CONFLICT DO NOTHING;
 
@@ -6076,7 +6318,8 @@ WHERE code =4053;
    display_fr = 'BCAEA',
    display_it = 'BCAEA',
    display_ro = ''
-WHERE code =4054;
+WHERE code = 4054;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4055,4055) ON CONFLICT DO NOTHING;
 
@@ -6101,7 +6344,8 @@ WHERE code =4054;
    display_fr = 'BCAEB',
    display_it = 'BCAEB',
    display_ro = ''
-WHERE code =4055;
+WHERE code = 4055;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4056,4056) ON CONFLICT DO NOTHING;
 
@@ -6126,7 +6370,8 @@ WHERE code =4055;
    display_fr = 'BCAFA',
    display_it = 'BCAFA',
    display_ro = ''
-WHERE code =4056;
+WHERE code = 4056;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4057,4057) ON CONFLICT DO NOTHING;
 
@@ -6151,7 +6396,8 @@ WHERE code =4056;
    display_fr = 'BCAFB',
    display_it = 'BCAFB',
    display_ro = ''
-WHERE code =4057;
+WHERE code = 4057;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4058,4058) ON CONFLICT DO NOTHING;
 
@@ -6176,7 +6422,8 @@ WHERE code =4057;
    display_fr = 'BCAGA',
    display_it = 'BCAGA',
    display_ro = ''
-WHERE code =4058;
+WHERE code = 4058;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4059,4059) ON CONFLICT DO NOTHING;
 
@@ -6201,7 +6448,8 @@ WHERE code =4058;
    display_fr = 'BCAGB',
    display_it = 'BCAGB',
    display_ro = ''
-WHERE code =4059;
+WHERE code = 4059;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4060,4060) ON CONFLICT DO NOTHING;
 
@@ -6226,7 +6474,8 @@ WHERE code =4059;
    display_fr = 'BCAZA',
    display_it = 'BCAZA',
    display_ro = ''
-WHERE code =4060;
+WHERE code = 4060;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4061,4061) ON CONFLICT DO NOTHING;
 
@@ -6251,7 +6500,8 @@ WHERE code =4060;
    display_fr = 'BCAZB',
    display_it = 'BCAZB',
    display_ro = ''
-WHERE code =4061;
+WHERE code = 4061;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4062,4062) ON CONFLICT DO NOTHING;
 
@@ -6276,7 +6526,8 @@ WHERE code =4061;
    display_fr = 'BCBA',
    display_it = 'BCBA',
    display_ro = ''
-WHERE code =4062;
+WHERE code = 4062;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4063,4063) ON CONFLICT DO NOTHING;
 
@@ -6301,7 +6552,8 @@ WHERE code =4062;
    display_fr = 'BCBB',
    display_it = 'BCBB',
    display_ro = ''
-WHERE code =4063;
+WHERE code = 4063;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4064,4064) ON CONFLICT DO NOTHING;
 
@@ -6326,7 +6578,8 @@ WHERE code =4063;
    display_fr = 'BCBC',
    display_it = 'BCBC',
    display_ro = ''
-WHERE code =4064;
+WHERE code = 4064;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4065,4065) ON CONFLICT DO NOTHING;
 
@@ -6351,7 +6604,8 @@ WHERE code =4064;
    display_fr = 'BCBD',
    display_it = 'BCBD',
    display_ro = ''
-WHERE code =4065;
+WHERE code = 4065;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4066,4066) ON CONFLICT DO NOTHING;
 
@@ -6376,7 +6630,8 @@ WHERE code =4065;
    display_fr = 'BCBE',
    display_it = 'BCBE',
    display_ro = ''
-WHERE code =4066;
+WHERE code = 4066;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8868,8868) ON CONFLICT DO NOTHING;
 
@@ -6401,7 +6656,8 @@ WHERE code =4066;
    display_fr = 'BCBF',
    display_it = 'BCBF',
    display_ro = ''
-WHERE code =8868;
+WHERE code = 8868;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8869,8869) ON CONFLICT DO NOTHING;
 
@@ -6426,7 +6682,8 @@ WHERE code =8868;
    display_fr = 'BCBG',
    display_it = 'BCBG',
    display_ro = ''
-WHERE code =8869;
+WHERE code = 8869;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4067,4067) ON CONFLICT DO NOTHING;
 
@@ -6451,7 +6708,8 @@ WHERE code =8869;
    display_fr = 'BCBZ',
    display_it = 'BCBZ',
    display_ro = ''
-WHERE code =4067;
+WHERE code = 4067;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4068,4068) ON CONFLICT DO NOTHING;
 
@@ -6476,7 +6734,8 @@ WHERE code =4067;
    display_fr = 'BCCAA',
    display_it = 'BCCAA',
    display_ro = ''
-WHERE code =4068;
+WHERE code = 4068;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4069,4069) ON CONFLICT DO NOTHING;
 
@@ -6501,7 +6760,8 @@ WHERE code =4068;
    display_fr = 'BCCAB',
    display_it = 'BCCAB',
    display_ro = ''
-WHERE code =4069;
+WHERE code = 4069;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4070,4070) ON CONFLICT DO NOTHING;
 
@@ -6526,7 +6786,8 @@ WHERE code =4069;
    display_fr = 'BCCAY',
    display_it = 'BCCAY',
    display_ro = ''
-WHERE code =4070;
+WHERE code = 4070;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4071,4071) ON CONFLICT DO NOTHING;
 
@@ -6551,7 +6812,8 @@ WHERE code =4070;
    display_fr = 'BCCBA',
    display_it = 'BCCBA',
    display_ro = ''
-WHERE code =4071;
+WHERE code = 4071;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4072,4072) ON CONFLICT DO NOTHING;
 
@@ -6576,7 +6838,8 @@ WHERE code =4071;
    display_fr = 'BCCBB',
    display_it = 'BCCBB',
    display_ro = ''
-WHERE code =4072;
+WHERE code = 4072;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4073,4073) ON CONFLICT DO NOTHING;
 
@@ -6601,7 +6864,8 @@ WHERE code =4072;
    display_fr = 'BCCBY',
    display_it = 'BCCBY',
    display_ro = ''
-WHERE code =4073;
+WHERE code = 4073;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4074,4074) ON CONFLICT DO NOTHING;
 
@@ -6626,7 +6890,8 @@ WHERE code =4073;
    display_fr = 'BCCYA',
    display_it = 'BCCYA',
    display_ro = ''
-WHERE code =4074;
+WHERE code = 4074;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4075,4075) ON CONFLICT DO NOTHING;
 
@@ -6651,7 +6916,8 @@ WHERE code =4074;
    display_fr = 'BCCYB',
    display_it = 'BCCYB',
    display_ro = ''
-WHERE code =4075;
+WHERE code = 4075;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4076,4076) ON CONFLICT DO NOTHING;
 
@@ -6676,7 +6942,8 @@ WHERE code =4075;
    display_fr = 'BCD',
    display_it = 'BCD',
    display_ro = ''
-WHERE code =4076;
+WHERE code = 4076;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8870,8870) ON CONFLICT DO NOTHING;
 
@@ -6701,7 +6968,8 @@ WHERE code =4076;
    display_fr = 'BCDXP',
    display_it = 'BCDXP',
    display_ro = ''
-WHERE code =8870;
+WHERE code = 8870;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4077,4077) ON CONFLICT DO NOTHING;
 
@@ -6726,7 +6994,8 @@ WHERE code =8870;
    display_fr = 'BCE',
    display_it = 'BCE',
    display_ro = ''
-WHERE code =4077;
+WHERE code = 4077;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8871,8871) ON CONFLICT DO NOTHING;
 
@@ -6751,7 +7020,8 @@ WHERE code =4077;
    display_fr = 'BCEXP',
    display_it = 'BCEXP',
    display_ro = ''
-WHERE code =8871;
+WHERE code = 8871;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4078,4078) ON CONFLICT DO NOTHING;
 
@@ -6776,7 +7046,8 @@ WHERE code =8871;
    display_fr = 'BDA',
    display_it = 'BDA',
    display_ro = ''
-WHERE code =4078;
+WHERE code = 4078;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4079,4079) ON CONFLICT DO NOTHING;
 
@@ -6801,7 +7072,8 @@ WHERE code =4078;
    display_fr = 'BDB',
    display_it = 'BDB',
    display_ro = ''
-WHERE code =4079;
+WHERE code = 4079;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4136,4136) ON CONFLICT DO NOTHING;
 
@@ -6826,7 +7098,8 @@ WHERE code =4079;
    display_fr = 'BDBA',
    display_it = 'BDBA',
    display_ro = ''
-WHERE code =4136;
+WHERE code = 4136;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4137,4137) ON CONFLICT DO NOTHING;
 
@@ -6851,7 +7124,8 @@ WHERE code =4136;
    display_fr = 'BDBB',
    display_it = 'BDBB',
    display_ro = ''
-WHERE code =4137;
+WHERE code = 4137;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4138,4138) ON CONFLICT DO NOTHING;
 
@@ -6876,7 +7150,8 @@ WHERE code =4137;
    display_fr = 'BDBC',
    display_it = 'BDBC',
    display_ro = ''
-WHERE code =4138;
+WHERE code = 4138;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4141,4141) ON CONFLICT DO NOTHING;
 
@@ -6901,7 +7176,8 @@ WHERE code =4138;
    display_fr = 'BDBF',
    display_it = 'BDBF',
    display_ro = ''
-WHERE code =4141;
+WHERE code = 4141;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4142,4142) ON CONFLICT DO NOTHING;
 
@@ -6926,7 +7202,8 @@ WHERE code =4141;
    display_fr = 'BDBG',
    display_it = 'BDBG',
    display_ro = ''
-WHERE code =4142;
+WHERE code = 4142;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4143,4143) ON CONFLICT DO NOTHING;
 
@@ -6951,7 +7228,8 @@ WHERE code =4142;
    display_fr = 'BDBH',
    display_it = 'BDBH',
    display_ro = ''
-WHERE code =4143;
+WHERE code = 4143;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4144,4144) ON CONFLICT DO NOTHING;
 
@@ -6976,7 +7254,8 @@ WHERE code =4143;
    display_fr = 'BDBI',
    display_it = 'BDBI',
    display_ro = ''
-WHERE code =4144;
+WHERE code = 4144;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4145,4145) ON CONFLICT DO NOTHING;
 
@@ -7001,7 +7280,8 @@ WHERE code =4144;
    display_fr = 'BDBJ',
    display_it = 'BDBJ',
    display_ro = ''
-WHERE code =4145;
+WHERE code = 4145;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8872,8872) ON CONFLICT DO NOTHING;
 
@@ -7026,7 +7306,8 @@ WHERE code =4145;
    display_fr = 'BDBM',
    display_it = 'BDBM',
    display_ro = ''
-WHERE code =8872;
+WHERE code = 8872;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8873,8873) ON CONFLICT DO NOTHING;
 
@@ -7051,7 +7332,8 @@ WHERE code =8872;
    display_fr = 'BDCAA',
    display_it = 'BDCAA',
    display_ro = ''
-WHERE code =8873;
+WHERE code = 8873;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8874,8874) ON CONFLICT DO NOTHING;
 
@@ -7076,7 +7358,8 @@ WHERE code =8873;
    display_fr = 'BDCAB',
    display_it = 'BDCAB',
    display_ro = ''
-WHERE code =8874;
+WHERE code = 8874;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8875,8875) ON CONFLICT DO NOTHING;
 
@@ -7101,7 +7384,8 @@ WHERE code =8874;
    display_fr = 'BDCAC',
    display_it = 'BDCAC',
    display_ro = ''
-WHERE code =8875;
+WHERE code = 8875;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8876,8876) ON CONFLICT DO NOTHING;
 
@@ -7126,7 +7410,8 @@ WHERE code =8875;
    display_fr = 'BDCAD',
    display_it = 'BDCAD',
    display_ro = ''
-WHERE code =8876;
+WHERE code = 8876;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8877,8877) ON CONFLICT DO NOTHING;
 
@@ -7151,7 +7436,8 @@ WHERE code =8876;
    display_fr = 'BDCAE',
    display_it = 'BDCAE',
    display_ro = ''
-WHERE code =8877;
+WHERE code = 8877;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8878,8878) ON CONFLICT DO NOTHING;
 
@@ -7176,7 +7462,8 @@ WHERE code =8877;
    display_fr = 'BDCAZ',
    display_it = 'BDCAZ',
    display_ro = ''
-WHERE code =8878;
+WHERE code = 8878;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8879,8879) ON CONFLICT DO NOTHING;
 
@@ -7201,7 +7488,8 @@ WHERE code =8878;
    display_fr = 'BDCBA',
    display_it = 'BDCBA',
    display_ro = ''
-WHERE code =8879;
+WHERE code = 8879;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8880,8880) ON CONFLICT DO NOTHING;
 
@@ -7226,7 +7514,8 @@ WHERE code =8879;
    display_fr = 'BDCBB',
    display_it = 'BDCBB',
    display_ro = ''
-WHERE code =8880;
+WHERE code = 8880;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8881,8881) ON CONFLICT DO NOTHING;
 
@@ -7251,7 +7540,8 @@ WHERE code =8880;
    display_fr = 'BDCBC',
    display_it = 'BDCBC',
    display_ro = ''
-WHERE code =8881;
+WHERE code = 8881;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8882,8882) ON CONFLICT DO NOTHING;
 
@@ -7276,7 +7566,8 @@ WHERE code =8881;
    display_fr = 'BDCBD',
    display_it = 'BDCBD',
    display_ro = ''
-WHERE code =8882;
+WHERE code = 8882;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8883,8883) ON CONFLICT DO NOTHING;
 
@@ -7301,7 +7592,8 @@ WHERE code =8882;
    display_fr = 'BDCBE',
    display_it = 'BDCBE',
    display_ro = ''
-WHERE code =8883;
+WHERE code = 8883;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8884,8884) ON CONFLICT DO NOTHING;
 
@@ -7326,7 +7618,8 @@ WHERE code =8883;
    display_fr = 'BDCBZ',
    display_it = 'BDCBZ',
    display_ro = ''
-WHERE code =8884;
+WHERE code = 8884;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8885,8885) ON CONFLICT DO NOTHING;
 
@@ -7351,7 +7644,8 @@ WHERE code =8884;
    display_fr = 'BDCCA',
    display_it = 'BDCCA',
    display_ro = ''
-WHERE code =8885;
+WHERE code = 8885;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8886,8886) ON CONFLICT DO NOTHING;
 
@@ -7376,7 +7670,8 @@ WHERE code =8885;
    display_fr = 'BDCCB',
    display_it = 'BDCCB',
    display_ro = ''
-WHERE code =8886;
+WHERE code = 8886;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8887,8887) ON CONFLICT DO NOTHING;
 
@@ -7401,7 +7696,8 @@ WHERE code =8886;
    display_fr = 'BDCCC',
    display_it = 'BDCCC',
    display_ro = ''
-WHERE code =8887;
+WHERE code = 8887;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8888,8888) ON CONFLICT DO NOTHING;
 
@@ -7426,7 +7722,8 @@ WHERE code =8887;
    display_fr = 'BDCCD',
    display_it = 'BDCCD',
    display_ro = ''
-WHERE code =8888;
+WHERE code = 8888;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8889,8889) ON CONFLICT DO NOTHING;
 
@@ -7451,7 +7748,8 @@ WHERE code =8888;
    display_fr = 'BDCCE',
    display_it = 'BDCCE',
    display_ro = ''
-WHERE code =8889;
+WHERE code = 8889;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8890,8890) ON CONFLICT DO NOTHING;
 
@@ -7476,7 +7774,8 @@ WHERE code =8889;
    display_fr = 'BDCCZ',
    display_it = 'BDCCZ',
    display_ro = ''
-WHERE code =8890;
+WHERE code = 8890;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8891,8891) ON CONFLICT DO NOTHING;
 
@@ -7501,7 +7800,8 @@ WHERE code =8890;
    display_fr = 'BDCZA',
    display_it = 'BDCZA',
    display_ro = ''
-WHERE code =8891;
+WHERE code = 8891;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8892,8892) ON CONFLICT DO NOTHING;
 
@@ -7526,7 +7826,8 @@ WHERE code =8891;
    display_fr = 'BDCZB',
    display_it = 'BDCZB',
    display_ro = ''
-WHERE code =8892;
+WHERE code = 8892;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8893,8893) ON CONFLICT DO NOTHING;
 
@@ -7551,7 +7852,8 @@ WHERE code =8892;
    display_fr = 'BDCZC',
    display_it = 'BDCZC',
    display_ro = ''
-WHERE code =8893;
+WHERE code = 8893;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8894,8894) ON CONFLICT DO NOTHING;
 
@@ -7576,7 +7878,8 @@ WHERE code =8893;
    display_fr = 'BDCZD',
    display_it = 'BDCZD',
    display_ro = ''
-WHERE code =8894;
+WHERE code = 8894;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8895,8895) ON CONFLICT DO NOTHING;
 
@@ -7601,7 +7904,8 @@ WHERE code =8894;
    display_fr = 'BDCZE',
    display_it = 'BDCZE',
    display_ro = ''
-WHERE code =8895;
+WHERE code = 8895;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8896,8896) ON CONFLICT DO NOTHING;
 
@@ -7626,7 +7930,8 @@ WHERE code =8895;
    display_fr = 'BDCZZ',
    display_it = 'BDCZZ',
    display_ro = ''
-WHERE code =8896;
+WHERE code = 8896;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4084,4084) ON CONFLICT DO NOTHING;
 
@@ -7651,7 +7956,8 @@ WHERE code =8896;
    display_fr = 'BDDA',
    display_it = 'BDDA',
    display_ro = ''
-WHERE code =4084;
+WHERE code = 4084;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8897,8897) ON CONFLICT DO NOTHING;
 
@@ -7676,7 +7982,8 @@ WHERE code =4084;
    display_fr = 'BDDC',
    display_it = 'BDDC',
    display_ro = ''
-WHERE code =8897;
+WHERE code = 8897;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8898,8898) ON CONFLICT DO NOTHING;
 
@@ -7701,7 +8008,8 @@ WHERE code =8897;
    display_fr = 'BDDD',
    display_it = 'BDDD',
    display_ro = ''
-WHERE code =8898;
+WHERE code = 8898;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8899,8899) ON CONFLICT DO NOTHING;
 
@@ -7726,7 +8034,8 @@ WHERE code =8898;
    display_fr = 'BDDE',
    display_it = 'BDDE',
    display_ro = ''
-WHERE code =8899;
+WHERE code = 8899;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4086,4086) ON CONFLICT DO NOTHING;
 
@@ -7751,7 +8060,8 @@ WHERE code =8899;
    display_fr = 'BDEAA',
    display_it = 'BDEAA',
    display_ro = ''
-WHERE code =4086;
+WHERE code = 4086;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4087,4087) ON CONFLICT DO NOTHING;
 
@@ -7776,7 +8086,8 @@ WHERE code =4086;
    display_fr = 'BDEAB',
    display_it = 'BDEAB',
    display_ro = ''
-WHERE code =4087;
+WHERE code = 4087;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4088,4088) ON CONFLICT DO NOTHING;
 
@@ -7801,7 +8112,8 @@ WHERE code =4087;
    display_fr = 'BDEAC',
    display_it = 'BDEAC',
    display_ro = ''
-WHERE code =4088;
+WHERE code = 4088;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8900,8900) ON CONFLICT DO NOTHING;
 
@@ -7826,7 +8138,8 @@ WHERE code =4088;
    display_fr = 'BDECA',
    display_it = 'BDECA',
    display_ro = ''
-WHERE code =8900;
+WHERE code = 8900;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8901,8901) ON CONFLICT DO NOTHING;
 
@@ -7851,7 +8164,8 @@ WHERE code =8900;
    display_fr = 'BDECB',
    display_it = 'BDECB',
    display_ro = ''
-WHERE code =8901;
+WHERE code = 8901;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8902,8902) ON CONFLICT DO NOTHING;
 
@@ -7876,7 +8190,8 @@ WHERE code =8901;
    display_fr = 'BDECC',
    display_it = 'BDECC',
    display_ro = ''
-WHERE code =8902;
+WHERE code = 8902;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8903,8903) ON CONFLICT DO NOTHING;
 
@@ -7901,7 +8216,8 @@ WHERE code =8902;
    display_fr = 'BDEDA',
    display_it = 'BDEDA',
    display_ro = ''
-WHERE code =8903;
+WHERE code = 8903;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8904,8904) ON CONFLICT DO NOTHING;
 
@@ -7926,7 +8242,8 @@ WHERE code =8903;
    display_fr = 'BDEDB',
    display_it = 'BDEDB',
    display_ro = ''
-WHERE code =8904;
+WHERE code = 8904;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8905,8905) ON CONFLICT DO NOTHING;
 
@@ -7951,7 +8268,8 @@ WHERE code =8904;
    display_fr = 'BDEDC',
    display_it = 'BDEDC',
    display_ro = ''
-WHERE code =8905;
+WHERE code = 8905;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8906,8906) ON CONFLICT DO NOTHING;
 
@@ -7976,7 +8294,8 @@ WHERE code =8905;
    display_fr = 'BDEEA',
    display_it = 'BDEEA',
    display_ro = ''
-WHERE code =8906;
+WHERE code = 8906;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8907,8907) ON CONFLICT DO NOTHING;
 
@@ -8001,7 +8320,8 @@ WHERE code =8906;
    display_fr = 'BDEEB',
    display_it = 'BDEEB',
    display_ro = ''
-WHERE code =8907;
+WHERE code = 8907;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (8908,8908) ON CONFLICT DO NOTHING;
 
@@ -8026,7 +8346,8 @@ WHERE code =8907;
    display_fr = 'BDEEC',
    display_it = 'BDEEC',
    display_ro = ''
-WHERE code =8908;
+WHERE code = 8908;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4092,4092) ON CONFLICT DO NOTHING;
 
@@ -8051,7 +8372,8 @@ WHERE code =8908;
    display_fr = 'BDEYA',
    display_it = 'BDEYA',
    display_ro = ''
-WHERE code =4092;
+WHERE code = 4092;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4093,4093) ON CONFLICT DO NOTHING;
 
@@ -8076,7 +8398,8 @@ WHERE code =4092;
    display_fr = 'BDEYB',
    display_it = 'BDEYB',
    display_ro = ''
-WHERE code =4093;
+WHERE code = 4093;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4094,4094) ON CONFLICT DO NOTHING;
 
@@ -8101,7 +8424,8 @@ WHERE code =4093;
    display_fr = 'BDEYY',
    display_it = 'BDEYY',
    display_ro = ''
-WHERE code =4094;
+WHERE code = 4094;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4095,4095) ON CONFLICT DO NOTHING;
 
@@ -8126,7 +8450,8 @@ WHERE code =4094;
    display_fr = 'BDFA',
    display_it = 'BDFA',
    display_ro = ''
-WHERE code =4095;
+WHERE code = 4095;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4096,4096) ON CONFLICT DO NOTHING;
 
@@ -8151,7 +8476,8 @@ WHERE code =4095;
    display_fr = 'BDFB',
    display_it = 'BDFB',
    display_ro = ''
-WHERE code =4096;
+WHERE code = 4096;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4097,4097) ON CONFLICT DO NOTHING;
 
@@ -8176,7 +8502,8 @@ WHERE code =4096;
    display_fr = 'BDFC',
    display_it = 'BDFC',
    display_ro = ''
-WHERE code =4097;
+WHERE code = 4097;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4098,4098) ON CONFLICT DO NOTHING;
 
@@ -8201,7 +8528,8 @@ WHERE code =4097;
    display_fr = 'BDFZ',
    display_it = 'BDFZ',
    display_ro = ''
-WHERE code =4098;
+WHERE code = 4098;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4099,4099) ON CONFLICT DO NOTHING;
 
@@ -8226,7 +8554,8 @@ WHERE code =4098;
    display_fr = 'BDGA',
    display_it = 'BDGA',
    display_ro = ''
-WHERE code =4099;
+WHERE code = 4099;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4100,4100) ON CONFLICT DO NOTHING;
 
@@ -8251,7 +8580,8 @@ WHERE code =4099;
    display_fr = 'BDGB',
    display_it = 'BDGB',
    display_ro = ''
-WHERE code =4100;
+WHERE code = 4100;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4101,4101) ON CONFLICT DO NOTHING;
 
@@ -8276,7 +8606,8 @@ WHERE code =4100;
    display_fr = 'BDGC',
    display_it = 'BDGC',
    display_ro = ''
-WHERE code =4101;
+WHERE code = 4101;
+
 --- Adapt tww_vl.damage_channel_channel_damage_code
  INSERT INTO tww_vl.damage_channel_channel_damage_code (code, vsacode) VALUES (4102,4102) ON CONFLICT DO NOTHING;
 
@@ -8301,7 +8632,8 @@ WHERE code =4101;
    display_fr = 'BDGZ',
    display_it = 'BDGZ',
    display_ro = ''
-WHERE code =4102;
+WHERE code = 4102;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4148,4148) ON CONFLICT DO NOTHING;
 
@@ -8326,7 +8658,8 @@ WHERE code =4102;
    display_fr = 'DAAA',
    display_it = 'DAAA',
    display_ro = 'DAAA'
-WHERE code =4148;
+WHERE code = 4148;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4149,4149) ON CONFLICT DO NOTHING;
 
@@ -8351,7 +8684,8 @@ WHERE code =4148;
    display_fr = 'DAAB',
    display_it = 'DAAB',
    display_ro = 'DAAB'
-WHERE code =4149;
+WHERE code = 4149;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4150,4150) ON CONFLICT DO NOTHING;
 
@@ -8376,7 +8710,8 @@ WHERE code =4149;
    display_fr = 'DABAA',
    display_it = 'DABAA',
    display_ro = 'DABAA'
-WHERE code =4150;
+WHERE code = 4150;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4151,4151) ON CONFLICT DO NOTHING;
 
@@ -8401,7 +8736,8 @@ WHERE code =4150;
    display_fr = 'DABAB',
    display_it = 'DABAB',
    display_ro = 'DABAB'
-WHERE code =4151;
+WHERE code = 4151;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4152,4152) ON CONFLICT DO NOTHING;
 
@@ -8426,7 +8762,8 @@ WHERE code =4151;
    display_fr = 'DABAC',
    display_it = 'DABAC',
    display_ro = 'DABAC'
-WHERE code =4152;
+WHERE code = 4152;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4153,4153) ON CONFLICT DO NOTHING;
 
@@ -8451,7 +8788,8 @@ WHERE code =4152;
    display_fr = 'DABAD',
    display_it = 'DABAD',
    display_ro = 'DABAD'
-WHERE code =4153;
+WHERE code = 4153;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8909,8909) ON CONFLICT DO NOTHING;
 
@@ -8476,7 +8814,8 @@ WHERE code =4153;
    display_fr = 'DABAE',
    display_it = 'DABAE',
    display_ro = 'DABAE'
-WHERE code =8909;
+WHERE code = 8909;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4154,4154) ON CONFLICT DO NOTHING;
 
@@ -8501,7 +8840,8 @@ WHERE code =8909;
    display_fr = 'DABBA',
    display_it = 'DABBA',
    display_ro = 'DABBA'
-WHERE code =4154;
+WHERE code = 4154;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4155,4155) ON CONFLICT DO NOTHING;
 
@@ -8526,7 +8866,8 @@ WHERE code =4154;
    display_fr = 'DABBB',
    display_it = 'DABBB',
    display_ro = 'DABBB'
-WHERE code =4155;
+WHERE code = 4155;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4156,4156) ON CONFLICT DO NOTHING;
 
@@ -8551,7 +8892,8 @@ WHERE code =4155;
    display_fr = 'DABBC',
    display_it = 'DABBC',
    display_ro = 'DABBC'
-WHERE code =4156;
+WHERE code = 4156;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4157,4157) ON CONFLICT DO NOTHING;
 
@@ -8576,7 +8918,8 @@ WHERE code =4156;
    display_fr = 'DABBD',
    display_it = 'DABBD',
    display_ro = 'DABBD'
-WHERE code =4157;
+WHERE code = 4157;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8910,8910) ON CONFLICT DO NOTHING;
 
@@ -8601,7 +8944,8 @@ WHERE code =4157;
    display_fr = 'DABBE',
    display_it = 'DABBE',
    display_ro = 'DABBE'
-WHERE code =8910;
+WHERE code = 8910;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4158,4158) ON CONFLICT DO NOTHING;
 
@@ -8626,7 +8970,8 @@ WHERE code =8910;
    display_fr = 'DABCA',
    display_it = 'DABCA',
    display_ro = 'DABCA'
-WHERE code =4158;
+WHERE code = 4158;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4159,4159) ON CONFLICT DO NOTHING;
 
@@ -8651,7 +8996,8 @@ WHERE code =4158;
    display_fr = 'DABCB',
    display_it = 'DABCB',
    display_ro = 'DABCB'
-WHERE code =4159;
+WHERE code = 4159;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4160,4160) ON CONFLICT DO NOTHING;
 
@@ -8676,7 +9022,8 @@ WHERE code =4159;
    display_fr = 'DABCC',
    display_it = 'DABCC',
    display_ro = 'DABCC'
-WHERE code =4160;
+WHERE code = 4160;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4161,4161) ON CONFLICT DO NOTHING;
 
@@ -8701,7 +9048,8 @@ WHERE code =4160;
    display_fr = 'DABCD',
    display_it = 'DABCD',
    display_ro = 'DABCD'
-WHERE code =4161;
+WHERE code = 4161;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8911,8911) ON CONFLICT DO NOTHING;
 
@@ -8726,7 +9074,8 @@ WHERE code =4161;
    display_fr = 'DABCE',
    display_it = 'DABCE',
    display_ro = 'DABCE'
-WHERE code =8911;
+WHERE code = 8911;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4162,4162) ON CONFLICT DO NOTHING;
 
@@ -8751,7 +9100,8 @@ WHERE code =8911;
    display_fr = 'DACA',
    display_it = 'DACA',
    display_ro = 'DACA'
-WHERE code =4162;
+WHERE code = 4162;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4163,4163) ON CONFLICT DO NOTHING;
 
@@ -8776,7 +9126,8 @@ WHERE code =4162;
    display_fr = 'DACB',
    display_it = 'DACB',
    display_ro = 'DACB'
-WHERE code =4163;
+WHERE code = 4163;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4164,4164) ON CONFLICT DO NOTHING;
 
@@ -8801,7 +9152,8 @@ WHERE code =4163;
    display_fr = 'DACC',
    display_it = 'DACC',
    display_ro = 'DACC'
-WHERE code =4164;
+WHERE code = 4164;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4165,4165) ON CONFLICT DO NOTHING;
 
@@ -8826,7 +9178,8 @@ WHERE code =4164;
    display_fr = 'DADA',
    display_it = 'DADA',
    display_ro = 'DADA'
-WHERE code =4165;
+WHERE code = 4165;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4166,4166) ON CONFLICT DO NOTHING;
 
@@ -8851,7 +9204,8 @@ WHERE code =4165;
    display_fr = 'DADB',
    display_it = 'DADB',
    display_ro = 'DADB'
-WHERE code =4166;
+WHERE code = 4166;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4167,4167) ON CONFLICT DO NOTHING;
 
@@ -8876,7 +9230,8 @@ WHERE code =4166;
    display_fr = 'DADC',
    display_it = 'DADC',
    display_ro = 'DADC'
-WHERE code =4167;
+WHERE code = 4167;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4168,4168) ON CONFLICT DO NOTHING;
 
@@ -8901,7 +9256,8 @@ WHERE code =4167;
    display_fr = 'DAE',
    display_it = 'DAE',
    display_ro = 'DAE'
-WHERE code =4168;
+WHERE code = 4168;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4169,4169) ON CONFLICT DO NOTHING;
 
@@ -8926,7 +9282,8 @@ WHERE code =4168;
    display_fr = 'DAFAA',
    display_it = 'DAFAA',
    display_ro = 'DAFAA'
-WHERE code =4169;
+WHERE code = 4169;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4170,4170) ON CONFLICT DO NOTHING;
 
@@ -8951,7 +9308,8 @@ WHERE code =4169;
    display_fr = 'DAFAB',
    display_it = 'DAFAB',
    display_ro = 'DAFAB'
-WHERE code =4170;
+WHERE code = 4170;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4171,4171) ON CONFLICT DO NOTHING;
 
@@ -8976,7 +9334,8 @@ WHERE code =4170;
    display_fr = 'DAFAC',
    display_it = 'DAFAC',
    display_ro = 'DAFAC'
-WHERE code =4171;
+WHERE code = 4171;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4172,4172) ON CONFLICT DO NOTHING;
 
@@ -9001,7 +9360,8 @@ WHERE code =4171;
    display_fr = 'DAFAD',
    display_it = 'DAFAD',
    display_ro = 'DAFAD'
-WHERE code =4172;
+WHERE code = 4172;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4173,4173) ON CONFLICT DO NOTHING;
 
@@ -9026,7 +9386,8 @@ WHERE code =4172;
    display_fr = 'DAFAE',
    display_it = 'DAFAE',
    display_ro = 'DAFAE'
-WHERE code =4173;
+WHERE code = 4173;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8912,8912) ON CONFLICT DO NOTHING;
 
@@ -9051,7 +9412,8 @@ WHERE code =4173;
    display_fr = 'DAFAZ',
    display_it = 'DAFAZ',
    display_ro = 'DAFAZ'
-WHERE code =8912;
+WHERE code = 8912;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4174,4174) ON CONFLICT DO NOTHING;
 
@@ -9076,7 +9438,8 @@ WHERE code =8912;
    display_fr = 'DAFBA',
    display_it = 'DAFBA',
    display_ro = 'DAFBA'
-WHERE code =4174;
+WHERE code = 4174;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4175,4175) ON CONFLICT DO NOTHING;
 
@@ -9101,7 +9464,8 @@ WHERE code =4174;
    display_fr = 'DAFBE',
    display_it = 'DAFBE',
    display_ro = 'DAFBE'
-WHERE code =4175;
+WHERE code = 4175;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8913,8913) ON CONFLICT DO NOTHING;
 
@@ -9126,7 +9490,8 @@ WHERE code =4175;
    display_fr = 'DAFBZ',
    display_it = 'DAFBZ',
    display_ro = 'DAFBZ'
-WHERE code =8913;
+WHERE code = 8913;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4176,4176) ON CONFLICT DO NOTHING;
 
@@ -9151,7 +9516,8 @@ WHERE code =8913;
    display_fr = 'DAFCA',
    display_it = 'DAFCA',
    display_ro = 'DAFCA'
-WHERE code =4176;
+WHERE code = 4176;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4177,4177) ON CONFLICT DO NOTHING;
 
@@ -9176,7 +9542,8 @@ WHERE code =4176;
    display_fr = 'DAFCB',
    display_it = 'DAFCB',
    display_ro = 'DAFCB'
-WHERE code =4177;
+WHERE code = 4177;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4178,4178) ON CONFLICT DO NOTHING;
 
@@ -9201,7 +9568,8 @@ WHERE code =4177;
    display_fr = 'DAFCC',
    display_it = 'DAFCC',
    display_ro = 'DAFCC'
-WHERE code =4178;
+WHERE code = 4178;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4179,4179) ON CONFLICT DO NOTHING;
 
@@ -9226,7 +9594,8 @@ WHERE code =4178;
    display_fr = 'DAFCD',
    display_it = 'DAFCD',
    display_ro = 'DAFCD'
-WHERE code =4179;
+WHERE code = 4179;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4180,4180) ON CONFLICT DO NOTHING;
 
@@ -9251,7 +9620,8 @@ WHERE code =4179;
    display_fr = 'DAFCE',
    display_it = 'DAFCE',
    display_ro = 'DAFCE'
-WHERE code =4180;
+WHERE code = 4180;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8914,8914) ON CONFLICT DO NOTHING;
 
@@ -9276,7 +9646,8 @@ WHERE code =4180;
    display_fr = 'DAFCZ',
    display_it = 'DAFCZ',
    display_ro = 'DAFCZ'
-WHERE code =8914;
+WHERE code = 8914;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4181,4181) ON CONFLICT DO NOTHING;
 
@@ -9301,7 +9672,8 @@ WHERE code =8914;
    display_fr = 'DAFDA',
    display_it = 'DAFDA',
    display_ro = 'DAFDA'
-WHERE code =4181;
+WHERE code = 4181;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4182,4182) ON CONFLICT DO NOTHING;
 
@@ -9326,7 +9698,8 @@ WHERE code =4181;
    display_fr = 'DAFDB',
    display_it = 'DAFDB',
    display_ro = 'DAFDB'
-WHERE code =4182;
+WHERE code = 4182;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4183,4183) ON CONFLICT DO NOTHING;
 
@@ -9351,7 +9724,8 @@ WHERE code =4182;
    display_fr = 'DAFDC',
    display_it = 'DAFDC',
    display_ro = 'DAFDC'
-WHERE code =4183;
+WHERE code = 4183;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4184,4184) ON CONFLICT DO NOTHING;
 
@@ -9376,7 +9750,8 @@ WHERE code =4183;
    display_fr = 'DAFDD',
    display_it = 'DAFDD',
    display_ro = 'DAFDD'
-WHERE code =4184;
+WHERE code = 4184;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4185,4185) ON CONFLICT DO NOTHING;
 
@@ -9401,7 +9776,8 @@ WHERE code =4184;
    display_fr = 'DAFDE',
    display_it = 'DAFDE',
    display_ro = 'DAFDE'
-WHERE code =4185;
+WHERE code = 4185;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8915,8915) ON CONFLICT DO NOTHING;
 
@@ -9426,7 +9802,8 @@ WHERE code =4185;
    display_fr = 'DAFDZ',
    display_it = 'DAFDZ',
    display_ro = 'DAFDZ'
-WHERE code =8915;
+WHERE code = 8915;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4186,4186) ON CONFLICT DO NOTHING;
 
@@ -9451,7 +9828,8 @@ WHERE code =8915;
    display_fr = 'DAFEA',
    display_it = 'DAFEA',
    display_ro = 'DAFEA'
-WHERE code =4186;
+WHERE code = 4186;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4187,4187) ON CONFLICT DO NOTHING;
 
@@ -9476,7 +9854,8 @@ WHERE code =4186;
    display_fr = 'DAFEB',
    display_it = 'DAFEB',
    display_ro = 'DAFEB'
-WHERE code =4187;
+WHERE code = 4187;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4188,4188) ON CONFLICT DO NOTHING;
 
@@ -9501,7 +9880,8 @@ WHERE code =4187;
    display_fr = 'DAFEC',
    display_it = 'DAFEC',
    display_ro = 'DAFEC'
-WHERE code =4188;
+WHERE code = 4188;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4189,4189) ON CONFLICT DO NOTHING;
 
@@ -9526,7 +9906,8 @@ WHERE code =4188;
    display_fr = 'DAFED',
    display_it = 'DAFED',
    display_ro = 'DAFED'
-WHERE code =4189;
+WHERE code = 4189;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4190,4190) ON CONFLICT DO NOTHING;
 
@@ -9551,7 +9932,8 @@ WHERE code =4189;
    display_fr = 'DAFEE',
    display_it = 'DAFEE',
    display_ro = 'DAFEE'
-WHERE code =4190;
+WHERE code = 4190;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8916,8916) ON CONFLICT DO NOTHING;
 
@@ -9576,7 +9958,8 @@ WHERE code =4190;
    display_fr = 'DAFEZ',
    display_it = 'DAFEZ',
    display_ro = 'DAFEZ'
-WHERE code =8916;
+WHERE code = 8916;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4191,4191) ON CONFLICT DO NOTHING;
 
@@ -9601,7 +9984,8 @@ WHERE code =8916;
    display_fr = 'DAFFA',
    display_it = 'DAFFA',
    display_ro = 'DAFFA'
-WHERE code =4191;
+WHERE code = 4191;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4192,4192) ON CONFLICT DO NOTHING;
 
@@ -9626,7 +10010,8 @@ WHERE code =4191;
    display_fr = 'DAFFB',
    display_it = 'DAFFB',
    display_ro = 'DAFFB'
-WHERE code =4192;
+WHERE code = 4192;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4193,4193) ON CONFLICT DO NOTHING;
 
@@ -9651,7 +10036,8 @@ WHERE code =4192;
    display_fr = 'DAFFC',
    display_it = 'DAFFC',
    display_ro = 'DAFFC'
-WHERE code =4193;
+WHERE code = 4193;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4194,4194) ON CONFLICT DO NOTHING;
 
@@ -9676,7 +10062,8 @@ WHERE code =4193;
    display_fr = 'DAFFD',
    display_it = 'DAFFD',
    display_ro = 'DAFFD'
-WHERE code =4194;
+WHERE code = 4194;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4195,4195) ON CONFLICT DO NOTHING;
 
@@ -9701,7 +10088,8 @@ WHERE code =4194;
    display_fr = 'DAFFE',
    display_it = 'DAFFE',
    display_ro = 'DAFFE'
-WHERE code =4195;
+WHERE code = 4195;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8917,8917) ON CONFLICT DO NOTHING;
 
@@ -9726,7 +10114,8 @@ WHERE code =4195;
    display_fr = 'DAFFZ',
    display_it = 'DAFFZ',
    display_ro = 'DAFFZ'
-WHERE code =8917;
+WHERE code = 8917;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4196,4196) ON CONFLICT DO NOTHING;
 
@@ -9751,7 +10140,8 @@ WHERE code =8917;
    display_fr = 'DAFGA',
    display_it = 'DAFGA',
    display_ro = 'DAFGA'
-WHERE code =4196;
+WHERE code = 4196;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4197,4197) ON CONFLICT DO NOTHING;
 
@@ -9776,7 +10166,8 @@ WHERE code =4196;
    display_fr = 'DAFGB',
    display_it = 'DAFGB',
    display_ro = 'DAFGB'
-WHERE code =4197;
+WHERE code = 4197;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4198,4198) ON CONFLICT DO NOTHING;
 
@@ -9801,7 +10192,8 @@ WHERE code =4197;
    display_fr = 'DAFGC',
    display_it = 'DAFGC',
    display_ro = 'DAFGC'
-WHERE code =4198;
+WHERE code = 4198;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4199,4199) ON CONFLICT DO NOTHING;
 
@@ -9826,7 +10218,8 @@ WHERE code =4198;
    display_fr = 'DAFGD',
    display_it = 'DAFGD',
    display_ro = 'DAFGD'
-WHERE code =4199;
+WHERE code = 4199;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4200,4200) ON CONFLICT DO NOTHING;
 
@@ -9851,7 +10244,8 @@ WHERE code =4199;
    display_fr = 'DAFGE',
    display_it = 'DAFGE',
    display_ro = 'DAFGE'
-WHERE code =4200;
+WHERE code = 4200;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8918,8918) ON CONFLICT DO NOTHING;
 
@@ -9876,7 +10270,8 @@ WHERE code =4200;
    display_fr = 'DAFGZ',
    display_it = 'DAFGZ',
    display_ro = 'DAFGZ'
-WHERE code =8918;
+WHERE code = 8918;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4201,4201) ON CONFLICT DO NOTHING;
 
@@ -9901,7 +10296,8 @@ WHERE code =8918;
    display_fr = 'DAFHB',
    display_it = 'DAFHB',
    display_ro = 'DAFHB'
-WHERE code =4201;
+WHERE code = 4201;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4202,4202) ON CONFLICT DO NOTHING;
 
@@ -9926,7 +10322,8 @@ WHERE code =4201;
    display_fr = 'DAFHC',
    display_it = 'DAFHC',
    display_ro = 'DAFHC'
-WHERE code =4202;
+WHERE code = 4202;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4203,4203) ON CONFLICT DO NOTHING;
 
@@ -9951,7 +10348,8 @@ WHERE code =4202;
    display_fr = 'DAFHD',
    display_it = 'DAFHD',
    display_ro = 'DAFHD'
-WHERE code =4203;
+WHERE code = 4203;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4204,4204) ON CONFLICT DO NOTHING;
 
@@ -9976,7 +10374,8 @@ WHERE code =4203;
    display_fr = 'DAFHE',
    display_it = 'DAFHE',
    display_ro = 'DAFHE'
-WHERE code =4204;
+WHERE code = 4204;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4205,4205) ON CONFLICT DO NOTHING;
 
@@ -10001,7 +10400,8 @@ WHERE code =4204;
    display_fr = 'DAFIA',
    display_it = 'DAFIA',
    display_ro = 'DAFIA'
-WHERE code =4205;
+WHERE code = 4205;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4206,4206) ON CONFLICT DO NOTHING;
 
@@ -10026,7 +10426,8 @@ WHERE code =4205;
    display_fr = 'DAFIB',
    display_it = 'DAFIB',
    display_ro = 'DAFIB'
-WHERE code =4206;
+WHERE code = 4206;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4207,4207) ON CONFLICT DO NOTHING;
 
@@ -10051,7 +10452,8 @@ WHERE code =4206;
    display_fr = 'DAFIC',
    display_it = 'DAFIC',
    display_ro = 'DAFIC'
-WHERE code =4207;
+WHERE code = 4207;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4208,4208) ON CONFLICT DO NOTHING;
 
@@ -10076,7 +10478,8 @@ WHERE code =4207;
    display_fr = 'DAFID',
    display_it = 'DAFID',
    display_ro = 'DAFID'
-WHERE code =4208;
+WHERE code = 4208;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4209,4209) ON CONFLICT DO NOTHING;
 
@@ -10101,7 +10504,8 @@ WHERE code =4208;
    display_fr = 'DAFIE',
    display_it = 'DAFIE',
    display_ro = 'DAFIE'
-WHERE code =4209;
+WHERE code = 4209;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8919,8919) ON CONFLICT DO NOTHING;
 
@@ -10126,7 +10530,8 @@ WHERE code =4209;
    display_fr = 'DAFIZ',
    display_it = 'DAFIZ',
    display_ro = 'DAFIZ'
-WHERE code =8919;
+WHERE code = 8919;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4210,4210) ON CONFLICT DO NOTHING;
 
@@ -10151,7 +10556,8 @@ WHERE code =8919;
    display_fr = 'DAFJB',
    display_it = 'DAFJB',
    display_ro = 'DAFJB'
-WHERE code =4210;
+WHERE code = 4210;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4211,4211) ON CONFLICT DO NOTHING;
 
@@ -10176,7 +10582,8 @@ WHERE code =4210;
    display_fr = 'DAFJC',
    display_it = 'DAFJC',
    display_ro = 'DAFJC'
-WHERE code =4211;
+WHERE code = 4211;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4212,4212) ON CONFLICT DO NOTHING;
 
@@ -10201,7 +10608,8 @@ WHERE code =4211;
    display_fr = 'DAFJD',
    display_it = 'DAFJD',
    display_ro = 'DAFJD'
-WHERE code =4212;
+WHERE code = 4212;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4213,4213) ON CONFLICT DO NOTHING;
 
@@ -10226,7 +10634,8 @@ WHERE code =4212;
    display_fr = 'DAFJE',
    display_it = 'DAFJE',
    display_ro = 'DAFJE'
-WHERE code =4213;
+WHERE code = 4213;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8920,8920) ON CONFLICT DO NOTHING;
 
@@ -10251,7 +10660,8 @@ WHERE code =4213;
    display_fr = 'DAFJZ',
    display_it = 'DAFJZ',
    display_ro = 'DAFJZ'
-WHERE code =8920;
+WHERE code = 8920;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8921,8921) ON CONFLICT DO NOTHING;
 
@@ -10276,7 +10686,8 @@ WHERE code =8920;
    display_fr = 'DAFKA',
    display_it = 'DAFKA',
    display_ro = 'DAFKA'
-WHERE code =8921;
+WHERE code = 8921;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8922,8922) ON CONFLICT DO NOTHING;
 
@@ -10301,7 +10712,8 @@ WHERE code =8921;
    display_fr = 'DAFKE',
    display_it = 'DAFKE',
    display_ro = 'DAFKE'
-WHERE code =8922;
+WHERE code = 8922;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8923,8923) ON CONFLICT DO NOTHING;
 
@@ -10326,7 +10738,8 @@ WHERE code =8922;
    display_fr = 'DAFKZ',
    display_it = 'DAFKZ',
    display_ro = 'DAFKZ'
-WHERE code =8923;
+WHERE code = 8923;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4214,4214) ON CONFLICT DO NOTHING;
 
@@ -10351,7 +10764,8 @@ WHERE code =8923;
    display_fr = 'DAFZA',
    display_it = 'DAFZA',
    display_ro = 'DAFZA'
-WHERE code =4214;
+WHERE code = 4214;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4215,4215) ON CONFLICT DO NOTHING;
 
@@ -10376,7 +10790,8 @@ WHERE code =4214;
    display_fr = 'DAFZB',
    display_it = 'DAFZB',
    display_ro = 'DAFZB'
-WHERE code =4215;
+WHERE code = 4215;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4216,4216) ON CONFLICT DO NOTHING;
 
@@ -10401,7 +10816,8 @@ WHERE code =4215;
    display_fr = 'DAFZC',
    display_it = 'DAFZC',
    display_ro = 'DAFZC'
-WHERE code =4216;
+WHERE code = 4216;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4217,4217) ON CONFLICT DO NOTHING;
 
@@ -10426,7 +10842,8 @@ WHERE code =4216;
    display_fr = 'DAFZD',
    display_it = 'DAFZD',
    display_ro = 'DAFZD'
-WHERE code =4217;
+WHERE code = 4217;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4218,4218) ON CONFLICT DO NOTHING;
 
@@ -10451,7 +10868,8 @@ WHERE code =4217;
    display_fr = 'DAFZE',
    display_it = 'DAFZE',
    display_ro = 'DAFZE'
-WHERE code =4218;
+WHERE code = 4218;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8924,8924) ON CONFLICT DO NOTHING;
 
@@ -10476,7 +10894,8 @@ WHERE code =4218;
    display_fr = 'DAFZZ',
    display_it = 'DAFZZ',
    display_ro = 'DAFZZ'
-WHERE code =8924;
+WHERE code = 8924;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4219,4219) ON CONFLICT DO NOTHING;
 
@@ -10501,7 +10920,8 @@ WHERE code =8924;
    display_fr = 'DAG',
    display_it = 'DAG',
    display_ro = 'DAG'
-WHERE code =4219;
+WHERE code = 4219;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4220,4220) ON CONFLICT DO NOTHING;
 
@@ -10526,7 +10946,8 @@ WHERE code =4219;
    display_fr = 'DAHA',
    display_it = 'DAHA',
    display_ro = 'DAHA'
-WHERE code =4220;
+WHERE code = 4220;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4221,4221) ON CONFLICT DO NOTHING;
 
@@ -10551,7 +10972,8 @@ WHERE code =4220;
    display_fr = 'DAHB',
    display_it = 'DAHB',
    display_ro = 'DAHB'
-WHERE code =4221;
+WHERE code = 4221;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4222,4222) ON CONFLICT DO NOTHING;
 
@@ -10576,7 +10998,8 @@ WHERE code =4221;
    display_fr = 'DAHC',
    display_it = 'DAHC',
    display_ro = 'DAHC'
-WHERE code =4222;
+WHERE code = 4222;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4223,4223) ON CONFLICT DO NOTHING;
 
@@ -10601,7 +11024,8 @@ WHERE code =4222;
    display_fr = 'DAHD',
    display_it = 'DAHD',
    display_ro = 'DAHD'
-WHERE code =4223;
+WHERE code = 4223;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4224,4224) ON CONFLICT DO NOTHING;
 
@@ -10626,7 +11050,8 @@ WHERE code =4223;
    display_fr = 'DAHE',
    display_it = 'DAHE',
    display_ro = 'DAHE'
-WHERE code =4224;
+WHERE code = 4224;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4225,4225) ON CONFLICT DO NOTHING;
 
@@ -10651,7 +11076,8 @@ WHERE code =4224;
    display_fr = 'DAHZ',
    display_it = 'DAHZ',
    display_ro = 'DAHZ'
-WHERE code =4225;
+WHERE code = 4225;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4226,4226) ON CONFLICT DO NOTHING;
 
@@ -10676,7 +11102,8 @@ WHERE code =4225;
    display_fr = 'DAIAA',
    display_it = 'DAIAA',
    display_ro = 'DAIAA'
-WHERE code =4226;
+WHERE code = 4226;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4227,4227) ON CONFLICT DO NOTHING;
 
@@ -10701,7 +11128,8 @@ WHERE code =4226;
    display_fr = 'DAIAB',
    display_it = 'DAIAB',
    display_ro = 'DAIAB'
-WHERE code =4227;
+WHERE code = 4227;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4228,4228) ON CONFLICT DO NOTHING;
 
@@ -10726,7 +11154,8 @@ WHERE code =4227;
    display_fr = 'DAIAC',
    display_it = 'DAIAC',
    display_ro = 'DAIAC'
-WHERE code =4228;
+WHERE code = 4228;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4229,4229) ON CONFLICT DO NOTHING;
 
@@ -10751,7 +11180,8 @@ WHERE code =4228;
    display_fr = 'DAIZ',
    display_it = 'DAIZ',
    display_ro = 'DAIZ'
-WHERE code =4229;
+WHERE code = 4229;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4230,4230) ON CONFLICT DO NOTHING;
 
@@ -10776,7 +11206,8 @@ WHERE code =4229;
    display_fr = 'DAJA',
    display_it = 'DAJA',
    display_ro = 'DAJA'
-WHERE code =4230;
+WHERE code = 4230;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4231,4231) ON CONFLICT DO NOTHING;
 
@@ -10801,7 +11232,8 @@ WHERE code =4230;
    display_fr = 'DAJB',
    display_it = 'DAJB',
    display_ro = 'DAJB'
-WHERE code =4231;
+WHERE code = 4231;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4232,4232) ON CONFLICT DO NOTHING;
 
@@ -10826,7 +11258,8 @@ WHERE code =4231;
    display_fr = 'DAJC',
    display_it = 'DAJC',
    display_ro = 'DAJC'
-WHERE code =4232;
+WHERE code = 4232;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4233,4233) ON CONFLICT DO NOTHING;
 
@@ -10851,7 +11284,8 @@ WHERE code =4232;
    display_fr = 'DAKA',
    display_it = 'DAKA',
    display_ro = 'DAKA'
-WHERE code =4233;
+WHERE code = 4233;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4234,4234) ON CONFLICT DO NOTHING;
 
@@ -10876,7 +11310,8 @@ WHERE code =4233;
    display_fr = 'DAKB',
    display_it = 'DAKB',
    display_ro = 'DAKB'
-WHERE code =4234;
+WHERE code = 4234;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4235,4235) ON CONFLICT DO NOTHING;
 
@@ -10901,7 +11336,8 @@ WHERE code =4234;
    display_fr = 'DAKC',
    display_it = 'DAKC',
    display_ro = 'DAKC'
-WHERE code =4235;
+WHERE code = 4235;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4236,4236) ON CONFLICT DO NOTHING;
 
@@ -10926,7 +11362,8 @@ WHERE code =4235;
    display_fr = 'DAKDA',
    display_it = 'DAKDA',
    display_ro = 'DAKDA'
-WHERE code =4236;
+WHERE code = 4236;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4237,4237) ON CONFLICT DO NOTHING;
 
@@ -10951,7 +11388,8 @@ WHERE code =4236;
    display_fr = 'DAKDB',
    display_it = 'DAKDB',
    display_ro = 'DAKDB'
-WHERE code =4237;
+WHERE code = 4237;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4238,4238) ON CONFLICT DO NOTHING;
 
@@ -10976,7 +11414,8 @@ WHERE code =4237;
    display_fr = 'DAKDC',
    display_it = 'DAKDC',
    display_ro = 'DAKDC'
-WHERE code =4238;
+WHERE code = 4238;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8925,8925) ON CONFLICT DO NOTHING;
 
@@ -11001,7 +11440,8 @@ WHERE code =4238;
    display_fr = 'DAKDD',
    display_it = 'DAKDD',
    display_ro = 'DAKDD'
-WHERE code =8925;
+WHERE code = 8925;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4239,4239) ON CONFLICT DO NOTHING;
 
@@ -11026,7 +11466,8 @@ WHERE code =8925;
    display_fr = 'DAKE',
    display_it = 'DAKE',
    display_ro = 'DAKE'
-WHERE code =4239;
+WHERE code = 4239;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8926,8926) ON CONFLICT DO NOTHING;
 
@@ -11051,7 +11492,8 @@ WHERE code =4239;
    display_fr = 'DAKF',
    display_it = 'DAKF',
    display_ro = 'DAKF'
-WHERE code =8926;
+WHERE code = 8926;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8927,8927) ON CONFLICT DO NOTHING;
 
@@ -11076,7 +11518,8 @@ WHERE code =8926;
    display_fr = 'DAKG',
    display_it = 'DAKG',
    display_ro = 'DAKG'
-WHERE code =8927;
+WHERE code = 8927;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8928,8928) ON CONFLICT DO NOTHING;
 
@@ -11101,7 +11544,8 @@ WHERE code =8927;
    display_fr = 'DAKH',
    display_it = 'DAKH',
    display_ro = 'DAKH'
-WHERE code =8928;
+WHERE code = 8928;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8929,8929) ON CONFLICT DO NOTHING;
 
@@ -11126,7 +11570,8 @@ WHERE code =8928;
    display_fr = 'DAKI',
    display_it = 'DAKI',
    display_ro = 'DAKI'
-WHERE code =8929;
+WHERE code = 8929;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8930,8930) ON CONFLICT DO NOTHING;
 
@@ -11151,7 +11596,8 @@ WHERE code =8929;
    display_fr = 'DAKJ',
    display_it = 'DAKJ',
    display_ro = 'DAKJ'
-WHERE code =8930;
+WHERE code = 8930;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8931,8931) ON CONFLICT DO NOTHING;
 
@@ -11176,7 +11622,8 @@ WHERE code =8930;
    display_fr = 'DAKK',
    display_it = 'DAKK',
    display_ro = 'DAKK'
-WHERE code =8931;
+WHERE code = 8931;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8932,8932) ON CONFLICT DO NOTHING;
 
@@ -11201,7 +11648,8 @@ WHERE code =8931;
    display_fr = 'DAKL',
    display_it = 'DAKL',
    display_ro = 'DAKL'
-WHERE code =8932;
+WHERE code = 8932;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8933,8933) ON CONFLICT DO NOTHING;
 
@@ -11226,7 +11674,8 @@ WHERE code =8932;
    display_fr = 'DAKM',
    display_it = 'DAKM',
    display_ro = 'DAKM'
-WHERE code =8933;
+WHERE code = 8933;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8934,8934) ON CONFLICT DO NOTHING;
 
@@ -11251,7 +11700,8 @@ WHERE code =8933;
    display_fr = 'DAKN',
    display_it = 'DAKN',
    display_ro = 'DAKN'
-WHERE code =8934;
+WHERE code = 8934;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4240,4240) ON CONFLICT DO NOTHING;
 
@@ -11276,7 +11726,8 @@ WHERE code =8934;
    display_fr = 'DAKZ',
    display_it = 'DAKZ',
    display_ro = 'DAKZ'
-WHERE code =4240;
+WHERE code = 4240;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4241,4241) ON CONFLICT DO NOTHING;
 
@@ -11301,7 +11752,8 @@ WHERE code =4240;
    display_fr = 'DALA',
    display_it = 'DALA',
    display_ro = 'DALA'
-WHERE code =4241;
+WHERE code = 4241;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4242,4242) ON CONFLICT DO NOTHING;
 
@@ -11326,7 +11778,8 @@ WHERE code =4241;
    display_fr = 'DALB',
    display_it = 'DALB',
    display_ro = 'DALB'
-WHERE code =4242;
+WHERE code = 4242;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8935,8935) ON CONFLICT DO NOTHING;
 
@@ -11351,7 +11804,8 @@ WHERE code =4242;
    display_fr = 'DALC',
    display_it = 'DALC',
    display_ro = 'DALC'
-WHERE code =8935;
+WHERE code = 8935;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8936,8936) ON CONFLICT DO NOTHING;
 
@@ -11376,7 +11830,8 @@ WHERE code =8935;
    display_fr = 'DALD',
    display_it = 'DALD',
    display_ro = 'DALD'
-WHERE code =8936;
+WHERE code = 8936;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8937,8937) ON CONFLICT DO NOTHING;
 
@@ -11401,7 +11856,8 @@ WHERE code =8936;
    display_fr = 'DALE',
    display_it = 'DALE',
    display_ro = 'DALE'
-WHERE code =8937;
+WHERE code = 8937;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8938,8938) ON CONFLICT DO NOTHING;
 
@@ -11426,7 +11882,8 @@ WHERE code =8937;
    display_fr = 'DALF',
    display_it = 'DALF',
    display_ro = 'DALF'
-WHERE code =8938;
+WHERE code = 8938;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8939,8939) ON CONFLICT DO NOTHING;
 
@@ -11451,7 +11908,8 @@ WHERE code =8938;
    display_fr = 'DALG',
    display_it = 'DALG',
    display_ro = 'DALG'
-WHERE code =8939;
+WHERE code = 8939;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4243,4243) ON CONFLICT DO NOTHING;
 
@@ -11476,7 +11934,8 @@ WHERE code =8939;
    display_fr = 'DALZ',
    display_it = 'DALZ',
    display_ro = 'DALZ'
-WHERE code =4243;
+WHERE code = 4243;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4244,4244) ON CONFLICT DO NOTHING;
 
@@ -11501,7 +11960,8 @@ WHERE code =4243;
    display_fr = 'DAMA',
    display_it = 'DAMA',
    display_ro = 'DAMA'
-WHERE code =4244;
+WHERE code = 4244;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4245,4245) ON CONFLICT DO NOTHING;
 
@@ -11526,7 +11986,8 @@ WHERE code =4244;
    display_fr = 'DAMB',
    display_it = 'DAMB',
    display_ro = 'DAMB'
-WHERE code =4245;
+WHERE code = 4245;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4246,4246) ON CONFLICT DO NOTHING;
 
@@ -11551,7 +12012,8 @@ WHERE code =4245;
    display_fr = 'DAMC',
    display_it = 'DAMC',
    display_ro = 'DAMC'
-WHERE code =4246;
+WHERE code = 4246;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4247,4247) ON CONFLICT DO NOTHING;
 
@@ -11576,7 +12038,8 @@ WHERE code =4246;
    display_fr = 'DAN',
    display_it = 'DAN',
    display_ro = 'DAN'
-WHERE code =4247;
+WHERE code = 4247;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4248,4248) ON CONFLICT DO NOTHING;
 
@@ -11601,7 +12064,8 @@ WHERE code =4247;
    display_fr = 'DAO',
    display_it = 'DAO',
    display_ro = 'DAO'
-WHERE code =4248;
+WHERE code = 4248;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4249,4249) ON CONFLICT DO NOTHING;
 
@@ -11626,7 +12090,8 @@ WHERE code =4248;
    display_fr = 'DAP',
    display_it = 'DAP',
    display_ro = 'DAP'
-WHERE code =4249;
+WHERE code = 4249;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4250,4250) ON CONFLICT DO NOTHING;
 
@@ -11651,7 +12116,8 @@ WHERE code =4249;
    display_fr = 'DAQA',
    display_it = 'DAQA',
    display_ro = 'DAQA'
-WHERE code =4250;
+WHERE code = 4250;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4251,4251) ON CONFLICT DO NOTHING;
 
@@ -11676,7 +12142,8 @@ WHERE code =4250;
    display_fr = 'DAQB',
    display_it = 'DAQB',
    display_ro = 'DAQB'
-WHERE code =4251;
+WHERE code = 4251;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4252,4252) ON CONFLICT DO NOTHING;
 
@@ -11701,7 +12168,8 @@ WHERE code =4251;
    display_fr = 'DAQC',
    display_it = 'DAQC',
    display_ro = 'DAQC'
-WHERE code =4252;
+WHERE code = 4252;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4253,4253) ON CONFLICT DO NOTHING;
 
@@ -11726,7 +12194,8 @@ WHERE code =4252;
    display_fr = 'DAQD',
    display_it = 'DAQD',
    display_ro = 'DAQD'
-WHERE code =4253;
+WHERE code = 4253;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4254,4254) ON CONFLICT DO NOTHING;
 
@@ -11751,7 +12220,8 @@ WHERE code =4253;
    display_fr = 'DAQE',
    display_it = 'DAQE',
    display_ro = 'DAQE'
-WHERE code =4254;
+WHERE code = 4254;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4255,4255) ON CONFLICT DO NOTHING;
 
@@ -11776,7 +12246,8 @@ WHERE code =4254;
    display_fr = 'DAQF',
    display_it = 'DAQF',
    display_ro = 'DAQF'
-WHERE code =4255;
+WHERE code = 4255;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4256,4256) ON CONFLICT DO NOTHING;
 
@@ -11801,7 +12272,8 @@ WHERE code =4255;
    display_fr = 'DAQG',
    display_it = 'DAQG',
    display_ro = 'DAQG'
-WHERE code =4256;
+WHERE code = 4256;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4257,4257) ON CONFLICT DO NOTHING;
 
@@ -11826,7 +12298,8 @@ WHERE code =4256;
    display_fr = 'DAQH',
    display_it = 'DAQH',
    display_ro = 'DAQH'
-WHERE code =4257;
+WHERE code = 4257;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4258,4258) ON CONFLICT DO NOTHING;
 
@@ -11851,7 +12324,8 @@ WHERE code =4257;
    display_fr = 'DAQI',
    display_it = 'DAQI',
    display_ro = 'DAQI'
-WHERE code =4258;
+WHERE code = 4258;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4259,4259) ON CONFLICT DO NOTHING;
 
@@ -11876,7 +12350,8 @@ WHERE code =4258;
    display_fr = 'DAQJ',
    display_it = 'DAQJ',
    display_ro = 'DAQJ'
-WHERE code =4259;
+WHERE code = 4259;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4260,4260) ON CONFLICT DO NOTHING;
 
@@ -11901,7 +12376,8 @@ WHERE code =4259;
    display_fr = 'DAQK',
    display_it = 'DAQK',
    display_ro = 'DAQK'
-WHERE code =4260;
+WHERE code = 4260;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4261,4261) ON CONFLICT DO NOTHING;
 
@@ -11926,7 +12402,8 @@ WHERE code =4260;
    display_fr = 'DAQZ',
    display_it = 'DAQZ',
    display_ro = 'DAQZ'
-WHERE code =4261;
+WHERE code = 4261;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4262,4262) ON CONFLICT DO NOTHING;
 
@@ -11951,7 +12428,8 @@ WHERE code =4261;
    display_fr = 'DARA',
    display_it = 'DARA',
    display_ro = 'DARA'
-WHERE code =4262;
+WHERE code = 4262;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4263,4263) ON CONFLICT DO NOTHING;
 
@@ -11976,7 +12454,8 @@ WHERE code =4262;
    display_fr = 'DARB',
    display_it = 'DARB',
    display_ro = 'DARB'
-WHERE code =4263;
+WHERE code = 4263;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4264,4264) ON CONFLICT DO NOTHING;
 
@@ -12001,7 +12480,8 @@ WHERE code =4263;
    display_fr = 'DARC',
    display_it = 'DARC',
    display_ro = 'DARC'
-WHERE code =4264;
+WHERE code = 4264;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4265,4265) ON CONFLICT DO NOTHING;
 
@@ -12026,7 +12506,8 @@ WHERE code =4264;
    display_fr = 'DARD',
    display_it = 'DARD',
    display_ro = 'DARD'
-WHERE code =4265;
+WHERE code = 4265;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4266,4266) ON CONFLICT DO NOTHING;
 
@@ -12051,7 +12532,8 @@ WHERE code =4265;
    display_fr = 'DARE',
    display_it = 'DARE',
    display_ro = 'DARE'
-WHERE code =4266;
+WHERE code = 4266;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4267,4267) ON CONFLICT DO NOTHING;
 
@@ -12076,7 +12558,8 @@ WHERE code =4266;
    display_fr = 'DARF',
    display_it = 'DARF',
    display_ro = 'DARF'
-WHERE code =4267;
+WHERE code = 4267;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4268,4268) ON CONFLICT DO NOTHING;
 
@@ -12101,7 +12584,8 @@ WHERE code =4267;
    display_fr = 'DARG',
    display_it = 'DARG',
    display_ro = 'DARG'
-WHERE code =4268;
+WHERE code = 4268;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4269,4269) ON CONFLICT DO NOTHING;
 
@@ -12126,7 +12610,8 @@ WHERE code =4268;
    display_fr = 'DARH',
    display_it = 'DARH',
    display_ro = 'DARH'
-WHERE code =4269;
+WHERE code = 4269;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4270,4270) ON CONFLICT DO NOTHING;
 
@@ -12151,7 +12636,8 @@ WHERE code =4269;
    display_fr = 'DARZ',
    display_it = 'DARZ',
    display_ro = 'DARZ'
-WHERE code =4270;
+WHERE code = 4270;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4271,4271) ON CONFLICT DO NOTHING;
 
@@ -12176,7 +12662,8 @@ WHERE code =4270;
    display_fr = 'DBAA',
    display_it = 'DBAA',
    display_ro = ''
-WHERE code =4271;
+WHERE code = 4271;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4272,4272) ON CONFLICT DO NOTHING;
 
@@ -12201,7 +12688,8 @@ WHERE code =4271;
    display_fr = 'DBAB',
    display_it = 'DBAB',
    display_ro = ''
-WHERE code =4272;
+WHERE code = 4272;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4273,4273) ON CONFLICT DO NOTHING;
 
@@ -12226,7 +12714,8 @@ WHERE code =4272;
    display_fr = 'DBAC',
    display_it = 'DBAC',
    display_ro = ''
-WHERE code =4273;
+WHERE code = 4273;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4274,4274) ON CONFLICT DO NOTHING;
 
@@ -12251,7 +12740,8 @@ WHERE code =4273;
    display_fr = 'DBBA',
    display_it = 'DBBA',
    display_ro = ''
-WHERE code =4274;
+WHERE code = 4274;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4275,4275) ON CONFLICT DO NOTHING;
 
@@ -12276,7 +12766,8 @@ WHERE code =4274;
    display_fr = 'DBBB',
    display_it = 'DBBB',
    display_ro = ''
-WHERE code =4275;
+WHERE code = 4275;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4276,4276) ON CONFLICT DO NOTHING;
 
@@ -12301,7 +12792,8 @@ WHERE code =4275;
    display_fr = 'DBBC',
    display_it = 'DBBC',
    display_ro = ''
-WHERE code =4276;
+WHERE code = 4276;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4277,4277) ON CONFLICT DO NOTHING;
 
@@ -12326,7 +12818,8 @@ WHERE code =4276;
    display_fr = 'DBBZ',
    display_it = 'DBBZ',
    display_ro = ''
-WHERE code =4277;
+WHERE code = 4277;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4278,4278) ON CONFLICT DO NOTHING;
 
@@ -12351,7 +12844,8 @@ WHERE code =4277;
    display_fr = 'DBCA',
    display_it = 'DBCA',
    display_ro = ''
-WHERE code =4278;
+WHERE code = 4278;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4279,4279) ON CONFLICT DO NOTHING;
 
@@ -12376,7 +12870,8 @@ WHERE code =4278;
    display_fr = 'DBCB',
    display_it = 'DBCB',
    display_ro = ''
-WHERE code =4279;
+WHERE code = 4279;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4280,4280) ON CONFLICT DO NOTHING;
 
@@ -12401,7 +12896,8 @@ WHERE code =4279;
    display_fr = 'DBCC',
    display_it = 'DBCC',
    display_ro = ''
-WHERE code =4280;
+WHERE code = 4280;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4281,4281) ON CONFLICT DO NOTHING;
 
@@ -12426,7 +12922,8 @@ WHERE code =4280;
    display_fr = 'DBCZ',
    display_it = 'DBCZ',
    display_ro = ''
-WHERE code =4281;
+WHERE code = 4281;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4282,4282) ON CONFLICT DO NOTHING;
 
@@ -12451,7 +12948,8 @@ WHERE code =4281;
    display_fr = 'DBD',
    display_it = 'DBD',
    display_ro = ''
-WHERE code =4282;
+WHERE code = 4282;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4283,4283) ON CONFLICT DO NOTHING;
 
@@ -12476,7 +12974,8 @@ WHERE code =4282;
    display_fr = 'DBEA',
    display_it = 'DBEA',
    display_ro = ''
-WHERE code =4283;
+WHERE code = 4283;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4284,4284) ON CONFLICT DO NOTHING;
 
@@ -12501,7 +13000,8 @@ WHERE code =4283;
    display_fr = 'DBEB',
    display_it = 'DBEB',
    display_ro = ''
-WHERE code =4284;
+WHERE code = 4284;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4285,4285) ON CONFLICT DO NOTHING;
 
@@ -12526,7 +13026,8 @@ WHERE code =4284;
    display_fr = 'DBEC',
    display_it = 'DBEC',
    display_ro = ''
-WHERE code =4285;
+WHERE code = 4285;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4286,4286) ON CONFLICT DO NOTHING;
 
@@ -12551,7 +13052,8 @@ WHERE code =4285;
    display_fr = 'DBED',
    display_it = 'DBED',
    display_ro = ''
-WHERE code =4286;
+WHERE code = 4286;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4287,4287) ON CONFLICT DO NOTHING;
 
@@ -12576,7 +13078,8 @@ WHERE code =4286;
    display_fr = 'DBEE',
    display_it = 'DBEE',
    display_ro = ''
-WHERE code =4287;
+WHERE code = 4287;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4288,4288) ON CONFLICT DO NOTHING;
 
@@ -12601,7 +13104,8 @@ WHERE code =4287;
    display_fr = 'DBEF',
    display_it = 'DBEF',
    display_ro = ''
-WHERE code =4288;
+WHERE code = 4288;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4289,4289) ON CONFLICT DO NOTHING;
 
@@ -12626,7 +13130,8 @@ WHERE code =4288;
    display_fr = 'DBEG',
    display_it = 'DBEG',
    display_ro = ''
-WHERE code =4289;
+WHERE code = 4289;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4290,4290) ON CONFLICT DO NOTHING;
 
@@ -12651,7 +13156,8 @@ WHERE code =4289;
    display_fr = 'DBEH',
    display_it = 'DBEH',
    display_ro = ''
-WHERE code =4290;
+WHERE code = 4290;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4291,4291) ON CONFLICT DO NOTHING;
 
@@ -12676,7 +13182,8 @@ WHERE code =4290;
    display_fr = 'DBEZ',
    display_it = 'DBEZ',
    display_ro = ''
-WHERE code =4291;
+WHERE code = 4291;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4292,4292) ON CONFLICT DO NOTHING;
 
@@ -12701,7 +13208,8 @@ WHERE code =4291;
    display_fr = 'DBFAA',
    display_it = 'DBFAA',
    display_ro = ''
-WHERE code =4292;
+WHERE code = 4292;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4293,4293) ON CONFLICT DO NOTHING;
 
@@ -12726,7 +13234,8 @@ WHERE code =4292;
    display_fr = 'DBFAB',
    display_it = 'DBFAB',
    display_ro = ''
-WHERE code =4293;
+WHERE code = 4293;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4294,4294) ON CONFLICT DO NOTHING;
 
@@ -12751,7 +13260,8 @@ WHERE code =4293;
    display_fr = 'DBFAC',
    display_it = 'DBFAC',
    display_ro = ''
-WHERE code =4294;
+WHERE code = 4294;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4295,4295) ON CONFLICT DO NOTHING;
 
@@ -12776,7 +13286,8 @@ WHERE code =4294;
    display_fr = 'DBFBA',
    display_it = 'DBFBA',
    display_ro = ''
-WHERE code =4295;
+WHERE code = 4295;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4296,4296) ON CONFLICT DO NOTHING;
 
@@ -12801,7 +13312,8 @@ WHERE code =4295;
    display_fr = 'DBFBB',
    display_it = 'DBFBB',
    display_ro = ''
-WHERE code =4296;
+WHERE code = 4296;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4297,4297) ON CONFLICT DO NOTHING;
 
@@ -12826,7 +13338,8 @@ WHERE code =4296;
    display_fr = 'DBFBC',
    display_it = 'DBFBC',
    display_ro = ''
-WHERE code =4297;
+WHERE code = 4297;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4298,4298) ON CONFLICT DO NOTHING;
 
@@ -12851,7 +13364,8 @@ WHERE code =4297;
    display_fr = 'DBFCA',
    display_it = 'DBFCA',
    display_ro = ''
-WHERE code =4298;
+WHERE code = 4298;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4299,4299) ON CONFLICT DO NOTHING;
 
@@ -12876,7 +13390,8 @@ WHERE code =4298;
    display_fr = 'DBFCB',
    display_it = 'DBFCB',
    display_ro = ''
-WHERE code =4299;
+WHERE code = 4299;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4300,4300) ON CONFLICT DO NOTHING;
 
@@ -12901,7 +13416,8 @@ WHERE code =4299;
    display_fr = 'DBFCC',
    display_it = 'DBFCC',
    display_ro = ''
-WHERE code =4300;
+WHERE code = 4300;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4301,4301) ON CONFLICT DO NOTHING;
 
@@ -12926,7 +13442,8 @@ WHERE code =4300;
    display_fr = 'DBFDA',
    display_it = 'DBFDA',
    display_ro = ''
-WHERE code =4301;
+WHERE code = 4301;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4302,4302) ON CONFLICT DO NOTHING;
 
@@ -12951,7 +13468,8 @@ WHERE code =4301;
    display_fr = 'DBFDB',
    display_it = 'DBFDB',
    display_ro = ''
-WHERE code =4302;
+WHERE code = 4302;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4303,4303) ON CONFLICT DO NOTHING;
 
@@ -12976,7 +13494,8 @@ WHERE code =4302;
    display_fr = 'DBFDC',
    display_it = 'DBFDC',
    display_ro = ''
-WHERE code =4303;
+WHERE code = 4303;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4304,4304) ON CONFLICT DO NOTHING;
 
@@ -13001,7 +13520,8 @@ WHERE code =4303;
    display_fr = 'DBG',
    display_it = 'DBG',
    display_ro = ''
-WHERE code =4304;
+WHERE code = 4304;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4305,4305) ON CONFLICT DO NOTHING;
 
@@ -13026,7 +13546,8 @@ WHERE code =4304;
    display_fr = 'DBHAA',
    display_it = 'DBHAA',
    display_ro = ''
-WHERE code =4305;
+WHERE code = 4305;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4306,4306) ON CONFLICT DO NOTHING;
 
@@ -13051,7 +13572,8 @@ WHERE code =4305;
    display_fr = 'DBHAB',
    display_it = 'DBHAB',
    display_ro = ''
-WHERE code =4306;
+WHERE code = 4306;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4307,4307) ON CONFLICT DO NOTHING;
 
@@ -13076,7 +13598,8 @@ WHERE code =4306;
    display_fr = 'DBHAC',
    display_it = 'DBHAC',
    display_ro = ''
-WHERE code =4307;
+WHERE code = 4307;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4308,4308) ON CONFLICT DO NOTHING;
 
@@ -13101,7 +13624,8 @@ WHERE code =4307;
    display_fr = 'DBHAZ',
    display_it = 'DBHAZ',
    display_ro = ''
-WHERE code =4308;
+WHERE code = 4308;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4309,4309) ON CONFLICT DO NOTHING;
 
@@ -13126,7 +13650,8 @@ WHERE code =4308;
    display_fr = 'DBHBA',
    display_it = 'DBHBA',
    display_ro = ''
-WHERE code =4309;
+WHERE code = 4309;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4310,4310) ON CONFLICT DO NOTHING;
 
@@ -13151,7 +13676,8 @@ WHERE code =4309;
    display_fr = 'DBHBB',
    display_it = 'DBHBB',
    display_ro = ''
-WHERE code =4310;
+WHERE code = 4310;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4311,4311) ON CONFLICT DO NOTHING;
 
@@ -13176,7 +13702,8 @@ WHERE code =4310;
    display_fr = 'DBHBC',
    display_it = 'DBHBC',
    display_ro = ''
-WHERE code =4311;
+WHERE code = 4311;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4312,4312) ON CONFLICT DO NOTHING;
 
@@ -13201,7 +13728,8 @@ WHERE code =4311;
    display_fr = 'DBHBZ',
    display_it = 'DBHBZ',
    display_ro = ''
-WHERE code =4312;
+WHERE code = 4312;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4313,4313) ON CONFLICT DO NOTHING;
 
@@ -13226,7 +13754,8 @@ WHERE code =4312;
    display_fr = 'DBHZA',
    display_it = 'DBHZA',
    display_ro = ''
-WHERE code =4313;
+WHERE code = 4313;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4314,4314) ON CONFLICT DO NOTHING;
 
@@ -13251,7 +13780,8 @@ WHERE code =4313;
    display_fr = 'DBHZB',
    display_it = 'DBHZB',
    display_ro = ''
-WHERE code =4314;
+WHERE code = 4314;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4315,4315) ON CONFLICT DO NOTHING;
 
@@ -13276,7 +13806,8 @@ WHERE code =4314;
    display_fr = 'DBHZC',
    display_it = 'DBHZC',
    display_ro = ''
-WHERE code =4315;
+WHERE code = 4315;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4316,4316) ON CONFLICT DO NOTHING;
 
@@ -13301,7 +13832,8 @@ WHERE code =4315;
    display_fr = 'DBHZZ',
    display_it = 'DBHZZ',
    display_ro = ''
-WHERE code =4316;
+WHERE code = 4316;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4317,4317) ON CONFLICT DO NOTHING;
 
@@ -13326,7 +13858,8 @@ WHERE code =4316;
    display_fr = 'DCAA',
    display_it = 'DCAA',
    display_ro = 'DCAA'
-WHERE code =4317;
+WHERE code = 4317;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4318,4318) ON CONFLICT DO NOTHING;
 
@@ -13351,7 +13884,8 @@ WHERE code =4317;
    display_fr = 'DCAB',
    display_it = 'DCAB',
    display_ro = 'DCAB'
-WHERE code =4318;
+WHERE code = 4318;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4319,4319) ON CONFLICT DO NOTHING;
 
@@ -13376,7 +13910,8 @@ WHERE code =4318;
    display_fr = 'DCAC',
    display_it = 'DCAC',
    display_ro = 'DCAC'
-WHERE code =4319;
+WHERE code = 4319;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4320,4320) ON CONFLICT DO NOTHING;
 
@@ -13401,7 +13936,8 @@ WHERE code =4319;
    display_fr = 'DCAD',
    display_it = 'DCAD',
    display_ro = 'DCAD'
-WHERE code =4320;
+WHERE code = 4320;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4321,4321) ON CONFLICT DO NOTHING;
 
@@ -13426,7 +13962,8 @@ WHERE code =4320;
    display_fr = 'DCAE',
    display_it = 'DCAE',
    display_ro = 'DCAE'
-WHERE code =4321;
+WHERE code = 4321;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4322,4322) ON CONFLICT DO NOTHING;
 
@@ -13451,7 +13988,8 @@ WHERE code =4321;
    display_fr = 'DCAF',
    display_it = 'DCAF',
    display_ro = 'DCAF'
-WHERE code =4322;
+WHERE code = 4322;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4323,4323) ON CONFLICT DO NOTHING;
 
@@ -13476,7 +14014,8 @@ WHERE code =4322;
    display_fr = 'DCAZ',
    display_it = 'DCAZ',
    display_ro = 'DCAZ'
-WHERE code =4323;
+WHERE code = 4323;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4324,4324) ON CONFLICT DO NOTHING;
 
@@ -13501,7 +14040,8 @@ WHERE code =4323;
    display_fr = 'DCBA',
    display_it = 'DCBA',
    display_ro = 'DCBA'
-WHERE code =4324;
+WHERE code = 4324;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4325,4325) ON CONFLICT DO NOTHING;
 
@@ -13526,7 +14066,8 @@ WHERE code =4324;
    display_fr = 'DCBB',
    display_it = 'DCBB',
    display_ro = 'DCBB'
-WHERE code =4325;
+WHERE code = 4325;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4326,4326) ON CONFLICT DO NOTHING;
 
@@ -13551,7 +14092,8 @@ WHERE code =4325;
    display_fr = 'DCBC',
    display_it = 'DCBC',
    display_ro = 'DCBC'
-WHERE code =4326;
+WHERE code = 4326;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8940,8940) ON CONFLICT DO NOTHING;
 
@@ -13576,7 +14118,8 @@ WHERE code =4326;
    display_fr = 'DCBD',
    display_it = 'DCBD',
    display_ro = 'DCBD'
-WHERE code =8940;
+WHERE code = 8940;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8941,8941) ON CONFLICT DO NOTHING;
 
@@ -13601,7 +14144,8 @@ WHERE code =8940;
    display_fr = 'DCBE',
    display_it = 'DCBE',
    display_ro = 'DCBE'
-WHERE code =8941;
+WHERE code = 8941;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8942,8942) ON CONFLICT DO NOTHING;
 
@@ -13626,7 +14170,8 @@ WHERE code =8941;
    display_fr = 'DCBF',
    display_it = 'DCBF',
    display_ro = 'DCBF'
-WHERE code =8942;
+WHERE code = 8942;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4327,4327) ON CONFLICT DO NOTHING;
 
@@ -13651,7 +14196,8 @@ WHERE code =8942;
    display_fr = 'DCBZ',
    display_it = 'DCBZ',
    display_ro = 'DCBZ'
-WHERE code =4327;
+WHERE code = 4327;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4328,4328) ON CONFLICT DO NOTHING;
 
@@ -13676,7 +14222,8 @@ WHERE code =4327;
    display_fr = 'DCFA',
    display_it = 'DCFA',
    display_ro = 'DCFA'
-WHERE code =4328;
+WHERE code = 4328;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4329,4329) ON CONFLICT DO NOTHING;
 
@@ -13701,7 +14248,8 @@ WHERE code =4328;
    display_fr = 'DCFB',
    display_it = 'DCFB',
    display_ro = 'DCFB'
-WHERE code =4329;
+WHERE code = 4329;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4330,4330) ON CONFLICT DO NOTHING;
 
@@ -13726,7 +14274,8 @@ WHERE code =4329;
    display_fr = 'DCFC',
    display_it = 'DCFC',
    display_ro = 'DCFC'
-WHERE code =4330;
+WHERE code = 4330;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4331,4331) ON CONFLICT DO NOTHING;
 
@@ -13751,7 +14300,8 @@ WHERE code =4330;
    display_fr = 'DCFD',
    display_it = 'DCFD',
    display_ro = 'DCFD'
-WHERE code =4331;
+WHERE code = 4331;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4332,4332) ON CONFLICT DO NOTHING;
 
@@ -13776,7 +14326,8 @@ WHERE code =4331;
    display_fr = 'DCFE',
    display_it = 'DCFE',
    display_ro = 'DCFE'
-WHERE code =4332;
+WHERE code = 4332;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4333,4333) ON CONFLICT DO NOTHING;
 
@@ -13801,7 +14352,8 @@ WHERE code =4332;
    display_fr = 'DCFF',
    display_it = 'DCFF',
    display_ro = 'DCFF'
-WHERE code =4333;
+WHERE code = 4333;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4334,4334) ON CONFLICT DO NOTHING;
 
@@ -13826,7 +14378,8 @@ WHERE code =4333;
    display_fr = 'DCFG',
    display_it = 'DCFG',
    display_ro = 'DCFG'
-WHERE code =4334;
+WHERE code = 4334;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4335,4335) ON CONFLICT DO NOTHING;
 
@@ -13851,7 +14404,8 @@ WHERE code =4334;
    display_fr = 'DCFH',
    display_it = 'DCFH',
    display_ro = 'DCFH'
-WHERE code =4335;
+WHERE code = 4335;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4336,4336) ON CONFLICT DO NOTHING;
 
@@ -13876,7 +14430,8 @@ WHERE code =4335;
    display_fr = 'DCFI',
    display_it = 'DCFI',
    display_ro = 'DCFI'
-WHERE code =4336;
+WHERE code = 4336;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4337,4337) ON CONFLICT DO NOTHING;
 
@@ -13901,7 +14456,8 @@ WHERE code =4336;
    display_fr = 'DCFJ',
    display_it = 'DCFJ',
    display_ro = 'DCFJ'
-WHERE code =4337;
+WHERE code = 4337;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4338,4338) ON CONFLICT DO NOTHING;
 
@@ -13926,7 +14482,8 @@ WHERE code =4337;
    display_fr = 'DCFK',
    display_it = 'DCFK',
    display_ro = 'DCFK'
-WHERE code =4338;
+WHERE code = 4338;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4339,4339) ON CONFLICT DO NOTHING;
 
@@ -13951,7 +14508,8 @@ WHERE code =4338;
    display_fr = 'DCFL',
    display_it = 'DCFL',
    display_ro = 'DCFL'
-WHERE code =4339;
+WHERE code = 4339;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4340,4340) ON CONFLICT DO NOTHING;
 
@@ -13976,7 +14534,8 @@ WHERE code =4339;
    display_fr = 'DCFM',
    display_it = 'DCFM',
    display_ro = 'DCFM'
-WHERE code =4340;
+WHERE code = 4340;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4341,4341) ON CONFLICT DO NOTHING;
 
@@ -14001,7 +14560,8 @@ WHERE code =4340;
    display_fr = 'DCFN',
    display_it = 'DCFN',
    display_ro = 'DCFN'
-WHERE code =4341;
+WHERE code = 4341;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4342,4342) ON CONFLICT DO NOTHING;
 
@@ -14026,7 +14586,8 @@ WHERE code =4341;
    display_fr = 'DCFO',
    display_it = 'DCFO',
    display_ro = 'DCFO'
-WHERE code =4342;
+WHERE code = 4342;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4343,4343) ON CONFLICT DO NOTHING;
 
@@ -14051,7 +14612,8 @@ WHERE code =4342;
    display_fr = 'DCFP',
    display_it = 'DCFP',
    display_ro = 'DCFP'
-WHERE code =4343;
+WHERE code = 4343;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4344,4344) ON CONFLICT DO NOTHING;
 
@@ -14076,7 +14638,8 @@ WHERE code =4343;
    display_fr = 'DCFQ',
    display_it = 'DCFQ',
    display_ro = 'DCFQ'
-WHERE code =4344;
+WHERE code = 4344;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4345,4345) ON CONFLICT DO NOTHING;
 
@@ -14101,7 +14664,8 @@ WHERE code =4344;
    display_fr = 'DCFR',
    display_it = 'DCFR',
    display_ro = 'DCFR'
-WHERE code =4345;
+WHERE code = 4345;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4346,4346) ON CONFLICT DO NOTHING;
 
@@ -14126,7 +14690,8 @@ WHERE code =4345;
    display_fr = 'DCFS',
    display_it = 'DCFS',
    display_ro = 'DCFS'
-WHERE code =4346;
+WHERE code = 4346;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4347,4347) ON CONFLICT DO NOTHING;
 
@@ -14151,7 +14716,8 @@ WHERE code =4346;
    display_fr = 'DCFT',
    display_it = 'DCFT',
    display_ro = 'DCFT'
-WHERE code =4347;
+WHERE code = 4347;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4348,4348) ON CONFLICT DO NOTHING;
 
@@ -14176,7 +14742,8 @@ WHERE code =4347;
    display_fr = 'DCFU',
    display_it = 'DCFU',
    display_ro = 'DCFU'
-WHERE code =4348;
+WHERE code = 4348;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4349,4349) ON CONFLICT DO NOTHING;
 
@@ -14201,7 +14768,8 @@ WHERE code =4348;
    display_fr = 'DCFV',
    display_it = 'DCFV',
    display_ro = 'DCFV'
-WHERE code =4349;
+WHERE code = 4349;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4350,4350) ON CONFLICT DO NOTHING;
 
@@ -14226,7 +14794,8 @@ WHERE code =4349;
    display_fr = 'DCFW',
    display_it = 'DCFW',
    display_ro = 'DCFW'
-WHERE code =4350;
+WHERE code = 4350;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4351,4351) ON CONFLICT DO NOTHING;
 
@@ -14251,7 +14820,8 @@ WHERE code =4350;
    display_fr = 'DCFX',
    display_it = 'DCFX',
    display_ro = 'DCFX'
-WHERE code =4351;
+WHERE code = 4351;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4352,4352) ON CONFLICT DO NOTHING;
 
@@ -14276,7 +14846,8 @@ WHERE code =4351;
    display_fr = 'DCGAA',
    display_it = 'DCGAA',
    display_ro = 'DCGAA'
-WHERE code =4352;
+WHERE code = 4352;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4353,4353) ON CONFLICT DO NOTHING;
 
@@ -14301,7 +14872,8 @@ WHERE code =4352;
    display_fr = 'DCGAB',
    display_it = 'DCGAB',
    display_ro = 'DCGAB'
-WHERE code =4353;
+WHERE code = 4353;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4354,4354) ON CONFLICT DO NOTHING;
 
@@ -14326,7 +14898,8 @@ WHERE code =4353;
    display_fr = 'DCGAC',
    display_it = 'DCGAC',
    display_ro = 'DCGAC'
-WHERE code =4354;
+WHERE code = 4354;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4355,4355) ON CONFLICT DO NOTHING;
 
@@ -14351,7 +14924,8 @@ WHERE code =4354;
    display_fr = 'DCGBA',
    display_it = 'DCGBA',
    display_ro = 'DCGBA'
-WHERE code =4355;
+WHERE code = 4355;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4356,4356) ON CONFLICT DO NOTHING;
 
@@ -14376,7 +14950,8 @@ WHERE code =4355;
    display_fr = 'DCGBB',
    display_it = 'DCGBB',
    display_ro = 'DCGBB'
-WHERE code =4356;
+WHERE code = 4356;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4357,4357) ON CONFLICT DO NOTHING;
 
@@ -14401,7 +14976,8 @@ WHERE code =4356;
    display_fr = 'DCGBC',
    display_it = 'DCGBC',
    display_ro = 'DCGBC'
-WHERE code =4357;
+WHERE code = 4357;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4358,4358) ON CONFLICT DO NOTHING;
 
@@ -14426,7 +15002,8 @@ WHERE code =4357;
    display_fr = 'DCGCA',
    display_it = 'DCGCA',
    display_ro = 'DCGCA'
-WHERE code =4358;
+WHERE code = 4358;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4359,4359) ON CONFLICT DO NOTHING;
 
@@ -14451,7 +15028,8 @@ WHERE code =4358;
    display_fr = 'DCGCB',
    display_it = 'DCGCB',
    display_ro = 'DCGCB'
-WHERE code =4359;
+WHERE code = 4359;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4360,4360) ON CONFLICT DO NOTHING;
 
@@ -14476,7 +15054,8 @@ WHERE code =4359;
    display_fr = 'DCGCC',
    display_it = 'DCGCC',
    display_ro = 'DCGCC'
-WHERE code =4360;
+WHERE code = 4360;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4364,4364) ON CONFLICT DO NOTHING;
 
@@ -14501,7 +15080,8 @@ WHERE code =4360;
    display_fr = 'DCGXAA',
    display_it = 'DCGXAA',
    display_ro = 'DCGXAA'
-WHERE code =4364;
+WHERE code = 4364;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4365,4365) ON CONFLICT DO NOTHING;
 
@@ -14526,7 +15106,8 @@ WHERE code =4364;
    display_fr = 'DCGXAB',
    display_it = 'DCGXAB',
    display_ro = 'DCGXAB'
-WHERE code =4365;
+WHERE code = 4365;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4366,4366) ON CONFLICT DO NOTHING;
 
@@ -14551,7 +15132,8 @@ WHERE code =4365;
    display_fr = 'DCGXAC',
    display_it = 'DCGXAC',
    display_ro = 'DCGXAC'
-WHERE code =4366;
+WHERE code = 4366;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4367,4367) ON CONFLICT DO NOTHING;
 
@@ -14576,7 +15158,8 @@ WHERE code =4366;
    display_fr = 'DCGXBA',
    display_it = 'DCGXBA',
    display_ro = 'DCGXBA'
-WHERE code =4367;
+WHERE code = 4367;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4368,4368) ON CONFLICT DO NOTHING;
 
@@ -14601,7 +15184,8 @@ WHERE code =4367;
    display_fr = 'DCGXBB',
    display_it = 'DCGXBB',
    display_ro = 'DCGXBB'
-WHERE code =4368;
+WHERE code = 4368;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4369,4369) ON CONFLICT DO NOTHING;
 
@@ -14626,7 +15210,8 @@ WHERE code =4368;
    display_fr = 'DCGXBC',
    display_it = 'DCGXBC',
    display_ro = 'DCGXBC'
-WHERE code =4369;
+WHERE code = 4369;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4370,4370) ON CONFLICT DO NOTHING;
 
@@ -14651,7 +15236,8 @@ WHERE code =4369;
    display_fr = 'DCGXCA',
    display_it = 'DCGXCA',
    display_ro = 'DCGXCA'
-WHERE code =4370;
+WHERE code = 4370;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4371,4371) ON CONFLICT DO NOTHING;
 
@@ -14676,7 +15262,8 @@ WHERE code =4370;
    display_fr = 'DCGXCB',
    display_it = 'DCGXCB',
    display_ro = 'DCGXCB'
-WHERE code =4371;
+WHERE code = 4371;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4372,4372) ON CONFLICT DO NOTHING;
 
@@ -14701,7 +15288,8 @@ WHERE code =4371;
    display_fr = 'DCGXCC',
    display_it = 'DCGXCC',
    display_ro = 'DCGXCC'
-WHERE code =4372;
+WHERE code = 4372;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4373,4373) ON CONFLICT DO NOTHING;
 
@@ -14726,7 +15314,8 @@ WHERE code =4372;
    display_fr = 'DCGYA',
    display_it = 'DCGYA',
    display_ro = 'DCGYA'
-WHERE code =4373;
+WHERE code = 4373;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4374,4374) ON CONFLICT DO NOTHING;
 
@@ -14751,7 +15340,8 @@ WHERE code =4373;
    display_fr = 'DCGYB',
    display_it = 'DCGYB',
    display_ro = 'DCGYB'
-WHERE code =4374;
+WHERE code = 4374;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4375,4375) ON CONFLICT DO NOTHING;
 
@@ -14776,7 +15366,8 @@ WHERE code =4374;
    display_fr = 'DCGYC',
    display_it = 'DCGYC',
    display_ro = 'DCGYC'
-WHERE code =4375;
+WHERE code = 4375;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4376,4376) ON CONFLICT DO NOTHING;
 
@@ -14801,7 +15392,8 @@ WHERE code =4375;
    display_fr = 'DCGZA',
    display_it = 'DCGZA',
    display_ro = 'DCGZA'
-WHERE code =4376;
+WHERE code = 4376;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4377,4377) ON CONFLICT DO NOTHING;
 
@@ -14826,7 +15418,8 @@ WHERE code =4376;
    display_fr = 'DCGZB',
    display_it = 'DCGZB',
    display_ro = 'DCGZB'
-WHERE code =4377;
+WHERE code = 4377;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4378,4378) ON CONFLICT DO NOTHING;
 
@@ -14851,7 +15444,8 @@ WHERE code =4377;
    display_fr = 'DCGZC',
    display_it = 'DCGZC',
    display_ro = 'DCGZC'
-WHERE code =4378;
+WHERE code = 4378;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4379,4379) ON CONFLICT DO NOTHING;
 
@@ -14876,7 +15470,8 @@ WHERE code =4378;
    display_fr = 'DCHA',
    display_it = 'DCHA',
    display_ro = 'DCHA'
-WHERE code =4379;
+WHERE code = 4379;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4382,4382) ON CONFLICT DO NOTHING;
 
@@ -14901,7 +15496,8 @@ WHERE code =4379;
    display_fr = 'DCHB',
    display_it = 'DCHB',
    display_ro = 'DCHB'
-WHERE code =4382;
+WHERE code = 4382;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8943,8943) ON CONFLICT DO NOTHING;
 
@@ -14926,7 +15522,8 @@ WHERE code =4382;
    display_fr = 'DCHC',
    display_it = 'DCHC',
    display_ro = 'DCHC'
-WHERE code =8943;
+WHERE code = 8943;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8944,8944) ON CONFLICT DO NOTHING;
 
@@ -14951,7 +15548,8 @@ WHERE code =8943;
    display_fr = 'DCIAA',
    display_it = 'DCIAA',
    display_ro = 'DCIAA'
-WHERE code =8944;
+WHERE code = 8944;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8945,8945) ON CONFLICT DO NOTHING;
 
@@ -14976,7 +15574,8 @@ WHERE code =8944;
    display_fr = 'DCIAB',
    display_it = 'DCIAB',
    display_ro = 'DCIAB'
-WHERE code =8945;
+WHERE code = 8945;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8946,8946) ON CONFLICT DO NOTHING;
 
@@ -15001,7 +15600,8 @@ WHERE code =8945;
    display_fr = 'DCIAC',
    display_it = 'DCIAC',
    display_ro = 'DCIAC'
-WHERE code =8946;
+WHERE code = 8946;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8947,8947) ON CONFLICT DO NOTHING;
 
@@ -15026,7 +15626,8 @@ WHERE code =8946;
    display_fr = 'DCIAD',
    display_it = 'DCIAD',
    display_ro = 'DCIAD'
-WHERE code =8947;
+WHERE code = 8947;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8948,8948) ON CONFLICT DO NOTHING;
 
@@ -15051,7 +15652,8 @@ WHERE code =8947;
    display_fr = 'DCIAZ',
    display_it = 'DCIAZ',
    display_ro = 'DCIAZ'
-WHERE code =8948;
+WHERE code = 8948;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4384,4384) ON CONFLICT DO NOTHING;
 
@@ -15076,7 +15678,8 @@ WHERE code =8948;
    display_fr = 'DCIB',
    display_it = 'DCIB',
    display_ro = 'DCIB'
-WHERE code =4384;
+WHERE code = 4384;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8949,8949) ON CONFLICT DO NOTHING;
 
@@ -15101,7 +15704,8 @@ WHERE code =4384;
    display_fr = 'DCIBY',
    display_it = 'DCIBY',
    display_ro = 'DCIBY'
-WHERE code =8949;
+WHERE code = 8949;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8950,8950) ON CONFLICT DO NOTHING;
 
@@ -15126,7 +15730,8 @@ WHERE code =8949;
    display_fr = 'DCICY',
    display_it = 'DCICY',
    display_ro = 'DCICY'
-WHERE code =8950;
+WHERE code = 8950;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4385,4385) ON CONFLICT DO NOTHING;
 
@@ -15151,7 +15756,8 @@ WHERE code =8950;
    display_fr = 'DCLAA',
    display_it = 'DCLAA',
    display_ro = 'DCLAA'
-WHERE code =4385;
+WHERE code = 4385;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4386,4386) ON CONFLICT DO NOTHING;
 
@@ -15176,7 +15782,8 @@ WHERE code =4385;
    display_fr = 'DCLAB',
    display_it = 'DCLAB',
    display_ro = 'DCLAB'
-WHERE code =4386;
+WHERE code = 4386;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4387,4387) ON CONFLICT DO NOTHING;
 
@@ -15201,7 +15808,8 @@ WHERE code =4386;
    display_fr = 'DCLBA',
    display_it = 'DCLBA',
    display_ro = 'DCLBA'
-WHERE code =4387;
+WHERE code = 4387;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4388,4388) ON CONFLICT DO NOTHING;
 
@@ -15226,7 +15834,8 @@ WHERE code =4387;
    display_fr = 'DCLBB',
    display_it = 'DCLBB',
    display_ro = 'DCLBB'
-WHERE code =4388;
+WHERE code = 4388;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4389,4389) ON CONFLICT DO NOTHING;
 
@@ -15251,7 +15860,8 @@ WHERE code =4388;
    display_fr = 'DCLCA',
    display_it = 'DCLCA',
    display_ro = 'DCLCA'
-WHERE code =4389;
+WHERE code = 4389;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4390,4390) ON CONFLICT DO NOTHING;
 
@@ -15276,7 +15886,8 @@ WHERE code =4389;
    display_fr = 'DCLCB',
    display_it = 'DCLCB',
    display_ro = 'DCLCB'
-WHERE code =4390;
+WHERE code = 4390;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4391,4391) ON CONFLICT DO NOTHING;
 
@@ -15301,7 +15912,8 @@ WHERE code =4390;
    display_fr = 'DCMA',
    display_it = 'DCMA',
    display_ro = 'DCMA'
-WHERE code =4391;
+WHERE code = 4391;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4392,4392) ON CONFLICT DO NOTHING;
 
@@ -15326,7 +15938,8 @@ WHERE code =4391;
    display_fr = 'DCMB',
    display_it = 'DCMB',
    display_ro = 'DCMB'
-WHERE code =4392;
+WHERE code = 4392;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4393,4393) ON CONFLICT DO NOTHING;
 
@@ -15351,7 +15964,8 @@ WHERE code =4392;
    display_fr = 'DCMC',
    display_it = 'DCMC',
    display_ro = 'DCMC'
-WHERE code =4393;
+WHERE code = 4393;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4394,4394) ON CONFLICT DO NOTHING;
 
@@ -15376,7 +15990,8 @@ WHERE code =4393;
    display_fr = 'DDA',
    display_it = 'DDA',
    display_ro = 'DDA'
-WHERE code =4394;
+WHERE code = 4394;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4395,4395) ON CONFLICT DO NOTHING;
 
@@ -15401,7 +16016,8 @@ WHERE code =4394;
    display_fr = 'DDB',
    display_it = 'DDB',
    display_ro = 'DDB'
-WHERE code =4395;
+WHERE code = 4395;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8951,8951) ON CONFLICT DO NOTHING;
 
@@ -15426,7 +16042,8 @@ WHERE code =4395;
    display_fr = 'DDCAB',
    display_it = 'DDCAB',
    display_ro = 'DDCAB'
-WHERE code =8951;
+WHERE code = 8951;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8952,8952) ON CONFLICT DO NOTHING;
 
@@ -15451,7 +16068,8 @@ WHERE code =8951;
    display_fr = 'DDCAZ',
    display_it = 'DDCAZ',
    display_ro = 'DDCAZ'
-WHERE code =8952;
+WHERE code = 8952;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8953,8953) ON CONFLICT DO NOTHING;
 
@@ -15476,7 +16094,8 @@ WHERE code =8952;
    display_fr = 'DDCBA',
    display_it = 'DDCBA',
    display_ro = 'DDCBA'
-WHERE code =8953;
+WHERE code = 8953;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8954,8954) ON CONFLICT DO NOTHING;
 
@@ -15501,7 +16120,8 @@ WHERE code =8953;
    display_fr = 'DDCBB',
    display_it = 'DDCBB',
    display_ro = 'DDCBB'
-WHERE code =8954;
+WHERE code = 8954;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8955,8955) ON CONFLICT DO NOTHING;
 
@@ -15526,7 +16146,8 @@ WHERE code =8954;
    display_fr = 'DDCBZ',
    display_it = 'DDCBZ',
    display_ro = 'DDCBZ'
-WHERE code =8955;
+WHERE code = 8955;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8956,8956) ON CONFLICT DO NOTHING;
 
@@ -15551,7 +16172,8 @@ WHERE code =8955;
    display_fr = 'DDCCA',
    display_it = 'DDCCA',
    display_ro = 'DDCCA'
-WHERE code =8956;
+WHERE code = 8956;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8957,8957) ON CONFLICT DO NOTHING;
 
@@ -15576,7 +16198,8 @@ WHERE code =8956;
    display_fr = 'DDCCB',
    display_it = 'DDCCB',
    display_ro = 'DDCCB'
-WHERE code =8957;
+WHERE code = 8957;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8958,8958) ON CONFLICT DO NOTHING;
 
@@ -15601,7 +16224,8 @@ WHERE code =8957;
    display_fr = 'DDCCZ',
    display_it = 'DDCCZ',
    display_ro = 'DDCCZ'
-WHERE code =8958;
+WHERE code = 8958;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8959,8959) ON CONFLICT DO NOTHING;
 
@@ -15626,7 +16250,8 @@ WHERE code =8958;
    display_fr = 'DDCDA',
    display_it = 'DDCDA',
    display_ro = 'DDCDA'
-WHERE code =8959;
+WHERE code = 8959;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8960,8960) ON CONFLICT DO NOTHING;
 
@@ -15651,7 +16276,8 @@ WHERE code =8959;
    display_fr = 'DDCDB',
    display_it = 'DDCDB',
    display_ro = 'DDCDB'
-WHERE code =8960;
+WHERE code = 8960;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8961,8961) ON CONFLICT DO NOTHING;
 
@@ -15676,7 +16302,8 @@ WHERE code =8960;
    display_fr = 'DDCDZ',
    display_it = 'DDCDZ',
    display_ro = 'DDCDZ'
-WHERE code =8961;
+WHERE code = 8961;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8962,8962) ON CONFLICT DO NOTHING;
 
@@ -15701,7 +16328,8 @@ WHERE code =8961;
    display_fr = 'DDCZA',
    display_it = 'DDCZA',
    display_ro = 'DDCZA'
-WHERE code =8962;
+WHERE code = 8962;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8963,8963) ON CONFLICT DO NOTHING;
 
@@ -15726,7 +16354,8 @@ WHERE code =8962;
    display_fr = 'DDCZB',
    display_it = 'DDCZB',
    display_ro = 'DDCZB'
-WHERE code =8963;
+WHERE code = 8963;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8964,8964) ON CONFLICT DO NOTHING;
 
@@ -15751,7 +16380,8 @@ WHERE code =8963;
    display_fr = 'DDCZZ',
    display_it = 'DDCZZ',
    display_ro = 'DDCZZ'
-WHERE code =8964;
+WHERE code = 8964;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4401,4401) ON CONFLICT DO NOTHING;
 
@@ -15776,7 +16406,8 @@ WHERE code =8964;
    display_fr = 'DDD',
    display_it = 'DDD',
    display_ro = 'DDD'
-WHERE code =4401;
+WHERE code = 4401;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4402,4402) ON CONFLICT DO NOTHING;
 
@@ -15801,7 +16432,8 @@ WHERE code =4401;
    display_fr = 'DDEAA',
    display_it = 'DDEAA',
    display_ro = 'DDEAA'
-WHERE code =4402;
+WHERE code = 4402;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4403,4403) ON CONFLICT DO NOTHING;
 
@@ -15826,7 +16458,8 @@ WHERE code =4402;
    display_fr = 'DDEAB',
    display_it = 'DDEAB',
    display_ro = 'DDEAB'
-WHERE code =4403;
+WHERE code = 4403;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4404,4404) ON CONFLICT DO NOTHING;
 
@@ -15851,7 +16484,8 @@ WHERE code =4403;
    display_fr = 'DDEAC',
    display_it = 'DDEAC',
    display_ro = 'DDEAC'
-WHERE code =4404;
+WHERE code = 4404;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8965,8965) ON CONFLICT DO NOTHING;
 
@@ -15876,7 +16510,8 @@ WHERE code =4404;
    display_fr = 'DDECA',
    display_it = 'DDECA',
    display_ro = 'DDECA'
-WHERE code =8965;
+WHERE code = 8965;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8966,8966) ON CONFLICT DO NOTHING;
 
@@ -15901,7 +16536,8 @@ WHERE code =8965;
    display_fr = 'DDECB',
    display_it = 'DDECB',
    display_ro = 'DDECB'
-WHERE code =8966;
+WHERE code = 8966;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8967,8967) ON CONFLICT DO NOTHING;
 
@@ -15926,7 +16562,8 @@ WHERE code =8966;
    display_fr = 'DDECC',
    display_it = 'DDECC',
    display_ro = 'DDECC'
-WHERE code =8967;
+WHERE code = 8967;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8968,8968) ON CONFLICT DO NOTHING;
 
@@ -15951,7 +16588,8 @@ WHERE code =8967;
    display_fr = 'DDEDA',
    display_it = 'DDEDA',
    display_ro = 'DDEDA'
-WHERE code =8968;
+WHERE code = 8968;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8969,8969) ON CONFLICT DO NOTHING;
 
@@ -15976,7 +16614,8 @@ WHERE code =8968;
    display_fr = 'DDEDB',
    display_it = 'DDEDB',
    display_ro = 'DDEDB'
-WHERE code =8969;
+WHERE code = 8969;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8970,8970) ON CONFLICT DO NOTHING;
 
@@ -16001,7 +16640,8 @@ WHERE code =8969;
    display_fr = 'DDEDC',
    display_it = 'DDEDC',
    display_ro = 'DDEDC'
-WHERE code =8970;
+WHERE code = 8970;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8971,8971) ON CONFLICT DO NOTHING;
 
@@ -16026,7 +16666,8 @@ WHERE code =8970;
    display_fr = 'DDEEA',
    display_it = 'DDEEA',
    display_ro = 'DDEEA'
-WHERE code =8971;
+WHERE code = 8971;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8972,8972) ON CONFLICT DO NOTHING;
 
@@ -16051,7 +16692,8 @@ WHERE code =8971;
    display_fr = 'DDEEB',
    display_it = 'DDEEB',
    display_ro = 'DDEEB'
-WHERE code =8972;
+WHERE code = 8972;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (8973,8973) ON CONFLICT DO NOTHING;
 
@@ -16076,7 +16718,8 @@ WHERE code =8972;
    display_fr = 'DDEEC',
    display_it = 'DDEEC',
    display_ro = 'DDEEC'
-WHERE code =8973;
+WHERE code = 8973;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4408,4408) ON CONFLICT DO NOTHING;
 
@@ -16101,7 +16744,8 @@ WHERE code =8973;
    display_fr = 'DDEYA',
    display_it = 'DDEYA',
    display_ro = 'DDEYA'
-WHERE code =4408;
+WHERE code = 4408;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4409,4409) ON CONFLICT DO NOTHING;
 
@@ -16126,7 +16770,8 @@ WHERE code =4408;
    display_fr = 'DDEYB',
    display_it = 'DDEYB',
    display_ro = 'DDEYB'
-WHERE code =4409;
+WHERE code = 4409;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4410,4410) ON CONFLICT DO NOTHING;
 
@@ -16151,7 +16796,8 @@ WHERE code =4409;
    display_fr = 'DDEYY',
    display_it = 'DDEYY',
    display_ro = 'DDEYY'
-WHERE code =4410;
+WHERE code = 4410;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4411,4411) ON CONFLICT DO NOTHING;
 
@@ -16176,7 +16822,8 @@ WHERE code =4410;
    display_fr = 'DDFA',
    display_it = 'DDFA',
    display_ro = 'DDFA'
-WHERE code =4411;
+WHERE code = 4411;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4412,4412) ON CONFLICT DO NOTHING;
 
@@ -16201,7 +16848,8 @@ WHERE code =4411;
    display_fr = 'DDFB',
    display_it = 'DDFB',
    display_ro = 'DDFB'
-WHERE code =4412;
+WHERE code = 4412;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4413,4413) ON CONFLICT DO NOTHING;
 
@@ -16226,7 +16874,8 @@ WHERE code =4412;
    display_fr = 'DDFC',
    display_it = 'DDFC',
    display_ro = 'DDFC'
-WHERE code =4413;
+WHERE code = 4413;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4414,4414) ON CONFLICT DO NOTHING;
 
@@ -16251,7 +16900,8 @@ WHERE code =4413;
    display_fr = 'DDFZ',
    display_it = 'DDFZ',
    display_ro = 'DDFZ'
-WHERE code =4414;
+WHERE code = 4414;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4416,4416) ON CONFLICT DO NOTHING;
 
@@ -16276,7 +16926,8 @@ WHERE code =4414;
    display_fr = 'DDGA',
    display_it = 'DDGA',
    display_ro = 'DDGA'
-WHERE code =4416;
+WHERE code = 4416;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4417,4417) ON CONFLICT DO NOTHING;
 
@@ -16301,7 +16952,8 @@ WHERE code =4416;
    display_fr = 'DDGB',
    display_it = 'DDGB',
    display_ro = 'DDGB'
-WHERE code =4417;
+WHERE code = 4417;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4418,4418) ON CONFLICT DO NOTHING;
 
@@ -16326,7 +16978,8 @@ WHERE code =4417;
    display_fr = 'DDGC',
    display_it = 'DDGC',
    display_ro = 'DDGC'
-WHERE code =4418;
+WHERE code = 4418;
+
 --- Adapt tww_vl.damage_manhole_manhole_damage_code
  INSERT INTO tww_vl.damage_manhole_manhole_damage_code (code, vsacode) VALUES (4419,4419) ON CONFLICT DO NOTHING;
 
@@ -16351,7 +17004,8 @@ WHERE code =4418;
    display_fr = 'DDGZ',
    display_it = 'DDGZ',
    display_ro = 'DDGZ'
-WHERE code =4419;
+WHERE code = 4419;
+
 --- Adapt tww_vl.damage_manhole_manhole_shaft_area
  INSERT INTO tww_vl.damage_manhole_manhole_shaft_area (code, vsacode) VALUES (3743,3743) ON CONFLICT DO NOTHING;
 
@@ -16376,7 +17030,8 @@ WHERE code =4419;
    display_fr = 'A',
    display_it = 'A',
    display_ro = 'A'
-WHERE code =3743;
+WHERE code = 3743;
+
 --- Adapt tww_vl.damage_manhole_manhole_shaft_area
  INSERT INTO tww_vl.damage_manhole_manhole_shaft_area (code, vsacode) VALUES (3744,3744) ON CONFLICT DO NOTHING;
 
@@ -16401,7 +17056,8 @@ WHERE code =3743;
    display_fr = 'B',
    display_it = 'B',
    display_ro = 'B'
-WHERE code =3744;
+WHERE code = 3744;
+
 --- Adapt tww_vl.damage_manhole_manhole_shaft_area
  INSERT INTO tww_vl.damage_manhole_manhole_shaft_area (code, vsacode) VALUES (3745,3745) ON CONFLICT DO NOTHING;
 
@@ -16426,7 +17082,8 @@ WHERE code =3744;
    display_fr = 'D',
    display_it = 'D',
    display_ro = 'D'
-WHERE code =3745;
+WHERE code = 3745;
+
 --- Adapt tww_vl.damage_manhole_manhole_shaft_area
  INSERT INTO tww_vl.damage_manhole_manhole_shaft_area (code, vsacode) VALUES (3746,3746) ON CONFLICT DO NOTHING;
 
@@ -16451,7 +17108,8 @@ WHERE code =3745;
    display_fr = 'F',
    display_it = 'F',
    display_ro = 'F'
-WHERE code =3746;
+WHERE code = 3746;
+
 --- Adapt tww_vl.damage_manhole_manhole_shaft_area
  INSERT INTO tww_vl.damage_manhole_manhole_shaft_area (code, vsacode) VALUES (3747,3747) ON CONFLICT DO NOTHING;
 
@@ -16476,7 +17134,8 @@ WHERE code =3746;
    display_fr = 'H',
    display_it = 'H',
    display_ro = 'H'
-WHERE code =3747;
+WHERE code = 3747;
+
 --- Adapt tww_vl.damage_manhole_manhole_shaft_area
  INSERT INTO tww_vl.damage_manhole_manhole_shaft_area (code, vsacode) VALUES (3748,3748) ON CONFLICT DO NOTHING;
 
@@ -16501,7 +17160,8 @@ WHERE code =3747;
    display_fr = 'I',
    display_it = 'I',
    display_ro = 'I'
-WHERE code =3748;
+WHERE code = 3748;
+
 --- Adapt tww_vl.damage_manhole_manhole_shaft_area
  INSERT INTO tww_vl.damage_manhole_manhole_shaft_area (code, vsacode) VALUES (3749,3749) ON CONFLICT DO NOTHING;
 
@@ -16526,7 +17186,8 @@ WHERE code =3748;
    display_fr = 'J',
    display_it = 'J',
    display_ro = 'J'
-WHERE code =3749;
+WHERE code = 3749;
+
 --- Adapt tww_vl.data_media_kind
  INSERT INTO tww_vl.data_media_kind (code, vsacode) VALUES (3784,3784) ON CONFLICT DO NOTHING;
 
@@ -16551,7 +17212,8 @@ WHERE code =3749;
    display_fr = 'autre',
    display_it = '',
    display_ro = ''
-WHERE code =3784;
+WHERE code = 3784;
+
 --- Adapt tww_vl.data_media_kind
  INSERT INTO tww_vl.data_media_kind (code, vsacode) VALUES (3785,3785) ON CONFLICT DO NOTHING;
 
@@ -16576,7 +17238,8 @@ WHERE code =3784;
    display_fr = 'CD',
    display_it = 'CD',
    display_ro = 'CD'
-WHERE code =3785;
+WHERE code = 3785;
+
 --- Adapt tww_vl.data_media_kind
  INSERT INTO tww_vl.data_media_kind (code, vsacode) VALUES (3786,3786) ON CONFLICT DO NOTHING;
 
@@ -16601,7 +17264,8 @@ WHERE code =3785;
    display_fr = 'disquette',
    display_it = '',
    display_ro = ''
-WHERE code =3786;
+WHERE code = 3786;
+
 --- Adapt tww_vl.data_media_kind
  INSERT INTO tww_vl.data_media_kind (code, vsacode) VALUES (3787,3787) ON CONFLICT DO NOTHING;
 
@@ -16626,7 +17290,8 @@ WHERE code =3786;
    display_fr = 'DVD',
    display_it = 'DVD',
    display_ro = 'DVD'
-WHERE code =3787;
+WHERE code = 3787;
+
 --- Adapt tww_vl.data_media_kind
  INSERT INTO tww_vl.data_media_kind (code, vsacode) VALUES (3788,3788) ON CONFLICT DO NOTHING;
 
@@ -16651,7 +17316,8 @@ WHERE code =3787;
    display_fr = 'disque dur',
    display_it = '',
    display_ro = ''
-WHERE code =3788;
+WHERE code = 3788;
+
 --- Adapt tww_vl.data_media_kind
  INSERT INTO tww_vl.data_media_kind (code, vsacode) VALUES (3789,3789) ON CONFLICT DO NOTHING;
 
@@ -16676,7 +17342,8 @@ WHERE code =3788;
    display_fr = 'serveur',
    display_it = '',
    display_ro = ''
-WHERE code =3789;
+WHERE code = 3789;
+
 --- Adapt tww_vl.data_media_kind
  INSERT INTO tww_vl.data_media_kind (code, vsacode) VALUES (3790,3790) ON CONFLICT DO NOTHING;
 
@@ -16701,7 +17368,8 @@ WHERE code =3789;
    display_fr = 'bande vidéo',
    display_it = '',
    display_ro = ''
-WHERE code =3790;
+WHERE code = 3790;
+
 --- Adapt tww_vl.data_media_kind
  INSERT INTO tww_vl.data_media_kind (code, vsacode) VALUES (9318,9318) ON CONFLICT DO NOTHING;
 
@@ -16726,7 +17394,8 @@ WHERE code =3790;
    display_fr = 'serveur web',
    display_it = '',
    display_ro = ''
-WHERE code =9318;
+WHERE code = 9318;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (9044,9044) ON CONFLICT DO NOTHING;
 
@@ -16751,7 +17420,8 @@ WHERE code =9318;
    display_fr = 'TOILETTE_SANS_VIDANGE',
    display_it = '',
    display_ro = 'rrr_Abflusslose_Toilette'
-WHERE code =9044;
+WHERE code = 9044;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (9042,9042) ON CONFLICT DO NOTHING;
 
@@ -16776,7 +17446,8 @@ WHERE code =9044;
    display_fr = 'EVACUATION_SANS_REJET',
    display_it = '',
    display_ro = ''
-WHERE code =9042;
+WHERE code = 9042;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3800,3800) ON CONFLICT DO NOTHING;
 
@@ -16801,7 +17472,8 @@ WHERE code =9042;
    display_fr = 'LIMITEUR_DEBIT',
    display_it = '',
    display_ro = ''
-WHERE code =3800;
+WHERE code = 3800;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3801,3801) ON CONFLICT DO NOTHING;
 
@@ -16826,7 +17498,8 @@ WHERE code =3800;
    display_fr = 'OUVRAGE_RESEAU_AS',
    display_it = '',
    display_ro = ''
-WHERE code =3801;
+WHERE code = 3801;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3802,3802) ON CONFLICT DO NOTHING;
 
@@ -16851,7 +17524,8 @@ WHERE code =3801;
    display_fr = 'TRAITEMENT_EAUX_USEES',
    display_it = '',
    display_ro = ''
-WHERE code =3802;
+WHERE code = 3802;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3803,3803) ON CONFLICT DO NOTHING;
 
@@ -16876,7 +17550,8 @@ WHERE code =3802;
    display_fr = 'NOEUD_RESEAU',
    display_it = '',
    display_ro = ''
-WHERE code =3803;
+WHERE code = 3803;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3804,3804) ON CONFLICT DO NOTHING;
 
@@ -16901,7 +17576,8 @@ WHERE code =3803;
    display_fr = 'ELEMENT_RESEAU_EVACUATION',
    display_it = '',
    display_ro = ''
-WHERE code =3804;
+WHERE code = 3804;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3805,3805) ON CONFLICT DO NOTHING;
 
@@ -16926,7 +17602,8 @@ WHERE code =3804;
    display_fr = 'STATION_EPURATION',
    display_it = '',
    display_ro = ''
-WHERE code =3805;
+WHERE code = 3805;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3806,3806) ON CONFLICT DO NOTHING;
 
@@ -16951,7 +17628,8 @@ WHERE code =3805;
    display_fr = 'ASSOCIATION_EPURATION_EAU',
    display_it = '',
    display_ro = ''
-WHERE code =3806;
+WHERE code = 3806;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3807,3807) ON CONFLICT DO NOTHING;
 
@@ -16976,7 +17654,8 @@ WHERE code =3806;
    display_fr = 'OFFICE',
    display_it = '',
    display_ro = ''
-WHERE code =3807;
+WHERE code = 3807;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3808,3808) ON CONFLICT DO NOTHING;
 
@@ -17001,7 +17680,8 @@ WHERE code =3807;
    display_fr = 'OBJET_RACCORDE',
    display_it = '',
    display_ro = ''
-WHERE code =3808;
+WHERE code = 3808;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3809,3809) ON CONFLICT DO NOTHING;
 
@@ -17026,7 +17706,8 @@ WHERE code =3808;
    display_fr = 'OUVRAGES_STEP',
    display_it = '',
    display_ro = ''
-WHERE code =3809;
+WHERE code = 3809;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3810,3810) ON CONFLICT DO NOTHING;
 
@@ -17051,7 +17732,8 @@ WHERE code =3809;
    display_fr = 'CONSOMMATION_ENERGIE_STEP',
    display_it = '',
    display_ro = ''
-WHERE code =3810;
+WHERE code = 3810;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3811,3811) ON CONFLICT DO NOTHING;
 
@@ -17076,7 +17758,8 @@ WHERE code =3810;
    display_fr = 'LIEU_BAIGNADE',
    display_it = '',
    display_ro = ''
-WHERE code =3811;
+WHERE code = 3811;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3812,3812) ON CONFLICT DO NOTHING;
 
@@ -17101,7 +17784,8 @@ WHERE code =3811;
    display_fr = 'BANQUETTE',
    display_it = '',
    display_ro = ''
-WHERE code =3812;
+WHERE code = 3812;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3813,3813) ON CONFLICT DO NOTHING;
 
@@ -17126,7 +17810,8 @@ WHERE code =3812;
    display_fr = 'élement ouvrage',
    display_it = '',
    display_ro = ''
-WHERE code =3813;
+WHERE code = 3813;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (9038,9038) ON CONFLICT DO NOTHING;
 
@@ -17151,7 +17836,8 @@ WHERE code =3813;
    display_fr = 'VIDANGE_DE_BASSINS',
    display_it = '',
    display_ro = ''
-WHERE code =9038;
+WHERE code = 9038;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (9039,9039) ON CONFLICT DO NOTHING;
 
@@ -17176,7 +17862,8 @@ WHERE code =9038;
    display_fr = 'NETTOYAGE_DE_BASSINS',
    display_it = '',
    display_ro = ''
-WHERE code =9039;
+WHERE code = 9039;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (9027,9027) ON CONFLICT DO NOTHING;
 
@@ -17201,7 +17888,8 @@ WHERE code =9039;
    display_fr = 'EVALUATION_GENERALE_ECO_BIOL',
    display_it = '',
    display_ro = ''
-WHERE code =9027;
+WHERE code = 9027;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3814,3814) ON CONFLICT DO NOTHING;
 
@@ -17226,7 +17914,8 @@ WHERE code =9027;
    display_fr = 'FONTAINE',
    display_it = '',
    display_ro = ''
-WHERE code =3814;
+WHERE code = 3814;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3815,3815) ON CONFLICT DO NOTHING;
 
@@ -17251,7 +17940,8 @@ WHERE code =3814;
    display_fr = 'FICHIER',
    display_it = '',
    display_ro = ''
-WHERE code =3815;
+WHERE code = 3815;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3816,3816) ON CONFLICT DO NOTHING;
 
@@ -17276,7 +17966,8 @@ WHERE code =3815;
    display_fr = 'SUPPORT_DONNEES',
    display_it = '',
    display_ro = ''
-WHERE code =3816;
+WHERE code = 3816;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3817,3817) ON CONFLICT DO NOTHING;
 
@@ -17301,7 +17992,8 @@ WHERE code =3816;
    display_fr = 'COUVERCLE',
    display_it = '',
    display_ro = ''
-WHERE code =3817;
+WHERE code = 3817;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3818,3818) ON CONFLICT DO NOTHING;
 
@@ -17326,7 +18018,8 @@ WHERE code =3817;
    display_fr = 'PASSAGE_SOUS_TUYAU',
    display_it = '',
    display_ro = ''
-WHERE code =3818;
+WHERE code = 3818;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (5083,5083) ON CONFLICT DO NOTHING;
 
@@ -17351,7 +18044,8 @@ WHERE code =3818;
    display_fr = 'EXUTOIRE',
    display_it = '',
    display_ro = ''
-WHERE code =5083;
+WHERE code = 5083;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3819,3819) ON CONFLICT DO NOTHING;
 
@@ -17376,7 +18070,8 @@ WHERE code =5083;
    display_fr = 'dispositif access',
    display_it = '',
    display_ro = ''
-WHERE code =3819;
+WHERE code = 3819;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3820,3820) ON CONFLICT DO NOTHING;
 
@@ -17401,7 +18096,8 @@ WHERE code =3819;
    display_fr = 'SURFACE_INDIVIDUELLE',
    display_it = '',
    display_ro = ''
-WHERE code =3820;
+WHERE code = 3820;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3821,3821) ON CONFLICT DO NOTHING;
 
@@ -17426,7 +18122,8 @@ WHERE code =3820;
    display_fr = 'BASSIN_VERSANT',
    display_it = '',
    display_ro = ''
-WHERE code =3821;
+WHERE code = 3821;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3822,3822) ON CONFLICT DO NOTHING;
 
@@ -17451,7 +18148,8 @@ WHERE code =3821;
    display_fr = 'EQUIPEMENT_ELECTRIQUE',
    display_it = '',
    display_ro = ''
-WHERE code =3822;
+WHERE code = 3822;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3823,3823) ON CONFLICT DO NOTHING;
 
@@ -17476,7 +18174,8 @@ WHERE code =3822;
    display_fr = 'EQUIPEMENT_ELECTROMECA',
    display_it = '',
    display_ro = ''
-WHERE code =3823;
+WHERE code = 3823;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (9028,9028) ON CONFLICT DO NOTHING;
 
@@ -17501,7 +18200,8 @@ WHERE code =3823;
    display_fr = 'EVACUATION',
    display_it = '',
    display_ro = ''
-WHERE code =9028;
+WHERE code = 9028;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (9043,9043) ON CONFLICT DO NOTHING;
 
@@ -17526,7 +18226,8 @@ WHERE code =9028;
    display_fr = 'EVACUATION_AVEC_REJET',
    display_it = '',
    display_ro = ''
-WHERE code =9043;
+WHERE code = 9043;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3824,3824) ON CONFLICT DO NOTHING;
 
@@ -17551,7 +18252,8 @@ WHERE code =9043;
    display_fr = '',
    display_it = '',
    display_ro = ''
-WHERE code =3824;
+WHERE code = 3824;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3825,3825) ON CONFLICT DO NOTHING;
 
@@ -17576,7 +18278,8 @@ WHERE code =3824;
    display_fr = 'EVENEMENT_MAINTENANCE',
    display_it = '',
    display_ro = ''
-WHERE code =3825;
+WHERE code = 3825;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (9029,9029) ON CONFLICT DO NOTHING;
 
@@ -17601,7 +18304,8 @@ WHERE code =3825;
    display_fr = 'RETENUE_DE_MATIERES_SOLIDES',
    display_it = '',
    display_ro = ''
-WHERE code =9029;
+WHERE code = 9029;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3826,3826) ON CONFLICT DO NOTHING;
 
@@ -17626,7 +18330,8 @@ WHERE code =9029;
    display_fr = 'échelle poissons',
    display_it = '',
    display_ro = ''
-WHERE code =3826;
+WHERE code = 3826;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3827,3827) ON CONFLICT DO NOTHING;
 
@@ -17651,7 +18356,8 @@ WHERE code =3826;
    display_fr = '',
    display_it = '',
    display_ro = ''
-WHERE code =3827;
+WHERE code = 3827;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3828,3828) ON CONFLICT DO NOTHING;
 
@@ -17676,7 +18382,8 @@ WHERE code =3827;
    display_fr = 'INSTALLATION_REFOULEMENT',
    display_it = '',
    display_ro = ''
-WHERE code =3828;
+WHERE code = 3828;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3829,3829) ON CONFLICT DO NOTHING;
 
@@ -17701,7 +18408,8 @@ WHERE code =3828;
    display_fr = 'PASSAGE_A_GUE',
    display_it = '',
    display_ro = ''
-WHERE code =3829;
+WHERE code = 3829;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3830,3830) ON CONFLICT DO NOTHING;
 
@@ -17726,7 +18434,8 @@ WHERE code =3829;
    display_fr = 'BATIMENT',
    display_it = '',
    display_ro = ''
-WHERE code =3830;
+WHERE code = 3830;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (9030,9030) ON CONFLICT DO NOTHING;
 
@@ -17751,7 +18460,8 @@ WHERE code =3830;
    display_fr = 'BATIMENTS',
    display_it = '',
    display_ro = ''
-WHERE code =9030;
+WHERE code = 9030;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (9031,9031) ON CONFLICT DO NOTHING;
 
@@ -17776,7 +18486,8 @@ WHERE code =9030;
    display_fr = 'BATIMENTS_BAUREGBL',
    display_it = '',
    display_ro = ''
-WHERE code =9031;
+WHERE code = 9031;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3831,3831) ON CONFLICT DO NOTHING;
 
@@ -17801,7 +18512,8 @@ WHERE code =9031;
    display_fr = 'SOURCE_DANGER',
    display_it = '',
    display_ro = ''
-WHERE code =3831;
+WHERE code = 3831;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3832,3832) ON CONFLICT DO NOTHING;
 
@@ -17826,7 +18538,8 @@ WHERE code =3831;
    display_fr = 'COMMUNE',
    display_it = '',
    display_ro = ''
-WHERE code =3832;
+WHERE code = 3832;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (9032,9032) ON CONFLICT DO NOTHING;
 
@@ -17851,7 +18564,8 @@ WHERE code =3832;
    display_fr = 'COOPERATIVE',
    display_it = '',
    display_ro = ''
-WHERE code =9032;
+WHERE code = 9032;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (9041,9041) ON CONFLICT DO NOTHING;
 
@@ -17876,7 +18590,8 @@ WHERE code =9032;
    display_fr = 'BASSIN_VERSANT_COMPLET',
    display_it = '',
    display_ro = ''
-WHERE code =9041;
+WHERE code = 9041;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3833,3833) ON CONFLICT DO NOTHING;
 
@@ -17901,7 +18616,8 @@ WHERE code =9041;
    display_fr = 'BARRAGE_ALLUVIONS',
    display_it = '',
    display_ro = ''
-WHERE code =3833;
+WHERE code = 3833;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3834,3834) ON CONFLICT DO NOTHING;
 
@@ -17926,7 +18642,8 @@ WHERE code =3833;
    display_fr = 'TRONCON_COURS_EAU',
    display_it = '',
    display_ro = ''
-WHERE code =3834;
+WHERE code = 3834;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3835,3835) ON CONFLICT DO NOTHING;
 
@@ -17951,7 +18668,8 @@ WHERE code =3834;
    display_fr = 'SEUIL',
    display_it = '',
    display_ro = ''
-WHERE code =3835;
+WHERE code = 3835;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3836,3836) ON CONFLICT DO NOTHING;
 
@@ -17976,7 +18694,8 @@ WHERE code =3835;
    display_fr = 'SECTEUR_PROTECTION_EAUX',
    display_it = '',
    display_ro = ''
-WHERE code =3836;
+WHERE code = 3836;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3837,3837) ON CONFLICT DO NOTHING;
 
@@ -18001,7 +18720,8 @@ WHERE code =3836;
    display_fr = 'SECTEUR_EAUX_SUP',
    display_it = '',
    display_ro = ''
-WHERE code =3837;
+WHERE code = 3837;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3838,3838) ON CONFLICT DO NOTHING;
 
@@ -18026,7 +18746,8 @@ WHERE code =3837;
    display_fr = 'fond cours d''eau',
    display_it = '',
    display_ro = ''
-WHERE code =3838;
+WHERE code = 3838;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3839,3839) ON CONFLICT DO NOTHING;
 
@@ -18051,7 +18772,8 @@ WHERE code =3838;
    display_fr = 'AMENAGEMENT_COURS_EAU',
    display_it = '',
    display_ro = ''
-WHERE code =3839;
+WHERE code = 3839;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3840,3840) ON CONFLICT DO NOTHING;
 
@@ -18076,7 +18798,8 @@ WHERE code =3839;
    display_fr = 'OUVRAGE_RETENUE',
    display_it = '',
    display_ro = ''
-WHERE code =3840;
+WHERE code = 3840;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3841,3841) ON CONFLICT DO NOTHING;
 
@@ -18101,7 +18824,8 @@ WHERE code =3840;
    display_fr = 'AQUIFERE',
    display_it = '',
    display_ro = ''
-WHERE code =3841;
+WHERE code = 3841;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3842,3842) ON CONFLICT DO NOTHING;
 
@@ -18126,7 +18850,8 @@ WHERE code =3841;
    display_fr = 'PERIMETRE_PROT_EAUX_SOUT',
    display_it = '',
    display_ro = ''
-WHERE code =3842;
+WHERE code = 3842;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3843,3843) ON CONFLICT DO NOTHING;
 
@@ -18151,7 +18876,8 @@ WHERE code =3842;
    display_fr = '',
    display_it = '',
    display_ro = ''
-WHERE code =3843;
+WHERE code = 3843;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3844,3844) ON CONFLICT DO NOTHING;
 
@@ -18176,7 +18902,8 @@ WHERE code =3843;
    display_fr = 'TRONCON',
    display_it = '',
    display_ro = ''
-WHERE code =3844;
+WHERE code = 3844;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3845,3845) ON CONFLICT DO NOTHING;
 
@@ -18201,7 +18928,8 @@ WHERE code =3844;
    display_fr = 'POINT_TRONCON',
    display_it = '',
    display_ro = ''
-WHERE code =3845;
+WHERE code = 3845;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3846,3846) ON CONFLICT DO NOTHING;
 
@@ -18226,7 +18954,8 @@ WHERE code =3845;
    display_fr = 'RELATION_HQ',
    display_it = '',
    display_ro = ''
-WHERE code =3846;
+WHERE code = 3846;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3847,3847) ON CONFLICT DO NOTHING;
 
@@ -18251,7 +18980,8 @@ WHERE code =3846;
    display_fr = 'Géométrie hydraulique',
    display_it = '',
    display_ro = ''
-WHERE code =3847;
+WHERE code = 3847;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3848,3848) ON CONFLICT DO NOTHING;
 
@@ -18276,7 +19006,8 @@ WHERE code =3847;
    display_fr = 'RELATION_GEOM_HYDR',
    display_it = '',
    display_ro = ''
-WHERE code =3848;
+WHERE code = 3848;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (9033,9033) ON CONFLICT DO NOTHING;
 
@@ -18301,7 +19032,8 @@ WHERE code =3848;
    display_fr = 'PARAMETRES_HYDR',
    display_it = '',
    display_ro = ''
-WHERE code =9033;
+WHERE code = 9033;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3849,3849) ON CONFLICT DO NOTHING;
 
@@ -18326,7 +19058,8 @@ WHERE code =9033;
    display_fr = 'CANALISATION',
    display_it = '',
    display_ro = ''
-WHERE code =3849;
+WHERE code = 3849;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3850,3850) ON CONFLICT DO NOTHING;
 
@@ -18351,7 +19084,8 @@ WHERE code =3849;
    display_fr = 'dommage aux canalisation',
    display_it = '',
    display_ro = ''
-WHERE code =3850;
+WHERE code = 3850;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3851,3851) ON CONFLICT DO NOTHING;
 
@@ -18376,7 +19110,8 @@ WHERE code =3850;
    display_fr = 'CANTON',
    display_it = '',
    display_ro = ''
-WHERE code =3851;
+WHERE code = 3851;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (9034,9034) ON CONFLICT DO NOTHING;
 
@@ -18401,7 +19136,8 @@ WHERE code =3851;
    display_fr = 'PETITE_STEP',
    display_it = '',
    display_ro = ''
-WHERE code =9034;
+WHERE code = 9034;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (9035,9035) ON CONFLICT DO NOTHING;
 
@@ -18426,7 +19162,8 @@ WHERE code =9034;
    display_fr = 'EXPLOITATION_AGRICOLE',
    display_it = '',
    display_ro = ''
-WHERE code =9035;
+WHERE code = 9035;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3852,3852) ON CONFLICT DO NOTHING;
 
@@ -18451,7 +19188,8 @@ WHERE code =9035;
    display_fr = 'LEAPING_WEIR',
    display_it = '',
    display_ro = ''
-WHERE code =3852;
+WHERE code = 3852;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (9036,9036) ON CONFLICT DO NOTHING;
 
@@ -18476,7 +19214,8 @@ WHERE code =3852;
    display_fr = 'MESURE',
    display_it = '',
    display_ro = ''
-WHERE code =9036;
+WHERE code = 9036;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3853,3853) ON CONFLICT DO NOTHING;
 
@@ -18501,7 +19240,8 @@ WHERE code =9036;
    display_fr = 'PRETRAITEMENT_MECANIQUE',
    display_it = '',
    display_ro = ''
-WHERE code =3853;
+WHERE code = 3853;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3854,3854) ON CONFLICT DO NOTHING;
 
@@ -18526,7 +19266,8 @@ WHERE code =3853;
    display_fr = 'APPAREIL_MESURE',
    display_it = '',
    display_ro = ''
-WHERE code =3854;
+WHERE code = 3854;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3855,3855) ON CONFLICT DO NOTHING;
 
@@ -18551,7 +19292,8 @@ WHERE code =3854;
    display_fr = 'SERIE_MESURES',
    display_it = '',
    display_ro = ''
-WHERE code =3855;
+WHERE code = 3855;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3856,3856) ON CONFLICT DO NOTHING;
 
@@ -18576,7 +19318,8 @@ WHERE code =3855;
    display_fr = 'RESULTAT_MESURE',
    display_it = '',
    display_ro = ''
-WHERE code =3856;
+WHERE code = 3856;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3857,3857) ON CONFLICT DO NOTHING;
 
@@ -18601,7 +19344,8 @@ WHERE code =3856;
    display_fr = 'STATION_MESURE',
    display_it = '',
    display_ro = ''
-WHERE code =3857;
+WHERE code = 3857;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3858,3858) ON CONFLICT DO NOTHING;
 
@@ -18626,7 +19370,8 @@ WHERE code =3857;
    display_fr = 'CHAMBRE_STANDARD',
    display_it = '',
    display_ro = ''
-WHERE code =3858;
+WHERE code = 3858;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3859,3859) ON CONFLICT DO NOTHING;
 
@@ -18651,7 +19396,8 @@ WHERE code =3858;
    display_fr = 'dommage chambre standard',
    display_it = '',
    display_ro = ''
-WHERE code =3859;
+WHERE code = 3859;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3861,3861) ON CONFLICT DO NOTHING;
 
@@ -18676,7 +19422,8 @@ WHERE code =3859;
    display_fr = 'PARAM_ECOULEMENT_SUP',
    display_it = '',
    display_ro = ''
-WHERE code =3861;
+WHERE code = 3861;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3862,3862) ON CONFLICT DO NOTHING;
 
@@ -18701,7 +19448,8 @@ WHERE code =3861;
    display_fr = 'eaux superficielles',
    display_it = '',
    display_ro = ''
-WHERE code =3862;
+WHERE code = 3862;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3863,3863) ON CONFLICT DO NOTHING;
 
@@ -18726,7 +19474,8 @@ WHERE code =3862;
    display_fr = 'ORGANISATION',
    display_it = '',
    display_ro = ''
-WHERE code =3863;
+WHERE code = 3863;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3864,3864) ON CONFLICT DO NOTHING;
 
@@ -18751,7 +19500,8 @@ WHERE code =3863;
    display_fr = 'ZONE_RESERVEE',
    display_it = '',
    display_ro = ''
-WHERE code =3864;
+WHERE code = 3864;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3865,3865) ON CONFLICT DO NOTHING;
 
@@ -18776,7 +19526,8 @@ WHERE code =3864;
    display_fr = 'PRIVE',
    display_it = '',
    display_ro = 'privata'
-WHERE code =3865;
+WHERE code = 3865;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3866,3866) ON CONFLICT DO NOTHING;
 
@@ -18801,7 +19552,8 @@ WHERE code =3865;
    display_fr = 'dispositif nettoyage',
    display_it = '',
    display_ro = ''
-WHERE code =3866;
+WHERE code = 3866;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3867,3867) ON CONFLICT DO NOTHING;
 
@@ -18826,7 +19578,8 @@ WHERE code =3866;
    display_fr = 'RESERVOIR',
    display_it = '',
    display_ro = ''
-WHERE code =3867;
+WHERE code = 3867;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3868,3868) ON CONFLICT DO NOTHING;
 
@@ -18851,7 +19604,8 @@ WHERE code =3867;
    display_fr = '',
    display_it = '',
    display_ro = ''
-WHERE code =3868;
+WHERE code = 3868;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3869,3869) ON CONFLICT DO NOTHING;
 
@@ -18876,7 +19630,8 @@ WHERE code =3868;
    display_fr = 'PROFIL_TUYAU',
    display_it = '',
    display_ro = ''
-WHERE code =3869;
+WHERE code = 3869;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3870,3870) ON CONFLICT DO NOTHING;
 
@@ -18901,7 +19656,8 @@ WHERE code =3869;
    display_fr = 'PROFIL_TUYAU_GEOM',
    display_it = '',
    display_ro = ''
-WHERE code =3870;
+WHERE code = 3870;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (9040,9040) ON CONFLICT DO NOTHING;
 
@@ -18926,7 +19682,8 @@ WHERE code =3870;
    display_fr = 'PROTECTION_REFOULEMENT',
    display_it = '',
    display_ro = ''
-WHERE code =9040;
+WHERE code = 9040;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3871,3871) ON CONFLICT DO NOTHING;
 
@@ -18951,7 +19708,8 @@ WHERE code =9040;
    display_fr = 'dommage',
    display_it = '',
    display_ro = ''
-WHERE code =3871;
+WHERE code = 3871;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3872,3872) ON CONFLICT DO NOTHING;
 
@@ -18976,7 +19734,8 @@ WHERE code =3871;
    display_fr = '',
    display_it = '',
    display_ro = ''
-WHERE code =3872;
+WHERE code = 3872;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3873,3873) ON CONFLICT DO NOTHING;
 
@@ -19001,7 +19760,8 @@ WHERE code =3872;
    display_fr = 'éclues',
    display_it = '',
    display_ro = ''
-WHERE code =3873;
+WHERE code = 3873;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3874,3874) ON CONFLICT DO NOTHING;
 
@@ -19026,7 +19786,8 @@ WHERE code =3873;
    display_fr = 'lac',
    display_it = 'lago',
    display_ro = ''
-WHERE code =3874;
+WHERE code = 3874;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3875,3875) ON CONFLICT DO NOTHING;
 
@@ -19051,7 +19812,8 @@ WHERE code =3874;
    display_fr = 'RAMPE',
    display_it = '',
    display_ro = ''
-WHERE code =3875;
+WHERE code = 3875;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3876,3876) ON CONFLICT DO NOTHING;
 
@@ -19076,7 +19838,8 @@ WHERE code =3875;
    display_fr = 'OUVRAGE_SPECIAL',
    display_it = '',
    display_ro = ''
-WHERE code =3876;
+WHERE code = 3876;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (9026,9026) ON CONFLICT DO NOTHING;
 
@@ -19101,7 +19864,8 @@ WHERE code =3876;
    display_fr = 'TETE_DE_RINCAGE',
    display_it = '',
    display_ro = ''
-WHERE code =9026;
+WHERE code = 9026;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (9037,9037) ON CONFLICT DO NOTHING;
 
@@ -19126,7 +19890,8 @@ WHERE code =9026;
    display_fr = 'FICHE_TECHNIQUE',
    display_it = '',
    display_ro = ''
-WHERE code =9037;
+WHERE code = 9037;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3877,3877) ON CONFLICT DO NOTHING;
 
@@ -19151,7 +19916,8 @@ WHERE code =9037;
    display_fr = 'CENTRALE_COMMANDE',
    display_it = '',
    display_ro = ''
-WHERE code =3877;
+WHERE code = 3877;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3878,3878) ON CONFLICT DO NOTHING;
 
@@ -19176,7 +19942,8 @@ WHERE code =3877;
    display_fr = 'SUBSTANCE',
    display_it = '',
    display_ro = ''
-WHERE code =3878;
+WHERE code = 3878;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3879,3879) ON CONFLICT DO NOTHING;
 
@@ -19201,7 +19968,8 @@ WHERE code =3878;
    display_fr = 'DEVERSOIR_LATERAL',
    display_it = '',
    display_ro = ''
-WHERE code =3879;
+WHERE code = 3879;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3880,3880) ON CONFLICT DO NOTHING;
 
@@ -19226,7 +19994,8 @@ WHERE code =3879;
    display_fr = '',
    display_it = '',
    display_ro = ''
-WHERE code =3880;
+WHERE code = 3880;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3881,3881) ON CONFLICT DO NOTHING;
 
@@ -19251,7 +20020,8 @@ WHERE code =3880;
    display_fr = 'CUNETTE_DEBIT_TEMPS_SEC',
    display_it = '',
    display_ro = ''
-WHERE code =3881;
+WHERE code = 3881;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3882,3882) ON CONFLICT DO NOTHING;
 
@@ -19276,7 +20046,8 @@ WHERE code =3881;
    display_fr = 'DEVERSOIR',
    display_it = '',
    display_ro = ''
-WHERE code =3882;
+WHERE code = 3882;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3883,3883) ON CONFLICT DO NOTHING;
 
@@ -19301,7 +20072,8 @@ WHERE code =3882;
    display_fr = 'CARACTERISTIQUES_DEVERSOIR',
    display_it = '',
    display_ro = ''
-WHERE code =3883;
+WHERE code = 3883;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3884,3884) ON CONFLICT DO NOTHING;
 
@@ -19326,7 +20098,8 @@ WHERE code =3883;
    display_fr = 'RIVE',
    display_it = '',
    display_ro = ''
-WHERE code =3884;
+WHERE code = 3884;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3885,3885) ON CONFLICT DO NOTHING;
 
@@ -19351,7 +20124,8 @@ WHERE code =3884;
    display_fr = 'ACCIDENT',
    display_it = '',
    display_ro = ''
-WHERE code =3885;
+WHERE code = 3885;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3886,3886) ON CONFLICT DO NOTHING;
 
@@ -19376,7 +20150,8 @@ WHERE code =3885;
    display_fr = 'EXAMEN',
    display_it = '',
    display_ro = ''
-WHERE code =3886;
+WHERE code = 3886;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3887,3887) ON CONFLICT DO NOTHING;
 
@@ -19401,7 +20176,8 @@ WHERE code =3886;
    display_fr = 'Installation d''infiltration',
    display_it = '',
    display_ro = ''
-WHERE code =3887;
+WHERE code = 3887;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3888,3888) ON CONFLICT DO NOTHING;
 
@@ -19426,7 +20202,8 @@ WHERE code =3887;
    display_fr = '',
    display_it = '',
    display_ro = ''
-WHERE code =3888;
+WHERE code = 3888;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3890,3890) ON CONFLICT DO NOTHING;
 
@@ -19451,7 +20228,8 @@ WHERE code =3888;
    display_fr = 'CAPTAGE',
    display_it = '',
    display_ro = ''
-WHERE code =3890;
+WHERE code = 3890;
+
 --- Adapt tww_vl.file_classname
  INSERT INTO tww_vl.file_classname (code, vsacode) VALUES (3891,3891) ON CONFLICT DO NOTHING;
 
@@ -19476,7 +20254,8 @@ WHERE code =3890;
    display_fr = 'ZONE',
    display_it = '',
    display_ro = ''
-WHERE code =3891;
+WHERE code = 3891;
+
 --- Adapt tww_vl.file_kind
  INSERT INTO tww_vl.file_kind (code, vsacode) VALUES (3770,3770) ON CONFLICT DO NOTHING;
 
@@ -19501,7 +20280,8 @@ WHERE code =3891;
    display_fr = 'autre',
    display_it = '',
    display_ro = ''
-WHERE code =3770;
+WHERE code = 3770;
+
 --- Adapt tww_vl.file_kind
  INSERT INTO tww_vl.file_kind (code, vsacode) VALUES (9146,9146) ON CONFLICT DO NOTHING;
 
@@ -19526,7 +20306,8 @@ WHERE code =3770;
    display_fr = 'vidéo numérique',
    display_it = '',
    display_ro = ''
-WHERE code =9146;
+WHERE code = 9146;
+
 --- Adapt tww_vl.file_kind
  INSERT INTO tww_vl.file_kind (code, vsacode) VALUES (3772,3772) ON CONFLICT DO NOTHING;
 
@@ -19551,7 +20332,8 @@ WHERE code =9146;
    display_fr = 'photo',
    display_it = '',
    display_ro = ''
-WHERE code =3772;
+WHERE code = 3772;
+
 --- Adapt tww_vl.file_kind
  INSERT INTO tww_vl.file_kind (code, vsacode) VALUES (3773,3773) ON CONFLICT DO NOTHING;
 
@@ -19576,7 +20358,8 @@ WHERE code =3772;
    display_fr = 'film panoramique',
    display_it = '',
    display_ro = ''
-WHERE code =3773;
+WHERE code = 3773;
+
 --- Adapt tww_vl.file_kind
  INSERT INTO tww_vl.file_kind (code, vsacode) VALUES (9147,9147) ON CONFLICT DO NOTHING;
 
@@ -19601,7 +20384,8 @@ WHERE code =3773;
    display_fr = 'scan',
    display_it = '',
    display_ro = ''
-WHERE code =9147;
+WHERE code = 9147;
+
 --- Adapt tww_vl.file_kind
  INSERT INTO tww_vl.file_kind (code, vsacode) VALUES (8812,8812) ON CONFLICT DO NOTHING;
 
@@ -19626,7 +20410,8 @@ WHERE code =9147;
    display_fr = 'croquis',
    display_it = '',
    display_ro = 'Schi?a'
-WHERE code =8812;
+WHERE code = 8812;
+
 --- Adapt tww_vl.file_kind
  INSERT INTO tww_vl.file_kind (code, vsacode) VALUES (3774,3774) ON CONFLICT DO NOTHING;
 
@@ -19651,7 +20436,8 @@ WHERE code =8812;
    display_fr = 'fichier texte',
    display_it = '',
    display_ro = ''
-WHERE code =3774;
+WHERE code = 3774;
+
 --- Adapt tww_vl.file_kind
  INSERT INTO tww_vl.file_kind (code, vsacode) VALUES (3775,3775) ON CONFLICT DO NOTHING;
 
@@ -19676,4 +20462,4 @@ WHERE code =3774;
    display_fr = 'vidéo',
    display_it = '',
    display_ro = ''
-WHERE code =3775;
+WHERE code = 3775;
