@@ -68,7 +68,7 @@ class Hook(HookBase):
         }  # when dropping psycopg2 support, we can use the SRID var directly
         self.variables_sql = {
             "SRID": {
-                "value": f"{SRID}",
+                "value": SRID,
                 "type": "number",
             },
             "value_lang": {
