@@ -56,9 +56,9 @@ class Hook(HookBase):
             self.parameters = self.load_yaml(self.cwd / "app_modification.template.yaml")
             if "modification_repositories" in self.parameters:
                 for entry in self.parameters["modification_repositories"]:
-                    if modification_ci and entry[id] == "ci":
+                    if modification_ci and entry["id"] == "ci":
                         entry["active"] = True
-                    if modification_agxx and entry[id] == "agxx":
+                    if modification_agxx and entry["id"] == "agxx":
                         entry["active"] = True
 
         abspath = self.cwd if not modification_yaml else ""
