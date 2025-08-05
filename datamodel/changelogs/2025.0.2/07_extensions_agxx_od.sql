@@ -177,7 +177,6 @@ CREATE INDEX IF NOT EXISTS in_od_agxx_unconnected_node_bwrel_situation3d_geometr
     (situation3d_geometry)
     TABLESPACE pg_default;
 
--- 1:1 relation GEPMassnahme/GEPKnoten
 CREATE TABLE tww_od.agxx_reach_point
 (
    uuid uuid NOT NULL DEFAULT uuid_generate_v4(),
