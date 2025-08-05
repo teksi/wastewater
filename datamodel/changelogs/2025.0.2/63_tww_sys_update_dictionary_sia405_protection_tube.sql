@@ -5,7 +5,7 @@
 --- Adapt tww_sys.dictionary_od_table
 INSERT INTO tww_sys.dictionary_od_table (id, tablename) VALUES (8502,'sia405pt_protection_tube') ON CONFLICT DO NOTHING;
 
-UPDATE tww_sys.dictionary_od_table SET 
+UPDATE tww_sys.dictionary_od_table SET
    tablename = 'sia405pt_protection_tube',
    name_en = 'protection tube',
    shortcut_en = 'PT',
@@ -456,7 +456,7 @@ WHERE (class_id = 8502 AND attribute_id = 9457);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8502,9420,9432) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405pt_protection_tube',
    field_name = 'material',
    value_name = 'unknown',
@@ -479,7 +479,7 @@ WHERE (class_id = 8502 AND attribute_id = 9420 AND attribute_id = 9432);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8502,9420,9433) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405pt_protection_tube',
    field_name = 'material',
    value_name = 'plastic.polyethylene',
@@ -502,7 +502,7 @@ WHERE (class_id = 8502 AND attribute_id = 9420 AND attribute_id = 9433);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8502,9420,9434) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405pt_protection_tube',
    field_name = 'material',
    value_name = 'plastic.PVC',
@@ -525,7 +525,7 @@ WHERE (class_id = 8502 AND attribute_id = 9420 AND attribute_id = 9434);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8502,9420,9435) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405pt_protection_tube',
    field_name = 'material',
    value_name = 'steel',
@@ -548,7 +548,7 @@ WHERE (class_id = 8502 AND attribute_id = 9420 AND attribute_id = 9435);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8502,9420,9436) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405pt_protection_tube',
    field_name = 'material',
    value_name = 'cast_iron.ductile_cast',
@@ -571,7 +571,7 @@ WHERE (class_id = 8502 AND attribute_id = 9420 AND attribute_id = 9436);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8502,9420,9437) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405pt_protection_tube',
    field_name = 'material',
    value_name = 'cast_iron.gray_iron',
@@ -594,7 +594,7 @@ WHERE (class_id = 8502 AND attribute_id = 9420 AND attribute_id = 9437);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8502,9420,9438) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405pt_protection_tube',
    field_name = 'material',
    value_name = 'concrete',
@@ -617,7 +617,7 @@ WHERE (class_id = 8502 AND attribute_id = 9420 AND attribute_id = 9438);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8502,9425,9443) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405pt_protection_tube',
    field_name = 'horizontal_positioning',
    value_name = 'accurate',
@@ -640,7 +640,7 @@ WHERE (class_id = 8502 AND attribute_id = 9425 AND attribute_id = 9443);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8502,9425,9444) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405pt_protection_tube',
    field_name = 'horizontal_positioning',
    value_name = 'unknown',
@@ -663,7 +663,7 @@ WHERE (class_id = 8502 AND attribute_id = 9425 AND attribute_id = 9444);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8502,9425,9445) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405pt_protection_tube',
    field_name = 'horizontal_positioning',
    value_name = 'inaccurate',
@@ -686,7 +686,7 @@ WHERE (class_id = 8502 AND attribute_id = 9425 AND attribute_id = 9445);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8502,9426,9446) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405pt_protection_tube',
    field_name = 'status',
    value_name = 'inoperative',
@@ -709,7 +709,7 @@ WHERE (class_id = 8502 AND attribute_id = 9426 AND attribute_id = 9446);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8502,9426,9447) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405pt_protection_tube',
    field_name = 'status',
    value_name = 'inoperative.reserve',
@@ -732,7 +732,7 @@ WHERE (class_id = 8502 AND attribute_id = 9426 AND attribute_id = 9447);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8502,9426,9448) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405pt_protection_tube',
    field_name = 'status',
    value_name = 'operational',
@@ -755,7 +755,7 @@ WHERE (class_id = 8502 AND attribute_id = 9426 AND attribute_id = 9448);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8502,9426,9449) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405pt_protection_tube',
    field_name = 'status',
    value_name = 'operational.tentative',
@@ -778,7 +778,7 @@ WHERE (class_id = 8502 AND attribute_id = 9426 AND attribute_id = 9449);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8502,9426,9450) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405pt_protection_tube',
    field_name = 'status',
    value_name = 'others',
@@ -801,7 +801,7 @@ WHERE (class_id = 8502 AND attribute_id = 9426 AND attribute_id = 9450);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8502,9426,9451) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405pt_protection_tube',
    field_name = 'status',
    value_name = 'other.calculation_alternative',
@@ -824,7 +824,7 @@ WHERE (class_id = 8502 AND attribute_id = 9426 AND attribute_id = 9451);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8502,9426,9452) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405pt_protection_tube',
    field_name = 'status',
    value_name = 'other.planned',
@@ -847,7 +847,7 @@ WHERE (class_id = 8502 AND attribute_id = 9426 AND attribute_id = 9452);
 
 
 INSERT INTO tww_sys.dictionary_od_values (class_id, attribute_id, value_id) VALUES (8502,9426,9453) ON CONFLICT DO NOTHING;
-UPDATE tww_sys.dictionary_od_values SET 
+UPDATE tww_sys.dictionary_od_values SET
    table_name = 'sia405pt_protection_tube',
    field_name = 'status',
    value_name = 'other.project',
@@ -867,5 +867,3 @@ UPDATE tww_sys.dictionary_od_values SET
    value_description_it = '',
    value_description_ro = ''
 WHERE (class_id = 8502 AND attribute_id = 9426 AND attribute_id = 9453);
-
-
