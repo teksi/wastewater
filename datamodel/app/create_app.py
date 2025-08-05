@@ -372,7 +372,7 @@ Running modification {modification.get('id')}
                 value, var_type = meta["value"], meta["type"].lower()
 
                 if var_type == "number":  # Directly insert SQL without escaping
-                    if isinstance(value,float) or isinstance(value,int):
+                    if isinstance(value, float) or isinstance(value, int):
                         formatted_vars[key] = psycopg.sql.SQL(value)
                     else:  # avoid injection
                         raise ValueError(f"Value '{value}' is not float or int.")
