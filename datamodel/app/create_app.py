@@ -61,7 +61,7 @@ class Hook(HookBase):
                     if modification_agxx and entry["id"] == "agxx":
                         entry["active"] = True
 
-        abspath = self.cwd if not modification_yaml else ""
+        self.abspath = self.cwd if not modification_yaml else ""
 
         variables_pirogue = {
             "SRID": psycopg.sql.SQL(f"{SRID}")
@@ -136,14 +136,14 @@ Running modification {modification.get('id')}
         for key in self.multiple_inherintances:
             MultipleInheritance(
                 connection=self.connection,
-                definition=self.load_yaml(abspath / self.multiple_inherintances[key]),
+                definition=self.load_yaml(self.abspath / self.multiple_inherintances[key]),
                 drop=True,
                 variables=variables_pirogue,
             ).create()
 
         for key, value in self.extra_definitions.items():
             if value:
-                self.extra_definitions[key].update(abspath / value)
+                self.extra_definitions[key].update(self.abspath / value)
 
         vw_wastewater_structure(
             connection=self.connection,
@@ -241,7 +241,7 @@ Running modification {modification.get('id')}
         # TODO: Are these export views necessary? cymed 13.03.25
         for _, yaml_path in self.simple_joins_yaml.items():
             SimpleJoins(
-                definition=self.load_yaml(abspath / yaml_path), connection=self.connection
+                definition=self.load_yaml(self.abspath / yaml_path), connection=self.connection
             ).create()
 
         sql_directories = [
@@ -284,8 +284,8 @@ Running modification {modification.get('id')}
         # load definitions from config
         template_path = modification_config.get("template", None)
         if template_path:
-            curr_dir = os.path.dirname(template_path)
-            modification_config = self.load_yaml(template_path)
+            curr_dir = self.abspath / os.path.dirname(template_path)
+            modification_config = self.load_yaml(self.abspath /template_path)
         else:
             curr_dir = ""
 
