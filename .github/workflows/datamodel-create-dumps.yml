@@ -57,7 +57,7 @@ jobs:
 
       - name: Schemaspy
         if: ${{ matrix.extension == '' }}
-        run:  docker compose run schemaspy
+        run:  docker compose exec schemaspy schemaspy -configFile /schemaspy.properties
 
       - name: Docker logs
         if: failure()
