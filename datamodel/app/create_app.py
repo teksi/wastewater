@@ -111,7 +111,7 @@ Running modification {modification.get('id')}
                 """
                 )
                 self.load_modification(
-                    modification=modification,
+                    modification_config=modification,
                 )
         for entry in self.parameters.get("modification_repositories"):
             if entry.get("reset_vl", False):
