@@ -331,7 +331,8 @@ LEFT JOIN (SELECT
 		   obj_id,
 		   co_level,
 		   detail_geometry3d_geometry,
-		   co_positional_accuracy
+		   co_positional_accuracy,
+		   wwtp_number
 		   FROM
 		   tww_od.agxx_unconnected_node_bwrel) unc ON unc.obj_id=wn.obj_id
 

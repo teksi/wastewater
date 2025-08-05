@@ -7,12 +7,10 @@ def extra_cols(
     connection: psycopg.Connection, extra_definition: dict = {}, skip_prefix: bool = False
 ):
     if extra_definition:
-        # Create a cursor
-        cursor = connection.cursor()
         str = ", " + "\n    ,".join(
             [
                 select_columns(
-                    pg_cur=cursor,
+                    connection=connection,
                     table_schema=table_parts(table_def["table"])[0],
                     table_name=table_parts(table_def["table"])[1],
                     skip_columns=table_def.get("skip_columns", []),
@@ -23,7 +21,6 @@ def extra_cols(
                 for table_def in extra_definition.get("joins", {}).values()
             ]
         )
-        cursor.close()
         return str
     return ""
 
@@ -46,12 +43,10 @@ def extra_joins(connection: psycopg.Connection, extra_definition: dict = {}):
 
 def insert_extra(connection: psycopg.Connection, extra_definition: dict = {}):
     if extra_definition:
-        # Create a cursor
-        cursor = connection.cursor()
         str = "\n     ".join(
             [
                 insert_command(
-                    pg_cur=cursor,
+                    connection=connection,
                     table_schema=table_parts(table_def["table"])[0],
                     table_name=table_parts(table_def["table"])[1],
                     remove_pkey=table_def.get("remove_pkey", False),
@@ -79,12 +74,10 @@ def insert_extra(connection: psycopg.Connection, extra_definition: dict = {}):
 
 def update_extra(connection: psycopg.Connection, extra_definition: dict = {}):
     if extra_definition:
-        # Create a cursor
-        cursor = connection.cursor()
         str = "\n     ".join(
             [
                 update_command(
-                    pg_cur=cursor,
+                    connection=connection,
                     table_schema=table_parts(table_def["table"])[0],
                     table_name=table_parts(table_def["table"])[1],
                     remove_pkey=table_def.get("remove_pkey", False),

@@ -61,14 +61,14 @@ class Hook(HookBase):
                     if modification_agxx and entry["id"] == "agxx":
                         entry["active"] = True
 
-        abspath = self.cwd if not modification_yaml else ""
+        self.abspath = self.cwd if not modification_yaml else ""
 
         variables_pirogue = {
             "SRID": psycopg.sql.SQL(f"{SRID}")
         }  # when dropping psycopg2 support, we can use the SRID var directly
         self.variables_sql = {
             "SRID": {
-                "value": f"{SRID}",
+                "value": SRID,
                 "type": "number",
             },
             "value_lang": {
@@ -136,14 +136,14 @@ Running modification {modification.get('id')}
         for key in self.multiple_inherintances:
             MultipleInheritance(
                 connection=self.connection,
-                definition=self.load_yaml(abspath / self.multiple_inherintances[key]),
+                definition=self.load_yaml(self.abspath / self.multiple_inherintances[key]),
                 drop=True,
                 variables=variables_pirogue,
             ).create()
 
         for key, value in self.extra_definitions.items():
             if value:
-                self.extra_definitions[key].update(abspath / value)
+                self.extra_definitions[key] = self.abspath / value
 
         vw_wastewater_structure(
             connection=self.connection,
@@ -241,7 +241,7 @@ Running modification {modification.get('id')}
         # TODO: Are these export views necessary? cymed 13.03.25
         for _, yaml_path in self.simple_joins_yaml.items():
             SimpleJoins(
-                definition=self.load_yaml(abspath / yaml_path), connection=self.connection
+                definition=self.load_yaml(self.abspath / yaml_path), connection=self.connection
             ).create()
 
         sql_directories = [
@@ -284,8 +284,8 @@ Running modification {modification.get('id')}
         # load definitions from config
         template_path = modification_config.get("template", None)
         if template_path:
-            curr_dir = os.path.dirname(template_path)
-            modification_config = self.load_yaml(template_path)
+            curr_dir = self.abspath / os.path.dirname(template_path)
+            modification_config = self.load_yaml(self.abspath / template_path)
         else:
             curr_dir = ""
 
@@ -372,9 +372,10 @@ Running modification {modification.get('id')}
                 value, var_type = meta["value"], meta["type"].lower()
 
                 if var_type == "number":  # Directly insert SQL without escaping
-                    if not re.match(r"^[\d.]*$", value):  # avoid injection
-                        raise ValueError(f"Number '{value}' contains invalid characters.")
-                    formatted_vars[key] = psycopg.sql.SQL(value)
+                    if isinstance(value, float) or isinstance(value, int):
+                        formatted_vars[key] = psycopg.sql.SQL(f"{value}")
+                    else:  # avoid injection
+                        raise ValueError(f"Value '{value}' is not float or int.")
                 elif var_type == "identifier":  # Table/Column names
                     if not re.match(r"^[a-zA-Z_][a-zA-Z0-9_]*$", value):  # avoid injection
                         raise ValueError(f"Identifier '{value}' contains invalid characters.")
