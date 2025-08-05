@@ -1,3 +1,126 @@
+------------------
+-- System tables
+------------------
+INSERT INTO tww_sys.dictionary_od_table (id, tablename, shortcut_en) VALUES
+(2999998,'agxx_measure_text','MX'),
+(2999999,'agxx_building_group_text','GX')
+ON CONFLICT (id) DO UPDATE
+SET tablename=EXCLUDED.tablename,
+shortcut_en=EXCLUDED.shortcut_en;
+
+
+-----------------------------
+-- CREATE NEW VL --
+-----------------------------
+-- Ist_Schnittstelle
+CREATE TABLE IF NOT EXISTS tww_vl.wastewater_node_ag96_is_gateway
+(CONSTRAINT pkey_tww_vl_wastewater_node_ag96_is_gateway PRIMARY KEY (code))
+ INHERITS (tww_vl.value_list_base)
+ TABLESPACE pg_default; --Werteliste
+
+ALTER TABLE tww_vl.wastewater_node_ag96_is_gateway DROP CONSTRAINT IF EXISTS pkey_tww_vl_wastewater_node_ag96_is_gateway CASCADE;
+ALTER TABLE tww_vl.wastewater_node_ag96_is_gateway ADD CONSTRAINT pkey_tww_vl_wastewater_node_ag96_is_gateway PRIMARY KEY (code);
+INSERT INTO tww_vl.wastewater_node_ag96_is_gateway (code,vsacode,value_de,value_en,active) VALUES
+(1999951,1999951,'Schnittstelle','gateway',true),
+(1999950,1999950,'keine_Schnittstelle','no_gateway',true),
+(1999949,1999949,'unbekannt','unknown',true)
+ON CONFLICT (code) DO UPDATE SET
+  vsacode = EXCLUDED.vsacode
+, value_de = EXCLUDED.value_de
+, value_en = EXCLUDED.value_en
+, active = EXCLUDED.active
+;
+
+-- FunktionAG Anschluss
+CREATE TABLE IF NOT EXISTS tww_vl.wastewater_node_ag64_function
+(CONSTRAINT pkey_tww_vl_wastewater_node_ag64_function PRIMARY KEY (code))
+INHERITS (tww_vl.value_list_base);
+
+ALTER TABLE tww_vl.wastewater_node_ag64_function DROP CONSTRAINT IF EXISTS pkey_tww_vl_wastewater_node_ag64_function CASCADE;
+ALTER TABLE tww_vl.wastewater_node_ag64_function ADD CONSTRAINT pkey_tww_vl_wastewater_node_ag64_function PRIMARY KEY (code);
+INSERT INTO tww_vl.wastewater_node_ag64_function (code,vsacode,value_de,active) VALUES
+(1999948,1999948,'Anschluss',true),
+(1999933,1999933,'andere',true) -- für Zweitdeckel
+ON CONFLICT (code) DO UPDATE SET
+  vsacode = EXCLUDED.vsacode
+, value_de = EXCLUDED.value_de
+, value_en = EXCLUDED.value_en
+, active = EXCLUDED.active
+;
+
+CREATE TABLE IF NOT EXISTS tww_vl.building_group_ag96_disposal_type (CONSTRAINT pkey_tww_vl_building_group_ag96_disposal_type PRIMARY KEY (code)) INHERITS (tww_vl.value_list_base);
+ALTER TABLE tww_vl.building_group_ag96_disposal_type DROP CONSTRAINT IF EXISTS pkey_tww_vl_building_group_ag96_disposal_type CASCADE;
+ALTER TABLE tww_vl.building_group_ag96_disposal_type ADD CONSTRAINT pkey_tww_vl_building_group_ag96_disposal_type PRIMARY KEY (code);
+INSERT INTO tww_vl.building_group_ag96_disposal_type (code,vsacode,value_de,value_en,active) VALUES
+(1999964,1999964,'Ableitung_Verwertung','drainage',true),  -- kein VSA mapping
+(1999963,1999963,'Klaereinrichtung_Speicherung','clearing_storing',true),  -- kein VSA mapping
+(1999962,1999962,'keinBedarf','noDemand',true),  -- kein VSA mapping
+(1999961,1999961,'pendent','pending',true)  -- kein VSA mapping
+ON CONFLICT (code) DO UPDATE SET
+  vsacode = EXCLUDED.vsacode
+, value_de = EXCLUDED.value_de
+, value_en = EXCLUDED.value_en
+, active = EXCLUDED.active
+;
+
+CREATE TABLE IF NOT EXISTS tww_vl.building_group_text_plantype (
+    CONSTRAINT pkey_tww_vl_building_group_text_plantype_code PRIMARY KEY (code)
+)
+    INHERITS (tww_vl.value_list_base)
+TABLESPACE pg_default;
+INSERT INTO tww_vl.building_group_text_plantype
+SELECT * FROM tww_vl.wastewater_structure_text_plantype
+ON CONFLICT DO NOTHING;
+
+CREATE TABLE IF NOT EXISTS tww_vl.building_group_text_texthali (
+    CONSTRAINT pkey_tww_vl_building_group_text_texthali_code PRIMARY KEY (code)
+)
+    INHERITS (tww_vl.value_list_base)
+TABLESPACE pg_default;
+INSERT INTO tww_vl.building_group_text_texthali
+SELECT * FROM tww_vl.wastewater_structure_text_texthali
+ON CONFLICT DO NOTHING;
+
+CREATE TABLE IF NOT EXISTS tww_vl.building_group_text_textvali (
+    CONSTRAINT pkey_tww_vl_building_group_text_textvali_code PRIMARY KEY (code)
+)
+    INHERITS (tww_vl.value_list_base)
+TABLESPACE pg_default;
+INSERT INTO tww_vl.building_group_text_textvali
+SELECT * FROM tww_vl.wastewater_structure_text_textvali
+ON CONFLICT DO NOTHING;
+
+CREATE TABLE IF NOT EXISTS tww_vl.measure_text_plantype (
+    CONSTRAINT pkey_tww_vl_measure_text_plantype_code PRIMARY KEY (code)
+)
+    INHERITS (tww_vl.value_list_base)
+TABLESPACE pg_default;
+INSERT INTO tww_vl.measure_text_plantype
+SELECT * FROM tww_vl.wastewater_structure_text_plantype
+ON CONFLICT DO NOTHING;
+
+CREATE TABLE IF NOT EXISTS tww_vl.measure_text_texthali (
+    CONSTRAINT pkey_tww_vl_measure_text_texthali_code PRIMARY KEY (code)
+)
+    INHERITS (tww_vl.value_list_base)
+TABLESPACE pg_default;
+INSERT INTO tww_vl.measure_text_texthali
+SELECT * FROM tww_vl.wastewater_structure_text_texthali
+ON CONFLICT DO NOTHING;
+
+CREATE TABLE IF NOT EXISTS tww_vl.measure_text_textvali (
+    CONSTRAINT pkey_tww_vl_measure_text_textvali_code PRIMARY KEY (code)
+)
+    INHERITS (tww_vl.value_list_base)
+TABLESPACE pg_default;
+INSERT INTO tww_vl.measure_text_textvali
+SELECT * FROM tww_vl.wastewater_structure_text_textvali
+ON CONFLICT DO NOTHING;
+
+------------------------
+-- UPDATE EXISTING VL --
+------------------------
+
 -----------------
 -- Organisation
 -----------------
