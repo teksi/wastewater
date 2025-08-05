@@ -372,9 +372,10 @@ Running modification {modification.get('id')}
                 value, var_type = meta["value"], meta["type"].lower()
 
                 if var_type == "number":  # Directly insert SQL without escaping
-                    if not re.match(r"^[\d.]*$", value):  # avoid injection
-                        raise ValueError(f"Number '{value}' contains invalid characters.")
-                    formatted_vars[key] = psycopg.sql.SQL(value)
+                    if isinstance(value,float) or isinstance(value,int):
+                        formatted_vars[key] = psycopg.sql.SQL(value)
+                    else:  # avoid injection
+                        raise ValueError(f"Value '{value}' is not float or int.")
                 elif var_type == "identifier":  # Table/Column names
                     if not re.match(r"^[a-zA-Z_][a-zA-Z0-9_]*$", value):  # avoid injection
                         raise ValueError(f"Identifier '{value}' contains invalid characters.")
